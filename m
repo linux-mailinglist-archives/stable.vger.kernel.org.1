@@ -1,152 +1,146 @@
-Return-Path: <stable+bounces-192685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075DAC3E81F
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 06:26:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4F1C3EAA7
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 07:58:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92D213A740B
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 05:26:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1460F3A5E77
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 06:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E25231A23;
-	Fri,  7 Nov 2025 05:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D661304BD6;
+	Fri,  7 Nov 2025 06:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DArbjkgc"
+	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="fak4xDyk"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E773B2A0
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 05:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569EB30497C;
+	Fri,  7 Nov 2025 06:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762493156; cv=none; b=MSxYnEHHdgjQcCnGnibHW/0IXhLb4t5k/D4mVy9xkEWBiIxTk/R7nA6k6YaV7CfkBHhXKA9AWW19Rj1V8DlCuubWiMECjyJcnztbOXTskwWXl8KPaap2wFIR1oNQZfIl7gDwuxcZ7hpMiyKgS+IeQscUqaM4DX70Hw1Ikk9FbYw=
+	t=1762498716; cv=none; b=jucjaFPDBomSFAxY8VE7hWqXJoYt9A6biQVA8SYzbHD/BscBDqhwJm+9m3wI7peYC0pR7nf9xfaIiWb7xVltXOj8RWGyDd4FbWXeWqQExsvlq2leC194YunpXoR43+tXIPXwi2pgis6UNWlNA+PKYgY4WjsP8/EC0RI/a6sDBYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762493156; c=relaxed/simple;
-	bh=FOIxSUOM7h3Hic7TDO2WM/pjYTkeJ8gT7KEAt/huqb0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qALJO4WflV913M8tbINTAs7wv46hvU5B+8MvkGvmn7KK+SkmMVyhyZeNvQT02QfQTbDn7dvwefCJVxjbV9FpTF6f5VW07bEzzScoQxJVghLM2fwhosZlYg3a9o/yyRXFeavKcx6cQ+rQLbgPEqlchcwekCIzWrh8MT0qAJXsv8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DArbjkgc; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762493154;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xIpaacKZHnJUNIQ6uKG4gx1AM30s80yCIKhtIRTzyv0=;
-	b=DArbjkgc2YyKn1WNfy79XsGHk3V/KAO+Yz+KGKNRW8eXURkZTZqJLD/TywklX1IrORYWeI
-	14YCSJzSfrjMsQy4ffLIGfkGFuL4mBKNuJwJMXQUEyPwx6fWXdxe2j04V6+55bYktF1xkN
-	AE3zOaD811izKjX/zXHEpSNUyoSterk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-201-Ga0bJ94AOjqLafsq0-eLSg-1; Fri,
- 07 Nov 2025 00:25:51 -0500
-X-MC-Unique: Ga0bJ94AOjqLafsq0-eLSg-1
-X-Mimecast-MFC-AGG-ID: Ga0bJ94AOjqLafsq0-eLSg_1762493149
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 60FAD19560A7;
-	Fri,  7 Nov 2025 05:25:48 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.190])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 839681945110;
-	Fri,  7 Nov 2025 05:25:46 +0000 (UTC)
-Date: Fri, 7 Nov 2025 13:25:41 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Pingfan Liu <piliu@redhat.com>
-Cc: kexec@lists.infradead.org, linux-integrity@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Alexander Graf <graf@amazon.com>,
-	Steven Chen <chenste@linux.microsoft.com>, stable@vger.kernel.org
-Subject: Re: [PATCHv2 2/2] kernel/kexec: Fix IMA when allocation happens in
- CMA area
-Message-ID: <aQ2C1UyJoyyuC/ZK@MiWiFi-R3L-srv>
-References: <20251106065904.10772-1-piliu@redhat.com>
- <20251106065904.10772-2-piliu@redhat.com>
- <aQxV2ULFzG/xrl7/@MiWiFi-R3L-srv>
- <CAF+s44TyM7sBVmGn7kn5Cw+Ygm02F93hchiSBN0Q_qR=oA+DLg@mail.gmail.com>
- <aQ1QiLGXWRsZbiYo@MiWiFi-R3L-srv>
- <CAF+s44TOt+EwGi9VDES9PC+VaGZoDCw6rbyRv_mnb0xbaLScbg@mail.gmail.com>
+	s=arc-20240116; t=1762498716; c=relaxed/simple;
+	bh=WB/W09ZH7AM/kwynGqLiO2jAqRASpyMZeZ3DfMpSwqo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WjyKHTOntbz0zPP+O8CP0+/kgOwMGhqtn7HCEI+hZKMRpweFJHL7so7jRx8k1Yvipc8E9UvntWne1RP2Li+gEqYFDz0jseJYwMlmJychGsoJGUN1JCReQk2RSn+Yy11SCg16EpI0/2QmVgEuHmm71lfR8l8fXwwNIFnROMjKgl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=fak4xDyk; arc=none smtp.client-ip=178.154.239.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
+Received: from mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:6518:0:640:e091:0])
+	by forward502d.mail.yandex.net (Yandex) with ESMTPS id 07260C1E42;
+	Fri, 07 Nov 2025 09:58:19 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id GwgPjWGL4Gk0-lavljUaz;
+	Fri, 07 Nov 2025 09:58:18 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
+	t=1762498698; bh=k8RMyoSQNMrDyOfpu6xvqgm3N84tfDfzdVd1J0QkfjI=;
+	h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+	b=fak4xDykBdwnWTKXd2nYStK3b/oXR30px9jIjiXc8JVIyukgU1R7+32ZZonjON+pQ
+	 +VpxjtozYGpMa4BZ9zE83ZU+BhEte+8//kVRRCAf93DQxsCQIWWuFEbmWiAr1htCg7
+	 roO8j2PYApDOgwdvF2XLMNtriqDUfb6fgGlrYK6o=
+Authentication-Results: mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
+Message-ID: <afcb878e-d233-4c87-a0fc-803612c8c91f@rosa.ru>
+Date: Fri, 7 Nov 2025 09:58:16 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] bpf: hashtab: fix 32-bit overflow in memory usage
+ calculation
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
+ <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lvc-patches@linuxtesting.org,
+ stable@vger.kernel.org
+References: <20251106205852.45511-1-a.safin@rosa.ru>
+ <CALOAHbCcfszFFDuABhPHoMioT26GAXOKZzMqww0QY1wKogNm1g@mail.gmail.com>
+Content-Language: ru
+From: =?UTF-8?B?0JDQu9C10LrRgdC10Lkg0KHQsNGE0LjQvQ==?= <a.safin@rosa.ru>
+In-Reply-To: <CALOAHbCcfszFFDuABhPHoMioT26GAXOKZzMqww0QY1wKogNm1g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAF+s44TOt+EwGi9VDES9PC+VaGZoDCw6rbyRv_mnb0xbaLScbg@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On 11/07/25 at 01:13pm, Pingfan Liu wrote:
-> On Fri, Nov 7, 2025 at 9:51 AM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > On 11/06/25 at 06:01pm, Pingfan Liu wrote:
-> > > On Thu, Nov 6, 2025 at 4:01 PM Baoquan He <bhe@redhat.com> wrote:
-> > > >
-> > > > On 11/06/25 at 02:59pm, Pingfan Liu wrote:
-> > > > > When I tested kexec with the latest kernel, I ran into the following warning:
-> > > > >
-> > > > > [   40.712410] ------------[ cut here ]------------
-> > > > > [   40.712576] WARNING: CPU: 2 PID: 1562 at kernel/kexec_core.c:1001 kimage_map_segment+0x144/0x198
-> > > > > [...]
-> > > > > [   40.816047] Call trace:
-> > > > > [   40.818498]  kimage_map_segment+0x144/0x198 (P)
-> > > > > [   40.823221]  ima_kexec_post_load+0x58/0xc0
-> > > > > [   40.827246]  __do_sys_kexec_file_load+0x29c/0x368
-> > > > > [...]
-> > > > > [   40.855423] ---[ end trace 0000000000000000 ]---
-> > > > >
-> > > > > This is caused by the fact that kexec allocates the destination directly
-> > > > > in the CMA area. In that case, the CMA kernel address should be exported
-> > > > > directly to the IMA component, instead of using the vmalloc'd address.
-> > > >
-> > > > Well, you didn't update the log accordingly.
-> > > >
-> > >
-> > > I am not sure what you mean. Do you mean the earlier content which I
-> > > replied to you?
-> >
-> > No. In v1, you return cma directly. But in v2, you return its direct
-> > mapping address, isnt' it?
-> >
-> 
-> Yes. But I think it is a fault in the code, which does not convey the
-> expression in the commit log. Do you think I should rephrase the words
-> "the CMA kernel address" as "the CMA kernel direct mapping address"?
+Yes, that looks even better to me. Changing value_size to u64 at declaration
+makes the arithmetic safe everywhere and keeps the code cleaner.
 
-That's fine to me.
+I agree with this version.
 
-> 
-> > >
-> > > > Do you know why cma area can't be mapped into vmalloc?
-> > > >
-> > > Should not the kernel direct mapping be used?
-> >
-> > When image->segment_cma[i] has value, image->ima_buffer_addr also
-> > contains the physical address of the cma area, why cma physical address
-> > can't be mapped into vmalloc and cause the failure and call trace?
-> >
-> 
-> It could be done using the vmalloc approach, but it's unnecessary.
-> IIUC, kimage_map_segment() was introduced to provide a contiguous
-> virtual address for IMA access, since the IND_SRC pages are scattered
-> throughout the kernel. However, in the CMA case, there is already a
-> contiguous virtual address in the kernel direct mapping range.
-> Normally, when we have a physical address, we simply use
-> phys_to_virt() to get its corresponding kernel virtual address.
+Should I prepare a v2 patch with this modification, or will you take it 
+from here?
 
-OK, I understand cma area is contiguous, and no need to map into
-vmalloc. I am wondering why in the old code mapping cma addrss into 
-vmalloc cause the warning which you said is a IMA problem. 
-
+07.11.2025 04:58, Yafang Shao пишет:
+> On Fri, Nov 7, 2025 at 4:59 AM Alexei Safin <a.safin@rosa.ru> wrote:
+>> The intermediate product value_size * num_possible_cpus() is evaluated
+>> in 32-bit arithmetic and only then promoted to 64 bits. On systems with
+>> large value_size and many possible CPUs this can overflow and lead to
+>> an underestimated memory usage.
+>>
+>> Cast value_size to u64 before multiplying.
+>>
+>> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>>
+>> Fixes: 304849a27b34 ("bpf: hashtab memory usage")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Alexei Safin <a.safin@rosa.ru>
+>> ---
+>>   kernel/bpf/hashtab.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+>> index 570e2f723144..7ad6b5137ba1 100644
+>> --- a/kernel/bpf/hashtab.c
+>> +++ b/kernel/bpf/hashtab.c
+>> @@ -2269,7 +2269,7 @@ static u64 htab_map_mem_usage(const struct bpf_map *map)
+>>                  usage += htab->elem_size * num_entries;
+>>
+>>                  if (percpu)
+>> -                       usage += value_size * num_possible_cpus() * num_entries;
+>> +                       usage += (u64)value_size * num_possible_cpus() * num_entries;
+>>                  else if (!lru)
+>>                          usage += sizeof(struct htab_elem *) * num_possible_cpus();
+>>          } else {
+>> @@ -2281,7 +2281,7 @@ static u64 htab_map_mem_usage(const struct bpf_map *map)
+>>                  usage += (htab->elem_size + LLIST_NODE_SZ) * num_entries;
+>>                  if (percpu) {
+>>                          usage += (LLIST_NODE_SZ + sizeof(void *)) * num_entries;
+>> -                       usage += value_size * num_possible_cpus() * num_entries;
+>> +                       usage += (u64)value_size * num_possible_cpus() * num_entries;
+>>                  }
+>>          }
+>>          return usage;
+>> --
+>> 2.50.1 (Apple Git-155)
+>>
+> Thanks for the fix. What do you think about this change?
+>
+> diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+> index 4a9eeb7aef85..f9084158bfe2 100644
+> --- a/kernel/bpf/hashtab.c
+> +++ b/kernel/bpf/hashtab.c
+> @@ -2251,7 +2251,7 @@ static long bpf_for_each_hash_elem(struct
+> bpf_map *map, bpf_callback_t callback_
+>   static u64 htab_map_mem_usage(const struct bpf_map *map)
+>   {
+>          struct bpf_htab *htab = container_of(map, struct bpf_htab, map);
+> -       u32 value_size = round_up(htab->map.value_size, 8);
+> +       u64 value_size = round_up(htab->map.value_size, 8);
+>          bool prealloc = htab_is_prealloc(htab);
+>          bool percpu = htab_is_percpu(htab);
+>          bool lru = htab_is_lru(htab);
+>
+>
 
