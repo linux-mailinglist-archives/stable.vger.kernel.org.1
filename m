@@ -1,184 +1,158 @@
-Return-Path: <stable+bounces-192713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72625C3FB1D
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 12:17:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6357EC3FB47
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 12:20:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52DBB3A6C16
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 11:17:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4DCB14E42DB
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 11:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEDB321445;
-	Fri,  7 Nov 2025 11:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8692D31DD81;
+	Fri,  7 Nov 2025 11:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="CIxH4+JH";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ghCBnvDO"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jUkZvzKt"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833641F5821;
-	Fri,  7 Nov 2025 11:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CD629AB05
+	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 11:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762514259; cv=none; b=i5gJwBuTS72sdWBhfJwpHwfYkFpPJ3QXI6SdaxxM+nsWQd+0pbrSfheJnTj0YIPMGTDxrNo0HOv+2i6IwSFBYfiTF6iXkm/clow1Uom8kGbyhSjugtR/4G1HwkYatmC4WCh4tr09w11ndAX290aAQSG37WwJyfqSOyIFi4Z9DsY=
+	t=1762514417; cv=none; b=lulRHliNNyCR48R7qupeMELMDj6L/SJGgftmEKTku3PMl/a8M4fPCs9RRrh1uqRjpN2IelZZ4Ira/O1Y/S76WDfJlLT5JWYiS2hbaxnvzLAtXR5GlzF7Uu2RvFfb1PSfdoPxB5GW8gqZy3jPj6+A6LnG2gvafNRr0JKof5NovXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762514259; c=relaxed/simple;
-	bh=Y9pUCfcFi4AsEJHJltTCRril7hFnOkYG0tyEo8NBeFg=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=tfCunUB9VUgJ6YTiLHtqWqyvhj/PsxKg7OIjKdAWX51jgsCrlHf7aNijX/Zx+dfafCYhXGD63fIde5dwS3CuMAeiPbROEWxGHUqcgzny/ElILwlQujHHj4nFN1KAW4i7JEbopaiYQvk/oEx53dzZBROrPqhjUfFMWuPe2C+nIH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=CIxH4+JH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ghCBnvDO; arc=none smtp.client-ip=202.12.124.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 4F60B1D00149;
-	Fri,  7 Nov 2025 06:17:35 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 07 Nov 2025 06:17:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
-	1762514255; x=1762600655; bh=BBzJnnctCnq4Fcyhvxggl9CB8DYe4i8BJNv
-	opXA2dBs=; b=CIxH4+JHa2AOTOyFspUql3H/vqlFrzbrSO/NjyqXPiC2sdj8AVB
-	maNeRVlSZAcLLc/VsqivXSGEcf94YBo1Newtl90xemViH4OYbYXJU7vyft23yjkS
-	KSjj4I9tbY7Tpxcpbb4gxrQik45Tm42kRyWos+sQ34GMWHdwpQ5xuzHYWGynvuoF
-	Iq2CZw8PKEaFhP/IHfWXxqPjyQQQdaFRSilliOepB1/F+gSTsTUEIsDc9SsTXyfO
-	4hkVVlj4918R3u0tyDXj0y0GvpRA9duTM8jWsgNkNT6ktlVhVaWb8fZie9nIZkRd
-	+CEP12CdDW/XreIeBlEk/Y/+1Mi5WW86KMQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762514255; x=
-	1762600655; bh=BBzJnnctCnq4Fcyhvxggl9CB8DYe4i8BJNvopXA2dBs=; b=g
-	hCBnvDOJ4EuRX5QTbG9wrnoQXEoGLPEWjdom+5QjeYOXzhQ/Z8WvcaU6tlFtoJm+
-	7jjbgYTroGPrqngoFE147RZsbhrtRJF3yPWlnTsODstodSzyLYX2Oelu3hjKjvia
-	QuEMDAoZIZL32HyzbPHLbpOklMzkwoSeXkTLFS5RL9wYkpjz1Df+YfIhVJTRSIfU
-	bj450jcs/BpLb4WJz1eLDO/pbTzrZVKrN8XazAne5YGNjcQu5dvJjU4XSIrnOJxF
-	cYwcrh2IPkjre2WpuUdM07pfqLTa4Cffrd8/U9SHW/Apcthqnfmcpf9/Fv/ngfh1
-	E6e9YZC0QZhAcRYMC11ZA==
-X-ME-Sender: <xms:TtUNaYs0uvLVFFCyvD_8DfaSdGHQ-37Sf9L55YaURw3jXyY2deyViA>
-    <xme:TtUNaRc_WX-_83TnheJz7KtwST_KrnfE9Qk89OiznRBWE3SKx_1YZ5RrxqTyOpOqq
-    g6RuSzxs3swrh8tLBmJWHZivhNGreWbdAJkSYEVRrmJUGfODQ>
-X-ME-Received: <xmr:TtUNaV_XpQVM1AH9oe-T2sDfB_qirhgiaxNgtGjaAeJfewzRrmM5F2_Ly6RtpX-vck8ayhwAbYqEgb-AKoCCQqXiBjfekVLVispmOjkwvDGb>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukeelhedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurheptgfgggfhvfevufgjfhffkfhrsehtjeertddttdejnecuhfhrohhmpefpvghilheu
-    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
-    epgeehfeevheehteetudehjeduiefhueehieevvdejkeeufeevkeelieffffduhfevnecu
-    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmhgrihhlrdhnvghtpdhnsggp
-    rhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehsthgrsghlvg
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhnfhhssehv
-    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhf
-    ohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegtvghlsehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehsphgvvggutghrrggtkhgvrheshhhothhmrghilhdrtghomhdprhgt
-    phhtthhopegurghvihgurdhlrghighhhthdrlhhinhhugiesghhmrghilhdrtghomhdprh
-    gtphhtthhopegurghvihgurdhlrghighhhthesrggtuhhlrggsrdgtohhm
-X-ME-Proxy: <xmx:TtUNacTtY4f33CCyCn7XaQghQ8b0lqIHX9-ooYPf8lRWqp4KxxROZw>
-    <xmx:TtUNaWop-ByXFOldZ-xsyF5cp7mdV5n-KujEEwrMGwVOv4HthesJ_w>
-    <xmx:TtUNaZmTI3IkTimhuisxgGiLwx3y-4IWqCg0zBCbzASnqihUygUzjA>
-    <xmx:TtUNafd9TdB4ll859qYjl6MA9tvEmbDVTV89LfuBik2ycadxRkLZUg>
-    <xmx:T9UNaRmvNsoXUjsACfHe8Ip7M8Xg3XEdNZC716U44UxJOZgDT5iuATIz>
-Feedback-ID: iab3e480c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 7 Nov 2025 06:17:32 -0500 (EST)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=arc-20240116; t=1762514417; c=relaxed/simple;
+	bh=BRaK+VjCK1hNZi3/Bm25vdWhbCF3f4DmIMNp6ZePR/4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pl6Gty86vVTYKjoZ36cxmSbtwxC/A8ausc5dNAV2QEz2Da3UFBsigzR9wKU7vJlWBj6of+opp8n1Sp8JN2YlGpmuoYGaBFnTuZ+FZAqwfisvN4Z+l8Jmun8K3Cq7kz6W0lswQqlpo8DfHAGiNkBrtAeImorKFLHiWEhhg/Chlqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jUkZvzKt; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ed861eb98cso7796151cf.3
+        for <stable@vger.kernel.org>; Fri, 07 Nov 2025 03:20:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762514415; x=1763119215; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fCuntcHPB7jt7B/bSZdm9gqlzC6yu+GRicnaUIhJiE0=;
+        b=jUkZvzKtLY+JSbhFO4QDQAGxkk4ytJCkr8KMyQ/klCNASqBvBpGxSiLm2fdHMiJCKO
+         Ut+ahhOqbegytRzh+KR5nabbJRq2vR+cB3X73kbMFv+Q10e7un0CORbff6BDJdwk684P
+         gWKx+ZSUDBI6680d7NmVMabEKpPAvNxb96FRI/I3EutuLavhEQGAMNeMGzydzluohZTG
+         vxgnvW9dPj+MV0o+w14sN24hebsdyN2KRBmxOkxQAzZ/g+0EDS5GYnh9S4xbdunYctQe
+         BC9KASBUx8/3VYjCTQ5AYZuc2ZDiaLAYBY5QIqvSBE4liwEqaOcQ/8lQvJMDx2EPOgST
+         XAvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762514415; x=1763119215;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fCuntcHPB7jt7B/bSZdm9gqlzC6yu+GRicnaUIhJiE0=;
+        b=dZqFqyHeKqJaw2LGM5IONRAJBG2C8VTZ6Pv6eqA28FTyOx2TFZlmzeT6Lggb0QF0Rl
+         H67GoEhVH2/G+Dee/jNXVU9Hh1VriZS3nPEXhj++7lvhlHFnSShRJ2bETjAT/kzAFiCY
+         30eaedc+DWRhyyF43IdGZgT8QBoqHs9q5N81rU/P9Ee9WeoI+8uOqlCyDJ004nAWqXoa
+         JBleL4c0QxI43BfPgg5/DmsIEumRU1Qr74JVqKElAjh8UatMeKRsWBDyOUuFu/rHn8z9
+         EircKx08QijjpRbHlAqfQcM+s5FXlB4WsR6W5x7bGDPoaCE3jsrPaeEEwu53DntnptT9
+         dRaA==
+X-Forwarded-Encrypted: i=1; AJvYcCXs3W9Q54a2rNMpbx7LBaAI0y3s0GTy/DBlm9G2i/bDOwfOX3kAR6Mvi6vAQ8tGdP5oRRIvZ/A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbiXVaptiqitub8ySzzXdqeajNc/C4XZD2vcCg6Af3yWAPKOmE
+	j1sD+N+yN4GrquNzCIjISCZ3Ajr3Huot0tL4KgNsWe9MLebxFJovtkD79LGAVw+Uuwj3wBSe13W
+	sTcc57M7O4ZZu1j2lWd2M5xHq7sMR7L8RDhi3pQ6B
+X-Gm-Gg: ASbGncuRqUUjROtY/KzIumt5XnWh9HtTNB0DZW9mMjHytVAgqrABneaeXMT2Hrw5Okw
+	nA1CgHA8POsn4I/Wk5RF+l+ZJnft0K4xH0mSvC9p333bTxSqS7b35a1Tu3vdwG3EkbufpUpdGfw
+	Qlh+X8F2Z46zsqusX3FWWp/+VXrhVClR8Aguo9nBmlJRz9JoRuO0BnRZqjzNJJip85ReQkEZubh
+	WLW2fgxJ10E8w2bTMVSpmWuFTZgvZrpD34/ZitQzj/TnRylc6JTXF7qQ0wYhw9RL17NWZNB
+X-Google-Smtp-Source: AGHT+IGC3fYMjryS9zADloir/gP2Yamma9UjG5JSmMf62xT/E/o9kWnU3HSHFswBMiaxi1WGy0axf3d/DY0sMx5XNcM=
+X-Received: by 2002:ac8:5702:0:b0:4ec:f969:cabc with SMTP id
+ d75a77b69052e-4ed9494e284mr28907961cf.10.1762514414438; Fri, 07 Nov 2025
+ 03:20:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "David Laight" <david.laight.linux@gmail.com>
-Cc: "Chuck Lever" <cel@kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "David Laight" <David.Laight@ACULAB.COM>,
- "Linux NFS Mailing List" <linux-nfs@vger.kernel.org>,
- "Linux List Kernel Mailing" <linux-kernel@vger.kernel.org>,
- speedcracker@hotmail.com
-Subject: Re: Compile Error fs/nfsd/nfs4state.o - clamp() low limit slotsize
- greater than high limit total_avail/scale_factor
-In-reply-to: <20251106192210.1b6a3ca0@pumpkin>
-References: <bbba88825d7b2b06031c1b085d76787a2502d70e.camel@kernel.org>,
- <37bc1037-37d8-4168-afc9-da8e2d1dd26b@kernel.org>,
- <20251106192210.1b6a3ca0@pumpkin>
-Date: Fri, 07 Nov 2025 22:17:20 +1100
-Message-id: <176251424056.634289.13464296772500147856@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
+References: <20251107080117.15099-1-make24@iscas.ac.cn>
+In-Reply-To: <20251107080117.15099-1-make24@iscas.ac.cn>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 7 Nov 2025 03:20:03 -0800
+X-Gm-Features: AWmQ_bnEuaGnleUmw5tdQ2p6tHQd4r5RAkYYgVZBqY4gtBL8VHSKOH_-igWdJDQ
+Message-ID: <CANn89iKswhYk4ASH0oG1YbvNsP9Yxuk4vSX5P45Tj_UY+s16VQ@mail.gmail.com>
+Subject: Re: [PATCH] net: Fix error handling in netdev_register_kobject
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	sdf@fomichev.me, atenart@kernel.org, kuniyu@google.com, yajun.deng@linux.dev, 
+	gregkh@suse.de, ebiederm@xmission.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 07 Nov 2025, David Laight wrote:
-> On Thu, 6 Nov 2025 09:33:28 -0500
-> Chuck Lever <cel@kernel.org> wrote:
-> 
-> > FYI
-> > 
-> > https://bugzilla.kernel.org/show_bug.cgi?id=220745
-> 
-> Ugg - that code is horrid.
-> It seems to have got deleted since, but it is:
-> 
-> 	u32 slotsize = slot_bytes(ca);
-> 	u32 num = ca->maxreqs;
-> 	unsigned long avail, total_avail;
-> 	unsigned int scale_factor;
-> 
-> 	spin_lock(&nfsd_drc_lock);
-> 	if (nfsd_drc_max_mem > nfsd_drc_mem_used)
-> 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
-> 	else
-> 		/* We have handed out more space than we chose in
-> 		 * set_max_drc() to allow.  That isn't really a
-> 		 * problem as long as that doesn't make us think we
-> 		 * have lots more due to integer overflow.
-> 		 */
-> 		total_avail = 0;
-> 	avail = min((unsigned long)NFSD_MAX_MEM_PER_SESSION, total_avail);
-> 	/*
-> 	 * Never use more than a fraction of the remaining memory,
-> 	 * unless it's the only way to give this client a slot.
-> 	 * The chosen fraction is either 1/8 or 1/number of threads,
-> 	 * whichever is smaller.  This ensures there are adequate
-> 	 * slots to support multiple clients per thread.
-> 	 * Give the client one slot even if that would require
-> 	 * over-allocation--it is better than failure.
-> 	 */
-> 	scale_factor = max_t(unsigned int, 8, nn->nfsd_serv->sv_nrthreads);
-> 
-> 	avail = clamp_t(unsigned long, avail, slotsize,
-> 			total_avail/scale_factor);
-> 	num = min_t(int, num, avail / slotsize);
-> 	num = max_t(int, num, 1);
-> 
-> Lets rework it a bit...
-> 	if (nfsd_drc_max_mem > nfsd_drc_mem_used) {
-> 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
-> 		avail = min(NFSD_MAX_MEM_PER_SESSION, total_avail);
-> 		avail = clamp(avail, n + sizeof(xxx), total_avail/8)
-> 	} else {
-> 		total_avail = 0;
-> 		avail = 0;
-> 		avail = clamp(0, n + sizeof(xxx), 0);
-> 	}
-> 
-> Neither of those clamp() are sane at all - should be clamp(val, lo, hi)
-> with 'lo <= hi' otherwise the result is dependant on the order of the
-> comparisons.
-> The compiler sees the second one and rightly bleats.
+On Fri, Nov 7, 2025 at 12:01=E2=80=AFAM Ma Ke <make24@iscas.ac.cn> wrote:
+>
+> After calling device_initialize(), the reference count of the device
+> is set to 1. If device_add() fails or register_queue_kobjects() fails,
+> the function returns without calling put_device() to release the
+> initial reference, causing a memory leak of the device structure.
+> Similarly, in netdev_unregister_kobject(), after calling device_del(),
+> there is no call to put_device() to release the initial reference,
+> leading to a memory leak. Add put_device() in the error paths of
+> netdev_register_kobject() and after device_del() in
+> netdev_unregister_kobject() to properly release the device references.
+>
+> Found by code review.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: a1b3f594dc5f ("net: Expose all network devices in a namespaces in =
+sysfs")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>  net/core/net-sysfs.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+> index ca878525ad7c..d3895f26a0c8 100644
+> --- a/net/core/net-sysfs.c
+> +++ b/net/core/net-sysfs.c
+> @@ -2327,6 +2327,7 @@ void netdev_unregister_kobject(struct net_device *n=
+dev)
+>         pm_runtime_set_memalloc_noio(dev, false);
+>
+>         device_del(dev);
+> +       put_device(dev);
 
-In fact only gcc-9 bleats.
+Please take a look at free_netdev()
 
-gcc-7 gcc-10 gcc-13 gcc-15
-all seem to think it is fine.
+>  }
+>
+>  /* Create sysfs entries for network device. */
+> @@ -2357,7 +2358,7 @@ int netdev_register_kobject(struct net_device *ndev=
+)
+>
+>         error =3D device_add(dev);
+>         if (error)
+> -               return error;
+> +               goto out_put_device;
+>
+>         error =3D register_queue_kobjects(ndev);
+>         if (error) {
+> @@ -2367,6 +2368,10 @@ int netdev_register_kobject(struct net_device *nde=
+v)
+>
+>         pm_runtime_set_memalloc_noio(dev, true);
+>
+> +       return 0;
+> +
+> +out_put_device:
+> +       put_device(dev);
+>         return error;
 
-NeilBrown
+This seems bogus.
+
+Was your report based on AI or some tooling ?
+
+You would think that syzbot would have found an issue a long time ago...
 
