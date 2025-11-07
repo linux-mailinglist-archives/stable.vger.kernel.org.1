@@ -1,305 +1,318 @@
-Return-Path: <stable+bounces-192700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D5AC3F458
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 10:54:07 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B00C3F47C
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 10:56:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6DEB3A1884
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 09:54:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E3DFA34D677
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 09:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5AB2D9784;
-	Fri,  7 Nov 2025 09:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F7D2F6585;
+	Fri,  7 Nov 2025 09:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jIF3Oqme"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TO0dwnTx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57CC28030E
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 09:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762509244; cv=none; b=VzQrQdPLwbmqljbLe51sP3Og6LUoid8nJ+ESyPbSqoiCf5D+oAOkc3U8lc82D6HAyJb4Z0tlhbASXb00SJPZgPaVjCmJN+54Z22LbLVFliqKt212l5zDXuZyWUiVMw01EnTBlQAtV/oE7dMqWoTsbCa8+tStwcvx6oD6TYX42fU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762509244; c=relaxed/simple;
-	bh=LJJEk10POdcTsPhHa19ZeOv6WD/yQjLxyWkbC1toxzM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jquxnQbi6o3S/qM6hR7uJi3MO9CvQpCkSvgQpXPoiGBEAo7vNqqmqkirnrcJk9M2YgGaSN6A1yX9Ww6ll56bGX2nrOczbIqfVtj/EcwPND3eS0T7R/aDHxEXvYgUDrdD5WRwLZ00KzHYDigVLSYE+VZMuK5kqjc0WQjQYNTKS/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jIF3Oqme; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2957850c63bso5844975ad.0
-        for <stable@vger.kernel.org>; Fri, 07 Nov 2025 01:54:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762509242; x=1763114042; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PdFrpCMgzVY+qjVrXkUkn7fFQNGJUHKXO+rmqKz+1v0=;
-        b=jIF3Oqmezwi0bkvjLvyK9FinpmRgMKMxmFSe6ydV8ke5dzJSqn2L6Imo796wsLbinB
-         QA9ih+nvrDQmQvvFwO90moH8dSWlrGJVQi/OIZ4vR/+O/3p1CPRxf5tVb1TP+L7CM1m7
-         /L+f3iq6Uc9fz2szO67I5+UZdhU69Q5mVk4mahhmdF9P6NoLq8bXCLPBo3CeJCBNroRV
-         wgV351693syWR1QwuAje3Es9lA7mnFsVwi43UZi7NI+AElE9D225LA/mqmNYycl4mBtD
-         dEDfS0OcxcmFzHGSQMzwmgezdF2K93fSekdOj20St1lLti78IcgNrm5SmcE8vssw1KjC
-         rDtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762509242; x=1763114042;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PdFrpCMgzVY+qjVrXkUkn7fFQNGJUHKXO+rmqKz+1v0=;
-        b=iblP5+YSkYxYuohk6Y5Zpqi7mxazVSeCLxJ9KoM58OwZJEedvkrMw6605L/C1Hexka
-         D8oZyWaRdX0JItN/+NxIqRBd8w99zYJLQuVohP4uL/WwKCisvUTEx8VHbQz84smsjc7p
-         v1r/3Te+Xh0lxuQlS9PYbKF31QPOTQ3RnxpSJlVYziX1b90v0UYMF90zksUUjaX+6xiH
-         mLOMPhGPkKaXO0k90gG6G5SvZtoUvnMcImRQs9V8TMm87bBMXli6CUmVyfDwtf8RDzOG
-         9zQYjyip6u00vC3BZIK3anxPb+1bGmzi9HkheiMNW0QoSNj8ZWtrnmsWBtYU0Au0Sz0B
-         IoGg==
-X-Forwarded-Encrypted: i=1; AJvYcCWS/87NMsA21Qx/Lt88KdCKWZqhsD8Jj2qmOLbKyvzkK9CO+7zlez1yWTKBYn9OxWhlykSJNKw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzeOuAYUqdXwZpZFjtLfQsqFncuYANzbZrUb6ExwEhiM52Qxq7
-	IrezvkIcSW4ZJXBX1ygsfOqFvCOV8gczYhX9qUApjB5h1meVL9T4Q3UgeNF14KdvjqRLYBaABWA
-	KGSKNWJ85y/3IvIhmqxBNnujTifaXmmE=
-X-Gm-Gg: ASbGncvnJTTKP9Ci9iVXcXpYSbo8QnJ7cogKNTAgP+0OH/C1dUuOLuAp0MVTaTssaPj
-	9D50nog9TLHtbIrjcPYHKHJaS54DtpZuOijrLTIOVWvPVysl+A92QnoFEEHGpwoDBYdvlPkmrw+
-	6Id5Wp8HQJ8bTqYShW0xm8hw9Z7d2r5jZY2XgBtY6sZelOkB52o418SQ+zGVXGbQO6ENd0j+r5d
-	qdz295MYEclXwbRHOAtq1RD17FQU/eE2mpzlXANbIRUrLOnB1Bf5/3qs/jC+GJzE+iRFhL3
-X-Google-Smtp-Source: AGHT+IE11zhMAgi5cvIEZMVAHip/aU++LIjg8RLYkVfjpVQzr3BdfJWiu8X8UTY8why69UfvnlPjVZ1PmACNZK12Mhk=
-X-Received: by 2002:a17:902:e847:b0:292:9ac7:2608 with SMTP id
- d9443c01a7336-297c94b32a9mr15262395ad.8.1762509242005; Fri, 07 Nov 2025
- 01:54:02 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B615B2D9EED;
+	Fri,  7 Nov 2025 09:56:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762509398; cv=fail; b=SqDjL91fckbExws5+SqD5ECIamEM8nmVRlbU+cpbe7zXw6eFQh8TJiW14qI3lDm6L5zoPzMHN8pYfsgu97qrQcqmL+5ST3ExtcJMGPpx8j/tgfyVG8czaBPkTzExSkThBN3vPJpMtfZ7aXQ3X5WQPHONqxHbkoY0cz+7+Vo82+Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762509398; c=relaxed/simple;
+	bh=5h7HZcz/iuIWhfi1ljBwJaPuEGM+N6Xfk0MeqiA7TpA=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=mjtCOKZStnPAGEEPXKPLb4iI3RaORObtI7YIFiokbsdvySVTy+EIAbklFipC/r3f+cbg99tafL1aINfoHpMI127kYvrMc5GsGMefBsMKd0+5loWgPu1EDMkhx5SpVUtzFr64XcW9cl11Ir0oSYJywdUnYxu1HXuVhsu+mN48WuM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TO0dwnTx; arc=fail smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762509397; x=1794045397;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:mime-version;
+  bh=5h7HZcz/iuIWhfi1ljBwJaPuEGM+N6Xfk0MeqiA7TpA=;
+  b=TO0dwnTxdEn3Gj5oAxb/zhr2hdWN4j0qY7Q+obZbDJPsuVKKtIOPxeqJ
+   Yx79xgaP0iMOjxEiL9Gcf20GuYpsomh1lj3X6nIpq/x18RV/OFTPCenFy
+   /NGpkWw3r/CCGIWAm37RI3y3EBfdqZmYDcpuU3xcqTGThY7TgmJrUow5k
+   26PHOR3HGRjW0RY+27m00GWnLAVugl1YxnSmjeWIwjr09f3V3tU8+VTzM
+   UKzhQmBAK8tUAYAZc7C8FQDPbj4RfersxeuqZXTIstfFbbP34kh0FYRUL
+   5/w2kYyWx5UbwpmULBvXrZ0uFMhdPVp6QWTXBZpQIt9/cMxE3F3ovWDc+
+   A==;
+X-CSE-ConnectionGUID: 9qyBypI+S7OuE6Mv3+Sk4A==
+X-CSE-MsgGUID: cwATL0JhQfym77Tp3i0mcw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11605"; a="67269239"
+X-IronPort-AV: E=Sophos;i="6.19,286,1754982000"; 
+   d="asc'?scan'208";a="67269239"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 01:56:36 -0800
+X-CSE-ConnectionGUID: 1GQumejiS+msD2Q5HnPYeA==
+X-CSE-MsgGUID: RYdzEpKOTOmORGAgXt0VnA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,286,1754982000"; 
+   d="asc'?scan'208";a="188163946"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 01:56:36 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Fri, 7 Nov 2025 01:56:35 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Fri, 7 Nov 2025 01:56:35 -0800
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.17) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Fri, 7 Nov 2025 01:56:35 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NcCdhBXOQioNWt9d6VH8atsmMZJTQp/jd5TlomnlkOvc65XH5xEDVK+McBwsT2Cl9L+48OD/vm4yzs8UeF/7LcTCoM1y1rz+jMpK0BYqjQZmuhsLsqaq/PGc8v0hLKfV03XlptNoorvZOzrY/zJCkE5RvF0s6tRHbOshIOTm24Lt3SphiDfkleEwifPsYeGqmQ5CF0Z8W8z/hWLQGlP7mU5G4/nCKrUBMQVgqwsqcSrCqv7uXJXuYHQt+qUPwFr5M/SvYHV/VgCRXzfBJ2URpR6qWNQSniE3e22DYMhP98xVHiTJEhKAjyAGqvQ+hJXKwjGPnnrACkRJQrBsen0okQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qPpB2u90iHLiS9k9bPKheSLOW5TWTK32TDI3LQu//jE=;
+ b=MHk/t2Zvc1S/I5eQRtsUr6fi49x6CqF7SJyr+sORnqiNqpEGBHbsnW8gbAjTqUJEYvq+mSMEJX6/a9VaVuYsgAh/A8fqVD9vstOoRJE9NbB2gKPNB+8DzddP7A0Srx1cfZZUcH5c6YRsckPq7ddhqiCGUqmpffYDaXOMFXGbanScBgirczkHd9FckDzwVjUjzXzoKrslxLnB/pZTUkZigBFAdbcYUCroYSDE15YGUJqLtEm8d3+ptc+21jstDNp7KT7vjJeRONzxb10kDkt9KF72O0Tt9k5mailAxuPdVzgKEb3KtkDeKuYYzQ6K28TVEgL2Uagr1/aI2dIIrRtYxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO1PR11MB5089.namprd11.prod.outlook.com (2603:10b6:303:9b::16)
+ by SA0PR11MB4703.namprd11.prod.outlook.com (2603:10b6:806:9f::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.13; Fri, 7 Nov
+ 2025 09:56:33 +0000
+Received: from CO1PR11MB5089.namprd11.prod.outlook.com
+ ([fe80::81f7:c6c0:ca43:11c3]) by CO1PR11MB5089.namprd11.prod.outlook.com
+ ([fe80::81f7:c6c0:ca43:11c3%3]) with mapi id 15.20.9298.010; Fri, 7 Nov 2025
+ 09:56:33 +0000
+Message-ID: <98c774ea-943d-43f0-a29d-b540bf289939@intel.com>
+Date: Fri, 7 Nov 2025 01:56:30 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] strparser: Fix signed/unsigned mismatch bug
+To: Nate Karstens <nate.karstens@garmin.com>, <netdev@vger.kernel.org>
+CC: Nate Karstens <nate.karstens@gmail.com>, Tom Herbert <tom@quantonium.net>,
+	Sabrina Dubroca <sd@queasysnail.net>, <stable@vger.kernel.org>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Martin KaFai Lau <martin.lau@kernel.org>, Jakub Sitnicki
+	<jakub@cloudflare.com>, Jiayuan Chen <mrpre@163.com>, "Dr. David Alan
+ Gilbert" <linux@treblig.org>, Tom Herbert <tom@herbertland.com>,
+	<linux-kernel@vger.kernel.org>
+References: <20251106222835.1871628-1-nate.karstens@garmin.com>
+Content-Language: en-US
+From: Jacob Keller <jacob.e.keller@intel.com>
+Autocrypt: addr=jacob.e.keller@intel.com; keydata=
+ xjMEaFx9ShYJKwYBBAHaRw8BAQdAE+TQsi9s60VNWijGeBIKU6hsXLwMt/JY9ni1wnsVd7nN
+ J0phY29iIEtlbGxlciA8amFjb2IuZS5rZWxsZXJAaW50ZWwuY29tPsKTBBMWCgA7FiEEIEBU
+ qdczkFYq7EMeapZdPm8PKOgFAmhcfUoCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AA
+ CgkQapZdPm8PKOiZAAEA4UV0uM2PhFAw+tlK81gP+fgRqBVYlhmMyroXadv0lH4BAIf4jLxI
+ UPEL4+zzp4ekaw8IyFz+mRMUBaS2l+cpoBUBzjgEaFx9ShIKKwYBBAGXVQEFAQEHQF386lYe
+ MPZBiQHGXwjbBWS5OMBems5rgajcBMKc4W4aAwEIB8J4BBgWCgAgFiEEIEBUqdczkFYq7EMe
+ apZdPm8PKOgFAmhcfUoCGwwACgkQapZdPm8PKOjbUQD+MsPBANqBUiNt+7w0dC73R6UcQzbg
+ cFx4Yvms6cJjeD4BAKf193xbq7W3T7r9BdfTw6HRFYDiHXgkyoc/2Q4/T+8H
+In-Reply-To: <20251106222835.1871628-1-nate.karstens@garmin.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature";
+	boundary="------------8U6omurRma5qEgPzIYC36inr"
+X-ClientProxiedBy: SJ0PR13CA0007.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c0::12) To CO1PR11MB5089.namprd11.prod.outlook.com
+ (2603:10b6:303:9b::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CACueBy7yNo4jq4HbiLXn0ez14w8CUTtTpPHmpSB-Ou6jhhNypA@mail.gmail.com>
- <CANn89iL9e9TZoOZ8KG66ea37bo=WztPqRPk8A9i0Ntx2KidYBw@mail.gmail.com>
- <aQtubP3V6tUOaEl5@shredder> <CACueBy6LKYmusLjQPnQGCoSZQLEVAo5_X47B-gaH-2dSx6xDuw@mail.gmail.com>
-In-Reply-To: <CACueBy6LKYmusLjQPnQGCoSZQLEVAo5_X47B-gaH-2dSx6xDuw@mail.gmail.com>
-From: chuang <nashuiliang@gmail.com>
-Date: Fri, 7 Nov 2025 17:53:51 +0800
-X-Gm-Features: AWmQ_bnKgi56ZSPNSnKawG2OgOKGBH6FrWpo36dTSyLysdWpwJuxy5qm1OA073U
-Message-ID: <CACueBy4EAuBoHDQPVSg_wdUYXYxQzToRx4Y+TSgcBwxEcODt_w@mail.gmail.com>
-Subject: Re: [PATCH net] ipv4: route: Prevent rt_bind_exception() from
- rebinding stale fnhe
-To: Ido Schimmel <idosch@idosch.org>
-Cc: Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Networking <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR11MB5089:EE_|SA0PR11MB4703:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef060030-8550-4fca-53ed-08de1de3ee94
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UU1NeWFHb21QWW5NSWZyRHRyNlVxOTdkbHNoNnVVN0ZJWlc3ZzhZRUFRc2pN?=
+ =?utf-8?B?YVNncEZzWXlwMlY4OW4yUm9lbjI4d3BDNnczNVdyN2ZVRmNqRDVtZkVUME9s?=
+ =?utf-8?B?SkE3YkdOV3pvdFNaVWF5eFpQOXUwZ0tOeEhSdG9BK2dZWldSMmJITm4zQXFv?=
+ =?utf-8?B?b0JBblIxcHY5bmNiNTcrSHpaTHhjMHdRYWI5WmlRRVV1anRjZGJzbkswY3BI?=
+ =?utf-8?B?L1RCd2REN0xQSTkrb2lnUUR2TVNTbUNPckpoVlJlUXNHRS9sWnZ2MlZmb01L?=
+ =?utf-8?B?M0REQ1dLY2ZnYkN3YjB0R3ZWTk5jME9RSDdPajRkTHhENmRxdnZBYUlyTEU4?=
+ =?utf-8?B?Y09hcmt3a0QxZGVSS3Znd28wRFBoRWhEUU90YThNb2NrNlZSUm5WNENxU3NW?=
+ =?utf-8?B?ZEJ1aGRNZjFZQSs0eHdVSDFMbFc4Ris0N2RhRC9lcjNvMFFEOHk4amxNZGcx?=
+ =?utf-8?B?Tmg2WFl3a3VKWGhmZlYxSXVGWStMeWdvaEJ0RUI4a1VWckNqZGdYOTZqYTE4?=
+ =?utf-8?B?MEdvU1hoeUdFQ09HK0xSUkJYU05JMnNyT0IxRWlENmdyVUVKdCtlN2I4ZUhr?=
+ =?utf-8?B?VUdQQ1oxSkdQR1hUQStyYnh0Si9SUTRzcUFBejJDVlpic00xTDdpUDcxZzE0?=
+ =?utf-8?B?ZFNjd3RWYWNqNGljYUdVbk5zbjFVMkd4VWh3YzVGNDU1azgrbkVCa0RGeEhv?=
+ =?utf-8?B?NVNXa056Ylc5Q0VYZTBEdHAwSldSZEdqcDRVdElYQlhSR1EwSVlBeDBrR3Rs?=
+ =?utf-8?B?KzVrZkRKQVVyRm5rSzVYcis2MWFoeFkzZ1QwemFXeklFd1RSNXVHN2xiSHNP?=
+ =?utf-8?B?NkN6dk1BZ2hMZWdPTEFmWk55eDEvTXlBYmVkU24wMnUwcEp5aWpCN3FiVU1O?=
+ =?utf-8?B?a3dvQ2FFOGZVUTlpSUFDdnM5VWg3LzAvb091M1JMU2gzdWtkTDVWUHp5WkR4?=
+ =?utf-8?B?ZlVURFZYdW1JZysxV2NyZXJQUHRJMmNOeUNTU1ZoODhUc2FmQmUwVE5QbE9Y?=
+ =?utf-8?B?UkRRTTdLdVZBS2gxRlRZVDgwMlBNNEZZNkZPQVA0VGw4UFRtWkZUdTZJK3or?=
+ =?utf-8?B?djVOR3VpdXVLOTd1My9laEY0VFBnQlBEVjZYeXBneVlVRER4Zmp3bTNkd2FC?=
+ =?utf-8?B?YS9BUXhsaE81MjJLZ1lERmFpT2NGa2srK2NicVF6UTQ4ejNUeWRCQkNHZFAx?=
+ =?utf-8?B?LzQ2ckt5REVpZTRCNTdKU1lGTThxYUVKUEphaE9tMGRsaUE4VjdFWEdZdWN2?=
+ =?utf-8?B?S2VlRXpoWXdwTndhRCtBa2xwaStiRDhCOGtyYnI5MUpUaW4wUXB2Y2JOQVJD?=
+ =?utf-8?B?eExZVVFsY2dncVpIQWhOY2JRdVFqR0NqTC8yZUpySkZIVXY1L2NHVDEyRHdL?=
+ =?utf-8?B?TU8xL21kSHI4RjRuUG5kSEZhdW94MUg2UUFuR0hEMFd4NFJOMTRWVUtPbE1j?=
+ =?utf-8?B?WjZjSzEzMFcyNGVla1MwVXl0dlIzY0FYVDgxaXdTekRaRXlBeE01SEEvK1BC?=
+ =?utf-8?B?SmdIU3owVVdBVTVQaS90ZlhWeTNxcnNYcVl2anc1a2d1Wml6eG5kSkh4cU5U?=
+ =?utf-8?B?RmdKTWNTOUxadXQxM21oOElLenVGMkpiZDNHK3FVUmVwRTc1MVlJdzRlb2xN?=
+ =?utf-8?B?VS8raUEzdGZMTE5mWXBQcHRyZXZvaW4rMU9hV2JIKzZma0hiTDMxUWlFQnlr?=
+ =?utf-8?B?VDhGUEd2V2d3V1Z2UXg2SzJHeXdqMTVTVzdING5pbTI2R0VyWXZKOFQvWU5D?=
+ =?utf-8?B?elRXcVF2dmF6YVNJbFN6OEdablVTUGFmN0k3YjRuQURpUy9LdksvYnRXeEZs?=
+ =?utf-8?B?NktmRUVuOTBsUVU0aGJodVZGM0hkZGhZQUVxMmNhUGg1MkV5SndYdUFUQlFy?=
+ =?utf-8?B?ZGh2N1U2dThxS3BoYnk0ZExBREhBOGlJREoyOWlPRElwUnB5WDViWjNvbXNC?=
+ =?utf-8?Q?U++yv1YZNyT+BLwjcbaMlpI9UYnFt6cR?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB5089.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MnpwdVBOWmVlYUlHelQvVXVZbEF2OTlqbjlmZWg2am5OdVVlMmxtbmpsWUND?=
+ =?utf-8?B?dVlqUnNkcXE1RGF5cGxKL3pPRkd1SHdGQkQ5U25aa2hmNTcvUzJoNkhFS2tU?=
+ =?utf-8?B?K0pqejEyb0NiOGVwN3ljWmJmZnE1TGNNcnBBVU5MTFQ0SGVCZWZjY0RpUFFy?=
+ =?utf-8?B?b3NLck82TlZvaVdpcHF5VVJmL1VMRU9PblRCT1dxU0dnY3ZxVktOdlpkbGtq?=
+ =?utf-8?B?YlYwUXM0ZzhwVGUwYkZkb1pNVHZZZHNqL0hKTVNZSlZCbTJhbG56cFMrbm5Q?=
+ =?utf-8?B?SUwrQUFVWDhldk1YemttbnF3T1JSRHc4aGpjWTljQy93bnkrd2F1Q09Vd3Zw?=
+ =?utf-8?B?RkdWeHY4aGtDUGREUzc0bVdaODVCK0t5YmFXcit0ZlRLbjQ4Wm4xK1VTcWFa?=
+ =?utf-8?B?L1hhNmIyYkJLUnpiWHBscXc3WnByZGsvZm0rRUI0WE90alo2MFg1NWpGbWgr?=
+ =?utf-8?B?TklpSmdXRU8xL1dVMUR1OVVhaEVzOHYxMkdMVW4vWmdtS2ZjQ21NdXdxaE9s?=
+ =?utf-8?B?bzQxNEF0MDNqRlRtYkdWWVV1M2JUS2VvZFRjTW9GS1ZsSHZsTnR2S25tWGhr?=
+ =?utf-8?B?RFhHTUZNRTVXWjRFVlNFRy9adFNTdXBRU0o1S2lBenZIMEE2WnVQSklDREFD?=
+ =?utf-8?B?Z1hXRmQwdWZpdDliOVRvR2VSc2NNV0w0T0hWMExtNWd0c2xQVWRIcFZFOXRO?=
+ =?utf-8?B?NitOSS9OWkY3SmVWYlYrM2NhWFh2T0NxRmNQNU5hcTZkMDBEdmUxeW4xeDJ3?=
+ =?utf-8?B?MENNdWpVU1dWeXFqT0pFLzVWMm5hUDk2NGZrajB2M3FhZFFlWEQzZURRd09V?=
+ =?utf-8?B?SWtLcXlpRWR3MkVpa2pDQzZOZjZkK0Ezd2l5MFpRNlhpc1ZnOGU0MkQrb2ZT?=
+ =?utf-8?B?Zy9PcEY4SURNYUlGWXRIMU00b2dzRWpRLzkwRmR0UUFtaUU3ejE1TDFhQTBS?=
+ =?utf-8?B?emg5cldBdHY0cFVQWnRSVzBwVEpvQXJVY2Q5OGRyeWdDYXd5MG1ZTmNWUHpR?=
+ =?utf-8?B?UzA5U3RlUlZ3R1VSSzVmR0F0QmY4TDU0c1pCWDVGWnoyYjdFcklRMk5EU01t?=
+ =?utf-8?B?MFNLYVlYdzUraHZqTTZqRVBrQ1M0cHR4aUhhZ1pRYXI3UDVxNjl1Ung3REpD?=
+ =?utf-8?B?TnQ5a1JVUzVZOVFod24rM2JmNW9GeUhQSXNLMEtTdGE3S3F0TXpqcUN5MGRu?=
+ =?utf-8?B?T0JjSnNoTUtBRHZWNHlBMk40S1VIY2VUcUNmbHVRNEZQaU9nTkR5NklZWVE0?=
+ =?utf-8?B?eERkTXZkS0JTamdVZGlsR29GRThQYyswZm5BenkyREwwZEtaN1BuRVRCSnhv?=
+ =?utf-8?B?SEdocThOeWpuTlQwRGNvenpQeEJjb2FDS2V0TTFQZnJYb2loNTlOcStSUmc1?=
+ =?utf-8?B?M0JIV2p6MWxNcUxxUnp6V0pVNHViUzhiYXhOWHZFMkpza3dnVXQzdjJmZ29J?=
+ =?utf-8?B?Wnh4TzRra2ovNnczZWtDZ1NIdkJlRFlINi9JajRVdCtndElCQUd6aXU2bGpr?=
+ =?utf-8?B?d1RVeDNsR0ZSMnFSUFZFeHhobkxjL2tmSjZUc0xBbWg4bVdNbGpIRElpL0dC?=
+ =?utf-8?B?VUp0LzVwOHpsZ25URkdMcnVxRExaZi9oazNQWXdRcWJUaHJCZVMwZ20vTS8x?=
+ =?utf-8?B?K2xQMXZnZlRDVksyRWlDUVRNb0xBK1YrWEJpU1lYNFc0VzhwdTEvSWxDZkp4?=
+ =?utf-8?B?NjBRdC9EMGpKY0Voa29GaEdUSjJWd3NSZmw5cG9QMEFpOHJveVVIajhQQ044?=
+ =?utf-8?B?NWE1cm9yemtnRVpqS2FjWFpZZ0pDWGdZTTdza1pFMEFxWUh3d29xL0tpRHd6?=
+ =?utf-8?B?a3QrVTkyMFkxUnl2bE9wbGtIcnE5WjhHdWRLQlk2RnY1ZGw3OHAvSkEvV2Ev?=
+ =?utf-8?B?ZmFkM3RsYi9tOVV3ZWlrU0lIQnkrZnI4VUttQ001a0RRcklub1pHSm5zR0RS?=
+ =?utf-8?B?NFBzYWh0em54a3pQcnRYRnFIcEFOT3lmYzd6RFBhUGxKZzhDRmkxTzJtNnBN?=
+ =?utf-8?B?eDdFSHhFYlBTQnJvdU5OaDFOcUdpQkJYMFRmSmVaaEJDTDM3MG1NZkx0ZE1P?=
+ =?utf-8?B?bE9rUFdtZVpwd0pnS3RiV05IeTdyUEl1S21jbTVsQ0dQYTRFOWU1N3RKOTc5?=
+ =?utf-8?B?U0oxZzJhVGZXMmhGaHFXdnZFcHBnUWlzeHJVQkJUUWtidnYwSWdrTUZFdEgr?=
+ =?utf-8?B?elE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef060030-8550-4fca-53ed-08de1de3ee94
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5089.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 09:56:33.2583
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: muPp2K47TnKC8fM7BhxTXJnQsEUayS/i5jj7+wnD5trLhGer5SDfOyXFtn0SEgBWJljqp61Pieqt6xsM3fVgl9vJiv+g2hx/O69sXm+Y08E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4703
+X-OriginatorOrg: intel.com
+
+--------------8U6omurRma5qEgPzIYC36inr
+Content-Type: multipart/mixed; boundary="------------ztfZIIwmbApEMzzf2m0IfT9K";
+ protected-headers="v1"
+Message-ID: <98c774ea-943d-43f0-a29d-b540bf289939@intel.com>
+Date: Fri, 7 Nov 2025 01:56:30 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] strparser: Fix signed/unsigned mismatch bug
+To: Nate Karstens <nate.karstens@garmin.com>, netdev@vger.kernel.org
+Cc: Nate Karstens <nate.karstens@gmail.com>, Tom Herbert
+ <tom@quantonium.net>, Sabrina Dubroca <sd@queasysnail.net>,
+ stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Martin KaFai Lau <martin.lau@kernel.org>,
+ Jakub Sitnicki <jakub@cloudflare.com>, Jiayuan Chen <mrpre@163.com>,
+ "Dr. David Alan Gilbert" <linux@treblig.org>,
+ Tom Herbert <tom@herbertland.com>, linux-kernel@vger.kernel.org
+References: <20251106222835.1871628-1-nate.karstens@garmin.com>
+Content-Language: en-US
+From: Jacob Keller <jacob.e.keller@intel.com>
+Autocrypt: addr=jacob.e.keller@intel.com; keydata=
+ xjMEaFx9ShYJKwYBBAHaRw8BAQdAE+TQsi9s60VNWijGeBIKU6hsXLwMt/JY9ni1wnsVd7nN
+ J0phY29iIEtlbGxlciA8amFjb2IuZS5rZWxsZXJAaW50ZWwuY29tPsKTBBMWCgA7FiEEIEBU
+ qdczkFYq7EMeapZdPm8PKOgFAmhcfUoCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AA
+ CgkQapZdPm8PKOiZAAEA4UV0uM2PhFAw+tlK81gP+fgRqBVYlhmMyroXadv0lH4BAIf4jLxI
+ UPEL4+zzp4ekaw8IyFz+mRMUBaS2l+cpoBUBzjgEaFx9ShIKKwYBBAGXVQEFAQEHQF386lYe
+ MPZBiQHGXwjbBWS5OMBems5rgajcBMKc4W4aAwEIB8J4BBgWCgAgFiEEIEBUqdczkFYq7EMe
+ apZdPm8PKOgFAmhcfUoCGwwACgkQapZdPm8PKOjbUQD+MsPBANqBUiNt+7w0dC73R6UcQzbg
+ cFx4Yvms6cJjeD4BAKf193xbq7W3T7r9BdfTw6HRFYDiHXgkyoc/2Q4/T+8H
+In-Reply-To: <20251106222835.1871628-1-nate.karstens@garmin.com>
+
+--------------ztfZIIwmbApEMzzf2m0IfT9K
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-Thanks for reviewing the patch. I'm providing the detailed analysis
-and debugging traces below to confirm the root cause and exact
-location of the reference count leak.
-
-1. Environment and Symptom
-
-The issue was consistently reproduced when routing TCP traffic through
-a Software IP Tunnel interface (sit0). The traffic flow  is:
-
-  APP -> sit0 (IP tunnel) -> outside
-
-This leads to a reference count leak that prevents the device from
-being freed during unregistration, resulting in the kernel log
-warning:
-
-  unregister_netdevice: waiting for sit0 to become free. Usage count =3D N
-
-2. Enable refcnt_tracer
-
-Live-crash analysis identified a stale dst entry retaining a reference
-to sit0. With CONFIG_NET_DEV_REFCNT_TRACKER enabled, the allocation
-stack for the leaked reference was identified:
-
-[1279559.416854] leaked reference.
-[1279559.416955]  dst_init+0x48/0x100
-[1279559.416965]  dst_alloc+0x66/0xd0
-[1279559.416966]  rt_dst_alloc+0x3c/0xd0
-[1279559.416974]  ip_route_output_key_hash_rcu+0x1d7/0x940
-[1279559.416978]  ip_route_output_key_hash+0x6d/0xa0
-[1279559.416979]  ip_route_output_flow+0x1f/0x70
-[1279559.416980]  __ip_queue_xmit+0x415/0x480
-[1279559.416984]  ip_queue_xmit+0x15/0x20
-[1279559.416986]  __tcp_transmit_skb+0xad4/0xc50
-
-3. Pinpointing the Unmatched dst_hold()
-
-To pinpoint the specific reference not released, we added tracepoints
-to all dst_hold/put functions and used eBPF to record the full
-lifecycle. The tracing identified a hold operation with the following
-call stack:
-
-do_trace_dst_entry_inc+0x45
-rt_set_nexthop.constprop.0+0x376      /* <<<<<<<<<<<<<<<<<<<< HERE */
-__mkroute_output+0x2B7
-ip_route_output_key_hash_rcu+0xBD
-ip_route_output_key_hash+0x6D
-ip_route_output_flow+0x1F
-inet_sk_rebuild_header+0x19C
-__tcp_retransmit_skb+0x7E
-tcp_retransmit_skb+0x19
-tcp_retransmit_timer+0x3DF
-
-The address rt_set_nexthop.constprop.0+0x376 corresponds to the
-dst_hold() call inside rt_bind_exception().
-
-4. Root Cause Analysis
-
-The sit driver's packet transmission path calls: sit_tunnel_xmit() ->
-... -> update_or_create_fnhe(), which lead to fnhe_remove_oldest()
-being called to delete entries exceeding the
-FNHE_RECLAIM_DEPTH+random.
-
-The race window is between fnhe_remove_oldest() selecting fnheX for
-deletion and the subsequent kfree_rcu(). During this time, the
-concurrent path's __mkroute_output() -> find_exception() can fetch the
-soon-to-be-deleted fnheX, and rt_bind_exception() then binds it with a
-new dst using a dst_hold(). When the original fnheX is freed via RCU,
-the dst reference remains permanently leaked.
-
-5. Fix Validation with eBPF
-
-The patch mitigates this by zeroing fnhe_daddr before the
-RCU-protected deletion steps. This prevents rt_bind_exception() from
-attempting to reuse the entry.
-The fix was validated by probing the rt_bind_exception path (which in
-my environment is optimized to rt_set_nexthop.constprop.0) to catch
-any zeroed but active FNHEs being processed:
-
-bpftrace -e 'kprobe:rt_set_nexthop.constprop.0
-{
-    $rt =3D (struct rtable *)arg0;
-    $fnhe =3D (struct fib_nh_exception *)arg3;
-    $fi =3D (struct flowi *)arg4;
-
-    /* Check for an FNHE that is marked for deletion (daddr =3D=3D 0)
-     * but is still visible/valid (fnhe_expires !=3D 0 and not expired).
-     */
-    if ($fi !=3D 0 && $fnhe !=3D 0 && $fnhe->fnhe_daddr =3D=3D 0 &&
-$fnhe->fnhe_expires !=3D 0 && $fnhe->fnhe_expires >=3D jiffies) {
-        printf("rt: %llx, dev: %s, will leak before this patch\n",
-$rt, $rt->dst.dev->name);
-    }
-}'
 
 
+On 11/6/2025 2:28 PM, Nate Karstens wrote:
+> The `len` member of the sk_buff is an unsigned int. This is cast to
+> `ssize_t` (a signed type) for the first sk_buff in the comparison,
+> but not the second sk_buff. On 32-bit systems, this can result in
+> an integer underflow for certain values because unsigned arithmetic
+> is being used.
+>=20
+> This appears to be an oversight: if the intention was to use unsigned
+> arithmetic, then the first cast would have been omitted. The change
+> ensures both len values are cast to `ssize_t`.
+>=20
+> The underflow causes an issue with ktls when multiple TLS PDUs are
+> included in a single TCP segment. The mainline kernel does not use
+> strparser for ktls anymore, but this is still useful for other
+> features that still use strparser, and for backporting.
+>=20
+> Signed-off-by: Nate Karstens <nate.karstens@garmin.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 43a0c6751a32 ("strparser: Stream parser for messages")
+> ---
 
-On Thu, Nov 6, 2025 at 8:31=E2=80=AFAM chuang <nashuiliang@gmail.com> wrote=
-:
->
-> Thanks, your analysis is excellent and makes perfect sense. I can
-> briefly describe the issue.
->
-> This problem took quite some time to analyze overall =E2=80=94 we enabled
-> netdev refcnt, added dst tracepoints, and eventually captured a race
-> condition between fnhe deletion and rt_bind_exception.
->
-> In our environment, we use the sit driver(ip tunnel). During the xmit
-> path, it records the PMTU for each destination, creating or updating
-> fnhe entries (even when the MTU is already appropriate). Because there
-> are many data flows, the sit driver updates PMTU very frequently,
-> which leads to the race condition mentioned above.
->
-> Sorry for the brief summary =E2=80=94 I=E2=80=99ll provide a more detaile=
-d explanation
-> later, along with the patch verification method.
->
-> On Wed, Nov 5, 2025 at 23:34 Ido Schimmel <idosch@idosch.org> wrote:
-> >
-> > On Wed, Nov 05, 2025 at 06:26:22AM -0800, Eric Dumazet wrote:
-> > > On Mon, Nov 3, 2025 at 7:09=E2=80=AFPM chuang <nashuiliang@gmail.com>=
- wrote:
-> > > >
-> > > > From 35dbc9abd8da820007391b707bd2c1a9c99ee67d Mon Sep 17 00:00:00 2=
-001
-> > > > From: Chuang Wang <nashuiliang@gmail.com>
-> > > > Date: Tue, 4 Nov 2025 02:52:11 +0000
-> > > > Subject: [PATCH net] ipv4: route: Prevent rt_bind_exception() from =
-rebinding
-> > > >  stale fnhe
-> > > >
-> > > > A race condition exists between fnhe_remove_oldest() and
-> > > > rt_bind_exception() where a fnhe that is scheduled for removal can =
-be
-> > > > rebound to a new dst.
-> > > >
-> > > > The issue occurs when fnhe_remove_oldest() selects an fnhe (fnheX)
-> > > > for deletion, but before it can be flushed and freed via RCU,
-> > > > CPU 0 enters rt_bind_exception() and attempts to reuse the entry.
-> > > >
-> > > > CPU 0                             CPU 1
-> > > > __mkroute_output()
-> > > >   find_exception() [fnheX]
-> > > >                                   update_or_create_fnhe()
-> > > >                                     fnhe_remove_oldest() [fnheX]
-> > > >   rt_bind_exception() [bind dst]
-> > > >                                   RCU callback [fnheX freed, dst le=
-ak]
-> > > >
-> > > > If rt_bind_exception() successfully binds fnheX to a new dst, the
-> > > > newly bound dst will never be properly freed because fnheX will
-> > > > soon be released by the RCU callback, leading to a permanent
-> > > > reference count leak on the old dst and the device.
-> > > >
-> > > > This issue manifests as a device reference count leak and a
-> > > > warning in dmesg when unregistering the net device:
-> > > >
-> > > >   unregister_netdevice: waiting for ethX to become free. Usage coun=
-t =3D N
-> > > >
-> > > > Fix this race by clearing 'oldest->fnhe_daddr' before calling
-> > > > fnhe_flush_routes(). Since rt_bind_exception() checks this field,
-> > > > setting it to zero prevents the stale fnhe from being reused and
-> > > > bound to a new dst just before it is freed.
-> > > >
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: 67d6d681e15b ("ipv4: make exception cache less predictible")
-> > >
-> > > I do not see how this commit added the bug you are looking at ?
-> >
-> > Not the author, but my understanding is that the issue is that an
-> > exception entry which is queued for deletion allows a dst entry to be
-> > bound to it. As such, nobody will ever release the reference from the
-> > dst entry and the associated net device.
-> >
-> > Before 67d6d681e15b, exception entries were only queued for deletion by
-> > ip_del_fnhe() and it prevented dst entries from binding themselves to
-> > the deleted exception entry by clearing 'fnhe->fnhe_daddr' which is
-> > checked in rt_bind_exception(). See ee60ad219f5c7.
-> >
-> > 67d6d681e15b added another point in the code that queues exception
-> > entries for deletion, but without clearing 'fnhe->fnhe_daddr' first.
-> > Therefore, it added another instance of the bug that was fixed in
-> > ee60ad219f5c7.
-> >
-> > >
-> > > > Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
-> > > > ---
-> > > >  net/ipv4/route.c | 5 +++++
-> > > >  1 file changed, 5 insertions(+)
-> > > >
-> > > > diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-> > > > index 6d27d3610c1c..b549d6a57307 100644
-> > > > --- a/net/ipv4/route.c
-> > > > +++ b/net/ipv4/route.c
-> > > > @@ -607,6 +607,11 @@ static void fnhe_remove_oldest(struct
-> > > > fnhe_hash_bucket *hash)
-> > > >                         oldest_p =3D fnhe_p;
-> > > >                 }
-> > > >         }
-> > > > +
-> > > > +       /* Clear oldest->fnhe_daddr to prevent this fnhe from being
-> > > > +        * rebound with new dsts in rt_bind_exception().
-> > > > +        */
-> > > > +       oldest->fnhe_daddr =3D 0;
-> > > >         fnhe_flush_routes(oldest);
-> > > >         *oldest_p =3D oldest->fnhe_next;
-> > > >         kfree_rcu(oldest, rcu);
-> > > > --
-> > >
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+
+>  net/strparser/strparser.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/net/strparser/strparser.c b/net/strparser/strparser.c
+> index 43b1f558b33d..e659fea2da70 100644
+> --- a/net/strparser/strparser.c
+> +++ b/net/strparser/strparser.c
+> @@ -238,7 +238,7 @@ static int __strp_recv(read_descriptor_t *desc, str=
+uct sk_buff *orig_skb,
+>  				strp_parser_err(strp, -EMSGSIZE, desc);
+>  				break;
+>  			} else if (len <=3D (ssize_t)head->len -
+> -					  skb->len - stm->strp.offset) {
+> +					  (ssize_t)skb->len - stm->strp.offset) {
+>  				/* Length must be into new skb (and also
+>  				 * greater than zero)
+>  				 */
+
+
+--------------ztfZIIwmbApEMzzf2m0IfT9K--
+
+--------------8U6omurRma5qEgPzIYC36inr
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wnsEABYIACMWIQQgQFSp1zOQVirsQx5qll0+bw8o6AUCaQ3CTwUDAAAAAAAKCRBqll0+bw8o6D0K
+AQDFlBw/EWdZOaQ8B/NtzktAThNlMZZ0X5O5GYDaW9SvkAD+K4vGKT2OUgo8++1cP1KG24elHwoi
+dNxL9STsI9lCZAE=
+=UsBq
+-----END PGP SIGNATURE-----
+
+--------------8U6omurRma5qEgPzIYC36inr--
 
