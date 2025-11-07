@@ -1,178 +1,183 @@
-Return-Path: <stable+bounces-192672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B80C3E51E
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 04:15:19 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E90C3E50F
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 04:14:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2418D4E6179
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 03:15:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B695F34ADFE
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 03:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BBC6263F5E;
-	Fri,  7 Nov 2025 03:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF802F7AB0;
+	Fri,  7 Nov 2025 03:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="YMLzOiBj"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cXgVXgTj";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ECuRFRJM"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-113.mail.139.com (n169-113.mail.139.com [120.232.169.113])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8104A41
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 03:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.113
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530EF2EF660
+	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 03:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762485314; cv=none; b=mhVynXa0qqMqsjjAmBMMo30K446ThknJlzvkTkPSZwLIUcn1GTd4JNqckeH089Tp1zvrT8aNcGKjm5AQQfTQNLdjmoHe9kZtc6kJyC8tbuBW7KNJgsslIEsEAbyZZLkPoGOifK9s9ivix7CFBdyJSgvNkszUn0bZGZDP3tOIph8=
+	t=1762485240; cv=none; b=Kp5qpjRb2jHqVvhU6gy+7hXRcCvZJExbQ5KWNiUvzQM76vCLMlRdChnKcAwP+iaDqoN7XwHOHtu9gHZc+tCiEAbg/toYJ+WuGscqZrMbpsro6xI1AjgKqf1TxVsWdV+shGBXskgqAODbg/ZF2E+XwdKt/EH4fFVgFKk8HXlRdKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762485314; c=relaxed/simple;
-	bh=pv7c1nfQH6OTTNMK54BI8Ty3uchRho7vh6jVSBQAWr8=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=QjKwGtqFSnU2ybeRTpVXGTRKQU/jV/8VZVncjuI3LzLi0+znBTaQ662HYQ0b60deIsmlg8g708h7bc+/Ei/5UBoR3KB7vOEzKEd43Rc+LGz/YBglzRbE/1QcQXUQciC4Z9pJt8Wq6Wa+cP0GZDfiaVm7G0LCn4q9601vvws397w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=YMLzOiBj; arc=none smtp.client-ip=120.232.169.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+	s=arc-20240116; t=1762485240; c=relaxed/simple;
+	bh=1qMF7nlKbcQyP3hFkm2Yom7lAyH0NJ2FKvArrMUXsTY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ECymjQkOaDkYfC5ft9PfIAi0YtQTW4Q5MJwcyhDalEXG0O01Jkvu2bluyimQ7II1nX/2NIy/PZB4HWBpotuWReeVu9ZfhYDyXp2X9X6g+5kGaUP93JYYGTW6REmPSK8EkUKHILWiKfCbiyi5gKFpH02Ycj1oMv5cBL63nxmq2WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cXgVXgTj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ECuRFRJM; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A6HHDJS2326852
+	for <stable@vger.kernel.org>; Fri, 7 Nov 2025 03:13:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=5ulkyrEbi8OnMoUGToNxsPYw
+	iMFv+TZXN3Zpai6wGaM=; b=cXgVXgTjAJloHyXh2XZUR4c4wnZphLV+Knql7lBs
+	m5JLwEiHlNAaiCe8wGdPSXQsJ8yLthEJiiDJ698KMVSSYu4UXbR/kDVF/HXonwkk
+	AT/PZDykrU/ZrIffmNpZKDfw9E3EIjAR+SH/HRf6kEAI1yTTT/erCFR4z8xDSuEe
+	sa/05Dt9mT7cqbym84w2slLBJMaUF22ZMiI6GMIGzVFJ0maQ9rGLWTbWia5cMsno
+	eKC6v/ldHUgBBm+9BqX8aXZ9ygivcWAYxoLaN16D/TE4SeVIiaDSVr6jg9mCB2DR
+	RzpkdQEbMPz2aq8iO4HyidaoUFZPSgStPfzyVgpiV1iCGQ==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a8h0v4b5j-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Fri, 07 Nov 2025 03:13:57 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4ed74e6c468so4032401cf.3
+        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 19:13:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=YMLzOiBjS3+Fokff/jeNWPh0qnoqI7TV6Hgpl1SE0FB5sR8TfqcsYLHPcKFAhAC+K7Q03img8E177
-	 t9JI5P8GcUVUpBwjHXP2GQpALfZPVSOUYj/qs6qVciUjIisWSqj9TwaqUKRx6DRlKgOoLkgfNIPxU0
-	 6zZfQ7Y19LdnYix8=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[117.129.7.61])
-	by rmsmtp-lg-appmail-29-12034 (RichMail) with SMTP id 2f02690d637a273-46591;
-	Fri, 07 Nov 2025 11:11:57 +0800 (CST)
-X-RM-TRANSID:2f02690d637a273-46591
-From: Rajani Kantha <681739313@139.com>
-To: alexander.sverdlin@siemens.com,
-	vladimir.oltean@nxp.com,
-	pabeni@redhat.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH 6.6.y] net: dsa: improve shutdown sequence
-Date: Fri,  7 Nov 2025 11:11:55 +0800
-Message-Id: <20251107031155.3026-1-681739313@139.com>
-X-Mailer: git-send-email 2.17.1
+        d=oss.qualcomm.com; s=google; t=1762485236; x=1763090036; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ulkyrEbi8OnMoUGToNxsPYwiMFv+TZXN3Zpai6wGaM=;
+        b=ECuRFRJMsbXCxcBH4ncmFOAiBEe+xK2bS6T56lXsL9SUEXhuryoM2HAHPnT+frEHw9
+         RkPisOd0el5dzamF5oZjDdJZC4vT25qRB1N1DFuXKQxSaZ/Q44TxrWyx7X3hJ47vmAfW
+         7BpTRw3SFkxh/2kBmUNw0+UJuSC8VjKkyKQe1wesbZdA7LyU/xKCMTRuYbc1ZEDIdELF
+         znjlMu5wTk57bWdEKws9CJL7dVeG98B8yTep1m2NuJHzdD4zspCZx9pXxtFDcVbr0Stq
+         +qywjO3EcuNarMZskpN+GjkmIY1iBky54sl8YTf4U8Mfc1DH1S/4b/wu4QrlxZFl0EsC
+         B50w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762485236; x=1763090036;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5ulkyrEbi8OnMoUGToNxsPYwiMFv+TZXN3Zpai6wGaM=;
+        b=snTAcWVr5M+EJqk0HDopLFNd+X6KiO+8GH+3AiZQsPzNPM8O4PMGCTPv4N/pg6kMZB
+         TLIxpBHg05jSk7vN0h+6xhWLoR7+VGIcoK1zY170Gmun33pdnwntGTjswFWGWf1go0VQ
+         R+l6++kub6nAGf66rwzbGioIMCIucKxreFUVaudZU2MOM1A9p/VPx2+PnsqCVNNGRaAU
+         LnY4/Lba4h6zDXqvmRmvExWbx59IdNmkiq096dh0oYR4M5E8VDvLJrmmSXFitiEmxdLG
+         8XUIXpIV1dgF71w+myUA2QhCLpndSzKlbmmbLPrIatujvIfb4WJoZMi/xJJgwXD9Q5tz
+         ij4g==
+X-Forwarded-Encrypted: i=1; AJvYcCVrHrcI5RiVu6jKXX7cGNK7KYt8DzVADNfJFfZRcll9msOZdpr3DLYbhPq0UenYP1pj0/D9nRw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8O/K8Gzw49lFjEEhIVo9+qXS89TtAynLFgPz0oCTSyUSWzQrp
+	Vq6SIviXDggoavaPJaYgZi3jvcyvm6JrbdjSVhGXIjMgUotxTqefrIw5AJI0zE5AWGNcoWH0b6N
+	g7IRaqsbka7Dfpda892Lv4ZogW/ps2SVYbh6SYZlcSFVX0/lEWWNrNcLZtqieeMu1q0w=
+X-Gm-Gg: ASbGncuw8+hFFU4l7sXLS2Wv3FddGxiwmZpYwIsL9fYsGTFfJ3f4CdwvG79TnyaLIgX
+	b1wjpMhuwcxz1EEtKM5qnxwSxVqhA3l1y4M0RQJ4WK1m7i/LUMLpuVFFJNIM88euXugl4uYX9er
+	I1m2k4Yh4aahb58nr5ijPkm73Hqh4YVf51mJZnar0g8yESy5zvmKVxU7NH86bJKMtRU0C33YAHV
+	mI0+FOfrQEShRfBvi1bCr4KxgzCjOe7qjQ4qPac/uFs1mhilNcyq987T/buj03z7L4C3EAVj/Za
+	qtxDJHy5OWlVkfQTUpdlK3/EOm/iBpoFeE7YsJBbfrCdI6qFfi83pOvmhPitjUGFldtAvXHDAUL
+	SaQeVQNFRPEc+GkLZa+/I06tHCOiMbxm6jRUZoq4UR06h+rPAdr9XlqEOxrQ0RbyGH9a5mXKDiJ
+	XrdzhuO8XEkiYs
+X-Received: by 2002:a05:622a:738a:b0:4ec:f26f:5aea with SMTP id d75a77b69052e-4ed94a8e321mr15222091cf.68.1762485236159;
+        Thu, 06 Nov 2025 19:13:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IED1oCM5bH6C0iTYRHg+jtwwgcsfQV0Yto6qRZJZKP6JFon9v0IgWDdEwixPFVo/5Mx6jkNww==
+X-Received: by 2002:a05:622a:738a:b0:4ec:f26f:5aea with SMTP id d75a77b69052e-4ed94a8e321mr15221901cf.68.1762485235727;
+        Thu, 06 Nov 2025 19:13:55 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5944a3a1a71sm1158846e87.83.2025.11.06.19.13.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Nov 2025 19:13:54 -0800 (PST)
+Date: Fri, 7 Nov 2025 05:13:53 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Shuai Zhang <quic_shuaz@quicinc.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        quic_chejiang@quicinc.com, quic_jiaymao@quicinc.com,
+        quic_chezhou@quicinc.com
+Subject: Re: [PATCH v1] Bluetooth: btusb: add new custom firmwares
+Message-ID: <jztfgic2kbziqradykdmyqv6st3lue23snweawlxtmprqd3ifu@t3gw2o4g5qfx>
+References: <20251107021345.2759890-1-quic_shuaz@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251107021345.2759890-1-quic_shuaz@quicinc.com>
+X-Proofpoint-ORIG-GUID: HcbrkMqwGk2bfAj9lQFHtfrVupNmFudV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA3MDAyMyBTYWx0ZWRfXwirrO5/8M7Pt
+ zhQaknSLidY8jrdY/CU8+31t+5IfaEZIKrnkJGIL3JDiYczj7sCOlwTu10t2in/XXqnXLOXwbt1
+ 8jiDuQ+jzx2tJfEj/pWW9H7+LTIm4Ze8zyZ1e2Yu6NUZVB+U5mI7nxzhjlZNZZgDuYdy8+FsJaU
+ sTLtlpRCkDgGtSNg4RB0oNGQQ2skF9lfrXbE5Ddf9UKdgWPq0PHyJlEcbnyMFLo/BLhh3WnzoOc
+ xvioh0P72SI56XBB3mEFxf3eTxhvBojyMgVf0C33PGMoJT3n5unywOV/3mSM4lLRLhdRZWv7mUc
+ VkTuezxMwEFQgl8xsd9Y4rGmCF2ZdiegyIJkUBkkrIrtJTsSKgcFDoIMOZzVJLCT3rgwPCL6Jx9
+ jXEDQvkHxFHtNkSnYmU8PLyn3+jEaw==
+X-Proofpoint-GUID: HcbrkMqwGk2bfAj9lQFHtfrVupNmFudV
+X-Authority-Analysis: v=2.4 cv=PoyergM3 c=1 sm=1 tr=0 ts=690d63f5 cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=3m3fJbb2j65Qt_-WAq4A:9
+ a=CjuIK1q_8ugA:10 a=dawVfQjAaf238kedN5IG:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-06_05,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 clxscore=1015 priorityscore=1501 phishscore=0 spamscore=0
+ adultscore=0 impostorscore=0 malwarescore=0 bulkscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511070023
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+On Fri, Nov 07, 2025 at 10:13:45AM +0800, Shuai Zhang wrote:
+> There are custom-made firmwares based on board ID for a given QCA BT
+> chip sometimes, and they are different with existing firmwares and put
+> in a separate subdirectory to avoid conflict, for example:
+> QCA2066, as a variant of WCN6855, has firmwares under 'qca/QCA2066/'
+> of linux-firmware repository.
 
-[ Upstream commit 6c24a03a61a245fe34d47582898331fa034b6ccd ]
+These are generic phrases regarding QCA2066. Describe why and what is
+done in the patch (e.g. why do you add new entry to that table).
 
-Alexander Sverdlin presents 2 problems during shutdown with the
-lan9303 driver. One is specific to lan9303 and the other just happens
-to reproduce there.
+> 
+> Cc: stable@vger.kernel.org
 
-The first problem is that lan9303 is unique among DSA drivers in that it
-calls dev_get_drvdata() at "arbitrary runtime" (not probe, not shutdown,
-not remove):
+There is little point for CC'ing stable if this is not a fix (and it's
+not, it lacks a corresponding tag).
 
-phy_state_machine()
--> ...
-   -> dsa_user_phy_read()
-      -> ds->ops->phy_read()
-         -> lan9303_phy_read()
-            -> chip->ops->phy_read()
-               -> lan9303_mdio_phy_read()
-                  -> dev_get_drvdata()
+> Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
 
-But we never stop the phy_state_machine(), so it may continue to run
-after dsa_switch_shutdown(). Our common pattern in all DSA drivers is
-to set drvdata to NULL to suppress the remove() method that may come
-afterwards. But in this case it will result in an NPD.
+Please migrate to the @oss.qualcomm.com address.
 
-The second problem is that the way in which we set
-dp->master->dsa_ptr = NULL; is concurrent with receive packet
-processing. dsa_switch_rcv() checks once whether dev->dsa_ptr is NULL,
-but afterwards, rather than continuing to use that non-NULL value,
-dev->dsa_ptr is dereferenced again and again without NULL checks:
-dsa_master_find_slave() and many other places. In between dereferences,
-there is no locking to ensure that what was valid once continues to be
-valid.
+> ---
+>  drivers/bluetooth/btusb.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+> index dcbff7641..7175e9b2d 100644
+> --- a/drivers/bluetooth/btusb.c
+> +++ b/drivers/bluetooth/btusb.c
+> @@ -3273,6 +3273,7 @@ static const struct qca_device_info qca_devices_table[] = {
+>  
+>  static const struct qca_custom_firmware qca_custom_btfws[] = {
+>  	{ 0x00130201, 0x030A, "QCA2066" },
+> +	{ 0x00130201, 0x030B, "QCA2066" },
+>  	{ },
+>  };
+>  
+> -- 
+> 2.34.1
+> 
 
-Both problems have the common aspect that closing the master interface
-solves them.
-
-In the first case, dev_close(master) triggers the NETDEV_GOING_DOWN
-event in dsa_slave_netdevice_event() which closes slave ports as well.
-dsa_port_disable_rt() calls phylink_stop(), which synchronously stops
-the phylink state machine, and ds->ops->phy_read() will thus no longer
-call into the driver after this point.
-
-In the second case, dev_close(master) should do this, as per
-Documentation/networking/driver.rst:
-
-| Quiescence
-| ----------
-|
-| After the ndo_stop routine has been called, the hardware must
-| not receive or transmit any data.  All in flight packets must
-| be aborted. If necessary, poll or wait for completion of
-| any reset commands.
-
-So it should be sufficient to ensure that later, when we zeroize
-master->dsa_ptr, there will be no concurrent dsa_switch_rcv() call
-on this master.
-
-The addition of the netif_device_detach() function is to ensure that
-ioctls, rtnetlinks and ethtool requests on the slave ports no longer
-propagate down to the driver - we're no longer prepared to handle them.
-
-The race condition actually did not exist when commit 0650bf52b31f
-("net: dsa: be compatible with masters which unregister on shutdown")
-first introduced dsa_switch_shutdown(). It was created later, when we
-stopped unregistering the slave interfaces from a bad spot, and we just
-replaced that sequence with a racy zeroization of master->dsa_ptr
-(one which doesn't ensure that the interfaces aren't up).
-
-Reported-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Closes: https://lore.kernel.org/netdev/2d2e3bba17203c14a5ffdabc174e3b6bbb9ad438.camel@siemens.com/
-Closes: https://lore.kernel.org/netdev/c1bf4de54e829111e0e4a70e7bd1cf523c9550ff.camel@siemens.com/
-Fixes: ee534378f005 ("net: dsa: fix panic when DSA master device unbinds on shutdown")
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20240913203549.3081071-1-vladimir.oltean@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Modification: Using dp->master and dp->slave instead of dp->conduit and dp->user ]
-Signed-off-by: Rajani Kantha <681739313@139.com>
----
- net/dsa/dsa.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
-index 07736edc8b6a..c9bf1a9a6c99 100644
---- a/net/dsa/dsa.c
-+++ b/net/dsa/dsa.c
-@@ -1613,6 +1613,7 @@ EXPORT_SYMBOL_GPL(dsa_unregister_switch);
- void dsa_switch_shutdown(struct dsa_switch *ds)
- {
- 	struct net_device *master, *slave_dev;
-+	LIST_HEAD(close_list);
- 	struct dsa_port *dp;
- 
- 	mutex_lock(&dsa2_mutex);
-@@ -1622,10 +1623,16 @@ void dsa_switch_shutdown(struct dsa_switch *ds)
- 
- 	rtnl_lock();
- 
-+	dsa_switch_for_each_cpu_port(dp, ds)
-+		list_add(&dp->master->close_list, &close_list);
-+
-+	dev_close_many(&close_list, true);
-+
- 	dsa_switch_for_each_user_port(dp, ds) {
- 		master = dsa_port_to_master(dp);
- 		slave_dev = dp->slave;
- 
-+		netif_device_detach(slave_dev);
- 		netdev_upper_dev_unlink(master, slave_dev);
- 	}
- 
 -- 
-2.17.1
-
-
+With best wishes
+Dmitry
 
