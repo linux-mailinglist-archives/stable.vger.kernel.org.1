@@ -1,190 +1,209 @@
-Return-Path: <stable+bounces-192663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55C92C3E11C
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 02:01:18 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7BAC3E242
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 02:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98E9518881D1
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 01:01:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D88864E23BD
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 01:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CAF2609D0;
-	Fri,  7 Nov 2025 01:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16832EACF2;
+	Fri,  7 Nov 2025 01:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HBHQHaUu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="nE8SzKHQ"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="pOcXaY65"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1C72DF6F7
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 01:01:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06232450FE
+	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 01:37:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762477267; cv=none; b=NC37GSwhBOSOn4bCJfVnBWO8Zxm2gFkTUyqiMX/0JHABRhLI5uHzlJWoe3ymuysWcu5m9mxehA974gAtNE7Z5l42N+yfvqt5vDkenZA3oLAEUBO2I5/Y/SgKMAHYx765cFJM1zPhTqgdKSnybrNBqXUdEBLHTgER+X9ImWAsuVQ=
+	t=1762479461; cv=none; b=qZx39HIZZLsQRWcYBxc032UJLWzjPfbe12NAQRGpKpM/6ephRmre0hHIQeMHZrG8PdnYA5NmoYd+7fFPgCmwwtQd3bihgxUKz00vOnV04ntGZGgw0h9oi7n2CaWIpNQmjl5Pgqvz53eNG1bQ4NKV9c/0RMS/fkt7gu+YwDcBMCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762477267; c=relaxed/simple;
-	bh=6Vq6xnllNLKddg7S0xjjPzOVqzBWr3NnaXE5Cy1bsT8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gdBYFoaL/cC328ccYGQwlPCZyhutGIAKqZ6M0ImJtI6H+JOuoQdpYd6blo60A5ST4pe4Ncg4GX5sLFjutUo+niVe8RydXl58KbDSPnSbPrxPZ0o9IjLfdX3QWyVc3CoHYR5+v6k2jDCldJjXKeocXUbKCbrLNF6tDxe3ZVk55/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HBHQHaUu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=nE8SzKHQ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762477263;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oS0uMhMGdq49DhBi/gfTvr28qD45X58Y+Rz8QovrzNg=;
-	b=HBHQHaUu3blTnI4kWkRTUhGBDgAL0bIXq4gZyNHhmUipZXHXFp6M9eABGwPo0EjU9dnyeO
-	TPVnVgrJ1fwgkRlQ75IVMgyoWDe0i+Q272iIwUhaaPacdt8GnsE2WpQf3yezCzNXlg4lHw
-	ZJWqhaOzThmcAuUKtdJ1DcGuH2cN+wk=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-299-EYlYOgTUOeqp31xJvYpy5w-1; Thu, 06 Nov 2025 20:01:01 -0500
-X-MC-Unique: EYlYOgTUOeqp31xJvYpy5w-1
-X-Mimecast-MFC-AGG-ID: EYlYOgTUOeqp31xJvYpy5w_1762477260
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b6097ca315bso649716a12.3
-        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 17:01:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1762477260; x=1763082060; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oS0uMhMGdq49DhBi/gfTvr28qD45X58Y+Rz8QovrzNg=;
-        b=nE8SzKHQzsB4iXiQhlfyOIf2C6EApvHhyKOS0ghyH6x//JS5uQSdyI6lNvznsde+DG
-         4K4XnF9ZY5dLMmkuGey51M8bzB1ufOtAOVyK9BL5xmC4Q7ZCco2RSPqM/CsJM+4TtzPW
-         PtklTJcmfGp+IfSh331l1DZ6p1Bykw9llhBoj/wAYmUoP+Jy2kHAVsbYDRW52wziiI/1
-         CxtaiY3LKUA2X1sfimjcy3VYUV6wqtxXbgpIZ0HHGRIRCBh2wMYNF6J1ky8a+kSIHlyU
-         k2ucaRw/l/4mO7mLrL54JSzsA3LfiQwoZkWke8YAKMixj84vDCnA5EvbLkfrtUa91KG0
-         /fYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762477260; x=1763082060;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=oS0uMhMGdq49DhBi/gfTvr28qD45X58Y+Rz8QovrzNg=;
-        b=IjBUaHDmR4/qXp7K7wYI5xSiY7DEJTjl3WTxPEb4Ip4rq8FoqK/IjFKsU+bQANV3v7
-         vWsH/4Y1nEhbqq84RYqbslPLdMQb9zaYTzxXosyElRqD3pr3/kvU4y0syEM0Q8jmc45o
-         p/BJObVKeKHy6FUIh9f9BGiT9IBD6ifrwxq5F8IwCzrXGSPWCxkwnHfrAC8zqIhExrLi
-         fOrEJ3jX0QzukU4Hz42DIa/bPsCsl2WrFFFdaGSl/HYiQ6gKcOcuydPXVppMuePJO+fZ
-         E+Mzq0OGr3fLD2r3ek5zaifZli8FaXnixJ/u3UyJeRDe7gquXKLjWsYybwTJ4sk2Ll7d
-         Vugw==
-X-Forwarded-Encrypted: i=1; AJvYcCWHZzFrvk7iP3htJfFOTSttu5GPYj/VUPvc92nYh7YdXoOoZoDvp9+6noy38q96HJ8gMWARhVg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+LXN+Rc11fve2DanJgA8GG73iWlGcPdyF5XOlRcu4OKzoX0gM
-	x/aKcg94UoAnqVDmlU6OXADrQW3Uf7wYWYjCsBlS2lVRf1DPmT5dRUFQkjYtObE/dgGXsW2o26Z
-	GAQdVKsvgdW7A5bqxbE9+fUuuYbbWEZ3rpEKFUlsCRIioTmKnt6RhfD7rGkNwcrrntkb4A417to
-	RbB9xQhMfQ01c2JFoDEpBrS4IayoaL0PlL
-X-Gm-Gg: ASbGncvSJVzUDM263CWyv6wrIu5heKzrANZ9v4NE2O6Rr8JaLlDWZWTNYqjGtw0r/HF
-	BzH0Fc5jL8NyHW5W8LrCVnJmunMMhlRP3o5YkAtWcFgQPrEd8pgl2TuhuLo+GRgGpzU2oSpjMF4
-	ZxF1mJZScpd4bOtfrDyActiq0+N0rbdAuQKMu7TwVwAibz4YZJ/ZwmAcPx
-X-Received: by 2002:a05:6a20:72a5:b0:343:af1:9a5a with SMTP id adf61e73a8af0-352291520b6mr2205562637.5.1762477260189;
-        Thu, 06 Nov 2025 17:01:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEGZjYhyU2I/iqThL1SwvIj+q56hy6nUrJ+za+wlQBhGl64lNQqk0EUbiOrhi2GgmjKaUpvt0VIaarghb0tmRU=
-X-Received: by 2002:a05:6a20:72a5:b0:343:af1:9a5a with SMTP id
- adf61e73a8af0-352291520b6mr2205498637.5.1762477259683; Thu, 06 Nov 2025
- 17:00:59 -0800 (PST)
+	s=arc-20240116; t=1762479461; c=relaxed/simple;
+	bh=16u8ltwYy6iD72uqXaUTu4zIJa98LedQ/xKqbPWCgWU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LxiiFZ8cqll9OgzZLfeEJZx6Gcv+bL7p549P+tXZ0k/ij4euCo2YBGDXA1cQxtevO+juIy/KGXQRXcyPw7vsteVvGAIA2ixawYageAkkyXzsSi/d0GtsMrLqMW7hiY+DqQvmxWKZNqTN2IOb7n5PkVW3ytChkFII6AC03zu1Qag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=pOcXaY65; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=si
+	4O3LFWbbyDCE2fl6AQFsUxeN3M0Ego/jGc4OWKMA0=; b=pOcXaY65Z4Q1+QCsYC
+	5NKyd68YIXCmcsnbFut2xaFkacmANLRqdj8CQuCfi1Pc5U+IFpYMh7N+Ag05VZjF
+	mBYr+JVqOVcim1OsWRMPFj0bbGnMJzXBJP3Gkt8MjV1JfVvh4kVsv9cwY9HXipDU
+	BOe7RzVTQIiEH831aZWPhHhCs=
+Received: from LAPTOP-HOSUGD0G.wrs.com (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wBnIq4+TQ1pqqXRCA--.3628S4;
+	Fri, 07 Nov 2025 09:37:14 +0800 (CST)
+From: jetlan9@163.com
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 6.6.y] net: allow small head cache usage with large MAX_SKB_FRAGS values
+Date: Fri,  7 Nov 2025 09:37:01 +0800
+Message-Id: <20251107013701.1411-1-jetlan9@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251107003005.107D6C4CEFB@smtp.kernel.org>
-In-Reply-To: <20251107003005.107D6C4CEFB@smtp.kernel.org>
-From: Pingfan Liu <piliu@redhat.com>
-Date: Fri, 7 Nov 2025 09:00:48 +0800
-X-Gm-Features: AWmQ_bkXy77GLlQuIcMFJZTYbmotYc5pKuX5_CTlFqpD6b4cIml4CakEu0fWk5w
-Message-ID: <CAF+s44QyfTDsXDXaAYtN3Kcf2i8g9J7tQdBnwDc=PtnTV-sM0g@mail.gmail.com>
-Subject: Re: [to-be-updated] kernel-kexec-fix-ima-when-allocation-happens-in-cma-area.patch
- removed from -mm tree
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: mm-commits@vger.kernel.org, zohar@linux.ibm.com, stable@vger.kernel.org, 
-	roberto.sassu@huawei.com, graf@amazon.com, chenste@linux.microsoft.com, 
-	bhe@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBnIq4+TQ1pqqXRCA--.3628S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW3JFyxZF45CrW5Xr18XF48tFb_yoWxJr4rpr
+	srAFyrCr4ktr1DJF4UAw43JF18K393C3W7G3WxX3WYka13Kr15Wws5trW5ZF1YyrZ8ZFy3
+	GFs2qr4jyrs8Z3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zK-erbUUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbCwwoDy2kNTUo26AAA38
 
-On Fri, Nov 7, 2025 at 8:30=E2=80=AFAM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
->
-> The quilt patch titled
->      Subject: kernel/kexec: fix IMA when allocation happens in CMA area
-> has been removed from the -mm tree.  Its filename was
->      kernel-kexec-fix-ima-when-allocation-happens-in-cma-area.patch
->
-> This patch was dropped because an updated version will be issued
->
-> ------------------------------------------------------
-> From: Pingfan Liu <piliu@redhat.com>
-> Subject: kernel/kexec: fix IMA when allocation happens in CMA area
-> Date: Wed, 5 Nov 2025 21:09:22 +0800
->
-> When I tested kexec with the latest kernel, I ran into the following
-> warning:
->
-> [   40.712410] ------------[ cut here ]------------
-> [   40.712576] WARNING: CPU: 2 PID: 1562 at kernel/kexec_core.c:1001 kima=
-ge_map_segment+0x144/0x198
-> [...]
-> [   40.816047] Call trace:
-> [   40.818498]  kimage_map_segment+0x144/0x198 (P)
-> [   40.823221]  ima_kexec_post_load+0x58/0xc0
-> [   40.827246]  __do_sys_kexec_file_load+0x29c/0x368
-> [...]
-> [   40.855423] ---[ end trace 0000000000000000 ]---
->
-> This is caused by the fact that kexec allocates the destination directly
-> in the CMA area.  In that case, the CMA kernel address should be exported
-> directly to the IMA component, instead of using the vmalloc'd address.
->
-> Link: https://lkml.kernel.org/r/20251105130922.13321-2-piliu@redhat.com
-> Fixes: 0091d9241ea2 ("kexec: define functions to map and unmap segments")
-> Signed-off-by: Pingfan Liu <piliu@redhat.com>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Mimi Zohar <zohar@linux.ibm.com>
-> Cc: Roberto Sassu <roberto.sassu@huawei.com>
-> Cc: Alexander Graf <graf@amazon.com>
-> Cc: Steven Chen <chenste@linux.microsoft.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
->
->  kernel/kexec_core.c |    7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> --- a/kernel/kexec_core.c~kernel-kexec-fix-ima-when-allocation-happens-in=
--cma-area
-> +++ a/kernel/kexec_core.c
-> @@ -967,6 +967,7 @@ void *kimage_map_segment(struct kimage *
->         kimage_entry_t *ptr, entry;
->         struct page **src_pages;
->         unsigned int npages;
-> +       struct page *cma;
->         void *vaddr =3D NULL;
->         int i;
->
-> @@ -974,6 +975,9 @@ void *kimage_map_segment(struct kimage *
->         size =3D image->segment[idx].memsz;
->         eaddr =3D addr + size;
->
-> +       cma =3D image->segment_cma[idx];
-> +       if (cma)
-> +               return cma;
+From: Paolo Abeni <pabeni@redhat.com>
 
-It should be " return page_address(cma);" as [PATCHv2 2/2]
-kernel/kexec: Fix IMA when allocation happens in CMA area
-(https://lore.kernel.org/all/20251106065904.10772-2-piliu@redhat.com/
-)
+[ Upstream commit 14ad6ed30a10afbe91b0749d6378285f4225d482 ]
 
+Sabrina reported the following splat:
 
-Thanks,
+    WARNING: CPU: 0 PID: 1 at net/core/dev.c:6935 netif_napi_add_weight_locked+0x8f2/0xba0
+    Modules linked in:
+    CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.14.0-rc1-net-00092-g011b03359038 #996
+    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
+    RIP: 0010:netif_napi_add_weight_locked+0x8f2/0xba0
+    Code: e8 c3 e6 6a fe 48 83 c4 28 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc c7 44 24 10 ff ff ff ff e9 8f fb ff ff e8 9e e6 6a fe <0f> 0b e9 d3 fe ff ff e8 92 e6 6a fe 48 8b 04 24 be ff ff ff ff 48
+    RSP: 0000:ffffc9000001fc60 EFLAGS: 00010293
+    RAX: 0000000000000000 RBX: ffff88806ce48128 RCX: 1ffff11001664b9e
+    RDX: ffff888008f00040 RSI: ffffffff8317ca42 RDI: ffff88800b325cb6
+    RBP: ffff88800b325c40 R08: 0000000000000001 R09: ffffed100167502c
+    R10: ffff88800b3a8163 R11: 0000000000000000 R12: ffff88800ac1c168
+    R13: ffff88800ac1c168 R14: ffff88800ac1c168 R15: 0000000000000007
+    FS:  0000000000000000(0000) GS:ffff88806ce00000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: ffff888008201000 CR3: 0000000004c94001 CR4: 0000000000370ef0
+    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+    Call Trace:
+    <TASK>
+    gro_cells_init+0x1ba/0x270
+    xfrm_input_init+0x4b/0x2a0
+    xfrm_init+0x38/0x50
+    ip_rt_init+0x2d7/0x350
+    ip_init+0xf/0x20
+    inet_init+0x406/0x590
+    do_one_initcall+0x9d/0x2e0
+    do_initcalls+0x23b/0x280
+    kernel_init_freeable+0x445/0x490
+    kernel_init+0x20/0x1d0
+    ret_from_fork+0x46/0x80
+    ret_from_fork_asm+0x1a/0x30
+    </TASK>
+    irq event stamp: 584330
+    hardirqs last  enabled at (584338): [<ffffffff8168bf87>] __up_console_sem+0x77/0xb0
+    hardirqs last disabled at (584345): [<ffffffff8168bf6c>] __up_console_sem+0x5c/0xb0
+    softirqs last  enabled at (583242): [<ffffffff833ee96d>] netlink_insert+0x14d/0x470
+    softirqs last disabled at (583754): [<ffffffff8317c8cd>] netif_napi_add_weight_locked+0x77d/0xba0
 
-Pingfan
+on kernel built with MAX_SKB_FRAGS=45, where SKB_WITH_OVERHEAD(1024)
+is smaller than GRO_MAX_HEAD.
+
+Such built additionally contains the revert of the single page frag cache
+so that napi_get_frags() ends up using the page frag allocator, triggering
+the splat.
+
+Note that the underlying issue is independent from the mentioned
+revert; address it ensuring that the small head cache will fit either TCP
+and GRO allocation and updating napi_alloc_skb() and __netdev_alloc_skb()
+to select kmalloc() usage for any allocation fitting such cache.
+
+Reported-by: Sabrina Dubroca <sd@queasysnail.net>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Fixes: 3948b05950fd ("net: introduce a config option to tweak MAX_SKB_FRAGS")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Minor context change fixed. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
+---
+ include/net/gro.h |  3 +++
+ net/core/gro.c    |  3 ---
+ net/core/skbuff.c | 10 +++++++---
+ 3 files changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/include/net/gro.h b/include/net/gro.h
+index 018343254c90..9260ed367c91 100644
+--- a/include/net/gro.h
++++ b/include/net/gro.h
+@@ -10,6 +10,9 @@
+ #include <linux/skbuff.h>
+ #include <net/udp.h>
+ 
++/* This should be increased if a protocol with a bigger head is added. */
++#define GRO_MAX_HEAD (MAX_HEADER + 128)
++
+ struct napi_gro_cb {
+ 	union {
+ 		struct {
+diff --git a/net/core/gro.c b/net/core/gro.c
+index 397cf5984250..b8cc44406e69 100644
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -6,9 +6,6 @@
+ 
+ #define MAX_GRO_SKBS 8
+ 
+-/* This should be increased if a protocol with a bigger head is added. */
+-#define GRO_MAX_HEAD (MAX_HEADER + 128)
+-
+ static DEFINE_SPINLOCK(offload_lock);
+ struct list_head offload_base __read_mostly = LIST_HEAD_INIT(offload_base);
+ /* Maximum number of GRO_NORMAL skbs to batch up for list-RX */
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 867832f8bbae..073e2c527407 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -67,6 +67,7 @@
+ #include <net/dst.h>
+ #include <net/sock.h>
+ #include <net/checksum.h>
++#include <net/gro.h>
+ #include <net/gso.h>
+ #include <net/ip6_checksum.h>
+ #include <net/xfrm.h>
+@@ -96,7 +97,9 @@ static struct kmem_cache *skbuff_ext_cache __ro_after_init;
+ 
+ static struct kmem_cache *skb_small_head_cache __ro_after_init;
+ 
+-#define SKB_SMALL_HEAD_SIZE SKB_HEAD_ALIGN(MAX_TCP_HEADER)
++#define GRO_MAX_HEAD_PAD (GRO_MAX_HEAD + NET_SKB_PAD + NET_IP_ALIGN)
++#define SKB_SMALL_HEAD_SIZE SKB_HEAD_ALIGN(max(MAX_TCP_HEADER, \
++					       GRO_MAX_HEAD_PAD))
+ 
+ /* We want SKB_SMALL_HEAD_CACHE_SIZE to not be a power of two.
+  * This should ensure that SKB_SMALL_HEAD_HEADROOM is a unique
+@@ -708,7 +711,7 @@ struct sk_buff *__netdev_alloc_skb(struct net_device *dev, unsigned int len,
+ 	/* If requested length is either too small or too big,
+ 	 * we use kmalloc() for skb->head allocation.
+ 	 */
+-	if (len <= SKB_WITH_OVERHEAD(1024) ||
++	if (len <= SKB_WITH_OVERHEAD(SKB_SMALL_HEAD_CACHE_SIZE) ||
+ 	    len > SKB_WITH_OVERHEAD(PAGE_SIZE) ||
+ 	    (gfp_mask & (__GFP_DIRECT_RECLAIM | GFP_DMA))) {
+ 		skb = __alloc_skb(len, gfp_mask, SKB_ALLOC_RX, NUMA_NO_NODE);
+@@ -785,7 +788,8 @@ struct sk_buff *__napi_alloc_skb(struct napi_struct *napi, unsigned int len,
+ 	 * When the small frag allocator is available, prefer it over kmalloc
+ 	 * for small fragments
+ 	 */
+-	if ((!NAPI_HAS_SMALL_PAGE_FRAG && len <= SKB_WITH_OVERHEAD(1024)) ||
++	if ((!NAPI_HAS_SMALL_PAGE_FRAG &&
++	     len <= SKB_WITH_OVERHEAD(SKB_SMALL_HEAD_CACHE_SIZE)) ||
+ 	    len > SKB_WITH_OVERHEAD(PAGE_SIZE) ||
+ 	    (gfp_mask & (__GFP_DIRECT_RECLAIM | GFP_DMA))) {
+ 		skb = __alloc_skb(len, gfp_mask, SKB_ALLOC_RX | SKB_ALLOC_NAPI,
+-- 
+2.43.0
 
 
