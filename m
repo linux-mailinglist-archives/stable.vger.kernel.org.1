@@ -1,127 +1,108 @@
-Return-Path: <stable+bounces-192669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01794C3E3C1
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 03:22:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B51C3E4C1
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 04:06:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91F241889412
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 02:22:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 181E8188B877
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 03:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CCE2BD035;
-	Fri,  7 Nov 2025 02:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2DA276046;
+	Fri,  7 Nov 2025 03:06:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=draconx-ca.20230601.gappssmtp.com header.i=@draconx-ca.20230601.gappssmtp.com header.b="cn57xZ0o"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFE928D8F4
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 02:21:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2272040B6
+	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 03:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762482118; cv=none; b=jY4cNR3Ts+ZHrWeHcqQqpP2ky6wTaBbifDlMKFyiXLAVgh9tW6Re3WEUiQ+rbCkNllxtyL7jVbZ+2bM1Qg9luYJpyZEvuZg5Tb5f5CRj38EWOmxVZgh/6Oa1dFMLBGIkquLkl2lymB/sx8L4BkdVz3ygVHkpLbVvOWl9WFjx8xg=
+	t=1762484777; cv=none; b=aNKisf+rpXwvv5BbA+7/2j2IR/s92lYcM+i1MfzCroCdC4N22pRT2zLXKiPFGp62ecxQ4C8YzJk+2TZhFhUaQbzXt2hPDTg9l+O9snho1ypQTTKl2XFsIN/mIpEwjjmxkQT2CGBxQIxsBtFLGtpbAVQagJQNP12hz98sSVBgl2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762482118; c=relaxed/simple;
-	bh=v2YWqnCq3BoAzNq27ROrOCMT/qzVUerObh5rQwSo16I=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FoKkTs33i+mr3Ba5rgle6bl0t4Zp3YGsxua8waNUcGxgGfmk5WNsZwb3w46fiUWkOnfDWr/fSUy5YjG4E8S7LTa1gp2+Cht6flXYSDnM3jWZo1f8+NRUk83oG5aI/EDFpcFL/OLQNDTkRg+5D9cgk9mldE30amBoaR9q0CdP66M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.169.211.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:Yeas1t1762482107t440t63233
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [125.120.71.67])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 3816815724803750602
-To: "'Vadim Fedorenko'" <vadim.fedorenko@linux.dev>,
-	<netdev@vger.kernel.org>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Richard Cochran'" <richardcochran@gmail.com>,
-	"'Simon Horman'" <horms@kernel.org>,
-	"'Jacob Keller'" <jacob.e.keller@intel.com>,
-	<netdev@vger.kernel.org>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Richard Cochran'" <richardcochran@gmail.com>,
-	"'Simon Horman'" <horms@kernel.org>,
-	"'Jacob Keller'" <jacob.e.keller@intel.com>
-Cc: "'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	<stable@vger.kernel.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	<stable@vger.kernel.org>
-References: <17A4943B0AAA971B+20251105020752.57931-1-jiawenwu@trustnetic.com> <de2f5da5-05db-4bd7-90c3-c51558e50545@linux.dev> <09a701dc4ec1$d0cc3210$72649630$@trustnetic.com> <04492fd4-4808-421a-b082-a05503b1d714@linux.dev>
-In-Reply-To: <04492fd4-4808-421a-b082-a05503b1d714@linux.dev>
-Subject: RE: [PATCH net] net: txgbe: remove wx_ptp_init() in device reset flow
-Date: Fri, 7 Nov 2025 10:21:46 +0800
-Message-ID: <0a7601dc4f8d$44034400$cc09cc00$@trustnetic.com>
+	s=arc-20240116; t=1762484777; c=relaxed/simple;
+	bh=SqF6cjAe5fIGfKljFwR84iVXlUipV5ARm6YRakF57pM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kQSL5ImdhcjrT1inkJTDXukg55qxTh0xo6QeBhewbbhDLiNjVi1pk45U2QKuIChSQbqoT5TwF1kTxGgMeEkhDYfDdHXFIYpqmha5DivicCJ4xaBKUHM/5mcUglCxJTgyXPNyc43xiAkt1kWqflHhO4FfPxoalDB0LTKKSDB7GJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=draconx.ca; spf=none smtp.mailfrom=draconx.ca; dkim=pass (2048-bit key) header.d=draconx-ca.20230601.gappssmtp.com header.i=@draconx-ca.20230601.gappssmtp.com header.b=cn57xZ0o; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=draconx.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=draconx.ca
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-88033f09ffeso3491966d6.1
+        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 19:06:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=draconx-ca.20230601.gappssmtp.com; s=20230601; t=1762484775; x=1763089575; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=E56miCz2ucyW7p5RTNikjLhgl4gC4pK61qcfT2Qpt0U=;
+        b=cn57xZ0oPlgAD+CBSKMswSkoX9xKQS1HixdXW5ECEdl1/YgEelftUJw1DUcEfh+duA
+         CqyX7f9UdS2NaP2m4VEwp/qSKjRqSQDW17RbaRWRXGTqnivMrDDO91IRo5di4cHofFo4
+         dDmQShLEs015pKEKpL5+2L1UsNOF0CCOCELwr7VtTZodwebonazUVnNh52D0rcis0esS
+         z9KV+2j1vbSwr3RhKOGq0fn9HINj478kHnk0DOEWVuwsrTs0VH637mEM4F+1mdG3XZr6
+         s+cYsLKU+BMUC+arbyjobnJQiPwtQZS8rT7DMBjEc8kNkXUA+YVqrxCLg6UDZ1dBhD6f
+         oIeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762484775; x=1763089575;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E56miCz2ucyW7p5RTNikjLhgl4gC4pK61qcfT2Qpt0U=;
+        b=AkH6M9DTrh3JRcJgQ7mCKi34hpLEyjZl5t5KjXOXmKZcCtHIY1Fhuy9ijIjwU3IXVO
+         vDtSvZ9IY30gZxO7YrlQsKOSLYOs/W5E9UeCR+DGmcA1lRD36PImF/a3/c395EPKhzrc
+         vvi+lge7RkW4k9wPivfvmkUJL2C1z4u5rNrxbMB3XabbERQ5nogo6Y+MgV6QwLd7uTIY
+         e+BpLFExZxuQQO9skCND8geAcEIgk6WmMF0LsELcSj2gtvVfnUNlc/OWHlspJE4u5Vg7
+         Z8oj6LRMUblG4hClpgp3U1WnZAn8ttjfxr+ymo4zx7GCr7RCg4pjU4wiToJ3mGfP0i/n
+         NkpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWAtIx2Su5H8UQPLU5U86i9tejPITXGpYp5+byiB9n/ejjUsFeW04E20WhjXVms2xAM9y1Uytc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwB/wn32VEjQ7nWHIIwSHVmwCtAgSAMsgS2FfGhPxHNEbsezKA3
+	EejApAC5d9Fiof0BFjKCSYqer3KKeG4aBxwyHRkkw6FBZEMvz9ul8mJqHLjRgVuS6UmQCqkeJnQ
+	41Dz3w24=
+X-Gm-Gg: ASbGncspvALK3Fuut/pgn1wRfYd/ChHBPf9im4VNkuAFaheMOc4BHX308mEV9Twpank
+	jrKKjTcYNzS8f1IHizVTikQmJEuBibwyHWBZX8TilCPP7KQ4oyfJHUGJUBM/27mNsJ4eYEML3Uz
+	RaU7QR2Um8IiiSyQJLl1KLl0nr13X6Bo9mK0x5ypwQ3KH9kg2LVpmCQEpQ3zHSMbKx3nMzc9xkW
+	xsU1Z8o26pWVVGgyVlLVrArNCHVJ6IN+Bby7TdTQ/iJLqhEKUljveGAnyKnS6KsPj0yC2gnCqwk
+	JNo8C+oEwx2cRzh9bSz8HxYIIKdmy/ZCyGq0hKHT/+mm/+ilQLxeX7i/lLCPx9yG4/Z2rac+chp
+	ywHXFsJDh3vE0w4PBgN2njStyBSkMxAWICrvsZppOn/0q81pBl3OwXpmEgZg2TMELEaSAoCnjdM
+	r2xaOnMa/vGscn6uQf2qPpqpnowBF5m0yp34ZyOyVW
+X-Google-Smtp-Source: AGHT+IEwrtDh+N2RU8TdlIkL8MsNx2X7a1H9tD28kPSplx5JFVcsb0223J9Fj+vOzbjZ1jDImx6R0g==
+X-Received: by 2002:a05:6214:4004:b0:87c:108f:676c with SMTP id 6a1803df08f44-88167b17ed2mr26261796d6.25.1762484774711;
+        Thu, 06 Nov 2025 19:06:14 -0800 (PST)
+Received: from localhost (ip-24-156-181-135.user.start.ca. [24.156.181.135])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-88082a38210sm30548476d6.55.2025.11.06.19.06.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Nov 2025 19:06:14 -0800 (PST)
+Date: Thu, 6 Nov 2025 22:06:12 -0500
+From: Nick Bowler <nbowler@draconx.ca>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Esben Haabendal <esben@geanix.com>, linux-kernel@vger.kernel.org, 
+	regressions@lists.linux.dev, linux-rtc@vger.kernel.org, stable@vger.kernel.org, 
+	sparclinux@vger.kernel.org
+Subject: Re: PROBLEM: hwclock busted w/ M48T59 RTC (regression)
+Message-ID: <e7ezfmqnbduq7jdc7osicqp4rnztu466gpbcxaoj54jfigsvvp@iroscsnamy3c>
+References: <krmiwpwogrvpehlqdrugb5glcmsu54qpw3mteonqeqymrvzz37@dzt7mes7qgxt>
+ <DmLaDrfp-izPBqLjB9SAGPy3WVKOPNgg9FInsykhNO3WPEWgltKF5GoDknld3l5xoJxovduV8xn8ygSupvyIFOCCZl0Q0aTXwKT2XhPM1n8=@geanix.com>
+ <ni6gdeax2itvzagwbqkw6oj5xsbx6vqsidop6cbj2oqneovjib@mrwzqakbla35>
+ <35bd11bf-23fa-4ce9-96fb-d10ad6cd546e@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQExXBZeSPIacREnfT1C8jsshPjwPgIYC4qlAnOcZc8CJ2bJhbYGxueA
-Content-Language: zh-cn
-X-QQ-SENDSIZE: 520
-Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: OatzRg8pHEjpzGxovdm05ab1gFKuXFKw0CZWGrRucYBHCH51/5LoJyge
-	jQ1Q1qLH7/3jzKdDQJuHWqpS2HtxiaK1I7Lvgmcj0WE0goYz3g0EYIHfGcQXKv4aYkAuGJ8
-	HZKJsiJJtwH7J9JWZjp/cI8BBrx1n+v9rKCvDbsYIZpt2YmTzAR5q/AabZjgNyUiijOMh1o
-	jTUXQs7Wr9fJPeYRDjUZ3b3dWBPIneLyGgtb2ntmKmDH1u3QsDaGJ8PNMo9a6iY/J2e4Q0+
-	xI+dYmjrT3ZOJyPtm35IZSRv1RhlM7sTyYikvv6Qyzs5x4aRTz2kWDwE3V8xI3JEy6bHWLN
-	6PtuahBImoLDGCtaByMNacNqTSvCs9GZ/H19jJeISt74H0tRPQlQH6vAhxwIWcePgMK4WD9
-	es2gZxZKCarEtyuTw5bx3ysyC0iUUes/Vjr+hICc8ZBp6Q391yqVH5gVWgQmA143L4T3kaX
-	+5MPey/lnernpGQnx6Xcp5SjPso2QPJ956HLOPsfk7AWpia/MmA2vk3rWAFX6PFz6gBshzr
-	XSkHBaBE27/mK03P+fnYyhmucvL55U/U1gWzyjNls8Qr0Qm2IHefzM74zSdtKnHrsWK6XtC
-	3RQdkXjMemW1nUppUzjG98tAVITr45UBV+NxP2hXetmQWGsVdaOC1ZzDK2999ItbSkVZI6m
-	y9Um1COyOij52BA3jBulI0OOLaNUHDKF5/lnzVya+c6TXCUZ3PRsMOOikl0FGKzDjRqnlvN
-	HRaAh1VJaSpaYGYTe5bfOZpZ4H5uZqSlbEn5iyuc+WC9WhB637RZLugptY5EkxJu2Q2PUdW
-	QBiB3YhroVgM3GLqUL59ehHAHC4Gva2xPYZkgpjXjjWXrHO3Acv6Ur1GvgnEnBCnmTEfsSW
-	3Xx2hHMWSoznVKSX6nfNVhnBv6C60dE5Dqtrf9TbirDHKaNt5zevkEYbDJeRv73NaOERvo2
-	NHJghvay7Iz+ALKpPzMrnG1r5jjJxlycvFxrMo4+x70Z0ray63YDevU+pTjN6QvfWYzXEXX
-	eI5PmAPNr1/HcNK5qfRnIqgB5mEIVA6ettctn40A==
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <35bd11bf-23fa-4ce9-96fb-d10ad6cd546e@leemhuis.info>
 
-On Thu, Nov 6, 2025 7:27 PM, Vadim Fedorenko wrote:
-> On 06/11/2025 02:05, Jiawen Wu wrote:
-> > On Thu, Nov 6, 2025 4:03 AM, Vadim Fedorenko wrote:
-> >> On 05/11/2025 02:07, Jiawen Wu wrote:
-> >>> The functions txgbe_up() and txgbe_down() are called in pairs to reset
-> >>> hardware configurations. PTP stop function is not called in
-> >>> txgbe_down(), so there is no need to call PTP init function in
-> >>> txgbe_up().
-> >>>
-> >>
-> >> txgbe_reset() is called during txgbe_down(), and it calls
-> >> wx_ptp_reset(), which I believe is the reason for wx_ptp_init() call
-> >
-> > wx_ptp_reset() just reset the hardware bits, but does not destroy the PTP clock.
-> > wx_ptp_init() should be called after wx_ptp_stop() has been called.
-> 
-> wx_ptp_init()/wx_ptp_reset() recalculate shift/mul configuration based
-> on link speed. link down/link up sequence may bring new link speed,
-> where these values have to reconfigured, right? I kinda agree
-> that full procedure of wx_ptp_init() might not be needed, but we have to
-> be sure not to reuse old ptp configuration.
+On Thu, Nov 06, 2025 at 11:25:55AM +0100, Thorsten Leemhuis wrote:
+> Just wondering: was this fixed in between? Just asking, as I noticed the
+> culprit was backported to various stable/longterm series recently
 
-This indicates that the original approach was also wrong. wx_ptp_init() would
-return here: if (wx_ptp_create_clock(wx)).
+I am not aware of any fix.  I just retested both 6.18-rc4 and 6.17.7 and
+there is no change in behaviour.
 
-But for the changing of link speed, wx_ptp_reset_cyclecounter() is called in
-.mac_link_up() and .mac_link_down().
-
-
+Thanks,
+  Nick
 
