@@ -1,147 +1,146 @@
-Return-Path: <stable+bounces-192737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290EAC40805
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 16:02:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E892AC4099C
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 16:34:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2935A4F27BD
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 15:01:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 939D51A44364
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 15:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573432E5B2E;
-	Fri,  7 Nov 2025 15:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F364632ABD0;
+	Fri,  7 Nov 2025 15:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="ejgLOU5L";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="0jNIOSff"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKSWX+Ff"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC10820322;
-	Fri,  7 Nov 2025 15:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF97C239E7F;
+	Fri,  7 Nov 2025 15:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762527711; cv=none; b=U4DaNNbDMkEPlo3+0Ju+lYTXA9sA0EBNp91PWa8Bzw6lw73WrAI9vtevt7Euck+osBog5NB2PtGeCPRfdo4LZJNmADjcxsb8RQbZDTLhW4ne4vX6WU5hjco6Ol+JtlNgwCe5V3lLhBaJb27Mj9fjicgJEXDHLwdZAZwhqAZd1Kg=
+	t=1762529667; cv=none; b=A8iB66V1yiqYvJeDST4dQ6ZM/UNgH7owH7BN0omS8tIeYc+BMSbrHIFCjmjAIkZ2bBXm26cR40EBosLmESAENm6Xp/RgFhZZYTjxZ3KUHXHVP+9jWDb7wh5rF556nNg89JghPZGZvpNqRXHhhbokb8X6WC712JdmLm8QG5N23RU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762527711; c=relaxed/simple;
-	bh=hKX9NqHwPyvWQ9qAD9KYGenqTfpej1gkT0MLEjS8A8Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NCdyJGxAa5LYmzRMza7naZBGjhaKquhVFDW5vIar42OUHWhFe8hcXKX9PYZqkW77euLLS4iexVf5Arc/8kssrNsRjKHoMqni8RMJA8RWXa0gqVpJmTMcLcG9WBjU8ccZsgNUDgkfiG8brDGZbVSepl5gAWdllb2BIy6dW3FU80Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=ejgLOU5L; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=0jNIOSff; arc=none smtp.client-ip=202.12.124.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 829037A007A;
-	Fri,  7 Nov 2025 10:01:47 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Fri, 07 Nov 2025 10:01:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1762527707; x=
-	1762614107; bh=kRC3srLxdI1/rQQ/YoHbTjMKAUDZ9Yv07eN0UYC6WpM=; b=e
-	jgLOU5LVPVIW4Vqg23pausJkqWeXnBJUy3J9Cl/TdM0KtDDL1I6KzhgTISjz5R/j
-	hb3lR5lDhMe4AtpH+8M6h/vAuz3WVmLoDcE7qgcDMbhx0SKnhWrCNqSy5q8qvAD2
-	+T5yeTRzOpSIaPbQC84JNz6yeUGlveD3cHB+ON7ZbFmlyV+SIOjPTDOD2UFOSSxy
-	fKKWFpPBFoUb93Y+29u7aULrMh1UYhZfn7y48VGneVQjbXKQNLO7+2XcvMVR8xrd
-	ehY34muZJJdl8ougCTm/TbU+WFsyfifdOkvkFxSbPmfg5Lt34DWqNBPGPkQzmGfG
-	DPpaGnDFDF0q9863vGYgQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1762527707; x=1762614107; bh=kRC3srLxdI1/rQQ/YoHbTjMKAUDZ9Yv07eN
-	0UYC6WpM=; b=0jNIOSffa2YjszV07iP5dGCWcN1vaAWgmfm90aLwh9WU/1Speo3
-	lkQ0HZD6r6s08ePOKVqyHTV7hwEOgx43eq4SMDxPuwVzDk60SgfPPVdqxRWpUGTO
-	x6LgPHbLzml2gl6UzpGAJUdjgSe0wh+BJpNObmqi4LlLc/mUtqZWxf1aH50HL2+g
-	5OeogsgpIOwmGBhyy7dMZQjJg80ijCMnRTPjaNN7K4uBrgJ8yngb3oK+zbPjgN9K
-	4yx0mgek5QR6sUQ+jeoA8OYPVp7wUkOtPtQjwOlqNxClmVfm96L47gLWZ7rgukQW
-	1D5idUXrv4KtqCA3wCLzxGt2jtiLDb2E0QQ==
-X-ME-Sender: <xms:2gkOaYnUOBRnwm2fJE2NyZAqJsuO5MIEgecb6UzQX3WAaS94Wxox2Q>
-    <xme:2gkOaYwSqqO6wrvD1ti-aX_CfR6uMwXdndP5vqhFNIT-9aNk1l_zJBft-L3ahjFs_
-    wrhvfvo1qCwklnGKydc81_VdcdtnjnzOx1ASiNQArmd4ie0XF0H>
-X-ME-Received: <xmr:2gkOaW-z0NtPh6C5kfQqu1Vm642faVK2gY8Sdn9PhG24hXftvhWIiWl5skSz>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukeelleejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
-    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
-    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
-    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopedujedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtohepnhgrthgvrdhkrghrshhtvghnshesghgrrh
-    hmihhnrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtohepnhgrthgvrdhkrghrshhtvghnshesghhmrghilhdrtghomhdprh
-    gtphhtthhopehtohhmsehquhgrnhhtohhnihhumhdrnhgvthdprhgtphhtthhopehjrggt
-    ohgsrdgvrdhkvghllhgvrhesihhnthgvlhdrtghomhdprhgtphhtthhopehsthgrsghlvg
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvghmsegurghvvghm
-    lhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
-    dprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:2gkOaTDq53Jgw1U8DCshPHCxtO8t4-4bKpreJHHfyXTW-pj0LEwkAw>
-    <xmx:2gkOadp4W4egqUEzFYldwrGIIbQr1YFALSk2NMNAaP4p2aqggETtxg>
-    <xmx:2gkOabkPw44DdaGNNfKGqH83-MfJ79Wc1YsN2-A27lN99soUKFdtAQ>
-    <xmx:2gkOaQWEm7gWmEMh7-id5epnQ1AuQobqhkshppXDKWoJtMu7QPy4Qw>
-    <xmx:2wkOaXpXvzicvBosjEUjzcAFKlm12B3wVhMvXi6b-_JonzBjEX0Xy0cO>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 7 Nov 2025 10:01:45 -0500 (EST)
-Date: Fri, 7 Nov 2025 16:01:43 +0100
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Nate Karstens <nate.karstens@garmin.com>
-Cc: netdev@vger.kernel.org, Nate Karstens <nate.karstens@gmail.com>,
-	Tom Herbert <tom@quantonium.net>,
-	Jacob Keller <jacob.e.keller@intel.com>, stable@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>, Jiayuan Chen <mrpre@163.com>,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Tom Herbert <tom@herbertland.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] strparser: Fix signed/unsigned mismatch bug
-Message-ID: <aQ4J169gBFHVzAJa@krikkit>
-References: <20251106222835.1871628-1-nate.karstens@garmin.com>
+	s=arc-20240116; t=1762529667; c=relaxed/simple;
+	bh=LxNetJZGDoMZFkpRGbsUFYiHX1dIJkPSJNhZIh7fWk4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mioMD9bOgDDst19fxrjSLvVkLSu7M1NDxY4vPQ6wwvSu6XlzTYw0CZYfW/7nTUkLNUIM9irv47c2lwHL//BLdKEy55tpWsr0rk0ArY7GrcqoLtX89Tcs0JYR1fO2VwzEDiTCzuBIyKozPH1BrOfzyaxANtCDrhgXJqL/ksGyb0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKSWX+Ff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD15C116B1;
+	Fri,  7 Nov 2025 15:34:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762529667;
+	bh=LxNetJZGDoMZFkpRGbsUFYiHX1dIJkPSJNhZIh7fWk4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dKSWX+FfsMx27vKMdLnIXVhMQqCrPvpioKY188pQpJICpX1zPI77ADOc1aaYfI0mV
+	 cxbkirMijskTZNQElzCjKRE04R3G3NZbHualo2FN+jgcAlbvt+uDU5qX/ldGyRkSFg
+	 /Gz0AdUSmGJEsyMUqj4+j0kAYej55PNlMQIzLLfRKoT96y/8PXjrbqN0fcXgvtE2YT
+	 wD5GZib4UO8AN4HkObf11wjhBSUBSGjtJVedIgkfY8LCiOQYzR8QUHwbJ0HO1XTyd5
+	 dLyzTgSkdAdkxUoWx8loeEauPbnFuqUHnNCkjEehUbGRzdyWlz3Qk2o/A+e95BS+Up
+	 8Hu/UmzQmPEKQ==
+From: Chuck Lever <cel@kernel.org>
+To: NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>
+Cc: <linux-nfs@vger.kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	stable@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH v11 1/3] NFSD: Make FILE_SYNC WRITEs comply with spec
+Date: Fri,  7 Nov 2025 10:34:20 -0500
+Message-ID: <20251107153422.4373-2-cel@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251107153422.4373-1-cel@kernel.org>
+References: <20251107153422.4373-1-cel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251106222835.1871628-1-nate.karstens@garmin.com>
+Content-Transfer-Encoding: 8bit
 
-2025-11-06, 16:28:33 -0600, Nate Karstens wrote:
-> The `len` member of the sk_buff is an unsigned int. This is cast to
-> `ssize_t` (a signed type) for the first sk_buff in the comparison,
-> but not the second sk_buff. On 32-bit systems, this can result in
-> an integer underflow for certain values because unsigned arithmetic
-> is being used.
-> 
-> This appears to be an oversight: if the intention was to use unsigned
-> arithmetic, then the first cast would have been omitted. The change
-> ensures both len values are cast to `ssize_t`.
-> 
-> The underflow causes an issue with ktls when multiple TLS PDUs are
-> included in a single TCP segment. The mainline kernel does not use
-> strparser for ktls anymore, but this is still useful for other
-> features that still use strparser, and for backporting.
-> 
-> Signed-off-by: Nate Karstens <nate.karstens@garmin.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 43a0c6751a32 ("strparser: Stream parser for messages")
-> ---
->  net/strparser/strparser.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Mike noted that when NFSD responds to an NFS_FILE_SYNC WRITE, it
+does not also persist file time stamps. To wit, Section 18.32.3
+of RFC 8881 mandates:
 
-Thanks Nate.
+> The client specifies with the stable parameter the method of how
+> the data is to be processed by the server. If stable is
+> FILE_SYNC4, the server MUST commit the data written plus all file
+> system metadata to stable storage before returning results. This
+> corresponds to the NFSv2 protocol semantics. Any other behavior
+> constitutes a protocol violation. If stable is DATA_SYNC4, then
+> the server MUST commit all of the data to stable storage and
+> enough of the metadata to retrieve the data before returning.
 
+Commit 3f3503adb332 ("NFSD: Use vfs_iocb_iter_write()") replaced:
+
+-		flags |= RWF_SYNC;
+
+with:
+
++		kiocb.ki_flags |= IOCB_DSYNC;
+
+which appears to be correct given:
+
+	if (flags & RWF_SYNC)
+		kiocb_flags |= IOCB_DSYNC;
+
+in kiocb_set_rw_flags(). However the author of that commit did not
+appreciate that the previous line in kiocb_set_rw_flags() results
+in IOCB_SYNC also being set:
+
+	kiocb_flags |= (__force int) (flags & RWF_SUPPORTED);
+
+RWF_SUPPORTED contains RWF_SYNC, and RWF_SYNC is the same bit as
+IOCB_SYNC. Reviewers at the time did not catch the omission.
+
+Reported-by: Mike Snitzer <snitzer@kernel.org>
+Closes: https://lore.kernel.org/linux-nfs/20251018005431.3403-1-cel@kernel.org/T/#t
+Fixes: 3f3503adb332 ("NFSD: Use vfs_iocb_iter_write()")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neil@brown.name>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+---
+ fs/nfsd/vfs.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index f537a7b4ee01..5333d49910d9 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1314,8 +1314,18 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 		stable = NFS_UNSTABLE;
+ 	init_sync_kiocb(&kiocb, file);
+ 	kiocb.ki_pos = offset;
+-	if (stable && !fhp->fh_use_wgather)
+-		kiocb.ki_flags |= IOCB_DSYNC;
++	if (likely(!fhp->fh_use_wgather)) {
++		switch (stable) {
++		case NFS_FILE_SYNC:
++			/* persist data and timestamps */
++			kiocb.ki_flags |= IOCB_DSYNC | IOCB_SYNC;
++			break;
++		case NFS_DATA_SYNC:
++			/* persist data only */
++			kiocb.ki_flags |= IOCB_DSYNC;
++			break;
++		}
++	}
+ 
+ 	nvecs = xdr_buf_to_bvec(rqstp->rq_bvec, rqstp->rq_maxpages, payload);
+ 	iov_iter_bvec(&iter, ITER_SOURCE, rqstp->rq_bvec, nvecs, *cnt);
 -- 
-Sabrina
+2.51.0
+
 
