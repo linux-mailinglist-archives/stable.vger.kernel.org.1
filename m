@@ -1,78 +1,74 @@
-Return-Path: <stable+bounces-192743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF39DC40E08
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 17:28:47 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7404BC40E35
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 17:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA16C3A544D
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 16:26:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A33754F3E0F
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 16:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7762DF143;
-	Fri,  7 Nov 2025 16:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF8627E056;
+	Fri,  7 Nov 2025 16:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aVryJvXp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N//hDvRD"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8802C2BD5B9;
-	Fri,  7 Nov 2025 16:25:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D0C2874F6;
+	Fri,  7 Nov 2025 16:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762532759; cv=none; b=X7F01TkJutZ/nRpPEqeAHErqrdMaatQ3YRGA6aAXnbj4iPbC6MLLN/8pYm5dwomNthwL75ModCpXDrgIVBACPQaWt9rdVO2DhQVBMAx59WMCzL0YewBvPj8mKu6zWcI/Mo5D3lmlWTQg5iTw+Z+QaIX6pmB7MvYkCjgMAmAYF5Y=
+	t=1762532922; cv=none; b=qe+YEjQxh6shnQVHXWO74Z8GHW2ffvcQKPX5zOcwWcMe5FGnESnFDEfs4TiIpctvuEvhtI5n0zEXsGMBpryZzP2j8CYV2Q746fqhR/DzN7HHo0gz6iakqVpwYtJhvaFUsf9BUAYy6aDFD0tldH5CZyGsJlJCHYR66nC5Rw0jKHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762532759; c=relaxed/simple;
-	bh=7CwFn3glPOx+LEuwLyVNBz8w4VFBGU+ikxsXH3OvEZM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JoCJArT6o3ueY8SENqqbPKZTWWSGaz3syeT1NgV68MFF5sc64jfb2u7ppFcRvtJLWF87C0Ym8N1Q6Xhe01b+k4EKGGwGQN5gT2wrNJ3DzY6XqphKla9tJDVFmRM+pbUjQePh5vbq2EDh6xHh8s9zIAIN20Z6xchCM6zGxUhnc+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aVryJvXp; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A7D0ooh2282023;
-	Fri, 7 Nov 2025 16:25:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	wejWMBrYU48tLmTyosI5XfDNT011hcTBGXvSUb8Cw9s=; b=aVryJvXpOJJa/lhM
-	FLZyG7K9pYzPNeoSnIYGKJAxPPNi5d4pLmQPAHODPsPcvgY7OxFRHrYM4wlukTGu
-	PvvC3o6SCrRahEdHo98ntbfCrQyiMkjf9N0fXlxAyTUEY4Sdb5ANASlGyQrhWyMr
-	Zq97E1Krv8s6oxauUCXHyEY06fIn0RuNWffJP7WEkxWQruoSdAh438tETKj8zNZe
-	Kt51GkBYnofaMcjLHmoMeaaZApyARyEJOJB+JOFaO6aBUG6HyCPz+1DL5sQs+MQo
-	CnRAh6m8t7FADWghEbGcKBfea/dyrvqu/uvf6M77lPvBXc7vS9XJV3sojtFMiYvr
-	M2Z90A==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a9a9shv6g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Nov 2025 16:25:47 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5A7GPkQV024442
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 7 Nov 2025 16:25:46 GMT
-Received: from hu-vikramsa-hyd.qualcomm.com (10.80.80.8) by
- nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.24; Fri, 7 Nov 2025 08:25:40 -0800
-From: Vikram Sharma <quic_vikramsa@quicinc.com>
-To: <bryan.odonoghue@linaro.org>, <mchehab@kernel.org>, <robh@kernel.org>,
-        <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <andersson@kernel.org>,
-        <konradybcio@kernel.org>, <hverkuil-cisco@xs4all.nl>,
-        <cros-qcom-dts-watchers@chromium.org>, <catalin.marinas@arm.com>,
-        <will@kernel.org>
-CC: <linux-arm-kernel@lists.infradead.org>, <quic_svankada@quicinc.com>,
-        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_nihalkum@quicinc.com>, <quic_vikramsa@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v6 1/2] dt-bindings: media: qcom,qcs8300-camss: Add missing power supplies
-Date: Fri, 7 Nov 2025 21:55:20 +0530
-Message-ID: <20251107162521.511536-2-quic_vikramsa@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251107162521.511536-1-quic_vikramsa@quicinc.com>
-References: <20251107162521.511536-1-quic_vikramsa@quicinc.com>
+	s=arc-20240116; t=1762532922; c=relaxed/simple;
+	bh=z/6y2TuwEjthwLYrrzdV0KzP7tPR7oG0JJ8YHoUwzLI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NKdmFXKoBWdVNKQySwkFtL5FxsGych7Cw/bX71JbYnJmETuDTIUq3vOWIs5gyW6Ys0uACr5AcixjuXMLO8BeHpdWkjXubGNCXCS6jzmJ0CvHXmPd5A5fj19n/wRJBbN0H2Y4owUwoXaJgtgPijItCWzOEKtCJzgQqk2RtYd8TuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N//hDvRD; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762532919; x=1794068919;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=z/6y2TuwEjthwLYrrzdV0KzP7tPR7oG0JJ8YHoUwzLI=;
+  b=N//hDvRD+YBSz55IZfmxzvdAvHpx0TpBEtAhjaq+kLRysgko3gS7KKze
+   KA/zUgkh/R6zZ7VMt+aPMEPw8VQsYatWfNBvb5BtG4ZeVYzXStFUxPc4T
+   ziYUH1StR7mO1VezXR76zxdqQvBzTzEcjX+6kSuW3LbdECL7mfJ6JGRm7
+   vFRPQqpFQG4jck7oek73RcyBju+2nao5qX6llwBhkgNff05GA+zKx1wLO
+   AnHtQTbXQsKczNKMLseTmDs9VHv6E6FRd/0btwKK3Mi33kBM3b7S9UW1v
+   Tgr/a6Uc29ebE/TgTA6Cn5qrML4T9QYIesSJXJ12XsvfJjCYl664pfg4H
+   A==;
+X-CSE-ConnectionGUID: 2UAUkQ+oSlqijo/9h4i09g==
+X-CSE-MsgGUID: uULJifcERCiyurh1KM0JqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11606"; a="74979454"
+X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; 
+   d="scan'208";a="74979454"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 08:28:38 -0800
+X-CSE-ConnectionGUID: exg1YIsMRyKhhVLYxoCCQQ==
+X-CSE-MsgGUID: ghXZz0aTQbKZQ4AChyzbfw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; 
+   d="scan'208";a="187328933"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO mnyman-desk.intel.com) ([10.245.245.61])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 08:28:36 -0800
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+To: <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/3] xhci: fix stale flag preventig URBs after link state error is cleared
+Date: Fri,  7 Nov 2025 18:28:16 +0200
+Message-ID: <20251107162819.1362579-2-mathias.nyman@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251107162819.1362579-1-mathias.nyman@linux.intel.com>
+References: <20251107162819.1362579-1-mathias.nyman@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,86 +76,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=CdgFJbrl c=1 sm=1 tr=0 ts=690e1d8b cx=c_pps
- a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=Cg3GaYijB682ADaUwpUA:9
- a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA3MDEzNSBTYWx0ZWRfX7KWhvaCkoG4G
- pBJLSRAY7dkbwytqYYt3GE8mwh+t8BGoUk94SOc+mkVH+XpWIyYK/S5ekiYLtdEYIo+gGCOpbNS
- WSO4xY8ZsnIwDGWzrU2dk35iI+H5Cd4kkVGYmBrN1A7HY9lPne24T7YLzBQodrIfxBWHGmrS/Vj
- CmBK8PAyLfTJhc9DefE0/KZCdUWqlCe0KkhPE+aZQKchbmWJ1aQV2UZUFHrEbV3505OB03SDt7L
- n3TvSWzvPf4GagS6ZW2xEBupWCSfBMcPDOsqmn7iHZfs7eaDcnSTurCH0w06r06rC2RELgFdiw+
- XXkp16fjL9K2oM0qdyJ4oPDGOR8XCvPwbIoiIxT3Y1e31MDv5PfheiZ7sHI2EkRvPARKpf9w58o
- 8M51hnpG3WtGRcVRCofqieLyjFSz+Q==
-X-Proofpoint-ORIG-GUID: 6tor7pudIUAbELG53kSioz-X6DKPGxdE
-X-Proofpoint-GUID: 6tor7pudIUAbELG53kSioz-X6DKPGxdE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-07_04,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 malwarescore=0 spamscore=0 bulkscore=0
- phishscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511070135
 
-Add missing vdda-phy-supply and vdda-pll-supply in the (monaco)qcs8300
-camss binding. While enabling imx412 sensor for qcs8300 we see a need
-to add these supplies which were missing in initial submission.
+A usb device caught behind a link in ss.Inactive error state needs to
+be reset to recover. A VDEV_PORT_ERROR flag is used to track this state,
+preventing new transfers from being queued until error is cleared.
 
-Fixes: 634a2958fae30 ("media: dt-bindings: Add qcom,qcs8300-camss compatible")
-Cc: <stable@vger.kernel.org>
-Co-developed-by: Nihal Kumar Gupta <quic_nihalkum@quicinc.com>
-Signed-off-by: Nihal Kumar Gupta <quic_nihalkum@quicinc.com>
-Signed-off-by: Vikram Sharma <quic_vikramsa@quicinc.com>
+This flag may be left uncleared if link goes to error state between two
+resets, and print the following message:
+
+"xhci_hcd 0000:00:14.0: Can't queue urb, port error, link inactive"
+
+Fix setting and clearing the flag.
+
+The flag is cleared after hub driver has successfully reset the device
+when hcd->reset_device is called. xhci-hcd issues an internal "reset
+device" command in this callback, and clear all flags once the command
+completes successfully.
+
+This command may complete with a context state error if slot was recently
+reset and is already in the defauilt state. This is treated as a success
+but flag was left uncleared.
+
+The link state field is also unreliable if port is currently in reset,
+so don't set the flag in active reset cases.
+Also clear the flag immediately when link is no longer in ss.Inactive
+state and port event handler detects a completed reset.
+
+This issue was discovered while debugging kernel bugzilla issue 220491.
+It is likely one small part of the problem, causing some of the failures,
+but root cause remains unknown
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220491
+Fixes: b8c3b718087b ("usb: xhci: Don't try to recover an endpoint if port is in error state.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 ---
- .../bindings/media/qcom,qcs8300-camss.yaml          | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/usb/host/xhci-ring.c | 15 ++++++++++-----
+ drivers/usb/host/xhci.c      |  1 +
+ 2 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml b/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml
-index 80a4540a22dc..e5f170aa4d9e 100644
---- a/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml
-+++ b/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml
-@@ -120,6 +120,14 @@ properties:
-     items:
-       - const: top
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 8e209aa33ea7..5bdcf9ab2b99 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1985,6 +1985,7 @@ static void xhci_cavium_reset_phy_quirk(struct xhci_hcd *xhci)
  
-+  vdda-phy-supply:
-+    description:
-+      Phandle to a 0.88V regulator supply to CSI PHYs.
+ static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
+ {
++	struct xhci_virt_device *vdev = NULL;
+ 	struct usb_hcd *hcd;
+ 	u32 port_id;
+ 	u32 portsc, cmd_reg;
+@@ -2016,6 +2017,9 @@ static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
+ 		goto cleanup;
+ 	}
+ 
++	if (port->slot_id)
++		vdev = xhci->devs[port->slot_id];
 +
-+  vdda-pll-supply:
-+    description:
-+      Phandle to 1.2V regulator supply to CSI PHYs pll block.
-+
-   ports:
-     $ref: /schemas/graph.yaml#/properties/ports
+ 	/* We might get interrupts after shared_hcd is removed */
+ 	if (port->rhub == &xhci->usb3_rhub && xhci->shared_hcd == NULL) {
+ 		xhci_dbg(xhci, "ignore port event for removed USB3 hcd\n");
+@@ -2038,10 +2042,11 @@ static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
+ 		usb_hcd_resume_root_hub(hcd);
+ 	}
  
-@@ -160,6 +168,8 @@ required:
-   - power-domains
-   - power-domain-names
-   - ports
-+  - vdda-phy-supply
-+  - vdda-pll-supply
+-	if (hcd->speed >= HCD_USB3 &&
+-	    (portsc & PORT_PLS_MASK) == XDEV_INACTIVE) {
+-		if (port->slot_id && xhci->devs[port->slot_id])
+-			xhci->devs[port->slot_id]->flags |= VDEV_PORT_ERROR;
++	if (vdev && (portsc & PORT_PLS_MASK) == XDEV_INACTIVE) {
++		if (!(portsc & PORT_RESET))
++			vdev->flags |= VDEV_PORT_ERROR;
++	} else if (vdev && portsc & PORT_RC) {
++		vdev->flags &= ~VDEV_PORT_ERROR;
+ 	}
  
- additionalProperties: false
- 
-@@ -328,6 +338,9 @@ examples:
-             power-domains = <&camcc CAM_CC_TITAN_TOP_GDSC>;
-             power-domain-names = "top";
- 
-+            vdda-phy-supply = <&vreg_l4a_0p88>;
-+            vdda-pll-supply = <&vreg_l1c_1p2>;
-+
-             ports {
-                 #address-cells = <1>;
-                 #size-cells = <0>;
+ 	if ((portsc & PORT_PLC) && (portsc & PORT_PLS_MASK) == XDEV_RESUME) {
+@@ -2099,7 +2104,7 @@ static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
+ 		 * so the roothub behavior is consistent with external
+ 		 * USB 3.0 hub behavior.
+ 		 */
+-		if (port->slot_id && xhci->devs[port->slot_id])
++		if (vdev)
+ 			xhci_ring_device(xhci, port->slot_id);
+ 		if (bus_state->port_remote_wakeup & (1 << hcd_portnum)) {
+ 			xhci_test_and_clear_bit(xhci, port, PORT_PLC);
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index 0cb45b95e4f5..a148a1280126 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -4007,6 +4007,7 @@ static int xhci_discover_or_reset_device(struct usb_hcd *hcd,
+ 				xhci_get_slot_state(xhci, virt_dev->out_ctx));
+ 		xhci_dbg(xhci, "Not freeing device rings.\n");
+ 		/* Don't treat this as an error.  May change my mind later. */
++		virt_dev->flags = 0;
+ 		ret = 0;
+ 		goto command_cleanup;
+ 	case COMP_SUCCESS:
 -- 
-2.34.1
+2.43.0
 
 
