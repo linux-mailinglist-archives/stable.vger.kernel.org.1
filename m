@@ -1,211 +1,285 @@
-Return-Path: <stable+bounces-192740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5BEC40A5C
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 16:45:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F004C40BBE
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 17:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7836B4EB25C
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 15:45:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 855AC4F3FE3
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 16:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BFD2D7394;
-	Fri,  7 Nov 2025 15:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2645425B69F;
+	Fri,  7 Nov 2025 16:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="N2KSJ4I3"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DYaQJOVo"
 X-Original-To: stable@vger.kernel.org
-Received: from mx13.kaspersky-labs.com (mx13.kaspersky-labs.com [91.103.66.164])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011018.outbound.protection.outlook.com [52.101.70.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362D8125B2;
-	Fri,  7 Nov 2025 15:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.103.66.164
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762530343; cv=none; b=keKi81hcCdY2dCJu43tzyM0Noi/5KsFsXfkciS+/lOWrk/08F97RfU6xai0FkXsor64l33S6hjDS8i/SADHSx6DXK7su15jvFVD3mhzucFartWBqmOQ0S4gOctHS3c+WSiW245wujvMNEK6oJ7dK7IgF+3nXPaLmdqb3DG+IljQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762530343; c=relaxed/simple;
-	bh=gSVyAnwa/eT2IrQeUH6B6InqjR5qZpkSV+VtOrAMIBE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EoPELley74Oi/uCCwDXwfZQ0AaysF6ckEHwUvP4zhPCjhkRo3u41CvbNm8h1CXhdw/dQRHzdRd7b+AhXOOnoHHnIX9Z/GXNa9zC8UPdUryf3tzUdBFLABFjlalU8uKztSMfXLLCNVCD2SkFsBeu0s490S+uHNdOcaeSQxoVpENs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=N2KSJ4I3; arc=none smtp.client-ip=91.103.66.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1762530337;
-	bh=NE3R/3BKJGW2lXDVXEr1LfPaybTpng72jTTBKj5B/yE=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=N2KSJ4I3tp/27fmiCuRhHaa9eB4lzMcZDmOTxqzp2rJDcUA7Dyaj8JZSnNuNPGJC6
-	 ZWf+DIBXR2G+cAE0NGYBj+jYvbUUYQvI9pcNccrZFc+MG+8a71aE4yUVqDNSJViPaq
-	 Tdfj60wNEH1RhF10O2M6D4SpPo5wKkFTYPiGM8I6uqyoHJ7geAYPkDod10iyBbyuwA
-	 X1b2ZCWiEcHaJ+s7bElDJnv0BQdr6aMqnt6p22jfeMVuCRevLIRd7YoSf0YlXS2CIT
-	 HPWbfw5mBSSTLhuNBRTnIrll54xBetXV3Ebu29VykqRvmGhbe9eH9liHoE/NZJgXq6
-	 DYgbBQqv5G1Cg==
-Received: from relay13.kaspersky-labs.com (localhost [127.0.0.1])
-	by relay13.kaspersky-labs.com (Postfix) with ESMTP id 30AB03E4F07;
-	Fri,  7 Nov 2025 18:45:37 +0300 (MSK)
-Received: from mail-hq2.kaspersky.com (unknown [91.103.66.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub13.kaspersky-labs.com (Postfix) with ESMTPS id BA6643E47E3;
-	Fri,  7 Nov 2025 18:45:36 +0300 (MSK)
-Received: from Nalivayko.avp.ru (10.16.105.14) by HQMAILSRV3.avp.ru
- (10.64.57.53) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Fri, 7 Nov
- 2025 18:45:19 +0300
-From: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
-To: <linux-media@vger.kernel.org>
-CC: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>, Mauro
- Carvalho Chehab <mchehab@kernel.org>, Michael Krufky <mkrufky@linuxtv.org>,
-	<syzbot+f9f5333782a854509322@syzkaller.appspotmail.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH 2/2] media: mxl111sf: fix i2c race condition during device probe
-Date: Fri, 7 Nov 2025 18:44:26 +0300
-Message-ID: <20251107154426.2116743-3-Sergey.Nalivayko@kaspersky.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251107154426.2116743-1-Sergey.Nalivayko@kaspersky.com>
-References: <20251107154426.2116743-1-Sergey.Nalivayko@kaspersky.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003791DA62E;
+	Fri,  7 Nov 2025 16:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762531311; cv=fail; b=CtxONe485h46gKk6z/pkcZ8u6paVvD+WjNdji8K9H90oF4s28A8+jJVhr3g1ykZJH1d7/JUlx8gWq7qMO7RSiFNW16tffFXExzXt+uYIB3ngaOifcDVv3sL4ioxsYi7CPJ5FePZAodxMGlKrdznot43trslKid2ccO4V8t209r4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762531311; c=relaxed/simple;
+	bh=BUfGFa+6gpdaM/4QJiq94U8HeNBIGbZKHMjTnTMRYZM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=oY7+uRpnC4/sxaQuAjc6A0DRGNGQDr8Vr7vhiokigJF1ct019WgY15F7LbvxCdmEvFj6hwOz5tAqUKj+X47vJSXFZ1vbdbPBnZ6gAou9fKcBwjeoXcWMEaRquED+eRPWik+DVDwvu601YlYZ4xPj9Hmkcapa2WMu/5bu62gceds=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DYaQJOVo; arc=fail smtp.client-ip=52.101.70.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tKjKeYX0iR3txymMbKB3A0aL7c8dcWNC5Y3eGelXn2CNeaZBthWkyZeOfPbMyd6cLmNJS6ZMAmlCC9FmcmfrHBVTc9Ae6P9bDx1buQpr0+lKR6qDGeRjpG0ZcgF4TPxOl/xq7od6SSbudtPqeqTegu+6laaUfBnF0/HBaJFPMM8bZBLoUw+FBtTlsWsc761OBWjbOHFB3k+faD5nrYmtG2kmK928IAZ0lWLL7skkXxiEsHkvg7qNmBYKpTJJn0ap3UK1tZuyODwYdNXKWjV/dVcD7WTLiIFl5016D54LnWriaOxcXiywqw6AYZT7rvQgvfJIpPBOz63fMrvWw5eAug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xZoJ2hKryKACymwm11YWLeHl+zXO6knEuLiQC8WmJWw=;
+ b=B2NXz9Ww7eCgmd6cCOGkpN2BEZ5f+dxk5ElDEyj9gXaalZFjr0TZdV74kAK3sypppARZ/Y9zeZFX1J1E6WwY5R51ZixScK9FufqnyYjvbvRxcWJEBaJksCpS+53K376SRMWFe2AiKDeJsFAUvBI1wt0ywkV4JZ2mRB4BypYFMvLP8NIrobLcpgENfcKGCn5YsMRw0T4laPvUNKlbSEFTeXRr9SHBPunazgX4DONgNuoTcavhHqnl7FHLpDSRVdnIZ/K0dNHzFDWK8e2F/ZeQTd7tRDrZLTHdhb8r61BE34lN5WO87mJT8Xd2dAM+Ubmw0iKovg5ux3bBg7ICQEvVaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xZoJ2hKryKACymwm11YWLeHl+zXO6knEuLiQC8WmJWw=;
+ b=DYaQJOVoxICT+PW9Ou3ZpSgTKhNVB4E4jOVHYFS4Jci+nNUy0LVNxr45loqpSQvWIzmLMiYaA8hekO8yQRxb6vMN/oERKDiI+ELoSFVPbft4x4OkIjZ/ANMYl3cpfNrXUpsAM8UU86Lkih8TQkg6qI/fGKMrxQpxwWZ7Cp94gfU+M/PxmMTPuS3apNV96U8ya9Q18LLQuhrkEnhDTttG+hpuybjBmBkyLDyIJsZe5T948TXczU/iso9nRqq3mxy4ZcIidzQfZq6KYdK34GvHSyPML8KnZH9C4Uq/jNdj+e8RCukZId/QOQGooWxlQbvgG/VjVZmK4NPFcfq0zFj5Ng==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
+ by AM9PR04MB8486.eurprd04.prod.outlook.com (2603:10a6:20b:419::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Fri, 7 Nov
+ 2025 16:01:46 +0000
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9298.010; Fri, 7 Nov 2025
+ 16:01:46 +0000
+Date: Fri, 7 Nov 2025 11:01:38 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Michael Tretter <m.tretter@pengutronix.de>
+Cc: Steve Longerbeam <slongerbeam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Hans Verkuil <hans.verkuil@cisco.com>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org,
+	Michael Tretter <michael.tretter@pengutronix.de>
+Subject: Re: [PATCH v2 2/2] media: staging: imx: configure src_mux in
+ csi_start
+Message-ID: <aQ4X4o3CqOI7e0Dm@lizhi-Precision-Tower-5810>
+References: <20251107-media-imx-fixes-v2-0-07d949964194@pengutronix.de>
+ <20251107-media-imx-fixes-v2-2-07d949964194@pengutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251107-media-imx-fixes-v2-2-07d949964194@pengutronix.de>
+X-ClientProxiedBy: SJ0PR03CA0037.namprd03.prod.outlook.com
+ (2603:10b6:a03:33e::12) To PAXSPRMB0053.eurprd04.prod.outlook.com
+ (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: HQMAILSRV3.avp.ru (10.64.57.53) To HQMAILSRV3.avp.ru
- (10.64.57.53)
-X-KSE-ServerInfo: HQMAILSRV3.avp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 11/07/2025 15:33:04
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 197892 [Nov 07 2025]
-X-KSE-AntiSpam-Info: Version: 6.1.1.11
-X-KSE-AntiSpam-Info: Envelope from: Sergey.Nalivayko@kaspersky.com
-X-KSE-AntiSpam-Info: LuaCore: 75 0.3.75
- aab2175a55dcbd410b25b8694e49bbee3c09cdde
-X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
-X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
-X-KSE-AntiSpam-Info: {Tracking_one_url}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: kaspersky.com:7.1.1,5.0.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;syzkaller.appspot.com:7.1.1,5.0.1
-X-KSE-AntiSpam-Info: {Tracking_white_helo}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 11/07/2025 15:34:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 11/7/2025 12:14:00 PM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSMG-AntiPhishing: NotDetected, bases: 2025/11/07 15:29:00
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/11/07 15:09:00 #27893311
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2025/11/07 15:29:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 52
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AM9PR04MB8486:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8643a627-012e-4947-c236-08de1e16f3f0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|52116014|376014|366016|1800799024|19092799006|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?drUsbkql5q2CVpFQa38B8icdbcB1Miu9huvBuNkHeefLRPxtS+x8wwGC+rYY?=
+ =?us-ascii?Q?puwDE8y6pg5ATk1Ll4bJhz+J8vTeuL8olN6CoNc10aYlHZspBCTHxBr+eFy0?=
+ =?us-ascii?Q?P+Ma1A5FG6WNtsp7nxpd5gBB9iccv+fu7tVNg0McpccTxDTCZsMXb091OpDK?=
+ =?us-ascii?Q?+Rj0+27bYhxtWNuK1r06IWkBdkwyIHqJ+Owjq4Ud/GLAycc6vecfu6DLFM+f?=
+ =?us-ascii?Q?fHTxP7avvxAT7KSe/v6LS6WcfSjdqptJaewKOMcpCaD0AG2c/Rj9+F1BVGZs?=
+ =?us-ascii?Q?ggOQvzzdE1GIg6ClMtASRY2NuqF7zRMtYRW0ob+WRFTsZQ1PCNXA9nM/vYBc?=
+ =?us-ascii?Q?qzSetWU/WtlESTo3cNvOgbYnR2MW3ZhZSKTYpiTyZ8ImpSH0x0w5TSXKTpy3?=
+ =?us-ascii?Q?+PlLr++XNXjxjmAjkJT8kTq32mlogdKLfT0lnQYGbCgVLE8xZUa0buLbLr98?=
+ =?us-ascii?Q?d2lbTY/sNu82k1CY5RrlIW32REjsOAQAIW85wXXv8YjOpL2Kse0ddZ8LPzpe?=
+ =?us-ascii?Q?EweBkUU205G9mTMhxCYchUIy8BMcdsk+aYzAORgAh9WK/LsH6+H/tCvhL6m+?=
+ =?us-ascii?Q?F64aFcnjwMYeTlpzVsTuXEsHd+VE8rXIoU/o7FCqJWZ4Czy2d9u4mhd92UIK?=
+ =?us-ascii?Q?ljwFy2x9AgvVAWqf5pmWcGI+LYPkx7QLSvkHu6xMSscLUfRizdTVLq0xKPIP?=
+ =?us-ascii?Q?QkIjT4BDl0WN8WB6IN1Djke9TKgC95sqc3AIcfvx8zGwVljKjuRAE8wc5dB0?=
+ =?us-ascii?Q?cWVIR4KXJMJOyQ45QNIQu5NckAcH7R5sscnM/OTjbZfJmsH6Sa9Ka+tnMQ26?=
+ =?us-ascii?Q?8OY5sNz43Vvd3WWyxDf8HMKCksQ2sgPl96ltuuLvJfQo59Ib/cL7OEmC40Qw?=
+ =?us-ascii?Q?pF2X6iDPtCxRH2LT3938q/qYfB0SjxOFWz2G12pqVFSFgJXSFQBmrIVo2sO3?=
+ =?us-ascii?Q?fe//5Zgpp4i8DkXv7j9lWB8NkOqtxlVkc8qSthx4xP7ZlQs3o7yENn+qN6IS?=
+ =?us-ascii?Q?OFej3Kax0DF6YWWcHySW4tnnH8ogzlX7efPftLIBUQoyZOwGJ2baqXd21sWK?=
+ =?us-ascii?Q?0ePjPWU4p0g2hLOpYDbPJ1VLXOPIGrmHsi4rwiqgGlgehbRiOJgysk8Ifuy0?=
+ =?us-ascii?Q?q8Ej9KCLoXh1CR0lKTqz25jwxGarX1DiYjBG/Z4KZp2YwYXdMJ2HNAIDapn+?=
+ =?us-ascii?Q?L75Lm5nWuqib3T4ppSRgVAljqBIRXz5Sy+MlxwjOAi763vUyAEBgUQiehcLY?=
+ =?us-ascii?Q?KBtTZ0ZxgZfQnFDvUrlotNs4kCFvogp/CDTj7Oejft3rR4sYy/pLPB6DtQ70?=
+ =?us-ascii?Q?M9PksXTHYBaJcPaHURIfLTdJQWRn7kEOfSdmpWTiUXpil018IdbOTTLU3epI?=
+ =?us-ascii?Q?GI6HduVcAzOXwoiAzGaUhCnIMB50Mjyzk/yKQKpiBVRgwO7CP8ZdkGbkWNbo?=
+ =?us-ascii?Q?X/wLsC2dUpRZeUIVc3Iq1aQ8VUBfwSa3t87Ey1rGV/wQqOLGk/5YoGd0LOgo?=
+ =?us-ascii?Q?9reYJ7/nUSIZfBCNhmP/c7XXAGKkei5CAFRc?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(366016)(1800799024)(19092799006)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xf4MPUoE1rHT5z9xsxrXvWqc2nw15Oetw37X+vZkfCoI4WIRJ8KzSdjjXAxt?=
+ =?us-ascii?Q?mlPkSg12ehwNxVuoYxq8nLkBVFxcIU0ZBZR1qDYZYT85NbUsWIKwSHqDPzoq?=
+ =?us-ascii?Q?tndjnxw9vqmUvn/Wpnmk7s3NW1WbtV3bfgaYvA5YqHSNxqFJCPY5MYd0R8sm?=
+ =?us-ascii?Q?Eh/tBu6Mp+Ahq2TfCsu7A2Ar7keJjobfbwyn6M72tA3rpUo6nENCpOJeXx7A?=
+ =?us-ascii?Q?kLLT8c2IjibcKPm+D3DZY/TMPfh8Z2BEAsUd1jiaqZ5GGxauZe2+KUfXnC1p?=
+ =?us-ascii?Q?4kOBPytdFeuLqx/dvZZBbHIe/UDoalFUW+6/8hwolgHzWn0rHickapkMebtu?=
+ =?us-ascii?Q?A2vnBS7L0cPE1/57ZbINapfohWdygxve0oXPsnaJUcB0brF/Id5w6AsLp/Df?=
+ =?us-ascii?Q?sUxQtHKRfG+3SEJbbhdeARU4AwZsHDHg7Z8RJTzp4vtbzK05CheYkoUpUax0?=
+ =?us-ascii?Q?40jYttRnrHTQSLrb5bej/wVNkxQ6pkDaFRQ1glU8Y5YlKqGHRj5pokA8eNAA?=
+ =?us-ascii?Q?yvvp5q29Znay9SbYPVzFQR9aQkqAPBN8JMHSHkwbdx2x8Vzfpl7HRsbppp97?=
+ =?us-ascii?Q?PTHYc/t2Y1OOkP0+EHUXZjnL0zbWQEu5MfuPUI2CT/3HKI7waIYkHJnsiJDj?=
+ =?us-ascii?Q?t2CGeGMvhDP96kDOp+/3fElnvvVx7OWAsNu2GXI1db/TTy4k8bkAwBrh7dSH?=
+ =?us-ascii?Q?sZ/eZ2SamwkFXWKfma3ze8J8Mypye48g4PXZkHZdJURvHZuveAUXjXFQHFJv?=
+ =?us-ascii?Q?8g7qG7aMmK7sZ3/050tIYAPaYEnV1tlaq7S7kKbocPkdJuuL+oVUaM+2pTS8?=
+ =?us-ascii?Q?pvlCpg1JwF2fuwA97Qit3iwj0cRq28k3lFntUriPd6iOX7G1WzNqInrHwN3L?=
+ =?us-ascii?Q?EmxLbYYDs2Y4/kkWX6LHUQMVV0dPSCiUY+y6IK7agLsLRhWj9kpyN6o1r3MA?=
+ =?us-ascii?Q?Zj59v+jiOLcE/jfc3WsGMY9cfldFSX8hKSNQHWO+uZQW8v1KVRd6id0anE5h?=
+ =?us-ascii?Q?o6rtb3DMioXu3GiD7/E8CtiVb7yxxfGHhva5uYbOmcuGSgq1g7SEiJlz2KNX?=
+ =?us-ascii?Q?zD7m3slT4KGqvl9HWDy1Y1hDFsLv7zxbfWs9GC4DQq9NCKbYOtHhInFN89qs?=
+ =?us-ascii?Q?7Eaq/ishr2J3RylCJcujgvXuweCGVMh6PvGGUEd7AgruPyqBz8Np2arR81Q5?=
+ =?us-ascii?Q?PIj+O7AHKoy5ucTslIuwGcP6+sG7cWlwWTazmvQzHOmYynbO49tlm837Yw98?=
+ =?us-ascii?Q?JdK/lPg7JAImMiIriLeq92mLeGoID3501zda1B3SfQmWsXzzyvDiOdqxm3dR?=
+ =?us-ascii?Q?VMy6t3NHlD1kEIUnZpgfuNI8Ly/PZeH73bxPK3xE0kseFcZAsLBCEzr0DCAs?=
+ =?us-ascii?Q?yT8u5R2Ko83hK9PVwqI5qtdm06xI0XU21uS0YKk6N1rFdNTQ4w/jdD9vLlgK?=
+ =?us-ascii?Q?i3OMv6iNhQLVDNOTtp/pNmnmoYsa9cXIsQonrKnlSQtMJbAi4BRJgMigqdHZ?=
+ =?us-ascii?Q?1KEvZHLOBkMGBCT/Sefq7QbqS6qxsAxlBqvP9DIVmOKZeC/yvzsnwfHFMKZN?=
+ =?us-ascii?Q?XA2a+1qLMiIQjfFqUBYpfb17RQ6ohe5zJ6xR8igF?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8643a627-012e-4947-c236-08de1e16f3f0
+X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 16:01:46.5083
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QxBRcq/tDBr+lHz+ltuXPbp1HRphM61qfSVO1WSwS2eqirRtn4o3EXxfChnkalBGqTi68LF1ja6IE8/Iat7UQg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8486
 
-syzbot reports a KASAN issue as below:
+On Fri, Nov 07, 2025 at 11:34:34AM +0100, Michael Tretter wrote:
+> After media_pipeline_start() was called, the media graph is assumed to
+> be validated. It won't be validated again if a second stream starts.
+>
+> The imx-media-csi driver, however, changes hardware configuration in the
+> link_validate() callback. This can result in started streams with
+> misconfigured hardware.
+>
+> In the concrete example, the ipu2_csi1 is driven by a parallel video
+> input. After the media pipeline has been started with this
+> configuration, a second stream is configured to use ipu1_csi0 with
+> MIPI-CSI input from imx6-mipi-csi2. This may require the reconfiguration
+> of ipu1_csi0 with ipu_set_csi_src_mux(). Since the media pipeline is
+> already running, link_validate won't be called, and the ipu1_csi0 won't
+> be reconfigured. The resulting video is broken, because the ipu1_csi0 is
+> misconfigured, but no error is reported.
+>
+> Move ipu_set_csi_src_mux from csi_link_validate to csi_start to ensure
+> that input to ipu1_csi0 is configured correctly when starting the
+> stream. This is a local reconfiguration in ipu1_csi0 and is possible
+> while the media pipeline is running.
+>
+> Since csi_start() is called with priv->lock already locked,
+> csi_set_src() must not lock priv->lock again. Thus, the mutex_lock() is
+> dropped.
+>
+> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+> Fixes: 4a34ec8e470c ("[media] media: imx: Add CSI subdev driver")
+> Cc: stable@vger.kernel.org
+> ---
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000019: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x00000000000000c8-0x00000000000000cf]
-CPU: 1 UID: 0 PID: 5849 Comm: syz-executor279 Not tainted 6.15.0-rc2-syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-RIP: 0010:__mutex_lock_common kernel/locking/mutex.c:580 [inline]
-RIP: 0010:__mutex_lock+0x15d/0x10c0 kernel/locking/mutex.c:746
-Call Trace:
- <TASK>
- dvb_usbv2_generic_write+0x26/0x50 drivers/media/usb/dvb-usb-v2/dvb_usb_urb.c:77
- mxl111sf_ctrl_msg+0x172/0x2e0 drivers/media/usb/dvb-usb-v2/mxl111sf.c:73
- mxl111sf_write_reg+0xda/0x1f0 drivers/media/usb/dvb-usb-v2/mxl111sf.c:123
- mxl111sf_i2c_start drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c:130 [inline]
- mxl111sf_i2c_sw_xfer_msg drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c:-1 [inline]
- mxl111sf_i2c_xfer+0x923/0x8aa0 drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c:813
- __i2c_transfer+0x859/0x2250 drivers/i2c/i2c-core-base.c:-1
- i2c_transfer+0x2c2/0x430 drivers/i2c/i2c-core-base.c:2315
- i2c_transfer_buffer_flags+0x182/0x260 drivers/i2c/i2c-core-base.c:2343
- i2c_master_recv include/linux/i2c.h:79 [inline]
- i2cdev_read+0x10a/0x220 drivers/i2c/i2c-dev.c:155
- vfs_read+0x21f/0xb90 fs/read_write.c:568
- ksys_read+0x19d/0x2d0 fs/read_write.c:713
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-This occurs due to a race condition during DVB-USB-V2 device initialization.
-While initialization is in progress, I2C data may be read from userspace,
-leading to a NULL pointer dereference in dvb_usbv2_generic_write
-and a kernel panic.
-
-      Thread 1 (probe device)             Thread 2 (receive i2c data)
-    ...
-    dvb_usbv2_probe()
-      ...
-      d->priv = kzalloc(
-          d->props->size_of_priv,
-          GFP_KERNEL);
-      ...
-      dvb_usbv2_init()
-      ...
-        // can read data from i2c
-        dvb_usbv2_i2c_init()
-      ...
-                                        ...
-                                        i2cdev_read()
-                                        ...
-                                          // d->priv data is invalid. UB
-                                          mxl111sf_i2c_xfer()
-                                            ...
-                                            mxl111sf_ctrl_msg()
-                                              ...
-                                              // null ptr deref
-                                              dvb_usbv2_generic_write()
-                                        ...
-      ...
-      // d->priv data is valid
-      dvb_usbv2_adapter_init()
-      ...
-
-Add init_ready flag check to prevent I/O on uninitialized DVB-USB-V2 device.
-
-Reported-by: syzbot+f9f5333782a854509322@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f9f5333782a854509322
-Fixes: 4c66c9205c07 ("[media] dvb-usb: add ATSC support for the Hauppauge WinTV-Aero-M")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
----
- drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c b/drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c
-index 100a1052dcbc..b7bad90b16dc 100644
---- a/drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c
-+++ b/drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c
-@@ -804,7 +804,7 @@ int mxl111sf_i2c_xfer(struct i2c_adapter *adap,
- 	int hwi2c = (state->chip_rev > MXL111SF_V6);
- 	int i, ret;
- 
--	if (mutex_lock_interruptible(&d->i2c_mutex) < 0)
-+	if (!atomic_read(&d->init_ready) || mutex_lock_interruptible(&d->i2c_mutex) < 0)
- 		return -EAGAIN;
- 
- 	for (i = 0; i < num; i++) {
--- 
-2.39.5
-
+> Changes in v2:
+>
+> - Add documentation for the dropped priv->lock in commit message
+> ---
+>  drivers/staging/media/imx/imx-media-csi.c | 44 +++++++++++++++++--------------
+>  1 file changed, 24 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
+> index 55a7d8f38465..1bc644f73a9d 100644
+> --- a/drivers/staging/media/imx/imx-media-csi.c
+> +++ b/drivers/staging/media/imx/imx-media-csi.c
+> @@ -744,6 +744,28 @@ static int csi_setup(struct csi_priv *priv,
+>  	return 0;
+>  }
+>
+> +static void csi_set_src(struct csi_priv *priv,
+> +			struct v4l2_mbus_config *mbus_cfg)
+> +{
+> +	bool is_csi2;
+> +
+> +	is_csi2 = !is_parallel_bus(mbus_cfg);
+> +	if (is_csi2) {
+> +		/*
+> +		 * NOTE! It seems the virtual channels from the mipi csi-2
+> +		 * receiver are used only for routing by the video mux's,
+> +		 * or for hard-wired routing to the CSI's. Once the stream
+> +		 * enters the CSI's however, they are treated internally
+> +		 * in the IPU as virtual channel 0.
+> +		 */
+> +		ipu_csi_set_mipi_datatype(priv->csi, 0,
+> +					  &priv->format_mbus[CSI_SINK_PAD]);
+> +	}
+> +
+> +	/* select either parallel or MIPI-CSI2 as input to CSI */
+> +	ipu_set_csi_src_mux(priv->ipu, priv->csi_id, is_csi2);
+> +}
+> +
+>  static int csi_start(struct csi_priv *priv)
+>  {
+>  	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
+> @@ -760,6 +782,8 @@ static int csi_start(struct csi_priv *priv)
+>  	input_fi = &priv->frame_interval[CSI_SINK_PAD];
+>  	output_fi = &priv->frame_interval[priv->active_output_pad];
+>
+> +	csi_set_src(priv, &mbus_cfg);
+> +
+>  	/* start upstream */
+>  	ret = v4l2_subdev_call(priv->src_sd, video, s_stream, 1);
+>  	ret = (ret && ret != -ENOIOCTLCMD) ? ret : 0;
+> @@ -1130,7 +1154,6 @@ static int csi_link_validate(struct v4l2_subdev *sd,
+>  {
+>  	struct csi_priv *priv = v4l2_get_subdevdata(sd);
+>  	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
+> -	bool is_csi2;
+>  	int ret;
+>
+>  	ret = v4l2_subdev_link_validate_default(sd, link,
+> @@ -1145,25 +1168,6 @@ static int csi_link_validate(struct v4l2_subdev *sd,
+>  		return ret;
+>  	}
+>
+> -	mutex_lock(&priv->lock);
+> -
+> -	is_csi2 = !is_parallel_bus(&mbus_cfg);
+> -	if (is_csi2) {
+> -		/*
+> -		 * NOTE! It seems the virtual channels from the mipi csi-2
+> -		 * receiver are used only for routing by the video mux's,
+> -		 * or for hard-wired routing to the CSI's. Once the stream
+> -		 * enters the CSI's however, they are treated internally
+> -		 * in the IPU as virtual channel 0.
+> -		 */
+> -		ipu_csi_set_mipi_datatype(priv->csi, 0,
+> -					  &priv->format_mbus[CSI_SINK_PAD]);
+> -	}
+> -
+> -	/* select either parallel or MIPI-CSI2 as input to CSI */
+> -	ipu_set_csi_src_mux(priv->ipu, priv->csi_id, is_csi2);
+> -
+> -	mutex_unlock(&priv->lock);
+>  	return ret;
+>  }
+>
+>
+> --
+> 2.47.3
+>
 
