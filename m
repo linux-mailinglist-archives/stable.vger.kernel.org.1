@@ -1,209 +1,307 @@
-Return-Path: <stable+bounces-192664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B7BAC3E242
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 02:37:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC7ADC3E284
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 02:48:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D88864E23BD
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 01:37:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A8C6F4E4436
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 01:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16832EACF2;
-	Fri,  7 Nov 2025 01:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D516A2EC097;
+	Fri,  7 Nov 2025 01:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="pOcXaY65"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ag2YoIxQ"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06232450FE
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 01:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDFE20C037;
+	Fri,  7 Nov 2025 01:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762479461; cv=none; b=qZx39HIZZLsQRWcYBxc032UJLWzjPfbe12NAQRGpKpM/6ephRmre0hHIQeMHZrG8PdnYA5NmoYd+7fFPgCmwwtQd3bihgxUKz00vOnV04ntGZGgw0h9oi7n2CaWIpNQmjl5Pgqvz53eNG1bQ4NKV9c/0RMS/fkt7gu+YwDcBMCA=
+	t=1762480094; cv=none; b=nRJxFHUR22vPpwj/tYzL0NoY5x5fk/6FuvMoxEo7gKpcvTjR7bt9u81TMzpOBO4AyM+5MTaE0GIIPKRA11Q44kJdg72rvMoNk7JoG9g1Hrv4uCmHptw5QcOBDf6YHObuXPzgChIjaT6wNLrJB+Q5kkvvs9SFtiRlCdP72pBmRRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762479461; c=relaxed/simple;
-	bh=16u8ltwYy6iD72uqXaUTu4zIJa98LedQ/xKqbPWCgWU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LxiiFZ8cqll9OgzZLfeEJZx6Gcv+bL7p549P+tXZ0k/ij4euCo2YBGDXA1cQxtevO+juIy/KGXQRXcyPw7vsteVvGAIA2ixawYageAkkyXzsSi/d0GtsMrLqMW7hiY+DqQvmxWKZNqTN2IOb7n5PkVW3ytChkFII6AC03zu1Qag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=pOcXaY65; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=si
-	4O3LFWbbyDCE2fl6AQFsUxeN3M0Ego/jGc4OWKMA0=; b=pOcXaY65Z4Q1+QCsYC
-	5NKyd68YIXCmcsnbFut2xaFkacmANLRqdj8CQuCfi1Pc5U+IFpYMh7N+Ag05VZjF
-	mBYr+JVqOVcim1OsWRMPFj0bbGnMJzXBJP3Gkt8MjV1JfVvh4kVsv9cwY9HXipDU
-	BOe7RzVTQIiEH831aZWPhHhCs=
-Received: from LAPTOP-HOSUGD0G.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wBnIq4+TQ1pqqXRCA--.3628S4;
-	Fri, 07 Nov 2025 09:37:14 +0800 (CST)
-From: jetlan9@163.com
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.6.y] net: allow small head cache usage with large MAX_SKB_FRAGS values
-Date: Fri,  7 Nov 2025 09:37:01 +0800
-Message-Id: <20251107013701.1411-1-jetlan9@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1762480094; c=relaxed/simple;
+	bh=v6zB7iF5EiKs73sB6PUObq4nGfpH3jYdCoelt/6miLs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=stEZEYS7xrTVrnKURSXTGac2FobvtonDU5UIqsaBMVj9ZguwF7g7f5hq/2bNTX6ZbzAN+aRoO3ibwGnYLJXbRgTPDGWmkH0i2ostCwtOHvJ4chz4BGMPCQ1hIp2WXDkeb/44NWfMDMw5gr6hMm5hUw7xVwOHdMQ7lVpgVWMmdT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ag2YoIxQ; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762480092; x=1794016092;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version;
+  bh=v6zB7iF5EiKs73sB6PUObq4nGfpH3jYdCoelt/6miLs=;
+  b=ag2YoIxQ50k4fGsf79jKbSeX7fV319ARFCIGJJv8Vx8F/y16l3cUwORq
+   kd3d2agyLnEZ/iEkovHSOdz2qzOyKASZdvVRXxA8vOttiOBnqvVq83iAm
+   /OXfNCZKCasXm1niSzTUXZe/SRL6m/xJBKDL3KkQvYvKpfmXJvD7RcoPF
+   8IGNTR1PY54zmTjQGLZHi401/QOS3akSRgAYSFSbrkHgFzKy9CrcPMl59
+   8Y9P1U8bpTGkS0f1MwgvKQrzquEUaHFB89+/ZnpU9P4Mzgmtr/50mkWjV
+   AgXiL7jPjnp5dUuVz+wXkBBNq4jQOPmQiLFf6zd+G8FkrQ6JUKo/FCVzd
+   w==;
+X-CSE-ConnectionGUID: zxsUaSvMQgafFaykqN0+jA==
+X-CSE-MsgGUID: DifoU98DQ8+Nv/sGUIcwMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11605"; a="67241706"
+X-IronPort-AV: E=Sophos;i="6.19,285,1754982000"; 
+   d="scan'208,223";a="67241706"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 17:48:11 -0800
+X-CSE-ConnectionGUID: /AutPi0LR1iLAUCfBEN1LA==
+X-CSE-MsgGUID: OaLG+u0DTzeLtN74sO/HoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,285,1754982000"; 
+   d="scan'208,223";a="187864855"
+Received: from dwesterg-mobl1.amr.corp.intel.com ([10.125.111.51])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 17:48:11 -0800
+Message-ID: <8794c34dc127ee1bd3ed4d746ca7c1235ca3cb93.camel@linux.intel.com>
+Subject: Re: [REGRESSION] Intel Turbo Boost stuck disabled on some Clevo
+ machines (was: [PATCH] cpufreq: intel_pstate: Unchecked MSR aceess in
+ legacy mode)
+From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To: Aaron Rainbolt <arainbolt@kfocus.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, viresh.kumar@linaro.org, 
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org,  mmikowski@kfocus.org
+Date: Thu, 06 Nov 2025 17:48:10 -0800
+In-Reply-To: <20251106113137.5b83bb3f@kf-m2g5>
+References: <20250429210711.255185-1-srinivas.pandruvada@linux.intel.com>
+	 <CAJZ5v0h99RFF26qAnJf07LS0t-6ATm9c2zrQVzdi96x3FAPXQg@mail.gmail.com>
+	 <20250910113650.54eafc2b@kf-m2g5>
+	 <dda1d8d23407623c99e2f22e60ada1872bca98fe.camel@linux.intel.com>
+	 <20250910153329.10dcef9d@kf-m2g5>
+	 <db92b8a310d88214e2045a73d3da6d0ffe8606f7.camel@linux.intel.com>
+	 <20251106113137.5b83bb3f@kf-m2g5>
+Content-Type: multipart/mixed; boundary="=-9Wrt8BcrBEO56xUhdjM+"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBnIq4+TQ1pqqXRCA--.3628S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW3JFyxZF45CrW5Xr18XF48tFb_yoWxJr4rpr
-	srAFyrCr4ktr1DJF4UAw43JF18K393C3W7G3WxX3WYka13Kr15Wws5trW5ZF1YyrZ8ZFy3
-	GFs2qr4jyrs8Z3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zK-erbUUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbCwwoDy2kNTUo26AAA38
 
-From: Paolo Abeni <pabeni@redhat.com>
+--=-9Wrt8BcrBEO56xUhdjM+
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[ Upstream commit 14ad6ed30a10afbe91b0749d6378285f4225d482 ]
+Hi Aaron,
 
-Sabrina reported the following splat:
+Please again verify this change. This limits the scope.
+Patch attached.
 
-    WARNING: CPU: 0 PID: 1 at net/core/dev.c:6935 netif_napi_add_weight_locked+0x8f2/0xba0
-    Modules linked in:
-    CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.14.0-rc1-net-00092-g011b03359038 #996
-    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
-    RIP: 0010:netif_napi_add_weight_locked+0x8f2/0xba0
-    Code: e8 c3 e6 6a fe 48 83 c4 28 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc c7 44 24 10 ff ff ff ff e9 8f fb ff ff e8 9e e6 6a fe <0f> 0b e9 d3 fe ff ff e8 92 e6 6a fe 48 8b 04 24 be ff ff ff ff 48
-    RSP: 0000:ffffc9000001fc60 EFLAGS: 00010293
-    RAX: 0000000000000000 RBX: ffff88806ce48128 RCX: 1ffff11001664b9e
-    RDX: ffff888008f00040 RSI: ffffffff8317ca42 RDI: ffff88800b325cb6
-    RBP: ffff88800b325c40 R08: 0000000000000001 R09: ffffed100167502c
-    R10: ffff88800b3a8163 R11: 0000000000000000 R12: ffff88800ac1c168
-    R13: ffff88800ac1c168 R14: ffff88800ac1c168 R15: 0000000000000007
-    FS:  0000000000000000(0000) GS:ffff88806ce00000(0000) knlGS:0000000000000000
-    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-    CR2: ffff888008201000 CR3: 0000000004c94001 CR4: 0000000000370ef0
-    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-    Call Trace:
-    <TASK>
-    gro_cells_init+0x1ba/0x270
-    xfrm_input_init+0x4b/0x2a0
-    xfrm_init+0x38/0x50
-    ip_rt_init+0x2d7/0x350
-    ip_init+0xf/0x20
-    inet_init+0x406/0x590
-    do_one_initcall+0x9d/0x2e0
-    do_initcalls+0x23b/0x280
-    kernel_init_freeable+0x445/0x490
-    kernel_init+0x20/0x1d0
-    ret_from_fork+0x46/0x80
-    ret_from_fork_asm+0x1a/0x30
-    </TASK>
-    irq event stamp: 584330
-    hardirqs last  enabled at (584338): [<ffffffff8168bf87>] __up_console_sem+0x77/0xb0
-    hardirqs last disabled at (584345): [<ffffffff8168bf6c>] __up_console_sem+0x5c/0xb0
-    softirqs last  enabled at (583242): [<ffffffff833ee96d>] netlink_insert+0x14d/0x470
-    softirqs last disabled at (583754): [<ffffffff8317c8cd>] netif_napi_add_weight_locked+0x77d/0xba0
+Thanks,
+Srinivas
 
-on kernel built with MAX_SKB_FRAGS=45, where SKB_WITH_OVERHEAD(1024)
-is smaller than GRO_MAX_HEAD.
+On Thu, 2025-11-06 at 11:31 -0600, Aaron Rainbolt wrote:
+> On Thu, 06 Nov 2025 07:23:14 -0800
+> srinivas pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
+>=20
+> > Hi Aaron,
+> >=20
+> > On Wed, 2025-09-10 at 15:33 -0500, Aaron Rainbolt wrote:
+> > > On Wed, 10 Sep 2025 10:15:00 -0700
+> > > srinivas pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
+> > > =C2=A0=20
+> > > > On Wed, 2025-09-10 at 11:36 -0500, Aaron Rainbolt wrote:=C2=A0=20
+> > > > > On Wed, 30 Apr 2025 16:29:09 +0200
+> > > > > "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+> > > > > =C2=A0=C2=A0=C2=A0=20
+> > > > > > On Tue, Apr 29, 2025 at 11:07=E2=80=AFPM Srinivas Pandruvada
+> > > > > > <srinivas.pandruvada@linux.intel.com> wrote:=C2=A0=C2=A0=C2=A0=
+=20
+> > > > > > >=20
+> > > > > > > When turbo mode is unavailable on a Skylake-X system,
+> > > > > > > executing
+> > > > > > > the
+> > > > > > > command:
+> > > > > > > "echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo"
+> > > > > > > results in an unchecked MSR access error: WRMSR to 0x199
+> > > > > > > (attempted to write 0x0000000100001300).=C2=A0=20
+> > Please try the attached patch, if this address this issue.
+>=20
+> I can confirm that this patch does resolve the issue when applied to
+> Kubuntu Focus's 6.14 kernel. CPU frequencies are available that
+> require
+> turbo boost, and `cat /sys/devices/system/cpu/intel_pstate` returns
+> `0`. The logs from `dmesg` also indicate that turbo was disabled
+> earlier in boot, but the warnings about turbo being disabled stop
+> appearing later on, even when manipulating the `no_turbo` file:
+>=20
+> [=C2=A0=C2=A0 25.893012] intel_pstate: Turbo is disabled
+> [=C2=A0=C2=A0 25.893019] intel_pstate: Turbo disabled by BIOS or unavaila=
+ble on
+> processor
+> [=C2=A0=C2=A0 25.950587] NET: Registered PF_QIPCRTR protocol family
+> [=C2=A0=C2=A0 26.599013] Realtek Internal NBASE-T PHY r8169-0-6c00:00: at=
+tached
+> PHY driver (mii_bus:phy_addr=3Dr8169-0-6c00:00, irq=3DMAC)
+> [=C2=A0=C2=A0 26.725959] ACPI BIOS Error (bug): Could not resolve symbol
+> [\_TZ.ETMD], AE_NOT_FOUND (20240827/psargs-332)
+>=20
+> [=C2=A0=C2=A0 26.725976] No Local Variables are initialized for Method [_=
+OSC]
+>=20
+> [=C2=A0=C2=A0 26.725978] Initialized Arguments for Method [_OSC]:=C2=A0 (=
+4 arguments
+> defined for method invocation)
+> [=C2=A0=C2=A0 26.725979]=C2=A0=C2=A0 Arg0:=C2=A0=C2=A0 0000000030ddf166 <=
+Obj>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Buffer(16)
+> 5D A8 3B B2 B7 C8 42 35
+> [=C2=A0=C2=A0 26.725991]=C2=A0=C2=A0 Arg1:=C2=A0=C2=A0 0000000002bd3ac4 <=
+Obj>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Integer
+> 0000000000000001
+> [=C2=A0=C2=A0 26.725996]=C2=A0=C2=A0 Arg2:=C2=A0=C2=A0 0000000033eb047e <=
+Obj>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Integer
+> 0000000000000002
+> [=C2=A0=C2=A0 26.725999]=C2=A0=C2=A0 Arg3:=C2=A0=C2=A0 00000000de6cf5f1 <=
+Obj>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Buffer(8)
+> 00 00 00 00 05 00 00 00
+>=20
+> [=C2=A0=C2=A0 26.726010] ACPI Error: Aborting method \_SB.IETM._OSC due t=
+o
+> previous error (AE_NOT_FOUND) (20240827/psparse-529)
+> [=C2=A0=C2=A0 26.726056] Consider using thermal netlink events interface
+> [=C2=A0=C2=A0 26.769209] r8169 0000:6c:00.0 enp108s0: Link is Down
+> [=C2=A0=C2=A0 26.857318] zram0: detected capacity change from 0 to 195035=
+136
+> [=C2=A0=C2=A0 26.864390] vboxdrv: Found 32 processor cores/threads
+> [=C2=A0=C2=A0 26.873227] Adding 97517564k swap on /dev/zram0.=C2=A0 Prior=
+ity:-2
+> extents:1 across:97517564k SS
+> [=C2=A0=C2=A0 26.880588] vboxdrv: TSC mode is Invariant, tentative freque=
+ncy
+> 2419194640 Hz
+> [=C2=A0=C2=A0 26.880592] vboxdrv: Successfully loaded version 7.2.4 r1709=
+95
+> (interface 0x00340001)
+> [=C2=A0=C2=A0 26.895725] intel_pstate: Turbo is disabled
+> [=C2=A0=C2=A0 26.895730] intel_pstate: Turbo disabled by BIOS or unavaila=
+ble on
+> processor
+> [=C2=A0=C2=A0 26.943715] iwlwifi 0000:00:14.3: WFPM_UMAC_PD_NOTIFICATION:=
+ 0x20
+> [=C2=A0=C2=A0 26.943746] iwlwifi 0000:00:14.3: WFPM_LMAC2_PD_NOTIFICATION=
+: 0x1f
+> [=C2=A0=C2=A0 26.943755] iwlwifi 0000:00:14.3: WFPM_AUTH_KEY_0: 0x90
+> [=C2=A0=C2=A0 26.943765] iwlwifi 0000:00:14.3: CNVI_SCU_SEQ_DATA_DW9: 0x0
+> [=C2=A0=C2=A0 26.944901] iwlwifi 0000:00:14.3: RFIm is deactivated, reaso=
+n =3D 5
+> [=C2=A0=C2=A0 27.045437] iwlwifi 0000:00:14.3: Registered PHC clock: iwlw=
+ifi-
+> PTP, with index: 0
+> [=C2=A0=C2=A0 27.098590] VBoxNetFlt: Successfully started.
+> [=C2=A0=C2=A0 27.101687] VBoxNetAdp: Successfully started.
+> [=C2=A0=C2=A0 27.153602] bridge: filtering via arp/ip/ip6tables is no lon=
+ger
+> available by default. Update your scripts to load br_netfilter if you
+> need this.
+> [=C2=A0=C2=A0 27.851014] loop14: detected capacity change from 0 to 8
+> [=C2=A0=C2=A0 27.895706] r8169 0000:6c:00.0: invalid VPD tag 0xff (size 0=
+) at
+> offset 0; assume missing optional EEPROM
+> [=C2=A0=C2=A0 28.898015] intel_pstate: Turbo is disabled
+> [=C2=A0=C2=A0 28.898021] intel_pstate: Turbo disabled by BIOS or unavaila=
+ble on
+> processor
+> [=C2=A0=C2=A0 31.900781] intel_pstate: Turbo is disabled
+> [=C2=A0=C2=A0 31.900788] intel_pstate: Turbo disabled by BIOS or unavaila=
+ble on
+> processor
+> [=C2=A0=C2=A0 33.959448] Bluetooth: RFCOMM TTY layer initialized
+> [=C2=A0=C2=A0 33.959456] Bluetooth: RFCOMM socket layer initialized
+> [=C2=A0=C2=A0 33.959462] Bluetooth: RFCOMM ver 1.11
+> [=C2=A0=C2=A0 36.903768] intel_pstate: Turbo is disabled
+> [=C2=A0=C2=A0 36.903777] intel_pstate: Turbo disabled by BIOS or unavaila=
+ble on
+> processor
+> [=C2=A0=C2=A0 38.054345] systemd-journald[883]:
+> /var/log/journal/a9e8e3d2041547169b107e1e1a23f2ce/user-1000.journal:
+> Journal file uses a different sequence number ID, rotating.
+> [=C2=A0=C2=A0 39.799560] warning: `kded5' uses wireless extensions which =
+will
+> stop working for Wi-Fi 7 hardware; use nl80211
+> [=C2=A0=C2=A0 40.884365] wlp0s20f3: authenticate with 18:ee:86:8b:16:a2 (=
+local
+> address=3D98:bd:80:8a:e9:27)
+> [=C2=A0=C2=A0 40.885147] wlp0s20f3: send auth to 18:ee:86:8b:16:a2 (try 1=
+/3)
+> [=C2=A0=C2=A0 40.968595] wlp0s20f3: authenticate with 18:ee:86:8b:16:a2 (=
+local
+> address=3D98:bd:80:8a:e9:27)
+> [=C2=A0=C2=A0 40.968603] wlp0s20f3: send auth to 18:ee:86:8b:16:a2 (try 1=
+/3)
+> [=C2=A0=C2=A0 40.980941] wlp0s20f3: authenticated
+> [=C2=A0=C2=A0 40.981904] wlp0s20f3: associate with 18:ee:86:8b:16:a2 (try=
+ 1/3)
+> [=C2=A0=C2=A0 41.042933] wlp0s20f3: RX AssocResp from 18:ee:86:8b:16:a2
+> (capab=3D0x1431 status=3D0 aid=3D14)
+> [=C2=A0=C2=A0 41.046917] wlp0s20f3: associated
+>=20
+> If you post the patch, I'm happy to add a `Tested-by` tag for it.
+> Thank you for your help!
+>=20
+> > Thanks,
+> > Srinivas
+>=20
+>=20
 
-Such built additionally contains the revert of the single page frag cache
-so that napi_get_frags() ends up using the page frag allocator, triggering
-the splat.
 
-Note that the underlying issue is independent from the mentioned
-revert; address it ensuring that the small head cache will fit either TCP
-and GRO allocation and updating napi_alloc_skb() and __netdev_alloc_skb()
-to select kmalloc() usage for any allocation fitting such cache.
+--=-9Wrt8BcrBEO56xUhdjM+
+Content-Disposition: attachment;
+	filename*0=0001-cpufreq-intel_pstate-Check-IDA-feature-only-during-M.pat;
+	filename*1=ch
+Content-Type: text/x-patch;
+	name="0001-cpufreq-intel_pstate-Check-IDA-feature-only-during-M.patch";
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-Reported-by: Sabrina Dubroca <sd@queasysnail.net>
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Fixes: 3948b05950fd ("net: introduce a config option to tweak MAX_SKB_FRAGS")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Minor context change fixed. ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
----
- include/net/gro.h |  3 +++
- net/core/gro.c    |  3 ---
- net/core/skbuff.c | 10 +++++++---
- 3 files changed, 10 insertions(+), 6 deletions(-)
+RnJvbSAxNGE3MjI1ZGVhODZkZjBmMjg4Zjk0ZGYxNzRlM2QxZmNkMGExOGVkIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBTcmluaXZhcyBQYW5kcnV2YWRhIDxzcmluaXZhcy5wYW5kcnV2
+YWRhQGxpbnV4LmludGVsLmNvbT4KRGF0ZTogVGh1LCA2IE5vdiAyMDI1IDE3OjM0OjA5IC0wODAw
+ClN1YmplY3Q6IFtQQVRDSF0gY3B1ZnJlcTogaW50ZWxfcHN0YXRlOiBDaGVjayBJREEgZmVhdHVy
+ZSBvbmx5IGR1cmluZyBNU1IKIDB4MTk5IHdyaXRlCgpDb21taXQgMGZiNWJlN2ZlYTk4ICgiY3B1
+ZnJlcTogaW50ZWxfcHN0YXRlOiBVbmNoZWNrZWQgTVNSIGFjZWVzcyBpbgpsZWdhY3kgbW9kZSIp
+IGludHJvZHVjZWQgYSBjaGVjayBmb3IgZmVhdHVyZSBYODZfRkVBVFVSRV9JREEgdG8gdmVyaWZ5
+CnR1cmJvIG1vZGUgc3VwcG9ydC4gQWx0aG91Z2ggdGhpcyBpcyB0aGUgY29ycmVjdCB3YXkgdG8g
+Y2hlY2sgZm9yIHR1cmJvCm1vZGUsIGl0IGNhdXNlcyBpc3N1ZXMgb24gc29tZSBwbGF0Zm9ybXMg
+dGhhdCBkaXNhYmxlIHR1cmJvIGR1cmluZyBPUwpib290IGJ1dCBlbmFibGUgaXQgbGF0ZXIuIFdp
+dGhvdXQgdGhpcyBmZWF0dXJlIGNoZWNrLCB1c2VycyB3ZXJlIGFibGUgdG8Kd3JpdGUgMCB0byAv
+c3lzL2RldmljZXMvc3lzdGVtL2NwdS9pbnRlbF9wc3RhdGUvbm9fdHVyYm8gcG9zdC1ib290IHRv
+CmdldCB0dXJibyBtb2RlIGZyZXF1ZW5jaWVzLgoKVG8gcmVzdG9yZSB0aGUgb2xkIGJlaGF2aW9y
+IHdoaWxlIHN0aWxsIGFkZHJlc3NpbmcgdGhlIHVuY2hlY2tlZCBNU1IKaXNzdWUgb24gc29tZSBT
+a3lsYWtlLVggc3lzdGVtcywgbGltaXQgdGhlIFg4Nl9GRUFUVVJFX0lEQSBjaGVjayB0byBvbmx5
+CndoZW4gc2V0dGluZyBNU1IgMHgxOTkgVHVyYm8gRW5nYWdlIEJpdCAoYml0IDMyKS4KCkZpeGVz
+OiAwZmI1YmU3ZmVhOTggKCJjcHVmcmVxOiBpbnRlbF9wc3RhdGU6IFVuY2hlY2tlZCBNU1IgYWNl
+ZXNzIGluIGxlZ2FjeSBtb2RlIikKU2lnbmVkLW9mZi1ieTogU3Jpbml2YXMgUGFuZHJ1dmFkYSA8
+c3Jpbml2YXMucGFuZHJ1dmFkYUBsaW51eC5pbnRlbC5jb20+Ci0tLQogZHJpdmVycy9jcHVmcmVx
+L2ludGVsX3BzdGF0ZS5jIHwgOSArKysrLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlv
+bnMoKyksIDUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9jcHVmcmVxL2ludGVs
+X3BzdGF0ZS5jIGIvZHJpdmVycy9jcHVmcmVxL2ludGVsX3BzdGF0ZS5jCmluZGV4IDQzZTg0N2U5
+Zjc0MS4uMzhhOGU4NzdmMjIyIDEwMDY0NAotLS0gYS9kcml2ZXJzL2NwdWZyZXEvaW50ZWxfcHN0
+YXRlLmMKKysrIGIvZHJpdmVycy9jcHVmcmVxL2ludGVsX3BzdGF0ZS5jCkBAIC01OTgsOSArNTk4
+LDYgQEAgc3RhdGljIGJvb2wgdHVyYm9faXNfZGlzYWJsZWQodm9pZCkKIHsKIAl1NjQgbWlzY19l
+bjsKIAotCWlmICghY3B1X2ZlYXR1cmVfZW5hYmxlZChYODZfRkVBVFVSRV9JREEpKQotCQlyZXR1
+cm4gdHJ1ZTsKLQogCXJkbXNybChNU1JfSUEzMl9NSVNDX0VOQUJMRSwgbWlzY19lbik7CiAKIAly
+ZXR1cm4gISEobWlzY19lbiAmIE1TUl9JQTMyX01JU0NfRU5BQkxFX1RVUkJPX0RJU0FCTEUpOwpA
+QCAtMjAxNCw3ICsyMDExLDggQEAgc3RhdGljIHU2NCBhdG9tX2dldF92YWwoc3RydWN0IGNwdWRh
+dGEgKmNwdWRhdGEsIGludCBwc3RhdGUpCiAJdTMyIHZpZDsKIAogCXZhbCA9ICh1NjQpcHN0YXRl
+IDw8IDg7Ci0JaWYgKFJFQURfT05DRShnbG9iYWwubm9fdHVyYm8pICYmICFSRUFEX09OQ0UoZ2xv
+YmFsLnR1cmJvX2Rpc2FibGVkKSkKKwlpZiAoUkVBRF9PTkNFKGdsb2JhbC5ub190dXJibykgJiYg
+IVJFQURfT05DRShnbG9iYWwudHVyYm9fZGlzYWJsZWQpICYmCisJICAgIGNwdV9mZWF0dXJlX2Vu
+YWJsZWQoWDg2X0ZFQVRVUkVfSURBKSkKIAkJdmFsIHw9ICh1NjQpMSA8PCAzMjsKIAogCXZpZF9m
+cCA9IGNwdWRhdGEtPnZpZC5taW4gKyBtdWxfZnAoCkBAIC0yMTc5LDcgKzIxNzcsOCBAQCBzdGF0
+aWMgdTY0IGNvcmVfZ2V0X3ZhbChzdHJ1Y3QgY3B1ZGF0YSAqY3B1ZGF0YSwgaW50IHBzdGF0ZSkK
+IAl1NjQgdmFsOwogCiAJdmFsID0gKHU2NClwc3RhdGUgPDwgODsKLQlpZiAoUkVBRF9PTkNFKGds
+b2JhbC5ub190dXJibykgJiYgIVJFQURfT05DRShnbG9iYWwudHVyYm9fZGlzYWJsZWQpKQorCWlm
+IChSRUFEX09OQ0UoZ2xvYmFsLm5vX3R1cmJvKSAmJiAhUkVBRF9PTkNFKGdsb2JhbC50dXJib19k
+aXNhYmxlZCkgJiYKKwkgICAgY3B1X2ZlYXR1cmVfZW5hYmxlZChYODZfRkVBVFVSRV9JREEpKQog
+CQl2YWwgfD0gKHU2NCkxIDw8IDMyOwogCiAJcmV0dXJuIHZhbDsKLS0gCjIuNDMuMAoK
 
-diff --git a/include/net/gro.h b/include/net/gro.h
-index 018343254c90..9260ed367c91 100644
---- a/include/net/gro.h
-+++ b/include/net/gro.h
-@@ -10,6 +10,9 @@
- #include <linux/skbuff.h>
- #include <net/udp.h>
- 
-+/* This should be increased if a protocol with a bigger head is added. */
-+#define GRO_MAX_HEAD (MAX_HEADER + 128)
-+
- struct napi_gro_cb {
- 	union {
- 		struct {
-diff --git a/net/core/gro.c b/net/core/gro.c
-index 397cf5984250..b8cc44406e69 100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -6,9 +6,6 @@
- 
- #define MAX_GRO_SKBS 8
- 
--/* This should be increased if a protocol with a bigger head is added. */
--#define GRO_MAX_HEAD (MAX_HEADER + 128)
--
- static DEFINE_SPINLOCK(offload_lock);
- struct list_head offload_base __read_mostly = LIST_HEAD_INIT(offload_base);
- /* Maximum number of GRO_NORMAL skbs to batch up for list-RX */
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 867832f8bbae..073e2c527407 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -67,6 +67,7 @@
- #include <net/dst.h>
- #include <net/sock.h>
- #include <net/checksum.h>
-+#include <net/gro.h>
- #include <net/gso.h>
- #include <net/ip6_checksum.h>
- #include <net/xfrm.h>
-@@ -96,7 +97,9 @@ static struct kmem_cache *skbuff_ext_cache __ro_after_init;
- 
- static struct kmem_cache *skb_small_head_cache __ro_after_init;
- 
--#define SKB_SMALL_HEAD_SIZE SKB_HEAD_ALIGN(MAX_TCP_HEADER)
-+#define GRO_MAX_HEAD_PAD (GRO_MAX_HEAD + NET_SKB_PAD + NET_IP_ALIGN)
-+#define SKB_SMALL_HEAD_SIZE SKB_HEAD_ALIGN(max(MAX_TCP_HEADER, \
-+					       GRO_MAX_HEAD_PAD))
- 
- /* We want SKB_SMALL_HEAD_CACHE_SIZE to not be a power of two.
-  * This should ensure that SKB_SMALL_HEAD_HEADROOM is a unique
-@@ -708,7 +711,7 @@ struct sk_buff *__netdev_alloc_skb(struct net_device *dev, unsigned int len,
- 	/* If requested length is either too small or too big,
- 	 * we use kmalloc() for skb->head allocation.
- 	 */
--	if (len <= SKB_WITH_OVERHEAD(1024) ||
-+	if (len <= SKB_WITH_OVERHEAD(SKB_SMALL_HEAD_CACHE_SIZE) ||
- 	    len > SKB_WITH_OVERHEAD(PAGE_SIZE) ||
- 	    (gfp_mask & (__GFP_DIRECT_RECLAIM | GFP_DMA))) {
- 		skb = __alloc_skb(len, gfp_mask, SKB_ALLOC_RX, NUMA_NO_NODE);
-@@ -785,7 +788,8 @@ struct sk_buff *__napi_alloc_skb(struct napi_struct *napi, unsigned int len,
- 	 * When the small frag allocator is available, prefer it over kmalloc
- 	 * for small fragments
- 	 */
--	if ((!NAPI_HAS_SMALL_PAGE_FRAG && len <= SKB_WITH_OVERHEAD(1024)) ||
-+	if ((!NAPI_HAS_SMALL_PAGE_FRAG &&
-+	     len <= SKB_WITH_OVERHEAD(SKB_SMALL_HEAD_CACHE_SIZE)) ||
- 	    len > SKB_WITH_OVERHEAD(PAGE_SIZE) ||
- 	    (gfp_mask & (__GFP_DIRECT_RECLAIM | GFP_DMA))) {
- 		skb = __alloc_skb(len, gfp_mask, SKB_ALLOC_RX | SKB_ALLOC_NAPI,
--- 
-2.43.0
 
+--=-9Wrt8BcrBEO56xUhdjM+--
 
