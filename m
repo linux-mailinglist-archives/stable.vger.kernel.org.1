@@ -1,183 +1,220 @@
-Return-Path: <stable+bounces-192711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732EEC3F8E4
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 11:45:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7A5C3FA50
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 12:06:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C90B034E4A0
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 10:45:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF34F3B6A58
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 11:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4782D7DF9;
-	Fri,  7 Nov 2025 10:45:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ipfe5PL6";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="COuwrsvw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB10531C58A;
+	Fri,  7 Nov 2025 11:06:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6561FE47B
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 10:45:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E715F31AF1D
+	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 11:06:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762512311; cv=none; b=khgMLx8wcpZqPiIxvKNdApESrI1cWh/mhpC/hbOHAUVEoa+GgTb2mjwUcFNpq0/wKaaxOQzpEut86zpQxCg6ibtaunxraCW2ch28J7Rqikas6nOEfxP+SESH5Oz5q5UCwrE6LMUQX6bzEAy00krLJj5FKquoHvmONf6KQvexjf8=
+	t=1762513579; cv=none; b=CJJAfb2vlT+Yl3HHWgOtbPIbtF6vt4ZLNWLJy7ZVZehQyDVwn+niMadQ/CevAt6I8b6F4GomoMS+vcauRDf07tuJGP0smGJBvaPc+Fdsb0vBEzxrfX3gKKLqfTN1fOfl7AWfaS3/fvJIyi4Xq8XXeuV4HtRfxMk2nsBsdDQh05o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762512311; c=relaxed/simple;
-	bh=cldVxJpRNKgcFoYyGi5TZxiwhzfN4EJKPJL34klWTCM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dkMWbyMMvGfKAyaKq9IAG2i0qhH6xt1MhQv7/gmpvUxMzIcgzsDJQFlY1n+mrVH+APzEqCgxDQAt+tsFb2GziwRR3d9Kx1AfgLAV2eVAD5QFr4wShaOj5tunkIdVQxZuHmj0WwKpue8z6tBOLna/NBmYWGFptAZzNURkUTirQu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ipfe5PL6; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=COuwrsvw; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A757kui2273776
-	for <stable@vger.kernel.org>; Fri, 7 Nov 2025 10:45:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=jzF0z6hZFHuEWKL0+LuBE3RXthAv/UoQBwr
-	q4S+rbnQ=; b=ipfe5PL6a6URkUKf47E+fnN8OJTeFFpPmO/56E5fGfl/Z/LIWPA
-	lw6qMCHtDTx6QUB24WoH2ZAC0mU4pKVutO9ZpHmUai+t99OUP2h6BUozLojhz0Hj
-	/e63Ysz3kAGX76R5XwMdfgnUZ5X7iXcRivTEQv9IBSU4y9kHHjhvmLAF6z7lImDh
-	VXEMBOiicE7urIDLTc6EYoYxCuPikzQqZso73+7PhJGHq29J/x+Lz1bda7GjFrrL
-	DA0e2HlSMA9mbxjqcTgjZnIJ6WNd3d3IyHSwO51xRapsyZipFmm0ZLto97E9Cr6E
-	Ib9dfW+7yNmAtwywZrSZ4TQJzd1gq/xTjtQ==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a9abmrydk-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 07 Nov 2025 10:45:08 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-32eb18b5500so1174175a91.2
-        for <stable@vger.kernel.org>; Fri, 07 Nov 2025 02:45:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1762512308; x=1763117108; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jzF0z6hZFHuEWKL0+LuBE3RXthAv/UoQBwrq4S+rbnQ=;
-        b=COuwrsvwxJ3FDqreh/0ScuO/NBIIZDY6iBeNImtg5qWYQJYr5gR9cyFUa3ogxyAAZC
-         C5siMllSDe5cQynPIIbBf5tUUXbOUlMpxe5gbi5ZJsXKXI5IovgV3QNysv2jAu2Uz7EK
-         f7hdmJVN+D8VIyI9Gi5ntXIWq7tYl1zdwXlI31Bl5f6ML8Lyhhzl1XYDbpdQKXhF9KyN
-         3B7oSlc41HbbRa9s2DoQW7YuSiTftKps67wnTDzB2/jW/jHDwy/cNxq13EMbY8hiDfXF
-         SczHCTrFvYT5cbX8uiRIlJOGbQahdktAuLxG1YOWwJESg0aQm3dTukGj2+UwRdJj8rOT
-         YHBQ==
+	s=arc-20240116; t=1762513579; c=relaxed/simple;
+	bh=3vB+SlHxUbkkRzKoqMns9VRF4uBIh29actxYlHhBAMI=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=Ti6uCv+MN1XzNSaTHU3Sh87bZc44C5qcUOzICfiLKZWw0UGIXI0M5Dcm3pOa+keJl2jU5oei2gycQbIbrbNksvjawimX3xnh6pJ7wXfM60yBKNkvKFrByEvVJEN/3UqOLZSzjPBtTW2+JoNHGZafaJrBqnAqfHK0JnpQh5PxiRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-93e8839f138so49567639f.2
+        for <stable@vger.kernel.org>; Fri, 07 Nov 2025 03:06:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762512308; x=1763117108;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jzF0z6hZFHuEWKL0+LuBE3RXthAv/UoQBwrq4S+rbnQ=;
-        b=DbdgMpx/EL5nfH3/BuRcWjhz2DYR06C4Wd+TkKW0HooNMWEZfIjYsAt1H/w+U2xhfQ
-         zQy8NyHCNIYkdqCr3XcbL4HLqOoTrfuh1+kJo1k/x+A3C8Dgb8XEO76FtPJXthvd6IY8
-         YqyeZEu22UDF3kA8p1sSBnzh0zhDKntMvBgFwFMfdpNQIwmEP8DVJoeRUnUwCA1QEvWZ
-         klkCEw/WKloe+cYmZvpfkIXBGMjMG/F1xuUEk/Q65R8cjnjQiaybRDku5UZwawoz3rW7
-         KPe4oIFNg4KyNV7+C21aFpZmvycyjW/2jjh/sKbQ8mJIL3ucY6K3YojXX5yOFtrw1aj2
-         wRUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUdd5LXBWDBVM4oB4yjeYRqyFFMOySrNEyZldN9skQYJoWC3Y7NqNpmdVhbqde3LKI3n5kFpyQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9PTY+UZyU3x4VzNHOPPP2/segV1WhKkvPdgoLS8agFkP4ViOB
-	mIZUpxLW6uJMkNYuMQY+1TI7trsFvsiQ+lRnLOvCcLz+bHT8AqlQGUut7yBxFdiSZmmbe617ndI
-	EGDBs7qJyUuaIMXVV+NwHML14kQrcIRrP+mv3sQjIMtbH5QKkOha3ex4Ta34=
-X-Gm-Gg: ASbGncvzul1HkbnOVM2oB6iPzzE10MOrpRUUNVoUDs3zVB8gD8XBF9NOcRGBb6l9ATy
-	ytdpk9as9DoP4SSg7LJXR1fRkb+gG439LN50/EVjHOHXVbPq4jsbNhkasGPjDGmnbdtIyKErtwV
-	TQXDeyePyqRcJNXhPBCwtKqp6vDMgoq0hyg5oLkGbVzT5NAPOU9atdssIz/vKDKRDd+cIsOrJtc
-	UknlMIg3NrAglJmPyD808YdUhHVRIfk7DPcaqXJGmaOAdUmrERXwMXDU8bEH1NnjmCWCReZdl8B
-	8BhFdBzrgRyPyF+pwJ2NCmtVfPNdG2/p4jwyFCZhRfwHqxD1aIIh3QYKvhotDryrSRp9qWvGFV2
-	Mel9TGgdqfFVs8saUElcly0Iif2A4TPvG7Z0xAwcNwUM/sX5vdK65
-X-Received: by 2002:a17:90b:2b43:b0:340:d1a1:af6d with SMTP id 98e67ed59e1d1-3434c59666cmr3200927a91.36.1762512307544;
-        Fri, 07 Nov 2025 02:45:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFLIPMfoRBFdSkLK6MSwRI0bu0MIuKCQtHo+cC8zhSDBXAl4TEpY+PzJ0TgjkcmFqBio+utwA==
-X-Received: by 2002:a17:90b:2b43:b0:340:d1a1:af6d with SMTP id 98e67ed59e1d1-3434c59666cmr3200902a91.36.1762512307083;
-        Fri, 07 Nov 2025 02:45:07 -0800 (PST)
-Received: from hu-punita-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341d08b69e5sm2137711a91.0.2025.11.07.02.45.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Nov 2025 02:45:06 -0800 (PST)
-From: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
-To: gregkh@linuxfoundation.org
-Cc: Jamie Iles <jamie.iles@oss.qualcomm.com>, Thinh.Nguyen@synopsys.com,
-        fabioaiuto83@gmail.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Punit Agrawal <punit.agrawal@oss.qualcomm.com>
-Subject: [PATCH v2] drivers/usb/dwc3: fix PCI parent check
-Date: Fri,  7 Nov 2025 10:44:37 +0000
-Message-Id: <20251107104437.1602509-1-punit.agrawal@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1762513576; x=1763118376;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BlZiSo9idK2j7S97qoxkiQFU6gD7Ty00a+sM4XvvUvQ=;
+        b=QaBNF74UlOFd6kw3Yh7H1iEgONYPvbcP6D56UMqfFrYEuh/c1GsDNt5ztnpp++OUku
+         O55/JbmIoa4WK/rAbxY63/rQh6jbG3H1WEQk3LJDVj8FA8UKW9HCOXP5BkZxPBZLaBhn
+         KNTAAALI8cR9Mt1K7Z/vg+N4bOFHgwitW3tJXPSR4grQxA+lCBpCaXTi0rDj0N1yvjiS
+         mZmcsVkKeH9xwhr0Pj5SavFx0gRXBo5B9B+oJ+Vzk40zKQZSXpite9syhxGDA6N6xUPY
+         d0574cFJ8kIwekEy+CcQw3S6s43lEMN7AOt3oYalwqMZuz0KqQeJBWIPVrpm5zXUCvEQ
+         4ctw==
+X-Forwarded-Encrypted: i=1; AJvYcCXpvJUyqsykOUie9sG0Lk8obpZEFLu3OT6scf9enVN2VQN5VsFCjHh74iZE+wKIyCQE/Ab5e4I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpsFlqHYbbvRiJ7aiGODA1Ce/lOjZfCfBGO7edVEy2khlShaNA
+	Tf+k9GZj9KRpaB5Z431aG/5kLN1TcHR7R9CDO05dtVIeVzp6oNMl8q4Dx9vyhmkj16xXoYzHKwI
+	8jWcqLk5aO+JUsd/QCf4X5P56q4FilBOL0ofUpF5yVqO8hqPqeLwyfJYKTY8=
+X-Google-Smtp-Source: AGHT+IFtq8vti0VVMqqLFM0bv4gUTSBe4hTPp5evTjvIF5wiTxqgsOFnnguZogDuOBM7v8Hwi4ZtDTN1tvpIai1XWk5jXBtYFQJY
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: Y2mhbR1jo8dGu77N14P_U1JUaT7JhVwD
-X-Proofpoint-ORIG-GUID: Y2mhbR1jo8dGu77N14P_U1JUaT7JhVwD
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA3MDA4NiBTYWx0ZWRfX0vcrn0E8GMEu
- MgDyN63U3e4jGFopAYBmQDuHp/d1L2Cj5DNzbGetzFdbvk7V22DsP/+hqKiM3mENErU1Wc9NIxK
- XQcOT/qW6WWFaXLdYbwaG/m5Cka3+Y14LiwkffjV9tAcC1IUvh3bm4fihfq7cXGYT1uLOVH6bNJ
- z9eKGDCS/ry/bkg5+cOrKDx+jMZJeCOKHN6/iQBJ0Q7mGlGCNIEgXCDrIeP1pc3fPUEz445F599
- meHhe+DGX3dUESUQMZIkG6F/zo3AzPbY9lhkhG2apufmQyvj11YBVb4C2q5u57znMGoVcM8ksGm
- OFFt0h5S3EjjygNkeq2xd5rxTqYFrSXB9x08Sc15oNjKI3ZgzFFODjnZ9lOusXEGPFsqjhfrg8G
- ICQWDOl0kidz+6Gz7p+f3R6QL8O3Xw==
-X-Authority-Analysis: v=2.4 cv=HPjO14tv c=1 sm=1 tr=0 ts=690dcdb4 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=jIQo8A4GAAAA:8 a=jM0-4Wpw8WwY0CpfOG8A:9
- a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-07_02,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 bulkscore=0 clxscore=1011 malwarescore=0
- suspectscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511070086
+X-Received: by 2002:a05:6e02:3485:b0:433:2943:3a78 with SMTP id
+ e9e14a558f8ab-4335f478e35mr38087315ab.31.1762513576045; Fri, 07 Nov 2025
+ 03:06:16 -0800 (PST)
+Date: Fri, 07 Nov 2025 03:06:16 -0800
+In-Reply-To: <20251107080117.15099-1-make24@iscas.ac.cn>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <690dd2a8.a70a0220.22f260.003d.GAE@google.com>
+Subject: [syzbot ci] Re: net: Fix error handling in netdev_register_kobject
+From: syzbot ci <syzbot+ci348771c1c9b7511f@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, atenart@kernel.org, davem@davemloft.net, 
+	ebiederm@xmission.com, edumazet@google.com, gregkh@suse.de, horms@kernel.org, 
+	kuba@kernel.org, kuniyu@google.com, linux-kernel@vger.kernel.org, 
+	make24@iscas.ac.cn, netdev@vger.kernel.org, pabeni@redhat.com, 
+	sdf@fomichev.me, stable@vger.kernel.org, yajun.deng@linux.dev
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Jamie Iles <jamie.iles@oss.qualcomm.com>
+syzbot ci has tested the following series
 
-The sysdev_is_parent check was being used to infer PCI devices that have
-the DMA mask set from the PCI capabilities, but sysdev_is_parent is also
-used for non-PCI ACPI devices in which case the DMA mask would be the
-bus default or as set by the _DMA method.
+[v1] net: Fix error handling in netdev_register_kobject
+https://lore.kernel.org/all/20251107080117.15099-1-make24@iscas.ac.cn
+* [PATCH] net: Fix error handling in netdev_register_kobject
 
-Without this fix the DMA mask would default to 32-bits and so allocation
-would fail if there was no DRAM below 4GB.
+and found the following issue:
+KASAN: slab-use-after-free Read in netdev_run_todo
 
-Fixes: 47ce45906ca9 ("usb: dwc3: leave default DMA for PCI devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jamie Iles <jamie.iles@oss.qualcomm.com>
-Signed-off-by: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Full report is available here:
+https://ci.syzbot.org/series/29bd058e-ea85-48e2-9bb9-ff9c0214f12e
+
+***
+
+KASAN: slab-use-after-free Read in netdev_run_todo
+
+tree:      net-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
+base:      8a25a2e34157d882032112e4194ccdfb29c499e8
+arch:      amd64
+compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+config:    https://ci.syzbot.org/builds/2f985280-f9ef-47c8-b4ec-80d44968222b/config
+
+==================================================================
+BUG: KASAN: slab-use-after-free in kobject_put+0x2ab/0x480
+Read of size 1 at addr ffff888113992714 by task kworker/u8:0/12
+
+CPU: 0 UID: 0 PID: 12 Comm: kworker/u8:0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Workqueue: netns cleanup_net
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250
+ print_report+0xca/0x240
+ kasan_report+0x118/0x150
+ kobject_put+0x2ab/0x480
+ netdev_run_todo+0xd2e/0xea0
+ ops_undo_list+0x3e1/0x990
+ cleanup_net+0x4d8/0x820
+ process_scheduled_works+0xae1/0x17b0
+ worker_thread+0x8a0/0xda0
+ kthread+0x711/0x8a0
+ ret_from_fork+0x4bc/0x870
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Allocated by task 5810:
+ kasan_save_track+0x3e/0x80
+ __kasan_kmalloc+0x93/0xb0
+ __kvmalloc_node_noprof+0x5cd/0x910
+ alloc_netdev_mqs+0xa6/0x11b0
+ ip6gre_init_net+0xb5/0x3c0
+ ops_init+0x35c/0x5c0
+ setup_net+0xfe/0x320
+ copy_net_ns+0x34e/0x4e0
+ create_new_namespaces+0x3f3/0x720
+ unshare_nsproxy_namespaces+0x11c/0x170
+ ksys_unshare+0x4c8/0x8c0
+ __x64_sys_unshare+0x38/0x50
+ do_syscall_64+0xfa/0xfa0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 12:
+ kasan_save_track+0x3e/0x80
+ __kasan_save_free_info+0x46/0x50
+ __kasan_slab_free+0x5c/0x80
+ kfree+0x19a/0x6d0
+ device_release+0x9c/0x1c0
+ kobject_put+0x22b/0x480
+ netdev_run_todo+0xd0c/0xea0
+ ops_undo_list+0x3e1/0x990
+ cleanup_net+0x4d8/0x820
+ process_scheduled_works+0xae1/0x17b0
+ worker_thread+0x8a0/0xda0
+ kthread+0x711/0x8a0
+ ret_from_fork+0x4bc/0x870
+ ret_from_fork_asm+0x1a/0x30
+
+The buggy address belongs to the object at ffff888113992000
+ which belongs to the cache kmalloc-cg-4k of size 4096
+The buggy address is located 1812 bytes inside of
+ freed 4096-byte region [ffff888113992000, ffff888113993000)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x113990
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+flags: 0x17ff00000000040(head|node=0|zone=2|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 017ff00000000040 ffff88810004b500 dead000000000122 0000000000000000
+raw: 0000000000000000 0000000000040004 00000000f5000000 0000000000000000
+head: 017ff00000000040 ffff88810004b500 dead000000000122 0000000000000000
+head: 0000000000000000 0000000000040004 00000000f5000000 0000000000000000
+head: 017ff00000000003 ffffea00044e6401 00000000ffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5810, tgid 5810 (syz-executor), ts 65154411256, free_ts 60842795356
+ post_alloc_hook+0x240/0x2a0
+ get_page_from_freelist+0x2365/0x2440
+ __alloc_frozen_pages_noprof+0x181/0x370
+ alloc_pages_mpol+0x232/0x4a0
+ allocate_slab+0x96/0x350
+ ___slab_alloc+0xe94/0x18a0
+ __slab_alloc+0x65/0x100
+ __kmalloc_noprof+0x471/0x7f0
+ __register_sysctl_table+0x72/0x1340
+ __addrconf_sysctl_register+0x328/0x4c0
+ addrconf_sysctl_register+0x168/0x1c0
+ ipv6_add_dev+0xd46/0x1370
+ addrconf_notify+0x794/0x1010
+ notifier_call_chain+0x1b6/0x3e0
+ register_netdevice+0x1608/0x1ae0
+ register_netdev+0x40/0x60
+page last free pid 15 tgid 15 stack trace:
+ __free_frozen_pages+0xbc4/0xd30
+ __folio_put+0x21b/0x2c0
+ skb_release_data+0x49a/0x7c0
+ napi_consume_skb+0x158/0x1e0
+ skb_defer_free_flush+0x18f/0x250
+ net_rx_action+0x804/0xe50
+ handle_softirqs+0x286/0x870
+ run_ksoftirqd+0x9b/0x100
+ smpboot_thread_fn+0x542/0xa60
+ kthread+0x711/0x8a0
+ ret_from_fork+0x4bc/0x870
+ ret_from_fork_asm+0x1a/0x30
+
+Memory state around the buggy address:
+ ffff888113992600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff888113992680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff888113992700: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                         ^
+ ffff888113992780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff888113992800: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
 ---
-v1[0] -> v2:
-* Added tags
-* Cc stable
-
-[0] https://lore.kernel.org/all/20251105145801.485371-1-punit.agrawal@oss.qualcomm.com/
-
- drivers/usb/dwc3/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index ae140c356295..c2ce2f5e60a1 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -25,6 +25,7 @@
- #include <linux/of.h>
- #include <linux/of_graph.h>
- #include <linux/acpi.h>
-+#include <linux/pci.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/pinctrl/devinfo.h>
- #include <linux/reset.h>
-@@ -2241,7 +2242,7 @@ int dwc3_core_probe(const struct dwc3_probe_data *data)
- 	dev_set_drvdata(dev, dwc);
- 	dwc3_cache_hwparams(dwc);
- 
--	if (!dwc->sysdev_is_parent &&
-+	if (!dev_is_pci(dwc->sysdev) &&
- 	    DWC3_GHWPARAMS0_AWIDTH(dwc->hwparams.hwparams0) == 64) {
- 		ret = dma_set_mask_and_coherent(dwc->sysdev, DMA_BIT_MASK(64));
- 		if (ret)
--- 
-2.34.1
-
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
