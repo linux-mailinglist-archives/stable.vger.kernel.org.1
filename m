@@ -1,114 +1,160 @@
-Return-Path: <stable+bounces-192673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E1CBC3E56D
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 04:22:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AFB6C3E5B6
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 04:37:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C0AA188870A
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 03:22:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A4C3D4E96A6
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 03:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3A02E8B9E;
-	Fri,  7 Nov 2025 03:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2099C26FA4E;
+	Fri,  7 Nov 2025 03:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Tjf0XBXd"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F1E21578F;
-	Fri,  7 Nov 2025 03:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFD51E32D3;
+	Fri,  7 Nov 2025 03:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762485736; cv=none; b=nwsAyFgUpzZynU2zS3Hv9/VM2ziMyscBVoVcFJrQdDUI5BqRnpuG+QwPJlYfGs4hTgFKsmM6MGxKUGikytL4KdRPxSAPl/keBqVr4U1+AbbONWWFSDSWHuRHKowgLGFSHELqSYqoQXgMQ0pRhupm2+MXs+P59kl+UpsWlhfIh1I=
+	t=1762486614; cv=none; b=pIn5sJl0GcUUJUyIwW4lXOinynfFGTIgiOL2pjq1fYXFI0zCf4DHTAbcpV8lg1izYmGxSoNjRkHFbLrKUyzKjQSG2wguCL06m0a0XkAxQRFcqwDb8ZKu00+NoraymcvwK40eQC4jkyQyY3mE31hD4Sk0cyghhdfuGX6TPBa8oQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762485736; c=relaxed/simple;
-	bh=n/CvNyeydy7A7ai8PO9KeruPT4Vy2/gZRmm23G/tF6s=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=XXAZ3Iw0+DnoSBbEWNzzG8QgBR1L5XpnTyucMXJ5GulYz3GoJMclIHZaXjIWji/Alcv6LfCjSybK7D9lbOIAvj5mARsX8yDRXO3TkUy4BVsPEUIjYQl1krcYC5J/Tw2AIwIGMil4sUh3IFIyngGzaq4360SkY69MVqxEtUdnZVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-05 (Coremail) with SMTP id zQCowAD3ZvXSZQ1pMZXYAQ--.42215S2;
-	Fri, 07 Nov 2025 11:22:02 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: eajames@linux.ibm.com,
-	ninad@linux.ibm.com,
-	joel@jms.id.au
-Cc: linux-fsi@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] fsi: Fix device refcount leak in i2cr_scom_probe
-Date: Fri,  7 Nov 2025 11:21:52 +0800
-Message-Id: <20251107032152.16835-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:zQCowAD3ZvXSZQ1pMZXYAQ--.42215S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GryfGF43Zr1xCw4UJry3XFb_yoWkCFc_Cw
-	1Dur9rWrn8WFZ3uFy3Xr43ZryF9F4qqF18CF4jqrWfKasxXFnrXwn5ur4UCr4xWw47AFsY
-	v3W8WrWfZr1IgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbTkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7MxkF7I0En4kS14v26r126r1DMxkIecxEwVAFwVW8GwCF04k20xvY0x0EwIxGrw
-	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
-	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
-	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxK
-	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
-	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU4q2NUUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1762486614; c=relaxed/simple;
+	bh=nVriIHzmashBkCW2VFpuMwrSeYJMPKJ3QDEHWU2OVgA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=AbRegyl9cmuNaHMIZn7B8tLIdUCyhXIP8zMBHzAyMydJ1dmptjOqdv8QdO1+izIkdYxtXk+bOTpbOBo+/W1A3VAUjEK5QHyVX7k6UywuxvaDfuvq0+2Nhoy6Jt1C920xcY9pwVxQOv9gaSZZza5bdNBOiYBo5u7X5GS6TiHaKJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Tjf0XBXd; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A6Ndjeh4131640;
+	Fri, 7 Nov 2025 03:36:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Nf8RXttBqHji/3Sicd9Mom5Ri4WDh6MyyrJMGfCdhZ0=; b=Tjf0XBXd7Ad02lNR
+	o5WefUVdELiW9gBsyOllUN45CgFtE2QFQsC3YB8m5KQdcwp6zzAnKIzJ18WnjMxC
+	op5RRsoIDde0cPVhFBwOya8AWbLttMIkoF5AnwIdaiVsjZ61MtonVl4EtC1GKWPp
+	I+77fx1KCYbW3jLReMIornM9+7ujwbBtZks56iRIKkSKDP4qDWqJfGHYUpFWrilY
+	LQ/x/I1xBdr2HH/vtkTd4tlVDpj8o4uIwicz1BIMnPCkTNyW5UGItzutDTB3G4OE
+	uwX7wWYAMfZ9RHv4Nvt2LaU0SvwM+N2sZvS9BbeKIzwberqX+ZIUBtB45CUdmnQE
+	F5aUvg==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a8u3x2k0x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Nov 2025 03:36:38 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5A73ab6e019243
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 7 Nov 2025 03:36:37 GMT
+Received: from [10.239.96.215] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.24; Thu, 6 Nov
+ 2025 19:36:35 -0800
+Message-ID: <d0dca2e9-ccbe-4c3b-9008-80f0030d39ec@quicinc.com>
+Date: Fri, 7 Nov 2025 11:36:32 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] Bluetooth: hci_qca: Convert timeout from jiffies
+ to ms
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+CC: <dmitry.baryshkov@oss.qualcomm.com>, <marcel@holtmann.org>,
+        <luiz.dentz@gmail.com>, <linux-bluetooth@vger.kernel.org>,
+        <stable@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <quic_chejiang@quicinc.com>
+References: <20251106140103.1406081-1-quic_shuaz@quicinc.com>
+ <20251106140103.1406081-3-quic_shuaz@quicinc.com>
+ <3676d7e4-5a28-4e8a-bc55-1386b4fbc58f@molgen.mpg.de>
+Content-Language: en-US
+From: Shuai Zhang <quic_shuaz@quicinc.com>
+In-Reply-To: <3676d7e4-5a28-4e8a-bc55-1386b4fbc58f@molgen.mpg.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA3MDAyNiBTYWx0ZWRfX+tg7KLcQ/cxR
+ CuWXlXb2/72+nfDGM7i/ZKUpdE6483O/OjDK5b43GO5hxZTnVCcnyU1BEOlJvA39qWMdVlP/GxG
+ pp6k7qsuZ/jeqYzuOfpj/aU92CmdaNMoNReyWBNKIHxraL86bRwbUnNoxhI+y2I8r7zKHdpMEvX
+ k5ZyiGc6wbJN3GG6K0GX3DRartuX/89l/6DH2otSqT9HqlXeFf7ewWtVLh18KaQGTnSPltNBxab
+ nkOR8ilAKSCP/tXkxmZ5ixbolpRTBs0ehJ3G3Y9mlivTMBZocWjMOcSSDIWa4e2GQcFI35iLkRT
+ oGQcpSUYozR1D6aukbwU68soKWXsJMH2NeaKcNejjGdg+NH5p7WY/cixhD+IgROViilBU/Xf0Zi
+ gEPVosy0NHZy/p0ouBELLVTxG9aKNQ==
+X-Proofpoint-ORIG-GUID: CUSZOZYcoMoyewKP-UNk6lqjLecc1v5i
+X-Proofpoint-GUID: CUSZOZYcoMoyewKP-UNk6lqjLecc1v5i
+X-Authority-Analysis: v=2.4 cv=BrKQAIX5 c=1 sm=1 tr=0 ts=690d6946 cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
+ a=aVdW3E6abQPMYJYOtfMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-06_05,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 spamscore=0 priorityscore=1501 impostorscore=0 bulkscore=0
+ clxscore=1015 adultscore=0 phishscore=0 malwarescore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511070026
 
-This patch fixes a device reference count leak in the i2cr_scom driver
-by adding proper put_device() calls in both error paths and the remove
-function.
+Dear Paul
 
-Found by code review.
+On 11/6/2025 10:27 PM, Paul Menzel wrote:
+> Dear Shuai,
+> 
+> 
+> Thank you for your patch.
+> 
+> Am 06.11.25 um 15:01 schrieb Shuai Zhang:
+>> Since the timer uses jiffies as its unit rather than ms, the timeout value
+>> must be converted from ms to jiffies when configuring the timer. Otherwise,
+>> the intended 8s timeout is incorrectly set to approximately 33s.
+>>
+>> Cc: stable@vger.kernel.org
+> 
+> A Fixes: tag is needed.
+> 
+>> Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
+>> ---
+>>   drivers/bluetooth/hci_qca.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+>> index fa6be1992..c14b2fa9d 100644
+>> --- a/drivers/bluetooth/hci_qca.c
+>> +++ b/drivers/bluetooth/hci_qca.c
+>> @@ -1602,7 +1602,7 @@ static void qca_wait_for_dump_collection(struct hci_dev *hdev)
+>>       struct qca_data *qca = hu->priv;
+>>         wait_on_bit_timeout(&qca->flags, QCA_MEMDUMP_COLLECTION,
+>> -                TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT_MS);
+>> +                TASK_UNINTERRUPTIBLE, msecs_to_jiffies(MEMDUMP_TIMEOUT_MS));
+>>         clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
+>>   }
+> 
+> With the Fixes: tag added, feel free to add:
+> 
+> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> 
+> 
 
-Cc: stable@vger.kernel.org
-Fixes: c0b34bed0bbf ("fsi: Add I2C Responder SCOM driver")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/fsi/i2cr-scom.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Thank you for your suggestion. I will update and resubmit. 
 
-diff --git a/drivers/fsi/i2cr-scom.c b/drivers/fsi/i2cr-scom.c
-index cb7e02213032..11506d321d7e 100644
---- a/drivers/fsi/i2cr-scom.c
-+++ b/drivers/fsi/i2cr-scom.c
-@@ -104,14 +104,20 @@ static int i2cr_scom_probe(struct device *dev)
- 
- 	ret = fsi_get_new_minor(fsi_dev, fsi_dev_scom, &scom->dev.devt, &didx);
- 	if (ret)
--		return ret;
-+		goto err_put_device;
- 
- 	dev_set_name(&scom->dev, "scom%d", didx);
- 	cdev_init(&scom->cdev, &i2cr_scom_fops);
- 	ret = cdev_device_add(&scom->cdev, &scom->dev);
- 	if (ret)
--		fsi_free_minor(scom->dev.devt);
-+		goto err_free_minor;
-+
-+	return ret;
- 
-+err_free_minor:
-+	fsi_free_minor(scom->dev.devt);
-+err_put_device:
-+	put_device(&scom->dev);
- 	return ret;
- }
- 
--- 
-2.17.1
+> Kind regards,
+> 
+> Paul
+
+Best regards,
+Shuai
 
 
