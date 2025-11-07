@@ -1,174 +1,165 @@
-Return-Path: <stable+bounces-192742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BEBC40D64
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 17:19:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF39DC40E08
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 17:28:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA22D1887D2C
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 16:19:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA16C3A544D
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 16:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8B5258CE7;
-	Fri,  7 Nov 2025 16:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7762DF143;
+	Fri,  7 Nov 2025 16:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="Hj0+XCX6"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aVryJvXp"
 X-Original-To: stable@vger.kernel.org
-Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DC525C810;
-	Fri,  7 Nov 2025 16:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8802C2BD5B9;
+	Fri,  7 Nov 2025 16:25:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762532360; cv=none; b=IIhK6GdrfeU9jmAeuLvGxQ43DJikTiaWNRcupUKq8zpF0NHP4PzhwWSu8mQMbL0F8ffJtKM60Oauo5Y9OOEziJ+RrUyAVKNoqHFK/qWYtzdw4p+L9RmAfCIuQ+n0ozUrxNVW699LF6xk1THj5x5pd2DMhtjbZ0+x24JvLpUC8PU=
+	t=1762532759; cv=none; b=X7F01TkJutZ/nRpPEqeAHErqrdMaatQ3YRGA6aAXnbj4iPbC6MLLN/8pYm5dwomNthwL75ModCpXDrgIVBACPQaWt9rdVO2DhQVBMAx59WMCzL0YewBvPj8mKu6zWcI/Mo5D3lmlWTQg5iTw+Z+QaIX6pmB7MvYkCjgMAmAYF5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762532360; c=relaxed/simple;
-	bh=WbRX7mezc1hkSGv/O3eHZdEH+UlazBmlAxDE8/oSk84=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RGa9NmYQhfC6Duqm8Cd4kQGEU2F5M5Drh6uMRLJzTvZlpj5vp00qUfVcjH+ljoG7lVpa/FeNZSlEuFl8bdrEqKx89V85tdaZZIazMWBk6KsS/FLuP4OQzEVk6gGHfAUPUWRXhqxqkP9ZKYADzLapH5ZGku3IvwvqQ2rNnnkkQ0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=Hj0+XCX6; arc=none smtp.client-ip=199.89.3.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 003.mia.mailroute.net (Postfix) with ESMTP id 4d344w3L2ZzlgqV6;
-	Fri,  7 Nov 2025 16:19:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1762532348; x=1765124349; bh=jbhPWfJ0xDnjiVPuOPTte/So
-	5DeOuewRoHeum+5O9+c=; b=Hj0+XCX6K9hpi/dv7rjOs/7RqfSJcus3Mfq515Zp
-	3HXoEHWddqwaK5H9Jkn8KT1lb5sh8NyvYufKasQAXyCE9ElxzPtZI2DMdv+hQoms
-	q2RV89lh6YfeMc2Pz8jdaduQgy92MFNvyG7GrqUqBKfZd6pf9pJB3vbtM7lmdNke
-	RwZtlbXBotlsEYrtpcICA1l0A4/7M5XMK1xHQBg5M9U0gFoyUOXzdiqqZ/z2mcMz
-	TGqVQBOqrT0f5aT5Xkv5AgvismJUrZ0eL5hX52InwVsgkKcozA6C36xYXH9CyxQU
-	GymF5cTL8DUoYJID6GIPAHhDYbiiovLY0IouximsZBRqDQ==
-X-Virus-Scanned: by MailRoute
-Received: from 003.mia.mailroute.net ([127.0.0.1])
- by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id JogAQFbsZk9F; Fri,  7 Nov 2025 16:19:08 +0000 (UTC)
-Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4d344f2KNXzlgqTx;
-	Fri,  7 Nov 2025 16:18:56 +0000 (UTC)
-Message-ID: <e7c3d79e-6557-4497-973b-5038f9f35958@acm.org>
-Date: Fri, 7 Nov 2025 08:18:55 -0800
+	s=arc-20240116; t=1762532759; c=relaxed/simple;
+	bh=7CwFn3glPOx+LEuwLyVNBz8w4VFBGU+ikxsXH3OvEZM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JoCJArT6o3ueY8SENqqbPKZTWWSGaz3syeT1NgV68MFF5sc64jfb2u7ppFcRvtJLWF87C0Ym8N1Q6Xhe01b+k4EKGGwGQN5gT2wrNJ3DzY6XqphKla9tJDVFmRM+pbUjQePh5vbq2EDh6xHh8s9zIAIN20Z6xchCM6zGxUhnc+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aVryJvXp; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A7D0ooh2282023;
+	Fri, 7 Nov 2025 16:25:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	wejWMBrYU48tLmTyosI5XfDNT011hcTBGXvSUb8Cw9s=; b=aVryJvXpOJJa/lhM
+	FLZyG7K9pYzPNeoSnIYGKJAxPPNi5d4pLmQPAHODPsPcvgY7OxFRHrYM4wlukTGu
+	PvvC3o6SCrRahEdHo98ntbfCrQyiMkjf9N0fXlxAyTUEY4Sdb5ANASlGyQrhWyMr
+	Zq97E1Krv8s6oxauUCXHyEY06fIn0RuNWffJP7WEkxWQruoSdAh438tETKj8zNZe
+	Kt51GkBYnofaMcjLHmoMeaaZApyARyEJOJB+JOFaO6aBUG6HyCPz+1DL5sQs+MQo
+	CnRAh6m8t7FADWghEbGcKBfea/dyrvqu/uvf6M77lPvBXc7vS9XJV3sojtFMiYvr
+	M2Z90A==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a9a9shv6g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Nov 2025 16:25:47 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5A7GPkQV024442
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 7 Nov 2025 16:25:46 GMT
+Received: from hu-vikramsa-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.24; Fri, 7 Nov 2025 08:25:40 -0800
+From: Vikram Sharma <quic_vikramsa@quicinc.com>
+To: <bryan.odonoghue@linaro.org>, <mchehab@kernel.org>, <robh@kernel.org>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <andersson@kernel.org>,
+        <konradybcio@kernel.org>, <hverkuil-cisco@xs4all.nl>,
+        <cros-qcom-dts-watchers@chromium.org>, <catalin.marinas@arm.com>,
+        <will@kernel.org>
+CC: <linux-arm-kernel@lists.infradead.org>, <quic_svankada@quicinc.com>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_nihalkum@quicinc.com>, <quic_vikramsa@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v6 1/2] dt-bindings: media: qcom,qcs8300-camss: Add missing power supplies
+Date: Fri, 7 Nov 2025 21:55:20 +0530
+Message-ID: <20251107162521.511536-2-quic_vikramsa@quicinc.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20251107162521.511536-1-quic_vikramsa@quicinc.com>
+References: <20251107162521.511536-1-quic_vikramsa@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] block: Remove queue freezing from several sysfs store
- callbacks
-To: Nilay Shroff <nilay@linux.ibm.com>, Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
- Ming Lei <ming.lei@redhat.com>, Martin Wilck <mwilck@suse.com>,
- Benjamin Marzinski <bmarzins@redhat.com>, stable@vger.kernel.org,
- Chaitanya Kulkarni <kch@nvidia.com>, Hannes Reinecke <hare@suse.de>,
- Damien Le Moal <dlemoal@kernel.org>
-References: <20251105170534.2989596-1-bvanassche@acm.org>
- <b556d704-dc3b-4e6c-a158-69fb5b377dac@linux.ibm.com>
- <7f2d2486-6b74-4ed1-81c8-2aa584cfe264@acm.org>
- <096323ad-529b-4b5c-a966-ff7cd6315ecc@linux.ibm.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <096323ad-529b-4b5c-a966-ff7cd6315ecc@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=CdgFJbrl c=1 sm=1 tr=0 ts=690e1d8b cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=Cg3GaYijB682ADaUwpUA:9
+ a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA3MDEzNSBTYWx0ZWRfX7KWhvaCkoG4G
+ pBJLSRAY7dkbwytqYYt3GE8mwh+t8BGoUk94SOc+mkVH+XpWIyYK/S5ekiYLtdEYIo+gGCOpbNS
+ WSO4xY8ZsnIwDGWzrU2dk35iI+H5Cd4kkVGYmBrN1A7HY9lPne24T7YLzBQodrIfxBWHGmrS/Vj
+ CmBK8PAyLfTJhc9DefE0/KZCdUWqlCe0KkhPE+aZQKchbmWJ1aQV2UZUFHrEbV3505OB03SDt7L
+ n3TvSWzvPf4GagS6ZW2xEBupWCSfBMcPDOsqmn7iHZfs7eaDcnSTurCH0w06r06rC2RELgFdiw+
+ XXkp16fjL9K2oM0qdyJ4oPDGOR8XCvPwbIoiIxT3Y1e31MDv5PfheiZ7sHI2EkRvPARKpf9w58o
+ 8M51hnpG3WtGRcVRCofqieLyjFSz+Q==
+X-Proofpoint-ORIG-GUID: 6tor7pudIUAbELG53kSioz-X6DKPGxdE
+X-Proofpoint-GUID: 6tor7pudIUAbELG53kSioz-X6DKPGxdE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-07_04,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 adultscore=0 malwarescore=0 spamscore=0 bulkscore=0
+ phishscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511070135
 
-On 11/7/25 2:41 AM, Nilay Shroff wrote:
-> On 11/7/25 2:19 AM, Bart Van Assche wrote:
->> On 11/6/25 5:01 AM, Nilay Shroff wrote:
->>>> @@ -154,10 +153,8 @@ queue_ra_store(struct gendisk *disk, const char=
- *page, size_t count)
->>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * calculated from the queue li=
-mits by queue_limits_commit_update.
->>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
->>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mutex_lock(&q->limits_lock);
->>>> -=C2=A0=C2=A0=C2=A0 memflags =3D blk_mq_freeze_queue(q);
->>>> -=C2=A0=C2=A0=C2=A0 disk->bdi->ra_pages =3D ra_kb >> (PAGE_SHIFT - 1=
-0);
->>>> +=C2=A0=C2=A0=C2=A0 data_race(disk->bdi->ra_pages =3D ra_kb >> (PAGE=
-_SHIFT - 10));
->>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mutex_unlock(&q->limits_lock);
->>>> -=C2=A0=C2=A0=C2=A0 blk_mq_unfreeze_queue(q, memflags);
->>>>  =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ret;
->>>>  =C2=A0 }
->>>
->>> I think we don't need data_race() here as disk->bdi->ra_pages is alre=
-ady
->>> protected by ->limits_lock. Furthermore, while you're at it, I=E2=80=99=
-d suggest
->>> protecting the set/get access of ->ra_pages using ->limits_lock when =
-it=E2=80=99s
->>> invoked from the ioctl context (BLKRASET/BLKRAGET).
->>
->> I think that we really need the data_race() annotation here because
->> there is plenty of code that reads ra_pages without using any locking.
->=20
-> I believe, in that case we need to annotate both reader and writer, usi=
-ng
-> data_race(). Annotating only writer but not reader would not help suppr=
-ess
-> KCSAN reports of a data race.
+Add missing vdda-phy-supply and vdda-pll-supply in the (monaco)qcs8300
+camss binding. While enabling imx412 sensor for qcs8300 we see a need
+to add these supplies which were missing in initial submission.
 
-No. As the comment above the data_race() macro explains, the data_race()
-macro makes memory accesses invisible to KCSAN. Hence, annotating
-writers only with data_race() is sufficient.
->>>> @@ -480,9 +468,7 @@ static ssize_t queue_io_timeout_store(struct gen=
-disk *disk, const char *page,
->>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err || val =3D=3D 0)
->>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINV=
-AL;
->>>>  =C2=A0 -=C2=A0=C2=A0=C2=A0 memflags =3D blk_mq_freeze_queue(q);
->>>> -=C2=A0=C2=A0=C2=A0 blk_queue_rq_timeout(q, msecs_to_jiffies(val));
->>>> -=C2=A0=C2=A0=C2=A0 blk_mq_unfreeze_queue(q, memflags);
->>>> +=C2=A0=C2=A0=C2=A0 data_race((blk_queue_rq_timeout(q, msecs_to_jiff=
-ies(val)), 0));
->>>>  =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return count;
->>>>  =C2=A0 }
->>>
->>> The use of data_race() above seems redundant, since the update to q->=
-rq_timeout
->>> is already marked with WRITE_ONCE(). However, the read access to q->r=
-q_timeout
->>> in a few places within the I/O hotpath is not marked and instead acce=
-ssed directly
->>> using plain C-language loads.
->>
->> That's an existing issue and an issue that falls outside the scope of =
-my
->> patch.
->>
-> Hmm, I don=E2=80=99t think this issue falls outside the scope of the cu=
-rrent patch.
-> Without this change, it would not be possible for queue_io_timeout_stor=
-e()
-> to run concurrently with the I/O hotpath and update q->rq_timeout while=
- it=E2=80=99s
-> being read. Since this patch removes queue freeze from queue_io_timeout=
-_store(),
-> it can now potentially execute concurrently with the I/O hotpath, which=
- could
-> then manifest the KCSAN-reported data race described above.
-Annotating all rq_timeout read accesses with READ_ONCE() would be
-cumbersome because there are plenty of direct rq_timeout accesses
-outside the block layer, e.g. in drivers/scsi/st.c (SCSI tape driver).
+Fixes: 634a2958fae30 ("media: dt-bindings: Add qcom,qcs8300-camss compatible")
+Cc: <stable@vger.kernel.org>
+Co-developed-by: Nihal Kumar Gupta <quic_nihalkum@quicinc.com>
+Signed-off-by: Nihal Kumar Gupta <quic_nihalkum@quicinc.com>
+Signed-off-by: Vikram Sharma <quic_vikramsa@quicinc.com>
+---
+ .../bindings/media/qcom,qcs8300-camss.yaml          | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-I prefer an alternative approach: annotate the q->rq_timeout update in
-blk_queue_rq_timeout() with both data_race() and WRITE_ONCE(). That
-guarantees that rq_timeout update happens once and prevents that KCSAN
-complains about rq_timeout reads.
-
-Thanks,
-
-Bart.
+diff --git a/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml b/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml
+index 80a4540a22dc..e5f170aa4d9e 100644
+--- a/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml
+@@ -120,6 +120,14 @@ properties:
+     items:
+       - const: top
+ 
++  vdda-phy-supply:
++    description:
++      Phandle to a 0.88V regulator supply to CSI PHYs.
++
++  vdda-pll-supply:
++    description:
++      Phandle to 1.2V regulator supply to CSI PHYs pll block.
++
+   ports:
+     $ref: /schemas/graph.yaml#/properties/ports
+ 
+@@ -160,6 +168,8 @@ required:
+   - power-domains
+   - power-domain-names
+   - ports
++  - vdda-phy-supply
++  - vdda-pll-supply
+ 
+ additionalProperties: false
+ 
+@@ -328,6 +338,9 @@ examples:
+             power-domains = <&camcc CAM_CC_TITAN_TOP_GDSC>;
+             power-domain-names = "top";
+ 
++            vdda-phy-supply = <&vreg_l4a_0p88>;
++            vdda-pll-supply = <&vreg_l1c_1p2>;
++
+             ports {
+                 #address-cells = <1>;
+                 #size-cells = <0>;
+-- 
+2.34.1
 
 
