@@ -1,111 +1,202 @@
-Return-Path: <stable+bounces-192709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABDB1C3F82D
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 11:39:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEB1C3F884
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 11:41:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 31F314E1846
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 10:36:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEB7F188DB01
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 10:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9499A32C316;
-	Fri,  7 Nov 2025 10:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBA131BC94;
+	Fri,  7 Nov 2025 10:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cI9ctnXI"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FB2253B59
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 10:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C3731BC85;
+	Fri,  7 Nov 2025 10:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762511808; cv=none; b=L47JZsLHi1nWNuZ9D0+joCa5zpo7VeU9ix6onlx7tezbR2iX3I4P5nx6Y8QI8j2qWX2sJHcBjBXIumFhpMEo02bwAU2BV4tPBC9kcKPjL/yGFSpHslPp0R3I+diNpVLyZEoUNV7mdtSzKOjuSN+qtSQ5DZXs4jFkBWxtEvIlz8I=
+	t=1762512095; cv=none; b=HCHgzcbEmucosSdh5sAu6eFArM/cCEb+QiJWEqQCgkas/GP5h+hZ8GYemROLCzoKJN+dPwRFhy8y32avkKWLnSIbQf+iusLlya1XAoYomwXwgpAfMLA09/Akd/5SzN0ckj8MJ7xprvvIS0LbgJjSQaYXvJReizqRsuCiy1t0vUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762511808; c=relaxed/simple;
-	bh=D3MYsOwUR4ontrP/Jui3taLN5zLST+IKcpEwg+9F4BE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sqX13fMVjqSOcl98+l9/lUk8kQ8c+SVWQbDRmNMUdtlLQFWXHK3uQsMuMdkbN1lCaKFJvhgZyl88YBpb4TB8xghkPvzZKt3UCXycSMqsdhUju4TR8Zx54SdfmX+FKMPjL70+QKKWILob1ADiZ1BlkanNre/nojoy6OjxK+B30f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vHJpd-0008P1-Hn; Fri, 07 Nov 2025 11:36:37 +0100
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vHJpd-007VwK-17;
-	Fri, 07 Nov 2025 11:36:37 +0100
-Received: from pza by lupine with local (Exim 4.98.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vHJpd-0000000041V-14PK;
-	Fri, 07 Nov 2025 11:36:37 +0100
-Message-ID: <70dda82cef6a916475cf05e3c2e06b95b66402cf.camel@pengutronix.de>
-Subject: Re: [PATCH v2 2/2] media: staging: imx: configure src_mux in
- csi_start
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Michael Tretter <m.tretter@pengutronix.de>, Steve Longerbeam
-	 <slongerbeam@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Pengutronix Kernel Team
-	 <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Hans Verkuil
-	 <hans.verkuil@cisco.com>
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, Michael
- Tretter	 <michael.tretter@pengutronix.de>
-Date: Fri, 07 Nov 2025 11:36:37 +0100
-In-Reply-To: <20251107-media-imx-fixes-v2-2-07d949964194@pengutronix.de>
-References: <20251107-media-imx-fixes-v2-0-07d949964194@pengutronix.de>
-	 <20251107-media-imx-fixes-v2-2-07d949964194@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1-1+deb13u1 
+	s=arc-20240116; t=1762512095; c=relaxed/simple;
+	bh=x3xfEJjsq+90MqQHycYpk6tGt7j/nlcynzGU7Sk/V5o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z2pOJk/kLyg65to1Zo3aViGuxrlrq6RTFMt5PDnFNXyyq55Z4FCCKFQEsXmsS6AhXj+CY2ntVQWNQOAMM1oLGNMEepe+lWSTds3xPs/2enCYT0GIxYiq0z94lDqrk/gvO3xWasEHRC04sJl7JUx6N3iiOg/oxPJUFTL3ynjsBCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cI9ctnXI; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A7679Ds030815;
+	Fri, 7 Nov 2025 10:41:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=FQfKCs
+	u2JMigErayMP5cI5pbifx5TVI3qW+Q7KoPDgg=; b=cI9ctnXIbgOtcbnJ0ESWbG
+	HwCFZ70eAKf0HUMlLMGtPcuIvpePmF82x/K5byai/kqRMywVg5rlx1Opxhw08f1X
+	N0rBHuVHceUURLMUs090grRajG5M2SCF/q3EKiaFBKOcKaCz6UECmjx4G1WadhP3
+	/yCuNGbhft0oHQ7li8Lzcwva2xSqviKgzPJ5o1bPk/mAQHiHcTKCa29kl0fXhzrO
+	1c99NlES5rqDj7Nqt0K3+mRBZj1o+7G2312/fiVJ+d2Ce+YMvCMCc3pw2qlfLqHB
+	IIigQLBmjPkuNttXs79/9hyenDHmXnXOijyVarImA93QXT7ywwIXbiWqU33Cfp2w
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59v2au80-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Nov 2025 10:41:16 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A78jm7T021491;
+	Fri, 7 Nov 2025 10:41:15 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a5xrk20hg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Nov 2025 10:41:15 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A7AfESR30343722
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Nov 2025 10:41:15 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CF39458052;
+	Fri,  7 Nov 2025 10:41:14 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7307A5805E;
+	Fri,  7 Nov 2025 10:41:10 +0000 (GMT)
+Received: from [9.61.79.219] (unknown [9.61.79.219])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  7 Nov 2025 10:41:10 +0000 (GMT)
+Message-ID: <096323ad-529b-4b5c-a966-ff7cd6315ecc@linux.ibm.com>
+Date: Fri, 7 Nov 2025 16:11:08 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] block: Remove queue freezing from several sysfs store
+ callbacks
+To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+        Ming Lei <ming.lei@redhat.com>, Martin Wilck <mwilck@suse.com>,
+        Benjamin Marzinski <bmarzins@redhat.com>, stable@vger.kernel.org,
+        Chaitanya Kulkarni <kch@nvidia.com>, Hannes Reinecke <hare@suse.de>,
+        Damien Le Moal <dlemoal@kernel.org>
+References: <20251105170534.2989596-1-bvanassche@acm.org>
+ <b556d704-dc3b-4e6c-a158-69fb5b377dac@linux.ibm.com>
+ <7f2d2486-6b74-4ed1-81c8-2aa584cfe264@acm.org>
+Content-Language: en-US
+From: Nilay Shroff <nilay@linux.ibm.com>
+In-Reply-To: <7f2d2486-6b74-4ed1-81c8-2aa584cfe264@acm.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: D7oNcefHysAjdWrrLK5KlKsBilAj5YEM
+X-Proofpoint-ORIG-GUID: D7oNcefHysAjdWrrLK5KlKsBilAj5YEM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfXyTpMcHJQaW2i
+ om2zAxkr2GXaMfI6Ro1hnsJ7wAQ0MdWSr+Jl6uWYrCrI/0LCaRBDyoi1ozkERRJSAFMZhbxV9nC
+ s/ekVp4ZqhP42VtCZyvBGcvBlGqbdgZ3EVDwF62s46O1aofluEuSimLnKJtnoA2Bb7cvDndknBx
+ 1Me47hAgmgNtpFHr/RKuBKwU6NfwBJZCSdxvm65ssG8o7fUqbmLKkq2OEuDePKN6RL5myrCCjRn
+ juXQ2LbniZ2dK0GO5WWiQWuH8iAUhmSvYg1Q2ZwP0RsFTGFh4heA97oQLVmUJLWgS6HE15nO7fX
+ 87sygwPG/2Lk3/nowxazR+d5EO9TauzxXlfLUbkLJY9bjgky83qF66dVOC6XmmnZ6iOsscS2015
+ bqKQVFaOfRqd6cc9k3PcHAJ5zF5cng==
+X-Authority-Analysis: v=2.4 cv=H8HWAuYi c=1 sm=1 tr=0 ts=690dcccc cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=slnAk8qkVrWKiL5MmmsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-07_02,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 lowpriorityscore=0 priorityscore=1501 adultscore=0
+ impostorscore=0 clxscore=1015 bulkscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010021
 
-On Fr, 2025-11-07 at 11:34 +0100, Michael Tretter wrote:
-> After media_pipeline_start() was called, the media graph is assumed to
-> be validated. It won't be validated again if a second stream starts.
->=20
-> The imx-media-csi driver, however, changes hardware configuration in the
-> link_validate() callback. This can result in started streams with
-> misconfigured hardware.
->=20
-> In the concrete example, the ipu2_csi1 is driven by a parallel video
-> input. After the media pipeline has been started with this
-> configuration, a second stream is configured to use ipu1_csi0 with
-> MIPI-CSI input from imx6-mipi-csi2. This may require the reconfiguration
-> of ipu1_csi0 with ipu_set_csi_src_mux(). Since the media pipeline is
-> already running, link_validate won't be called, and the ipu1_csi0 won't
-> be reconfigured. The resulting video is broken, because the ipu1_csi0 is
-> misconfigured, but no error is reported.
->=20
-> Move ipu_set_csi_src_mux from csi_link_validate to csi_start to ensure
-> that input to ipu1_csi0 is configured correctly when starting the
-> stream. This is a local reconfiguration in ipu1_csi0 and is possible
-> while the media pipeline is running.
->=20
-> Since csi_start() is called with priv->lock already locked,
-> csi_set_src() must not lock priv->lock again. Thus, the mutex_lock() is
-> dropped.
->=20
-> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-> Fixes: 4a34ec8e470c ("[media] media: imx: Add CSI subdev driver")
-> Cc: stable@vger.kernel.org
 
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 
-regards
-Philipp
+On 11/7/25 2:19 AM, Bart Van Assche wrote:
+> On 11/6/25 5:01 AM, Nilay Shroff wrote:
+>>> @@ -154,10 +153,8 @@ queue_ra_store(struct gendisk *disk, const char *page, size_t count)
+>>>        * calculated from the queue limits by queue_limits_commit_update.
+>>>        */
+>>>       mutex_lock(&q->limits_lock);
+>>> -    memflags = blk_mq_freeze_queue(q);
+>>> -    disk->bdi->ra_pages = ra_kb >> (PAGE_SHIFT - 10);
+>>> +    data_race(disk->bdi->ra_pages = ra_kb >> (PAGE_SHIFT - 10));
+>>>       mutex_unlock(&q->limits_lock);
+>>> -    blk_mq_unfreeze_queue(q, memflags);
+>>>         return ret;
+>>>   }
+>>
+>> I think we don't need data_race() here as disk->bdi->ra_pages is already
+>> protected by ->limits_lock. Furthermore, while you're at it, I’d suggest
+>> protecting the set/get access of ->ra_pages using ->limits_lock when it’s
+>> invoked from the ioctl context (BLKRASET/BLKRAGET).
+> 
+> I think that we really need the data_race() annotation here because
+> there is plenty of code that reads ra_pages without using any locking.
+
+I believe, in that case we need to annotate both reader and writer, using
+data_race(). Annotating only writer but not reader would not help suppress
+KCSAN reports of a data race.
+
+>>> @@ -480,9 +468,7 @@ static ssize_t queue_io_timeout_store(struct gendisk *disk, const char *page,
+>>>       if (err || val == 0)
+>>>           return -EINVAL;
+>>>   -    memflags = blk_mq_freeze_queue(q);
+>>> -    blk_queue_rq_timeout(q, msecs_to_jiffies(val));
+>>> -    blk_mq_unfreeze_queue(q, memflags);
+>>> +    data_race((blk_queue_rq_timeout(q, msecs_to_jiffies(val)), 0));
+>>>         return count;
+>>>   }
+>>
+>> The use of data_race() above seems redundant, since the update to q->rq_timeout
+>> is already marked with WRITE_ONCE(). However, the read access to q->rq_timeout
+>> in a few places within the I/O hotpath is not marked and instead accessed directly
+>> using plain C-language loads.
+> 
+> That's fair. I will remove data_race() again from
+> queue_io_timeout_store().
+>> BUG: KCSAN: data-race in blk_add_timer+0x74/0x1f0
+>>
+>> Based on the gdb trace:
+>>
+>> (gdb) info line *(blk_add_timer+0x74)
+>> Line 138 of "block/blk-timeout.c" starts at address 0xc000000000d5637c <blk_add_timer+108> and ends at 0xc000000000d5638c <blk_add_timer+124>.
+>>
+>> This corresponds to:
+>>
+>> 128 void blk_add_timer(struct request *req)
+>> 129 {
+>> 130         struct request_queue *q = req->q;
+>> 131         unsigned long expiry;
+>> 132
+>> 133         /*
+>> 134          * Some LLDs, like scsi, peek at the timeout to prevent a
+>> 135          * command from being retried forever.
+>> 136          */
+>> 137         if (!req->timeout)
+>> 138                 req->timeout = q->rq_timeout;
+>>
+>> As seen above, the read access to q->rq_timeout is unmarked. To avoid the reported
+>> data race, we should replace this plain access with READ_ONCE(q->rq_timeout).
+>> This is one instance in the I/O hotpath where q->rq_timeout is read without annotation,
+>> and there are likely a few more similar cases that should be updated in the same way.
+> 
+> That's an existing issue and an issue that falls outside the scope of my
+> patch.
+> 
+Hmm, I don’t think this issue falls outside the scope of the current patch. 
+Without this change, it would not be possible for queue_io_timeout_store()
+to run concurrently with the I/O hotpath and update q->rq_timeout while it’s
+being read. Since this patch removes queue freeze from queue_io_timeout_store(),
+it can now potentially execute concurrently with the I/O hotpath, which could
+then manifest the KCSAN-reported data race described above.
+
+Thanks,--Nilay
 
