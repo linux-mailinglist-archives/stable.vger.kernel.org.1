@@ -1,183 +1,114 @@
-Return-Path: <stable+bounces-192671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E90C3E50F
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 04:14:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E1CBC3E56D
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 04:22:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B695F34ADFE
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 03:14:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C0AA188870A
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 03:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF802F7AB0;
-	Fri,  7 Nov 2025 03:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cXgVXgTj";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ECuRFRJM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3A02E8B9E;
+	Fri,  7 Nov 2025 03:22:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530EF2EF660
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 03:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F1E21578F;
+	Fri,  7 Nov 2025 03:22:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762485240; cv=none; b=Kp5qpjRb2jHqVvhU6gy+7hXRcCvZJExbQ5KWNiUvzQM76vCLMlRdChnKcAwP+iaDqoN7XwHOHtu9gHZc+tCiEAbg/toYJ+WuGscqZrMbpsro6xI1AjgKqf1TxVsWdV+shGBXskgqAODbg/ZF2E+XwdKt/EH4fFVgFKk8HXlRdKM=
+	t=1762485736; cv=none; b=nwsAyFgUpzZynU2zS3Hv9/VM2ziMyscBVoVcFJrQdDUI5BqRnpuG+QwPJlYfGs4hTgFKsmM6MGxKUGikytL4KdRPxSAPl/keBqVr4U1+AbbONWWFSDSWHuRHKowgLGFSHELqSYqoQXgMQ0pRhupm2+MXs+P59kl+UpsWlhfIh1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762485240; c=relaxed/simple;
-	bh=1qMF7nlKbcQyP3hFkm2Yom7lAyH0NJ2FKvArrMUXsTY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ECymjQkOaDkYfC5ft9PfIAi0YtQTW4Q5MJwcyhDalEXG0O01Jkvu2bluyimQ7II1nX/2NIy/PZB4HWBpotuWReeVu9ZfhYDyXp2X9X6g+5kGaUP93JYYGTW6REmPSK8EkUKHILWiKfCbiyi5gKFpH02Ycj1oMv5cBL63nxmq2WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cXgVXgTj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ECuRFRJM; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A6HHDJS2326852
-	for <stable@vger.kernel.org>; Fri, 7 Nov 2025 03:13:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=5ulkyrEbi8OnMoUGToNxsPYw
-	iMFv+TZXN3Zpai6wGaM=; b=cXgVXgTjAJloHyXh2XZUR4c4wnZphLV+Knql7lBs
-	m5JLwEiHlNAaiCe8wGdPSXQsJ8yLthEJiiDJ698KMVSSYu4UXbR/kDVF/HXonwkk
-	AT/PZDykrU/ZrIffmNpZKDfw9E3EIjAR+SH/HRf6kEAI1yTTT/erCFR4z8xDSuEe
-	sa/05Dt9mT7cqbym84w2slLBJMaUF22ZMiI6GMIGzVFJ0maQ9rGLWTbWia5cMsno
-	eKC6v/ldHUgBBm+9BqX8aXZ9ygivcWAYxoLaN16D/TE4SeVIiaDSVr6jg9mCB2DR
-	RzpkdQEbMPz2aq8iO4HyidaoUFZPSgStPfzyVgpiV1iCGQ==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a8h0v4b5j-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 07 Nov 2025 03:13:57 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4ed74e6c468so4032401cf.3
-        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 19:13:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1762485236; x=1763090036; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ulkyrEbi8OnMoUGToNxsPYwiMFv+TZXN3Zpai6wGaM=;
-        b=ECuRFRJMsbXCxcBH4ncmFOAiBEe+xK2bS6T56lXsL9SUEXhuryoM2HAHPnT+frEHw9
-         RkPisOd0el5dzamF5oZjDdJZC4vT25qRB1N1DFuXKQxSaZ/Q44TxrWyx7X3hJ47vmAfW
-         7BpTRw3SFkxh/2kBmUNw0+UJuSC8VjKkyKQe1wesbZdA7LyU/xKCMTRuYbc1ZEDIdELF
-         znjlMu5wTk57bWdEKws9CJL7dVeG98B8yTep1m2NuJHzdD4zspCZx9pXxtFDcVbr0Stq
-         +qywjO3EcuNarMZskpN+GjkmIY1iBky54sl8YTf4U8Mfc1DH1S/4b/wu4QrlxZFl0EsC
-         B50w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762485236; x=1763090036;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5ulkyrEbi8OnMoUGToNxsPYwiMFv+TZXN3Zpai6wGaM=;
-        b=snTAcWVr5M+EJqk0HDopLFNd+X6KiO+8GH+3AiZQsPzNPM8O4PMGCTPv4N/pg6kMZB
-         TLIxpBHg05jSk7vN0h+6xhWLoR7+VGIcoK1zY170Gmun33pdnwntGTjswFWGWf1go0VQ
-         R+l6++kub6nAGf66rwzbGioIMCIucKxreFUVaudZU2MOM1A9p/VPx2+PnsqCVNNGRaAU
-         LnY4/Lba4h6zDXqvmRmvExWbx59IdNmkiq096dh0oYR4M5E8VDvLJrmmSXFitiEmxdLG
-         8XUIXpIV1dgF71w+myUA2QhCLpndSzKlbmmbLPrIatujvIfb4WJoZMi/xJJgwXD9Q5tz
-         ij4g==
-X-Forwarded-Encrypted: i=1; AJvYcCVrHrcI5RiVu6jKXX7cGNK7KYt8DzVADNfJFfZRcll9msOZdpr3DLYbhPq0UenYP1pj0/D9nRw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8O/K8Gzw49lFjEEhIVo9+qXS89TtAynLFgPz0oCTSyUSWzQrp
-	Vq6SIviXDggoavaPJaYgZi3jvcyvm6JrbdjSVhGXIjMgUotxTqefrIw5AJI0zE5AWGNcoWH0b6N
-	g7IRaqsbka7Dfpda892Lv4ZogW/ps2SVYbh6SYZlcSFVX0/lEWWNrNcLZtqieeMu1q0w=
-X-Gm-Gg: ASbGncuw8+hFFU4l7sXLS2Wv3FddGxiwmZpYwIsL9fYsGTFfJ3f4CdwvG79TnyaLIgX
-	b1wjpMhuwcxz1EEtKM5qnxwSxVqhA3l1y4M0RQJ4WK1m7i/LUMLpuVFFJNIM88euXugl4uYX9er
-	I1m2k4Yh4aahb58nr5ijPkm73Hqh4YVf51mJZnar0g8yESy5zvmKVxU7NH86bJKMtRU0C33YAHV
-	mI0+FOfrQEShRfBvi1bCr4KxgzCjOe7qjQ4qPac/uFs1mhilNcyq987T/buj03z7L4C3EAVj/Za
-	qtxDJHy5OWlVkfQTUpdlK3/EOm/iBpoFeE7YsJBbfrCdI6qFfi83pOvmhPitjUGFldtAvXHDAUL
-	SaQeVQNFRPEc+GkLZa+/I06tHCOiMbxm6jRUZoq4UR06h+rPAdr9XlqEOxrQ0RbyGH9a5mXKDiJ
-	XrdzhuO8XEkiYs
-X-Received: by 2002:a05:622a:738a:b0:4ec:f26f:5aea with SMTP id d75a77b69052e-4ed94a8e321mr15222091cf.68.1762485236159;
-        Thu, 06 Nov 2025 19:13:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IED1oCM5bH6C0iTYRHg+jtwwgcsfQV0Yto6qRZJZKP6JFon9v0IgWDdEwixPFVo/5Mx6jkNww==
-X-Received: by 2002:a05:622a:738a:b0:4ec:f26f:5aea with SMTP id d75a77b69052e-4ed94a8e321mr15221901cf.68.1762485235727;
-        Thu, 06 Nov 2025 19:13:55 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5944a3a1a71sm1158846e87.83.2025.11.06.19.13.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Nov 2025 19:13:54 -0800 (PST)
-Date: Fri, 7 Nov 2025 05:13:53 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Shuai Zhang <quic_shuaz@quicinc.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        quic_chejiang@quicinc.com, quic_jiaymao@quicinc.com,
-        quic_chezhou@quicinc.com
-Subject: Re: [PATCH v1] Bluetooth: btusb: add new custom firmwares
-Message-ID: <jztfgic2kbziqradykdmyqv6st3lue23snweawlxtmprqd3ifu@t3gw2o4g5qfx>
-References: <20251107021345.2759890-1-quic_shuaz@quicinc.com>
+	s=arc-20240116; t=1762485736; c=relaxed/simple;
+	bh=n/CvNyeydy7A7ai8PO9KeruPT4Vy2/gZRmm23G/tF6s=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=XXAZ3Iw0+DnoSBbEWNzzG8QgBR1L5XpnTyucMXJ5GulYz3GoJMclIHZaXjIWji/Alcv6LfCjSybK7D9lbOIAvj5mARsX8yDRXO3TkUy4BVsPEUIjYQl1krcYC5J/Tw2AIwIGMil4sUh3IFIyngGzaq4360SkY69MVqxEtUdnZVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-05 (Coremail) with SMTP id zQCowAD3ZvXSZQ1pMZXYAQ--.42215S2;
+	Fri, 07 Nov 2025 11:22:02 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: eajames@linux.ibm.com,
+	ninad@linux.ibm.com,
+	joel@jms.id.au
+Cc: linux-fsi@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] fsi: Fix device refcount leak in i2cr_scom_probe
+Date: Fri,  7 Nov 2025 11:21:52 +0800
+Message-Id: <20251107032152.16835-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:zQCowAD3ZvXSZQ1pMZXYAQ--.42215S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7GryfGF43Zr1xCw4UJry3XFb_yoWkCFc_Cw
+	1Dur9rWrn8WFZ3uFy3Xr43ZryF9F4qqF18CF4jqrWfKasxXFnrXwn5ur4UCr4xWw47AFsY
+	v3W8WrWfZr1IgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbTkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7MxkF7I0En4kS14v26r126r1DMxkIecxEwVAFwVW8GwCF04k20xvY0x0EwIxGrw
+	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxK
+	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU4q2NUUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251107021345.2759890-1-quic_shuaz@quicinc.com>
-X-Proofpoint-ORIG-GUID: HcbrkMqwGk2bfAj9lQFHtfrVupNmFudV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA3MDAyMyBTYWx0ZWRfXwirrO5/8M7Pt
- zhQaknSLidY8jrdY/CU8+31t+5IfaEZIKrnkJGIL3JDiYczj7sCOlwTu10t2in/XXqnXLOXwbt1
- 8jiDuQ+jzx2tJfEj/pWW9H7+LTIm4Ze8zyZ1e2Yu6NUZVB+U5mI7nxzhjlZNZZgDuYdy8+FsJaU
- sTLtlpRCkDgGtSNg4RB0oNGQQ2skF9lfrXbE5Ddf9UKdgWPq0PHyJlEcbnyMFLo/BLhh3WnzoOc
- xvioh0P72SI56XBB3mEFxf3eTxhvBojyMgVf0C33PGMoJT3n5unywOV/3mSM4lLRLhdRZWv7mUc
- VkTuezxMwEFQgl8xsd9Y4rGmCF2ZdiegyIJkUBkkrIrtJTsSKgcFDoIMOZzVJLCT3rgwPCL6Jx9
- jXEDQvkHxFHtNkSnYmU8PLyn3+jEaw==
-X-Proofpoint-GUID: HcbrkMqwGk2bfAj9lQFHtfrVupNmFudV
-X-Authority-Analysis: v=2.4 cv=PoyergM3 c=1 sm=1 tr=0 ts=690d63f5 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=3m3fJbb2j65Qt_-WAq4A:9
- a=CjuIK1q_8ugA:10 a=dawVfQjAaf238kedN5IG:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-06_05,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 clxscore=1015 priorityscore=1501 phishscore=0 spamscore=0
- adultscore=0 impostorscore=0 malwarescore=0 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511070023
 
-On Fri, Nov 07, 2025 at 10:13:45AM +0800, Shuai Zhang wrote:
-> There are custom-made firmwares based on board ID for a given QCA BT
-> chip sometimes, and they are different with existing firmwares and put
-> in a separate subdirectory to avoid conflict, for example:
-> QCA2066, as a variant of WCN6855, has firmwares under 'qca/QCA2066/'
-> of linux-firmware repository.
+This patch fixes a device reference count leak in the i2cr_scom driver
+by adding proper put_device() calls in both error paths and the remove
+function.
 
-These are generic phrases regarding QCA2066. Describe why and what is
-done in the patch (e.g. why do you add new entry to that table).
+Found by code review.
 
-> 
-> Cc: stable@vger.kernel.org
+Cc: stable@vger.kernel.org
+Fixes: c0b34bed0bbf ("fsi: Add I2C Responder SCOM driver")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/fsi/i2cr-scom.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-There is little point for CC'ing stable if this is not a fix (and it's
-not, it lacks a corresponding tag).
-
-> Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
-
-Please migrate to the @oss.qualcomm.com address.
-
-> ---
->  drivers/bluetooth/btusb.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-> index dcbff7641..7175e9b2d 100644
-> --- a/drivers/bluetooth/btusb.c
-> +++ b/drivers/bluetooth/btusb.c
-> @@ -3273,6 +3273,7 @@ static const struct qca_device_info qca_devices_table[] = {
->  
->  static const struct qca_custom_firmware qca_custom_btfws[] = {
->  	{ 0x00130201, 0x030A, "QCA2066" },
-> +	{ 0x00130201, 0x030B, "QCA2066" },
->  	{ },
->  };
->  
-> -- 
-> 2.34.1
-> 
-
+diff --git a/drivers/fsi/i2cr-scom.c b/drivers/fsi/i2cr-scom.c
+index cb7e02213032..11506d321d7e 100644
+--- a/drivers/fsi/i2cr-scom.c
++++ b/drivers/fsi/i2cr-scom.c
+@@ -104,14 +104,20 @@ static int i2cr_scom_probe(struct device *dev)
+ 
+ 	ret = fsi_get_new_minor(fsi_dev, fsi_dev_scom, &scom->dev.devt, &didx);
+ 	if (ret)
+-		return ret;
++		goto err_put_device;
+ 
+ 	dev_set_name(&scom->dev, "scom%d", didx);
+ 	cdev_init(&scom->cdev, &i2cr_scom_fops);
+ 	ret = cdev_device_add(&scom->cdev, &scom->dev);
+ 	if (ret)
+-		fsi_free_minor(scom->dev.devt);
++		goto err_free_minor;
++
++	return ret;
+ 
++err_free_minor:
++	fsi_free_minor(scom->dev.devt);
++err_put_device:
++	put_device(&scom->dev);
+ 	return ret;
+ }
+ 
 -- 
-With best wishes
-Dmitry
+2.17.1
+
 
