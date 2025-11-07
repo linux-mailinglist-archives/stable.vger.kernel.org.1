@@ -1,179 +1,174 @@
-Return-Path: <stable+bounces-192717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CED2C3FC34
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 12:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0BEEC3FDB8
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 13:11:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B71721892336
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 11:44:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6398C1895AC2
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 12:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71066320A1D;
-	Fri,  7 Nov 2025 11:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5AFC327211;
+	Fri,  7 Nov 2025 12:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mSkktNqi"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fJpGf1I2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC25631BCBD
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 11:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8DA2DEA8C;
+	Fri,  7 Nov 2025 12:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762515810; cv=none; b=Z0Nm0/30fwxw/IlUJwMmmSJZyRtHw/WAHwk7gKGVaYdBUQFIxdJKH1IcijNwNXNU4tyzBq0/PqWZLuss/LEVDmbVNHXlZcfWAU25o9XtoApqCCBMBBsocLEar3ysSlzqkOeeDPVm7IjP9Fugr5S2GCE/ZwSQ8v3VDyVDK2wip14=
+	t=1762517477; cv=none; b=gLphT6iN8lHmmu3t4HLiUeDmZ8A2LVg5z3riWWUlih5l55cjAXPjGPGZEMu8UXTPgjxmJSRIikJx1D3XMvuw2UL1pmIM4mChWnDeEbLQCPXs6vFP+p3T7p+YYa2H0hia6HK4ZEceE1Y3fysI0VDO8LAoBsia19CaqxWdU5rLvZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762515810; c=relaxed/simple;
-	bh=AmjUPrWpuTwthWsVlqGLH9DR6E98FBF6NayNRYjqv5c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xg6GNqkRrxpTJqGKJQRRfYrktuSugPpB5Y/9HUBwsWa71+9HmxSZa4md4WBjb5jgoLLyvX4JxiX1uB9PJ5is0H8u7Mtlv9/PL+XoKWVdyvI9ZHvcBbmbw+jNLv/j2xCNOvnFSrBgRFTZPuv/MbaLYwYLdvau/AiTrbO3KcUlOwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mSkktNqi; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-429c7e438a8so601306f8f.2
-        for <stable@vger.kernel.org>; Fri, 07 Nov 2025 03:43:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762515807; x=1763120607; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nqzN7knDGH9QbbVJwM6bluXyesO87eP1mjfXDHBEKqY=;
-        b=mSkktNqio9IcoHCXxwbligTDrRPU3DT6gRpEjQ+4Rud8/53kDBSYVQuxS/HIwfsFrx
-         Yj+u3saj9StcPn8deML3Y4k99XQEZDca9E03kjQQd6+XRbYrVE0YSk5spjPKgbdloxYC
-         Hz1GyQztA+riEwsvDjf8qYK/VwsJ1jRPrUbTCkftdicHCuG8B8k2iZvbPD5zpHKvdzNF
-         kJ7w1FeqBlo6hm8U3FO2VATsRGTxfJBVb7elygi73NUHMDdJMDNSOU5WJPLWLmUgDFhY
-         0cOM++qHNdJlDCvKqhWkotHTaFBUtaHOND/QXwzy7mXPD33PZPd27EfcuCx4Ty5kG9KR
-         ebCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762515807; x=1763120607;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nqzN7knDGH9QbbVJwM6bluXyesO87eP1mjfXDHBEKqY=;
-        b=JR7tDDX5RSJsELsJBDXrhRzUmN7xxLANIPCGqj1Wmh3C/bkbr+TbAq/DRWBIhf5xhY
-         7ubrIjnsoRGU6/pGeQ42cakyc7TvWrTFLiQCS3Hhp+FPkKNxhM29cBFYz++1DoLYB3+F
-         GCPqU66tGvKPUSmRpKNNhy7mhVHbuT5+gguatGE/yEB2GM6G0Ow8E7V1TgJsIqVqfc5c
-         nX81PMxIYVqtIjH6379CduSyozsdIEiMlJ9Jr/ecuBNH7QxJfbiWy1LL1cOnWuT514Eb
-         z3fxbK7VwfM8Da2ecoCEsVvUMUzHhbRvVZVM6p800zJt0xIZPr1DaaQjRLVoA2g2aiEm
-         sXZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVKnk1clXrZ3/t97mMcOnvTfdnmFMTeCJSvXmfAR+aVKxbpiuQC02lcmXJ7i3yX3YpND92Mn0A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywj1B+bpYlWDTs6WaulFfJ5NzekCvq0uUm24VdRQx0S8IaCMZAx
-	XXM+ODXamF8zVAVIenjkDtcKSbNwb3smbtuYjNpdp77964swGDtElWiT
-X-Gm-Gg: ASbGncsinZMOP30xw5s3sXLVhjYHP4as8A5H0Blx4Zc+2L0gKAaBp+GtdmXTscmGyus
-	yUDYfvSsZryENcJ+8hevbyD0oHvxX9G4m6psjSinfN87zp6wJMK+EkUSRrMYCsoqJy8hECpG1ZJ
-	sbtb16OsDuhbguhvQ02+s6FRIQlP1jzzcMv6hXo1iJ8Kkk6DzG1Y4dlkXMLcqd85ke8Lh+F4JGF
-	EVbnf4/HXaQKAJUM4OI7rDedKfzAUg88XY4IhzS1VUFA8N9tp/KrAh8YT6qpnBSGp+8JBQ8czAK
-	MfB+hRbXYF5/rLQE/vNesRwtX9z6WKcQUWsSbIDgGePPC6kaXkrwJVI0uvkNJzgohqgJq0tFgAQ
-	G6QKePoRcoKyBjLkaltZmi3il10peWPNr/wyjGXOL2BVNK/0chtzfa/UY0hr1qX9xQzKnBWm+WD
-	Ciw1bZjjBHzDjCsL8YUfBALJ2dlI8RJfcBRbrZ0k6JTA==
-X-Google-Smtp-Source: AGHT+IHw1xLInjNvQyJ+t0Q049pOhGmFx6agirkk01rOnXi/dnaEiyF9VIdrFsbRc2ZzQtwnJmDSoA==
-X-Received: by 2002:a5d:5d0c:0:b0:429:d6b7:6b9b with SMTP id ffacd0b85a97d-42ae5af7ff7mr2595204f8f.62.1762515806681;
-        Fri, 07 Nov 2025 03:43:26 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42abe64fd90sm4714454f8f.21.2025.11.07.03.43.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Nov 2025 03:43:26 -0800 (PST)
-Date: Fri, 7 Nov 2025 11:43:24 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: NeilBrown <neilb@ownmail.net>
-Cc: NeilBrown <neil@brown.name>, "Chuck Lever" <cel@kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "David Laight" <David.Laight@ACULAB.COM>,
- "Linux NFS Mailing List" <linux-nfs@vger.kernel.org>, "Linux List Kernel
- Mailing" <linux-kernel@vger.kernel.org>, speedcracker@hotmail.com
-Subject: Re: Compile Error fs/nfsd/nfs4state.o - clamp() low limit slotsize
- greater than high limit total_avail/scale_factor
-Message-ID: <20251107114324.33fd69f3@pumpkin>
-In-Reply-To: <176251424056.634289.13464296772500147856@noble.neil.brown.name>
-References: <bbba88825d7b2b06031c1b085d76787a2502d70e.camel@kernel.org>
-	<37bc1037-37d8-4168-afc9-da8e2d1dd26b@kernel.org>
-	<20251106192210.1b6a3ca0@pumpkin>
-	<176251424056.634289.13464296772500147856@noble.neil.brown.name>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1762517477; c=relaxed/simple;
+	bh=hpVr8iyO7KGqD2WBV4SGKNp+0Tu8kexwAFvNHJZsQLg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=aWtSyWEPDvLNcEDydoKcduFf0efKeFzhdng+uwpFI0V/YlkPHeuUDSL/UUUZeK9CaLQ5Jq945UQS6qUvOmvCRj6FUDw/6aZDsKWVGVcMcXIkOTpMI43d/PFClH6ebdrSV+XMY6nbBglU6fXAbXfoFpl4lu2N6W35TtsPAkCEDXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fJpGf1I2; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A758uSr557751;
+	Fri, 7 Nov 2025 12:11:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	SKJwrIblNVll+XvukvV4wZxNBbHDoBGgVYbGrDMsKq8=; b=fJpGf1I25+oZVvsF
+	+kT9cRiP4mO/XNbfkk1VXzR1t8t6QBSHtTK4QWm+YPI+0noF/4Y6Ex03gijgdRfN
+	Uh1xt1mszDB/rBxL+7J1Ov09NzN/BuCoTxKIfjfEDX0G/h0jeDUGzviqoc2ezeX3
+	VT9YO0odaGk3XnjWurPbkMNhzLT6d/QJpKRI+LxS0S3NqAe3h/Wp9ua+wgUlGnbk
+	1hbVD83cci0sH8od3XzA626YFqG4vYnBzfHJ9+YKEa4YACKH0WHlQBg84Zw8OyI9
+	gSFWoLU3iMILOeEGYz71RjDoMWTk4E82Yt3tkg1JRMmhpntTIoC4sGzKAxEK5AYt
+	VZkMsQ==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a8yr9u00a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Nov 2025 12:11:11 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5A7CBBMW025956
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 7 Nov 2025 12:11:11 GMT
+Received: from [10.239.96.215] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.24; Fri, 7 Nov
+ 2025 04:09:58 -0800
+Message-ID: <ace738bf-f40f-46ac-9b17-bac658d2a290@quicinc.com>
+Date: Fri, 7 Nov 2025 20:09:56 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] Bluetooth: btusb: add new custom firmwares
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+CC: Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz
+	<luiz.dentz@gmail.com>,
+        <linux-bluetooth@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <quic_chejiang@quicinc.com>, <quic_jiaymao@quicinc.com>,
+        <quic_chezhou@quicinc.com>
+References: <20251107021345.2759890-1-quic_shuaz@quicinc.com>
+ <jztfgic2kbziqradykdmyqv6st3lue23snweawlxtmprqd3ifu@t3gw2o4g5qfx>
+Content-Language: en-US
+From: Shuai Zhang <quic_shuaz@quicinc.com>
+In-Reply-To: <jztfgic2kbziqradykdmyqv6st3lue23snweawlxtmprqd3ifu@t3gw2o4g5qfx>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=DrpbOW/+ c=1 sm=1 tr=0 ts=690de1df cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
+ a=Z3BhJ2cJuhskXHIy3gwA:9 a=QEXdDO2ut3YA:10 a=1R1Xb7_w0-cA:10
+ a=OREKyDgYLcYA:10 a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-ORIG-GUID: 0NKRCAy15mT4tuWyXgxV_4RLIx39QKIl
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA3MDA5OSBTYWx0ZWRfX90rD9E6BZHBk
+ hqE5Z9YGHFBYGqniqdiuPdmKfweVOmZXxqwZr4sfp3ZC9oTRhbmd8Vk6ZSPbYd2gu1+bEyFRDpu
+ pySUw48PMgM8kQUuH9FfHrgL8sEXaJDftjq9dGANseWDbTfV7HbTE+8m2OLNmmkWvt0J7dVFkvD
+ mPNs8OacUdDTZcQqxzdT1ttl28HxYHWBeRnL1LMo6bdVgooiilUBB+EG15t3q6IXc5pEOsrOsnf
+ iVJkvpPoybVHHojjs7L5kjlTQJrkmIT8vsOzDWFuik//E52ZdVvpmrTCZlkaRXsY36Jvz4/HV7A
+ XSikZZMtfM/FkH4wbrTlrI9l8wSAmyd7lG8tpbLzshtTfdQre+ySuQKyjrf9waDkdcVRua41i4p
+ 3HfVLt4pf3E5g1QdCIc7oXfklZ6r7A==
+X-Proofpoint-GUID: 0NKRCAy15mT4tuWyXgxV_4RLIx39QKIl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-07_03,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 adultscore=0 impostorscore=0 bulkscore=0
+ clxscore=1015 priorityscore=1501 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2511070099
 
-On Fri, 07 Nov 2025 22:17:20 +1100
-NeilBrown <neilb@ownmail.net> wrote:
+Hi Dmitry
 
-> On Fri, 07 Nov 2025, David Laight wrote:
-> > On Thu, 6 Nov 2025 09:33:28 -0500
-> > Chuck Lever <cel@kernel.org> wrote:
-> >   
-> > > FYI
-> > > 
-> > > https://bugzilla.kernel.org/show_bug.cgi?id=220745  
-> > 
-> > Ugg - that code is horrid.
-> > It seems to have got deleted since, but it is:
-> > 
-> > 	u32 slotsize = slot_bytes(ca);
-> > 	u32 num = ca->maxreqs;
-> > 	unsigned long avail, total_avail;
-> > 	unsigned int scale_factor;
-> > 
-> > 	spin_lock(&nfsd_drc_lock);
-> > 	if (nfsd_drc_max_mem > nfsd_drc_mem_used)
-> > 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
-> > 	else
-> > 		/* We have handed out more space than we chose in
-> > 		 * set_max_drc() to allow.  That isn't really a
-> > 		 * problem as long as that doesn't make us think we
-> > 		 * have lots more due to integer overflow.
-> > 		 */
-> > 		total_avail = 0;
-> > 	avail = min((unsigned long)NFSD_MAX_MEM_PER_SESSION, total_avail);
-> > 	/*
-> > 	 * Never use more than a fraction of the remaining memory,
-> > 	 * unless it's the only way to give this client a slot.
-> > 	 * The chosen fraction is either 1/8 or 1/number of threads,
-> > 	 * whichever is smaller.  This ensures there are adequate
-> > 	 * slots to support multiple clients per thread.
-> > 	 * Give the client one slot even if that would require
-> > 	 * over-allocation--it is better than failure.
-> > 	 */
-> > 	scale_factor = max_t(unsigned int, 8, nn->nfsd_serv->sv_nrthreads);
-> > 
-> > 	avail = clamp_t(unsigned long, avail, slotsize,
-> > 			total_avail/scale_factor);
-> > 	num = min_t(int, num, avail / slotsize);
-> > 	num = max_t(int, num, 1);
-> > 
-> > Lets rework it a bit...
-> > 	if (nfsd_drc_max_mem > nfsd_drc_mem_used) {
-> > 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
-> > 		avail = min(NFSD_MAX_MEM_PER_SESSION, total_avail);
-> > 		avail = clamp(avail, n + sizeof(xxx), total_avail/8)
-> > 	} else {
-> > 		total_avail = 0;
-> > 		avail = 0;
-> > 		avail = clamp(0, n + sizeof(xxx), 0);
-> > 	}
-> > 
-> > Neither of those clamp() are sane at all - should be clamp(val, lo, hi)
-> > with 'lo <= hi' otherwise the result is dependant on the order of the
-> > comparisons.
-> > The compiler sees the second one and rightly bleats.  
+On 11/7/2025 11:13 AM, Dmitry Baryshkov wrote:
+> On Fri, Nov 07, 2025 at 10:13:45AM +0800, Shuai Zhang wrote:
+>> There are custom-made firmwares based on board ID for a given QCA BT
+>> chip sometimes, and they are different with existing firmwares and put
+>> in a separate subdirectory to avoid conflict, for example:
+>> QCA2066, as a variant of WCN6855, has firmwares under 'qca/QCA2066/'
+>> of linux-firmware repository.
 > 
-> In fact only gcc-9 bleats.
+> These are generic phrases regarding QCA2066. Describe why and what is
+> done in the patch (e.g. why do you add new entry to that table).
+> 
+>>
+>> Cc: stable@vger.kernel.org
+> 
+> There is little point for CC'ing stable if this is not a fix (and it's
+> not, it lacks a corresponding tag).
+> 
 
-That is probably why it didn't get picked up earlier.
+I tried not adding Cc: stable@vger.kernel.org, but this question occurred.
 
-> gcc-7 gcc-10 gcc-13 gcc-15
-> all seem to think it is fine.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Which, of course, it isn't...
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-	David
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree."
+
+
+
+>> Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
+> 
+> Please migrate to the @oss.qualcomm.com address.
+
+I am currently submitting an application for an OSS account.
 
 > 
-> NeilBrown
+>> ---
+>>  drivers/bluetooth/btusb.c | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+>> index dcbff7641..7175e9b2d 100644
+>> --- a/drivers/bluetooth/btusb.c
+>> +++ b/drivers/bluetooth/btusb.c
+>> @@ -3273,6 +3273,7 @@ static const struct qca_device_info qca_devices_table[] = {
+>>  
+>>  static const struct qca_custom_firmware qca_custom_btfws[] = {
+>>  	{ 0x00130201, 0x030A, "QCA2066" },
+>> +	{ 0x00130201, 0x030B, "QCA2066" },
+>>  	{ },
+>>  };
+>>  
+>> -- 
+>> 2.34.1
+>>
+> 
+
+Best,regard
+Shuai
 
 
