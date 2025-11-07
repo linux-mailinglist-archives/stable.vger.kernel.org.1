@@ -1,123 +1,125 @@
-Return-Path: <stable+bounces-192681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5032CC3E68A
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 05:02:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E19C3E7B7
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 06:04:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84EA03A9F1E
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 04:02:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DCB9C4E278B
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 05:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F202A28750F;
-	Fri,  7 Nov 2025 04:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6905624169F;
+	Fri,  7 Nov 2025 05:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="0C0Fsenp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZiU4b06q"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08CA2214A97
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 04:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FFA1DA60D;
+	Fri,  7 Nov 2025 05:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762488137; cv=none; b=SS+DIMoZbURn40jeUIbiImk6bgV5zJSY7h+JwgZjx8JLZKCz03m9Qdfm5afBL4jo0b51qtExM/oD31gYEIx8GmcnsvmbJgDtTHgrrD/UsSsRbxUxZ6RtfMpkD6oQiHckeltpahualftetljorb/zlANtaeRs+W0XOhbxkuSVyvQ=
+	t=1762491874; cv=none; b=eUeMGwdLRHLhI9axjolw3AyAzf58i1eP+Rw3kff8oMx7zUHtADmNliPdlFspI5y25VL3kRfNVAdK50ARdlX7lKK+nh+Gi1aaw9oFczZwpcflcogUfa+NU78hC0SVquBUgpWHfRSgy3NM0nMxqjTuGkjBy7OH5MS+mIRgLiSzuAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762488137; c=relaxed/simple;
-	bh=UUuenMYg9ocxnpNEOQdv6RBX2DzfhgqPqQJHBfqyat0=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=QeytVJigQHrbtdrAk4Elno8HDU8WjzRfiEPAPpct1Y9xnoamwXudOEHNauw0H1N9zV5UO8pTYrAjQFUvlGurWEjLKklN3G8C+Mg5MHfQgtmZZuf2Yc0N9cUtWuJuxR42CPqEAN2eS9jujZ5R+QbfLpybTUtIzx21pvdiEdxjT44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=0C0Fsenp; arc=none smtp.client-ip=120.232.169.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=0C0FsenpEofFHcagG9lqooB1qz3rWBgCbz2sHhvzHg5agiJmzFin1YCK1CwuH8aR5MPf5T176D5ai
-	 Nv/NqJ+5HGmZY19nwsG0A45eo1qq40LC6Q1STVa24erwhaYVauqleL5X9aZQZI02UiQh/ya8Ju86k5
-	 QoxGsQMatMJtHDQY=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[117.129.7.61])
-	by rmsmtp-lg-appmail-19-12022 (RichMail) with SMTP id 2ef6690d6e850fa-47440;
-	Fri, 07 Nov 2025 11:59:03 +0800 (CST)
-X-RM-TRANSID:2ef6690d6e850fa-47440
-From: Rajani Kantha <681739313@139.com>
-To: dsahern@kernel.org,
-	wangliang74@huawei.com,
-	horms@kernel.org,
-	kuba@kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 6.6.y] net: fix NULL pointer dereference in l3mdev_l3_rcv
-Date: Fri,  7 Nov 2025 11:59:02 +0800
-Message-Id: <20251107035902.3695-1-681739313@139.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1762491874; c=relaxed/simple;
+	bh=WkgmRKdKxCnzs6d1MwMyzQnG3gLzUtUwssTUT4PokGQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qpev0v/aJEASVMl8SF8DHwxj1+XeNunSz9zFgn2fLUSVJCf+CwUD10mBLrUJWys5kxQWBDu5ThxXfR8SGEZlhEylLyI5opYpYxhGD4GVhBOM6pvy27NIWFFtgTNWS67vy2NfWpI2/Px1k5wCKH5fZ1MYqHbwJXcGV47NOHN7GMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZiU4b06q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89C0C116B1;
+	Fri,  7 Nov 2025 05:04:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762491873;
+	bh=WkgmRKdKxCnzs6d1MwMyzQnG3gLzUtUwssTUT4PokGQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZiU4b06q1u0P6OmRIk9yoMM1wLEoGeW6RaAgUjMmQC8WaTPM75XUsr5g7LPt00qGj
+	 xgeOvqi5kH8EJQvGJi8xyrAjUcT5JUMypHeiGgXvRNw9oy1nVsmMVnyXRJN4I+ly9l
+	 etwX3wOr0InWpuPHfNMJhKeIy7QLWkeydVkD9M7DQMksFtmb+X9+EIUxKXiRIKjD+7
+	 ZsBpyL1QF0QQmHTjxSVRkR/TyKUGVuH57RryrDMo3JxuAXcBMu0Y0QYvAuOE4YnYK2
+	 uX/GPYGh3xF1o/P80r6GavZLQRZU3YlWs2x8iPv66z3nE15I7/ZcNZbJMMNCGlPZqt
+	 Hz70n9JCToBzw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH] kallsyms: fix symbol type for "big" symbols
+Date: Fri,  7 Nov 2025 06:04:14 +0100
+Message-ID: <20251107050414.511648-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Wang Liang <wangliang74@huawei.com>
+`kallsyms_get_symbol_type()` does not take into account the potential
+extra byte for "big" symbols.
 
-[ Upstream commit 0032c99e83b9ce6d5995d65900aa4b6ffb501cce ]
+This makes `/proc/kallsyms` output the wrong symbol type for such "big"
+symbols, such as a bogus `1` symbol type, which in turn confused other
+tooling [1].
 
-When delete l3s ipvlan:
+Thus fix it.
 
-    ip link del link eth0 ipvlan1 type ipvlan mode l3s
-
-This may cause a null pointer dereference:
-
-    Call trace:
-     ip_rcv_finish+0x48/0xd0
-     ip_rcv+0x5c/0x100
-     __netif_receive_skb_one_core+0x64/0xb0
-     __netif_receive_skb+0x20/0x80
-     process_backlog+0xb4/0x204
-     napi_poll+0xe8/0x294
-     net_rx_action+0xd8/0x22c
-     __do_softirq+0x12c/0x354
-
-This is because l3mdev_l3_rcv() visit dev->l3mdev_ops after
-ipvlan_l3s_unregister() assign the dev->l3mdev_ops to NULL. The process
-like this:
-
-    (CPU1)                     | (CPU2)
-    l3mdev_l3_rcv()            |
-      check dev->priv_flags:   |
-        master = skb->dev;     |
-                               |
-                               | ipvlan_l3s_unregister()
-                               |   set dev->priv_flags
-                               |   dev->l3mdev_ops = NULL;
-                               |
-      visit master->l3mdev_ops |
-
-To avoid this by do not set dev->l3mdev_ops when unregister l3s ipvlan.
-
-Suggested-by: David Ahern <dsahern@kernel.org>
-Fixes: c675e06a98a4 ("ipvlan: decouple l3s mode dependencies from other modes")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250321090353.1170545-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Rajani Kantha <681739313@139.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/CANiq72ns1sRukpX-4L3FgqfJw4nXZ5AyqQKCEeQ=nhyERG7QGA@mail.gmail.com/
+Fixes: 73bbb94466fd ("kallsyms: support "big" kernel symbols")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- drivers/net/ipvlan/ipvlan_l3s.c | 1 -
- 1 file changed, 1 deletion(-)
+Somehow this went unnoticed so far... In Fedora 42 I compared the
+System.map with `/proc/kallsyms` and that was the only symbol with a
+different type -- Arnaldo, could you please confirm this makes it go
+away for you? Thanks!
 
-diff --git a/drivers/net/ipvlan/ipvlan_l3s.c b/drivers/net/ipvlan/ipvlan_l3s.c
-index d5b05e803219..ca35a50bb640 100644
---- a/drivers/net/ipvlan/ipvlan_l3s.c
-+++ b/drivers/net/ipvlan/ipvlan_l3s.c
-@@ -224,5 +224,4 @@ void ipvlan_l3s_unregister(struct ipvl_port *port)
- 
- 	dev->priv_flags &= ~IFF_L3MDEV_RX_HANDLER;
- 	ipvlan_unregister_nf_hook(read_pnet(&port->pnet));
--	dev->l3mdev_ops = NULL;
+ kernel/kallsyms.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
+index 1e7635864124..4f9b612d6bf2 100644
+--- a/kernel/kallsyms.c
++++ b/kernel/kallsyms.c
+@@ -101,11 +101,21 @@ static unsigned int kallsyms_expand_symbol(unsigned int off,
+  */
+ static char kallsyms_get_symbol_type(unsigned int off)
+ {
++	const u8 len = kallsyms_names[off];
++
++	off++;
++
++	/*
++	 * If MSB is 1, it is a "big" symbol, so we need to skip two bytes.
++	 */
++	if ((len & 0x80) != 0)
++		off++;
++
+ 	/*
+ 	 * Get just the first code, look it up in the token table,
+ 	 * and return the first char from this token.
+ 	 */
+-	return kallsyms_token_table[kallsyms_token_index[kallsyms_names[off + 1]]];
++	return kallsyms_token_table[kallsyms_token_index[kallsyms_names[off]]];
  }
--- 
-2.17.1
 
 
+
+base-commit: dc77806cf3b4788d328fddf245e86c5b529f31a2
+--
+2.51.2
 
