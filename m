@@ -1,125 +1,211 @@
-Return-Path: <stable+bounces-192739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E4CC409F3
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 16:37:29 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5BEC40A5C
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 16:45:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD28F562BBA
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 15:37:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7836B4EB25C
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 15:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E54432B9BA;
-	Fri,  7 Nov 2025 15:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BFD2D7394;
+	Fri,  7 Nov 2025 15:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="FZ/RnJ6f"
+	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="N2KSJ4I3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx13.kaspersky-labs.com (mx13.kaspersky-labs.com [91.103.66.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5CF32B9B0
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 15:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362D8125B2;
+	Fri,  7 Nov 2025 15:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.103.66.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762529840; cv=none; b=Iin4yvoMwTQlXJ+CQmMgIHdmf02513Sl8Oqg6WAUtLusybIcIKthoYdbk5kcqmAyMiQYcHFGJ+ZCZJzZXMTs2hvPluHZJlojcYt41H0+P3u2afD8Ab8F1rQzVonVW0Zr2mh6FF6s4P9j30uo1X3Av1ZmWpF2bO/zEMqSeQ8voqI=
+	t=1762530343; cv=none; b=keKi81hcCdY2dCJu43tzyM0Noi/5KsFsXfkciS+/lOWrk/08F97RfU6xai0FkXsor64l33S6hjDS8i/SADHSx6DXK7su15jvFVD3mhzucFartWBqmOQ0S4gOctHS3c+WSiW245wujvMNEK6oJ7dK7IgF+3nXPaLmdqb3DG+IljQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762529840; c=relaxed/simple;
-	bh=YAtagVcx34LiTu2Em+AG4zrD5yn9L45QqXjTBIFCHBE=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=boH0DfRD5KvpU82B9ulJxscGMhUg+SRyK6tk6Al1avpd5BgJLNfqQrk5VU6s9NpiLHBWxfdgphwBYF+FI331aKgky0cesMoo57bzWmMUH5+s9WDePVBSph53671jtalEFXpcSbRCnNdn+O5dINymkoJNOgPMCIvwDvP+oR8n8q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=FZ/RnJ6f; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5930f751531so874977e87.3
-        for <stable@vger.kernel.org>; Fri, 07 Nov 2025 07:37:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1762529836; x=1763134636; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:references:mime-version:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kTtcdT44O12GZqFLnS478W/Jpk+0DJ3d4h0jXmuqd2w=;
-        b=FZ/RnJ6fWpPxXrB2+fvFJJZde+Vmv7M2WbHBwXXnJsLl529BoFWAb/F6fQUuE1SMkG
-         EIDp94UvQU7xiUsXn7yVYAum3qPN9Tug63tdpkbry6XmHbMfgBXeBA3QgUza9AJrt8gr
-         NTC7yy01wLjCDZ0AHLPZcSIB+LZckQIF7HRckGGC7cKh9mj3kwz0irNlIHEp0p0MqzsO
-         tbHrFwWwjeGJQSjNn9c2wNbMD4S03m+6QSp/6EPzr+nebdXVL7fJ/t2V2+JBDWg+U7/w
-         nYKQncAVBWHvguzUVBU7dXgs4mr1Qt6Ttq5uffS4VjbqXz65x8VnMoGmSsYm1vJkMR0v
-         g/nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762529836; x=1763134636;
-        h=cc:to:subject:message-id:date:references:mime-version:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kTtcdT44O12GZqFLnS478W/Jpk+0DJ3d4h0jXmuqd2w=;
-        b=wCG+m2Vyta1Q5vcPYFiDRSkE6kM5DhjSGcvTMQSDnasqvHMBm2eIaiOpvWhCXwqB2l
-         5gHp70gsNNt1fd/7xg21IAaZxi2+lEakYpU8GZ2LKhHrimO6IKZZ5rvHObXo1ZiJpfa0
-         0VdlgcnUbst/PrVVD7Alqtn9IpQqCFoWt9X9iUXYeh3CWZGtrwJ6FGW2wOR7IfAJM9OK
-         0om6j+nyOGIPt2mjxjCnXoW4UFTHxjfy9okbncte0y25Fr6MDIW/7YtQd5Yex+QoX41g
-         VnopxotKjk1Nrp2p64DRQ/sazNfQgrcL6X3nVuVkPGHqgM/8b94TQIopdUhHGHqC3S3G
-         mvug==
-X-Forwarded-Encrypted: i=1; AJvYcCVC01QtbNWP9BDIPvnBa/kMJqmZ39URtjzpHNCsS4MpMvdFnLV5qhV453pyIo7E7SeFgZ+7Ri0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQXMLTYb3DZqF3c0D8A2gPdjOyU65QsB9IDdSmZTv7i9FKLHVD
-	ohDxZsFyinR1BslwQW/o/5ZUld3xv+YBW9y0Vm4j5/H4a9GZkcBLMKpQgcBTZIqVlurghz1D14C
-	qA3KrnR+hv/qaDIYX3c8x0e9mH469HTFV/L1RUfOOiA==
-X-Gm-Gg: ASbGncvwcFaDa3Z+aZaAM4VUr+UP1SuQ/ndPOgajR/xsYSAxg3iu6mzg8FEyWG7pHWA
-	tBKYhYZD5mV6A0RTOYtijiOCnkKhveU9SFJg7ZGcDpGTNHaOhv/AQt0BeOG7evUBJOGOENeInVT
-	+gnhYwcyZOUWwGULFOQKRleilh5H5SE1sQNXNeTYgrbbDuFPSdiWKPJPnYnqry7F0UY7/6AlMOS
-	+995px108bg5ZyM2JF9KJjup4iyQmEulXOYgPmXhk2gB+I374Hd0PGa4igBlI2OlouiOtRiFa7z
-	bfF7sUZ8s1RarX0=
-X-Google-Smtp-Source: AGHT+IFIQWLvyizEJkA6WQQPfls6s2Ke/GDQq2r3QKt0gm0TI4N21r92bi9oP4EBFVG7CQqpb1Qa/kmwxqVMsaEgQbA=
-X-Received: by 2002:a05:6512:114f:b0:57e:c1e6:ba8 with SMTP id
- 2adb3069b0e04-59456b689ecmr1167747e87.12.1762529836073; Fri, 07 Nov 2025
- 07:37:16 -0800 (PST)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 7 Nov 2025 07:37:15 -0800
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 7 Nov 2025 07:37:15 -0800
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-In-Reply-To: <20251107033924.3707495-1-quic_shuaz@quicinc.com>
+	s=arc-20240116; t=1762530343; c=relaxed/simple;
+	bh=gSVyAnwa/eT2IrQeUH6B6InqjR5qZpkSV+VtOrAMIBE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EoPELley74Oi/uCCwDXwfZQ0AaysF6ckEHwUvP4zhPCjhkRo3u41CvbNm8h1CXhdw/dQRHzdRd7b+AhXOOnoHHnIX9Z/GXNa9zC8UPdUryf3tzUdBFLABFjlalU8uKztSMfXLLCNVCD2SkFsBeu0s490S+uHNdOcaeSQxoVpENs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=N2KSJ4I3; arc=none smtp.client-ip=91.103.66.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
+	s=mail202505; t=1762530337;
+	bh=NE3R/3BKJGW2lXDVXEr1LfPaybTpng72jTTBKj5B/yE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=N2KSJ4I3tp/27fmiCuRhHaa9eB4lzMcZDmOTxqzp2rJDcUA7Dyaj8JZSnNuNPGJC6
+	 ZWf+DIBXR2G+cAE0NGYBj+jYvbUUYQvI9pcNccrZFc+MG+8a71aE4yUVqDNSJViPaq
+	 Tdfj60wNEH1RhF10O2M6D4SpPo5wKkFTYPiGM8I6uqyoHJ7geAYPkDod10iyBbyuwA
+	 X1b2ZCWiEcHaJ+s7bElDJnv0BQdr6aMqnt6p22jfeMVuCRevLIRd7YoSf0YlXS2CIT
+	 HPWbfw5mBSSTLhuNBRTnIrll54xBetXV3Ebu29VykqRvmGhbe9eH9liHoE/NZJgXq6
+	 DYgbBQqv5G1Cg==
+Received: from relay13.kaspersky-labs.com (localhost [127.0.0.1])
+	by relay13.kaspersky-labs.com (Postfix) with ESMTP id 30AB03E4F07;
+	Fri,  7 Nov 2025 18:45:37 +0300 (MSK)
+Received: from mail-hq2.kaspersky.com (unknown [91.103.66.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
+	by mailhub13.kaspersky-labs.com (Postfix) with ESMTPS id BA6643E47E3;
+	Fri,  7 Nov 2025 18:45:36 +0300 (MSK)
+Received: from Nalivayko.avp.ru (10.16.105.14) by HQMAILSRV3.avp.ru
+ (10.64.57.53) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Fri, 7 Nov
+ 2025 18:45:19 +0300
+From: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
+To: <linux-media@vger.kernel.org>
+CC: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>,
+	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>, Mauro
+ Carvalho Chehab <mchehab@kernel.org>, Michael Krufky <mkrufky@linuxtv.org>,
+	<syzbot+f9f5333782a854509322@syzkaller.appspotmail.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH 2/2] media: mxl111sf: fix i2c race condition during device probe
+Date: Fri, 7 Nov 2025 18:44:26 +0300
+Message-ID: <20251107154426.2116743-3-Sergey.Nalivayko@kaspersky.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251107154426.2116743-1-Sergey.Nalivayko@kaspersky.com>
+References: <20251107154426.2116743-1-Sergey.Nalivayko@kaspersky.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251107033924.3707495-1-quic_shuaz@quicinc.com>
-Date: Fri, 7 Nov 2025 07:37:15 -0800
-X-Gm-Features: AWmQ_bm8xW_kPpRTsH9WNw3ymMoDp75e2yehSkvO8IUPn-NE_tXci0xOQuXb2kk
-Message-ID: <CAMRc=Mce4KU_zWzbmM=gNzHi4XOGQWdA_MTPBRt15GfnSX5Crg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] Fix SSR unable to wake up bug
-To: Shuai Zhang <quic_shuaz@quicinc.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	quic_chejiang@quicinc.com, quic_jiaymao@quicinc.com, quic_chezhou@quicinc.com, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Marcel Holtmann <marcel@holtmann.org>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: HQMAILSRV3.avp.ru (10.64.57.53) To HQMAILSRV3.avp.ru
+ (10.64.57.53)
+X-KSE-ServerInfo: HQMAILSRV3.avp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 11/07/2025 15:33:04
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 197892 [Nov 07 2025]
+X-KSE-AntiSpam-Info: Version: 6.1.1.11
+X-KSE-AntiSpam-Info: Envelope from: Sergey.Nalivayko@kaspersky.com
+X-KSE-AntiSpam-Info: LuaCore: 75 0.3.75
+ aab2175a55dcbd410b25b8694e49bbee3c09cdde
+X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
+X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
+X-KSE-AntiSpam-Info: {Tracking_one_url}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: kaspersky.com:7.1.1,5.0.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;syzkaller.appspot.com:7.1.1,5.0.1
+X-KSE-AntiSpam-Info: {Tracking_white_helo}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/07/2025 15:34:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 11/7/2025 12:14:00 PM
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/11/07 15:29:00
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/11/07 15:09:00 #27893311
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/11/07 15:29:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 52
 
-On Fri, 7 Nov 2025 04:39:22 +0100, Shuai Zhang <quic_shuaz@quicinc.com> said:
-> This patch series fixes delayed hw_error handling during SSR.
->
-> Patch 1 adds a wakeup to ensure hw_error is processed promptly after coredump collection.
-> Patch 2 corrects the timeout unit from jiffies to ms.
->
-> Changes v3:
-> - patch2 add Fixes tag
-> - Link to v2
->   https://lore.kernel.org/all/20251106140103.1406081-1-quic_shuaz@quicinc.com/
->
-> Changes v2:
-> - Split timeout conversion into a separate patch.
-> - Clarified commit messages and added test case description.
-> - Link to v1
->   https://lore.kernel.org/all/20251104112601.2670019-1-quic_shuaz@quicinc.com/
->
-> Shuai Zhang (2):
->   Bluetooth: qca: Fix delayed hw_error handling due to missing wakeup
->     during SSR
->   Bluetooth: hci_qca: Convert timeout from jiffies to ms
->
->  drivers/bluetooth/hci_qca.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> --
+syzbot reports a KASAN issue as below:
 
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000019: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x00000000000000c8-0x00000000000000cf]
+CPU: 1 UID: 0 PID: 5849 Comm: syz-executor279 Not tainted 6.15.0-rc2-syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+RIP: 0010:__mutex_lock_common kernel/locking/mutex.c:580 [inline]
+RIP: 0010:__mutex_lock+0x15d/0x10c0 kernel/locking/mutex.c:746
+Call Trace:
+ <TASK>
+ dvb_usbv2_generic_write+0x26/0x50 drivers/media/usb/dvb-usb-v2/dvb_usb_urb.c:77
+ mxl111sf_ctrl_msg+0x172/0x2e0 drivers/media/usb/dvb-usb-v2/mxl111sf.c:73
+ mxl111sf_write_reg+0xda/0x1f0 drivers/media/usb/dvb-usb-v2/mxl111sf.c:123
+ mxl111sf_i2c_start drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c:130 [inline]
+ mxl111sf_i2c_sw_xfer_msg drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c:-1 [inline]
+ mxl111sf_i2c_xfer+0x923/0x8aa0 drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c:813
+ __i2c_transfer+0x859/0x2250 drivers/i2c/i2c-core-base.c:-1
+ i2c_transfer+0x2c2/0x430 drivers/i2c/i2c-core-base.c:2315
+ i2c_transfer_buffer_flags+0x182/0x260 drivers/i2c/i2c-core-base.c:2343
+ i2c_master_recv include/linux/i2c.h:79 [inline]
+ i2cdev_read+0x10a/0x220 drivers/i2c/i2c-dev.c:155
+ vfs_read+0x21f/0xb90 fs/read_write.c:568
+ ksys_read+0x19d/0x2d0 fs/read_write.c:713
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+
+This occurs due to a race condition during DVB-USB-V2 device initialization.
+While initialization is in progress, I2C data may be read from userspace,
+leading to a NULL pointer dereference in dvb_usbv2_generic_write
+and a kernel panic.
+
+      Thread 1 (probe device)             Thread 2 (receive i2c data)
+    ...
+    dvb_usbv2_probe()
+      ...
+      d->priv = kzalloc(
+          d->props->size_of_priv,
+          GFP_KERNEL);
+      ...
+      dvb_usbv2_init()
+      ...
+        // can read data from i2c
+        dvb_usbv2_i2c_init()
+      ...
+                                        ...
+                                        i2cdev_read()
+                                        ...
+                                          // d->priv data is invalid. UB
+                                          mxl111sf_i2c_xfer()
+                                            ...
+                                            mxl111sf_ctrl_msg()
+                                              ...
+                                              // null ptr deref
+                                              dvb_usbv2_generic_write()
+                                        ...
+      ...
+      // d->priv data is valid
+      dvb_usbv2_adapter_init()
+      ...
+
+Add init_ready flag check to prevent I/O on uninitialized DVB-USB-V2 device.
+
+Reported-by: syzbot+f9f5333782a854509322@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f9f5333782a854509322
+Fixes: 4c66c9205c07 ("[media] dvb-usb: add ATSC support for the Hauppauge WinTV-Aero-M")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
+---
+ drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c b/drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c
+index 100a1052dcbc..b7bad90b16dc 100644
+--- a/drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c
++++ b/drivers/media/usb/dvb-usb-v2/mxl111sf-i2c.c
+@@ -804,7 +804,7 @@ int mxl111sf_i2c_xfer(struct i2c_adapter *adap,
+ 	int hwi2c = (state->chip_rev > MXL111SF_V6);
+ 	int i, ret;
+ 
+-	if (mutex_lock_interruptible(&d->i2c_mutex) < 0)
++	if (!atomic_read(&d->init_ready) || mutex_lock_interruptible(&d->i2c_mutex) < 0)
+ 		return -EAGAIN;
+ 
+ 	for (i = 0; i < num; i++) {
+-- 
+2.39.5
+
 
