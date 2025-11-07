@@ -1,122 +1,164 @@
-Return-Path: <stable+bounces-192727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5A7C4008E
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 14:08:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D47C4015D
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 14:23:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5E343B8B70
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 13:08:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB6623AB001
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 13:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714B42C032E;
-	Fri,  7 Nov 2025 13:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CBE2DF707;
+	Fri,  7 Nov 2025 13:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GyHqf8Tw"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Q8YDR0yu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C053264A9D;
-	Fri,  7 Nov 2025 13:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D815D2DCF5D;
+	Fri,  7 Nov 2025 13:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762520877; cv=none; b=fu9DSZkUIV0DP0ZRESGWwSNryH8ihc5nPXdeyk6jwt2aOU46mUAsQ2jWkbbckQ43YF4Yq5gc5WYPyalI7G9TYW3RZrk2i67xA5C5jWIjkTO6FQe4MpUVuXNWA2yB5uLnwnai/DtzoSTYd4uFzbOXqndet6fgvJX9eFaDBnTlv2w=
+	t=1762521756; cv=none; b=q7TtJ6HWkGmNP06607VB3GsoNI07JcPXtiZDotHpEMkGbydCXhHpVc5IJ6085MOFllUn8wR+JKcXD83Gfc+2oxKPUFOWFII4qJ6HlNftT7MjOe+P1d+mzweCaVY7fxy6pqbZ4ME9HJkKq4WP3BxizO8xHDpfFaCSD8olCeNRCFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762520877; c=relaxed/simple;
-	bh=gTCe6+8DCvvTv/gwaosX0O1LJx32TQrppUBdFg7nEZ4=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=GNpGRsyTnQO02YHdK1M5W8CS24Bz3MaCvLXb44ZfGr5eskDEanp9L1KcISkGMP8sJiFcKK1DG+lLfbZDxPcUzCkYMmz/MGNMbNAOI2lMfe+RhzPTTC0MnM7YGgHPUqJ+o+y7ISq34/5qpA734qkY+H4pUj6vO6Sbn9KqcBYrWZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GyHqf8Tw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB87EC19421;
-	Fri,  7 Nov 2025 13:07:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762520876;
-	bh=gTCe6+8DCvvTv/gwaosX0O1LJx32TQrppUBdFg7nEZ4=;
-	h=Date:From:To:Cc:Subject:References:From;
-	b=GyHqf8TwIU4rt1cFeUgO4fS4nNJ6DVg8ytscgRw4KL4L3gaewE1KKnGmw/TlKo/nM
-	 SI1mAPSUB/M1mDxvwmNJy+b+fFqF5cMQw4pnAvqNT/cR4+ejYkPpCvrinXK6/UrWYp
-	 FNyqKkviQLAASmtazERNk3yVPzwYzJuv+3VGFXKHoNafAFiph/IaSOohjasYUK/uds
-	 DvlYoDxN3oFoMwi+Jr7e9y2utGowRaqKFw0bDWMfr2uKxDhxUg/sEtIw4csAfP0QjZ
-	 1xnfkBxLLiA7VzG2oq4TpEIpV8+Y0GRaSsL4BkBLXl0ide4d/CHQem41exgdfl0Pc9
-	 OCIrQijE17auA==
-Received: from rostedt by gandalf with local (Exim 4.98.2)
-	(envelope-from <rostedt@kernel.org>)
-	id 1vHMC6-00000000GGV-0MR2;
-	Fri, 07 Nov 2025 08:07:58 -0500
-Message-ID: <20251107130757.937218818@kernel.org>
-User-Agent: quilt/0.68
-Date: Fri, 07 Nov 2025 08:07:31 -0500
-From: Steven Rostedt <rostedt@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Tomas Glozar <tglozar@redhat.com>,
- John Kacur <jkacur@redhat.com>,
- stable@vger.kernel.org,
- Vincent Donnefort <vdonnefort@google.com>,
- syzbot+92a3745cea5ec6360309@syzkaller.appspotmail.com
-Subject: [for-linus][PATCH 1/3] ring-buffer: Do not warn in ring_buffer_map_get_reader() when reader
- catches up
-References: <20251107130730.158197641@kernel.org>
+	s=arc-20240116; t=1762521756; c=relaxed/simple;
+	bh=GMkTgBl3xi96tpXT53uIkRYtF9prPQbYl/jkp8rmHpU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OcGzCeNKzq7GdtUe5TmpGaN40sLtNGSUENARLhIXenmbfK2XfXkby9xYIzGjDhKUg9lmam25Nsh6ErfcRTk9JoDmDLabfWN9j4ZE5NfAjmHuikcUUcjfsO52E3Hqt6SCpvX84qP5BrBDzu5Sh0IEBSqMxqW7xohWgd9Z5EMGd+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Q8YDR0yu; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A79EEFh1713270;
+	Fri, 7 Nov 2025 13:22:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	3KVuh3J4uffSmXT4wBLbWgmsTFDpOCerKixjRaCFdY8=; b=Q8YDR0yuYZIlg3pk
+	TMjIdeFBn0cJ7p1QRm6P5p96OeKDAkat8h8iayh2B24rm+zNRaFhGTbA+J2TSwAG
+	NwkH3x2QsAW02EQ0B54gVg0xGsszz30whcTeE439wS/1W5APxImfnFplaghdEzLu
+	h5XkKLkY76tCLmV9CiV8Nxw92zBhOMClOFIKw4fxeVAz5ynQQdXRV6AsUhYM0xwn
+	IDUMl214G6t1EDGOLlp/YI5KiOsau+D4+yhDfHwa76rTPybXzgK0C4l2vSsaK9Fp
+	6r0WQGfC7fBwHdprQI5OxpIcVtFbkV4ASEGawpXaspRRXqrWxKJeDMKJrsD9glXg
+	CoSmQw==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a96ue1xj8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Nov 2025 13:22:24 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5A7DMNbm006928
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 7 Nov 2025 13:22:23 GMT
+Received: from hu-vikramsa-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.24; Fri, 7 Nov 2025 05:22:18 -0800
+From: Vikram Sharma <quic_vikramsa@quicinc.com>
+To: <bryan.odonoghue@linaro.org>, <mchehab@kernel.org>, <robh@kernel.org>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <andersson@kernel.org>,
+        <konradybcio@kernel.org>, <hverkuil-cisco@xs4all.nl>,
+        <cros-qcom-dts-watchers@chromium.org>, <catalin.marinas@arm.com>,
+        <will@kernel.org>
+CC: <linux-arm-kernel@lists.infradead.org>, <quic_svankada@quicinc.com>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_nihalkum@quicinc.com>, <quic_vikramsa@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v5 1/2] dt-bindings: media: qcom,qcs8300-camss: Add missing power supplies
+Date: Fri, 7 Nov 2025 18:51:53 +0530
+Message-ID: <20251107132154.436017-2-quic_vikramsa@quicinc.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20251107132154.436017-1-quic_vikramsa@quicinc.com>
+References: <20251107132154.436017-1-quic_vikramsa@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=fYKgCkQF c=1 sm=1 tr=0 ts=690df290 cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=WbcqwB_1BIAAR86fcXAA:9
+ a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-ORIG-GUID: rWVeNR4KXq_FKdyp3UyEPS0T9w9EGAug
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA3MDEwOSBTYWx0ZWRfX2oHB3+oWH/MT
+ mJEG9BscQ2//1NtlUNGhuXYxSCv65r40mx4Bxaf0UMoyF1hfVp9c3x2htWSve/7C1IER2l6R/3L
+ +u6x6sekcHcqwm2x66s4OPzBeOUESYghyQM5bjnFbG2IxE/XaOs9erp6gjVdDXFjjjoEkZlGEf4
+ vc2NGjRduCH9XF7BS4hz0AHVgOBHuLpPC/Jp/IgsFsJu1397KgGVWDKQsueYRGGDUszYlrdWzOl
+ NbGFbCk28nmcWZTJ/g1IWuLNao34fLjBpdBaumyWlDOUpsGwkLUx5Gfjx4f8nZgWy1YUv/HdU+a
+ 3t1qsVLOWaXWF5A2uEVzSCbn+xxd0SQvy18TOMH+vZyyY4f672/cXtxiVZfLEdEfCa1gJWpbOZ2
+ Kau0sMltAuarrtRekMiHkzk/4V2Lpw==
+X-Proofpoint-GUID: rWVeNR4KXq_FKdyp3UyEPS0T9w9EGAug
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-07_03,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 priorityscore=1501 malwarescore=0 spamscore=0
+ lowpriorityscore=0 bulkscore=0 impostorscore=0 clxscore=1011 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511070109
 
-From: Steven Rostedt <rostedt@goodmis.org>
+Add support for vdda-phy-supply and vdda-pll-supply in the QCS8300
+CAMSS binding.
 
-The function ring_buffer_map_get_reader() is a bit more strict than the
-other get reader functions, and except for certain situations the
-rb_get_reader_page() should not return NULL. If it does, it triggers a
-warning.
-
-This warning was triggering but after looking at why, it was because
-another acceptable situation was happening and it wasn't checked for.
-
-If the reader catches up to the writer and there's still data to be read
-on the reader page, then the rb_get_reader_page() will return NULL as
-there's no new page to get.
-
-In this situation, the reader page should not be updated and no warning
-should trigger.
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Reported-by: syzbot+92a3745cea5ec6360309@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/690babec.050a0220.baf87.0064.GAE@google.com/
-Link: https://lore.kernel.org/20251016132848.1b11bb37@gandalf.local.home
-Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 634a2958fae30 ("media: dt-bindings: Add qcom,qcs8300-camss compatible")
+Cc: <stable@vger.kernel.org>
+Co-developed-by: Nihal Kumar Gupta <quic_nihalkum@quicinc.com>
+Signed-off-by: Nihal Kumar Gupta <quic_nihalkum@quicinc.com>
+Signed-off-by: Vikram Sharma <quic_vikramsa@quicinc.com>
 ---
- kernel/trace/ring_buffer.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../bindings/media/qcom,qcs8300-camss.yaml          | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 1244d2c5c384..afcd3747264d 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -7344,6 +7344,10 @@ int ring_buffer_map_get_reader(struct trace_buffer *buffer, int cpu)
- 		goto out;
- 	}
+diff --git a/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml b/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml
+index 80a4540a22dc..e5f170aa4d9e 100644
+--- a/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml
+@@ -120,6 +120,14 @@ properties:
+     items:
+       - const: top
  
-+	/* Did the reader catch up with the writer? */
-+	if (cpu_buffer->reader_page == cpu_buffer->commit_page)
-+		goto out;
++  vdda-phy-supply:
++    description:
++      Phandle to a 0.88V regulator supply to CSI PHYs.
 +
- 	reader = rb_get_reader_page(cpu_buffer);
- 	if (WARN_ON(!reader))
- 		goto out;
++  vdda-pll-supply:
++    description:
++      Phandle to 1.2V regulator supply to CSI PHYs pll block.
++
+   ports:
+     $ref: /schemas/graph.yaml#/properties/ports
+ 
+@@ -160,6 +168,8 @@ required:
+   - power-domains
+   - power-domain-names
+   - ports
++  - vdda-phy-supply
++  - vdda-pll-supply
+ 
+ additionalProperties: false
+ 
+@@ -328,6 +338,9 @@ examples:
+             power-domains = <&camcc CAM_CC_TITAN_TOP_GDSC>;
+             power-domain-names = "top";
+ 
++            vdda-phy-supply = <&vreg_l4a_0p88>;
++            vdda-pll-supply = <&vreg_l1c_1p2>;
++
+             ports {
+                 #address-cells = <1>;
+                 #size-cells = <0>;
 -- 
-2.51.0
-
+2.34.1
 
 
