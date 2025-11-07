@@ -1,108 +1,178 @@
-Return-Path: <stable+bounces-192670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B51C3E4C1
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 04:06:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B80C3E51E
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 04:15:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 181E8188B877
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 03:06:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2418D4E6179
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 03:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2DA276046;
-	Fri,  7 Nov 2025 03:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BBC6263F5E;
+	Fri,  7 Nov 2025 03:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=draconx-ca.20230601.gappssmtp.com header.i=@draconx-ca.20230601.gappssmtp.com header.b="cn57xZ0o"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="YMLzOiBj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2272040B6
-	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 03:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+Received: from n169-113.mail.139.com (n169-113.mail.139.com [120.232.169.113])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8104A41
+	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 03:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762484777; cv=none; b=aNKisf+rpXwvv5BbA+7/2j2IR/s92lYcM+i1MfzCroCdC4N22pRT2zLXKiPFGp62ecxQ4C8YzJk+2TZhFhUaQbzXt2hPDTg9l+O9snho1ypQTTKl2XFsIN/mIpEwjjmxkQT2CGBxQIxsBtFLGtpbAVQagJQNP12hz98sSVBgl2E=
+	t=1762485314; cv=none; b=mhVynXa0qqMqsjjAmBMMo30K446ThknJlzvkTkPSZwLIUcn1GTd4JNqckeH089Tp1zvrT8aNcGKjm5AQQfTQNLdjmoHe9kZtc6kJyC8tbuBW7KNJgsslIEsEAbyZZLkPoGOifK9s9ivix7CFBdyJSgvNkszUn0bZGZDP3tOIph8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762484777; c=relaxed/simple;
-	bh=SqF6cjAe5fIGfKljFwR84iVXlUipV5ARm6YRakF57pM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kQSL5ImdhcjrT1inkJTDXukg55qxTh0xo6QeBhewbbhDLiNjVi1pk45U2QKuIChSQbqoT5TwF1kTxGgMeEkhDYfDdHXFIYpqmha5DivicCJ4xaBKUHM/5mcUglCxJTgyXPNyc43xiAkt1kWqflHhO4FfPxoalDB0LTKKSDB7GJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=draconx.ca; spf=none smtp.mailfrom=draconx.ca; dkim=pass (2048-bit key) header.d=draconx-ca.20230601.gappssmtp.com header.i=@draconx-ca.20230601.gappssmtp.com header.b=cn57xZ0o; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=draconx.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=draconx.ca
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-88033f09ffeso3491966d6.1
-        for <stable@vger.kernel.org>; Thu, 06 Nov 2025 19:06:15 -0800 (PST)
+	s=arc-20240116; t=1762485314; c=relaxed/simple;
+	bh=pv7c1nfQH6OTTNMK54BI8Ty3uchRho7vh6jVSBQAWr8=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=QjKwGtqFSnU2ybeRTpVXGTRKQU/jV/8VZVncjuI3LzLi0+znBTaQ662HYQ0b60deIsmlg8g708h7bc+/Ei/5UBoR3KB7vOEzKEd43Rc+LGz/YBglzRbE/1QcQXUQciC4Z9pJt8Wq6Wa+cP0GZDfiaVm7G0LCn4q9601vvws397w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=YMLzOiBj; arc=none smtp.client-ip=120.232.169.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=draconx-ca.20230601.gappssmtp.com; s=20230601; t=1762484775; x=1763089575; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E56miCz2ucyW7p5RTNikjLhgl4gC4pK61qcfT2Qpt0U=;
-        b=cn57xZ0oPlgAD+CBSKMswSkoX9xKQS1HixdXW5ECEdl1/YgEelftUJw1DUcEfh+duA
-         CqyX7f9UdS2NaP2m4VEwp/qSKjRqSQDW17RbaRWRXGTqnivMrDDO91IRo5di4cHofFo4
-         dDmQShLEs015pKEKpL5+2L1UsNOF0CCOCELwr7VtTZodwebonazUVnNh52D0rcis0esS
-         z9KV+2j1vbSwr3RhKOGq0fn9HINj478kHnk0DOEWVuwsrTs0VH637mEM4F+1mdG3XZr6
-         s+cYsLKU+BMUC+arbyjobnJQiPwtQZS8rT7DMBjEc8kNkXUA+YVqrxCLg6UDZ1dBhD6f
-         oIeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762484775; x=1763089575;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E56miCz2ucyW7p5RTNikjLhgl4gC4pK61qcfT2Qpt0U=;
-        b=AkH6M9DTrh3JRcJgQ7mCKi34hpLEyjZl5t5KjXOXmKZcCtHIY1Fhuy9ijIjwU3IXVO
-         vDtSvZ9IY30gZxO7YrlQsKOSLYOs/W5E9UeCR+DGmcA1lRD36PImF/a3/c395EPKhzrc
-         vvi+lge7RkW4k9wPivfvmkUJL2C1z4u5rNrxbMB3XabbERQ5nogo6Y+MgV6QwLd7uTIY
-         e+BpLFExZxuQQO9skCND8geAcEIgk6WmMF0LsELcSj2gtvVfnUNlc/OWHlspJE4u5Vg7
-         Z8oj6LRMUblG4hClpgp3U1WnZAn8ttjfxr+ymo4zx7GCr7RCg4pjU4wiToJ3mGfP0i/n
-         NkpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWAtIx2Su5H8UQPLU5U86i9tejPITXGpYp5+byiB9n/ejjUsFeW04E20WhjXVms2xAM9y1Uytc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwB/wn32VEjQ7nWHIIwSHVmwCtAgSAMsgS2FfGhPxHNEbsezKA3
-	EejApAC5d9Fiof0BFjKCSYqer3KKeG4aBxwyHRkkw6FBZEMvz9ul8mJqHLjRgVuS6UmQCqkeJnQ
-	41Dz3w24=
-X-Gm-Gg: ASbGncspvALK3Fuut/pgn1wRfYd/ChHBPf9im4VNkuAFaheMOc4BHX308mEV9Twpank
-	jrKKjTcYNzS8f1IHizVTikQmJEuBibwyHWBZX8TilCPP7KQ4oyfJHUGJUBM/27mNsJ4eYEML3Uz
-	RaU7QR2Um8IiiSyQJLl1KLl0nr13X6Bo9mK0x5ypwQ3KH9kg2LVpmCQEpQ3zHSMbKx3nMzc9xkW
-	xsU1Z8o26pWVVGgyVlLVrArNCHVJ6IN+Bby7TdTQ/iJLqhEKUljveGAnyKnS6KsPj0yC2gnCqwk
-	JNo8C+oEwx2cRzh9bSz8HxYIIKdmy/ZCyGq0hKHT/+mm/+ilQLxeX7i/lLCPx9yG4/Z2rac+chp
-	ywHXFsJDh3vE0w4PBgN2njStyBSkMxAWICrvsZppOn/0q81pBl3OwXpmEgZg2TMELEaSAoCnjdM
-	r2xaOnMa/vGscn6uQf2qPpqpnowBF5m0yp34ZyOyVW
-X-Google-Smtp-Source: AGHT+IEwrtDh+N2RU8TdlIkL8MsNx2X7a1H9tD28kPSplx5JFVcsb0223J9Fj+vOzbjZ1jDImx6R0g==
-X-Received: by 2002:a05:6214:4004:b0:87c:108f:676c with SMTP id 6a1803df08f44-88167b17ed2mr26261796d6.25.1762484774711;
-        Thu, 06 Nov 2025 19:06:14 -0800 (PST)
-Received: from localhost (ip-24-156-181-135.user.start.ca. [24.156.181.135])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-88082a38210sm30548476d6.55.2025.11.06.19.06.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Nov 2025 19:06:14 -0800 (PST)
-Date: Thu, 6 Nov 2025 22:06:12 -0500
-From: Nick Bowler <nbowler@draconx.ca>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Esben Haabendal <esben@geanix.com>, linux-kernel@vger.kernel.org, 
-	regressions@lists.linux.dev, linux-rtc@vger.kernel.org, stable@vger.kernel.org, 
-	sparclinux@vger.kernel.org
-Subject: Re: PROBLEM: hwclock busted w/ M48T59 RTC (regression)
-Message-ID: <e7ezfmqnbduq7jdc7osicqp4rnztu466gpbcxaoj54jfigsvvp@iroscsnamy3c>
-References: <krmiwpwogrvpehlqdrugb5glcmsu54qpw3mteonqeqymrvzz37@dzt7mes7qgxt>
- <DmLaDrfp-izPBqLjB9SAGPy3WVKOPNgg9FInsykhNO3WPEWgltKF5GoDknld3l5xoJxovduV8xn8ygSupvyIFOCCZl0Q0aTXwKT2XhPM1n8=@geanix.com>
- <ni6gdeax2itvzagwbqkw6oj5xsbx6vqsidop6cbj2oqneovjib@mrwzqakbla35>
- <35bd11bf-23fa-4ce9-96fb-d10ad6cd546e@leemhuis.info>
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=YMLzOiBjS3+Fokff/jeNWPh0qnoqI7TV6Hgpl1SE0FB5sR8TfqcsYLHPcKFAhAC+K7Q03img8E177
+	 t9JI5P8GcUVUpBwjHXP2GQpALfZPVSOUYj/qs6qVciUjIisWSqj9TwaqUKRx6DRlKgOoLkgfNIPxU0
+	 6zZfQ7Y19LdnYix8=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[117.129.7.61])
+	by rmsmtp-lg-appmail-29-12034 (RichMail) with SMTP id 2f02690d637a273-46591;
+	Fri, 07 Nov 2025 11:11:57 +0800 (CST)
+X-RM-TRANSID:2f02690d637a273-46591
+From: Rajani Kantha <681739313@139.com>
+To: alexander.sverdlin@siemens.com,
+	vladimir.oltean@nxp.com,
+	pabeni@redhat.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH 6.6.y] net: dsa: improve shutdown sequence
+Date: Fri,  7 Nov 2025 11:11:55 +0800
+Message-Id: <20251107031155.3026-1-681739313@139.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <35bd11bf-23fa-4ce9-96fb-d10ad6cd546e@leemhuis.info>
 
-On Thu, Nov 06, 2025 at 11:25:55AM +0100, Thorsten Leemhuis wrote:
-> Just wondering: was this fixed in between? Just asking, as I noticed the
-> culprit was backported to various stable/longterm series recently
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-I am not aware of any fix.  I just retested both 6.18-rc4 and 6.17.7 and
-there is no change in behaviour.
+[ Upstream commit 6c24a03a61a245fe34d47582898331fa034b6ccd ]
 
-Thanks,
-  Nick
+Alexander Sverdlin presents 2 problems during shutdown with the
+lan9303 driver. One is specific to lan9303 and the other just happens
+to reproduce there.
+
+The first problem is that lan9303 is unique among DSA drivers in that it
+calls dev_get_drvdata() at "arbitrary runtime" (not probe, not shutdown,
+not remove):
+
+phy_state_machine()
+-> ...
+   -> dsa_user_phy_read()
+      -> ds->ops->phy_read()
+         -> lan9303_phy_read()
+            -> chip->ops->phy_read()
+               -> lan9303_mdio_phy_read()
+                  -> dev_get_drvdata()
+
+But we never stop the phy_state_machine(), so it may continue to run
+after dsa_switch_shutdown(). Our common pattern in all DSA drivers is
+to set drvdata to NULL to suppress the remove() method that may come
+afterwards. But in this case it will result in an NPD.
+
+The second problem is that the way in which we set
+dp->master->dsa_ptr = NULL; is concurrent with receive packet
+processing. dsa_switch_rcv() checks once whether dev->dsa_ptr is NULL,
+but afterwards, rather than continuing to use that non-NULL value,
+dev->dsa_ptr is dereferenced again and again without NULL checks:
+dsa_master_find_slave() and many other places. In between dereferences,
+there is no locking to ensure that what was valid once continues to be
+valid.
+
+Both problems have the common aspect that closing the master interface
+solves them.
+
+In the first case, dev_close(master) triggers the NETDEV_GOING_DOWN
+event in dsa_slave_netdevice_event() which closes slave ports as well.
+dsa_port_disable_rt() calls phylink_stop(), which synchronously stops
+the phylink state machine, and ds->ops->phy_read() will thus no longer
+call into the driver after this point.
+
+In the second case, dev_close(master) should do this, as per
+Documentation/networking/driver.rst:
+
+| Quiescence
+| ----------
+|
+| After the ndo_stop routine has been called, the hardware must
+| not receive or transmit any data.  All in flight packets must
+| be aborted. If necessary, poll or wait for completion of
+| any reset commands.
+
+So it should be sufficient to ensure that later, when we zeroize
+master->dsa_ptr, there will be no concurrent dsa_switch_rcv() call
+on this master.
+
+The addition of the netif_device_detach() function is to ensure that
+ioctls, rtnetlinks and ethtool requests on the slave ports no longer
+propagate down to the driver - we're no longer prepared to handle them.
+
+The race condition actually did not exist when commit 0650bf52b31f
+("net: dsa: be compatible with masters which unregister on shutdown")
+first introduced dsa_switch_shutdown(). It was created later, when we
+stopped unregistering the slave interfaces from a bad spot, and we just
+replaced that sequence with a racy zeroization of master->dsa_ptr
+(one which doesn't ensure that the interfaces aren't up).
+
+Reported-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Closes: https://lore.kernel.org/netdev/2d2e3bba17203c14a5ffdabc174e3b6bbb9ad438.camel@siemens.com/
+Closes: https://lore.kernel.org/netdev/c1bf4de54e829111e0e4a70e7bd1cf523c9550ff.camel@siemens.com/
+Fixes: ee534378f005 ("net: dsa: fix panic when DSA master device unbinds on shutdown")
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20240913203549.3081071-1-vladimir.oltean@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Modification: Using dp->master and dp->slave instead of dp->conduit and dp->user ]
+Signed-off-by: Rajani Kantha <681739313@139.com>
+---
+ net/dsa/dsa.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index 07736edc8b6a..c9bf1a9a6c99 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -1613,6 +1613,7 @@ EXPORT_SYMBOL_GPL(dsa_unregister_switch);
+ void dsa_switch_shutdown(struct dsa_switch *ds)
+ {
+ 	struct net_device *master, *slave_dev;
++	LIST_HEAD(close_list);
+ 	struct dsa_port *dp;
+ 
+ 	mutex_lock(&dsa2_mutex);
+@@ -1622,10 +1623,16 @@ void dsa_switch_shutdown(struct dsa_switch *ds)
+ 
+ 	rtnl_lock();
+ 
++	dsa_switch_for_each_cpu_port(dp, ds)
++		list_add(&dp->master->close_list, &close_list);
++
++	dev_close_many(&close_list, true);
++
+ 	dsa_switch_for_each_user_port(dp, ds) {
+ 		master = dsa_port_to_master(dp);
+ 		slave_dev = dp->slave;
+ 
++		netif_device_detach(slave_dev);
+ 		netdev_upper_dev_unlink(master, slave_dev);
+ 	}
+ 
+-- 
+2.17.1
+
+
 
