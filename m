@@ -1,207 +1,232 @@
-Return-Path: <stable+bounces-192751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C47F6C41C6A
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 22:25:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C3EC41DD8
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 23:50:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 99FEC4E87B2
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 21:25:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 842684E6BA7
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 22:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077082F39A1;
-	Fri,  7 Nov 2025 21:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F60C303A05;
+	Fri,  7 Nov 2025 22:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="dfkQqhzQ"
+	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="iu3sfu2+";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="yWmg7GrN"
 X-Original-To: stable@vger.kernel.org
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011046.outbound.protection.outlook.com [52.101.62.46])
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2157624DD1F;
-	Fri,  7 Nov 2025 21:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762550718; cv=fail; b=VAmx08JLpvwGJ0Pdi6VL2O1VnEaU3uKinjYSQr0b0oPT7fy9Z7qAKWYHTjadyv6HxGWtQOPwIq3UMmMICniZBWPlyxiN6/XEeG8+spLmsGDCMp8KPeAwvdHYTrd+jShbvobxGNP45xojLPRGD7Ecg8Xs1vnLpwthugCr6l6+lCQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762550718; c=relaxed/simple;
-	bh=KaO9vJ0vTzlZWgGZB3iWwMjx8FFGnPHH97qu1VoYD3w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=m7+x3jykWvHrrLZ3+Bxp10vfGXJZkXELDUrXATcRVb6E0nspUylDHe91jXO5R2D5jVmDqzt1tKrtbBPy486SYjYVsOByONdqrQeQptCjOZeGhiJAANfJtEnJVXfsLpHzRoVC7Ahzb7n5RI9WbM9waZVdZKI5i5KQYMBm3Qn21xc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=dfkQqhzQ; arc=fail smtp.client-ip=52.101.62.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ovu2H2buTgWc4DkotrlVOt1sF16LbQ4ETHf5jW8zQLUhj7pLCVTnWygMGYjhP89dX39i4Z/LEgkizNXtCA6nGNE9wERyz0mXhIFGvgVLfnX9dvWDMRv+y0UrRf3NZ5eMLY/7QxWehJKm4H8vVciE8bFi43XJ3KchXxVBHRNE9rxtoyysbMEJAz79KaBw3HNDpR5fAmRXV9HBut5Z1HJ0Ml/WCECaoGMKQYqjGfCG7HlRxJJHydPSGNk2WMOPSZtgiPrjdrVmjkcRzRLj2AuIG+xYUz9hDpofHgK9sL4NGcYhc6vxIT4VDh0weEFNDLRRx0P4WDh7MsaSdsJGJvqC0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=49f/dsrE0aeRW4jFyUv4zhu7dsTAIMmUkRxf8KHWCuA=;
- b=fs39GV1WCB11jUtFFUrg2qGQB4IBlNrGX86e71T4gzSYaRxC4lH3GZxjQQvNlOpz1NbNNGGdWhhseuYKM553I199CPeZ/OQ7BeT20PuxY2GmbAR2TnwevqSlMZUzxFVs/vtAvVj8FBClWAGQOAX1pXl7AHG0Ro33fOjCGmyiO2FkFzG1jUVHnBDaGi/QoW61HrWB+SvyBjuXveOGSK6mHOCvSb3rdQJGyVoSHpY8lUrcqTgE5J0xWwtB0puSzLe95DE71e2Ctp4CAWuno0ImIMqL7G+CNcXDep/9ERtUXf7Pyw44XH2mRO35OLScJnN8YyraP8BAm+ecibCMCus2pA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.194) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
- dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=49f/dsrE0aeRW4jFyUv4zhu7dsTAIMmUkRxf8KHWCuA=;
- b=dfkQqhzQI4FhRcviJEB6c25BzUyljOLOxL4B6FiPKnKjKrJduNy1cPRQGuna405+ezoCW/3DmHCxl3Cp8onaaE8aEJtnU85dOZr8+OB1c1nJ9U4H8QnbLMLzOCOaBmNwXxy0z8K12mRBoCyczMegkgmQiV+rjfQegyLJbgoc3+M=
-Received: from DM6PR11CA0029.namprd11.prod.outlook.com (2603:10b6:5:190::42)
- by DM3PPFA09EE1970.namprd10.prod.outlook.com (2603:10b6:f:fc00::c3b) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Fri, 7 Nov
- 2025 21:25:12 +0000
-Received: from DS1PEPF0001709B.namprd05.prod.outlook.com
- (2603:10b6:5:190:cafe::7a) by DM6PR11CA0029.outlook.office365.com
- (2603:10b6:5:190::42) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.13 via Frontend Transport; Fri,
- 7 Nov 2025 21:25:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.194)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.194; helo=lewvzet200.ext.ti.com; pr=C
-Received: from lewvzet200.ext.ti.com (198.47.23.194) by
- DS1PEPF0001709B.mail.protection.outlook.com (10.167.18.105) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9298.6 via Frontend Transport; Fri, 7 Nov 2025 21:25:12 +0000
-Received: from DLEE212.ent.ti.com (157.170.170.114) by lewvzet200.ext.ti.com
- (10.4.14.103) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 7 Nov
- 2025 15:25:07 -0600
-Received: from DLEE203.ent.ti.com (157.170.170.78) by DLEE212.ent.ti.com
- (157.170.170.114) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 7 Nov
- 2025 15:25:07 -0600
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE203.ent.ti.com
- (157.170.170.78) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Fri, 7 Nov 2025 15:25:07 -0600
-Received: from [10.249.35.170] ([10.249.35.170])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 5A7LP6r73649310;
-	Fri, 7 Nov 2025 15:25:06 -0600
-Message-ID: <76078ce8-aec3-4a3c-b866-926fc284692e@ti.com>
-Date: Fri, 7 Nov 2025 15:25:06 -0600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A682FFDF4;
+	Fri,  7 Nov 2025 22:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762555802; cv=none; b=mEiBf07PZbHM/RpSQtm2C+qKEsHONefXwLnnHuneiKhOWYtyi5R1zvd8HiQmpyGUdjyQU8TRe4zHkcZFdEdKVaEBkfIrYd93WbR5vO/rFMHSERDGAB4bX1uUpTJe6XuWq9HS2fYQDpKV7gF4Jh9J7EGPiqioLUJYxMWsrPMRkHY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762555802; c=relaxed/simple;
+	bh=Aeo/VzE1/UV207VY7Gch3A/3nfTb68ooL8dPoD/Cfgk=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=lG9Sp7m19ZgC92YogBUF+xX8tQlzn7ENci82l99xy7Xwr0yzZi8kTqWSdxlx/rO+HMsKPF7aFk/POvCT6HPdJxt+Osu2dLlIVgBAIH13wLyux8I1T05fgJreFwoKleCzbbPjn/j+85asqYlggGHdLCvBWh3bfEDxC6MaJkMtWAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=iu3sfu2+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=yWmg7GrN; arc=none smtp.client-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 15C9C7A01B6;
+	Fri,  7 Nov 2025 17:49:59 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Fri, 07 Nov 2025 17:49:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
+	1762555798; x=1762642198; bh=aCExvVff/T1beCIBhfJtcWSIpIUbwYfLTD4
+	NHxXGVdI=; b=iu3sfu2+YJ7TYN2VUmigtGfTH6CAMsDtvQD4TAhwLUVySVkqkpJ
+	QGUMOHAORfsvpT4qVHU8fgcgWuhWEQu7LMu+CAKvU0MANY24xEFhQ8xsEaUbnzWx
+	seyCzCPRbb5ulphgJ7HfL8KgdOMzAcj6LZTba3B0QLO4RGv+1GhINuN2blWSFCI1
+	ivqS4UQOvvrYkOmPeCIS7XQWTQIzHDMnqk+lBmck47W6KCiP7RrBwFLI5zACLlvc
+	8U3YBhj0n1g+Gx7OR4Aey3RQkLRZCa4+hkZjZZjMBFOiOdjmmckw43n9rfJo7qck
+	jzeAI5dyCkpuEX+75UOXBBhe6kkojcwlaSA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762555798; x=
+	1762642198; bh=aCExvVff/T1beCIBhfJtcWSIpIUbwYfLTD4NHxXGVdI=; b=y
+	Wmg7GrNix50DzyxmmMWAJUoJyrI3nwULpuLdidrebuh9iswgamFWc0BgPE105k+L
+	VCSlOAH+QT2nt39mYC4nq/JiJsdqoSiYv7x6QAYS6joHqaWdhw/v5PHjAttJz2YH
+	eBCblF14XzqdXzeS5ggIhwopdUbV3KrWxxjkxmqI21LzYAOIXynAyGncq4oHGRFW
+	7mzqzMj+3zilAEXuvmLykreM4AJybeek38fwU2HCdDcPQXxQ2XuXlEWrGbhJQdOq
+	lKMThsAxIWA+0FRYyQCVGMpR3736QUjbTl5+aORhUQXzxRKaS0MP6ZsMTfQOcvdQ
+	hmhattUrbaXkgM+yIuO+w==
+X-ME-Sender: <xms:lncOaRzQIDkTa-CRCRh4xZmJ2SYpjHrmJHTDfxrmT_PXKDRe58KOyg>
+    <xme:lncOadTBedDKvxcHedF0VgEA7eu5ZvaLJ-o0yCVL2eTe0OAfNk-Xm1g9hzlu0WrfY
+    AWaH0hmazOqWBvjPZROQHI15pzS5sSBNavC6LLielthZdJbWJI>
+X-ME-Received: <xmr:lncOadhPLzKIB0pEmS33mhes9fK5QTTvGX2CJhSAlfIHJqE9bfxGoaF0F8Ol-gjUNh-0JK0LDARj8r1CIoUHq9XW0q74bq9UUZbunGSwSY8R>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduledtledtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtjeertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epgeehfeevheehteetudehjeduiefhueehieevvdejkeeufeevkeelieffffduhfevnecu
+    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmhgrihhlrdhnvghtpdhnsggp
+    rhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehsthgrsghlvg
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhnfhhssehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlse
+    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhf
+    ohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegtvghlsehkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehsphgvvggutghrrggtkhgvrheshhhothhmrghilhdrtghomhdprhgt
+    phhtthhopegurghvihgurdhlrghighhhthdrlhhinhhugiesghhmrghilhdrtghomhdprh
+    gtphhtthhopegurghvihgurdhlrghighhhthesrggtuhhlrggsrdgtohhm
+X-ME-Proxy: <xmx:lncOaUnvtP20W8uSG4C8mVFJ6jFF0wSgG_yWQ1P13vF9czCfqZCR5g>
+    <xmx:lncOaQtNbwFjr7hXu8207q0mYuOO9iPywfuQAPT0iCX5mHBhFWfM2A>
+    <xmx:lncOaSZlTDlM_1AWJvzq4pzotmDI5dOcEU6hqOlazDo6YTbvctdNEQ>
+    <xmx:lncOaQBl77wqtwFAkQDUI6In3xYAZaWblNM_I_TrP3679hKJNdn6eg>
+    <xmx:lncOaVLv1GPoSSc8pWS15F-PsDNKcMz8lR1C0ds9hUl1c4l49aMkoaot>
+Feedback-ID: iab3e480c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 7 Nov 2025 17:49:55 -0500 (EST)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] Enable 1GHz OPP am335x-bonegreen-eco
-To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, Aaro Koskinen
-	<aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman
-	<khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, Tony Lindgren
-	<tony@atomide.com>, Lee Jones <lee@kernel.org>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>
-CC: Andrew Davis <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>, <linux-omap@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<stable@vger.kernel.org>
-References: <20251106-fix_tps65219-v2-0-a7d608c4272f@bootlin.com>
-Content-Language: en-US
-From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-In-Reply-To: <20251106-fix_tps65219-v2-0-a7d608c4272f@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF0001709B:EE_|DM3PPFA09EE1970:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f2c3631-08e7-448e-ea15-08de1e4422d0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|1800799024|36860700013|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OFFIK3BKOEo0bnVyM3loUk03bVp5ZmFCdUZySHUrL3pGd3FUa3lYSndXY01M?=
- =?utf-8?B?ZXdFRDMyNXVxemdnVEFyOGhsbytWZzZ0eXFlT0pHYzhFYWZUcyt6QmxTeXRC?=
- =?utf-8?B?RXJLakNBaWFTVzlQZGtiSVRtOHNPYnprSmIvYmwyampxTzhuU00yN05rSElV?=
- =?utf-8?B?WXYza05ncDdmd01QSEo5VVdFYjNPV1dkcDBEalFJMU1qLyswaEtuTG9Kb2hp?=
- =?utf-8?B?NjRGeHR6bXpab1d2c0h0OGxGZTFIb2U5QmVaeHhWUUxZeDFySmtNTlB2NHVn?=
- =?utf-8?B?Ums1VlhVTlIycnphOVU2dytlWXBSbWhkbks1cmFvK00vSjlvYTkvZjU1Zm5x?=
- =?utf-8?B?ZytqRzVFNTU3UGlyTWZWTWdSUVJha0h5d015V25ndUpaMTlqSjY5cWNaamVP?=
- =?utf-8?B?OTZmUXplckNIRWN6MXpLUUkxMzhGS0I3L0pYTTVHakIzQ0UyZy9mWUc2NlUv?=
- =?utf-8?B?V1lETHZSUDBUMG9tekk0M2NTZm1Pa2l3VzNaWjhoRHM1WDlIZnlRSlNKL0JK?=
- =?utf-8?B?V0RGWGMvd0c1eUVQdkM1Q0QyWlZvZ2F1UDV2bE05K0hRSm1SbmcrRFBaRXE4?=
- =?utf-8?B?TzZrMVhPdWZET3h4SDRrSTcxaGZFL3V2NkN5dWVHbzVBcElmdERkTE9GSnht?=
- =?utf-8?B?RmNEUXg3VU9XSDBpTGVqakgrV2NmY3RyRGJDejdUM3JQc3dXZUJVdm4xNy83?=
- =?utf-8?B?Rlh6Z0cwT3ZkbHpFNmZSbUlCemZZbDN2SnMzQlV0U1IxcjVUZStYc1JoWUli?=
- =?utf-8?B?K3BFTFZ2b3h2aXE3SGk3S01aa3BVTnF0anN1ZG42Y01FQk1vT3ZvaEI0dWVk?=
- =?utf-8?B?akhnWTgxRUVpS042NTV2UjE4dXR3SXBTcXhkenVmYTFEUmRQUzNFMDhGangv?=
- =?utf-8?B?VWtOa3dFa1MrcE16c0tDT0VhWlBmcnoxQ1hOUGlPMU9hMnlXSTVTWjRTVi80?=
- =?utf-8?B?elluWXpIeDhvZElzSG52TmZsVHI5cEtkNzBEMjUvc09pTHZodUJGTm1xbWlF?=
- =?utf-8?B?RzZiazZjRlhNWEZxOFc2c3d0YXR5QWg1ZlJEekVKYm1iRlBJbW1ydHpRWUE5?=
- =?utf-8?B?Tk0wOWgyWnE4ZEwxV1ozRDlSL0JEdVhNeEVlVUdrNE1tdDVhWm13QmNtWHZN?=
- =?utf-8?B?V2pKUW9oUVpBUGswOVBhTnNrc3ZTMWxscjNTSnVOVlcva1NidTVkN0ZFNnJm?=
- =?utf-8?B?eGVaYVVWbGJoaDU2a1ZYNTRtbU1oTjVSYUY0ZHhFeFFEZ1EvZG1LKzFtQ2Zn?=
- =?utf-8?B?M0JYeU1hQ0ltVytGUlpXbG5HeWJOZTQ2K0pwVmJpSGFyM3RCVThPczNIeFEr?=
- =?utf-8?B?WVQ5dnNCUnRNSHVEekFoUGQveFdaS3RzRU1EY0lpVkplcVZZMnhScy80bHJv?=
- =?utf-8?B?NStzYWM1Z01zc1pDOHIzNGpMTlpjdXdlNkVoYVhMa2Zic1RNKzI1b1VDZUdz?=
- =?utf-8?B?UTcycVlTMUZVTkhOZXNzWUIzVllYeHBLL3d0MnpQcGMvbUI1TEhsY1lHK01w?=
- =?utf-8?B?Um00SmZYMmM2UEJpdVh2aCswUlpuUk5QMmhrYzZZN0JMb2JjcDBTY2NIU3o2?=
- =?utf-8?B?VENaTGZpQkFsVjBsb3pxMkkxTXhsYkdxUFRjZ2pIQy82UjJ0NlAzTDJRaXBy?=
- =?utf-8?B?eWVoTEo3aCtmS09LU0VPeGtNYUpXV0U5R3dTVHpBZDJ3ZWY1RGhrZ3F1aW1w?=
- =?utf-8?B?ODJnSmlneEJ5bGJrODFJN0R5bU95S3ZSV1N1dFk2bFBXTmlHRGpkNlYrVENz?=
- =?utf-8?B?amNpeDV4cGorTFZSekZtK2wyMmNpR1hZamN1dkZjZVJlam8zL3dnZ2lMc3Ix?=
- =?utf-8?B?ZVdSd1dRZmNISnlMdDhlcDI2UHJnY2dhQXR0R0tWUjFCZXVKZ0VidTNsdm55?=
- =?utf-8?B?N1ZCY3J1c2Vlay9NNGVMTVJUVDI1eU1JM2Zoa3AxNHFUeXNBREdkYm1MYm5l?=
- =?utf-8?B?N1BhbUVObWtId3dSWjY0Uk1vOVZDWmcrZzNaY2hMUDVVMkpyelpPTkRuNkRJ?=
- =?utf-8?B?QVROVEFITDROWXhWMzdYeVMxYkRFdmVXcnVHTjMwaHJRRW5lci94UHlEaTQr?=
- =?utf-8?B?YW1PckxnQmE5ckRYODlvd3pBRkMxWlg4N3AyeTVlVkZVQ2VnWG5URlpBZURD?=
- =?utf-8?Q?6Zk4HblER7cvLjjeDDgJHMEmZ?=
-X-Forefront-Antispam-Report:
-	CIP:198.47.23.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet200.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(1800799024)(36860700013)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 21:25:12.3334
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f2c3631-08e7-448e-ea15-08de1e4422d0
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.194];Helo=[lewvzet200.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF0001709B.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPFA09EE1970
+From: NeilBrown <neilb@ownmail.net>
+To: "David Laight" <david.laight.linux@gmail.com>
+Cc: "Chuck Lever" <cel@kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "David Laight" <David.Laight@ACULAB.COM>,
+ "Linux NFS Mailing List" <linux-nfs@vger.kernel.org>,
+ "Linux List Kernel Mailing" <linux-kernel@vger.kernel.org>,
+ speedcracker@hotmail.com
+Subject: Re: Compile Error fs/nfsd/nfs4state.o - clamp() low limit slotsize
+ greater than high limit total_avail/scale_factor
+In-reply-to: <20251107114324.33fd69f3@pumpkin>
+References: <bbba88825d7b2b06031c1b085d76787a2502d70e.camel@kernel.org>,
+ <37bc1037-37d8-4168-afc9-da8e2d1dd26b@kernel.org>,
+ <20251106192210.1b6a3ca0@pumpkin>,
+ <176251424056.634289.13464296772500147856@noble.neil.brown.name>,
+ <20251107114324.33fd69f3@pumpkin>
+Date: Sat, 08 Nov 2025 09:49:49 +1100
+Message-id: <176255578949.634289.10177595719141795960@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 
-Hi Kory,
+On Fri, 07 Nov 2025, David Laight wrote:
+> On Fri, 07 Nov 2025 22:17:20 +1100
+> NeilBrown <neilb@ownmail.net> wrote:
+> 
+> > On Fri, 07 Nov 2025, David Laight wrote:
+> > > On Thu, 6 Nov 2025 09:33:28 -0500
+> > > Chuck Lever <cel@kernel.org> wrote:
+> > >   
+> > > > FYI
+> > > > 
+> > > > https://bugzilla.kernel.org/show_bug.cgi?id=220745  
+> > > 
+> > > Ugg - that code is horrid.
+> > > It seems to have got deleted since, but it is:
+> > > 
+> > > 	u32 slotsize = slot_bytes(ca);
+> > > 	u32 num = ca->maxreqs;
+> > > 	unsigned long avail, total_avail;
+> > > 	unsigned int scale_factor;
+> > > 
+> > > 	spin_lock(&nfsd_drc_lock);
+> > > 	if (nfsd_drc_max_mem > nfsd_drc_mem_used)
+> > > 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
+> > > 	else
+> > > 		/* We have handed out more space than we chose in
+> > > 		 * set_max_drc() to allow.  That isn't really a
+> > > 		 * problem as long as that doesn't make us think we
+> > > 		 * have lots more due to integer overflow.
+> > > 		 */
+> > > 		total_avail = 0;
+> > > 	avail = min((unsigned long)NFSD_MAX_MEM_PER_SESSION, total_avail);
+> > > 	/*
+> > > 	 * Never use more than a fraction of the remaining memory,
+> > > 	 * unless it's the only way to give this client a slot.
+> > > 	 * The chosen fraction is either 1/8 or 1/number of threads,
+> > > 	 * whichever is smaller.  This ensures there are adequate
+> > > 	 * slots to support multiple clients per thread.
+> > > 	 * Give the client one slot even if that would require
+> > > 	 * over-allocation--it is better than failure.
+> > > 	 */
+> > > 	scale_factor = max_t(unsigned int, 8, nn->nfsd_serv->sv_nrthreads);
+> > > 
+> > > 	avail = clamp_t(unsigned long, avail, slotsize,
+> > > 			total_avail/scale_factor);
+> > > 	num = min_t(int, num, avail / slotsize);
+> > > 	num = max_t(int, num, 1);
+> > > 
+> > > Lets rework it a bit...
+> > > 	if (nfsd_drc_max_mem > nfsd_drc_mem_used) {
+> > > 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
+> > > 		avail = min(NFSD_MAX_MEM_PER_SESSION, total_avail);
+> > > 		avail = clamp(avail, n + sizeof(xxx), total_avail/8)
+> > > 	} else {
+> > > 		total_avail = 0;
+> > > 		avail = 0;
+> > > 		avail = clamp(0, n + sizeof(xxx), 0);
+> > > 	}
+> > > 
+> > > Neither of those clamp() are sane at all - should be clamp(val, lo, hi)
+> > > with 'lo <= hi' otherwise the result is dependant on the order of the
+> > > comparisons.
+> > > The compiler sees the second one and rightly bleats.  
+> > 
+> > In fact only gcc-9 bleats.
+> 
+> That is probably why it didn't get picked up earlier.
+> 
+> > gcc-7 gcc-10 gcc-13 gcc-15
+> > all seem to think it is fine.
+> 
+> Which, of course, it isn't...
 
-On 11/6/2025 4:49 AM, Kory Maincent (TI.com) wrote:
-> The vdd_mpu regulator maximum voltage was previously limited to 1.2985V,
-> which prevented the CPU from reaching the 1GHz operating point. This
-> limitation was put in place because voltage changes were not working
-> correctly, causing the board to stall when attempting higher frequencies.
-> Increase the maximum voltage to 1.3515V to allow the full 1GHz OPP to be
-> used.
->
-> Add a TPS65219 PMIC driver fixes that properly implement the LOCK register
-> handling, to make voltage transitions work reliably.
->
-> Changes in v2:
-> - Setup a custom regmap_bus only for the TPS65214 instead of checking
->   the chip_id every time reg_write is called.
-> - Add the am335x-bonegreen-eco devicetree change in the same patch
->   series.
+I've now had a proper look at your analysis of the code - thanks.
 
-Reviewed-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+I agree that the code is unclear (at best) and that if it were still
+upstream I would want to fix it.  However is does function correctly.
 
->
-> Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
-> ---
-> Kory Maincent (TI.com) (2):
->       mfd: tps65219: Implement LOCK register handling for TPS65214
->       ARM: dts: am335x-bonegreen-eco: Enable 1GHz OPP by increasing vdd_mpu voltage
->
->  arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts |  2 +-
->  drivers/mfd/tps65219.c                             | 51 +++++++++++++++++++++-
->  include/linux/mfd/tps65219.h                       |  2 +
->  3 files changed, 53 insertions(+), 2 deletions(-)
-> ---
-> base-commit: 1c353dc8d962de652bc7ad2ba2e63f553331391c
-> change-id: 20251106-fix_tps65219-dd62141d22cf
->
-> Best regards,
+As you say, when min > max, the result of clamp(val, min, max) depends
+on the order of comparison, and we know what the order of comparison is
+because we can look at the code for clamp().
+
+Currently it is 
+
+	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+
+which will use max when max is below val and min.
+Previously it was 
+	min((typeof(val))max(val, lo), hi)
+which also will use max when it is below val and min
+
+Before that it was 
+#define clamp_t(type, val, min, max) ({                \
+       type __val = (val);                     \
+       type __min = (min);                     \
+       type __max = (max);                     \
+       __val = __val < __min ? __min: __val;   \
+       __val > __max ? __max: __val; })
+
+which also uses max when that is less that val and min.
+
+So I think the nfsd code has always worked correctly.  That is not
+sufficient for mainline - there we want it to also be robust and
+maintainable. But for stable kernels it should be sufficient.
+Adding a patch to "stable" kernels which causes working code to fail to
+compile does not seem, to me, to be in the spirit of "stability".
+(Have the "clamp" checking in mainline, finding problems there,
+and backporting the fixes to stable seems to me to be the best way
+to use these checking improvements to improve "stable").
+
+Thanks,
+NeilBrown
 
