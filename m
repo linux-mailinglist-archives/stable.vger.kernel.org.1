@@ -1,139 +1,100 @@
-Return-Path: <stable+bounces-192678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43337C3E5EF
-	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 04:40:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 522B4C3E62F
+	for <lists+stable@lfdr.de>; Fri, 07 Nov 2025 04:42:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 162954EC406
-	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 03:39:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 618794E88C7
+	for <lists+stable@lfdr.de>; Fri,  7 Nov 2025 03:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649662F99A6;
-	Fri,  7 Nov 2025 03:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C4828003A;
+	Fri,  7 Nov 2025 03:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="R7NCxVhJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UzFuZOYY"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886CA1E32D3;
-	Fri,  7 Nov 2025 03:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC032227599
+	for <stable@vger.kernel.org>; Fri,  7 Nov 2025 03:41:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762486776; cv=none; b=Ah1WY1mz8wi1PDJgF//5RFMQ4dTR4R62Mf7rYzpTTMsUMvgWA9eCxXVbDjVmaPThM6wH/fON1IWtlB2Vm8ZkZarEt+LJoKokzawwheghbq8aG5szxkg3AQStGdK1Es9C7sZjWY/rBIkaDG7mGdmwqPGrK3xowrfwxca6b6RBZvc=
+	t=1762486872; cv=none; b=PvTRnu/QTl6QaxrQolgmmTuc094g0+G6tVH6XO7AQqRaHWsdFfztkv6Z5PGesvDLfNHAvp+rqYSOn4lrap3/gClYZh9MVBor5NxAhHQeG+wJAvX34KCpckDaWrYXjTpq1AbOh/9/vX4V94oXbBm2T/97h4cYJKmm7arzxgFOo/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762486776; c=relaxed/simple;
-	bh=TY6AfTS9IE25kyf1VzFS8t6tVnHe0Sw2zjiBp2xWaG0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C7TQu9kaYw5edix00C/GQyATPejBiQPSJIuMHvgBcGjBlb8b++9Ha+VDWXdSpm9UIyWIekWoKsaIS1Jug5b4GY8MNHTA+idDzmAdyAr9Wtfx3MFDcMdyw49O2To75YkqslQfgrGVeNPVa2IVmv4kvDVDwHkHppxjBNJO+0wKd6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=R7NCxVhJ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A718bOn1710787;
-	Fri, 7 Nov 2025 03:39:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=CG/kbwf3jm9
-	5G/VIBAhWTxS8SVIJcY0oCufgRxYh/C0=; b=R7NCxVhJFSg5+Ua4QpWGJmIQ1WY
-	/tkcVLbqqbkg9mPtzTFblDNQHgPJBb3M1gJiL9sJ1AzO9lFI8KS8f4MFx0IXzmbd
-	X76bgI6rIL2VHKCAUNnUL4yg7EE3CtAql6XH+/n8ECjud2HmDFP/HUkbMOctNHPI
-	dXnZB4KuwUIx9kgo+p2slk+ljmo/g5bKKKzMfNOHVpQwpmZXfe83MSqU2Z9VVr2g
-	3UipdLapVeW3N38jNlCsU5BVkKcxfNQLCS00BPxwTKzDFphkVZWNyPVIuAMTCCL7
-	Bx9b6SPcbLIh6wzFb7bvl2uG4uzOj17eBNWbO5c3xASVUtlUQ7fksn9batA==
-Received: from aptaippmta01.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a96ue0cn7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Nov 2025 03:39:31 +0000 (GMT)
-Received: from pps.filterd (APTAIPPMTA01.qualcomm.com [127.0.0.1])
-	by APTAIPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A73dSQO014121;
-	Fri, 7 Nov 2025 03:39:28 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 4a5b9nc06k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Nov 2025 03:39:28 +0000
-Received: from APTAIPPMTA01.qualcomm.com (APTAIPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5A73dReN014107;
-	Fri, 7 Nov 2025 03:39:27 GMT
-Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
-	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 5A73dRSk014104
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Nov 2025 03:39:27 +0000
-Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
-	id 6A7982327E; Fri,  7 Nov 2025 11:39:26 +0800 (CST)
-From: Shuai Zhang <quic_shuaz@quicinc.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>, Marcel Holtmann <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        quic_chejiang@quicinc.com, quic_jiaymao@quicinc.com,
-        quic_chezhou@quicinc.com, Shuai Zhang <quic_shuaz@quicinc.com>
-Subject: [PATCH v3 2/2] Bluetooth: hci_qca: Convert timeout from jiffies to ms
-Date: Fri,  7 Nov 2025 11:39:24 +0800
-Message-Id: <20251107033924.3707495-3-quic_shuaz@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251107033924.3707495-1-quic_shuaz@quicinc.com>
-References: <20251107033924.3707495-1-quic_shuaz@quicinc.com>
+	s=arc-20240116; t=1762486872; c=relaxed/simple;
+	bh=s4gDsQXTGLmkO86GK80L1Mh9JJwBgH9BfFIwQ8B9k2M=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=pQ8bU4wW+lMysFryEryDXuLFVMYBSffL3ggLlmC9ashZ8RA31Lr0xW/zVHygNA1HHrljP3MkUDvLCsTzLh+//TwLPp/cyOzrffyd8+Yw3uR9VcsitWu7DwmXXKKbUZeAkSSRfmRGcx67G9JhFwQcr+JIU3Za7Xba0DKsCH0FOgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UzFuZOYY; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762486871; x=1794022871;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=s4gDsQXTGLmkO86GK80L1Mh9JJwBgH9BfFIwQ8B9k2M=;
+  b=UzFuZOYYWoCwn1nWyYdzEwdeh4zt1WkBmthbzUcdktzf67NuWi0KApWs
+   u4BbVypP5WUbYozn5ropY/C7rX4pcTxYEvU1YJCJyQAYKORVzO7HoOuHu
+   aBLbKBJgzBy4nbAJ9f5M+MOYXb+QcDsZ6k/gdDzhGK4FfKx0NMUEYTJzP
+   1zz0BOTh2M0K3ra1vto8Rt5/wwQAJLTatzNPI5otOA1TQxkQ6fZJotxQc
+   WRvQ9D6po7HnG1YXVVedjNFQ4RML0De3hDFczRx7l7tGD296LlB/PEbTN
+   Z6kPayH/1tyyM5nZYvKh3nteCNKDBFJZgvGcZls0ECIyAbM4vnuiP1V+q
+   Q==;
+X-CSE-ConnectionGUID: VgsoFDZZTFWBNBRqb3XpPg==
+X-CSE-MsgGUID: hwGlSqrNRjaalTKxGcwQuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11605"; a="63844860"
+X-IronPort-AV: E=Sophos;i="6.19,285,1754982000"; 
+   d="scan'208";a="63844860"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 19:41:09 -0800
+X-CSE-ConnectionGUID: IcqZYJ5ZSXykh/6Za6enVg==
+X-CSE-MsgGUID: 3fFEqD7hQGeSAy3/e0nnfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,285,1754982000"; 
+   d="scan'208";a="192200538"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by fmviesa005.fm.intel.com with ESMTP; 06 Nov 2025 19:41:07 -0800
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vHDLW-000Ufg-0D;
+	Fri, 07 Nov 2025 03:41:06 +0000
+Date: Fri, 7 Nov 2025 11:40:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Shuai Zhang <quic_shuaz@quicinc.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v3 1/2] Bluetooth: qca: Fix delayed hw_error handling due
+ to missing wakeup during SSR
+Message-ID: <aQ1qS9-MyXH-N5Jx@4b976af397a4>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=fYKgCkQF c=1 sm=1 tr=0 ts=690d69f3 cx=c_pps
- a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
- a=70vrXUCaxUCbDeWopUYA:9 a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: P9ihKIfk0fy5gtb6RslSXp3mdUvzT4Ex
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA3MDAyNiBTYWx0ZWRfX7sQrYpMphNb9
- bvFOr7V6IdrMJCO768yxvsFdHpe+Jg1k8wEoPSBvV670oZ7ieTndH/lHawMa93YnH55+cRp70Pv
- JKE8zM1CeUVF7YBKKj2qEpf/XR4SncKey56DVBDWSgAw8fl9X/cUpPWjff9mo1YV25H5CzPavRc
- BL4MNSPCjwQeOZCeyyknb+kzIt7cbrbi5Q2iKMnjLb+8PQO+MeEYJGi0lNiv4O234kZJap1jZND
- fVwuZDiVedNbu88/PEN3ADcpLIE6I6hz2yOlh8wsUeYde0TjVvEAceNelKQDsw/sFr1f9bRC5o2
- y0wjUYUUL5WhbSsC7PkChh+pG2ReUazzZOXd9EHrcF3rTatOpK7TwWMeQHxxy4k+z+k220IqdCF
- xHjkhHVYkF0/C5k/UTEjaUoV2w7KNQ==
-X-Proofpoint-GUID: P9ihKIfk0fy5gtb6RslSXp3mdUvzT4Ex
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-06_05,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 priorityscore=1501 malwarescore=0 spamscore=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 clxscore=1015 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511070026
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251107033924.3707495-2-quic_shuaz@quicinc.com>
 
-Since the timer uses jiffies as its unit rather than ms, the timeout value
-must be converted from ms to jiffies when configuring the timer. Otherwise,
-the intended 8s timeout is incorrectly set to approximately 33s.
+Hi,
 
-Cc: stable@vger.kernel.org
-Fixes: d841502c79e3 ("Bluetooth: hci_qca: Collect controller memory dump during SSR")
-Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
----
- drivers/bluetooth/hci_qca.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks for your patch.
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index fa6be1992..c14b2fa9d 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1602,7 +1602,7 @@ static void qca_wait_for_dump_collection(struct hci_dev *hdev)
- 	struct qca_data *qca = hu->priv;
- 
- 	wait_on_bit_timeout(&qca->flags, QCA_MEMDUMP_COLLECTION,
--			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT_MS);
-+			    TASK_UNINTERRUPTIBLE, msecs_to_jiffies(MEMDUMP_TIMEOUT_MS));
- 
- 	clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
- }
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v3 1/2] Bluetooth: qca: Fix delayed hw_error handling due to missing wakeup during SSR
+Link: https://lore.kernel.org/stable/20251107033924.3707495-2-quic_shuaz%40quicinc.com
+
 -- 
-2.34.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
