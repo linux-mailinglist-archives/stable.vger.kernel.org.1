@@ -1,182 +1,132 @@
-Return-Path: <stable+bounces-192772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD79C427BC
-	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 06:26:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29EECC427D4
+	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 06:40:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F42D188A64A
-	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 05:27:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEB25188F987
+	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 05:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B32E2C11F2;
-	Sat,  8 Nov 2025 05:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D863F270542;
+	Sat,  8 Nov 2025 05:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdEPlGpX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bGu/Ifjy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0855E28C5DE
-	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 05:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A6E4317D
+	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 05:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762579602; cv=none; b=cAhtgj3qDDxXaVe/yyMtvNn+y09QG+XHylHorOaG3CxBMax71kyZZ/N9hOO9+jrmUt5vFIcg34fDAw4LkUQ9sDRfYGs5qnMz45JvxXeySt7jlrIH/vDH15ItXPzN/p0SRMG7F3zBQPLkwI0Uu5xzH46gIBwWUvxVs0z0fFKzbUs=
+	t=1762580419; cv=none; b=VhAYC+g3JbQe7B/8fkJXF4IO2E7NkE2HCkWz8l9Wco508DUN/cNmD96T2zZKA4CFOJE8aQtN+Ci7+pW636SHjM/fi7A4ebU+3hvk/aTRyfQHbZ/0uRVokuihLDlyu3vTk7HCXON8Or3ffrWOwuczaa8qw6LydegCpnJZUKsJm8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762579602; c=relaxed/simple;
-	bh=98+gntMW4kVaSlkWF3dHQbOdxR3A4ZREh/ya7KGg3Mg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RLkAdok3zOGAN3nnXJUIMPKMmbUaqX3CWCrcK/jj1MGtD8qbZC0V9x/Y2Co+Si50Nx+1kxBvD3iyHK/kVinqWDia1AvFrsjhv8C1NTd00CvOaon292w1rey+ueIc7raI/0syBFlhVMfh7o2fzG/G4zoBv4R0o4sj0S9JpBR3NOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdEPlGpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F060C113D0;
-	Sat,  8 Nov 2025 05:26:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762579601;
-	bh=98+gntMW4kVaSlkWF3dHQbOdxR3A4ZREh/ya7KGg3Mg=;
-	h=Subject:To:Cc:From:Date:From;
-	b=SdEPlGpXMHsaLRttvbhyqPlNCaJswruOdelNuDGc5BFTWUb9g5e6GvpKcf/MCP8P0
-	 qu8N/0kOdFgxys6EBd1OKgv2pubhu26q/ur7b5NnDyj/SBe8fxI+uimm3+RB5UR9H/
-	 kda0ww+YQMXo59eD62J15U+whTg7nMsZq1AmkMms=
-Subject: FAILED: patch "[PATCH] drm/mediatek: Disable AFBC support on Mediatek DRM driver" failed to apply to 6.6-stable tree
-To: ariel.dalessandro@collabora.com,chunkuang.hu@kernel.org,ck.hu@mediatek.com,daniels@collabora.com,macpaul.lin@mediatek.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sat, 08 Nov 2025 14:26:38 +0900
-Message-ID: <2025110838-imply-extruding-3561@gregkh>
+	s=arc-20240116; t=1762580419; c=relaxed/simple;
+	bh=8n8+LxqHAgati7AeDofQcf/a3JB31BUTWqP0F3TTAHg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sFleyzXGR/rak4NZB1B23gV/zFPImksEKzPZhM7G3032swonBG/dMO9KY2F6LdPvV8daEOoB2junaxE3caBCH+WPlnpNFl1mlpRLJBi8wn0kjE2cwal+nf7MdZp+UoB8kpXQZ+UhNRs9U7349052IZnAoemlNJWXC8bOohjmlBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bGu/Ifjy; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b98983bae8eso854890a12.0
+        for <stable@vger.kernel.org>; Fri, 07 Nov 2025 21:40:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762580417; x=1763185217; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kzpr9FS38cfunqPmaiI0KKxAhNklXoFm1GkzWYUkMqA=;
+        b=bGu/IfjypogCqpEfrYxuBYf4Ju7jw+o8Ud+zQUDwLGNWer8cFRlLfCZlQf4M1bPeM+
+         OHPofwR3Jz7y076ivsxMcI73o/7Vlf6eP563JyzzTq+k6FvHSP5vyL/Zfqi2z178IB+b
+         cT4AhpwX6hVEkOLYd00JyC/TdZ0V6P5jFhWA8xUgel5BD4vnCZRIIIYBxY2vsZgvWTH7
+         90TZzXBXjkOANECXL9zSAEGgbRjEcWFYERjnnO0IPmWof/DEAyDaaryWyctvvzXMJCbv
+         nQ2FGINMScMD/m9/7zWaQv7ftGgzTNn5vkVUWmFqISicOha2GrdCS1+6jOdZObRTO5tO
+         lxqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762580417; x=1763185217;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kzpr9FS38cfunqPmaiI0KKxAhNklXoFm1GkzWYUkMqA=;
+        b=dw7At6H0CfFLbh14xzN79eQNFp2YL03kix35+3dMGjD4bQ2ODcHjIC1bY2pGlBbtYP
+         dEDNWRfpT+IjAShUaEvTnVSlyIjqvU9X7IQAgjuAJtNp2zF4jFADDdZMAIZu/Xj6sSok
+         1vO3CW8K6C1pGLt75uaEd1nlwIJKUvDbtKrBeJGoNHQuhwo2OZrmJVpTGxvmyrGZr9+A
+         O/D4poThGXeO5NpJJrH/f0UaLzBO3uaDYaBqG3MAcydsrOMtlcqltaQItlq9KqyUSAzL
+         piJGQYN6puUL5UjVZZJFPwShvNgyaOQmWmmWZegVfInoMUiugO7L7WEfxaTG6uuTq/wQ
+         wfgg==
+X-Forwarded-Encrypted: i=1; AJvYcCVvxApVM678hnrR5xQyQ/tT4okSTNz0qQOGdsHYKYch3Qh5wEaLeQbsy5rpOIAfLnOoepC3pRQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yww2WvD1lYmzMALflYKBKD0rFCsJxJUO5wwbkpoPEF2T5rbbFqC
+	ymRVVmhb3q5jyIep+Yak+oXBs5QtGmfeNcKKO0RfT77tHieFitSEGT1z
+X-Gm-Gg: ASbGnctY0qQdPTmt7/vpIt4qrhRLVLiOryeRVAS4LpkJXWDQis0C7oc+0d6I/TlrVWd
+	T1cVQKpPj1lXKf3D/Zb4mJFA59oJj3arjlnxEidJ0bs7QDOq+UOL8RGGwQvuCSaQX5RmlQDBxWJ
+	zg4lNc1Y9uu0eI15Eg6eeWwclR4TIhFoWT0YjXrkIFv+ekuEQfn+Pulz+BCb0tXtM7VfzRefCqq
+	PTBGR81Yz+uJlBJxpOciBiZM5HPda5rd0jYccVD/XZVZDIPDOhJUFg3eSlI/c6JfmrEas3noQKJ
+	cUE2KXP+Yw+BFVLHlamt9Vf9rFn+/KaobeO1K+Ql8XPQ/en1Wb3g98SCd8PYiOIxgKApFzYDRtl
+	CJF6jBehCCfXgmrbhwm7hmrJ9gPv5G+sGCJ31lBKYk/UKJY9uGKCI1PZZnhbfDILvaA+wL7mIPo
+	je61bANcbl/UtcFJB5QSBiD6nI
+X-Google-Smtp-Source: AGHT+IGYgTX9sv7kEZ/sV+bmIlOIvmsyRTprbSJZXJCtl+790BMGjSY1AhJm52TRrDajQgfdJYr/9Q==
+X-Received: by 2002:a17:902:e787:b0:293:623:3265 with SMTP id d9443c01a7336-297e56d9003mr17396975ad.34.1762580417377;
+        Fri, 07 Nov 2025 21:40:17 -0800 (PST)
+Received: from localhost.localdomain ([175.144.123.39])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29650c5ee4dsm77925225ad.45.2025.11.07.21.40.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Nov 2025 21:40:16 -0800 (PST)
+From: "Khairul A. Romli" <karom.9560@gmail.com>
+To: karom.9560@gmail.com
+Cc: Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
+	stable@vger.kernel.org,
+	Richard Gong <richard.gong@intel.com>
+Subject: [PATCH 1/1] firmware: stratix10-svc: stop kernel thread once service is completed
+Date: Sat,  8 Nov 2025 13:40:11 +0800
+Message-ID: <eadf3b34e55bb7edcae9c149fb321115dd859cf6.1762416980.git.khairul.anuar.romli@altera.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
+From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This patch resolves a customer-reported issue where the Stratix10 SVC
+service layer caused maximum CPU utilization. The original logic only
+stopped the thread if it was running and there was one or fewer active
+clients. This overly restrictive condition prevented the thread from
+stopping even when the application was active, leading to unnecessary CPU
+consumption.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+The updated logic now stops the thread whenever it is running, regardless
+of the number of active clients, ensuring better resource management and
+resolving the performance issue.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 9882a40640036d5bbc590426a78981526d4f2345
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110838-imply-extruding-3561@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+Fixes: 7ca5ce896524 ("firmware: add Intel Stratix10 service layer driver")
+Cc: stable@vger.kernel.org # 5.4+
+Signed-off-by: Richard Gong <richard.gong@intel.com>
+Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+---
+ drivers/firmware/stratix10-svc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 9882a40640036d5bbc590426a78981526d4f2345 Mon Sep 17 00:00:00 2001
-From: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-Date: Fri, 24 Oct 2025 17:27:56 -0300
-Subject: [PATCH] drm/mediatek: Disable AFBC support on Mediatek DRM driver
-
-Commit c410fa9b07c3 ("drm/mediatek: Add AFBC support to Mediatek DRM
-driver") added AFBC support to Mediatek DRM and enabled the
-32x8/split/sparse modifier.
-
-However, this is currently broken on Mediatek MT8188 (Genio 700 EVK
-platform); tested using upstream Kernel and Mesa (v25.2.1), AFBC is used by
-default since Mesa v25.0.
-
-Kernel trace reports vblank timeouts constantly, and the render is garbled:
-
-```
-[CRTC:62:crtc-0] vblank wait timed out
-WARNING: CPU: 7 PID: 70 at drivers/gpu/drm/drm_atomic_helper.c:1835 drm_atomic_helper_wait_for_vblanks.part.0+0x24c/0x27c
-[...]
-Hardware name: MediaTek Genio-700 EVK (DT)
-Workqueue: events_unbound commit_work
-pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : drm_atomic_helper_wait_for_vblanks.part.0+0x24c/0x27c
-lr : drm_atomic_helper_wait_for_vblanks.part.0+0x24c/0x27c
-sp : ffff80008337bca0
-x29: ffff80008337bcd0 x28: 0000000000000061 x27: 0000000000000000
-x26: 0000000000000001 x25: 0000000000000000 x24: ffff0000c9dcc000
-x23: 0000000000000001 x22: 0000000000000000 x21: ffff0000c66f2f80
-x20: ffff0000c0d7d880 x19: 0000000000000000 x18: 000000000000000a
-x17: 000000040044ffff x16: 005000f2b5503510 x15: 0000000000000000
-x14: 0000000000000000 x13: 74756f2064656d69 x12: 742074696177206b
-x11: 0000000000000058 x10: 0000000000000018 x9 : ffff800082396a70
-x8 : 0000000000057fa8 x7 : 0000000000000cce x6 : ffff8000823eea70
-x5 : ffff0001fef5f408 x4 : ffff80017ccee000 x3 : ffff0000c12cb480
-x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c12cb480
-Call trace:
- drm_atomic_helper_wait_for_vblanks.part.0+0x24c/0x27c (P)
- drm_atomic_helper_commit_tail_rpm+0x64/0x80
- commit_tail+0xa4/0x1a4
- commit_work+0x14/0x20
- process_one_work+0x150/0x290
- worker_thread+0x2d0/0x3ec
- kthread+0x12c/0x210
- ret_from_fork+0x10/0x20
----[ end trace 0000000000000000 ]---
-```
-
-Until this gets fixed upstream, disable AFBC support on this platform, as
-it's currently broken with upstream Mesa.
-
-Fixes: c410fa9b07c3 ("drm/mediatek: Add AFBC support to Mediatek DRM driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-Reviewed-by: Daniel Stone <daniels@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: Macpaul Lin <macpaul.lin@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20251024202756.811425-1-ariel.dalessandro@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-
-diff --git a/drivers/gpu/drm/mediatek/mtk_plane.c b/drivers/gpu/drm/mediatek/mtk_plane.c
-index 02349bd44001..788b52c1d10c 100644
---- a/drivers/gpu/drm/mediatek/mtk_plane.c
-+++ b/drivers/gpu/drm/mediatek/mtk_plane.c
-@@ -21,9 +21,6 @@
- 
- static const u64 modifiers[] = {
- 	DRM_FORMAT_MOD_LINEAR,
--	DRM_FORMAT_MOD_ARM_AFBC(AFBC_FORMAT_MOD_BLOCK_SIZE_32x8 |
--				AFBC_FORMAT_MOD_SPLIT |
--				AFBC_FORMAT_MOD_SPARSE),
- 	DRM_FORMAT_MOD_INVALID,
- };
- 
-@@ -71,26 +68,7 @@ static bool mtk_plane_format_mod_supported(struct drm_plane *plane,
- 					   uint32_t format,
- 					   uint64_t modifier)
+diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
+index e3f990d888d7..ec39522711ea 100644
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -1040,8 +1040,8 @@ EXPORT_SYMBOL_GPL(stratix10_svc_send);
+  */
+ void stratix10_svc_done(struct stratix10_svc_chan *chan)
  {
--	if (modifier == DRM_FORMAT_MOD_LINEAR)
--		return true;
--
--	if (modifier != DRM_FORMAT_MOD_ARM_AFBC(
--				AFBC_FORMAT_MOD_BLOCK_SIZE_32x8 |
--				AFBC_FORMAT_MOD_SPLIT |
--				AFBC_FORMAT_MOD_SPARSE))
--		return false;
--
--	if (format != DRM_FORMAT_XRGB8888 &&
--	    format != DRM_FORMAT_ARGB8888 &&
--	    format != DRM_FORMAT_BGRX8888 &&
--	    format != DRM_FORMAT_BGRA8888 &&
--	    format != DRM_FORMAT_ABGR8888 &&
--	    format != DRM_FORMAT_XBGR8888 &&
--	    format != DRM_FORMAT_RGB888 &&
--	    format != DRM_FORMAT_BGR888)
--		return false;
--
--	return true;
-+	return modifier == DRM_FORMAT_MOD_LINEAR;
- }
- 
- static void mtk_plane_destroy_state(struct drm_plane *plane,
+-	/* stop thread when thread is running AND only one active client */
+-	if (chan->ctrl->task && chan->ctrl->num_active_client <= 1) {
++	/* stop thread when thread is running */
++	if (chan->ctrl->task) {
+ 		pr_debug("svc_smc_hvc_shm_thread is stopped\n");
+ 		kthread_stop(chan->ctrl->task);
+ 		chan->ctrl->task = NULL;
+-- 
+2.43.7
 
 
