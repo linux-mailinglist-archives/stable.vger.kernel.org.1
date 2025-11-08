@@ -1,88 +1,123 @@
-Return-Path: <stable+bounces-192775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1869C42C19
-	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 12:44:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2296C42C46
+	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 12:54:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6857A188B01C
-	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 11:44:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A746A4E3DF8
+	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 11:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527663002A9;
-	Sat,  8 Nov 2025 11:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pEdxv21q"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95565285C99;
+	Sat,  8 Nov 2025 11:54:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00964283FF1;
-	Sat,  8 Nov 2025 11:43:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA9B1FC8;
+	Sat,  8 Nov 2025 11:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762602239; cv=none; b=NIsIlJPjlVmB6ygIJMjPC2NOL89WiJdWjnIt62fw3CwUMPivP2D/fh4I/7T/E7PXvyHle4QC8oYX1ZwkIPCy+OSR4qVc8XCxSShoORjFbTSzLPhZXZxszdS3SSLtEY3mWUud6ks9rqW034Gt/I7/X1cPZgci0O0zs4+MkeAr2Q8=
+	t=1762602863; cv=none; b=jxMGkzGOWPXm6H3bIUHPeMoKggf4XBA/YyncIVOxrXigvTv82wJKCRmdCJ5+vg38+4dNoYLVGNvGRgJrU1pvXczUlBdFNz7+iw8o96hCOsC7FHjFCLyJq0s4A0LXLfPuGeNlHayTjSzUJ6KyjO8p9I9Ksgfu9dUDzR5w9nwsY2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762602239; c=relaxed/simple;
-	bh=E39zBR+/q8Bg8pTqde3U5WC0/GsvxvWX3vKNLyHS27U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hSMfU8jvIIqxqvEZ2yTwP4ghQ0z19kEu8fA8XSlXUsjJrf2TEr0xpbTRYZfgllkBb+ui2xNt+ChtfWx7NAfioIgF1esZSQzMrVZKdZ+P6oYwlh0HYBZlp+OqlCyvMNQ71HtFdKefPBPlsKsUSyd00KcjA4oEddBP9WfIcCqDEKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pEdxv21q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18E0C19422;
-	Sat,  8 Nov 2025 11:43:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762602238;
-	bh=E39zBR+/q8Bg8pTqde3U5WC0/GsvxvWX3vKNLyHS27U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pEdxv21qocJeC0qMkvDuMhfJwTqyYCCHbgEJd2v2eFxjz7zoOrw91Nm0SmX9c41SG
-	 bSEKsZS7n7wUK2zBQUQbzNFjPsB0pHOxPzjcx9TgIv2tMSheVD0IDDfIxunixiTSnf
-	 7tUTJJD/mSD54PK+C2S7POiZ6YmlfskIWxL8PcY9m8/bOGHJ6zs5vDrriwTKYqkist
-	 e1Vc72tkibEThvA1oG6+GVp1aAJsIHr9mDQoGrpmssVqO9fGZR25Um54J+FdBkZMJl
-	 f4qT5bd7IRb8phRSsmhks47gcAuE4TeyPGIc49o/wATCcbSSFlZy/ZPlItyv1tx1UZ
-	 S6NQcVhnYumqg==
-Date: Sat, 8 Nov 2025 12:43:55 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Vikram Sharma <quic_vikramsa@quicinc.com>
-Cc: bryan.odonoghue@linaro.org, mchehab@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, andersson@kernel.org, 
-	konradybcio@kernel.org, hverkuil-cisco@xs4all.nl, cros-qcom-dts-watchers@chromium.org, 
-	catalin.marinas@arm.com, will@kernel.org, linux-arm-kernel@lists.infradead.org, 
-	quic_svankada@quicinc.com, linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, quic_nihalkum@quicinc.com, 
+	s=arc-20240116; t=1762602863; c=relaxed/simple;
+	bh=ndNmxdkh04ykLZ7E1ZNLgfUkU5xu9a8BkyVL5p81t3k=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=GvHv4uv1yAJfUPfYtAbiVjdDXxYZGPMLfVh4gU8cxa7HjVU0Wik8plzZovChXJEcDE8B2tLqHYN59VhJj1AnfqyDaehb0ifs+gsc8I4HUMsaDhZ6BE/HPqsLif1/DIKHFqJ6+CI39H97DiDJfn1HNrRuntmDk6L4KISco0m/HkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-05 (Coremail) with SMTP id zQCowAD3YvFLLw9pipgGAg--.40529S2;
+	Sat, 08 Nov 2025 19:53:53 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: akpm@linux-foundation.org,
+	jgg@ziepe.ca,
+	leon@kernel.org,
+	jhubbard@nvidia.com,
+	mpenttil@redhat.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] dt-bindings: media: qcom,qcs8300-camss: Add
- missing power supplies
-Message-ID: <20251108-khaki-shark-of-devotion-cf4bce@kuoka>
-References: <20251107162521.511536-1-quic_vikramsa@quicinc.com>
- <20251107162521.511536-2-quic_vikramsa@quicinc.com>
+Subject: [PATCH] mm/hmm/test: Fix error handling in dmirror_device_init
+Date: Sat,  8 Nov 2025 19:53:46 +0800
+Message-Id: <20251108115346.6368-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:zQCowAD3YvFLLw9pipgGAg--.40529S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AF17Jr1ktw4rXryfJFW5Jrb_yoW8Xw1fpF
+	1UJas0kryUGrn3Gr18Zr48Ww1UKr9Yywn5Aw1UG34IgrW3XryYqry8Gw4Fqw1FkrWkJF15
+	XFWaq3Z5AF1UAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9m14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_Gw4l42xK82IYc2Ij64vIr41l4I
+	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
+	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
+	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8I
+	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
+	1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JU6GQhUUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251107162521.511536-2-quic_vikramsa@quicinc.com>
 
-On Fri, Nov 07, 2025 at 09:55:20PM +0530, Vikram Sharma wrote:
-> Add missing vdda-phy-supply and vdda-pll-supply in the (monaco)qcs8300
-> camss binding. While enabling imx412 sensor for qcs8300 we see a need
-> to add these supplies which were missing in initial submission.
-> 
-> Fixes: 634a2958fae30 ("media: dt-bindings: Add qcom,qcs8300-camss compatible")
-> Cc: <stable@vger.kernel.org>
-> Co-developed-by: Nihal Kumar Gupta <quic_nihalkum@quicinc.com>
-> Signed-off-by: Nihal Kumar Gupta <quic_nihalkum@quicinc.com>
-> Signed-off-by: Vikram Sharma <quic_vikramsa@quicinc.com>
-> ---
->  .../bindings/media/qcom,qcs8300-camss.yaml          | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+dmirror_device_init() calls device_initialize() which sets the device
+reference count to 1, but fails to call put_device() when error occurs
+after dev_set_name() or cdev_device_add() failures. This results in
+memory leaks of struct device objects. Additionally,
+dmirror_device_remove() lacks the final put_device() call to properly
+release the device reference.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Found by code review.
 
-Best regards,
-Krzysztof
+Cc: stable@vger.kernel.org
+Fixes: 6a760f58c792 ("mm/hmm/test: use char dev with struct device to get device node")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ lib/test_hmm.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index 83e3d8208a54..5159fc36eea6 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -1458,20 +1458,25 @@ static int dmirror_device_init(struct dmirror_device *mdevice, int id)
+ 
+ 	ret = dev_set_name(&mdevice->device, "hmm_dmirror%u", id);
+ 	if (ret)
+-		return ret;
++		goto put_device;
+ 
+ 	ret = cdev_device_add(&mdevice->cdevice, &mdevice->device);
+ 	if (ret)
+-		return ret;
++		goto put_device;
+ 
+ 	/* Build a list of free ZONE_DEVICE struct pages */
+ 	return dmirror_allocate_chunk(mdevice, NULL);
++
++put_device:
++	put_device(&mdevice->device);
++	return ret;
+ }
+ 
+ static void dmirror_device_remove(struct dmirror_device *mdevice)
+ {
+ 	dmirror_device_remove_chunks(mdevice);
+ 	cdev_device_del(&mdevice->cdevice, &mdevice->device);
++	put_device(&mdevice->device);
+ }
+ 
+ static int __init hmm_dmirror_init(void)
+-- 
+2.17.1
 
 
