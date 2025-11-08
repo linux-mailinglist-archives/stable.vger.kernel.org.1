@@ -1,93 +1,88 @@
-Return-Path: <stable+bounces-192774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A6DC42A06
-	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 10:09:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1869C42C19
+	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 12:44:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C6FE24E4755
-	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 09:09:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6857A188B01C
+	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 11:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FD72DE70E;
-	Sat,  8 Nov 2025 09:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527663002A9;
+	Sat,  8 Nov 2025 11:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Zfvqq7OI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pEdxv21q"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6631D61B7
-	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 09:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00964283FF1;
+	Sat,  8 Nov 2025 11:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762592955; cv=none; b=dQmIlbf3Oh/4SACOU0/LrDGJ8HAd23ApIxkuzBptKphfSVBgeDlrmKjgw2+YRZRodJk1ZHs/Wr8v2t2Gu4aT3I75adZP9Js8TlCGtTYpSdnnxFFSM0vHeOQ+48owVvjSjiwlAFcmyElksWIVQNk0ay0jNZgvoGQ5rcsCcCislLA=
+	t=1762602239; cv=none; b=NIsIlJPjlVmB6ygIJMjPC2NOL89WiJdWjnIt62fw3CwUMPivP2D/fh4I/7T/E7PXvyHle4QC8oYX1ZwkIPCy+OSR4qVc8XCxSShoORjFbTSzLPhZXZxszdS3SSLtEY3mWUud6ks9rqW034Gt/I7/X1cPZgci0O0zs4+MkeAr2Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762592955; c=relaxed/simple;
-	bh=ac9IS7LxhGvsJ5M7ao47Xp0eXk3OFOlfbqAMvrPtePE=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=kQkOd39/QrgpXBQQjCd9iAJaIRYHCIj7ROIoiFA5Mq8L96GHp6HImtDI4qSMdh295LZclK0z27CCn3XHNXL3aU1rbC6ahHPSbczlVxr7ve/uO8Q9mgqrLcMqdUdNa334ayErKlX6SCS9VMtVVz03X4+I8sE+kuWSYvBTSZDKYrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Zfvqq7OI; arc=none smtp.client-ip=95.215.58.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1762602239; c=relaxed/simple;
+	bh=E39zBR+/q8Bg8pTqde3U5WC0/GsvxvWX3vKNLyHS27U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hSMfU8jvIIqxqvEZ2yTwP4ghQ0z19kEu8fA8XSlXUsjJrf2TEr0xpbTRYZfgllkBb+ui2xNt+ChtfWx7NAfioIgF1esZSQzMrVZKdZ+P6oYwlh0HYBZlp+OqlCyvMNQ71HtFdKefPBPlsKsUSyd00KcjA4oEddBP9WfIcCqDEKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pEdxv21q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18E0C19422;
+	Sat,  8 Nov 2025 11:43:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762602238;
+	bh=E39zBR+/q8Bg8pTqde3U5WC0/GsvxvWX3vKNLyHS27U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pEdxv21qocJeC0qMkvDuMhfJwTqyYCCHbgEJd2v2eFxjz7zoOrw91Nm0SmX9c41SG
+	 bSEKsZS7n7wUK2zBQUQbzNFjPsB0pHOxPzjcx9TgIv2tMSheVD0IDDfIxunixiTSnf
+	 7tUTJJD/mSD54PK+C2S7POiZ6YmlfskIWxL8PcY9m8/bOGHJ6zs5vDrriwTKYqkist
+	 e1Vc72tkibEThvA1oG6+GVp1aAJsIHr9mDQoGrpmssVqO9fGZR25Um54J+FdBkZMJl
+	 f4qT5bd7IRb8phRSsmhks47gcAuE4TeyPGIc49o/wATCcbSSFlZy/ZPlItyv1tx1UZ
+	 S6NQcVhnYumqg==
+Date: Sat, 8 Nov 2025 12:43:55 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Vikram Sharma <quic_vikramsa@quicinc.com>
+Cc: bryan.odonoghue@linaro.org, mchehab@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, andersson@kernel.org, 
+	konradybcio@kernel.org, hverkuil-cisco@xs4all.nl, cros-qcom-dts-watchers@chromium.org, 
+	catalin.marinas@arm.com, will@kernel.org, linux-arm-kernel@lists.infradead.org, 
+	quic_svankada@quicinc.com, linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, quic_nihalkum@quicinc.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v6 1/2] dt-bindings: media: qcom,qcs8300-camss: Add
+ missing power supplies
+Message-ID: <20251108-khaki-shark-of-devotion-cf4bce@kuoka>
+References: <20251107162521.511536-1-quic_vikramsa@quicinc.com>
+ <20251107162521.511536-2-quic_vikramsa@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762592941;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ac9IS7LxhGvsJ5M7ao47Xp0eXk3OFOlfbqAMvrPtePE=;
-	b=Zfvqq7OI9pkjpiJOrYomc+ls+98QLTL/pSq9xUOjZjJVPdkNowl9gQav1VxF6GlDQcSVU/
-	mFg6UEjC/0myT6bcnk/pTfd5m3iJduwhS7Jqb4hoZAG4auxE75Xx/IQRpbW7ESbJMvJHL9
-	F5Wc0q8Ooe7P3d4n1rDliQmB1Q3N80g=
-Date: Sat, 08 Nov 2025 09:08:58 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Yosry Ahmed" <yosry.ahmed@linux.dev>
-Message-ID: <3759161383b53759888f64d9a03983c05026ab1c@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH 5/6] KVM: SVM: Add missing save/restore handling of LBR
- MSRs
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: "Paolo Bonzini" <pbonzini@redhat.com>, "Jim Mattson"
- <jmattson@google.com>, "Maxim Levitsky" <mlevitsk@redhat.com>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20251108004524.1600006-6-yosry.ahmed@linux.dev>
-References: <20251108004524.1600006-1-yosry.ahmed@linux.dev>
- <20251108004524.1600006-6-yosry.ahmed@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251107162521.511536-2-quic_vikramsa@quicinc.com>
 
-November 7, 2025 at 4:45 PM, "Yosry Ahmed" <yosry.ahmed@linux.dev mailto:=
-yosry.ahmed@linux.dev?to=3D%22Yosry%20Ahmed%22%20%3Cyosry.ahmed%40linux.d=
-ev%3E > wrote:
->=20
->=20MSR_IA32_DEBUGCTLMSR and LBR MSRs are currently not enumerated by
-> KVM_GET_MSR_INDEX_LIST, and LBR MSRs cannot be set with KVM_SET_MSRS. S=
-o
-> save/restore is completely broken.
->=20
->=20Fix it by adding the MSRs to msrs_to_save_base, and allowing writes t=
-o
-> LBR MSRs from userspace only (as they are read-only MSRs). Additionally=
-,
-> to correctly restore L1's LBRs while L2 is running, make sure the LBRs
-> are copied from the captured VMCB01 save area in svm_copy_vmrun_state()=
-.
->=20
->=20Fixes: 24e09cbf480a ("KVM: SVM: enable LBR virtualization")
-> Cc: stable@vger.kernel.org
->
+On Fri, Nov 07, 2025 at 09:55:20PM +0530, Vikram Sharma wrote:
+> Add missing vdda-phy-supply and vdda-pll-supply in the (monaco)qcs8300
+> camss binding. While enabling imx412 sensor for qcs8300 we see a need
+> to add these supplies which were missing in initial submission.
+> 
+> Fixes: 634a2958fae30 ("media: dt-bindings: Add qcom,qcs8300-camss compatible")
+> Cc: <stable@vger.kernel.org>
+> Co-developed-by: Nihal Kumar Gupta <quic_nihalkum@quicinc.com>
+> Signed-off-by: Nihal Kumar Gupta <quic_nihalkum@quicinc.com>
+> Signed-off-by: Vikram Sharma <quic_vikramsa@quicinc.com>
+> ---
+>  .../bindings/media/qcom,qcs8300-camss.yaml          | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
 
-Reported-by:=C2=A0Jim Mattson <jmattson@google.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-[..]
+Best regards,
+Krzysztof
+
 
