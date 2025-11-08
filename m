@@ -1,73 +1,96 @@
-Return-Path: <stable+bounces-192777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B65C42C79
-	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 13:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7A2C42CEC
+	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 13:36:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9B5ED349B35
-	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 12:06:10 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CC5F53489DA
+	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 12:36:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70F923EA94;
-	Sat,  8 Nov 2025 12:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEE754654;
+	Sat,  8 Nov 2025 12:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gpOULasz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SbZfQk2p"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6231F222560;
-	Sat,  8 Nov 2025 12:06:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1951258EF0
+	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 12:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762603565; cv=none; b=CnoYkv4m+nRxoOlJrnKi1yDi6EqbRIPRl+yLLoy2OAQcaLMV5C1sspkoQFqhZ6g0HfkG4/R6RoEazZbUIsElc8P/B8qIBUqSRwgNCqNuYSCrxpfXEIx+TqTV19VA9Dcd8HAFUA/rzS/E7gwQBxrH1BiRWHBJubr7lxreFn6dE1M=
+	t=1762605381; cv=none; b=XTe6BzL/4gu7DZxCjkKBLNyVAhqaqLdO+jfmuCt7iuYplsw0JEcjzYp+QyQeHsOp6Vjlkj39T8XjgIpjAtfKns3jkqepOQTysQbaC2m9QIw6hfhyPakhDrY6/9kmX0I80eBDHUMi/LO/wpklA7ysN2WOwjsviB62wQOqrD6L1yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762603565; c=relaxed/simple;
-	bh=BqxvbyHZr/XGWKF/eN0lTVeCKAfJuLLL6a2EREHic88=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u5PeWAHB97jKFpJblO1kkMmNIzcIHoxg9azfcpxhSgKHYL+w8rRNhuA4b4Ttp3/JbLrBNQ5NEj8jGGrg7h28A3Yc9GxTZOOPVUeNY09X57PyO1Lf4DC4RklAJfXTQg6yI1utSWQ1fm21SWqnJObkh3xDd+vy5AwfHQvIqcMUMn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gpOULasz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0158C16AAE;
-	Sat,  8 Nov 2025 12:06:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762603564;
-	bh=BqxvbyHZr/XGWKF/eN0lTVeCKAfJuLLL6a2EREHic88=;
-	h=From:To:Cc:Subject:Date:From;
-	b=gpOULaszBBOdYMiNvXpJkrW80awPsF2l2D99okxCG+rj9Iok75GMS3Wgvm8ezpukH
-	 wak9qG2xuH3B8n64DDScG/UzTLXR+Ny89QNwauRHmXYmX6bVuCqrd6KuJ3gO7GIS7p
-	 Hgsxd4tQPgjyNXb22rkEqz83rshYnjKNt0+3p7V3bkWiE6rsrOPojLNM8lVmr3ajhJ
-	 3SOmjoBPMoIjg+SjP8YcWJP3Y03c9OvRsdNlUJ/6KHUWMBwVI7l2TcnA1tUHoTUcHK
-	 /u31rPctV8AP4VaP92NWfUi300N7IhyR6T9mzOKb+ei9SDirUAGhBV21oa8EQ4rTZT
-	 O+xHBiVXlGzJQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vHhhi-00000003Tka-3aFc;
-	Sat, 08 Nov 2025 12:06:02 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Mark Brown <broonie@kernel.org>,
-	Maximilian Dittgen <mdittgen@amazon.de>,
-	Oliver Upton <oupton@kernel.org>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Sascha Bischoff <sascha.bischoff@arm.com>,
-	Sebastian Ene <sebastianene@google.com>,
-	Sebastian Ott <sebott@redhat.com>,
-	stable@vger.kernel.org,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org
-Subject: [GIT PULL] KVM/arm64 fixes for 6.18, take #2
-Date: Sat,  8 Nov 2025 12:05:59 +0000
-Message-ID: <20251108120559.1201561-1-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1762605381; c=relaxed/simple;
+	bh=uRVHkf74PN+NsgRpPhLx88tlLbm6OItPRVdDekAJNfg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WbFLVXCwBaFG2B6AN/CmgrfEhaG6TskJW2uVq0b95uzfpD5wGD2Wvd5hhCZcWBolJbol+C18hStzsUP0EqEai07Ej9aw1qZ3RtIqePix5G3l9TPyW3vjrP1cIltwUw0sL7Z8vYD7WDTwJ6dGwOA2T6+QcZ2m1xUfCDs54F/NVdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SbZfQk2p; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ba3b6f1df66so119483a12.3
+        for <stable@vger.kernel.org>; Sat, 08 Nov 2025 04:36:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762605378; x=1763210178; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kb8819sRG4CMNnKbcxDJ79PlxuoIzXm9ZoWrsp3orTM=;
+        b=SbZfQk2pS/PzjUrbA9LceOfFNNiwGZDO1+ZftxUBKKIigRfxtITCbQjrXobUAO78vj
+         XPGhYREsChQoWpuSCejJa3n+PhWkXF1kpIDbn5mB25xct4cBcl9dAfeWxCC2eKpbL2Ue
+         xyt3gGbaCLYA+6okZ8tQw+KQD+Anm9ts+Osvq5DmoSOTz/xiPr8tnsS9cpGcW4HAA8HM
+         sPK4lBckeVNoB5Ghp/9vV8sZaa2N96HRxpapjCAnIWe4KiLWsp8q/6RlGtllrafXwyRf
+         fApRQquKHVRb36aVyydfMxRxUzhVi5fEfyTtGDR+sqvIZe/mDHaQfypZzBY/V+P9Qxwa
+         9Raw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762605378; x=1763210178;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Kb8819sRG4CMNnKbcxDJ79PlxuoIzXm9ZoWrsp3orTM=;
+        b=s/klsB8cNDl37W5GKp+g4OpiXlXWZAySncJ6w7vD6+l1sPEBvFjTcurKfhVCb9odYG
+         P61nFfExRSoJgQHrdf6qggdKbEMSUwGDJ4TxdspPpeAhNbfiLg8RHylc3Fs51O/LzlvN
+         fzZuJMUu7xXHBgbCTPom2sYJ98Xmech+cuZqx0pO/kbwcWjiPElEr5v8Fkw33nk9TJWY
+         P5qZvPoPVBxCsUyVG3yH1edjkzGanCmDj2pddKmdsb6MS5tqCqEglzAmkfowfelN3nSk
+         nZycXs56SK+pUlPU4RgB8OqBKgQxGNHg8ni/b71LiqX9gHLKOoI+XKpPl+LkgOMgU1Y+
+         xUnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUH8iWCEmfMB+std+OuAIaCIxYttsbmzH4p2/iHJdq3QZudI7b44fzUeUkQzmpimLHKW3h67KM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx11HtSKuRcUtnLSZJq/YnYQLg32CHa5ilAh+lK0ch+R+/1mLUj
+	ZjJgbLtjD+eGQW+iZpzDcbtbo+6w1nMQi2H9UqB7uWtD75sgyTOJZ9lC
+X-Gm-Gg: ASbGncsX2KO4LW5yJpJXhOY/9OfCCX41/pe6ZyF664dmpDWLibXSb+uxbui+nAe0QKq
+	/dy1t8ptS58t/rzGVNGjLGU7aq79UPXKbNlL9nHaJBxRKH26WXvjh+vqxpYVyCiUXQXcgrLyx/V
+	YO3arZGlDpFtCI2hel6KOvRVmPnzUZN/vcbmEUoGMeSVgETcNBheoXdEL7MF41Tr9o5kCrPUP5X
+	GIxxnpUUi5wOFXo7bhTmKLNxJJwOh8/xHu3OcqsWRqgzMWvjMrDjClo3itNaCFbvPCM7C57agf2
+	kfLWJ696/UMqh9MSq2zyQ22MLCrToP8j4vmKAofEjvlimSw9KcccN/rNO5/WG+Z2bv8QSTrWH8m
+	3X7qjTkx/Tl0fYiuGKBCkYOUpgHnQEcPtlfTNGTMDU2Oe8tq/caDwTwdvpMWZLJQYh2xHwVFG/k
+	O/ZxoOQ206MeT+09jHXz9g/pvbKtX8Y71MNmgZVcR+deWI5q52iFlhLVpCHQW0wnHkxeedg9oNk
+	0np/LNy1l8=
+X-Google-Smtp-Source: AGHT+IHbxRfdUT4HVX6GH+hFiYMSSiTWIZoTQpxma32JqxsfSwUnqkfo6IFizDS0NzlaG/f8uasiNg==
+X-Received: by 2002:a17:902:e847:b0:296:549c:a1e with SMTP id d9443c01a7336-297e5649f22mr15677755ad.3.1762605378467;
+        Sat, 08 Nov 2025 04:36:18 -0800 (PST)
+Received: from poi.localdomain (KD118158218050.ppp-bb.dion.ne.jp. [118.158.218.50])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ba901959a47sm7648305a12.28.2025.11.08.04.36.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Nov 2025 04:36:18 -0800 (PST)
+From: Qianchang Zhao <pioooooooooip@gmail.com>
+To: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>
+Cc: gregkh@linuxfoundation.org,
+	linux-cifs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	security@kernel.org,
+	Zhitong Liu <liuzhitong1993@gmail.com>,
+	Qianchang Zhao <pioooooooooip@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ksmbd: vfs: fix truncate lock-range check for shrink/grow and avoid size==0 underflow
+Date: Sat,  8 Nov 2025 21:36:09 +0900
+Message-Id: <20251108123609.382365-1-pioooooooooip@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2025110803-retrace-unnatural-127f@gregkh>
+References: <2025110803-retrace-unnatural-127f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,105 +98,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: pbonzini@redhat.com, broonie@kernel.org, mdittgen@amazon.de, oupton@kernel.org, peter.maydell@linaro.org, sascha.bischoff@arm.com, sebastianene@google.com, sebott@redhat.com, stable@vger.kernel.org, vdonnefort@google.com, will@kernel.org, yuzenghui@huawei.com, joey.gouly@arm.com, suzuki.poulose@arm.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Paolo,
+ksmbd_vfs_truncate() uses check_lock_range() with arguments that are
+incorrect for shrink, and can underflow when size==0:
 
-Much later than expected, but here's the second set of fixes KVM/arm64
-for 6.18. The core changes are mostly fixes for a bunch of recent
-regressions, plus a couple that address the way pKVM deals with
-untrusted data. The rest address a couple of selftests, and Oliver's
-new email address.
+- For shrink, the code passed [inode->i_size, size-1], which is reversed.
+- When size==0, "size-1" underflows to -1, so the range becomes
+  [old_size, -1], effectively skipping the intended [0, old_size-1].
 
-Please pull,
+Fix by:
+- Rejecting negative size with -EINVAL.
+- For shrink (size < old): check [size, old-1].
+- For grow   (size > old): check [old, size-1].
+- Skip lock check when size == old.
+- Keep the return value on conflict as -EAGAIN (no noisy pr_err()).
 
-	M.
+This avoids the size==0 underflow and uses the correct range order,
+preserving byte-range lock semantics.
 
-The following changes since commit ca88ecdce5f51874a7c151809bd2c936ee0d3805:
+Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+---
+ fs/smb/server/vfs.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
-  arm64: Revamp HCR_EL2.E2H RES1 detection (2025-10-14 08:18:40 +0100)
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index 891ed2dc2..e7843ec9b 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -825,17 +825,27 @@ int ksmbd_vfs_truncate(struct ksmbd_work *work,
+ 	if (!work->tcon->posix_extensions) {
+ 		struct inode *inode = file_inode(filp);
+ 
+-		if (size < inode->i_size) {
+-			err = check_lock_range(filp, size,
+-					       inode->i_size - 1, WRITE);
+-		} else {
+-			err = check_lock_range(filp, inode->i_size,
+-					       size - 1, WRITE);
++		loff_t old = i_size_read(inode);
++		loff_t start = 0, end = -1;
++		bool need_check = false;
++
++		if (size < 0)
++			return -EINVAL;
++
++		if (size < old) {
++			start = size;
++			end   = old - 1;
++			need_check = true;
++		} else if (size > old) {
++			start = old;
++			end   = size - 1;
++			need_check = true;
+ 		}
+ 
+-		if (err) {
+-			pr_err("failed due to lock\n");
+-			return -EAGAIN;
++		if (need_check) {
++			err = check_lock_range(filp, start, end, WRITE);
++			if (err)
++				return -EAGAIN;
+ 		}
+ 	}
+-- 
+2.34.1
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git tags/kvmarm-fixes-6.18-2
-
-for you to fetch changes up to 4af235bf645516481a82227d82d1352b9788903a:
-
-  MAINTAINERS: Switch myself to using kernel.org address (2025-11-08 11:21:20 +0000)
-
-----------------------------------------------------------------
-KVM/arm654 fixes for 6.18, take #2
-
-* Core fixes
-
-  - Fix trapping regression when no in-kernel irqchip is present
-    (20251021094358.1963807-1-sascha.bischoff@arm.com)
-
-  - Check host-provided, untrusted ranges and offsets in pKVM
-    (20251016164541.3771235-1-vdonnefort@google.com)
-    (20251017075710.2605118-1-sebastianene@google.com)
-
-  - Fix regression restoring the ID_PFR1_EL1 register
-    (20251030122707.2033690-1-maz@kernel.org
-
-  - Fix vgic ITS locking issues when LPIs are not directly injected
-    (20251107184847.1784820-1-oupton@kernel.org)
-
-* Test fixes
-
-  - Correct target CPU programming in vgic_lpi_stress selftest
-    (20251020145946.48288-1-mdittgen@amazon.de)
-
-  - Fix exposure of SCTLR2_EL2 and ZCR_EL2 in get-reg-list selftest
-    (20251023-b4-kvm-arm64-get-reg-list-sctlr-el2-v1-1-088f88ff992a@kernel.org)
-    (20251024-kvm-arm64-get-reg-list-zcr-el2-v1-1-0cd0ff75e22f@kernel.org)
-
-* Misc
-
-  - Update Oliver's email address
-    (20251107012830.1708225-1-oupton@kernel.org)
-
-----------------------------------------------------------------
-Marc Zyngier (3):
-      KVM: arm64: Make all 32bit ID registers fully writable
-      KVM: arm64: Set ID_{AA64PFR0,PFR1}_EL1.GIC when GICv3 is configured
-      KVM: arm64: Limit clearing of ID_{AA64PFR0,PFR1}_EL1.GIC to userspace irqchip
-
-Mark Brown (2):
-      KVM: arm64: selftests: Add SCTLR2_EL2 to get-reg-list
-      KVM: arm64: selftests: Filter ZCR_EL2 in get-reg-list
-
-Maximilian Dittgen (1):
-      KVM: selftests: fix MAPC RDbase target formatting in vgic_lpi_stress
-
-Oliver Upton (3):
-      KVM: arm64: vgic-v3: Reinstate IRQ lock ordering for LPI xarray
-      KVM: arm64: vgic-v3: Release reserved slot outside of lpi_xa's lock
-      MAINTAINERS: Switch myself to using kernel.org address
-
-Sascha Bischoff (1):
-      KVM: arm64: vgic-v3: Trap all if no in-kernel irqchip
-
-Sebastian Ene (1):
-      KVM: arm64: Check the untrusted offset in FF-A memory share
-
-Vincent Donnefort (1):
-      KVM: arm64: Check range args for pKVM mem transitions
-
- .mailmap                                           |  3 +-
- MAINTAINERS                                        |  2 +-
- arch/arm64/kvm/hyp/nvhe/ffa.c                      |  9 ++-
- arch/arm64/kvm/hyp/nvhe/mem_protect.c              | 28 +++++++++
- arch/arm64/kvm/sys_regs.c                          | 71 ++++++++++++----------
- arch/arm64/kvm/vgic/vgic-debug.c                   | 16 +++--
- arch/arm64/kvm/vgic/vgic-init.c                    | 16 ++++-
- arch/arm64/kvm/vgic/vgic-its.c                     | 18 +++---
- arch/arm64/kvm/vgic/vgic-v3.c                      |  3 +-
- arch/arm64/kvm/vgic/vgic.c                         | 23 ++++---
- tools/testing/selftests/kvm/arm64/get-reg-list.c   |  3 +
- tools/testing/selftests/kvm/lib/arm64/gic_v3_its.c |  9 ++-
- 12 files changed, 137 insertions(+), 64 deletions(-)
 
