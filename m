@@ -1,119 +1,250 @@
-Return-Path: <stable+bounces-192792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689B2C43579
-	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 23:25:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E31CC43594
+	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 23:40:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 13BAC348858
-	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 22:25:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99A2F188CC98
+	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 22:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540F429D27E;
-	Sat,  8 Nov 2025 22:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDE926CE0F;
+	Sat,  8 Nov 2025 22:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NJqA0/rm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A48829BDA2
-	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 22:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E3324469E
+	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 22:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762640700; cv=none; b=oEb0yMsBO5/1H3/FXj9JIIvDLNepWputDHXwg3IIWc41vTViXK407lqs3vbKjfSGZbWeaDj+f0DgnqKEP+oOnu4rUX0gGYBKIMKNztcZhh9rlHNR8ESTYnDPFOiCEzP8x+rN75Z5cSHDielLM4p7LVzpLEO3sWrVKKnv1Dwxz48=
+	t=1762641611; cv=none; b=AGvjhtQ7OFoVuSQ4JcsLzwgkSba5KOdhvfSWjIaEd82Fqhcol+DoCOjGcIRtePC3/tHqv4i+5puqC2E3y83eYrWs0YRUr4ag52KAyeTkfMZNulnn79xBfKeqSs2vp26cy5/u2dVRDPenidEUt+Ibc4FER3kxxBkz9eFIt0dS0Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762640700; c=relaxed/simple;
-	bh=2Mv2eWVx/Gp/9zmenLTCFy4zz2PyZwi5pO/4yt7VAqc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QqZesJ9rl58DaAwszg0MKEya4rC+Gl/FFhNrX0+dFXAKnPBze4DC2AUHa60vAXr279W/zWkK8XrdL/iO3htzASAal4HeXfhHS+L24zwmZ/OY4v96Ea/PPKllGeZUN/ERLkPeB9jEpHwQT+TsP9rmTR9JFAn6BRpyz6SZR0LLEh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca
+	s=arc-20240116; t=1762641611; c=relaxed/simple;
+	bh=v2olXTITm7id/Jbok7SDUxyytcIF0922b41bv/r3gEA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KndX1lWDFVFwsaJev4JsX8O3ty/k8xZuhwap7dvLCBqZvXLuiaX/RKStBfx+zTHx44y7XnmqxIZ327ntfCSJNmUlBBpoR2Klg6aqnDxZju9t/zOFVKHyU1F8UNe1RIUh1Q9FeMErJmJWCz6tIieSbw7VgaQ5FhJvmQZYZgqeFEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NJqA0/rm; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-88058103dcfso12301416d6.3
-        for <stable@vger.kernel.org>; Sat, 08 Nov 2025 14:24:58 -0800 (PST)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-477632b0621so12870435e9.2
+        for <stable@vger.kernel.org>; Sat, 08 Nov 2025 14:40:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762641607; x=1763246407; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GeISWmTa3vUK5FBNCaamQkWxvL/7eMCUuRL+6ngrP4Y=;
+        b=NJqA0/rm4BCXw1p5FOX+GDVCIjt58glkz9Q3ZcfHYl+bQhke5jQF8tHQAoP756LAEN
+         RoEO1iHN1pJnsaCwQAJugdstZHDrY7RZHUv9cJZkiyW4eRJHB/HZO8BHEYbgXefjWHfJ
+         zzmDbvR+1wBEyS3oVxJmNxGHlRu9NLTwsNmHczq3QpM/P2eYEevH5t9xCFxZ+CFUT3+F
+         Bhs3kd1ZQM88X++du1e04gyLGr+NLbxjs+c8xm+v0xs9AbXoxRPSKUXeDx+4v6RHewXE
+         Jh4ztCqjxd8faYiMkD1DalrKN923yhr0Xu0kfm9/G9+lE17rUvB6RbfwD5hL5z5H2ppv
+         SOKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762640697; x=1763245497;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rIK9zYAgTOFKn0gaT0fUYRv/pXw/XsmvNmFsqqYFUAk=;
-        b=mbL9wiJjKt2W4MQm1t2GT0YMjMRd9RJMixTGf8PmhuyL3tbxhn4w5TBeouJMzC/c2J
-         +KYkT5zZ8/6SdRtXe5fbD6GA24MHtPaG2N7MdnEgIYvrTaZetGFdNFzz7vVpnJ8Mo2At
-         CYFhsAGNLWkI6tPIoK4MVhZKxfg5q3nJxG+hafW8axKtqsSlNunx6WJmF+cfH2RayLeg
-         KsxMTVR+3WFKokQIZzQ73YwODVH2az2vin5jO+Bwz38PGsuLwLjAo+yKl9pS4ddMK5ay
-         0f4IqsDeYXtfT0RGbpzyizbhu6wcBngLXYBPsnig/EGV4HGkqOAHA32pnY33vy2AkPWj
-         uumg==
-X-Forwarded-Encrypted: i=1; AJvYcCVFuNiE7rvqnwDKWylLptf861wbgbPsit6gL92z02PFZEe4by9ocBDmfwWwfW3BdxTK4m8p3OE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeGLCOm3XVZW/1KTlpxnWT6DxYngHQle7ZnEZUbV4tXBdPFPug
-	vTqr3rIVTgbOkCalGZIF1VEzuUOwmrif8CrWHwi0P5J3dOIS9PKWd3sH
-X-Gm-Gg: ASbGncuj18Xf5ILm7BJJVk8Wz99NLIgYxobvhAgVWSIzRjCxcy+oPF29ww4WY7TwVzx
-	IRuu8PIBvd0X/LjYt9qNSaWV9Dcg9oxZKzmY8IrozFYXTKVvl5NRXNvbwKtnswN+4ml9EB+96MW
-	WxkziChOVcgqk4B49euhYEJag3FaCjJaILSfIIRJHvA628FirqCW6UMSkUPV2lOo5Qo33QJqDcp
-	hMyXYJy9vbnDkg7hvLRfCZQyXfAGzgG6FXBxODcnTAhc0HMP5OcZrP1l/TnmsJ4XetnvYzFiT5M
-	ZkEuadGGl85Ki0VLWI3k6RIGJq7600I+CK2CAJfsq+MvtVsjMFD9m3nDXZ90B3vs09Lnb5jUZps
-	O8vm8uoCG0TVLfH1GLCz5aWRUrpUoHoimXerlyvUh6pXOosZs35CG7NMM9VadsCzpGNYzGAeimk
-	15
-X-Google-Smtp-Source: AGHT+IEjXFwr+Srm4QmfVRgu2vNEak6lu57AWOlSK22OF1wICTm1uk8SpWxSTMr5t0Nyhn7q3c8MDQ==
-X-Received: by 2002:a05:6214:daf:b0:880:5851:3c61 with SMTP id 6a1803df08f44-882384ae832mr39079716d6.0.1762640697346;
-        Sat, 08 Nov 2025 14:24:57 -0800 (PST)
-Received: from [192.168.2.45] ([65.93.187.46])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88238928a80sm21582896d6.9.2025.11.08.14.24.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Nov 2025 14:24:56 -0800 (PST)
-Message-ID: <baf4fd6c-1796-47cb-a9bb-72521a217453@vasilevsky.ca>
-Date: Sat, 8 Nov 2025 17:24:44 -0500
+        d=1e100.net; s=20230601; t=1762641607; x=1763246407;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GeISWmTa3vUK5FBNCaamQkWxvL/7eMCUuRL+6ngrP4Y=;
+        b=RxlRxBHqd+mYYCVKUmkfUZZBylqEqhtGP4U1F6ugoyQvhWWTiSckpvOfHcQ2YCJr6l
+         Dodt1POXuWyapx6vvRLulEEee649HYb4qV/LH0P+blyVyyYFX9vRYbzgfmLl5NjVqXFF
+         MOd1yt9m5EkG5yH/uIx1NXjBesT6T2XlJN6vhpdsDjhE9Wm+DxkmV52Bf2xYRJj9G2D0
+         hGG0V6xLJZA2h5dW3JBZ+CBO8t0ocHEKiDE2rx0gh/6ABmOkZ+cGy1kbsnUVG7oL2+Xs
+         H4noblmVlZdpFR9D3kaH6HkK8XcbBbNTCqbGzQFF6lk/rTL+egiHyX1oZLQmR9k98lPK
+         PPyA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZcoZRNNzJtwPZKs/aCMNGfGa556zgpcQgz5FiVBII5J4CiMWcy0px2rdGUc8CDOVDNrkxB2g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/oxW7RE7rWkAsP6JQdFylhXisUyOk06UWk2Nxq5Zfj/YxR/71
+	wKo9Swa3mKtXC5ICzI0QxnModR8I++XUPfAkNl5hvz5Cmk8k3dMkrJ2m
+X-Gm-Gg: ASbGnct523vDcgviwn9OX2XcpTghCghTdBH6N8E5+6cAYqWVn/Ldu9LcR5Lk6U5LETq
+	VLbe2FRuDMeaopkYeY249poLhHFFk2CIun20rL17eoUV93lrjLJLCxX/r5gp12qTyajRy/N4DNV
+	rVkZmt+hED51b4Cape0H21PscxhRHEXpHkVFUibr721C70b0DKTAAGEcPKhg+UcI/h1/6l+7Gay
+	mxsx515yVMxaUEW6JLUsCo+Vxaxz5LrxIurLyUXH6RCrZtr4hvxZE7cyquucgylQ6igmTmFjCNJ
+	v0ZGnJoqYzpKDjuz53CU+TjXlLHJx1gP9LveeU0CVbS/kMLgGb9+UXMxz+D4pNkLRXPQZD2gI4q
+	Zt/F6mhZPoda5SrQlwAc2zZrOQnzdJYZPuf/EyRC1RMHbjCpazTDAkhpuUBVZZU2k+nWPyhUg/0
+	ZwmJ3OXjKfl/Si/63/30oTfC/PA8SGoDSECuyKmKQDqhjiEFo6iSnX
+X-Google-Smtp-Source: AGHT+IGsbfXCcLr/eMJsRMvbDro8yZc7tlZ7s2qGXaBx74rmIg1A2WehS9AdBI43idEKThFTSBaWAA==
+X-Received: by 2002:a05:600c:8709:b0:471:15c1:45b9 with SMTP id 5b1f17b1804b1-47773288defmr31071275e9.29.1762641606936;
+        Sat, 08 Nov 2025 14:40:06 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47763e4f89fsm78847315e9.3.2025.11.08.14.40.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Nov 2025 14:40:06 -0800 (PST)
+Date: Sat, 8 Nov 2025 22:40:04 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Chuck Lever <cel@kernel.org>
+Cc: NeilBrown <neil@brown.name>, "stable@vger.kernel.org"
+ <stable@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, David
+ Laight <David.Laight@ACULAB.COM>, Linux NFS Mailing List
+ <linux-nfs@vger.kernel.org>, Linux List Kernel Mailing
+ <linux-kernel@vger.kernel.org>, speedcracker@hotmail.com
+Subject: Re: Compile Error fs/nfsd/nfs4state.o - clamp() low limit slotsize
+ greater than high limit total_avail/scale_factor
+Message-ID: <20251108224004.05895f84@pumpkin>
+In-Reply-To: <cf9573c2-5fb7-4417-8ff0-eef4172621fb@kernel.org>
+References: <bbba88825d7b2b06031c1b085d76787a2502d70e.camel@kernel.org>
+	<37bc1037-37d8-4168-afc9-da8e2d1dd26b@kernel.org>
+	<20251106192210.1b6a3ca0@pumpkin>
+	<176251424056.634289.13464296772500147856@noble.neil.brown.name>
+	<20251107114324.33fd69f3@pumpkin>
+	<176255578949.634289.10177595719141795960@noble.neil.brown.name>
+	<cf9573c2-5fb7-4417-8ff0-eef4172621fb@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: Fix mprotect on book3s32
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Nadav Amit <nadav.amit@gmail.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, linux-mm@kvack.org
-References: <20251027-vasi-mprotect-g3-v1-1-3c5187085f9a@vasilevsky.ca>
- <878qgg49or.ritesh.list@gmail.com>
-Content-Language: en-US
-From: Dave Vasilevsky <dave@vasilevsky.ca>
-In-Reply-To: <878qgg49or.ritesh.list@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 2025-11-08 14:16, Ritesh Harjani wrote: 
-> Shouldn't we flush all if we get tlb_flush request for full mm? e.g.
-> Something like this maybe? 
+On Sat, 8 Nov 2025 10:49:34 -0500
+Chuck Lever <cel@kernel.org> wrote:
+
+> On 11/7/25 5:49 PM, NeilBrown wrote:
+> > On Fri, 07 Nov 2025, David Laight wrote:  
+> >> On Fri, 07 Nov 2025 22:17:20 +1100
+> >> NeilBrown <neilb@ownmail.net> wrote:
+> >>  
+> >>> On Fri, 07 Nov 2025, David Laight wrote:  
+> >>>> On Thu, 6 Nov 2025 09:33:28 -0500
+> >>>> Chuck Lever <cel@kernel.org> wrote:
+> >>>>     
+> >>>>> FYI
+> >>>>>
+> >>>>> https://bugzilla.kernel.org/show_bug.cgi?id=220745    
+> >>>>
+> >>>> Ugg - that code is horrid.
+> >>>> It seems to have got deleted since, but it is:
+> >>>>
+> >>>> 	u32 slotsize = slot_bytes(ca);
+> >>>> 	u32 num = ca->maxreqs;
+> >>>> 	unsigned long avail, total_avail;
+> >>>> 	unsigned int scale_factor;
+> >>>>
+> >>>> 	spin_lock(&nfsd_drc_lock);
+> >>>> 	if (nfsd_drc_max_mem > nfsd_drc_mem_used)
+> >>>> 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
+> >>>> 	else
+> >>>> 		/* We have handed out more space than we chose in
+> >>>> 		 * set_max_drc() to allow.  That isn't really a
+> >>>> 		 * problem as long as that doesn't make us think we
+> >>>> 		 * have lots more due to integer overflow.
+> >>>> 		 */
+> >>>> 		total_avail = 0;
+> >>>> 	avail = min((unsigned long)NFSD_MAX_MEM_PER_SESSION, total_avail);
+> >>>> 	/*
+> >>>> 	 * Never use more than a fraction of the remaining memory,
+> >>>> 	 * unless it's the only way to give this client a slot.
+> >>>> 	 * The chosen fraction is either 1/8 or 1/number of threads,
+> >>>> 	 * whichever is smaller.  This ensures there are adequate
+> >>>> 	 * slots to support multiple clients per thread.
+> >>>> 	 * Give the client one slot even if that would require
+> >>>> 	 * over-allocation--it is better than failure.
+> >>>> 	 */
+> >>>> 	scale_factor = max_t(unsigned int, 8, nn->nfsd_serv->sv_nrthreads);
+> >>>>
+> >>>> 	avail = clamp_t(unsigned long, avail, slotsize,
+> >>>> 			total_avail/scale_factor);
+> >>>> 	num = min_t(int, num, avail / slotsize);
+> >>>> 	num = max_t(int, num, 1);
+> >>>>
+> >>>> Lets rework it a bit...
+> >>>> 	if (nfsd_drc_max_mem > nfsd_drc_mem_used) {
+> >>>> 		total_avail = nfsd_drc_max_mem - nfsd_drc_mem_used;
+> >>>> 		avail = min(NFSD_MAX_MEM_PER_SESSION, total_avail);
+> >>>> 		avail = clamp(avail, n + sizeof(xxx), total_avail/8)
+> >>>> 	} else {
+> >>>> 		total_avail = 0;
+> >>>> 		avail = 0;
+> >>>> 		avail = clamp(0, n + sizeof(xxx), 0);
+> >>>> 	}
+> >>>>
+> >>>> Neither of those clamp() are sane at all - should be clamp(val, lo, hi)
+> >>>> with 'lo <= hi' otherwise the result is dependant on the order of the
+> >>>> comparisons.
+> >>>> The compiler sees the second one and rightly bleats.    
+> >>>
+> >>> In fact only gcc-9 bleats.  
+> >>
+> >> That is probably why it didn't get picked up earlier.
+> >>  
+> >>> gcc-7 gcc-10 gcc-13 gcc-15
+> >>> all seem to think it is fine.  
+> >>
+> >> Which, of course, it isn't...  
+> > 
+> > I've now had a proper look at your analysis of the code - thanks.
+> > 
+> > I agree that the code is unclear (at best) and that if it were still
+> > upstream I would want to fix it.  However is does function correctly.
+> > 
+> > As you say, when min > max, the result of clamp(val, min, max) depends
+> > on the order of comparison, and we know what the order of comparison is
+> > because we can look at the code for clamp().
+> > 
+> > Currently it is 
+> > 
+> > 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+> > 
+> > which will use max when max is below val and min.
+> > Previously it was 
+> > 	min((typeof(val))max(val, lo), hi)
+> > which also will use max when it is below val and min
+> > 
+> > Before that it was 
+> > #define clamp_t(type, val, min, max) ({                \
+> >        type __val = (val);                     \
+> >        type __min = (min);                     \
+> >        type __max = (max);                     \
+> >        __val = __val < __min ? __min: __val;   \
+> >        __val > __max ? __max: __val; })
+> > 
+> > which also uses max when that is less that val and min.
+> > 
+> > So I think the nfsd code has always worked correctly.  That is not
+> > sufficient for mainline - there we want it to also be robust and
+> > maintainable. But for stable kernels it should be sufficient.
+> > Adding a patch to "stable" kernels which causes working code to fail to
+> > compile does not seem, to me, to be in the spirit of "stability".
+> > (Have the "clamp" checking in mainline, finding problems there,
+> > and backporting the fixes to stable seems to me to be the best way
+> > to use these checking improvements to improve "stable").  
 > 
-> +void hash__tlb_flush(struct mmu_gather *tlb)
-> +{
-> +       if (tlb->fullmm || tlb->need_flush_all)
-> +               hash__flush_tlb_mm(tlb->mm);
-> +       else
-> +               hash__flush_range(tlb->mm, tlb->start, tlb->end);
-> +}
+> I agree with Neil. The LTS code was building and working rather
+> universally until recently. The less risky approach is to leave this
+> code unchanged and seek another remedy for the OP.
 
-That seems reasonable, I should be able to test it next by next
-weekend and re-submit.
+IIRC minmax.h was backported to allow other changes be backported.
+So something has to give.
+Changing the:
+	avail = clamp_t(unsigned long, avail, slotsize, total_avail/scale_factor);
+to
+	avail = min(avail, total_avail/scale_factor);
+fixes everything and leaves this code behaving the same way.
+The later:
+	num = max_t(int, num, 1);
+has the effect that the lower bound of the clamp_t() was expected to have.
 
-> Thanks again for pointing this out. How did you find this though?
-> What hardware do you use?
+I've just looked through the old versions.
+The comment when the clamp_t() was added is:
+	* Never use more than a third of the remaining memory,
+	* unless it's the only way to give this client a slot.
+The intention was clearly that 'avail' would be at least 'slotsize',
+even though clamp() has never worked that way (and relying on the order
+of the comparisons is a bug in itself).
+This got 'fixed' by the extra check that ensures 'num' is at least one,
+but the code clearly wasn't read properly at that time.
+(It has also suffered because clamp_t() was used and truncated significant
+bits of the values.)
+I've no sympathy for this buggy code that has been bodge fixed several times.
 
-I'm on an iBook G3 from 2001, running Arch Power:
-https://archlinuxpower.org/. I found the bug because SheepShaver has a
-configure test for mprotect, which was failing--I was quite surprised!
-
-The bug reproduces easily on qemu (with the `mac99` machine), if you'd
-like to try yourself.
-
--Dave
+	David
 
 
 
