@@ -1,162 +1,162 @@
-Return-Path: <stable+bounces-192768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDE0C42658
-	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 05:05:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB07C427B2
+	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 06:24:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA6063BA49D
-	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 04:05:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 672A9188EC2A
+	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 05:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12722D641F;
-	Sat,  8 Nov 2025 04:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA2E26E6E4;
+	Sat,  8 Nov 2025 05:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="g3gswGtw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yE/oN+ne"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43975213E89;
-	Sat,  8 Nov 2025 04:05:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166141F419A
+	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 05:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762574703; cv=none; b=Hs2+sWqwglzSpWjoxBegiKWPMQpdmaR6UJdmlZKfQWyj4rZ7CYG4DhjoFbFCN4hYcrYDWC88Z5UMiwZi2B8C90iTnCKxTlOS5m6VtIDlXFJ/Ze6rgBgWZVq+r2jAlPtaKS8G1NBcmbRl47+cImTiK7kTs6rO7+IIXopONgPZ6BE=
+	t=1762579449; cv=none; b=D3nlVGHXRvo6eYy/P53oj7zxP8WZuoXOPOcT0bKIbz2Ksv1dovTiYEGo8XR5B4FElTgL7lKR21urTZkbGV0yop3nxPx7fKqZJjZYSFZ4Y8LDPLaj1+isGeRECRNlGZregZX1ai+CvE8QMPzWEVJRqpSsU9VfjeLBLAxo2Bky/1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762574703; c=relaxed/simple;
-	bh=DAPBOunjrN2WBG1qy858QFtGOAdDA5SvkDZT8mq+yTc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=JGk4LYUtUXqQpvED93ZSMQgR5nV0Fq03erWKfSb9KNPDAjf5/cM69owDTXhz6WWhx32EKN5yoFBA52HQ8f3QoRwRJhzB/XChIUkceK2dDiHMSNBeDqOnXC6znH61RAKvB0tUJa+OLrT/XFKd1rLgtSxslChIkLbqs7I2etRD09Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=g3gswGtw; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from canpmsgout06.his.huawei.com (unknown [172.19.92.157])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4d3Mdm54HDzThDX;
-	Sat,  8 Nov 2025 12:00:12 +0800 (CST)
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=lqgvkFa3e8i8MM1SshqaM3MIjNOge6PEtlvJ9SHBLBk=;
-	b=g3gswGtw+MWqpjhot7+3x63T2c+j1EPMEHCwWwtp1u8aQZeuAWJYBdd++dZgb3Qxr3fPPkUwX
-	0zBMKiD1H+e8lI+DQqk6trAevmhC8v8DkLrEr45KOwwY/yX+blMti+GSreYFI50AuZdCZD5QEJk
-	giXuE6u8mxaNqZghKHUCJMA=
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4d3MjD5pJtzRhRF;
-	Sat,  8 Nov 2025 12:03:12 +0800 (CST)
-Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
-	by mail.maildlp.com (Postfix) with ESMTPS id 45CA318048E;
-	Sat,  8 Nov 2025 12:04:49 +0800 (CST)
-Received: from [127.0.0.1] (10.174.178.254) by dggpemf500013.china.huawei.com
- (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 8 Nov
- 2025 12:04:48 +0800
-Message-ID: <7350e19f-f2d2-4b2a-8ced-b57c73f4fccb@huawei.com>
-Date: Sat, 8 Nov 2025 12:04:47 +0800
+	s=arc-20240116; t=1762579449; c=relaxed/simple;
+	bh=viDK+BQMKPWCkXU8yEX35LKQDgQgO06CTEkK8rndBBM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a/r+ZEhCGk7pTfYyEfzIHBJofZf5itiR61NR/l2qxsOuiepCSZD0sKkyVaoIzKCjUZOT4O6seNZK+vXgllJE5wGb/S17KOG2mClF2S7oUTVB8wop+Gu7cTNIkXeVBcgtJdJ6fG7AlYa9fMZPg3PxHWg79LyL68lgVcBeldFt0K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yE/oN+ne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575E5C113D0;
+	Sat,  8 Nov 2025 05:24:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1762579448;
+	bh=viDK+BQMKPWCkXU8yEX35LKQDgQgO06CTEkK8rndBBM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=yE/oN+neSJsQIRKXI63z7cWMZcJRBAkUuNT2hxJjhTBdC7tAD4ZWBido+23+Jjs05
+	 FiFyfxFuw4BuR/D211vy99WaAJFrvOW25dsIg0nwacM5zJ2dNUwq7YCx1GRavqCQT6
+	 TiUHl+mTvM+KniMLoF8xd6EW2ul+lyGpQEVHU8YA=
+Subject: FAILED: patch "[PATCH] rust: kbuild: workaround `rustdoc` doctests modifier bug" failed to apply to 6.12-stable tree
+To: ojeda@kernel.org,aliceryhl@google.com,jforbes@fedoraproject.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 08 Nov 2025 14:24:05 +0900
+Message-ID: <2025110805-fame-viability-c333@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] ext4: fix string copying in
- parse_apply_sb_mount_options()
-Content-Language: en-GB
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-CC: Theodore Ts'o <tytso@mit.edu>, Jan Kara <jack@suse.cz>,
-	<linux-ext4@vger.kernel.org>, Andreas Dilger <adilger.kernel@dilger.ca>,
-	"Darrick J. Wong" <djwong@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, <stable@vger.kernel.org>
-References: <20251101160430.222297-1-pchelkin@ispras.ru>
-From: Baokun Li <libaokun1@huawei.com>
-In-Reply-To: <20251101160430.222297-1-pchelkin@ispras.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf500013.china.huawei.com (7.185.36.188)
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On 2025-11-02 00:04, Fedor Pchelkin wrote:
-> strscpy_pad() can't be used to copy a non-NUL-term string into a NUL-term
-> string of possibly bigger size.  Commit 0efc5990bca5 ("string.h: Introduce
-> memtostr() and memtostr_pad()") provides additional information in that
-> regard.  So if this happens, the following warning is observed:
->
-> strnlen: detected buffer overflow: 65 byte read of buffer size 64
-> WARNING: CPU: 0 PID: 28655 at lib/string_helpers.c:1032 __fortify_report+0x96/0xc0 lib/string_helpers.c:1032
-> Modules linked in:
-> CPU: 0 UID: 0 PID: 28655 Comm: syz-executor.3 Not tainted 6.12.54-syzkaller-00144-g5f0270f1ba00 #0
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> RIP: 0010:__fortify_report+0x96/0xc0 lib/string_helpers.c:1032
-> Call Trace:
->  <TASK>
->  __fortify_panic+0x1f/0x30 lib/string_helpers.c:1039
->  strnlen include/linux/fortify-string.h:235 [inline]
->  sized_strscpy include/linux/fortify-string.h:309 [inline]
->  parse_apply_sb_mount_options fs/ext4/super.c:2504 [inline]
->  __ext4_fill_super fs/ext4/super.c:5261 [inline]
->  ext4_fill_super+0x3c35/0xad00 fs/ext4/super.c:5706
->  get_tree_bdev_flags+0x387/0x620 fs/super.c:1636
->  vfs_get_tree+0x93/0x380 fs/super.c:1814
->  do_new_mount fs/namespace.c:3553 [inline]
->  path_mount+0x6ae/0x1f70 fs/namespace.c:3880
->  do_mount fs/namespace.c:3893 [inline]
->  __do_sys_mount fs/namespace.c:4103 [inline]
->  __se_sys_mount fs/namespace.c:4080 [inline]
->  __x64_sys_mount+0x280/0x300 fs/namespace.c:4080
->  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
->  do_syscall_64+0x64/0x140 arch/x86/entry/common.c:83
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
->
-> Since userspace is expected to provide s_mount_opts field to be at most 63
-> characters long with the ending byte being NUL-term, use a 64-byte buffer
-> which matches the size of s_mount_opts, so that strscpy_pad() does its job
-> properly.  Return with error if the user still managed to provide a
-> non-NUL-term string here.
->
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
->
-> Fixes: 8ecb790ea8c3 ("ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 
-Looks good to me.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
+To reproduce the conflict and resubmit, you may use the following commands:
 
-> ---
->
-> v2: - treat non-NUL-term s_mount_opts as invalid case (Jan Kara)
->     - swap order of patches in series so the fixing-one goes first
->
-> v1: https://lore.kernel.org/lkml/20251028130949.599847-1-pchelkin@ispras.ru/T/#u
->
->  fs/ext4/super.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-> index 33e7c08c9529..15bef41f08bd 100644
-> --- a/fs/ext4/super.c
-> +++ b/fs/ext4/super.c
-> @@ -2475,7 +2475,7 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
->  					struct ext4_fs_context *m_ctx)
->  {
->  	struct ext4_sb_info *sbi = EXT4_SB(sb);
-> -	char s_mount_opts[65];
-> +	char s_mount_opts[64];
->  	struct ext4_fs_context *s_ctx = NULL;
->  	struct fs_context *fc = NULL;
->  	int ret = -ENOMEM;
-> @@ -2483,7 +2483,8 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
->  	if (!sbi->s_es->s_mount_opts[0])
->  		return 0;
->  
-> -	strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts);
-> +	if (strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts) < 0)
-> +		return -E2BIG;
->  
->  	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
->  	if (!fc)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x fad472efab0a805dd939f017c5b8669a786a4bcf
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110805-fame-viability-c333@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From fad472efab0a805dd939f017c5b8669a786a4bcf Mon Sep 17 00:00:00 2001
+From: Miguel Ojeda <ojeda@kernel.org>
+Date: Sun, 2 Nov 2025 22:28:53 +0100
+Subject: [PATCH] rust: kbuild: workaround `rustdoc` doctests modifier bug
+
+The `rustdoc` modifiers bug [1] was fixed in Rust 1.90.0 [2], for which
+we added a workaround in commit abbf9a449441 ("rust: workaround `rustdoc`
+target modifiers bug").
+
+However, `rustdoc`'s doctest generation still has a similar issue [3],
+being fixed at [4], which does not affect us because we apply the
+workaround to both, and now, starting with Rust 1.91.0 (released
+2025-10-30), `-Zsanitizer` is a target modifier too [5], which means we
+fail with:
+
+      RUSTDOC TK rust/kernel/lib.rs
+    error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `kernel`
+     --> rust/kernel/lib.rs:3:1
+      |
+    3 | //! The `kernel` crate.
+      | ^
+      |
+      = help: the `-Zsanitizer` flag modifies the ABI so Rust crates compiled with different values of this flag cannot be used together safely
+      = note: unset `-Zsanitizer` in this crate is incompatible with `-Zsanitizer=kernel-address` in dependency `core`
+      = help: set `-Zsanitizer=kernel-address` in this crate or unset `-Zsanitizer` in `core`
+      = help: if you are sure this will not cause problems, you may use `-Cunsafe-allow-abi-mismatch=sanitizer` to silence this error
+
+A simple way around is to add the sanitizer to the list in the existing
+workaround (especially if we had not started to pass the sanitizer
+flags in the previous commit, since in that case that would not be
+necessary). However, that still applies the workaround in more cases
+than necessary.
+
+Instead, only modify the doctests flags to ignore the check for
+sanitizers, so that it is more local (and thus the compiler keeps checking
+it for us in the normal `rustdoc` calls). Since the previous commit
+already treated the `rustdoc` calls as kernel objects, this should allow
+us in the future to easily remove this workaround when the time comes.
+
+By the way, the `-Cunsafe-allow-abi-mismatch` flag overwrites previous
+ones rather than appending, so it needs to be all done in the same flag.
+Moreover, unknown modifiers are rejected, and thus we have to gate based
+on the version too.
+
+Finally, `-Zsanitizer-cfi-normalize-integers` is not affected (in Rust
+1.91.0), so it is not needed in the workaround for the moment.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/issues/144521 [1]
+Link: https://github.com/rust-lang/rust/pull/144523 [2]
+Link: https://github.com/rust-lang/rust/issues/146465 [3]
+Link: https://github.com/rust-lang/rust/pull/148068 [4]
+Link: https://github.com/rust-lang/rust/pull/138736 [5]
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Link: https://patch.msgid.link/20251102212853.1505384-2-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+
+diff --git a/rust/Makefile b/rust/Makefile
+index a9fb9354b659..3e545c1a0ff4 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -69,6 +69,9 @@ core-edition := $(if $(call rustc-min-version,108700),2024,2021)
+ # the time being (https://github.com/rust-lang/rust/issues/144521).
+ rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
+ 
++# Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
++doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer)
++
+ # `rustc` recognizes `--remap-path-prefix` since 1.26.0, but `rustdoc` only
+ # since Rust 1.81.0. Moreover, `rustdoc` ICEs on out-of-tree builds since Rust
+ # 1.82.0 (https://github.com/rust-lang/rust/issues/138520). Thus workaround both
+@@ -236,7 +239,7 @@ quiet_cmd_rustdoc_test_kernel = RUSTDOC TK $<
+ 		--extern bindings --extern uapi \
+ 		--no-run --crate-name kernel -Zunstable-options \
+ 		--sysroot=/dev/null \
+-		$(rustdoc_modifiers_workaround) \
++		$(doctests_modifiers_workaround) \
+ 		--test-builder $(objtree)/scripts/rustdoc_test_builder \
+ 		$< $(rustdoc_test_kernel_quiet); \
+ 	$(objtree)/scripts/rustdoc_test_gen
 
 
