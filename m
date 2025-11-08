@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-192781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D21C42DFF
-	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 15:07:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D087FC42E14
+	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 15:09:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2430188F63D
-	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 14:08:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7588E3A424A
+	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 14:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DF91DE4F1;
-	Sat,  8 Nov 2025 14:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A1718FDDE;
+	Sat,  8 Nov 2025 14:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ccdgvLtx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eQTEsl7o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9267483
-	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 14:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CD87483
+	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 14:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762610871; cv=none; b=Em6FsuUNTJ82TuiBC0ce+QdmPmcS3HioGLZv2XcTgV46YpE0FOxoRym5JFD6YwKflkamep5e+gWWPSj2IhOl3x7hKPxHdKst+KFAzbVjFGTsG9RNeTe9/hFzE+Ffm2saRmsI/ROYi3kpBEFcOIR6nsYDnoClnxDfK6HwP6xC0fA=
+	t=1762610986; cv=none; b=AKhbxRcH7ILg164UyMxWo4NpOrPYtObeZqqC+nk93aVsOokaP2OTEW8eFoqjtVfbYtKVMR/WYf7UbM+w/sPZfB4NdZJxAdJA8nurKRDM8518rbha9HWaYNZYMfzIUOL7wy7T1ikPnEt6ZRp+Av11bRMuj8bCq7haxkRcWTNznQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762610871; c=relaxed/simple;
-	bh=k7NZTR5S1qKB1g4bNrayjMhj2tvE1ITn7isu3HuBvD4=;
+	s=arc-20240116; t=1762610986; c=relaxed/simple;
+	bh=NPUD18z25FYfm33ofmm5BfieA5EN80d39Y64AH5X9vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J+FMvK9FKWicEbeRrjqGXPfje+QAW4tsbNRbUTO+7Ws7Fbj7C/39Dl9XKu48xHmg8RhdduZXug+iKvLuX2FN59erabnLQ42fQuVtzlOYpms16zXcRbHIVOQ3j05tVRccIxUdnHfnqcTkaugLVejI4ZYEfKIRNrKT9Q4zwaytHvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ccdgvLtx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E017C4CEFB;
-	Sat,  8 Nov 2025 14:07:50 +0000 (UTC)
+	 MIME-Version; b=bOdoW1+UOswuRfwNw6rdHwUQICKJKVTpoIy4TzT0F9sa3CAyGgm+tQjtCR3xDT27g7nFrD1/VuEnTBpf41l6AiPIW0sip/fe+mC9pVhQW/IyOSC0Kl5DI/7ZZQ6nMKATAeKgAo8jgNSTuWFLIYnYitU6HI3rjCYM+xe6XMC77nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eQTEsl7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF56FC4CEF7;
+	Sat,  8 Nov 2025 14:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762610871;
-	bh=k7NZTR5S1qKB1g4bNrayjMhj2tvE1ITn7isu3HuBvD4=;
+	s=k20201202; t=1762610986;
+	bh=NPUD18z25FYfm33ofmm5BfieA5EN80d39Y64AH5X9vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ccdgvLtxDY8kljuuW7wd73km4HbIzkRO4bJVt6tQCv4NNbkIfY33A8+sXeBaNL+Ts
-	 UNOGFXcv6ibDQjYSZKUNbPLikMUmV646VfNI6AY0a83H2KZzH63vhuanr5f3z6P/n1
-	 XOKf1xkz/vOr3bN2eMCvjrrkB91U5JrjMLf84q1V3pDE1Jksng2xzK3OQ0UG+M77zT
-	 yM1tqG6S/9Xiyt+K4qR+2QB/2z9IK8EA6HuevkfkUhR9C5YG9Lh+C7EkXS3RlU4oy6
-	 LG/nHQjFDwgx16Un/x/k5tj2zo8Bo6kMoX7g7ZypHT96AQosAqGqyrqC+wAZHQvgnF
-	 Me9cUAH/W3rKw==
+	b=eQTEsl7oVwDKLEgKC/hEL32E5Wvwj7o6+GutCLxMlacMeGSRwsa5IitxgQccbsKIv
+	 gFkNnNGfDvMutZgryhD49xZ+U9y/LCJ9jZDLnZPihzkZioslmVzOlf4eGt4cBd8j00
+	 6hjf32x5uzO7H9LDkRLBDOTi6adG4FvWf2X6M9AZBLnhtxwvrpPXEEZ3UMob3JIpN8
+	 R8yTcqfeqY5OOV/JB294pW+Qgsui7a6FwE/5exzHDiRsuGMPZT83Za/m8cPtdbs5xA
+	 /EI6OUkpBw0TqnkRWZYYFc2J3l8L7Yew/taMjyYuFf1hL1uHU1FGiwPOIZ56hlOryY
+	 2IugXnxb3R9FA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	"Justin M. Forbes" <jforbes@fedoraproject.org>,
+Cc: Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] rust: kbuild: treat `build_error` and `rustdoc` as kernel objects
-Date: Sat,  8 Nov 2025 09:07:48 -0500
-Message-ID: <20251108140748.129017-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] btrfs: ensure no dirty metadata is written back for an fs with errors
+Date: Sat,  8 Nov 2025 09:09:44 -0500
+Message-ID: <20251108140944.129703-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025110816-catalog-residency-716f@gregkh>
-References: <2025110816-catalog-residency-716f@gregkh>
+In-Reply-To: <2025110858-banker-discolor-266d@gregkh>
+References: <2025110858-banker-discolor-266d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,76 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 16c43a56b79e2c3220b043236369a129d508c65a ]
+[ Upstream commit 2618849f31e7cf51fadd4a5242458501a6d5b315 ]
 
-Even if normally `build_error` isn't a kernel object, it should still
-be treated as such so that we pass the same flags. Similarly, `rustdoc`
-targets are never kernel objects, but we need to treat them as such.
+[BUG]
+During development of a minor feature (make sure all btrfs_bio::end_io()
+is called in task context), I noticed a crash in generic/388, where
+metadata writes triggered new works after btrfs_stop_all_workers().
 
-Otherwise, starting with Rust 1.91.0 (released 2025-10-30), `rustc`
-will complain about missing sanitizer flags since `-Zsanitizer` is a
-target modifier too [1]:
+It turns out that it can even happen without any code modification, just
+using RAID5 for metadata and the same workload from generic/388 is going
+to trigger the use-after-free.
 
-    error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `build_error`
-     --> rust/build_error.rs:3:1
-      |
-    3 | //! Build-time error.
-      | ^
-      |
-      = help: the `-Zsanitizer` flag modifies the ABI so Rust crates compiled with different values of this flag cannot be used together safely
-      = note: unset `-Zsanitizer` in this crate is incompatible with `-Zsanitizer=kernel-address` in dependency `core`
-      = help: set `-Zsanitizer=kernel-address` in this crate or unset `-Zsanitizer` in `core`
-      = help: if you are sure this will not cause problems, you may use `-Cunsafe-allow-abi-mismatch=sanitizer` to silence this error
+[CAUSE]
+If btrfs hits an error, the fs is marked as error, no new
+transaction is allowed thus metadata is in a frozen state.
 
-Thus explicitly mark them as kernel objects.
+But there are some metadata modifications before that error, and they are
+still in the btree inode page cache.
 
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust/pull/138736 [1]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
-Link: https://patch.msgid.link/20251102212853.1505384-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Since there will be no real transaction commit, all those dirty folios
+are just kept as is in the page cache, and they can not be invalidated
+by invalidate_inode_pages2() call inside close_ctree(), because they are
+dirty.
+
+And finally after btrfs_stop_all_workers(), we call iput() on btree
+inode, which triggers writeback of those dirty metadata.
+
+And if the fs is using RAID56 metadata, this will trigger RMW and queue
+new works into rmw_workers, which is already stopped, causing warning
+from queue_work() and use-after-free.
+
+[FIX]
+Add a special handling for write_one_eb(), that if the fs is already in
+an error state, immediately mark the bbio as failure, instead of really
+submitting them.
+
+Then during close_ctree(), iput() will just discard all those dirty
+tree blocks without really writing them back, thus no more new jobs for
+already stopped-and-freed workqueues.
+
+The extra discard in write_one_eb() also acts as an extra safenet.
+E.g. the transaction abort is triggered by some extent/free space
+tree corruptions, and since extent/free space tree is already corrupted
+some tree blocks may be allocated where they shouldn't be (overwriting
+existing tree blocks). In that case writing them back will further
+corrupting the fs.
+
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 [ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/Makefile | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/btrfs/extent_io.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 07c13100000cd..6bcc478900af2 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -107,12 +107,18 @@ rustdoc-core: private rustc_target_flags = --edition=$(core-edition) $(core-cfgs
- rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs rustdoc-clean FORCE
- 	+$(call if_changed,rustdoc)
- 
-+# Even if `rustdoc` targets are not kernel objects, they should still be
-+# treated as such so that we pass the same flags. Otherwise, for instance,
-+# `rustdoc` will complain about missing sanitizer flags causing an ABI mismatch.
-+rustdoc-compiler_builtins: private is-kernel-object := y
- rustdoc-compiler_builtins: $(src)/compiler_builtins.rs rustdoc-core FORCE
- 	+$(call if_changed,rustdoc)
- 
-+rustdoc-ffi: private is-kernel-object := y
- rustdoc-ffi: $(src)/ffi.rs rustdoc-core FORCE
- 	+$(call if_changed,rustdoc)
- 
-+rustdoc-kernel: private is-kernel-object := y
- rustdoc-kernel: private rustc_target_flags = --extern ffi \
-     --extern build_error --extern macros=$(objtree)/$(obj)/libmacros.so \
-     --extern bindings --extern uapi
-@@ -433,6 +439,10 @@ $(obj)/compiler_builtins.o: private rustc_objcopy = -w -W '__*'
- $(obj)/compiler_builtins.o: $(src)/compiler_builtins.rs $(obj)/core.o FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
-+# Even if normally `build_error` is not a kernel object, it should still be
-+# treated as such so that we pass the same flags. Otherwise, for instance,
-+# `rustc` will complain about missing sanitizer flags causing an ABI mismatch.
-+$(obj)/build_error.o: private is-kernel-object := y
- $(obj)/build_error.o: $(src)/build_error.rs $(obj)/compiler_builtins.o FORCE
- 	+$(call if_changed_rule,rustc_library)
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 2d6ccc21a8229..fab8ffb3a2f82 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -1751,6 +1751,14 @@ static noinline_for_stack void write_one_eb(struct extent_buffer *eb,
+ 			unlock_page(p);
+ 		}
+ 	}
++	/*
++	 * If the fs is already in error status, do not submit any writeback
++	 * but immediately finish it.
++	 */
++	if (unlikely(BTRFS_FS_ERROR(fs_info))) {
++		btrfs_bio_end_io(bbio, errno_to_blk_status(BTRFS_FS_ERROR(fs_info)));
++		return;
++	}
+ 	btrfs_submit_bio(bbio, 0);
+ }
  
 -- 
 2.51.0
