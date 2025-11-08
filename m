@@ -1,132 +1,93 @@
-Return-Path: <stable+bounces-192773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29EECC427D4
-	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 06:40:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A6DC42A06
+	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 10:09:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEB25188F987
-	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 05:40:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C6FE24E4755
+	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 09:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D863F270542;
-	Sat,  8 Nov 2025 05:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FD72DE70E;
+	Sat,  8 Nov 2025 09:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bGu/Ifjy"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Zfvqq7OI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A6E4317D
-	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 05:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6631D61B7
+	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 09:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762580419; cv=none; b=VhAYC+g3JbQe7B/8fkJXF4IO2E7NkE2HCkWz8l9Wco508DUN/cNmD96T2zZKA4CFOJE8aQtN+Ci7+pW636SHjM/fi7A4ebU+3hvk/aTRyfQHbZ/0uRVokuihLDlyu3vTk7HCXON8Or3ffrWOwuczaa8qw6LydegCpnJZUKsJm8k=
+	t=1762592955; cv=none; b=dQmIlbf3Oh/4SACOU0/LrDGJ8HAd23ApIxkuzBptKphfSVBgeDlrmKjgw2+YRZRodJk1ZHs/Wr8v2t2Gu4aT3I75adZP9Js8TlCGtTYpSdnnxFFSM0vHeOQ+48owVvjSjiwlAFcmyElksWIVQNk0ay0jNZgvoGQ5rcsCcCislLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762580419; c=relaxed/simple;
-	bh=8n8+LxqHAgati7AeDofQcf/a3JB31BUTWqP0F3TTAHg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sFleyzXGR/rak4NZB1B23gV/zFPImksEKzPZhM7G3032swonBG/dMO9KY2F6LdPvV8daEOoB2junaxE3caBCH+WPlnpNFl1mlpRLJBi8wn0kjE2cwal+nf7MdZp+UoB8kpXQZ+UhNRs9U7349052IZnAoemlNJWXC8bOohjmlBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bGu/Ifjy; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b98983bae8eso854890a12.0
-        for <stable@vger.kernel.org>; Fri, 07 Nov 2025 21:40:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762580417; x=1763185217; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kzpr9FS38cfunqPmaiI0KKxAhNklXoFm1GkzWYUkMqA=;
-        b=bGu/IfjypogCqpEfrYxuBYf4Ju7jw+o8Ud+zQUDwLGNWer8cFRlLfCZlQf4M1bPeM+
-         OHPofwR3Jz7y076ivsxMcI73o/7Vlf6eP563JyzzTq+k6FvHSP5vyL/Zfqi2z178IB+b
-         cT4AhpwX6hVEkOLYd00JyC/TdZ0V6P5jFhWA8xUgel5BD4vnCZRIIIYBxY2vsZgvWTH7
-         90TZzXBXjkOANECXL9zSAEGgbRjEcWFYERjnnO0IPmWof/DEAyDaaryWyctvvzXMJCbv
-         nQ2FGINMScMD/m9/7zWaQv7ftGgzTNn5vkVUWmFqISicOha2GrdCS1+6jOdZObRTO5tO
-         lxqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762580417; x=1763185217;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kzpr9FS38cfunqPmaiI0KKxAhNklXoFm1GkzWYUkMqA=;
-        b=dw7At6H0CfFLbh14xzN79eQNFp2YL03kix35+3dMGjD4bQ2ODcHjIC1bY2pGlBbtYP
-         dEDNWRfpT+IjAShUaEvTnVSlyIjqvU9X7IQAgjuAJtNp2zF4jFADDdZMAIZu/Xj6sSok
-         1vO3CW8K6C1pGLt75uaEd1nlwIJKUvDbtKrBeJGoNHQuhwo2OZrmJVpTGxvmyrGZr9+A
-         O/D4poThGXeO5NpJJrH/f0UaLzBO3uaDYaBqG3MAcydsrOMtlcqltaQItlq9KqyUSAzL
-         piJGQYN6puUL5UjVZZJFPwShvNgyaOQmWmmWZegVfInoMUiugO7L7WEfxaTG6uuTq/wQ
-         wfgg==
-X-Forwarded-Encrypted: i=1; AJvYcCVvxApVM678hnrR5xQyQ/tT4okSTNz0qQOGdsHYKYch3Qh5wEaLeQbsy5rpOIAfLnOoepC3pRQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yww2WvD1lYmzMALflYKBKD0rFCsJxJUO5wwbkpoPEF2T5rbbFqC
-	ymRVVmhb3q5jyIep+Yak+oXBs5QtGmfeNcKKO0RfT77tHieFitSEGT1z
-X-Gm-Gg: ASbGnctY0qQdPTmt7/vpIt4qrhRLVLiOryeRVAS4LpkJXWDQis0C7oc+0d6I/TlrVWd
-	T1cVQKpPj1lXKf3D/Zb4mJFA59oJj3arjlnxEidJ0bs7QDOq+UOL8RGGwQvuCSaQX5RmlQDBxWJ
-	zg4lNc1Y9uu0eI15Eg6eeWwclR4TIhFoWT0YjXrkIFv+ekuEQfn+Pulz+BCb0tXtM7VfzRefCqq
-	PTBGR81Yz+uJlBJxpOciBiZM5HPda5rd0jYccVD/XZVZDIPDOhJUFg3eSlI/c6JfmrEas3noQKJ
-	cUE2KXP+Yw+BFVLHlamt9Vf9rFn+/KaobeO1K+Ql8XPQ/en1Wb3g98SCd8PYiOIxgKApFzYDRtl
-	CJF6jBehCCfXgmrbhwm7hmrJ9gPv5G+sGCJ31lBKYk/UKJY9uGKCI1PZZnhbfDILvaA+wL7mIPo
-	je61bANcbl/UtcFJB5QSBiD6nI
-X-Google-Smtp-Source: AGHT+IGYgTX9sv7kEZ/sV+bmIlOIvmsyRTprbSJZXJCtl+790BMGjSY1AhJm52TRrDajQgfdJYr/9Q==
-X-Received: by 2002:a17:902:e787:b0:293:623:3265 with SMTP id d9443c01a7336-297e56d9003mr17396975ad.34.1762580417377;
-        Fri, 07 Nov 2025 21:40:17 -0800 (PST)
-Received: from localhost.localdomain ([175.144.123.39])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29650c5ee4dsm77925225ad.45.2025.11.07.21.40.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Nov 2025 21:40:16 -0800 (PST)
-From: "Khairul A. Romli" <karom.9560@gmail.com>
-To: karom.9560@gmail.com
-Cc: Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
-	stable@vger.kernel.org,
-	Richard Gong <richard.gong@intel.com>
-Subject: [PATCH 1/1] firmware: stratix10-svc: stop kernel thread once service is completed
-Date: Sat,  8 Nov 2025 13:40:11 +0800
-Message-ID: <eadf3b34e55bb7edcae9c149fb321115dd859cf6.1762416980.git.khairul.anuar.romli@altera.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1762592955; c=relaxed/simple;
+	bh=ac9IS7LxhGvsJ5M7ao47Xp0eXk3OFOlfbqAMvrPtePE=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=kQkOd39/QrgpXBQQjCd9iAJaIRYHCIj7ROIoiFA5Mq8L96GHp6HImtDI4qSMdh295LZclK0z27CCn3XHNXL3aU1rbC6ahHPSbczlVxr7ve/uO8Q9mgqrLcMqdUdNa334ayErKlX6SCS9VMtVVz03X4+I8sE+kuWSYvBTSZDKYrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Zfvqq7OI; arc=none smtp.client-ip=95.215.58.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762592941;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ac9IS7LxhGvsJ5M7ao47Xp0eXk3OFOlfbqAMvrPtePE=;
+	b=Zfvqq7OI9pkjpiJOrYomc+ls+98QLTL/pSq9xUOjZjJVPdkNowl9gQav1VxF6GlDQcSVU/
+	mFg6UEjC/0myT6bcnk/pTfd5m3iJduwhS7Jqb4hoZAG4auxE75Xx/IQRpbW7ESbJMvJHL9
+	F5Wc0q8Ooe7P3d4n1rDliQmB1Q3N80g=
+Date: Sat, 08 Nov 2025 09:08:58 +0000
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Yosry Ahmed" <yosry.ahmed@linux.dev>
+Message-ID: <3759161383b53759888f64d9a03983c05026ab1c@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH 5/6] KVM: SVM: Add missing save/restore handling of LBR
+ MSRs
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: "Paolo Bonzini" <pbonzini@redhat.com>, "Jim Mattson"
+ <jmattson@google.com>, "Maxim Levitsky" <mlevitsk@redhat.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20251108004524.1600006-6-yosry.ahmed@linux.dev>
+References: <20251108004524.1600006-1-yosry.ahmed@linux.dev>
+ <20251108004524.1600006-6-yosry.ahmed@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 
-From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+November 7, 2025 at 4:45 PM, "Yosry Ahmed" <yosry.ahmed@linux.dev mailto:=
+yosry.ahmed@linux.dev?to=3D%22Yosry%20Ahmed%22%20%3Cyosry.ahmed%40linux.d=
+ev%3E > wrote:
+>=20
+>=20MSR_IA32_DEBUGCTLMSR and LBR MSRs are currently not enumerated by
+> KVM_GET_MSR_INDEX_LIST, and LBR MSRs cannot be set with KVM_SET_MSRS. S=
+o
+> save/restore is completely broken.
+>=20
+>=20Fix it by adding the MSRs to msrs_to_save_base, and allowing writes t=
+o
+> LBR MSRs from userspace only (as they are read-only MSRs). Additionally=
+,
+> to correctly restore L1's LBRs while L2 is running, make sure the LBRs
+> are copied from the captured VMCB01 save area in svm_copy_vmrun_state()=
+.
+>=20
+>=20Fixes: 24e09cbf480a ("KVM: SVM: enable LBR virtualization")
+> Cc: stable@vger.kernel.org
+>
 
-This patch resolves a customer-reported issue where the Stratix10 SVC
-service layer caused maximum CPU utilization. The original logic only
-stopped the thread if it was running and there was one or fewer active
-clients. This overly restrictive condition prevented the thread from
-stopping even when the application was active, leading to unnecessary CPU
-consumption.
+Reported-by:=C2=A0Jim Mattson <jmattson@google.com>
 
-The updated logic now stops the thread whenever it is running, regardless
-of the number of active clients, ensuring better resource management and
-resolving the performance issue.
-
-Fixes: 7ca5ce896524 ("firmware: add Intel Stratix10 service layer driver")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Richard Gong <richard.gong@intel.com>
-Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
----
- drivers/firmware/stratix10-svc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
-index e3f990d888d7..ec39522711ea 100644
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -1040,8 +1040,8 @@ EXPORT_SYMBOL_GPL(stratix10_svc_send);
-  */
- void stratix10_svc_done(struct stratix10_svc_chan *chan)
- {
--	/* stop thread when thread is running AND only one active client */
--	if (chan->ctrl->task && chan->ctrl->num_active_client <= 1) {
-+	/* stop thread when thread is running */
-+	if (chan->ctrl->task) {
- 		pr_debug("svc_smc_hvc_shm_thread is stopped\n");
- 		kthread_stop(chan->ctrl->task);
- 		chan->ctrl->task = NULL;
--- 
-2.43.7
-
+> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+[..]
 
