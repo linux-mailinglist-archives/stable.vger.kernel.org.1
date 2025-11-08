@@ -1,133 +1,162 @@
-Return-Path: <stable+bounces-192767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0943FC42525
-	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 03:50:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDE0C42658
+	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 05:05:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0EEA189345D
-	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 02:50:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA6063BA49D
+	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 04:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4203F28643C;
-	Sat,  8 Nov 2025 02:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12722D641F;
+	Sat,  8 Nov 2025 04:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VAchsO6a"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="g3gswGtw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC6328D82A
-	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 02:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43975213E89;
+	Sat,  8 Nov 2025 04:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762570215; cv=none; b=TjOvb7YSNb0D8qJQ1qLVcP7KqJXdRioUax+JwhOLsu3h3+TKq6nEwf/Mj7XQmNcZFFqKOospT1hHpcyBV05tuLLYRtHU3Yd1xW2+E6TK6gwUnGZdpIBHk6sVuNTbKuY0oGguVeeQ7onc1xyV9xvt3cryEZZyLcavNjWzbcOLx50=
+	t=1762574703; cv=none; b=Hs2+sWqwglzSpWjoxBegiKWPMQpdmaR6UJdmlZKfQWyj4rZ7CYG4DhjoFbFCN4hYcrYDWC88Z5UMiwZi2B8C90iTnCKxTlOS5m6VtIDlXFJ/Ze6rgBgWZVq+r2jAlPtaKS8G1NBcmbRl47+cImTiK7kTs6rO7+IIXopONgPZ6BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762570215; c=relaxed/simple;
-	bh=OAMQkM8H202HpZ9SyALa6Zflvi3TrT+59q9nVOpCnkg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XWx4v4SMOT/qqoebLtSQatVSFGYEF8DKEbhWo+aTWc5BsjKPuBuqZlN5bzwt+XC8jgdAHqlqgUjYWCDOpVBnbpRKpvfFISLZbbBNBa2BVH/jLIJU3AWlANOmFpS7m12wHkwTQ4mZZg+gz1omPI2cEOIMXoYlA0imb9IF4Xb09uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VAchsO6a; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-294f3105435so48375ad.1
-        for <stable@vger.kernel.org>; Fri, 07 Nov 2025 18:50:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762570213; x=1763175013; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xz9KbiB3pKiQMMUPj1p32orHVehzjrikuGFe9xgdEQk=;
-        b=VAchsO6alXNukU6gX/pvJYwQCDSkZMHVh4dVm5JfY1oGfbAmpLxIYCzpZtKbeACb5R
-         9sFUxtSIP4BSiAq9li9cHIgUHph9mZvWSTXO/T79k3bo0MUqC18QTeEytObcv5guW7PX
-         RIOMgMkQdealGumFovKyXvrSk+QXhr92rzy44TokOfWiRrjxS+x6igOdcw0y6Ax7dhRz
-         QPq9dkVUXaY7tjGC4wHgccyx5nv/nHP12pzmntBfGPDPuD61cbBRUMYB19mKOFXGeMiA
-         kMjEWQmn//kTGO2mW6VgLFV8byEqB4R7Mzz0ZdgGWj/1YuqOZ6BEsHcuqNhuSjHK4zsf
-         j1qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762570213; x=1763175013;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Xz9KbiB3pKiQMMUPj1p32orHVehzjrikuGFe9xgdEQk=;
-        b=WT/oWPR58tqCuHWdxgj3BjGiKaLiupgvdhlk48ciZFkla8H093OXRaXkVa48X9LRhq
-         Z9KY7hhWWUFCJjEIggW1Glk5CBJjOhV8dZzPRPeDATA4YTbGnD490dYVQnHsNtID+otf
-         sx805LMsziIuZ8HV4MSUFOko4EFwoguReRgm7NPkac3YeilSXKWESleSkoGHPHkGaEXR
-         21cJFuKPbgzyklwu5a+RQL3sK3FXZKNSFy2OBAkMXV2tAjvp+XPTTY21QDxn2MpFDWAw
-         YPANLaIvm5Ti9A0La5HCRUVsqyzueRA0Q1eFV/ybMPR3dcVbWxOcMTuw0SBw2tiwwmBT
-         zxHA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqHprdonfaVs65c5zCfBXUtsV3mOAkaUHP8sU2R4G8VhHlN6CRgueoVAgecRs6ZZezSf+dXLo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+bxeCSxu97gck2pMmYTt2WjmVaG5A+A5Tcenv3J1xRB/Tl2wp
-	PxKWyPEZIxXf5p55+Qwlx8lu5jYYLQ0lugtqeF50HIst+o+RX9Sswx81F8lM1pW7e+e0jP5yfoN
-	yWCxvlNtuU2rswKuLyXUo4zl7zGvOm5lgXMSSE/vJ
-X-Gm-Gg: ASbGnctEOSViCiIPhxnd52YTPx9eGHR0fgc+KPmMKrNZbZdyXjefmdjShmARHGEzwzC
-	1++EvIoZMcbjPZS+GCm8XW9ytLj6lEcnO9Y5hcsiEBr7o4zmdxxF5dujvMSyoywWydkA4brK/G9
-	icVozvRk+b3wrQBcPyYiAJAXOKZsFemDY2Er5S9q11Pcp48o/cvDvgIjXFge9sB1UD+jMDxuTDc
-	qEkEZp+XnCIS2HPj4pc6ocUwRj8jzTJca0ztNSPDvSzFSzbXczCFoI8y85LDB3655RI
-X-Google-Smtp-Source: AGHT+IEDYpJKL+hIOzjq2gpmJ4iFLKF/Y9OWuaaO1G7yVaYPMHtubhDweRGu3Pd8BduK0hfGnF3VI4ZMdg1XmQs5Cik=
-X-Received: by 2002:a17:902:d4cd:b0:291:6858:ee60 with SMTP id
- d9443c01a7336-297e51be5b3mr2383685ad.4.1762570212326; Fri, 07 Nov 2025
- 18:50:12 -0800 (PST)
+	s=arc-20240116; t=1762574703; c=relaxed/simple;
+	bh=DAPBOunjrN2WBG1qy858QFtGOAdDA5SvkDZT8mq+yTc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=JGk4LYUtUXqQpvED93ZSMQgR5nV0Fq03erWKfSb9KNPDAjf5/cM69owDTXhz6WWhx32EKN5yoFBA52HQ8f3QoRwRJhzB/XChIUkceK2dDiHMSNBeDqOnXC6znH61RAKvB0tUJa+OLrT/XFKd1rLgtSxslChIkLbqs7I2etRD09Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=g3gswGtw; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from canpmsgout06.his.huawei.com (unknown [172.19.92.157])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4d3Mdm54HDzThDX;
+	Sat,  8 Nov 2025 12:00:12 +0800 (CST)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=lqgvkFa3e8i8MM1SshqaM3MIjNOge6PEtlvJ9SHBLBk=;
+	b=g3gswGtw+MWqpjhot7+3x63T2c+j1EPMEHCwWwtp1u8aQZeuAWJYBdd++dZgb3Qxr3fPPkUwX
+	0zBMKiD1H+e8lI+DQqk6trAevmhC8v8DkLrEr45KOwwY/yX+blMti+GSreYFI50AuZdCZD5QEJk
+	giXuE6u8mxaNqZghKHUCJMA=
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4d3MjD5pJtzRhRF;
+	Sat,  8 Nov 2025 12:03:12 +0800 (CST)
+Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
+	by mail.maildlp.com (Postfix) with ESMTPS id 45CA318048E;
+	Sat,  8 Nov 2025 12:04:49 +0800 (CST)
+Received: from [127.0.0.1] (10.174.178.254) by dggpemf500013.china.huawei.com
+ (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 8 Nov
+ 2025 12:04:48 +0800
+Message-ID: <7350e19f-f2d2-4b2a-8ced-b57c73f4fccb@huawei.com>
+Date: Sat, 8 Nov 2025 12:04:47 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251108014246.689509-1-ojeda@kernel.org> <CANiq72nKC5r24VHAp9oUPR1HVPqT+=0ab9N0w6GqTF-kJOeiSw@mail.gmail.com>
-In-Reply-To: <CANiq72nKC5r24VHAp9oUPR1HVPqT+=0ab9N0w6GqTF-kJOeiSw@mail.gmail.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Fri, 7 Nov 2025 18:49:35 -0800
-X-Gm-Features: AWmQ_bn2xE_C004xbiOPfj6vuNrWvyE4Ho8Vxi_L-U3qXSI0Ruu8KQu5_TFbvtY
-Message-ID: <CABCJKucCJLWfHz6o=wWWx95keLC6na+uO3a0WVLTPEz02gENPw@mail.gmail.com>
-Subject: Re: [PATCH] rust: kbuild: skip gendwarfksyms in `bindings.o` for Rust
- >= 1.91.0
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, linux-modules@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
-	Haiyue Wang <haiyuewa@163.com>, Miguel Ojeda <ojeda@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] ext4: fix string copying in
+ parse_apply_sb_mount_options()
+Content-Language: en-GB
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+CC: Theodore Ts'o <tytso@mit.edu>, Jan Kara <jack@suse.cz>,
+	<linux-ext4@vger.kernel.org>, Andreas Dilger <adilger.kernel@dilger.ca>,
+	"Darrick J. Wong" <djwong@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, <stable@vger.kernel.org>
+References: <20251101160430.222297-1-pchelkin@ispras.ru>
+From: Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <20251101160430.222297-1-pchelkin@ispras.ru>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf500013.china.huawei.com (7.185.36.188)
 
-On Fri, Nov 7, 2025 at 6:31=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On 2025-11-02 00:04, Fedor Pchelkin wrote:
+> strscpy_pad() can't be used to copy a non-NUL-term string into a NUL-term
+> string of possibly bigger size.  Commit 0efc5990bca5 ("string.h: Introduce
+> memtostr() and memtostr_pad()") provides additional information in that
+> regard.  So if this happens, the following warning is observed:
 >
-> On Sat, Nov 8, 2025 at 2:44=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
-> >
-> > note that `CLIPPY=3D1` does not reproduce it
+> strnlen: detected buffer overflow: 65 byte read of buffer size 64
+> WARNING: CPU: 0 PID: 28655 at lib/string_helpers.c:1032 __fortify_report+0x96/0xc0 lib/string_helpers.c:1032
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 28655 Comm: syz-executor.3 Not tainted 6.12.54-syzkaller-00144-g5f0270f1ba00 #0
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> RIP: 0010:__fortify_report+0x96/0xc0 lib/string_helpers.c:1032
+> Call Trace:
+>  <TASK>
+>  __fortify_panic+0x1f/0x30 lib/string_helpers.c:1039
+>  strnlen include/linux/fortify-string.h:235 [inline]
+>  sized_strscpy include/linux/fortify-string.h:309 [inline]
+>  parse_apply_sb_mount_options fs/ext4/super.c:2504 [inline]
+>  __ext4_fill_super fs/ext4/super.c:5261 [inline]
+>  ext4_fill_super+0x3c35/0xad00 fs/ext4/super.c:5706
+>  get_tree_bdev_flags+0x387/0x620 fs/super.c:1636
+>  vfs_get_tree+0x93/0x380 fs/super.c:1814
+>  do_new_mount fs/namespace.c:3553 [inline]
+>  path_mount+0x6ae/0x1f70 fs/namespace.c:3880
+>  do_mount fs/namespace.c:3893 [inline]
+>  __do_sys_mount fs/namespace.c:4103 [inline]
+>  __se_sys_mount fs/namespace.c:4080 [inline]
+>  __x64_sys_mount+0x280/0x300 fs/namespace.c:4080
+>  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+>  do_syscall_64+0x64/0x140 arch/x86/entry/common.c:83
+>  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 >
-> And obviously this means we have to special case this one too...
+> Since userspace is expected to provide s_mount_opts field to be at most 63
+> characters long with the ending byte being NUL-term, use a 64-byte buffer
+> which matches the size of s_mount_opts, so that strscpy_pad() does its job
+> properly.  Return with error if the user still managed to provide a
+> non-NUL-term string here.
 >
->     $(obj)/bindings.o: private skip_gendwarfksyms :=3D $(if $(call
-> rustc-min-version,109100),$(if $(KBUILD_CLIPPY),,1))
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 >
-> There may be other cases that disable the optimization or similar,
-> plus we may have other small crates in the future that could also
-> suffer from this, so it may be best to simply force to generate the
-> DWARF with a dummy symbol from that crate for the time being as the
-> fix:
->
->     #[expect(unused)]
->     static DUMMY_SYMBOL_FOR_DWARF_DEBUGINFO_GENERATION_FOR_GENDWARFKSYMS:
-> () =3D ();
+> Fixes: 8ecb790ea8c3 ("ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 
-This looks reasonable to me, and indeed seems to fix the problem.
+Looks good to me.
 
-> And then later do something in the `cmd` command itself or teaching
-> `genkallksyms` to auto-skip in cases like this.
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+
+> ---
 >
-> What do you think?
+> v2: - treat non-NUL-term s_mount_opts as invalid case (Jan Kara)
+>     - swap order of patches in series so the fixing-one goes first
+>
+> v1: https://lore.kernel.org/lkml/20251028130949.599847-1-pchelkin@ispras.ru/T/#u
+>
+>  fs/ext4/super.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+> index 33e7c08c9529..15bef41f08bd 100644
+> --- a/fs/ext4/super.c
+> +++ b/fs/ext4/super.c
+> @@ -2475,7 +2475,7 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
+>  					struct ext4_fs_context *m_ctx)
+>  {
+>  	struct ext4_sb_info *sbi = EXT4_SB(sb);
+> -	char s_mount_opts[65];
+> +	char s_mount_opts[64];
+>  	struct ext4_fs_context *s_ctx = NULL;
+>  	struct fs_context *fc = NULL;
+>  	int ret = -ENOMEM;
+> @@ -2483,7 +2483,8 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
+>  	if (!sbi->s_es->s_mount_opts[0])
+>  		return 0;
+>  
+> -	strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts);
+> +	if (strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts) < 0)
+> +		return -E2BIG;
+>  
+>  	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
+>  	if (!fc)
 
-Like I mentioned in the other thread, we ideally wouldn't silently
-skip symbol versioning because the exported symbols won't be usable in
-this case.
 
-Sami
 
