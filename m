@@ -1,147 +1,160 @@
-Return-Path: <stable+bounces-192757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60333C421F6
-	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 01:21:25 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F16C42265
+	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 01:46:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 54E904E969F
-	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 00:21:22 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B546734EAF4
+	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 00:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27CE71F8AC8;
-	Sat,  8 Nov 2025 00:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1263628C5B1;
+	Sat,  8 Nov 2025 00:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="1rZgRV4a"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Dfn66SeY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76121F37DA;
-	Sat,  8 Nov 2025 00:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE73825A2C6
+	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 00:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762561278; cv=none; b=IU5jin9XYHYgPMoaNiXcYONHWPrbHTmuuvAdoJL9H6bPEXZ1qEiYgVtY9GktD0NzfbI0lay1zDTxU0GVtez32USo7x4v3vswpjx2P38EnP49zA/CTraSpHiDhuz91L11k5rxDRsPu8c6QJdUpdCt3BMY0j1d2j05rrWgm+8qqKg=
+	t=1762562757; cv=none; b=AcZ0OWc9qOP4r+gX0zCtjkkPFP3mHN4jp2eal+TrvH5cYgBupMQqBTny+n/xzMMtJBuEONpu9thT2NbbCSogEqnZfcAEmPV85vdHMCEB5YFed9OVkMwjIVYdDCBh/VAGKDEC0I1qdupqzzFO2SCf8QFqqxvTXLgb3wZobNrr0xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762561278; c=relaxed/simple;
-	bh=ubxu3QvUgOY9Xa92eq7fTiKssMWZG1JbPSlx1umseG4=;
-	h=Date:To:From:Subject:Message-Id; b=g6G7MbbXgR8DEn91cwxYlVnJdKOfC9oUSUIwNheqcvO+BZEY2KEbJ+CJCDPbMernMA++HteMAiPNiTaZBObJD3GfnPtD31nkZq/RcrvXGw49ohLeiUjfO0c9JRNIbx5bYtA6VLL20S6VYh15Xks+/o775PBaYloV2u3uxUBnIQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1rZgRV4a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6052AC4CEF7;
-	Sat,  8 Nov 2025 00:21:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762561278;
-	bh=ubxu3QvUgOY9Xa92eq7fTiKssMWZG1JbPSlx1umseG4=;
-	h=Date:To:From:Subject:From;
-	b=1rZgRV4aT3aELvwHoEWNoeUzw6KoBHW3W2FfDbYkDYFFneKjhkvi4xnWQOsqCVU7O
-	 tL9fRpwojC3j5s3eiykx3cNRo5OAlVFBwuDFTZQq7ZInbZhE3k7y6rLKfO0ukkt76A
-	 rHwIbvL7C6QnC8Y1kEkcXvNuSeiBULIdaj9zBoxU=
-Date: Fri, 07 Nov 2025 16:21:17 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,graf@amazon.com,chenste@linux.microsoft.com,bhe@redhat.com,piliu@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kernel-kexec-fix-ima-when-allocation-happens-in-cma-area.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251108002118.6052AC4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1762562757; c=relaxed/simple;
+	bh=JVr3UApUdU/lwfvGUxGHcQSlPHEF12JTkHv16rEIhWs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=c3nxCmqEn8b9B/E9hG9BF0Y17rJCMR+WwYV9ZRtPwzvwvNxab81wgUA7O8+d1pzYOtrT1Us+qerPX0HtCMQpeo4S1SrEDcD4LjhQn5TA72RWh4rrUfbXcaNLOoMYMScgSipQcUOmqHp5v23ci1Rj+zKjf7bv5RpytsXvYpLIutE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Dfn66SeY; arc=none smtp.client-ip=91.218.175.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762562753;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7WjgKU0UcXzH6sPJxy5qQCTT2XuzfK8VfrppJwY8Nqs=;
+	b=Dfn66SeYoVgJ/DKrBuksnpALQ8y5ngiV/C0NHdLDH2TWkpX2Wgxttmb5OxRD4qJSUF51UV
+	dYl/Kgx3wHuB8FY2I4ppii0sHV2q7MW0mKSaWTgWrpA8N1VjDoOJo3CpvQ/MJ7zu21vMl8
+	yE/mLOcexO+lRNo1L1UT+JtwmP2O3hE=
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/6] KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()
+Date: Sat,  8 Nov 2025 00:45:20 +0000
+Message-ID: <20251108004524.1600006-3-yosry.ahmed@linux.dev>
+In-Reply-To: <20251108004524.1600006-1-yosry.ahmed@linux.dev>
+References: <20251108004524.1600006-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
+svm_update_lbrv() is called when MSR_IA32_DEBUGCTLMSR is updated, and on
+nested transitions where LBRV is used. It checks whether LBRV enablement
+needs to be changed in the current VMCB, and if it does, it also
+recalculate intercepts to LBR MSRs.
 
-The patch titled
-     Subject: kernel/kexec: fix IMA when allocation happens in CMA area
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kernel-kexec-fix-ima-when-allocation-happens-in-cma-area.patch
+However, there are cases where intercepts need to be updated even when
+LBRV enablement doesn't. Example scenario:
+- L1 has MSR_IA32_DEBUGCTLMSR cleared.
+- L1 runs L2 without LBR_CTL_ENABLE (no LBRV).
+- L2 sets DEBUGCTLMSR_LBR in MSR_IA32_DEBUGCTLMSR, svm_update_lbrv()
+  sets LBR_CTL_ENABLE in VMCB02 and disables intercepts to LBR MSRs.
+- L2 exits to L1, svm_update_lbrv() is not called on this transition.
+- L1 clears MSR_IA32_DEBUGCTLMSR, svm_update_lbrv() finds that
+  LBR_CTL_ENABLE is already cleared in VMCB01 and does nothing.
+- Intercepts remain disabled, L1 reads to LBR MSRs read the host MSRs.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kernel-kexec-fix-ima-when-allocation-happens-in-cma-area.patch
+Fix it by always recalculating intercepts in svm_update_lbrv().
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Fixes: 1d5a1b5860ed ("KVM: x86: nSVM: correctly virtualize LBR msrs when L2 is running")
+Cc: stable@vger.kernel.org
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Pingfan Liu <piliu@redhat.com>
-Subject: kernel/kexec: fix IMA when allocation happens in CMA area
-Date: Thu, 6 Nov 2025 14:59:04 +0800
-
-When I tested kexec with the latest kernel, I ran into the following
-warning:
-
-[   40.712410] ------------[ cut here ]------------
-[   40.712576] WARNING: CPU: 2 PID: 1562 at kernel/kexec_core.c:1001 kimage_map_segment+0x144/0x198
-[...]
-[   40.816047] Call trace:
-[   40.818498]  kimage_map_segment+0x144/0x198 (P)
-[   40.823221]  ima_kexec_post_load+0x58/0xc0
-[   40.827246]  __do_sys_kexec_file_load+0x29c/0x368
-[...]
-[   40.855423] ---[ end trace 0000000000000000 ]---
-
-This is caused by the fact that kexec allocates the destination directly
-in the CMA area.  In that case, the CMA kernel address should be exported
-directly to the IMA component, instead of using the vmalloc'd address.
-
-Link: https://lkml.kernel.org/r/20251106065904.10772-2-piliu@redhat.com
-Fixes: 07d24902977e ("kexec: enable CMA based contiguous allocation")
-Signed-off-by: Pingfan Liu <piliu@redhat.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Steven Chen <chenste@linux.microsoft.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
+ arch/x86/kvm/svm/svm.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
- kernel/kexec_core.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
---- a/kernel/kexec_core.c~kernel-kexec-fix-ima-when-allocation-happens-in-cma-area
-+++ a/kernel/kexec_core.c
-@@ -967,6 +967,7 @@ void *kimage_map_segment(struct kimage *
- 	kimage_entry_t *ptr, entry;
- 	struct page **src_pages;
- 	unsigned int npages;
-+	struct page *cma;
- 	void *vaddr = NULL;
- 	int i;
- 
-@@ -974,6 +975,9 @@ void *kimage_map_segment(struct kimage *
- 	size = image->segment[idx].memsz;
- 	eaddr = addr + size;
- 
-+	cma = image->segment_cma[idx];
-+	if (cma)
-+		return page_address(cma);
- 	/*
- 	 * Collect the source pages and map them in a contiguous VA range.
- 	 */
-@@ -1014,7 +1018,8 @@ void *kimage_map_segment(struct kimage *
- 
- void kimage_unmap_segment(void *segment_buffer)
- {
--	vunmap(segment_buffer);
-+	if (is_vmalloc_addr(segment_buffer))
-+		vunmap(segment_buffer);
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index d25c56b30b4e2..26ab75ecf1c67 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -806,25 +806,29 @@ void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
+ 	vmcb_mark_dirty(to_vmcb, VMCB_LBR);
  }
  
- struct kexec_load_limit {
-_
-
-Patches currently in -mm which might be from piliu@redhat.com are
-
-kernel-kexec-change-the-prototype-of-kimage_map_segment.patch
-kernel-kexec-fix-ima-when-allocation-happens-in-cma-area.patch
+-void svm_enable_lbrv(struct kvm_vcpu *vcpu)
++static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 
+ 	svm->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
+-	svm_recalc_lbr_msr_intercepts(vcpu);
+ 
+ 	/* Move the LBR msrs to the vmcb02 so that the guest can see them. */
+ 	if (is_guest_mode(vcpu))
+ 		svm_copy_lbrs(svm->vmcb, svm->vmcb01.ptr);
+ }
+ 
+-static void svm_disable_lbrv(struct kvm_vcpu *vcpu)
++void svm_enable_lbrv(struct kvm_vcpu *vcpu)
++{
++	__svm_enable_lbrv(vcpu);
++	svm_recalc_lbr_msr_intercepts(vcpu);
++}
++
++static void __svm_disable_lbrv(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 
+ 	KVM_BUG_ON(sev_es_guest(vcpu->kvm), vcpu->kvm);
+ 	svm->vmcb->control.virt_ext &= ~LBR_CTL_ENABLE_MASK;
+-	svm_recalc_lbr_msr_intercepts(vcpu);
+ 
+ 	/*
+ 	 * Move the LBR msrs back to the vmcb01 to avoid copying them
+@@ -853,13 +857,18 @@ void svm_update_lbrv(struct kvm_vcpu *vcpu)
+ 			    (is_guest_mode(vcpu) && guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+ 			    (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK));
+ 
+-	if (enable_lbrv == current_enable_lbrv)
+-		return;
++	if (enable_lbrv && !current_enable_lbrv)
++		__svm_enable_lbrv(vcpu);
++	else if (!enable_lbrv && current_enable_lbrv)
++		__svm_disable_lbrv(vcpu);
+ 
+-	if (enable_lbrv)
+-		svm_enable_lbrv(vcpu);
+-	else
+-		svm_disable_lbrv(vcpu);
++	/*
++	 * During nested transitions, it is possible that the current VMCB has
++	 * LBR_CTL set, but the previous LBR_CTL had it cleared (or vice versa).
++	 * In this case, even though LBR_CTL does not need an update, intercepts
++	 * do, so always recalculate the intercepts here.
++	 */
++	svm_recalc_lbr_msr_intercepts(vcpu);
+ }
+ 
+ void disable_nmi_singlestep(struct vcpu_svm *svm)
+-- 
+2.51.2.1041.gc1ab5b90ca-goog
 
 
