@@ -1,129 +1,147 @@
-Return-Path: <stable+bounces-192786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A218DC42EF1
-	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 16:57:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 077C7C4339B
+	for <lists+stable@lfdr.de>; Sat, 08 Nov 2025 20:10:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1A4AD4E27DD
-	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 15:57:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 199B53AFB4E
+	for <lists+stable@lfdr.de>; Sat,  8 Nov 2025 19:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6861CEADB;
-	Sat,  8 Nov 2025 15:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942DB27B50F;
+	Sat,  8 Nov 2025 19:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NPhw8UE+"
+	dkim=pass (2048-bit key) header.d=yhndnzj.com header.i=@yhndnzj.com header.b="fEfR45/B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-10625.protonmail.ch (mail-10625.protonmail.ch [79.135.106.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610611EA7CB
-	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 15:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C542236F7
+	for <stable@vger.kernel.org>; Sat,  8 Nov 2025 19:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762617447; cv=none; b=FXCkFhUnU5o6wQBZzYTk1xuerro2RvOfmzAuoc3zfAoceIgHfshsmcHxFIg1OKuBGQ6Z8QWDfsvx82BL5f/CafM1UuKG2/Iwz0hzguVXHGb+bG76O/bRpaqWUm/VZaNZWAYv8SKETW0XSN5aQThS4ryaqeAM0Lo3dnfYmZXu5Eg=
+	t=1762629004; cv=none; b=lxSDXve13P93p1ImxW8ZaUun0Bv3Au3fnlQ0xBel3mtiGcNTDveo1g4ryquRe7S1NWFETDqKUEGeODGuompv5t1ocrwZgs2cNynOmEeT2YgI8qKygG/2Z7YMOAZ++fpRLD544HYknpqaSAupB3GIvmPmFeazAtkk2RiVn8HAQQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762617447; c=relaxed/simple;
-	bh=1B6qJxhbK00jLGFc+/1YeYK+A12GIKfCTEsHFV4BWFE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MZSgmLctyo2tR9BbEDmFqhgT+z7KFF+5rEUWa/zDEP/YCA6fTG4o/2so/Sk/doBTvVGzCyHxbTUTiCUDge5edsR25bZNuDarNxucGRO+726iLoUJV0Bn5GfISswSS9yZO9HD9ZoGamVeT2KlwkWBm/Bzfr2iGVQh1wXBnFA2/b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NPhw8UE+; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3436d9da02eso38187a91.1
-        for <stable@vger.kernel.org>; Sat, 08 Nov 2025 07:57:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762617446; x=1763222246; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UF04VjpCgrtM4AACwnQlzOMrdSH/wb0uO//xFFcApf4=;
-        b=NPhw8UE+uGSqouH7donjkwGs8XsLpQPCFsj2zK/upWEoCA2ckn30uTNztMiwWsFhwJ
-         RUi2UQud8H7gjTorRjPKJk3d+uzhHRMvAauypLHQl7EaUI+tUKLZWSgnVfT/uta4R0/+
-         x6Rx/HLFB6O1QQfqF1rjozka19gFNDSTcYp1WO7iGAg0WvjLPRZfFvuGv8bSxHzJBgON
-         qXLHdGuLUb1CTUuCjirhLE1U+JrmKYfEF0WmdHyc3uqrfT1fna+Q7v63lktBZUM7MV1Z
-         ZvrFhOiMY6IwvPKDRPE62N9WzDhQfBVMobAD6rRpo9bgWB+KW0INgiU19HnPEdMhWXvQ
-         uHTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762617446; x=1763222246;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UF04VjpCgrtM4AACwnQlzOMrdSH/wb0uO//xFFcApf4=;
-        b=hvDikZAh36mpsMzF1qeoTgdly+eKii+P51TPKjW8MHoswiAO6S7W9FZBaotj/U+/ia
-         1SVipT1n2VT0f+1Qy8R0uRstkM3A5t1F0lzgVTUZyPG7Xz4PnNhIkOJm/DLnwqS4WARc
-         6D8lrCmxUCZEjTo+YdJs8pLG4M9+A38mauEXbTQlUyPFk7JB1Us6VPOYbupso1/1ngl0
-         aDqWhqjn9WfXFzGEFXF8UeFOilzs/dePXbREDB39sBz5aBNh+ihETDT3w9UA3+mOOE4L
-         Q6LY8tOipApNMDYQOZxhycAsmLHyfTlzpb8A7J4qV+zy3VP7kYySMKK2jQm/on91UimO
-         WnTw==
-X-Forwarded-Encrypted: i=1; AJvYcCVx318AviRMtCaZn2gZ/whjScXqYXX8tArjIfpRHcMAm68BwNeJSW6eXvaWX/u+CzyuWJqvsD0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxAQdadkRIJ2ECTwznLCEFkDLmWVnQsLC6nY0O1ZSm+/0l55Fb
-	W5Lws7wjJZqvTZdl6LXzHP+F1KINn4guWiHMouowPw/PfURgAs0SUOec
-X-Gm-Gg: ASbGncuomSjuqJNPZ1Y/F42zH2EeJWWRRBcucv+IOG4XEma24uhEKGAHSxW3uR1W89u
-	596ee2PDEv6F4yvOD3nfoSiSk3MLGUFNlP7QFnK+vwMby744DM3EDxPgRDIrz+NTbjbp119tV78
-	coHuKFUEv/RSiXbHl0HYdj4jyP6l4MmTrdHpTolcb1R5nTCAN2GTsbVQtA338Z4wcscoe+xpuam
-	NOXkTiHQVf4ZDwprTmRq3k1CqKkpK1EhJMPND0+HfUnZZ5zgRiiU6l/5WBbyaeavcGESC+UbLGs
-	eYwWUJvq+o3mPG1uQ9GEMlr/VjYyf04T6Fpvqx8aAnbv7j4b9MsA3Em93o0EPOGnVtqYTGsPMhp
-	cKS7cRcorvY3HsK8iwQD2/lmTBluFUOdOIsPK1O1kP8MQ+2mkY2WqBgmgi6M28jc6mzQh5Q6q+1
-	hvPcffF/a6Ie0HHAK3D8/nlzBZVByMPixz/npWgrHiimgMFhKr5oGQKw2QhXnJfHbBuUQXIYi6
-X-Google-Smtp-Source: AGHT+IH9LyA7/tnKICrBnlW9MvtAHS+5SqO+iVA2GT69gP6cJzXTVGRPCBtL5DJXPhM6hg6KNiVtoA==
-X-Received: by 2002:a05:6a20:4305:b0:2e3:a914:aabe with SMTP id adf61e73a8af0-353a026aa2fmr1974504637.2.1762617445630;
-        Sat, 08 Nov 2025 07:57:25 -0800 (PST)
-Received: from poi.localdomain (KD118158218050.ppp-bb.dion.ne.jp. [118.158.218.50])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ba901c39ea7sm8200832a12.29.2025.11.08.07.57.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Nov 2025 07:57:24 -0800 (PST)
-From: Qianchang Zhao <pioooooooooip@gmail.com>
-To: Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>
-Cc: gregkh@linuxfoundation.org,
-	linux-cifs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	security@kernel.org,
-	Zhitong Liu <liuzhitong1993@gmail.com>,
-	Qianchang Zhao <pioooooooooip@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] ksmbd: vfs: skip lock-range check on equal size to avoid size==0 underflow
-Date: Sun,  9 Nov 2025 00:57:12 +0900
-Message-Id: <20251108155712.384021-1-pioooooooooip@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CAKYAXd-R8NGDzQ-GTM67QbCxwJTCMGNhxKBo1a0sm0XBDqftLw@mail.gmail.com>
-References: <CAKYAXd-R8NGDzQ-GTM67QbCxwJTCMGNhxKBo1a0sm0XBDqftLw@mail.gmail.com>
+	s=arc-20240116; t=1762629004; c=relaxed/simple;
+	bh=9e3E1g4hxN+rejc8kzum2wJk3KiPtUh8/abMAG27iG8=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=sJzq2QQMF1K9c3GZG/oQo8ehHvug5/rXE7IoZrwDS/H97pMQAkhB8lm0GMobV7vuVgEb81hdrCSdEtt7zYLAhunmcLq8Zoq0vJUgZ2yz/GAPblSi11Y/o+AqNJFAQrLLlH69rMr/Fi3sFWp2S2a1d0ZgdL7wIEB71n7dfunYX2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=yhndnzj.com; spf=pass smtp.mailfrom=yhndnzj.com; dkim=pass (2048-bit key) header.d=yhndnzj.com header.i=@yhndnzj.com header.b=fEfR45/B; arc=none smtp.client-ip=79.135.106.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=yhndnzj.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yhndnzj.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yhndnzj.com;
+	s=protonmail; t=1762628992; x=1762888192;
+	bh=WfmfezCASpoeRxzyP97/Bg6TuZeskJUKe+Q4rAekhjg=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=fEfR45/BGmwWjUPZt6R1yF9uOirxoDV5bmKbJHcdmYTVN6KC1lLXBcFooWKTSwOa9
+	 EvBA3LO5ooz9thOjCxycCoPWu7v7B4iN0NMZ5RJR+xqfPiQT9A+bflUjd8jKs5vutw
+	 o8WpXvXUEpgUiQzmG1tsgj+BWtJGrbSKTJN0Z8N3f62gfnVu0INV3RaSOA1XG4ZrVJ
+	 ipi2kFQQZkEomm03BbX3b++TPECxdbtcQm2y7BNFPnOCPktyGZIlGIleeRnW+vqzZo
+	 1V/UZT605WmGMutL6ZSZpGrRMS+G1bxZiN+wPuGJ+p/VQfm5U6jiU6lxb/ogidYUvn
+	 dLse2aUSQu/5Q==
+Date: Sat, 08 Nov 2025 19:09:47 +0000
+To: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+From: Mike Yuan <me@yhndnzj.com>
+Cc: Mike Yuan <me@yhndnzj.com>, linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Christian Brauner <brauner@kernel.org>, Hugh Dickins <hughd@google.com>, stable@vger.kernel.org
+Subject: [PATCH] shmem: fix tmpfs reconfiguration (remount) when noswap is set
+Message-ID: <20251108190930.440685-1-me@yhndnzj.com>
+Feedback-ID: 102487535:user:proton
+X-Pm-Message-ID: 149e0ed8edb97c432bef16be68b2175ea0fe5f86
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-When size equals the current i_size (including 0), the code used to call
-check_lock_range(filp, i_size, size - 1, WRITE), which computes `size - 1`
-and can underflow for size==0. Skip the equal case.
+In systemd we're trying to switch the internal credentials setup logic
+to new mount API [1], and I noticed fsconfig(FSCONFIG_CMD_RECONFIGURE)
+consistently fails on tmpfs with noswap option. This can be trivially
+reproduced with the following:
 
-Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+```
+int fs_fd =3D fsopen("tmpfs", 0);
+fsconfig(fs_fd, FSCONFIG_SET_FLAG, "noswap", NULL, 0);
+fsconfig(fs_fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
+fsmount(fs_fd, 0, 0);
+fsconfig(fs_fd, FSCONFIG_CMD_RECONFIGURE, NULL, NULL, 0);  <------ EINVAL
+```
+
+After some digging the culprit is shmem_reconfigure() rejecting
+!(ctx->seen & SHMEM_SEEN_NOSWAP) && sbinfo->noswap, which is bogus
+as ctx->seen serves as a mask for whether certain options are touched
+at all. On top of that, noswap option doesn't use fsparam_flag_no,
+hence it's not really possible to "reenable" swap to begin with.
+Drop the check and redundant SHMEM_SEEN_NOSWAP flag.
+
+[1] https://github.com/systemd/systemd/pull/39637
+
+Fixes: 2c6efe9cf2d7 ("shmem: add support to ignore swap")
+Signed-off-by: Mike Yuan <me@yhndnzj.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: <stable@vger.kernel.org>
 ---
- fs/smb/server/vfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/shmem.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index 891ed2dc2..d068b78a3 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -828,7 +828,7 @@ int ksmbd_vfs_truncate(struct ksmbd_work *work,
- 		if (size < inode->i_size) {
- 			err = check_lock_range(filp, size,
- 					       inode->i_size - 1, WRITE);
--		} else {
-+		} else if (size > inode->i_size) {
- 			err = check_lock_range(filp, inode->i_size,
- 					       size - 1, WRITE);
- 		}
--- 
-2.34.1
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b9081b817d28..1b976414d6fa 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -131,8 +131,7 @@ struct shmem_options {
+ #define SHMEM_SEEN_INODES 2
+ #define SHMEM_SEEN_HUGE 4
+ #define SHMEM_SEEN_INUMS 8
+-#define SHMEM_SEEN_NOSWAP 16
+-#define SHMEM_SEEN_QUOTA 32
++#define SHMEM_SEEN_QUOTA 16
+ };
+=20
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+@@ -4677,7 +4676,6 @@ static int shmem_parse_one(struct fs_context *fc, str=
+uct fs_parameter *param)
+ =09=09=09=09       "Turning off swap in unprivileged tmpfs mounts unsuppor=
+ted");
+ =09=09}
+ =09=09ctx->noswap =3D true;
+-=09=09ctx->seen |=3D SHMEM_SEEN_NOSWAP;
+ =09=09break;
+ =09case Opt_quota:
+ =09=09if (fc->user_ns !=3D &init_user_ns)
+@@ -4827,14 +4825,15 @@ static int shmem_reconfigure(struct fs_context *fc)
+ =09=09err =3D "Current inum too high to switch to 32-bit inums";
+ =09=09goto out;
+ =09}
+-=09if ((ctx->seen & SHMEM_SEEN_NOSWAP) && ctx->noswap && !sbinfo->noswap) =
+{
++
++=09/*
++=09 * "noswap" doesn't use fsparam_flag_no, i.e. there's no "swap"
++=09 * counterpart for (re-)enabling swap.
++=09 */
++=09if (ctx->noswap && !sbinfo->noswap) {
+ =09=09err =3D "Cannot disable swap on remount";
+ =09=09goto out;
+ =09}
+-=09if (!(ctx->seen & SHMEM_SEEN_NOSWAP) && !ctx->noswap && sbinfo->noswap)=
+ {
+-=09=09err =3D "Cannot enable swap on remount if it was disabled on first m=
+ount";
+-=09=09goto out;
+-=09}
+=20
+ =09if (ctx->seen & SHMEM_SEEN_QUOTA &&
+ =09    !sb_any_quota_loaded(fc->root->d_sb)) {
+
+base-commit: 0d7bee10beeb59b1133bf5a4749b17a4ef3bbb01
+--=20
+2.51.1
+
 
 
