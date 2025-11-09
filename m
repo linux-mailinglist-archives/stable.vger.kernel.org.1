@@ -1,142 +1,124 @@
-Return-Path: <stable+bounces-192830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238A0C43A1B
-	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 09:21:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF06C43A63
+	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 09:59:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8C4B3ADF80
-	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 08:21:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 938093B1F39
+	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 08:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB4E245014;
-	Sun,  9 Nov 2025 08:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5065E2C21C2;
+	Sun,  9 Nov 2025 08:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S3QdJTty"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="IUsWLpCM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.smtpout.orange.fr (smtp-17.smtpout.orange.fr [80.12.242.17])
+	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC94A4C6D
-	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 08:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9485920102B;
+	Sun,  9 Nov 2025 08:59:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762676498; cv=none; b=k+XDU70F11n8NMOi6iMtT8vaNnMKZOHkAWQ1AyHOGe1M1uPKmhgCsv5LYKM9Lv/W1pwaRgXpxh+gwVqvsvvY7dwD7cTG8StCiBj9RnC7VEJiCxlHbghI4INgsueRqC2gS0GazTWSq/P1gWjqMG7+0EI7joorFycE6e8kJ8FHjB0=
+	t=1762678758; cv=none; b=oTE7Mnv5ndNgUZ+KoyfUxOagdE+QZCPanMuNXrLU+SRYmV6rVKQm5WYHwP9W7+CtsRmJaJBYO4sdbdIOyOvvSXczcGeO3RX37xI6QxPn4j4NE5KPejxqrsRRyfRD1uw7SW6zkYab6G9HtV45mKK3FHWzJVJ74xlyr4F+/A5sbQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762676498; c=relaxed/simple;
-	bh=blBxIzHVxMDkVOYTtn6sgPlXbPeUDm01RifRQqnXCR0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YMX84JcBa5RbqqmuKaK8fL73sca6lfL5rOrhskq1aVkFGTIgSTeNRGtsUA7oVhTupKbXZfPDAY7yDed9c02eGQCTIHg5x7hTzXyvjYgkKv68/bQX2zRTfGCVEc73YmcaGNluWQU0ixeUjjz5WJIfDH/QDVAnTvYKtje1+dLO798=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S3QdJTty; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-786d1658793so18458307b3.1
-        for <stable@vger.kernel.org>; Sun, 09 Nov 2025 00:21:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762676496; x=1763281296; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d+G16wY2Uy0RV+AHrXQMNikD/m9lQ1yJj0Gcep7twG4=;
-        b=S3QdJTty/L11BVtLiwPOBbzCAagOfkD+f0DsIARoixGNax9XxDN0k8JA4UxXfahKNH
-         KLQJRcrqy/SbuWaYIzVPbcfBhodpb4zJbO0D4vjW8nqG8RiV1lvF8mHSFtfJeBifO6TQ
-         SJ/ytDBmSLz7w2g4A58x9PMARyddh0L5y682OrDDrozFTts0o4s2FwWy2yzrQ8aYkPyT
-         rCVt7Ux4Z2pknCmY/XoisWadoNXizg11SS00GoKluU+g+JSKRLU2yJ7bIDAFBLa+3Kv0
-         SrhZt5aFAv4SgFWJgY3rj5t7zgRKXJtfqN50v6lwsXnP20a+X1aeGwREbFLze+cd1sRB
-         1qSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762676496; x=1763281296;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=d+G16wY2Uy0RV+AHrXQMNikD/m9lQ1yJj0Gcep7twG4=;
-        b=FVsP/Y99phNZpQyrPw1W8nEkMeAMrt5xhayNoHDJW8WpmpOqUAVd0KlkzWeNTcVDn1
-         3+piP4i9CVol4HuwkDdInql7aw2QOMpFGNymyE2Xp5Pnij7X8mYgJ0etZJMqd8VdC5+e
-         TEudbViFKN2DS9yFInZX9FKP+XTWxzpeJmkKTYwtFF8QtamqCbrU3BAS+vlzyDAOKp4q
-         TkTWXCthKwlW5UsmcAuPCmmRmIadokDBl4SDJRXgBhUgOSbqkgIiVbNW5F4uiNxxAGx4
-         rm5jkKKvNBxDYkzOQ+5Nrr8Pxq2QP81zhNeELSHJoZsy4AqOHlpZtW5RaZcqyq4h74S6
-         404w==
-X-Forwarded-Encrypted: i=1; AJvYcCX//Awao5Jv4z++ntp13QdbdcFxe1H++vJjNNM9x8uHHVJLnixqVCV/whjSasd+FX+JAjx3A5I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxGSTlxfNwwXEKYXP38vsnGj8V69eKHuWEBiAvZEjDuG9xuHNC
-	3mD7V6Yq1AuQM9Q91GrYBTJaBt3EPBtX0i9GurHmnTofcRiIBSzfkRoVrb+CNPg5/IfaSBQEwsH
-	jVmzS/+JT/jdu9QVwapnWM8U8n7Aocy0=
-X-Gm-Gg: ASbGncvz7Vkuup8nUZU0/0yCkjSwgmoefGYK4SKCtLqZAF14eF3aoMLnE2YFgd9pNAE
-	C9Eq5prd2sZXPK6Fi0QSHCqzKekGOBomkH84RxyaslGQjNWJEtv23FSLdlAQMFK4wSGdNJe/WMv
-	v6LvjHxcDRruC8ml2zgs694ZU214pRilJdgwvB3h5clkyhRgs/DxtHn12P2NaTQnlvdVtE4frpb
-	ZEF0j0ZNpcj9kJ+Zz/WvqzGt2BMQic0qRNcoosn5v5Was51RmIbihkQmHaB3Dk2akmOqvFG
-X-Google-Smtp-Source: AGHT+IEaqIye4DtDHgikTrookKOjzbjgSvwfAg40yRgSxZD6MgtC7CaLSpR7r2YAQlHytf/EZLr37UyRk0xdeDBmYNI=
-X-Received: by 2002:a05:690c:610d:b0:787:ea39:6656 with SMTP id
- 00721157ae682-787ea397030mr7757287b3.22.1762676495801; Sun, 09 Nov 2025
- 00:21:35 -0800 (PST)
+	s=arc-20240116; t=1762678758; c=relaxed/simple;
+	bh=NIHTz/OoDgmGZXlh3rApI4xKI1Lcg03ixB3x9I+bkWw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l4LMFWp+Sttwf1aX7xq2rlMN3m1DMYrUnJi/PZNktZPGVcYj4LUJhOWYtQnpEzIVxFvn7UR7MauX/V3saSGx2I/KeKhtuNsqaSArQqZ7bQWW04FaWRshG413zarKmcXZxHvfzhZYcUa1EuYw25qVeOCJwhHCfCd95UnLJjMNkjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=IUsWLpCM; arc=none smtp.client-ip=80.12.242.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
+ ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
+	by smtp.orange.fr with ESMTPA
+	id I1GKvCutnh1kKI1GKvZT3p; Sun, 09 Nov 2025 09:59:07 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1762678747;
+	bh=ryN6OIWBoqgz2Ty3b+qLcani7MHBs1yOn6/7cVXhrqg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=IUsWLpCMzOagE1B1RapkxoJBbwX3CzMtARrKHk6x/d0qJfKE8FJ40pCcXNFKJOvMv
+	 3i16bDxgey4ixnzmbOI6WkEWyhKsP8OvwOSExb+ilLJV7Um5TyB8hXYipBmI0Vfcqj
+	 cCSs4+iZSaFSeu88UeJ1yVfNyEdifUAA8Y4kHBB3woKhz8CcU+by/vtZ/bm+ehegj2
+	 XrOY8/DtBNcdIr9EdtVA6kSkdwEMwh74YJb1Vl5AlrVm2TSjMBiGcmTNN20M3yaInA
+	 ZgA0DJG4eE0yba5rkbahUmQ8HJoBoEfdV5iDIaE5DKNlODQClpzdqrTT36xtObPUfu
+	 zbpPu10JvLQPg==
+X-ME-Helo: [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 09 Nov 2025 09:59:07 +0100
+X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
+Message-ID: <cb5c891d-a266-4228-9189-b53bf0d26322@wanadoo.fr>
+Date: Sun, 9 Nov 2025 09:59:03 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251107100310.61478-1-a.safin@rosa.ru> <20251107114127.4e130fb2@pumpkin>
- <CALOAHbB1cJ3EAmOOQ6oYM4ZJZn-eA7pP07=sDeG3naOM2G9Aew@mail.gmail.com>
-In-Reply-To: <CALOAHbB1cJ3EAmOOQ6oYM4ZJZn-eA7pP07=sDeG3naOM2G9Aew@mail.gmail.com>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Sun, 9 Nov 2025 16:20:59 +0800
-X-Gm-Features: AWmQ_bnJ-vvvsH1qxIwP2kkBXgkqUH_eUTNwEZRz0N4xm2likEq83gy42ECpYgE
-Message-ID: <CALOAHbCz+9T349GCmyMkork=Nc_08OnXCoVCz+WO0kdXgx3MDA@mail.gmail.com>
-Subject: Re: [PATCH v2] bpf: hashtab: fix 32-bit overflow in memory usage calculation
-To: David Laight <david.laight.linux@gmail.com>, Alexei Safin <a.safin@rosa.ru>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	lvc-patches@linuxtesting.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rtc: Fix error handling in devm_rtc_allocate_device
+To: Ma Ke <make24@iscas.ac.cn>, alexandre.belloni@bootlin.com
+Cc: linux-rtc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, stable@vger.kernel.org
+References: <20251109060817.5620-1-make24@iscas.ac.cn>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Content-Language: en-US, fr-FR
+In-Reply-To: <20251109060817.5620-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 9, 2025 at 11:00=E2=80=AFAM Yafang Shao <laoar.shao@gmail.com> =
-wrote:
->
-> On Fri, Nov 7, 2025 at 7:41=E2=80=AFPM David Laight
-> <david.laight.linux@gmail.com> wrote:
-> >
-> > On Fri,  7 Nov 2025 13:03:05 +0300
-> > Alexei Safin <a.safin@rosa.ru> wrote:
-> >
-> > > The intermediate product value_size * num_possible_cpus() is evaluate=
-d
-> > > in 32-bit arithmetic and only then promoted to 64 bits. On systems wi=
-th
-> > > large value_size and many possible CPUs this can overflow and lead to
-> > > an underestimated memory usage.
-> > >
-> > > Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> >
-> > That code is insane.
-> > The size being calculated looks like a kernel memory size.
-> > You really don't want to be allocating single structures that exceed 4G=
-B.
->
-> I failed to get your point.
-> The calculation `value_size * num_possible_cpus() * num_entries` can
-> overflow. While the creation of a hashmap limits `value_size *
-> num_entries` to U32_MAX, this new formula can easily exceed that
-> limit. For example, on my test server with just 64 CPUs, the following
-> operation will trigger an overflow:
->
->           map_fd =3D bpf_map_create(BPF_MAP_TYPE_PERCPU_HASH, "count_map"=
-, 4, 4,
->                                                      1 << 27, &map_opts)
+Le 09/11/2025 à 07:08, Ma Ke a écrit :
+> In rtc_allocate_device(), device_initialize() sets the reference count
+> to 1. In rtc_allocate_device(), when devm_add_action_or_reset() or
+> dev_set_name() fails after successful device initialization via
+> device_initialize(), rtc_allocate_device() returns an error without
+> properly calling put_device() and releasing the reference count.
 
-Upon reviewing the code, I see that `num_entries` is declared as u64,
-which prevents overflow in the calculation `value_size *
-num_possible_cpus() * num_entries`. Therefore, this change is
-unnecessary.
+The correct error handling is already in place and your patch looks wrong.
 
-It seems that the Linux Verification Center (linuxtesting.org) needs
-to be improved ;-)
+> Add proper error handling that calls put_device() in all error paths
+> after device_initialize(), ensuring proper resource cleanup.
 
---=20
-Regards
-Yafang
+This is precisely the purpose of devm_add_action_or_reset().
+Look at it and at the devm_rtc_release_device() which does what you expect.
+
+CJ
+
+> 
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 3068a254d551 ("rtc: introduce new registration method")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>   drivers/rtc/class.c | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/rtc/class.c b/drivers/rtc/class.c
+> index b1a2be1f9e3b..db5f33a22b14 100644
+> --- a/drivers/rtc/class.c
+> +++ b/drivers/rtc/class.c
+> @@ -379,13 +379,17 @@ struct rtc_device *devm_rtc_allocate_device(struct device *dev)
+>   	rtc->dev.parent = dev;
+>   	err = devm_add_action_or_reset(dev, devm_rtc_release_device, rtc);
+>   	if (err)
+> -		return ERR_PTR(err);
+> +		goto err_put_device;
+>   
+>   	err = dev_set_name(&rtc->dev, "rtc%d", id);
+>   	if (err)
+> -		return ERR_PTR(err);
+> +		goto err_put_device;
+>   
+>   	return rtc;
+> +
+> +err_put_device:
+> +	put_device(&rtc->dev);
+> +	return ERR_PTR(err);
+>   }
+>   EXPORT_SYMBOL_GPL(devm_rtc_allocate_device);
+>   
+
 
