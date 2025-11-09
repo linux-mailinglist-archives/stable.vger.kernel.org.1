@@ -1,134 +1,137 @@
-Return-Path: <stable+bounces-192835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FA3C43C79
-	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 12:08:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E2DC43CD4
+	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 12:47:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA4E93A5F12
-	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 11:07:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 06BFD4E4FA2
+	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 11:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC91A2DE1E0;
-	Sun,  9 Nov 2025 11:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4082D97A5;
+	Sun,  9 Nov 2025 11:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="DZaCzS7h"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="PzRzahBw"
 X-Original-To: stable@vger.kernel.org
-Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
+Received: from pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com [50.112.246.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF032DC338;
-	Sun,  9 Nov 2025 11:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79601272801;
+	Sun,  9 Nov 2025 11:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=50.112.246.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762686384; cv=none; b=GFW9fo594HZbqhiNsSqP/schaai0iOsOYDPAzS3F7dQNqzOoBfYsKxmV/b9DoQRSHFdc/mFZJOmOH34ajyJwKSFTmS/LTUI41vjzJzDo6Oi1EJH8nYH/Qv029A3wGYd9kYpTgRjFKcaJ+UzP/MegyJV5IZuHyargLt5xKzomktM=
+	t=1762688834; cv=none; b=SRnPGD0e0RXRZoVhzfanF2QSF39DNBL9WwFzb6+6JF/yJaEZsCb3BT0XC5nxAYQxVG+iBsDG1dzOlxRTI+SHr36pGXS3oo7PL/xpINVAk1mMaMKp3escycqnr9zwCey6UKoWJu06vjXOkmFeqfqAEe3/lDbCN4mrZN67TH4azWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762686384; c=relaxed/simple;
-	bh=628j+T4NN4U3fieq61FSy/7vinhuQ5xHDPEojaikKO8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ev3RrQiZ2ezthSht4Da2Fj4tBq06Qg6Q8dtbTpJzTOBszJIxPbTPuKZyKbtrnpXhl3RWeMKlMmA6zJrBpTaYebVzcmG7naE8eu2g9CeGmBnJnUVqqk1GFOOj1AFhmqlJOYBnOmybptJgy8EI/iNosubkkgyoOkVaX2SWWGXjdY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=DZaCzS7h; arc=none smtp.client-ip=178.154.239.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
-Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c37:8120:0:640:c15b:0])
-	by forward500b.mail.yandex.net (Yandex) with ESMTPS id 61A51C092A;
-	Sun, 09 Nov 2025 14:00:19 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id G0KGd3lLrOs0-kx0gRr5n;
-	Sun, 09 Nov 2025 14:00:18 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
-	t=1762686018; bh=Ul+neqMs6+35CzJCWIQokzZfipMzxkGIjAKa5XhFakA=;
-	h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
-	b=DZaCzS7hgPVQJUlGFb5xbirfZ+cGgJ0+JN/6nvvT9eyi2+toQ8pmKvGGbLtUaBvIK
-	 c/lTu+WdWozu8PqR8hIQiDLNvb5PhUmeZUOcQwEZu0IXO3jD8JubbW2KOinVjEFKaN
-	 B0uQ8oLH5FVCCcVhFz2xOw6x2WJGOWUz2Zrwc/ZA=
-Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
-Message-ID: <8a4aae40-46d3-403a-a1cf-117343c584f6@rosa.ru>
-Date: Sun, 9 Nov 2025 14:00:16 +0300
+	s=arc-20240116; t=1762688834; c=relaxed/simple;
+	bh=TGbsIJbNdmZDoghwpLH5vb7hIw6MrViTyBvoEOlSxQ8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IovwMywg+rNtaaFDZ9e7ImLKdirqM8TKoqugNYDN1J7H/2OGrZMZvG9MA76IDPgvnDrRJpwzfgJV0pL2kXNIWccbCJxdQ4jkhyCUPX+IVuU8lNqtfYeyJzQlHxH5SEPrSxBGM1RsnqLnVRS0rOSGshQDbKeP3MOluveEVLdvRQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=PzRzahBw; arc=none smtp.client-ip=50.112.246.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1762688833; x=1794224833;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=FnH+XOeMpGV+rIc6L0kniRTBsRQVu5GU526boyROU3A=;
+  b=PzRzahBw+juIBN/D+CrIOp7zzB9UWL9YHv2skYjeKplJ2L2hROBrMZ9y
+   9q9INuKJV30VAhb4ghBrYqr3uWHUnNNSnQgo6H4nl8bZB2q2mixVfk8GX
+   ai/bTPGnW+kOVLZjvNXk2mf0QDaw8f6O2CoM3rKhEt8Vqegc7fyodBXoA
+   StfYZOnHkhVDYx/IpLZWqoxPKhWv8D1s4sjoVI9Y9zpU8QAPUYi/tvzco
+   vxKmhkn0achcf0TIRRFYnS37o9jaaktHY/Nm8wqjB1T7KuPiJhDERv7oz
+   fVc4TBYLBoABTwYi1+PvbIexzI69aGunwTkzAaieCpFqDc4gcuME70GUQ
+   w==;
+X-CSE-ConnectionGUID: P7BRPApNQ3CsxQ5GEntzWA==
+X-CSE-MsgGUID: XuE1YFYPT6W/VeQKBjpq5g==
+X-IronPort-AV: E=Sophos;i="6.19,291,1754956800"; 
+   d="scan'208";a="6525068"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2025 11:47:10 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.105:12405]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.51.49:2525] with esmtp (Farcaster)
+ id a48445c3-2db9-4804-9d90-8e6dec0a1b66; Sun, 9 Nov 2025 11:47:10 +0000 (UTC)
+X-Farcaster-Flow-ID: a48445c3-2db9-4804-9d90-8e6dec0a1b66
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Sun, 9 Nov 2025 11:47:10 +0000
+Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
+ (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Sun, 9 Nov 2025
+ 11:47:08 +0000
+From: Eliav Farber <farbere@amazon.com>
+To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
+	<viro@zeniv.linux.org.uk>, <dan.j.williams@intel.com>, <willy@infradead.org>,
+	<jack@suse.cz>, <linux-fsdevel@vger.kernel.org>, <linux-nvdimm@lists.01.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <farbere@amazon.com>, Christoph Hellwig <hch@lst.de>, "Darrick J. Wong"
+	<djwong@kernel.org>
+Subject: [PATCH v2 5.10.y] fsdax: mark the iomap argument to dax_iomap_sector as const
+Date: Sun, 9 Nov 2025 11:47:03 +0000
+Message-ID: <20251109114703.16554-1-farbere@amazon.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] bpf: hashtab: fix 32-bit overflow in memory usage
- calculation
-To: Yafang Shao <laoar.shao@gmail.com>,
- David Laight <david.laight.linux@gmail.com>
-Cc: Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, lvc-patches@linuxtesting.org,
- stable@vger.kernel.org
-References: <20251107100310.61478-1-a.safin@rosa.ru>
- <20251107114127.4e130fb2@pumpkin>
- <CALOAHbB1cJ3EAmOOQ6oYM4ZJZn-eA7pP07=sDeG3naOM2G9Aew@mail.gmail.com>
- <CALOAHbCz+9T349GCmyMkork=Nc_08OnXCoVCz+WO0kdXgx3MDA@mail.gmail.com>
-Content-Language: ru
-From: =?UTF-8?B?0JDQu9C10LrRgdC10Lkg0KHQsNGE0LjQvQ==?= <a.safin@rosa.ru>
-In-Reply-To: <CALOAHbCz+9T349GCmyMkork=Nc_08OnXCoVCz+WO0kdXgx3MDA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWC003.ant.amazon.com (10.13.139.252) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Thanks for the follow-up.
+From: Christoph Hellwig <hch@lst.de>
 
-Just to clarify: the overflow happens before the multiplication by
-num_entries. In C, the * operator is left-associative, so the expression is
-evaluated as (value_size * num_possible_cpus()) * num_entries. Since
-value_size was u32 and num_possible_cpus() returns int, the first product is
-performed in 32-bit arithmetic due to usual integer promotions. If that
-intermediate product overflows, the result is already incorrect before it is
-promoted when multiplied by u64 num_entries.
+[ Upstream commit 7e4f4b2d689d959b03cb07dfbdb97b9696cb1076 ]
 
-A concrete example within allowed limits:
-value_size = 1,048,576 (1 MiB), num_possible_cpus() = 4096
-=> 1,048,576 * 4096 = 2^32 => wraps to 0 in 32 bits, even with 
-num_entries = 1.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+---
+V1 -> V2: Added missing 'Signed-off-by'
 
-This isn’t about a single >4GiB allocation - it’s about aggregated memory
-usage (percpu), which can legitimately exceed 4GiB in total.
+Fixes:
 
-v2 promotes value_size to u64 at declaration, which avoids the 32-bit
-intermediate overflow cleanly.
+fs/dax.c: In function 'dax_iomap_iter':
+fs/dax.c:1147:44: error: passing argument 1 of 'dax_iomap_sector' discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]
+   const sector_t sector = dax_iomap_sector(iomap, pos);
+                                            ^~~~~
+fs/dax.c:1009:17: note: expected 'struct iomap *' but argument is of type 'const struct iomap *'
+   static sector_t dax_iomap_sector(struct iomap *iomap, loff_t pos)
+                 ^~~~~~~~~~~~~~~~
 
-09.11.2025 11:20, Yafang Shao пишет:
-> On Sun, Nov 9, 2025 at 11:00 AM Yafang Shao <laoar.shao@gmail.com> wrote:
->> On Fri, Nov 7, 2025 at 7:41 PM David Laight
->> <david.laight.linux@gmail.com> wrote:
->>> On Fri,  7 Nov 2025 13:03:05 +0300
->>> Alexei Safin <a.safin@rosa.ru> wrote:
->>>
->>>> The intermediate product value_size * num_possible_cpus() is evaluated
->>>> in 32-bit arithmetic and only then promoted to 64 bits. On systems with
->>>> large value_size and many possible CPUs this can overflow and lead to
->>>> an underestimated memory usage.
->>>>
->>>> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->>> That code is insane.
->>> The size being calculated looks like a kernel memory size.
->>> You really don't want to be allocating single structures that exceed 4GB.
->> I failed to get your point.
->> The calculation `value_size * num_possible_cpus() * num_entries` can
->> overflow. While the creation of a hashmap limits `value_size *
->> num_entries` to U32_MAX, this new formula can easily exceed that
->> limit. For example, on my test server with just 64 CPUs, the following
->> operation will trigger an overflow:
->>
->>            map_fd = bpf_map_create(BPF_MAP_TYPE_PERCPU_HASH, "count_map", 4, 4,
->>                                                       1 << 27, &map_opts)
-> Upon reviewing the code, I see that `num_entries` is declared as u64,
-> which prevents overflow in the calculation `value_size *
-> num_possible_cpus() * num_entries`. Therefore, this change is
-> unnecessary.
->
-> It seems that the Linux Verification Center (linuxtesting.org) needs
-> to be improved ;-)
->
+The issue was introduced by the cherry-pick of commit 8df4919cb921
+("fsdax: switch dax_iomap_rw to use iomap_iter")
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/fs/dax.c?h=v5.10.246&id=8df4919cb921b28809d05feae3e98dc5d8b48146
+
+The upstream change made callers pass a const struct iomap *:
+   const struct iomap *iomap = &iomi->iomap;
+but dax_iomap_sector() still expected a mutable pointer:
+   static sector_t dax_iomap_sector(struct iomap *iomap, loff_t pos)
+
+ fs/dax.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/dax.c b/fs/dax.c
+index 91820b9b50b7..2ca33ef5d519 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -1006,7 +1006,7 @@ int dax_writeback_mapping_range(struct address_space *mapping,
+ }
+ EXPORT_SYMBOL_GPL(dax_writeback_mapping_range);
+ 
+-static sector_t dax_iomap_sector(struct iomap *iomap, loff_t pos)
++static sector_t dax_iomap_sector(const struct iomap *iomap, loff_t pos)
+ {
+ 	return (iomap->addr + (pos & PAGE_MASK) - iomap->offset) >> 9;
+ }
+-- 
+2.47.3
+
 
