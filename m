@@ -1,130 +1,127 @@
-Return-Path: <stable+bounces-192797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D71DC43747
-	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 03:32:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DAF2C43792
+	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 04:01:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 02EC6348354
-	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 02:32:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6B123B290C
+	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 03:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63A71C6FEC;
-	Sun,  9 Nov 2025 02:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B1913A86C;
+	Sun,  9 Nov 2025 03:01:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kmIuom7H"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261A11A23B6;
-	Sun,  9 Nov 2025 02:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C20429A1
+	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 03:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762655567; cv=none; b=Q7J68AfjJxXOXNSPBCo/GuhcWjBvHqcO6lKv+HPYqOA5OsDYTtW4h6w/Cs2b1ornJirrEwwpX0aBsXd1c+UvGQqsaqbGDqm9b7RevczToQgUOu7rH2P1L/EYzmgOuXsmmwea3wxGEJjoOF7jKpRZsAPgxwaX39HKUeX8I07AAhc=
+	t=1762657272; cv=none; b=XoZ0hpixEHhJkypIaw43zNiwNrvIfYVqeqJiqZRzaQXS8LrB61CJIUnQqnrmmNZKidGlqVflydEzvhKqXciUVbRtV2EYJg4r3t5SCdJakFqP6RWPi5HkLc1CFca6GceHvQwc5VALJUqefBW9H4Q5gF5v50FmWnDT2MTZ0WcvT1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762655567; c=relaxed/simple;
-	bh=yP0wUqwDv+VrvJrRl4MeGRT5eX9vSWFZy6msvm4MXXE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BaHtlX6n558eU2qvVgrMhYsiPPF0mbhxJyMx+ZbD8bd4t2CrFY3ec78nRj/jjwAr3aVTsGvgflepNPOrfLwgyABjvTS52ZA+1UlkYc8VgOW2va0wsrbV6Nh5yaQnrw7jQ0YqXqDWluAWHuD5pjsT3Ko4XawXTZ5BWix7GcO+cJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.45])
-	by gateway (Coremail) with SMTP id _____8Dx_tJK_Q9p7NcgAA--.6063S3;
-	Sun, 09 Nov 2025 10:32:42 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.68.45])
-	by front1 (Coremail) with SMTP id qMiowJAxleQ4_Q9pqzAsAQ--.2346S2;
-	Sun, 09 Nov 2025 10:32:41 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev,
-	Xuefeng Li <lixuefeng@loongson.cn>,
-	Guo Ren <guoren@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	linux-kernel@vger.kernel.org,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] LoongArch: Consolidate early_ioremap()/ioremap_prot()
-Date: Sun,  9 Nov 2025 10:32:14 +0800
-Message-ID: <20251109023214.355231-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1762657272; c=relaxed/simple;
+	bh=qESZOs7qVRRXh6bJdptBB7hTiAoMVKJFzBaPoCkk3EY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N1fVA7VOdgqkmok+pFUIR2Uc8PSJ1zV9J2uWtjtDpnDPZB5mJn4cwJzg48NWM/KfUYVAn/aU++JO8kKMivmln8bb1g5RSGQibRbZGB9oB4ncRu0vCUxe5ASZhxyhFDe3gX1pb1bZ6fZy/eu2v7lDEanxw1RrnUaD5gpH8j1J/MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kmIuom7H; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-787da30c50fso5715587b3.3
+        for <stable@vger.kernel.org>; Sat, 08 Nov 2025 19:01:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762657270; x=1763262070; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e6DNnuqiLsyZO9SJ1ruoojCJDemUC0rmD+JV8URPIgI=;
+        b=kmIuom7HWv5Bw3LKWVZzRD70GEbWouljPMMw3bkvJX2DiBvWEjpum1E3ODjEAe026c
+         ToSXkTv4VBoDYU6JzptKBIn0iM6ngsgZZFOvnLXH9FaqA6Jwgu6qvE4ikHRQxzZPV5Nw
+         CeUp9Y/es4e1VsWIMZtvfSc7YRsjFzEZXH8Lxuu++tX/9g6nFUeEsXav0x1Ox87DfvK5
+         C60uDeX+PgzJjVsUbcTw+gCW+or976Yv5tToowvIHmvKETm9VyiOHhgIFaDcgfRJ44qD
+         MuRK8X1vr31eErv4HL6zoZi4R3iIEdVfbIATpMdTLEptNnExCIWqpiMy7XC9O22Sc/m+
+         5aVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762657270; x=1763262070;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=e6DNnuqiLsyZO9SJ1ruoojCJDemUC0rmD+JV8URPIgI=;
+        b=RLBeu7LRaUrxCjm04TdokXLV84z8KpEHZsZ3XDhlOmW3ExzhGij2eRq42wBCPGjOuf
+         1MXzemyAryk6u965MVknLywlbGPaxhjP/9eEfKMx2hKZaG+JUmmo2qhOAzfko8GNKAR3
+         w3iy0juVUMdwUCzcksQAkzuvjPNUCTY1zvOsgFvzk4OhUbK91rR5IcRQTSiQSgFkabcR
+         fS5783sxRTSCg5VjedTR8ItQAte5g3aiOKBlrHE9NrToPJHKoNkKdSbqLH8rRahddYhl
+         vxwTTsdGal2duNgu8946Uhffg4D+/sw/R3ChewOz0BIVAsIRCzk0q0aSGDBwOTTTbcsB
+         ypCA==
+X-Forwarded-Encrypted: i=1; AJvYcCWnfVUZCccvwaJo7rmlWFMeDx3n18VPDIJOZ1bJIa0nMcCsl+N76qTRlNfiC2HQIbWiZPwiK1k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/VfPl41uk0zZ7ukpLbo65MbU5dtBhexYAlgjGsIPCcOoarTty
+	hMnw7r1aBpJo5QuzK+duHZ2Oi12TANWgPqQtVFbJWKcCtPHWXKx6Qbj6xaC/PjBVCquTLMUjwH9
+	oQ5GLjOCvB3hr4XPbElsXZ5UUnQbN6bw=
+X-Gm-Gg: ASbGncumwIXXvW1Rd9XOhmjUZAB0pSBwNoWSh+XVIgS8JS0A0UUcXdWaE4MK8rw2UUL
+	nlvB86C0Ip1PMYjcUEnC7aboA6+kcBW1kxbBofMXphbsUOnKGW9U3ybb2MMIiaknMAf7hQm6Fqp
+	jIlBUKetTEjB+7i7W/R8WACE0Tt8rz4MFXoqrnzeDD7n+QCdB5/DQziamQWCzbC9qBVyHRLFGxN
+	99lL3XrxuxUk86eHL30+K8ngJ/D/doEHOnqAlAVnrlPj86AeYE9ExQTVsbCiD3fZjORidIK
+X-Google-Smtp-Source: AGHT+IFl0PygBGVQDcDoux4KUpDZWbMWPvO9pvbbbb8+4rH/xr6b/zEQCBbAmTqX2PhbkuQ7hJB0oosFqP46oGnaGwE=
+X-Received: by 2002:a05:690c:658a:b0:785:aedf:4ac6 with SMTP id
+ 00721157ae682-787d5355527mr68221527b3.6.1762657270013; Sat, 08 Nov 2025
+ 19:01:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxleQ4_Q9pqzAsAQ--.2346S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7AFy5tFyrur1kAr1rJFyUXFc_yoW8ury8pF
-	92kr1kJFs8Kr1xGFykJFy7Wr1UtFnrKFWIqFW2kF9xu3Wjvr18ZrWkCr90vFyUXa95KFWr
-	XrZ3Wa43CF4UJagCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9Fb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	tVWrXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
-	AKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
-	6r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
-	CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF
-	0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
-	AIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2
-	KfnxnUUI43ZEXa7IU8EeHDUUUUU==
+References: <20251107100310.61478-1-a.safin@rosa.ru> <20251107114127.4e130fb2@pumpkin>
+In-Reply-To: <20251107114127.4e130fb2@pumpkin>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Sun, 9 Nov 2025 11:00:34 +0800
+X-Gm-Features: AWmQ_bl4pAwU4DcdzQl2rZraMoW7kKSb0oYzeEjLEM0Qy75Y6egynRfDTOFL-tw
+Message-ID: <CALOAHbB1cJ3EAmOOQ6oYM4ZJZn-eA7pP07=sDeG3naOM2G9Aew@mail.gmail.com>
+Subject: Re: [PATCH v2] bpf: hashtab: fix 32-bit overflow in memory usage calculation
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Alexei Safin <a.safin@rosa.ru>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	lvc-patches@linuxtesting.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-1. Use phys_addr_t instead of u64, which can work for both 32/64 bits.
-2. Check whether the input physical address is above TO_PHYS_MASK (and
-   return NULL if yes) for the DMW version.
+On Fri, Nov 7, 2025 at 7:41=E2=80=AFPM David Laight
+<david.laight.linux@gmail.com> wrote:
+>
+> On Fri,  7 Nov 2025 13:03:05 +0300
+> Alexei Safin <a.safin@rosa.ru> wrote:
+>
+> > The intermediate product value_size * num_possible_cpus() is evaluated
+> > in 32-bit arithmetic and only then promoted to 64 bits. On systems with
+> > large value_size and many possible CPUs this can overflow and lead to
+> > an underestimated memory usage.
+> >
+> > Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>
+> That code is insane.
+> The size being calculated looks like a kernel memory size.
+> You really don't want to be allocating single structures that exceed 4GB.
 
-Note: In theory early_ioremap() also need the TO_PHYS_MASK checking, but
-the UEFI BIOS pass some DMW virtual addresses.
+I failed to get your point.
+The calculation `value_size * num_possible_cpus() * num_entries` can
+overflow. While the creation of a hashmap limits `value_size *
+num_entries` to U32_MAX, this new formula can easily exceed that
+limit. For example, on my test server with just 64 CPUs, the following
+operation will trigger an overflow:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/include/asm/io.h | 5 ++++-
- arch/loongarch/mm/ioremap.c     | 2 +-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+          map_fd =3D bpf_map_create(BPF_MAP_TYPE_PERCPU_HASH, "count_map", =
+4, 4,
+                                                     1 << 27, &map_opts)
 
-diff --git a/arch/loongarch/include/asm/io.h b/arch/loongarch/include/asm/io.h
-index eaff72b38dc8..0130185e0349 100644
---- a/arch/loongarch/include/asm/io.h
-+++ b/arch/loongarch/include/asm/io.h
-@@ -14,7 +14,7 @@
- #include <asm/pgtable-bits.h>
- #include <asm/string.h>
- 
--extern void __init __iomem *early_ioremap(u64 phys_addr, unsigned long size);
-+extern void __init __iomem *early_ioremap(phys_addr_t phys_addr, unsigned long size);
- extern void __init early_iounmap(void __iomem *addr, unsigned long size);
- 
- #define early_memremap early_ioremap
-@@ -25,6 +25,9 @@ extern void __init early_iounmap(void __iomem *addr, unsigned long size);
- static inline void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
- 					 pgprot_t prot)
- {
-+	if (offset > TO_PHYS_MASK)
-+		return NULL;
-+
- 	switch (pgprot_val(prot) & _CACHE_MASK) {
- 	case _CACHE_CC:
- 		return (void __iomem *)(unsigned long)(CACHE_BASE + offset);
-diff --git a/arch/loongarch/mm/ioremap.c b/arch/loongarch/mm/ioremap.c
-index df949a3d0f34..27c336959fe8 100644
---- a/arch/loongarch/mm/ioremap.c
-+++ b/arch/loongarch/mm/ioremap.c
-@@ -6,7 +6,7 @@
- #include <asm/io.h>
- #include <asm-generic/early_ioremap.h>
- 
--void __init __iomem *early_ioremap(u64 phys_addr, unsigned long size)
-+void __init __iomem *early_ioremap(phys_addr_t phys_addr, unsigned long size)
- {
- 	return ((void __iomem *)TO_CACHE(phys_addr));
- }
--- 
-2.47.3
-
+--=20
+Regards
+Yafang
 
