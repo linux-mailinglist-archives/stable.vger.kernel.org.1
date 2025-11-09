@@ -1,118 +1,209 @@
-Return-Path: <stable+bounces-192854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AB2C44473
-	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 18:28:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A875C444C7
+	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 19:06:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F36413A2438
-	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 17:28:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB941188904D
+	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 18:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474D82FE067;
-	Sun,  9 Nov 2025 17:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1532821FF25;
+	Sun,  9 Nov 2025 18:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KbBFIEPE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CKFSODqk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B512EBBAA
-	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 17:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2561FF7C8;
+	Sun,  9 Nov 2025 18:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762709324; cv=none; b=RUmK1TZ5/6RI6NcUwWIGLU1llsZfoFjzQEwI4eFs5ufcOWO2AUfiSWgtKtGgIV6+v1eMnZmhBvegyXlLsl+a+tZ4c6ZyQrWxTEaQPPfrMkEIiXimaZCuswlyl1437V1YahvxZzfBrIgy246UPd7ylw6kNc5pF527Trrhx1Jm4qU=
+	t=1762711567; cv=none; b=YUtDDIVPXmVjpvf29aGBai7m7xqTG7MRLtpNhzXuGyCcsPfn/PFlN/1i9C8mF8l/BBERQL+m37B8y6kq4VL3JfLYIgYaOb5PN6KeRpxYDsuZBQZtjzIuo5pjoT5xhf+ORR45V30/Z2VdbYXRHZ+qmwfA1Gzw4ghiQ4SX+n8okTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762709324; c=relaxed/simple;
-	bh=oaZbFrrLK6gcB2BJgc78QjZ2h9TO6qaXihmNe77C4rU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C5M19cihhxpUvsfT9OAD+fqFwjv0fJLduJcQuMytnq0Q0iHe4UEF1x4b1UjWk0KIsjVUxD3ghNEzf8w5P2Wkat39yrtl91T6ZXMa9EH8f88rh5Ch7cOmpFyTnYE38Vn/E1c1DXpxu9CuXa553KlnSNm8rR5xDWk1jveysHldFqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KbBFIEPE; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-343641ceb62so324600a91.1
-        for <stable@vger.kernel.org>; Sun, 09 Nov 2025 09:28:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762709322; x=1763314122; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oaZbFrrLK6gcB2BJgc78QjZ2h9TO6qaXihmNe77C4rU=;
-        b=KbBFIEPE+rfBW7NgQs/oHPQp/hnMUruXsw/XratFdRJiFytuPrZ9n1z859mDGhx4FU
-         yv7vUDZNs5tENse6kC9MTr8A5OApjI6Ky11w9wtDZx9MYxe+GgQWCRkm5Va1N4vxTk11
-         an8sQB/lDUABf5yQtvk86J0gXW7TiIQb/6P2i0bBkVCxBG7QfoKL4RnZge/oxv/1P9+g
-         5xItxr10zRVE50rcLujq1GDcoEJthOHD/+uCeBJKF/zEdJPj2uj/TEJHxTpw15JBY2TH
-         FZWzwPfaZT5dnL8kGpVzIdfsKYqpzRMbb2SYtZcMoyO248eJLq2eJam824aIxb3G5tkQ
-         K8GQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762709322; x=1763314122;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=oaZbFrrLK6gcB2BJgc78QjZ2h9TO6qaXihmNe77C4rU=;
-        b=ZaoAJOBhnq0s6CPK+YdkM1NhliyLD9ouNY0T0LfNYckGMfjymrN9rkkyljDmkkAC1v
-         UheTWhdTLcb+LEQhWTAMMhR1agVJI5mHee+EZj3tgMBbWyFcjvA6DkS51oLp+LtOGmFx
-         af/M/U5iiGn/nt2DuxvAq8ITtOFouBK/UBn6MFnIYcaJayPw3EA0Zs96td0X+3dCM1vl
-         I2JbVaBWIS+TLyarCRVqUFRYfHvOO9nAbhzalvRebbbCa1hdxavEpQgBWdgo/2ReKXR8
-         yh/dsB9a9drH7pYMRVkwAe1FobqufEeeVnQsKatLBUPBAa6APkn2gaRrJ4gpNb8VHrQX
-         Or2w==
-X-Forwarded-Encrypted: i=1; AJvYcCWt+/e6NT5GjHpI92qrLcqGYzfayKpd3mxT9DSKhfDK6Zb4JHI22Rly3G0JvzGK57Nj1tOJvQs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqoKDEJWp00KVcAhPG6fkJercj+bVu1HJXinBXWFoJrGrpkPCT
-	hIIgjpdYFY53eSZNeubZ8WWNw7BYpC5k7PiWuuCZy53tcfFnH18pzD3PCaGO1afcwWkPKOostC6
-	sHcqPQstFiKRUqDuzf2n7pRTfa9gdh0I=
-X-Gm-Gg: ASbGnctrQ5SgIMS5JTPvcST5T4DqNT62bYovraTBjXtZNCxkQ20NeTSbls57kwXodEd
-	SFvRrDjcjk50R2pzD7z6oi9N3Rwx0W6I1mGME1yctx8wmh82vxdhkpSIxEQpRx7ZDoS9fBepJ+S
-	Q4nxmJTydb240kZYrS7zp93+PBZBMSG3gxbBjRYVl8ofp00ziuBpVuEJuxQ02ObIsdqNAJnWuo1
-	2igemqK9nUY3B3eUFNMElhIpfiyzjGyGtcXI/AoYn33PMNDSN7gZvv8Y3hSwheZvswWq4kHVWn0
-	Y8HY1Oe55CYEI95GukS1ToC2aco+4GuQhDS09Ldcd2i3o5N09aZ5NlDv25MmoxUYTgOLTFYpIoD
-	6ANg=
-X-Google-Smtp-Source: AGHT+IEmVeP2I5vWvNByBcdTD8y7+55gQj7tDg8bVmRJ4Wt2Gu4r+jl34CQq4iAnjs5yqrZbqVdAnmSpp/v5gYbXOt0=
-X-Received: by 2002:a17:903:2f88:b0:297:f88a:c15d with SMTP id
- d9443c01a7336-297f88ac5abmr25523995ad.10.1762709322007; Sun, 09 Nov 2025
- 09:28:42 -0800 (PST)
+	s=arc-20240116; t=1762711567; c=relaxed/simple;
+	bh=Rv5rj91RamEanT2fugz7Olj75634AA1cClCMNmzZM78=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HwlOrWmwSaJwm134nuEP7nLZaext2ep9qPSd0BV27oiiGC0DRdMdfqn6xW0xC85XGqSnX/pdktysVHDRfSRRwozBUitEVuSzFkGgCGreVbnSI9F2uG8q2bORKPJv+gRaXhL+Dg8Ah2c6ke+pdLmCJHYAZM6Dz7ytVJ4Tc0N9Czk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CKFSODqk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1A6A3C4CEFB;
+	Sun,  9 Nov 2025 18:06:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762711565;
+	bh=Rv5rj91RamEanT2fugz7Olj75634AA1cClCMNmzZM78=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=CKFSODqkHQ7lajblVBiiunadMTS7FxkMrl1FUVEvYMWbPrVewMnYvqw8Faz3HSOHO
+	 wYK0mqHj+P2DdQ3JWU7IW/l/lQv80/cz4hMzJDLxS4C5PeWLUnY0mEKaq1a7+sIXVn
+	 EjGCP/7Y/yBMCHwbqMyCahOB+JqzGM62GNRR1Upx/hRUyHPFUxZhPCtGyNavZ9A22A
+	 gh56UNc9kT501DhHTzC6x5HwA137NrxgsCmANUK2SpLPWKfvhF9zmOUWHuVkJd/6OB
+	 TjT1USFaxAkDaiX2NXDcq/tHsexW4Zh3Z3pN5fD87c1sBohbGazNj0magcn8QZ/8MJ
+	 NqJVH4OMboX3g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 098F4CCF9F8;
+	Sun,  9 Nov 2025 18:06:05 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Date: Mon, 10 Nov 2025 02:06:03 +0800
+Subject: [PATCH] Revert "mm, swap: avoid redundant swap device pinning"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2025110805-fame-viability-c333@gregkh>
-In-Reply-To: <2025110805-fame-viability-c333@gregkh>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 9 Nov 2025 18:28:29 +0100
-X-Gm-Features: AWmQ_blX8FJGrS5-kua4_ptsv7G-opHja2iQB_Sx7JMlS-6hc3lPjnVs0Vlxy5s
-Message-ID: <CANiq72nZO7h4ktLGNNx1wixAdVsPUkJkAAJSsN3regBKNG1LMw@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] rust: kbuild: workaround `rustdoc`
- doctests modifier bug" failed to apply to 6.12-stable tree
-To: gregkh@linuxfoundation.org
-Cc: ojeda@kernel.org, aliceryhl@google.com, jforbes@fedoraproject.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com>
+X-B4-Tracking: v=1; b=H4sIAArYEGkC/x2MQQqAIBAAvxJ7TnAtSftKdNBaay8WGhGEf086D
+ szMC5kSU4axeSHRzZmPWAHbBpbdxY0Er5VBSaURpRVVonSJwWjVe6kDuk7I3qGy2lMwDmp5Jgr
+ 8/NdpLuUDy1WRSmUAAAA=
+X-Change-ID: 20251109-revert-78524b05f1a3-04a1295bef8a
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+ Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+ Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Yosry Ahmed <yosry.ahmed@linux.dev>, 
+ Chengming Zhou <chengming.zhou@linux.dev>, 
+ Youngjun Park <youngjun.park@lge.com>, Kairui Song <ryncsn@gmail.com>, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762711563; l=4133;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=alE+X02rbk4jwNfT7auzmxmmmbItfQDo8i+kaNeAHjY=;
+ b=y+ozs+sm7ni2QmqCYkgxfgsn49ITpx52INQ0Dq+5Kq9kcCBk7gA/JGdd6qZOmhRbyTjalAn2s
+ R3zWuGKIM3zBS6pl2r1pQbcyZsst8HOxUqBN0/qrRpv0I1JrjRU40Ny
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
 
-On Sat, Nov 8, 2025 at 6:24=E2=80=AFAM <gregkh@linuxfoundation.org> wrote:
->
-> The patch below does not apply to the 6.12-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
->
-> To reproduce the conflict and resubmit, you may use the following command=
-s:
->
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
-t/ linux-6.12.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x fad472efab0a805dd939f017c5b8669a786a4bcf
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110805-=
-fame-viability-c333@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+From: Kairui Song <kasong@tencent.com>
 
-I replied in Sasha's sibling resolution -- there is something odd in
-the log which I would like to understand.
+This reverts commit 78524b05f1a3e16a5d00cc9c6259c41a9d6003ce.
 
-Cheers,
-Miguel
+While reviewing recent leaf entry changes, I noticed that commit
+78524b05f1a3 ("mm, swap: avoid redundant swap device pinning") isn't
+correct. It's true that most all callers of __read_swap_cache_async are
+already holding a swap entry reference, so the repeated swap device
+pinning isn't needed on the same swap device, but it is possible that
+VMA readahead (swap_vma_readahead()) may encounter swap entries from a
+different swap device when there are multiple swap devices, and call
+__read_swap_cache_async without holding a reference to that swap device.
+
+So it is possible to cause a UAF if swapoff of device A raced with
+swapin on device B, and VMA readahead tries to read swap entries from
+device A. It's not easy to trigger but in theory possible to cause real
+issues. And besides, that commit made swap more vulnerable to issues
+like corrupted page tables.
+
+Just revert it. __read_swap_cache_async isn't that sensitive to
+performance after all, as it's mostly used for SSD/HDD swap devices with
+readahead. SYNCHRONOUS_IO devices may fallback onto it for swap count >
+1 entries, but very soon we will have a new helper and routine for
+such devices, so they will never touch this helper or have redundant
+swap device reference overhead.
+
+Fixes: 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+ mm/swap_state.c | 14 ++++++--------
+ mm/zswap.c      |  8 +-------
+ 2 files changed, 7 insertions(+), 15 deletions(-)
+
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 3f85a1c4cfd9..0c25675de977 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -406,13 +406,17 @@ struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+ 		struct mempolicy *mpol, pgoff_t ilx, bool *new_page_allocated,
+ 		bool skip_if_exists)
+ {
+-	struct swap_info_struct *si = __swap_entry_to_info(entry);
++	struct swap_info_struct *si;
+ 	struct folio *folio;
+ 	struct folio *new_folio = NULL;
+ 	struct folio *result = NULL;
+ 	void *shadow = NULL;
+ 
+ 	*new_page_allocated = false;
++	si = get_swap_device(entry);
++	if (!si)
++		return NULL;
++
+ 	for (;;) {
+ 		int err;
+ 
+@@ -499,6 +503,7 @@ struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+ 	put_swap_folio(new_folio, entry);
+ 	folio_unlock(new_folio);
+ put_and_return:
++	put_swap_device(si);
+ 	if (!(*new_page_allocated) && new_folio)
+ 		folio_put(new_folio);
+ 	return result;
+@@ -518,16 +523,11 @@ struct folio *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+ 		struct vm_area_struct *vma, unsigned long addr,
+ 		struct swap_iocb **plug)
+ {
+-	struct swap_info_struct *si;
+ 	bool page_allocated;
+ 	struct mempolicy *mpol;
+ 	pgoff_t ilx;
+ 	struct folio *folio;
+ 
+-	si = get_swap_device(entry);
+-	if (!si)
+-		return NULL;
+-
+ 	mpol = get_vma_policy(vma, addr, 0, &ilx);
+ 	folio = __read_swap_cache_async(entry, gfp_mask, mpol, ilx,
+ 					&page_allocated, false);
+@@ -535,8 +535,6 @@ struct folio *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+ 
+ 	if (page_allocated)
+ 		swap_read_folio(folio, plug);
+-
+-	put_swap_device(si);
+ 	return folio;
+ }
+ 
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 5d0f8b13a958..aefe71fd160c 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1005,18 +1005,12 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	struct folio *folio;
+ 	struct mempolicy *mpol;
+ 	bool folio_was_allocated;
+-	struct swap_info_struct *si;
+ 	int ret = 0;
+ 
+ 	/* try to allocate swap cache folio */
+-	si = get_swap_device(swpentry);
+-	if (!si)
+-		return -EEXIST;
+-
+ 	mpol = get_task_policy(current);
+ 	folio = __read_swap_cache_async(swpentry, GFP_KERNEL, mpol,
+-			NO_INTERLEAVE_INDEX, &folio_was_allocated, true);
+-	put_swap_device(si);
++				NO_INTERLEAVE_INDEX, &folio_was_allocated, true);
+ 	if (!folio)
+ 		return -ENOMEM;
+ 
+
+---
+base-commit: 02dafa01ec9a00c3758c1c6478d82fe601f5f1ba
+change-id: 20251109-revert-78524b05f1a3-04a1295bef8a
+
+Best regards,
+-- 
+Kairui Song <kasong@tencent.com>
+
+
 
