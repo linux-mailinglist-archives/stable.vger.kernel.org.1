@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-192817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCC5C437D5
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B551C437D4
 	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 04:15:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECD1C3AFFA1
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D95D23B29F6
 	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 03:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA3513FEE;
-	Sun,  9 Nov 2025 03:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7564A18A6D4;
+	Sun,  9 Nov 2025 03:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2et+/sK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhhNbH3B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A56A17A2EB
-	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 03:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340AD14A8B
+	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 03:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762658117; cv=none; b=lOaBvD+XRIR3tCivyJd04ShmFOIeWGBzVk5U5pckKU7zoP0PoWqzN9ahIJehkof34FARhaTRsjj2NFhD/WO8zS1/LfO0BbiUMjpW1e9LtWP9AU5R2I91i/yqCwi9TKYof7r9cCiZCP/hacikdzWSPLjsYjsEedGFthb2i2SIaoQ=
+	t=1762658120; cv=none; b=f4iYjvKqqlQHDAQQd/qkVpLFgPhHtK9XUFJOQeOPc0XsOtkl2xVAP+wedFz4RLOBluFe7AIyTW9TYeGOoWbrJyVYIZxZ6wtjZP5hL0M2KAKDKw5JcjBSD9w4FjwnGazeM0jrMUSYaKwmBOfW84zkNRS9NelJIZY4QecOKaTQhxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762658117; c=relaxed/simple;
-	bh=v9eQ1qzTbewACcvEiane2g6z4v6uWa194+Q7XMtlTQQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UycJ3eb9iaaz86l3vTaei/WKDO4sEmrbWcNZ4rdSwutXd327hBAdvkZqI/J+XbMHvX9og+qAx8teknmy4/TXYVodfx+aZS0l0jOjrc17MYNNay/ZLGXNwE+UZJUlRpIbnXqnNFxttHgvgjn8kAAFoIJog4hhPg1XTJdcWAF5S6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2et+/sK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293CCC116D0;
-	Sun,  9 Nov 2025 03:15:17 +0000 (UTC)
+	s=arc-20240116; t=1762658120; c=relaxed/simple;
+	bh=tCiBlLuF3CRUdBGno7v3+Zye9ytRmmgaCpKRPaPNg0Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AsfAQAKKXggahtuEbxmQILz3ZtxJ1MTdpiz8yK1d5ohTtpZ93ttCuw+JS0QlHx2fjVNnvoPgYcupXY66il+5SS+CFxvnfYsFFZPwaD9I2FbCeR67kBPAbxzMSesdKsLlsx9TcEx1+CpC9psBRCM3UUq1hz/ZSspECn7mlv+eoMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhhNbH3B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F81C4AF0B;
+	Sun,  9 Nov 2025 03:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762658117;
-	bh=v9eQ1qzTbewACcvEiane2g6z4v6uWa194+Q7XMtlTQQ=;
+	s=korg; t=1762658119;
+	bh=tCiBlLuF3CRUdBGno7v3+Zye9ytRmmgaCpKRPaPNg0Q=;
 	h=Subject:To:Cc:From:Date:From;
-	b=C2et+/sKwXhOEs8+yP16NHX+EUDXT+C5FYSNqEZiIqM5UaxS69dgJOvlRFo2/4dVK
-	 QmkG8s1E59LKau9jEIh00CS8cuiwvicli4naVPWfC+6jl0gNC0wiCMWUubjhGoycOE
-	 gkS+5amJ+wSzTVFJOkaUa+bIn6aCgwO1XT1H6gpk=
-Subject: FAILED: patch "[PATCH] scsi: ufs: core: Add a quirk to suppress link_startup_again" failed to apply to 6.1-stable tree
+	b=bhhNbH3BPvhjuFRK/whr9Ud5VKwfuXJjwNTetkyjzmk96IbgCf5QrSBV6Yawspewq
+	 q7fwsBGvutSq4kjWVYM/ixwXNgIHOxtMepVGfJqbUoj6imQFrPNjHxA2o//5sxsI6v
+	 RQY3kaYd0XsCrW5MZmTqnauK/Wu8S5fIkZRZAWUI=
+Subject: FAILED: patch "[PATCH] scsi: ufs: core: Add a quirk to suppress link_startup_again" failed to apply to 5.15-stable tree
 To: adrian.hunter@intel.com,bvanassche@acm.org,martin.petersen@oracle.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 09 Nov 2025 12:15:06 +0900
-Message-ID: <2025110906-sneak-fountain-8be2@gregkh>
+Date: Sun, 09 Nov 2025 12:15:07 +0900
+Message-ID: <2025110907-aloof-vocally-61bd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x d34caa89a132cd69efc48361d4772251546fdb88
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110906-sneak-fountain-8be2@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110907-aloof-vocally-61bd@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
