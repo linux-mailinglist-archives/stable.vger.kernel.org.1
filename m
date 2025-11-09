@@ -1,221 +1,117 @@
-Return-Path: <stable+bounces-192847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34809C44183
-	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 16:48:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F26C44325
+	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 18:05:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9E0B34E45D8
-	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 15:48:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C7173A41EB
+	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 17:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0992D595A;
-	Sun,  9 Nov 2025 15:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB3F3002D6;
+	Sun,  9 Nov 2025 17:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="m/WDc6+6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cjNWwBi2"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D0F1ACEDE;
-	Sun,  9 Nov 2025 15:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EE7883F
+	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 17:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762703317; cv=none; b=Zjj7kC7/TN+96cPdcbATXMZKfC6lXPZA3kapStSfdgBqZlk+Fe0NsBUwL2stz/8DZ9sP2xdCN/NSlbJJo1KeXD5KfGVecTZfMFsc2iHpEyfuTCzbz78JL+zPyx1HyOXVKJgzZ60d9LmlRLMCoMTkvCVPebRyqL4vdhyPh/UPrqk=
+	t=1762707938; cv=none; b=C20eQvYZlWyP62TLyNPgx4atBS7RWJEuOQUXDUgYnqoQhqwq/wn6PxgPgkrRDaA7ExJsSxUm3N41SH64fxmPwklZCE/C7FES79I6njDHk0tZ0QJ84L/EFeb8ydEBAboZFtE0LYpiqJFpQ0Xo9I4AznA5zvg2A9EtQtNx5i9tuns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762703317; c=relaxed/simple;
-	bh=ofI0MhvTfEk58ryGBbMza+D+MAOY61wnhQ4VuePQ77k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gBc9AI0yjG+QVfhYRSSxIloabuyKEyM9jiZV1Sqt5iy5hLXadyK8EVROVrRLI91QstEznD97ygHGHAuuy+icDhPdgjMyRQmd4vghvwYKrkgzwKg0+SuU2hI6uoMAV7ySCXkXEyE7DA88JU8C5kUqBMb+lfQmKjwNBwZ4xyY1UJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=m/WDc6+6; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 7FC547A018B;
-	Sun,  9 Nov 2025 10:48:34 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Sun, 09 Nov 2025 10:48:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1762703314; x=1762789714; bh=b+2LS7UCVaJe+CkDjanB6mvOORphIKM3fSv
-	R3+Jtl7g=; b=m/WDc6+6Ro7dPcZjTxoWToWtcC6+jCfGm1WCf9pfjxwUwr/FSIW
-	ewwYpj/+b0hfTkrVWKFGDUQ8aBRGxecM6+NQi78orICQUU15IPH88PlejFxUdI3Z
-	JP5VYWWsp5nBsS7PZMQDmslWBdNyKsXjdnmZ9cOfYE0ROTzXOw0mebxoOJbcx2f/
-	sIhS2rGUSiK29B5fj08os3kzX6c0ScV34HZbd6mB5NYiktwJtRfrbb+HlijGg4/D
-	LWv5WRoWIDlLPYLngj+pmmpq94Ve6/GSBQ1IBNLQRsH6yHOcF8KBS+2ObU3P3QPQ
-	9gBd9M+9PAz7y3vXZJRqKnsr/J5Jk++g5ig==
-X-ME-Sender: <xms:0bcQae_e3WGflVVSw6wgF5b1q0udnz4V_7AKQ5buBPLugluMIE6bFQ>
-    <xme:0bcQaUsdGaGvojj7H7zqQuQBP5-bKF8iWwRNsg4-82zPRHj7tKznBrSV5R_D5nV0h
-    q7belR1u3gS9F7wY-gJSb7Cf_Agl83B8uhWdUGS4Qt5FO2EgM0>
-X-ME-Received: <xmr:0bcQae1D58Z-DS5yoeqjt1Q4enrN0_5bJRULSrIEHFJ5qZpWNsbMBj2u>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduleehkedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepkfguohcuufgt
-    hhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepvddufeevkeehueegfedtvdevfefgudeifeduieefgfelkeehgeelgeejjeeggefh
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihguoh
-    hstghhsehiughoshgthhdrohhrghdpnhgspghrtghpthhtohepuddtpdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopehnrghshhhuihhlihgrnhhgsehgmhgrihhlrdgtohhmpd
-    hrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehs
-    thgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvghmse
-    gurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepughsrghhvghrnheskhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohephhhorhhmsheskhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorh
-    hg
-X-ME-Proxy: <xmx:0bcQaZTqbF4U0xtsNyb9PrPJ1IwbYMZCo1HUi7nxocyXI9YgH9SIJw>
-    <xmx:0bcQaSebCzE5oqautVHpqLaRTT2tNMMzqCMXkAkZxdbU9rqV2TmXiA>
-    <xmx:0bcQaaefwouKTn0pshTixXGInNlIUboMHgJj1iNuQ-umZZw2FeHfhQ>
-    <xmx:0bcQac1HkFTIWwqANPmjJoWVL1geH0zMorSL3tc605Bz5VP88GdRKw>
-    <xmx:0rcQafXc5DBJSQeGw6k_b44OBj9tTKc4FQ2KrPDvb50a4o_kWilFK3eY>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 9 Nov 2025 10:48:33 -0500 (EST)
-Date: Sun, 9 Nov 2025 17:48:31 +0200
-From: Ido Schimmel <idosch@idosch.org>
-To: chuang <nashuiliang@gmail.com>
-Cc: Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	Networking <netdev@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] ipv4: route: Prevent rt_bind_exception() from
- rebinding stale fnhe
-Message-ID: <aRC3zxmpOXXDqSX2@shredder>
-References: <CACueBy7yNo4jq4HbiLXn0ez14w8CUTtTpPHmpSB-Ou6jhhNypA@mail.gmail.com>
- <CANn89iL9e9TZoOZ8KG66ea37bo=WztPqRPk8A9i0Ntx2KidYBw@mail.gmail.com>
- <aQtubP3V6tUOaEl5@shredder>
- <CACueBy6LKYmusLjQPnQGCoSZQLEVAo5_X47B-gaH-2dSx6xDuw@mail.gmail.com>
- <CACueBy4EAuBoHDQPVSg_wdUYXYxQzToRx4Y+TSgcBwxEcODt_w@mail.gmail.com>
+	s=arc-20240116; t=1762707938; c=relaxed/simple;
+	bh=AqH3W23jxyu8ISAvGC0IDlGpJ7WUaZjaX4DpbPxK1fc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=svkjqE8SB5mI2LIQACjJjE8MMlOZ+2muZnk4hCZnNNF35sUNyFkWxHQ2WTktPPCFN/Ad+4csdRhBy+ckrZ26JEgiDpWdN9rmuYECqCLBq2LA8UnWUd1g/8HRHx6k2tG54hE+r4vrZS93JJ1XhoMs+4nYUIS0bxDA0Bd8GksYNVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cjNWwBi2; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-343514c781fso346557a91.1
+        for <stable@vger.kernel.org>; Sun, 09 Nov 2025 09:05:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762707937; x=1763312737; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AqH3W23jxyu8ISAvGC0IDlGpJ7WUaZjaX4DpbPxK1fc=;
+        b=cjNWwBi2q4c6P3imEIeF+vyRZdQjBl9k2XY8HE6Z7O/ev6AiKOIJ3QtTRMANFy3kmt
+         79lcVCVl4MfY/W2LBXLsYiomefDztHjcxuOv9to+P29Rk1nhMa0fUC5ykd2qW7k/HbvK
+         oZWEBiJJQLnDYGOXT19BiuWspmC0cKUcxpRXKa6pZ1P7dZejJHaymcIpEq+V/b06YgEo
+         6S2UtRUjroeqEMv7qkZnFl+dqbSXyfG5ScaJ/TjuymR8sRnMGAc92dL5FPu+WK9dFjFe
+         ztF5hm4Y5xE8YUiapm2uhN8/rE8dPGvlKr/VyELDhbYvlSaf7zXWs1fVlLR9dIXC7jg2
+         IRtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762707937; x=1763312737;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AqH3W23jxyu8ISAvGC0IDlGpJ7WUaZjaX4DpbPxK1fc=;
+        b=QyGXI6DwyJM07rFBxiZTgs+pQyoBIau/eURDKNjEc3DHg4zPh1jkzPC2FT+lRlcs3n
+         iFOLGKyVvbJYiIJTwzrhLllkJthYtgyZKz85t7Uf5fbEX45PXK1XCAp1KNYZZjLW0eGn
+         Ld9aDPK8Vl+YdPNPoMqFDPwMCf++/MZYnwkvapNb6hTTewDCYaVjTfMgFAFxLNib33A+
+         DRTCYd89CQ1iu1IWq7GTcObpuAeDdDv0PwSWxvj27m5CSd9XQ/+IwicL1RGTAQnCrXN5
+         x/aYGE9zAEdjzxvTvzhfGDD225hsUyhfhC6oI3/rs3XOeGqj1xvsQm76Iggk2GOHf7Nr
+         VtjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXaVTIgCX0K1/KbrvOTEbQ6DWQZfy9uP0NtP8WSQsh9/NcsGQSb1gO1R4pu+ifBOU0SKwRQbZU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBjhV/AsmlD1yR0b2feQCcBL8RRAGZLIqppo/LXev/YuY3kDfk
+	FjmUaTZzxFzPu8ckukWjAXVDQ51kOjEaO/C68cYaSsdxbxTITPBTZ9LjcSIy1Bv+olZphiXsJ2W
+	9HVDOnu0gDfnBqlPX9e6Z15rYkFDJbMSot4Pc
+X-Gm-Gg: ASbGnctCdXeeyQuzA3BeOTkO/GoecZcrDuSbytuCt3aRUhedqSH5T8M4AYoi58dx/jQ
+	P5qjj9Nlh+7gryNqQ+NcEOSA5K+NS6n8Ydsk6BMZt5qrQKRVszDI3pzNGrM5zaeAeeNGk2xSUf9
+	hMEeaK/ud23LtkRqOXpovCCUvC+Ca5B14FLMZI8gYHajHKZFkKScLZYZ/M5bg5fvTqbvJucN3nf
+	zxjuQwMb4jd+1zgw9cIKKqGMkBPj8uXnASV8udHcqWWhrSJASe3uk8W8lkEenzNPHEkpOEJo6ZF
+	2z8UNKfHMQvN1MDAH4nMoIE0qzth+8qvA8mlwyEnkfzj6dqVMcojnK+RmlFE7Jbd/Le+5e7dtjK
+	5mCxbqEJlyL9ABw==
+X-Google-Smtp-Source: AGHT+IHM/p3iEmXAbDup/KTdxfoL2rrz9hF/9N9A+tH0YWr3W8mlgY9SovApcgmfn3Kl7Ifz3U3yJl5LrcD4uh7QzvY=
+X-Received: by 2002:a17:902:d4cd:b0:295:a1a5:baf6 with SMTP id
+ d9443c01a7336-297e56d674fmr38514655ad.6.1762707936829; Sun, 09 Nov 2025
+ 09:05:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACueBy4EAuBoHDQPVSg_wdUYXYxQzToRx4Y+TSgcBwxEcODt_w@mail.gmail.com>
+References: <2025110816-catalog-residency-716f@gregkh>
+In-Reply-To: <2025110816-catalog-residency-716f@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 9 Nov 2025 18:05:24 +0100
+X-Gm-Features: AWmQ_bnjhkpcTi228qrVNi5uFUuk0-PEVeODZR5iXYzELsgCbQygtlnnR4NS4vw
+Message-ID: <CANiq72m2Rw2tFVH5e0PKo99k6Bn4fn-6N39DnHGsEDvmNhGYMg@mail.gmail.com>
+Subject: Re: FAILED: patch "[PATCH] rust: kbuild: treat `build_error` and
+ `rustdoc` as kernel" failed to apply to 6.12-stable tree
+To: gregkh@linuxfoundation.org
+Cc: ojeda@kernel.org, aliceryhl@google.com, jforbes@fedoraproject.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 07, 2025 at 05:53:51PM +0800, chuang wrote:
-> Thanks for reviewing the patch. I'm providing the detailed analysis
-> and debugging traces below to confirm the root cause and exact
-> location of the reference count leak.
-> 
-> 1. Environment and Symptom
-> 
-> The issue was consistently reproduced when routing TCP traffic through
-> a Software IP Tunnel interface (sit0). The traffic flow  is:
-> 
->   APP -> sit0 (IP tunnel) -> outside
-> 
-> This leads to a reference count leak that prevents the device from
-> being freed during unregistration, resulting in the kernel log
-> warning:
-> 
->   unregister_netdevice: waiting for sit0 to become free. Usage count = N
-> 
-> 2. Enable refcnt_tracer
-> 
-> Live-crash analysis identified a stale dst entry retaining a reference
-> to sit0. With CONFIG_NET_DEV_REFCNT_TRACKER enabled, the allocation
-> stack for the leaked reference was identified:
-> 
-> [1279559.416854] leaked reference.
-> [1279559.416955]  dst_init+0x48/0x100
-> [1279559.416965]  dst_alloc+0x66/0xd0
-> [1279559.416966]  rt_dst_alloc+0x3c/0xd0
-> [1279559.416974]  ip_route_output_key_hash_rcu+0x1d7/0x940
-> [1279559.416978]  ip_route_output_key_hash+0x6d/0xa0
-> [1279559.416979]  ip_route_output_flow+0x1f/0x70
-> [1279559.416980]  __ip_queue_xmit+0x415/0x480
-> [1279559.416984]  ip_queue_xmit+0x15/0x20
-> [1279559.416986]  __tcp_transmit_skb+0xad4/0xc50
-> 
-> 3. Pinpointing the Unmatched dst_hold()
-> 
-> To pinpoint the specific reference not released, we added tracepoints
-> to all dst_hold/put functions and used eBPF to record the full
-> lifecycle. The tracing identified a hold operation with the following
-> call stack:
-> 
-> do_trace_dst_entry_inc+0x45
-> rt_set_nexthop.constprop.0+0x376      /* <<<<<<<<<<<<<<<<<<<< HERE */
-> __mkroute_output+0x2B7
-> ip_route_output_key_hash_rcu+0xBD
-> ip_route_output_key_hash+0x6D
-> ip_route_output_flow+0x1F
-> inet_sk_rebuild_header+0x19C
-> __tcp_retransmit_skb+0x7E
-> tcp_retransmit_skb+0x19
-> tcp_retransmit_timer+0x3DF
-> 
-> The address rt_set_nexthop.constprop.0+0x376 corresponds to the
-> dst_hold() call inside rt_bind_exception().
-> 
-> 4. Root Cause Analysis
-> 
-> The sit driver's packet transmission path calls: sit_tunnel_xmit() ->
-> ... -> update_or_create_fnhe(), which lead to fnhe_remove_oldest()
-> being called to delete entries exceeding the
-> FNHE_RECLAIM_DEPTH+random.
-> 
-> The race window is between fnhe_remove_oldest() selecting fnheX for
-> deletion and the subsequent kfree_rcu(). During this time, the
-> concurrent path's __mkroute_output() -> find_exception() can fetch the
-> soon-to-be-deleted fnheX, and rt_bind_exception() then binds it with a
-> new dst using a dst_hold(). When the original fnheX is freed via RCU,
-> the dst reference remains permanently leaked.
-> 
-> 5. Fix Validation with eBPF
-> 
-> The patch mitigates this by zeroing fnhe_daddr before the
-> RCU-protected deletion steps. This prevents rt_bind_exception() from
-> attempting to reuse the entry.
-> The fix was validated by probing the rt_bind_exception path (which in
-> my environment is optimized to rt_set_nexthop.constprop.0) to catch
-> any zeroed but active FNHEs being processed:
-> 
-> bpftrace -e 'kprobe:rt_set_nexthop.constprop.0
-> {
->     $rt = (struct rtable *)arg0;
->     $fnhe = (struct fib_nh_exception *)arg3;
->     $fi = (struct flowi *)arg4;
-> 
->     /* Check for an FNHE that is marked for deletion (daddr == 0)
->      * but is still visible/valid (fnhe_expires != 0 and not expired).
->      */
->     if ($fi != 0 && $fnhe != 0 && $fnhe->fnhe_daddr == 0 &&
-> $fnhe->fnhe_expires != 0 && $fnhe->fnhe_expires >= jiffies) {
->         printf("rt: %llx, dev: %s, will leak before this patch\n",
-> $rt, $rt->dst.dev->name);
->     }
-> }'
+On Sat, Nov 8, 2025 at 6:24=E2=80=AFAM <gregkh@linuxfoundation.org> wrote:
+>
+> The patch below does not apply to the 6.12-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> To reproduce the conflict and resubmit, you may use the following command=
+s:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
+t/ linux-6.12.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 16c43a56b79e2c3220b043236369a129d508c65a
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110816-=
+catalog-residency-716f@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-Thanks for the details. I was able to reproduce the issue with [1] and I
-can confirm that it does not reproduce with your fix.
+Sasha's sibling resolution looks fine, thanks!
 
-Are you going to submit v2?
-
-[1]
-#!/bin/bash
-
-ip netns add ns1
-ip -n ns1 link set dev lo up
-ip -n ns1 address add 192.0.2.1/32 dev lo
-ip -n ns1 link add name dummy1 up type dummy
-ip -n ns1 route add 192.0.2.2/32 dev dummy1
-ip -n ns1 link add name gretap1 up arp off type gretap local 192.0.2.1 remote 192.0.2.2
-ip -n ns1 route add 198.51.0.0/16 dev gretap1
-taskset -c 0 ip netns exec ns1 mausezahn gretap1 -A 198.51.100.1 -B 198.51.0.0/16 -t udp -p 1000 -c 0 -q &
-taskset -c 2 ip netns exec ns1 mausezahn gretap1 -A 198.51.100.1 -B 198.51.0.0/16 -t udp -p 1000 -c 0 -q &
-sleep 10
-ip netns pids ns1 | xargs kill
-ip netns del ns1
+Cheers,
+Miguel
 
