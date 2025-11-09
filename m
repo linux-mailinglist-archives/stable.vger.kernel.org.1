@@ -1,117 +1,107 @@
-Return-Path: <stable+bounces-192849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F26C44325
-	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 18:05:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40EC1C44355
+	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 18:07:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C7173A41EB
-	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 17:05:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D57533B42DB
+	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 17:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB3F3002D6;
-	Sun,  9 Nov 2025 17:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20C53043AF;
+	Sun,  9 Nov 2025 17:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cjNWwBi2"
+	dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b="PO3jGN4O"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EE7883F
-	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 17:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AE9303A39
+	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 17:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762707938; cv=none; b=C20eQvYZlWyP62TLyNPgx4atBS7RWJEuOQUXDUgYnqoQhqwq/wn6PxgPgkrRDaA7ExJsSxUm3N41SH64fxmPwklZCE/C7FES79I6njDHk0tZ0QJ84L/EFeb8ydEBAboZFtE0LYpiqJFpQ0Xo9I4AznA5zvg2A9EtQtNx5i9tuns=
+	t=1762707977; cv=none; b=MbBL0ENaFYhVmbCVxKmRpsMEYNbPzptIREXW3f0tM/ZXrTJCveBVled9A8hMymDDTC06ZKJRJQkODyueliEahEdFouA4JjcABQNBEDF0giuLN1nKYFcFBv8DQ2QVfTwEPaw5yg9uY1+LKFbCJlTA8RAoiBICImaRLf/510QbEd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762707938; c=relaxed/simple;
-	bh=AqH3W23jxyu8ISAvGC0IDlGpJ7WUaZjaX4DpbPxK1fc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=svkjqE8SB5mI2LIQACjJjE8MMlOZ+2muZnk4hCZnNNF35sUNyFkWxHQ2WTktPPCFN/Ad+4csdRhBy+ckrZ26JEgiDpWdN9rmuYECqCLBq2LA8UnWUd1g/8HRHx6k2tG54hE+r4vrZS93JJ1XhoMs+4nYUIS0bxDA0Bd8GksYNVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cjNWwBi2; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-343514c781fso346557a91.1
-        for <stable@vger.kernel.org>; Sun, 09 Nov 2025 09:05:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762707937; x=1763312737; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AqH3W23jxyu8ISAvGC0IDlGpJ7WUaZjaX4DpbPxK1fc=;
-        b=cjNWwBi2q4c6P3imEIeF+vyRZdQjBl9k2XY8HE6Z7O/ev6AiKOIJ3QtTRMANFy3kmt
-         79lcVCVl4MfY/W2LBXLsYiomefDztHjcxuOv9to+P29Rk1nhMa0fUC5ykd2qW7k/HbvK
-         oZWEBiJJQLnDYGOXT19BiuWspmC0cKUcxpRXKa6pZ1P7dZejJHaymcIpEq+V/b06YgEo
-         6S2UtRUjroeqEMv7qkZnFl+dqbSXyfG5ScaJ/TjuymR8sRnMGAc92dL5FPu+WK9dFjFe
-         ztF5hm4Y5xE8YUiapm2uhN8/rE8dPGvlKr/VyELDhbYvlSaf7zXWs1fVlLR9dIXC7jg2
-         IRtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762707937; x=1763312737;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AqH3W23jxyu8ISAvGC0IDlGpJ7WUaZjaX4DpbPxK1fc=;
-        b=QyGXI6DwyJM07rFBxiZTgs+pQyoBIau/eURDKNjEc3DHg4zPh1jkzPC2FT+lRlcs3n
-         iFOLGKyVvbJYiIJTwzrhLllkJthYtgyZKz85t7Uf5fbEX45PXK1XCAp1KNYZZjLW0eGn
-         Ld9aDPK8Vl+YdPNPoMqFDPwMCf++/MZYnwkvapNb6hTTewDCYaVjTfMgFAFxLNib33A+
-         DRTCYd89CQ1iu1IWq7GTcObpuAeDdDv0PwSWxvj27m5CSd9XQ/+IwicL1RGTAQnCrXN5
-         x/aYGE9zAEdjzxvTvzhfGDD225hsUyhfhC6oI3/rs3XOeGqj1xvsQm76Iggk2GOHf7Nr
-         VtjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXaVTIgCX0K1/KbrvOTEbQ6DWQZfy9uP0NtP8WSQsh9/NcsGQSb1gO1R4pu+ifBOU0SKwRQbZU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBjhV/AsmlD1yR0b2feQCcBL8RRAGZLIqppo/LXev/YuY3kDfk
-	FjmUaTZzxFzPu8ckukWjAXVDQ51kOjEaO/C68cYaSsdxbxTITPBTZ9LjcSIy1Bv+olZphiXsJ2W
-	9HVDOnu0gDfnBqlPX9e6Z15rYkFDJbMSot4Pc
-X-Gm-Gg: ASbGnctCdXeeyQuzA3BeOTkO/GoecZcrDuSbytuCt3aRUhedqSH5T8M4AYoi58dx/jQ
-	P5qjj9Nlh+7gryNqQ+NcEOSA5K+NS6n8Ydsk6BMZt5qrQKRVszDI3pzNGrM5zaeAeeNGk2xSUf9
-	hMEeaK/ud23LtkRqOXpovCCUvC+Ca5B14FLMZI8gYHajHKZFkKScLZYZ/M5bg5fvTqbvJucN3nf
-	zxjuQwMb4jd+1zgw9cIKKqGMkBPj8uXnASV8udHcqWWhrSJASe3uk8W8lkEenzNPHEkpOEJo6ZF
-	2z8UNKfHMQvN1MDAH4nMoIE0qzth+8qvA8mlwyEnkfzj6dqVMcojnK+RmlFE7Jbd/Le+5e7dtjK
-	5mCxbqEJlyL9ABw==
-X-Google-Smtp-Source: AGHT+IHM/p3iEmXAbDup/KTdxfoL2rrz9hF/9N9A+tH0YWr3W8mlgY9SovApcgmfn3Kl7Ifz3U3yJl5LrcD4uh7QzvY=
-X-Received: by 2002:a17:902:d4cd:b0:295:a1a5:baf6 with SMTP id
- d9443c01a7336-297e56d674fmr38514655ad.6.1762707936829; Sun, 09 Nov 2025
- 09:05:36 -0800 (PST)
+	s=arc-20240116; t=1762707977; c=relaxed/simple;
+	bh=hixGnyCiJkbLF2rf11XmLlhnL534vXHietAHClgNN5E=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kPsNA1kA23Lh7Gz5Ch3PVhY0Y2IQtqbJdKcReSC72MjioM41cfW2wjYvzCbHI6bnW2uBezfwGZEAg7x+aLlW7x23yAhhTmY7r0Fr/Bsva4H41vqQeQhrXVTSeuiBJnRSsUIJbLpBrX+b/KaJFjXBRjKa5TyloGly38AZq1WJXLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com; spf=pass smtp.mailfrom=cknow-tech.com; dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b=PO3jGN4O; arc=none smtp.client-ip=91.218.175.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow-tech.com
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow-tech.com;
+	s=key1; t=1762707963;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZGL6vN01C4fpVYtMS2FjDXAheoK7OIOq3/QZwzVz6I0=;
+	b=PO3jGN4Ozros9j3l2U07INj40Af2D4ml7LcHGzWPa7uIZ8xTXXkGjohxb2akm+VFyvrJKV
+	T9FM5+PSPHXFV2snPZ8DPCTCxbpj55UVzS2v90khbSFokWOK4+ObTg7FeKrcGQeFYmby3p
+	aVxoCpzYuQAZjF0wJZVsvbVlx75VKbbB7ulLGPJZNFuxcWcAJlZ7YDbs2hcmRkoac4nZEC
+	LWLIDcz6YaoPzzWqmjIN2JYid3HIvORz9/GrZmJT7W02h0BCL3QLHLF/PdqR7PO9I3v8G3
+	NvKb6mON2bwIVt/gwqYsERVbsNhLVnbcxB1O7AgglQC/tuv4Vg74yhHOVmXe7A==
+From: Diederik de Haas <diederik@cknow-tech.com>
+Subject: [PATCH 0/2] Fixes for PineNote DT validation issues
+Date: Sun, 09 Nov 2025 18:05:25 +0100
+Message-Id: <20251109-rk3566-pinenote-dt-fixes-upstream-v1-0-ed38d200cc04@cknow-tech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2025110816-catalog-residency-716f@gregkh>
-In-Reply-To: <2025110816-catalog-residency-716f@gregkh>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 9 Nov 2025 18:05:24 +0100
-X-Gm-Features: AWmQ_bnjhkpcTi228qrVNi5uFUuk0-PEVeODZR5iXYzELsgCbQygtlnnR4NS4vw
-Message-ID: <CANiq72m2Rw2tFVH5e0PKo99k6Bn4fn-6N39DnHGsEDvmNhGYMg@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] rust: kbuild: treat `build_error` and
- `rustdoc` as kernel" failed to apply to 6.12-stable tree
-To: gregkh@linuxfoundation.org
-Cc: ojeda@kernel.org, aliceryhl@google.com, jforbes@fedoraproject.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANXJEGkC/x3MQQrCMBBG4auUWTvQJG1BryIuov2jg5iGmVSE0
+ rs3uPzg8TYyqMDo0m2k+IrJkhvcqaPHK+YnWOZm8r0fnevPrO8wThMXychLBc+Vk/xgvBarivh
+ hl+7BI6UhIFL7FMW/aJvrbd8PUHkyX3MAAAA=
+X-Change-ID: 20251109-rk3566-pinenote-dt-fixes-upstream-1fb32eff43ea
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+ Samuel Holland <samuel@sholland.org>
+Cc: hrdl <git@hrdl.eu>, phantomas <phantomas@phantomas.xyz>, 
+ Dragan Simic <dsimic@manjaro.org>, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Diederik de Haas <diederik@cknow-tech.com>, 
+ stable@vger.kernel.org
+X-Migadu-Flow: FLOW_OUT
 
-On Sat, Nov 8, 2025 at 6:24=E2=80=AFAM <gregkh@linuxfoundation.org> wrote:
->
-> The patch below does not apply to the 6.12-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
->
-> To reproduce the conflict and resubmit, you may use the following command=
-s:
->
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
-t/ linux-6.12.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 16c43a56b79e2c3220b043236369a129d508c65a
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110816-=
-catalog-residency-716f@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+These patches fix the following DeviceTree validation issues on the
+PineNote dtb files:
 
-Sasha's sibling resolution looks fine, thanks!
+    Warning (graph_child_address): /i2c@fe5c0000/tcpc@60/connector/ports:
+      graph node has single child node 'port@0', #address-cells/#size-cells
+      are not necessary
+
+    usb2phy@fe8a0000 (rockchip,rk3568-usb2phy): otg-port: 'port' does not
+      match any of the regexes: '^pinctrl-[0-9]+$'
+
+And with these 2 fixes, there are no more DT validation issues :-)
+
+The fix for the 2nd issue also fix these kernel errors:
+
+  rockchip-usb2phy fe8a0000.usb2phy: Failed to create device link (0x180) with supplier port0 for /usb2phy@fe8a0000/otg-port
+  rockchip-usb2phy fe8a0000.usb2phy: Failed to create device link (0x180) with supplier 3-0060 for /usb2phy@fe8a0000/otg-port
 
 Cheers,
-Miguel
+  Diederik
+
+Signed-off-by: Diederik de Haas <diederik@cknow-tech.com>
+---
+Diederik de Haas (2):
+      arm64: dts: rockchip: Simplify usb-c-connector port on rk3566-pinenote
+      arm64: dts: rockchip: Move otg-port to controller on rk3566-pinenote
+
+ arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi | 27 +++++++++--------------
+ 1 file changed, 10 insertions(+), 17 deletions(-)
+---
+base-commit: 6146a0f1dfae5d37442a9ddcba012add260bceb0
+change-id: 20251109-rk3566-pinenote-dt-fixes-upstream-1fb32eff43ea
+
+Best regards,
+-- 
+Diederik de Haas <diederik@cknow-tech.com>
+
 
