@@ -1,212 +1,114 @@
-Return-Path: <stable+bounces-192824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72524C43832
-	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 04:27:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1ED2C43908
+	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 07:08:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C5761889EBC
-	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 03:27:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6DAEA4E2E2C
+	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 06:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B1F1E32A2;
-	Sun,  9 Nov 2025 03:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tS/1IE4e"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE2223CEF9;
+	Sun,  9 Nov 2025 06:08:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4DE1A0BD6
-	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 03:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273DB1494C3;
+	Sun,  9 Nov 2025 06:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762658819; cv=none; b=UA55i82Q+hNXzytJLL++2vurgEgWTUe/sdL7gxRM+bAs9q14b1FJItQ16A2zCXC+YR+AmfnurP6RjMq6HN+JgJVQUfY8FukpVXgrBJnh2uCyOMqmIafGS5tQJ6GH9HhdI8eDocMnRVhs0yfbKIxrd2y92tiYmPtxXvwtX+0BzPI=
+	t=1762668521; cv=none; b=d1FvJoPVw/22ST2jMHPOvgUjZkxrqrkcQYa5H9bwAyPSJgd17B4pneUG4WLyFwBfAS7RKk9Xh5g1TPqXCSJMbv9/mE+Sbt5cYpeDTJXpCRHx/pGYiy0NhXfvVMnVwNOAyEcVCD5oEC2v3nxyv8TuZ8sEW9Hw8sJXLkHWXkB1pbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762658819; c=relaxed/simple;
-	bh=Okjr7CtmSVwY1X5z67mGWonDK7W4ofg0/aRuSpgAxRs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VpSA/JRG6S0dS9NxWcWRRoVPgTvVW9m/vSug+Nl1v7LAXum3Z0kaxbjToZX/oJCyriZAOhrX/LQPOY1op3mDUCEQR9uPbryrXLQwiTof1eguttmCn4AR2WTBZ+DxE6MBeQHOStZjm3qw60KmNBzhdtQjauqo0DvHu8W62r1MBYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tS/1IE4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5ED1C16AAE;
-	Sun,  9 Nov 2025 03:26:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762658818;
-	bh=Okjr7CtmSVwY1X5z67mGWonDK7W4ofg0/aRuSpgAxRs=;
-	h=Subject:To:Cc:From:Date:From;
-	b=tS/1IE4e1IDqZXJ+Ub1tjL2hvspBGLf0jK2ZECTh28Z6711obwfi0LgQYEDKnzB44
-	 Tnhg/w4uIkmP8yG86d5FCRlJ2qS02BEtmjsSVvPvy06MWsQC2LvDY//ShleqqzSBO+
-	 aDWerDxigbzOtkcrHXtn+2R8foMMj/98LaJda3tc=
-Subject: FAILED: patch "[PATCH] wifi: mac80211: use wiphy_hrtimer_work for csa.switch_work" failed to apply to 6.12-stable tree
-To: benjamin.berg@intel.com,johannes.berg@intel.com,miriam.rachel.korenblit@intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 09 Nov 2025 12:26:56 +0900
-Message-ID: <2025110956-smile-parade-ac75@gregkh>
+	s=arc-20240116; t=1762668521; c=relaxed/simple;
+	bh=JzGe8gBqJqRG3DdvZham7oPo7ql6kFZuuuNn+lKnDPU=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=S5tyrZiKaDX1xGL3c8RsEds7bcQbAFvUuhVLfm5zRIQEsSgxRfDUE0kFPVXvrwFOqlH41S0YyURHM8JREXtDaxen3j//y3uQVNSpmPUgu++Q+OdSm69144psijO84Pz7xpcGujoQZrKnazKjP9Rt1K0eTJULmKYNBEGbqva8LvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-01 (Coremail) with SMTP id qwCowAD3jMzTLxBpN0cSAA--.2587S2;
+	Sun, 09 Nov 2025 14:08:30 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: alexandre.belloni@bootlin.com
+Cc: linux-rtc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] rtc: Fix error handling in devm_rtc_allocate_device
+Date: Sun,  9 Nov 2025 14:08:17 +0800
+Message-Id: <20251109060817.5620-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:qwCowAD3jMzTLxBpN0cSAA--.2587S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WFyxAF13Gr47GF1Utw18Krg_yoW8GFW7pF
+	4fCa90krWUJr48Gw17u3WkuFyYgw4SkayfGF1xGwna9F93ZFyqyryxtryIqw18JFWkGay3
+	XFy7Ga1rCF18C3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9C14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
+	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
+	x2IErcIFxwCY1x0262kKe7AKxVWUAVWUtwCY02Avz4vE14v_GF1l42xK82IYc2Ij64vIr4
+	1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
+	67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
+	8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAv
+	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14
+	v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUOo7_UUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
 
+In rtc_allocate_device(), device_initialize() sets the reference count
+to 1. In rtc_allocate_device(), when devm_add_action_or_reset() or
+dev_set_name() fails after successful device initialization via
+device_initialize(), rtc_allocate_device() returns an error without
+properly calling put_device() and releasing the reference count.
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Add proper error handling that calls put_device() in all error paths
+after device_initialize(), ensuring proper resource cleanup.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Found by code review.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x fbc1cc6973099f45e4c30b86f12b4435c7cb7d24
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110956-smile-parade-ac75@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+Cc: stable@vger.kernel.org
+Fixes: 3068a254d551 ("rtc: introduce new registration method")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/rtc/class.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From fbc1cc6973099f45e4c30b86f12b4435c7cb7d24 Mon Sep 17 00:00:00 2001
-From: Benjamin Berg <benjamin.berg@intel.com>
-Date: Tue, 28 Oct 2025 12:58:40 +0200
-Subject: [PATCH] wifi: mac80211: use wiphy_hrtimer_work for csa.switch_work
-
-The work item may be scheduled relatively far in the future. As the
-event happens at a specific point in time, the normal timer accuracy is
-not sufficient in that case.
-
-Switch to use wiphy_hrtimer_work so that the accuracy is sufficient. To
-make this work, use the same clock to store the timestamp.
-
-CC: stable@vger.kernel.org
-Fixes: ec3252bff7b6 ("wifi: mac80211: use wiphy work for channel switch")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20251028125710.68258c7e4ac4.I4ff2b2cdffbbf858bf5f08baccc7a88c4f9efe6f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 57065714cf8c..7f8799fd673e 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -1290,7 +1290,7 @@ ieee80211_link_chanctx_reservation_complete(struct ieee80211_link_data *link)
- 				 &link->csa.finalize_work);
- 		break;
- 	case NL80211_IFTYPE_STATION:
--		wiphy_delayed_work_queue(sdata->local->hw.wiphy,
-+		wiphy_hrtimer_work_queue(sdata->local->hw.wiphy,
- 					 &link->u.mgd.csa.switch_work, 0);
- 		break;
- 	case NL80211_IFTYPE_UNSPECIFIED:
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index eb38049b2252..878c3b14aeb8 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1017,10 +1017,10 @@ struct ieee80211_link_data_managed {
- 	bool operating_11g_mode;
+diff --git a/drivers/rtc/class.c b/drivers/rtc/class.c
+index b1a2be1f9e3b..db5f33a22b14 100644
+--- a/drivers/rtc/class.c
++++ b/drivers/rtc/class.c
+@@ -379,13 +379,17 @@ struct rtc_device *devm_rtc_allocate_device(struct device *dev)
+ 	rtc->dev.parent = dev;
+ 	err = devm_add_action_or_reset(dev, devm_rtc_release_device, rtc);
+ 	if (err)
+-		return ERR_PTR(err);
++		goto err_put_device;
  
- 	struct {
--		struct wiphy_delayed_work switch_work;
-+		struct wiphy_hrtimer_work switch_work;
- 		struct cfg80211_chan_def ap_chandef;
- 		struct ieee80211_parsed_tpe tpe;
--		unsigned long time;
-+		ktime_t time;
- 		bool waiting_bcn;
- 		bool ignored_same_chan;
- 		bool blocked_tx;
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index d71eabe5abf8..4a19b765ccb6 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -472,10 +472,10 @@ static int _ieee80211_set_active_links(struct ieee80211_sub_if_data *sdata,
- 		 * from there.
- 		 */
- 		if (link->conf->csa_active)
--			wiphy_delayed_work_queue(local->hw.wiphy,
-+			wiphy_hrtimer_work_queue(local->hw.wiphy,
- 						 &link->u.mgd.csa.switch_work,
- 						 link->u.mgd.csa.time -
--						 jiffies);
-+						 ktime_get_boottime());
- 	}
+ 	err = dev_set_name(&rtc->dev, "rtc%d", id);
+ 	if (err)
+-		return ERR_PTR(err);
++		goto err_put_device;
  
- 	for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index f95bcf84ecc2..f3138d158535 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -2594,7 +2594,7 @@ void ieee80211_chswitch_done(struct ieee80211_vif *vif, bool success,
- 			return;
- 		}
- 
--		wiphy_delayed_work_queue(sdata->local->hw.wiphy,
-+		wiphy_hrtimer_work_queue(sdata->local->hw.wiphy,
- 					 &link->u.mgd.csa.switch_work, 0);
- 	}
- 
-@@ -2753,7 +2753,8 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
- 		.timestamp = timestamp,
- 		.device_timestamp = device_timestamp,
- 	};
--	unsigned long now;
-+	u32 csa_time_tu;
-+	ktime_t now;
- 	int res;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
-@@ -2983,10 +2984,9 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
- 					  csa_ie.mode);
- 
- 	/* we may have to handle timeout for deactivated link in software */
--	now = jiffies;
--	link->u.mgd.csa.time = now +
--			       TU_TO_JIFFIES((max_t(int, csa_ie.count, 1) - 1) *
--					     link->conf->beacon_int);
-+	now = ktime_get_boottime();
-+	csa_time_tu = (max_t(int, csa_ie.count, 1) - 1) * link->conf->beacon_int;
-+	link->u.mgd.csa.time = now + us_to_ktime(ieee80211_tu_to_usec(csa_time_tu));
- 
- 	if (ieee80211_vif_link_active(&sdata->vif, link->link_id) &&
- 	    local->ops->channel_switch) {
-@@ -3001,7 +3001,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
- 	}
- 
- 	/* channel switch handled in software */
--	wiphy_delayed_work_queue(local->hw.wiphy,
-+	wiphy_hrtimer_work_queue(local->hw.wiphy,
- 				 &link->u.mgd.csa.switch_work,
- 				 link->u.mgd.csa.time - now);
- 	return;
-@@ -8849,7 +8849,7 @@ void ieee80211_mgd_setup_link(struct ieee80211_link_data *link)
- 	else
- 		link->u.mgd.req_smps = IEEE80211_SMPS_OFF;
- 
--	wiphy_delayed_work_init(&link->u.mgd.csa.switch_work,
-+	wiphy_hrtimer_work_init(&link->u.mgd.csa.switch_work,
- 				ieee80211_csa_switch_work);
- 
- 	ieee80211_clear_tpe(&link->conf->tpe);
-@@ -10064,7 +10064,7 @@ void ieee80211_mgd_stop_link(struct ieee80211_link_data *link)
- 			  &link->u.mgd.request_smps_work);
- 	wiphy_work_cancel(link->sdata->local->hw.wiphy,
- 			  &link->u.mgd.recalc_smps);
--	wiphy_delayed_work_cancel(link->sdata->local->hw.wiphy,
-+	wiphy_hrtimer_work_cancel(link->sdata->local->hw.wiphy,
- 				  &link->u.mgd.csa.switch_work);
+ 	return rtc;
++
++err_put_device:
++	put_device(&rtc->dev);
++	return ERR_PTR(err);
  }
+ EXPORT_SYMBOL_GPL(devm_rtc_allocate_device);
  
+-- 
+2.17.1
 
 
