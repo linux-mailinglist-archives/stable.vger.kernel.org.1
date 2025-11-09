@@ -1,137 +1,230 @@
-Return-Path: <stable+bounces-192827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20ADC4392D
-	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 07:24:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D78EDC439BC
+	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 08:12:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 176494E3F0B
-	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 06:24:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD53B4E495F
+	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 07:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D172459EA;
-	Sun,  9 Nov 2025 06:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA2926E16A;
+	Sun,  9 Nov 2025 07:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="n+JdvuwS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dQQWJMin";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="OtwONP0E"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB3423DEB6;
-	Sun,  9 Nov 2025 06:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F92F23D7E3
+	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 07:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762669439; cv=none; b=EAPmh6OVxSXuJRKcZst4iGTJclfx9XVwDqP7IjuEtLZp0mQe5nrOlRpIfZuq0gqZE8LPtOzlud55BElmvzPSOEAgv+kpY5xnF9xqUAQA4Yd6CLmGMfn0i4dW7CVV4Schg0c6LnOn8FRrQ9fDBL2v4d6GCmbMCjxbzQ9GiHG2r28=
+	t=1762672357; cv=none; b=EYcIEuqkQBvEHXqGAzEpbfujbHH1a9mCE+AuiXjKr7TxZ4WsrfdsBPjVC86cwil/5J7d0uwwdX47GgjMGYPN40nJVbhUzCBCoRqw4oxiiT8v4/hbD8dKNUWcaxT88pLde/4NjcQdjNDyz+UdjIfzQiPdaFXCDXhz360CkVbr71s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762669439; c=relaxed/simple;
-	bh=ZA3WOin+Ic+7yNFAqgJtH9uboaaS+mRnwgM13YBtU+U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=p750oII+FNAh8buyL56PeKdyLeXnqADPkD31L2XScgq+fgPsDYXtSx7Z3V//TuGlhadR6+V9my4oxQ0KLtuzdix0Mi7hAYIkz2JjFeYlkk0SOVVeDjgM9jNCcvqrFBh9T5WfLH0qBl7PB1K4EaRO2S1xIXzwuo8i8k4RsFngqDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=n+JdvuwS; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A93gDiT3405494;
-	Sun, 9 Nov 2025 06:23:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	1PFVwLU+PwPAcQxv50gU88qqYYM5kLsABu7HUle+scw=; b=n+JdvuwSnzYBzIy9
-	VWbqtbmo+14euFGwTxiNqwqyHtLShTqIzFSVrLsv//BpbrQ7Q4TQNJiPN+msDFsf
-	29BuLOhb6pWqTf1BpSmxhccv5lmOjxBXQvoWqla/rkvP1jEGeHFXgG1etnTTrLpl
-	7snyBBBExCJdWZn72jEH5ZQu7BgraxYSZCJLZSPqD8ks5p3faa/cYvPRimliLONj
-	u6sv9/0Lq88zieCqS+uZ+ePP0E50AcYcHHotlqyGoaIE8d4+8zQ+ubajhPZnB69k
-	eiAX7P7sX/wifepYxehHjPQtt7zhJjCHNxL/dj7Qm+on8cAScHwiKChRU2nbJ3ow
-	mQPcGw==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a9y1h1qce-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 09 Nov 2025 06:23:49 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5A96NmgR001804
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 9 Nov 2025 06:23:48 GMT
-Received: from [10.253.12.191] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.24; Sat, 8 Nov
- 2025 22:23:47 -0800
-Message-ID: <41684170-b9d2-4fdb-8c7a-ecb0bc9a79b9@quicinc.com>
-Date: Sun, 9 Nov 2025 14:23:44 +0800
+	s=arc-20240116; t=1762672357; c=relaxed/simple;
+	bh=AdHoQjrbJVFhbXbn4e53hG++/4NMIHDDh8uAXYDruqQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C05p4mMsAjLDZkhHu8hFSLZX6+7UASZsL7qFroBums5SueNNtWeorqRjaCSyL8umkrl0fd1XAg7RY93UEtlb58Nj2Y4z4g5BCOmFtfFClx5oaW4E8r9Y1nyhLZpwUxgb9Kdop7pm9I8jMIuHSjGZVhuy4xIbJ4W3yeijuVasq0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dQQWJMin; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=OtwONP0E; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762672354;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m82cK3xRCUvbcWhZbxs+7WqSqZtr7xd6qiGXFqz/RDg=;
+	b=dQQWJMin8BoFu9Iz8/O4zl1ZszWz+I8apNdzENFNDj7qX5t0VHWqOPQ8pP0HxUa+joPUug
+	vx0Lg8RDN77MNIGfeJZY+iL1duaYfkXlLrJWNftgEOs7Iu4jT1P79gWspBRDMNuLWqulsW
+	4dTC9pSVlen1tERg2zYRJt2907IPrZc=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-122-wCUKhJ7QOxGeSAmneGuotg-1; Sun, 09 Nov 2025 02:12:32 -0500
+X-MC-Unique: wCUKhJ7QOxGeSAmneGuotg-1
+X-Mimecast-MFC-AGG-ID: wCUKhJ7QOxGeSAmneGuotg_1762672352
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-29806c42760so8042505ad.2
+        for <stable@vger.kernel.org>; Sat, 08 Nov 2025 23:12:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1762672351; x=1763277151; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m82cK3xRCUvbcWhZbxs+7WqSqZtr7xd6qiGXFqz/RDg=;
+        b=OtwONP0Es+55TGk0aJEIkjpgaQ/DMVMlWXLwLBMHJfTv3apandFkzEAcqym3Ui8Jos
+         NhrbT3w6CQ1ZBJs6gOzqNg9cyq7uQEaNc9isTC0tqemkCAYQQGMP+wolasoYWQ+ZQsfM
+         qOrDV3+0dL83+BLPCYjt12n6ZuV4I/4pha0BivSod32mgJ7FCbyMZMsctnyUd64e+hUb
+         sAI/DtmU6AC8WlKMcJkmG/mXbjDYYObyNAe41/g3rP0ih61iJI5mNHYqnPh0yiYZ12lV
+         /52VqGq1+lrIdr9nuirgNrSPo5R+ND3/kMqqxPITYEtaMITjrX0TYqc3UF/kBH4Sc2BK
+         ZJZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762672351; x=1763277151;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=m82cK3xRCUvbcWhZbxs+7WqSqZtr7xd6qiGXFqz/RDg=;
+        b=M0pS2WRUuWhqC+bdBvqE6eCwqTCIDEaJMBsAFlNQvDvemCclIBJ17jrc+6cZyj9pgn
+         4VKPGKTQ18F0tBNUxs1FoLgSroiUOvBGt/8shW1UFsMn9I4fiwomOY+FqfZJBDp1gq99
+         2/P7pOfqc9W+jtQYDSH/JGebDMdDO/yp7QIbv4Q4GnBFj7y7ILuEW1sV0XKcwOflp0jB
+         0ijKPYLXwNPaxG6ZuCU7Ig6aAp1A9mHhKe5UzeI5CHwMwZu/ns28CoqDgWGn/R/2W0gz
+         +O1/QaTiJyQYvrN5M0d9TCCGW8MnK42JeRSAAlM0q/oS0Ys3cDUBFugDfwFtNpayfIRD
+         I2ZA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+03zbQx7PQEOd4Ojw+2TtG5y80QxByEZ9dsvbTdXc0JwxJDAylJciGlQXAMbd+sygLWnyIOw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsT8Nm54Cf4PL3DodQzhpvLgdusgEtpI6QyZTOPP/NHbf4P7d0
+	UWLwo/gDqd2BIlNsMi5147D8aXFCannHqbn96ADh1SUXYH4nJ+9ITTDYX6kll7cW4+WrZKm5KlR
+	AnTxa81y26nDFJyZAJNNBIItIGsjf+N/6QJCA2qufqyJmJk9sZCJpKb4YgCfhdUNXgSN069XI5W
+	D0ym0ji4AvW8lduShQEnNSWifqoLJYdaXP
+X-Gm-Gg: ASbGncvmRe1ir6eruvo093V7jjoEUixNvBw+8/Yzy+DyF5i+/fF9PcQkV3ZQNUJ6jvL
+	IgUyWKzIWdVC4F+wxEU37kEO2MaIKxYrxpQJE6BhHDW79oAoB/xz22GCvi5hfYPCMn3yf5cLCnP
+	ETzvVZw5koVn6Nh5UPDQ7kEPOcUSDVeKY/D1xbHcj4g+imvs0elJCvSXep24BGZcUdvuLOtGIll
+	8OndtrqdHsIUSMy2ZO+Yj993Lgv8QbNNh+nAwQtc7F/nOPJVgwxGRlsLY6u
+X-Received: by 2002:a17:902:e78f:b0:295:68df:da34 with SMTP id d9443c01a7336-297e5718086mr51623605ad.53.1762672351603;
+        Sat, 08 Nov 2025 23:12:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGmxSGLvw4pgRZ8aTw3qCykYC8xSzISK8rwIn1R2Gkp0ELn8flQDD1U9o+r1UzqIM5FPkf2ioy3/4F0I7hTmD4=
+X-Received: by 2002:a17:902:e78f:b0:295:68df:da34 with SMTP id
+ d9443c01a7336-297e5718086mr51623375ad.53.1762672351274; Sat, 08 Nov 2025
+ 23:12:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] Bluetooth: btusb: add new custom firmwares
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        kernel test robot
-	<lkp@intel.com>
-CC: <stable@vger.kernel.org>, <oe-kbuild-all@lists.linux.dev>
-References: <20251107125405.1632663-2-quic_shuaz@quicinc.com>
- <aQ3sbHDGL4DQAE8J@4b976af397a4>
- <66bjkpos6ul2gnh4ezmtidjguv3qx6bedhlihbg4vtdkmnvsrb@jmojegj6ijf3>
-Content-Language: en-US
-From: Shuai Zhang <quic_shuaz@quicinc.com>
-In-Reply-To: <66bjkpos6ul2gnh4ezmtidjguv3qx6bedhlihbg4vtdkmnvsrb@jmojegj6ijf3>
+References: <20251108120559.1201561-1-maz@kernel.org>
+In-Reply-To: <20251108120559.1201561-1-maz@kernel.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Sun, 9 Nov 2025 08:12:17 +0100
+X-Gm-Features: AWmQ_bkaJ1JaU0aGn42MK0o7nRRGD7HuTETuGXjvrbkmq0cZ5a-Jnj8bQX-Px3w
+Message-ID: <CABgObfa2ShbRn-MctT7-y4joG85AgtjgKXM=OJA9_2FbDZ6XPQ@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM/arm64 fixes for 6.18, take #2
+To: Marc Zyngier <maz@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Maximilian Dittgen <mdittgen@amazon.de>, 
+	Oliver Upton <oupton@kernel.org>, Peter Maydell <peter.maydell@linaro.org>, 
+	Sascha Bischoff <sascha.bischoff@arm.com>, Sebastian Ene <sebastianene@google.com>, 
+	Sebastian Ott <sebott@redhat.com>, stable@vger.kernel.org, 
+	Vincent Donnefort <vdonnefort@google.com>, Will Deacon <will@kernel.org>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: mxsL80OHJqHLWoWJf0l8X0a_7F_BKh9d
-X-Proofpoint-GUID: mxsL80OHJqHLWoWJf0l8X0a_7F_BKh9d
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA5MDA1MiBTYWx0ZWRfX5TloFg+eEeSJ
- qed81VuMW33mzRtS15RtCNv/xmIqn9k89ZR8Z0AQaAbNlIlYd6nZzg7vBvtZxsDmn6zn1FCxDV/
- N6Cf3GVg09cKzlYeaYpwMoFEYn4R6thgPlP6zRurI8ZswLhGHoGqkcUa8OUFrPI7a8jzyQ3nDF/
- CML1Or9fuPSDF9SuV60AAjmU/kc7wngZ6cLEsvrlv4TZr1JiPa/yfszAvC6sBwjSR0Dv2nR/HJZ
- dy9R4ANa80QdQ0Lm0wzzTWcEpQn/2Ocz1Cx3MIcvwLHBr61qfPWvC+xlUJtvJIBcRlKrJswDhMQ
- DsLf1WUIbqf/+HCd1bdzm/x4xGoJwNkm0RSuCglh8AfbkntQsKl+fL/7cZyWmROP3Kt+uA82+AN
- 5vUQ4xS0jioF5uwZFob/KSIyoEz7Ew==
-X-Authority-Analysis: v=2.4 cv=Xuj3+FF9 c=1 sm=1 tr=0 ts=69103375 cx=c_pps
- a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
- a=Up1s5pyZt900Hf9bEyoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=1R1Xb7_w0-cA:10 a=OREKyDgYLcYA:10 a=TjNXssC_j7lpFel5tvFf:22
- a=HhbK4dLum7pmb74im6QT:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-09_03,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 suspectscore=0 spamscore=0 phishscore=0
- malwarescore=0 clxscore=1011 impostorscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2511090052
+Content-Transfer-Encoding: quoted-printable
 
-Hi Dmitry 
+On Sat, Nov 8, 2025 at 1:06=E2=80=AFPM Marc Zyngier <maz@kernel.org> wrote:
+>
+> Paolo,
+>
+> Much later than expected, but here's the second set of fixes KVM/arm64
+> for 6.18. The core changes are mostly fixes for a bunch of recent
+> regressions, plus a couple that address the way pKVM deals with
+> untrusted data. The rest address a couple of selftests, and Oliver's
+> new email address.
 
-On 11/7/2025 10:14 PM, Dmitry Baryshkov wrote:
-> On Fri, Nov 07, 2025 at 08:56:12PM +0800, kernel test robot wrote:
->> Hi,
->>
->> Thanks for your patch.
->>
->> FYI: kernel test robot notices the stable kernel rule is not satisfied.
->>
->> The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
->>
->> Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
->> Subject: [PATCH v2 1/1] Bluetooth: btusb: add new custom firmwares
->> Link: https://lore.kernel.org/stable/20251107125405.1632663-2-quic_shuaz%40quicinc.com
-> 
-> Shuai, why are you sending a patch which is not a fix for inclusion into
-> the stable tree? Why do you cc:stable in your headers? Do you understand
-> what stable kernels are for?
-> 
+Pulled, thanks.
 
-Sorry for the oversight — I forgot to remove the Cc: stable@vger.kernel.org. 
-I will correct this in the next revision. Thank you for pointing it out.
+Paolo
 
-Best regards,
-Shuai Zhang
+>
+> Please pull,
+>
+>         M.
+>
+> The following changes since commit ca88ecdce5f51874a7c151809bd2c936ee0d38=
+05:
+>
+>   arm64: Revamp HCR_EL2.E2H RES1 detection (2025-10-14 08:18:40 +0100)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git tags/kv=
+marm-fixes-6.18-2
+>
+> for you to fetch changes up to 4af235bf645516481a82227d82d1352b9788903a:
+>
+>   MAINTAINERS: Switch myself to using kernel.org address (2025-11-08 11:2=
+1:20 +0000)
+>
+> ----------------------------------------------------------------
+> KVM/arm654 fixes for 6.18, take #2
+>
+> * Core fixes
+>
+>   - Fix trapping regression when no in-kernel irqchip is present
+>     (20251021094358.1963807-1-sascha.bischoff@arm.com)
+>
+>   - Check host-provided, untrusted ranges and offsets in pKVM
+>     (20251016164541.3771235-1-vdonnefort@google.com)
+>     (20251017075710.2605118-1-sebastianene@google.com)
+>
+>   - Fix regression restoring the ID_PFR1_EL1 register
+>     (20251030122707.2033690-1-maz@kernel.org
+>
+>   - Fix vgic ITS locking issues when LPIs are not directly injected
+>     (20251107184847.1784820-1-oupton@kernel.org)
+>
+> * Test fixes
+>
+>   - Correct target CPU programming in vgic_lpi_stress selftest
+>     (20251020145946.48288-1-mdittgen@amazon.de)
+>
+>   - Fix exposure of SCTLR2_EL2 and ZCR_EL2 in get-reg-list selftest
+>     (20251023-b4-kvm-arm64-get-reg-list-sctlr-el2-v1-1-088f88ff992a@kerne=
+l.org)
+>     (20251024-kvm-arm64-get-reg-list-zcr-el2-v1-1-0cd0ff75e22f@kernel.org=
+)
+>
+> * Misc
+>
+>   - Update Oliver's email address
+>     (20251107012830.1708225-1-oupton@kernel.org)
+>
+> ----------------------------------------------------------------
+> Marc Zyngier (3):
+>       KVM: arm64: Make all 32bit ID registers fully writable
+>       KVM: arm64: Set ID_{AA64PFR0,PFR1}_EL1.GIC when GICv3 is configured
+>       KVM: arm64: Limit clearing of ID_{AA64PFR0,PFR1}_EL1.GIC to userspa=
+ce irqchip
+>
+> Mark Brown (2):
+>       KVM: arm64: selftests: Add SCTLR2_EL2 to get-reg-list
+>       KVM: arm64: selftests: Filter ZCR_EL2 in get-reg-list
+>
+> Maximilian Dittgen (1):
+>       KVM: selftests: fix MAPC RDbase target formatting in vgic_lpi_stres=
+s
+>
+> Oliver Upton (3):
+>       KVM: arm64: vgic-v3: Reinstate IRQ lock ordering for LPI xarray
+>       KVM: arm64: vgic-v3: Release reserved slot outside of lpi_xa's lock
+>       MAINTAINERS: Switch myself to using kernel.org address
+>
+> Sascha Bischoff (1):
+>       KVM: arm64: vgic-v3: Trap all if no in-kernel irqchip
+>
+> Sebastian Ene (1):
+>       KVM: arm64: Check the untrusted offset in FF-A memory share
+>
+> Vincent Donnefort (1):
+>       KVM: arm64: Check range args for pKVM mem transitions
+>
+>  .mailmap                                           |  3 +-
+>  MAINTAINERS                                        |  2 +-
+>  arch/arm64/kvm/hyp/nvhe/ffa.c                      |  9 ++-
+>  arch/arm64/kvm/hyp/nvhe/mem_protect.c              | 28 +++++++++
+>  arch/arm64/kvm/sys_regs.c                          | 71 ++++++++++++----=
+------
+>  arch/arm64/kvm/vgic/vgic-debug.c                   | 16 +++--
+>  arch/arm64/kvm/vgic/vgic-init.c                    | 16 ++++-
+>  arch/arm64/kvm/vgic/vgic-its.c                     | 18 +++---
+>  arch/arm64/kvm/vgic/vgic-v3.c                      |  3 +-
+>  arch/arm64/kvm/vgic/vgic.c                         | 23 ++++---
+>  tools/testing/selftests/kvm/arm64/get-reg-list.c   |  3 +
+>  tools/testing/selftests/kvm/lib/arm64/gic_v3_its.c |  9 ++-
+>  12 files changed, 137 insertions(+), 64 deletions(-)
+>
+
 
