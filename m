@@ -1,54 +1,75 @@
-Return-Path: <stable+bounces-192833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47885C43B97
-	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 11:20:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0184FC43BD8
+	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 11:38:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE4A8188945A
-	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 10:21:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 996F74E4B1B
+	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 10:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C37028489E;
-	Sun,  9 Nov 2025 10:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71952BEC32;
+	Sun,  9 Nov 2025 10:38:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HWErHo7J"
 X-Original-To: stable@vger.kernel.org
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196DA221299;
-	Sun,  9 Nov 2025 10:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A601F0994;
+	Sun,  9 Nov 2025 10:38:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762683644; cv=none; b=XpbW+3cqsd/9hC7H//kTpADqEoCy9o/iiGRLmHJLfnC3iwyIxBjZvCpZG92kZuz0KJiLdi5HQONv4SyvYTm9FWGIcMdGVsAGA/SfZa8Ip//YWi0s/CmWIQlW0XZJoEdKfI4TNv4kCHiCQnmiCE/YKWOR7PWs5KHa9vIqAe72Ymw=
+	t=1762684699; cv=none; b=L2tCSfSn+JdIbx+enZnnbsgykTE7hQzCWtkNUHDUbCg4op9D+rCWmk6Y4vp52/IkvWDQPYTcxuiTmlpwNX9yZRcgAM1ga+wka+pXoy6SRjZtOs2lYRixtn2pfaptE+yApb0TsB1TgMcEZP3gAh7wCPVRJvke0sxG27p9fCMD3/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762683644; c=relaxed/simple;
-	bh=SEopC2/3odri8g9wb1KBvHrgrUFJUmIYYhOYzFwgBvM=;
+	s=arc-20240116; t=1762684699; c=relaxed/simple;
+	bh=ofM+kAPSxidAttzGwGnb9gy5uKh+1uekSJ3GE5rGyEg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lu6OwqJA4zg1We9oluN+K1DJbJT0C8C/8GZ6/Cr9IjEhdX80F/cxG8Ah4F745qEh3Z4CyPotarxQenNwSEFDV+Yi++PznM+lhPC8xXph53Fv9u8H/yRnru2t+n6rxPrnomoE9u/xYp/2p2M0RSsFVax2doGF78ixqlFBcqILcbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4d47Jy2P0lz9sSH;
-	Sun,  9 Nov 2025 10:48:18 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 4g6UDkaIzWZF; Sun,  9 Nov 2025 10:48:18 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4d47Jy1C6Vz9sS7;
-	Sun,  9 Nov 2025 10:48:18 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 180918B764;
-	Sun,  9 Nov 2025 10:48:18 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id kQzC0qppv8Je; Sun,  9 Nov 2025 10:48:17 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6F75F8B763;
-	Sun,  9 Nov 2025 10:48:17 +0100 (CET)
-Message-ID: <a7d9feaa-3a52-4c72-be56-6757e75af2ac@csgroup.eu>
-Date: Sun, 9 Nov 2025 10:48:17 +0100
+	 In-Reply-To:Content-Type; b=ojsurSrumuw7hQVl/Tzt4GhfuE5GaUpZDTM2Cb9iCi7B22w/HlHKdmzqfcHbC4TbxqsArl8Y98GfpuCA1eCjj6gXGfNbVSLk1vxCY930I9aUE/j9j0WLSyHASYf+rYN3uPN4zEbeF/xcuiH/4+2XkbakRdhLSVNmTpsKqzUuaWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HWErHo7J; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A94FBNZ015364;
+	Sun, 9 Nov 2025 10:37:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=KZA6CO
+	4X82O5E5YuSRC76+fxWN9Ob/ng9A6n3OFimrM=; b=HWErHo7Jt8wXzbFS7oB+/e
+	TB/sQBUfWNbxX0jk5HYmiEUW5JaNMgtShKN7YX8IrG+hK8NKqzfIt6bM8J3tooq9
+	KUo9DDzX3E3UXk+N0XiM9CrfsNGRTpFfzG0EmIkczXqnMhmr6ZGbb67UXRLeZmnZ
+	SFP4QdWhCZPY2gGRFXYpn71o8mOHFuCygTF3XzflQB0sIQeUVV6F3xkwQ7PeHPPC
+	yDaXU2rvm03aSA/fC7r/06XQJzivzLPy3G0dvA4sTS2FdOoDq5Xq0Vc+fL4b3Il5
+	2rKUYoJMxjThthQvA21p8Hz2Fy3dMbLxRZ13Hii33AzNHHSX/Jd/t8cxjzvVY8JA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wgwkchr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 09 Nov 2025 10:37:55 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A99JJml009576;
+	Sun, 9 Nov 2025 10:37:54 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aajdj118b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 09 Nov 2025 10:37:54 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A9AbsW122676012
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 9 Nov 2025 10:37:54 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 36C1C58060;
+	Sun,  9 Nov 2025 10:37:54 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C6A3B5805A;
+	Sun,  9 Nov 2025 10:37:49 +0000 (GMT)
+Received: from [9.61.96.116] (unknown [9.61.96.116])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Sun,  9 Nov 2025 10:37:49 +0000 (GMT)
+Message-ID: <c72447a9-73a3-42af-aae5-55c042b3974c@linux.ibm.com>
+Date: Sun, 9 Nov 2025 16:07:47 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,95 +77,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: Use relocated font data pointer for
- btext_drawchar()
-To: Finn Thain <fthain@linux-m68k.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Cc: Cedar Maxwell <cedarmaxwell@mac.com>, Stan Johnson <userm57@yahoo.com>,
- "Dr. David Alan Gilbert" <linux@treblig.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, stable@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <d941a3221695e836963c8f9cb5fbb61e202bad0c.1762648546.git.fthain@linux-m68k.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <d941a3221695e836963c8f9cb5fbb61e202bad0c.1762648546.git.fthain@linux-m68k.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v4] block: Remove queue freezing from several sysfs store
+ callbacks
+To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+        Ming Lei <ming.lei@redhat.com>, Martin Wilck <mwilck@suse.com>,
+        Benjamin Marzinski <bmarzins@redhat.com>, stable@vger.kernel.org,
+        Chaitanya Kulkarni <kch@nvidia.com>, Hannes Reinecke <hare@suse.de>,
+        Damien Le Moal <dlemoal@kernel.org>
+References: <20251105170534.2989596-1-bvanassche@acm.org>
+ <b556d704-dc3b-4e6c-a158-69fb5b377dac@linux.ibm.com>
+ <7f2d2486-6b74-4ed1-81c8-2aa584cfe264@acm.org>
+ <096323ad-529b-4b5c-a966-ff7cd6315ecc@linux.ibm.com>
+ <e7c3d79e-6557-4497-973b-5038f9f35958@acm.org>
+Content-Language: en-US
+From: Nilay Shroff <nilay@linux.ibm.com>
+In-Reply-To: <e7c3d79e-6557-4497-973b-5038f9f35958@acm.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: YSoZ0X_jibQmVKykJy5ES5q_e821vVbz
+X-Proofpoint-ORIG-GUID: YSoZ0X_jibQmVKykJy5ES5q_e821vVbz
+X-Authority-Analysis: v=2.4 cv=VMPQXtPX c=1 sm=1 tr=0 ts=69106f03 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=rtch9BD_4Y7QLr5F-6QA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDAyMiBTYWx0ZWRfX+uOQ9N3d/mLi
+ RDdNoopvcLHZPAEhu2rIoNnA4aWCYHlZuZl8qdvDzcMXe6GmyP4k1jotAJqEcImYFXj5cF0al9U
+ rYQFz778N2PL/p/1DaXt9URp8H3mRHNWyGVadV9chgyKLCB4nd+vdifhYMmgDgjeMMChYS4vw04
+ 6Z4yKr6T3OvujNGw8EcTBtSEsglLYMVg3fxA1W2W0se8ZJ/zdsgN+xFPtHo/8YWZ7lFppw8pu67
+ Pb+dYnBz9Buttk2nTRnQH0rK3VyDVd/TrOG5TQ4yyoHDYGs+k3z4nP7zJ2RUjHsHjMOJJ5Q4DqG
+ JeZ2Gyx5X93YyTFfNcBK3x7RsW+CO/EuRr9DD6gnd0rVcPspqkPq26kWBPMj6JmV8h05RcHdfH0
+ MExnVCCco5O4Ze2dZezQVhXO6lEEZA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-09_04,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
+ clxscore=1015 phishscore=0 spamscore=0 malwarescore=0 adultscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2511080022
 
 
 
-Le 09/11/2025 à 01:35, Finn Thain a écrit :
-> From: Christophe Leroy <christophe.leroy@csgroup.eu>
+On 11/7/25 9:48 PM, Bart Van Assche wrote:
+> On 11/7/25 2:41 AM, Nilay Shroff wrote:
+>> On 11/7/25 2:19 AM, Bart Van Assche wrote:
+>>> On 11/6/25 5:01 AM, Nilay Shroff wrote:
+>>>>> @@ -154,10 +153,8 @@ queue_ra_store(struct gendisk *disk, const char *page, size_t count)
+>>>>>         * calculated from the queue limits by queue_limits_commit_update.
+>>>>>         */
+>>>>>        mutex_lock(&q->limits_lock);
+>>>>> -    memflags = blk_mq_freeze_queue(q);
+>>>>> -    disk->bdi->ra_pages = ra_kb >> (PAGE_SHIFT - 10);
+>>>>> +    data_race(disk->bdi->ra_pages = ra_kb >> (PAGE_SHIFT - 10));
+>>>>>        mutex_unlock(&q->limits_lock);
+>>>>> -    blk_mq_unfreeze_queue(q, memflags);
+>>>>>          return ret;
+>>>>>    }
+>>>>
+>>>> I think we don't need data_race() here as disk->bdi->ra_pages is already
+>>>> protected by ->limits_lock. Furthermore, while you're at it, I’d suggest
+>>>> protecting the set/get access of ->ra_pages using ->limits_lock when it’s
+>>>> invoked from the ioctl context (BLKRASET/BLKRAGET).
+>>>
+>>> I think that we really need the data_race() annotation here because
+>>> there is plenty of code that reads ra_pages without using any locking.
+>>
+>> I believe, in that case we need to annotate both reader and writer, using
+>> data_race(). Annotating only writer but not reader would not help suppress
+>> KCSAN reports of a data race.
 > 
-> Since Linux v6.7, booting using BootX on an Old World PowerMac produces
-> an early crash. Stan Johnson writes, "the symptoms are that the screen
-> goes blank and the backlight stays on, and the system freezes (Linux
-> doesn't boot)."
-> Further testing revealed that the failure can be avoided by disabling
-> CONFIG_BOOTX_TEXT. Bisection revealed that the regression was caused by
-> a patch which replaced the static btext font data with const data in a
-> different compilation unit. To fix this, access the font data at its
-> relocated address.
+> No. As the comment above the data_race() macro explains, the data_race()
+> macro makes memory accesses invisible to KCSAN. Hence, annotating
+> writers only with data_race() is sufficient.
 
-You can explain that characters start being displayed by bootx_init() 
-which is call very early in the boot before kernel text is relocated to 
-its final location. During that period, data is addressed with an offset 
-which is added to the Global Offset Table (GOT) entries at the start of 
-bootx_init() by fonction reloc_got2(). But the pointers that are located 
-inside a structure are not referenced in the GOT and are therefore not 
-updated by reloc_got2(). It is therefore needed to apply the offset 
-manually by using PTRRELOC() macro.
+If the data access is marked using one of READ_ONCE(), WRITE_ONCE(), or
+data_race(), then KCSAN would not instrument that access. However, plain
+accesses are always instrumented.
 
+So, if we only mark the writers but keep the readers as plain accesses, KCSAN
+would likely report a race at unknown origin — because the plain read access is 
+still being watched, and when the variable’s value changes, it’s detected as a
+data race. This is exactly what I observed and reported earlier with this change.
+
+>>>>> @@ -480,9 +468,7 @@ static ssize_t queue_io_timeout_store(struct gendisk *disk, const char *page,
+>>>>>        if (err || val == 0)
+>>>>>            return -EINVAL;
+>>>>>    -    memflags = blk_mq_freeze_queue(q);
+>>>>> -    blk_queue_rq_timeout(q, msecs_to_jiffies(val));
+>>>>> -    blk_mq_unfreeze_queue(q, memflags);
+>>>>> +    data_race((blk_queue_rq_timeout(q, msecs_to_jiffies(val)), 0));
+>>>>>          return count;
+>>>>>    }
+>>>>
+>>>> The use of data_race() above seems redundant, since the update to q->rq_timeout
+>>>> is already marked with WRITE_ONCE(). However, the read access to q->rq_timeout
+>>>> in a few places within the I/O hotpath is not marked and instead accessed directly
+>>>> using plain C-language loads.
+>>>
+>>> That's an existing issue and an issue that falls outside the scope of my
+>>> patch.
+>>>
+>> Hmm, I don’t think this issue falls outside the scope of the current patch.
+>> Without this change, it would not be possible for queue_io_timeout_store()
+>> to run concurrently with the I/O hotpath and update q->rq_timeout while it’s
+>> being read. Since this patch removes queue freeze from queue_io_timeout_store(),
+>> it can now potentially execute concurrently with the I/O hotpath, which could
+>> then manifest the KCSAN-reported data race described above.
+> Annotating all rq_timeout read accesses with READ_ONCE() would be
+> cumbersome because there are plenty of direct rq_timeout accesses
+> outside the block layer, e.g. in drivers/scsi/st.c (SCSI tape driver).
 > 
-> Cc: Cedar Maxwell <cedarmaxwell@mac.com>
-> Cc: Stan Johnson <userm57@yahoo.com>
-> Cc: "Dr. David Alan Gilbert" <linux@treblig.org>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: stable@vger.kernel.org
-> Link: https://lists.debian.org/debian-powerpc/2025/10/msg00111.html
-> Link: https://lore.kernel.org/linuxppc-dev/d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com/
-> Reported-by: Cedar Maxwell <cedarmaxwell@mac.com>
-> Closes: https://lists.debian.org/debian-powerpc/2025/09/msg00031.html
-> Bisected-by: Stan Johnson <userm57@yahoo.com>
-> Tested-by: Stan Johnson <userm57@yahoo.com>
-> Fixes: 0ebc7feae79a ("powerpc: Use shared font data")
-> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-> 
-> ---
-> 
-> Christophe, as you're the author of this patch, this submission will
-> probably need your sign-off.
+Yes I agree there're plenty of them.
 
-I only suggested it, you authored the patch. Add me as:
-
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
+> I prefer an alternative approach: annotate the q->rq_timeout update in
+> blk_queue_rq_timeout() with both data_race() and WRITE_ONCE(). That
+> guarantees that rq_timeout update happens once and prevents that KCSAN
+> complains about rq_timeout reads.
 > 
-> ---
->   arch/powerpc/kernel/btext.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kernel/btext.c b/arch/powerpc/kernel/btext.c
-> index 7f63f1cdc6c3..ca00c4824e31 100644
-> --- a/arch/powerpc/kernel/btext.c
-> +++ b/arch/powerpc/kernel/btext.c
-> @@ -20,6 +20,7 @@
->   #include <asm/io.h>
->   #include <asm/processor.h>
->   #include <asm/udbg.h>
-> +#include <asm/setup.h>
->   
->   #define NO_SCROLL
->   
-> @@ -463,7 +464,7 @@ static noinline void draw_byte(unsigned char c, long locX, long locY)
->   {
->   	unsigned char *base	= calc_base(locX << 3, locY << 4);
->   	unsigned int font_index = c * 16;
-> -	const unsigned char *font	= font_sun_8x16.data + font_index;
-> +	const unsigned char *font = PTRRELOC(font_sun_8x16.data) + font_index;
->   	int rb			= dispDeviceRowBytes;
->   
->   	rmci_maybe_on();
-
+Again if we avoid marking read access then as I mentioned above it'd 
+cause a race at unknown origin. That said, you may spin a new patch
+with the change (as you see fit) and I'll help test and review it.
+Thanks,
+--Nilay
 
