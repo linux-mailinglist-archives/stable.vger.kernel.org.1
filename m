@@ -1,129 +1,149 @@
-Return-Path: <stable+bounces-192839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43C4C43DD4
-	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 13:39:43 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0FB9C43E22
+	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 13:51:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A850C1881DC3
-	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 12:40:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A70124E604A
+	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 12:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A704B2E975A;
-	Sun,  9 Nov 2025 12:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98EC2459EA;
+	Sun,  9 Nov 2025 12:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b="pBDK//sH"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="dHgEs1xz"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-77.freemail.mail.aliyun.com (out30-77.freemail.mail.aliyun.com [115.124.30.77])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7B51FF1B5
-	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 12:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EAA8200C2
+	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 12:50:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762691979; cv=none; b=LRtI9SVg2ExWHVcNhaNnplMji69iPg9GNCaKXSoGwsEDiIfYzXiINaootyvk7WnSl17LOwXe3C1bbEv1XMcW9HqXdXbg0axGyo0aUH8MIvjD3grufJzvO6+vpUwqJfCHDS7SOE7xSE2fSCT/PHCgquFhKPNmcNC5MeJ514Gav1E=
+	t=1762692653; cv=none; b=RcVneCb9S05dk38Rvrc+eQtgt4cjc3xzvlSNIOwiy1w98eYTqOJRaVWXaGPjetBqfi0lgQq82BaIUxB9OGuit/rTyw0BFIW0l0lgaBAF4rv4Pt3qpd/Bh8v8fP6NdLOBnuSbvXMZ84gl3zSL7bNUrW7+WLWqhNIH/oC0hOVMvUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762691979; c=relaxed/simple;
-	bh=tgaJipRxzgSlf8d/QzOrKvDBYhmAcCFCzqYrEdF6GyE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HetumnmtxaKXSYa04aHesPhdEvXBKuvocJuUuw7uaEJzplWXh7QyZ+oy/QLepLBOkvJgrZC7mBrWsrWveT3J5dMuIZ5QyO9q2PmURKMMzBmpxk+1TemMW59CF9e9ZFv57PH9p/Wnfja2BW9RTU4erAkedMbD2F9QddOGZrnj0MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliyun.com; spf=pass smtp.mailfrom=aliyun.com; dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b=pBDK//sH; arc=none smtp.client-ip=115.124.30.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliyun.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliyun.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=aliyun.com; s=s1024;
-	t=1762691973; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=ULl9qOeeg7YVsoGH+dDc81qoeYuBgl6Nonyl6XZ+6Qk=;
-	b=pBDK//sHffaPuUXQWpW8JF89hRA4/etRcmBU2x7CwBZNSg3a96E3qK2UKnfRugBPBZ5RfB7M3BEc3uUTlu5TmcvQxLifrNCWBdHy/HSVk4rWRfXLNlMxnMxpUo6zVHADtdKRwFH4oeb0ANTNxIab/UReliPT4sY0Ez3SDDzD/AY=
-Received: from pek-blan-cn-l1.corp.ad.wrs.com(mailfrom:ruohanlan@aliyun.com fp:SMTPD_---0WryB6fk_1762691957 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sun, 09 Nov 2025 20:39:32 +0800
-From: ruohanlan@aliyun.com
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Ruohan Lan <ruohanlan@aliyun.com>
-Subject: [PATCH 6.1.y] espintcp: fix skb leaks
-Date: Sun,  9 Nov 2025 20:39:15 +0800
-Message-Id: <20251109123915.789-1-ruohanlan@aliyun.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1762692653; c=relaxed/simple;
+	bh=3+eCSIJebndjJaTRAnvjUhtxBWMBuVLg/zcAVRwkD9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HUHzx3FYPG0gIO37JrqOqa2fuEj3nK6YubWy1rkg4IuwVCxzaBHZv9d4M1wJLUNIoDpjiuUHO290ykwIV+rleXdu5oBwK+ItH5Pggbrlz66TI0+M3g6XavekYzmHxruwDNaJo1jd+09W4onrt5uPWZ/lJkNjX3Z7zegNjZean1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=dHgEs1xz; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A384940E01A5;
+	Sun,  9 Nov 2025 12:50:46 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id x6tOSQpmtv46; Sun,  9 Nov 2025 12:50:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1762692640; bh=ZzMumuc6B8Ne+FAzcfk1GubYVm3w0Dm/pitWyyyKY5E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dHgEs1xz++HEvHJoFNws+zzbpdObjgzkpIT79hiJeTSIwT9+IArBryCaMjJtHYUkH
+	 iZ0ocTHsR2r6IvsbwkZEVEfpuyWS5BedyBT76FeG3qFxsfyYT+aqEktieXDo6MGGjd
+	 NYXDCDgXeOtu8SHtLYgSk/OV1RyMrukQf33DToM7bNJ9gnLLSwir9YX42Q55hmFlAl
+	 E+UFBcS0AFIM4lUCSqUPFHS1WG+KLJj0Z6LbKcnwJDfjVkTAyDFxbRwigF3ZdBVpHV
+	 KhFdNvaDHEnKex+6AATwsMVOAyPHJ6rCZm8TuWekogq9sVfiX3W0u3NyImWHwW/usy
+	 f8YTxMjcHWtik83oeFFOIKUHgk3zoKIJjU+pISWwnPG6VUMymg/vxEzRH+J/dnGOQg
+	 svd1z091QA8a3CxBoau5eD1GlSLPi6IJGBYehABCZCuzFf5zRciU/3TKJN36w4eo64
+	 oy0BbbZErOkIu5tEczGkWIdAAjMeSi7qbtIZpCJS8pRkn4K5qOJEpfixDfjAsLEWsW
+	 dEQgJRlnOMHZTekjC0afm7RmwhNmGVbxUHd4cW0CLIgi/w/yuGEsF/iyqLjJXBuqVp
+	 iRLLoYuz63fiJZ6a4j/WOGZd7fXU8uyNMwEF4u02OQsGiw4caxM65DXCFVVoBqyKPV
+	 fiF6yOvSvXr7hS6Zk7JMuBec=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 1679540E00DA;
+	Sun,  9 Nov 2025 12:50:37 +0000 (UTC)
+Date: Sun, 9 Nov 2025 13:50:29 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: gregkh@linuxfoundation.org
+Cc: mario.limonciello@amd.com, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] x86/CPU/AMD: Add missing terminator for
+ zen5_rdseed_microcode" failed to apply to 6.12-stable tree
+Message-ID: <20251109125029.GAaRCOFWPArcysoy5j@fat_crate.local>
+References: <2025110944-strenuous-hydrant-ea0b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2025110944-strenuous-hydrant-ea0b@gregkh>
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+On Sun, Nov 09, 2025 at 12:12:44PM +0900, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 6.12-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x f1fdffe0afea02ba783acfe815b6a60e7180df40
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110944-strenuous-hydrant-ea0b@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+> 
+> Possible dependencies:
+> 
+> 
+> 
+> thanks,
+> 
+> greg k-h
+> 
+> ------------------ original commit in Linus's tree ------------------
+> 
+> From f1fdffe0afea02ba783acfe815b6a60e7180df40 Mon Sep 17 00:00:00 2001
+> From: Mario Limonciello <mario.limonciello@amd.com>
+> Date: Tue, 4 Nov 2025 10:10:06 -0600
+> Subject: [PATCH] x86/CPU/AMD: Add missing terminator for zen5_rdseed_microcode
+> 
+> Running x86_match_min_microcode_rev() on a Zen5 CPU trips up KASAN for an out
+> of bounds access.
+> 
+> Fixes: 607b9fb2ce248 ("x86/CPU/AMD: Add RDSEED fix for Zen5")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Cc: stable@vger.kernel.org
+> Link: https://patch.msgid.link/20251104161007.269885-1-mario.limonciello@amd.com
+> 
+> diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+> index 8e36964a7721..2ba9f2d42d8c 100644
+> --- a/arch/x86/kernel/cpu/amd.c
+> +++ b/arch/x86/kernel/cpu/amd.c
+> @@ -1038,6 +1038,7 @@ static void init_amd_zen4(struct cpuinfo_x86 *c)
+>  static const struct x86_cpu_id zen5_rdseed_microcode[] = {
+>  	ZEN_MODEL_STEP_UCODE(0x1a, 0x02, 0x1, 0x0b00215a),
+>  	ZEN_MODEL_STEP_UCODE(0x1a, 0x11, 0x0, 0x0b101054),
+> +	{},
+>  };
+>  
+>  static void init_amd_zen5(struct cpuinfo_x86 *c)
 
-[ Upstream commit 63c1f19a3be3169e51a5812d22a6d0c879414076 ]
+Yeah, this one is not needed for 6.12. You have this one queued there:
 
-A few error paths are missing a kfree_skb.
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/diff/queue-6.12/x86-cpu-amd-add-rdseed-fix-for-zen5.patch?id=a45420df6b86929e1029eab70190e3c90e488de3
 
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-[ Minor context change fixed. ]
-Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
----
- net/ipv4/esp4.c     | 4 +++-
- net/ipv6/esp6.c     | 4 +++-
- net/xfrm/espintcp.c | 4 +++-
- 3 files changed, 9 insertions(+), 3 deletions(-)
+and that version doesn't need the empty element termination fix.
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index 8f5417ff355d..a40f78a6474c 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -152,8 +152,10 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
- 
- 	sk = esp_find_tcp_sk(x);
- 	err = PTR_ERR_OR_ZERO(sk);
--	if (err)
-+	if (err) {
-+		kfree_skb(skb);
- 		goto out;
-+	}
- 
- 	bh_lock_sock(sk);
- 	if (sock_owned_by_user(sk))
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index 085a83b807af..48963fc9057b 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -169,8 +169,10 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
- 
- 	sk = esp6_find_tcp_sk(x);
- 	err = PTR_ERR_OR_ZERO(sk);
--	if (err)
-+	if (err) {
-+		kfree_skb(skb);
- 		goto out;
-+	}
- 
- 	bh_lock_sock(sk);
- 	if (sock_owned_by_user(sk))
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index d6fece1ed982..b26fbaead7a5 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -168,8 +168,10 @@ int espintcp_queue_out(struct sock *sk, struct sk_buff *skb)
- {
- 	struct espintcp_ctx *ctx = espintcp_getctx(sk);
- 
--	if (skb_queue_len(&ctx->out_queue) >= READ_ONCE(netdev_max_backlog))
-+	if (skb_queue_len(&ctx->out_queue) >= READ_ONCE(netdev_max_backlog)) {
-+		kfree_skb(skb);
- 		return -ENOBUFS;
-+	}
- 
- 	__skb_queue_tail(&ctx->out_queue, skb);
- 
+So you can drop this one for 6.12.
+
+Thx.
+
 -- 
-2.43.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
