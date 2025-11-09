@@ -1,155 +1,146 @@
-Return-Path: <stable+bounces-192837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4BFC43CE9
-	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 12:53:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE14C43D1F
+	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 13:11:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0578188C94C
-	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 11:53:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CFEE24E3671
+	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 12:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966142DECC2;
-	Sun,  9 Nov 2025 11:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74B22E7F1D;
+	Sun,  9 Nov 2025 12:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ikgj9kXs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i0xKG8HL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14512DEA7D
-	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 11:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA56B2E7BCB
+	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 12:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762689185; cv=none; b=S2Z/ZijlERQw477xk0x1wLS+dVvX/qWzo818PpqV5LXJn2cS89J/Gu3zRQtBJ44Vr0Mf/zgf9XCD5d1dA9qHrOaHoBO/0yFyVJ8lb/qCmKh2Ajd+RX0yBa4Gs94cXHUYn9xc9+IX6nqN/U/VmcKueJV6A1YlrrxQKgK3dAletgg=
+	t=1762690295; cv=none; b=DuLlcA+P4rSNGt0XcXZDGEZd0Gnjo1n/RPAzGduashf6J1Z6kdrDGuhbAfbppRi+Gzfvv+LBHX7HsXhzylyjOdgTFJg1g5fKXHuSs05y9ztPoKFuRsegNSqs/dJXSKpA9O4jOkVSKsRLUrWEEcmo2PNNdUMSk10pDkNOJmu1kfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762689185; c=relaxed/simple;
-	bh=YDk5MRIGuW1x2NadRPuVP+NinleU3/BZNen7SBV7Ix4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YqlB62fslRIaQPhXNtFdL3V/KMqScj0bIpOxmQePSix9ITROVpCcV0XvWjvrB+y47NpsO+Uil6Yt91d4ZGg4WBM0NDHpfNVBAwQnmenMQU+2G0kk618GS7pAhDp5dHJA7xCkDOMocfpgzlk6ImAl78owoSx/Mw/P6BxcRw4QQF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ikgj9kXs; arc=none smtp.client-ip=209.85.128.41
+	s=arc-20240116; t=1762690295; c=relaxed/simple;
+	bh=9TrRIYB2XOoX17zzX0ixZst/V96BVzam/k//08+kh8w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hvv9UHCvPkna/btFUuXXSyP3CU5gNyxv8ZjwPhS5ZpT6xAdJOuT52tYovVteQtyDdKAA7EzyS5YyGKvGKexiKr2/yOxHBcnarp7Do+ZQKMiMeAhXrQu58oE8fMXgDLnHObg/phPFIofpzQ/CHtjvzb16uU8y+0RPyUnnxGJ4EAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i0xKG8HL; arc=none smtp.client-ip=74.125.224.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-471191ac79dso22408325e9.3
-        for <stable@vger.kernel.org>; Sun, 09 Nov 2025 03:53:03 -0800 (PST)
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-63f9beb27b9so1799425d50.1
+        for <stable@vger.kernel.org>; Sun, 09 Nov 2025 04:11:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762689182; x=1763293982; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oi5/iqZfrxw/CP5GK2yW/mE7gxZjVbgvC6f7zP3R/B4=;
-        b=ikgj9kXsZCo1EnYwrXQKyv0gtvl5RKyFBl4BDa5Bib6P/g2AMclfr18KdgpckCQUvH
-         yCPzbtLbvK16KDM57+XRepaPcu0XDDfJMzZDAhSoQBKX2AAt6FgXX0HmTai7XSYIe8q+
-         2WcvpIToaNOGZHzjzj9LZ8EFUEC0o1Py0V8vTMTVIPNCsde1FE51BrS3nXg8VYHw3Yij
-         dh4E3eJFyxJYRwfPtZcQ+rNImI6/GhRDg5/fxYN4YAzVxhfHfm9Rcarxasda9rizv13P
-         phoT5j2tO9xTNJN1KXzH0ROkirkI1tsvVIq/siv2LcodWheZcARM+C6geVPdOTXE+1qj
-         yOkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762689182; x=1763293982;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1762690293; x=1763295093; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oi5/iqZfrxw/CP5GK2yW/mE7gxZjVbgvC6f7zP3R/B4=;
-        b=W25GN0tOHtw3Q1r8Yhbe4qByt5w5MKtPFGDZMk62Ln/8GFcLuFSQOXYw8UC6gdwuRH
-         FPbZLa8oSQrZSSVyjne57UQ0aVnWy7zqqluXdliqnROj3u0m7paDvFx0Z9UrkniZyKOe
-         EnTdLQtb2hMveLNW0NZnVL5PVWGFd6lui8kNe6SpILQlyMNi6zwc5eiIkhb4MtKlfk84
-         7dzAYi1/jULyNN7Wy1TMcb9HGzNyrd/QBSpXnC3KE2HABEliDc9OU8BADzxNsjq3ZMZi
-         pVb3ITvUlH1BasXaNSzOcEuWfG5ByNVJLNm+APFPGD+sJ0t0ETVnQN+F7sPTY24mmh31
-         faJw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBazfK2AXwdGugOdP1StUrdHbdoEi25yTyk34HEDs6Hwvmj2Uf6zGlHsZedV4Re2vzPAfI44Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2L0rv+BBdFqswgkCilYilyyECMS/57VBdEAN99mr+YvBYkX/M
-	Y5xq409tpBRipLfN44KEXf/j1bD57gcoLVVkfZsIcY9YyKxbsX1hbE8H
-X-Gm-Gg: ASbGncvToCYMRJpp9euq7lsuTxOTV5rbKpjmYYdGdRWLmULiI1628dJ/zwrKG374bsP
-	6kIB5AHN2GAdHpboTlQ7vEXSRLNl7NVdIHj/PHEAXQBQdm9hGe53YwVOW7wyDDZQovDq/6IGXhM
-	dGem4a/W1JFFoIitfKBRXTtqJpjEUd3t/xQNEgYLUt/goCnA41UjxpuuTFTENtNj14wDg0lOZJQ
-	Ce2AnFeWG6+nkJ1d1QfJ8W+KW5LCB30/vgCNq+7MyJ8UnkxRXqqCNJ9YWEXSuNeocjztDWvFpI8
-	0Dofp6au1stw/mNyi9tNToDxtveL03P4PQ4cy1FQgo5bANzJWGn7y9UxTpDRrcCe90dKEiw4+G5
-	0jv8JYLaad3HChQ3aEaGhfCx71P4W9nLYTw0kaMtecLpn82C7bEIHCGfL/jJpO/zBnYfootkj9t
-	fdayfrnUVFwR0vvtNMgTGhrnZGNcbsvUdP3hCLT3M4
-X-Google-Smtp-Source: AGHT+IF0OdPl7P7zek6LN5EpjrwqGOR8oHSE9cecr6daRpyCulT9z+cFJeMMKofyvzMK78abF/CwMw==
-X-Received: by 2002:a05:600c:4f4c:b0:477:7a87:48d1 with SMTP id 5b1f17b1804b1-4777a874db1mr13826495e9.30.1762689181321;
-        Sun, 09 Nov 2025 03:53:01 -0800 (PST)
-Received: from Ansuel-XPS24 (93-34-90-37.ip49.fastwebnet.it. [93.34.90.37])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4776bcfd021sm185197325e9.11.2025.11.09.03.52.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Nov 2025 03:53:00 -0800 (PST)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mtd: mtdpart: ignore error -ENOENT from parsers on subpartitions
-Date: Sun,  9 Nov 2025 12:52:44 +0100
-Message-ID: <20251109115247.15448-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.51.0
+        bh=SaB3iUzdscR6aViyJqwLMcsd0JlvtsbUTPKpewl2qBw=;
+        b=i0xKG8HLwJxJQcEyL2ltkvCVpmxagHX06H1+TkaAdLNrdGkDsu5HgIlgaq9FWa6WvO
+         778wxQiCre3f4LjyO+5X+h7e2oGY+3U+6VawUd0/AJ9OjFMAmtWQZ4MbfLbB9iUegERz
+         DW9CvOugr9jrIMCGEW8xhiR+2sOF00U5VYaYEQLys/WO4lN/iE0SN9VQ5+sus/cjGbk0
+         efenTlxYu3lJb/pdai0TMlsKRlh3OwzDOqWSaE0ODACKK5NqMooUynYg6YqmrPSXOh/A
+         ZHTpSW/Z+fdsKOxPssK92QFeflKqVutZMvWqMR/hmE3Ubq3hoxXgIiZ6eJEK5uvRuKFZ
+         F8Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762690293; x=1763295093;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SaB3iUzdscR6aViyJqwLMcsd0JlvtsbUTPKpewl2qBw=;
+        b=P0DXWqEH//QXtTsVcPUAWm4QYGpmJu3LYr2G6tiug/837aDoPjai8+5OMIxlRzVqzD
+         TonCs0zw8YrVA94ulRjk5prtHznuHaDXNVbVQSo3/jkaE2CmVCIoGiYAFgYkfIC836dS
+         h0w4GiO4cNVTEWH2N4/ODZ0h+KjceC0Bo1dTahXtzRJinn42uDVKBtdZsBCr/cz8SHdW
+         DOPNAsCiGL10TbMslsAjgEXLwEbvroMpcR9QA7RzGp6LUx+/rMCz1tj4FQnmXK20+qck
+         c9vKb9zUA7sICv4cyLumTCt9fypFH3K2DnGUJlizus7XFKcIptjLkrVm5hOiKlLTZ/PZ
+         wDRg==
+X-Forwarded-Encrypted: i=1; AJvYcCVadrBThmZAIkAOf+fo/Ba+QYHkv4eT29lfBauTKQ8KRzG/rfYxSXOoMKNqiILJgPUTXdwDgfc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6QkrE//MbkHKfhmjbVKyHl9WP1dX3h8bKsczuVmfnWx+jTmpx
+	mBFH7zjsN/Rao9eC33l7FEqkDBeCkJ/X3UZ59JrAVvOOsvKWuVveMHkFenuIMNPVyFxNuhermuN
+	q3eLNZen7vaiqNNG9Yzhlwshwyo8DajU=
+X-Gm-Gg: ASbGncvoO0CACUe124YTqjANwHSsq1S32+7A6TOU5LVjWUjLD+YU7BC6sQRB2kHtPH6
+	1nBIqSCcAzlKcY7cb7ofgWCrcTtWQWJCiH04QxKE0sC7+H7FmCx9saww32Z7tZM7bGggEv2qmkS
+	+AXo9HiXAo8at28SA/WAzZ7wszDCyjkbh3XQHS1S1E7Frd7YRqpE5LfebLprvrC2zDwm+z9g7Xv
+	OXo5R8JDISr048Y9Sai8BXpKW4tSgyQ7hV3nl5sY/cH6rLn4dTLzn/rslak/jj9J2YAYBRt
+X-Google-Smtp-Source: AGHT+IEKhjeme65HFe4rbHvn0fhtz0mbKIXocvNQ95paIv/R07SYgK3/Ab1CQi+EtohDNRjUSI8bQbzPh8xSQmFFyn8=
+X-Received: by 2002:a53:acc8:0:20b0:63f:aef7:d009 with SMTP id
+ 956f58d0204a3-640d4543d3emr3526712d50.5.1762690292759; Sun, 09 Nov 2025
+ 04:11:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251107100310.61478-1-a.safin@rosa.ru> <20251107114127.4e130fb2@pumpkin>
+ <CALOAHbB1cJ3EAmOOQ6oYM4ZJZn-eA7pP07=sDeG3naOM2G9Aew@mail.gmail.com>
+ <CALOAHbCz+9T349GCmyMkork=Nc_08OnXCoVCz+WO0kdXgx3MDA@mail.gmail.com> <8a4aae40-46d3-403a-a1cf-117343c584f6@rosa.ru>
+In-Reply-To: <8a4aae40-46d3-403a-a1cf-117343c584f6@rosa.ru>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Sun, 9 Nov 2025 20:10:56 +0800
+X-Gm-Features: AWmQ_blpVmNsJtsggeQbfkqHI6DRzOvkhrN0Qih5Gjdy_fjh5mvfLp1OZCiTq2g
+Message-ID: <CALOAHbBdcq6bKCeroGFmUNfo6Os+KOXGzeqVZjM=S0Q9hpxYew@mail.gmail.com>
+Subject: Re: [PATCH v2] bpf: hashtab: fix 32-bit overflow in memory usage calculation
+To: =?UTF-8?B?0JDQu9C10LrRgdC10Lkg0KHQsNGE0LjQvQ==?= <a.safin@rosa.ru>
+Cc: David Laight <david.laight.linux@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	lvc-patches@linuxtesting.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit 5c2f7727d437 ("mtd: mtdpart: check for subpartitions parsing
-result") introduced some kind of regression with parser on subpartitions
-where if a parser emits an error then the entire parsing process from the
-upper parser fails and partitions are deleted.
+On Sun, Nov 9, 2025 at 7:00=E2=80=AFPM =D0=90=D0=BB=D0=B5=D0=BA=D1=81=D0=B5=
+=D0=B9 =D0=A1=D0=B0=D1=84=D0=B8=D0=BD <a.safin@rosa.ru> wrote:
+>
+> Thanks for the follow-up.
+>
+> Just to clarify: the overflow happens before the multiplication by
+> num_entries. In C, the * operator is left-associative, so the expression =
+is
+> evaluated as (value_size * num_possible_cpus()) * num_entries. Since
+> value_size was u32 and num_possible_cpus() returns int, the first product=
+ is
+> performed in 32-bit arithmetic due to usual integer promotions. If that
+> intermediate product overflows, the result is already incorrect before it=
+ is
+> promoted when multiplied by u64 num_entries.
+>
+> A concrete example within allowed limits:
+> value_size =3D 1,048,576 (1 MiB), num_possible_cpus() =3D 4096
+> =3D> 1,048,576 * 4096 =3D 2^32 =3D> wraps to 0 in 32 bits, even with
+> num_entries =3D 1.
 
-Not checking for error in subpartitions was originally intended as
-special parser can emit error also in the case of the partition not
-correctly init (for example a wiped partition) or special case where the
-partition should be skipped due to some ENV variables externally
-provided (from bootloader for example)
+Thank you for the clarification.
 
-One example case is the TRX partition where, in the context of a wiped
-partition, returns a -ENOENT as the trx_magic is not found in the
-expected TRX header (as the partition is wiped)
+Based on my understanding, the maximum value_size for a percpu hashmap
+appears to be constrained by PCPU_MIN_UNIT_SIZE (32768), as referenced
+in htab_map_alloc_check():
 
-To better handle this and still keep some kind of error tracking (for
-example to catch -ENOMEM errors or -EINVAL errors), permit parser on
-subpartition to emit -ENOENT error, print a debug log and skip them
-accordingly.
+  https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git/tree/ker=
+nel/bpf/hashtab.c#n457
 
-This results in giving better tracking of the status of the parser
-(instead of returning just 0, dropping any kind of signal that there is
-something wrong with the parser) and to some degree restore the original
-logic of the subpartitions parse.
+This would require num_possible_cpus() to reach 131072 to potentially
+cause an overflow.  However, the maximum number of CPUs supported on
+x86_64 is typically 8192 in standard kernel configurations. I'm
+uncertain if any architectures actually support systems at this scale.
 
-(worth to notice that some special partition might have all the special
-header present for the parser and declare 0 partition in it, this is why
-it would be wrong to simply return 0 in the case of a special partition
-that is NOT init for the scanning parser)
 
-Cc: stable@vger.kernel.org
-Fixes: 5c2f7727d437 ("mtd: mtdpart: check for subpartitions parsing result")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/mtd/mtdpart.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> This isn=E2=80=99t about a single >4GiB allocation - it=E2=80=99s about a=
+ggregated memory
+> usage (percpu), which can legitimately exceed 4GiB in total.
+>
+> v2 promotes value_size to u64 at declaration, which avoids the 32-bit
+> intermediate overflow cleanly.
 
-diff --git a/drivers/mtd/mtdpart.c b/drivers/mtd/mtdpart.c
-index 994e8c51e674..2876501a7814 100644
---- a/drivers/mtd/mtdpart.c
-+++ b/drivers/mtd/mtdpart.c
-@@ -425,9 +425,12 @@ int add_mtd_partitions(struct mtd_info *parent,
- 
- 		mtd_add_partition_attrs(child);
- 
--		/* Look for subpartitions */
-+		/* Look for subpartitions (skip if no maching parser found) */
- 		ret = parse_mtd_partitions(child, parts[i].types, NULL);
--		if (ret < 0) {
-+		if (ret < 0 && ret == -ENOENT) {
-+			pr_debug("Skip parsing subpartitions: %d\n", ret);
-+			continue;
-+		} else if (ret < 0) {
- 			pr_err("Failed to parse subpartitions: %d\n", ret);
- 			goto err_del_partitions;
- 		}
--- 
-2.51.0
 
+--
+Regards
+Yafang
 
