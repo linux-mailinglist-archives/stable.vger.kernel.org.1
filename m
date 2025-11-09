@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-192806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E967DC437B3
-	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 04:12:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FFAAC437B6
+	for <lists+stable@lfdr.de>; Sun, 09 Nov 2025 04:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8F5FE4E18F2
-	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 03:12:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6D78A4E24AE
+	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 03:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86BB678F2B;
-	Sun,  9 Nov 2025 03:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A1178F2B;
+	Sun,  9 Nov 2025 03:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lo6Kller"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvLHP8vo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443A27483
-	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 03:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6597483
+	for <stable@vger.kernel.org>; Sun,  9 Nov 2025 03:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762657969; cv=none; b=pEgmIR804MskKBfFVkldTZQIr8qHKC44PlFb2nwvnA8jOvi0j1nScjafIsjhpiOtbCATlrYN0VoaCHDtcvLjm9B2sLi5zF4Lpdmg9Fv+GCdZNp/zbZOlcba2IyxwIjbDDKadx6ICEtx6XERwcRemHpUQ+tv8edfhFZYCOm4o29I=
+	t=1762658037; cv=none; b=VOUHOBP4BT4tJAHKlZuyH5IZcgzhsKvNYBznWS6w5LH8/9Iq9Y3HtRQkQg1kaq+un+4gG2tyGD3fFJ0LqiREP+zays7bZsr9EYq0SK7Irzeh3/R7qnIxtVVaH5nr0oG9M4Oi/ApnQQlYzvtiX2Wmb2mdDZ8MCHelcBTKWSafmeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762657969; c=relaxed/simple;
-	bh=kho6qm4c9qyMviDljGhc2431wAGC/4iKqY4xRGbgZSI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dCMgwpX8P8+qz4wwX4asy/KMp6Adr/KVCxKVn1cQUbg5uFHRXza+d1oLQ1e2LcydPBQKBjRSYtyk1bcR5M3ccJ8/zIRx9ZYSQ+4XXQBY3iHx5ssz9VuZqndaJtUgtg+YeLuRh6uklVe7BKfW+1oe4EF3FMjUPqO1n6/N3qewBZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lo6Kller; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8788DC116D0;
-	Sun,  9 Nov 2025 03:12:47 +0000 (UTC)
+	s=arc-20240116; t=1762658037; c=relaxed/simple;
+	bh=uV0vS2DLlhAbQLytKiLN4V3fEEHNSBn37s+pDYpgIQw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=k183RrqCPwm13vNnU/iv6a7YtRj/xHlhzqMle/loVtaINuQ96pTfSTnnHs/2ZSpT1vZdcv4XwXGr6ERskCqYuJc/zOzNy0++bPRh9NKsRu/5JFmq59lyC/GQFkO8r90e+63cuwmFWA0Em4upwQVicuWXEmFvmexQuD+srYQHTbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvLHP8vo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F93C19422;
+	Sun,  9 Nov 2025 03:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762657967;
-	bh=kho6qm4c9qyMviDljGhc2431wAGC/4iKqY4xRGbgZSI=;
+	s=korg; t=1762658037;
+	bh=uV0vS2DLlhAbQLytKiLN4V3fEEHNSBn37s+pDYpgIQw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=lo6KllerVWi3kVIbXvW+j6RowzujBcXagD3DuZOEZ9VThdNltslTCLO1Jc2si7HZr
-	 0n8dnn5ikapjwTbBkPnMF0CubgQKDVrWwfxnkxWoXywTX11pym1WeBcOB0Vfu+5ZBC
-	 D3rO6rF3fZzCiorHq8P+LqOIvI2bfxS41PDQJqC8=
-Subject: FAILED: patch "[PATCH] x86/CPU/AMD: Add missing terminator for zen5_rdseed_microcode" failed to apply to 6.12-stable tree
-To: mario.limonciello@amd.com,bp@alien8.de
+	b=SvLHP8vonn+D6SB6F0Cx1j9TmPyrgTP11tZvfS57cfBxyDyxMOg1FHlxgGcKfXiNj
+	 EYqZEvNzBdUJu0+d9CAzsobDv/IerDA/LmDVMeh3qQUhgz2n3tZxW2mJ1fQmB/cDNz
+	 JAZS3DRt3KzP2o7g/Izlkzh0QPCQlOm5O9GUApPs=
+Subject: FAILED: patch "[PATCH] virtio-net: fix received length check in big packets" failed to apply to 6.1-stable tree
+To: minhquangbui99@gmail.com,kuba@kernel.org,leiyang@redhat.com,xuanzhuo@linux.alibaba.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 09 Nov 2025 12:12:44 +0900
-Message-ID: <2025110944-strenuous-hydrant-ea0b@gregkh>
+Date: Sun, 09 Nov 2025 12:13:54 +0900
+Message-ID: <2025110954-lunacy-murkiness-7783@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x f1fdffe0afea02ba783acfe815b6a60e7180df40
+git cherry-pick -x 0c716703965ffc5ef4311b65cb5d84a703784717
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110944-strenuous-hydrant-ea0b@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025110954-lunacy-murkiness-7783@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,31 +77,78 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f1fdffe0afea02ba783acfe815b6a60e7180df40 Mon Sep 17 00:00:00 2001
-From: Mario Limonciello <mario.limonciello@amd.com>
-Date: Tue, 4 Nov 2025 10:10:06 -0600
-Subject: [PATCH] x86/CPU/AMD: Add missing terminator for zen5_rdseed_microcode
+From 0c716703965ffc5ef4311b65cb5d84a703784717 Mon Sep 17 00:00:00 2001
+From: Bui Quang Minh <minhquangbui99@gmail.com>
+Date: Thu, 30 Oct 2025 21:44:38 +0700
+Subject: [PATCH] virtio-net: fix received length check in big packets
 
-Running x86_match_min_microcode_rev() on a Zen5 CPU trips up KASAN for an out
-of bounds access.
+Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
+for big packets"), when guest gso is off, the allocated size for big
+packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
+negotiated MTU. The number of allocated frags for big packets is stored
+in vi->big_packets_num_skbfrags.
 
-Fixes: 607b9fb2ce248 ("x86/CPU/AMD: Add RDSEED fix for Zen5")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Because the host announced buffer length can be malicious (e.g. the host
+vhost_net driver's get_rx_bufs is modified to announce incorrect
+length), we need a check in virtio_net receive path. Currently, the
+check is not adapted to the new change which can lead to NULL page
+pointer dereference in the below while loop when receiving length that
+is larger than the allocated one.
+
+This commit fixes the received length check corresponding to the new
+change.
+
+Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251104161007.269885-1-mario.limonciello@amd.com
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Link: https://patch.msgid.link/20251030144438.7582-1-minhquangbui99@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 8e36964a7721..2ba9f2d42d8c 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1038,6 +1038,7 @@ static void init_amd_zen4(struct cpuinfo_x86 *c)
- static const struct x86_cpu_id zen5_rdseed_microcode[] = {
- 	ZEN_MODEL_STEP_UCODE(0x1a, 0x02, 0x1, 0x0b00215a),
- 	ZEN_MODEL_STEP_UCODE(0x1a, 0x11, 0x0, 0x0b101054),
-+	{},
- };
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index e6e650bc3bc3..8855a994e12b 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -910,17 +910,6 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
+ 		goto ok;
+ 	}
  
- static void init_amd_zen5(struct cpuinfo_x86 *c)
+-	/*
+-	 * Verify that we can indeed put this data into a skb.
+-	 * This is here to handle cases when the device erroneously
+-	 * tries to receive more than is possible. This is usually
+-	 * the case of a broken device.
+-	 */
+-	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
+-		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
+-		dev_kfree_skb(skb);
+-		return NULL;
+-	}
+ 	BUG_ON(offset >= PAGE_SIZE);
+ 	while (len) {
+ 		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
+@@ -2112,9 +2101,19 @@ static struct sk_buff *receive_big(struct net_device *dev,
+ 				   struct virtnet_rq_stats *stats)
+ {
+ 	struct page *page = buf;
+-	struct sk_buff *skb =
+-		page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
++	struct sk_buff *skb;
+ 
++	/* Make sure that len does not exceed the size allocated in
++	 * add_recvbuf_big.
++	 */
++	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
++		pr_debug("%s: rx error: len %u exceeds allocated size %lu\n",
++			 dev->name, len,
++			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
++		goto err;
++	}
++
++	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
+ 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
+ 	if (unlikely(!skb))
+ 		goto err;
 
 
