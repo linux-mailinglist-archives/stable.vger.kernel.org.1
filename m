@@ -1,218 +1,241 @@
-Return-Path: <stable+bounces-192927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4D4C461A6
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 12:04:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F4223C462D8
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 12:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D33DA3450B1
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 11:04:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38D733BA9C9
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 11:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B363081D7;
-	Mon, 10 Nov 2025 11:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC4D309EFC;
+	Mon, 10 Nov 2025 11:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IL2wBUnZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jvkX4q0u"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9643081C6
-	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 11:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941CD3090FB;
+	Mon, 10 Nov 2025 11:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762772654; cv=none; b=MmYhyC9t4nmmYEDNIr10n1wTsIBdt2uTQcLM0Wh0seFW3+csoR8wRv/qtCHpLkpGNw/s3pqMDDhaGMLTIkA9n2vWI10v7zrb6T0Q9GG0Twcqgcwdf/6uqus5MhnJ+hClGXmLxMN1yG6bQg0Abhp7ZvHH632683kwSHGxKwlJu9s=
+	t=1762773292; cv=none; b=LtDSdObewxBzkLoEnEtX5MBCW1+9Xo8DHPFvOLe0VWzl1CV+lrDkrmsJqymju3zINmIF3kStqg0HIepz6/FIgar/dKfFDf9gimgpxMl+G38SaoRwrC6yrpFAQNVPHTEgrlf2vKM7cCurwGKNJcBlWQcnXELeDFRhgTX+k2Pi9O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762772654; c=relaxed/simple;
-	bh=1Z+gaT40oj3T5r3ek/hMQ0J0ma0x2pMde1fuBz+MOWc=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=gt4G7VNAgyJKecikgrahjCc0Fj0i38wjOzrOkfKMp1WBuRvozR0TFDl5tEGp0vw5ksOnSc3FYeW6utKyQo6LGrDma6MaRqw8F+FdJ6+39pB6SQwv9uu+alV4AngBwEstyTJYnLPegVlWuLu1R8PsO6zvXyXnRKGEQnTtHzxZaTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IL2wBUnZ; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-477632cc932so10879855e9.3
-        for <stable@vger.kernel.org>; Mon, 10 Nov 2025 03:04:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762772650; x=1763377450; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yIWnZ8dEqAIo6e04DNrTq+ZCsjQol4ZAc5Df0I8mreM=;
-        b=IL2wBUnZGYGVWNEpyCph9/ihdD+tX5BiyHigu9uHwImLuvHER+s21IVTwJxByNOF08
-         IFvBbqHjowPabtmwGtm0uyxuFXgyPhQWBj34PVJRWXl9JMeBQ1NHNZIxK9JI3e5eQwy+
-         RjWOtbEmfUGMGn5bkY89LCsOWdc8PF+x3CkBE5XiALHxJErI2NMutfBlpBcRjBqifYOL
-         kWMM5L8Fgs+KffgNNWNO0nqZ2pIb1y5GkTRBD43WZBd2DX/db9714XGUtoz1cnTVrrRD
-         46IGtLXprJxPW71shUaijrKUHLoXLGt5Oyo9/HhFRgyfHNMny9GZW3tdaXwkFx0xYivc
-         2djg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762772650; x=1763377450;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yIWnZ8dEqAIo6e04DNrTq+ZCsjQol4ZAc5Df0I8mreM=;
-        b=nArx/efJP7u4E6oVfRcVI93+XQOWTaTSXuK4ZBMYgAsEsb110jopmlGxW+wMj3fh42
-         QXrDRf20+PT4wFnF28yNpFNBIpguGTjJ5rJN8tc7+MsjjPCl54IVaLg+MlhSeoT2oULo
-         /8VhMFeWLCFuki6EOT0TqFW1uYE0n7EiCzMz5ewFNsZ88CSOFWbWOE31Q5YXDbzm6TLS
-         ps0sjdt2s1KPzkKHp9JLee5OjhjfaacOM0FK/lvyqanGXEyjozRByaSINMw5DHFTsnYw
-         /cNKNgREZembmDEA1DfBnPwQsz39KmYOD8hVrS3xgADUw+jO3fAxJnpPU8VW3BWPvaDM
-         58Vg==
-X-Forwarded-Encrypted: i=1; AJvYcCXcE3DF/WHcdjsPdH3HiVh2ZBygvOU6VgLEbHyTv7paBuq35cmRJvHoH5xaat98xtUITh+j6m8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyt025jnpkf6p2aIrDF2tAHPRCpEQhEfdmxJYBiiZWeSRIyit+L
-	gDKNiIx2bkSlBHCp1ujs9NqgHsIjLsz8zJzUxOUEOLRhv+w+ACQH2Fu6E6XswS7rrk8=
-X-Gm-Gg: ASbGncskS3JL+7aB9VT0TZRwlfsWYUiycsq1QhWXIli+3dxdeOy1/d9xzxTKALsRSue
-	RxjQvdidaRguAAO9FWiL0J7JleW5ONRGntk37QGGoYB7ZjxuZYxrXOr294EJrWJRP/eGDbmd264
-	sfAGUSbC6tj78Ni2Rm1fZ2qhsbqDY38+QIDl47+QWEzcuW9k1jMmLi0dLR72kfEpAT21lEJM/A9
-	PzpiYL/lmNoq/EkpsLamIAyTJeN2wQ3+YgoW57NR5lfaO/izXy+ENe1aDDWFKz8IdmJv7VBJyVK
-	NKQlYXIG1eTJt/YMCxHx/ptx8Q12VKt58YJCRaZDM3dVdHbW2CxZ07fhNTx3/k1FMhjL+9aF8Xv
-	KTo2dn8Hy0dTvqwAHgLLcIRKZKVp0+pXrS8FoqOyb+1ON1sT41YCIQzRQO4NVwH39EUcEtdedWF
-	VviqH0/R+M9lWZpCeRAVlhc014CLHK3sKq64jmsHU6vTm+mn937i0p
-X-Google-Smtp-Source: AGHT+IH0yKFYlADFFoNgI+vt5Nvr3682vUUZksEIjYehH1HnbB5yCLv9XtMdyOspZEkknqy2NTGIgA==
-X-Received: by 2002:a05:600c:c84:b0:46e:3f75:da49 with SMTP id 5b1f17b1804b1-477732a1d2bmr55933905e9.37.1762772649975;
-        Mon, 10 Nov 2025 03:04:09 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:3d9:2080:f168:a23e:c1b2:ae61? ([2a01:e0a:3d9:2080:f168:a23e:c1b2:ae61])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47763e4f13dsm106249415e9.5.2025.11.10.03.04.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Nov 2025 03:04:09 -0800 (PST)
-Message-ID: <3c98a3f1-ca68-41ed-a8bb-f99a57ac57d7@linaro.org>
-Date: Mon, 10 Nov 2025 12:04:08 +0100
+	s=arc-20240116; t=1762773292; c=relaxed/simple;
+	bh=OFYqhoFHCb9z5lCtrXzvza23SjBkOyj647ogbswGaTE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AbbBnLo47CZziRWsc5AlMtfTaHH/xFOpzxBkK2ZRVG3XWQ6fjoc+KyC7MQsey8CBQ5WFaCwRcupTgKW10q+hCvMoNl+yaQvI4zK0MqVildsYk5OyisAVVxixL85/h4IRqGvBFdr0f0w1kwomBKFX281GZMxzdl5HuCiLHYvbVsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jvkX4q0u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC239C116D0;
+	Mon, 10 Nov 2025 11:14:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762773292;
+	bh=OFYqhoFHCb9z5lCtrXzvza23SjBkOyj647ogbswGaTE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jvkX4q0uZa2PNO7Dp+T2n35s2PVi9VO5jrQESLJzDRpNaNRPS9NZz/oPkQ9TFL/mu
+	 2C0rq89OGbb+D6Hc0ts9/XKL4RWMCUsBK1cRBIXXRa9Og8VC5pDYoyx/3xY1vVppj6
+	 oVedrJPnfWcMLVa7Sn926N3s201A9lLYWmTf/JnpA4YrZZhh8hhORaMQ/BFdylW2Ay
+	 Y+lo/40Kizd6MnK6KgXlfmhNTYeiHfUxa6VJB/rTwoh772psPCFe12MbEzj1/K8NEp
+	 ISD8LKJA6z0WJis8TRKlECghOR6gX79Ko9UfTyqTxB4okbFla7pGyVNcEtGvJcFJoa
+	 jiW1XtMy2PKxQ==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vIPrI-0000000007Y-0whP;
+	Mon, 10 Nov 2025 12:14:52 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ryan Mann <rmann@ndigital.com>,
+	Andreas Messer <andi@bastelmap.de>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/8] USB: serial: ftdi_sio: match on interface number for jtag
+Date: Mon, 10 Nov 2025 12:12:05 +0100
+Message-ID: <20251110111212.32702-2-johan@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251110111212.32702-1-johan@kernel.org>
+References: <20251110111212.32702-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH] PCI: meson: Remove meson_pcie_link_up() timeout, message,
- speed check
-To: Bjorn Helgaas <helgaas@kernel.org>, Yue Wang <yue.wang@Amlogic.com>,
- Kevin Hilman <khilman@baylibre.com>
-Cc: Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Linnaea Lavia <linnaea-von-lavia@live.com>, FUKAUMI Naoki <naoki@radxa.com>,
- Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
- linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org
-References: <20251103221930.1831376-1-helgaas@kernel.org>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20251103221930.1831376-1-helgaas@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/3/25 23:19, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> Previously meson_pcie_link_up() only returned true if the link was in the
-> L0 state.  This was incorrect because hardware autonomously manages
-> transitions between L0, L0s, and L1 while both components on the link stay
-> in D0.  Those states should all be treated as "link is active".
-> 
-> Returning false when the device was in L0s or L1 broke config accesses
-> because dw_pcie_other_conf_map_bus() fails if the link is down, which
-> caused errors like this:
-> 
->    meson-pcie fc000000.pcie: error: wait linkup timeout
->    pci 0000:01:00.0: BAR 0: error updating (0xfc700004 != 0xffffffff)
-> 
-> Remove the LTSSM state check, timeout, speed check, and error message from
-> meson_pcie_link_up(), the dw_pcie_ops.link_up() method, so it is a simple
-> boolean check of whether the link is active.  Timeouts and and error
-> messages are handled at a higher level, e.g., dw_pcie_wait_for_link().
-> 
-> Fixes: 9c0ef6d34fdb ("PCI: amlogic: Add the Amlogic Meson PCIe controller driver")
-> Reported-by: Linnaea Lavia <linnaea-von-lavia@live.com>
-> Closes: https://lore.kernel.org/r/DM4PR05MB102707B8CDF84D776C39F22F2C7F0A@DM4PR05MB10270.namprd05.prod.outlook.com
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> Tested-by: Linnaea Lavia <linnaea-von-lavia@live.com>
-> Cc: stable@vger.kernel.org
-> ---
->   drivers/pci/controller/dwc/pci-meson.c | 36 +++-----------------------
->   1 file changed, 3 insertions(+), 33 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-meson.c b/drivers/pci/controller/dwc/pci-meson.c
-> index 787469d1b396..13685d89227a 100644
-> --- a/drivers/pci/controller/dwc/pci-meson.c
-> +++ b/drivers/pci/controller/dwc/pci-meson.c
-> @@ -338,40 +338,10 @@ static struct pci_ops meson_pci_ops = {
->   static bool meson_pcie_link_up(struct dw_pcie *pci)
->   {
->   	struct meson_pcie *mp = to_meson_pcie(pci);
-> -	struct device *dev = pci->dev;
-> -	u32 speed_okay = 0;
-> -	u32 cnt = 0;
-> -	u32 state12, state17, smlh_up, ltssm_up, rdlh_up;
-> +	u32 state12;
->   
-> -	do {
-> -		state12 = meson_cfg_readl(mp, PCIE_CFG_STATUS12);
-> -		state17 = meson_cfg_readl(mp, PCIE_CFG_STATUS17);
-> -		smlh_up = IS_SMLH_LINK_UP(state12);
-> -		rdlh_up = IS_RDLH_LINK_UP(state12);
-> -		ltssm_up = IS_LTSSM_UP(state12);
-> -
-> -		if (PM_CURRENT_STATE(state17) < PCIE_GEN3)
-> -			speed_okay = 1;
-> -
-> -		if (smlh_up)
-> -			dev_dbg(dev, "smlh_link_up is on\n");
-> -		if (rdlh_up)
-> -			dev_dbg(dev, "rdlh_link_up is on\n");
-> -		if (ltssm_up)
-> -			dev_dbg(dev, "ltssm_up is on\n");
-> -		if (speed_okay)
-> -			dev_dbg(dev, "speed_okay\n");
-> -
-> -		if (smlh_up && rdlh_up && ltssm_up && speed_okay)
-> -			return true;
-> -
-> -		cnt++;
-> -
-> -		udelay(10);
-> -	} while (cnt < WAIT_LINKUP_TIMEOUT);
-> -
-> -	dev_err(dev, "error: wait linkup timeout\n");
-> -	return false;
-> +	state12 = meson_cfg_readl(mp, PCIE_CFG_STATUS12);
-> +	return IS_SMLH_LINK_UP(state12) && IS_RDLH_LINK_UP(state12);
->   }
->   
->   static int meson_pcie_host_init(struct dw_pcie_rp *pp)
+Some FTDI devices have the first port reserved for JTAG and have been
+using a dedicated quirk to prevent binding to it.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on BananaPi M2S
+As can be inferred directly or indirectly from the commit messages,
+almost all of these devices are dual port devices which means that the
+more recently added macro for matching on interface number can be used
+instead (and some such devices do so already).
 
-Thanks !
+This avoids probing interfaces that will never be bound and cleans up
+the match table somewhat.
 
-Neil
+Note that the JTAG quirk is kept for quad port devices, which would
+otherwise require three match entries.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/usb/serial/ftdi_sio.c | 72 ++++++++++++-----------------------
+ 1 file changed, 24 insertions(+), 48 deletions(-)
+
+diff --git a/drivers/usb/serial/ftdi_sio.c b/drivers/usb/serial/ftdi_sio.c
+index b37fa31f5694..9993a5123344 100644
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -628,10 +628,8 @@ static const struct usb_device_id id_table_combined[] = {
+ 	{ USB_DEVICE(FTDI_VID, FTDI_IBS_PEDO_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_IBS_PROD_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_TAVIR_STK500_PID) },
+-	{ USB_DEVICE(FTDI_VID, FTDI_TIAO_UMPA_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, FTDI_NT_ORIONLXM_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_TIAO_UMPA_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_NT_ORIONLXM_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_NT_ORIONLX_PLUS_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_NT_ORION_IO_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_NT_ORIONMX_PID) },
+@@ -842,24 +840,17 @@ static const struct usb_device_id id_table_combined[] = {
+ 	{ USB_DEVICE(FTDI_VID, FTDI_ELSTER_UNICOM_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_PROPOX_JTAGCABLEII_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_PROPOX_ISPCABLEIII_PID) },
+-	{ USB_DEVICE(FTDI_VID, CYBER_CORTEX_AV_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, CYBER_CORTEX_AV_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(OLIMEX_VID, OLIMEX_ARM_USB_OCD_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(OLIMEX_VID, OLIMEX_ARM_USB_OCD_H_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(OLIMEX_VID, OLIMEX_ARM_USB_TINY_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(OLIMEX_VID, OLIMEX_ARM_USB_TINY_H_PID, 1) },
+-	{ USB_DEVICE(FIC_VID, FIC_NEO1973_DEBUG_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, FTDI_OOCDLINK_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, LMI_LM3S_DEVEL_BOARD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, LMI_LM3S_EVAL_BOARD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, LMI_LM3S_ICDI_BOARD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, FTDI_TURTELIZER_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FIC_VID, FIC_NEO1973_DEBUG_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_OOCDLINK_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_DEVEL_BOARD_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_EVAL_BOARD_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_ICDI_BOARD_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_TURTELIZER_PID, 1) },
+ 	{ USB_DEVICE(RATOC_VENDOR_ID, RATOC_PRODUCT_ID_USB60F) },
+ 	{ USB_DEVICE(RATOC_VENDOR_ID, RATOC_PRODUCT_ID_SCU18) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_REU_TINY_PID) },
+@@ -901,17 +892,14 @@ static const struct usb_device_id id_table_combined[] = {
+ 	{ USB_DEVICE(ATMEL_VID, STK541_PID) },
+ 	{ USB_DEVICE(DE_VID, STB_PID) },
+ 	{ USB_DEVICE(DE_VID, WHT_PID) },
+-	{ USB_DEVICE(ADI_VID, ADI_GNICE_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(ADI_VID, ADI_GNICEPLUS_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(ADI_VID, ADI_GNICE_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ADI_VID, ADI_GNICEPLUS_PID, 1) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MICROCHIP_VID, MICROCHIP_USB_BOARD_PID,
+ 					USB_CLASS_VENDOR_SPEC,
+ 					USB_SUBCLASS_VENDOR_SPEC, 0x00) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(ACTEL_VID, MICROSEMI_ARROW_SF2PLUS_BOARD_PID, 2) },
+ 	{ USB_DEVICE(JETI_VID, JETI_SPC1201_PID) },
+-	{ USB_DEVICE(MARVELL_VID, MARVELL_SHEEVAPLUG_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(MARVELL_VID, MARVELL_SHEEVAPLUG_PID, 1) },
+ 	{ USB_DEVICE(LARSENBRUSGAARD_VID, LB_ALTITRACK_PID) },
+ 	{ USB_DEVICE(GN_OTOMETRICS_VID, AURICAL_USB_PID) },
+ 	{ USB_DEVICE(FTDI_VID, PI_C865_PID) },
+@@ -934,10 +922,8 @@ static const struct usb_device_id id_table_combined[] = {
+ 	{ USB_DEVICE(PI_VID, PI_1016_PID) },
+ 	{ USB_DEVICE(KONDO_VID, KONDO_USB_SERIAL_PID) },
+ 	{ USB_DEVICE(BAYER_VID, BAYER_CONTOUR_CABLE_PID) },
+-	{ USB_DEVICE(FTDI_VID, MARVELL_OPENRD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, TI_XDS100V2_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, MARVELL_OPENRD_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, TI_XDS100V2_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, HAMEG_HO820_PID) },
+ 	{ USB_DEVICE(FTDI_VID, HAMEG_HO720_PID) },
+ 	{ USB_DEVICE(FTDI_VID, HAMEG_HO730_PID) },
+@@ -946,18 +932,14 @@ static const struct usb_device_id id_table_combined[] = {
+ 	{ USB_DEVICE(FTDI_VID, MJSG_SR_RADIO_PID) },
+ 	{ USB_DEVICE(FTDI_VID, MJSG_HD_RADIO_PID) },
+ 	{ USB_DEVICE(FTDI_VID, MJSG_XM_RADIO_PID) },
+-	{ USB_DEVICE(FTDI_VID, XVERVE_SIGNALYZER_ST_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, XVERVE_SIGNALYZER_SLITE_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, XVERVE_SIGNALYZER_SH2_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, XVERVE_SIGNALYZER_ST_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, XVERVE_SIGNALYZER_SLITE_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, XVERVE_SIGNALYZER_SH2_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, XVERVE_SIGNALYZER_SH4_PID),
+ 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+ 	{ USB_DEVICE(FTDI_VID, SEGWAY_RMP200_PID) },
+ 	{ USB_DEVICE(FTDI_VID, ACCESIO_COM4SM_PID) },
+-	{ USB_DEVICE(IONICS_VID, IONICS_PLUGCOMPUTER_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(IONICS_VID, IONICS_PLUGCOMPUTER_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CHAMSYS_24_MASTER_WING_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CHAMSYS_PC_WING_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CHAMSYS_USB_DMX_PID) },
+@@ -972,15 +954,12 @@ static const struct usb_device_id id_table_combined[] = {
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CINTERION_MC55I_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_FHE_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_DOTEC_PID) },
+-	{ USB_DEVICE(QIHARDWARE_VID, MILKYMISTONE_JTAGSERIAL_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(ST_VID, ST_STMCLT_2232_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(QIHARDWARE_VID, MILKYMISTONE_JTAGSERIAL_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ST_VID, ST_STMCLT_2232_PID, 1) },
+ 	{ USB_DEVICE(ST_VID, ST_STMCLT_4232_PID),
+ 		.driver_info = (kernel_ulong_t)&ftdi_stmclite_quirk },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_RF_R106) },
+-	{ USB_DEVICE(FTDI_VID, FTDI_DISTORTEC_JTAG_LOCK_PICK_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_DISTORTEC_JTAG_LOCK_PICK_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_LUMEL_PD12_PID) },
+ 	/* Crucible Devices */
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CT_COMET_PID) },
+@@ -1055,8 +1034,7 @@ static const struct usb_device_id id_table_combined[] = {
+ 	{ USB_DEVICE(ICPDAS_VID, ICPDAS_I7561U_PID) },
+ 	{ USB_DEVICE(ICPDAS_VID, ICPDAS_I7563U_PID) },
+ 	{ USB_DEVICE(WICED_VID, WICED_USB20706V2_PID) },
+-	{ USB_DEVICE(TI_VID, TI_CC3200_LAUNCHPAD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(TI_VID, TI_CC3200_LAUNCHPAD_PID, 1) },
+ 	{ USB_DEVICE(CYPRESS_VID, CYPRESS_WICED_BT_USB_PID) },
+ 	{ USB_DEVICE(CYPRESS_VID, CYPRESS_WICED_WL_USB_PID) },
+ 	{ USB_DEVICE(AIRBUS_DS_VID, AIRBUS_DS_P8GR) },
+@@ -1076,10 +1054,8 @@ static const struct usb_device_id id_table_combined[] = {
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ODIN_PID) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(UBLOX_VID, UBLOX_EVK_M101_PID, 2) },
+ 	/* FreeCalypso USB adapters */
+-	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_UNBUF_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_FALCONIA_JTAG_UNBUF_PID, 1) },
+ 	/* GMC devices */
+ 	{ USB_DEVICE(GMC_VID, GMC_Z216C_PID) },
+ 	/* Altera USB Blaster 3 */
+-- 
+2.51.0
 
 
