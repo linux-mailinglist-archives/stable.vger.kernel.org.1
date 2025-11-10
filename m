@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-192907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEAF9C44FEC
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 06:21:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5D7C44FEF
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 06:21:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06580188E698
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 05:21:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFCB2188DFE9
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 05:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4599A2E6CD9;
-	Mon, 10 Nov 2025 05:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211D22E92BA;
+	Mon, 10 Nov 2025 05:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="T6HQ01E3"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JEEggjXL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033D02D738A;
-	Mon, 10 Nov 2025 05:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07902E7F08;
+	Mon, 10 Nov 2025 05:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762752043; cv=none; b=PGDdHb6P5VHkZlTa+G9lw0w2NPtCIeSUU/8yWhebZVYB3QFlYnJ1ygh4MSByuUmo4/Bjh8JwA/vqs9MT44iBpc5g2mPLq+tZIp4KzgpyKYG/ehUHSkia5MUSPhQ1R1jH+UxLy0URqm5roTavucGfTpT5IX1Ly9YYdzNOLqmq8jc=
+	t=1762752048; cv=none; b=EqZL8+51FB6g71mRINeJ5bLyUfZPLi0oXdQDepMUWcqJsniV10imvi0/oYIRu+ylWbZFd//T1T2j7nBEI/4gUPiHya+BG4Q9r6M7xacQInGZBv8qOUGSwMLAhydz+VHmnSu3mbmbJaerSyhDf7i8tON6yiGzHq9UPmT4GEnJpew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762752043; c=relaxed/simple;
-	bh=MfQyZcMgQXjMx1i7fKWk0Mwo8OmMRKffWkbaWcdfLCY=;
-	h=Date:To:From:Subject:Message-Id; b=ZwHGlyHgC+5oykgcw8MOOsA6utRpoxH7vMmNBKrvaWuxHfg48UcE9qqo3S3euYo6nJH1xK8VMDjzHfDFOLCtK+a2UYPq8L4MgBYX9yCSIaXkw77RrpkY1HmH3AH0NVFhMaxwa4zaQv1ogr1RUD0TwkjkZFDe5NcxQaEKpBvX/Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=T6HQ01E3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A657CC19423;
-	Mon, 10 Nov 2025 05:20:42 +0000 (UTC)
+	s=arc-20240116; t=1762752048; c=relaxed/simple;
+	bh=6XR8+f2UAp4FOMFGDLGTkrf3wkJSUrEMA2/R0JuY09o=;
+	h=Date:To:From:Subject:Message-Id; b=ZGwXH0tdiyWMlTVqnfs3QPumMo6wYbAIBxr39NmoW71Oo2BGya75kGHMCEDNCOJNA04hJp6nUx6aLtW8ZGP7tItEZNFmNflZ39zTCT4Id6YjBqEfPxgPOEdT1h+ckYmokdDk+F5guGHvqulqimJpRqfPl+2eyjYn8CYDsvQRxeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JEEggjXL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C127C4CEFB;
+	Mon, 10 Nov 2025 05:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762752042;
-	bh=MfQyZcMgQXjMx1i7fKWk0Mwo8OmMRKffWkbaWcdfLCY=;
+	s=korg; t=1762752048;
+	bh=6XR8+f2UAp4FOMFGDLGTkrf3wkJSUrEMA2/R0JuY09o=;
 	h=Date:To:From:Subject:From;
-	b=T6HQ01E3/gCLCu/fASBdjJAiHwyDA2hZ6ykLZDPJv3idxyM3yplirNHWJlzlAd0y5
-	 7ojt1EPFid3wFGV1saWrI9Ays3gXpbSgq0Obnf/d/JtnYq8FRmoqv1J2BrHxMfXDYU
-	 g7Ur3Qe2JQSzw2z3zwju9PP9lJ+o7Z4E2daKsWac=
-Date: Sun, 09 Nov 2025 21:20:42 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,rppt@kernel.org,lorenzo.stoakes@oracle.com,david@redhat.com,big-sleep-vuln-reports@google.com,lance.yang@linux.dev,akpm@linux-foundation.org
+	b=JEEggjXLoB2bB2hxxzHGgDESwkysXlNC0ntLApIzHpYDqo77G+UMMkk9RTimtwASk
+	 n+I1+HFSc5YDcZvax1u9eDxM9+bNKbeI+1KxDgy8FCuUrHyk4lzpNMHFyUEvqA+jA5
+	 /CoeOqfMvWdgdM1kArXvYriSivUCFMPktdzZwbag=
+Date: Sun, 09 Nov 2025 21:20:47 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,pasha.tatashin@soleen.com,graf@amazon.com,bhe@redhat.com,pratyush@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-secretmem-fix-use-after-free-race-in-fault-handler.patch removed from -mm tree
-Message-Id: <20251110052042.A657CC19423@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] kho-warn-and-exit-when-unpreserved-page-wasnt-preserved.patch removed from -mm tree
+Message-Id: <20251110052048.5C127C4CEFB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,74 +50,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/secretmem: fix use-after-free race in fault handler
+     Subject: kho: warn and exit when unpreserved page wasn't preserved
 has been removed from the -mm tree.  Its filename was
-     mm-secretmem-fix-use-after-free-race-in-fault-handler.patch
+     kho-warn-and-exit-when-unpreserved-page-wasnt-preserved.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Lance Yang <lance.yang@linux.dev>
-Subject: mm/secretmem: fix use-after-free race in fault handler
-Date: Fri, 31 Oct 2025 20:09:55 +0800
+From: Pratyush Yadav <pratyush@kernel.org>
+Subject: kho: warn and exit when unpreserved page wasn't preserved
+Date: Mon, 3 Nov 2025 19:02:32 +0100
 
-When a page fault occurs in a secret memory file created with
-`memfd_secret(2)`, the kernel will allocate a new folio for it, mark the
-underlying page as not-present in the direct map, and add it to the file
-mapping.
+Calling __kho_unpreserve() on a pair of (pfn, end_pfn) that wasn't
+preserved is a bug.  Currently, if that is done, the physxa or bits can be
+NULL.  This results in a soft lockup since a NULL physxa or bits results
+in redoing the loop without ever making any progress.
 
-If two tasks cause a fault in the same page concurrently, both could end
-up allocating a folio and removing the page from the direct map, but only
-one would succeed in adding the folio to the file mapping.  The task that
-failed undoes the effects of its attempt by (a) freeing the folio again
-and (b) putting the page back into the direct map.  However, by doing
-these two operations in this order, the page becomes available to the
-allocator again before it is placed back in the direct mapping.
+Return when physxa or bits are not found, but WARN first to loudly
+indicate invalid behaviour.
 
-If another task attempts to allocate the page between (a) and (b), and the
-kernel tries to access it via the direct map, it would result in a
-supervisor not-present page fault.
-
-Fix the ordering to restore the direct map before the folio is freed.
-
-Link: https://lkml.kernel.org/r/20251031120955.92116-1-lance.yang@linux.dev
-Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
-Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
-Acked-by: David Hildenbrand <david@redhat.com>
+Link: https://lkml.kernel.org/r/20251103180235.71409-3-pratyush@kernel.org
+Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/secretmem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/kexec_handover.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/mm/secretmem.c~mm-secretmem-fix-use-after-free-race-in-fault-handler
-+++ a/mm/secretmem.c
-@@ -82,13 +82,13 @@ retry:
- 		__folio_mark_uptodate(folio);
- 		err = filemap_add_folio(mapping, folio, offset, gfp);
- 		if (unlikely(err)) {
--			folio_put(folio);
- 			/*
- 			 * If a split of large page was required, it
- 			 * already happened when we marked the page invalid
- 			 * which guarantees that this call won't fail
- 			 */
- 			set_direct_map_default_noflush(folio_page(folio, 0));
-+			folio_put(folio);
- 			if (err == -EEXIST)
- 				goto retry;
+--- a/kernel/kexec_handover.c~kho-warn-and-exit-when-unpreserved-page-wasnt-preserved
++++ a/kernel/kexec_handover.c
+@@ -171,12 +171,12 @@ static void __kho_unpreserve(struct kho_
+ 		const unsigned long pfn_high = pfn >> order;
+ 
+ 		physxa = xa_load(&track->orders, order);
+-		if (!physxa)
+-			continue;
++		if (WARN_ON_ONCE(!physxa))
++			return;
+ 
+ 		bits = xa_load(&physxa->phys_bits, pfn_high / PRESERVE_BITS);
+-		if (!bits)
+-			continue;
++		if (WARN_ON_ONCE(!bits))
++			return;
+ 
+ 		clear_bit(pfn_high % PRESERVE_BITS, bits->preserve);
  
 _
 
-Patches currently in -mm which might be from lance.yang@linux.dev are
+Patches currently in -mm which might be from pratyush@kernel.org are
 
-mm-khugepaged-guard-is_zero_pfn-calls-with-pte_present.patch
+maintainers-add-myself-as-a-reviewer-for-kho.patch
+liveupdate-luo_file-add-private-argument-to-store-runtime-state.patch
 
 
