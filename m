@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-192937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95463C466E4
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 13:02:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A30C46708
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 13:04:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 366F74EAFBD
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 12:01:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 808C61882FE3
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 12:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7AD30DEA2;
-	Mon, 10 Nov 2025 11:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA5930DEA0;
+	Mon, 10 Nov 2025 11:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QicJQgJZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dsjr8IvP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7E330DD3B
-	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 11:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD4730DD2C
+	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 11:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762775935; cv=none; b=FWNN4/wnySpgBHv8KadE0f/AKWRHm50rHxopTMc3BCBVQ6KQ3OmOStZdaTqCJUC0MwZCR7f67zDLwOeBUms/kq2fKnE7oqu9GBBIejSnYRhHoAUatPrzspv6Mlnyr/N4FJ3NlaopIBMNd4Bk5WyIiWU9Z0pYVZhcbmkDuIjsIJA=
+	t=1762775936; cv=none; b=MD09QDSnKvXoDwZH+1S/hfkLtAmb8X4nqjBSPkjBdHvQfd+p9Egr4REvw9h6Y2EEJOM64NJiYOTFSX/iay11+4Vjpo4hGWMkQ/Hj61miixlE1eWl9aiMdIL82gRWzmzkzpEooKuIjfMiyJAkovG3QMOQbq6OzST2qkxWD401Wfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762775935; c=relaxed/simple;
-	bh=iROiThlAzUw7G0m/dhROTCapQgXBCzRYivckOSDMsvs=;
+	s=arc-20240116; t=1762775936; c=relaxed/simple;
+	bh=P83TD7LricTzevw7P26sqUxbZdPTzkVyELuF1QE8yO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e04e9kQc+lUW9oBfOSbRZXjqg1Lih3RbmNIdNkNg5nIuxG5kyXDiGaGtNtLoSCI2IGWoGMV+dcSWh384NShWwQTj+5Hf7R/5tbeime7NbbEJfEC9SY8Q/zKSFKfq+wzHWvJRL23aHRsirzPfFHSkmJZ7giHj5yQmhYue5OszEOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QicJQgJZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8BEC4CEFB;
-	Mon, 10 Nov 2025 11:58:53 +0000 (UTC)
+	 MIME-Version; b=tQLr/yIqt3TdsUhsQ2MmXXubzKv6SGjRS9nB1oiFVU5BmOTJpkooQsHtosba0A2WoDZQdkWBjnQzvJgo+RcWNflR76KobTbO4SDp7JWfaCb/y9pWchvbbNOwGm7TPQCCbyVP8BFzue1uYAl88OdppPXU2q7valONrYSQzJRbJBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dsjr8IvP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175E9C16AAE;
+	Mon, 10 Nov 2025 11:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762775934;
-	bh=iROiThlAzUw7G0m/dhROTCapQgXBCzRYivckOSDMsvs=;
+	s=k20201202; t=1762775935;
+	bh=P83TD7LricTzevw7P26sqUxbZdPTzkVyELuF1QE8yO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QicJQgJZ+ckKGdWVzJ2xJ5wYhgzcUkipWs6Wt9bvq4bdA2cMqHtzxOdBtzQPa9l3/
-	 nfIcIgbauNqM4RIwh3WV7utwdkbj0LTmjCIIg8UcKbLozjtC8fIvXJhHXjlVj+vdlE
-	 2zUTIiN7qrFj8mwEfohJ7fXRpr3iN8rHF/UQomQwESbCfz2/tknSWfGZyFO5OqiArk
-	 OXzmfBDTn0wBqeqL7PbrSuaY3Q9WW6Cfg9Sts58m0COaZAjtT1WdVLaWAiJrnmGGM1
-	 0BX2mH1+fryA0g2KoJXMvdfcDdpXquy+YIZuhWEoKzlHQKgeABdAb8TdQt+56yuUEa
-	 xdu6mjarNC78A==
+	b=dsjr8IvP8PEr1E0g330a8Gh/DxFf/JdebyFk8RKeYWVjnenqXjPheSuab5ZLSiS1S
+	 9L4p/hfKB2QnkeJQT5rvxobJS/oeCIJLqsM5ZQMFPiJ7KWrZDWNLb8xtudasuKxSfK
+	 VTFMpRZeSgjdCwlgoQvBseS1bw+xkqrNy+TMVyGOsGFpUv5h+63UYzgni6o5idNQOi
+	 cgp9WIi22igV33fE9wAxy0UgDocc6mPWju+yQYOVm/MaS0ZbX8ula8iMjGaxF5bMqV
+	 laOq/J2AzsH9QJTDirc4o29gwQB+DDLFqFJEntdBIGtWSN+Hu5eB8gMcGRf0fCzZZu
+	 RGy1YJ8h6wXzw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Eric Biggers <ebiggers@google.com>,
@@ -49,9 +49,9 @@ Cc: Eric Biggers <ebiggers@google.com>,
 	Alim Akhtar <alim.akhtar@samsung.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 4/7] scsi: ufs: core: Add fill_crypto_prdt variant op
-Date: Mon, 10 Nov 2025 06:58:45 -0500
-Message-ID: <20251110115848.651076-4-sashal@kernel.org>
+Subject: [PATCH 6.6.y 5/7] scsi: ufs: core: Add UFSHCD_QUIRK_KEYS_IN_PRDT
+Date: Mon, 10 Nov 2025 06:58:46 -0500
+Message-ID: <20251110115848.651076-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251110115848.651076-1-sashal@kernel.org>
 References: <2025110906-retrieval-daunting-5fa7@gregkh>
@@ -66,102 +66,96 @@ Content-Transfer-Encoding: 8bit
 
 From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 8ecea3da1567e0648b5d37a6faec73fc9c8571ba ]
+[ Upstream commit 4c45dba50a3750a0834353c4187e7896b158bc0c ]
 
-Add a variant op to allow host drivers to initialize nonstandard
-crypto-related fields in the PRDT.  This is needed to support inline
-encryption on the "Exynos" UFS controller.
+Since the nonstandard inline encryption support on Exynos SoCs requires
+that raw cryptographic keys be copied into the PRDT, it is desirable to
+zeroize those keys after each request to keep them from being left in
+memory.  Therefore, add a quirk bit that enables the zeroization.
 
-Note that this will be used together with the support for overriding the
-PRDT entry size that was already added by commit ada1e653a5ea ("scsi: ufs:
-core: Allow UFS host drivers to override the sg entry size").
+We could instead do the zeroization unconditionally.  However, using a
+quirk bit avoids adding the zeroization overhead to standard devices.
 
 Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
 Signed-off-by: Eric Biggers <ebiggers@google.com>
-Link: https://lore.kernel.org/r/20240708235330.103590-5-ebiggers@kernel.org
+Link: https://lore.kernel.org/r/20240708235330.103590-6-ebiggers@kernel.org
 Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Stable-dep-of: d34caa89a132 ("scsi: ufs: core: Add a quirk to suppress link_startup_again")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd-crypto.h | 19 +++++++++++++++++++
- drivers/ufs/core/ufshcd.c        |  2 +-
- include/ufs/ufshcd.h             |  4 ++++
- 3 files changed, 24 insertions(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd-crypto.h | 17 +++++++++++++++++
+ drivers/ufs/core/ufshcd.c        |  1 +
+ include/ufs/ufshcd.h             |  8 ++++++++
+ 3 files changed, 26 insertions(+)
 
 diff --git a/drivers/ufs/core/ufshcd-crypto.h b/drivers/ufs/core/ufshcd-crypto.h
-index be8596f20ba2f..3eb8df42e1942 100644
+index 3eb8df42e1942..89bb97c14c15b 100644
 --- a/drivers/ufs/core/ufshcd-crypto.h
 +++ b/drivers/ufs/core/ufshcd-crypto.h
-@@ -37,6 +37,19 @@ ufshcd_prepare_req_desc_hdr_crypto(struct ufshcd_lrb *lrbp,
- 	h->dunu = cpu_to_le32(upper_32_bits(lrbp->data_unit_num));
+@@ -50,6 +50,20 @@ static inline int ufshcd_crypto_fill_prdt(struct ufs_hba *hba,
+ 	return 0;
  }
  
-+static inline int ufshcd_crypto_fill_prdt(struct ufs_hba *hba,
-+					  struct ufshcd_lrb *lrbp)
++static inline void ufshcd_crypto_clear_prdt(struct ufs_hba *hba,
++					    struct ufshcd_lrb *lrbp)
 +{
-+	struct scsi_cmnd *cmd = lrbp->cmd;
-+	const struct bio_crypt_ctx *crypt_ctx = scsi_cmd_to_rq(cmd)->crypt_ctx;
++	if (!(hba->quirks & UFSHCD_QUIRK_KEYS_IN_PRDT))
++		return;
 +
-+	if (crypt_ctx && hba->vops && hba->vops->fill_crypto_prdt)
-+		return hba->vops->fill_crypto_prdt(hba, crypt_ctx,
-+						   lrbp->ucd_prdt_ptr,
-+						   scsi_sg_count(cmd));
-+	return 0;
++	if (!(scsi_cmd_to_rq(lrbp->cmd)->crypt_ctx))
++		return;
++
++	/* Zeroize the PRDT because it can contain cryptographic keys. */
++	memzero_explicit(lrbp->ucd_prdt_ptr,
++			 ufshcd_sg_entry_size(hba) * scsi_sg_count(lrbp->cmd));
 +}
 +
  bool ufshcd_crypto_enable(struct ufs_hba *hba);
  
  int ufshcd_hba_init_crypto_capabilities(struct ufs_hba *hba);
-@@ -54,6 +67,12 @@ static inline void
- ufshcd_prepare_req_desc_hdr_crypto(struct ufshcd_lrb *lrbp,
- 				   struct request_desc_header *h) { }
+@@ -73,6 +87,9 @@ static inline int ufshcd_crypto_fill_prdt(struct ufs_hba *hba,
+ 	return 0;
+ }
  
-+static inline int ufshcd_crypto_fill_prdt(struct ufs_hba *hba,
-+					  struct ufshcd_lrb *lrbp)
-+{
-+	return 0;
-+}
++static inline void ufshcd_crypto_clear_prdt(struct ufs_hba *hba,
++					    struct ufshcd_lrb *lrbp) { }
 +
  static inline bool ufshcd_crypto_enable(struct ufs_hba *hba)
  {
  	return false;
 diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 7dcdaac31546b..8b7033cd6cdbb 100644
+index 8b7033cd6cdbb..6990886a54c5d 100644
 --- a/drivers/ufs/core/ufshcd.c
 +++ b/drivers/ufs/core/ufshcd.c
-@@ -2586,7 +2586,7 @@ static int ufshcd_map_sg(struct ufs_hba *hba, struct ufshcd_lrb *lrbp)
+@@ -5509,6 +5509,7 @@ void ufshcd_release_scsi_cmd(struct ufs_hba *hba,
+ 	struct scsi_cmnd *cmd = lrbp->cmd;
  
- 	ufshcd_sgl_to_prdt(hba, lrbp, sg_segments, scsi_sglist(cmd));
- 
--	return 0;
-+	return ufshcd_crypto_fill_prdt(hba, lrbp);
+ 	scsi_dma_unmap(cmd);
++	ufshcd_crypto_clear_prdt(hba, lrbp);
+ 	ufshcd_release(hba);
+ 	ufshcd_clk_scaling_update_busy(hba);
  }
- 
- /**
 diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index 3a3183dc899c3..9ba8162c00a5e 100644
+index 9ba8162c00a5e..40b457b4c831e 100644
 --- a/include/ufs/ufshcd.h
 +++ b/include/ufs/ufshcd.h
-@@ -323,6 +323,7 @@ struct ufs_pwr_mode_info {
-  * @device_reset: called to issue a reset pulse on the UFS device
-  * @config_scaling_param: called to configure clock scaling parameters
-  * @program_key: program or evict an inline encryption key
-+ * @fill_crypto_prdt: initialize crypto-related fields in the PRDT
-  * @event_notify: called to notify important events
-  * @mcq_config_resource: called to configure MCQ platform resources
-  * @get_hba_mac: called to get vendor specific mac value, mandatory for mcq mode
-@@ -366,6 +367,9 @@ struct ufs_hba_variant_ops {
- 				struct devfreq_simple_ondemand_data *data);
- 	int	(*program_key)(struct ufs_hba *hba,
- 			       const union ufs_crypto_cfg_entry *cfg, int slot);
-+	int	(*fill_crypto_prdt)(struct ufs_hba *hba,
-+				    const struct bio_crypt_ctx *crypt_ctx,
-+				    void *prdt, unsigned int num_segments);
- 	void	(*event_notify)(struct ufs_hba *hba,
- 				enum ufs_event_type evt, void *data);
- 	int	(*mcq_config_resource)(struct ufs_hba *hba);
+@@ -662,6 +662,14 @@ enum ufshcd_quirks {
+ 	 * host controller initialization fails if that bit is set.
+ 	 */
+ 	UFSHCD_QUIRK_BROKEN_CRYPTO_ENABLE		= 1 << 23,
++
++	/*
++	 * This quirk needs to be enabled if the host controller driver copies
++	 * cryptographic keys into the PRDT in order to send them to hardware,
++	 * and therefore the PRDT should be zeroized after each request (as per
++	 * the standard best practice for managing keys).
++	 */
++	UFSHCD_QUIRK_KEYS_IN_PRDT			= 1 << 24,
+ };
+ 
+ enum ufshcd_caps {
 -- 
 2.51.0
 
