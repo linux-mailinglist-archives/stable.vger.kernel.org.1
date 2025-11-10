@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-192993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11250C4962B
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 22:20:31 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F46C49634
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 22:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBFEE188CC90
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 21:20:55 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8E5EC341143
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 21:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52682FD7B2;
-	Mon, 10 Nov 2025 21:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA3D2FC013;
+	Mon, 10 Nov 2025 21:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AIEZalwM"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SBtFK4y5"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01212FDC40
-	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 21:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D257E2D94BB
+	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 21:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762809624; cv=none; b=TXchzNOqXGOVDBXTGYkNXIL+asHTKxLLWpa0tR0WMLDYePyu2guJoWXr0dYvbY1sqzUN0N4goUPGkIeomJBi9j5Sn3ufu3nASzmXJM0R/x24Cjh+gbFHKKAHbPXkqGI3kfJxDd4qx+KenAueYUEIS5nKe3wf7EIMdj3vUM++o6U=
+	t=1762809638; cv=none; b=p9nPPsWzn7VL5Yn+yVBrAQaPV8/f/y6V3lOMHkTOLUzW01mcZCj0IY/JOB5X4rMSpSGBCDDiABWufIJjRbhCT2rk+HmC2aqmAgITBdRQx3wtVuYZffzywUo+Cj70j8MHONkqg7JkO2G0BFgfP4UIcIMGYhyb1AW7SWtcQZ9kRe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762809624; c=relaxed/simple;
-	bh=JADbXZ5UI8Umt97CJUolaWnIg4Woa+TeJ+k8vFvZs9k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a2jSK3uNTNzmKK1YQh1LBD7LEzYjVwvX9WlM3wQ8/oyYhW2jn+vwb1VpXHyWdbAnW2Ai6riCAOpuzPGBGL3YrH/GoA6fTZKH0wVoYETHA2AvtlY2TUL+NymeZW4YibO/wnEjEJwgaO0vI9K5GCmZDIuaXIOqZKATWQDb7RtBSwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AIEZalwM; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1762809638; c=relaxed/simple;
+	bh=VwpxWlflDd3Cl0Mm2O4FlTqYvEwO9NBeGIQsW7oDzZ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NA8C6f+xzhnrT9VMf6GCDz6TMqDsBCITn4i4UCB+Auk7aE0BEichTXYLuUHKnFwO0bPStp0Ej9DNswTk0X2wGGmZBXbp4HXyTSihoBnrXHD+D3PzFJjoHNgw2qWKi43UHSRgkgZzxj2OX97ZwwPsjIclpmjvnTYiuqJwxRBgKqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SBtFK4y5; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762809613;
+	s=mimecast20190719; t=1762809626;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=YwkRbSaRWjLN0bjmCmxaA8r5XkXC44OYSeuiWIjvBBw=;
-	b=AIEZalwMnNiPbSMTpibyxmdzJmOE0F7Ctcxtph8JN+bUOqLpOaSjDtokNVd14BMrGi6M3g
-	L1iKEuPLAPa6FXahU/Gb8Lx83vPplsCROzCXbfYuaFdysR7BYmpzHPjr3EgkP8yLeBEYwG
-	yJhF5974iNHLaKvFGUjso+p3Z9PXaTY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CqbdrlaMc3Jk8JpenOWMbSfatSrNtvvxxieQXTOmSxo=;
+	b=SBtFK4y5d9TdxFFuamr6mI1dPs3y1a+hGQLJA0GYNJPTZeDMfA/18nSVDEuXR+pIJOt3jb
+	F+i+samMxZRxGoySv/8sqdKWKS0Y5SyRWWxUxdnAz2Z2ImBgu8t8//CV1LS2reW6aXcFBb
+	NDwY5ciyaEoqpCiIu/CJtpXwD60KJIc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-ze_qOA5lOnGL22DR3cL4MQ-1; Mon,
- 10 Nov 2025 16:20:10 -0500
-X-MC-Unique: ze_qOA5lOnGL22DR3cL4MQ-1
-X-Mimecast-MFC-AGG-ID: ze_qOA5lOnGL22DR3cL4MQ_1762809609
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-434-OW3wz_ZXNEe33dtCVjHiHQ-1; Mon,
+ 10 Nov 2025 16:20:16 -0500
+X-MC-Unique: OW3wz_ZXNEe33dtCVjHiHQ-1
+X-Mimecast-MFC-AGG-ID: OW3wz_ZXNEe33dtCVjHiHQ_1762809614
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9AB041956070;
-	Mon, 10 Nov 2025 21:20:08 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C992F195609D;
+	Mon, 10 Nov 2025 21:20:13 +0000 (UTC)
 Received: from emilne-na.westford.csb (unknown [10.45.224.56])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 95D1519560B7;
-	Mon, 10 Nov 2025 21:20:03 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EE81E19560B7;
+	Mon, 10 Nov 2025 21:20:08 +0000 (UTC)
 From: "Ewan D. Milne" <emilne@redhat.com>
 To: linux-nvme@lists.infradead.org
 Cc: mpatalan@redhat.com,
@@ -65,9 +67,11 @@ Cc: mpatalan@redhat.com,
 	njavali@marvell.com,
 	ming.lei@redhat.com,
 	stable@vger.kernel.org
-Subject: [PATCH 0/2] Two NVMe/FC bug fixes for -stable
-Date: Mon, 10 Nov 2025 16:19:59 -0500
-Message-ID: <20251110212001.6318-1-emilne@redhat.com>
+Subject: [PATCH 1/2] nvme: nvme-fc: move tagset removal to nvme_fc_delete_ctrl()
+Date: Mon, 10 Nov 2025 16:20:00 -0500
+Message-ID: <20251110212001.6318-2-emilne@redhat.com>
+In-Reply-To: <20251110212001.6318-1-emilne@redhat.com>
+References: <20251110212001.6318-1-emilne@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,27 +81,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-This patch series contains two fixes to the NVMe/FC transport code.
+Now target is removed from nvme_fc_ctrl_free() which is the ctrl->ref
+release handler. And even admin queue is unquiesced there, this way
+is definitely wrong because the ctr->ref is grabbed when submitting
+command.
 
-The first one fixes a problem where we prematurely free the tagset
-based on an observation and a fix originally proposed by Ming Lei,
-with a further modification based on more extensive testing.
+And Marco observed that nvme_fc_ctrl_free() can be called from request
+completion code path, and trigger kernel warning since request completes
+from softirq context.
 
-The second one fixes a problem where we sometimes still had a
-workqueue item queued when we freed the nvme_fc_ctrl.
+Fix the issue by moveing target removal into nvme_fc_delete_ctrl(),
+which is also aligned with nvme-tcp and nvme-rdma.
 
-Because both patches touch the same nvme_fc_delete_ctrl() function,
-they have to be applied in the correct order to merge cleanly.
-However they fix separate issues.
+Patch originally proposed by Ming Lei, then modified to move the tagset
+removal down to after nvme_fc_delete_association() after further testing.
 
-Ewan D. Milne (2):
-  nvme-fc: move tagset removal to nvme_fc_delete_ctrl()
-  nvme: nvme-fc: Ensure ->ioerr_work is cancelled in
-    nvme_fc_delete_ctrl()
+Cc: Marco Patalano <mpatalan@redhat.com>
+Cc: Ewan Milne <emilne@redhat.com>
+Cc: James Smart <james.smart@broadcom.com>
+Cc: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Cc: stable@vger.kernel.org
+Tested-by: Marco Patalano <mpatalan@redhat.com>
+Signed-off-by: Ewan D. Milne <emilne@redhat.com>
+---
+ drivers/nvme/host/fc.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
- drivers/nvme/host/fc.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
-
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index b613fc5966a7..9e1841223e8a 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -2359,17 +2359,11 @@ nvme_fc_ctrl_free(struct kref *ref)
+ 		container_of(ref, struct nvme_fc_ctrl, ref);
+ 	unsigned long flags;
+ 
+-	if (ctrl->ctrl.tagset)
+-		nvme_remove_io_tag_set(&ctrl->ctrl);
+-
+ 	/* remove from rport list */
+ 	spin_lock_irqsave(&ctrl->rport->lock, flags);
+ 	list_del(&ctrl->ctrl_list);
+ 	spin_unlock_irqrestore(&ctrl->rport->lock, flags);
+ 
+-	nvme_unquiesce_admin_queue(&ctrl->ctrl);
+-	nvme_remove_admin_tag_set(&ctrl->ctrl);
+-
+ 	kfree(ctrl->queues);
+ 
+ 	put_device(ctrl->dev);
+@@ -3265,11 +3259,18 @@ nvme_fc_delete_ctrl(struct nvme_ctrl *nctrl)
+ 
+ 	cancel_work_sync(&ctrl->ioerr_work);
+ 	cancel_delayed_work_sync(&ctrl->connect_work);
++
+ 	/*
+ 	 * kill the association on the link side.  this will block
+ 	 * waiting for io to terminate
+ 	 */
+ 	nvme_fc_delete_association(ctrl);
++
++	if (ctrl->ctrl.tagset)
++		nvme_remove_io_tag_set(&ctrl->ctrl);
++
++	nvme_unquiesce_admin_queue(&ctrl->ctrl);
++	nvme_remove_admin_tag_set(&ctrl->ctrl);
+ }
+ 
+ static void
 -- 
 2.43.0
 
