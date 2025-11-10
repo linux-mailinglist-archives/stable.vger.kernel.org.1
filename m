@@ -1,310 +1,289 @@
-Return-Path: <stable+bounces-192923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 867D8C459CA
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 10:23:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A048C45D01
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 11:06:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD74E4E97E0
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 09:23:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 430BD4F02A7
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 10:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2143002AD;
-	Mon, 10 Nov 2025 09:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55D4302CB3;
+	Mon, 10 Nov 2025 10:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kaYzo5LK"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="01ClbPZE";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="3Dx3gwgS";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="yfJRo7UP";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="7oGurzhB"
 X-Original-To: stable@vger.kernel.org
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013002.outbound.protection.outlook.com [40.107.159.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CA82F7AB5;
-	Mon, 10 Nov 2025 09:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762766584; cv=fail; b=VBOdBw0lKE6xo6LLKV4XqBeCM1SZKf20/nsGUPkUDhZMHf8Ix6FH2+kcXG6j8gkSUSD2+vJ+4ZUbtCOEzAcGWx3PUpSPg2UTpstOgwyzAiP3srckXe22AROQxAvV6lb8vF20QkUmma/SvsWRKDGGdG2tkJ6DuK6pv+UUUGUHmVQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762766584; c=relaxed/simple;
-	bh=icunUZ7iDuwYLuXeFh7MvArubdIedPNTgaxNtTOrN7g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fAX7N16gnUNlRKpkSQAUZ+q4HmtmUGYn7FMouiJpkgJ8B/bwocSFfc5Qmn5xgnUJTSMFm2I+qnesL3LpNWRYqH2/JHJU2YMQuG0pTpUuYS/62EdYxAFglkXs+OH77fi9jKDnSzckY/35gwql22PC8w9SyttikG678vP3wiydpS4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kaYzo5LK; arc=fail smtp.client-ip=40.107.159.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bcCCHw9xT7iZ0PxlkiEvT+6HGmQKFsUXN6+3Q8tdA63A06VcQvNDr+/Y45QhjZwT0k9M8ovOuPjF9JFs/+wGI5Dnp3pccvFicG1RYOfVFqEhSke3mXVg8SvMWmNboeb9/MaJ404XNA7M1fBm1J3IsPzSDLd0hBo/2smjoInevMleeGQMm2XdJP5Q534hg/u1uik148qmtInWgBdfAsFk446m1CedOxHHliECylzv4aq4CtSX7/paLcg5MrCasGvhYSXnyAMB8aKMShpuF3GJzMuMeKcxC1tZNWPvf/sAxs9vM0KLuuWLV9nBsJgusj2HMa8BvI5pzPHt5wSHiAiffQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yJH7S921AnDuXVgkK05Ud9SrROp4capxQMhSxPtjys0=;
- b=QQJ9Cc6uQIAsK46VDFzzBE2QC8Dvh9ixSQMTdsNRvU6BheGVtIHVPYSqjdCr68u3OrfJsEefzNXl8GqWDgz4fonytYFWjiiN5DQVejaYMLaCd0MUdxYDGTZMO+uKJDLLuuo4PsRmZIrWavCpAksjCIjbGAj9Gec8uEZbXJJhMPqE8s7aA8rRG4dy4V2zM8553GggtgIWS4+Ygozzlt1PjlsphNmwF9E1yYt0KFFQPm3hG6gkoFwKOkH18qhVytL9I1vo6/l7T9gbA6vDl7ivbfbr/oqJworhNF3OZFY+2SR1ZDE9gGXn6kLYpC8sCTjHA6VcNWRmqoBJ0R+JUxF4jQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yJH7S921AnDuXVgkK05Ud9SrROp4capxQMhSxPtjys0=;
- b=kaYzo5LKUFqHd5h24lhKY3/7kaBYfxAQ5nd+AsmcdVgTDlUiYphoZ40smtgXUMpkK5a20wuN+ZEa4rcBSnmjP15iii8EDUDQdLkW5bv4MM6rCYFUrWqNqo1mb3Eq94k34WvpZtLemXM5qOcan286vauhQgvtVefD+OUOhXrH40fpMB7D7JlG44M7UX2OsTFgGFCZ9r9zdoSDeBvYXOzQqftYwhHCcE8FnvJOq3ktgEgc6uPj3tuXQ0ZTv4573D/PZF2sxM/EV4SbNm8DwQv1tYmaMja31daFT5sAhq1mGV5G3QMoX3zqffwFZK9dKlt/60jAWp5B4LyNgcbqaSxUbQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by PA1PR04MB10468.eurprd04.prod.outlook.com (2603:10a6:102:448::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Mon, 10 Nov
- 2025 09:22:57 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::b067:7ceb:e3d7:6f93]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::b067:7ceb:e3d7:6f93%5]) with mapi id 15.20.9298.010; Mon, 10 Nov 2025
- 09:22:57 +0000
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: linux-phy@lists.infradead.org
-Cc: Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Josua Mayer <josua@solid-run.com>,
-	linux-kernel@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	devicetree@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v4 phy 03/16] phy: lynx-28g: support individual lanes as OF PHY providers
-Date: Mon, 10 Nov 2025 11:22:28 +0200
-Message-Id: <20251110092241.1306838-4-vladimir.oltean@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251110092241.1306838-1-vladimir.oltean@nxp.com>
-References: <20251110092241.1306838-1-vladimir.oltean@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AM8P190CA0026.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:219::31) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CE22367CF
+	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 10:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762768827; cv=none; b=aHS6YcPd+6+JeWcb/mrp+6bJlcfVk1Y8QfIOjPgb8R0tdLeCSx6IQnqaoBRSjgULyS+btSYCHWI1RBpIrpLkJViYXeIUjnhNTkXbrSM+MWfPJHIVOmRwHINQUxSZzVCKGBciesIFbeQfd2+N8RdoP3bSbJd0MhYC5gZUusjWmTg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762768827; c=relaxed/simple;
+	bh=0pLiqC7zX6y5XToxFf10Jb0sl2165D68lFufLFCmghU=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=c5lAWjt6PTwoaH7VAVbz7qFbaj9FZkcP/5TJXu3cHvU6HHvdCiqeSMPGUPqJQa5QId+cx8lVpj1c+fh6LStgRbhX/sDOE0IH3URQTKWWwUKBS9wCYvaw9gUrS5NTp0NjvImRGu7Q7pIEvXPbdoJ4PGXzL0Mo2ADpNuhYCH9JXDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=01ClbPZE; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=3Dx3gwgS; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=yfJRo7UP; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=7oGurzhB; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D917F21FD3;
+	Mon, 10 Nov 2025 10:00:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762768823; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=w/BxzBnNXdonPq9Y2zaHgBKsc6ngF/ZxixFOXiRQSKo=;
+	b=01ClbPZEEaxy3wZZLi+/XxDAzr9ERLYxEqIPHHG1P1IfNbwDw8pTZEdwre7d07UuooCVZW
+	lglKjLBhNrBp44IfF9288dpUM82muFDyz4yxsuOBnB6p5+uYF6PSFZ+EvfUyeHBhM3R3HN
+	BrV8s8vQhRWIiK2o4fLY6Hsm070qHDk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762768823;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=w/BxzBnNXdonPq9Y2zaHgBKsc6ngF/ZxixFOXiRQSKo=;
+	b=3Dx3gwgSnNNnNO7xj1B5hovmWrE11K8uvmJVtIzoYzmuzzrfmq1fW0AFdLrBpMSUSJhS2D
+	4FC99zHgSlhtTKCQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762768822; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=w/BxzBnNXdonPq9Y2zaHgBKsc6ngF/ZxixFOXiRQSKo=;
+	b=yfJRo7UPgLDczWsyOb5u2S5P5rbSYNqPxCoZmCsfouyx9opWZ3/Fe7rZ5ZjkhGp0eiAsOr
+	tItWPqIXvnLA272hctKvBrB2HmKoOvpz3EMutfzAXzAnA7CRcdOTxlpBZsB2HTYeKDjGm2
+	hjkNXXNjXR8cq1NlbCc5XYJwNjporFk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762768822;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=w/BxzBnNXdonPq9Y2zaHgBKsc6ngF/ZxixFOXiRQSKo=;
+	b=7oGurzhBOwCAEPvpUb4Vxelu4c21TIi6sz+7BWCz8wiSYjgfnkf8JhKEeFgbqbItX1OKtL
+	S9Jjze6YpUxxLhAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A818D1432C;
+	Mon, 10 Nov 2025 10:00:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id P5q0KLa3EWmBCAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 10 Nov 2025 10:00:22 +0000
+Message-ID: <461d3a9e-f3e2-4c2f-ac9b-2b842ce115fd@suse.cz>
+Date: Mon, 10 Nov 2025 11:00:22 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|PA1PR04MB10468:EE_
-X-MS-Office365-Filtering-Correlation-Id: e2f9c866-95da-4eca-77db-08de203abbe9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|366016|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PcxpmZkzE+S7VRAQKbo5p3Ck4qhsVWqeHWlAbUAcFHOUNE+67FuEl8U2AHlp?=
- =?us-ascii?Q?D1abu+DLqrls9UtPkapqGk2Qup4s+n5CZICozvKp4eMGlElaU3CTrZl/RVUh?=
- =?us-ascii?Q?kvFbFNtGeo8jK8R+kR9D5ckE2WYVSS0WlGuCqfXLTT/rzjUfC5dsHqLLesuW?=
- =?us-ascii?Q?Qf8fCBPGTYeb/ITArGMTp6oOaTPJR4iqnBN3l5ZxTBm36Jxn2sRuANJIa5NS?=
- =?us-ascii?Q?xQjEmaQOHemuNupPKyMzX6I18rkyYZGcgzZgR40PweiA8Fvhpgjf+TQCwYZy?=
- =?us-ascii?Q?fidTYAp+IUAI51hJwro+WZCWQIz14cZjHJTOInQQ/bm1KjU73HVvtfxMHW/Y?=
- =?us-ascii?Q?nqL/eKtw1P7rdDsTVTjixoVzJMDiW4M+qv54ciu3Rz0Uwv6hFVdf6VUY2dTJ?=
- =?us-ascii?Q?z/bColbl48tXb9yjKvTcJscI6N9ZotoV2MwBrvuX3yncSoObIa4s7pbYZJaX?=
- =?us-ascii?Q?sjQS/x42I2OZy8ijWpAUT286h5QGDWl7VSlcvAYjPiA6s5j3mZ5V5U9pJa9g?=
- =?us-ascii?Q?BntkhuzhlQd55JeA6Zyp6Y+RF1ncnp/jypqmgOer26s8rCwBiZeoAPfM3dKT?=
- =?us-ascii?Q?W7D7rdD5jdbNzCjntp54+68/EZPwyUtcBJxVlP/vj+HDWvGnkRRkZb40CtCh?=
- =?us-ascii?Q?s8THDZj8j3lEDSLBmVNxZTby6+vnpe4+uUgUuZM65iAgzrQUUzuORggI8BNI?=
- =?us-ascii?Q?XAsjcJjFOXwikSTryPMCF9xffa/9v4ZPQgSpUB/v0poBQUBzP/Bswh4xt6EP?=
- =?us-ascii?Q?1lVC+vtsGEsZ2WgVMXnnkYGKxvUggQJiuP7HvBLq+Et5Xvuqz5ggDnRPtwYW?=
- =?us-ascii?Q?QM8kr3OKF7ARs1JKiuhMmU8b6EbJ8FPvaOOPj93plJDLR2M+9Jf5/1i01cl1?=
- =?us-ascii?Q?IJUcaQPuJ/NGnMwCBX1whPkFboc8NI0sZrqz7ynosFA/NS9+NrkaxC8IFijX?=
- =?us-ascii?Q?oeQOrfUutptUyDusFScjHZtJWuQ5BBCuyvuy5aTKchvCTH7Y6rmNU/Dd6FTY?=
- =?us-ascii?Q?FTXTC7BGtvHdk/7Zu6szVnUAzjn2giw4I4W+TGIbtyHJnLiQZzA8/Byub8Pv?=
- =?us-ascii?Q?WVVaXL/tPmPxlfEu/ksoCMURHiZhmOH4aUUjhMczgI09sk9Is/tvUXXhgsWP?=
- =?us-ascii?Q?20hA0a5HC+ovqmIxGvk/dwyD6wn3WaeYd/4CUyEGTngn3fOyozuDwyTjUkHN?=
- =?us-ascii?Q?iOCQupeD9wHBLB9wedGGqoOw81LRegXu+H/O1NSCk6vGqfPaRLoScUM9E5Wg?=
- =?us-ascii?Q?aoD/vlE/JlIFTHEl1ZWso5DKakbGDtAY8+h+LMHp38Gl9tyiE3j8pvUwLzwp?=
- =?us-ascii?Q?zZSs3SQv7lb+aj7KoLgzjd49Hu9066Fr9+0qT6W3FzXtP2KzsgHeI0X/hAMf?=
- =?us-ascii?Q?0hK3BA0lw5OJ2zRPN/QAQULUdeUykqgX7z8IzJf/QUG4JXDU3mdY0nF42f8f?=
- =?us-ascii?Q?wUAAKHjne59isTf7RcTq9M/FVG6/8shqm+3n7xiIdDeqM3rF+hkkboUBsZ68?=
- =?us-ascii?Q?R2B7pmEA2uWSYy57RiKfxbUBmdysY1M5ZuvM?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kpyV04BhzWHPbPwIsQvq6lGJvJTH5ApU8f7JKpj8xvbHO9pMFIqe1Jp17MKp?=
- =?us-ascii?Q?FJBffjaYxezPyEhr0B9FfoerO3qBvrzjgqDU/763cfSwe+GznHvme7E6B/v4?=
- =?us-ascii?Q?uoscdbV7h3vXpOBwfhsnf/l3+0Lt82oWYmV2CACjRAYWM+bhLQu63+uEs8Tq?=
- =?us-ascii?Q?a0NYCEtY4WGHWgQ+lLicLsYwyjuJ/8GFm1T6HwUammZNsNG/8Fi/aX2B7M9T?=
- =?us-ascii?Q?1nfchXazizTOUmnsBD6TA9VI/Ader/U1ehEMijM+X7ejSXhybcUf3eNcvhq7?=
- =?us-ascii?Q?ZGkrwy4wIBA5V1T+kHf4gMjjW3pBsfvn1eAFLk7ZhlbPQFu22k2q9nSbEioa?=
- =?us-ascii?Q?nBex6atNYETDyeEtxWoWU9zsdRtsjxlMLW5bf+WPl2fcCcX56bpP6JDnwl9I?=
- =?us-ascii?Q?EJzEIFM7mp/j9vEOs1FARLNasFzHKFdoMvo7cpAiF/8LuBA3MDHvA7/lLr2q?=
- =?us-ascii?Q?iOuWa+c5gKUiOM+k2Bgu/6I/rlJA/8y5U5pYuvs0YdT0b/jUyX6hQVLxYdp8?=
- =?us-ascii?Q?pGnREUwFV+B8QPPwmG+OQF7mint90H8qzTNCmROkA/lO8TQXdanORkiq8vT/?=
- =?us-ascii?Q?d0zRm19DD2cF7aXvt6KAb2EzGNPlFViOAiyoWkw/+ftuYSOBCRt2bezShGG2?=
- =?us-ascii?Q?Ky7CKFI0tIvbKdcma9LbUK/kU4fGmK2zW6Ncui1C5RDHs4VaEjiir2smYy19?=
- =?us-ascii?Q?uQDH+UimMQ9G2o6JuDSXdGNNDuPII1pWUKQsHJJBnmcGFSV7GVpO5UTZhexc?=
- =?us-ascii?Q?o/IFmcirx2DUs9BUIj8hActAUGWWeSA/MYiaThI9c7V0QowxB9CkBMvEdQp9?=
- =?us-ascii?Q?7nogBMpqeRaH5QMz6qtKSwPq4W/fgbA2oIHco7x/ocUcFyXCN4KDoMz7uBuR?=
- =?us-ascii?Q?3hmWsdDzXOoI1RYqmeQSo69L2CjwYOQd9ofqGWrRnduJ74iTMkJWjybeBJLI?=
- =?us-ascii?Q?meKIeV+pQqm+nzDML4ITh9MRK4+sGal67HG/3sNxDOiDE+b6mJC9Puvhb2W5?=
- =?us-ascii?Q?6GxOXj3TNvwow3RW3mLsfv8IlxtpJALSE9sY2vxef8iVkcCcrd3VvNZK+Yul?=
- =?us-ascii?Q?MEmFz0GIOchd1qVCsVCsTLLDtKljntzMHnF5IE+XE7RtFSIdd6OWxi8bCcaZ?=
- =?us-ascii?Q?BP3G6nuqzNjPMKVqZJVQcBZlCeAyqwMMpQd+z+UtnGQAqF5V03jR+vIabtXw?=
- =?us-ascii?Q?yY6/tFB3XESJnvcVOTsfneIqalKhFejP07lmz8vv28eRtlEeZdiC/cGae7uD?=
- =?us-ascii?Q?ddc36yAg+FVLiVmAxz8g7dzNZmYJKVeIpCxkYK9yjEmG5nllEN77jt6DkRUu?=
- =?us-ascii?Q?Kl5v2erEp2YIWLmr1kQhoQJag5yH/U3Gmg412OqHFKSKw9QR9ln5BLQkMhDY?=
- =?us-ascii?Q?UCw9e2h5SEzKNi860abNXgDHtSy7uW4adPNkA9zFYN7jUAxCuBnc0ehI4Lqs?=
- =?us-ascii?Q?x2HGLKSHDH0dHTQiwQCGE5vJTWoiWtbWLM00Zq6Qq3kxKwz2cW2PCbwIdc3K?=
- =?us-ascii?Q?2VQ1qlOAU9cxJ92vkC2IgGGkVCi+QzjrkpbNgGc1vNWZm+7lIMZbV6kTYlFQ?=
- =?us-ascii?Q?SCMLIVC7BCQ0aeR7Yy5TcjSx43/45d+fq92MaLqWusEvutfU30HRcn+9dDv1?=
- =?us-ascii?Q?QA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2f9c866-95da-4eca-77db-08de203abbe9
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2025 09:22:56.8642
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: olW9OIIFP5dI2JzkHYuaoHzeuzdpkK/HK/fShP3TCPwjc1vJmDhYwb9xjYAwhGn30ApVyeoeKTW/RGpsczEV6g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10468
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] mm/ksm: fix flag-dropping behavior in ksm_madvise
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+To: Jakub Acs <acsjakub@amazon.de>, linux-mm@kvack.org,
+ Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, xu.xin16@zte.com.cn,
+ chengming.zhou@linux.dev, peterx@redhat.com, axelrasmussen@google.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251001090353.57523-1-acsjakub@amazon.de>
+ <20251001090353.57523-2-acsjakub@amazon.de>
+ <13c7242e-3a40-469b-9e99-8a65a21449bb@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <13c7242e-3a40-469b-9e99-8a65a21449bb@suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qemu.org:url,imap1.dmz-prg2.suse.org:helo,zte.com.cn:email,amazon.de:email,linux-foundation.org:email,suse.cz:mid,kvack.org:email,linux.dev:email]
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
+X-Spam-Level: 
 
-Currently, the bindings of this multi-lane SerDes are such that
-consumers specify the lane index in the PHY cell, and the lane itself is
-not described in the device tree.
+On 11/6/25 11:39, Vlastimil Babka wrote:
+> On 10/1/25 11:03, Jakub Acs wrote:
+>> syzkaller discovered the following crash: (kernel BUG)
+>> 
+>> [   44.607039] ------------[ cut here ]------------
+>> [   44.607422] kernel BUG at mm/userfaultfd.c:2067!
+>> [   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+>> [   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
+>> [   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+>> [   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
+>> 
+>> <snip other registers, drop unreliable trace>
+>> 
+>> [   44.617726] Call Trace:
+>> [   44.617926]  <TASK>
+>> [   44.619284]  userfaultfd_release+0xef/0x1b0
+>> [   44.620976]  __fput+0x3f9/0xb60
+>> [   44.621240]  fput_close_sync+0x110/0x210
+>> [   44.622222]  __x64_sys_close+0x8f/0x120
+>> [   44.622530]  do_syscall_64+0x5b/0x2f0
+>> [   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>> [   44.623244] RIP: 0033:0x7f365bb3f227
+>> 
+>> Kernel panics because it detects UFFD inconsistency during
+>> userfaultfd_release_all(). Specifically, a VMA which has a valid pointer
+>> to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
+>> 
+>> The inconsistency is caused in ksm_madvise(): when user calls madvise()
+>> with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR
+>> mode, it accidentally clears all flags stored in the upper 32 bits of
+>> vma->vm_flags.
+>> 
+>> Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int
+>> and int are 32-bit wide. This setup causes the following mishap during
+>> the &= ~VM_MERGEABLE assignment.
+>> 
+>> VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
+>> After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
+>> promoted to unsigned long before the & operation. This promotion fills
+>> upper 32 bits with leading 0s, as we're doing unsigned conversion (and
+>> even for a signed conversion, this wouldn't help as the leading bit is
+>> 0). & operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
+>> instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
+>> the upper 32-bits of its value.
+>> 
+>> Fix it by changing `VM_MERGEABLE` constant to unsigned long, using the
+>> BIT() macro.
+>> 
+>> Note: other VM_* flags are not affected:
+>> This only happens to the VM_MERGEABLE flag, as the other VM_* flags are
+>> all constants of type int and after ~ operation, they end up with
+>> leading 1 and are thus converted to unsigned long with leading 1s.
+>> 
+>> Note 2:
+>> After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
+>> no longer a kernel BUG, but a WARNING at the same place:
+>> 
+>> [   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
+>> 
+>> but the root-cause (flag-drop) remains the same.
+>> 
+>> Fixes: 7677f7fd8be76 ("userfaultfd: add minor fault registration mode")
+> 
+> Late to the party, but it seems to me the correct Fixes: should be
+> f8af4da3b4c1 ("ksm: the mm interface to ksm")
+> which introduced the flag and the buggy clearing code, no?
 
-It is desirable to describe individual Lynx 28G SerDes lanes in the
-device tree, in order to be able to customize electrical properties such
-as those in Documentation/devicetree/bindings/phy/transmit-amplitude.yaml
-(or others).
+Clarification: flags with bits >31 did not exist at the time of f8af4da3b4c1
+as they were only introduced later with 63c17fb8e5a4 ("mm/core,
+x86/mm/pkeys: Store protection bits in high VMA flags") (v4.6) so that would
+have been the most precise Fixes: commit. Sorry, Hugh :)
 
-If each lane may have an OF node, it appears natural for consumers to
-have their "phys" phandle point to that OF node.
+But that doesn't affect the stable backports efforts where the oldest LTS is
+5.4 anyway.
 
-The problem is that transitioning between one format and another is a
-breaking change. The bindings of the 28G Lynx SerDes can themselves be
-extended in a backward-compatible way, but the consumers cannot be
-modified without breaking them.
-
-Namely, if we have:
-
-&mac {
-	phys = <&serdes1 0>;
-};
-
-we cannot update the device tree to:
-
-&mac {
-	phys = <&serdes1_lane_0>;
-};
-
-because old kernels cannot resolve this phandle to a valid PHY.
-
-The proposal here is to keep tolerating existing device trees, which are
-not supposed to be changed, but modify lynx_28g_xlate() to also resolve
-the new format with #phy-cells = <0> in the lanes.
-
-This way we support 3 modes:
-- Legacy device trees, no OF nodes for lanes
-- New device trees, OF nodes for lanes and "phys" phandle points towards
-  them
-- Hybrid device trees, OF nodes for lanes (to describe electrical
-  parameters), but "phys" phandle points towards the SerDes top-level
-  provider
-
-Cc: Rob Herring <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
-v3->v4:
-- patch is new, broken out from previous "[PATCH v3 phy 13/17] phy:
-  lynx-28g: probe on per-SoC and per-instance compatible strings" to
-  deal only with lane OF nodes, in a backportable way
-- contains a new idea to support phandles either to the SerDes or to
-  lane nodes, via a single xlate function that redirects to
-  of_phy_simple_xlate() if the phandle is to the lane, or is implemented
-  as before if the phandle is to the SerDes.
-- Compared to v3 where we decided based on the compatible string whether
-  to use lynx_28g_xlate() which expects the SerDes as PHY provider, or
-  of_phy_simple_xlate() which expects the lanes as PHY provider, here we
-  completely decouple those two concepts and patch lynx_28g_xlate() to
-  support both cases.
-
- drivers/phy/freescale/phy-fsl-lynx-28g.c | 49 +++++++++++++++++++++---
- 1 file changed, 44 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/phy/freescale/phy-fsl-lynx-28g.c b/drivers/phy/freescale/phy-fsl-lynx-28g.c
-index 901240bbcade..61a992ff274f 100644
---- a/drivers/phy/freescale/phy-fsl-lynx-28g.c
-+++ b/drivers/phy/freescale/phy-fsl-lynx-28g.c
-@@ -571,7 +571,14 @@ static struct phy *lynx_28g_xlate(struct device *dev,
- 				  const struct of_phandle_args *args)
- {
- 	struct lynx_28g_priv *priv = dev_get_drvdata(dev);
--	int idx = args->args[0];
-+	int idx;
-+
-+	if (args->args_count == 0)
-+		return of_phy_simple_xlate(dev, args);
-+	else if (args->args_count != 1)
-+		return ERR_PTR(-ENODEV);
-+
-+	idx = args->args[0];
- 
- 	if (WARN_ON(idx >= LYNX_28G_NUM_LANE))
- 		return ERR_PTR(-EINVAL);
-@@ -605,6 +612,7 @@ static int lynx_28g_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct phy_provider *provider;
- 	struct lynx_28g_priv *priv;
-+	struct device_node *dn;
- 	int err;
- 
- 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-@@ -618,10 +626,41 @@ static int lynx_28g_probe(struct platform_device *pdev)
- 
- 	lynx_28g_pll_read_configuration(priv);
- 
--	for (int i = 0; i < LYNX_28G_NUM_LANE; i++) {
--		err = lynx_28g_probe_lane(priv, i, NULL);
--		if (err)
--			return err;
-+	dn = dev_of_node(dev);
-+	if (of_get_child_count(dn)) {
-+		struct device_node *child;
-+
-+		for_each_available_child_of_node(dn, child) {
-+			u32 reg;
-+
-+			/* PHY subnode name must be 'phy'. */
-+			if (!(of_node_name_eq(child, "phy")))
-+				continue;
-+
-+			if (of_property_read_u32(child, "reg", &reg)) {
-+				dev_err(dev, "No \"reg\" property for %pOF\n", child);
-+				of_node_put(child);
-+				return -EINVAL;
-+			}
-+
-+			if (reg >= LYNX_28G_NUM_LANE) {
-+				dev_err(dev, "\"reg\" property out of range for %pOF\n", child);
-+				of_node_put(child);
-+				return -EINVAL;
-+			}
-+
-+			err = lynx_28g_probe_lane(priv, reg, child);
-+			if (err) {
-+				of_node_put(child);
-+				return err;
-+			}
-+		}
-+	} else {
-+		for (int i = 0; i < LYNX_28G_NUM_LANE; i++) {
-+			err = lynx_28g_probe_lane(priv, i, NULL);
-+			if (err)
-+				return err;
-+		}
- 	}
- 
- 	dev_set_drvdata(dev, priv);
--- 
-2.34.1
+> Commit 7677f7fd8be76 is just one that notices it, right? But there are other
+> flags in >32 bit area, including pkeys etc. Sounds rather dangerous if they
+> can be cleared using a madvise.
+> 
+> So we can't amend the Fixes: now but maybe could advise stable to backport
+> for even older versions than based on 7677f7fd8be76 ?
+> 
+>> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Cc: Xu Xin <xu.xin16@zte.com.cn>
+>> Cc: Chengming Zhou <chengming.zhou@linux.dev>
+>> Cc: Peter Xu <peterx@redhat.com>
+>> Cc: Axel Rasmussen <axelrasmussen@google.com>
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Cc: stable@vger.kernel.org
+>> ---
+>>  include/linux/mm.h | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index 1ae97a0b8ec7..c6794d0e24eb 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -296,7 +296,7 @@ extern unsigned int kobjsize(const void *objp);
+>>  #define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
+>>  #define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
+>>  #define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
+>> -#define VM_MERGEABLE	0x80000000	/* KSM may merge identical pages */
+>> +#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
+>>  
+>>  #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
+>>  #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
+> 
 
 
