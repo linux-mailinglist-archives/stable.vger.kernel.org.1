@@ -1,195 +1,140 @@
-Return-Path: <stable+bounces-192933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A709C46618
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 12:50:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AF8C466FF
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 13:04:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E6EE1887460
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 11:51:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8401F1881736
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 12:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2398630AAC8;
-	Mon, 10 Nov 2025 11:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312053128D5;
+	Mon, 10 Nov 2025 11:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gk76Bm0H";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kvx5R2QP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aliAYlZw"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2884430C63D
-	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 11:50:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E205530DD19
+	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 11:58:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762775404; cv=none; b=VQLjcfdGPZiOd4JeBvAv9CT+2qAKlyG2q7mySS0J2c0l4wQgYh+oBVXud7B2lvp7G6YCnqcASwHFo6pIQZtaFBJMFCWJf0qO4VwHyloIq4C4wHFotWxxPPQ47gsyhKtgQ+0jYNbTtfJdlsRhWG7RViLLqmeL5d2xjlZVbHkRkBk=
+	t=1762775932; cv=none; b=nkcCENQK2btrlzb6KSJisECRKF68z8Dp6IaKILI2cnY6Npse+7DLK9nple1ZElHxArIG8TBGRJ+TUmsEqR+1/C0DacwbCjA4004dRgb4y5X+5dp+ObWGJeoc3WkXtIt6mNCZA1n+OqWGUDwCA6pL7JYGbrYB205JGl/Z8Z3mkko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762775404; c=relaxed/simple;
-	bh=PbfOgtPT0n2UXrEeiTGt3mSbUyFEmdqiEYouVpjeTQ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JxBfz3EwXKuTIh/WNrLDWaH8nUtoyx7/B5tEaktsddRkTHAiVpWk0ovhUDHwFN16YKaca26wpCxKfMk2BH+rrNindMinqzB6Kg+fo13KYYN+xfDvbw9RR7wmtSkUyee/6x0Sw4FIpzGaH9Rnpr2xnz+q2sWHocWVyCQ4yTGgwak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gk76Bm0H; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kvx5R2QP; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AA9CgOk3146225
-	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 11:50:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	toGXLTCJlydVt4OAEmWhLmfjiiINqMpQruYYZvrtmdI=; b=gk76Bm0HEIR3QPsF
-	p7UsJGZS/mEfyH6qsxu3gXJ1AhsXIYhbfNQg94YOOVS6o8U+T8h5Sek35YtId91i
-	cqj7Gj5N77/fYFyyw4EeC7KvyVPlkTSAzOMj9OLvf66DoA9hxsP/IM4bc/0JD2hG
-	8RONuhFUHeg5hLuJHdjoJWcGeIL8P+QU0wlD+o2/KDiDkst/UXG7WGXItqYXjCW6
-	5W0BQfPmLHk+Wx2Ygy7+mvpRdbebCFsDvDo3LE6IXZBODMirnJRHjLyRCRG83Dkm
-	UGiMb7fYn/bsJEIgYcKKKcUwUBFa7ic1wERFslFeSMTEEb8t3uU4DvJginSUOso4
-	6AIrTQ==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4abd7hrfg0-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 11:50:00 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8b23452ec2bso84184085a.1
-        for <stable@vger.kernel.org>; Mon, 10 Nov 2025 03:50:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1762775400; x=1763380200; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=toGXLTCJlydVt4OAEmWhLmfjiiINqMpQruYYZvrtmdI=;
-        b=kvx5R2QP6T4yRuayO5k5s6nvc9Balhe/8wpNMPyn7BFeA0dLjbAp4pLoTNFkss2dTC
-         nESxj2KPlakZtFHJTm7KAlKF5uItfjNVeOHI+tfSrh3y9Z692EExyk7bfHbQsgIWCRTH
-         9k0n8pENWYSehv+Q0GL+DUzv1mNaFK6mfjDbP2uTjLwKu10hSSHxRIaXtb0exuiIze1x
-         ibVx0ENVa0EBxD0tS/pF/c0nEZXnN7/a+nDvsjLuWWCB0MzdDuxiLY9kKFFuhWyuLIZW
-         EGpq7TNbe6TGcB6WaMBzhbzndmec8yVDUU+EMlym0o4g8piGt3aSrgvJdcvuDp3ni7rR
-         73WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762775400; x=1763380200;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=toGXLTCJlydVt4OAEmWhLmfjiiINqMpQruYYZvrtmdI=;
-        b=S8n72yH7dXcPXncyKC2u/UjBqxfvKjOn/TCZ65wZ1FJkVbwyXoH1vBwNdV/i+2ERac
-         hLJkD8GOEbLXAQpO80BAXzwVoKH5tsZeuL5WxX12dW2im74kr2It7Kf6vWi3EQ2Tc/bk
-         58k2Oi2cxl4QFQLrlipK44C+pl8P+8js8wxvuOT1cI9oOIj+bVdahLlTD23F64OApqOR
-         +RzeZVP7+KWESVQeImFrAu+BG6+ShOWWUGjMMQOgfN5WQfxtMtq20usHva60snNgMTNs
-         Ta2Ps7byyiWwmyXqhmRcEAH7kda7ZPmkiU0K4ET+KVl9PbOqiglNjftDHMkjcxAzaafA
-         ntRw==
-X-Forwarded-Encrypted: i=1; AJvYcCVgOJXWAdSr4zDtg10z/uXMdfWH08qpUF6HjwpgPbaXM1YX/y8bQPMuX+T7VfiaPEDHOUyrnjk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrltGIlrWkCfA4YXBe/051ULwsCOpYatcoqVFtx7iwMyfmjq0o
-	chlugraohgZuo/jIAY6YqDBlIe8efD19Fs+NwyeU96GgrD8iGYpdONJLpxtgLZySw6QrETz21Xg
-	y8fYfFClXgnjXCWsgx4YQBEy3h4JPS+d1m9Jsf0OGdEcfla74nb68NjokjFI=
-X-Gm-Gg: ASbGncuT3dsXHZqnc98ncMUtHoOX7kzpPSQ0mRzInw2VJ4n4n57u9riUIV8lKu8bvPY
-	YWdqOXMPPRcL3jFV+gNImmzhRJnRQXX7+AkC1uylvMkhf/XHjSgek5KcCmnngUB9B284IG08/yM
-	YzQnffEV9+6EsmlV/ttxmL6vhBB6EVOiDSKIFKibPUqIZeBBNK/U7Kj/29GLpcLLniAjLxR6GB4
-	K/844Yy5qMmyScsJMK0l1Xp6qTdVpogeWmVouhH1tP6mISFhBKCkGk/FTf9eUblMg66H4bH46I7
-	yxghcMBc4YeQv/2O1M1UvAs2YAresTEs0PfvjvY+iFDK0giasApYXpP5QLIBvRfTv4Jrym4xl8o
-	rJD80c6ecKie2+nLgzCu79PCEzne5RzC4fxKRw5ZPCZar5bbb+5aas9vz
-X-Received: by 2002:a05:620a:28d0:b0:8a2:a5b2:e3bf with SMTP id af79cd13be357-8b257f06a92mr604941985a.6.1762775400440;
-        Mon, 10 Nov 2025 03:50:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGVjQGFZFRM2pmp/M8zDXVLETjOwEc3uxHXPygKZvWFAmQzq7WVw+Rm1obV6L2pDPnFYmJtbg==
-X-Received: by 2002:a05:620a:28d0:b0:8a2:a5b2:e3bf with SMTP id af79cd13be357-8b257f06a92mr604939685a.6.1762775399998;
-        Mon, 10 Nov 2025 03:49:59 -0800 (PST)
-Received: from [192.168.119.202] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bdbce8f9sm1072113366b.2.2025.11.10.03.49.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Nov 2025 03:49:59 -0800 (PST)
-Message-ID: <28ffece5-29b7-4d6f-a6cf-5fdf3b8259ef@oss.qualcomm.com>
-Date: Mon, 10 Nov 2025 12:49:57 +0100
+	s=arc-20240116; t=1762775932; c=relaxed/simple;
+	bh=JqmIGzJGzfxUyKu90gqTMiH9zXs/ZC4/ChQUJO8kE8M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VRsKV8dDfl0HIQtY+B1djin53zLj5qoZZMuZkTmlPgXy8RtHC7yPMen03pl3zCLmRdJlqLweKlPVkoHhyREE7riUBQcTPt02l49kCyN1F99zZjS1jCdj8Xs7RGf6OpIZrOvXM8mkpaSxDsO/lslI/JvozF07n3a5nTA7MeSOSX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aliAYlZw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5C7C116D0;
+	Mon, 10 Nov 2025 11:58:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762775931;
+	bh=JqmIGzJGzfxUyKu90gqTMiH9zXs/ZC4/ChQUJO8kE8M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aliAYlZw1rRz8cPfa2eXFsP7/Z9nY5v4jmFR6qu7Me0Sdw52Adkkuyz3VUZZjeany
+	 HKQt3ve0W72qLQ7TR4acW436uvtR4oB6RHEHxvk5JsMpdLIZqT5q1f/kkedKw8GHZl
+	 DN0TLKz8xilcqfUelR8x/VtBnRTa+FZaQRTncqRhkvvjx2rWNTMN1SxGB+dBtio3Xi
+	 ho8YTAmgdFaIIE7YtAr6XkPVumxMY2hDtnx5wq7miYqYZXmYsN4hWXCt5K8/FswfvX
+	 VzAkUQegdbIt/9qWUuGPc75ICm/xnb2syhjWb6oFRRTI+m9g5MIibXePiboTQNxCdW
+	 VbAC/umg67chQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Eric Biggers <ebiggers@google.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/7] scsi: ufs: core: Add UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE
+Date: Mon, 10 Nov 2025 06:58:42 -0500
+Message-ID: <20251110115848.651076-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025110906-retrieval-daunting-5fa7@gregkh>
+References: <2025110906-retrieval-daunting-5fa7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: lemans-evk: Enable Bluetooth support
-To: Wei Deng <wei.deng@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        stable@vger.kernel.org, cheng.jiang@oss.qualcomm.com,
-        quic_jiaymao@quicinc.com, quic_chezhou@quicinc.com,
-        quic_shuaz@quicinc.com
-References: <20251110055709.319587-1-wei.deng@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20251110055709.319587-1-wei.deng@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: o1gj0rOSDLvDw4e2q06wxsUP5AEXLX5l
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEwMDEwMyBTYWx0ZWRfX+p6bMY5tA6kx
- +02l9AuLtALnzOLpaQDTLwGkdG1XoVe4Nslw7IWRZ6lp5AxxT932Q4jdEiQCjM7xCjyGze3P5U3
- 4bOP/b5K1euAzNR9PHAaBSEiOMDhX3PgTzk7Txzb5HanfN2igq6eZJScbMy5RFnLByym6LtrGXM
- dJAovC6oLWSTxglUHpx8u+Vmc16s1SVpak2xM4WkEWblIwv9UJ9a4nJwCagw0Vg9CbB0dlcvQFO
- puFnPl0dlzntlVUDFr6Y1TvKwc2WRb6b8ktI5Kd3IJXuzL3cJI7mLQ7Ylnc6sqCBxOH+oaWxWaa
- hTO1jpAWIYCjm4MT4NlQC4soZ5kyUXZVobVdo3/qge7lVZCJogGAhaQZzKXkWtTnBoefyzWeVa/
- qN5QbEq/2PpK9OL1s8efKM0wY1PujA==
-X-Proofpoint-ORIG-GUID: o1gj0rOSDLvDw4e2q06wxsUP5AEXLX5l
-X-Authority-Analysis: v=2.4 cv=Yt4ChoYX c=1 sm=1 tr=0 ts=6911d169 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=b7yh_2p2DTCkp5fgmd0A:9
- a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-10_04,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 spamscore=0 phishscore=0 malwarescore=0
- impostorscore=0 clxscore=1015 suspectscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2511100103
+Content-Transfer-Encoding: 8bit
 
-On 11/10/25 6:57 AM, Wei Deng wrote:
-> There's a WCN6855 WiFi/Bluetooth module on an M.2 card. To make
-> Bluetooth work, we need to define the necessary device tree nodes,
-> including UART configuration and power supplies.
-> 
-> Since there is no standard M.2 binding in the device tree at present,
-> the PMU is described using dedicated PMU nodes to represent the
-> internal regulators required by the module.
-> 
-> The 3.3V supply for the module is assumed to come directly from the
-> main board supply, which is 12V. To model this in the device tree, we
-> add a fixed 12V regulator node as the DC-IN source and connect it to
-> the 3.3V regulator node.
-> 
-> Signed-off-by: Wei Deng <wei.deng@oss.qualcomm.com>
-> ---
+From: Eric Biggers <ebiggers@google.com>
 
-[...]
+[ Upstream commit c2a90eee29f41630225c9a64d26c425e1d50b401 ]
 
->  &apps_rsc {
-> @@ -627,6 +708,22 @@ &qupv3_id_2 {
->  	status = "okay";
->  };
->  
-> +&qup_uart17_cts {
-> +	bias-disable;
-> +};
-> +
-> +&qup_uart17_rts {
-> +	bias-pull-down;
-> +};
-> +
-> +&qup_uart17_tx {
-> +	bias-pull-up;
-> +};
-> +
-> +&qup_uart17_rx {
-> +	bias-pull-down;
-> +};
+Add UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE which lets UFS host drivers
+initialize the blk_crypto_profile themselves rather than have it be
+initialized by ufshcd-core according to the UFSHCI standard.  This is
+needed to support inline encryption on the "Exynos" UFS controller which
+has a nonstandard interface.
 
-This is notably different than all other platforms' bluetooth pin
-settings - for example pulling down RX sounds odd, since UART signal
-is supposed to be high at idle
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Link: https://lore.kernel.org/r/20240708235330.103590-2-ebiggers@kernel.org
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: d34caa89a132 ("scsi: ufs: core: Add a quirk to suppress link_startup_again")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/ufs/core/ufshcd-crypto.c | 10 +++++++---
+ include/ufs/ufshcd.h             |  9 +++++++++
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
-see hamoa.dtsi : qup_uart14_default as an example
+diff --git a/drivers/ufs/core/ufshcd-crypto.c b/drivers/ufs/core/ufshcd-crypto.c
+index f2c4422cab864..debc925ae439b 100644
+--- a/drivers/ufs/core/ufshcd-crypto.c
++++ b/drivers/ufs/core/ufshcd-crypto.c
+@@ -159,6 +159,9 @@ int ufshcd_hba_init_crypto_capabilities(struct ufs_hba *hba)
+ 	int err = 0;
+ 	enum blk_crypto_mode_num blk_mode_num;
+ 
++	if (hba->quirks & UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE)
++		return 0;
++
+ 	/*
+ 	 * Don't use crypto if either the hardware doesn't advertise the
+ 	 * standard crypto capability bit *or* if the vendor specific driver
+@@ -228,9 +231,10 @@ void ufshcd_init_crypto(struct ufs_hba *hba)
+ 	if (!(hba->caps & UFSHCD_CAP_CRYPTO))
+ 		return;
+ 
+-	/* Clear all keyslots - the number of keyslots is (CFGC + 1) */
+-	for (slot = 0; slot < hba->crypto_capabilities.config_count + 1; slot++)
+-		ufshcd_clear_keyslot(hba, slot);
++	/* Clear all keyslots. */
++	for (slot = 0; slot < hba->crypto_profile.num_slots; slot++)
++		hba->crypto_profile.ll_ops.keyslot_evict(&hba->crypto_profile,
++							 NULL, slot);
+ }
+ 
+ void ufshcd_crypto_register(struct ufs_hba *hba, struct request_queue *q)
+diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+index e9db9682316a2..21d03510efb66 100644
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -642,6 +642,15 @@ enum ufshcd_quirks {
+ 	 * thus need this quirk to skip related flow.
+ 	 */
+ 	UFSHCD_QUIRK_MCQ_BROKEN_RTC			= 1 << 21,
++
++	/*
++	 * This quirk needs to be enabled if the host controller supports inline
++	 * encryption but it needs to initialize the crypto capabilities in a
++	 * nonstandard way and/or needs to override blk_crypto_ll_ops.  If
++	 * enabled, the standard code won't initialize the blk_crypto_profile;
++	 * ufs_hba_variant_ops::init() must do it instead.
++	 */
++	UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE		= 1 << 22,
+ };
+ 
+ enum ufshcd_caps {
+-- 
+2.51.0
 
-Konrad
 
