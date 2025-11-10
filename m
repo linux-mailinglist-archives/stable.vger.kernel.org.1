@@ -1,163 +1,140 @@
-Return-Path: <stable+bounces-192871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13580C44A3B
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 00:32:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ECFAC44AD1
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 01:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7C633AC46C
-	for <lists+stable@lfdr.de>; Sun,  9 Nov 2025 23:32:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BB94188B923
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 00:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FD823BD1B;
-	Sun,  9 Nov 2025 23:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E8317B506;
+	Mon, 10 Nov 2025 00:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="sTTRis8q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EDDBp+q+"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9435A2E40E;
-	Sun,  9 Nov 2025 23:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EE32AD1F
+	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 00:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762731146; cv=none; b=QBOCzxkIWBHLBDT67RvcrmSa9hRBFjUptvZkNjNOBdAY6gl2DtNLu6pBTDY4t4OCYehV5lscyxcJECyLSuOi6DZcHzHZyxMn5scCYFjq7qR6ePKUG7j4dp378VVZ3u3J5dhGz6bTj/HazOKr5CcqcderwZUbbf8dG0JF83w0eeM=
+	t=1762735673; cv=none; b=YGCbgOX+6UzBfy1gcT4ZbCho6dEauhfSGQWhMQMdo8T6+62tiSoSwkXcMAD2sv89yC9w/vrcmvoFIRvBxEuzYrGPy+ful9AO//XXPVvI9ArImLu9xAe2gVjyuGvk4HCPgrx3A/PItGZWIQLN9DDsW0YXfXKiZz0vTpM7p45CBQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762731146; c=relaxed/simple;
-	bh=cN5E4hsnFbex6XZm2lWNS8X0PLAtD1Fk9wFC+yfUx/Y=;
-	h=To:Cc:Message-ID:From:Subject:Date; b=Qrg/aHifWYIV0FZwVsuPEZOFdOuO74nBp17kptbSEcyjgw8hTXNG1EaIXF3J/Yw4KKwWCttAtLF+H/8kxOnm900bKna8PweyGWKt71Suqs547I+keotUWPoiXmqmzC/Xge4CQLga1c673EnEukBgMv+WZDt9LTVXBGfHSx9dILQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=sTTRis8q; arc=none smtp.client-ip=103.168.172.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 7D0C9EC0096;
-	Sun,  9 Nov 2025 18:32:21 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Sun, 09 Nov 2025 18:32:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:message-id:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1762731141; x=1762817541; bh=nx4FOrWdSq+YAbCvyjoWIFM0L4cd
-	YEzeFfgYi/pIqlo=; b=sTTRis8q4cGmdKtjI7SQR5NMchmNSUj9D2hEv2YLMbmC
-	8W2R4duBlMvcfkFtQbaF1innN67sAqe/j+vhwMyCjaPcV5ozcZoR6DPaAua0YEky
-	X66t2MuVcTfeWiJcM9IRXlSd0goYmxub6Hx662cM+OD2bGN/ZzeNJSyW6py5TWpI
-	9F4SXOwSuC1687WcSYRG2sXK0cztIwUgy5GXuy55j11lqWyCM7yYmtx6+u9BkuN5
-	cW/01r3zKfOz9HM+f6SKZrtBW2NhQfyDbik1X6fdBEzikJMTme4hRJlTY+3egQZP
-	ypx+y2DMJe/UKoi7AI1XrkdITE/5WCv3CSIBebNsFA==
-X-ME-Sender: <xms:gyQRaVxoHoSwFU4KR8ZgDOtrT2hPSwXtnwz7TK7KEIg8pZStBNUOYQ>
-    <xme:gyQRadbog7rYoRV6h9uQxmyr-PmdrhegsZ4qJfn0OB8LKgs8gGJJafbT4fBqaOTsj
-    Fao59dqo_yn6pWSCom4k4qydW2srLzCFiv833AipMytX5yEbnARVEA1>
-X-ME-Received: <xmr:gyQRae10O_B0O-NV6Xdv97bGFa5Ik7zTA0PI0MzySsdAIdTe-Q3xz8urr9-oCMT1cUqY9Ly0Dr4DZ_rdFswUauF_zuKkjiQ55jM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduleeijeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepvfevkffhufffsedttdertddttddtnecuhfhrohhmpefhihhnnhcuvfhhrghinhcu
-    oehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    eukedugeettdegfffhfeejveevkedtgeeuudeggffgheegleejheeiffelgfeuueenucff
-    ohhmrghinhepuggvsghirghnrdhorhhgpdhkvghrnhgvlhdrohhrghenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhu
-    gidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouh
-    htpdhrtghpthhtohepmhgrugguhieslhhinhhugidrihgsmhdrtghomhdprhgtphhtthho
-    pehmphgvsegvlhhlvghrmhgrnhdrihgurdgruhdprhgtphhtthhopehnphhighhgihhnse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghrohihsegt
-    shhgrhhouhhprdgvuhdprhgtphhtthhopegtvggurghrmhgrgiifvghllhesmhgrtgdrtg
-    homhdprhgtphhtthhopehushgvrhhmheejseihrghhohhordgtohhmpdhrtghpthhtohep
-    lhhinhhugiesthhrvggslhhighdrohhrghdprhgtphhtthhopegsvghnhheskhgvrhhnvg
-    hlrdgtrhgrshhhihhnghdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhk
-    vghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:gyQRaXc1RFdIknDVT28Jr6NJ5CHLiMceYEgqOPUG66Pwxxw-HYd_Zg>
-    <xmx:gyQRaTLPt2hEREj_BMqP524Q5xj_cna2JkjukdC8Mx97Hz7EYoHNvw>
-    <xmx:gyQRadrD7307-ZTMu5fxNNN3BReLwHYaAGmM17Otbr7WvFgOybJbvA>
-    <xmx:gyQRaZtK7jqdKf0Bj1nmwjFPUpheifYGZsZGAszOqAytc_FGvrvSrg>
-    <xmx:hSQRadKHSj-vVrXAFHXXRS0w98m3FHAElT2rKORMXn6cuMf0Zlzdnl2D>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 9 Nov 2025 18:32:16 -0500 (EST)
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-    Michael Ellerman <mpe@ellerman.id.au>,
-    Nicholas Piggin <npiggin@gmail.com>,
-    Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Cedar Maxwell <cedarmaxwell@mac.com>,
-    Stan Johnson <userm57@yahoo.com>,
-    "Dr. David Alan Gilbert" <linux@treblig.org>,
-    Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-    stable@vger.kernel.org,
-    linuxppc-dev@lists.ozlabs.org,
-    linux-kernel@vger.kernel.org
-Message-ID: <22b3b247425a052b079ab84da926706b3702c2c7.1762731022.git.fthain@linux-m68k.org>
-From: Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH v2] powerpc: Add reloc_offset() to font bitmap pointer used for
- bootx_printf()
-Date: Mon, 10 Nov 2025 10:30:22 +1100
+	s=arc-20240116; t=1762735673; c=relaxed/simple;
+	bh=2mGP7YHgs6hdvGDLpCkHIzOwWjTIBT/spZGOZ1FMaaE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TLKJbF4yCSKMkMqf+cq9wVWgpT2pOBdUnXzM7hbN1gSUL2KVsl3MlmW45zelo/tlVqzV6hU26FCYj7oonnzczk9dThEtITk6aYATd9eEpoEb/QxQF5lPEHGD0uOTnOcpVPq1UNtMQf7elW3yiUEMS1ncjSIq0qZVhtAaoRS+6YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EDDBp+q+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19AB8C4CEFB;
+	Mon, 10 Nov 2025 00:47:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762735672;
+	bh=2mGP7YHgs6hdvGDLpCkHIzOwWjTIBT/spZGOZ1FMaaE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EDDBp+q+FhLKe0pHxxC/CauQWCYjmzL6ht7ROM5Yl0NDKROJQdLO9JosZ97kBe/sc
+	 DssBjlbpBj7Jq0j7vHmQb+UgBvz3e4iYSTCOTVdD/tNjaDLp5M/Ngfe8ZIL68iHb8Q
+	 3Do5qFDwFSoxTO808U9AbIBdWFwjg3ZbMq0tVXOe2YQM0LcLD8JlpVSIJ09ntMSN51
+	 WmqJmj/ekGDUHByQEztZyJy/aK4i7MbUYKk0MeO/p4XEMuhi2gCAAUMGiBWgAo8zDC
+	 eU+SMlYLmUqAe9xYaAWGbeK0ci1A/VEsL16lsh+Jl1mBE89SW3Xi/oAS1RD5P3eu4b
+	 4C0PfSHw7LWbw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Eric Biggers <ebiggers@google.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/8] scsi: ufs: core: Add UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE
+Date: Sun,  9 Nov 2025 19:47:43 -0500
+Message-ID: <20251110004750.555028-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025110940-control-hence-f9a8@gregkh>
+References: <2025110940-control-hence-f9a8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Since Linux v6.7, booting using BootX on an Old World PowerMac produces
-an early crash. Stan Johnson writes, "the symptoms are that the screen
-goes blank and the backlight stays on, and the system freezes (Linux
-doesn't boot)."
+From: Eric Biggers <ebiggers@google.com>
 
-Further testing revealed that the failure can be avoided by disabling
-CONFIG_BOOTX_TEXT. Bisection revealed that the regression was caused by
-a change to the font bitmap pointer that's used when btext_init() begins
-painting characters on the display, early in the boot process.
+[ Upstream commit c2a90eee29f41630225c9a64d26c425e1d50b401 ]
 
-Christophe Leroy explains, "before kernel text is relocated to its final
-location ... data is addressed with an offset which is added to the
-Global Offset Table (GOT) entries at the start of bootx_init()
-by function reloc_got2(). But the pointers that are located inside a
-structure are not referenced in the GOT and are therefore not updated by
-reloc_got2(). It is therefore needed to apply the offset manually by using
-PTRRELOC() macro."
+Add UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE which lets UFS host drivers
+initialize the blk_crypto_profile themselves rather than have it be
+initialized by ufshcd-core according to the UFSHCI standard.  This is
+needed to support inline encryption on the "Exynos" UFS controller which
+has a nonstandard interface.
 
-Cc: Cedar Maxwell <cedarmaxwell@mac.com>
-Cc: Stan Johnson <userm57@yahoo.com>
-Cc: "Dr. David Alan Gilbert" <linux@treblig.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: stable@vger.kernel.org
-Link: https://lists.debian.org/debian-powerpc/2025/10/msg00111.html
-Link: https://lore.kernel.org/linuxppc-dev/d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com/
-Reported-by: Cedar Maxwell <cedarmaxwell@mac.com>
-Closes: https://lists.debian.org/debian-powerpc/2025/09/msg00031.html
-Bisected-by: Stan Johnson <userm57@yahoo.com>
-Tested-by: Stan Johnson <userm57@yahoo.com>
-Fixes: 0ebc7feae79a ("powerpc: Use shared font data")
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Link: https://lore.kernel.org/r/20240708235330.103590-2-ebiggers@kernel.org
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: d968e99488c4 ("scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE for Intel ADL")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Changed since v1:
- - Improved commit log entry to better explain the need for PTRRELOC().
----
- arch/powerpc/kernel/btext.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd-crypto.c | 10 +++++++---
+ include/ufs/ufshcd.h             |  9 +++++++++
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/btext.c b/arch/powerpc/kernel/btext.c
-index 7f63f1cdc6c3..ca00c4824e31 100644
---- a/arch/powerpc/kernel/btext.c
-+++ b/arch/powerpc/kernel/btext.c
-@@ -20,6 +20,7 @@
- #include <asm/io.h>
- #include <asm/processor.h>
- #include <asm/udbg.h>
-+#include <asm/setup.h>
+diff --git a/drivers/ufs/core/ufshcd-crypto.c b/drivers/ufs/core/ufshcd-crypto.c
+index f2c4422cab864..debc925ae439b 100644
+--- a/drivers/ufs/core/ufshcd-crypto.c
++++ b/drivers/ufs/core/ufshcd-crypto.c
+@@ -159,6 +159,9 @@ int ufshcd_hba_init_crypto_capabilities(struct ufs_hba *hba)
+ 	int err = 0;
+ 	enum blk_crypto_mode_num blk_mode_num;
  
- #define NO_SCROLL
++	if (hba->quirks & UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE)
++		return 0;
++
+ 	/*
+ 	 * Don't use crypto if either the hardware doesn't advertise the
+ 	 * standard crypto capability bit *or* if the vendor specific driver
+@@ -228,9 +231,10 @@ void ufshcd_init_crypto(struct ufs_hba *hba)
+ 	if (!(hba->caps & UFSHCD_CAP_CRYPTO))
+ 		return;
  
-@@ -463,7 +464,7 @@ static noinline void draw_byte(unsigned char c, long locX, long locY)
- {
- 	unsigned char *base	= calc_base(locX << 3, locY << 4);
- 	unsigned int font_index = c * 16;
--	const unsigned char *font	= font_sun_8x16.data + font_index;
-+	const unsigned char *font = PTRRELOC(font_sun_8x16.data) + font_index;
- 	int rb			= dispDeviceRowBytes;
+-	/* Clear all keyslots - the number of keyslots is (CFGC + 1) */
+-	for (slot = 0; slot < hba->crypto_capabilities.config_count + 1; slot++)
+-		ufshcd_clear_keyslot(hba, slot);
++	/* Clear all keyslots. */
++	for (slot = 0; slot < hba->crypto_profile.num_slots; slot++)
++		hba->crypto_profile.ll_ops.keyslot_evict(&hba->crypto_profile,
++							 NULL, slot);
+ }
  
- 	rmci_maybe_on();
+ void ufshcd_crypto_register(struct ufs_hba *hba, struct request_queue *q)
+diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+index e9db9682316a2..21d03510efb66 100644
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -642,6 +642,15 @@ enum ufshcd_quirks {
+ 	 * thus need this quirk to skip related flow.
+ 	 */
+ 	UFSHCD_QUIRK_MCQ_BROKEN_RTC			= 1 << 21,
++
++	/*
++	 * This quirk needs to be enabled if the host controller supports inline
++	 * encryption but it needs to initialize the crypto capabilities in a
++	 * nonstandard way and/or needs to override blk_crypto_ll_ops.  If
++	 * enabled, the standard code won't initialize the blk_crypto_profile;
++	 * ufs_hba_variant_ops::init() must do it instead.
++	 */
++	UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE		= 1 << 22,
+ };
+ 
+ enum ufshcd_caps {
 -- 
-2.49.1
+2.51.0
 
 
