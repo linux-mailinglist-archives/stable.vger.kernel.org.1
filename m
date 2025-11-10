@@ -1,117 +1,115 @@
-Return-Path: <stable+bounces-192957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF214C46FC7
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 14:43:47 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB19C47095
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 14:53:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFAD81887003
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 13:42:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B35044EC576
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 13:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0155A30C36D;
-	Mon, 10 Nov 2025 13:42:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcM3pBk1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F09630FC0D;
+	Mon, 10 Nov 2025 13:53:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from postmaster.electro-mail.ru (postmaster.electro-mail.ru [109.236.68.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F9F228CBC;
-	Mon, 10 Nov 2025 13:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8E3225417;
+	Mon, 10 Nov 2025 13:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.236.68.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762782148; cv=none; b=NoToLihSk3AUihuY/kXCH9e/M2L2WuDEnmVYLDWo2APqsZDbZ91hx6sREgAq/i8lvvcVEzSgi4f1Q2kazBr8KPdlwu5hjJNSJ5UyIterTjiYf0LfH4gj//RgNAcCBxUAA6Bg10AA995JNdvfrWLtqT91+9aQeT76voxIjGQrP8c=
+	t=1762782800; cv=none; b=bslTxE9wBz+iBCvmDoxplnpq59LLnyhWY8ezIJ84WnBwMVEksPCI7uDN9PxSED/RwUuf5u3kurM2vl3yMWLgSu7Kr8IcDDTSBQark+gJ3GknUwh4bridcHzk0SgsVi8O0Rz7eKG0qEXzcLGyVIe+I4AAuLmPJkEsHm3rEhOFC9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762782148; c=relaxed/simple;
-	bh=odW9RE5kXkX2DoPQTnJV7+yOA9qzBKlmq7olgQ28j3g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YJGdALyxp1rlw20bS7x0ApS/fz4uhS7vGwZJFBtPeyDZgTQF+wP1NK6UE5c9EFhQfPqEQgUUFwU+mvI3qhMGRc5e1Ytae9qhHdkFJPA0v/nnH6Shdw6SR+gVI+qxhfP6wZkzpomicfQl7HEDEVhH8uOAqdaqTlyj2JAWxjOVNEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcM3pBk1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AC6C19422;
-	Mon, 10 Nov 2025 13:42:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762782148;
-	bh=odW9RE5kXkX2DoPQTnJV7+yOA9qzBKlmq7olgQ28j3g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BcM3pBk15O8CeNHJ6ZFU3yCzeMV4Y+gf/ucl4hMOp9TkHKM4w83754QMcY+eHCplJ
-	 VVvkxwiMOhYVejdAAQ9ZV0OPwuRx+XLt330hwDHRO4OHadL3UaBkhzHbMyi4EGaAgA
-	 u5Ole6i5YV13ByA1G8X61zv+qbe4FLEcet5D57A8PbObccoz9wMQKlAZnxxQRUaP69
-	 HlOhICvag0gpNdQs903tkSLBxBZOP8dCzqepwtV8tZ08Z6zy0iTTNtRqxegEK5SZaJ
-	 V1oWm0OMSRwIrHwH3HINjqk3Xv4PACI/el1NKNphPbwoV51TtN0A6IF4pyeatJz4Ww
-	 DOTd87ugiq7qg==
-Date: Mon, 10 Nov 2025 13:42:21 +0000
-From: Lee Jones <lee@kernel.org>
-To: kernel test robot <lkp@intel.com>
-Cc: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Shree Ramamoorthy <s-ramamoorthy@ti.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, oe-kbuild-all@lists.linux.dev,
-	Andrew Davis <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mfd: tps65219: Implement LOCK register handling
- for TPS65214
-Message-ID: <20251110134221.GD1949330@google.com>
-References: <20251106-fix_tps65219-v2-1-a7d608c4272f@bootlin.com>
- <202511070607.Il9q9meO-lkp@intel.com>
+	s=arc-20240116; t=1762782800; c=relaxed/simple;
+	bh=PJKxtiMdy5PQki0XTyfXhR7VS9xxuP+6xbZzXQLijds=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ISMJ5PvESDgqQAUykmlVwS5i1f5p48pqLssXOJrw7EqPrspaT1wR+oGIvR6qLM3K93yvfzNkPvysMyFUTQ819HP+ZM5iiJ1MDEmQV6p+hrKhSCxX482rPB3hYW3h2IHy+cuJtBdeEs5cTid1i1ZlghDWUsWz+4zT40u6/Del650=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tpz.ru; spf=pass smtp.mailfrom=tpz.ru; arc=none smtp.client-ip=109.236.68.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tpz.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tpz.ru
+Received: from localhost (localhost [127.0.0.1])
+	by postmaster.electro-mail.ru (Postfix) with ESMTP id 6EFD6FFC581;
+	Mon, 10 Nov 2025 16:45:25 +0300 (MSK)
+Received: from postmaster.electro-mail.ru ([127.0.0.1])
+	by localhost (postmaster.electro-mail.ru [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id l7jmAB_-WevC; Mon, 10 Nov 2025 16:45:25 +0300 (MSK)
+Received: from postmaster.electro-mail.ru (localhost [127.0.0.1])
+	by postmaster.electro-mail.ru (Postfix) with ESMTPS id E4BA8FFC582;
+	Mon, 10 Nov 2025 16:45:24 +0300 (MSK)
+Received: from email.electro-mail.ru (unknown [10.10.0.10])
+	by postmaster.electro-mail.ru (Postfix) with ESMTPS id D5BCEFFC581;
+	Mon, 10 Nov 2025 16:45:24 +0300 (MSK)
+Received: from lvc.d-systems.local (109.236.68.122) by email.electro-mail.ru
+ (10.120.0.4) with Microsoft SMTP Server (TLS) id 14.3.487.0; Mon, 10 Nov 2025
+ 16:45:23 +0300
+From: Ilya Krutskih <devsec@tpz.ru>
+To: <sdl@secdev.space>
+CC: Ilya Krutskih <devsec@tpz.ru>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <tglx@linutronix.de>, <mingo@kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, <lvc-project@linuxtesting.org>
+Subject: [PATCH] net: fealnx: fixed possible out of band acces to an array
+Date: Mon, 10 Nov 2025 13:44:22 +0000
+Message-ID: <20251110134423.432612-1-devsec@tpz.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <202511070607.Il9q9meO-lkp@intel.com>
+Content-Type: text/plain
+X-KSE-ServerInfo: srv-mail-01.tpz.local, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Interceptor-Info: protection disabled
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 09.10.2024 20:59:00
+X-KSE-Attachment-Filter-Scan-Result: Clean
+X-KSE-Attachment-Filter-Scan-Result: skipped
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 07 Nov 2025, kernel test robot wrote:
+fixed possible out of band access to an array=20
+If the fealnx_init_one() function is called more than MAX_UNITS times=20
+or card_idx is less than zero
 
-> Hi Kory,
-> 
-> kernel test robot noticed the following build warnings:
-> 
-> [auto build test WARNING on 1c353dc8d962de652bc7ad2ba2e63f553331391c]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Kory-Maincent-TI-com/mfd-tps65219-Implement-LOCK-register-handling-for-TPS65214/20251106-185551
-> base:   1c353dc8d962de652bc7ad2ba2e63f553331391c
-> patch link:    https://lore.kernel.org/r/20251106-fix_tps65219-v2-1-a7d608c4272f%40bootlin.com
-> patch subject: [PATCH v2 1/2] mfd: tps65219: Implement LOCK register handling for TPS65214
-> config: i386-buildonly-randconfig-003-20251107 (https://download.01.org/0day-ci/archive/20251107/202511070607.Il9q9meO-lkp@intel.com/config)
-> compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251107/202511070607.Il9q9meO-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202511070607.Il9q9meO-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
->    drivers/mfd/tps65219.c: In function 'tps65214_reg_write':
-> >> drivers/mfd/tps65219.c:479:26: warning: variable 'tps' set but not used [-Wunused-but-set-variable]
->      479 |         struct tps65219 *tps;
->          |                          ^~~
-> 
-> 
-> vim +/tps +479 drivers/mfd/tps65219.c
-> 
->    475	
->    476	static int tps65214_reg_write(void *context, unsigned int reg, unsigned int val)
->    477	{
->    478		struct i2c_client *i2c = context;
->  > 479		struct tps65219 *tps;
+Added a check: 0 <=3D card_idx < MAX_UNITS
 
-Please fix.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
--- 
-Lee Jones [李琼斯]
+Signed-off-by: Ilya Krutskih <devsec@tpz.ru>
+---
+ drivers/net/ethernet/fealnx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/fealnx.c b/drivers/net/ethernet/fealnx.=
+c
+index 6ac8547ef9b8..c7f2141a01fe 100644
+--- a/drivers/net/ethernet/fealnx.c
++++ b/drivers/net/ethernet/fealnx.c
+@@ -491,8 +491,8 @@ static int fealnx_init_one(struct pci_dev *pdev,
+=20
+ 	card_idx++;
+ 	sprintf(boardname, "fealnx%d", card_idx);
+-
+-	option =3D card_idx < MAX_UNITS ? options[card_idx] : 0;
++	if (card_idx >=3D 0)
++		option =3D card_idx < MAX_UNITS ? options[card_idx] : 0;
+=20
+ 	i =3D pci_enable_device(pdev);
+ 	if (i) return i;
+@@ -623,7 +623,7 @@ static int fealnx_init_one(struct pci_dev *pdev,
+ 		np->default_port =3D option & 15;
+ 	}
+=20
+-	if (card_idx < MAX_UNITS && full_duplex[card_idx] > 0)
++	if ((0 <=3D card_idx && MAX_UNITS > card_idx) && full_duplex[card_idx] =
+> 0)
+ 		np->mii.full_duplex =3D full_duplex[card_idx];
+=20
+ 	if (np->mii.full_duplex) {
+--=20
+2.43.0
+
 
