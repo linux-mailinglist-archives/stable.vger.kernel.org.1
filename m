@@ -1,231 +1,104 @@
-Return-Path: <stable+bounces-192992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90016C492A4
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 21:00:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11250C4962B
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 22:20:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A73723A8705
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 19:57:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBFEE188CC90
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 21:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F2133FE30;
-	Mon, 10 Nov 2025 19:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52682FD7B2;
+	Mon, 10 Nov 2025 21:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RejfgAbF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AIEZalwM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1FA33FE22;
-	Mon, 10 Nov 2025 19:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01212FDC40
+	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 21:20:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762804653; cv=none; b=MGfDLD+EB6XvOVRC+ve2TbaD+MG9dR8ipXln8NtN2nyYy3VxbQTa1Y401VNfEabBkXUsIpRs46uhihqBrqSvplIGUhXIUbkA1axiEXcas9g27J415q85iFKOByj2pY1tRlSijxTtlcozH6KcZO1FLqFx6clRDD485Ed2FoBBmfQ=
+	t=1762809624; cv=none; b=TXchzNOqXGOVDBXTGYkNXIL+asHTKxLLWpa0tR0WMLDYePyu2guJoWXr0dYvbY1sqzUN0N4goUPGkIeomJBi9j5Sn3ufu3nASzmXJM0R/x24Cjh+gbFHKKAHbPXkqGI3kfJxDd4qx+KenAueYUEIS5nKe3wf7EIMdj3vUM++o6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762804653; c=relaxed/simple;
-	bh=8jymNanNDh6OTlugBO11d9IPEUWdygDIcCUgZeTZ+BY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZQnxvQQukEeDhFR3z62bkT2Pl8oL8sCHkyuw2+VT9vXgiqRLjGMDM1iTFj5rprgbGorb0rdwepM3cPdtYDqhIX2xd5TSXgskmvkClky1+hKlOzxq5RugW98lNBWsLRmBB2otXbuAK4a6/saMLRqHk6vCBJ7pjrtXp/pvtfnp2K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RejfgAbF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE84C2BC87;
-	Mon, 10 Nov 2025 19:57:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762804652;
-	bh=8jymNanNDh6OTlugBO11d9IPEUWdygDIcCUgZeTZ+BY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RejfgAbFBT59TuDSFk3Cyjg8poBLbGKWa8PYKiE8jadpNf2V5WdYycEwKl5vLFb6y
-	 OJ3VzPUlRRUibfewgWupWbyVDD6Ibst15G0n/GeAONyUSJlJ+W3Vul28N2JfU8Ja5z
-	 UAwB5VW6BDO1c+SlW0ZfYqImnhGm7sHyfm26Pz5Gl+Y+f7ibHuObZgtDfbJNYSj6jC
-	 ouvlDEckUak8RQNs3PMpYwnxjNOKxAm0KU4bmvDbFEac9TCsxzT7LsLxA3+CuTuPxC
-	 yuPujKOd1PD4I2rJdekjtZDnwON3YiUsjqzhjdazn+zl7OwLM184H7FKLRgB+LMEpI
-	 XX5PtvuEUO/YQ==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
+	s=arc-20240116; t=1762809624; c=relaxed/simple;
+	bh=JADbXZ5UI8Umt97CJUolaWnIg4Woa+TeJ+k8vFvZs9k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a2jSK3uNTNzmKK1YQh1LBD7LEzYjVwvX9WlM3wQ8/oyYhW2jn+vwb1VpXHyWdbAnW2Ai6riCAOpuzPGBGL3YrH/GoA6fTZKH0wVoYETHA2AvtlY2TUL+NymeZW4YibO/wnEjEJwgaO0vI9K5GCmZDIuaXIOqZKATWQDb7RtBSwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AIEZalwM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762809613;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YwkRbSaRWjLN0bjmCmxaA8r5XkXC44OYSeuiWIjvBBw=;
+	b=AIEZalwMnNiPbSMTpibyxmdzJmOE0F7Ctcxtph8JN+bUOqLpOaSjDtokNVd14BMrGi6M3g
+	L1iKEuPLAPa6FXahU/Gb8Lx83vPplsCROzCXbfYuaFdysR7BYmpzHPjr3EgkP8yLeBEYwG
+	yJhF5974iNHLaKvFGUjso+p3Z9PXaTY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-ze_qOA5lOnGL22DR3cL4MQ-1; Mon,
+ 10 Nov 2025 16:20:10 -0500
+X-MC-Unique: ze_qOA5lOnGL22DR3cL4MQ-1
+X-Mimecast-MFC-AGG-ID: ze_qOA5lOnGL22DR3cL4MQ_1762809609
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9AB041956070;
+	Mon, 10 Nov 2025 21:20:08 +0000 (UTC)
+Received: from emilne-na.westford.csb (unknown [10.45.224.56])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 95D1519560B7;
+	Mon, 10 Nov 2025 21:20:03 +0000 (UTC)
+From: "Ewan D. Milne" <emilne@redhat.com>
+To: linux-nvme@lists.infradead.org
+Cc: mpatalan@redhat.com,
+	james.smart@broadcom.com,
+	paul.ely@broadcom.com,
+	justin.tee@broadcom.com,
+	sagi@grimberg.me,
+	njavali@marvell.com,
+	ming.lei@redhat.com,
 	stable@vger.kernel.org
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	intel-xe@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.17-6.12] drm/xe: Move declarations under conditional branch
-Date: Mon, 10 Nov 2025 14:57:06 -0500
-Message-ID: <20251110195718.859919-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251110195718.859919-1-sashal@kernel.org>
-References: <20251110195718.859919-1-sashal@kernel.org>
+Subject: [PATCH 0/2] Two NVMe/FC bug fixes for -stable
+Date: Mon, 10 Nov 2025 16:19:59 -0500
+Message-ID: <20251110212001.6318-1-emilne@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.17.7
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+This patch series contains two fixes to the NVMe/FC transport code.
 
-[ Upstream commit 9cd27eec872f0b95dcdd811edc39d2d32e4158c8 ]
+The first one fixes a problem where we prematurely free the tagset
+based on an observation and a fix originally proposed by Ming Lei,
+with a further modification based on more extensive testing.
 
-The xe_device_shutdown() function was needing a few declarations
-that were only required under a specific condition. This change
-moves those declarations to be within that conditional branch
-to avoid unnecessary declarations.
+The second one fixes a problem where we sometimes still had a
+workqueue item queued when we freed the nvme_fc_ctrl.
 
-Reviewed-by: Nitin Gote <nitin.r.gote@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20251007100208.1407021-1-tejas.upadhyay@intel.com
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-(cherry picked from commit 15b3036045188f4da4ca62b2ed01b0f160252e9b)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+Because both patches touch the same nvme_fc_delete_ctrl() function,
+they have to be applied in the correct order to merge cleanly.
+However they fix separate issues.
 
-LLM Generated explanations, may be completely bogus:
+Ewan D. Milne (2):
+  nvme-fc: move tagset removal to nvme_fc_delete_ctrl()
+  nvme: nvme-fc: Ensure ->ioerr_work is cancelled in
+    nvme_fc_delete_ctrl()
 
-Based on my analysis using semantic code analysis tools and git
-repository examination, here is my assessment:
+ drivers/nvme/host/fc.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-## Answer: YES
-
-## Detailed Analysis:
-
-### 1. Semantic Analysis Tools Used:
-
-**mcp__semcode__find_function**: Located the `xe_device_shutdown`
-function in drivers/gpu/drm/xe/xe_device.c:963-983
-
-**mcp__semcode__find_callers**: Identified that `xe_device_shutdown` is
-called by `xe_pci_shutdown` (the PCI device shutdown handler at
-drivers/gpu/drm/xe/xe_pci.c:877)
-
-**mcp__semcode__diff_functions**: Attempted to analyze semantic
-differences in the diff
-
-**Git history analysis**: Examined the commit chain and discovered the
-critical dependency relationship
-
-### 2. Key Findings:
-
-**This commit is explicitly marked as a stable dependency** for commit
-b11a020d914c3 ("drm/xe: Do clean shutdown also when using flr"). The git
-log shows:
-```
-Stable-dep-of: b11a020d914c ("drm/xe: Do clean shutdown also when using
-flr")
-```
-
-**The dependent bug fix (b11a020d914c3)**:
-- Fixes a real bug causing "random warnings from pending related works
-  as the underlying hardware is reset in the middle of their execution"
-- Has a `Fixes:` tag pointing to 501d799a47e2 ("drm/xe: Wire up device
-  shutdown handler")
-- Includes `Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>`
-  indicating maintainer involvement
-- Is already cherry-picked and destined for stable trees
-
-### 3. Code Change Analysis:
-
-**What this commit does**:
-- Moves variable declarations (`struct xe_gt *gt` and `u8 id`) from
-  function start into the conditional block where they're actually used
-- Purely a code organization change with **zero behavioral impact**
-- Changes from:
-  ```c
-  void xe_device_shutdown(struct xe_device *xe) {
-  struct xe_gt *gt;  // Declared at top
-  u8 id;
-  if (xe_driver_flr_disabled(xe)) {
-  // use gt and id here
-  }
-  }
-  ```
-  To:
-  ```c
-  void xe_device_shutdown(struct xe_device *xe) {
-  if (xe_driver_flr_disabled(xe)) {
-  struct xe_gt *gt;  // Declared inside conditional
-  u8 id;
-  // use gt and id here
-  }
-  }
-  ```
-
-### 4. Impact Scope:
-
-- **Affected function**: Single function `xe_device_shutdown` in xe DRM
-  driver
-- **Call path**: User shutdown/reboot → PCI shutdown handler →
-  xe_pci_shutdown → xe_device_shutdown
-- **Risk level**: Minimal - this is a refactoring that doesn't change
-  behavior
-- **Subsystem**: Intel Xe GPU driver (drm/xe) - not a core kernel
-  subsystem
-
-### 5. Why This Should Be Backported:
-
-**Primary Reason**: **Stable Dependency Requirement**
-- The subsequent bug fix b11a020d914c3 needs this commit for clean
-  application
-- Without it, the bug fix patch may have context conflicts or require
-  manual adjustment
-- Stable tree maintainers have already identified this as a required
-  dependency
-
-**Secondary Reasons**:
-- **Zero risk**: Pure code movement with no behavioral change
-- **Small scope**: Single function in a device driver
-- **Cherry-picked**: Already cherry-picked with signature `(cherry
-  picked from commit 15b3036045188f4da4ca62b2ed01b0f160252e9b)`
-- **Enables important fix**: Required for fixing shutdown warnings that
-  affect users
-
-### 6. Stable Tree Rules Compliance:
-
-✅ **Fixes real issue** (as a dependency for an actual bug fix)
-✅ **Small and contained** (single function, declaration movement)
-✅ **No new features** (refactoring only)
-✅ **Low regression risk** (no behavioral change)
-✅ **Explicitly marked for stable** (Stable-dep-of tag)
-
-### Conclusion:
-
-This commit should be backported to stable trees because it is
-explicitly marked as a stable dependency for an important bug fix. While
-it doesn't fix a bug itself, it's a necessary prerequisite that ensures
-the subsequent fix (b11a020d914c3) applies cleanly. The change is safe
-(zero behavioral impact), small (single function), and already
-identified by maintainers as required for stable tree integration.
-
- drivers/gpu/drm/xe/xe_device.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index 1c9907b8a4e9e..e7f838fed3298 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -962,12 +962,12 @@ void xe_device_remove(struct xe_device *xe)
- 
- void xe_device_shutdown(struct xe_device *xe)
- {
--	struct xe_gt *gt;
--	u8 id;
--
- 	drm_dbg(&xe->drm, "Shutting down device\n");
- 
- 	if (xe_driver_flr_disabled(xe)) {
-+		struct xe_gt *gt;
-+		u8 id;
-+
- 		xe_display_pm_shutdown(xe);
- 
- 		xe_irq_suspend(xe);
 -- 
-2.51.0
+2.43.0
 
 
