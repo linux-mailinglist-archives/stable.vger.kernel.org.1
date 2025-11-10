@@ -1,122 +1,124 @@
-Return-Path: <stable+bounces-192963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE058C47274
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 15:24:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6117CC473BC
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 15:35:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 815B518853E1
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 14:24:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3392B1886898
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 14:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A57731283E;
-	Mon, 10 Nov 2025 14:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5226F315D37;
+	Mon, 10 Nov 2025 14:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="gYwvnRf1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZBkHe/p"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD1D3126C5;
-	Mon, 10 Nov 2025 14:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0101430C630;
+	Mon, 10 Nov 2025 14:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762784665; cv=none; b=otRPKQyE9of7bqf3dvdySAP5WB/XxqdDdQeuPNX4cqbAuncCKRAZFWSwhlWTQt9jW5SqqDXzgsfdXZcYXneFdr0iwe0tDoCeq/RUf1cZ1M3+NS0SCtBPW0AmQ8nMOataK0G8Rz5XZgHemZpEj8wW+6kH0GjCpsrTnyeluPc0MZI=
+	t=1762785280; cv=none; b=ng5/iq7o7sX+O3cmA4AEc0/OsRYL2538R3JOjVxOMy2stLY+Us1RhZrv4PeWMTZFsRA8FYjqR5QdRRiGcR+OdmLNc8Z69klY3NhUDCkZe67TnQ4peGQnYT2rdLh3JHXKw+sMUcNx+hV2i3Iek1CaLOy1O0fKUd8kL43RSCZoZjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762784665; c=relaxed/simple;
-	bh=JGZIzuVhWGC5kPsqULut5X8vxT48KYgXTejxFx9xV5s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mK6pmL2+P2iyF4Dp7ZJRVJ3vR0rT3uV9ausfDoz3KLrfouTEDgooW9x5bGLAMLWvNUwyV3agHE+Np8lVrbLzSYhzLETKlJsPs76Tut+BvPOPq4/7wBd9oCJSNcw+vOjRFKY4mP8YVgFDlACZbmaLTSTkVz9LasWG7GUqUlAqifk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=gYwvnRf1; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=MyqtwMhfj3aYB5/YZYHefwpNNP/5TyDe6z4hlolkG1o=;
-	b=gYwvnRf1gXDq1/sUEjvMK6XeiqeZ/mQhNjHq181GZDVBcLsWfXzMtaWbg8iX5i
-	aoVSlSxhcNndtiCfkr5mjHtd3llD0eZaNhMbQHusUrQrBCOCjEvN7QrMYAH9AD87
-	aXy+aSnJfsfYFr5A9JgX4rz+3YcePIhqhgDCD8RMU/xn8=
-Received: from [192.168.1.105] (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgDXnNFb9RFpkRvpDA--.18906S2;
-	Mon, 10 Nov 2025 22:23:24 +0800 (CST)
-Message-ID: <ca686233-f687-4147-b22a-72d0b0bedfcc@163.com>
-Date: Mon, 10 Nov 2025 22:23:21 +0800
+	s=arc-20240116; t=1762785280; c=relaxed/simple;
+	bh=tbLSKTw5AUf6TNZDLnvM5iO0QJwGxY8JMEutVZVGHDU=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=uZpDDyuUTW8tFrv2DapYT0zO74XyPNUWKpYTszMFHKcKVt57SLrrnaA4jbOkurZ4v9954B+afHsE05sPg6urfX76o1F06PTG5q7wiqMPELYy1inaHz6WJK1c/nPe3DSIG173L0sfmG64TXUdZRfBfAvMulKc92+EVcPQqJOovb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZBkHe/p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46ABEC116B1;
+	Mon, 10 Nov 2025 14:34:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762785279;
+	bh=tbLSKTw5AUf6TNZDLnvM5iO0QJwGxY8JMEutVZVGHDU=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=aZBkHe/pxy0wOC+B2RVIw8KwW0hbyTXws6hnxhGsKBGdbUwkIvKSRe7dqMkQWPACP
+	 DWc/GhOMK0xu1w8a5Y4ztWPH2SVsWwf103ok2KOk0xRg/028U7RHD/pbJ2jYI5PGjB
+	 oxnnCs+YKWNat8TxOXCNxxJL47OzMo+xNoWCitzQyYlqLq6leE2UIcLtIm1uJzhMg1
+	 lov4m0m1PLwEd/0f5UOtKVrHHcdrmT7LO2ZHV/5K1r5wcuKl5X7FiHlcrVyG0ydYii
+	 eGvFeHlFRonezSSnJowJIul7cM+/3ubZak5mj2ES65BK5L/oQwIHkqBJF+dYgokdiE
+	 3oe4NJopE3qjA==
+Date: Mon, 10 Nov 2025 08:34:37 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] gendwarfksyms: Skip files with no exports
-To: Miguel Ojeda <ojeda@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Alex Gaynor <alex.gaynor@gmail.com>
-Cc: linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
-References: <20251110131913.1789896-1-ojeda@kernel.org>
-Content-Language: en-US
-From: Haiyue Wang <haiyuewa@163.com>
-In-Reply-To: <20251110131913.1789896-1-ojeda@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:PCgvCgDXnNFb9RFpkRvpDA--.18906S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Ww17ZF4DXFWrCFykAw15XFb_yoW8tFWkpF
-	Z3Wrs8Kry5Ga48tFW7Gr1xuF15X3s5Gr43JrWrXw48ZF17Z3ZagFZ29r45uFyUuws29ay5
-	tFsFvF1jgw4qv3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UtPEhUUUUU=
-X-CM-SenderInfo: 5kdl53xhzdqiywtou0bp/1tbiRR0Ca2kR4R9-swABs6
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-bluetooth@vger.kernel.org, cheng.jiang@oss.qualcomm.com, 
+ Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ quic_jiaymao@quicinc.com, linux-arm-msm@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, quic_shuaz@quicinc.com, 
+ quic_chezhou@quicinc.com, Konrad Dybcio <konradybcio@kernel.org>
+To: Wei Deng <wei.deng@oss.qualcomm.com>
+In-Reply-To: <20251110055709.319587-1-wei.deng@oss.qualcomm.com>
+References: <20251110055709.319587-1-wei.deng@oss.qualcomm.com>
+Message-Id: <176278493491.154705.438976021468566948.robh@kernel.org>
+Subject: Re: [PATCH] arm64: dts: qcom: lemans-evk: Enable Bluetooth support
 
-On 11/10/2025 9:19 PM, Miguel Ojeda wrote:
-> From: Sami Tolvanen <samitolvanen@google.com>
+
+On Mon, 10 Nov 2025 11:27:09 +0530, Wei Deng wrote:
+> There's a WCN6855 WiFi/Bluetooth module on an M.2 card. To make
+> Bluetooth work, we need to define the necessary device tree nodes,
+> including UART configuration and power supplies.
 > 
-> Starting with Rust 1.91.0 (released 2025-10-30), in upstream commit
-> ab91a63d403b ("Ignore intrinsic calls in cross-crate-inlining cost model")
-> [1][2], `bindings.o` stops containing DWARF debug information because the
-> `Default` implementations contained `write_bytes()` calls which are now
-> ignored in that cost model (note that `CLIPPY=1` does not reproduce it).
+> Since there is no standard M.2 binding in the device tree at present,
+> the PMU is described using dedicated PMU nodes to represent the
+> internal regulators required by the module.
 > 
-> This means `gendwarfksyms` complains:
+> The 3.3V supply for the module is assumed to come directly from the
+> main board supply, which is 12V. To model this in the device tree, we
+> add a fixed 12V regulator node as the DC-IN source and connect it to
+> the 3.3V regulator node.
 > 
->        RUSTC L rust/bindings.o
->      error: gendwarfksyms: process_module: dwarf_get_units failed: no debugging information?
-> 
-> There are several alternatives that would work here: conditionally
-> skipping in the cases needed (but that is subtle and brittle), forcing
-> DWARF generation with e.g. a dummy `static` (ugly and we may need to
-> do it in several crates), skipping the call to the tool in the Kbuild
-> command when there are no exports (fine) or teaching the tool to do so
-> itself (simple and clean).
-> 
-> Thus do the last one: don't attempt to process files if we have no symbol
-> versions to calculate.
-> 
->    [ I used the commit log of my patch linked below since it explained the
->      root issue and expanded it a bit more to summarize the alternatives.
-> 
->        - Miguel ]
-> 
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-> Reported-by: Haiyue Wang <haiyuewa@163.com>
-> Closes: https://lore.kernel.org/rust-for-linux/b8c1c73d-bf8b-4bf2-beb1-84ffdcd60547@163.com/
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://lore.kernel.org/rust-for-linux/CANiq72nKC5r24VHAp9oUPR1HVPqT+=0ab9N0w6GqTF-kJOeiSw@mail.gmail.com/
-> Link: https://github.com/rust-lang/rust/commit/ab91a63d403b0105cacd72809cd292a72984ed99 [1]
-> Link: https://github.com/rust-lang/rust/pull/145910 [2]
-> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Wei Deng <wei.deng@oss.qualcomm.com>
 > ---
->   scripts/gendwarfksyms/gendwarfksyms.c | 3 ++-
->   scripts/gendwarfksyms/gendwarfksyms.h | 2 +-
->   scripts/gendwarfksyms/symbols.c       | 4 +++-
->   3 files changed, 6 insertions(+), 3 deletions(-)
+>  arch/arm64/boot/dts/qcom/lemans-evk.dts | 115 ++++++++++++++++++++++++
+>  1 file changed, 115 insertions(+)
 > 
 
-Tested-by: Haiyue Wang <haiyuewa@163.com>
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: attempting to guess base-commit...
+ Base: tags/next-20251107 (exact match)
+ Base: tags/next-20251107 (use --merge-base to override)
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/qcom/' for 20251110055709.319587-1-wei.deng@oss.qualcomm.com:
+
+arch/arm64/boot/dts/qcom/lemans-evk.dtb: wcn6855-pmu (qcom,wcn6855-pmu): 'vddpcielp3-supply', 'vddpcielp9-supply' do not match any of the regexes: '^pinctrl-[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/regulator/qcom,qca6390-pmu.yaml
+arch/arm64/boot/dts/qcom/lemans-evk.dtb: wcn6855-pmu (qcom,wcn6855-pmu): 'vddpcie1p3-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/regulator/qcom,qca6390-pmu.yaml
+arch/arm64/boot/dts/qcom/lemans-evk.dtb: wcn6855-pmu (qcom,wcn6855-pmu): 'vddpcie1p9-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/regulator/qcom,qca6390-pmu.yaml
+
+
+
+
 
 
