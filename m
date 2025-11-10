@@ -1,156 +1,279 @@
-Return-Path: <stable+bounces-192926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB8AAC46136
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 11:55:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7288C460EE
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 11:51:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AA58A4E60D3
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 10:55:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 88B144E9B7D
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 10:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794EA305979;
-	Mon, 10 Nov 2025 10:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5573074A7;
+	Mon, 10 Nov 2025 10:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="S0Xsly9W"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cTOlzGjk"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9E323B60A;
-	Mon, 10 Nov 2025 10:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916AC306492;
+	Mon, 10 Nov 2025 10:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762772131; cv=none; b=TmrzwRjqiP46Ih22zTSrdXmm5zn8Zyk71ENMg+ll/xaOp8zkh3ndFqitgDjB0VIMWOJTZiqlfQqjNgnX9yqvQNV8po/dkI+k2xlW2701bDaJEu9E6aduGLeSUFc+a+sucznVmkvJ9lSjgyD7E2KytQG3TYIQZspw+NWhR6O3T1I=
+	t=1762771858; cv=none; b=NZ8Hi19N8EBNuQ00KWUWcvqRyA/RzK7qz7MO0jG/SNt/kYxCzfvb1zXgowKAxmdH05gtQWvyRNS2oY9Z4W0/yt+iOD0q4KexxGPrYOtFe3FWkt5lrLQVw+VLGKgymzzlPDf+UIwxHhZXLB9wFHMI569o9IExuRX5TsH5FoyGqPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762772131; c=relaxed/simple;
-	bh=Q8IujptSu2LeCXU8JhQKUxaH7FsIZEOd9utsCw4OaiA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=CD9lk6tPoYcSw28LO894WEm0xjzpZ0OILJIqUdtlCx+/Iocv2Lp/pLrrC5t7Ab266eH++BTh53AlRvNG9o43YAXEgicDzPcMhtpkBAyjch3WNlsPfNKF8I/ZOty0wqZlkmcXz11f5ul9az1slyWB2tj/MhZ9Fto0MdVR92+62E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=S0Xsly9W; arc=none smtp.client-ip=115.124.30.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1762772124; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=IYGpWxlfS7Ghtlne/3hBnEGQd5/vaVez4+R8iM/BRvc=;
-	b=S0Xsly9W6abOUcCOpwfQjpjm12cwEqHwLF0vC24JAfMXWy1cA4AQNyqV8mq+NyusVZA+hAUmL3Ur/9oODTxOqU7AwCsrAIa5B9EJ8QyvC/nXG2l2fO54ao8XkngaeJXCkxdIl7AUP8b/Ki0g1ykuOnmEvm1Lh+ur2EbW37KQn6A=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Ws1z-Vy_1762771801 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 10 Nov 2025 18:50:02 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>,
-  linux-mm@kvack.org,  Andrew Morton <akpm@linux-foundation.org>,  Kemeng
- Shi <shikemeng@huaweicloud.com>,  Nhat Pham <nphamcs@gmail.com>,  Baoquan
- He <bhe@redhat.com>,  Barry Song <baohua@kernel.org>,  Chris Li
- <chrisl@kernel.org>,  Johannes Weiner <hannes@cmpxchg.org>,  Yosry Ahmed
- <yosry.ahmed@linux.dev>,  Chengming Zhou <chengming.zhou@linux.dev>,
-  Youngjun Park <youngjun.park@lge.com>,  linux-kernel@vger.kernel.org,
-  stable@vger.kernel.org,  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: Re: [PATCH] Revert "mm, swap: avoid redundant swap device pinning"
-In-Reply-To: <CAMgjq7CTdtjMUUk2YvanL_PMZxS_7+pQhHDP-DjkhDaUhDRjDw@mail.gmail.com>
-	(Kairui Song's message of "Mon, 10 Nov 2025 13:32:52 +0800")
-References: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com>
-	<875xbiodl2.fsf@DESKTOP-5N7EMDA>
-	<CAMgjq7CTdtjMUUk2YvanL_PMZxS_7+pQhHDP-DjkhDaUhDRjDw@mail.gmail.com>
-Date: Mon, 10 Nov 2025 18:50:01 +0800
-Message-ID: <877bvymaau.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1762771858; c=relaxed/simple;
+	bh=SxLpJRCLNbGRJQQxfNl9Sjq3Ybg28Uj5WOePADjH8Jg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=QxRqBLdFIDcylHD/vZJuAHYTEsfTpeu4vUJc8ZI6Q9VnBaDqOFI3/shmtRcZ9eVvR2B5lAXuFf4qlV2wts6bcya+/0uYX2pHfWr/c2XORBRQnew3KXOWi3ec0Ij0NFzzKWCxQ1jJBhQolpmbbZ43iOZxkp/VB3nsEsvFpmOQGCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cTOlzGjk; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762771856; x=1794307856;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SxLpJRCLNbGRJQQxfNl9Sjq3Ybg28Uj5WOePADjH8Jg=;
+  b=cTOlzGjkAPqNHFRl2Q7zUCsZK/6qHlCv0bnY2Y3INl+sAfF1Du78IDPp
+   w+dXehF81ja1a06yo3IdSGuPmmrasqM9pgP05daFDzU5Rvfi96K/PbE+8
+   WQ9K2LhCHhB80OdqbJOjXWZZ/C8w7SF/hkgNFnqriizIduBNIZehJtjSp
+   fbPL8rr+Pq5zkZFNmn+EQDCI1dOZMCCb6K4ZqNaUWDTaBJeKfRBkp+QRo
+   wPxtx1P4+PeQ0+jeKjuuG1/uFYpzqvfOra/xhqieQtBaEU0tex+mfx3XF
+   7pl6aamyrC5AZE8gXDz4DRonmA4SGqCnPn0oTo+5KoNig7zyYz/8T0R5N
+   Q==;
+X-CSE-ConnectionGUID: VYAapwTyS2S5Vk5lYBVndg==
+X-CSE-MsgGUID: GXkB9cDqQnqV9Bp2vSE8ew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11608"; a="75925574"
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
+   d="scan'208";a="75925574"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 02:50:56 -0800
+X-CSE-ConnectionGUID: LLRhveABRwWVw52PFBWn2A==
+X-CSE-MsgGUID: QReF50qTSe2FD+S9BQAV2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
+   d="scan'208";a="188286919"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.13])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 02:50:52 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+	Alex Davis <alex47794@gmail.com>,
+	stable@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 1/1] serial: 8250: Fix 8250_rsa symbol loop
+Date: Mon, 10 Nov 2025 12:50:43 +0200
+Message-Id: <20251110105043.4062-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Kairui Song <ryncsn@gmail.com> writes:
+Depmod fails for a kernel made with:
+  make allnoconfig
+  echo -e "CONFIG_MODULES=y\nCONFIG_SERIAL_8250=m\nCONFIG_SERIAL_8250_EXTENDED=y\nCONFIG_SERIAL_8250_RSA=y" >> .config 
+  make olddefconfig
 
-> On Mon, Nov 10, 2025 at 9:56=E2=80=AFAM Huang, Ying
-> <ying.huang@linux.alibaba.com> wrote:
->>
->> Hi, Kairui,
->>
->> Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> writes:
->>
->> > From: Kairui Song <kasong@tencent.com>
->> >
->> > This reverts commit 78524b05f1a3e16a5d00cc9c6259c41a9d6003ce.
->> >
->> > While reviewing recent leaf entry changes, I noticed that commit
->> > 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning") isn't
->> > correct. It's true that most all callers of __read_swap_cache_async are
->> > already holding a swap entry reference, so the repeated swap device
->> > pinning isn't needed on the same swap device, but it is possible that
->> > VMA readahead (swap_vma_readahead()) may encounter swap entries from a
->> > different swap device when there are multiple swap devices, and call
->> > __read_swap_cache_async without holding a reference to that swap devic=
-e.
->> >
->> > So it is possible to cause a UAF if swapoff of device A raced with
->> > swapin on device B, and VMA readahead tries to read swap entries from
->> > device A. It's not easy to trigger but in theory possible to cause real
->> > issues. And besides, that commit made swap more vulnerable to issues
->> > like corrupted page tables.
->> >
->> > Just revert it. __read_swap_cache_async isn't that sensitive to
->> > performance after all, as it's mostly used for SSD/HDD swap devices wi=
-th
->> > readahead. SYNCHRONOUS_IO devices may fallback onto it for swap count >
->> > 1 entries, but very soon we will have a new helper and routine for
->> > such devices, so they will never touch this helper or have redundant
->> > swap device reference overhead.
->>
->> Is it better to add get_swap_device() in swap_vma_readahead()?  Whenever
->> we get a swap entry, the first thing we need to do is call
->> get_swap_device() to check the validity of the swap entry and prevent
->> the backing swap device from going under us.  This helps us to avoid
->> checking the validity of the swap entry in every swap function.  Does
->> this sound reasonable?
->
-> Hi Ying, thanks for the suggestion!
->
-> Yes, that's also a feasible approach.
->
-> What I was thinking is that, currently except the readahead path, all
-> swapin entry goes through the get_swap_device() helper, that helper
-> also helps to mitigate swap entry corruption that may causes OOB or
-> NULL deref. Although I think it's really not that helpful at all to
-> mitigate page table corruption from the kernel side, but seems not a
-> really bad idea to have.
->
-> And the code is simpler this way, and seems more suitable for a stable
-> & mainline fix. If we want  to add get_swap_device() in
-> swap_vma_readahead(), we need to do that for every entry that doesn't
-> match the target entry's swap device. The reference overhead is
-> trivial compared to readhead and bio layer, and only non
-> SYNCHRONOUS_IO devices use this helper (madvise is a special case, we
-> may optimize that later). ZRAM may fallback to the readahead path but
-> this fallback will be eliminated very soon in swap table p2.
+...due to a dependency loop:
 
-We have 2 choices in general.
+  depmod: ERROR: Cycle detected: 8250 -> 8250_base -> 8250
+  depmod: ERROR: Found 2 modules in dependency cycles!
 
-1. Add get/put_swap_device() in every swap function.
+This is caused by the move of 8250 RSA code from 8250_port.c (in
+8250_base.ko) into 8250_rsa.c (in 8250.ko) by the commit 5a128fb475fb
+("serial: 8250: move RSA functions to 8250_rsa.c"). The commit
+b20d6576cdb3 ("serial: 8250: export RSA functions") tried to fix a
+missing symbol issue with EXPORTs but those then cause this dependency
+cycle.
 
-2. Add get/put_swap_device() in every caller of the swap functions.
+Break dependency loop by moving 8250_rsa.o from 8250.ko to 8250_base.ko
+and by passing univ8250_port_base_ops to univ8250_rsa_support() that
+can make a local copy of it.
 
-Personally, I prefer 2.  It works better in situations like calling
-multiple swap functions.  It can reduce duplicated references.  It helps
-improve code reasoning and readability.
-
-> Another approach I thought about is that we might want readahead to
-> stop when it sees entries from a different swap device. That swap
-> device might be ZRAM where VMA readahead is not helpful.
->
-> How do you think?
-
-One possible solution is to skip or stop for a swap entry from the
-SYNCHRONOUS_IO swap device.
-
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Reported-by: Alex Davis <alex47794@gmail.com>
+Fixes: 5a128fb475fb ("serial: 8250: move RSA functions to 8250_rsa.c")
+Fixes: b20d6576cdb3 ("serial: 8250: export RSA functions")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/87frc3sd8d.fsf@posteo.net/
+Link: https://lore.kernel.org/all/CADiockCvM6v+d+UoFZpJSMoLAdpy99_h-hJdzUsdfaWGn3W7-g@mail.gmail.com/
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
-Best Regards,
-Huang, Ying
+
+in thread -> v1:
+- Changed prototype also in the #else block
+
+ drivers/tty/serial/8250/8250.h          |  4 ++--
+ drivers/tty/serial/8250/8250_platform.c |  2 +-
+ drivers/tty/serial/8250/8250_rsa.c      | 26 ++++++++++++++++---------
+ drivers/tty/serial/8250/Makefile        |  2 +-
+ 4 files changed, 21 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/tty/serial/8250/8250.h b/drivers/tty/serial/8250/8250.h
+index 58e64c4e1e3a..e99f5193d8f1 100644
+--- a/drivers/tty/serial/8250/8250.h
++++ b/drivers/tty/serial/8250/8250.h
+@@ -322,13 +322,13 @@ static inline void serial8250_pnp_exit(void) { }
+ #endif
+ 
+ #ifdef CONFIG_SERIAL_8250_RSA
+-void univ8250_rsa_support(struct uart_ops *ops);
++void univ8250_rsa_support(struct uart_ops *ops, const struct uart_ops *core_ops);
+ void rsa_enable(struct uart_8250_port *up);
+ void rsa_disable(struct uart_8250_port *up);
+ void rsa_autoconfig(struct uart_8250_port *up);
+ void rsa_reset(struct uart_8250_port *up);
+ #else
+-static inline void univ8250_rsa_support(struct uart_ops *ops) { }
++static inline void univ8250_rsa_support(struct uart_ops *ops, const struct uart_ops *core_ops) { }
+ static inline void rsa_enable(struct uart_8250_port *up) {}
+ static inline void rsa_disable(struct uart_8250_port *up) {}
+ static inline void rsa_autoconfig(struct uart_8250_port *up) {}
+diff --git a/drivers/tty/serial/8250/8250_platform.c b/drivers/tty/serial/8250/8250_platform.c
+index b27981340e76..fe7ec440ffa5 100644
+--- a/drivers/tty/serial/8250/8250_platform.c
++++ b/drivers/tty/serial/8250/8250_platform.c
+@@ -75,7 +75,7 @@ static void __init __serial8250_isa_init_ports(void)
+ 
+ 	/* chain base port ops to support Remote Supervisor Adapter */
+ 	univ8250_port_ops = *univ8250_port_base_ops;
+-	univ8250_rsa_support(&univ8250_port_ops);
++	univ8250_rsa_support(&univ8250_port_ops, univ8250_port_base_ops);
+ 
+ 	if (share_irqs)
+ 		irqflag = IRQF_SHARED;
+diff --git a/drivers/tty/serial/8250/8250_rsa.c b/drivers/tty/serial/8250/8250_rsa.c
+index 40a3dbd9e452..1f182f165525 100644
+--- a/drivers/tty/serial/8250/8250_rsa.c
++++ b/drivers/tty/serial/8250/8250_rsa.c
+@@ -14,6 +14,8 @@
+ static unsigned long probe_rsa[PORT_RSA_MAX];
+ static unsigned int probe_rsa_count;
+ 
++static const struct uart_ops *core_port_base_ops;
++
+ static int rsa8250_request_resource(struct uart_8250_port *up)
+ {
+ 	struct uart_port *port = &up->port;
+@@ -67,7 +69,7 @@ static void univ8250_config_port(struct uart_port *port, int flags)
+ 		}
+ 	}
+ 
+-	univ8250_port_base_ops->config_port(port, flags);
++	core_port_base_ops->config_port(port, flags);
+ 
+ 	if (port->type != PORT_RSA && up->probe & UART_PROBE_RSA)
+ 		rsa8250_release_resource(up);
+@@ -78,11 +80,11 @@ static int univ8250_request_port(struct uart_port *port)
+ 	struct uart_8250_port *up = up_to_u8250p(port);
+ 	int ret;
+ 
+-	ret = univ8250_port_base_ops->request_port(port);
++	ret = core_port_base_ops->request_port(port);
+ 	if (ret == 0 && port->type == PORT_RSA) {
+ 		ret = rsa8250_request_resource(up);
+ 		if (ret < 0)
+-			univ8250_port_base_ops->release_port(port);
++			core_port_base_ops->release_port(port);
+ 	}
+ 
+ 	return ret;
+@@ -94,15 +96,25 @@ static void univ8250_release_port(struct uart_port *port)
+ 
+ 	if (port->type == PORT_RSA)
+ 		rsa8250_release_resource(up);
+-	univ8250_port_base_ops->release_port(port);
++	core_port_base_ops->release_port(port);
+ }
+ 
+-void univ8250_rsa_support(struct uart_ops *ops)
++/*
++ * It is not allowed to directly reference any symbols from 8250.ko here as
++ * that would result in a dependency loop between the 8250.ko and
++ * 8250_base.ko modules. This function is called from 8250.ko and is used to
++ * break the symbolic dependency cycle. Anything that is needed from 8250.ko
++ * has to be passed as pointers to this function which then can adjust those
++ * variables on 8250.ko side or store them locally as needed.
++ */
++void univ8250_rsa_support(struct uart_ops *ops, const struct uart_ops *core_ops)
+ {
++	core_port_base_ops = core_ops;
+ 	ops->config_port  = univ8250_config_port;
+ 	ops->request_port = univ8250_request_port;
+ 	ops->release_port = univ8250_release_port;
+ }
++EXPORT_SYMBOL_FOR_MODULES(univ8250_rsa_support, "8250");
+ 
+ module_param_hw_array(probe_rsa, ulong, ioport, &probe_rsa_count, 0444);
+ MODULE_PARM_DESC(probe_rsa, "Probe I/O ports for RSA");
+@@ -146,7 +158,6 @@ void rsa_enable(struct uart_8250_port *up)
+ 	if (up->port.uartclk == SERIAL_RSA_BAUD_BASE * 16)
+ 		serial_out(up, UART_RSA_FRR, 0);
+ }
+-EXPORT_SYMBOL_FOR_MODULES(rsa_enable, "8250_base");
+ 
+ /*
+  * Attempts to turn off the RSA FIFO and resets the RSA board back to 115kbps compat mode. It is
+@@ -178,7 +189,6 @@ void rsa_disable(struct uart_8250_port *up)
+ 	if (result)
+ 		up->port.uartclk = SERIAL_RSA_BAUD_BASE_LO * 16;
+ }
+-EXPORT_SYMBOL_FOR_MODULES(rsa_disable, "8250_base");
+ 
+ void rsa_autoconfig(struct uart_8250_port *up)
+ {
+@@ -191,7 +201,6 @@ void rsa_autoconfig(struct uart_8250_port *up)
+ 	if (__rsa_enable(up))
+ 		up->port.type = PORT_RSA;
+ }
+-EXPORT_SYMBOL_FOR_MODULES(rsa_autoconfig, "8250_base");
+ 
+ void rsa_reset(struct uart_8250_port *up)
+ {
+@@ -200,7 +209,6 @@ void rsa_reset(struct uart_8250_port *up)
+ 
+ 	serial_out(up, UART_RSA_FRR, 0);
+ }
+-EXPORT_SYMBOL_FOR_MODULES(rsa_reset, "8250_base");
+ 
+ #ifdef CONFIG_SERIAL_8250_DEPRECATED_OPTIONS
+ #ifndef MODULE
+diff --git a/drivers/tty/serial/8250/Makefile b/drivers/tty/serial/8250/Makefile
+index 513a0941c284..9ec4d5fe64de 100644
+--- a/drivers/tty/serial/8250/Makefile
++++ b/drivers/tty/serial/8250/Makefile
+@@ -7,7 +7,6 @@ obj-$(CONFIG_SERIAL_8250)		+= 8250.o
+ 8250-y					:= 8250_core.o
+ 8250-y					+= 8250_platform.o
+ 8250-$(CONFIG_SERIAL_8250_PNP)		+= 8250_pnp.o
+-8250-$(CONFIG_SERIAL_8250_RSA)		+= 8250_rsa.o
+ 
+ obj-$(CONFIG_SERIAL_8250)		+= 8250_base.o
+ 8250_base-y				:= 8250_port.o
+@@ -15,6 +14,7 @@ obj-$(CONFIG_SERIAL_8250)		+= 8250_base.o
+ 8250_base-$(CONFIG_SERIAL_8250_DWLIB)	+= 8250_dwlib.o
+ 8250_base-$(CONFIG_SERIAL_8250_FINTEK)	+= 8250_fintek.o
+ 8250_base-$(CONFIG_SERIAL_8250_PCILIB)	+= 8250_pcilib.o
++8250_base-$(CONFIG_SERIAL_8250_RSA)	+= 8250_rsa.o
+ 
+ obj-$(CONFIG_SERIAL_8250_CONSOLE)	+= 8250_early.o
+ 
+
+base-commit: 719f3df3e113e03d2c8cf324827da1fd17a9bd8f
+-- 
+2.39.5
+
 
