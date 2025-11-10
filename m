@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-192939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27465C466F6
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 13:03:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC08C466F9
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 13:03:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A2B63BF5DA
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 12:01:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 939333BF63F
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 12:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF9330DEA9;
-	Mon, 10 Nov 2025 11:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF9B30DEB1;
+	Mon, 10 Nov 2025 11:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FR+i4fjH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l/O/zHEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0D330DD2C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A17830DEAF
 	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 11:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762775937; cv=none; b=ursFSHlamX/EFq87dqhkFXlIXh4cuc/Za9tjXSb3k6mV217BNqvCKeUihB8WaPEWYZnfJ4yiBGHdxbgSQkOC7jlXtl/OwFHt/g+T6K9oyu40NcmV0SEMha7XK7Wk98CLM4cmVsaq9xg1yOSW9WBFHpBcSCNyb3ze1cLh7LSxOOE=
+	t=1762775938; cv=none; b=Lj2HkT/fYEhJzn4BCmlOI3TuKxrKQ9i/sBOBbdvZrWi2w8n2qalB9YhC8DTx7fDIIj1zPY3mtOOOl+ljHeVYyFTl47/kN55x1ZDnf2LIrZNoQ3ZFZ7+tIxX1bYBcKONVbbtqBiwiawjs17trxTSmJ+kFiGBPQ6LzzeNarbORGIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762775937; c=relaxed/simple;
-	bh=urzWP9HaUVShdAi2zyjCLbRkfrdpe71cZ/4ayv1H52M=;
+	s=arc-20240116; t=1762775938; c=relaxed/simple;
+	bh=C4DXR9jctCLJUYxa4Z5E0VxHBspsG7Y9Yrc6Ni81tWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qx70ihyXp++pEX4S2gQlA+MVn4jF8WvRs70cMH5173Veesldvw8oBM88kljZskaXwWPniOreohB6rCJZQXJxZGPkiR4L0kPnmId1SdxT9DSiX225eww5UsgXsYvIIXHpKWtQNrsT7O/A2EjpoJJ0Rd9/PDCAS3PXpPE29UWbzp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FR+i4fjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36227C4CEF5;
-	Mon, 10 Nov 2025 11:58:56 +0000 (UTC)
+	 MIME-Version; b=KtjyNUwMT5oge/HVqh/XYuw5JlzfitKqILa+I590WTcsgJoWwW3bl6Rva6iq3CtOtccPwomFDeLaRBH+SvS2Ne2Gc7SubVLpg9Wy9wH9MajLfbR/iOEKi0y+8fI+mJshZGhSgiPAxKbZJCCbLuGnU+jKqdMwL6kg3q/YogdUEx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l/O/zHEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B34C19421;
+	Mon, 10 Nov 2025 11:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762775936;
-	bh=urzWP9HaUVShdAi2zyjCLbRkfrdpe71cZ/4ayv1H52M=;
+	s=k20201202; t=1762775937;
+	bh=C4DXR9jctCLJUYxa4Z5E0VxHBspsG7Y9Yrc6Ni81tWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FR+i4fjHia3zE+49T2ria2Iwo8tMoeXJFiJj3HPJ9Z8Bg7tFH4yMfimeVTFOIpsPh
-	 7rJ3AfPDrZjiOupNu5ojL7I4hxc71ZsBHYi90hEVbo/UaIGi3fH0qJSmL6yVmGcnBE
-	 O+sdQS6NGXVDcnI+O8wHq4StQMCrdzFRFlpsTYTVeuaWEBsX7WBk/qtarfJfe+G86H
-	 o6WOACyMMfJTizBpdD1yl7YWFKMXQ0W5iVPCyR+EkTH6ZXd0U2d7T6tjpI6Rw7EJqH
-	 OuIHgUhRP5h1lQwdE2gI4FMYUcRRO3dzBZDAJpw2PLua1VyqoUuKI5ktm+wRLGT9Er
-	 MRUaWgOB7E3MQ==
+	b=l/O/zHEE+GSAxG+2ZkjxfBK9GTTsc0dE00HwfsN1MYlvvcBFBjSZfljTbGSPiFflI
+	 xd0ahEBnlSjD1bZilWNhEiKr2U+xuZeqTbpfA6Rr0Dq6xjbJE67Q14aecSebB12XX5
+	 ZiOOcGHJ5wwyOUza2JJOgnHqQY62sp1o/kOYP3tMRmvoDrbUJ7x37IGXEOoieqRdK2
+	 44puZBLG1a95OYurvteWlVS+S75n4owrgd8HZsCfeyiongkv3ba7oYM33oFZmuXMFf
+	 1d5UiiZbNfzujRVj7zaO5sK+W7WBuiujb1+RKJ54K1SHxDKTVahxTg9EmnLtyuxhch
+	 q91Ujk4i0Nzqg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Amit Pundir <amit.pundir@linaro.org>,
+Cc: Adrian Hunter <adrian.hunter@intel.com>,
 	Bart Van Assche <bvanassche@acm.org>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 6/7] scsi: ufs: core: Add a quirk for handling broken LSDBS field in controller capabilities register
-Date: Mon, 10 Nov 2025 06:58:47 -0500
-Message-ID: <20251110115848.651076-6-sashal@kernel.org>
+Subject: [PATCH 6.6.y 7/7] scsi: ufs: core: Add a quirk to suppress link_startup_again
+Date: Mon, 10 Nov 2025 06:58:48 -0500
+Message-ID: <20251110115848.651076-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251110115848.651076-1-sashal@kernel.org>
 References: <2025110906-retrieval-daunting-5fa7@gregkh>
@@ -63,65 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit cd06b713a6880997ca5aecac8e33d5f9c541749e ]
+[ Upstream commit d34caa89a132cd69efc48361d4772251546fdb88 ]
 
-'Legacy Queue & Single Doorbell Support (LSDBS)' field in the controller
-capabilities register is supposed to report whether the legacy single
-doorbell mode is supported in the controller or not. But some controllers
-report '1' in this field which corresponds to 'LSDB not supported', but
-they indeed support LSDB. So let's add a quirk to handle those controllers.
+ufshcd_link_startup() has a facility (link_startup_again) to issue
+DME_LINKSTARTUP a 2nd time even though the 1st time was successful.
 
-If the quirk is enabled by the controller driver, then LSDBS register field
-will be ignored and legacy single doorbell mode is assumed to be enabled
-always.
+Some older hardware benefits from that, however the behaviour is
+non-standard, and has been found to cause link startup to be unreliable
+for some Intel Alder Lake based host controllers.
 
-Tested-by: Amit Pundir <amit.pundir@linaro.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240816-ufs-bug-fix-v3-1-e6fe0e18e2a3@linaro.org
+Add UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE to suppress
+link_startup_again, in preparation for setting the quirk for affected
+controllers.
+
+Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251024085918.31825-3-adrian.hunter@intel.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: d34caa89a132 ("scsi: ufs: core: Add a quirk to suppress link_startup_again")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 6 +++++-
- include/ufs/ufshcd.h      | 8 ++++++++
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 3 ++-
+ include/ufs/ufshcd.h      | 7 +++++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 6990886a54c5d..8e24cdc8a29b9 100644
+index 8e24cdc8a29b9..fcaf4b9c950e4 100644
 --- a/drivers/ufs/core/ufshcd.c
 +++ b/drivers/ufs/core/ufshcd.c
-@@ -2365,7 +2365,11 @@ static inline int ufshcd_hba_capabilities(struct ufs_hba *hba)
- 	 * 0h: legacy single doorbell support is available
- 	 * 1h: indicate that legacy single doorbell support has been removed
+@@ -4977,7 +4977,8 @@ static int ufshcd_link_startup(struct ufs_hba *hba)
+ 	 * If UFS device isn't active then we will have to issue link startup
+ 	 * 2 times to make sure the device state move to active.
  	 */
--	hba->lsdb_sup = !FIELD_GET(MASK_LSDB_SUPPORT, hba->capabilities);
-+	if (!(hba->quirks & UFSHCD_QUIRK_BROKEN_LSDBS_CAP))
-+		hba->lsdb_sup = !FIELD_GET(MASK_LSDB_SUPPORT, hba->capabilities);
-+	else
-+		hba->lsdb_sup = true;
-+
- 	if (!hba->mcq_sup)
- 		return 0;
+-	if (!ufshcd_is_ufs_dev_active(hba))
++	if (!(hba->quirks & UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE) &&
++	    !ufshcd_is_ufs_dev_active(hba))
+ 		link_startup_again = true;
  
+ link_startup:
 diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index 40b457b4c831e..dac568503e905 100644
+index dac568503e905..3e81a2168d704 100644
 --- a/include/ufs/ufshcd.h
 +++ b/include/ufs/ufshcd.h
-@@ -670,6 +670,14 @@ enum ufshcd_quirks {
- 	 * the standard best practice for managing keys).
+@@ -678,6 +678,13 @@ enum ufshcd_quirks {
+ 	 * single doorbell mode.
  	 */
- 	UFSHCD_QUIRK_KEYS_IN_PRDT			= 1 << 24,
+ 	UFSHCD_QUIRK_BROKEN_LSDBS_CAP			= 1 << 25,
 +
 +	/*
-+	 * This quirk indicates that the controller reports the value 1 (not
-+	 * supported) in the Legacy Single DoorBell Support (LSDBS) bit of the
-+	 * Controller Capabilities register although it supports the legacy
-+	 * single doorbell mode.
++	 * This quirk indicates that DME_LINKSTARTUP should not be issued a 2nd
++	 * time (refer link_startup_again) after the 1st time was successful,
++	 * because it causes link startup to become unreliable.
 +	 */
-+	UFSHCD_QUIRK_BROKEN_LSDBS_CAP			= 1 << 25,
++	UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE		= 1 << 26,
  };
  
  enum ufshcd_caps {
