@@ -1,105 +1,101 @@
-Return-Path: <stable+bounces-192909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 986C8C4506B
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 06:33:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE20C45071
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 06:33:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB7ED188E10F
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 05:34:02 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 63497346663
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 05:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C1E2777FC;
-	Mon, 10 Nov 2025 05:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD5C288537;
+	Mon, 10 Nov 2025 05:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U6/GyxCt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O3hUALDC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EB5883F
-	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 05:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A47A25A2CF
+	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 05:33:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762752812; cv=none; b=aGx5LSG3RJyRIlpnw5xvFTJ69R1nCG3LVBZu+i1kD3ftp2KD/Mf7e5Xt99XEQ3y4M1OKL/XQ7+HWYzNOpzJg/IROfQsduWLvSKypv+nfLSywgt2N9Pj93wKaR33b7quaXMvFb94kFc6RWtNUAHGxwgYkKi6vIG+bVqZ4qKaib28=
+	t=1762752825; cv=none; b=m9gYGXJHkPNa8ZEc+7eZnNSRtghMaHZCOlJ+bw/gJFyNXVdDq6tY41u5CKngAEddzlZqL8QI4mGQnbMdKJKv8UXJ65M9uY64dA3fsVPeUG+L9dlEW/anXPXm9bob84l2iub+kZHdOmWJ9GHc/w+1Ki6mOglLWALFpE5jNGK7Uzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762752812; c=relaxed/simple;
-	bh=y6LEgdgdd9v8Z7GZe+XO/MCaNmA1ideLxm9iboioNS0=;
+	s=arc-20240116; t=1762752825; c=relaxed/simple;
+	bh=s06XNi/Hhu/yWCnO+JKkYUMMuOx1UTaMkm1QBjZeMDo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KFbSXPY1NaRWcuXUpLUehi38iLaT5NPJfUInNzD+lncLpAwauXah2CNqFhwv6xrCA9LNenGUEaUrrVqFS2okVZVQO5pYpc6+zxmi3L5I6abv79asgNqkOn5axAK00buP52teQgg5IRzfBSqtFBExM5DljIIw4frSSUXsbAiTXYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U6/GyxCt; arc=none smtp.client-ip=209.85.208.52
+	 To:Cc:Content-Type; b=iGqQ39hvOxFLl28GzRUO9Th27VRdb5HRLyCosafuTS3gC3vb5KtnyjujT3xnbHhqKg4yqsNVy8tUft0U16JIWJ8xRWpb2+XYyFA20mkUTTNIYK07j6W0dlengoOZWCE2lsZzpwS0zKWMB/qPz0HdQTLPbF1SGB7mLYEW4gMG2kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O3hUALDC; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6419b7b4b80so495504a12.2
-        for <stable@vger.kernel.org>; Sun, 09 Nov 2025 21:33:30 -0800 (PST)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-64080ccf749so4011937a12.2
+        for <stable@vger.kernel.org>; Sun, 09 Nov 2025 21:33:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762752809; x=1763357609; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762752822; x=1763357622; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qR/MbGcnUq0EBQz4ehwdMha/tCfwYBiuvbwmX0gSrQU=;
-        b=U6/GyxCth/p6wjpu9TwJziMGHlCB5Pv4pRjdmZZZ4J280KITfK7iNQKtKeT8+cbEzq
-         wMG+2tbRoEFy+1W6dCx9czZKv9zpgQUsm3hqhbyLGjSaKRRJm98H6ntTa7VcDkPZSq0G
-         w3xHJCroyXymSxlnkJlI+LLsgT3N+J53CAoPFtQiDf7BIYoB/KgKUEIRsaD2rHQXfcMK
-         4t5NeNHCngHCa5/I9oUU4eWOfIEHOh1aqDk5rS9QjeWse3+R9rbNd6t/WBS+tKcR/NV2
-         RF0RF9B6V4oxmDu44KgDSAGOcL4sIuvT4fW2fZbzpQ+cw/FX6WH4nMC7arjEiZXExAfP
-         aCXQ==
+        bh=2YPse+AqWc5TNScb2DsIrm8BhXLhTwQmVOCKCe+y8NY=;
+        b=O3hUALDCxG9yn9HUsRVgVMJi/LUm7H4Ig9JO+B5Ya5Yr+z0FWL7eTCaJ/j3PjRBg83
+         6WOUJqGcGJqjPAz0clTDq2jLXR1T5lPxIYa2zKL9GbsV42TfRpjNoPT6DSQpW9SqrGaA
+         h5MNfG3IlJANaShHs6BJZRc+lQm77xbzNz/WzCP02YfgCugo6E0wDuw+P9GSdmug8pLc
+         jbb8mzHbu2vBtwzwHevrrRvJvgROzZ219pV2t0Hdju6Q0AU9tMx2/XbdvdK5LaAOlwTf
+         AouKkV/NDCFiQNswYQpmC/tKLEA2VTbbMq8khGCJd18JmHuPqixKNFICvniPOntUiezn
+         rXSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762752809; x=1763357609;
+        d=1e100.net; s=20230601; t=1762752822; x=1763357622;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=qR/MbGcnUq0EBQz4ehwdMha/tCfwYBiuvbwmX0gSrQU=;
-        b=kku/TK8RFeEkTvnY1KhfVoxm1FNILZnTutZalI8Q5moGftjCPu86FAa32W0E2Mhpf2
-         pDE23XBy7J9cRazsh9D86LZ6tw1aoAlbp7mSiDbAMzbX/3AJ3HfqbrkwYxJnGbv/dlvA
-         qbviEhv6t6WFjwT8aP/CeuX5R5pYmpZOwlgsNgy2OIniASbY1H2x4w4HAremhL27FI3e
-         +XcSv4tyc0304bW8czd2k3aYid9CPmPnkACFmjU3bbrsxBCskl+7SMDhL/wEfoG81fTp
-         rViFw5I6SA6EPBdoIatTgd3dtX4kmH3Rd0v1EeY7h8pDyyFy1lGHWtxi0FGBgA0MCFzC
-         fayA==
-X-Forwarded-Encrypted: i=1; AJvYcCX78QtqcAj2zD+TtxOyjXvhciEgrM9oOkXd4XoDRfZhhQTcnSxEqzs6HtguiZ2m4CqvVMn9Rjg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhfeJyFNtD2yDadammfDeRWDA+mXcb7AOkjXfsMKpZam1G/xCS
-	9dUHGwAjBt7gMgi4bVM0b9PUUehkDrmi9qVDMwLkeFkh5gf5lsk995dj/REvpnDdin6fzS/zxWy
-	4KxjG1IJtmZtkPZDYy5genoYw6px9T/c=
-X-Gm-Gg: ASbGncszCsrVQmrChIzDj0pD9dQqNPBHQA+3p6SfLr+cPL60U/GuUxT75cGFaS+Koi6
-	rORicIJw/MglIlf31Eg9PxFfuVFIxn5r+dn7yAXW6RizfqfgPab/h8w+T18e/LGx7kpJtMU5+EN
-	1uTv6J6/TFIaKbC4yeOKSPoTYICesccYLS7lnwUm4ih9DlVWo7EYNI6idIc26ymGa7H+OkvlkeW
-	7e1vPolEQ+eeswydKwINo7VizA8L2lVt+QWPGhBERJNM1bqjoYk6zINw/mQ
-X-Google-Smtp-Source: AGHT+IEQaTF+1TfzvP4FKyKjl0iE5Fs96BjILlbZ5Ppxh1pUUmMmsbNSxF6n9/ltcRRgD+ILMiYpD6RIg1jm5j9TO5c=
-X-Received: by 2002:a17:907:3fa4:b0:b57:2c65:116e with SMTP id
- a640c23a62f3a-b72e02b3515mr749481466b.12.1762752808595; Sun, 09 Nov 2025
- 21:33:28 -0800 (PST)
+        bh=2YPse+AqWc5TNScb2DsIrm8BhXLhTwQmVOCKCe+y8NY=;
+        b=cPotKNtU2pAqopD23j9MIWDqlPTfFuCp5hmDMJuhGgTtsOvB8wxXUNlc1Em+W+Vn+A
+         ZmSx8UDZyEQSVkR75EE0sG9efE38wUOpNhijioinjMEcJXs20RkC5zh8bOOPrO7kqPkc
+         JQb7aB/5HhzTO6jBf6hzv1xzBpiJjkv2YalySV/yDq9r9gNH1qQOZ9D7ks8VZ1J65ted
+         S5Kc1dT1m+Sk4Z34I/Q+tTCs/NixZcEr2d7K+/HYE2atw8LVzpSltwcNpKWQ5/FA8tSS
+         rG/5S1gB7JHAooJUFHCVDYDIETFelt4dYl9vRq7YW8VRo0VN0+z7z1Sq2y4gcbUA0T3+
+         2TmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXVBRwa6Ph2Ycm6EMYfGqUz2m5CccFQCpGuq5flgS6ZX0Imu20xl3Pep2IV6sbOOjCdmPOlzHk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3b629hGvwgQVZWTkm3zI1lsQgcBrMbjqMIOgcBKTW1cIWzOM0
+	2zpZN66wjETdXudlsiTAI9komeGvGzV4O/nzpsetin0zan6BCqfKTRgW4xwMCdn6iRIyBG291lz
+	kWzVhhI4kzGJ5Kv/vn05e7oq1mLN1I88=
+X-Gm-Gg: ASbGnctRq+Gkeov4cOXMMnWNwxaVDSUlnPZrLL12auKmgnn4dRbML2QvzOT+IS7zzFv
+	IGBqqlkYihxNs/wleueEls0kDlln2V5do0dm5bwC7AAeZUXrQEjvaDB+yI2JMALpthz7LGjmeRh
+	0X5rDdaReZXDIwJf8z5aM8hb5/TxzKGV1wdouzmn8I/jQuOJ5VF9M0AbPQ1v1AyKqAU5/JK9ecr
+	D9HCtgkroS0291FmrLzkAL+DHVGBJQMtWDyP2qsc4tgO8QRRA9YHQ5bMLhYcHWZqi/aF8c=
+X-Google-Smtp-Source: AGHT+IHIgpKw2JS/4nW9GWH99xD30wamSLuWzRvjpP+v876+1IW6dPW88z704lMHVQvozZxjzLX+eTNtmZCa8pvUdhM=
+X-Received: by 2002:a05:6402:270f:b0:640:b7f1:1cc8 with SMTP id
+ 4fb4d7f45d1cf-6415e822f52mr5145100a12.18.1762752821989; Sun, 09 Nov 2025
+ 21:33:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com> <875xbiodl2.fsf@DESKTOP-5N7EMDA>
-In-Reply-To: <875xbiodl2.fsf@DESKTOP-5N7EMDA>
+References: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com> <2025111053-saddlebag-maybe-0edc@gregkh>
+In-Reply-To: <2025111053-saddlebag-maybe-0edc@gregkh>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 10 Nov 2025 13:32:52 +0800
-X-Gm-Features: AWmQ_bk0J22Vk5bVsirS-BlCYuVlPSn2kEJtIWp5JuDlLDq9qg3-goJo61eNTfo
-Message-ID: <CAMgjq7CTdtjMUUk2YvanL_PMZxS_7+pQhHDP-DjkhDaUhDRjDw@mail.gmail.com>
+Date: Mon, 10 Nov 2025 13:33:05 +0800
+X-Gm-Features: AWmQ_bkULrKqEl-qbo8niCo2wz3BnMM2b5Qc9JZ7etDw2JSDO9jzr5c_pKKh-b8
+Message-ID: <CAMgjq7DnaD-bH1efF9c1X0XAvZaMufzBUGxxeRrRAJBzBe59+g@mail.gmail.com>
 Subject: Re: [PATCH] Revert "mm, swap: avoid redundant swap device pinning"
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: linux-mm <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 10, 2025 at 9:56=E2=80=AFAM Huang, Ying
-<ying.huang@linux.alibaba.com> wrote:
+Greg KH <gregkh@linuxfoundation.org> =E4=BA=8E 2025=E5=B9=B411=E6=9C=8810=
+=E6=97=A5=E5=91=A8=E4=B8=80 09:01=E5=86=99=E9=81=93=EF=BC=9A
 >
-> Hi, Kairui,
->
-> Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> writes:
->
+> On Mon, Nov 10, 2025 at 02:06:03AM +0800, Kairui Song via B4 Relay wrote:
 > > From: Kairui Song <kasong@tencent.com>
 > >
 > > This reverts commit 78524b05f1a3e16a5d00cc9c6259c41a9d6003ce.
@@ -127,37 +123,125 @@ h
 > > 1 entries, but very soon we will have a new helper and routine for
 > > such devices, so they will never touch this helper or have redundant
 > > swap device reference overhead.
+> >
+> > Fixes: 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning")
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > ---
+> >  mm/swap_state.c | 14 ++++++--------
+> >  mm/zswap.c      |  8 +-------
+> >  2 files changed, 7 insertions(+), 15 deletions(-)
+> >
+> > diff --git a/mm/swap_state.c b/mm/swap_state.c
+> > index 3f85a1c4cfd9..0c25675de977 100644
+> > --- a/mm/swap_state.c
+> > +++ b/mm/swap_state.c
+> > @@ -406,13 +406,17 @@ struct folio *__read_swap_cache_async(swp_entry_t=
+ entry, gfp_t gfp_mask,
+> >               struct mempolicy *mpol, pgoff_t ilx, bool *new_page_alloc=
+ated,
+> >               bool skip_if_exists)
+> >  {
+> > -     struct swap_info_struct *si =3D __swap_entry_to_info(entry);
+> > +     struct swap_info_struct *si;
+> >       struct folio *folio;
+> >       struct folio *new_folio =3D NULL;
+> >       struct folio *result =3D NULL;
+> >       void *shadow =3D NULL;
+> >
+> >       *new_page_allocated =3D false;
+> > +     si =3D get_swap_device(entry);
+> > +     if (!si)
+> > +             return NULL;
+> > +
+> >       for (;;) {
+> >               int err;
+> >
+> > @@ -499,6 +503,7 @@ struct folio *__read_swap_cache_async(swp_entry_t e=
+ntry, gfp_t gfp_mask,
+> >       put_swap_folio(new_folio, entry);
+> >       folio_unlock(new_folio);
+> >  put_and_return:
+> > +     put_swap_device(si);
+> >       if (!(*new_page_allocated) && new_folio)
+> >               folio_put(new_folio);
+> >       return result;
+> > @@ -518,16 +523,11 @@ struct folio *read_swap_cache_async(swp_entry_t e=
+ntry, gfp_t gfp_mask,
+> >               struct vm_area_struct *vma, unsigned long addr,
+> >               struct swap_iocb **plug)
+> >  {
+> > -     struct swap_info_struct *si;
+> >       bool page_allocated;
+> >       struct mempolicy *mpol;
+> >       pgoff_t ilx;
+> >       struct folio *folio;
+> >
+> > -     si =3D get_swap_device(entry);
+> > -     if (!si)
+> > -             return NULL;
+> > -
+> >       mpol =3D get_vma_policy(vma, addr, 0, &ilx);
+> >       folio =3D __read_swap_cache_async(entry, gfp_mask, mpol, ilx,
+> >                                       &page_allocated, false);
+> > @@ -535,8 +535,6 @@ struct folio *read_swap_cache_async(swp_entry_t ent=
+ry, gfp_t gfp_mask,
+> >
+> >       if (page_allocated)
+> >               swap_read_folio(folio, plug);
+> > -
+> > -     put_swap_device(si);
+> >       return folio;
+> >  }
+> >
+> > diff --git a/mm/zswap.c b/mm/zswap.c
+> > index 5d0f8b13a958..aefe71fd160c 100644
+> > --- a/mm/zswap.c
+> > +++ b/mm/zswap.c
+> > @@ -1005,18 +1005,12 @@ static int zswap_writeback_entry(struct zswap_e=
+ntry *entry,
+> >       struct folio *folio;
+> >       struct mempolicy *mpol;
+> >       bool folio_was_allocated;
+> > -     struct swap_info_struct *si;
+> >       int ret =3D 0;
+> >
+> >       /* try to allocate swap cache folio */
+> > -     si =3D get_swap_device(swpentry);
+> > -     if (!si)
+> > -             return -EEXIST;
+> > -
+> >       mpol =3D get_task_policy(current);
+> >       folio =3D __read_swap_cache_async(swpentry, GFP_KERNEL, mpol,
+> > -                     NO_INTERLEAVE_INDEX, &folio_was_allocated, true);
+> > -     put_swap_device(si);
+> > +                             NO_INTERLEAVE_INDEX, &folio_was_allocated=
+, true);
+> >       if (!folio)
+> >               return -ENOMEM;
+> >
+> >
+> > ---
+> > base-commit: 02dafa01ec9a00c3758c1c6478d82fe601f5f1ba
+> > change-id: 20251109-revert-78524b05f1a3-04a1295bef8a
+> >
+> > Best regards,
+> > --
+> > Kairui Song <kasong@tencent.com>
+> >
+> >
+> >
 >
-> Is it better to add get_swap_device() in swap_vma_readahead()?  Whenever
-> we get a swap entry, the first thing we need to do is call
-> get_swap_device() to check the validity of the swap entry and prevent
-> the backing swap device from going under us.  This helps us to avoid
-> checking the validity of the swap entry in every swap function.  Does
-> this sound reasonable?
+> <formletter>
+>
+> This is not the correct way to submit patches for inclusion in the
+> stable kernel tree.  Please read:
+>     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.ht=
+ml
+> for how to do this properly.
+>
+> </formletter>
 
-Hi Ying, thanks for the suggestion!
-
-Yes, that's also a feasible approach.
-
-What I was thinking is that, currently except the readahead path, all
-swapin entry goes through the get_swap_device() helper, that helper
-also helps to mitigate swap entry corruption that may causes OOB or
-NULL deref. Although I think it's really not that helpful at all to
-mitigate page table corruption from the kernel side, but seems not a
-really bad idea to have.
-
-And the code is simpler this way, and seems more suitable for a stable
-& mainline fix. If we want  to add get_swap_device() in
-swap_vma_readahead(), we need to do that for every entry that doesn't
-match the target entry's swap device. The reference overhead is
-trivial compared to readhead and bio layer, and only non
-SYNCHRONOUS_IO devices use this helper (madvise is a special case, we
-may optimize that later). ZRAM may fallback to the readahead path but
-this fallback will be eliminated very soon in swap table p2.
-
-Another approach I thought about is that we might want readahead to
-stop when it sees entries from a different swap device. That swap
-device might be ZRAM where VMA readahead is not helpful.
-
-How do you think?
+Thanks for the info, my bad, I was trying new tools to send patches so
+the Cc tags were missing, will fix it. This patch is meant to be
+merged into the mainline first.
 
