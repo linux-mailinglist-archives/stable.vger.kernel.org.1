@@ -1,99 +1,119 @@
-Return-Path: <stable+bounces-192912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0604CC4513B
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 07:27:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA93AC4521F
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 07:54:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D37DA188E49C
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 06:27:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 895973AE917
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 06:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D97227B9F;
-	Mon, 10 Nov 2025 06:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3AA2E8E0E;
+	Mon, 10 Nov 2025 06:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vy0GR/a7"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Br9zEjbq"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A1A19F13F
-	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 06:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143E3231A21
+	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 06:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762756028; cv=none; b=q7Vm57RANQbA0x0LgaZmDMRbEvyRM/hvKxpzKAtHw/+VD4TYUKV7b3OVrp+UFO3gUiznr23d8HfXXclKtnvqaWVkhfEGYW6CGDQVW1kXPjGucHcMVnkiFEeXpM+vcODs8SKqjN/DCnZi5yD1JuIGMORySIEgzdn0E1TusIsTzGk=
+	t=1762757670; cv=none; b=s/enHrJ31/++Y9p4QVpDCjVGsq+9l5c/vNmGpibDaW2HzK/ollbb9wehYhZveESzDsQkc0dnWjaJou2lz4opii5Uw8u7pu2FEdT0NGwykykWJZhhc1569nhelJHbORjBiH6Cr5CiMv2DJ62UX1teghuS4dbOBO3+QSALgDNAWkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762756028; c=relaxed/simple;
-	bh=HWzC7zpraGIpTCNuY/j0kH9Pr9vt8PHVS5TX6e66vZI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ERtj3AdWJ8eVkH+CQMY980GCdNTVgAX/Uki5Cyr9nUSbg00tcn0TIWT9gsN8y2ba3SYxGiZMzvgCNs8VyXApGKSSNFfHuts3BozTdy0Bln03lYW5E1aPy9VPirkK5XTrE5q+jWj75St8SpunTFd96gQN7ZT099fbST4zLsx3TeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vy0GR/a7; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762756027; x=1794292027;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=HWzC7zpraGIpTCNuY/j0kH9Pr9vt8PHVS5TX6e66vZI=;
-  b=Vy0GR/a714y+t+PAYmivZdxZ7fGF2NXnVe+hNKJV+KrePfXWgR9S3BWo
-   LzXDl58pHzAmOPadndiZuz35SAG9ks9lOmQvIQ/L2QSLoLfE0O4cqP3HE
-   G11vSWMJAgVxGIJjTKAUUko98EH5HUIvAesUQLaK6IvcPcfkInn86WCBg
-   LS0P82CVUZnzxOfelMZwU17Q59nqpJq0Rd868DaRAVP1yoLQUnQvzQViG
-   reoph70w4IG3OmRe6NoSE8JN7IT3lzm283vYlI/uCIpURYGszkamtJVrX
-   1ioC4WP+a2btR39rbWYvY4kWCbPwc0kTMglLQ2dosLuHx1t9wyfxRFAcx
-   A==;
-X-CSE-ConnectionGUID: 4nwGP1UMSRahkwOQSEkaWA==
-X-CSE-MsgGUID: knAVBEcmTtO+vJlU+S9oPA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11608"; a="64502853"
-X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="64502853"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2025 22:27:06 -0800
-X-CSE-ConnectionGUID: y72OW6nsQSuWgDW+Gf42zA==
-X-CSE-MsgGUID: IbuKepxeThqPXJCng2iACg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="188236098"
-Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 09 Nov 2025 22:27:04 -0800
-Received: from kbuild by 7b01c990427b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vILMk-00005f-11;
-	Mon, 10 Nov 2025 06:27:02 +0000
-Date: Mon, 10 Nov 2025 14:26:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wei Deng <wei.deng@oss.qualcomm.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] arm64: dts: qcom: lemans-evk: Enable Bluetooth support
-Message-ID: <aRGFsvTZ4y5RmTwu@8d1a9004a541>
+	s=arc-20240116; t=1762757670; c=relaxed/simple;
+	bh=U27FR47vvI/+sK8vvk3aBB/np16WyOGQoW5cBKa4vNk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TjwwimwNbVpgDcdPVtIIfHIBzQyAI4Ff0cLvomKX1ge0VApOz9p5Lap6yp0IhlNivTX+urEq8/Noix8mPw8YhxyER3QC4B5IjP1U468U3b6KH/6xM3+1DmkmI4UsJnotaawXQ9d1k7QEZf6SOX1yLCaTgIpwRiaXOvwCL5kdhjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Br9zEjbq; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-42b3c965ca9so139935f8f.1
+        for <stable@vger.kernel.org>; Sun, 09 Nov 2025 22:54:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1762757667; x=1763362467; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=U27FR47vvI/+sK8vvk3aBB/np16WyOGQoW5cBKa4vNk=;
+        b=Br9zEjbqG1VIXlTjsll9fsBldskDLAfNTuV9+BN4Ca7+rWfLJnxMPdqRYYoqX7aUld
+         NihjEnrIk33vgYwHLVan4cBbh6YfThM+ToKjZB+HHhR6+l6XW9JmQtcIEYxlzNmA8Rci
+         1QwQMgbvIE5GTs3iBPJ22QryrygoB2ZZcNYgKp8Hfc+0naI0PhCOdkBq3Hsvfi16qtH3
+         MQjnBZa87Be3wg5tHSGbgwCq3rNt5ycRf/w6mxRcbhQ1oH5nnceIh83GdvQn093ZA2nH
+         DsGEUHVKcK4QDVdWNagUX6d8EF1psPQUDATNQjRcCwgP3DkB84gHT5M+yT2z9qlU1MyE
+         wdHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762757667; x=1763362467;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=U27FR47vvI/+sK8vvk3aBB/np16WyOGQoW5cBKa4vNk=;
+        b=w1C5SvG/158enrJO0wQg8H9OICx1Xzer+Jr6gG2uo7ip967iku/o2KmvjNjk9p3zay
+         vb99wXVr1g+f4+yziisZP1AbcIir5AXYbIPiUvWnlLmcZR62CtS0f6qw3PklqRAYFnA4
+         aug4G4PaSMzAy4boPwEdqcsWUCMcAQka1PHM9rPf6N0iR4onGyoMpawhf+i46LPF6rPM
+         x/hzEhYRGPqND3VbPfFuON5fzu36nySR8NsQsqcEGgtzeQhlRVhBYtI2dToWpuKIe970
+         nMTvHyYG8GUGVmNXxXti86VFg8vYhtxAj2OjjyMbnYJQuPlyGl+kdpezOnhP9hjg1peL
+         jbvg==
+X-Forwarded-Encrypted: i=1; AJvYcCUbHe+5jz6bjeu7erW8NG22cOuvu8Bh9G4gERJ9ndM7LWmOGevEm7e9fnSmjtQq4rDglEVpEdI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1flkRs4avVZooSdwl8xgwdB49gIza/nzB8PaMQyDb4tv6rdlM
+	FzVIBQ+jRPZR0AcTLppikqvHVYMcJxua5WOQVG0IGGg2b0DDHFIhNmLVDn5VAu3MYS8=
+X-Gm-Gg: ASbGncuSqvAzuapPxUEytAe+pxqiQIr+GkK6Pbc9VbUNXY7EhbwR3Nk7jvSq+j4Y5F/
+	lOuZpqMQ//8yMgJ6I4hfNnl3sSB4s/E6vnPQnj7vLUbWORDTKGM+ZLgr9hSL2WoV5bQlaJNIkoA
+	7m3aqSpIDGujMYOfi+8+IQT34wbAlFzVbEJg+mprJ25HCcykRqJrhV8XQ2rpbRCBLpGwwD9dlB+
+	/7wtP4l35UxkjAAjaf3w0GEH8GqhNfxguPM++rLtzjEftHUGVzKlUQawCqgo81pagCDr5O9mcVe
+	opERJxk22fkjmIWEQc77BZUPViATMd3lhRnjUQjoq/ahx2GhM/CJTdLNr+Avzq/WJ+PNwWKz9HZ
+	f0pa8Wn0kFnlEfs+htsLoXbqnlXrvI7Y5typpMh4OgALcVy6CvMXXLk+WwwfDxAFvQ610FnyS/q
+	sGI5Cf5Zwg1Uvu8Uc/
+X-Google-Smtp-Source: AGHT+IG87FW8xkI+HPhFc3NsIT1cI0tR3t1R9dpEVJouEeUSbLV2nxEXO/MYUxjy/6jIyUp7TqvHtw==
+X-Received: by 2002:a05:6000:2a0c:b0:42b:3ee9:4772 with SMTP id ffacd0b85a97d-42b3ee96373mr151631f8f.52.1762757667400;
+        Sun, 09 Nov 2025 22:54:27 -0800 (PST)
+Received: from [10.11.12.107] ([5.12.85.52])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42ac677ab75sm19848370f8f.35.2025.11.09.22.54.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Nov 2025 22:54:26 -0800 (PST)
+Message-ID: <c67466c0-c133-4fac-82d5-b412693f9d30@linaro.org>
+Date: Mon, 10 Nov 2025 08:54:24 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251110055709.319587-1-wei.deng@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] Hello,
+To: Miquel Raynal <miquel.raynal@bootlin.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Steam Lin <STLin2@winbond.com>, linux-mtd@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Sean Anderson <sean.anderson@linux.dev>
+References: <20251105-winbond-v6-18-rc1-spi-nor-v1-0-42cc9fb46e1b@bootlin.com>
+Content-Language: en-US
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+In-Reply-To: <20251105-winbond-v6-18-rc1-spi-nor-v1-0-42cc9fb46e1b@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+Hi, Miquel,
 
-Thanks for your patch.
+On 11/5/25 7:26 PM, Miquel Raynal wrote:
+> Here is a series adding support for 6 Winbond SPI NOR chips. Describing
+> these chips is needed otherwise the block protection feature is not
+> available. Everything else looks fine otherwise.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+I'm glad to see this, you're an locking expert now :). Do you care to
+extend the SPI NOR testing requirements [1] with steps on how to test the
+locking? There's some testing proposed at [2], would you please check and
+review it?
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Thanks!
+ta
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] arm64: dts: qcom: lemans-evk: Enable Bluetooth support
-Link: https://lore.kernel.org/stable/20251110055709.319587-1-wei.deng%40oss.qualcomm.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+[1] https://docs.kernel.org/driver-api/mtd/spi-nor.html#minimum-testing-requirements
+[2] https://lore.kernel.org/linux-mtd/92e99a96-5582-48a5-a4f9-e9b33fcff171@linux.dev/
 
