@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-192997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11FFDC4998C
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 23:35:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE40FC49956
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 23:33:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6FEA14F4802
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 22:30:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6592D188F2DE
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 22:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9154B340DA6;
-	Mon, 10 Nov 2025 22:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B203431F2;
+	Mon, 10 Nov 2025 22:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="taVGA8jA"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RzC3TX2/"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC3832D7E6
-	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 22:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AAF33F387
+	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 22:29:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762813791; cv=none; b=jktUZLwEpvYX4dZdrmH8cWgzMytA9Jn/4Y0u8+xDdE5Qjm6HyX2N2/IomuHAneEE+XPWd9sik/dzz2/H/2Ft9wiNHZIobk6ZvlhoERc+58/Le0v2bjsjYunwAZ0p+NUayu5zIqDCl9CB1DOJoyMjoJ66l0EqBgmI8/HJdHkbr3c=
+	t=1762813793; cv=none; b=V0SGJfJncx9b1PFjY75ITLhwUCT3cU85MqW5hmQnxbcT7pERtqPX6q/kD1ODjLM9tgm9ztsytFYJXhBVWvgtabu5aJsS5tJmZnjMnrrDWlFH+lKOhXN3Mr5Y7t9YvtN56Whwk7QoQWh7e1JI9G8H1fNVqlqbSaBETuPZdWYxU6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762813791; c=relaxed/simple;
-	bh=xFbdQlplq0WqCRJ78rpGzqY3fFN0yCjW8nbOWqfddkQ=;
+	s=arc-20240116; t=1762813793; c=relaxed/simple;
+	bh=9DRor7lV4Re2abUUUUzQvXd6E2q83n/HLL7sD5H893U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2P3WsubTrU1HyFxFcNNciGzq5Nk/GNAu5YBF1aM5u+uG6bsa2X0KKaRsD9rJKhQ98ZsSDW/GMHDs8lll3T4qj9bgdtGPoMWo6QKfqU50I7k3DgSTuJs6znE/Q2jXeCPRV7/WhcH/nZhKVFbpAAqkenAKeIQz3kB7qDkkt5yjOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=taVGA8jA; arc=none smtp.client-ip=91.218.175.170
+	 MIME-Version:Content-Type; b=AsDOnGRR5OORB+7szjl+xtC/FayPE9iDmwXRKGIFrLZBLxCvU5p2tv/sni6kzAaIkq2uOupwx7LALGtpz6F+CUgVqZl35r7Jgyde8E1fAo9mhEJULOY5fm4Cl+kU3UmmMmjwRPOKF52dLxKp8klLhgQwwYO+uCsdmgj6wHLXgCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RzC3TX2/; arc=none smtp.client-ip=91.218.175.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762813785;
+	t=1762813788;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TcWwaqQvIuhlseQmCNLeqyZH+QJu2fp9KDcT1knut6I=;
-	b=taVGA8jAEgPSWJPPg0uEVYU8GRVY9Xh4j3a/JvYdRh2ygnMYKSqAuEZWbd5HTf0vBdwVLi
-	2tsH7RW8Wwj0lJAX5P3zSLWHqmUBZssnWdMYuxQwaiK1ZFPySvQtoTM8kDAGRzkQBEO09h
-	Ml9UzgCgxBoHEMu1Ekk5qaOXhLyvoE0=
+	bh=fp6La+n8eNRyqu4lEfbbzhDmUUR1lpJy82ZrTTptZlk=;
+	b=RzC3TX2/itPXUGhg55lbr/4d2BdQ77NpaA7a6Dpfj3QkiVIFVNWwah2/Um4MWsl0Cjitjr
+	dbgE1fyl9m5csn8qLT/hMTkbA22BR/oZa8025eLrL1v8gxWO/OYMVpvU/J+U2B/VNHhI5G
+	z7AnoyC3T3E/++NR8J3hpn22mMCd0nk=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -50,9 +50,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 02/13] KVM: SVM: Add missing save/restore handling of LBR MSRs
-Date: Mon, 10 Nov 2025 22:29:11 +0000
-Message-ID: <20251110222922.613224-3-yosry.ahmed@linux.dev>
+Subject: [PATCH v2 04/13] KVM: nSVM: Fix consistency checks for NP_ENABLE
+Date: Mon, 10 Nov 2025 22:29:13 +0000
+Message-ID: <20251110222922.613224-5-yosry.ahmed@linux.dev>
 In-Reply-To: <20251110222922.613224-1-yosry.ahmed@linux.dev>
 References: <20251110222922.613224-1-yosry.ahmed@linux.dev>
 Precedence: bulk
@@ -61,87 +61,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-MSR_IA32_DEBUGCTLMSR and LBR MSRs are currently not enumerated by
-KVM_GET_MSR_INDEX_LIST, and LBR MSRs cannot be set with KVM_SET_MSRS. So
-save/restore is completely broken.
+KVM currenty fails a nested VMRUN and injects VMEXIT_INVALID (aka
+SVM_EXIT_ERR) if L1 sets NP_ENABLE and the host does not support NPTs.
+On first glance, it seems like the check should actually be for
+guest_cpu_cap_has(X86_FEATURE_NPT) instead, as it is possible for the
+host to support NPTs but the guest CPUID to not advertise it.
 
-Fix it by adding the MSRs to msrs_to_save_base, and allowing writes to
-LBR MSRs from userspace only (as they are read-only MSRs). Additionally,
-to correctly restore L1's LBRs while L2 is running, make sure the LBRs
-are copied from the captured VMCB01 save area in svm_copy_vmrun_state().
+However, the consistency check is not architectural to begin with. The
+APM does not mention VMEXIT_INVALID if NP_ENABLE is set on a processor
+that does not have X86_FEATURE_NPT. Hence, NP_ENABLE should be ignored
+if X86_FEATURE_NPT is not available for L1. Apart from the consistency
+check, this is currently the case because NP_ENABLE is actually copied
+from VMCB01 to VMCB02, not from VMCB12.
 
-Fixes: 24e09cbf480a ("KVM: SVM: enable LBR virtualization")
+On the other hand, the APM does mention two other consistency checks for
+NP_ENABLE, both of which are missing (paraphrased):
+
+In Volume #2, 15.25.3 (24593—Rev. 3.42—March 2024):
+
+  If VMRUN is executed with hCR0.PG cleared to zero and NP_ENABLE set to
+  1, VMRUN terminates with #VMEXIT(VMEXIT_INVALID)
+
+In Volume #2, 15.25.4 (24593—Rev. 3.42—March 2024):
+
+  When VMRUN is executed with nested paging enabled (NP_ENABLE = 1), the
+  following conditions are considered illegal state combinations, in
+  addition to those mentioned in “Canonicalization and Consistency
+  Checks”:
+    • Any MBZ bit of nCR3 is set.
+    • Any G_PAT.PA field has an unsupported type encoding or any
+    reserved field in G_PAT has a nonzero value.
+
+Replace the existing consistency check with consistency checks on
+hCR0.PG and nCR3. Only perform the consistency checks if L1 has
+X86_FEATURE_NPT and NP_ENABLE is set in VMCB12. The G_PAT consistency
+check will be addressed separately.
+
+As it is now possible for an L1 to run L2 with NP_ENABLE set but
+ignored, also check that L1 has X86_FEATURE_NPT in nested_npt_enabled().
+
+Pass L1's CR0 to __nested_vmcb_check_controls(). In
+nested_vmcb_check_controls(), L1's CR0 is available through
+kvm_read_cr0(), as vcpu->arch.cr0 is not updated to L2's CR0 until later
+through nested_vmcb02_prepare_save() -> svm_set_cr0().
+
+In svm_set_nested_state(), L1's CR0 is available in the captured save
+area, as svm_get_nested_state() captures L1's save area when running L2,
+and L1's CR0 is stashed in VMCB01 on nested VMRUN (in
+nested_svm_vmrun()).
+
+Fixes: 4b16184c1cca ("KVM: SVM: Initialize Nested Nested MMU context on VMRUN")
 Cc: stable@vger.kernel.org
-Reported-by: Jim Mattson <jmattson@google.com>
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/kvm/svm/nested.c |  3 +++
- arch/x86/kvm/svm/svm.c    | 20 ++++++++++++++++++++
- arch/x86/kvm/x86.c        |  3 +++
- 3 files changed, 26 insertions(+)
+ arch/x86/kvm/svm/nested.c | 21 ++++++++++++++++-----
+ arch/x86/kvm/svm/svm.h    |  3 ++-
+ 2 files changed, 18 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index a37bd5c1f36fa..74211c5c68026 100644
+index 74211c5c68026..87bcc5eff96e8 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -1055,6 +1055,9 @@ void svm_copy_vmrun_state(struct vmcb_save_area *to_save,
- 		to_save->isst_addr = from_save->isst_addr;
- 		to_save->ssp = from_save->ssp;
- 	}
-+
-+	if (lbrv)
-+		svm_copy_lbrs(to_save, from_save);
+@@ -325,7 +325,8 @@ static bool nested_svm_check_bitmap_pa(struct kvm_vcpu *vcpu, u64 pa, u32 size)
  }
  
- void svm_copy_vmloadsave_state(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 711276e8ee84f..af0e9c26527e3 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2983,6 +2983,26 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
- 		svm_update_lbrv(vcpu);
- 		break;
-+	case MSR_IA32_LASTBRANCHFROMIP:
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.br_from = data;
-+		break;
-+	case MSR_IA32_LASTBRANCHTOIP:
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.br_to = data;
-+		break;
-+	case MSR_IA32_LASTINTFROMIP:
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.last_excp_from = data;
-+		break;
-+	case MSR_IA32_LASTINTTOIP:
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.last_excp_to = data;
-+		break;
- 	case MSR_VM_HSAVE_PA:
- 		/*
- 		 * Old kernels did not validate the value written to
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index c9c2aa6f4705e..9cb824f9cf644 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -348,6 +348,9 @@ static const u32 msrs_to_save_base[] = {
- 	MSR_IA32_U_CET, MSR_IA32_S_CET,
- 	MSR_IA32_PL0_SSP, MSR_IA32_PL1_SSP, MSR_IA32_PL2_SSP,
- 	MSR_IA32_PL3_SSP, MSR_IA32_INT_SSP_TAB,
-+	MSR_IA32_DEBUGCTLMSR,
-+	MSR_IA32_LASTBRANCHFROMIP, MSR_IA32_LASTBRANCHTOIP,
-+	MSR_IA32_LASTINTFROMIP, MSR_IA32_LASTINTTOIP,
- };
+ static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+-					 struct vmcb_ctrl_area_cached *control)
++					 struct vmcb_ctrl_area_cached *control,
++					 unsigned long l1_cr0)
+ {
+ 	if (CC(!vmcb12_is_intercept(control, INTERCEPT_VMRUN)))
+ 		return false;
+@@ -333,8 +334,12 @@ static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+ 	if (CC(control->asid == 0))
+ 		return false;
  
- static const u32 msrs_to_save_pmu[] = {
+-	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) && !npt_enabled))
+-		return false;
++	if (nested_npt_enabled(to_svm(vcpu))) {
++		if (CC(!kvm_vcpu_is_legal_gpa(vcpu, control->nested_cr3)))
++			return false;
++		if (CC(!(l1_cr0 & X86_CR0_PG)))
++			return false;
++	}
+ 
+ 	if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
+ 					   MSRPM_SIZE)))
+@@ -400,7 +405,12 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu)
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	struct vmcb_ctrl_area_cached *ctl = &svm->nested.ctl;
+ 
+-	return __nested_vmcb_check_controls(vcpu, ctl);
++	/*
++	 * Make sure we did not enter guest mode yet, in which case
++	 * kvm_read_cr0() could return L2's CR0.
++	 */
++	WARN_ON_ONCE(is_guest_mode(vcpu));
++	return __nested_vmcb_check_controls(vcpu, ctl, kvm_read_cr0(vcpu));
+ }
+ 
+ static
+@@ -1831,7 +1841,8 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 
+ 	ret = -EINVAL;
+ 	__nested_copy_vmcb_control_to_cache(vcpu, &ctl_cached, ctl);
+-	if (!__nested_vmcb_check_controls(vcpu, &ctl_cached))
++	/* 'save' contains L1 state saved from before VMRUN */
++	if (!__nested_vmcb_check_controls(vcpu, &ctl_cached, save->cr0))
+ 		goto out_free;
+ 
+ 	/*
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index f6fb70ddf7272..3e805a43ffcdb 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -552,7 +552,8 @@ static inline bool gif_set(struct vcpu_svm *svm)
+ 
+ static inline bool nested_npt_enabled(struct vcpu_svm *svm)
+ {
+-	return svm->nested.ctl.nested_ctl & SVM_NESTED_CTL_NP_ENABLE;
++	return guest_cpu_cap_has(&svm->vcpu, X86_FEATURE_NPT) &&
++		svm->nested.ctl.nested_ctl & SVM_NESTED_CTL_NP_ENABLE;
+ }
+ 
+ static inline bool nested_vnmi_enabled(struct vcpu_svm *svm)
 -- 
 2.51.2.1041.gc1ab5b90ca-goog
 
