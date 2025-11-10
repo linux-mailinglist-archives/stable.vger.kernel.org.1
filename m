@@ -1,124 +1,96 @@
-Return-Path: <stable+bounces-192964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6117CC473BC
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 15:35:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29710C47594
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 15:51:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3392B1886898
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 14:36:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F14641891105
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 14:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5226F315D37;
-	Mon, 10 Nov 2025 14:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B263101DC;
+	Mon, 10 Nov 2025 14:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZBkHe/p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ekcVxPa4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0101430C630;
-	Mon, 10 Nov 2025 14:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700C930F7FE;
+	Mon, 10 Nov 2025 14:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762785280; cv=none; b=ng5/iq7o7sX+O3cmA4AEc0/OsRYL2538R3JOjVxOMy2stLY+Us1RhZrv4PeWMTZFsRA8FYjqR5QdRRiGcR+OdmLNc8Z69klY3NhUDCkZe67TnQ4peGQnYT2rdLh3JHXKw+sMUcNx+hV2i3Iek1CaLOy1O0fKUd8kL43RSCZoZjo=
+	t=1762786273; cv=none; b=JSEkHACkVEuSwOcD6nOi+T5gfsD8RJMCsueSOPh87eB8vPAwj0fjqCOkOM3TGfK3jwcAfZ3mxF1xKRqT27EcVvGvtyCK9FhOJFy/r4ePM7nwbvl2ac2KtLZiUYUdHnGVK9hAoBQxR/m/UL3V88o7r0XKvQPCvvf3KKfR6faoSd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762785280; c=relaxed/simple;
-	bh=tbLSKTw5AUf6TNZDLnvM5iO0QJwGxY8JMEutVZVGHDU=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=uZpDDyuUTW8tFrv2DapYT0zO74XyPNUWKpYTszMFHKcKVt57SLrrnaA4jbOkurZ4v9954B+afHsE05sPg6urfX76o1F06PTG5q7wiqMPELYy1inaHz6WJK1c/nPe3DSIG173L0sfmG64TXUdZRfBfAvMulKc92+EVcPQqJOovb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZBkHe/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46ABEC116B1;
-	Mon, 10 Nov 2025 14:34:39 +0000 (UTC)
+	s=arc-20240116; t=1762786273; c=relaxed/simple;
+	bh=iy9M5bi9LnHKrEDzCp3+pahks1xh5T1G+df/WkdGulQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nEo3gW/vabp8LBQnmd1aX9GXZf+Rer7PRRwKmR8/FvLMk1JavQcW+SX9pmiQCIhvItzayjwvTR1bsUhhzT1CvjLk1CJ+kjbeOioE7ei1wljKyAPkZGRRUVhunWSfFmmF2RVzma7pOAVCcBN6dGiCTyzuijcBEMi3VnzZY0/4Or0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ekcVxPa4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA6DFC19422;
+	Mon, 10 Nov 2025 14:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762785279;
-	bh=tbLSKTw5AUf6TNZDLnvM5iO0QJwGxY8JMEutVZVGHDU=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=aZBkHe/pxy0wOC+B2RVIw8KwW0hbyTXws6hnxhGsKBGdbUwkIvKSRe7dqMkQWPACP
-	 DWc/GhOMK0xu1w8a5Y4ztWPH2SVsWwf103ok2KOk0xRg/028U7RHD/pbJ2jYI5PGjB
-	 oxnnCs+YKWNat8TxOXCNxxJL47OzMo+xNoWCitzQyYlqLq6leE2UIcLtIm1uJzhMg1
-	 lov4m0m1PLwEd/0f5UOtKVrHHcdrmT7LO2ZHV/5K1r5wcuKl5X7FiHlcrVyG0ydYii
-	 eGvFeHlFRonezSSnJowJIul7cM+/3ubZak5mj2ES65BK5L/oQwIHkqBJF+dYgokdiE
-	 3oe4NJopE3qjA==
-Date: Mon, 10 Nov 2025 08:34:37 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1762786273;
+	bh=iy9M5bi9LnHKrEDzCp3+pahks1xh5T1G+df/WkdGulQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ekcVxPa4WKSDY5nkkdT6Z1L9JkXrS0GeqRGRQyQGaADUJSIySRrFKgXopcHptZ0CW
+	 idrdGJyTtjFSqm0FwWiNEIV8CL3wQDQRhSPbq+2xSu3ncV6Gr7Rnuq5hVaPj0xshzY
+	 0ajfh9yV4V0GEGqnTvPiPBDRnqhN4uIclSppQcvZnKs9461StxjaofbtllxoFibJwt
+	 qalnULA88Cg//a9kdsRWU9F5cj5ik+RMF7GwLbQLLBRtjiEa7S8bP5vT4uAkrBRUu3
+	 yXNerXsSO+2nFAi1LMwJMCC4n/rY+LUYE9+tlKhoXlTwWxrsAx0GvLbN81sEXSOFqw
+	 sxFEBRmKXGvlw==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vITEf-000000005KC-0dai;
+	Mon, 10 Nov 2025 15:51:13 +0100
+Date: Mon, 10 Nov 2025 15:51:13 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] clocksource/drivers/stm: Fix section mismatches
+Message-ID: <aRH74auttb6UgnjP@hovoldconsulting.com>
+References: <20251017054943.7195-1-johan@kernel.org>
+ <7ad2b976-3b0d-4823-a145-ceedf071450d@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-bluetooth@vger.kernel.org, cheng.jiang@oss.qualcomm.com, 
- Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
- stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
- quic_jiaymao@quicinc.com, linux-arm-msm@vger.kernel.org, 
- Bjorn Andersson <andersson@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, quic_shuaz@quicinc.com, 
- quic_chezhou@quicinc.com, Konrad Dybcio <konradybcio@kernel.org>
-To: Wei Deng <wei.deng@oss.qualcomm.com>
-In-Reply-To: <20251110055709.319587-1-wei.deng@oss.qualcomm.com>
-References: <20251110055709.319587-1-wei.deng@oss.qualcomm.com>
-Message-Id: <176278493491.154705.438976021468566948.robh@kernel.org>
-Subject: Re: [PATCH] arm64: dts: qcom: lemans-evk: Enable Bluetooth support
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7ad2b976-3b0d-4823-a145-ceedf071450d@linaro.org>
 
+Hi Daniel,
 
-On Mon, 10 Nov 2025 11:27:09 +0530, Wei Deng wrote:
-> There's a WCN6855 WiFi/Bluetooth module on an M.2 card. To make
-> Bluetooth work, we need to define the necessary device tree nodes,
-> including UART configuration and power supplies.
-> 
-> Since there is no standard M.2 binding in the device tree at present,
-> the PMU is described using dedicated PMU nodes to represent the
-> internal regulators required by the module.
-> 
-> The 3.3V supply for the module is assumed to come directly from the
-> main board supply, which is 12V. To model this in the device tree, we
-> add a fixed 12V regulator node as the DC-IN source and connect it to
-> the 3.3V regulator node.
-> 
-> Signed-off-by: Wei Deng <wei.deng@oss.qualcomm.com>
-> ---
->  arch/arm64/boot/dts/qcom/lemans-evk.dts | 115 ++++++++++++++++++++++++
->  1 file changed, 115 insertions(+)
-> 
+On Wed, Nov 05, 2025 at 02:32:18PM +0100, Daniel Lezcano wrote:
 
+> You should replace __init by __init_or_module
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+That's not sufficient as the driver can still be rebound through sysfs
+currently (the driver would probably crash anyway, but that's a separate
+issue).
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+Also note that no drivers use __init_or_module these days, likely as
+everyone uses modules and it's not worth the added complexity in trying
+to get the section markers right for a build configuration that few
+people care about.
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
+I can send a follow-on patch to suppress the unbind attribute, or
+include it in a v2 if you insist on using __init_or_module. 
 
-  pip3 install dtschema --upgrade
+What do you prefer?
 
+> On 10/17/25 07:49, Johan Hovold wrote:
+> > Platform drivers can be probed after their init sections have been
+> > discarded (e.g. on probe deferral or manual rebind through sysfs) so the
+> > probe function must not live in init. Device managed resource actions
+> > similarly cannot be discarded.
 
-This patch series was applied (using b4) to base:
- Base: attempting to guess base-commit...
- Base: tags/next-20251107 (exact match)
- Base: tags/next-20251107 (use --merge-base to override)
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/qcom/' for 20251110055709.319587-1-wei.deng@oss.qualcomm.com:
-
-arch/arm64/boot/dts/qcom/lemans-evk.dtb: wcn6855-pmu (qcom,wcn6855-pmu): 'vddpcielp3-supply', 'vddpcielp9-supply' do not match any of the regexes: '^pinctrl-[0-9]+$'
-	from schema $id: http://devicetree.org/schemas/regulator/qcom,qca6390-pmu.yaml
-arch/arm64/boot/dts/qcom/lemans-evk.dtb: wcn6855-pmu (qcom,wcn6855-pmu): 'vddpcie1p3-supply' is a required property
-	from schema $id: http://devicetree.org/schemas/regulator/qcom,qca6390-pmu.yaml
-arch/arm64/boot/dts/qcom/lemans-evk.dtb: wcn6855-pmu (qcom,wcn6855-pmu): 'vddpcie1p9-supply' is a required property
-	from schema $id: http://devicetree.org/schemas/regulator/qcom,qca6390-pmu.yaml
-
-
-
-
-
+Johan
 
