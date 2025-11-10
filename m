@@ -1,279 +1,218 @@
-Return-Path: <stable+bounces-192925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7288C460EE
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 11:51:13 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4D4C461A6
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 12:04:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 88B144E9B7D
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 10:51:07 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D33DA3450B1
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 11:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5573074A7;
-	Mon, 10 Nov 2025 10:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B363081D7;
+	Mon, 10 Nov 2025 11:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cTOlzGjk"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IL2wBUnZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916AC306492;
-	Mon, 10 Nov 2025 10:50:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9643081C6
+	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 11:04:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762771858; cv=none; b=NZ8Hi19N8EBNuQ00KWUWcvqRyA/RzK7qz7MO0jG/SNt/kYxCzfvb1zXgowKAxmdH05gtQWvyRNS2oY9Z4W0/yt+iOD0q4KexxGPrYOtFe3FWkt5lrLQVw+VLGKgymzzlPDf+UIwxHhZXLB9wFHMI569o9IExuRX5TsH5FoyGqPg=
+	t=1762772654; cv=none; b=MmYhyC9t4nmmYEDNIr10n1wTsIBdt2uTQcLM0Wh0seFW3+csoR8wRv/qtCHpLkpGNw/s3pqMDDhaGMLTIkA9n2vWI10v7zrb6T0Q9GG0Twcqgcwdf/6uqus5MhnJ+hClGXmLxMN1yG6bQg0Abhp7ZvHH632683kwSHGxKwlJu9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762771858; c=relaxed/simple;
-	bh=SxLpJRCLNbGRJQQxfNl9Sjq3Ybg28Uj5WOePADjH8Jg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=QxRqBLdFIDcylHD/vZJuAHYTEsfTpeu4vUJc8ZI6Q9VnBaDqOFI3/shmtRcZ9eVvR2B5lAXuFf4qlV2wts6bcya+/0uYX2pHfWr/c2XORBRQnew3KXOWi3ec0Ij0NFzzKWCxQ1jJBhQolpmbbZ43iOZxkp/VB3nsEsvFpmOQGCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cTOlzGjk; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762771856; x=1794307856;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=SxLpJRCLNbGRJQQxfNl9Sjq3Ybg28Uj5WOePADjH8Jg=;
-  b=cTOlzGjkAPqNHFRl2Q7zUCsZK/6qHlCv0bnY2Y3INl+sAfF1Du78IDPp
-   w+dXehF81ja1a06yo3IdSGuPmmrasqM9pgP05daFDzU5Rvfi96K/PbE+8
-   WQ9K2LhCHhB80OdqbJOjXWZZ/C8w7SF/hkgNFnqriizIduBNIZehJtjSp
-   fbPL8rr+Pq5zkZFNmn+EQDCI1dOZMCCb6K4ZqNaUWDTaBJeKfRBkp+QRo
-   wPxtx1P4+PeQ0+jeKjuuG1/uFYpzqvfOra/xhqieQtBaEU0tex+mfx3XF
-   7pl6aamyrC5AZE8gXDz4DRonmA4SGqCnPn0oTo+5KoNig7zyYz/8T0R5N
-   Q==;
-X-CSE-ConnectionGUID: VYAapwTyS2S5Vk5lYBVndg==
-X-CSE-MsgGUID: GXkB9cDqQnqV9Bp2vSE8ew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11608"; a="75925574"
-X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="75925574"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 02:50:56 -0800
-X-CSE-ConnectionGUID: LLRhveABRwWVw52PFBWn2A==
-X-CSE-MsgGUID: QReF50qTSe2FD+S9BQAV2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="188286919"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.13])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 02:50:52 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
-	Alex Davis <alex47794@gmail.com>,
-	stable@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 1/1] serial: 8250: Fix 8250_rsa symbol loop
-Date: Mon, 10 Nov 2025 12:50:43 +0200
-Message-Id: <20251110105043.4062-1-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1762772654; c=relaxed/simple;
+	bh=1Z+gaT40oj3T5r3ek/hMQ0J0ma0x2pMde1fuBz+MOWc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=gt4G7VNAgyJKecikgrahjCc0Fj0i38wjOzrOkfKMp1WBuRvozR0TFDl5tEGp0vw5ksOnSc3FYeW6utKyQo6LGrDma6MaRqw8F+FdJ6+39pB6SQwv9uu+alV4AngBwEstyTJYnLPegVlWuLu1R8PsO6zvXyXnRKGEQnTtHzxZaTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IL2wBUnZ; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-477632cc932so10879855e9.3
+        for <stable@vger.kernel.org>; Mon, 10 Nov 2025 03:04:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1762772650; x=1763377450; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yIWnZ8dEqAIo6e04DNrTq+ZCsjQol4ZAc5Df0I8mreM=;
+        b=IL2wBUnZGYGVWNEpyCph9/ihdD+tX5BiyHigu9uHwImLuvHER+s21IVTwJxByNOF08
+         IFvBbqHjowPabtmwGtm0uyxuFXgyPhQWBj34PVJRWXl9JMeBQ1NHNZIxK9JI3e5eQwy+
+         RjWOtbEmfUGMGn5bkY89LCsOWdc8PF+x3CkBE5XiALHxJErI2NMutfBlpBcRjBqifYOL
+         kWMM5L8Fgs+KffgNNWNO0nqZ2pIb1y5GkTRBD43WZBd2DX/db9714XGUtoz1cnTVrrRD
+         46IGtLXprJxPW71shUaijrKUHLoXLGt5Oyo9/HhFRgyfHNMny9GZW3tdaXwkFx0xYivc
+         2djg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762772650; x=1763377450;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yIWnZ8dEqAIo6e04DNrTq+ZCsjQol4ZAc5Df0I8mreM=;
+        b=nArx/efJP7u4E6oVfRcVI93+XQOWTaTSXuK4ZBMYgAsEsb110jopmlGxW+wMj3fh42
+         QXrDRf20+PT4wFnF28yNpFNBIpguGTjJ5rJN8tc7+MsjjPCl54IVaLg+MlhSeoT2oULo
+         /8VhMFeWLCFuki6EOT0TqFW1uYE0n7EiCzMz5ewFNsZ88CSOFWbWOE31Q5YXDbzm6TLS
+         ps0sjdt2s1KPzkKHp9JLee5OjhjfaacOM0FK/lvyqanGXEyjozRByaSINMw5DHFTsnYw
+         /cNKNgREZembmDEA1DfBnPwQsz39KmYOD8hVrS3xgADUw+jO3fAxJnpPU8VW3BWPvaDM
+         58Vg==
+X-Forwarded-Encrypted: i=1; AJvYcCXcE3DF/WHcdjsPdH3HiVh2ZBygvOU6VgLEbHyTv7paBuq35cmRJvHoH5xaat98xtUITh+j6m8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyt025jnpkf6p2aIrDF2tAHPRCpEQhEfdmxJYBiiZWeSRIyit+L
+	gDKNiIx2bkSlBHCp1ujs9NqgHsIjLsz8zJzUxOUEOLRhv+w+ACQH2Fu6E6XswS7rrk8=
+X-Gm-Gg: ASbGncskS3JL+7aB9VT0TZRwlfsWYUiycsq1QhWXIli+3dxdeOy1/d9xzxTKALsRSue
+	RxjQvdidaRguAAO9FWiL0J7JleW5ONRGntk37QGGoYB7ZjxuZYxrXOr294EJrWJRP/eGDbmd264
+	sfAGUSbC6tj78Ni2Rm1fZ2qhsbqDY38+QIDl47+QWEzcuW9k1jMmLi0dLR72kfEpAT21lEJM/A9
+	PzpiYL/lmNoq/EkpsLamIAyTJeN2wQ3+YgoW57NR5lfaO/izXy+ENe1aDDWFKz8IdmJv7VBJyVK
+	NKQlYXIG1eTJt/YMCxHx/ptx8Q12VKt58YJCRaZDM3dVdHbW2CxZ07fhNTx3/k1FMhjL+9aF8Xv
+	KTo2dn8Hy0dTvqwAHgLLcIRKZKVp0+pXrS8FoqOyb+1ON1sT41YCIQzRQO4NVwH39EUcEtdedWF
+	VviqH0/R+M9lWZpCeRAVlhc014CLHK3sKq64jmsHU6vTm+mn937i0p
+X-Google-Smtp-Source: AGHT+IH0yKFYlADFFoNgI+vt5Nvr3682vUUZksEIjYehH1HnbB5yCLv9XtMdyOspZEkknqy2NTGIgA==
+X-Received: by 2002:a05:600c:c84:b0:46e:3f75:da49 with SMTP id 5b1f17b1804b1-477732a1d2bmr55933905e9.37.1762772649975;
+        Mon, 10 Nov 2025 03:04:09 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:3d9:2080:f168:a23e:c1b2:ae61? ([2a01:e0a:3d9:2080:f168:a23e:c1b2:ae61])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47763e4f13dsm106249415e9.5.2025.11.10.03.04.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Nov 2025 03:04:09 -0800 (PST)
+Message-ID: <3c98a3f1-ca68-41ed-a8bb-f99a57ac57d7@linaro.org>
+Date: Mon, 10 Nov 2025 12:04:08 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH] PCI: meson: Remove meson_pcie_link_up() timeout, message,
+ speed check
+To: Bjorn Helgaas <helgaas@kernel.org>, Yue Wang <yue.wang@Amlogic.com>,
+ Kevin Hilman <khilman@baylibre.com>
+Cc: Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Linnaea Lavia <linnaea-von-lavia@live.com>, FUKAUMI Naoki <naoki@radxa.com>,
+ Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+ linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org
+References: <20251103221930.1831376-1-helgaas@kernel.org>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20251103221930.1831376-1-helgaas@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Depmod fails for a kernel made with:
-  make allnoconfig
-  echo -e "CONFIG_MODULES=y\nCONFIG_SERIAL_8250=m\nCONFIG_SERIAL_8250_EXTENDED=y\nCONFIG_SERIAL_8250_RSA=y" >> .config 
-  make olddefconfig
+On 11/3/25 23:19, Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
+> 
+> Previously meson_pcie_link_up() only returned true if the link was in the
+> L0 state.  This was incorrect because hardware autonomously manages
+> transitions between L0, L0s, and L1 while both components on the link stay
+> in D0.  Those states should all be treated as "link is active".
+> 
+> Returning false when the device was in L0s or L1 broke config accesses
+> because dw_pcie_other_conf_map_bus() fails if the link is down, which
+> caused errors like this:
+> 
+>    meson-pcie fc000000.pcie: error: wait linkup timeout
+>    pci 0000:01:00.0: BAR 0: error updating (0xfc700004 != 0xffffffff)
+> 
+> Remove the LTSSM state check, timeout, speed check, and error message from
+> meson_pcie_link_up(), the dw_pcie_ops.link_up() method, so it is a simple
+> boolean check of whether the link is active.  Timeouts and and error
+> messages are handled at a higher level, e.g., dw_pcie_wait_for_link().
+> 
+> Fixes: 9c0ef6d34fdb ("PCI: amlogic: Add the Amlogic Meson PCIe controller driver")
+> Reported-by: Linnaea Lavia <linnaea-von-lavia@live.com>
+> Closes: https://lore.kernel.org/r/DM4PR05MB102707B8CDF84D776C39F22F2C7F0A@DM4PR05MB10270.namprd05.prod.outlook.com
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> Tested-by: Linnaea Lavia <linnaea-von-lavia@live.com>
+> Cc: stable@vger.kernel.org
+> ---
+>   drivers/pci/controller/dwc/pci-meson.c | 36 +++-----------------------
+>   1 file changed, 3 insertions(+), 33 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-meson.c b/drivers/pci/controller/dwc/pci-meson.c
+> index 787469d1b396..13685d89227a 100644
+> --- a/drivers/pci/controller/dwc/pci-meson.c
+> +++ b/drivers/pci/controller/dwc/pci-meson.c
+> @@ -338,40 +338,10 @@ static struct pci_ops meson_pci_ops = {
+>   static bool meson_pcie_link_up(struct dw_pcie *pci)
+>   {
+>   	struct meson_pcie *mp = to_meson_pcie(pci);
+> -	struct device *dev = pci->dev;
+> -	u32 speed_okay = 0;
+> -	u32 cnt = 0;
+> -	u32 state12, state17, smlh_up, ltssm_up, rdlh_up;
+> +	u32 state12;
+>   
+> -	do {
+> -		state12 = meson_cfg_readl(mp, PCIE_CFG_STATUS12);
+> -		state17 = meson_cfg_readl(mp, PCIE_CFG_STATUS17);
+> -		smlh_up = IS_SMLH_LINK_UP(state12);
+> -		rdlh_up = IS_RDLH_LINK_UP(state12);
+> -		ltssm_up = IS_LTSSM_UP(state12);
+> -
+> -		if (PM_CURRENT_STATE(state17) < PCIE_GEN3)
+> -			speed_okay = 1;
+> -
+> -		if (smlh_up)
+> -			dev_dbg(dev, "smlh_link_up is on\n");
+> -		if (rdlh_up)
+> -			dev_dbg(dev, "rdlh_link_up is on\n");
+> -		if (ltssm_up)
+> -			dev_dbg(dev, "ltssm_up is on\n");
+> -		if (speed_okay)
+> -			dev_dbg(dev, "speed_okay\n");
+> -
+> -		if (smlh_up && rdlh_up && ltssm_up && speed_okay)
+> -			return true;
+> -
+> -		cnt++;
+> -
+> -		udelay(10);
+> -	} while (cnt < WAIT_LINKUP_TIMEOUT);
+> -
+> -	dev_err(dev, "error: wait linkup timeout\n");
+> -	return false;
+> +	state12 = meson_cfg_readl(mp, PCIE_CFG_STATUS12);
+> +	return IS_SMLH_LINK_UP(state12) && IS_RDLH_LINK_UP(state12);
+>   }
+>   
+>   static int meson_pcie_host_init(struct dw_pcie_rp *pp)
 
-...due to a dependency loop:
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on BananaPi M2S
 
-  depmod: ERROR: Cycle detected: 8250 -> 8250_base -> 8250
-  depmod: ERROR: Found 2 modules in dependency cycles!
+Thanks !
 
-This is caused by the move of 8250 RSA code from 8250_port.c (in
-8250_base.ko) into 8250_rsa.c (in 8250.ko) by the commit 5a128fb475fb
-("serial: 8250: move RSA functions to 8250_rsa.c"). The commit
-b20d6576cdb3 ("serial: 8250: export RSA functions") tried to fix a
-missing symbol issue with EXPORTs but those then cause this dependency
-cycle.
-
-Break dependency loop by moving 8250_rsa.o from 8250.ko to 8250_base.ko
-and by passing univ8250_port_base_ops to univ8250_rsa_support() that
-can make a local copy of it.
-
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Reported-by: Alex Davis <alex47794@gmail.com>
-Fixes: 5a128fb475fb ("serial: 8250: move RSA functions to 8250_rsa.c")
-Fixes: b20d6576cdb3 ("serial: 8250: export RSA functions")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/87frc3sd8d.fsf@posteo.net/
-Link: https://lore.kernel.org/all/CADiockCvM6v+d+UoFZpJSMoLAdpy99_h-hJdzUsdfaWGn3W7-g@mail.gmail.com/
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
----
-
-in thread -> v1:
-- Changed prototype also in the #else block
-
- drivers/tty/serial/8250/8250.h          |  4 ++--
- drivers/tty/serial/8250/8250_platform.c |  2 +-
- drivers/tty/serial/8250/8250_rsa.c      | 26 ++++++++++++++++---------
- drivers/tty/serial/8250/Makefile        |  2 +-
- 4 files changed, 21 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/tty/serial/8250/8250.h b/drivers/tty/serial/8250/8250.h
-index 58e64c4e1e3a..e99f5193d8f1 100644
---- a/drivers/tty/serial/8250/8250.h
-+++ b/drivers/tty/serial/8250/8250.h
-@@ -322,13 +322,13 @@ static inline void serial8250_pnp_exit(void) { }
- #endif
- 
- #ifdef CONFIG_SERIAL_8250_RSA
--void univ8250_rsa_support(struct uart_ops *ops);
-+void univ8250_rsa_support(struct uart_ops *ops, const struct uart_ops *core_ops);
- void rsa_enable(struct uart_8250_port *up);
- void rsa_disable(struct uart_8250_port *up);
- void rsa_autoconfig(struct uart_8250_port *up);
- void rsa_reset(struct uart_8250_port *up);
- #else
--static inline void univ8250_rsa_support(struct uart_ops *ops) { }
-+static inline void univ8250_rsa_support(struct uart_ops *ops, const struct uart_ops *core_ops) { }
- static inline void rsa_enable(struct uart_8250_port *up) {}
- static inline void rsa_disable(struct uart_8250_port *up) {}
- static inline void rsa_autoconfig(struct uart_8250_port *up) {}
-diff --git a/drivers/tty/serial/8250/8250_platform.c b/drivers/tty/serial/8250/8250_platform.c
-index b27981340e76..fe7ec440ffa5 100644
---- a/drivers/tty/serial/8250/8250_platform.c
-+++ b/drivers/tty/serial/8250/8250_platform.c
-@@ -75,7 +75,7 @@ static void __init __serial8250_isa_init_ports(void)
- 
- 	/* chain base port ops to support Remote Supervisor Adapter */
- 	univ8250_port_ops = *univ8250_port_base_ops;
--	univ8250_rsa_support(&univ8250_port_ops);
-+	univ8250_rsa_support(&univ8250_port_ops, univ8250_port_base_ops);
- 
- 	if (share_irqs)
- 		irqflag = IRQF_SHARED;
-diff --git a/drivers/tty/serial/8250/8250_rsa.c b/drivers/tty/serial/8250/8250_rsa.c
-index 40a3dbd9e452..1f182f165525 100644
---- a/drivers/tty/serial/8250/8250_rsa.c
-+++ b/drivers/tty/serial/8250/8250_rsa.c
-@@ -14,6 +14,8 @@
- static unsigned long probe_rsa[PORT_RSA_MAX];
- static unsigned int probe_rsa_count;
- 
-+static const struct uart_ops *core_port_base_ops;
-+
- static int rsa8250_request_resource(struct uart_8250_port *up)
- {
- 	struct uart_port *port = &up->port;
-@@ -67,7 +69,7 @@ static void univ8250_config_port(struct uart_port *port, int flags)
- 		}
- 	}
- 
--	univ8250_port_base_ops->config_port(port, flags);
-+	core_port_base_ops->config_port(port, flags);
- 
- 	if (port->type != PORT_RSA && up->probe & UART_PROBE_RSA)
- 		rsa8250_release_resource(up);
-@@ -78,11 +80,11 @@ static int univ8250_request_port(struct uart_port *port)
- 	struct uart_8250_port *up = up_to_u8250p(port);
- 	int ret;
- 
--	ret = univ8250_port_base_ops->request_port(port);
-+	ret = core_port_base_ops->request_port(port);
- 	if (ret == 0 && port->type == PORT_RSA) {
- 		ret = rsa8250_request_resource(up);
- 		if (ret < 0)
--			univ8250_port_base_ops->release_port(port);
-+			core_port_base_ops->release_port(port);
- 	}
- 
- 	return ret;
-@@ -94,15 +96,25 @@ static void univ8250_release_port(struct uart_port *port)
- 
- 	if (port->type == PORT_RSA)
- 		rsa8250_release_resource(up);
--	univ8250_port_base_ops->release_port(port);
-+	core_port_base_ops->release_port(port);
- }
- 
--void univ8250_rsa_support(struct uart_ops *ops)
-+/*
-+ * It is not allowed to directly reference any symbols from 8250.ko here as
-+ * that would result in a dependency loop between the 8250.ko and
-+ * 8250_base.ko modules. This function is called from 8250.ko and is used to
-+ * break the symbolic dependency cycle. Anything that is needed from 8250.ko
-+ * has to be passed as pointers to this function which then can adjust those
-+ * variables on 8250.ko side or store them locally as needed.
-+ */
-+void univ8250_rsa_support(struct uart_ops *ops, const struct uart_ops *core_ops)
- {
-+	core_port_base_ops = core_ops;
- 	ops->config_port  = univ8250_config_port;
- 	ops->request_port = univ8250_request_port;
- 	ops->release_port = univ8250_release_port;
- }
-+EXPORT_SYMBOL_FOR_MODULES(univ8250_rsa_support, "8250");
- 
- module_param_hw_array(probe_rsa, ulong, ioport, &probe_rsa_count, 0444);
- MODULE_PARM_DESC(probe_rsa, "Probe I/O ports for RSA");
-@@ -146,7 +158,6 @@ void rsa_enable(struct uart_8250_port *up)
- 	if (up->port.uartclk == SERIAL_RSA_BAUD_BASE * 16)
- 		serial_out(up, UART_RSA_FRR, 0);
- }
--EXPORT_SYMBOL_FOR_MODULES(rsa_enable, "8250_base");
- 
- /*
-  * Attempts to turn off the RSA FIFO and resets the RSA board back to 115kbps compat mode. It is
-@@ -178,7 +189,6 @@ void rsa_disable(struct uart_8250_port *up)
- 	if (result)
- 		up->port.uartclk = SERIAL_RSA_BAUD_BASE_LO * 16;
- }
--EXPORT_SYMBOL_FOR_MODULES(rsa_disable, "8250_base");
- 
- void rsa_autoconfig(struct uart_8250_port *up)
- {
-@@ -191,7 +201,6 @@ void rsa_autoconfig(struct uart_8250_port *up)
- 	if (__rsa_enable(up))
- 		up->port.type = PORT_RSA;
- }
--EXPORT_SYMBOL_FOR_MODULES(rsa_autoconfig, "8250_base");
- 
- void rsa_reset(struct uart_8250_port *up)
- {
-@@ -200,7 +209,6 @@ void rsa_reset(struct uart_8250_port *up)
- 
- 	serial_out(up, UART_RSA_FRR, 0);
- }
--EXPORT_SYMBOL_FOR_MODULES(rsa_reset, "8250_base");
- 
- #ifdef CONFIG_SERIAL_8250_DEPRECATED_OPTIONS
- #ifndef MODULE
-diff --git a/drivers/tty/serial/8250/Makefile b/drivers/tty/serial/8250/Makefile
-index 513a0941c284..9ec4d5fe64de 100644
---- a/drivers/tty/serial/8250/Makefile
-+++ b/drivers/tty/serial/8250/Makefile
-@@ -7,7 +7,6 @@ obj-$(CONFIG_SERIAL_8250)		+= 8250.o
- 8250-y					:= 8250_core.o
- 8250-y					+= 8250_platform.o
- 8250-$(CONFIG_SERIAL_8250_PNP)		+= 8250_pnp.o
--8250-$(CONFIG_SERIAL_8250_RSA)		+= 8250_rsa.o
- 
- obj-$(CONFIG_SERIAL_8250)		+= 8250_base.o
- 8250_base-y				:= 8250_port.o
-@@ -15,6 +14,7 @@ obj-$(CONFIG_SERIAL_8250)		+= 8250_base.o
- 8250_base-$(CONFIG_SERIAL_8250_DWLIB)	+= 8250_dwlib.o
- 8250_base-$(CONFIG_SERIAL_8250_FINTEK)	+= 8250_fintek.o
- 8250_base-$(CONFIG_SERIAL_8250_PCILIB)	+= 8250_pcilib.o
-+8250_base-$(CONFIG_SERIAL_8250_RSA)	+= 8250_rsa.o
- 
- obj-$(CONFIG_SERIAL_8250_CONSOLE)	+= 8250_early.o
- 
-
-base-commit: 719f3df3e113e03d2c8cf324827da1fd17a9bd8f
--- 
-2.39.5
+Neil
 
 
