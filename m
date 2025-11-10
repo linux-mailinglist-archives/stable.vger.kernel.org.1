@@ -1,158 +1,113 @@
-Return-Path: <stable+bounces-192977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C268C485AF
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 18:33:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6557C48865
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 19:24:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC5843A58E9
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 17:33:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4814E4EA346
+	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 18:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DF82D7DFB;
-	Mon, 10 Nov 2025 17:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB54732AAB6;
+	Mon, 10 Nov 2025 18:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="drC5W9vK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NfmALfXQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFF02641FC
-	for <stable@vger.kernel.org>; Mon, 10 Nov 2025 17:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542313218B2;
+	Mon, 10 Nov 2025 18:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762795981; cv=none; b=ev3RNDnJzz6CRmB5VOX5tLVZqKgKktdoProc92q8QMUYW3wae+IkqmvdRWURzQn+QoGellAKq7FklKQ7W4X65uC18K/x8paQ1vM7W0mgfQAmjy4dZb4RBN7Z3ZYablcB7W/XyOQZpwW0/wLGDIRerDzarBSAVxBVfAVpWrg9ovs=
+	t=1762799048; cv=none; b=g9CIn/RtX8SU63OSHyDaNQP6L7htf6eB0pNTLajLE/nphpMLEJGGjWt7MPfeJQ5b+XegW92dnXuvmSAQ5gJUI0BNqquFZjbICy5A5IRzV1NwIX23NXCzmtq8p2Mobivc//uluMborKPkF7x3qt6xsRWdMwavrMFPi23rwvmFwu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762795981; c=relaxed/simple;
-	bh=lavqjS8uyddXCf50slP6/gj/LovmQ9D/FO5ATpZAsEM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bvsMOay80eVUkEpNlKAeBmp1PVU5j0QV1zw5oG4+T3EZ7QPAiZCJ3lRr1rlprGKdYr6phPhbI3OfaRH6YyuS/RjMqlF+TIxksmf+YLe6FmxFd276I+diJKFSCWm2dmpqkmfAkxS8vJfCckUwWzZdPFTGExlR+fN6Io1ZZJBdpEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=drC5W9vK; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-88249766055so20047496d6.1
-        for <stable@vger.kernel.org>; Mon, 10 Nov 2025 09:32:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762795979; x=1763400779; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=auNNYNeszcnW8UxlPsUXlu6HqCk9VFPDDrt3cDy7QDk=;
-        b=drC5W9vK26wS4dcrGuI42zlNJSLMOtQMFlg8oSLywXMtlPMkkApgFrPue0PXmqUiLV
-         YzCd4G3f72x27RuXRCx8GznVrv16dLie2W3urfbdLr3HTrjpoKLc5jRlurplF0+dNy9C
-         sOb9bZY744MQzLXc50Z9dHt5kq5eNt0s77cCnmLoIWRaML/4seD9LSNvetyTLu/Y7ln+
-         Su111UYA1BUVwPFlUg8A/y7xMlWfw4Mk1LGxzgcjTVUT8RsCKVQFiN3hL99/lzKurYvx
-         l9IXWW230Ku5+eVNAasqEzOAhkLfMCrU81qMAdcafPQyeWTI+ET+4Rrf92/Gm1cqjLIv
-         eTLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762795979; x=1763400779;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=auNNYNeszcnW8UxlPsUXlu6HqCk9VFPDDrt3cDy7QDk=;
-        b=Syw5deYSBlvgdzCMWFaCVggCP56p/3no8+6rJtCGV7KPjv5hh5TiRlO5fkBMxAcaCG
-         y5/lW7M3nRP44beSzXopJeOVMTi7QNHDb02lYGB8pPLYkV9sgZST9ikkrJEk0utxWtaG
-         0KvZQAgdQIsksZEr2RNqDFhA6YGi3T6/tfrZ1kU/PhGmPFnvfeSaJsbRDv1dUG11SAZy
-         V8nBaQC89MfJTR4uRFeLGCfHVD/N8zoMcuyOcVF3u5C/lOG2gGxnJ1LkNC1pUI7Q1k19
-         wkq5Bz8VpVuh2xHfwIsZE/179jOAJ2BuHtXDBUqV1JcEBx+7irOZY1VF3t/CIgOncV4O
-         HamQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSvQFBCzwsSK40FPr/HEmlS3uLi2sd7KcLECvgkJ5roEsxMoHNVVYGkZQCAuDUfPm7fLuwSWI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8RCinjkI5xL8gUo2p5h0P+IgthNLq/O5N5hn0gQ3aMRLCPzsQ
-	KQ5/KlUY1huQyrJ+ldLeEkPwiyIlmhcmS2yYHK5l48vhbkU89SBoUlTM1daCOAi2RQ6jwnWBE9U
-	2c9T7tJNW8xSOMB3exY5io/xfF0HQPTKaqN+ofkA/
-X-Gm-Gg: ASbGncvrhZpPyF9mJVg2X9JHB1BcjK9tHC+5aQecp9SH+dbNFHbmGcrLnTFXC+C2P0/
-	a09DMT2XdjX5tSM0xxPHaOuHz+ojopZq6s3eVHFPxO+jr9MUCZuWaTJj0i9ZETveQK/yOE/BqHV
-	roAFbCjQGDIyTvByZebJ1XHyCnTP7fS+Wg0JR+yq375gE3e4XhjyJ9OVAoK3v6Mg85QTLlfr62G
-	9I2TjulWj+yk/EkJowvflsErXs1CXkI+9mxjiY+w0VdwMJJG1ZGzsMzMIdUX4/rnZCzXekiEAPI
-	JNp6mDo1ePb/ym0=
-X-Google-Smtp-Source: AGHT+IHeuRC7ChrdFjjxvcWC3ajdMKHJ+Azj7LDyTH5BCluSFj1o6p4ZSWP6EGrRrokOPiEV3z2rvlDUhI4wexrXKNM=
-X-Received: by 2002:a0c:e00a:0:b0:882:4660:3724 with SMTP id
- 6a1803df08f44-88246605291mr69808466d6.63.1762795978283; Mon, 10 Nov 2025
- 09:32:58 -0800 (PST)
+	s=arc-20240116; t=1762799048; c=relaxed/simple;
+	bh=QcmGZgGER1WlXItZoFVk7+ynEwglcHKP6PhNd97EWUE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=j9nDYX358rQ3j88ajCJTb3TWUzm6SFQUGUqvjxdxIX3eydYkCdLc5GfTjM/Xh83uPiyZPZY8WtjTQg0bBoq7v5hLVEG4iEBkZ1NSwhraTvzv7tGV5Ay9aqsV9xkL7gUjSxwEID6PZMmmXjBEnsk30by8r4ucnM3GZHXhCsCjiPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NfmALfXQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74819C116B1;
+	Mon, 10 Nov 2025 18:24:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762799047;
+	bh=QcmGZgGER1WlXItZoFVk7+ynEwglcHKP6PhNd97EWUE=;
+	h=From:Subject:Date:To:Cc:From;
+	b=NfmALfXQnMY1e1gphmkgHCGJX2FyaE3AQpzFkPx8ZuKsEE0lYZFtTUWDsAFji4iLz
+	 nYIgxoId+qggpDtBM+7E3hFrNWhhKm3BLcpY0D9OKUnv6TS05xoI7i7ai6pXw0DvTV
+	 OQEO6h8kDcM8nIatGfkG2TwZYK9c5v56s3EDxmnORNEPn1KdYJ47YNDnbuxpJmht+G
+	 jfLSzwGefMlu471CSSUkMd6FpPLnXzL7BcFGIy1Vsr99QW6teTkd+jmVJYQdkqxYpp
+	 ywAplWyYBYbq2kM1mzuoFKgNzFAUv+3YNTsN4+Q/Bk4pAVjbQXLty9YsxD6GkVGGU+
+	 7LD+BaIiToeyQ==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/6] selftests: mptcp: join: fix some flaky tests
+Date: Mon, 10 Nov 2025 19:23:39 +0100
+Message-Id: <20251110-net-mptcp-sft-join-unstable-v1-0-a4332c714e10@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1761763681.git.m.wieczorretman@pm.me> <fbce40a59b0a22a5735cb6e9b95c5a45a34b23cb.1761763681.git.m.wieczorretman@pm.me>
-In-Reply-To: <fbce40a59b0a22a5735cb6e9b95c5a45a34b23cb.1761763681.git.m.wieczorretman@pm.me>
-From: Alexander Potapenko <glider@google.com>
-Date: Mon, 10 Nov 2025 18:32:21 +0100
-X-Gm-Features: AWmQ_bmUvxxbg_c-XB1Dy80QL57feg4coPRIZHNTl9ervff8Rzi8S1pGrWY59Fo
-Message-ID: <CAG_fn=Wj9rB0jHKT3QKjZsPYce1JFcb1e72QBOBP52Ybs3_qgQ@mail.gmail.com>
-Subject: Re: [PATCH v6 01/18] kasan: Unpoison pcpu chunks with base address tag
-To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, 
-	kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, 
-	ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, 
-	morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, 
-	baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, 
-	wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, 
-	fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, 
-	ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, 
-	brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, 
-	mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, 
-	thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, 
-	jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, 
-	mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, 
-	vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, 
-	ardb@kernel.org, Liam.Howlett@oracle.com, nicolas.schier@linux.dev, 
-	ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, 
-	broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, 
-	maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, 
-	rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	llvm@lists.linux.dev, linux-doc@vger.kernel.org, stable@vger.kernel.org, 
-	Baoquan He <bhe@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKstEmkC/x3MQQqDMBBA0avIrB0woSnSqxQXSRzrSDuGTJSCe
+ HeDy7f4/wClzKTwag7ItLPyKhWmbSDOXj6EPFaD7awzputRqOAvlZhQp4LLyoKbaPHhS+i87eM
+ YnuTdA+ohZZr4f9/fUEMYzvMCytfIqXIAAAA=
+X-Change-ID: 20251108-net-mptcp-sft-join-unstable-5a28cdb6ea54
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1496; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=QcmGZgGER1WlXItZoFVk7+ynEwglcHKP6PhNd97EWUE=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKFdPdmM1285CYsLx54W3PC6frJZ/t3ONzNehEye7v6v
+ ZyztjNXd5SyMIhxMciKKbJIt0Xmz3xexVvi5WcBM4eVCWQIAxenAEykx57hn3Wr7ve3lYlWiywK
+ rFzfFZ9TWzR57rzzh8OSn50LPHza+hbDP/WVd30Wqf21/C51Osx38/Z9K8otT24y4Zsnxzp7lgG
+ vBzMA
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-On Wed, Oct 29, 2025 at 8:05=E2=80=AFPM Maciej Wieczor-Retman
-<m.wieczorretman@pm.me> wrote:
->
-> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
->
-> The problem presented here is related to NUMA systems and tag-based
-> KASAN modes - software and hardware ones. It can be explained in the
-> following points:
->
->         1. There can be more than one virtual memory chunk.
->         2. Chunk's base address has a tag.
->         3. The base address points at the first chunk and thus inherits
->            the tag of the first chunk.
->         4. The subsequent chunks will be accessed with the tag from the
->            first chunk.
->         5. Thus, the subsequent chunks need to have their tag set to
->            match that of the first chunk.
->
-> Refactor code by moving it into a helper in preparation for the actual
-> fix.
+When looking at the recent CI results on NIPA and MPTCP CIs, a few MPTCP
+Join tests are marked as unstable. Here are some fixes for that.
 
-The code in the helper function:
+- Patch 1: a small fix for mptcp_connect.sh, printing a note as
+  initially intended. For >=v5.13.
 
-> +void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
-> +{
-> +       int area;
-> +
-> +       for (area =3D 0 ; area < nr_vms ; area++) {
-> +               kasan_poison(vms[area]->addr, vms[area]->size,
-> +                            arch_kasan_get_tag(vms[area]->addr), false);
-> +       }
-> +}
+- Patch 2: avoid unexpected reset when closing subflows. For >= 5.13.
 
-is different from what was originally called:
+- Patches 3-4: longer transfer when not waiting for the end. For >=5.18.
 
-> -       for (area =3D 0; area < nr_vms; area++)
-> -               vms[area]->addr =3D kasan_unpoison_vmalloc(vms[area]->add=
-r,
-> -                               vms[area]->size, KASAN_VMALLOC_PROT_NORMA=
-L);
-> +       kasan_unpoison_vmap_areas(vms, nr_vms);
+- Patch 5: read all received data when expecting a reset. For >= v6.1.
 
-, so the patch description is a bit misleading.
+- Patch 6: a fix to properly kill background tasks. For >= v6.5.
 
-Please also ensure you fix the errors reported by kbuild test robot.
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Matthieu Baerts (NGI0) (6):
+      selftests: mptcp: connect: fix fallback note due to OoO
+      selftests: mptcp: join: rm: set backup flag
+      selftests: mptcp: join: endpoints: longer transfer
+      selftests: mptcp: join: userspace: longer transfer
+      selftests: mptcp: connect: trunc: read all recv data
+      selftests: mptcp: join: properly kill background tasks
+
+ tools/testing/selftests/net/mptcp/mptcp_connect.c  | 18 +++--
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |  2 +-
+ tools/testing/selftests/net/mptcp/mptcp_join.sh    | 90 +++++++++++-----------
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh     | 21 +++++
+ 4 files changed, 80 insertions(+), 51 deletions(-)
+---
+base-commit: 96a9178a29a6b84bb632ebeb4e84cf61191c73d5
+change-id: 20251108-net-mptcp-sft-join-unstable-5a28cdb6ea54
+
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
