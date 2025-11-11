@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 197CAC4A64A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:43 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48FB0C4A95F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BA883AC071
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 613CB344A2C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA7A307AE4;
-	Tue, 11 Nov 2025 01:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A05E23C4F2;
+	Tue, 11 Nov 2025 01:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E2pdN1I5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pi0R+DmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46A625F797;
-	Tue, 11 Nov 2025 01:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236B026E146;
+	Tue, 11 Nov 2025 01:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823301; cv=none; b=m9HU+pf9xXdTca8/TgsCvbcGYCgdmmAl1cFRlr2chtPU5y7nUOdDMfnId2zTF/JO8pAjHDsleY++t5OzGkFwRBeWEhCCiJ88o/B0xYiQzVusw95nN5rqkQpsMMfr5Sn2m+KNkUTqZbuQPwDx0p3LfvRHujCrxNuJTV5N8USwtRk=
+	t=1762824448; cv=none; b=hbmr+qWj5u+moZSJzS6KkhPWe//Ae8y0feVLrSjNWup6WB+/Qt9qqOuaxxu1Xqj2hlqmcPJrmvv6CTkVCbr0qnhJVlcoq1ZFQFkVdxGAwukuHIQHYG1SfR3cxdjy8jcvddrQcKERBQWtryBC0aEkSN7GOw/Xqh81TL0kuBcSjGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823301; c=relaxed/simple;
-	bh=YQSYifkGgQ6W1lOPVJnuP3buK2hhcAIGDDDqk+MIIuU=;
+	s=arc-20240116; t=1762824448; c=relaxed/simple;
+	bh=1JaIySDXTn5wr+Ll4OW9Glkus8qj88oqQg6/5Mi0ozY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dFbKMT6VUv4u6hoAQlbZY40+X/IMDy6DQzuUS707bVniQ5PW9Eg6nY2sWOb54h2NLqibkZGp3Lna999y27EcONeY2xYaYepgQLBJrseharxHgN2LNGw67cTQGlZGbtbBRvI5Ozjj74ZNbev1QMjnT4vQ1OwOPd0/OxWNNkWwO9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E2pdN1I5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EB9C113D0;
-	Tue, 11 Nov 2025 01:08:21 +0000 (UTC)
+	 MIME-Version; b=NSlMYNuEZ5DrOdjGQnoN82lVgRf6ojB9G1r0kOcsFgeKc7IXiFIpAAFN6dEZ0GoXeDZL5ojtu09snR+fJfLFW8rD+EMm+QghSij40jhUPLGoZHN/T7xXBWcf/32nuAlqRKs1nnLWUDTpvUjLGLs3kY8CbcZ8EMxJ2SwR+uDBQ30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pi0R+DmR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F6EC16AAE;
+	Tue, 11 Nov 2025 01:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823301;
-	bh=YQSYifkGgQ6W1lOPVJnuP3buK2hhcAIGDDDqk+MIIuU=;
+	s=korg; t=1762824448;
+	bh=1JaIySDXTn5wr+Ll4OW9Glkus8qj88oqQg6/5Mi0ozY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E2pdN1I5/gUw5YxXb8VatF9WSRLNPTHBkt2W/Gskd2fipGiY1YWuYLlfl5fO8A3r1
-	 IXpZ2b/v++SWqccB9WSxCZgoAGe/CHIfFbRehiG5EOPSqIJskQkmZ4vY+zDctTpPz4
-	 J72DMW5ONhQLZg/BYuDnhUyf8PTtZAJJB6BedaRY=
+	b=pi0R+DmR95WFYVdZpG2VukpK30mP38okC5OAp3Gfk+zMb4GfHl3NaiI1YGX/SfRxc
+	 /5i+vbe4bKJvyPlFcyoZUGsqfvAnYSo76ah0k0CVEpD7BpSBIgX8u7FJbRlViFLWTM
+	 aIvGYwDjexyhvO/K64Aka1JNvT7649efMdatc6gM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 215/565] scsi: ufs: host: mediatek: Fix PWM mode switch issue
-Date: Tue, 11 Nov 2025 09:41:11 +0900
-Message-ID: <20251111004531.759434028@linuxfoundation.org>
+Subject: [PATCH 6.17 502/849] wifi: mac80211: Fix HE capabilities element check
+Date: Tue, 11 Nov 2025 09:41:12 +0900
+Message-ID: <20251111004548.569938646@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 7212d624f8638f8ea8ad1ecbb80622c7987bc7a1 ]
+[ Upstream commit ea928544f3215fdeac24d66bef85e10bb638b8c1 ]
 
-Address a failure in switching to PWM mode by ensuring proper
-configuration of power modes and adaptation settings. The changes
-include checks for SLOW_MODE and adjustments to the desired working mode
-and adaptation configuration based on the device's power mode and
-hardware version.
+The element data length check did not account for the extra
+octet used for the extension ID. Fix it.
 
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20250811131423.3444014-6-peter.wang@mediatek.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250907115109.8da0012e2286.I8c0c69a0011f7153c13b365b14dfef48cfe7c3e3@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-mediatek.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ net/mac80211/mlme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
-index 5841431d98543..8701d2307ad3f 100644
---- a/drivers/ufs/host/ufs-mediatek.c
-+++ b/drivers/ufs/host/ufs-mediatek.c
-@@ -1140,6 +1140,10 @@ static bool ufs_mtk_pmc_via_fastauto(struct ufs_hba *hba,
- 	    dev_req_params->gear_rx < UFS_HS_G4)
- 		return false;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index c1b13b3411cdb..24a35fccca9de 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5733,7 +5733,7 @@ static u8 ieee80211_max_rx_chains(struct ieee80211_link_data *link,
+ 	he_cap_elem = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_CAPABILITY,
+ 					     ies->data, ies->len);
  
-+	if (dev_req_params->pwr_tx == SLOW_MODE ||
-+	    dev_req_params->pwr_rx == SLOW_MODE)
-+		return false;
-+
- 	return true;
- }
+-	if (!he_cap_elem || he_cap_elem->datalen < sizeof(*he_cap))
++	if (!he_cap_elem || he_cap_elem->datalen < sizeof(*he_cap) + 1)
+ 		return chains;
  
-@@ -1155,6 +1159,10 @@ static int ufs_mtk_pre_pwr_change(struct ufs_hba *hba,
- 	host_params.hs_rx_gear = UFS_HS_G5;
- 	host_params.hs_tx_gear = UFS_HS_G5;
- 
-+	if (dev_max_params->pwr_rx == SLOW_MODE ||
-+	    dev_max_params->pwr_tx == SLOW_MODE)
-+		host_params.desired_working_mode = UFS_PWM_MODE;
-+
- 	ret = ufshcd_negotiate_pwr_params(&host_params, dev_max_params, dev_req_params);
- 	if (ret) {
- 		pr_info("%s: failed to determine capabilities\n",
-@@ -1187,10 +1195,21 @@ static int ufs_mtk_pre_pwr_change(struct ufs_hba *hba,
- 		}
- 	}
- 
--	if (host->hw_ver.major >= 3) {
-+	if (dev_req_params->pwr_rx == FAST_MODE ||
-+	    dev_req_params->pwr_rx == FASTAUTO_MODE) {
-+		if (host->hw_ver.major >= 3) {
-+			ret = ufshcd_dme_configure_adapt(hba,
-+						   dev_req_params->gear_tx,
-+						   PA_INITIAL_ADAPT);
-+		} else {
-+			ret = ufshcd_dme_configure_adapt(hba,
-+				   dev_req_params->gear_tx,
-+				   PA_NO_ADAPT);
-+		}
-+	} else {
- 		ret = ufshcd_dme_configure_adapt(hba,
--					   dev_req_params->gear_tx,
--					   PA_INITIAL_ADAPT);
-+			   dev_req_params->gear_tx,
-+			   PA_NO_ADAPT);
- 	}
- 
- 	return ret;
+ 	/* skip one byte ext_tag_id */
 -- 
 2.51.0
 
