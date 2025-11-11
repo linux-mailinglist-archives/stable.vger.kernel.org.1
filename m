@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-194414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C6CC4B295
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:04:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FA0C4AE7D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 385C84203EF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F0C764F8C36
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6811C29A30A;
-	Tue, 11 Nov 2025 01:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6659A2DCC04;
+	Tue, 11 Nov 2025 01:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kRlGt6f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHNSeKGE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243B0253951;
-	Tue, 11 Nov 2025 01:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A90338918;
+	Tue, 11 Nov 2025 01:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825549; cv=none; b=kJDajQ1gufI9ckaPFpnzXiQDPw4MqLOofuL1hh9NfsZbCPF434hG3+g5N4MwtMlYRQKRzEpy6FZqFRxJiju/fUqUkqVP0Yph8Hy/4aX+Jc7plPsk99LYZTgryUwnwcVeGWgCN7skNJvQ8LX56pHUfjuqmZPelg8WoM5Iks+7ylo=
+	t=1762824978; cv=none; b=p75/fUMoih4BqVdw9g4eWb08nTM6zfyCt5IJ4jsMSsv0gnlIO+EUKtUILZX4i9odi0dTKNYFDfvYLHq177XMOq9UsyrBInPBVoKyy+cY6k5q7dMqOJXTwyv0d7w2eFPkeQL1hP5DYGT7ZyxNSXFWTBzoDmwFTWicXYqKzex6oyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825549; c=relaxed/simple;
-	bh=sGPBebGV7Vsy/1nsYbaGcfxY0AIUF5PjZOGDc6AGBHk=;
+	s=arc-20240116; t=1762824978; c=relaxed/simple;
+	bh=RRz8tKsom8cWyH3XNmxPtltuPwaRACYlgS8RkC2fJ94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=glJccGepSfv8Zao062i1yloTL20J5sqmlTbNtFyPZWP+cSpg3HDd0l/eB5D0PG9nw4J75et9yCNAZk+6B1v945zU44BTLMPtfZln1fbeV1Y68uUt5mTLEMH2EmcP7r951i7RbaQ0nThQAsAKQXYoe4GeG9/g6BkhLda/wcbMwto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kRlGt6f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70074C4AF09;
-	Tue, 11 Nov 2025 01:45:47 +0000 (UTC)
+	 MIME-Version; b=A16QLGesl5XR0AJ0lzckoPos4C2VfPXy7tcyMoF1dgBjJXHaiGib4BaJObuM0yEat5tqNZvHC4TVolsRTkSFyHxaPXdDTFT1oE5XeOBFJfLCzfKpeDdTNrxUoVozPYAoZIoRMB/ffSFUjarsKidof4/eMk0o0kUGc3xTD32i2Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHNSeKGE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C5BC4AF09;
+	Tue, 11 Nov 2025 01:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825547;
-	bh=sGPBebGV7Vsy/1nsYbaGcfxY0AIUF5PjZOGDc6AGBHk=;
+	s=korg; t=1762824978;
+	bh=RRz8tKsom8cWyH3XNmxPtltuPwaRACYlgS8RkC2fJ94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0kRlGt6fUOu6vViUTQj2KIh+95Xb4EgL9wMKmfXFV/HOEJmKqAX19BeFcWo5QEVvH
-	 SJlGVnAl3TzhXcGgKlpWI0LPp9LZ2zDpp00VsgaHeuWq4PJBS8D/Q/pXOI08+ZjMtp
-	 PGQYGTJO6fKwkrVo7JmG/jZlmNtlEak0pK1a4MvQ=
+	b=YHNSeKGEuS18/OpCopL9HkAgMbgosIqIovZEZOeD5KhbX3LbM2mtio/qv8PiPcQ7K
+	 pEeoA7uASkaO3LlRUf7UBLL32SCU4bX7O7pdi7+77nycizf0O46r+TonUtEXkJMHYB
+	 WaTNp5UVFYXo+/JdDE4m+aJHf0GYvSwKPB7cPRZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	"Sun peng (Leo) Li" <sunpeng.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>
-Subject: [PATCH 6.17 847/849] drm/amd/display: use GFP_NOWAIT for allocation in interrupt handler
+	Punit Agrawal <punit.agrawal@oss.qualcomm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 561/565] ACPI: SPCR: Check for table version when using precise baudrate
 Date: Tue, 11 Nov 2025 09:46:57 +0900
-Message-ID: <20251111004556.896562736@linuxfoundation.org>
+Message-ID: <20251111004539.637001376@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
 
-commit 72a1eb3cf573ab957ae412f0efb0cf6ff0876234 upstream.
+commit 543d35004007a06ef247acf2fc55efa8388aa741 upstream.
 
-schedule_dc_vmin_vmax() is called by dm_crtc_high_irq(). Hence, we
-cannot have the former sleep. Use GFP_NOWAIT for allocation in this
-function.
+Commit 4d330fe54145 ("ACPI: SPCR: Support Precise Baud Rate field")
+added support to use the precise baud rate available since SPCR 1.09
+(revision 4) but failed to check the version of the table provided by
+the firmware.
 
-Fixes: c210b757b400 ("drm/amd/display: fix dmub access race condition")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Sun peng (Leo) Li <sunpeng.li@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c04812cbe2f247a1c1e53a9b6c5e659963fe4065)
-Cc: stable@vger.kernel.org
+Accessing an older version of SPCR table causes accesses beyond the
+end of the table and can lead to garbage data to be used for the baud
+rate.
+
+Check the version of the firmware provided SPCR to ensure that the
+precise baudrate is vaild before using it.
+
+Fixes: 4d330fe54145 ("ACPI: SPCR: Support Precise Baud Rate field")
+Signed-off-by: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251024123125.1081612-1-punit.agrawal@oss.qualcomm.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/spcr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -561,13 +561,13 @@ static void schedule_dc_vmin_vmax(struct
- 	struct dc_stream_state *stream,
- 	struct dc_crtc_timing_adjust *adjust)
- {
--	struct vupdate_offload_work *offload_work = kzalloc(sizeof(*offload_work), GFP_KERNEL);
-+	struct vupdate_offload_work *offload_work = kzalloc(sizeof(*offload_work), GFP_NOWAIT);
- 	if (!offload_work) {
- 		drm_dbg_driver(adev_to_drm(adev), "Failed to allocate vupdate_offload_work\n");
- 		return;
- 	}
- 
--	struct dc_crtc_timing_adjust *adjust_copy = kzalloc(sizeof(*adjust_copy), GFP_KERNEL);
-+	struct dc_crtc_timing_adjust *adjust_copy = kzalloc(sizeof(*adjust_copy), GFP_NOWAIT);
- 	if (!adjust_copy) {
- 		drm_dbg_driver(adev_to_drm(adev), "Failed to allocate adjust_copy\n");
- 		kfree(offload_work);
+--- a/drivers/acpi/spcr.c
++++ b/drivers/acpi/spcr.c
+@@ -152,7 +152,7 @@ int __init acpi_parse_spcr(bool enable_e
+ 	 * Baud Rate field. If this field is zero or not present, Configured
+ 	 * Baud Rate is used.
+ 	 */
+-	if (table->precise_baudrate)
++	if (table->header.revision >= 4 && table->precise_baudrate)
+ 		baud_rate = table->precise_baudrate;
+ 	else switch (table->baud_rate) {
+ 	case 0:
 
 
 
