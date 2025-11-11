@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBC5C4AB11
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E976C4AB86
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8C8F1893A50
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0632418854D1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDA33314C8;
-	Tue, 11 Nov 2025 01:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D6C332ED0;
+	Tue, 11 Nov 2025 01:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BP/mSNPh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOH06Trz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D624932ED5D;
-	Tue, 11 Nov 2025 01:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7817F27FD4A;
+	Tue, 11 Nov 2025 01:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823945; cv=none; b=g4vqDH9uXX5T8gkeNymub9wx99N5BnJlvwwBGTx96AP4dj5hJnhRpieIFHyDD/vpb+WFjg1SF1LzIAElhEaTrJxvUcND8AviQlXNw78uTJ745gCfUvBu8Rlkw/Uji89mV57ImC/idDaY5u82jMi6e497tOBsWwExng/x0Dnm+MU=
+	t=1762823949; cv=none; b=LXxNFjD+0MXCT0SrlHfcdh2pc9aqyjE+Y7CntFSnVUZ6y6AGFkBhEmt0EUlMCE7WJcnBrSZpG6Mj4xwmROPinVWVs7Zo4hKcv8+NipxDkuFEGAVDAZrbf3VXsQ9i/DrXYAm96ttL4Gt8ycwjt1577Brn1/v/CkmFoU7SJmJztf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823945; c=relaxed/simple;
-	bh=jl4NsO7TWnaUxMI+x6Qigy+tHfwQ4/uaMLCeqmwEfSU=;
+	s=arc-20240116; t=1762823949; c=relaxed/simple;
+	bh=ABnkS29oGZ1Of76JlllobGcJwllOE9dCTfmbdPp64Jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jblfnNiNlZxx4SuRAn5/wbv/pN9uhg4wOndC1Y02sX2kpTnVzMc6JFzw50PnTZQEp1c7hj2NTpDEAchwM3beGFsr+m1uOXNoZa4dGjybr7UfWs/1XTSRtIf/5/vlIl1yaLBml25iyZOz3GUkljOCw2ca6OGOGLCHecu38C/lDzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BP/mSNPh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546EAC113D0;
-	Tue, 11 Nov 2025 01:19:04 +0000 (UTC)
+	 MIME-Version; b=KuJj9FuxG57B6Hbes1eb7JWRwSwIt6Zy6pIqFAs+GPULYQOKWjcVYytcaO/uY+yVOnuvA/HqvtJh7+6Ku9rDiWR0avLIw0yQ7HFLa0R+Bt4hMR07w1kAYaGdtasgkkgQencw8TSSIC0a0oIjXHLgXHssE5WWi+2cJjsT+uUq8Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOH06Trz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A15C4CEF5;
+	Tue, 11 Nov 2025 01:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823944;
-	bh=jl4NsO7TWnaUxMI+x6Qigy+tHfwQ4/uaMLCeqmwEfSU=;
+	s=korg; t=1762823949;
+	bh=ABnkS29oGZ1Of76JlllobGcJwllOE9dCTfmbdPp64Jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BP/mSNPhr2UvMJYvyAWZ26RqdO8FBC71ll9LOtutFY0bvun94ppT5JDNL59Ov6C0k
-	 HHAF1hqjJ4yVdUFcXxLTtpE9lb5mTHvQFSZe70YEAdGokeRFk9dBNyiEQQkxcHAz3V
-	 8HwQ/7jagaybZ7Fj1uN+HJONQb1pFqfzrhb7Dsgw=
+	b=lOH06TrzAMR7lQyIGqPfE0nbs5UeKyl08Rzed+zk1kE/PkXQe+uErDlSWW8CgaOh5
+	 LEK88tdtk/M9Wz56PeboAKjQ3eMxw/G0L5xJJFWvUHnt4/eguj5G/rBiIRddYjaP/V
+	 W9b3GF+zDPDDWOi7j2cwImg91YWjhqA3WfC/0QTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 402/849] microchip: lan865x: add ndo_eth_ioctl handler to enable PHY ioctl support
-Date: Tue, 11 Nov 2025 09:39:32 +0900
-Message-ID: <20251111004546.158677418@linuxfoundation.org>
+Subject: [PATCH 6.17 403/849] tcp: use dst_dev_rcu() in tcp_fastopen_active_disable_ofo_check()
+Date: Tue, 11 Nov 2025 09:39:33 +0900
+Message-ID: <20251111004546.182165484@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,41 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 34c21e91192aa1ff66f9d6cef8132717840d04e6 ]
+[ Upstream commit b62a59c18b692f892dcb8109c1c2e653b2abc95c ]
 
-Introduce support for standard MII ioctl operations in the LAN865x
-Ethernet driver by implementing the .ndo_eth_ioctl callback. This allows
-PHY-related ioctl commands to be handled via phy_do_ioctl_running() and
-enables support for ethtool and other user-space tools that rely on ioctl
-interface to perform PHY register access using commands like SIOCGMIIREG
-and SIOCSMIIREG.
+Use RCU to avoid a pair of atomic operations and a potential
+UAF on dst_dev()->flags.
 
-This feature enables improved diagnostics and PHY configuration
-capabilities from userspace.
-
-Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250828114549.46116-1-parthiban.veerasooran@microchip.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250828195823.3958522-8-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan865x/lan865x.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp_fastopen.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-index 79b800d2b72c2..b428ad6516c5e 100644
---- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-+++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-@@ -326,6 +326,7 @@ static const struct net_device_ops lan865x_netdev_ops = {
- 	.ndo_start_xmit		= lan865x_send_packet,
- 	.ndo_set_rx_mode	= lan865x_set_multicast_list,
- 	.ndo_set_mac_address	= lan865x_set_mac_address,
-+	.ndo_eth_ioctl          = phy_do_ioctl_running,
- };
+diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
+index f1884f0c9e523..7d945a527daf0 100644
+--- a/net/ipv4/tcp_fastopen.c
++++ b/net/ipv4/tcp_fastopen.c
+@@ -576,11 +576,12 @@ void tcp_fastopen_active_disable_ofo_check(struct sock *sk)
+ 		}
+ 	} else if (tp->syn_fastopen_ch &&
+ 		   atomic_read(&sock_net(sk)->ipv4.tfo_active_disable_times)) {
+-		dst = sk_dst_get(sk);
+-		dev = dst ? dst_dev(dst) : NULL;
++		rcu_read_lock();
++		dst = __sk_dst_get(sk);
++		dev = dst ? dst_dev_rcu(dst) : NULL;
+ 		if (!(dev && (dev->flags & IFF_LOOPBACK)))
+ 			atomic_set(&sock_net(sk)->ipv4.tfo_active_disable_times, 0);
+-		dst_release(dst);
++		rcu_read_unlock();
+ 	}
+ }
  
- static int lan865x_probe(struct spi_device *spi)
 -- 
 2.51.0
 
