@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552F7C4AD48
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 247B8C4A881
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 350CC189456D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA5593B87F8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FC9266B6C;
-	Tue, 11 Nov 2025 01:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF08346E46;
+	Tue, 11 Nov 2025 01:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrkRr+cp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtwtYLAF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBDBDDAB;
-	Tue, 11 Nov 2025 01:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A25346E45;
+	Tue, 11 Nov 2025 01:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824835; cv=none; b=nYW42kbgqMbX8OXP1CcOoHNXYEIuAVp2+oXJ3L7dICoNE6r1Iy8UqKmQmwzl6tZOSKPxIgdJXqmiFTjPIvng2unoU1AqAQR0etB6bd9CxaWt6x73TdkmewNUr+Y3LJpSLIJNf5epfr9cGRyNAWDd1sxCErfLGCUBffMA1yj6YR0=
+	t=1762823660; cv=none; b=d51vJNTa+5arngLOPOCuSdnwLHzy/VJxyREF7OwwtMdwndmf80+trkd6Ag/ozW3qf3d5bPiOmLLSRNnjT0ID7Y6uHp5zJhgzUK1Uk9CRF2L/9quX9hClRzEraLEh/dJISY709ANRho1jwtlucPvCQJFmhbseDUcXFIgKhDCvfxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824835; c=relaxed/simple;
-	bh=0+M0/b+CMFDJNxlNegA1QpVepb9D7MxQ0/NX4ihTh8I=;
+	s=arc-20240116; t=1762823660; c=relaxed/simple;
+	bh=gvPaIz96l6y8st3SQkooKkBeWUfSbuKSGr74dbn6FZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/5LtJqwOad/XOA7U/R+tfQpJWabN9nRSdF2K+PydyWG8LpQ1dN0oG6Rys0+//3yGwviMod3lqjjgavuQXi06m4VJIj0XhkYXYQ808jXNxGspjBDJWsxZM/k5+wd5N3jF1OzSQTzTdrAtnteYWgAbg/EdKp+0dTFBVaU+2uYXBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZrkRr+cp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2EEC4CEFB;
-	Tue, 11 Nov 2025 01:33:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=czxvUgP0LOI92b7xGvcgaaQSj5+WpI1d40v38SmPS2gejS6LrW+Afta8Bxoxpzut13H9wUxOwJU1aeG5YzlLyh3UAK8D15c/UvYIVAiLAQWXkD2livCqYjKsdo7ZkQkD7Gjta5Cka4o9Ur06LRJorkzlUAKrqg4U7NBQc3YL6M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtwtYLAF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32759C4CEF5;
+	Tue, 11 Nov 2025 01:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824834;
-	bh=0+M0/b+CMFDJNxlNegA1QpVepb9D7MxQ0/NX4ihTh8I=;
+	s=korg; t=1762823659;
+	bh=gvPaIz96l6y8st3SQkooKkBeWUfSbuKSGr74dbn6FZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZrkRr+cp0BT4B0VeD9XvyecAFqCHyaI98oCbmb52HwGrVX/ZqgTCyvoftmx3KrePy
-	 rljkW806y638TgY7nikNKNuHfWMFt/xPBpGdhRlYHb+g0Gq3YVk8ZNlnLw8UdH4fU/
-	 jcHPukJReFqs0+0OSzkygojn1wvZS629L4wFf6VQ=
+	b=QtwtYLAF/rtzYewYPIsTNGH1bY5x5Wdpi9nhOHnX6BKnU4j0NecGOujr6fqPRlgvX
+	 2H/Ydd5GH97Z5xgKjflUzjioFnt9iwtzyuIed27eMvjQK9WNcVFbfh/xsbufxOQGqB
+	 sK87vFCJ2hrivW8CzYXDQKqi62D9sPNnldim3Tbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangzijie <wangzijie1@honor.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 581/849] f2fs: fix infinite loop in __insert_extent_tree()
+Subject: [PATCH 6.12 295/565] media: adv7180: Only validate format in querystd
 Date: Tue, 11 Nov 2025 09:42:31 +0900
-Message-ID: <20251111004550.465190876@linuxfoundation.org>
+Message-ID: <20251111004533.514713778@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangzijie <wangzijie1@honor.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 23361bd54966b437e1ed3eb1a704572f4b279e58 ]
+[ Upstream commit 91c5d7c849273d14bc4bae1b92666bdb5409294a ]
 
-When we get wrong extent info data, and look up extent_node in rb tree,
-it will cause infinite loop (CONFIG_F2FS_CHECK_FS=n). Avoiding this by
-return NULL and print some kernel messages in that case.
+The .querystd callback should not program the device with the detected
+standard, it should only report the standard to user-space. User-space
+may then use .s_std to set the standard, if it wants to use it.
 
-Signed-off-by: wangzijie <wangzijie1@honor.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+All that is required of .querystd is to setup the auto detection of
+standards and report its findings.
+
+While at it add some documentation on why this can't happen while
+streaming and improve the error handling using a scoped guard.
+
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/extent_cache.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/i2c/adv7180.c | 37 ++++++++++++++++---------------------
+ 1 file changed, 16 insertions(+), 21 deletions(-)
 
-diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
-index 199c1e7a83ef3..ba0a07bfd3463 100644
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -604,7 +604,13 @@ static struct extent_node *__insert_extent_tree(struct f2fs_sb_info *sbi,
- 			p = &(*p)->rb_right;
- 			leftmost = false;
- 		} else {
-+			f2fs_err_ratelimited(sbi, "%s: corrupted extent, type: %d, "
-+				"extent node in rb tree [%u, %u, %u], age [%llu, %llu], "
-+				"extent node to insert [%u, %u, %u], age [%llu, %llu]",
-+				__func__, et->type, en->ei.fofs, en->ei.blk, en->ei.len, en->ei.age,
-+				en->ei.last_blocks, ei->fofs, ei->blk, ei->len, ei->age, ei->last_blocks);
- 			f2fs_bug_on(sbi, 1);
-+			return NULL;
- 		}
- 	}
+diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
+index 6eb55f0d89dc9..f3f47beff76bb 100644
+--- a/drivers/media/i2c/adv7180.c
++++ b/drivers/media/i2c/adv7180.c
+@@ -357,32 +357,27 @@ static inline struct adv7180_state *to_state(struct v4l2_subdev *sd)
+ static int adv7180_querystd(struct v4l2_subdev *sd, v4l2_std_id *std)
+ {
+ 	struct adv7180_state *state = to_state(sd);
+-	int err = mutex_lock_interruptible(&state->mutex);
+-	if (err)
+-		return err;
+-
+-	if (state->streaming) {
+-		err = -EBUSY;
+-		goto unlock;
+-	}
++	int ret;
  
+-	err = adv7180_set_video_standard(state,
+-			ADV7180_STD_AD_PAL_BG_NTSC_J_SECAM);
+-	if (err)
+-		goto unlock;
++	guard(mutex)(&state->mutex);
+ 
+-	msleep(100);
+-	__adv7180_status(state, NULL, std);
++	/*
++	 * We can't sample the standard if the device is streaming as that would
++	 * interfere with the capture session as the VID_SEL reg is touched.
++	 */
++	if (state->streaming)
++		return -EBUSY;
+ 
+-	err = v4l2_std_to_adv7180(state->curr_norm);
+-	if (err < 0)
+-		goto unlock;
++	/* Set the standard to autodetect PAL B/G/H/I/D, NTSC J or SECAM */
++	ret = adv7180_set_video_standard(state,
++					 ADV7180_STD_AD_PAL_BG_NTSC_J_SECAM);
++	if (ret)
++		return ret;
+ 
+-	err = adv7180_set_video_standard(state, err);
++	/* Allow some time for the autodetection to run. */
++	msleep(100);
+ 
+-unlock:
+-	mutex_unlock(&state->mutex);
+-	return err;
++	return __adv7180_status(state, NULL, std);
+ }
+ 
+ static int adv7180_s_routing(struct v4l2_subdev *sd, u32 input,
 -- 
 2.51.0
 
