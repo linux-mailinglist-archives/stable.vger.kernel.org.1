@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-193193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD2FC4A082
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 473A4C4A115
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B49F188DC75
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 011EA4F3230
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6FB246333;
-	Tue, 11 Nov 2025 00:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3131DF258;
+	Tue, 11 Nov 2025 00:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWfWbwqe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZErg6IH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BF11D6DB5;
-	Tue, 11 Nov 2025 00:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2728A4C97;
+	Tue, 11 Nov 2025 00:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822520; cv=none; b=KTK/72kFIZ/VXI7CfZTAnqqGsv91s7O2knEdsmb72V536ZVXjLHFt6TWZJOycLeq/+gT04JW3atJWC/ld9EklKx9wBBzerQlDXI+e/ib4XdfhD8AqYIxwlFYMaaDVSd17uVM/cAON1u77ynIB2ZSkizbLUsUYhT2UXhqZ341GqI=
+	t=1762822525; cv=none; b=iajqqrusVF9MVkyDQUe/Lj7oFnfBCb80V3v8ovshSttH6oqJ+scc9ZiR7PUb2tkPxfnQG82N9AXrhEBT4sT+n/1RXYLGSuLhgo0BQ8x6KbqzrlYep0rkWCGqCUDonk327NuBY2FsAujjfD1W+w8Kp/4ST9h2mgp7UgNiPp4Kwmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822520; c=relaxed/simple;
-	bh=fDwfr4LCXz/Uq2TZ01ZihnsNCp/1/qzjcxcRwxsPRvg=;
+	s=arc-20240116; t=1762822525; c=relaxed/simple;
+	bh=PCVNDdstFtVn/p5iofNMV7O9oNXFhvCzmhCrDX9v3Bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W6gyjHVQsmvk6MSXNXWyhfXfkMLcsaLssQLVAynxfr3y16gSe2j29kW5HhlWwaAznzS7bavMf+BHiWRCLVfEZCNZv0TuWKwaluY3BQJPJFEWMLXv/pz0aUsEJuA09ToNM6pWy3RfZE3FkBYVOp+0rCibyvVaRkNmBT9qf5Tyllw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWfWbwqe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D609C4CEF5;
-	Tue, 11 Nov 2025 00:55:19 +0000 (UTC)
+	 MIME-Version; b=ZuDkYPMFD2AQf640kL0nFYUtccJbjT320XhU6tzJZJhLzE0RR1FdK2DT/FK2qgJ6xE3CfIqXIFtqzm36Of5qG38ZEhPbf6pkUecUUCBq3sgOGW55dB3HFYxXdCfTVa/CR0gaghlGYvGMkg4d1RZ5Gcf3AjMk0OsRPZefXRnrSh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZErg6IH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8620C19424;
+	Tue, 11 Nov 2025 00:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822520;
-	bh=fDwfr4LCXz/Uq2TZ01ZihnsNCp/1/qzjcxcRwxsPRvg=;
+	s=korg; t=1762822525;
+	bh=PCVNDdstFtVn/p5iofNMV7O9oNXFhvCzmhCrDX9v3Bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rWfWbwqehNikNwplxLOSGJPSL1oBszLKjck+R4N1XuW1EYcPbQXGp+1YjyZj4qbmG
-	 YxaL/HuzUo5tmVGkhPi7gLKG9ImVLnpASZ+jmUXIlrn9lDr9HsJdWqwKd1ujMtSOu0
-	 649lH1k7HpQZCUY++zbgkFqqQPdRuHxi0OSzJmcg=
+	b=eZErg6IHzNKWNDamVdacxCrhxjDsqX4Lf2T6fagYrh0KzgsOIlKEGqmtfvzfEALpB
+	 S3rAeoSFyEsB0xUizwgBVehOkx300JNOpj5YekI4a2Hcz3vc5SLCMpalf4ys22IGps
+	 GbOpF+EIBWrTaDQF5ovUGU8dZ75GTm6bvdUaFcqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paresh Bhagat <p-bhagat@ti.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 129/849] cpufreq: ti: Add support for AM62D2
-Date: Tue, 11 Nov 2025 09:34:59 +0900
-Message-ID: <20251111004539.513153421@linuxfoundation.org>
+Subject: [PATCH 6.17 130/849] bpf: Use tnums for JEQ/JNE is_branch_taken logic
+Date: Tue, 11 Nov 2025 09:35:00 +0900
+Message-ID: <20251111004539.537809878@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,41 +68,104 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paresh Bhagat <p-bhagat@ti.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit b5af45302ebc141662b2b60c713c9202e88c943c ]
+[ Upstream commit f41345f47fb267a9c95ca710c33448f8d0d81d83 ]
 
-Add support for TI K3 AM62D2 SoC to read speed and revision values
-from hardware and pass to OPP layer. AM62D shares the same configuations
-as AM62A so use existing am62a7_soc_data.
+In the following toy program (reg states minimized for readability), R0
+and R1 always have different values at instruction 6. This is obvious
+when reading the program but cannot be guessed from ranges alone as
+they overlap (R0 in [0; 0xc0000000], R1 in [1024; 0xc0000400]).
 
-Signed-off-by: Paresh Bhagat <p-bhagat@ti.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+  0: call bpf_get_prandom_u32#7  ; R0_w=scalar()
+  1: w0 = w0                     ; R0_w=scalar(var_off=(0x0; 0xffffffff))
+  2: r0 >>= 30                   ; R0_w=scalar(var_off=(0x0; 0x3))
+  3: r0 <<= 30                   ; R0_w=scalar(var_off=(0x0; 0xc0000000))
+  4: r1 = r0                     ; R1_w=scalar(var_off=(0x0; 0xc0000000))
+  5: r1 += 1024                  ; R1_w=scalar(var_off=(0x400; 0xc0000000))
+  6: if r1 != r0 goto pc+1
+
+Looking at tnums however, we can deduce that R1 is always different from
+R0 because their tnums don't agree on known bits. This patch uses this
+logic to improve is_scalar_branch_taken in case of BPF_JEQ and BPF_JNE.
+
+This change has a tiny impact on complexity, which was measured with
+the Cilium complexity CI test. That test covers 72 programs with
+various build and load time configurations for a total of 970 test
+cases. For 80% of test cases, the patch has no impact. On the other
+test cases, the patch decreases complexity by only 0.08% on average. In
+the best case, the verifier needs to walk 3% less instructions and, in
+the worst case, 1.5% more. Overall, the patch has a small positive
+impact, especially for our largest programs.
+
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/be3ee70b6e489c49881cb1646114b1d861b5c334.1755694147.git.paul.chaignon@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/ti-cpufreq.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/tnum.h  | 3 +++
+ kernel/bpf/tnum.c     | 8 ++++++++
+ kernel/bpf/verifier.c | 4 ++++
+ 3 files changed, 15 insertions(+)
 
-diff --git a/drivers/cpufreq/ti-cpufreq.c b/drivers/cpufreq/ti-cpufreq.c
-index 5a5147277cd0a..9a912d3093153 100644
---- a/drivers/cpufreq/ti-cpufreq.c
-+++ b/drivers/cpufreq/ti-cpufreq.c
-@@ -310,6 +310,7 @@ static const struct soc_device_attribute k3_cpufreq_soc[] = {
- 	{ .family = "AM62X", .revision = "SR1.0" },
- 	{ .family = "AM62AX", .revision = "SR1.0" },
- 	{ .family = "AM62PX", .revision = "SR1.0" },
-+	{ .family = "AM62DX", .revision = "SR1.0" },
- 	{ /* sentinel */ }
- };
+diff --git a/include/linux/tnum.h b/include/linux/tnum.h
+index 57ed3035cc309..0ffb77ffe0e87 100644
+--- a/include/linux/tnum.h
++++ b/include/linux/tnum.h
+@@ -51,6 +51,9 @@ struct tnum tnum_xor(struct tnum a, struct tnum b);
+ /* Multiply two tnums, return @a * @b */
+ struct tnum tnum_mul(struct tnum a, struct tnum b);
  
-@@ -457,6 +458,7 @@ static const struct of_device_id ti_cpufreq_of_match[]  __maybe_unused = {
- 	{ .compatible = "ti,omap36xx", .data = &omap36xx_soc_data, },
- 	{ .compatible = "ti,am625", .data = &am625_soc_data, },
- 	{ .compatible = "ti,am62a7", .data = &am62a7_soc_data, },
-+	{ .compatible = "ti,am62d2", .data = &am62a7_soc_data, },
- 	{ .compatible = "ti,am62p5", .data = &am62p5_soc_data, },
- 	/* legacy */
- 	{ .compatible = "ti,omap3430", .data = &omap34xx_soc_data, },
++/* Return true if the known bits of both tnums have the same value */
++bool tnum_overlap(struct tnum a, struct tnum b);
++
+ /* Return a tnum representing numbers satisfying both @a and @b */
+ struct tnum tnum_intersect(struct tnum a, struct tnum b);
+ 
+diff --git a/kernel/bpf/tnum.c b/kernel/bpf/tnum.c
+index fa353c5d550fc..d9328bbb3680b 100644
+--- a/kernel/bpf/tnum.c
++++ b/kernel/bpf/tnum.c
+@@ -143,6 +143,14 @@ struct tnum tnum_mul(struct tnum a, struct tnum b)
+ 	return tnum_add(TNUM(acc_v, 0), acc_m);
+ }
+ 
++bool tnum_overlap(struct tnum a, struct tnum b)
++{
++	u64 mu;
++
++	mu = ~a.mask & ~b.mask;
++	return (a.value & mu) == (b.value & mu);
++}
++
+ /* Note that if a and b disagree - i.e. one has a 'known 1' where the other has
+  * a 'known 0' - this will return a 'known 1' for that bit.
+  */
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index ed1457c273409..2844adf4da61a 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -15906,6 +15906,8 @@ static int is_scalar_branch_taken(struct bpf_reg_state *reg1, struct bpf_reg_sta
+ 		 */
+ 		if (tnum_is_const(t1) && tnum_is_const(t2))
+ 			return t1.value == t2.value;
++		if (!tnum_overlap(t1, t2))
++			return 0;
+ 		/* non-overlapping ranges */
+ 		if (umin1 > umax2 || umax1 < umin2)
+ 			return 0;
+@@ -15930,6 +15932,8 @@ static int is_scalar_branch_taken(struct bpf_reg_state *reg1, struct bpf_reg_sta
+ 		 */
+ 		if (tnum_is_const(t1) && tnum_is_const(t2))
+ 			return t1.value != t2.value;
++		if (!tnum_overlap(t1, t2))
++			return 1;
+ 		/* non-overlapping ranges */
+ 		if (umin1 > umax2 || umax1 < umin2)
+ 			return 1;
 -- 
 2.51.0
 
