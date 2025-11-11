@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D12C4AEB7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D42C4A758
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6891C3B8714
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 78D784F110E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425C32D29D6;
-	Tue, 11 Nov 2025 01:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A2B348440;
+	Tue, 11 Nov 2025 01:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tc+Zywyb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCEd2YQI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FA025EF81;
-	Tue, 11 Nov 2025 01:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE91347FF4;
+	Tue, 11 Nov 2025 01:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824931; cv=none; b=M8eIMA9su9RPxMD14/iQAetrmd5BNUBTX/FOB2UKUq1SMTCBvbx5yBHXmxg0RbL2zn1c7i6wxOg++T6gMaJAkprFM40CoQnNK48+owf7Jj0HZpw8U39FmtWYLbCSyrMN/WpTcrcNR8b8nsGmPMsasJ2ChKQ9sUuhKOOhFS1j1rw=
+	t=1762823759; cv=none; b=gND+Vh3f6H6jbgRCj8PGMqh65VVJ1hrsSitY6xyCL4tPJU+9JfDSGR5sfNdLBTbg07xap8TM8njDSU9m1hor8iOVSZ7UmfnYJu7CqINkY8ifvWviQqBPE1iz0v1xpb3qVneOvzNb8NU88qKrrvNiSt/ol93ZY9u+wypnFIOPk1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824931; c=relaxed/simple;
-	bh=wp4KjkC+enCRoTPUmnMYl1JwndAcLAMewf0QVw8t5LM=;
+	s=arc-20240116; t=1762823759; c=relaxed/simple;
+	bh=87EEJDoyIlfHKCTZxq2OoEN1CuSwrpuzBFmfF+SAMGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TI+xRf7CLc8ffiCcJ6bmkcgb8lP/IQzLUDQXuNtWbc/I10sAZy2GsDfNYGef9qDi4ufBR2UvSrywRPGN+o65LkkSDSq8+4pnubqkdd7CKYVxI2wQWap8JO9daEj0OskDq0vSPkFOODcxx/AC/G7CnorZ0QaADtPvIrP3dhpKQJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tc+Zywyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394BEC4CEFB;
-	Tue, 11 Nov 2025 01:35:30 +0000 (UTC)
+	 MIME-Version; b=ULcbkhnDSbAbC+7o3k9maeaHS14GUjYUw1UP6MbAnz54csJ2XPMSinD2heLeNUvziIrIiiRDCaoyXRDicu6xPi4YbMGbx1KK6MLSrr/113d5SIt3PPguqkGTqXikcg7UgbkIjGFk0cz+fj0tCxiBXhAY6d+Tpppskdu9CkPIf/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCEd2YQI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92ED6C116B1;
+	Tue, 11 Nov 2025 01:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824930;
-	bh=wp4KjkC+enCRoTPUmnMYl1JwndAcLAMewf0QVw8t5LM=;
+	s=korg; t=1762823758;
+	bh=87EEJDoyIlfHKCTZxq2OoEN1CuSwrpuzBFmfF+SAMGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tc+ZywybdxNS0zgfWzLKcGzr8LmqM3RClXXPMMLuW0j+Mi3i7IjxNiyfSrFlM4gFO
-	 HRz4MF7KZitwRnKmPN5sReTO0ppDTmpUIpxejM+HM57uDBJWyev0ap6ColerCVBPBy
-	 RzatXwaCpdGxb/9rc+PMahJxKiw6gTc7wqt9pK7I=
+	b=MCEd2YQI74Dw/UF5eEHJgpayeyd+Iz/YuczA915M5C9Ybomo8Qx02CvHeyUbcZWlT
+	 gephA3Ljxcb76yF4LBO8TVw5AlCQhJ+RJLiqosKnhCQqOkhWYUG6L4T+eJHu+rJJVZ
+	 GLAXQqMIGk1/SDyTuzGbJZ+AltmE5Wc35f7M9L7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Antonino Maniscalco <antomani103@gmail.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 600/849] iommu/vt-d: Remove LPIG from page group response descriptor
+Subject: [PATCH 6.12 314/565] drm/msm: make sure to not queue up recovery more than once
 Date: Tue, 11 Nov 2025 09:42:50 +0900
-Message-ID: <20251111004550.929461708@linuxfoundation.org>
+Message-ID: <20251111004533.950131601@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Antonino Maniscalco <antomani103@gmail.com>
 
-[ Upstream commit 4402e8f39d0bfff5c0a5edb5e1afe27a56545e11 ]
+[ Upstream commit 10fb1b2fcaee5545a5e54db1ed4d7b15c2db50c8 ]
 
-Bit 66 in the page group response descriptor used to be the LPIG (Last
-Page in Group), but it was marked as Reserved since Specification 4.0.
-Remove programming on this bit to make it consistent with the latest
-specification.
+If two fault IRQs arrive in short succession recovery work will be
+queued up twice.
 
-Existing hardware all treats bit 66 of the page group response descriptor
-as "ignored", therefore this change doesn't break any existing hardware.
+When recovery runs a second time it may end up killing an unrelated
+context.
 
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20250901053943.1708490-1-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Prevent this by masking off interrupts when triggering recovery.
+
+Signed-off-by: Antonino Maniscalco <antomani103@gmail.com>
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/670023/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.h | 1 -
- drivers/iommu/intel/prq.c   | 7 ++-----
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-index 2c261c069001c..21b2c3f85ddc5 100644
---- a/drivers/iommu/intel/iommu.h
-+++ b/drivers/iommu/intel/iommu.h
-@@ -462,7 +462,6 @@ enum {
- #define QI_PGRP_PASID(pasid)	(((u64)(pasid)) << 32)
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 80c78aff96433..29d39b2bd86e0 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -1522,6 +1522,9 @@ static void a6xx_fault_detect_irq(struct msm_gpu *gpu)
+ 	/* Turn off the hangcheck timer to keep it from bothering us */
+ 	del_timer(&gpu->hangcheck_timer);
  
- /* Page group response descriptor QW1 */
--#define QI_PGRP_LPIG(x)		(((u64)(x)) << 2)
- #define QI_PGRP_IDX(idx)	(((u64)(idx)) << 3)
- 
- 
-diff --git a/drivers/iommu/intel/prq.c b/drivers/iommu/intel/prq.c
-index 52570e42a14c0..ff63c228e6e19 100644
---- a/drivers/iommu/intel/prq.c
-+++ b/drivers/iommu/intel/prq.c
-@@ -151,8 +151,7 @@ static void handle_bad_prq_event(struct intel_iommu *iommu,
- 			QI_PGRP_PASID_P(req->pasid_present) |
- 			QI_PGRP_RESP_CODE(result) |
- 			QI_PGRP_RESP_TYPE;
--	desc.qw1 = QI_PGRP_IDX(req->prg_index) |
--			QI_PGRP_LPIG(req->lpig);
-+	desc.qw1 = QI_PGRP_IDX(req->prg_index);
- 
- 	qi_submit_sync(iommu, &desc, 1, 0);
++	/* Turn off interrupts to avoid triggering recovery again */
++	gpu_write(gpu, REG_A6XX_RBBM_INT_0_MASK, 0);
++
+ 	kthread_queue_work(gpu->worker, &gpu->recover_work);
  }
-@@ -379,19 +378,17 @@ void intel_iommu_page_response(struct device *dev, struct iopf_fault *evt,
- 	struct iommu_fault_page_request *prm;
- 	struct qi_desc desc;
- 	bool pasid_present;
--	bool last_page;
- 	u16 sid;
- 
- 	prm = &evt->fault.prm;
- 	sid = PCI_DEVID(bus, devfn);
- 	pasid_present = prm->flags & IOMMU_FAULT_PAGE_REQUEST_PASID_VALID;
--	last_page = prm->flags & IOMMU_FAULT_PAGE_REQUEST_LAST_PAGE;
- 
- 	desc.qw0 = QI_PGRP_PASID(prm->pasid) | QI_PGRP_DID(sid) |
- 			QI_PGRP_PASID_P(pasid_present) |
- 			QI_PGRP_RESP_CODE(msg->code) |
- 			QI_PGRP_RESP_TYPE;
--	desc.qw1 = QI_PGRP_IDX(prm->grpid) | QI_PGRP_LPIG(last_page);
-+	desc.qw1 = QI_PGRP_IDX(prm->grpid);
- 	desc.qw2 = 0;
- 	desc.qw3 = 0;
  
 -- 
 2.51.0
