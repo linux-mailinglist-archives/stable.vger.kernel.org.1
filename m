@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-194419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829A7C4B194
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F08FDC4AE20
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EBE814FD6DB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A0D41881352
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51C4307ADE;
-	Tue, 11 Nov 2025 01:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B729033F371;
+	Tue, 11 Nov 2025 01:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtQGYrFw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvYekyH1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CF92857F0;
-	Tue, 11 Nov 2025 01:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734AF2DC350;
+	Tue, 11 Nov 2025 01:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825559; cv=none; b=sH93xnskMLdkVSt7w7btEjjQr7zTjuVe29f2GIktD2Hw/H4nhlE0Q16xDE3saFoMWM2drMG6r55QuUfw6qDCUeBvbL/eMa6XcthQiwN7L3f0qmDrciG3XFX7TUaHw3qIKPDNTBlWYiX4OEmycvsEuW43qgfnMzIQC5qJx7aEjhk=
+	t=1762825014; cv=none; b=N5iEAw1Xi8DsKxg2VycizGzXdtkrkB59loiXb284/DmugfC0lmB3i1ARyk78mM8b8F0SjID5uWVKQQLDqbIQqbXkw9mUklFYcjo1a08BdO3wP8Z9ShRXak0fkPa8RahS6mcehmiEmuaTR1nwWUzhoJoIMos7DMZYSiVD7rcA5BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825559; c=relaxed/simple;
-	bh=lZ/za5f0N8LyTuWt0OnB7vYZog6I27hI1Bybw+rh+rI=;
+	s=arc-20240116; t=1762825014; c=relaxed/simple;
+	bh=5UHJc8xS4tpAvi/QwURSTz63A2mVm5VFxJYVnLkOGMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rr8A0689Ba7ztPvWloxJoPuOvaxZ2bLZIG/Tx/Tx+/BCapYZNth25Ob4Or4dkfGSb8Z14VgFZduNa4YT6ZCjqqAysKSRD9sDl/DhWOwFBxOlGeO6zhlUB3edrELkNb7qfHgrLLnL4lXJ37C84yLXt1xqk0htkPobM8im2xXo2uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtQGYrFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36213C116D0;
-	Tue, 11 Nov 2025 01:45:59 +0000 (UTC)
+	 MIME-Version; b=uP7sj6qH/eSKBFjoX+wpTo/8Edop9Q+W7A2lfPxWzUsbIUKFGFoIbg7nL/y/91qA1X1d4AjFirpdHV4MYe3qu5+NGdAn1UsJMOyElJifcgG8gCUIHBnLrrzimnAkx37w8HEPqLAO0BggmCRzEyToVHHULH3h2k5OL7tjEOgug8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvYekyH1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B05C4CEF5;
+	Tue, 11 Nov 2025 01:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825559;
-	bh=lZ/za5f0N8LyTuWt0OnB7vYZog6I27hI1Bybw+rh+rI=;
+	s=korg; t=1762825014;
+	bh=5UHJc8xS4tpAvi/QwURSTz63A2mVm5VFxJYVnLkOGMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rtQGYrFwvpbkWWMiQEZK9A6fcurLFHz9YLBgeiUiK4lMipoXLXpEjru3qYwpYtL47
-	 Ch/pgAWL82pQX6owwtIsl7KPTvDNNwfDz3hcYbKd8nVuGAn2ArNeCrnpId3JstYK2X
-	 BtpEedfdeS3U4yQihVf1uceZQPCwLRjaNcRCPEco=
+	b=qvYekyH1pce46s94t4wjUc4R/jMv+rnDQLxOA9rlatGfzgPb84aqNQThBj3o7iPSK
+	 01OoeqA2JvRfN0tDppP5KcIGlmCIiev8+dmtIDC4bs3fqoq21mC0L0LPHQIusStHjH
+	 Gk0uGWSPBgcvV/Mtug1BkJwg4sXHMMnIwbWr5uYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Paul Walmsley <pjw@kernel.org>
-Subject: [PATCH 6.17 811/849] riscv: Fix memory leak in module_frob_arch_sections()
+	Xin Long <lucien.xin@gmail.com>,
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 525/565] sctp: Hold sock lock while iterating over address list
 Date: Tue, 11 Nov 2025 09:46:21 +0900
-Message-ID: <20251111004556.033235633@linuxfoundation.org>
+Message-ID: <20251111004538.775434226@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-commit c42458fcf54b3d0bc2ac06667c98dceb43831889 upstream.
+[ Upstream commit f1fc201148c7e684c10a72b6a3375597f28d1ef6 ]
 
-The current code directly overwrites the scratch pointer with the
-return value of kvrealloc(). If kvrealloc() fails and returns NULL,
-the original buffer becomes unreachable, causing a memory leak.
+Move address list traversal in inet_assoc_attr_size() under the sock
+lock to avoid holding the RCU read lock.
 
-Fix this by using a temporary variable to store kvrealloc()'s return
-value and only update the scratch pointer on success.
-
-Found via static anlaysis and this is similar to commit 42378a9ca553
-("bpf, verifier: Fix memory leak in array reallocation for stack state")
-
-Fixes: be17c0df6795 ("riscv: module: Optimize PLT/GOT entry counting")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20251026091912.39727-1-linmq006@gmail.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Xin Long <lucien.xin@gmail.com>
+Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251028161506.3294376-4-stefan.wiehler@nokia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/module-sections.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/sctp/diag.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/arch/riscv/kernel/module-sections.c b/arch/riscv/kernel/module-sections.c
-index 75551ac6504c..1675cbad8619 100644
---- a/arch/riscv/kernel/module-sections.c
-+++ b/arch/riscv/kernel/module-sections.c
-@@ -119,6 +119,7 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
- 	unsigned int num_plts = 0;
- 	unsigned int num_gots = 0;
- 	Elf_Rela *scratch = NULL;
-+	Elf_Rela *new_scratch;
- 	size_t scratch_size = 0;
- 	int i;
+diff --git a/net/sctp/diag.c b/net/sctp/diag.c
+index 95e65b9d623b3..5a43f25478d03 100644
+--- a/net/sctp/diag.c
++++ b/net/sctp/diag.c
+@@ -230,14 +230,15 @@ struct sctp_comm_param {
+ 	bool net_admin;
+ };
  
-@@ -168,9 +169,12 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
- 		scratch_size_needed = (num_scratch_relas + num_relas) * sizeof(*scratch);
- 		if (scratch_size_needed > scratch_size) {
- 			scratch_size = scratch_size_needed;
--			scratch = kvrealloc(scratch, scratch_size, GFP_KERNEL);
--			if (!scratch)
-+			new_scratch = kvrealloc(scratch, scratch_size, GFP_KERNEL);
-+			if (!new_scratch) {
-+				kvfree(scratch);
- 				return -ENOMEM;
-+			}
-+			scratch = new_scratch;
- 		}
+-static size_t inet_assoc_attr_size(struct sctp_association *asoc)
++static size_t inet_assoc_attr_size(struct sock *sk,
++				   struct sctp_association *asoc)
+ {
+ 	int addrlen = sizeof(struct sockaddr_storage);
+ 	int addrcnt = 0;
+ 	struct sctp_sockaddr_entry *laddr;
  
- 		for (size_t j = 0; j < num_relas; j++)
+ 	list_for_each_entry_rcu(laddr, &asoc->base.bind_addr.address_list,
+-				list)
++				list, lockdep_sock_is_held(sk))
+ 		addrcnt++;
+ 
+ 	return	  nla_total_size(sizeof(struct sctp_info))
+@@ -263,11 +264,14 @@ static int sctp_sock_dump_one(struct sctp_endpoint *ep, struct sctp_transport *t
+ 	if (err)
+ 		return err;
+ 
+-	rep = nlmsg_new(inet_assoc_attr_size(assoc), GFP_KERNEL);
+-	if (!rep)
++	lock_sock(sk);
++
++	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
++	if (!rep) {
++		release_sock(sk);
+ 		return -ENOMEM;
++	}
+ 
+-	lock_sock(sk);
+ 	if (ep != assoc->ep) {
+ 		err = -EAGAIN;
+ 		goto out;
 -- 
-2.51.2
+2.51.0
 
 
 
