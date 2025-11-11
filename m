@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-193321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C53C4A30D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A23F8C4A316
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C697F4E86F2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 95E0D4EF0FD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98862256C8D;
-	Tue, 11 Nov 2025 01:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D666244693;
+	Tue, 11 Nov 2025 01:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/geCPOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgfd9xZQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5215D1F5F6;
-	Tue, 11 Nov 2025 01:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAB81C28E;
+	Tue, 11 Nov 2025 01:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822894; cv=none; b=cVTuhJQVqZNPRMbnsLEgOHul+J3p2onpT0apaYbyOXlvFXknSk1hThH99T6UdsBcWXKL4MvZicWHf2zb73Kl4a3bFFb9yvybQDooM5KpyJjRUEl0cbHc6EVqOzirW0mLVkcngYKsQLOU5Z53JzyWkf4ZsRiKJBBAp08KJvPAlNY=
+	t=1762822898; cv=none; b=FFwPu4/bjFIdHwcp/CKd1GmjTNALd4z9AGRn0RarSrlT+aPCwYzCa1LTxrmpPJcT1AtKVZO2diLmocpEpuPgrhd0dMlWweVhp3L2C4lK0C5sMv+yoNSfD/ihu3WDBOtFloEk8BhMBxw7U3c3eFiFtT/2xRbvvMndR4q9nauBP3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822894; c=relaxed/simple;
-	bh=IwGfsHayuZeZeWLynPUXTAxZcBbgRLK8zDv6cFT9Hlg=;
+	s=arc-20240116; t=1762822898; c=relaxed/simple;
+	bh=oPsx0s8gOJZNCTPEinHIR2bbPqTB8a2ImtpLX/eZgDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DarMdPXHjeeDnF6MoV+ozT8qxXDKWpQRqxuGWajmGwot+i7V7NnJO4pkWs+YnDW5URGJ8t5qjiFCM5yRu3MkM4NpdUto/Fx60YkI7xlmiDptssvhkprEZb06dtfvXLMl9aNRAiPQM9IGe61UYycuSyqjtkIu7shC3+Oakl6h/+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/geCPOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59C9C4CEF5;
-	Tue, 11 Nov 2025 01:01:33 +0000 (UTC)
+	 MIME-Version; b=TQckaE+RGG+UHxDfl+ONITdUj/62IX9urnPErvLPXJlQLsPXlOoWbHSmHPqyVrSw/6eievnGG6QKr0RpiQuHbal1KzH8cTHhTv10oESVMQ6uQQMTJx73iATCwycLcrJ3qesOLC3Uu815Oqkcj8U4zHnzmvFKAIhJENFpA3kRhgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgfd9xZQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD36C19421;
+	Tue, 11 Nov 2025 01:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822894;
-	bh=IwGfsHayuZeZeWLynPUXTAxZcBbgRLK8zDv6cFT9Hlg=;
+	s=korg; t=1762822898;
+	bh=oPsx0s8gOJZNCTPEinHIR2bbPqTB8a2ImtpLX/eZgDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B/geCPOxUNap/z2nkTgGkjosexhxfoUmNcBM0x9TjDn1UgZORppGOxi0Yd/rytQaD
-	 6rkjhK4Y2KZphUaSlTgQtpkS3go+Ak2U+DY9hGVReP51nLMUFG9wrULZNSdohwc9Aa
-	 pKBLcZrlvu7dvZ60eKPIDMexwpJDVLy+dombc7Vs=
+	b=pgfd9xZQZK0hLUTJrZXtDLuczJYZWc5JOcnt/gWfJadaQOCufUTL2NP+WTH5f15Ol
+	 cvzCiButMePzCyNP652k4JJFs/hXe+RYkLSsd9PbauRVoY3cAaHYhcvaFpXLzZVlc0
+	 xt9LFvVAlsPNHle7z+tcNUmik7dXCJw+ifSvjGY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janne Grunau <j@jannau.net>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Neal Gompa <neal@gompa.dev>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Sven Peter <sven@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Fenglin Wu <fenglin.wu@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 191/849] pmdomain: apple: Add "apple,t8103-pmgr-pwrstate"
-Date: Tue, 11 Nov 2025 09:36:01 +0900
-Message-ID: <20251111004541.053061546@linuxfoundation.org>
+Subject: [PATCH 6.17 192/849] power: supply: qcom_battmgr: handle charging state change notifications
+Date: Tue, 11 Nov 2025 09:36:02 +0900
+Message-ID: <20251111004541.086636349@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -69,39 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Janne Grunau <j@jannau.net>
+From: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
 
-[ Upstream commit 442816f97a4f84cb321d3359177a3b9b0ce48a60 ]
+[ Upstream commit 41307ec7df057239aae3d0f089cc35a0d735cdf8 ]
 
-After discussion with the devicetree maintainers we agreed to not extend
-lists with the generic compatible "apple,pmgr-pwrstate" anymore [1]. Use
-"apple,t8103-pmgr-pwrstate" as base compatible as it is the SoC the
-driver and bindings were written for.
+The X1E80100 battery management firmware sends a notification with
+code 0x83 when the battery charging state changes, such as switching
+between fast charge, taper charge, end of charge, or any other error
+charging states.
 
-[1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@kernel.org/
+The same notification code is used with bit[8] set when charging stops
+because the charge control end threshold is reached. Additionally,
+a 2-bit value is included in bit[10:9] with the same code to indicate
+the charging source capability, which is determined by the calculated
+power from voltage and current readings from PDOs: 2 means a strong
+charger over 60W, 1 indicates a weak charger, and 0 means there is no
+charging source.
 
-Signed-off-by: Janne Grunau <j@jannau.net>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Sven Peter <sven@kernel.org>
+These 3-MSB [10:8] in the notification code is not much useful for now,
+hence just ignore them and trigger a power supply change event whenever
+0x83 notification code is received. This helps to eliminate the unknown
+notification error messages.
+
+Reported-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Closes: https://lore.kernel.org/all/r65idyc4of5obo6untebw4iqfj2zteiggnnzabrqtlcinvtddx@xc4aig5abesu/
+Signed-off-by: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/apple/pmgr-pwrstate.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/power/supply/qcom_battmgr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pmdomain/apple/pmgr-pwrstate.c b/drivers/pmdomain/apple/pmgr-pwrstate.c
-index 9467235110f46..82c33cf727a82 100644
---- a/drivers/pmdomain/apple/pmgr-pwrstate.c
-+++ b/drivers/pmdomain/apple/pmgr-pwrstate.c
-@@ -306,6 +306,7 @@ static int apple_pmgr_ps_probe(struct platform_device *pdev)
- }
+diff --git a/drivers/power/supply/qcom_battmgr.c b/drivers/power/supply/qcom_battmgr.c
+index fdb2d1b883fc5..c9dc8b378aa1e 100644
+--- a/drivers/power/supply/qcom_battmgr.c
++++ b/drivers/power/supply/qcom_battmgr.c
+@@ -30,8 +30,9 @@ enum qcom_battmgr_variant {
+ #define NOTIF_BAT_PROPERTY		0x30
+ #define NOTIF_USB_PROPERTY		0x32
+ #define NOTIF_WLS_PROPERTY		0x34
+-#define NOTIF_BAT_INFO			0x81
+ #define NOTIF_BAT_STATUS		0x80
++#define NOTIF_BAT_INFO			0x81
++#define NOTIF_BAT_CHARGING_STATE	0x83
  
- static const struct of_device_id apple_pmgr_ps_of_match[] = {
-+	{ .compatible = "apple,t8103-pmgr-pwrstate" },
- 	{ .compatible = "apple,pmgr-pwrstate" },
- 	{}
- };
+ #define BATTMGR_BAT_INFO		0x9
+ 
+@@ -947,12 +948,14 @@ static void qcom_battmgr_notification(struct qcom_battmgr *battmgr,
+ 	}
+ 
+ 	notification = le32_to_cpu(msg->notification);
++	notification &= 0xff;
+ 	switch (notification) {
+ 	case NOTIF_BAT_INFO:
+ 		battmgr->info.valid = false;
+ 		fallthrough;
+ 	case NOTIF_BAT_STATUS:
+ 	case NOTIF_BAT_PROPERTY:
++	case NOTIF_BAT_CHARGING_STATE:
+ 		power_supply_changed(battmgr->bat_psy);
+ 		break;
+ 	case NOTIF_USB_PROPERTY:
 -- 
 2.51.0
 
