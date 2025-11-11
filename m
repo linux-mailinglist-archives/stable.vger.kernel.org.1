@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-193177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B11C4A040
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07178C4A049
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 526533AAC4F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D436E188D405
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A2C214210;
-	Tue, 11 Nov 2025 00:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B65E24EA90;
+	Tue, 11 Nov 2025 00:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCGdoVWO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3FmS08p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EC44C97;
-	Tue, 11 Nov 2025 00:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C164C97;
+	Tue, 11 Nov 2025 00:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822479; cv=none; b=XzMziecvG4Wxjo5vP9Rwj3+sCceW1DQ146Emx6ndryQLFgdCyVHRq/8gAUV1rAjMltPTMRuecT/lCkBIFSfxN9pV+zbmO22muQjJokm3xCZ5+rar8c5k3Bzk4bPvLQ8mRP92Kzz9jT4egA1wiKtonmVsCzYiqKUfImPjcyk7d4g=
+	t=1762822484; cv=none; b=mQqGBeVCcegsW0ZSuiESg+QJO2ocoW01ZTS3cyle9Vc7tqz+iBYY42eL6aRCvenO9mPZHZ9m76wkJurGYykU7z3iWvHFs552iDE/DCpNmnFeCQ5ZCKL7I5hpbPU0ZgL1tHDidwNTuQb6RIQjaOGTrcUZBAETJhY2uggcqfv6f8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822479; c=relaxed/simple;
-	bh=dgUTkJfgBR+cBv9Q9jrFwL/YsuBWpbDM7sS7vI4f020=;
+	s=arc-20240116; t=1762822484; c=relaxed/simple;
+	bh=z7tYf2OyuhvxXuAUsLSUDa2sJfNZa7ZElDTh5gkqHrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qP7qvZ8/DtfD2EXqa58rTjpmSlf6cfJlY8o/oSodVEnoFgeABU4zcrNkh77HGBGINPvF37nATh+kAdtzk+TxtH+lcmQDPp5HmA3Uq+ajjfNtyCWI90gl1WVgPeE1tQib8xaH9vsNtFD1rr9i6Q1w46589fIu2ZxNyR29AkTk6Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCGdoVWO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0839AC4CEFB;
-	Tue, 11 Nov 2025 00:54:38 +0000 (UTC)
+	 MIME-Version; b=LPt6l4/RmW0kG7VOTWyS2du7IKAtkaS7mA7narg9ABXUcpDeHboAvjUiGlqIqI6s9Z/pHcb0yzg0Itozz6IsuGjmuoiS8BAUf1FyZYmlbwCfZ2QSSxmBuxFXf90zHywhVoy+WBeavDCvsNeS4RA0/uvS1rhdJVGLBxQUIAb68iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3FmS08p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0E1C16AAE;
+	Tue, 11 Nov 2025 00:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822479;
-	bh=dgUTkJfgBR+cBv9Q9jrFwL/YsuBWpbDM7sS7vI4f020=;
+	s=korg; t=1762822483;
+	bh=z7tYf2OyuhvxXuAUsLSUDa2sJfNZa7ZElDTh5gkqHrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eCGdoVWOV8JmHLJRrakHqcNR6ByHex8L3jwYA9dYzuisJh1+nOV44UW8sVy8C/WjO
-	 9lEZOOTfyHFU4P87Gkn+Mvvl/tts1WEZ92ydqsATvahlPMebJvzKnJ+1gZ2F2VzWbM
-	 squ6XD+XRv3ZKyfo8+jrru+tK7vKUqjOKfrGy6Dw=
+	b=b3FmS08pBHZfaNVeHObMaHIVkSjbwLgB10WvCQ3lz9xFA79pQ6lwlRxtahenAugPj
+	 AOFaOVD3wWmyOiuRYwio9NPst8ZZ8SuNOxbK5GiKzHm4D5+ylnUkwd/MMKdmlFkn8E
+	 jTMhXJ86enjysls9YlvPUCeyVs6edBEVMFWdZk7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Smith <itistotalbotnet@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/565] drm/amd/pm/powerplay/smumgr: Fix PCIeBootLinkLevel value on Iceland
-Date: Tue, 11 Nov 2025 09:38:34 +0900
-Message-ID: <20251111004528.226963112@linuxfoundation.org>
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 059/565] ACPI: fan: Use ACPI handle when retrieving _FST
+Date: Tue, 11 Nov 2025 09:38:35 +0900
+Message-ID: <20251111004528.250225549@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,40 +65,146 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Smith <itistotalbotnet@gmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 501672e3c1576aa9a8364144213c77b98a31a42c ]
+commit 58764259ebe0c9efd569194444629f6b26f86583 upstream.
 
-Previously this was initialized with zero which represented PCIe Gen
-1.0 instead of using the
-maximum value from the speed table which is the behaviour of all other
-smumgr implementations.
+Usage of the ACPI device should be phased out in the future, as
+the driver itself is now using the platform bus.
 
-Fixes: 18aafc59b106 ("drm/amd/powerplay: implement fw related smu interface for iceland.")
-Signed-off-by: John Smith <itistotalbotnet@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 92b0a6ae6672857ddeabf892223943d2f0e06c97)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Replace any usage of struct acpi_device in acpi_fan_get_fst() to
+allow users to drop usage of struct acpi_device.
+
+Also extend the integer check to all three package elements.
+
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20251007234149.2769-2-W_Armin@gmx.de
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/fan.h       |    3 ++-
+ drivers/acpi/fan_attr.c  |    2 +-
+ drivers/acpi/fan_core.c  |   34 ++++++++++++++++++++++------------
+ drivers/acpi/fan_hwmon.c |    3 +--
+ 4 files changed, 26 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c
-index 17d2f5bff4a7e..49c32183878de 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c
-@@ -2028,7 +2028,7 @@ static int iceland_init_smc_table(struct pp_hwmgr *hwmgr)
- 	table->VoltageResponseTime  = 0;
- 	table->PhaseResponseTime  = 0;
- 	table->MemoryThermThrottleEnable  = 1;
--	table->PCIeBootLinkLevel = 0;
-+	table->PCIeBootLinkLevel = (uint8_t) (data->dpm_table.pcie_speed_table.count);
- 	table->PCIeGenInterval = 1;
+--- a/drivers/acpi/fan.h
++++ b/drivers/acpi/fan.h
+@@ -47,6 +47,7 @@ struct acpi_fan_fst {
+ };
  
- 	result = iceland_populate_smc_svi2_config(hwmgr, table);
--- 
-2.51.0
-
+ struct acpi_fan {
++	acpi_handle handle;
+ 	bool acpi4;
+ 	struct acpi_fan_fif fif;
+ 	struct acpi_fan_fps *fps;
+@@ -56,7 +57,7 @@ struct acpi_fan {
+ 	struct device_attribute fine_grain_control;
+ };
+ 
+-int acpi_fan_get_fst(struct acpi_device *device, struct acpi_fan_fst *fst);
++int acpi_fan_get_fst(acpi_handle handle, struct acpi_fan_fst *fst);
+ int acpi_fan_create_attributes(struct acpi_device *device);
+ void acpi_fan_delete_attributes(struct acpi_device *device);
+ 
+--- a/drivers/acpi/fan_attr.c
++++ b/drivers/acpi/fan_attr.c
+@@ -55,7 +55,7 @@ static ssize_t show_fan_speed(struct dev
+ 	struct acpi_fan_fst fst;
+ 	int status;
+ 
+-	status = acpi_fan_get_fst(acpi_dev, &fst);
++	status = acpi_fan_get_fst(acpi_dev->handle, &fst);
+ 	if (status)
+ 		return status;
+ 
+--- a/drivers/acpi/fan_core.c
++++ b/drivers/acpi/fan_core.c
+@@ -44,25 +44,30 @@ static int fan_get_max_state(struct ther
+ 	return 0;
+ }
+ 
+-int acpi_fan_get_fst(struct acpi_device *device, struct acpi_fan_fst *fst)
++int acpi_fan_get_fst(acpi_handle handle, struct acpi_fan_fst *fst)
+ {
+ 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+ 	union acpi_object *obj;
+ 	acpi_status status;
+ 	int ret = 0;
+ 
+-	status = acpi_evaluate_object(device->handle, "_FST", NULL, &buffer);
+-	if (ACPI_FAILURE(status)) {
+-		dev_err(&device->dev, "Get fan state failed\n");
+-		return -ENODEV;
+-	}
++	status = acpi_evaluate_object(handle, "_FST", NULL, &buffer);
++	if (ACPI_FAILURE(status))
++		return -EIO;
+ 
+ 	obj = buffer.pointer;
+-	if (!obj || obj->type != ACPI_TYPE_PACKAGE ||
+-	    obj->package.count != 3 ||
+-	    obj->package.elements[1].type != ACPI_TYPE_INTEGER) {
+-		dev_err(&device->dev, "Invalid _FST data\n");
+-		ret = -EINVAL;
++	if (!obj)
++		return -ENODATA;
++
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count != 3) {
++		ret = -EPROTO;
++		goto err;
++	}
++
++	if (obj->package.elements[0].type != ACPI_TYPE_INTEGER ||
++	    obj->package.elements[1].type != ACPI_TYPE_INTEGER ||
++	    obj->package.elements[2].type != ACPI_TYPE_INTEGER) {
++		ret = -EPROTO;
+ 		goto err;
+ 	}
+ 
+@@ -81,7 +86,7 @@ static int fan_get_state_acpi4(struct ac
+ 	struct acpi_fan_fst fst;
+ 	int status, i;
+ 
+-	status = acpi_fan_get_fst(device, &fst);
++	status = acpi_fan_get_fst(device->handle, &fst);
+ 	if (status)
+ 		return status;
+ 
+@@ -319,11 +324,16 @@ static int acpi_fan_probe(struct platfor
+ 	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+ 	char *name;
+ 
++	if (!device)
++		return -ENODEV;
++
+ 	fan = devm_kzalloc(&pdev->dev, sizeof(*fan), GFP_KERNEL);
+ 	if (!fan) {
+ 		dev_err(&device->dev, "No memory for fan\n");
+ 		return -ENOMEM;
+ 	}
++
++	fan->handle = device->handle;
+ 	device->driver_data = fan;
+ 	platform_set_drvdata(pdev, fan);
+ 
+--- a/drivers/acpi/fan_hwmon.c
++++ b/drivers/acpi/fan_hwmon.c
+@@ -85,13 +85,12 @@ static umode_t acpi_fan_hwmon_is_visible
+ static int acpi_fan_hwmon_read(struct device *dev, enum hwmon_sensor_types type, u32 attr,
+ 			       int channel, long *val)
+ {
+-	struct acpi_device *adev = to_acpi_device(dev->parent);
+ 	struct acpi_fan *fan = dev_get_drvdata(dev);
+ 	struct acpi_fan_fps *fps;
+ 	struct acpi_fan_fst fst;
+ 	int ret;
+ 
+-	ret = acpi_fan_get_fst(adev, &fst);
++	ret = acpi_fan_get_fst(fan->handle, &fst);
+ 	if (ret < 0)
+ 		return ret;
+ 
 
 
 
