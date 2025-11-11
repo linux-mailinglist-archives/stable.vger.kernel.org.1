@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-194008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4C1C4ACCD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 614F4C4A734
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 00AE34F13EA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C61233B1746
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44766340280;
-	Tue, 11 Nov 2025 01:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEBE261B6E;
+	Tue, 11 Nov 2025 01:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0fJh/3H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q17CyGh2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007FE26560B;
-	Tue, 11 Nov 2025 01:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C984272E7C;
+	Tue, 11 Nov 2025 01:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824587; cv=none; b=cano0+gMwA4/p7YedE7J+Do225rnIwkiwZrmu9R7hnD1dozXaNUcv2DsGZo6HMxw4An0/h7DQcF2CJzYhOt+nUCrtw5NFfK3nB/zbKHiLpKfFdUe+O29QsRb82WxhU2oca2tzGQ/dME0rAcKky/mQhvuAxyjWzFNh0rCdAnKqAk=
+	t=1762823419; cv=none; b=ZeWjbAqqFjVmwO/lb/deutjQmy0Zu8eXGVQZN2T6fr4KnNz647HJZNoP03pq54HN/z4RyYel+cPx0LpssLOvHbSAihxm84Pn03ipI8QFWM21vrdzK9EAm50UP/EO0hZvAM53AYle3Kv3sHfGMzFVcNTU6AzifhzN9GM5NkE66f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824587; c=relaxed/simple;
-	bh=PWJ5w7Wf77zbR+s/Hnd1GsyCcwZfael+QmtIWHgvjVk=;
+	s=arc-20240116; t=1762823419; c=relaxed/simple;
+	bh=YvU4ztbZvDRhES5Pzcmodz52RWP1tkSJorgI8W3n8QU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EfQwXAz8SHXteAcDD5ynK8vkKSs5E1sp8EwG7+tebY9Gj+YoMzDCl9JhP3R2p2zqGbQANCH847qdRTWh2XQWtR2h1W0d9/DIKyZo54fhDNLQv04OKSRI4rVhWzA7ikjDYSp1PMpYqUo5uJzVP1tuhlG9gJU7rUMdn16n5YQPT8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m0fJh/3H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95556C4CEF5;
-	Tue, 11 Nov 2025 01:29:46 +0000 (UTC)
+	 MIME-Version; b=lsOkA/gYfLCu95q0LIlZnyfUaqt1fv1pqpHlBmueiLjkuBdz7/WZTUIW9PAtWgkQsbIHbn4cw+YZb4dwfIdRt6Lk9Frm/IXfS61P8/MDAgIcESNTq1dDDeMl7uSh9o5O8/qP80wSgrGBFc0APrdKHYZ9ySzs3mIvepHeatBm/7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q17CyGh2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624FDC4CEF5;
+	Tue, 11 Nov 2025 01:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824586;
-	bh=PWJ5w7Wf77zbR+s/Hnd1GsyCcwZfael+QmtIWHgvjVk=;
+	s=korg; t=1762823418;
+	bh=YvU4ztbZvDRhES5Pzcmodz52RWP1tkSJorgI8W3n8QU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m0fJh/3HxHhH1fSJuJCK8XVKoEQQGQBnGyHDDE4OHh4ejOy0y6B1eIaSy0pL7G24x
-	 lNX7bEzvCQ8SuglZQb5yHkVOWj+Khb++nBJlubKXf/k2yYSNZYDbS0p4eBANl7J/wU
-	 fNSmtPY6gswzyQwF0XzpdxuJRtTZ/Ht5tbcO8/OU=
+	b=q17CyGh24wEQwNnWuK3qJsMc2NXrgRb09ZqGJVoOxYhsUXSw5DRM7Eo28g13gOZrO
+	 O/gASoCVoOv1HysVCotGxflniJnn9OMJfFedH8wjacUGlXNKgcBttjENYJVs2XeRrb
+	 0Ca4WSX1iftRYOa5GeIjp0hYVDQ8WhhtwIW63Baw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Pavan Kumar Linga <pavan.kumar.linga@intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Brian Vazquez <brianvv@google.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 529/849] PCI: dwc: Verify the single eDMA IRQ in dw_pcie_edma_irq_verify()
+Subject: [PATCH 6.12 243/565] idpf: do not linearize big TSO packets
 Date: Tue, 11 Nov 2025 09:41:39 +0900
-Message-ID: <20251111004549.206293706@linuxfoundation.org>
+Message-ID: <20251111004532.378217526@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +71,347 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 09fefb24ed5e15f3b112f6c04b21a90ea23eaf8b ]
+[ Upstream commit 02614eee26fbdfd73b944769001cefeff6ed008c ]
 
-dw_pcie_edma_irq_verify() is supposed to verify the eDMA IRQs in devicetree
-by fetching them using either 'dma' or 'dmaX' IRQ names. Former is used
-when the platform uses a single IRQ for all eDMA channels and latter is
-used when the platform uses separate IRQ per channel. But currently,
-dw_pcie_edma_irq_verify() bails out early if edma::nr_irqs is 1, i.e., when
-a single IRQ is used. This gives an impression that the driver could work
-with any single IRQ in devicetree, not necessarily with name 'dma'.
+idpf has a limit on number of scatter-gather frags
+that can be used per segment.
 
-But dw_pcie_edma_irq_vector(), which actually requests the IRQ, does
-require the single IRQ to be named as 'dma'. So this creates inconsistency
-between dw_pcie_edma_irq_verify() and dw_pcie_edma_irq_vector().
+Currently, idpf_tx_start() checks if the limit is hit
+and forces a linearization of the whole packet.
 
-Thus, to fix this inconsistency, make sure dw_pcie_edma_irq_verify() also
-verifies the single IRQ name by removing the bail out code.
+This requires high order allocations that can fail
+under memory pressure. A full size BIG-TCP packet
+would require order-7 alocation on x86_64 :/
 
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-[mani: reworded subject and description]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-[bhelgaas: fix typos]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20250908165914.547002-3-cassel@kernel.org
+We can move the check earlier from idpf_features_check()
+for TSO packets, to force GSO in this case, removing the
+cost of a big copy.
+
+This means that a linearization will eventually happen
+with sizes smaller than one MSS.
+
+__idpf_chk_linearize() is renamed to idpf_chk_tso_segment()
+and moved to idpf_lib.c
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Jacob Keller <jacob.e.keller@intel.com>
+Cc: Madhu Chittim <madhu.chittim@intel.com>
+Cc: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Reviewed-by: Joshua Hay <joshua.a.hay@intel.com>
+Tested-by: Brian Vazquez <brianvv@google.com>
+Acked-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20250818195934.757936-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf.h      |   2 +
+ drivers/net/ethernet/intel/idpf/idpf_lib.c  | 102 +++++++++++++++-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 129 ++++----------------
+ 3 files changed, 120 insertions(+), 113 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
-index 89aad5a08928c..c7a2cf5e886f3 100644
---- a/drivers/pci/controller/dwc/pcie-designware.c
-+++ b/drivers/pci/controller/dwc/pcie-designware.c
-@@ -1045,9 +1045,7 @@ static int dw_pcie_edma_irq_verify(struct dw_pcie *pci)
- 	char name[15];
- 	int ret;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+index a2b346d91879e..f4d51c885f335 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -144,6 +144,7 @@ enum idpf_vport_state {
+  * @link_speed_mbps: Link speed in mbps
+  * @vport_idx: Relative vport index
+  * @max_tx_hdr_size: Max header length hardware can support
++ * @tx_max_bufs: Max buffers that can be transmitted with scatter-gather
+  * @state: See enum idpf_vport_state
+  * @netstats: Packet and byte stats
+  * @stats_lock: Lock to protect stats update
+@@ -155,6 +156,7 @@ struct idpf_netdev_priv {
+ 	u32 link_speed_mbps;
+ 	u16 vport_idx;
+ 	u16 max_tx_hdr_size;
++	u16 tx_max_bufs;
+ 	enum idpf_vport_state state;
+ 	struct rtnl_link_stats64 netstats;
+ 	spinlock_t stats_lock;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index 52d9caab2fcb2..371fc5052420d 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -742,6 +742,7 @@ static int idpf_cfg_netdev(struct idpf_vport *vport)
+ 	np->vport_idx = vport->idx;
+ 	np->vport_id = vport->vport_id;
+ 	np->max_tx_hdr_size = idpf_get_max_tx_hdr_size(adapter);
++	np->tx_max_bufs = idpf_get_max_tx_bufs(adapter);
  
--	if (pci->edma.nr_irqs == 1)
--		return 0;
--	else if (pci->edma.nr_irqs > 1)
-+	if (pci->edma.nr_irqs > 1)
- 		return pci->edma.nr_irqs != ch_cnt ? -EINVAL : 0;
+ 	spin_lock_init(&np->stats_lock);
  
- 	ret = platform_get_irq_byname_optional(pdev, "dma");
+@@ -2205,6 +2206,92 @@ static int idpf_change_mtu(struct net_device *netdev, int new_mtu)
+ 	return err;
+ }
+ 
++/**
++ * idpf_chk_tso_segment - Check skb is not using too many buffers
++ * @skb: send buffer
++ * @max_bufs: maximum number of buffers
++ *
++ * For TSO we need to count the TSO header and segment payload separately.  As
++ * such we need to check cases where we have max_bufs-1 fragments or more as we
++ * can potentially require max_bufs+1 DMA transactions, 1 for the TSO header, 1
++ * for the segment payload in the first descriptor, and another max_buf-1 for
++ * the fragments.
++ *
++ * Returns true if the packet needs to be software segmented by core stack.
++ */
++static bool idpf_chk_tso_segment(const struct sk_buff *skb,
++				 unsigned int max_bufs)
++{
++	const struct skb_shared_info *shinfo = skb_shinfo(skb);
++	const skb_frag_t *frag, *stale;
++	int nr_frags, sum;
++
++	/* no need to check if number of frags is less than max_bufs - 1 */
++	nr_frags = shinfo->nr_frags;
++	if (nr_frags < (max_bufs - 1))
++		return false;
++
++	/* We need to walk through the list and validate that each group
++	 * of max_bufs-2 fragments totals at least gso_size.
++	 */
++	nr_frags -= max_bufs - 2;
++	frag = &shinfo->frags[0];
++
++	/* Initialize size to the negative value of gso_size minus 1.  We use
++	 * this as the worst case scenario in which the frag ahead of us only
++	 * provides one byte which is why we are limited to max_bufs-2
++	 * descriptors for a single transmit as the header and previous
++	 * fragment are already consuming 2 descriptors.
++	 */
++	sum = 1 - shinfo->gso_size;
++
++	/* Add size of frags 0 through 4 to create our initial sum */
++	sum += skb_frag_size(frag++);
++	sum += skb_frag_size(frag++);
++	sum += skb_frag_size(frag++);
++	sum += skb_frag_size(frag++);
++	sum += skb_frag_size(frag++);
++
++	/* Walk through fragments adding latest fragment, testing it, and
++	 * then removing stale fragments from the sum.
++	 */
++	for (stale = &shinfo->frags[0];; stale++) {
++		int stale_size = skb_frag_size(stale);
++
++		sum += skb_frag_size(frag++);
++
++		/* The stale fragment may present us with a smaller
++		 * descriptor than the actual fragment size. To account
++		 * for that we need to remove all the data on the front and
++		 * figure out what the remainder would be in the last
++		 * descriptor associated with the fragment.
++		 */
++		if (stale_size > IDPF_TX_MAX_DESC_DATA) {
++			int align_pad = -(skb_frag_off(stale)) &
++					(IDPF_TX_MAX_READ_REQ_SIZE - 1);
++
++			sum -= align_pad;
++			stale_size -= align_pad;
++
++			do {
++				sum -= IDPF_TX_MAX_DESC_DATA_ALIGNED;
++				stale_size -= IDPF_TX_MAX_DESC_DATA_ALIGNED;
++			} while (stale_size > IDPF_TX_MAX_DESC_DATA);
++		}
++
++		/* if sum is negative we failed to make sufficient progress */
++		if (sum < 0)
++			return true;
++
++		if (!nr_frags--)
++			break;
++
++		sum -= stale_size;
++	}
++
++	return false;
++}
++
+ /**
+  * idpf_features_check - Validate packet conforms to limits
+  * @skb: skb buffer
+@@ -2226,12 +2313,15 @@ static netdev_features_t idpf_features_check(struct sk_buff *skb,
+ 	if (skb->ip_summed != CHECKSUM_PARTIAL)
+ 		return features;
+ 
+-	/* We cannot support GSO if the MSS is going to be less than
+-	 * 88 bytes. If it is then we need to drop support for GSO.
+-	 */
+-	if (skb_is_gso(skb) &&
+-	    (skb_shinfo(skb)->gso_size < IDPF_TX_TSO_MIN_MSS))
+-		features &= ~NETIF_F_GSO_MASK;
++	if (skb_is_gso(skb)) {
++		/* We cannot support GSO if the MSS is going to be less than
++		 * 88 bytes. If it is then we need to drop support for GSO.
++		 */
++		if (skb_shinfo(skb)->gso_size < IDPF_TX_TSO_MIN_MSS)
++			features &= ~NETIF_F_GSO_MASK;
++		else if (idpf_chk_tso_segment(skb, np->tx_max_bufs))
++			features &= ~NETIF_F_GSO_MASK;
++	}
+ 
+ 	/* Ensure MACLEN is <= 126 bytes (63 words) and not an odd size */
+ 	len = skb_network_offset(skb);
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 087a3077d5481..11bb61c123754 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -15,8 +15,28 @@ struct idpf_tx_stash {
+ #define idpf_tx_buf_compl_tag(buf)	(*(u32 *)&(buf)->priv)
+ LIBETH_SQE_CHECK_PRIV(u32);
+ 
+-static bool idpf_chk_linearize(struct sk_buff *skb, unsigned int max_bufs,
+-			       unsigned int count);
++/**
++ * idpf_chk_linearize - Check if skb exceeds max descriptors per packet
++ * @skb: send buffer
++ * @max_bufs: maximum scatter gather buffers for single packet
++ * @count: number of buffers this packet needs
++ *
++ * Make sure we don't exceed maximum scatter gather buffers for a single
++ * packet.
++ * TSO case has been handled earlier from idpf_features_check().
++ */
++static bool idpf_chk_linearize(const struct sk_buff *skb,
++			       unsigned int max_bufs,
++			       unsigned int count)
++{
++	if (likely(count <= max_bufs))
++		return false;
++
++	if (skb_is_gso(skb))
++		return false;
++
++	return true;
++}
+ 
+ /**
+  * idpf_buf_lifo_push - push a buffer pointer onto stack
+@@ -2575,111 +2595,6 @@ int idpf_tso(struct sk_buff *skb, struct idpf_tx_offload_params *off)
+ 	return 1;
+ }
+ 
+-/**
+- * __idpf_chk_linearize - Check skb is not using too many buffers
+- * @skb: send buffer
+- * @max_bufs: maximum number of buffers
+- *
+- * For TSO we need to count the TSO header and segment payload separately.  As
+- * such we need to check cases where we have max_bufs-1 fragments or more as we
+- * can potentially require max_bufs+1 DMA transactions, 1 for the TSO header, 1
+- * for the segment payload in the first descriptor, and another max_buf-1 for
+- * the fragments.
+- */
+-static bool __idpf_chk_linearize(struct sk_buff *skb, unsigned int max_bufs)
+-{
+-	const struct skb_shared_info *shinfo = skb_shinfo(skb);
+-	const skb_frag_t *frag, *stale;
+-	int nr_frags, sum;
+-
+-	/* no need to check if number of frags is less than max_bufs - 1 */
+-	nr_frags = shinfo->nr_frags;
+-	if (nr_frags < (max_bufs - 1))
+-		return false;
+-
+-	/* We need to walk through the list and validate that each group
+-	 * of max_bufs-2 fragments totals at least gso_size.
+-	 */
+-	nr_frags -= max_bufs - 2;
+-	frag = &shinfo->frags[0];
+-
+-	/* Initialize size to the negative value of gso_size minus 1.  We use
+-	 * this as the worst case scenario in which the frag ahead of us only
+-	 * provides one byte which is why we are limited to max_bufs-2
+-	 * descriptors for a single transmit as the header and previous
+-	 * fragment are already consuming 2 descriptors.
+-	 */
+-	sum = 1 - shinfo->gso_size;
+-
+-	/* Add size of frags 0 through 4 to create our initial sum */
+-	sum += skb_frag_size(frag++);
+-	sum += skb_frag_size(frag++);
+-	sum += skb_frag_size(frag++);
+-	sum += skb_frag_size(frag++);
+-	sum += skb_frag_size(frag++);
+-
+-	/* Walk through fragments adding latest fragment, testing it, and
+-	 * then removing stale fragments from the sum.
+-	 */
+-	for (stale = &shinfo->frags[0];; stale++) {
+-		int stale_size = skb_frag_size(stale);
+-
+-		sum += skb_frag_size(frag++);
+-
+-		/* The stale fragment may present us with a smaller
+-		 * descriptor than the actual fragment size. To account
+-		 * for that we need to remove all the data on the front and
+-		 * figure out what the remainder would be in the last
+-		 * descriptor associated with the fragment.
+-		 */
+-		if (stale_size > IDPF_TX_MAX_DESC_DATA) {
+-			int align_pad = -(skb_frag_off(stale)) &
+-					(IDPF_TX_MAX_READ_REQ_SIZE - 1);
+-
+-			sum -= align_pad;
+-			stale_size -= align_pad;
+-
+-			do {
+-				sum -= IDPF_TX_MAX_DESC_DATA_ALIGNED;
+-				stale_size -= IDPF_TX_MAX_DESC_DATA_ALIGNED;
+-			} while (stale_size > IDPF_TX_MAX_DESC_DATA);
+-		}
+-
+-		/* if sum is negative we failed to make sufficient progress */
+-		if (sum < 0)
+-			return true;
+-
+-		if (!nr_frags--)
+-			break;
+-
+-		sum -= stale_size;
+-	}
+-
+-	return false;
+-}
+-
+-/**
+- * idpf_chk_linearize - Check if skb exceeds max descriptors per packet
+- * @skb: send buffer
+- * @max_bufs: maximum scatter gather buffers for single packet
+- * @count: number of buffers this packet needs
+- *
+- * Make sure we don't exceed maximum scatter gather buffers for a single
+- * packet. We have to do some special checking around the boundary (max_bufs-1)
+- * if TSO is on since we need count the TSO header and payload separately.
+- * E.g.: a packet with 7 fragments can require 9 DMA transactions; 1 for TSO
+- * header, 1 for segment payload, and then 7 for the fragments.
+- */
+-static bool idpf_chk_linearize(struct sk_buff *skb, unsigned int max_bufs,
+-			       unsigned int count)
+-{
+-	if (likely(count < max_bufs))
+-		return false;
+-	if (skb_is_gso(skb))
+-		return __idpf_chk_linearize(skb, max_bufs);
+-
+-	return count > max_bufs;
+-}
+ 
+ /**
+  * idpf_tx_splitq_get_ctx_desc - grab next desc and update buffer ring
 -- 
 2.51.0
 
