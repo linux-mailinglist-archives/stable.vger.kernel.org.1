@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A918C4A00E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D87CC4A0E5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:56:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC94B3A9094
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EB4D14F1E1E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9FC24113D;
-	Tue, 11 Nov 2025 00:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE7E24113D;
+	Tue, 11 Nov 2025 00:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfOucBAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r77kiOxO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C321D6DB5;
-	Tue, 11 Nov 2025 00:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3D74C97;
+	Tue, 11 Nov 2025 00:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822428; cv=none; b=Kn07HwcDVnuUxuBpxVb6Qdoy3PBCvOcfsRhYopfPuRPso8leGFqb+hL4lCQu3NO299nDHqLxAVidyqGsbnDLceQ3W23tGKQjtg3vYVX7Pqf/eDHSl27FBVjqxGJIAQ5VjPzWDUp4R9tqJ5qaxKAT9KVHzqd8IrffLAt1py3MOBk=
+	t=1762822433; cv=none; b=Il7DwnD12rB66gyK55+38vGZFa1tema+eQhmo7Sxnt3GgLIYzspbySDsYsEWExY9WI3pUS0YQfr7+r6YRqcMFgqCet4GJcB1s+YnKIOQQlS16wxHSl2kZQfizHMiaGjMrse3CN6uHAOFVgTpcVdDZOjPk2L/JjYdR1DqB5Xxpgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822428; c=relaxed/simple;
-	bh=SsuAMdHFIM3SJAFlzk8+pMYvUZSlk3rizibuKQvOSLg=;
+	s=arc-20240116; t=1762822433; c=relaxed/simple;
+	bh=nNVIjYDWwSDJG7bZNlCGvQOILZgpdWTkEKde+57AVjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OC/hCg0Ahnrhi9uCs1CjYbkDql0BLI8FnPQ+fHRmnT82eaPiLL8vRjQiryEe0GUy5zIoS/z/39FYyA9OLVKuclFL7FazQCuDXFvhf73bnjT2e9I9x5Z1EKByQIbuZbGJfD7aJYPS9ISYxxXW41gMTjy4d4ybSnXSSayU7YYYeq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfOucBAN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70AEC4CEFB;
-	Tue, 11 Nov 2025 00:53:47 +0000 (UTC)
+	 MIME-Version; b=Z72cV8u0WSEql/7aaAYWYciqLZVHUC0fO9/qL8xS44dfTAcWERxsnOiP6Sf34ctk+gNdfKqFKQhXxSduuYKrqMa2m+sO5zxX1ncCQCY38tPLjzQPgTWphQ7iKFuM9rji3sze0/7nW02Sgd/evXfCZ3NUsFY+E40kx88ky7/GyeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r77kiOxO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6D0C4CEFB;
+	Tue, 11 Nov 2025 00:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822428;
-	bh=SsuAMdHFIM3SJAFlzk8+pMYvUZSlk3rizibuKQvOSLg=;
+	s=korg; t=1762822433;
+	bh=nNVIjYDWwSDJG7bZNlCGvQOILZgpdWTkEKde+57AVjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PfOucBANcLq26HnChMoGKWhXbSV36TRMXzkUZbKLs9HYtqBZbhxwW4RszBeUTv4zV
-	 ecGeHOZiULNH/zPKohMq7/w/8xt1uRACx7xVcA3IsRC57R3Otom5Dpg3USt2o1FHr1
-	 Q5wJBpZ1CGnSUC/3mglR1d84WVRmy/3d+l6i2Ex8=
+	b=r77kiOxO8vck+Nb1OdKYmhcrysxUZUx45eaWO2DCbXyJmq4R42A84secAvD9NA5oc
+	 Kh96yf4cfGuqNRe5X0LnE9Q5jk4gRxxXLS+g7dl0TQBB+zMdB2enfPOUmsKzD39rSD
+	 yi5OXydjViGEjuKr3Gz7jM0/PbGG03g0kPNCFI+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Christian Gmeiner <cgmeiner@igalia.com>,
+	Petr Oros <poros@redhat.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/565] drm/etnaviv: fix flush sequence logic
-Date: Tue, 11 Nov 2025 09:38:24 +0900
-Message-ID: <20251111004527.987488220@linuxfoundation.org>
+Subject: [PATCH 6.12 049/565] tools: ynl: fix string attribute length to include null terminator
+Date: Tue, 11 Nov 2025 09:38:25 +0900
+Message-ID: <20251111004528.011682907@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,44 +67,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit a042beac6e6f8ac1e923784cfff98b47cbabb185 ]
+[ Upstream commit 65f9c4c5888913c2cf5d2fc9454c83f9930d537d ]
 
-The current logic uses the flush sequence from the current address
-space. This is harmless when deducing the flush requirements for the
-current submit, as either the incoming address space is the same one
-as the currently active one or we switch context, in which case the
-flush is unconditional.
+The ynl_attr_put_str() function was not including the null terminator
+in the attribute length calculation. This caused kernel to reject
+CTRL_CMD_GETFAMILY requests with EINVAL:
+"Attribute failed policy validation".
 
-However, this sequence is also stored as the current flush sequence
-of the GPU. If we switch context the stored flush sequence will no
-longer belong to the currently active address space. This incoherency
-can then cause missed flushes, resulting in translation errors.
+For a 4-character family name like "dpll":
+- Sent: nla_len=8 (4 byte header + 4 byte string without null)
+- Expected: nla_len=9 (4 byte header + 5 byte string with null)
 
-Fixes: 27b67278e007 ("drm/etnaviv: rework MMU handling")
-Signed-off-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
-Link: https://lore.kernel.org/r/20251021093723.3887980-1-l.stach@pengutronix.de
+The bug was introduced in commit 15d2540e0d62 ("tools: ynl: check for
+overflow of constructed messages") when refactoring from stpcpy() to
+strlen(). The original code correctly included the null terminator:
+
+  end = stpcpy(ynl_attr_data(attr), str);
+  attr->nla_len = NLA_HDRLEN + NLA_ALIGN(end -
+                                (char *)ynl_attr_data(attr));
+
+Since stpcpy() returns a pointer past the null terminator, the length
+included it. The refactored version using strlen() omitted the +1.
+
+The fix also removes NLA_ALIGN() from nla_len calculation, since
+nla_len should contain actual attribute length, not aligned length.
+Alignment is only for calculating next attribute position. This makes
+the code consistent with ynl_attr_put().
+
+CTRL_ATTR_FAMILY_NAME uses NLA_NUL_STRING policy which requires
+null terminator. Kernel validates with memchr() and rejects if not
+found.
+
+Fixes: 15d2540e0d62 ("tools: ynl: check for overflow of constructed messages")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Tested-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Ivan Vecera <ivecera@redhat.com>
+Link: https://lore.kernel.org/20251018151737.365485-3-zahari.doychev@linux.com
+Link: https://patch.msgid.link/20251024132438.351290-1-poros@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_buffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/net/ynl/lib/ynl-priv.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
-index b13a17276d07c..88385dc3b30d8 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
-@@ -347,7 +347,7 @@ void etnaviv_buffer_queue(struct etnaviv_gpu *gpu, u32 exec_state,
- 	u32 link_target, link_dwords;
- 	bool switch_context = gpu->exec_state != exec_state;
- 	bool switch_mmu_context = gpu->mmu_context != mmu_context;
--	unsigned int new_flush_seq = READ_ONCE(gpu->mmu_context->flush_seq);
-+	unsigned int new_flush_seq = READ_ONCE(mmu_context->flush_seq);
- 	bool need_flush = switch_mmu_context || gpu->flush_seq != new_flush_seq;
- 	bool has_blt = !!(gpu->identity.minor_features5 &
- 			  chipMinorFeatures5_BLT_ENGINE);
+diff --git a/tools/net/ynl/lib/ynl-priv.h b/tools/net/ynl/lib/ynl-priv.h
+index 3c09a7bbfba59..baafc66a61855 100644
+--- a/tools/net/ynl/lib/ynl-priv.h
++++ b/tools/net/ynl/lib/ynl-priv.h
+@@ -301,7 +301,7 @@ ynl_attr_put_str(struct nlmsghdr *nlh, unsigned int attr_type, const char *str)
+ 	struct nlattr *attr;
+ 	size_t len;
+ 
+-	len = strlen(str);
++	len = strlen(str) + 1;
+ 	if (__ynl_attr_put_overflow(nlh, len))
+ 		return;
+ 
+@@ -309,7 +309,7 @@ ynl_attr_put_str(struct nlmsghdr *nlh, unsigned int attr_type, const char *str)
+ 	attr->nla_type = attr_type;
+ 
+ 	strcpy((char *)ynl_attr_data(attr), str);
+-	attr->nla_len = NLA_HDRLEN + NLA_ALIGN(len);
++	attr->nla_len = NLA_HDRLEN + len;
+ 
+ 	nlh->nlmsg_len += NLMSG_ALIGN(attr->nla_len);
+ }
 -- 
 2.51.0
 
