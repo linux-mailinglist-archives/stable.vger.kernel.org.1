@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E7DC4A0AC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:56:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F609C4A13F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC694188DD62
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:56:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 17DCA4F131A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7231DF258;
-	Tue, 11 Nov 2025 00:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A88524BBEB;
+	Tue, 11 Nov 2025 00:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUlNWtVR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUCjUKh1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186F94C97;
-	Tue, 11 Nov 2025 00:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D174086A;
+	Tue, 11 Nov 2025 00:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822560; cv=none; b=HAvD16LY4enfFvB9odsf4Qo7tRkKfloPVStsSdZXT/VhT7Yr8UVo13XnBaYVMET9Gf3RnAWI/FgBlfHZKQGa8iztUA1SUWLv/aaXdrb9H7Vz4PlExi8R9zJNvM0Uu5swfSG2pa1jUqFuF71uMgDwBzTXuvanY4cJWpL/BXhHaK0=
+	t=1762822567; cv=none; b=GzyW04f2qvFyvOHlmR2fiweg14x5WnazqFhdtnPHtpnzFMM4jRR0sTw8bt8trp2TnzObIpb2IufKoL/okxCOZfptRkvBCEnR9Ggr7yIDmFiP7rsa140EhX+4ReScRL8knOQRW4PPB/d2O32lXaSKhZoYoabWS9bWNlc/XmJSA2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822560; c=relaxed/simple;
-	bh=ylx8/Ws9g1wga5zniE6QvPxKBEnLSr17vqK2Nc1ueAg=;
+	s=arc-20240116; t=1762822567; c=relaxed/simple;
+	bh=tGQxLlQrl+044a4aRXCjCkwzjHja4vPGGgzHuY573hM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=agFSsvTKc/jsl9Lp4J7D07GKyxtqI+g6RdmPQmVHXNjRhNBp/U/yh2TpHPzGt3lKjbFAJ5NDWTJc7mvCEiQymL0qMpvu1Shom2MUVLa+AoDi4L6K1xaugWBCouKMm9KbTnWXlsfrNaQvL0h40bR7NBk8us2T3Cy5twnpsQlk164=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUlNWtVR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E69C4CEFB;
-	Tue, 11 Nov 2025 00:55:59 +0000 (UTC)
+	 MIME-Version; b=BMERbPjbsMYS6nT0qvSnIOs/klvHZGtERjsaz2Eqs6qcyWrbefKfmgYpdGfEN8xFq2TzBIWdoVgqK2dQAT4J/Tw6qKWf95glfMxID9wTBYMeBR5z8rMefTV+OzkXchl/744WJnNua18F2vzDCA3aYP6uE63DuH5sjRZdOQ/KP7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUCjUKh1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6EFC4CEFB;
+	Tue, 11 Nov 2025 00:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822560;
-	bh=ylx8/Ws9g1wga5zniE6QvPxKBEnLSr17vqK2Nc1ueAg=;
+	s=korg; t=1762822566;
+	bh=tGQxLlQrl+044a4aRXCjCkwzjHja4vPGGgzHuY573hM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JUlNWtVRPHyiBoQtFHrkz0UW/HmTaDRInqe8StmrzWVfDuYDdO7lPH8Dkw4OLI2pE
-	 FAQDMRf16zrreIKSckSSSY0D5nEiUwaLFJfZc3Y1/dX168rT8fJZtg+QTvV8F00sCd
-	 1meRTUjnq5YJ9OvUQoEo1jB/YDL6F3N4FM8nFDHw=
+	b=OUCjUKh1YDED9ih6j0Vf4qZIpFDHN+3yq1qtJN3QpIK7RDzIK0J3G/EWioU4TXo0d
+	 8JdSkJxbgtlG/1xcITxHqVefl4nnI2hib6UdV9xmBASdmT56VRgFMkFQkhfMJa2dh+
+	 zeIVUVipQn2Ctolq2Kg345P50tJLcULOaCGX2Yyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wilson Alvarez <wilson.e.alvarez@rubonnek.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jiawei Zhao <phoenix500526@163.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 137/849] ACPI: video: force native for Lenovo 82K8
-Date: Tue, 11 Nov 2025 09:35:07 +0900
-Message-ID: <20251111004539.709231553@linuxfoundation.org>
+Subject: [PATCH 6.17 138/849] libbpf: Fix USDT SIB argument handling causing unrecognized register error
+Date: Tue, 11 Nov 2025 09:35:08 +0900
+Message-ID: <20251111004539.732790091@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,43 +66,197 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Jiawei Zhao <phoenix500526@163.com>
 
-[ Upstream commit f144bc21befdcf8e54d2f19b23b4e84f13be01f9 ]
+[ Upstream commit 758acb9ccfdbf854b55abaceaf1f3f229cde3d19 ]
 
-Lenovo 82K8 has a broken brightness control provided by nvidia_wmi_ec.
-Add a quirk to prevent using it.
+On x86-64, USDT arguments can be specified using Scale-Index-Base (SIB)
+addressing, e.g. "1@-96(%rbp,%rax,8)". The current USDT implementation
+in libbpf cannot parse this format, causing `bpf_program__attach_usdt()`
+to fail with -ENOENT (unrecognized register).
 
-Reported-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4512
-Tested-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20250820170927.895573-1-superm1@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+This patch fixes this by implementing the necessary changes:
+- add correct handling for SIB-addressed arguments in `bpf_usdt_arg`.
+- add adaptive support to `__bpf_usdt_arg_type` and
+  `__bpf_usdt_arg_spec` to represent SIB addressing parameters.
+
+Signed-off-by: Jiawei Zhao <phoenix500526@163.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250827053128.1301287-2-phoenix500526@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/lib/bpf/usdt.bpf.h | 44 ++++++++++++++++++++++++++--
+ tools/lib/bpf/usdt.c     | 62 ++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 99 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index d507d5e084354..4cf74f173c785 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -948,6 +948,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
- 		},
- 	},
-+	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4512 */
-+	{
-+	 .callback = video_detect_force_native,
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "82K8"),
-+		},
-+	},
- 	{ },
+diff --git a/tools/lib/bpf/usdt.bpf.h b/tools/lib/bpf/usdt.bpf.h
+index 2a7865c8e3fe3..43deb05a51970 100644
+--- a/tools/lib/bpf/usdt.bpf.h
++++ b/tools/lib/bpf/usdt.bpf.h
+@@ -34,13 +34,32 @@ enum __bpf_usdt_arg_type {
+ 	BPF_USDT_ARG_CONST,
+ 	BPF_USDT_ARG_REG,
+ 	BPF_USDT_ARG_REG_DEREF,
++	BPF_USDT_ARG_SIB,
  };
  
++/*
++ * This struct layout is designed specifically to be backwards/forward
++ * compatible between libbpf versions for ARG_CONST, ARG_REG, and
++ * ARG_REG_DEREF modes. ARG_SIB requires libbpf v1.7+.
++ */
+ struct __bpf_usdt_arg_spec {
+ 	/* u64 scalar interpreted depending on arg_type, see below */
+ 	__u64 val_off;
++#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+ 	/* arg location case, see bpf_usdt_arg() for details */
+-	enum __bpf_usdt_arg_type arg_type;
++	enum __bpf_usdt_arg_type arg_type: 8;
++	/* index register offset within struct pt_regs */
++	__u16 idx_reg_off: 12;
++	/* scale factor for index register (1, 2, 4, or 8) */
++	__u16 scale_bitshift: 4;
++	/* reserved for future use, keeps reg_off offset stable */
++	__u8 __reserved: 8;
++#else
++	__u8 __reserved: 8;
++	__u16 idx_reg_off: 12;
++	__u16 scale_bitshift: 4;
++	enum __bpf_usdt_arg_type arg_type: 8;
++#endif
+ 	/* offset of referenced register within struct pt_regs */
+ 	short reg_off;
+ 	/* whether arg should be interpreted as signed value */
+@@ -149,7 +168,7 @@ int bpf_usdt_arg(struct pt_regs *ctx, __u64 arg_num, long *res)
+ {
+ 	struct __bpf_usdt_spec *spec;
+ 	struct __bpf_usdt_arg_spec *arg_spec;
+-	unsigned long val;
++	unsigned long val, idx;
+ 	int err, spec_id;
+ 
+ 	*res = 0;
+@@ -202,6 +221,27 @@ int bpf_usdt_arg(struct pt_regs *ctx, __u64 arg_num, long *res)
+ 			return err;
+ #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+ 		val >>= arg_spec->arg_bitshift;
++#endif
++		break;
++	case BPF_USDT_ARG_SIB:
++		/* Arg is in memory addressed by SIB (Scale-Index-Base) mode
++		 * (e.g., "-1@-96(%rbp,%rax,8)" in USDT arg spec). We first
++		 * fetch the base register contents and the index register
++		 * contents from pt_regs. Then we calculate the final address
++		 * as base + (index * scale) + offset, and do a user-space
++		 * probe read to fetch the argument value.
++		 */
++		err = bpf_probe_read_kernel(&val, sizeof(val), (void *)ctx + arg_spec->reg_off);
++		if (err)
++			return err;
++		err = bpf_probe_read_kernel(&idx, sizeof(idx), (void *)ctx + arg_spec->idx_reg_off);
++		if (err)
++			return err;
++		err = bpf_probe_read_user(&val, sizeof(val), (void *)(val + (idx << arg_spec->scale_bitshift) + arg_spec->val_off));
++		if (err)
++			return err;
++#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
++		val >>= arg_spec->arg_bitshift;
+ #endif
+ 		break;
+ 	default:
+diff --git a/tools/lib/bpf/usdt.c b/tools/lib/bpf/usdt.c
+index 3373b9d45ac44..867bff6b06990 100644
+--- a/tools/lib/bpf/usdt.c
++++ b/tools/lib/bpf/usdt.c
+@@ -200,12 +200,23 @@ enum usdt_arg_type {
+ 	USDT_ARG_CONST,
+ 	USDT_ARG_REG,
+ 	USDT_ARG_REG_DEREF,
++	USDT_ARG_SIB,
+ };
+ 
+ /* should match exactly struct __bpf_usdt_arg_spec from usdt.bpf.h */
+ struct usdt_arg_spec {
+ 	__u64 val_off;
+-	enum usdt_arg_type arg_type;
++#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
++	enum usdt_arg_type arg_type: 8;
++	__u16	idx_reg_off: 12;
++	__u16	scale_bitshift: 4;
++	__u8 __reserved: 8;     /* keep reg_off offset stable */
++#else
++	__u8 __reserved: 8;     /* keep reg_off offset stable */
++	__u16	idx_reg_off: 12;
++	__u16	scale_bitshift: 4;
++	enum usdt_arg_type arg_type: 8;
++#endif
+ 	short reg_off;
+ 	bool arg_signed;
+ 	char arg_bitshift;
+@@ -1283,11 +1294,51 @@ static int calc_pt_regs_off(const char *reg_name)
+ 
+ static int parse_usdt_arg(const char *arg_str, int arg_num, struct usdt_arg_spec *arg, int *arg_sz)
+ {
+-	char reg_name[16];
+-	int len, reg_off;
+-	long off;
++	char reg_name[16] = {0}, idx_reg_name[16] = {0};
++	int len, reg_off, idx_reg_off, scale = 1;
++	long off = 0;
++
++	if (sscanf(arg_str, " %d @ %ld ( %%%15[^,] , %%%15[^,] , %d ) %n",
++		   arg_sz, &off, reg_name, idx_reg_name, &scale, &len) == 5 ||
++		sscanf(arg_str, " %d @ ( %%%15[^,] , %%%15[^,] , %d ) %n",
++		       arg_sz, reg_name, idx_reg_name, &scale, &len) == 4 ||
++		sscanf(arg_str, " %d @ %ld ( %%%15[^,] , %%%15[^)] ) %n",
++		       arg_sz, &off, reg_name, idx_reg_name, &len) == 4 ||
++		sscanf(arg_str, " %d @ ( %%%15[^,] , %%%15[^)] ) %n",
++		       arg_sz, reg_name, idx_reg_name, &len) == 3
++		) {
++		/*
++		 * Scale Index Base case:
++		 * 1@-96(%rbp,%rax,8)
++		 * 1@(%rbp,%rax,8)
++		 * 1@-96(%rbp,%rax)
++		 * 1@(%rbp,%rax)
++		 */
++		arg->arg_type = USDT_ARG_SIB;
++		arg->val_off = off;
+ 
+-	if (sscanf(arg_str, " %d @ %ld ( %%%15[^)] ) %n", arg_sz, &off, reg_name, &len) == 3) {
++		reg_off = calc_pt_regs_off(reg_name);
++		if (reg_off < 0)
++			return reg_off;
++		arg->reg_off = reg_off;
++
++		idx_reg_off = calc_pt_regs_off(idx_reg_name);
++		if (idx_reg_off < 0)
++			return idx_reg_off;
++		arg->idx_reg_off = idx_reg_off;
++
++		/* validate scale factor and set fields directly */
++		switch (scale) {
++		case 1: arg->scale_bitshift = 0; break;
++		case 2: arg->scale_bitshift = 1; break;
++		case 4: arg->scale_bitshift = 2; break;
++		case 8: arg->scale_bitshift = 3; break;
++		default:
++			pr_warn("usdt: invalid SIB scale %d, expected 1, 2, 4, 8\n", scale);
++			return -EINVAL;
++		}
++	} else if (sscanf(arg_str, " %d @ %ld ( %%%15[^)] ) %n",
++				arg_sz, &off, reg_name, &len) == 3) {
+ 		/* Memory dereference case, e.g., -4@-20(%rbp) */
+ 		arg->arg_type = USDT_ARG_REG_DEREF;
+ 		arg->val_off = off;
+@@ -1306,6 +1357,7 @@ static int parse_usdt_arg(const char *arg_str, int arg_num, struct usdt_arg_spec
+ 	} else if (sscanf(arg_str, " %d @ %%%15s %n", arg_sz, reg_name, &len) == 2) {
+ 		/* Register read case, e.g., -4@%eax */
+ 		arg->arg_type = USDT_ARG_REG;
++		/* register read has no memory offset */
+ 		arg->val_off = 0;
+ 
+ 		reg_off = calc_pt_regs_off(reg_name);
 -- 
 2.51.0
 
