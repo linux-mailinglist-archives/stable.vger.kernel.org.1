@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1589EC4A978
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F55C4A5F3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B340034C0F2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5379A4F1716
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0750B3016FC;
-	Tue, 11 Nov 2025 01:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8C730AAC9;
+	Tue, 11 Nov 2025 01:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVs6Pmdm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m127gS+8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BED26ED5E;
-	Tue, 11 Nov 2025 01:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B9C26FDBD;
+	Tue, 11 Nov 2025 01:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824469; cv=none; b=INYGPEUBfHfaclfHXRFoZ5Qbabsm7Ls57Jm2OIcTy2f0LbacX/DyMPYRpgZCdrd+2E40GosgepvcicsCXuwKTqqnc1/IZXHouThezhRc+pX2ur2+571w49brWwU9K1zwo8pBU4+wR6GIrkwu6rR5unhS/AEiIeEy509DI8Ev49k=
+	t=1762823327; cv=none; b=VMeK03c4z91b7mjKmtmL9Ce8MRJ3exnNgSi3wcVzXBHmLXEk0l4XDYoc872sxle8TdjJ3ELmFqU4GjVBEkIiRNipMh0digtpzQ37n3OpywZTtUeg3zbO3jAkN+mnK7gJzSEAw44h7rSQNTfen1MMmfo+BBg7xCJIvM502ph0A70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824469; c=relaxed/simple;
-	bh=dCATCRaAn34DO2/+ThL+Vvc96E4HJiUnRmkdHFvYFCc=;
+	s=arc-20240116; t=1762823327; c=relaxed/simple;
+	bh=6fhgFRErNl6ks6QXUsJbfF6njhiuBB+ffqPddLXyx5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cSf0WtMYeB6SrhRYM1v6Jb21OQO9bVg2ZaV+lrddYWdBGnCPuup1pAs7ZDDr9YM99dWxghYel4jGkVufrWk317JdJibndHm3gfDYzcbFf8K6Oga1cdk0a5TALcSOfgBTOn1ON6Ulf3MA4uw3Ec7bE2EpXlXVVTu88y1vqyMhlCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVs6Pmdm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C393C116B1;
-	Tue, 11 Nov 2025 01:27:49 +0000 (UTC)
+	 MIME-Version; b=TTurdYhnx/ps7dKzfl5pDYOjLBL6DtL/1Bv96yf5xLldo78g0tr10GbC8Iig6Rs9fLOKfpSdAuTTOIXt3JGMQNjG/pGFPnlxJbCT4RdZneMM0CtlOGbr2HlILjH9VqzFO9O6xV8op9IqGkvFAWS9mqOvcQGBoNWCaiPS3saq0Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m127gS+8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1701FC19425;
+	Tue, 11 Nov 2025 01:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824469;
-	bh=dCATCRaAn34DO2/+ThL+Vvc96E4HJiUnRmkdHFvYFCc=;
+	s=korg; t=1762823327;
+	bh=6fhgFRErNl6ks6QXUsJbfF6njhiuBB+ffqPddLXyx5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iVs6PmdmzhdO/T+VihQn1UK297LZtQtthp3ztkeJQ/Y29QW11WyW/0V8F+BfbAvFy
-	 tKElZKQil/Ej65dCaZt1KgvZZ/TglTzoTLXohwQ2ilC6zXcNOMkNewWcwhdTNNfnt5
-	 hkdMl4/kJANIwLgRh73piPhOnQ80Jygm0NEC+aB4=
+	b=m127gS+8sGdJP36W/2xnESKbeGfy8xvegwq9/AX4UZKDpt1VT/+xHqJENaja+8vYY
+	 bZQuxvhKrvUv13M7Z1RyGd6XQUKbruCV9ngBhGQ8bIJ7RmZimuP+FGE0JB1ctcW1/w
+	 PLUNYs4KdqTBuAewFzgSu23BU+vo5JBsDzWMPkuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Dege <michael.dege@renesas.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 506/849] phy: renesas: r8a779f0-ether-serdes: add new step added to latest datasheet
+Subject: [PATCH 6.12 220/565] media: imon: make send_packet() more robust
 Date: Tue, 11 Nov 2025 09:41:16 +0900
-Message-ID: <20251111004548.663862233@linuxfoundation.org>
+Message-ID: <20251111004531.872795114@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Dege <michael.dege@renesas.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit e4a8db93b5ec9bca1cc66b295544899e3afd5e86 ]
+[ Upstream commit eecd203ada43a4693ce6fdd3a58ae10c7819252c ]
 
-R-Car S4-8 datasheet Rev.1.20 describes some additional register
-settings at the end of the initialization.
+syzbot is reporting that imon has three problems which result in
+hung tasks due to forever holding device lock [1].
 
-Signed-off-by: Michael Dege <michael.dege@renesas.com>
-Link: https://lore.kernel.org/r/20250703-renesas-serdes-update-v4-2-1db5629cac2b@renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+First problem is that when usb_rx_callback_intf0() once got -EPROTO error
+after ictx->dev_present_intf0 became true, usb_rx_callback_intf0()
+resubmits urb after printk(), and resubmitted urb causes
+usb_rx_callback_intf0() to again get -EPROTO error. This results in
+printk() flooding (RCU stalls).
+
+Alan Stern commented [2] that
+
+  In theory it's okay to resubmit _if_ the driver has a robust
+  error-recovery scheme (such as giving up after some fixed limit on the
+  number of errors or after some fixed time has elapsed, perhaps with a
+  time delay to prevent a flood of errors).  Most drivers don't bother to
+  do this; they simply give up right away.  This makes them more
+  vulnerable to short-term noise interference during USB transfers, but in
+  reality such interference is quite rare.  There's nothing really wrong
+  with giving up right away.
+
+but imon has a poor error-recovery scheme which just retries forever;
+this behavior should be fixed.
+
+Since I'm not sure whether it is safe for imon users to give up upon any
+error code, this patch takes care of only union of error codes chosen from
+modules in drivers/media/rc/ directory which handle -EPROTO error (i.e.
+ir_toy, mceusb and igorplugusb).
+
+Second problem is that when usb_rx_callback_intf0() once got -EPROTO error
+before ictx->dev_present_intf0 becomes true, usb_rx_callback_intf0() always
+resubmits urb due to commit 8791d63af0cf ("[media] imon: don't wedge
+hardware after early callbacks"). Move the ictx->dev_present_intf0 test
+introduced by commit 6f6b90c9231a ("[media] imon: don't parse scancodes
+until intf configured") to immediately before imon_incoming_packet(), or
+the first problem explained above happens without printk() flooding (i.e.
+hung task).
+
+Third problem is that when usb_rx_callback_intf0() is not called for some
+reason (e.g. flaky hardware; the reproducer for this problem sometimes
+prevents usb_rx_callback_intf0() from being called),
+wait_for_completion_interruptible() in send_packet() never returns (i.e.
+hung task). As a workaround for such situation, change send_packet() to
+wait for completion with timeout of 10 seconds.
+
+Link: https://syzkaller.appspot.com/bug?extid=592e2ab8775dbe0bf09a [1]
+Link: https://lkml.kernel.org/r/d6da6709-d799-4be3-a695-850bddd6eb24@rowland.harvard.edu [2]
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/renesas/r8a779f0-ether-serdes.c | 28 +++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/media/rc/imon.c | 61 +++++++++++++++++++++++++----------------
+ 1 file changed, 37 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/phy/renesas/r8a779f0-ether-serdes.c b/drivers/phy/renesas/r8a779f0-ether-serdes.c
-index 3b2d8cef75e52..4d12d091b0ab0 100644
---- a/drivers/phy/renesas/r8a779f0-ether-serdes.c
-+++ b/drivers/phy/renesas/r8a779f0-ether-serdes.c
-@@ -49,6 +49,13 @@ static void r8a779f0_eth_serdes_write32(void __iomem *addr, u32 offs, u32 bank,
- 	iowrite32(data, addr + offs);
+diff --git a/drivers/media/rc/imon.c b/drivers/media/rc/imon.c
+index 1e7f800701331..ddb1304cb77b8 100644
+--- a/drivers/media/rc/imon.c
++++ b/drivers/media/rc/imon.c
+@@ -650,12 +650,15 @@ static int send_packet(struct imon_context *ictx)
+ 		smp_rmb(); /* ensure later readers know we're not busy */
+ 		pr_err_ratelimited("error submitting urb(%d)\n", retval);
+ 	} else {
+-		/* Wait for transmission to complete (or abort) */
+-		retval = wait_for_completion_interruptible(
+-				&ictx->tx.finished);
+-		if (retval) {
++		/* Wait for transmission to complete (or abort or timeout) */
++		retval = wait_for_completion_interruptible_timeout(&ictx->tx.finished, 10 * HZ);
++		if (retval <= 0) {
+ 			usb_kill_urb(ictx->tx_urb);
+ 			pr_err_ratelimited("task interrupted\n");
++			if (retval < 0)
++				ictx->tx.status = retval;
++			else
++				ictx->tx.status = -ETIMEDOUT;
+ 		}
+ 
+ 		ictx->tx.busy = false;
+@@ -1754,14 +1757,6 @@ static void usb_rx_callback_intf0(struct urb *urb)
+ 	if (!ictx)
+ 		return;
+ 
+-	/*
+-	 * if we get a callback before we're done configuring the hardware, we
+-	 * can't yet process the data, as there's nowhere to send it, but we
+-	 * still need to submit a new rx URB to avoid wedging the hardware
+-	 */
+-	if (!ictx->dev_present_intf0)
+-		goto out;
+-
+ 	switch (urb->status) {
+ 	case -ENOENT:		/* usbcore unlink successful! */
+ 		return;
+@@ -1770,16 +1765,29 @@ static void usb_rx_callback_intf0(struct urb *urb)
+ 		break;
+ 
+ 	case 0:
+-		imon_incoming_packet(ictx, urb, intfnum);
++		/*
++		 * if we get a callback before we're done configuring the hardware, we
++		 * can't yet process the data, as there's nowhere to send it, but we
++		 * still need to submit a new rx URB to avoid wedging the hardware
++		 */
++		if (ictx->dev_present_intf0)
++			imon_incoming_packet(ictx, urb, intfnum);
+ 		break;
+ 
++	case -ECONNRESET:
++	case -EILSEQ:
++	case -EPROTO:
++	case -EPIPE:
++		dev_warn(ictx->dev, "imon %s: status(%d)\n",
++			 __func__, urb->status);
++		return;
++
+ 	default:
+ 		dev_warn(ictx->dev, "imon %s: status(%d): ignored\n",
+ 			 __func__, urb->status);
+ 		break;
+ 	}
+ 
+-out:
+ 	usb_submit_urb(ictx->rx_urb_intf0, GFP_ATOMIC);
  }
  
-+static u32 r8a779f0_eth_serdes_read32(void __iomem *addr, u32 offs,  u32 bank)
-+{
-+	iowrite32(bank, addr + R8A779F0_ETH_SERDES_BANK_SELECT);
-+
-+	return ioread32(addr + offs);
-+}
-+
- static int
- r8a779f0_eth_serdes_reg_wait(struct r8a779f0_eth_serdes_channel *channel,
- 			     u32 offs, u32 bank, u32 mask, u32 expected)
-@@ -274,6 +281,7 @@ static int r8a779f0_eth_serdes_hw_init_late(struct r8a779f0_eth_serdes_channel
- *channel)
- {
- 	int ret;
-+	u32 val;
+@@ -1795,14 +1803,6 @@ static void usb_rx_callback_intf1(struct urb *urb)
+ 	if (!ictx)
+ 		return;
  
- 	ret = r8a779f0_eth_serdes_chan_setting(channel);
- 	if (ret)
-@@ -287,6 +295,26 @@ static int r8a779f0_eth_serdes_hw_init_late(struct r8a779f0_eth_serdes_channel
+-	/*
+-	 * if we get a callback before we're done configuring the hardware, we
+-	 * can't yet process the data, as there's nowhere to send it, but we
+-	 * still need to submit a new rx URB to avoid wedging the hardware
+-	 */
+-	if (!ictx->dev_present_intf1)
+-		goto out;
+-
+ 	switch (urb->status) {
+ 	case -ENOENT:		/* usbcore unlink successful! */
+ 		return;
+@@ -1811,16 +1811,29 @@ static void usb_rx_callback_intf1(struct urb *urb)
+ 		break;
  
- 	r8a779f0_eth_serdes_write32(channel->addr, 0x03d0, 0x380, 0x0000);
+ 	case 0:
+-		imon_incoming_packet(ictx, urb, intfnum);
++		/*
++		 * if we get a callback before we're done configuring the hardware, we
++		 * can't yet process the data, as there's nowhere to send it, but we
++		 * still need to submit a new rx URB to avoid wedging the hardware
++		 */
++		if (ictx->dev_present_intf1)
++			imon_incoming_packet(ictx, urb, intfnum);
+ 		break;
  
-+	val = r8a779f0_eth_serdes_read32(channel->addr, 0x00c0, 0x180);
-+	r8a779f0_eth_serdes_write32(channel->addr, 0x00c0, 0x180, val | BIT(8));
-+	ret = r8a779f0_eth_serdes_reg_wait(channel, 0x0100, 0x180, BIT(0), 1);
-+	if (ret)
-+		return ret;
-+	r8a779f0_eth_serdes_write32(channel->addr, 0x00c0, 0x180, val & ~BIT(8));
-+	ret = r8a779f0_eth_serdes_reg_wait(channel, 0x0100, 0x180, BIT(0), 0);
-+	if (ret)
-+		return ret;
++	case -ECONNRESET:
++	case -EILSEQ:
++	case -EPROTO:
++	case -EPIPE:
++		dev_warn(ictx->dev, "imon %s: status(%d)\n",
++			 __func__, urb->status);
++		return;
 +
-+	val = r8a779f0_eth_serdes_read32(channel->addr, 0x0144, 0x180);
-+	r8a779f0_eth_serdes_write32(channel->addr, 0x0144, 0x180, val | BIT(4));
-+	ret = r8a779f0_eth_serdes_reg_wait(channel, 0x0180, 0x180, BIT(0), 1);
-+	if (ret)
-+		return ret;
-+	r8a779f0_eth_serdes_write32(channel->addr, 0x0144, 0x180, val & ~BIT(4));
-+	ret = r8a779f0_eth_serdes_reg_wait(channel, 0x0180, 0x180, BIT(0), 0);
-+	if (ret)
-+		return ret;
-+
- 	return r8a779f0_eth_serdes_monitor_linkup(channel);
+ 	default:
+ 		dev_warn(ictx->dev, "imon %s: status(%d): ignored\n",
+ 			 __func__, urb->status);
+ 		break;
+ 	}
+ 
+-out:
+ 	usb_submit_urb(ictx->rx_urb_intf1, GFP_ATOMIC);
  }
  
 -- 
