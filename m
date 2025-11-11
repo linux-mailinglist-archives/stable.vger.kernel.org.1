@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-193403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C685C4A445
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D90C4A44E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1B7184F6B88
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 64C8D4F9E9C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E41E2609FD;
-	Tue, 11 Nov 2025 01:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0DFC2561A7;
+	Tue, 11 Nov 2025 01:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWdOpt9e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSLDka8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4AC248F6A;
-	Tue, 11 Nov 2025 01:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E71A248883;
+	Tue, 11 Nov 2025 01:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823099; cv=none; b=FKyr0VhWE6tW/kgmHkydBBqNIDuoCjfWgWc85A6996q3ETvZNiViAWcwjkzKZ0yoLzITyvtq2auJNhxoPL/fpzUdzNNAIm2kf9hYFAyhucwsY4HYHyB6vdcRcme1ySqxauiOlygvWWxjU9LI5gb0/ZzSddMGgjBvztGIZDQEvGI=
+	t=1762823103; cv=none; b=HvnnI9u4sr1KP8YkB3iOtlSXY3/QW891NeVdH66dr4x2cin1Q5uFJn5fNRLVQbnJ0XrUM7c5trAKWFL1cX7ZXxrIfwQ3lzWj6bDTFwM8mjIBgo44OXcgib+dqWZk3TTf+Dw0OY8InFUv1jbcgZK8Yi3D1dc5j13sTLXbrrkR/9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823099; c=relaxed/simple;
-	bh=3brse65hJtJK64b02XzGUfr5Tp3yo2jmz7AW+ZztDVE=;
+	s=arc-20240116; t=1762823103; c=relaxed/simple;
+	bh=oRvSjvpmyn4T/thTbwVirwTyJdTRY2Mr+97DUTcwEZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kLSZrYppGZ5e7CzVLfG+6csu3D8td7EidI1L+Gjcyy9YsPLDG9+qDW82XyWe/58Eo2DhSZZP5KcR3e+7sqs81uZlaadBaw6Ka1nK3mMw2yyQCs/CpYFG+86amwT+xrx9QCrP+boHj2LgzNDnSdHqssGuCgzWBVvFoi5fpTZtcTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWdOpt9e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA08C4CEFB;
-	Tue, 11 Nov 2025 01:04:58 +0000 (UTC)
+	 MIME-Version; b=a/B66UNcCHBlP6vav+L+qHE+AQvGQCsqwQN3Bbu/HHqwewbGrXo3gBtHz5l8JJYTzr28LwU7M4kiOaI9Xccq2A89WOBcyVd6rU6Mt/vQ+UzixYosw7PQdCxShF+leKC4iowXoEu/Je11N2QiFmnH4EOpIp2q47kSb5VKwr8cKYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSLDka8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1856C16AAE;
+	Tue, 11 Nov 2025 01:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823098;
-	bh=3brse65hJtJK64b02XzGUfr5Tp3yo2jmz7AW+ZztDVE=;
+	s=korg; t=1762823103;
+	bh=oRvSjvpmyn4T/thTbwVirwTyJdTRY2Mr+97DUTcwEZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWdOpt9euiRRg3cJaZYvDYNOzwwrn/psLPqAP12/4TNltX5VGXnYFR1YWf6KPUYUT
-	 GC4YAPnSezqw7kxbGe6lnZ45UQF6EbFopCdBZIdsq2GbXdRnjv7/dwoBBuFCVud6ho
-	 RTB5qD+SnAylM6pq9aBaTyP+mH9OZ8pPQdh+3NE8=
+	b=pSLDka8uojxuM+akNvPCEyJHwXof+euHk+XrTA4rJUrjZEvkgjBS+M0BlCHNh1iJh
+	 ua1Fc3Y3sZguaFUk6RCo+tLohvuj8SacNakptTgP9uZPw/Cijvfp3pbokW2tLzXlUR
+	 zqANs+9Kc49JoCa4tokfeoVBfXpHnwxKqVp2jEFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Robin Chen <robin.chen@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 171/565] mfd: intel-lpss: Add Intel Wildcat Lake LPSS PCI IDs
-Date: Tue, 11 Nov 2025 09:40:27 +0900
-Message-ID: <20251111004530.781200738@linuxfoundation.org>
+Subject: [PATCH 6.12 172/565] drm/amd/display: fix condition for setting timing_adjust_pending
+Date: Tue, 11 Nov 2025 09:40:28 +0900
+Message-ID: <20251111004530.806337506@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -61,52 +64,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-[ Upstream commit c91a0e4e549d0457c61f2199fcd84d699400bee1 ]
+[ Upstream commit 1a6a3374ecb9899ccf0d209b5783a796bdba8cec ]
 
-Add Intel Wildcat Lake PCI IDs.
+timing_adjust_pending is used to defer certain programming sequences
+when OTG timing is about to be changed, like with VRR. Insufficient
+checking for timing change in this case caused a regression which
+reduces PSR Replay residency.
 
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250915112936.10696-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Robin Chen <robin.chen@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel-lpss-pci.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/intel-lpss-pci.c b/drivers/mfd/intel-lpss-pci.c
-index 1d8cdc4d5819b..5b1c13fb23468 100644
---- a/drivers/mfd/intel-lpss-pci.c
-+++ b/drivers/mfd/intel-lpss-pci.c
-@@ -367,6 +367,19 @@ static const struct pci_device_id intel_lpss_pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0x4b79), (kernel_ulong_t)&ehl_i2c_info },
- 	{ PCI_VDEVICE(INTEL, 0x4b7a), (kernel_ulong_t)&ehl_i2c_info },
- 	{ PCI_VDEVICE(INTEL, 0x4b7b), (kernel_ulong_t)&ehl_i2c_info },
-+	/* WCL */
-+	{ PCI_VDEVICE(INTEL, 0x4d25), (kernel_ulong_t)&bxt_uart_info },
-+	{ PCI_VDEVICE(INTEL, 0x4d26), (kernel_ulong_t)&bxt_uart_info },
-+	{ PCI_VDEVICE(INTEL, 0x4d27), (kernel_ulong_t)&tgl_spi_info },
-+	{ PCI_VDEVICE(INTEL, 0x4d30), (kernel_ulong_t)&tgl_spi_info },
-+	{ PCI_VDEVICE(INTEL, 0x4d46), (kernel_ulong_t)&tgl_spi_info },
-+	{ PCI_VDEVICE(INTEL, 0x4d50), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0x4d51), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0x4d52), (kernel_ulong_t)&bxt_uart_info },
-+	{ PCI_VDEVICE(INTEL, 0x4d78), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0x4d79), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0x4d7a), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0x4d7b), (kernel_ulong_t)&ehl_i2c_info },
- 	/* JSL */
- 	{ PCI_VDEVICE(INTEL, 0x4da8), (kernel_ulong_t)&spt_uart_info },
- 	{ PCI_VDEVICE(INTEL, 0x4da9), (kernel_ulong_t)&spt_uart_info },
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 84e377113e580..13d5f0451fecf 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -453,7 +453,9 @@ bool dc_stream_adjust_vmin_vmax(struct dc *dc,
+ 	 * avoid conflicting with firmware updates.
+ 	 */
+ 	if (dc->ctx->dce_version > DCE_VERSION_MAX) {
+-		if (dc->optimized_required || dc->wm_optimized_required) {
++		if ((dc->optimized_required || dc->wm_optimized_required) &&
++			(stream->adjust.v_total_max != adjust->v_total_max ||
++			stream->adjust.v_total_min != adjust->v_total_min)) {
+ 			stream->adjust.timing_adjust_pending = true;
+ 			return false;
+ 		}
 -- 
 2.51.0
 
