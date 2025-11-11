@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-193342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6AAC4A38E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DE5C4AC85
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 202F24F0B37
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F3A43AC608
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB38253944;
-	Tue, 11 Nov 2025 01:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85036340A59;
+	Tue, 11 Nov 2025 01:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcE8cxHu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tknZWmFl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1F17262A;
-	Tue, 11 Nov 2025 01:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431AF340280;
+	Tue, 11 Nov 2025 01:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822944; cv=none; b=tlaqTUrRGKKGSim/mUhJ5CA4R2me8C+SplFB1ZGDoNeD3+YcEapEFpavJaJoerRdNjCi4WOVxkEISy5mumVpHAeOnsQfm1kXsZC/hoNTLAIwlAM6zoDfpvXAB0rt2aKIGrRgz9ff7YJRtJ7dE9fgqPQdj5xRgn3JSLRD9wMc3r0=
+	t=1762824034; cv=none; b=VPxQwzAfWm1mJLynvCurkZeEOi+pzQcqmiSJgcjEdpoFvRiYjn2uZuOFk6rK7qJFqQbTzvfOEOhq144AG1DjRAKdRqcnSCqj74p/ru+cKP7PIcmcOErS65uMCPHF6XziL6UN4/jVzWoNamc+rWSsDGsuUAkRJ1SpTZfks3uHOoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822944; c=relaxed/simple;
-	bh=3yrO09orLFRACu3cDSi+eqXHGH5x/BsziGzoYy6lA2I=;
+	s=arc-20240116; t=1762824034; c=relaxed/simple;
+	bh=ftAywpmBI83f6xE7mAC7Q1j1nMjGaIFlHfKWPOeILvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UHWF3JWXtj3H4NFDKrKVXsXnaC6+eWbnyrAKE6qayGmH7Tv3+AaivlVN1kMzygDiq7psp5N3fhgPecamXwCJ9u3RE+CczT0Xak1eBVTCpktiSjZ9CKHHk2+aaqydGhprjBN22bQhlyseSnWa5NCv+WW19KszefQHKiiEQeEeisk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcE8cxHu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5C4C16AAE;
-	Tue, 11 Nov 2025 01:02:23 +0000 (UTC)
+	 MIME-Version; b=Q59EfiBfJCrGcD7hzrrObkZJo/Qc+YEBg2QUxJtEZN2q/XH+ofP4xGsKkFD4t36cd88ldeVPgqOELazr++tweh4yjuRnwQXTtdZVFreaVf1xDtpCJMBTy9ZYIg6k5vOrPvh2822Qq65WrlCvgwSOMom89nIt8xgctLSY4uF5TqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tknZWmFl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6976C4CEFB;
+	Tue, 11 Nov 2025 01:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822943;
-	bh=3yrO09orLFRACu3cDSi+eqXHGH5x/BsziGzoYy6lA2I=;
+	s=korg; t=1762824034;
+	bh=ftAywpmBI83f6xE7mAC7Q1j1nMjGaIFlHfKWPOeILvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KcE8cxHuHkxTmtcP01zc4KoMl1U6jwaOoFEaaHThpS0tQgA106RkLTQLJyI14TGg4
-	 9XPGAuDvqnFfc0xwNIQ7AN0/+AXHz2+bIypW1V6b3ny75rQA+52x0MON9XGk1hi+Bs
-	 PGug6Hp4ds+YNH+JqE0AxqZ7goLmafTW2Tl7OgYA=
+	b=tknZWmFld2xLT0lRueuAgMjiGg+5DoxEBcFKExFLvSdXpWglDDCSqu5+xec1UHB0N
+	 Io4nPD7cu1iSu7gzg6L3p2jQz1WYY1FA4vp70CkudBqv5EcoiCeWXEJXpOKP5uXuaW
+	 PpdDe14w/6bjqPOPGCv6veC+IfJSEIC6pxRXugCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Daniel Wagner <wagi@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 138/565] nvme-fc: use lock accessing port_state and rport state
+Subject: [PATCH 6.17 424/849] selftests: drv-net: rss_ctx: make the test pass with few queues
 Date: Tue, 11 Nov 2025 09:39:54 +0900
-Message-ID: <20251111004530.049682215@linuxfoundation.org>
+Message-ID: <20251111004546.689757081@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 891cdbb162ccdb079cd5228ae43bdeebce8597ad ]
+[ Upstream commit e2cf2d5baa09248d3d50b73522594b778388e3bc ]
 
-nvme_fc_unregister_remote removes the remote port on a lport object at
-any point in time when there is no active association. This races with
-with the reconnect logic, because nvme_fc_create_association is not
-taking a lock to check the port_state and atomically increase the
-active count on the rport.
+rss_ctx.test_rss_key_indir implicitly expects at least 5 queues,
+as it checks that the traffic on first 2 queues is lower than
+the remaining queues when we use all queues. Special case fewer
+queues.
 
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Closes: https://lore.kernel.org/all/u4ttvhnn7lark5w3sgrbuy2rxupcvosp4qmvj46nwzgeo5ausc@uyrkdls2muwx
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250901173139.881070-2-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ tools/testing/selftests/drivers/net/hw/rss_ctx.py | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index 7c13a400071e6..57c9491233860 100644
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -3026,11 +3026,17 @@ nvme_fc_create_association(struct nvme_fc_ctrl *ctrl)
+diff --git a/tools/testing/selftests/drivers/net/hw/rss_ctx.py b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
+index 9838b8457e5a6..4206212d03a65 100755
+--- a/tools/testing/selftests/drivers/net/hw/rss_ctx.py
++++ b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
+@@ -178,8 +178,13 @@ def test_rss_key_indir(cfg):
+     cnts = _get_rx_cnts(cfg)
+     GenerateTraffic(cfg).wait_pkts_and_stop(20000)
+     cnts = _get_rx_cnts(cfg, prev=cnts)
+-    # First two queues get less traffic than all the rest
+-    ksft_lt(sum(cnts[:2]), sum(cnts[2:]), "traffic distributed: " + str(cnts))
++    if qcnt > 4:
++        # First two queues get less traffic than all the rest
++        ksft_lt(sum(cnts[:2]), sum(cnts[2:]),
++                "traffic distributed: " + str(cnts))
++    else:
++        # When queue count is low make sure third queue got significant pkts
++        ksft_ge(cnts[2], 3500, "traffic distributed: " + str(cnts))
  
- 	++ctrl->ctrl.nr_reconnects;
  
--	if (ctrl->rport->remoteport.port_state != FC_OBJSTATE_ONLINE)
-+	spin_lock_irqsave(&ctrl->rport->lock, flags);
-+	if (ctrl->rport->remoteport.port_state != FC_OBJSTATE_ONLINE) {
-+		spin_unlock_irqrestore(&ctrl->rport->lock, flags);
- 		return -ENODEV;
-+	}
- 
--	if (nvme_fc_ctlr_active_on_rport(ctrl))
-+	if (nvme_fc_ctlr_active_on_rport(ctrl)) {
-+		spin_unlock_irqrestore(&ctrl->rport->lock, flags);
- 		return -ENOTUNIQ;
-+	}
-+	spin_unlock_irqrestore(&ctrl->rport->lock, flags);
- 
- 	dev_info(ctrl->ctrl.device,
- 		"NVME-FC{%d}: create association : host wwpn 0x%016llx "
+ def test_rss_queue_reconfigure(cfg, main_ctx=True):
 -- 
 2.51.0
 
