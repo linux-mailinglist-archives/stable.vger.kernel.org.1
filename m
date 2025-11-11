@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-194107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159FDC4AD63
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6CBC4B244
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72B2C188F16C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 626354204A8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7128262FEC;
-	Tue, 11 Nov 2025 01:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3B5307AC6;
+	Tue, 11 Nov 2025 01:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3T+mYGQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pE5C8YrM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7512325A64C;
-	Tue, 11 Nov 2025 01:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C0330748C;
+	Tue, 11 Nov 2025 01:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824823; cv=none; b=CSULlb32iYYW+O0xD/TnDkwfA7f5PJKTWHBNdQCHzmnV+V4t+bv3A8BasAs40JugDnRy+k8OTe1MaWBOLojkufy/Nsyn8hEjv7Y5v2i+enFwfk9Imx4zuyH/WwCcsj3vTxa9p7cQAJkKiTGipqP879k2cT9s7iAd6v1DogPwRvY=
+	t=1762825557; cv=none; b=oIExqmldSJPsJhjNzKXuc8T1Lk7cKLrhweiTYBv9AsxTi2Eu4lV43N+96/EWlSPyudiV+LOHrL5SMxcTrd1FMhs6SvSfYi88mdIk6unBYkqHeVZfZABXxm3SkEkb3WX4+yjGC69YATmL6iXrvXnrNz0wg+Q+MrywqRRN+7H4caA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824823; c=relaxed/simple;
-	bh=8BqeE5KFvSJa+7Q1AtBU3w1YW6hbmyysRSBaEzzPIHs=;
+	s=arc-20240116; t=1762825557; c=relaxed/simple;
+	bh=0V8kim3T1KGIlQIUBgKfUCU7lP3WV/WLZnWWPT0c81c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WIaNbsW/kGiPacgYd8435I7k9LQDrnSs7bZ1iLu27To48iZIxCgM6Pe/aBzahoneM6rDnsutgFI1ad+U0UTC79KAaSHc/jdQHIU+HJS/cJOFQ65udy0iBFJb1fEwTv51yJqWWkEFNtCEsNAZ1KBVR+Ku3n3KhvkxwP4tTQQYDP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3T+mYGQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1564AC116B1;
-	Tue, 11 Nov 2025 01:33:42 +0000 (UTC)
+	 MIME-Version; b=bzydJKX8pKU3MvTvFsKIOZl0KbhwakBimbO6ndH4nq1sw0zBC3Tah4jOHA/4FioaMc8mK8/LVOUm0ZwBOcpUin54LTHMSapzYSVuTeBuOmU7pJrGwCFf66+rRoLswcrWvUrFc6MMhXJzI25QISRNkgF+/GTiEk7spuDxoHimfWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pE5C8YrM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56ADC16AAE;
+	Tue, 11 Nov 2025 01:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824823;
-	bh=8BqeE5KFvSJa+7Q1AtBU3w1YW6hbmyysRSBaEzzPIHs=;
+	s=korg; t=1762825557;
+	bh=0V8kim3T1KGIlQIUBgKfUCU7lP3WV/WLZnWWPT0c81c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v3T+mYGQTtNuZTxn3vW56MLQ0D+LBcTWk/q8/BHpkCI1HJnqAZFylxx6S1Yphqxri
-	 aGF0p220i1CyBojHrK7TINxXI+F+Mlo/EYHm4KJU6hqI+QopJMoz7MSVI5QtYOxPOH
-	 uFjqMeznhUEaUCsUB7HJlUniGyVdwE+x68zEibxg=
+	b=pE5C8YrMBO48W/a+MtfxL9U5kTVy+GKZebycTTKTGyJ6X/i0DJsozjGra6O3Bg0gS
+	 5/KAnz0PwOGxsoRP8MdvmOcDygHDko1aa4/QtgU35Fn4Z/GIFal1l7JzzhR1lwDfGk
+	 RYDrmIwctXUQzHPlPxnxLgRfvBnfnVNTF38wZy1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 524/565] sctp: Prevent TOCTOU out-of-bounds write
+	Joao Martins <joao.m.martins@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	syzbot+093a8a8b859472e6c257@syzkaller.appspotmail.com,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.17 810/849] iommufd: Dont overflow during division for dirty tracking
 Date: Tue, 11 Nov 2025 09:46:20 +0900
-Message-ID: <20251111004538.752125999@linuxfoundation.org>
+Message-ID: <20251111004556.009086214@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 95aef86ab231f047bb8085c70666059b58f53c09 ]
+commit cb30dfa75d55eced379a42fd67bd5fb7ec38555e upstream.
 
-For the following path not holding the sock lock,
+If pgshift is 63 then BITS_PER_TYPE(*bitmap->bitmap) * pgsize will overflow
+to 0 and this triggers divide by 0.
 
-  sctp_diag_dump() -> sctp_for_each_endpoint() -> sctp_ep_dump()
+In this case the index should just be 0, so reorganize things to divide
+by shift and avoid hitting any overflows.
 
-make sure not to exceed bounds in case the address list has grown
-between buffer allocation (time-of-check) and write (time-of-use).
-
-Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251028161506.3294376-3-stefan.wiehler@nokia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/r/0-v1-663679b57226+172-iommufd_dirty_div0_jgg@nvidia.com
+Cc: stable@vger.kernel.org
+Fixes: 58ccf0190d19 ("vfio: Add an IOVA bitmap support")
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reported-by: syzbot+093a8a8b859472e6c257@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=093a8a8b859472e6c257
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/diag.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iommu/iommufd/iova_bitmap.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-index dadf8254b30fd..95e65b9d623b3 100644
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -88,6 +88,9 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
- 		memcpy(info, &laddr->a, sizeof(laddr->a));
- 		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
- 		info += addrlen;
-+
-+		if (!--addrcnt)
-+			break;
- 	}
- 	rcu_read_unlock();
+--- a/drivers/iommu/iommufd/iova_bitmap.c
++++ b/drivers/iommu/iommufd/iova_bitmap.c
+@@ -130,9 +130,8 @@ struct iova_bitmap {
+ static unsigned long iova_bitmap_offset_to_index(struct iova_bitmap *bitmap,
+ 						 unsigned long iova)
+ {
+-	unsigned long pgsize = 1UL << bitmap->mapped.pgshift;
+-
+-	return iova / (BITS_PER_TYPE(*bitmap->bitmap) * pgsize);
++	return (iova >> bitmap->mapped.pgshift) /
++	       BITS_PER_TYPE(*bitmap->bitmap);
+ }
  
--- 
-2.51.0
-
+ /*
 
 
 
