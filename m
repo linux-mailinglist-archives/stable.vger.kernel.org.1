@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-194366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2365BC4B163
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E7BC4ACF4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F53C1896E7E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3524188B621
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2C534028B;
-	Tue, 11 Nov 2025 01:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78362F5479;
+	Tue, 11 Nov 2025 01:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkBbVA5T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0m6VNlt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B4A33FE34;
-	Tue, 11 Nov 2025 01:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BC126ED5C;
+	Tue, 11 Nov 2025 01:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825436; cv=none; b=B6MACqAtOIvgcXGjY7jP2sUthtDt4BwKFGz/DH2sapQ2W9yiJgUlxJubyx+a1Aw+8CwZDsaBzU4a/nLqC+vXKxChL5JPUQvomKw1Xz9fhJfcKHf7HxwQo2eZB+CTg11miJf8md1MghM/C9HdLCroCaiEjoeeSLscNtboJUjmMLM=
+	t=1762824771; cv=none; b=qcR6MkHWcPsV13Pv2xO6GfB3nI8a1+ddIOja04rfbCYoQvRsvw3YA5fVWHIBRKF+SUOVKfsbexe+Uwxc/igf75qyyn3WxxsTjmo0d2lUHhx+CwC+hcYAl77MhhFj9aY1cP7bIGt76pHLv4LjRMUioIl8ICONy6q8A2p9f0WhT0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825436; c=relaxed/simple;
-	bh=8czR8V+EDRf9enLqVuQoneoHt0yLyOJbUFo7CNL/8Ck=;
+	s=arc-20240116; t=1762824771; c=relaxed/simple;
+	bh=LTacqr11LGwLOwGCztkRyejn8Gd6BXP3UMF37G373DQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D28smlObZ3B2T1j+s9WT6S2SiV0r/SHTfOGwB+e1arecH218wHN+DkIfj9E2FMS+s38v9OJD5GoZub1VnbTIdJZgntT+J36uHB9LBiT6N+ilnekfAI+IsmOS4/eKOX1hjoYQqF0aEojKIYgyp0BufM41S8FHSc+XuzIouHmQ90c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkBbVA5T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E24C116D0;
-	Tue, 11 Nov 2025 01:43:55 +0000 (UTC)
+	 MIME-Version; b=AFFUHxzBAFUKMtP2bscOCLYP8emtRNU08CD+LMX69Jc62gvzo6d5EaBW8FhPGCxlczLGCiwFsyBW67z5cugUWMRhhGtD4GS0+bQw1fNZT+pIJUEq5xxMDeEbSC4WlBzrNAyEpsRg+lXlHciDll5W7aewGgwdxoDlWnv3kN62Oaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0m6VNlt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F28C113D0;
+	Tue, 11 Nov 2025 01:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825436;
-	bh=8czR8V+EDRf9enLqVuQoneoHt0yLyOJbUFo7CNL/8Ck=;
+	s=korg; t=1762824771;
+	bh=LTacqr11LGwLOwGCztkRyejn8Gd6BXP3UMF37G373DQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NkBbVA5ToFNpkJLIXlHIbbmrZrjTYhmfEvjqlyHphxwmsJSEj3+ykj8MEfvIiJNXJ
-	 mJNXDyiHibNo4iOTf9m0HlnGBcTJ5vdKAcJmrG6VL7WLQTrjHheqM1xwtUQJx6VAtX
-	 KzqBUzGxbeVpoPc2H97Ii3hOccMMnSb6IdJY+xwU=
+	b=q0m6VNlte8nUjAU3HGVkMexT2U9BM64aexMRFyg33eA9xMRfJCD6niaaDemWle+Dz
+	 KtMdF+yndQOdic/bPr2We7mYc6yEya40x7XAKXfxWKstLqlPHczA9e2858hY1QoMYl
+	 VmI1BLqSbAMwsY80t6rCceiRt4ZAP1f+Lh6PZlqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Anubhav Singh <anubhavsinggh@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 799/849] selftests/vsock: avoid false-positives when checking dmesg
-Date: Tue, 11 Nov 2025 09:46:09 +0900
-Message-ID: <20251111004555.749924660@linuxfoundation.org>
+Subject: [PATCH 6.12 514/565] selftests/net: use destination options instead of hop-by-hop
+Date: Tue, 11 Nov 2025 09:46:10 +0900
+Message-ID: <20251111004538.521298757@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
+From: Anubhav Singh <anubhavsinggh@google.com>
 
-[ Upstream commit 3534e03e0ec2e00908765549828a69df5ebefb91 ]
+[ Upstream commit f8e8486702abb05b8c734093aab1606af0eac068 ]
 
-Sometimes VMs will have some intermittent dmesg warnings that are
-unrelated to vsock. Change the dmesg parsing to filter on strings
-containing 'vsock' to avoid false positive failures that are unrelated
-to vsock. The downside is that it is possible for some vsock related
-warnings to not contain the substring 'vsock', so those will be missed.
+The GRO self-test, gro.c, currently constructs IPv6 packets containing a
+Hop-by-Hop Options header (IPPROTO_HOPOPTS) to ensure the GRO path
+correctly handles IPv6 extension headers.
 
-Fixes: a4a65c6fe08b ("selftests/vsock: add initial vmtest.sh for vsock")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20251105-vsock-vmtest-dmesg-fix-v2-1-1a042a14892c@meta.com
+However, network elements may be configured to drop packets with the
+Hop-by-Hop Options header (HBH). This causes the self-test to fail
+in environments where such network elements are present.
+
+To improve the robustness and reliability of this test in diverse
+network environments, switch from using IPPROTO_HOPOPTS to
+IPPROTO_DSTOPTS (Destination Options).
+
+The Destination Options header is less likely to be dropped by
+intermediate routers and still serves the core purpose of the test:
+validating GRO's handling of an IPv6 extension header. This change
+ensures the test can execute successfully without being incorrectly
+failed by network policies outside the kernel's control.
+
+Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Anubhav Singh <anubhavsinggh@google.com>
+Link: https://patch.msgid.link/20251030060436.1556664-1-anubhavsinggh@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vsock/vmtest.sh | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/gro.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index edacebfc16325..8ceeb8a7894f5 100755
---- a/tools/testing/selftests/vsock/vmtest.sh
-+++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -389,9 +389,9 @@ run_test() {
- 	local rc
+diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+index d8a7906a9df98..ecd28f2dacee3 100644
+--- a/tools/testing/selftests/net/gro.c
++++ b/tools/testing/selftests/net/gro.c
+@@ -734,11 +734,11 @@ static void send_ipv6_exthdr(int fd, struct sockaddr_ll *daddr, char *ext_data1,
+ 	static char exthdr_pck[sizeof(buf) + MIN_EXTHDR_SIZE];
  
- 	host_oops_cnt_before=$(dmesg | grep -c -i 'Oops')
--	host_warn_cnt_before=$(dmesg --level=warn | wc -l)
-+	host_warn_cnt_before=$(dmesg --level=warn | grep -c -i 'vsock')
- 	vm_oops_cnt_before=$(vm_ssh -- dmesg | grep -c -i 'Oops')
--	vm_warn_cnt_before=$(vm_ssh -- dmesg --level=warn | wc -l)
-+	vm_warn_cnt_before=$(vm_ssh -- dmesg --level=warn | grep -c -i 'vsock')
+ 	create_packet(buf, 0, 0, PAYLOAD_LEN, 0);
+-	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data1);
++	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_DSTOPTS, ext_data1);
+ 	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
  
- 	name=$(echo "${1}" | awk '{ print $1 }')
- 	eval test_"${name}"
-@@ -403,7 +403,7 @@ run_test() {
- 		rc=$KSFT_FAIL
- 	fi
+ 	create_packet(buf, PAYLOAD_LEN * 1, 0, PAYLOAD_LEN, 0);
+-	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data2);
++	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_DSTOPTS, ext_data2);
+ 	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
+ }
  
--	host_warn_cnt_after=$(dmesg --level=warn | wc -l)
-+	host_warn_cnt_after=$(dmesg --level=warn | grep -c -i 'vsock')
- 	if [[ ${host_warn_cnt_after} -gt ${host_warn_cnt_before} ]]; then
- 		echo "FAIL: kernel warning detected on host" | log_host "${name}"
- 		rc=$KSFT_FAIL
-@@ -415,7 +415,7 @@ run_test() {
- 		rc=$KSFT_FAIL
- 	fi
- 
--	vm_warn_cnt_after=$(vm_ssh -- dmesg --level=warn | wc -l)
-+	vm_warn_cnt_after=$(vm_ssh -- dmesg --level=warn | grep -c -i 'vsock')
- 	if [[ ${vm_warn_cnt_after} -gt ${vm_warn_cnt_before} ]]; then
- 		echo "FAIL: kernel warning detected on vm" | log_host "${name}"
- 		rc=$KSFT_FAIL
 -- 
 2.51.0
 
