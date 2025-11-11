@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-193437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB389C4A487
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:14:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA69C4AC43
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 382F2188066F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:12:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 291563B80EC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B76342CBC;
-	Tue, 11 Nov 2025 01:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BA8342C93;
+	Tue, 11 Nov 2025 01:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayPDOZ1T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAXdvau8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D0C2C026E;
-	Tue, 11 Nov 2025 01:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B98F2D94B8;
+	Tue, 11 Nov 2025 01:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823181; cv=none; b=oTB2FhAZQd00DilOw0KYJOowZIE+jXOoZpDpXmYqYKAikrCCxaoC4VCRNmgCrqFj8dPuX9x4NMeScYRnUO7QkrPULHoEgz5mx35H8yIUqKBvCW3h7GxJ9KJGkgECvuo2ezYnvL9j+L0G409CEJW6Uayu3je/7mnYL93+U7de4o4=
+	t=1762824062; cv=none; b=iI7qAR0iMCTpjSasYKAYHHacbO+3bEDr5Qz4lD1RnlRB12bViybmGeMORyLwC2STqp+qbDid3Gb2JU2OGeSiYsKLh5VPcPXy1RUxxwJzxsBRuQi7PY0yu86Q2M4CaaKN6fLiho9ykw0dOaB6pdYJjNrFi+CAkRLHtdFRFl/Hpgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823181; c=relaxed/simple;
-	bh=z5sfeEliNNOzcXhkJ9twYVLzi3sHJhc9RKxufjFBwLQ=;
+	s=arc-20240116; t=1762824062; c=relaxed/simple;
+	bh=bGeQSNz22sBqSjKheL21K89EW1g5WLghscdzRbKzHHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNRBjlLET1axd1X3EiLtjMCl+sei+pBXKWBZEA4K7jy9B8k/HFhnn/Hewscd0af333sCAgt4BZtNaANBLf8oG3OmjF7o+J7BJDCzimJ45Ja8fZjPm/ZYN+ZmBFSb/mDpX5I63qy1zGS1ILGgBi5ZUz6j+z7QS2tefz6xoiN6aCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayPDOZ1T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637FBC16AAE;
-	Tue, 11 Nov 2025 01:06:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qy1wwFGdhZkuwt03TtHlgjSLHjecoVAAkTO2mZ8IRorTYHxqNyBpx6Nay4YVzh295xrBl/wFo2hObWWUeYjrBJWqiPtio/axB+UtjodoS6hA5abxGK2UiAaHcOJHb5+tDjyei909+2U3WxkLDYZgHDtec9fAJ4av5XEHa1FwGZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAXdvau8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE63C19425;
+	Tue, 11 Nov 2025 01:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823181;
-	bh=z5sfeEliNNOzcXhkJ9twYVLzi3sHJhc9RKxufjFBwLQ=;
+	s=korg; t=1762824062;
+	bh=bGeQSNz22sBqSjKheL21K89EW1g5WLghscdzRbKzHHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ayPDOZ1T3R1YBd6zikKkxfTMooUGrcCHdnjl76qByoElwaHRyWiJNGDsVYiSX+VYE
-	 2SDHZSdwywQPTt6hCCCAipRqZbTsc7SYHL5BF8A5DIMUkPsF534avqslMP4j1rAoa0
-	 /oZtE4BHovVkFihtUhI4iHF7r9FVs4ysFGihGROI=
+	b=SAXdvau85lFpUqQL2+4pFPFKmdc5/IlKrJV5Mryn0s0ZMj6I0V9Eeq1Xvkr+HqE6+
+	 X2AdQ+Wiroj7iojXFaR3qH5fuCxE1eEUNtLJNB+Z8eMdQ6o1KExMoI8Bqa1SpWq5g8
+	 p4irz9odPeejrvZUaTYVTj5jSGETx73umTwfF+Qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janne Grunau <j@jannau.net>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Neal Gompa <neal@gompa.dev>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Sven Peter <sven@kernel.org>,
+	=?UTF-8?q?Philip=20M=C3=BCller?= <philm@manjaro.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 143/565] pmdomain: apple: Add "apple,t8103-pmgr-pwrstate"
+Subject: [PATCH 6.17 429/849] drm: panel-backlight-quirks: Make EDID match optional
 Date: Tue, 11 Nov 2025 09:39:59 +0900
-Message-ID: <20251111004530.158673882@linuxfoundation.org>
+Message-ID: <20251111004546.805467404@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janne Grunau <j@jannau.net>
+From: Antheas Kapenekakis <lkml@antheas.dev>
 
-[ Upstream commit 442816f97a4f84cb321d3359177a3b9b0ce48a60 ]
+[ Upstream commit 9931e4be11f2129a20ffd908bc364598a63016f8 ]
 
-After discussion with the devicetree maintainers we agreed to not extend
-lists with the generic compatible "apple,pmgr-pwrstate" anymore [1]. Use
-"apple,t8103-pmgr-pwrstate" as base compatible as it is the SoC the
-driver and bindings were written for.
+Currently, having a valid panel_id match is required to use the quirk
+system. For certain devices, we know that all SKUs need a certain quirk.
+Therefore, allow not specifying ident by only checking for a match
+if panel_id is non-zero.
 
-[1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@kernel.org/
-
-Signed-off-by: Janne Grunau <j@jannau.net>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Sven Peter <sven@kernel.org>
+Tested-by: Philip Müller <philm@manjaro.org>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Link: https://lore.kernel.org/r/20250829145541.512671-2-lkml@antheas.dev
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/apple/pmgr-pwrstate.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/drm_panel_backlight_quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pmdomain/apple/pmgr-pwrstate.c b/drivers/pmdomain/apple/pmgr-pwrstate.c
-index 9467235110f46..82c33cf727a82 100644
---- a/drivers/pmdomain/apple/pmgr-pwrstate.c
-+++ b/drivers/pmdomain/apple/pmgr-pwrstate.c
-@@ -306,6 +306,7 @@ static int apple_pmgr_ps_probe(struct platform_device *pdev)
- }
+diff --git a/drivers/gpu/drm/drm_panel_backlight_quirks.c b/drivers/gpu/drm/drm_panel_backlight_quirks.c
+index 598f812b7cb38..b38b33e26ea5c 100644
+--- a/drivers/gpu/drm/drm_panel_backlight_quirks.c
++++ b/drivers/gpu/drm/drm_panel_backlight_quirks.c
+@@ -50,7 +50,7 @@ static bool drm_panel_min_backlight_quirk_matches(const struct drm_panel_min_bac
+ 	if (!dmi_match(quirk->dmi_match.field, quirk->dmi_match.value))
+ 		return false;
  
- static const struct of_device_id apple_pmgr_ps_of_match[] = {
-+	{ .compatible = "apple,t8103-pmgr-pwrstate" },
- 	{ .compatible = "apple,pmgr-pwrstate" },
- 	{}
- };
+-	if (!drm_edid_match(edid, &quirk->ident))
++	if (quirk->ident.panel_id && !drm_edid_match(edid, &quirk->ident))
+ 		return false;
+ 
+ 	return true;
 -- 
 2.51.0
 
