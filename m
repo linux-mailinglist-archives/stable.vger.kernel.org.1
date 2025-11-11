@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCACC4B0BE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:33 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B3AC4ABDD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 304323B72D9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:48:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F7DE4F8233
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2729B30EF71;
-	Tue, 11 Nov 2025 01:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D0A2701DC;
+	Tue, 11 Nov 2025 01:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huEz1V4T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJylGDQw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67BA2D9497;
-	Tue, 11 Nov 2025 01:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C285025F797;
+	Tue, 11 Nov 2025 01:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825271; cv=none; b=j1l4NxYud6MYqhldGeeq5xBZOrM210YsAYkFQaQ9H1vCjUa857+nSHDwHNwtTvhdOFq2+voSBQwt3XXbaWtUYPgSdjEdXAmjnV2fm/LxFqpN7PW2+tUDNHrJLxBfJRQxYQgMg1R8Onimn4nqTAGH7PicbSN1p9ZgZ6BQ0FpYmdE=
+	t=1762824445; cv=none; b=SPMFPl3cv2aE5yJhdXM2h2YniMrmtFD5HC70uD4dp1v598lHX3zcv1P46JyRF6Z3eNeL8OJNcqISiprE/CorJZQelYFsL79d+YVharPEY4sYZI6Kv6btVRRfL/CeTtHa+VWoDpho8uUuXUthffSmZAWMvBa71EyzzwtINWfkIys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825271; c=relaxed/simple;
-	bh=hB581TaBkdp8UFx1DHM+UnZuGs0D+oDosQgjNBeES/I=;
+	s=arc-20240116; t=1762824445; c=relaxed/simple;
+	bh=er7PZRM4G0R67ZMirWF4+mFTqfpkRtVjE2/oagXA78M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnkNnlopMZPAFeY5P5e8YH55+9CUcUsSAyRaR9uJlnL3HzfsQEztoRq3JGAA7cPRX55d7S29OV6myl/GGQoIBekjRD1AKLkRZKmhvRC0t79Vr08aix0MngQpKd94eze9MkAeqHlqFk5tGFbyznHLAGSfdUjVH2kYd95DrKhPyNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huEz1V4T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F910C4CEF5;
-	Tue, 11 Nov 2025 01:41:10 +0000 (UTC)
+	 MIME-Version; b=H2Ui8p5DcnmnDGlXficjtFJwbYS4og6ZXIB+6HLN4InLU3DyI/FRf3IZq7hmt3JPJgZUf6Cq/pV5EqjI/EbtwUXl5NkYVNaa64NKZ1h2/4iqQ5BhUz9bT30ePYvy3ZfcWW3N9H5h4q5G0p3cg5DJ64nXpH9E6dt8kNnUm1iGW2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJylGDQw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0BFC4CEF5;
+	Tue, 11 Nov 2025 01:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825271;
-	bh=hB581TaBkdp8UFx1DHM+UnZuGs0D+oDosQgjNBeES/I=;
+	s=korg; t=1762824445;
+	bh=er7PZRM4G0R67ZMirWF4+mFTqfpkRtVjE2/oagXA78M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=huEz1V4Tps0jswbc4KGqVXel2oa8T7RodMeN6CfROF3WJ9sLX7p1JpCJbtpEAejSt
-	 SOjPyBxzvXoH73pAW4mMXDV7EWozAowY+sGRGyPSZ3jp4d3gf6+eZMP8vTKAkSXRdr
-	 Dx3ZUXwucB8vh9kkLIOsszHJw5fAqvbXuhMtt3jI=
+	b=RJylGDQwS44HWstJD8eq+fYnCMAypXZsUriTEkUogUrKJ74KwQuDi5TgSua7ObY9E
+	 Ap7goE+nEroU4Rno4/laEido8coXoMhdHy0eFXO/5BWa2eRqhR0o9lPVLIeCcC7gwu
+	 OuXjEN0Y8Z3u5R8Q+ev2YNGzIQL3aPXfi2uwKV44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 733/849] ceph: add checking of wait_for_completion_killable() return value
+Subject: [PATCH 6.12 447/565] ftrace: Fix softlockup in ftrace_module_enable
 Date: Tue, 11 Nov 2025 09:45:03 +0900
-Message-ID: <20251111004554.158094581@linuxfoundation.org>
+Message-ID: <20251111004536.944575588@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
 
-[ Upstream commit b7ed1e29cfe773d648ca09895b92856bd3a2092d ]
+[ Upstream commit 4099b98203d6b33d990586542fa5beee408032a3 ]
 
-The Coverity Scan service has detected the calling of
-wait_for_completion_killable() without checking the return
-value in ceph_lock_wait_for_completion() [1]. The CID 1636232
-defect contains explanation: "If the function returns an error
-value, the error value may be mistaken for a normal value.
-In ceph_lock_wait_for_completion(): Value returned from
-a function is not checked for errors before being used. (CWE-252)".
+A soft lockup was observed when loading amdgpu module.
+If a module has a lot of tracable functions, multiple calls
+to kallsyms_lookup can spend too much time in RCU critical
+section and with disabled preemption, causing kernel panic.
+This is the same issue that was fixed in
+commit d0b24b4e91fc ("ftrace: Prevent RCU stall on PREEMPT_VOLUNTARY
+kernels") and commit 42ea22e754ba ("ftrace: Add cond_resched() to
+ftrace_graph_set_hash()").
 
-The patch adds the checking of wait_for_completion_killable()
-return value and return the error code from
-ceph_lock_wait_for_completion().
+Fix it the same way by adding cond_resched() in ftrace_module_enable.
 
-[1] https://scan5.scan.coverity.com/#/project-view/64304/10063?selectedIssue=1636232
-
-Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Link: https://lore.kernel.org/aMQD9_lxYmphT-up@vova-pc
+Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/locks.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/trace/ftrace.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ceph/locks.c b/fs/ceph/locks.c
-index ebf4ac0055ddc..dd764f9c64b9f 100644
---- a/fs/ceph/locks.c
-+++ b/fs/ceph/locks.c
-@@ -221,7 +221,10 @@ static int ceph_lock_wait_for_completion(struct ceph_mds_client *mdsc,
- 	if (err && err != -ERESTARTSYS)
- 		return err;
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 370cde32c696e..f7208f2525447 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -7396,6 +7396,8 @@ void ftrace_module_enable(struct module *mod)
+ 		if (!within_module(rec->ip, mod))
+ 			break;
  
--	wait_for_completion_killable(&req->r_safe_completion);
-+	err = wait_for_completion_killable(&req->r_safe_completion);
-+	if (err)
-+		return err;
++		cond_resched();
 +
- 	return 0;
- }
- 
+ 		/* Weak functions should still be ignored */
+ 		if (!test_for_valid_rec(rec)) {
+ 			/* Clear all other flags. Should not be enabled anyway */
 -- 
 2.51.0
 
