@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-193795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59A9C4AAF9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2892AC4AF43
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9AFA3B3C4C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E593D4F99E9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC282BE7B8;
-	Tue, 11 Nov 2025 01:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3264F340DB1;
+	Tue, 11 Nov 2025 01:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJqBkH1K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1o/4R2Gl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8EF33FE26;
-	Tue, 11 Nov 2025 01:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14F4340D90;
+	Tue, 11 Nov 2025 01:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824024; cv=none; b=rWtgF1gPuRCs6s1VBLEf8fbGwNr2o9yC157/XLp3o1z0HaTfuEEtUjGajUcQ/uYXqsRT7krT6o2SJEHBSom6JWpcqZMP8i6p51z6ewb3xt2s39DNeBXLeVNu3yzh/9IUcThUkozk2EgnDG3glnffymI52toyPrhiIJacKFpM768=
+	t=1762825104; cv=none; b=d6sl1scTgdRC3Z5OVoSIIPBfOHhzqkwNP5+45pzsjkSNHiOxXl8NmotYO9rCaHe0jqnE6C6BGLwzfl6pB8MmmStR7wbqfmEO6+BUVbppT0RMfmMwTmEjEivR+279PucErFgHgUzsUuSspRU1cGdJLAEUpJoXk6Fh6uEr4xN994M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824024; c=relaxed/simple;
-	bh=keZmqWeOPgZa2p0VY/x9ShlnPC00vgHoE5LN1tRWHsg=;
+	s=arc-20240116; t=1762825104; c=relaxed/simple;
+	bh=imHv92SkyrlY2xkoGPPKr0t2QZh7DRSm28Ktk38zv3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5r8apf2dTprozXhmZIDXzxZS7/ZPI/Ile5H6sFszrLjHaOmQojlXEMs6f9I0VrvJYPcrwVTSxZ7yJs4tD5DZa5yS6Gz0Qzjgw2N3RGvurMPKvMbaAgZcbgTo+NBGw45WSycdDsLvaOm22XusK4xoCtNxuSLnmZqlJG5z9/3TRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJqBkH1K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67353C4CEF5;
-	Tue, 11 Nov 2025 01:20:24 +0000 (UTC)
+	 MIME-Version; b=kT0J45HbQesdfGw5/Ncl7e02AOkG9R416jtAQb5QbhPwl/FsXkwzyB2ZxEzLLWtR4adTSIAF+sFdH/LSpsYFfMIy1nGOsJnidf9Y9bZ0k+vOQRbKxxlhXikDd8eEJlIOpy3Ow3w4Ldt2B5BvTlPBW91fwcsznEUqx3+r9BmLpl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1o/4R2Gl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBAFC116B1;
+	Tue, 11 Nov 2025 01:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824024;
-	bh=keZmqWeOPgZa2p0VY/x9ShlnPC00vgHoE5LN1tRWHsg=;
+	s=korg; t=1762825103;
+	bh=imHv92SkyrlY2xkoGPPKr0t2QZh7DRSm28Ktk38zv3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJqBkH1KkbgmoyoMuLkmb+3+QZ0KUFTe8o1ovz6IHVVSz8HC3dCAIyYh3l2yolRTV
-	 F8zwsmcLaGPGudM0Tbqr+ffHNHAshoid+fGEsrvZxSbt0RUZprJSuQ1KBsbZtua5Zp
-	 8S6p+CiWZrpeHjieMOcdGKKpK7GFAuuIkUc/19kw=
+	b=1o/4R2GlvL8FZMPWXBvu3yhec60MpTHXgmi5NueGsXaoRBluQ5uZF/wjhRqzkbbwa
+	 sPwq7tfAdX/8NPNgnBzt2hDvdaUzgB1gG68ClWV0PrV3uoH+24oZ+UZtnHGTp5C0zy
+	 yuzMrLUG5izqqbvcYnUc8Bg+sOk6dEoYb5cFKL5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Avri Altman <avri.altman@sandisk.com>,
-	Nitin Rawat <quic_nitirawa@quicinc.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Chris Lu <chris.lu@mediatek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 373/565] scsi: ufs: core: Disable timestamp functionality if not supported
-Date: Tue, 11 Nov 2025 09:43:49 +0900
-Message-ID: <20251111004535.260302077@linuxfoundation.org>
+Subject: [PATCH 6.17 660/849] Bluetooth: btusb: Add new VID/PID 13d3/3627 for MT7925
+Date: Tue, 11 Nov 2025 09:43:50 +0900
+Message-ID: <20251111004552.382051854@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Chris Lu <chris.lu@mediatek.com>
 
-[ Upstream commit fb1f4568346153d2f80fdb4ffcfa0cf4fb257d3c ]
+[ Upstream commit 576952cf981b7d2b7d3227b246b4326e5548a133 ]
 
-Some Kioxia UFS 4 devices do not support the qTimestamp attribute.  Set
-the UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT for these devices such that no
-error messages appear in the kernel log about failures to set the
-qTimestamp attribute.
+Add VID 13d3 & PID 3627 for MediaTek MT7922 USB Bluetooth chip.
 
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Avri Altman <avri.altman@sandisk.com>
-Tested-by: Nitin Rawat <quic_nitirawa@quicinc.com> # on SM8650-QRD
-Reviewed-by: Nitin Rawat <quic_nitirawa@quicinc.com>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Message-ID: <20250909190614.3531435-1-bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below.
+
+T:  Bus=07 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=13d3 ProdID=3627 Rev= 1.00
+S:  Manufacturer=MediaTek Inc.
+S:  Product=Wireless_Device
+S:  SerialNumber=000000000
+C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
+A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
+E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
+I:  If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
+E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
+E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
+
+Signed-off-by: Chris Lu <chris.lu@mediatek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 6 +++++-
- include/ufs/ufs_quirks.h  | 3 +++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index d4dbb6769efa2..fca05834eefc2 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -295,6 +295,9 @@ static const struct ufs_dev_quirk ufs_fixups[] = {
- 	{ .wmanufacturerid = UFS_VENDOR_TOSHIBA,
- 	  .model = "THGLF2G9D8KBADG",
- 	  .quirk = UFS_DEVICE_QUIRK_PA_TACTIVATE },
-+	{ .wmanufacturerid = UFS_VENDOR_TOSHIBA,
-+	  .model = "THGJFJT1E45BATP",
-+	  .quirk = UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT },
- 	{}
- };
- 
-@@ -8670,7 +8673,8 @@ static void ufshcd_set_timestamp_attr(struct ufs_hba *hba)
- 	struct ufs_dev_info *dev_info = &hba->dev_info;
- 	struct utp_upiu_query_v4_0 *upiu_data;
- 
--	if (dev_info->wspecversion < 0x400)
-+	if (dev_info->wspecversion < 0x400 ||
-+	    hba->dev_quirks & UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT)
- 		return;
- 
- 	ufshcd_dev_man_lock(hba);
-diff --git a/include/ufs/ufs_quirks.h b/include/ufs/ufs_quirks.h
-index f52de5ed1b3b6..83563247c36cb 100644
---- a/include/ufs/ufs_quirks.h
-+++ b/include/ufs/ufs_quirks.h
-@@ -113,4 +113,7 @@ struct ufs_dev_quirk {
-  */
- #define UFS_DEVICE_QUIRK_PA_HIBER8TIME          (1 << 12)
- 
-+/* Some UFS 4 devices do not support the qTimestamp attribute */
-+#define UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT	(1 << 13)
-+
- #endif /* UFS_QUIRKS_H_ */
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 3595a8bad6bdf..30679a572095c 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -734,6 +734,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3613), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x13d3, 0x3627), .driver_info = BTUSB_MEDIATEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3628), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3630), .driver_info = BTUSB_MEDIATEK |
 -- 
 2.51.0
 
