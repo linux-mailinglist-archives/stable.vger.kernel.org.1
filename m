@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-194067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEFAFC4AE14
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AA4C4B133
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0A9BF4F1264
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AD73189B997
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38DBC3446CC;
-	Tue, 11 Nov 2025 01:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945F433BBAE;
+	Tue, 11 Nov 2025 01:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xp1r26ZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2ziZYFz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88E32EA481;
-	Tue, 11 Nov 2025 01:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FA62F6186;
+	Tue, 11 Nov 2025 01:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824729; cv=none; b=nJLdXUsr0RKLTxl+rXcWErc8Hs4zmPQj91pxnnD2olag3DtmneBOCOjELQa2fHNOILXUupxTkywnyp0HPp/O12sIuOPNYxv94yvojR8qHqhbALreg6gNNIMrenxoNePFiep+R8v/pyETmD1t5sjX/tSufPnK5c+f4bpz3yV2SSA=
+	t=1762825417; cv=none; b=UTYigU1clp18UE1HyUfeDMiL/dc8jot7QSpsBOPNYg8YaG0q+UAfrC68PpTh3S8pA3o9sq8ptrb73DRaRKboMoB3QpLJuZkYQ/BuldDSpovzR6jACkOHTLzkReWxLyvob0edvM6awZ9pnzJOySEfeuYewgfXwDr7h3ansqgvu9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824729; c=relaxed/simple;
-	bh=LGPuBDvaU1NAJn5OfswNUZPPFax+A67jnVKWruyY6A0=;
+	s=arc-20240116; t=1762825417; c=relaxed/simple;
+	bh=C1+fA3px3XTcqz9NOOTCyLVnRwtXVqo5R1QUYpDDyus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZlwLyQxAO3GYbt0y28Vyurlf+kS0KD2AMf0XsyJtgaRVzfteHhZ0b6enaWvnOHdvQDNLmMq2FfbxFAx7N6b6fr7zwVOixuJ2YDnFxTcirr1bN0aTKCnN/Hc0QS+psvxWSHXdpFwCM6IQ52nJtLoRORNQAyltLZuZw8AMXE0AJLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xp1r26ZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A650C4CEFB;
-	Tue, 11 Nov 2025 01:32:07 +0000 (UTC)
+	 MIME-Version; b=Yu7fzzpB9Jw/ct1T22S1dKw/mMXHx7lCF7N5y6+yGc+cIXmT1sP2vMBo48xkDr6inC6fIahXkYbng0thmuOsHIA9QGITIS51WuF0awNfLPdYcHhHb/bpoqqp9DqSfIkwiQd3nFrOduSKkTgvM1gRO/nbbU1u3UxZLLD8m+l6Q74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2ziZYFz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1883C16AAE;
+	Tue, 11 Nov 2025 01:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824728;
-	bh=LGPuBDvaU1NAJn5OfswNUZPPFax+A67jnVKWruyY6A0=;
+	s=korg; t=1762825417;
+	bh=C1+fA3px3XTcqz9NOOTCyLVnRwtXVqo5R1QUYpDDyus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xp1r26ZWVI0yOqHKNhq/GseJPFiUrc+MqnBFK+WkYvwglFwRYsVbrdsCkm8qd0k12
-	 pXCcgJq/ekpnMsMEjxhd4fmzTatGSgALkHFbNGoPN3rKS2EwgR7xSb1zXbHxM7FOU4
-	 +GUABVjeBsmj0KVsnsP+IFbype9P+hn9NXUAHEkc=
+	b=i2ziZYFz0y2uFzuwp/C2G1y7uUf1fNR6+plQj8Ph5ZvMl+WA4xHvf3s64dRWcac6s
+	 cn5cfKx+MGsvdkeXpA6gAJ+NufdvLG0F8LgneABBYlT2NDHPpoYZpfj575o0GBWe+x
+	 dl5DdlSB+EE+sq7au54gkQ5Wse65vadFe45Gl0C4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 506/565] net: libwx: fix device bus LAN ID
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 792/849] net/mlx5e: SHAMPO, Fix skb size check for 64K pages
 Date: Tue, 11 Nov 2025 09:46:02 +0900
-Message-ID: <20251111004538.329774564@linuxfoundation.org>
+Message-ID: <20251111004555.577585127@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-commit a04ea57aae375bdda1cb57034d8bcbb351e1f973 upstream.
+[ Upstream commit bacd8d80181ebe34b599a39aa26bf73a44c91e55 ]
 
-The device bus LAN ID was obtained from PCI_FUNC(), but when a PF
-port is passthrough to a virtual machine, the function number may not
-match the actual port index on the device. This could cause the driver
-to perform operations such as LAN reset on the wrong port.
+mlx5e_hw_gro_skb_has_enough_space() uses a formula to check if there is
+enough space in the skb frags to store more data. This formula is
+incorrect for 64K page sizes and it triggers early GRO session
+termination because the first fragment will blow up beyond
+GRO_LEGACY_MAX_SIZE.
 
-Fix this by reading the LAN ID from port status register.
+This patch adds a special case for page sizes >= GRO_LEGACY_MAX_SIZE
+(64K) which uses the skb->len instead. Within this context,
+the check is safe from fragment overflow because the hardware
+will continuously fill the data up to the reservation size of 64K
+and the driver will coalesce all data from the same page to the same
+fragment. This means that the data will span one fragment or at most
+two for such a large page size.
 
-Fixes: a34b3e6ed8fb ("net: txgbe: Store PCI info")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+It is expected that the if statement will be optimized out as the
+check is done with constants.
+
+Fixes: 92552d3abd32 ("net/mlx5e: HW_GRO cqe handler implementation")
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/B60A670C1F52CB8E+20251104062321.40059-1-jiawenwu@trustnetic.com
+Link: https://patch.msgid.link/1762238915-1027590-3-git-send-email-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_hw.c   |    3 ++-
- drivers/net/ethernet/wangxun/libwx/wx_type.h |    4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -1943,7 +1943,8 @@ int wx_sw_init(struct wx *wx)
- 	wx->oem_svid = pdev->subsystem_vendor;
- 	wx->oem_ssid = pdev->subsystem_device;
- 	wx->bus.device = PCI_SLOT(pdev->devfn);
--	wx->bus.func = PCI_FUNC(pdev->devfn);
-+	wx->bus.func = FIELD_GET(WX_CFG_PORT_ST_LANID,
-+				 rd32(wx, WX_CFG_PORT_ST));
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index f19e94884a52e..0dcb4d5b06c8e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -2327,7 +2327,10 @@ mlx5e_hw_gro_skb_has_enough_space(struct sk_buff *skb, u16 data_bcnt)
+ {
+ 	int nr_frags = skb_shinfo(skb)->nr_frags;
  
- 	if (wx->oem_svid == PCI_VENDOR_ID_WANGXUN) {
- 		wx->subsystem_vendor_id = pdev->subsystem_vendor;
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -85,6 +85,8 @@
- #define WX_CFG_PORT_CTL_DRV_LOAD     BIT(3)
- #define WX_CFG_PORT_CTL_QINQ         BIT(2)
- #define WX_CFG_PORT_CTL_D_VLAN       BIT(0) /* double vlan*/
-+#define WX_CFG_PORT_ST               0x14404
-+#define WX_CFG_PORT_ST_LANID         GENMASK(9, 8)
- #define WX_CFG_TAG_TPID(_i)          (0x14430 + ((_i) * 4))
- #define WX_CFG_PORT_CTL_NUM_VT_MASK  GENMASK(13, 12) /* number of TVs */
+-	return PAGE_SIZE * nr_frags + data_bcnt <= GRO_LEGACY_MAX_SIZE;
++	if (PAGE_SIZE >= GRO_LEGACY_MAX_SIZE)
++		return skb->len + data_bcnt <= GRO_LEGACY_MAX_SIZE;
++	else
++		return PAGE_SIZE * nr_frags + data_bcnt <= GRO_LEGACY_MAX_SIZE;
+ }
  
-@@ -451,8 +453,6 @@ enum WX_MSCA_CMD_value {
- #define TXD_USE_COUNT(S)     DIV_ROUND_UP((S), WX_MAX_DATA_PER_TXD)
- #define DESC_NEEDED          (MAX_SKB_FRAGS + 4)
- 
--#define WX_CFG_PORT_ST               0x14404
--
- /******************* Receive Descriptor bit definitions **********************/
- #define WX_RXD_STAT_DD               BIT(0) /* Done */
- #define WX_RXD_STAT_EOP              BIT(1) /* End of Packet */
+ static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe)
+-- 
+2.51.0
+
 
 
 
