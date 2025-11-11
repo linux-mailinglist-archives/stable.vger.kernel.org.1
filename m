@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-193228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1941C4A109
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:55 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4FA3C4A183
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:59:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98D9D188C100
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 765B34F0A39
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B406323FC41;
-	Tue, 11 Nov 2025 00:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DEC214210;
+	Tue, 11 Nov 2025 00:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GaXwUHU9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Soi2rYVQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674D14C97;
-	Tue, 11 Nov 2025 00:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453541DF258;
+	Tue, 11 Nov 2025 00:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822670; cv=none; b=S0g7oY+Yf0lYdPyZKzWvfwCe2/0pxMFiEQamgiEbKX3NzN/h7s31sLfDDZnROwh3ZyMBugi2PunPCIA3q6kVFWwZcDHcvwJet2AIyG0stLHJceWxXXlTWEA1cWs0e14C5ecUtvrQkzyzFR8DWYSHU82PuMwOe8crjjNz2v7BOy8=
+	t=1762822675; cv=none; b=m8SWhkj7NRA6mrtA6vlZfiWBOZZliI73ahCfjV5IoK7pA0oYk5Ub06BjtY+4+96Ie33tGSz08Mvnx0ZRKNBb9ONv2HDIR8maewUamnIDnJTyWxfMQfi8TCela9JT6UX4EEwHW3+hK+hD1WJilCzLRCjpyZSg8G/pa7EIJZDqHdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822670; c=relaxed/simple;
-	bh=mvxqgDY/ZwZDY0G1szpA/vulWeCZS2hp7etNuFGo4q0=;
+	s=arc-20240116; t=1762822675; c=relaxed/simple;
+	bh=8OxEqz7MKXRGAFsKN3Dv4f1FZCxKOhkiMkdYd/OLnE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TceKQ4bzQ8r7498s3WGIu7ac1lsc0IlqcYZuVztgDz5GMbTRUWz2Gso4kTkHfPcfyHW3hzfC9jY2VzdhkG5aXq54FP7JeQHcf7zS8Nu7+wNYrNSzZappzXOYazprtaOVcxJboZdWaVp1UEhM1Sg0vFZtZzi+hI4NT6Ax1DD7Zvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GaXwUHU9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF248C19421;
-	Tue, 11 Nov 2025 00:57:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gJ5qEDnpog0OZCVO/Vaz2yhLT8YvV8jUS/0wWlF4Ermk8t7c7BjUha0hINDxaMzjYeUoJOzuFcjk5PwcQVlnKx8QwmfwA0OvAR7V5wxLmGGAGJDHdwkbo+R+OMWivdgpN0NL6tkNB4fVFZesVPnQi+rhjmlHm73KP4meMqt5BO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Soi2rYVQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E27C4AF0B;
+	Tue, 11 Nov 2025 00:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822670;
-	bh=mvxqgDY/ZwZDY0G1szpA/vulWeCZS2hp7etNuFGo4q0=;
+	s=korg; t=1762822675;
+	bh=8OxEqz7MKXRGAFsKN3Dv4f1FZCxKOhkiMkdYd/OLnE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GaXwUHU9XVL06TveT89I4dP6QEKtGI/sFCVWeL1ebIFPY7zmfD9EmCCQDAca3PgN6
-	 hxFZ59M+7q9KqZUVDJjI5jbYMNg37Za2UzdeX93q0jvH+eoShQpa2mIyLrDd6zEHg6
-	 bTMIPHznRznOyBAdKHcxmHYZQe03PxSGa6ZL4F2Y=
+	b=Soi2rYVQSEdewwjDx2bdadu9Rn0320zwUusBz0csWcyU+hpXIYc5jFx8bwrrGvJ9a
+	 0MI9SXLDBH77Ue0GPPBR/bnD8JpOszDIVeolDL7BYMJ0djBsNTKeZjqE/L7FE7F89a
+	 w6kmh71AXaRb5fimpPH8t0aGNYBdsD8A6YhDAKus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Quentin Monnet <qmo@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 145/849] bpftool: Add CET-aware symbol matching for x86_64 architectures
-Date: Tue, 11 Nov 2025 09:35:15 +0900
-Message-ID: <20251111004539.911440769@linuxfoundation.org>
+Subject: [PATCH 6.17 146/849] selftests/bpf: Upon failures, exit with code 1 in test_xsk.sh
+Date: Tue, 11 Nov 2025 09:35:16 +0900
+Message-ID: <20251111004539.939586398@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -63,130 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit 6417ca85305ecaffef13cf9063ac35da8fba8500 ]
+[ Upstream commit 2a912258c90e895363c0ffc0be8a47f112ab67b7 ]
 
-Adjust symbol matching logic to account for Control-flow Enforcement
-Technology (CET) on x86_64 systems. CET prefixes functions with
-a 4-byte 'endbr' instruction, shifting the actual hook entry point to
-symbol + 4.
+Currently, even if some subtests fails, the end result will still yield
+"ok 1 selftests: bpf: test_xsk.sh". Fix it by exiting with 1 if there are
+any failures.
 
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Quentin Monnet <qmo@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/20250829061107.23905-3-chenyuan_fl@163.com
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Link: https://lore.kernel.org/bpf/20250828-selftests-bpf-test_xsk_ret-v1-1-e6656c01f397@suse.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/link.c | 54 +++++++++++++++++++++++++++++++++++++---
- 1 file changed, 50 insertions(+), 4 deletions(-)
+ tools/testing/selftests/bpf/test_xsk.sh | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/bpf/bpftool/link.c b/tools/bpf/bpftool/link.c
-index a773e05d5ade4..bdcd717b0348f 100644
---- a/tools/bpf/bpftool/link.c
-+++ b/tools/bpf/bpftool/link.c
-@@ -282,11 +282,52 @@ get_addr_cookie_array(__u64 *addrs, __u64 *cookies, __u32 count)
- 	return data;
- }
+diff --git a/tools/testing/selftests/bpf/test_xsk.sh b/tools/testing/selftests/bpf/test_xsk.sh
+index 65aafe0003db0..62db060298a4a 100755
+--- a/tools/testing/selftests/bpf/test_xsk.sh
++++ b/tools/testing/selftests/bpf/test_xsk.sh
+@@ -241,4 +241,6 @@ done
  
-+static bool is_x86_ibt_enabled(void)
-+{
-+#if defined(__x86_64__)
-+	struct kernel_config_option options[] = {
-+		{ "CONFIG_X86_KERNEL_IBT", },
-+	};
-+	char *values[ARRAY_SIZE(options)] = { };
-+	bool ret;
-+
-+	if (read_kernel_config(options, ARRAY_SIZE(options), values, NULL))
-+		return false;
-+
-+	ret = !!values[0];
-+	free(values[0]);
-+	return ret;
-+#else
-+	return false;
-+#endif
-+}
-+
-+static bool
-+symbol_matches_target(__u64 sym_addr, __u64 target_addr, bool is_ibt_enabled)
-+{
-+	if (sym_addr == target_addr)
-+		return true;
-+
-+	/*
-+	 * On x86_64 architectures with CET (Control-flow Enforcement Technology),
-+	 * function entry points have a 4-byte 'endbr' instruction prefix.
-+	 * This causes kprobe hooks to target the address *after* 'endbr'
-+	 * (symbol address + 4), preserving the CET instruction.
-+	 * Here we check if the symbol address matches the hook target address
-+	 * minus 4, indicating a CET-enabled function entry point.
-+	 */
-+	if (is_ibt_enabled && sym_addr == target_addr - 4)
-+		return true;
-+
-+	return false;
-+}
-+
- static void
- show_kprobe_multi_json(struct bpf_link_info *info, json_writer_t *wtr)
- {
- 	struct addr_cookie *data;
- 	__u32 i, j = 0;
-+	bool is_ibt_enabled;
- 
- 	jsonw_bool_field(json_wtr, "retprobe",
- 			 info->kprobe_multi.flags & BPF_F_KPROBE_MULTI_RETURN);
-@@ -306,11 +347,13 @@ show_kprobe_multi_json(struct bpf_link_info *info, json_writer_t *wtr)
- 	if (!dd.sym_count)
- 		goto error;
- 
-+	is_ibt_enabled = is_x86_ibt_enabled();
- 	for (i = 0; i < dd.sym_count; i++) {
--		if (dd.sym_mapping[i].address != data[j].addr)
-+		if (!symbol_matches_target(dd.sym_mapping[i].address,
-+					   data[j].addr, is_ibt_enabled))
- 			continue;
- 		jsonw_start_object(json_wtr);
--		jsonw_uint_field(json_wtr, "addr", dd.sym_mapping[i].address);
-+		jsonw_uint_field(json_wtr, "addr", (unsigned long)data[j].addr);
- 		jsonw_string_field(json_wtr, "func", dd.sym_mapping[i].name);
- 		/* Print null if it is vmlinux */
- 		if (dd.sym_mapping[i].module[0] == '\0') {
-@@ -719,6 +762,7 @@ static void show_kprobe_multi_plain(struct bpf_link_info *info)
- {
- 	struct addr_cookie *data;
- 	__u32 i, j = 0;
-+	bool is_ibt_enabled;
- 
- 	if (!info->kprobe_multi.count)
- 		return;
-@@ -742,12 +786,14 @@ static void show_kprobe_multi_plain(struct bpf_link_info *info)
- 	if (!dd.sym_count)
- 		goto error;
- 
-+	is_ibt_enabled = is_x86_ibt_enabled();
- 	printf("\n\t%-16s %-16s %s", "addr", "cookie", "func [module]");
- 	for (i = 0; i < dd.sym_count; i++) {
--		if (dd.sym_mapping[i].address != data[j].addr)
-+		if (!symbol_matches_target(dd.sym_mapping[i].address,
-+					   data[j].addr, is_ibt_enabled))
- 			continue;
- 		printf("\n\t%016lx %-16llx %s",
--		       dd.sym_mapping[i].address, data[j].cookie, dd.sym_mapping[i].name);
-+		       (unsigned long)data[j].addr, data[j].cookie, dd.sym_mapping[i].name);
- 		if (dd.sym_mapping[i].module[0] != '\0')
- 			printf(" [%s]  ", dd.sym_mapping[i].module);
- 		else
+ if [ $failures -eq 0 ]; then
+         echo "All tests successful!"
++else
++	exit 1
+ fi
 -- 
 2.51.0
 
