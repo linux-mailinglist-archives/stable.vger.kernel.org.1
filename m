@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E9EC4A5D8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D76C4A5E7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0656A188264C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2E7918837F1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79D42F5A10;
-	Tue, 11 Nov 2025 01:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7712F693C;
+	Tue, 11 Nov 2025 01:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUAIBryc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwhGG6dx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8457F2E7182;
-	Tue, 11 Nov 2025 01:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B262F39B1;
+	Tue, 11 Nov 2025 01:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823243; cv=none; b=Hb4oA6bVgK+JZWeuvB4Ocr+W+4s6QNJgWlPAtdCPHC4c5UTtudStNsmifcYdi//x0NI4Qt61aC3nqSkalGqIXZXku1ABXYSPUbRkVZ1abWrO5qfPgRgThaRIW09a7NLLOnOL4FkRO4F1KLNKiAO/O8xQHaASdw35HoMN/DHfwtA=
+	t=1762823247; cv=none; b=svrfJXss5tjVQL050eHN92lRNf2QRTQS1vFPRBRFU4lvKyc8JqS8rgrRmvLic25ysVllLUwiLdZ6BHMVGsugB7VtFEnTawUTAjnmneyPGDBX72jYzYIuB8D7cNR7YdmZ0424zFfIc3ioVzLABRT0InqCn5FObmsHT3DdtKFBDek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823243; c=relaxed/simple;
-	bh=jtnz8ZFyIL0fJMZP7FCwnBbB6nWUDtCeaJ3i9zrVMsE=;
+	s=arc-20240116; t=1762823247; c=relaxed/simple;
+	bh=ch+EWr7evOAitxBZi/ODezADFhtcWOdlf56Pef3m5l8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lXeqO98GFUYopo/L3hDKaYmDaf2UYyzE+xafOfVzg4nAj57NOpGv28Wu6E2VvPSykckNDlPfUthU8a/M9QMFuMRWUSCmoxtJeF/5NRqS3zmtdxU9dfnnFCFeRtgaXQsb0FOEqkLjO6kOWXQXsRhmqINauT3kILP9ao9zjtjqDrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUAIBryc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3949C4CEF5;
-	Tue, 11 Nov 2025 01:07:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iUnQfY8QJ/6CH8VrfAAcFhrA1kM5AWXLewh46SWDa9/YLnuCMiZJ65AFLJkRnvCPG5ZIaI+k9DfftEQioPXzAHfvhsjotlIN4y51ynOXGK7bWA9OVqX/WphhCoWci52NEa8cJGIdaGeTspq9FV53Smv8ngK9ufZc0wDwZWadeFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwhGG6dx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B851C16AAE;
+	Tue, 11 Nov 2025 01:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823243;
-	bh=jtnz8ZFyIL0fJMZP7FCwnBbB6nWUDtCeaJ3i9zrVMsE=;
+	s=korg; t=1762823247;
+	bh=ch+EWr7evOAitxBZi/ODezADFhtcWOdlf56Pef3m5l8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YUAIBrycDiCUeWNdwEIG3Imr30BRtHiOoyJ86O/BzXQUsqP7zzwRNU7qA3YEUG/Xg
-	 /S/a5cgPqKcpHAGsXKnX/O3IlbAswzW5Vj+XBu9p0+LkWNY0qlVNmisvYaWRDqSXTw
-	 VoW5lPJKGthxKrA0p0pdkTVJj2PnKfAhtFAT6kCM=
+	b=LwhGG6dxcBQ8ongBafXBo7dxisXTBoZUSV69rPxg2JQS5JAlZWWV1kq44MqVmC+pn
+	 0O0YK2fneh/Wx4Qlu5u7bOSVHCPHfVxpRmnp9Cv7aVJdnoWzno0miil+PizigYwCvy
+	 CfgskadMNLR0r2i5sZsBXAdh6K6McTLKFHzUS4p0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathishkumar S <sathishkumar.sundararaju@amd.com>,
-	Leo Liu <leo.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 260/849] drm/amdgpu/jpeg: Hold pg_lock before jpeg poweroff
-Date: Tue, 11 Nov 2025 09:37:10 +0900
-Message-ID: <20251111004542.718512645@linuxfoundation.org>
+Subject: [PATCH 6.17 261/849] drm/xe/pf: Program LMTT directory pointer on all GTs within a tile
+Date: Tue, 11 Nov 2025 09:37:11 +0900
+Message-ID: <20251111004542.743641214@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -61,46 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sathishkumar S <sathishkumar.sundararaju@amd.com>
+From: Piotr Piórkowski <piotr.piorkowski@intel.com>
 
-[ Upstream commit 0e7581eda8c76d1ca4cf519631a4d4eb9f82b94c ]
+[ Upstream commit ad69d62588cd6bf8cddaff5e3e2eb1b8dd876d35 ]
 
-Acquire jpeg_pg_lock before changes to jpeg power state
-and release it after power off from idle work handler.
+Previously, the LMTT directory pointer was only programmed for primary GT
+within a tile. However, to ensure correct Local Memory access by VFs,
+the LMTT configuration must be programmed on all GTs within the tile.
+Lets program the LMTT directory pointer on every GT of the tile
+to guarantee proper LMEM access across all GTs on VFs.
 
-Signed-off-by: Sathishkumar S <sathishkumar.sundararaju@amd.com>
-Reviewed-by: Leo Liu <leo.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+HSD: 18042797646
+Bspec: 67468
+Signed-off-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Michał Winiarski <michal.winiarski@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Link: https://lore.kernel.org/r/20250805091850.1508240-1-piotr.piorkowski@intel.com
+Signed-off-by: Michał Winiarski <michal.winiarski@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_lmtt.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-index 82d58ac7afb01..5d5e9ee83a5d6 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-@@ -121,10 +121,12 @@ static void amdgpu_jpeg_idle_work_handler(struct work_struct *work)
- 			fences += amdgpu_fence_count_emitted(&adev->jpeg.inst[i].ring_dec[j]);
- 	}
+diff --git a/drivers/gpu/drm/xe/xe_lmtt.c b/drivers/gpu/drm/xe/xe_lmtt.c
+index a2000307d5bf9..a78c9d474a6ef 100644
+--- a/drivers/gpu/drm/xe/xe_lmtt.c
++++ b/drivers/gpu/drm/xe/xe_lmtt.c
+@@ -195,14 +195,17 @@ static void lmtt_setup_dir_ptr(struct xe_lmtt *lmtt)
+ 	struct xe_tile *tile = lmtt_to_tile(lmtt);
+ 	struct xe_device *xe = tile_to_xe(tile);
+ 	dma_addr_t offset = xe_bo_main_addr(lmtt->pd->bo, XE_PAGE_SIZE);
++	struct xe_gt *gt;
++	u8 id;
  
--	if (!fences && !atomic_read(&adev->jpeg.total_submission_cnt))
-+	if (!fences && !atomic_read(&adev->jpeg.total_submission_cnt)) {
-+		mutex_lock(&adev->jpeg.jpeg_pg_lock);
- 		amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_JPEG,
- 						       AMD_PG_STATE_GATE);
--	else
-+		mutex_unlock(&adev->jpeg.jpeg_pg_lock);
-+	} else
- 		schedule_delayed_work(&adev->jpeg.idle_work, JPEG_IDLE_TIMEOUT);
+ 	lmtt_debug(lmtt, "DIR offset %pad\n", &offset);
+ 	lmtt_assert(lmtt, xe_bo_is_vram(lmtt->pd->bo));
+ 	lmtt_assert(lmtt, IS_ALIGNED(offset, SZ_64K));
+ 
+-	xe_mmio_write32(&tile->mmio,
+-			GRAPHICS_VER(xe) >= 20 ? XE2_LMEM_CFG : LMEM_CFG,
+-			LMEM_EN | REG_FIELD_PREP(LMTT_DIR_PTR, offset / SZ_64K));
++	for_each_gt_on_tile(gt, tile, id)
++		xe_mmio_write32(&gt->mmio,
++				GRAPHICS_VER(xe) >= 20 ? XE2_LMEM_CFG : LMEM_CFG,
++				LMEM_EN | REG_FIELD_PREP(LMTT_DIR_PTR, offset / SZ_64K));
  }
  
+ /**
 -- 
 2.51.0
 
