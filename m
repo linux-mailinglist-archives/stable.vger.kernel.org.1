@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC84C4AE8F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF05C4ACD6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D06C18981B4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:43:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D723D3BAE15
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7C933FE17;
-	Tue, 11 Nov 2025 01:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A999334683;
+	Tue, 11 Nov 2025 01:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHExqxRD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCnmKDgv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA65E26D4DE;
-	Tue, 11 Nov 2025 01:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0C733437F;
+	Tue, 11 Nov 2025 01:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825056; cv=none; b=YATvPtCHRBTpZwsAPgeTBBv5t+irOCzBemg6VmDPHnD00OiKBB39dxoXicS7FxvZHkVPfv7jvfqHGVDgtFn7dFLmu/K42rwF+PyvxX6+XPCIsTI7gyonRYNciwoEzXsEjjB5bm58vOevAt8t1H9KduDizqrM2j6ZTCUsxsQ+Bek=
+	t=1762823952; cv=none; b=I17ev6UCwbp0Z17S9nbk88MptxNRjF21KZd3dCr0Gg39DMQKL3/wQr/XhbOZd2i+o5pReflC4d074ZdrfXH82A6vqWEjMQtfJNyri+oj+iilGY1M5l/C0Ynrqkeg8y+IKPzqLeaV9ehw7V+WjKRPneUWIedK9E5J/Q7mvruD+7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825056; c=relaxed/simple;
-	bh=Cx9Dge65hJhnHJKG569+pXuaeLO0Qi+SoKWWs5vKC2o=;
+	s=arc-20240116; t=1762823952; c=relaxed/simple;
+	bh=8Wc3QLhdX2cICQ1cg5aDggJC8W9ehMj4QuKcIkpEtGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHuvnNoUNc5xSfHFlLvydP6jqkJL9nPkWdNiUdSru1Y8SsLkHpKc89tU5Gyhi6HAwCJluasZq+B3bVPnZnTabVXfU2xixb8JtAzCbWtpprw6N4skP+C8IgwlerjEg6uqPNL9e9qujjnEk6CRaiBPRpiezCNOp4oOuFbodCokBOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHExqxRD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E71C19424;
-	Tue, 11 Nov 2025 01:37:36 +0000 (UTC)
+	 MIME-Version; b=EgbqQG/yZ3IB/EgouO+61xuYrgO6G/x4Gmu2Wdi22G3RIW2i7hTEu5NZFcWyrvi9S6E97Z6ysz4fH9KeIgnWmBCM5RwUsDoaezLTYWANYXwgt9K5IU7cR93kBHygBP/N3/b3LbN+pIc0FmXldBqB/U1ytyYX1qJRKvojDiMeWzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCnmKDgv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747BAC4CEFB;
+	Tue, 11 Nov 2025 01:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825056;
-	bh=Cx9Dge65hJhnHJKG569+pXuaeLO0Qi+SoKWWs5vKC2o=;
+	s=korg; t=1762823951;
+	bh=8Wc3QLhdX2cICQ1cg5aDggJC8W9ehMj4QuKcIkpEtGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LHExqxRD4VhYizIXkASxXFSH+FMXTD4X1d1JZmVDCzr54UcHvTUt7dAyxZx79E3Zj
-	 mXmVdbS6AZLFRJpFMhWCdmUU1cQtoTbnxJgHx0xnoZVBd1OJluz2p0BDJ6/xJetiTW
-	 CjDNOdAcx69I03xeUusY/rpbHRkrTfB5cGTnD+ho=
+	b=TCnmKDgvybFQeZzuRDnhI3XilnyzyTL16U6LYz8FKxDGWSKfuBf+k8S2rqdmRZHSx
+	 ZKejvM3WhFurwKBEDKyN3cqBYGhpIMhkZF8vgFgJuNde2+eCD8KnsW8iFxQ+8XG9Qb
+	 IAXIP3RarJ3Gx3K3T1asCGcC90vACyxZQKWkCZTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Yusuke Goda <yusuke.goda.sx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 642/849] ASoC: renesas: msiof: tidyup DMAC stop timing
+Subject: [PATCH 6.12 356/565] wifi: mt76: mt7996: Temporarily disable EPCS
 Date: Tue, 11 Nov 2025 09:43:32 +0900
-Message-ID: <20251111004551.952204787@linuxfoundation.org>
+Message-ID: <20251111004534.880093481@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
 
-[ Upstream commit 25aa058b5c83a3c455a2a288bb3295c0b234f093 ]
+[ Upstream commit e6291bb7a5935b2f1d337fd7a58eab7ada6678ad ]
 
-Current DMAC is stopped before HW stop, but it might be cause of
-sync error. Stop HW first.
+EPCS is not yet ready, so do not claim to support it.
 
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Tested-by: Yusuke Goda <yusuke.goda.sx@renesas.com>
-Link: https://patch.msgid.link/878qi3yuu0.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250904-mt7996-mlo-more-fixes-v1-4-89d8fed67f20@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/renesas/rcar/msiof.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/soc/renesas/rcar/msiof.c b/sound/soc/renesas/rcar/msiof.c
-index 3a1a6496637dd..555fdd4fb2513 100644
---- a/sound/soc/renesas/rcar/msiof.c
-+++ b/sound/soc/renesas/rcar/msiof.c
-@@ -222,9 +222,6 @@ static int msiof_hw_stop(struct snd_soc_component *component,
- 		val = SIIER_RDREQE | SIIER_RDMAE | SISTR_ERR_RX;
- 	msiof_update(priv, SIIER, val, 0);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 91b7d35bdb431..65bd9c32d42c1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -1190,7 +1190,6 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
+ 	eht_cap->has_eht = true;
  
--	/* Stop DMAC */
--	snd_dmaengine_pcm_trigger(substream, cmd);
--
- 	/* SICTR */
- 	if (is_play)
- 		val = SICTR_TXE;
-@@ -232,6 +229,9 @@ static int msiof_hw_stop(struct snd_soc_component *component,
- 		val = SICTR_RXE;
- 	msiof_update_and_wait(priv, SICTR, val, 0, 0);
- 
-+	/* Stop DMAC */
-+	snd_dmaengine_pcm_trigger(substream, cmd);
-+
- 	/* indicate error status if exist */
- 	if (priv->err_syc[substream->stream] ||
- 	    priv->err_ovf[substream->stream] ||
+ 	eht_cap_elem->mac_cap_info[0] =
+-		IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
+ 		IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
+ 		u8_encode_bits(IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454,
+ 			       IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_MASK);
 -- 
 2.51.0
 
