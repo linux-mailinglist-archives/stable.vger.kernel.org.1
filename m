@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1604CC4B268
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:03:56 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA1AC4AA91
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F3DA3B8509
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:43 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3F22E34CAC9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AED033F8A7;
-	Tue, 11 Nov 2025 01:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BC8341678;
+	Tue, 11 Nov 2025 01:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guaAi4ww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIaDeAJi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8352E0412;
-	Tue, 11 Nov 2025 01:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFAF189B84;
+	Tue, 11 Nov 2025 01:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825377; cv=none; b=dcbtQo2gsbW9dmMNpTTj5YRQfvhVRjWrH8+e+lpTNL6O3UDmW2TiTrfrIsQMEeSbFrLAzx+n+/J99QCzpq6it2ocqoOZC8V1efwodjhl+wFmXtcaOjQrtlnGd1GZRVmLfIRh5GcE6enZtsLi8oTKH4i+bjsEBfbUb7bBCYyrU90=
+	t=1762824645; cv=none; b=TXrC3v7pDh4yal9CYUQmpdifu765m4wv2QD4Q+xDk7MQf2Ag8r6DPzpmNf0X+oKI8ICwXzgWTc5qoxZ5UsuDTSaT5ULdm8JFTStFApyLNckhrM8jKES2GIcblfD3p58P0eNI37lqc70tkzH5gB8JOhKOOTupWgnHMZ+2LPZ0K/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825377; c=relaxed/simple;
-	bh=OsIdxEayijNObFY3oM2KI/sfAtnPoB5ktOUpbAGX6qI=;
+	s=arc-20240116; t=1762824645; c=relaxed/simple;
+	bh=iKAOafGtof0HpEk7qx/kg7LHPaK0n+IwF9hCOEouwTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=itZwSMKSLlaDUpmjQhV3Db/wuJNQ5mywAlnfVG6Us2mq17k1vyxrMojpl3NDhaUI7R4RLASWfAxbrY0q0AEeBWHJF7G6Ke5pKDs/YM9nZ5MLFBmyxwVAxP65eVFUQK15TNZZyQWG53YDcjhjnVCKOIvhpVmq2ha3ATsndf47+qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guaAi4ww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452BBC116D0;
-	Tue, 11 Nov 2025 01:42:56 +0000 (UTC)
+	 MIME-Version; b=jWwrigtkBpkJkrbcz2rI8QK2Q7GoQrhPHfumi1F93uGeNS36qHSA1S2q+jdQ8vd+aewkSycQIo/JPsl5nKrRfZbYta6N+DOKU2lRVH3Byd4tLLYGU1pZ1PJps0sBCQBplnLur2I3eczaiICfCpEPWoTLO47xMLwlb9aSLCqTWkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIaDeAJi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B54C116B1;
+	Tue, 11 Nov 2025 01:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825376;
-	bh=OsIdxEayijNObFY3oM2KI/sfAtnPoB5ktOUpbAGX6qI=;
+	s=korg; t=1762824645;
+	bh=iKAOafGtof0HpEk7qx/kg7LHPaK0n+IwF9hCOEouwTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=guaAi4wwPnQkoWJeq0R5DhQwBgflsxGLtdegrXJ7FgPwI+LFtt18TLG2ZE33L9+HP
-	 xeirSyfhvU4mkT/scFgh2WiioIGYZ9slIoAswIHtdjkU4IYEG9gnxQJ0MzrwGuKhfA
-	 874gW1DVcK+M97R/UUf62JxFkmOlhihXWKusmgro=
+	b=JIaDeAJiiPllJJgeX2+I9MzdgWFeyDeMu0Dy/RMSfqfSfaKP4vr0iIG2Z7ZBxJtdG
+	 KGL+klQEjwcOpgTQonyj+2fLTZaeiO/+W+wKWNWuUZu3lsTWTcCuzhPtnRRGI6UlkF
+	 S3xMw35DcC7wgyahRICTq5M5fxICDxbC+hD80Jk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 776/849] sctp: Hold sock lock while iterating over address list
-Date: Tue, 11 Nov 2025 09:45:46 +0900
-Message-ID: <20251111004555.187997083@linuxfoundation.org>
+Subject: [PATCH 6.12 491/565] drm/amdkfd: Fix mmap write lock not release
+Date: Tue, 11 Nov 2025 09:45:47 +0900
+Message-ID: <20251111004537.979523967@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit f1fc201148c7e684c10a72b6a3375597f28d1ef6 ]
+[ Upstream commit 7574f30337e19045f03126b4c51f525b84e5049e ]
 
-Move address list traversal in inet_assoc_attr_size() under the sock
-lock to avoid holding the RCU read lock.
+If mmap write lock is taken while draining retry fault, mmap write lock
+is not released because svm_range_restore_pages calls mmap_read_unlock
+then returns. This causes deadlock and system hangs later because mmap
+read or write lock cannot be taken.
 
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251028161506.3294376-4-stefan.wiehler@nokia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Downgrade mmap write lock to read lock if draining retry fault fix this
+bug.
+
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/diag.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-index 95e65b9d623b3..5a43f25478d03 100644
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -230,14 +230,15 @@ struct sctp_comm_param {
- 	bool net_admin;
- };
- 
--static size_t inet_assoc_attr_size(struct sctp_association *asoc)
-+static size_t inet_assoc_attr_size(struct sock *sk,
-+				   struct sctp_association *asoc)
- {
- 	int addrlen = sizeof(struct sockaddr_storage);
- 	int addrcnt = 0;
- 	struct sctp_sockaddr_entry *laddr;
- 
- 	list_for_each_entry_rcu(laddr, &asoc->base.bind_addr.address_list,
--				list)
-+				list, lockdep_sock_is_held(sk))
- 		addrcnt++;
- 
- 	return	  nla_total_size(sizeof(struct sctp_info))
-@@ -263,11 +264,14 @@ static int sctp_sock_dump_one(struct sctp_endpoint *ep, struct sctp_transport *t
- 	if (err)
- 		return err;
- 
--	rep = nlmsg_new(inet_assoc_attr_size(assoc), GFP_KERNEL);
--	if (!rep)
-+	lock_sock(sk);
-+
-+	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
-+	if (!rep) {
-+		release_sock(sk);
- 		return -ENOMEM;
-+	}
- 
--	lock_sock(sk);
- 	if (ep != assoc->ep) {
- 		err = -EAGAIN;
- 		goto out;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index 155948dc3d07a..0d950a20741d8 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -3036,6 +3036,8 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
+ 	if (svms->checkpoint_ts[gpuidx] != 0) {
+ 		if (amdgpu_ih_ts_after_or_equal(ts,  svms->checkpoint_ts[gpuidx])) {
+ 			pr_debug("draining retry fault, drop fault 0x%llx\n", addr);
++			if (write_locked)
++				mmap_write_downgrade(mm);
+ 			r = -EAGAIN;
+ 			goto out_unlock_svms;
+ 		} else {
 -- 
 2.51.0
 
