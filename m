@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC48AC4A79D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0C6C4ACEE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1F1C18939D6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C9A314F402F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3074A340D93;
-	Tue, 11 Nov 2025 01:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC11D25D209;
+	Tue, 11 Nov 2025 01:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ix9c9yRb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUbsW5sy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77CF27FD54;
-	Tue, 11 Nov 2025 01:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656E82BB17;
+	Tue, 11 Nov 2025 01:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823473; cv=none; b=Q7bQz8GREMaP1V3FuwUjqTpRulESFLJKUa3avR1LazdOJ9kyCyA7JZ0BK1ON8Nn1uBhmUdFGBlOj6y6gEgtphr5p1mB+R9qAk58JS6A3j1sl64nymNnOSBlJ174daQiS/bQEeac6wzxAlO5ynND0zFTIypovUPwJIlnbfRHHj5M=
+	t=1762824633; cv=none; b=A4FZIMV3LvncNEam6MDdFh5fP9z8JGQwGshPYPqybgKJ/s5+aJOrhEAEFez3c/J60BvdaXXJHAaGyw7IFDipxT7o8AatYA2Evz+DNnShGL5kC4GJCoM4fxzlLxVhpcwoEQb0NA0W1I+4/UyDs7SDxG/dUrJN0zDVlaxvKZzDInk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823473; c=relaxed/simple;
-	bh=7w+NS156tK3pGcF+IxjH7aqqA+zlaiQ+QulxYwT2V0U=;
+	s=arc-20240116; t=1762824633; c=relaxed/simple;
+	bh=v3py1gVPVsnZ9+Gu1nXxNBUDU+jq+9FzQisQvKBQ1Zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ksU41Sya0tAt13MJDS4pVPa96/0EschBOyMzxVqCbd0Kt2jdGmQfPMtPLedb8yEKP912d8dYebzdg2uud6N3GdkIzEsK3Aj2GuLnklAJzzm9i3EGyC2BnGJThlqOJE5hUrT4xrkoPeJ/3brcb15I0Yjc7+wehiSjgq04bluy9Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ix9c9yRb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746B7C116B1;
-	Tue, 11 Nov 2025 01:11:12 +0000 (UTC)
+	 MIME-Version; b=kC7TFIvy6L7QVkUxgA0CBNJ2lc8+AoLJm/Uq7g3/YwpSmopcglESPGx8qGx8XIeUX6cCvyw+qRNwtdfqdltJFEsdgfJKHI2JCKQHSsI15bjQPmQPHqhUI3mZu7TYWkDDjaUp3nOQpS2YsuksROigWMnmDUpmROHLkAbTovL+v78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUbsW5sy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0635DC19422;
+	Tue, 11 Nov 2025 01:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823472;
-	bh=7w+NS156tK3pGcF+IxjH7aqqA+zlaiQ+QulxYwT2V0U=;
+	s=korg; t=1762824633;
+	bh=v3py1gVPVsnZ9+Gu1nXxNBUDU+jq+9FzQisQvKBQ1Zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ix9c9yRbj5cQ95w5RgXjcoIsqAcrjYVahzKbeEAiohEu8OdPnKZ+HJw4FpJ1OKjJf
-	 lz/D4fazIhr2Y381kFK52AMV3fPyMov4sVKU9zy3o3yYfZVf48zwlyi7G9WSEII5tS
-	 6W/dNagxtRO0jMH42WjUjctmBrdxPFhRzexIIKgY=
+	b=eUbsW5syr0OSp8uBYHqBCQ5N0lTEhWLfFwjbhB2uA8O0Sqab6kUCbuHVCbFWFrtrR
+	 sMCZqr9md3FS/maWVyj/jeOkm5zJ4+Yqs0QLvcArbP7sXWcR5wyCUuuyvBw1ho53+N
+	 kXnO6BVkfJz+3r9YlUdFowb9yN8a7jpjjcmbdc9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Davis <afd@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 253/565] remoteproc: wkup_m3: Use devm_pm_runtime_enable() helper
-Date: Tue, 11 Nov 2025 09:41:49 +0900
-Message-ID: <20251111004532.597001627@linuxfoundation.org>
+Subject: [PATCH 6.17 540/849] wifi: mt76: mt7996: Temporarily disable EPCS
+Date: Tue, 11 Nov 2025 09:41:50 +0900
+Message-ID: <20251111004549.469391961@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Davis <afd@ti.com>
+From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
 
-[ Upstream commit 461edcf73eec57bc0006fbb5209f5012c514c58b ]
+[ Upstream commit e6291bb7a5935b2f1d337fd7a58eab7ada6678ad ]
 
-Use device life-cycle managed runtime enable function to simplify probe
-and exit paths.
+EPCS is not yet ready, so do not claim to support it.
 
-Signed-off-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20250814153940.670564-1-afd@ti.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250904-mt7996-mlo-more-fixes-v1-4-89d8fed67f20@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/wkup_m3_rproc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/remoteproc/wkup_m3_rproc.c b/drivers/remoteproc/wkup_m3_rproc.c
-index 36a55f7ffa64d..c39bd2bf2c1e7 100644
---- a/drivers/remoteproc/wkup_m3_rproc.c
-+++ b/drivers/remoteproc/wkup_m3_rproc.c
-@@ -148,7 +148,9 @@ static int wkup_m3_rproc_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 84015ab24af62..5a77771e3e6d6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -1330,7 +1330,6 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
+ 	eht_cap->has_eht = true;
  
--	pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(dev);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to enable runtime PM\n");
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "pm_runtime_get_sync() failed\n");
-@@ -219,7 +221,6 @@ static int wkup_m3_rproc_probe(struct platform_device *pdev)
- 	rproc_free(rproc);
- err:
- 	pm_runtime_put_noidle(dev);
--	pm_runtime_disable(dev);
- 	return ret;
- }
- 
-@@ -230,7 +231,6 @@ static void wkup_m3_rproc_remove(struct platform_device *pdev)
- 	rproc_del(rproc);
- 	rproc_free(rproc);
- 	pm_runtime_put_sync(&pdev->dev);
--	pm_runtime_disable(&pdev->dev);
- }
- 
- #ifdef CONFIG_PM
+ 	eht_cap_elem->mac_cap_info[0] =
+-		IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
+ 		IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
+ 		u8_encode_bits(IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454,
+ 			       IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_MASK);
 -- 
 2.51.0
 
