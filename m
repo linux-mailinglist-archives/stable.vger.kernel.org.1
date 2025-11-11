@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-194172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 093CCC4AE23
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F9A8C4B03C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:53:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C1BF189738F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C9163B955B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6E9337BB4;
-	Tue, 11 Nov 2025 01:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21FA339709;
+	Tue, 11 Nov 2025 01:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLM1hz/E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePXdEJ7p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFECD189B84;
-	Tue, 11 Nov 2025 01:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB263396F7;
+	Tue, 11 Nov 2025 01:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824976; cv=none; b=qgA+q/I7ku4StWmbMNKeLIGSWJzxjU3m6vzqT5ea0qD4jLPAY+q+7NSXjUwV50K7jUfcvFyx/VkI+pwSkbU7k4/XvrTqVPrcb8VhIXssTfGUJ9OoEjxf0NQRvXwP9YHLWPwrUD1Pqwt3zjUk5SAd4D8y3klNYd6mHWWZ0wVIz10=
+	t=1762824980; cv=none; b=HPOXpxib93GasGG4qOMdLLymugSX5w+1LrEhBQ6sskmExEu9PZwqP2YMethCR8aNAAVbXGRaGCuPaPtAd5YI/5AXF413XTJbTC+7JT2KrDW90BZjKXvI4rxzdpgofjwxJ4cgOSOjj1eCLohbXW649Fegfttn1Cq5tHAFmGtLjAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824976; c=relaxed/simple;
-	bh=oWH1eIlEGD8fzilm8dhRcs2leMx6so2Jowkyfp09ajE=;
+	s=arc-20240116; t=1762824980; c=relaxed/simple;
+	bh=GOwHvvyU/AHp7VITo75xJU/r+a0uhMpacMfSdy68yTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ffwd7nFSG+/veysDN4UUda1JO+5t4RgT0aEJq+7uZFMTvkzBtryKx39hHY+0gzUACe8IyFAHRcxMBNATtvMQJJvtYHcP+aHeDThpc8hVMJ1rx7OOBNTC+ITOGvDf6p96ErHaUGTTDx5njZ0rzc75jyrAWwe6SnLyXH8foEuSm2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLM1hz/E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B639C116D0;
-	Tue, 11 Nov 2025 01:36:15 +0000 (UTC)
+	 MIME-Version; b=Q5IOu2yL4KXrvoj/RptM5GwBBpCZ2Men6VGOLM6j+U+xVPABe+QtqhpTMXRpklwhNEkUH54bXsI9GO2MI8OKzLO3HteGPmznDnR4jTp7Qi8NBkQEv1RqaHvgEaRiPBow+U6pRECN4z59dQBk9sNl8qv7YvoM1awEtPbZ44ASFB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePXdEJ7p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3184C116D0;
+	Tue, 11 Nov 2025 01:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824975;
-	bh=oWH1eIlEGD8fzilm8dhRcs2leMx6so2Jowkyfp09ajE=;
+	s=korg; t=1762824980;
+	bh=GOwHvvyU/AHp7VITo75xJU/r+a0uhMpacMfSdy68yTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DLM1hz/E9pQ4G+q1Irc5p0Rfaw977jqPfFzsYyHsx4y4DnUD5YvFwhxLN9JYfQk/2
-	 mEC0wBRBHYTL4mZXvXXbe8RiL0UI0i7cVtRuCazDEl2N8h5J96hHmckOjkcHZWOaAw
-	 J9e6G6VGk4e7dLQqJYHbBtmuoFV1jCa2SuF1KDU0=
+	b=ePXdEJ7p9HtvIJqCTPyJPzHYsiTVbxaUX9neQaGUsUA2U3bilf7ABOQ+zWd4maPaW
+	 bUUO7SM93PY8PIYIDT0NrWXGQKWyP9ObLW+0rit/vaPEADnQi7loXs+RWxXf1SwYmu
+	 z9x/XC/0Q6kFGhg/3wK/u90Pu7pxComcGIKCeqsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Mastro <amastro@fb.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 608/849] vfio: return -ENOTTY for unsupported device feature
-Date: Tue, 11 Nov 2025 09:42:58 +0900
-Message-ID: <20251111004551.122922518@linuxfoundation.org>
+Subject: [PATCH 6.17 609/849] ptp_ocp: make ptp_ocp driver compatible with PTP_EXTTS_REQUEST2
+Date: Tue, 11 Nov 2025 09:42:59 +0900
+Message-ID: <20251111004551.149723722@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,38 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Mastro <amastro@fb.com>
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
-[ Upstream commit 16df67f2189a71a8310bcebddb87ed569e8352be ]
+[ Upstream commit d3ca2ef0c915d219e0d958e0bdcc4be6c02c210b ]
 
-The two implementers of vfio_device_ops.device_feature,
-vfio_cdx_ioctl_feature and vfio_pci_core_ioctl_feature, return
--ENOTTY in the fallthrough case when the feature is unsupported. For
-consistency, the base case, vfio_ioctl_device_feature, should do the
-same when device_feature == NULL, indicating an implementation has no
-feature extensions.
+Originally ptp_ocp driver was not strictly checking flags for external
+timestamper and was always activating rising edge timestamping as it's
+the only supported mode. Recent changes to ptp made it incompatible with
+PTP_EXTTS_REQUEST2 ioctl. Adjust ptp_clock_info to provide supported
+mode and be compatible with new infra.
 
-Signed-off-by: Alex Mastro <amastro@fb.com>
-Link: https://lore.kernel.org/r/20250908-vfio-enotty-v1-1-4428e1539e2e@fb.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+While at here remove explicit check of periodic output flags from the
+driver and provide supported flags for ptp core to check.
+
+Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20250918131146.651468-1-vadim.fedorenko@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/vfio_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ptp/ptp_ocp.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index 5046cae052224..715368076a1fe 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -1251,7 +1251,7 @@ static int vfio_ioctl_device_feature(struct vfio_device *device,
- 			feature.argsz - minsz);
- 	default:
- 		if (unlikely(!device->ops->device_feature))
--			return -EINVAL;
-+			return -ENOTTY;
- 		return device->ops->device_feature(device, feature.flags,
- 						   arg->data,
- 						   feature.argsz - minsz);
+diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+index f354f2f51a48c..a5c3632529862 100644
+--- a/drivers/ptp/ptp_ocp.c
++++ b/drivers/ptp/ptp_ocp.c
+@@ -1485,6 +1485,8 @@ static const struct ptp_clock_info ptp_ocp_clock_info = {
+ 	.pps		= true,
+ 	.n_ext_ts	= 6,
+ 	.n_per_out	= 5,
++	.supported_extts_flags = PTP_STRICT_FLAGS | PTP_RISING_EDGE,
++	.supported_perout_flags = PTP_PEROUT_DUTY_CYCLE | PTP_PEROUT_PHASE,
+ };
+ 
+ static void
+@@ -2095,10 +2097,6 @@ ptp_ocp_signal_from_perout(struct ptp_ocp *bp, int gen,
+ {
+ 	struct ptp_ocp_signal s = { };
+ 
+-	if (req->flags & ~(PTP_PEROUT_DUTY_CYCLE |
+-			   PTP_PEROUT_PHASE))
+-		return -EOPNOTSUPP;
+-
+ 	s.polarity = bp->signal[gen].polarity;
+ 	s.period = ktime_set(req->period.sec, req->period.nsec);
+ 	if (!s.period)
 -- 
 2.51.0
 
