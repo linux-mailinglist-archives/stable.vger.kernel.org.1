@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEF2BC4AE17
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DDEBC4AF82
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 235B73A997B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 05FCB4FB753
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A49034844B;
-	Tue, 11 Nov 2025 01:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D843431E3;
+	Tue, 11 Nov 2025 01:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQ5653/J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrVNVW7v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502952DCF6E;
-	Tue, 11 Nov 2025 01:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A90CDDAB;
+	Tue, 11 Nov 2025 01:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824337; cv=none; b=WLGdCZI+Cju7NKwDrTKyCz7Pa4Ba7WTfWkcootogfmWKg6f28V/HSivEKcoOzDlBdEQiF9EvyPU5lfoZJFU6B0d6brtJSCAyfQVZxYsCk2FmsPSZdz8BVMPhE1YbJKazfzOb98+VimNTdkh73g1ku4MT+w0dRZ8fqOzdj8DWwt8=
+	t=1762825165; cv=none; b=BNlVbh9nE/duBklcWpNkYFd0diYFaFMvYtRcoxy/bWCLWdR+4w/F+YdT1jRbm9dC4YSVfC46fh0cOItXCWnoxfXh6Z/1Tni1mS++6QHgrKEHCwfaL4t2hU4wg18rBV5ytKwmLQc0myQxxuJ+4lrawgu+Pzu5ultAONiJXvClPu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824337; c=relaxed/simple;
-	bh=miHueLiGyU0aHGJTFhH89sCdrMdni1fXzeNL1Oph+2s=;
+	s=arc-20240116; t=1762825165; c=relaxed/simple;
+	bh=UHkzwCyYOh2BnG7bOW3AfYss0cwA3ft/KKfByTeWb3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sBPBtzZSXYrc7UbKHpDsN7GGt3bKy1JKC4YtQti6L0fLrBCHOR0X6UREW4bWycZ1sogblh+3CCclUYwpocjCZgHJmVejn/wDyYQ61fhQwMAlOcFDXEANIbUxSv1jbyC0zsfKfDTp4oK3RMdaYtEfk8zTxzKmRN48FS17qVuogV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQ5653/J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E079BC19421;
-	Tue, 11 Nov 2025 01:25:36 +0000 (UTC)
+	 MIME-Version; b=KfL87RuyRUOQYzOLcfCa1gpyjymnEckpJ2Pkm73pI1yZJxko1F7uobRm12DcMNmEyFLexT6G5YykOgnqhHoOsGvpBEv7UOIl7mpHbsjN/9TymWC8xTi4k7sw5kkQVhrgcuNvMtlB1JBrTiax4S09T8bV+vUQWJwphDopaVXL01k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrVNVW7v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306B8C4CEFB;
+	Tue, 11 Nov 2025 01:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824337;
-	bh=miHueLiGyU0aHGJTFhH89sCdrMdni1fXzeNL1Oph+2s=;
+	s=korg; t=1762825165;
+	bh=UHkzwCyYOh2BnG7bOW3AfYss0cwA3ft/KKfByTeWb3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQ5653/JqsLgCsUst18d00MdFWC+fNIhS7U9kzRzMMNtmxtlgVyDia7s1njdLLMMt
-	 EZ48ihOiOkUc55OC+1rbHLM0qGG55mTM+i5yzFfxRdaLJq12li1sbJEvYTqDprpH6S
-	 PrvQaK36DGiWRGOBg8gouFLj4m9t+wu8iiBa5JBE=
+	b=wrVNVW7vSSqmGukf4XWMIEby+MMGM+IZHKa49oKTtHZCTq4JpxoqdWMyjD+rV/tim
+	 +8gsI0ATwlL+37fTSdm216OgofFQpo1Zw3kuAJWXwUwykWbeHARKOZuEnjy5SbNsFc
+	 TZAOGmDXs4+vgPIZHtRtkSTH4z59k58YcFCSQb6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 402/565] PCI: cadence: Check for the existence of cdns_pcie::ops before using it
+Subject: [PATCH 6.17 688/849] RDMA/hns: Fix recv CQ and QP cache affinity
 Date: Tue, 11 Nov 2025 09:44:18 +0900
-Message-ID: <20251111004535.916505587@linuxfoundation.org>
+Message-ID: <20251111004553.060883759@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,181 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Wang <unicorn_wang@outlook.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 49a6c160ad4812476f8ae1a8f4ed6d15adfa6c09 ]
+[ Upstream commit c4b67b514af8c2d73c64b36e0cd99e9b26b9ac82 ]
 
-cdns_pcie::ops might not be populated by all the Cadence glue drivers. This
-is going to be true for the upcoming Sophgo platform which doesn't set the
-ops.
+Currently driver enforces affinity between QP cache and send CQ
+cache, which helps improve the performance of sending, but doesn't
+set affinity with recv CQ cache, resulting in suboptimal performance
+of receiving.
 
-Hence, add a check to prevent NULL pointer dereference.
+Use one CQ bank per context to ensure the affinity among QP, send CQ
+and recv CQ. For kernel ULP, CQ bank is fixed to 0.
 
-Signed-off-by: Chen Wang <unicorn_wang@outlook.com>
-[mani: reworded subject and description]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/35182ee1d972dfcd093a964e11205efcebbdc044.1757643388.git.unicorn_wang@outlook.com
+Fixes: 9e03dbea2b06 ("RDMA/hns: Fix CQ and QP cache affinity")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20251016114051.1963197-2-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-host.c | 2 +-
- drivers/pci/controller/cadence/pcie-cadence.c      | 4 ++--
- drivers/pci/controller/cadence/pcie-cadence.h      | 6 +++---
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_cq.c     | 58 +++++++++++++++++++--
+ drivers/infiniband/hw/hns/hns_roce_device.h |  4 ++
+ drivers/infiniband/hw/hns/hns_roce_main.c   |  4 ++
+ 3 files changed, 63 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
-index 741e10a575ec7..675b7ea6ff784 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-host.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
-@@ -452,7 +452,7 @@ static int cdns_pcie_host_init_address_translation(struct cdns_pcie_rc *rc)
- 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_PCI_ADDR1(0), addr1);
- 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(0), desc1);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_cq.c b/drivers/infiniband/hw/hns/hns_roce_cq.c
+index 3a5c93c9fb3e6..6aa82fe9dd3df 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_cq.c
++++ b/drivers/infiniband/hw/hns/hns_roce_cq.c
+@@ -30,6 +30,7 @@
+  * SOFTWARE.
+  */
  
--	if (pcie->ops->cpu_addr_fixup)
-+	if (pcie->ops && pcie->ops->cpu_addr_fixup)
- 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
++#include <linux/pci.h>
+ #include <rdma/ib_umem.h>
+ #include <rdma/uverbs_ioctl.h>
+ #include "hns_roce_device.h"
+@@ -37,6 +38,43 @@
+ #include "hns_roce_hem.h"
+ #include "hns_roce_common.h"
  
- 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(12) |
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.c b/drivers/pci/controller/cadence/pcie-cadence.c
-index 4251fac5e3106..a1b66dbfc10f8 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence.c
-@@ -90,7 +90,7 @@ void cdns_pcie_set_outbound_region(struct cdns_pcie *pcie, u8 busnr, u8 fn,
- 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(r), desc1);
- 
- 	/* Set the CPU address */
--	if (pcie->ops->cpu_addr_fixup)
-+	if (pcie->ops && pcie->ops->cpu_addr_fixup)
- 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
- 
- 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(nbits) |
-@@ -120,7 +120,7 @@ void cdns_pcie_set_outbound_region_for_normal_msg(struct cdns_pcie *pcie,
- 	}
- 
- 	/* Set the CPU address */
--	if (pcie->ops->cpu_addr_fixup)
-+	if (pcie->ops && pcie->ops->cpu_addr_fixup)
- 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
- 
- 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(17) |
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
-index 39ee9945c903e..c267566fa76ec 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.h
-+++ b/drivers/pci/controller/cadence/pcie-cadence.h
-@@ -499,7 +499,7 @@ static inline u32 cdns_pcie_ep_fn_readl(struct cdns_pcie *pcie, u8 fn, u32 reg)
- 
- static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
++void hns_roce_put_cq_bankid_for_uctx(struct hns_roce_ucontext *uctx)
++{
++	struct hns_roce_dev *hr_dev = to_hr_dev(uctx->ibucontext.device);
++	struct hns_roce_cq_table *cq_table = &hr_dev->cq_table;
++
++	if (hr_dev->pci_dev->revision < PCI_REVISION_ID_HIP09)
++		return;
++
++	mutex_lock(&cq_table->bank_mutex);
++	cq_table->ctx_num[uctx->cq_bank_id]--;
++	mutex_unlock(&cq_table->bank_mutex);
++}
++
++void hns_roce_get_cq_bankid_for_uctx(struct hns_roce_ucontext *uctx)
++{
++	struct hns_roce_dev *hr_dev = to_hr_dev(uctx->ibucontext.device);
++	struct hns_roce_cq_table *cq_table = &hr_dev->cq_table;
++	u32 least_load = cq_table->ctx_num[0];
++	u8 bankid = 0;
++	u8 i;
++
++	if (hr_dev->pci_dev->revision < PCI_REVISION_ID_HIP09)
++		return;
++
++	mutex_lock(&cq_table->bank_mutex);
++	for (i = 1; i < HNS_ROCE_CQ_BANK_NUM; i++) {
++		if (cq_table->ctx_num[i] < least_load) {
++			least_load = cq_table->ctx_num[i];
++			bankid = i;
++		}
++	}
++	cq_table->ctx_num[bankid]++;
++	mutex_unlock(&cq_table->bank_mutex);
++
++	uctx->cq_bank_id = bankid;
++}
++
+ static u8 get_least_load_bankid_for_cq(struct hns_roce_bank *bank)
  {
--	if (pcie->ops->start_link)
-+	if (pcie->ops && pcie->ops->start_link)
- 		return pcie->ops->start_link(pcie);
- 
- 	return 0;
-@@ -507,13 +507,13 @@ static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
- 
- static inline void cdns_pcie_stop_link(struct cdns_pcie *pcie)
- {
--	if (pcie->ops->stop_link)
-+	if (pcie->ops && pcie->ops->stop_link)
- 		pcie->ops->stop_link(pcie);
+ 	u32 least_load = bank[0].inuse;
+@@ -55,7 +93,21 @@ static u8 get_least_load_bankid_for_cq(struct hns_roce_bank *bank)
+ 	return bankid;
  }
  
- static inline bool cdns_pcie_link_up(struct cdns_pcie *pcie)
+-static int alloc_cqn(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
++static u8 select_cq_bankid(struct hns_roce_dev *hr_dev,
++			   struct hns_roce_bank *bank, struct ib_udata *udata)
++{
++	struct hns_roce_ucontext *uctx = udata ?
++		rdma_udata_to_drv_context(udata, struct hns_roce_ucontext,
++					  ibucontext) : NULL;
++
++	if (hr_dev->pci_dev->revision >= PCI_REVISION_ID_HIP09)
++		return uctx ? uctx->cq_bank_id : 0;
++
++	return get_least_load_bankid_for_cq(bank);
++}
++
++static int alloc_cqn(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq,
++		     struct ib_udata *udata)
  {
--	if (pcie->ops->link_up)
-+	if (pcie->ops && pcie->ops->link_up)
- 		return pcie->ops->link_up(pcie);
+ 	struct hns_roce_cq_table *cq_table = &hr_dev->cq_table;
+ 	struct hns_roce_bank *bank;
+@@ -63,7 +115,7 @@ static int alloc_cqn(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
+ 	int id;
  
- 	return true;
+ 	mutex_lock(&cq_table->bank_mutex);
+-	bankid = get_least_load_bankid_for_cq(cq_table->bank);
++	bankid = select_cq_bankid(hr_dev, cq_table->bank, udata);
+ 	bank = &cq_table->bank[bankid];
+ 
+ 	id = ida_alloc_range(&bank->ida, bank->min, bank->max, GFP_KERNEL);
+@@ -396,7 +448,7 @@ int hns_roce_create_cq(struct ib_cq *ib_cq, const struct ib_cq_init_attr *attr,
+ 		goto err_cq_buf;
+ 	}
+ 
+-	ret = alloc_cqn(hr_dev, hr_cq);
++	ret = alloc_cqn(hr_dev, hr_cq, udata);
+ 	if (ret) {
+ 		ibdev_err(ibdev, "failed to alloc CQN, ret = %d.\n", ret);
+ 		goto err_cq_db;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_device.h b/drivers/infiniband/hw/hns/hns_roce_device.h
+index 78ee04a48a74a..06832c0ac0556 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_device.h
++++ b/drivers/infiniband/hw/hns/hns_roce_device.h
+@@ -217,6 +217,7 @@ struct hns_roce_ucontext {
+ 	struct mutex		page_mutex;
+ 	struct hns_user_mmap_entry *db_mmap_entry;
+ 	u32			config;
++	u8 cq_bank_id;
+ };
+ 
+ struct hns_roce_pd {
+@@ -495,6 +496,7 @@ struct hns_roce_cq_table {
+ 	struct hns_roce_hem_table	table;
+ 	struct hns_roce_bank bank[HNS_ROCE_CQ_BANK_NUM];
+ 	struct mutex			bank_mutex;
++	u32 ctx_num[HNS_ROCE_CQ_BANK_NUM];
+ };
+ 
+ struct hns_roce_srq_table {
+@@ -1305,5 +1307,7 @@ hns_roce_user_mmap_entry_insert(struct ib_ucontext *ucontext, u64 address,
+ 				size_t length,
+ 				enum hns_roce_mmap_type mmap_type);
+ bool check_sl_valid(struct hns_roce_dev *hr_dev, u8 sl);
++void hns_roce_put_cq_bankid_for_uctx(struct hns_roce_ucontext *uctx);
++void hns_roce_get_cq_bankid_for_uctx(struct hns_roce_ucontext *uctx);
+ 
+ #endif /* _HNS_ROCE_DEVICE_H */
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index d50f36f8a1107..f3607fe107a7f 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -425,6 +425,8 @@ static int hns_roce_alloc_ucontext(struct ib_ucontext *uctx,
+ 	if (ret)
+ 		goto error_fail_copy_to_udata;
+ 
++	hns_roce_get_cq_bankid_for_uctx(context);
++
+ 	return 0;
+ 
+ error_fail_copy_to_udata:
+@@ -447,6 +449,8 @@ static void hns_roce_dealloc_ucontext(struct ib_ucontext *ibcontext)
+ 	struct hns_roce_ucontext *context = to_hr_ucontext(ibcontext);
+ 	struct hns_roce_dev *hr_dev = to_hr_dev(ibcontext->device);
+ 
++	hns_roce_put_cq_bankid_for_uctx(context);
++
+ 	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_CQ_RECORD_DB ||
+ 	    hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_QP_RECORD_DB)
+ 		mutex_destroy(&context->page_mutex);
 -- 
 2.51.0
 
