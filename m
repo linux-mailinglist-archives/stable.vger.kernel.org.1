@@ -1,40 +1,56 @@
-Return-Path: <stable+bounces-194436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B33FC4B80F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 06:12:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 277C3C4B8DD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 06:39:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AEAB334D64C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 05:12:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D41AB3B0A33
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 05:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5820527E049;
-	Tue, 11 Nov 2025 05:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777FC2848B4;
+	Tue, 11 Nov 2025 05:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="hQhLsiQX"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC3F192B75;
-	Tue, 11 Nov 2025 05:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D48A277CA4;
+	Tue, 11 Nov 2025 05:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762837972; cv=none; b=toCpc8sSKw0ySE3Qcj+R/4s3JnU9ZCvoQApfvUPFkamL8RSv/WQlxcz/j19fY/9yrX655LE5zBsWUJDqyx3g5q47RbMjK7VuzZ9rf8SQWZu7pgzKsM0USUN+IE/v4+hLdJhhpWIiLJhwF44BNCpdvMDB6LAZCgUZxE6BCLCB+6I=
+	t=1762839549; cv=none; b=kdRSokv6OdugInVdfvSJjQ5/bIyNs7VQGstVVbTYC68MRpUO6XYYc1CWdt4yZK4GWhhJ4vkIoUob66C8nCm9lXjurUMRtoL2KhlH3V3a0n45WSECnx6T8PmQK50Ve7oDYe87OUMGA1NH0uMBu3N7aGZyCqCEXidrgtydU5LVGyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762837972; c=relaxed/simple;
-	bh=ybHQewpBqmXq74HdFXym7It1mNLyXlXzMhLBKfsR7/Y=;
+	s=arc-20240116; t=1762839549; c=relaxed/simple;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uO9fZAuT6zQM6qAE9jpMTdE9oysnPXUyB6DzJDUw80uP2mpZ5TRm//7Zow2AKGc7bkRGj0ru61fvR8flmg9GsrDGd/0ePfqatgjeJWkKkJ4rphC/oyLQHC/eSU1GR2mVB4wjjvjqwuXkfeCZhik+3oByFBr6CpB+gKqcX/t5Wfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2668B2B;
-	Mon, 10 Nov 2025 21:12:40 -0800 (PST)
-Received: from [10.164.136.36] (unknown [10.164.136.36])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DBE473F66E;
-	Mon, 10 Nov 2025 21:12:44 -0800 (PST)
-Message-ID: <19def538-3fb6-48a1-ae8b-a82139b8bbb9@arm.com>
-Date: Tue, 11 Nov 2025 10:42:41 +0530
+	 In-Reply-To:Content-Type; b=XYx7fUuCjf0DuOUM68Hl6Shh7dGfUrdB6TWhWxOpGzmZ2KUorzz9fCltSsvvLavUxDREtnH+dUTKkG6DUpgcKQ06RK2Rc+Z/VHhYmbBvDbv0gTXFxcNtd3u0/gjVkWt+KDUKBeiY42sqDihscmZU+u0tfVfkmxP8tBwFW2oTNdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=hQhLsiQX; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1762839538; x=1763444338; i=rwarsow@gmx.de;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=hQhLsiQX+x39tlsI0RjBLWrmAiX6LceWjGD94lGuuu2pr9wi36fnGyPUjZjIPdc3
+	 RP0jlb5B80+Ms4r7ZofdPbTh2AaX8FIoncNZWttdyseZ9PKti3bYbPlu7N0P974tk
+	 UEeQ1oPErCNmI4NwoV7jS7IOsXQ1Rar2YDQ54MngSrMZ/NNkEqdewkc3d42mb3OyJ
+	 MgHpACxpvYLgEhrZUxnSjXdgiMQm0vw9umdm/HMrz3O2lrWvHp+Q85S22nNNAFNar
+	 25l/1+BqMwSjZSEmRUvx1tWX31LUyG5hfFNxwhz0sz1D9iwRbASvmqUDtcn0Mw8Rp
+	 J/VRHZGHnWL/sMsufg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.33.173]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MRmjw-1vkhGC2pB4-00MkUq; Tue, 11
+ Nov 2025 06:38:58 +0100
+Message-ID: <7233ee9a-9ba6-46a9-9baa-7aab6641d1fb@gmx.de>
+Date: Tue, 11 Nov 2025 06:38:56 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,284 +58,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64/pageattr: Propagate return value from
- __change_memory_common
-To: Yang Shi <yang@os.amperecomputing.com>, Will Deacon <will@kernel.org>
-Cc: catalin.marinas@arm.com, ryan.roberts@arm.com, rppt@kernel.org,
- shijie@os.amperecomputing.com, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20251103061306.82034-1-dev.jain@arm.com>
- <aQjHQt2rYL6av4qw@willie-the-truck>
- <f594696b-ba33-4c04-9cf5-e88767221ae0@os.amperecomputing.com>
- <f8b899cf-d377-4dc7-a57c-82826ea5e1ea@arm.com>
- <aQn4EwKar66UZ7rz@willie-the-truck>
- <586b8d19-a5d2-4248-869b-98f39b792acb@arm.com>
- <17eed751-e1c5-4ea5-af1d-e96da16d5e26@arm.com>
- <c1701ce9-c8b7-4ac8-8dd4-930af3dad7d2@os.amperecomputing.com>
- <938fc839-b27a-484f-a49c-6dc05b3e9983@arm.com>
- <94c91f8f-cd8f-4f51-961f-eb2904420ee4@os.amperecomputing.com>
- <47f0fe70-5359-4b98-8a23-c09ab20bd6d9@arm.com>
- <ca628d43-502a-42f1-be57-bcb37103ddf8@os.amperecomputing.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <ca628d43-502a-42f1-be57-bcb37103ddf8@os.amperecomputing.com>
+Subject: Re: [PATCH 6.17 000/849] 6.17.8-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20251111004536.460310036@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:M0F5RI+/ksTEirpr+igM5D2b8jUxPdhAgqxbZdmAkjZ1nyLSBfv
+ iX+SbOnircF4neBzSGDyqLsOUfU6TS2xi2qiB2ktJqLASLnEDlXJYTgLTkKm0Qiiqgd9qvX
+ qaBQS90h0erul0MgDYRr141la/hda5BDVKgnxcP8IVfenYSmo9ACvseu7tzcf5qQEavGcRh
+ UyxvsejALRqwkVUWayu/A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:mnGsFjCWo8I=;5iHAVJ2HHM2AUeGOVKW3iDmDDno
+ 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
 
+Hi
 
-On 11/11/25 10:38 am, Yang Shi wrote:
->
->
-> On 11/10/25 8:55 PM, Dev Jain wrote:
->>
->> On 11/11/25 10:14 am, Yang Shi wrote:
->>>
->>>
->>> On 11/10/25 8:37 PM, Dev Jain wrote:
->>>>
->>>> On 11/11/25 9:47 am, Yang Shi wrote:
->>>>>
->>>>>
->>>>> On 11/10/25 7:39 PM, Dev Jain wrote:
->>>>>>
->>>>>> On 05/11/25 9:27 am, Dev Jain wrote:
->>>>>>>
->>>>>>> On 04/11/25 6:26 pm, Will Deacon wrote:
->>>>>>>> On Tue, Nov 04, 2025 at 09:06:12AM +0530, Dev Jain wrote:
->>>>>>>>> On 04/11/25 12:15 am, Yang Shi wrote:
->>>>>>>>>> On 11/3/25 7:16 AM, Will Deacon wrote:
->>>>>>>>>>> On Mon, Nov 03, 2025 at 11:43:06AM +0530, Dev Jain wrote:
->>>>>>>>>>>> Post a166563e7ec3 ("arm64: mm: support large block mapping 
->>>>>>>>>>>> when
->>>>>>>>>>>> rodata=full"),
->>>>>>>>>>>> __change_memory_common has a real chance of failing due to 
->>>>>>>>>>>> split
->>>>>>>>>>>> failure.
->>>>>>>>>>>> Before that commit, this line was introduced in c55191e96caa,
->>>>>>>>>>>> still having
->>>>>>>>>>>> a chance of failing if it needs to allocate pagetable 
->>>>>>>>>>>> memory in
->>>>>>>>>>>> apply_to_page_range, although that has never been observed 
->>>>>>>>>>>> to be true.
->>>>>>>>>>>> In general, we should always propagate the return value to 
->>>>>>>>>>>> the caller.
->>>>>>>>>>>>
->>>>>>>>>>>> Cc: stable@vger.kernel.org
->>>>>>>>>>>> Fixes: c55191e96caa ("arm64: mm: apply r/o permissions of VM
->>>>>>>>>>>> areas to its linear alias as well")
->>>>>>>>>>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>>>>>>>>>> ---
->>>>>>>>>>>> Based on Linux 6.18-rc4.
->>>>>>>>>>>>
->>>>>>>>>>>>    arch/arm64/mm/pageattr.c | 5 ++++-
->>>>>>>>>>>>    1 file changed, 4 insertions(+), 1 deletion(-)
->>>>>>>>>>>>
->>>>>>>>>>>> diff --git a/arch/arm64/mm/pageattr.c 
->>>>>>>>>>>> b/arch/arm64/mm/pageattr.c
->>>>>>>>>>>> index 5135f2d66958..b4ea86cd3a71 100644
->>>>>>>>>>>> --- a/arch/arm64/mm/pageattr.c
->>>>>>>>>>>> +++ b/arch/arm64/mm/pageattr.c
->>>>>>>>>>>> @@ -148,6 +148,7 @@ static int change_memory_common(unsigned
->>>>>>>>>>>> long addr, int numpages,
->>>>>>>>>>>>        unsigned long size = PAGE_SIZE * numpages;
->>>>>>>>>>>>        unsigned long end = start + size;
->>>>>>>>>>>>        struct vm_struct *area;
->>>>>>>>>>>> +    int ret;
->>>>>>>>>>>>        int i;
->>>>>>>>>>>>          if (!PAGE_ALIGNED(addr)) {
->>>>>>>>>>>> @@ -185,8 +186,10 @@ static int change_memory_common(unsigned
->>>>>>>>>>>> long addr, int numpages,
->>>>>>>>>>>>        if (rodata_full && (pgprot_val(set_mask) == 
->>>>>>>>>>>> PTE_RDONLY ||
->>>>>>>>>>>>                    pgprot_val(clear_mask) == PTE_RDONLY)) {
->>>>>>>>>>>>            for (i = 0; i < area->nr_pages; i++) {
->>>>>>>>>>>> - __change_memory_common((u64)page_address(area->pages[i]),
->>>>>>>>>>>> +            ret =
->>>>>>>>>>>> __change_memory_common((u64)page_address(area->pages[i]),
->>>>>>>>>>>>                               PAGE_SIZE, set_mask, 
->>>>>>>>>>>> clear_mask);
->>>>>>>>>>>> +            if (ret)
->>>>>>>>>>>> +                return ret;
->>>>>>>>>>> Hmm, this means we can return failure half-way through the 
->>>>>>>>>>> operation. Is
->>>>>>>>>>> that something callers are expecting to handle? If so, how 
->>>>>>>>>>> can they tell
->>>>>>>>>>> how far we got?
->>>>>>>>>> IIUC the callers don't have to know whether it is half-way or 
->>>>>>>>>> not
->>>>>>>>>> because the callers will change the permission back (e.g. to 
->>>>>>>>>> RW) for the
->>>>>>>>>> whole range when freeing memory.
->>>>>>>>> Yes, it is the caller's responsibility to set 
->>>>>>>>> VM_FLUSH_RESET_PERMS flag.
->>>>>>>>> Upon vfree(), it will change the direct map permissions back 
->>>>>>>>> to RW.
->>>>>>>> Ok, but vfree() ends up using update_range_prot() to do that 
->>>>>>>> and if we
->>>>>>>> need to worry about that failing (as per your commit message), 
->>>>>>>> then
->>>>>>>> we're in trouble because the calls to set_area_direct_map() are 
->>>>>>>> unchecked.
->>>>>>>>
->>>>>>>> In other words, this patch is either not necessary or it is 
->>>>>>>> incomplete.
->>>>>>>
->>>>>>> Here is the relevant email, in the discussion between Ryan and 
->>>>>>> Yang:
->>>>>>>
->>>>>>> https://lore.kernel.org/all/fe52a1d8-5211-4962-afc8-c3f9caf64119@os.amperecomputing.com/ 
->>>>>>>
->>>>>>>
->>>>>>> We had concluded that all callers of set_memory_ro() or 
->>>>>>> set_memory_rox() (which require the
->>>>>>> linear map perm change back to default, upon vfree() ) will call 
->>>>>>> it for the entire region (vm_struct).
->>>>>>> So, when we do the set_direct_map_invalid_noflush, it is 
->>>>>>> guaranteed that the region has already
->>>>>>> been split. So this call cannot fail.
->>>>>>>
->>>>>>> https://lore.kernel.org/all/f8898c87-8f49-4ef2-86ae-b60bcf67658c@os.amperecomputing.com/ 
->>>>>>>
->>>>>>>
->>>>>>> This email notes that there is some code doing set_memory_rw() 
->>>>>>> and unnecessarily setting the VM_FLUSH_RESET_PERMS
->>>>>>> flag, but in that case we don't care about the 
->>>>>>> set_direct_map_invalid_noflush call failing because the protections
->>>>>>> are already RW.
->>>>>>>
->>>>>>> Although we had also observed that all of this is fragile and 
->>>>>>> depends on the caller doing the
->>>>>>> correct thing. The real solution should be somehow getting rid 
->>>>>>> of the BBM style invalidation.
->>>>>>> Ryan had proposed some methods in that email thread.
->>>>>>>
->>>>>>> One solution which I had thought of, is that, observe that we 
->>>>>>> are doing an overkill by
->>>>>>> setting the linear map to invalid and then default, for the 
->>>>>>> *entire* region. What we
->>>>>>> can do is iterate over the linear map alias of the vm_struct 
->>>>>>> *area and only change permission
->>>>>>> back to RW for the pages which are *not* RW. And, those relevant 
->>>>>>> mappings are guaranteed to
->>>>>>> be split because they were changed from RW to not RW.
->>>>>>
->>>>>> @Yang and Ryan,
->>>>>>
->>>>>> I saw Yang's patch here:
->>>>>> https://lore.kernel.org/all/20251023204428.477531-1-yang@os.amperecomputing.com/ 
->>>>>>
->>>>>> and realized that currently we are splitting away the linear map 
->>>>>> alias of the *entire* region.
->>>>>>
->>>>>> Shouldn't this then imply that set_direct_map_invalid_noflush 
->>>>>> will never fail, since even
->>>>>>
->>>>>> a set_memory_rox() call on a single page will split the linear 
->>>>>> map for the entire region,
->>>>>>
->>>>>> and thus there is no fragility here which we were discussing 
->>>>>> about? I may be forgetting
->>>>>>
->>>>>> something, this linear map stuff is confusing enough already.
->>>>>
->>>>> It still may fail due to page table allocation failure when doing 
->>>>> split. But it is still fine. We may run into 3 cases:
->>>>>
->>>>> 1. set_memory_rox succeed to split the whole range, then 
->>>>> set_direct_map_invalid_noflush() will succeed too
->>>>> 2. set_memory_rox fails to split, for example, just change partial 
->>>>> range permission due to page table allocation failure, then 
->>>>> set_direct_map_invalid_noflush() may
->>>>>    a. successfully change the permission back to default till 
->>>>> where set_memory_rox fails at since that range has been 
->>>>> successfully split. It is ok since the remaining range is actually 
->>>>> not changed to ro by set_memory_rox at all
->>>>>    b. successfully change the permission back to default for the 
->>>>> whole range (for example, memory pressure is mitigated when 
->>>>> set_direct_map_invalid_noflush() is called). It is definitely fine 
->>>>> as well
->>>>
->>>> Correct, what I mean to imply here is that, your patch will break 
->>>> this? If set_memory_* is applied on x till y, your patch changes 
->>>> the linear map alias
->>>>
->>>> only from x till y - set_direct_map_invalid_noflush instead 
->>>> operates on 0 till size - 1, where 0 <=x <=y <= size - 1. So, it 
->>>> may encounter a -ENOMEM
->>>>
->>>> on [0, x) range while invalidating, and that is *not* okay because 
->>>> we must reset back [0, x) to default?
->>>
->>> I see your point now. But I think the callers need to guarantee they 
->>> call set_memory_rox and set_direct_map_invalid_noflush on the same 
->>> range, right? Currently kernel just calls them on the whole area.
->>
->> Nope. The fact that the kernel changes protections, and undoes the 
->> changed protections, on the *entire* alias of the vm_struct region, 
->> protects us from the fragility we were talking about earlier.
->
-> This is what I meant "kernel just calls them on the whole area".
->
->>
->> Suppose you have a range from 0 till size - 1, and you call 
->> set_memory_* on a random point (page) p. The argument we discussed 
->> above is independent of p, which lets us drop our
->>
->> previous erroneous conclusion that all of this works because no 
->> caller does a partial set_memory_*.
->
-> Sorry I don't follow you. What "erroneous conclusion" do you mean? You 
-> can call set_memory_* on a random point, but 
-> set_direct_map_invalid_noflush() should be called on the random point 
-> too. The current code of set_area_direct_map() doesn't consider this 
-> case because there is no such call. Is this what you meant?
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
+Thanks
 
-I was referring to the discussion in the linear map work - I think we 
-had concluded that we don't need to worry about the BBM style 
-invalidation failing, *because* no one does a partial set_memory_*.
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
-What I am saying - we don't care whether caller does a partial or a full 
-set_memory_*, we are still safe, because the linear map alias change on 
-both sides (set_memory_* -> __change_memory_common, and vm_reset_perms 
--> set_area_direct_map() )
-
-operate on the entire region.
-
-
->
->>
->>
->> I would like to send a patch clearly documenting this behaviour, 
->> assuming no one else finds a hole in this reasoning.
->
-> Proper comment to explain the subtle behavior is definitely welcome.
->
-> Thanks,
-> Yang
->
->>
->>
->>>
->>> Thanks,
->>> Yang
->>>
->>>>
->>>>
->>>>>
->>>>> Hopefully I don't miss anything.
->>>>>
->>>>> Thanks,
->>>>> Yang
->>>>>
->>>>>
->>>>>>
->>>>>>
->>>>>>>
->>>>>>>>
->>>>>>>> Will
->>>>>>>
->>>>>
->>>
->
 
