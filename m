@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216BFC4B0EB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:56:29 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98320C4AC79
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66D2F188381A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 31A364FB1FB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C2D340D9A;
-	Tue, 11 Nov 2025 01:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F113E331A74;
+	Tue, 11 Nov 2025 01:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMIuVoqF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRO4TlEF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C86133B955;
-	Tue, 11 Nov 2025 01:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB84E263F28;
+	Tue, 11 Nov 2025 01:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825322; cv=none; b=RTo1qq9lXIng2JBXtn/z/WPBLXcK+iWdL9QlHxQzayay6i4QPfJu1hofViAQc0vKrFFr39mO8KRCpgjQKnSv4r7AAz2ssyVqA2bIR20R4okILPLekIKaV8UiUaU32fiFXDJ/nl8ny2e1ZNhSI1hIAzhQE3hDzPMuTNkTxl9+1WY=
+	t=1762824544; cv=none; b=Jb1MyvdbpmM4wEw7Te5Pmqm8lhszyrzcr+C2+/NPlRIJbDl7bOUJHTw06oj/wuZeDHUbcg2GeGIZ3ObH7NGsDa59CiIcxVZxv32E04jzWTGZHp0jS29+zZBvQouIEP3D1NP77ABUDq7PzwxJYk8vlDz6ARFh+rvK5pvd86TbpQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825322; c=relaxed/simple;
-	bh=Ho2qf58uEKgX4udxdzx6MQw1Rf7e8SZfWYoCzxyZlzk=;
+	s=arc-20240116; t=1762824544; c=relaxed/simple;
+	bh=Ty+nRpOiBBeQn29wGZuUzB+8T2aiRwob0zeFSRNzwl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ApZK4SKVdNvEvHTmAF/0rwRfpFCnmeZjR33XizOkdjtkWsxCBmpk5tO2MaC/COdIVlA1h02AhO7d3tAP4YSMT4PoAMxy0zssjMPwsMeoUVy4N9igLBhfGFBJFx4J7vaWf/jezSF5OhlzG4k+JVEIIyyEMlRj9ddZuIQZYDjHM00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMIuVoqF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81ABBC19425;
-	Tue, 11 Nov 2025 01:42:01 +0000 (UTC)
+	 MIME-Version; b=rd15gNkK+qWdEcNidkgWQnvoaSy4uzoWD0NQYhkxgUAOlC+3BpnN0vf9YngxF91BLbD9DaerFBCWqXX8zRe4jFMFO6o8X1pe9SOaqPnMsQPD/NhL9e535OGWLAJPVzTBixhf5ESI8kBty/Y4YdGzj/GkCJg/OH6kkBSMN+XKUZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRO4TlEF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8CAC116D0;
+	Tue, 11 Nov 2025 01:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825321;
-	bh=Ho2qf58uEKgX4udxdzx6MQw1Rf7e8SZfWYoCzxyZlzk=;
+	s=korg; t=1762824544;
+	bh=Ty+nRpOiBBeQn29wGZuUzB+8T2aiRwob0zeFSRNzwl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HMIuVoqFmBsPyMiCm16ru+9ylKLkq2DylyL0n9lBDBnnUUFYVbz+mIk7k24mht5Hi
-	 5CxKASZ7VrLHngSr7qy0MeHbudqt4nLJkwpidGUrfEEkhvodp3anJvV5ZZBqzH8qYE
-	 8v933Uyi+38kHYjBRNf5T5DAZHjXIO+XJgVA20cI=
+	b=gRO4TlEF/n6QiH8sj1EYpi2uB1FJb2een2vVc/h0zLtAPfHqhZAr0ZPLW2JPuPGSz
+	 6U8sqpMbNwtlrHJyvkrH0sN/Lv9YYOg9hzcIl78cJHSMTxSz6eljT3CZCbG6SWDHpQ
+	 heXhuc2lZZdeoZBD4ErANcFPB2MPPe21hKGB9s2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Lee <chullee@google.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 751/849] scsi: ufs: core: Fix a race condition related to the "hid" attribute group
-Date: Tue, 11 Nov 2025 09:45:21 +0900
-Message-ID: <20251111004554.590969951@linuxfoundation.org>
+Subject: [PATCH 6.12 466/565] clk: sunxi-ng: sun6i-rtc: Add A523 specifics
+Date: Tue, 11 Nov 2025 09:45:22 +0900
+Message-ID: <20251111004537.385017383@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Chen-Yu Tsai <wens@csie.org>
 
-[ Upstream commit c74dc8ab47c1ec3927f63ca83b542c363249b3d8 ]
+[ Upstream commit 7aa8781f379c32c31bd78f1408a31765b2297c43 ]
 
-ufs_sysfs_add_nodes() is called concurrently with ufs_get_device_desc().
-This may cause the following code to be called before
-ufs_sysfs_add_nodes():
+The A523's RTC block is backward compatible with the R329's, but it also
+has a calibration function for its internal oscillator, which would
+allow it to provide a clock rate closer to the desired 32.768 KHz. This
+is useful on the Radxa Cubie A5E, which does not have an external 32.768
+KHz crystal.
 
-	sysfs_update_group(&hba->dev->kobj, &ufs_sysfs_hid_group);
+Add new compatible-specific data for it.
 
-If this happens, ufs_sysfs_add_nodes() triggers a kernel warning and
-fails. Fix this by calling ufs_sysfs_add_nodes() before SCSI LUNs are
-scanned since the sysfs_update_group() call happens from the context of
-thread that executes ufshcd_async_scan(). This patch fixes the following
-kernel warning:
-
-sysfs: cannot create duplicate filename '/devices/platform/3c2d0000.ufs/hid'
-Workqueue: async async_run_entry_fn
-Call trace:
- dump_backtrace+0xfc/0x17c
- show_stack+0x18/0x28
- dump_stack_lvl+0x40/0x104
- dump_stack+0x18/0x3c
- sysfs_warn_dup+0x6c/0xc8
- internal_create_group+0x1c8/0x504
- sysfs_create_groups+0x38/0x9c
- ufs_sysfs_add_nodes+0x20/0x58
- ufshcd_init+0x1114/0x134c
- ufshcd_pltfrm_init+0x728/0x7d8
- ufs_google_probe+0x30/0x84
- platform_probe+0xa0/0xe0
- really_probe+0x114/0x454
- __driver_probe_device+0xa4/0x160
- driver_probe_device+0x44/0x23c
- __device_attach_driver+0x15c/0x1f4
- bus_for_each_drv+0x10c/0x168
- __device_attach_async_helper+0x80/0xf8
- async_run_entry_fn+0x4c/0x17c
- process_one_work+0x26c/0x65c
- worker_thread+0x33c/0x498
- kthread+0x110/0x134
- ret_from_fork+0x10/0x20
-ufshcd 3c2d0000.ufs: ufs_sysfs_add_nodes: sysfs groups creation failed (err = -17)
-
-Cc: Daniel Lee <chullee@google.com>
-Fixes: bb7663dec67b ("scsi: ufs: sysfs: Make HID attributes visible")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251014200118.3390839-2-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20250909170947.2221611-1-wens@kernel.org
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/sunxi-ng/ccu-sun6i-rtc.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index b6d5d135527c0..8208a26c3ed63 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10869,8 +10869,8 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
- 	if (err)
- 		goto out_disable;
+diff --git a/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c b/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c
+index 87e23d16ed0f3..50a85f33b8fbb 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c
++++ b/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c
+@@ -325,6 +325,13 @@ static const struct sun6i_rtc_match_data sun50i_r329_rtc_ccu_data = {
+ 	.osc32k_fanout_nparents	= ARRAY_SIZE(sun50i_r329_osc32k_fanout_parents),
+ };
  
--	async_schedule(ufshcd_async_scan, hba);
- 	ufs_sysfs_add_nodes(hba->dev);
-+	async_schedule(ufshcd_async_scan, hba);
- 
- 	device_enable_async_suspend(dev);
- 	ufshcd_pm_qos_init(hba);
++static const struct sun6i_rtc_match_data sun55i_a523_rtc_ccu_data = {
++	.have_ext_osc32k	= true,
++	.have_iosc_calibration	= true,
++	.osc32k_fanout_parents	= sun50i_r329_osc32k_fanout_parents,
++	.osc32k_fanout_nparents	= ARRAY_SIZE(sun50i_r329_osc32k_fanout_parents),
++};
++
+ static const struct of_device_id sun6i_rtc_ccu_match[] = {
+ 	{
+ 		.compatible	= "allwinner,sun50i-h616-rtc",
+@@ -334,6 +341,10 @@ static const struct of_device_id sun6i_rtc_ccu_match[] = {
+ 		.compatible	= "allwinner,sun50i-r329-rtc",
+ 		.data		= &sun50i_r329_rtc_ccu_data,
+ 	},
++	{
++		.compatible	= "allwinner,sun55i-a523-rtc",
++		.data		= &sun55i_a523_rtc_ccu_data,
++	},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, sun6i_rtc_ccu_match);
 -- 
 2.51.0
 
