@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABA50C4A186
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:59:41 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07308C4A1E1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 240413ACC56
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 07D054F4053
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11CF4C97;
-	Tue, 11 Nov 2025 00:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B51E24A043;
+	Tue, 11 Nov 2025 00:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfYDFOZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkilf0gr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA36244693;
-	Tue, 11 Nov 2025 00:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCB01C6FE1;
+	Tue, 11 Nov 2025 00:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822727; cv=none; b=kBP0QAdyO8CKYeOsbdHqZkhJj6aUJhomEhdzmVZfpVybQKfXgyBpoMX0wJdrI3QgotvY00GjLPXpmQAiyW4spKQ+gCd7UlreIrdKnQkx8kXViYQAVKDzX4j8pw5Zxn37yFcC7LNCVO9qnVTh7sAsIcL2Ggt51V605qf2gPsMtWs=
+	t=1762822732; cv=none; b=QuhD+05gpPpADaWPjzWoilhJs/V6M5zQsXE6e4KC3jdv8zIauU6HvnRh/fkIc0u7B19b5x2T3497GThhkr/q/fMggykOlsgKvgDXk5dl6kxjx+tlrGE3quZT+P/RsA0s3KDUMnf0O8CIlf15LiGY6wNUH/l2Yjbn9OxGJBj9qpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822727; c=relaxed/simple;
-	bh=tSYfcLOrx9Mc01SJCoamGchLkn+0W22VdaXD7QyUxfY=;
+	s=arc-20240116; t=1762822732; c=relaxed/simple;
+	bh=D6MxCog94nroTO5GT45KqCrpsGtMJ1TVsuBfUufFNzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4DOv/uMZVxwO8RXKGq8qmP5o6FJP/TG6AlE43kk357AH4CivyglyemTuzHUrpdDtwnfNX5/3uDBYknsJpSjLvkFIkfXCa/UzlxZ/5tqqUgdgQmm9prKt8k4FbmE6QM0Hn30/L8d4PNZ3jtTeGeUJnnGpLkZ9XqAYvPZLq9mu24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfYDFOZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEDEC4AF0B;
-	Tue, 11 Nov 2025 00:58:46 +0000 (UTC)
+	 MIME-Version; b=LAwJA/wbQ+jta3ahkW0rD12xz/iyU2RF4fB39crHo46E7fWCoVk/PJuc7cqqjXK6GU8VtX+l8lkELgDI0iTRY8S6N8kVPOJAJCxGYKpykv3vH3oCa6B5F3e3VnCjUsVIQVTV8i5tXoyez24cF92gxri6h9bg5sC7qIvlylg6nds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkilf0gr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88AA6C113D0;
+	Tue, 11 Nov 2025 00:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822727;
-	bh=tSYfcLOrx9Mc01SJCoamGchLkn+0W22VdaXD7QyUxfY=;
+	s=korg; t=1762822731;
+	bh=D6MxCog94nroTO5GT45KqCrpsGtMJ1TVsuBfUufFNzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gfYDFOZVM+55OUlFskTEewjWE0q+CNA1/RNw8OlnIG4mPcLd5K611UUOxowR8ZYYi
-	 dI1EM7xhzwLHCpSwQrhp82W8nZh2DtRptSDWnymt+QFstaJkT6n7MMjztLkpVuGgPq
-	 h7W+CFdzV17n1SUHvQ1Dr4/4mikeuJE7o5jKrHc0=
+	b=mkilf0grFAt/WYaGPSoiXDB9wmdfXqeSYCuKBQ/7RcOts956C2tRADS0+fG+B4Upy
+	 QRi4LM6XNg5aT6c5SbXsgSL6+AOKHUMPZaEqr/NZV2Eg5egtqzxUhFaOKzHUmnHlWB
+	 P8wUJbzvDKaVqPx1XVovMIrqj2gI86L6tWVgBTqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ober <dober@lenovo.com>,
-	David Ober <dober6023@gmail.com>,
+	Chuande Chen <chuachen@cisco.com>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 156/849] hwmon: (lenovo-ec-sensors) Update P8 supprt
-Date: Tue, 11 Nov 2025 09:35:26 +0900
-Message-ID: <20251111004540.202259936@linuxfoundation.org>
+Subject: [PATCH 6.17 157/849] hwmon: (sbtsi_temp) AMD CPU extended temperature range support
+Date: Tue, 11 Nov 2025 09:35:27 +0900
+Message-ID: <20251111004540.229751468@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,121 +66,138 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Ober <dober6023@gmail.com>
+From: Chuande Chen <chuachen@cisco.com>
 
-[ Upstream commit 43c056ac85b60232861005765153707f1b0354b6 ]
+[ Upstream commit d9d61f1da35038793156c04bb13f0a1350709121 ]
 
-This fixes differences for the P8 system that was initially set to
-the same thermal values as the P7, also adds in the PSU sensor for
-all of the supported systems
+Many AMD CPUs can support this feature now. We would get a wrong CPU DIE
+temperature if don't consider this. In low-temperature environments,
+the CPU die temperature can drop below zero. So many platforms would like
+to make extended temperature range as their default configuration.
+Default temperature range (0C to 255.875C).
+Extended temperature range (-49C to +206.875C).
+Ref Doc: AMD V3000 PPR (Doc ID #56558).
 
-Signed-off-by: David Ober <dober@lenovo.com>
-Signed-off-by: David Ober <dober6023@gmail.com>
-Link: https://lore.kernel.org/r/20250807103228.10465-1-dober6023@gmail.com
-[groeck: Update subject]
+Signed-off-by: Chuande Chen <chuachen@cisco.com>
+Link: https://lore.kernel.org/r/20250814053940.96764-1-chenchuande@gmail.com
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/lenovo-ec-sensors.c | 34 +++++++++++++++++++++++++++----
- 1 file changed, 30 insertions(+), 4 deletions(-)
+ drivers/hwmon/sbtsi_temp.c | 46 +++++++++++++++++++++++++-------------
+ 1 file changed, 31 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/hwmon/lenovo-ec-sensors.c b/drivers/hwmon/lenovo-ec-sensors.c
-index 143fb79713f7d..8681bbf6665b1 100644
---- a/drivers/hwmon/lenovo-ec-sensors.c
-+++ b/drivers/hwmon/lenovo-ec-sensors.c
-@@ -66,7 +66,7 @@ enum systems {
- 	LENOVO_P8,
- };
+diff --git a/drivers/hwmon/sbtsi_temp.c b/drivers/hwmon/sbtsi_temp.c
+index 3c839f56c4603..a6c439e376ff7 100644
+--- a/drivers/hwmon/sbtsi_temp.c
++++ b/drivers/hwmon/sbtsi_temp.c
+@@ -14,6 +14,7 @@
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/of.h>
++#include <linux/bitfield.h>
  
--static int px_temp_map[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-+static int px_temp_map[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 31, 32};
+ /*
+  * SB-TSI registers only support SMBus byte data access. "_INT" registers are
+@@ -29,8 +30,22 @@
+ #define SBTSI_REG_TEMP_HIGH_DEC		0x13 /* RW */
+ #define SBTSI_REG_TEMP_LOW_DEC		0x14 /* RW */
  
- static const char * const lenovo_px_ec_temp_label[] = {
- 	"CPU1",
-@@ -84,9 +84,29 @@ static const char * const lenovo_px_ec_temp_label[] = {
- 	"PCI_Z3",
- 	"PCI_Z4",
- 	"AMB",
-+	"PSU1",
-+	"PSU2",
- };
++/*
++ * Bit for reporting value with temperature measurement range.
++ * bit == 0: Use default temperature range (0C to 255.875C).
++ * bit == 1: Use extended temperature range (-49C to +206.875C).
++ */
++#define SBTSI_CONFIG_EXT_RANGE_SHIFT	2
++/*
++ * ReadOrder bit specifies the reading order of integer and decimal part of
++ * CPU temperature for atomic reads. If bit == 0, reading integer part triggers
++ * latching of the decimal part, so integer part should be read first.
++ * If bit == 1, read order should be reversed.
++ */
+ #define SBTSI_CONFIG_READ_ORDER_SHIFT	5
  
--static int gen_temp_map[] = {0, 2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-+static int p8_temp_map[] = {0, 1, 2, 8, 9, 13, 14, 15, 16, 17, 19, 20, 33};
++#define SBTSI_TEMP_EXT_RANGE_ADJ	49000
 +
-+static const char * const lenovo_p8_ec_temp_label[] = {
-+	"CPU1",
-+	"CPU_DIMM_BANK1",
-+	"CPU_DIMM_BANK2",
-+	"M2_Z2R",
-+	"M2_Z3R",
-+	"DIMM_RIGHT",
-+	"DIMM_LEFT",
-+	"PCI_Z1",
-+	"PCI_Z2",
-+	"PCI_Z3",
-+	"AMB",
-+	"REAR_VR",
-+	"PSU",
-+};
-+
-+static int gen_temp_map[] = {0, 2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 31};
+ #define SBTSI_TEMP_MIN	0
+ #define SBTSI_TEMP_MAX	255875
  
- static const char * const lenovo_gen_ec_temp_label[] = {
- 	"CPU1",
-@@ -101,6 +121,7 @@ static const char * const lenovo_gen_ec_temp_label[] = {
- 	"PCI_Z3",
- 	"PCI_Z4",
- 	"AMB",
-+	"PSU",
+@@ -38,6 +53,8 @@
+ struct sbtsi_data {
+ 	struct i2c_client *client;
+ 	struct mutex lock;
++	bool ext_range_mode;
++	bool read_order;
  };
  
- static int px_fan_map[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-@@ -293,6 +314,8 @@ static const struct hwmon_channel_info *lenovo_ec_hwmon_info_px[] = {
- 			   HWMON_T_INPUT | HWMON_T_LABEL,
- 			   HWMON_T_INPUT | HWMON_T_LABEL,
- 			   HWMON_T_INPUT | HWMON_T_LABEL,
-+			   HWMON_T_INPUT | HWMON_T_LABEL,
-+			   HWMON_T_INPUT | HWMON_T_LABEL,
- 			   HWMON_T_INPUT | HWMON_T_LABEL),
- 	HWMON_CHANNEL_INFO(fan,
- 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MAX,
-@@ -327,6 +350,7 @@ static const struct hwmon_channel_info *lenovo_ec_hwmon_info_p8[] = {
- 			   HWMON_T_INPUT | HWMON_T_LABEL,
- 			   HWMON_T_INPUT | HWMON_T_LABEL,
- 			   HWMON_T_INPUT | HWMON_T_LABEL,
-+			   HWMON_T_INPUT | HWMON_T_LABEL,
- 			   HWMON_T_INPUT | HWMON_T_LABEL),
- 	HWMON_CHANNEL_INFO(fan,
- 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MAX,
-@@ -359,6 +383,7 @@ static const struct hwmon_channel_info *lenovo_ec_hwmon_info_p7[] = {
- 			   HWMON_T_INPUT | HWMON_T_LABEL,
- 			   HWMON_T_INPUT | HWMON_T_LABEL,
- 			   HWMON_T_INPUT | HWMON_T_LABEL,
-+			   HWMON_T_INPUT | HWMON_T_LABEL,
- 			   HWMON_T_INPUT | HWMON_T_LABEL),
- 	HWMON_CHANNEL_INFO(fan,
- 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MAX,
-@@ -388,6 +413,7 @@ static const struct hwmon_channel_info *lenovo_ec_hwmon_info_p5[] = {
- 			   HWMON_T_INPUT | HWMON_T_LABEL,
- 			   HWMON_T_INPUT | HWMON_T_LABEL,
- 			   HWMON_T_INPUT | HWMON_T_LABEL,
-+			   HWMON_T_INPUT | HWMON_T_LABEL,
- 			   HWMON_T_INPUT | HWMON_T_LABEL),
- 	HWMON_CHANNEL_INFO(fan,
- 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MAX,
-@@ -545,9 +571,9 @@ static int lenovo_ec_probe(struct platform_device *pdev)
- 		break;
- 	case 3:
- 		ec_data->fan_labels = p8_ec_fan_label;
--		ec_data->temp_labels = lenovo_gen_ec_temp_label;
-+		ec_data->temp_labels = lenovo_p8_ec_temp_label;
- 		ec_data->fan_map = p8_fan_map;
--		ec_data->temp_map = gen_temp_map;
-+		ec_data->temp_map = p8_temp_map;
- 		lenovo_ec_chip_info.info = lenovo_ec_hwmon_info_p8;
- 		break;
- 	default:
+ /*
+@@ -74,23 +91,11 @@ static int sbtsi_read(struct device *dev, enum hwmon_sensor_types type,
+ {
+ 	struct sbtsi_data *data = dev_get_drvdata(dev);
+ 	s32 temp_int, temp_dec;
+-	int err;
+ 
+ 	switch (attr) {
+ 	case hwmon_temp_input:
+-		/*
+-		 * ReadOrder bit specifies the reading order of integer and
+-		 * decimal part of CPU temp for atomic reads. If bit == 0,
+-		 * reading integer part triggers latching of the decimal part,
+-		 * so integer part should be read first. If bit == 1, read
+-		 * order should be reversed.
+-		 */
+-		err = i2c_smbus_read_byte_data(data->client, SBTSI_REG_CONFIG);
+-		if (err < 0)
+-			return err;
+-
+ 		mutex_lock(&data->lock);
+-		if (err & BIT(SBTSI_CONFIG_READ_ORDER_SHIFT)) {
++		if (data->read_order) {
+ 			temp_dec = i2c_smbus_read_byte_data(data->client, SBTSI_REG_TEMP_DEC);
+ 			temp_int = i2c_smbus_read_byte_data(data->client, SBTSI_REG_TEMP_INT);
+ 		} else {
+@@ -122,6 +127,8 @@ static int sbtsi_read(struct device *dev, enum hwmon_sensor_types type,
+ 		return temp_dec;
+ 
+ 	*val = sbtsi_reg_to_mc(temp_int, temp_dec);
++	if (data->ext_range_mode)
++		*val -= SBTSI_TEMP_EXT_RANGE_ADJ;
+ 
+ 	return 0;
+ }
+@@ -146,6 +153,8 @@ static int sbtsi_write(struct device *dev, enum hwmon_sensor_types type,
+ 		return -EINVAL;
+ 	}
+ 
++	if (data->ext_range_mode)
++		val += SBTSI_TEMP_EXT_RANGE_ADJ;
+ 	val = clamp_val(val, SBTSI_TEMP_MIN, SBTSI_TEMP_MAX);
+ 	sbtsi_mc_to_reg(val, &temp_int, &temp_dec);
+ 
+@@ -203,6 +212,7 @@ static int sbtsi_probe(struct i2c_client *client)
+ 	struct device *dev = &client->dev;
+ 	struct device *hwmon_dev;
+ 	struct sbtsi_data *data;
++	int err;
+ 
+ 	data = devm_kzalloc(dev, sizeof(struct sbtsi_data), GFP_KERNEL);
+ 	if (!data)
+@@ -211,8 +221,14 @@ static int sbtsi_probe(struct i2c_client *client)
+ 	data->client = client;
+ 	mutex_init(&data->lock);
+ 
+-	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name, data, &sbtsi_chip_info,
+-							 NULL);
++	err = i2c_smbus_read_byte_data(data->client, SBTSI_REG_CONFIG);
++	if (err < 0)
++		return err;
++	data->ext_range_mode = FIELD_GET(BIT(SBTSI_CONFIG_EXT_RANGE_SHIFT), err);
++	data->read_order = FIELD_GET(BIT(SBTSI_CONFIG_READ_ORDER_SHIFT), err);
++
++	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name, data,
++							 &sbtsi_chip_info, NULL);
+ 
+ 	return PTR_ERR_OR_ZERO(hwmon_dev);
+ }
 -- 
 2.51.0
 
