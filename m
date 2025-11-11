@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0598C4AB24
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52596C4AD1B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5166118945EA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57BAC3BB947
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F763431FA;
-	Tue, 11 Nov 2025 01:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4643A2D9EF9;
+	Tue, 11 Nov 2025 01:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gb7LvAd+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TnhG3FN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4AD2D979C;
-	Tue, 11 Nov 2025 01:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E8F258EF6;
+	Tue, 11 Nov 2025 01:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824097; cv=none; b=iJGphGE3D3oIAcn8Ar2bXmNmzRJqIGekY3LFBMdIgq3GEsCbpr3w8XdxpdSEHnJSZA9fJftt3Hwf3QD4q75KIBUct2aq8GVmI2GPSEul2zUINe5dTP0UyYvGcUUMtYSHNSVeRFjBTZdpmoZXSZt1RjVdIZuKfoExAnx7YXMzKyQ=
+	t=1762824102; cv=none; b=riq7ARQ/qrUPsEfH6GVYgooC4T0wA1M6IfzzKEdhXdInimXImoC68s0XDByoa2udoqC/mcLh9nvct9lXWa/ZSmGiGpRmO5tpYdAG1Wglk/aKYfv0OaMUKVl22zwss5QHO0kC+QLcM+AhJs4bA4cYDU+LGTMXsDne1iO4w23FkqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824097; c=relaxed/simple;
-	bh=pLPO7s+ywDCeoAX2TsyaIgCxniKRr39Jn7A1k6rC5yI=;
+	s=arc-20240116; t=1762824102; c=relaxed/simple;
+	bh=EZShQ55Zbxax+Em9AeJfmU+82x3WCzyrpkW53sZlAD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZbDWjXT1XKH32zYrQWlZX0qxhA4M4994BGILDcKf0g1Xa8vUpYKjFZTyu+IX9JGz/QKHm389PfrIDphWY3jRPlnwtkpOXSrgt5Di8dLW715B0UR3hIRrM+3ar1hzt0Vk1/5K1iIajN2bXdmyKNqa7B9Q87D3s3rUpGrCPtmjH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gb7LvAd+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD32EC19424;
-	Tue, 11 Nov 2025 01:21:36 +0000 (UTC)
+	 MIME-Version; b=IffAtEPif0cT33KxaTnP6yVWN/gRZ//nRAT9dCCQu+FVP0cIh+nS6qNiuxLehSasFVZZ+RNEbquBAfKlHcEeT8BGzc/9TKIrd6L+yGE8ov8CcGWtlHCd2JQCLL6gCg5ByQ4Z3nQubmn2GtaRKmdbz5J5ubK55WxWwbNltfymdew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TnhG3FN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB55C4CEFB;
+	Tue, 11 Nov 2025 01:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824097;
-	bh=pLPO7s+ywDCeoAX2TsyaIgCxniKRr39Jn7A1k6rC5yI=;
+	s=korg; t=1762824101;
+	bh=EZShQ55Zbxax+Em9AeJfmU+82x3WCzyrpkW53sZlAD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gb7LvAd+tiiMOSpG2wyK6iV2uZAfmprRUTrgQhfywM7EGXhDIDR3WuvoNyTWpCBmn
-	 qX/VwD3HfEpLRUCYoK7+ogPqpRPIuAzVKUdNPaRf2OprtFMfkMfM9thdhK8tyjZj9K
-	 xORQA1nGtG3SXWTh4fiOTDRmso8YqNGu2ejEnfSI=
+	b=1TnhG3FNBCqPVbAuGZmqa1ezKtW+x3lbVyqEXTD/Dlt2HntdkZ1QtKuGAJLxgQHpq
+	 nNrVqvOdGVEVVMuQtvuU5DhTmZQRl+qOqod03x+sAsmh8f4g2K3YJHLV6rYxF+amQg
+	 OswLdvnnknc011bLFydtD7SrpiR2qWFVeZKPgW+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 436/849] media: verisilicon: Explicitly disable selection api ioctls for decoders
-Date: Tue, 11 Nov 2025 09:40:06 +0900
-Message-ID: <20251111004546.974931381@linuxfoundation.org>
+Subject: [PATCH 6.17 437/849] wifi: mac80211: Fix 6 GHz Band capabilities element advertisement in lower bands
+Date: Tue, 11 Nov 2025 09:40:07 +0900
+Message-ID: <20251111004546.997529381@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,61 +67,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paul Kocialkowski <paulk@sys-base.io>
+From: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
 
-[ Upstream commit 73d50aa92f28ee8414fbfde011974fce970b82cc ]
+[ Upstream commit e53f8b12a21c2974b66fa8c706090182da06fff3 ]
 
-Call the dedicated v4l2_disable_ioctl helper instead of manually
-checking whether the current context is an encoder for the selection
-api ioctls.
+Currently, when adding the 6 GHz Band Capabilities element, the channel
+list of the wiphy is checked to determine if 6 GHz is supported for a given
+virtual interface. However, in a multi-radio wiphy (e.g., one that has
+both lower bands and 6 GHz combined), the wiphy advertises support for
+all bands. As a result, the 6 GHz Band Capabilities element is incorrectly
+included in mesh beacon and station's association request frames of
+interfaces operating in lower bands, without verifying whether the
+interface is actually operating in a 6 GHz channel.
 
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fix this by verifying if the interface operates on 6 GHz channel
+before adding the element. Note that this check cannot be placed
+directly in ieee80211_put_he_6ghz_cap() as the same function is used to
+add probe request elements while initiating scan in which case the
+interface may not be operating in any band's channel.
+
+Signed-off-by: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250606104436.326654-1-rameshkumar.sundaram@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/verisilicon/hantro_drv.c  | 2 ++
- drivers/media/platform/verisilicon/hantro_v4l2.c | 6 ++----
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/mac80211/mesh.c | 3 +++
+ net/mac80211/mlme.c | 3 ++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/media/platform/verisilicon/hantro_drv.c
-index fa972effd4a2c..9d5e50fedae1f 100644
---- a/drivers/media/platform/verisilicon/hantro_drv.c
-+++ b/drivers/media/platform/verisilicon/hantro_drv.c
-@@ -917,6 +917,8 @@ static int hantro_add_func(struct hantro_dev *vpu, unsigned int funcid)
- 		vpu->decoder = func;
- 		v4l2_disable_ioctl(vfd, VIDIOC_TRY_ENCODER_CMD);
- 		v4l2_disable_ioctl(vfd, VIDIOC_ENCODER_CMD);
-+		v4l2_disable_ioctl(vfd, VIDIOC_G_SELECTION);
-+		v4l2_disable_ioctl(vfd, VIDIOC_S_SELECTION);
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index a4a715f6f1c32..f37068a533f4e 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -624,6 +624,9 @@ int mesh_add_he_6ghz_cap_ie(struct ieee80211_sub_if_data *sdata,
+ 	if (!sband)
+ 		return -EINVAL;
+ 
++	if (sband->band != NL80211_BAND_6GHZ)
++		return 0;
++
+ 	iftd = ieee80211_get_sband_iftype_data(sband,
+ 					       NL80211_IFTYPE_MESH_POINT);
+ 	/* The device doesn't support HE in mesh mode or at all */
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index f38881b927d17..c1b13b3411cdb 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -1850,7 +1850,8 @@ ieee80211_add_link_elems(struct ieee80211_sub_if_data *sdata,
+ 		ieee80211_put_he_cap(skb, sdata, sband,
+ 				     &assoc_data->link[link_id].conn);
+ 		ADD_PRESENT_EXT_ELEM(WLAN_EID_EXT_HE_CAPABILITY);
+-		ieee80211_put_he_6ghz_cap(skb, sdata, smps_mode);
++		if (sband->band == NL80211_BAND_6GHZ)
++			ieee80211_put_he_6ghz_cap(skb, sdata, smps_mode);
  	}
  
- 	video_set_drvdata(vfd, vpu);
-diff --git a/drivers/media/platform/verisilicon/hantro_v4l2.c b/drivers/media/platform/verisilicon/hantro_v4l2.c
-index 7c3515cf7d64a..4598f9b4bd21c 100644
---- a/drivers/media/platform/verisilicon/hantro_v4l2.c
-+++ b/drivers/media/platform/verisilicon/hantro_v4l2.c
-@@ -663,8 +663,7 @@ static int vidioc_g_selection(struct file *file, void *priv,
- 	struct hantro_ctx *ctx = fh_to_ctx(priv);
- 
- 	/* Crop only supported on source. */
--	if (!ctx->is_encoder ||
--	    sel->type != V4L2_BUF_TYPE_VIDEO_OUTPUT)
-+	if (sel->type != V4L2_BUF_TYPE_VIDEO_OUTPUT)
- 		return -EINVAL;
- 
- 	switch (sel->target) {
-@@ -696,8 +695,7 @@ static int vidioc_s_selection(struct file *file, void *priv,
- 	struct vb2_queue *vq;
- 
- 	/* Crop only supported on source. */
--	if (!ctx->is_encoder ||
--	    sel->type != V4L2_BUF_TYPE_VIDEO_OUTPUT)
-+	if (sel->type != V4L2_BUF_TYPE_VIDEO_OUTPUT)
- 		return -EINVAL;
- 
- 	/* Change not allowed if the queue is streaming. */
+ 	/*
 -- 
 2.51.0
 
