@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-193455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADFA9C4A5AB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8C1C4AD90
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 275D63ACA20
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:15:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A71523BC890
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF2F34A779;
-	Tue, 11 Nov 2025 01:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838C541C69;
+	Tue, 11 Nov 2025 01:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xT0gRjNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mH5tdw7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36F034A3D8;
-	Tue, 11 Nov 2025 01:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC45262FEC;
+	Tue, 11 Nov 2025 01:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823227; cv=none; b=jkdQnxe2QzXgimcU9F21M1Nxz3E9B03Zvxqhp3RITGVCtEOzBxJQSPsrEsuec2LIxSZeETkG7c6e34W9RLicqCbuQBXCUjW9LXTElLMukgF6rGDLy6G8S7BcGyOt39gE2cOx1X9RW7CRW06EhtuZr8l/73ys4CxgViTcaOasmQo=
+	t=1762824394; cv=none; b=oevt0bAHhNJ5AW1FgS6q4BAdPtTWokIl3hQydTcWq3TSL/i4yWoFr5vMMZx7kTDjBm6RleIHIOo57xhCBr/rZkOHKgWgz33Pv3YZ/03FytxaqkQCnh69/UWw7b+eRwf7uZJ1Gj3dfFeTV/ATZWpf9EvGOuywdP7uvDpBVbID2M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823227; c=relaxed/simple;
-	bh=mh5tipanqKwswvOQqCciDbHFuktTH3WDMUtTP9UivuY=;
+	s=arc-20240116; t=1762824394; c=relaxed/simple;
+	bh=A8Z3Xp489f3tC4YfvLJFapLerSRY/ahOc2ad1Z+Cc34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gUBIQQ7+hlrV8+/tT1UQcLfSzfpRTuNitxajBdJkMS3VsQFwnhFsLE0sKem9aU9TtQok81yEmsYHFBKiVuMAp9v4weS++KonxKhYPf19eIl/1VVGYlY+IpNlK2i5PhbSKaob8h2o+Cn/3yDo6WcrRj31OYWM15U92obyEqgQSmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xT0gRjNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472CCC19421;
-	Tue, 11 Nov 2025 01:07:04 +0000 (UTC)
+	 MIME-Version; b=XySjDAzcQybRIg+UWK4lXCF6GhYmPc4+fnxtzADPbxF6kdLD22dkgdYbGqLBbJomjGUd9xMubna2PQnN1W6gNWlz48UfaGdbevbsrVeT5SXMYfFk9QmFdRuSklf95cwpOyyD3nGmoujiNl9FwXzkiwxN3o3G6TdAV8ljz4z/g+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mH5tdw7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7BFC19421;
+	Tue, 11 Nov 2025 01:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823224;
-	bh=mh5tipanqKwswvOQqCciDbHFuktTH3WDMUtTP9UivuY=;
+	s=korg; t=1762824394;
+	bh=A8Z3Xp489f3tC4YfvLJFapLerSRY/ahOc2ad1Z+Cc34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xT0gRjNitVpB8Yhq0CCUdmMlfgX7XIylNl4mgjzZx3kOcmwqgm1XYNtaYui6BSe9a
-	 i/WTqXwrRp9sMrQh6z+wHRyUdfjKUT+Und5cOVsFl+sIsf+rEM9JLC92OQfUQBaF4L
-	 ymrsGhhKLrVGuztS0+5fZeeU/88UbYWBjR2q90rY=
+	b=mH5tdw7OAT8YglfhqnpMz7Z4+A8Lgtdzcz28MznGhbdhykJXq7sYvrUi+NhJE5arY
+	 X3bPJAp+j5w2tkM9bWbRy3B4ac0qMMRE1D82TD+Oz1qbPg6z09mQfLwbF9N7kN1WQy
+	 y7mxEQnvh+5/c/tSzvCP49ZYHbI0IXNoOzWAyZ3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Parth Pancholi <parth.pancholi@toradex.com>,
-	Jayesh Choudhary <j-choudhary@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 200/565] drm/tidss: Use the crtc_* timings when programming the HW
+Subject: [PATCH 6.17 486/849] media: qcom: camss: csiphy-3ph: Add CSIPHY 2ph DPHY v2.0.1 init sequence
 Date: Tue, 11 Nov 2025 09:40:56 +0900
-Message-ID: <20251111004531.428166910@linuxfoundation.org>
+Message-ID: <20251111004548.191262297@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +64,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-[ Upstream commit 478306edc23eec4f0ec24a46222485910c66212d ]
+[ Upstream commit ce63fbdf849f52584d9b5d9a4cc23cbc88746c30 ]
 
-Use the crtc_* fields from drm_display_mode, instead of the "logical"
-fields. This shouldn't change anything in practice, but afaiu the crtc_*
-fields are the correct ones to use here.
+This is the CSI PHY version found in QCS2290/QCM2290 SoCs.
+The table is extracted from downstream camera driver.
 
-Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
-Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-3-e61cc06074c2@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_crtc.c  |  2 +-
- drivers/gpu/drm/tidss/tidss_dispc.c | 16 ++++++++--------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ .../qcom/camss/camss-csiphy-3ph-1-0.c         | 89 +++++++++++++++++++
+ drivers/media/platform/qcom/camss/camss.h     |  1 +
+ 2 files changed, 90 insertions(+)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_crtc.c b/drivers/gpu/drm/tidss/tidss_crtc.c
-index 94f8e3178df58..1604eca265ef6 100644
---- a/drivers/gpu/drm/tidss/tidss_crtc.c
-+++ b/drivers/gpu/drm/tidss/tidss_crtc.c
-@@ -225,7 +225,7 @@ static void tidss_crtc_atomic_enable(struct drm_crtc *crtc,
- 	tidss_runtime_get(tidss);
+diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+index 88c0ba495c327..a128a42f1303d 100644
+--- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
++++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+@@ -319,6 +319,90 @@ csiphy_lane_regs lane_regs_sm8250[] = {
+ 	{0x0884, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
+ };
  
- 	r = dispc_vp_set_clk_rate(tidss->dispc, tcrtc->hw_videoport,
--				  mode->clock * 1000);
-+				  mode->crtc_clock * 1000);
- 	if (r != 0)
- 		return;
++/* 14nm 2PH v 2.0.1 2p5Gbps 4 lane DPHY mode */
++static const struct
++csiphy_lane_regs lane_regs_qcm2290[] = {
++	{0x0030, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x002c, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0034, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0028, 0x04, 0x00, CSIPHY_DNP_PARAMS},
++	{0x003c, 0xb8, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x001c, 0x0a, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0000, 0xd7, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0004, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0020, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0008, 0x04, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
++	{0x000c, 0xff, 0x00, CSIPHY_DNP_PARAMS},
++	{0x0010, 0x50, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0038, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0060, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0064, 0x3f, 0x00, CSIPHY_DEFAULT_PARAMS},
++
++	{0x0730, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x072c, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0734, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0728, 0x04, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x073c, 0xb8, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x071c, 0x0a, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0700, 0xc0, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0704, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0720, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0708, 0x04, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
++	{0x070c, 0xff, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0710, 0x50, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0738, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0760, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0764, 0x3f, 0x00, CSIPHY_DEFAULT_PARAMS},
++
++	{0x0230, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x022c, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0234, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0228, 0x04, 0x00, CSIPHY_DNP_PARAMS},
++	{0x023c, 0xb8, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x021c, 0x0a, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0200, 0xd7, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0204, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0220, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0208, 0x04, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
++	{0x020c, 0xff, 0x00, CSIPHY_DNP_PARAMS},
++	{0x0210, 0x50, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0238, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0260, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0264, 0x3f, 0x00, CSIPHY_DEFAULT_PARAMS},
++
++	{0x0430, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x042c, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0434, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0428, 0x04, 0x00, CSIPHY_DNP_PARAMS},
++	{0x043c, 0xb8, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x041c, 0x0a, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0400, 0xd7, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0404, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0420, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0408, 0x04, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
++	{0x040C, 0xff, 0x00, CSIPHY_DNP_PARAMS},
++	{0x0410, 0x50, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0438, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0460, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0464, 0x3f, 0x00, CSIPHY_DEFAULT_PARAMS},
++
++	{0x0630, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x062c, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0634, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0628, 0x04, 0x00, CSIPHY_DNP_PARAMS},
++	{0x063c, 0xb8, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x061c, 0x0a, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0600, 0xd7, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0604, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0620, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0608, 0x04, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
++	{0x060C, 0xff, 0x00, CSIPHY_DNP_PARAMS},
++	{0x0610, 0x50, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0638, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0660, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{0x0664, 0x3f, 0x00, CSIPHY_DEFAULT_PARAMS},
++};
++
+ /* GEN2 2.1.2 2PH DPHY mode */
+ static const struct
+ csiphy_lane_regs lane_regs_sm8550[] = {
+@@ -744,6 +828,7 @@ static bool csiphy_is_gen2(u32 version)
+ 	bool ret = false;
  
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index 45f22ead3e61d..8ee6a6dc8dbd2 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -1086,13 +1086,13 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
+ 	switch (version) {
++	case CAMSS_2290:
+ 	case CAMSS_7280:
+ 	case CAMSS_8250:
+ 	case CAMSS_8280XP:
+@@ -829,6 +914,10 @@ static int csiphy_init(struct csiphy_device *csiphy)
+ 		regs->lane_regs = &lane_regs_sdm845[0];
+ 		regs->lane_array_size = ARRAY_SIZE(lane_regs_sdm845);
+ 		break;
++	case CAMSS_2290:
++		regs->lane_regs = &lane_regs_qcm2290[0];
++		regs->lane_array_size = ARRAY_SIZE(lane_regs_qcm2290);
++		break;
+ 	case CAMSS_7280:
+ 	case CAMSS_8250:
+ 		regs->lane_regs = &lane_regs_sm8250[0];
+diff --git a/drivers/media/platform/qcom/camss/camss.h b/drivers/media/platform/qcom/camss/camss.h
+index 63c0afee154a0..377707d91ff2f 100644
+--- a/drivers/media/platform/qcom/camss/camss.h
++++ b/drivers/media/platform/qcom/camss/camss.h
+@@ -78,6 +78,7 @@ enum pm_domain {
  
- 	dispc_set_num_datalines(dispc, hw_videoport, fmt->data_width);
- 
--	hfp = mode->hsync_start - mode->hdisplay;
--	hsw = mode->hsync_end - mode->hsync_start;
--	hbp = mode->htotal - mode->hsync_end;
-+	hfp = mode->crtc_hsync_start - mode->crtc_hdisplay;
-+	hsw = mode->crtc_hsync_end - mode->crtc_hsync_start;
-+	hbp = mode->crtc_htotal - mode->crtc_hsync_end;
- 
--	vfp = mode->vsync_start - mode->vdisplay;
--	vsw = mode->vsync_end - mode->vsync_start;
--	vbp = mode->vtotal - mode->vsync_end;
-+	vfp = mode->crtc_vsync_start - mode->crtc_vdisplay;
-+	vsw = mode->crtc_vsync_end - mode->crtc_vsync_start;
-+	vbp = mode->crtc_vtotal - mode->crtc_vsync_end;
- 
- 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_TIMING_H,
- 		       FLD_VAL(hsw - 1, 7, 0) |
-@@ -1134,8 +1134,8 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
- 		       FLD_VAL(ivs, 12, 12));
- 
- 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_SIZE_SCREEN,
--		       FLD_VAL(mode->hdisplay - 1, 11, 0) |
--		       FLD_VAL(mode->vdisplay - 1, 27, 16));
-+		       FLD_VAL(mode->crtc_hdisplay - 1, 11, 0) |
-+		       FLD_VAL(mode->crtc_vdisplay - 1, 27, 16));
- 
- 	VP_REG_FLD_MOD(dispc, hw_videoport, DISPC_VP_CONTROL, 1, 0, 0);
- }
+ enum camss_version {
+ 	CAMSS_660,
++	CAMSS_2290,
+ 	CAMSS_7280,
+ 	CAMSS_8x16,
+ 	CAMSS_8x53,
 -- 
 2.51.0
 
