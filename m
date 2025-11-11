@@ -1,99 +1,98 @@
-Return-Path: <stable+bounces-194468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076AFC4D81D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 12:51:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C612EC4DA43
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 13:22:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65BFF3A9D66
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 11:47:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 976E03AA61D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 12:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA588305E10;
-	Tue, 11 Nov 2025 11:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7D83587A4;
+	Tue, 11 Nov 2025 12:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jL8GcXI1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKuD+BGu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FCF2FBE02;
-	Tue, 11 Nov 2025 11:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E6A239E70;
+	Tue, 11 Nov 2025 12:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762861614; cv=none; b=qz7woJVkUh2EoanLsQPvIPEL6I5Ud3nHMEOv4lTKftyLnrsrO8eDEEsSBZfOXsBeFLvertLNanO5C0YPEaU4bui+2X6JWeLSMxUfmc7RH7+JRG4paqY55ekSe/OFvFORVVsxjOpzb1ga1cuOPx/8p8/lfxy0hv8066y2UMJOTuw=
+	t=1762863645; cv=none; b=l1NPlibXFLo5PVPkeKV/MDtX1r0OiZCLxNeQUhGfck3+fE0Wc/DoewFSGv//QvN83JwdjeLhstjPqryhfZri/IISj1WkM0T5B858C/JIJzeYUb5G5fteLqpOTY9nSrs39CCE8BqfbhmJpmFJWD1rSJx7ejsDvRia7kaHOL61Fgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762861614; c=relaxed/simple;
-	bh=rbNJbwQaBcRf4KNiq9G/qg/S5qDVdWHZCk623jvQNEs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cAOCe69wduJljLVbAi5rr3xx0801qXtiwgy8dD9Ni1jQXlzWYwXkUDPnSwtAlxYA+kacJkaET59dfGRdd05v7k/Q2cnf92kBy0IiG0lvFAVjlCeTfB9wv4oBoPOXu1ayrRhs2lSr3wYgtmfdKr8GTScH0iVjRorsA7AC9O5LuGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jL8GcXI1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A76C116D0;
-	Tue, 11 Nov 2025 11:46:53 +0000 (UTC)
+	s=arc-20240116; t=1762863645; c=relaxed/simple;
+	bh=LrYuYrmtuJjDh7C5WDbZ2fJNtMQftogqP2oRT0RkTNw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=niHcZw1zzsNjJgbGjjcJ1QdYhuh0/6AlGpZ7rMVMw2HqOmfccygv2NSAcoZGNa14Y2cSlsUUpaJ0E3XxDamBqKfTxgqfapCSJ8ysbdnGmDhtQkGi6zm68aab+GjwctltMYdRrIeori3D79i8uULKPUJZj26+c2PNuZzKpkTv2Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKuD+BGu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB456C4CEF7;
+	Tue, 11 Nov 2025 12:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762861614;
-	bh=rbNJbwQaBcRf4KNiq9G/qg/S5qDVdWHZCk623jvQNEs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jL8GcXI1ItZe32CT+KBn/kcGiBK5XTxl56y0yOPgqp1VB5uPY3YVkQzBqryEom4Us
-	 6Zwh3BEgMVaSc8DUKiUAUELh4nvvhMOmCVTWZ+cOnEpbQcRuv9WkyU70Uk4XEnxLlB
-	 xiWDE5OqCwBfefOHM45rBf+DAahj7rPIakb7ufLw8LXDYSMe3dzCtP1vlHFpWNP35h
-	 EOBj9Ht2Jld0TP5FzfhsLwhUY0qTyinhetCtip7kJXUQAKd3XLAY8ZVbxyBxhCAQDJ
-	 jbnmpYMlQXOFD8r1i5+LCNL4sPnNZpeKWR2yTnMEz8qp3dUyp4Ozv1BCQw5VX7zArq
-	 q6mwlVg36qVaA==
-Message-ID: <13bf4434-13a1-4db0-8bcf-4c52edaa68f3@kernel.org>
-Date: Tue, 11 Nov 2025 05:46:51 -0600
+	s=k20201202; t=1762863645;
+	bh=LrYuYrmtuJjDh7C5WDbZ2fJNtMQftogqP2oRT0RkTNw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XKuD+BGuYmtN6+1XLmq3VjW050+l6Ss86Msh+/iB8JwtRAWTopjYSXHfWwzgVWMB7
+	 hapS4SX8Q+FEfsOTNMXHbMDUr4fm7v88x/Oc7hHCZ622PMX+Oap3u7/+i6VGSScjyA
+	 uy2KdaZbDAfjsYcr21qe8rjVWBVavwbGkMZ2XDD9yUzzpjqp2zVsLFarm4H0FC5gIP
+	 3gPrxH3fFQiOjD1gztC75oxDOHg3G4PGfXV1AeWDl1ijNc+Z/Mj72i/nyhTQ2AVC+d
+	 DOqK5x11YHpFB3/zpdLdNRxQYZoL07A0gLLth9kNaFGq97CiLmLcf9QqDcwoJXeoas
+	 F+EXvCkxpzXgQ==
+Date: Tue, 11 Nov 2025 12:20:36 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.17 000/849] 6.17.8-rc1 review
+Message-ID: <aRMqFBsYy6iqP9-F@finisterre.sirena.org.uk>
+References: <20251111004536.460310036@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] EDAC/altera: Use INTTEST register for Ethernet and USB
- SBE injection
-To: niravkumarlaxmidas.rabara@altera.com, bp@alien8.de, tony.luck@intel.com
-Cc: linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251111081333.1279635-1-niravkumarlaxmidas.rabara@altera.com>
-Content-Language: en-US
-From: Dinh Nguyen <dinguyen@kernel.org>
-In-Reply-To: <20251111081333.1279635-1-niravkumarlaxmidas.rabara@altera.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="C/2JlLrvF+o4nfdT"
+Content-Disposition: inline
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+X-Cookie: You dialed 5483.
 
 
+--C/2JlLrvF+o4nfdT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 11/11/25 02:13, niravkumarlaxmidas.rabara@altera.com wrote:
-> From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
-> 
-> The current single-bit error injection mechanism flips bits directly in
-> ECC RAM by performing write and read operations. When the ECC RAM is
-> actively used by the Ethernet or USB controller, this approach sometimes
-> trigger a false double-bit error.
-> 
-> Switch both Ethernet and USB EDAC devices to use the INTTEST register
-> (altr_edac_a10_device_inject_fops) for single-bit error injection,
-> similar to the existing double-bit error injection method.
-> 
-> Fixes: 064acbd4f4ab ("EDAC, altera: Add Stratix10 peripheral support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
-> ---
-> 
-> v2 changes:
->   - Add missing Cc tag
-> 
-> v1 link:
-> https://lore.kernel.org/all/20251101051723.917688-1-niravkumarlaxmidas.rabara@altera.com/
-> 
->   drivers/edac/altera_edac.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/edac/altera_edac.c b/drivers/edac/altera_edac.c
-> index 103b2c2eba2a..5c5d4585d8ae 100644
-> --- a/drivers/edac/altera_edac.c
-> +++ b/drivers/edac/altera_edac.c
+On Tue, Nov 11, 2025 at 09:32:50AM +0900, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.17.8 release.
+> There are 849 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Tested-by: Mark Brown <broonie@kernel.org>
+
+--C/2JlLrvF+o4nfdT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkTKhMACgkQJNaLcl1U
+h9D3gQf/fDCTO/oYUG4Gr9oetKADdpcOAWImmfoO4UOI1odB7LThkweviI42ECT1
+PHxvfq7ctX/IT2ZyiLjCwZqG1r/YuwN6fxOcSJVnenPFmC22j+NKoyUCS/REpE08
+MYGJq4Y8KNwkNT9kUxMSOqboT3aNS1skpku1p+pCJusZ8W12GHs2ogXSmP+cB1hK
+5kR6XtQuFqeUYIG8oXDpq3b/MQzCFx1k8IRn8iB7oUgsK1OPJzsY1pCy5ucFAlNe
+rhafYKGl/waA+2CN9RzbziSANST3QvYeNo7ZmtlM9rkxxwwGagpG9SbXcYn442YB
+Lp9m1ZpAI19pcSDLz1d3vqIaTQ5oMw==
+=MgSz
+-----END PGP SIGNATURE-----
+
+--C/2JlLrvF+o4nfdT--
 
