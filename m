@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4EAAC4B10C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:56:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E8E3C4AB63
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F18024F70EB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A22114FA354
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A164D34A79E;
-	Tue, 11 Nov 2025 01:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CB52FC009;
+	Tue, 11 Nov 2025 01:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUa8iUbu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBWsIU5M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6DC34A796;
-	Tue, 11 Nov 2025 01:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE72265CC5;
+	Tue, 11 Nov 2025 01:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825336; cv=none; b=oKIqHfvI393XwF2lCVnuUYFmfDRQ3/Dxf/2Po7fg9yRapQNjjb4U3oc9VKKMq1yzQZlXkSWJY5yZtcX8Jq0UGBc7jCVetKx8uoQRAYBOaAIpo1n8SvW8NWUn0tvrUYFvNDfou/QJD9x57f9bsxuU32x9pj62JXZXOIi/GOxCFBY=
+	t=1762824370; cv=none; b=EiUeNO+xBQTdavLsG3nKNvVmKUPg5Ziu/attvsXoP3emYtjY0yBV5J9cNeSve3kLeszdz0RN/rNgLMMxZqnYag5kJxIJHhEPY9EaeLHnxP/eUckIIQhQ3wLz+L2d6Tg0+IrNNneHwRodPor0fV1cotMry1MVQcZkH0K9uXWNDNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825336; c=relaxed/simple;
-	bh=3XfSQ+drwwxRNKDBB/o9qqTEjEP6XdsmiGnb7t58qfs=;
+	s=arc-20240116; t=1762824370; c=relaxed/simple;
+	bh=Upkt8ggdWs5N4yFV8u7QiHwa+JH3aTtbbGLP3ujbL5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxGGm0Ue8qGl6FGPnTvYrnWw20Qc+9S3B7d1lQnEMrKiqZy4e4R9kFiMTbxZ7UwYUlzJkkkFtpiReftQ/IEySfXQtKdAMOG/6freQdpXteiXIauKHK4wzhiQypfjlZibE8Qb9Nr3RpJkhYAxH1tYVJID93TMBzqU9UkfktEsAb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUa8iUbu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8913C116D0;
-	Tue, 11 Nov 2025 01:42:15 +0000 (UTC)
+	 MIME-Version; b=gAM/UDHHYSjIUE7IHobDLB8xtyhQfhoIO/U5VfplqjS2PNRePq26qZH4CJbXJ6to3Yo4BEClBSDWKWx5ilRl6DZIeQD9udU9cssRL+2TumblAfj/MyL3hPxSRyuTCWXwIVsXHuBoT9hbzhZzOkb2L3k4joYLq85gYRTzHHDu0K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBWsIU5M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C73C116D0;
+	Tue, 11 Nov 2025 01:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825336;
-	bh=3XfSQ+drwwxRNKDBB/o9qqTEjEP6XdsmiGnb7t58qfs=;
+	s=korg; t=1762824370;
+	bh=Upkt8ggdWs5N4yFV8u7QiHwa+JH3aTtbbGLP3ujbL5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DUa8iUbuvWQfo/HSSa9crraMXw/sDZ/h17z1S9W75i4QnWKt4sdejjxPKRAOZ1qJH
-	 3FeJNIGNSvY8WJxRdiVn1UJCpP9ekfxv1dwpg/cM5RQGm4cfdTbqJQGXP9z6vwRvN2
-	 +NomPDW+XDCG+oe3ZehcACqT9jw9FdSO/pc6mU/c=
+	b=hBWsIU5Mg51zAEA2WXLHaObWJIWwEKHcA2Ng+1aC7o+7yY0Nnu77w/hYxawl735mR
+	 49kjAULM9gU7bcqgKGEz+JHl4DnD5KKcW7arxK9mDR3YG2S+7Sez5zEn3RrRe7Wnr4
+	 kH6z1Bt/g1SHqGIfucP/RzQuceXRhPYZ/etNX1qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hoyoung Seo <hy50.seo@samsung.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 716/849] scsi: ufs: core: Include UTP error in INT_FATAL_ERRORS
+Subject: [PATCH 6.12 430/565] ASoC: stm32: sai: manage context in set_sysclk callback
 Date: Tue, 11 Nov 2025 09:44:46 +0900
-Message-ID: <20251111004553.743809799@linuxfoundation.org>
+Message-ID: <20251111004536.545753585@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hoyoung Seo <hy50.seo@samsung.com>
+From: Olivier Moysan <olivier.moysan@foss.st.com>
 
-[ Upstream commit 558ae4579810fa0fef011944230c65a6f3087f85 ]
+[ Upstream commit 27fa1a8b2803dfd88c39f03b0969c55f667cdc43 ]
 
-When a UTP error occurs in isolation, UFS is not currently recoverable.
-This is because the UTP error is not considered fatal in the error
-handling code, leading to either an I/O timeout or an OCS error.
+The mclk direction now needs to be specified in endpoint node with
+"system-clock-direction-out" property. However some calls to the
+set_sysclk callback, related to CPU DAI clock, result in unbalanced
+calls to clock API.
+The set_sysclk callback in STM32 SAI driver is intended only for mclk
+management. So it is relevant to ensure that calls to set_sysclk are
+related to mclk only.
+Since the master clock is handled only at runtime, skip the calls to
+set_sysclk in the initialization phase.
 
-Add the UTP error flag to INT_FATAL_ERRORS so the controller will be
-reset in this situation.
-
-  sd 0:0:0:0: [sda] tag#38 UNKNOWN(0x2003) Result: hostbyte=0x07
-  driverbyte=DRIVER_OK cmd_age=0s
-  sd 0:0:0:0: [sda] tag#38 CDB: opcode=0x28 28 00 00 51 24 e2 00 00 08 00
-  I/O error, dev sda, sector 42542864 op 0x0:(READ) flags 0x80700 phys_seg
-  8 prio class 2
-  OCS error from controller = 9 for tag 39
-  pa_err[1] = 0x80000010 at 2667224756 us
-  pa_err: total cnt=2
-  dl_err[0] = 0x80000002 at 2667148060 us
-  dl_err[1] = 0x80002000 at 2667282844 us
-  No record of nl_err
-  No record of tl_err
-  No record of dme_err
-  No record of auto_hibern8_err
-  fatal_err[0] = 0x804 at 2667282836 us
-
-  ---------------------------------------------------
-  		REGISTER
-  ---------------------------------------------------
-                             NAME	      OFFSET	         VALUE
-                      STD HCI SFR	  0xfffffff0	           0x0
-                             AHIT	        0x18	         0x814
-                 INTERRUPT STATUS	        0x20	        0x1000
-                 INTERRUPT ENABLE	        0x24	       0x70ef5
-
-[mkp: commit desc]
-
-Signed-off-by: Hoyoung Seo <hy50.seo@samsung.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Message-Id: <20250930061428.617955-1-hy50.seo@samsung.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20250916123118.84175-1-olivier.moysan@foss.st.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/ufs/ufshci.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/stm/stm32_sai_sub.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/ufs/ufshci.h b/include/ufs/ufshci.h
-index 612500a7088f0..e64b701321010 100644
---- a/include/ufs/ufshci.h
-+++ b/include/ufs/ufshci.h
-@@ -180,6 +180,7 @@ static inline u32 ufshci_version(u32 major, u32 minor)
- #define UTP_TASK_REQ_COMPL			0x200
- #define UIC_COMMAND_COMPL			0x400
- #define DEVICE_FATAL_ERROR			0x800
-+#define UTP_ERROR				0x1000
- #define CONTROLLER_FATAL_ERROR			0x10000
- #define SYSTEM_BUS_FATAL_ERROR			0x20000
- #define CRYPTO_ENGINE_FATAL_ERROR		0x40000
-@@ -199,7 +200,8 @@ static inline u32 ufshci_version(u32 major, u32 minor)
- 				CONTROLLER_FATAL_ERROR |\
- 				SYSTEM_BUS_FATAL_ERROR |\
- 				CRYPTO_ENGINE_FATAL_ERROR |\
--				UIC_LINK_LOST)
-+				UIC_LINK_LOST |\
-+				UTP_ERROR)
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index 5828f9dd866e4..5938d6361e1ec 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -551,6 +551,14 @@ static int stm32_sai_set_sysclk(struct snd_soc_dai *cpu_dai,
+ 	struct stm32_sai_sub_data *sai = snd_soc_dai_get_drvdata(cpu_dai);
+ 	int ret;
  
- /* HCS - Host Controller Status 30h */
- #define DEVICE_PRESENT				0x1
++	/*
++	 * The mclk rate is determined at runtime from the audio stream rate.
++	 * Skip calls to the set_sysclk callback that are not relevant during the
++	 * initialization phase.
++	 */
++	if (!snd_soc_card_is_instantiated(cpu_dai->component->card))
++		return 0;
++
+ 	if (dir == SND_SOC_CLOCK_OUT && sai->sai_mclk) {
+ 		ret = stm32_sai_sub_reg_up(sai, STM_SAI_CR1_REGX,
+ 					   SAI_XCR1_NODIV,
 -- 
 2.51.0
 
