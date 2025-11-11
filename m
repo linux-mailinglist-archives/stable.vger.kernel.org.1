@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-193457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360FAC4A593
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:21:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6CAC4AE08
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 245511894540
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:16:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C20673B6167
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA3F34A3D8;
-	Tue, 11 Nov 2025 01:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B04303A0D;
+	Tue, 11 Nov 2025 01:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqTXxDl6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCL0gdtb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273CC34A77A;
-	Tue, 11 Nov 2025 01:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB90262FEC;
+	Tue, 11 Nov 2025 01:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823230; cv=none; b=h2jPuJhMUkeakpKmqGu65/nMyHNcr/cXFdygTN47ypAuDtMiGhJgN3gK30mEMFAgnZ9hZHn8w9oe1GwsHWFXiBTP9BDuW9tGR0gqUGF5jl0qKciE2Qdb0+/gAGqJ2/SAvRCraWFXP8Da7xEWfn5sytuLX6Gr4ZJZKC8MUcwhL9w=
+	t=1762824403; cv=none; b=YkI6BmlBg8EPU5YKcsONMqm6ispWXPJfdKxAqJVfW7A+YNW/bSlbYnTheXa8uPSmzTRCbtUWPbF1FVYk2Rizrz/iXIeiI8BjGgE5MvHWPN+F1TCHl1aPhNPw6Nv5anYMCN9/OJbANo+TN0I67trd3ujJmBHVWAvgh8Q4OyZvVDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823230; c=relaxed/simple;
-	bh=Bqw9tZfAv5SartoohybGiZgHWyFA15My85vxsVgsuKE=;
+	s=arc-20240116; t=1762824403; c=relaxed/simple;
+	bh=nRCna5ioKCg847gjYyUaw5yhCenL/BIWr1SIsvqyKmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IgoHvhdCGWSVpxGWKcu9fARX7P0WGOiqEmUjbwIpZ879lAFEdcOjyJxeW7P+9zrCYoxIH9PTrrwzrm+TSRUnZecn72EYX5flpp2hpfAGw+2XesB/8uO+Mi5BT37SDZv4JIaJY1xR8424Bifw7Rr9Uy0Faf4OgLYyahso9JjCtAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqTXxDl6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B470C16AAE;
-	Tue, 11 Nov 2025 01:07:08 +0000 (UTC)
+	 MIME-Version; b=s3shbxT6EhqR+XMvvUSc533clMIL1Xtqku/abO9fOnQnirPVNQ8Inl6J+MaGwWquQBWR37vJt60Rd+gli0zxJrfnMg2jfYHZeF0WdRfvhi/+4zulS0PySz3a84DOVa1sLNSEjrT9e0yclcQNR2nWMKSUs5PEWda6jqdu+HKpyrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCL0gdtb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D2EC19421;
+	Tue, 11 Nov 2025 01:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823229;
-	bh=Bqw9tZfAv5SartoohybGiZgHWyFA15My85vxsVgsuKE=;
+	s=korg; t=1762824403;
+	bh=nRCna5ioKCg847gjYyUaw5yhCenL/BIWr1SIsvqyKmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zqTXxDl6Vimr5pWMZvTKoBDYIbXgi8cc0ZVJRnbfg36FD2xx1N7ZZVHeJrYvgr9cp
-	 1/qe+1OuRpUMdAo8X2z26HdMOkc3Cghx9uPZA2TgSsS+fWWqsREbl0QWdt8k6VTbaG
-	 fnXBigsWfjQRGdCeC9hAXL2hfA2R/dbS3Dxlgof8=
+	b=bCL0gdtbnyhhs6v3DURlP1isqN7nNpv8hKyahzebZRrrxfptH9wu2Je0xya5tccQU
+	 rO5ZTpulPFmEy6vhRRRkOiSKZlt8GNxjm8VlptdjdzjVDhXaHQL/JZ1est2T57KqBd
+	 qgbg+pnaMKMV5OHs2YkaoboxMEkj7T0pp5QgwCXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parth Pancholi <parth.pancholi@toradex.com>,
-	Jayesh Choudhary <j-choudhary@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 201/565] drm/bridge: cdns-dsi: Fix REG_WAKEUP_TIME value
-Date: Tue, 11 Nov 2025 09:40:57 +0900
-Message-ID: <20251111004531.449320247@linuxfoundation.org>
+Subject: [PATCH 6.17 488/849] drm/xe/guc: Always add CT disable action during second init step
+Date: Tue, 11 Nov 2025 09:40:58 +0900
+Message-ID: <20251111004548.238097503@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit eea4f89b6461294ed6bea1d3285bb3f79c09a041 ]
+[ Upstream commit 955f3bc4af440bb950c7a1567197aaf6aa2213ae ]
 
-The driver tries to calculate the value for REG_WAKEUP_TIME. However,
-the calculation itself is not correct, and to add on it, the resulting
-value is almost always larger than the field's size, so the actual
-result is more or less random.
+On DGFX, during init_post_hwconfig() step, we are reinitializing
+CTB BO in VRAM and we have to replace cleanup action to disable CT
+communication prior to release of underlying BO.
 
-According to the docs, figuring out the value for REG_WAKEUP_TIME
-requires HW characterization and there's no way to have a generic
-algorithm to come up with the value. That doesn't help at all...
+But that introduces some discrepancy between DGFX and iGFX, as for
+iGFX we keep previously added disable CT action that would be called
+during unwind much later.
 
-However, we know that the value must be smaller than the line time, and,
-at least in my understanding, the proper value for it is quite small.
-Testing shows that setting it to 1/10 of the line time seems to work
-well. All video modes from my HDMI monitor work with this algorithm.
+To keep the same flow on both types of platforms, always replace old
+cleanup action and register new one.
 
-Hopefully we'll get more information on how to calculate the value, and
-we can then update this.
-
-Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
-Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-11-e61cc06074c2@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Link: https://lore.kernel.org/r/20250908102053.539-2-michal.wajdeczko@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_guc_ct.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-index 89eed0668bfb2..faa0bdfd19370 100644
---- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-@@ -833,7 +833,13 @@ static void cdns_dsi_bridge_enable(struct drm_bridge *bridge)
+diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
+index ff622628d823f..22eff8476ad48 100644
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -300,12 +300,11 @@ int xe_guc_ct_init_post_hwconfig(struct xe_guc_ct *ct)
  
- 	tx_byte_period = DIV_ROUND_DOWN_ULL((u64)NSEC_PER_SEC * 8,
- 					    phy_cfg->hs_clk_rate);
--	reg_wakeup = (phy_cfg->hs_prepare + phy_cfg->hs_zero) / tx_byte_period;
-+
-+	/*
-+	 * Estimated time [in clock cycles] to perform LP->HS on D-PHY.
-+	 * It is not clear how to calculate this, so for now,
-+	 * set it to 1/10 of the total number of clocks in a line.
-+	 */
-+	reg_wakeup = dsi_cfg.htotal / nlanes / 10;
- 	writel(REG_WAKEUP_TIME(reg_wakeup) | REG_LINE_DURATION(tmp),
- 	       dsi->regs + VID_DPHY_TIME);
+ 	xe_assert(xe, !xe_guc_ct_enabled(ct));
  
+-	if (!IS_DGFX(xe))
+-		return 0;
+-
+-	ret = xe_managed_bo_reinit_in_vram(xe, tile, &ct->bo);
+-	if (ret)
+-		return ret;
++	if (IS_DGFX(xe)) {
++		ret = xe_managed_bo_reinit_in_vram(xe, tile, &ct->bo);
++		if (ret)
++			return ret;
++	}
+ 
+ 	devm_release_action(xe->drm.dev, guc_action_disable_ct, ct);
+ 	return devm_add_action_or_reset(xe->drm.dev, guc_action_disable_ct, ct);
 -- 
 2.51.0
 
