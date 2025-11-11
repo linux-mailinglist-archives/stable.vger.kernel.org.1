@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 293ECC4A4E7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:16:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 698FDC4A60E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 809234F563A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:11:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 913DD1885863
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14981342177;
-	Tue, 11 Nov 2025 01:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152942FE071;
+	Tue, 11 Nov 2025 01:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etgJNVce"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaCkKBHq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BC1342151;
-	Tue, 11 Nov 2025 01:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EFE26ED58;
+	Tue, 11 Nov 2025 01:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823176; cv=none; b=JkPoIYPeL+SE16OJWGT+QIFWTdiSKXq/CTjwsUZobblVfiUiqydhzn7uLRaE9sWUdvFXRGCIsXfao1bQuWyAluo6bTgPCinS98cGlzA1VJUZSHhUK5DARXYunUfcchTyL5N2lXy3/rELQub7zUw27qYKKgBb0T2OxFwDz3fj8co=
+	t=1762823261; cv=none; b=WUiNhLA+cMtL6CIHq4rCTOd+C+1flpJNzBDNjIbPZY52sa01KCey0zX+v9MLfLuStP2INQBYnT3uBj3ILXMaA6McpMp1WvGiA9dqaPx6WjUmFAjn6pjGj5+H/yBPS8xziqCjxAT+CLLUTAQK7msqDdVzyINDWkYgAf2q/7ZBqh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823176; c=relaxed/simple;
-	bh=NOgy+57dbvqJxaFJ6ryvIlC2ucKuqFFJ+96JoUd8Pf8=;
+	s=arc-20240116; t=1762823261; c=relaxed/simple;
+	bh=X1m1BpxMbHrhgcu2Z7S8GeT2z6Z5ZjoyvHZURAc+R/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qzMDQA2wTUAMwZRlS3yXl42Hrcke35uhzQGlIuyIByiyfvMLEf1YdTj6YU60vITQv6az6k0WZ19FtTqQytbojr9lfVdPAqy6BPF2Hxdh1wNZoJJIZSdguAk5UP7L9EykKBuIJL7Oy44zV1TsfLV5U7EHdj4IrPmwIJBqvv3i/8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etgJNVce; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6254CC16AAE;
-	Tue, 11 Nov 2025 01:06:16 +0000 (UTC)
+	 MIME-Version; b=hStxfsJ3zemI0x5qKlcS/6O5KpWIrL00PalwukZA7yNS+ejSOSvENlen7gPPioz5G6CwJm2ob6smDCoeaQbKrBbael29MEaMzuG66V57XKd9b+NXjedWV3d90y3Z7VbClfXKwpfmnCcV+GAcn0AFBXILehv25CbcVP8KI05fe2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaCkKBHq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242EDC4CEF5;
+	Tue, 11 Nov 2025 01:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823176;
-	bh=NOgy+57dbvqJxaFJ6ryvIlC2ucKuqFFJ+96JoUd8Pf8=;
+	s=korg; t=1762823261;
+	bh=X1m1BpxMbHrhgcu2Z7S8GeT2z6Z5ZjoyvHZURAc+R/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=etgJNVceFJYoJVOLVOHtmrofGxBjlZltARGltC0DjkIwDsj9BCUDQxl9MSKKTQ4EU
-	 5bdn5wZQiXMjZdrZfsE8Xc1iHuX9DxTZ4dRwnUcKYodKyYwY050mzoX9wfpdHPzfiX
-	 yN2cZuc8S1VL0HetdqPn7maJYnw90S9eTMoSqTyw=
+	b=OaCkKBHqFFv9mCZzA9ZKStorA/9dOG2fwAtT5gG3elcjgKPz/7CCXHZDSw5RWw8Fk
+	 fLM5R6wTp3BcJr85WN/ydPD2KR2LcU6mkg8rzKnJU+k6AK46gB+f5Onk1uKqcBJzNf
+	 WsptubgkvXOFVA36xVmLtnkIcLA3LAdWy0uLvDgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Liu <xiang.liu@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Ce Sun <cesun102@amd.com>,
+	"Stanley.Yang" <Stanley.Yang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 245/849] drm/amdgpu: Update IPID value for bad page threshold CPER
-Date: Tue, 11 Nov 2025 09:36:55 +0900
-Message-ID: <20251111004542.355458532@linuxfoundation.org>
+Subject: [PATCH 6.17 246/849] drm/amdgpu: Avoid rma causes GPU duplicate reset
+Date: Tue, 11 Nov 2025 09:36:56 +0900
+Message-ID: <20251111004542.380723507@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,54 +68,101 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xiang Liu <xiang.liu@amd.com>
+From: Ce Sun <cesun102@amd.com>
 
-[ Upstream commit 8f0245ee95c5ba65a2fe03f60386868353c6a3a0 ]
+[ Upstream commit 21c0ffa612c98bcc6dab5bd9d977a18d565ee28e ]
 
-Update the IPID register value for bad page threshold CPER according to
-the latest definition.
+Try to ensure poison creation handle is completed in time
+to set device rma value.
 
-Signed-off-by: Xiang Liu <xiang.liu@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Ce Sun <cesun102@amd.com>
+Signed-off-by: Stanley.Yang <Stanley.Yang@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 17 ++++++++++-------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h |  1 +
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
-index 48a8aa1044b15..ee937d617c826 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
-@@ -206,6 +206,7 @@ int amdgpu_cper_entry_fill_bad_page_threshold_section(struct amdgpu_device *adev
- {
- 	struct cper_sec_desc *section_desc;
- 	struct cper_sec_nonstd_err *section;
-+	uint32_t socket_id;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+index c88123302a071..54909bcf181f3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -3285,7 +3285,6 @@ static void amdgpu_ras_do_page_retirement(struct work_struct *work)
+ 					      page_retirement_dwork.work);
+ 	struct amdgpu_device *adev = con->adev;
+ 	struct ras_err_data err_data;
+-	unsigned long err_cnt;
  
- 	section_desc = (struct cper_sec_desc *)((uint8_t *)hdr + SEC_DESC_OFFSET(idx));
- 	section = (struct cper_sec_nonstd_err *)((uint8_t *)hdr +
-@@ -224,6 +225,9 @@ int amdgpu_cper_entry_fill_bad_page_threshold_section(struct amdgpu_device *adev
- 	section->ctx.reg_arr_size = sizeof(section->ctx.reg_dump);
+ 	/* If gpu reset is ongoing, delay retiring the bad pages */
+ 	if (amdgpu_in_reset(adev) || amdgpu_ras_in_recovery(adev)) {
+@@ -3297,13 +3296,9 @@ static void amdgpu_ras_do_page_retirement(struct work_struct *work)
+ 	amdgpu_ras_error_data_init(&err_data);
  
- 	/* Hardcoded Reg dump for bad page threshold CPER */
-+	socket_id = (adev->smuio.funcs && adev->smuio.funcs->get_socket_id) ?
-+				adev->smuio.funcs->get_socket_id(adev) :
-+				0;
- 	section->ctx.reg_dump[CPER_ACA_REG_CTL_LO]    = 0x1;
- 	section->ctx.reg_dump[CPER_ACA_REG_CTL_HI]    = 0x0;
- 	section->ctx.reg_dump[CPER_ACA_REG_STATUS_LO] = 0x137;
-@@ -234,8 +238,8 @@ int amdgpu_cper_entry_fill_bad_page_threshold_section(struct amdgpu_device *adev
- 	section->ctx.reg_dump[CPER_ACA_REG_MISC0_HI]  = 0x0;
- 	section->ctx.reg_dump[CPER_ACA_REG_CONFIG_LO] = 0x2;
- 	section->ctx.reg_dump[CPER_ACA_REG_CONFIG_HI] = 0x1ff;
--	section->ctx.reg_dump[CPER_ACA_REG_IPID_LO]   = 0x0;
--	section->ctx.reg_dump[CPER_ACA_REG_IPID_HI]   = 0x96;
-+	section->ctx.reg_dump[CPER_ACA_REG_IPID_LO]   = (socket_id / 4) & 0x01;
-+	section->ctx.reg_dump[CPER_ACA_REG_IPID_HI]   = 0x096 | (((socket_id % 4) & 0x3) << 12);
- 	section->ctx.reg_dump[CPER_ACA_REG_SYND_LO]   = 0x0;
- 	section->ctx.reg_dump[CPER_ACA_REG_SYND_HI]   = 0x0;
+ 	amdgpu_umc_handle_bad_pages(adev, &err_data);
+-	err_cnt = err_data.err_addr_cnt;
  
+ 	amdgpu_ras_error_data_fini(&err_data);
+ 
+-	if (err_cnt && amdgpu_ras_is_rma(adev))
+-		amdgpu_ras_reset_gpu(adev);
+-
+ 	amdgpu_ras_schedule_retirement_dwork(con,
+ 			AMDGPU_RAS_RETIRE_PAGE_INTERVAL);
+ }
+@@ -3357,6 +3352,9 @@ static int amdgpu_ras_poison_creation_handler(struct amdgpu_device *adev,
+ 	if (total_detect_count)
+ 		schedule_delayed_work(&ras->page_retirement_dwork, 0);
+ 
++	if (amdgpu_ras_is_rma(adev) && atomic_cmpxchg(&ras->rma_in_recovery, 0, 1) == 0)
++		amdgpu_ras_reset_gpu(adev);
++
+ 	return 0;
+ }
+ 
+@@ -3392,6 +3390,12 @@ static int amdgpu_ras_poison_consumption_handler(struct amdgpu_device *adev,
+ 		reset_flags |= msg.reset;
+ 	}
+ 
++	/*
++	 * Try to ensure poison creation handler is completed first
++	 * to set rma if bad page exceed threshold.
++	 */
++	flush_delayed_work(&con->page_retirement_dwork);
++
+ 	/* for RMA, amdgpu_ras_poison_creation_handler will trigger gpu reset */
+ 	if (reset_flags && !amdgpu_ras_is_rma(adev)) {
+ 		if (reset_flags & AMDGPU_RAS_GPU_RESET_MODE1_RESET)
+@@ -3401,8 +3405,6 @@ static int amdgpu_ras_poison_consumption_handler(struct amdgpu_device *adev,
+ 		else
+ 			reset = reset_flags;
+ 
+-		flush_delayed_work(&con->page_retirement_dwork);
+-
+ 		con->gpu_reset_flags |= reset;
+ 		amdgpu_ras_reset_gpu(adev);
+ 
+@@ -3570,6 +3572,7 @@ int amdgpu_ras_recovery_init(struct amdgpu_device *adev, bool init_bp_info)
+ 	mutex_init(&con->recovery_lock);
+ 	INIT_WORK(&con->recovery_work, amdgpu_ras_do_recovery);
+ 	atomic_set(&con->in_recovery, 0);
++	atomic_set(&con->rma_in_recovery, 0);
+ 	con->eeprom_control.bad_channel_bitmap = 0;
+ 
+ 	max_eeprom_records_count = amdgpu_ras_eeprom_max_record_count(&con->eeprom_control);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
+index 927d6bff734ae..699953c02649f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
+@@ -515,6 +515,7 @@ struct amdgpu_ras {
+ 	/* gpu recovery */
+ 	struct work_struct recovery_work;
+ 	atomic_t in_recovery;
++	atomic_t rma_in_recovery;
+ 	struct amdgpu_device *adev;
+ 	/* error handler data */
+ 	struct ras_err_handler_data *eh_data;
 -- 
 2.51.0
 
