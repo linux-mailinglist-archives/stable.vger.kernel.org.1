@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27D3C4A9F8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBC5C4AB11
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DAFC1882F86
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8C8F1893A50
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8B631281B;
-	Tue, 11 Nov 2025 01:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDA33314C8;
+	Tue, 11 Nov 2025 01:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIr+DwDf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BP/mSNPh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BA31C28E;
-	Tue, 11 Nov 2025 01:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D624932ED5D;
+	Tue, 11 Nov 2025 01:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823940; cv=none; b=YxfZgMhvnb3xfYzXM376D+ihxhTiWiW/onWU2TFx6scjoLHD/0uvXS3CF/Kb1uX7b1DQURag2NRvHRIVKDhodGfBrSgpaYaHz0cSRdPtjiU7UrgEhFjyADRGjUo9JycSlduIsci4rn6z3SI74PqDaR5EsiRN71BPsTxk+1E1KaY=
+	t=1762823945; cv=none; b=g4vqDH9uXX5T8gkeNymub9wx99N5BnJlvwwBGTx96AP4dj5hJnhRpieIFHyDD/vpb+WFjg1SF1LzIAElhEaTrJxvUcND8AviQlXNw78uTJ745gCfUvBu8Rlkw/Uji89mV57ImC/idDaY5u82jMi6e497tOBsWwExng/x0Dnm+MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823940; c=relaxed/simple;
-	bh=GsNmxQDIMQfQBqBrcY/fqQffMKJbBIgKhxanv5Aldjo=;
+	s=arc-20240116; t=1762823945; c=relaxed/simple;
+	bh=jl4NsO7TWnaUxMI+x6Qigy+tHfwQ4/uaMLCeqmwEfSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lSJTddhsDoj6N8OmbL3l5yyVGGX3iBf21xabqJMi+USZdkpc7WNO2QW+vluftQKN0Wzduvut7r0K1yvnddVkoUCmRy2RJ2z9/P5BD/CfKTPy2RoiLTNQvDNSB8qGJp+os15GnLZx+2UENs/RISJiq3/kXXdnkSC0feHX95zIsTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIr+DwDf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D85CC16AAE;
-	Tue, 11 Nov 2025 01:18:59 +0000 (UTC)
+	 MIME-Version; b=jblfnNiNlZxx4SuRAn5/wbv/pN9uhg4wOndC1Y02sX2kpTnVzMc6JFzw50PnTZQEp1c7hj2NTpDEAchwM3beGFsr+m1uOXNoZa4dGjybr7UfWs/1XTSRtIf/5/vlIl1yaLBml25iyZOz3GUkljOCw2ca6OGOGLCHecu38C/lDzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BP/mSNPh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546EAC113D0;
+	Tue, 11 Nov 2025 01:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823940;
-	bh=GsNmxQDIMQfQBqBrcY/fqQffMKJbBIgKhxanv5Aldjo=;
+	s=korg; t=1762823944;
+	bh=jl4NsO7TWnaUxMI+x6Qigy+tHfwQ4/uaMLCeqmwEfSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iIr+DwDfTjJMebyxp7lOBHzmh06kq/7Ysd+sS5+4jvx7YbBcHm4hpcnDjMp8n8YUo
-	 I9hmEeLBsidqmkPWblaYRu9VGHx+Lsg/fVLzdBhqIeBLiJ+z20ZTOKoSVcUW76TXuc
-	 vpo9Jgt/axXxHmt7dXe+IXcPEi6mgGQVk2XR/ut4=
+	b=BP/mSNPhr2UvMJYvyAWZ26RqdO8FBC71ll9LOtutFY0bvun94ppT5JDNL59Ov6C0k
+	 HHAF1hqjJ4yVdUFcXxLTtpE9lb5mTHvQFSZe70YEAdGokeRFk9dBNyiEQQkxcHAz3V
+	 8HwQ/7jagaybZ7Fj1uN+HJONQb1pFqfzrhb7Dsgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 401/849] inet_diag: annotate data-races in inet_diag_bc_sk()
-Date: Tue, 11 Nov 2025 09:39:31 +0900
-Message-ID: <20251111004546.133828259@linuxfoundation.org>
+Subject: [PATCH 6.17 402/849] microchip: lan865x: add ndo_eth_ioctl handler to enable PHY ioctl support
+Date: Tue, 11 Nov 2025 09:39:32 +0900
+Message-ID: <20251111004546.158677418@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,60 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
 
-[ Upstream commit 4fd84a0aaf2ba125b441aa09d415022385e66bf2 ]
+[ Upstream commit 34c21e91192aa1ff66f9d6cef8132717840d04e6 ]
 
-inet_diag_bc_sk() runs with an unlocked socket,
-annotate potential races with READ_ONCE().
+Introduce support for standard MII ioctl operations in the LAN865x
+Ethernet driver by implementing the .ndo_eth_ioctl callback. This allows
+PHY-related ioctl commands to be handled via phy_do_ioctl_running() and
+enables support for ethtool and other user-space tools that rely on ioctl
+interface to perform PHY register access using commands like SIOCGMIIREG
+and SIOCSMIIREG.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250828102738.2065992-4-edumazet@google.com
+This feature enables improved diagnostics and PHY configuration
+capabilities from userspace.
+
+Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250828114549.46116-1-parthiban.veerasooran@microchip.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_diag.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/microchip/lan865x/lan865x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
-index 2fa53b16fe778..238b2a4a6cf43 100644
---- a/net/ipv4/inet_diag.c
-+++ b/net/ipv4/inet_diag.c
-@@ -785,7 +785,7 @@ static void entry_fill_addrs(struct inet_diag_entry *entry,
- 			     const struct sock *sk)
- {
- #if IS_ENABLED(CONFIG_IPV6)
--	if (sk->sk_family == AF_INET6) {
-+	if (entry->family == AF_INET6) {
- 		entry->saddr = sk->sk_v6_rcv_saddr.s6_addr32;
- 		entry->daddr = sk->sk_v6_daddr.s6_addr32;
- 	} else
-@@ -798,18 +798,18 @@ static void entry_fill_addrs(struct inet_diag_entry *entry,
+diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+index 79b800d2b72c2..b428ad6516c5e 100644
+--- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
++++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+@@ -326,6 +326,7 @@ static const struct net_device_ops lan865x_netdev_ops = {
+ 	.ndo_start_xmit		= lan865x_send_packet,
+ 	.ndo_set_rx_mode	= lan865x_set_multicast_list,
+ 	.ndo_set_mac_address	= lan865x_set_mac_address,
++	.ndo_eth_ioctl          = phy_do_ioctl_running,
+ };
  
- int inet_diag_bc_sk(const struct nlattr *bc, struct sock *sk)
- {
--	struct inet_sock *inet = inet_sk(sk);
-+	const struct inet_sock *inet = inet_sk(sk);
- 	struct inet_diag_entry entry;
- 
- 	if (!bc)
- 		return 1;
- 
--	entry.family = sk->sk_family;
-+	entry.family = READ_ONCE(sk->sk_family);
- 	entry_fill_addrs(&entry, sk);
--	entry.sport = inet->inet_num;
--	entry.dport = ntohs(inet->inet_dport);
--	entry.ifindex = sk->sk_bound_dev_if;
--	entry.userlocks = sk_fullsock(sk) ? sk->sk_userlocks : 0;
-+	entry.sport = READ_ONCE(inet->inet_num);
-+	entry.dport = ntohs(READ_ONCE(inet->inet_dport));
-+	entry.ifindex = READ_ONCE(sk->sk_bound_dev_if);
-+	entry.userlocks = sk_fullsock(sk) ? READ_ONCE(sk->sk_userlocks) : 0;
- 	if (sk_fullsock(sk))
- 		entry.mark = READ_ONCE(sk->sk_mark);
- 	else if (sk->sk_state == TCP_NEW_SYN_RECV)
+ static int lan865x_probe(struct spi_device *spi)
 -- 
 2.51.0
 
