@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04AAC4A379
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 920D0C4A382
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8538C4F4885
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 59E5E4F4A5E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034257262A;
-	Tue, 11 Nov 2025 01:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605E424E4C6;
+	Tue, 11 Nov 2025 01:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7cUr1ea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fF75vBtC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E6F248F6A;
-	Tue, 11 Nov 2025 01:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C38A246768;
+	Tue, 11 Nov 2025 01:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822929; cv=none; b=tbP+pybONlQsKcGMFao+GXJaS7vjsMxGCFjIl9OBPVWVN0EEo/4lTkqv1COVS+UA0HOI9ajpBQx1JkkhJtN90BSSFRz56YLxnQdt2TwWqxTuMZqAMQvN90kVhVh44jr/Twi6bEhucr9D9FdWRK7GOFpzuz/IyVxb1uYfw45lZx4=
+	t=1762822937; cv=none; b=UFCkFxjWLiN71Q6f44B+liWXuaPHH6n5f0r2RKVUGdF3x0HhHkc8NZyz4gwnJxTg43l5GitJ5MWFvMfQKtPuGNNrqpVtKm9poL3Tj+VDvgNqnrdnc3b2Z/Q1OIBfH1zlicaPWCCiDNXVT9LGFqCKQMt0poAmqDKlrbbcKEtP4e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822929; c=relaxed/simple;
-	bh=RL5yLuK8hof4bJtTCCN5YDqro/v7FLVms1zxVRuK7iQ=;
+	s=arc-20240116; t=1762822937; c=relaxed/simple;
+	bh=P0t8p6eWvdkCo3kJUJ9tX5F3vr8NtVtg09zxCFGxP4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vhc/LZOi/hixHHxSafK2dQYPGfYpZ1rhioLH8vUKW+Zo4BIAOSZBgHJsNgSlxdjaWoa7kf8hbihX9B7roZ11r3iWPBdW1+Bfk5n+ZPOy4M5v3wRto7h0t0jt1imaoyv1FCc257IBZ4lTQemGfV9gdXG34r55yipzCFbG2v6bMGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7cUr1ea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1347C113D0;
-	Tue, 11 Nov 2025 01:02:08 +0000 (UTC)
+	 MIME-Version; b=MZGHpC3yz6kcEmFPoswjIIOdLnWOjmHsNYzQzYW6H0glEzNgozYTM+dXWZ9ARBeyYEBjBVFg6IGDwefnAsrcBA4iTeaglRflZ59qd/yvwJmvFlaUcWubb5BL0ice272nNEM4fmZ4df5Evmp9e7pzX2wBUMuv8C68i2OmSbCbyCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fF75vBtC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E4FC16AAE;
+	Tue, 11 Nov 2025 01:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822929;
-	bh=RL5yLuK8hof4bJtTCCN5YDqro/v7FLVms1zxVRuK7iQ=;
+	s=korg; t=1762822936;
+	bh=P0t8p6eWvdkCo3kJUJ9tX5F3vr8NtVtg09zxCFGxP4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U7cUr1eagH9MWuQuIbum5QTpt8I0C3G6pep2KKZrm7NePlXW2OjJfIUyQFTitkCCp
-	 AXmsRJ/XRker0tRAkL8GABT/lbbmJ9ujWWqhSYiJBxJjoDRlExoMrjRcmoWewoH0mt
-	 6demHMN391Tp1Vb3HPb4yYaIWxbm5H4hjJU4NeUg=
+	b=fF75vBtCmST4Xu+C0dvBIbJBoTMeQ+nwUK5xu9/RIvrWQJD1kGM2LP3rH7hoqleO1
+	 rJp1MhsVuIjwWd4DGk9SQKu6MXL5f3abmo7ISiFM/ecwGf+tykYsqu940h1j40KFWp
+	 4wS+ttkWKDUTm/sPX3jRsZ6qLV2tzNNbyp6FT7Bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chen Pei <cp0613@linux.alibaba.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 198/849] spi: rpc-if: Add resume support for RZ/G3E
-Date: Tue, 11 Nov 2025 09:36:08 +0900
-Message-ID: <20251111004541.226350490@linuxfoundation.org>
+Subject: [PATCH 6.17 199/849] ACPI: SPCR: Support Precise Baud Rate field
+Date: Tue, 11 Nov 2025 09:36:09 +0900
+Message-ID: <20251111004541.250277650@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,34 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Chen Pei <cp0613@linux.alibaba.com>
 
-[ Upstream commit ad4728740bd68d74365a43acc25a65339a9b2173 ]
+[ Upstream commit 4d330fe54145ecfbb657ac01a554fdedf3c1927e ]
 
-On RZ/G3E using PSCI, s2ram powers down the SoC. After resume,
-reinitialize the hardware for SPI operations.
+The Microsoft Serial Port Console Redirection (SPCR) specification
+revision 1.09 comprises additional field: Precise Baud Rate [1].
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/20250921112649.104516-3-biju.das.jz@bp.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+It is used to describe non-traditional baud rates (such as those
+used by high-speed UARTs).
+
+It contains a specific non-zero baud rate which overrides the value
+of the Configured Baud Rate field. If this field is zero or not
+present, Configured Baud Rate is used.
+
+Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/serports/serial-port-console-redirection-table [1]
+Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
+Link: https://patch.msgid.link/20250913070815.16758-1-cp0613@linux.alibaba.com
+[ rjw: Corrected typo in the subject ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-rpc-if.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/spcr.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-rpc-if.c b/drivers/spi/spi-rpc-if.c
-index 627cffea5d5c7..300a7c10b3d40 100644
---- a/drivers/spi/spi-rpc-if.c
-+++ b/drivers/spi/spi-rpc-if.c
-@@ -207,6 +207,8 @@ static int __maybe_unused rpcif_spi_resume(struct device *dev)
- {
- 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+diff --git a/drivers/acpi/spcr.c b/drivers/acpi/spcr.c
+index cd36a97b0ea2c..fa12e740386de 100644
+--- a/drivers/acpi/spcr.c
++++ b/drivers/acpi/spcr.c
+@@ -146,7 +146,15 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
+ 		goto done;
+ 	}
  
-+	rpcif_hw_init(dev, false);
-+
- 	return spi_controller_resume(ctlr);
- }
- 
+-	switch (table->baud_rate) {
++	/*
++	 * SPCR 1.09 defines Precise Baud Rate Filed contains a specific
++	 * non-zero baud rate which overrides the value of the Configured
++	 * Baud Rate field. If this field is zero or not present, Configured
++	 * Baud Rate is used.
++	 */
++	if (table->precise_baudrate)
++		baud_rate = table->precise_baudrate;
++	else switch (table->baud_rate) {
+ 	case 0:
+ 		/*
+ 		 * SPCR 1.04 defines 0 as a preconfigured state of UART.
 -- 
 2.51.0
 
