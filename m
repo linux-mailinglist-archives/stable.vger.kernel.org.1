@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-194117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C40C4AD45
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A1FC4B181
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33D60188F537
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3DC5F4F7984
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E178D261B77;
-	Tue, 11 Nov 2025 01:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7520624A043;
+	Tue, 11 Nov 2025 01:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jklicebB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttN2JaSS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D155DDAB;
-	Tue, 11 Nov 2025 01:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB4623C4F2;
+	Tue, 11 Nov 2025 01:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824846; cv=none; b=s/WbvW5dPs3t+t/8Zeox20xyedPKBba3pOwtvRWS6zmuxjy/O1Ul5m5hEnQbwGfUcDYAKa8jJTjV4P9rX2YrJ/wHuUylmISUJp5nBwITzvsLkOxwmBOkPcHFrI2R/VKD8TP9wmqUYOy9/AoFnFu/PA5iIU3NBmRuDKzSWzjRD4E=
+	t=1762825485; cv=none; b=koprFDb0V1t4D7u66GAdQ8+tHF+1Ke7TNTI/PJH6dUN1DQJEpPfGzk4Dt0ky+ldPz6bvV30/1KAsJ/kUAT1lsh68yvvPBe8bkp8Q2L6wRqwU8cByQ9V5TxB5pjEaLKG6Gv9knklv3b94LRzD1S4B55J4Pn9Zbg6Rq9NthrIOf9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824846; c=relaxed/simple;
-	bh=MDbvjf1s2NlpDgCeseuCjN8PwdPrQICdl6KqJJCGR4k=;
+	s=arc-20240116; t=1762825485; c=relaxed/simple;
+	bh=L/8qgXthGKer8T/POqdItO8gMX7GSIR/vWVrOhF2nT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XnE89CpbbIYv+FiD74Shoku+NgkwhuGfHZsTqeR6+KdNfA5PTfQoJMKx2B1RQC1jQR64j5CjzESv8RnQ5jbbO/U3Y3Jiw+iGlTHglW0sl6uC5VrqRcxR1N2cdtQ9y8fi9yTtmz7bbtd1xBG7rv7emQhh2h61AwipOa81Pj5YBZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jklicebB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3C7C116D0;
-	Tue, 11 Nov 2025 01:34:06 +0000 (UTC)
+	 MIME-Version; b=uwrpNHeg1hlKYjad4Hxg8vJ5nTw1ZEdZKB1cKIlDMVjL2tKCRQB7pUNGq9bo5hjWeNzZ1PIzcnntlhPJtmRp9WbdiE1+Y1Om5U4gjBvK+iCkwYUjg0e11jy1GpKMhkf7tkSXPZUYvBIp4Ew2pbJihmLyQgVadxN8YTdbmlNX0Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttN2JaSS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1ACBC4CEFB;
+	Tue, 11 Nov 2025 01:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824846;
-	bh=MDbvjf1s2NlpDgCeseuCjN8PwdPrQICdl6KqJJCGR4k=;
+	s=korg; t=1762825485;
+	bh=L/8qgXthGKer8T/POqdItO8gMX7GSIR/vWVrOhF2nT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jklicebBcMbwL7UwDzw6fPo+WtSfjjDVfkHQQaHxe2WodqyqcCnk5hiHFCxFiot/P
-	 Hxtl8YzxCgPHE9BYU/COZ5pg+T/eYcoyqb0bvg8pXNx7zSCtroLxyR928JpRptbKy5
-	 7ITXA01lAnFIPEndF0rwrs4ydzZU8+FyKRzlAWig=
+	b=ttN2JaSSkG9/AJQv6Ail8tlorknUQkGtXI4an/7VCHVavxypW4O6CiDBIdhBSLoD+
+	 XH7jF9I6XfIpooSCXyCoYu02P3SsR7jCD3DU3MEufwoxGAlAMvrD+MHA6QRteKjzvZ
+	 Bu0+P2YfTfPxjBkaBZ4en5zvF9lEuoR6Dyc7+s6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 536/565] net/mlx5e: SHAMPO, Fix skb size check for 64K pages
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.17 822/849] x86/CPU/AMD: Add missing terminator for zen5_rdseed_microcode
 Date: Tue, 11 Nov 2025 09:46:32 +0900
-Message-ID: <20251111004539.031314269@linuxfoundation.org>
+Message-ID: <20251111004556.299142883@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit bacd8d80181ebe34b599a39aa26bf73a44c91e55 ]
+commit f1fdffe0afea02ba783acfe815b6a60e7180df40 upstream.
 
-mlx5e_hw_gro_skb_has_enough_space() uses a formula to check if there is
-enough space in the skb frags to store more data. This formula is
-incorrect for 64K page sizes and it triggers early GRO session
-termination because the first fragment will blow up beyond
-GRO_LEGACY_MAX_SIZE.
+Running x86_match_min_microcode_rev() on a Zen5 CPU trips up KASAN for an out
+of bounds access.
 
-This patch adds a special case for page sizes >= GRO_LEGACY_MAX_SIZE
-(64K) which uses the skb->len instead. Within this context,
-the check is safe from fragment overflow because the hardware
-will continuously fill the data up to the reservation size of 64K
-and the driver will coalesce all data from the same page to the same
-fragment. This means that the data will span one fragment or at most
-two for such a large page size.
-
-It is expected that the if statement will be optimized out as the
-check is done with constants.
-
-Fixes: 92552d3abd32 ("net/mlx5e: HW_GRO cqe handler implementation")
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1762238915-1027590-3-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 607b9fb2ce248 ("x86/CPU/AMD: Add RDSEED fix for Zen5")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251104161007.269885-1-mario.limonciello@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 59aa10f1a9d95..4eb1150e71547 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -2316,7 +2316,10 @@ mlx5e_hw_gro_skb_has_enough_space(struct sk_buff *skb, u16 data_bcnt)
- {
- 	int nr_frags = skb_shinfo(skb)->nr_frags;
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1021,6 +1021,7 @@ static void init_amd_zen4(struct cpuinfo
+ static const struct x86_cpu_id zen5_rdseed_microcode[] = {
+ 	ZEN_MODEL_STEP_UCODE(0x1a, 0x02, 0x1, 0x0b00215a),
+ 	ZEN_MODEL_STEP_UCODE(0x1a, 0x11, 0x0, 0x0b101054),
++	{},
+ };
  
--	return PAGE_SIZE * nr_frags + data_bcnt <= GRO_LEGACY_MAX_SIZE;
-+	if (PAGE_SIZE >= GRO_LEGACY_MAX_SIZE)
-+		return skb->len + data_bcnt <= GRO_LEGACY_MAX_SIZE;
-+	else
-+		return PAGE_SIZE * nr_frags + data_bcnt <= GRO_LEGACY_MAX_SIZE;
- }
- 
- static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe)
--- 
-2.51.0
-
+ static void init_amd_zen5(struct cpuinfo_x86 *c)
 
 
 
