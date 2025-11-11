@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-193595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6470C4A7C7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DFB1C4ACC7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FD713B5955
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2FA41883734
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1713343214;
-	Tue, 11 Nov 2025 01:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B793446B2;
+	Tue, 11 Nov 2025 01:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hM5rLcJc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ob0sNbnu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB0C261573;
-	Tue, 11 Nov 2025 01:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DFA2E6CA4;
+	Tue, 11 Nov 2025 01:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823555; cv=none; b=ESUnUQERjyCJTBmGEuDnHJ+L56cwI8SNDuwB4i9wBsNy7uc7w7l4GgDL/9LPX/nf5IOVTa5e0D0rFyR62LhbXN1UDwNuygz7JZ+bGjMUp8tEV4C2y/6jKrBO2DJKyRmF6mDbqynk7NV7ylBmj5uf8a1F97AFRzaSdbYZzwJ6k9M=
+	t=1762824709; cv=none; b=oy73SmFPvPKC1o930i1C2A1mvNuAmIhIA/wieNEuHWUVS52oZ+yBBfxqvtiuJXrxpHjL3m7UCZQBlf/3v0XDZlqoGflCvM1CBktbAWfsdBmpOk7NMD8hOlh/FKCg2ojzqb4EWpO+VWlppI+ZXvBPefMxKC+5mg39WllM6lMALSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823555; c=relaxed/simple;
-	bh=M3Nm5rYGR4UhJoSceLzjDg4d5PxElO59jsYSx50UZX8=;
+	s=arc-20240116; t=1762824709; c=relaxed/simple;
+	bh=v8hhlNAEzzFNB37lhW6lj9D3cIIpwD6ONPK915jcUF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXA3rYOrBzLXiEIpaS8/zlx5KYoAGNQiP0LlPEnBnuanEDd4gUXoT7MZSME7NV7fG1BUSnzdWfYzQqK8oIwLhJ+rIN7laB6r6QX5EsPyeq3xFtAsST5PmSgSYELN40L6gZYFbvlcgi7Us8asJ0PNQ427+PGnwRqShNe9eSX981Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hM5rLcJc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EACC4CEFB;
-	Tue, 11 Nov 2025 01:12:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kTzUSndcwBC+MSVU0pP50q6o293ThIbGRcJqEUNr/k5d4beYzpIU+fhg3nc3DchD5fhC+YEfAZUzsQ05Jhvw1TkUvXOwzbhplxMSlpHm2BH0J12MJflyVs18q0nG5c96aNDblSDWUpIcvw4jm+fP7t+Suax7CYeq7ot2CNbgD6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ob0sNbnu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D66C4CEF5;
+	Tue, 11 Nov 2025 01:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823555;
-	bh=M3Nm5rYGR4UhJoSceLzjDg4d5PxElO59jsYSx50UZX8=;
+	s=korg; t=1762824709;
+	bh=v8hhlNAEzzFNB37lhW6lj9D3cIIpwD6ONPK915jcUF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hM5rLcJcuKlO35a3QAB3Lg5MtXvpYWi02WDhE9Wp8KRexFRrHhZiiijA/jvg4CTXT
-	 fTEO512Dh8Lu4JATAKuoF5yKF6l5vt2XDbikS3/R/c/ZOiXKA/BBZP5EDm6WTyQH1Z
-	 /rzLVbA/nZhPeyTcfjjkSj3xNL+YtstKZjUB1XJM=
+	b=Ob0sNbnuVuZhit8nnPb2RnDnIybru7TIwGYDcR8xXORBPg9xzhuHhIn1s8ajXR2/X
+	 bow3DmrlP9hoE6gd0O2NZ2x+HeQOojrPw5mFtMDYH2sWqqWmep1tBOdNX6teQPvZz1
+	 8EPnE2tVMnHEg/396+wKRuyg9rdvOE01nZjP8HRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 269/565] mips: lantiq: danube: add missing properties to cpu node
+Subject: [PATCH 6.17 555/849] drm/amd/display: Dont use non-registered VUPDATE on DCE 6
 Date: Tue, 11 Nov 2025 09:42:05 +0900
-Message-ID: <20251111004532.939532103@linuxfoundation.org>
+Message-ID: <20251111004549.826037244@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +62,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit e8dee66c37085dc9858eb8608bc783c2900e50e7 ]
+[ Upstream commit 6cbe6e072c5d088101cd542ad8ef8541edeea5c3 ]
 
-This fixes the following warnings:
-arch/mips/boot/dts/lantiq/danube_easy50712.dtb: cpus: '#address-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/cpus.yaml#
-arch/mips/boot/dts/lantiq/danube_easy50712.dtb: cpus: '#size-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/cpus.yaml#
-arch/mips/boot/dts/lantiq/danube_easy50712.dtb: cpu@0 (mips,mips24Kc): 'reg' is a required property
-	from schema $id: http://devicetree.org/schemas/mips/cpus.yaml#
+The VUPDATE interrupt isn't registered on DCE 6, so don't try
+to use that.
 
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+This fixes a page flip timeout after sleep/resume on DCE 6.
+
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/lantiq/danube.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 22 ++++++++++++-------
+ .../amd/display/amdgpu_dm/amdgpu_dm_crtc.c    | 16 +++++++++-----
+ 2 files changed, 24 insertions(+), 14 deletions(-)
 
-diff --git a/arch/mips/boot/dts/lantiq/danube.dtsi b/arch/mips/boot/dts/lantiq/danube.dtsi
-index 7a7ba66aa5349..0a942bc091436 100644
---- a/arch/mips/boot/dts/lantiq/danube.dtsi
-+++ b/arch/mips/boot/dts/lantiq/danube.dtsi
-@@ -5,8 +5,12 @@
- 	compatible = "lantiq,xway", "lantiq,danube";
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 3762b3c0ef983..f450bcb43c9c1 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3050,14 +3050,20 @@ static void dm_gpureset_toggle_interrupts(struct amdgpu_device *adev,
+ 				drm_warn(adev_to_drm(adev), "Failed to %s pflip interrupts\n",
+ 					 enable ? "enable" : "disable");
  
- 	cpus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
+-			if (enable) {
+-				if (amdgpu_dm_crtc_vrr_active(to_dm_crtc_state(acrtc->base.state)))
+-					rc = amdgpu_dm_crtc_set_vupdate_irq(&acrtc->base, true);
+-			} else
+-				rc = amdgpu_dm_crtc_set_vupdate_irq(&acrtc->base, false);
+-
+-			if (rc)
+-				drm_warn(adev_to_drm(adev), "Failed to %sable vupdate interrupt\n", enable ? "en" : "dis");
++			if (dc_supports_vrr(adev->dm.dc->ctx->dce_version)) {
++				if (enable) {
++					if (amdgpu_dm_crtc_vrr_active(
++							to_dm_crtc_state(acrtc->base.state)))
++						rc = amdgpu_dm_crtc_set_vupdate_irq(
++							&acrtc->base, true);
++				} else
++					rc = amdgpu_dm_crtc_set_vupdate_irq(
++							&acrtc->base, false);
 +
- 		cpu@0 {
- 			compatible = "mips,mips24Kc";
-+			reg = <0>;
- 		};
- 	};
++				if (rc)
++					drm_warn(adev_to_drm(adev), "Failed to %sable vupdate interrupt\n",
++						enable ? "en" : "dis");
++			}
  
+ 			irq_source = IRQ_TYPE_VBLANK + acrtc->otg_inst;
+ 			/* During gpu-reset we disable and then enable vblank irq, so
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+index 80205c9bc9403..2047ac51f1b66 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+@@ -321,13 +321,17 @@ static inline int amdgpu_dm_crtc_set_vblank(struct drm_crtc *crtc, bool enable)
+ 			dc->config.disable_ips != DMUB_IPS_DISABLE_ALL &&
+ 			sr_supported && vblank->config.disable_immediate)
+ 			drm_crtc_vblank_restore(crtc);
++	}
+ 
+-		/* vblank irq on -> Only need vupdate irq in vrr mode */
+-		if (amdgpu_dm_crtc_vrr_active(acrtc_state))
+-			rc = amdgpu_dm_crtc_set_vupdate_irq(crtc, true);
+-	} else {
+-		/* vblank irq off -> vupdate irq off */
+-		rc = amdgpu_dm_crtc_set_vupdate_irq(crtc, false);
++	if (dc_supports_vrr(dm->dc->ctx->dce_version)) {
++		if (enable) {
++			/* vblank irq on -> Only need vupdate irq in vrr mode */
++			if (amdgpu_dm_crtc_vrr_active(acrtc_state))
++				rc = amdgpu_dm_crtc_set_vupdate_irq(crtc, true);
++		} else {
++			/* vblank irq off -> vupdate irq off */
++			rc = amdgpu_dm_crtc_set_vupdate_irq(crtc, false);
++		}
+ 	}
+ 
+ 	if (rc)
 -- 
 2.51.0
 
