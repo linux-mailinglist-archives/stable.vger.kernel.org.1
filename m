@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-193897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A59BEC4AAE4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 454C6C4A499
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3CD654F9E5F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EF1A1883CE2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F982346FD0;
-	Tue, 11 Nov 2025 01:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B7834321F;
+	Tue, 11 Nov 2025 01:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqHiMDZa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1sQztRP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDE72DEA9D;
-	Tue, 11 Nov 2025 01:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112F234320C;
+	Tue, 11 Nov 2025 01:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824264; cv=none; b=b7AfMfhjvQT7FmoOCBbO9ISSQCpGHpIXkAnsXHFjWW/pUTvfdBAXHm4jVLXnKe2NVlHnh8YBldgXPRx3E2074Xs3/4W9bR0z6VvtfRsW00e5YBxAlcIs+fvyBdPKsgSLJbpNIAp6NCfiuMOzVvxRllTXDjGsIMbXvHoX/aKhDnA=
+	t=1762823184; cv=none; b=pZrLinrN+4ieemPozeS17p3LUeinjQ0AqOAinCfE9uvlc1NrDAIDfG06WF3F+uESyzn+xNmiUNAeZC78k/P1tZAIn8uPMeoGhCJOa0pWfHKjV4gJ7n3hIu1/XSni34tC9ARznT76edTZWirhdMi+ggTtayfmu003a4z+kPIPD+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824264; c=relaxed/simple;
-	bh=iWdm0e9PMbesC4CbJfD8esl7JmZxkZwnSTiweqJwHQc=;
+	s=arc-20240116; t=1762823184; c=relaxed/simple;
+	bh=fQL6fdO2OW8LngKpGGyLiPJiP212czGUDU8m6TuJtbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzRhJ4vY86GlbfFkt+9Gy+kkZGJQL3YhhjRrMxRDLV476bevpM3nc1F2TL6RxN4CwP3G/WxqVsx9Sl0vpQlwnfpY6GqX8N+Jprh8rzw+11eFF4A+Tu3TYw9j/duiKefTjcMxxAjhhbuawZ9kQBCAkaTbF9Dyz66Oez8RvCi7Aoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqHiMDZa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3B5C116B1;
-	Tue, 11 Nov 2025 01:24:23 +0000 (UTC)
+	 MIME-Version; b=oRyIK6/pEePhiRppk+3QhQ3yWE9hLtPlDh0BdbP3Rfta5EFq1A5QwyCz+PbdZ5FTYoTUW0fpxzdlWJqDzaVj9/sJYTnjjMfIvkp195mXGih+OCUUZUHif4gh5xdfNRg6yJAOqQVqkSeveq9Omwua3DfLKogdhiGqZB/bL6iKgb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1sQztRP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D85C19421;
+	Tue, 11 Nov 2025 01:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824263;
-	bh=iWdm0e9PMbesC4CbJfD8esl7JmZxkZwnSTiweqJwHQc=;
+	s=korg; t=1762823183;
+	bh=fQL6fdO2OW8LngKpGGyLiPJiP212czGUDU8m6TuJtbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqHiMDZaKrd1EYkW5gc7WD1dNSG3JxvcvQrqlrCCRFlJDfpfFJ7REfBPm+cCbFh2t
-	 KbnWknPiyhq3joAQhIuUtEhYW+IWlbUg+u7ty73Q50+D8fBndLAnaBbQ/9dR22E+Ya
-	 zIASbAcVjU1vAFUogfh2hkZeuxzfr1Ihgckh1w8M=
+	b=W1sQztRPsOGi/SUBa8DJFvT7KbvH7FYLqeD1+mOsMYFnbpCGgXrsJn66woNgf3x4b
+	 J2lHSdApnC4rqbDgM356ptPpdhotJtiSTmjBzaVX95XQVQL/lhdsxVy1V3EJrtytBY
+	 /yJFEKEBEJIIoIIsjOth2fjj7NLp4GdDSeF/kYEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xion Wang <xion.wang@mediatek.com>,
+	Sathishkumar S <sathishkumar.sundararaju@amd.com>,
+	Leo Liu <leo.liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 473/849] char: Use list_del_init() in misc_deregister() to reinitialize list pointer
+Subject: [PATCH 6.12 187/565] drm/amdgpu/jpeg: Hold pg_lock before jpeg poweroff
 Date: Tue, 11 Nov 2025 09:40:43 +0900
-Message-ID: <20251111004547.883688690@linuxfoundation.org>
+Message-ID: <20251111004531.139272247@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xion Wang <xion.wang@mediatek.com>
+From: Sathishkumar S <sathishkumar.sundararaju@amd.com>
 
-[ Upstream commit e28022873c0d051e980c4145f1965cab5504b498 ]
+[ Upstream commit 0e7581eda8c76d1ca4cf519631a4d4eb9f82b94c ]
 
-Currently, misc_deregister() uses list_del() to remove the device
-from the list. After list_del(), the list pointers are set to
-LIST_POISON1 and LIST_POISON2, which may help catch use-after-free bugs,
-but does not reset the list head.
-If misc_deregister() is called more than once on the same device,
-list_empty() will not return true, and list_del() may be called again,
-leading to undefined behavior.
+Acquire jpeg_pg_lock before changes to jpeg power state
+and release it after power off from idle work handler.
 
-Replace list_del() with list_del_init() to reinitialize the list head
-after deletion. This makes the code more robust against double
-deregistration and allows safe usage of list_empty() on the miscdevice
-after deregistration.
-
-[ Note, this seems to keep broken out-of-tree drivers from doing foolish
-  things.  While this does not matter for any in-kernel drivers,
-  external drivers could use a bit of help to show them they shouldn't
-  be doing stuff like re-registering misc devices - gregkh ]
-
-Signed-off-by: Xion Wang <xion.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20250904063714.28925-2-xion.wang@mediatek.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sathishkumar S <sathishkumar.sundararaju@amd.com>
+Reviewed-by: Leo Liu <leo.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/misc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/misc.c b/drivers/char/misc.c
-index 4c276b8066ff8..ea5b4975347a0 100644
---- a/drivers/char/misc.c
-+++ b/drivers/char/misc.c
-@@ -281,7 +281,7 @@ void misc_deregister(struct miscdevice *misc)
- 		return;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
+index 6df99cb00d9a5..f96a79a4d5397 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
+@@ -117,10 +117,12 @@ static void amdgpu_jpeg_idle_work_handler(struct work_struct *work)
+ 			fences += amdgpu_fence_count_emitted(&adev->jpeg.inst[i].ring_dec[j]);
+ 	}
  
- 	mutex_lock(&misc_mtx);
--	list_del(&misc->list);
-+	list_del_init(&misc->list);
- 	device_destroy(&misc_class, MKDEV(MISC_MAJOR, misc->minor));
- 	misc_minor_free(misc->minor);
- 	if (misc->minor > MISC_DYNAMIC_MINOR)
+-	if (!fences && !atomic_read(&adev->jpeg.total_submission_cnt))
++	if (!fences && !atomic_read(&adev->jpeg.total_submission_cnt)) {
++		mutex_lock(&adev->jpeg.jpeg_pg_lock);
+ 		amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_JPEG,
+ 						       AMD_PG_STATE_GATE);
+-	else
++		mutex_unlock(&adev->jpeg.jpeg_pg_lock);
++	} else
+ 		schedule_delayed_work(&adev->jpeg.idle_work, JPEG_IDLE_TIMEOUT);
+ }
+ 
 -- 
 2.51.0
 
