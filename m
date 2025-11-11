@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-194210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09CA5C4AF22
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:52 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 474A4C4A8E8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15FC23A2ED3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 714EE4F5B77
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB9433FE26;
-	Tue, 11 Nov 2025 01:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F9833BBB5;
+	Tue, 11 Nov 2025 01:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdvXZ/dJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GwNHlCE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC07F3081B8;
-	Tue, 11 Nov 2025 01:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081A925CC40;
+	Tue, 11 Nov 2025 01:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825063; cv=none; b=KAIxuWIePVBDUgrbgLQJmp5OFsaWBknXDtSoYmoR9eHIGKtmAguAcez64LroYECKnkqKyIsq7fgAYVe0G55cBz6BWRR2I5KA5xKN0diJesAm9FxvUIcXkRw2w8aP0OIWI6gUsNAsxzpj0eJ83SHHaO9M+HXyiDMC8jSB9jpaGNs=
+	t=1762824001; cv=none; b=kRNxH8bQS/FTDQzirgyRgmpVH1cWWsRy+EG7NhA/fqq+dDMaqhNfS0Y/MT258/CUjeetAhq5VYd6N8wGE1Kb1UZiLywe5ELHKWKuFBj953YAjsq3cLU2TObhQ4ZXyWY3q9bpajpPC1W4E6ACFY4wPJfMW2xij13tKpHrjYE0Llk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825063; c=relaxed/simple;
-	bh=9B+GArblTDPZJVxWusVsy7xQl9AjsNMQekllBKujVio=;
+	s=arc-20240116; t=1762824001; c=relaxed/simple;
+	bh=meN4BPqI428n9/wURJ2Jagp0ZHMR+WPn/Mpf6nHDoKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOfBOaMqlO3w01SqdvtvXj6gjGkrV+hrI9yk8Kzti06odKOxzQrzqdoel746VWcAbCiDQEhOZt2DrplzR8O1Lg+3ckAgfJN33Ahj2S3mO50coynk3aJjkrohsX6r2drO++++lfGiYNGIyjcIy7/v1+NChLOiW7w5HRdI6la2ZJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdvXZ/dJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B05C113D0;
-	Tue, 11 Nov 2025 01:37:43 +0000 (UTC)
+	 MIME-Version; b=QvPlv1tDKWjuXP3G2wsVwrUrvpjcWieEz0zf4TSriyWHiyaFAMn1fvggKh3rx929EyD7kRlOvz0Ah0cTNIByTvVpFSQhGYMjxs/LppXK04SnXmgUp3B4NxJbV25Wy2HosUb1BlNqmL9quA9vOQ+VKdSXjpfbRyOaIkm8YJn81Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GwNHlCE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C4CFC4CEF5;
+	Tue, 11 Nov 2025 01:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825063;
-	bh=9B+GArblTDPZJVxWusVsy7xQl9AjsNMQekllBKujVio=;
+	s=korg; t=1762824000;
+	bh=meN4BPqI428n9/wURJ2Jagp0ZHMR+WPn/Mpf6nHDoKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JdvXZ/dJ9FdUrLua4YK51ubul0eeU9guRyWcbrk0SO58rBpyWg7T4AfLzNaZpQi1I
-	 6VEV+0HzaG7304LlRTnckvbXjTEvWJgBuKAqoFzKYn29iltAl/XqK1k93mqeLsvbWN
-	 3d00JQqXOSMfgmVix5Mtra0GHlVs8n4GWTVGF66I=
+	b=1GwNHlCEMmuNJvsynC3wPDsVJJCrtP+HEl55JhAZIa60OJ81HNP3GLbr3q9fYgPbJ
+	 S+xW5OOJW+RgkeRXwVxPPl57pWhIYAdGmt3KMm7QCp+n6sq5EKIN1+Q1+qpJyworOF
+	 e7DiRvQ1Ch9ORlBi5W+XdoM409gCfO7WMSQ89ejo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Julian Sun <sunjunchao@bytedance.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 645/849] ext4: increase IO priority of fastcommit
-Date: Tue, 11 Nov 2025 09:43:35 +0900
-Message-ID: <20251111004552.020370729@linuxfoundation.org>
+Subject: [PATCH 6.12 360/565] drm/amdgpu: Use memdup_array_user in amdgpu_cs_wait_fences_ioctl
+Date: Tue, 11 Nov 2025 09:43:36 +0900
+Message-ID: <20251111004534.966362312@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Sun <sunjunchao@bytedance.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit 46e75c56dfeafb6756773b71cabe187a6886859a ]
+[ Upstream commit dea75df7afe14d6217576dbc28cc3ec1d1f712fb ]
 
-The following code paths may result in high latency or even task hangs:
-   1. fastcommit io is throttled by wbt.
-   2. jbd2_fc_wait_bufs() might wait for a long time while
-JBD2_FAST_COMMIT_ONGOING is set in journal->flags, and then
-jbd2_journal_commit_transaction() waits for the
-JBD2_FAST_COMMIT_ONGOING bit for a long time while holding the write
-lock of j_state_lock.
-   3. start_this_handle() waits for read lock of j_state_lock which
-results in high latency or task hang.
+Replace kmalloc_array() + copy_from_user() with memdup_array_user().
 
-Given the fact that ext4_fc_commit() already modifies the current
-process' IO priority to match that of the jbd2 thread, it should be
-reasonable to match jbd2's IO submission flags as well.
+This shrinks the source code and improves separation between the kernel
+and userspace slabs.
 
-Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20250827121812.1477634-1-sunjunchao@bytedance.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/fast_commit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
-index 42bee1d4f9f97..fa66b08de9994 100644
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -663,7 +663,7 @@ void ext4_fc_track_range(handle_t *handle, struct inode *inode, ext4_lblk_t star
- 
- static void ext4_fc_submit_bh(struct super_block *sb, bool is_tail)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 5df21529b3b13..187263c0406ef 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -1737,30 +1737,21 @@ int amdgpu_cs_wait_fences_ioctl(struct drm_device *dev, void *data,
  {
--	blk_opf_t write_flags = REQ_SYNC;
-+	blk_opf_t write_flags = JBD2_JOURNAL_REQ_FLAGS;
- 	struct buffer_head *bh = EXT4_SB(sb)->s_fc_bh;
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+ 	union drm_amdgpu_wait_fences *wait = data;
+-	uint32_t fence_count = wait->in.fence_count;
+-	struct drm_amdgpu_fence *fences_user;
+ 	struct drm_amdgpu_fence *fences;
+ 	int r;
  
- 	/* Add REQ_FUA | REQ_PREFLUSH only its tail */
+ 	/* Get the fences from userspace */
+-	fences = kmalloc_array(fence_count, sizeof(struct drm_amdgpu_fence),
+-			GFP_KERNEL);
+-	if (fences == NULL)
+-		return -ENOMEM;
+-
+-	fences_user = u64_to_user_ptr(wait->in.fences);
+-	if (copy_from_user(fences, fences_user,
+-		sizeof(struct drm_amdgpu_fence) * fence_count)) {
+-		r = -EFAULT;
+-		goto err_free_fences;
+-	}
++	fences = memdup_array_user(u64_to_user_ptr(wait->in.fences),
++				   wait->in.fence_count,
++				   sizeof(struct drm_amdgpu_fence));
++	if (IS_ERR(fences))
++		return PTR_ERR(fences);
+ 
+ 	if (wait->in.wait_all)
+ 		r = amdgpu_cs_wait_all_fences(adev, filp, wait, fences);
+ 	else
+ 		r = amdgpu_cs_wait_any_fence(adev, filp, wait, fences);
+ 
+-err_free_fences:
+ 	kfree(fences);
+ 
+ 	return r;
 -- 
 2.51.0
 
