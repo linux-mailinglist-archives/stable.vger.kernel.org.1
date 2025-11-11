@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5700C4B027
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:53:21 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A29CC4A8E1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 860AB3BB008
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:43:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 55DE84F6913
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790182F5320;
-	Tue, 11 Nov 2025 01:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD23533CEAA;
+	Tue, 11 Nov 2025 01:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yD2cRvgL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBscdZD3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A1F21ABB9;
-	Tue, 11 Nov 2025 01:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A01325CC40;
+	Tue, 11 Nov 2025 01:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825087; cv=none; b=p5lOTSqb0KmbjxdwipKBCMP7TpXV7HjSZzqtcGof+dtqMBuqjEVicd3mOCRQVRV7q+VUAKmn0KcpZboVB6rieTTGWJRd5136B7fuY1J+nieajYKLg76jfbu90U/L3ZqAgngPIoNznbEBGgXqcszreljN2wyonvMhrZ6byBbkhiw=
+	t=1762823998; cv=none; b=nenDy1K7kyzKNhk1aZn+jmrUtMoHbQDeY8O22GroTM1IUqSZPbix9y/FpR+xnuf8BnYcsT0TqGgpH+Eiznjcgxo9YZWdNLE8bcjjf7in3bo2H5hADswQde6lK/SHEftJd9KwbgnYqFWahRw8L+nTWyP3aom6G6WqqEKy6Ozkqms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825087; c=relaxed/simple;
-	bh=2Ybh7+3Pa2jOxAhKPZznNUZVllAPcTF8GOHOjrF150s=;
+	s=arc-20240116; t=1762823998; c=relaxed/simple;
+	bh=swntWXiu6ejr6eXuazvBlD3C2wohGf5KqfHhbvfbWlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rl4F5oYatPM6w3xaX1TQsinHeldy/NLH4etL2j3hejkH4NmGVCe5KTK2e8Up4DQv/nfLsZVvOSZlU5zogid6yRfoXkzGyaFFKgUOwELTUVzFbxhKLnZi/CqjQ2NrhrCbnqEiSTD1sGmFRXPVjcETZMEwXpN7Mtrke+xVHk8vv0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yD2cRvgL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66CAC4CEF5;
-	Tue, 11 Nov 2025 01:38:06 +0000 (UTC)
+	 MIME-Version; b=Jl8m4G8cEonyN+GBAp6Sd+gMAAJKFiSLOc3ABpd+1uqQdxOcbg9IlrttEEtHTpWGnvEPBkbA5BBHPQ2xCKKMHaWdDf/JSXFJy15Km8GTuNVP8sXoyak0zlOhCZGJx/q1Ok8uVfrVCpOa30CS0hdYB31HFz4LOTPAAcFSsdfDakE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBscdZD3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3EAC113D0;
+	Tue, 11 Nov 2025 01:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825087;
-	bh=2Ybh7+3Pa2jOxAhKPZznNUZVllAPcTF8GOHOjrF150s=;
+	s=korg; t=1762823998;
+	bh=swntWXiu6ejr6eXuazvBlD3C2wohGf5KqfHhbvfbWlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yD2cRvgLVqoyUIcbplBXmuV3wGCUkssK0XUhfwstG7Sm9+Dr1sfnk7PqbKWQaCD2+
-	 j/KLcOh5yA1K5+g2DbOQBrcD9aLpyeU+lzHccLfE8EDSRSgmO0zWJyv0Cv/RIDyMQJ
-	 wlkrySGXvB3mz0bmvjiBuf1BH4hiIrlF0LSPG7L4=
+	b=nBscdZD3o1No+wtxyGpFDNj+Bs6z4kD6jnibBCPjsyNi+Ajivi9g+m4tOZlcZ2TRu
+	 SR6Rkzgtn7YVrL5AQK4srATsHaadz1UPm6klOGz4qj+sdqxsxoHSmKl0d/JV37MvwJ
+	 PaVXL0Z9OTWEp09vrjeTQhMrda4hM96LReFOcUcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Timothy Pearson <tpearson@raptorengineering.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 654/849] vfio/pci: Fix INTx handling on legacy non-PCI 2.3 devices
+Subject: [PATCH 6.12 368/565] ethernet: Extend device_get_mac_address() to use NVMEM
 Date: Tue, 11 Nov 2025 09:43:44 +0900
-Message-ID: <20251111004552.240113911@linuxfoundation.org>
+Message-ID: <20251111004535.148496214@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timothy Pearson <tpearson@raptorengineering.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 8b9f128947dd72e0fcf256088a673abac9b720bf ]
+[ Upstream commit d2d3f529e7b6ff2aa432b16a2317126621c28058 ]
 
-PCI devices prior to PCI 2.3 both use level interrupts and do not support
-interrupt masking, leading to a failure when passed through to a KVM guest on
-at least the ppc64 platform. This failure manifests as receiving and
-acknowledging a single interrupt in the guest, while the device continues to
-assert the level interrupt indicating a need for further servicing.
+A lot of modern SoC have the ability to store MAC addresses in their
+NVMEM. So extend the generic function device_get_mac_address() to
+obtain the MAC address from an nvmem cell named 'mac-address' in
+case there is no firmware node which contains the MAC address directly.
 
-When lazy IRQ masking is used on DisINTx- (non-PCI 2.3) hardware, the following
-sequence occurs:
-
- * Level IRQ assertion on device
- * IRQ marked disabled in kernel
- * Host interrupt handler exits without clearing the interrupt on the device
- * Eventfd is delivered to userspace
- * Guest processes IRQ and clears device interrupt
- * Device de-asserts INTx, then re-asserts INTx while the interrupt is masked
- * Newly asserted interrupt acknowledged by kernel VMM without being handled
- * Software mask removed by VFIO driver
- * Device INTx still asserted, host controller does not see new edge after EOI
-
-The behavior is now platform-dependent.  Some platforms (amd64) will continue
-to spew IRQs for as long as the INTX line remains asserted, therefore the IRQ
-will be handled by the host as soon as the mask is dropped.  Others (ppc64) will
-only send the one request, and if it is not handled no further interrupts will
-be sent.  The former behavior theoretically leaves the system vulnerable to
-interrupt storm, and the latter will result in the device stalling after
-receiving exactly one interrupt in the guest.
-
-Work around this by disabling lazy IRQ masking for DisINTx- INTx devices.
-
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
-Link: https://lore.kernel.org/r/333803015.1744464.1758647073336.JavaMail.zimbra@raptorengineeringinc.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250912140332.35395-3-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_intrs.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/ethernet/eth.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index 123298a4dc8f5..61d29f6b3730c 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -304,9 +304,14 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
- 
- 	vdev->irq_type = VFIO_PCI_INTX_IRQ_INDEX;
- 
-+	if (!vdev->pci_2_3)
-+		irq_set_status_flags(pdev->irq, IRQ_DISABLE_UNLAZY);
+diff --git a/net/ethernet/eth.c b/net/ethernet/eth.c
+index 4e3651101b866..43e211e611b16 100644
+--- a/net/ethernet/eth.c
++++ b/net/ethernet/eth.c
+@@ -613,7 +613,10 @@ EXPORT_SYMBOL(fwnode_get_mac_address);
+  */
+ int device_get_mac_address(struct device *dev, char *addr)
+ {
+-	return fwnode_get_mac_address(dev_fwnode(dev), addr);
++	if (!fwnode_get_mac_address(dev_fwnode(dev), addr))
++		return 0;
 +
- 	ret = request_irq(pdev->irq, vfio_intx_handler,
- 			  irqflags, ctx->name, ctx);
- 	if (ret) {
-+		if (!vdev->pci_2_3)
-+			irq_clear_status_flags(pdev->irq, IRQ_DISABLE_UNLAZY);
- 		vdev->irq_type = VFIO_PCI_NUM_IRQS;
- 		kfree(name);
- 		vfio_irq_ctx_free(vdev, ctx, 0);
-@@ -352,6 +357,8 @@ static void vfio_intx_disable(struct vfio_pci_core_device *vdev)
- 		vfio_virqfd_disable(&ctx->unmask);
- 		vfio_virqfd_disable(&ctx->mask);
- 		free_irq(pdev->irq, ctx);
-+		if (!vdev->pci_2_3)
-+			irq_clear_status_flags(pdev->irq, IRQ_DISABLE_UNLAZY);
- 		if (ctx->trigger)
- 			eventfd_ctx_put(ctx->trigger);
- 		kfree(ctx->name);
++	return nvmem_get_mac_address(dev, addr);
+ }
+ EXPORT_SYMBOL(device_get_mac_address);
+ 
 -- 
 2.51.0
 
