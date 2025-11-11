@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E90BC4A1AB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:00:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD0CC4A238
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:02:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E98B5188E2AA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F36691887818
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A65246768;
-	Tue, 11 Nov 2025 01:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC473AC3B;
+	Tue, 11 Nov 2025 01:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x76YPgo0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHbe96zf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248F91C28E;
-	Tue, 11 Nov 2025 01:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF04124E4C6;
+	Tue, 11 Nov 2025 01:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822827; cv=none; b=kYUkm3fbQLkl7FHKMo19un286ipF2ENPom5gwcNMFlm7lqvBsGOkueZDO14uwiLqtbZPWMhiXw40IOAxkMr3NkBNCBAZYUj6bzV78jND8YEnumasv5yO+Lzu29IPDn3aPQdqWD1S+Vxel7AmLNmndJM6iPWIsFznLWPNqgy2XL4=
+	t=1762822932; cv=none; b=YwMOX0IkPyXJXkUsXlpufroHGKDg2djCqmTAi3z/rsLZCSkqTERSg1Y5GCv25nnNIIsOihhb7CpS8JmYVU25qJbeS92ouwTg29r9haOnC+RbETYDcc1HcORhs/0caNzCHsZfLVb+7OCJSHUw7++DHp+FQsyB5SRavFzS3zBzVtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822827; c=relaxed/simple;
-	bh=ag2gKjFIffvOWv2EW+bn/C+mCJMFpHAnH6gWL9/TcE8=;
+	s=arc-20240116; t=1762822932; c=relaxed/simple;
+	bh=efq1Ok5b0v0oiZZuo3rkJADVv2ZAKydYkgVH9WNAdHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFc70odQAvczVVnVnXX7GKqbj+tiattKh5FEMhWhGDgFJZ1FcFC6SsnBfVyG2Txi4znQH8bDBTeBieUbOJVYiQkFTOnYnaEcs2wrmTwxgKZWBsv0siCAYNJl9RCpMroUrxFN0dOkAUDJ/MqTW3fdA9MuY5rfzwwJ125B/PeAkXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x76YPgo0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AADC116B1;
-	Tue, 11 Nov 2025 01:00:26 +0000 (UTC)
+	 MIME-Version; b=g43pSs26tu1dge3wVpFzhUv7Gd9Z7h9lTUJevkyG+J+5bNM3BWrDMsIfDXb8Ld8W20I/PQJiZEOpveuoowypJYgesJDROm2fxGc1wfoPE/UcFlNW3fv5iopo1+TNpSeEOCG38XCkxWui2Tme7dRBhglN6V2C3qFtvrvSHOQO54Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHbe96zf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB4EC116B1;
+	Tue, 11 Nov 2025 01:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822827;
-	bh=ag2gKjFIffvOWv2EW+bn/C+mCJMFpHAnH6gWL9/TcE8=;
+	s=korg; t=1762822931;
+	bh=efq1Ok5b0v0oiZZuo3rkJADVv2ZAKydYkgVH9WNAdHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x76YPgo07v0nhfw55znHe2Qhhypk2zPzgERcmrXGdBzjxWDY6wRUDe0APkS1O45DB
-	 Hn4hgKEQHOoJbUNFPUZpquteyB0V9ppOfP5y2skkp9RAo6UqTs0wtHNOYK6CunCq72
-	 sO41kIb6Q78nsFSww1aH8eyUgaBE/QwQGbdNx85M=
+	b=NHbe96zfPeaewkahbWKI6s5OcUCc1/MZTe6V1FKSDvYlJzrFOxxUn93lrWJrABiNF
+	 0HgFtOvrphcz2/fhHhTJmIf+Xthw6Flk97IVSifDh53E7IsxqdxzMb71Y9/vsS+RLs
+	 XPwCBDOXgOoLFPkwhLRsU7jEnQ1If+a81vusnNmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Wang <wangming01@loongson.cn>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Quanyang Wang <quanyang.wang@windriver.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 165/849] irqchip/loongson-pch-lpc: Use legacy domain for PCH-LPC IRQ controller
-Date: Tue, 11 Nov 2025 09:35:35 +0900
-Message-ID: <20251111004540.423361664@linuxfoundation.org>
+Subject: [PATCH 6.17 167/849] arm64: zynqmp: Disable coresight by default
+Date: Tue, 11 Nov 2025 09:35:37 +0900
+Message-ID: <20251111004540.471754484@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,66 +66,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ming Wang <wangming01@loongson.cn>
+From: Quanyang Wang <quanyang.wang@windriver.com>
 
-[ Upstream commit c33c43f71bda362b292a6e57ac41b64342dc87b3 ]
+[ Upstream commit 0e3f9140ad04dca9a6a93dd6a6decdc53fd665ca ]
 
-On certain Loongson platforms, drivers attempting to request a legacy
-ISA IRQ directly via request_irq() (e.g., IRQ 4) may fail. The
-virtual IRQ descriptor is not fully initialized and lacks a valid irqchip.
+When secure-boot mode of bootloader is enabled, the registers of
+coresight are not permitted to access that's why disable it by default.
 
-This issue does not affect ACPI-enumerated devices described in DSDT,
-as their interrupts are properly mapped via the GSI translation path.
-This indicates the LPC irqdomain itself is functional but is not correctly
-handling direct VIRQ-to-HWIRQ mappings.
-
-The root cause is the use of irq_domain_create_linear(). This API sets
-up a domain for dynamic, on-demand mapping, typically triggered by a GSI
-request. It does not pre-populate the mappings for the legacy VIRQ range
-(0-15). Consequently, if no ACPI device claims a specific GSI
-(e.g., GSI 4), the corresponding VIRQ (e.g., VIRQ 4) is never mapped to
-the LPC domain. A direct call to request_irq(4, ...) then fails because
-the kernel cannot resolve this VIRQ to a hardware interrupt managed by
-the LPC controller.
-
-The PCH-LPC interrupt controller is an i8259-compatible legacy device
-that requires a deterministic, static 1-to-1 mapping for IRQs 0-15 to
-support legacy drivers.
-
-Fix this by replacing irq_domain_create_linear() with
-irq_domain_create_legacy(). This API is specifically designed for such
-controllers. It establishes the required static 1-to-1 VIRQ-to-HWIRQ
-mapping for the entire legacy range (0-15) immediately upon domain
-creation. This ensures that any VIRQ in this range is always resolvable,
-making direct calls to request_irq() for legacy IRQs function correctly.
-
-Signed-off-by: Ming Wang <wangming01@loongson.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Quanyang Wang <quanyang.wang@windriver.com>
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/7e308b8efe977c4912079b4d1b1ab3d24908559e.1756799774.git.michal.simek@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-loongson-pch-lpc.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/xilinx/zynqmp.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/irqchip/irq-loongson-pch-lpc.c b/drivers/irqchip/irq-loongson-pch-lpc.c
-index 2d4c3ec128b8f..912bf50a5c7ca 100644
---- a/drivers/irqchip/irq-loongson-pch-lpc.c
-+++ b/drivers/irqchip/irq-loongson-pch-lpc.c
-@@ -200,8 +200,13 @@ int __init pch_lpc_acpi_init(struct irq_domain *parent,
- 		goto iounmap_base;
- 	}
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
+index e11d282462bd3..23d867c03263d 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
++++ b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
+@@ -550,6 +550,7 @@
+ 			reg = <0x0 0xfec10000 0x0 0x1000>;
+ 			clock-names = "apb_pclk";
+ 			cpu = <&cpu0>;
++			status = "disabled";
+ 		};
  
--	priv->lpc_domain = irq_domain_create_linear(irq_handle, LPC_COUNT,
--					&pch_lpc_domain_ops, priv);
-+	/*
-+	 * The LPC interrupt controller is a legacy i8259-compatible device,
-+	 * which requires a static 1:1 mapping for IRQs 0-15.
-+	 * Use irq_domain_create_legacy to establish this static mapping early.
-+	 */
-+	priv->lpc_domain = irq_domain_create_legacy(irq_handle, LPC_COUNT, 0, 0,
-+						    &pch_lpc_domain_ops, priv);
- 	if (!priv->lpc_domain) {
- 		pr_err("Failed to create IRQ domain\n");
- 		goto free_irq_handle;
+ 		cpu1_debug: debug@fed10000 {
+@@ -557,6 +558,7 @@
+ 			reg = <0x0 0xfed10000 0x0 0x1000>;
+ 			clock-names = "apb_pclk";
+ 			cpu = <&cpu1>;
++			status = "disabled";
+ 		};
+ 
+ 		cpu2_debug: debug@fee10000 {
+@@ -564,6 +566,7 @@
+ 			reg = <0x0 0xfee10000 0x0 0x1000>;
+ 			clock-names = "apb_pclk";
+ 			cpu = <&cpu2>;
++			status = "disabled";
+ 		};
+ 
+ 		cpu3_debug: debug@fef10000 {
+@@ -571,6 +574,7 @@
+ 			reg = <0x0 0xfef10000 0x0 0x1000>;
+ 			clock-names = "apb_pclk";
+ 			cpu = <&cpu3>;
++			status = "disabled";
+ 		};
+ 
+ 		/* GDMA */
 -- 
 2.51.0
 
