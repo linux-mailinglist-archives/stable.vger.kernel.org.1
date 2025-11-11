@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C5CC4B0A9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:20 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 358EBC4A959
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A4381890E26
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:48:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AF03334C684
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F492D29D6;
-	Tue, 11 Nov 2025 01:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4684B30749A;
+	Tue, 11 Nov 2025 01:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFOsQxcz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwUDQtY7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA2B2BCF5;
-	Tue, 11 Nov 2025 01:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013EE248F6A;
+	Tue, 11 Nov 2025 01:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825269; cv=none; b=SOwAnxtQHOPlzfmJ+C/q3Z9v6MH2xe60RKcvn+bwC6IY1ZkL6mC1+oESxoc6fhw72uLN7LOSDkDf9lpl5kjB7FAj1UR/jC+MGjKaGI6SOdNG/4amsZFUOSMfvhKh0EIuMwnBEt+bItZZ9sCPX2LmqKuI/dHQFeecVBwW5Haz5sU=
+	t=1762824441; cv=none; b=LHVABIl5zZu+HpP7iXoDHgwPx3IvBa9lcLYZjTgTMXGUE58O44fqmN8fTGRh2+yYiKJeU8fkVvdXcj92mlZd8L1Z+cQ3vUB1BEp0BMrktPXsFJ6brgAVO0mz8Vx5PN79KRMkosOaX4+1ebo+8WlvPc8bMlqIpx3PFAk/AKTNFEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825269; c=relaxed/simple;
-	bh=5BLRkKcUBQGIhxHKKYbteev+Y87x0KArfXzG6SQpUkk=;
+	s=arc-20240116; t=1762824441; c=relaxed/simple;
+	bh=GLVcrg0FQQTgPe/jZAe1QrAd8kp/qt8eh6tvef70x30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h2yXZaaznD0/Ap2YfZONpf6MDrK3fKg9BKLfMnC17YZHbl9VM7Mjvllisu7ZHSCUsbpJzEQrenP1XGprvBxcPJRV5CwTe1g7ALKdZeVUfoemmW0M5lE/LZ5cyLFNcmsh6/l045PJb1wrkV58yX1weuIOaJWmtHm9ZryuMeUdVVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFOsQxcz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF309C113D0;
-	Tue, 11 Nov 2025 01:41:08 +0000 (UTC)
+	 MIME-Version; b=Xnt/NNwYmzRpQjRLn0Ya33DJ6SkUpR5ltP3Nh3mpLLCZTpK6jbuyDCpsfjv37DLd6AReIkqKZIFxy75TGXOgwNO3NWBHbFgqabetQLj538Kn6soV34YpL6y5OyNg1dYhWQyZngHwtAAufIYT7lkA1VM/2nQBfsO2D+qrYX5sQiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jwUDQtY7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73368C4CEF5;
+	Tue, 11 Nov 2025 01:27:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825269;
-	bh=5BLRkKcUBQGIhxHKKYbteev+Y87x0KArfXzG6SQpUkk=;
+	s=korg; t=1762824440;
+	bh=GLVcrg0FQQTgPe/jZAe1QrAd8kp/qt8eh6tvef70x30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FFOsQxczeZnNp2uSZB/FcYhvlb8ttlQYWh5juybmkX9gRKgjNvjE8+bNZam6MlTwB
-	 w3at10B5xWXciuG9IZNEiJsbrUYqKUrhwZjbED5nz1H0IwDFxwTlWdncx9aeCFW/0z
-	 j8aVA9sWLQjgaeQN5cT7ZDnWp8BPkxKoBu2ubBZQ=
+	b=jwUDQtY7ICO5g0UWMlAT6akKwwUIfJVU7mQjoVJxhUCzoLYjSfY/WS3YpQFa6/oBk
+	 hST4P5uAi/+3/0f4YfdQKQ4j0ForlqGuJHwpzoPt5QE8esa7YUX5eWPCoSDAz5JReu
+	 ZB337om9NybhHmaOHNz6bM1L+PQaDbuvzhGpTh9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Asad Kamal <asad.kamal@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Stanislav Fort of Aisle Research <stanislav.fort@aisle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 732/849] drm/amdgpu: Report individual reset error
+Subject: [PATCH 6.12 446/565] orangefs: fix xattr related buffer overflow...
 Date: Tue, 11 Nov 2025 09:45:02 +0900
-Message-ID: <20251111004554.131974541@linuxfoundation.org>
+Message-ID: <20251111004536.921429498@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Mike Marshall <hubcap@omnibond.com>
 
-[ Upstream commit 2e97663760e5fb7ee14f399c68e57b894f01e505 ]
+[ Upstream commit 025e880759c279ec64d0f754fe65bf45961da864 ]
 
-If reinitialization of one of the GPUs fails after reset, it logs
-failure on all subsequent GPUs eventhough they have resumed
-successfully.
+Willy Tarreau <w@1wt.eu> forwarded me a message from
+Disclosure <disclosure@aisle.com> with the following
+warning:
 
-A sample log where only device at 0000:95:00.0 had a failure -
+> The helper `xattr_key()` uses the pointer variable in the loop condition
+> rather than dereferencing it. As `key` is incremented, it remains non-NULL
+> (until it runs into unmapped memory), so the loop does not terminate on
+> valid C strings and will walk memory indefinitely, consuming CPU or hanging
+> the thread.
 
-	amdgpu 0000:15:00.0: amdgpu: GPU reset(19) succeeded!
-	amdgpu 0000:65:00.0: amdgpu: GPU reset(19) succeeded!
-	amdgpu 0000:75:00.0: amdgpu: GPU reset(19) succeeded!
-	amdgpu 0000:85:00.0: amdgpu: GPU reset(19) succeeded!
-	amdgpu 0000:95:00.0: amdgpu: GPU reset(19) failed
-	amdgpu 0000:e5:00.0: amdgpu: GPU reset(19) failed
-	amdgpu 0000:f5:00.0: amdgpu: GPU reset(19) failed
-	amdgpu 0000:05:00.0: amdgpu: GPU reset(19) failed
-	amdgpu 0000:15:00.0: amdgpu: GPU reset end with ret = -5
+I easily reproduced this with setfattr and getfattr, causing a kernel
+oops, hung user processes and corrupted orangefs files. Disclosure
+sent along a diff (not a patch) with a suggested fix, which I based
+this patch on.
 
-To avoid confusion, report the error for each device
-separately and return the first error as the overall result.
+After xattr_key started working right, xfstest generic/069 exposed an
+xattr related memory leak that lead to OOM. xattr_key returns
+a hashed key.  When adding xattrs to the orangefs xattr cache, orangefs
+used hash_add, a kernel hashing macro. hash_add also hashes the key using
+hash_log which resulted in additions to the xattr cache going to the wrong
+hash bucket. generic/069 tortures a single file and orangefs does a
+getattr for the xattr "security.capability" every time. Orangefs
+negative caches on xattrs which includes a kmalloc. Since adds to the
+xattr cache were going to the wrong bucket, every getattr for
+"security.capability" resulted in another kmalloc, none of which were
+ever freed.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Asad Kamal <asad.kamal@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+I changed the two uses of hash_add to hlist_add_head instead
+and the memory leak ceased and generic/069 quit throwing furniture.
+
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Reported-by: Stanislav Fort of Aisle Research <stanislav.fort@aisle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 25 +++++++++++++---------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ fs/orangefs/xattr.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 1115af343e013..ddd0e7ab82be7 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -6337,23 +6337,28 @@ static int amdgpu_device_sched_resume(struct list_head *device_list,
- 		if (!drm_drv_uses_atomic_modeset(adev_to_drm(tmp_adev)) && !job_signaled)
- 			drm_helper_resume_force_mode(adev_to_drm(tmp_adev));
+diff --git a/fs/orangefs/xattr.c b/fs/orangefs/xattr.c
+index 74ef75586f384..eee3c5ed1bbbb 100644
+--- a/fs/orangefs/xattr.c
++++ b/fs/orangefs/xattr.c
+@@ -54,7 +54,9 @@ static inline int convert_to_internal_xattr_flags(int setxattr_flags)
+ static unsigned int xattr_key(const char *key)
+ {
+ 	unsigned int i = 0;
+-	while (key)
++	if (!key)
++		return 0;
++	while (*key)
+ 		i += *key++;
+ 	return i % 16;
+ }
+@@ -175,8 +177,8 @@ ssize_t orangefs_inode_getxattr(struct inode *inode, const char *name,
+ 				cx->length = -1;
+ 				cx->timeout = jiffies +
+ 				    orangefs_getattr_timeout_msecs*HZ/1000;
+-				hash_add(orangefs_inode->xattr_cache, &cx->node,
+-				    xattr_key(cx->key));
++				hlist_add_head( &cx->node,
++                                   &orangefs_inode->xattr_cache[xattr_key(cx->key)]);
+ 			}
+ 		}
+ 		goto out_release_op;
+@@ -229,8 +231,8 @@ ssize_t orangefs_inode_getxattr(struct inode *inode, const char *name,
+ 			memcpy(cx->val, buffer, length);
+ 			cx->length = length;
+ 			cx->timeout = jiffies + HZ;
+-			hash_add(orangefs_inode->xattr_cache, &cx->node,
+-			    xattr_key(cx->key));
++			hlist_add_head(&cx->node,
++				&orangefs_inode->xattr_cache[xattr_key(cx->key)]);
+ 		}
+ 	}
  
--		if (tmp_adev->asic_reset_res)
--			r = tmp_adev->asic_reset_res;
--
--		tmp_adev->asic_reset_res = 0;
--
--		if (r) {
-+		if (tmp_adev->asic_reset_res) {
- 			/* bad news, how to tell it to userspace ?
- 			 * for ras error, we should report GPU bad status instead of
- 			 * reset failure
- 			 */
- 			if (reset_context->src != AMDGPU_RESET_SRC_RAS ||
- 			    !amdgpu_ras_eeprom_check_err_threshold(tmp_adev))
--				dev_info(tmp_adev->dev, "GPU reset(%d) failed\n",
--					atomic_read(&tmp_adev->gpu_reset_counter));
--			amdgpu_vf_error_put(tmp_adev, AMDGIM_ERROR_VF_GPU_RESET_FAIL, 0, r);
-+				dev_info(
-+					tmp_adev->dev,
-+					"GPU reset(%d) failed with error %d \n",
-+					atomic_read(
-+						&tmp_adev->gpu_reset_counter),
-+					tmp_adev->asic_reset_res);
-+			amdgpu_vf_error_put(tmp_adev,
-+					    AMDGIM_ERROR_VF_GPU_RESET_FAIL, 0,
-+					    tmp_adev->asic_reset_res);
-+			if (!r)
-+				r = tmp_adev->asic_reset_res;
-+			tmp_adev->asic_reset_res = 0;
- 		} else {
--			dev_info(tmp_adev->dev, "GPU reset(%d) succeeded!\n", atomic_read(&tmp_adev->gpu_reset_counter));
-+			dev_info(tmp_adev->dev, "GPU reset(%d) succeeded!\n",
-+				 atomic_read(&tmp_adev->gpu_reset_counter));
- 			if (amdgpu_acpi_smart_shift_update(tmp_adev,
- 							   AMDGPU_SS_DEV_D0))
- 				dev_warn(tmp_adev->dev,
 -- 
 2.51.0
 
