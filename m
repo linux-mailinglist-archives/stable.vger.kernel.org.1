@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2730DC4B184
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E96FBC4AE29
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C80CF4F77A0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 54D4E4E171A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6EF246333;
-	Tue, 11 Nov 2025 01:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DF427FD4A;
+	Tue, 11 Nov 2025 01:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="quTPmy3J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVhII8jF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE101D86FF;
-	Tue, 11 Nov 2025 01:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0085FDDAB;
+	Tue, 11 Nov 2025 01:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825481; cv=none; b=sfTprOaCTcIPUmzl+bI2V2u4qw+LtE9N/8W9h9ExKobygQ7PeDgTddVUozI3hEqHt3AeEW4EMN89vclUsXXxrm1S6aotzuZld2IHDH34tFprfKGfayiHaKSdTE29xe4OslgMfWsEy+hAiC2jrQc9aH6N9klD32GYk8sDXp+4tAg=
+	t=1762824842; cv=none; b=iq/wlw7hqt/noU0fEoYyXBjnFLIdK7zZptlFgZEsj2xiZr9IeVEcAzltyU4ICMe0M/EJ+QMUpIs2kQIEimfrwJPAHi25XqOZgAwMaPdJfDGr49pKYOag1F4I9tNupqqhUGKPo9zu/E1n8oUjMLozyMc47hQ6AXipXWZIcBzliSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825481; c=relaxed/simple;
-	bh=MmnL5mh0YEt6IGBfEhx3Ey5zEwxi0nggaYa8X0KdNAI=;
+	s=arc-20240116; t=1762824842; c=relaxed/simple;
+	bh=gzlJR/TycdueY79o8HWknf2CE/Vu0nX41Qy/H6H8yg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0mLx3Fw+d6LBGjulg72iQX7bIBybzT5Ndr0SwoilQViXUqQQmeD6PJx+OrLFgECgZre44Mv8jv30ddut5mHrwknC6hbbxpGX5CZQfFcnlfYyjE519ZjNi7th4pcYqRc22KWKT0C2SCCI6QtoW7XdPIkF795YpQ23bUWVNxawLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quTPmy3J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F8B0C19421;
-	Tue, 11 Nov 2025 01:44:39 +0000 (UTC)
+	 MIME-Version; b=lVTq1BsdS2YRDPH9hhpFAvNcGfHoHE19ptvsPYFG4NSbpnY1xpgMWCKMZHSiPsypzLCUb18SSOcIOyzfcZmCyWjtLfA8RK501coj7boSL3fnOL9KXTuVd0Uk+texH5sKLdjLeJN7376XzmGcnwz0ObKizY70tiPeullI+3QbyiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVhII8jF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9384AC4CEFB;
+	Tue, 11 Nov 2025 01:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825480;
-	bh=MmnL5mh0YEt6IGBfEhx3Ey5zEwxi0nggaYa8X0KdNAI=;
+	s=korg; t=1762824841;
+	bh=gzlJR/TycdueY79o8HWknf2CE/Vu0nX41Qy/H6H8yg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=quTPmy3JIiVVdsodiNY5F5tQ+gYqe9QZVWBnZUR4/3N1wNkPMeSPG+QxQ7mMBkhi5
-	 by2qhxuOT+7LJ1C/CVww2c/QyrIanqTqBISAgx1ChXIhX098C4ktmiR5xJgaHHiRZX
-	 RYf3hegl4DwhFHbI8Ifc9tc7BUESBdmjILyWB6x4=
+	b=QVhII8jFqIIqiX1ZJ+UmXiZb5qpGg6QHE2yxlhRBHd7pIMcQKCGh1a+7i8T3cXBmN
+	 haE3JkcB6w/+mqwpvT+sk/ul+mJXzTjXMLyxq3HQVrne2Njf89hDzJovmp1p1q7akg
+	 ZZSxDw9gUNcgQJfSLoaxovuk+Sxz/yaGClaHDGQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.17 821/849] xfs: fix various problems in xfs_atomic_write_cow_iomap_begin
+	Meghana Malladi <m-malladi@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 535/565] net: ti: icssg-prueth: Fix fdb hash size configuration
 Date: Tue, 11 Nov 2025 09:46:31 +0900
-Message-ID: <20251111004556.274824745@linuxfoundation.org>
+Message-ID: <20251111004539.007695373@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,172 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Meghana Malladi <m-malladi@ti.com>
 
-commit 8d7bba1e8314013ecc817a91624104ceb9352ddc upstream.
+[ Upstream commit ae4789affd1e181ae46e72e2b5fbe2d6d7b6616a ]
 
-I think there are several things wrong with this function:
+The ICSSG driver does the initial FDB configuration which
+includes setting the control registers. Other run time
+management like learning is managed by the PRU's. The default
+FDB hash size used by the firmware is 512 slots, which is
+currently missing in the current driver. Update the driver
+FDB config to include FDB hash size as well.
 
-A) xfs_bmapi_write can return a much larger unwritten mapping than what
-   the caller asked for.  We convert part of that range to written, but
-   return the entire written mapping to iomap even though that's
-   inaccurate.
+Please refer trm [1] 6.4.14.12.17 section on how the FDB config
+register gets configured. From the table 6-1404, there is a reset
+field for FDB_HAS_SIZE which is 4, meaning 1024 slots. Currently
+the driver is not updating this reset value from 4(1024 slots) to
+3(512 slots). This patch fixes this by updating the reset value
+to 512 slots.
 
-B) The arguments to xfs_reflink_convert_cow_locked are wrong -- an
-   unwritten mapping could be *smaller* than the write range (or even
-   the hole range).  In this case, we convert too much file range to
-   written state because we then return a smaller mapping to iomap.
-
-C) It doesn't handle delalloc mappings.  This I covered in the patch
-   that I already sent to the list.
-
-D) Reassigning count_fsb to handle the hole means that if the second
-   cmap lookup attempt succeeds (due to racing with someone else) we
-   trim the mapping more than is strictly necessary.  The changing
-   meaning of count_fsb makes this harder to notice.
-
-E) The tracepoint is kinda wrong because @length is mutated.  That makes
-   it harder to chase the data flows through this function because you
-   can't just grep on the pos/bytecount strings.
-
-F) We don't actually check that the br_state = XFS_EXT_NORM assignment
-   is accurate, i.e that the cow fork actually contains a written
-   mapping for the range we're interested in
-
-G) Somewhat inadequate documentation of why we need to xfs_trim_extent
-   so aggressively in this function.
-
-H) Not sure why xfs_iomap_end_fsb is used here, the vfs already clamped
-   the write range to s_maxbytes.
-
-Fix these issues, and then the atomic writes regressions in generic/760,
-generic/617, generic/091, generic/263, and generic/521 all go away for
-me.
-
-Cc: stable@vger.kernel.org # v6.16
-Fixes: bd1d2c21d5d249 ("xfs: add xfs_atomic_write_cow_iomap_begin()")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1]: https://www.ti.com/lit/pdf/spruim2
+Fixes: abd5576b9c57f ("net: ti: icssg-prueth: Add support for ICSSG switch firmware")
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251104104415.3110537-1-m-malladi@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_iomap.c |   61 +++++++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 50 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/ti/icssg/icssg_config.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/xfs/xfs_iomap.c
-+++ b/fs/xfs/xfs_iomap.c
-@@ -1082,6 +1082,29 @@ const struct iomap_ops xfs_zoned_direct_
- };
- #endif /* CONFIG_XFS_RT */
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_config.c b/drivers/net/ethernet/ti/icssg/icssg_config.c
+index da53eb04b0a43..3f8237c17d099 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_config.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_config.c
+@@ -66,6 +66,9 @@
+ #define FDB_GEN_CFG1		0x60
+ #define SMEM_VLAN_OFFSET	8
+ #define SMEM_VLAN_OFFSET_MASK	GENMASK(25, 8)
++#define FDB_HASH_SIZE_MASK	GENMASK(6, 3)
++#define FDB_HASH_SIZE_SHIFT	3
++#define FDB_HASH_SIZE		3
  
-+#ifdef DEBUG
-+static void
-+xfs_check_atomic_cow_conversion(
-+	struct xfs_inode		*ip,
-+	xfs_fileoff_t			offset_fsb,
-+	xfs_filblks_t			count_fsb,
-+	const struct xfs_bmbt_irec	*cmap)
-+{
-+	struct xfs_iext_cursor		icur;
-+	struct xfs_bmbt_irec		cmap2 = { };
-+
-+	if (xfs_iext_lookup_extent(ip, ip->i_cowfp, offset_fsb, &icur, &cmap2))
-+		xfs_trim_extent(&cmap2, offset_fsb, count_fsb);
-+
-+	ASSERT(cmap2.br_startoff == cmap->br_startoff);
-+	ASSERT(cmap2.br_blockcount == cmap->br_blockcount);
-+	ASSERT(cmap2.br_startblock == cmap->br_startblock);
-+	ASSERT(cmap2.br_state == cmap->br_state);
-+}
-+#else
-+# define xfs_check_atomic_cow_conversion(...)	((void)0)
-+#endif
-+
- static int
- xfs_atomic_write_cow_iomap_begin(
- 	struct inode		*inode,
-@@ -1093,9 +1116,10 @@ xfs_atomic_write_cow_iomap_begin(
- {
- 	struct xfs_inode	*ip = XFS_I(inode);
- 	struct xfs_mount	*mp = ip->i_mount;
--	const xfs_fileoff_t		offset_fsb = XFS_B_TO_FSBT(mp, offset);
--	xfs_fileoff_t		end_fsb = xfs_iomap_end_fsb(mp, offset, length);
--	xfs_filblks_t		count_fsb = end_fsb - offset_fsb;
-+	const xfs_fileoff_t	offset_fsb = XFS_B_TO_FSBT(mp, offset);
-+	const xfs_fileoff_t	end_fsb = XFS_B_TO_FSB(mp, offset + length);
-+	const xfs_filblks_t	count_fsb = end_fsb - offset_fsb;
-+	xfs_filblks_t		hole_count_fsb;
- 	int			nmaps = 1;
- 	xfs_filblks_t		resaligned;
- 	struct xfs_bmbt_irec	cmap;
-@@ -1134,14 +1158,20 @@ retry:
- 	if (cmap.br_startoff <= offset_fsb) {
- 		if (isnullstartblock(cmap.br_startblock))
- 			goto convert_delay;
-+
-+		/*
-+		 * cmap could extend outside the write range due to previous
-+		 * speculative preallocations.  We must trim cmap to the write
-+		 * range because the cow fork treats written mappings to mean
-+		 * "write in progress".
-+		 */
- 		xfs_trim_extent(&cmap, offset_fsb, count_fsb);
- 		goto found;
- 	}
- 
--	end_fsb = cmap.br_startoff;
--	count_fsb = end_fsb - offset_fsb;
-+	hole_count_fsb = cmap.br_startoff - offset_fsb;
- 
--	resaligned = xfs_aligned_fsb_count(offset_fsb, count_fsb,
-+	resaligned = xfs_aligned_fsb_count(offset_fsb, hole_count_fsb,
- 			xfs_get_cowextsz_hint(ip));
- 	xfs_iunlock(ip, XFS_ILOCK_EXCL);
- 
-@@ -1177,7 +1207,7 @@ retry:
- 	 * atomic writes to that same range will be aligned (and don't require
- 	 * this COW-based method).
- 	 */
--	error = xfs_bmapi_write(tp, ip, offset_fsb, count_fsb,
-+	error = xfs_bmapi_write(tp, ip, offset_fsb, hole_count_fsb,
- 			XFS_BMAPI_COWFORK | XFS_BMAPI_PREALLOC |
- 			XFS_BMAPI_EXTSZALIGN, 0, &cmap, &nmaps);
- 	if (error) {
-@@ -1190,17 +1220,26 @@ retry:
- 	if (error)
- 		goto out_unlock;
- 
-+	/*
-+	 * cmap could map more blocks than the range we passed into bmapi_write
-+	 * because of EXTSZALIGN or adjacent pre-existing unwritten mappings
-+	 * that were merged.  Trim cmap to the original write range so that we
-+	 * don't convert more than we were asked to do for this write.
-+	 */
-+	xfs_trim_extent(&cmap, offset_fsb, count_fsb);
-+
- found:
- 	if (cmap.br_state != XFS_EXT_NORM) {
--		error = xfs_reflink_convert_cow_locked(ip, offset_fsb,
--				count_fsb);
-+		error = xfs_reflink_convert_cow_locked(ip, cmap.br_startoff,
-+				cmap.br_blockcount);
- 		if (error)
- 			goto out_unlock;
- 		cmap.br_state = XFS_EXT_NORM;
-+		xfs_check_atomic_cow_conversion(ip, offset_fsb, count_fsb,
-+				&cmap);
- 	}
- 
--	length = XFS_FSB_TO_B(mp, cmap.br_startoff + cmap.br_blockcount);
--	trace_xfs_iomap_found(ip, offset, length - offset, XFS_COW_FORK, &cmap);
-+	trace_xfs_iomap_found(ip, offset, length, XFS_COW_FORK, &cmap);
- 	seq = xfs_iomap_inode_sequence(ip, IOMAP_F_SHARED);
- 	xfs_iunlock(ip, XFS_ILOCK_EXCL);
- 	return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags, IOMAP_F_SHARED, seq);
+ #define FDB_GEN_CFG2		0x64
+ #define FDB_VLAN_EN		BIT(6)
+@@ -463,6 +466,8 @@ void icssg_init_emac_mode(struct prueth *prueth)
+ 	/* Set VLAN TABLE address base */
+ 	regmap_update_bits(prueth->miig_rt, FDB_GEN_CFG1, SMEM_VLAN_OFFSET_MASK,
+ 			   addr <<  SMEM_VLAN_OFFSET);
++	regmap_update_bits(prueth->miig_rt, FDB_GEN_CFG1, FDB_HASH_SIZE_MASK,
++			   FDB_HASH_SIZE << FDB_HASH_SIZE_SHIFT);
+ 	/* Set enable VLAN aware mode, and FDBs for all PRUs */
+ 	regmap_write(prueth->miig_rt, FDB_GEN_CFG2, (FDB_PRU0_EN | FDB_PRU1_EN | FDB_HOST_EN));
+ 	prueth->vlan_tbl = (struct prueth_vlan_tbl __force *)(prueth->shram.va +
+@@ -484,6 +489,8 @@ void icssg_init_fw_offload_mode(struct prueth *prueth)
+ 	/* Set VLAN TABLE address base */
+ 	regmap_update_bits(prueth->miig_rt, FDB_GEN_CFG1, SMEM_VLAN_OFFSET_MASK,
+ 			   addr <<  SMEM_VLAN_OFFSET);
++	regmap_update_bits(prueth->miig_rt, FDB_GEN_CFG1, FDB_HASH_SIZE_MASK,
++			   FDB_HASH_SIZE << FDB_HASH_SIZE_SHIFT);
+ 	/* Set enable VLAN aware mode, and FDBs for all PRUs */
+ 	regmap_write(prueth->miig_rt, FDB_GEN_CFG2, FDB_EN_ALL);
+ 	prueth->vlan_tbl = (struct prueth_vlan_tbl __force *)(prueth->shram.va +
+-- 
+2.51.0
+
 
 
 
