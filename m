@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA1AC4AA91
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A948EC4B118
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3F22E34CAC9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06641189B7D8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BC8341678;
-	Tue, 11 Nov 2025 01:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939F12E173B;
+	Tue, 11 Nov 2025 01:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIaDeAJi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQoIC3/V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFAF189B84;
-	Tue, 11 Nov 2025 01:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B062E0412;
+	Tue, 11 Nov 2025 01:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824645; cv=none; b=TXrC3v7pDh4yal9CYUQmpdifu765m4wv2QD4Q+xDk7MQf2Ag8r6DPzpmNf0X+oKI8ICwXzgWTc5qoxZ5UsuDTSaT5ULdm8JFTStFApyLNckhrM8jKES2GIcblfD3p58P0eNI37lqc70tkzH5gB8JOhKOOTupWgnHMZ+2LPZ0K/A=
+	t=1762825379; cv=none; b=WmWyUMHXtCcHhYUGKce3r5kQRKhfKaUnfZH/Fvl+AlrFWc+yUVQMy9y5PdzW6NwFF1xi1Jf2NQu202AUFOsR+Us+z2Hqgv82XweIwjaCVns6k6Q3RvqdsUsAU6ZvpVj8++U5WBogacLYMEwxhiuAKygD8XCymj3Tqjif21nbI7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824645; c=relaxed/simple;
-	bh=iKAOafGtof0HpEk7qx/kg7LHPaK0n+IwF9hCOEouwTs=;
+	s=arc-20240116; t=1762825379; c=relaxed/simple;
+	bh=519wM4PKG6MoONCdKIiXPLs8sxFX6t3gCRMOZP/edZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWwrigtkBpkJkrbcz2rI8QK2Q7GoQrhPHfumi1F93uGeNS36qHSA1S2q+jdQ8vd+aewkSycQIo/JPsl5nKrRfZbYta6N+DOKU2lRVH3Byd4tLLYGU1pZ1PJps0sBCQBplnLur2I3eczaiICfCpEPWoTLO47xMLwlb9aSLCqTWkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIaDeAJi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B54C116B1;
-	Tue, 11 Nov 2025 01:30:44 +0000 (UTC)
+	 MIME-Version; b=FgxI04NP/9NNJ7m7mBGOyuEmiC79R/j7DcAer4O251cfLtMi5quoXGlTYXWakYoK+mN1WkwoGj90fIGJkYGcE1nENdDf8lAusf3779eaBRUeeQEb+hdFSMj3F9KRu1Bmqn+dH2sG/EPydCjnWF80gN9hUSAjZ0U1raKcKwNEkoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQoIC3/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A59C19422;
+	Tue, 11 Nov 2025 01:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824645;
-	bh=iKAOafGtof0HpEk7qx/kg7LHPaK0n+IwF9hCOEouwTs=;
+	s=korg; t=1762825379;
+	bh=519wM4PKG6MoONCdKIiXPLs8sxFX6t3gCRMOZP/edZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JIaDeAJiiPllJJgeX2+I9MzdgWFeyDeMu0Dy/RMSfqfSfaKP4vr0iIG2Z7ZBxJtdG
-	 KGL+klQEjwcOpgTQonyj+2fLTZaeiO/+W+wKWNWuUZu3lsTWTcCuzhPtnRRGI6UlkF
-	 S3xMw35DcC7wgyahRICTq5M5fxICDxbC+hD80Jk4=
+	b=YQoIC3/VgHTZ7Ha1iEUJm646iqZxiuw7uwJI83gNq36/I1X/1UU/tww+s6o/6JF/G
+	 LCTIdNi7v85EFlqKDDE8Ea4T4tkhQM6as6R3NdSgkOhNo73bDPQULnKsCkfyGGU2jv
+	 3X6QmpYRw29/Ud30HFF+DXsiM7lrN2+OgpWhjhLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Mohammad Heib <mheib@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 491/565] drm/amdkfd: Fix mmap write lock not release
+Subject: [PATCH 6.17 777/849] net: ionic: add dma_wmb() before ringing TX doorbell
 Date: Tue, 11 Nov 2025 09:45:47 +0900
-Message-ID: <20251111004537.979523967@linuxfoundation.org>
+Message-ID: <20251111004555.214231705@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Mohammad Heib <mheib@redhat.com>
 
-[ Upstream commit 7574f30337e19045f03126b4c51f525b84e5049e ]
+[ Upstream commit d261f5b09c28850dc63ca1d3018596f829f402d5 ]
 
-If mmap write lock is taken while draining retry fault, mmap write lock
-is not released because svm_range_restore_pages calls mmap_read_unlock
-then returns. This causes deadlock and system hangs later because mmap
-read or write lock cannot be taken.
+The TX path currently writes descriptors and then immediately writes to
+the MMIO doorbell register to notify the NIC.  On weakly ordered
+architectures, descriptor writes may still be pending in CPU or DMA
+write buffers when the doorbell is issued, leading to the device
+fetching stale or incomplete descriptors.
 
-Downgrade mmap write lock to read lock if draining retry fault fix this
-bug.
+Add a dma_wmb() in ionic_txq_post() to ensure all descriptor writes are
+visible to the device before the doorbell MMIO write.
 
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0f3154e6bcb3 ("ionic: Add Tx and Rx handling")
+Signed-off-by: Mohammad Heib <mheib@redhat.com>
+Link: https://patch.msgid.link/20251031155203.203031-1-mheib@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/pensando/ionic/ionic_txrx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 155948dc3d07a..0d950a20741d8 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -3036,6 +3036,8 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
- 	if (svms->checkpoint_ts[gpuidx] != 0) {
- 		if (amdgpu_ih_ts_after_or_equal(ts,  svms->checkpoint_ts[gpuidx])) {
- 			pr_debug("draining retry fault, drop fault 0x%llx\n", addr);
-+			if (write_locked)
-+				mmap_write_downgrade(mm);
- 			r = -EAGAIN;
- 			goto out_unlock_svms;
- 		} else {
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
+index d10b58ebf6034..2e571d0a0d8a2 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
+@@ -29,6 +29,10 @@ static void ionic_tx_clean(struct ionic_queue *q,
+ 
+ static inline void ionic_txq_post(struct ionic_queue *q, bool ring_dbell)
+ {
++	/* Ensure TX descriptor writes reach memory before NIC reads them.
++	 * Prevents device from fetching stale descriptors.
++	 */
++	dma_wmb();
+ 	ionic_q_post(q, ring_dbell);
+ }
+ 
 -- 
 2.51.0
 
