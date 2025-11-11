@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC317C4A794
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B182C4AF25
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 34E6234C2A1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53C1A1891D53
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6529C335060;
-	Tue, 11 Nov 2025 01:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE0E26E158;
+	Tue, 11 Nov 2025 01:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRXNOG88"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AV3t6Yc4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9093396F7;
-	Tue, 11 Nov 2025 01:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77403A944;
+	Tue, 11 Nov 2025 01:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823980; cv=none; b=q9plRqHWN+YababMl9CcUHLu6i0REauYbjJXTwQ0x31x4ncQvZXOL4oSwmhC+YEIXqxzhkmm0OaoVN0TrHnQ/HfFNDLXxB/lCHlHXWgZEH/IPO9Ws1rSXPGqgRlW/+33NPipBA4LF5ELFSNH5NvTMFh19/euWAMHL0ALHpFgBz0=
+	t=1762825080; cv=none; b=a+t4upSujyug9ua50XK2T+7YsD8Y/DgLIxrJuhNvPm9lh5ZDSEKKsjvzIVLPtyWaLzGCFnzB9xJUYn6OHAwGfbVtkHFWtI0XP1Kr61d7WBIrXPRj01oLJ5jKW1gsJ/VqlEt+trzMu3iy87ZfYHzkslzl51Q/PcqQPY/F29Uqg60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823980; c=relaxed/simple;
-	bh=lHElhPHNmYDuv9lqMK1mYcMRGxs3MiO8q6R9KJFYc8Y=;
+	s=arc-20240116; t=1762825080; c=relaxed/simple;
+	bh=YpAFs6L0nYvc+wC4NzWMjQT6rHFHh8yznGm0CVLC2nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=efHMLE5g9jgPv7qSQqj54u0Jt4yq+OD5rLnODRs+iOsUCQfH2//R/x6qsmLyfaesRjjHc3mH1AJBaTCYzfOJKNLPdCEbPfvLm8oQ5P4uLeTHnuXm3yxivcqAzXkv2MdRuIQiyrfcHnmz3XSvi9V96i/SnJRWs810QNtfZSh05KE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lRXNOG88; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B89C2BCB0;
-	Tue, 11 Nov 2025 01:19:39 +0000 (UTC)
+	 MIME-Version; b=ZmyKJ1bXJc3ZJhsqqsxWaMeUMf4sk+kR4Nd6TCXEOm2cl0pQczjIwOvmHEq1QOElqrcowYDIzzr+N3Cj8btfzbmQBC7+z98SZk+GA3xGzpVMZLYw/LFoJHzunLbtDXWukkfZvZM1COVOuUd+lF6AoLk5hxfhoXlueXfX1aOkpVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AV3t6Yc4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CD2C2BCAF;
+	Tue, 11 Nov 2025 01:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823979;
-	bh=lHElhPHNmYDuv9lqMK1mYcMRGxs3MiO8q6R9KJFYc8Y=;
+	s=korg; t=1762825080;
+	bh=YpAFs6L0nYvc+wC4NzWMjQT6rHFHh8yznGm0CVLC2nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lRXNOG88p0rdJjBGQ4iWSh3oY4GZ3p7CL8N4Wk/boEEYaoy8t0iFxWECwy1yDdq47
-	 i92L3IP08HsurSFC2xHYGEwlpiCnrSLTbiLucNexVJnlPXbJs6YR6W6uLqW29w4QO5
-	 8pZDwSHQDIP02GfdydSHz5LyMMTRiQk+CIXvwYCE=
+	b=AV3t6Yc4+6e373VrLzz8DU0iTixRfnNgdtK8mCi+ckopOwtVO/zYs2gIb0z3mn8j+
+	 j2p1MuexNK/Jt3kToZcprkczeNQkXYKOe2i64IxuftmxmlV7Ff30ph6ITR00HRaWee
+	 ok2l09zwiZA10sO6SC/78h+SzKLvC/eWB7INTmBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 364/565] drm/amd/display: Fix DVI-D/HDMI adapters
-Date: Tue, 11 Nov 2025 09:43:40 +0900
-Message-ID: <20251111004535.056229975@linuxfoundation.org>
+Subject: [PATCH 6.17 651/849] ASoC: tlv320aic3x: Fix class-D initialization for tlv320aic3007
+Date: Tue, 11 Nov 2025 09:43:41 +0900
+Message-ID: <20251111004552.168555552@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +60,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Primoz Fiser <primoz.fiser@norik.com>
 
-[ Upstream commit 489f0f600ce2c0dae640df9035e1d82677d2580f ]
+[ Upstream commit 733a763dd8b3ac2858dd238a91bb3a2fdff4739e ]
 
-When the EDID has the HDMI bit, we should simply select
-the HDMI signal type even on DVI ports.
+The problem of having class-D initialization sequence in probe using
+regmap_register_patch() is that it will do hardware register writes
+immediately after being called as it bypasses regcache. Afterwards, in
+aic3x_init() we also perform codec soft reset, rendering class-D init
+sequence pointless. This issue is even more apparent when using reset
+GPIO line, since in that case class-D amplifier initialization fails
+with "Failed to init class D: -5" message as codec is already held in
+reset state after requesting the reset GPIO and hence hardware I/O
+fails with -EIO errno.
 
-For reference see, the legacy amdgpu display code:
-amdgpu_atombios_encoder_get_encoder_mode
-which selects ATOM_ENCODER_MODE_HDMI for the same case.
+Thus move class-D amplifier initialization sequence from probe function
+to aic3x_set_power() just before the usual regcache sync. Use bypassed
+regmap_multi_reg_write_bypassed() function to make sure, class-D init
+sequence is performed in proper order as described in the datasheet.
 
-This commit fixes DVI connectors to work with DVI-D/HDMI
-adapters so that they can now produce output over these
-connectors for HDMI monitors with higher bandwidth modes.
-With this change, even HDMI audio works through DVI.
-
-For testing, I used a CAA-DMDHFD3 DVI-D/HDMI adapter
-with the following GPUs:
-
-Tahiti (DCE 6) - DC can now output 4K 30 Hz over DVI
-Polaris 10 (DCE 11.2) - DC can now output 4K 60 Hz over DVI
-
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+Link: https://patch.msgid.link/20250925085929.2581749-1-primoz.fiser@norik.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_detection.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/codecs/tlv320aic3x.c | 32 ++++++++++++++------------------
+ 1 file changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-index d21ee9d12d269..3f609f5468595 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-@@ -1132,6 +1132,10 @@ static bool detect_link_and_local_sink(struct dc_link *link,
- 		if (sink->sink_signal == SIGNAL_TYPE_HDMI_TYPE_A &&
- 		    !sink->edid_caps.edid_hdmi)
- 			sink->sink_signal = SIGNAL_TYPE_DVI_SINGLE_LINK;
-+		else if (dc_is_dvi_signal(sink->sink_signal) &&
-+			 aud_support->hdmi_audio_native &&
-+			 sink->edid_caps.edid_hdmi)
-+			sink->sink_signal = SIGNAL_TYPE_HDMI_TYPE_A;
+diff --git a/sound/soc/codecs/tlv320aic3x.c b/sound/soc/codecs/tlv320aic3x.c
+index f1649df197389..eea8ca285f8e0 100644
+--- a/sound/soc/codecs/tlv320aic3x.c
++++ b/sound/soc/codecs/tlv320aic3x.c
+@@ -121,6 +121,16 @@ static const struct reg_default aic3x_reg[] = {
+ 	{ 108, 0x00 }, { 109, 0x00 },
+ };
  
- 		if (link->local_sink && dc_is_dp_signal(sink_caps.signal))
- 			dp_trace_init(link);
++static const struct reg_sequence aic3007_class_d[] = {
++	/* Class-D speaker driver init; datasheet p. 46 */
++	{ AIC3X_PAGE_SELECT, 0x0D },
++	{ 0xD, 0x0D },
++	{ 0x8, 0x5C },
++	{ 0x8, 0x5D },
++	{ 0x8, 0x5C },
++	{ AIC3X_PAGE_SELECT, 0x00 },
++};
++
+ static bool aic3x_volatile_reg(struct device *dev, unsigned int reg)
+ {
+ 	switch (reg) {
+@@ -1393,6 +1403,10 @@ static int aic3x_set_power(struct snd_soc_component *component, int power)
+ 			gpiod_set_value(aic3x->gpio_reset, 0);
+ 		}
+ 
++		if (aic3x->model == AIC3X_MODEL_3007)
++			regmap_multi_reg_write_bypassed(aic3x->regmap, aic3007_class_d,
++							ARRAY_SIZE(aic3007_class_d));
++
+ 		/* Sync reg_cache with the hardware */
+ 		regcache_cache_only(aic3x->regmap, false);
+ 		regcache_sync(aic3x->regmap);
+@@ -1723,17 +1737,6 @@ static void aic3x_configure_ocmv(struct device *dev, struct aic3x_priv *aic3x)
+ 	}
+ }
+ 
+-
+-static const struct reg_sequence aic3007_class_d[] = {
+-	/* Class-D speaker driver init; datasheet p. 46 */
+-	{ AIC3X_PAGE_SELECT, 0x0D },
+-	{ 0xD, 0x0D },
+-	{ 0x8, 0x5C },
+-	{ 0x8, 0x5D },
+-	{ 0x8, 0x5C },
+-	{ AIC3X_PAGE_SELECT, 0x00 },
+-};
+-
+ int aic3x_probe(struct device *dev, struct regmap *regmap, kernel_ulong_t driver_data)
+ {
+ 	struct aic3x_priv *aic3x;
+@@ -1823,13 +1826,6 @@ int aic3x_probe(struct device *dev, struct regmap *regmap, kernel_ulong_t driver
+ 
+ 	aic3x_configure_ocmv(dev, aic3x);
+ 
+-	if (aic3x->model == AIC3X_MODEL_3007) {
+-		ret = regmap_register_patch(aic3x->regmap, aic3007_class_d,
+-					    ARRAY_SIZE(aic3007_class_d));
+-		if (ret != 0)
+-			dev_err(dev, "Failed to init class D: %d\n", ret);
+-	}
+-
+ 	ret = devm_snd_soc_register_component(dev, &soc_component_dev_aic3x, &aic3x_dai, 1);
+ 	if (ret)
+ 		return ret;
 -- 
 2.51.0
 
