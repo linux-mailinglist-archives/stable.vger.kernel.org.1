@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-194133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F25C4AE98
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2E7DC4ADB8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F7CB4F8094
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A268188647A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E6A306B15;
-	Tue, 11 Nov 2025 01:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B776230C36F;
+	Tue, 11 Nov 2025 01:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4RGs/FY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIYOXzUc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C218F306D57;
-	Tue, 11 Nov 2025 01:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7488F30ACFA;
+	Tue, 11 Nov 2025 01:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824883; cv=none; b=tWfpP1FGOwszSxfGvG5DJ2XXarCAjJYqXEJ76yU8spkEfvdtcb0iHjLUepjoqjvEFtvCProgyu2QLthpZR0SZlUuNyw3gNduFarwbvNnnL85l62xZouDG8b7+8AhKrBI0FCTnoD/30qvGTDebLhDsdnAZ6cB2Q8wElrnXSbvfRA=
+	t=1762824909; cv=none; b=Azb5JLWhNV4ee9gjkjuxTwC4boGKUfJC887rFCXkXEsIJJuHjvv0GS3JihLvDA4a4H0jnd28adroHRXYnjWJ1TMpuA1FZLjj30c0CErmDUk+lU6Qh1mjjZ3NUd0hOxeXvbgna4n6D+bC98VO9gWNM12HkrG0IE2GOZsl+ywqqx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824883; c=relaxed/simple;
-	bh=lBDzGFabeSc5fGjBOzjvA18kpV9HiZ+e2jM59GejBvU=;
+	s=arc-20240116; t=1762824909; c=relaxed/simple;
+	bh=9DjPcGxZjKHvfBLgAHkFuqsfmXWJgrKbUZv0AJ4l9pw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oFQLO8X2E2BOUnzZMyjrtwNKB7zEN+MNNgRw9+yn+wYmF7R51mIsMhdJLZUVOGOxUW4reBHuzi1lYMQOKjKzqxGe8Y4BH4qk6R198qMim+oE6v0arlz/SlTbEnxUDoilq1pCzDACvAZ/wVw1pHf/3T+YVT19ZfSKWfW/TvJw1Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4RGs/FY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7DCC116D0;
-	Tue, 11 Nov 2025 01:34:43 +0000 (UTC)
+	 MIME-Version; b=j9PhA/9pB1RL0CqnHpJuT/jKrOyUK6Xi7RUEoOAWzmN6zJQ0Lf5H4lHqd9KwApzGUWvalbRn2fUQ0aydOBMfUyFv5LJTSpf3YRfxdExlK/G3uzFfLfACVNQTbj6qNHm12Wc+Yt/1eQgu+SVHDCLJgRoSQxRj+yHtkyUVSdDY9X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIYOXzUc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4F3C19422;
+	Tue, 11 Nov 2025 01:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824883;
-	bh=lBDzGFabeSc5fGjBOzjvA18kpV9HiZ+e2jM59GejBvU=;
+	s=korg; t=1762824909;
+	bh=9DjPcGxZjKHvfBLgAHkFuqsfmXWJgrKbUZv0AJ4l9pw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4RGs/FYOWdNW3qTFJjRRLDJp0g/1Ha8YHDqgYhlsqQadFcYwumOSs/sWAkMzoTeH
-	 tlQFI3hQl6c7xrituPYfDaIFoU4Joa/ttOfyY7Q6oN5aHsob7+nIl3yLPabf2+i/v9
-	 CKqCadq3P6s+4n5MIJ3S0ONQD4NQlvbK063PJvG0=
+	b=xIYOXzUcBleMGeUG4OCIcl68cIeeMzGBHtCCatpxZHq2rlu1fKd42fFsp6N5iybxB
+	 CMFa7nwQgzEkPz7B6wN+t+RNkWu+OHYO2hEQSKIFnT/jfbPjdXD1GT5bUKlhxenWYZ
+	 ETHEt2kBr+QncgHJJVF8g7+N2CeU4QUB1wx/dXHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qendrim Maxhuni <qendrim.maxhuni@garderos.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 528/565] net: usb: qmi_wwan: initialize MAC header offset in qmimux_rx_fixup
-Date: Tue, 11 Nov 2025 09:46:24 +0900
-Message-ID: <20251111004538.846399760@linuxfoundation.org>
+Subject: [PATCH 6.12 529/565] bnxt_en: Fix a possible memory leak in bnxt_ptp_init
+Date: Tue, 11 Nov 2025 09:46:25 +0900
+Message-ID: <20251111004538.870387179@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,68 +69,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit e120f46768d98151ece8756ebd688b0e43dc8b29 ]
+[ Upstream commit deb8eb39164382f1f67ef8e8af9176baf5e10f2d ]
 
-Raw IP packets have no MAC header, leaving skb->mac_header uninitialized.
-This can trigger kernel panics on ARM64 when xfrm or other subsystems
-access the offset due to strict alignment checks.
+In bnxt_ptp_init(), when ptp_clock_register() fails, the driver is
+not freeing the memory allocated for ptp_info->pin_config.  Fix it
+to unconditionally free ptp_info->pin_config in bnxt_ptp_free().
 
-Initialize the MAC header to prevent such crashes.
-
-This can trigger kernel panics on ARM when running IPsec over the
-qmimux0 interface.
-
-Example trace:
-
-    Internal error: Oops: 000000009600004f [#1] SMP
-    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.34-gbe78e49cb433 #1
-    Hardware name: LS1028A RDB Board (DT)
-    pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-    pc : xfrm_input+0xde8/0x1318
-    lr : xfrm_input+0x61c/0x1318
-    sp : ffff800080003b20
-    Call trace:
-     xfrm_input+0xde8/0x1318
-     xfrm6_rcv+0x38/0x44
-     xfrm6_esp_rcv+0x48/0xa8
-     ip6_protocol_deliver_rcu+0x94/0x4b0
-     ip6_input_finish+0x44/0x70
-     ip6_input+0x44/0xc0
-     ipv6_rcv+0x6c/0x114
-     __netif_receive_skb_one_core+0x5c/0x8c
-     __netif_receive_skb+0x18/0x60
-     process_backlog+0x78/0x17c
-     __napi_poll+0x38/0x180
-     net_rx_action+0x168/0x2f0
-
-Fixes: c6adf77953bc ("net: usb: qmi_wwan: add qmap mux protocol support")
-Signed-off-by: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
-Link: https://patch.msgid.link/20251029075744.105113-1-qendrim.maxhuni@garderos.com
+Fixes: caf3eedbcd8d ("bnxt_en: 1PPS support for 5750X family chips")
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20251104005700.542174-3-michael.chan@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index f04da733240c0..bd51435ed4184 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -192,6 +192,12 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 		if (!skbn)
- 			return 0;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+index 650034a4bb46d..6dfa0ab74c332 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+@@ -1040,9 +1040,9 @@ static void bnxt_ptp_free(struct bnxt *bp)
+ 	if (ptp->ptp_clock) {
+ 		ptp_clock_unregister(ptp->ptp_clock);
+ 		ptp->ptp_clock = NULL;
+-		kfree(ptp->ptp_info.pin_config);
+-		ptp->ptp_info.pin_config = NULL;
+ 	}
++	kfree(ptp->ptp_info.pin_config);
++	ptp->ptp_info.pin_config = NULL;
+ }
  
-+	       /* Raw IP packets don't have a MAC header, but other subsystems
-+		* (like xfrm) may still access MAC header offsets, so they must
-+		* be initialized.
-+		*/
-+		skb_reset_mac_header(skbn);
-+
- 		switch (skb->data[offset + qmimux_hdr_sz] & 0xf0) {
- 		case 0x40:
- 			skbn->protocol = htons(ETH_P_IP);
+ int bnxt_ptp_init(struct bnxt *bp)
 -- 
 2.51.0
 
