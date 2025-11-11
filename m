@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-193079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B109C49F3B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 847E1C49F41
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EC793AA6F0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444703AB483
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE96246333;
-	Tue, 11 Nov 2025 00:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E420A12DDA1;
+	Tue, 11 Nov 2025 00:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOlX1CFl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkdctji7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D889212DDA1;
-	Tue, 11 Nov 2025 00:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBE14C97;
+	Tue, 11 Nov 2025 00:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822250; cv=none; b=VdLaYtpphyoJsU8BWtOFV21G6Ol+JxY+yPN5N/lBXtIhxLl1fcDCqBK3eho9jE+din2UmqYvFJo+gWswcolyl3GRsql+QxlLw0+EOX4h/pmg1lm9tgp4SKKTPl869tIQFX5KDKXtNvHktx+oCpPxRNOjccdsEQUmyXzVymPCxYY=
+	t=1762822254; cv=none; b=d5ocINU/Xxu7AJcvdkr8f3QaAqE8pTPzYse3Autylk0IzSGFtqXt7YE+qZvaYUVogp37D87HzjngmDi+OV+HNIP0bFZp4TEVBGzKA77GUXjVO8lrRHGY+21fDbviAhLRKkgdhwOTI+y+QwwJsJ6m72A0Et5sDm2ccLqTv6NzX+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822250; c=relaxed/simple;
-	bh=KRCsEYvZ6WbgL3B+viSLfk3P9lz/2tUK+XxpWs4+CQ0=;
+	s=arc-20240116; t=1762822254; c=relaxed/simple;
+	bh=2MnJYnUpESVE9t2XRuaSN79O+7PVpWTBiei3RBBPLPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4qd0wfFmcGSZj1QY7DVPIrcG6CSqi0N6flS0bH8REabqgTfpSXZVXpvU9puZ9TlRT5lS0EnvsUIIREp9awzOgfNPPw6vbG0iTcwhh114p4zUjJpkzQAzHL4b5Ylj7PwE+dNAGzsr0Bp8z9VvTJ4fvs+5qTc1C7LZkbwvKOB+yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOlX1CFl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D02C16AAE;
-	Tue, 11 Nov 2025 00:50:49 +0000 (UTC)
+	 MIME-Version; b=kYE7ocZz9WMmqQ7wjb6P68fHPxlIYaYBSD+X9GUAsqE21N1qYhNprOdYQdzuCkCb0qoy6ELOY3AUWkHZtmvp5roP3Jh8LBa+zdO05JA7P1I9oaXq/sapkJc7VRK5MOsn7a3YMwZKYXEeQzpka457uo2bV7mTafilbsqgwCDcTBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkdctji7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380BDC116B1;
+	Tue, 11 Nov 2025 00:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822249;
-	bh=KRCsEYvZ6WbgL3B+viSLfk3P9lz/2tUK+XxpWs4+CQ0=;
+	s=korg; t=1762822254;
+	bh=2MnJYnUpESVE9t2XRuaSN79O+7PVpWTBiei3RBBPLPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wOlX1CFlb1acqLG5viySzOAyMvtc7jHVd5opcwlyI8FMBnWGO3Y2xgrG0CJActFq9
-	 xYDwoE/x8gAgt0+Z/RZMSXPnSz8gcHXkg9OhdGVqEuapUBjTBCbNPE0quhqYHGwPDq
-	 c6G4YTiNwAcsjWkU4Ffwtdg1ZpfTaSGAUXutKURk=
+	b=qkdctji7+hnpCxFhRyFm/2sW9wDVb/VNV5EfiPGOpBvh8ZA3HBvvLL0srIqLq6JFN
+	 ifMbRVdi47KnVCLQjvoscl659DXTsByDx7OHQauXmRlByIvEDHOVjXz2UMqoWs1AOt
+	 t+Ufub2jfgQHLOrKyZLZPyHETZn1ZAEpa2hrg8fM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong Gu <yong.g.gu@ericsson.com>,
-	Mykyta Yatsenko <yatsenko@meta.com>,
-	Malin Jonsson <malin.jonsson@est.tech>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 066/849] bpf: Conditionally include dynptr copy kfuncs
-Date: Tue, 11 Nov 2025 09:33:56 +0900
-Message-ID: <20251111004538.024235916@linuxfoundation.org>
+Subject: [PATCH 6.17 067/849] drm/msm: Ensure vm is created in VM_BIND ioctl
+Date: Tue, 11 Nov 2025 09:33:57 +0900
+Message-ID: <20251111004538.048432075@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,61 +65,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Malin Jonsson <malin.jonsson@est.tech>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit 8ce93aabbf75171470e3d1be56bf1a6937dc5db8 ]
+[ Upstream commit 00d5f09719aa6c37545be5c05d25a1eaf8f3da7e ]
 
-Since commit a498ee7576de ("bpf: Implement dynptr copy kfuncs"), if
-CONFIG_BPF_EVENTS is not enabled, but BPF_SYSCALL and DEBUG_INFO_BTF are,
-the build will break like so:
+Since the vm is lazily created, to allow userspace to opt-in to a
+VM_BIND context, we can't assume it is already created.
 
-  BTFIDS  vmlinux.unstripped
-WARN: resolve_btfids: unresolved symbol bpf_probe_read_user_str_dynptr
-WARN: resolve_btfids: unresolved symbol bpf_probe_read_user_dynptr
-WARN: resolve_btfids: unresolved symbol bpf_probe_read_kernel_str_dynptr
-WARN: resolve_btfids: unresolved symbol bpf_probe_read_kernel_dynptr
-WARN: resolve_btfids: unresolved symbol bpf_copy_from_user_task_str_dynptr
-WARN: resolve_btfids: unresolved symbol bpf_copy_from_user_task_dynptr
-WARN: resolve_btfids: unresolved symbol bpf_copy_from_user_str_dynptr
-WARN: resolve_btfids: unresolved symbol bpf_copy_from_user_dynptr
-make[2]: *** [scripts/Makefile.vmlinux:72: vmlinux.unstripped] Error 255
-make[2]: *** Deleting file 'vmlinux.unstripped'
-make[1]: *** [/repo/malin/upstream/linux/Makefile:1242: vmlinux] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-
-Guard these symbols with #ifdef CONFIG_BPF_EVENTS to resolve the problem.
-
-Fixes: a498ee7576de ("bpf: Implement dynptr copy kfuncs")
-Reported-by: Yong Gu <yong.g.gu@ericsson.com>
-Acked-by: Mykyta Yatsenko <yatsenko@meta.com>
-Signed-off-by: Malin Jonsson <malin.jonsson@est.tech>
-Link: https://lore.kernel.org/r/20251024151436.139131-1-malin.jonsson@est.tech
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 2e6a8a1fe2b2 ("drm/msm: Add VM_BIND ioctl")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/682939/
+Message-ID: <20251022222039.9937-1-robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/msm_gem_vma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 9c750a6a895bf..a12f4fa444086 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -3816,6 +3816,7 @@ BTF_ID_FLAGS(func, bpf_iter_kmem_cache_next, KF_ITER_NEXT | KF_RET_NULL | KF_SLE
- BTF_ID_FLAGS(func, bpf_iter_kmem_cache_destroy, KF_ITER_DESTROY | KF_SLEEPABLE)
- BTF_ID_FLAGS(func, bpf_local_irq_save)
- BTF_ID_FLAGS(func, bpf_local_irq_restore)
-+#ifdef CONFIG_BPF_EVENTS
- BTF_ID_FLAGS(func, bpf_probe_read_user_dynptr)
- BTF_ID_FLAGS(func, bpf_probe_read_kernel_dynptr)
- BTF_ID_FLAGS(func, bpf_probe_read_user_str_dynptr)
-@@ -3824,6 +3825,7 @@ BTF_ID_FLAGS(func, bpf_copy_from_user_dynptr, KF_SLEEPABLE)
- BTF_ID_FLAGS(func, bpf_copy_from_user_str_dynptr, KF_SLEEPABLE)
- BTF_ID_FLAGS(func, bpf_copy_from_user_task_dynptr, KF_SLEEPABLE | KF_TRUSTED_ARGS)
- BTF_ID_FLAGS(func, bpf_copy_from_user_task_str_dynptr, KF_SLEEPABLE | KF_TRUSTED_ARGS)
-+#endif
- #ifdef CONFIG_DMA_SHARED_BUFFER
- BTF_ID_FLAGS(func, bpf_iter_dmabuf_new, KF_ITER_NEW | KF_SLEEPABLE)
- BTF_ID_FLAGS(func, bpf_iter_dmabuf_next, KF_ITER_NEXT | KF_RET_NULL | KF_SLEEPABLE)
+diff --git a/drivers/gpu/drm/msm/msm_gem_vma.c b/drivers/gpu/drm/msm/msm_gem_vma.c
+index 381a0853c05ba..b6248f86a5ab1 100644
+--- a/drivers/gpu/drm/msm/msm_gem_vma.c
++++ b/drivers/gpu/drm/msm/msm_gem_vma.c
+@@ -1401,7 +1401,7 @@ msm_ioctl_vm_bind(struct drm_device *dev, void *data, struct drm_file *file)
+ 	 * Maybe we could allow just UNMAP ops?  OTOH userspace should just
+ 	 * immediately close the device file and all will be torn down.
+ 	 */
+-	if (to_msm_vm(ctx->vm)->unusable)
++	if (to_msm_vm(msm_context_vm(dev, ctx))->unusable)
+ 		return UERR(EPIPE, dev, "context is unusable");
+ 
+ 	/*
 -- 
 2.51.0
 
