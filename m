@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E79C4A52A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 911E7C4ADDB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0FB3189290A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:14:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D48C3B99DD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D54346FC0;
-	Tue, 11 Nov 2025 01:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084922F2612;
+	Tue, 11 Nov 2025 01:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0upo4dne"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ae8eLELt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706BD2DC350;
-	Tue, 11 Nov 2025 01:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F192FD7CA;
+	Tue, 11 Nov 2025 01:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823209; cv=none; b=DuUIHA/hWG89uva6nE+JA+6/Mr7ClXSbnsneV+/0B/RNGqwMq6BiKlHRbtja/XaetgdXwSKVfKM5ZH/Cr7ku6UUJc6tMnX6pKu5CMLAF2c5xnEPQfR2bNVZw+SBFGExTCvoskkYCNvA5d/abwRYPnWLih0AThodUUa/vuqJUCLc=
+	t=1762824377; cv=none; b=Zi5EQy+DgI3JwDpQeowmb9e/etnt3Zi+1faGQbOtOlTFglYamfaAwxXBpDGKK2snxjxG97YivWFAV5ZVO5udWO2IKbi+prx7vt+tMXDruCAfotji+0t6GEMWIVS72V1LWxNGeq+3ULaJDDywAGDLSOzK7GNLkZdMf6mNE9RuQCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823209; c=relaxed/simple;
-	bh=KJNjKRDthoFFJipdVWmaAN+472HYx+5IFPHIOVYnEpQ=;
+	s=arc-20240116; t=1762824377; c=relaxed/simple;
+	bh=gb2lo9eafL3inZ/vR5F+jbHMTdNoAQuoXvjdabHz1HM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ONE7wZlyeBSEN8Y50ElSl4kVlSFQJQmusdb4aDUepIgXIVleejVRnmVh7NEg2q7bA3LRf+4rFieWUEbQtty8eHaeYGablZl5Zvp3K706G9l4QJORAqaQXx2sggHdXuqt+kv5fRXtG028A2g6e9mrCiJNO+RJfeE8TtNPcaPC19M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0upo4dne; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DA9C4AF09;
-	Tue, 11 Nov 2025 01:06:47 +0000 (UTC)
+	 MIME-Version; b=c4jsQn2hOqf4pc/jhuybw+UlAF/h24daeg/DRrkQipb9dftuATbOQTL3xVVGA2L3RIJaO8dR1bMnCUmsRT268eYGOixl3KITfu7kquddntrGUNC8ejbZv/cz+Z+TL8y+kGEblogUO0cynOqzrLVTLLOhuS64SR/OF2bNt0QjpdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ae8eLELt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39206C116B1;
+	Tue, 11 Nov 2025 01:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823208;
-	bh=KJNjKRDthoFFJipdVWmaAN+472HYx+5IFPHIOVYnEpQ=;
+	s=korg; t=1762824377;
+	bh=gb2lo9eafL3inZ/vR5F+jbHMTdNoAQuoXvjdabHz1HM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0upo4dneAUOuy6mXwn/9pOS/vJyccMZ46SCw+L/CQ4D8YMKJHs3aBIXbVSVNNIeho
-	 KnAzlB6SKIxtloDlCWEqIkyEsouVOaT60pBJIta+LT9mYAS8hwnriuN1rfBmafQtpD
-	 /JAsCgcjJ1eFkvPad99Lh/6peXDpnoAwDkfQX95M=
+	b=ae8eLELtv+4YUt3FR2ctLq8TeHM8qxmuxH/Xnem8aq7Z2A0YgdkIqIcjRfLbCJFj9
+	 wytLeC4AbEu1yNFahJdomY341bUMujNMNlHqM1CobzPsnaNqVhHhKxjB3ofStL6RAq
+	 P3hLEwlbUZ2iYgwpjkBDRISMNlkfn0RUsMx+b4qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geoffrey McRae <geoffrey.mcrae@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
+	Raag Jadav <raag.jadav@intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 197/565] drm/amdkfd: return -ENOTTY for unsupported IOCTLs
+Subject: [PATCH 6.17 483/849] drm/xe/i2c: Enable bus mastering
 Date: Tue, 11 Nov 2025 09:40:53 +0900
-Message-ID: <20251111004531.360105997@linuxfoundation.org>
+Message-ID: <20251111004548.118828098@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey McRae <geoffrey.mcrae@amd.com>
+From: Raag Jadav <raag.jadav@intel.com>
 
-[ Upstream commit 57af162bfc8c05332a28c4d458d246cc46d2746d ]
+[ Upstream commit fce99326c9cf5a0e57c4283a61c6b622ef5b0de8 ]
 
-Some kfd ioctls may not be available depending on the kernel version the
-user is running, as such we need to report -ENOTTY so userland can
-determine the cause of the ioctl failure.
+Enable bus mastering for I2C controller to support device initiated
+in-band transactions.
 
-Signed-off-by: Geoffrey McRae <geoffrey.mcrae@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250908055320.2549722-1-raag.jadav@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index 67b5f3d7ff8e9..fc473e3ba2d00 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -3253,8 +3253,10 @@ static long kfd_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
- 	int retcode = -EINVAL;
- 	bool ptrace_attached = false;
+diff --git a/drivers/gpu/drm/xe/xe_i2c.c b/drivers/gpu/drm/xe/xe_i2c.c
+index bc7dc2099470c..983e8e08e4739 100644
+--- a/drivers/gpu/drm/xe/xe_i2c.c
++++ b/drivers/gpu/drm/xe/xe_i2c.c
+@@ -245,7 +245,7 @@ void xe_i2c_pm_resume(struct xe_device *xe, bool d3cold)
+ 		return;
  
--	if (nr >= AMDKFD_CORE_IOCTL_COUNT)
-+	if (nr >= AMDKFD_CORE_IOCTL_COUNT) {
-+		retcode = -ENOTTY;
- 		goto err_i1;
-+	}
+ 	if (d3cold)
+-		xe_mmio_rmw32(mmio, I2C_CONFIG_CMD, 0, PCI_COMMAND_MEMORY);
++		xe_mmio_rmw32(mmio, I2C_CONFIG_CMD, 0, PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER);
  
- 	if ((nr >= AMDKFD_COMMAND_START) && (nr < AMDKFD_COMMAND_END)) {
- 		u32 amdkfd_size;
-@@ -3267,8 +3269,10 @@ static long kfd_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
- 			asize = amdkfd_size;
- 
- 		cmd = ioctl->cmd;
--	} else
-+	} else {
-+		retcode = -ENOTTY;
- 		goto err_i1;
-+	}
- 
- 	dev_dbg(kfd_device, "ioctl cmd 0x%x (#0x%x), arg 0x%lx\n", cmd, nr, arg);
- 
+ 	xe_mmio_rmw32(mmio, I2C_CONFIG_PMCSR, PCI_PM_CTRL_STATE_MASK, (__force u32)PCI_D0);
+ 	drm_dbg(&xe->drm, "pmcsr: 0x%08x\n", xe_mmio_read32(mmio, I2C_CONFIG_PMCSR));
 -- 
 2.51.0
 
