@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-193379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F05C4A3FF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:09:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D473EC4ABA5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4536E4F3477
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC6BB18943B1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA512505AA;
-	Tue, 11 Nov 2025 01:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37063446C9;
+	Tue, 11 Nov 2025 01:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="quqKr/Cl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNdE00/M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C057262A;
-	Tue, 11 Nov 2025 01:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13D43446B6;
+	Tue, 11 Nov 2025 01:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823042; cv=none; b=gDfwjA1J1Ls6EvGRk10oKv6pp7uG7pBfAqVGhkoWtkufV2lvekV0m3pRtkO8SpO5zbq6r5q4yIB8fkGn5XnYMI8ZjkcJWWkdzKlyOjd7ltntMAQo97N8HnuMReJSyd3i5W/fGbOxorpekG4YhaX7aQaweUwQw/ZnHkrrjJwbBoo=
+	t=1762824148; cv=none; b=EJTY76sq4U3y5WDeSyi5Zg9Boo9A7NStTkDqKkYyVBYmo5T+XpHGaCcG/Nf09LXA+pi/EEYgXMyPB0M5xUXSJs5nFhcj1o0+teBk7q4KqGR05wpF+hV6UeILnJ2bqcnXrgdEeYFerWC6HQS3sHxXCBjXkXr0vRyCVdWSwlPaWi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823042; c=relaxed/simple;
-	bh=+fZPIUJ2DptVX0tUVBu7pnDy+99KZBoMcPm2yrMcDNg=;
+	s=arc-20240116; t=1762824148; c=relaxed/simple;
+	bh=ifeYbH6muKQp5+fn3TB3pCocSfakFzXpylntssnGTNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sedk9uiT4RpKKYcjQB3hyNXigAUpxWViojPU3DxZqp49MqZ6PwBPP1BY9hyTy7FDObMbHOTxsY4pVCv1CI5/KKAWmT699g9isNub9ElD7E+z6eXhbo7pYne7XAfm83ODA25mnz+XZRBPhiCtju5WgeJKXHxG3gpB7n/jyENyASU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quqKr/Cl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E326DC4CEF5;
-	Tue, 11 Nov 2025 01:04:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hH02NCYEgnfb1OyzJEaeyxSdjsgm+qaQRYkTG4GPlgVak9JCh8rxHR790HsPAPy7oEOL7od0JE7km2LSFUcA+cTaP4gJH07CXRhN1lxe8S79OK81Xhs18SmwRP8t7KPv/wNOhkoQc3LsdsZcjp2sThbzN/RHJUujCo8Z+DNQc5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNdE00/M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD36BC19422;
+	Tue, 11 Nov 2025 01:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823042;
-	bh=+fZPIUJ2DptVX0tUVBu7pnDy+99KZBoMcPm2yrMcDNg=;
+	s=korg; t=1762824148;
+	bh=ifeYbH6muKQp5+fn3TB3pCocSfakFzXpylntssnGTNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=quqKr/CluiiA9hOVoYSn2q/mFkMfUgDWpC9RrU23sLi8+QS0GpTXCROkTGKozCmae
-	 MpGbM6xHMCVX2sgAcGgBfPSxjuwyBS0sb/5lbCNDBKSUtKTMWXxg8cyVaODrmoSeCJ
-	 TaAdD3DlXq5qAqE2nNXLEfaS9UjBsYN6ZIxoWKkw=
+	b=CNdE00/M1AdyAYZ3Q68UHWD3Bh2y85boWTOpFZ2JpfjDNO6Bhq9xZNMfJ6ZOb8aR+
+	 gadDYY7yE+UmBBNiM6J+6rnOlnvYi3aRjOu8qzRfFxSnMGaQ88HhpqlB3S+zlauGpj
+	 joG948w2gUFQxA5n8hZpWJFPCpzt6TBG5OuCuf3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 160/565] hwmon: (dell-smm) Remove Dell Precision 490 custom config data
+Subject: [PATCH 6.17 446/849] drm/xe: improve dma-resv handling for backup object
 Date: Tue, 11 Nov 2025 09:40:16 +0900
-Message-ID: <20251111004530.536123454@linuxfoundation.org>
+Message-ID: <20251111004547.217717802@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +62,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit ddb61e737f04e3c6c8299c1e00bf17a42a7f05cf ]
+[ Upstream commit edb1745fc618ba8ef63a45ce3ae60de1bdf29231 ]
 
-It turns out the second fan on the Dell Precision 490 does not
-really support I8K_FAN_TURBO. Setting the fan state to 3 enables
-automatic fan control, just like on the other two fans.
-The reason why this was misinterpreted as turbo mode was that
-the second fan normally spins faster in automatic mode than
-in the previous fan states. Yet when in state 3, the fan speed
-reacts to heat exposure, exposing the automatic mode setting.
+Since the dma-resv is shared we don't need to reserve and add a fence
+slot fence twice, plus no need to loop through the dependencies.
 
-Link: https://github.com/lm-sensors/lm-sensors/pull/383
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20250917181036.10972-2-W_Armin@gmx.de
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://lore.kernel.org/r/20250829164715.720735-2-matthew.auld@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/dell-smm-hwmon.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ drivers/gpu/drm/xe/xe_bo.c      | 13 +------------
+ drivers/gpu/drm/xe/xe_migrate.c |  2 +-
+ 2 files changed, 2 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
-index b043fbd15c9da..f73f461937482 100644
---- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -1324,7 +1324,6 @@ struct i8k_config_data {
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index d07e23eb1a54d..5a61441d68af5 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -1242,14 +1242,11 @@ int xe_bo_evict_pinned(struct xe_bo *bo)
+ 		else
+ 			migrate = mem_type_to_migrate(xe, bo->ttm.resource->mem_type);
  
- enum i8k_configs {
- 	DELL_LATITUDE_D520,
--	DELL_PRECISION_490,
- 	DELL_STUDIO,
- 	DELL_XPS,
- };
-@@ -1334,10 +1333,6 @@ static const struct i8k_config_data i8k_config_data[] __initconst = {
- 		.fan_mult = 1,
- 		.fan_max = I8K_FAN_TURBO,
- 	},
--	[DELL_PRECISION_490] = {
--		.fan_mult = 1,
--		.fan_max = I8K_FAN_TURBO,
--	},
- 	[DELL_STUDIO] = {
- 		.fan_mult = 1,
- 		.fan_max = I8K_FAN_HIGH,
-@@ -1357,15 +1352,6 @@ static const struct dmi_system_id i8k_config_dmi_table[] __initconst = {
- 		},
- 		.driver_data = (void *)&i8k_config_data[DELL_LATITUDE_D520],
- 	},
--	{
--		.ident = "Dell Precision 490",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--			DMI_MATCH(DMI_PRODUCT_NAME,
--				  "Precision WorkStation 490"),
--		},
--		.driver_data = (void *)&i8k_config_data[DELL_PRECISION_490],
--	},
- 	{
- 		.ident = "Dell Studio",
- 		.matches = {
++		xe_assert(xe, bo->ttm.base.resv == backup->ttm.base.resv);
+ 		ret = dma_resv_reserve_fences(bo->ttm.base.resv, 1);
+ 		if (ret)
+ 			goto out_backup;
+ 
+-		ret = dma_resv_reserve_fences(backup->ttm.base.resv, 1);
+-		if (ret)
+-			goto out_backup;
+-
+ 		fence = xe_migrate_copy(migrate, bo, backup, bo->ttm.resource,
+ 					backup->ttm.resource, false);
+ 		if (IS_ERR(fence)) {
+@@ -1259,8 +1256,6 @@ int xe_bo_evict_pinned(struct xe_bo *bo)
+ 
+ 		dma_resv_add_fence(bo->ttm.base.resv, fence,
+ 				   DMA_RESV_USAGE_KERNEL);
+-		dma_resv_add_fence(backup->ttm.base.resv, fence,
+-				   DMA_RESV_USAGE_KERNEL);
+ 		dma_fence_put(fence);
+ 	} else {
+ 		ret = xe_bo_vmap(backup);
+@@ -1338,10 +1333,6 @@ int xe_bo_restore_pinned(struct xe_bo *bo)
+ 		if (ret)
+ 			goto out_unlock_bo;
+ 
+-		ret = dma_resv_reserve_fences(backup->ttm.base.resv, 1);
+-		if (ret)
+-			goto out_unlock_bo;
+-
+ 		fence = xe_migrate_copy(migrate, backup, bo,
+ 					backup->ttm.resource, bo->ttm.resource,
+ 					false);
+@@ -1352,8 +1343,6 @@ int xe_bo_restore_pinned(struct xe_bo *bo)
+ 
+ 		dma_resv_add_fence(bo->ttm.base.resv, fence,
+ 				   DMA_RESV_USAGE_KERNEL);
+-		dma_resv_add_fence(backup->ttm.base.resv, fence,
+-				   DMA_RESV_USAGE_KERNEL);
+ 		dma_fence_put(fence);
+ 	} else {
+ 		ret = xe_bo_vmap(backup);
+diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
+index 2a627ed64b8f8..ba9b8590eccb2 100644
+--- a/drivers/gpu/drm/xe/xe_migrate.c
++++ b/drivers/gpu/drm/xe/xe_migrate.c
+@@ -901,7 +901,7 @@ struct dma_fence *xe_migrate_copy(struct xe_migrate *m,
+ 		if (!fence) {
+ 			err = xe_sched_job_add_deps(job, src_bo->ttm.base.resv,
+ 						    DMA_RESV_USAGE_BOOKKEEP);
+-			if (!err && src_bo != dst_bo)
++			if (!err && src_bo->ttm.base.resv != dst_bo->ttm.base.resv)
+ 				err = xe_sched_job_add_deps(job, dst_bo->ttm.base.resv,
+ 							    DMA_RESV_USAGE_BOOKKEEP);
+ 			if (err)
 -- 
 2.51.0
 
