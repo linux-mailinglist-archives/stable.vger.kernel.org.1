@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE50C4A3D8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:08:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92537C4AB68
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DF7CF4F57A8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B67E11888715
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A9625A64C;
-	Tue, 11 Nov 2025 01:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B546344038;
+	Tue, 11 Nov 2025 01:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlo+yRw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITbwRE5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F4E258EF6;
-	Tue, 11 Nov 2025 01:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56768344037;
+	Tue, 11 Nov 2025 01:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822995; cv=none; b=QM95Dh5Oihya/gnEtsM4bqJE/epFD1YgC5QE/CLZkdotiozQEWUnmwdQKQPDRm4mC8VPYrJy+i+4FznxjGevf7VuyZSnua03jE3Gez3kyHmnPKa8xe3hn8uNWyKKidb8+C7X42X13/i5WYgByU4hqhucMAR4L6tnb3ClSU1+L0c=
+	t=1762824109; cv=none; b=N0NUPhX9uUzHDJ/RTH/PZP/ilb8XziXPaYcPHegoyPpiTH2EDjPMxyndf5UiR1yQ86jwsbRv0hVT5CDZtAdlPeivm7L2EQ2ksa8li94l5yGSR9cVWS5hbB9b19eHtTeohO9tLupv4FQIPejhTq5BxNvxe2Gv8AJ1dABMj1+Aytg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822995; c=relaxed/simple;
-	bh=stQbRNPWyZz+ZXOKthJEDoi4It3//vhhhOayAVcRfKc=;
+	s=arc-20240116; t=1762824109; c=relaxed/simple;
+	bh=uawzaMcaIQRNxTWpTd5y5fKNL4S/Y/wn2i7xVW1ukuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aSl6qgmknSUK75SNmu2h1zPBYOb2OkLYMGdNGJGuuPkonJHnZk36shqK/tHLFvzWW+7b1pR26xEQiw61Kvk8E7udIcRb4pn1mCe4ubjan6VMHbLBScWgPwBXLrcQXYNtQ63hfu/AXqHe8x9rZNRQw9DwrhiaZG6qhlCG5oGhHtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dlo+yRw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F73DC19424;
-	Tue, 11 Nov 2025 01:03:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sOa/gdVcibHoDh1beVyh9bGUN6FCWwhUQCOzjvLi6kHC8bmgnzqdxA9GWuMRGl1/gHvaiIbXTEpWanZs6HAU0pHHpsN+Grnk9UNowww7dyXXF5u2dIGIggkbStmBF9WJLgV/fmfCB217hYEbmSnyOG/39JJX+cTgSJkvFqZYyjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITbwRE5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2B0C19425;
+	Tue, 11 Nov 2025 01:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822994;
-	bh=stQbRNPWyZz+ZXOKthJEDoi4It3//vhhhOayAVcRfKc=;
+	s=korg; t=1762824109;
+	bh=uawzaMcaIQRNxTWpTd5y5fKNL4S/Y/wn2i7xVW1ukuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dlo+yRw1MyJOIpRn5DZYlWQUWBG+31Pv5ZuYPhx0K95zV5ZreOXTILsc5HBOwRkB1
-	 YrfQMuh+RthHZaJrBvE4vDXUgfwbMF8CF+h4QgGDqTl19RtkqOjQWndZVxFg0bFsJl
-	 L+wOQwCDDUDDdDu/HdA9Oz5XGAh3+8Cpzn9xV2SA=
+	b=ITbwRE5F75rHaGpOSd78S2vzkX6aJYS8ZWQDsF4ahj4S5HxHHITHbO2ayh2bDcSor
+	 5kV33l7ikLLzdJi06NAbjRm1H6DgUSctNWC/CAigGYiTfMabmEM3t4ZGu93Y4a0Lyo
+	 Z+jdiyYdKu9A/k4BxKIFAEab7YGhUGFMbQZaaSjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Kean Ren <kean0048@gmail.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 151/565] clocksource/drivers/vf-pit: Replace raw_readl/writel to readl/writel
-Date: Tue, 11 Nov 2025 09:40:07 +0900
-Message-ID: <20251111004530.337853354@linuxfoundation.org>
+Subject: [PATCH 6.17 438/849] platform/x86: think-lmi: Add extra TC BIOS error messages
+Date: Tue, 11 Nov 2025 09:40:08 +0900
+Message-ID: <20251111004547.021865941@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,101 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 0b781f527d6f99e68e5b3780ae03cd69a7cb5c0c ]
+[ Upstream commit a0d6959c345d89d811288a718e3f6b145dcadc8c ]
 
-The driver uses the raw_readl() and raw_writel() functions. Those are
-not for MMIO devices. Replace them with readl() and writel()
+Add extra error messages that are used by ThinkCenter platforms.
 
-[ dlezcano: Fixed typo in the subject s/reald/readl/ ]
-
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20250804152344.1109310-2-daniel.lezcano@linaro.org
+Signed-off-by: Kean Ren <kean0048@gmail.com>
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20250903173824.1472244-4-mpearson-lenovo@squebb.ca
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-vf-pit.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/platform/x86/lenovo/think-lmi.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/clocksource/timer-vf-pit.c b/drivers/clocksource/timer-vf-pit.c
-index 911c92146eca6..8041a8f62d1fa 100644
---- a/drivers/clocksource/timer-vf-pit.c
-+++ b/drivers/clocksource/timer-vf-pit.c
-@@ -35,30 +35,30 @@ static unsigned long cycle_per_jiffy;
+diff --git a/drivers/platform/x86/lenovo/think-lmi.c b/drivers/platform/x86/lenovo/think-lmi.c
+index 0992b41b6221d..e6a2c8e94cfdc 100644
+--- a/drivers/platform/x86/lenovo/think-lmi.c
++++ b/drivers/platform/x86/lenovo/think-lmi.c
+@@ -179,10 +179,21 @@ MODULE_PARM_DESC(debug_support, "Enable debug command support");
  
- static inline void pit_timer_enable(void)
- {
--	__raw_writel(PITTCTRL_TEN | PITTCTRL_TIE, clkevt_base + PITTCTRL);
-+	writel(PITTCTRL_TEN | PITTCTRL_TIE, clkevt_base + PITTCTRL);
- }
+ static const struct tlmi_err_codes tlmi_errs[] = {
+ 	{"Success", 0},
++	{"Set Certificate operation was successful.", 0},
+ 	{"Not Supported", -EOPNOTSUPP},
+ 	{"Invalid Parameter", -EINVAL},
+ 	{"Access Denied", -EACCES},
+ 	{"System Busy", -EBUSY},
++	{"Set Certificate operation failed with status:Invalid Parameter.", -EINVAL},
++	{"Set Certificate operation failed with status:Invalid certificate type.", -EINVAL},
++	{"Set Certificate operation failed with status:Invalid password format.", -EINVAL},
++	{"Set Certificate operation failed with status:Password retry count exceeded.", -EACCES},
++	{"Set Certificate operation failed with status:Password Invalid.", -EACCES},
++	{"Set Certificate operation failed with status:Operation aborted.", -EBUSY},
++	{"Set Certificate operation failed with status:No free slots to write.", -ENOSPC},
++	{"Set Certificate operation failed with status:Certificate not found.", -EEXIST},
++	{"Set Certificate operation failed with status:Internal error.", -EFAULT},
++	{"Set Certificate operation failed with status:Certificate too large.", -EFBIG},
+ };
  
- static inline void pit_timer_disable(void)
- {
--	__raw_writel(0, clkevt_base + PITTCTRL);
-+	writel(0, clkevt_base + PITTCTRL);
- }
- 
- static inline void pit_irq_acknowledge(void)
- {
--	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
-+	writel(PITTFLG_TIF, clkevt_base + PITTFLG);
- }
- 
- static u64 notrace pit_read_sched_clock(void)
- {
--	return ~__raw_readl(clksrc_base + PITCVAL);
-+	return ~readl(clksrc_base + PITCVAL);
- }
- 
- static int __init pit_clocksource_init(unsigned long rate)
- {
- 	/* set the max load value and start the clock source counter */
--	__raw_writel(0, clksrc_base + PITTCTRL);
--	__raw_writel(~0UL, clksrc_base + PITLDVAL);
--	__raw_writel(PITTCTRL_TEN, clksrc_base + PITTCTRL);
-+	writel(0, clksrc_base + PITTCTRL);
-+	writel(~0UL, clksrc_base + PITLDVAL);
-+	writel(PITTCTRL_TEN, clksrc_base + PITTCTRL);
- 
- 	sched_clock_register(pit_read_sched_clock, 32, rate);
- 	return clocksource_mmio_init(clksrc_base + PITCVAL, "vf-pit", rate,
-@@ -76,7 +76,7 @@ static int pit_set_next_event(unsigned long delta,
- 	 * hardware requirement.
- 	 */
- 	pit_timer_disable();
--	__raw_writel(delta - 1, clkevt_base + PITLDVAL);
-+	writel(delta - 1, clkevt_base + PITLDVAL);
- 	pit_timer_enable();
- 
- 	return 0;
-@@ -125,8 +125,8 @@ static struct clock_event_device clockevent_pit = {
- 
- static int __init pit_clockevent_init(unsigned long rate, int irq)
- {
--	__raw_writel(0, clkevt_base + PITTCTRL);
--	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
-+	writel(0, clkevt_base + PITTCTRL);
-+	writel(PITTFLG_TIF, clkevt_base + PITTFLG);
- 
- 	BUG_ON(request_irq(irq, pit_timer_interrupt, IRQF_TIMER | IRQF_IRQPOLL,
- 			   "VF pit timer", &clockevent_pit));
-@@ -183,7 +183,7 @@ static int __init pit_timer_init(struct device_node *np)
- 	cycle_per_jiffy = clk_rate / (HZ);
- 
- 	/* enable the pit module */
--	__raw_writel(~PITMCR_MDIS, timer_base + PITMCR);
-+	writel(~PITMCR_MDIS, timer_base + PITMCR);
- 
- 	ret = pit_clocksource_init(clk_rate);
- 	if (ret)
+ static const char * const encoding_options[] = {
 -- 
 2.51.0
 
