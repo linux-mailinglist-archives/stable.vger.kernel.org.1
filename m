@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF89C4A821
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 350D1C4A803
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B76A93B49A0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADE101895E29
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCCD2DD5E2;
-	Tue, 11 Nov 2025 01:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7C8346E56;
+	Tue, 11 Nov 2025 01:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hT+upXi2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFpE89xc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDB12DC32A;
-	Tue, 11 Nov 2025 01:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2BA25EF81;
+	Tue, 11 Nov 2025 01:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823692; cv=none; b=sgGv4UKx9mqHeaUH8bWe2Tx7bqO4Zu6evYXI80Pfaj1qngvs275VyjEMW+RoSLGnUREn6vrRfrzHNX6CnOouWvBrS9PzhJl9VpgztpeMOrF/qRq0lTIbVAKzUQjpIqSxd6khGP9DnuLWzfAmyN6Z8xQ7JUFfuUsBdf22YBiSsN8=
+	t=1762823698; cv=none; b=IByunJm1zzVEuMw1JBc4NSKSEOIwvafbHdkHOGsfrJNEr4NaORCedfwxdi2L9+MmDFnF97OaXoujXld0B5tKZraHqev/X2RUbiZ7UMDFuMyUATd8gb7DcUy4fkLCFUH2fLM01sf+j7orLa1uWvHFdNW66O8GBMo01WEn2zxc3EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823692; c=relaxed/simple;
-	bh=SQhxxNuL6Gho6dBEM47zCY0jxXOaX0N5xbrR/xqrPgA=;
+	s=arc-20240116; t=1762823698; c=relaxed/simple;
+	bh=GwyZPaKoq65U0CbmaJVre070wRYXG/op09jwTW2GGKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDUh6L+HzSaSbybkCeNdna4Hsuqk/nNsdlu77Oa9p7B1xpemHS23Kf0E9E9O+nI4btUe75f4wZRdov16+D1TC+UdH+k7Dn6tKhXjGqciijT/iZGoTmMJYMFWTazGXE3aBlQUE6DEe4A8+FYLke4POrcLCdaCZqARu2hk54QtK8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hT+upXi2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6772BC4CEFB;
-	Tue, 11 Nov 2025 01:14:52 +0000 (UTC)
+	 MIME-Version; b=flVtrRuxJWz+kgR+n8lFT1+E7JxZZPQd5U27atqRWXmuQ1dftK5EshRoRs7Z/XdtOXHRVNqUzjfadCWraq9v+rY1R9bAZW1pY9UTBqoBdlINZW0OABsFHQNQ3ctpGSPzRfdlBrR9/guJSzlEc5y/mZYyNLXFxoy1Gh0jvpLPvtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFpE89xc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62C1C19422;
+	Tue, 11 Nov 2025 01:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823692;
-	bh=SQhxxNuL6Gho6dBEM47zCY0jxXOaX0N5xbrR/xqrPgA=;
+	s=korg; t=1762823698;
+	bh=GwyZPaKoq65U0CbmaJVre070wRYXG/op09jwTW2GGKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hT+upXi2I+PUMqxBBzdFfvjlSvp05Tt9p+p+/glmaRuQt8lYJS0taUOVs7gFQBzmj
-	 Sknxu5HtsjTmNNDVYxzXW6jLcBLDvk2B4Nfy1fx8OHwgHkwU1dtRE6yoTJxRnkYi9X
-	 g7K8pp1De6tSL56a46m/aIQP9pPKSVsx2bs6R+tc=
+	b=AFpE89xcws4cfmnAj7RNMR2KRxMetltzuglVGyEyBM4SM89B24hvHQUNjgXlt4S+U
+	 Mx72UcvTy1ZrYYFbkZHF9jORBez3K8e2ooaaumWGRgyYRp2I4Lp8y0n+q38DKJbonh
+	 b1fV5CVU9yl93y3RyP9J/6OcpozP2WnC0iRN57Mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Davis <afd@ti.com>,
-	Hari Nagalla <hnagalla@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Oscar Maes <oscmaes92@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 351/849] rpmsg: char: Export alias for RPMSG ID rpmsg-raw from table
-Date: Tue, 11 Nov 2025 09:38:41 +0900
-Message-ID: <20251111004544.905683877@linuxfoundation.org>
+Subject: [PATCH 6.17 352/849] net: ipv4: allow directed broadcast routes to use dst hint
+Date: Tue, 11 Nov 2025 09:38:42 +0900
+Message-ID: <20251111004544.930482568@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,54 +67,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrew Davis <afd@ti.com>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-[ Upstream commit 6e29c30d8ddea6109ea7e0b9f17e7841df0794ea ]
+[ Upstream commit 1b8c5fa0cb35efd08f07f700e6d78a541ebabe26 ]
 
-Module aliases are used by userspace to identify the correct module to
-load for a detected hardware. The currently supported RPMSG device IDs for
-this module include "rpmsg-raw", but the module alias is "rpmsg_chrdev".
+Currently, ip_extract_route_hint uses RTN_BROADCAST to decide
+whether to use the route dst hint mechanism.
 
-Use the helper macro MODULE_DEVICE_TABLE(rpmsg) to export the correct
-supported IDs. And while here, to keep backwards compatibility we also add
-the other ID "rpmsg_chrdev" so that it is also still exported as an alias.
+This check is too strict, as it prevents directed broadcast
+routes from using the hint, resulting in poor performance
+during bursts of directed broadcast traffic.
 
-This has the side benefit of adding support for some legacy firmware
-which still uses the original "rpmsg_chrdev" ID. This was the ID used for
-this driver before it was upstreamed (as reflected by the module alias).
+Fix this in ip_extract_route_hint and modify ip_route_use_hint
+to preserve the intended behaviour.
 
-Signed-off-by: Andrew Davis <afd@ti.com>
-Acked-by: Hari Nagalla <hnagalla@ti.com>
-Tested-by: Hari Nagalla <hnagalla@ti.com>
-Link: https://lore.kernel.org/r/20250619205722.133827-1-afd@ti.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250819174642.5148-2-oscmaes92@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/rpmsg_char.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv4/ip_input.c | 11 +++++++----
+ net/ipv4/route.c    |  2 +-
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/rpmsg/rpmsg_char.c b/drivers/rpmsg/rpmsg_char.c
-index eec7642d26863..96fcdd2d7093c 100644
---- a/drivers/rpmsg/rpmsg_char.c
-+++ b/drivers/rpmsg/rpmsg_char.c
-@@ -522,8 +522,10 @@ static void rpmsg_chrdev_remove(struct rpmsg_device *rpdev)
- 
- static struct rpmsg_device_id rpmsg_chrdev_id_table[] = {
- 	{ .name	= "rpmsg-raw" },
-+	{ .name	= "rpmsg_chrdev" },
- 	{ },
- };
-+MODULE_DEVICE_TABLE(rpmsg, rpmsg_chrdev_id_table);
- 
- static struct rpmsg_driver rpmsg_chrdev_driver = {
- 	.probe = rpmsg_chrdev_probe,
-@@ -565,6 +567,5 @@ static void rpmsg_chrdev_exit(void)
+diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
+index fc323994b1fa0..a09aca2c8567d 100644
+--- a/net/ipv4/ip_input.c
++++ b/net/ipv4/ip_input.c
+@@ -587,9 +587,13 @@ static void ip_sublist_rcv_finish(struct list_head *head)
  }
- module_exit(rpmsg_chrdev_exit);
  
--MODULE_ALIAS("rpmsg:rpmsg_chrdev");
- MODULE_DESCRIPTION("RPMSG device interface");
- MODULE_LICENSE("GPL v2");
+ static struct sk_buff *ip_extract_route_hint(const struct net *net,
+-					     struct sk_buff *skb, int rt_type)
++					     struct sk_buff *skb)
+ {
+-	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST ||
++	const struct iphdr *iph = ip_hdr(skb);
++
++	if (fib4_has_custom_rules(net) ||
++	    ipv4_is_lbcast(iph->daddr) ||
++	    ipv4_is_zeronet(iph->daddr) ||
+ 	    IPCB(skb)->flags & IPSKB_MULTIPATH)
+ 		return NULL;
+ 
+@@ -618,8 +622,7 @@ static void ip_list_rcv_finish(struct net *net, struct list_head *head)
+ 
+ 		dst = skb_dst(skb);
+ 		if (curr_dst != dst) {
+-			hint = ip_extract_route_hint(net, skb,
+-						     dst_rtable(dst)->rt_type);
++			hint = ip_extract_route_hint(net, skb);
+ 
+ 			/* dispatch old sublist */
+ 			if (!list_empty(&sublist))
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 5582ccd673eeb..86a20d12472f4 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2210,7 +2210,7 @@ ip_route_use_hint(struct sk_buff *skb, __be32 daddr, __be32 saddr,
+ 		goto martian_source;
+ 	}
+ 
+-	if (rt->rt_type != RTN_LOCAL)
++	if (!(rt->rt_flags & RTCF_LOCAL))
+ 		goto skip_validate_source;
+ 
+ 	reason = fib_validate_source_reason(skb, saddr, daddr, dscp, 0, dev,
 -- 
 2.51.0
 
