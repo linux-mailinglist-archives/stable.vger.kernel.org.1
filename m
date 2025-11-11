@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-194279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C36C4B0C7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A06C4AD57
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9F5A3ADCA8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A71E23BB8E2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222AA30E0FB;
-	Tue, 11 Nov 2025 01:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D07343215;
+	Tue, 11 Nov 2025 01:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hstp5+ND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atjWB4pv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE2230BF77;
-	Tue, 11 Nov 2025 01:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4694D2940B;
+	Tue, 11 Nov 2025 01:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825226; cv=none; b=g4v56HlDqoB3ojlAvMP9BUCp0eHDGkhCOnMNWQqg0bQgSiohnKFrWcNsjl1IS/NsMPwUDddRTbikxQSGtBKajTiZ88PgBh84ZsX6iQVn5hhkUfcg7C5Wll5eb5w7SDLY+Nf+sfX/S9wPtxMkYXK6i2zG1ZbtD43rhmGSnrWCtpE=
+	t=1762824090; cv=none; b=SrAz7DmLsEHHclPpG0QBjlD2UG10qAISl7dOm8gNbn0qwxeanQppG7swLtSXq+/tphMZyJNxVD6YVHdqHxekuxtWsXMpfCPjyIY7GEJ+qLrY5mkoJkF6AaGZ+v9tpCxxV/6RIew/9WKqCssZVCgf/BGkKXAKozDzrLpVaf3OoxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825226; c=relaxed/simple;
-	bh=zppDU+8A8MedntZ7FANIF4DOfJIWB7fx8ksR8dIHkQs=;
+	s=arc-20240116; t=1762824090; c=relaxed/simple;
+	bh=SZvr4YLJH5egMhX5ICy+UhYIGCoDqfw4ZLw3l6DJcF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uPU/4ZXSPlu+11oC/lI1X6ESj8e20zsYwqdow7ECdzXzwg0wmLPjuGZK8sx9Gvv2TYYpvD6BTHVK+UxLgGEtMSOvm4byEGmazR4T1yJ4dCxKv5If2BkZ2ssL9CyCZSWeEPte19MxQBilyuPNKBAlpmJYKDbMTJLEnb1Sz5DpVCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hstp5+ND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE38C4CEFB;
-	Tue, 11 Nov 2025 01:40:26 +0000 (UTC)
+	 MIME-Version; b=f1tJxbcSuciQZ6Ge7jJrDqEbw7NeeAFhZhfO/THfa9yWl93n8KptSQtd2bECECi/lgBHWswdHbJztydIjMWpF9ZujPH6PnILp5gR9Y+Ao+r8oL94dJj+ZXF7mbeTFl+iawuJphWxRFEOzzmb1Aqc+Rc05g7/46VX9VexSzlgot0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atjWB4pv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D746BC16AAE;
+	Tue, 11 Nov 2025 01:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825226;
-	bh=zppDU+8A8MedntZ7FANIF4DOfJIWB7fx8ksR8dIHkQs=;
+	s=korg; t=1762824090;
+	bh=SZvr4YLJH5egMhX5ICy+UhYIGCoDqfw4ZLw3l6DJcF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hstp5+NDJIfPFeY6bZLlejPPUsCNsMdduM7o6SsK5edOWzl74s/5bPJb9oesc2eDk
-	 JhSN12SpnORB7r61GXERpDCepFEk2iG8xbEjervBJczf7tanHODf+YvxD4KLnkywIX
-	 jLpFGAI1dBD8PgL5SbLbESZozEDI5F098PNcGJoQ=
+	b=atjWB4pvwpX0R44Qy86Tj1in0CQMXQ04J5NB5nEKGJM+hT7lzFn3aO5FfEG1gJQlY
+	 I5cQKDTRnxeNjr3/E6J5wR3HmEw3OYWtt3ENbMIn81IPILjWKox0H+EZk5ogbXyR20
+	 uJWMv2xBTDYVYyTqSg/cZmdQmY34R8NUYxVhOQLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5fd749c74105b0e1b302@syzkaller.appspotmail.com,
-	Qingfang Deng <dqfext@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 671/849] 6pack: drop redundant locking and refcounting
+Subject: [PATCH 6.12 385/565] wifi: rtw89: renew a completion for each H2C command waiting C2H event
 Date: Tue, 11 Nov 2025 09:44:01 +0900
-Message-ID: <20251111004552.641836218@linuxfoundation.org>
+Message-ID: <20251111004535.530919454@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,175 +62,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit 38b04ed7072e54086102eae2d05d03ffcdb4b695 ]
+[ Upstream commit bc2a5a12fa6259e190c7edb03e63b28ab480101b ]
 
-The TTY layer already serializes line discipline operations with
-tty->ldisc_sem, so the extra disc_data_lock and refcnt in 6pack
-are unnecessary.
+Logically before a waiting side which has already timed out turns the
+atomic status back to idle, a completing side could still pass atomic
+condition and call complete. It will make the following H2C commands,
+waiting C2H events, get a completion unexpectedly early. Hence, renew
+a completion for each H2C command waiting a C2H event.
 
-Removing them simplifies the code and also resolves a lockdep warning
-reported by syzbot. The warning did not indicate a real deadlock, since
-the write-side lock was only taken in process context with hardirqs
-disabled.
-
-Reported-by: syzbot+5fd749c74105b0e1b302@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68c858b0.050a0220.3c6139.0d1c.GAE@google.com/
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250925051059.26876-1-dqfext@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250915065343.39023-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hamradio/6pack.c | 57 ++++--------------------------------
- 1 file changed, 5 insertions(+), 52 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 49 ++++++++++++++++++++---
+ drivers/net/wireless/realtek/rtw89/core.h | 10 ++++-
+ drivers/net/wireless/realtek/rtw89/fw.c   |  2 +
+ 3 files changed, 53 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/hamradio/6pack.c b/drivers/net/hamradio/6pack.c
-index c5e5423e18633..885992951e8a6 100644
---- a/drivers/net/hamradio/6pack.c
-+++ b/drivers/net/hamradio/6pack.c
-@@ -115,8 +115,6 @@ struct sixpack {
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 3584445b27387..faa764d5c1a01 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -4318,37 +4318,74 @@ void rtw89_core_update_beacon_work(struct work_struct *work)
  
- 	struct timer_list	tx_t;
- 	struct timer_list	resync_t;
--	refcount_t		refcnt;
--	struct completion	dead;
- 	spinlock_t		lock;
+ int rtw89_wait_for_cond(struct rtw89_wait_info *wait, unsigned int cond)
+ {
+-	struct completion *cmpl = &wait->completion;
++	struct rtw89_wait_response *prep;
+ 	unsigned long time_left;
+ 	unsigned int cur;
++	int err = 0;
+ 
+ 	cur = atomic_cmpxchg(&wait->cond, RTW89_WAIT_COND_IDLE, cond);
+ 	if (cur != RTW89_WAIT_COND_IDLE)
+ 		return -EBUSY;
+ 
+-	time_left = wait_for_completion_timeout(cmpl, RTW89_WAIT_FOR_COND_TIMEOUT);
++	prep = kzalloc(sizeof(*prep), GFP_KERNEL);
++	if (!prep) {
++		err = -ENOMEM;
++		goto reset;
++	}
++
++	init_completion(&prep->completion);
++
++	rcu_assign_pointer(wait->resp, prep);
++
++	time_left = wait_for_completion_timeout(&prep->completion,
++						RTW89_WAIT_FOR_COND_TIMEOUT);
+ 	if (time_left == 0) {
+-		atomic_set(&wait->cond, RTW89_WAIT_COND_IDLE);
+-		return -ETIMEDOUT;
++		err = -ETIMEDOUT;
++		goto cleanup;
+ 	}
+ 
++	wait->data = prep->data;
++
++cleanup:
++	rcu_assign_pointer(wait->resp, NULL);
++	kfree_rcu(prep, rcu_head);
++
++reset:
++	atomic_set(&wait->cond, RTW89_WAIT_COND_IDLE);
++
++	if (err)
++		return err;
++
+ 	if (wait->data.err)
+ 		return -EFAULT;
+ 
+ 	return 0;
+ }
+ 
++static void rtw89_complete_cond_resp(struct rtw89_wait_response *resp,
++				     const struct rtw89_completion_data *data)
++{
++	resp->data = *data;
++	complete(&resp->completion);
++}
++
+ void rtw89_complete_cond(struct rtw89_wait_info *wait, unsigned int cond,
+ 			 const struct rtw89_completion_data *data)
+ {
++	struct rtw89_wait_response *resp;
+ 	unsigned int cur;
+ 
++	guard(rcu)();
++
++	resp = rcu_dereference(wait->resp);
++	if (!resp)
++		return;
++
+ 	cur = atomic_cmpxchg(&wait->cond, cond, RTW89_WAIT_COND_IDLE);
+ 	if (cur != cond)
+ 		return;
+ 
+-	wait->data = *data;
+-	complete(&wait->completion);
++	rtw89_complete_cond_resp(resp, data);
+ }
+ 
+ void rtw89_core_ntfy_btc_event(struct rtw89_dev *rtwdev, enum rtw89_btc_hmsg event)
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 7be32b83d4d64..36ba2ca255bb0 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -4391,17 +4391,23 @@ struct rtw89_completion_data {
+ 	u8 buf[RTW89_COMPLETION_BUF_SIZE];
  };
  
-@@ -353,42 +351,13 @@ static void sp_bump(struct sixpack *sp, char cmd)
++struct rtw89_wait_response {
++	struct rcu_head rcu_head;
++	struct completion completion;
++	struct rtw89_completion_data data;
++};
++
+ struct rtw89_wait_info {
+ 	atomic_t cond;
+-	struct completion completion;
+ 	struct rtw89_completion_data data;
++	struct rtw89_wait_response __rcu *resp;
+ };
  
- /* ----------------------------------------------------------------------- */
+ #define RTW89_WAIT_FOR_COND_TIMEOUT msecs_to_jiffies(100)
  
--/*
-- * We have a potential race on dereferencing tty->disc_data, because the tty
-- * layer provides no locking at all - thus one cpu could be running
-- * sixpack_receive_buf while another calls sixpack_close, which zeroes
-- * tty->disc_data and frees the memory that sixpack_receive_buf is using.  The
-- * best way to fix this is to use a rwlock in the tty struct, but for now we
-- * use a single global rwlock for all ttys in ppp line discipline.
-- */
--static DEFINE_RWLOCK(disc_data_lock);
--                                                                                
--static struct sixpack *sp_get(struct tty_struct *tty)
--{
--	struct sixpack *sp;
--
--	read_lock(&disc_data_lock);
--	sp = tty->disc_data;
--	if (sp)
--		refcount_inc(&sp->refcnt);
--	read_unlock(&disc_data_lock);
--
--	return sp;
--}
--
--static void sp_put(struct sixpack *sp)
--{
--	if (refcount_dec_and_test(&sp->refcnt))
--		complete(&sp->dead);
--}
--
- /*
-  * Called by the TTY driver when there's room for more data.  If we have
-  * more packets to send, we send them here.
-  */
- static void sixpack_write_wakeup(struct tty_struct *tty)
+ static inline void rtw89_init_wait(struct rtw89_wait_info *wait)
  {
--	struct sixpack *sp = sp_get(tty);
-+	struct sixpack *sp = tty->disc_data;
- 	int actual;
- 
- 	if (!sp)
-@@ -400,7 +369,7 @@ static void sixpack_write_wakeup(struct tty_struct *tty)
- 		clear_bit(TTY_DO_WRITE_WAKEUP, &tty->flags);
- 		sp->tx_enable = 0;
- 		netif_wake_queue(sp->dev);
--		goto out;
-+		return;
- 	}
- 
- 	if (sp->tx_enable) {
-@@ -408,9 +377,6 @@ static void sixpack_write_wakeup(struct tty_struct *tty)
- 		sp->xleft -= actual;
- 		sp->xhead += actual;
- 	}
--
--out:
--	sp_put(sp);
+-	init_completion(&wait->completion);
++	rcu_assign_pointer(wait->resp, NULL);
+ 	atomic_set(&wait->cond, RTW89_WAIT_COND_IDLE);
  }
  
- /* ----------------------------------------------------------------------- */
-@@ -430,7 +396,7 @@ static void sixpack_receive_buf(struct tty_struct *tty, const u8 *cp,
- 	if (!count)
- 		return;
- 
--	sp = sp_get(tty);
-+	sp = tty->disc_data;
- 	if (!sp)
- 		return;
- 
-@@ -446,7 +412,6 @@ static void sixpack_receive_buf(struct tty_struct *tty, const u8 *cp,
- 	}
- 	sixpack_decode(sp, cp, count1);
- 
--	sp_put(sp);
- 	tty_unthrottle(tty);
- }
- 
-@@ -561,8 +526,6 @@ static int sixpack_open(struct tty_struct *tty)
- 
- 	spin_lock_init(&sp->lock);
- 	spin_lock_init(&sp->rxlock);
--	refcount_set(&sp->refcnt, 1);
--	init_completion(&sp->dead);
- 
- 	/* !!! length of the buffers. MTU is IP MTU, not PACLEN!  */
- 
-@@ -638,19 +601,11 @@ static void sixpack_close(struct tty_struct *tty)
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 7894e1a569a2c..ae2c4ff74531a 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -7446,6 +7446,8 @@ static int rtw89_h2c_tx_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *skb,
  {
- 	struct sixpack *sp;
+ 	int ret;
  
--	write_lock_irq(&disc_data_lock);
- 	sp = tty->disc_data;
--	tty->disc_data = NULL;
--	write_unlock_irq(&disc_data_lock);
- 	if (!sp)
- 		return;
- 
--	/*
--	 * We have now ensured that nobody can start using ap from now on, but
--	 * we have to wait for all existing users to finish.
--	 */
--	if (!refcount_dec_and_test(&sp->refcnt))
--		wait_for_completion(&sp->dead);
-+	tty->disc_data = NULL;
- 
- 	/* We must stop the queue to avoid potentially scribbling
- 	 * on the free buffers. The sp->dead completion is not sufficient
-@@ -673,7 +628,7 @@ static void sixpack_close(struct tty_struct *tty)
- static int sixpack_ioctl(struct tty_struct *tty, unsigned int cmd,
- 		unsigned long arg)
- {
--	struct sixpack *sp = sp_get(tty);
-+	struct sixpack *sp = tty->disc_data;
- 	struct net_device *dev;
- 	unsigned int tmp, err;
- 
-@@ -725,8 +680,6 @@ static int sixpack_ioctl(struct tty_struct *tty, unsigned int cmd,
- 		err = tty_mode_ioctl(tty, cmd, arg);
- 	}
- 
--	sp_put(sp);
--
- 	return err;
- }
- 
++	lockdep_assert_wiphy(rtwdev->hw->wiphy);
++
+ 	ret = rtw89_h2c_tx(rtwdev, skb, false);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to send h2c\n");
 -- 
 2.51.0
 
