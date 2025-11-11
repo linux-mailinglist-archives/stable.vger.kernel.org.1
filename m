@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-193938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39537C4ACD0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE50C4A602
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8481C3AFB3F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 721BB1884737
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69E13054DF;
-	Tue, 11 Nov 2025 01:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5439D2FC009;
+	Tue, 11 Nov 2025 01:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZL4/Hwe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FczUXpzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37DE248F6A;
-	Tue, 11 Nov 2025 01:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBE9265CC5;
+	Tue, 11 Nov 2025 01:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824419; cv=none; b=a6Bn0sUEdDqv1uWtncu5oCu0ssDA0A/gdwFnnLnGKbiT4c0zqjPZTy1ybo5ETTX5f8U7re4dbHjKGqaTx8osN4GQ3E76h1+AcaZ64Tw7InmA1YQ1hotBUA1HqVyU2X/BNKYFu4XUE5wIA/qy7UIm9hi92VogSAq1y6X94GO3Mm8=
+	t=1762823255; cv=none; b=RndOM7/EWWmVDr0ANArPP99MgZvXp84SJq6xcR3IfFTPiT0UpShxCKUwroGSkzqqUgFOeaD3m3fsVuRUNxc7pgSBDZVClyqwq0kCG9DAzqDnyNMwWiShDAuzUmmQhY9j/Z3Q/Zzf1kkKT/TP/6uZtIt+yrxH2h7IbNpq/1fpj4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824419; c=relaxed/simple;
-	bh=wExKomsksmWmWxeEtjBTaUDJGFtjHB5naps03LFJN+U=;
+	s=arc-20240116; t=1762823255; c=relaxed/simple;
+	bh=r+MwlFImFYGpFKDe464zxPfTNsUr6ldc1NeGpRzZ/yM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ph8urSmlcSh1OoQUbmErMWEUHLFWfD4wSuTLEUXGeb1d006YF8pWUJA8LikSR3nMznEJm81sAA3cKUHIKrIDUI91agGJXMmN4XC72nK4LeLpEKLhFTdxaLtTDQbNpfdlo1vm3ngzr+R3VSu/Rdm2cct0PfQcCaeEenf89HcXiHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZL4/Hwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F66BC116B1;
-	Tue, 11 Nov 2025 01:26:59 +0000 (UTC)
+	 MIME-Version; b=i5CKmLISdE/mZtcAwTmy2kBO4MPOOoct+pSxFa8DJf34pZAqFFrI6BWud5Sck3wNvE4fOwHPKV+p2Lf9qYqCAQ8lqGzDIPde/L27NdHVydsfbcQmJ9EclW/YEUQ3ekEZZEbbAWHuqkuEHcwnJcWz9IWEPFW4wfOQqCtv6K1K9mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FczUXpzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4544FC116B1;
+	Tue, 11 Nov 2025 01:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824419;
-	bh=wExKomsksmWmWxeEtjBTaUDJGFtjHB5naps03LFJN+U=;
+	s=korg; t=1762823254;
+	bh=r+MwlFImFYGpFKDe464zxPfTNsUr6ldc1NeGpRzZ/yM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZL4/HweWVPEC1DmMzvn3sMBB8ih6iecu8FATiqNG8FXtRsdjQQdJrDOPb2M4Wv4T
-	 R+cQdqXdU6fH2p5GJH6k8XUnkQhB0x/FgatJZtMJQ+C8qj5qjSgcPclLKcVOrIg+Cy
-	 TagAkyUqph5K9REu07vwbqaDXrvtGYf2MX/h5JrA=
+	b=FczUXpzQHlCHjLIxk06I8XZpFt5sCdgak0NdY+BpYzWjRq4mWX3bEl3nx5CsbR3TF
+	 dqNVPapbb05SZa7k8fvXws0Abis8Gj5DGjgGaj1dI3sXkcXHfOkLr6QOAp+HjV1pYb
+	 94dQMZOk3ycTEMUkpFnu1BR/Cp/6v6y76eCRdKK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 491/849] selftests: mptcp: join: allow more time to send ADD_ADDR
-Date: Tue, 11 Nov 2025 09:41:01 +0900
-Message-ID: <20251111004548.311837287@linuxfoundation.org>
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Dave Hansen <dave.hansen@intel.com>
+Subject: [PATCH 6.12 206/565] x86/vsyscall: Do not require X86_PF_INSTR to emulate vsyscall
+Date: Tue, 11 Nov 2025 09:41:02 +0900
+Message-ID: <20251111004531.559046011@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit e2cda6343bfe459c3331db5afcd675ab333112dd ]
+[ Upstream commit 8ba38a7a9a699905b84fa97578a8291010dec273 ]
 
-When many ADD_ADDR need to be sent, it can take some time to send each
-of them, and create new subflows. Some CIs seem to occasionally have
-issues with these tests, especially with "debug" kernels.
+emulate_vsyscall() expects to see X86_PF_INSTR in PFEC on a vsyscall
+page fault, but the CPU does not report X86_PF_INSTR if neither
+X86_FEATURE_NX nor X86_FEATURE_SMEP are enabled.
 
-Two subtests will now run for a slightly longer time: the last two where
-3 or more ADD_ADDR are sent during the test.
+X86_FEATURE_NX should be enabled on nearly all 64-bit CPUs, except for
+early P4 processors that did not support this feature.
 
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250907-net-next-mptcp-add_addr-retrans-adapt-v1-3-824cc805772b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Instead of explicitly checking for X86_PF_INSTR, compare the fault
+address to RIP.
+
+On machines with X86_FEATURE_NX enabled, issue a warning if RIP is equal
+to fault address but X86_PF_INSTR is absent.
+
+[ dhansen: flesh out code comments ]
+
+Originally-by: Dave Hansen <dave.hansen@intel.com>
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Link: https://lore.kernel.org/all/bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com
+Link: https://lore.kernel.org/all/20250624145918.2720487-1-kirill.shutemov%40linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/entry/vsyscall/vsyscall_64.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 5579709c36533..725f1a00bbf19 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2151,7 +2151,8 @@ signal_address_tests()
- 		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
- 		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal
- 		pm_nl_set_limits $ns2 3 3
--		run_tests $ns1 $ns2 10.0.1.1
-+		speed=slow \
-+			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 3 3 3
- 		chk_add_nr 3 3
- 	fi
-@@ -2163,7 +2164,8 @@ signal_address_tests()
- 		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
- 		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal
- 		pm_nl_set_limits $ns2 3 3
--		run_tests $ns1 $ns2 10.0.1.1
-+		speed=slow \
-+			run_tests $ns1 $ns2 10.0.1.1
- 		join_syn_tx=3 \
- 			chk_join_nr 1 1 1
- 		chk_add_nr 3 3
+diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
+index 2fb7d53cf3338..95e053b0a4bc0 100644
+--- a/arch/x86/entry/vsyscall/vsyscall_64.c
++++ b/arch/x86/entry/vsyscall/vsyscall_64.c
+@@ -124,7 +124,12 @@ bool emulate_vsyscall(unsigned long error_code,
+ 	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
+ 		return false;
+ 
+-	if (!(error_code & X86_PF_INSTR)) {
++	/*
++	 * Assume that faults at regs->ip are because of an
++	 * instruction fetch. Return early and avoid
++	 * emulation for faults during data accesses:
++	 */
++	if (address != regs->ip) {
+ 		/* Failed vsyscall read */
+ 		if (vsyscall_mode == EMULATE)
+ 			return false;
+@@ -136,13 +141,19 @@ bool emulate_vsyscall(unsigned long error_code,
+ 		return false;
+ 	}
+ 
++	/*
++	 * X86_PF_INSTR is only set when NX is supported.  When
++	 * available, use it to double-check that the emulation code
++	 * is only being used for instruction fetches:
++	 */
++	if (cpu_feature_enabled(X86_FEATURE_NX))
++		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
++
+ 	/*
+ 	 * No point in checking CS -- the only way to get here is a user mode
+ 	 * trap to a high address, which means that we're in 64-bit user code.
+ 	 */
+ 
+-	WARN_ON_ONCE(address != regs->ip);
+-
+ 	if (vsyscall_mode == NONE) {
+ 		warn_bad_vsyscall(KERN_INFO, regs,
+ 				  "vsyscall attempted with vsyscall=none");
 -- 
 2.51.0
 
