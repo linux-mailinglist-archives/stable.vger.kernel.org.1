@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE018C4A767
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 976F9C4A77C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 492A53B80B6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28C4D189410B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B383B3431EF;
-	Tue, 11 Nov 2025 01:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB22343201;
+	Tue, 11 Nov 2025 01:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gL/2ogx1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GiGDq2rb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2F42D8DC3;
-	Tue, 11 Nov 2025 01:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061432D8DC3;
+	Tue, 11 Nov 2025 01:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823532; cv=none; b=Yuc/dwynmA4cXAOSeS9mhWRIh1DEnzq7V8kkmhE9PgDHJShzTKXqLnlILRpEXYnb7xzv7tNK0I4y28LDsjkPWAZ2wbGejT6/MT7HMvU+Y8CRsSiprQi6pr2nDytItnLjIIOzXQBW3enQm+AH7aY7c8I937m6Ub18hyrtvx+P15I=
+	t=1762823537; cv=none; b=kLGjUJjmxovB69fv9yZhSZi4mAFDe7Fh9X0Roz06nPMz9LRXSsJVpnK1c37JiBN9+k1uotd0uCx2XA9/geWrog7XXANGd0JGiyIT2hpl+InDiyzGQkYgM0Q/EtjmDkfp3IzHoQJe9Seva368odJBtcAXUSZrLaCq523PY6XJ4W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823532; c=relaxed/simple;
-	bh=DW/pUdrLncu5NiOTQzRIP/pCRinMkTh1kj2zR9iORDc=;
+	s=arc-20240116; t=1762823537; c=relaxed/simple;
+	bh=rCFDDwrHQLDPraSpHyaOU7kywXHIFGTWN/h63SN7gHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ciD90vE45IiWmGchFUdnbfO+m+3y9vOFIuuJy2BqX7d/c2o8iQFUnUks6qYS86R0Mbw3dy1RJtMpDb41XLSL1IsH4SK5VegL7nd6njXqYaASEsCwfBo/0GcWyLw9NfLrs9oz/OSnmzHik2zlJnniqrf6ClE2B7NPZiUvjiq6vX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gL/2ogx1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D918BC19424;
-	Tue, 11 Nov 2025 01:12:11 +0000 (UTC)
+	 MIME-Version; b=a4QrlR4KuhbzM20UgaFYCJVlf0ufhsJgeNZsZDgCKn45Oz5rlRls3ZqwbV7RUt7NQXdX/c4JZ/R8F04KVePm1gWo5avJDUvgKdUBY2I0hifx3bD/jNiXsZboDqlz6suWdogMtHPsh6l9sqodfrAGAIBqC1ldU/syBh52FdAagu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GiGDq2rb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988A0C113D0;
+	Tue, 11 Nov 2025 01:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823532;
-	bh=DW/pUdrLncu5NiOTQzRIP/pCRinMkTh1kj2zR9iORDc=;
+	s=korg; t=1762823536;
+	bh=rCFDDwrHQLDPraSpHyaOU7kywXHIFGTWN/h63SN7gHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gL/2ogx1BGDsV3gBACLGs5ULPywZ2qO2AbX27pFeZLkoVWuZSqoDwzmpplDYYozpm
-	 NuJ3/r3Ylq/s01cWcw1z8RXihv83WfEm7nemJ4/HxEV6WVbfAuYdwT0hEJFpJsEjFw
-	 IWI4IBbI2Y/rbLvmvweORWICFHl1SUpcyBauLwUU=
+	b=GiGDq2rbvy2zq4su6jt6pTD+r1pvUalqujrbAMoXCadQuoY99ZdA039Z3fFPLf5nx
+	 3z07Us4yD/ybuSCWjUgX7CIUQazcrMYyQrAAUDvJOt1GA+Ccdum/UwGuwYF8VSc96I
+	 WUlUrH0JuaRjAd0USrfdK/ml9FCgpcswB244eci8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xichao Zhao <zhao.xichao@vivo.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 318/849] hwrng: timeriomem - Use us_to_ktime() where appropriate
-Date: Tue, 11 Nov 2025 09:38:08 +0900
-Message-ID: <20251111004544.102559890@linuxfoundation.org>
+Subject: [PATCH 6.17 319/849] iio: adc: spear_adc: mask SPEAR_ADC_STATUS channel and avg sample before setting register
+Date: Tue, 11 Nov 2025 09:38:09 +0900
+Message-ID: <20251111004544.125911931@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,33 +67,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xichao Zhao <zhao.xichao@vivo.com>
+From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
 
-[ Upstream commit 817fcdbd4ca29834014a5dadbe8e11efeb12800c ]
+[ Upstream commit d75c7021c08e8ae3f311ef2464dca0eaf75fab9f ]
 
-It is better to replace ns_to_ktime() with us_to_ktime(),
-which can make the code clearer.
+avg sample info is a bit field coded inside the following
+bits: 5,6,7 and 8 of a device status register.
 
-Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Channel num info the same, but over bits: 1, 2 and 3.
+
+Mask both values in order to avoid touching other register bits,
+since the first info (avg sample), came from DT.
+
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250717221559.158872-1-rodrigo.gobbi.7@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/timeriomem-rng.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/spear_adc.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/char/hw_random/timeriomem-rng.c b/drivers/char/hw_random/timeriomem-rng.c
-index b95f6d0f17ede..e61f063932090 100644
---- a/drivers/char/hw_random/timeriomem-rng.c
-+++ b/drivers/char/hw_random/timeriomem-rng.c
-@@ -150,7 +150,7 @@ static int timeriomem_rng_probe(struct platform_device *pdev)
- 		priv->rng_ops.quality = pdata->quality;
- 	}
+diff --git a/drivers/iio/adc/spear_adc.c b/drivers/iio/adc/spear_adc.c
+index e3a865c79686e..df100dce77da4 100644
+--- a/drivers/iio/adc/spear_adc.c
++++ b/drivers/iio/adc/spear_adc.c
+@@ -14,6 +14,7 @@
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+ #include <linux/io.h>
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/completion.h>
+@@ -29,9 +30,9 @@
  
--	priv->period = ns_to_ktime(period * NSEC_PER_USEC);
-+	priv->period = us_to_ktime(period);
- 	init_completion(&priv->completion);
- 	hrtimer_setup(&priv->timer, timeriomem_rng_trigger, CLOCK_MONOTONIC, HRTIMER_MODE_ABS);
+ /* Bit definitions for SPEAR_ADC_STATUS */
+ #define SPEAR_ADC_STATUS_START_CONVERSION	BIT(0)
+-#define SPEAR_ADC_STATUS_CHANNEL_NUM(x)		((x) << 1)
++#define SPEAR_ADC_STATUS_CHANNEL_NUM_MASK	GENMASK(3, 1)
+ #define SPEAR_ADC_STATUS_ADC_ENABLE		BIT(4)
+-#define SPEAR_ADC_STATUS_AVG_SAMPLE(x)		((x) << 5)
++#define SPEAR_ADC_STATUS_AVG_SAMPLE_MASK	GENMASK(8, 5)
+ #define SPEAR_ADC_STATUS_VREF_INTERNAL		BIT(9)
  
+ #define SPEAR_ADC_DATA_MASK		0x03ff
+@@ -157,8 +158,8 @@ static int spear_adc_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_RAW:
+ 		mutex_lock(&st->lock);
+ 
+-		status = SPEAR_ADC_STATUS_CHANNEL_NUM(chan->channel) |
+-			SPEAR_ADC_STATUS_AVG_SAMPLE(st->avg_samples) |
++		status = FIELD_PREP(SPEAR_ADC_STATUS_CHANNEL_NUM_MASK, chan->channel) |
++			FIELD_PREP(SPEAR_ADC_STATUS_AVG_SAMPLE_MASK, st->avg_samples) |
+ 			SPEAR_ADC_STATUS_START_CONVERSION |
+ 			SPEAR_ADC_STATUS_ADC_ENABLE;
+ 		if (st->vref_external == 0)
 -- 
 2.51.0
 
