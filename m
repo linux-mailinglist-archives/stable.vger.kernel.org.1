@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1B8C4A8ED
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:51 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE35BC4A59C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:21:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B6F8188E96C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:14 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5A23934BFFC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88243451A9;
-	Tue, 11 Nov 2025 01:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202E33446DE;
+	Tue, 11 Nov 2025 01:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtQiDhXk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C53glXtX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730023446CB;
-	Tue, 11 Nov 2025 01:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC742DA757;
+	Tue, 11 Nov 2025 01:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823620; cv=none; b=BEuhX5POT8JDGzomb+80te0AkKTdzAD8QFe26lOa6KBW8g8bayQ3n6RSrmEfvOrUHWL5RVw+98/MkYW3cmqH2vkR+1j9YM09tHK2NQVxMpng77+z8c8dHPoxGCaWTXQg+Y6oOTKA9p8a1E3FYpwIITkPvqKcGpYi2QkIITRy4Cc=
+	t=1762823624; cv=none; b=m5o+XxUA+Z7T6d4lbfMu6OE5yQWJ0mZ/F9zGx7KoTDpMT/sKl1OgrjkDFm8HTqQCuxrFnGZEkqNhBffNyWubxsjuLrYD0wp6AlS0S4Ucn5ObRvXrS6SFkDRQUl+9TGsyMXr4YBoYkuCbCLQDo9UxBBZjXqkheA8FMZiy8rXkums=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823620; c=relaxed/simple;
-	bh=btr15EVHZ0umfnEXzcfXzPqMtt0QddquU80K6U+WIsk=;
+	s=arc-20240116; t=1762823624; c=relaxed/simple;
+	bh=nsAPtHZnTeTNbwUi5+Y4olP3eQ4YcA+MHiacYFhRxcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=chse9t8EFc6b15tooQrcwFGsZFxdLIWbuMd6+4Q3ZoNw5aF6IbMJax12kEyHb6YyYu9Kqft4VEIKABRjOKmNs44dII/jlnbKLKJ0Nzi/nzzw74xeL9uofIIXLz7Styua7AKFwipjuVEfg5mQmdaPTbAoXrz1vezaCYgwwh0g9K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtQiDhXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0700AC19424;
-	Tue, 11 Nov 2025 01:13:39 +0000 (UTC)
+	 MIME-Version; b=SVqZFFjOVDePuQnh3i7bBANNPeCtg+D8w9OgWIlCMmERyGzxJA9YpizNsJm80K+axC4scNZbCC2KzDeZLhOkFUQtAiv4wSOLmFFZoyH33b+lc+jpNbWCszQ6+lDHRsUfsxeALQeREgjPJsj0P3S5IjQe3GWMoEvXhVFTPxog9Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C53glXtX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6598FC4CEF5;
+	Tue, 11 Nov 2025 01:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823620;
-	bh=btr15EVHZ0umfnEXzcfXzPqMtt0QddquU80K6U+WIsk=;
+	s=korg; t=1762823624;
+	bh=nsAPtHZnTeTNbwUi5+Y4olP3eQ4YcA+MHiacYFhRxcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jtQiDhXkVze3G0Wuxu4ktkQZWvFYQzGkMG4UTZUWrmz2UKBEfInvgkyn0zyQBKFdq
-	 4Amsh35m4EOvYxsnK5ut/4pjZLP8+DpSaxsN2VcNSQMUV0T+jAgPwOH90aEGvEkY4G
-	 t8wmdMtU66NMl/cSlUNofZXoHWIc41Hm757TlqXs=
+	b=C53glXtXLRxh312Ack874+syPZkOO9Y4yOgP5R0PbMnkv9Y0SJ36b5A7QfnJ4bGq7
+	 /dozh3oKtVCDdpew8PYXT/3jcoA6gAefCnVvHWhjrp5LD3zHJc9xa0H6oq+SKU/xTE
+	 u2xN3QH4vlUrZ91GWY0PNWXe4PJ8epyjDqFcL4Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sungho Kim <sungho.kim@furiosa.ai>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 337/849] f2fs: fix to detect potential corrupted nid in free_nid_list
-Date: Tue, 11 Nov 2025 09:38:27 +0900
-Message-ID: <20251111004544.567168143@linuxfoundation.org>
+Subject: [PATCH 6.17 338/849] PCI/P2PDMA: Fix incorrect pointer usage in devm_kfree() call
+Date: Tue, 11 Nov 2025 09:38:28 +0900
+Message-ID: <20251111004544.591764753@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,74 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Sungho Kim <sungho.kim@furiosa.ai>
 
-[ Upstream commit 8fc6056dcf79937c46c97fa4996cda65956437a9 ]
+[ Upstream commit 6238784e502b6a9fbeb3a6b77284b29baa4135cc ]
 
-As reported, on-disk footer.ino and footer.nid is the same and
-out-of-range, let's add sanity check on f2fs_alloc_nid() to detect
-any potential corruption in free_nid_list.
+The error handling path in pci_p2pdma_add_resource() contains a bug in its
+`pgmap_free` label.
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Memory is allocated for the `p2p_pgmap` struct, and the pointer is stored
+in `p2p_pgmap`. However, the error path calls devm_kfree() with `pgmap`,
+which is a pointer to a member field within the `p2p_pgmap` struct, not the
+base pointer of the allocation.
+
+Correct the bug by passing the correct base pointer, `p2p_pgmap`, to
+devm_kfree().
+
+Signed-off-by: Sungho Kim <sungho.kim@furiosa.ai>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Link: https://patch.msgid.link/20250820105714.2939896-1-sungho.kim@furiosa.ai
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c          | 17 ++++++++++++++++-
- include/linux/f2fs_fs.h |  1 +
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/pci/p2pdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 92054dcbe20d0..4254db453b2d3 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -27,12 +27,17 @@ static struct kmem_cache *free_nid_slab;
- static struct kmem_cache *nat_entry_set_slab;
- static struct kmem_cache *fsync_node_entry_slab;
- 
-+static inline bool is_invalid_nid(struct f2fs_sb_info *sbi, nid_t nid)
-+{
-+	return nid < F2FS_ROOT_INO(sbi) || nid >= NM_I(sbi)->max_nid;
-+}
-+
- /*
-  * Check whether the given nid is within node id range.
-  */
- int f2fs_check_nid_range(struct f2fs_sb_info *sbi, nid_t nid)
- {
--	if (unlikely(nid < F2FS_ROOT_INO(sbi) || nid >= NM_I(sbi)->max_nid)) {
-+	if (unlikely(is_invalid_nid(sbi, nid))) {
- 		set_sbi_flag(sbi, SBI_NEED_FSCK);
- 		f2fs_warn(sbi, "%s: out-of-range nid=%x, run fsck to fix.",
- 			  __func__, nid);
-@@ -2654,6 +2659,16 @@ bool f2fs_alloc_nid(struct f2fs_sb_info *sbi, nid_t *nid)
- 		f2fs_bug_on(sbi, list_empty(&nm_i->free_nid_list));
- 		i = list_first_entry(&nm_i->free_nid_list,
- 					struct free_nid, list);
-+
-+		if (unlikely(is_invalid_nid(sbi, i->nid))) {
-+			spin_unlock(&nm_i->nid_list_lock);
-+			f2fs_err(sbi, "Corrupted nid %u in free_nid_list",
-+								i->nid);
-+			f2fs_stop_checkpoint(sbi, false,
-+					STOP_CP_REASON_CORRUPTED_NID);
-+			return false;
-+		}
-+
- 		*nid = i->nid;
- 
- 		__move_free_nid(sbi, i, FREE_NID, PREALLOC_NID);
-diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
-index 2f8b8bfc0e731..6afb4a13b81d6 100644
---- a/include/linux/f2fs_fs.h
-+++ b/include/linux/f2fs_fs.h
-@@ -79,6 +79,7 @@ enum stop_cp_reason {
- 	STOP_CP_REASON_FLUSH_FAIL,
- 	STOP_CP_REASON_NO_SEGMENT,
- 	STOP_CP_REASON_CORRUPTED_FREE_BITMAP,
-+	STOP_CP_REASON_CORRUPTED_NID,
- 	STOP_CP_REASON_MAX,
- };
- 
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index da5657a020074..1cb5e423eed4f 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -360,7 +360,7 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ pages_free:
+ 	devm_memunmap_pages(&pdev->dev, pgmap);
+ pgmap_free:
+-	devm_kfree(&pdev->dev, pgmap);
++	devm_kfree(&pdev->dev, p2p_pgmap);
+ 	return error;
+ }
+ EXPORT_SYMBOL_GPL(pci_p2pdma_add_resource);
 -- 
 2.51.0
 
