@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59614C49F68
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D91F9C49FFE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9F503A8D28
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A3E2188C7D2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB5512DDA1;
-	Tue, 11 Nov 2025 00:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09833244693;
+	Tue, 11 Nov 2025 00:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZbxxmEV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMxz95TI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3FC4C97;
-	Tue, 11 Nov 2025 00:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6674086A;
+	Tue, 11 Nov 2025 00:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822304; cv=none; b=TVlqCHRUQR0EGO6kd3ILd+5OoYacnKnATuHRnxajWrdqpRBpk+OAvFhNdMQlrdfHjnwEQKoIKFCHoNQ8ZdzhtutbJxUobVXu/0KL3cszNB0zgxt/5M4pCEH5op4cY383z6DboGH3qDVI59qUfis6GnX1nyG3Z6y1f+aZ9/mf0mk=
+	t=1762822418; cv=none; b=j5aMjMdQgbzvEZGnkgQhvzbWUVP7ISZKA0TLgAlXGd7GQsf8Faaqt0zCgoRUaL+MgfkfxJA+8ZbP+0HSqumzobrM7f6lE1JNRQ7dFx6FmdAmeeeduDuOckqi9yFJr9HU52qu9FTm37gn81Q6hNQBQn/DJjoYOgTdynGWDlRgqss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822304; c=relaxed/simple;
-	bh=GAKXHpSBhHygVXXlkFAj+Phpb/Uxn06TA6+wT6s+o20=;
+	s=arc-20240116; t=1762822418; c=relaxed/simple;
+	bh=SRIPdPswIFD0ENWZJFzxdQaNVmo3Ai6sFl6a7DhwhHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M8hkKz6aYK/FhglAwMQMl62YpHiFz3mVsQ60GxWpia2oiLH/rT+hoqkQfFB3x+u8h6r/nAliyYzzHgOG/OmVhjYfSLQNTicRZYuXPS4HyLqjJ72h4ovSnz4538EYu/msx2S6196A309NiP4+iXTbiLmp77GyEY4XK9BC9Gp6jq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZbxxmEV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E6EC116B1;
-	Tue, 11 Nov 2025 00:51:43 +0000 (UTC)
+	 MIME-Version; b=HEWFv4kPwaVWPxBMHc4kziFAAZrnPGXU5UwV6LkuVb2zG7ZncJr3EDxLgxnXXfTgShmRhzJ4ZdlB/R43FA4c2VbdBGLLtxBzdtdwp26ii83fKuUu6Z3HsGbImHiSpTWcM9UDdiEAtdXjq9vj6C6zQPOZfJB7EakYTXdGYafdf5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMxz95TI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295F7C2BC87;
+	Tue, 11 Nov 2025 00:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822303;
-	bh=GAKXHpSBhHygVXXlkFAj+Phpb/Uxn06TA6+wT6s+o20=;
+	s=korg; t=1762822418;
+	bh=SRIPdPswIFD0ENWZJFzxdQaNVmo3Ai6sFl6a7DhwhHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZbxxmEVW0aPRYhkNqf8ne55Q6oRE+Hncjm1/qrUVdgNg2WWC67yxpztUxEAAvyUf
-	 fJc1o+TZHez3xOW15eBYIG1CeUpiNDNN1eR2ElU4uKb0vdoG9BmZFEnLhUulRlKvHW
-	 p9YczHSi3R+2GIsfrOoxBqYxDRhSbOUs7vlhpQBw=
+	b=sMxz95TIHCpvBQVr3TzV2DxtQbhwf/aOy3DfutRDTvAJZcjGwESLDQjVCL4GiDGJK
+	 jeoovJ0n99fNQzbNkcU1D7YJd768qoGGTi3pdi7Qzml5uIrxHsiKcSg4ya7XcJrC+w
+	 KKpnliJbh4EO1wgy4opf8mzezaWmU1QjQCS9JEd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Yu Zhang (Yuriy)" <quic_yuzha@quicinc.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
 	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 022/565] wifi: ath11k: add support for MU EDCA
-Date: Tue, 11 Nov 2025 09:37:58 +0900
-Message-ID: <20251111004527.372039030@linuxfoundation.org>
+Subject: [PATCH 6.12 023/565] wifi: ath11k: avoid bit operation on key flags
+Date: Tue, 11 Nov 2025 09:37:59 +0900
+Message-ID: <20251111004527.396038986@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -61,223 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Zhang(Yuriy) <quic_yuzha@quicinc.com>
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
 
-[ Upstream commit b78c02f7c7104f1e77ade12ebde267e6fb388ca9 ]
+[ Upstream commit 9c78e747dd4fee6c36fcc926212e20032055cf9d ]
 
-The current code does not have the MU EDCA feature, so it cannot support
-the use of EDCA by STA in specific UL MU HE TB PPDU transmissions. Refer
-to IEEE Std 802.11ax-2021 "9.4.2.251 MU EDCA Parameter Set element",
-"26.2.7 EDCA operation using MU EDCA parameters".
+Bitwise operations with WMI_KEY_PAIRWISE (defined as 0) are ineffective
+and misleading. This results in pairwise key validations added in
+commit 97acb0259cc9 ("wifi: ath11k: fix group data packet drops
+during rekey") to always evaluate false and clear key commands for
+pairwise keys are not honored.
 
-Add ath11k_mac_op_conf_tx_mu_edca() to construct the MU EDCA parameters
-received from mac80211 into WMI WMM parameters，and send to the firmware
-according to the different WMM type flags.
+Since firmware supports overwriting the new key without explicitly
+clearing the previous one, there is no visible impact currently.
+However, to restore consistency with the previous behavior and improve
+clarity, replace bitwise operations with direct assignments and
+comparisons for key flags.
 
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04523-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.9.0.1-02146-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
 
-Signed-off-by: Yu Zhang (Yuriy) <quic_yuzha@quicinc.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-wireless/aLlaetkalDvWcB7b@stanley.mountain
+Fixes: 97acb0259cc9 ("wifi: ath11k: fix group data packet drops during rekey")
+Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
 Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250124061343.2263467-1-quic_yuzha@quicinc.com
+Link: https://patch.msgid.link/20251003092158.1080637-1-rameshkumar.sundaram@oss.qualcomm.com
+[update copyright per current guidance]
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Stable-dep-of: 9c78e747dd4f ("wifi: ath11k: avoid bit operation on key flags")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.h |  3 +-
- drivers/net/wireless/ath/ath11k/mac.c  | 53 +++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath11k/wmi.c  | 11 +++---
- drivers/net/wireless/ath/ath11k/wmi.h  | 10 ++++-
- 4 files changed, 67 insertions(+), 10 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index cd9f9fb6ab68e..7394b46835e1a 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #ifndef ATH11K_CORE_H
-@@ -372,6 +372,7 @@ struct ath11k_vif {
- 
- 	u16 tx_seq_no;
- 	struct wmi_wmm_params_all_arg wmm_params;
-+	struct wmi_wmm_params_all_arg muedca_params;
- 	struct list_head list;
- 	union {
- 		struct {
 diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 9db3369d32048..3889f08822d41 100644
+index 3889f08822d41..419c9497800af 100644
 --- a/drivers/net/wireless/ath/ath11k/mac.c
 +++ b/drivers/net/wireless/ath/ath11k/mac.c
 @@ -1,7 +1,7 @@
  // SPDX-License-Identifier: BSD-3-Clause-Clear
  /*
   * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
   */
  
  #include <net/mac80211.h>
-@@ -5283,6 +5283,45 @@ static int ath11k_conf_tx_uapsd(struct ath11k *ar, struct ieee80211_vif *vif,
- 	return ret;
- }
- 
-+static int ath11k_mac_op_conf_tx_mu_edca(struct ieee80211_hw *hw,
-+					 struct ieee80211_vif *vif,
-+					 unsigned int link_id, u16 ac,
-+					 const struct ieee80211_tx_queue_params *params)
-+{
-+	struct ath11k_vif *arvif = ath11k_vif_to_arvif(vif);
-+	struct ath11k *ar = hw->priv;
-+	struct wmi_wmm_params_arg *p;
-+	int ret;
-+
-+	switch (ac) {
-+	case IEEE80211_AC_VO:
-+		p = &arvif->muedca_params.ac_vo;
-+		break;
-+	case IEEE80211_AC_VI:
-+		p = &arvif->muedca_params.ac_vi;
-+		break;
-+	case IEEE80211_AC_BE:
-+		p = &arvif->muedca_params.ac_be;
-+		break;
-+	case IEEE80211_AC_BK:
-+		p = &arvif->muedca_params.ac_bk;
-+		break;
-+	default:
-+		ath11k_warn(ar->ab, "error ac: %d", ac);
-+		return -EINVAL;
-+	}
-+
-+	p->cwmin = u8_get_bits(params->mu_edca_param_rec.ecw_min_max, GENMASK(3, 0));
-+	p->cwmax = u8_get_bits(params->mu_edca_param_rec.ecw_min_max, GENMASK(7, 4));
-+	p->aifs = u8_get_bits(params->mu_edca_param_rec.aifsn, GENMASK(3, 0));
-+	p->txop = params->mu_edca_param_rec.mu_edca_timer;
-+
-+	ret = ath11k_wmi_send_wmm_update_cmd_tlv(ar, arvif->vdev_id,
-+						 &arvif->muedca_params,
-+						 WMI_WMM_PARAM_TYPE_11AX_MU_EDCA);
-+	return ret;
-+}
-+
- static int ath11k_mac_op_conf_tx(struct ieee80211_hw *hw,
- 				 struct ieee80211_vif *vif,
- 				 unsigned int link_id, u16 ac,
-@@ -5321,12 +5360,22 @@ static int ath11k_mac_op_conf_tx(struct ieee80211_hw *hw,
- 	p->txop = params->txop;
- 
- 	ret = ath11k_wmi_send_wmm_update_cmd_tlv(ar, arvif->vdev_id,
--						 &arvif->wmm_params);
-+						 &arvif->wmm_params,
-+						 WMI_WMM_PARAM_TYPE_LEGACY);
- 	if (ret) {
- 		ath11k_warn(ar->ab, "failed to set wmm params: %d\n", ret);
- 		goto exit;
+@@ -4407,9 +4407,9 @@ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
  	}
  
-+	if (params->mu_edca) {
-+		ret = ath11k_mac_op_conf_tx_mu_edca(hw, vif, link_id, ac,
-+						    params);
-+		if (ret) {
-+			ath11k_warn(ar->ab, "failed to set mu_edca params: %d\n", ret);
-+			goto exit;
-+		}
-+	}
-+
- 	ret = ath11k_conf_tx_uapsd(ar, vif, ac, params->uapsd);
+ 	if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE)
+-		flags |= WMI_KEY_PAIRWISE;
++		flags = WMI_KEY_PAIRWISE;
+ 	else
+-		flags |= WMI_KEY_GROUP;
++		flags = WMI_KEY_GROUP;
  
- 	if (ret)
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 5f7edf622de7a..98811726d33bf 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- #include <linux/skbuff.h>
- #include <linux/ctype.h>
-@@ -2662,7 +2662,8 @@ int ath11k_wmi_send_scan_chan_list_cmd(struct ath11k *ar,
- }
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
+ 		   "%s for peer %pM on vdev %d flags 0x%X, type = %d, num_sta %d\n",
+@@ -4446,7 +4446,7 @@ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
  
- int ath11k_wmi_send_wmm_update_cmd_tlv(struct ath11k *ar, u32 vdev_id,
--				       struct wmi_wmm_params_all_arg *param)
-+				       struct wmi_wmm_params_all_arg *param,
-+				       enum wmi_wmm_params_type wmm_param_type)
- {
- 	struct ath11k_pdev_wmi *wmi = ar->wmi;
- 	struct wmi_vdev_set_wmm_params_cmd *cmd;
-@@ -2681,7 +2682,7 @@ int ath11k_wmi_send_wmm_update_cmd_tlv(struct ath11k *ar, u32 vdev_id,
- 			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
+ 	is_ap_with_no_sta = (vif->type == NL80211_IFTYPE_AP &&
+ 			     !arvif->num_stations);
+-	if ((flags & WMI_KEY_PAIRWISE) || cmd == SET_KEY || is_ap_with_no_sta) {
++	if (flags == WMI_KEY_PAIRWISE || cmd == SET_KEY || is_ap_with_no_sta) {
+ 		ret = ath11k_install_key(arvif, key, cmd, peer_addr, flags);
+ 		if (ret) {
+ 			ath11k_warn(ab, "ath11k_install_key failed (%d)\n", ret);
+@@ -4460,7 +4460,7 @@ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 			goto exit;
+ 		}
  
- 	cmd->vdev_id = vdev_id;
--	cmd->wmm_param_type = 0;
-+	cmd->wmm_param_type = wmm_param_type;
- 
- 	for (ac = 0; ac < WME_NUM_AC; ac++) {
- 		switch (ac) {
-@@ -2714,8 +2715,8 @@ int ath11k_wmi_send_wmm_update_cmd_tlv(struct ath11k *ar, u32 vdev_id,
- 		wmm_param->no_ack = wmi_wmm_arg->no_ack;
- 
- 		ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
--			   "wmm set ac %d aifs %d cwmin %d cwmax %d txop %d acm %d no_ack %d\n",
--			   ac, wmm_param->aifs, wmm_param->cwmin,
-+			   "wmm set type %d ac %d aifs %d cwmin %d cwmax %d txop %d acm %d no_ack %d\n",
-+			   wmm_param_type, ac, wmm_param->aifs, wmm_param->cwmin,
- 			   wmm_param->cwmax, wmm_param->txoplimit,
- 			   wmm_param->acm, wmm_param->no_ack);
+-		if ((flags & WMI_KEY_GROUP) && cmd == SET_KEY && is_ap_with_no_sta)
++		if (flags == WMI_KEY_GROUP && cmd == SET_KEY && is_ap_with_no_sta)
+ 			arvif->reinstall_group_keys = true;
  	}
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 30b4b0c176826..9fcffaa2f383c 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
  
- #ifndef ATH11K_WMI_H
-@@ -6347,6 +6347,11 @@ enum wmi_sta_keepalive_method {
- #define WMI_STA_KEEPALIVE_INTERVAL_DEFAULT	30
- #define WMI_STA_KEEPALIVE_INTERVAL_DISABLE	0
- 
-+enum wmi_wmm_params_type {
-+	WMI_WMM_PARAM_TYPE_LEGACY = 0,
-+	WMI_WMM_PARAM_TYPE_11AX_MU_EDCA = 1,
-+};
-+
- const void **ath11k_wmi_tlv_parse_alloc(struct ath11k_base *ab,
- 					struct sk_buff *skb, gfp_t gfp);
- int ath11k_wmi_cmd_send(struct ath11k_pdev_wmi *wmi, struct sk_buff *skb,
-@@ -6403,7 +6408,8 @@ int ath11k_wmi_send_scan_start_cmd(struct ath11k *ar,
- int ath11k_wmi_send_scan_stop_cmd(struct ath11k *ar,
- 				  struct scan_cancel_param *param);
- int ath11k_wmi_send_wmm_update_cmd_tlv(struct ath11k *ar, u32 vdev_id,
--				       struct wmi_wmm_params_all_arg *param);
-+				       struct wmi_wmm_params_all_arg *param,
-+				       enum wmi_wmm_params_type wmm_param_type);
- int ath11k_wmi_pdev_suspend(struct ath11k *ar, u32 suspend_opt,
- 			    u32 pdev_id);
- int ath11k_wmi_pdev_resume(struct ath11k *ar, u32 pdev_id);
 -- 
 2.51.0
 
