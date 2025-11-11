@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-193400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732F5C4A436
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3C2C4A385
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5C9844F9D3D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 994323A431E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607D5261B6E;
-	Tue, 11 Nov 2025 01:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C2F25C818;
+	Tue, 11 Nov 2025 01:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQZKBMAz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZZuCZlX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8012505AA;
-	Tue, 11 Nov 2025 01:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EA62561A7;
+	Tue, 11 Nov 2025 01:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823092; cv=none; b=g7D4r9Xs44qRm2rGQdcOQ0e2ivoUEr5opTUzQy9HP4cCXJQ5VLZ1MbS9DTOQyAO8fvPaGecM1ocFMR7jlrEEwzB2xzQURJ6o+m+r80mld8I92pthjsyhC8JKqODQAXz9y4rF52ghtpWrC8hBcOdcs9Fe21xbdE/PMtD9Mp75GXw=
+	t=1762823101; cv=none; b=vBESeK3Vbzni3z/j6OHloetoUHaw1MO2KnkfcYTRvUZNSn41tff1R/EsABeDP3J/Bd3z2k6ENHli/IDe/lATFlzJgMX5RZRu+wO63YYpLS2zeBw7Mv0smBei8nm5XqaU0HTdSGWIG5wASawpIjR7MGYYlvYl6w7cPBwteEEDSzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823092; c=relaxed/simple;
-	bh=vytDEDe11inwnX6/nj/dHu19tARteHSaM+0daZ8DO08=;
+	s=arc-20240116; t=1762823101; c=relaxed/simple;
+	bh=zSwFhE3voOcbN6v190NsPkn8QfSp/1NXbBxJF1jURj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYq1LSqhVgUPpsJWxuIyxkMxw4/Ti8WZb2+/5TWVwwPnYj4077AA2L8Al4gORu42d0yUGUF2QMLzxITtKphZg/6aOtHA7IJIKm0M+hWoPSpBSrT22y5yHDEPF/IUZ7+4ny1ZYAGj6f3NCS2lNgjVnrZvAeh3fiK4t7MZMd4bE6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQZKBMAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF05C113D0;
-	Tue, 11 Nov 2025 01:04:51 +0000 (UTC)
+	 MIME-Version; b=MFFVK7flkePOVXSPZIFigZsHhOHBhH2+e3HN+v8Iq0E6dkG+p1L5VbZMBNPRwn3mj9YDZhd2s897cnpzz4ucenIcBYEMX3AVlfX31rXzKnkQCJA0Qad/1icWkROGSVRixqNi0trA+g7csm3B6MgIyU4Tdg9UBMPp/npOYlfy0Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZZuCZlX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CD6C4AF09;
+	Tue, 11 Nov 2025 01:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823092;
-	bh=vytDEDe11inwnX6/nj/dHu19tARteHSaM+0daZ8DO08=;
+	s=korg; t=1762823101;
+	bh=zSwFhE3voOcbN6v190NsPkn8QfSp/1NXbBxJF1jURj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JQZKBMAzNt5+5RNTmowOTnU3V2B7xu/FEkZl2dUjlMBwIWqo4W3/UVXHwaZmyfHGM
-	 uFEVOAu1vvNEWdKNeqKzBGOb0cwHqaMFtAFuid8OTc3uSWkQVufcFHiaL0s8E64SxX
-	 xmWf6OsJjl8aRVSxxqMDJlXaBiG9ToepjqfpJC0c=
+	b=QZZuCZlXCXw7PXNH7nI33LaFEyDMMhN9R7z63y3/tixOQQOwO90RVSpxf1aVdfWAH
+	 NVKmPL2DrI3A+22OvAaX1wTmQ/XgvseHZMbFg8LJ/UHPzLmJG7E35/dKsxecDwFB9W
+	 hUdP06ivSyuQM8Vz3q9f6mg1RUS+sp99mhjC+LXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sk Anirban <sk.anirban@intel.com>,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Ostrowski Rafal <rostrows@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 229/849] drm/xe/ptl: Apply Wa_16026007364
-Date: Tue, 11 Nov 2025 09:36:39 +0900
-Message-ID: <20251111004541.978267129@linuxfoundation.org>
+Subject: [PATCH 6.17 231/849] drm/amd/display: Update tiled to tiled copy command
+Date: Tue, 11 Nov 2025 09:36:41 +0900
+Message-ID: <20251111004542.029922138@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,98 +69,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sk Anirban <sk.anirban@intel.com>
+From: Ostrowski Rafal <rostrows@amd.com>
 
-[ Upstream commit d72779c29d82c6e371cea8b427550bd6923c2577 ]
+[ Upstream commit 19f76f2390be5abe8d5ed986780b73564ba2baca ]
 
-As part of this WA GuC will save and restore value of two XE3_Media
-control registers that were not included in the HW power context.
+[Why & How]
+Tiled command rect dimensions is 1 based, do rect_x/y - 1 internally
 
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
-Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Link: https://lore.kernel.org/r/20250716101622.3421480-2-sk.anirban@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Ostrowski Rafal <rostrows@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/abi/guc_klvs_abi.h |  1 +
- drivers/gpu/drm/xe/xe_guc_ads.c       | 35 +++++++++++++++++++++++++++
- drivers/gpu/drm/xe/xe_wa_oob.rules    |  1 +
- 3 files changed, 37 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/abi/guc_klvs_abi.h b/drivers/gpu/drm/xe/abi/guc_klvs_abi.h
-index d7719d0e36ca7..45a321d0099f1 100644
---- a/drivers/gpu/drm/xe/abi/guc_klvs_abi.h
-+++ b/drivers/gpu/drm/xe/abi/guc_klvs_abi.h
-@@ -421,6 +421,7 @@ enum xe_guc_klv_ids {
- 	GUC_WORKAROUND_KLV_ID_BACK_TO_BACK_RCS_ENGINE_RESET				= 0x9009,
- 	GUC_WA_KLV_WAKE_POWER_DOMAINS_FOR_OUTBOUND_MMIO					= 0x900a,
- 	GUC_WA_KLV_RESET_BB_STACK_PTR_ON_VF_SWITCH					= 0x900b,
-+	GUC_WA_KLV_RESTORE_UNSAVED_MEDIA_CONTROL_REG					= 0x900c,
- };
- 
- #endif
-diff --git a/drivers/gpu/drm/xe/xe_guc_ads.c b/drivers/gpu/drm/xe/xe_guc_ads.c
-index 131cfc56be00a..8ff8626227ae4 100644
---- a/drivers/gpu/drm/xe/xe_guc_ads.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ads.c
-@@ -284,6 +284,35 @@ static size_t calculate_golden_lrc_size(struct xe_guc_ads *ads)
- 	return total_size;
- }
- 
-+static void guc_waklv_enable_two_word(struct xe_guc_ads *ads,
-+				      enum xe_guc_klv_ids klv_id,
-+				      u32 value1,
-+				      u32 value2,
-+				      u32 *offset, u32 *remain)
-+{
-+	u32 size;
-+	u32 klv_entry[] = {
-+			/* 16:16 key/length */
-+			FIELD_PREP(GUC_KLV_0_KEY, klv_id) |
-+			FIELD_PREP(GUC_KLV_0_LEN, 2),
-+			value1,
-+			value2,
-+			/* 2 dword data */
-+	};
-+
-+	size = sizeof(klv_entry);
-+
-+	if (*remain < size) {
-+		drm_warn(&ads_to_xe(ads)->drm,
-+			 "w/a klv buffer too small to add klv id %d\n", klv_id);
-+	} else {
-+		xe_map_memcpy_to(ads_to_xe(ads), ads_to_map(ads), *offset,
-+				 klv_entry, size);
-+		*offset += size;
-+		*remain -= size;
-+	}
-+}
-+
- static void guc_waklv_enable_one_word(struct xe_guc_ads *ads,
- 				      enum xe_guc_klv_ids klv_id,
- 				      u32 value,
-@@ -381,6 +410,12 @@ static void guc_waklv_init(struct xe_guc_ads *ads)
- 		guc_waklv_enable_simple(ads,
- 					GUC_WA_KLV_RESET_BB_STACK_PTR_ON_VF_SWITCH,
- 					&offset, &remain);
-+	if (GUC_FIRMWARE_VER(&gt->uc.guc) >= MAKE_GUC_VER(70, 47, 0) && XE_WA(gt, 16026007364))
-+		guc_waklv_enable_two_word(ads,
-+					  GUC_WA_KLV_RESTORE_UNSAVED_MEDIA_CONTROL_REG,
-+					  0x0,
-+					  0xF,
-+					  &offset, &remain);
- 
- 	size = guc_ads_waklv_size(ads) - remain;
- 	if (!size)
-diff --git a/drivers/gpu/drm/xe/xe_wa_oob.rules b/drivers/gpu/drm/xe/xe_wa_oob.rules
-index 710f4423726c9..48c7a42e2fcad 100644
---- a/drivers/gpu/drm/xe/xe_wa_oob.rules
-+++ b/drivers/gpu/drm/xe/xe_wa_oob.rules
-@@ -73,3 +73,4 @@ no_media_l3	MEDIA_VERSION(3000)
- 14022085890	GRAPHICS_VERSION(2001)
- 
- 15015404425_disable	PLATFORM(PANTHERLAKE), MEDIA_STEP(B0, FOREVER)
-+16026007364    MEDIA_VERSION(3000)
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+index f5ef1a07078e5..714c468c010d3 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
++++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+@@ -2072,8 +2072,8 @@ bool dmub_lsdma_send_tiled_to_tiled_copy_command(
+ 	lsdma_data->u.tiled_copy_data.dst_swizzle_mode = params.swizzle_mode;
+ 	lsdma_data->u.tiled_copy_data.src_element_size = params.element_size;
+ 	lsdma_data->u.tiled_copy_data.dst_element_size = params.element_size;
+-	lsdma_data->u.tiled_copy_data.rect_x           = params.rect_x;
+-	lsdma_data->u.tiled_copy_data.rect_y           = params.rect_y;
++	lsdma_data->u.tiled_copy_data.rect_x           = params.rect_x - 1;
++	lsdma_data->u.tiled_copy_data.rect_y           = params.rect_y - 1;
+ 	lsdma_data->u.tiled_copy_data.dcc              = params.dcc;
+ 	lsdma_data->u.tiled_copy_data.tmz              = params.tmz;
+ 	lsdma_data->u.tiled_copy_data.read_compress    = params.read_compress;
 -- 
 2.51.0
 
