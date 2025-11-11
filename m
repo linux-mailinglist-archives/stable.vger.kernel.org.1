@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB11AC4A4B7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:15:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F063BC4ADA8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AECE0188AD32
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:12:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46E6A3B5EC9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C6B344038;
-	Tue, 11 Nov 2025 01:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD5A2F656B;
+	Tue, 11 Nov 2025 01:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtdZHdDi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KEsMX7Oe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA92534402F;
-	Tue, 11 Nov 2025 01:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270A72F39B1;
+	Tue, 11 Nov 2025 01:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823188; cv=none; b=B9DSLGZoVsln37s4tzCgMVxDR7u8LFBhh/SHv5o+MUB2m+KGO6/j7QecK2lp1BhaxAqwcxdxlwN5KaUTDQF++cbBgN5dTdqJEFXJns7FVTw1hI+J3CM+ZXn4CgFG/6/cMfG3VYkdhzNkG2AkbxUhJhRbXliN989cEmYQXroG+as=
+	t=1762824361; cv=none; b=fOV50wAkTcTe0of+6xkr1jwJssTPfjF4dNT/kThowOpwogQOcf/Zuguprss2y9PTnkuJn+tbDghbckObcQaeG2oq1IT5K+mBcQlYbl9wKRQdOcXLd7PG8/o5aB6cEu1awu9KEgBoFlOCBbWrzuaAgNmithZDcZnTJRZ3XfHo7PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823188; c=relaxed/simple;
-	bh=5cieyM9Hew6QhqVgS/RHBhb1b3JhZJzZy+K008KiDu8=;
+	s=arc-20240116; t=1762824361; c=relaxed/simple;
+	bh=ekkgtDmTbeuJbIZ6JTXolfh2bRt5vQStnzF9l8H1a+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDmpdGlw7sBumm1ZF6R5ocWPVLxqqKr0PI5yep6ZKrTSPpV1016pQDweQb+FpRgiC3AVj6P0azBFoSwwbfi5qT/wSW0lebFDwNzxk7ChU4f0XHjHhskXEbvnkx+dTHf7TLjHY5oNTP2sCDBKkp/CLrmahE/Jix5nGxrYr0v9K8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtdZHdDi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48001C16AAE;
-	Tue, 11 Nov 2025 01:06:28 +0000 (UTC)
+	 MIME-Version; b=X/fijHkEDYVGd5sFojEP4Zyagq3O00OSlS0XFa1hcuTDoH3FeHWaSjIWCyeDSLf303Lk0Zzuny97j/B1TZJCGUTVulmVMZ+JCSC+Cl2oTX5InC5Y+Lm+S9e/Qqarml7DcIDK4684/tX2RjiNif6+BT+36bGVDTnj34fF3j6lDA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KEsMX7Oe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7737C19422;
+	Tue, 11 Nov 2025 01:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823188;
-	bh=5cieyM9Hew6QhqVgS/RHBhb1b3JhZJzZy+K008KiDu8=;
+	s=korg; t=1762824361;
+	bh=ekkgtDmTbeuJbIZ6JTXolfh2bRt5vQStnzF9l8H1a+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CtdZHdDiAHJdkOoIMkqhb3H+L911VnsZhFGVfmNDuh1GIGMOcgdxH1nb7YEkovwtZ
-	 x+evLAxdccRBWRuyqYddi9Be8Iba4PZSSTG5fpb7dJjfdprO2ehrVPmczrv9MvftIy
-	 4+c0f5pWpR/fGxp7KlF/9kHMucHnlUa9fuTmtrTw=
+	b=KEsMX7OeP/EoXjIDTsV8X27cXEPkue+z3AvFlt0NG/lDHEpK/tprcP2ZXvIujCyRA
+	 C17zt1gh+gm/zXh8+9wUxMmAOzqX3B0NkGlcnKimPYDlecECHZGWdOLyyHKf3NFCB5
+	 3e0XIe0+GCRi2D4xLgSKFVrCTjqtRnMS0LAKXF1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wake Liu <wakel@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zenm Chen <zenmchen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 193/565] selftests/net: Replace non-standard __WORDSIZE with sizeof(long) * 8
-Date: Tue, 11 Nov 2025 09:40:49 +0900
-Message-ID: <20251111004531.270232441@linuxfoundation.org>
+Subject: [PATCH 6.17 480/849] wifi: rtw89: Add USB ID 2001:332a for D-Link AX9U rev. A1
+Date: Tue, 11 Nov 2025 09:40:50 +0900
+Message-ID: <20251111004548.047172543@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wake Liu <wakel@google.com>
+From: Zenm Chen <zenmchen@gmail.com>
 
-[ Upstream commit c36748e8733ef9c5f4cd1d7c4327994e5b88b8df ]
+[ Upstream commit 2ffc73cdb8247dc09b6534c4018681a126c1d5f5 ]
 
-The `__WORDSIZE` macro, defined in the non-standard `<bits/wordsize.h>`
-header, is a GNU extension and not universally available with all
-toolchains, such as Clang when used with musl libc.
+Add USB ID 2001:332a for D-Link AX9U rev. A1 which is a RTL8851BU-based
+Wi-Fi adapter.
 
-This can lead to build failures in environments where this header is
-missing.
+Only managed mode and AP mode are tested and it works in both.
 
-The intention of the code is to determine the bit width of a C `long`.
-Replace the non-portable `__WORDSIZE` with the standard and portable
-`sizeof(long) * 8` expression to achieve the same result.
-
-This change also removes the inclusion of the now-unused
-`<bits/wordsize.h>` header.
-
-Signed-off-by: Wake Liu <wakel@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250902035755.1969530-1-zenmchen@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/psock_tpacket.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/rtw8851bu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/net/psock_tpacket.c b/tools/testing/selftests/net/psock_tpacket.c
-index 404a2ce759ab6..93092d13b3c59 100644
---- a/tools/testing/selftests/net/psock_tpacket.c
-+++ b/tools/testing/selftests/net/psock_tpacket.c
-@@ -33,7 +33,6 @@
- #include <ctype.h>
- #include <fcntl.h>
- #include <unistd.h>
--#include <bits/wordsize.h>
- #include <net/ethernet.h>
- #include <netinet/ip.h>
- #include <arpa/inet.h>
-@@ -785,7 +784,7 @@ static int test_kernel_bit_width(void)
- 
- static int test_user_bit_width(void)
- {
--	return __WORDSIZE;
-+	return sizeof(long) * 8;
- }
- 
- static const char *tpacket_str[] = {
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851bu.c b/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
+index c3722547c6b09..04e1ab13b7535 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
+@@ -16,6 +16,9 @@ static const struct rtw89_driver_info rtw89_8851bu_info = {
+ static const struct usb_device_id rtw_8851bu_id_table[] = {
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xb851, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&rtw89_8851bu_info },
++	/* D-Link AX9U rev. A1 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x332a, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&rtw89_8851bu_info },
+ 	/* TP-Link Archer TX10UB Nano */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3625, 0x010b, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&rtw89_8851bu_info },
 -- 
 2.51.0
 
