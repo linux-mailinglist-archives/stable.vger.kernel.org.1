@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A76AC4A66B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:25:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C22C4ABAE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3753B188FB5C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 884B04F01EF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5163081C0;
-	Tue, 11 Nov 2025 01:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9553A306B30;
+	Tue, 11 Nov 2025 01:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYiKz87S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4BMoyu0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88EC3081AD;
-	Tue, 11 Nov 2025 01:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519EB25F797;
+	Tue, 11 Nov 2025 01:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823306; cv=none; b=V914YyABKKQEZlWFBtDElqpCOUMuy2RSRhrATq4EyMuBUexr48BI8VdRc7as9YKQyXGcXNuSztWiskU8i0Oq8+tn2gqvorLyiTzmsPQPdwvpCHh6TqIffxl+OLgO7PusjCdsPypfRR3o5xjNaR/lOuajBWJRZNOHQ/GKGsCX5qg=
+	t=1762824455; cv=none; b=kCEtt24ODTDu1dW5Hl+JvfqDyVeB9BjqIhbr+YbUZpHjfaptBOT9H1DOzAEaI+fp72zg/fJQp7qg79IATELlQeZPrHxbZs7tiSLaJ3M32xyn2FkJV6RucZP9kDIyz5GzxwNjntMrNPBNc0Zd36pqKxXzpN03p1AyQz+rRA5TF6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823306; c=relaxed/simple;
-	bh=X9oXn9qcSIR0eI2WmKggFwL88yn87p26MknU7PyptIs=;
+	s=arc-20240116; t=1762824455; c=relaxed/simple;
+	bh=E/Qs3gRZTD8mnP1GR8JeRfbBd4ZMUyHpG72uAQl1o/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wo/k7qc03W3nTgsIaUFN3wFQ84A55ou/Am0QBOWBdphpD1BFB2G0eCVeqv/UyzDji4mvehGORXZ4EEA5ESj7YYesJubcKM7sNS1j+aF0AjtGYP1elt8UU7pmJ00wPTchclIT2+fS7VaOTabxlUdWTTSDR4cp9/oKuH8VbKrEnRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYiKz87S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34023C4CEF5;
-	Tue, 11 Nov 2025 01:08:26 +0000 (UTC)
+	 MIME-Version; b=SXmVuZGRadPmZjy6bFgVWgGvaDdjwQi3EaWWxaAZA2Pqm8CljqYWysq+9C2mOj48NWGwb/Kb0IA8+0eScPpVzxAsLp3QWhTgK/iJYXuFy69LLAF8s9tUbpEqJe7byAMl7zYDKlqsmv5azvMqWI6c6pGS33yUKA0vrKTctYsEotw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4BMoyu0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53CBC113D0;
+	Tue, 11 Nov 2025 01:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823306;
-	bh=X9oXn9qcSIR0eI2WmKggFwL88yn87p26MknU7PyptIs=;
+	s=korg; t=1762824455;
+	bh=E/Qs3gRZTD8mnP1GR8JeRfbBd4ZMUyHpG72uAQl1o/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NYiKz87SaB91inXmR5Xmehm1dwmS2A55Z72vNsvvZoaaRXlVqoWUoMQCvukcHmXrF
-	 iA+l1EYsRrTkZCJ6sf9v2KPUrdTlB+ALYG4PoJzBdQ4U4kImchSN4LcQwrEPQwmOHv
-	 +6Rxn1KzTkukk+KE6OxxqwnOOJr5n7l2wo1mItwU=
+	b=y4BMoyu0Gv454l6zUu4vNWDHeKAHT91zX+3tT3P2xgN56KUs/laH9/ueo0OZBoel+
+	 QjQewOOyPj444c9l0LurHQWhMKIHvhUGP+TKPoNQaEpgoxpimuYN8U9x1Sw4l+0V6o
+	 d7rlupqKHuFVWLKBjmeLQbPqTaPLLyldMPR4XBl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Chao <alice.chao@mediatek.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 216/565] scsi: ufs: host: mediatek: Assign power mode userdata before FASTAUTO mode change
-Date: Tue, 11 Nov 2025 09:41:12 +0900
-Message-ID: <20251111004531.782349745@linuxfoundation.org>
+Subject: [PATCH 6.17 503/849] fbcon: Use screen info to find primary device
+Date: Tue, 11 Nov 2025 09:41:13 +0900
+Message-ID: <20251111004548.594036299@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Chao <alice.chao@mediatek.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 979feee0cf43b32d288931649d7c6d9a5524ea55 ]
+[ Upstream commit ad90860bd10ee3ed387077aed88828b139339976 ]
 
-Assign power mode userdata settings before transitioning to FASTAUTO
-power mode. This ensures that default timeout values are set for various
-parameters, enhancing the reliability and performance of the power mode
-change process.
+On systems with non VGA GPUs fbcon can't find the primary GPU because
+video_is_primary_device() only checks the VGA arbiter.
 
-Signed-off-by: Alice Chao <alice.chao@mediatek.com>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20250811131423.3444014-7-peter.wang@mediatek.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Add a screen info check to video_is_primary_device() so that callers
+can get accurate data on such systems.
+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
+Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://lore.kernel.org/r/20250811162606.587759-4-superm1@kernel.org
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-mediatek.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ arch/x86/video/video-common.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
-index 8701d2307ad3f..191db60b393d9 100644
---- a/drivers/ufs/host/ufs-mediatek.c
-+++ b/drivers/ufs/host/ufs-mediatek.c
-@@ -1186,6 +1186,28 @@ static int ufs_mtk_pre_pwr_change(struct ufs_hba *hba,
- 		ufshcd_dme_set(hba, UIC_ARG_MIB(PA_TXHSADAPTTYPE),
- 			       PA_NO_ADAPT);
+diff --git a/arch/x86/video/video-common.c b/arch/x86/video/video-common.c
+index 81fc97a2a837a..e0aeee99bc99e 100644
+--- a/arch/x86/video/video-common.c
++++ b/arch/x86/video/video-common.c
+@@ -9,6 +9,7 @@
  
-+		if (!(hba->quirks & UFSHCD_QUIRK_SKIP_DEF_UNIPRO_TIMEOUT_SETTING)) {
-+			ufshcd_dme_set(hba, UIC_ARG_MIB(PA_PWRMODEUSERDATA0),
-+					DL_FC0ProtectionTimeOutVal_Default);
-+			ufshcd_dme_set(hba, UIC_ARG_MIB(PA_PWRMODEUSERDATA1),
-+					DL_TC0ReplayTimeOutVal_Default);
-+			ufshcd_dme_set(hba, UIC_ARG_MIB(PA_PWRMODEUSERDATA2),
-+					DL_AFC0ReqTimeOutVal_Default);
-+			ufshcd_dme_set(hba, UIC_ARG_MIB(PA_PWRMODEUSERDATA3),
-+					DL_FC1ProtectionTimeOutVal_Default);
-+			ufshcd_dme_set(hba, UIC_ARG_MIB(PA_PWRMODEUSERDATA4),
-+					DL_TC1ReplayTimeOutVal_Default);
-+			ufshcd_dme_set(hba, UIC_ARG_MIB(PA_PWRMODEUSERDATA5),
-+					DL_AFC1ReqTimeOutVal_Default);
+ #include <linux/module.h>
+ #include <linux/pci.h>
++#include <linux/screen_info.h>
+ #include <linux/vgaarb.h>
+ 
+ #include <asm/video.h>
+@@ -27,6 +28,11 @@ EXPORT_SYMBOL(pgprot_framebuffer);
+ 
+ bool video_is_primary_device(struct device *dev)
+ {
++#ifdef CONFIG_SCREEN_INFO
++	struct screen_info *si = &screen_info;
++	struct resource res[SCREEN_INFO_MAX_RESOURCES];
++	ssize_t i, numres;
++#endif
+ 	struct pci_dev *pdev;
+ 
+ 	if (!dev_is_pci(dev))
+@@ -34,7 +40,24 @@ bool video_is_primary_device(struct device *dev)
+ 
+ 	pdev = to_pci_dev(dev);
+ 
+-	return (pdev == vga_default_device());
++	if (!pci_is_display(pdev))
++		return false;
 +
-+			ufshcd_dme_set(hba, UIC_ARG_MIB(DME_LocalFC0ProtectionTimeOutVal),
-+					DL_FC0ProtectionTimeOutVal_Default);
-+			ufshcd_dme_set(hba, UIC_ARG_MIB(DME_LocalTC0ReplayTimeOutVal),
-+					DL_TC0ReplayTimeOutVal_Default);
-+			ufshcd_dme_set(hba, UIC_ARG_MIB(DME_LocalAFC0ReqTimeOutVal),
-+					DL_AFC0ReqTimeOutVal_Default);
-+		}
++	if (pdev == vga_default_device())
++		return true;
 +
- 		ret = ufshcd_uic_change_pwr_mode(hba,
- 					FASTAUTO_MODE << 4 | FASTAUTO_MODE);
++#ifdef CONFIG_SCREEN_INFO
++	numres = screen_info_resources(si, res, ARRAY_SIZE(res));
++	for (i = 0; i < numres; ++i) {
++		if (!(res[i].flags & IORESOURCE_MEM))
++			continue;
++
++		if (pci_find_resource(pdev, &res[i]))
++			return true;
++	}
++#endif
++
++	return false;
+ }
+ EXPORT_SYMBOL(video_is_primary_device);
  
 -- 
 2.51.0
