@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9037C4AA1B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88246C4A69E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 53ACC34C859
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DF153B117A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200A033E362;
-	Tue, 11 Nov 2025 01:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B507127814A;
+	Tue, 11 Nov 2025 01:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBm9zKET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1IH01cf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA7222301;
-	Tue, 11 Nov 2025 01:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709A326056C;
+	Tue, 11 Nov 2025 01:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824567; cv=none; b=oXCWkiAJgnI/6jS7TRQppQB/oD1Apq2OBFYcYyztYL1TQFXr3BPQUXUcRrnEdGyG0OX3/sHeKvjXGRfDMFn/5fxQxoANiAlNeWQfFpNcSPDt/pyjJ3SUxiOOjwEik6cXR0P5GV8rOv/gQMd0VJd8wRu9pPgog+P2EM93loq5S2w=
+	t=1762823397; cv=none; b=T/noUtzFXeBKoDfxTOWajJGcJKH10pa8FSMsGDa9XX99wea9pFVhj6oFvMMtbSLmj6GkbyG3XD8QwBnQGL2AgZF8bK4vu08xDIwkliEKURPvURyUgNGHqPDNbe0hWB10OFlnHVq6oJCdyNhw8C7IiDd2TzejY3JuQ/5KG6NCI20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824567; c=relaxed/simple;
-	bh=NfLbOmu8X45X/nwzth9yQ04sIZEB0/4eDa2JWHejbio=;
+	s=arc-20240116; t=1762823397; c=relaxed/simple;
+	bh=UEZ+xLtQODELrP4NI0QV9qO/tinaNO/tE1a+vS42bGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FdOJ76P9OsDh1qf/0S+IvZ3Ol35Kkor+6sJXQTpjR2CxxWcoyMMTHhoIHPnI5KlyhRvxrSN4ctwf9T+3klP4XYolqvBWJvbzAVlsZdJdK/HrKeaGDALsvRROKqKrw8egPg9p14iaYBHFuEI4JfrndiDNpw86kRCbLEaP3z/Uamk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBm9zKET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4DBC4AF0B;
-	Tue, 11 Nov 2025 01:29:27 +0000 (UTC)
+	 MIME-Version; b=k54B0u2lS9cQvPazNVnqDYUNWoxcp4SjAaANDuADRexkMTRfMIMPIreIFuJBe4URzw8buUt4C/MktS8BPCIdyAGvsQAEQV7eVF4DipkyEL7/16V7Y9HKh41sUZsa0/fyQnKeZ1yocWNL9gc6JNRcJxSwnJOU2ADBtc58UKXSYes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1IH01cf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6C6C19422;
+	Tue, 11 Nov 2025 01:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824567;
-	bh=NfLbOmu8X45X/nwzth9yQ04sIZEB0/4eDa2JWHejbio=;
+	s=korg; t=1762823397;
+	bh=UEZ+xLtQODELrP4NI0QV9qO/tinaNO/tE1a+vS42bGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBm9zKET+7CMXBAiX5Sigm7rz+ZgoXwDHOoplfAUGn4YwPIfskSLIciMW/zZ/YrH4
-	 rSuZ2+QGYRP/Rb4JojLo3lVpPjtTth/NkL7n18CqTKpFM3gpszuQgquVO0GhjddLOz
-	 MQRi5TZoi6ybE7BzQHLKrDIOjW6tl+xiDIC5DERE=
+	b=q1IH01cf9ZqvkOPJAf2PmHnuJptdaE+bEluX9Sz0JnjYMVYvS+1dav11hSWAZeNkg
+	 kPwDyFGO/HDtwu66UeWzYStzvXLl4Vb9OXFW8Vb3mN7FsKMsQa+hVWxhzVO4cXNrTe
+	 7Zvku99RHyUYgYPGRu2Ndtvi7cmMXvEkgQNKditc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sungho Kim <sungho.kim@furiosa.ai>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 525/849] udp_tunnel: use netdev_warn() instead of netdev_WARN()
+Subject: [PATCH 6.12 239/565] PCI/P2PDMA: Fix incorrect pointer usage in devm_kfree() call
 Date: Tue, 11 Nov 2025 09:41:35 +0900
-Message-ID: <20251111004549.113731433@linuxfoundation.org>
+Message-ID: <20251111004532.291331162@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Sungho Kim <sungho.kim@furiosa.ai>
 
-[ Upstream commit dc2f650f7e6857bf384069c1a56b2937a1ee370d ]
+[ Upstream commit 6238784e502b6a9fbeb3a6b77284b29baa4135cc ]
 
-netdev_WARN() uses WARN/WARN_ON to print a backtrace along with
-file and line information. In this case, udp_tunnel_nic_register()
-returning an error is just a failed operation, not a kernel bug.
+The error handling path in pci_p2pdma_add_resource() contains a bug in its
+`pgmap_free` label.
 
-udp_tunnel_nic_register() can fail due to a memory allocation
-failure (kzalloc() or udp_tunnel_nic_alloc()).
-This is a normal runtime error and not a kernel bug.
+Memory is allocated for the `p2p_pgmap` struct, and the pointer is stored
+in `p2p_pgmap`. However, the error path calls devm_kfree() with `pgmap`,
+which is a pointer to a member field within the `p2p_pgmap` struct, not the
+base pointer of the allocation.
 
-Replace netdev_WARN() with netdev_warn() accordingly.
+Correct the bug by passing the correct base pointer, `p2p_pgmap`, to
+devm_kfree().
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250910195031.3784748-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sungho Kim <sungho.kim@furiosa.ai>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Link: https://patch.msgid.link/20250820105714.2939896-1-sungho.kim@furiosa.ai
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_tunnel_nic.c | 2 +-
+ drivers/pci/p2pdma.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/udp_tunnel_nic.c b/net/ipv4/udp_tunnel_nic.c
-index ff66db48453cf..944b3cf25468e 100644
---- a/net/ipv4/udp_tunnel_nic.c
-+++ b/net/ipv4/udp_tunnel_nic.c
-@@ -930,7 +930,7 @@ udp_tunnel_nic_netdevice_event(struct notifier_block *unused,
- 
- 		err = udp_tunnel_nic_register(dev);
- 		if (err)
--			netdev_WARN(dev, "failed to register for UDP tunnel offloads: %d", err);
-+			netdev_warn(dev, "failed to register for UDP tunnel offloads: %d", err);
- 		return notifier_from_errno(err);
- 	}
- 	/* All other events will need the udp_tunnel_nic state */
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index 4f47a13cb500f..52e1564eadd0b 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -351,7 +351,7 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ pages_free:
+ 	devm_memunmap_pages(&pdev->dev, pgmap);
+ pgmap_free:
+-	devm_kfree(&pdev->dev, pgmap);
++	devm_kfree(&pdev->dev, p2p_pgmap);
+ 	return error;
+ }
+ EXPORT_SYMBOL_GPL(pci_p2pdma_add_resource);
 -- 
 2.51.0
 
