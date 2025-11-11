@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B3AC4ABDD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA84C4AD7F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F7DE4F8233
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B31A03BCA3F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D0A2701DC;
-	Tue, 11 Nov 2025 01:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A255305976;
+	Tue, 11 Nov 2025 01:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJylGDQw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UsPOlXHq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C285025F797;
-	Tue, 11 Nov 2025 01:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97D326E146;
+	Tue, 11 Nov 2025 01:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824445; cv=none; b=SPMFPl3cv2aE5yJhdXM2h2YniMrmtFD5HC70uD4dp1v598lHX3zcv1P46JyRF6Z3eNeL8OJNcqISiprE/CorJZQelYFsL79d+YVharPEY4sYZI6Kv6btVRRfL/CeTtHa+VWoDpho8uUuXUthffSmZAWMvBa71EyzzwtINWfkIys=
+	t=1762824450; cv=none; b=pmQ6ovaj672R6Bl00Bgv2dzOm2PMkCO6BT7Dsna4Vkj84rUPil8MYz6ENbOjsXBHb/RsYprdgY+fDBlj69bo8JjFN4zRUJuCWLyvXhw/l3R+EBED4zJg70amdWicJ6GvHWnqoWroon3GX3diLJtBGsTuq9O9iNuINlJVt69ImY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824445; c=relaxed/simple;
-	bh=er7PZRM4G0R67ZMirWF4+mFTqfpkRtVjE2/oagXA78M=;
+	s=arc-20240116; t=1762824450; c=relaxed/simple;
+	bh=4bNaVSR6Ph3EqGls69mPtMQIfTz9Zyyta11Daj0ZaH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2Ui8p5DcnmnDGlXficjtFJwbYS4og6ZXIB+6HLN4InLU3DyI/FRf3IZq7hmt3JPJgZUf6Cq/pV5EqjI/EbtwUXl5NkYVNaa64NKZ1h2/4iqQ5BhUz9bT30ePYvy3ZfcWW3N9H5h4q5G0p3cg5DJ64nXpH9E6dt8kNnUm1iGW2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJylGDQw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0BFC4CEF5;
-	Tue, 11 Nov 2025 01:27:25 +0000 (UTC)
+	 MIME-Version; b=kwa8DjJRTLbcALw118yRfXF7lrB50bNFWtH8Lcs6C9fEcbHaY/p+tE+1IOVB+zW8fA6vLzsBW0daG/EFBtJ8fPIe9us96bpp22jpvoOxlBEMQLGsEXkk5bBk8C8wYu8H7TVjCG+otnzUmKG4iTe6+lv+oxJe8wXfBfmiLcLM2Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UsPOlXHq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1EDC2BC86;
+	Tue, 11 Nov 2025 01:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824445;
-	bh=er7PZRM4G0R67ZMirWF4+mFTqfpkRtVjE2/oagXA78M=;
+	s=korg; t=1762824450;
+	bh=4bNaVSR6Ph3EqGls69mPtMQIfTz9Zyyta11Daj0ZaH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJylGDQwS44HWstJD8eq+fYnCMAypXZsUriTEkUogUrKJ74KwQuDi5TgSua7ObY9E
-	 Ap7goE+nEroU4Rno4/laEido8coXoMhdHy0eFXO/5BWa2eRqhR0o9lPVLIeCcC7gwu
-	 OuXjEN0Y8Z3u5R8Q+ev2YNGzIQL3aPXfi2uwKV44=
+	b=UsPOlXHqvSXEWwXeAZaF92b1Fgu4cTQ9flfagQhzMKskpbLK2EYeeffthkr94kKWu
+	 3m6axaqjgEru/BrH8LD+S895QJUK9JyUdCxCXqGX3en8OmeJeje/3xOWm7H2vZQsrv
+	 OUoX08raFJriLiEyVKB+233RJ50J5JqMHm/0ovpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 447/565] ftrace: Fix softlockup in ftrace_module_enable
-Date: Tue, 11 Nov 2025 09:45:03 +0900
-Message-ID: <20251111004536.944575588@linuxfoundation.org>
+Subject: [PATCH 6.12 448/565] ksmbd: use sock_create_kern interface to create kernel socket
+Date: Tue, 11 Nov 2025 09:45:04 +0900
+Message-ID: <20251111004536.967436847@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,42 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 4099b98203d6b33d990586542fa5beee408032a3 ]
+[ Upstream commit 3677ca67b9791481af16d86e47c3c7d1f2442f95 ]
 
-A soft lockup was observed when loading amdgpu module.
-If a module has a lot of tracable functions, multiple calls
-to kallsyms_lookup can spend too much time in RCU critical
-section and with disabled preemption, causing kernel panic.
-This is the same issue that was fixed in
-commit d0b24b4e91fc ("ftrace: Prevent RCU stall on PREEMPT_VOLUNTARY
-kernels") and commit 42ea22e754ba ("ftrace: Add cond_resched() to
-ftrace_graph_set_hash()").
+we should use sock_create_kern() if the socket resides in kernel space.
 
-Fix it the same way by adding cond_resched() in ftrace_module_enable.
-
-Link: https://lore.kernel.org/aMQD9_lxYmphT-up@vova-pc
-Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/server/transport_tcp.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 370cde32c696e..f7208f2525447 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -7396,6 +7396,8 @@ void ftrace_module_enable(struct module *mod)
- 		if (!within_module(rec->ip, mod))
- 			break;
+diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
+index b51ccc16abe11..169e3013e48b5 100644
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -475,12 +475,13 @@ static int create_socket(struct interface *iface)
+ 	struct socket *ksmbd_socket;
+ 	bool ipv4 = false;
  
-+		cond_resched();
-+
- 		/* Weak functions should still be ignored */
- 		if (!test_for_valid_rec(rec)) {
- 			/* Clear all other flags. Should not be enabled anyway */
+-	ret = sock_create(PF_INET6, SOCK_STREAM, IPPROTO_TCP, &ksmbd_socket);
++	ret = sock_create_kern(current->nsproxy->net_ns, PF_INET6, SOCK_STREAM,
++			IPPROTO_TCP, &ksmbd_socket);
+ 	if (ret) {
+ 		if (ret != -EAFNOSUPPORT)
+ 			pr_err("Can't create socket for ipv6, fallback to ipv4: %d\n", ret);
+-		ret = sock_create(PF_INET, SOCK_STREAM, IPPROTO_TCP,
+-				  &ksmbd_socket);
++		ret = sock_create_kern(current->nsproxy->net_ns, PF_INET,
++				SOCK_STREAM, IPPROTO_TCP, &ksmbd_socket);
+ 		if (ret) {
+ 			pr_err("Can't create socket for ipv4: %d\n", ret);
+ 			goto out_clear;
 -- 
 2.51.0
 
