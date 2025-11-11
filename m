@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-193781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E18C4A8D5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:43 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6FB0C4A8DE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0FBB84F680F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3FE864F0DC8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34A733BBA2;
-	Tue, 11 Nov 2025 01:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA69C27FD54;
+	Tue, 11 Nov 2025 01:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNGs+LUt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWXgVAOT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEE025CC40;
-	Tue, 11 Nov 2025 01:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832BC33BBB5;
+	Tue, 11 Nov 2025 01:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823991; cv=none; b=lWJbM6YIV7xbrFdA7gTGsfqiszr4wISOTUilpExsP+ll9kCzgIuNxRMdZxAhqNQnsNVk6vDlDmP4C4DFvJGF+z2xC+HCuk3D0PjPqg9QDNl4VbldcAqeUNbSLdQ6NDemtz339VtE600i65ossWqGUEZ5Vg5hUQa5GQe7LLcaU1c=
+	t=1762823996; cv=none; b=VRUthkA2AFgJ4qLEA9dCzfs1aH/A+kzjeot3Byup1SZVvWyolaVoxGfIYTzLeqcpkUqNbjWfLcLsXZe+SsGGLCHELFKdIXh+V5Lodl0ng9P4IH3apkYZuU9HCP3M9+PF66T2dG76B68WqYth1ju2N7m4P7ECEqTcnC8fOKv0+18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823991; c=relaxed/simple;
-	bh=nlpRLnWkMM6ZvlQwkNYqWC03sbJ3nB4bDhzEmBTnYmY=;
+	s=arc-20240116; t=1762823996; c=relaxed/simple;
+	bh=lMtNFKSg09ItOQa8qr7OmUqb0M0Ugl+iXXkxQ0EJCp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQg+mYexwGA8SvlwcVqgLudnPLVcA10PN1YloV+AC1VpLiDHV2KyLT5GpZwWTSGKXfkoqzC8HfN5x5Wpkm3f34+Gkb4gS31c81JaBAdPioveBvkYv3NkSn9/iMzcsrcR4uBQbp4PydHKMtyBDSO2nKr8Ptmy8/NTUsAB9xhBqF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNGs+LUt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20CF0C19422;
-	Tue, 11 Nov 2025 01:19:51 +0000 (UTC)
+	 MIME-Version; b=Ez+Gy+oKtjJaD5RCnqai4SjrE2U2gLYnK1KumPzVfegUGoqdNuHFtoMpVNcejbxWwwDGodLX0bYjU0S0JeD3vKL8TlZ1r/3jPeSKGM466UpS9cyAPYCTMYPClujQj4Tt3t3mSC9RaMYUD2JQL+7IxfOhI73G5NKzGuRhOJNQ7K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWXgVAOT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E71C116B1;
+	Tue, 11 Nov 2025 01:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823991;
-	bh=nlpRLnWkMM6ZvlQwkNYqWC03sbJ3nB4bDhzEmBTnYmY=;
+	s=korg; t=1762823996;
+	bh=lMtNFKSg09ItOQa8qr7OmUqb0M0Ugl+iXXkxQ0EJCp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YNGs+LUtY3+P3K1IKF0cuk0iA67VFhTHJZ/Jemj21HnAGpSIu9NF6FKVwfBj26jLD
-	 wPBCKFqNl4hMj50H4vlW1rCSbN+XOTpgHI0FAD18MjWjZStwOvJ7OoO7QrGI0Emr99
-	 KNw7LHQ8p8dnYJYflTA7OD3IPvuF/HUmP2zusgHA=
+	b=KWXgVAOTRp+4K1RzMOHOSGSRkm82xv+VUjV0aJmHguvxxWA1KEcW1Yg98xFw/TL8g
+	 7K05OYYacZ4BxUFb0jr/YdX//RTPEcfWRJolbJIYh4NNbBtFSvHzzMpZyK0ISaoGDj
+	 fdJaD+QRBdXHs/kX34DXDWbN+QRbp5p07Fk4EZyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devendra K Verma <devverma@amd.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 416/849] dmaengine: dw-edma: Set status for callback_result
-Date: Tue, 11 Nov 2025 09:39:46 +0900
-Message-ID: <20251111004546.499223860@linuxfoundation.org>
+Subject: [PATCH 6.17 417/849] netfilter: nf_tables: all transaction allocations can now sleep
+Date: Tue, 11 Nov 2025 09:39:47 +0900
+Message-ID: <20251111004546.522844300@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,72 +65,177 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Devendra K Verma <devverma@amd.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 5e742de97c806a4048418237ef1283e7d71eaf4b ]
+[ Upstream commit 3d95a2e016abab29ccb6f384576b2038e544a5a8 ]
 
-DMA Engine has support for the callback_result which provides
-the status of the request and the residue. This helps in
-determining the correct status of the request and in
-efficient resource management of the request.
-The 'callback_result' method is preferred over the deprecated
-'callback' method.
+Now that nft_setelem_flush is not called with rcu read lock held or
+disabled softinterrupts anymore this can now use GFP_KERNEL too.
 
-Signed-off-by: Devendra K Verma <devverma@amd.com>
-Link: https://lore.kernel.org/r/20250821121505.318179-1-devverma@amd.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+This is the last atomic allocation of transaction elements, so remove
+all gfp_t arguments and the wrapper function.
+
+This makes attempts to delete large sets much more reliable, before
+this was prone to transient memory allocation failures.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-edma/dw-edma-core.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ net/netfilter/nf_tables_api.c | 47 ++++++++++++++---------------------
+ 1 file changed, 19 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-edma-core.c
-index b43255f914f33..8e5f7defa6b67 100644
---- a/drivers/dma/dw-edma/dw-edma-core.c
-+++ b/drivers/dma/dw-edma/dw-edma-core.c
-@@ -584,6 +584,25 @@ dw_edma_device_prep_interleaved_dma(struct dma_chan *dchan,
- 	return dw_edma_device_transfer(&xfer);
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index c3c73411c40c4..eed434e0a9702 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -151,12 +151,12 @@ static void nft_ctx_init(struct nft_ctx *ctx,
+ 	bitmap_zero(ctx->reg_inited, NFT_REG32_NUM);
  }
  
-+static void dw_hdma_set_callback_result(struct virt_dma_desc *vd,
-+					enum dmaengine_tx_result result)
-+{
-+	u32 residue = 0;
-+	struct dw_edma_desc *desc;
-+	struct dmaengine_result *res;
-+
-+	if (!vd->tx.callback_result)
-+		return;
-+
-+	desc = vd2dw_edma_desc(vd);
-+	if (desc)
-+		residue = desc->alloc_sz - desc->xfer_sz;
-+
-+	res = &vd->tx_result;
-+	res->result = result;
-+	res->residue = residue;
-+}
-+
- static void dw_edma_done_interrupt(struct dw_edma_chan *chan)
+-static struct nft_trans *nft_trans_alloc_gfp(const struct nft_ctx *ctx,
+-					     int msg_type, u32 size, gfp_t gfp)
++static struct nft_trans *nft_trans_alloc(const struct nft_ctx *ctx,
++					 int msg_type, u32 size)
  {
- 	struct dw_edma_desc *desc;
-@@ -597,6 +616,8 @@ static void dw_edma_done_interrupt(struct dw_edma_chan *chan)
- 		case EDMA_REQ_NONE:
- 			desc = vd2dw_edma_desc(vd);
- 			if (!desc->chunks_alloc) {
-+				dw_hdma_set_callback_result(vd,
-+							    DMA_TRANS_NOERROR);
- 				list_del(&vd->node);
- 				vchan_cookie_complete(vd);
- 			}
-@@ -633,6 +654,7 @@ static void dw_edma_abort_interrupt(struct dw_edma_chan *chan)
- 	spin_lock_irqsave(&chan->vc.lock, flags);
- 	vd = vchan_next_desc(&chan->vc);
- 	if (vd) {
-+		dw_hdma_set_callback_result(vd, DMA_TRANS_ABORTED);
- 		list_del(&vd->node);
- 		vchan_cookie_complete(vd);
+ 	struct nft_trans *trans;
+ 
+-	trans = kzalloc(size, gfp);
++	trans = kzalloc(size, GFP_KERNEL);
+ 	if (trans == NULL)
+ 		return NULL;
+ 
+@@ -172,12 +172,6 @@ static struct nft_trans *nft_trans_alloc_gfp(const struct nft_ctx *ctx,
+ 	return trans;
+ }
+ 
+-static struct nft_trans *nft_trans_alloc(const struct nft_ctx *ctx,
+-					 int msg_type, u32 size)
+-{
+-	return nft_trans_alloc_gfp(ctx, msg_type, size, GFP_KERNEL);
+-}
+-
+ static struct nft_trans_binding *nft_trans_get_binding(struct nft_trans *trans)
+ {
+ 	switch (trans->msg_type) {
+@@ -442,8 +436,7 @@ static bool nft_trans_collapse_set_elem_allowed(const struct nft_trans_elem *a,
+ 
+ static bool nft_trans_collapse_set_elem(struct nftables_pernet *nft_net,
+ 					struct nft_trans_elem *tail,
+-					struct nft_trans_elem *trans,
+-					gfp_t gfp)
++					struct nft_trans_elem *trans)
+ {
+ 	unsigned int nelems, old_nelems = tail->nelems;
+ 	struct nft_trans_elem *new_trans;
+@@ -466,9 +459,11 @@ static bool nft_trans_collapse_set_elem(struct nftables_pernet *nft_net,
+ 	/* krealloc might free tail which invalidates list pointers */
+ 	list_del_init(&tail->nft_trans.list);
+ 
+-	new_trans = krealloc(tail, struct_size(tail, elems, nelems), gfp);
++	new_trans = krealloc(tail, struct_size(tail, elems, nelems),
++			     GFP_KERNEL);
+ 	if (!new_trans) {
+-		list_add_tail(&tail->nft_trans.list, &nft_net->commit_list);
++		list_add_tail(&tail->nft_trans.list,
++			      &nft_net->commit_list);
+ 		return false;
  	}
+ 
+@@ -484,7 +479,7 @@ static bool nft_trans_collapse_set_elem(struct nftables_pernet *nft_net,
+ }
+ 
+ static bool nft_trans_try_collapse(struct nftables_pernet *nft_net,
+-				   struct nft_trans *trans, gfp_t gfp)
++				   struct nft_trans *trans)
+ {
+ 	struct nft_trans *tail;
+ 
+@@ -501,7 +496,7 @@ static bool nft_trans_try_collapse(struct nftables_pernet *nft_net,
+ 	case NFT_MSG_DELSETELEM:
+ 		return nft_trans_collapse_set_elem(nft_net,
+ 						   nft_trans_container_elem(tail),
+-						   nft_trans_container_elem(trans), gfp);
++						   nft_trans_container_elem(trans));
+ 	}
+ 
+ 	return false;
+@@ -537,17 +532,14 @@ static void nft_trans_commit_list_add_tail(struct net *net, struct nft_trans *tr
+ 	}
+ }
+ 
+-static void nft_trans_commit_list_add_elem(struct net *net, struct nft_trans *trans,
+-					   gfp_t gfp)
++static void nft_trans_commit_list_add_elem(struct net *net, struct nft_trans *trans)
+ {
+ 	struct nftables_pernet *nft_net = nft_pernet(net);
+ 
+ 	WARN_ON_ONCE(trans->msg_type != NFT_MSG_NEWSETELEM &&
+ 		     trans->msg_type != NFT_MSG_DELSETELEM);
+ 
+-	might_alloc(gfp);
+-
+-	if (nft_trans_try_collapse(nft_net, trans, gfp)) {
++	if (nft_trans_try_collapse(nft_net, trans)) {
+ 		kfree(trans);
+ 		return;
+ 	}
+@@ -7573,7 +7565,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 						}
+ 
+ 						ue->priv = elem_priv;
+-						nft_trans_commit_list_add_elem(ctx->net, trans, GFP_KERNEL);
++						nft_trans_commit_list_add_elem(ctx->net, trans);
+ 						goto err_elem_free;
+ 					}
+ 				}
+@@ -7597,7 +7589,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 	}
+ 
+ 	nft_trans_container_elem(trans)->elems[0].priv = elem.priv;
+-	nft_trans_commit_list_add_elem(ctx->net, trans, GFP_KERNEL);
++	nft_trans_commit_list_add_elem(ctx->net, trans);
+ 	return 0;
+ 
+ err_set_full:
+@@ -7863,7 +7855,7 @@ static int nft_del_setelem(struct nft_ctx *ctx, struct nft_set *set,
+ 	nft_setelem_data_deactivate(ctx->net, set, elem.priv);
+ 
+ 	nft_trans_container_elem(trans)->elems[0].priv = elem.priv;
+-	nft_trans_commit_list_add_elem(ctx->net, trans, GFP_KERNEL);
++	nft_trans_commit_list_add_elem(ctx->net, trans);
+ 	return 0;
+ 
+ fail_ops:
+@@ -7888,9 +7880,8 @@ static int nft_setelem_flush(const struct nft_ctx *ctx,
+ 	if (!nft_set_elem_active(ext, iter->genmask))
+ 		return 0;
+ 
+-	trans = nft_trans_alloc_gfp(ctx, NFT_MSG_DELSETELEM,
+-				    struct_size_t(struct nft_trans_elem, elems, 1),
+-				    GFP_ATOMIC);
++	trans = nft_trans_alloc(ctx, NFT_MSG_DELSETELEM,
++				struct_size_t(struct nft_trans_elem, elems, 1));
+ 	if (!trans)
+ 		return -ENOMEM;
+ 
+@@ -7901,7 +7892,7 @@ static int nft_setelem_flush(const struct nft_ctx *ctx,
+ 	nft_trans_elem_set(trans) = set;
+ 	nft_trans_container_elem(trans)->nelems = 1;
+ 	nft_trans_container_elem(trans)->elems[0].priv = elem_priv;
+-	nft_trans_commit_list_add_elem(ctx->net, trans, GFP_ATOMIC);
++	nft_trans_commit_list_add_elem(ctx->net, trans);
+ 
+ 	return 0;
+ }
+@@ -7918,7 +7909,7 @@ static int __nft_set_catchall_flush(const struct nft_ctx *ctx,
+ 
+ 	nft_setelem_data_deactivate(ctx->net, set, elem_priv);
+ 	nft_trans_container_elem(trans)->elems[0].priv = elem_priv;
+-	nft_trans_commit_list_add_elem(ctx->net, trans, GFP_KERNEL);
++	nft_trans_commit_list_add_elem(ctx->net, trans);
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
