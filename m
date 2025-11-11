@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5325EC4A064
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1012C4A052
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B1A7188D0E3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5779F4F3FF6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC8424113D;
-	Tue, 11 Nov 2025 00:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454EC260566;
+	Tue, 11 Nov 2025 00:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxs5WCHQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OisbjC1E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A25D4C97;
-	Tue, 11 Nov 2025 00:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA4725A640;
+	Tue, 11 Nov 2025 00:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822505; cv=none; b=KPuj8NEsgG+tKdVDgARcDsYke00cQcsQykIYGht1uA26K8Q+fD/Css6GJ3/CuBDsJvkwaqKtNuBzhyT9V2+plZQaLN4VPUt17eZTkXgqiKzPoTonvjENjAZEfMZ0PcQsqSOPa0BJslYibAscInQ5/LFLxtdkgysUrOdUGMsZwo8=
+	t=1762822315; cv=none; b=pulk6sx+Kc7cd55hwlAWI9aGwYXFJRyPhM0cJSz9qeFB5XpsVzubPGdfS9nIkGgWbiNqOhzA2oPXxy4Ouq6skuNjy/K1SuuhU1fbRsCMBrgYDxyheqmns0S8f+Mu7K+6YpJE2VNaNJv0La+vYpIfniscAkefd0DTmYutk1f+kuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822505; c=relaxed/simple;
-	bh=V4zzSwxvCWpXM65NdnGGmiPpWgLL9PtW73dMZIGB9l8=;
+	s=arc-20240116; t=1762822315; c=relaxed/simple;
+	bh=GfxPEN/BHPkUhlT5qrOfBLkwMJQOgD7oCwgCMtrWD/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CIoNEMX/9B62Tv+cXkWLjfwQ8VMug/DPiP8mUhxejWOmASYia5ORiTlhYsu42eZr3l0gI8bPFnAvBRh35+ow5aAzXNW82h8aYIG+f3PYuEzcDvRugYPVS0BczW+OQaKOHwoigquG0LliTF3jVqz/DwMTlX5q+oYDF/V8y4FKUF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxs5WCHQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D2BC4CEFB;
-	Tue, 11 Nov 2025 00:55:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RA8MAE7rIyiorcKj+0V6QarjVn1I7QMTKz/Bb/TrvnDx/Jda3fv7KAQw8SEQa9759KXN6Kzd9UAzjLcqdUqeehfIaNF40f1SmBz9/RvJ99ooj8KRD1UN++BXiBD+gFfsJV3fBmBjuHunlX7KpcsoW4l3cAiWshigHCzdmZRJzGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OisbjC1E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67574C116B1;
+	Tue, 11 Nov 2025 00:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822505;
-	bh=V4zzSwxvCWpXM65NdnGGmiPpWgLL9PtW73dMZIGB9l8=;
+	s=korg; t=1762822315;
+	bh=GfxPEN/BHPkUhlT5qrOfBLkwMJQOgD7oCwgCMtrWD/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wxs5WCHQXBLJPWU+ifu813Nz8TMmA/K8OcGHdMFUDUw6OezudIEsaeOML7FwMADIe
-	 WaGS6m9H53qOzljiGcqZrRsf/5haVAPU5INQB2hj1nxMGao8m2Xc0Lp/cxmUZR0PEq
-	 ArwToD+pMyBNQi75yLC+MLhcu8CsEP7HgwSlroNQ=
+	b=OisbjC1EhwRgbT8a6D8iLp1kjYcjGZuypmLnhcUDimkxYHNQEkRgJKe/CuQdqWO59
+	 +km6OoXUoUPrd8UFhiEwIPPmmhK/mFfPooD7fjrY9zQed2Mhsi8kGIvaCcyfhYSyzd
+	 39RyXZX2LmB3qGWLnPSMdN/bapYm4RCnnabCCMVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Zanders <maarten@zanders.be>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 077/849] ASoC: fsl_sai: Fix sync error in consumer mode
-Date: Tue, 11 Nov 2025 09:34:07 +0900
-Message-ID: <20251111004538.283831933@linuxfoundation.org>
+Subject: [PATCH 6.17 078/849] ASoC: soc_sdw_utils: remove cs42l43 component_name
+Date: Tue, 11 Nov 2025 09:34:08 +0900
+Message-ID: <20251111004538.306911300@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -61,65 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maarten Zanders <maarten@zanders.be>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit b2dd1d0d322dce5f331961c927e775b84014d5ab ]
+[ Upstream commit 45f5c9eec43a9bf448f46562f146810831916cc9 ]
 
-When configured for default synchronisation (Rx syncs to Tx) and the
-SAI operates in consumer mode (clocks provided externally to Tx), a
-synchronisation error occurs on Tx on the first attempt after device
-initialisation when the playback stream is started while a capture
-stream is already active. This results in channel shift/swap on the
-playback stream.
-Subsequent streams (ie after that first failing one) always work
-correctly, no matter the order, with or without the other stream active.
+"spk:cs42l43-spk" component string will be added conditionally by
+asoc_sdw_cs42l43_spk_rtd_init(). We should not add "spk:cs42l43"
+unconditionally.
 
-This issue was observed (and fix tested) on an i.MX6UL board connected
-to an ADAU1761 codec, where the codec provides both frame and bit clock
-(connected to TX pins).
-
-To fix this, always initialize the 'other' xCR4 and xCR5 registers when
-we're starting a stream which is synced to the opposite one, irregardless
-of the producer/consumer status.
-
-Fixes: 51659ca069ce ("ASoC: fsl-sai: set xCR4/xCR5/xMR for SAI master mode")
-
-Signed-off-by: Maarten Zanders <maarten@zanders.be>
-Reviewed-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-Link: https://patch.msgid.link/20251024135716.584265-1-maarten@zanders.be
+Fixes: c61da55412a0 ("ASoC: sdw_utils: Add missed component_name strings for speaker amps")
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20251027140012.966306-1-yung-chuan.liao@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_sai.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/sdw_utils/soc_sdw_utils.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 6c0ae4b33aa4f..b6c72c4bd3cd3 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -652,12 +652,12 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
- 		val_cr4 |= FSL_SAI_CR4_CHMOD;
- 
- 	/*
--	 * For SAI provider mode, when Tx(Rx) sync with Rx(Tx) clock, Rx(Tx) will
--	 * generate bclk and frame clock for Tx(Rx), we should set RCR4(TCR4),
--	 * RCR5(TCR5) for playback(capture), or there will be sync error.
-+	 * When Tx(Rx) sync with Rx(Tx) clock, Rx(Tx) will provide bclk and
-+	 * frame clock for Tx(Rx). We should set RCR4(TCR4), RCR5(TCR5)
-+	 * for playback(capture), or there will be sync error.
- 	 */
- 
--	if (!sai->is_consumer_mode[tx] && fsl_sai_dir_is_synced(sai, adir)) {
-+	if (fsl_sai_dir_is_synced(sai, adir)) {
- 		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(!tx, ofs),
- 				   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK |
- 				   FSL_SAI_CR4_CHMOD_MASK,
+diff --git a/sound/soc/sdw_utils/soc_sdw_utils.c b/sound/soc/sdw_utils/soc_sdw_utils.c
+index 1580331cd34c5..0c95700b8715a 100644
+--- a/sound/soc/sdw_utils/soc_sdw_utils.c
++++ b/sound/soc/sdw_utils/soc_sdw_utils.c
+@@ -600,7 +600,6 @@ struct asoc_sdw_codec_info codec_info_list[] = {
+ 			{
+ 				.direction = {true, false},
+ 				.dai_name = "cs42l43-dp6",
+-				.component_name = "cs42l43",
+ 				.dai_type = SOC_SDW_DAI_TYPE_AMP,
+ 				.dailink = {SOC_SDW_AMP_OUT_DAI_ID, SOC_SDW_UNUSED_DAI_ID},
+ 				.init = asoc_sdw_cs42l43_spk_init,
 -- 
 2.51.0
 
