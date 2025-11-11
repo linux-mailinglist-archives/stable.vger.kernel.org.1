@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-194180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C222C4AE65
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F188C4AF07
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C13C7189128B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9CCE94FABDD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBE433BBB5;
-	Tue, 11 Nov 2025 01:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2FC339714;
+	Tue, 11 Nov 2025 01:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYpkKxkR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a18w5y+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F5726A1B6;
-	Tue, 11 Nov 2025 01:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE2C26A1B6;
+	Tue, 11 Nov 2025 01:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824994; cv=none; b=ghJ0LVkfcfYLHH2Xbg8VntvtwxbIqJJ+mvH3njgsQ6r1+fttFAMVSgOHgHu5Yojk5GqJqxBfmROWHZ/Dk7UyuGImJrAjvnYEm3H/Poi5YekumDJs5RLGm6Jl1AmtVdcpzRa8Ryt51EFV4vygj3lEdY68GC+ojc/+KEtUIAPAoos=
+	t=1762824998; cv=none; b=W4FBIvAbQEUSO/CbJ1z7VJ0HZxEtXUlm3xFVhjq+F7eOAIL9H5ZUsXY4KgPYII6E2b2PKY86ya+wpg6qOSkTpuixcMCsegqvUr7Nk8WeQKeq6Yycy8t8P+N+7bmQD7HrYkJVfkldpAwGgNVo1ITTzfRqWvOV91utb5346LGsBnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824994; c=relaxed/simple;
-	bh=BdAAq4TkgPI1oiWc11kKNtNgmB5dSbho9kcfmUH5YhU=;
+	s=arc-20240116; t=1762824998; c=relaxed/simple;
+	bh=u4/Um56TefT29mI7fklvrXM9THKXX7yFiIGNExWNw8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m3qAabI56oqW+7ki/nwfDW0wL/iFsop37iZRFiFKwUjlyFTHP5XQFEJCaSeKfwIXvEjfSSOCh4ayjTGxNsuBhITh5oxZX9zWHWMhB5qmkvIVeS8f2xXD8YNmCaKQ8OIDSd2GhmkBBDYJ0supO7L9h2eOR5flmHhyIbBFNcWssI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYpkKxkR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AD3C16AAE;
-	Tue, 11 Nov 2025 01:36:33 +0000 (UTC)
+	 MIME-Version; b=UjyCA3+v5M6SwSN7mC2xzfh8V1L5Ke8IZZfenedZ06KkeOHeWVy9OOLVS9lb5S0mK4xMH88s6Ytya8HimXb6nLKX5e6Aejiz/25mw9AihZYZCoRyBpY4zLtjoA4Nv7eV8VT3xGR7cR6oyzM1u8CXAQ0iqhKGi8F3tjl7ID7eFg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a18w5y+K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C624C113D0;
+	Tue, 11 Nov 2025 01:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824993;
-	bh=BdAAq4TkgPI1oiWc11kKNtNgmB5dSbho9kcfmUH5YhU=;
+	s=korg; t=1762824998;
+	bh=u4/Um56TefT29mI7fklvrXM9THKXX7yFiIGNExWNw8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HYpkKxkRPypRNBxaRLFulcnKzMtWWCb0wjUJD0A+A/+YnIpD6jH+fNPlVhx4AHrvN
-	 vsRK+RD/KvrpPvFTu4XpMIfe81f8yZVwHJOzbSOzYgENYfXJMGoz7GTDKQgFN6LBQh
-	 NESpcP63Q1QUJ5A/uCSS2vt8K//u5/nr61dGLU9U=
+	b=a18w5y+KPZ6szyQ7U53oXF3TR365zFKASpf/9LYPD+EsBzde+FV7a+mjD6yHwO0JE
+	 0U+izLul5RT4bVEAXwFD6EdLRD3g08MAbvMNUMXfUkUVoysYDrYWC8RCs/pp0q9IUI
+	 zmuB4X4sdUsohXe+LmiorY0e9Byo2g88p7ebEGoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 564/565] drm/amd/display: Fix black screen with HDMI outputs
-Date: Tue, 11 Nov 2025 09:47:00 +0900
-Message-ID: <20251111004539.710298652@linuxfoundation.org>
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 565/565] net: phy: fix phy_disable_eee
+Date: Tue, 11 Nov 2025 09:47:01 +0900
+Message-ID: <20251111004539.732368164@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -63,49 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit fdc93beeadc2439e5e85d056a8fe681dcced09da upstream.
+commit c83ca5a4df7cf0ce9ccc25e8481043e05aed6ad0 upstream.
 
-[Why & How]
-This fixes the black screen issue on certain APUs with HDMI,
-accompanied by the following messages:
+genphy_c45_write_eee_adv() becomes a no-op if phydev->supported_eee
+is cleared. That's not what we want because this function is still
+needed to clear the EEE advertisement register(s).
+Fill phydev->eee_broken_modes instead to ensure that userspace
+can't re-enable EEE advertising.
 
-amdgpu 0000:c4:00.0: amdgpu: [drm] Failed to setup vendor info
-                     frame on connector DP-1: -22
-amdgpu 0000:c4:00.0: [drm] Cannot find any crtc or sizes [drm]
-                     Cannot find any crtc or sizes
-
-Fixes: 489f0f600ce2 ("drm/amd/display: Fix DVI-D/HDMI adapters")
-Suggested-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 678c901443a6d2e909e3b51331a20f9d8f84ce82)
+Fixes: b55498ff14bd ("net: phy: add phy_disable_eee")
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/57e2ae5f-4319-413c-b5c4-ebc8d049bc23@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_detection.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/phy_device.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-@@ -1133,6 +1133,7 @@ static bool detect_link_and_local_sink(s
- 		    !sink->edid_caps.edid_hdmi)
- 			sink->sink_signal = SIGNAL_TYPE_DVI_SINGLE_LINK;
- 		else if (dc_is_dvi_signal(sink->sink_signal) &&
-+			 dc_is_dvi_signal(link->connector_signal) &&
- 			 aud_support->hdmi_audio_native &&
- 			 sink->edid_caps.edid_hdmi)
- 			sink->sink_signal = SIGNAL_TYPE_HDMI_TYPE_A;
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3054,10 +3054,11 @@ EXPORT_SYMBOL(phy_support_eee);
+  */
+ void phy_disable_eee(struct phy_device *phydev)
+ {
+-	linkmode_zero(phydev->supported_eee);
+ 	linkmode_zero(phydev->advertising_eee);
+ 	phydev->eee_cfg.tx_lpi_enabled = false;
+ 	phydev->eee_cfg.eee_enabled = false;
++	/* don't let userspace re-enable EEE advertisement */
++	linkmode_fill(phydev->eee_broken_modes);
+ }
+ EXPORT_SYMBOL_GPL(phy_disable_eee);
+ 
 
 
 
