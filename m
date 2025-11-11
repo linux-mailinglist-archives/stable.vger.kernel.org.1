@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-193530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B792C4A530
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:55 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015A0C4A620
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CC2FE34BE02
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9EA764F573C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6766C337B8A;
-	Tue, 11 Nov 2025 01:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A37A337BB4;
+	Tue, 11 Nov 2025 01:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcaVvvZw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrzPKRye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239832750E6;
-	Tue, 11 Nov 2025 01:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3213427FD72;
+	Tue, 11 Nov 2025 01:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823400; cv=none; b=mkPoUQN+UjCwLYY/lp08w33fSqbstlxVZ3poOWlzkqLTczwffr6x2VXRJjl/2taMXSK+k7GrSyImZAKNCdCc3/nboTk3jH3D6t00WKl0wKNdjemGnv0NPiwBrqlubDb4nqm5iduxXkVYY2195ziQYwsSG71axcs9COt2MN09pbU=
+	t=1762823405; cv=none; b=Ow0FqWWjtwhqC9C+R9plUbFXOf3iKq8Qn9kZGZlVjpEVXpy/w1iKdBQVfTl+VgNJp7jfZD3/1HjMFnlCxMZvfYc8QVyCrul78XaR6kaGRH6RFMdqEi/0Qc+k0W04rOuwA+Zr6eanAGTYkjVrS5CvRYzwa8TOxCi5LXNT5HKaF5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823400; c=relaxed/simple;
-	bh=6ZqC98vG/lvvPHQxd0BcoKc8VaN3ogMTBgvbsdup0fo=;
+	s=arc-20240116; t=1762823405; c=relaxed/simple;
+	bh=Lvv4tX2pPUBVzDCnKhODBclbUelCj2puD8V7ZxggpRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pqs+SUHprlI1DoZ7aPEM/4A6ua1nSxjXf48cLkPENgytRRUHzJhdQY5FYSvAOgxliW+rYzHZvh6vVE8h8R3WaY0JItz8tP42OVOcpK7LbX3EqMnSCkeZZ65bie0aRDNQ9P2mXA44fWVMNu8w8gLW8YkLp3zQDX4tXWh1Wd12dm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcaVvvZw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BADDC116B1;
-	Tue, 11 Nov 2025 01:09:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m4CtO/SQEDeCJfvhJFwMZAi0u4lYPGT4AcDZwEywI5CPWMTe7mMcgdL8KpEO9+/EOdd9BOfl1JDe3iPFNkyJgNghLRbiwDvzEGvv9uzTWpujvtqXJGceXm/3xjC4vGLDv2DGAh80tdwzgruflJ7sAPKYKUwrFDck+W81Xyc75QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrzPKRye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA10C4CEF5;
+	Tue, 11 Nov 2025 01:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823399;
-	bh=6ZqC98vG/lvvPHQxd0BcoKc8VaN3ogMTBgvbsdup0fo=;
+	s=korg; t=1762823405;
+	bh=Lvv4tX2pPUBVzDCnKhODBclbUelCj2puD8V7ZxggpRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KcaVvvZwVSS89MVhDbdEFuFQA433KytinWdJ6xbKAtNzh4YYqCL63vykErk3RRBkL
-	 6cm3rMa1A21UXsYLvVq299Iv3reuggL9H02sLAmJ1IEIHLbIihzQmPlHKzaDCl8LxL
-	 YVLvRDMcaPEJXF7LtBiWDjWTSpdkj1DyURjfeeSM=
+	b=UrzPKRye59DxYkIhVtjgDDI5yplYSvJ241dZmCsAIxYS9iYSQJxG4aZzLkFKAotfE
+	 fAZKyg+skugR7oVNd0HtOZDLLKoQ5MysFaICHZ2nbMEni7O5hVxQHUMaZBVCiv0Xpo
+	 IQvHIT2T99u4gN9vYIXa01/v0qbq8If6x71nnsec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 293/849] net: stmmac: Check stmmac_hw_setup() in stmmac_resume()
-Date: Tue, 11 Nov 2025 09:37:43 +0900
-Message-ID: <20251111004543.490932570@linuxfoundation.org>
+Subject: [PATCH 6.17 294/849] ice: Dont use %pK through printk or tracepoints
+Date: Tue, 11 Nov 2025 09:37:44 +0900
+Message-ID: <20251111004543.514224847@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -62,50 +65,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 6896c2449a1858acb643014894d01b3a1223d4e5 ]
+[ Upstream commit 66ceb45b7d7e9673254116eefe5b6d3a44eba267 ]
 
-stmmac_hw_setup() may return 0 on success and an appropriate negative
-integer as defined in errno.h file on failure, just check it and then
-return early if failed in stmmac_resume().
+In the past %pK was preferable to %p as it would not leak raw pointer
+values into the kernel log.
+Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
+the regular %p has been improved to avoid this issue.
+Furthermore, restricted pointers ("%pK") were never meant to be used
+through printk(). They can still unintentionally leak raw pointers or
+acquire sleeping locks in atomic contexts.
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://patch.msgid.link/20250811073506.27513-2-yangtiezhu@loongson.cn
+Switch to the regular pointer formatting which is safer and
+easier to reason about.
+There are still a few users of %pK left, but these use it through seq_file,
+for which its usage is safe.
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Acked-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250811-restricted-pointers-net-v5-1-2e2fdc7d3f2c@linutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c  |  2 +-
+ drivers/net/ethernet/intel/ice/ice_trace.h | 10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 7b16d1207b80c..b9f55e4e360fb 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7977,7 +7977,14 @@ int stmmac_resume(struct device *dev)
- 	stmmac_free_tx_skbufs(priv);
- 	stmmac_clear_descriptors(priv, &priv->dma_conf);
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 77781277aa8e4..92b95d92d5992 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -9125,7 +9125,7 @@ static int ice_create_q_channels(struct ice_vsi *vsi)
+ 		list_add_tail(&ch->list, &vsi->ch_list);
+ 		vsi->tc_map_vsi[i] = ch->ch_vsi;
+ 		dev_dbg(ice_pf_to_dev(pf),
+-			"successfully created channel: VSI %pK\n", ch->ch_vsi);
++			"successfully created channel: VSI %p\n", ch->ch_vsi);
+ 	}
+ 	return 0;
  
--	stmmac_hw_setup(ndev, false);
-+	ret = stmmac_hw_setup(ndev, false);
-+	if (ret < 0) {
-+		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
-+		mutex_unlock(&priv->lock);
-+		rtnl_unlock();
-+		return ret;
-+	}
-+
- 	stmmac_init_coalesce(priv);
- 	phylink_rx_clk_stop_block(priv->phylink);
- 	stmmac_set_rx_mode(ndev);
+diff --git a/drivers/net/ethernet/intel/ice/ice_trace.h b/drivers/net/ethernet/intel/ice/ice_trace.h
+index 07aab6e130cd5..4f35ef8d6b299 100644
+--- a/drivers/net/ethernet/intel/ice/ice_trace.h
++++ b/drivers/net/ethernet/intel/ice/ice_trace.h
+@@ -130,7 +130,7 @@ DECLARE_EVENT_CLASS(ice_tx_template,
+ 				   __entry->buf = buf;
+ 				   __assign_str(devname);),
+ 
+-		    TP_printk("netdev: %s ring: %pK desc: %pK buf %pK", __get_str(devname),
++		    TP_printk("netdev: %s ring: %p desc: %p buf %p", __get_str(devname),
+ 			      __entry->ring, __entry->desc, __entry->buf)
+ );
+ 
+@@ -158,7 +158,7 @@ DECLARE_EVENT_CLASS(ice_rx_template,
+ 				   __entry->desc = desc;
+ 				   __assign_str(devname);),
+ 
+-		    TP_printk("netdev: %s ring: %pK desc: %pK", __get_str(devname),
++		    TP_printk("netdev: %s ring: %p desc: %p", __get_str(devname),
+ 			      __entry->ring, __entry->desc)
+ );
+ DEFINE_EVENT(ice_rx_template, ice_clean_rx_irq,
+@@ -182,7 +182,7 @@ DECLARE_EVENT_CLASS(ice_rx_indicate_template,
+ 				   __entry->skb = skb;
+ 				   __assign_str(devname);),
+ 
+-		    TP_printk("netdev: %s ring: %pK desc: %pK skb %pK", __get_str(devname),
++		    TP_printk("netdev: %s ring: %p desc: %p skb %p", __get_str(devname),
+ 			      __entry->ring, __entry->desc, __entry->skb)
+ );
+ 
+@@ -205,7 +205,7 @@ DECLARE_EVENT_CLASS(ice_xmit_template,
+ 				   __entry->skb = skb;
+ 				   __assign_str(devname);),
+ 
+-		    TP_printk("netdev: %s skb: %pK ring: %pK", __get_str(devname),
++		    TP_printk("netdev: %s skb: %p ring: %p", __get_str(devname),
+ 			      __entry->skb, __entry->ring)
+ );
+ 
+@@ -228,7 +228,7 @@ DECLARE_EVENT_CLASS(ice_tx_tstamp_template,
+ 		    TP_fast_assign(__entry->skb = skb;
+ 				   __entry->idx = idx;),
+ 
+-		    TP_printk("skb %pK idx %d",
++		    TP_printk("skb %p idx %d",
+ 			      __entry->skb, __entry->idx)
+ );
+ #define DEFINE_TX_TSTAMP_OP_EVENT(name) \
 -- 
 2.51.0
 
