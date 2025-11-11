@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-193186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C792C4A05E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59135C4A13E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E51F188D356
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D60FC3ACEE0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD75C214210;
-	Tue, 11 Nov 2025 00:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8817F1C6FE1;
+	Tue, 11 Nov 2025 00:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+GTLK5D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AU6eqNgo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890094C97;
-	Tue, 11 Nov 2025 00:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443501DF258;
+	Tue, 11 Nov 2025 00:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822500; cv=none; b=UIJM/ow9KWsX/WV1C9pOVN7TVkvhyW1K8Fwfg79rXmcEHb2iUdA41h5z83f50tGLCWcWKPFiz/OwF2F7ap7UL8IYcEi0R1YT28J5K+3IHm3pEtezHLK53P54wYO5kQn3CtjfNyT8M4t74Uli+ugXkspLUjvrYn7sN2uzYJfeoOM=
+	t=1762822708; cv=none; b=UeCpO8MEgrqz2X/S7L+pFoam3gyIYH3wF90Zy+PgUqpQwiWPJ3OCD3x/CJq5JtMhXZ2Qbc4ql/dpgkzvGbvYsKy+VmWDJ58UpWWi/QbGt08SSLC4vGmZmwp4cbva7YmHHt665ov0moMZhzwUKUEwAwp5QDlmwk38PVytpNxgPng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822500; c=relaxed/simple;
-	bh=0G9ASr8sa0o/o0erfp3+IsWW5IAcyYmtLiO54/swpYs=;
+	s=arc-20240116; t=1762822708; c=relaxed/simple;
+	bh=ismkj4svXZizxt7pQQAEAslYesChDy+r7vNtjcaRAoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qGhhUiKnpnh7fRvOgZmm7u9753mzXmDlSY9W3f2JyecO7cntVEHhJlUSCrxMbg/aLqEqDrBv29xVzsorzlrYYJuxdVU5RkXWRElW7MfeA1SOOBYXEr8Xd+y3SDVPFPWJrIEJpirdDZolduog3wdk26SsT6ssC+RYObjVAGI6Llo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+GTLK5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25611C116B1;
-	Tue, 11 Nov 2025 00:54:59 +0000 (UTC)
+	 MIME-Version; b=YJFjyXYF3hwkBua1T3dCIkFdRdNIvRXwQk1sVlzp8lP1HcaG40SBDhtaUsb2aumfxAa8vEyGcp8CCAfNDUonyOkXRxNFkQQ+xsy5ze/iHFaCA6xmZzP84kexIS//H9WzeStMybfzhxi4JgEJgNq/cV9q9GqMyknnV/e0O6JysM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AU6eqNgo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A02C4CEFB;
+	Tue, 11 Nov 2025 00:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822500;
-	bh=0G9ASr8sa0o/o0erfp3+IsWW5IAcyYmtLiO54/swpYs=;
+	s=korg; t=1762822708;
+	bh=ismkj4svXZizxt7pQQAEAslYesChDy+r7vNtjcaRAoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+GTLK5DOHtW4AlzShskzQwKoglTLxm44NLaoPPUW2j2FSuvREAAzpUPlq5BkDSBn
-	 VRRJK/ZPIhzIeH5UP9JKx2Uvzn1IoE6vvO/DxAdSjqk260fV/XxxThIOgVBfGBbCjN
-	 ALCAnXyjEmSfJ8bwJr9eFKnVyscTRl6f4nXO+u9g=
+	b=AU6eqNgopNq8ntV5J7NDsdFcmdjPocI/qcC91QdLyz2yEA1BHyCj8GNnqSDenR3Fm
+	 li98Nt2sGkknezP+/MJgA6yTbUa0VnfD3Bpewdy+ehogO+4WxuCv0n89OJazQB0Szb
+	 exyHBHiWyTwxy2vSO60B9nHTEWBuDutlSbBRSjhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xudong Hao <xudong.hao@intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Zide Chen <zide.chen@intel.com>
-Subject: [PATCH 6.12 062/565] perf/x86/intel: Fix KASAN global-out-of-bounds warning
-Date: Tue, 11 Nov 2025 09:38:38 +0900
-Message-ID: <20251111004528.325919807@linuxfoundation.org>
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Steev Klimaszewski <steev@kali.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 063/565] regmap: slimbus: fix bus_context pointer in regmap init calls
+Date: Tue, 11 Nov 2025 09:38:39 +0900
+Message-ID: <20251111004528.351703351@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,58 +70,99 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-commit 0ba6502ce167fc3d598c08c2cc3b4ed7ca5aa251 upstream.
+commit 434f7349a1f00618a620b316f091bd13a12bc8d2 upstream.
 
-When running "perf mem record" command on CWF, the below KASAN
-global-out-of-bounds warning is seen.
+Commit 4e65bda8273c ("ASoC: wcd934x: fix error handling in
+wcd934x_codec_parse_data()") revealed the problem in the slimbus regmap.
+That commit breaks audio playback, for instance, on sdm845 Thundercomm
+Dragonboard 845c board:
 
-  ==================================================================
-  BUG: KASAN: global-out-of-bounds in cmt_latency_data+0x176/0x1b0
-  Read of size 4 at addr ffffffffb721d000 by task dtlb/9850
+ Unable to handle kernel paging request at virtual address ffff8000847cbad4
+ ...
+ CPU: 5 UID: 0 PID: 776 Comm: aplay Not tainted 6.18.0-rc1-00028-g7ea30958b305 #11 PREEMPT
+ Hardware name: Thundercomm Dragonboard 845c (DT)
+ ...
+ Call trace:
+  slim_xfer_msg+0x24/0x1ac [slimbus] (P)
+  slim_read+0x48/0x74 [slimbus]
+  regmap_slimbus_read+0x18/0x24 [regmap_slimbus]
+  _regmap_raw_read+0xe8/0x174
+  _regmap_bus_read+0x44/0x80
+  _regmap_read+0x60/0xd8
+  _regmap_update_bits+0xf4/0x140
+  _regmap_select_page+0xa8/0x124
+  _regmap_raw_write_impl+0x3b8/0x65c
+  _regmap_bus_raw_write+0x60/0x80
+  _regmap_write+0x58/0xc0
+  regmap_write+0x4c/0x80
+  wcd934x_hw_params+0x494/0x8b8 [snd_soc_wcd934x]
+  snd_soc_dai_hw_params+0x3c/0x7c [snd_soc_core]
+  __soc_pcm_hw_params+0x22c/0x634 [snd_soc_core]
+  dpcm_be_dai_hw_params+0x1d4/0x38c [snd_soc_core]
+  dpcm_fe_dai_hw_params+0x9c/0x17c [snd_soc_core]
+  snd_pcm_hw_params+0x124/0x464 [snd_pcm]
+  snd_pcm_common_ioctl+0x110c/0x1820 [snd_pcm]
+  snd_pcm_ioctl+0x34/0x4c [snd_pcm]
+  __arm64_sys_ioctl+0xac/0x104
+  invoke_syscall+0x48/0x104
+  el0_svc_common.constprop.0+0x40/0xe0
+  do_el0_svc+0x1c/0x28
+  el0_svc+0x34/0xec
+  el0t_64_sync_handler+0xa0/0xf0
+  el0t_64_sync+0x198/0x19c
 
-  Call Trace:
+The __devm_regmap_init_slimbus() started to be used instead of
+__regmap_init_slimbus() after the commit mentioned above and turns out
+the incorrect bus_context pointer (3rd argument) was used in
+__devm_regmap_init_slimbus(). It should be just "slimbus" (which is equal
+to &slimbus->dev). Correct it. The wcd934x codec seems to be the only or
+the first user of devm_regmap_init_slimbus() but we should fix it till
+the point where __devm_regmap_init_slimbus() was introduced therefore
+two "Fixes" tags.
 
-   kasan_report+0xb8/0xf0
-   cmt_latency_data+0x176/0x1b0
-   setup_arch_pebs_sample_data+0xf49/0x2560
-   intel_pmu_drain_arch_pebs+0x577/0xb00
-   handle_pmi_common+0x6c4/0xc80
+While at this, also correct the same argument in __regmap_init_slimbus().
 
-The issue is caused by below code in __grt_latency_data(). The code
-tries to access x86_hybrid_pmu structure which doesn't exist on
-non-hybrid platform like CWF.
-
-        WARN_ON_ONCE(hybrid_pmu(event->pmu)->pmu_type == hybrid_big)
-
-So add is_hybrid() check before calling this WARN_ON_ONCE to fix the
-global-out-of-bounds access issue.
-
-Fixes: 090262439f66 ("perf/x86/intel: Rename model-specific pebs_latency_data functions")
-Reported-by: Xudong Hao <xudong.hao@intel.com>
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Zide Chen <zide.chen@intel.com>
+Fixes: 4e65bda8273c ("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
+Fixes: 7d6f7fb053ad ("regmap: add SLIMbus support")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251028064214.1451968-1-dapeng1.mi@linux.intel.com
+Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Ma Ke <make24@iscas.ac.cn>
+Cc: Steev Klimaszewski <steev@kali.org>
+Cc: Srinivas Kandagatla <srini@kernel.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251022201013.1740211-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/ds.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/base/regmap/regmap-slimbus.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -305,7 +305,8 @@ static u64 __grt_latency_data(struct per
- {
- 	u64 val;
+--- a/drivers/base/regmap/regmap-slimbus.c
++++ b/drivers/base/regmap/regmap-slimbus.c
+@@ -48,8 +48,7 @@ struct regmap *__regmap_init_slimbus(str
+ 	if (IS_ERR(bus))
+ 		return ERR_CAST(bus);
  
--	WARN_ON_ONCE(hybrid_pmu(event->pmu)->pmu_type == hybrid_big);
-+	WARN_ON_ONCE(is_hybrid() &&
-+		     hybrid_pmu(event->pmu)->pmu_type == hybrid_big);
+-	return __regmap_init(&slimbus->dev, bus, &slimbus->dev, config,
+-			     lock_key, lock_name);
++	return __regmap_init(&slimbus->dev, bus, slimbus, config, lock_key, lock_name);
+ }
+ EXPORT_SYMBOL_GPL(__regmap_init_slimbus);
  
- 	dse &= PERF_PEBS_DATA_SOURCE_GRT_MASK;
- 	val = hybrid_var(event->pmu, pebs_data_source)[dse];
+@@ -63,8 +62,7 @@ struct regmap *__devm_regmap_init_slimbu
+ 	if (IS_ERR(bus))
+ 		return ERR_CAST(bus);
+ 
+-	return __devm_regmap_init(&slimbus->dev, bus, &slimbus, config,
+-				  lock_key, lock_name);
++	return __devm_regmap_init(&slimbus->dev, bus, slimbus, config, lock_key, lock_name);
+ }
+ EXPORT_SYMBOL_GPL(__devm_regmap_init_slimbus);
+ 
 
 
 
