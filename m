@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B3CC4B048
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:53:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07727C4AE92
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5096F4F9FC5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:48:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A08D3BCA77
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3E014286;
-	Tue, 11 Nov 2025 01:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6AD3081BE;
+	Tue, 11 Nov 2025 01:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGNpjQeE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ihkw6ZW7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06E17640E;
-	Tue, 11 Nov 2025 01:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7C225A64C;
+	Tue, 11 Nov 2025 01:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825281; cv=none; b=iWI58ms+EngtwZDkMWlaVrHyKe9npVUiADvRFjFlfmV+7csdLPtZtAXoLovWtbLFXzTd1wqMCSBT5LcUHAZEbzfK81S9HrtzrjxPjOwIs+28bTydMftQx53ynDfkSsPStp01GOMkpQhPOroTc4Fk4zI/nOibtYrmWn0/7mBNkvI=
+	t=1762824457; cv=none; b=RY33QKbKxkswWjfzjbsh1+C5Ovf65tNnOzVZys0GT/nlj9TyAJOA6iFQ625dDoclwTwsfHGJ29rFyDR9h4kiuWeXv1Ml00JKShW4Xf1+4w9w5HEc7CZ1OQa8CXNp6GhJKJidKiA0+T8ggDBVcWaIAVjBKEix/ybRJkhpj5wgcSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825281; c=relaxed/simple;
-	bh=TEH8EWbQA8LvwdN6T5rJ134mJcwpxvxBLR2mvibYBXw=;
+	s=arc-20240116; t=1762824457; c=relaxed/simple;
+	bh=QxvpdostZIAy2zMgLB/hADaxG+oyQSzRyOGkYhQUesE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8cTvV90DRkoA+qCwJspRudBSHyrXNvXG3Rz6+7nuGGZDtqh6t1R4vtQIM8xEnu75Ry+qd85uWzkqig4uPOSNvg6LXCmDebwAQaUkRnXvxi7ZPuF5bLIBLnYCBQXxGft0feRBj6TRU0QU4CkWeiTgKv+LLQCT+mzxurAZh887aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGNpjQeE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91549C19422;
-	Tue, 11 Nov 2025 01:41:20 +0000 (UTC)
+	 MIME-Version; b=tFPiA+xB7pX641DeCPoXoaKtGhFRy2pRz90+srHw4lFcWKZeQzzcfltj4KtFgxUhzMFMHjtMOM10ACuXUx9vEsA/oBneTMSKWtQF3qmxDRWdwkNfV08t1nqoXItFcu8RWRNT5SY1J6E1zFIKY6EjSLd5Jcu7POKOzdgIIxk5nWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ihkw6ZW7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59211C19421;
+	Tue, 11 Nov 2025 01:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825280;
-	bh=TEH8EWbQA8LvwdN6T5rJ134mJcwpxvxBLR2mvibYBXw=;
+	s=korg; t=1762824457;
+	bh=QxvpdostZIAy2zMgLB/hADaxG+oyQSzRyOGkYhQUesE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fGNpjQeEwIBsx2QJLPpY6IjXHOjlyBSJvfuu61s0kUKgIKkIOryMn9ZgDd9YOvFni
-	 SAA+//6dOkNMWKARm7D7dHrDAsJUiPQf+7L4OBq8EjK+shLBYN3YggwyQgRBN3tYhw
-	 yvs77GNy376NCBMgXyVZiPbpA8htE+EcxJcbeECI=
+	b=Ihkw6ZW7r63eZkaXGe01bbnG48Yc6eMiGOzBTeamabzPKU6/Bh2k+QTHIY7wM1FYG
+	 VPHfDHHEV71AjgVbK5D2TWH8v1wGwGlXqszicJxMp8ZJQa0YEJ0ImVGpQvBCHJs6TH
+	 JGtGGPKqpUdWeneFyCfIJosG/jXcLSJtuT3FO88k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kotresh HR <khiremat@redhat.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Coiby Xu <coxu@redhat.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 736/849] ceph: fix multifs mds auth caps issue
+Subject: [PATCH 6.12 450/565] ima: dont clear IMA_DIGSIG flag when setting or removing non-IMA xattr
 Date: Tue, 11 Nov 2025 09:45:06 +0900
-Message-ID: <20251111004554.233540766@linuxfoundation.org>
+Message-ID: <20251111004537.013152857@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,177 +62,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kotresh HR <khiremat@redhat.com>
+From: Coiby Xu <coxu@redhat.com>
 
-[ Upstream commit 22c73d52a6d05c5a2053385c0d6cd9984732799d ]
+[ Upstream commit 88b4cbcf6b041ae0f2fc8a34554a5b6a83a2b7cd ]
 
-The mds auth caps check should also validate the
-fsname along with the associated caps. Not doing
-so would result in applying the mds auth caps of
-one fs on to the other fs in a multifs ceph cluster.
-The bug causes multiple issues w.r.t user
-authentication, following is one such example.
+Currently when both IMA and EVM are in fix mode, the IMA signature will
+be reset to IMA hash if a program first stores IMA signature in
+security.ima and then writes/removes some other security xattr for the
+file.
 
-Steps to Reproduce (on vstart cluster):
-1. Create two file systems in a cluster, say 'fsname1' and 'fsname2'
-2. Authorize read only permission to the user 'client.usr' on fs 'fsname1'
-    $ceph fs authorize fsname1 client.usr / r
-3. Authorize read and write permission to the same user 'client.usr' on fs 'fsname2'
-    $ceph fs authorize fsname2 client.usr / rw
-4. Update the keyring
-    $ceph auth get client.usr >> ./keyring
+For example, on Fedora, after booting the kernel with "ima_appraise=fix
+evm=fix ima_policy=appraise_tcb" and installing rpm-plugin-ima,
+installing/reinstalling a package will not make good reference IMA
+signature generated. Instead IMA hash is generated,
 
-With above permssions for the user 'client.usr', following is the
-expectation.
-  a. The 'client.usr' should be able to only read the contents
-     and not allowed to create or delete files on file system 'fsname1'.
-  b. The 'client.usr' should be able to read/write on file system 'fsname2'.
+    # getfattr -m - -d -e hex /usr/bin/bash
+    # file: usr/bin/bash
+    security.ima=0x0404...
 
-But, with this bug, the 'client.usr' is allowed to read/write on file
-system 'fsname1'. See below.
+This happens because when setting security.selinux, the IMA_DIGSIG flag
+that had been set early was cleared. As a result, IMA hash is generated
+when the file is closed.
 
-5. Mount the file system 'fsname1' with the user 'client.usr'
-     $sudo bin/mount.ceph usr@.fsname1=/ /kmnt_fsname1_usr/
-6. Try creating a file on file system 'fsname1' with user 'client.usr'. This
-   should fail but passes with this bug.
-     $touch /kmnt_fsname1_usr/file1
-7. Mount the file system 'fsname1' with the user 'client.admin' and create a
-   file.
-     $sudo bin/mount.ceph admin@.fsname1=/ /kmnt_fsname1_admin
-     $echo "data" > /kmnt_fsname1_admin/admin_file1
-8. Try removing an existing file on file system 'fsname1' with the user
-   'client.usr'. This shoudn't succeed but succeeds with the bug.
-     $rm -f /kmnt_fsname1_usr/admin_file1
+Similarly, IMA signature can be cleared on file close after removing
+security xattr like security.evm or setting/removing ACL.
 
-For more information, please take a look at the corresponding mds/fuse patch
-and tests added by looking into the tracker mentioned below.
+Prevent replacing the IMA file signature with a file hash, by preventing
+the IMA_DIGSIG flag from being reset.
 
-v2: Fix a possible null dereference in doutc
-v3: Don't store fsname from mdsmap, validate against
-    ceph_mount_options's fsname and use it
-v4: Code refactor, better warning message and
-    fix possible compiler warning
+Here's a minimal C reproducer which sets security.selinux as the last
+step which can also replaced by removing security.evm or setting ACL,
 
-[ Slava.Dubeyko: "fsname check failed" -> "fsname mismatch" ]
+    #include <stdio.h>
+    #include <sys/xattr.h>
+    #include <fcntl.h>
+    #include <unistd.h>
+    #include <string.h>
+    #include <stdlib.h>
 
-Link: https://tracker.ceph.com/issues/72167
-Signed-off-by: Kotresh HR <khiremat@redhat.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+    int main() {
+        const char* file_path = "/usr/sbin/test_binary";
+        const char* hex_string = "030204d33204490066306402304";
+        int length = strlen(hex_string);
+        char* ima_attr_value;
+        int fd;
+
+        fd = open(file_path, O_WRONLY|O_CREAT|O_EXCL, 0644);
+        if (fd == -1) {
+            perror("Error opening file");
+            return 1;
+        }
+
+        ima_attr_value = (char*)malloc(length / 2 );
+        for (int i = 0, j = 0; i < length; i += 2, j++) {
+            sscanf(hex_string + i, "%2hhx", &ima_attr_value[j]);
+        }
+
+        if (fsetxattr(fd, "security.ima", ima_attr_value, length/2, 0) == -1) {
+            perror("Error setting extended attribute");
+            close(fd);
+            return 1;
+        }
+
+        const char* selinux_value= "system_u:object_r:bin_t:s0";
+        if (fsetxattr(fd, "security.selinux", selinux_value, strlen(selinux_value), 0) == -1) {
+            perror("Error setting extended attribute");
+            close(fd);
+            return 1;
+        }
+
+        close(fd);
+
+        return 0;
+    }
+
+Signed-off-by: Coiby Xu <coxu@redhat.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/mds_client.c |  8 ++++++++
- fs/ceph/mdsmap.c     | 14 +++++++++++++-
- fs/ceph/super.c      | 14 --------------
- fs/ceph/super.h      | 14 ++++++++++++++
- 4 files changed, 35 insertions(+), 15 deletions(-)
+ security/integrity/ima/ima_appraise.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
-index 3bc72b47fe4d4..3efbc11596e00 100644
---- a/fs/ceph/mds_client.c
-+++ b/fs/ceph/mds_client.c
-@@ -5649,11 +5649,19 @@ static int ceph_mds_auth_match(struct ceph_mds_client *mdsc,
- 	u32 caller_uid = from_kuid(&init_user_ns, cred->fsuid);
- 	u32 caller_gid = from_kgid(&init_user_ns, cred->fsgid);
- 	struct ceph_client *cl = mdsc->fsc->client;
-+	const char *fs_name = mdsc->fsc->mount_options->mds_namespace;
- 	const char *spath = mdsc->fsc->mount_options->server_path;
- 	bool gid_matched = false;
- 	u32 gid, tlen, len;
- 	int i, j;
- 
-+	doutc(cl, "fsname check fs_name=%s  match.fs_name=%s\n",
-+	      fs_name, auth->match.fs_name ? auth->match.fs_name : "");
-+	if (auth->match.fs_name && strcmp(auth->match.fs_name, fs_name)) {
-+		/* fsname mismatch, try next one */
-+		return 0;
-+	}
-+
- 	doutc(cl, "match.uid %lld\n", auth->match.uid);
- 	if (auth->match.uid != MDS_AUTH_UID_ANY) {
- 		if (auth->match.uid != caller_uid)
-diff --git a/fs/ceph/mdsmap.c b/fs/ceph/mdsmap.c
-index 8109aba66e023..2c7b151a7c95c 100644
---- a/fs/ceph/mdsmap.c
-+++ b/fs/ceph/mdsmap.c
-@@ -353,10 +353,22 @@ struct ceph_mdsmap *ceph_mdsmap_decode(struct ceph_mds_client *mdsc, void **p,
- 		__decode_and_drop_type(p, end, u8, bad_ext);
- 	}
- 	if (mdsmap_ev >= 8) {
-+		u32 fsname_len;
- 		/* enabled */
- 		ceph_decode_8_safe(p, end, m->m_enabled, bad_ext);
- 		/* fs_name */
--		ceph_decode_skip_string(p, end, bad_ext);
-+		ceph_decode_32_safe(p, end, fsname_len, bad_ext);
-+
-+		/* validate fsname against mds_namespace */
-+		if (!namespace_equals(mdsc->fsc->mount_options, *p,
-+				      fsname_len)) {
-+			pr_warn_client(cl, "fsname %*pE doesn't match mds_namespace %s\n",
-+				       (int)fsname_len, (char *)*p,
-+				       mdsc->fsc->mount_options->mds_namespace);
-+			goto bad;
-+		}
-+		/* skip fsname after validation */
-+		ceph_decode_skip_n(p, end, fsname_len, bad);
- 	}
- 	/* damaged */
- 	if (mdsmap_ev >= 9) {
-diff --git a/fs/ceph/super.c b/fs/ceph/super.c
-index c3eb651862c55..ebef5244ae25a 100644
---- a/fs/ceph/super.c
-+++ b/fs/ceph/super.c
-@@ -246,20 +246,6 @@ static void canonicalize_path(char *path)
- 	path[j] = '\0';
+diff --git a/security/integrity/ima/ima_appraise.c b/security/integrity/ima/ima_appraise.c
+index 656c709b974fd..f7770c24995b7 100644
+--- a/security/integrity/ima/ima_appraise.c
++++ b/security/integrity/ima/ima_appraise.c
+@@ -671,6 +671,15 @@ static int ima_protect_xattr(struct dentry *dentry, const char *xattr_name,
+ 	return 0;
  }
  
--/*
-- * Check if the mds namespace in ceph_mount_options matches
-- * the passed in namespace string. First time match (when
-- * ->mds_namespace is NULL) is treated specially, since
-- * ->mds_namespace needs to be initialized by the caller.
-- */
--static int namespace_equals(struct ceph_mount_options *fsopt,
--			    const char *namespace, size_t len)
--{
--	return !(fsopt->mds_namespace &&
--		 (strlen(fsopt->mds_namespace) != len ||
--		  strncmp(fsopt->mds_namespace, namespace, len)));
--}
--
- static int ceph_parse_old_source(const char *dev_name, const char *dev_name_end,
- 				 struct fs_context *fc)
- {
-diff --git a/fs/ceph/super.h b/fs/ceph/super.h
-index cf176aab0f823..4ac6561285b18 100644
---- a/fs/ceph/super.h
-+++ b/fs/ceph/super.h
-@@ -104,6 +104,20 @@ struct ceph_mount_options {
- 	struct fscrypt_dummy_policy dummy_enc_policy;
- };
- 
 +/*
-+ * Check if the mds namespace in ceph_mount_options matches
-+ * the passed in namespace string. First time match (when
-+ * ->mds_namespace is NULL) is treated specially, since
-+ * ->mds_namespace needs to be initialized by the caller.
++ * ima_reset_appraise_flags - reset ima_iint_cache flags
++ *
++ * @digsig: whether to clear/set IMA_DIGSIG flag, tristate values
++ *          0: clear IMA_DIGSIG
++ *          1: set IMA_DIGSIG
++ *         -1: don't change IMA_DIGSIG
++ *
 + */
-+static inline int namespace_equals(struct ceph_mount_options *fsopt,
-+				   const char *namespace, size_t len)
-+{
-+	return !(fsopt->mds_namespace &&
-+		 (strlen(fsopt->mds_namespace) != len ||
-+		  strncmp(fsopt->mds_namespace, namespace, len)));
-+}
-+
- /* mount state */
- enum {
- 	CEPH_MOUNT_MOUNTING,
+ static void ima_reset_appraise_flags(struct inode *inode, int digsig)
+ {
+ 	struct ima_iint_cache *iint;
+@@ -683,9 +692,9 @@ static void ima_reset_appraise_flags(struct inode *inode, int digsig)
+ 		return;
+ 	iint->measured_pcrs = 0;
+ 	set_bit(IMA_CHANGE_XATTR, &iint->atomic_flags);
+-	if (digsig)
++	if (digsig == 1)
+ 		set_bit(IMA_DIGSIG, &iint->atomic_flags);
+-	else
++	else if (digsig == 0)
+ 		clear_bit(IMA_DIGSIG, &iint->atomic_flags);
+ }
+ 
+@@ -771,6 +780,8 @@ static int ima_inode_setxattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 		digsig = (xvalue->type == EVM_IMA_XATTR_DIGSIG);
+ 	} else if (!strcmp(xattr_name, XATTR_NAME_EVM) && xattr_value_len > 0) {
+ 		digsig = (xvalue->type == EVM_XATTR_PORTABLE_DIGSIG);
++	} else {
++		digsig = -1;
+ 	}
+ 	if (result == 1 || evm_revalidate_status(xattr_name)) {
+ 		ima_reset_appraise_flags(d_backing_inode(dentry), digsig);
+@@ -784,7 +795,7 @@ static int ima_inode_set_acl(struct mnt_idmap *idmap, struct dentry *dentry,
+ 			     const char *acl_name, struct posix_acl *kacl)
+ {
+ 	if (evm_revalidate_status(acl_name))
+-		ima_reset_appraise_flags(d_backing_inode(dentry), 0);
++		ima_reset_appraise_flags(d_backing_inode(dentry), -1);
+ 
+ 	return 0;
+ }
+@@ -792,11 +803,13 @@ static int ima_inode_set_acl(struct mnt_idmap *idmap, struct dentry *dentry,
+ static int ima_inode_removexattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 				 const char *xattr_name)
+ {
+-	int result;
++	int result, digsig = -1;
+ 
+ 	result = ima_protect_xattr(dentry, xattr_name, NULL, 0);
+ 	if (result == 1 || evm_revalidate_status(xattr_name)) {
+-		ima_reset_appraise_flags(d_backing_inode(dentry), 0);
++		if (!strcmp(xattr_name, XATTR_NAME_IMA))
++			digsig = 0;
++		ima_reset_appraise_flags(d_backing_inode(dentry), digsig);
+ 		if (result == 1)
+ 			result = 0;
+ 	}
 -- 
 2.51.0
 
