@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 363E4C4AF55
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B644C4AD87
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 95F754EEC58
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06C963B82E5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E253009F1;
-	Tue, 11 Nov 2025 01:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D35626561E;
+	Tue, 11 Nov 2025 01:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IYj3F/Zu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ujc8ZOhU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFCE2701DC;
-	Tue, 11 Nov 2025 01:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A47E2D979C;
+	Tue, 11 Nov 2025 01:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825134; cv=none; b=MhPaB3F7yMrG6Wzm011Z7LPS0svw8WzZUPxcYUxl6MSiPN7InZc4iB1yw8VRek7Ya7iVMV2GpUUqyOaj+M6wVcOXeAP7dKzajyOZkSS/99StqrHvQheAKOrV9N+d/sPRqvKyaUJFDQbXfCxj91owBd3KxQuYaV7uH8zPLukH3Ic=
+	t=1762824116; cv=none; b=kQQJYRUZ/Z+HQDtdjuzIBQrZShX06Jsn+vzRiPxnNXT/8i/U3L8fEh2LeN7tM/Ewz/iv5oEPOuxka53uMWzuZgdBG88vgn6FNdbAGAUko1GlqTWcLqIFYBfEseAkuUlFKxT3UcxYPCx16v3+l+ibMTN1siAE++JWog7IP+SlbPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825134; c=relaxed/simple;
-	bh=f+Ew/xtN9Zt8HsbYYkqg6xAZ7cLAZh9jT4Tkydkt6WM=;
+	s=arc-20240116; t=1762824116; c=relaxed/simple;
+	bh=Oa2pJR8K2KnrgDDAUuC13rnIXhXDDU0ULlbi1g8ttfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWshZIAA9DEnOnOjvGuMsELTn5H9WtQ93nkz+tZsZ8IkBqqIIDl1nxvqjsP0LwwnTqD8C2yMr3mIvUqsvV2GdwvWn/dP7SxggEUo7Wi0wLTQC9Cfy3x1qkO+gx9UjW8Cw8QPFNC79kQxWes+NZXAH/TzvhCToHGcsBO5yyQoETU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IYj3F/Zu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BD1C4CEFB;
-	Tue, 11 Nov 2025 01:38:53 +0000 (UTC)
+	 MIME-Version; b=nMnzKsnAblZOizKgAjZgja+sCh4ZU1tamLXgulweqG9cZcJsYwyGVQTXRR6bPNkFMxEnP8zMYAO61yDKwciiinjCuzVjTBhsAKyeOYH594bn4KQ0vzxFAabDcrWme9i5omjJyiRDk/9w2RmRmPWKqkCxTheOtb9b5jLG1Bz4jbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ujc8ZOhU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAEEC19421;
+	Tue, 11 Nov 2025 01:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825134;
-	bh=f+Ew/xtN9Zt8HsbYYkqg6xAZ7cLAZh9jT4Tkydkt6WM=;
+	s=korg; t=1762824116;
+	bh=Oa2pJR8K2KnrgDDAUuC13rnIXhXDDU0ULlbi1g8ttfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IYj3F/ZuE3EGnt4W3I4woR/LBSKEz5xeUi3qDZpFDo4LoPWrHL4+Gm+Qh9A2FDywe
-	 vLfZeaZBDesQrva20FSu2k6hJd4quQ+P9gK3Eh/IzNnFTUVKlJOAwNOjyoeGacpVIV
-	 zvcy2hYDnHcZ59AUHnHfCeIJi/vSPSQE5yNAOyHM=
+	b=Ujc8ZOhUXyRXPZW9qSpPazCnHQPpjdJoRdjgYAac5uvOwCd8ATrUVe0Xxc6e/CvEZ
+	 2vJJVbqCMtuTfilgXZAY4rJJUntA699zIKcniuk1B+Pl9dzxmP5Hg2mB4d6ixcz9Rh
+	 67inEz4uTzdBd4O00BPOA9SUctaQ1nCpjWTsZcLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 676/849] ksmbd: use sock_create_kern interface to create kernel socket
+Subject: [PATCH 6.12 390/565] jfs: Verify inode mode when loading from disk
 Date: Tue, 11 Nov 2025 09:44:06 +0900
-Message-ID: <20251111004552.763297568@linuxfoundation.org>
+Message-ID: <20251111004535.645913511@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 3677ca67b9791481af16d86e47c3c7d1f2442f95 ]
+[ Upstream commit 7a5aa54fba2bd591b22b9b624e6baa9037276986 ]
 
-we should use sock_create_kern() if the socket resides in kernel space.
+The inode mode loaded from corrupted disk can be invalid. Do like what
+commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
+does.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_tcp.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/jfs/inode.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index 1009cb324fd51..43401d09c9db4 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -473,12 +473,13 @@ static int create_socket(struct interface *iface)
- 	struct socket *ksmbd_socket;
- 	bool ipv4 = false;
- 
--	ret = sock_create(PF_INET6, SOCK_STREAM, IPPROTO_TCP, &ksmbd_socket);
-+	ret = sock_create_kern(current->nsproxy->net_ns, PF_INET6, SOCK_STREAM,
-+			IPPROTO_TCP, &ksmbd_socket);
- 	if (ret) {
- 		if (ret != -EAFNOSUPPORT)
- 			pr_err("Can't create socket for ipv6, fallback to ipv4: %d\n", ret);
--		ret = sock_create(PF_INET, SOCK_STREAM, IPPROTO_TCP,
--				  &ksmbd_socket);
-+		ret = sock_create_kern(current->nsproxy->net_ns, PF_INET,
-+				SOCK_STREAM, IPPROTO_TCP, &ksmbd_socket);
- 		if (ret) {
- 			pr_err("Can't create socket for ipv4: %d\n", ret);
- 			goto out_clear;
+diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
+index 5fe8cb4742c21..8ee653aa07ced 100644
+--- a/fs/jfs/inode.c
++++ b/fs/jfs/inode.c
+@@ -59,9 +59,15 @@ struct inode *jfs_iget(struct super_block *sb, unsigned long ino)
+ 			 */
+ 			inode->i_link[inode->i_size] = '\0';
+ 		}
+-	} else {
++	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
++		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
+ 		inode->i_op = &jfs_file_inode_operations;
+ 		init_special_inode(inode, inode->i_mode, inode->i_rdev);
++	} else {
++		printk(KERN_DEBUG "JFS: Invalid file type 0%04o for inode %lu.\n",
++		       inode->i_mode, inode->i_ino);
++		iget_failed(inode);
++		return ERR_PTR(-EIO);
+ 	}
+ 	unlock_new_inode(inode);
+ 	return inode;
 -- 
 2.51.0
 
