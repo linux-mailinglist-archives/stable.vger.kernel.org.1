@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA149C4A18C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:59:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD663C4A1F0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33F7F3ACC85
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1B6374F427E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6814244693;
-	Tue, 11 Nov 2025 00:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BAB11DF258;
+	Tue, 11 Nov 2025 00:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNRPHZgt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VlmjVTOZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FDA4C97;
-	Tue, 11 Nov 2025 00:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2138B214210;
+	Tue, 11 Nov 2025 00:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822736; cv=none; b=nZsV2BqTQm+yTIDs7ydHw/cgfWYf7hzfkruirWG9SEhwRObuJpInqAxNv+BMcf+tfwvFgamhlIBxx43XI21Ad0nsA38ZxQQE2oRw8L44JHbDHWRM4/caMmmh/mEyKat4ypRC5G0GhapOlU805ZztKVtrjD2PdFqwa5nK49hplaY=
+	t=1762822741; cv=none; b=LomNcUXisNHw5+9hkb9wPTPj0QC5Sh4Y3MUpEQm72VxCt15nCVuGJ8TbFEO6zKKrqrAacNUVxa0oFz19u55qodTjXm15map12vK+1QZSQGdSHa3CporswmCk+mdexwhLD7Epi//Xcgpcn5JK0QaIxiOyu3kYkymV1kwc/yCohJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822736; c=relaxed/simple;
-	bh=eU+Sn1uNReDFnokonjkwcJ4ngYO06jwxC94K7NZ70w4=;
+	s=arc-20240116; t=1762822741; c=relaxed/simple;
+	bh=0eDW1RrRpb+3MAYImuSUYWDPQKVUvDbiX4BIHlzj2zU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JIAvGVur8QNsugAUODWmzvQFI0eFP+a9krp7uSPGIVWQ+OdONZTv2+JoDp+dZS9mUPhCBmnLbu4Qjqsgbyyqqa3ZgPoBPyN4s1+aHdpjk59kgP/ajAUd1FBdI2FszCFRHXFmgjgYRKVPNnhgLM5NT0AJNXPacLwKVRkcJKd+xrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNRPHZgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DFBC4CEFB;
-	Tue, 11 Nov 2025 00:58:55 +0000 (UTC)
+	 MIME-Version; b=sHTOjwutTK6W0JD6trVgxaGlJ2TqkOJatAu+kmarVuxFeuCeqSxcJRcp8Avx/f4JerpOwctNKjdBtZstJ7Nlv3Ud3KiBX6hJafEPWaLHGUkDVb6NMNaiWG101HbFWMyg5BFxeJ+DTpJgEmNFe9ijJVqY8EFZ+SHUdsKRxj6psio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VlmjVTOZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB6B6C4CEFB;
+	Tue, 11 Nov 2025 00:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822736;
-	bh=eU+Sn1uNReDFnokonjkwcJ4ngYO06jwxC94K7NZ70w4=;
+	s=korg; t=1762822741;
+	bh=0eDW1RrRpb+3MAYImuSUYWDPQKVUvDbiX4BIHlzj2zU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xNRPHZgtWck97foA980/xNZKwuiBe5vD4FvkoBfdI5Wlr2d+hBDytDC0cwHleRiEH
-	 89i9BT/hkuvYenSKVxcvNr11aq4UbYVHY2z5BC+xow2EvGBqclNgNDvvFLwTPCpn64
-	 gOhdY5UaEeTj+LnsX+/IUcOWRxM/dngFapKGnF9Q=
+	b=VlmjVTOZT0LiwO3bzxbSYLJJaJSx9WtAwbjunP0CxYq/MKQLdO0cfSMqWpaLT2loR
+	 V5Me1MlGYgEx84ARi2Isea6ps+k1Q5cdxibamQUnepOGUb1/wkeCcDEB4thFIKqhOr
+	 ey7/rAviH6zsDii7Z/d+/PsnDUjRVATcJDz15qbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
+	Jiayi Li <lijiayi@kylinos.cn>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/565] mmc: host: renesas_sdhi: Fix the actual clock
-Date: Tue, 11 Nov 2025 09:39:11 +0900
-Message-ID: <20251111004529.099191057@linuxfoundation.org>
+Subject: [PATCH 6.12 096/565] memstick: Add timeout to prevent indefinite waiting
+Date: Tue, 11 Nov 2025 09:39:12 +0900
+Message-ID: <20251111004529.120835848@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,47 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-[ Upstream commit 9c174e4dacee9fb2014a4ffc953d79a5707b77e4 ]
+[ Upstream commit b65e630a55a490a0269ab1e4a282af975848064c ]
 
-Wrong actual clock reported, if the SD clock division ratio is other
-than 1:1(bits DIV[7:0] in SD_CLK_CTRL are set to 11111111).
+Add timeout handling to wait_for_completion calls in memstick_set_rw_addr()
+and memstick_alloc_card() to prevent indefinite blocking in case of
+hardware or communication failures.
 
-On high speed mode, cat /sys/kernel/debug/mmc1/ios
-Without the patch:
-clock:          50000000 Hz
-actual clock:   200000000 Hz
-
-After the fix:
-clock:          50000000 Hz
-actual clock:   50000000 Hz
-
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250629203859.170850-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Link: https://lore.kernel.org/r/20250804024825.1565078-1-lijiayi@kylinos.cn
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/renesas_sdhi_core.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/memstick/core/memstick.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index 6ebb3d1eeb4d6..73e9c50968e1d 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -220,7 +220,11 @@ static void renesas_sdhi_set_clock(struct tmio_mmc_host *host,
- 			clk &= ~0xff;
- 	}
+diff --git a/drivers/memstick/core/memstick.c b/drivers/memstick/core/memstick.c
+index 2fcc40aa96340..b9459c53c3ed3 100644
+--- a/drivers/memstick/core/memstick.c
++++ b/drivers/memstick/core/memstick.c
+@@ -366,7 +366,9 @@ int memstick_set_rw_addr(struct memstick_dev *card)
+ {
+ 	card->next_request = h_memstick_set_rw_addr;
+ 	memstick_new_req(card->host);
+-	wait_for_completion(&card->mrq_complete);
++	if (!wait_for_completion_timeout(&card->mrq_complete,
++			msecs_to_jiffies(500)))
++		card->current_mrq.error = -ETIMEDOUT;
  
--	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, clk & CLK_CTL_DIV_MASK);
-+	clock = clk & CLK_CTL_DIV_MASK;
-+	if (clock != 0xff)
-+		host->mmc->actual_clock /= (1 << (ffs(clock) + 1));
-+
-+	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, clock);
- 	if (!(host->pdata->flags & TMIO_MMC_MIN_RCAR2))
- 		usleep_range(10000, 11000);
+ 	return card->current_mrq.error;
+ }
+@@ -400,7 +402,9 @@ static struct memstick_dev *memstick_alloc_card(struct memstick_host *host)
  
+ 		card->next_request = h_memstick_read_dev_id;
+ 		memstick_new_req(host);
+-		wait_for_completion(&card->mrq_complete);
++		if (!wait_for_completion_timeout(&card->mrq_complete,
++				msecs_to_jiffies(500)))
++			card->current_mrq.error = -ETIMEDOUT;
+ 
+ 		if (card->current_mrq.error)
+ 			goto err_out;
 -- 
 2.51.0
 
