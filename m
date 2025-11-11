@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247B8C4A881
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DBAAC4AE81
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA5593B87F8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 328D63B53F5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF08346E46;
-	Tue, 11 Nov 2025 01:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0353227FD5B;
+	Tue, 11 Nov 2025 01:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtwtYLAF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWwxSJR7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A25346E45;
-	Tue, 11 Nov 2025 01:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44D8DDAB;
+	Tue, 11 Nov 2025 01:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823660; cv=none; b=d51vJNTa+5arngLOPOCuSdnwLHzy/VJxyREF7OwwtMdwndmf80+trkd6Ag/ozW3qf3d5bPiOmLLSRNnjT0ID7Y6uHp5zJhgzUK1Uk9CRF2L/9quX9hClRzEraLEh/dJISY709ANRho1jwtlucPvCQJFmhbseDUcXFIgKhDCvfxU=
+	t=1762824839; cv=none; b=ioKVLAKXjlq38g10idgnVUF/xee+xA6T0UbdMbh1llxq5nrTtccApVO16vpqyG2psmcs6eWqlEg3JaIThmR9PCQvDEbbbLFKx/SxgoJkpsnqylCYVoZFLlBwmPbAmy0san8mfujve/IpSeMqb5NuPnQTG3RDyz0g8JPvY8tIaXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823660; c=relaxed/simple;
-	bh=gvPaIz96l6y8st3SQkooKkBeWUfSbuKSGr74dbn6FZw=;
+	s=arc-20240116; t=1762824839; c=relaxed/simple;
+	bh=VGUmldoED8TRc2Od/Ot4q848F40qmm5gRVhpXFJ2hlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=czxvUgP0LOI92b7xGvcgaaQSj5+WpI1d40v38SmPS2gejS6LrW+Afta8Bxoxpzut13H9wUxOwJU1aeG5YzlLyh3UAK8D15c/UvYIVAiLAQWXkD2livCqYjKsdo7ZkQkD7Gjta5Cka4o9Ur06LRJorkzlUAKrqg4U7NBQc3YL6M4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtwtYLAF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32759C4CEF5;
-	Tue, 11 Nov 2025 01:14:19 +0000 (UTC)
+	 MIME-Version; b=QRGQMJUCfO1rkbJHkYOQ7KRonZ2H5stqQhyOLhu2gdov47henXX4s6VZon4Fw4188R6KX95i492zFMygSV3A7eFg4i2Sima2mpYTw8MYoxcBJ1m9ZiO9NGzftNn92SvKWACrOQH0Wx4Fp1gtwojXCxiRbRL2kAOJxrOuhxc/ZMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWwxSJR7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54133C113D0;
+	Tue, 11 Nov 2025 01:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823659;
-	bh=gvPaIz96l6y8st3SQkooKkBeWUfSbuKSGr74dbn6FZw=;
+	s=korg; t=1762824839;
+	bh=VGUmldoED8TRc2Od/Ot4q848F40qmm5gRVhpXFJ2hlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QtwtYLAF/rtzYewYPIsTNGH1bY5x5Wdpi9nhOHnX6BKnU4j0NecGOujr6fqPRlgvX
-	 2H/Ydd5GH97Z5xgKjflUzjioFnt9iwtzyuIed27eMvjQK9WNcVFbfh/xsbufxOQGqB
-	 sK87vFCJ2hrivW8CzYXDQKqi62D9sPNnldim3Tbc=
+	b=hWwxSJR7Bd8hBALOC4jOYI8I2PRpD2h7KZ2GNSqCbqXeP9oPjOCniqRe04JHzZLm9
+	 xECFK4HgnGVgySUnaugiybwK9S7sqCYcTtVDY9LNxsEDs0gszsLfW4HzvwqrUYA5wK
+	 QmaRdK0lkhg63WKVtA7rvqeo7H53P68SqZIqyFaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Chih-Kang Chang <gary.chang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 295/565] media: adv7180: Only validate format in querystd
-Date: Tue, 11 Nov 2025 09:42:31 +0900
-Message-ID: <20251111004533.514713778@linuxfoundation.org>
+Subject: [PATCH 6.17 582/849] wifi: rtw89: disable RTW89_PHYSTS_IE09_FTR_0 for ppdu status
+Date: Tue, 11 Nov 2025 09:42:32 +0900
+Message-ID: <20251111004550.490260384@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-[ Upstream commit 91c5d7c849273d14bc4bae1b92666bdb5409294a ]
+[ Upstream commit 4e79a5cc01c5e1f1ba393ed3b44b0c3611eaadf1 ]
 
-The .querystd callback should not program the device with the detected
-standard, it should only report the standard to user-space. User-space
-may then use .s_std to set the standard, if it wants to use it.
+The IE length of RTW89_PHYSTS_IE09_FTR_0 is dynamic, need to calculate
+more to get it. This IE is not necessary now, disable it to avoid get
+wrong IE length to let the parse function check failed.
 
-All that is required of .querystd is to setup the auto detection of
-standards and report its findings.
-
-While at it add some documentation on why this can't happen while
-streaming and improve the error handling using a scoped guard.
-
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250915065213.38659-4-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/adv7180.c | 37 ++++++++++++++++---------------------
- 1 file changed, 16 insertions(+), 21 deletions(-)
+ drivers/net/wireless/realtek/rtw89/phy.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
-index 6eb55f0d89dc9..f3f47beff76bb 100644
---- a/drivers/media/i2c/adv7180.c
-+++ b/drivers/media/i2c/adv7180.c
-@@ -357,32 +357,27 @@ static inline struct adv7180_state *to_state(struct v4l2_subdev *sd)
- static int adv7180_querystd(struct v4l2_subdev *sd, v4l2_std_id *std)
- {
- 	struct adv7180_state *state = to_state(sd);
--	int err = mutex_lock_interruptible(&state->mutex);
--	if (err)
--		return err;
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 01a03d2de3ffb..59cb32720fb7b 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -5929,8 +5929,6 @@ static void __rtw89_physts_parsing_init(struct rtw89_dev *rtwdev,
+ 			val |= BIT(RTW89_PHYSTS_IE13_DL_MU_DEF) |
+ 			       BIT(RTW89_PHYSTS_IE01_CMN_OFDM);
+ 		} else if (i >= RTW89_CCK_PKT) {
+-			val |= BIT(RTW89_PHYSTS_IE09_FTR_0);
 -
--	if (state->streaming) {
--		err = -EBUSY;
--		goto unlock;
--	}
-+	int ret;
+ 			val &= ~(GENMASK(RTW89_PHYSTS_IE07_CMN_EXT_PATH_D,
+ 					 RTW89_PHYSTS_IE04_CMN_EXT_PATH_A));
  
--	err = adv7180_set_video_standard(state,
--			ADV7180_STD_AD_PAL_BG_NTSC_J_SECAM);
--	if (err)
--		goto unlock;
-+	guard(mutex)(&state->mutex);
- 
--	msleep(100);
--	__adv7180_status(state, NULL, std);
-+	/*
-+	 * We can't sample the standard if the device is streaming as that would
-+	 * interfere with the capture session as the VID_SEL reg is touched.
-+	 */
-+	if (state->streaming)
-+		return -EBUSY;
- 
--	err = v4l2_std_to_adv7180(state->curr_norm);
--	if (err < 0)
--		goto unlock;
-+	/* Set the standard to autodetect PAL B/G/H/I/D, NTSC J or SECAM */
-+	ret = adv7180_set_video_standard(state,
-+					 ADV7180_STD_AD_PAL_BG_NTSC_J_SECAM);
-+	if (ret)
-+		return ret;
- 
--	err = adv7180_set_video_standard(state, err);
-+	/* Allow some time for the autodetection to run. */
-+	msleep(100);
- 
--unlock:
--	mutex_unlock(&state->mutex);
--	return err;
-+	return __adv7180_status(state, NULL, std);
- }
- 
- static int adv7180_s_routing(struct v4l2_subdev *sd, u32 input,
 -- 
 2.51.0
 
