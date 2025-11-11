@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-193866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E397AC4A8AB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:16 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76124C4AA96
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8D75934C584
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B80C64F188A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA384345CBE;
-	Tue, 11 Nov 2025 01:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF722346A01;
+	Tue, 11 Nov 2025 01:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdBoJxWI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HelsQVHz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A872DFA5B;
-	Tue, 11 Nov 2025 01:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E311C4A24;
+	Tue, 11 Nov 2025 01:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824191; cv=none; b=cwGOw4oWDLoEI8AawZiHiYKCZfFyGOmucXGpbXiTZ0j1vtrsdtV0lDjggj0AV2S/vgQsIBk4ZhBhQ7Djv8xhpEqw/foNMIdgWsfsRekEV30dUSq5wWRk3Dqa4LMNuQ392GCl6qezqVyBJS6o74U1akTim8w+fiv8lmc40y7c+3M=
+	t=1762824198; cv=none; b=fFDx3etUJ9+CvFQI2OYE0WZAkfF9NR5zp3nrhYPouWLd9UQzrGnfmLARD57HBNlTV5LYDzwcYOJ/sAiQ7MIhpriCg/b5RcizFctnlM85gyeBPHi//TgcUUtPcm8kPNKwCXbYgvujjLSktJaVyUyqpLiTUPUGpepFZtePNTZMUls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824191; c=relaxed/simple;
-	bh=wdLjeDiCRy08WmLbexUu/BwbbYOPA9Dc0w3QX2bZ6z4=;
+	s=arc-20240116; t=1762824198; c=relaxed/simple;
+	bh=Vywo1JvmdO2ALzS3zJmdWGjWrpDEdIydu2lw7elflTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5gieKMFigU7/KyV908mtXxrhI6IA3R8rvP71o44/WkS9wC9dZ9W5QFLZC+Gb26WpEGYl9QttyIbYE5TXsGJNhj+5k23XH4npUXjuq5Ar9kpzZTTAJ+w2JTdW7pnNiKJNqMPO2hpFpqzvtZXtx4Kpt66NkXKEmFuY4FA6UXJ9mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdBoJxWI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031A0C4CEFB;
-	Tue, 11 Nov 2025 01:23:10 +0000 (UTC)
+	 MIME-Version; b=U1e8mYw5bI3DQfGZhzSWU7wlPTeAITwEMyyutS90HwIjteip/lgXtCLrAhYcT6jqhwjxiTtY8Dq+n2T0iRAZs6bvGRiUdQteCGj+hF4N0wANfvHFCTUyFLuOhB4+lcDlNjkCrpmzII3JC03vew0zNpZB/OJBQ9BFnRsfr3Q324I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HelsQVHz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B959DC113D0;
+	Tue, 11 Nov 2025 01:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824191;
-	bh=wdLjeDiCRy08WmLbexUu/BwbbYOPA9Dc0w3QX2bZ6z4=;
+	s=korg; t=1762824196;
+	bh=Vywo1JvmdO2ALzS3zJmdWGjWrpDEdIydu2lw7elflTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DdBoJxWI17iVqa8gnf22PGIeQtK3d+NuAc5hgv6jk5cnEbQWJy+jd2yqLo6k0uXJU
-	 PHP/0fxHkboTEjpwCcKs3G7Adqt8pC6G7B0RKhe7F6UMqMwWskFZfkQShjH86Yxd1N
-	 Zb578hLe8I5V+oiwi+4GKRmTqYQT74Nx2Kxf+y9Q=
+	b=HelsQVHzO9b7Os8sFI4yu6iO0o4UPzWctraWcos1C7sdBrCoHJY8VkWMQjAp5PGuq
+	 6UasCzDvF2iqNJ8XEIzEJqew1Heljs0yT7HAsCtoHRS2o2R+FcuwUmJEl9rx3wj0LE
+	 iqTpbVOe75a8L4L7GRJOJIGvlqw1fUdK+4uyqaAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Mario Limonciello <superm1@kernel.org>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 459/849] drm/amd/pm: refine amdgpu pm sysfs node error code
-Date: Tue, 11 Nov 2025 09:40:29 +0900
-Message-ID: <20251111004547.525220241@linuxfoundation.org>
+Subject: [PATCH 6.17 460/849] drm/amd/display: Indicate when custom brightness curves are in use
+Date: Tue, 11 Nov 2025 09:40:30 +0900
+Message-ID: <20251111004547.549098781@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,42 +69,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: Mario Limonciello <superm1@kernel.org>
 
-[ Upstream commit cf32515a70618c0fb2319bd4a855f4d9447940a8 ]
+[ Upstream commit 68f3c044f37d9f50d67417fa8018d9cf16423458 ]
 
-v1:
-Returns different error codes based on the scenario to help the user app understand
-the AMDGPU device status when an exception occurs.
+[Why]
+There is a `scale` sysfs attribute that can be used to indicate when
+non-linear brightness scaling is in use.  As Custom brightness curves
+work by linear interpolation of points the scale is no longer linear.
 
-v2:
-change -NODEV to -EBUSY.
+[How]
+Indicate non-linear scaling when custom brightness curves in use and
+linear scaling otherwise.
 
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Mario Limonciello <superm1@kernel.org>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_pm.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/amdgpu_pm.c b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-index 5fbfe7333b54d..1fca183827c7c 100644
---- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-@@ -110,9 +110,10 @@ static int amdgpu_pm_dev_state_check(struct amdgpu_device *adev, bool runpm)
- 	bool runpm_check = runpm ? adev->in_runpm : false;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index afe3a8279c3a9..8eb2fc4133487 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -5032,8 +5032,11 @@ amdgpu_dm_register_backlight_device(struct amdgpu_dm_connector *aconnector)
+ 	} else
+ 		props.brightness = props.max_brightness = MAX_BACKLIGHT_LEVEL;
  
- 	if (amdgpu_in_reset(adev))
--		return -EPERM;
-+		return -EBUSY;
-+
- 	if (adev->in_suspend && !runpm_check)
--		return -EPERM;
-+		return -EBUSY;
+-	if (caps->data_points && !(amdgpu_dc_debug_mask & DC_DISABLE_CUSTOM_BRIGHTNESS_CURVE))
++	if (caps->data_points && !(amdgpu_dc_debug_mask & DC_DISABLE_CUSTOM_BRIGHTNESS_CURVE)) {
+ 		drm_info(drm, "Using custom brightness curve\n");
++		props.scale = BACKLIGHT_SCALE_NON_LINEAR;
++	} else
++		props.scale = BACKLIGHT_SCALE_LINEAR;
+ 	props.type = BACKLIGHT_RAW;
  
- 	return 0;
- }
+ 	snprintf(bl_name, sizeof(bl_name), "amdgpu_bl%d",
 -- 
 2.51.0
 
