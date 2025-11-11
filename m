@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1BEFC4A439
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D28BDC4A4D2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:16:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5882D188A472
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:10:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7293A4F3677
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C7033A02F;
-	Tue, 11 Nov 2025 01:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FED027814A;
+	Tue, 11 Nov 2025 01:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSJfxXai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMTmNItZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FE933B6C4;
-	Tue, 11 Nov 2025 01:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1B2261573;
+	Tue, 11 Nov 2025 01:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823160; cv=none; b=reyYAXqU0I/+SY2WI7B3/iofisKUvh0aPOInfBOo/Jb2X1q6L24LuwzApGkWT3bgCZ2WjdXH4n/3J76K0JMFtzysrDr7J/yNzkOxwX/LguIxjFJ3PrrqmjFDdXwXl+M6U4UAT70Hc/brXP/gExr66FvR7kD5QC0FuoCp/qEJEkI=
+	t=1762823165; cv=none; b=T8Aa8U9YBaewGz11nVgnu3QhqWXzRPopq8VRnLEf9fbf/K5OJoyGrqMentD9kqi72pqfe7mqTzZaGDiceh+CGoCZ6YPL0Ngo6jNdT8h7qfupR9kz1LNP7sahJ3aHkmFclERIxGqVZGeK2dXSMKtdM6uEkVLFgIQJr+X9zwp+HV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823160; c=relaxed/simple;
-	bh=7u1xTAEwskNK19el2A6az/HWu+kNwujk7F322NoPgcw=;
+	s=arc-20240116; t=1762823165; c=relaxed/simple;
+	bh=eEZyCzS7X1/A3Z6AT2BrKZmY/5iYdC/c1YMipdivT2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHV1XmvDGxzt+F0jZk+XVipHKV1SnFUVa/Xb5C20vADdhzfZdRvWO25N0SAsOtFaKLBK7e9MJGK7z0jIhbSbQ17fSYbjOhtkMl4jD3cRz86OwGu2HAIDxgu2ElMBtOYD1DTGIlx7V8/adQ7mUeytXE00z+Py3VHYx14/p6EwdfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSJfxXai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E21C4CEF5;
-	Tue, 11 Nov 2025 01:06:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WZgS/IFlgfO+LXHCxaaxwnVXkz5p2ijhvUDgvtgTyNYbDkxtYzCyzV+6yjsu3Wn9yGhHL6KD9xXZXj2pRQIgkmiFIy+G7Kfp1VBmOmUAN7kAd9NtyOjk5ANp2RY8BiDrwVm3683h826HA99n6kXNRDNcen+4RENZAO1VpkTzUHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMTmNItZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE711C16AAE;
+	Tue, 11 Nov 2025 01:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823160;
-	bh=7u1xTAEwskNK19el2A6az/HWu+kNwujk7F322NoPgcw=;
+	s=korg; t=1762823165;
+	bh=eEZyCzS7X1/A3Z6AT2BrKZmY/5iYdC/c1YMipdivT2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bSJfxXaiBQsgsIfIupS+nqUkWiVNxfaJiDglC3eNfJBLrz+lbtGG5/bo9WNSdPC+F
-	 Zro6opdZ/kwUKKtbscmytCAvKJGBLa83bdYgZJWjUVuR34glIH5qo1TOAYJyYzXWzM
-	 MME2H9IPOF2z+hjPuu4qwOYKtmnHJetNbI4FeMG8=
+	b=vMTmNItZA/OQgul5T/3VSuxY+byfps9zX1h7JdJtc2MCf3h/6qYtOMGB4giKhlWQ5
+	 01Gd3OV6jSKosXpD0rT7Te+Tdv2RjbXrg8DoyxrjTYjccsARUqQqphtUPMr7/9kZC6
+	 W/5ThczjS3gsRp7sSFuGV9WW5stEVR6u/cnKW7+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Maarten Lankhorst <dev@lankhorst.se>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 242/849] drm/xe: Fix oops in xe_gem_fault when running core_hotunplug test.
-Date: Tue, 11 Nov 2025 09:36:52 +0900
-Message-ID: <20251111004542.287342008@linuxfoundation.org>
+Subject: [PATCH 6.17 243/849] drm/xe/pf: Dont resume device from restart worker
+Date: Tue, 11 Nov 2025 09:36:53 +0900
+Message-ID: <20251111004542.310532549@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -60,81 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maarten Lankhorst <dev@lankhorst.se>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit 1cda3c755bb7770be07d75949bb0f45fb88651f6 ]
+[ Upstream commit 9fd9f221440024b7451678898facfb34af054310 ]
 
-I saw an oops in xe_gem_fault when running the xe-fast-feedback
-testlist against the realtime kernel without debug options enabled.
+The PF's restart worker shouldn't attempt to resume the device on
+its own, since its goal is to finish PF and VFs reprovisioning on
+the recently reset GuC. Take extra RPM reference while scheduling
+a work and release it from the worker or when we cancel a work.
 
-The panic happens after core_hotunplug unbind-rebind finishes.
-Presumably what happens is that a process mmaps, unlocks because
-of the FAULT_FLAG_RETRY_NOWAIT logic, has no process memory left,
-causing ttm_bo_vm_dummy_page() to return VM_FAULT_NOPAGE, since
-there was nothing left to populate, and then oopses in
-"mem_type_is_vram(tbo->resource->mem_type)" because tbo->resource
-is NULL.
-
-It's convoluted, but fits the data and explains the oops after
-the test exits.
-
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://lore.kernel.org/r/20250715152057.23254-2-dev@lankhorst.se
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Reviewed-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://lore.kernel.org/r/20250801142822.180530-4-michal.wajdeczko@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_sriov_pf.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index 50c79049ccea0..d07e23eb1a54d 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -1711,22 +1711,26 @@ static vm_fault_t xe_gem_fault(struct vm_fault *vmf)
- 		ret = ttm_bo_vm_fault_reserved(vmf, vmf->vma->vm_page_prot,
- 					       TTM_BO_VM_NUM_PREFAULT);
- 		drm_dev_exit(idx);
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
+index bdbd15f3afe38..c4dda87b47cc8 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
+@@ -55,7 +55,12 @@ static void pf_init_workers(struct xe_gt *gt)
+ static void pf_fini_workers(struct xe_gt *gt)
+ {
+ 	xe_gt_assert(gt, IS_SRIOV_PF(gt_to_xe(gt)));
+-	disable_work_sync(&gt->sriov.pf.workers.restart);
 +
-+		if (ret == VM_FAULT_RETRY &&
-+		    !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT))
-+			goto out;
-+
-+		/*
-+		 * ttm_bo_vm_reserve() already has dma_resv_lock.
-+		 */
-+		if (ret == VM_FAULT_NOPAGE &&
-+		    mem_type_is_vram(tbo->resource->mem_type)) {
-+			mutex_lock(&xe->mem_access.vram_userfault.lock);
-+			if (list_empty(&bo->vram_userfault_link))
-+				list_add(&bo->vram_userfault_link,
-+					 &xe->mem_access.vram_userfault.list);
-+			mutex_unlock(&xe->mem_access.vram_userfault.lock);
-+		}
- 	} else {
- 		ret = ttm_bo_vm_dummy_page(vmf, vmf->vma->vm_page_prot);
- 	}
++	if (disable_work_sync(&gt->sriov.pf.workers.restart)) {
++		xe_gt_sriov_dbg_verbose(gt, "pending restart disabled!\n");
++		/* release an rpm reference taken on the worker's behalf */
++		xe_pm_runtime_put(gt_to_xe(gt));
++	}
+ }
  
--	if (ret == VM_FAULT_RETRY && !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT))
--		goto out;
--	/*
--	 * ttm_bo_vm_reserve() already has dma_resv_lock.
--	 */
--	if (ret == VM_FAULT_NOPAGE && mem_type_is_vram(tbo->resource->mem_type)) {
--		mutex_lock(&xe->mem_access.vram_userfault.lock);
--		if (list_empty(&bo->vram_userfault_link))
--			list_add(&bo->vram_userfault_link, &xe->mem_access.vram_userfault.list);
--		mutex_unlock(&xe->mem_access.vram_userfault.lock);
--	}
--
- 	dma_resv_unlock(tbo->base.resv);
- out:
- 	if (needs_rpm)
+ /**
+@@ -207,8 +212,11 @@ static void pf_cancel_restart(struct xe_gt *gt)
+ {
+ 	xe_gt_assert(gt, IS_SRIOV_PF(gt_to_xe(gt)));
+ 
+-	if (cancel_work_sync(&gt->sriov.pf.workers.restart))
++	if (cancel_work_sync(&gt->sriov.pf.workers.restart)) {
+ 		xe_gt_sriov_dbg_verbose(gt, "pending restart canceled!\n");
++		/* release an rpm reference taken on the worker's behalf */
++		xe_pm_runtime_put(gt_to_xe(gt));
++	}
+ }
+ 
+ /**
+@@ -226,9 +234,12 @@ static void pf_restart(struct xe_gt *gt)
+ {
+ 	struct xe_device *xe = gt_to_xe(gt);
+ 
+-	xe_pm_runtime_get(xe);
++	xe_gt_assert(gt, !xe_pm_runtime_suspended(xe));
++
+ 	xe_gt_sriov_pf_config_restart(gt);
+ 	xe_gt_sriov_pf_control_restart(gt);
++
++	/* release an rpm reference taken on our behalf */
+ 	xe_pm_runtime_put(xe);
+ 
+ 	xe_gt_sriov_dbg(gt, "restart completed\n");
+@@ -247,8 +258,13 @@ static void pf_queue_restart(struct xe_gt *gt)
+ 
+ 	xe_gt_assert(gt, IS_SRIOV_PF(xe));
+ 
+-	if (!queue_work(xe->sriov.wq, &gt->sriov.pf.workers.restart))
++	/* take an rpm reference on behalf of the worker */
++	xe_pm_runtime_get_noresume(xe);
++
++	if (!queue_work(xe->sriov.wq, &gt->sriov.pf.workers.restart)) {
+ 		xe_gt_sriov_dbg(gt, "restart already in queue!\n");
++		xe_pm_runtime_put(xe);
++	}
+ }
+ 
+ /**
 -- 
 2.51.0
 
