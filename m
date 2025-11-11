@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC85C4A5E4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:29 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0378FC4A524
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 11AB54F0473
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:50 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A289234A60F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1555A308F14;
-	Tue, 11 Nov 2025 01:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF2A2727FD;
+	Tue, 11 Nov 2025 01:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWuQgjob"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXnURVWi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D3226ED5E;
-	Tue, 11 Nov 2025 01:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724E72701D1;
+	Tue, 11 Nov 2025 01:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823313; cv=none; b=Box1zY1CAAFB8URddiSnZ4JH1XPBF6gO8xaiLfuSwoxX2xEghk24MnJEDz04BegrHz6sVNlV7NS1vYuMhss6kZRwb8w9arR7HorLSuWe08Dj1d7f0zGKOqrDgJZsH4dGbAXDJBSZW4nk8ZbsW3+KIqNzI1Z1u7DJ9pLF/I9DV50=
+	t=1762823364; cv=none; b=msIwKiCuXaQLKx7SPIkwdMv1Gu1pQewb6E9NIkdKCi831IrnA3a31nWOTF68JUM8BOyzGotCygdZItztaMXQERW4nbsFOoQfBhdZ5VaeCgNJL2hFLYnsY+w8+ruODgDNsDIsGI2sUs4pFcLVFHEWgeVK3jraiGZVmjEUtR0udc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823313; c=relaxed/simple;
-	bh=P9pnHyEDNpAHWJ63PfhV0ah4+Hpvy9qFAODYxJwkDYU=;
+	s=arc-20240116; t=1762823364; c=relaxed/simple;
+	bh=JcvVAHFfnpb2IlJc7jBjSyh7wuMWBEtG2ujTrBcSe2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tIUcdZBxipIxOQEvsPFX+CKuIMNlH25ujriUo1egDwQiiLahg/HmQljBrZkECNjyosooDLxFDd4zlgm7gl4Qd9hBGQ/d1B3o5D1lKINcUWlPujp4wbPltUq8zF+aqqmPP1RfM013tMUZks0IoC4KQor7MiKBIPDiJc2xppvZWO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWuQgjob; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5359EC19422;
-	Tue, 11 Nov 2025 01:08:33 +0000 (UTC)
+	 MIME-Version; b=u7fDwJF2zkvCTotn3CsTzgGxRyQXppdYrNVRiwSFoHSzHCGnBwBWnTaH25j+ybIkh2Q8MUe1//HWoHLN30PzRLar1ZFV7mrkArvsfQIduoG+KndZ/WM0bkzVwyh5uYkkYONf44JV97e87JRSADJQgHQPQnYErZb7nJk8mR1HzTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXnURVWi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FF2C19421;
+	Tue, 11 Nov 2025 01:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823313;
-	bh=P9pnHyEDNpAHWJ63PfhV0ah4+Hpvy9qFAODYxJwkDYU=;
+	s=korg; t=1762823364;
+	bh=JcvVAHFfnpb2IlJc7jBjSyh7wuMWBEtG2ujTrBcSe2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IWuQgjobDmfcro5jS1uIzrds7A4SjA3kC90PAzXIpbmT/Ke8x5CFx3cmJSuuM3QP0
-	 kmFGGwgRDLQjv5vl98ETdL7JnhQBkBBve/JFqfo4HMzNb4Vw9yTgqp1e4XQ8PkDrwq
-	 qKMoUCQKLpaIyhTVxyaaPmO1wb3Ken7qY8IdcJ6I=
+	b=wXnURVWiRbgNQh2HpeyvKgVElmV7lsAIqAIywg7/85U8Bo66+IrQ0Jrmuu7GmwZX9
+	 I/fZ3VWblKKDjqa4JxRouh9FuT+c0/IxyWtKfyDoPDzNrNzpB943SEJmak6F7zQTM6
+	 BH+tEBaR12RH0dM7CJ/6ZRxOrkTgundo/Oi7bbms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ce Sun <cesun102@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
+	Jiang Liu <gerry@linux.alibaba.com>,
+	Meng Li <li.meng@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 247/849] drm/amdgpu: Effective health check before reset
-Date: Tue, 11 Nov 2025 09:36:57 +0900
-Message-ID: <20251111004542.403821518@linuxfoundation.org>
+Subject: [PATCH 6.17 248/849] drm/amd/amdgpu: Release xcp drm memory after unplug
+Date: Tue, 11 Nov 2025 09:36:58 +0900
+Message-ID: <20251111004542.428545210@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,95 +68,145 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ce Sun <cesun102@amd.com>
+From: Meng Li <li.meng@amd.com>
 
-[ Upstream commit da467352296f8e50c7ab7057ead44a1df1c81496 ]
+[ Upstream commit e6c2b0f23221ed43c4cc6f636e9ab7862954d562 ]
 
-Move amdgpu_device_health_check into amdgpu_device_gpu_recover to
-ensure that if the device is present can be checked before reset
+Add a new API amdgpu_xcp_drm_dev_free().
+After unplug xcp device, need to release xcp drm memory etc.
 
-The reason is:
-1.During the dpc event, the device where the dpc event occurs is not
-present on the bus
-2.When both dpc event and ATHUB event occur simultaneously,the dpc thread
-holds the reset domain lock when detecting error,and the gpu recover thread
-acquires the hive lock.The device is simultaneously in the states of
-amdgpu_ras_in_recovery and occurs_dpc,so gpu recover thread will not go to
-amdgpu_device_health_check.It waits for the reset domain lock held by the
-dpc thread, but dpc thread has not released the reset domain lock.In the dpc
-callback slot_reset,to obtain the hive lock, the hive lock is held by the
-gpu recover thread at this time.So a deadlock occurred
-
-Signed-off-by: Ce Sun <cesun102@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Co-developed-by: Jiang Liu <gerry@linux.alibaba.com>
+Signed-off-by: Jiang Liu <gerry@linux.alibaba.com>
+Signed-off-by: Meng Li <li.meng@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 26 +++++++---------------
- 1 file changed, 8 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c     |  1 +
+ drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.c | 56 +++++++++++++++++----
+ drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.h |  1 +
+ 3 files changed, 49 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index c8459337fcb89..dfa68cb411966 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -6132,12 +6132,11 @@ static int amdgpu_device_health_check(struct list_head *device_list_handle)
- 	return ret;
- }
- 
--static int amdgpu_device_recovery_prepare(struct amdgpu_device *adev,
-+static void amdgpu_device_recovery_prepare(struct amdgpu_device *adev,
- 					  struct list_head *device_list,
- 					  struct amdgpu_hive_info *hive)
- {
- 	struct amdgpu_device *tmp_adev = NULL;
--	int r;
- 
- 	/*
- 	 * Build list of devices to reset.
-@@ -6157,14 +6156,6 @@ static int amdgpu_device_recovery_prepare(struct amdgpu_device *adev,
- 	} else {
- 		list_add_tail(&adev->reset_list, device_list);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
+index c417f86892207..699acc1b46b59 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
+@@ -406,6 +406,7 @@ void amdgpu_xcp_dev_unplug(struct amdgpu_device *adev)
+ 		p_ddev->primary->dev = adev->xcp_mgr->xcp[i].pdev;
+ 		p_ddev->driver =  adev->xcp_mgr->xcp[i].driver;
+ 		p_ddev->vma_offset_manager = adev->xcp_mgr->xcp[i].vma_offset_manager;
++		amdgpu_xcp_drm_dev_free(p_ddev);
  	}
--
--	if (!amdgpu_sriov_vf(adev) && (!adev->pcie_reset_ctx.occurs_dpc)) {
--		r = amdgpu_device_health_check(device_list);
--		if (r)
--			return r;
--	}
--
--	return 0;
  }
  
- static void amdgpu_device_recovery_get_reset_lock(struct amdgpu_device *adev,
-@@ -6457,8 +6448,13 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
- 	reset_context->hive = hive;
- 	INIT_LIST_HEAD(&device_list);
+diff --git a/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.c b/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.c
+index 8bc36f04b1b71..44009aa8216ed 100644
+--- a/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.c
++++ b/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.c
+@@ -46,18 +46,29 @@ static const struct drm_driver amdgpu_xcp_driver = {
  
--	if (amdgpu_device_recovery_prepare(adev, &device_list, hive))
--		goto end_reset;
-+	amdgpu_device_recovery_prepare(adev, &device_list, hive);
+ static int8_t pdev_num;
+ static struct xcp_device *xcp_dev[MAX_XCP_PLATFORM_DEVICE];
++static DEFINE_MUTEX(xcp_mutex);
+ 
+ int amdgpu_xcp_drm_dev_alloc(struct drm_device **ddev)
+ {
+ 	struct platform_device *pdev;
+ 	struct xcp_device *pxcp_dev;
+ 	char dev_name[20];
+-	int ret;
++	int ret, i;
 +
-+	if (!amdgpu_sriov_vf(adev)) {
-+		r = amdgpu_device_health_check(&device_list);
-+		if (r)
-+			goto end_reset;
++	guard(mutex)(&xcp_mutex);
+ 
+ 	if (pdev_num >= MAX_XCP_PLATFORM_DEVICE)
+ 		return -ENODEV;
+ 
+-	snprintf(dev_name, sizeof(dev_name), "amdgpu_xcp_%d", pdev_num);
++	for (i = 0; i < MAX_XCP_PLATFORM_DEVICE; i++) {
++		if (!xcp_dev[i])
++			break;
 +	}
++
++	if (i >= MAX_XCP_PLATFORM_DEVICE)
++		return -ENODEV;
++
++	snprintf(dev_name, sizeof(dev_name), "amdgpu_xcp_%d", i);
+ 	pdev = platform_device_register_simple(dev_name, -1, NULL, 0);
+ 	if (IS_ERR(pdev))
+ 		return PTR_ERR(pdev);
+@@ -73,8 +84,8 @@ int amdgpu_xcp_drm_dev_alloc(struct drm_device **ddev)
+ 		goto out_devres;
+ 	}
  
- 	/* We need to lock reset domain only once both for XGMI and single device */
- 	amdgpu_device_recovery_get_reset_lock(adev, &device_list);
-@@ -6965,12 +6961,6 @@ pci_ers_result_t amdgpu_pci_slot_reset(struct pci_dev *pdev)
- 	int r = 0, i;
- 	u32 memsize;
+-	xcp_dev[pdev_num] = pxcp_dev;
+-	xcp_dev[pdev_num]->pdev = pdev;
++	xcp_dev[i] = pxcp_dev;
++	xcp_dev[i]->pdev = pdev;
+ 	*ddev = &pxcp_dev->drm;
+ 	pdev_num++;
  
--	/* PCI error slot reset should be skipped During RAS recovery */
--	if ((amdgpu_ip_version(adev, GC_HWIP, 0) == IP_VERSION(9, 4, 3) ||
--	    amdgpu_ip_version(adev, GC_HWIP, 0) == IP_VERSION(9, 4, 4)) &&
--	    amdgpu_ras_in_recovery(adev))
--		return PCI_ERS_RESULT_RECOVERED;
--
- 	dev_info(adev->dev, "PCI error: slot reset callback!!\n");
+@@ -89,16 +100,43 @@ int amdgpu_xcp_drm_dev_alloc(struct drm_device **ddev)
+ }
+ EXPORT_SYMBOL(amdgpu_xcp_drm_dev_alloc);
  
- 	memset(&reset_context, 0, sizeof(reset_context));
+-void amdgpu_xcp_drv_release(void)
++static void free_xcp_dev(int8_t index)
+ {
+-	for (--pdev_num; pdev_num >= 0; --pdev_num) {
+-		struct platform_device *pdev = xcp_dev[pdev_num]->pdev;
++	if ((index < MAX_XCP_PLATFORM_DEVICE) && (xcp_dev[index])) {
++		struct platform_device *pdev = xcp_dev[index]->pdev;
+ 
+ 		devres_release_group(&pdev->dev, NULL);
+ 		platform_device_unregister(pdev);
+-		xcp_dev[pdev_num] = NULL;
++
++		xcp_dev[index] = NULL;
++		pdev_num--;
++	}
++}
++
++void amdgpu_xcp_drm_dev_free(struct drm_device *ddev)
++{
++	int8_t i;
++
++	guard(mutex)(&xcp_mutex);
++
++	for (i = 0; i < MAX_XCP_PLATFORM_DEVICE; i++) {
++		if ((xcp_dev[i]) && (&xcp_dev[i]->drm == ddev)) {
++			free_xcp_dev(i);
++			break;
++		}
++	}
++}
++EXPORT_SYMBOL(amdgpu_xcp_drm_dev_free);
++
++void amdgpu_xcp_drv_release(void)
++{
++	int8_t i;
++
++	guard(mutex)(&xcp_mutex);
++
++	for (i = 0; pdev_num && i < MAX_XCP_PLATFORM_DEVICE; i++) {
++		free_xcp_dev(i);
+ 	}
+-	pdev_num = 0;
+ }
+ EXPORT_SYMBOL(amdgpu_xcp_drv_release);
+ 
+diff --git a/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.h b/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.h
+index c1c4b679bf95c..580a1602c8e36 100644
+--- a/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.h
++++ b/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.h
+@@ -25,5 +25,6 @@
+ #define _AMDGPU_XCP_DRV_H_
+ 
+ int amdgpu_xcp_drm_dev_alloc(struct drm_device **ddev);
++void amdgpu_xcp_drm_dev_free(struct drm_device *ddev);
+ void amdgpu_xcp_drv_release(void);
+ #endif /* _AMDGPU_XCP_DRV_H_ */
 -- 
 2.51.0
 
