@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F49C4A95E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62AADC4AAF6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8583B0F49
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F56F1897C72
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E0F30498E;
-	Tue, 11 Nov 2025 01:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD5E30EF63;
+	Tue, 11 Nov 2025 01:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deNIwrM0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAYXxPLh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6426E3043CD;
-	Tue, 11 Nov 2025 01:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1EF302761;
+	Tue, 11 Nov 2025 01:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823856; cv=none; b=MgJ8Yl+HTq+0bBog/YSjqBd8j9fYPHROHQoVQnlD3g4AfdhX8iugSfi1q/i+5ngpkkZAyWLHOegQOGQ9evX4OlWPERarSI4Mr5l0tsMl5z/wqBs/r6lzCIX1CwH5foUTMlu0GHfwyCn51k4Hh+6rb5cvN4QUaUC2KvrQfOteQsA=
+	t=1762823908; cv=none; b=qYxdpWwF5a2LknZ8+Dpi6nQWGJwsdlsRYhhK63oTgUwbwejkxLeRiirM9L3GboZTRvAMlKi8xgGL4rWlKTqAeaS2Ieuxg6vnysunyH9gU/HMjNw0BYgzsBV8vml2NPlT6G6dL4ytcT19WcxWBhggJLcuH7HK1eP954esLwVox6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823856; c=relaxed/simple;
-	bh=vRRlQZzaLxiowKK6nPmemeLZxI7aMYpZm/sTYx2w0eo=;
+	s=arc-20240116; t=1762823908; c=relaxed/simple;
+	bh=y7WBj7oA5olGtx11BmEYQFv0B2XLbIXca9Ces9a/MLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N0U2DqEGVJd9k4cwjdZ2zK2FD9ssa8iQ2nEmr+7336uUlmQg3T0eZeYuYUZ/95+MJnsEm8SiTBP49r4lESxlvfxU8TQOYx0u/4JIwL6q5CwCT3OU8nIaIknZ93WskQPJSNBMZF1vhsJbpz8lDUzhiIeQM1pYGPwRNp3Zg1Jlfa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deNIwrM0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040A2C16AAE;
-	Tue, 11 Nov 2025 01:17:35 +0000 (UTC)
+	 MIME-Version; b=KFaqeo7X3d7HLZZa/LCxa5y1HM60ApVJkQKe0dVAwNEsN3uYAW4Cchjl1SczDe9F3dE7zGhBYTN1O7cL8MpUFnl2uVCnabjA5qTo0kZZCK5UCA1ObGKfrJi/z98zC8IiHkIDilk451R/1nYcKLSJkFMd/M02BAcNhYx+62cz6JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAYXxPLh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F08AC116B1;
+	Tue, 11 Nov 2025 01:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823856;
-	bh=vRRlQZzaLxiowKK6nPmemeLZxI7aMYpZm/sTYx2w0eo=;
+	s=korg; t=1762823908;
+	bh=y7WBj7oA5olGtx11BmEYQFv0B2XLbIXca9Ces9a/MLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deNIwrM0NWRbFr5qkj1GlCrQmbma1XZ0OocctFAjIq5GpTaOK9UKPwBX41rZnrkd7
-	 gmNf0CU0aj/7rhh+IZzeQMdF3XxNEUInp1EP8bMt1VPplocioNo0RO6ksSsOylDi//
-	 kcBypWNYlUq9H+XXhG3PbYmooYxou+Vt+sgZEAMQ=
+	b=JAYXxPLhlsTWva8zAHGq0Zp3jWWoFHxsobRuQe5Pw6RRFY8Yjdm757eaBcf8grH2v
+	 2hpHIKJIBm1swP79pcFH+RXmGjjgQSYvYAMSdpaAqqUB8m79prCl3O3GjErkaEU6zp
+	 /Y5Sg8+0Xfl6aVaEFOcCv5WPhfvu9dt3ML6AjVcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 320/565] f2fs: fix wrong layout information on 16KB page
-Date: Tue, 11 Nov 2025 09:42:56 +0900
-Message-ID: <20251111004534.085893959@linuxfoundation.org>
+Subject: [PATCH 6.12 321/565] selftests: mptcp: join: allow more time to send ADD_ADDR
+Date: Tue, 11 Nov 2025 09:42:57 +0900
+Message-ID: <20251111004534.107543703@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,42 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit a33be64b98d0723748d2fab0832b926613e1fce0 ]
+[ Upstream commit e2cda6343bfe459c3331db5afcd675ab333112dd ]
 
-This patch fixes to support different block size.
+When many ADD_ADDR need to be sent, it can take some time to send each
+of them, and create new subflows. Some CIs seem to occasionally have
+issues with these tests, especially with "debug" kernels.
 
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Two subtests will now run for a slightly longer time: the last two where
+3 or more ADD_ADDR are sent during the test.
+
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250907-net-next-mptcp-add_addr-retrans-adapt-v1-3-824cc805772b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/sysfs.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index eb84b9418ac11..b3c04ecc3a271 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -1623,12 +1623,15 @@ static int __maybe_unused disk_map_seq_show(struct seq_file *seq,
- 	seq_printf(seq, " Main          : 0x%010x (%10d)\n",
- 			SM_I(sbi)->main_blkaddr,
- 			le32_to_cpu(F2FS_RAW_SUPER(sbi)->segment_count_main));
--	seq_printf(seq, " # of Sections : %12d\n",
--			le32_to_cpu(F2FS_RAW_SUPER(sbi)->section_count));
-+	seq_printf(seq, " Block size    : %12lu KB\n", F2FS_BLKSIZE >> 10);
-+	seq_printf(seq, " Segment size  : %12d MB\n",
-+			(BLKS_PER_SEG(sbi) << (F2FS_BLKSIZE_BITS - 10)) >> 10);
- 	seq_printf(seq, " Segs/Sections : %12d\n",
- 			SEGS_PER_SEC(sbi));
- 	seq_printf(seq, " Section size  : %12d MB\n",
--			SEGS_PER_SEC(sbi) << 1);
-+			(BLKS_PER_SEC(sbi) << (F2FS_BLKSIZE_BITS - 10)) >> 10);
-+	seq_printf(seq, " # of Sections : %12d\n",
-+			le32_to_cpu(F2FS_RAW_SUPER(sbi)->section_count));
- 
- 	if (!f2fs_is_multi_device(sbi))
- 		return 0;
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index ec7547bdda89f..7ac63821a8842 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2125,7 +2125,8 @@ signal_address_tests()
+ 		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
+ 		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal
+ 		pm_nl_set_limits $ns2 3 3
+-		run_tests $ns1 $ns2 10.0.1.1
++		speed=slow \
++			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 3 3 3
+ 		chk_add_nr 3 3
+ 	fi
+@@ -2137,7 +2138,8 @@ signal_address_tests()
+ 		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
+ 		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal
+ 		pm_nl_set_limits $ns2 3 3
+-		run_tests $ns1 $ns2 10.0.1.1
++		speed=slow \
++			run_tests $ns1 $ns2 10.0.1.1
+ 		join_syn_tx=3 \
+ 			chk_join_nr 1 1 1
+ 		chk_add_nr 3 3
 -- 
 2.51.0
 
