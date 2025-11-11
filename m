@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-193474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2CFCC4A617
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA6CC4A626
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A2AB3B6583
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:16:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF6EA18882D0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4AC252917;
-	Tue, 11 Nov 2025 01:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0492FF143;
+	Tue, 11 Nov 2025 01:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4BFhTep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5omNOjK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5492F2612;
-	Tue, 11 Nov 2025 01:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB6C248F6A;
+	Tue, 11 Nov 2025 01:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823270; cv=none; b=GkQwD2OofW58pLHwxj1FtsFI4YTTbl+kvEL/CTBPnJfP0lD/XC6dwb11yWyujJrMp8fUYUAnZCg04fdHBJMejMsqIijKjWBUNvI6rIMTMf6Akhlvtz0LhELplQLa9PSS/gIIJmn8FSqoqF9lRVaz36quUmjSU8MXfLP8YJJvogc=
+	t=1762823273; cv=none; b=uZyhKimimkyfVhbiGjGsn6mt0necMuNMY05SuT1WJXNjDVGn0argZQZEsWpqoKqZV+fX2wDhW2epo1D/iNR485JuvfXPeaWa5xpRwF77aIY5K7dQtlLGwjScJB4cYkiiuijuclvnWLbPkcMv8iLSl/4bnPvNYm8oMg2pMKSY0So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823270; c=relaxed/simple;
-	bh=3FMNiUYCm6ZS8t/yECAYroLTQFWXE1jThyDuLnV60kY=;
+	s=arc-20240116; t=1762823273; c=relaxed/simple;
+	bh=7NRFMsbPybHXfY26HZQ9QyVI53gzGG/igNOeut4qlrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WGzRYzJUdg7OhGS2P/6S45+bS+ViB+r4eLjCkcfiO9y5F6oq+23zlf4AkWwqGYDe0/sIMGvo04LqF5jkrdBMBqPEbnE6VJQviuhLA39BvzNzuj4Eid3jsicbFGhXwXOV8aoHKu9xStHpN7ffb6oL4nTVL9UnIAoaHneWW2Ka2SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4BFhTep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284C4C16AAE;
-	Tue, 11 Nov 2025 01:07:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EDRvzubYxI+AeKmWvaIepDZ0VNDt1GWiAEl8o7SfKLh4sLxUFuqq7gO4uyqRZmqzervLwlRUdpYgui9Am/quLvk6DvFC2tSAQ9nm5jseX1iyicaicMBDFBAc+rBg9RerC70gjVrQCRqmLebc/Zcw2hU0zhR29wfLxbr7rG8wwnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5omNOjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDF9C4CEFB;
+	Tue, 11 Nov 2025 01:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823268;
-	bh=3FMNiUYCm6ZS8t/yECAYroLTQFWXE1jThyDuLnV60kY=;
+	s=korg; t=1762823273;
+	bh=7NRFMsbPybHXfY26HZQ9QyVI53gzGG/igNOeut4qlrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z4BFhTep3Ydcmt5mAYr69lRAYLbFyLJzk1aAr2aECvcME17hfyrRWIYiE9O2bCDIv
-	 rhjHVDc7JwxQV0WF0KU5/QmeoP9E2l2JerdIyppq8R8NX5xGSMvl9qQpHyyRY41G5J
-	 X1zwYJVxW4CknGSqxF4k9YjZc3wPJGglkPKcFTjM=
+	b=H5omNOjK+eixkw0UDZTGjPtHGWATydEbHhm9QjHRRzQgebyC7mY2I7JSpeu+5ogkL
+	 OSfbP17GcA25cHM+7dwwNlkavQd+4tm9BNWkTIWK1sZbhJqEO4RTQBwY3VmnKzRRRz
+	 x6alsepf0knemxXbRP/XqnazMBEAbbV3OJslreXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Danny Wang <Danny.Wang@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 265/849] drm/amd/display: Reset apply_eamless_boot_optimization when dpms_off
-Date: Tue, 11 Nov 2025 09:37:15 +0900
-Message-ID: <20251111004542.839209985@linuxfoundation.org>
+Subject: [PATCH 6.17 266/849] drm/amdgpu: add to custom amdgpu_drm_release drm_dev_enter/exit
+Date: Tue, 11 Nov 2025 09:37:16 +0900
+Message-ID: <20251111004542.863776332@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -70,39 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Danny Wang <Danny.Wang@amd.com>
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-[ Upstream commit ad335b5fc9ed1cdeb33fbe97d2969b3a2eedaf3e ]
+[ Upstream commit c31f486bc8dd6f481adcb9cca4a6e1837b8cf127 ]
 
-[WHY&HOW]
-The user closed the lid while the system was powering on and opened it
-again before the “apply_seamless_boot_optimization” was set to false,
-resulting in the eDP remaining blank.
-Reset the “apply_seamless_boot_optimization” to false when dpms off.
+User queues are disabled before GEM objects are released
+(protecting against user app crashes).
+No races with PCI hot-unplug (because drm_dev_enter prevents cleanup
+if iewdevice is being removed).
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Danny Wang <Danny.Wang@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index bc364792d9d31..2d2f4c4bdc97e 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -3404,7 +3404,7 @@ static void update_seamless_boot_flags(struct dc *dc,
- 		int surface_count,
- 		struct dc_stream_state *stream)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index c1792e9ab126d..5e81ff3ffdc3f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2937,11 +2937,14 @@ static int amdgpu_drm_release(struct inode *inode, struct file *filp)
  {
--	if (get_seamless_boot_stream_count(context) > 0 && surface_count > 0) {
-+	if (get_seamless_boot_stream_count(context) > 0 && (surface_count > 0 || stream->dpms_off)) {
- 		/* Optimize seamless boot flag keeps clocks and watermarks high until
- 		 * first flip. After first flip, optimization is required to lower
- 		 * bandwidth. Important to note that it is expected UEFI will
+ 	struct drm_file *file_priv = filp->private_data;
+ 	struct amdgpu_fpriv *fpriv = file_priv->driver_priv;
++	struct drm_device *dev = file_priv->minor->dev;
++	int idx;
+ 
+-	if (fpriv) {
++	if (fpriv && drm_dev_enter(dev, &idx)) {
+ 		fpriv->evf_mgr.fd_closing = true;
+ 		amdgpu_eviction_fence_destroy(&fpriv->evf_mgr);
+ 		amdgpu_userq_mgr_fini(&fpriv->userq_mgr);
++		drm_dev_exit(idx);
+ 	}
+ 
+ 	return drm_release(inode, filp);
 -- 
 2.51.0
 
