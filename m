@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA94EC4B08E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:54:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6FEC4AAC3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC4CC3B499F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E61A04F672C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F00342CB2;
-	Tue, 11 Nov 2025 01:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB09346E5D;
+	Tue, 11 Nov 2025 01:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhH7BDPN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeLdOOVq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593A3342CAD;
-	Tue, 11 Nov 2025 01:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BDB2DE707;
+	Tue, 11 Nov 2025 01:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825163; cv=none; b=NT5eHMFKpycE7FBsDMSHWo9+XOq7uGfPHXqUU0GSLxIryDEoh/8bkbG/7ScFBDsIlsjpVYMrq8EKcjmw+006eDAtUU3mCkWSOjGnptf/NV5TQE0kvBLHE7YsX7n1lReAy7qstWVgF9YFwvUlAyAwEd9t/uyTgn+UWHzl0YMPxDY=
+	t=1762824226; cv=none; b=PVNH5dxs2qzltdh7uQNJfspcjPYBnWkmqC6we3r/kwqzy/n6M2297L1qIXdVGSF1uNyE3RzcqVMV80YfmhNVRTE7n6bpzxHL9DehmbRCcwBI+udOTnAli4zxJrbJGQc9IpALShxpCwFB+og2mD1uqDK8+f4+injMRewo9lQJE4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825163; c=relaxed/simple;
-	bh=o37TYFAO5N+ll9Yn+XEFXbOhObjE9Wxwlx7QVv9ixoo=;
+	s=arc-20240116; t=1762824226; c=relaxed/simple;
+	bh=O6ADUg+x+IvWaNgc+7nV+tHeeayo3pZHwLbLtaXu0QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QovpItjArlcHa/DFaLY/V5KXFWL3sKkI+IHNh2VU294lOigNI+01IjVGKFpBDZ11pRMiASjD9HxyX6x1vaxbZB5usvJijMRXjld2Zq0YAjsfPnRSDPXg1k/r1uYAdfoxCmLadIjEGfgpwnSmjay07z1IrVT2M8BhZg5moeHaUYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhH7BDPN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB8BC4AF09;
-	Tue, 11 Nov 2025 01:39:22 +0000 (UTC)
+	 MIME-Version; b=K6lVTzgnXWsw7lRAoX7kI8ij/Nv+BFs9GBERWLFsDl7ScnCPeW8kGSXEPpx7gQxoQxOgx1UQxuTFu+Pn2MI0tOFtvLwcmQud3UttX8FRzXGTXAFE9hV5iY5syatY+jts5ZZ/LxlG4PxXlyQp4YwOQTwFeZVlKuCVrFFuHwYiE5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeLdOOVq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B7AC4CEFB;
+	Tue, 11 Nov 2025 01:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825163;
-	bh=o37TYFAO5N+ll9Yn+XEFXbOhObjE9Wxwlx7QVv9ixoo=;
+	s=korg; t=1762824226;
+	bh=O6ADUg+x+IvWaNgc+7nV+tHeeayo3pZHwLbLtaXu0QE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PhH7BDPNDuqvcuhvaqe6+IZ52vpMYJBQQPOsuyBL6zJeGT8iwHiIdXlxHMXE9gUza
-	 TvtNPraKKGuLaGjGNDZoU1zJTfNCP559OnD75QJbYdjJGkm92anbiyJ4DUS93aebGH
-	 Tl4pd695EnORhkBv+s4Wu5lWZNIGFFiZRDEewiH8=
+	b=xeLdOOVqxyFLsRBimt1LyrNwr2iZfNjenT4Swi4IThh0FdqHBHKZmFetvEKAGUaQW
+	 NC5wjALZkIAwXo7QhjbUDzQAW108x3Vh2nGZzESXmSxt9zv5D3yjmXPxKgjd2+2G7/
+	 704eIQdUJYjpufMMQHAdgRvQjLFhDApzkfRIfROs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Leon Romanovsky <leon@kernel.org>,
+	ChunHao Lin <hau@realtek.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 687/849] RDMA/uverbs: Fix umem release in UVERBS_METHOD_CQ_CREATE
+Subject: [PATCH 6.12 401/565] r8169: set EEE speed down ratio to 1
 Date: Tue, 11 Nov 2025 09:44:17 +0900
-Message-ID: <20251111004553.035480885@linuxfoundation.org>
+Message-ID: <20251111004535.893368189@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuhao Fu <sfual@cse.ust.hk>
+From: ChunHao Lin <hau@realtek.com>
 
-[ Upstream commit d8713158faad0fd4418cb2f4e432c3876ad53a1f ]
+[ Upstream commit bf7154ffb1c65a201906296a9d3eb22e9daa5ffc ]
 
-In `UVERBS_METHOD_CQ_CREATE`, umem should be released if anything goes
-wrong. Currently, if `create_cq_umem` fails, umem would not be
-released or referenced, causing a possible leak.
+EEE speed down means speed down MAC MCU clock. It is not from spec.
+It is kind of Realtek specific power saving feature. But enable it
+may cause some issues, like packet drop or interrupt loss. Different
+hardware may have different issues.
 
-In this patch, we release umem at `UVERBS_METHOD_CQ_CREATE`, the driver
-should not release umem if it returns an error code.
+EEE speed down ratio (mac ocp 0xe056[7:4]) is used to set EEE speed
+down rate. The larger this value is, the more power can save. But it
+actually save less power then we expected. And, as mentioned above,
+will impact compatibility. So set it to 1 (mac ocp 0xe056[7:4] = 0)
+, which means not to speed down, to improve compatibility.
 
-Fixes: 1a40c362ae26 ("RDMA/uverbs: Add a common way to create CQ with umem")
-Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
-Link: https://patch.msgid.link/aOh1le4YqtYwj-hH@osx.local
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: ChunHao Lin <hau@realtek.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/20250918023425.3463-1-hau@realtek.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_std_types_cq.c |  1 +
- drivers/infiniband/hw/efa/efa_verbs.c         | 16 +++++++---------
- 2 files changed, 8 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/core/uverbs_std_types_cq.c b/drivers/infiniband/core/uverbs_std_types_cq.c
-index 37cd375565104..fab5d914029dd 100644
---- a/drivers/infiniband/core/uverbs_std_types_cq.c
-+++ b/drivers/infiniband/core/uverbs_std_types_cq.c
-@@ -206,6 +206,7 @@ static int UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE)(
- 	return ret;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 80b5262d0d572..bec5f68237753 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -3467,7 +3467,7 @@ static void rtl_hw_start_8168h_1(struct rtl8169_private *tp)
+ 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
+ 	}
  
- err_free:
-+	ib_umem_release(umem);
- 	rdma_restrack_put(&cq->res);
- 	kfree(cq);
- err_event_file:
-diff --git a/drivers/infiniband/hw/efa/efa_verbs.c b/drivers/infiniband/hw/efa/efa_verbs.c
-index 886923d5fe506..542d25e191ea6 100644
---- a/drivers/infiniband/hw/efa/efa_verbs.c
-+++ b/drivers/infiniband/hw/efa/efa_verbs.c
-@@ -1216,13 +1216,13 @@ int efa_create_cq_umem(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
- 		if (umem->length < cq->size) {
- 			ibdev_dbg(&dev->ibdev, "External memory too small\n");
- 			err = -EINVAL;
--			goto err_free_mem;
-+			goto err_out;
- 		}
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xe052, 0x6000, 0x8008);
+ 	r8168_mac_ocp_modify(tp, 0xe0d6, 0x01ff, 0x017f);
+ 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
+@@ -3572,7 +3572,7 @@ static void rtl_hw_start_8117(struct rtl8169_private *tp)
+ 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
+ 	}
  
- 		if (!ib_umem_is_contiguous(umem)) {
- 			ibdev_dbg(&dev->ibdev, "Non contiguous CQ unsupported\n");
- 			err = -EINVAL;
--			goto err_free_mem;
-+			goto err_out;
- 		}
- 
- 		cq->cpu_addr = NULL;
-@@ -1251,7 +1251,7 @@ int efa_create_cq_umem(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
- 
- 	err = efa_com_create_cq(&dev->edev, &params, &result);
- 	if (err)
--		goto err_free_mem;
-+		goto err_free_mapped;
- 
- 	resp.db_off = result.db_off;
- 	resp.cq_idx = result.cq_idx;
-@@ -1299,12 +1299,10 @@ int efa_create_cq_umem(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
- 	efa_cq_user_mmap_entries_remove(cq);
- err_destroy_cq:
- 	efa_destroy_cq_idx(dev, cq->cq_idx);
--err_free_mem:
--	if (umem)
--		ib_umem_release(umem);
--	else
--		efa_free_mapped(dev, cq->cpu_addr, cq->dma_addr, cq->size, DMA_FROM_DEVICE);
--
-+err_free_mapped:
-+	if (!umem)
-+		efa_free_mapped(dev, cq->cpu_addr, cq->dma_addr, cq->size,
-+				DMA_FROM_DEVICE);
- err_out:
- 	atomic64_inc(&dev->stats.create_cq_err);
- 	return err;
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_write(tp, 0xea80, 0x0003);
+ 	r8168_mac_ocp_modify(tp, 0xe052, 0x0000, 0x0009);
+ 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
+@@ -3772,7 +3772,7 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
+ 	r8168_mac_ocp_modify(tp, 0xc0b4, 0x0000, 0x000c);
+ 	r8168_mac_ocp_modify(tp, 0xeb6a, 0x00ff, 0x0033);
+ 	r8168_mac_ocp_modify(tp, 0xeb50, 0x03e0, 0x0040);
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0030);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xe040, 0x1000, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xea1c, 0x0003, 0x0001);
+ 	if (tp->mac_version == RTL_GIGA_MAC_VER_65 ||
 -- 
 2.51.0
 
