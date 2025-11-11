@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-194214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46058C4B097
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:54:54 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EBBEC4AA5A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F8E73B839F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B90DF4F4D7F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5456C26B76A;
-	Tue, 11 Nov 2025 01:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157D230F7F1;
+	Tue, 11 Nov 2025 01:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDXmllyk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2plKmpu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4C025C818;
-	Tue, 11 Nov 2025 01:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37BB34676D;
+	Tue, 11 Nov 2025 01:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825073; cv=none; b=tEW5jf8HJUWjjM9MrG9JSiZnIsoKETJGhd0E7t6GzKi+1R0qH60RR+4MWdUHxeiLt5lobH5t/7n1rhV4btuBwc1zQVbrz/arcUI8Q8r4QTQ5M5/K/RfBHklZMVbGl+M1xzmMffwIG0N/JpY3Bf9NYOq73j9uUJwJnGucH2oJTsY=
+	t=1762824169; cv=none; b=KtFNLW9qvE7hrQ4+c1lgfuvG8cwgqv89iaHdvbvI+oJOnIlWWfULZQFz2iGcjdrSXHIKbZgzWaQlI93iRhpxtrM2q5cjEF4G1STrAgWPgxfikDTkLTAi/Zz/hG5LudRmtBZFU7n+kDJQT0Ye6krtKVeW+Ci3lencJClN/MG9qBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825073; c=relaxed/simple;
-	bh=VYqycBdqapcDzeKa1OjB0GVw2RU4o1CywwGGGTKfrP8=;
+	s=arc-20240116; t=1762824169; c=relaxed/simple;
+	bh=U5HNWWi5mIIyUqCtiaimQKo99BLl+miY0KeKWCw7hw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FiJC+ntVZh1QoOmuUlUsbYb6dxUZIm4tynlfcg0lR/MfzPgGfKdKhcfiGcm83GI+PfM3qkj61DsLcZ3dTWOMv6lIy14oXy/3oqdXnM+RQwQE8zcbRpB82knaLAOXaXQEqk3CD3+ol40hMfB7HVPiYqPvsDNcJYHyQCrgP1dcHFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDXmllyk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E70BC4CEFB;
-	Tue, 11 Nov 2025 01:37:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T2i20J+XZshCu+DQrPwEE1Q/2HdD0JA3TlB93c+AZXZow22AuI/aewRWvbSUcCsmOwlf4tD/rWSomB3ZXaM4sSsSBWsBA+EzC/Gi/IorwaYhoxmq0foSKhPYsb7c7+iArtXGv+EfhCrAVyR6iP6MyvC8eDaZ3kvRRoha3nfT4HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2plKmpu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E255EC4CEF5;
+	Tue, 11 Nov 2025 01:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825072;
-	bh=VYqycBdqapcDzeKa1OjB0GVw2RU4o1CywwGGGTKfrP8=;
+	s=korg; t=1762824169;
+	bh=U5HNWWi5mIIyUqCtiaimQKo99BLl+miY0KeKWCw7hw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jDXmllykxcN4ECZ9WzMjesN+LtFDy4ctuk9up1hmfXwnQX1O0VQUs9FTbbiFUqw9m
-	 tzhiiOg6olypRT0bVURjHtW23Nd16YTQO9wOD+qMJCtJO5pPY+mhcenfAn7h/HzUOs
-	 kYm/CYMTS0rwd0oHP+FCfCPpDIkj2ysG/A6B0Jxs=
+	b=L2plKmpu45l1DrkqBw/kWo3hmXhJ6v0L+eMurMI31EW0jFv+Zil7+OCD//oebP7nF
+	 pRlvAAPCC+8I4mUgSMWLzssBu8/PrKfy8totP64YBp7sYoWL8GFaGNaMfW3CmwlW8F
+	 rBNMePe9KTlOVSp6X8ip6xEgK5SdciwkukvV4nSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
+	AceLan Kao <acelan.kao@canonical.com>,
+	Kai-Heng Feng <kaihengf@nvidia.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Denis Benato <benato.denis96@gmail.com>,
+	=?UTF-8?q?Merthan=20Karaka=C5=9F?= <m3rthn.k@gmail.com>,
+	Eric Naim <dnaim@cachyos.org>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 648/849] drm/amdgpu: Fix fence signaling race condition in userqueue
-Date: Tue, 11 Nov 2025 09:43:38 +0900
-Message-ID: <20251111004552.092495816@linuxfoundation.org>
+Subject: [PATCH 6.12 363/565] drm/amd: Avoid evicting resources at S5
+Date: Tue, 11 Nov 2025 09:43:39 +0900
+Message-ID: <20251111004535.033781019@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +69,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse.Zhang <Jesse.Zhang@amd.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit b8ae2640f9acd4f411c9227d2493755d03fe440a ]
+[ Upstream commit 531df041f2a5296174abd8292d298eb62fe1ea97 ]
 
-This commit fixes a potential race condition in the userqueue fence
-signaling mechanism by replacing dma_fence_is_signaled_locked() with
-dma_fence_is_signaled().
+Normally resources are evicted on dGPUs at suspend or hibernate and
+on APUs at hibernate.  These steps are unnecessary when using the S4
+callbacks to put the system into S5.
 
-The issue occurred because:
-1. dma_fence_is_signaled_locked() should only be used when holding
-   the fence's individual lock, not just the fence list lock
-2. Using the locked variant without the proper fence lock could lead
-   to double-signaling scenarios:
-   - Hardware completion signals the fence
-   - Software path also tries to signal the same fence
-
-By using dma_fence_is_signaled() instead, we properly handle the
-locking hierarchy and avoid the race condition while still maintaining
-the necessary synchronization through the fence_list_lock.
-
-v2: drop the comment (Christian)
-
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Cc: AceLan Kao <acelan.kao@canonical.com>
+Cc: Kai-Heng Feng <kaihengf@nvidia.com>
+Cc: Mark Pearson <mpearson-lenovo@squebb.ca>
+Cc: Denis Benato <benato.denis96@gmail.com>
+Cc: Merthan Karakaş <m3rthn.k@gmail.com>
+Tested-by: Eric Naim <dnaim@cachyos.org>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-index c2a983ff23c95..b372baae39797 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-@@ -276,7 +276,7 @@ static int amdgpu_userq_fence_create(struct amdgpu_usermode_queue *userq,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 7ff81bd1ec200..7a8a53fbe918c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4731,6 +4731,10 @@ static int amdgpu_device_evict_resources(struct amdgpu_device *adev)
+ 	if ((adev->in_s3 || adev->in_s0ix) && (adev->flags & AMD_IS_APU))
+ 		return 0;
  
- 	/* Check if hardware has already processed the job */
- 	spin_lock_irqsave(&fence_drv->fence_list_lock, flags);
--	if (!dma_fence_is_signaled_locked(fence))
-+	if (!dma_fence_is_signaled(fence))
- 		list_add_tail(&userq_fence->link, &fence_drv->fences);
- 	else
- 		dma_fence_put(fence);
++	/* No need to evict when going to S5 through S4 callbacks */
++	if (system_state == SYSTEM_POWER_OFF)
++		return 0;
++
+ 	ret = amdgpu_ttm_evict_resources(adev, TTM_PL_VRAM);
+ 	if (ret)
+ 		DRM_WARN("evicting device resources failed\n");
 -- 
 2.51.0
 
