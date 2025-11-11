@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-193405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D90C4A44E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:12:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1417C4AA99
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 64C8D4F9E9C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8565E4F47B7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0DFC2561A7;
-	Tue, 11 Nov 2025 01:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21781F419F;
+	Tue, 11 Nov 2025 01:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSLDka8u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qsv+p/ZQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E71A248883;
-	Tue, 11 Nov 2025 01:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5211C4A24;
+	Tue, 11 Nov 2025 01:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823103; cv=none; b=HvnnI9u4sr1KP8YkB3iOtlSXY3/QW891NeVdH66dr4x2cin1Q5uFJn5fNRLVQbnJ0XrUM7c5trAKWFL1cX7ZXxrIfwQ3lzWj6bDTFwM8mjIBgo44OXcgib+dqWZk3TTf+Dw0OY8InFUv1jbcgZK8Yi3D1dc5j13sTLXbrrkR/9c=
+	t=1762824186; cv=none; b=TIi6WQwKCZqOgDtedrmLGJIpCukVAHJUJCiYELnkftwpvfMR5AjwojzPbFQp1kN/6sTHeQyPYx2thHbmgg8Oc+HuB+VnU4g88xvLNySrMsCZtxsZcVmqLIKrwuDDqVHMhYX2m1QmRQZfm6VnfX7cgno5cCAUL7I6JDShQ+pbM8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823103; c=relaxed/simple;
-	bh=oRvSjvpmyn4T/thTbwVirwTyJdTRY2Mr+97DUTcwEZw=;
+	s=arc-20240116; t=1762824186; c=relaxed/simple;
+	bh=K3VArEx6DI15jb+KCa6NPUd2dcq6/Lr4H/0zzgKlGI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/B66UNcCHBlP6vav+L+qHE+AQvGQCsqwQN3Bbu/HHqwewbGrXo3gBtHz5l8JJYTzr28LwU7M4kiOaI9Xccq2A89WOBcyVd6rU6Mt/vQ+UzixYosw7PQdCxShF+leKC4iowXoEu/Je11N2QiFmnH4EOpIp2q47kSb5VKwr8cKYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSLDka8u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1856C16AAE;
-	Tue, 11 Nov 2025 01:05:02 +0000 (UTC)
+	 MIME-Version; b=AtNiGEDw1QLQWVh43nLJA1H1h9mGPmh4CayiJPYvG9mC4hyxH3vBL4W9IZ2bbpIjw5Wbihz6riB1WWoV5Q8b3/LpCAzkYrb8l3CwNpAf1lr/+Y7scyzW8Jqz7FSrDzKXJFC4FN0cLtseDHLeX3gCzf74P2XSLbE/b3dybc4vMUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qsv+p/ZQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AEFEC113D0;
+	Tue, 11 Nov 2025 01:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823103;
-	bh=oRvSjvpmyn4T/thTbwVirwTyJdTRY2Mr+97DUTcwEZw=;
+	s=korg; t=1762824186;
+	bh=K3VArEx6DI15jb+KCa6NPUd2dcq6/Lr4H/0zzgKlGI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSLDka8uojxuM+akNvPCEyJHwXof+euHk+XrTA4rJUrjZEvkgjBS+M0BlCHNh1iJh
-	 ua1Fc3Y3sZguaFUk6RCo+tLohvuj8SacNakptTgP9uZPw/Cijvfp3pbokW2tLzXlUR
-	 zqANs+9Kc49JoCa4tokfeoVBfXpHnwxKqVp2jEFo=
+	b=Qsv+p/ZQimtgEGQVaack8pAtcI7lkCx6T70bFBnqVuRTKr8La2xhswH8mcHO2bfb2
+	 ViCMnMV1nHHRllejTdC5M8iDnYZ4neBuukEwDfVSJi5VLbLUMPdJ+f0CSvTlMGFAsI
+	 XpI1qNT3qTj56VZi9G1CckVqEFSzkKcHULMU42PM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Robin Chen <robin.chen@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Ausef Yousof <Ausef.Yousof@amd.com>,
 	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 172/565] drm/amd/display: fix condition for setting timing_adjust_pending
+Subject: [PATCH 6.17 458/849] drm/amd/display: dont wait for pipe update during medupdate/highirq
 Date: Tue, 11 Nov 2025 09:40:28 +0900
-Message-ID: <20251111004530.806337506@linuxfoundation.org>
+Message-ID: <20251111004547.502368857@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,45 +65,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Ausef Yousof <Ausef.Yousof@amd.com>
 
-[ Upstream commit 1a6a3374ecb9899ccf0d209b5783a796bdba8cec ]
+[ Upstream commit 895b61395eefd28376250778a741f11e12715a39 ]
 
-timing_adjust_pending is used to defer certain programming sequences
-when OTG timing is about to be changed, like with VRR. Insufficient
-checking for timing change in this case caused a regression which
-reduces PSR Replay residency.
+[why&how]
+control flag for the wait during pipe update wait for vupdate should
+be set if update type is not fast or med to prevent an invalid sleep
+operation
 
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Robin Chen <robin.chen@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
 Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 84e377113e580..13d5f0451fecf 100644
+index 2d2f4c4bdc97e..74efd50b7c23a 100644
 --- a/drivers/gpu/drm/amd/display/dc/core/dc.c
 +++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -453,7 +453,9 @@ bool dc_stream_adjust_vmin_vmax(struct dc *dc,
- 	 * avoid conflicting with firmware updates.
- 	 */
- 	if (dc->ctx->dce_version > DCE_VERSION_MAX) {
--		if (dc->optimized_required || dc->wm_optimized_required) {
-+		if ((dc->optimized_required || dc->wm_optimized_required) &&
-+			(stream->adjust.v_total_max != adjust->v_total_max ||
-+			stream->adjust.v_total_min != adjust->v_total_min)) {
- 			stream->adjust.timing_adjust_pending = true;
- 			return false;
- 		}
+@@ -4163,7 +4163,7 @@ static void commit_planes_for_stream(struct dc *dc,
+ 	}
+ 
+ 	if (dc->hwseq->funcs.wait_for_pipe_update_if_needed)
+-		dc->hwseq->funcs.wait_for_pipe_update_if_needed(dc, top_pipe_to_program, update_type == UPDATE_TYPE_FAST);
++		dc->hwseq->funcs.wait_for_pipe_update_if_needed(dc, top_pipe_to_program, update_type < UPDATE_TYPE_FULL);
+ 
+ 	if (should_lock_all_pipes && dc->hwss.interdependent_update_lock) {
+ 		if (dc->hwss.subvp_pipe_control_lock)
 -- 
 2.51.0
 
