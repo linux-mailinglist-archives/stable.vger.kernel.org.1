@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAEFEC4B15A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:28 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36320C4A9E8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2F323B3979
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:03 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D6B5434C817
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1CF347FD3;
-	Tue, 11 Nov 2025 01:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D073126B9;
+	Tue, 11 Nov 2025 01:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOcm2bv6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoCs+8rx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655E4348883;
-	Tue, 11 Nov 2025 01:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C38256C6D;
+	Tue, 11 Nov 2025 01:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825319; cv=none; b=riYn4brVY2jiKPxnktcpuQY7oKtz3ypWcuaJq266QvmSrQsAP2g6NxkwylaZP2RyWGqw6W62lXMkWmiAH0EqwwbLewyuLy8EnP9uQm44NNKD+RtDX8XeGW9SKXd05O0cMYCjRoTyqjdWbAjMUWGpfOfnZ4ix75cmPfroAtu0ShQ=
+	t=1762824532; cv=none; b=bcciG9aJjikE/yRfdMuO8oSZYOUk8MSj7fsXdcCGyL8Znr99zEm3u/bqx3xj0v7rPbSuKhCai1fvacrJZIsBiOB1Zhtl/pNRBzWtDo+XGwaZ3Q/cBX6xYRLu0JVz0++vl+HiGa2WIR3loksfWkgBzt6U8sV8EyOwFB7H4WFu2us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825319; c=relaxed/simple;
-	bh=qh+pf1O8FiAbLA9D6jYtmkA1/a328n9Wi5HlX+yiHqo=;
+	s=arc-20240116; t=1762824532; c=relaxed/simple;
+	bh=Hktywv82Lo59BUfsC+yRHyjTzNbKhKwUwPRcafdKfjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CnC1dpbeQlp7ijMm9/qcs/zdYgQItEBVV7tggXcrEtzyLXQ93WghCWJiKza+lNaag1UKnJN5X3U9KLL6hfKLppXA6ZdzOQSnxpyZRNjjivsjAk64LPxPyyIv93jKLacfV3I6i8M4fmef9JS7GWzHqga4Itt6rHL10vhuoWaMRhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOcm2bv6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BECC19424;
-	Tue, 11 Nov 2025 01:41:58 +0000 (UTC)
+	 MIME-Version; b=Z1kgs5eSC93oY8lfW6SpS7wRvZylHwANNMRaNNUzMWm9IdcI+3/7WEU9KEiGW2t6dFFyCLf2Niq8AaXeE9Ov/3RzfvzKkHKuZON7X6dzlr7wGhOaoIvp/tEp7WaZLKFkXi6OFdHePEdhfMu2J7Ki5/vLiB9DXimJo1qoImK8Yoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoCs+8rx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A413C4CEF5;
+	Tue, 11 Nov 2025 01:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825319;
-	bh=qh+pf1O8FiAbLA9D6jYtmkA1/a328n9Wi5HlX+yiHqo=;
+	s=korg; t=1762824532;
+	bh=Hktywv82Lo59BUfsC+yRHyjTzNbKhKwUwPRcafdKfjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOcm2bv6EUfbS2axhL1WtFFoS1Lo34B7TFSSiOl0bQqXlRraIDGFEk+vNIs9hBHad
-	 guQ2GL+ItJUbHsN1WEbWhBcuioooz0e5Bvi6nbWG/DeGrzoZ0hyEQc7kE+FXEdNUF1
-	 BBv/vW4g9+/wmkNqYHiSPnhG9qE8uD+uZWFKDV88=
+	b=AoCs+8rxsDvMPD+3oZuPPRKodLHIPPQDB+GKh914+PS71OmojB3RcWuk1xytUu/ra
+	 QeKRrqnUx7VeDEGIgW3wJzhjC5cY2zybLtUqf7djsJKpn16xbkHiz7Yc7lzmCd/eON
+	 XbribTAMuKeLvBSn14nqkfURyVZWkPbyJ+E0ikDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 750/849] net: libwx: fix device bus LAN ID
+	Yikang Yue <yikangy2@illinois.edu>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 464/565] fs/hpfs: Fix error code for new_inode() failure in mkdir/create/mknod/symlink
 Date: Tue, 11 Nov 2025 09:45:20 +0900
-Message-ID: <20251111004554.567488674@linuxfoundation.org>
+Message-ID: <20251111004537.339214858@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Yikang Yue <yikangy2@illinois.edu>
 
-commit a04ea57aae375bdda1cb57034d8bcbb351e1f973 upstream.
+[ Upstream commit 32058c38d3b79a28963a59ac0353644dc24775cd ]
 
-The device bus LAN ID was obtained from PCI_FUNC(), but when a PF
-port is passthrough to a virtual machine, the function number may not
-match the actual port index on the device. This could cause the driver
-to perform operations such as LAN reset on the wrong port.
+The function call new_inode() is a primitive for allocating an inode in memory,
+rather than planning disk space for it. Therefore, -ENOMEM should be returned
+as the error code rather than -ENOSPC.
 
-Fix this by reading the LAN ID from port status register.
+To be specific, new_inode()'s call path looks like this:
+new_inode
+  new_inode_pseudo
+    alloc_inode
+      ops->alloc_inode (hpfs_alloc_inode)
+        alloc_inode_sb
+          kmem_cache_alloc_lru
 
-Fixes: a34b3e6ed8fb ("net: txgbe: Store PCI info")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/B60A670C1F52CB8E+20251104062321.40059-1-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Therefore, the failure of new_inode() indicates a memory presure issue (-ENOMEM),
+not a lack of disk space. However, the current implementation of
+hpfs_mkdir/create/mknod/symlink incorrectly returns -ENOSPC when new_inode() fails.
+This patch fix this by set err to -ENOMEM before the goto statement.
+
+BTW, we also noticed that other nested calls within these four functions,
+like hpfs_alloc_f/dnode and hpfs_add_dirent, might also fail due to memory presure.
+But similarly, only -ENOSPC is returned. Addressing these will involve code
+modifications in other functions, and we plan to submit dedicated patches for these
+issues in the future. For this patch, we focus on new_inode().
+
+Signed-off-by: Yikang Yue <yikangy2@illinois.edu>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_hw.c   |    3 ++-
- drivers/net/ethernet/wangxun/libwx/wx_type.h |    4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ fs/hpfs/namei.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -2368,7 +2368,8 @@ int wx_sw_init(struct wx *wx)
- 	wx->oem_svid = pdev->subsystem_vendor;
- 	wx->oem_ssid = pdev->subsystem_device;
- 	wx->bus.device = PCI_SLOT(pdev->devfn);
--	wx->bus.func = PCI_FUNC(pdev->devfn);
-+	wx->bus.func = FIELD_GET(WX_CFG_PORT_ST_LANID,
-+				 rd32(wx, WX_CFG_PORT_ST));
+diff --git a/fs/hpfs/namei.c b/fs/hpfs/namei.c
+index d0edf9ed33b60..9a40068b59b77 100644
+--- a/fs/hpfs/namei.c
++++ b/fs/hpfs/namei.c
+@@ -52,8 +52,10 @@ static int hpfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
+ 	dee.fnode = cpu_to_le32(fno);
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail2;
++	}
+ 	hpfs_init_inode(result);
+ 	result->i_ino = fno;
+ 	hpfs_i(result)->i_parent_dir = dir->i_ino;
+@@ -153,9 +155,10 @@ static int hpfs_create(struct mnt_idmap *idmap, struct inode *dir,
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
  
- 	if (wx->oem_svid == PCI_VENDOR_ID_WANGXUN ||
- 	    pdev->is_virtfn) {
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -96,6 +96,8 @@
- #define WX_CFG_PORT_CTL_DRV_LOAD     BIT(3)
- #define WX_CFG_PORT_CTL_QINQ         BIT(2)
- #define WX_CFG_PORT_CTL_D_VLAN       BIT(0) /* double vlan*/
-+#define WX_CFG_PORT_ST               0x14404
-+#define WX_CFG_PORT_ST_LANID         GENMASK(9, 8)
- #define WX_CFG_TAG_TPID(_i)          (0x14430 + ((_i) * 4))
- #define WX_CFG_PORT_CTL_NUM_VT_MASK  GENMASK(13, 12) /* number of TVs */
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
+-	
++	}
+ 	hpfs_init_inode(result);
+ 	result->i_ino = fno;
+ 	result->i_mode |= S_IFREG;
+@@ -239,9 +242,10 @@ static int hpfs_mknod(struct mnt_idmap *idmap, struct inode *dir,
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
  
-@@ -549,8 +551,6 @@ enum WX_MSCA_CMD_value {
- #define TXD_USE_COUNT(S)     DIV_ROUND_UP((S), WX_MAX_DATA_PER_TXD)
- #define DESC_NEEDED          (MAX_SKB_FRAGS + 4)
- 
--#define WX_CFG_PORT_ST               0x14404
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
 -
- /******************* Receive Descriptor bit definitions **********************/
- #define WX_RXD_STAT_DD               BIT(0) /* Done */
- #define WX_RXD_STAT_EOP              BIT(1) /* End of Packet */
++	}
+ 	hpfs_init_inode(result);
+ 	result->i_ino = fno;
+ 	hpfs_i(result)->i_parent_dir = dir->i_ino;
+@@ -314,8 +318,10 @@ static int hpfs_symlink(struct mnt_idmap *idmap, struct inode *dir,
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+ 
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
++	}
+ 	result->i_ino = fno;
+ 	hpfs_init_inode(result);
+ 	hpfs_i(result)->i_parent_dir = dir->i_ino;
+-- 
+2.51.0
+
 
 
 
