@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-193651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5243EC4A708
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F09FC4AE95
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 779054F1A29
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 80B544F8419
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC62C346E45;
-	Tue, 11 Nov 2025 01:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742B030595A;
+	Tue, 11 Nov 2025 01:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vU4yYShY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TkSP8aDK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AB62DC78C;
-	Tue, 11 Nov 2025 01:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9FE2820A0;
+	Tue, 11 Nov 2025 01:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823685; cv=none; b=Ou0SYtdOrGJzY0NV+JzJc512BmM6q+oOhakV/eFKS7DNqeEaoqjcYRql/Am9f4nIrQd4HlgufRRfMoYu7DVin7VBVqvrz0eZC6VUNKxDzMBjOFkuTvMvokE+I62xbvctuKWiBuOxL1DuH7VKSakv+jn6P+WzmNhOfuVmHNupMHE=
+	t=1762824860; cv=none; b=dpR43Bu+ylWY1CKkFK5gCoheEF2CpAeeuTLznBo4LbusPZ7TtIP7/Wtww8vS1cXFACmkrL6mHvrWlHqkrEbXmZtRvlPXiQo9NV74abRYO7BQadLtA/4CghxtivxXdJqjIYEYDECJnAaZf4oA4+1h1TfWA4G0rr8OqfaMnchXKKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823685; c=relaxed/simple;
-	bh=A+mLEOrpyDcpOQwPooW8/ogx3fjFipcfRp2qHJarwQM=;
+	s=arc-20240116; t=1762824860; c=relaxed/simple;
+	bh=Q0mmcAp9ukSV7Y6o22jj2iCxpP+FsTWj1Zfl9FYzTDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DC1HzweAUrPYmrKowsskOQvsPZZM5g/Cbu16ms5AmAM+EtRjd0F8vokLb4J9mdddaFuHeZiIycbq8Gnp9ocKKtxiHmHo9x2jiVuf0NpBiyrgVhmRhfGyZPNspKNydBpUivry9FRRVl+dTCaEtNHzwyIKRhQ8RCQ1QlbJD5fxBcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vU4yYShY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D7FC113D0;
-	Tue, 11 Nov 2025 01:14:44 +0000 (UTC)
+	 MIME-Version; b=Gm3Jb7ezktyXxjIDI4FPcbrPS1rwKGxWb0N5Fu36kCdQZKb/pUvZiuT7GX9jy0TzNDjpmCmIB4Duecp+2nhpAvubtYjWRZZRW60EgM12kIoLXwX2EWEM7HcWUDp7/AOlbOPxU8ahHU2t2iczulor7VG4Y8zYmABtvo5dYAKIs1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TkSP8aDK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19C8C116B1;
+	Tue, 11 Nov 2025 01:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823685;
-	bh=A+mLEOrpyDcpOQwPooW8/ogx3fjFipcfRp2qHJarwQM=;
+	s=korg; t=1762824860;
+	bh=Q0mmcAp9ukSV7Y6o22jj2iCxpP+FsTWj1Zfl9FYzTDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vU4yYShYvndbKA4mUkxf20TclVFbHCZ3rm0MZ2K4mSCxscrHPhDefvozuobpDyfvo
-	 S+hrjlOCxDp2N0rgZqDcfbuGibPKKOOQk5AG1BQue1IlGMyzcKDNPwrSeL9yBidnqH
-	 WLvtdTVd6mzXUFqKq39KsplzyXkEHkFNOvR/R+5w=
+	b=TkSP8aDK5+xi4ab1Mp27/HMvi/GVi74YHTN8BNaHuKXL2t1j3H6USeL/sBCnNof8u
+	 vQ3C4P40QDw8lO27ZblcR9JdhY9DIpS2kL7DRpWdCd+tqAP8uLr1fWXu5mcuDWzKtp
+	 hpKmx4wISvMaHpoEYn4ARD8rAsnc3qd6Qma3I5rA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	Julia Filipchuk <julia.filipchuk@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 300/565] drm/xe/guc: Set upper limit of H2G retries over CTB
+Subject: [PATCH 6.17 586/849] ipv6: np->rxpmtu race annotation
 Date: Tue, 11 Nov 2025 09:42:36 +0900
-Message-ID: <20251111004533.627665443@linuxfoundation.org>
+Message-ID: <20251111004550.590768869@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +66,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2506af5f8109a387a5e8e9e3d7c498480b8033db ]
+[ Upstream commit 9fba1eb39e2f74d2002c5cbcf1d4435d37a4f752 ]
 
-The GuC communication protocol allows GuC to send NO_RESPONSE_RETRY
-reply message to indicate that due to some interim condition it can
-not handle incoming H2G request and the host shall resend it.
+Add READ_ONCE() annotations because np->rxpmtu can be changed
+while udpv6_recvmsg() and rawv6_recvmsg() read it.
 
-But in some cases, due to errors, this unsatisfied condition might
-be final and this could lead to endless retries as it was recently
-seen on the CI:
+Since this is a very rarely used feature, and that udpv6_recvmsg()
+and rawv6_recvmsg() read np->rxopt anyway, change the test order
+so that np->rxpmtu does not need to be in a hot cache line.
 
- [drm] GT0: PF: VF1 FLR didn't finish in 5000 ms (-ETIMEDOUT)
- [drm] GT0: PF: VF1 resource sanitizing failed (-ETIMEDOUT)
- [drm] GT0: PF: VF1 FLR failed!
- [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
- [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
- [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
- [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
-
-To avoid such dangerous loops allow only limited number of retries
-(for now 50) and add some delays (n * 5ms) to slow down the rate of
-resending this repeated request.
-
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Reviewed-by: Julia Filipchuk <julia.filipchuk@intel.com>
-Link: https://lore.kernel.org/r/20250903223330.6408-1-michal.wajdeczko@intel.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250916160951.541279-4-edumazet@google.com
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_ct.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/ipv6/raw.c | 2 +-
+ net/ipv6/udp.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index f1ce4e14dcb5f..d692e279d9fbf 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -977,11 +977,15 @@ static bool retry_failure(struct xe_guc_ct *ct, int ret)
- 	return true;
- }
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index 4c3f8245c40f1..eceef8af1355f 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -445,7 +445,7 @@ static int rawv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_ERRQUEUE)
+ 		return ipv6_recv_error(sk, msg, len, addr_len);
  
-+#define GUC_SEND_RETRY_LIMIT	50
-+#define GUC_SEND_RETRY_MSLEEP	5
-+
- static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
- 			    u32 *response_buffer, bool no_fail)
- {
- 	struct xe_gt *gt = ct_to_gt(ct);
- 	struct g2h_fence g2h_fence;
-+	unsigned int retries = 0;
- 	int ret = 0;
+-	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
++	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
+ 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
  
- 	/*
-@@ -1065,6 +1069,12 @@ static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
- 		xe_gt_dbg(gt, "H2G action %#x retrying: reason %#x\n",
- 			  action[0], g2h_fence.reason);
- 		mutex_unlock(&ct->lock);
-+		if (++retries > GUC_SEND_RETRY_LIMIT) {
-+			xe_gt_err(gt, "H2G action %#x reached retry limit=%u, aborting\n",
-+				  action[0], GUC_SEND_RETRY_LIMIT);
-+			return -ELOOP;
-+		}
-+		msleep(GUC_SEND_RETRY_MSLEEP * retries);
- 		goto retry;
- 	}
- 	if (g2h_fence.fail) {
+ 	skb = skb_recv_datagram(sk, flags, &err);
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 6a68f77da44b5..7f53fcc82a9ec 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -479,7 +479,7 @@ int udpv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_ERRQUEUE)
+ 		return ipv6_recv_error(sk, msg, len, addr_len);
+ 
+-	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
++	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
+ 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
+ 
+ try_again:
 -- 
 2.51.0
 
