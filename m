@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-193699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B20EC4A7BB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC48C4AE86
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2C0504F0E8E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:25:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE72D18977B7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A86D2F25F1;
-	Tue, 11 Nov 2025 01:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB2526A1B6;
+	Tue, 11 Nov 2025 01:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exFuZB0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifz5YxG+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175DA26E703;
-	Tue, 11 Nov 2025 01:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5C32DC78C;
+	Tue, 11 Nov 2025 01:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823800; cv=none; b=Pg2w/lwutMkHmfqOX/Jx5twoeVVipJKOZvGmIzdsabSlLDW2DGngoHJt0VFFpy3xMVTia+cznGS7tjdtfT2eC3PHUBFMHUsjANtmBauJi9SgkotHPuvfe8aTunjTlmp59PZeph/N4ei1NdDw12Tyg83V8Km4hv1te9xbGM81ZcU=
+	t=1762825000; cv=none; b=KSQH5Y+Eg4XEy/cNSiBMe9WIbbsWY8zADhnWo7mk7m1JE+BZGqT0G50BGZJFfhYjt+AdD2TSM1rJGM5hRx5Nn9aC1Hz500jen0Tn/rXaEO+gxchfyitoGmIC+fgAXTl4ZVgvHcHOHZMN85K8QYFFFf+qoXwzxtAua4qC3UjT5tI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823800; c=relaxed/simple;
-	bh=j0xEmAWMzQ3LkkWV2GFnLECjZd70EFKap/CrJ5gHtq0=;
+	s=arc-20240116; t=1762825000; c=relaxed/simple;
+	bh=mcVIhgioLLECD1u/wcX/J0dRFlDx+9bRq48FC2QSWZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JpfvpLSuNN2/Wn40WFcpJgou2pTzzUppVjpoeWhxo00rkkE+xfR49id2PENGjaJtb099DaNzqBOTiTU/nXlmkyGUld11NXoFuOy85pHAmlHnxaybHJNxviCxqeNMie3JnndPCQKUm3mYgmOcLjb/E7FP+CW5MflsHSf7efEpwho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exFuZB0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86BFC4CEFB;
-	Tue, 11 Nov 2025 01:16:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FDw9XZJxJPnUKHr5T2w3WEa2Daril5BruhRixZMYIuDS1SmT2areKvOQcbk2+1gJyYri6DJtstf4j/CbzHajeuy242EHREa2/6hZkIAVMQW8EKVFObiCUjy7KFPXWEKAvg7iytynQnA3MmbHNayC10qvIkSy/NwooqIUDekxrCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifz5YxG+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5998DC2BC86;
+	Tue, 11 Nov 2025 01:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823800;
-	bh=j0xEmAWMzQ3LkkWV2GFnLECjZd70EFKap/CrJ5gHtq0=;
+	s=korg; t=1762825000;
+	bh=mcVIhgioLLECD1u/wcX/J0dRFlDx+9bRq48FC2QSWZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exFuZB0fQhPx80f3wI4L/lJtENZH9mVsn6g24hneX/SRI0erwW03az81QMwaP59TJ
-	 v+PvdWT8CbkBcMgByiANnJrbd/EU8MrZUt18Rg1IQuPwCnB1jFQSzqWBdbGO34KJ+q
-	 ykvkkQb+vSWvczYxoXsvDVZqCLL8fEOiPxKlkH1c=
+	b=ifz5YxG+faBxI2cXw6eEHLpSLYsel+yIDdgI9Iz5aNxUiUoBmKEgRE/gJ5TCM7Jvm
+	 wEwejWlQ5PlvC5pCNeT7n3MGSRHMaoUkl+BrMh3JjJfm5aIilV8Zlz2fc8XKjdw+U7
+	 XjCr0qewmVNu/CtPA71cbm/zYxqGHVkidDOV2Xlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 327/565] scsi: ufs: host: mediatek: Disable auto-hibern8 during power mode changes
+Subject: [PATCH 6.17 613/849] PCI/PM: Skip resuming to D0 if device is disconnected
 Date: Tue, 11 Nov 2025 09:43:03 +0900
-Message-ID: <20251111004534.243904407@linuxfoundation.org>
+Message-ID: <20251111004551.244516915@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,112 +63,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit f5ca8d0c7a6388abd5d8023cc682e1543728cc73 ]
+[ Upstream commit 299fad4133677b845ce962f78c9cf75bded63f61 ]
 
-Disable auto-hibern8 during power mode transitions to prevent unintended
-entry into auto-hibern8. Restore the original auto-hibern8 timer value
-after completing the power mode change to maintain system stability and
-prevent potential issues during power state transitions.
+When a device is surprise-removed (e.g., due to a dock unplug), the PCI
+core unconfigures all downstream devices and sets their error state to
+pci_channel_io_perm_failure. This marks them as disconnected via
+pci_dev_is_disconnected().
 
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+During device removal, the runtime PM framework may attempt to resume the
+device to D0 via pm_runtime_get_sync(), which calls into pci_power_up().
+Since the device is already disconnected, this resume attempt is
+unnecessary and results in a predictable errors like this, typically when
+undocking from a TBT3 or USB4 dock with PCIe tunneling:
+
+  pci 0000:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
+
+Avoid powering up disconnected devices by checking their status early in
+pci_power_up() and returning -EIO.
+
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+[bhelgaas: add typical message]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Link: https://patch.msgid.link/20250909031916.4143121-1-superm1@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-mediatek.c | 53 +++++++++++++++++++--------------
- 1 file changed, 30 insertions(+), 23 deletions(-)
+ drivers/pci/pci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
-index 003ca5ad88228..00ecfe14c1fd9 100644
---- a/drivers/ufs/host/ufs-mediatek.c
-+++ b/drivers/ufs/host/ufs-mediatek.c
-@@ -1237,19 +1237,49 @@ static int ufs_mtk_pre_pwr_change(struct ufs_hba *hba,
- 	return ret;
- }
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 005b92e6585e9..372de7961d2a6 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1374,6 +1374,11 @@ int pci_power_up(struct pci_dev *dev)
+ 		return -EIO;
+ 	}
  
-+static int ufs_mtk_auto_hibern8_disable(struct ufs_hba *hba)
-+{
-+	int ret;
-+
-+	/* disable auto-hibern8 */
-+	ufshcd_writel(hba, 0, REG_AUTO_HIBERNATE_IDLE_TIMER);
-+
-+	/* wait host return to idle state when auto-hibern8 off */
-+	ufs_mtk_wait_idle_state(hba, 5);
-+
-+	ret = ufs_mtk_wait_link_state(hba, VS_LINK_UP, 100);
-+	if (ret) {
-+		dev_warn(hba->dev, "exit h8 state fail, ret=%d\n", ret);
-+
-+		ufshcd_force_error_recovery(hba);
-+
-+		/* trigger error handler and break suspend */
-+		ret = -EBUSY;
++	if (pci_dev_is_disconnected(dev)) {
++		dev->current_state = PCI_D3cold;
++		return -EIO;
 +	}
 +
-+	return ret;
-+}
-+
- static int ufs_mtk_pwr_change_notify(struct ufs_hba *hba,
- 				     enum ufs_notify_change_status stage,
- 				     struct ufs_pa_layer_attr *dev_max_params,
- 				     struct ufs_pa_layer_attr *dev_req_params)
- {
- 	int ret = 0;
-+	static u32 reg;
- 
- 	switch (stage) {
- 	case PRE_CHANGE:
-+		if (ufshcd_is_auto_hibern8_supported(hba)) {
-+			reg = ufshcd_readl(hba, REG_AUTO_HIBERNATE_IDLE_TIMER);
-+			ufs_mtk_auto_hibern8_disable(hba);
-+		}
- 		ret = ufs_mtk_pre_pwr_change(hba, dev_max_params,
- 					     dev_req_params);
- 		break;
- 	case POST_CHANGE:
-+		if (ufshcd_is_auto_hibern8_supported(hba))
-+			ufshcd_writel(hba, reg, REG_AUTO_HIBERNATE_IDLE_TIMER);
- 		break;
- 	default:
- 		ret = -EINVAL;
-@@ -1483,29 +1513,6 @@ static void ufs_mtk_dev_vreg_set_lpm(struct ufs_hba *hba, bool lpm)
- 	}
- }
- 
--static int ufs_mtk_auto_hibern8_disable(struct ufs_hba *hba)
--{
--	int ret;
--
--	/* disable auto-hibern8 */
--	ufshcd_writel(hba, 0, REG_AUTO_HIBERNATE_IDLE_TIMER);
--
--	/* wait host return to idle state when auto-hibern8 off */
--	ufs_mtk_wait_idle_state(hba, 5);
--
--	ret = ufs_mtk_wait_link_state(hba, VS_LINK_UP, 100);
--	if (ret) {
--		dev_warn(hba->dev, "exit h8 state fail, ret=%d\n", ret);
--
--		ufshcd_force_error_recovery(hba);
--
--		/* trigger error handler and break suspend */
--		ret = -EBUSY;
--	}
--
--	return ret;
--}
--
- static int ufs_mtk_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
- 	enum ufs_notify_change_status status)
- {
+ 	pci_read_config_word(dev, dev->pm_cap + PCI_PM_CTRL, &pmcsr);
+ 	if (PCI_POSSIBLE_ERROR(pmcsr)) {
+ 		pci_err(dev, "Unable to change power state from %s to D0, device inaccessible\n",
 -- 
 2.51.0
 
