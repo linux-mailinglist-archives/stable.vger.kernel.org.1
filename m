@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF07C4A0EE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D44C4A0F4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F0C194F24CE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 93DCE4F256B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343C6214210;
-	Tue, 11 Nov 2025 00:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D694424113D;
+	Tue, 11 Nov 2025 00:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEntDElM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4MM5uIO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FCF4C97;
-	Tue, 11 Nov 2025 00:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930444C97;
+	Tue, 11 Nov 2025 00:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822454; cv=none; b=VR0ZG34uUKiA6bRfFf5YtT3ULeHcAXIrxjSN+HsATNQlneLPIFmg588wMP67PYmJEv3q3Tx6Uw/PTyovyIJgrNxlX2AGnyihIKxvru8GAJPyyXebtrkQFPrTeqSzpbfUOSw0+gYCHQ1XLppf2+Yhrid6kUk4XSL/Kqws5jlTxck=
+	t=1762822458; cv=none; b=NM0oZ/fsCiLud34gMAow5JQKgVLrDZD4N8RqZgQuHBzrDEbahIdHJZol+VmR3HcL1u7dqByZ/YFfBqMKWyZdotyuazM8zO1yGnaoYqDKLNgAUR4w5+wMSwNMCHx50CbnayPiqJbf+zuBRS44SvFY4UpFaiJ6VTgr6pS6vrOeI/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822454; c=relaxed/simple;
-	bh=rJxM9DM0FC1tYeBS156NSQp4+pehyce7i1qERKunPIM=;
+	s=arc-20240116; t=1762822458; c=relaxed/simple;
+	bh=I/CIMITgADnLa8a4mDYFSQhI3h3mf0yuxGytgK6wjRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TsQiQy6IlfzkgWab+uNY3SMkTxbTISzjMjt4EOBV7KfvWHH0IaOyqIxDGb6PeJN0SKbgA53o7yNBxdscYjMhXDO5O3MuTIJ3Kvlr2CI2W2AOWGUG3S3tRziFo0NuTcAIPaqlhw2bwyQHpZK4iNulHpT5gH1In6dsEgxU3sa0IRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEntDElM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF72C4AF0B;
-	Tue, 11 Nov 2025 00:54:13 +0000 (UTC)
+	 MIME-Version; b=bqaCTHUMIsLeDc2KgE1b3TGsFNPHiPcww9Hdb/NjJUMi8GoTeIKb1ysxCRbBUfkVyEZuC+iH+hJvEz+cXek/wt4aFMIwXKht0ikTaELlA2zYWyr/qYAm8lPiJ594K9eNPt9JMaPf8L6Xm3HmAysoEeHRWQ5xjZYmTMlGtJ3enHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4MM5uIO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C395C19422;
+	Tue, 11 Nov 2025 00:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822453;
-	bh=rJxM9DM0FC1tYeBS156NSQp4+pehyce7i1qERKunPIM=;
+	s=korg; t=1762822458;
+	bh=I/CIMITgADnLa8a4mDYFSQhI3h3mf0yuxGytgK6wjRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WEntDElMFoA16AdqtGyJNLFaKT5uwufk1GlId263iGn8GTH/lbmP2ZlSAmTu92PJB
-	 Q6t4rU1IIPUFWcz+w78R1/9zc8kKI1CwXbO6QYKdjoz986O5sWHEazAkUBQhMGQSw0
-	 p92puT1gk0dyna0jQmuuymgAhYjq8wIpgSFGymv4=
+	b=i4MM5uIOZynYsl0wB9c+etxGAs6YfcpWlcQ9iRVwUEFX68a1EMZvrmW/6sTosrXw4
+	 0Fu+CpWfdhm3STw/nHH1mQfk8UAibuvcK8QexZj8KWCiZSsxQyBtqTiDrmaKhTmN2N
+	 zFPwummRktSQ8YKnqF4zv2SJVR1YbxNI9oVBTTOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Zanders <maarten@zanders.be>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 053/565] ASoC: fsl_sai: Fix sync error in consumer mode
-Date: Tue, 11 Nov 2025 09:38:29 +0900
-Message-ID: <20251111004528.106449955@linuxfoundation.org>
+Subject: [PATCH 6.12 054/565] drm/radeon: Do not kfree() devres managed rdev
+Date: Tue, 11 Nov 2025 09:38:30 +0900
+Message-ID: <20251111004528.130674499@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,59 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Maarten Zanders <maarten@zanders.be>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit b2dd1d0d322dce5f331961c927e775b84014d5ab ]
+[ Upstream commit 3328443363a0895fd9c096edfe8ecd372ca9145e ]
 
-When configured for default synchronisation (Rx syncs to Tx) and the
-SAI operates in consumer mode (clocks provided externally to Tx), a
-synchronisation error occurs on Tx on the first attempt after device
-initialisation when the playback stream is started while a capture
-stream is already active. This results in channel shift/swap on the
-playback stream.
-Subsequent streams (ie after that first failing one) always work
-correctly, no matter the order, with or without the other stream active.
+Since the allocation of the drivers main structure was changed to
+devm_drm_dev_alloc() rdev is managed by devres and we shouldn't be calling
+kfree() on it.
 
-This issue was observed (and fix tested) on an i.MX6UL board connected
-to an ADAU1761 codec, where the codec provides both frame and bit clock
-(connected to TX pins).
+This fixes things exploding if the driver probe fails and devres cleans up
+the rdev after we already free'd it.
 
-To fix this, always initialize the 'other' xCR4 and xCR5 registers when
-we're starting a stream which is synced to the opposite one, irregardless
-of the producer/consumer status.
-
-Fixes: 51659ca069ce ("ASoC: fsl-sai: set xCR4/xCR5/xMR for SAI master mode")
-
-Signed-off-by: Maarten Zanders <maarten@zanders.be>
-Reviewed-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-Link: https://patch.msgid.link/20251024135716.584265-1-maarten@zanders.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a9ed2f052c5c ("drm/radeon: change drm_dev_alloc to devm_drm_dev_alloc")
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 16c0681617b8a045773d4d87b6140002fa75b03b)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_sai.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/radeon/radeon_kms.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 7e4338762f085..bc3bf1c55d3c1 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -620,12 +620,12 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
- 		val_cr4 |= FSL_SAI_CR4_CHMOD;
+diff --git a/drivers/gpu/drm/radeon/radeon_kms.c b/drivers/gpu/drm/radeon/radeon_kms.c
+index 645e33bf7947e..ba1446acd7032 100644
+--- a/drivers/gpu/drm/radeon/radeon_kms.c
++++ b/drivers/gpu/drm/radeon/radeon_kms.c
+@@ -84,7 +84,6 @@ void radeon_driver_unload_kms(struct drm_device *dev)
+ 	rdev->agp = NULL;
  
- 	/*
--	 * For SAI provider mode, when Tx(Rx) sync with Rx(Tx) clock, Rx(Tx) will
--	 * generate bclk and frame clock for Tx(Rx), we should set RCR4(TCR4),
--	 * RCR5(TCR5) for playback(capture), or there will be sync error.
-+	 * When Tx(Rx) sync with Rx(Tx) clock, Rx(Tx) will provide bclk and
-+	 * frame clock for Tx(Rx). We should set RCR4(TCR4), RCR5(TCR5)
-+	 * for playback(capture), or there will be sync error.
- 	 */
+ done_free:
+-	kfree(rdev);
+ 	dev->dev_private = NULL;
+ }
  
--	if (!sai->is_consumer_mode[tx] && fsl_sai_dir_is_synced(sai, adir)) {
-+	if (fsl_sai_dir_is_synced(sai, adir)) {
- 		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(!tx, ofs),
- 				   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK |
- 				   FSL_SAI_CR4_CHMOD_MASK,
 -- 
 2.51.0
 
