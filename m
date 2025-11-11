@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A29CC4A8E1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC240C4AF10
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 55DE84F6913
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0E621890DC8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD23533CEAA;
-	Tue, 11 Nov 2025 01:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E122F39B1;
+	Tue, 11 Nov 2025 01:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBscdZD3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BW/tlR3S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A01325CC40;
-	Tue, 11 Nov 2025 01:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1F126ED5C;
+	Tue, 11 Nov 2025 01:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823998; cv=none; b=nenDy1K7kyzKNhk1aZn+jmrUtMoHbQDeY8O22GroTM1IUqSZPbix9y/FpR+xnuf8BnYcsT0TqGgpH+Eiznjcgxo9YZWdNLE8bcjjf7in3bo2H5hADswQde6lK/SHEftJd9KwbgnYqFWahRw8L+nTWyP3aom6G6WqqEKy6Ozkqms=
+	t=1762825089; cv=none; b=kyasdzUA1leiS/JcQCWkmsFfkvREu6uPWFMFtgQ/hwhbe+7pnSlyZxRUKJYL1D7oRiujjzJfaIKBUpdq8MRcuyZryXLonOWHgfILBstWQPWrmiN37GRESmrM2+S4MPKyaheYW4BXHPQWwtYQ7MHrcDSYqoRrLhsHUQQtPAD7BKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823998; c=relaxed/simple;
-	bh=swntWXiu6ejr6eXuazvBlD3C2wohGf5KqfHhbvfbWlg=;
+	s=arc-20240116; t=1762825089; c=relaxed/simple;
+	bh=YxwH1YaTa51PKqnK8dpNIQlEEip2+SIJoSNlsSudB78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jl8m4G8cEonyN+GBAp6Sd+gMAAJKFiSLOc3ABpd+1uqQdxOcbg9IlrttEEtHTpWGnvEPBkbA5BBHPQ2xCKKMHaWdDf/JSXFJy15Km8GTuNVP8sXoyak0zlOhCZGJx/q1Ok8uVfrVCpOa30CS0hdYB31HFz4LOTPAAcFSsdfDakE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBscdZD3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3EAC113D0;
-	Tue, 11 Nov 2025 01:19:57 +0000 (UTC)
+	 MIME-Version; b=eHDBc9sGuc6bsCKNyo1wYbT00VGRHB12GIlYWfE0NYi56BUtcJZIuyRPbAQVxYUgiKjP7nNKVavh0UlXRSJ7QIEvOBIFo8u6IYuywzcw8HGWDwwWtKXkwIpts+VRbaGTlFKKYoknSEDOboCNyvWDd5v0MSjTTGvN5a8gIeKbn8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BW/tlR3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CDEC4CEFB;
+	Tue, 11 Nov 2025 01:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823998;
-	bh=swntWXiu6ejr6eXuazvBlD3C2wohGf5KqfHhbvfbWlg=;
+	s=korg; t=1762825089;
+	bh=YxwH1YaTa51PKqnK8dpNIQlEEip2+SIJoSNlsSudB78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nBscdZD3o1No+wtxyGpFDNj+Bs6z4kD6jnibBCPjsyNi+Ajivi9g+m4tOZlcZ2TRu
-	 SR6Rkzgtn7YVrL5AQK4srATsHaadz1UPm6klOGz4qj+sdqxsxoHSmKl0d/JV37MvwJ
-	 PaVXL0Z9OTWEp09vrjeTQhMrda4hM96LReFOcUcY=
+	b=BW/tlR3Ss9OBN+1AakWpZqzRN6MsneIHwk2iReTrM8iSbqZ4y8vjoUsQZeN/LbUpU
+	 BtDJyXJxsxvESmlH2bzmB4JsbZy+XZWHDrtamunOIs733dUIT/rPrRoYabTalA39u9
+	 hY3sqqx3g/iS1C5tFWZnEOiPZDyIjOz/QtUefdeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tushar Dave <tdave@nvidia.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 368/565] ethernet: Extend device_get_mac_address() to use NVMEM
-Date: Tue, 11 Nov 2025 09:43:44 +0900
-Message-ID: <20251111004535.148496214@linuxfoundation.org>
+Subject: [PATCH 6.17 655/849] vfio/nvgrace-gpu: Add GB300 SKU to the devid table
+Date: Tue, 11 Nov 2025 09:43:45 +0900
+Message-ID: <20251111004552.264199674@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Tushar Dave <tdave@nvidia.com>
 
-[ Upstream commit d2d3f529e7b6ff2aa432b16a2317126621c28058 ]
+[ Upstream commit 407aa63018d15c35a34938633868e61174d2ef6e ]
 
-A lot of modern SoC have the ability to store MAC addresses in their
-NVMEM. So extend the generic function device_get_mac_address() to
-obtain the MAC address from an nvmem cell named 'mac-address' in
-case there is no firmware node which contains the MAC address directly.
+GB300 is NVIDIA's Grace Blackwell Ultra Superchip.
 
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250912140332.35395-3-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Add the GB300 SKU device-id to nvgrace_gpu_vfio_pci_table.
+
+Signed-off-by: Tushar Dave <tdave@nvidia.com>
+Reviewed-by: Ankit Agrawal <ankita@nvidia.com>
+Link: https://lore.kernel.org/r/20250925170935.121587-1-tdave@nvidia.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethernet/eth.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/vfio/pci/nvgrace-gpu/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ethernet/eth.c b/net/ethernet/eth.c
-index 4e3651101b866..43e211e611b16 100644
---- a/net/ethernet/eth.c
-+++ b/net/ethernet/eth.c
-@@ -613,7 +613,10 @@ EXPORT_SYMBOL(fwnode_get_mac_address);
-  */
- int device_get_mac_address(struct device *dev, char *addr)
- {
--	return fwnode_get_mac_address(dev_fwnode(dev), addr);
-+	if (!fwnode_get_mac_address(dev_fwnode(dev), addr))
-+		return 0;
-+
-+	return nvmem_get_mac_address(dev, addr);
- }
- EXPORT_SYMBOL(device_get_mac_address);
+diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+index d95761dcdd58c..36b79713fd5a5 100644
+--- a/drivers/vfio/pci/nvgrace-gpu/main.c
++++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+@@ -995,6 +995,8 @@ static const struct pci_device_id nvgrace_gpu_vfio_pci_table[] = {
+ 	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, 0x2348) },
+ 	/* GB200 SKU */
+ 	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, 0x2941) },
++	/* GB300 SKU */
++	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, 0x31C2) },
+ 	{}
+ };
  
 -- 
 2.51.0
