@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-194226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF98BC4B0A0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59A9C4AAF9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDAEC3BA2B6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:43:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9AFA3B3C4C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A332FE592;
-	Tue, 11 Nov 2025 01:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC282BE7B8;
+	Tue, 11 Nov 2025 01:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wF7TnV2c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJqBkH1K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F248340DB7;
-	Tue, 11 Nov 2025 01:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8EF33FE26;
+	Tue, 11 Nov 2025 01:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825101; cv=none; b=jThNnBNjbtWTiZ+gLr48Q0O0DZ6/r6J03cEKQsr9gp1uQrG3tsLoq0DYpkVUmGxhnqUkRc60IjXNw3U7EdPIXbF7VnHL+8n2ifYmLMqQ77mmxuljmjUqDvGwG5/8ksM2saOT0L6HKbNCkvjiw7j4XSXob2kaW9fMUek/mFNYhuA=
+	t=1762824024; cv=none; b=rWtgF1gPuRCs6s1VBLEf8fbGwNr2o9yC157/XLp3o1z0HaTfuEEtUjGajUcQ/uYXqsRT7krT6o2SJEHBSom6JWpcqZMP8i6p51z6ewb3xt2s39DNeBXLeVNu3yzh/9IUcThUkozk2EgnDG3glnffymI52toyPrhiIJacKFpM768=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825101; c=relaxed/simple;
-	bh=8dbYneWbsQGD2lCnUMs+nZiYduBtIabTQTWoZIY586U=;
+	s=arc-20240116; t=1762824024; c=relaxed/simple;
+	bh=keZmqWeOPgZa2p0VY/x9ShlnPC00vgHoE5LN1tRWHsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Io+O04qoRixfKrXoJNEyNG9DTBk1WMK/DWwJ17L/lZwPV2EtuIsdQ/wfD69kGp1hfDEjXQdS4nGk41bfSGZ44ylb+ZT5FKkcMraIn/Zcpf8td8OdgmOm8ovq0WzOql/HhWvam3xvS7rJ+eWej1QAUw5k8T/uWkCmXvBXMwiP6JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wF7TnV2c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E80C4CEF5;
-	Tue, 11 Nov 2025 01:38:21 +0000 (UTC)
+	 MIME-Version; b=O5r8apf2dTprozXhmZIDXzxZS7/ZPI/Ile5H6sFszrLjHaOmQojlXEMs6f9I0VrvJYPcrwVTSxZ7yJs4tD5DZa5yS6Gz0Qzjgw2N3RGvurMPKvMbaAgZcbgTo+NBGw45WSycdDsLvaOm22XusK4xoCtNxuSLnmZqlJG5z9/3TRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJqBkH1K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67353C4CEF5;
+	Tue, 11 Nov 2025 01:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825101;
-	bh=8dbYneWbsQGD2lCnUMs+nZiYduBtIabTQTWoZIY586U=;
+	s=korg; t=1762824024;
+	bh=keZmqWeOPgZa2p0VY/x9ShlnPC00vgHoE5LN1tRWHsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wF7TnV2cQdv2jmhn6PkEMBnzmxTa/KSESCN7571zX0KXnJ3LwSZ6VEEeJK0e+5VZ8
-	 NW7IBRfggTadmSiAWJh+Potd71KZ0FMpSVwmgEaOQpNmdzZ8Ibam8+q2Lvgu1nTmUf
-	 PzEC6KSFU2Y1srmOl0tZTBehrR90yQhVuu6zC/RY=
+	b=ZJqBkH1KkbgmoyoMuLkmb+3+QZ0KUFTe8o1ovz6IHVVSz8HC3dCAIyYh3l2yolRTV
+	 F8zwsmcLaGPGudM0Tbqr+ffHNHAshoid+fGEsrvZxSbt0RUZprJSuQ1KBsbZtua5Zp
+	 8S6p+CiWZrpeHjieMOcdGKKpK7GFAuuIkUc/19kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Avri Altman <avri.altman@sandisk.com>,
+	Nitin Rawat <quic_nitirawa@quicinc.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 659/849] net: macb: avoid dealing with endianness in macb_set_hwaddr()
+Subject: [PATCH 6.12 373/565] scsi: ufs: core: Disable timestamp functionality if not supported
 Date: Tue, 11 Nov 2025 09:43:49 +0900
-Message-ID: <20251111004552.358473578@linuxfoundation.org>
+Message-ID: <20251111004535.260302077@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 70a5ce8bc94545ba0fb47b2498bfb12de2132f4d ]
+[ Upstream commit fb1f4568346153d2f80fdb4ffcfa0cf4fb257d3c ]
 
-bp->dev->dev_addr is of type `unsigned char *`. Casting it to a u32
-pointer and dereferencing implies dealing manually with endianness,
-which is error-prone.
+Some Kioxia UFS 4 devices do not support the qTimestamp attribute.  Set
+the UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT for these devices such that no
+error messages appear in the kernel log about failures to set the
+qTimestamp attribute.
 
-Replace by calls to get_unaligned_le32|le16() helpers.
-
-This was found using sparse:
-   ⟩ make C=2 drivers/net/ethernet/cadence/macb_main.o
-   warning: incorrect type in assignment (different base types)
-      expected unsigned int [usertype] bottom
-      got restricted __le32 [usertype]
-   warning: incorrect type in assignment (different base types)
-      expected unsigned short [usertype] top
-      got restricted __le16 [usertype]
-   ...
-
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250923-macb-fixes-v6-5-772d655cdeb6@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Avri Altman <avri.altman@sandisk.com>
+Tested-by: Nitin Rawat <quic_nitirawa@quicinc.com> # on SM8650-QRD
+Reviewed-by: Nitin Rawat <quic_nitirawa@quicinc.com>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Message-ID: <20250909190614.3531435-1-bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufshcd.c | 6 +++++-
+ include/ufs/ufs_quirks.h  | 3 +++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index fc082a7a5a313..4af2ec705ba52 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -274,9 +274,9 @@ static void macb_set_hwaddr(struct macb *bp)
- 	u32 bottom;
- 	u16 top;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index d4dbb6769efa2..fca05834eefc2 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -295,6 +295,9 @@ static const struct ufs_dev_quirk ufs_fixups[] = {
+ 	{ .wmanufacturerid = UFS_VENDOR_TOSHIBA,
+ 	  .model = "THGLF2G9D8KBADG",
+ 	  .quirk = UFS_DEVICE_QUIRK_PA_TACTIVATE },
++	{ .wmanufacturerid = UFS_VENDOR_TOSHIBA,
++	  .model = "THGJFJT1E45BATP",
++	  .quirk = UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT },
+ 	{}
+ };
  
--	bottom = cpu_to_le32(*((u32 *)bp->dev->dev_addr));
-+	bottom = get_unaligned_le32(bp->dev->dev_addr);
- 	macb_or_gem_writel(bp, SA1B, bottom);
--	top = cpu_to_le16(*((u16 *)(bp->dev->dev_addr + 4)));
-+	top = get_unaligned_le16(bp->dev->dev_addr + 4);
- 	macb_or_gem_writel(bp, SA1T, top);
+@@ -8670,7 +8673,8 @@ static void ufshcd_set_timestamp_attr(struct ufs_hba *hba)
+ 	struct ufs_dev_info *dev_info = &hba->dev_info;
+ 	struct utp_upiu_query_v4_0 *upiu_data;
  
- 	if (gem_has_ptp(bp)) {
+-	if (dev_info->wspecversion < 0x400)
++	if (dev_info->wspecversion < 0x400 ||
++	    hba->dev_quirks & UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT)
+ 		return;
+ 
+ 	ufshcd_dev_man_lock(hba);
+diff --git a/include/ufs/ufs_quirks.h b/include/ufs/ufs_quirks.h
+index f52de5ed1b3b6..83563247c36cb 100644
+--- a/include/ufs/ufs_quirks.h
++++ b/include/ufs/ufs_quirks.h
+@@ -113,4 +113,7 @@ struct ufs_dev_quirk {
+  */
+ #define UFS_DEVICE_QUIRK_PA_HIBER8TIME          (1 << 12)
+ 
++/* Some UFS 4 devices do not support the qTimestamp attribute */
++#define UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT	(1 << 13)
++
+ #endif /* UFS_QUIRKS_H_ */
 -- 
 2.51.0
 
