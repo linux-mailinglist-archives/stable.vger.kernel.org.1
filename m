@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A83DC4A701
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:55 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3393C4A5B4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9128E4F3515
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:27 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6E676349A16
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2677346A0C;
-	Tue, 11 Nov 2025 01:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98A8346A1B;
+	Tue, 11 Nov 2025 01:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="La5i5wu/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSfD4JBw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D26D2DC32A;
-	Tue, 11 Nov 2025 01:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E1A2DC32A;
+	Tue, 11 Nov 2025 01:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823676; cv=none; b=uXP5CeVxTCZSUtF+CtsELrmtl67U6m+DeiTtIEyJFv3gPL+e48dTsse8GsEFwBsWJgD128bVRLhj3NJDlWnUXjsD1ujs94L6GYAYcGiCNm8CgP6reFpZ2/lUli8f0HQCJ0Z63I67QbiAGG7HdITSobaF/VOYRsIc3sqs8OwV/H4=
+	t=1762823680; cv=none; b=Omr4kwHilBCfMcfiVXEzYgKw7yGqBtBYPH2ovRmhcjeVKc9Lcd4lrSO9MtTiLTEaITxVuEh5THUvDyYDyKhCJP3DiUadzHWhLS15bbNhpnFXQuJGSenEUVaNhK1K+lf/3StFiaBPcCruyWRSbyNnaFcKN9srkatdajsLaGpcw5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823676; c=relaxed/simple;
-	bh=R4+uQSXJM68l9QrCo77Y7Qz3FaT5XiyXpXD8ucWpmiA=;
+	s=arc-20240116; t=1762823680; c=relaxed/simple;
+	bh=jxmJhfxPYn8BKEmG9C0YlcYPaMMpzI13ByFbRwLBRCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tH9DwW3GV37bs+M0g8C2MgrczMTzGY7TKZ5841r+0/FbdAC7gRnaYAW0/gbYm/CxFpp6KsDdYOkaDF+rWuYZa/bvCx305+A2vWru8LkqMNX7fW7LjCJ3IX4TiAOGIi5XBzGEqcrV/xgDBe5lb8FLLyxezV4H8mYmiUopTS/RgZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=La5i5wu/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917D8C4CEF5;
-	Tue, 11 Nov 2025 01:14:35 +0000 (UTC)
+	 MIME-Version; b=kyVOzfjNBUe7/9rY1MbaRst3fdZFH65WxWCf5Ek+Yn6CFMpvhQ7fnEoXpS++MkVysxb2hbAea2vFNiFqqmTvvsLBkHkytokgNiZzAr5Ef4eSiXEPpGLU+eYmp0skFK/iFQJgm/vZxyC7hm39F9MkbUpqiHRfhz/ydTs0MNMHoMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSfD4JBw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31528C16AAE;
+	Tue, 11 Nov 2025 01:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823676;
-	bh=R4+uQSXJM68l9QrCo77Y7Qz3FaT5XiyXpXD8ucWpmiA=;
+	s=korg; t=1762823680;
+	bh=jxmJhfxPYn8BKEmG9C0YlcYPaMMpzI13ByFbRwLBRCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=La5i5wu/2QBwba8NxBaeEnx06L0+e3EKJw78l9pSI+mr3F7HnTOhu7DEnoyCFcjaL
-	 wfOlIU0eFEH60qlMUmE1jb12KXoeVdv/2Lx4M3KhbGKMYToCKhfBwRc/xWSdRknKXw
-	 1Ss0uYQZAkPjwaRU/Yu0Lkn7M7iND4VZG/mOcfbU=
+	b=MSfD4JBwVyxKYMq52ODRKBn9FOjYMbeVrpe9sHZwLMB6LN6tO2LlzhiRuWyH68vJV
+	 0txXI8eeRC1Fhe7ZbfHnBKYKUKwGlKuuXJkDMwVbm85warwzWCtyZPXIgzV4qY8/f2
+	 ZmuRLC9FWp9gFtwCNaUqEEr8fpS8XpGWoxgNZIXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cryolitia PukNgae <cryolitia@uniontech.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Alex Lanzano <lanzano.alex@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 348/849] net: wangxun: limit tx_max_coalesced_frames_irq
-Date: Tue, 11 Nov 2025 09:38:38 +0900
-Message-ID: <20251111004544.833930679@linuxfoundation.org>
+Subject: [PATCH 6.17 349/849] iio: imu: bmi270: Match PNP ID found on newer GPD firmware
+Date: Tue, 11 Nov 2025 09:38:39 +0900
+Message-ID: <20251111004544.857229858@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,40 +68,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Cryolitia PukNgae <cryolitia@uniontech.com>
 
-[ Upstream commit fd4aa243f154a80bbeb3dd311d2114eeb538f479 ]
+[ Upstream commit dc757dc1572d579c2634c05d0a03c5676227c571 ]
 
-Add limitation on tx_max_coalesced_frames_irq as 0 ~ 65535, because
-'wx->tx_work_limit' is declared as a member of type u16.
+GPD devices originally used BMI160 sensors with the "BMI0160" PNP ID.
+When they switched to BMI260 sensors in newer hardware, they reused
+the existing Windows driver which accepts both "BMI0160" and "BMI0260"
+IDs. Consequently, they kept "BMI0160" in DSDT tables for new BMI260
+devices, causing driver mismatches in Linux.
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250821023408.53472-3-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+1. GPD updated BIOS v0.40+[1] for newer devices to report "BMI0260" for
+BMI260 sensors to avoid loading the bmi160 driver on Linux. While this
+isn't Bosch's VID;
+2. Bosch's official Windows driver uses "BMI0260" as a compatible ID
+3. We're seeing real devices shipping with "BMI0260" in DSDT
+
+The DSDT excerpt of GPD G1619-04 with BIOS v0.40:
+
+Scope (_SB.I2CC)
+{
+    Device (BMA2)
+    {
+        Name (_ADR, Zero)  // _ADR: Address
+        Name (_HID, "BMI0260")  // _HID: Hardware ID
+        Name (_CID, "BMI0260")  // _CID: Compatible ID
+        Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
+        Name (_UID, One)  // _UID: Unique ID
+        Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+        {
+            Name (RBUF, ResourceTemplate ()
+            {
+                I2cSerialBusV2 (0x0069, ControllerInitiated, 0x00061A80,
+                    AddressingMode7Bit, "\\_SB.I2CC",
+                    0x00, ResourceConsumer, , Exclusive,
+                    )
+            })
+            Return (RBUF) /* \_SB_.I2CC.BMA2._CRS.RBUF */
+        }
+        # omit some noise
+    }
+}
+
+Link: http://download.softwincn.com/WIN%20Max%202024/Max2-7840-BIOS-V0.41.zip #1
+Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Acked-by: Alex Lanzano <lanzano.alex@gmail.com>
+Link: https://patch.msgid.link/20250821-bmi270-gpd-acpi-v4-1-5279b471d749@uniontech.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_ethtool.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/iio/imu/bmi270/bmi270_i2c.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index c12a4cb951f68..254a48ede2660 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -334,8 +334,11 @@ int wx_set_coalesce(struct net_device *netdev,
- 			return -EOPNOTSUPP;
- 	}
+diff --git a/drivers/iio/imu/bmi270/bmi270_i2c.c b/drivers/iio/imu/bmi270/bmi270_i2c.c
+index c77839b03a969..b909a421ad017 100644
+--- a/drivers/iio/imu/bmi270/bmi270_i2c.c
++++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
+@@ -41,6 +41,8 @@ static const struct i2c_device_id bmi270_i2c_id[] = {
+ static const struct acpi_device_id bmi270_acpi_match[] = {
+ 	/* GPD Win Mini, Aya Neo AIR Pro, OXP Mini Pro, etc. */
+ 	{ "BMI0160",  (kernel_ulong_t)&bmi260_chip_info },
++	/* GPD Win Max 2 2023(sincice BIOS v0.40), etc. */
++	{ "BMI0260",  (kernel_ulong_t)&bmi260_chip_info },
+ 	{ }
+ };
  
--	if (ec->tx_max_coalesced_frames_irq)
--		wx->tx_work_limit = ec->tx_max_coalesced_frames_irq;
-+	if (ec->tx_max_coalesced_frames_irq > U16_MAX  ||
-+	    !ec->tx_max_coalesced_frames_irq)
-+		return -EINVAL;
-+
-+	wx->tx_work_limit = ec->tx_max_coalesced_frames_irq;
- 
- 	switch (wx->mac.type) {
- 	case wx_mac_sp:
 -- 
 2.51.0
 
