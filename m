@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB1AC4A5FF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1E9C4A60B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D0871884F33
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7336C1885F85
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE0E2E7182;
-	Tue, 11 Nov 2025 01:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C602F6186;
+	Tue, 11 Nov 2025 01:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mcZDVm8q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqV6h7N3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A511265CC5;
-	Tue, 11 Nov 2025 01:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD73248F6A;
+	Tue, 11 Nov 2025 01:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823257; cv=none; b=DxrpmqAvQhUE7oqSD/0QLt14InOqvqxxd38L44Onxxf6kIhY7lP/Tq4mBpAMy5W+s3IKJd6j3zIefld+m2ASXK7mp0V8Cikp3h+VakTZpZyujDpdfho2TijVyIVcA4/lQWaWJJbpcunyoDddfiRG3dFCPmDlkWJ9pL4TaDYcRhk=
+	t=1762823264; cv=none; b=d3Ocg5mmjdrhVIbDoewcgFZRYZpdEXB0Fxi64LteY/YtgpiKFKPDEK4rRnaHBAqo17/CEYFnUs4af72E//NAVCwbETismAQmD7TzGW77pbYp1BKqT8xBc4ZQGkFb0RB4HrUEkzBLbGXhLzvy6lJcey6k29YX5NkGU4qhA7z8BK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823257; c=relaxed/simple;
-	bh=cWA8GNsEIoTzoKAvfA7Z6BaPxH9SIkBdYBkjBe9jFaE=;
+	s=arc-20240116; t=1762823264; c=relaxed/simple;
+	bh=KYrUoiCEoXNB1Zt3RT38rFm8aqwExEh31Bgq9WyLv8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZRFWbsMvyZrnOPC//jVsWuB4hVf9hQkPhC05QpQKn2CyroCfKhJ7OW216Pa5JvqiXPyXq+jJ43wmWGe2W8GGl+rIu1K2J+94JzXLRJm09FIlPfyyQVCg485eOGffpfZpPl3wxWbaitE+VoBIa1OIguNcW7mKLmFEFif06Av3u4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mcZDVm8q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97908C19421;
-	Tue, 11 Nov 2025 01:07:36 +0000 (UTC)
+	 MIME-Version; b=N2lJqRC2+4L4lx3UiWG3AMcTpS8x8e0mKD1eDj3hG0qpk4hyM281YRh4hNV9NYIishsQiE1FWKfDfro5NOvrrLHnByFQla3eIusKIoT/51jcqkmiK4jVMv3fgBKppPXw7jpRiCV6Vnaf4eOHUgTZB+id6iLv/Bc/hjhqIZtoScY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqV6h7N3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F27C116B1;
+	Tue, 11 Nov 2025 01:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823256;
-	bh=cWA8GNsEIoTzoKAvfA7Z6BaPxH9SIkBdYBkjBe9jFaE=;
+	s=korg; t=1762823263;
+	bh=KYrUoiCEoXNB1Zt3RT38rFm8aqwExEh31Bgq9WyLv8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mcZDVm8q7dVcWXU7spK059NYM59j9uMrrfp9dHSzIh/xNNj26kzaoa3WE5ViOzNfw
-	 Q3psnCFBq578FxGUXj1SzbTyhivqv6zZrEOMKM/NmCM7fAsbu/UNLqNpNlax23l3g1
-	 oxg9E+i5gZsLFkJ465m3RNuwVEGTrNqkIkZBg/7E=
+	b=ZqV6h7N3usT15aH1844jenuk3qie9VebSfEMW7Y2PjA3xExdDOgjpgnklL1SDsnKW
+	 2tQrnarYRXs1G3ufvJY9ZsBCF1pS1Ww8c6l3EZNQvEwbbxixJAgu6t78nwycKoRkFX
+	 khG7ZVndWQuKwvcSqB1j13RTebbe/SbvtAfqh7X8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
+	Terry Cheong <htcheong@chromium.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 263/849] ASoC: tas2781: Add keyword "init" in profile section
-Date: Tue, 11 Nov 2025 09:37:13 +0900
-Message-ID: <20251111004542.790485687@linuxfoundation.org>
+Subject: [PATCH 6.17 264/849] ASoC: mediatek: Use SND_JACK_AVOUT for HDMI/DP jacks
+Date: Tue, 11 Nov 2025 09:37:14 +0900
+Message-ID: <20251111004542.815821560@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,90 +67,155 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Terry Cheong <htcheong@chromium.org>
 
-[ Upstream commit e83dcd139e776ebb86d5e88e13282580407278e4 ]
+[ Upstream commit 8ed2dca4df2297177e0edcb7e0c72ef87f3fd81a ]
 
-Since version 0x105, the keyword 'init' was introduced into the profile,
-which is used for chip initialization, particularly to store common
-settings for other non-initialization profiles.
+The SND_JACK_AVOUT is a more specific jack type for HDMI and DisplayPort.
+Updatae the MediaTek drivers to use such jack type, allowing system to
+determine the device type based on jack event.
 
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Link: https://patch.msgid.link/20250803131110.1443-1-shenghao-ding@ti.com
+Signed-off-by: Terry Cheong <htcheong@chromium.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://patch.msgid.link/20250723-mtk-hdmi-v1-1-4ff945eb6136@chromium.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/tas2781-dsp.h       |  8 ++++++++
- sound/soc/codecs/tas2781-fmwlib.c | 12 ++++++++++++
- sound/soc/codecs/tas2781-i2c.c    |  6 ++++++
- 3 files changed, 26 insertions(+)
+ sound/soc/mediatek/mt8173/mt8173-rt5650.c                 | 2 +-
+ sound/soc/mediatek/mt8183/mt8183-da7219-max98357.c        | 2 +-
+ .../soc/mediatek/mt8183/mt8183-mt6358-ts3a227-max98357.c  | 2 +-
+ sound/soc/mediatek/mt8186/mt8186-mt6366.c                 | 2 +-
+ sound/soc/mediatek/mt8188/mt8188-mt6359.c                 | 8 ++++----
+ sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c   | 2 +-
+ sound/soc/mediatek/mt8195/mt8195-mt6359.c                 | 4 ++--
+ 7 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/include/sound/tas2781-dsp.h b/include/sound/tas2781-dsp.h
-index c3a9efa73d5d0..a21f34c0266ea 100644
---- a/include/sound/tas2781-dsp.h
-+++ b/include/sound/tas2781-dsp.h
-@@ -198,6 +198,14 @@ struct tasdevice_rca {
- 	int ncfgs;
- 	struct tasdevice_config_info **cfg_info;
- 	int profile_cfg_id;
-+	/*
-+	 * Since version 0x105, the keyword 'init' was introduced into the
-+	 * profile, which is used for chip initialization, particularly to
-+	 * store common settings for other non-initialization profiles.
-+	 * if (init_profile_id < 0)
-+	 *         No init profile inside the RCA firmware.
-+	 */
-+	int init_profile_id;
- };
+diff --git a/sound/soc/mediatek/mt8173/mt8173-rt5650.c b/sound/soc/mediatek/mt8173/mt8173-rt5650.c
+index 7d6a3586cdd55..3d6d7bc05b872 100644
+--- a/sound/soc/mediatek/mt8173/mt8173-rt5650.c
++++ b/sound/soc/mediatek/mt8173/mt8173-rt5650.c
+@@ -159,7 +159,7 @@ static int mt8173_rt5650_hdmi_init(struct snd_soc_pcm_runtime *rtd)
+ {
+ 	int ret;
  
- void tasdevice_select_cfg_blk(void *context, int conf_no,
-diff --git a/sound/soc/codecs/tas2781-fmwlib.c b/sound/soc/codecs/tas2781-fmwlib.c
-index c9c1e608ddb75..8baf56237624a 100644
---- a/sound/soc/codecs/tas2781-fmwlib.c
-+++ b/sound/soc/codecs/tas2781-fmwlib.c
-@@ -180,6 +180,16 @@ static struct tasdevice_config_info *tasdevice_add_config(
- 			dev_err(tas_priv->dev, "add conf: Out of boundary\n");
- 			goto out;
- 		}
-+		/* If in the RCA bin file are several profiles with the
-+		 * keyword "init", init_profile_id only store the last
-+		 * init profile id.
-+		 */
-+		if (strnstr(&config_data[config_offset], "init", 64)) {
-+			tas_priv->rcabin.init_profile_id =
-+				tas_priv->rcabin.ncfgs - 1;
-+			dev_dbg(tas_priv->dev, "%s: init profile id = %d\n",
-+				__func__, tas_priv->rcabin.init_profile_id);
-+		}
- 		config_offset += 64;
+-	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_LINEOUT,
++	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_AVOUT,
+ 				    &mt8173_rt5650_hdmi_jack);
+ 	if (ret)
+ 		return ret;
+diff --git a/sound/soc/mediatek/mt8183/mt8183-da7219-max98357.c b/sound/soc/mediatek/mt8183/mt8183-da7219-max98357.c
+index 3388e076ccc9e..983f3b91119a9 100644
+--- a/sound/soc/mediatek/mt8183/mt8183-da7219-max98357.c
++++ b/sound/soc/mediatek/mt8183/mt8183-da7219-max98357.c
+@@ -378,7 +378,7 @@ static int mt8183_da7219_max98357_hdmi_init(struct snd_soc_pcm_runtime *rtd)
+ 		snd_soc_card_get_drvdata(rtd->card);
+ 	int ret;
+ 
+-	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_LINEOUT,
++	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_AVOUT,
+ 				    &priv->hdmi_jack);
+ 	if (ret)
+ 		return ret;
+diff --git a/sound/soc/mediatek/mt8183/mt8183-mt6358-ts3a227-max98357.c b/sound/soc/mediatek/mt8183/mt8183-mt6358-ts3a227-max98357.c
+index 497a9043be7bb..0bc1f11e17aa7 100644
+--- a/sound/soc/mediatek/mt8183/mt8183-mt6358-ts3a227-max98357.c
++++ b/sound/soc/mediatek/mt8183/mt8183-mt6358-ts3a227-max98357.c
+@@ -383,7 +383,7 @@ mt8183_mt6358_ts3a227_max98357_hdmi_init(struct snd_soc_pcm_runtime *rtd)
+ 		snd_soc_card_get_drvdata(rtd->card);
+ 	int ret;
+ 
+-	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_LINEOUT,
++	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_AVOUT,
+ 				    &priv->hdmi_jack);
+ 	if (ret)
+ 		return ret;
+diff --git a/sound/soc/mediatek/mt8186/mt8186-mt6366.c b/sound/soc/mediatek/mt8186/mt8186-mt6366.c
+index 43546012cf613..45df69809cbab 100644
+--- a/sound/soc/mediatek/mt8186/mt8186-mt6366.c
++++ b/sound/soc/mediatek/mt8186/mt8186-mt6366.c
+@@ -362,7 +362,7 @@ static int mt8186_mt6366_rt1019_rt5682s_hdmi_init(struct snd_soc_pcm_runtime *rt
+ 		return ret;
  	}
  
-@@ -283,6 +293,8 @@ int tasdevice_rca_parser(void *context, const struct firmware *fmw)
- 	int i;
+-	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_LINEOUT, jack);
++	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_AVOUT, jack);
+ 	if (ret) {
+ 		dev_err(rtd->dev, "HDMI Jack creation failed: %d\n", ret);
+ 		return ret;
+diff --git a/sound/soc/mediatek/mt8188/mt8188-mt6359.c b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
+index ea814a0f726d6..c6e7461e8f764 100644
+--- a/sound/soc/mediatek/mt8188/mt8188-mt6359.c
++++ b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
+@@ -250,14 +250,14 @@ enum mt8188_jacks {
+ static struct snd_soc_jack_pin mt8188_hdmi_jack_pins[] = {
+ 	{
+ 		.pin = "HDMI",
+-		.mask = SND_JACK_LINEOUT,
++		.mask = SND_JACK_AVOUT,
+ 	},
+ };
  
- 	rca = &(tas_priv->rcabin);
-+	/* Initialize to none */
-+	rca->init_profile_id = -1;
- 	fw_hdr = &(rca->fw_hdr);
- 	if (!fmw || !fmw->data) {
- 		dev_err(tas_priv->dev, "Failed to read %s\n",
-diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
-index 0e09d794516fc..ea3cdb8553de1 100644
---- a/sound/soc/codecs/tas2781-i2c.c
-+++ b/sound/soc/codecs/tas2781-i2c.c
-@@ -1641,6 +1641,12 @@ static void tasdevice_fw_ready(const struct firmware *fmw,
- 	tasdevice_prmg_load(tas_priv, 0);
- 	tas_priv->cur_prog = 0;
+ static struct snd_soc_jack_pin mt8188_dp_jack_pins[] = {
+ 	{
+ 		.pin = "DP",
+-		.mask = SND_JACK_LINEOUT,
++		.mask = SND_JACK_AVOUT,
+ 	},
+ };
  
-+	/* Init common setting for different audio profiles */
-+	if (tas_priv->rcabin.init_profile_id >= 0)
-+		tasdevice_select_cfg_blk(tas_priv,
-+			tas_priv->rcabin.init_profile_id,
-+			TASDEVICE_BIN_BLK_PRE_POWER_UP);
-+
- #ifdef CONFIG_SND_SOC_TAS2781_ACOUST_I2C
- 	if (tas_priv->name_prefix)
- 		acoustic_debugfs_node = devm_kasprintf(tas_priv->dev,
+@@ -638,7 +638,7 @@ static int mt8188_hdmi_codec_init(struct snd_soc_pcm_runtime *rtd)
+ 	int ret = 0;
+ 
+ 	ret = snd_soc_card_jack_new_pins(rtd->card, "HDMI Jack",
+-					 SND_JACK_LINEOUT, jack,
++					 SND_JACK_AVOUT, jack,
+ 					 mt8188_hdmi_jack_pins,
+ 					 ARRAY_SIZE(mt8188_hdmi_jack_pins));
+ 	if (ret) {
+@@ -663,7 +663,7 @@ static int mt8188_dptx_codec_init(struct snd_soc_pcm_runtime *rtd)
+ 	struct snd_soc_component *component = snd_soc_rtd_to_codec(rtd, 0)->component;
+ 	int ret = 0;
+ 
+-	ret = snd_soc_card_jack_new_pins(rtd->card, "DP Jack", SND_JACK_LINEOUT,
++	ret = snd_soc_card_jack_new_pins(rtd->card, "DP Jack", SND_JACK_AVOUT,
+ 					 jack, mt8188_dp_jack_pins,
+ 					 ARRAY_SIZE(mt8188_dp_jack_pins));
+ 	if (ret) {
+diff --git a/sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c b/sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c
+index bf483a8fb34a4..91c57765ab57b 100644
+--- a/sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c
++++ b/sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c
+@@ -368,7 +368,7 @@ static int mt8192_mt6359_hdmi_init(struct snd_soc_pcm_runtime *rtd)
+ 		snd_soc_rtd_to_codec(rtd, 0)->component;
+ 	int ret;
+ 
+-	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_LINEOUT, jack);
++	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_AVOUT, jack);
+ 	if (ret) {
+ 		dev_err(rtd->dev, "HDMI Jack creation failed: %d\n", ret);
+ 		return ret;
+diff --git a/sound/soc/mediatek/mt8195/mt8195-mt6359.c b/sound/soc/mediatek/mt8195/mt8195-mt6359.c
+index e57391c213e7d..7b96c843a14a5 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-mt6359.c
++++ b/sound/soc/mediatek/mt8195/mt8195-mt6359.c
+@@ -360,7 +360,7 @@ static int mt8195_dptx_codec_init(struct snd_soc_pcm_runtime *rtd)
+ 		snd_soc_rtd_to_codec(rtd, 0)->component;
+ 	int ret;
+ 
+-	ret = snd_soc_card_jack_new(rtd->card, "DP Jack", SND_JACK_LINEOUT, jack);
++	ret = snd_soc_card_jack_new(rtd->card, "DP Jack", SND_JACK_AVOUT, jack);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -375,7 +375,7 @@ static int mt8195_hdmi_codec_init(struct snd_soc_pcm_runtime *rtd)
+ 		snd_soc_rtd_to_codec(rtd, 0)->component;
+ 	int ret;
+ 
+-	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_LINEOUT, jack);
++	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_AVOUT, jack);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.51.0
 
