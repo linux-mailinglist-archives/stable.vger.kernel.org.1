@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 813E5C4A590
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:21:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D622C4A5B1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FB901889F8D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:16:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A47934F2FDB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:16:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AFC34A789;
-	Tue, 11 Nov 2025 01:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7698B34A766;
+	Tue, 11 Nov 2025 01:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YU81WgN0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJt+n+0H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3536347BDB;
-	Tue, 11 Nov 2025 01:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E789C3491D6;
+	Tue, 11 Nov 2025 01:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823227; cv=none; b=dePqOEk1qVx5+aWc7xCmah3OHqPN5E/in/Jmc+nBIgCyR5nypieGqDEp+Twzn0gtMJNCTLmj4aGyuwEXYlFpmwiC1qq+PiRH6UZ9Imgf+j5XBhzSW/+qWKqRap4yhEC3D9WMgefI1Il+FARlheFfjqMsNoGGDP8Ry3ICJNKtWvM=
+	t=1762823232; cv=none; b=oHNYd+2dSfmu/Flv2K/ylY2jF0No2s0QtCq0lgxjoqTgcA+z6SkWjVjqz0ARspNS+mFdVKNhlA6rW3dxc+iRxMOX3kY355ygZWWh2+cDO9H6Rn6/ev/HK40rVq6JjBhgNjNgszaQiWro/1n+ks60+6jZ0q4HHw4pFdyakjP3UkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823227; c=relaxed/simple;
-	bh=O8/g7ZnNBPe+0UALuo4D9f2wsCcQ25qicnk79Ol0elI=;
+	s=arc-20240116; t=1762823232; c=relaxed/simple;
+	bh=R4a64Cn9l3pHCoriGvKoQ7aK1LW4fDtH3Aly4O4lU3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sda5KHSht37mH1T/+dGwV8jq7igx86KtAhiypr4gWZm0ZGoclaPyiT0V+qCR6xqmU/ShorNyBYdQZsWrn8ozBn/kmWV6n1lDYSt12WaUMCTXXoZKx5oQxlrxxOLzfnLjBsVDSJgiKTtwNRwWWrIR3eqyX1Apm9LTG/Bcv2E1++A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YU81WgN0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977D6C4AF0B;
-	Tue, 11 Nov 2025 01:07:06 +0000 (UTC)
+	 MIME-Version; b=N+wh+Hg8NJqIAuwxJqAXvRDB8tS9d0BEotfjasdMzU2NXrpGgYSlf/aVsH6IYGv6H277l3Iau1FLgV8a5yNlLcSMoyZfOGRURa267WLw+gsUJsXOA6jRRDt4kD6WbbVKwxVvwrKIycq5O9JOxi9/uFhPTXNrl0Cr+LMMmfzFCoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJt+n+0H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75286C116B1;
+	Tue, 11 Nov 2025 01:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823226;
-	bh=O8/g7ZnNBPe+0UALuo4D9f2wsCcQ25qicnk79Ol0elI=;
+	s=korg; t=1762823231;
+	bh=R4a64Cn9l3pHCoriGvKoQ7aK1LW4fDtH3Aly4O4lU3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YU81WgN06KprIdVc1rW0dT/v6bd2ldbpp4Ohrz/kJvz36hytJGwl/gVf5NofyXscf
-	 Y4Y+dnXcN+Ztm4KYRKxOxhAhkwS5kzW9xRlK0EsXBgXMBxhHw/qPKa1qCCszj0bOr3
-	 vIzD8pv6dyQBtqAzyFUVIkcFmE5d0b0JDk/wuClM=
+	b=wJt+n+0H7Z1lOrUPuzkwNPqP0dn4oF8Gp5njMReXOqT4m0ECtMBhKb5Ui2bUgWlSi
+	 gIY1g7697yqmn9pRy9f+JeJyzdPS5ia0e42Lv3bJGS4Crgyh7OzqGyNipjhe9zJ2Ml
+	 kmQgtXJvDCGEYu3CdegsAbQXoIbvfFH8n21wvyfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Asad Kamal <asad.kamal@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 257/849] drm/amd/pm: Use cached metrics data on aldebaran
-Date: Tue, 11 Nov 2025 09:37:07 +0900
-Message-ID: <20251111004542.644846971@linuxfoundation.org>
+Subject: [PATCH 6.17 258/849] drm/amd/pm: Use cached metrics data on arcturus
+Date: Tue, 11 Nov 2025 09:37:08 +0900
+Message-ID: <20251111004542.669235131@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -69,10 +69,10 @@ Content-Transfer-Encoding: 8bit
 
 From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit e87577ef6daa0cfb10ca139c720f0c57bd894174 ]
+[ Upstream commit 2f3b1ccf83be83a3330e38194ddfd1a91fec69be ]
 
-Cached metrics data validity is 1ms on aldebaran. It's not reasonable
-for any client to query gpu_metrics at a faster rate and constantly
+Cached metrics data validity is 1ms on arcturus. It's not reasonable for
+any client to query gpu_metrics at a faster rate and constantly
 interrupt PMFW.
 
 Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
@@ -80,14 +80,14 @@ Reviewed-by: Asad Kamal <asad.kamal@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c | 2 +-
+ drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-index c63d2e28954d0..b067147b7c41f 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-@@ -1781,7 +1781,7 @@ static ssize_t aldebaran_get_gpu_metrics(struct smu_context *smu,
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+index 9ad46f545d15c..599eddb5a67d5 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+@@ -1897,7 +1897,7 @@ static ssize_t arcturus_get_gpu_metrics(struct smu_context *smu,
  
  	ret = smu_cmn_get_metrics_table(smu,
  					&metrics,
