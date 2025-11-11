@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77FAC4AC40
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2566C4AF28
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 448B43B5A36
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A4C7188F909
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D87344052;
-	Tue, 11 Nov 2025 01:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F852FE059;
+	Tue, 11 Nov 2025 01:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKhgDr7v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rm9l7Cz6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20252DA757;
-	Tue, 11 Nov 2025 01:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF5C23C4F2;
+	Tue, 11 Nov 2025 01:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824120; cv=none; b=dB9ajDuDmtxR1f2D4ichk+T9ABTrZ7EqeED8CCaEsVasKaxYikRDH++k7jFDd87Dt9p5p4SPxHNz2CxcsKag4KFsoL3owkYz/gMVop6so6qVV9gh3U2ipvF4F3SDr+DeAxsiag3TWU/wW/I7QpWXYRcWs3ZwqqIl3WzIcaZx/QM=
+	t=1762825136; cv=none; b=CKC6iX9NcIF1K6Xv/b/s+a/wgpwhUpswgprM5w/jkXDYGAgZyqUHCLJCjknAO7/Em4xbXzVXr8pIgdsO8ZGFTlAC4oDR+2q+fErlPeft+Kxe4hSKHWMoQLV6q0yQLQzORQa9Zu4df0SS0c24HwJrpxFU9Jlq0f0fiNIISig/j0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824120; c=relaxed/simple;
-	bh=QSuCtokbByleE4sD52qVbO9iShJ9EETOcNQAEIkV8Wg=;
+	s=arc-20240116; t=1762825136; c=relaxed/simple;
+	bh=DhbMJ7K3mSk4tKCyzhOCZ4vLm/orf1pOO0RUkjmqWfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JT+AouvddQFg/eF373s8ntQGdZHgH0cGBV4vM6jM+d3YV7y0dt5HHudV/f8EDS1IWzkVoSXJ5zDZNNI9mbC+PoxFwXx7BJLTfAnvfMc1N1n965OJliEkOd+FcyWs6ZOQpkmaqtcOxnKSrwSKt9xrpsuF/Kwp09mmrm4OIoB5UmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKhgDr7v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E19C113D0;
-	Tue, 11 Nov 2025 01:22:00 +0000 (UTC)
+	 MIME-Version; b=U4S7GKt/aUOlrXqtXP9fDngFnINdD3+FUICBceH8HD0mvc5iAyTbrQzpLgPUBRXgDBRCNrgE/lMaCTYoMmIjZw4QLk5aHAWF7y2s4qKkfwiGZNY8eixBy+tmA8uJu6Dv5uKAMRyOCXjbisKxuR6Ae1Yc7VoLO/Q0l2+GJ9WSgU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rm9l7Cz6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B471C113D0;
+	Tue, 11 Nov 2025 01:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824120;
-	bh=QSuCtokbByleE4sD52qVbO9iShJ9EETOcNQAEIkV8Wg=;
+	s=korg; t=1762825136;
+	bh=DhbMJ7K3mSk4tKCyzhOCZ4vLm/orf1pOO0RUkjmqWfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKhgDr7vGGfX1oZFKIU4pmC10tp+J+OPrAnzzqv9CUdF0bQCk7B0uc0BgyqW0e6+a
-	 SZsdRHoN8gklNRx7zGEs54MnEU3QuuWSXCXjJlCdimd97QGY0o9D4t6qQO3DnnuV4F
-	 L5VWCN/6oCG01lM88UHWOccDR7tpmreV44Lb0ehU=
+	b=rm9l7Cz6hdZvKfkoL5lbq9G192TYg8i1TDS7EXfYfp/smOJfEaycStzajtpcSaDqo
+	 fBcUxEk3rWS+frMjdndpU9Vl/IANKtNygSwxBgci0CpBV0YW87m3rA73prz5zvdZ0M
+	 9W82B/Q+S2CVR8pAO/6qFSGbBMk8DFEZSFhLId/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c4f3462d8b2ad7977bea@syzkaller.appspotmail.com,
-	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 391/565] jfs: fix uninitialized waitqueue in transaction manager
+Subject: [PATCH 6.17 677/849] smb: client: update cfid->last_access_time in open_cached_dir_by_dentry()
 Date: Tue, 11 Nov 2025 09:44:07 +0900
-Message-ID: <20251111004535.668292559@linuxfoundation.org>
+Message-ID: <20251111004552.788712430@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-[ Upstream commit 300b072df72694ea330c4c673c035253e07827b8 ]
+[ Upstream commit 5676398315b73f21d6a4e2d36606ce94e8afc79e ]
 
-The transaction manager initialization in txInit() was not properly
-initializing TxBlock[0].waitor waitqueue, causing a crash when
-txEnd(0) is called on read-only filesystems.
+open_cached_dir_by_dentry() was missing an update of
+cfid->last_access_time to jiffies, similar to what open_cached_dir()
+has.
 
-When a filesystem is mounted read-only, txBegin() returns tid=0 to
-indicate no transaction. However, txEnd(0) still gets called and
-tries to access TxBlock[0].waitor via tid_to_tblock(0), but this
-waitqueue was never initialized because the initialization loop
-started at index 1 instead of 0.
+Add it to the function.
 
-This causes a 'non-static key' lockdep warning and system crash:
-  INFO: trying to register non-static key in txEnd
-
-Fix by ensuring all transaction blocks including TxBlock[0] have
-their waitqueues properly initialized during txInit().
-
-Reported-by: syzbot+c4f3462d8b2ad7977bea@syzkaller.appspotmail.com
-
-Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_txnmgr.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ fs/smb/client/cached_dir.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
-index be17e3c43582f..7840a03e5bcb7 100644
---- a/fs/jfs/jfs_txnmgr.c
-+++ b/fs/jfs/jfs_txnmgr.c
-@@ -272,14 +272,15 @@ int txInit(void)
- 	if (TxBlock == NULL)
- 		return -ENOMEM;
- 
--	for (k = 1; k < nTxBlock - 1; k++) {
--		TxBlock[k].next = k + 1;
-+	for (k = 0; k < nTxBlock; k++) {
- 		init_waitqueue_head(&TxBlock[k].gcwait);
- 		init_waitqueue_head(&TxBlock[k].waitor);
- 	}
-+
-+	for (k = 1; k < nTxBlock - 1; k++) {
-+		TxBlock[k].next = k + 1;
-+	}
- 	TxBlock[k].next = 0;
--	init_waitqueue_head(&TxBlock[k].gcwait);
--	init_waitqueue_head(&TxBlock[k].waitor);
- 
- 	TxAnchor.freetid = 1;
- 	init_waitqueue_head(&TxAnchor.freewait);
+diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
+index b69daeb1301b3..cc857a030a778 100644
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -423,6 +423,7 @@ int open_cached_dir_by_dentry(struct cifs_tcon *tcon,
+ 			cifs_dbg(FYI, "found a cached file handle by dentry\n");
+ 			kref_get(&cfid->refcount);
+ 			*ret_cfid = cfid;
++			cfid->last_access_time = jiffies;
+ 			spin_unlock(&cfids->cfid_list_lock);
+ 			return 0;
+ 		}
 -- 
 2.51.0
 
