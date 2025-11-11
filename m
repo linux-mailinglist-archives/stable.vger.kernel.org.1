@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C80C4A7C5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:53 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2594BC4A9F1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7F4F1893B46
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C694334C850
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7775527FD7C;
-	Tue, 11 Nov 2025 01:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A255C332EAE;
+	Tue, 11 Nov 2025 01:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TgqYCo7s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0QAx49HV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324B926FA67;
-	Tue, 11 Nov 2025 01:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3C6255F28;
+	Tue, 11 Nov 2025 01:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823489; cv=none; b=Ggy8sOMnlblixk+LkdV36DQdhhC4y9cnM14qgcTwe7VEHbSTa91QJkd5/TQrGG4wwDTUgWu6npkKswQvvk3hkRVYYQZDD+8/pjaM0YbNNlIr90ytkb2AVi5bLg6at9zp0Ws5rfw3VZnVGyKWXR9ReKffKFD4w0z+qHy18NaJip0=
+	t=1762824542; cv=none; b=Mh3XxT0cVZ9wD8hihkaQh00NjhvEpk7VwiC5eIq72WksRpxl/ykul9M9xr+Kn4jmDji1fcylIfLlqXo+0Xw0zAEd3ciYcZWY36BY5zX1ZH8IUrBjKNbGChX3yU35+JPvhOSRirZrHPycZUQl3G0outr3/Zlj+gqf22rHdmZdue8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823489; c=relaxed/simple;
-	bh=XLFXVozV0fj0ysJ6xjRxwUrMrx4nvEKOvxwDAndJHjo=;
+	s=arc-20240116; t=1762824542; c=relaxed/simple;
+	bh=03J0F2otaNnr9rPSGR+P3nWHFcW8CECm4DfimWhQYcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ggcrvL7amHDugkd+eJU8RV//Y3/MBYF6/PSBFW1/NryFrBTe6qhVKUeb6mC/oWz07HDmDtY4czB15ivR11yFlIDtVSKx4VqlW93qfhinNsQtWc9Fm01E9rgTAGUW6rL9EW8T9XIBU5oygTANpogExxgkb26QPp9fU6ZwIjTUYAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TgqYCo7s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0ED9C4CEF5;
-	Tue, 11 Nov 2025 01:11:28 +0000 (UTC)
+	 MIME-Version; b=TyVLwqj2R2Rh8Khkw3Kgd7XH0IzZVjRJLPD/42zCC8ueKTHL9jx79jNybCMON40o9ioZqSK0hEseLXdJniYor0mKm7OwX/jyphgF3DjXar2ze7aQymxTB8m80pihr9FlhTvTJM/9UPWCM9y1aZlTVbW9x5qT3+X842gZv4n/IGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0QAx49HV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E631BC4CEF5;
+	Tue, 11 Nov 2025 01:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823489;
-	bh=XLFXVozV0fj0ysJ6xjRxwUrMrx4nvEKOvxwDAndJHjo=;
+	s=korg; t=1762824542;
+	bh=03J0F2otaNnr9rPSGR+P3nWHFcW8CECm4DfimWhQYcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TgqYCo7suuoiObGK2LQcOtG+tTst/6+4PV2wOkB0NbZfc9oVDSSjSwEPoLxsjssPD
-	 CMiDA0DAxjzQ2g60JnjFfwY9qPkfyRY1nx+7EPU917bCW8BaHZYIrmOcf2MIsN2fG8
-	 7X/OlOHLCte4janJs1Li7rWOQhVos4tq4bLJQ3PM=
+	b=0QAx49HVtqzAa7PeTpeCA2+279vRhz662BcUi89RJqAfYPUaOZDkad7ekvcLX3skX
+	 ec28wOYOerkAwWoOnFwFPJ213rjPq71NyAQ1NV1PUh86g4fYZH8LNx0YMTfBI3V3r6
+	 cyt/PUdD7keaVeX57HwnN45BufmhYkCSOTn1lT8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Zijun Hu <zijun.hu@oss.qualcomm.com>,
+	Daniel Palmer <daniel@thingy.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 234/565] char: misc: Does not request module for miscdevice with dynamic minor
+Subject: [PATCH 6.17 520/849] eth: 8139too: Make 8139TOO_PIO depend on !NO_IOPORT_MAP
 Date: Tue, 11 Nov 2025 09:41:30 +0900
-Message-ID: <20251111004532.178275959@linuxfoundation.org>
+Message-ID: <20251111004548.995242142@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
+From: Daniel Palmer <daniel@thingy.jp>
 
-[ Upstream commit 1ba0fb42aa6a5f072b1b8c0b0520b32ad4ef4b45 ]
+[ Upstream commit 43adad382e1fdecabd2c4cd2bea777ef4ce4109e ]
 
-misc_open() may request module for miscdevice with dynamic minor, which
-is meaningless since:
+When 8139too is probing and 8139TOO_PIO=y it will call pci_iomap_range()
+and from there __pci_ioport_map() for the PCI IO space.
+If HAS_IOPORT_MAP=n and NO_GENERIC_PCI_IOPORT_MAP=n, like it is on my
+m68k config, __pci_ioport_map() becomes NULL, pci_iomap_range() will
+always fail and the driver will complain it couldn't map the PIO space
+and return an error.
 
-- The dynamic minor allocated is unknown in advance without registering
-  miscdevice firstly.
-- Macro MODULE_ALIAS_MISCDEV() is not applicable for dynamic minor.
+NO_IOPORT_MAP seems to cover the case where what 8139too is trying
+to do cannot ever work so make 8139TOO_PIO depend on being it false
+and avoid creating an unusable driver.
 
-Fix by only requesting module for miscdevice with fixed minor.
-
-Acked-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250714-rfc_miscdev-v6-6-2ed949665bde@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daniel Palmer <daniel@thingy.jp>
+Link: https://patch.msgid.link/20250907064349.3427600-1-daniel@thingy.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/misc.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/realtek/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/misc.c b/drivers/char/misc.c
-index 9ee78c76e8663..6f9ce6b3cc5a6 100644
---- a/drivers/char/misc.c
-+++ b/drivers/char/misc.c
-@@ -150,7 +150,8 @@ static int misc_open(struct inode *inode, struct file *file)
- 		break;
- 	}
- 
--	if (!new_fops) {
-+	/* Only request module for fixed minor code */
-+	if (!new_fops && minor < MISC_DYNAMIC_MINOR) {
- 		mutex_unlock(&misc_mtx);
- 		request_module("char-major-%d-%d", MISC_MAJOR, minor);
- 		mutex_lock(&misc_mtx);
-@@ -162,10 +163,11 @@ static int misc_open(struct inode *inode, struct file *file)
- 			new_fops = fops_get(iter->fops);
- 			break;
- 		}
--		if (!new_fops)
--			goto fail;
- 	}
- 
-+	if (!new_fops)
-+		goto fail;
-+
- 	/*
- 	 * Place the miscdevice in the file's
- 	 * private_data so it can be used by the
+diff --git a/drivers/net/ethernet/realtek/Kconfig b/drivers/net/ethernet/realtek/Kconfig
+index fe136f61586fe..272c83bfdc6ce 100644
+--- a/drivers/net/ethernet/realtek/Kconfig
++++ b/drivers/net/ethernet/realtek/Kconfig
+@@ -58,7 +58,7 @@ config 8139TOO
+ config 8139TOO_PIO
+ 	bool "Use PIO instead of MMIO"
+ 	default y
+-	depends on 8139TOO
++	depends on 8139TOO && !NO_IOPORT_MAP
+ 	help
+ 	  This instructs the driver to use programmed I/O ports (PIO) instead
+ 	  of PCI shared memory (MMIO).  This can possibly solve some problems
 -- 
 2.51.0
 
