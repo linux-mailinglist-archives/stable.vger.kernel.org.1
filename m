@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C85C4A6DE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB9DEC4A73A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 817841891BB9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F23653AC57B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7768132ED5D;
-	Tue, 11 Nov 2025 01:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0D63328F3;
+	Tue, 11 Nov 2025 01:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLXd+JXX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gz4IuAiw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F7F2727FD;
-	Tue, 11 Nov 2025 01:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0762737E3;
+	Tue, 11 Nov 2025 01:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823355; cv=none; b=raLWf4srusjzwnMBfLdxzMhdKpr70aNyr/KoFAShvQKWdn49uwc1HG0zPcEd8sxiyZtQ8VkDxGh48ykxhTgTA5zAxuEC5UK9ZINv0g0wuTxInhWdSHiBAx32hca4d8HLBycTSWfd9bdyYaFfF2wVHiALLSEfwK6lNIX8Bk6QSno=
+	t=1762823359; cv=none; b=GxnLsVuUYmSQLT4NMm8ZXfypT+d61v4qOSg5cKfmVoxZYP4y/JZEiXGH/QU5Jhk/PaZgx3kZbNnKYYYgi6KYDyfhph2v9lUdUmTQF1LbjgCz/454n7vfsMQoqSwipQy8lNTbr4VUqeJ2OoaKJ92Y43TkFTdGVxpKYGOgE75sktQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823355; c=relaxed/simple;
-	bh=dbzSHCIlN0pehbE7vpT3CvLMdFhmCpaVo9MR5UqLnZE=;
+	s=arc-20240116; t=1762823359; c=relaxed/simple;
+	bh=ODgxG7yG7ULg8B83+ImQIAfq80PjxjunM5x6Rf0UDUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bpne3X/Er+uKR1QzJh7meXcPvAgigy39CvWgL+IS4fABtMPED4jYg6qfFZx6vvXayt5V1t/UcvFrsHQobQqQZ+ZUNvpt++OGGn1Szsb7lIggVJOBm1KMC/x79vuBXVtCRtuJWCilOsurs1RdnYCV+jXrsB/DORqH3E84TD/6IcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLXd+JXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44AEC4AF0B;
-	Tue, 11 Nov 2025 01:09:14 +0000 (UTC)
+	 MIME-Version; b=KU318fuPlAw0cfajVgsOURu0If21lzOq+MIkLOI0csM5IBFl+cwipoZyAAwT/ghB+zVi2NZH+Y4IR2UhVuVgwyBNmB3w63Bhh7+pb/Yq9FEFlwSSbt0ZuZt66tbeZ/8sMb6jbxkoDly2mVW1t7s0wVzDRdZHWp0y/MzwptoHFbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gz4IuAiw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FDCC19424;
+	Tue, 11 Nov 2025 01:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823355;
-	bh=dbzSHCIlN0pehbE7vpT3CvLMdFhmCpaVo9MR5UqLnZE=;
+	s=korg; t=1762823359;
+	bh=ODgxG7yG7ULg8B83+ImQIAfq80PjxjunM5x6Rf0UDUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLXd+JXXRwP5LMkxDQaP9wA6VZpif4uoSc2OwT1Wgv/3ZiNAyOmMlK2tVHxVTZMTN
-	 nsIwrQWijNOIVoGxx4PYU2Cn/QP+nzxnNzg6mu+o5pgPWXtT3oBTxyG3nxu6hZNd0Y
-	 DMY4L4R7nmGuzpbEZgaX4ct3qjZIbaVd0CNeoBQs=
+	b=gz4IuAiwZOxbU3rZZNMipj45h9gZw7YBcR2nZilGaFa61lbVEDMAUnidCW3mAJuvB
+	 VOE//L14SycQUjPxPCUxCNe6SbGKh0B1jky7FKDcQgk3Of9DFxHA0KRSoA85+yWaMP
+	 cqoD9tnSk9eF610wGDy8cjpzjXTET60/CGqIU/YE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Ming Qian <ming.qian@oss.nxp.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 282/849] media: pci: ivtv: Dont create fake v4l2_fh
-Date: Tue, 11 Nov 2025 09:37:32 +0900
-Message-ID: <20251111004543.239267938@linuxfoundation.org>
+Subject: [PATCH 6.17 283/849] media: amphion: Delete v4l2_fh synchronously in .release()
+Date: Tue, 11 Nov 2025 09:37:33 +0900
+Message-ID: <20251111004543.261174727@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,175 +69,86 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 
-[ Upstream commit cc6e8d1ccea792d8550428e0831e3a35b0ccfddc ]
+[ Upstream commit 19fb9c5b815f70eb90d5b545f65b83bc9c490ecd ]
 
-The ivtv driver has a structure named ivtv_open_id that models an open
-file handle for the device. It embeds a v4l2_fh instance for file
-handles that correspond to a V4L2 video device, and stores a pointer to
-that v4l2_fh in struct ivtv_stream to identify which open file handle
-owns a particular stream.
+The v4l2_fh initialized and added in vpu_v4l2_open() is delete and
+cleaned up when the last reference to the vpu_inst is released. This may
+happen later than at vpu_v4l2_close() time.
 
-In addition to video devices, streams can be owned by ALSA PCM devices.
-Those devices do not make use of the v4l2_fh instance for obvious
-reasons, but the snd_ivtv_pcm_capture_open() function still initializes
-a "fake" v4l2_fh for the sole purpose of using it as an open file handle
-identifier. The v4l2_fh is not properly destroyed when the ALSA PCM
-device is closed, leading to possible resource leaks.
+Not deleting and cleaning up the v4l2_fh when closing the file handle to
+the video device is not ideal, as the v4l2_fh will still be present in
+the video device's fh_list, and will store a copy of events queued to
+the video device. There may also be other side effects of keeping alive
+an object that represents an open file handle after the file handle is
+closed.
 
-Fortunately, the v4l2_fh instance pointed to by ivtv_stream is not
-accessed, only the pointer value is used for comparison. Replace it with
-a pointer to the ivtv_open_id structure that embeds the v4l2_fh, and
-don't initialize the v4l2_fh for ALSA PCM devices.
+The v4l2_fh instance is embedded in the vpu_inst structure, and is
+accessed in two different ways:
+
+- in vpu_notify_eos() and vpu_notify_source_change(), to queue V4L2
+  events to the file handle ; and
+
+- through the driver to access the v4l2_fh.m2m_ctx pointer.
+
+The v4l2_fh.m2m_ctx pointer is not touched by v4l2_fh_del() and
+v4l2_fh_exit(). It is set to NULL by the driver when closing the file
+handle, in vpu_v4l2_close().
+
+The vpu_notify_eos() and vpu_notify_source_change() functions are called
+in vpu_set_last_buffer_dequeued() and vdec_handle_resolution_change()
+respectively, only if the v4l2_fh.m2m_ctx pointer is not NULL. There is
+therefore a guarantee that no new event will be queued to the v4l2_fh
+after vpu_v4l2_close() destroys the m2m_ctx.
+
+The vpu_notify_eos() function is also called from vpu_vb2_buf_finish(),
+which is guaranteed to be called for all queued buffers when
+vpu_v4l2_close() calls v4l2_m2m_ctx_release(), and will not be called
+later.
+
+It is therefore safe to assume that the driver will not touch the
+v4l2_fh, except to check the m2m_ctx pointer, after vpu_v4l2_close()
+destroys the m2m_ctx. We can safely delete and cleanup the v4l2_fh
+synchronously in vpu_v4l2_close().
 
 Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Ming Qian <ming.qian@oss.nxp.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/ivtv/ivtv-alsa-pcm.c |  2 --
- drivers/media/pci/ivtv/ivtv-driver.h   |  3 ++-
- drivers/media/pci/ivtv/ivtv-fileops.c  | 18 +++++++++---------
- drivers/media/pci/ivtv/ivtv-irq.c      |  4 ++--
- 4 files changed, 13 insertions(+), 14 deletions(-)
+ drivers/media/platform/amphion/vpu_v4l2.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/pci/ivtv/ivtv-alsa-pcm.c b/drivers/media/pci/ivtv/ivtv-alsa-pcm.c
-index 8f346d7da9c8d..269a799ec046c 100644
---- a/drivers/media/pci/ivtv/ivtv-alsa-pcm.c
-+++ b/drivers/media/pci/ivtv/ivtv-alsa-pcm.c
-@@ -148,14 +148,12 @@ static int snd_ivtv_pcm_capture_open(struct snd_pcm_substream *substream)
+diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/platform/amphion/vpu_v4l2.c
+index 74668fa362e24..1c3740baf6942 100644
+--- a/drivers/media/platform/amphion/vpu_v4l2.c
++++ b/drivers/media/platform/amphion/vpu_v4l2.c
+@@ -718,8 +718,6 @@ static int vpu_v4l2_release(struct vpu_inst *inst)
  
- 	s = &itv->streams[IVTV_ENC_STREAM_TYPE_PCM];
+ 	v4l2_ctrl_handler_free(&inst->ctrl_handler);
+ 	mutex_destroy(&inst->lock);
+-	v4l2_fh_del(&inst->fh);
+-	v4l2_fh_exit(&inst->fh);
  
--	v4l2_fh_init(&item.fh, &s->vdev);
- 	item.itv = itv;
- 	item.type = s->type;
+ 	call_void_vop(inst, cleanup);
  
- 	/* See if the stream is available */
- 	if (ivtv_claim_stream(&item, item.type)) {
- 		/* No, it's already in use */
--		v4l2_fh_exit(&item.fh);
- 		snd_ivtv_unlock(itvsc);
- 		return -EBUSY;
- 	}
-diff --git a/drivers/media/pci/ivtv/ivtv-driver.h b/drivers/media/pci/ivtv/ivtv-driver.h
-index a6ffa99e16bc6..83818048f7fe4 100644
---- a/drivers/media/pci/ivtv/ivtv-driver.h
-+++ b/drivers/media/pci/ivtv/ivtv-driver.h
-@@ -322,6 +322,7 @@ struct ivtv_queue {
- };
+@@ -788,6 +786,8 @@ int vpu_v4l2_open(struct file *file, struct vpu_inst *inst)
  
- struct ivtv;				/* forward reference */
-+struct ivtv_open_id;
- 
- struct ivtv_stream {
- 	/* These first four fields are always set, even if the stream
-@@ -331,7 +332,7 @@ struct ivtv_stream {
- 	const char *name;		/* name of the stream */
- 	int type;			/* stream type */
- 
--	struct v4l2_fh *fh;		/* pointer to the streaming filehandle */
-+	struct ivtv_open_id *id;	/* pointer to the streaming ivtv_open_id */
- 	spinlock_t qlock;		/* locks access to the queues */
- 	unsigned long s_flags;		/* status flags, see above */
- 	int dma;			/* can be PCI_DMA_TODEVICE, PCI_DMA_FROMDEVICE or PCI_DMA_NONE */
-diff --git a/drivers/media/pci/ivtv/ivtv-fileops.c b/drivers/media/pci/ivtv/ivtv-fileops.c
-index cfa28d0355863..1ac8d691df5cd 100644
---- a/drivers/media/pci/ivtv/ivtv-fileops.c
-+++ b/drivers/media/pci/ivtv/ivtv-fileops.c
-@@ -39,16 +39,16 @@ int ivtv_claim_stream(struct ivtv_open_id *id, int type)
- 
- 	if (test_and_set_bit(IVTV_F_S_CLAIMED, &s->s_flags)) {
- 		/* someone already claimed this stream */
--		if (s->fh == &id->fh) {
-+		if (s->id == id) {
- 			/* yes, this file descriptor did. So that's OK. */
- 			return 0;
- 		}
--		if (s->fh == NULL && (type == IVTV_DEC_STREAM_TYPE_VBI ||
-+		if (s->id == NULL && (type == IVTV_DEC_STREAM_TYPE_VBI ||
- 					 type == IVTV_ENC_STREAM_TYPE_VBI)) {
- 			/* VBI is handled already internally, now also assign
- 			   the file descriptor to this stream for external
- 			   reading of the stream. */
--			s->fh = &id->fh;
-+			s->id = id;
- 			IVTV_DEBUG_INFO("Start Read VBI\n");
- 			return 0;
- 		}
-@@ -56,7 +56,7 @@ int ivtv_claim_stream(struct ivtv_open_id *id, int type)
- 		IVTV_DEBUG_INFO("Stream %d is busy\n", type);
- 		return -EBUSY;
- 	}
--	s->fh = &id->fh;
-+	s->id = id;
- 	if (type == IVTV_DEC_STREAM_TYPE_VBI) {
- 		/* Enable reinsertion interrupt */
- 		ivtv_clear_irq_mask(itv, IVTV_IRQ_DEC_VBI_RE_INSERT);
-@@ -94,7 +94,7 @@ void ivtv_release_stream(struct ivtv_stream *s)
- 	struct ivtv *itv = s->itv;
- 	struct ivtv_stream *s_vbi;
- 
--	s->fh = NULL;
-+	s->id = NULL;
- 	if ((s->type == IVTV_DEC_STREAM_TYPE_VBI || s->type == IVTV_ENC_STREAM_TYPE_VBI) &&
- 		test_bit(IVTV_F_S_INTERNAL_USE, &s->s_flags)) {
- 		/* this stream is still in use internally */
-@@ -126,7 +126,7 @@ void ivtv_release_stream(struct ivtv_stream *s)
- 		/* was already cleared */
- 		return;
- 	}
--	if (s_vbi->fh) {
-+	if (s_vbi->id) {
- 		/* VBI stream still claimed by a file descriptor */
- 		return;
- 	}
-@@ -359,7 +359,7 @@ static ssize_t ivtv_read(struct ivtv_stream *s, char __user *ubuf, size_t tot_co
- 	size_t tot_written = 0;
- 	int single_frame = 0;
- 
--	if (atomic_read(&itv->capturing) == 0 && s->fh == NULL) {
-+	if (atomic_read(&itv->capturing) == 0 && s->id == NULL) {
- 		/* shouldn't happen */
- 		IVTV_DEBUG_WARN("Stream %s not initialized before read\n", s->name);
- 		return -EIO;
-@@ -831,7 +831,7 @@ void ivtv_stop_capture(struct ivtv_open_id *id, int gop_end)
- 		     id->type == IVTV_ENC_STREAM_TYPE_VBI) &&
- 		    test_bit(IVTV_F_S_INTERNAL_USE, &s->s_flags)) {
- 			/* Also used internally, don't stop capturing */
--			s->fh = NULL;
-+			s->id = NULL;
- 		}
- 		else {
- 			ivtv_stop_v4l2_encode_stream(s, gop_end);
-@@ -915,7 +915,7 @@ int ivtv_v4l2_close(struct file *filp)
- 	v4l2_fh_exit(fh);
- 
- 	/* Easy case first: this stream was never claimed by us */
--	if (s->fh != &id->fh)
-+	if (s->id != id)
- 		goto close_done;
- 
- 	/* 'Unclaim' this stream */
-diff --git a/drivers/media/pci/ivtv/ivtv-irq.c b/drivers/media/pci/ivtv/ivtv-irq.c
-index 4d63daa01eed2..078d9cd77c710 100644
---- a/drivers/media/pci/ivtv/ivtv-irq.c
-+++ b/drivers/media/pci/ivtv/ivtv-irq.c
-@@ -305,7 +305,7 @@ static void dma_post(struct ivtv_stream *s)
- 			ivtv_process_vbi_data(itv, buf, 0, s->type);
- 			s->q_dma.bytesused += buf->bytesused;
- 		}
--		if (s->fh == NULL) {
-+		if (s->id == NULL) {
- 			ivtv_queue_move(s, &s->q_dma, NULL, &s->q_free, 0);
- 			return;
- 		}
-@@ -330,7 +330,7 @@ static void dma_post(struct ivtv_stream *s)
- 		set_bit(IVTV_F_I_HAVE_WORK, &itv->i_flags);
- 	}
- 
--	if (s->fh)
-+	if (s->id)
- 		wake_up(&s->waitq);
+ 	return 0;
+ error:
++	v4l2_fh_del(&inst->fh);
++	v4l2_fh_exit(&inst->fh);
+ 	vpu_inst_put(inst);
+ 	return ret;
  }
+@@ -807,6 +807,9 @@ int vpu_v4l2_close(struct file *file)
+ 	call_void_vop(inst, release);
+ 	vpu_inst_unlock(inst);
+ 
++	v4l2_fh_del(&inst->fh);
++	v4l2_fh_exit(&inst->fh);
++
+ 	vpu_inst_unregister(inst);
+ 	vpu_inst_put(inst);
  
 -- 
 2.51.0
