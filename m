@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-193547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 984B8C4A719
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:12 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 071A3C4AA60
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBE963B7BAB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:34 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9FF1034C957
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E8133F39B;
-	Tue, 11 Nov 2025 01:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B6C340DAC;
+	Tue, 11 Nov 2025 01:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1o7XYafs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgU4pBHp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E9B248883;
-	Tue, 11 Nov 2025 01:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C829F340D8C;
+	Tue, 11 Nov 2025 01:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823442; cv=none; b=VTa4Tp//FEwFO49Oia0lmvNOozfXif4wsO/cNGhTp8qT25MEdNyCn6zUu8ilDaIYWJR7PDS5lv3hTMe9LN+s5xNFKQoXHaKszWqiEpOgPFHKHed8+LyQg31omo2Ln1pa1zTTjWRYFk9hir3+GR/U3nPiGtdjOXvZ7uaOPqZGA5U=
+	t=1762824612; cv=none; b=Pog49A6xI0XfwOkuPBozO2dPJfDjxOc6fTrKJh547S1eYuYDC0hUrXGF7PI2Y3JJfuC4dB0u1IYTWzIq4GqqhQwFPD4BmEzPpULOB0nEJO+U8s15+mV2WfhK76jKL1ydEgoC0kwF5bAnsB1EAYixGnSTtG4vsdcxPpHmDQqEmcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823442; c=relaxed/simple;
-	bh=Kis806pFvHWgcIf2hxDtRYBvo/L2BOfIEK1E6qiMDcw=;
+	s=arc-20240116; t=1762824612; c=relaxed/simple;
+	bh=uS3Webz7eflAnPlyAStcO+pT7c7loLztxLMfqo9zzUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etpdtquGjt0BZayINFUA7FtG2nqv7a/DDmOE7rZfPtCsDXbcppY/5NwiRXEiwZuq7RHV2c1BC62TojXUG/6esZtl9ggz88g+AfzmiAXX5fZNB9WcP2sOGFbWF4F+D4GAVw5FoYMHCK7q02lFx6o38ovow3zkmFDe5kmGLY3rWGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1o7XYafs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCBCC4CEFB;
-	Tue, 11 Nov 2025 01:10:42 +0000 (UTC)
+	 MIME-Version; b=lvwXCe4+Hq34c5OQudFzfSZCFF+DSpaOU+j7THiNKwXYJ5kk3vpZFNQEM4JCx+jLas0iJIxrWnc5YZb61YP41aX03v7Y2NXa9ZGZZvVZue4bEFTqcfCSTaqPoHipymL3wOmTyJ/e3/PS7rf/fg19TD2UGxax/wLZ2XfO7no0Un0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgU4pBHp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6692CC16AAE;
+	Tue, 11 Nov 2025 01:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823442;
-	bh=Kis806pFvHWgcIf2hxDtRYBvo/L2BOfIEK1E6qiMDcw=;
+	s=korg; t=1762824612;
+	bh=uS3Webz7eflAnPlyAStcO+pT7c7loLztxLMfqo9zzUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1o7XYafsNu3e/nQb+O2bxqVZu7Nv1dDxieqn/EPyH2PpDxEk//R2QB/B9faReNXTe
-	 0nQGm1BjnTcX7hNT8El3dHISEpQmoOb/IlrQYzpeFaEzyXpN8oyWCFW+qrncCng+G4
-	 +kSUV0yFk5imj9ST3YOkgXmYBfP64fIH5NfCPUN4=
+	b=qgU4pBHpFwlh0NiyarAD9u4U1RctvcE3k/CUokbqBFLSiBYZUL+mZxouXufbEaFwV
+	 wpmvzUMBx8M0yEWgz/NjuyakPJNl4slp4uX3zZxLxZ4t7Cm35iCe8qejWSDR6YDH3C
+	 D6NRlxtdsU3795y1vGGMxngum6pbBqHgTZqcPpic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Davis <afd@ti.com>,
-	Hari Nagalla <hnagalla@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Shannon Nelson <sln@onemain.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 247/565] rpmsg: char: Export alias for RPMSG ID rpmsg-raw from table
-Date: Tue, 11 Nov 2025 09:41:43 +0900
-Message-ID: <20251111004532.466068192@linuxfoundation.org>
+Subject: [PATCH 6.17 534/849] ionic: use int type for err in ionic_get_module_eeprom_by_page
+Date: Tue, 11 Nov 2025 09:41:44 +0900
+Message-ID: <20251111004549.327504070@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Davis <afd@ti.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 6e29c30d8ddea6109ea7e0b9f17e7841df0794ea ]
+[ Upstream commit d586676a2714176bed06cf70467c4e08ac2d4681 ]
 
-Module aliases are used by userspace to identify the correct module to
-load for a detected hardware. The currently supported RPMSG device IDs for
-this module include "rpmsg-raw", but the module alias is "rpmsg_chrdev".
+The variable 'err' is declared as u32, but it is used to store
+negative error codes such as -EINVAL.
 
-Use the helper macro MODULE_DEVICE_TABLE(rpmsg) to export the correct
-supported IDs. And while here, to keep backwards compatibility we also add
-the other ID "rpmsg_chrdev" so that it is also still exported as an alias.
+Changing the type of 'err' to int ensures proper representation of
+negative error codes and aligns with standard kernel error handling
+conventions.
 
-This has the side benefit of adding support for some legacy firmware
-which still uses the original "rpmsg_chrdev" ID. This was the ID used for
-this driver before it was upstreamed (as reflected by the module alias).
+Also, there is no need to initialize 'err' since it is always set
+before being used.
 
-Signed-off-by: Andrew Davis <afd@ti.com>
-Acked-by: Hari Nagalla <hnagalla@ti.com>
-Tested-by: Hari Nagalla <hnagalla@ti.com>
-Link: https://lore.kernel.org/r/20250619205722.133827-1-afd@ti.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Shannon Nelson <sln@onemain.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Link: https://patch.msgid.link/20250912141426.3922545-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/rpmsg_char.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rpmsg/rpmsg_char.c b/drivers/rpmsg/rpmsg_char.c
-index eec7642d26863..96fcdd2d7093c 100644
---- a/drivers/rpmsg/rpmsg_char.c
-+++ b/drivers/rpmsg/rpmsg_char.c
-@@ -522,8 +522,10 @@ static void rpmsg_chrdev_remove(struct rpmsg_device *rpdev)
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+index 92f30ff2d6316..2d9efadb5d2ae 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+@@ -978,7 +978,7 @@ static int ionic_get_module_eeprom_by_page(struct net_device *netdev,
+ {
+ 	struct ionic_lif *lif = netdev_priv(netdev);
+ 	struct ionic_dev *idev = &lif->ionic->idev;
+-	u32 err = -EINVAL;
++	int err;
+ 	u8 *src;
  
- static struct rpmsg_device_id rpmsg_chrdev_id_table[] = {
- 	{ .name	= "rpmsg-raw" },
-+	{ .name	= "rpmsg_chrdev" },
- 	{ },
- };
-+MODULE_DEVICE_TABLE(rpmsg, rpmsg_chrdev_id_table);
- 
- static struct rpmsg_driver rpmsg_chrdev_driver = {
- 	.probe = rpmsg_chrdev_probe,
-@@ -565,6 +567,5 @@ static void rpmsg_chrdev_exit(void)
- }
- module_exit(rpmsg_chrdev_exit);
- 
--MODULE_ALIAS("rpmsg:rpmsg_chrdev");
- MODULE_DESCRIPTION("RPMSG device interface");
- MODULE_LICENSE("GPL v2");
+ 	if (!page_data->length)
 -- 
 2.51.0
 
