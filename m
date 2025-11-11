@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CCB2C4A16E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:59:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0C15C4A1FC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCB4D188E302
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6CF704F433C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3302F23FC41;
-	Tue, 11 Nov 2025 00:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D4C24EA90;
+	Tue, 11 Nov 2025 00:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSa3zJtU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/NTvUK4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96F524BBEB;
-	Tue, 11 Nov 2025 00:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892B44C97;
+	Tue, 11 Nov 2025 00:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822739; cv=none; b=aiQj0HtMlyWhb8UmoA+AtHG227vuBoVF4uTka/YUM3kX80mP8yeKsyJwwhzkpXKmliHt6IzogwQKl2Eohm3y390RK348Dd4/b8LnY96e1n6Vc78ia7wjFgaahnNuykKidPgozurltxTP0QkMmfsWRZXthhxMHjvvafQpwqQH0qM=
+	t=1762822743; cv=none; b=XF6ZlyYHoajXgdpcEePZLEaIj2zhDGI/j1Q9k3Q0nh3bNjUS8R6LrtXRm9x3n6WpwnpO4CaWOKG77drJnXg/ylvQImAb0XhHpExYK0kgVkR7kdp5QOah6ucfcYb7cGS2dFf+vKhe04FgThAKe5qArNF9DXPc19zJ332RgdlE+9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822739; c=relaxed/simple;
-	bh=zpObJASxcMqjs8o16jg2GPNab67gmtTecO4Sj73QSS0=;
+	s=arc-20240116; t=1762822743; c=relaxed/simple;
+	bh=Kt1Eb5n1QxzfFJejMe2JD2lPqMEfNrssV1Y45f3flVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W0OvDjGWOgIdjs31BsC8/WkJNx6BhNXwbfodvZ8JHIb2qbv9bzjszv1nILLoQWcD6NNmGXYVfUEstJ/ipmGX00410YX1aTkegx7FMUyZ4rbDxnZMNeoJJUCEiOTQX1bGzZMMIXD4DGhS/W2Bdjfz1WoJh61HROdQDkdzMcJx5aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSa3zJtU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FEC0C16AAE;
-	Tue, 11 Nov 2025 00:58:58 +0000 (UTC)
+	 MIME-Version; b=fy+q/8FGuki47ZkU5keUID+OPXOixcRDvqq0/QP4HAzGlJhm0SnFM9SclpAv1zKodAVnVD0kPSGG2N2g4M8nKT/ft5MHq45FGjuPhwlKbam3zF55rO/64JKb6E+Dvz0A3n9eCX1/zYr5prm/72oNWUhVDaVWRggI/Lio4I8V6dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/NTvUK4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F883C4CEFB;
+	Tue, 11 Nov 2025 00:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822738;
-	bh=zpObJASxcMqjs8o16jg2GPNab67gmtTecO4Sj73QSS0=;
+	s=korg; t=1762822743;
+	bh=Kt1Eb5n1QxzfFJejMe2JD2lPqMEfNrssV1Y45f3flVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSa3zJtU4duQZNy1lM4XuAV1oa5gYLpnGZCr1IovWbvrBC+H4a4pJgHIQ5VmXl3+Q
-	 fXnPn2YNkKoyleaIu+kxa1fOyTxRCz06jTfU16aSbVs4LuJmqy2733DdS2jlFNKVH7
-	 WXUpJzhqhNxQgXALuXl4aUq7Nhvw+vGkZSY4toPM=
+	b=R/NTvUK4y1kqmsdO/QpR1KnOKQkFCXhjInXSVchkvzHR7XSmbW/S5A98Xbtr2TpVa
+	 C9MH/9WKLDh74rlGjtjiTX1DPhP2xHyCYW/ho8DdK5QKwmkQv0WUVQ+EQ4+1ASZ7ip
+	 U7+m6A5ycTfGLj09EE8cqY9xDhPzQgoVGtIeJCdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 158/849] pinctrl: renesas: rzg2l: Add suspend/resume support for Schmitt control registers
-Date: Tue, 11 Nov 2025 09:35:28 +0900
-Message-ID: <20251111004540.252847925@linuxfoundation.org>
+Subject: [PATCH 6.17 159/849] pinctrl: keembay: release allocated memory in detach path
+Date: Tue, 11 Nov 2025 09:35:29 +0900
+Message-ID: <20251111004540.277454791@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,84 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 837afa592c6234be82acb5d23e0a39e9befdaa85 ]
+[ Upstream commit aae7a2876c3b39d07aa7655ea082af8e7862f3a5 ]
 
-Renesas RZ/G3E supports a power-saving mode where power to most of the
-SoC components is lost, including the PIN controller.  Save and restore
-the Schmitt control register contents to ensure the functionality is
-preserved after a suspend/resume cycle.
+Unlike all the other allocations in this driver, the memory for storing
+the pin function descriptions allocated with kcalloc() and later resized
+with krealloc() is never freed. Use devres like elsewhere to handle
+that. While at it - replace krealloc() with more suitable
+devm_krealloc_array().
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com> # on RZ/G3S
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250819084022.20512-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Note: the logic in this module is pretty convoluted and could probably
+use some revisiting, we should probably be able to calculate the exact
+amount of memory needed in advance or even skip the allocation
+altogether and just add each function to the radix tree separately.
+
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rzg2l.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-keembay.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-index 22bc5b8f65fde..289917a0e8725 100644
---- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-@@ -320,6 +320,7 @@ struct rzg2l_pinctrl_pin_settings {
-  * @iolh: IOLH registers cache
-  * @pupd: PUPD registers cache
-  * @ien: IEN registers cache
-+ * @smt: SMT registers cache
-  * @sd_ch: SD_CH registers cache
-  * @eth_poc: ET_POC registers cache
-  * @eth_mode: ETH_MODE register cache
-@@ -333,6 +334,7 @@ struct rzg2l_pinctrl_reg_cache {
- 	u32	*iolh[2];
- 	u32	*ien[2];
- 	u32	*pupd[2];
-+	u32	*smt;
- 	u8	sd_ch[2];
- 	u8	eth_poc[2];
- 	u8	eth_mode;
-@@ -2719,6 +2721,10 @@ static int rzg2l_pinctrl_reg_cache_alloc(struct rzg2l_pinctrl *pctrl)
- 	if (!cache->pfc)
+diff --git a/drivers/pinctrl/pinctrl-keembay.c b/drivers/pinctrl/pinctrl-keembay.c
+index 60cf017498b32..6aefcbc313099 100644
+--- a/drivers/pinctrl/pinctrl-keembay.c
++++ b/drivers/pinctrl/pinctrl-keembay.c
+@@ -1603,7 +1603,8 @@ static int keembay_build_functions(struct keembay_pinctrl *kpc)
+ 	 * being part of 8 (hw maximum) globally unique muxes.
+ 	 */
+ 	kpc->nfuncs = 0;
+-	keembay_funcs = kcalloc(kpc->npins * 8, sizeof(*keembay_funcs), GFP_KERNEL);
++	keembay_funcs = devm_kcalloc(kpc->dev, kpc->npins * 8,
++				     sizeof(*keembay_funcs), GFP_KERNEL);
+ 	if (!keembay_funcs)
  		return -ENOMEM;
  
-+	cache->smt = devm_kcalloc(pctrl->dev, nports, sizeof(*cache->smt), GFP_KERNEL);
-+	if (!cache->smt)
-+		return -ENOMEM;
-+
- 	for (u8 i = 0; i < 2; i++) {
- 		u32 n_dedicated_pins = pctrl->data->n_dedicated_pins;
- 
-@@ -2980,7 +2986,7 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
- 	struct rzg2l_pinctrl_reg_cache *cache = pctrl->cache;
- 
- 	for (u32 port = 0; port < nports; port++) {
--		bool has_iolh, has_ien, has_pupd;
-+		bool has_iolh, has_ien, has_pupd, has_smt;
- 		u32 off, caps;
- 		u8 pincnt;
- 		u64 cfg;
-@@ -2993,6 +2999,7 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
- 		has_iolh = !!(caps & (PIN_CFG_IOLH_A | PIN_CFG_IOLH_B | PIN_CFG_IOLH_C));
- 		has_ien = !!(caps & PIN_CFG_IEN);
- 		has_pupd = !!(caps & PIN_CFG_PUPD);
-+		has_smt = !!(caps & PIN_CFG_SMT);
- 
- 		if (suspend)
- 			RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + PFC(off), cache->pfc[port]);
-@@ -3031,6 +3038,9 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
- 							 cache->ien[1][port]);
- 			}
- 		}
-+
-+		if (has_smt)
-+			RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + SMT(off), cache->smt[port]);
+@@ -1634,7 +1635,9 @@ static int keembay_build_functions(struct keembay_pinctrl *kpc)
  	}
- }
  
+ 	/* Reallocate memory based on actual number of functions */
+-	new_funcs = krealloc(keembay_funcs, kpc->nfuncs * sizeof(*new_funcs), GFP_KERNEL);
++	new_funcs = devm_krealloc_array(kpc->dev, keembay_funcs,
++					kpc->nfuncs, sizeof(*new_funcs),
++					GFP_KERNEL);
+ 	if (!new_funcs) {
+ 		kfree(keembay_funcs);
+ 		return -ENOMEM;
 -- 
 2.51.0
 
