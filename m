@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-194303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAF9C4B0D3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BBBFC4AC16
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A013A189AC22
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2CAA44F84D2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FD42D9798;
-	Tue, 11 Nov 2025 01:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1E9308F1B;
+	Tue, 11 Nov 2025 01:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyHTDGzZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5sijHFP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D22C1E9B3D;
-	Tue, 11 Nov 2025 01:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A29E2741C9;
+	Tue, 11 Nov 2025 01:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825285; cv=none; b=sZ1tYl4ztysWCrAGOYP87Yfg+MRiRqw3C3SrTEX5guU8wrqdEYAQ6TTBHC1wlgyEyiL3/1Qt98n5a8KWuSeKFOe6kTtsLfLw5o+hMFux4Ht1V+2WrEHM517939YDuRlVKI5nsqBlHRQeOV/6EXVorZimr4jlIyIoogpPl9I6tnQ=
+	t=1762824467; cv=none; b=rJC5NbrN9rCw14W34tzI/iQW13L97A/n6xiYEPMSiKnMHn0c/BlT3NVWionW85GW2NQtixal616qBWD0QrQOAG5VuP2eBRMPyLqbcQVClPriV4qWb6z+ysV4RrUCYIg0tlkN20FIk9Krb/mUkOeaV7heMtYxHpGqhS+kg8sNLlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825285; c=relaxed/simple;
-	bh=6MrKhXiVwGNm1qHIOKUGf7nnxNKRKtHqJKSF9iHgdkY=;
+	s=arc-20240116; t=1762824467; c=relaxed/simple;
+	bh=wy47GdRzKuwHNdUC5Bx7aS3pFeKCr2NwpecUePLn2Pk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BQRUdKgDqi0u5ivVGcVd5rqu4g3FeSW5tdqXbVQtz4j9c0NaPtnxOqdLXcpxhiGxQfemCU7xLCEH16lLZ0JN1wohQJAAEEx3ZtJiInX7hER6+imFa1hfyMXqSLWmC1kzVUMxUXL7+JjyPAP9in2hNlwIp7avYAzeJKNs6aJ1ilw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyHTDGzZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EB5C16AAE;
-	Tue, 11 Nov 2025 01:41:25 +0000 (UTC)
+	 MIME-Version; b=AI6L4A1FUfs8wobCImB9JVrHH8sJZaSIYijPN2fYrYMgty5/JN74G9Y87CRwWCA0jSY8oCo+oNCIKO+4q7EUqbT+vTyc7jA46Ayla5I4xAmGGEF89TH8LJnjoc+PhSw4xeGVnAMRD0dbcxhfzrXl+izutk7+PjYkrWrpz7CSdhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5sijHFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC66C4CEF5;
+	Tue, 11 Nov 2025 01:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825285;
-	bh=6MrKhXiVwGNm1qHIOKUGf7nnxNKRKtHqJKSF9iHgdkY=;
+	s=korg; t=1762824467;
+	bh=wy47GdRzKuwHNdUC5Bx7aS3pFeKCr2NwpecUePLn2Pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZyHTDGzZgu7qdbtQgJAsR4zkdsXc5U9MWCnWDlPVguDBBBQTF56EQbBa7RzStNSoD
-	 fm4Y23K9484bbbFR/DN3cmnyyL5FyAg1+U/KjkyHy/geDUMnHatResEHztQJweFxTq
-	 KWKKpqew6a75Ukb74D9Q5oyQnELnC4AGWtlLLAZw=
+	b=g5sijHFPxJ0WhXqofTZFNq2HloB72wDCFCs8fcUM9rLjmoR88EKO6wn23LnRQY2E1
+	 3Z2LVVMtaKCNDgihfF1sYUkpTWR+qkrDJ9sLMv+6EsXepXyWafLs86IqtG5EAGSHWu
+	 eA7oCKsfOnK3SS3i0CFUSfbN40UdJi2lQf+0rgJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.17 738/849] rust: condvar: fix broken intra-doc link
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 452/565] char: misc: restrict the dynamic range to exclude reserved minors
 Date: Tue, 11 Nov 2025 09:45:08 +0900
-Message-ID: <20251111004554.282781730@linuxfoundation.org>
+Message-ID: <20251111004537.058519784@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit 09b1704f5b02c18dd02b21343530463fcfc92c54 upstream.
+[ Upstream commit 31b636d2c41613e3bd36256a4bd53e9dacfa2677 ]
 
-The future move of pin-init to `syn` uncovers the following broken
-intra-doc link:
+When this was first reported [1], the possibility of having sufficient
+number of dynamic misc devices was theoretical, in the case of dlm driver.
+In practice, its userspace never created more than one device.
 
-    error: unresolved link to `crate::pin_init`
-      --> rust/kernel/sync/condvar.rs:39:40
-       |
-    39 | /// instances is with the [`pin_init`](crate::pin_init!) and [`new_condvar`] macros.
-       |                                        ^^^^^^^^^^^^^^^^ no item named `pin_init` in module `kernel`
-       |
-       = note: `-D rustdoc::broken-intra-doc-links` implied by `-D warnings`
-       = help: to override `-D warnings` add `#[allow(rustdoc::broken_intra_doc_links)]`
+What we know from commit ab760791c0cf ("char: misc: Increase the maximum
+number of dynamic misc devices to 1048448"), is that the miscdevice
+interface has been used for allocating more than the single-shot devices it
+was designed for. And it is not only coresight_tmc, but many other drivers
+are able to create multiple devices.
 
-Currently, when rendered, the link points to a literal `crate::pin_init!`
-URL.
+On systems like the ones described in the above commit, it is certain that
+the dynamic allocation will allocate certain reserved minor numbers,
+leading to failures when a later driver tries to claim its reserved number.
 
-Thus fix it.
+Instead of excluding the historically statically allocated range from
+dynamic allocation, restrict the latter to minors above 255. That also
+removes the need for DYNAMIC_MINORS and the convolution in allocating minor
+numbers, simplifying the code.
 
-Cc: stable@vger.kernel.org
-Fixes: 129e97be8e28 ("rust: pin-init: fix documentation links")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://patch.msgid.link/20251029073344.349341-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Since commit ab760791c0cf ("char: misc: Increase the maximum number of
+dynamic misc devices to 1048448") has been applied, such range is already
+possible. And given such devices already need to be dynamically created,
+there should be no systems where this might become a problem.
+
+[1] https://lore.kernel.org/all/1257813017-28598-3-git-send-email-cascardo@holoscopio.com/
+
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Link: https://lore.kernel.org/r/20250423-misc-dynrange-v4-1-133b5ae4ca18@igalia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/sync/condvar.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/misc.c | 28 +++++-----------------------
+ 1 file changed, 5 insertions(+), 23 deletions(-)
 
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index c6ec64295c9f..aa5b9a7a726d 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -36,7 +36,7 @@ macro_rules! new_condvar {
- /// spuriously.
- ///
- /// Instances of [`CondVar`] need a lock class and to be pinned. The recommended way to create such
--/// instances is with the [`pin_init`](crate::pin_init!) and [`new_condvar`] macros.
-+/// instances is with the [`pin_init`](pin_init::pin_init!) and [`new_condvar`] macros.
- ///
- /// # Examples
- ///
+diff --git a/drivers/char/misc.c b/drivers/char/misc.c
+index 792a1412faffe..8d8c4bcf07e1c 100644
+--- a/drivers/char/misc.c
++++ b/drivers/char/misc.c
+@@ -58,9 +58,8 @@ static LIST_HEAD(misc_list);
+ static DEFINE_MUTEX(misc_mtx);
+ 
+ /*
+- * Assigned numbers, used for dynamic minors
++ * Assigned numbers.
+  */
+-#define DYNAMIC_MINORS 128 /* like dynamic majors */
+ static DEFINE_IDA(misc_minors_ida);
+ 
+ static int misc_minor_alloc(int minor)
+@@ -69,34 +68,17 @@ static int misc_minor_alloc(int minor)
+ 
+ 	if (minor == MISC_DYNAMIC_MINOR) {
+ 		/* allocate free id */
+-		ret = ida_alloc_max(&misc_minors_ida, DYNAMIC_MINORS - 1, GFP_KERNEL);
+-		if (ret >= 0) {
+-			ret = DYNAMIC_MINORS - ret - 1;
+-		} else {
+-			ret = ida_alloc_range(&misc_minors_ida, MISC_DYNAMIC_MINOR + 1,
+-					      MINORMASK, GFP_KERNEL);
+-		}
++		ret = ida_alloc_range(&misc_minors_ida, MISC_DYNAMIC_MINOR + 1,
++				      MINORMASK, GFP_KERNEL);
+ 	} else {
+-		/* specific minor, check if it is in dynamic or misc dynamic range  */
+-		if (minor < DYNAMIC_MINORS) {
+-			minor = DYNAMIC_MINORS - minor - 1;
+-			ret = ida_alloc_range(&misc_minors_ida, minor, minor, GFP_KERNEL);
+-		} else if (minor > MISC_DYNAMIC_MINOR) {
+-			ret = ida_alloc_range(&misc_minors_ida, minor, minor, GFP_KERNEL);
+-		} else {
+-			/* case of non-dynamic minors, no need to allocate id */
+-			ret = 0;
+-		}
++		ret = ida_alloc_range(&misc_minors_ida, minor, minor, GFP_KERNEL);
+ 	}
+ 	return ret;
+ }
+ 
+ static void misc_minor_free(int minor)
+ {
+-	if (minor < DYNAMIC_MINORS)
+-		ida_free(&misc_minors_ida, DYNAMIC_MINORS - minor - 1);
+-	else if (minor > MISC_DYNAMIC_MINOR)
+-		ida_free(&misc_minors_ida, minor);
++	ida_free(&misc_minors_ida, minor);
+ }
+ 
+ #ifdef CONFIG_PROC_FS
 -- 
-2.51.2
+2.51.0
 
 
 
