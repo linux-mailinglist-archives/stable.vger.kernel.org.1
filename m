@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AFEC4A543
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:19:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B9CC4AC9A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BF1B334BE89
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B30804F4017
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25892337BAE;
-	Tue, 11 Nov 2025 01:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF83340287;
+	Tue, 11 Nov 2025 01:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZbAFhr0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVLWWtfw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E38339B58;
-	Tue, 11 Nov 2025 01:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BEE261573;
+	Tue, 11 Nov 2025 01:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823423; cv=none; b=scyAtq4xzal8sSJ8UvXFtQgVG6RNQXOdmaibdmpfExNB2iRknCKqSe1oKqi2/JM+YrETvSf4BFudHbeHrEI5gUboch+eJd2LY777q/mwTeY/ReoT8ZabttkK/kPSEmWBajpGM4y/24VnxPRfqRNxlGWN3Snvlu27Iw1rSSmOVng=
+	t=1762824594; cv=none; b=X9LpOo2UqVclxuPfOxUJmTaR082Rg9sP2qeMu/31TbTtj0XF7SETNn8xQP491O09BVU10T9pKTeEnltOsMreyKo8ctRxxhyT/t8+FdM+GBC+kDRB+oTl9mxP4nERi/eLYiYY04kiyg20avtVatfHNIHb9tuUCf8WMFrJNZyOOU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823423; c=relaxed/simple;
-	bh=b3uGZs5I2eaVzQ/lIs//+dm7tZukxalm0YuxtJ5562U=;
+	s=arc-20240116; t=1762824594; c=relaxed/simple;
+	bh=FkpWNA4YnmDg//sMAnbQWI6bH15ZoaLi8Jcou8mSh2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQWe+R1LA9RYwpIS5nh0YB0kdQBHghfeoXK/4byq1u17OCbohmEFPN203mVk0Ch3QGHgc7FPAxmXrvm3XExxPEHms44Z7NLrzkcixGe+hX4h78TJrSOuovth9idnVP0Z0M6suuIRhhXJjLbxtf6+PaUNu8Bq4A0bLkR2CyQsVmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZbAFhr0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B43C16AAE;
-	Tue, 11 Nov 2025 01:10:23 +0000 (UTC)
+	 MIME-Version; b=T/UKAvNAO3vnPmsvTLm97Se0cg2qvT6JXNEtB+qnEX3emqjRnNnrQBMjihXdAPnSUfEJM4HWIrlmxRqMZw3UBMkqSuFnNC31s++3SFwW4x3QvCVhPPfPt9FmJBKwtqCxxlunV7HMQJ2tFFIAEgKJHgY057bwplWLW/tKFZfm4iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVLWWtfw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CADC116B1;
+	Tue, 11 Nov 2025 01:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823423;
-	bh=b3uGZs5I2eaVzQ/lIs//+dm7tZukxalm0YuxtJ5562U=;
+	s=korg; t=1762824593;
+	bh=FkpWNA4YnmDg//sMAnbQWI6bH15ZoaLi8Jcou8mSh2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZbAFhr0iQPRtxXLKF98WpUa5soW4LjqTeEUhYFqVWHtZuUURFYgZ17WyzAgzGQJL
-	 iPDSrk+/rdsnwoDnFBHjjU3hg+0aCQIvMURPWr3oBoGHHfMO6Cve9o8w6Db8bN1fz0
-	 oozwOzX2ilLZHjUvK/qUn3LzDJeZfn1XneSgExgw=
+	b=WVLWWtfwSKEhAOqQZF+45Sx2g+VM9Ln8mpfSBcxvxn1qbJm2+AV0U1VhSRD5NtUCr
+	 FYjGhieSOuS97BiEI4TWZXidWAi4uaSuP5uxFH+RJV6hB2iMN/VLbSTDBT/iFx3iKJ
+	 13j28wmPxGsyRt53rhzTk1jCel6yL430bbGEfsZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	Allison Henderson <allison.henderson@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 244/565] rds: Fix endianness annotation for RDS_MPATH_HASH
+	Yunseong Kim <ysk@kzalloc.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>
+Subject: [PATCH 6.17 530/849] crypto: ccp - Fix incorrect payload size calculation in psp_poulate_hsti()
 Date: Tue, 11 Nov 2025 09:41:40 +0900
-Message-ID: <20251111004532.400513890@linuxfoundation.org>
+Message-ID: <20251111004549.231745616@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ujwal Kundur <ujwal.kundur@gmail.com>
+From: Yunseong Kim <ysk@kzalloc.com>
 
-[ Upstream commit 77907a068717fbefb25faf01fecca553aca6ccaa ]
+[ Upstream commit 2b0dc40ac6ca16ee0c489927f4856cf9cd3874c7 ]
 
-jhash_1word accepts host endian inputs while rs_bound_port is a be16
-value (sockaddr_in6.sin6_port). Use ntohs() for consistency.
+payload_size field of the request header is incorrectly calculated using
+sizeof(req). Since 'req' is a pointer (struct hsti_request *), sizeof(req)
+returns the size of the pointer itself (e.g., 8 bytes on a 64-bit system),
+rather than the size of the structure it points to. This leads to an
+incorrect payload size being sent to the Platform Security Processor (PSP),
+potentially causing the HSTI query command to fail.
 
-Flagged by Sparse.
+Fix this by using sizeof(*req) to correctly calculate the size of the
+struct hsti_request.
 
-Signed-off-by: Ujwal Kundur <ujwal.kundur@gmail.com>
-Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
-Link: https://patch.msgid.link/20250820175550.498-4-ujwal.kundur@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>> ---
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/rds.h | 2 +-
+ drivers/crypto/ccp/hsti.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rds/rds.h b/net/rds/rds.h
-index dc360252c5157..5b1c072e2e7ff 100644
---- a/net/rds/rds.h
-+++ b/net/rds/rds.h
-@@ -93,7 +93,7 @@ enum {
+diff --git a/drivers/crypto/ccp/hsti.c b/drivers/crypto/ccp/hsti.c
+index 1b39a4fb55c06..0e6b73b55dbf7 100644
+--- a/drivers/crypto/ccp/hsti.c
++++ b/drivers/crypto/ccp/hsti.c
+@@ -88,7 +88,7 @@ static int psp_poulate_hsti(struct psp_device *psp)
+ 	if (!req)
+ 		return -ENOMEM;
  
- /* Max number of multipaths per RDS connection. Must be a power of 2 */
- #define	RDS_MPATH_WORKERS	8
--#define	RDS_MPATH_HASH(rs, n) (jhash_1word((rs)->rs_bound_port, \
-+#define	RDS_MPATH_HASH(rs, n) (jhash_1word(ntohs((rs)->rs_bound_port), \
- 			       (rs)->rs_hash_initval) & ((n) - 1))
+-	req->header.payload_size = sizeof(req);
++	req->header.payload_size = sizeof(*req);
  
- #define IS_CANONICAL(laddr, faddr) (htonl(laddr) < htonl(faddr))
+ 	ret = psp_send_platform_access_msg(PSP_CMD_HSTI_QUERY, (struct psp_request *)req);
+ 	if (ret)
 -- 
 2.51.0
 
