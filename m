@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-193892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CEA2C4A8E4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91640C4ACDA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CC2B934C570
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A14393BC796
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1E4346FB9;
-	Tue, 11 Nov 2025 01:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2AA2F7AAC;
+	Tue, 11 Nov 2025 01:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2Qt0Yze"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Inu/86N5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373DB346FA2;
-	Tue, 11 Nov 2025 01:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997E6265CC5;
+	Tue, 11 Nov 2025 01:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824252; cv=none; b=lM2kKXOy0q4BkzCvuZwIRcuo1rQ5JRI27OA7FJ2tqvAIzZOzO85DzhcSgA3oWBb+ltmt8fmxf8Zg/ZoXqB4+3pNqcrLKMOFnQf17NbQ6wJRko2vcGZdRqrsuquFE99fjq6FBcaUAZJRCv7ssWxPg/8asW8l5wYy4kWGDxLOSrvg=
+	t=1762824365; cv=none; b=i0TXl0OU99DaoPdNaOwVsm3aSKfuk48qWPAKdcmqeFM3FnTof3DfM/s2bgVWciF6wjsPuOhm8Zy+H3mOVVKxAMwRLlML0LYnkydpVhRw2k95nTyhQOh0xMHeNS8RGBabaBnAROVAyMO/o8rqDRK0pgWX2HC4Ab8gbM/ZqlpHh+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824252; c=relaxed/simple;
-	bh=pX180A4+ADs8DFMZALPf2YoWW/k9gpMUjnp9JCqUKIo=;
+	s=arc-20240116; t=1762824365; c=relaxed/simple;
+	bh=g/3p7fIMkNMgRN9RnpVvoFQqCzrOeGkbAGRRQKU3LeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nVn4eWhb8dv6d/G4BtYgCN3NI5PM27dTlND3vFCjFsbU4xl1aEwRVvevSeDaEtyYHANk6uFjxzIk0B16I1C5Dfjn/ejPKoWv1V6Hvwz5fh8+5Ob+XkgAVTmgaTAVEM6qMf6GCqNPMQqIuIp/C5lb3dT/a4Exkq1SwSVSzEJIHd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2Qt0Yze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEA8C19421;
-	Tue, 11 Nov 2025 01:24:11 +0000 (UTC)
+	 MIME-Version; b=ujDjxTM7wmrjnWiU3T1zI3b6O2hCrVVOdzbxteTx9luxnJOih2nv2hNjprhIZ4l1d3mehRPLY0NdPMocC45Don4ShHqMcnQz7iIVoh7/i09EGFyGRuxeBviil1HEc6OMmS8oXBGfQn5uoj734aY+EWhAfvEgItmiy0PpgwU23y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Inu/86N5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334F0C19421;
+	Tue, 11 Nov 2025 01:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824252;
-	bh=pX180A4+ADs8DFMZALPf2YoWW/k9gpMUjnp9JCqUKIo=;
+	s=korg; t=1762824365;
+	bh=g/3p7fIMkNMgRN9RnpVvoFQqCzrOeGkbAGRRQKU3LeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J2Qt0YzeFammEMWBobAef63dipziq+6l342ERrAGvyszeQHunSXC0x0ql3eTo96nI
-	 oMB284tsXhhi0KHxC8GlfvD/7iMBxJLbgKbZCj9OMm6T763BwVcymSmP0xDbrrMQR+
-	 gIEtoliNsZa9Y1KDp5e0VLR6z99FotgIrl+Ziy84=
+	b=Inu/86N5vFonY/9HqLrPYsg8UUM6VPA6S3dG9wrvkki+qMS1dOUEVZHUG5wAF7Kwu
+	 8FGKtUovwOTjmXUN/wGPjbS5zuNLivBUU6lOQZQBGU2d6kZGR9fwdPNOOCfxRLU6Oc
+	 TOKBuEOxhOogD1Z6UR0ADE3+DuLC/5hY3P+JOEUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Liu <xiang.liu@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 453/849] drm/amdgpu: Correct info field of bad page threshold exceed CPER
-Date: Tue, 11 Nov 2025 09:40:23 +0900
-Message-ID: <20251111004547.380081674@linuxfoundation.org>
+Subject: [PATCH 6.17 454/849] drm/amd: add more cyan skillfish PCI ids
+Date: Tue, 11 Nov 2025 09:40:24 +0900
+Message-ID: <20251111004547.404740033@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,43 +65,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xiang Liu <xiang.liu@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit f320ed01cf5f2259e2035a56900952cb3cc77e7a ]
+[ Upstream commit 1e18746381793bef7c715fc5ec5611a422a75c4c ]
 
-Correct valid_bits and ms_chk_bits of section info field for bad page
-threshold exceed CPER to match OOB's behavior.
+Add additional PCI IDs to the cyan skillfish family.
 
-Signed-off-by: Xiang Liu <xiang.liu@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
-index ee937d617c826..54de38dbaf2d5 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
-@@ -68,7 +68,6 @@ void amdgpu_cper_entry_fill_hdr(struct amdgpu_device *adev,
- 	hdr->error_severity		= sev;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 5e81ff3ffdc3f..e60043ac9841e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2172,6 +2172,11 @@ static const struct pci_device_id pciidlist[] = {
+ 	{0x1002, 0x7410, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_ALDEBARAN},
  
- 	hdr->valid_bits.platform_id	= 1;
--	hdr->valid_bits.partition_id	= 1;
- 	hdr->valid_bits.timestamp	= 1;
- 
- 	amdgpu_cper_get_timestamp(&hdr->timestamp);
-@@ -220,7 +219,10 @@ int amdgpu_cper_entry_fill_bad_page_threshold_section(struct amdgpu_device *adev
- 	section->hdr.valid_bits.err_context_cnt = 1;
- 
- 	section->info.error_type = RUNTIME;
-+	section->info.valid_bits.ms_chk = 1;
- 	section->info.ms_chk_bits.err_type_valid = 1;
-+	section->info.ms_chk_bits.err_type = 1;
-+	section->info.ms_chk_bits.pcc = 1;
- 	section->ctx.reg_ctx_type = CPER_CTX_TYPE_CRASH;
- 	section->ctx.reg_arr_size = sizeof(section->ctx.reg_dump);
+ 	/* CYAN_SKILLFISH */
++	{0x1002, 0x13DB, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
++	{0x1002, 0x13F9, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
++	{0x1002, 0x13FA, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
++	{0x1002, 0x13FB, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
++	{0x1002, 0x13FC, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
+ 	{0x1002, 0x13FE, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
+ 	{0x1002, 0x143F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
  
 -- 
 2.51.0
