@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-193648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC47C4A854
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A587AC4AED1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E62F3B8961
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39A5E3AE06B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA68426A1B6;
-	Tue, 11 Nov 2025 01:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EE8305940;
+	Tue, 11 Nov 2025 01:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+jo9U8G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axZ1YLVa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55842DC32A;
-	Tue, 11 Nov 2025 01:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652E327D786;
+	Tue, 11 Nov 2025 01:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823678; cv=none; b=fv6iRZZupwihQFaMMNE90+hYhsbI/WQAzqoGLwwJV1rqFZXffcES5zl/MvLsx3mSLoU2FWM0/Wi7BQyF9LnaunbSXe/sWfhQP08QIc2zR4w9A725JHKHEf4OVXvPfylmREqAFtsRMR3r/ziSuI8PLhM6JAHFxWdSAhh7apU/kE8=
+	t=1762824853; cv=none; b=Uw7cG6zlzJSfgMeWSWu4LnAT8LD8XTTnuznUqEtYQMb9XiSto4rFpGYCcVQiqSzIbH/PFS0zOyC5yl05ZNPaUjN870SQe7DwBxdKQme5diIXDScqK/b45++wPTij2JNrX4pSDlpxGRdRGXmKPinmuAfuGUCl30yUFhiNr9AtzeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823678; c=relaxed/simple;
-	bh=Exep3jqikyMJsXQoH6TEjLtiXvBzTEwDSLqb7ru3ITg=;
+	s=arc-20240116; t=1762824853; c=relaxed/simple;
+	bh=mmz9loR48Y1ezoV67N8UpCDRx7yjlSKbSiaq6OCsGVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fc7ZNeNKUGUsrsK4isqvKZ9OmavW+d61WE+g7KMPPfuNZK7GVSqUm5w0FRWoExgf0LBnayssZW1Hvj0CDZ3JjPGriMd29DgnfwONsjfMu8Im/YeCM+TFk1G3ozoPo8nEdDxpRVLSFiyWsnsvcqGn1GX+5KDquWa6kwHL0iTVzxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+jo9U8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F386BC4CEFB;
-	Tue, 11 Nov 2025 01:14:37 +0000 (UTC)
+	 MIME-Version; b=PP0Va44xmm359BBoQHso3vn3J+pGrH7ljFZpo+C6RoJgMzAvK3EUVTUEIgHi0rkUA316z0eI3yOZP8eaPxIrkOim/HQeSpp54rWZnuP9DtzT1nLzLQOul0ptobUK/UiWQy51qQV9TJhWqhWFBIVHW0DzHSuOXEVDGZQw3QLyMBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axZ1YLVa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DE6C16AAE;
+	Tue, 11 Nov 2025 01:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823678;
-	bh=Exep3jqikyMJsXQoH6TEjLtiXvBzTEwDSLqb7ru3ITg=;
+	s=korg; t=1762824853;
+	bh=mmz9loR48Y1ezoV67N8UpCDRx7yjlSKbSiaq6OCsGVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+jo9U8GZN0RtN6RJGo03S8Qz0dQ9KwDm7udWsos9qzp0kOiNV917W6gYNtAu1U0v
-	 dzVI2vGr1PJ4Xro4144GseeeGEXXr0taEzGuISjIxIu1CwoMCprWfzERe4bgEAjc4i
-	 4FrUfDNT2ysYA1GeaEfP3YV9+68yE+kPktytnVwQ=
+	b=axZ1YLVa0kg4Wm8ZcoBa6QI3r4HM40BY4NlvQSe6Dx7QgrkBIaEswRd12u8hqxXY+
+	 R6yZyJUoJWr5BlajGJipq7qpfkj3ZoCoxp4iBSTZZXyv7q4IMR19h2llDmXEhLSCNl
+	 PYZW77L3CAR8Nz+/6S7JRZ7XQhE0jhDq7I3BTcMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	Nick Nielsen <nick.kainielsen@free.fr>,
+	grm1 <grm1@mailbox.org>,
+	Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 299/565] PCI: imx6: Enable the Vaux supply if available
+Subject: [PATCH 6.17 585/849] usb: xhci-pci: add support for hosts with zero USB3 ports
 Date: Tue, 11 Nov 2025 09:42:35 +0900
-Message-ID: <20251111004533.604127637@linuxfoundation.org>
+Message-ID: <20251111004550.563791234@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Niklas Neronin <niklas.neronin@linux.intel.com>
 
-[ Upstream commit c221cbf8dc547eb8489152ac62ef103fede99545 ]
+[ Upstream commit 719de070f764e079cdcb4ddeeb5b19b3ddddf9c1 ]
 
-When the 3.3Vaux supply is present, fetch it at the probe time and keep it
-enabled for the entire PCIe controller lifecycle so that the link can enter
-L2 state and the devices can signal wakeup using either Beacon or WAKE#
-mechanisms.
+Add xhci support for PCI hosts that have zero USB3 ports.
+Avoid creating a shared Host Controller Driver (HCD) when there is only
+one root hub. Additionally, all references to 'xhci->shared_hcd' are now
+checked before use.
 
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[mani: reworded the subject, description and error message]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250820022328.2143374-1-hongxing.zhu@nxp.com
+Only xhci-pci.c requires modification to accommodate this change, as the
+xhci core already supports configurations with zero USB3 ports. This
+capability was introduced when xHCI Platform and MediaTek added support
+for zero USB3 ports.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220181
+Tested-by: Nick Nielsen <nick.kainielsen@free.fr>
+Tested-by: grm1 <grm1@mailbox.org>
+Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250917210726.97100-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/host/xhci-pci.c | 42 +++++++++++++++++++++----------------
+ 1 file changed, 24 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index c5254241942d3..8877d327867ee 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1487,6 +1487,10 @@ static int imx_pcie_probe(struct platform_device *pdev)
- 	pci->max_link_speed = 1;
- 	of_property_read_u32(node, "fsl,max-link-speed", &pci->max_link_speed);
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 00fac8b233d2a..5c8ab519f497d 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -610,7 +610,7 @@ int xhci_pci_common_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ {
+ 	int retval;
+ 	struct xhci_hcd *xhci;
+-	struct usb_hcd *hcd;
++	struct usb_hcd *hcd, *usb3_hcd;
+ 	struct reset_control *reset;
  
-+	ret = devm_regulator_get_enable_optional(&pdev->dev, "vpcie3v3aux");
-+	if (ret < 0 && ret != -ENODEV)
-+		return dev_err_probe(dev, ret, "failed to enable Vaux supply\n");
+ 	reset = devm_reset_control_get_optional_exclusive(&dev->dev, NULL);
+@@ -636,26 +636,32 @@ int xhci_pci_common_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 	hcd = dev_get_drvdata(&dev->dev);
+ 	xhci = hcd_to_xhci(hcd);
+ 	xhci->reset = reset;
+-	xhci->shared_hcd = usb_create_shared_hcd(&xhci_pci_hc_driver, &dev->dev,
+-						 pci_name(dev), hcd);
+-	if (!xhci->shared_hcd) {
+-		retval = -ENOMEM;
+-		goto dealloc_usb2_hcd;
+-	}
+ 
+-	retval = xhci_ext_cap_init(xhci);
+-	if (retval)
+-		goto put_usb3_hcd;
++	xhci->allow_single_roothub = 1;
++	if (!xhci_has_one_roothub(xhci)) {
++		xhci->shared_hcd = usb_create_shared_hcd(&xhci_pci_hc_driver, &dev->dev,
++							 pci_name(dev), hcd);
++		if (!xhci->shared_hcd) {
++			retval = -ENOMEM;
++			goto dealloc_usb2_hcd;
++		}
+ 
+-	retval = usb_add_hcd(xhci->shared_hcd, dev->irq,
+-			IRQF_SHARED);
+-	if (retval)
+-		goto put_usb3_hcd;
+-	/* Roothub already marked as USB 3.0 speed */
++		retval = xhci_ext_cap_init(xhci);
++		if (retval)
++			goto put_usb3_hcd;
 +
- 	imx_pcie->vpcie = devm_regulator_get_optional(&pdev->dev, "vpcie");
- 	if (IS_ERR(imx_pcie->vpcie)) {
- 		if (PTR_ERR(imx_pcie->vpcie) != -ENODEV)
++		retval = usb_add_hcd(xhci->shared_hcd, dev->irq, IRQF_SHARED);
++		if (retval)
++			goto put_usb3_hcd;
++	} else {
++		retval = xhci_ext_cap_init(xhci);
++		if (retval)
++			goto dealloc_usb2_hcd;
++	}
+ 
+-	if (!(xhci->quirks & XHCI_BROKEN_STREAMS) &&
+-			HCC_MAX_PSA(xhci->hcc_params) >= 4)
+-		xhci->shared_hcd->can_do_streams = 1;
++	usb3_hcd = xhci_get_usb3_hcd(xhci);
++	if (usb3_hcd && !(xhci->quirks & XHCI_BROKEN_STREAMS) && HCC_MAX_PSA(xhci->hcc_params) >= 4)
++		usb3_hcd->can_do_streams = 1;
+ 
+ 	/* USB-2 and USB-3 roothubs initialized, allow runtime pm suspend */
+ 	pm_runtime_put_noidle(&dev->dev);
 -- 
 2.51.0
 
