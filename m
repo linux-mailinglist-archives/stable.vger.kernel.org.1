@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-194260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6CBC4B100
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:56:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F19A7C4ABD4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 094163BC6D0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0137318948EA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207DE30597E;
-	Tue, 11 Nov 2025 01:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594D63469E4;
+	Tue, 11 Nov 2025 01:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1qsHf2/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysD3wOfC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27D92820A0;
-	Tue, 11 Nov 2025 01:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DD41F09B3;
+	Tue, 11 Nov 2025 01:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825181; cv=none; b=pwCWg1x9lEcSA/IxgNXBjZSdOoIIxtEGBeScyb4RxTXaLbYKt4/rkMk3ZaFuWKlgkpDGYzLcC6xHQRmxGrKc2TmA61uAvTkEEQvKZaN3K/P+5OYDHDuuHw+ZN5aPKK9Uww+DvB+zR+jBVX2XG9A3uJ68egSkwzL+2bOn0zGUkVQ=
+	t=1762824194; cv=none; b=De45rfyPC/eTxvl5RK8W9kPbhnSb4FOYWWslMoLOxEUufHuixDLQQ9CUurqYQAKZ5HlEhu34p1e2WDRxIWcJtWruV5FOGjpkbzHkuqAj4Fl8uFCmfwek8sEum9Q/hoYnY/lAfJgMaC8iA09i1zgdQDyOiR5kptdiSKLTVSNv2JA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825181; c=relaxed/simple;
-	bh=kAwkjWDIwEQG5vn96pLxcoEGrRTBMvt39KkUDowdf7s=;
+	s=arc-20240116; t=1762824194; c=relaxed/simple;
+	bh=ptzH4nJEOxfwRJP5w2WQrNuHCEQjT+M6ehFesNxdDrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNrHEoIHSuptYl/waDi15yCVk+F9Im2Qv0TOW/gWZ8oHHyTpCzTlu2IJHnZXRWd4J9SWUbsIPNQweO1qeaHEG+hSRH2XhzvvOYaEujsqrh0sIWzNGNYr3t/lBzEVvw20Q0357inJR8/4tGgOv++rNWtl/yFSqd/lC9oaAfQw6/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1qsHf2/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F2EC116B1;
-	Tue, 11 Nov 2025 01:39:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iXJWiGlq2ch3mWVAfQX9nYQq29yU/viWeosxAOa5CahEG/a4T/xv3hpSxZ8M6Qc6MhhVspvb2bnHcs/W/RRVZFyfyEwIqoICKlpTYX3fMEafh7T3/mHUoqvWVQVA0wKADzit1xFcf9NcR8G06uhcY7F9Rv7SCwEbPqSoEHailpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysD3wOfC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35366C4CEF5;
+	Tue, 11 Nov 2025 01:23:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825181;
-	bh=kAwkjWDIwEQG5vn96pLxcoEGrRTBMvt39KkUDowdf7s=;
+	s=korg; t=1762824193;
+	bh=ptzH4nJEOxfwRJP5w2WQrNuHCEQjT+M6ehFesNxdDrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1qsHf2/YBfDtb7SAD03gLHROUGiyLVTiQZ4neMvh/T4JBHyXMj/28vprNvSIK5W7
-	 2x2usmRFb6iDUumL6gSipVdAUuaAvLlxiRy0QyaLYsEr6dQusbF+4VzIME+LIvI4it
-	 9PGMF0DbLSb7vG/3cEhWiMvVoNk0vg6P8Tdt/hiM=
+	b=ysD3wOfCmKeSQl1aFwp4beijx34hv5USKLO6f/KerkmVwX2JFHipZKGAfPLAYlVOA
+	 kwt5GK3jdoI7dWsB7Dk3uzbyo8n2gN9gYZhFbZwGhTirJ3E7WOCK2EAiTIenw1Hotm
+	 ueIVAKJ/MbIlUKFxXc6uSu/+aFTLtYKmeAHFoPRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Drew Fustini <fustini@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 694/849] clk: thead: th1520-ap: set all AXI clocks to CLK_IS_CRITICAL
+Subject: [PATCH 6.12 408/565] PCI/PM: Skip resuming to D0 if device is disconnected
 Date: Tue, 11 Nov 2025 09:44:24 +0900
-Message-ID: <20251111004553.210454468@linuxfoundation.org>
+Message-ID: <20251111004536.049547943@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,169 +63,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit c567bc5fc68c4388c00e11fc65fd14fe86b52070 ]
+[ Upstream commit 299fad4133677b845ce962f78c9cf75bded63f61 ]
 
-The AXI crossbar of TH1520 has no proper timeout handling, which means
-gating AXI clocks can easily lead to bus timeout and thus system hang.
+When a device is surprise-removed (e.g., due to a dock unplug), the PCI
+core unconfigures all downstream devices and sets their error state to
+pci_channel_io_perm_failure. This marks them as disconnected via
+pci_dev_is_disconnected().
 
-Set all AXI clock gates to CLK_IS_CRITICAL. All these clock gates are
-ungated by default on system reset.
+During device removal, the runtime PM framework may attempt to resume the
+device to D0 via pm_runtime_get_sync(), which calls into pci_power_up().
+Since the device is already disconnected, this resume attempt is
+unnecessary and results in a predictable errors like this, typically when
+undocking from a TBT3 or USB4 dock with PCIe tunneling:
 
-In addition, convert all current CLK_IGNORE_UNUSED usage to
-CLK_IS_CRITICAL to prevent unwanted clock gating.
+  pci 0000:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
 
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Reviewed-by: Drew Fustini <fustini@kernel.org>
-Signed-off-by: Drew Fustini <fustini@kernel.org>
+Avoid powering up disconnected devices by checking their status early in
+pci_power_up() and returning -EIO.
+
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+[bhelgaas: add typical message]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Link: https://patch.msgid.link/20250909031916.4143121-1-superm1@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/thead/clk-th1520-ap.c | 44 +++++++++++++++----------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ drivers/pci/pci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
-index ec52726fbea95..6c1976aa1ae62 100644
---- a/drivers/clk/thead/clk-th1520-ap.c
-+++ b/drivers/clk/thead/clk-th1520-ap.c
-@@ -480,7 +480,7 @@ static struct ccu_div axi4_cpusys2_aclk = {
- 		.hw.init	= CLK_HW_INIT_PARENTS_HW("axi4-cpusys2-aclk",
- 					      gmac_pll_clk_parent,
- 					      &ccu_div_ops,
--					      0),
-+					      CLK_IS_CRITICAL),
- 	},
- };
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 0dd548e2b3676..5e5326031eb72 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1403,6 +1403,11 @@ int pci_power_up(struct pci_dev *dev)
+ 		return -EIO;
+ 	}
  
-@@ -502,7 +502,7 @@ static struct ccu_div axi_aclk = {
- 		.hw.init	= CLK_HW_INIT_PARENTS_DATA("axi-aclk",
- 						      axi_parents,
- 						      &ccu_div_ops,
--						      0),
-+						      CLK_IS_CRITICAL),
- 	},
- };
- 
-@@ -651,7 +651,7 @@ static struct ccu_div apb_pclk = {
- 		.hw.init	= CLK_HW_INIT_PARENTS_DATA("apb-pclk",
- 						      apb_parents,
- 						      &ccu_div_ops,
--						      CLK_IGNORE_UNUSED),
-+						      CLK_IS_CRITICAL),
- 	},
- };
- 
-@@ -682,7 +682,7 @@ static struct ccu_div vi_clk = {
- 		.hw.init	= CLK_HW_INIT_PARENTS_HW("vi",
- 					      video_pll_clk_parent,
- 					      &ccu_div_ops,
--					      0),
-+					      CLK_IS_CRITICAL),
- 	},
- };
- 
-@@ -707,7 +707,7 @@ static struct ccu_div vo_axi_clk = {
- 		.hw.init	= CLK_HW_INIT_PARENTS_HW("vo-axi",
- 					      video_pll_clk_parent,
- 					      &ccu_div_ops,
--					      0),
-+					      CLK_IS_CRITICAL),
- 	},
- };
- 
-@@ -732,7 +732,7 @@ static struct ccu_div vp_axi_clk = {
- 		.hw.init	= CLK_HW_INIT_PARENTS_HW("vp-axi",
- 					      video_pll_clk_parent,
- 					      &ccu_div_ops,
--					      CLK_IGNORE_UNUSED),
-+					      CLK_IS_CRITICAL),
- 	},
- };
- 
-@@ -791,27 +791,27 @@ static const struct clk_parent_data emmc_sdio_ref_clk_pd[] = {
- static CCU_GATE(CLK_BROM, brom_clk, "brom", ahb2_cpusys_hclk_pd, 0x100, 4, 0);
- static CCU_GATE(CLK_BMU, bmu_clk, "bmu", axi4_cpusys2_aclk_pd, 0x100, 5, 0);
- static CCU_GATE(CLK_AON2CPU_A2X, aon2cpu_a2x_clk, "aon2cpu-a2x", axi4_cpusys2_aclk_pd,
--		0x134, 8, 0);
-+		0x134, 8, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_X2X_CPUSYS, x2x_cpusys_clk, "x2x-cpusys", axi4_cpusys2_aclk_pd,
--		0x134, 7, 0);
-+		0x134, 7, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_CPU2AON_X2H, cpu2aon_x2h_clk, "cpu2aon-x2h", axi_aclk_pd,
--		0x138, 8, CLK_IGNORE_UNUSED);
-+		0x138, 8, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_CPU2PERI_X2H, cpu2peri_x2h_clk, "cpu2peri-x2h", axi4_cpusys2_aclk_pd,
--		0x140, 9, CLK_IGNORE_UNUSED);
-+		0x140, 9, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_PERISYS_APB1_HCLK, perisys_apb1_hclk, "perisys-apb1-hclk", perisys_ahb_hclk_pd,
--		0x150, 9, CLK_IGNORE_UNUSED);
-+		0x150, 9, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_PERISYS_APB2_HCLK, perisys_apb2_hclk, "perisys-apb2-hclk", perisys_ahb_hclk_pd,
--		0x150, 10, CLK_IGNORE_UNUSED);
-+		0x150, 10, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_PERISYS_APB3_HCLK, perisys_apb3_hclk, "perisys-apb3-hclk", perisys_ahb_hclk_pd,
--		0x150, 11, CLK_IGNORE_UNUSED);
-+		0x150, 11, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_PERISYS_APB4_HCLK, perisys_apb4_hclk, "perisys-apb4-hclk", perisys_ahb_hclk_pd,
- 		0x150, 12, 0);
- static const struct clk_parent_data perisys_apb4_hclk_pd[] = {
- 	{ .hw = &perisys_apb4_hclk.gate.hw },
- };
- 
--static CCU_GATE(CLK_NPU_AXI, npu_axi_clk, "npu-axi", axi_aclk_pd, 0x1c8, 5, 0);
--static CCU_GATE(CLK_CPU2VP, cpu2vp_clk, "cpu2vp", axi_aclk_pd, 0x1e0, 13, 0);
-+static CCU_GATE(CLK_NPU_AXI, npu_axi_clk, "npu-axi", axi_aclk_pd, 0x1c8, 5, CLK_IS_CRITICAL);
-+static CCU_GATE(CLK_CPU2VP, cpu2vp_clk, "cpu2vp", axi_aclk_pd, 0x1e0, 13, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_EMMC_SDIO, emmc_sdio_clk, "emmc-sdio", emmc_sdio_ref_clk_pd, 0x204, 30, 0);
- static CCU_GATE(CLK_GMAC1, gmac1_clk, "gmac1", gmac_pll_clk_pd, 0x204, 26, 0);
- static CCU_GATE(CLK_PADCTRL1, padctrl1_clk, "padctrl1", perisys_apb_pclk_pd, 0x204, 24, 0);
-@@ -855,11 +855,11 @@ static CCU_GATE(CLK_SRAM2, sram2_clk, "sram2", axi_aclk_pd, 0x20c, 2, 0);
- static CCU_GATE(CLK_SRAM3, sram3_clk, "sram3", axi_aclk_pd, 0x20c, 1, 0);
- 
- static CCU_GATE(CLK_AXI4_VO_ACLK, axi4_vo_aclk, "axi4-vo-aclk",
--		video_pll_clk_pd, 0x0, 0, 0);
-+		video_pll_clk_pd, 0x0, 0, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_GPU_CORE, gpu_core_clk, "gpu-core-clk", video_pll_clk_pd,
- 		0x0, 3, 0);
- static CCU_GATE(CLK_GPU_CFG_ACLK, gpu_cfg_aclk, "gpu-cfg-aclk",
--		video_pll_clk_pd, 0x0, 4, 0);
-+		video_pll_clk_pd, 0x0, 4, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_DPU_PIXELCLK0, dpu0_pixelclk, "dpu0-pixelclk",
- 		dpu0_clk_pd, 0x0, 5, 0);
- static CCU_GATE(CLK_DPU_PIXELCLK1, dpu1_pixelclk, "dpu1-pixelclk",
-@@ -891,9 +891,9 @@ static CCU_GATE(CLK_MIPI_DSI1_REFCLK, mipi_dsi1_refclk, "mipi-dsi1-refclk",
- static CCU_GATE(CLK_HDMI_I2S, hdmi_i2s_clk, "hdmi-i2s-clk", video_pll_clk_pd,
- 		0x0, 19, 0);
- static CCU_GATE(CLK_X2H_DPU1_ACLK, x2h_dpu1_aclk, "x2h-dpu1-aclk",
--		video_pll_clk_pd, 0x0, 20, 0);
-+		video_pll_clk_pd, 0x0, 20, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_X2H_DPU_ACLK, x2h_dpu_aclk, "x2h-dpu-aclk",
--		video_pll_clk_pd, 0x0, 21, 0);
-+		video_pll_clk_pd, 0x0, 21, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_AXI4_VO_PCLK, axi4_vo_pclk, "axi4-vo-pclk",
- 		video_pll_clk_pd, 0x0, 22, 0);
- static CCU_GATE(CLK_IOPMP_VOSYS_DPU_PCLK, iopmp_vosys_dpu_pclk,
-@@ -903,11 +903,11 @@ static CCU_GATE(CLK_IOPMP_VOSYS_DPU1_PCLK, iopmp_vosys_dpu1_pclk,
- static CCU_GATE(CLK_IOPMP_VOSYS_GPU_PCLK, iopmp_vosys_gpu_pclk,
- 		"iopmp-vosys-gpu-pclk", video_pll_clk_pd, 0x0, 25, 0);
- static CCU_GATE(CLK_IOPMP_DPU1_ACLK, iopmp_dpu1_aclk, "iopmp-dpu1-aclk",
--		video_pll_clk_pd, 0x0, 27, 0);
-+		video_pll_clk_pd, 0x0, 27, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_IOPMP_DPU_ACLK, iopmp_dpu_aclk, "iopmp-dpu-aclk",
--		video_pll_clk_pd, 0x0, 28, 0);
-+		video_pll_clk_pd, 0x0, 28, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_IOPMP_GPU_ACLK, iopmp_gpu_aclk, "iopmp-gpu-aclk",
--		video_pll_clk_pd, 0x0, 29, 0);
-+		video_pll_clk_pd, 0x0, 29, CLK_IS_CRITICAL);
- static CCU_GATE(CLK_MIPIDSI0_PIXCLK, mipi_dsi0_pixclk, "mipi-dsi0-pixclk",
- 		video_pll_clk_pd, 0x0, 30, 0);
- static CCU_GATE(CLK_MIPIDSI1_PIXCLK, mipi_dsi1_pixclk, "mipi-dsi1-pixclk",
++	if (pci_dev_is_disconnected(dev)) {
++		dev->current_state = PCI_D3cold;
++		return -EIO;
++	}
++
+ 	pci_read_config_word(dev, dev->pm_cap + PCI_PM_CTRL, &pmcsr);
+ 	if (PCI_POSSIBLE_ERROR(pmcsr)) {
+ 		pci_err(dev, "Unable to change power state from %s to D0, device inaccessible\n",
 -- 
 2.51.0
 
