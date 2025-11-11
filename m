@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-193368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE826C4A3F1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:09:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE40DC4AC13
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EBB4D4F59B2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D752E3AF81A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0582224E4C6;
-	Tue, 11 Nov 2025 01:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144B325D209;
+	Tue, 11 Nov 2025 01:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cq+nB/us"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EA76v6m8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71097262A;
-	Tue, 11 Nov 2025 01:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FEB2D6605;
+	Tue, 11 Nov 2025 01:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823016; cv=none; b=u5I1IP6BaPn2YpRV9FvbrAa4g+abFWbMIDatmvMiS81desyEcpkbIQ5muaIyjMu4L4Eo4Y3s/RtbSeTQgu10xgGaPfC5SZGgk9asNgBuco1wnBRKzUKFaf1c/iv80RUnFcOU+GlYjyAdr8IHsBc3p/Q/Xp1iiw13kX/cZum+hXM=
+	t=1762824127; cv=none; b=sMs4qVTPT3m6Ddz2dQlm6imQKMsyktP0eCzSR/ekUWTUBo1XpajHlNT9uB3SjoYLL7uw/LnqrLPyOemgcnItyohEAq1hLohZn6vobPCghcd+dDNyfs9KDt5LaGZgeKH1L0es3VV6fBYHQA/dYUS3AHEbC/UpsXzKx2eiBJGtiAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823016; c=relaxed/simple;
-	bh=Y4aDlYj+WIvTolN1xbeSTbnASPpx6Xh/MO7vdqbVXnk=;
+	s=arc-20240116; t=1762824127; c=relaxed/simple;
+	bh=gtX1Xevitw+p65UOfD3cTzDq7y+IpcckZQoXdo4kdLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AFB47qxnmuT7NMD+5qhC7X1RDeIcswqSkI5Jv1Qvv8HLBhrJT4TsnzlENjl7MwH3PNvs3wT1zQwhOjWt4gIfpBXbRcig76MSD9eD6VLt7PLr3BvXgO7w0ErGJ+cm/U2AxXJhFNOZQV2W4j+Q+OVh9l9C3WWGFhVZVoHtXaKsz+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cq+nB/us; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599B0C4CEF5;
-	Tue, 11 Nov 2025 01:03:36 +0000 (UTC)
+	 MIME-Version; b=p2dgTJvPPVQ5lNUNb6df/Bk5qtNbB38NGCDo7kMfuu++YrwVoZCOeMW3jORIfCMw+t8DFJtwClWYoSTCdhjlf+EPPKukKlK/CO+ZVHV4BJbqPxkfLbseg4w5si1BfQly+ApqfWI7HmbLEDrjZ8MCAd/vdh7nCOmexyL7gU1S7xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EA76v6m8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0C2C4AF09;
+	Tue, 11 Nov 2025 01:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823016;
-	bh=Y4aDlYj+WIvTolN1xbeSTbnASPpx6Xh/MO7vdqbVXnk=;
+	s=korg; t=1762824127;
+	bh=gtX1Xevitw+p65UOfD3cTzDq7y+IpcckZQoXdo4kdLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cq+nB/uspDKuVoRhWzrUVQ22hvlk5PeeY0kL3dAr/SFHOk7K4Z4nssA/jbQKKdalW
-	 fyFkVyW+XJDZz81SEb0/qOUrz9BSHL8WEPhWgaeFcG7jvgJVaBHznMG6g2ihn2zxGg
-	 EMMkmKScxmVkQPQu+vQZE+pVZf0rJFpQKIHjIVfg=
+	b=EA76v6m8c91Isb1/SAhGY3k1Um22nIeXkxMolcBuZ2yfuKpQ/UBrpOGxvXxkxs5V3
+	 xzNLUNGSf0NyjwmRIPQ9OZjbjN02itlE4zeFFRD7ap1j0Xm3T4ixxpx2zRDgActKei
+	 x27qka8q4UNE8ha9WhEBlL2H9UKEdvItch5rVN3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghao Duan <duanchenghao@kylinos.cn>,
-	Pu Lehui <pulehui@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Julia Filipchuk <julia.filipchuk@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 155/565] riscv: bpf: Fix uninitialized symbol retval_off
-Date: Tue, 11 Nov 2025 09:40:11 +0900
-Message-ID: <20251111004530.426935924@linuxfoundation.org>
+Subject: [PATCH 6.17 442/849] drm/xe/guc: Set upper limit of H2G retries over CTB
+Date: Tue, 11 Nov 2025 09:40:12 +0900
+Message-ID: <20251111004547.119381958@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghao Duan <duanchenghao@kylinos.cn>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit d0bf7cd5df18466d969bb60e8890b74cf96081ca ]
+[ Upstream commit 2506af5f8109a387a5e8e9e3d7c498480b8033db ]
 
-In the __arch_prepare_bpf_trampoline() function, retval_off is only
-meaningful when save_ret is true, so the current logic is correct.
-However, in the original logic, retval_off is only initialized under
-certain conditions; for example, in the fmod_ret logic, the compiler is
-not aware that the flags of the fmod_ret program (prog) have set
-BPF_TRAMP_F_CALL_ORIG, which results in an uninitialized symbol
-compilation warning.
+The GuC communication protocol allows GuC to send NO_RESPONSE_RETRY
+reply message to indicate that due to some interim condition it can
+not handle incoming H2G request and the host shall resend it.
 
-So initialize retval_off unconditionally to fix it.
+But in some cases, due to errors, this unsatisfied condition might
+be final and this could lead to endless retries as it was recently
+seen on the CI:
 
-Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
-Reviewed-by: Pu Lehui <pulehui@huawei.com>
-Link: https://lore.kernel.org/r/20250922062244.822937-2-duanchenghao@kylinos.cn
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+ [drm] GT0: PF: VF1 FLR didn't finish in 5000 ms (-ETIMEDOUT)
+ [drm] GT0: PF: VF1 resource sanitizing failed (-ETIMEDOUT)
+ [drm] GT0: PF: VF1 FLR failed!
+ [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
+ [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
+ [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
+ [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
+
+To avoid such dangerous loops allow only limited number of retries
+(for now 50) and add some delays (n * 5ms) to slow down the rate of
+resending this repeated request.
+
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Reviewed-by: Julia Filipchuk <julia.filipchuk@intel.com>
+Link: https://lore.kernel.org/r/20250903223330.6408-1-michal.wajdeczko@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/net/bpf_jit_comp64.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_ct.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
-index 497945aa3e2c4..5895c1b2be203 100644
---- a/arch/riscv/net/bpf_jit_comp64.c
-+++ b/arch/riscv/net/bpf_jit_comp64.c
-@@ -906,10 +906,9 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
- 	stack_size += 16;
+diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
+index 6d70dd1c106d4..ff622628d823f 100644
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -1079,11 +1079,15 @@ static bool retry_failure(struct xe_guc_ct *ct, int ret)
+ 	return true;
+ }
  
- 	save_ret = flags & (BPF_TRAMP_F_CALL_ORIG | BPF_TRAMP_F_RET_FENTRY_RET);
--	if (save_ret) {
-+	if (save_ret)
- 		stack_size += 16; /* Save both A5 (BPF R0) and A0 */
--		retval_off = stack_size;
--	}
-+	retval_off = stack_size;
++#define GUC_SEND_RETRY_LIMIT	50
++#define GUC_SEND_RETRY_MSLEEP	5
++
+ static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
+ 			    u32 *response_buffer, bool no_fail)
+ {
+ 	struct xe_gt *gt = ct_to_gt(ct);
+ 	struct g2h_fence g2h_fence;
++	unsigned int retries = 0;
+ 	int ret = 0;
  
- 	stack_size += nr_arg_slots * 8;
- 	args_off = stack_size;
+ 	/*
+@@ -1148,6 +1152,12 @@ static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
+ 		xe_gt_dbg(gt, "H2G action %#x retrying: reason %#x\n",
+ 			  action[0], g2h_fence.reason);
+ 		mutex_unlock(&ct->lock);
++		if (++retries > GUC_SEND_RETRY_LIMIT) {
++			xe_gt_err(gt, "H2G action %#x reached retry limit=%u, aborting\n",
++				  action[0], GUC_SEND_RETRY_LIMIT);
++			return -ELOOP;
++		}
++		msleep(GUC_SEND_RETRY_MSLEEP * retries);
+ 		goto retry;
+ 	}
+ 	if (g2h_fence.fail) {
 -- 
 2.51.0
 
