@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-194076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562F8C4ACDF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A83C4ADE7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A51F188FDE1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2BD914F6D83
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669342E0412;
-	Tue, 11 Nov 2025 01:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCA4246333;
+	Tue, 11 Nov 2025 01:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvKf2zLB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQMvpOy3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223FB2EB5CE;
-	Tue, 11 Nov 2025 01:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253A82F12DA;
+	Tue, 11 Nov 2025 01:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824750; cv=none; b=lJrs2YDU7U9rAwU+1Ks6/IBEnM6VEGHjaNhBGGtUJ07HeOXjVLVOu5KbM1LOSUUATEwHuSZnlepSbwxw72gJSOZIe2yR6MxLivbOO90p3IhRxc//6ZmpPfkPD/SbkPrp2qoeSVABGZP53cVFCtFy/aNbRe7YQNhG3kIi9BrN2is=
+	t=1762824755; cv=none; b=Q6XwuA4lqxmykMqY7ZSx/bfHg8Q3epg+hR62aHaPEcr4f00UWRDZXI68CilhqZ30hBTmVe1tnfvgCtmFYajB+HT+pqrl+XtUcNl/K6y84OjpQL+lS4XxF3EFawgx2flne1K9eC4X/WShmKhZ/O1TONrXS0ayOoEs07r+DkGyqpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824750; c=relaxed/simple;
-	bh=KPpyqMNEzL1cvFeDjO9HYzSq2sEWec+qomyTp22Xzgk=;
+	s=arc-20240116; t=1762824755; c=relaxed/simple;
+	bh=7hjTIX9BUERV8CQpAdxDPp0H+tNe5B9VqS2+FxOsREM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LeV7ERV6y5HCyHWoOSipNEna4V/66GZbkFrOtMlRLVBuZKnvbM2LvRiUI7R4y5cY6JQxzjMdn9ngyRdiF4WFeRrpoik5gmfCungiZpwnHhFon/Q7PVVGj3SAAaT89PTwrcDbVaAS1WNM+BO9cx1vni/NwnrZBfLf634xK6cvnu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvKf2zLB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8DEFC4CEFB;
-	Tue, 11 Nov 2025 01:32:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QURKr6NPE8DTesoEdjHKRX4xwzwRVx5BZMfTzpyjD0RWmDBDUFzqbm3PAGwj4IqqVzPTx3MdF4RgbSz5YBDzcjxKghC/xYTYmU3EKhRiacwh8v95fYdkrkJC3uWfZ2l7Wz/crpVV3j9MzLrMetQa9+9cbz/UqybvUdWpIoEbUxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQMvpOy3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66697C4CEFB;
+	Tue, 11 Nov 2025 01:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824750;
-	bh=KPpyqMNEzL1cvFeDjO9HYzSq2sEWec+qomyTp22Xzgk=;
+	s=korg; t=1762824754;
+	bh=7hjTIX9BUERV8CQpAdxDPp0H+tNe5B9VqS2+FxOsREM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BvKf2zLBJEmPVR/jt2FVfTWlSlHgd5i6Dw5yozJY14jGYlm7V3hmRNnqrgR3BwcFO
-	 FdoywDlKeQbO7X0aFIYH5qXaCjnBwVX9Log6meVeOWrUWdfS5d9CcNsb9MTfM/L60C
-	 obnWIkBWM7+q7HFBZPnWrcXpOrKXyOYCYNnBidP8=
+	b=LQMvpOy35zdcG9aTG1qvErpvpGYRbJrHn/Imqf1nP+lX7RUkgANjuci2eIl0PvdeO
+	 ifwcF9X5it1xVfzpT096xNx4rzcJKxK31+C8o6InYG7DZBRwracbXsWjgbFVl5/4vp
+	 ozj1c5Cgsrs/6PBsnE9QfdGhOo+TiOCPJfajf7Ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 510/565] Bluetooth: btrtl: Fix memory leak in rtlbt_parse_firmware_v2()
-Date: Tue, 11 Nov 2025 09:46:06 +0900
-Message-ID: <20251111004538.427390604@linuxfoundation.org>
+Subject: [PATCH 6.12 511/565] net: dsa: tag_brcm: legacy: reorganize functions
+Date: Tue, 11 Nov 2025 09:46:07 +0900
+Message-ID: <20251111004538.450161115@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -60,43 +61,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit 1c21cf89a66413eb04b2d22c955b7a50edc14dfa ]
+[ Upstream commit a4daaf063f8269a5881154c5b77c5ef6639d65d3 ]
 
-The memory allocated for ptr using kvmalloc() is not freed on the last
-error path. Fix that by freeing it on that error path.
+Move brcm_leg_tag_rcv() definition to top.
+This function is going to be shared between two different tags.
 
-Fixes: 9a24ce5e29b1 ("Bluetooth: btrtl: Firmware format v2 support")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-2-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 3d18a84eddde ("net: dsa: tag_brcm: legacy: fix untagged rx on unbridged ports for bcm63xx")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btrtl.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/dsa/tag_brcm.c | 64 +++++++++++++++++++++++-----------------------
+ 1 file changed, 32 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
-index 59eb948664223..c4431c5976b40 100644
---- a/drivers/bluetooth/btrtl.c
-+++ b/drivers/bluetooth/btrtl.c
-@@ -625,8 +625,10 @@ static int rtlbt_parse_firmware_v2(struct hci_dev *hdev,
- 		len += entry->len;
- 	}
+diff --git a/net/dsa/tag_brcm.c b/net/dsa/tag_brcm.c
+index fe75821623a4f..9f4b0bcd95cde 100644
+--- a/net/dsa/tag_brcm.c
++++ b/net/dsa/tag_brcm.c
+@@ -213,6 +213,38 @@ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_BRCM, BRCM_NAME);
+ #endif
  
--	if (!len)
-+	if (!len) {
-+		kvfree(ptr);
- 		return -EPERM;
-+	}
+ #if IS_ENABLED(CONFIG_NET_DSA_TAG_BRCM_LEGACY)
++static struct sk_buff *brcm_leg_tag_rcv(struct sk_buff *skb,
++					struct net_device *dev)
++{
++	int len = BRCM_LEG_TAG_LEN;
++	int source_port;
++	u8 *brcm_tag;
++
++	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_TAG_LEN + VLAN_HLEN)))
++		return NULL;
++
++	brcm_tag = dsa_etype_header_pos_rx(skb);
++
++	source_port = brcm_tag[5] & BRCM_LEG_PORT_ID;
++
++	skb->dev = dsa_conduit_find_user(dev, 0, source_port);
++	if (!skb->dev)
++		return NULL;
++
++	/* VLAN tag is added by BCM63xx internal switch */
++	if (netdev_uses_dsa(skb->dev))
++		len += VLAN_HLEN;
++
++	/* Remove Broadcom tag and update checksum */
++	skb_pull_rcsum(skb, len);
++
++	dsa_default_offload_fwd_mark(skb);
++
++	dsa_strip_etype_header(skb, len);
++
++	return skb;
++}
++
+ static struct sk_buff *brcm_leg_tag_xmit(struct sk_buff *skb,
+ 					 struct net_device *dev)
+ {
+@@ -250,38 +282,6 @@ static struct sk_buff *brcm_leg_tag_xmit(struct sk_buff *skb,
+ 	return skb;
+ }
  
- 	*_buf = ptr;
- 	return len;
+-static struct sk_buff *brcm_leg_tag_rcv(struct sk_buff *skb,
+-					struct net_device *dev)
+-{
+-	int len = BRCM_LEG_TAG_LEN;
+-	int source_port;
+-	u8 *brcm_tag;
+-
+-	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_TAG_LEN + VLAN_HLEN)))
+-		return NULL;
+-
+-	brcm_tag = dsa_etype_header_pos_rx(skb);
+-
+-	source_port = brcm_tag[5] & BRCM_LEG_PORT_ID;
+-
+-	skb->dev = dsa_conduit_find_user(dev, 0, source_port);
+-	if (!skb->dev)
+-		return NULL;
+-
+-	/* VLAN tag is added by BCM63xx internal switch */
+-	if (netdev_uses_dsa(skb->dev))
+-		len += VLAN_HLEN;
+-
+-	/* Remove Broadcom tag and update checksum */
+-	skb_pull_rcsum(skb, len);
+-
+-	dsa_default_offload_fwd_mark(skb);
+-
+-	dsa_strip_etype_header(skb, len);
+-
+-	return skb;
+-}
+-
+ static const struct dsa_device_ops brcm_legacy_netdev_ops = {
+ 	.name = BRCM_LEGACY_NAME,
+ 	.proto = DSA_TAG_PROTO_BRCM_LEGACY,
 -- 
 2.51.0
 
