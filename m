@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-193083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315FAC49FE6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F404C49FE9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 009984F0524
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 78D7C4F199A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDA6192B75;
-	Tue, 11 Nov 2025 00:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EE924EA90;
+	Tue, 11 Nov 2025 00:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdlhoNSu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMjZFhqk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F4B4C97;
-	Tue, 11 Nov 2025 00:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB9D1FDA92;
+	Tue, 11 Nov 2025 00:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822260; cv=none; b=tU/No3N5BnqbuZAo5Lz+UCW3ZTX4jqwufF2Y+v8eomjm97pO1I6ASyomaQSpZEdI3uvrU3GBRi37cGk8NyL1pXplXe8G22l6h2bJlSCHE6b9y6upFpJQlj0buDNZ6iC2FNg3EjyTh3sp0hO/MYLNo/mzljnemzuhnPS3R4w/uNY=
+	t=1762822264; cv=none; b=R1dAXSC5lBU+W4yLgnKaE42bCAHsgkbaiQkEsoxe7Ns1g3eMFrqKksjD7iHzhY4P8nCjVtXKtP6dhfwgt0ZUmte2MuDbvkCRWSnsO+aPJPRDITtFEYWZZ22AWJdhzaKPBbEes1VAVB6rBYXnAY+IqooCV2HmJKxVqNDpDstt2wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822260; c=relaxed/simple;
-	bh=4WApMxtJqfX65bjHdX1BiiDPKme86yY3p1CDzq0s6+g=;
+	s=arc-20240116; t=1762822264; c=relaxed/simple;
+	bh=qDo08HJc97ZOlbphHhMX2clzexLOE5GzeDYVU1daZkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Br3k+fX1FFFfH2CAUNmFiwHe5BsETa+fp79e3m+NxANLTTXXet7Hb/rWeaGaP2v+IvdXtonqOKaL8tCDyEFS09CBHiT4BqUUyex1EkUM+zweHTpo2A9Ky3l8MZRYQg/5OMB0rlmclV9rXACXbzhtVnlwjc7scQlF8I/VGP1BPqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdlhoNSu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFC2C113D0;
-	Tue, 11 Nov 2025 00:50:59 +0000 (UTC)
+	 MIME-Version; b=Kf+fLMoVU49xPYMGlJ2C2gjwX3dScBM8DOPMM1w/Uf1A3jWPO/MCVHnHOUP4Nza1CbcwLok5hHBKcVUZ1sCYTzAURsjyKgYBsKiFfSXjAC+3m0UHN+7vPpwSXtO7nXlvKivS9E2clIW3/gLIfDU60OPptYjp6EZKCdctCSEQYWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMjZFhqk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37374C16AAE;
+	Tue, 11 Nov 2025 00:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822259;
-	bh=4WApMxtJqfX65bjHdX1BiiDPKme86yY3p1CDzq0s6+g=;
+	s=korg; t=1762822264;
+	bh=qDo08HJc97ZOlbphHhMX2clzexLOE5GzeDYVU1daZkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MdlhoNSuCQNkzX08QBdo0mTft/u319k3FMSkXcjyTQgh2WkAA5ejktl/N6L1Y14+m
-	 +hGkhwEnKCT1M26IahLlC3vLGToHmwKYaYlOW3LPISUqBJJdQmiIm8EJ/+FihyBZKF
-	 TGCosCWU4u0HMUdcISI1t0l5DYby885dH6kLZSBM=
+	b=uMjZFhqkEELUdFpJsUjO06o6alGL6VTlfI6p7jR6ui/HVK/9TlMijNtWRjrTBueP3
+	 T3qFh81x0ar2tiEGxeCxs/iElcxdTIR9qm2Nzu7wU/FRIvU1HBp4Gox8mPxDqyHZ5d
+	 /OJyaux2sTHXafVDh02nkrxwWHxrqu5jnTSD3WIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
 	Geliang Tang <geliang@kernel.org>,
 	Mat Martineau <martineau@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 013/565] mptcp: drop bogus optimization in __mptcp_check_push()
-Date: Tue, 11 Nov 2025 09:37:49 +0900
-Message-ID: <20251111004527.159238392@linuxfoundation.org>
+Subject: [PATCH 6.12 014/565] mptcp: restore window probe
+Date: Tue, 11 Nov 2025 09:37:50 +0900
+Message-ID: <20251111004527.184527451@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -70,94 +70,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-commit 27b0e701d3872ba59c5b579a9e8a02ea49ad3d3b upstream.
+commit a824084b98d8a1dbd6e85d0842a8eb5e73467f59 upstream.
 
-Accessing the transmit queue without owning the msk socket lock is
-inherently racy, hence __mptcp_check_push() could actually quit early
-even when there is pending data.
+Since commit 72377ab2d671 ("mptcp: more conservative check for zero
+probes") the MPTCP-level zero window probe check is always disabled, as
+the TCP-level write queue always contains at least the newly allocated
+skb.
 
-That in turn could cause unexpected tx lock and timeout.
+Refine the relevant check tacking in account that the above condition
+and that such skb can have zero length.
 
-Dropping the early check avoids the race, implicitly relaying on later
-tests under the relevant lock. With such change, all the other
-mptcp_send_head() call sites are now under the msk socket lock and we
-can additionally drop the now unneeded annotation on the transmit head
-pointer accesses.
-
-Fixes: 6e628cd3a8f7 ("mptcp: use mptcp release_cb for delayed tasks")
+Fixes: 72377ab2d671 ("mptcp: more conservative check for zero probes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Tested-by: Geliang Tang <geliang@kernel.org>
+Reported-by: Geliang Tang <geliang@kernel.org>
+Closes: https://lore.kernel.org/d0a814c364e744ca6b836ccd5b6e9146882e8d42.camel@kernel.org
 Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251028-net-mptcp-send-timeout-v1-1-38ffff5a9ec8@kernel.org
+Link: https://patch.msgid.link/20251028-net-mptcp-send-timeout-v1-3-38ffff5a9ec8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   11 ++++-------
- net/mptcp/protocol.h |    2 +-
- 2 files changed, 5 insertions(+), 8 deletions(-)
+ net/mptcp/protocol.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -1047,7 +1047,7 @@ static void __mptcp_clean_una(struct soc
- 			if (WARN_ON_ONCE(!msk->recovery))
- 				break;
+@@ -1340,7 +1340,12 @@ alloc_skb:
+ 	if (copy == 0) {
+ 		u64 snd_una = READ_ONCE(msk->snd_una);
  
--			WRITE_ONCE(msk->first_pending, mptcp_send_next(sk));
-+			msk->first_pending = mptcp_send_next(sk);
+-		if (snd_una != msk->snd_nxt || tcp_write_queue_tail(ssk)) {
++		/* No need for zero probe if there are any data pending
++		 * either at the msk or ssk level; skb is the current write
++		 * queue tail and can be empty at this point.
++		 */
++		if (snd_una != msk->snd_nxt || skb->len ||
++		    skb != tcp_send_head(ssk)) {
+ 			tcp_remove_empty_skb(ssk);
+ 			return 0;
  		}
- 
- 		dfrag_clear(sk, dfrag);
-@@ -1593,7 +1593,7 @@ static int __subflow_push_pending(struct
- 
- 			mptcp_update_post_push(msk, dfrag, ret);
- 		}
--		WRITE_ONCE(msk->first_pending, mptcp_send_next(sk));
-+		msk->first_pending = mptcp_send_next(sk);
- 
- 		if (msk->snd_burst <= 0 ||
- 		    !sk_stream_memory_free(ssk) ||
-@@ -1937,7 +1937,7 @@ static int mptcp_sendmsg(struct sock *sk
- 			get_page(dfrag->page);
- 			list_add_tail(&dfrag->list, &msk->rtx_queue);
- 			if (!msk->first_pending)
--				WRITE_ONCE(msk->first_pending, dfrag);
-+				msk->first_pending = dfrag;
- 		}
- 		pr_debug("msk=%p dfrag at seq=%llu len=%u sent=%u new=%d\n", msk,
- 			 dfrag->data_seq, dfrag->data_len, dfrag->already_sent,
-@@ -2940,7 +2940,7 @@ static void __mptcp_clear_xmit(struct so
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	struct mptcp_data_frag *dtmp, *dfrag;
- 
--	WRITE_ONCE(msk->first_pending, NULL);
-+	msk->first_pending = NULL;
- 	list_for_each_entry_safe(dfrag, dtmp, &msk->rtx_queue, list)
- 		dfrag_clear(sk, dfrag);
- }
-@@ -3494,9 +3494,6 @@ void __mptcp_data_acked(struct sock *sk)
- 
- void __mptcp_check_push(struct sock *sk, struct sock *ssk)
- {
--	if (!mptcp_send_head(sk))
--		return;
--
- 	if (!sock_owned_by_user(sk))
- 		__mptcp_subflow_push_pending(sk, ssk, false);
- 	else
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -414,7 +414,7 @@ static inline struct mptcp_data_frag *mp
- {
- 	const struct mptcp_sock *msk = mptcp_sk(sk);
- 
--	return READ_ONCE(msk->first_pending);
-+	return msk->first_pending;
- }
- 
- static inline struct mptcp_data_frag *mptcp_send_next(struct sock *sk)
 
 
 
