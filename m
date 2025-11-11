@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-193178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B0F2C4A046
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56771C4A04C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 126C4188CF2F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14E8E3AC3E0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75BB244693;
-	Tue, 11 Nov 2025 00:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88311DF258;
+	Tue, 11 Nov 2025 00:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8AFX/Bs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AB9f3Vpn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38014C97;
-	Tue, 11 Nov 2025 00:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778FA4C97;
+	Tue, 11 Nov 2025 00:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822481; cv=none; b=MYEquFxUt+F6YRSIvJB6uqZPF+CTXRtAbuHDvjOpoaPmuMLCHr/nigbw50BsR2IwuS2Plc8fKGb2HS9XS/WtfUzU8/4uglmHdoTsJOSPmdNTVK5Fq2ZEAcS61ahjlZbiJ0CmVzWR6BMPZrv675zbA5Pr30CO8VbaHrr9mr/Ho4Q=
+	t=1762822486; cv=none; b=megIVv96SMCBtuN829hLLkkdz6crZ1Kw7pjydv/kcBndoZPA0IDa/R+2L/FDhoEflKwxmRTl4d4PNpqJrzrdSJWqxqxIh1fCO71I07CBvoP3Jr5tHZhHGT1n3bjUfp1kQOIIPfC0QhwrF634GpuTUtS/J65KhO9M4YMlw1fYH6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822481; c=relaxed/simple;
-	bh=MKpuEWu5/CpJ258NqHWl/tfmz8jUOYPUxODUVK8fCEw=;
+	s=arc-20240116; t=1762822486; c=relaxed/simple;
+	bh=qBk3KkO/+3tvQI8+O/BHrIR9rycjLqbj7LwhkDHP8ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AoAGPzyOxIHHo04d223ednTD0X/lEWrtyXjAZm6gvybyjSgtL/mgsA7iQCCgTHKgGki+IoCbuEB6fcihpJ078QDjREjoEUcPYU+oaY+CTBknC9xV0JFkdFpkZCbbDglxUPQWXbLmkIFXT3lnyJOH4BGLIH/XxWCzsVV09HpJJrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8AFX/Bs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D67C116B1;
-	Tue, 11 Nov 2025 00:54:41 +0000 (UTC)
+	 MIME-Version; b=K2q0Sw8xCgXIPk1iX3H+621l99dfOtinSCiZ42rFpM3e+LfADVza00tANHqNckMJocLVgogykcrgQiBZev6IcGmETQLslb+FwR+hLggNaXikQktKt1rT/trz+p5CUi1EFtpzDXqpSahzmeFqd2KcCPJ3MbrwD2ZiWmIqQM2NPrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AB9f3Vpn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DACD8C116B1;
+	Tue, 11 Nov 2025 00:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822481;
-	bh=MKpuEWu5/CpJ258NqHWl/tfmz8jUOYPUxODUVK8fCEw=;
+	s=korg; t=1762822486;
+	bh=qBk3KkO/+3tvQI8+O/BHrIR9rycjLqbj7LwhkDHP8ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8AFX/BszbY+80xBm37leC6Q/rTxl8eAOGkQwM13/I/hl2FiQFehp4lYcwWhG8CKQ
-	 BxRxiRFybLQNrQjWhseZfjnwusxXM4fqY5HJvKQH4baP0yPDaXU4rbjKuMJJjJLgNc
-	 tCF2WJ0Vmv/9l4+TgzMrGtaJE7i7iQXHDxRJ3fI0=
+	b=AB9f3VpnIAGUnfnW36COv+2eOQhmEtosjiqB2lWTd1+AsRCvjiKrmuPdBSrUWM0w7
+	 ePgoPPotnpzBKqhvWi4m87tePDtEBQNUT9zs7Co1qUn0BoiMOOLExi4z6XEhm77Rji
+	 m5TMxi75xcmbpkhof/K6m0hCvPH/MgPMugPk/fzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Heijligen <thomas.heijligen@secunet.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
-	Michael Brunner <Michael.Brunner@jumptec.com>
-Subject: [PATCH 6.17 116/849] mfd: kempld: Switch back to earlier ->init() behavior
-Date: Tue, 11 Nov 2025 09:34:46 +0900
-Message-ID: <20251111004539.203484328@linuxfoundation.org>
+	Owen Gu <guhuinan@xiaomi.com>
+Subject: [PATCH 6.17 117/849] usb: gadget: f_fs: Fix epfile null pointer access after ep enable.
+Date: Tue, 11 Nov 2025 09:34:47 +0900
+Message-ID: <20251111004539.226746676@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,72 +64,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heijligen, Thomas <thomas.heijligen@secunet.com>
+From: Owen Gu <guhuinan@xiaomi.com>
 
-commit 309e65d151ab9be1e7b01d822880cd8c4e611dff upstream.
+commit cfd6f1a7b42f62523c96d9703ef32b0dbc495ba4 upstream.
 
-Commit 9e36775c22c7 ("mfd: kempld: Remove custom DMI matching code")
-removes the ability to load the driver if no matching system DMI data
-is found. Before this commit the driver could be loaded using
-alternative methods such as ACPI or `force_device_id` in the absence
-of a matching system DMI entry.
+A race condition occurs when ffs_func_eps_enable() runs concurrently
+with ffs_data_reset(). The ffs_data_clear() called in ffs_data_reset()
+sets ffs->epfiles to NULL before resetting ffs->eps_count to 0, leading
+to a NULL pointer dereference when accessing epfile->ep in
+ffs_func_eps_enable() after successful usb_ep_enable().
 
-Restore this ability while keeping the refactored
-`platform_device_info` table.
+The ffs->epfiles pointer is set to NULL in both ffs_data_clear() and
+ffs_data_close() functions, and its modification is protected by the
+spinlock ffs->eps_lock. And the whole ffs_func_eps_enable() function
+is also protected by ffs->eps_lock.
 
-Signed-off-by: Thomas Heijligen <thomas.heijligen@secunet.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/7d2c7e92253d851194a781720051536cca2722b8.camel@secunet.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Cc: Michael Brunner <Michael.Brunner@jumptec.com>
+Thus, add NULL pointer handling for ffs->epfiles in the
+ffs_func_eps_enable() function to fix issues
+
+Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
+Link: https://lore.kernel.org/r/20250915092907.17802-1-guhuinan@xiaomi.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/kempld-core.c |   32 ++++++++++++++++++--------------
- 1 file changed, 18 insertions(+), 14 deletions(-)
+ drivers/usb/gadget/function/f_fs.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/mfd/kempld-core.c
-+++ b/drivers/mfd/kempld-core.c
-@@ -779,22 +779,26 @@ MODULE_DEVICE_TABLE(dmi, kempld_dmi_tabl
- static int __init kempld_init(void)
- {
- 	const struct dmi_system_id *id;
--	int ret = -ENODEV;
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -2407,7 +2407,12 @@ static int ffs_func_eps_enable(struct ff
+ 	ep = func->eps;
+ 	epfile = ffs->epfiles;
+ 	count = ffs->eps_count;
+-	while(count--) {
++	if (!epfile) {
++		ret = -ENOMEM;
++		goto done;
++	}
++
++	while (count--) {
+ 		ep->ep->driver_data = ep;
  
--	for (id = dmi_first_match(kempld_dmi_table); id; id = dmi_first_match(id + 1)) {
--		/* Check, if user asked for the exact device ID match */
--		if (force_device_id[0] && !strstr(id->ident, force_device_id))
--			continue;
--
--		ret = kempld_create_platform_device(&kempld_platform_data_generic);
--		if (ret)
--			continue;
--
--		break;
-+	/*
-+	 * This custom DMI iteration allows the driver to be initialized in three ways:
-+	 * - When a forced_device_id string matches any ident in the kempld_dmi_table,
-+	 *   regardless of whether the DMI device is present in the system dmi table.
-+	 * - When a matching entry is present in the DMI system tabe.
-+	 * - Through alternative mechanisms like ACPI.
-+	 */
-+	if (force_device_id[0]) {
-+		for (id = kempld_dmi_table; id->matches[0].slot != DMI_NONE; id++)
-+			if (strstr(id->ident, force_device_id))
-+				if (!kempld_create_platform_device(&kempld_platform_data_generic))
-+					break;
-+		if (id->matches[0].slot == DMI_NONE)
-+			return -ENODEV;
-+	} else {
-+		for (id = dmi_first_match(kempld_dmi_table); id; id = dmi_first_match(id+1))
-+			if (kempld_create_platform_device(&kempld_platform_data_generic))
-+				break;
+ 		ret = config_ep_by_speed(func->gadget, &func->function, ep->ep);
+@@ -2431,6 +2436,7 @@ static int ffs_func_eps_enable(struct ff
  	}
--	if (ret)
--		return ret;
--
- 	return platform_driver_register(&kempld_driver);
- }
  
+ 	wake_up_interruptible(&ffs->wait);
++done:
+ 	spin_unlock_irqrestore(&func->ffs->eps_lock, flags);
+ 
+ 	return ret;
 
 
 
