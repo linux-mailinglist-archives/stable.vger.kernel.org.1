@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0631C4B247
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:02:44 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6F8C4AB20
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C39D93B5019
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:59 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 68A7434CCB5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166FB2FD67A;
-	Tue, 11 Nov 2025 01:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD9E3446AB;
+	Tue, 11 Nov 2025 01:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6hSGMUq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MtQ9JfFg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F8E2F6186;
-	Tue, 11 Nov 2025 01:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499541D86FF;
+	Tue, 11 Nov 2025 01:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825407; cv=none; b=fUVbR4b/w+JOUacgxakEvWr6/sih7Ci+9E3132J3iNYQqn+1sEi19PmnywLEcnYOxGLC4rDPP7mKVxteHuWtZEsRJt7IrmkqoMBU0vQoVFk4iloXFzrsdSTcKeDxjV3QChxU0C4CnKjRuOMN0INfVssAf0MRym998uGdZF5zlRI=
+	t=1762824707; cv=none; b=Sd+aTK01GA+ngzY8VTg728m1nY+a8LBJRgxj8v2zPZd7vRCLnkLTvA0mylh3V2BXmjO3j//GulaxbrBPvjU6inOrbNP41NHA7tKY+SkEQJrQvNxG9TOOhyaJnjaY1hCQ0ilcQLoAYP0YlfDfX0Zm7X8LjTzEwT+aQ26e2TIDXUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825407; c=relaxed/simple;
-	bh=O2dAIEDJLOjWl+LLwlxLWZXm6n8nBztS2nlgVYu4QQQ=;
+	s=arc-20240116; t=1762824707; c=relaxed/simple;
+	bh=klSHM/jm5EcPVefNCW850AihEpDiIA1VlMH3bz7GNb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+37zAWzTjRBwag2+n6sI7FuIzIOxd4P64JgNBbFjQpGAMqyaFhA3y5vG7nUKZXLhBn0J+vn3V+c7RetZovwVGFptsQPPj7q/ca5MSV8yd+i+Umw8QDK06q73OsWzWqLJhzAHD04Rfbt9783k6l5hn9++hOhe4e2zV4aKZRS5zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6hSGMUq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CA7C116B1;
-	Tue, 11 Nov 2025 01:43:27 +0000 (UTC)
+	 MIME-Version; b=KVmiczAANyd9bwID0wfeW54WmyaFMViaa+/+Dfx/Nu2nPm0tiRG7Es1Xor0CY1wWlWq+nv7FFHqEI5YpwkmkarjIFntjUdfBlW9o5F/rkoB+s4EyqtZ7hRaS/jo4ruCZizdybMhfug7nhSGDc3KZtZfgLZGlpdA9T5pVRlCmGE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MtQ9JfFg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8008C19422;
+	Tue, 11 Nov 2025 01:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825407;
-	bh=O2dAIEDJLOjWl+LLwlxLWZXm6n8nBztS2nlgVYu4QQQ=;
+	s=korg; t=1762824707;
+	bh=klSHM/jm5EcPVefNCW850AihEpDiIA1VlMH3bz7GNb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6hSGMUqIuwG4XNcykxo2FFPkLTlEqtIhJ/tswVmT6xec3IIuD7yrqEpXT7RD+euu
-	 PQTryqyXSuhgtHuENGFqBvbGkVzCH5mmbZT//y3nrdMiGvY9Q1NO9H7Eo4eS0mOkux
-	 R8EfuhNrnkr/j2LOpamIbwZPg/lhtldGjdF3IY64=
+	b=MtQ9JfFgUn/R0jltPMHa2Yv9iJ7LFoFhX4wj1+r5JO9fU2gd83VgZUNni8GWzWdmQ
+	 A5SDH16NL/lQNKdV74hnkCrg6AnJFQBZWQofh1gQF9bFjv84+v9pIpD6F9lWs8iTmU
+	 ldMtQ5fFJVaMSmd0Z32/EOtYadF+jbcpHLwm5DzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 788/849] io_uring: fix types for region size calulation
+	Shuangpeng Bai <SJB7183@psu.edu>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 502/565] media: videobuf2: forbid remove_bufs when legacy fileio is active
 Date: Tue, 11 Nov 2025 09:45:58 +0900
-Message-ID: <20251111004555.487358589@linuxfoundation.org>
+Message-ID: <20251111004538.236283810@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 1fd5367391bf0eeb09e624c4ab45121b54eaab96 ]
+commit 27afd6e066cfd80ddbe22a4a11b99174ac89cced upstream.
 
-->nr_pages is int, it needs type extension before calculating the region
-size.
+vb2_ioctl_remove_bufs() call manipulates queue internal buffer list,
+potentially overwriting some pointers used by the legacy fileio access
+mode. Forbid that ioctl when fileio is active to protect internal queue
+state between subsequent read/write calls.
 
-Fixes: a90558b36ccee ("io_uring/memmap: helper for pinning region pages")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-[axboe: style fixup]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: a3293a85381e ("media: v4l2: Add REMOVE_BUFS ioctl")
+Reported-by: Shuangpeng Bai <SJB7183@psu.edu>
+Closes: https://lore.kernel.org/linux-media/5317B590-AAB4-4F17-8EA1-621965886D49@psu.edu/
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/memmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/common/videobuf2/videobuf2-v4l2.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/io_uring/memmap.c b/io_uring/memmap.c
-index 2e99dffddfc5c..add03ca75cb90 100644
---- a/io_uring/memmap.c
-+++ b/io_uring/memmap.c
-@@ -135,7 +135,7 @@ static int io_region_pin_pages(struct io_ring_ctx *ctx,
- 				struct io_mapped_region *mr,
- 				struct io_uring_region_desc *reg)
- {
--	unsigned long size = mr->nr_pages << PAGE_SHIFT;
-+	unsigned long size = (size_t) mr->nr_pages << PAGE_SHIFT;
- 	struct page **pages;
- 	int nr_pages;
+--- a/drivers/media/common/videobuf2/videobuf2-v4l2.c
++++ b/drivers/media/common/videobuf2/videobuf2-v4l2.c
+@@ -1015,6 +1015,11 @@ int vb2_ioctl_remove_bufs(struct file *f
+ 	if (vb2_queue_is_busy(vdev->queue, file))
+ 		return -EBUSY;
  
--- 
-2.51.0
-
++	if (vb2_fileio_is_active(vdev->queue)) {
++		dprintk(vdev->queue, 1, "file io in progress\n");
++		return -EBUSY;
++	}
++
+ 	return vb2_core_remove_bufs(vdev->queue, d->index, d->count);
+ }
+ EXPORT_SYMBOL_GPL(vb2_ioctl_remove_bufs);
 
 
 
