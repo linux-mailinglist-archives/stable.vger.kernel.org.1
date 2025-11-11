@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-193515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0378FC4A524
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 705CEC4A4F7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:17:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A289234A60F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8707C4F3E3C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF2A2727FD;
-	Tue, 11 Nov 2025 01:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F10343D85;
+	Tue, 11 Nov 2025 01:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXnURVWi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vE4T1nr0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724E72701D1;
-	Tue, 11 Nov 2025 01:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A9D343D73;
+	Tue, 11 Nov 2025 01:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823364; cv=none; b=msIwKiCuXaQLKx7SPIkwdMv1Gu1pQewb6E9NIkdKCi831IrnA3a31nWOTF68JUM8BOyzGotCygdZItztaMXQERW4nbsFOoQfBhdZ5VaeCgNJL2hFLYnsY+w8+ruODgDNsDIsGI2sUs4pFcLVFHEWgeVK3jraiGZVmjEUtR0udc8=
+	t=1762823186; cv=none; b=fWAEaRmyO2Qq1tEbz9ixIhCLJqbIAaDnSCJSRXiZNezQYCyGzhibKh2IT046jVdYDYXoZ68nkjmU2R4pquaEVg1+5AerOr5EGPanxBs/58pMvjinXEkLGUTHNe1pgJAFDADXbY3PkYjO02cSrNCmrlqtlpeeKlkdP0R4gvQsuQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823364; c=relaxed/simple;
-	bh=JcvVAHFfnpb2IlJc7jBjSyh7wuMWBEtG2ujTrBcSe2U=;
+	s=arc-20240116; t=1762823186; c=relaxed/simple;
+	bh=MeEokvo1UgbKz9s89h9AIh/Uu00eiPDbKoFApAEQ/mQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u7fDwJF2zkvCTotn3CsTzgGxRyQXppdYrNVRiwSFoHSzHCGnBwBWnTaH25j+ybIkh2Q8MUe1//HWoHLN30PzRLar1ZFV7mrkArvsfQIduoG+KndZ/WM0bkzVwyh5uYkkYONf44JV97e87JRSADJQgHQPQnYErZb7nJk8mR1HzTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXnURVWi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FF2C19421;
-	Tue, 11 Nov 2025 01:09:23 +0000 (UTC)
+	 MIME-Version; b=lUnx6iijuTK03c3L8ppYlH/pAM4hpxN7+Wg24TlkXxsYfBdOhKgj+EmaVbx2fj10HYDaJHPM/Uq7dU8xnTJMOSXVQTUZHsMRuATxzUadQzFhxn/jgA62xqQJI+Mc6CAR6MeorGz7iDWANYz1THwXQbT+nQ3+oyQBaKfx6yeV5os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vE4T1nr0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F06C116B1;
+	Tue, 11 Nov 2025 01:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823364;
-	bh=JcvVAHFfnpb2IlJc7jBjSyh7wuMWBEtG2ujTrBcSe2U=;
+	s=korg; t=1762823186;
+	bh=MeEokvo1UgbKz9s89h9AIh/Uu00eiPDbKoFApAEQ/mQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wXnURVWiRbgNQh2HpeyvKgVElmV7lsAIqAIywg7/85U8Bo66+IrQ0Jrmuu7GmwZX9
-	 I/fZ3VWblKKDjqa4JxRouh9FuT+c0/IxyWtKfyDoPDzNrNzpB943SEJmak6F7zQTM6
-	 BH+tEBaR12RH0dM7CJ/6ZRxOrkTgundo/Oi7bbms=
+	b=vE4T1nr0KHINUrG0BmzdirhrmblAK9sCqInWRTDx6YEqNtcVgtmfu6+zS0A7pBJBT
+	 ZxutKgxegB6e6O8h/+2kxRyAYokbYVQLXnvLO/8X8xAHT1kQjhPqqnJHPD+rsn4l68
+	 t+mtaqxrl20ULb7BL+f3Wxi2Mrp0GkMoi6h5UodM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiang Liu <gerry@linux.alibaba.com>,
-	Meng Li <li.meng@amd.com>,
+	"Stanley.Yang" <Stanley.Yang@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 248/849] drm/amd/amdgpu: Release xcp drm memory after unplug
-Date: Tue, 11 Nov 2025 09:36:58 +0900
-Message-ID: <20251111004542.428545210@linuxfoundation.org>
+Subject: [PATCH 6.17 249/849] drm/amdgpu: Fix vcn v5.0.1 poison irq call trace
+Date: Tue, 11 Nov 2025 09:36:59 +0900
+Message-ID: <20251111004542.452002209@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,145 +67,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Meng Li <li.meng@amd.com>
+From: Stanley.Yang <Stanley.Yang@amd.com>
 
-[ Upstream commit e6c2b0f23221ed43c4cc6f636e9ab7862954d562 ]
+[ Upstream commit b1b29aa88f5367d0367c8eeef643635bc6009a9a ]
 
-Add a new API amdgpu_xcp_drm_dev_free().
-After unplug xcp device, need to release xcp drm memory etc.
+Why:
+    [13014.890792] Call Trace:
+    [13014.890793]  <TASK>
+    [13014.890795]  ? show_trace_log_lvl+0x1d6/0x2ea
+    [13014.890799]  ? show_trace_log_lvl+0x1d6/0x2ea
+    [13014.890800]  ? vcn_v5_0_1_hw_fini+0xe9/0x110 [amdgpu]
+    [13014.890872]  ? show_regs.part.0+0x23/0x29
+    [13014.890873]  ? show_regs.cold+0x8/0xd
+    [13014.890874]  ? amdgpu_irq_put+0xc6/0xe0 [amdgpu]
+    [13014.890934]  ? __warn+0x8c/0x100
+    [13014.890936]  ? amdgpu_irq_put+0xc6/0xe0 [amdgpu]
+    [13014.890995]  ? report_bug+0xa4/0xd0
+    [13014.890999]  ? handle_bug+0x39/0x90
+    [13014.891001]  ? exc_invalid_op+0x19/0x70
+    [13014.891003]  ? asm_exc_invalid_op+0x1b/0x20
+    [13014.891005]  ? amdgpu_irq_put+0xc6/0xe0 [amdgpu]
+    [13014.891065]  ? amdgpu_irq_put+0x63/0xe0 [amdgpu]
+    [13014.891124]  vcn_v5_0_1_hw_fini+0xe9/0x110 [amdgpu]
+    [13014.891189]  amdgpu_ip_block_hw_fini+0x3b/0x78 [amdgpu]
+    [13014.891309]  amdgpu_device_fini_hw+0x3c1/0x479 [amdgpu]
+How:
+    Add omitted vcn poison irq get call.
 
-Co-developed-by: Jiang Liu <gerry@linux.alibaba.com>
-Signed-off-by: Jiang Liu <gerry@linux.alibaba.com>
-Signed-off-by: Meng Li <li.meng@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Stanley.Yang <Stanley.Yang@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c     |  1 +
- drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.c | 56 +++++++++++++++++----
- drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.h |  1 +
- 3 files changed, 49 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c | 10 +++++-----
+ drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c  |  7 +++++++
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
-index c417f86892207..699acc1b46b59 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
-@@ -406,6 +406,7 @@ void amdgpu_xcp_dev_unplug(struct amdgpu_device *adev)
- 		p_ddev->primary->dev = adev->xcp_mgr->xcp[i].pdev;
- 		p_ddev->driver =  adev->xcp_mgr->xcp[i].driver;
- 		p_ddev->vma_offset_manager = adev->xcp_mgr->xcp[i].vma_offset_manager;
-+		amdgpu_xcp_drm_dev_free(p_ddev);
- 	}
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
+index 54523dc1f7026..03ec4b741d194 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
+@@ -1058,6 +1058,11 @@ static int jpeg_v5_0_1_ras_late_init(struct amdgpu_device *adev, struct ras_comm
+ 	if (r)
+ 		return r;
  
-diff --git a/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.c b/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.c
-index 8bc36f04b1b71..44009aa8216ed 100644
---- a/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.c
-+++ b/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.c
-@@ -46,18 +46,29 @@ static const struct drm_driver amdgpu_xcp_driver = {
- 
- static int8_t pdev_num;
- static struct xcp_device *xcp_dev[MAX_XCP_PLATFORM_DEVICE];
-+static DEFINE_MUTEX(xcp_mutex);
- 
- int amdgpu_xcp_drm_dev_alloc(struct drm_device **ddev)
- {
- 	struct platform_device *pdev;
- 	struct xcp_device *pxcp_dev;
- 	char dev_name[20];
--	int ret;
-+	int ret, i;
++	r = amdgpu_ras_bind_aca(adev, AMDGPU_RAS_BLOCK__JPEG,
++				&jpeg_v5_0_1_aca_info, NULL);
++	if (r)
++		goto late_fini;
 +
-+	guard(mutex)(&xcp_mutex);
- 
- 	if (pdev_num >= MAX_XCP_PLATFORM_DEVICE)
- 		return -ENODEV;
- 
--	snprintf(dev_name, sizeof(dev_name), "amdgpu_xcp_%d", pdev_num);
-+	for (i = 0; i < MAX_XCP_PLATFORM_DEVICE; i++) {
-+		if (!xcp_dev[i])
-+			break;
-+	}
-+
-+	if (i >= MAX_XCP_PLATFORM_DEVICE)
-+		return -ENODEV;
-+
-+	snprintf(dev_name, sizeof(dev_name), "amdgpu_xcp_%d", i);
- 	pdev = platform_device_register_simple(dev_name, -1, NULL, 0);
- 	if (IS_ERR(pdev))
- 		return PTR_ERR(pdev);
-@@ -73,8 +84,8 @@ int amdgpu_xcp_drm_dev_alloc(struct drm_device **ddev)
- 		goto out_devres;
+ 	if (amdgpu_ras_is_supported(adev, ras_block->block) &&
+ 		adev->jpeg.inst->ras_poison_irq.funcs) {
+ 		r = amdgpu_irq_get(adev, &adev->jpeg.inst->ras_poison_irq, 0);
+@@ -1065,11 +1070,6 @@ static int jpeg_v5_0_1_ras_late_init(struct amdgpu_device *adev, struct ras_comm
+ 			goto late_fini;
  	}
  
--	xcp_dev[pdev_num] = pxcp_dev;
--	xcp_dev[pdev_num]->pdev = pdev;
-+	xcp_dev[i] = pxcp_dev;
-+	xcp_dev[i]->pdev = pdev;
- 	*ddev = &pxcp_dev->drm;
- 	pdev_num++;
+-	r = amdgpu_ras_bind_aca(adev, AMDGPU_RAS_BLOCK__JPEG,
+-				&jpeg_v5_0_1_aca_info, NULL);
+-	if (r)
+-		goto late_fini;
+-
+ 	return 0;
  
-@@ -89,16 +100,43 @@ int amdgpu_xcp_drm_dev_alloc(struct drm_device **ddev)
- }
- EXPORT_SYMBOL(amdgpu_xcp_drm_dev_alloc);
+ late_fini:
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
+index d8bbb93767318..cb560d64da08c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
+@@ -1608,6 +1608,13 @@ static int vcn_v5_0_1_ras_late_init(struct amdgpu_device *adev, struct ras_commo
+ 	if (r)
+ 		goto late_fini;
  
--void amdgpu_xcp_drv_release(void)
-+static void free_xcp_dev(int8_t index)
- {
--	for (--pdev_num; pdev_num >= 0; --pdev_num) {
--		struct platform_device *pdev = xcp_dev[pdev_num]->pdev;
-+	if ((index < MAX_XCP_PLATFORM_DEVICE) && (xcp_dev[index])) {
-+		struct platform_device *pdev = xcp_dev[index]->pdev;
- 
- 		devres_release_group(&pdev->dev, NULL);
- 		platform_device_unregister(pdev);
--		xcp_dev[pdev_num] = NULL;
-+
-+		xcp_dev[index] = NULL;
-+		pdev_num--;
++	if (amdgpu_ras_is_supported(adev, ras_block->block) &&
++		adev->vcn.inst->ras_poison_irq.funcs) {
++		r = amdgpu_irq_get(adev, &adev->vcn.inst->ras_poison_irq, 0);
++		if (r)
++			goto late_fini;
 +	}
-+}
 +
-+void amdgpu_xcp_drm_dev_free(struct drm_device *ddev)
-+{
-+	int8_t i;
-+
-+	guard(mutex)(&xcp_mutex);
-+
-+	for (i = 0; i < MAX_XCP_PLATFORM_DEVICE; i++) {
-+		if ((xcp_dev[i]) && (&xcp_dev[i]->drm == ddev)) {
-+			free_xcp_dev(i);
-+			break;
-+		}
-+	}
-+}
-+EXPORT_SYMBOL(amdgpu_xcp_drm_dev_free);
-+
-+void amdgpu_xcp_drv_release(void)
-+{
-+	int8_t i;
-+
-+	guard(mutex)(&xcp_mutex);
-+
-+	for (i = 0; pdev_num && i < MAX_XCP_PLATFORM_DEVICE; i++) {
-+		free_xcp_dev(i);
- 	}
--	pdev_num = 0;
- }
- EXPORT_SYMBOL(amdgpu_xcp_drv_release);
+ 	return 0;
  
-diff --git a/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.h b/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.h
-index c1c4b679bf95c..580a1602c8e36 100644
---- a/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.h
-+++ b/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.h
-@@ -25,5 +25,6 @@
- #define _AMDGPU_XCP_DRV_H_
- 
- int amdgpu_xcp_drm_dev_alloc(struct drm_device **ddev);
-+void amdgpu_xcp_drm_dev_free(struct drm_device *ddev);
- void amdgpu_xcp_drv_release(void);
- #endif /* _AMDGPU_XCP_DRV_H_ */
+ late_fini:
 -- 
 2.51.0
 
