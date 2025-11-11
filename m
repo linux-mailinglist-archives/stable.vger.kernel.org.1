@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-193874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74134C4ACB8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4225C4AFB2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38B7E3BC287
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CCBF188FAF1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C130346A12;
-	Tue, 11 Nov 2025 01:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EEC2C324C;
+	Tue, 11 Nov 2025 01:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5sMGTLt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oqdBm60"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1923A26D4C1;
-	Tue, 11 Nov 2025 01:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E5F26FA67;
+	Tue, 11 Nov 2025 01:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824210; cv=none; b=O8+6MQVOSpQF6MLWKx420QpiU8F39LCr4nn2b/WBATgp3lOyMK+/CwwAl89hc56VzoKRstkopwtlBHlM+kgqFJ3/y9pqWwKiukPvORHRbaPwrXqZA3ZtfEmHaUP2w5QO8Zu1yUKe3KveVWBK9nIYL60sQl8mDgxi443/2nRFtXo=
+	t=1762825188; cv=none; b=s0N/Xh2ajuoIPA9M3iwD3QZN+RSwM+gZd8iI2dNAPigqaYZ9TBUEfk4N0fAGa36MkvjZ46/rFJlD5fE5cn0EDEpOIxTF+lGycc9V3stpnJhls7roYSdRkVyLRDC7iTSP+E/zDJSZsw99w1Daq033Z+RQ4TOn8TJSedzxscE53zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824210; c=relaxed/simple;
-	bh=sDOAACzSP3M3wuC2kIFefoPeo+vuPvL7bxEzMsPCkrA=;
+	s=arc-20240116; t=1762825188; c=relaxed/simple;
+	bh=J98T4PlSJr3krxFP7436siFRg76A2XkAdoHuwv6Ekrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgnOn+prvjOBZ7vHnTotShb7eA+QjC4Uh5ed3xOYThD39fSnrFB5d2v0Zk+sY2G6WoCXBPlmSzLtH6AeyeRCBdrDTYBtrRZkh2gSUA95JntrYrAU1LYkOaXvq7bM8Es4K0WGH3vihWjoa+ju3r2w7rzZonNq8WMC0jeAyjoYGeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5sMGTLt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85322C19424;
-	Tue, 11 Nov 2025 01:23:29 +0000 (UTC)
+	 MIME-Version; b=q5BpkjyhCtEEOQbqC4JHqNiR4WGT+t1gp8NNvW/F3SpV06yu8KGOCvcL3S7/eRUIeBmpYKfvHczFK9hj784u5AmjEayuoLBnx1wNY5LYbdKWtDD5QF5dKNKot3xKxB4x2PNgcFVPO+amxW6OVl+ZSb8SBxicGFsWu2e7OPTDEsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oqdBm60; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314BAC116B1;
+	Tue, 11 Nov 2025 01:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824209;
-	bh=sDOAACzSP3M3wuC2kIFefoPeo+vuPvL7bxEzMsPCkrA=;
+	s=korg; t=1762825188;
+	bh=J98T4PlSJr3krxFP7436siFRg76A2XkAdoHuwv6Ekrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5sMGTLt72CvQQRu5uzqN5WU5ZZhuvCPHfqkgnXEcy0vk3EXWv9Xq6Z6SmX1dZFja
-	 Z3REz7pcFdds3/zEG2eQqRubsx3NjxV5HkXUiDc7AMSc2onZAWKcVpUUuNziiLejOG
-	 ULZB/eWA/l9s3bR7Vbo+4q3nCIJkszr3Hwjxbq90=
+	b=0oqdBm60d7ltlVGfFP69vE40p0eG0XaFAfYu1xLBYSIvPEW+UqwNVDBmpuxnS2rdM
+	 OML5HEh+VEEnsx3wJAjiQ9GaqxyEIKtqisybtBznA8FwyXYgS+U9wauJMTnmTCVeZb
+	 E/Rv23UOupiXsPHnHJJFtlPdCENmZwfT7cyfZtzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Yikang Yue <yikangy2@illinois.edu>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 411/565] wifi: ath12k: Increase DP_REO_CMD_RING_SIZE to 256
+Subject: [PATCH 6.17 697/849] fs/hpfs: Fix error code for new_inode() failure in mkdir/create/mknod/symlink
 Date: Tue, 11 Nov 2025 09:44:27 +0900
-Message-ID: <20251111004536.114750271@linuxfoundation.org>
+Message-ID: <20251111004553.282595344@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
+From: Yikang Yue <yikangy2@illinois.edu>
 
-[ Upstream commit 82993345aef6987a916337ebd2fca3ff4a6250a7 ]
+[ Upstream commit 32058c38d3b79a28963a59ac0353644dc24775cd ]
 
-Increase DP_REO_CMD_RING_SIZE from 128 to 256 to avoid
-queuing failures observed during stress test scenarios.
+The function call new_inode() is a primitive for allocating an inode in memory,
+rather than planning disk space for it. Therefore, -ENOMEM should be returned
+as the error code rather than -ENOSPC.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+To be specific, new_inode()'s call path looks like this:
+new_inode
+  new_inode_pseudo
+    alloc_inode
+      ops->alloc_inode (hpfs_alloc_inode)
+        alloc_inode_sb
+          kmem_cache_alloc_lru
 
-Signed-off-by: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250806111750.3214584-2-nithyanantham.paramasivam@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Therefore, the failure of new_inode() indicates a memory presure issue (-ENOMEM),
+not a lack of disk space. However, the current implementation of
+hpfs_mkdir/create/mknod/symlink incorrectly returns -ENOSPC when new_inode() fails.
+This patch fix this by set err to -ENOMEM before the goto statement.
+
+BTW, we also noticed that other nested calls within these four functions,
+like hpfs_alloc_f/dnode and hpfs_add_dirent, might also fail due to memory presure.
+But similarly, only -ENOSPC is returned. Addressing these will involve code
+modifications in other functions, and we plan to submit dedicated patches for these
+issues in the future. For this patch, we focus on new_inode().
+
+Signed-off-by: Yikang Yue <yikangy2@illinois.edu>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hpfs/namei.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
-index 2fb18b83b3eec..ec140052097e9 100644
---- a/drivers/net/wireless/ath/ath12k/dp.h
-+++ b/drivers/net/wireless/ath/ath12k/dp.h
-@@ -167,7 +167,7 @@ struct ath12k_pdev_dp {
- #define DP_REO_REINJECT_RING_SIZE	32
- #define DP_RX_RELEASE_RING_SIZE		1024
- #define DP_REO_EXCEPTION_RING_SIZE	128
--#define DP_REO_CMD_RING_SIZE		128
-+#define DP_REO_CMD_RING_SIZE		256
- #define DP_REO_STATUS_RING_SIZE		2048
- #define DP_RXDMA_BUF_RING_SIZE		4096
- #define DP_RX_MAC_BUF_RING_SIZE		2048
+diff --git a/fs/hpfs/namei.c b/fs/hpfs/namei.c
+index e3cdc421dfba7..353e13a615f56 100644
+--- a/fs/hpfs/namei.c
++++ b/fs/hpfs/namei.c
+@@ -52,8 +52,10 @@ static struct dentry *hpfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
+ 	dee.fnode = cpu_to_le32(fno);
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail2;
++	}
+ 	hpfs_init_inode(result);
+ 	result->i_ino = fno;
+ 	hpfs_i(result)->i_parent_dir = dir->i_ino;
+@@ -153,9 +155,10 @@ static int hpfs_create(struct mnt_idmap *idmap, struct inode *dir,
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+ 
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
+-	
++	}
+ 	hpfs_init_inode(result);
+ 	result->i_ino = fno;
+ 	result->i_mode |= S_IFREG;
+@@ -239,9 +242,10 @@ static int hpfs_mknod(struct mnt_idmap *idmap, struct inode *dir,
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+ 
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
+-
++	}
+ 	hpfs_init_inode(result);
+ 	result->i_ino = fno;
+ 	hpfs_i(result)->i_parent_dir = dir->i_ino;
+@@ -314,8 +318,10 @@ static int hpfs_symlink(struct mnt_idmap *idmap, struct inode *dir,
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+ 
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
++	}
+ 	result->i_ino = fno;
+ 	hpfs_init_inode(result);
+ 	hpfs_i(result)->i_parent_dir = dir->i_ino;
 -- 
 2.51.0
 
