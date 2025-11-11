@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E708C4A419
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:10:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B10E0C4A340
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5A51D4F942F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3266D3AF4B6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E8926561E;
-	Tue, 11 Nov 2025 01:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65881263F4A;
+	Tue, 11 Nov 2025 01:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqpisoNb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7NmB68a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AE526E703;
-	Tue, 11 Nov 2025 01:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2142125A334;
+	Tue, 11 Nov 2025 01:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823054; cv=none; b=ZfUqqc8V4TutpH2BaCcqqQ6WY/FXnR/FlWLD6mM04LH4reGi+ZTT/2SVlHMkxjVJwTY11HHmX1pSQGdWO5ZKwR6ByCiWimPuanumxcZ7Rp6bWSTfzzQru39hkfYT3762nxePEFOalLF7oX/cECZYThlU22+fZ4V+PbG8xZtCosQ=
+	t=1762823059; cv=none; b=c9Lmp3kpGb2kcLXmStXrzv4PAOXu/vV7OGAbWr+zRvozLaZYWCXIkp/+PjgdgaWs4nyAgE92xNn7aLNuEpVjhg3VfsPFTxyKCHoCfcCS439GkZVY8X4oeXb4bO9ZMLAWzJpV36ki+YVifFgUAUWOq5ogrl1Ukw9EUENwd5n+5JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823054; c=relaxed/simple;
-	bh=GbQX32j92UdVHxDE0m1f8+ensratgMT6qazyzZzL/zI=;
+	s=arc-20240116; t=1762823059; c=relaxed/simple;
+	bh=gtiCdxf1o8XwrFQGpkEjE6Mvqf13C7c1WLcGNCBqhTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lC2GQOy/KrREgQaYpGL7Cfpc4ckrk9rff2nRa6eUCI615emkBj+QJNdwqP+xyOCpzfhauVHTpR/hLMgV3WKXJFVK4CqJeJiABI4kGgSzwSXx2Rv9mQgqQjXbuUVA+bu8h+8Qgj5tIQ4oqsqIpWm2bVfpBkd5XgW0n6Ka78G+DT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqpisoNb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2E3C19424;
-	Tue, 11 Nov 2025 01:04:13 +0000 (UTC)
+	 MIME-Version; b=lrjdeBnEZqj+JkMTn04A0KCsf6gBJEgn+Uzo6joFjGZvNhaZdNPA3HxVcfebRtyFY1UEYsoq2EuSc3prnVN0ZNvM2c7XX2oneKb253FstSDXDZKpeLIaen7wz1yMrkJJ7eRvtfWVLiO5YDZi6ewE7d4p6xljpIUX5McuytW5sfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7NmB68a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3844C113D0;
+	Tue, 11 Nov 2025 01:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823054;
-	bh=GbQX32j92UdVHxDE0m1f8+ensratgMT6qazyzZzL/zI=;
+	s=korg; t=1762823059;
+	bh=gtiCdxf1o8XwrFQGpkEjE6Mvqf13C7c1WLcGNCBqhTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sqpisoNb2/qkjTaLZiN61TtQUr9k26QSzwhFwr++FmDqg4vPrhSYnlmz7vMC1arkE
-	 Gxlbtox0HMHcwr3oI8nzkzyetDUPuthrDsJGxd8BDvywFg722KWfX/7pugJC0jXD7r
-	 zNMY3flbjsxvEIMBAejrTqzZM8PyPW9M+4ipsVUI=
+	b=O7NmB68aIaRCdlwqk6vuyB2rNHR8WgRM/0IilgI3x3UlPlpU9HihDs53WV66hm8A3
+	 uUA2sjQPYeG3u4H3bm53DAraasStf6NStooBy3dQvF4uqEDDeSSp2zHiSVBO7R+iHF
+	 sySryh3evJ4AFr7eIMd1ngVaqELTaZ7dUzYg0BXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 222/849] mfd: qnap-mcu: Include linux/types.h in qnap-mcu.h shared header
-Date: Tue, 11 Nov 2025 09:36:32 +0900
-Message-ID: <20251111004541.810904936@linuxfoundation.org>
+Subject: [PATCH 6.17 223/849] mfd: madera: Work around false-positive -Wininitialized warning
+Date: Tue, 11 Nov 2025 09:36:33 +0900
+Message-ID: <20251111004541.836059428@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -60,50 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5e1c88679174e4bfe5d152060b06d370bd85de80 ]
+[ Upstream commit 364752aa0c6ab0a06a2d5bfdb362c1ca407f1a30 ]
 
-Relying on other components to include those basic types is unreliable
-and may cause compile errors like:
+clang-21 warns about one uninitialized variable getting dereferenced
+in madera_dev_init:
 
-../include/linux/mfd/qnap-mcu.h:13:9: error: unknown type name ‘u32’
-   13 |         u32 baud_rate;
-      |         ^~~
-../include/linux/mfd/qnap-mcu.h:17:9: error: unknown type name ‘bool’
-   17 |         bool usb_led;
-      |         ^~~~
+drivers/mfd/madera-core.c:739:10: error: variable 'mfd_devs' is uninitialized when used here [-Werror,-Wuninitialized]
+  739 |                               mfd_devs, n_devs,
+      |                               ^~~~~~~~
+drivers/mfd/madera-core.c:459:33: note: initialize the variable 'mfd_devs' to silence this warning
+  459 |         const struct mfd_cell *mfd_devs;
+      |                                        ^
+      |                                         = NULL
 
-So make sure, the types used in the header are available.
+The code is actually correct here because n_devs is only nonzero
+when mfd_devs is a valid pointer, but this is impossible for the
+compiler to see reliably.
 
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250804130726.3180806-2-heiko@sntech.de
+Change the logic to check for the pointer as well, to make this easier
+for the compiler to follow.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20250807071932.4085458-1-arnd@kernel.org
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mfd/qnap-mcu.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mfd/madera-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/mfd/qnap-mcu.h b/include/linux/mfd/qnap-mcu.h
-index 8d48c212fd444..42bf523f9a5b0 100644
---- a/include/linux/mfd/qnap-mcu.h
-+++ b/include/linux/mfd/qnap-mcu.h
-@@ -7,6 +7,8 @@
- #ifndef _LINUX_QNAP_MCU_H_
- #define _LINUX_QNAP_MCU_H_
+diff --git a/drivers/mfd/madera-core.c b/drivers/mfd/madera-core.c
+index bdbd5bfc97145..2f74a8c644a32 100644
+--- a/drivers/mfd/madera-core.c
++++ b/drivers/mfd/madera-core.c
+@@ -456,7 +456,7 @@ int madera_dev_init(struct madera *madera)
+ 	struct device *dev = madera->dev;
+ 	unsigned int hwid;
+ 	int (*patch_fn)(struct madera *) = NULL;
+-	const struct mfd_cell *mfd_devs;
++	const struct mfd_cell *mfd_devs = NULL;
+ 	int n_devs = 0;
+ 	int i, ret;
  
-+#include <linux/types.h>
-+
- struct qnap_mcu;
+@@ -670,7 +670,7 @@ int madera_dev_init(struct madera *madera)
+ 		goto err_reset;
+ 	}
  
- struct qnap_mcu_variant {
+-	if (!n_devs) {
++	if (!n_devs || !mfd_devs) {
+ 		dev_err(madera->dev, "Device ID 0x%x not a %s\n", hwid,
+ 			madera->type_name);
+ 		ret = -ENODEV;
 -- 
 2.51.0
 
