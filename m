@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4500CC4A397
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA25C4A94A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 454FB4F1B4C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB1384F616C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDD224E4A1;
-	Tue, 11 Nov 2025 01:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A353A2D94AB;
+	Tue, 11 Nov 2025 01:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1waj5UCu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F78mLGda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9874086A;
-	Tue, 11 Nov 2025 01:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC5A2D29D6;
+	Tue, 11 Nov 2025 01:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822953; cv=none; b=cxWJ7nll1iasEfO32XPxZioBC7FFdcuF075p5AtunCbl3iI0ckokhrqKwJlJcId7vdZLgqWcQRAB6lMbOOBHCUCpPOkPb8IOgMyZHYmeWGqJk9VO+zdppCTT4VqOW9H+30BItt0kNDl0oiLQwPyghMG9fS7IiaT560MNiBVLkpc=
+	t=1762824049; cv=none; b=r0EuPTve5CkV1LiG81UX45dDphuEU78Rwo5LUsv5i3gfzdbbSkqLsFpIaD/M9KJx4rDCwp/w6el//FCsU3gEbpFxIUhL69Dx3Fm42dg/CqQf1QcxnbyuhmdQr3PDPH1zP7cHCwlX1UgFUQcJfCVvShTafV8d/82tmQxGR0mLSvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822953; c=relaxed/simple;
-	bh=4mnhxd5aKvjfrZzQGnabQXHYKUcwQoJ5TEKXRnCiyw0=;
+	s=arc-20240116; t=1762824049; c=relaxed/simple;
+	bh=7KnNUBuE/dBQBmEKIQoTzQnxuNUvO1/435Bp6P1tsMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CTqp7xmkHtuAa0vKgYAXrvg2oVdUgZ5GoTinKtJezdLkj8PExSPLi9sbuKGrlguXSZViQPdwK4Qsig//BLLchXfsrBHDaJ3hCm5gR5WBc1C9+F8Jep4ZRhLKcYNQOkbASU3N0ru75A7/ERURsUO5gUTielG67FXZG51Xt8UECKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1waj5UCu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EA4C19422;
-	Tue, 11 Nov 2025 01:02:32 +0000 (UTC)
+	 MIME-Version; b=tHRIe8b4+7APuDRs+MyJH0dX7R+x/AyniWjtaJNcfLa/UBlwOA54FiWBIIYoBhIHvHrSDgGYpOV1Z3L6LDXQhf2EH4z7NtRZ4tgPCRCn54lBtY+gUNT/OaGdbxJFU9w3E97vQ0d1tkTBUEg+gBcJuMnck1vJ3J7yyAn9XnATAxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F78mLGda; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA520C116B1;
+	Tue, 11 Nov 2025 01:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822953;
-	bh=4mnhxd5aKvjfrZzQGnabQXHYKUcwQoJ5TEKXRnCiyw0=;
+	s=korg; t=1762824049;
+	bh=7KnNUBuE/dBQBmEKIQoTzQnxuNUvO1/435Bp6P1tsMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1waj5UCu34J5wktNt/WlOEqzkN7AiS3HSwhl5BM+bigHuDUU70wpdhtMVv45XBAlX
-	 yJa4QEGKTAOD+pwjouBQm+4zEOQu+G2/U0+Rdykb13d3oB7RBY9mBaC/IdQ0cFP8X7
-	 zPE9OlqEEJ0FrML5iVDX06hBp1QPWJaRD9AAufRY=
+	b=F78mLGda/21KU7WlZ6RWqqG6qXHgZj0DUtySBJ/jolTemI5+Uym7cNF6ELCF152t4
+	 pQVz8+ypbR3YS6zDTdxE3FFkr5qEzekF5Mro+h/vNinzLIG0sj0bUCWX7CmPeyGPOv
+	 +bZtMFqs4uUfruIzm5EBzjW0F5kwJJZF6hETaH5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 140/565] i3c: mipi-i3c-hci-pci: Add support for Intel Wildcat Lake-U I3C
-Date: Tue, 11 Nov 2025 09:39:56 +0900
-Message-ID: <20251111004530.092662092@linuxfoundation.org>
+Subject: [PATCH 6.17 427/849] wifi: mac80211: count reg connection element in the size
+Date: Tue, 11 Nov 2025 09:39:57 +0900
+Message-ID: <20251111004546.760003417@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit d515503f3c8a8475b2f78782534aad09722904e1 ]
+[ Upstream commit 1373f94148a5adac2f42c8ba9771105624fe4af0 ]
 
-Add I3C controller PCI IDs on Intel Wildcat Lake-U.
+We currently don't count the reg connection length in the per-link
+capability length. Fix it.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250808131732.1213227-1-jarkko.nikula@linux.intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250826202512.b14fc82f736b.I03442382e8a07f6f9836bcdac2e22ce8afbe6a21@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/mipi-i3c-hci-pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/mlme.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master/mipi-i3c-hci/mipi-i3c-hci-pci.c b/drivers/i3c/master/mipi-i3c-hci/mipi-i3c-hci-pci.c
-index c6c3a3ec11eae..08e6cbdf89cea 100644
---- a/drivers/i3c/master/mipi-i3c-hci/mipi-i3c-hci-pci.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/mipi-i3c-hci-pci.c
-@@ -124,6 +124,9 @@ static void mipi_i3c_hci_pci_remove(struct pci_dev *pci)
- }
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index dd650a127a317..f38881b927d17 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2112,8 +2112,11 @@ ieee80211_link_common_elems_size(struct ieee80211_sub_if_data *sdata,
+ 		sizeof(struct ieee80211_he_mcs_nss_supp) +
+ 		IEEE80211_HE_PPE_THRES_MAX_LEN;
  
- static const struct pci_device_id mipi_i3c_hci_pci_devices[] = {
-+	/* Wildcat Lake-U */
-+	{ PCI_VDEVICE(INTEL, 0x4d7c), (kernel_ulong_t)&intel_info},
-+	{ PCI_VDEVICE(INTEL, 0x4d6f), (kernel_ulong_t)&intel_info},
- 	/* Panther Lake-H */
- 	{ PCI_VDEVICE(INTEL, 0xe37c), (kernel_ulong_t)&intel_info},
- 	{ PCI_VDEVICE(INTEL, 0xe36f), (kernel_ulong_t)&intel_info},
+-	if (sband->band == NL80211_BAND_6GHZ)
++	if (sband->band == NL80211_BAND_6GHZ) {
+ 		size += 2 + 1 + sizeof(struct ieee80211_he_6ghz_capa);
++		/* reg connection */
++		size += 4;
++	}
+ 
+ 	size += 2 + 1 + sizeof(struct ieee80211_eht_cap_elem) +
+ 		sizeof(struct ieee80211_eht_mcs_nss_supp) +
 -- 
 2.51.0
 
