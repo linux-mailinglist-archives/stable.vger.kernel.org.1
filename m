@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1125AC4A6C5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E707BC4A999
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 82A7034C187
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CFFB3BA485
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95723043BF;
-	Tue, 11 Nov 2025 01:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6875D303A0D;
+	Tue, 11 Nov 2025 01:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uT9YVS1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="viZ0BBwp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E0A303A08;
-	Tue, 11 Nov 2025 01:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E3741C69;
+	Tue, 11 Nov 2025 01:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823849; cv=none; b=erQ2r3fUKIS+7tbSY4ITRTQsqo9fRlh3/I1uuzXUidlGqqYLcPUNsUIYKd4qRqsZPEezJNlfWPi7ykOnBDm8qfri+c1dMi8zsjvySMuKsaHTuyPf46QGHNctYkQpiU1ZkfHyrzmSYtNiussfEQJfltGzGTLpqymyoTXunu1FeY0=
+	t=1762823854; cv=none; b=tj0SICarrpUYaqXt41FkEzJo6UEAkri1dHuWhZ5K8ngLn6RNH4vTiUZyYPDCGOdPShJ4rAgKIWkdwriVJ9pX7EHIdt9KMczG11Y/TSB8v2OB1y+Ckh9PVIy/zJtX89O8jPoyhY4fnFaSMvHUuY1LDw5iWzlbHEg1djj05KHL9Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823849; c=relaxed/simple;
-	bh=iWNqWotAPZMBDXNqkKVojR8BUp56hgi9JJaBAiUamwE=;
+	s=arc-20240116; t=1762823854; c=relaxed/simple;
+	bh=f04XJFjspASzS2qrNzjo2WOziXpkwI1Yj61yMHG0+GM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ar7JitXDvxScoM/YU4jlGFra39kk5WCewrmQWs+pDcUYPBkH/T4K/8NigKtDKVB2BaA2KMfjpRQSnk/z/+YvUHZ/R9DTLpXUALhkFhY+9d6+WHlKEuMJZkLHpNyZqLMuxWM4X6pJX/lTW6Cp2zV/4OyQTCHihXiic2xnLordpU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uT9YVS1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1204CC113D0;
-	Tue, 11 Nov 2025 01:17:28 +0000 (UTC)
+	 MIME-Version; b=pbnBFJ3SXXBqO/AAbBB91uXj1enjuFM92rPUmlobG/4vW1987+RvxrPYTURA9Z2GdFGlBeRpLn6VdMrFB/sM9GOaiXkhGoNh2DR0hhiyZBvj+GVtU9fa4sYm0Zj3UhtJXoBKntO1IvaF/FIAtVYsoRjTXhpVrknn4bHW+c0V8EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=viZ0BBwp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97D1C116B1;
+	Tue, 11 Nov 2025 01:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823849;
-	bh=iWNqWotAPZMBDXNqkKVojR8BUp56hgi9JJaBAiUamwE=;
+	s=korg; t=1762823854;
+	bh=f04XJFjspASzS2qrNzjo2WOziXpkwI1Yj61yMHG0+GM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uT9YVS1nuStJmDipRwF806iYwRhIMVe2VEs11HezOr+hURDULrKMFDA4Uc/v7HR9n
-	 Zz8Mf31HzL+wOgY8OVnJeKB931bFSwErTZwHPZYZSE0qXhMgw3XYsIhheJoIz0xjdu
-	 Kt/oShL8m5cZ1HtemD1RBXEyrGIjJCa2dmSvjm5E=
+	b=viZ0BBwpH+KIZ0thqeeyQPwVRpSaBMmyFXTGJqvUoP08mLcz1MOf1XfGFv2ljXCDi
+	 Fh9Mt2JTiqlGylQkosJ97l1ZyxMsTPaoURl0znmkkxzbc7YkqEjIdrFEpP4lzxTrzZ
+	 mlEiB/p0AxKjcuKEyf2l07TonVBywCoipVd3A90Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 384/849] drm/msm/dpu: Filter modes based on adjusted mode clock
-Date: Tue, 11 Nov 2025 09:39:14 +0900
-Message-ID: <20251111004545.714810648@linuxfoundation.org>
+Subject: [PATCH 6.17 385/849] drm/msm: Use of_reserved_mem_region_to_resource() for "memory-region"
+Date: Tue, 11 Nov 2025 09:39:15 +0900
+Message-ID: <20251111004545.738865577@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,142 +66,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jessica Zhang <jessica.zhang@oss.qualcomm.com>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-[ Upstream commit 62b7d68352881609e237b303fa391410ebc583a5 ]
+[ Upstream commit fb53e8f09fc1e1a343fd08ea4f353f81613975d7 ]
 
-Filter out modes that have a clock rate greater than the max core clock
-rate when adjusted for the perf clock factor
+Use the newly added of_reserved_mem_region_to_resource() function to
+handle "memory-region" properties.
 
-This is especially important for chipsets such as QCS615 that have lower
-limits for the MDP max core clock.
+The original code did not set 'zap_available' to false if
+of_address_to_resource() failed which seems like an oversight.
 
-Since the core CRTC clock is at least the mode clock (adjusted for the
-perf clock factor) [1], the modes supported by the driver should be less
-than the max core clock rate.
-
-[1] https://elixir.bootlin.com/linux/v6.12.4/source/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c#L83
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Jessica Zhang <jessica.zhang@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/652041/
-Link: https://lore.kernel.org/r/20250506-filter-modes-v2-1-c20a0b7aa241@oss.qualcomm.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/662275/
+Link: https://lore.kernel.org/r/20250703183442.2073717-1-robh@kernel.org
+[DB: dropped part related to VRAM, no longer applicable]
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c | 35 +++++++++++++------
- drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h |  3 ++
- drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c      | 12 +++++++
- 3 files changed, 39 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
-index 0fb5789c60d0d..13cc658065c56 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
-@@ -31,6 +31,26 @@ enum dpu_perf_mode {
- 	DPU_PERF_MODE_MAX
- };
- 
-+/**
-+ * dpu_core_perf_adjusted_mode_clk - Adjust given mode clock rate according to
-+ *   the perf clock factor.
-+ * @crtc_clk_rate - Unadjusted mode clock rate
-+ * @perf_cfg: performance configuration
-+ */
-+u64 dpu_core_perf_adjusted_mode_clk(u64 mode_clk_rate,
-+				    const struct dpu_perf_cfg *perf_cfg)
-+{
-+	u32 clk_factor;
-+
-+	clk_factor = perf_cfg->clk_inefficiency_factor;
-+	if (clk_factor) {
-+		mode_clk_rate *= clk_factor;
-+		do_div(mode_clk_rate, 100);
-+	}
-+
-+	return mode_clk_rate;
-+}
-+
- /**
-  * _dpu_core_perf_calc_bw() - to calculate BW per crtc
-  * @perf_cfg: performance configuration
-@@ -75,28 +95,21 @@ static u64 _dpu_core_perf_calc_clk(const struct dpu_perf_cfg *perf_cfg,
- 	struct drm_plane *plane;
- 	struct dpu_plane_state *pstate;
- 	struct drm_display_mode *mode;
--	u64 crtc_clk;
--	u32 clk_factor;
-+	u64 mode_clk;
- 
- 	mode = &state->adjusted_mode;
- 
--	crtc_clk = (u64)mode->vtotal * mode->hdisplay * drm_mode_vrefresh(mode);
-+	mode_clk = (u64)mode->vtotal * mode->hdisplay * drm_mode_vrefresh(mode);
- 
- 	drm_atomic_crtc_for_each_plane(plane, crtc) {
- 		pstate = to_dpu_plane_state(plane->state);
- 		if (!pstate)
- 			continue;
- 
--		crtc_clk = max(pstate->plane_clk, crtc_clk);
--	}
--
--	clk_factor = perf_cfg->clk_inefficiency_factor;
--	if (clk_factor) {
--		crtc_clk *= clk_factor;
--		do_div(crtc_clk, 100);
-+		mode_clk = max(pstate->plane_clk, mode_clk);
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+index f1230465bf0d0..8c6336b007dc0 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+@@ -10,7 +10,7 @@
+ #include <linux/interconnect.h>
+ #include <linux/firmware/qcom/qcom_scm.h>
+ #include <linux/kernel.h>
+-#include <linux/of_address.h>
++#include <linux/of_reserved_mem.h>
+ #include <linux/pm_opp.h>
+ #include <linux/slab.h>
+ #include <linux/soc/qcom/mdt_loader.h>
+@@ -33,7 +33,7 @@ static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname,
+ 	struct device *dev = &gpu->pdev->dev;
+ 	const struct firmware *fw;
+ 	const char *signed_fwname = NULL;
+-	struct device_node *np, *mem_np;
++	struct device_node *np;
+ 	struct resource r;
+ 	phys_addr_t mem_phys;
+ 	ssize_t mem_size;
+@@ -51,18 +51,11 @@ static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname,
+ 		return -ENODEV;
  	}
  
--	return crtc_clk;
-+	return dpu_core_perf_adjusted_mode_clk(mode_clk, perf_cfg);
- }
+-	mem_np = of_parse_phandle(np, "memory-region", 0);
+-	of_node_put(np);
+-	if (!mem_np) {
++	ret = of_reserved_mem_region_to_resource(np, 0, &r);
++	if (ret) {
+ 		zap_available = false;
+-		return -EINVAL;
+-	}
+-
+-	ret = of_address_to_resource(mem_np, 0, &r);
+-	of_node_put(mem_np);
+-	if (ret)
+ 		return ret;
+-
++	}
+ 	mem_phys = r.start;
  
- static struct dpu_kms *_dpu_crtc_get_kms(struct drm_crtc *crtc)
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h
-index d2f21d34e501e..3740bc97422ca 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h
-@@ -54,6 +54,9 @@ struct dpu_core_perf {
- 	u32 fix_core_ab_vote;
- };
- 
-+u64 dpu_core_perf_adjusted_mode_clk(u64 clk_rate,
-+				    const struct dpu_perf_cfg *perf_cfg);
-+
- int dpu_core_perf_crtc_check(struct drm_crtc *crtc,
- 		struct drm_crtc_state *state);
- 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-index 94912b4708fb5..d59512e45af05 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-@@ -1534,6 +1534,7 @@ static enum drm_mode_status dpu_crtc_mode_valid(struct drm_crtc *crtc,
- 						const struct drm_display_mode *mode)
- {
- 	struct dpu_kms *dpu_kms = _dpu_crtc_get_kms(crtc);
-+	u64 adjusted_mode_clk;
- 
- 	/* if there is no 3d_mux block we cannot merge LMs so we cannot
- 	 * split the large layer into 2 LMs, filter out such modes
-@@ -1541,6 +1542,17 @@ static enum drm_mode_status dpu_crtc_mode_valid(struct drm_crtc *crtc,
- 	if (!dpu_kms->catalog->caps->has_3d_merge &&
- 	    mode->hdisplay > dpu_kms->catalog->caps->max_mixer_width)
- 		return MODE_BAD_HVALUE;
-+
-+	adjusted_mode_clk = dpu_core_perf_adjusted_mode_clk(mode->clock,
-+							    dpu_kms->perf.perf_cfg);
-+
-+	/*
-+	 * The given mode, adjusted for the perf clock factor, should not exceed
-+	 * the max core clock rate
-+	 */
-+	if (dpu_kms->perf.max_core_clk_rate < adjusted_mode_clk * 1000)
-+		return MODE_CLOCK_HIGH;
-+
  	/*
- 	 * max crtc width is equal to the max mixer width * 2 and max height is 4K
- 	 */
 -- 
 2.51.0
 
