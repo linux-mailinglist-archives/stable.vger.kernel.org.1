@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-193907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26A0C4A923
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:34 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DFAC4A50B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E2B86340F64
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 04F52348FDD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BEC22F12C1;
-	Tue, 11 Nov 2025 01:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D84E27054C;
+	Tue, 11 Nov 2025 01:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZFNLjeP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCySzkmG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4877C26E71F;
-	Tue, 11 Nov 2025 01:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6A726FDBD;
+	Tue, 11 Nov 2025 01:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824344; cv=none; b=JOem77q7GxvBW2f8oMSeCQU9aWLynQ5sY7O71sZLZh4KE69ZcbRLGOEOv0SILycrW5VHUE9pKQNd8Nm4uFKdLrSjJYiPo2OtsdinMyd7f2tYPDqrisSVN8HCIhZk5lFN9MQBXvRrqUUerm+Gm/dX7TWqlm/yYRAqddVvVX/2aZs=
+	t=1762823338; cv=none; b=g2MZQ9nMzpeI4nw+KGtVXMfiVk7wuuEaPf05zQtGWl6SYzIiM303CVppYDC8zW/id+qurIxm4l3wnlpM5tC/Yx1St2JXnp6YYiUSsvngrkrBSR9izQniMgm2r1Ts/5Lj9RorpuGOuVIJEszDAtkVLFQQQ/P2yX79wLg6WIARAmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824344; c=relaxed/simple;
-	bh=IwmoZNLKSs1O6K75p6G5UR4Km81rQeT/yi8PLAMN1jY=;
+	s=arc-20240116; t=1762823338; c=relaxed/simple;
+	bh=XennKgp2m1j58Yz3lq5AMRws05mtr81NBlwMZbBGZyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OovmOdQ+NrR/SleXIsgoh+F5J98Nmsw1pfs0RgViTe56zj5OZS29kO9JyI5ZNfwqLtiE48eQzYNDwHFt6VzdHGEdqjw5YxxHSdlIwXx3UhrzKaFDatOxk2M+vV3FbrgqB7u8x5isxvk847TZoWDqEgaiRj+uslbU5gA/CzMn0Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZFNLjeP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D507CC116D0;
-	Tue, 11 Nov 2025 01:25:43 +0000 (UTC)
+	 MIME-Version; b=nV+mGvuNvArlo++YgLO0ORAEsE5217+vaI2x9iaoi25nulIFJawHSa+b/kxEfGrrRlnmHGba46W/Hepa8lV6/++tkVCDsC8v+5JpinnkC22/aw1nx2icJTEsNPQPogwudfnfSZ0MHZVcfjteAV1LaiNY62OG9lKtyEH2MV4WH90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCySzkmG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9C2C4CEF5;
+	Tue, 11 Nov 2025 01:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824344;
-	bh=IwmoZNLKSs1O6K75p6G5UR4Km81rQeT/yi8PLAMN1jY=;
+	s=korg; t=1762823338;
+	bh=XennKgp2m1j58Yz3lq5AMRws05mtr81NBlwMZbBGZyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zZFNLjePRXb+qchwTYnt+4GHrYbkez49uy5Nwgv1dMc9ntIIF1vNnS25b0CIflAiF
-	 VNSEGxKT0v0Kb/Ft0L522hfvOhq5/0tdgXlNuPHYlKfehW7U43jpuhxn2LUw2CINlo
-	 dMSZJRWJTWvkq+afviqkg+O55Mni0laF50bXMe18=
+	b=JCySzkmGhSarQ/zsreTbADoU6NiL0cBm0JLFGQ4xbUJ5P+LX1GVfMgxECa/d7nKL+
+	 zui9y76thY84wU9qd26gitqOylT2ICGrsWFcxbFWpmMN4/7m7xWffHfX7oh/r7GsZQ
+	 Zw4cvtzkwHc+9b6NRZ7dl0wTG6ch6eE39GnPZWL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Ramu R <ramu.r@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Subject: [PATCH 6.17 477/849] idpf: link NAPIs to queues
+	Dillon Varone <dillon.varone@amd.com>,
+	TungYu Lu <tungyu.lu@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 191/565] drm/amd/display: Wait until OTG enable state is cleared
 Date: Tue, 11 Nov 2025 09:40:47 +0900
-Message-ID: <20251111004547.976302591@linuxfoundation.org>
+Message-ID: <20251111004531.226883133@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,231 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: TungYu Lu <tungyu.lu@amd.com>
 
-[ Upstream commit bd74a86bc75d35adefbebcec7c3a743d02c06230 ]
+[ Upstream commit e7496c15d830689cc4fc666b976c845ed2c5ed28 ]
 
-Add the missing linking of NAPIs to netdev queues when enabling
-interrupt vectors in order to support NAPI configuration and
-interfaces requiring get_rx_queue()->napi to be set (like XSk
-busy polling).
+[Why]
+Customer reported an issue that OS starts and stops device multiple times
+during driver installation. Frequently disabling and enabling OTG may
+prevent OTG from being safely disabled and cause incorrect configuration
+upon the next enablement.
 
-As currently, idpf_vport_{start,stop}() is called from several flows
-with inconsistent RTNL locking, we need to synchronize them to avoid
-runtime assertions. Notably:
+[How]
+Add a wait until OTG_CURRENT_MASTER_EN_STATE is cleared as a short term
+solution.
 
-* idpf_{open,stop}() -- regular NDOs, RTNL is always taken;
-* idpf_initiate_soft_reset() -- usually called under RTNL;
-* idpf_init_task -- called from the init work, needs RTNL;
-* idpf_vport_dealloc -- called without RTNL taken, needs it.
-
-Expand common idpf_vport_{start,stop}() to take an additional bool
-telling whether we need to manually take the RTNL lock.
-
-Suggested-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com> # helper
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Tested-by: Ramu R <ramu.r@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: TungYu Lu <tungyu.lu@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c  | 38 +++++++++++++++------
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 17 +++++++++
- 2 files changed, 45 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index e327950c93d8e..f4b89d222610f 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -884,14 +884,18 @@ static void idpf_remove_features(struct idpf_vport *vport)
- /**
-  * idpf_vport_stop - Disable a vport
-  * @vport: vport to disable
-+ * @rtnl: whether to take RTNL lock
-  */
--static void idpf_vport_stop(struct idpf_vport *vport)
-+static void idpf_vport_stop(struct idpf_vport *vport, bool rtnl)
- {
- 	struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
+diff --git a/drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c b/drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c
+index a5d6a7dca554c..27a9ec55d53ec 100644
+--- a/drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c
+@@ -226,6 +226,11 @@ static bool optc401_disable_crtc(struct timing_generator *optc)
+ 	REG_UPDATE(CONTROL,
+ 			VTG0_ENABLE, 0);
  
- 	if (np->state <= __IDPF_VPORT_DOWN)
- 		return;
- 
-+	if (rtnl)
-+		rtnl_lock();
++	// wait until CRTC_CURRENT_MASTER_EN_STATE == 0
++	REG_WAIT(OTG_CONTROL,
++			 OTG_CURRENT_MASTER_EN_STATE,
++			 0, 10, 15000);
 +
- 	netif_carrier_off(vport->netdev);
- 	netif_tx_disable(vport->netdev);
- 
-@@ -913,6 +917,9 @@ static void idpf_vport_stop(struct idpf_vport *vport)
- 	idpf_vport_queues_rel(vport);
- 	idpf_vport_intr_rel(vport);
- 	np->state = __IDPF_VPORT_DOWN;
-+
-+	if (rtnl)
-+		rtnl_unlock();
- }
- 
- /**
-@@ -936,7 +943,7 @@ static int idpf_stop(struct net_device *netdev)
- 	idpf_vport_ctrl_lock(netdev);
- 	vport = idpf_netdev_to_vport(netdev);
- 
--	idpf_vport_stop(vport);
-+	idpf_vport_stop(vport, false);
- 
- 	idpf_vport_ctrl_unlock(netdev);
- 
-@@ -1029,7 +1036,7 @@ static void idpf_vport_dealloc(struct idpf_vport *vport)
- 	idpf_idc_deinit_vport_aux_device(vport->vdev_info);
- 
- 	idpf_deinit_mac_addr(vport);
--	idpf_vport_stop(vport);
-+	idpf_vport_stop(vport, true);
- 
- 	if (!test_bit(IDPF_HR_RESET_IN_PROG, adapter->flags))
- 		idpf_decfg_netdev(vport);
-@@ -1370,8 +1377,9 @@ static void idpf_rx_init_buf_tail(struct idpf_vport *vport)
- /**
-  * idpf_vport_open - Bring up a vport
-  * @vport: vport to bring up
-+ * @rtnl: whether to take RTNL lock
-  */
--static int idpf_vport_open(struct idpf_vport *vport)
-+static int idpf_vport_open(struct idpf_vport *vport, bool rtnl)
- {
- 	struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
- 	struct idpf_adapter *adapter = vport->adapter;
-@@ -1381,6 +1389,9 @@ static int idpf_vport_open(struct idpf_vport *vport)
- 	if (np->state != __IDPF_VPORT_DOWN)
- 		return -EBUSY;
- 
-+	if (rtnl)
-+		rtnl_lock();
-+
- 	/* we do not allow interface up just yet */
- 	netif_carrier_off(vport->netdev);
- 
-@@ -1388,7 +1399,7 @@ static int idpf_vport_open(struct idpf_vport *vport)
- 	if (err) {
- 		dev_err(&adapter->pdev->dev, "Failed to allocate interrupts for vport %u: %d\n",
- 			vport->vport_id, err);
--		return err;
-+		goto err_rtnl_unlock;
- 	}
- 
- 	err = idpf_vport_queues_alloc(vport);
-@@ -1475,6 +1486,9 @@ static int idpf_vport_open(struct idpf_vport *vport)
- 		goto deinit_rss;
- 	}
- 
-+	if (rtnl)
-+		rtnl_unlock();
-+
- 	return 0;
- 
- deinit_rss:
-@@ -1492,6 +1506,10 @@ static int idpf_vport_open(struct idpf_vport *vport)
- intr_rel:
- 	idpf_vport_intr_rel(vport);
- 
-+err_rtnl_unlock:
-+	if (rtnl)
-+		rtnl_unlock();
-+
- 	return err;
- }
- 
-@@ -1572,7 +1590,7 @@ void idpf_init_task(struct work_struct *work)
- 	np = netdev_priv(vport->netdev);
- 	np->state = __IDPF_VPORT_DOWN;
- 	if (test_and_clear_bit(IDPF_VPORT_UP_REQUESTED, vport_config->flags))
--		idpf_vport_open(vport);
-+		idpf_vport_open(vport, true);
- 
- 	/* Spawn and return 'idpf_init_task' work queue until all the
- 	 * default vports are created
-@@ -1962,7 +1980,7 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
- 		idpf_send_delete_queues_msg(vport);
- 	} else {
- 		set_bit(IDPF_VPORT_DEL_QUEUES, vport->flags);
--		idpf_vport_stop(vport);
-+		idpf_vport_stop(vport, false);
- 	}
- 
- 	idpf_deinit_rss(vport);
-@@ -1992,7 +2010,7 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
- 		goto err_open;
- 
- 	if (current_state == __IDPF_VPORT_UP)
--		err = idpf_vport_open(vport);
-+		err = idpf_vport_open(vport, false);
- 
- 	goto free_vport;
- 
-@@ -2002,7 +2020,7 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
- 
- err_open:
- 	if (current_state == __IDPF_VPORT_UP)
--		idpf_vport_open(vport);
-+		idpf_vport_open(vport, false);
- 
- free_vport:
- 	kfree(new_vport);
-@@ -2240,7 +2258,7 @@ static int idpf_open(struct net_device *netdev)
- 	if (err)
- 		goto unlock;
- 
--	err = idpf_vport_open(vport);
-+	err = idpf_vport_open(vport, false);
- 
- unlock:
- 	idpf_vport_ctrl_unlock(netdev);
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index e75a94d7ac2ac..92634c4bb369a 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -3430,6 +3430,20 @@ void idpf_vport_intr_rel(struct idpf_vport *vport)
- 	vport->q_vectors = NULL;
- }
- 
-+static void idpf_q_vector_set_napi(struct idpf_q_vector *q_vector, bool link)
-+{
-+	struct napi_struct *napi = link ? &q_vector->napi : NULL;
-+	struct net_device *dev = q_vector->vport->netdev;
-+
-+	for (u32 i = 0; i < q_vector->num_rxq; i++)
-+		netif_queue_set_napi(dev, q_vector->rx[i]->idx,
-+				     NETDEV_QUEUE_TYPE_RX, napi);
-+
-+	for (u32 i = 0; i < q_vector->num_txq; i++)
-+		netif_queue_set_napi(dev, q_vector->tx[i]->idx,
-+				     NETDEV_QUEUE_TYPE_TX, napi);
-+}
-+
- /**
-  * idpf_vport_intr_rel_irq - Free the IRQ association with the OS
-  * @vport: main vport structure
-@@ -3450,6 +3464,7 @@ static void idpf_vport_intr_rel_irq(struct idpf_vport *vport)
- 		vidx = vport->q_vector_idxs[vector];
- 		irq_num = adapter->msix_entries[vidx].vector;
- 
-+		idpf_q_vector_set_napi(q_vector, false);
- 		kfree(free_irq(irq_num, q_vector));
- 	}
- }
-@@ -3637,6 +3652,8 @@ static int idpf_vport_intr_req_irq(struct idpf_vport *vport)
- 				   "Request_irq failed, error: %d\n", err);
- 			goto free_q_irqs;
- 		}
-+
-+		idpf_q_vector_set_napi(q_vector, true);
- 	}
- 
- 	return 0;
+ 	/* CRTC disabled, so disable  clock. */
+ 	REG_WAIT(OTG_CLOCK_CONTROL,
+ 			OTG_BUSY, 0,
 -- 
 2.51.0
 
