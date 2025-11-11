@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-193029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A308AC49ED2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EAEBC4A041
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65C9C3AD490
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:48:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E91474F3DE1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86EDF256C8D;
-	Tue, 11 Nov 2025 00:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE57025A626;
+	Tue, 11 Nov 2025 00:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2g2mCh8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4cR5s/2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330CC4C97;
-	Tue, 11 Nov 2025 00:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A530625484B;
+	Tue, 11 Nov 2025 00:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822129; cv=none; b=N2TjLst9Q1in29HGlw5vCnu3XnSnx7GW/EtH2K6/+sZVGoHwLEXN57uVv0ILMj6O68pWby2P/von4i6C5+/vMZgmU/gPxsiwh1KbWKKU37qSG5r/3XG3RalUWyn5DOuFwK2I5OzW24oO7xYpysNWqO0TgquarXmo1LjXBmd+uHI=
+	t=1762822313; cv=none; b=C1xksYCfiUlc6+K4DaS5nZYHokHaPl1ZSeOaRKUSxMge0AO/zAFcvCNrqeT5K2V99m2BggfUf5lgaBsIPJni6gc502l0aICmGlJCEEJEdkO42J742eHg0VRKvi9tzC6tdrcyGh6Gumxsl4hQd9/uhAMx6on3N13Q1Pq/GGlCjVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822129; c=relaxed/simple;
-	bh=WrkpoqO0AiSCXGu0jdOpQtaMumtqNZbiUqplvlHxnzY=;
+	s=arc-20240116; t=1762822313; c=relaxed/simple;
+	bh=0FwQm5QxE+MGdnoad2EwpV52pFpFojFr8sIbgd0gbMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jObjAud8YWCxNrk2WQatR6il2uzSFv7a5NWrEhonXvUnNVgep1ezCw4CMz0X5Luggu8/mBFq442/eYQ736HcsSzuWRmk2jaB7VoofOVHRkh1fpS4zt71HFz5Dv1/0IDib5qhPL17I9s+WsU87zdzBDo9U4jJ1uh4ZxdgkS37OzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2g2mCh8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D93C4CEF5;
-	Tue, 11 Nov 2025 00:48:48 +0000 (UTC)
+	 MIME-Version; b=aOR3ZiLLKKR7AguQ6JMSTA8fpq8ymLzD++DETIWiNZW92Hgykz52z8MDVeFrnXc6manwHvBohzL7+yfwiDHv+jBVTt10u+XUrH7JLC+O6obwWXpPvGmZZNBrxjn4Y3xUFtlK0mMnELjOnz0hDidtuJKgrl1eYrx3HdrBynIgke4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4cR5s/2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109EBC19424;
+	Tue, 11 Nov 2025 00:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822129;
-	bh=WrkpoqO0AiSCXGu0jdOpQtaMumtqNZbiUqplvlHxnzY=;
+	s=korg; t=1762822313;
+	bh=0FwQm5QxE+MGdnoad2EwpV52pFpFojFr8sIbgd0gbMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2g2mCh8xsiZhvq4CtCCt0ANm+7T8MagnWqmfbo55suFaNV03K6rb0CE3sFxGqt09C
-	 44x/oASZugYOQCEPzybnjGa3GAamUOKCG9FftjIKzUnYuvOQf3sZUX62wHD6LUafqW
-	 DtuMEjWSAppGWpY+oIyjxJ0/Nz4isiYoFO4YC+pw=
+	b=p4cR5s/2d3J5pnFe8riT3/x7d91J61ggSOyVSf4mg6Nt1nPT32SLsUyX5v0FlJ/qp
+	 EcgzZWYMi2Xox21pLA78Zp7GIOTSRIJClymx6ELeTWU9DgPTNAihJdRfLbdJil4zZ4
+	 HuiEBWao/lH4xf+xOGF82TQHibNxSdtNGO5CX0aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Price <gourry@gourry.net>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.17 027/849] x86/CPU/AMD: Add RDSEED fix for Zen5
-Date: Tue, 11 Nov 2025 09:33:17 +0900
-Message-ID: <20251111004537.106768902@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>,
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Chao Gao <chao.gao@intel.com>
+Subject: [PATCH 6.17 028/849] x86/fpu: Ensure XFD state on signal delivery
+Date: Tue, 11 Nov 2025 09:33:18 +0900
+Message-ID: <20251111004537.129593759@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -65,49 +67,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gregory Price <gourry@gourry.net>
+From: Chang S. Bae <chang.seok.bae@intel.com>
 
-commit 607b9fb2ce248cc5b633c5949e0153838992c152 upstream.
+commit 388eff894d6bc5f921e9bfff0e4b0ab2684a96e9 upstream.
 
-There's an issue with RDSEED's 16-bit and 32-bit register output
-variants on Zen5 which return a random value of 0 "at a rate inconsistent
-with randomness while incorrectly signaling success (CF=1)". Search the
-web for AMD-SB-7055 for more detail.
+Sean reported [1] the following splat when running KVM tests:
 
-Add a fix glue which checks microcode revisions.
+   WARNING: CPU: 232 PID: 15391 at xfd_validate_state+0x65/0x70
+   Call Trace:
+    <TASK>
+    fpu__clear_user_states+0x9c/0x100
+    arch_do_signal_or_restart+0x142/0x210
+    exit_to_user_mode_loop+0x55/0x100
+    do_syscall_64+0x205/0x2c0
+    entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-  [ bp: Add microcode revisions checking, rewrite. ]
+Chao further identified [2] a reproducible scenario involving signal
+delivery: a non-AMX task is preempted by an AMX-enabled task which
+modifies the XFD MSR.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20251018024010.4112396-1-gourry@gourry.net
+When the non-AMX task resumes and reloads XSTATE with init values,
+a warning is triggered due to a mismatch between fpstate::xfd and the
+CPU's current XFD state. fpu__clear_user_states() does not currently
+re-synchronize the XFD state after such preemption.
+
+Invoke xfd_update_state() which detects and corrects the mismatch if
+there is a dynamic feature.
+
+This also benefits the sigreturn path, as fpu__restore_sig() may call
+fpu__clear_user_states() when the sigframe is inaccessible.
+
+[ dhansen: minor changelog munging ]
+
+Closes: https://lore.kernel.org/lkml/aDCo_SczQOUaB2rS@google.com [1]
+Fixes: 672365477ae8a ("x86/fpu: Update XFD state where required")
+Reported-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Tested-by: Chao Gao <chao.gao@intel.com>
+Link: https://lore.kernel.org/all/aDWbctO%2FRfTGiCg3@intel.com [2]
+Cc:stable@vger.kernel.org
+Link: https://patch.msgid.link/20250610001700.4097-1-chang.seok.bae%40intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/kernel/fpu/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1018,8 +1018,18 @@ static void init_amd_zen4(struct cpuinfo
- 	}
- }
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -825,6 +825,9 @@ void fpu__clear_user_states(struct fpu *
+ 	    !fpregs_state_valid(fpu, smp_processor_id()))
+ 		os_xrstor_supervisor(fpu->fpstate);
  
-+static const struct x86_cpu_id zen5_rdseed_microcode[] = {
-+	ZEN_MODEL_STEP_UCODE(0x1a, 0x02, 0x1, 0x0b00215a),
-+	ZEN_MODEL_STEP_UCODE(0x1a, 0x11, 0x0, 0x0b101054),
-+};
++	/* Ensure XFD state is in sync before reloading XSTATE */
++	xfd_update_state(fpu->fpstate);
 +
- static void init_amd_zen5(struct cpuinfo_x86 *c)
- {
-+	if (!x86_match_min_microcode_rev(zen5_rdseed_microcode)) {
-+		clear_cpu_cap(c, X86_FEATURE_RDSEED);
-+		msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
-+		pr_emerg_once("RDSEED32 is broken. Disabling the corresponding CPUID bit.\n");
-+	}
- }
+ 	/* Reset user states in registers. */
+ 	restore_fpregs_from_init_fpstate(XFEATURE_MASK_USER_RESTORE);
  
- static void init_amd(struct cpuinfo_x86 *c)
 
 
 
