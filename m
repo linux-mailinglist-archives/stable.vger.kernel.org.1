@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2346C4A1B7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:00:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DECB7C4A1BD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:00:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F5153AD133
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4269C3AD378
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5D24C97;
-	Tue, 11 Nov 2025 00:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4AE92561A7;
+	Tue, 11 Nov 2025 01:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQ2g9Zs5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNCAL+G8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71F8244693;
-	Tue, 11 Nov 2025 00:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B029257849;
+	Tue, 11 Nov 2025 01:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822795; cv=none; b=pwEABbNeGwj3BWoEUrX7V5uIURQmXjnMt3ljJAV3n/Wb8ehoWSkxPV6yrxIF3TE+pUm8VkcNXJmINbNyMoYhqkaphAyMRcr8JcVUZRq8Nt05E4fB+9LKVSM9XlSUVxByCwbXrJUu/nHbhsnR5Wc/qiGX8hbMBVg39ZO+saetSjI=
+	t=1762822803; cv=none; b=R/M0Bngr+pwIHnECRWQasIsBAW71unujRetVxKGFWHiLr7X4f9pPzR+J0eAqvl0sjuWNvzGZUUaoS4qaXdgUyoQX3bZieBk+P2qrSdADypvVLGwnSqqAJRX70LIqaYt5kGuKgW5RNRs/IZikqOr6VYqSUOwP7ZmhCh0wi9L4tmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822795; c=relaxed/simple;
-	bh=27OVNvLiVGlmnfBD5YG8DviGxivhjxZOSzzng1rtyUM=;
+	s=arc-20240116; t=1762822803; c=relaxed/simple;
+	bh=LKKQRVyDc13Rz6BsYCfxU6+nmOtQaz+P8MVG/5OdCVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cYNgm7xBjNmt7QxOJjMgafiKKGE3SkKELaJ5AqM+gMusxue/OyRv2H8CaGAoYgTNXICxEyKvyEWq5wk4oDGeRd6rH12T8RTAJEm5OQ3P1fy1vJPvOfHrJpzibeRLnsZTu01RDrYNx0nRBNakN9oI/167jXGMBArlhVlsSkFgkgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQ2g9Zs5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CA2C4CEF5;
-	Tue, 11 Nov 2025 00:59:55 +0000 (UTC)
+	 MIME-Version; b=IjIeAvsqHnbqCPqnwk4+5bfylwgn+eKkC5rAJSI7ordNzzcCNY9vboiPmPEGkSz4wIRsehT7UY9LlIRGEIrxVlGG8dQ/8FjNEtA6QzVM44Ar6uaKozA1muznVm0vkMUQAQX3NU1hvYRy2Qt7ZBXyrzqqKZGiVvzEVyjvCxatH4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNCAL+G8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30376C16AAE;
+	Tue, 11 Nov 2025 01:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822795;
-	bh=27OVNvLiVGlmnfBD5YG8DviGxivhjxZOSzzng1rtyUM=;
+	s=korg; t=1762822803;
+	bh=LKKQRVyDc13Rz6BsYCfxU6+nmOtQaz+P8MVG/5OdCVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rQ2g9Zs5FmP6pcsVpVw4lAuQowug9mwztp1o6Q8byFRmBkwPTzC2PsLEWixom2IDH
-	 H8Tw6Xfcgo2DkoTzveXFEeH2M/pwkSqNhaLu2jGEp/JTFqft3MlH7xqvF3dEK4lQad
-	 sulwrz80OFGgQ9SfQlemfefxy3tn5EpQ+Ou8qwW8=
+	b=zNCAL+G8P7wUIdIWbImDVkmwwKjkKVOAg+FwgZI3b7f+8qM+EG13Q8L2UtAOKhaxL
+	 7N/Ea4SoNHqaD0889PRVUWSPjrdkuID4i6iLzAMiiTGpsRdG3YKRo6ktBcTeIoKdH8
+	 bH4uB7wyDO+KNlx3s2jOK8xrVKRl0IAHeE7LtpcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Travkin <nikita@trvn.ru>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Bryan Brattlof <bb@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 173/849] firmware: qcom: tzmem: disable sc7180 platform
-Date: Tue, 11 Nov 2025 09:35:43 +0900
-Message-ID: <20251111004540.619399923@linuxfoundation.org>
+Subject: [PATCH 6.17 174/849] soc: ti: k3-socinfo: Add information for AM62L SR1.1
+Date: Tue, 11 Nov 2025 09:35:44 +0900
+Message-ID: <20251111004540.641932457@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,36 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Travkin <nikita@trvn.ru>
+From: Bryan Brattlof <bb@ti.com>
 
-[ Upstream commit 3cc9a8cadaf66e1a53e5fee48f8bcdb0a3fd5075 ]
+[ Upstream commit 037e496038f6e4cfb3642a0ffc2db19838d564dd ]
 
-When SHM bridge is enabled, assigning RMTFS memory causes the calling
-core to hang if the system is running in EL1.
+The second silicon revision for the AM62L was mainly a ROM revision
+and therefore this silicon revision is labeled SR1.1
 
-Disable SHM bridge on sc7180 devices to avoid that hang.
+Add a new decode array to properly identify this revision as SR1.1
 
-Signed-off-by: Nikita Travkin <nikita@trvn.ru>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250721-sc7180-shm-hang-v1-1-99ad9ffeb5b4@trvn.ru
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Bryan Brattlof <bb@ti.com>
+Link: https://patch.msgid.link/20250908-62l-chipid-v1-1-9c7194148140@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom/qcom_tzmem.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/soc/ti/k3-socinfo.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/firmware/qcom/qcom_tzmem.c b/drivers/firmware/qcom/qcom_tzmem.c
-index ea0a353556570..12e448669b8bd 100644
---- a/drivers/firmware/qcom/qcom_tzmem.c
-+++ b/drivers/firmware/qcom/qcom_tzmem.c
-@@ -77,6 +77,7 @@ static bool qcom_tzmem_using_shm_bridge;
+diff --git a/drivers/soc/ti/k3-socinfo.c b/drivers/soc/ti/k3-socinfo.c
+index d716be113c84f..50c170a995f90 100644
+--- a/drivers/soc/ti/k3-socinfo.c
++++ b/drivers/soc/ti/k3-socinfo.c
+@@ -66,6 +66,10 @@ static const char * const j721e_rev_string_map[] = {
+ 	"1.0", "1.1", "2.0",
+ };
  
- /* List of machines that are known to not support SHM bridge correctly. */
- static const char *const qcom_tzmem_blacklist[] = {
-+	"qcom,sc7180", /* hang in rmtfs memory assignment */
- 	"qcom,sc8180x",
- 	"qcom,sdm670", /* failure in GPU firmware loading */
- 	"qcom,sdm845", /* reset in rmtfs memory assignment */
++static const char * const am62lx_rev_string_map[] = {
++	"1.0", "1.1",
++};
++
+ static int
+ k3_chipinfo_partno_to_names(unsigned int partno,
+ 			    struct soc_device_attribute *soc_dev_attr)
+@@ -92,6 +96,12 @@ k3_chipinfo_variant_to_sr(unsigned int partno, unsigned int variant,
+ 		soc_dev_attr->revision = kasprintf(GFP_KERNEL, "SR%s",
+ 						   j721e_rev_string_map[variant]);
+ 		break;
++	case JTAG_ID_PARTNO_AM62LX:
++		if (variant >= ARRAY_SIZE(am62lx_rev_string_map))
++			goto err_unknown_variant;
++		soc_dev_attr->revision = kasprintf(GFP_KERNEL, "SR%s",
++						   am62lx_rev_string_map[variant]);
++		break;
+ 	default:
+ 		variant++;
+ 		soc_dev_attr->revision = kasprintf(GFP_KERNEL, "SR%x.0",
 -- 
 2.51.0
 
