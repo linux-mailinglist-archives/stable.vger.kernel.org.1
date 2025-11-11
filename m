@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 454C6C4A499
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC09C4ABD1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EF1A1883CE2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:12:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD252188F947
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B7834321F;
-	Tue, 11 Nov 2025 01:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CA9346FDF;
+	Tue, 11 Nov 2025 01:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1sQztRP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXrmLHY3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112F234320C;
-	Tue, 11 Nov 2025 01:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0488E26C399;
+	Tue, 11 Nov 2025 01:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823184; cv=none; b=pZrLinrN+4ieemPozeS17p3LUeinjQ0AqOAinCfE9uvlc1NrDAIDfG06WF3F+uESyzn+xNmiUNAeZC78k/P1tZAIn8uPMeoGhCJOa0pWfHKjV4gJ7n3hIu1/XSni34tC9ARznT76edTZWirhdMi+ggTtayfmu003a4z+kPIPD+g=
+	t=1762824268; cv=none; b=ktXzzb3sds3zr0iAbL0sZVuGAwwlnAuVeS/fId81FGF9Z70q9JJZqG89pLQocvjg0PMM9qovbQwe+iFSmjW/yntdZ/LB7zXtfWx36/fA6RttiTeX4DE6nsPSmGWE5j7M2w+Kym9dyhL8ceVgvsuBS/Nl5cs+xwrCFNpetIYDec0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823184; c=relaxed/simple;
-	bh=fQL6fdO2OW8LngKpGGyLiPJiP212czGUDU8m6TuJtbo=;
+	s=arc-20240116; t=1762824268; c=relaxed/simple;
+	bh=60vlrtQRvVFIr4jOFUNwB63k+2hikOwpiBVgebQ7EMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oRyIK6/pEePhiRppk+3QhQ3yWE9hLtPlDh0BdbP3Rfta5EFq1A5QwyCz+PbdZ5FTYoTUW0fpxzdlWJqDzaVj9/sJYTnjjMfIvkp195mXGih+OCUUZUHif4gh5xdfNRg6yJAOqQVqkSeveq9Omwua3DfLKogdhiGqZB/bL6iKgb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1sQztRP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D85C19421;
-	Tue, 11 Nov 2025 01:06:23 +0000 (UTC)
+	 MIME-Version; b=ulVQ9lkRtGJNLng0dUFXj+XA4N0LhUcOIQR2iaeTd9q6vd8eIpz72FTwj88YXyW64OURmyi1OrgE297dRIdifYxRwAsOqCKP4q2NLvO3ZqUDtR1XwfK088skLCOVATbKcCbyDa4KXLI1xqE/7J2eYso7jr9Hat4RHIPRl1spr2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXrmLHY3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A89C113D0;
+	Tue, 11 Nov 2025 01:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823183;
-	bh=fQL6fdO2OW8LngKpGGyLiPJiP212czGUDU8m6TuJtbo=;
+	s=korg; t=1762824267;
+	bh=60vlrtQRvVFIr4jOFUNwB63k+2hikOwpiBVgebQ7EMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W1sQztRPsOGi/SUBa8DJFvT7KbvH7FYLqeD1+mOsMYFnbpCGgXrsJn66woNgf3x4b
-	 J2lHSdApnC4rqbDgM356ptPpdhotJtiSTmjBzaVX95XQVQL/lhdsxVy1V3EJrtytBY
-	 /yJFEKEBEJIIoIIsjOth2fjj7NLp4GdDSeF/kYEc=
+	b=vXrmLHY35mEcfur2ctpyNdSA40WpSgzxRh0gDapRtmA0x3YGK613ZafDcGKpCy+hA
+	 7NINcfA/PbLC0g+OJAFROCplmHseb0YPDZmMq8Xt7/APJ/GBKJeI6CObCQcULZl5NE
+	 CNMLbsPEK+THYseVhiGAtp5TfeXp3fNw4OPWQltI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathishkumar S <sathishkumar.sundararaju@amd.com>,
-	Leo Liu <leo.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 187/565] drm/amdgpu/jpeg: Hold pg_lock before jpeg poweroff
-Date: Tue, 11 Nov 2025 09:40:43 +0900
-Message-ID: <20251111004531.139272247@linuxfoundation.org>
+Subject: [PATCH 6.17 474/849] drm/msm/adreno: Add speedbin data for A623 GPU
+Date: Tue, 11 Nov 2025 09:40:44 +0900
+Message-ID: <20251111004547.906908984@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sathishkumar S <sathishkumar.sundararaju@amd.com>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit 0e7581eda8c76d1ca4cf519631a4d4eb9f82b94c ]
+[ Upstream commit 0584da4515dbb4fec69107ce837eef36a7be5d7d ]
 
-Acquire jpeg_pg_lock before changes to jpeg power state
-and release it after power off from idle work handler.
+Add the speedbin mappings for Adreno 623 GPU.
 
-Signed-off-by: Sathishkumar S <sathishkumar.sundararaju@amd.com>
-Reviewed-by: Leo Liu <leo.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/672462/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_catalog.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-index 6df99cb00d9a5..f96a79a4d5397 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-@@ -117,10 +117,12 @@ static void amdgpu_jpeg_idle_work_handler(struct work_struct *work)
- 			fences += amdgpu_fence_count_emitted(&adev->jpeg.inst[i].ring_dec[j]);
- 	}
- 
--	if (!fences && !atomic_read(&adev->jpeg.total_submission_cnt))
-+	if (!fences && !atomic_read(&adev->jpeg.total_submission_cnt)) {
-+		mutex_lock(&adev->jpeg.jpeg_pg_lock);
- 		amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_JPEG,
- 						       AMD_PG_STATE_GATE);
--	else
-+		mutex_unlock(&adev->jpeg.jpeg_pg_lock);
-+	} else
- 		schedule_delayed_work(&adev->jpeg.idle_work, JPEG_IDLE_TIMEOUT);
- }
- 
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+index 2b1c41f6cfeee..3c82b3f320e3a 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+@@ -913,6 +913,11 @@ static const struct adreno_info a6xx_gpus[] = {
+ 				{ /* sentinel */ },
+ 			},
+ 		},
++		.speedbins = ADRENO_SPEEDBINS(
++			{ 0,   0 },
++			{ 185, 0 },
++			{ 127, 1 },
++		),
+ 	}, {
+ 		.chip_ids = ADRENO_CHIP_IDS(
+ 			0x06030001,
 -- 
 2.51.0
 
