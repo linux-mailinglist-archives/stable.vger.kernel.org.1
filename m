@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-193679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4710BC4A95C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B312BC4AE03
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F12A3B917C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B0DB189619F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF53347FDF;
-	Tue, 11 Nov 2025 01:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554F9334683;
+	Tue, 11 Nov 2025 01:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MmbSCo/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlGwS14I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4984D347FD3;
-	Tue, 11 Nov 2025 01:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0864E330B12;
+	Tue, 11 Nov 2025 01:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823754; cv=none; b=fxRS4DniYgJNar3ls/ssRyWmouDWLEwffYWp4ACp1QlnHgpOHM4cJepCaJiCJfuNxVk9CLGaA9Fvggc0nGmMVmK6uDmW6gp8tTi8bEozzmF5oSjNjlirmC7yYlgo2Tfh3mSdbVACb9vMSulcnGV4yJjBiau9n/+DBUsgBZAW/DM=
+	t=1762824926; cv=none; b=YsWzMN9WC9ZUlDR7J5cAwKrMuLIBXWP+UtB7b4Jb+qwGfC6X+aCbAWEtQ3Wruxo4m8XunxrBGdDYKT0TQyKP8+80+RgaqYVAU3DcR3rvPL7T23TirexbHH4KfyoKeoqeKHy0Pv1XX6Q97NlXnMXi03++Vs+WICcYUOWjpWzXLyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823754; c=relaxed/simple;
-	bh=o3+J/fXNqqOHOiAVlsFRJg1l5g4EvwRPSGKdFNbliwU=;
+	s=arc-20240116; t=1762824926; c=relaxed/simple;
+	bh=EPcHGQPvVsIaktgHSKvt09p4BeNjNoBIqVx70cn+sPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dwj99xqDlfaJr5YEw8mhNwdT/ZD1KHKbkklhWFI4UrqhI0pc7YqG4IUYd07wax+8ThpAgIuhHoe+556X5es0t4mOQA2JAKqr8zvMN4zNbv40Ce5tcjXsQfo/rZhqI0PU/qWPZKfHeea/gzige1ciZQvdpHjlKsz+EGK1OYYghdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MmbSCo/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D958DC113D0;
-	Tue, 11 Nov 2025 01:15:53 +0000 (UTC)
+	 MIME-Version; b=ZHLHk5XtwXiyKJK/oIMpCsAl3wsuzg/VsgxxciDhdQZmlwzMmgZ1BhCyVRyhbGWFQPrWaLK8d0YHZLTtnbPzFAf9FFHdL2FFXOoJNKOnEW8axeftt3KDYFJ/vwo1ylHAkCV6ackdIHOvUaUVTzsSiT83Q0qG7XhpgSklki9G9TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KlGwS14I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA67C116B1;
+	Tue, 11 Nov 2025 01:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823754;
-	bh=o3+J/fXNqqOHOiAVlsFRJg1l5g4EvwRPSGKdFNbliwU=;
+	s=korg; t=1762824925;
+	bh=EPcHGQPvVsIaktgHSKvt09p4BeNjNoBIqVx70cn+sPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MmbSCo/smPO0Qz7uxLHwdadlWqBth1PB7eDqNnBaQNWdJCdeoRarybG+j1nAYnHv
-	 o9r7ffw4FxPl1SgRRSoXCGBopxOK9xHiRNV9MhGKuOG64GjFq5VxSwC/xVqukCpLHb
-	 3b8PwAddEx1jMlKobAq7O0R2QWqZsV4QVjtvYuRM=
+	b=KlGwS14IfaF80/HzNHB7mym9xV3MF/zP5hBvD1l1zdKKNtUoPjc/+3xmHn0I2E+l5
+	 f4sutACq26VhWXR3Rdmt8vJPC3+GUAMNB+si/j1ORs2wPkIbcbcY93sifYU9icMqCD
+	 QMRe7EmVl69ozJ/Ahp0xWwGhfG39/06EI1oQvEvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zizhi Wo <wozizhi@huaweicloud.com>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 313/565] tty/vt: Add missing return value for VT_RESIZE in vt_ioctl()
+Subject: [PATCH 6.17 599/849] wifi: ath10k: Fix connection after GTK rekeying
 Date: Tue, 11 Nov 2025 09:42:49 +0900
-Message-ID: <20251111004533.927620816@linuxfoundation.org>
+Message-ID: <20251111004550.903682634@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zizhi Wo <wozizhi@huaweicloud.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-[ Upstream commit da7e8b3823962b13e713d4891e136a261ed8e6a2 ]
+[ Upstream commit 487e8a8c3421df0af3707e54c7e069f1d89cbda7 ]
 
-In vt_ioctl(), the handler for VT_RESIZE always returns 0, which prevents
-users from detecting errors. Add the missing return value so that errors
-can be properly reported to users like vt_resizex().
+It appears that not all hardware/firmware implementations support
+group key deletion correctly, which can lead to connection hangs
+and deauthentication following GTK rekeying (delete and install).
 
-Signed-off-by: Zizhi Wo <wozizhi@huaweicloud.com>
-Link: https://lore.kernel.org/r/20250904023955.3892120-1-wozizhi@huaweicloud.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To avoid this issue, instead of attempting to delete the key using
+the special WMI_CIPHER_NONE value, we now replace the key with an
+invalid (random) value.
+
+This behavior has been observed with WCN39xx chipsets.
+
+Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
+Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
+Closes: https://lore.kernel.org/all/DAWJQ2NIKY28.1XOG35E4A682G@linaro.org
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # QRB2210 RB1
+Link: https://patch.msgid.link/20250902143225.837487-1-loic.poulain@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vt/vt_ioctl.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/mac.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/vt/vt_ioctl.c b/drivers/tty/vt/vt_ioctl.c
-index 1f2bdd2e1cc59..387b691826623 100644
---- a/drivers/tty/vt/vt_ioctl.c
-+++ b/drivers/tty/vt/vt_ioctl.c
-@@ -923,7 +923,9 @@ int vt_ioctl(struct tty_struct *tty,
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 24dd794e31ea2..154ac7a709824 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -16,6 +16,7 @@
+ #include <linux/acpi.h>
+ #include <linux/of.h>
+ #include <linux/bitfield.h>
++#include <linux/random.h>
  
- 			if (vc) {
- 				/* FIXME: review v tty lock */
--				__vc_resize(vc_cons[i].d, cc, ll, true);
-+				ret = __vc_resize(vc_cons[i].d, cc, ll, true);
-+				if (ret)
-+					return ret;
- 			}
- 		}
- 		console_unlock();
+ #include "hif.h"
+ #include "core.h"
+@@ -290,8 +291,15 @@ static int ath10k_send_key(struct ath10k_vif *arvif,
+ 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
+ 
+ 	if (cmd == DISABLE_KEY) {
+-		arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
+-		arg.key_data = NULL;
++		if (flags & WMI_KEY_GROUP) {
++			/* Not all hardware handles group-key deletion operation
++			 * correctly. Replace the key with a junk value to invalidate it.
++			 */
++			get_random_bytes(key->key, key->keylen);
++		} else {
++			arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
++			arg.key_data = NULL;
++		}
+ 	}
+ 
+ 	return ath10k_wmi_vdev_install_key(arvif->ar, &arg);
 -- 
 2.51.0
 
