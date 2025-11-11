@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-193065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C654AC49EF9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 484A1C49EFC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ECFB1889C37
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21CDB1889C2B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143B92AE8D;
-	Tue, 11 Nov 2025 00:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9420B1D6DB5;
+	Tue, 11 Nov 2025 00:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikaIy+qZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8kLP0v3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C644912DDA1;
-	Tue, 11 Nov 2025 00:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F25012DDA1;
+	Tue, 11 Nov 2025 00:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822218; cv=none; b=PPasoAH0y40gcSmEyscriLq+17na7I6BU0igRtDgy81RVMv3LTFtCzIXVkctjIrKnYF323CFKNNInC0VLjILe3F3E1YEGHmqXLlKgEpGqzlVkX12PQsxc3FuspYDxCYnNAtSulFueF5cqMnWDP0fcIut9XKEMDcMNcGcAbZ8N5Q=
+	t=1762822222; cv=none; b=KTusqgaY7gCZcCSI3JUDiuwz3kXE0ua57MOYRF0VLwdb8Ctqbn7hLZx5Suj0sOFhT0o4rODCZ2rRXTjc+4zzXEMq+iGv7LNie+SnNuY5YBoHF1iEgZoJ0HstLUm7jVLntx32CXWP22eZ3B7Ibjgx7nj4UvlZBBl14irkkEDAxUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822218; c=relaxed/simple;
-	bh=xXuccTHnGojvJIU9j+XDEdL30hZQMVUo1/wR/8JPNE4=;
+	s=arc-20240116; t=1762822222; c=relaxed/simple;
+	bh=Hk8+7wq/agBau/9JNfhK7tNjXKVSWpGvE6k4Ni0YPjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uSYsPyr52p1QXH5fyN9zrUKyRKBUivoKI78Qz2ATx69Li5gl1KKwdY21+gmWGHYLtZlEGWMylqNYv+CPnodTnViGtQTsJ00lQAujgslsDM8ySvez7jAmZkjVI029fKISJNa1f/N79fBlA7jaGFWkDjmPwYr5U1MqGfI8jvmhKDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikaIy+qZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2179AC4AF09;
-	Tue, 11 Nov 2025 00:50:16 +0000 (UTC)
+	 MIME-Version; b=aaT504EjJ18giOOmAtVPzpOH4jqa+uMkU9NWVEeJLJ5FCTt+5uXfUPMwNIkyKN/FPx9yKhvgO0T3tjm72CbgTkqoKhDkJ7OpC90Z716Ys/3n2USl2NADX0jiobOsFhq4F15yKXx0l4qrlQ/GUmtJ2L9QuGEztBnlpQiwOurFXb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8kLP0v3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE320C113D0;
+	Tue, 11 Nov 2025 00:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822217;
-	bh=xXuccTHnGojvJIU9j+XDEdL30hZQMVUo1/wR/8JPNE4=;
+	s=korg; t=1762822222;
+	bh=Hk8+7wq/agBau/9JNfhK7tNjXKVSWpGvE6k4Ni0YPjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikaIy+qZaeQHgOfvzGAyzEPR2cXC4/gfDbE7bu8ox1aKUTJh9fYPLAPyfU2RUFIpT
-	 KKXZ+qn3louZZd01q3Hir+fzIHkCIWOAVuT/PIEam5pfULCIkCCt8OeV9L0gIywl/O
-	 ZjhYjB1ldWnIC3jpkyS/0vBFNqYjyd1YPTQTv7uk=
+	b=D8kLP0v3Splm2RfDBhDAtD25wuM3Dx1SEpkkCF4x7Ff54to27muL/zgA2dNE8tTC1
+	 PI0nCydvm8pKbYqW4Z0a/5E/M+8TGynxvwcxXHlNKEIBFLGRypmAJ54M87GSD9c4tM
+	 ZXJCRgJjkrXO5Sd6eoRFQd09bwCmdflejYDoHmtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 005/565] ACPI: video: Fix use-after-free in acpi_video_switch_brightness()
-Date: Tue, 11 Nov 2025 09:37:41 +0900
-Message-ID: <20251111004526.964506630@linuxfoundation.org>
+Subject: [PATCH 6.12 006/565] ACPI: button: Call input_free_device() on failing input device registration
+Date: Tue, 11 Nov 2025 09:37:42 +0900
+Message-ID: <20251111004526.991524083@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,50 +65,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yuhao Jiang <danisjiang@gmail.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-commit 8f067aa59430266386b83c18b983ca583faa6a11 upstream.
+commit 20594cd104abaaabb676c7a2915b150ae5ff093d upstream.
 
-The switch_brightness_work delayed work accesses device->brightness
-and device->backlight, freed by acpi_video_dev_unregister_backlight()
-during device removal.
+Make acpi_button_add() call input_free_device() when
+input_register_device() fails as required according to the
+documentation of the latter.
 
-If the work executes after acpi_video_bus_unregister_backlight()
-frees these resources, it causes a use-after-free when
-acpi_video_switch_brightness() dereferences device->brightness or
-device->backlight.
-
-Fix this by calling cancel_delayed_work_sync() for each device's
-switch_brightness_work in acpi_video_bus_remove_notify_handler()
-after removing the notify handler that queues the work. This ensures
-the work completes before the memory is freed.
-
-Fixes: 8ab58e8e7e097 ("ACPI / video: Fix backlight taking 2 steps on a brightness up/down keypress")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-[ rjw: Changelog edit ]
-Link: https://patch.msgid.link/20251022200704.2655507-1-danisjiang@gmail.com
+Fixes: 0d51157dfaac ("ACPI: button: Eliminate the driver notify callback")
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Cc: 6.5+ <stable@vger.kernel.org> # 6.5+
+[ rjw: Subject and changelog rewrite, Fixes: tag ]
+Link: https://patch.msgid.link/20251006084706.971855-1-kaushlendra.kumar@intel.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_video.c |    4 +++-
+ drivers/acpi/button.c |    4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -1946,8 +1946,10 @@ static void acpi_video_bus_remove_notify
- 	struct acpi_video_device *dev;
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -613,8 +613,10 @@ static int acpi_button_add(struct acpi_d
  
- 	mutex_lock(&video->device_list_lock);
--	list_for_each_entry(dev, &video->video_device_list, entry)
-+	list_for_each_entry(dev, &video->video_device_list, entry) {
- 		acpi_video_dev_remove_notify_handler(dev);
-+		cancel_delayed_work_sync(&dev->switch_brightness_work);
+ 	input_set_drvdata(input, device);
+ 	error = input_register_device(input);
+-	if (error)
++	if (error) {
++		input_free_device(input);
+ 		goto err_remove_fs;
 +	}
- 	mutex_unlock(&video->device_list_lock);
  
- 	acpi_video_bus_stop_devices(video);
+ 	switch (device->device_type) {
+ 	case ACPI_BUS_TYPE_POWER_BUTTON:
 
 
 
