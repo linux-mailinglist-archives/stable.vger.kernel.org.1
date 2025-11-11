@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E8E3C4AB63
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95644C4B136
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A22114FA354
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 334384F6F56
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CB52FC009;
-	Tue, 11 Nov 2025 01:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBABB34889B;
+	Tue, 11 Nov 2025 01:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBWsIU5M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WddZbDj3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE72265CC5;
-	Tue, 11 Nov 2025 01:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8645334A790;
+	Tue, 11 Nov 2025 01:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824370; cv=none; b=EiUeNO+xBQTdavLsG3nKNvVmKUPg5Ziu/attvsXoP3emYtjY0yBV5J9cNeSve3kLeszdz0RN/rNgLMMxZqnYag5kJxIJHhEPY9EaeLHnxP/eUckIIQhQ3wLz+L2d6Tg0+IrNNneHwRodPor0fV1cotMry1MVQcZkH0K9uXWNDNk=
+	t=1762825338; cv=none; b=msClpCoCO73FFkriKH1KZqryy4EbTbIVyRkuYQPUU2T37308YHbtomxu9zIxbL+cmDajeXrQZQ8lodJJ22A9QzTHV4CCKZPps140zM0YexfrVxK5/8nXPHFtlH6Xqn9p9VPtqdal8t+sS7lN54xQM9cdPRPjWCteZAQsjaOFkcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824370; c=relaxed/simple;
-	bh=Upkt8ggdWs5N4yFV8u7QiHwa+JH3aTtbbGLP3ujbL5w=;
+	s=arc-20240116; t=1762825338; c=relaxed/simple;
+	bh=qpGs6pJI7KmnothcuDfNPt+Eo9V57CkCHWeZc7xVkiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gAM/UDHHYSjIUE7IHobDLB8xtyhQfhoIO/U5VfplqjS2PNRePq26qZH4CJbXJ6to3Yo4BEClBSDWKWx5ilRl6DZIeQD9udU9cssRL+2TumblAfj/MyL3hPxSRyuTCWXwIVsXHuBoT9hbzhZzOkb2L3k4joYLq85gYRTzHHDu0K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBWsIU5M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C73C116D0;
-	Tue, 11 Nov 2025 01:26:09 +0000 (UTC)
+	 MIME-Version; b=iYV1Y8XxsLtb+022WSBgyNdyMOBIng4/bVdyE57BubUy/puJPSu9Am6TbH84ZL+JbFCUu1hB6jhbVbcNt0Zd9+eXBgfQ58jgLtD3CCoNMxE6vgZgJfeTkksNCCCtW//HT7N8fpieaN2p/Zr68PWK9e0ne4HwiJKsTH95OXUn32I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WddZbDj3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26AF1C4CEFB;
+	Tue, 11 Nov 2025 01:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824370;
-	bh=Upkt8ggdWs5N4yFV8u7QiHwa+JH3aTtbbGLP3ujbL5w=;
+	s=korg; t=1762825338;
+	bh=qpGs6pJI7KmnothcuDfNPt+Eo9V57CkCHWeZc7xVkiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hBWsIU5Mg51zAEA2WXLHaObWJIWwEKHcA2Ng+1aC7o+7yY0Nnu77w/hYxawl735mR
-	 49kjAULM9gU7bcqgKGEz+JHl4DnD5KKcW7arxK9mDR3YG2S+7Sez5zEn3RrRe7Wnr4
-	 kH6z1Bt/g1SHqGIfucP/RzQuceXRhPYZ/etNX1qg=
+	b=WddZbDj3DMZmiDFy/HksPiHN37GCwMX4IPfBo3RXJ52f7yu0xL+2zP9kXYQLDPwgv
+	 I5StZVzyThYw7wTR0M/1S8paQ34XSNglvk/dfjM0L1C0aGSECUon8zemhRR6ub8uv3
+	 d8IKQJgQ+m5H7FcOrkE09aX9SI50NTwVVHsNGqT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
+	Zsolt Kajtar <soci@c64.rulez.org>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 430/565] ASoC: stm32: sai: manage context in set_sysclk callback
-Date: Tue, 11 Nov 2025 09:44:46 +0900
-Message-ID: <20251111004536.545753585@linuxfoundation.org>
+Subject: [PATCH 6.17 717/849] fbdev: core: Fix ubsan warning in pixel_to_pat
+Date: Tue, 11 Nov 2025 09:44:47 +0900
+Message-ID: <20251111004553.766207014@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olivier Moysan <olivier.moysan@foss.st.com>
+From: Zsolt Kajtar <soci@c64.rulez.org>
 
-[ Upstream commit 27fa1a8b2803dfd88c39f03b0969c55f667cdc43 ]
+[ Upstream commit aad1d99beaaf132e2024a52727c24894cdf9474a ]
 
-The mclk direction now needs to be specified in endpoint node with
-"system-clock-direction-out" property. However some calls to the
-set_sysclk callback, related to CPU DAI clock, result in unbalanced
-calls to clock API.
-The set_sysclk callback in STM32 SAI driver is intended only for mclk
-management. So it is relevant to ensure that calls to set_sysclk are
-related to mclk only.
-Since the master clock is handled only at runtime, skip the calls to
-set_sysclk in the initialization phase.
+It could be triggered on 32 bit big endian machines at 32 bpp in the
+pattern realignment. In this case just return early as the result is
+an identity.
 
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Link: https://patch.msgid.link/20250916123118.84175-1-olivier.moysan@foss.st.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Zsolt Kajtar <soci@c64.rulez.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/stm/stm32_sai_sub.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/video/fbdev/core/fb_fillrect.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 5828f9dd866e4..5938d6361e1ec 100644
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -551,6 +551,14 @@ static int stm32_sai_set_sysclk(struct snd_soc_dai *cpu_dai,
- 	struct stm32_sai_sub_data *sai = snd_soc_dai_get_drvdata(cpu_dai);
- 	int ret;
- 
-+	/*
-+	 * The mclk rate is determined at runtime from the audio stream rate.
-+	 * Skip calls to the set_sysclk callback that are not relevant during the
-+	 * initialization phase.
-+	 */
-+	if (!snd_soc_card_is_instantiated(cpu_dai->component->card))
-+		return 0;
-+
- 	if (dir == SND_SOC_CLOCK_OUT && sai->sai_mclk) {
- 		ret = stm32_sai_sub_reg_up(sai, STM_SAI_CR1_REGX,
- 					   SAI_XCR1_NODIV,
+diff --git a/drivers/video/fbdev/core/fb_fillrect.h b/drivers/video/fbdev/core/fb_fillrect.h
+index 66042e534de77..f366670a53af8 100644
+--- a/drivers/video/fbdev/core/fb_fillrect.h
++++ b/drivers/video/fbdev/core/fb_fillrect.h
+@@ -92,8 +92,7 @@ static unsigned long pixel_to_pat(int bpp, u32 color)
+ 		pattern = pattern | pattern << bpp;
+ 		break;
+ 	default:
+-		pattern = color;
+-		break;
++		return color;
+ 	}
+ #ifndef __LITTLE_ENDIAN
+ 	pattern <<= (BITS_PER_LONG % bpp);
 -- 
 2.51.0
 
