@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-194062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD839C4ACCA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293ECC4AE56
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2CDA18813ED
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D3ED3B2DCA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A8A3446BB;
-	Tue, 11 Nov 2025 01:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72D43446C8;
+	Tue, 11 Nov 2025 01:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnxTKh3Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFtNpRH9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93C82E6CA4;
-	Tue, 11 Nov 2025 01:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C652DEA9D;
+	Tue, 11 Nov 2025 01:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824716; cv=none; b=PiCUKfb4Tr8m3KhCbeZrQDiH/6bUsNCN6RcLk9OpzExOXHznkHN3d5swA3Pq6n1YaeiSUcvWK8QFs7LC1ZAgdNG/V3d2WfCBHIpOJIPNRH9s+Fic+5ql7WKy7g/3G8NTxqut0qbAJs+nn8F12w7iYdP/shQv+9k0snpNXLCaeac=
+	t=1762824721; cv=none; b=TYuwrSFmeR+40SLT8kknNaTnScjOyVz//mNt3bJtZD5RCkLvWPHzVATOhFLTwYs5/7gp6xF2GhCQxR5Vyze3bGtyBHuabAp3EtS4V+cpFyl35BueV7h0W6SHbdmXbh8zv9sMwQleWw+gZQf3n0vXWMLEQPzKoVsLDjeTZ1P4/rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824716; c=relaxed/simple;
-	bh=lFYj7BCdNcpTF6vdhxJ15qFR94lzEyBkP4lFmGVhCZo=;
+	s=arc-20240116; t=1762824721; c=relaxed/simple;
+	bh=SqV1mzG+8kHAUDm+SIcBF3aJJZnINQiMuypegPXdg+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dIcWSyC26yWgPgT/p2RyuPSFtcbzfNhlr63ZD+l8r22nB3AqgokSZy9o/70nywNjsK8HNkt0hV8uTQxEUTCNIibWOGGqZhm2DubeTchBb84sHPQgbIawchkvJ6I5CkZIZd/IT9I0YaUgLYULLKiMxMXZXoNKT82BAcjdRajbu2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnxTKh3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A58C19421;
-	Tue, 11 Nov 2025 01:31:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WlflysRY6fu+VtJ+YRXuXe+cjGHv7d8jNz0VfQlKOQ/pTA7ZhJHhleTJiEeVKlWjezB8v5/dUNxb5ZrjF7zgfSQfZ0k8jXy2VzqPwdLmEiDLd8qTDkSBYZFpWZpZWoq47atjUUvS+yZ1N/l0+IyJIKmW8HfzzN7UJTCxaQDzx34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFtNpRH9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BED0C113D0;
+	Tue, 11 Nov 2025 01:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824716;
-	bh=lFYj7BCdNcpTF6vdhxJ15qFR94lzEyBkP4lFmGVhCZo=;
+	s=korg; t=1762824721;
+	bh=SqV1mzG+8kHAUDm+SIcBF3aJJZnINQiMuypegPXdg+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mnxTKh3ZRhe5hjxLhH7rVQxA+l0hD5nE2+RRLp3U2JQ7WN7QtT7n0F1QIuek2q9Y9
-	 UeeptUqT7FecyyexvnIqHw5+32DJ95TVtWsPZ2R47ZbrV4QjBn0Xilhz5VkQa5qI3c
-	 4evbOeNfY1ppsL2XJ1gZzHe+vCIbqU6Eh6s7hKyU=
+	b=aFtNpRH9SY5xaeejok0WZNJzl4abTS9gpTE3wF6oVbEG/8ysRoVknwYhzSDCuRkqd
+	 QCVx1S4JEF0prsooOCg5dEHNshXXEPSRJcNqHMjduKTbK3UlDloy0M2/nJrNbee05m
+	 NvIFKcOvDqKyPriIC5UNPB6f5OMl6zT9QZYhls18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Alex Hung <alex.hung@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 556/849] drm/amd/display: Keep PLL0 running on DCE 6.0 and 6.4
-Date: Tue, 11 Nov 2025 09:42:06 +0900
-Message-ID: <20251111004549.849736948@linuxfoundation.org>
+Subject: [PATCH 6.17 557/849] drm/amd/display: Fix DVI-D/HDMI adapters
+Date: Tue, 11 Nov 2025 09:42:07 +0900
+Message-ID: <20251111004549.873830236@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -70,60 +70,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 0449726b58ea64ec96b95f95944f0a3650204059 ]
+[ Upstream commit 489f0f600ce2c0dae640df9035e1d82677d2580f ]
 
-DC can turn off the display clock when no displays are connected
-or when all displays are off, for reference see:
-- dce*_validate_bandwidth
+When the EDID has the HDMI bit, we should simply select
+the HDMI signal type even on DVI ports.
 
-DC also assumes that the DP clock is always on and never powers
-it down, for reference see:
-- dce110_clock_source_power_down
+For reference see, the legacy amdgpu display code:
+amdgpu_atombios_encoder_get_encoder_mode
+which selects ATOM_ENCODER_MODE_HDMI for the same case.
 
-In case of DCE 6.0 and 6.4, PLL0 is the clock source for both
-the engine clock and DP clock, for reference see:
-- radeon_atom_pick_pll
-- atombios_crtc_set_disp_eng_pll
+This commit fixes DVI connectors to work with DVI-D/HDMI
+adapters so that they can now produce output over these
+connectors for HDMI monitors with higher bandwidth modes.
+With this change, even HDMI audio works through DVI.
 
-Therefore, PLL0 should be always kept running on DCE 6.0 and 6.4.
-This commit achieves that by ensuring that by setting the display
-clock to the corresponding value in low power state instead of
-zero.
+For testing, I used a CAA-DMDHFD3 DVI-D/HDMI adapter
+with the following GPUs:
 
-This fixes a page flip timeout on SI with DC which happens when
-all connected displays are blanked.
+Tahiti (DCE 6) - DC can now output 4K 30 Hz over DVI
+Polaris 10 (DCE 11.2) - DC can now output 4K 60 Hz over DVI
 
 Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
 Reviewed-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/resource/dce60/dce60_resource.c    | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/link/link_detection.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
-index f887d59da7c6f..33c1b9b24bb9c 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
-@@ -881,7 +881,16 @@ static enum dc_status dce60_validate_bandwidth(
- 		context->bw_ctx.bw.dce.dispclk_khz = 681000;
- 		context->bw_ctx.bw.dce.yclk_khz = 250000 * MEMORY_TYPE_MULTIPLIER_CZ;
- 	} else {
--		context->bw_ctx.bw.dce.dispclk_khz = 0;
-+		/* On DCE 6.0 and 6.4 the PLL0 is both the display engine clock and
-+		 * the DP clock, and shouldn't be turned off. Just select the display
-+		 * clock value from its low power mode.
-+		 */
-+		if (dc->ctx->dce_version == DCE_VERSION_6_0 ||
-+			dc->ctx->dce_version == DCE_VERSION_6_4)
-+			context->bw_ctx.bw.dce.dispclk_khz = 352000;
-+		else
-+			context->bw_ctx.bw.dce.dispclk_khz = 0;
-+
- 		context->bw_ctx.bw.dce.yclk_khz = 0;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+index 827b630daf49a..18d0ef40f23fb 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+@@ -1140,6 +1140,10 @@ static bool detect_link_and_local_sink(struct dc_link *link,
+ 		if (sink->sink_signal == SIGNAL_TYPE_HDMI_TYPE_A &&
+ 		    !sink->edid_caps.edid_hdmi)
+ 			sink->sink_signal = SIGNAL_TYPE_DVI_SINGLE_LINK;
++		else if (dc_is_dvi_signal(sink->sink_signal) &&
++			 aud_support->hdmi_audio_native &&
++			 sink->edid_caps.edid_hdmi)
++			sink->sink_signal = SIGNAL_TYPE_HDMI_TYPE_A;
  
+ 		if (link->local_sink && dc_is_dp_signal(sink_caps.signal))
+ 			dp_trace_init(link);
 -- 
 2.51.0
 
