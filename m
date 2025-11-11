@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC400C4A911
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:28 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BCB3C4A5C6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D6E818961F5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 16FC9340286
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72AC346E6B;
-	Tue, 11 Nov 2025 01:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460D1346FBA;
+	Tue, 11 Nov 2025 01:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zq8GsyT2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBeOf1hj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF2230E82E;
-	Tue, 11 Nov 2025 01:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007D6346FB0;
+	Tue, 11 Nov 2025 01:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823711; cv=none; b=sj0zEE1ttuoiy3UCYow34JFNqjVjQRaHIatJUtX3yGi9vUDwTUrnmHREwCCRzVkDutbRbQdBlZbnMHBjtl9MxVO/GGb4QG6C0U+qnbJlX1edCubjPd2PPRew3XHBw8bHoGjYc0upR9gwrFd5ekaWl1qW/oBAVP6nXQ+XbdCfpd8=
+	t=1762823715; cv=none; b=XO5HxSbU+R2SfCZvxqxfd0/qv20d3dCUNTquH/Kka46isEG8AyVdpQmTfYdxfC9pzEXN92i6BqCa8Iehd/uRD/w84rHt0p1eQu6XsrqDx1+ebNIzTCdm3gewgVTLLKVbdxBkp0EHBMHkykygLxP3s3QOPlE1bt4h1KYrRI3FUAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823711; c=relaxed/simple;
-	bh=DeNMaefLrraRxYvZOAG68/Ca/UbIu1Jz7U9/SSmRQzA=;
+	s=arc-20240116; t=1762823715; c=relaxed/simple;
+	bh=VP5HehuQcPev/QNRPSoxKIxJ1Ptf/iRWw3CXvo5TzlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQvZKm/A9EQd1jqZrOmye8O1sxPSOdT0mP7eIYoYbfDFwxgHIJ6NMOeBfPFYPGAGhzQo64gfwgxBP66R9qK6ulB+7pW7eZhAHJb6evJYTjCwVJbXChGB1/nIAZbMTRVJDWtYCdC9y+DsGWtNd4i0fKMEE5yxFLSa1SuQYEScCMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zq8GsyT2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DC5C113D0;
-	Tue, 11 Nov 2025 01:15:07 +0000 (UTC)
+	 MIME-Version; b=LiUpNMByBwauChdiTpiCVTcAvfmyaZh2ESIosWaCkl/veOXD3DTDEf2f0yAHlotbDWCSIQGQ46Ra+Wx7yCtPbqbMhsQUfTjIhHFiLoFIMpp+zyQKFk1oZu6suCQtstepyZO73YjsCRH9T0nC9vlZYZMdoJTISHKXE7fccRn0x44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBeOf1hj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F056C116B1;
+	Tue, 11 Nov 2025 01:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823707;
-	bh=DeNMaefLrraRxYvZOAG68/Ca/UbIu1Jz7U9/SSmRQzA=;
+	s=korg; t=1762823714;
+	bh=VP5HehuQcPev/QNRPSoxKIxJ1Ptf/iRWw3CXvo5TzlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zq8GsyT2Cn3vIOwkBQLUUqF482pj/Jpc0/J2voclOY9kG/XRa25/lHFNx7ESq2prz
-	 iwHUg0Qkvw3GPJhjMGnojecPvLgKIYtbBoq18DI28JXUtONQJpT5rrXGtU12mxn/eB
-	 IRlLW24LmddwD4zdbsJNuGh1Ldw/Fa3tzcWID9OM=
+	b=hBeOf1hjJUkBuEqDWOBMdgb0SEjCxDE9dvZnEp4VndYFIZh2CPD4MSkM/eUpLnK/O
+	 FU1STsb5UBPdldrKTjv4IlKJ2EtCvusAFQnL706TSnqIsASLs7jlma0T7eK0sCIm9r
+	 HRu3SgzoRak2Rb+YVNSLVGKhgdPRAuDhjnf+nl8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ching-Te Ku <ku920601@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 354/849] wifi: rtw89: coex: Limit Wi-Fi scan slot cost to avoid A2DP glitch
-Date: Tue, 11 Nov 2025 09:38:44 +0900
-Message-ID: <20251111004544.980152532@linuxfoundation.org>
+Subject: [PATCH 6.17 355/849] scsi: mpi3mr: Fix I/O failures during controller reset
+Date: Tue, 11 Nov 2025 09:38:45 +0900
+Message-ID: <20251111004545.003034553@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,60 +66,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ching-Te Ku <ku920601@realtek.com>
+From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
 
-[ Upstream commit ebea22c7f1b2f06f4ff0719d76bd19830cf25c9f ]
+[ Upstream commit b7b2176e30fc8e57664e5a8a23387af66eb7f72b ]
 
-When Wi-Fi is scanning at 2.4GHz, PTA will abort almost all the BT request.
-Once the Wi-Fi slot stay too long, BT audio device can not get enough data,
-audio glitch will happened. This patch limit 2.4Ghz Wi-Fi slot to 80ms
-while Wi-Fi is scanning to avoid audio glitch.
+I/Os can race with controller reset and fail.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250819034428.26307-5-pkshih@realtek.com
+Block requests at the mid layer when reset starts using
+scsi_host_block(), and resume with scsi_host_unblock() after reset
+completes.
+
+Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Link: https://lore.kernel.org/r/20250820084138.228471-4-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c | 3 +++
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 2 ++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index e4e6daf51a1ba..0f7ae572ef915 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -93,7 +93,7 @@ static const struct rtw89_btc_fbtc_slot s_def[] = {
- 	[CXST_E2G]	= __DEF_FBTC_SLOT(5,   0xea5a5a5a, SLOT_MIX),
- 	[CXST_E5G]	= __DEF_FBTC_SLOT(5,   0xffffffff, SLOT_ISO),
- 	[CXST_EBT]	= __DEF_FBTC_SLOT(5,   0xe5555555, SLOT_MIX),
--	[CXST_ENULL]	= __DEF_FBTC_SLOT(5,   0xaaaaaaaa, SLOT_ISO),
-+	[CXST_ENULL]	= __DEF_FBTC_SLOT(5,   0x55555555, SLOT_MIX),
- 	[CXST_WLK]	= __DEF_FBTC_SLOT(250, 0xea5a5a5a, SLOT_MIX),
- 	[CXST_W1FDD]	= __DEF_FBTC_SLOT(50,  0xffffffff, SLOT_ISO),
- 	[CXST_B1FDD]	= __DEF_FBTC_SLOT(50,  0xffffdfff, SLOT_ISO),
-@@ -4153,6 +4153,7 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
- 				     s_def[CXST_EBT].cxtbl, s_def[CXST_EBT].cxtype);
- 			_slot_set_le(btc, CXST_ENULL, s_def[CXST_ENULL].dur,
- 				     s_def[CXST_ENULL].cxtbl, s_def[CXST_ENULL].cxtype);
-+			_slot_set_dur(btc, CXST_EBT, dur_2);
- 			break;
- 		case BTC_CXP_OFFE_DEF2:
- 			_slot_set(btc, CXST_E2G, 20, cxtbl[1], SLOT_ISO);
-@@ -4162,6 +4163,7 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
- 				     s_def[CXST_EBT].cxtbl, s_def[CXST_EBT].cxtype);
- 			_slot_set_le(btc, CXST_ENULL, s_def[CXST_ENULL].dur,
- 				     s_def[CXST_ENULL].cxtbl, s_def[CXST_ENULL].cxtype);
-+			_slot_set_dur(btc, CXST_EBT, dur_2);
- 			break;
- 		case BTC_CXP_OFFE_2GBWMIXB:
- 			if (a2dp->exist)
-@@ -4170,6 +4172,7 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
- 				_slot_set(btc, CXST_E2G, 5, tbl_w1, SLOT_MIX);
- 			_slot_set_le(btc, CXST_EBT, cpu_to_le16(40),
- 				     s_def[CXST_EBT].cxtbl, s_def[CXST_EBT].cxtype);
-+			_slot_set_dur(btc, CXST_EBT, dur_2);
- 			break;
- 		case BTC_CXP_OFFE_WL: /* for 4-way */
- 			_slot_set(btc, CXST_E2G, 5, cxtbl[1], SLOT_MIX);
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index 0152d31d430ab..9e18cc2747104 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -5420,6 +5420,7 @@ int mpi3mr_soft_reset_handler(struct mpi3mr_ioc *mrioc,
+ 	    mpi3mr_reset_rc_name(reset_reason));
+ 
+ 	mrioc->device_refresh_on = 0;
++	scsi_block_requests(mrioc->shost);
+ 	mrioc->reset_in_progress = 1;
+ 	mrioc->stop_bsgs = 1;
+ 	mrioc->prev_reset_result = -1;
+@@ -5528,6 +5529,7 @@ int mpi3mr_soft_reset_handler(struct mpi3mr_ioc *mrioc,
+ 	if (!retval) {
+ 		mrioc->diagsave_timeout = 0;
+ 		mrioc->reset_in_progress = 0;
++		scsi_unblock_requests(mrioc->shost);
+ 		mrioc->pel_abort_requested = 0;
+ 		if (mrioc->pel_enabled) {
+ 			mrioc->pel_cmds.retry_count = 0;
+@@ -5552,6 +5554,7 @@ int mpi3mr_soft_reset_handler(struct mpi3mr_ioc *mrioc,
+ 		mrioc->device_refresh_on = 0;
+ 		mrioc->unrecoverable = 1;
+ 		mrioc->reset_in_progress = 0;
++		scsi_unblock_requests(mrioc->shost);
+ 		mrioc->stop_bsgs = 0;
+ 		retval = -1;
+ 		mpi3mr_flush_cmds_for_unrecovered_controller(mrioc);
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index 1582cdbc66302..5516ac62a5065 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -2866,12 +2866,14 @@ static void mpi3mr_preparereset_evt_th(struct mpi3mr_ioc *mrioc,
+ 		    "prepare for reset event top half with rc=start\n");
+ 		if (mrioc->prepare_for_reset)
+ 			return;
++		scsi_block_requests(mrioc->shost);
+ 		mrioc->prepare_for_reset = 1;
+ 		mrioc->prepare_for_reset_timeout_counter = 0;
+ 	} else if (evtdata->reason_code == MPI3_EVENT_PREPARE_RESET_RC_ABORT) {
+ 		dprint_event_th(mrioc,
+ 		    "prepare for reset top half with rc=abort\n");
+ 		mrioc->prepare_for_reset = 0;
++		scsi_unblock_requests(mrioc->shost);
+ 		mrioc->prepare_for_reset_timeout_counter = 0;
+ 	}
+ 	if ((event_reply->msg_flags & MPI3_EVENT_NOTIFY_MSGFLAGS_ACK_MASK)
 -- 
 2.51.0
 
