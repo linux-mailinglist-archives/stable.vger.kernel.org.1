@@ -1,215 +1,76 @@
-Return-Path: <stable+bounces-193001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC82C49B8E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:18:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7B4C49DCB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 88F4B4EAD5B
-	for <lists+stable@lfdr.de>; Mon, 10 Nov 2025 23:18:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E34C3A5C4D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFD32F745E;
-	Mon, 10 Nov 2025 23:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05D21C5496;
+	Tue, 11 Nov 2025 00:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="fseYXR81";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IPt204lt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="coYVcdd7"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6119B242D78;
-	Mon, 10 Nov 2025 23:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DDE1C3F36;
+	Tue, 11 Nov 2025 00:25:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762816710; cv=none; b=emqO4P/hXJbOxmfw0AnPv3q66kbakCSGPe+ZXIQ2piTh7ZNY+80rnxLEbasjNb1TuheVi9sM/DU9s/bqLoyDKzxUmwRAZGcFNO1moUuUl633AF8calWE/LkkRl0H1+zMqTyQtHyMW/yNnlHRk+3xE4LlP0eRHHYcBtQ7aApJDyc=
+	t=1762820757; cv=none; b=AX3r9PcnvFuD/Li4LPSYT5klkKNHCMIlgvu4Eee9ICt8ana677ddz96u6cclYZfvSSU2bKqSr2qycvWzk/8oHBigiElM3YtjiSEXqgPYIGwX/TgIIKe/JhO1An+z7Elkv7FubXRg6NKDmLpavjxUY+mE2XFPRfP7lQla0cYu7tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762816710; c=relaxed/simple;
-	bh=x8wyF9KUZS67p+qkcbiNjLsonDBfnOPM5VU//pUMgXA=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=p4s8Q1TKRqutzLSb2JHAiwL/12aIDXheAsEGwvEJ9uL+k+PS3gW6aLVADVgPTR65GW1oiyiTej87FsR1n8SAU5u51qSfdISI9D4dHdvlq3iHpR6SxiH8Y/iSnGSRWesKErOiCdAz8Q/dYej4t0aBF5DoUR+Py7PwR+ZVhOXw/EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=fseYXR81; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IPt204lt; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 62BA47A00F7;
-	Mon, 10 Nov 2025 18:18:26 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Mon, 10 Nov 2025 18:18:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
-	1762816706; x=1762903106; bh=+HGKJK0puQ4xAOM/cfIuqP/yBP/Srkmb9O7
-	8+GprgqI=; b=fseYXR81AQwOUb0dF31tsCxOqOoMBwT7IkTDL3wsa69EN8FgaIQ
-	uVDPIpekK5Bxu4/0Bb4sz8anKxANCsDvqWrR0YckQmv5ilEmPLQwQVWk4NEr21WK
-	Twmq9iR11OnBi9x2+CqlS1c854ILEECLchp3NZEwliJmDKf9oqK8VpXtasVR44Fk
-	ggFdixblgNXO+9cx0kovyN5z5wivYneRUWzKO8hXMG8wiLNOOc1lfIzaKFT3p0Es
-	QPJixPEzW9xEL13OE7ugtvD4fqtn1P3CksAwGIaS1mK4hxGXGT1UzAgFFfvf3CxQ
-	rxm8Ft8zo7riekI2iisLQGRj+KbYP8rQAMA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762816706; x=
-	1762903106; bh=+HGKJK0puQ4xAOM/cfIuqP/yBP/Srkmb9O78+GprgqI=; b=I
-	Pt204ltT5YqSQvDuaSzaivuZxDbKf281mYVakFWu5bYzSadgIcBNK4VYa0X1e/v5
-	Enhcp+U+pxYqVHHp4Y284QnV24GsjP3kKEllBA9KY+/GzQC8wgKyR/W6m3uMzWxa
-	FrysD87iYETYH7CU0HPH2O4XWslLJ4OO1tAHLkATvHEkwOlkdFBi4Rsn/8keKIa8
-	zf+ypln5RHHP1sUsro8ppf4UwIRFGnVXgosAYvm7O5NCk4O+fdJLv6/xZ7IuQcPq
-	OS1Z9zz546Fdcc9H8irBfPEZmKLCgNXf0D4nmuGueooFpFvpzvxPfySHE0GwQJDl
-	E4Mg2312xt23SdtTqARIw==
-X-ME-Sender: <xms:wXISaeHD9iWnB6qEs-jKNmujhGVLeaM0McFpwlkRIzvaAhxpjbkHlg>
-    <xme:wXISaZbsxuHlnequ0FFGE9S-O5kooL3aZJYlKqPF3Zd8wEMEaXkfAwwKeZA_lOvBd
-    DChqig1HegFhJUPwah8gHbpESTRCgUWSz-yWyDF_7ejdxMFKBg>
-X-ME-Received: <xmr:wXISaYDbY3wemOYqoQmjxC6dIsan-yxgLCroySjJ4RMRCL_xSVqfFfjt_GFZ6kzyiMLybIOPqst4TF0FmQ8qH4NvFB9AePy4VXzFx0MccYUg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduleelieduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurheptgfgggfhvfevufgjfhffkfhrsehtqhertddttdejnecuhfhrohhmpefpvghilheu
-    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
-    epvdeuteelkeejkeevteetvedtkeegleduieeftdeftefgtddtleejgfelgfevffeinecu
-    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmhgrihhlrdhnvghtpdhnsggp
-    rhgtphhtthhopeejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehsthgrsghlvg
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhnfhhssehv
-    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghhuhgtkhdrlhgvvhgvrhes
-    ohhrrggtlhgvrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurg
-    htihhonhdrohhrghdprhgtphhtthhopehsphgvvggutghrrggtkhgvrheshhhothhmrghi
-    lhdrtghomhdprhgtphhtthhopegurghvihgurdhlrghighhhthesrggtuhhlrggsrdgtoh
-    hm
-X-ME-Proxy: <xmx:wXISaZlwIpYYRj276ba6x-avQXre3RTC4VTD3ueF8ra7o3hr2ymcyA>
-    <xmx:wXISaRwlbOwSheDt0LvjV4SEPMe4rVEHDqkgptjoEdkoLn2h-hHZlA>
-    <xmx:wXISabQSHMbGVBc2HH08oz-zSSDUCi-V7DepyGP2QNMAYBweuNomAg>
-    <xmx:wXISaR898BBYUoIDK31yYDRFX5hCvVgxT9eCdY2VxvJ-v3xuVsIbCQ>
-    <xmx:wnISaXVwKiJ2UhMhHANmqlw837S0CoKV_JzHWMGreF7aMwWgxJCT-8vq>
-Feedback-ID: iab3e480c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 10 Nov 2025 18:18:23 -0500 (EST)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1762820757; c=relaxed/simple;
+	bh=tmEynDFT0iU/lwP8EzIKQPTUdOo4aqJRs8fz2HYpXaE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VfMXJJUKvX2UuavB3FbpvI1BTgFzu65p8TutmahiFaOnDGgPbniXuc1MDZvHaqxkF+7wZk7DIJ7GrmVvZqKoZy3H63F7h74tnf5LDk/R7q5+pc6dYS20E4v4gjCP4uxsXBCoJVxAhMx72sQpstcgl2QNSdQuwunGY7L4gyKI3vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=coYVcdd7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BF3C116B1;
+	Tue, 11 Nov 2025 00:25:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1762820757;
+	bh=tmEynDFT0iU/lwP8EzIKQPTUdOo4aqJRs8fz2HYpXaE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=coYVcdd7qsKsMWhd0kwnOzRCnfWDEpVpb7GGBkb/jYomYONU+KIsLwVkB6LyzAg3J
+	 W4LBZdrnT06knHMAfdmC2Iyum0Ib55+Zo1v3vCVr9gclu8IN2An1d8eOzIikvv93+W
+	 15MUtmuFVYsr0aop1rEOf0O+oe7OmKQukpDrvJO4=
+Date: Tue, 11 Nov 2025 09:25:54 +0900
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Melissa Wen <mwen@igalia.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	Harry Wentland <harry.wentland@amd.com>,
+	Leo Li <sunpeng.li@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Subject: Re: Patch "drm/amd/display: change dc stream color settings only in
+ atomic commit" has been added to the 6.17-stable tree
+Message-ID: <2025111144-debrief-engraver-056b@gregkh>
+References: <20251104235338.370388-1-sashal@kernel.org>
+ <3aaf35bc-3595-45af-bd20-aaa5c9401959@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "Chuck Lever" <chuck.lever@oracle.com>
-Cc: stable@vger.kernel.org, "Andrew Morton" <akpm@linux-foundation.org>,
- "David Laight" <David.Laight@ACULAB.COM>,
- "Linux NFS Mailing List" <linux-nfs@vger.kernel.org>,
- "Linux List Kernel Mailing" <linux-kernel@vger.kernel.org>,
- speedcracker@hotmail.com
-Subject: Re: [PATCH stable 6.1.y] nfsd: use __clamp in nfsd4_get_drc_mem()
-In-reply-to: <17e85980-9af9-4320-88d1-fa0c9a7220b1@oracle.com>
-References: <176272473578.634289.16492611931438112048@noble.neil.brown.name>,
- <17e85980-9af9-4320-88d1-fa0c9a7220b1@oracle.com>
-Date: Tue, 11 Nov 2025 10:18:19 +1100
-Message-id: <176281669984.634289.12369219545843965992@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3aaf35bc-3595-45af-bd20-aaa5c9401959@igalia.com>
 
-On Mon, 10 Nov 2025, Chuck Lever wrote:
-> Hi Neil -
->=20
-> On 11/9/25 4:45 PM, NeilBrown wrote:
-> >=20
-> > From: NeilBrown <neil@brown.name>
-> >=20
-> > A recent change to clamp_t() in 6.1.y caused fs/nfsd/nfs4state.c to fail
-> > to compile with gcc-9.
->=20
-> I have a comment on merge process:
->=20
-> Reported on 6.1.y, but might be present in other LTS releases, since
-> 2030ca560c5f exists in every LTS kernel since v5.4.y.
+On Thu, Nov 06, 2025 at 10:17:16AM -0300, Melissa Wen wrote:
+> Hi Sasha,
+> 
+> Same here, can you backport the previous related commit (2f9c63883730
+> "drm/amd/display: update color on atomic commit time" [1])  too?
+> Otherwise, the commit below alone will cause regressions.
 
-I thought this might be likely but I didn't have enough motivation to check.
+Now done, thanks.
 
->=20
-> At least, my understanding of the stable rules is that they prefer this
-> kind of patch be applied to all relevant LTS kernels. I strongly prefer
-> that NFSD experts review and test this change /before/ it is merged,
-> since nfsd4_get_drc_mem() is part of the NFSv4.1 session slot
-> implementation, and since in this case we don't get the benefit of
-> /any/ soak time in linux-next or an upstream -rc release.
-
-The patch is deliberately written to transparent without requiring any
-(export or otherwise) understand of the NFS or even of the code being
-changed.
-It purely removes the BUILD_BUG_ON().
-
->=20
-> So IMHO this patch needs to target v6.12.y, not v6.1.y, and it should be
-> marked
-
-Can I leave the process management to you.
-Though as you say later, the same patch should apply equally to both.
-
->=20
-> Fixes: 2030ca560c5f ("nfsd: degraded slot-count more gracefully as
-> allocation nears exhaustion.")
-
-There is no evidence that patch is broken so it is hard to justify
-saying that we fixed it.  But I honestly don't care.
-
->=20
-> (Since the patched code hasn't changed in many years, I think the final
-> patch ought to apply cleanly to both 6.12.y and 6.1.y).
->=20
-> I need to take the fix into nfsd-6.12.y and run NFSD CI against it, then
-> it can be sent along to stable@, and they will put it back into the
-> older LTS kernels for us.
->=20
->=20
-> > The code was written with the assumption that when "max < min",
-> >    clamp(val, min, max)
-> > would return max.  This assumption is not documented as an API promise
-> > and the change cause a compile failure if it could be statically
-> > determined that "max < min".
-> >=20
-> > The relevant code was no longer present upstream when the clamp() change
-> > landed there, so there is no upstream change to backport.
-> >=20
-> > As there is no clear case that the code is functioning incorrectly, the
-> > patch aims to restore the behaviour to exactly that before the clamp
-> > change, and to match what compilers other than gcc-9 produce.
->=20
-> > clamp_t(type,v,min,max) is replaced with
-> >   __clamp((type)v, (type)min, (type)max)
-> >=20
-> > Some of those type casts are unnecessary but they are included to make
-> > the code obviously correct.
-> > (__clamp() is the same as clamp(), but without the static API usage
-> > test).
-> >=20
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D220745#c0
-> > Fixes: 1519fbc8832b ("minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi te=
-st in clamp()")
->=20
-> Stable-dep-of: 1519fbc8832b ("minmax.h: use BUILD_BUG_ON_MSG() for the
-> lo < hi test in clamp()")
->=20
-
-I haven't come across Stable-dep-of before.  I can't find it in
-Documentation.  Looking at some examples I guess it makes sense.
-Except that Stable-dep-of normally comes before, and Fixes normally
-comes after the target...
-
-Thanks,
-NeilBrown
-
-
-> might be more appropriate.
->=20
->=20
-> > Signed-off-by: NeilBrown <neil@brown.name>
->=20
-> --=20
-> Chuck Lever
->=20
-
+greg k-h
 
