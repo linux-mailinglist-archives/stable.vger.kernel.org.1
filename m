@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-193180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56771C4A04C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A83C4A103
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14E8E3AC3E0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1A0B34F4001
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88311DF258;
-	Tue, 11 Nov 2025 00:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8710D24113D;
+	Tue, 11 Nov 2025 00:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AB9f3Vpn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DM1EaTu9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778FA4C97;
-	Tue, 11 Nov 2025 00:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CEC4086A;
+	Tue, 11 Nov 2025 00:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822486; cv=none; b=megIVv96SMCBtuN829hLLkkdz6crZ1Kw7pjydv/kcBndoZPA0IDa/R+2L/FDhoEflKwxmRTl4d4PNpqJrzrdSJWqxqxIh1fCO71I07CBvoP3Jr5tHZhHGT1n3bjUfp1kQOIIPfC0QhwrF634GpuTUtS/J65KhO9M4YMlw1fYH6U=
+	t=1762822491; cv=none; b=UjSEB1rGecZ/yBCiI7MtB7kVp9MhAIN8lpMcuMo5TnS3/Y6p2o6ZLBqA/O+kW4rcYArDnSR+zEylkDNcG1R260tRTcb0iIKAJg4+QZlrmYgoHPGyk2qVM9U7NZV8wUMmpTuVutPM+vTYZP6aDFeGGdUQkJtC5uJLs7rCGTm/Nck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822486; c=relaxed/simple;
-	bh=qBk3KkO/+3tvQI8+O/BHrIR9rycjLqbj7LwhkDHP8ow=;
+	s=arc-20240116; t=1762822491; c=relaxed/simple;
+	bh=EV5wQ0mCyPLEunE/u3vabNQNPDiUJmn5KwDtU6Gl5Sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K2q0Sw8xCgXIPk1iX3H+621l99dfOtinSCiZ42rFpM3e+LfADVza00tANHqNckMJocLVgogykcrgQiBZev6IcGmETQLslb+FwR+hLggNaXikQktKt1rT/trz+p5CUi1EFtpzDXqpSahzmeFqd2KcCPJ3MbrwD2ZiWmIqQM2NPrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AB9f3Vpn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DACD8C116B1;
-	Tue, 11 Nov 2025 00:54:45 +0000 (UTC)
+	 MIME-Version; b=BIiKfEYnQ8O5la+5FkOmo14Q6KYgBTvhgAP1eHHmFjr3mmfYD56jJbolwoL6taRcMaLAuaA6YBN8bE6cd1PMEZm4qB9Jw2CBqm98AkboCM8EiVywZF9OqGM4xViwRvBQFm8v/dGPArGnjDcuo8BlFwGN01bvElzE1fz+xrndTvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DM1EaTu9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94973C116B1;
+	Tue, 11 Nov 2025 00:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822486;
-	bh=qBk3KkO/+3tvQI8+O/BHrIR9rycjLqbj7LwhkDHP8ow=;
+	s=korg; t=1762822490;
+	bh=EV5wQ0mCyPLEunE/u3vabNQNPDiUJmn5KwDtU6Gl5Sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AB9f3VpnIAGUnfnW36COv+2eOQhmEtosjiqB2lWTd1+AsRCvjiKrmuPdBSrUWM0w7
-	 ePgoPPotnpzBKqhvWi4m87tePDtEBQNUT9zs7Co1qUn0BoiMOOLExi4z6XEhm77Rji
-	 m5TMxi75xcmbpkhof/K6m0hCvPH/MgPMugPk/fzA=
+	b=DM1EaTu9IgNwE+qg4yKQfNaE0+mDZyHaFxXY4SmJqe4yEew5C7nFsp/C+lV8Ai32n
+	 rDkGyE01bB4FFJ4rmiTXgAthgAKahztkEI25CWcoe/noykJ68YBU45EtiRhe460biJ
+	 YE3rgqqRgOXOOf+d6GK2YRthZtXP/v4FCnqBRTig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Owen Gu <guhuinan@xiaomi.com>
-Subject: [PATCH 6.17 117/849] usb: gadget: f_fs: Fix epfile null pointer access after ep enable.
-Date: Tue, 11 Nov 2025 09:34:47 +0900
-Message-ID: <20251111004539.226746676@linuxfoundation.org>
+	Ryan Chen <ryan_chen@aspeedtech.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 118/849] soc: aspeed: socinfo: Add AST27xx silicon IDs
+Date: Tue, 11 Nov 2025 09:34:48 +0900
+Message-ID: <20251111004539.250161312@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -64,55 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Owen Gu <guhuinan@xiaomi.com>
+From: Ryan Chen <ryan_chen@aspeedtech.com>
 
-commit cfd6f1a7b42f62523c96d9703ef32b0dbc495ba4 upstream.
+[ Upstream commit c30dcfd4b5a0f0e3fe7138bf287f6de6b1b00278 ]
 
-A race condition occurs when ffs_func_eps_enable() runs concurrently
-with ffs_data_reset(). The ffs_data_clear() called in ffs_data_reset()
-sets ffs->epfiles to NULL before resetting ffs->eps_count to 0, leading
-to a NULL pointer dereference when accessing epfile->ep in
-ffs_func_eps_enable() after successful usb_ep_enable().
+Extend the ASPEED SoC info driver to support AST27XX silicon IDs.
 
-The ffs->epfiles pointer is set to NULL in both ffs_data_clear() and
-ffs_data_close() functions, and its modification is protected by the
-spinlock ffs->eps_lock. And the whole ffs_func_eps_enable() function
-is also protected by ffs->eps_lock.
-
-Thus, add NULL pointer handling for ffs->epfiles in the
-ffs_func_eps_enable() function to fix issues
-
-Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
-Link: https://lore.kernel.org/r/20250915092907.17802-1-guhuinan@xiaomi.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ryan Chen <ryan_chen@aspeedtech.com>
+Link: https://patch.msgid.link/20250807005208.3517283-1-ryan_chen@aspeedtech.com
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_fs.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/soc/aspeed/aspeed-socinfo.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -2407,7 +2407,12 @@ static int ffs_func_eps_enable(struct ff
- 	ep = func->eps;
- 	epfile = ffs->epfiles;
- 	count = ffs->eps_count;
--	while(count--) {
-+	if (!epfile) {
-+		ret = -ENOMEM;
-+		goto done;
-+	}
-+
-+	while (count--) {
- 		ep->ep->driver_data = ep;
+diff --git a/drivers/soc/aspeed/aspeed-socinfo.c b/drivers/soc/aspeed/aspeed-socinfo.c
+index 3f759121dc00a..67e9ac3d08ecc 100644
+--- a/drivers/soc/aspeed/aspeed-socinfo.c
++++ b/drivers/soc/aspeed/aspeed-socinfo.c
+@@ -27,6 +27,10 @@ static struct {
+ 	{ "AST2620", 0x05010203 },
+ 	{ "AST2605", 0x05030103 },
+ 	{ "AST2625", 0x05030403 },
++	/* AST2700 */
++	{ "AST2750", 0x06000003 },
++	{ "AST2700", 0x06000103 },
++	{ "AST2720", 0x06000203 },
+ };
  
- 		ret = config_ep_by_speed(func->gadget, &func->function, ep->ep);
-@@ -2431,6 +2436,7 @@ static int ffs_func_eps_enable(struct ff
- 	}
- 
- 	wake_up_interruptible(&ffs->wait);
-+done:
- 	spin_unlock_irqrestore(&func->ffs->eps_lock, flags);
- 
- 	return ret;
+ static const char *siliconid_to_name(u32 siliconid)
+-- 
+2.51.0
+
 
 
 
