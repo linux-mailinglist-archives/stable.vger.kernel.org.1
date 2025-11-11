@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F03CC4A63E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 553A0C4A69B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FCBF3AFA6A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D29D53AFB3B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5C6305976;
-	Tue, 11 Nov 2025 01:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6863093A5;
+	Tue, 11 Nov 2025 01:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5Tg9/sH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ga4mQbEc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0947225F797;
-	Tue, 11 Nov 2025 01:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84F73090CB;
+	Tue, 11 Nov 2025 01:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823316; cv=none; b=ajTNZhmt3dsQ4fCJ6EwYaHyYgo5sxVQDhHqOleKt8TKcsrBiFuhPxl4ExWJptz7KShRi1fYxKrV1PHlh6XH727KyuPHn21ohOKNOmwCd/BwmjQgsLFeFD98KU6tMJLZ2EKYKYBwPzOJt4vfBLlYZPOnNsMa2sboq0zXc4nL5jEU=
+	t=1762823320; cv=none; b=pWgb5DKrLqMaW6YJtm2PylT6yjwFHTppPCHghPGe2kbYUyu58JPE9CvRbsKYUYkHGiLERBLpZF98pyJxUWVTq2Dkr/uzjpbSaIuIqCJDRqoGrnfrmw0vcV3oqKnBGcvxzyDpSPvwfsOgAJ8/hsGCxdUUpXmxDhBaDAKZI7sIzRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823316; c=relaxed/simple;
-	bh=kN48xLI2kl7w8jxbGAzW4o1yS2vCOeFkQ9yjAVEHY4Q=;
+	s=arc-20240116; t=1762823320; c=relaxed/simple;
+	bh=ui+JZ0eQLLbLvLDByRJGqL0ng5QbGX+IEaJdWc03lKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o31ai3239PlL9edcrJ3ot8l84UBcQvRKICGXWzeorJOQkGt5cZ2f+WdWFwi3l2SJQAfN/m4MIRVcRs+tsIwJIrlLsI5++GT0TcV1aPXSMv3BPeJr6dvHQiwllh5aOcWOMFgQySEnVArkosPeOT67w5h87/OTwPSE0AE4ygJItH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5Tg9/sH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96356C19422;
-	Tue, 11 Nov 2025 01:08:35 +0000 (UTC)
+	 MIME-Version; b=L03u7KaEL6k0Hf9OGtWv2SteNli9Xq9ZOMujj1/WjS+tB8mufPTm4NOeAeV21sGFXAyfRpxIEq5hbYRpabZoq6LN6Cfl0ikFstmTZhjX0LbKWWsAotE+lJkNI11VfV1aRTi2hE9AOfwM1jFuovI6DMejKPntuZkE1ir4SfxlWfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ga4mQbEc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A631C4CEFB;
+	Tue, 11 Nov 2025 01:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823315;
-	bh=kN48xLI2kl7w8jxbGAzW4o1yS2vCOeFkQ9yjAVEHY4Q=;
+	s=korg; t=1762823320;
+	bh=ui+JZ0eQLLbLvLDByRJGqL0ng5QbGX+IEaJdWc03lKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5Tg9/sHVLYSOx2q8ae+ES4XkDCb4B7qJhooQlvTph5OtudSMx9bLQKkSWr0+X339
-	 Mph0Eqe3VAOhlRGzmJ0+5B/cA3r6v3nDitGJa3Wg/TE5t3Qy5q4d0V9oQLbYcTdsnG
-	 azAn3udMO/kDoU2L6GFDs+BO+LOTy0IPWNM48dqI=
+	b=Ga4mQbEcPJtXst51uy79kXe6jIrWR5cohONxLO4I1ayXKhEbrAEcnJkf528EZsmis
+	 Igu7fXEc5HH9j2jmwGBlU9BlqKFGB53W9YvPnkPqoOK/n2p8V3vD+QQyYkEzQVgBoB
+	 5lXVbpqfY/Rya+Vi5yiqRLaLHxIf4wqmaBRofTyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Wake Liu <wakel@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 274/849] selftests/net: Replace non-standard __WORDSIZE with sizeof(long) * 8
-Date: Tue, 11 Nov 2025 09:37:24 +0900
-Message-ID: <20251111004543.052617833@linuxfoundation.org>
+Subject: [PATCH 6.17 275/849] selftests/net: Ensure assert() triggers in psock_tpacket.c
+Date: Tue, 11 Nov 2025 09:37:25 +0900
+Message-ID: <20251111004543.075605548@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,50 +68,41 @@ Content-Transfer-Encoding: 8bit
 
 From: Wake Liu <wakel@google.com>
 
-[ Upstream commit c36748e8733ef9c5f4cd1d7c4327994e5b88b8df ]
+[ Upstream commit bc4c0a48bdad7f225740b8e750fdc1da6d85e1eb ]
 
-The `__WORDSIZE` macro, defined in the non-standard `<bits/wordsize.h>`
-header, is a GNU extension and not universally available with all
-toolchains, such as Clang when used with musl libc.
+The get_next_frame() function in psock_tpacket.c was missing a return
+statement in its default switch case, leading to a compiler warning.
 
-This can lead to build failures in environments where this header is
-missing.
+This was caused by a `bug_on(1)` call, which is defined as an
+`assert()`, being compiled out because NDEBUG is defined during the
+build.
 
-The intention of the code is to determine the bit width of a C `long`.
-Replace the non-portable `__WORDSIZE` with the standard and portable
-`sizeof(long) * 8` expression to achieve the same result.
-
-This change also removes the inclusion of the now-unused
-`<bits/wordsize.h>` header.
+Instead of adding a `return NULL;` which would silently hide the error
+and could lead to crashes later, this change restores the original
+author's intent. By adding `#undef NDEBUG` before including <assert.h>,
+we ensure the assertion is active and will cause the test to abort if
+this unreachable code is ever executed.
 
 Signed-off-by: Wake Liu <wakel@google.com>
+Link: https://patch.msgid.link/20250809062013.2407822-1-wakel@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/psock_tpacket.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/testing/selftests/net/psock_tpacket.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tools/testing/selftests/net/psock_tpacket.c b/tools/testing/selftests/net/psock_tpacket.c
-index 221270cee3eaa..0dd909e325d93 100644
+index 0dd909e325d93..2938045c5cf97 100644
 --- a/tools/testing/selftests/net/psock_tpacket.c
 +++ b/tools/testing/selftests/net/psock_tpacket.c
-@@ -33,7 +33,6 @@
- #include <ctype.h>
- #include <fcntl.h>
- #include <unistd.h>
--#include <bits/wordsize.h>
- #include <net/ethernet.h>
- #include <netinet/ip.h>
- #include <arpa/inet.h>
-@@ -785,7 +784,7 @@ static int test_kernel_bit_width(void)
+@@ -22,6 +22,7 @@
+  *   - TPACKET_V3: RX_RING
+  */
  
- static int test_user_bit_width(void)
- {
--	return __WORDSIZE;
-+	return sizeof(long) * 8;
- }
- 
- static const char *tpacket_str[] = {
++#undef NDEBUG
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <sys/types.h>
 -- 
 2.51.0
 
