@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35857C4A247
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:03:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74773C4A24D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:03:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9F8D04F534A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A90ED4F2724
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB918253944;
-	Tue, 11 Nov 2025 01:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191D8214210;
+	Tue, 11 Nov 2025 01:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGnjkDFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPMeFMFy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B0C1C28E;
-	Tue, 11 Nov 2025 01:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C929D7262A;
+	Tue, 11 Nov 2025 01:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822809; cv=none; b=kh5VKwjyr6TJCKyiZ8nQLUouNsQ3QtzxexOz/YK1PxbBpWew5rPi1NNDRJtzlUJeND+7bQQPH8n+yNLQudk69nc3mT3JwbVWAjpc6iaIX40hubaQILPYrfbAe/Q5qXoHqI1WudtGIgx+7DNUNYd8PxMRt0NyZkv2YYbyVk9hQ6g=
+	t=1762822812; cv=none; b=RbWwXDXELA8ZyCxDsggz1JWg61csKIoe5p3J+FkwV148xQ+gofECTElqV21u+kmqVhkWmExu1LSbiL2SlscVSsWfr6I698BG4xUM6m/fjPywxmHka5Jy9seKqCJ3fEpUwKXV+rTPCmniPhYT+GdZLzSZEkuVK/qMNKguhPtMlk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822809; c=relaxed/simple;
-	bh=nHdXDrNimmdepIewviz/9Z5UzMFkgRk6tkS/NSS7MKo=;
+	s=arc-20240116; t=1762822812; c=relaxed/simple;
+	bh=4HxNyrTY5lGfmbj+p5AH/cwoEhZ7Lc9xHfln6K9QM4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ry9ls9TQp7vxtxTSYb5gcWTJr9oiHgeRhZVfsfVXjzZ+UbyCd5BezL4QZMkRMrqcQV5aeaxPxOvGAEM/gNlw2WXpTVgh09+MARxZGU3ceHvEOoulEVMxGlKKIHSlTqWw3NveFOJk2NowyD1on2p5BMTLqJyiygtzKqD2MtBsgu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGnjkDFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7987C113D0;
-	Tue, 11 Nov 2025 01:00:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AZ0BPyWCN0K/T0yiLxVUffr7ZHLdfLIucSk/sWigFkw4uwSRiIUq570f8IbsQWPLEJ5CGI8/0Odiwg5NsJgean566ETxOPRa2e2cufn3x2NtxiT9+SOlNoc8IRxGH7bpa5dBhRdaNMnqXnFJZHDsTLI0ObYiMKASFYvGGUV13tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPMeFMFy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 634FDC4CEF5;
+	Tue, 11 Nov 2025 01:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822808;
-	bh=nHdXDrNimmdepIewviz/9Z5UzMFkgRk6tkS/NSS7MKo=;
+	s=korg; t=1762822812;
+	bh=4HxNyrTY5lGfmbj+p5AH/cwoEhZ7Lc9xHfln6K9QM4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GGnjkDFbcssTe0agm7FsQheiMmS2HWaMye/JOTA8iIv7iPzAI3C75ESfOreAy3j97
-	 Dn/xsuhYtsF+dH2LmxytzS82K5rTUuZVcxBiqE7pBgl9m5a2RoGgZ2t5aZ/gXGWAF8
-	 IYZO/f77mH9tX/OEMrml+hf2qubisdiNHaCG+X9A=
+	b=aPMeFMFyEtq0eQjsKMs1nixdRkgAnqzsbc98qb8zfqQ67lKkbQ4IDmha3M2KyzhQL
+	 YJTqB4E+ktqQvZ5hW8+MSKPFFMp2sRhqhn4Dut7/XMZZNPt2m+s4jnqnKpVafEYAPe
+	 qB6NoQdW7u2jZtiQbFrVNexTBRxDPMC0AIrL756A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarthak Garg <quic_sartgarg@quicinc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 175/849] mmc: sdhci-msm: Enable tuning for SDR50 mode for SD card
-Date: Tue, 11 Nov 2025 09:35:45 +0900
-Message-ID: <20251111004540.664345790@linuxfoundation.org>
+Subject: [PATCH 6.17 176/849] pwm: pca9685: Use bulk write to atomicially update registers
+Date: Tue, 11 Nov 2025 09:35:46 +0900
+Message-ID: <20251111004540.689010179@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -61,78 +60,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarthak Garg <quic_sartgarg@quicinc.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 08b68ca543ee9d5a8d2dc406165e4887dd8f170b ]
+[ Upstream commit de5855613263b426ee697dd30224322f2e634dec ]
 
-For Qualcomm SoCs which needs level shifter for SD card, extra delay is
-seen on receiver data path.
+The output of a PWM channel is configured by four register values. Write
+them in a single i2c transaction to ensure glitch free updates.
 
-To compensate this delay enable tuning for SDR50 mode for targets which
-has level shifter. SDHCI_SDR50_NEEDS_TUNING caps will be set for targets
-with level shifter on Qualcomm SOC's.
-
-Signed-off-by: Sarthak Garg <quic_sartgarg@quicinc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/bfa8c0267c9ec059d0d77f146998d564654c75ca.1753784092.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-msm.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/pwm/pwm-pca9685.c | 46 ++++++++++++++++++++++++---------------
+ 1 file changed, 29 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index 9d8e20dc8ca11..e7df864bdcaf6 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -81,6 +81,7 @@
- #define CORE_IO_PAD_PWR_SWITCH_EN	BIT(15)
- #define CORE_IO_PAD_PWR_SWITCH	BIT(16)
- #define CORE_HC_SELECT_IN_EN	BIT(18)
-+#define CORE_HC_SELECT_IN_SDR50	(4 << 19)
- #define CORE_HC_SELECT_IN_HS400	(6 << 19)
- #define CORE_HC_SELECT_IN_MASK	(7 << 19)
+diff --git a/drivers/pwm/pwm-pca9685.c b/drivers/pwm/pwm-pca9685.c
+index 9ce75704a15f8..91f96b28ce1b5 100644
+--- a/drivers/pwm/pwm-pca9685.c
++++ b/drivers/pwm/pwm-pca9685.c
+@@ -61,6 +61,8 @@
+ #define MODE1_SUB2		BIT(2)
+ #define MODE1_SUB1		BIT(3)
+ #define MODE1_SLEEP		BIT(4)
++#define MODE1_AI		BIT(5)
++
+ #define MODE2_INVRT		BIT(4)
+ #define MODE2_OUTDRV		BIT(2)
  
-@@ -1133,6 +1134,10 @@ static bool sdhci_msm_is_tuning_needed(struct sdhci_host *host)
+@@ -131,6 +133,19 @@ static int pca9685_write_reg(struct pwm_chip *chip, unsigned int reg, unsigned i
+ 	return err;
+ }
+ 
++static int pca9685_write_4reg(struct pwm_chip *chip, unsigned int reg, u8 val[4])
++{
++	struct pca9685 *pca = to_pca(chip);
++	struct device *dev = pwmchip_parent(chip);
++	int err;
++
++	err = regmap_bulk_write(pca->regmap, reg, val, 4);
++	if (err)
++		dev_err(dev, "regmap_write to register 0x%x failed: %pe\n", reg, ERR_PTR(err));
++
++	return err;
++}
++
+ /* Helper function to set the duty cycle ratio to duty/4096 (e.g. duty=2048 -> 50%) */
+ static void pca9685_pwm_set_duty(struct pwm_chip *chip, int channel, unsigned int duty)
  {
- 	struct mmc_ios *ios = &host->mmc->ios;
+@@ -143,12 +158,10 @@ static void pca9685_pwm_set_duty(struct pwm_chip *chip, int channel, unsigned in
+ 		return;
+ 	} else if (duty >= PCA9685_COUNTER_RANGE) {
+ 		/* Set the full ON bit and clear the full OFF bit */
+-		pca9685_write_reg(chip, REG_ON_H(channel), LED_FULL);
+-		pca9685_write_reg(chip, REG_OFF_H(channel), 0);
++		pca9685_write_4reg(chip, REG_ON_L(channel), (u8[4]){ 0, LED_FULL, 0, 0 });
+ 		return;
+ 	}
  
-+	if (ios->timing == MMC_TIMING_UHS_SDR50 &&
-+	    host->flags & SDHCI_SDR50_NEEDS_TUNING)
-+		return true;
-+
- 	/*
- 	 * Tuning is required for SDR104, HS200 and HS400 cards and
- 	 * if clock frequency is greater than 100MHz in these modes.
-@@ -1201,6 +1206,8 @@ static int sdhci_msm_execute_tuning(struct mmc_host *mmc, u32 opcode)
- 	struct mmc_ios ios = host->mmc->ios;
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	const struct sdhci_msm_offset *msm_offset = msm_host->offset;
-+	u32 config;
+-
+ 	if (pwm->state.usage_power && channel < PCA9685_MAXCHAN) {
+ 		/*
+ 		 * If usage_power is set, the pca9685 driver will phase shift
+@@ -163,12 +176,9 @@ static void pca9685_pwm_set_duty(struct pwm_chip *chip, int channel, unsigned in
  
- 	if (!sdhci_msm_is_tuning_needed(host)) {
- 		msm_host->use_cdr = false;
-@@ -1217,6 +1224,14 @@ static int sdhci_msm_execute_tuning(struct mmc_host *mmc, u32 opcode)
- 	 */
- 	msm_host->tuning_done = 0;
+ 	off = (on + duty) % PCA9685_COUNTER_RANGE;
  
-+	if (ios.timing == MMC_TIMING_UHS_SDR50 &&
-+	    host->flags & SDHCI_SDR50_NEEDS_TUNING) {
-+		config = readl_relaxed(host->ioaddr + msm_offset->core_vendor_spec);
-+		config &= ~CORE_HC_SELECT_IN_MASK;
-+		config |= CORE_HC_SELECT_IN_EN | CORE_HC_SELECT_IN_SDR50;
-+		writel_relaxed(config, host->ioaddr + msm_offset->core_vendor_spec);
-+	}
-+
- 	/*
- 	 * For HS400 tuning in HS200 timing requires:
- 	 * - select MCLK/2 in VENDOR_SPEC
+-	/* Set ON time (clears full ON bit) */
+-	pca9685_write_reg(chip, REG_ON_L(channel), on & 0xff);
+-	pca9685_write_reg(chip, REG_ON_H(channel), (on >> 8) & 0xf);
+-	/* Set OFF time (clears full OFF bit) */
+-	pca9685_write_reg(chip, REG_OFF_L(channel), off & 0xff);
+-	pca9685_write_reg(chip, REG_OFF_H(channel), (off >> 8) & 0xf);
++	/* implicitly clear full ON and full OFF bit */
++	pca9685_write_4reg(chip, REG_ON_L(channel),
++			   (u8[4]){ on & 0xff, (on >> 8) & 0xf, off & 0xff, (off >> 8) & 0xf });
+ }
+ 
+ static unsigned int pca9685_pwm_get_duty(struct pwm_chip *chip, int channel)
+@@ -544,9 +554,8 @@ static int pca9685_pwm_probe(struct i2c_client *client)
+ 
+ 	mutex_init(&pca->lock);
+ 
+-	ret = pca9685_read_reg(chip, PCA9685_MODE2, &reg);
+-	if (ret)
+-		return ret;
++	/* clear MODE2_OCH */
++	reg = 0;
+ 
+ 	if (device_property_read_bool(&client->dev, "invert"))
+ 		reg |= MODE2_INVRT;
+@@ -562,16 +571,19 @@ static int pca9685_pwm_probe(struct i2c_client *client)
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Disable all LED ALLCALL and SUBx addresses to avoid bus collisions */
++	/*
++	 * Disable all LED ALLCALL and SUBx addresses to avoid bus collisions,
++	 * enable Auto-Increment.
++	 */
+ 	pca9685_read_reg(chip, PCA9685_MODE1, &reg);
+ 	reg &= ~(MODE1_ALLCALL | MODE1_SUB1 | MODE1_SUB2 | MODE1_SUB3);
++	reg |= MODE1_AI;
+ 	pca9685_write_reg(chip, PCA9685_MODE1, reg);
+ 
+ 	/* Reset OFF/ON registers to POR default */
+-	pca9685_write_reg(chip, PCA9685_ALL_LED_OFF_L, 0);
+-	pca9685_write_reg(chip, PCA9685_ALL_LED_OFF_H, LED_FULL);
+-	pca9685_write_reg(chip, PCA9685_ALL_LED_ON_L, 0);
+-	pca9685_write_reg(chip, PCA9685_ALL_LED_ON_H, LED_FULL);
++	ret = pca9685_write_4reg(chip, PCA9685_ALL_LED_ON_L, (u8[]){ 0, LED_FULL, 0, LED_FULL });
++	if (ret < 0)
++		return dev_err_probe(&client->dev, ret, "Failed to reset ON/OFF registers\n");
+ 
+ 	chip->ops = &pca9685_pwm_ops;
+ 
 -- 
 2.51.0
 
