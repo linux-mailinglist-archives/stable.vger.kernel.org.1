@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E112C4B286
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:04:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D24C4AC7C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7694C3B1FD7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4179188F8B7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563C41F419F;
-	Tue, 11 Nov 2025 01:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64795341648;
+	Tue, 11 Nov 2025 01:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bz79IJNs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIeZNHBY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5DD34AB17;
-	Tue, 11 Nov 2025 01:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE362D9ECD;
+	Tue, 11 Nov 2025 01:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825348; cv=none; b=GqM1kL4UkAnxbP21HNnQ00oiv94mjInQ3OmEYh4NE1BFZ13pcUWsl4OpqTOJPNAbC4i1ROGK5mj7LYIF6qnHcpZ8BgfjPI6aeDvJahaQvnVifAmYgNIJ1UCjnMrxrpWdLgrU+azaOqtI8/Z2W8WqxxLz/VD6Fk3m2yuWcCz7L/w=
+	t=1762824615; cv=none; b=NgMi4W7LIodGyow9jbIqB72XbVzW3WiRdo5hSWIBYZoUE6+sCAmd+BqsDeXuihGvtkc1Udqz2CZTDYeg/KA2lFJ+gTdFxHewjStnyqy+awM8t/trSCSKVlrFSBnqqGsY6czZK9VzEw74E+dRmWkq/fsejcUQ1bvF3sG+eDg5U8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825348; c=relaxed/simple;
-	bh=yG+4QglGZly4MlQxYvMKUR0MLTYciggiEISa+S233f8=;
+	s=arc-20240116; t=1762824615; c=relaxed/simple;
+	bh=k4hFxmeTiZ7fRdS6//kibMXL4B5cEfjAubDkH4IuBlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HgiQc+E5rrCLZA2aIkm0B5hc86YL9NMhJwVyUCMa4C4x1HqXapJU+JkwmGd4IPUdKwsBIAVlRFfjLWJJUBdJgkMuywXP71g48oxH1G/CDW7N8JkPGPQb+tbqyqxrltGAKGBDEpPyi5zVG2tJw789/16dyHs3fu1YcLPhnRg5aSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bz79IJNs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581DFC19422;
-	Tue, 11 Nov 2025 01:42:27 +0000 (UTC)
+	 MIME-Version; b=NLkNBDvifqXp1Fly8ktTc7Tq4uJPwpGTA+hkcpKcqPNaOShalpJsFznjMIVv3li9DcHpxQSqzvJiTAY+NRQGTXBjF9b/DWa4oyPOYrx9ZdhoFnQZopRh4VfStOMDAtL181GgWlE1oxoVaOgyVmEBncoChf0hcbYHhCUUHKxOk14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIeZNHBY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B83C116D0;
+	Tue, 11 Nov 2025 01:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825347;
-	bh=yG+4QglGZly4MlQxYvMKUR0MLTYciggiEISa+S233f8=;
+	s=korg; t=1762824615;
+	bh=k4hFxmeTiZ7fRdS6//kibMXL4B5cEfjAubDkH4IuBlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bz79IJNsYTwdLWDA3Z8vIb94E7UrBdHUCyg88C6l73KsHOZl5u5ndOHadgq4I3qVL
-	 VhfydA7T3ZZOhKHk0SHYgY8fqCqWPm7ceW/AHtgYsUcbmmniL+XaN0WjYBjRn+elBQ
-	 zbisXd2eA9Xwc1UH6o8fAy7d8xq2acG9XBLuHOuE=
+	b=lIeZNHBY9kp8zLlsYSRXxX+5+m/K8KJ+uuKQMEA3RDAgm+MKfTmvJV0DghPIBo0hA
+	 rvoxQbxTG6YDMULgTukRgIwX4+bWJeJhsrCqLGSKBQ95ZqsFmJw4jawvTXyNuxFA8o
+	 J4ARJK8tMJhSyWEOAWe/wAR6YjJq39+W3MiXffD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gustavo Luiz Duarte <gustavold@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hoyoung Seo <hy50.seo@samsung.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 765/849] netconsole: Acquire su_mutex before navigating configs hierarchy
-Date: Tue, 11 Nov 2025 09:45:35 +0900
-Message-ID: <20251111004554.926967084@linuxfoundation.org>
+Subject: [PATCH 6.12 480/565] scsi: ufs: core: Include UTP error in INT_FATAL_ERRORS
+Date: Tue, 11 Nov 2025 09:45:36 +0900
+Message-ID: <20251111004537.720452205@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo Luiz Duarte <gustavold@gmail.com>
+From: Hoyoung Seo <hy50.seo@samsung.com>
 
-[ Upstream commit d7d2fcf7ae31471b4e08b7e448b8fd0ec2e06a1b ]
+[ Upstream commit 558ae4579810fa0fef011944230c65a6f3087f85 ]
 
-There is a race between operations that iterate over the userdata
-cg_children list and concurrent add/remove of userdata items through
-configfs. The update_userdata() function iterates over the
-nt->userdata_group.cg_children list, and count_extradata_entries() also
-iterates over this same list to count nodes.
+When a UTP error occurs in isolation, UFS is not currently recoverable.
+This is because the UTP error is not considered fatal in the error
+handling code, leading to either an I/O timeout or an OCS error.
 
-Quoting from Documentation/filesystems/configfs.rst:
-> A subsystem can navigate the cg_children list and the ci_parent pointer
-> to see the tree created by the subsystem.  This can race with configfs'
-> management of the hierarchy, so configfs uses the subsystem mutex to
-> protect modifications.  Whenever a subsystem wants to navigate the
-> hierarchy, it must do so under the protection of the subsystem
-> mutex.
+Add the UTP error flag to INT_FATAL_ERRORS so the controller will be
+reset in this situation.
 
-Without proper locking, if a userdata item is added or removed
-concurrently while these functions are iterating, the list can be
-accessed in an inconsistent state. For example, the list_for_each() loop
-can reach a node that is being removed from the list by list_del_init()
-which sets the nodes' .next pointer to point to itself, so the loop will
-never end (or reach the WARN_ON_ONCE in update_userdata() ).
+  sd 0:0:0:0: [sda] tag#38 UNKNOWN(0x2003) Result: hostbyte=0x07
+  driverbyte=DRIVER_OK cmd_age=0s
+  sd 0:0:0:0: [sda] tag#38 CDB: opcode=0x28 28 00 00 51 24 e2 00 00 08 00
+  I/O error, dev sda, sector 42542864 op 0x0:(READ) flags 0x80700 phys_seg
+  8 prio class 2
+  OCS error from controller = 9 for tag 39
+  pa_err[1] = 0x80000010 at 2667224756 us
+  pa_err: total cnt=2
+  dl_err[0] = 0x80000002 at 2667148060 us
+  dl_err[1] = 0x80002000 at 2667282844 us
+  No record of nl_err
+  No record of tl_err
+  No record of dme_err
+  No record of auto_hibern8_err
+  fatal_err[0] = 0x804 at 2667282836 us
 
-Fix this by holding the configfs subsystem mutex (su_mutex) during all
-operations that iterate over cg_children.
-This includes:
-- userdatum_value_store() which calls update_userdata() to iterate over
-  cg_children
-- All sysdata_*_enabled_store() functions which call
-  count_extradata_entries() to iterate over cg_children
+  ---------------------------------------------------
+  		REGISTER
+  ---------------------------------------------------
+                             NAME	      OFFSET	         VALUE
+                      STD HCI SFR	  0xfffffff0	           0x0
+                             AHIT	        0x18	         0x814
+                 INTERRUPT STATUS	        0x20	        0x1000
+                 INTERRUPT ENABLE	        0x24	       0x70ef5
 
-The su_mutex must be acquired before dynamic_netconsole_mutex to avoid
-potential lock ordering issues, as configfs operations may already hold
-su_mutex when calling into our code.
+[mkp: commit desc]
 
-Fixes: df03f830d099 ("net: netconsole: cache userdata formatted string in netconsole_target")
-Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
-Link: https://patch.msgid.link/20251029-netconsole-fix-warn-v1-1-0d0dd4622f48@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hoyoung Seo <hy50.seo@samsung.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Message-Id: <20250930061428.617955-1-hy50.seo@samsung.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netconsole.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/ufs/ufshci.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index e3722de08ea9f..3ff1dfc3d26b2 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -928,6 +928,7 @@ static ssize_t userdatum_value_store(struct config_item *item, const char *buf,
- 	if (count > MAX_EXTRADATA_VALUE_LEN)
- 		return -EMSGSIZE;
+diff --git a/include/ufs/ufshci.h b/include/ufs/ufshci.h
+index 27364c4a6ef9f..63ae3150f6be3 100644
+--- a/include/ufs/ufshci.h
++++ b/include/ufs/ufshci.h
+@@ -185,6 +185,7 @@ static inline u32 ufshci_version(u32 major, u32 minor)
+ #define UTP_TASK_REQ_COMPL			0x200
+ #define UIC_COMMAND_COMPL			0x400
+ #define DEVICE_FATAL_ERROR			0x800
++#define UTP_ERROR				0x1000
+ #define CONTROLLER_FATAL_ERROR			0x10000
+ #define SYSTEM_BUS_FATAL_ERROR			0x20000
+ #define CRYPTO_ENGINE_FATAL_ERROR		0x40000
+@@ -204,7 +205,8 @@ static inline u32 ufshci_version(u32 major, u32 minor)
+ 				CONTROLLER_FATAL_ERROR |\
+ 				SYSTEM_BUS_FATAL_ERROR |\
+ 				CRYPTO_ENGINE_FATAL_ERROR |\
+-				UIC_LINK_LOST)
++				UIC_LINK_LOST |\
++				UTP_ERROR)
  
-+	mutex_lock(&netconsole_subsys.su_mutex);
- 	mutex_lock(&dynamic_netconsole_mutex);
- 
- 	ret = strscpy(udm->value, buf, sizeof(udm->value));
-@@ -941,6 +942,7 @@ static ssize_t userdatum_value_store(struct config_item *item, const char *buf,
- 	ret = count;
- out_unlock:
- 	mutex_unlock(&dynamic_netconsole_mutex);
-+	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
- }
- 
-@@ -966,6 +968,7 @@ static ssize_t sysdata_msgid_enabled_store(struct config_item *item,
- 	if (ret)
- 		return ret;
- 
-+	mutex_lock(&netconsole_subsys.su_mutex);
- 	mutex_lock(&dynamic_netconsole_mutex);
- 	curr = !!(nt->sysdata_fields & SYSDATA_MSGID);
- 	if (msgid_enabled == curr)
-@@ -986,6 +989,7 @@ static ssize_t sysdata_msgid_enabled_store(struct config_item *item,
- 	ret = strnlen(buf, count);
- unlock:
- 	mutex_unlock(&dynamic_netconsole_mutex);
-+	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
- }
- 
-@@ -1000,6 +1004,7 @@ static ssize_t sysdata_release_enabled_store(struct config_item *item,
- 	if (ret)
- 		return ret;
- 
-+	mutex_lock(&netconsole_subsys.su_mutex);
- 	mutex_lock(&dynamic_netconsole_mutex);
- 	curr = !!(nt->sysdata_fields & SYSDATA_RELEASE);
- 	if (release_enabled == curr)
-@@ -1020,6 +1025,7 @@ static ssize_t sysdata_release_enabled_store(struct config_item *item,
- 	ret = strnlen(buf, count);
- unlock:
- 	mutex_unlock(&dynamic_netconsole_mutex);
-+	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
- }
- 
-@@ -1034,6 +1040,7 @@ static ssize_t sysdata_taskname_enabled_store(struct config_item *item,
- 	if (ret)
- 		return ret;
- 
-+	mutex_lock(&netconsole_subsys.su_mutex);
- 	mutex_lock(&dynamic_netconsole_mutex);
- 	curr = !!(nt->sysdata_fields & SYSDATA_TASKNAME);
- 	if (taskname_enabled == curr)
-@@ -1054,6 +1061,7 @@ static ssize_t sysdata_taskname_enabled_store(struct config_item *item,
- 	ret = strnlen(buf, count);
- unlock:
- 	mutex_unlock(&dynamic_netconsole_mutex);
-+	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
- }
- 
-@@ -1069,6 +1077,7 @@ static ssize_t sysdata_cpu_nr_enabled_store(struct config_item *item,
- 	if (ret)
- 		return ret;
- 
-+	mutex_lock(&netconsole_subsys.su_mutex);
- 	mutex_lock(&dynamic_netconsole_mutex);
- 	curr = !!(nt->sysdata_fields & SYSDATA_CPU_NR);
- 	if (cpu_nr_enabled == curr)
-@@ -1097,6 +1106,7 @@ static ssize_t sysdata_cpu_nr_enabled_store(struct config_item *item,
- 	ret = strnlen(buf, count);
- unlock:
- 	mutex_unlock(&dynamic_netconsole_mutex);
-+	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
- }
- 
+ /* HCS - Host Controller Status 30h */
+ #define DEVICE_PRESENT				0x1
 -- 
 2.51.0
 
