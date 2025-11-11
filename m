@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E0E8C4A3D9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:08:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6E8C4A3E5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:08:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD7344F82A6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7C0C64F8398
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2094025C818;
-	Tue, 11 Nov 2025 01:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7398925EF9C;
+	Tue, 11 Nov 2025 01:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rti8wI5C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3iJLRTf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26D5246768;
-	Tue, 11 Nov 2025 01:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275C824E4A1;
+	Tue, 11 Nov 2025 01:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822998; cv=none; b=dBwKhGv3APXBJEBczzYJ/RLfPua5Rby18piUlz/44Acbyagk4DXtYAFLpIxHlBefOZMYRv3S1MkRVVIe88tXsWjdmbrV1heQXR1QdIeIrhrJdKcelyInN4D505Ql6HcOBYZR85mADBhDE6ZnczztJ1aAgGdlF2XvnOQ8YVZBGhs=
+	t=1762823002; cv=none; b=l8RvcLY6XrVDG03PeP1Z5BrX8+kI5YjEMt6yJr1imNebzMSHs3IqHsMrdyTRq7OuCSPUwH/sA6bDC9RhWsUCBS5EAsBgfZs1KAlCYZAOeJ31SuKSHeZIiz8FqjwI3iOgh4zVY7Ksackd7T0vPlBdM16it0KL5WUhhFe5T77+Qig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822998; c=relaxed/simple;
-	bh=yLyuMcLE3LdKZONcOWexHAypwNvI2IoeswzNZVTtV0Y=;
+	s=arc-20240116; t=1762823002; c=relaxed/simple;
+	bh=AP8I7IQTcPfLILZ8bZI9oLcniPl4RBXOfqRNNXv3TAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PX0KeclJylecMdeWhb831+Tii8Xi8QTIrDe/VeOtExQ5ZlmoOoad7JmZPTwMO6mOZZfn1cuQ43fGTWpyixE4k7EUR0nd6UjnQiPFu6lFYwBzss6cxhvZPvKdQtm3vUA6Fm+ZPqkVEUQzTHbnk7KbEgf9E6cMDUmJN2NVKQGEODg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rti8wI5C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022C2C4CEF5;
-	Tue, 11 Nov 2025 01:03:16 +0000 (UTC)
+	 MIME-Version; b=qQQSDOB8qeW5hbWRL3Ij1gdGqehvg7PsjyzJyXUYEfCUic/J9AjI7eVhT10CVdm5QYy8gn9vAAEVti8RVkr3zpGQWN8zbA5tddopeU18C4gwRLcGJrX/bFQ+ZjpA4UxUuyOfa6LLyiFVsR7KnEpqYR2Y3IVfgVntUMx7W1tqZ0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3iJLRTf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B35C116B1;
+	Tue, 11 Nov 2025 01:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822997;
-	bh=yLyuMcLE3LdKZONcOWexHAypwNvI2IoeswzNZVTtV0Y=;
+	s=korg; t=1762823002;
+	bh=AP8I7IQTcPfLILZ8bZI9oLcniPl4RBXOfqRNNXv3TAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rti8wI5CRKPkvMiL8rRuZqt7o77sgaSLMxHPb3VfuVFH+2lnpoII2hpA8SVEmSEyM
-	 rw+Q7MPrvfa06/peXDXpVZtB1S7hlbDanf3EVKAcx2yrdzEHRkiuDVuimb44zqvs8/
-	 kpd9mf1d00LNMJvTT4mJAReByvoxd9PwzvmowD0U=
+	b=G3iJLRTfoJmvKAl6S2WCGr/grq6DMm3A7uOR2rBV/INCuZhMVjjtbwGlmYdbmRDv4
+	 bksbTBQYTraGgEJwQzyjn6iNvhFGKA5Yqa6VtX4mvUZ9TXi3aXnOjQZmEvRr93xuk5
+	 tWXorxkRtX3iX65NAnNITRiO/sHjQExqwnQof+9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 211/849] hwmon: (dell-smm) Add support for Dell OptiPlex 7040
-Date: Tue, 11 Nov 2025 09:36:21 +0900
-Message-ID: <20251111004541.547481565@linuxfoundation.org>
+Subject: [PATCH 6.17 212/849] tools/cpupower: Fix incorrect size in cpuidle_state_disable()
+Date: Tue, 11 Nov 2025 09:36:22 +0900
+Message-ID: <20251111004541.569353600@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,41 +66,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 53d3bd48ef6ff1567a75ca77728968f5ab493cb4 ]
+[ Upstream commit 23199d2aa6dcaf6dd2da772f93d2c94317d71459 ]
 
-The Dell OptiPlex 7040 supports the legacy SMM interface for reading
-sensors and performing fan control. Whitelist this machine so that
-this driver loads automatically.
+Fix incorrect size parameter passed to cpuidle_state_write_file() in
+cpuidle_state_disable().
 
-Closes: https://github.com/Wer-Wolf/i8kutils/issues/15
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20250917181036.10972-5-W_Armin@gmx.de
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+The function was incorrectly using sizeof(disable) which returns the
+size of the unsigned int variable (4 bytes) instead of the actual
+length of the string stored in the 'value' buffer.
+
+Since 'value' is populated with snprintf() to contain the string
+representation of the disable value, we should use the length
+returned by snprintf() to get the correct string length for
+writing to the sysfs file.
+
+This ensures the correct number of bytes is written to the cpuidle
+state disable file in sysfs.
+
+Link: https://lore.kernel.org/r/20250917050820.1785377-1-kaushlendra.kumar@intel.com
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/dell-smm-hwmon.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/power/cpupower/lib/cpuidle.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
-index 3f61b2d7935e4..5801128e16c3c 100644
---- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -1280,6 +1280,13 @@ static const struct dmi_system_id i8k_dmi_table[] __initconst = {
- 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "OptiPlex 7050"),
- 		},
- 	},
-+	{
-+		.ident = "Dell OptiPlex 7040",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "OptiPlex 7040"),
-+		},
-+	},
- 	{
- 		.ident = "Dell Precision",
- 		.matches = {
+diff --git a/tools/power/cpupower/lib/cpuidle.c b/tools/power/cpupower/lib/cpuidle.c
+index 0ecac009273ce..f2c1139adf716 100644
+--- a/tools/power/cpupower/lib/cpuidle.c
++++ b/tools/power/cpupower/lib/cpuidle.c
+@@ -233,6 +233,7 @@ int cpuidle_state_disable(unsigned int cpu,
+ {
+ 	char value[SYSFS_PATH_MAX];
+ 	int bytes_written;
++	int len;
+ 
+ 	if (cpuidle_state_count(cpu) <= idlestate)
+ 		return -1;
+@@ -241,10 +242,10 @@ int cpuidle_state_disable(unsigned int cpu,
+ 				 idlestate_value_files[IDLESTATE_DISABLE]))
+ 		return -2;
+ 
+-	snprintf(value, SYSFS_PATH_MAX, "%u", disable);
++	len = snprintf(value, SYSFS_PATH_MAX, "%u", disable);
+ 
+ 	bytes_written = cpuidle_state_write_file(cpu, idlestate, "disable",
+-						   value, sizeof(disable));
++						   value, len);
+ 	if (bytes_written)
+ 		return 0;
+ 	return -3;
 -- 
 2.51.0
 
