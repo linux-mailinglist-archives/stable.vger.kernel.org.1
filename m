@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-194078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A83C4ADE7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE846C4B17B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2BD914F6D83
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1E06D4FCA3B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCA4246333;
-	Tue, 11 Nov 2025 01:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4FE2340277;
+	Tue, 11 Nov 2025 01:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQMvpOy3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rowUU1d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253A82F12DA;
-	Tue, 11 Nov 2025 01:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B1033FE22;
+	Tue, 11 Nov 2025 01:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824755; cv=none; b=Q6XwuA4lqxmykMqY7ZSx/bfHg8Q3epg+hR62aHaPEcr4f00UWRDZXI68CilhqZ30hBTmVe1tnfvgCtmFYajB+HT+pqrl+XtUcNl/K6y84OjpQL+lS4XxF3EFawgx2flne1K9eC4X/WShmKhZ/O1TONrXS0ayOoEs07r+DkGyqpo=
+	t=1762825431; cv=none; b=Ay+meFmiGfV6tVtdphHQutiKlVu6/9/O5ZuHZi4pREz8dyOD6/kIp5VdI21C/c0FFioNC8M+V0EJOw5dCSQ2OFiK8zDu64GJqb2y7klh1fwX52FzjSY+pqBjen64l/TzWx+WDy669Y0xeqbOp1AzUazk7CN+RBMbvjO3ue/PWLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824755; c=relaxed/simple;
-	bh=7hjTIX9BUERV8CQpAdxDPp0H+tNe5B9VqS2+FxOsREM=;
+	s=arc-20240116; t=1762825431; c=relaxed/simple;
+	bh=pDzhzv2uDXmVghxw7VbDOEnd0yPaQ9R3kRz1ughru/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QURKr6NPE8DTesoEdjHKRX4xwzwRVx5BZMfTzpyjD0RWmDBDUFzqbm3PAGwj4IqqVzPTx3MdF4RgbSz5YBDzcjxKghC/xYTYmU3EKhRiacwh8v95fYdkrkJC3uWfZ2l7Wz/crpVV3j9MzLrMetQa9+9cbz/UqybvUdWpIoEbUxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQMvpOy3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66697C4CEFB;
-	Tue, 11 Nov 2025 01:32:34 +0000 (UTC)
+	 MIME-Version; b=sCcmyAvasTlQ+GEhnn0hqQgigBshVJsupoaZ+Ni/1SauJDett4yRuGQpUcJ7/Wo+dzyauYVp8PLmAqBNtbT7zrmKmXzQuKmvqgaH46JTZDjhyxIpsHq/gHm6YYbL75dDj9pLJ9lB9FH+RIkrQPxdV2+IFsmUuQ6epS+iGWzPLRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rowUU1d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5C3C116B1;
+	Tue, 11 Nov 2025 01:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824754;
-	bh=7hjTIX9BUERV8CQpAdxDPp0H+tNe5B9VqS2+FxOsREM=;
+	s=korg; t=1762825431;
+	bh=pDzhzv2uDXmVghxw7VbDOEnd0yPaQ9R3kRz1ughru/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQMvpOy35zdcG9aTG1qvErpvpGYRbJrHn/Imqf1nP+lX7RUkgANjuci2eIl0PvdeO
-	 ifwcF9X5it1xVfzpT096xNx4rzcJKxK31+C8o6InYG7DZBRwracbXsWjgbFVl5/4vp
-	 ozj1c5Cgsrs/6PBsnE9QfdGhOo+TiOCPJfajf7Ko=
+	b=0rowUU1d++QRU7VrOfeOp0Kzdfu0BrWH5lgSj05TACz9DGq4Pzey8ggtdXCdWClL/
+	 4569rEf26HQwyaeDUJ9VU/ZHyzlnlGoumcfHh/cgrHKuuNjAf46Hj5qOplGwgx+USE
+	 vXDwIYLGeGn8kT31EhrBqji/kMdvyNiQUZk/b6Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	syzbot+dd280197f0f7ab3917be@syzkaller.appspotmail.com,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 511/565] net: dsa: tag_brcm: legacy: reorganize functions
+Subject: [PATCH 6.17 797/849] net: bridge: fix use-after-free due to MST port state bypass
 Date: Tue, 11 Nov 2025 09:46:07 +0900
-Message-ID: <20251111004538.450161115@linuxfoundation.org>
+Message-ID: <20251111004555.701741588@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +62,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit a4daaf063f8269a5881154c5b77c5ef6639d65d3 ]
+[ Upstream commit 8dca36978aa80bab9d4da130c211db75c9e00048 ]
 
-Move brcm_leg_tag_rcv() definition to top.
-This function is going to be shared between two different tags.
+syzbot reported[1] a use-after-free when deleting an expired fdb. It is
+due to a race condition between learning still happening and a port being
+deleted, after all its fdbs have been flushed. The port's state has been
+toggled to disabled so no learning should happen at that time, but if we
+have MST enabled, it will bypass the port's state, that together with VLAN
+filtering disabled can lead to fdb learning at a time when it shouldn't
+happen while the port is being deleted. VLAN filtering must be disabled
+because we flush the port VLANs when it's being deleted which will stop
+learning. This fix adds a check for the port's vlan group which is
+initialized to NULL when the port is getting deleted, that avoids the port
+state bypass. When MST is enabled there would be a minimal new overhead
+in the fast-path because the port's vlan group pointer is cache-hot.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-2-noltari@gmail.com
+[1] https://syzkaller.appspot.com/bug?extid=dd280197f0f7ab3917be
+
+Fixes: ec7328b59176 ("net: bridge: mst: Multiple Spanning Tree (MST) mode")
+Reported-by: syzbot+dd280197f0f7ab3917be@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/69088ffa.050a0220.29fc44.003d.GAE@google.com/
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20251105111919.1499702-2-razor@blackwall.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 3d18a84eddde ("net: dsa: tag_brcm: legacy: fix untagged rx on unbridged ports for bcm63xx")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dsa/tag_brcm.c | 64 +++++++++++++++++++++++-----------------------
- 1 file changed, 32 insertions(+), 32 deletions(-)
+ net/bridge/br_forward.c | 2 +-
+ net/bridge/br_input.c   | 4 ++--
+ net/bridge/br_private.h | 8 +++++---
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/net/dsa/tag_brcm.c b/net/dsa/tag_brcm.c
-index fe75821623a4f..9f4b0bcd95cde 100644
---- a/net/dsa/tag_brcm.c
-+++ b/net/dsa/tag_brcm.c
-@@ -213,6 +213,38 @@ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_BRCM, BRCM_NAME);
- #endif
+diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
+index 870bdf2e082c4..dea09096ad0fb 100644
+--- a/net/bridge/br_forward.c
++++ b/net/bridge/br_forward.c
+@@ -25,7 +25,7 @@ static inline int should_deliver(const struct net_bridge_port *p,
  
- #if IS_ENABLED(CONFIG_NET_DSA_TAG_BRCM_LEGACY)
-+static struct sk_buff *brcm_leg_tag_rcv(struct sk_buff *skb,
-+					struct net_device *dev)
-+{
-+	int len = BRCM_LEG_TAG_LEN;
-+	int source_port;
-+	u8 *brcm_tag;
-+
-+	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_TAG_LEN + VLAN_HLEN)))
-+		return NULL;
-+
-+	brcm_tag = dsa_etype_header_pos_rx(skb);
-+
-+	source_port = brcm_tag[5] & BRCM_LEG_PORT_ID;
-+
-+	skb->dev = dsa_conduit_find_user(dev, 0, source_port);
-+	if (!skb->dev)
-+		return NULL;
-+
-+	/* VLAN tag is added by BCM63xx internal switch */
-+	if (netdev_uses_dsa(skb->dev))
-+		len += VLAN_HLEN;
-+
-+	/* Remove Broadcom tag and update checksum */
-+	skb_pull_rcsum(skb, len);
-+
-+	dsa_default_offload_fwd_mark(skb);
-+
-+	dsa_strip_etype_header(skb, len);
-+
-+	return skb;
-+}
-+
- static struct sk_buff *brcm_leg_tag_xmit(struct sk_buff *skb,
- 					 struct net_device *dev)
+ 	vg = nbp_vlan_group_rcu(p);
+ 	return ((p->flags & BR_HAIRPIN_MODE) || skb->dev != p->dev) &&
+-		(br_mst_is_enabled(p->br) || p->state == BR_STATE_FORWARDING) &&
++		(br_mst_is_enabled(p) || p->state == BR_STATE_FORWARDING) &&
+ 		br_allowed_egress(vg, skb) && nbp_switchdev_allowed_egress(p, skb) &&
+ 		!br_skb_isolated(p, skb);
+ }
+diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
+index 5f6ac9bf15275..c07265b365b10 100644
+--- a/net/bridge/br_input.c
++++ b/net/bridge/br_input.c
+@@ -94,7 +94,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
+ 
+ 	br = p->br;
+ 
+-	if (br_mst_is_enabled(br)) {
++	if (br_mst_is_enabled(p)) {
+ 		state = BR_STATE_FORWARDING;
+ 	} else {
+ 		if (p->state == BR_STATE_DISABLED) {
+@@ -421,7 +421,7 @@ static rx_handler_result_t br_handle_frame(struct sk_buff **pskb)
+ 		return RX_HANDLER_PASS;
+ 
+ forward:
+-	if (br_mst_is_enabled(p->br))
++	if (br_mst_is_enabled(p))
+ 		goto defer_stp_filtering;
+ 
+ 	switch (p->state) {
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 8de0904b9627f..fdaf7d8374639 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -1932,10 +1932,12 @@ static inline bool br_vlan_state_allowed(u8 state, bool learn_allow)
+ /* br_mst.c */
+ #ifdef CONFIG_BRIDGE_VLAN_FILTERING
+ DECLARE_STATIC_KEY_FALSE(br_mst_used);
+-static inline bool br_mst_is_enabled(struct net_bridge *br)
++static inline bool br_mst_is_enabled(const struct net_bridge_port *p)
  {
-@@ -250,38 +282,6 @@ static struct sk_buff *brcm_leg_tag_xmit(struct sk_buff *skb,
- 	return skb;
++	/* check the port's vlan group to avoid racing with port deletion */
+ 	return static_branch_unlikely(&br_mst_used) &&
+-		br_opt_get(br, BROPT_MST_ENABLED);
++	       br_opt_get(p->br, BROPT_MST_ENABLED) &&
++	       rcu_access_pointer(p->vlgrp);
  }
  
--static struct sk_buff *brcm_leg_tag_rcv(struct sk_buff *skb,
--					struct net_device *dev)
--{
--	int len = BRCM_LEG_TAG_LEN;
--	int source_port;
--	u8 *brcm_tag;
--
--	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_TAG_LEN + VLAN_HLEN)))
--		return NULL;
--
--	brcm_tag = dsa_etype_header_pos_rx(skb);
--
--	source_port = brcm_tag[5] & BRCM_LEG_PORT_ID;
--
--	skb->dev = dsa_conduit_find_user(dev, 0, source_port);
--	if (!skb->dev)
--		return NULL;
--
--	/* VLAN tag is added by BCM63xx internal switch */
--	if (netdev_uses_dsa(skb->dev))
--		len += VLAN_HLEN;
--
--	/* Remove Broadcom tag and update checksum */
--	skb_pull_rcsum(skb, len);
--
--	dsa_default_offload_fwd_mark(skb);
--
--	dsa_strip_etype_header(skb, len);
--
--	return skb;
--}
--
- static const struct dsa_device_ops brcm_legacy_netdev_ops = {
- 	.name = BRCM_LEGACY_NAME,
- 	.proto = DSA_TAG_PROTO_BRCM_LEGACY,
+ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
+@@ -1950,7 +1952,7 @@ int br_mst_fill_info(struct sk_buff *skb,
+ int br_mst_process(struct net_bridge_port *p, const struct nlattr *mst_attr,
+ 		   struct netlink_ext_ack *extack);
+ #else
+-static inline bool br_mst_is_enabled(struct net_bridge *br)
++static inline bool br_mst_is_enabled(const struct net_bridge_port *p)
+ {
+ 	return false;
+ }
 -- 
 2.51.0
 
