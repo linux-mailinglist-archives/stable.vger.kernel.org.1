@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-194122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87B9C4ADFC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFFA1C4B157
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D0B83BAA5B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43274189BB5D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BA8305978;
-	Tue, 11 Nov 2025 01:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC66E303CAE;
+	Tue, 11 Nov 2025 01:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6/2gVZg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLayj1Mo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF8C298CDE;
-	Tue, 11 Nov 2025 01:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C7C41C69;
+	Tue, 11 Nov 2025 01:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824858; cv=none; b=HhTWIwjZokyZFh8jZ9tDd1Rht0WL4IygoxS4MtUuAaw1HPLabOEHjr/1YJJOdvDeiMiPYjItM81pUzKlR1rEg67JH9CQM1bv2ws8jmqjIkuDsztf9T8f/iuFQ6ZHr/McITW/PenMgqxan5wLkdYlm73gjkGX0LK5HK103sojV6A=
+	t=1762825461; cv=none; b=brWk/oYfUJGJIfWotOOuphWy5mfHzesCFDw3mjKcVMyZF0iXDTKbiFNhfw7aJnGQCGK+PbNYCgrQGlIYkvWSEIkVhJGPwMg+W7RTBQgjYriTv1WRljUzM0m/rzl3LbGO0GBf+Z3UU24KdpU/7eSAb9nOdl2xthCU4bhp2WBDrIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824858; c=relaxed/simple;
-	bh=+hUS+VFxieuUYajkThx0PQ4Z7V8ggm+WqlpWZFyHKh0=;
+	s=arc-20240116; t=1762825461; c=relaxed/simple;
+	bh=wbo4RVQOp9vVJhMHZNAAY8VEUDWaqtep6HxFWye/DFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ne5vgPjvqlxllH+0u1OTgEv/gvGYcKUcBPfFXPv4643R4YK2UTpaewHVGDd92fJ7vcP5Ln9Z2PM1kIGsT55bZePXWN+U3YaTnOX6uX+kqhlm8mbtoy2VxL9jlkGEeNP/wiB06UHFnvnAtYIgr7VvvpRec0/CihsJ8O0RVuJD02o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6/2gVZg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0A8C4CEFB;
-	Tue, 11 Nov 2025 01:34:17 +0000 (UTC)
+	 MIME-Version; b=ZZFo+kSpIpoP4hf6w1fDYhysGplPigZpCL4vGH5hP6zYIpPXdr8/6OkJ8JqCINGtW0H1BwPmxsbKtldLzb2PlPm0otigJaPTiRWJFI+SaoruO1cUUonyLn2H9p+DZcLfczRqyZgPdvmtY0AJLQQzNjmOA46kO1eDtt7dKZZKSio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLayj1Mo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3D3C113D0;
+	Tue, 11 Nov 2025 01:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824857;
-	bh=+hUS+VFxieuUYajkThx0PQ4Z7V8ggm+WqlpWZFyHKh0=;
+	s=korg; t=1762825461;
+	bh=wbo4RVQOp9vVJhMHZNAAY8VEUDWaqtep6HxFWye/DFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6/2gVZguzoMQl20Cbccf2pj8OHvs0D8JEV0wAverB7B2YjzrNDPnE8nL2P/jUFD4
-	 A6LzfN+ecWtXBWFNCFqZl47/rt1f8cWx9jtxJD4Nh9kpTeEgf54WFbeyAKd+YSJ822
-	 HIlEWMrToopqXsEg53KTkH2egMlZ4Dfhr91SHYgs=
+	b=BLayj1MoiADmsj7ZnpI76lJlh7Alk1eq2y1oV7dtz+qv0egX0W0izwtLa6/eDe6c7
+	 F+ZTtAuQHYBpKNgSbFMViMiHmhJnT4I9vllosIuhk0YhOO7Y8My4uPLUBwbjKvDXA6
+	 bN9lflaNd5AFixSKwBGaKWGTZgTo9ck+mjF/cc8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammad Heib <mheib@redhat.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 527/565] net: ionic: map SKB after pseudo-header checksum prep
+	Yuta Hayama <hayama@lineo.co.jp>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.17 813/849] rtc: rx8025: fix incorrect register reference
 Date: Tue, 11 Nov 2025 09:46:23 +0900
-Message-ID: <20251111004538.820601876@linuxfoundation.org>
+Message-ID: <20251111004556.080639642@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Heib <mheib@redhat.com>
+From: Yuta Hayama <hayama@lineo.co.jp>
 
-[ Upstream commit de0337d641bfa5b6d6b489e479792f1039274e84 ]
+commit 162f24cbb0f6ec596e7e9f3e91610d79dc805229 upstream.
 
-The TSO path called ionic_tx_map_skb() before preparing the TCP pseudo
-checksum (ionic_tx_tcp_[inner_]pseudo_csum()), which may perform
-skb_cow_head() and might modifies bytes in the linear header area.
+This code is intended to operate on the CTRL1 register, but ctrl[1] is
+actually CTRL2. Correctly, ctrl[0] is CTRL1.
 
-Mapping first and then mutating the header risks:
-  - Using a stale DMA address if skb_cow_head() relocates the head, and/or
-  - Device reading stale header bytes on weakly-ordered systems
-    (CPU writes after mapping are not guaranteed visible without an
-    explicit dma_sync_single_for_device()).
-
-Reorder the TX path to perform all header mutations (including
-skb_cow_head()) *before* DMA mapping. Mapping is now done only after the
-skb layout and header contents are final. This removes the need for any
-post-mapping dma_sync and prevents on-wire corruption observed under
-VLAN+TSO load after repeated runs.
-
-This change is purely an ordering fix; no functional behavior change
-otherwise.
-
-Fixes: 0f3154e6bcb3 ("ionic: Add Tx and Rx handling")
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Link: https://patch.msgid.link/20251031155203.203031-2-mheib@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yuta Hayama <hayama@lineo.co.jp>
+Fixes: 71af91565052 ("rtc: rx8025: fix 12/24 hour mode detection on RX-8035")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/eae5f479-5d28-4a37-859d-d54794e7628c@lineo.co.jp
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/pensando/ionic/ionic_txrx.c  | 30 ++++++++-----------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ drivers/rtc/rtc-rx8025.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-index 3a094d3ea6f4f..2cdcd46e922cd 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-@@ -1448,19 +1448,6 @@ static int ionic_tx_tso(struct net_device *netdev, struct ionic_queue *q,
- 	bool encap;
- 	int err;
- 
--	desc_info = &q->tx_info[q->head_idx];
--
--	if (unlikely(ionic_tx_map_skb(q, skb, desc_info)))
--		return -EIO;
--
--	len = skb->len;
--	mss = skb_shinfo(skb)->gso_size;
--	outer_csum = (skb_shinfo(skb)->gso_type & (SKB_GSO_GRE |
--						   SKB_GSO_GRE_CSUM |
--						   SKB_GSO_IPXIP4 |
--						   SKB_GSO_IPXIP6 |
--						   SKB_GSO_UDP_TUNNEL |
--						   SKB_GSO_UDP_TUNNEL_CSUM));
- 	has_vlan = !!skb_vlan_tag_present(skb);
- 	vlan_tci = skb_vlan_tag_get(skb);
- 	encap = skb->encapsulation;
-@@ -1474,12 +1461,21 @@ static int ionic_tx_tso(struct net_device *netdev, struct ionic_queue *q,
- 		err = ionic_tx_tcp_inner_pseudo_csum(skb);
- 	else
- 		err = ionic_tx_tcp_pseudo_csum(skb);
--	if (unlikely(err)) {
--		/* clean up mapping from ionic_tx_map_skb */
--		ionic_tx_desc_unmap_bufs(q, desc_info);
-+	if (unlikely(err))
- 		return err;
--	}
- 
-+	desc_info = &q->tx_info[q->head_idx];
-+	if (unlikely(ionic_tx_map_skb(q, skb, desc_info)))
-+		return -EIO;
-+
-+	len = skb->len;
-+	mss = skb_shinfo(skb)->gso_size;
-+	outer_csum = (skb_shinfo(skb)->gso_type & (SKB_GSO_GRE |
-+						   SKB_GSO_GRE_CSUM |
-+						   SKB_GSO_IPXIP4 |
-+						   SKB_GSO_IPXIP6 |
-+						   SKB_GSO_UDP_TUNNEL |
-+						   SKB_GSO_UDP_TUNNEL_CSUM));
- 	if (encap)
- 		hdrlen = skb_inner_tcp_all_headers(skb);
- 	else
--- 
-2.51.0
-
+--- a/drivers/rtc/rtc-rx8025.c
++++ b/drivers/rtc/rtc-rx8025.c
+@@ -316,7 +316,7 @@ static int rx8025_init_client(struct i2c
+ 			return hour_reg;
+ 		rx8025->is_24 = (hour_reg & RX8035_BIT_HOUR_1224);
+ 	} else {
+-		rx8025->is_24 = (ctrl[1] & RX8025_BIT_CTRL1_1224);
++		rx8025->is_24 = (ctrl[0] & RX8025_BIT_CTRL1_1224);
+ 	}
+ out:
+ 	return err;
 
 
 
