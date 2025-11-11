@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-193526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C4CC4A52E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADA9AC4A6DD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7841534BE44
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 631D01892ED4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81FF21D5BC;
-	Tue, 11 Nov 2025 01:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64790336EF2;
+	Tue, 11 Nov 2025 01:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0iA6FVQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vk3km2cJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82791274FD3;
-	Tue, 11 Nov 2025 01:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5D726056C;
+	Tue, 11 Nov 2025 01:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823390; cv=none; b=P20R3ofJUemOicDgPz0E95wOi2rlLiykZ+GaaunTSgMG+dcIEyj3TkIBQ9heZ3n0u0pdLtE6mB+FY1HdMQnY2qOcycYt1EB/iIMwLEa1IKAMsnIR9pD/ZP0BP3eEc+x4d/J8uaqO9S6TYwDNehdtbSMVi2cNwFE0MFEHtFnpGJA=
+	t=1762823395; cv=none; b=Z1JE933PZxEug5riPocNNhHmv2rUnr2hCb9sgBnPCjBurMCDIlYX6uQGmbX18vO2YyJMb82ZpyKXhhFFsG1PCCejGouEmlLzrcWJE4yMcAsJAEGRuBOFMk7xBGeX8hge/aTGh1Q2xqJdzzSN5549zLgLQDmDln4UWOqLEpS0vSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823390; c=relaxed/simple;
-	bh=8OUXcERLeyWjGqFrByLVJ68rq9sr+uP9ZXwdS+cVsCg=;
+	s=arc-20240116; t=1762823395; c=relaxed/simple;
+	bh=BODOqef5+JbkAcBzobPJCEfRMFW6Dop69jnw/5utqWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LXHykdl9ipuHDVBAC9mzenXhfmIwtnF2J1qUwzdpNvgD68qTU+OpFxaHQkwI4Hzi3BJ3yowvmDElXRhoqOnAxyCmt8Zctre36sBii17HE65wFd9PqI+0IeP1fEKp8gFuxsAKASTXkVLCXcJKCu+cdP7n5Tm123f9giSZNwQ2TZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0iA6FVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E13F5C2BC87;
-	Tue, 11 Nov 2025 01:09:49 +0000 (UTC)
+	 MIME-Version; b=f9mNIPcjREXevD3e3V0/g5ddiIToql8O7PIMRM+i01VWJt6+IFVGZqchixliEOzMqOWRuSrEbET2JOH20iHWYuiQSBtfRoRoZ0CT1atKZENvUwANpuhQcuCQ0ns1akPbDZg5AzGOcR0S4ZhLN28ktyQRSDYRkwh9Aeqz6hYMcS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vk3km2cJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DDEC19421;
+	Tue, 11 Nov 2025 01:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823390;
-	bh=8OUXcERLeyWjGqFrByLVJ68rq9sr+uP9ZXwdS+cVsCg=;
+	s=korg; t=1762823395;
+	bh=BODOqef5+JbkAcBzobPJCEfRMFW6Dop69jnw/5utqWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e0iA6FVQ/VAZQTv0jzsk+zB8rDVrwnCkpTEt0LOsWlsY0Py8uD4auYNDPLVtHBVNX
-	 9jaB8l/lBvYjritkSxJVKMBfBCkUDS/frXqtgw6ohiE4Xscn9twzLmIkDxzlRTfWrb
-	 HiBKtiJznM/Bd5aUo+Iq4/dl1Gjsip/lHslo+qVc=
+	b=vk3km2cJmlN6ni8c5Ri70OCC/j/pEV+IES9ZPxwx8XOjs9HWJQOfeffuwA52o9DQR
+	 n4m5Xh3lLb2GKAai7fiiG8gzQXrb+RvNwEMSYNi7Q4JAC9Ujilxo20sy2Mia+HCKoz
+	 OkeL0uVwq82BNju/sB+X0sThQ8PNfPdhXhalcq5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 291/849] PCI/ERR: Update device error_state already after reset
-Date: Tue, 11 Nov 2025 09:37:41 +0900
-Message-ID: <20251111004543.444053256@linuxfoundation.org>
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Dave Hansen <dave.hansen@intel.com>
+Subject: [PATCH 6.17 292/849] x86/vsyscall: Do not require X86_PF_INSTR to emulate vsyscall
+Date: Tue, 11 Nov 2025 09:37:42 +0900
+Message-ID: <20251111004543.467441879@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,105 +68,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit 45bc82563d5505327d97963bc54d3709939fa8f8 ]
+[ Upstream commit 8ba38a7a9a699905b84fa97578a8291010dec273 ]
 
-After a Fatal Error has been reported by a device and has been recovered
-through a Secondary Bus Reset, AER updates the device's error_state to
-pci_channel_io_normal before invoking its driver's ->resume() callback.
+emulate_vsyscall() expects to see X86_PF_INSTR in PFEC on a vsyscall
+page fault, but the CPU does not report X86_PF_INSTR if neither
+X86_FEATURE_NX nor X86_FEATURE_SMEP are enabled.
 
-By contrast, EEH updates the error_state earlier, namely after resetting
-the device and before invoking its driver's ->slot_reset() callback.
-Commit c58dc575f3c8 ("powerpc/pseries: Set error_state to
-pci_channel_io_normal in eeh_report_reset()") explains in great detail
-that the earlier invocation is necessitated by various drivers checking
-accessibility of the device with pci_channel_offline() and avoiding
-accesses if it returns true.  It returns true for any other error_state
-than pci_channel_io_normal.
+X86_FEATURE_NX should be enabled on nearly all 64-bit CPUs, except for
+early P4 processors that did not support this feature.
 
-The device should be accessible already after reset, hence the reasoning
-is that it's safe to update the error_state immediately afterwards.
+Instead of explicitly checking for X86_PF_INSTR, compare the fault
+address to RIP.
 
-This deviation between AER and EEH seems problematic because drivers
-behave differently depending on which error recovery mechanism the
-platform uses.  Three drivers have gone so far as to update the
-error_state themselves, presumably to work around AER's behavior.
+On machines with X86_FEATURE_NX enabled, issue a warning if RIP is equal
+to fault address but X86_PF_INSTR is absent.
 
-For consistency, amend AER to update the error_state at the same recovery
-steps as EEH.  Drop the now unnecessary workaround from the three drivers.
+[ dhansen: flesh out code comments ]
 
-Keep updating the error_state before ->resume() in case ->error_detected()
-or ->mmio_enabled() return PCI_ERS_RESULT_RECOVERED, which causes
-->slot_reset() to be skipped.  There are drivers doing this even for Fatal
-Errors, e.g. mhi_pci_error_detected().
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/4517af6359ffb9d66152b827a5d2833459144e3f.1755008151.git.lukas@wunner.de
+Originally-by: Dave Hansen <dave.hansen@intel.com>
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Link: https://lore.kernel.org/all/bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com
+Link: https://lore.kernel.org/all/20250624145918.2720487-1-kirill.shutemov%40linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c | 1 -
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c    | 2 --
- drivers/pci/pcie/err.c                              | 3 ++-
- drivers/scsi/qla2xxx/qla_os.c                       | 5 -----
- 4 files changed, 2 insertions(+), 9 deletions(-)
+ arch/x86/entry/vsyscall/vsyscall_64.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c
-index d7cdea8f604d0..91e7b38143ead 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c
-@@ -4215,7 +4215,6 @@ static pci_ers_result_t qlcnic_83xx_io_slot_reset(struct pci_dev *pdev)
- 	struct qlcnic_adapter *adapter = pci_get_drvdata(pdev);
- 	int err = 0;
+diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
+index c9103a6fa06e8..6e6c0a7408371 100644
+--- a/arch/x86/entry/vsyscall/vsyscall_64.c
++++ b/arch/x86/entry/vsyscall/vsyscall_64.c
+@@ -124,7 +124,12 @@ bool emulate_vsyscall(unsigned long error_code,
+ 	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
+ 		return false;
  
--	pdev->error_state = pci_channel_io_normal;
- 	err = pci_enable_device(pdev);
- 	if (err)
- 		goto disconnect;
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-index 53cdd36c41236..e051d8c7a28d6 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-@@ -3766,8 +3766,6 @@ static int qlcnic_attach_func(struct pci_dev *pdev)
- 	struct qlcnic_adapter *adapter = pci_get_drvdata(pdev);
- 	struct net_device *netdev = adapter->netdev;
+-	if (!(error_code & X86_PF_INSTR)) {
++	/*
++	 * Assume that faults at regs->ip are because of an
++	 * instruction fetch. Return early and avoid
++	 * emulation for faults during data accesses:
++	 */
++	if (address != regs->ip) {
+ 		/* Failed vsyscall read */
+ 		if (vsyscall_mode == EMULATE)
+ 			return false;
+@@ -136,13 +141,19 @@ bool emulate_vsyscall(unsigned long error_code,
+ 		return false;
+ 	}
  
--	pdev->error_state = pci_channel_io_normal;
++	/*
++	 * X86_PF_INSTR is only set when NX is supported.  When
++	 * available, use it to double-check that the emulation code
++	 * is only being used for instruction fetches:
++	 */
++	if (cpu_feature_enabled(X86_FEATURE_NX))
++		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
++
+ 	/*
+ 	 * No point in checking CS -- the only way to get here is a user mode
+ 	 * trap to a high address, which means that we're in 64-bit user code.
+ 	 */
+ 
+-	WARN_ON_ONCE(address != regs->ip);
 -
- 	err = pci_enable_device(pdev);
- 	if (err)
- 		return err;
-diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index a4990c9ad493a..e85b9cd5fec1b 100644
---- a/drivers/pci/pcie/err.c
-+++ b/drivers/pci/pcie/err.c
-@@ -141,7 +141,8 @@ static int report_slot_reset(struct pci_dev *dev, void *data)
- 
- 	device_lock(&dev->dev);
- 	pdrv = dev->driver;
--	if (!pdrv || !pdrv->err_handler || !pdrv->err_handler->slot_reset)
-+	if (!pci_dev_set_io_state(dev, pci_channel_io_normal) ||
-+	    !pdrv || !pdrv->err_handler || !pdrv->err_handler->slot_reset)
- 		goto out;
- 
- 	err_handler = pdrv->err_handler;
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index d4b484c0fd9d7..4460421834cb2 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -7883,11 +7883,6 @@ qla2xxx_pci_slot_reset(struct pci_dev *pdev)
- 	       "Slot Reset.\n");
- 
- 	ha->pci_error_state = QLA_PCI_SLOT_RESET;
--	/* Workaround: qla2xxx driver which access hardware earlier
--	 * needs error state to be pci_channel_io_online.
--	 * Otherwise mailbox command timesout.
--	 */
--	pdev->error_state = pci_channel_io_normal;
- 
- 	pci_restore_state(pdev);
- 
+ 	if (vsyscall_mode == NONE) {
+ 		warn_bad_vsyscall(KERN_INFO, regs,
+ 				  "vsyscall attempted with vsyscall=none");
 -- 
 2.51.0
 
