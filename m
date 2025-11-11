@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-194280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC460C4AFB5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDECEC4AF88
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453341899FA2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 143923BA4F2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F4A30103C;
-	Tue, 11 Nov 2025 01:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D382304BD5;
+	Tue, 11 Nov 2025 01:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfQhgZex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ige7ofcr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2169530BF77;
-	Tue, 11 Nov 2025 01:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFF93043BF;
+	Tue, 11 Nov 2025 01:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825229; cv=none; b=fks4BxkIXgdauRpiKgDwUsHpvZKdGK6VhAgRdnOVF/pW7+Pfw7DPQboQVpEj7LA7JHItKYEhODUwpeDOAolviSy06pSSBeLV0n3jLvP4P1a/XUJSAUDaj5LaYHhXtU1Zpej9WkPwU5d1d9uhRvVJSnDTa0ItbsQFfNTJgCWPzBM=
+	t=1762825127; cv=none; b=two6ESQfSo2RuFpXGgkIslnonsT3jAs9SqqXWbA5SAQpL8VnDvtHoRnX7spTtZfkfevZY19bTk+iKtVd918sAeJnwJNdGNAMaPtCPGH6O0ai2IU1FIclNbg4YqdxjvuS83gB3BnWRxJiwqxuhplsE6dckdcv+iyiRQv4rMdgQFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825229; c=relaxed/simple;
-	bh=XeNasxOsVlQaBr4tPumGqqr4VqXvXbwxBcW69IEysLo=;
+	s=arc-20240116; t=1762825127; c=relaxed/simple;
+	bh=xs2dyrCDKvg47fHuzsqVGtyT17eJHKVgeHvlDhtvEDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FlDa4U51P2v0i6vEr1Y2AY24TRYjQsj+hUAtG60pksrEGqQ5f3u7gd0xBFi4aoLfi9ObAFOATLQnlRAlNmDRXpCadGMK/q+Z7KUuDzdpI3/rMtIoU0v9YZ1RSWB5CsIqYYKv5D1noBSdsyi+X3QDUh4DwRfgOmvCNyHL/6X6X9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfQhgZex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7C1C116B1;
-	Tue, 11 Nov 2025 01:40:28 +0000 (UTC)
+	 MIME-Version; b=T5rDPJ7WWlyJkLZPcsp+m5Pz+uVn3DdI+3OWkcmogVJxvWZD1UwPBvYupRjDa0QO0blNvV4dz/mOTSN3MzBIPJhxW5bIeoSU/2rovkp9tXnlGZeSIcs+kXjvSwVeEeRbpq6tPloaardH1hBBRtJf4PwfL3idW7fFTIItzj0hAL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ige7ofcr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DC6C4CEFB;
+	Tue, 11 Nov 2025 01:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825229;
-	bh=XeNasxOsVlQaBr4tPumGqqr4VqXvXbwxBcW69IEysLo=;
+	s=korg; t=1762825126;
+	bh=xs2dyrCDKvg47fHuzsqVGtyT17eJHKVgeHvlDhtvEDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RfQhgZex7AMgIZK49Gm7VZTSRx2iTFLBqW4aFfFJAIT5FXEQfMQ6ofEZbId+APOny
-	 qGsTISODRmPIMf2QbHxGYE7TO+UQ60Jh/TUs8dfNEkxI4cEx4sCaCPmfgpglDxs8DZ
-	 ghNGwZGCsHsWw5wLWT6RNxCTGtf2uGgcxpCclbKw=
+	b=ige7ofcrpyikvwBVao3fOnuyUi7Xyqo63kVksD2GLEWmKCkDKSmvmknSs5ZgHTiWp
+	 oEYPJ/CmAN06ygk9/Iqw7T7jucm01F605dMh8hTaPc+PyOYW+lFHigLWUKCF89wImV
+	 pxPst3+QSZE/+ZpsrKItZ7yMnjG7y91m+6YsVyf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Stanislav Fort of Aisle Research <stanislav.fort@aisle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 672/849] page_pool: Clamp pool size to max 16K pages
-Date: Tue, 11 Nov 2025 09:44:02 +0900
-Message-ID: <20251111004552.667513831@linuxfoundation.org>
+Subject: [PATCH 6.17 673/849] orangefs: fix xattr related buffer overflow...
+Date: Tue, 11 Nov 2025 09:44:03 +0900
+Message-ID: <20251111004552.691470598@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,50 +66,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Mike Marshall <hubcap@omnibond.com>
 
-[ Upstream commit a1b501a8c6a87c9265fd03bd004035199e2e8128 ]
+[ Upstream commit 025e880759c279ec64d0f754fe65bf45961da864 ]
 
-page_pool_init() returns E2BIG when the page_pool size goes above 32K
-pages. As some drivers are configuring the page_pool size according to
-the MTU and ring size, there are cases where this limit is exceeded and
-the queue creation fails.
+Willy Tarreau <w@1wt.eu> forwarded me a message from
+Disclosure <disclosure@aisle.com> with the following
+warning:
 
-The page_pool size doesn't have to cover a full queue, especially for
-larger ring size. So clamp the size instead of returning an error. Do
-this in the core to avoid having each driver do the clamping.
+> The helper `xattr_key()` uses the pointer variable in the loop condition
+> rather than dereferencing it. As `key` is incremented, it remains non-NULL
+> (until it runs into unmapped memory), so the loop does not terminate on
+> valid C strings and will walk memory indefinitely, consuming CPU or hanging
+> the thread.
 
-The current limit was deemed to high [1] so it was reduced to 16K to avoid
-page waste.
+I easily reproduced this with setfattr and getfattr, causing a kernel
+oops, hung user processes and corrupted orangefs files. Disclosure
+sent along a diff (not a patch) with a suggested fix, which I based
+this patch on.
 
-[1] https://lore.kernel.org/all/1758532715-820422-3-git-send-email-tariqt@nvidia.com/
+After xattr_key started working right, xfstest generic/069 exposed an
+xattr related memory leak that lead to OOM. xattr_key returns
+a hashed key.  When adding xattrs to the orangefs xattr cache, orangefs
+used hash_add, a kernel hashing macro. hash_add also hashes the key using
+hash_log which resulted in additions to the xattr cache going to the wrong
+hash bucket. generic/069 tortures a single file and orangefs does a
+getattr for the xattr "security.capability" every time. Orangefs
+negative caches on xattrs which includes a kmalloc. Since adds to the
+xattr cache were going to the wrong bucket, every getattr for
+"security.capability" resulted in another kmalloc, none of which were
+ever freed.
 
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250926131605.2276734-2-dtatulea@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+I changed the two uses of hash_add to hlist_add_head instead
+and the memory leak ceased and generic/069 quit throwing furniture.
+
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Reported-by: Stanislav Fort of Aisle Research <stanislav.fort@aisle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/page_pool.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/orangefs/xattr.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index e224d2145eed9..1a5edec485f14 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -211,11 +211,7 @@ static int page_pool_init(struct page_pool *pool,
- 		return -EINVAL;
+diff --git a/fs/orangefs/xattr.c b/fs/orangefs/xattr.c
+index 74ef75586f384..eee3c5ed1bbbb 100644
+--- a/fs/orangefs/xattr.c
++++ b/fs/orangefs/xattr.c
+@@ -54,7 +54,9 @@ static inline int convert_to_internal_xattr_flags(int setxattr_flags)
+ static unsigned int xattr_key(const char *key)
+ {
+ 	unsigned int i = 0;
+-	while (key)
++	if (!key)
++		return 0;
++	while (*key)
+ 		i += *key++;
+ 	return i % 16;
+ }
+@@ -175,8 +177,8 @@ ssize_t orangefs_inode_getxattr(struct inode *inode, const char *name,
+ 				cx->length = -1;
+ 				cx->timeout = jiffies +
+ 				    orangefs_getattr_timeout_msecs*HZ/1000;
+-				hash_add(orangefs_inode->xattr_cache, &cx->node,
+-				    xattr_key(cx->key));
++				hlist_add_head( &cx->node,
++                                   &orangefs_inode->xattr_cache[xattr_key(cx->key)]);
+ 			}
+ 		}
+ 		goto out_release_op;
+@@ -229,8 +231,8 @@ ssize_t orangefs_inode_getxattr(struct inode *inode, const char *name,
+ 			memcpy(cx->val, buffer, length);
+ 			cx->length = length;
+ 			cx->timeout = jiffies + HZ;
+-			hash_add(orangefs_inode->xattr_cache, &cx->node,
+-			    xattr_key(cx->key));
++			hlist_add_head(&cx->node,
++				&orangefs_inode->xattr_cache[xattr_key(cx->key)]);
+ 		}
+ 	}
  
- 	if (pool->p.pool_size)
--		ring_qsize = pool->p.pool_size;
--
--	/* Sanity limit mem that can be pinned down */
--	if (ring_qsize > 32768)
--		return -E2BIG;
-+		ring_qsize = min(pool->p.pool_size, 16384);
- 
- 	/* DMA direction is either DMA_FROM_DEVICE or DMA_BIDIRECTIONAL.
- 	 * DMA_BIDIRECTIONAL is for allowing page used for DMA sending,
 -- 
 2.51.0
 
