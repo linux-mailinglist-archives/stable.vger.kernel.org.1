@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-193274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C51C4A18F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:59:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0F0C4A192
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:59:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E0B9188E343
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1B7C188E13D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B65256C88;
-	Tue, 11 Nov 2025 00:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E02424113D;
+	Tue, 11 Nov 2025 00:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVx6L4uC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cumO03UT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D65E214210;
-	Tue, 11 Nov 2025 00:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4364C97;
+	Tue, 11 Nov 2025 00:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822779; cv=none; b=tQn9m1dPDNYYe9dSE7fhVvDv5v3MRl64fItRJmDZUZ5uiUsV4m3QHkfgE5xnNG/9e7pamJINEULohvz7mhIe8genJSxEZWn2wV7tcauFRDggMK/T0+I9pfGulO63yYfyvNm41fZ561nnSPJPtQOBvTKKJb2rSf7n3+EY6wHpBow=
+	t=1762822784; cv=none; b=L7EGQYt6oP4IYSGHQynBYM6NYkDnflkZ3NUANpxFe5bCe5J880c9VeHcPO6XgY4bet118+w77vK0rWA0hcsT2G/FJEI8JlKfD5OBZRMnAfU+QaquWKVCNaclRaYur5IlsmZwv0amfwFCkrWZivHCTcRQZXc9b36kjluMnrLieYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822779; c=relaxed/simple;
-	bh=IICWdzN8ppyacUp6o6dClvqsFRRFunMSD21GmlIoE7E=;
+	s=arc-20240116; t=1762822784; c=relaxed/simple;
+	bh=31Y1PY+3Dz4KHWYTliFURboga9h8tAvwkwiqzowDVUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IwDyATmq98lV15kp0oPJx+LfoN5os1frBCm37YgoJ+0hT5gr50EKSjrTdqxe3pgd5fjVAWkY/5P7cKpe5Tb2ysL7FB/4rVrOLO3ZKaTHfVe+sKMnet3Koy0MRWxzCOc005dGUSDUalcuaQfVZfoet2TvRwTMlsm4myTl3lHXCYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVx6L4uC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC12DC116B1;
-	Tue, 11 Nov 2025 00:59:38 +0000 (UTC)
+	 MIME-Version; b=fqblAYN7YsnHUSFxWSTvBMw+hKa+4PINSLLcQH8Wcra4QSRRGlTZmjYzRozsf0vFOspNMmRY7h+DTXKNbBE305jC5VkHjJwQDvXB5UhXO1D7ILL2NYZa4Jfb98TEENIjfIOsAiHFEIS6emB0K82PFavlCfqN+rw+I26PB/QfKuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cumO03UT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7D9C19421;
+	Tue, 11 Nov 2025 00:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822779;
-	bh=IICWdzN8ppyacUp6o6dClvqsFRRFunMSD21GmlIoE7E=;
+	s=korg; t=1762822783;
+	bh=31Y1PY+3Dz4KHWYTliFURboga9h8tAvwkwiqzowDVUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HVx6L4uCLmuN5LioZu0v/9ykjyqrMlZbC38vpTJs4/Oc9ykYm36woZ1yad/59K2AG
-	 8x/cNvEP77C8kZWHfqmEYOTL/LibO0TZMCnOA1jFcoGiQTFayy6p1oSd3KC1xn3616
-	 NBwJxSrAiTXgoIuaXH1p0nnHaXuPhKpSyF/ogi88=
+	b=cumO03UTHJE/zg1B/lfvBaeVBE5jBb1zXSEqEUlcoZAmjiFhvTcZ4Hf9O0pn5BdL6
+	 9JekkPtudAoNSktc4BQqzDBIpW4XOJCRB7/R4/0d9GJPWZ5hJokfus9+rmkFgK0fJo
+	 S0DNZiJ1EqCDEIFmhYnSE6HGLWb+xFLMsQmzVs4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Vineet Gupta <vgupta@kernel.org>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Quentin Monnet <qmo@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/565] arc: Fix __fls() const-foldability via __builtin_clzl()
-Date: Tue, 11 Nov 2025 09:39:23 +0900
-Message-ID: <20251111004529.361676958@linuxfoundation.org>
+Subject: [PATCH 6.12 108/565] bpftool: Add CET-aware symbol matching for x86_64 architectures
+Date: Tue, 11 Nov 2025 09:39:24 +0900
+Message-ID: <20251111004529.386438027@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -68,59 +69,124 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-[ Upstream commit a3fecb9160482367365cc384c59dd220b162b066 ]
+[ Upstream commit 6417ca85305ecaffef13cf9063ac35da8fba8500 ]
 
-While tracking down a problem where constant expressions used by
-BUILD_BUG_ON() suddenly stopped working[1], we found that an added static
-initializer was convincing the compiler that it couldn't track the state
-of the prior statically initialized value. Tracing this down found that
-ffs() was used in the initializer macro, but since it wasn't marked with
-__attribute__const__, the compiler had to assume the function might
-change variable states as a side-effect (which is not true for ffs(),
-which provides deterministic math results).
+Adjust symbol matching logic to account for Control-flow Enforcement
+Technology (CET) on x86_64 systems. CET prefixes functions with
+a 4-byte 'endbr' instruction, shifting the actual hook entry point to
+symbol + 4.
 
-For arc architecture with CONFIG_ISA_ARCV2=y, the __fls() function
-uses __builtin_arc_fls() which lacks GCC's const attribute, preventing
-compile-time constant folding, and KUnit testing of ffs/fls fails on
-arc[3]. A patch[2] to GCC to solve this has been sent.
-
-Add a fix for this by handling compile-time constants with the standard
-__builtin_clzl() builtin (which has const attribute) while preserving
-the optimized arc-specific builtin for runtime cases. This has the added
-benefit of skipping runtime calculation of compile-time constant values.
-Even with the GCC bug fixed (which is about "attribute const") this is a
-good change to avoid needless runtime costs, and should be done
-regardless of the state of GCC's bug.
-
-Build tested ARCH=arc allyesconfig with GCC arc-linux 15.2.0.
-
-Link: https://github.com/KSPP/linux/issues/364 [1]
-Link: https://gcc.gnu.org/pipermail/gcc-patches/2025-August/693273.html
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202508031025.doWxtzzc-lkp@intel.com/ [3]
-Signed-off-by: Kees Cook <kees@kernel.org>
-Acked-by: Vineet Gupta <vgupta@kernel.org>
-Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Quentin Monnet <qmo@kernel.org>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20250829061107.23905-3-chenyuan_fl@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arc/include/asm/bitops.h | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/bpf/bpftool/link.c | 54 +++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 50 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arc/include/asm/bitops.h b/arch/arc/include/asm/bitops.h
-index f5a936496f060..24981bba974d3 100644
---- a/arch/arc/include/asm/bitops.h
-+++ b/arch/arc/include/asm/bitops.h
-@@ -133,6 +133,8 @@ static inline __attribute__ ((const)) int fls(unsigned int x)
-  */
- static inline __attribute__ ((const)) unsigned long __fls(unsigned long x)
- {
-+	if (__builtin_constant_p(x))
-+		return x ? BITS_PER_LONG - 1 - __builtin_clzl(x) : 0;
- 	/* FLS insn has exactly same semantics as the API */
- 	return	__builtin_arc_fls(x);
+diff --git a/tools/bpf/bpftool/link.c b/tools/bpf/bpftool/link.c
+index 5cd503b763d72..9ce15febc6f25 100644
+--- a/tools/bpf/bpftool/link.c
++++ b/tools/bpf/bpftool/link.c
+@@ -282,11 +282,52 @@ get_addr_cookie_array(__u64 *addrs, __u64 *cookies, __u32 count)
+ 	return data;
  }
+ 
++static bool is_x86_ibt_enabled(void)
++{
++#if defined(__x86_64__)
++	struct kernel_config_option options[] = {
++		{ "CONFIG_X86_KERNEL_IBT", },
++	};
++	char *values[ARRAY_SIZE(options)] = { };
++	bool ret;
++
++	if (read_kernel_config(options, ARRAY_SIZE(options), values, NULL))
++		return false;
++
++	ret = !!values[0];
++	free(values[0]);
++	return ret;
++#else
++	return false;
++#endif
++}
++
++static bool
++symbol_matches_target(__u64 sym_addr, __u64 target_addr, bool is_ibt_enabled)
++{
++	if (sym_addr == target_addr)
++		return true;
++
++	/*
++	 * On x86_64 architectures with CET (Control-flow Enforcement Technology),
++	 * function entry points have a 4-byte 'endbr' instruction prefix.
++	 * This causes kprobe hooks to target the address *after* 'endbr'
++	 * (symbol address + 4), preserving the CET instruction.
++	 * Here we check if the symbol address matches the hook target address
++	 * minus 4, indicating a CET-enabled function entry point.
++	 */
++	if (is_ibt_enabled && sym_addr == target_addr - 4)
++		return true;
++
++	return false;
++}
++
+ static void
+ show_kprobe_multi_json(struct bpf_link_info *info, json_writer_t *wtr)
+ {
+ 	struct addr_cookie *data;
+ 	__u32 i, j = 0;
++	bool is_ibt_enabled;
+ 
+ 	jsonw_bool_field(json_wtr, "retprobe",
+ 			 info->kprobe_multi.flags & BPF_F_KPROBE_MULTI_RETURN);
+@@ -306,11 +347,13 @@ show_kprobe_multi_json(struct bpf_link_info *info, json_writer_t *wtr)
+ 	if (!dd.sym_count)
+ 		goto error;
+ 
++	is_ibt_enabled = is_x86_ibt_enabled();
+ 	for (i = 0; i < dd.sym_count; i++) {
+-		if (dd.sym_mapping[i].address != data[j].addr)
++		if (!symbol_matches_target(dd.sym_mapping[i].address,
++					   data[j].addr, is_ibt_enabled))
+ 			continue;
+ 		jsonw_start_object(json_wtr);
+-		jsonw_uint_field(json_wtr, "addr", dd.sym_mapping[i].address);
++		jsonw_uint_field(json_wtr, "addr", (unsigned long)data[j].addr);
+ 		jsonw_string_field(json_wtr, "func", dd.sym_mapping[i].name);
+ 		/* Print null if it is vmlinux */
+ 		if (dd.sym_mapping[i].module[0] == '\0') {
+@@ -716,6 +759,7 @@ static void show_kprobe_multi_plain(struct bpf_link_info *info)
+ {
+ 	struct addr_cookie *data;
+ 	__u32 i, j = 0;
++	bool is_ibt_enabled;
+ 
+ 	if (!info->kprobe_multi.count)
+ 		return;
+@@ -739,12 +783,14 @@ static void show_kprobe_multi_plain(struct bpf_link_info *info)
+ 	if (!dd.sym_count)
+ 		goto error;
+ 
++	is_ibt_enabled = is_x86_ibt_enabled();
+ 	printf("\n\t%-16s %-16s %s", "addr", "cookie", "func [module]");
+ 	for (i = 0; i < dd.sym_count; i++) {
+-		if (dd.sym_mapping[i].address != data[j].addr)
++		if (!symbol_matches_target(dd.sym_mapping[i].address,
++					   data[j].addr, is_ibt_enabled))
+ 			continue;
+ 		printf("\n\t%016lx %-16llx %s",
+-		       dd.sym_mapping[i].address, data[j].cookie, dd.sym_mapping[i].name);
++		       (unsigned long)data[j].addr, data[j].cookie, dd.sym_mapping[i].name);
+ 		if (dd.sym_mapping[i].module[0] != '\0')
+ 			printf(" [%s]  ", dd.sym_mapping[i].module);
+ 		else
 -- 
 2.51.0
 
