@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE40C4B00F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:53:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4681C4AA1E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 247F43B280C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BBF074F928B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B5323C4F2;
-	Tue, 11 Nov 2025 01:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F803446C5;
+	Tue, 11 Nov 2025 01:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fk02Mlbc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSkJBLjP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7242324466D;
-	Tue, 11 Nov 2025 01:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE712DC328;
+	Tue, 11 Nov 2025 01:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825153; cv=none; b=plDm/TxLkUtR9iFxhGHLx9PJ4CLmAJ+4IheGJ4r79iCR3LE1NHkNQSqsdafc2SIdegWKGxuN7JwWQtITyU21N4LO/o1SKlgO75cinTNhctWXOH/IemH73iV0ymHxKz8dLW8H7GHmGxO73Ktp6gr8Rr2TY8BQ969sZlX9Esc3S7o=
+	t=1762824150; cv=none; b=I/JGbYay+D2qHQmrAm5eSVwJRlMSHBfFiM7IxQXfJPXqxshI1b6DtyG/qey2umpyGQL/+kdKu6HwkAyG2Zlodb7IzyjnmVUL7LAg6jq2LsgB0zQmvH/l+Y9ePUiLUOMnvU86G80kX4Oj/DgWHFy6vOxS2MaywHk8/fFkFRYV2Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825153; c=relaxed/simple;
-	bh=0Lx2R2ttZHK343mDHxCzAqj5Kzg97JVf+DyM6kJCKbw=;
+	s=arc-20240116; t=1762824150; c=relaxed/simple;
+	bh=S8ss+F1HocZ1xpvsufv/Pp9qMEAgO0bNQ9lP04zFvtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bM09sRn/JphuJVWaQBdVtTa6Zox0BHtPI6C60KYFBh0vgz42yvkSphO1SEHjBB4jKQ8c5sd5/4v/IJj1rt0UtNlErLDuMXTqbUw/dKFzFPEAJUwO4iuE8ix8Yt8UoaZvJIrBZ9sV+b1i0JyU7/UxmlIXH7akZ2hXOTAqfHrahrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fk02Mlbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D932AC16AAE;
-	Tue, 11 Nov 2025 01:39:12 +0000 (UTC)
+	 MIME-Version; b=Yj8agaNIpiAi5fbKLqL15ilaOvnScyse7stkuUbfvGRQ2JY3HlwPy8PzJJs1f9Do71u5sX8fq4jbKVdj+DTFvnQPBo1RV+nTRiATPP9oFG6lKXUrno/7cSzbS7ddWRk8wtnoVrKYVPZ4mD6Jw/CBTO9fKjZKyJDExFOw3J8mkUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSkJBLjP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF9AC113D0;
+	Tue, 11 Nov 2025 01:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825153;
-	bh=0Lx2R2ttZHK343mDHxCzAqj5Kzg97JVf+DyM6kJCKbw=;
+	s=korg; t=1762824150;
+	bh=S8ss+F1HocZ1xpvsufv/Pp9qMEAgO0bNQ9lP04zFvtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fk02Mlbc2Rl+ua06AktrteXyzLOHfcK8GSzUsuUjSgdN2pUvQBNI2XhDjJzuWKbw+
-	 y7SdNhYJKDfgzz7F8/y76gX4EeAVHgVNiPXj3z3hNl95ocriL3OcdioS3m7jIzT7qE
-	 wdeycTevbEXzLokpo4fRIE9hAYLtN0j3kpwOBQKM=
+	b=eSkJBLjPq9lFkBLtO8yqRFI7hgUxqrGQ/+DH3OPHeG1y02hLUncCxOjJrAWwPY8Jy
+	 Lcqqkaa/FwppDnci5c/SS4RmS1Lb00vhxOt89Ka3DAUyu6yTnwGCfM+s+QqXQJOC2g
+	 YOp1Qlgw/c0MPm3DIxfXEwdaE617sJnRXK0mIgJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YanLong Dai <daiyanlong@kylinos.cn>,
-	Leon Romanovsky <leon@kernel.org>,
+	Seyediman Seyedarab <ImanDevel@gmail.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 683/849] RDMA/bnxt_re: Fix a potential memory leak in destroy_gsi_sqp
+Subject: [PATCH 6.12 397/565] iommu/vt-d: Replace snprintf with scnprintf in dmar_latency_snapshot()
 Date: Tue, 11 Nov 2025 09:44:13 +0900
-Message-ID: <20251111004552.935345741@linuxfoundation.org>
+Message-ID: <20251111004535.804489829@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YanLong Dai <daiyanlong@kylinos.cn>
+From: Seyediman Seyedarab <ImanDevel@gmail.com>
 
-[ Upstream commit 88de89f184661ebb946804a5abdf2bdec7f0a7ab ]
+[ Upstream commit 75c02a037609f34db17e91be195cedb33b61bae0 ]
 
-The current error handling path in bnxt_re_destroy_gsi_sqp() could lead
-to a resource leak. When bnxt_qplib_destroy_qp() fails, the function
-jumps to the 'fail' label and returns immediately, skipping the call
-to bnxt_qplib_free_qp_res().
+snprintf() returns the number of bytes that would have been written, not
+the number actually written. Using this for offset tracking can cause
+buffer overruns if truncation occurs.
 
-Continue the resource teardown even if bnxt_qplib_destroy_qp() fails,
-which aligns with the driver's general error handling strategy and
-prevents the potential leak.
+Replace snprintf() with scnprintf() to ensure the offset stays within
+bounds.
 
-Fixes: 8dae419f9ec73 ("RDMA/bnxt_re: Refactor queue pair creation code")
-Signed-off-by: YanLong Dai <daiyanlong@kylinos.cn>
-Link: https://patch.msgid.link/20250924061444.11288-1-daiyanlong@kylinos.cn
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Since scnprintf() never returns a negative value, and zero is not possible
+in this context because 'bytes' starts at 0 and 'size - bytes' is
+DEBUG_BUFFER_SIZE in the first call, which is large enough to hold the
+string literals used, the return value is always positive. An integer
+overflow is also completely out of reach here due to the small and fixed
+buffer size. The error check in latency_show_one() is therefore
+unnecessary. Remove it and make dmar_latency_snapshot() return void.
+
+Signed-off-by: Seyediman Seyedarab <ImanDevel@gmail.com>
+Link: https://lore.kernel.org/r/20250731225048.131364-1-ImanDevel@gmail.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/iommu/intel/debugfs.c | 10 ++--------
+ drivers/iommu/intel/perf.c    | 10 ++++------
+ drivers/iommu/intel/perf.h    |  5 ++---
+ 3 files changed, 8 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 260dc67b8b87c..12fee23de81e7 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -911,7 +911,7 @@ void bnxt_re_unlock_cqs(struct bnxt_re_qp *qp,
- 	spin_unlock_irqrestore(&qp->scq->cq_lock, flags);
- }
- 
--static int bnxt_re_destroy_gsi_sqp(struct bnxt_re_qp *qp)
-+static void bnxt_re_destroy_gsi_sqp(struct bnxt_re_qp *qp)
+diff --git a/drivers/iommu/intel/debugfs.c b/drivers/iommu/intel/debugfs.c
+index 5aa7f46a420b5..38790ff50977c 100644
+--- a/drivers/iommu/intel/debugfs.c
++++ b/drivers/iommu/intel/debugfs.c
+@@ -661,17 +661,11 @@ DEFINE_SHOW_ATTRIBUTE(ir_translation_struct);
+ static void latency_show_one(struct seq_file *m, struct intel_iommu *iommu,
+ 			     struct dmar_drhd_unit *drhd)
  {
- 	struct bnxt_re_qp *gsi_sqp;
- 	struct bnxt_re_ah *gsi_sah;
-@@ -931,10 +931,9 @@ static int bnxt_re_destroy_gsi_sqp(struct bnxt_re_qp *qp)
- 
- 	ibdev_dbg(&rdev->ibdev, "Destroy the shadow QP\n");
- 	rc = bnxt_qplib_destroy_qp(&rdev->qplib_res, &gsi_sqp->qplib_qp);
--	if (rc) {
-+	if (rc)
- 		ibdev_err(&rdev->ibdev, "Destroy Shadow QP failed");
--		goto fail;
--	}
-+
- 	bnxt_qplib_free_qp_res(&rdev->qplib_res, &gsi_sqp->qplib_qp);
- 
- 	/* remove from active qp list */
-@@ -949,10 +948,6 @@ static int bnxt_re_destroy_gsi_sqp(struct bnxt_re_qp *qp)
- 	rdev->gsi_ctx.gsi_sqp = NULL;
- 	rdev->gsi_ctx.gsi_sah = NULL;
- 	rdev->gsi_ctx.sqp_tbl = NULL;
+-	int ret;
 -
--	return 0;
--fail:
--	return rc;
+ 	seq_printf(m, "IOMMU: %s Register Base Address: %llx\n",
+ 		   iommu->name, drhd->reg_base_addr);
+ 
+-	ret = dmar_latency_snapshot(iommu, debug_buf, DEBUG_BUFFER_SIZE);
+-	if (ret < 0)
+-		seq_puts(m, "Failed to get latency snapshot");
+-	else
+-		seq_puts(m, debug_buf);
+-	seq_puts(m, "\n");
++	dmar_latency_snapshot(iommu, debug_buf, DEBUG_BUFFER_SIZE);
++	seq_printf(m, "%s\n", debug_buf);
  }
  
- /* Queue Pairs */
+ static int latency_show(struct seq_file *m, void *v)
+diff --git a/drivers/iommu/intel/perf.c b/drivers/iommu/intel/perf.c
+index adc4de6bbd88e..dceeadc3ee7cd 100644
+--- a/drivers/iommu/intel/perf.c
++++ b/drivers/iommu/intel/perf.c
+@@ -113,7 +113,7 @@ static char *latency_type_names[] = {
+ 	"     svm_prq"
+ };
+ 
+-int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
++void dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ {
+ 	struct latency_statistic *lstat = iommu->perf_statistic;
+ 	unsigned long flags;
+@@ -122,7 +122,7 @@ int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ 	memset(str, 0, size);
+ 
+ 	for (i = 0; i < COUNTS_NUM; i++)
+-		bytes += snprintf(str + bytes, size - bytes,
++		bytes += scnprintf(str + bytes, size - bytes,
+ 				  "%s", latency_counter_names[i]);
+ 
+ 	spin_lock_irqsave(&latency_lock, flags);
+@@ -130,7 +130,7 @@ int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ 		if (!dmar_latency_enabled(iommu, i))
+ 			continue;
+ 
+-		bytes += snprintf(str + bytes, size - bytes,
++		bytes += scnprintf(str + bytes, size - bytes,
+ 				  "\n%s", latency_type_names[i]);
+ 
+ 		for (j = 0; j < COUNTS_NUM; j++) {
+@@ -156,11 +156,9 @@ int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ 				break;
+ 			}
+ 
+-			bytes += snprintf(str + bytes, size - bytes,
++			bytes += scnprintf(str + bytes, size - bytes,
+ 					  "%12lld", val);
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(&latency_lock, flags);
+-
+-	return bytes;
+ }
+diff --git a/drivers/iommu/intel/perf.h b/drivers/iommu/intel/perf.h
+index df9a36942d643..1d4baad7e852e 100644
+--- a/drivers/iommu/intel/perf.h
++++ b/drivers/iommu/intel/perf.h
+@@ -40,7 +40,7 @@ void dmar_latency_disable(struct intel_iommu *iommu, enum latency_type type);
+ bool dmar_latency_enabled(struct intel_iommu *iommu, enum latency_type type);
+ void dmar_latency_update(struct intel_iommu *iommu, enum latency_type type,
+ 			 u64 latency);
+-int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size);
++void dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size);
+ #else
+ static inline int
+ dmar_latency_enable(struct intel_iommu *iommu, enum latency_type type)
+@@ -64,9 +64,8 @@ dmar_latency_update(struct intel_iommu *iommu, enum latency_type type, u64 laten
+ {
+ }
+ 
+-static inline int
++static inline void
+ dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ {
+-	return 0;
+ }
+ #endif /* CONFIG_DMAR_PERF */
 -- 
 2.51.0
 
