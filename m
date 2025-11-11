@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B82DFC4A5C9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A75C4A958
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 115454F38BD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:00 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EFFA33493DC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F582F2612;
-	Tue, 11 Nov 2025 01:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6227F3081C7;
+	Tue, 11 Nov 2025 01:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nA1B2VWR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jImMS6t4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339A22FF143;
-	Tue, 11 Nov 2025 01:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAA925A64C;
+	Tue, 11 Nov 2025 01:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823271; cv=none; b=fQhSK+qi9g03XwZdBjsNAUfqrQn5s4aMBd/ixd1cVhS3hcZybbAh6Dhx6pkt0ZCa7e9nZi9QuKMH0nK3PhD3WyuJ1Y1sLMQUY0HrbfGG3K74O8twGWivbeg4Y9mAHrB9eRSRfoaI4gIfh0gbCNnGNeZ0wfZ1klwYQz/klyJVLOY=
+	t=1762824460; cv=none; b=g4B8bmv+sVkTt2l7qRhyZD47XXhuxjU3cr+rZ6GRsWQWJRu20o6i25t+YxM7yr4PqaoJ2akJX5IOYMg2GTgnrXBa12vckp1CXyxK7p16iPbsX1HiYQWIo2YbHm1XXN/N0bF4qzeZvayUVU1rOb9JbRUrOCkNu6gBMF4hbmJnM5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823271; c=relaxed/simple;
-	bh=Ky/PR4YfO44R7ITxocZ0MobMnqb/3vnlEuPyNSM/8vk=;
+	s=arc-20240116; t=1762824460; c=relaxed/simple;
+	bh=NEWb/2wXl4OhFYXBfMGSa0bRE0JU+qs2z3Q6295fXSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJBCxGdHxWvDllMYB0lIoNavJ6i5odhG+//6l2towoI7y2ywzIY3RTgeiXDbOUcYdtPDmPT2N/nY38zi2pMXq81ro5rzLvI2fWBA/IqepPGSMslgidIWFPeUODE6s1YCgFO4EL+7eOldsBxjwFKWbl9HT/MdoCoDTpvNyAi5cbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nA1B2VWR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4D2C19421;
-	Tue, 11 Nov 2025 01:07:50 +0000 (UTC)
+	 MIME-Version; b=mEWUOb+lEeLokkqY1gGdFTNAQ0GBkMcTg7nldcv0dLPnNlAsJGYGazREXTwOb3FyoFsDaxzX3AEJIYKGtTplkQWwyRw049V7y2Yw+GB6ho3IMKoL9pW4agTL6aEh2F4sfUIgxz1vNVN/vRhgF4vD29UML+QnvtU6N/Y5cgd4JVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jImMS6t4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE89C116D0;
+	Tue, 11 Nov 2025 01:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823270;
-	bh=Ky/PR4YfO44R7ITxocZ0MobMnqb/3vnlEuPyNSM/8vk=;
+	s=korg; t=1762824460;
+	bh=NEWb/2wXl4OhFYXBfMGSa0bRE0JU+qs2z3Q6295fXSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nA1B2VWRxFhlYSy2qp5/6d+okb2kFiDeRLCTz40c5WAeLrpGM32hCsOnj4FjVGZXv
-	 f2m4Pp954oCif215nJaDNxpD3GurU/P3ePY+ruMBCZAmwHoIRYRHHFI9OYUG7AqxHZ
-	 DCiOPM4BzDwqnwMqAlXxfTWhijmpa3yWDRDK7Iv4=
+	b=jImMS6t4pjUsgLFHgTSrRsZ0M0QirTpPYa3ot0+pJox2heyefV/0jrhcEht0ccm6X
+	 8GLxdmqxzEHj5KM4h0nttWFa/2RiNINAGdK6uIw4h6k9kYTdBY2YBenscfU2vy/eq1
+	 alWvqoYK+BpSXdpbI/erEE/ECdp87ElwpgekPUNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 209/565] thunderbolt: Use is_pciehp instead of is_hotplug_bridge
+Subject: [PATCH 6.17 495/849] scsi: ufs: host: mediatek: Enhance recovery on hibernation exit failure
 Date: Tue, 11 Nov 2025 09:41:05 +0900
-Message-ID: <20251111004531.625169042@linuxfoundation.org>
+Message-ID: <20251111004548.405321671@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 5d03847175e81e86d4865456c15638faaf7c0634 ]
+[ Upstream commit faac32d4ece30609f1a0930ca0ae951cf6dc1786 ]
 
-The thunderbolt driver sets up device link dependencies from hotplug ports
-to the Host Router (aka Native Host Interface, NHI).  When resuming from
-system sleep, this allows the Host Router to re-establish tunnels to
-attached Thunderbolt devices before the hotplug ports resume.
+Improve the recovery process for hibernation exit failures. Trigger the
+error handler and break the suspend operation to ensure effective
+recovery from hibernation errors. Activate the error handling mechanism
+by ufshcd_force_error_recovery and scheduling the error handler work.
 
-To identify the hotplug ports, the driver utilizes the is_hotplug_bridge
-flag which also encompasses ACPI slots handled by the ACPI hotplug driver.
-
-Thunderbolt hotplug ports are always Hot-Plug Capable PCIe ports, so it is
-more apt to identify them with the is_pciehp flag.
-
-Similarly, hotplug ports on older Thunderbolt controllers have broken MSI
-support and are quirked to use legacy INTx interrupts instead.  The quirk
-identifies them with is_hotplug_bridge, even though all affected ports are
-also matched by is_pciehp.  So use is_pciehp here as well.
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c     | 2 +-
- drivers/thunderbolt/tb.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufshcd.c       |  3 ++-
+ drivers/ufs/host/ufs-mediatek.c | 14 +++++++++++---
+ include/ufs/ufshcd.h            |  1 +
+ 3 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index aa4733787cd7e..18fa918b4e537 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3832,7 +3832,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf80, quirk_no_pm_reset);
-  */
- static void quirk_thunderbolt_hotplug_msi(struct pci_dev *pdev)
- {
--	if (pdev->is_hotplug_bridge &&
-+	if (pdev->is_pciehp &&
- 	    (pdev->device != PCI_DEVICE_ID_INTEL_CACTUS_RIDGE_4C ||
- 	     pdev->revision <= 1))
- 		pdev->no_msi = 1;
-diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
-index e1da433a9e7fb..4ef8e67e9987e 100644
---- a/drivers/thunderbolt/tb.c
-+++ b/drivers/thunderbolt/tb.c
-@@ -3242,7 +3242,7 @@ static bool tb_apple_add_links(struct tb_nhi *nhi)
- 		if (!pci_is_pcie(pdev))
- 			continue;
- 		if (pci_pcie_type(pdev) != PCI_EXP_TYPE_DOWNSTREAM ||
--		    !pdev->is_hotplug_bridge)
-+		    !pdev->is_pciehp)
- 			continue;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 52f2c599a348e..8bb6c48216963 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -6462,13 +6462,14 @@ void ufshcd_schedule_eh_work(struct ufs_hba *hba)
+ 	}
+ }
  
- 		link = device_link_add(&pdev->dev, &nhi->pdev->dev,
+-static void ufshcd_force_error_recovery(struct ufs_hba *hba)
++void ufshcd_force_error_recovery(struct ufs_hba *hba)
+ {
+ 	spin_lock_irq(hba->host->host_lock);
+ 	hba->force_reset = true;
+ 	ufshcd_schedule_eh_work(hba);
+ 	spin_unlock_irq(hba->host->host_lock);
+ }
++EXPORT_SYMBOL_GPL(ufshcd_force_error_recovery);
+ 
+ static void ufshcd_clk_scaling_allow(struct ufs_hba *hba, bool allow)
+ {
+diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
+index 055b24758ca3d..6bdbbee1f0708 100644
+--- a/drivers/ufs/host/ufs-mediatek.c
++++ b/drivers/ufs/host/ufs-mediatek.c
+@@ -1646,7 +1646,7 @@ static void ufs_mtk_dev_vreg_set_lpm(struct ufs_hba *hba, bool lpm)
+ 	}
+ }
+ 
+-static void ufs_mtk_auto_hibern8_disable(struct ufs_hba *hba)
++static int ufs_mtk_auto_hibern8_disable(struct ufs_hba *hba)
+ {
+ 	int ret;
+ 
+@@ -1657,8 +1657,16 @@ static void ufs_mtk_auto_hibern8_disable(struct ufs_hba *hba)
+ 	ufs_mtk_wait_idle_state(hba, 5);
+ 
+ 	ret = ufs_mtk_wait_link_state(hba, VS_LINK_UP, 100);
+-	if (ret)
++	if (ret) {
+ 		dev_warn(hba->dev, "exit h8 state fail, ret=%d\n", ret);
++
++		ufshcd_force_error_recovery(hba);
++
++		/* trigger error handler and break suspend */
++		ret = -EBUSY;
++	}
++
++	return ret;
+ }
+ 
+ static int ufs_mtk_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
+@@ -1669,7 +1677,7 @@ static int ufs_mtk_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
+ 
+ 	if (status == PRE_CHANGE) {
+ 		if (ufshcd_is_auto_hibern8_supported(hba))
+-			ufs_mtk_auto_hibern8_disable(hba);
++			return ufs_mtk_auto_hibern8_disable(hba);
+ 		return 0;
+ 	}
+ 
+diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+index a3fa98540d184..a4eb5bde46e88 100644
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -1511,5 +1511,6 @@ int __ufshcd_write_ee_control(struct ufs_hba *hba, u32 ee_ctrl_mask);
+ int ufshcd_write_ee_control(struct ufs_hba *hba);
+ int ufshcd_update_ee_control(struct ufs_hba *hba, u16 *mask,
+ 			     const u16 *other_mask, u16 set, u16 clr);
++void ufshcd_force_error_recovery(struct ufs_hba *hba);
+ 
+ #endif /* End of Header */
 -- 
 2.51.0
 
