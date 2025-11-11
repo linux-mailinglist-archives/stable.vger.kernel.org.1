@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67803C4AB47
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B36CC4A5BA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CA4CC4F6EB0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2595B4F28F8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1296C347FEA;
-	Tue, 11 Nov 2025 01:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49953491F9;
+	Tue, 11 Nov 2025 01:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qy6XACK0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNb5lyDi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD54347BA5;
-	Tue, 11 Nov 2025 01:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2773491CD;
+	Tue, 11 Nov 2025 01:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824332; cv=none; b=DuxFzN2T8prqbSMsW1x7AUyfyGR0hmD02F1x5G0r8xBab6y73SUm6ZtN9xFN7JpknMx6NRaLE1E1l8PCErpYbb1/AK3zRyFHjhMGj9AvW2SCQOSIvRQX+d+8ar72Xmp8l/tnAUiAJW+E2FzS7onNUQ1y0vYFU+Y+7Q4/RiTzbtA=
+	t=1762823236; cv=none; b=Be9qCUDxbw40JMW7Zn/YLmawPOheGwkwEKxA2CU5ALokS5BMpx+YU3lNlTLqfTQ5Jue8xUq6SjseO3E04qvMJTCV3rXG/2mghDqUb5m3qOvev8aRXwj+99YIxzE/yD9NifgmAFerAfrwXi5m46B1e2BdjxPQNq2NrxIl3ZnS5so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824332; c=relaxed/simple;
-	bh=1er9HtlST1+oI1RuOh/abVTao1/Z6c3d3wDMdJlV3Uc=;
+	s=arc-20240116; t=1762823236; c=relaxed/simple;
+	bh=/Fv5I3uh/PRFZCQ9p2q1NjtX42sI+pKAVO+nc+2kDDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=baR629gDBYwfX0b+teGih7tAkG8x7kztsZDf2tmybG+1utOOfXBDQYtE+fzkFMIYLMIjP/hSo38NlXZIfUEAYNC/blNMXMEjnMxLxj84537HJtoDwvhVUjoRTOCs15aVYEU6K2AMnXn/NtBVeh4uPN2eyiGPvdpciphdexRKfWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qy6XACK0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A3AC16AAE;
-	Tue, 11 Nov 2025 01:25:32 +0000 (UTC)
+	 MIME-Version; b=hukoQ1kXUTth5glR4o13SPpsorQeihhmUId93cfOhj7Az9NKOMWIEJK0XhNKPNKV3Z/fKkggqu5Kk67KuElJ1oykQAQW6rBYexesOv2XfFmUx6H+LOF+pp89zL+QdBRGmN/I41OGNnNs6J/VdHVXYgTBGumm9HCrQ4obot6NpFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dNb5lyDi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088A5C19421;
+	Tue, 11 Nov 2025 01:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824332;
-	bh=1er9HtlST1+oI1RuOh/abVTao1/Z6c3d3wDMdJlV3Uc=;
+	s=korg; t=1762823236;
+	bh=/Fv5I3uh/PRFZCQ9p2q1NjtX42sI+pKAVO+nc+2kDDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qy6XACK0Wks22pqQKWuQ+VVb1H9nsQqiueS4iouB+4rcKKWLA9rvWMgCDgvjDU65p
-	 x1A9pSEUF0riMWIidFNJEj0JorZvfAX9Tfal35KxAElDv2UB4wOowRW5h+es9MVx5W
-	 1H9+/XLJTg+L/CWMQ3iVqrHCWqR0QE0FDwX+tdew=
+	b=dNb5lyDi8xiK8kaKWZ4ovEtk+ptm1hmc9d/RTIuWtGHqnKbfRyWjDX703hHNOIkhQ
+	 XFD3fpR2s+io+Ge+wUWwsK7fdm/z0/OyS+mVF8NMzuyEic14tuUpuG8NzFCLSzx3rE
+	 nA2thmhSxsFDBZ3of8PFq71sjouBloPkPQaxKwQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Terry Cheong <htcheong@chromium.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 475/849] drm/msm/adreno: Add fenced regwrite support
+Subject: [PATCH 6.12 189/565] ASoC: mediatek: Use SND_JACK_AVOUT for HDMI/DP jacks
 Date: Tue, 11 Nov 2025 09:40:45 +0900
-Message-ID: <20251111004547.929424542@linuxfoundation.org>
+Message-ID: <20251111004531.182581975@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,207 +63,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Terry Cheong <htcheong@chromium.org>
 
-[ Upstream commit a27d774045566b587bfc1ae9fb122642b06677b8 ]
+[ Upstream commit 8ed2dca4df2297177e0edcb7e0c72ef87f3fd81a ]
 
-There are some special registers which are accessible even when GX power
-domain is collapsed during an IFPC sleep. Accessing these registers
-wakes up GPU from power collapse and allow programming these registers
-without additional handshake with GMU. This patch adds support for this
-special register write sequence.
+The SND_JACK_AVOUT is a more specific jack type for HDMI and DisplayPort.
+Updatae the MediaTek drivers to use such jack type, allowing system to
+determine the device type based on jack event.
 
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/673368/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Signed-off-by: Terry Cheong <htcheong@chromium.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://patch.msgid.link/20250723-mtk-hdmi-v1-1-4ff945eb6136@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c     | 80 ++++++++++++++++++++++-
- drivers/gpu/drm/msm/adreno/a6xx_gpu.h     |  1 +
- drivers/gpu/drm/msm/adreno/a6xx_preempt.c | 20 +++---
- 3 files changed, 90 insertions(+), 11 deletions(-)
+ sound/soc/mediatek/mt8173/mt8173-rt5650.c                 | 2 +-
+ sound/soc/mediatek/mt8183/mt8183-da7219-max98357.c        | 2 +-
+ .../soc/mediatek/mt8183/mt8183-mt6358-ts3a227-max98357.c  | 2 +-
+ sound/soc/mediatek/mt8186/mt8186-mt6366.c                 | 2 +-
+ sound/soc/mediatek/mt8188/mt8188-mt6359.c                 | 8 ++++----
+ sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c   | 2 +-
+ sound/soc/mediatek/mt8195/mt8195-mt6359.c                 | 4 ++--
+ 7 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index f8992a68df7fb..536da1acf615e 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -16,6 +16,84 @@
- 
- #define GPU_PAS_ID 13
- 
-+static bool fence_status_check(struct msm_gpu *gpu, u32 offset, u32 value, u32 status, u32 mask)
-+{
-+	/* Success if !writedropped0/1 */
-+	if (!(status & mask))
-+		return true;
-+
-+	udelay(10);
-+
-+	/* Try to update fenced register again */
-+	gpu_write(gpu, offset, value);
-+
-+	/* We can't do a posted write here because the power domain could be
-+	 * in collapse state. So use the heaviest barrier instead
-+	 */
-+	mb();
-+	return false;
-+}
-+
-+static int fenced_write(struct a6xx_gpu *a6xx_gpu, u32 offset, u32 value, u32 mask)
-+{
-+	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
-+	struct msm_gpu *gpu = &adreno_gpu->base;
-+	struct a6xx_gmu *gmu = &a6xx_gpu->gmu;
-+	u32 status;
-+
-+	gpu_write(gpu, offset, value);
-+
-+	/* Nothing else to be done in the case of no-GMU */
-+	if (adreno_has_gmu_wrapper(adreno_gpu))
-+		return 0;
-+
-+	/* We can't do a posted write here because the power domain could be
-+	 * in collapse state. So use the heaviest barrier instead
-+	 */
-+	mb();
-+
-+	if (!gmu_poll_timeout(gmu, REG_A6XX_GMU_AHB_FENCE_STATUS, status,
-+			fence_status_check(gpu, offset, value, status, mask), 0, 1000))
-+		return 0;
-+
-+	/* Try again for another 1ms before failing */
-+	gpu_write(gpu, offset, value);
-+	mb();
-+
-+	if (!gmu_poll_timeout(gmu, REG_A6XX_GMU_AHB_FENCE_STATUS, status,
-+			fence_status_check(gpu, offset, value, status, mask), 0, 1000)) {
-+		/*
-+		 * The 'delay' warning is here because the pause to print this
-+		 * warning will allow gpu to move to power collapse which
-+		 * defeats the purpose of continuous polling for 2 ms
-+		 */
-+		dev_err_ratelimited(gmu->dev, "delay in fenced register write (0x%x)\n",
-+				offset);
-+		return 0;
-+	}
-+
-+	dev_err_ratelimited(gmu->dev, "fenced register write (0x%x) fail\n",
-+			offset);
-+
-+	return -ETIMEDOUT;
-+}
-+
-+int a6xx_fenced_write(struct a6xx_gpu *a6xx_gpu, u32 offset, u64 value, u32 mask, bool is_64b)
-+{
-+	int ret;
-+
-+	ret = fenced_write(a6xx_gpu, offset, lower_32_bits(value), mask);
-+	if (ret)
-+		return ret;
-+
-+	if (!is_64b)
-+		return 0;
-+
-+	ret = fenced_write(a6xx_gpu, offset + 1, upper_32_bits(value), mask);
-+
-+	return ret;
-+}
-+
- static inline bool _a6xx_check_idle(struct msm_gpu *gpu)
+diff --git a/sound/soc/mediatek/mt8173/mt8173-rt5650.c b/sound/soc/mediatek/mt8173/mt8173-rt5650.c
+index 466f176f8e948..09ddc7a186c6e 100644
+--- a/sound/soc/mediatek/mt8173/mt8173-rt5650.c
++++ b/sound/soc/mediatek/mt8173/mt8173-rt5650.c
+@@ -159,7 +159,7 @@ static int mt8173_rt5650_hdmi_init(struct snd_soc_pcm_runtime *rtd)
  {
- 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
-@@ -86,7 +164,7 @@ static void a6xx_flush(struct msm_gpu *gpu, struct msm_ringbuffer *ring)
- 	/* Update HW if this is the current ring and we are not in preempt*/
- 	if (!a6xx_in_preempt(a6xx_gpu)) {
- 		if (a6xx_gpu->cur_ring == ring)
--			gpu_write(gpu, REG_A6XX_CP_RB_WPTR, wptr);
-+			a6xx_fenced_write(a6xx_gpu, REG_A6XX_CP_RB_WPTR, wptr, BIT(0), false);
- 		else
- 			ring->restore_wptr = true;
- 	} else {
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.h b/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
-index 6e71f617fc3d0..e736c59d566b3 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
-@@ -295,5 +295,6 @@ int a6xx_gpu_state_put(struct msm_gpu_state *state);
+ 	int ret;
  
- void a6xx_bus_clear_pending_transactions(struct adreno_gpu *adreno_gpu, bool gx_off);
- void a6xx_gpu_sw_reset(struct msm_gpu *gpu, bool assert);
-+int a6xx_fenced_write(struct a6xx_gpu *gpu, u32 offset, u64 value, u32 mask, bool is_64b);
+-	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_LINEOUT,
++	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_AVOUT,
+ 				    &mt8173_rt5650_hdmi_jack);
+ 	if (ret)
+ 		return ret;
+diff --git a/sound/soc/mediatek/mt8183/mt8183-da7219-max98357.c b/sound/soc/mediatek/mt8183/mt8183-da7219-max98357.c
+index f848e14b091a1..2435535a6b622 100644
+--- a/sound/soc/mediatek/mt8183/mt8183-da7219-max98357.c
++++ b/sound/soc/mediatek/mt8183/mt8183-da7219-max98357.c
+@@ -378,7 +378,7 @@ static int mt8183_da7219_max98357_hdmi_init(struct snd_soc_pcm_runtime *rtd)
+ 		snd_soc_card_get_drvdata(rtd->card);
+ 	int ret;
  
- #endif /* __A6XX_GPU_H__ */
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_preempt.c b/drivers/gpu/drm/msm/adreno/a6xx_preempt.c
-index 6a12a35dabff1..10625ffbc4cfc 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_preempt.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_preempt.c
-@@ -41,7 +41,7 @@ static inline void set_preempt_state(struct a6xx_gpu *gpu,
- }
+-	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_LINEOUT,
++	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_AVOUT,
+ 				    &priv->hdmi_jack);
+ 	if (ret)
+ 		return ret;
+diff --git a/sound/soc/mediatek/mt8183/mt8183-mt6358-ts3a227-max98357.c b/sound/soc/mediatek/mt8183/mt8183-mt6358-ts3a227-max98357.c
+index bb6df056a8789..e3232e10a5fb7 100644
+--- a/sound/soc/mediatek/mt8183/mt8183-mt6358-ts3a227-max98357.c
++++ b/sound/soc/mediatek/mt8183/mt8183-mt6358-ts3a227-max98357.c
+@@ -383,7 +383,7 @@ mt8183_mt6358_ts3a227_max98357_hdmi_init(struct snd_soc_pcm_runtime *rtd)
+ 		snd_soc_card_get_drvdata(rtd->card);
+ 	int ret;
  
- /* Write the most recent wptr for the given ring into the hardware */
--static inline void update_wptr(struct msm_gpu *gpu, struct msm_ringbuffer *ring)
-+static inline void update_wptr(struct a6xx_gpu *a6xx_gpu, struct msm_ringbuffer *ring)
- {
- 	unsigned long flags;
- 	uint32_t wptr;
-@@ -51,7 +51,7 @@ static inline void update_wptr(struct msm_gpu *gpu, struct msm_ringbuffer *ring)
- 	if (ring->restore_wptr) {
- 		wptr = get_wptr(ring);
- 
--		gpu_write(gpu, REG_A6XX_CP_RB_WPTR, wptr);
-+		a6xx_fenced_write(a6xx_gpu, REG_A6XX_CP_RB_WPTR, wptr, BIT(0), false);
- 
- 		ring->restore_wptr = false;
+-	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_LINEOUT,
++	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_AVOUT,
+ 				    &priv->hdmi_jack);
+ 	if (ret)
+ 		return ret;
+diff --git a/sound/soc/mediatek/mt8186/mt8186-mt6366.c b/sound/soc/mediatek/mt8186/mt8186-mt6366.c
+index 771d53611c2a4..4c7674917a897 100644
+--- a/sound/soc/mediatek/mt8186/mt8186-mt6366.c
++++ b/sound/soc/mediatek/mt8186/mt8186-mt6366.c
+@@ -362,7 +362,7 @@ static int mt8186_mt6366_rt1019_rt5682s_hdmi_init(struct snd_soc_pcm_runtime *rt
+ 		return ret;
  	}
-@@ -172,7 +172,7 @@ void a6xx_preempt_irq(struct msm_gpu *gpu)
  
- 	set_preempt_state(a6xx_gpu, PREEMPT_FINISH);
+-	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_LINEOUT, jack);
++	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_AVOUT, jack);
+ 	if (ret) {
+ 		dev_err(rtd->dev, "HDMI Jack creation failed: %d\n", ret);
+ 		return ret;
+diff --git a/sound/soc/mediatek/mt8188/mt8188-mt6359.c b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
+index 62429e8e57b55..bd61e3baab9d0 100644
+--- a/sound/soc/mediatek/mt8188/mt8188-mt6359.c
++++ b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
+@@ -244,14 +244,14 @@ enum mt8188_jacks {
+ static struct snd_soc_jack_pin mt8188_hdmi_jack_pins[] = {
+ 	{
+ 		.pin = "HDMI",
+-		.mask = SND_JACK_LINEOUT,
++		.mask = SND_JACK_AVOUT,
+ 	},
+ };
  
--	update_wptr(gpu, a6xx_gpu->cur_ring);
-+	update_wptr(a6xx_gpu, a6xx_gpu->cur_ring);
+ static struct snd_soc_jack_pin mt8188_dp_jack_pins[] = {
+ 	{
+ 		.pin = "DP",
+-		.mask = SND_JACK_LINEOUT,
++		.mask = SND_JACK_AVOUT,
+ 	},
+ };
  
- 	set_preempt_state(a6xx_gpu, PREEMPT_NONE);
+@@ -588,7 +588,7 @@ static int mt8188_hdmi_codec_init(struct snd_soc_pcm_runtime *rtd)
+ 	int ret = 0;
  
-@@ -268,7 +268,7 @@ void a6xx_preempt_trigger(struct msm_gpu *gpu)
- 	 */
- 	if (!ring || (a6xx_gpu->cur_ring == ring)) {
- 		set_preempt_state(a6xx_gpu, PREEMPT_FINISH);
--		update_wptr(gpu, a6xx_gpu->cur_ring);
-+		update_wptr(a6xx_gpu, a6xx_gpu->cur_ring);
- 		set_preempt_state(a6xx_gpu, PREEMPT_NONE);
- 		spin_unlock_irqrestore(&a6xx_gpu->eval_lock, flags);
- 		return;
-@@ -302,13 +302,13 @@ void a6xx_preempt_trigger(struct msm_gpu *gpu)
+ 	ret = snd_soc_card_jack_new_pins(rtd->card, "HDMI Jack",
+-					 SND_JACK_LINEOUT, jack,
++					 SND_JACK_AVOUT, jack,
+ 					 mt8188_hdmi_jack_pins,
+ 					 ARRAY_SIZE(mt8188_hdmi_jack_pins));
+ 	if (ret) {
+@@ -613,7 +613,7 @@ static int mt8188_dptx_codec_init(struct snd_soc_pcm_runtime *rtd)
+ 	struct snd_soc_component *component = snd_soc_rtd_to_codec(rtd, 0)->component;
+ 	int ret = 0;
  
- 	spin_unlock_irqrestore(&ring->preempt_lock, flags);
+-	ret = snd_soc_card_jack_new_pins(rtd->card, "DP Jack", SND_JACK_LINEOUT,
++	ret = snd_soc_card_jack_new_pins(rtd->card, "DP Jack", SND_JACK_AVOUT,
+ 					 jack, mt8188_dp_jack_pins,
+ 					 ARRAY_SIZE(mt8188_dp_jack_pins));
+ 	if (ret) {
+diff --git a/sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c b/sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c
+index 943f811684037..dd1d43ce2af62 100644
+--- a/sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c
++++ b/sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c
+@@ -368,7 +368,7 @@ static int mt8192_mt6359_hdmi_init(struct snd_soc_pcm_runtime *rtd)
+ 		snd_soc_rtd_to_codec(rtd, 0)->component;
+ 	int ret;
  
--	gpu_write64(gpu,
--		REG_A6XX_CP_CONTEXT_SWITCH_SMMU_INFO,
--		a6xx_gpu->preempt_smmu_iova[ring->id]);
-+	a6xx_fenced_write(a6xx_gpu,
-+		REG_A6XX_CP_CONTEXT_SWITCH_SMMU_INFO, a6xx_gpu->preempt_smmu_iova[ring->id],
-+		BIT(1), true);
+-	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_LINEOUT, jack);
++	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_AVOUT, jack);
+ 	if (ret) {
+ 		dev_err(rtd->dev, "HDMI Jack creation failed: %d\n", ret);
+ 		return ret;
+diff --git a/sound/soc/mediatek/mt8195/mt8195-mt6359.c b/sound/soc/mediatek/mt8195/mt8195-mt6359.c
+index 400cec09c3a3c..00627e678d60b 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-mt6359.c
++++ b/sound/soc/mediatek/mt8195/mt8195-mt6359.c
+@@ -357,7 +357,7 @@ static int mt8195_dptx_codec_init(struct snd_soc_pcm_runtime *rtd)
+ 		snd_soc_rtd_to_codec(rtd, 0)->component;
+ 	int ret;
  
--	gpu_write64(gpu,
-+	a6xx_fenced_write(a6xx_gpu,
- 		REG_A6XX_CP_CONTEXT_SWITCH_PRIV_NON_SECURE_RESTORE_ADDR,
--		a6xx_gpu->preempt_iova[ring->id]);
-+		a6xx_gpu->preempt_iova[ring->id], BIT(1), true);
+-	ret = snd_soc_card_jack_new(rtd->card, "DP Jack", SND_JACK_LINEOUT, jack);
++	ret = snd_soc_card_jack_new(rtd->card, "DP Jack", SND_JACK_AVOUT, jack);
+ 	if (ret)
+ 		return ret;
  
- 	a6xx_gpu->next_ring = ring;
+@@ -372,7 +372,7 @@ static int mt8195_hdmi_codec_init(struct snd_soc_pcm_runtime *rtd)
+ 		snd_soc_rtd_to_codec(rtd, 0)->component;
+ 	int ret;
  
-@@ -328,7 +328,7 @@ void a6xx_preempt_trigger(struct msm_gpu *gpu)
- 	set_preempt_state(a6xx_gpu, PREEMPT_TRIGGERED);
+-	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_LINEOUT, jack);
++	ret = snd_soc_card_jack_new(rtd->card, "HDMI Jack", SND_JACK_AVOUT, jack);
+ 	if (ret)
+ 		return ret;
  
- 	/* Trigger the preemption */
--	gpu_write(gpu, REG_A6XX_CP_CONTEXT_SWITCH_CNTL, cntl);
-+	a6xx_fenced_write(a6xx_gpu, REG_A6XX_CP_CONTEXT_SWITCH_CNTL, cntl, BIT(1), false);
- }
- 
- static int preempt_init_ring(struct a6xx_gpu *a6xx_gpu,
 -- 
 2.51.0
 
