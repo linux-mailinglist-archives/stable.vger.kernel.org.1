@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-193119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8625C4A07F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E33C49FAA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B03454F27D3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C6241883999
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F9F24113D;
-	Tue, 11 Nov 2025 00:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DEA246333;
+	Tue, 11 Nov 2025 00:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OiNrGIW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYNpcXH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4884086A;
-	Tue, 11 Nov 2025 00:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CBC4C97;
+	Tue, 11 Nov 2025 00:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822343; cv=none; b=oP99woe3Mj87pE78hLPGKeCBOhdmHI0PTSTbJmYWimh9obqVHkE2I6CQgPo75pI//hcYbJDTOSZMrUNfPlM4+dQQjjyMKIP68wnMHZ2YTBjOh+M7/orC1uB8FzKGg2/TOgEp4SFjB6Vgpy24WHIi5UhoHd/0ETf/9ryYB8dXU9Q=
+	t=1762822348; cv=none; b=gv1RusJ+kGd1dOGevXQWVV6e1ui5NFK+OdQiCPjgLHLHPxEqpohIoEttSNZlmI0cbaGJ98pAL0eF8e57bnQt+HvdMA53IqzohLwVg2E+RbO6//QLR7pVo2SYOMku/UzoULpMjTbbv+SNW4liXAE+NSqDx174vbBbFUbQduB1yHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822343; c=relaxed/simple;
-	bh=lPut8GiC2dJC0N0ZrDi+EJgpNEvkjWBiLOO9RyHOUxg=;
+	s=arc-20240116; t=1762822348; c=relaxed/simple;
+	bh=LeGgMlEm07JV+uKnEAqmN7Gfz8OPYabgiVM8feizpC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FN89Kfj/eTWhuruRX2e1y8WpFapCUaLB4yaFUhkfV/n7N/PvkISOYK38r0tITnuLC6rvWcQOYuI/QGxI3t/HIfgOOsmqY2IinBbO8sPec0hBoUe9B7wTY5WVSzGl2ZZMuntSiRV/0oiQyKPBXcxGf28VgKywfcrt9ZGhacPduCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OiNrGIW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36924C19425;
-	Tue, 11 Nov 2025 00:52:23 +0000 (UTC)
+	 MIME-Version; b=RM2vQWCn0oVs0EiGV927cVCG6nsRjmkEgoL+cRPJGwvkGY9Q9GyZw80PyGZ8rR+Hawc6t+nzPitAy18vIsjQkclUUDQUJl7Oo64vbv4Z5GjqcvSzIrR1DhwI/WbBR+/tKfEpcT7MPOj7DU69uO3NEhJST4qP855K8KXueSCDvM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYNpcXH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E550FC4CEF5;
+	Tue, 11 Nov 2025 00:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822343;
-	bh=lPut8GiC2dJC0N0ZrDi+EJgpNEvkjWBiLOO9RyHOUxg=;
+	s=korg; t=1762822348;
+	bh=LeGgMlEm07JV+uKnEAqmN7Gfz8OPYabgiVM8feizpC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2OiNrGIW359ixT/QR5/BvRe1ofrEyVt0tQI6Tq66C496bg0zkqrddGdnf1VbJ0xLY
-	 OrPFAJp7OM02Y2cEUXheWJgwRzOfeTtdOyDDEtcxM95hXylH+eewAVKhEI4tmNZCsp
-	 tp1DL18biqPuZsenWK+B85YvArKpHx50rOeiZZ8g=
+	b=JYNpcXH8Wn5HkMxsZEadOkoTNqVQOyhhfYNyDxjM+hqhkL21T/fdIoEeBDbTZf61C
+	 oN4juzHwofD/4RvogaSyFsL8rA96RRdGOlj0GCiD5I7rSQ72OmW7GhhqX/Zsjbsxdc
+	 q9p51UEaXaelP/Yq6bl894+kbSpK0lBhf908UL+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.17 089/849] block: make REQ_OP_ZONE_OPEN a write operation
-Date: Tue, 11 Nov 2025 09:34:19 +0900
-Message-ID: <20251111004538.567768853@linuxfoundation.org>
+	Akash Goel <akash.goel@arm.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.17 090/849] dma-fence: Fix safe access wrapper to call timeline name method
+Date: Tue, 11 Nov 2025 09:34:20 +0900
+Message-ID: <20251111004538.589812859@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,59 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Akash Goel <akash.goel@arm.com>
 
-commit 19de03b312d69a7e9bacb51c806c6e3f4207376c upstream.
+commit 033559473dd3b55558b535aa37b8848c207b5cbb upstream.
 
-A REQ_OP_OPEN_ZONE request changes the condition of a sequential zone of
-a zoned block device to the explicitly open condition
-(BLK_ZONE_COND_EXP_OPEN). As such, it should be considered a write
-operation.
+This commit fixes the wrapper function dma_fence_timeline_name(), that
+was added for safe access, to actually call the timeline name method of
+dma_fence_ops.
 
-Change this operation code to be an odd number to reflect this. The
-following operation numbers are changed to keep the numbering compact.
-
-No problems were reported without this change as this operation has no
-data. However, this unifies the zone operation to reflect that they
-modify the device state and also allows strengthening checks in the
-block layer, e.g. checking if this operation is not issued against a
-read-only device.
-
-Fixes: 6c1b1da58f8c ("block: add zone open, close and finish operations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: <stable@vger.kernel.org> # v6.17+
+Signed-off-by: Akash Goel <akash.goel@arm.com>
+Fixes: 506aa8b02a8d ("dma-fence: Add safe access helpers and document the rules")
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Link: https://lore.kernel.org/r/20251021160951.1415603-1-akash.goel@arm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/blk_types.h |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/dma-buf/dma-fence.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/blk_types.h
-+++ b/include/linux/blk_types.h
-@@ -343,15 +343,15 @@ enum req_op {
- 	/* write the zero filled sector many times */
- 	REQ_OP_WRITE_ZEROES	= (__force blk_opf_t)9,
- 	/* Open a zone */
--	REQ_OP_ZONE_OPEN	= (__force blk_opf_t)10,
-+	REQ_OP_ZONE_OPEN	= (__force blk_opf_t)11,
- 	/* Close a zone */
--	REQ_OP_ZONE_CLOSE	= (__force blk_opf_t)11,
-+	REQ_OP_ZONE_CLOSE	= (__force blk_opf_t)13,
- 	/* Transition a zone to full */
--	REQ_OP_ZONE_FINISH	= (__force blk_opf_t)13,
-+	REQ_OP_ZONE_FINISH	= (__force blk_opf_t)15,
- 	/* reset a zone write pointer */
--	REQ_OP_ZONE_RESET	= (__force blk_opf_t)15,
-+	REQ_OP_ZONE_RESET	= (__force blk_opf_t)17,
- 	/* reset all the zone present on the device */
--	REQ_OP_ZONE_RESET_ALL	= (__force blk_opf_t)17,
-+	REQ_OP_ZONE_RESET_ALL	= (__force blk_opf_t)19,
+diff --git a/drivers/dma-buf/dma-fence.c b/drivers/dma-buf/dma-fence.c
+index 3f78c56b58dc..39e6f93dc310 100644
+--- a/drivers/dma-buf/dma-fence.c
++++ b/drivers/dma-buf/dma-fence.c
+@@ -1141,7 +1141,7 @@ const char __rcu *dma_fence_timeline_name(struct dma_fence *fence)
+ 			 "RCU protection is required for safe access to returned string");
  
- 	/* Driver private requests */
- 	REQ_OP_DRV_IN		= (__force blk_opf_t)34,
+ 	if (!test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags))
+-		return fence->ops->get_driver_name(fence);
++		return fence->ops->get_timeline_name(fence);
+ 	else
+ 		return "signaled-timeline";
+ }
+-- 
+2.51.2
+
 
 
 
