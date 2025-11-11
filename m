@@ -1,122 +1,138 @@
-Return-Path: <stable+bounces-194523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA6AC4FA2E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 20:45:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A66C4FA40
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 20:47:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ED48189D4C2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 19:45:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9D6D1897291
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 19:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3EC36B071;
-	Tue, 11 Nov 2025 19:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9351232C312;
+	Tue, 11 Nov 2025 19:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eOWsf+Wy"
+	dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b="ZVAnmryA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-il1-f193.google.com (mail-il1-f193.google.com [209.85.166.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361CA34F491
-	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 19:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D697B3538A3
+	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 19:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762890320; cv=none; b=UGw45vfec9lriBWu0fObxq3pG581VCycfnbr29O1r0+t0oxJa1eqLPw1lmpfKgrmdfhEmmoV884YNZcp7vB4d3gjD+UmB7u2fn+ZQ77zOqxFtrHAbsNTEG/NoCgXIh0IcRgXkNJ/noNeGM47hhkniK/gCjt73TiSsPPxIq7j8Mk=
+	t=1762890433; cv=none; b=klgp46n+mQUzobcoC/fwD3EO7Syz/SPhRhgaONlLHvveyvPT15BX0rQO3dOKpxeNLSkJojeMP0Aetbjg0kOFSlDxQVrpJbaKC9Hbh54qfYO97Iy4fCLtbZFycvuqSw99A6LvsElc1eZg+LcuXVeACTCOhL1Tk4CfXNnYDIM64Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762890320; c=relaxed/simple;
-	bh=Sg7FhLFPHYhYHz0dhqTZ1MP6Nbu0jdxwfOGdyNc5gt0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qFWQhuU1NoYUZH4NgWCxI2PVm17rtaqVgjF/u7zTIGodHMTLOet9jvcaMcsRYuyRn8gtQa4i0dDBovo2T0EUCJJbkLy8wcmX30RJzyYKni9HkpxW6eS3K+CiEq98X9vpxz7aKp7jMTjlalCdzcj4uWLdsDbOV91oOw/dnwDGpb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eOWsf+Wy; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7a9fb70f7a9so11000b3a.1
-        for <stable@vger.kernel.org>; Tue, 11 Nov 2025 11:45:18 -0800 (PST)
+	s=arc-20240116; t=1762890433; c=relaxed/simple;
+	bh=ZrW+cL6/6u+Ohf+JzfSVkT6ZAGlURKmwD1lBTmPGJbo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aJP/EfspYqIQnNXrCFAkfShauYoNydt/MofuMocxPQg8aLAo7JkQOVj4HR8QrI01EbiFogR4DJ2iNMKIVb7HRC0yzEZMpDVBvFWH/fj5Ro6rr+e29MfPFgiDu+WrqMD9wJUU4NDHkngIdeUCnKzbaJU5D4JctmtFRqRga8wXLgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sladewatkins.com; spf=pass smtp.mailfrom=sladewatkins.com; dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b=ZVAnmryA; arc=none smtp.client-ip=209.85.166.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sladewatkins.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sladewatkins.com
+Received: by mail-il1-f193.google.com with SMTP id e9e14a558f8ab-4330d2ea04eso137905ab.3
+        for <stable@vger.kernel.org>; Tue, 11 Nov 2025 11:47:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762890318; x=1763495118; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sg7FhLFPHYhYHz0dhqTZ1MP6Nbu0jdxwfOGdyNc5gt0=;
-        b=eOWsf+WyXEw/eSF9CmjV7HIDweZC0asEzb85mqYKzz9wg9h3Fdpm+mS73vV/5Ri0q4
-         t8upNUavqVuqv1KuNaDwbNcMTtBmEav4/wRRVAiTOGmNkbKa7JYB8Sr3/GutmNH1zy2b
-         sifoMj72Cs8fBjjrfh0B1yIsNwfW1QhayBnLG5uGcBynT17eVAjrj9w8qJgEMGmXwmvS
-         KNqDLm1LQdTW45V+nMxQyCR6IuZZ5AEvh72qA2Km/jLtdUtLXA8HsON+YTh7klrydLoW
-         gbXlNtwgbm0lWwyAwSzuYEffId7REO1vPMVZZsuaHTmVcPh642HqHwn1o3As6AL1BJIl
-         cDog==
+        d=sladewatkins.com; s=google; t=1762890431; x=1763495231; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZvmJ8eLa//4NsRGRjplCnKOxzOcbE/faHx1blTowx+I=;
+        b=ZVAnmryA8lNKlA8piHWG8uDrFckx9DeiFss3vLKMZ/OSY7zND0NdeCa+tounEqB2Nl
+         E7G39J1nY8HnKmUEZGJfi4XvIuhbVDQJ4HVjz1ac8T/VwQeJ2aQg6h1+eR8a1MJeyjLd
+         PLH16pIVZUodd3NX7pXzHs0tueAzKCoCocKsE1Tlpj3JrBnAzrkvZYJV2Col48cTDq5H
+         YZ+P2bndrkdf2EMlLa253ETE6Zv9l/gDCV5pfwGaMhgM90yTPYLtNfagbLWCoPhVahD+
+         2A/ZxVApqxZXjnYu+tuQCJmm9+p5U4uDhbee/wFLvqZn0hkkl40mLIgjX+xi/o8DH/mb
+         +aKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762890318; x=1763495118;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Sg7FhLFPHYhYHz0dhqTZ1MP6Nbu0jdxwfOGdyNc5gt0=;
-        b=n3hfqTEmKTJ7mgiOjbgrmwisGFklKboWNa5yn2Xhs4SB4C3toJk4X7sZUBE5LQBd6s
-         Kb3qqFdjD1Totgy3yqK0o+GrGv4AYOTpYoutqsGoj4AX454aeWaTqVwq+g+hblJIQc4H
-         eaE/nJkHhCZwOTElbBogy60T6wBMlkAZxKO02M7cheSfVm68zyMixYcyLmoveXDQAvr9
-         x9NVMuubpsLLcNkfa9oHSXY/nZceoB3UOFA1+xk880f8ya9ZTZPqsuk2lLyhkOJTZIgQ
-         /+1NDA6raAouDA3VQ51oCQ4ZhwoQEsWnrWvgCq/ejC9pZXjkuzUyagjB4IQQR/U6142K
-         0JRw==
-X-Forwarded-Encrypted: i=1; AJvYcCX+qmjdaxT0Ed9weizp+W/zFmR/vfZCviLvANtQGBkh9lENccvC5HInnRhpnkkKzKO2QLNakLk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx72KhXjEZfpy0xmAAgv3u7fTXWTPV1etlNUjYcO1x9GJ+/NsBR
-	QDU15SAKiP6eetRrW1ezzgnBxzHlF3JGPdd8EJNaVIhcIJCehTtyLqW0Fx2x303VVpdaSdGuL/A
-	0qAonPmMSoN0g44jFYmhfVB4gZuWx6P0=
-X-Gm-Gg: ASbGnctZYcCA0O+ms/sdqZ06jgdJgGA8/q6YDi4xzc1oJ7VvyduiiU+yOjDT3fIdKBB
-	U7mQHUdito9rvJzYywDBvPnzo1hURa+Yp9yrz5/f7MXYeAO2B9PqqLvx9x1aS6JS4Mn5C4S4g1T
-	H8LTiSaIkWg0hq5buxPSrmxSE76FKSd93RrB/6vqF37r2N6jpSGUfA4fM7c8qGoKUQ3cJ0yFuYH
-	IZVu3+5/NN8fBb+1zsyyLaxbS0hBxUASsAGIDVguWSGFFUe/A32OmqZs28Oqy8mF3SKXonLX930
-	7BI4KTlNcT0pc0xfQTXPGLh4zdr5TUhfAGZ2orvMQLsbjIcdNzleVO9+BlA+NM421kZHZKecZRj
-	75LU=
-X-Google-Smtp-Source: AGHT+IE5zjw8D+my40d60Ix41uKXNSt7HOnLAKKhJi0H3LCnV5CTo+qFPBfkXgqbqQK8w6cViFfsGq4E6L6246te+k0=
-X-Received: by 2002:a17:902:db0a:b0:295:70b1:edd6 with SMTP id
- d9443c01a7336-2984ed884e3mr3098505ad.3.1762890318029; Tue, 11 Nov 2025
- 11:45:18 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762890431; x=1763495231;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZvmJ8eLa//4NsRGRjplCnKOxzOcbE/faHx1blTowx+I=;
+        b=hdaQOrMjPP5v1hr9dfAie6/JUbBMWIDBbFjVQRarUb4WLW9nLzS7voC4KG1CpqdE71
+         j+E/TlAo1FsLLHjEmbBNkL2pEyAWnnyjM1I6cLf2p/CdrEGJbPVH/OALrTFdEz+fOzEB
+         Dvi64Ggyoh0B6j62JKxf1Bel0iD642i+yHhrCWZjvOOX7XN/xx9esIPenLQ1w6nOFofv
+         xC+Ui4UlrhWtncF1WqgKhRqn3OnvNsdv1UztSPaHJ3JbI1XnH0GtEf5h8LYSM737+GZ2
+         phfGu+5mEYyIEGagL1EGV4diMDpw64+HFE5TeoPwh0P6eeaPplcOI9WyfMk+iNRynv3H
+         I1nw==
+X-Forwarded-Encrypted: i=1; AJvYcCWqF1g8tZox9rJobzO+yv11dE6JIsboDstBrJZ7i5MYGhYMdY9II2DbDaTpl6DvYa/BVZeccY8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHTByvPK9uy7UNyuo1a7Y+QnrNgdtdRBYmLCWTxtfm4MvFzs7q
+	zglzN210yswXrbNOZIUZXeq0dEO3krl0oiLtl+Lexld4oogQPCvekzpG0f4YB+7N//Q=
+X-Gm-Gg: ASbGnctIvOloeduXvj15nRcJjeC2pP978nWf9SIh/s9GGH/AWLL/pdnRVVqXAvRfJqU
+	nqvcfcnnW8ATdpm11Fs472F9EZRtJyQCCiuuyNpdVMhxwQW61sgw1752W93k4M+8ocHzwVoCAS3
+	do3htMzlmav3wpQFq24Via+czjrwOGzF6DBFj3zjd2ZNDz8a4tnepnWTQcJ+iPrGOfa88Ae20ia
+	X0na2eIkUyH97H+k0hiBcc2Cx5WzbiV0TDwua1j2gQhOS306IHrldHOFz+EzdAjXx8j8LXdup7B
+	5XpRvniAe7yZYhMle5qVbxEGuNs3+TSLTcotv7/iel3YXQGOn1hEVjCGSGegxUHhU9RgwDJ1nBa
+	+TnvbH7oefVA3MvZQw7ssUU8EROyJ7nEoGVWn3Zl0Xtdb12aBkIzjnzQSSae3TbJEQ3BBdyMzDD
+	7Rv2TU633vDVw5WDg=
+X-Google-Smtp-Source: AGHT+IEFzUXrbqx24P+kXe5zMwKwFMHqOAgKW6mk9ecTAQgOVV1SJVteL9W3Xh6SnyVk+zsjwHpNnQ==
+X-Received: by 2002:a05:6e02:304a:b0:433:551d:5f2c with SMTP id e9e14a558f8ab-43473db30f7mr5000705ab.29.1762890431000;
+        Tue, 11 Nov 2025 11:47:11 -0800 (PST)
+Received: from [192.168.5.95] ([174.97.1.113])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-4347338d54esm2244295ab.22.2025.11.11.11.47.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Nov 2025 11:47:09 -0800 (PST)
+Message-ID: <07d63659-72b1-43d0-9139-2a0b6d73edd4@sladewatkins.com>
+Date: Tue, 11 Nov 2025 14:47:06 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251110131913.1789896-1-ojeda@kernel.org> <CANiq72mjFobjfQEtNvk9aA+757RkLpcfmCCEJAH69ZYsr67GdA@mail.gmail.com>
- <CA+icZUVcHfLru9SRfhNGToiRmyOY+fLw-ASEvQakZYfU1Kxq4g@mail.gmail.com>
-In-Reply-To: <CA+icZUVcHfLru9SRfhNGToiRmyOY+fLw-ASEvQakZYfU1Kxq4g@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 11 Nov 2025 20:45:06 +0100
-X-Gm-Features: AWmQ_bkZOKXuOXoFqnluk99fIIrWIqE98EcoUgehQR7XEFroNIarOWjMBHltciY
-Message-ID: <CANiq72mS2SFfMsMgVvmR7dgBpYq6O23Gx9fQmDWuaqrz5sVNYw@mail.gmail.com>
-Subject: Re: [PATCH v2] gendwarfksyms: Skip files with no exports
-To: sedat.dilek@gmail.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, linux-modules@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
-	Haiyue Wang <haiyuewa@163.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/565] 6.12.58-rc1 review
+To: Shuah Khan <skhan@linuxfoundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20251111004526.816196597@linuxfoundation.org>
+ <641427c7-0069-4bee-8e6a-53347654a926@linuxfoundation.org>
+Content-Language: en-US
+From: Slade Watkins <sr@sladewatkins.com>
+In-Reply-To: <641427c7-0069-4bee-8e6a-53347654a926@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 11, 2025 at 4:25=E2=80=AFPM Sedat Dilek <sedat.dilek@gmail.com>=
- wrote:
->
-> I switched over to gendwarfksyms in the very early testing days.
-> Faster builds. DWARFv5 fan.
->
-> And was using v5 of Sami's patchset against Linux v6.12 as it cleanly app=
-lied.
->
-> Last week, I jumped over to Linux v6.17.6 and the next testing will be
-> Linux v6.18-rc5+ (upcoming next LTS kernel-version).
->
-> I will try this patch - might be you will get a Tested-by.
+On 11/11/2025 1:00 PM, Shuah Khan wrote:
+> I am seeing a build failure on my system - the following
+> commit could be the reason.
+> 
+>>
+>> Heiner Kallweit <hkallweit1@gmail.com>
+>>      net: phy: fix phy_disable_eee
+>>
 
-Sound good -- I have applied it to start getting testing, but if you
-have a tag in the next day or so, I can add it.
+Hey Shuah,
 
-Thanks!
+Just to save you some time, this patch was already dropped from 
+6.12.58-rc2! :)
 
-Cheers,
-Miguel
+rc2: 
+https://lore.kernel.org/stable/20251111012348.571643096@linuxfoundation.org/
+
+> drivers/net/phy/phy_device.c: In function ‘phy_disable_eee’:
+> drivers/net/phy/phy_device.c:3061:29: error: passing argument 1 of 
+> ‘linkmode_fill’ makes pointer from integer without a cast [-Wint- 
+> conversion]
+>   3061 |         linkmode_fill(phydev->eee_broken_modes);
+>        |                       ~~~~~~^~~~~~~~~~~~~~~~~~
+>        |                             |
+>        |                             u32 {aka unsigned int}
+> 
+> I will go build it without this and update you.
+> 
+> thanks,
+> -- Shuah
+> 
+
+Best,
+Slade
 
