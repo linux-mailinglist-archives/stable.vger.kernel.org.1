@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 931E9C4B02D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:53:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B59C4ADAB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91D991896AF0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:47:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E988D3B51BC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2472344031;
-	Tue, 11 Nov 2025 01:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8681248883;
+	Tue, 11 Nov 2025 01:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buugyCTV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDvQlTTB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B633126A1;
-	Tue, 11 Nov 2025 01:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E191F5F6;
+	Tue, 11 Nov 2025 01:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825257; cv=none; b=tLoPGXn271C+D9LSLlmgSAoxvYpoyKMk/PFxa/tzO6PC919yvNI8hjK1yoLOSXFNUSnLByrNp42rmQu82C9l86d2+PD8rxGtokBQy1jpZngsHOwy0yje4T4I/QrdhsfBhb2iQpZgYT4cTqhDgxNjxoyMeJKdCu695HiVs/9ipHc=
+	t=1762824513; cv=none; b=AZlsgQeM25SdABROjIkm9wHzkWgswnyXIrFG3D6Ei4VpLM/cpzeljKp0gLR6Vcs0mRI8KBQysUmAtUqxYnzCsouu0BDgpt1oXwl/vlNm11iUj8dlp+Q/tCsAq1vv6/RiSh0uJa9IS5xNqaWn1UbXcpUAeHTyUrS+tQj0xTcHNhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825257; c=relaxed/simple;
-	bh=QTO+Wussn6+hyLInu/MJhXFe4BT5qjfLG3JukbofazM=;
+	s=arc-20240116; t=1762824513; c=relaxed/simple;
+	bh=+h+AZDZ/tlxdfvGQLc+4H4wjdwVL/FcHwOOyawiNRVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TtogNKyEpxe+vh55fBnesYQtuPButwaMciptOyK3sdtPSVSTwlaiv0CYDUXKqJG9W2jzoPB7H3g9SW5RWUEqNPUsDImx+WyjHOJSPv2qqJJyqfKF2pq8BIQAH+mLOBzWOg5pwFrbeTX147JneYnZJK7I/kgs6EbM9NN53lxScwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buugyCTV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10520C19421;
-	Tue, 11 Nov 2025 01:40:56 +0000 (UTC)
+	 MIME-Version; b=H7+4sklvE1kc/rg4MOYPpwDvNFFIkSZKEvWGB7idLm+DE/1AozVm0tR4/5ngziQpypXw1/bIU/+stKelyx4z6EyEN0HsXO4mUayo+vLiNj6g4hm+vOLC0qx7EfXRO2SubIM40q/KC6+PJSRXF8mvXhOYvzDH4otUjpRSRmlWQy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDvQlTTB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCF4C4CEF5;
+	Tue, 11 Nov 2025 01:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825257;
-	bh=QTO+Wussn6+hyLInu/MJhXFe4BT5qjfLG3JukbofazM=;
+	s=korg; t=1762824513;
+	bh=+h+AZDZ/tlxdfvGQLc+4H4wjdwVL/FcHwOOyawiNRVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=buugyCTV/rwPoT2orGYD4q6njaJttfWkq7vJ+bd7/Kc8hvj2SkbHGy3FilVfVhzAU
-	 HjjnsyFs5UvLmwwtvJChEU3zuiX46cbWsxX0gtoXYOxDojDHkOZc0hB+3Th7ZTbYvO
-	 P2gHbsxS5ZeGHoX9elyd5U0qtGsfpuzMrptXlJXo=
+	b=RDvQlTTBJpknY0lSJ0HttK2HzeOk6KaSLRWXE1+0AAZDqMOAKUDGd0lyTAEky8Oqx
+	 0vVW2cSjX1uuahTec3kwdcZMpNh6s0dxxh4sx4nPWdpt6X53/+04oscAYg7o2gh5Dd
+	 dxj4xTQq5KC8lU6SPzPQTxponkHDJPYL+U5UndDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Chi Zhiling <chizhiling@kylinos.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 728/849] kbuild: uapi: Strip comments before size type check
+Subject: [PATCH 6.12 442/565] exfat: limit log print for IO error
 Date: Tue, 11 Nov 2025 09:44:58 +0900
-Message-ID: <20251111004554.035686131@linuxfoundation.org>
+Message-ID: <20251111004536.828636172@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Chi Zhiling <chizhiling@kylinos.cn>
 
-[ Upstream commit 66128f4287b04aef4d4db9bf5035985ab51487d5 ]
+[ Upstream commit 6dfba108387bf4e71411b3da90b2d5cce48ba054 ]
 
-On m68k, check_sizetypes in headers_check reports:
+For exFAT filesystems with 4MB read_ahead_size, removing the storage device
+when the read operation is in progress, which cause the last read syscall
+spent 150s [1]. The main reason is that exFAT generates excessive log
+messages [2].
 
-    ./usr/include/asm/bootinfo-amiga.h:17: found __[us]{8,16,32,64} type without #include <linux/types.h>
+After applying this patch, approximately 300,000 lines of log messages
+were suppressed, and the delay of the last read() syscall was reduced
+to about 4 seconds.
 
-This header file does not use any of the Linux-specific integer types,
-but merely refers to them from comments, so this is a false positive.
-As of commit c3a9d74ee413bdb3 ("kbuild: uapi: upgrade check_sizetypes()
-warning to error"), this check was promoted to an error, breaking m68k
-all{mod,yes}config builds.
+[1]:
+write(5, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 131072) = 131072 <0.000120>
+read(4, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 131072) = 131072 <0.000032>
+write(5, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 131072) = 131072 <0.000119>
+read(4, 0x7fccf28ae000, 131072)         = -1 EIO (Input/output error) <150.186215>
 
-Fix this by stripping simple comments before looking for Linux-specific
-integer types.
+[2]:
+[  333.696603] exFAT-fs (vdb): error, failed to access to FAT (entry 0x0000d780, err:-5)
+[  333.697378] exFAT-fs (vdb): error, failed to access to FAT (entry 0x0000d780, err:-5)
+[  333.698156] exFAT-fs (vdb): error, failed to access to FAT (entry 0x0000d780, err:-5)
 
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://patch.msgid.link/949f096337e28d50510e970ae3ba3ec9c1342ec0.1759753998.git.geert@linux-m68k.org
-[nathan: Adjust comment and remove unnecessary escaping from slashes in
-         regex]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- usr/include/headers_check.pl | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/exfat/fatent.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/usr/include/headers_check.pl b/usr/include/headers_check.pl
-index 2b70bfa5558e6..02767e8bf22d0 100755
---- a/usr/include/headers_check.pl
-+++ b/usr/include/headers_check.pl
-@@ -155,6 +155,8 @@ sub check_sizetypes
- 	if (my $included = ($line =~ /^\s*#\s*include\s+[<"](\S+)[>"]/)[0]) {
- 		check_include_typesh($included);
+diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
+index 0c60ddc24c54a..2c3ab6313cc98 100644
+--- a/fs/exfat/fatent.c
++++ b/fs/exfat/fatent.c
+@@ -89,35 +89,36 @@ int exfat_ent_get(struct super_block *sb, unsigned int loc,
+ 	int err;
+ 
+ 	if (!is_valid_cluster(sbi, loc)) {
+-		exfat_fs_error(sb, "invalid access to FAT (entry 0x%08x)",
++		exfat_fs_error_ratelimit(sb,
++			"invalid access to FAT (entry 0x%08x)",
+ 			loc);
+ 		return -EIO;
  	}
-+	# strip single-line comments, as types may be referenced within them
-+	$line =~ s@/\*.*?\*/@@;
- 	if ($line =~ m/__[us](8|16|32|64)\b/) {
- 		printf STDERR "$filename:$lineno: " .
- 		              "found __[us]{8,16,32,64} type " .
+ 
+ 	err = __exfat_ent_get(sb, loc, content);
+ 	if (err) {
+-		exfat_fs_error(sb,
++		exfat_fs_error_ratelimit(sb,
+ 			"failed to access to FAT (entry 0x%08x, err:%d)",
+ 			loc, err);
+ 		return err;
+ 	}
+ 
+ 	if (*content == EXFAT_FREE_CLUSTER) {
+-		exfat_fs_error(sb,
++		exfat_fs_error_ratelimit(sb,
+ 			"invalid access to FAT free cluster (entry 0x%08x)",
+ 			loc);
+ 		return -EIO;
+ 	}
+ 
+ 	if (*content == EXFAT_BAD_CLUSTER) {
+-		exfat_fs_error(sb,
++		exfat_fs_error_ratelimit(sb,
+ 			"invalid access to FAT bad cluster (entry 0x%08x)",
+ 			loc);
+ 		return -EIO;
+ 	}
+ 
+ 	if (*content != EXFAT_EOF_CLUSTER && !is_valid_cluster(sbi, *content)) {
+-		exfat_fs_error(sb,
++		exfat_fs_error_ratelimit(sb,
+ 			"invalid access to FAT (entry 0x%08x) bogus content (0x%08x)",
+ 			loc, *content);
+ 		return -EIO;
 -- 
 2.51.0
 
