@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD111C4ABE3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44085C4B072
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:54:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 335DD4F7D1B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9E8E1896D96
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360B7305043;
-	Tue, 11 Nov 2025 01:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27092343D95;
+	Tue, 11 Nov 2025 01:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPcX7Bof"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wXekH4s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6A3248F6A;
-	Tue, 11 Nov 2025 01:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A9032D7CC;
+	Tue, 11 Nov 2025 01:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824415; cv=none; b=CjGRUH1O/yTOHcLHXG6xC/t5eMEQ6bs81amojPu+9/OW2nDEUWTBOwG/EkF2RD2eCOGV9a7rMVxqi3/nm77Hq8u+YtwvuIKvX3y1WP278aUHze8aonSmT9j0OzU5+C1VBz+ojvO1NaNammt2cbfPoGKchDA9KXgLCxPQFsMWKl4=
+	t=1762825252; cv=none; b=QzUJl8GICKrKD36q433+ejY/TE26AsOpYzYJFTxlkjptufneewa9YPRd/PtNWMGE78pML6llr87PfbBV6GIjc+AEYRpUWZ/OsQUrwDMtf+d/aT23JSnLGci3j6vddsnnqQFTMLK0Bb4w98PuyLVTUUPkzWI5VBdhNokduznSmDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824415; c=relaxed/simple;
-	bh=8oZ6961Y/t6T3M6isRmnHhSfam1Tr1/E0t/kqV6d94o=;
+	s=arc-20240116; t=1762825252; c=relaxed/simple;
+	bh=HBRHtAcJV5B6H/HhfaHr88F7fIB72vYpaV7Ea0x+4MU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mXIWpLHeHoaWhpiS+H5w2eSkey2db1YgG8W9nicBbny2KmVd4AB7pN1Pq6tfvPfTnfCyIfhi+U+H7ywjlZS5W0HToxppThJi8+SByZW/CnwHPxVKFcyP6y2mzNvWZnuSRuy5IqCYoUT5LgwkVMmc79XhjHZPcmMCuaffZarI1YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPcX7Bof; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CEA5C4AF09;
-	Tue, 11 Nov 2025 01:26:54 +0000 (UTC)
+	 MIME-Version; b=ZS41oCcQzNEFKmv5lI6L1xkihbt2vm2zpfsthjcwd6WEmahcmYE7Eu19yRVNwpaGJzfQbC2NqY1Oso//ZMf2rm9AU9pfjzZUJD4fouizNJpXXk/LXaYnSKK8JVfYUXz5vnCfSxz+2DQB955YBYVfKhe16J/My1OxZELC1YOa/VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wXekH4s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68456C19425;
+	Tue, 11 Nov 2025 01:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824414;
-	bh=8oZ6961Y/t6T3M6isRmnHhSfam1Tr1/E0t/kqV6d94o=;
+	s=korg; t=1762825252;
+	bh=HBRHtAcJV5B6H/HhfaHr88F7fIB72vYpaV7Ea0x+4MU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qPcX7Bofcy7oUpWHxRf2BbZjC8YO2hm/uCG1jnphydaWfZ/pX+V9Vhu5nRL4rRcFT
-	 ivm1+/ItGx3I8kYGkfSEqWx4TiuHC8iBol79FIKv9Yv0poj46UIvaYWW269OIKXMFy
-	 XBTEJAMyz5xDobhYho/hSuLdjigVNPUrVvmBZNbg=
+	b=2wXekH4s8h2ROFXKqtnhQkdKUXP5yYMY1TqRrRG8qM+sXn1PViAb1b3B6H2FEcRy4
+	 6h6d+gTjcKks/0ewBJ94lGRecj3qK2QQry4OINDiB+JZxVCwQDSX8lgkOWeFdiff0e
+	 gtrDFjLtBkQzN4D+/CXMDPMmKIuQhAIuSPLlU9FA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com,
-	Ivan Pravdin <ipravdin.official@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Bruno Thomsen <bruno.thomsen@gmail.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 439/565] Bluetooth: bcsp: receive data only if registered
-Date: Tue, 11 Nov 2025 09:44:55 +0900
-Message-ID: <20251111004536.758983356@linuxfoundation.org>
+Subject: [PATCH 6.17 726/849] rtc: pcf2127: fix watchdog interrupt mask on pcf2131
+Date: Tue, 11 Nov 2025 09:44:56 +0900
+Message-ID: <20251111004553.984930642@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Pravdin <ipravdin.official@gmail.com>
+From: Bruno Thomsen <bruno.thomsen@gmail.com>
 
-[ Upstream commit ca94b2b036c22556c3a66f1b80f490882deef7a6 ]
+[ Upstream commit 87064da2db7be537a7da20a25c18ba912c4db9e1 ]
 
-Currently, bcsp_recv() can be called even when the BCSP protocol has not
-been registered. This leads to a NULL pointer dereference, as shown in
-the following stack trace:
+When using interrupt pin (INT A) as watchdog output all other
+interrupt sources need to be disabled to avoid additional
+resets. Resulting INT_A_MASK1 value is 55 (0x37).
 
-    KASAN: null-ptr-deref in range [0x0000000000000108-0x000000000000010f]
-    RIP: 0010:bcsp_recv+0x13d/0x1740 drivers/bluetooth/hci_bcsp.c:590
-    Call Trace:
-     <TASK>
-     hci_uart_tty_receive+0x194/0x220 drivers/bluetooth/hci_ldisc.c:627
-     tiocsti+0x23c/0x2c0 drivers/tty/tty_io.c:2290
-     tty_ioctl+0x626/0xde0 drivers/tty/tty_io.c:2706
-     vfs_ioctl fs/ioctl.c:51 [inline]
-     __do_sys_ioctl fs/ioctl.c:907 [inline]
-     __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
-     do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-     do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-To prevent this, ensure that the HCI_UART_REGISTERED flag is set before
-processing received data. If the protocol is not registered, return
--EUNATCH.
-
-Reported-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4ed6852d4da4606c93da
-Tested-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
-Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+Link: https://lore.kernel.org/r/20250902182235.6825-1-bruno.thomsen@gmail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_bcsp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/rtc/rtc-pcf2127.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/bluetooth/hci_bcsp.c b/drivers/bluetooth/hci_bcsp.c
-index 76878119d910c..6cb904b7b643c 100644
---- a/drivers/bluetooth/hci_bcsp.c
-+++ b/drivers/bluetooth/hci_bcsp.c
-@@ -582,6 +582,9 @@ static int bcsp_recv(struct hci_uart *hu, const void *data, int count)
- 	struct bcsp_struct *bcsp = hu->priv;
- 	const unsigned char *ptr;
+diff --git a/drivers/rtc/rtc-pcf2127.c b/drivers/rtc/rtc-pcf2127.c
+index 3ba1de30e89c2..bb4fe81d3d62c 100644
+--- a/drivers/rtc/rtc-pcf2127.c
++++ b/drivers/rtc/rtc-pcf2127.c
+@@ -608,6 +608,21 @@ static int pcf2127_watchdog_init(struct device *dev, struct pcf2127 *pcf2127)
+ 			set_bit(WDOG_HW_RUNNING, &pcf2127->wdd.status);
+ 	}
  
-+	if (!test_bit(HCI_UART_REGISTERED, &hu->flags))
-+		return -EUNATCH;
++	/*
++	 * When using interrupt pin (INT A) as watchdog output, only allow
++	 * watchdog interrupt (PCF2131_BIT_INT_WD_CD) and disable (mask) all
++	 * other interrupts.
++	 */
++	if (pcf2127->cfg->type == PCF2131) {
++		ret = regmap_write(pcf2127->regmap,
++				   PCF2131_REG_INT_A_MASK1,
++				   PCF2131_BIT_INT_BLIE |
++				   PCF2131_BIT_INT_BIE |
++				   PCF2131_BIT_INT_AIE |
++				   PCF2131_BIT_INT_SI |
++				   PCF2131_BIT_INT_MI);
++	}
 +
- 	BT_DBG("hu %p count %d rx_state %d rx_count %ld",
- 	       hu, count, bcsp->rx_state, bcsp->rx_count);
+ 	return devm_watchdog_register_device(dev, &pcf2127->wdd);
+ }
  
 -- 
 2.51.0
