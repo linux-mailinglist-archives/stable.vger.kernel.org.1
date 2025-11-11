@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920D0C4A382
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:14 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF62C4A38B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 59E5E4F4A5E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9DA1F4F4BBB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605E424E4C6;
-	Tue, 11 Nov 2025 01:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E295F246768;
+	Tue, 11 Nov 2025 01:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fF75vBtC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ee6rpxh7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C38A246768;
-	Tue, 11 Nov 2025 01:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E73B4086A;
+	Tue, 11 Nov 2025 01:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822937; cv=none; b=UFCkFxjWLiN71Q6f44B+liWXuaPHH6n5f0r2RKVUGdF3x0HhHkc8NZyz4gwnJxTg43l5GitJ5MWFvMfQKtPuGNNrqpVtKm9poL3Tj+VDvgNqnrdnc3b2Z/Q1OIBfH1zlicaPWCCiDNXVT9LGFqCKQMt0poAmqDKlrbbcKEtP4e8=
+	t=1762822941; cv=none; b=n3/GkOcX1GHNDTiTSFcEeQD7wUnoTpf8ZDj6PR5JslPsjH/rt6KXZ09tbx3s+yrgfPQ47G5P0WLVUNiNrSNKidaJu2mxJHnP89zcdgcppNFQpdlZWFnGQu5+jzaby/JAYfqncH9GkQXclicR7xwzwS4HWrBfo8A3YTYyzW+8XT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822937; c=relaxed/simple;
-	bh=P0t8p6eWvdkCo3kJUJ9tX5F3vr8NtVtg09zxCFGxP4Y=;
+	s=arc-20240116; t=1762822941; c=relaxed/simple;
+	bh=wt6WzdyRrs1hsT1itaH++QhPsR6gtT1WMTYw8TDhADc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MZGHpC3yz6kcEmFPoswjIIOdLnWOjmHsNYzQzYW6H0glEzNgozYTM+dXWZ9ARBeyYEBjBVFg6IGDwefnAsrcBA4iTeaglRflZ59qd/yvwJmvFlaUcWubb5BL0ice272nNEM4fmZ4df5Evmp9e7pzX2wBUMuv8C68i2OmSbCbyCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fF75vBtC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E4FC16AAE;
-	Tue, 11 Nov 2025 01:02:16 +0000 (UTC)
+	 MIME-Version; b=aklBg2VsMdtUNyuzTJ8E++d+K5RdcP0Cf/iv692uCPsBmvbixwRtFslS69qAB9bp2Ved5BpuNs+5giFiYKXJAVm+dwzgVr/iy0vo6fUvp+2zHxwMnlgACI3Cnv/vuiGxLBwgyer2x1iFy3gxZJNBcVCmgX4M5kIEyPipHtW7UXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ee6rpxh7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431BEC19422;
+	Tue, 11 Nov 2025 01:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822936;
-	bh=P0t8p6eWvdkCo3kJUJ9tX5F3vr8NtVtg09zxCFGxP4Y=;
+	s=korg; t=1762822941;
+	bh=wt6WzdyRrs1hsT1itaH++QhPsR6gtT1WMTYw8TDhADc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fF75vBtCmST4Xu+C0dvBIbJBoTMeQ+nwUK5xu9/RIvrWQJD1kGM2LP3rH7hoqleO1
-	 rJp1MhsVuIjwWd4DGk9SQKu6MXL5f3abmo7ISiFM/ecwGf+tykYsqu940h1j40KFWp
-	 4wS+ttkWKDUTm/sPX3jRsZ6qLV2tzNNbyp6FT7Bk=
+	b=Ee6rpxh7ZJSITW+qcPtef7jzacXp9M4mq5Io8mK4+Pp3XlmqzfqMyaW3TgVPL+lXg
+	 B3Bc15EC16fdvVZUAfOCFbjW51KWqDSowqOA7l3KcBK7OysaW9Ga7captn44YsyYCH
+	 EjRXs/bzrt0KRgNJi0wmsAIu63EYkRRUUQ69nvMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Pei <cp0613@linux.alibaba.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 199/849] ACPI: SPCR: Support Precise Baud Rate field
-Date: Tue, 11 Nov 2025 09:36:09 +0900
-Message-ID: <20251111004541.250277650@linuxfoundation.org>
+Subject: [PATCH 6.17 200/849] clocksource/drivers/vf-pit: Replace raw_readl/writel to readl/writel
+Date: Tue, 11 Nov 2025 09:36:10 +0900
+Message-ID: <20251111004541.273600703@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,51 +66,95 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Pei <cp0613@linux.alibaba.com>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-[ Upstream commit 4d330fe54145ecfbb657ac01a554fdedf3c1927e ]
+[ Upstream commit 0b781f527d6f99e68e5b3780ae03cd69a7cb5c0c ]
 
-The Microsoft Serial Port Console Redirection (SPCR) specification
-revision 1.09 comprises additional field: Precise Baud Rate [1].
+The driver uses the raw_readl() and raw_writel() functions. Those are
+not for MMIO devices. Replace them with readl() and writel()
 
-It is used to describe non-traditional baud rates (such as those
-used by high-speed UARTs).
+[ dlezcano: Fixed typo in the subject s/reald/readl/ ]
 
-It contains a specific non-zero baud rate which overrides the value
-of the Configured Baud Rate field. If this field is zero or not
-present, Configured Baud Rate is used.
-
-Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/serports/serial-port-console-redirection-table [1]
-Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
-Link: https://patch.msgid.link/20250913070815.16758-1-cp0613@linux.alibaba.com
-[ rjw: Corrected typo in the subject ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20250804152344.1109310-2-daniel.lezcano@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/spcr.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-vf-pit.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/acpi/spcr.c b/drivers/acpi/spcr.c
-index cd36a97b0ea2c..fa12e740386de 100644
---- a/drivers/acpi/spcr.c
-+++ b/drivers/acpi/spcr.c
-@@ -146,7 +146,15 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
- 		goto done;
- 	}
+diff --git a/drivers/clocksource/timer-vf-pit.c b/drivers/clocksource/timer-vf-pit.c
+index 911c92146eca6..8041a8f62d1fa 100644
+--- a/drivers/clocksource/timer-vf-pit.c
++++ b/drivers/clocksource/timer-vf-pit.c
+@@ -35,30 +35,30 @@ static unsigned long cycle_per_jiffy;
  
--	switch (table->baud_rate) {
-+	/*
-+	 * SPCR 1.09 defines Precise Baud Rate Filed contains a specific
-+	 * non-zero baud rate which overrides the value of the Configured
-+	 * Baud Rate field. If this field is zero or not present, Configured
-+	 * Baud Rate is used.
-+	 */
-+	if (table->precise_baudrate)
-+		baud_rate = table->precise_baudrate;
-+	else switch (table->baud_rate) {
- 	case 0:
- 		/*
- 		 * SPCR 1.04 defines 0 as a preconfigured state of UART.
+ static inline void pit_timer_enable(void)
+ {
+-	__raw_writel(PITTCTRL_TEN | PITTCTRL_TIE, clkevt_base + PITTCTRL);
++	writel(PITTCTRL_TEN | PITTCTRL_TIE, clkevt_base + PITTCTRL);
+ }
+ 
+ static inline void pit_timer_disable(void)
+ {
+-	__raw_writel(0, clkevt_base + PITTCTRL);
++	writel(0, clkevt_base + PITTCTRL);
+ }
+ 
+ static inline void pit_irq_acknowledge(void)
+ {
+-	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
++	writel(PITTFLG_TIF, clkevt_base + PITTFLG);
+ }
+ 
+ static u64 notrace pit_read_sched_clock(void)
+ {
+-	return ~__raw_readl(clksrc_base + PITCVAL);
++	return ~readl(clksrc_base + PITCVAL);
+ }
+ 
+ static int __init pit_clocksource_init(unsigned long rate)
+ {
+ 	/* set the max load value and start the clock source counter */
+-	__raw_writel(0, clksrc_base + PITTCTRL);
+-	__raw_writel(~0UL, clksrc_base + PITLDVAL);
+-	__raw_writel(PITTCTRL_TEN, clksrc_base + PITTCTRL);
++	writel(0, clksrc_base + PITTCTRL);
++	writel(~0UL, clksrc_base + PITLDVAL);
++	writel(PITTCTRL_TEN, clksrc_base + PITTCTRL);
+ 
+ 	sched_clock_register(pit_read_sched_clock, 32, rate);
+ 	return clocksource_mmio_init(clksrc_base + PITCVAL, "vf-pit", rate,
+@@ -76,7 +76,7 @@ static int pit_set_next_event(unsigned long delta,
+ 	 * hardware requirement.
+ 	 */
+ 	pit_timer_disable();
+-	__raw_writel(delta - 1, clkevt_base + PITLDVAL);
++	writel(delta - 1, clkevt_base + PITLDVAL);
+ 	pit_timer_enable();
+ 
+ 	return 0;
+@@ -125,8 +125,8 @@ static struct clock_event_device clockevent_pit = {
+ 
+ static int __init pit_clockevent_init(unsigned long rate, int irq)
+ {
+-	__raw_writel(0, clkevt_base + PITTCTRL);
+-	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
++	writel(0, clkevt_base + PITTCTRL);
++	writel(PITTFLG_TIF, clkevt_base + PITTFLG);
+ 
+ 	BUG_ON(request_irq(irq, pit_timer_interrupt, IRQF_TIMER | IRQF_IRQPOLL,
+ 			   "VF pit timer", &clockevent_pit));
+@@ -183,7 +183,7 @@ static int __init pit_timer_init(struct device_node *np)
+ 	cycle_per_jiffy = clk_rate / (HZ);
+ 
+ 	/* enable the pit module */
+-	__raw_writel(~PITMCR_MDIS, timer_base + PITMCR);
++	writel(~PITMCR_MDIS, timer_base + PITMCR);
+ 
+ 	ret = pit_clocksource_init(clk_rate);
+ 	if (ret)
 -- 
 2.51.0
 
