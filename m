@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A00C4AD6F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 197CAC4A64A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC3143B7638
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BA883AC071
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985B2307AE6;
-	Tue, 11 Nov 2025 01:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA7A307AE4;
+	Tue, 11 Nov 2025 01:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhPFq2b4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E2pdN1I5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AE525F797;
-	Tue, 11 Nov 2025 01:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46A625F797;
+	Tue, 11 Nov 2025 01:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824443; cv=none; b=dOhVAKJ/kpWr0KAHtsG+0wh30mHRM/ctqwRxXEH8IZKArdTjL+vB+RxqepOeSBo45qMHFp/J/tdyHOL9FpUcVas1gBE/hAf6AtsaaJ1nwCD2WYEvhqClxyA6Fh1h/Ncaj91toNTGU/jS0R2x/h42xou4N+r7sA553scje6PinA8=
+	t=1762823301; cv=none; b=m9HU+pf9xXdTca8/TgsCvbcGYCgdmmAl1cFRlr2chtPU5y7nUOdDMfnId2zTF/JO8pAjHDsleY++t5OzGkFwRBeWEhCCiJ88o/B0xYiQzVusw95nN5rqkQpsMMfr5Sn2m+KNkUTqZbuQPwDx0p3LfvRHujCrxNuJTV5N8USwtRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824443; c=relaxed/simple;
-	bh=b+YNgyE9Xa83SH/6fbBhshDukSu3BiZepGsZgzYUaTg=;
+	s=arc-20240116; t=1762823301; c=relaxed/simple;
+	bh=YQSYifkGgQ6W1lOPVJnuP3buK2hhcAIGDDDqk+MIIuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NjOAAi5i3ZQ72KZ070EFAy4+v1Y5qj2VUfK+kZem5kBF6OIPH+7tFbm5KH/5ScltmXX/GG+alp/yW3EL3WbX2v43FqO0tQeMfI9ltwtBZ2g5OfbEv2AR9PEvBE5PGc2YHQiC+c6tVWvdXBkO5eYVKD5A5YM5Q6ieGcds2CS28wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhPFq2b4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD9BC116D0;
-	Tue, 11 Nov 2025 01:27:22 +0000 (UTC)
+	 MIME-Version; b=dFbKMT6VUv4u6hoAQlbZY40+X/IMDy6DQzuUS707bVniQ5PW9Eg6nY2sWOb54h2NLqibkZGp3Lna999y27EcONeY2xYaYepgQLBJrseharxHgN2LNGw67cTQGlZGbtbBRvI5Ozjj74ZNbev1QMjnT4vQ1OwOPd0/OxWNNkWwO9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E2pdN1I5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EB9C113D0;
+	Tue, 11 Nov 2025 01:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824443;
-	bh=b+YNgyE9Xa83SH/6fbBhshDukSu3BiZepGsZgzYUaTg=;
+	s=korg; t=1762823301;
+	bh=YQSYifkGgQ6W1lOPVJnuP3buK2hhcAIGDDDqk+MIIuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhPFq2b4c3oYAxJTTPisq8MyLKRn1PBuUFvmLG+67ilwwLpKobbQd8A8wHGoTtVz4
-	 bweQCB2UdVRDyWQoSpx0kP4ru9RMM6N2s02mDpfhrJ1WDcDyw8Zc3n9fi6qEBz2VV3
-	 Fb5+cpEOvPtEdyt9xj0g6sfif26pHX0ISPCageyQ=
+	b=E2pdN1I5/gUw5YxXb8VatF9WSRLNPTHBkt2W/Gskd2fipGiY1YWuYLlfl5fO8A3r1
+	 IXpZ2b/v++SWqccB9WSxCZgoAGe/CHIfFbRehiG5EOPSqIJskQkmZ4vY+zDctTpPz4
+	 J72DMW5ONhQLZg/BYuDnhUyf8PTtZAJJB6BedaRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 501/849] wifi: cfg80211: update the time stamps in hidden ssid
+Subject: [PATCH 6.12 215/565] scsi: ufs: host: mediatek: Fix PWM mode switch issue
 Date: Tue, 11 Nov 2025 09:41:11 +0900
-Message-ID: <20251111004548.545632394@linuxfoundation.org>
+Message-ID: <20251111004531.759434028@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 185cc2352cb1ef2178fe4e9a220a73c94007b8bb ]
+[ Upstream commit 7212d624f8638f8ea8ad1ecbb80622c7987bc7a1 ]
 
-In hidden SSID we have separate BSS entries for the beacon and for the
-probe response(s).
-The BSS entry time stamps represent the age of the BSS;
-when was the last time we heard the BSS.
-When we receive a beacon of a hidden SSID it means that we heard that
-BSS, so it makes sense to indicate that in the probe response entries.
-Do that.
+Address a failure in switching to PWM mode by ensuring proper
+configuration of power modes and adaptation settings. The changes
+include checks for SLOW_MODE and adjustments to the desired working mode
+and adaptation configuration based on the device's power mode and
+hardware version.
 
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250907115135.712745e498c0.I38186abf5d20dec6f6f2d42d2e1cdb50c6bfea25@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20250811131423.3444014-6-peter.wang@mediatek.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/ufs/host/ufs-mediatek.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 6c7b7c3828a41..90a9187a6b135 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1816,6 +1816,9 @@ static void cfg80211_update_hidden_bsses(struct cfg80211_internal_bss *known,
- 		WARN_ON(ies != old_ies);
+diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
+index 5841431d98543..8701d2307ad3f 100644
+--- a/drivers/ufs/host/ufs-mediatek.c
++++ b/drivers/ufs/host/ufs-mediatek.c
+@@ -1140,6 +1140,10 @@ static bool ufs_mtk_pmc_via_fastauto(struct ufs_hba *hba,
+ 	    dev_req_params->gear_rx < UFS_HS_G4)
+ 		return false;
  
- 		rcu_assign_pointer(bss->pub.beacon_ies, new_ies);
++	if (dev_req_params->pwr_tx == SLOW_MODE ||
++	    dev_req_params->pwr_rx == SLOW_MODE)
++		return false;
 +
-+		bss->ts = known->ts;
-+		bss->pub.ts_boottime = known->pub.ts_boottime;
- 	}
+ 	return true;
  }
  
-@@ -1882,6 +1885,10 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
- {
- 	lockdep_assert_held(&rdev->bss_lock);
+@@ -1155,6 +1159,10 @@ static int ufs_mtk_pre_pwr_change(struct ufs_hba *hba,
+ 	host_params.hs_rx_gear = UFS_HS_G5;
+ 	host_params.hs_tx_gear = UFS_HS_G5;
  
-+	/* Update time stamps */
-+	known->ts = new->ts;
-+	known->pub.ts_boottime = new->pub.ts_boottime;
++	if (dev_max_params->pwr_rx == SLOW_MODE ||
++	    dev_max_params->pwr_tx == SLOW_MODE)
++		host_params.desired_working_mode = UFS_PWM_MODE;
 +
- 	/* Update IEs */
- 	if (rcu_access_pointer(new->pub.proberesp_ies)) {
- 		const struct cfg80211_bss_ies *old;
-@@ -1945,8 +1952,6 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
- 	if (signal_valid)
- 		known->pub.signal = new->pub.signal;
- 	known->pub.capability = new->pub.capability;
--	known->ts = new->ts;
--	known->pub.ts_boottime = new->pub.ts_boottime;
- 	known->parent_tsf = new->parent_tsf;
- 	known->pub.chains = new->pub.chains;
- 	memcpy(known->pub.chain_signal, new->pub.chain_signal,
+ 	ret = ufshcd_negotiate_pwr_params(&host_params, dev_max_params, dev_req_params);
+ 	if (ret) {
+ 		pr_info("%s: failed to determine capabilities\n",
+@@ -1187,10 +1195,21 @@ static int ufs_mtk_pre_pwr_change(struct ufs_hba *hba,
+ 		}
+ 	}
+ 
+-	if (host->hw_ver.major >= 3) {
++	if (dev_req_params->pwr_rx == FAST_MODE ||
++	    dev_req_params->pwr_rx == FASTAUTO_MODE) {
++		if (host->hw_ver.major >= 3) {
++			ret = ufshcd_dme_configure_adapt(hba,
++						   dev_req_params->gear_tx,
++						   PA_INITIAL_ADAPT);
++		} else {
++			ret = ufshcd_dme_configure_adapt(hba,
++				   dev_req_params->gear_tx,
++				   PA_NO_ADAPT);
++		}
++	} else {
+ 		ret = ufshcd_dme_configure_adapt(hba,
+-					   dev_req_params->gear_tx,
+-					   PA_INITIAL_ADAPT);
++			   dev_req_params->gear_tx,
++			   PA_NO_ADAPT);
+ 	}
+ 
+ 	return ret;
 -- 
 2.51.0
 
