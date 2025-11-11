@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-194077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF06C4AEB2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A075AC4A899
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73A853BA44E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DCD63B87D2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0466345CD8;
-	Tue, 11 Nov 2025 01:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4416346A11;
+	Tue, 11 Nov 2025 01:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTX5XdkY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoCBWv/u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7442C345CBE;
-	Tue, 11 Nov 2025 01:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C00346A14;
+	Tue, 11 Nov 2025 01:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824752; cv=none; b=JCT8fDp0gyT24RVzRxkP3rgWZXZdBIe9szRAC257cXlZw1wpFhVcn+TydnXbn2JNuqYfgpLgL2gXbZqXtiHs45J9QQnS/y25Ksrg3blUTDEu3tk1akQPLPMK+EaRHlHtewnN87XXpOJuQlMc2Zu5zUCfK31oG0JdJcsgRQFXQDQ=
+	t=1762823657; cv=none; b=kwhQNnWZH1mVYvwK7BLjMbWAbvo7J8gG8r2kDpnWDdpHkUDJXyejCH0q4h+wMwLoeMEWtyuFX8Qm284QeajmpqZVvScn5PcH2bkcUWMme9AAvNGj1VWo+AJswyYwH2q24zPFyZStRgvL8vsf/H1FZ5mi5B4uX8tXQ9NDErMT2IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824752; c=relaxed/simple;
-	bh=b88virH20WIQtLbqA6pcvULXPjs/8p/hANHNPwjDm7g=;
+	s=arc-20240116; t=1762823657; c=relaxed/simple;
+	bh=nHGQn38TqpZt6Xw4mni11NNiRty+eVdyeRQ5wiVuUaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3JavfLng1uWlBmT3sVCyx5/lefQFKUuHoWB+XmQMvqKO3G2w2DtZb4HBuoYnUnMwcUkrD3uiLbULW9IF67PjZ4Dlq3ZR1ObP/riHC/0Cvz9Byyqex1R2j+hPEewSvrZncbtUeWmyvY2VE6l5pLzpVLbjAuLkNs5HgUXPgKJtng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTX5XdkY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA7DC113D0;
-	Tue, 11 Nov 2025 01:32:31 +0000 (UTC)
+	 MIME-Version; b=exKoananr7Z/5Vi/MA8RSN2xYkJZ2hwquhy75LHG7zTXXJoxbZsvtQYWUaoP/xSG1tfwFvKcuiN146lpDG10vkuMjnrHf4UvJN7P2kykiSHUN0iNva94lsXKM+iISvRzDaTf/IYtdrOyJ/XPnGQ5baZbgt713oWulRJ0RTSCEHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoCBWv/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8733C116B1;
+	Tue, 11 Nov 2025 01:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824752;
-	bh=b88virH20WIQtLbqA6pcvULXPjs/8p/hANHNPwjDm7g=;
+	s=korg; t=1762823657;
+	bh=nHGQn38TqpZt6Xw4mni11NNiRty+eVdyeRQ5wiVuUaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KTX5XdkYFaiKZ2sKUWq+0PHTLkJWvKnemkh5CtrOLX4Lw5ItyY9yZGP63ZKiOp6cc
-	 PUPaqUt5PyV40yWZmx5YRpLeoa7Vy7BrLJUAnJOBvCOxl9w2OywnXR8eZRnJiqNJ2p
-	 X1PwYI7zGpqsBQkJhWjvxwL1v23avlookDntFoIA=
+	b=ZoCBWv/ujFsU/oSKG1bvLoYn9FtIyvhD6eYSDbNY6HJpnVDJEBvMp8TlCqUASZfvB
+	 REYk+Jr9dHR19JIpbr3gmeJFm+g+iu8enZzOH3We0IJtfDNVo62GNmtim2PNVZ19kW
+	 ssvGTeijQxLKlvtqp516cIdExY3+ciwLkkxIldjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Palash Kambar <quic_pkambar@quicinc.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 563/849] scsi: ufs: ufs-qcom: Disable lane clocks during phy hibern8
+Subject: [PATCH 6.12 277/565] crypto: qat - use kcalloc() in qat_uclo_map_objs_from_mof()
 Date: Tue, 11 Nov 2025 09:42:13 +0900
-Message-ID: <20251111004550.023470799@linuxfoundation.org>
+Message-ID: <20251111004533.113987767@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Palash Kambar <quic_pkambar@quicinc.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit c1553fc105dff28f79bef90fab207235f5f2d977 ]
+[ Upstream commit 4c634b6b3c77bba237ee64bca172e73f9cee0cb2 ]
 
-Currently, the UFS lane clocks remain enabled even after the link enters
-the Hibern8 state and are only disabled during runtime/system
-suspend.This patch modifies the behavior to disable the lane clocks
-during ufs_qcom_setup_clocks(), which is invoked shortly after the link
-enters Hibern8 via gate work.
+As noted in the kernel documentation [1], open-coded multiplication in
+allocator arguments is discouraged because it can lead to integer overflow.
 
-While hibern8_notify() offers immediate control, toggling clocks on
-every transition isn't ideal due to varied contexts like clock scaling.
-Since setup_clocks() manages PHY/controller resources and is invoked
-soon after Hibern8 entry, it serves as a central and stable point for
-clock gating.
+Use kcalloc() to gain built-in overflow protection, making memory
+allocation safer when calculating allocation size compared to explicit
+multiplication.  Similarly, use size_add() instead of explicit addition
+for 'uobj_chunk_num + sobj_chunk_num'.
 
-Signed-off-by: Palash Kambar <quic_pkambar@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Message-ID: <20250909055149.2068737-1-quic_pkambar@quicinc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://www.kernel.org/doc/html/next/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments #1
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-qcom.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/crypto/intel/qat/qat_common/qat_uclo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index 3ea6b08d2b526..2b6eb377eec07 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -1183,6 +1183,13 @@ static int ufs_qcom_setup_clocks(struct ufs_hba *hba, bool on,
- 	case PRE_CHANGE:
- 		if (on) {
- 			ufs_qcom_icc_update_bw(host);
-+			if (ufs_qcom_is_link_hibern8(hba)) {
-+				err = ufs_qcom_enable_lane_clks(host);
-+				if (err) {
-+					dev_err(hba->dev, "enable lane clks failed, ret=%d\n", err);
-+					return err;
-+				}
-+			}
- 		} else {
- 			if (!ufs_qcom_is_link_active(hba)) {
- 				/* disable device ref_clk */
-@@ -1208,6 +1215,9 @@ static int ufs_qcom_setup_clocks(struct ufs_hba *hba, bool on,
- 			if (ufshcd_is_hs_mode(&hba->pwr_info))
- 				ufs_qcom_dev_ref_clk_ctrl(host, true);
- 		} else {
-+			if (ufs_qcom_is_link_hibern8(hba))
-+				ufs_qcom_disable_lane_clks(host);
-+
- 			ufs_qcom_icc_set_bw(host, ufs_qcom_bw_table[MODE_MIN][0][0].mem_bw,
- 					    ufs_qcom_bw_table[MODE_MIN][0][0].cfg_bw);
- 		}
+diff --git a/drivers/crypto/intel/qat/qat_common/qat_uclo.c b/drivers/crypto/intel/qat/qat_common/qat_uclo.c
+index 7ea40b4f6e5b4..1bde198c0bc07 100644
+--- a/drivers/crypto/intel/qat/qat_common/qat_uclo.c
++++ b/drivers/crypto/intel/qat/qat_common/qat_uclo.c
+@@ -1746,7 +1746,7 @@ static int qat_uclo_map_objs_from_mof(struct icp_qat_mof_handle *mobj_handle)
+ 	if (sobj_hdr)
+ 		sobj_chunk_num = sobj_hdr->num_chunks;
+ 
+-	mobj_hdr = kzalloc((uobj_chunk_num + sobj_chunk_num) *
++	mobj_hdr = kcalloc(size_add(uobj_chunk_num, sobj_chunk_num),
+ 			   sizeof(*mobj_hdr), GFP_KERNEL);
+ 	if (!mobj_hdr)
+ 		return -ENOMEM;
 -- 
 2.51.0
 
