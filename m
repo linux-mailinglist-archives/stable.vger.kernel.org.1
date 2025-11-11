@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-194023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5545C4AA66
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2F1C4B12A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 248B034C9C3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D536F4FC44F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C642D9780;
-	Tue, 11 Nov 2025 01:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D408F2DEA77;
+	Tue, 11 Nov 2025 01:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qT1yCLE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbkkQvoH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6BF158545;
-	Tue, 11 Nov 2025 01:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6FD26D4C1;
+	Tue, 11 Nov 2025 01:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824622; cv=none; b=U5i7K1DESg0pEhXwin8HzjfHrdzPOWH/u8sQN7cMZ++1C6RT5N18GpIhYSglqJTyGGH420I7SJnyK4k2gibAXfhEkThEUtC/QVROTRDwc1HUNIHpZxQk+TUsaZ78g0fgJ996/jGnynmJbqG+laEQrgHH06W+5x/DOdZF/nX0+bU=
+	t=1762825352; cv=none; b=XYLiopDdGsGe/wvnPme9kG7bRFbghef2PjKmYQOInf0JW6yGFC4qhJnhkt2gvxt/DAiG0f7R8Lm0ztEXZ9Uli5oOoy5OhU3Crq9vYZWRB5epEOesylmjS+9+Kt6jglY8L83LmuEmsE6tOxXrnIzBBAinOsS7FoaBgTqSMTUOgEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824622; c=relaxed/simple;
-	bh=I0GNZYR5fh89TKfXALsf7WvjibJslnjnC5H8HJWruZU=;
+	s=arc-20240116; t=1762825352; c=relaxed/simple;
+	bh=lvUTLfkow3el2Oiatq1S6zFW944dp+CM5I1tiNz1axA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MmGcoLZeksyQOSN9ZT6+T/bKi8ymJ0e1kGhkDsf748SyhU6Q5JZMCuebeD8esfKNw1TmKr1a1Fr+F5os5hMSVoqq9HJrFvnTlk6LjuRbkJ9kDEmBmsj7S5ZvYuDFZCiMKc8rfYfOXXAKxGmj79L/3vh2uTKzvrjs5SSCxhcPv24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qT1yCLE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9963BC4CEF5;
-	Tue, 11 Nov 2025 01:30:21 +0000 (UTC)
+	 MIME-Version; b=fal8BpGdAgg0eW4tNnILMuJTJ/Kk3Vw2yMhFyiLFiIF1816UqK7irlpBQIOh9TpooJVpvtWm/H6ILnAzmAFmOeM8atQJ9Bg/gbJZFlJikC5z7FHgtzwnsxuFZBXcubZL7zRZnE1een2vMBXHtwqIJlpjS5fqQFSVbbDB3/cGU+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbkkQvoH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA1DC4CEF5;
+	Tue, 11 Nov 2025 01:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824621;
-	bh=I0GNZYR5fh89TKfXALsf7WvjibJslnjnC5H8HJWruZU=;
+	s=korg; t=1762825352;
+	bh=lvUTLfkow3el2Oiatq1S6zFW944dp+CM5I1tiNz1axA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qT1yCLE9RGfqb6zwQzw3tLV7ErfcXoR5ZXLhYDpW3ewaBReml6r5ppnNvj/dceteI
-	 y5XtZ2XDTkihdsXyZqc1bk8MctslBpTRO1u8LWMngDubw8qO0KsDDzCC7tuZxs2uOa
-	 JKDs1f+ymuK+LmI3qTTCl7OeknaanSTR5/qfDrjI=
+	b=BbkkQvoHm5tlI1dpt6Vvrgjuep3tRuMj55IS1SbcbynkfYYkoxO/qQuFgY1LiIH8m
+	 8Epl1nfV0JzA44L54Sp83pyZ3UdNVAHP+y09zYBCBrx1Hk4VG4qE4wFws/aM+RBsPx
+	 +6yuB7TpzgQGFhhinSOT/jJfchG4RtvruXfofk9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 481/565] ACPI: property: Return present device nodes only on fwnode interface
+Subject: [PATCH 6.17 767/849] gpiolib: fix invalid pointer access in debugfs
 Date: Tue, 11 Nov 2025 09:45:37 +0900
-Message-ID: <20251111004537.742653956@linuxfoundation.org>
+Message-ID: <20251111004554.972860010@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit d9f866b2bb3eec38b3734f1fed325ec7c55ccdfa ]
+[ Upstream commit 2f6115ad8864cf3f48598f26c74c7c8e5c391919 ]
 
-fwnode_graph_get_next_subnode() may return fwnode backed by ACPI
-device nodes and there has been no check these devices are present
-in the system, unlike there has been on fwnode OF backend.
+If the memory allocation in gpiolib_seq_start() fails, the s->private
+field remains uninitialized and is later dereferenced without checking
+in gpiolib_seq_stop(). Initialize s->private to NULL before calling
+kzalloc() and check it before dereferencing it.
 
-In order to provide consistent behaviour towards callers,
-add a check for device presence by introducing
-a new function acpi_get_next_present_subnode(), used as the
-get_next_child_node() fwnode operation that also checks device
-node presence.
-
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Link: https://patch.msgid.link/20251001102636.1272722-2-sakari.ailus@linux.intel.com
-[ rjw: Kerneldoc comment and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: e348544f7994 ("gpio: protect the list of GPIO devices with SRCU")
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20251103141132.53471-1-brgl@bgdev.pl
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/property.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ drivers/gpio/gpiolib.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 342e7cef723cc..b51b947b0ca5b 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1357,6 +1357,28 @@ struct fwnode_handle *acpi_get_next_subnode(const struct fwnode_handle *fwnode,
- 	return NULL;
- }
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 74d54513730a7..4aa66d7b08598 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -5285,6 +5285,8 @@ static void *gpiolib_seq_start(struct seq_file *s, loff_t *pos)
+ 	struct gpio_device *gdev;
+ 	loff_t index = *pos;
  
-+/*
-+ * acpi_get_next_present_subnode - Return the next present child node handle
-+ * @fwnode: Firmware node to find the next child node for.
-+ * @child: Handle to one of the device's child nodes or a null handle.
-+ *
-+ * Like acpi_get_next_subnode(), but the device nodes returned by
-+ * acpi_get_next_present_subnode() are guaranteed to be present.
-+ *
-+ * Returns: The fwnode handle of the next present sub-node.
-+ */
-+static struct fwnode_handle *
-+acpi_get_next_present_subnode(const struct fwnode_handle *fwnode,
-+			      struct fwnode_handle *child)
-+{
-+	do {
-+		child = acpi_get_next_subnode(fwnode, child);
-+	} while (is_acpi_device_node(child) &&
-+		 !acpi_device_is_present(to_acpi_device_node(child)));
++	s->private = NULL;
 +
-+	return child;
-+}
+ 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return NULL;
+@@ -5318,7 +5320,11 @@ static void *gpiolib_seq_next(struct seq_file *s, void *v, loff_t *pos)
+ 
+ static void gpiolib_seq_stop(struct seq_file *s, void *v)
+ {
+-	struct gpiolib_seq_priv *priv = s->private;
++	struct gpiolib_seq_priv *priv;
 +
- /**
-  * acpi_node_get_parent - Return parent fwnode of this fwnode
-  * @fwnode: Firmware node whose parent to get
-@@ -1700,7 +1722,7 @@ static int acpi_fwnode_irq_get(const struct fwnode_handle *fwnode,
- 		.property_read_string_array =				\
- 			acpi_fwnode_property_read_string_array,		\
- 		.get_parent = acpi_node_get_parent,			\
--		.get_next_child_node = acpi_get_next_subnode,		\
-+		.get_next_child_node = acpi_get_next_present_subnode,	\
- 		.get_named_child_node = acpi_fwnode_get_named_child_node, \
- 		.get_name = acpi_fwnode_get_name,			\
- 		.get_name_prefix = acpi_fwnode_get_name_prefix,		\
++	priv = s->private;
++	if (!priv)
++		return;
+ 
+ 	srcu_read_unlock(&gpio_devices_srcu, priv->idx);
+ 	kfree(priv);
 -- 
 2.51.0
 
