@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56EDDC4AA33
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE599C4A8F9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07BDB3B6351
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C85E1884646
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E01347BBB;
-	Tue, 11 Nov 2025 01:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6AF8347FC3;
+	Tue, 11 Nov 2025 01:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGybXumW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuEf/sQj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CE72DE707;
-	Tue, 11 Nov 2025 01:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58492347BD4;
+	Tue, 11 Nov 2025 01:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823740; cv=none; b=ayI/m/myG7f3K5W/bR31/ExBYy9jzS/ye4NBmzsJkmdIezJx/AgJ2aPGx8ZWrDBifXG1vdQDQY09BKqM8Vhts1T1Lj76chaxu0lK7hd+eJZSl65bhZETeRvjfgXWpOu0rKa7amSAIDeVEFT6FcoZ5PZAstjLnGTkJxgL7yv7iwI=
+	t=1762823748; cv=none; b=F8TbGywEyvuS9Ed6H9xMdHFKssKTANPVxaV2eFTmoVuAW/NeUzrBvmYnokE4RXbI6WNizDorT/euVdp12ajDo/hDiOg+TToLEksD3l0NyLmtqPm/pJD+ub+fq76/GJD+B+mFfdnmKHmETTsMwV04kuXgZ/L6wi4Nl8i/ifcQGmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823740; c=relaxed/simple;
-	bh=h8A/mU3RdA9NqqnTf/jLVAfmEQnb6mXghUUNnxGlTXM=;
+	s=arc-20240116; t=1762823748; c=relaxed/simple;
+	bh=IyetU7gFlFr1FCVAdNajyGq1LXhW9sdrSB9I/8p/k1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jsvfr5at5mg+Sf/zqfoir3nilzmqqvhWpRChIGZ4TvRiJXTSd1AQGU69EHC0cYdTiLZ2s1dZOqqlz8UGFae3qVZc8IElt1jYcK5KHhdtRdOTT/qmAhxJxo2IqHjdKBr9S1dUzkUPD5z4G3TaavIM2GNUW898L4G9l1ts86r75Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGybXumW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6FCC116B1;
-	Tue, 11 Nov 2025 01:15:39 +0000 (UTC)
+	 MIME-Version; b=E6VDn4r+XGWZiK0CStPW/HoQzyEnEE7qT9bdCCIZ/I8MuSGEOm4i8UlgUSYc+NycvDNEL7XgPnMPTfO7BtEiAIUHiPjbCCGFgpx3cAANxYzVzUVnPh4ZxMygvSJXCu9IJVOsVSOBZnr2rB/9tgwpfGrOgTuKd+8dLnBC3zCu8mY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuEf/sQj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB05C4CEF5;
+	Tue, 11 Nov 2025 01:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823740;
-	bh=h8A/mU3RdA9NqqnTf/jLVAfmEQnb6mXghUUNnxGlTXM=;
+	s=korg; t=1762823747;
+	bh=IyetU7gFlFr1FCVAdNajyGq1LXhW9sdrSB9I/8p/k1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aGybXumWRkvFknBELeXUi/y3iRm7fjgcG/6lu/G7sBiXiyhj+tH6w7ewaKtRWOBEt
-	 XLfN7OiZ6NkspZP16yQ0XqdHQDI8DX07l/Rcft5XfFJuxtJk0Fe8jwuCPhXt2wVTW7
-	 94e+FFYQdFwK3O4m3tTlEbd9qIYpPL7PrMEnjCfM=
+	b=CuEf/sQjnRCF1aphwBoFkwCtuvrSgXCeuV1lX1ZBZp2lmVLuDOE7jSoRScgizP0Nv
+	 85ROpY4tSAiOEgxWPFhM48h+lHoeIQODuOjWwssdTvnMScbA0NfmMZ575x1YhO/QgX
+	 uvLDrJkpfJPKNwZObRKQHTM9B1BYyPRdmpcHPrNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Raag Jadav <raag.jadav@intel.com>,
+	Riana Tauro <riana.tauro@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 360/849] extcon: axp288: Fix wakeup source leaks on device unbind
-Date: Tue, 11 Nov 2025 09:38:50 +0900
-Message-ID: <20251111004545.122239924@linuxfoundation.org>
+Subject: [PATCH 6.17 361/849] drm/xe: Set GT as wedged before sending wedged uevent
+Date: Tue, 11 Nov 2025 09:38:51 +0900
+Message-ID: <20251111004545.145243802@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,35 +68,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Riana Tauro <riana.tauro@intel.com>
 
-[ Upstream commit 93ccf3f2f22ceaa975b462156f98527febee4fe5 ]
+[ Upstream commit 90fdcf5f89e9288c153923f16a60e6f7da18ba76 ]
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.
+Userspace should be notified after setting the device as wedged.
+Re-order function calls to set gt wedged before sending uevent.
 
-Link: https://lore.kernel.org/lkml/20250501-device-wakeup-leak-extcon-v2-2-7af77802cbea@linaro.org/
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Suggested-by: Raag Jadav <raag.jadav@intel.com>
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://lore.kernel.org/r/20250826063419.3022216-4-riana.tauro@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/extcon/extcon-axp288.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_device.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/extcon/extcon-axp288.c b/drivers/extcon/extcon-axp288.c
-index d3bcbe839c095..19856dddade62 100644
---- a/drivers/extcon/extcon-axp288.c
-+++ b/drivers/extcon/extcon-axp288.c
-@@ -470,7 +470,7 @@ static int axp288_extcon_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
+index 1c9907b8a4e9e..d399c2628fa33 100644
+--- a/drivers/gpu/drm/xe/xe_device.c
++++ b/drivers/gpu/drm/xe/xe_device.c
+@@ -1157,8 +1157,10 @@ static void xe_device_wedged_fini(struct drm_device *drm, void *arg)
+  * xe_device_declare_wedged - Declare device wedged
+  * @xe: xe device instance
+  *
+- * This is a final state that can only be cleared with a module
++ * This is a final state that can only be cleared with the recovery method
++ * specified in the drm wedged uevent. The default recovery method is
+  * re-probe (unbind + bind).
++ *
+  * In this state every IOCTL will be blocked so the GT cannot be used.
+  * In general it will be called upon any critical error such as gt reset
+  * failure or guc loading failure. Userspace will be notified of this state
+@@ -1192,13 +1194,15 @@ void xe_device_declare_wedged(struct xe_device *xe)
+ 			"IOCTLs and executions are blocked. Only a rebind may clear the failure\n"
+ 			"Please file a _new_ bug report at https://gitlab.freedesktop.org/drm/xe/kernel/issues/new\n",
+ 			dev_name(xe->drm.dev));
++	}
++
++	for_each_gt(gt, xe, id)
++		xe_gt_declare_wedged(gt);
  
--	device_init_wakeup(dev, true);
-+	devm_device_init_wakeup(dev);
- 	platform_set_drvdata(pdev, info);
- 
- 	return 0;
++	if (xe_device_wedged(xe)) {
+ 		/* Notify userspace of wedged device */
+ 		drm_dev_wedged_event(&xe->drm,
+ 				     DRM_WEDGE_RECOVERY_REBIND | DRM_WEDGE_RECOVERY_BUS_RESET,
+ 				     NULL);
+ 	}
+-
+-	for_each_gt(gt, xe, id)
+-		xe_gt_declare_wedged(gt);
+ }
 -- 
 2.51.0
 
