@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-193619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CAAEC4A80C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC2EC4A809
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 257DF189464E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D14B3B851B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4453F27B4E8;
-	Tue, 11 Nov 2025 01:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BDA43446D7;
+	Tue, 11 Nov 2025 01:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pT4ulrLh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMWZ0n90"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F13263F52;
-	Tue, 11 Nov 2025 01:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2113446CB;
+	Tue, 11 Nov 2025 01:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823611; cv=none; b=Lg19aY3XtSE4S67AqIDeLuQPJqTsrZCkJ5bR/xjhn6jRPulv89TCK88u5iXZF4jw57Jmz5Npm1BwZq6xMkaKqBvq6Nmf1bhooHX2KKOxBXz+oeefjf2lCqlK+HhJbK5/Vo6ourl0tUjj5vWxs3OjQoZzUcXMWCJmlwFIuaa8Dkk=
+	t=1762823615; cv=none; b=D+zvhDibvzhpYQt8FQaBSQBM93QsfxjEaDmX221+ukaecfDFmeM5x8BQZ/dpR0lGtmWwkmotGTJpcPxc28In7g8a//Z8yWPj4iEdnnJ866UXcRxpMU29usj9nu6FkNvZmlMjBM7oEAGEzuYC5Bj3hiVTyTQd5U6F07cP3cIlql0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823611; c=relaxed/simple;
-	bh=RttPQttfLFIMuax/ghoPLxGFKSAIhMalaxcgEjiVZlM=;
+	s=arc-20240116; t=1762823615; c=relaxed/simple;
+	bh=ex2me4M4HEgNC3tHDlZGVM883dvh/FJxHlFmG2UB518=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=We1B/NhC4/ji6AL5VaBUSqqd0WFacuFHuC6gmrj7qUdA4WBrw1kqyZ+AagHJtF3HKc+0WWLwqbQ4yNU/9hPYPMgvHS61K6TnfgZ6J5KPU3jxzQonO8+Ko//Rqa2GMSCIvdIL4Q4rPMaZD0UzmiFBHaOxYHXRxdJZa2+LBUHhb2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pT4ulrLh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA1EC113D0;
-	Tue, 11 Nov 2025 01:13:30 +0000 (UTC)
+	 MIME-Version; b=ir2A3+8tj+dPDTtGJfrd7UCNDmq9KVOHKQ8HhWM//A3kppGA2LyRAcqcJgOdy9AezbtY1EDApRM4aPvpWo87rUYFQQh7XzxT5oG6/xVJ2WnacKBVyPAvGiCHjLDzpApjwNAdIwP5KxnIKhowj6t6KPHyoey4rd3PjVQBMuFZxtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMWZ0n90; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1B9C19422;
+	Tue, 11 Nov 2025 01:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823610;
-	bh=RttPQttfLFIMuax/ghoPLxGFKSAIhMalaxcgEjiVZlM=;
+	s=korg; t=1762823615;
+	bh=ex2me4M4HEgNC3tHDlZGVM883dvh/FJxHlFmG2UB518=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pT4ulrLhy4o+M+/1ATyvjIPxUrV5lGvbCj8IxPaED668nXRPrnNKG33meY//NXkYW
-	 N+FHpH2LiXLiSzVmLf45YVn3MsoODe3R5gzVqNK4OaJ/qdj0fkNVD62bJqebQI7ld5
-	 yxu39+NutngRh1CoK55bnzAUx+A5Ro4GRRIgCRTs=
+	b=VMWZ0n90pz5SmzP3yDCiUj7EqPSaifMIE/+99RPsheIcWuEHwqT9EL3lVKcTNW7Ql
+	 dNDxVd7bZ07ueFlAgUZdnF4RjFZvMttNgMAPdRyDaJVVR+og6Es5ONclW6cjDsfCDA
+	 Hq9d+HQpHhONGaWshacYosFdwYsVE8jT/p+QXBZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 335/849] net: Call trace_sock_exceed_buf_limit() for memcg failure with SK_MEM_RECV.
-Date: Tue, 11 Nov 2025 09:38:25 +0900
-Message-ID: <20251111004544.518155442@linuxfoundation.org>
+Subject: [PATCH 6.17 336/849] dmaengine: idxd: Add a new IAA device ID for Wildcat Lake family platforms
+Date: Tue, 11 Nov 2025 09:38:26 +0900
+Message-ID: <20251111004544.542442223@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,45 +68,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
 
-[ Upstream commit 9d85c565a7b7c78b732393c02bcaa4d5c275fe58 ]
+[ Upstream commit c937969a503ebf45e0bebafee4122db22b0091bd ]
 
-Initially, trace_sock_exceed_buf_limit() was invoked when
-__sk_mem_raise_allocated() failed due to the memcg limit or the
-global limit.
+A new IAA device ID, 0xfd2d, is introduced across all Wildcat Lake
+family platforms. Add the device ID to the IDXD driver.
 
-However, commit d6f19938eb031 ("net: expose sk wmem in
-sock_exceed_buf_limit tracepoint") somehow suppressed the event
-only when memcg failed to charge for SK_MEM_RECV, although the
-memcg failure for SK_MEM_SEND still triggers the event.
-
-Let's restore the event for SK_MEM_RECV.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Link: https://patch.msgid.link/20250815201712.1745332-5-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20250801215936.188555-1-vinicius.gomes@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/dma/idxd/init.c      | 2 ++
+ drivers/dma/idxd/registers.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index e21348ead7e76..1382bddcbaff4 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -3336,8 +3336,7 @@ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
- 		}
- 	}
+diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
+index 8c4725ad1f648..2acc34b3daff8 100644
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -80,6 +80,8 @@ static struct pci_device_id idxd_pci_tbl[] = {
+ 	{ PCI_DEVICE_DATA(INTEL, IAA_DMR, &idxd_driver_data[IDXD_TYPE_IAX]) },
+ 	/* IAA PTL platforms */
+ 	{ PCI_DEVICE_DATA(INTEL, IAA_PTL, &idxd_driver_data[IDXD_TYPE_IAX]) },
++	/* IAA WCL platforms */
++	{ PCI_DEVICE_DATA(INTEL, IAA_WCL, &idxd_driver_data[IDXD_TYPE_IAX]) },
+ 	{ 0, }
+ };
+ MODULE_DEVICE_TABLE(pci, idxd_pci_tbl);
+diff --git a/drivers/dma/idxd/registers.h b/drivers/dma/idxd/registers.h
+index 9c1c546fe443e..0d84bd7a680b7 100644
+--- a/drivers/dma/idxd/registers.h
++++ b/drivers/dma/idxd/registers.h
+@@ -10,6 +10,7 @@
+ #define PCI_DEVICE_ID_INTEL_DSA_DMR	0x1212
+ #define PCI_DEVICE_ID_INTEL_IAA_DMR	0x1216
+ #define PCI_DEVICE_ID_INTEL_IAA_PTL	0xb02d
++#define PCI_DEVICE_ID_INTEL_IAA_WCL	0xfd2d
  
--	if (kind == SK_MEM_SEND || (kind == SK_MEM_RECV && charged))
--		trace_sock_exceed_buf_limit(sk, prot, allocated, kind);
-+	trace_sock_exceed_buf_limit(sk, prot, allocated, kind);
- 
- 	sk_memory_allocated_sub(sk, amt);
- 
+ #define DEVICE_VERSION_1		0x100
+ #define DEVICE_VERSION_2		0x200
 -- 
 2.51.0
 
