@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-194021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71622C4ACB2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07038C4B06F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:54:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F41673B22E4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56AAA189A9BF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE349311C20;
-	Tue, 11 Nov 2025 01:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E19B346A0F;
+	Tue, 11 Nov 2025 01:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izQaaDJx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="foGv8qrS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7894A2D94B7;
-	Tue, 11 Nov 2025 01:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9212D94B0;
+	Tue, 11 Nov 2025 01:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824617; cv=none; b=DCaqZQ0OgkfU7e6yl/LrUiBMmuLcdTh6sgOGx2b6zC2YGeDlMaO/E4HgpP6gCkNzfboz9jEXQhvZRiYfRKdmW0g/8MSV/60JvpWvZI2iVA//osCESvTF/KGvKcSyOQQKwnk3VyVFeptgCZ/2Fi5J6YqFidVZFaN7qxT9ULQYhUo=
+	t=1762825267; cv=none; b=lFGFHc8Mf4x5CFpcGe9Oasxgcmj8mCLhZvW+YmV7bVK9ZZ9pRw8s/R3A3m2uxulcodNBtxT0MnoYtBm3tVQVdMINLsaD/rzGUZQan8l1s8+9O8WKr19ePB4JClsGwz6gsuZm+v+pgJDvW1gKyKh5rzEd4LAbNJaP6/TeC8nPGW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824617; c=relaxed/simple;
-	bh=MKJSs8M2dyojSlq7uvpevFh0/cma1U/LB9wOYQH0DJQ=;
+	s=arc-20240116; t=1762825267; c=relaxed/simple;
+	bh=QCdryK6mmrYVhoyEiXz+6DUnvrONH4UdEYnG0FQb4P0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iBgsCLjUWchAhiUXihQw4nlX8oIRwIpMsQBwV5O/MSc9ftAHb2+7pSMXKo/ygfXKkT7xLQAWXpzi3xY+JFSE70wk5mdf1NG1aaVJo/Fbf36CVTMfv4H73M/orf4T1L5ozrm+zg8Q1f6ZqLozTo2i5LZshCDCm9eU/w3rG+YFIGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izQaaDJx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16270C16AAE;
-	Tue, 11 Nov 2025 01:30:16 +0000 (UTC)
+	 MIME-Version; b=rtfQ30QFcOBwqMYc8+0t2kt6PSXNm2ybzV0dnyXOUE7WGi1/PIMgCJ9MkPVvvKXQwvJHRb4mDRyckXU6l+RunZuMwBZ7iATId4n8BUghmzRAi4UsxYGRZTjlSP08M1OEFsc4XkJIRbWI82rx+orRUWAuvVVFviaipDsDQlvt7X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=foGv8qrS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FDA8C4CEF5;
+	Tue, 11 Nov 2025 01:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824617;
-	bh=MKJSs8M2dyojSlq7uvpevFh0/cma1U/LB9wOYQH0DJQ=;
+	s=korg; t=1762825264;
+	bh=QCdryK6mmrYVhoyEiXz+6DUnvrONH4UdEYnG0FQb4P0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=izQaaDJxGPCfESbCy/Ent3uDUdWYMcGcrwnNnC8Fnjd3WkBVdKc8w8VqtqxvK0yad
-	 f9+2sNFuevl+eOfGZLeiWGnKI+Z/pYA0UC1dog4rcaNd1BoMvIDQ4hxaEQ+y//JjCC
-	 ZNwwn5demI5XrKYtMYAxEEKjRW8z+WdzzogUCV+k=
+	b=foGv8qrSfNrEw+PqsI6za2OyJoZH/bXGH9ws7LFuzU/mfyjDFc7s+Kxg3v73yfeC8
+	 iWyMIiGVJIUV4pYByfPtRly4saH6+lGJBp0QIlitgvQRiYo2ZbvHb4L/kwx3nS5nbE
+	 3T5NMu2r14oTBO5+NgNcTyvZSDvvFZXmOaC75oUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5fd749c74105b0e1b302@syzkaller.appspotmail.com,
-	Qingfang Deng <dqfext@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Shuming Fan <shumingf@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 444/565] 6pack: drop redundant locking and refcounting
+Subject: [PATCH 6.17 730/849] ASoC: rt722: add settings for rt722VB
 Date: Tue, 11 Nov 2025 09:45:00 +0900
-Message-ID: <20251111004536.874446734@linuxfoundation.org>
+Message-ID: <20251111004554.085930147@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,175 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Shuming Fan <shumingf@realtek.com>
 
-[ Upstream commit 38b04ed7072e54086102eae2d05d03ffcdb4b695 ]
+[ Upstream commit a27539810e1e61efcfdeb51777ed875dc61e9d49 ]
 
-The TTY layer already serializes line discipline operations with
-tty->ldisc_sem, so the extra disc_data_lock and refcnt in 6pack
-are unnecessary.
+This patch adds settings for RT722VB.
 
-Removing them simplifies the code and also resolves a lockdep warning
-reported by syzbot. The warning did not indicate a real deadlock, since
-the write-side lock was only taken in process context with hardirqs
-disabled.
-
-Reported-by: syzbot+5fd749c74105b0e1b302@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68c858b0.050a0220.3c6139.0d1c.GAE@google.com/
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250925051059.26876-1-dqfext@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Link: https://patch.msgid.link/20251007080950.1999411-1-shumingf@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hamradio/6pack.c | 57 ++++--------------------------------
- 1 file changed, 5 insertions(+), 52 deletions(-)
+ sound/soc/codecs/rt722-sdca-sdw.c |  2 +-
+ sound/soc/codecs/rt722-sdca.c     | 14 ++++++++++++++
+ sound/soc/codecs/rt722-sdca.h     |  6 ++++++
+ 3 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/hamradio/6pack.c b/drivers/net/hamradio/6pack.c
-index 3bf6785f90573..0c766c9c31955 100644
---- a/drivers/net/hamradio/6pack.c
-+++ b/drivers/net/hamradio/6pack.c
-@@ -115,8 +115,6 @@ struct sixpack {
+diff --git a/sound/soc/codecs/rt722-sdca-sdw.c b/sound/soc/codecs/rt722-sdca-sdw.c
+index 70700bdb80a14..5ea40c1b159a8 100644
+--- a/sound/soc/codecs/rt722-sdca-sdw.c
++++ b/sound/soc/codecs/rt722-sdca-sdw.c
+@@ -21,7 +21,7 @@ static int rt722_sdca_mbq_size(struct device *dev, unsigned int reg)
+ 	switch (reg) {
+ 	case 0x2f01 ... 0x2f0a:
+ 	case 0x2f35 ... 0x2f36:
+-	case 0x2f50:
++	case 0x2f50 ... 0x2f52:
+ 	case 0x2f54:
+ 	case 0x2f58 ... 0x2f5d:
+ 	case SDW_SDCA_CTL(FUNC_NUM_JACK_CODEC, RT722_SDCA_ENT0, RT722_SDCA_CTL_FUNC_STATUS, 0):
+diff --git a/sound/soc/codecs/rt722-sdca.c b/sound/soc/codecs/rt722-sdca.c
+index 333611490ae35..79b8b7e70a334 100644
+--- a/sound/soc/codecs/rt722-sdca.c
++++ b/sound/soc/codecs/rt722-sdca.c
+@@ -1378,6 +1378,9 @@ static void rt722_sdca_dmic_preset(struct rt722_sdca_priv *rt722)
+ 		/* PHYtiming TDZ/TZD control */
+ 		regmap_write(rt722->regmap, 0x2f03, 0x06);
  
- 	struct timer_list	tx_t;
- 	struct timer_list	resync_t;
--	refcount_t		refcnt;
--	struct completion	dead;
- 	spinlock_t		lock;
++		if (rt722->hw_vid == RT722_VB)
++			regmap_write(rt722->regmap, 0x2f52, 0x00);
++
+ 		/* clear flag */
+ 		regmap_write(rt722->regmap,
+ 			SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT0, RT722_SDCA_CTL_FUNC_STATUS, 0),
+@@ -1415,6 +1418,9 @@ static void rt722_sdca_amp_preset(struct rt722_sdca_priv *rt722)
+ 			SDW_SDCA_CTL(FUNC_NUM_AMP, RT722_SDCA_ENT_OT23,
+ 				RT722_SDCA_CTL_VENDOR_DEF, CH_08), 0x04);
+ 
++		if (rt722->hw_vid == RT722_VB)
++			regmap_write(rt722->regmap, 0x2f54, 0x00);
++
+ 		/* clear flag */
+ 		regmap_write(rt722->regmap,
+ 			SDW_SDCA_CTL(FUNC_NUM_AMP, RT722_SDCA_ENT0, RT722_SDCA_CTL_FUNC_STATUS, 0),
+@@ -1506,6 +1512,9 @@ static void rt722_sdca_jack_preset(struct rt722_sdca_priv *rt722)
+ 		rt722_sdca_index_write(rt722, RT722_VENDOR_REG, RT722_DIGITAL_MISC_CTRL4,
+ 			0x0010);
+ 
++		if (rt722->hw_vid == RT722_VB)
++			regmap_write(rt722->regmap, 0x2f51, 0x00);
++
+ 		/* clear flag */
+ 		regmap_write(rt722->regmap,
+ 			SDW_SDCA_CTL(FUNC_NUM_JACK_CODEC, RT722_SDCA_ENT0, RT722_SDCA_CTL_FUNC_STATUS, 0),
+@@ -1516,6 +1525,7 @@ static void rt722_sdca_jack_preset(struct rt722_sdca_priv *rt722)
+ int rt722_sdca_io_init(struct device *dev, struct sdw_slave *slave)
+ {
+ 	struct rt722_sdca_priv *rt722 = dev_get_drvdata(dev);
++	unsigned int val;
+ 
+ 	rt722->disable_irq = false;
+ 
+@@ -1545,6 +1555,10 @@ int rt722_sdca_io_init(struct device *dev, struct sdw_slave *slave)
+ 
+ 	pm_runtime_get_noresume(&slave->dev);
+ 
++	rt722_sdca_index_read(rt722, RT722_VENDOR_REG, RT722_JD_PRODUCT_NUM, &val);
++	rt722->hw_vid = (val & 0x0f00) >> 8;
++	dev_dbg(&slave->dev, "%s hw_vid=0x%x\n", __func__, rt722->hw_vid);
++
+ 	rt722_sdca_dmic_preset(rt722);
+ 	rt722_sdca_amp_preset(rt722);
+ 	rt722_sdca_jack_preset(rt722);
+diff --git a/sound/soc/codecs/rt722-sdca.h b/sound/soc/codecs/rt722-sdca.h
+index 3c383705dd3cd..823abee9ab76c 100644
+--- a/sound/soc/codecs/rt722-sdca.h
++++ b/sound/soc/codecs/rt722-sdca.h
+@@ -39,6 +39,7 @@ struct  rt722_sdca_priv {
+ 	/* For DMIC */
+ 	bool fu1e_dapm_mute;
+ 	bool fu1e_mixer_mute[4];
++	int hw_vid;
  };
  
-@@ -353,42 +351,13 @@ static void sp_bump(struct sixpack *sp, char cmd)
+ struct rt722_sdca_dmic_kctrl_priv {
+@@ -233,6 +234,11 @@ enum rt722_sdca_jd_src {
+ 	RT722_JD1,
+ };
  
- /* ----------------------------------------------------------------------- */
- 
--/*
-- * We have a potential race on dereferencing tty->disc_data, because the tty
-- * layer provides no locking at all - thus one cpu could be running
-- * sixpack_receive_buf while another calls sixpack_close, which zeroes
-- * tty->disc_data and frees the memory that sixpack_receive_buf is using.  The
-- * best way to fix this is to use a rwlock in the tty struct, but for now we
-- * use a single global rwlock for all ttys in ppp line discipline.
-- */
--static DEFINE_RWLOCK(disc_data_lock);
--                                                                                
--static struct sixpack *sp_get(struct tty_struct *tty)
--{
--	struct sixpack *sp;
--
--	read_lock(&disc_data_lock);
--	sp = tty->disc_data;
--	if (sp)
--		refcount_inc(&sp->refcnt);
--	read_unlock(&disc_data_lock);
--
--	return sp;
--}
--
--static void sp_put(struct sixpack *sp)
--{
--	if (refcount_dec_and_test(&sp->refcnt))
--		complete(&sp->dead);
--}
--
- /*
-  * Called by the TTY driver when there's room for more data.  If we have
-  * more packets to send, we send them here.
-  */
- static void sixpack_write_wakeup(struct tty_struct *tty)
- {
--	struct sixpack *sp = sp_get(tty);
-+	struct sixpack *sp = tty->disc_data;
- 	int actual;
- 
- 	if (!sp)
-@@ -400,7 +369,7 @@ static void sixpack_write_wakeup(struct tty_struct *tty)
- 		clear_bit(TTY_DO_WRITE_WAKEUP, &tty->flags);
- 		sp->tx_enable = 0;
- 		netif_wake_queue(sp->dev);
--		goto out;
-+		return;
- 	}
- 
- 	if (sp->tx_enable) {
-@@ -408,9 +377,6 @@ static void sixpack_write_wakeup(struct tty_struct *tty)
- 		sp->xleft -= actual;
- 		sp->xhead += actual;
- 	}
--
--out:
--	sp_put(sp);
- }
- 
- /* ----------------------------------------------------------------------- */
-@@ -430,7 +396,7 @@ static void sixpack_receive_buf(struct tty_struct *tty, const u8 *cp,
- 	if (!count)
- 		return;
- 
--	sp = sp_get(tty);
-+	sp = tty->disc_data;
- 	if (!sp)
- 		return;
- 
-@@ -446,7 +412,6 @@ static void sixpack_receive_buf(struct tty_struct *tty, const u8 *cp,
- 	}
- 	sixpack_decode(sp, cp, count1);
- 
--	sp_put(sp);
- 	tty_unthrottle(tty);
- }
- 
-@@ -561,8 +526,6 @@ static int sixpack_open(struct tty_struct *tty)
- 
- 	spin_lock_init(&sp->lock);
- 	spin_lock_init(&sp->rxlock);
--	refcount_set(&sp->refcnt, 1);
--	init_completion(&sp->dead);
- 
- 	/* !!! length of the buffers. MTU is IP MTU, not PACLEN!  */
- 
-@@ -638,19 +601,11 @@ static void sixpack_close(struct tty_struct *tty)
- {
- 	struct sixpack *sp;
- 
--	write_lock_irq(&disc_data_lock);
- 	sp = tty->disc_data;
--	tty->disc_data = NULL;
--	write_unlock_irq(&disc_data_lock);
- 	if (!sp)
- 		return;
- 
--	/*
--	 * We have now ensured that nobody can start using ap from now on, but
--	 * we have to wait for all existing users to finish.
--	 */
--	if (!refcount_dec_and_test(&sp->refcnt))
--		wait_for_completion(&sp->dead);
-+	tty->disc_data = NULL;
- 
- 	/* We must stop the queue to avoid potentially scribbling
- 	 * on the free buffers. The sp->dead completion is not sufficient
-@@ -673,7 +628,7 @@ static void sixpack_close(struct tty_struct *tty)
- static int sixpack_ioctl(struct tty_struct *tty, unsigned int cmd,
- 		unsigned long arg)
- {
--	struct sixpack *sp = sp_get(tty);
-+	struct sixpack *sp = tty->disc_data;
- 	struct net_device *dev;
- 	unsigned int tmp, err;
- 
-@@ -725,8 +680,6 @@ static int sixpack_ioctl(struct tty_struct *tty, unsigned int cmd,
- 		err = tty_mode_ioctl(tty, cmd, arg);
- 	}
- 
--	sp_put(sp);
--
- 	return err;
- }
- 
++enum rt722_sdca_version {
++	RT722_VA,
++	RT722_VB,
++};
++
+ int rt722_sdca_io_init(struct device *dev, struct sdw_slave *slave);
+ int rt722_sdca_init(struct device *dev, struct regmap *regmap, struct sdw_slave *slave);
+ int rt722_sdca_index_write(struct rt722_sdca_priv *rt722,
 -- 
 2.51.0
 
