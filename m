@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-193882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C04C4ADED
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D7BC4A3D6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:08:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28C8E3BC3BB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08F64188F391
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C3F2E62C4;
-	Tue, 11 Nov 2025 01:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F633303CAF;
+	Tue, 11 Nov 2025 01:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpCVtwPA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSKlLSEC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46A61D86FF;
-	Tue, 11 Nov 2025 01:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E23302CA7;
+	Tue, 11 Nov 2025 01:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824228; cv=none; b=aoPuCoiX2Qnc5BkM7E9irbpiXow3c+otLExO0F4ppHlUJBV2PHOO6JJaGnVk9FVTCdgvj5q0TXnHoqN5qdvpc/TDF38lyew7ZN06itfEsoGon7xehkN8aZIBQ2v0fAnrYZ2VtiEFr9C40+xhY9C3vVt67y3+ELxfrr+G7wMKzac=
+	t=1762823149; cv=none; b=cQPcRchMAMsBUBp+n0qIZCYdWYc38u8M/7wyAREAG71bqyY9ZPQbYosMI0FKiITfmylpUFfcFAcUfx7jtTpkPeivd0i8ltrurG9BFO0AObvmWDfYijSymb3NxikbkKTM+J79tyl1Uts6WWotKWN7ijv+BxZ5Jx57I9JHhYp+8/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824228; c=relaxed/simple;
-	bh=YXH6aS2rQv2Ggmg7Dx2hLhr9zNpPxMot3LXgp0qu/5A=;
+	s=arc-20240116; t=1762823149; c=relaxed/simple;
+	bh=TFdjAqUvbiBEl+w5+LrX+Z18Fxay6wgre0Yo31D7H9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkxpGTQEFQ+O2Q4B3MaEzMfERNWRuSstRLSEsA+oKyP01/6n+T0Ig1XZSfvyRcwkecB2p3n07zLRxI9GNgar2SD9MYJxxg+fVCyeCEAeFyF8f/+5XVCBH9wW2oGoEl+xBBoW0fck14DdtKyu+y6K034/vsejY+wpjHDmKbBMdoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpCVtwPA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62976C116B1;
-	Tue, 11 Nov 2025 01:23:48 +0000 (UTC)
+	 MIME-Version; b=EKKabxUVfuHy2llJVmarDWg15XPT7YS4Y6pReMIilvQuDd2/K4TgBs3Aios0PNMBW1VldH/cftU/yw8514N+tATx5DYnkumWGML8VCtG4M5q6XVgRSjKPh+dwhfCIRWwW86jsbwQxaKoaHrGRwHD7D6FqVP1Z9UW5bwriR73kec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSKlLSEC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A88C116B1;
+	Tue, 11 Nov 2025 01:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824228;
-	bh=YXH6aS2rQv2Ggmg7Dx2hLhr9zNpPxMot3LXgp0qu/5A=;
+	s=korg; t=1762823149;
+	bh=TFdjAqUvbiBEl+w5+LrX+Z18Fxay6wgre0Yo31D7H9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpCVtwPA5f91PnFIoIprapaxrrnFPCmfCbPZwHn9Lqyyr9gKmhHTFgEpCdhTWFScS
-	 VI7wMSlocujLbgUuoOUo7cckWOJyhCkkgOVfiitmSBBjJGU5IjyOKFujl9T9buePKX
-	 WFKYYSDD1bKJEg/0U+griIry8XnuZ1A2WOiAsZ1Q=
+	b=xSKlLSEC5gI/+N7skFiI2/TeW1i69GmG/C4w7S+qvcFYPjOlPq9ZOj65QD52V0qDe
+	 Z1KKeexpHErGQOsmJpDu4fDr5Tezp+J9s5rs5tR3u1Opog9QD81A3GhMmB04RjnhZ6
+	 X0iNwzVKX/mVlBJeR+o6nNrIfQs/QPWllCbxfttY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Ce Sun <cesun102@amd.com>,
+	"Stanley.Yang" <Stanley.Yang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 466/849] serdev: Drop dev_pm_domain_detach() call
+Subject: [PATCH 6.12 180/565] drm/amdgpu: Avoid rma causes GPU duplicate reset
 Date: Tue, 11 Nov 2025 09:40:36 +0900
-Message-ID: <20251111004547.694322902@linuxfoundation.org>
+Message-ID: <20251111004530.980963597@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Ce Sun <cesun102@amd.com>
 
-[ Upstream commit e3fa89f3a768a9c61cf1bfe86b939ab5f36a9744 ]
+[ Upstream commit 21c0ffa612c98bcc6dab5bd9d977a18d565ee28e ]
 
-Starting with commit f99508074e78 ("PM: domains: Detach on
-device_unbind_cleanup()"), there is no longer a need to call
-dev_pm_domain_detach() in the bus remove function. The
-device_unbind_cleanup() function now handles this to avoid
-invoking devres cleanup handlers while the PM domain is
-powered off, which could otherwise lead to failures as
-described in the above-mentioned commit.
+Try to ensure poison creation handle is completed in time
+to set device rma value.
 
-Drop the explicit dev_pm_domain_detach() call and rely instead
-on the flags passed to dev_pm_domain_attach() to power off the
-domain.
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20250827101747.928265-1-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ce Sun <cesun102@amd.com>
+Signed-off-by: Stanley.Yang <Stanley.Yang@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serdev/core.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 17 ++++++++++-------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h |  1 +
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/tty/serdev/core.c b/drivers/tty/serdev/core.c
-index d16c207a1a9b2..b33e708cb2455 100644
---- a/drivers/tty/serdev/core.c
-+++ b/drivers/tty/serdev/core.c
-@@ -399,15 +399,12 @@ static int serdev_drv_probe(struct device *dev)
- 	const struct serdev_device_driver *sdrv = to_serdev_device_driver(dev->driver);
- 	int ret;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+index f5148027107bc..d9cdc89d4cde1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -2927,7 +2927,6 @@ static void amdgpu_ras_do_page_retirement(struct work_struct *work)
+ 					      page_retirement_dwork.work);
+ 	struct amdgpu_device *adev = con->adev;
+ 	struct ras_err_data err_data;
+-	unsigned long err_cnt;
  
--	ret = dev_pm_domain_attach(dev, PD_FLAG_ATTACH_POWER_ON);
-+	ret = dev_pm_domain_attach(dev, PD_FLAG_ATTACH_POWER_ON |
-+					PD_FLAG_DETACH_POWER_OFF);
- 	if (ret)
- 		return ret;
+ 	/* If gpu reset is ongoing, delay retiring the bad pages */
+ 	if (amdgpu_in_reset(adev) || amdgpu_ras_in_recovery(adev)) {
+@@ -2939,13 +2938,9 @@ static void amdgpu_ras_do_page_retirement(struct work_struct *work)
+ 	amdgpu_ras_error_data_init(&err_data);
  
--	ret = sdrv->probe(to_serdev_device(dev));
--	if (ret)
--		dev_pm_domain_detach(dev, true);
+ 	amdgpu_umc_handle_bad_pages(adev, &err_data);
+-	err_cnt = err_data.err_addr_cnt;
+ 
+ 	amdgpu_ras_error_data_fini(&err_data);
+ 
+-	if (err_cnt && amdgpu_ras_is_rma(adev))
+-		amdgpu_ras_reset_gpu(adev);
 -
--	return ret;
-+	return sdrv->probe(to_serdev_device(dev));
+ 	amdgpu_ras_schedule_retirement_dwork(con,
+ 			AMDGPU_RAS_RETIRE_PAGE_INTERVAL);
+ }
+@@ -3008,6 +3003,9 @@ static int amdgpu_ras_poison_creation_handler(struct amdgpu_device *adev,
+ 	if (total_detect_count)
+ 		schedule_delayed_work(&ras->page_retirement_dwork, 0);
+ 
++	if (amdgpu_ras_is_rma(adev) && atomic_cmpxchg(&ras->rma_in_recovery, 0, 1) == 0)
++		amdgpu_ras_reset_gpu(adev);
++
+ 	return 0;
  }
  
- static void serdev_drv_remove(struct device *dev)
-@@ -415,8 +412,6 @@ static void serdev_drv_remove(struct device *dev)
- 	const struct serdev_device_driver *sdrv = to_serdev_device_driver(dev->driver);
- 	if (sdrv->remove)
- 		sdrv->remove(to_serdev_device(dev));
--
--	dev_pm_domain_detach(dev, true);
- }
+@@ -3043,6 +3041,12 @@ static int amdgpu_ras_poison_consumption_handler(struct amdgpu_device *adev,
+ 		reset_flags |= msg.reset;
+ 	}
  
- static const struct bus_type serdev_bus_type = {
++	/*
++	 * Try to ensure poison creation handler is completed first
++	 * to set rma if bad page exceed threshold.
++	 */
++	flush_delayed_work(&con->page_retirement_dwork);
++
+ 	/* for RMA, amdgpu_ras_poison_creation_handler will trigger gpu reset */
+ 	if (reset_flags && !amdgpu_ras_is_rma(adev)) {
+ 		if (reset_flags & AMDGPU_RAS_GPU_RESET_MODE1_RESET)
+@@ -3052,8 +3056,6 @@ static int amdgpu_ras_poison_consumption_handler(struct amdgpu_device *adev,
+ 		else
+ 			reset = reset_flags;
+ 
+-		flush_delayed_work(&con->page_retirement_dwork);
+-
+ 		con->gpu_reset_flags |= reset;
+ 		amdgpu_ras_reset_gpu(adev);
+ 
+@@ -3174,6 +3176,7 @@ int amdgpu_ras_recovery_init(struct amdgpu_device *adev)
+ 	mutex_init(&con->recovery_lock);
+ 	INIT_WORK(&con->recovery_work, amdgpu_ras_do_recovery);
+ 	atomic_set(&con->in_recovery, 0);
++	atomic_set(&con->rma_in_recovery, 0);
+ 	con->eeprom_control.bad_channel_bitmap = 0;
+ 
+ 	max_eeprom_records_count = amdgpu_ras_eeprom_max_record_count(&con->eeprom_control);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
+index 669720a9c60af..7e7521fedafc7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
+@@ -510,6 +510,7 @@ struct amdgpu_ras {
+ 	/* gpu recovery */
+ 	struct work_struct recovery_work;
+ 	atomic_t in_recovery;
++	atomic_t rma_in_recovery;
+ 	struct amdgpu_device *adev;
+ 	/* error handler data */
+ 	struct ras_err_handler_data *eh_data;
 -- 
 2.51.0
 
