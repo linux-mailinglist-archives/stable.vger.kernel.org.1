@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B26C4AA09
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5A1C4AB50
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BBDA54F90B3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B3EA1887A09
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13DD265CA8;
-	Tue, 11 Nov 2025 01:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A19E266B6F;
+	Tue, 11 Nov 2025 01:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lvrDzRR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yasJtiQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5EE189B84;
-	Tue, 11 Nov 2025 01:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C613446BC;
+	Tue, 11 Nov 2025 01:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824141; cv=none; b=Lob1QIX8HQ9zsX/7dS+7RSENyP3xtxhygr8nLafF2eMUOcRDlNAyax4f3qNdRTUWM339AAYVvr2UM93AwMhVMTWVObRt4FzU4hv/cxh2wa8ug7MqXTkLTHAQVhtxH0bp6C6NehtNnCarfMT+HYVPbAhjHkPaON8qpi2rB09HU74=
+	t=1762824146; cv=none; b=Aq4WWiiiQ/7Lye5iPGjPn3b7nKuthkmASrkMiQS3pfWZWBmWmS/+M2DmWP6u0ep7HTfsTbJgHyhC6S1hUZBB0OOO07lrlEOi2uLkInal1CDRyI2vMD6Sgz3WWrBT1azOadAwDaoit87kwjB0KtfdBTY1HIH5sK7lFI5eCMQbCEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824141; c=relaxed/simple;
-	bh=CPRThx6CN5yvEYn1+f0bOnUh6vOZB3SXYM+bl/OUU+s=;
+	s=arc-20240116; t=1762824146; c=relaxed/simple;
+	bh=NNSfuOr2mkopx3Xy3apxT/x54phpEwVPPzSbccaU5eI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=miPk1zpRDy0ZeEHkN5AI4l99j2umaMVgCym83V6BmXpDzEJApju36T1pYtxivoqC/1dCjEEtV02BJN/VhFsptgykHHu9biK8DI2aj3eJ9aMHpZ9fVkpLzKETRbbOXQcqHrI3BpaW6CUgW/tw4iiFd0s5I363VJZ4a3VvclyjyyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lvrDzRR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0094C116D0;
-	Tue, 11 Nov 2025 01:22:20 +0000 (UTC)
+	 MIME-Version; b=NZoIAmUTvbbF1y5h8Sj6c7UKA7siJ5MejqeCN+tImAg3rYU/5tf7hw3WjNoITF+qyo2RLYo7OAPN4yPigxy1lDV8A4PIf1ELMB8xASvY/sstpHUBjYVhIvtKfFYXCVVTeZBC2mjaPeMByC0ewTsKHQYK1BF8uGpLMFfk4VXX1aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yasJtiQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838DCC116B1;
+	Tue, 11 Nov 2025 01:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824141;
-	bh=CPRThx6CN5yvEYn1+f0bOnUh6vOZB3SXYM+bl/OUU+s=;
+	s=korg; t=1762824145;
+	bh=NNSfuOr2mkopx3Xy3apxT/x54phpEwVPPzSbccaU5eI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2lvrDzRRz4XswEqzDGXXoxgeg4YQXMpqnw39wc/zo4KPYokolzvWoVbWdgvyNEeut
-	 s6luprQpOWUZUH/hNo6all200dPDs+Gic/k2CPt1NTBDrBMLhx8X2N/TYThPKGP/R3
-	 fkaIOhTQlrUbPnIs+WfWoQC0vcuFjAgCelauNuzo=
+	b=yasJtiQ58NBmsqvRrgOYGbxxjtTIobu4kOB7lTM1BDPlBk15i8mVtkyEhZvXIKFsp
+	 DfohUKdHfcCMGLguKpoPvRSwvOfi93fvOpqtlg6xxo9+0EgPkry3JCnPTuMn06U3xt
+	 rmK6BQSjcqQYXQRKVOAN/ZoeX0z7uroseThIk41w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Marko <robert.marko@sartura.hr>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vivek Pernamitta <quic_vpernami@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 395/565] net: ethernet: microchip: sparx5: make it selectable for ARCH_LAN969X
-Date: Tue, 11 Nov 2025 09:44:11 +0900
-Message-ID: <20251111004535.759004265@linuxfoundation.org>
+Subject: [PATCH 6.12 396/565] bus: mhi: core: Improve mhi_sync_power_up handling for SYS_ERR state
+Date: Tue, 11 Nov 2025 09:44:12 +0900
+Message-ID: <20251111004535.782410353@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,35 +66,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Robert Marko <robert.marko@sartura.hr>
+From: Vivek Pernamitta <quic_vpernami@quicinc.com>
 
-[ Upstream commit 6287982aa54946449bccff3e6488d3a15e458392 ]
+[ Upstream commit aa1a0e93ed21a06acb7ca9d4a4a9fce75ea53d0c ]
 
-LAN969x switchdev support depends on the SparX-5 core,so make it selectable
-for ARCH_LAN969X.
+Allow mhi_sync_power_up to handle SYS_ERR during power-up, reboot,
+or recovery. This is to avoid premature exit when MHI_PM_IN_ERROR_STATE is
+observed during above mentioned system states.
 
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
-Link: https://patch.msgid.link/20250917110106.55219-1-robert.marko@sartura.hr
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To achieve this, treat SYS_ERR as a valid state and let its handler process
+the error and queue the next transition to Mission Mode instead of aborting
+early.
+
+Signed-off-by: Vivek Pernamitta <quic_vpernami@quicinc.com>
+[mani: reworded description]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250912-uevent_vdev_next-20250911-v4-5-fa2f6ccd301b@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/sparx5/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bus/mhi/host/internal.h | 2 ++
+ drivers/bus/mhi/host/pm.c       | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/Kconfig b/drivers/net/ethernet/microchip/sparx5/Kconfig
-index 3f04992eace6a..64d774f64b12c 100644
---- a/drivers/net/ethernet/microchip/sparx5/Kconfig
-+++ b/drivers/net/ethernet/microchip/sparx5/Kconfig
-@@ -3,7 +3,7 @@ config SPARX5_SWITCH
- 	depends on NET_SWITCHDEV
- 	depends on HAS_IOMEM
- 	depends on OF
--	depends on ARCH_SPARX5 || COMPILE_TEST
-+	depends on ARCH_SPARX5 || ARCH_LAN969X || COMPILE_TEST
- 	depends on PTP_1588_CLOCK_OPTIONAL
- 	depends on BRIDGE || BRIDGE=n
- 	select PHYLINK
+diff --git a/drivers/bus/mhi/host/internal.h b/drivers/bus/mhi/host/internal.h
+index 762df4bb7f646..e8b68c0fec7b0 100644
+--- a/drivers/bus/mhi/host/internal.h
++++ b/drivers/bus/mhi/host/internal.h
+@@ -163,6 +163,8 @@ enum mhi_pm_state {
+ 							MHI_PM_IN_ERROR_STATE(pm_state))
+ #define MHI_PM_IN_SUSPEND_STATE(pm_state)		(pm_state & \
+ 							(MHI_PM_M3_ENTER | MHI_PM_M3))
++#define MHI_PM_FATAL_ERROR(pm_state)			((pm_state == MHI_PM_FW_DL_ERR) || \
++							(pm_state >= MHI_PM_SYS_ERR_FAIL))
+ 
+ #define NR_OF_CMD_RINGS					1
+ #define CMD_EL_PER_RING					128
+diff --git a/drivers/bus/mhi/host/pm.c b/drivers/bus/mhi/host/pm.c
+index 0ccbcb717955a..8f32dd0a2f218 100644
+--- a/drivers/bus/mhi/host/pm.c
++++ b/drivers/bus/mhi/host/pm.c
+@@ -1279,7 +1279,7 @@ int mhi_sync_power_up(struct mhi_controller *mhi_cntrl)
+ 		mhi_cntrl->ready_timeout_ms : mhi_cntrl->timeout_ms;
+ 	wait_event_timeout(mhi_cntrl->state_event,
+ 			   MHI_IN_MISSION_MODE(mhi_cntrl->ee) ||
+-			   MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state),
++			   MHI_PM_FATAL_ERROR(mhi_cntrl->pm_state),
+ 			   msecs_to_jiffies(timeout_ms));
+ 
+ 	ret = (MHI_IN_MISSION_MODE(mhi_cntrl->ee)) ? 0 : -ETIMEDOUT;
 -- 
 2.51.0
 
