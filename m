@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA60C4ACF1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C80C4A7C5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D0273BA1ED
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7F4F1893B46
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA8232D7E6;
-	Tue, 11 Nov 2025 01:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7775527FD7C;
+	Tue, 11 Nov 2025 01:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaT/6Z4R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TgqYCo7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FA1330338;
-	Tue, 11 Nov 2025 01:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324B926FA67;
+	Tue, 11 Nov 2025 01:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824535; cv=none; b=T0bnlKycF9u9QH4yFHfrS3mhVhalzAUwk9QD3Yq8zEk1GmjTA0HM9eSXuVudifqQD91AcGl3PXvUG0GVufwT/ZOBGjfdfWSyGS1qTjyIMYJO6acTIsG+rV+u3pEv14tW9sXm53wszhZHn31PKtNW++F/KMQZPYVP4X9SbbjPwMo=
+	t=1762823489; cv=none; b=Ggy8sOMnlblixk+LkdV36DQdhhC4y9cnM14qgcTwe7VEHbSTa91QJkd5/TQrGG4wwDTUgWu6npkKswQvvk3hkRVYYQZDD+8/pjaM0YbNNlIr90ytkb2AVi5bLg6at9zp0Ws5rfw3VZnVGyKWXR9ReKffKFD4w0z+qHy18NaJip0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824535; c=relaxed/simple;
-	bh=lvAqGYYqTxOlaQun93MN3rTsJOFd7i9QrClj41qqVL8=;
+	s=arc-20240116; t=1762823489; c=relaxed/simple;
+	bh=XLFXVozV0fj0ysJ6xjRxwUrMrx4nvEKOvxwDAndJHjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iSghQ9TW5lLL1k5PYiwVi/7lRTs0FE9pnM1QeTgxNaSWi2P0q4SSONEhQzL76aLwWH35JxDXIzg7IglrgnN/0btg7DHB5c4LGP8riUeSY26lwpABjeDz8OdC9kwdoGUkgyg/uwWgRW0tpooVDZXBh1kHQYZMXRU6/A6a52b2vlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaT/6Z4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5D4C4CEFB;
-	Tue, 11 Nov 2025 01:28:54 +0000 (UTC)
+	 MIME-Version; b=ggcrvL7amHDugkd+eJU8RV//Y3/MBYF6/PSBFW1/NryFrBTe6qhVKUeb6mC/oWz07HDmDtY4czB15ivR11yFlIDtVSKx4VqlW93qfhinNsQtWc9Fm01E9rgTAGUW6rL9EW8T9XIBU5oygTANpogExxgkb26QPp9fU6ZwIjTUYAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TgqYCo7s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0ED9C4CEF5;
+	Tue, 11 Nov 2025 01:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824534;
-	bh=lvAqGYYqTxOlaQun93MN3rTsJOFd7i9QrClj41qqVL8=;
+	s=korg; t=1762823489;
+	bh=XLFXVozV0fj0ysJ6xjRxwUrMrx4nvEKOvxwDAndJHjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OaT/6Z4Rk2j9nKXNkvLio9qzkrLH1bPzJW6UDHHW2HxlvkXWO7HS2AxalArFWy2Jf
-	 nyQ4go00unfWsPJJzUk+CZQR0m+/Xa7B0SNL8BNhx3rYDeXQpsFq4+dOSWWYnfmiNQ
-	 QA/deOFVjYOyk8NLEQhew/44sM/jyFgwwHfCmdbM=
+	b=TgqYCo7suuoiObGK2LQcOtG+tTst/6+4PV2wOkB0NbZfc9oVDSSjSwEPoLxsjssPD
+	 CMiDA0DAxjzQ2g60JnjFfwY9qPkfyRY1nx+7EPU917bCW8BaHZYIrmOcf2MIsN2fG8
+	 7X/OlOHLCte4janJs1Li7rWOQhVos4tq4bLJQ3PM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Zijun Hu <zijun.hu@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 519/849] selftests: Disable dad for ipv6 in fcnal-test.sh
-Date: Tue, 11 Nov 2025 09:41:29 +0900
-Message-ID: <20251111004548.971565387@linuxfoundation.org>
+Subject: [PATCH 6.12 234/565] char: misc: Does not request module for miscdevice with dynamic minor
+Date: Tue, 11 Nov 2025 09:41:30 +0900
+Message-ID: <20251111004532.178275959@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Ahern <dsahern@kernel.org>
+From: Zijun Hu <zijun.hu@oss.qualcomm.com>
 
-[ Upstream commit 53d591730ea34f97a82f7ec6e7c987ca6e34dc21 ]
+[ Upstream commit 1ba0fb42aa6a5f072b1b8c0b0520b32ad4ef4b45 ]
 
-Constrained test environment; duplicate address detection is not needed
-and causes races so disable it.
+misc_open() may request module for miscdevice with dynamic minor, which
+is meaningless since:
 
-Signed-off-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250910025828.38900-1-dsahern@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+- The dynamic minor allocated is unknown in advance without registering
+  miscdevice firstly.
+- Macro MODULE_ALIAS_MISCDEV() is not applicable for dynamic minor.
+
+Fix by only requesting module for miscdevice with fixed minor.
+
+Acked-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250714-rfc_miscdev-v6-6-2ed949665bde@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/fcnal-test.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/char/misc.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
-index f0fb114764b24..cf535c23a959a 100755
---- a/tools/testing/selftests/net/fcnal-test.sh
-+++ b/tools/testing/selftests/net/fcnal-test.sh
-@@ -424,6 +424,8 @@ create_ns()
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.keep_addr_on_down=1
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.forwarding=1
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.forwarding=1
-+	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.accept_dad=0
-+	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.accept_dad=0
- }
+diff --git a/drivers/char/misc.c b/drivers/char/misc.c
+index 9ee78c76e8663..6f9ce6b3cc5a6 100644
+--- a/drivers/char/misc.c
++++ b/drivers/char/misc.c
+@@ -150,7 +150,8 @@ static int misc_open(struct inode *inode, struct file *file)
+ 		break;
+ 	}
  
- # create veth pair to connect namespaces and apply addresses.
+-	if (!new_fops) {
++	/* Only request module for fixed minor code */
++	if (!new_fops && minor < MISC_DYNAMIC_MINOR) {
+ 		mutex_unlock(&misc_mtx);
+ 		request_module("char-major-%d-%d", MISC_MAJOR, minor);
+ 		mutex_lock(&misc_mtx);
+@@ -162,10 +163,11 @@ static int misc_open(struct inode *inode, struct file *file)
+ 			new_fops = fops_get(iter->fops);
+ 			break;
+ 		}
+-		if (!new_fops)
+-			goto fail;
+ 	}
+ 
++	if (!new_fops)
++		goto fail;
++
+ 	/*
+ 	 * Place the miscdevice in the file's
+ 	 * private_data so it can be used by the
 -- 
 2.51.0
 
