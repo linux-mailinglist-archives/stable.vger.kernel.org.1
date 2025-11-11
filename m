@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E007EC4AC3A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE8EC4AC5B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF0941889645
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D8CF3B9E83
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21C4261B77;
-	Tue, 11 Nov 2025 01:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF67A30EF63;
+	Tue, 11 Nov 2025 01:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWpPVtZN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZT8P38u9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C95327E7EB;
-	Tue, 11 Nov 2025 01:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AE730E0F6;
+	Tue, 11 Nov 2025 01:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824511; cv=none; b=R1/1zh+9veb1MKn2DskGZ2Pad5pytXymE346fH7En7Nz5h4qY7HMM+hTuWE6v3qKHifZNqtwZfqloJqZOavozTnBAQsb8XYjbZNoe17UOM0YrTiPLi4sEo/2oHl3Bn0za504wttbmh3MGf3J40hDMp2EB7Vg3F52Ny97N4e3fGU=
+	t=1762824518; cv=none; b=ZGGIo2xsiSe0VcH26ITF/Dzz+RmQk4PpBwtNkfVGyrCQeF+T7DXkwNd2m2vk9rhE1SyKyPa2ExMXQtcNQfjgktplf2L4BIOfl3SZhoYFy6Uw/ggccofTEK6sXRTohj4dgVrSPPBlmzVyDdNAzPqD/5MDPlz/foFp1NPzjzFzdeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824511; c=relaxed/simple;
-	bh=NR19GgoEt5R5wjbBwpxCsYNmWZnPmFYBpkD6cqdUnpU=;
+	s=arc-20240116; t=1762824518; c=relaxed/simple;
+	bh=cSur7KQ2d8sY24UE8ZBzUoPxs3pfkNqk5zFx2eui8QU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=la32DaMQ04GfFvOamAnPyGN33fhp9XVvrqvZw2TS3MbleKKs7nvIbQp4JW9Go+6d68g8Hea8Z1HockMcXX+vt6oV4UJYeiczcxf4Wio0Ak0QSiSN0MMUr+0BcFpd0D/F83TEokbYhFXQTEVubQFvxTG61jQzxhs1f7TB2QQRshA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWpPVtZN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3DBC116B1;
-	Tue, 11 Nov 2025 01:28:30 +0000 (UTC)
+	 MIME-Version; b=c6PNj+WlAzdx52ECV6adBqLnL6dEDUuqEIfIOQQwcCbo+g0MUdmVxAY36wIStviMfNRmK6eemLzG9AMDTSHhxLJlZhpXvYQSAo3PG3Dxm8tFCXEw10DYu1NGungSOp3fLiRsh3+mZKBacsQaqCyBhGH6WQzT+iI2IBEdfxU5rW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZT8P38u9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D5DC113D0;
+	Tue, 11 Nov 2025 01:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824511;
-	bh=NR19GgoEt5R5wjbBwpxCsYNmWZnPmFYBpkD6cqdUnpU=;
+	s=korg; t=1762824518;
+	bh=cSur7KQ2d8sY24UE8ZBzUoPxs3pfkNqk5zFx2eui8QU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QWpPVtZNfT+dRpFkt4nHWzCm5G0MAyYldMEs4FcBGcGY/ne8AIvXHLcnRrZwQjZmt
-	 OPJbrm+TFd5gT+jYLRBNGf+mVq0fQGO3AgEcwAvYqfvL1CwbxsTv7y8xXB+VaQs3mM
-	 wLD1zVv7Y7m81kiM26kicuL+sI0Ckjyd6o4y5syU=
+	b=ZT8P38u9LXcJv84KT+gxdasQC94v9tXsMFvSPEazTimb90B7uoHKRufbiL0V+umO2
+	 TZ93EsO9l1s0jQEq8qvjNBxpZJU4j8/CMCghNZ41b+BQgRDsQQpQCOckLjdVGrIvSo
+	 sA69i6hOhFjxWeUjqve6RHRsnBy7EXls549XqqxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Shardul Bankar <shardulsb08@gmail.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 460/565] RDMA/hns: Fix wrong WQE data when QP wraps around
-Date: Tue, 11 Nov 2025 09:45:16 +0900
-Message-ID: <20251111004537.245806211@linuxfoundation.org>
+Subject: [PATCH 6.12 461/565] btrfs: fix memory leak of qgroup_list in btrfs_add_qgroup_relation
+Date: Tue, 11 Nov 2025 09:45:17 +0900
+Message-ID: <20251111004537.268366487@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,79 +67,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Shardul Bankar <shardulsb08@gmail.com>
 
-[ Upstream commit fe9622011f955e35ba84d3af7b2f2fed31cf8ca1 ]
+[ Upstream commit f260c6aff0b8af236084012d14f9f1bf792ea883 ]
 
-When QP wraps around, WQE data from the previous use at the same
-position still remains as driver does not clear it. The WQE field
-layout differs across different opcodes, causing that the fields
-that are not explicitly assigned for the current opcode retain
-stale values, and are issued to HW by mistake. Such fields are as
-follows:
+When btrfs_add_qgroup_relation() is called with invalid qgroup levels
+(src >= dst), the function returns -EINVAL directly without freeing the
+preallocated qgroup_list structure passed by the caller. This causes a
+memory leak because the caller unconditionally sets the pointer to NULL
+after the call, preventing any cleanup.
 
-* MSG_START_SGE_IDX field in ATOMIC WQE
-* BLOCK_SIZE and ZBVA fields in FRMR WQE
-* DirectWQE fields when DirectWQE not used
+The issue occurs because the level validation check happens before the
+mutex is acquired and before any error handling path that would free
+the prealloc pointer. On this early return, the cleanup code at the
+'out' label (which includes kfree(prealloc)) is never reached.
 
-For ATOMIC WQE, always set the latest sge index in MSG_START_SGE_IDX
-as required by HW.
+In btrfs_ioctl_qgroup_assign(), the code pattern is:
 
-For FRMR WQE and DirectWQE, clear only those unassigned fields
-instead of the entire WQE to avoid performance penalty.
+    prealloc = kzalloc(sizeof(*prealloc), GFP_KERNEL);
+    ret = btrfs_add_qgroup_relation(trans, sa->src, sa->dst, prealloc);
+    prealloc = NULL;  // Always set to NULL regardless of return value
+    ...
+    kfree(prealloc);  // This becomes kfree(NULL), does nothing
 
-Fixes: 68a997c5d28c ("RDMA/hns: Add FRMR support for hip08")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20251016114051.1963197-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+When the level check fails, 'prealloc' is never freed by either the
+callee or the caller, resulting in a 64-byte memory leak per failed
+operation. This can be triggered repeatedly by an unprivileged user
+with access to a writable btrfs mount, potentially exhausting kernel
+memory.
+
+Fix this by freeing prealloc before the early return, ensuring prealloc
+is always freed on all error paths.
+
+Fixes: 4addc1ffd67a ("btrfs: qgroup: preallocate memory before adding a relation")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Shardul Bankar <shardulsb08@gmail.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ fs/btrfs/qgroup.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 6a6daca9f606c..f9356cb89497b 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -162,6 +162,8 @@ static void set_frmr_seg(struct hns_roce_v2_rc_send_wqe *rc_sq_wqe,
- 	hr_reg_write(fseg, FRMR_PBL_BUF_PG_SZ,
- 		     to_hr_hw_page_shift(mr->pbl_mtr.hem_cfg.buf_pg_shift));
- 	hr_reg_clear(fseg, FRMR_BLK_MODE);
-+	hr_reg_clear(fseg, FRMR_BLOCK_SIZE);
-+	hr_reg_clear(fseg, FRMR_ZBVA);
- }
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 2c9b38ae40da2..3c77f3506faf3 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1585,8 +1585,10 @@ int btrfs_add_qgroup_relation(struct btrfs_trans_handle *trans, u64 src, u64 dst
+ 	ASSERT(prealloc);
  
- static void set_atomic_seg(const struct ib_send_wr *wr,
-@@ -336,9 +338,6 @@ static int set_rwqe_data_seg(struct ib_qp *ibqp, const struct ib_send_wr *wr,
- 	int j = 0;
- 	int i;
+ 	/* Check the level of src and dst first */
+-	if (btrfs_qgroup_level(src) >= btrfs_qgroup_level(dst))
++	if (btrfs_qgroup_level(src) >= btrfs_qgroup_level(dst)) {
++		kfree(prealloc);
+ 		return -EINVAL;
++	}
  
--	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_MSG_START_SGE_IDX,
--		     (*sge_ind) & (qp->sge.sge_cnt - 1));
--
- 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_INLINE,
- 		     !!(wr->send_flags & IB_SEND_INLINE));
- 	if (wr->send_flags & IB_SEND_INLINE)
-@@ -583,6 +582,9 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
- 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_CQE,
- 		     (wr->send_flags & IB_SEND_SIGNALED) ? 1 : 0);
- 
-+	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_MSG_START_SGE_IDX,
-+		     curr_idx & (qp->sge.sge_cnt - 1));
-+
- 	if (wr->opcode == IB_WR_ATOMIC_CMP_AND_SWP ||
- 	    wr->opcode == IB_WR_ATOMIC_FETCH_AND_ADD) {
- 		if (msg_len != ATOMIC_WR_LEN)
-@@ -731,6 +733,9 @@ static int hns_roce_v2_post_send(struct ib_qp *ibqp,
- 		owner_bit =
- 		       ~(((qp->sq.head + nreq) >> ilog2(qp->sq.wqe_cnt)) & 0x1);
- 
-+		/* RC and UD share the same DirectWQE field layout */
-+		((struct hns_roce_v2_rc_send_wqe *)wqe)->byte_4 = 0;
-+
- 		/* Corresponding to the QP type, wqe process separately */
- 		if (ibqp->qp_type == IB_QPT_RC)
- 			ret = set_rc_wqe(qp, wr, wqe, &sge_idx, owner_bit);
+ 	mutex_lock(&fs_info->qgroup_ioctl_lock);
+ 	if (!fs_info->quota_root) {
 -- 
 2.51.0
 
