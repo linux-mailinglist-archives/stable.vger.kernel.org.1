@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-194148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CB5C4ADCF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:14 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28909C4A740
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A662618956CE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 144E94F178D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788E932AAC6;
-	Tue, 11 Nov 2025 01:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9AFC347BC4;
+	Tue, 11 Nov 2025 01:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHJKlAyo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MYltP32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D40311C33;
-	Tue, 11 Nov 2025 01:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7572D347BBD;
+	Tue, 11 Nov 2025 01:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824916; cv=none; b=i1Su4x41w2UNo93Jcz4oViUC/sdDwoICzSojUDmmBGaO5lShZbIkbamzcm/GlN7mFDNucCb6R+2JvdQlgA6SqQIsEGhMcttN6WeffDWjV08pS9h7QHmquNY+Ae6ky9hzyUaOWUae1Y52N6zjVUp3ioDlCUzJqxuqj7bU05x4P2w=
+	t=1762823744; cv=none; b=i1fcWYPtyUme/ZibywPeYACmuxJhTuR5GB24IYkoUyPbsTp9tJZEFSlT9J9SRS1XW0PmxeFu0K4xY9yQpbz2fp6RXVFZLLce0uWZl15WSyCAYLVQPzDKSaxySwnQSmc2PGW5DdpTWB4FQ+wASnFTisdxPuJIoWrV6VaAgaTchVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824916; c=relaxed/simple;
-	bh=67rD1WXet/MTv2EgzIFEMWxXf5y9LtaRC8VpJP0LlT8=;
+	s=arc-20240116; t=1762823744; c=relaxed/simple;
+	bh=p3cMxlbCiTKv4R+/NE5zPhuanmpuO+PNfLz/49FsF58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FHhUIRK2jQEHIC5DzmYbP1wg5Jv6KAjbAPPnYAfOXmTAxhv26Yg4XkK15MTd0jRQWP7tGQN46KIlO17MaQ6rHelfoPD35/6+yoex/Wk8J8CPbLJ/5X3mj+kDlqRjI4f2VFMUWqYCuTGfqEQpTwhPIImvCmIB5m0nz0pUlowmYnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHJKlAyo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BACD3C4CEFB;
-	Tue, 11 Nov 2025 01:35:15 +0000 (UTC)
+	 MIME-Version; b=usgl8OUyptu9ggnoccoRKLlzKfXaa3NOXU/b11CxQprQfng0+jKptWiKKDvH6HJOoVReQ5IKcxsPfqHDH+TOH/j6KPgYgtbPe7QwaZFgLOOz16VrVugwcU1Ze9YOeWzN9BOgT9kkzZWYdVCr5A6O+jr5whPO1/H4+W3Ghj6QbRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MYltP32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8606EC4CEF5;
+	Tue, 11 Nov 2025 01:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824916;
-	bh=67rD1WXet/MTv2EgzIFEMWxXf5y9LtaRC8VpJP0LlT8=;
+	s=korg; t=1762823744;
+	bh=p3cMxlbCiTKv4R+/NE5zPhuanmpuO+PNfLz/49FsF58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cHJKlAyoTrpP2sHiJ2h6mLE20F+CRlyjinEhCBjYRhgn4EN4lLJrt/xB6lbkSshQ8
-	 ZIDXimdKR18bRTeLEoKdx5JPVfKSZYlDWwXiBydVuri7Qtio2wyhpDPpSnLR2Xo7qM
-	 pwtV7cNIOM0MA52uA9IM7/cvtTFKGAD5DgUV0e+I=
+	b=0MYltP32bxwkz+Q/NwK/4pngx11Wv+z6v6HCrVZfG1FEc/PBWSf0zPL1Q6IPqNAEN
+	 m4IDJHG2EiPqpvEq8ePD+IuU5BuJZWMOpDiCjCC/ICvNNfnAQJtCE0yN348oC+onm4
+	 rIk0+brGa9dMqDDFBW7833D+Ufjo8O6LVnUX2HiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vivek Pernamitta <quic_vpernami@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	William Wu <william.wu@rock-chips.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 597/849] bus: mhi: core: Improve mhi_sync_power_up handling for SYS_ERR state
+Subject: [PATCH 6.12 311/565] usb: gadget: f_hid: Fix zero length packet transfer
 Date: Tue, 11 Nov 2025 09:42:47 +0900
-Message-ID: <20251111004550.853909406@linuxfoundation.org>
+Message-ID: <20251111004533.880387911@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vivek Pernamitta <quic_vpernami@quicinc.com>
+From: William Wu <william.wu@rock-chips.com>
 
-[ Upstream commit aa1a0e93ed21a06acb7ca9d4a4a9fce75ea53d0c ]
+[ Upstream commit ed6f727c575b1eb8136e744acfd5e7306c9548f6 ]
 
-Allow mhi_sync_power_up to handle SYS_ERR during power-up, reboot,
-or recovery. This is to avoid premature exit when MHI_PM_IN_ERROR_STATE is
-observed during above mentioned system states.
+Set the hid req->zero flag of ep0/in_ep to true by default,
+then the UDC drivers can transfer a zero length packet at
+the end if the hid transfer with size divisible to EPs max
+packet size according to the USB 2.0 spec.
 
-To achieve this, treat SYS_ERR as a valid state and let its handler process
-the error and queue the next transition to Mission Mode instead of aborting
-early.
-
-Signed-off-by: Vivek Pernamitta <quic_vpernami@quicinc.com>
-[mani: reworded description]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250912-uevent_vdev_next-20250911-v4-5-fa2f6ccd301b@quicinc.com
+Signed-off-by: William Wu <william.wu@rock-chips.com>
+Link: https://lore.kernel.org/r/1756204087-26111-1-git-send-email-william.wu@rock-chips.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/internal.h | 2 ++
- drivers/bus/mhi/host/pm.c       | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_hid.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bus/mhi/host/internal.h b/drivers/bus/mhi/host/internal.h
-index 034be33565b78..9f815cfac763e 100644
---- a/drivers/bus/mhi/host/internal.h
-+++ b/drivers/bus/mhi/host/internal.h
-@@ -170,6 +170,8 @@ enum mhi_pm_state {
- 							MHI_PM_IN_ERROR_STATE(pm_state))
- #define MHI_PM_IN_SUSPEND_STATE(pm_state)		(pm_state & \
- 							(MHI_PM_M3_ENTER | MHI_PM_M3))
-+#define MHI_PM_FATAL_ERROR(pm_state)			((pm_state == MHI_PM_FW_DL_ERR) || \
-+							(pm_state >= MHI_PM_SYS_ERR_FAIL))
+diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
+index ab4d170469f57..34d49d96def61 100644
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -526,7 +526,7 @@ static ssize_t f_hidg_write(struct file *file, const char __user *buffer,
+ 	}
  
- #define NR_OF_CMD_RINGS					1
- #define CMD_EL_PER_RING					128
-diff --git a/drivers/bus/mhi/host/pm.c b/drivers/bus/mhi/host/pm.c
-index 33d92bf2fc3ed..31b20c07de9ee 100644
---- a/drivers/bus/mhi/host/pm.c
-+++ b/drivers/bus/mhi/host/pm.c
-@@ -1279,7 +1279,7 @@ int mhi_sync_power_up(struct mhi_controller *mhi_cntrl)
- 		mhi_cntrl->ready_timeout_ms : mhi_cntrl->timeout_ms;
- 	wait_event_timeout(mhi_cntrl->state_event,
- 			   MHI_IN_MISSION_MODE(mhi_cntrl->ee) ||
--			   MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state),
-+			   MHI_PM_FATAL_ERROR(mhi_cntrl->pm_state),
- 			   msecs_to_jiffies(timeout_ms));
+ 	req->status   = 0;
+-	req->zero     = 0;
++	req->zero     = 1;
+ 	req->length   = count;
+ 	req->complete = f_hidg_req_complete;
+ 	req->context  = hidg;
+@@ -982,7 +982,7 @@ static int hidg_setup(struct usb_function *f,
+ 	return -EOPNOTSUPP;
  
- 	ret = (MHI_IN_MISSION_MODE(mhi_cntrl->ee)) ? 0 : -ETIMEDOUT;
+ respond:
+-	req->zero = 0;
++	req->zero = 1;
+ 	req->length = length;
+ 	status = usb_ep_queue(cdev->gadget->ep0, req, GFP_ATOMIC);
+ 	if (status < 0)
 -- 
 2.51.0
 
