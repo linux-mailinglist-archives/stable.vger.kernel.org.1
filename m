@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-194029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756C5C4AF31
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95484C4AD2A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50CCA3BB500
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E2DB34FBF89
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CA7266EFC;
-	Tue, 11 Nov 2025 01:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3262D879A;
+	Tue, 11 Nov 2025 01:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gE3BQ+sp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAVBXqNP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B2B2D6605;
-	Tue, 11 Nov 2025 01:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F934214210;
+	Tue, 11 Nov 2025 01:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824635; cv=none; b=SlbYQ0BQLtsurD3sEMBZR53TlvgonoT7NGEQtjnPcvrdANlwsJ2e+PUe5k6DEHR07BSb7jqm3lUexT8djzmTE+L0XI/bwacF4SioqGnFBtGYQvZuUC8T7+th8WcVV1qBLVcSnBuHHQkMOQKQT+zpWWZGr8dBGdZ5rn6CaQFA8K8=
+	t=1762824640; cv=none; b=rBNcxr++7AxKniMb/itD+tJwxgpU8TuKguVIk1FFcq5aOFJj4twc3NHaKRGOUGahZ1BAQ2TsyknxhimIfvJjp8aQH5RBU/xarcrNK1Yo/4V4hEeBY7lzSrFmiBgTMHLl2SA242WLoZjYD7g7dnzwQLkMX1n1knERpVzwl5mEdJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824635; c=relaxed/simple;
-	bh=YV/F39sT4hznVZ+e6TzLnkIh3Za2lHW6TcBb4V7P4EA=;
+	s=arc-20240116; t=1762824640; c=relaxed/simple;
+	bh=APeFQIrCfPys4N1eC43CW+1wgSGDmIi58KqHQZKLkjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ddPFux87ynge7dVDfNEx9GrZwdgaYRD98ZH0RstzPJT4UvUHfXceoGCuBOwxH4bjR0kDocG52tgzIZjMgWouBvoPS8iaz8eEJBvF/gLBM1CO37eOcIAw2nj5NwvHHbjusieCbVWFA+sxIm3vqYLKaAwQxIMwkdESxrZdNqWL1BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gE3BQ+sp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D0BC2BC87;
-	Tue, 11 Nov 2025 01:30:35 +0000 (UTC)
+	 MIME-Version; b=IcTLUspZ1mlyWm6iQL87WBnbpmSwwoBRpiXGm7yp11kMo4ZWdZr6FhCjr8uojdtxdHcLWd6HdbYwh1KTC3iKVzN8zHe+ounKrQIFD9IYid7o/YG5FT442O0y8Z0xsJ5e1uf1l+ZoUSs4YDKqZmbPSetP75YmfaD9twSieoQPnHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAVBXqNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2235DC4CEFB;
+	Tue, 11 Nov 2025 01:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824635;
-	bh=YV/F39sT4hznVZ+e6TzLnkIh3Za2lHW6TcBb4V7P4EA=;
+	s=korg; t=1762824640;
+	bh=APeFQIrCfPys4N1eC43CW+1wgSGDmIi58KqHQZKLkjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gE3BQ+spcFVEoClsGVb5gd22C1HURUEhY/nfnGUepIoZDlWNazGdSL2s8auxnXvxU
-	 caE+PU+R16jEi4sxb69790Kn0igh2BgCwirj9+cKb55geS8Esg4WPD4TddnUXCGOOg
-	 X4D4GdhfeCNPpzd47d10l6TNeqLwEyeRhoW0FaFI=
+	b=jAVBXqNPpCvQdxOhR2mpI5Tp4kUXI/l/qtMzgqjGAEwnia5OXGRr+Jek1vx+rjbnZ
+	 aME8I9hNJ1o2ws8Q/EBIfTLkGWCmgzEwjcCn4NAC1TwEewgqk6NvUgQIKoLh7A1i4K
+	 BmbY/Wlv/m2yn1rkTk+5Jk3MWYVZrMq+wIIfnKmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Valerio Setti <vsetti@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 489/565] kbuild: uapi: Strip comments before size type check
-Date: Tue, 11 Nov 2025 09:45:45 +0900
-Message-ID: <20251111004537.931437749@linuxfoundation.org>
+Subject: [PATCH 6.12 490/565] ASoC: meson: aiu-encoder-i2s: fix bit clock polarity
+Date: Tue, 11 Nov 2025 09:45:46 +0900
+Message-ID: <20251111004537.956655855@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -61,54 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Valerio Setti <vsetti@baylibre.com>
 
-[ Upstream commit 66128f4287b04aef4d4db9bf5035985ab51487d5 ]
+[ Upstream commit 4c4ed5e073a923fb3323022e1131cb51ad8df7a0 ]
 
-On m68k, check_sizetypes in headers_check reports:
+According to I2S specs audio data is sampled on the rising edge of the
+clock and it can change on the falling one. When operating in normal mode
+this SoC behaves the opposite so a clock polarity inversion is required
+in this case.
 
-    ./usr/include/asm/bootinfo-amiga.h:17: found __[us]{8,16,32,64} type without #include <linux/types.h>
+This was tested on an OdroidC2 (Amlogic S905 SoC) board.
 
-This header file does not use any of the Linux-specific integer types,
-but merely refers to them from comments, so this is a false positive.
-As of commit c3a9d74ee413bdb3 ("kbuild: uapi: upgrade check_sizetypes()
-warning to error"), this check was promoted to an error, breaking m68k
-all{mod,yes}config builds.
-
-Fix this by stripping simple comments before looking for Linux-specific
-integer types.
-
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://patch.msgid.link/949f096337e28d50510e970ae3ba3ec9c1342ec0.1759753998.git.geert@linux-m68k.org
-[nathan: Adjust comment and remove unnecessary escaping from slashes in
-         regex]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Valerio Setti <vsetti@baylibre.com>
+Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
+Tested-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://patch.msgid.link/20251007-fix-i2s-polarity-v1-1-86704d9cda10@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- usr/include/headers_check.pl | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/meson/aiu-encoder-i2s.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/usr/include/headers_check.pl b/usr/include/headers_check.pl
-index b6aec5e4365f9..682980781eb37 100755
---- a/usr/include/headers_check.pl
-+++ b/usr/include/headers_check.pl
-@@ -160,6 +160,8 @@ sub check_sizetypes
- 	if (my $included = ($line =~ /^\s*#\s*include\s+[<"](\S+)[>"]/)[0]) {
- 		check_include_typesh($included);
- 	}
-+	# strip single-line comments, as types may be referenced within them
-+	$line =~ s@/\*.*?\*/@@;
- 	if ($line =~ m/__[us](8|16|32|64)\b/) {
- 		printf STDERR "$filename:$lineno: " .
- 		              "found __[us]{8,16,32,64} type " .
+diff --git a/sound/soc/meson/aiu-encoder-i2s.c b/sound/soc/meson/aiu-encoder-i2s.c
+index a0dd914c8ed13..3b4061508c180 100644
+--- a/sound/soc/meson/aiu-encoder-i2s.c
++++ b/sound/soc/meson/aiu-encoder-i2s.c
+@@ -236,8 +236,12 @@ static int aiu_encoder_i2s_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+ 	    inv == SND_SOC_DAIFMT_IB_IF)
+ 		val |= AIU_CLK_CTRL_LRCLK_INVERT;
+ 
+-	if (inv == SND_SOC_DAIFMT_IB_NF ||
+-	    inv == SND_SOC_DAIFMT_IB_IF)
++	/*
++	 * The SoC changes data on the rising edge of the bitclock
++	 * so an inversion of the bitclock is required in normal mode
++	 */
++	if (inv == SND_SOC_DAIFMT_NB_NF ||
++	    inv == SND_SOC_DAIFMT_NB_IF)
+ 		val |= AIU_CLK_CTRL_AOCLK_INVERT;
+ 
+ 	/* Signal skew */
+@@ -328,4 +332,3 @@ const struct snd_soc_dai_ops aiu_encoder_i2s_dai_ops = {
+ 	.startup	= aiu_encoder_i2s_startup,
+ 	.shutdown	= aiu_encoder_i2s_shutdown,
+ };
+-
 -- 
 2.51.0
 
