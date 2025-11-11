@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-193390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE921C4A349
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB504C4AA9C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEB2D3B0782
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E80FB4EEAC6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B0F263F28;
-	Tue, 11 Nov 2025 01:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F693469FE;
+	Tue, 11 Nov 2025 01:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pi8vYgMa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOkLKRNH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31F725F797;
-	Tue, 11 Nov 2025 01:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A403469F2;
+	Tue, 11 Nov 2025 01:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823068; cv=none; b=tmgxjKYquYt3KID1e2nwnzUzZFIlOywU5eEXQhnGYly5jnCesMPzuYmZpT/m4cL6wlNWAwG5or1aQincc6cWiaSiVuHhv/brVMVHxzXVrmfrbGhjKJqtgKRVGPOUdZ+uPZQFshgKCHkpe/hC+Q1Cc0UJX3sSPHAfv+UkyYzZWYY=
+	t=1762824201; cv=none; b=P6YtISn6SM4+14iAQ7VkOgL6okbqtwMX5nOiRpXbRBXfdQjm3eNlWSMUTLqAIXNYjKQZMRO0WsuzAJ6dww4LpPjRcrqx4kELCujLh9R57dbBFDHJ6WoJkw2JkLKnFbrcEzVFssHhKBT8TxBbEYnVfNH6xgKQ7kQ/LKDnRnK5+Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823068; c=relaxed/simple;
-	bh=Bc1x9VrHwotFwylO3KQ5/NGJSUkQttdbDzTWqrD+Axo=;
+	s=arc-20240116; t=1762824201; c=relaxed/simple;
+	bh=3AR8Vl1OiMR9bSmR14vjmioDL+M6R09T35dKcUAFs/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBx/8eHTeigjkCATTvNsoKJOjcEnImaxDrUWItLR+GbWf1BHSBJ94dMoiduYuUs1bdwpx2oMcy8z080aIZHhjhvXeFalXByS8NdzloU1Nog/0qMgKr66DYqcIb1EKUpvFvhAkzP2X6z+ZcVPsnM4Aei4tBqP0oNEjYdo20xb0C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pi8vYgMa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435ACC19424;
-	Tue, 11 Nov 2025 01:04:28 +0000 (UTC)
+	 MIME-Version; b=gEPiP5FRZyOfk7uD5r4RECd2Hb4Xx+pTNyqmjIVa+Z1smAmkkvCEDcCQztMHQSvEqGV7xfqkAGC6+35sgmVP9nlum8oR02IcA7xCMTvDSLogV6eYmp8CXGGkPtj8U8aEBLGk/zNZGnGmngJX9jMfLUI1SX8GU+nNqYl6Z3iNo54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOkLKRNH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729C0C116B1;
+	Tue, 11 Nov 2025 01:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823068;
-	bh=Bc1x9VrHwotFwylO3KQ5/NGJSUkQttdbDzTWqrD+Axo=;
+	s=korg; t=1762824200;
+	bh=3AR8Vl1OiMR9bSmR14vjmioDL+M6R09T35dKcUAFs/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pi8vYgMaB/Idrxy5HUp/SHUpq5LrEFB2zFIbi+lvUUwTdmaxivPM96ywgmWhJYLGD
-	 9ppJBY9ScL989H/4rmbx6ceXEWhgvXhBdlRCcK7Lfr9aJNrWYy6zJ3u3Y3ZO9jo4x7
-	 bBVvzcZ/ap5vLE5W1HbBwtKxNvBXgh57BK0WdGNc=
+	b=AOkLKRNH9Xo9E9uk4quhHooQ4mr4f4zOSf3A3YFdPCJDogN4YSkobGULtI8ISA0wh
+	 tq5Dl9/ViTW/XbAvKmSXEaQzEcou804bJbZ0929ZOzWl/CIm6o0IOaaS/Cj3SezqG1
+	 VciAykWDMQ6FpfLGH2+mKD/XgN2rut4dGxN0q0Z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <len.brown@intel.com>,
+	Slark Xiao <slark_xiao@163.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 165/565] tools/power x86_energy_perf_policy: Prefer driver HWP limits
-Date: Tue, 11 Nov 2025 09:40:21 +0900
-Message-ID: <20251111004530.649899324@linuxfoundation.org>
+Subject: [PATCH 6.17 452/849] bus: mhi: host: pci_generic: Add support for all Foxconn T99W696 SKU variants
+Date: Tue, 11 Nov 2025 09:40:22 +0900
+Message-ID: <20251111004547.355741066@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-[ Upstream commit 2734fdbc9bb8a3aeb309ba0d62212d7f53f30bc7 ]
+[ Upstream commit 376358bb9770e5313d22d8784511497096cdb75f ]
 
-When we are successful in using cpufreq min/max limits,
-skip setting the raw MSR limits entirely.
+Since there are too many variants available for Foxconn T99W696 modem, and
+they all share the same configuration, use PCI_ANY_ID as the subsystem
+device ID to match each possible SKUs and support all of them.
 
-This is necessary to avoid undoing any modification that
-the cpufreq driver makes to our sysfs request.
-
-eg. intel_pstate may take our request for a limit
-that is valid according to HWP.CAP.MIN/MAX and clip
-it to be within the range available in PLATFORM_INFO.
-
-Signed-off-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+[mani: reworded subject/description and dropped the fixes tag]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250819020013.122162-1-slark_xiao@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../x86_energy_perf_policy/x86_energy_perf_policy.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/bus/mhi/host/pci_generic.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
-diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-index 0bda8e3ae7f77..891738116c8b2 100644
---- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-+++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-@@ -62,6 +62,7 @@ unsigned char turbo_update_value;
- unsigned char update_hwp_epp;
- unsigned char update_hwp_min;
- unsigned char update_hwp_max;
-+unsigned char hwp_limits_done_via_sysfs;
- unsigned char update_hwp_desired;
- unsigned char update_hwp_window;
- unsigned char update_hwp_use_pkg;
-@@ -951,8 +952,10 @@ int ratio_2_sysfs_khz(int ratio)
- }
- /*
-  * If HWP is enabled and cpufreq sysfs attribtes are present,
-- * then update sysfs, so that it will not become
-- * stale when we write to MSRs.
-+ * then update via sysfs. The intel_pstate driver may modify (clip)
-+ * this request, say, when HWP_CAP is outside of PLATFORM_INFO limits,
-+ * and the driver-chosen value takes precidence.
-+ *
-  * (intel_pstate's max_perf_pct and min_perf_pct will follow cpufreq,
-  *  so we don't have to touch that.)
-  */
-@@ -1007,6 +1010,8 @@ int update_sysfs(int cpu)
- 	if (update_hwp_max)
- 		update_cpufreq_scaling_freq(1, cpu, req_update.hwp_max);
- 
-+	hwp_limits_done_via_sysfs = 1;
-+
- 	return 0;
- }
- 
-@@ -1085,10 +1090,10 @@ int update_hwp_request(int cpu)
- 	if (debug)
- 		print_hwp_request(cpu, &req, "old: ");
- 
--	if (update_hwp_min)
-+	if (update_hwp_min && !hwp_limits_done_via_sysfs)
- 		req.hwp_min = req_update.hwp_min;
- 
--	if (update_hwp_max)
-+	if (update_hwp_max && !hwp_limits_done_via_sysfs)
- 		req.hwp_max = req_update.hwp_max;
- 
- 	if (update_hwp_desired)
+diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
+index 4edb5bb476baf..4564e2528775e 100644
+--- a/drivers/bus/mhi/host/pci_generic.c
++++ b/drivers/bus/mhi/host/pci_generic.c
+@@ -917,20 +917,8 @@ static const struct pci_device_id mhi_pci_id_table[] = {
+ 	/* Telit FE990A */
+ 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2015),
+ 		.driver_data = (kernel_ulong_t) &mhi_telit_fe990a_info },
+-	/* Foxconn T99W696.01, Lenovo Generic SKU */
+-	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, PCI_VENDOR_ID_FOXCONN, 0xe142),
+-		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w696_info },
+-	/* Foxconn T99W696.02, Lenovo X1 Carbon SKU */
+-	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, PCI_VENDOR_ID_FOXCONN, 0xe143),
+-		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w696_info },
+-	/* Foxconn T99W696.03, Lenovo X1 2in1 SKU */
+-	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, PCI_VENDOR_ID_FOXCONN, 0xe144),
+-		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w696_info },
+-	/* Foxconn T99W696.04, Lenovo PRC SKU */
+-	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, PCI_VENDOR_ID_FOXCONN, 0xe145),
+-		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w696_info },
+-	/* Foxconn T99W696.00, Foxconn SKU */
+-	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, PCI_VENDOR_ID_FOXCONN, 0xe146),
++	/* Foxconn T99W696, all variants */
++	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, PCI_VENDOR_ID_FOXCONN, PCI_ANY_ID),
+ 		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w696_info },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0308),
+ 		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx65_info },
 -- 
 2.51.0
 
