@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-193576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52403C4A7C8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BF5C4A7F1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 425863B7F74
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E18663B8031
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F0D341ADF;
-	Tue, 11 Nov 2025 01:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DEA1342CAD;
+	Tue, 11 Nov 2025 01:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AcAeMwW6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nfl65UEO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F33341AC7;
-	Tue, 11 Nov 2025 01:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A1434217C;
+	Tue, 11 Nov 2025 01:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823510; cv=none; b=LrXiSyBP9oKeTExBalcy/9QTXDOmj+69nRT3qY9uUbmgW2dB4XvRGY+GkEEUT+CaGBlxyZNDfhg9R/zkcNW/G0l/obyTibBUND8D0jvzAfgHTwIPUhlFIPqScXFMCr86hU3KekMdYKF1c6zkB0KDTedFKvZPxEjLe/qegnx7VgE=
+	t=1762823517; cv=none; b=h4lHY17iafEcWCai0FDmp608KTHr/IF53JCzAHN/iDJr1a9A0TUdE3C2lcP8eyqYsEHVBdXLp+fPn+6ePXuOwso3tWhyVFRTI8rO9IzzsMCaUpfNJ9lTwvPITLo0FjWGVYG8gl0Jcl41uO5AMJEIjrIRoXgKTYWvTpICDlO+46U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823510; c=relaxed/simple;
-	bh=w62OGB6d91pbiylO8LycuB3Ke7bGhejqjK2oZGtQFQg=;
+	s=arc-20240116; t=1762823517; c=relaxed/simple;
+	bh=rY2jHruyjCtkD5AERRixs/Dgg/BI+xtbdGkUXFgY8zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ev9pJk1PDpt7NbVb019BGQlToST7HQYCSn7qnDToxxCNBILjKqwj/o5pqmdwYczRsI9eRlxD6uJ2AWNegWmvLIqVOTmU/0NoMhlFGR+ppJ9r59XXyia/pbAKl6bDkZxJGTPs1oMt0sx3XYZLkGz7ax2R2t39zTZUcwqh9GhgUsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AcAeMwW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32F8C116B1;
-	Tue, 11 Nov 2025 01:11:49 +0000 (UTC)
+	 MIME-Version; b=fZJ7YFwKGKJKOW2Xz+pEbD89CHLA795bvwMme2OS3fZ3G24Md/saDj4JublwwcZ1todjOhdqt08PDaThwzjQ1nPpEV5yYqCtW2f+jCJqRirEx5HjxKTQJneWSemCJM+JRpWt381PR3uiXe+tTxgb7Bud0qE4Fh+fkJqSBHcL+ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nfl65UEO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68ABC2BC86;
+	Tue, 11 Nov 2025 01:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823510;
-	bh=w62OGB6d91pbiylO8LycuB3Ke7bGhejqjK2oZGtQFQg=;
+	s=korg; t=1762823517;
+	bh=rY2jHruyjCtkD5AERRixs/Dgg/BI+xtbdGkUXFgY8zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AcAeMwW6v40zVIMk85aw/v6FQzTu2ppZ6fWz1ieLpLAYwG5MEplxY2yyH8m7ZxZy6
-	 5O3Z95zHcmz3yL4jmOfd3dEuwndHXkHs0djXMZ3r+jXjV0wHtMbf/Ofqyi/zYfMOiF
-	 nTUEtI0kClmgPyCTZ2tDcUbZxfjV37/btp6tRBVw=
+	b=Nfl65UEOqnODcItukYO9RX0STMfLURkcIvpNI41S2PrIIeec7EqtLV07dPrT67FZy
+	 TBoOeDn+lCoJGpQsm8RSIIv4+JyqKw6tbjJfd7VUj+AGwsqr7cOhUssvC1nMyQF9OT
+	 V4kU1ZksCLFg37eLpKLqIUkR/sBbx9BC+/1GNQJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Heng Zhou <Heng.Zhou@amd.com>,
+	"Kasiviswanathan, Harish" <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 314/849] drm/bridge: display-connector: dont set OP_DETECT for DisplayPorts
-Date: Tue, 11 Nov 2025 09:38:04 +0900
-Message-ID: <20251111004544.004144487@linuxfoundation.org>
+Subject: [PATCH 6.17 315/849] drm/amdgpu: fix nullptr err of vm_handle_moved
+Date: Tue, 11 Nov 2025 09:38:05 +0900
+Message-ID: <20251111004544.032321033@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -69,49 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Heng Zhou <Heng.Zhou@amd.com>
 
-[ Upstream commit cb640b2ca54617f4a9d4d6efd5ff2afd6be11f19 ]
+[ Upstream commit 859958a7faefe5b7742b7b8cdbc170713d4bf158 ]
 
-Detecting the monitor for DisplayPort targets is more complicated than
-just reading the HPD pin level: it requires reading the DPCD in order to
-check what kind of device is attached to the port and whether there is
-an actual display attached.
+If a amdgpu_bo_va is fpriv->prt_va, the bo of this one is always NULL.
+So, such kind of amdgpu_bo_va should be updated separately before
+amdgpu_vm_handle_moved.
 
-In order to let DRM framework handle such configurations, disable
-DRM_BRIDGE_OP_DETECT for dp-connector devices, letting the actual DP
-driver perform detection. This still keeps DRM_BRIDGE_OP_HPD enabled, so
-it is valid for the bridge to report HPD events.
-
-Currently inside the kernel there are only two targets which list
-hpd-gpios for dp-connector devices: arm64/qcom/qcs6490-rb3gen2 and
-arm64/qcom/sa8295p-adp. Both should be fine with this change.
-
-Cc: Bjorn Andersson <andersson@kernel.org>
-Cc: Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org
-Acked-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250802-dp-conn-no-detect-v1-1-2748c2b946da@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Heng Zhou <Heng.Zhou@amd.com>
+Reviewed-by: Kasiviswanathan, Harish <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/display-connector.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/display-connector.c b/drivers/gpu/drm/bridge/display-connector.c
-index 52b7b5889e6fe..4f0295efb8f68 100644
---- a/drivers/gpu/drm/bridge/display-connector.c
-+++ b/drivers/gpu/drm/bridge/display-connector.c
-@@ -373,7 +373,8 @@ static int display_connector_probe(struct platform_device *pdev)
- 	if (conn->bridge.ddc)
- 		conn->bridge.ops |= DRM_BRIDGE_OP_EDID
- 				 |  DRM_BRIDGE_OP_DETECT;
--	if (conn->hpd_gpio)
-+	/* Detecting the monitor requires reading DPCD */
-+	if (conn->hpd_gpio && type != DRM_MODE_CONNECTOR_DisplayPort)
- 		conn->bridge.ops |= DRM_BRIDGE_OP_DETECT;
- 	if (conn->hpd_irq >= 0)
- 		conn->bridge.ops |= DRM_BRIDGE_OP_HPD;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+index 902eac2c685f3..30d4a47535882 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -2993,9 +2993,22 @@ int amdgpu_amdkfd_gpuvm_restore_process_bos(void *info, struct dma_fence __rcu *
+ 		struct amdgpu_device *adev = amdgpu_ttm_adev(
+ 			peer_vm->root.bo->tbo.bdev);
+ 
++		struct amdgpu_fpriv *fpriv =
++			container_of(peer_vm, struct amdgpu_fpriv, vm);
++
++		ret = amdgpu_vm_bo_update(adev, fpriv->prt_va, false);
++		if (ret) {
++			dev_dbg(adev->dev,
++				"Memory eviction: handle PRT moved failed, pid %8d. Try again.\n",
++				pid_nr(process_info->pid));
++			goto validate_map_fail;
++		}
++
+ 		ret = amdgpu_vm_handle_moved(adev, peer_vm, &exec.ticket);
+ 		if (ret) {
+-			pr_debug("Memory eviction: handle moved failed. Try again\n");
++			dev_dbg(adev->dev,
++				"Memory eviction: handle moved failed, pid %8d. Try again.\n",
++				pid_nr(process_info->pid));
+ 			goto validate_map_fail;
+ 		}
+ 	}
 -- 
 2.51.0
 
