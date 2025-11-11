@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-194404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B98C4B238
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:02:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5922C4ADE1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A94F4201DE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73B81189630D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E5A3093C0;
-	Tue, 11 Nov 2025 01:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACEF24EA90;
+	Tue, 11 Nov 2025 01:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7WqNoiy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFLyeZxZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906CF304BDC;
-	Tue, 11 Nov 2025 01:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05230265CA6;
+	Tue, 11 Nov 2025 01:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825524; cv=none; b=pozhKlfDLWLdeF1zN7FAQDW3JToo/r1HVfrmsgrtqW5Rla+wfWDNR7Kbieo4iUh9erDsvWtQGFuJTfLpfNtU/X9ypq1Ew0n5OIFcwRZs69LYl9WTYWij9z5sYXdr6JQv4YaDbrKlZElrk+bPzSH/U7rSbnH4hpxgYQALBQx/Ph4=
+	t=1762824928; cv=none; b=Aft78jHfGp9TiXBqKshy62v86ORq1o9nQNpmzqT81U64jcCXBMiOoj/kqtnVL1u2LETUOzBmGCNpXMkWoE/K3cc/T+xe2k+sg9j66mVAcVfJL/Z5AhP6k9pXw0CBjPrMqmZO04DPu3vxH7Z6udywlmO2PnUCQbY/poU6wUWQ7Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825524; c=relaxed/simple;
-	bh=uLkN/DMyWvuCnEU4u2DRbycyuZbEaubuiZa9DLVH8Lo=;
+	s=arc-20240116; t=1762824928; c=relaxed/simple;
+	bh=vzCk1evj6xt8zohtGaifSfgBbp1wDqslEOM3tIDd4sQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AGix9vkiKkmEAV0fV7tYlVmyXJAJtxLwS6pviVr9znQIth3pZt+g6KcKGnM8M5ZdMkgKsHbgAau61uHEYUktMfGcntA/r0L5DJPE95ybMrhT/c3fGFb48IucMN336vaR544BuuMwXVXEiWi6A//wDpHDlkmRl09BL7TLbTJGFro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7WqNoiy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9F6C16AAE;
-	Tue, 11 Nov 2025 01:45:24 +0000 (UTC)
+	 MIME-Version; b=h4vkFcvfOE4x7p/MsYUYfET73ZoLAp39TGzDQXktlKTG0PZ9ekiUh5VA7fDk/InwR9oJk3VaPgq/5F48ayT/C9+lJsjEsJzbtvPsp0NT/5+NJghd1vfAbs7kOtpgCTX0DaEDivMCMZRj/NHmxbIwNFyHoNN2H6rMobCg9E7PwHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFLyeZxZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E35C19421;
+	Tue, 11 Nov 2025 01:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825524;
-	bh=uLkN/DMyWvuCnEU4u2DRbycyuZbEaubuiZa9DLVH8Lo=;
+	s=korg; t=1762824927;
+	bh=vzCk1evj6xt8zohtGaifSfgBbp1wDqslEOM3tIDd4sQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z7WqNoiyejGPnzCAeK2ZsqUgs3HRA/nA5vtMVz2+LoiYTV4o68HF8IFoZ2WF+njZO
-	 aPWOHkqbrPV7IbKizEqOaoRdIXD4xklz/1oixcoXzAXl9NdoCcNRpRK/v53mlJDQyn
-	 JAvmJpGODtTD/t1D/Ev8sS5FKMRmk4Xj/1kFyMA0=
+	b=ZFLyeZxZgR0ertIt/qSU9fRvU4fThQ4oc6KW9S8MDymz9GTQwIln/GkeGXQlM1RuJ
+	 vPSeo1gByYYPAYFyXTwlyVBFbPZhlZ2zmWpITNN34PmJLSyh7FxBxlskpzNbASY2Vh
+	 HmBHeU+EKMaW+CrnYmCFxNHv1t9ehKZNXhszRIZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.17 838/849] ALSA: hda/tas2781: Enable init_profile_id for device initialization
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 552/565] drm/amdgpu/smu: Handle S0ix for vangogh
 Date: Tue, 11 Nov 2025 09:46:48 +0900
-Message-ID: <20251111004556.683005115@linuxfoundation.org>
+Message-ID: <20251111004539.419310998@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 7ddb711b6e0d33e0a673b49f69dff0d950ed60b9 upstream.
+commit 7c5609b72bfe57d8c601d9561e0d2551b605c017 upstream.
 
-Optimize the time consumption of profile switching, init_profile saves
-the common settings of different profiles, such as the dsp coefficients,
-etc, which can greatly reduce the profile switching time comsumption and
-remove the repetitive settings.
+Fix the flows for S0ix.  There is no need to stop
+rlc or reintialize PMFW in S0ix.
 
-Fixes: e83dcd139e77 ("ASoC: tas2781: Add keyword "init" in profile section")
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4659
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
+Tested-by: Antheas Kapenekakis <lkml@antheas.dev>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit fd39b5a5830d8f2553e0c09d4d50bdff28b10080)
+Cc: <stable@vger.kernel.org> # c81f5cebe849: drm/amdgpu: Drop PMFW RLC notifier from amdgpu_device_suspend()
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/codecs/side-codecs/tas2781_hda_i2c.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c        |    6 ++++++
+ drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c |    3 +++
+ 2 files changed, 9 insertions(+)
 
---- a/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-+++ b/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-@@ -472,6 +472,12 @@ static void tasdevice_dspfw_init(void *c
- 	if (tas_priv->fmw->nr_configurations > 0)
- 		tas_priv->cur_conf = 0;
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -1942,6 +1942,12 @@ static int smu_disable_dpms(struct smu_c
+ 	    smu->is_apu && (amdgpu_in_reset(adev) || adev->in_s0ix))
+ 		return 0;
  
-+	/* Init common setting for different audio profiles */
-+	if (tas_priv->rcabin.init_profile_id >= 0)
-+		tasdevice_select_cfg_blk(tas_priv,
-+			tas_priv->rcabin.init_profile_id,
-+			TASDEVICE_BIN_BLK_PRE_POWER_UP);
++	/* vangogh s0ix */
++	if ((amdgpu_ip_version(adev, MP1_HWIP, 0) == IP_VERSION(11, 5, 0) ||
++	     amdgpu_ip_version(adev, MP1_HWIP, 0) == IP_VERSION(11, 5, 2)) &&
++	    adev->in_s0ix)
++		return 0;
 +
- 	/* If calibrated data occurs error, dsp will still works with default
- 	 * calibrated data inside algo.
- 	 */
-@@ -760,6 +766,12 @@ static int tas2781_system_resume(struct
- 	tasdevice_reset(tas_hda->priv);
- 	tasdevice_prmg_load(tas_hda->priv, tas_hda->priv->cur_prog);
+ 	/*
+ 	 * For gpu reset, runpm and hibernation through BACO,
+ 	 * BACO feature has to be kept enabled.
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+@@ -2214,6 +2214,9 @@ static int vangogh_post_smu_init(struct
+ 	uint32_t total_cu = adev->gfx.config.max_cu_per_sh *
+ 		adev->gfx.config.max_sh_per_se * adev->gfx.config.max_shader_engines;
  
-+	/* Init common setting for different audio profiles */
-+	if (tas_hda->priv->rcabin.init_profile_id >= 0)
-+		tasdevice_select_cfg_blk(tas_hda->priv,
-+			tas_hda->priv->rcabin.init_profile_id,
-+			TASDEVICE_BIN_BLK_PRE_POWER_UP);
++	if (adev->in_s0ix)
++		return 0;
 +
- 	if (tas_hda->priv->playback_started)
- 		tasdevice_tuning_switch(tas_hda->priv, 0);
- 
+ 	/* allow message will be sent after enable message on Vangogh*/
+ 	if (smu_cmn_feature_is_enabled(smu, SMU_FEATURE_DPM_GFXCLK_BIT) &&
+ 			(adev->pg_flags & AMD_PG_SUPPORT_GFX_PG)) {
 
 
 
