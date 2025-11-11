@@ -1,211 +1,118 @@
-Return-Path: <stable+bounces-194509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A99C4F0AC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 17:31:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6909FC4F1AF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 17:46:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EED273AD8AD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 16:31:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B49A63BB661
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 16:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5803128D0;
-	Tue, 11 Nov 2025 16:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37C936CE01;
+	Tue, 11 Nov 2025 16:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="bpM/0HuS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GHefme+q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B90936C5B6
-	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 16:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD99727603F
+	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 16:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762878712; cv=none; b=ccuk0G0FHxd2LrrVs71YqIxUakVryL9K7QRrkmnBPSRPhAQ/4YJEo1Nn2jTHVhIgsxnOFSlR7jBdtp/pSQI3uwiJrIbk9d49rnJcde5wm7/W1W+/8xS/cxqqhWALGOwE5PJ9zzqCVz0dUj898JSfJzb+jMOBQurjTcDXPbFv588=
+	t=1762879478; cv=none; b=BJYL6CPFAGTXLOa1TO3NkFbLQedXgFkMe9oBMW4SeIzBMdfJe/2ezlobgA70OoLjnNsnovN5koZ5dX8H1AuBnbWtRl/aPoGVKdfMqmhsKvtr0db76BNyrHkjahF68iAlzc2jXKn6g61Xp3XWD1jHLOmIMTdTMVw0SNBUd2KtNWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762878712; c=relaxed/simple;
-	bh=/7JhdeqHU+pWuZo7BJYr/RwCCv41S/jJab+74+3hwpA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h1exomNJaHMLPaNehqjXSE/UOUs0vFvY1R/vB3rYmpV7EnZwht14hxRYlgtPSeOKGU+R2ElgMhMQPSJYBtf0eq5MLquizJuPUYwY2FGgvn17V+e9y1mi07II/QptbNPbT1T7xxoVLrZ9PjR6g2zWtWf7/BibQfR3y09ipZxrTfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=bpM/0HuS; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-64166a57f3bso4223820a12.1
-        for <stable@vger.kernel.org>; Tue, 11 Nov 2025 08:31:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1762878709; x=1763483509; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PJEhmkdX/tZ6LlQiQX/bCOF/D5Lhd4PVnpUuCIOrAzo=;
-        b=bpM/0HuSOo+MutJFeGQXYeeqH6ySa1JHquNYE35DJOb5b/oorzJdQDskdaHH/CJweE
-         plltLQ2siyhCqffJ2X0A7BhdqhKJXMcqI5seSkos/Fdxt3uBeLmQRISRnvJM5VYXxOHM
-         rSkAq6Wrv06FUBYV+k/Zjut9+jDe+6J4jz/0fP9nTgmSteQ4Qd0E3R5IU/Hd4w7OXeNI
-         gSTK6uenuOJn8oWAXs2Rv51D0tJiLDn415SBzMCk3l8FpuqerI2nj9rPfV0tTlZzb3Z8
-         HYPpK80uo0jM2am3I1GEbiSfDEWjndlj5v0KuH6mZzUnSZAbuAdykkitjcyDcAfFgQfO
-         IP+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762878709; x=1763483509;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PJEhmkdX/tZ6LlQiQX/bCOF/D5Lhd4PVnpUuCIOrAzo=;
-        b=XwXAVLsEVUj8g4QR332Gdb4MnqtawirHskaF64M/uc2d329YcaCtIr7ZckM++/f5zm
-         41RWerB1jErfKJ6ULKP8MarrsALakAyYkQTJvD4jiz2QaSrmWFvaj+W2Ui5ud8r1vihP
-         4XaGtRsSEx4sFIWQa6K8TZRmdYFTZhixQOeP6PZDF6mBdRo3Dpdw/+jfCKUwotT4WcnL
-         ljdyw5uoCc99TkZi+Rg1hwN8CGhO7qoVOtLgS27IuKlrEJdqrND9ngPWo6/+rYp2iDuE
-         oJojltZO/1FKYmQvwQIeUw4FYcIX1btfWt57D4p8QkWNIlxwiMnL7YvsLbF4ZYtFm42i
-         42Mw==
-X-Forwarded-Encrypted: i=1; AJvYcCVsdPW69fvwqX6QKyzOwPUjXCQjDHggymr6T+dJFpgtMpV3WUNrRKOVeaT27mqh+miHLCPTBa4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEt8Ebi6Q8Q3JxrQons9OsdL+xkRysLBLj8Gw0pvT8AP2ZYSeA
-	78yQmWvfqn5pXbC1nbxAg2EJtDFTEOiUSDtqeiHf3z+Ifbytv5XHxWMi5TtkDd/3EFE=
-X-Gm-Gg: ASbGncuKYsPbpOxQKS+UTKu11uPCqBzvqtMptXS04+0mxod91oZ32CHiIzG+lEsLWVv
-	TtjvmX70Iux2taLUDthhC+eOoxx39HX2Y2exGE4mIn3AZbFsgS0Vi37jnxXU8nSsn0VYwPTMaWm
-	VKQsCqp41hIPFS2QAiB+bXdmt88fQWQM7nJF1VVb6gnVbrRFSA0yk4etSLpd50TWCATLVmiz4TE
-	QUqn/Jj5qK65IDLJqV5cdCgvOY+qsCI3OCq3fNFpVsnNztNqBrW8blc2oS3IP4vM5geLGkORFVV
-	0pERVlVxngijQXM3jh+FRG9gnidv3oZIdofmgewQTQjuWNKvv5nbU3IkasRGYgAjhweYPj2Hjek
-	oXkEhlndj1bOXrjJmuI1IrZ0O/gFUe+soFsvCZGAwPnRjzRNintX4A2BXLOZX9zAs93o2gxL/+j
-	IbMNUsDCK+J217FdCJ8gTHwQE1DgCn
-X-Google-Smtp-Source: AGHT+IHeMXFBK2R94y0xAavt77FqJhtG78dDnrH6Srnh9imuOjXwMgWyuYOPJ4SCpRj8L5bEITGGSg==
-X-Received: by 2002:a17:907:960a:b0:b6d:519f:2389 with SMTP id a640c23a62f3a-b72e04ad8b5mr1360986366b.52.1762878708718;
-        Tue, 11 Nov 2025 08:31:48 -0800 (PST)
-Received: from pathway (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf312e51sm1366249866b.17.2025.11.11.08.31.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 08:31:48 -0800 (PST)
-Date: Tue, 11 Nov 2025 17:31:46 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: John Ogness <john.ogness@linutronix.de>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sherry Sun <sherry.sun@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Derek Barbosa <debarbos@redhat.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH printk v1 1/1] printk: Avoid scheduling irq_work on
- suspend
-Message-ID: <aRNk8vLuvfOOlAjV@pathway>
-References: <20251111144328.887159-1-john.ogness@linutronix.de>
- <20251111144328.887159-2-john.ogness@linutronix.de>
+	s=arc-20240116; t=1762879478; c=relaxed/simple;
+	bh=knPKDrMjXe5mlH+urOE16uEbmKHp060xbgSjEhJfc34=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t8OjqfFhtzy+ZQooItrGUGHEzbF7ec6HLFLMtirQFiTnqGxhPa+FeQ4yXAzOy8fm1n19QNguG198bZaS4gYr+wqb/5hSGExlZ2EhEylaGcxpZPFodmRktWRw1OfdDYBIB9iB1NnMoHdxanVaCx41lfJH2CbMMDSgRVDFzhP3s08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GHefme+q; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762879477; x=1794415477;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=knPKDrMjXe5mlH+urOE16uEbmKHp060xbgSjEhJfc34=;
+  b=GHefme+qaGAr+DCmLIAEOHBoew6hbPEvJhEcjsEN1Y4wVCc28fGJir43
+   +ximZMW5edqTOVW1H8HS5Ve3ohwAK9jkpRxdzLNcy8f80DXrdhMThshwz
+   5wjRBmp0mcAXtp+Wlhycxq8yiojg+kVaPcN/pctS1a+UNSo8SeFFz38CF
+   VcxAggw5DnfPveWpKggQwWxVf/4c6DCUeiSvV2mcatNAXj7h4dmkzoY8L
+   bTl3n0q8CL6W/RhsDEbI4tuE9wx/u/1mnHOqtzQbtSpKwP1NpE/qE4MIw
+   W9LWPaP1aAMN+WZ/WZ2tzMe8eZQ6YslZopCsinwTvQ1U8mbbDEVANV6fv
+   Q==;
+X-CSE-ConnectionGUID: 0CpA8tRrREqaLNrKF6SwXw==
+X-CSE-MsgGUID: mfxDK3WcR9G4No7OfNijJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11610"; a="75244615"
+X-IronPort-AV: E=Sophos;i="6.19,297,1754982000"; 
+   d="scan'208";a="75244615"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 08:44:36 -0800
+X-CSE-ConnectionGUID: cCqBs69wRreTNP9l5lZT8Q==
+X-CSE-MsgGUID: mJfXMg7EQL6N4dTq2pPY0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,297,1754982000"; 
+   d="scan'208";a="188646750"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO fedora) ([10.245.244.91])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 08:44:32 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	stable@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	apopple@nvidia.com,
+	airlied@gmail.com,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	felix.kuehling@amd.com,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	dakr@kernel.org,
+	"Mrozek, Michal" <michal.mrozek@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH v2 01/17] drm/xe/svm: Fix a debug printout
+Date: Tue, 11 Nov 2025 17:43:51 +0100
+Message-ID: <20251111164408.113070-2-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251111164408.113070-1-thomas.hellstrom@linux.intel.com>
+References: <20251111164408.113070-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251111144328.887159-2-john.ogness@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue 2025-11-11 15:49:22, John Ogness wrote:
-> Allowing irq_work to be scheduled while trying to suspend has shown
-> to cause problems as some architectures interpret the pending
-> interrupts as a reason to not suspend. This became a problem for
-> printk() with the introduction of NBCON consoles. With every
-> printk() call, NBCON console printing kthreads are woken by queueing
-> irq_work. This means that irq_work continues to be queued due to
-> printk() calls late in the suspend procedure.
-> 
-> Avoid this problem by preventing printk() from queueing irq_work
-> once console suspending has begun. This applies to triggering NBCON
-> and legacy deferred printing as well as klogd waiters.
-> 
-> Since triggering of NBCON threaded printing relies on irq_work, the
-> pr_flush() within console_suspend_all() is used to perform the final
-> flushing before suspending consoles and blocking irq_work queueing.
-> NBCON consoles that are not suspended (due to the usage of the
-> "no_console_suspend" boot argument) transition to atomic flushing.
-> 
-> Introduce a new global variable @console_offload_blocked to flag
+Avoid spamming the log with drm_info(). Use drm_dbg() instead.
 
-s/console_offload_blocked/console_irqwork_blocked/
+Fixes: cc795e041034 ("drm/xe/svm: Make xe_svm_range_needs_migrate_to_vram() public")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: <stable@vger.kernel.org> # v6.17+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ drivers/gpu/drm/xe/xe_svm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> when irq_work queueing is to be avoided. The flag is used by
-> printk_get_console_flush_type() to avoid allowing deferred printing
-> and switch NBCON consoles to atomic flushing. It is also used by
-> vprintk_emit() to avoid klogd waking.
-> 
-> --- a/kernel/printk/internal.h
-> +++ b/kernel/printk/internal.h
-> @@ -230,6 +230,8 @@ struct console_flush_type {
->  	bool	legacy_offload;
->  };
->  
-> +extern bool console_irqwork_blocked;
-> +
->  /*
->   * Identify which console flushing methods should be used in the context of
->   * the caller.
-> @@ -241,7 +243,7 @@ static inline void printk_get_console_flush_type(struct console_flush_type *ft)
->  	switch (nbcon_get_default_prio()) {
->  	case NBCON_PRIO_NORMAL:
->  		if (have_nbcon_console && !have_boot_console) {
-> -			if (printk_kthreads_running)
-> +			if (printk_kthreads_running && !console_irqwork_blocked)
->  				ft->nbcon_offload = true;
->  			else
->  				ft->nbcon_atomic = true;
-> @@ -251,7 +253,7 @@ static inline void printk_get_console_flush_type(struct console_flush_type *ft)
->  		if (have_legacy_console || have_boot_console) {
->  			if (!is_printk_legacy_deferred())
->  				ft->legacy_direct = true;
-> -			else
-> +			else if (!console_irqwork_blocked)
->  				ft->legacy_offload = true;
->  		}
->  		break;
+diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
+index 55c5a0eb82e1..894e8f092e3f 100644
+--- a/drivers/gpu/drm/xe/xe_svm.c
++++ b/drivers/gpu/drm/xe/xe_svm.c
+@@ -941,7 +941,7 @@ bool xe_svm_range_needs_migrate_to_vram(struct xe_svm_range *range, struct xe_vm
+ 	xe_assert(vm->xe, IS_DGFX(vm->xe));
+ 
+ 	if (xe_svm_range_in_vram(range)) {
+-		drm_info(&vm->xe->drm, "Range is already in VRAM\n");
++		drm_dbg(&vm->xe->drm, "Range is already in VRAM\n");
+ 		return false;
+ 	}
+ 
+-- 
+2.51.1
 
-This is one possibility.
-
-Another possibility would be to block the irq work
-directly in defer_console_output() and wake_up_klogd().
-It would handle all situations, including printk_trigger_flush()
-or defer_console_output().
-
-Or is there any reason, why these two call paths are not handled?
-
-I do not have strong opinion. This patch makes it more explicit
-when defer_console_output() or wake_up_klogd() is called.
-
-If we move the check into defer_console_output() or wake_up_klogd(),
-it would hide the behavior. But it will make the API more safe
-to use. And wake_up_klogd() is even exported via <linux/printk.h>.
-
-
-> @@ -264,7 +266,7 @@ static inline void printk_get_console_flush_type(struct console_flush_type *ft)
->  		if (have_legacy_console || have_boot_console) {
->  			if (!is_printk_legacy_deferred())
->  				ft->legacy_direct = true;
-> -			else
-> +			else if (!console_irqwork_blocked)
->  				ft->legacy_offload = true;
-
-This change won't be needed if we move the check into
-defer_console_output() and wake_up_klogd().
-
->  		}
->  		break;
-> diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-> index 5aee9ffb16b9a..94fc4a8662d4b 100644
-> --- a/kernel/printk/printk.c
-> +++ b/kernel/printk/printk.c
-> @@ -2426,7 +2429,7 @@ asmlinkage int vprintk_emit(int facility, int level,
->  
->  	if (ft.legacy_offload)
->  		defer_console_output();
-> -	else
-> +	else if (!console_irqwork_blocked)
->  		wake_up_klogd();
-
-Same here.
-
->  
->  	return printed_len;
-
-
-The rest of the patch looks good to me.
-
-Best Regards,
-Petr
 
