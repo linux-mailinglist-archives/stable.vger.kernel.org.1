@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4473CC4A87B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4781AC4A84F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 412D43B8868
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 407943B88AC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787962D879A;
-	Tue, 11 Nov 2025 01:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A592D346A0A;
+	Tue, 11 Nov 2025 01:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KsnmgmyI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIx1xGnB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305012DC328;
-	Tue, 11 Nov 2025 01:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F692DC350;
+	Tue, 11 Nov 2025 01:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823667; cv=none; b=k5zsg3UAoJAlAoikOy7DjQQo5iFIIDP6eDTDwu9RNjk9Aw362WNUqKK6d1AdvX4jaDYRDg60OEVv9vqMeD6jlyPMzA+MxD0ateP4p3ImBV2d8KIR8TQPZFVq1qjnpQvvI6pHd2VIi7ghvPd07dyPeYIfjO2Ud4W7mVVwMs5zm70=
+	t=1762823671; cv=none; b=UYE2BVzWQvleeFPKkCNPDOxJOpaDkn+ca9EQGKJO36b8fdek7rAcklvWL5/9wQuMVLmrJQ4E5+dhaqbfy44GP2zyu8MAXbG9r5rgEiCjnzrM9dekPYjvY2aYS+cC706846hZMZNRjraQzp6QFosmIOHti43h46RoZOLfszPu9Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823667; c=relaxed/simple;
-	bh=1Kyum33o7pMYV2OAoH3MMpV/ZbfGYDqSArgTtXepRAc=;
+	s=arc-20240116; t=1762823671; c=relaxed/simple;
+	bh=ujdZTUm5jo0pOUDD9+R5MoysribfuDUfFOyWAfg89KE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=neA3myHcD6MggR7K2gbVvZ3blJTiPreScZTgNEFY+NF0LWB+6h4duFsHV44W0O1nRgc/MS+ANrJVT+p+F1mXETHSzkD3MMduJBGkY0Kx9FA7RpkfO8mRwcfyfhYXQzLafX4yjFz8I6+cSyJRnmBzlLHzv0h+CDjdu7A8nHkE5hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KsnmgmyI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5ADC116B1;
-	Tue, 11 Nov 2025 01:14:26 +0000 (UTC)
+	 MIME-Version; b=nn4G1hQQ2+2TmufYfS66G+30ONm5jKOFc/ITPO2X8AoR3ujxyLTHISwpiemusMWfWCZGJsGIfa8+HlEHaaHfAZUxxs3pVXgAfImwG3K5uJWkEaGO7dXTlSWD1yC7h6fyFVcWVOagJiEboW75CNwPf1CYwkSs8llnb3rB5V5I6x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIx1xGnB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF7B8C2BC87;
+	Tue, 11 Nov 2025 01:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823666;
-	bh=1Kyum33o7pMYV2OAoH3MMpV/ZbfGYDqSArgTtXepRAc=;
+	s=korg; t=1762823671;
+	bh=ujdZTUm5jo0pOUDD9+R5MoysribfuDUfFOyWAfg89KE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KsnmgmyId5eHz5MY5LpGV9ptztgJroM2rHhKgrilXQ1vU+Q9x99YR+aK7Qhh4ITat
-	 lkVsXHHyydZ7UlIoRzwBwpLL1voSYkeGEq90j4Ia8UyEjls2wOR+wdmi5EQ5nAP2Zo
-	 5F1ghrKq+0vp896Mrpm0lk33O8dQHQMBrq3GrDDg=
+	b=tIx1xGnBQgK3N/x8CNoqeUHfavh4xZV2qN44LVPDBUJp3xsK93DNwpOXVhUfyyyMQ
+	 kT8K6ipexcStm+7PnTmF/wG4ffEptopklXBd01hroUYTp2b7lT6m4N+x+JnwozD7GR
+	 FEuCV3pUmeOSd8sa2DR7BQ0FOxXC6Z5EXLMhEk9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Ujwal Kundur <ujwal.kundur@gmail.com>,
+	Allison Henderson <allison.henderson@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 346/849] drm/panel: ilitek-ili9881c: move display_on/_off dcs calls to (un-)prepare
-Date: Tue, 11 Nov 2025 09:38:36 +0900
-Message-ID: <20251111004544.784057282@linuxfoundation.org>
+Subject: [PATCH 6.17 347/849] rds: Fix endianness annotation for RDS_MPATH_HASH
+Date: Tue, 11 Nov 2025 09:38:37 +0900
+Message-ID: <20251111004544.808625708@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,91 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Ujwal Kundur <ujwal.kundur@gmail.com>
 
-[ Upstream commit 5efa82492066fcb32308210fb3f0b752af74334f ]
+[ Upstream commit 77907a068717fbefb25faf01fecca553aca6ccaa ]
 
-At least for panel-bridges, the atomic_enable call is defined as being
-called right after the preceding element in the display pipe is enabled.
+jhash_1word accepts host endian inputs while rs_bound_port is a be16
+value (sockaddr_in6.sin6_port). Use ntohs() for consistency.
 
-It is also stated that "The bridge can assume that the display pipe (i.e.
-clocks and timing signals) feeding it is running when this callback is
-called"
+Flagged by Sparse.
 
-This means the DSI controller driving this display would have already
-switched over to video-mode from command mode and thus dcs functions
-should not be called anymore at this point.
-
-This caused a non-working display for me, when trying to enable
-the rk3576 dsi controller using a display using this controller.
-
-Therefore move the display_on/off calls the more appropriate
-prepare/unprepare callbacks.
-
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250707164906.1445288-3-heiko@sntech.de
+Signed-off-by: Ujwal Kundur <ujwal.kundur@gmail.com>
+Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
+Link: https://patch.msgid.link/20250820175550.498-4-ujwal.kundur@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-ilitek-ili9881c.c | 27 +++++--------------
- 1 file changed, 7 insertions(+), 20 deletions(-)
+ net/rds/rds.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
-index 3af22a5f5700c..7ed65d6762d86 100644
---- a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
-+++ b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
-@@ -1509,35 +1509,24 @@ static int ili9881c_prepare(struct drm_panel *panel)
- 	if (ret)
- 		goto disable_power;
+diff --git a/net/rds/rds.h b/net/rds/rds.h
+index dc360252c5157..5b1c072e2e7ff 100644
+--- a/net/rds/rds.h
++++ b/net/rds/rds.h
+@@ -93,7 +93,7 @@ enum {
  
--	return 0;
--
--disable_power:
--	regulator_disable(ctx->power);
--	return ret;
--}
--
--static int ili9881c_enable(struct drm_panel *panel)
--{
--	struct ili9881c *ctx = panel_to_ili9881c(panel);
--
- 	msleep(120);
+ /* Max number of multipaths per RDS connection. Must be a power of 2 */
+ #define	RDS_MPATH_WORKERS	8
+-#define	RDS_MPATH_HASH(rs, n) (jhash_1word((rs)->rs_bound_port, \
++#define	RDS_MPATH_HASH(rs, n) (jhash_1word(ntohs((rs)->rs_bound_port), \
+ 			       (rs)->rs_hash_initval) & ((n) - 1))
  
--	mipi_dsi_dcs_set_display_on(ctx->dsi);
-+	ret = mipi_dsi_dcs_set_display_on(ctx->dsi);
-+	if (ret)
-+		goto disable_power;
- 
- 	return 0;
--}
- 
--static int ili9881c_disable(struct drm_panel *panel)
--{
--	struct ili9881c *ctx = panel_to_ili9881c(panel);
--
--	return mipi_dsi_dcs_set_display_off(ctx->dsi);
-+disable_power:
-+	regulator_disable(ctx->power);
-+	return ret;
- }
- 
- static int ili9881c_unprepare(struct drm_panel *panel)
- {
- 	struct ili9881c *ctx = panel_to_ili9881c(panel);
- 
-+	mipi_dsi_dcs_set_display_off(ctx->dsi);
- 	mipi_dsi_dcs_enter_sleep_mode(ctx->dsi);
- 	regulator_disable(ctx->power);
- 	gpiod_set_value_cansleep(ctx->reset, 1);
-@@ -1710,8 +1699,6 @@ static enum drm_panel_orientation ili9881c_get_orientation(struct drm_panel *pan
- static const struct drm_panel_funcs ili9881c_funcs = {
- 	.prepare	= ili9881c_prepare,
- 	.unprepare	= ili9881c_unprepare,
--	.enable		= ili9881c_enable,
--	.disable	= ili9881c_disable,
- 	.get_modes	= ili9881c_get_modes,
- 	.get_orientation = ili9881c_get_orientation,
- };
+ #define IS_CANONICAL(laddr, faddr) (htonl(laddr) < htonl(faddr))
 -- 
 2.51.0
 
