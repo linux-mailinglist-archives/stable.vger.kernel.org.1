@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-194186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA08C4AEDB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB44C4AF64
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4E39F4F36F7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E72674F5E97
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71E833EAFD;
-	Tue, 11 Nov 2025 01:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24B3303CAC;
+	Tue, 11 Nov 2025 01:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vaQuIC82"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYXhrY+k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947F32DC78C;
-	Tue, 11 Nov 2025 01:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE131D86FF;
+	Tue, 11 Nov 2025 01:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825007; cv=none; b=aDcbET8uoSlz7aEtzVwhwsFRVV3VaBdv2KvXFwCCYmvj7jgsw7dOvwBW+EkmFtNMu2hX2TtcEC4JBOHsUElKbW3lYt5tv6xdFcdf4eczH1ZC/X6lGQ65rDDvBUcogvrJHbGfnt6kLxl5R676reM3+oqrREJr3TDM0BCKuh4Nkrg=
+	t=1762825122; cv=none; b=M03MdAKaA5aMXg0QBTwr47LCC5+71ZmJAXWrQfQqVncMnvt5NmTnlWyNB/gPZt6PUF9PTwo90LlkWWyud/MT6GQ+ivsA0ZsCnD8LfpdEy6tNvyj/ADr33NFk7UNyOPDNJoJXIFeFYmqkb3QTfuq7ESWpLlCupaB5+RK3S5JWnsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825007; c=relaxed/simple;
-	bh=4o71WmC4OV8HqdpG6cg+O46gO/X/mkTF28593C774QU=;
+	s=arc-20240116; t=1762825122; c=relaxed/simple;
+	bh=Mas6mmOl7NWeQL3aU55SpBwpUTI1SdOKtmeglRe0Co0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d60DgsXEjeGCVanuFpuD7U1BfVQ4dLTl4Afzt/6nzqyCzUuGJtqh8If9q7nNx5XvqRDn0xFdRxmVUhg19f0+BBXipJWRbDqavLDA/IZQW+rl0niVsAaxNoOKmWtXXUR09LUcs1C3rk9o1VZpa8l0ZPCEcmrk9I8IXyrJrvZXTcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaQuIC82; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DAAC19422;
-	Tue, 11 Nov 2025 01:36:47 +0000 (UTC)
+	 MIME-Version; b=uw0C8ewb6Vqkq3FU9Cr+v+ikZT0XsKGXb6wplYlXKA/sRqAd4WKQhuOsl8unBSijpa8DcXiz+m04oJBKnmGHUzsYg9Fmb9xnYp4emvAzp1xTXV2Suw4t0XUxon+Nlakm9zGV4USlGU/MDu16lXeonLGyPajQXzmyQm2qUZUbvAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYXhrY+k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14557C116B1;
+	Tue, 11 Nov 2025 01:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825007;
-	bh=4o71WmC4OV8HqdpG6cg+O46gO/X/mkTF28593C774QU=;
+	s=korg; t=1762825122;
+	bh=Mas6mmOl7NWeQL3aU55SpBwpUTI1SdOKtmeglRe0Co0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vaQuIC824wsogkP88/w8KsTHj8vFqTPkEl0IQqdUHM/MZ7BaRDC4q8s3OSKcLU73n
-	 EzAmZM63mnfwdHcQa+7Efr0j+UF+bzYFpH3y23rZqzyCLcyVS/LYKecm2i98zCXrUC
-	 m8rB9ttwC5OECelcpFugpcuD/t0oXl8GPE7fhKPU=
+	b=QYXhrY+kY4hBzTOVs4olgtSm57xLXGSaLezSmzwb0lFWfg4Ho0SoaQ6kpWFthvD9m
+	 oXqzvhVnYpbLc/o5RNLwoa5ekdjrjLsyEz7BMBKtEhGIKeIMLlR2LO70JkIHjA5u42
+	 QZI50tmuQ+5Y32hVXjuqOrzPQEYsPwestoxx4TKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 616/849] wifi: ath12k: Increase DP_REO_CMD_RING_SIZE to 256
-Date: Tue, 11 Nov 2025 09:43:06 +0900
-Message-ID: <20251111004551.323091879@linuxfoundation.org>
+Subject: [PATCH 6.17 617/849] net: dsa: microchip: Set SPI as bus interface during reset for KSZ8463
+Date: Tue, 11 Nov 2025 09:43:07 +0900
+Message-ID: <20251111004551.347512633@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,39 +67,103 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
 
-[ Upstream commit 82993345aef6987a916337ebd2fca3ff4a6250a7 ]
+[ Upstream commit a0b977a3d19368b235f2a6c06e800fb25452029b ]
 
-Increase DP_REO_CMD_RING_SIZE from 128 to 256 to avoid
-queuing failures observed during stress test scenarios.
+At reset, the KSZ8463 uses a strap-based configuration to set SPI as
+bus interface. SPI is the only bus supported by the driver. If the
+required pull-ups/pull-downs are missing (by mistake or by design to
+save power) the pins may float and the configuration can go wrong
+preventing any communication with the switch.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Introduce a ksz8463_configure_straps_spi() function called during the
+device reset. It relies on the 'straps-rxd-gpios' OF property and the
+'reset' pinmux configuration to enforce SPI as bus interface.
 
-Signed-off-by: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250806111750.3214584-2-nithyanantham.paramasivam@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+Link: https://patch.msgid.link/20250918-ksz-strap-pins-v3-3-16662e881728@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/microchip/ksz_common.c | 45 ++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
-index 7baa48b86f7ad..10093b4515882 100644
---- a/drivers/net/wireless/ath/ath12k/dp.h
-+++ b/drivers/net/wireless/ath/ath12k/dp.h
-@@ -184,7 +184,7 @@ struct ath12k_pdev_dp {
- #define DP_REO_REINJECT_RING_SIZE	32
- #define DP_RX_RELEASE_RING_SIZE		1024
- #define DP_REO_EXCEPTION_RING_SIZE	128
--#define DP_REO_CMD_RING_SIZE		128
-+#define DP_REO_CMD_RING_SIZE		256
- #define DP_REO_STATUS_RING_SIZE		2048
- #define DP_RXDMA_BUF_RING_SIZE		4096
- #define DP_RX_MAC_BUF_RING_SIZE		2048
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 9568cc391fe3e..a962055bfdbd8 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -23,6 +23,7 @@
+ #include <linux/of_mdio.h>
+ #include <linux/of_net.h>
+ #include <linux/micrel_phy.h>
++#include <linux/pinctrl/consumer.h>
+ #include <net/dsa.h>
+ #include <net/ieee8021q.h>
+ #include <net/pkt_cls.h>
+@@ -5345,6 +5346,38 @@ static int ksz_parse_drive_strength(struct ksz_device *dev)
+ 	return 0;
+ }
+ 
++static int ksz8463_configure_straps_spi(struct ksz_device *dev)
++{
++	struct pinctrl *pinctrl;
++	struct gpio_desc *rxd0;
++	struct gpio_desc *rxd1;
++
++	rxd0 = devm_gpiod_get_index_optional(dev->dev, "straps-rxd", 0, GPIOD_OUT_LOW);
++	if (IS_ERR(rxd0))
++		return PTR_ERR(rxd0);
++
++	rxd1 = devm_gpiod_get_index_optional(dev->dev, "straps-rxd", 1, GPIOD_OUT_HIGH);
++	if (IS_ERR(rxd1))
++		return PTR_ERR(rxd1);
++
++	if (!rxd0 && !rxd1)
++		return 0;
++
++	if ((rxd0 && !rxd1) || (rxd1 && !rxd0))
++		return -EINVAL;
++
++	pinctrl = devm_pinctrl_get_select(dev->dev, "reset");
++	if (IS_ERR(pinctrl))
++		return PTR_ERR(pinctrl);
++
++	return 0;
++}
++
++static int ksz8463_release_straps_spi(struct ksz_device *dev)
++{
++	return pinctrl_select_default_state(dev->dev);
++}
++
+ int ksz_switch_register(struct ksz_device *dev)
+ {
+ 	const struct ksz_chip_data *info;
+@@ -5360,10 +5393,22 @@ int ksz_switch_register(struct ksz_device *dev)
+ 		return PTR_ERR(dev->reset_gpio);
+ 
+ 	if (dev->reset_gpio) {
++		if (of_device_is_compatible(dev->dev->of_node, "microchip,ksz8463")) {
++			ret = ksz8463_configure_straps_spi(dev);
++			if (ret)
++				return ret;
++		}
++
+ 		gpiod_set_value_cansleep(dev->reset_gpio, 1);
+ 		usleep_range(10000, 12000);
+ 		gpiod_set_value_cansleep(dev->reset_gpio, 0);
+ 		msleep(100);
++
++		if (of_device_is_compatible(dev->dev->of_node, "microchip,ksz8463")) {
++			ret = ksz8463_release_straps_spi(dev);
++			if (ret)
++				return ret;
++		}
+ 	}
+ 
+ 	mutex_init(&dev->dev_mutex);
 -- 
 2.51.0
 
