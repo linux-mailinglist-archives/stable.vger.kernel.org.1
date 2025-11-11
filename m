@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-193705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A386C4A692
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2107EC4AA21
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3644134C1A8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC83D3BA1F0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49BB02FD1C5;
-	Tue, 11 Nov 2025 01:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1EB34B41C;
+	Tue, 11 Nov 2025 01:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFaOA2z6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzLXP4jg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27A426D4DF;
-	Tue, 11 Nov 2025 01:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC1A2FD7CA;
+	Tue, 11 Nov 2025 01:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823814; cv=none; b=l3OX8KJeWl2X9OZd2HQpnbmqk9dzLnJD2AMQjxqja5rvUbcXUW0tq1do4hQ3FZe3no8l4iWRhQQSd/sBfvaiUSElzEx4oalfJ2NukBknIInLtbZBpubFsILA//xw81dFDgGWiaVaTNLI3UcFeI4QYlNPlF+e00YatthDvJMrpyA=
+	t=1762823818; cv=none; b=VheZsvzcurj3eYhIbIVYbQeXAk6x/LoKyyWblThdtDMo5/sbdjfE/lq34rvaORs7BD6Zh5IDjxCka0X/TK2tE7JC3s4RqXCOKtuDn/SNmROXftGoJaOikNkOjHipUNBOXzsYI+Jovg9MBRwDwOFRPUhKg8tCkmk44Ox4Uot6Fis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823814; c=relaxed/simple;
-	bh=IHOv4QrwKicMPElzoOMMLcFOik2a2YFcPciqSX72IEk=;
+	s=arc-20240116; t=1762823818; c=relaxed/simple;
+	bh=tlBkSAMKx+g8d+ejllrr4WhH2IKJq95cd48RJxc6ZJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hejEV/j43r6gSaoOQs9zuO3aHKlskkQS5/yo5w0rfEC4c6dIso2U7H4SlMTB6/k++n0mihkR9Wy81dnO8WOOxwzNABp1O8NFUgUyJA5ZmnLawunGNn7TBgU7GRl4yI/L4KcmSMCRERBVsQivGUj6LSu7z7HNfOUrPPvX3+mH/nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFaOA2z6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F99AC19421;
-	Tue, 11 Nov 2025 01:16:53 +0000 (UTC)
+	 MIME-Version; b=SGw0JMWUszCL1Y0wVYeqcx0W0S7cVSqZFHPFH82ODpnXGhergl99SLilGsnSOrNLELYdncfISMUaXseEXmTG0kJLdgRMd4sm6zUCJXa1gd7Tsye+3D4Crr1HjL9upqL5WEp0nl8Xv8PAOzqFINYexIBYVHcBtXZuLXB1HG7WIlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzLXP4jg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4156CC4CEFB;
+	Tue, 11 Nov 2025 01:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823813;
-	bh=IHOv4QrwKicMPElzoOMMLcFOik2a2YFcPciqSX72IEk=;
+	s=korg; t=1762823818;
+	bh=tlBkSAMKx+g8d+ejllrr4WhH2IKJq95cd48RJxc6ZJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFaOA2z63jtPFQ1iixziHPMadWfsxWmhJMpf/iPOSHD2EdUgRa2TZYZBtGt7RALMp
-	 qdanjcw//plakF0QsC9rgsUEi5M05kGPtx+vxty9yMDOQzzB7oZPVbe61u2z/Td3mI
-	 6/gQnQTVk1gExoTBCaqXOhz55Eu562E6AwejtNqU=
+	b=xzLXP4jgUkSMA4s5bnUxn8rwAog2hSOSLyxZGAIEX1XFX3RAoQifTdXzyX8eyxo0Q
+	 pFwLR348casr9BTB8HB4WOzWJO/doc/zbVsLZzXfyijALFU/vftLE0WirvXpjtwKNG
+	 e5j4WWas4P6JpARJZBbwqI8bPMamv+eHQXMSu76c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dillon Varone <Dillon.Varone@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Wenjing Liu <Wenjing.Liu@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 377/849] drm/amd/display: Consider sink max slice width limitation for dsc
-Date: Tue, 11 Nov 2025 09:39:07 +0900
-Message-ID: <20251111004545.548043338@linuxfoundation.org>
+Subject: [PATCH 6.17 378/849] drm/amdgpu/vpe: cancel delayed work in hw_fini
+Date: Tue, 11 Nov 2025 09:39:08 +0900
+Message-ID: <20251111004545.571281700@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -69,42 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dillon Varone <Dillon.Varone@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 6b34e7ed4ba583ee77032a4c850ff97ba16ad870 ]
+[ Upstream commit ec813f384b1a9df332e86ff46c422e5d2d00217f ]
 
-[WHY&HOW]
-The sink max slice width limitation should be considered for DSC, but
-was removed in "refactor DSC cap calculations".
-This patch adds it back and takes the valid minimum between the sink and
-source.
+We need to cancel any outstanding work at both suspend
+and driver teardown. Move the cancel to hw_fini which
+gets called in both cases.
 
-Signed-off-by: Dillon Varone <Dillon.Varone@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Reviewed-by: Wenjing Liu <Wenjing.Liu@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
-index 1f53a9f0c0ac3..e4144b2443324 100644
---- a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
-@@ -1157,6 +1157,11 @@ static bool setup_dsc_config(
- 	if (!is_dsc_possible)
- 		goto done;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
+index 7538c4738af34..118fbe38b33ab 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
+@@ -461,6 +461,8 @@ static int vpe_hw_fini(struct amdgpu_ip_block *ip_block)
+ 	struct amdgpu_device *adev = ip_block->adev;
+ 	struct amdgpu_vpe *vpe = &adev->vpe;
  
-+	/* increase miniumum slice count to meet sink slice width limitations */
-+	min_slices_h = dc_fixpt_ceil(dc_fixpt_max(
-+			dc_fixpt_div_int(dc_fixpt_from_int(pic_width), dsc_common_caps.max_slice_width), // sink min
-+			dc_fixpt_from_int(min_slices_h))); // source min
++	cancel_delayed_work_sync(&adev->vpe.idle_work);
 +
- 	min_slices_h = fit_num_slices_up(dsc_common_caps.slice_caps, min_slices_h);
+ 	vpe_ring_stop(vpe);
  
- 	/* increase minimum slice count to meet sink throughput limitations */
+ 	/* Power off VPE */
+@@ -471,10 +473,6 @@ static int vpe_hw_fini(struct amdgpu_ip_block *ip_block)
+ 
+ static int vpe_suspend(struct amdgpu_ip_block *ip_block)
+ {
+-	struct amdgpu_device *adev = ip_block->adev;
+-
+-	cancel_delayed_work_sync(&adev->vpe.idle_work);
+-
+ 	return vpe_hw_fini(ip_block);
+ }
+ 
 -- 
 2.51.0
 
