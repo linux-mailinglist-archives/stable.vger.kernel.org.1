@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-193924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00F6C4AB83
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADFA9C4A5AB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4656B4FA4AF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 275D63ACA20
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10C526E16C;
-	Tue, 11 Nov 2025 01:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF2F34A779;
+	Tue, 11 Nov 2025 01:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEOlaU1/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xT0gRjNi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC972561A7;
-	Tue, 11 Nov 2025 01:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36F034A3D8;
+	Tue, 11 Nov 2025 01:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824387; cv=none; b=nG2oO3Qez0GnrP5qC/0LVAWMZXEyT9kKOFs+TSfCXkLaxZVpKJllJu8/Q1rfl7PY2T0ETNbXnNijYR7HuU9MBTCi6ut+mjW9XUCsP9iaJ8d1RN51aCrM7Jf0zuXlRQ6J/pEJfYqh+iXMy/ZWD1gAX2fmY1pKabKHrEzr+Hb2Hp0=
+	t=1762823227; cv=none; b=jkdQnxe2QzXgimcU9F21M1Nxz3E9B03Zvxqhp3RITGVCtEOzBxJQSPsrEsuec2LIxSZeETkG7c6e34W9RLicqCbuQBXCUjW9LXTElLMukgF6rGDLy6G8S7BcGyOt39gE2cOx1X9RW7CRW06EhtuZr8l/73ys4CxgViTcaOasmQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824387; c=relaxed/simple;
-	bh=s+LIl5bwpGjjVMrMi0dEyBqRGFbKUUFv1qeUx7UxONQ=;
+	s=arc-20240116; t=1762823227; c=relaxed/simple;
+	bh=mh5tipanqKwswvOQqCciDbHFuktTH3WDMUtTP9UivuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RO+RTf5fSmJeYBxkYhGevrL8aCOnNOtn5xFw3z5E8p4F7865hvPv4xj9GDbf/f9MPXE0UV9o7qENSiPEN0YBo04MZq+KohWhfDJ16GUHHgHJtNqN5nSYaOzxnyKJQBJXhD9d86Cbuaifbg/aDUB0TAOjKvpIlmT8HD8a3T0WYOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEOlaU1/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C473CC113D0;
-	Tue, 11 Nov 2025 01:26:26 +0000 (UTC)
+	 MIME-Version; b=gUBIQQ7+hlrV8+/tT1UQcLfSzfpRTuNitxajBdJkMS3VsQFwnhFsLE0sKem9aU9TtQok81yEmsYHFBKiVuMAp9v4weS++KonxKhYPf19eIl/1VVGYlY+IpNlK2i5PhbSKaob8h2o+Cn/3yDo6WcrRj31OYWM15U92obyEqgQSmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xT0gRjNi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472CCC19421;
+	Tue, 11 Nov 2025 01:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824387;
-	bh=s+LIl5bwpGjjVMrMi0dEyBqRGFbKUUFv1qeUx7UxONQ=;
+	s=korg; t=1762823224;
+	bh=mh5tipanqKwswvOQqCciDbHFuktTH3WDMUtTP9UivuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UEOlaU1/jXFP4zRvHG7957N1a8O3lxztHnM8k/IqfKGnWIoed9uuRiAAPJ7Gs6vHf
-	 kJM4b3gTjKqxMe8PuQts9/TM3uixRQAkDoaLKnrO692CiOjfUTJztJWumBqsLHFYCw
-	 GRwAe1NFSQtFlMpnepbTwgj3X7h+gryWEiHaxMX4=
+	b=xT0gRjNitVpB8Yhq0CCUdmMlfgX7XIylNl4mgjzZx3kOcmwqgm1XYNtaYui6BSe9a
+	 i/WTqXwrRp9sMrQh6z+wHRyUdfjKUT+Und5cOVsFl+sIsf+rEM9JLC92OQfUQBaF4L
+	 ymrsGhhKLrVGuztS0+5fZeeU/88UbYWBjR2q90rY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Parth Pancholi <parth.pancholi@toradex.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 485/849] media: i2c: og01a1b: Specify monochrome media bus format instead of Bayer
-Date: Tue, 11 Nov 2025 09:40:55 +0900
-Message-ID: <20251111004548.168098136@linuxfoundation.org>
+Subject: [PATCH 6.12 200/565] drm/tidss: Use the crtc_* timings when programming the HW
+Date: Tue, 11 Nov 2025 09:40:56 +0900
+Message-ID: <20251111004531.428166910@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit bfbd5aa5347fbd11ade188b316b800bfb27d9e22 ]
+[ Upstream commit 478306edc23eec4f0ec24a46222485910c66212d ]
 
-The OmniVision OG01A1B image sensor is a monochrome sensor, it supports
-8-bit and 10-bit RAW output formats only.
+Use the crtc_* fields from drm_display_mode, instead of the "logical"
+fields. This shouldn't change anything in practice, but afaiu the crtc_*
+fields are the correct ones to use here.
 
-That said the planar greyscale Y8/Y10 media formats are more appropriate
-for the sensor instead of the originally and arbitrary selected SGRBG one,
-since there is no red, green or blue color components.
-
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
+Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-3-e61cc06074c2@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/og01a1b.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/tidss/tidss_crtc.c  |  2 +-
+ drivers/gpu/drm/tidss/tidss_dispc.c | 16 ++++++++--------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/i2c/og01a1b.c b/drivers/media/i2c/og01a1b.c
-index 78d5d406e4b72..b7d0b677975d5 100644
---- a/drivers/media/i2c/og01a1b.c
-+++ b/drivers/media/i2c/og01a1b.c
-@@ -682,7 +682,7 @@ static void og01a1b_update_pad_format(const struct og01a1b_mode *mode,
- {
- 	fmt->width = mode->width;
- 	fmt->height = mode->height;
--	fmt->code = MEDIA_BUS_FMT_SGRBG10_1X10;
-+	fmt->code = MEDIA_BUS_FMT_Y10_1X10;
- 	fmt->field = V4L2_FIELD_NONE;
+diff --git a/drivers/gpu/drm/tidss/tidss_crtc.c b/drivers/gpu/drm/tidss/tidss_crtc.c
+index 94f8e3178df58..1604eca265ef6 100644
+--- a/drivers/gpu/drm/tidss/tidss_crtc.c
++++ b/drivers/gpu/drm/tidss/tidss_crtc.c
+@@ -225,7 +225,7 @@ static void tidss_crtc_atomic_enable(struct drm_crtc *crtc,
+ 	tidss_runtime_get(tidss);
+ 
+ 	r = dispc_vp_set_clk_rate(tidss->dispc, tcrtc->hw_videoport,
+-				  mode->clock * 1000);
++				  mode->crtc_clock * 1000);
+ 	if (r != 0)
+ 		return;
+ 
+diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
+index 45f22ead3e61d..8ee6a6dc8dbd2 100644
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -1086,13 +1086,13 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
+ 
+ 	dispc_set_num_datalines(dispc, hw_videoport, fmt->data_width);
+ 
+-	hfp = mode->hsync_start - mode->hdisplay;
+-	hsw = mode->hsync_end - mode->hsync_start;
+-	hbp = mode->htotal - mode->hsync_end;
++	hfp = mode->crtc_hsync_start - mode->crtc_hdisplay;
++	hsw = mode->crtc_hsync_end - mode->crtc_hsync_start;
++	hbp = mode->crtc_htotal - mode->crtc_hsync_end;
+ 
+-	vfp = mode->vsync_start - mode->vdisplay;
+-	vsw = mode->vsync_end - mode->vsync_start;
+-	vbp = mode->vtotal - mode->vsync_end;
++	vfp = mode->crtc_vsync_start - mode->crtc_vdisplay;
++	vsw = mode->crtc_vsync_end - mode->crtc_vsync_start;
++	vbp = mode->crtc_vtotal - mode->crtc_vsync_end;
+ 
+ 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_TIMING_H,
+ 		       FLD_VAL(hsw - 1, 7, 0) |
+@@ -1134,8 +1134,8 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
+ 		       FLD_VAL(ivs, 12, 12));
+ 
+ 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_SIZE_SCREEN,
+-		       FLD_VAL(mode->hdisplay - 1, 11, 0) |
+-		       FLD_VAL(mode->vdisplay - 1, 27, 16));
++		       FLD_VAL(mode->crtc_hdisplay - 1, 11, 0) |
++		       FLD_VAL(mode->crtc_vdisplay - 1, 27, 16));
+ 
+ 	VP_REG_FLD_MOD(dispc, hw_videoport, DISPC_VP_CONTROL, 1, 0, 0);
  }
- 
-@@ -828,7 +828,7 @@ static int og01a1b_enum_mbus_code(struct v4l2_subdev *sd,
- 	if (code->index > 0)
- 		return -EINVAL;
- 
--	code->code = MEDIA_BUS_FMT_SGRBG10_1X10;
-+	code->code = MEDIA_BUS_FMT_Y10_1X10;
- 
- 	return 0;
- }
-@@ -840,7 +840,7 @@ static int og01a1b_enum_frame_size(struct v4l2_subdev *sd,
- 	if (fse->index >= ARRAY_SIZE(supported_modes))
- 		return -EINVAL;
- 
--	if (fse->code != MEDIA_BUS_FMT_SGRBG10_1X10)
-+	if (fse->code != MEDIA_BUS_FMT_Y10_1X10)
- 		return -EINVAL;
- 
- 	fse->min_width = supported_modes[fse->index].width;
 -- 
 2.51.0
 
