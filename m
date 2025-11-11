@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-194234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C17C4AF9D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AA5C4ABA1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2E651893FB3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70C0F3B0311
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7660E302CAC;
-	Tue, 11 Nov 2025 01:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F299C34C121;
+	Tue, 11 Nov 2025 01:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGZ2EYBy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLw/VINR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B031D86FF;
-	Tue, 11 Nov 2025 01:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF2830748A;
+	Tue, 11 Nov 2025 01:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825120; cv=none; b=D2Zid0lDXWho31xs1zLjnprlhGC5RGotz6NMS8Os4Vpo33tLlHlX7shTd/HQ1TTtec2l2w67BC1nG9j1QtOtruQ24XdK4Sv0AyaakoPTT9TiqUf7tXB6EarAzsiywgfXEEBa+2uy3zhhcO0ooAZdBdSMDs/iwOWpaJzKvNBJdGI=
+	t=1762823868; cv=none; b=p/UlBAzWoKk6P7urBPPsQXahLr/g8VUHLa2Iw58F4kfgj9WGSP/GJtIlc+P9/cl0pUHNEQe56KJKtejn8xUwu2WfLDPa7KthT6rZ/Qd5PV0hqwiOtsysUN8spP+XCCg0wmtdTuBY9Yu8WRCazbZc/buI/Y/cLFPDd7PA9qxEdOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825120; c=relaxed/simple;
-	bh=dCMIo1o94GdAQuUKTKyxzhUxv+JCuHMqlwv5rXD96Us=;
+	s=arc-20240116; t=1762823868; c=relaxed/simple;
+	bh=Wlg3utuCbsLKxTQHPm8ZgQbylCpfmD7kRcrbFNF9OUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oY7fiZFsQ1Nc/TYQF+4xeBirAblEWlm4nKUBbnDwpg1LmcDjNhKaaTBeEMoJvy7eXVHKwGiNNxBhWp8dvrHv+H6Ig8rldfqyyjRd3Dq3GS5Yobfs/oHd+rEtAJHjr+7yD5tzLYGABzt9wDKyY1/ad2W6VHS9cy3BJWyFTW4z8LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGZ2EYBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E80C4CEF5;
-	Tue, 11 Nov 2025 01:38:39 +0000 (UTC)
+	 MIME-Version; b=EGr8AL6GPLNikerZZLyTRiZ13xfGQDA0vMZfl/6ec1ZrGRBZOhJCOypah4Np1P1hgNc6pHCIHhB4wKW7srpuQoa5slZWwuerYkntyJ0VaCTzNJRYpRqII43Pe43bmYvWgykRYqHqMISYWmNe4Z2Q/cD4gv5rzMCv+JrYuIFyMt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLw/VINR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3929FC4CEF5;
+	Tue, 11 Nov 2025 01:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825120;
-	bh=dCMIo1o94GdAQuUKTKyxzhUxv+JCuHMqlwv5rXD96Us=;
+	s=korg; t=1762823868;
+	bh=Wlg3utuCbsLKxTQHPm8ZgQbylCpfmD7kRcrbFNF9OUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aGZ2EYBy+7sVkft4KytLYdfp7thRfd/D81YQSx6ucK/WNmu3lzAiWc44Z4COgPZ0L
-	 ITk4RaUiMY8Xx0x+gyMsyT3Qn/vGIyA7Kl+TqKZAbw7kUdyvv4Z//shLOpo5otrPYr
-	 RSRhGYOhAabQqd6+0TZUYoGHBdLVfs2Ryn8unJxg=
+	b=tLw/VINRQv7x03h3gWmDS2mbeecXc3dkU1p3LaaZ78HTE7TPYXuBzeThAOOe6pC1e
+	 uEK4QQZ2tCBebOPCYTRlCoMTBAukEbArQinBdIurlu6DTZNmKkGfB7iMmyQHyE3EIg
+	 EBDZohpFXds7Nu6KjpPoJidxmV9JsVspRlxd7Rpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Sridevi Arvindekar <sarvinde@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	chenmiao <chenmiao.ku@gmail.com>,
+	Stafford Horne <shorne@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 626/849] drm/amd/display: Fix for test crash due to power gating
+Subject: [PATCH 6.12 340/565] openrisc: Add R_OR1K_32_PCREL relocation type module support
 Date: Tue, 11 Nov 2025 09:43:16 +0900
-Message-ID: <20251111004551.568355582@linuxfoundation.org>
+Message-ID: <20251111004534.528068607@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,41 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sridevi Arvindekar <sarvinde@amd.com>
+From: chenmiao <chenmiao.ku@gmail.com>
 
-[ Upstream commit 0bf6b216d4783cb51f9af05a49d3cce4fc22dc24 ]
+[ Upstream commit 9d0cb6d00be891586261a35da7f8c3c956825c39 ]
 
-[Why/How]
-Call power gating routine only if it is defined.
+To ensure the proper functioning of the jump_label test module, this patch
+adds support for the R_OR1K_32_PCREL relocation type for any modules. The
+implementation calculates the PC-relative offset by subtracting the
+instruction location from the target value and stores the result at the
+specified location.
 
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Sridevi Arvindekar <sarvinde@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: chenmiao <chenmiao.ku@gmail.com>
+Signed-off-by: Stafford Horne <shorne@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/openrisc/kernel/module.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-index 9d3946065620a..f7b72b24b7509 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-@@ -3129,7 +3129,8 @@ void dcn20_fpga_init_hw(struct dc *dc)
- 		res_pool->dccg->funcs->dccg_init(res_pool->dccg);
- 
- 	//Enable ability to power gate / don't force power on permanently
--	hws->funcs.enable_power_gating_plane(hws, true);
-+	if (hws->funcs.enable_power_gating_plane)
-+		hws->funcs.enable_power_gating_plane(hws, true);
- 
- 	// Specific to FPGA dccg and registers
- 	REG_WRITE(RBBMIF_TIMEOUT_DIS, 0xFFFFFFFF);
+diff --git a/arch/openrisc/kernel/module.c b/arch/openrisc/kernel/module.c
+index c9ff4c4a0b29b..4ac4fbaa827c1 100644
+--- a/arch/openrisc/kernel/module.c
++++ b/arch/openrisc/kernel/module.c
+@@ -55,6 +55,10 @@ int apply_relocate_add(Elf32_Shdr *sechdrs,
+ 			value |= *location & 0xfc000000;
+ 			*location = value;
+ 			break;
++		case R_OR1K_32_PCREL:
++			value -= (uint32_t)location;
++			*location = value;
++			break;
+ 		case R_OR1K_AHI16:
+ 			/* Adjust the operand to match with a signed LO16.  */
+ 			value += 0x8000;
 -- 
 2.51.0
 
