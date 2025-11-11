@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-193144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59017C49FEF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 275E3C49FF2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18D9E3A5E53
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB8493A1B67
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A385424113D;
-	Tue, 11 Nov 2025 00:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C39524113D;
+	Tue, 11 Nov 2025 00:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTjgJy43"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4t5uhft"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616EA4C97;
-	Tue, 11 Nov 2025 00:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD774C97;
+	Tue, 11 Nov 2025 00:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822402; cv=none; b=A5eFoD5/T4TY8Zvr9VT7VNU8AbZPaC18h5uZTb2TpqfeQqJv9dP4DX1aYHGxrK5XBndOsoaYwhwi+K0DgjDAM1BflC5vq75xUUA1EKSxchPWnuWmAKimyz6yopVKjgspewo9mhmh4Q9tZbCL+IeLx/NP/My3rMSfTzNJpPtSViE=
+	t=1762822407; cv=none; b=EdtAdOlf5ZPhoNdkWqpPsv5D3KrsRlDRG9fDLSOxaukYu3Yop+wOmZVVUKM9opiGcBgspNlMss/XdQGgxzzKhddch4h2HRlDQYxNbe/meiCh0ejB/k16HYtqISbq16JniIQ+y5hL80nycowEu0rmsHA8WC/WVG2fxhyVNguEm2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822402; c=relaxed/simple;
-	bh=JuwhFDiPMhQlKT3rCQZOlaScnVQk832qro1z4qxErpI=;
+	s=arc-20240116; t=1762822407; c=relaxed/simple;
+	bh=Y9Os1agqA+NZRAm+bBgOkBn+oChjCyOTIRyZBeB7Vs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WL8EaHf4SkLMMSz+jMLx2InNRgZxvWpj8eAUkTz35cD4D8eHUF+RRFkB4CfWUmfr/0XMfE5wOn4K3KTcCJeSTmIh8Wv921dUc/39KSfkKWFrdeWFlIRQPRtOoVtxUHwooFOItQw+MRGh2+ZG13g2RmGsqwBIZbuK8YV1lJ7dXhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTjgJy43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C237DC4CEF5;
-	Tue, 11 Nov 2025 00:53:21 +0000 (UTC)
+	 MIME-Version; b=nrugraZLjDsQtoHM6rGRcjRWbsRGRrSDCm9odcndjlKYQUT/LB9B6jqwtPzVrq75/RpBIPKRdS/phfdW/HHOx++32bYomXAGnLR71pUfDRoDhqp0/pBsn3o8zawbwsyg9zEXeTf1MY93wH3XcjRWiS6Cl8QqUdteutu95YkaO/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4t5uhft; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD5EC4AF09;
+	Tue, 11 Nov 2025 00:53:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822402;
-	bh=JuwhFDiPMhQlKT3rCQZOlaScnVQk832qro1z4qxErpI=;
+	s=korg; t=1762822407;
+	bh=Y9Os1agqA+NZRAm+bBgOkBn+oChjCyOTIRyZBeB7Vs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CTjgJy43PORPKe0I9F5zXEMw6cPxAUbRnqWo1Jax+CrFovetfZSqz23jMCM2ioc7f
-	 ZR/UlQ7kDFekIHTNLKuQWHi3QQQAm+eqBc/+shmi/w5Msy0WJKM8RA0/NjJiFqIdqt
-	 /1aIFvM51w5JpUg1sPSbS/jsoL5IKf+a8pANOOks=
+	b=K4t5uhftFg1EXFZQf4/CSuuI8jqE7t4B+Upc61UOPGnjyEUYMIvL5WiAd8ves79A7
+	 U7PESF7IUg+KQjveTOHIN8Uc/MYKsi6li5Y6SeyVV4p79HuPyQey946flh5REVymd2
+	 JfBZvvF9sBHBrzBD36dUlgsJKoaR6oYQ1zXrF6JE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Chris Lu <chris.lu@mediatek.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/565] Bluetooth: ISO: Fix BIS connection dst_type handling
-Date: Tue, 11 Nov 2025 09:38:19 +0900
-Message-ID: <20251111004527.869081465@linuxfoundation.org>
+Subject: [PATCH 6.12 044/565] Bluetooth: btmtksdio: Add pmctrl handling for BT closed state during reset
+Date: Tue, 11 Nov 2025 09:38:20 +0900
+Message-ID: <20251111004527.894458773@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -65,34 +66,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Chris Lu <chris.lu@mediatek.com>
 
-[ Upstream commit f0c200a4a537f8f374584a974518b0ce69eda76c ]
+[ Upstream commit 77343b8b4f87560f8f03e77b98a81ff3a147b262 ]
 
-Socket dst_type cannot be directly assigned to hci_conn->type since
-there domain is different which may lead to the wrong address type being
-used.
+This patch adds logic to handle power management control when the
+Bluetooth function is closed during the SDIO reset sequence.
 
-Fixes: 6a5ad251b7cd ("Bluetooth: ISO: Fix possible circular locking dependency")
+Specifically, if BT is closed before reset, the driver enables the
+SDIO function and sets driver pmctrl. After reset, if BT remains
+closed, the driver sets firmware pmctrl and disables the SDIO function.
+
+These changes ensure proper power management and device state consistency
+across the reset flow.
+
+Fixes: 8fafe702253d ("Bluetooth: mt7921s: support bluetooth reset mechanism")
+Signed-off-by: Chris Lu <chris.lu@mediatek.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btmtksdio.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index f48a694b004ab..c9a262f97678b 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1927,7 +1927,7 @@ static void iso_conn_ready(struct iso_conn *conn)
- 		 */
- 		if (!bacmp(&hcon->dst, BDADDR_ANY)) {
- 			bacpy(&hcon->dst, &iso_pi(parent)->dst);
--			hcon->dst_type = iso_pi(parent)->dst_type;
-+			hcon->dst_type = le_addr_type(iso_pi(parent)->dst_type);
- 		}
+diff --git a/drivers/bluetooth/btmtksdio.c b/drivers/bluetooth/btmtksdio.c
+index 13dcc0077732b..206de38fc1c82 100644
+--- a/drivers/bluetooth/btmtksdio.c
++++ b/drivers/bluetooth/btmtksdio.c
+@@ -1270,6 +1270,12 @@ static void btmtksdio_cmd_timeout(struct hci_dev *hdev)
  
- 		if (ev3) {
+ 	sdio_claim_host(bdev->func);
+ 
++	/* set drv_pmctrl if BT is closed before doing reset */
++	if (!test_bit(BTMTKSDIO_FUNC_ENABLED, &bdev->tx_state)) {
++		sdio_enable_func(bdev->func);
++		btmtksdio_drv_pmctrl(bdev);
++	}
++
+ 	sdio_writel(bdev->func, C_INT_EN_CLR, MTK_REG_CHLPCR, NULL);
+ 	skb_queue_purge(&bdev->txq);
+ 	cancel_work_sync(&bdev->txrx_work);
+@@ -1285,6 +1291,12 @@ static void btmtksdio_cmd_timeout(struct hci_dev *hdev)
+ 		goto err;
+ 	}
+ 
++	/* set fw_pmctrl back if BT is closed after doing reset */
++	if (!test_bit(BTMTKSDIO_FUNC_ENABLED, &bdev->tx_state)) {
++		btmtksdio_fw_pmctrl(bdev);
++		sdio_disable_func(bdev->func);
++	}
++
+ 	clear_bit(BTMTKSDIO_PATCH_ENABLED, &bdev->tx_state);
+ err:
+ 	sdio_release_host(bdev->func);
 -- 
 2.51.0
 
