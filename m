@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2678C4AE89
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A00C4AD6F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D5423BA2AF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC3143B7638
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64F8307ACF;
-	Tue, 11 Nov 2025 01:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985B2307AE6;
+	Tue, 11 Nov 2025 01:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhURnPjm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhPFq2b4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70488248F6A;
-	Tue, 11 Nov 2025 01:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AE525F797;
+	Tue, 11 Nov 2025 01:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824438; cv=none; b=u8ymC1xNx4ry4Nop8nbDUPSgmoFZRDisozI0lyLYVvYK/x4uCbOQ4CDV1VI68ML8y+Ig9XbhFVKhMeXpL8ZoSkx1ifHEArRhiGHlgTQF3sMRnOv7Zm+hp6+ZbGtBNXJcGPdI8aWzU7qh/40espYvf7FEo4L7mEIXbV5sTGHjVmo=
+	t=1762824443; cv=none; b=dOhVAKJ/kpWr0KAHtsG+0wh30mHRM/ctqwRxXEH8IZKArdTjL+vB+RxqepOeSBo45qMHFp/J/tdyHOL9FpUcVas1gBE/hAf6AtsaaJ1nwCD2WYEvhqClxyA6Fh1h/Ncaj91toNTGU/jS0R2x/h42xou4N+r7sA553scje6PinA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824438; c=relaxed/simple;
-	bh=w4QWRcr+FfgFEOE32GzeHEf4UoJBYGuObOZ0yKa0Sjs=;
+	s=arc-20240116; t=1762824443; c=relaxed/simple;
+	bh=b+YNgyE9Xa83SH/6fbBhshDukSu3BiZepGsZgzYUaTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ltSKA2y3E1IYLd8Td3w9wFVAs2k8/m0i0hQseSLTbb4Dl38bH2NEzYPqCzs/JZQ/E3wgpFJfVv8mhOZUyA12t0A1Bjrmw4zQaywLpMwni65RoBBMWzySLf6juPT/Zo2/4KVkDdw0zYC4ashg2kKAy4hm0nSww868QWFdPDw3SDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhURnPjm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A17C19425;
-	Tue, 11 Nov 2025 01:27:17 +0000 (UTC)
+	 MIME-Version; b=NjOAAi5i3ZQ72KZ070EFAy4+v1Y5qj2VUfK+kZem5kBF6OIPH+7tFbm5KH/5ScltmXX/GG+alp/yW3EL3WbX2v43FqO0tQeMfI9ltwtBZ2g5OfbEv2AR9PEvBE5PGc2YHQiC+c6tVWvdXBkO5eYVKD5A5YM5Q6ieGcds2CS28wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhPFq2b4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD9BC116D0;
+	Tue, 11 Nov 2025 01:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824438;
-	bh=w4QWRcr+FfgFEOE32GzeHEf4UoJBYGuObOZ0yKa0Sjs=;
+	s=korg; t=1762824443;
+	bh=b+YNgyE9Xa83SH/6fbBhshDukSu3BiZepGsZgzYUaTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WhURnPjmG8KCjeUU+GvVDoW+go9cs4TV2HidMMGRMVOkPs85w3AV7dCnnQyCvOTOL
-	 SpBwtFT2dsoNks3CxyJHVxU3cATKfspuwR9SKXaSeqcvmjdnGruD2zP0PGwCHKJzzk
-	 iUzLNXYOnp4bDopMPwz6yVFqeOKZ6NmLqPY22E3U=
+	b=uhPFq2b4c3oYAxJTTPisq8MyLKRn1PBuUFvmLG+67ilwwLpKobbQd8A8wHGoTtVz4
+	 bweQCB2UdVRDyWQoSpx0kP4ru9RMM6N2s02mDpfhrJ1WDcDyw8Zc3n9fi6qEBz2VV3
+	 Fb5+cpEOvPtEdyt9xj0g6sfif26pHX0ISPCageyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 500/849] ntfs3: pretend $Extend records as regular files
-Date: Tue, 11 Nov 2025 09:41:10 +0900
-Message-ID: <20251111004548.521889722@linuxfoundation.org>
+Subject: [PATCH 6.17 501/849] wifi: cfg80211: update the time stamps in hidden ssid
+Date: Tue, 11 Nov 2025 09:41:11 +0900
+Message-ID: <20251111004548.545632394@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,35 +66,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 4e8011ffec79717e5fdac43a7e79faf811a384b7 ]
+[ Upstream commit 185cc2352cb1ef2178fe4e9a220a73c94007b8bb ]
 
-Since commit af153bb63a33 ("vfs: catch invalid modes in may_open()")
-requires any inode be one of S_IFDIR/S_IFLNK/S_IFREG/S_IFCHR/S_IFBLK/
-S_IFIFO/S_IFSOCK type, use S_IFREG for $Extend records.
+In hidden SSID we have separate BSS entries for the beacon and for the
+probe response(s).
+The BSS entry time stamps represent the age of the BSS;
+when was the last time we heard the BSS.
+When we receive a beacon of a hidden SSID it means that we heard that
+BSS, so it makes sense to indicate that in the probe response entries.
+Do that.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250907115135.712745e498c0.I38186abf5d20dec6f6f2d42d2e1cdb50c6bfea25@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/wireless/scan.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 37cbbee7fa580..b08b009121653 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -471,6 +471,7 @@ static struct inode *ntfs_read_mft(struct inode *inode,
- 		   fname->home.seq == cpu_to_le16(MFT_REC_EXTEND)) {
- 		/* Records in $Extend are not a files or general directories. */
- 		inode->i_op = &ntfs_file_inode_operations;
-+		mode = S_IFREG;
- 	} else {
- 		err = -EINVAL;
- 		goto out;
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 6c7b7c3828a41..90a9187a6b135 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1816,6 +1816,9 @@ static void cfg80211_update_hidden_bsses(struct cfg80211_internal_bss *known,
+ 		WARN_ON(ies != old_ies);
+ 
+ 		rcu_assign_pointer(bss->pub.beacon_ies, new_ies);
++
++		bss->ts = known->ts;
++		bss->pub.ts_boottime = known->pub.ts_boottime;
+ 	}
+ }
+ 
+@@ -1882,6 +1885,10 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
+ {
+ 	lockdep_assert_held(&rdev->bss_lock);
+ 
++	/* Update time stamps */
++	known->ts = new->ts;
++	known->pub.ts_boottime = new->pub.ts_boottime;
++
+ 	/* Update IEs */
+ 	if (rcu_access_pointer(new->pub.proberesp_ies)) {
+ 		const struct cfg80211_bss_ies *old;
+@@ -1945,8 +1952,6 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
+ 	if (signal_valid)
+ 		known->pub.signal = new->pub.signal;
+ 	known->pub.capability = new->pub.capability;
+-	known->ts = new->ts;
+-	known->pub.ts_boottime = new->pub.ts_boottime;
+ 	known->parent_tsf = new->parent_tsf;
+ 	known->pub.chains = new->pub.chains;
+ 	memcpy(known->pub.chain_signal, new->pub.chain_signal,
 -- 
 2.51.0
 
