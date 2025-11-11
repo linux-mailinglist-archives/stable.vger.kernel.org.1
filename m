@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1382C4A6FB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A64C4AD06
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0DBD1892D97
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A6723B9F39
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9EC274FE3;
-	Tue, 11 Nov 2025 01:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417B933C502;
+	Tue, 11 Nov 2025 01:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzuGPhVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izcdrsqB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4115248883;
-	Tue, 11 Nov 2025 01:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1667333443;
+	Tue, 11 Nov 2025 01:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823392; cv=none; b=sA/hOIviqypSl2a/qIr67PmSrneJvZlPtWcGhyzJdf3hNqOjq9aXyKqWMpvUJaUfKh152lUdNkqP4j1LxKD14rm4X76GHKqKXF5zDYlZoBfRANDss3Rqyc5fPdp+2MRUwomgaiguunb7y+XCg22jPSL+Cc5RKXZ8eOYVjo/o3Fo=
+	t=1762824561; cv=none; b=PdL6nvB2kNCv2XTzQyiC8bm8j7Bvfo2nvQNelFwmFG5KeTpW77NF1RrLs2ZsuqzMH8b/hSdmLDKNHhcyo/UsZDfvXpekjfp2c1DHVGwRVU6u9KW+pOybO5rYKjAtDh9fASc10sN/3hvAxGHr5n6roWkbKXUpuL0/QSZTj+vbn40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823392; c=relaxed/simple;
-	bh=MnbVzu8TaPU1OP+dH1fTUmJjynS4OIAaF6f34ptyn50=;
+	s=arc-20240116; t=1762824561; c=relaxed/simple;
+	bh=BOGO2vNtNgVybIhjzuljFkiuiIpM9hKyALPefvffkS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqn0uvGD9a8feKwmKu1NqMQ3db/JeQDJx2ntKyMFcaypSi2TW2qMH/WX6vr/rVzB/lvDJzhAlkj6IE9KuuINWNTWPRc2U+EKIIPSwJmCKlHCoHzTciRGJQwDiY+zb6ZHNdIgF4BZLp+ZsxA90lkgeX7Kw9K8HOckWiSFjseJ94o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzuGPhVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7515CC4CEF5;
-	Tue, 11 Nov 2025 01:09:52 +0000 (UTC)
+	 MIME-Version; b=Cq5Fk0dJJfkVGGvqRNduNLTgJqcyv9OUmLdByTQN/mCQ6XTnP4Hnz427T/RzmmSjqNE7lryTW1X5utcbrgKsZNdMMDbb4JNq37lyh3BaynjrrNzP/LTD4s0sx4SKFwzltKQ2YWlpEQqgMbGSJgsHOOLGqKDA+OSJXolGJqJJqFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izcdrsqB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FA9C4CEFB;
+	Tue, 11 Nov 2025 01:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823392;
-	bh=MnbVzu8TaPU1OP+dH1fTUmJjynS4OIAaF6f34ptyn50=;
+	s=korg; t=1762824560;
+	bh=BOGO2vNtNgVybIhjzuljFkiuiIpM9hKyALPefvffkS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GzuGPhVuGuWwDRYFPEfXWKLm8AZ0IdSarlSYrNQjNGawWXgLy5huwYBuJ0v05PJtY
-	 3zvkJ6hEjwYQBz+napnXDccHZui1lMo9UbQT3iLaFuyD6mc53mrALTe1RBlSZldrkn
-	 uSHKdOvv1yfkJDT7Bzh9Y320avbzPqZh5McOi6JM=
+	b=izcdrsqBtKq6CcKSxhTuO/OHUnX9dCxoUHLUJYnzjwsSXwJeq5eGs16x3BiJST0Ko
+	 KSxioPgVkDRGVt8wUFqY3qyyCSNgN1q4wFm5pggKGZ+ut1o+CgBvHMXCxePQ8uUYGa
+	 UZ9TYbguvRxbstRzzaWvyTrz91EtQLF1A+4jTQmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 238/565] f2fs: fix to detect potential corrupted nid in free_nid_list
+Subject: [PATCH 6.17 524/849] selftests: net: lib.sh: Dont defer failed commands
 Date: Tue, 11 Nov 2025 09:41:34 +0900
-Message-ID: <20251111004532.270540298@linuxfoundation.org>
+Message-ID: <20251111004549.089946665@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 8fc6056dcf79937c46c97fa4996cda65956437a9 ]
+[ Upstream commit fa57032941d4b451c7264ebf3ad595bc98e3a9a9 ]
 
-As reported, on-disk footer.ino and footer.nid is the same and
-out-of-range, let's add sanity check on f2fs_alloc_nid() to detect
-any potential corruption in free_nid_list.
+Usually the autodefer helpers in lib.sh are expected to be run in context
+where success is the expected outcome. However when using them for feature
+detection, failure can legitimately occur. But the failed command still
+schedules a cleanup, which will likely fail again.
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Instead, only schedule deferred cleanup when the positive command succeeds.
+
+This way of organizing the cleanup has the added benefit that now the
+return code from these functions reflects whether the command passed.
+
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/af10a5bb82ea11ead978cf903550089e006d7e70.1757004393.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c          | 17 ++++++++++++++++-
- include/linux/f2fs_fs.h |  1 +
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/lib.sh | 32 +++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 7c27878293697..720768d574ae6 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -27,12 +27,17 @@ static struct kmem_cache *free_nid_slab;
- static struct kmem_cache *nat_entry_set_slab;
- static struct kmem_cache *fsync_node_entry_slab;
- 
-+static inline bool is_invalid_nid(struct f2fs_sb_info *sbi, nid_t nid)
-+{
-+	return nid < F2FS_ROOT_INO(sbi) || nid >= NM_I(sbi)->max_nid;
-+}
-+
- /*
-  * Check whether the given nid is within node id range.
-  */
- int f2fs_check_nid_range(struct f2fs_sb_info *sbi, nid_t nid)
+diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+index c7add0dc4c605..80cf1a75136cf 100644
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -547,8 +547,8 @@ ip_link_add()
  {
--	if (unlikely(nid < F2FS_ROOT_INO(sbi) || nid >= NM_I(sbi)->max_nid)) {
-+	if (unlikely(is_invalid_nid(sbi, nid))) {
- 		set_sbi_flag(sbi, SBI_NEED_FSCK);
- 		f2fs_warn(sbi, "%s: out-of-range nid=%x, run fsck to fix.",
- 			  __func__, nid);
-@@ -2609,6 +2614,16 @@ bool f2fs_alloc_nid(struct f2fs_sb_info *sbi, nid_t *nid)
- 		f2fs_bug_on(sbi, list_empty(&nm_i->free_nid_list));
- 		i = list_first_entry(&nm_i->free_nid_list,
- 					struct free_nid, list);
-+
-+		if (unlikely(is_invalid_nid(sbi, i->nid))) {
-+			spin_unlock(&nm_i->nid_list_lock);
-+			f2fs_err(sbi, "Corrupted nid %u in free_nid_list",
-+								i->nid);
-+			f2fs_stop_checkpoint(sbi, false,
-+					STOP_CP_REASON_CORRUPTED_NID);
-+			return false;
-+		}
-+
- 		*nid = i->nid;
+ 	local name=$1; shift
  
- 		__move_free_nid(sbi, i, FREE_NID, PREALLOC_NID);
-diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
-index 5206d63b33860..cc13b4e0e9147 100644
---- a/include/linux/f2fs_fs.h
-+++ b/include/linux/f2fs_fs.h
-@@ -79,6 +79,7 @@ enum stop_cp_reason {
- 	STOP_CP_REASON_FLUSH_FAIL,
- 	STOP_CP_REASON_NO_SEGMENT,
- 	STOP_CP_REASON_CORRUPTED_FREE_BITMAP,
-+	STOP_CP_REASON_CORRUPTED_NID,
- 	STOP_CP_REASON_MAX,
- };
+-	ip link add name "$name" "$@"
+-	defer ip link del dev "$name"
++	ip link add name "$name" "$@" && \
++		defer ip link del dev "$name"
+ }
  
+ ip_link_set_master()
+@@ -556,8 +556,8 @@ ip_link_set_master()
+ 	local member=$1; shift
+ 	local master=$1; shift
+ 
+-	ip link set dev "$member" master "$master"
+-	defer ip link set dev "$member" nomaster
++	ip link set dev "$member" master "$master" && \
++		defer ip link set dev "$member" nomaster
+ }
+ 
+ ip_link_set_addr()
+@@ -566,8 +566,8 @@ ip_link_set_addr()
+ 	local addr=$1; shift
+ 
+ 	local old_addr=$(mac_get "$name")
+-	ip link set dev "$name" address "$addr"
+-	defer ip link set dev "$name" address "$old_addr"
++	ip link set dev "$name" address "$addr" && \
++		defer ip link set dev "$name" address "$old_addr"
+ }
+ 
+ ip_link_has_flag()
+@@ -590,8 +590,8 @@ ip_link_set_up()
+ 	local name=$1; shift
+ 
+ 	if ! ip_link_is_up "$name"; then
+-		ip link set dev "$name" up
+-		defer ip link set dev "$name" down
++		ip link set dev "$name" up && \
++			defer ip link set dev "$name" down
+ 	fi
+ }
+ 
+@@ -600,8 +600,8 @@ ip_link_set_down()
+ 	local name=$1; shift
+ 
+ 	if ip_link_is_up "$name"; then
+-		ip link set dev "$name" down
+-		defer ip link set dev "$name" up
++		ip link set dev "$name" down && \
++			defer ip link set dev "$name" up
+ 	fi
+ }
+ 
+@@ -609,20 +609,20 @@ ip_addr_add()
+ {
+ 	local name=$1; shift
+ 
+-	ip addr add dev "$name" "$@"
+-	defer ip addr del dev "$name" "$@"
++	ip addr add dev "$name" "$@" && \
++		defer ip addr del dev "$name" "$@"
+ }
+ 
+ ip_route_add()
+ {
+-	ip route add "$@"
+-	defer ip route del "$@"
++	ip route add "$@" && \
++		defer ip route del "$@"
+ }
+ 
+ bridge_vlan_add()
+ {
+-	bridge vlan add "$@"
+-	defer bridge vlan del "$@"
++	bridge vlan add "$@" && \
++		defer bridge vlan del "$@"
+ }
+ 
+ wait_local_port_listen()
 -- 
 2.51.0
 
