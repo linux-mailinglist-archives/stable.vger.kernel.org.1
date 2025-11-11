@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-194282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD61C4B000
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:52:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC08C4B036
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:53:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C94831899FFC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:47:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A5B21881CC3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5884D30F7F6;
-	Tue, 11 Nov 2025 01:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2336C3446C0;
+	Tue, 11 Nov 2025 01:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMSA/lJS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eEF8gKkb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145BC30BF77;
-	Tue, 11 Nov 2025 01:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D173E3446B3;
+	Tue, 11 Nov 2025 01:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825234; cv=none; b=XUUQX7JWYDXxkTSNaYFTuxG+9tkAWHFLW4zN4AjSc8dMCMqT5a6VdHTUlqCpUqaTVqsJ0ImQuB3b98WpsCSSmJsE8bbKY5gZNVef8cAp9ijp0GEgN5eIm/4WeuoK1UeKhg5uXcSl8IonHza9CvHkITm85YRkdYK4jIslImATZgE=
+	t=1762825259; cv=none; b=HnaSIhZg5HTxQ9LVgL2li8bRZ/1sM5vD9LvOUdohUWLoRXjPIyhHScrpBskprhoYsczZFZ6UiXuz4V/MZVXPk4b5QFgjcU7VU3xdpNVoWQr7MGtGLaySfPooPlAX/K4N091RWOFthWYSf95ArbKH4fntwE3UzqdJBzjr8uixegE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825234; c=relaxed/simple;
-	bh=esYQLy4cpAQ7VuisV/W6VkOT27yHqCySDJokHNLEdfg=;
+	s=arc-20240116; t=1762825259; c=relaxed/simple;
+	bh=R9ewcabJaCle14q40T8gOgSk29vs2Ldp9M7gMXTzeTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgKPjgkwj3TBExPkaMC4pvVn0LfpBYxV2R24kHjmShnNploWa3638z+wSVXCDykAfQLXBmHp589b7CG/aPzsLgP1RWZRMsJ5CY/rQb7EE7ZR9/oxVIqLSehc595GoUei0SHr2MuFN3/qMBHKmTCFZv1Bze/55mnwVzziqCGyU3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMSA/lJS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A372FC113D0;
-	Tue, 11 Nov 2025 01:40:33 +0000 (UTC)
+	 MIME-Version; b=vBCWvZ2pOclzmkk6ddTuxS1gwmsW+MjwmnQTjlhHiQNUbRzsEbawKDXY2Ixq89o7VLgO6qmq/eOIKcYshEMNxDBs5ifrGD8eOIHnyyc+YqwD0tTghXHCN28XCg9eDeMsDFN7/64R8GFDgPuMqZKYcegIPfVkOl1qwmEeeu+HFgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eEF8gKkb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F50C4CEF5;
+	Tue, 11 Nov 2025 01:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825233;
-	bh=esYQLy4cpAQ7VuisV/W6VkOT27yHqCySDJokHNLEdfg=;
+	s=korg; t=1762825259;
+	bh=R9ewcabJaCle14q40T8gOgSk29vs2Ldp9M7gMXTzeTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMSA/lJSjF5/y5sOayEhftHC9QbJbrSOWPiY+dFA0Zwf+FGak1BojYR6nF+xmkjC7
-	 0XccBMklTmcNyzkm1UiB9fAMnqs9O00M73TEvzP3PW4sMkjC2JROfQ+LRpAkowNtvo
-	 HgqyzSW5Vqs+2K0vvP2JEf2fbQNEJfXZv+ORAeJg=
+	b=eEF8gKkbuSzUWyu/2pX46L1DWdx1EIpvPytAnBTWX9/+IBOM1u3IjQdf6rWSBwmBW
+	 I+gtoGkOd5ICz31CcqBv+qi6pB0VRyRihWzitw11lQFAg8XOKq93XmoR+g5fqrvAGr
+	 hrYenmsaWEnJWCQkUnpS6Kt6mr1jEn2fa+uGLw3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
 	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 710/849] clk: scmi: Add duty cycle ops only when duty cycle is supported
-Date: Tue, 11 Nov 2025 09:44:40 +0900
-Message-ID: <20251111004553.603232273@linuxfoundation.org>
+Subject: [PATCH 6.17 711/849] clk: clocking-wizard: Fix output clock register offset for Versal platforms
+Date: Tue, 11 Nov 2025 09:44:41 +0900
+Message-ID: <20251111004553.627132443@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,51 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
 
-[ Upstream commit 18db1ff2dea0f97dedaeadd18b0cb0a0d76154df ]
+[ Upstream commit 7c2e86f7b5af93d0e78c16e4359318fe7797671d ]
 
-For some of the SCMI based platforms, the oem extended config may be
-supported, but not for duty cycle purpose. Skip the duty cycle ops if
-err return when trying to get duty cycle info.
+The output clock register offset used in clk_wzrd_register_output_clocks
+was incorrectly referencing 0x3C instead of 0x38, which caused
+misconfiguration of output dividers on Versal platforms.
 
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Correcting the off-by-one error ensures proper configuration of output
+clocks.
+
+Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
 Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-scmi.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/clk/xilinx/clk-xlnx-clock-wizard.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-scmi.c b/drivers/clk/clk-scmi.c
-index d2408403283fc..c2f3ef4e58fe3 100644
---- a/drivers/clk/clk-scmi.c
-+++ b/drivers/clk/clk-scmi.c
-@@ -349,6 +349,8 @@ scmi_clk_ops_select(struct scmi_clk *sclk, bool atomic_capable,
- 		    unsigned int atomic_threshold_us,
- 		    const struct clk_ops **clk_ops_db, size_t db_size)
- {
-+	int ret;
-+	u32 val;
- 	const struct scmi_clock_info *ci = sclk->info;
- 	unsigned int feats_key = 0;
- 	const struct clk_ops *ops;
-@@ -370,8 +372,13 @@ scmi_clk_ops_select(struct scmi_clk *sclk, bool atomic_capable,
- 	if (!ci->parent_ctrl_forbidden)
- 		feats_key |= BIT(SCMI_CLK_PARENT_CTRL_SUPPORTED);
- 
--	if (ci->extended_config)
--		feats_key |= BIT(SCMI_CLK_DUTY_CYCLE_SUPPORTED);
-+	if (ci->extended_config) {
-+		ret = scmi_proto_clk_ops->config_oem_get(sclk->ph, sclk->id,
-+						 SCMI_CLOCK_CFG_DUTY_CYCLE,
-+						 &val, NULL, false);
-+		if (!ret)
-+			feats_key |= BIT(SCMI_CLK_DUTY_CYCLE_SUPPORTED);
-+	}
- 
- 	if (WARN_ON(feats_key >= db_size))
- 		return NULL;
+diff --git a/drivers/clk/xilinx/clk-xlnx-clock-wizard.c b/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
+index 0295a13a811cf..f209a02e82725 100644
+--- a/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
++++ b/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
+@@ -1108,7 +1108,7 @@ static int clk_wzrd_register_output_clocks(struct device *dev, int nr_outputs)
+ 						(dev,
+ 						 clkout_name, clk_name, 0,
+ 						 clk_wzrd->base,
+-						 (WZRD_CLK_CFG_REG(is_versal, 3) + i * 8),
++						 (WZRD_CLK_CFG_REG(is_versal, 2) + i * 8),
+ 						 WZRD_CLKOUT_DIVIDE_SHIFT,
+ 						 WZRD_CLKOUT_DIVIDE_WIDTH,
+ 						 CLK_DIVIDER_ONE_BASED |
 -- 
 2.51.0
 
