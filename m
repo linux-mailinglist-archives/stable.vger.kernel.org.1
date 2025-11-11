@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-193309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93586C4A21D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:02:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C73EC4A223
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B8FE3AD55D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E37D31886353
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40B6265CC5;
-	Tue, 11 Nov 2025 01:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C6B25EF9C;
+	Tue, 11 Nov 2025 01:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdqejCxf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Chf6U6BR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2E725A64C;
-	Tue, 11 Nov 2025 01:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0243248883;
+	Tue, 11 Nov 2025 01:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822867; cv=none; b=WGTz/Rr3Nstw9Ec/REy6PgJxFR4TruNxCEf/5eu/Odv//TXAsqlpwS6f5+J5bM3/TmtHsSCxF+FdmXgRQiL5NGhbKHROAcrSnKEg2ubqeKEVjwMiUqo75/XK3Gqklv8YPnS44W1CXwf5Ek7jXZwvXVKEC2DvZFbnEx+ZphgLTv8=
+	t=1762822911; cv=none; b=KimKnNcsJyHrSj/mbvtNy5eO95jgdJlGPkwCj5/j4+lUWwhSuHeMOedFH5vECaYmnfGrWz90MKo7+jQEkh0xnecCv6pQCE8GQqeoCkRSzYWRnt7U824z442AuAXsl3N2HA3PiZdfvvzxYhHHwgOTVV+0wVi8ljDqHUL5BQDOAPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822867; c=relaxed/simple;
-	bh=0rgWvX7l+mxelczeWMb9lX0hhDx7rCSmCgZXYXE6+XI=;
+	s=arc-20240116; t=1762822911; c=relaxed/simple;
+	bh=BL66hqJbd6jceZrX4jOzrgW9sonc1eunku/WQBpSvdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cSFETwOfc7OSjY+PKXzRuYUq0DCKMQl2xaEmrsDW9EMwaMBHc86l55zH15S1oRQXEAdacy5u49O83NTWxTuVqPAiHz6utnpRpAlx4cQ8IAr5487EAaTI4+NjdubGgCmsshMwvOHIm2LGwWZ1QowFd0F6v/Om0AAv7iJCbDY8JdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdqejCxf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15449C4AF09;
-	Tue, 11 Nov 2025 01:01:06 +0000 (UTC)
+	 MIME-Version; b=mVIrJgg+TGCtE6/JLfwJQu+rGmXI6hVIPJmjI6WOkvCq98BQgmJsH4ArMCd9zRcCWZMcQQgDs7+6rvgVEPqgCdUB8IcKHKOMVq+KvlGoiw9hHdHfpeaKD6MiumwnaJGu0IrVrXp8iqsr/APsklSLuGuxj4ZQK8H2RauLBPXzSSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Chf6U6BR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764C3C16AAE;
+	Tue, 11 Nov 2025 01:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822867;
-	bh=0rgWvX7l+mxelczeWMb9lX0hhDx7rCSmCgZXYXE6+XI=;
+	s=korg; t=1762822910;
+	bh=BL66hqJbd6jceZrX4jOzrgW9sonc1eunku/WQBpSvdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gdqejCxfwdaFItD+b7JbrGVoSYZhJ86dsZBCegCOu3D6oSci1LBI6i7scN/fetyXy
-	 VeKR6qZ+nH9W3doqa3Y7Zqx/CYR8WH3jqvmNE42i/WCmkaYSINqyz7q6OyyDgb8I5b
-	 idlN9IJc/2Huv4akqmpo4Z8dXdQ1PSnaIzvYpEGs=
+	b=Chf6U6BRMr2/RkLK5LSOB+ebqPN8sVk5AW4QRI3GMEJfkGSFFt9eS4WKxPPkYoDTF
+	 YD42PBbAdJQ04/4qBpzW+9e1p/QjX8ScaSbJoctEwYtDeb62ntgpJQUjYh1+aaymCs
+	 Ksy9q9CjlZHFy2hi6/XiOx8QtFRZOwuSTdhrZNHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Svyatoslav Ryhel <clamor95@gmail.com>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 186/849] video: backlight: lp855x_bl: Set correct EPROM start for LP8556
-Date: Tue, 11 Nov 2025 09:35:56 +0900
-Message-ID: <20251111004540.924391610@linuxfoundation.org>
+Subject: [PATCH 6.17 194/849] cpuidle: Fail cpuidle device registration if there is one already
+Date: Tue, 11 Nov 2025 09:36:04 +0900
+Message-ID: <20251111004541.132988662@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,35 +65,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Svyatoslav Ryhel <clamor95@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 07c7efda24453e05951fb2879f5452b720b91169 ]
+[ Upstream commit 7b1b7961170e4fcad488755e5ffaaaf9bd527e8f ]
 
-According to LP8556 datasheet EPROM region starts at 0x98 so adjust value
-in the driver accordingly.
+Refuse to register a cpuidle device if the given CPU has a cpuidle
+device already and print a message regarding it.
 
-Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-Reviewed-by: "Daniel Thompson (RISCstar)" <danielt@kernel.org>
-Link: https://lore.kernel.org/r/20250909074304.92135-2-clamor95@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Without this, an attempt to register a new cpuidle device without
+unregistering the existing one leads to the removal of the existing
+cpuidle device without removing its sysfs interface.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/lp855x_bl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpuidle/cpuidle.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/backlight/lp855x_bl.c b/drivers/video/backlight/lp855x_bl.c
-index 7075bfab59c4d..d191560ce285f 100644
---- a/drivers/video/backlight/lp855x_bl.c
-+++ b/drivers/video/backlight/lp855x_bl.c
-@@ -22,7 +22,7 @@
- #define LP855X_DEVICE_CTRL		0x01
- #define LP855X_EEPROM_START		0xA0
- #define LP855X_EEPROM_END		0xA7
--#define LP8556_EPROM_START		0xA0
-+#define LP8556_EPROM_START		0x98
- #define LP8556_EPROM_END		0xAF
+diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
+index 0835da449db8b..56132e843c991 100644
+--- a/drivers/cpuidle/cpuidle.c
++++ b/drivers/cpuidle/cpuidle.c
+@@ -635,8 +635,14 @@ static void __cpuidle_device_init(struct cpuidle_device *dev)
+ static int __cpuidle_register_device(struct cpuidle_device *dev)
+ {
+ 	struct cpuidle_driver *drv = cpuidle_get_cpu_driver(dev);
++	unsigned int cpu = dev->cpu;
+ 	int i, ret;
  
- /* LP8555/7 Registers */
++	if (per_cpu(cpuidle_devices, cpu)) {
++		pr_info("CPU%d: cpuidle device already registered\n", cpu);
++		return -EEXIST;
++	}
++
+ 	if (!try_module_get(drv->owner))
+ 		return -EINVAL;
+ 
+@@ -648,7 +654,7 @@ static int __cpuidle_register_device(struct cpuidle_device *dev)
+ 			dev->states_usage[i].disable |= CPUIDLE_STATE_DISABLED_BY_USER;
+ 	}
+ 
+-	per_cpu(cpuidle_devices, dev->cpu) = dev;
++	per_cpu(cpuidle_devices, cpu) = dev;
+ 	list_add(&dev->device_list, &cpuidle_detected_devices);
+ 
+ 	ret = cpuidle_coupled_register_device(dev);
 -- 
 2.51.0
 
