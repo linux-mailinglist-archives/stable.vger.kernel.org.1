@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A03C4A2D4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:05:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C677C4A2E1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:05:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C23934F009A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9AE604F716D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE92246768;
-	Tue, 11 Nov 2025 01:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8187262A;
+	Tue, 11 Nov 2025 01:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMk/vtG1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2upEfMh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB12F2E403;
-	Tue, 11 Nov 2025 01:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1BE1482E8;
+	Tue, 11 Nov 2025 01:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822872; cv=none; b=KHLuzQ29cJ8wJjA4rP0rFv91N6MW8zboXue7/bseMf/T2ZeXjwlXdG+Hxb12B7m1va5Nj0FIX7eZzP7FFhD5aJHGtF9ES9nidtm++zluYcRs4VPhy+vtzo5KFjWbG+StZYRowz/kwIJLdkHPTX8cdM9VqzrgwAHB8mKFSlcyjbw=
+	t=1762822877; cv=none; b=sFNYtN2+p0ChUFFplEXfUB088uJIiRLolOwZ5WlOIqSNU6CRPIbTv9ij4ciyPnOimrC6OcwKzmPrnpQSVRsPRvSNC9ZVWnDXyko2byNPbinqwEFquXkdB5iTWGyPOSaADd9cLMR9Qxw35emnSR+apk0zZDJJ0diO44oUdZEnF/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822872; c=relaxed/simple;
-	bh=OLYu8DGg5GrRmupcsQl1iz1ljPSFktBr9MpOCJ0JLs4=;
+	s=arc-20240116; t=1762822877; c=relaxed/simple;
+	bh=mI71i+blKKxjdw3Afq5jhh3LpzmWd7uWBmzCSenYacA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8slj1IjdLDpw1uoIwxXIYfO0BgbC+Oxq8JGm3l+Gt4YIKloOEAHU/oPifa3tOPxSNPZokYKiJH7N7jey7Od1FMHp0JjODH9yRXIiGfNDmVUBH+dIpRHOnBxCJFhMD5E2jkWZYvUWeaDizLlB08Z/6+BiInXCSIgnPXrh6idg0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMk/vtG1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C20C4CEFB;
-	Tue, 11 Nov 2025 01:01:12 +0000 (UTC)
+	 MIME-Version; b=i/Ml2+dhLZiRRnBGseWiJorRv00z733LlPlyG9wj0+zhV7xHLTkkGiFH0IkIIJVstkXp6RKaI1C/raZg2tMSdgJv23NkNGPsaX+LTLgbHqTmXGGO+4rikl+pevQHcEG6+gk7bVVsJxN4OoHC0GdjvDVquv4AYGsQGLOa5bMoC4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2upEfMh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397C1C16AAE;
+	Tue, 11 Nov 2025 01:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822872;
-	bh=OLYu8DGg5GrRmupcsQl1iz1ljPSFktBr9MpOCJ0JLs4=;
+	s=korg; t=1762822877;
+	bh=mI71i+blKKxjdw3Afq5jhh3LpzmWd7uWBmzCSenYacA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMk/vtG1My7nsL4YmKuRVOCAOWu7hcGsE6UGyISBEgzMxnLqQLR5g8xZBRO41zsCd
-	 PqZwbEYdVJMDUsJyKG1WvDwbvlqOqMykzLD6sWdO/8XQf56SdLB1zKKNxktMnynOtn
-	 fwkSpUE5cqjZjAVN2LLg2JiLO8lsSQ4iDJjJgFak=
+	b=m2upEfMhJY5nK08o7y/loKx6ZC/QNBQUCWu919LalkhdtsWlfVEOOo3a6aLdulrwg
+	 nytvDBloH5Et2e6VleCyrmuiuLiQUtOBjKvNMs+QJqBGLcGEbIQ/hAIsxhKG6e01gy
+	 Y5R9GTUdchS/fLjBmc11DkpzURKYGi5yQYo69/l4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 187/849] i3c: dw: Add shutdown support to dw_i3c_master driver
-Date: Tue, 11 Nov 2025 09:35:57 +0900
-Message-ID: <20251111004540.948013232@linuxfoundation.org>
+Subject: [PATCH 6.17 188/849] io_uring/zcrx: check all niovs filled with dma addresses
+Date: Tue, 11 Nov 2025 09:35:58 +0900
+Message-ID: <20251111004540.971994978@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,65 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 17e163f3d7a5449fe9065030048e28c4087b24ce ]
+[ Upstream commit d7ae46b454eb05e3df0d46c2ac9c61416a4d9057 ]
 
-Add shutdown handler to the Synopsys DesignWare I3C master driver,
-ensuring the device is gracefully disabled during system shutdown.
+Add a warning if io_populate_area_dma() can't fill in all net_iovs, it
+should never happen.
 
-The shutdown handler cancels any pending hot-join work and disables
-interrupts.
-
-Signed-off-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
-Link: https://lore.kernel.org/r/20250730151207.4113708-1-manikanta.guntupalli@amd.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/dw-i3c-master.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ io_uring/zcrx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
-index 974122b2d20ee..9ceedf09c3b6a 100644
---- a/drivers/i3c/master/dw-i3c-master.c
-+++ b/drivers/i3c/master/dw-i3c-master.c
-@@ -1737,6 +1737,28 @@ static const struct dev_pm_ops dw_i3c_pm_ops = {
- 	SET_RUNTIME_PM_OPS(dw_i3c_master_runtime_suspend, dw_i3c_master_runtime_resume, NULL)
- };
+diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+index 2035c77a16357..23ffc95caa427 100644
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -75,6 +75,9 @@ static int io_populate_area_dma(struct io_zcrx_ifq *ifq,
+ 			niov_idx++;
+ 		}
+ 	}
++
++	if (WARN_ON_ONCE(niov_idx != area->nia.num_niovs))
++		return -EFAULT;
+ 	return 0;
+ }
  
-+static void dw_i3c_shutdown(struct platform_device *pdev)
-+{
-+	struct dw_i3c_master *master = platform_get_drvdata(pdev);
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(master->dev);
-+	if (ret < 0) {
-+		dev_err(master->dev,
-+			"<%s> cannot resume i3c bus master, err: %d\n",
-+			__func__, ret);
-+		return;
-+	}
-+
-+	cancel_work_sync(&master->hj_work);
-+
-+	/* Disable interrupts */
-+	writel((u32)~INTR_ALL, master->regs + INTR_STATUS_EN);
-+	writel((u32)~INTR_ALL, master->regs + INTR_SIGNAL_EN);
-+
-+	pm_runtime_put_autosuspend(master->dev);
-+}
-+
- static const struct of_device_id dw_i3c_master_of_match[] = {
- 	{ .compatible = "snps,dw-i3c-master-1.00a", },
- 	{},
-@@ -1752,6 +1774,7 @@ MODULE_DEVICE_TABLE(acpi, amd_i3c_device_match);
- static struct platform_driver dw_i3c_driver = {
- 	.probe = dw_i3c_probe,
- 	.remove = dw_i3c_remove,
-+	.shutdown = dw_i3c_shutdown,
- 	.driver = {
- 		.name = "dw-i3c-master",
- 		.of_match_table = dw_i3c_master_of_match,
 -- 
 2.51.0
 
