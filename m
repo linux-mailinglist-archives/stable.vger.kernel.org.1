@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-193087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237EDC49F3E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B259C49F44
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A20E634BD6B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DB4B734BD71
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED6C244693;
-	Tue, 11 Nov 2025 00:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402D4192B75;
+	Tue, 11 Nov 2025 00:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXfRISET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ASC7Dwt+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0554C97;
-	Tue, 11 Nov 2025 00:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C9F4C97;
+	Tue, 11 Nov 2025 00:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822269; cv=none; b=qMjxFi1LFMJiI6qReroD+xO95nHFnDeeDoqk3F3ell8FX06UjfuMyVMigNFX60ByayK4bsH2Op7Q9hvyeJNiExsWoIcJKlUo3iqK3URbwm2+4egSdR83sURq/cHBb+2U9WCiXjksiYfqu7lOwiVhvwk1Enr54DQ/bOBqA+fIrro=
+	t=1762822274; cv=none; b=UtwLdq57qLzX3KbxGth4nqefgcbSNnMT4Rcn9M+wA/uNpc1zpKRHTBShkVHJbhvYhFCr1/bhC2Ic7ESCTzx6BgRHZdWOrFJ8MjbqH9GY99rAQYMa0tK0LTusLgIhOqV8jwrG2p0/eILuWJZPJ8TacdWc/cC/JlzXOWn0H976oPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822269; c=relaxed/simple;
-	bh=WPSdfXQqXmwBvUgXXTrRvPsQ0FlAmUlC7Gh2z1b03zE=;
+	s=arc-20240116; t=1762822274; c=relaxed/simple;
+	bh=bVYw2gKJOhk2FoXHKCtYxEAfZaViFnOK2aLOxnn5Wlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bxh3cBxTzTSCkIWv6oZb1x6nbg9EFoqILm95xCvRvsedtWWFyBYqtYMGhYSps/OLQUhi6cj/AV8r3nGLKcP7g+Bkp2+0PTd0Y/R6jfUPYW/SckqCBqDE3CFSBOjzN6YY0/qhxzO4y+bZzE+54vIc8rYokBxTP7vFty2TZAnEY/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXfRISET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E8AC113D0;
-	Tue, 11 Nov 2025 00:51:08 +0000 (UTC)
+	 MIME-Version; b=SeXzNlp50MeqQCVgKJk1r9rFyvbsx/0ux06JLuf8fCO6knlsc4AKYf062Y2hllcHKZbso1XYNI34k9PosBY0x/O84m0i1Up8f0zazMxYIpRAE4nHVjVcsE0In/YEqcSG0dnCfjkMVxkuHc2HyKnn43M/QW5tIiB/OSGDTrbVjg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ASC7Dwt+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5E2C19421;
+	Tue, 11 Nov 2025 00:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822269;
-	bh=WPSdfXQqXmwBvUgXXTrRvPsQ0FlAmUlC7Gh2z1b03zE=;
+	s=korg; t=1762822273;
+	bh=bVYw2gKJOhk2FoXHKCtYxEAfZaViFnOK2aLOxnn5Wlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tXfRISETALt0LIh5gzjJtJHlk7Fx2qAc7FFutIGOpbk3l7sxTAg7Yz4OmRJZkfnU3
-	 3MykOqzsbU21xwGLM0hL9oLCMNIvwidRaKZG8PKCfz27xB7SnVDaXIvmagTu7FfmBg
-	 6/KO0UjyszsgBoY//nAyzaGl6JZdHaFqgIgoEJoQ=
+	b=ASC7Dwt+IRC6FzTRKsj3cXpu/IlyDGKhOnqxmXOBnuO0SE28UtRgJjo2rp3an7+Ml
+	 w0nDxpo7RfRGtR9IxoxEu7Z6YyNigFQ3KQf5rM4toM/x0nXztmUTFLYJuFidzdvyCo
+	 rBtnytDbFd5zcfYWrayyh3zvzJ9h3MnnLK8rcXK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 015/565] ASoC: qdsp6: q6asm: do not sleep while atomic
-Date: Tue, 11 Nov 2025 09:37:51 +0900
-Message-ID: <20251111004527.208508941@linuxfoundation.org>
+	stable@vger.kernnel.org,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.12 016/565] s390/pci: Restore IRQ unconditionally for the zPCI device
+Date: Tue, 11 Nov 2025 09:37:52 +0900
+Message-ID: <20251111004527.233806157@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,38 +68,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Farhan Ali <alifm@linux.ibm.com>
 
-commit fdbb53d318aa94a094434e5f226617f0eb1e8f22 upstream.
+commit b45873c3f09153d1ad9b3a7bf9e5c0b0387fd2ea upstream.
 
-For some reason we ended up kfree between spinlock lock and unlock,
-which can sleep.
+Commit c1e18c17bda6 ("s390/pci: add zpci_set_irq()/zpci_clear_irq()"),
+introduced the zpci_set_irq() and zpci_clear_irq(), to be used while
+resetting a zPCI device.
 
-move the kfree out of spinlock section.
+Commit da995d538d3a ("s390/pci: implement reset_slot for hotplug
+slot"), mentions zpci_clear_irq() being called in the path for
+zpci_hot_reset_device().  But that is not the case anymore and these
+functions are not called outside of this file. Instead
+zpci_hot_reset_device() relies on zpci_disable_device() also clearing
+the IRQs, but misses to reset the zdev->irqs_registered flag.
 
-Fixes: a2a5d30218fd ("ASoC: qdsp6: q6asm: Add support to memory map and unmap")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251017085307.4325-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+However after a CLP disable/enable reset, the device's IRQ are
+unregistered, but the flag zdev->irq_registered does not get cleared. It
+creates an inconsistent state and so arch_restore_msi_irqs() doesn't
+correctly restore the device's IRQ. This becomes a problem when a PCI
+driver tries to restore the state of the device through
+pci_restore_state(). Restore IRQ unconditionally for the device and remove
+the irq_registered flag as its redundant.
+
+Fixes: c1e18c17bda6 ("s390/pci: add zpci_set_irq()/zpci_clear_irq()")
+Cc: stable@vger.kernnel.org
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6asm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/include/asm/pci.h |    1 -
+ arch/s390/pci/pci_irq.c     |    9 +--------
+ 2 files changed, 1 insertion(+), 9 deletions(-)
 
---- a/sound/soc/qcom/qdsp6/q6asm.c
-+++ b/sound/soc/qcom/qdsp6/q6asm.c
-@@ -377,9 +377,9 @@ static void q6asm_audio_client_free_buf(
+--- a/arch/s390/include/asm/pci.h
++++ b/arch/s390/include/asm/pci.h
+@@ -141,7 +141,6 @@ struct zpci_dev {
+ 	u8		has_resources	: 1;
+ 	u8		is_physfn	: 1;
+ 	u8		util_str_avail	: 1;
+-	u8		irqs_registered	: 1;
+ 	u8		tid_avail	: 1;
+ 	u8		reserved	: 1;
+ 	unsigned int	devfn;		/* DEVFN part of the RID*/
+--- a/arch/s390/pci/pci_irq.c
++++ b/arch/s390/pci/pci_irq.c
+@@ -107,9 +107,6 @@ static int zpci_set_irq(struct zpci_dev
+ 	else
+ 		rc = zpci_set_airq(zdev);
  
- 	spin_lock_irqsave(&ac->lock, flags);
- 	port->num_periods = 0;
-+	spin_unlock_irqrestore(&ac->lock, flags);
- 	kfree(port->buf);
- 	port->buf = NULL;
--	spin_unlock_irqrestore(&ac->lock, flags);
+-	if (!rc)
+-		zdev->irqs_registered = 1;
+-
+ 	return rc;
  }
  
- /**
+@@ -123,9 +120,6 @@ static int zpci_clear_irq(struct zpci_de
+ 	else
+ 		rc = zpci_clear_airq(zdev);
+ 
+-	if (!rc)
+-		zdev->irqs_registered = 0;
+-
+ 	return rc;
+ }
+ 
+@@ -427,8 +421,7 @@ bool arch_restore_msi_irqs(struct pci_de
+ {
+ 	struct zpci_dev *zdev = to_zpci(pdev);
+ 
+-	if (!zdev->irqs_registered)
+-		zpci_set_irq(zdev);
++	zpci_set_irq(zdev);
+ 	return true;
+ }
+ 
 
 
 
