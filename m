@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-194055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C886C4AB17
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F36C4A572
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:20:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 441BA34951C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AE9DF34BF2A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FA126D4C7;
-	Tue, 11 Nov 2025 01:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9411E343216;
+	Tue, 11 Nov 2025 01:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Od55mhKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zR88Qf/e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED9E2DE707;
-	Tue, 11 Nov 2025 01:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDF5343214;
+	Tue, 11 Nov 2025 01:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824700; cv=none; b=OGVSOg7qf1Urge402NzOnIr/AiI/yR+c9YxD+MvNq/FFbDoq+3YGbnzjY3LSGGaLzRnhoy4qNS/BwL9Satg7ji/3gvsMZVGvfvd6FDBVDGMduItmDcvhktIJRdpKsi5AX5ON6zblz9KsixGqiQVFRthyfGQZCJ8xSahph/ooP1w=
+	t=1762823546; cv=none; b=hIZBevyKAkUo2dsa6qXK4Ade8UhupetADp9rBbwKiKA6xgPNG5vpTqvXAb9Scx5y2Rz1ew0/QMSO1OHM/Z68d4uX6qv0kPVSqd1LwlnKv5tUPkqv5DGIlW+XNmDEiM7X+DdnsBH5tXngk+I/Io3KOknDFMXCDc7AcxmxEtpwOK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824700; c=relaxed/simple;
-	bh=1veMqOIlF2DhuEpuLQsDYAoqufV84kmi2FBw4ExIPgY=;
+	s=arc-20240116; t=1762823546; c=relaxed/simple;
+	bh=EmL/HGVTUBDdvBcsWNqKGgebFsFYvfJXcuz027NTOo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KPwlppK3v94Y3wA3YWvcAWkM3TPYBeT9NLmhXAsMrkTK96mQIoBTrgNIJrtMWhOR206aqYOj/1yS6mVvP8GGkZLGarVr2iUKMDzgPP97mM1tNJEAvD//brOXCvJq8ONNvgv4LyG3qp5JJYwtZGtROkq6OZXSMN9JmlPTJeBvXa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Od55mhKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD7D3C4AF0C;
-	Tue, 11 Nov 2025 01:31:39 +0000 (UTC)
+	 MIME-Version; b=pbTJR8VwigGOkTTqZV92esM5WXYd7MW4DiDRnuEmEEHnggR+P3JtDjxzBY3CIFAuijXEqRtO7mbZ/uXapXxb5ylRgrI5ZHXY7xR8b8+2ux00Yx3x04+WVKRsVCG1O4M2FwifYYXGSqvn1L+lGd6yAU1J+qsaI/4qGM2cawh2J7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zR88Qf/e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53F0C4CEFB;
+	Tue, 11 Nov 2025 01:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824700;
-	bh=1veMqOIlF2DhuEpuLQsDYAoqufV84kmi2FBw4ExIPgY=;
+	s=korg; t=1762823546;
+	bh=EmL/HGVTUBDdvBcsWNqKGgebFsFYvfJXcuz027NTOo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Od55mhKtkO31F+xDNk/azvsV+g4oeg5KbBliLlIO3Vs84y3ERPutAwzLhoD86kux8
-	 OZ+A23bOopCdODjGe9IB20M10ANq9uZftyZRoEzCEAXGtmjvjP5FOKCoUk4pR1fPy1
-	 ZunAhaYHE4coBJ5luNUypY3UwOvA/Uruue6nXap4=
+	b=zR88Qf/ei6+dneSJrMn2SDq8ZyF8sc4ePnv4gM6NzIGSaUiBVcUfnAQK4Tg3VuMr7
+	 /8YroRaDO3MQVWrSb3N2oBavUZj0BvXG0Sv+o6vKZ+adAK3RHBoP3sHj71gJRcQTt4
+	 +sIEsffbhgfRA3qI9/jZ2MdcjR6jSoCs703SUQ5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Chen <leo.chen@amd.com>,
-	Ausef Yousof <Ausef.Yousof@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Mangesh Gadre <Mangesh.Gadre@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 553/849] drm/amd/display: fix dml ms order of operations
+Subject: [PATCH 6.12 267/565] drm/amdgpu: Avoid vcn v5.0.1 poison irq call trace on sriov guest
 Date: Tue, 11 Nov 2025 09:42:03 +0900
-Message-ID: <20251111004549.777561885@linuxfoundation.org>
+Message-ID: <20251111004532.896881354@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ausef Yousof <Ausef.Yousof@amd.com>
+From: Mangesh Gadre <Mangesh.Gadre@amd.com>
 
-[ Upstream commit 02a6c2e4b28ff31f7a904c196a99fb2efe81e2cf ]
+[ Upstream commit 37551277dfed796b6749e4fa52bdb62403cfdb42 ]
 
-[why&how]
-small error in order of operations in immediateflipbytes
-calculation on dml ms side that can result in dml ms
-and mp mismatch immediateflip support for a given pipe
-and thus an invalid hw state, correct the order to align
-with mp.
+Sriov guest side doesn't init ras feature hence the poison irq shouldn't
+be put during hw fini
 
-Reviewed-by: Leo Chen <leo.chen@amd.com>
-Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Mangesh Gadre <Mangesh.Gadre@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-index 715f9019a33e2..4b9b2e84d3811 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-@@ -6529,7 +6529,7 @@ static noinline_for_stack void dml_prefetch_check(struct display_mode_lib_st *mo
- 				mode_lib->ms.TotImmediateFlipBytes = 0;
- 				for (k = 0; k <= mode_lib->ms.num_active_planes - 1; k++) {
- 					if (!(mode_lib->ms.policy.ImmediateFlipRequirement[k] == dml_immediate_flip_not_required)) {
--						mode_lib->ms.TotImmediateFlipBytes = mode_lib->ms.TotImmediateFlipBytes + mode_lib->ms.NoOfDPP[j][k] * mode_lib->ms.PDEAndMetaPTEBytesPerFrame[j][k] + mode_lib->ms.MetaRowBytes[j][k];
-+						mode_lib->ms.TotImmediateFlipBytes = mode_lib->ms.TotImmediateFlipBytes + mode_lib->ms.NoOfDPP[j][k] * (mode_lib->ms.PDEAndMetaPTEBytesPerFrame[j][k] + mode_lib->ms.MetaRowBytes[j][k]);
- 						if (mode_lib->ms.use_one_row_for_frame_flip[j][k]) {
- 							mode_lib->ms.TotImmediateFlipBytes = mode_lib->ms.TotImmediateFlipBytes + mode_lib->ms.NoOfDPP[j][k] * (2 * mode_lib->ms.DPTEBytesPerRow[j][k]);
- 						} else {
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
+index d8bbb93767318..0034e71283964 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
+@@ -284,7 +284,7 @@ static int vcn_v5_0_1_hw_fini(struct amdgpu_ip_block *ip_block)
+ 			vinst->set_pg_state(vinst, AMD_PG_STATE_GATE);
+ 	}
+ 
+-	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__VCN))
++	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__VCN) && !amdgpu_sriov_vf(adev))
+ 		amdgpu_irq_put(adev, &adev->vcn.inst->ras_poison_irq, 0);
+ 
+ 	return 0;
 -- 
 2.51.0
 
