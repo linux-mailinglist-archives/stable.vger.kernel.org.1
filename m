@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E329EC4A27D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:04:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44EEC4A283
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:04:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00E5D188EEBE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AC60188F087
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1481E25A334;
-	Tue, 11 Nov 2025 01:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DCE26056C;
+	Tue, 11 Nov 2025 01:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAkQ24mU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUuYKBN+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EFE258EF6;
-	Tue, 11 Nov 2025 01:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E724A1F5F6;
+	Tue, 11 Nov 2025 01:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822992; cv=none; b=J88zISHB1n0TC25EzmtpipuTyNMW9UBKF2fYaaVTCqx3UTG9S6kkCG6T2iWTp9nt9lX05Qb7yySbmBVJgPSMYo4SQNN07T/nDMvCslIbHwCSbU9K3WupkUBHd8ykoUsaBk6Qyw7Hu2f1Vv+uQI2rZi58/WYlTg+lPeFAqkZ0Kls=
+	t=1762823007; cv=none; b=ltKVs9+aXDA/R6GMgulreF+s8RrVcQN4g5bYrmj9/rWlYZBDz/fUfIvfPkJRq6rM4oo878QWWJ8lIESrtQJ3doI3Zi/5bpU2mjaoVinO45AIR3b3YWDUXOjENBIpFmEEqTks6Vf7wKXYBPpz1pauDgmkVl5zrNZa4XwECSjQiRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822992; c=relaxed/simple;
-	bh=vqioFOxfZgtLXHGBSIneGoGTsHbleNF28bvpzm6B+jI=;
+	s=arc-20240116; t=1762823007; c=relaxed/simple;
+	bh=5fBuZvFVGtDVn7kaAhCboEcr+jlNMPAnA0wQq3jcOEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSZt8WHO8W3SQOn6YUKihS0iVBe+ER9aw1Tdg33Nf6BjQU5SJMw5QCc/8RJKAQDJWnpu/kGoJzNcSqfZCPvOXkCE510EsNlIZMGBaxBWf9Zyth0xG3g96gJFz3iJy7x9twdJiee+KqDZVW5C0Ql0TkkX0V5XZvfj2xunkRWLA3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAkQ24mU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDAEC2BCAF;
-	Tue, 11 Nov 2025 01:03:12 +0000 (UTC)
+	 MIME-Version; b=ia8CPDlHt7D/S13SxFIQdPAoXiQl1m5CnoN1W6JFz6kt9bc1FS98JZsC1114DfAamLQtIGtnI6u0J3yzLoVKJEwnRe4L0mSXHWcySVs4QiybRS7CJv3nagZJVyZnVHOFDIy6NVv268m6PXmOc49UDEWILYAg30ZmZZMPx8pVMmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUuYKBN+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86AD3C4CEF5;
+	Tue, 11 Nov 2025 01:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822992;
-	bh=vqioFOxfZgtLXHGBSIneGoGTsHbleNF28bvpzm6B+jI=;
+	s=korg; t=1762823006;
+	bh=5fBuZvFVGtDVn7kaAhCboEcr+jlNMPAnA0wQq3jcOEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PAkQ24mURQ7KpB3QX3lBNphx/Vwhd0Twua1IVCVLsKxy6VKlGS2EbGVmlGSA0apqS
-	 BDa1XV+LoAkpRigyuT/bvf7BHVvDRRspmhEh9JQ4umNb6WFbcSQ8VegoT6E5CSoZwT
-	 +gd7DpY/vLDywmf/jsbwSv2NCy+CiY5V79yMBeIs=
+	b=IUuYKBN+06lmm2XSDN7xzLA28d9922bMHC4EtrOwZpRPye+kiPCUGUsOux1+SlVmj
+	 kQyXZWFPXzJ7+PZ4I4lFPKBbuqGf3weRHV5JXfCPjKC9kkc4fUWZTMapyxBKV9T7DN
+	 IkwxioX6EFUYmPIRhst8+dIedsOowCpxGcpZD+Kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Mykyta Yatsenko <yatsenko@meta.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 210/849] hwmon: (dell-smm) Remove Dell Precision 490 custom config data
-Date: Tue, 11 Nov 2025 09:36:20 +0900
-Message-ID: <20251111004541.522005486@linuxfoundation.org>
+Subject: [PATCH 6.17 213/849] selftests/bpf: Fix flaky bpf_cookie selftest
+Date: Tue, 11 Nov 2025 09:36:23 +0900
+Message-ID: <20251111004541.592042287@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,66 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Mykyta Yatsenko <yatsenko@meta.com>
 
-[ Upstream commit ddb61e737f04e3c6c8299c1e00bf17a42a7f05cf ]
+[ Upstream commit 105eb5dc74109a9f53c2f26c9a918d9347a73595 ]
 
-It turns out the second fan on the Dell Precision 490 does not
-really support I8K_FAN_TURBO. Setting the fan state to 3 enables
-automatic fan control, just like on the other two fans.
-The reason why this was misinterpreted as turbo mode was that
-the second fan normally spins faster in automatic mode than
-in the previous fan states. Yet when in state 3, the fan speed
-reacts to heat exposure, exposing the automatic mode setting.
+bpf_cookie can fail on perf_event_open(), when it runs after the task_work
+selftest. The task_work test causes perf to lower
+sysctl_perf_event_sample_rate, and bpf_cookie uses sample_freq,
+which is validated against that sysctl. As a result,
+perf_event_open() rejects the attr if the (now tighter) limit is
+exceeded.
 
-Link: https://github.com/lm-sensors/lm-sensors/pull/383
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20250917181036.10972-2-W_Armin@gmx.de
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+>From perf_event_open():
+if (attr.freq) {
+	if (attr.sample_freq > sysctl_perf_event_sample_rate)
+		return -EINVAL;
+} else {
+	if (attr.sample_period & (1ULL << 63))
+		return -EINVAL;
+}
+
+Switch bpf_cookie to use sample_period, which is not checked against
+sysctl_perf_event_sample_rate.
+
+Signed-off-by: Mykyta Yatsenko <yatsenko@meta.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250925215230.265501-1-mykyta.yatsenko5@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/dell-smm-hwmon.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/bpf_cookie.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
-index 1e2c8e2840015..3f61b2d7935e4 100644
---- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -1331,7 +1331,6 @@ struct i8k_config_data {
- 
- enum i8k_configs {
- 	DELL_LATITUDE_D520,
--	DELL_PRECISION_490,
- 	DELL_STUDIO,
- 	DELL_XPS,
- };
-@@ -1341,10 +1340,6 @@ static const struct i8k_config_data i8k_config_data[] __initconst = {
- 		.fan_mult = 1,
- 		.fan_max = I8K_FAN_TURBO,
- 	},
--	[DELL_PRECISION_490] = {
--		.fan_mult = 1,
--		.fan_max = I8K_FAN_TURBO,
--	},
- 	[DELL_STUDIO] = {
- 		.fan_mult = 1,
- 		.fan_max = I8K_FAN_HIGH,
-@@ -1364,15 +1359,6 @@ static const struct dmi_system_id i8k_config_dmi_table[] __initconst = {
- 		},
- 		.driver_data = (void *)&i8k_config_data[DELL_LATITUDE_D520],
- 	},
--	{
--		.ident = "Dell Precision 490",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--			DMI_MATCH(DMI_PRODUCT_NAME,
--				  "Precision WorkStation 490"),
--		},
--		.driver_data = (void *)&i8k_config_data[DELL_PRECISION_490],
--	},
- 	{
- 		.ident = "Dell Studio",
- 		.matches = {
+diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c b/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c
+index 4a0670c056bad..75f4dff7d0422 100644
+--- a/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c
++++ b/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c
+@@ -450,8 +450,7 @@ static void pe_subtest(struct test_bpf_cookie *skel)
+ 	attr.size = sizeof(attr);
+ 	attr.type = PERF_TYPE_SOFTWARE;
+ 	attr.config = PERF_COUNT_SW_CPU_CLOCK;
+-	attr.freq = 1;
+-	attr.sample_freq = 10000;
++	attr.sample_period = 100000;
+ 	pfd = syscall(__NR_perf_event_open, &attr, -1, 0, -1, PERF_FLAG_FD_CLOEXEC);
+ 	if (!ASSERT_GE(pfd, 0, "perf_fd"))
+ 		goto cleanup;
 -- 
 2.51.0
 
