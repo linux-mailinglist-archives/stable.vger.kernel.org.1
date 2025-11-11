@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8127DC4AD36
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C33C4B25B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:03:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BF1E189000D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE6543B91E6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6034F305044;
-	Tue, 11 Nov 2025 01:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9928306D47;
+	Tue, 11 Nov 2025 01:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEfndDiZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIR7wjXO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B75E2701DC;
-	Tue, 11 Nov 2025 01:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8535D3064AB;
+	Tue, 11 Nov 2025 01:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824807; cv=none; b=LtTYfhHo+gk1YsfSFxYGfSwogjSKt0hh4Igk95xufDohZAlkjrc9M0NaAWj3BYUVTIloFLtJ0qm480p97l1b/oM/4YJCYslHkDRhnpAmorCJ9t6K1tulSPzFjFd8Df6XTdLqvXxVal1WWhjxjxw6fdpoHJwRA36P9+kwZFLzjgM=
+	t=1762825552; cv=none; b=bGdO/dvHFH/LsWV8ayQhW8vPM3YWbRfcK7Zyl+EKiiQMpl2Hh1wTv0/OAP3rY617idcH6grrhRLGjqESFXvnh5eEQZJXnimsIaDiYBxEPQPijBR0vbff5kNhntqLgz4niVUrVwURr4KkqNkfUQ/R2VWLQhQexVwwaFK6Onj11gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824807; c=relaxed/simple;
-	bh=z1E0VnZkEx9QTfexSpg/UpUDdBspEOk2Jvso60jBajg=;
+	s=arc-20240116; t=1762825552; c=relaxed/simple;
+	bh=fmGK9sTPKpu9lsf9Pv2eNZOahb9GNLPHhtVJkwq7LVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9MBMV2b46qC7cMEoNzVgSV4/VHE1EHdZUCJNXNMw0qCrmYlcDQTZeVtJGQWXq/o7ZRAnWn8Hf5WjvosVgU6omxvL0VDr/L9QRdzWywEkqDuWTMJbdKdLxpJpt+aTcJxecFcGxvgDFELocUYGF7O9wrZ4MW59id6A3JPJ9v/5RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEfndDiZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5323C116B1;
-	Tue, 11 Nov 2025 01:33:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VrTeBoLD4MCDV//4UYDiyyuvClg76negsfYWR1SIS1svOlwzLKNOxYU+Bs9iuSBI1hBzuY6VBeDlt9tVPgWg1vOz4gzCSuGhqzkzLsHk6tGKRKZYM6SV4/rZHobdN4z4/Qi4FRsQk4/rn2X40GPl5/K4a+SIt0zkAbbu+F5oL/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIR7wjXO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E59C19424;
+	Tue, 11 Nov 2025 01:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824807;
-	bh=z1E0VnZkEx9QTfexSpg/UpUDdBspEOk2Jvso60jBajg=;
+	s=korg; t=1762825552;
+	bh=fmGK9sTPKpu9lsf9Pv2eNZOahb9GNLPHhtVJkwq7LVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEfndDiZfyP5R3GFzXHakPjf9bMjOXItHRJTH9J/IS98NDJwwJrtwppK47zXulRo7
-	 EzkCOE50rU9xWxyICR//MC+g/xgA4mEWiNmtp/7jRQfzIr0kBbkAw1AxbtvGtc/yQO
-	 KkeRg9/YKRToSRgGjs6EunTpAGAIfDzK8nU8rdtI=
+	b=oIR7wjXO1uppZFpvpIrDm7CualYv+cXVcym7xFmifhf8CSyW0Imdfunx8SMeUeM64
+	 0sbCBQl0jBGpyoOIiN4F2KVSRkISkUMo9vgX1rwMobfXmouagILcfoCGBw3zBBQdmx
+	 trG/5I+kFDSIw8/V1H/GYWZkDG6IrwIoKefIs2kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 521/565] net: dsa: b53: fix enabling ip multicast
-Date: Tue, 11 Nov 2025 09:46:17 +0900
-Message-ID: <20251111004538.684812954@linuxfoundation.org>
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+	Philipp Stanner <phasta@kernel.org>
+Subject: [PATCH 6.17 808/849] drm/sched: Fix deadlock in drm_sched_entity_kill_jobs_cb
+Date: Tue, 11 Nov 2025 09:46:18 +0900
+Message-ID: <20251111004555.960781175@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +61,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
 
-[ Upstream commit c264294624e956a967a9e2e5fa41e3273340b089 ]
+commit 487df8b698345dd5a91346335f05170ed5f29d4e upstream.
 
-In the New Control register bit 1 is either reserved, or has a different
-function:
+The Mesa issue referenced below pointed out a possible deadlock:
 
-    Out of Range Error Discard
+[ 1231.611031]  Possible interrupt unsafe locking scenario:
 
-    When enabled, the ingress port discards any frames
-    if the Length field is between 1500 and 1536
-    (excluding 1500 and 1536) and with good CRC.
+[ 1231.611033]        CPU0                    CPU1
+[ 1231.611034]        ----                    ----
+[ 1231.611035]   lock(&xa->xa_lock#17);
+[ 1231.611038]                                local_irq_disable();
+[ 1231.611039]                                lock(&fence->lock);
+[ 1231.611041]                                lock(&xa->xa_lock#17);
+[ 1231.611044]   <Interrupt>
+[ 1231.611045]     lock(&fence->lock);
+[ 1231.611047]
+                *** DEADLOCK ***
 
-The actual bit for enabling IP multicast is bit 0, which was only
-explicitly enabled for BCM5325 so far.
+In this example, CPU0 would be any function accessing job->dependencies
+through the xa_* functions that don't disable interrupts (eg:
+drm_sched_job_add_dependency(), drm_sched_entity_kill_jobs_cb()).
 
-For older switch chips, this bit defaults to 0, so we want to enable it
-as well, while newer switch chips default to 1, and their documentation
-says "It is illegal to set this bit to zero."
+CPU1 is executing drm_sched_entity_kill_jobs_cb() as a fence signalling
+callback so in an interrupt context. It will deadlock when trying to
+grab the xa_lock which is already held by CPU0.
 
-So drop the wrong B53_IPMC_FWD_EN define, enable the IP multicast bit
-also for other switch chips. While at it, rename it to (B53_)IP_MC as
-that is how it is called in Broadcom code.
+Replacing all xa_* usage by their xa_*_irq counterparts would fix
+this issue, but Christian pointed out another issue: dma_fence_signal
+takes fence.lock and so does dma_fence_add_callback.
 
-Fixes: 63cc54a6f073 ("net: dsa: b53: Fix egress flooding settings")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251102100758.28352-2-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  dma_fence_signal() // locks f1.lock
+  -> drm_sched_entity_kill_jobs_cb()
+  -> foreach dependencies
+     -> dma_fence_add_callback() // locks f2.lock
+
+This will deadlock if f1 and f2 share the same spinlock.
+
+To fix both issues, the code iterating on dependencies and re-arming them
+is moved out to drm_sched_entity_kill_jobs_work().
+
+Cc: stable@vger.kernel.org # v6.2+
+Fixes: 2fdb8a8f07c2 ("drm/scheduler: rework entity flush, kill and fini")
+Link: https://gitlab.freedesktop.org/mesa/mesa/-/issues/13908
+Reported-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+[phasta: commit message nits]
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://patch.msgid.link/20251104095358.15092-1-pierre-eric.pelloux-prayer@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 4 ++--
- drivers/net/dsa/b53/b53_regs.h   | 3 +--
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/scheduler/sched_entity.c |   34 +++++++++++++++++--------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 914dbb86e1b07..a22f28f98faee 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -369,11 +369,11 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
- 		 * frames should be flooded or not.
- 		 */
- 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
-+		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IP_MC;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
- 	} else {
- 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--		mgmt |= B53_IP_MCAST_25;
-+		mgmt |= B53_IP_MC;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
- 	}
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -173,26 +173,15 @@ int drm_sched_entity_error(struct drm_sc
  }
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index 5741231e0841d..2dca7dd76eb6b 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -110,8 +110,7 @@
+ EXPORT_SYMBOL(drm_sched_entity_error);
  
- /* IP Multicast control (8 bit) */
- #define B53_IP_MULTICAST_CTRL		0x21
--#define  B53_IP_MCAST_25		BIT(0)
--#define  B53_IPMC_FWD_EN		BIT(1)
-+#define  B53_IP_MC			BIT(0)
- #define  B53_UC_FWD_EN			BIT(6)
- #define  B53_MC_FWD_EN			BIT(7)
++static void drm_sched_entity_kill_jobs_cb(struct dma_fence *f,
++					  struct dma_fence_cb *cb);
++
+ static void drm_sched_entity_kill_jobs_work(struct work_struct *wrk)
+ {
+ 	struct drm_sched_job *job = container_of(wrk, typeof(*job), work);
+-
+-	drm_sched_fence_scheduled(job->s_fence, NULL);
+-	drm_sched_fence_finished(job->s_fence, -ESRCH);
+-	WARN_ON(job->s_fence->parent);
+-	job->sched->ops->free_job(job);
+-}
+-
+-/* Signal the scheduler finished fence when the entity in question is killed. */
+-static void drm_sched_entity_kill_jobs_cb(struct dma_fence *f,
+-					  struct dma_fence_cb *cb)
+-{
+-	struct drm_sched_job *job = container_of(cb, struct drm_sched_job,
+-						 finish_cb);
++	struct dma_fence *f;
+ 	unsigned long index;
  
--- 
-2.51.0
-
+-	dma_fence_put(f);
+-
+ 	/* Wait for all dependencies to avoid data corruptions */
+ 	xa_for_each(&job->dependencies, index, f) {
+ 		struct drm_sched_fence *s_fence = to_drm_sched_fence(f);
+@@ -220,6 +209,21 @@ static void drm_sched_entity_kill_jobs_c
+ 		dma_fence_put(f);
+ 	}
+ 
++	drm_sched_fence_scheduled(job->s_fence, NULL);
++	drm_sched_fence_finished(job->s_fence, -ESRCH);
++	WARN_ON(job->s_fence->parent);
++	job->sched->ops->free_job(job);
++}
++
++/* Signal the scheduler finished fence when the entity in question is killed. */
++static void drm_sched_entity_kill_jobs_cb(struct dma_fence *f,
++					  struct dma_fence_cb *cb)
++{
++	struct drm_sched_job *job = container_of(cb, struct drm_sched_job,
++						 finish_cb);
++
++	dma_fence_put(f);
++
+ 	INIT_WORK(&job->work, drm_sched_entity_kill_jobs_work);
+ 	schedule_work(&job->work);
+ }
 
 
 
