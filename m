@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1FAC4A250
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:03:06 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EBC8C4A22F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:02:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1F391883780
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A280F4F4E33
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A29824E4A1;
-	Tue, 11 Nov 2025 01:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C70724EA90;
+	Tue, 11 Nov 2025 00:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y++O7mQp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1IIA3Pv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17521F5F6;
-	Tue, 11 Nov 2025 01:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9F51C6FE1;
+	Tue, 11 Nov 2025 00:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822958; cv=none; b=j7j6cPpZe+NACVKi5QB5AUcLP9c3Uo1BHi/leAj1qd1mED/bm4n8vClesZ9yWjyWdw3irHLPSjmWOzsPLK7EeN97QBb+VDlAoU6JGBQ7+BblBG13qUR+dWBwGh/lPDYaeUtZpLc4/51uscoEVRv143Cmcgi8l6UzznN9pnDkjwM=
+	t=1762822774; cv=none; b=lAA2vG/7PimZ0dpIGNhXWK96bHnRIG0Ly/oafriz8H6ZpPp8sUbMllcYHE67sRLhTlo4bj3CsoJP5/bjKnqrTVSnDUwa1Ob7LN5tJ+WOi59vrYKOAUxYkfbRBbkKSPpCOjnYVnj/IxmEUfuc8GRSJuV2aBCCN5Q9vw8BFpcrlvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822958; c=relaxed/simple;
-	bh=r/JDgMjqQdW94k3Ey/MQ4LBcrOHUAzNNANSXNx5bbrw=;
+	s=arc-20240116; t=1762822774; c=relaxed/simple;
+	bh=Vbs8Yir4WWl50cVgp7l9sKLQMitJIywHDA84cA3vS9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VhT2U0FS5mo2bSM4GwEK+JtxWwk+YeHu5YvUB+hQaEJkBpmdEaolZOwB+/UaiAlvsx3FdS6Puz+/qUa11BGe6AqxZm/K+mRI6BKF6+p/TCptNqExi4e2Ei4WIGLE5TKTYSQVe5W68msIkMo47nclLSUHpJQ7W0jKf33xPJUlSOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y++O7mQp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BACC2BCB0;
-	Tue, 11 Nov 2025 01:02:37 +0000 (UTC)
+	 MIME-Version; b=T653z8xzJIK/sdmbQALwy+oAKP7w1Sy7FS/T71n+0SBIQPiij6GJGlMZ1/i2LWLY6VwyQDd0fDsqdhkXZpMWXFSzpLhkro3hFkhwcKlE5KbI/u7rY2q/okFBqtz2sP9jPD9ZTHzSWyi4X7L2vCZH6646f5hY4yO1xUIKaGSpzN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1IIA3Pv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11AEDC4CEFB;
+	Tue, 11 Nov 2025 00:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822957;
-	bh=r/JDgMjqQdW94k3Ey/MQ4LBcrOHUAzNNANSXNx5bbrw=;
+	s=korg; t=1762822774;
+	bh=Vbs8Yir4WWl50cVgp7l9sKLQMitJIywHDA84cA3vS9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y++O7mQpfaf0xoYaDWj6e1SEXpXW5U/mIFQh1sJVMOvQgfZYPneUGY7XQp15W4mUv
-	 mjcQCcf+0Mw8kUghL36mkUdrGEQNxe+t6Gztmr1zR/RAIQxQDiED0f/sV2BEqw0WRO
-	 UH5cWf97yy5Dk8xiG1ruFd8tpXRrfscPUJ0e6UnU=
+	b=i1IIA3Pv0ap5oR8I8C9RWGPIKKs86zn3AxyoC96lZ7CAxbF1xJQE0Wy7gP3t6Nwz+
+	 9dZX2kLF/0Hvv+8iPIG+4Jr9EeULi0m9NAwmV29yrSC7h26cYtbIfVwGSzwpfMUxsx
+	 oJ1QUcp/aIqHDcumnU93aIFRhe9uAW+6YwFh0crE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Dennis Beier <nanovim@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/565] selftests/bpf: Fix bpf_prog_detach2 usage in test_lirc_mode2
-Date: Tue, 11 Nov 2025 09:39:21 +0900
-Message-ID: <20251111004529.319050347@linuxfoundation.org>
+Subject: [PATCH 6.12 106/565] cpufreq/longhaul: handle NULL policy in longhaul_exit
+Date: Tue, 11 Nov 2025 09:39:22 +0900
+Message-ID: <20251111004529.340129743@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -60,42 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Dennis Beier <nanovim@gmail.com>
 
-[ Upstream commit 98857d111c53954aa038fcbc4cf48873e4240f7c ]
+[ Upstream commit 592532a77b736b5153e0c2e4c74aa50af0a352ab ]
 
-Commit e9fc3ce99b34 ("libbpf: Streamline error reporting for high-level
-APIs") redefined the way that bpf_prog_detach2() returns. Therefore, adapt
-the usage in test_lirc_mode2_user.c.
+longhaul_exit() was calling cpufreq_cpu_get(0) without checking
+for a NULL policy pointer. On some systems, this could lead to a
+NULL dereference and a kernel warning or panic.
 
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250828-selftests-bpf-v1-1-c7811cd8b98c@suse.com
+This patch adds a check using unlikely() and returns early if the
+policy is NULL.
+
+Bugzilla: #219962
+
+Signed-off-by: Dennis Beier <nanovim@gmail.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_lirc_mode2_user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/longhaul.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/test_lirc_mode2_user.c b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
-index 4694422aa76c3..88e4aeab21b7b 100644
---- a/tools/testing/selftests/bpf/test_lirc_mode2_user.c
-+++ b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
-@@ -74,7 +74,7 @@ int main(int argc, char **argv)
+diff --git a/drivers/cpufreq/longhaul.c b/drivers/cpufreq/longhaul.c
+index bd6fe8638d399..02767c1f9edef 100644
+--- a/drivers/cpufreq/longhaul.c
++++ b/drivers/cpufreq/longhaul.c
+@@ -954,6 +954,9 @@ static void __exit longhaul_exit(void)
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
+ 	int i;
  
- 	/* Let's try detach it before it was ever attached */
- 	ret = bpf_prog_detach2(progfd, lircfd, BPF_LIRC_MODE2);
--	if (ret != -1 || errno != ENOENT) {
-+	if (ret != -ENOENT) {
- 		printf("bpf_prog_detach2 not attached should fail: %m\n");
- 		return 1;
- 	}
++	if (unlikely(!policy))
++		return;
++
+ 	for (i = 0; i < numscales; i++) {
+ 		if (mults[i] == maxmult) {
+ 			struct cpufreq_freqs freqs;
 -- 
 2.51.0
 
