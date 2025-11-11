@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-193344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73DD6C4A254
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:03:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6072AC4A262
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:03:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D2113AC594
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABD26188DC75
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D575D246768;
-	Tue, 11 Nov 2025 01:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BEF0248F6A;
+	Tue, 11 Nov 2025 01:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZ+GF0BD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YhYYf+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A1A4086A;
-	Tue, 11 Nov 2025 01:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA6618027;
+	Tue, 11 Nov 2025 01:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822948; cv=none; b=LSq17XH+DhGlQlPkrbGjXlOHbDlcPCy5+4LzKWqEkIH80bWZkD1acu1UtSWubdoA9fCTkZ3jgatdg4cj9klOfzO6IYuWP0DbpmRJ6LKqI7SBF/r2/n/fgP/4sr/PBtsXzPZKPx3M4NPx8/aZ/Ly67H+AGibVE1jqdi02crJTkdA=
+	t=1762822984; cv=none; b=ehncmKtFj8DUix4AA2X9ujjO6fdBoA0kUr1Yul4BoIHSmXw47OIBHmEWbICHkLLhojf2oe6RhNgIttaxuoB4lfy1gL6xVQa9Mh+e7kXfNZMrJ2uaBgwsfnnQRae4U+o/f80lHg/xLVaBVgobj3Xpmwo0ameBH0x//C1ZG159ATk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822948; c=relaxed/simple;
-	bh=I9SSFnzPZDk9B2w4fWArs4Jw6Ew/GXjKH4HCaGXtBQU=;
+	s=arc-20240116; t=1762822984; c=relaxed/simple;
+	bh=56DjzD+1aGSvbW07nm/7kPWMoFHLGp8QSOtrm3I/bWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KkQ1+bVNPK3FEdL/hKmQDkaUxx1Z7M4i8Fv0p/2U6hQRukKe4KIEcDqBSwzObNnA/Ma2FdhV2AAOWalHoNcenemeaRj9PgOwOrh4Dl9KAfWyWKEKcXDVoTid33bvMtC/kSrrr8bNEHW2iY9Fq6jPVQvdOQ5FRuYcGUDZ8mafob4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZ+GF0BD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4990C19421;
-	Tue, 11 Nov 2025 01:02:27 +0000 (UTC)
+	 MIME-Version; b=Q5yeYx7VkSdRsJ2EBnUhQI4pl/P0ylSCeIKgtnzAqdCmPHi7ZtJDxLvgM8YvA/wDCrShen/yMVKCmN09eG+Dru8G0abFQ+aE7hOM6ugneu/U1bM7lg/cwVFA75ySht041rFiZsiyQln02nI57dPPYkV96UwxQKZIIjWJa4E806Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YhYYf+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FBDC16AAE;
+	Tue, 11 Nov 2025 01:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822948;
-	bh=I9SSFnzPZDk9B2w4fWArs4Jw6Ew/GXjKH4HCaGXtBQU=;
+	s=korg; t=1762822984;
+	bh=56DjzD+1aGSvbW07nm/7kPWMoFHLGp8QSOtrm3I/bWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lZ+GF0BDoK+EURY+TXSp0wLxAUV4xYXMtYkCbJfXWREpsVMOKJ2+TyF9C3buInM9V
-	 SPlaunqa7z9Q0DTJMZxwRweG1mFVgoTB434iJerExfzgHmjDLnM3NVb/3C1HBQsHTV
-	 Zh89XT6sD5Vrxu53k8lCRwxlCOzzQ7v79JnoAOxA=
+	b=0YhYYf+BOh8Tw/b3Tdr0HTIOdm2HsI56Yrq2GGQ4Bpaw0KQcIkV2+9GlTQtBcezhx
+	 vRKv/r7NmwCZqMSNGPcM/RkfFwWj4Z1Ew3lGad61NakPNQ5JPlzhf9UeyMexpboiiB
+	 JRgB5ZRAdP+cF256dP1wi1YE8IE0oLirihg8Kxi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Schatzberg <dschatzberg@meta.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Tejun Heo <tj@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Fenglin Wu <fenglin.wu@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 139/565] bpf: Do not limit bpf_cgroup_from_id to currents namespace
-Date: Tue, 11 Nov 2025 09:39:55 +0900
-Message-ID: <20251111004530.070808871@linuxfoundation.org>
+Subject: [PATCH 6.12 144/565] power: supply: qcom_battmgr: handle charging state change notifications
+Date: Tue, 11 Nov 2025 09:40:00 +0900
+Message-ID: <20251111004530.181703480@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -68,110 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
 
-[ Upstream commit 2c895133950646f45e5cf3900b168c952c8dbee8 ]
+[ Upstream commit 41307ec7df057239aae3d0f089cc35a0d735cdf8 ]
 
-The bpf_cgroup_from_id kfunc relies on cgroup_get_from_id to obtain the
-cgroup corresponding to a given cgroup ID. This helper can be called in
-a lot of contexts where the current thread can be random. A recent
-example was its use in sched_ext's ops.tick(), to obtain the root cgroup
-pointer. Since the current task can be whatever random user space task
-preempted by the timer tick, this makes the behavior of the helper
-unreliable.
+The X1E80100 battery management firmware sends a notification with
+code 0x83 when the battery charging state changes, such as switching
+between fast charge, taper charge, end of charge, or any other error
+charging states.
 
-Refactor out __cgroup_get_from_id as the non-namespace aware version of
-cgroup_get_from_id, and change bpf_cgroup_from_id to make use of it.
+The same notification code is used with bit[8] set when charging stops
+because the charge control end threshold is reached. Additionally,
+a 2-bit value is included in bit[10:9] with the same code to indicate
+the charging source capability, which is determined by the calculated
+power from voltage and current readings from PDOs: 2 means a strong
+charger over 60W, 1 indicates a weak charger, and 0 means there is no
+charging source.
 
-There is no compatibility breakage here, since changing the namespace
-against which the lookup is being done to the root cgroup namespace only
-permits a wider set of lookups to succeed now. The cgroup IDs across
-namespaces are globally unique, and thus don't need to be retranslated.
+These 3-MSB [10:8] in the notification code is not much useful for now,
+hence just ignore them and trigger a power supply change event whenever
+0x83 notification code is received. This helps to eliminate the unknown
+notification error messages.
 
-Reported-by: Dan Schatzberg <dschatzberg@meta.com>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20250915032618.1551762-2-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Closes: https://lore.kernel.org/all/r65idyc4of5obo6untebw4iqfj2zteiggnnzabrqtlcinvtddx@xc4aig5abesu/
+Signed-off-by: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cgroup.h |  1 +
- kernel/bpf/helpers.c   |  2 +-
- kernel/cgroup/cgroup.c | 24 ++++++++++++++++++++----
- 3 files changed, 22 insertions(+), 5 deletions(-)
+ drivers/power/supply/qcom_battmgr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
-index fc1324ed597d6..2a510dbbfe623 100644
---- a/include/linux/cgroup.h
-+++ b/include/linux/cgroup.h
-@@ -631,6 +631,7 @@ static inline void cgroup_kthread_ready(void)
- }
+diff --git a/drivers/power/supply/qcom_battmgr.c b/drivers/power/supply/qcom_battmgr.c
+index dd89104cb1672..f8bea732ba7f2 100644
+--- a/drivers/power/supply/qcom_battmgr.c
++++ b/drivers/power/supply/qcom_battmgr.c
+@@ -29,8 +29,9 @@ enum qcom_battmgr_variant {
+ #define NOTIF_BAT_PROPERTY		0x30
+ #define NOTIF_USB_PROPERTY		0x32
+ #define NOTIF_WLS_PROPERTY		0x34
+-#define NOTIF_BAT_INFO			0x81
+ #define NOTIF_BAT_STATUS		0x80
++#define NOTIF_BAT_INFO			0x81
++#define NOTIF_BAT_CHARGING_STATE	0x83
  
- void cgroup_path_from_kernfs_id(u64 id, char *buf, size_t buflen);
-+struct cgroup *__cgroup_get_from_id(u64 id);
- struct cgroup *cgroup_get_from_id(u64 id);
- #else /* !CONFIG_CGROUPS */
+ #define BATTMGR_BAT_INFO		0x9
  
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index a0bf39b7359aa..db4739951702e 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -2455,7 +2455,7 @@ __bpf_kfunc struct cgroup *bpf_cgroup_from_id(u64 cgid)
- {
- 	struct cgroup *cgrp;
+@@ -943,12 +944,14 @@ static void qcom_battmgr_notification(struct qcom_battmgr *battmgr,
+ 	}
  
--	cgrp = cgroup_get_from_id(cgid);
-+	cgrp = __cgroup_get_from_id(cgid);
- 	if (IS_ERR(cgrp))
- 		return NULL;
- 	return cgrp;
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 5fc2801ee921c..b8cde3d1cb7bc 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -6343,15 +6343,15 @@ void cgroup_path_from_kernfs_id(u64 id, char *buf, size_t buflen)
- }
- 
- /*
-- * cgroup_get_from_id : get the cgroup associated with cgroup id
-+ * __cgroup_get_from_id : get the cgroup associated with cgroup id
-  * @id: cgroup id
-  * On success return the cgrp or ERR_PTR on failure
-- * Only cgroups within current task's cgroup NS are valid.
-+ * There are no cgroup NS restrictions.
-  */
--struct cgroup *cgroup_get_from_id(u64 id)
-+struct cgroup *__cgroup_get_from_id(u64 id)
- {
- 	struct kernfs_node *kn;
--	struct cgroup *cgrp, *root_cgrp;
-+	struct cgroup *cgrp;
- 
- 	kn = kernfs_find_and_get_node_by_id(cgrp_dfl_root.kf_root, id);
- 	if (!kn)
-@@ -6373,6 +6373,22 @@ struct cgroup *cgroup_get_from_id(u64 id)
- 
- 	if (!cgrp)
- 		return ERR_PTR(-ENOENT);
-+	return cgrp;
-+}
-+
-+/*
-+ * cgroup_get_from_id : get the cgroup associated with cgroup id
-+ * @id: cgroup id
-+ * On success return the cgrp or ERR_PTR on failure
-+ * Only cgroups within current task's cgroup NS are valid.
-+ */
-+struct cgroup *cgroup_get_from_id(u64 id)
-+{
-+	struct cgroup *cgrp, *root_cgrp;
-+
-+	cgrp = __cgroup_get_from_id(id);
-+	if (IS_ERR(cgrp))
-+		return cgrp;
- 
- 	root_cgrp = current_cgns_cgroup_dfl();
- 	if (!cgroup_is_descendant(cgrp, root_cgrp)) {
+ 	notification = le32_to_cpu(msg->notification);
++	notification &= 0xff;
+ 	switch (notification) {
+ 	case NOTIF_BAT_INFO:
+ 		battmgr->info.valid = false;
+ 		fallthrough;
+ 	case NOTIF_BAT_STATUS:
+ 	case NOTIF_BAT_PROPERTY:
++	case NOTIF_BAT_CHARGING_STATE:
+ 		power_supply_changed(battmgr->bat_psy);
+ 		break;
+ 	case NOTIF_USB_PROPERTY:
 -- 
 2.51.0
 
