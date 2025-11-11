@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-194144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564A7C4AD72
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 500F7C4AD96
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02A4A188F4E0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DBB81890C6D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E16A2D94AD;
-	Tue, 11 Nov 2025 01:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B70314B8B;
+	Tue, 11 Nov 2025 01:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEPEB57i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7HVZhb7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CF422301;
-	Tue, 11 Nov 2025 01:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C343126B9;
+	Tue, 11 Nov 2025 01:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824909; cv=none; b=q4gDqGh2cPEsq/rl46Q5IWfdIUpnC93H9m5UoNwsY0HcYYkY2oTySi5VOjLMUE/TTbdRY+rvNzRfhekhseG0UTIM53knRf2AsIaecgXgmhQqOSMU4cX+UUuYvnbxyIj5zBE7jcXCBZXA0EqpVDGLYTEEzNHFqwZINhV2Ux7mPM8=
+	t=1762824914; cv=none; b=tb/TqjPKpGf213wg5Sy6S+9zWEquP//Og8GBbSflNzDy5375GpcgUd3Zo7BmKB/OOVS2eaKmJTOfYbA98W0Fq0+FKGc1n5KdQ9X6O72pT4ydpxxwhudvlZL+HYeNbllZcQKuJV5QJZ0JXYWVFj7j69xamkTnoay8nrPv6kiEx2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824909; c=relaxed/simple;
-	bh=0mrptI+EUp66Sl4BFC90xb7PufYf8srUllo8NzCKkwY=;
+	s=arc-20240116; t=1762824914; c=relaxed/simple;
+	bh=i+/YuHzDJ2iA2AG8ZcK3ajTwv9XBMkAWJeZG8HqfXBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYPbOD3CQvd1HCrAzkLz3q5ZeXSf4ToXPleoNaK8cNa90q8lp2YsEsFWIuHcubwU4AiXm9f2Ta10MhHK3Vo0kXPuMCFSph4gS6xS9+R+G4VQGz19CBTc/ibNQVsgDOe2pc7ukwVJCtRiXWOwa16HAueyW8pHhFajZj1fBFLFdCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEPEB57i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B64DC4CEF5;
-	Tue, 11 Nov 2025 01:35:06 +0000 (UTC)
+	 MIME-Version; b=Lpmm82Rfh5jZzz12eyGf2imrGwkvJ86qmVretnQwI9Bf5pRKeYnKhCg105/vTWHiwieOgSMiw5stvIQQyHrQ9rwVMWuU+Wib75NlehbymluYyqwk6yB3wUB/wONqilWQPWa7E91d8U2Swh8MQjoeI2uir3bLna5Bst6CDInwm2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7HVZhb7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F7AC113D0;
+	Tue, 11 Nov 2025 01:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824906;
-	bh=0mrptI+EUp66Sl4BFC90xb7PufYf8srUllo8NzCKkwY=;
+	s=korg; t=1762824913;
+	bh=i+/YuHzDJ2iA2AG8ZcK3ajTwv9XBMkAWJeZG8HqfXBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JEPEB57iL0TqvYeNxSnuA/jq36CS/nPMX7TwD3aRIe4EdFAEM5cbu8WAOFn1k2mQD
-	 jx/bbHzt0RfFNTKf83CBSytnC+P8+crzN13KUM0/iLtdf5vsuzjcIEUNK4J71DHY78
-	 tdU5+PbB2VhvLEQU7mBKmCu08JVPjzU/zrU8oS+c=
+	b=c7HVZhb7GqaDEu2Jr6a1tuM/ew694cbsYeAPp1WKTgZcBS1B6tLPMdQ5ktm1WvCD3
+	 Ge2OUgxP/VibBNi9i1TxM1AQqsQKcz4qZai0B0RHpopo7aAAcQlD6f3XZ49eIvOYPl
+	 JWF5zmHD+kyEwB1iFIn9rE3Q/9gcYfLzsxoQ6EW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuta Hayama <hayama@lineo.co.jp>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.12 548/565] rtc: rx8025: fix incorrect register reference
-Date: Tue, 11 Nov 2025 09:46:44 +0900
-Message-ID: <20251111004539.323703237@linuxfoundation.org>
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.12 549/565] x86/microcode/AMD: Add more known models to entry sign checking
+Date: Tue, 11 Nov 2025 09:46:45 +0900
+Message-ID: <20251111004539.346600069@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -65,34 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yuta Hayama <hayama@lineo.co.jp>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-commit 162f24cbb0f6ec596e7e9f3e91610d79dc805229 upstream.
+commit d23550efc6800841b4d1639784afaebdea946ae0 upstream.
 
-This code is intended to operate on the CTRL1 register, but ctrl[1] is
-actually CTRL2. Correctly, ctrl[0] is CTRL1.
+Two Zen5 systems are missing from need_sha_check(). Add them.
 
-Signed-off-by: Yuta Hayama <hayama@lineo.co.jp>
-Fixes: 71af91565052 ("rtc: rx8025: fix 12/24 hour mode detection on RX-8035")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/eae5f479-5d28-4a37-859d-d54794e7628c@lineo.co.jp
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://patch.msgid.link/20251106182904.4143757-1-superm1@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-rx8025.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/microcode/amd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/rtc/rtc-rx8025.c
-+++ b/drivers/rtc/rtc-rx8025.c
-@@ -316,7 +316,7 @@ static int rx8025_init_client(struct i2c
- 			return hour_reg;
- 		rx8025->is_24 = (hour_reg & RX8035_BIT_HOUR_1224);
- 	} else {
--		rx8025->is_24 = (ctrl[1] & RX8025_BIT_CTRL1_1224);
-+		rx8025->is_24 = (ctrl[0] & RX8025_BIT_CTRL1_1224);
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -208,10 +208,12 @@ static bool need_sha_check(u32 cur_rev)
+ 	case 0xaa001: return cur_rev <= 0xaa00116; break;
+ 	case 0xaa002: return cur_rev <= 0xaa00218; break;
+ 	case 0xb0021: return cur_rev <= 0xb002146; break;
++	case 0xb0081: return cur_rev <= 0xb008111; break;
+ 	case 0xb1010: return cur_rev <= 0xb101046; break;
+ 	case 0xb2040: return cur_rev <= 0xb204031; break;
+ 	case 0xb4040: return cur_rev <= 0xb404031; break;
+ 	case 0xb6000: return cur_rev <= 0xb600031; break;
++	case 0xb6080: return cur_rev <= 0xb608031; break;
+ 	case 0xb7000: return cur_rev <= 0xb700031; break;
+ 	default: break;
  	}
- out:
- 	return err;
 
 
 
