@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-194176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE72AC4B003
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:52:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB1CC4ADFD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A818B3B3703
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6FF318976A9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 793A3189B84;
-	Tue, 11 Nov 2025 01:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CE72DC76F;
+	Tue, 11 Nov 2025 01:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQ8JFKzf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZDCq2Vm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356F5339714;
-	Tue, 11 Nov 2025 01:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9E8339714;
+	Tue, 11 Nov 2025 01:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824985; cv=none; b=kHdC1gjyxynj5THdVcM/CeFpZ4Vo1jn3pyjno3+54ciBmPSvDLE8XZ2zye6x/aLeUfxCPhkCWc17NInLvCNsmfkLj1/wcHeCDJkdg2SjfS//0SkJ0UfSGBEJpScvPkyQcn29FsF0WTTC3TA3DT4Rgq5Q6QQr5etob5up+Qpoh0s=
+	t=1762824991; cv=none; b=htcZOTzr7QqEd3tu/HWKd7lpuFQ22Gli3/44QDMCEwybY1ycG3Rrf02MaaLfdC1v7Pb4+kQmthuSx+zJq4JieDt8i3xNwuRcR7O3pOmQ7OrK1bMEwJU4weyTTtD4h2iFWmsKVJ4WkKPUmsNhIG/sD4UEZl+CtvsU7L5xf8+6Zos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824985; c=relaxed/simple;
-	bh=zgwAyvqob9y5kYABM+jibA3OJfIdbnV1ciIlCD6W11w=;
+	s=arc-20240116; t=1762824991; c=relaxed/simple;
+	bh=q3tShRDKSVRMPbmje4yrOFmVoakAfQU/1XbbE6A3aSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLJYQ4QWRUSD1klYwZW2tLH7C1xhC5cdzbWfJknlxooO9dJZvrcB/Viaxjc9DGuUh3CsyU0CFhZNWexOg3SYG/uIYEx58oun8cYq1eTvvNLY34JJFHaUgofncdPuc18/tM5wrdfbZDRYuzPWVoJxRCYY5bummHB8yaWe9zKVong=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQ8JFKzf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B61C4CEFB;
-	Tue, 11 Nov 2025 01:36:24 +0000 (UTC)
+	 MIME-Version; b=h9zxwYZ5f2yq/7JE9D5a/ZKMIPtI7JRzFjn+Uj5Ob5lq3fecfvx/kt6gxO0tvcak8QwuYCs/j+7SlmdhrwNc4MU8HS7zuh95twCqUXziQ47FNEyZcj+DzGz84x9+Z1NOs4e2hu1GsY3uXkuDksygNkFonhbJxDuoUM+nihDow5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZDCq2Vm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42ACCC116D0;
+	Tue, 11 Nov 2025 01:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824984;
-	bh=zgwAyvqob9y5kYABM+jibA3OJfIdbnV1ciIlCD6W11w=;
+	s=korg; t=1762824991;
+	bh=q3tShRDKSVRMPbmje4yrOFmVoakAfQU/1XbbE6A3aSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QQ8JFKzf8JczzjMxhjLswf8Gc1GS9cwxX6jnX0xIMR4Uus1Z9eE2gn2biHeW/1SxS
-	 cExVR4T7HyjP8rHonnK5QU9AT/t2Fybt8oTFPetjOpVwoZ7JuihlKV+qMV4Yfb6MeM
-	 pqvM6S79uEONMkBYPXYoCVWu8KbMjViY5rN76pho=
+	b=zZDCq2VmZZt8HeieVjm1JN3XRilQvde8SwzAgbqy5qVtbF0as2ks1cnfFF8VsifK8
+	 OJQEPxvuD0eSfPuNWRI0HJSMEWVzwY01k+w5MqnDAIOiWOI7MIsotyUFGnmf/fW3KV
+	 NtsRY/EBtb/NWPJUQPcXEjYCpgz3T6Zz6kspSSzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chenghai Huang <huangchenghai2@huawei.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 610/849] crypto: hisilicon/qm - invalidate queues in use
-Date: Tue, 11 Nov 2025 09:43:00 +0900
-Message-ID: <20251111004551.174052410@linuxfoundation.org>
+Subject: [PATCH 6.17 611/849] crypto: hisilicon/qm - clear all VF configurations in the hardware
+Date: Tue, 11 Nov 2025 09:43:01 +0900
+Message-ID: <20251111004551.198220942@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -69,140 +69,82 @@ Content-Transfer-Encoding: 8bit
 
 From: Weili Qian <qianweili@huawei.com>
 
-[ Upstream commit 85acd1b26b8f5b838887dc965dc3aa2c0253f4d1 ]
+[ Upstream commit 64b9642fc29a14e1fe67842be9c69c7b90a3bcd6 ]
 
-Before the device reset, although the driver has set the queue
-status to intercept doorbells sent by the task process, the reset
-thread is isolated from the user-mode task process, so the task process
-may still send doorbells. Therefore, before the reset, the queue is
-directly invalidated, and the device directly discards the doorbells
-sent by the process.
+When disabling SR-IOV, clear the configuration of each VF
+in the hardware. Do not exit the configuration clearing process
+due to the failure of a single VF. Additionally, Clear the VF
+configurations before decrementing the PM counter.
 
 Signed-off-by: Weili Qian <qianweili@huawei.com>
 Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/qm.c | 53 ++++++++++++++++++++++++++---------
- 1 file changed, 40 insertions(+), 13 deletions(-)
+ drivers/crypto/hisilicon/qm.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-index 102aff9ea19a0..822202e0f11b6 100644
+index 822202e0f11b6..f9bf102b2b37d 100644
 --- a/drivers/crypto/hisilicon/qm.c
 +++ b/drivers/crypto/hisilicon/qm.c
-@@ -45,6 +45,8 @@
- 
- #define QM_SQ_TYPE_MASK			GENMASK(3, 0)
- #define QM_SQ_TAIL_IDX(sqc)		((le16_to_cpu((sqc).w11) >> 6) & 0x1)
-+#define QM_SQC_DISABLE_QP		(1U << 6)
-+#define QM_XQC_RANDOM_DATA		0xaaaa
- 
- /* cqc shift */
- #define QM_CQ_HOP_NUM_SHIFT		0
-@@ -3179,6 +3181,9 @@ static int qm_eq_aeq_ctx_cfg(struct hisi_qm *qm)
- 
- 	qm_init_eq_aeq_status(qm);
- 
-+	/* Before starting the dev, clear the memory and then configure to device using. */
-+	memset(qm->qdma.va, 0, qm->qdma.size);
-+
- 	ret = qm_eq_ctx_cfg(qm);
- 	if (ret) {
- 		dev_err(dev, "Set eqc failed!\n");
-@@ -3190,9 +3195,13 @@ static int qm_eq_aeq_ctx_cfg(struct hisi_qm *qm)
- 
- static int __hisi_qm_start(struct hisi_qm *qm)
- {
-+	struct device *dev = &qm->pdev->dev;
- 	int ret;
- 
--	WARN_ON(!qm->qdma.va);
-+	if (!qm->qdma.va) {
-+		dev_err(dev, "qm qdma is NULL!\n");
-+		return -EINVAL;
-+	}
- 
- 	if (qm->fun_type == QM_HW_PF) {
- 		ret = hisi_qm_set_vft(qm, 0, qm->qp_base, qm->qp_num);
-@@ -3266,7 +3275,7 @@ static int qm_restart(struct hisi_qm *qm)
- 	for (i = 0; i < qm->qp_num; i++) {
- 		qp = &qm->qp_array[i];
- 		if (atomic_read(&qp->qp_status.flags) == QP_STOP &&
--		    qp->is_resetting == true) {
-+		    qp->is_resetting == true && qp->is_in_kernel == true) {
- 			ret = qm_start_qp_nolock(qp, 0);
- 			if (ret < 0) {
- 				dev_err(dev, "Failed to start qp%d!\n", i);
-@@ -3298,24 +3307,44 @@ static void qm_stop_started_qp(struct hisi_qm *qm)
+@@ -3646,19 +3646,19 @@ static int qm_vf_q_assign(struct hisi_qm *qm, u32 num_vfs)
+ 	return 0;
  }
  
- /**
-- * qm_clear_queues() - Clear all queues memory in a qm.
-- * @qm: The qm in which the queues will be cleared.
-+ * qm_invalid_queues() - invalid all queues in use.
-+ * @qm: The qm in which the queues will be invalidated.
-  *
-- * This function clears all queues memory in a qm. Reset of accelerator can
-- * use this to clear queues.
-+ * This function invalid all queues in use. If the doorbell command is sent
-+ * to device in user space after the device is reset, the device discards
-+ * the doorbell command.
-  */
--static void qm_clear_queues(struct hisi_qm *qm)
-+static void qm_invalid_queues(struct hisi_qm *qm)
+-static int qm_clear_vft_config(struct hisi_qm *qm)
++static void qm_clear_vft_config(struct hisi_qm *qm)
  {
- 	struct hisi_qp *qp;
-+	struct qm_sqc *sqc;
-+	struct qm_cqc *cqc;
- 	int i;
+-	int ret;
+ 	u32 i;
  
+-	for (i = 1; i <= qm->vfs_num; i++) {
+-		ret = hisi_qm_set_vft(qm, i, 0, 0);
+-		if (ret)
+-			return ret;
+-	}
+-	qm->vfs_num = 0;
 +	/*
-+	 * Normal stop queues is no longer used and does not need to be
-+	 * invalid queues.
++	 * When disabling SR-IOV, clear the configuration of each VF in the hardware
++	 * sequentially. Failure to clear a single VF should not affect the clearing
++	 * operation of other VFs.
 +	 */
-+	if (qm->status.stop_reason == QM_NORMAL)
-+		return;
-+
-+	if (qm->status.stop_reason == QM_DOWN)
-+		hisi_qm_cache_wb(qm);
-+
- 	for (i = 0; i < qm->qp_num; i++) {
- 		qp = &qm->qp_array[i];
--		if (qp->is_in_kernel && qp->is_resetting)
-+		if (!qp->is_resetting)
-+			continue;
-+
-+		/* Modify random data and set sqc close bit to invalid queue. */
-+		sqc = qm->sqc + i;
-+		cqc = qm->cqc + i;
-+		sqc->w8 = cpu_to_le16(QM_XQC_RANDOM_DATA);
-+		sqc->w13 = cpu_to_le16(QM_SQC_DISABLE_QP);
-+		cqc->w8 = cpu_to_le16(QM_XQC_RANDOM_DATA);
-+		if (qp->is_in_kernel)
- 			memset(qp->qdma.va, 0, qp->qdma.size);
- 	}
--
--	memset(qm->qdma.va, 0, qm->qdma.size);
++	for (i = 1; i <= qm->vfs_num; i++)
++		(void)hisi_qm_set_vft(qm, i, 0, 0);
+ 
+-	return 0;
++	qm->vfs_num = 0;
  }
  
- /**
-@@ -3372,7 +3401,7 @@ int hisi_qm_stop(struct hisi_qm *qm, enum qm_stop_reason r)
- 		}
+ static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
+@@ -3993,13 +3993,13 @@ int hisi_qm_sriov_enable(struct pci_dev *pdev, int max_vfs)
+ 		goto err_put_sync;
  	}
  
--	qm_clear_queues(qm);
-+	qm_invalid_queues(qm);
- 	qm->status.stop_reason = QM_NORMAL;
++	qm->vfs_num = num_vfs;
+ 	ret = pci_enable_sriov(pdev, num_vfs);
+ 	if (ret) {
+ 		pci_err(pdev, "Can't enable VF!\n");
+ 		qm_clear_vft_config(qm);
+ 		goto err_put_sync;
+ 	}
+-	qm->vfs_num = num_vfs;
  
- err_unlock:
-@@ -4770,8 +4799,6 @@ void hisi_qm_dev_shutdown(struct pci_dev *pdev)
- 	ret = hisi_qm_stop(qm, QM_DOWN);
- 	if (ret)
- 		dev_err(&pdev->dev, "Fail to stop qm in shutdown!\n");
+ 	pci_info(pdev, "VF enabled, vfs_num(=%d)!\n", num_vfs);
+ 
+@@ -4034,11 +4034,10 @@ int hisi_qm_sriov_disable(struct pci_dev *pdev, bool is_frozen)
+ 	}
+ 
+ 	pci_disable_sriov(pdev);
 -
--	hisi_qm_cache_wb(qm);
+-	qm->vfs_num = 0;
++	qm_clear_vft_config(qm);
+ 	qm_pm_put_sync(qm);
+ 
+-	return qm_clear_vft_config(qm);
++	return 0;
  }
- EXPORT_SYMBOL_GPL(hisi_qm_dev_shutdown);
+ EXPORT_SYMBOL_GPL(hisi_qm_sriov_disable);
  
 -- 
 2.51.0
