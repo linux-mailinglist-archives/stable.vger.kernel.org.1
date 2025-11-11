@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C81C4A0E8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE20C4A022
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 11CB74F1FE0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C39083AAC6D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80564214210;
-	Tue, 11 Nov 2025 00:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EA024BBEB;
+	Tue, 11 Nov 2025 00:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TsQLPDyf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXG2Oqsn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA5B4C97;
-	Tue, 11 Nov 2025 00:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EFC1D6DB5;
+	Tue, 11 Nov 2025 00:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822440; cv=none; b=iLLCW8Drk83lsFQuJGk30/fW0SCInPw5Xdtt3E9xp0OoI+Df2eYLXsdXUjNPRFkIwcC8dgvHBv2OsDsO4qj7Lk5kFZUNpXEP9qMhrCgstRfevqonxRnsiJTE1PYBMbt1FKjl2R7+gyHvdz86XkFjfrj1L4t1kKe/g9XBStEggHY=
+	t=1762822447; cv=none; b=FCnYtLFQAwrtprd0TsBwG5VWJa5RWmXqxPkej2JND+Lfjb77yQv6zHTjkFDFMr1KtAktOXXWUG4h/FV26pGiVRvZf84MpPxno90jM5y0B7aSkG+u6phggPSUiwRAoBa5QXz33wZ73wCsxnaXmLj+Ohi8Z4bkU54/M7NV3gvy1YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822440; c=relaxed/simple;
-	bh=n8qSX+iKrhLNMSYIzba2CZXdxdGIiB7OWS67vYvm3X4=;
+	s=arc-20240116; t=1762822447; c=relaxed/simple;
+	bh=R1HZLa7ECdZav7R4Q6yIXuTsey886sRppXunLrrxJ/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9s1sRdpzzXHaVdyWSaLLxEn2wnB91muxBGLTV8rT2rsXs0PcEhkSYHWMj3kNhOEKh7urN+tRi6JNJFP3HKEzcnePIVl0ctEPfUo22g09GA5NM+iiWWFlKbRgfYSqNGeOiSSnlJviz+l6qPPOPfFAhq4wN8MHclpIXU3G/dYGWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TsQLPDyf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECA2C4CEF5;
-	Tue, 11 Nov 2025 00:53:59 +0000 (UTC)
+	 MIME-Version; b=mW1Bjf/qCHRGB+G2pcNGGfih7wVcF/VtsvuB8yGXmUdnJHkN6kzskItt5o8cUeBkifJ5Uz8VE5Qi5XI2TsndhoDeZCT1MqRMVD61EpAUPWFwsVrIMkCTUBkE5didZeErwp1rOq7DP6y0AsLAFmX5saRSopFh9+1kmI7PTFHUQ80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXG2Oqsn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805F3C16AAE;
+	Tue, 11 Nov 2025 00:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822439;
-	bh=n8qSX+iKrhLNMSYIzba2CZXdxdGIiB7OWS67vYvm3X4=;
+	s=korg; t=1762822446;
+	bh=R1HZLa7ECdZav7R4Q6yIXuTsey886sRppXunLrrxJ/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TsQLPDyflF1lmWz5hB1VJ+53ReFUBHEksbZZQJ4jCTDsBb6Zt7xxvR9TvXR1tR9VM
-	 tb1QXiLXKXf/p4P4l2+pBZmk3KK/PZiOLOKAap8m0v+/Km1ZMKP1lseYegT/Jk8hOe
-	 vUw/+HVEmXlW0ZIlFGAdvKvunoGjDs/zV9+ttHd4=
+	b=qXG2OqsnCFrOrZPEL2xcbAGbbyprsU2AeeKtGQMdbWaDBz7t0TyS7PK4HUFaNPQ7z
+	 gElTKxjEacS8305/2HmvXPzu5+QdQqASCOXwQd8YX2LCsG2iKv6rra6y+9kSniljgZ
+	 jI8NHmvOacaOD8OR5YRXAq5JTT+jkg+dBhTrsln4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 108/849] drm/amd/display: Dont program BLNDGAM_MEM_PWR_FORCE when CM low-power is disabled on DCN30
-Date: Tue, 11 Nov 2025 09:34:38 +0900
-Message-ID: <20251111004539.008021952@linuxfoundation.org>
+Subject: [PATCH 6.17 109/849] drm/amd/display: Add HDR workaround for a specific eDP
+Date: Tue, 11 Nov 2025 09:34:39 +0900
+Message-ID: <20251111004539.030889026@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,57 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matthew Schwartz <matthew.schwartz@linux.dev>
+From: Alex Hung <alex.hung@amd.com>
 
-commit 382bd6a792836875da555fe9a2b51222b813fed1 upstream.
+commit 7d08c3b1731014dd1cfd0bf8b0cb1cef9dfd191e upstream.
 
-Before commit 33056a97ae5e ("drm/amd/display: Remove double checks for
-`debug.enable_mem_low_power.bits.cm`"), dpp3_program_blnd_lut(NULL)
-checked the low-power debug flag before calling
-dpp3_power_on_blnd_lut(false).
+[WHY & HOW]
+Some eDP panels suffer from flicking when HDR is enabled in KDE or
+Gnome.
 
-After commit 33056a97ae5e ("drm/amd/display: Remove double checks for
-`debug.enable_mem_low_power.bits.cm`"), dpp3_program_blnd_lut(NULL)
-unconditionally calls dpp3_power_on_blnd_lut(false). The BLNDGAM power
-helper writes BLNDGAM_MEM_PWR_FORCE when CM low-power is disabled, causing
-immediate SRAM power toggles instead of deferring at vupdate. This can
-disrupt atomic color/LUT sequencing during transitions between
-direct scanout and composition within gamescope's DRM backend on
-Steam Deck OLED.
+This add another quirk to worksaround to skip VSC that is incompatible
+with an eDP panel.
 
-To fix this, leave the BLNDGAM power state unchanged when low-power is
-disabled, matching dpp3_power_on_hdr3dlut and dpp3_power_on_shaper.
-
-Fixes: 33056a97ae5e ("drm/amd/display: Remove double checks for `debug.enable_mem_low_power.bits.cm`")
-Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/4452
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 13ff4f63fcddfc84ec8632f1443936b00aa26725)
+(cherry picked from commit 99441824bec63549a076cd86631d138ec9a0c71c)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-index 09be2a90cc79..4f569cd8a5d6 100644
---- a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-@@ -578,9 +578,6 @@ static void dpp3_power_on_blnd_lut(
- 			dpp_base->ctx->dc->optimized_required = true;
- 			dpp_base->deferred_reg_writes.bits.disable_blnd_lut = true;
- 		}
--	} else {
--		REG_SET(CM_MEM_PWR_CTRL, 0,
--				BLNDGAM_MEM_PWR_FORCE, power_on == true ? 0 : 1);
- 	}
- }
- 
--- 
-2.51.2
-
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+@@ -82,6 +82,7 @@ static void apply_edid_quirks(struct drm
+ 		edid_caps->panel_patch.remove_sink_ext_caps = true;
+ 		break;
+ 	case drm_edid_encode_panel_id('S', 'D', 'C', 0x4154):
++	case drm_edid_encode_panel_id('S', 'D', 'C', 0x4171):
+ 		drm_dbg_driver(dev, "Disabling VSC on monitor with panel id %X\n", panel_id);
+ 		edid_caps->panel_patch.disable_colorimetry = true;
+ 		break;
 
 
 
