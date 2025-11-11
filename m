@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-193024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43811C49EA1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25135C49EB6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6254A1889C62
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:49:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2A5F188E269
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6922586C8;
-	Tue, 11 Nov 2025 00:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA22A2561A7;
+	Tue, 11 Nov 2025 00:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nX5GgQKv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdKFYyIe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7935A256C88;
-	Tue, 11 Nov 2025 00:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8012B24113D;
+	Tue, 11 Nov 2025 00:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822117; cv=none; b=L4u8uV8V0b5D/QjMN5ENpK5eTida4+jzabHk6lnxRGgDIwb1Hf60w4kirAeksbUnNBcm3lIzTESAGP+BF/vcM5B8u8AmpKE3IPsENeK+eCdVrgw23CP36TD/Tt0crlB6FtRRMvz4cok8xCP+dDX/mYylzEu7tzyX9IGr7CJ6u/4=
+	t=1762822131; cv=none; b=iguMfmu7XCGW2aGapoPs/wjTZ3BoLk6S8ZPUngyK95sMEiKFTzi02KuH6nXpPYFOnO2V+38vT2BnxfYvScJ7lRv8jjXZdoaoeO3QyXWmtpUk7XJRnc+kvqIIJB+y27SWePsQrtX7b44P0sk6YiLtqYiQqmql7u/9cRee6eU1XB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822117; c=relaxed/simple;
-	bh=ITwVk2bMf3bWJRT1qtW/+mN4oXdjdYJRM4q6hMMSDeY=;
+	s=arc-20240116; t=1762822131; c=relaxed/simple;
+	bh=ZooPDpFxMiDqdeUSDwEUm6fuEAEPXDLz8X6pVk5GNm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twR4nDu0gu4OSWY15qTZ27nirmbTanUWXsoA7Z10YAACRl7WaREmDOD1UIkQwv523Dmyiaips8KJ3RizYZ+HFSBFR4kJhQVJmLoDWooz2P2YetwKfnxtCgGTJDBN0CI19bsg+DnTQWx70PjhaH8hxsJyAWsP4E0KVpj6D8sICtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nX5GgQKv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1685AC116B1;
-	Tue, 11 Nov 2025 00:48:36 +0000 (UTC)
+	 MIME-Version; b=CZw6pr1iDKNw5gA5ayYzcPweHCEZOPa0oFIm8c9V+xGHx/4GKC0xT29VXaLNC+DAgUaRCMxPTbX10AmkiYNl4HHxDCJzC19jkQWL6gTgDEEnZpmh6uTKsPLHPmMNwBnUBKYvrcBh+6mzjiyFHUzXuPraWBdpv5Y0VfGBjIeP2TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdKFYyIe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D58AC113D0;
+	Tue, 11 Nov 2025 00:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822117;
-	bh=ITwVk2bMf3bWJRT1qtW/+mN4oXdjdYJRM4q6hMMSDeY=;
+	s=korg; t=1762822131;
+	bh=ZooPDpFxMiDqdeUSDwEUm6fuEAEPXDLz8X6pVk5GNm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nX5GgQKvHfbWIAh1oP+wj+8kT3/ViikGewYCYX1TxJgzfTORjr972UCSfqs7ZqOFL
-	 rqcv35mDigRCH9UnVaO+b8Gu0hxq1QqUY0Z7JqO0zSUt5OLBa8fj4mmzRPgFU5whw4
-	 HQ8pupOJb91wWbDA4fSJIu/iV/G7lf/wtdLbYeJw=
+	b=pdKFYyIeSE3VgaprtqcRJlPkOwKfTR+FFETkBwzmMdnjUhPgVewVHTrYnVhgO1h1i
+	 wwoRTQTL6XWGzXdEWbNWBR2OiGMslVoRgSwOay4k+hDDoel+DJmlku+nLj3Usnak7F
+	 weTN3jPx2AxBp6KGerelLikPXjVm2p+TSyExJcPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	tianshuo han <hantianshuo233@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.17 005/849] Revert "NFSD: Remove the cap on number of operations per NFSv4 COMPOUND"
-Date: Tue, 11 Nov 2025 09:32:55 +0900
-Message-ID: <20251111004536.593564653@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 006/849] net: usb: asix_devices: Check return value of usbnet_get_endpoints
+Date: Tue, 11 Nov 2025 09:32:56 +0900
+Message-ID: <20251111004536.615396862@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,122 +65,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 3e7f011c255582d7c914133785bbba1990441713 upstream.
+commit dc89548c6926d68dfdda11bebc1a5258bc41d887 upstream.
 
-I've found that pynfs COMP6 now leaves the connection or lease in a
-strange state, which causes CLOSE9 to hang indefinitely. I've dug
-into it a little, but I haven't been able to root-cause it yet.
-However, I bisected to commit 48aab1606fa8 ("NFSD: Remove the cap on
-number of operations per NFSv4 COMPOUND").
+The code did not check the return value of usbnet_get_endpoints.
+Add checks and return the error if it fails to transfer the error.
 
-Tianshuo Han also reports a potential vulnerability when decoding
-an NFSv4 COMPOUND. An attacker can place an arbitrarily large op
-count in the COMPOUND header, which results in:
+Found via static anlaysis and this is similar to
+commit 07161b2416f7 ("sr9800: Add check for usbnet_get_endpoints").
 
-[   51.410584] nfsd: vmalloc error: size 1209533382144, exceeds total
-pages, mode:0xdc0(GFP_KERNEL|__GFP_ZERO),
-nodemask=(null),cpuset=/,mems_allowed=0
-
-when NFSD attempts to allocate the COMPOUND op array.
-
-Let's restore the operation-per-COMPOUND limit, but increased to 200
-for now.
-
-Reported-by: tianshuo han <hantianshuo233@gmail.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fixes: 933a27d39e0e ("USB: asix - Add AX88178 support and many other changes")
+Fixes: 2e55cc7210fe ("[PATCH] USB: usbnet (3/9) module for ASIX Ethernet adapters")
 Cc: stable@vger.kernel.org
-Tested-by: Tianshuo Han <hantianshuo233@gmail.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://patch.msgid.link/20251026164318.57624-1-linmq006@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c  |   14 ++++++++++++--
- fs/nfsd/nfs4state.c |    1 +
- fs/nfsd/nfs4xdr.c   |    4 +++-
- fs/nfsd/nfsd.h      |    3 +++
- fs/nfsd/xdr4.h      |    1 +
- 5 files changed, 20 insertions(+), 3 deletions(-)
+ drivers/net/usb/asix_devices.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -2859,10 +2859,20 @@ nfsd4_proc_compound(struct svc_rqst *rqs
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -230,7 +230,9 @@ static int ax88172_bind(struct usbnet *d
+ 	int i;
+ 	unsigned long gpio_bits = dev->driver_info->data;
  
- 	rqstp->rq_lease_breaker = (void **)&cstate->clp;
+-	usbnet_get_endpoints(dev,intf);
++	ret = usbnet_get_endpoints(dev, intf);
++	if (ret)
++		goto out;
  
--	trace_nfsd_compound(rqstp, args->tag, args->taglen, args->opcnt);
-+	trace_nfsd_compound(rqstp, args->tag, args->taglen, args->client_opcnt);
- 	while (!status && resp->opcnt < args->opcnt) {
- 		op = &args->ops[resp->opcnt++];
+ 	/* Toggle the GPIOs in a manufacturer/model specific way */
+ 	for (i = 2; i >= 0; i--) {
+@@ -848,7 +850,9 @@ static int ax88772_bind(struct usbnet *d
  
-+		if (unlikely(resp->opcnt == NFSD_MAX_OPS_PER_COMPOUND)) {
-+			/* If there are still more operations to process,
-+			 * stop here and report NFS4ERR_RESOURCE. */
-+			if (cstate->minorversion == 0 &&
-+			    args->client_opcnt > resp->opcnt) {
-+				op->status = nfserr_resource;
-+				goto encode_op;
-+			}
-+		}
-+
- 		/*
- 		 * The XDR decode routines may have pre-set op->status;
- 		 * for example, if there is a miscellaneous XDR error
-@@ -2939,7 +2949,7 @@ encode_op:
- 			status = op->status;
- 		}
+ 	dev->driver_priv = priv;
  
--		trace_nfsd_compound_status(args->opcnt, resp->opcnt,
-+		trace_nfsd_compound_status(args->client_opcnt, resp->opcnt,
- 					   status, nfsd4_op_name(op->opnum));
+-	usbnet_get_endpoints(dev, intf);
++	ret = usbnet_get_endpoints(dev, intf);
++	if (ret)
++		return ret;
  
- 		nfsd4_cstate_clear_replay(cstate);
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -3865,6 +3865,7 @@ static __be32 check_forechannel_attrs(st
- 	ca->headerpadsz = 0;
- 	ca->maxreq_sz = min_t(u32, ca->maxreq_sz, maxrpc);
- 	ca->maxresp_sz = min_t(u32, ca->maxresp_sz, maxrpc);
-+	ca->maxops = min_t(u32, ca->maxops, NFSD_MAX_OPS_PER_COMPOUND);
- 	ca->maxresp_cached = min_t(u32, ca->maxresp_cached,
- 			NFSD_SLOT_CACHE_SIZE + NFSD_MIN_HDR_SEQ_SZ);
- 	ca->maxreqs = min_t(u32, ca->maxreqs, NFSD_MAX_SLOTS_PER_SESSION);
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -2488,8 +2488,10 @@ nfsd4_decode_compound(struct nfsd4_compo
+ 	/* Maybe the boot loader passed the MAC address via device tree */
+ 	if (!eth_platform_get_mac_address(&dev->udev->dev, buf)) {
+@@ -1281,7 +1285,9 @@ static int ax88178_bind(struct usbnet *d
+ 	int ret;
+ 	u8 buf[ETH_ALEN] = {0};
  
- 	if (xdr_stream_decode_u32(argp->xdr, &argp->minorversion) < 0)
- 		return false;
--	if (xdr_stream_decode_u32(argp->xdr, &argp->opcnt) < 0)
-+	if (xdr_stream_decode_u32(argp->xdr, &argp->client_opcnt) < 0)
- 		return false;
-+	argp->opcnt = min_t(u32, argp->client_opcnt,
-+			    NFSD_MAX_OPS_PER_COMPOUND);
+-	usbnet_get_endpoints(dev,intf);
++	ret = usbnet_get_endpoints(dev, intf);
++	if (ret)
++		return ret;
  
- 	if (argp->opcnt > ARRAY_SIZE(argp->iops)) {
- 		argp->ops = vcalloc(argp->opcnt, sizeof(*argp->ops));
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -57,6 +57,9 @@ struct readdir_cd {
- 	__be32			err;	/* 0, nfserr, or nfserr_eof */
- };
- 
-+/* Maximum number of operations per session compound */
-+#define NFSD_MAX_OPS_PER_COMPOUND	200
-+
- struct nfsd_genl_rqstp {
- 	struct sockaddr		rq_daddr;
- 	struct sockaddr		rq_saddr;
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -903,6 +903,7 @@ struct nfsd4_compoundargs {
- 	char *				tag;
- 	u32				taglen;
- 	u32				minorversion;
-+	u32				client_opcnt;
- 	u32				opcnt;
- 	bool				splice_ok;
- 	struct nfsd4_op			*ops;
+ 	/* Get the MAC address */
+ 	ret = asix_read_cmd(dev, AX_CMD_READ_NODE_ID, 0, 0, ETH_ALEN, buf, 0);
 
 
 
