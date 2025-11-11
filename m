@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17864C4AC97
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0EEFC4AF16
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 201AD3BAE32
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 692764FAE42
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CC333469A;
-	Tue, 11 Nov 2025 01:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CB833F8BD;
+	Tue, 11 Nov 2025 01:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdezTBWG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyQVqydu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F0D333721;
-	Tue, 11 Nov 2025 01:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B7526CE37;
+	Tue, 11 Nov 2025 01:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823956; cv=none; b=tPvaxI6R4QLTdTQNW9epPvACdMqm7a0yUOSktEvGvQiFq5cqYzRj82JBV8VPkvb8D47pmxSWGL2YRANPViEkDJzZzdHZkWRphFLzYrVJ2yQQYFietQQIs+cInTsruoPY4fVMgjk6mfzHZovixM1GHJd8pS9+UE7mV+UuXy5QtrM=
+	t=1762825059; cv=none; b=c5HzczF2xGwkS2Qqw/H42dgp83EQSPGdxYDuDKnnLzGO1si0SdDpXP0kjKQ2iPJHLfwOSQDTBfpucQXoK6O3Klv6P8vDBaGWrXa3asMa7al9NEr+wEgrusWYqtJL0L1wxYWeI7m/T8/2x9t+AVuTdyGeJ0Wiyu4lz+SPureamxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823956; c=relaxed/simple;
-	bh=5qrQg1wDeLCg8qQan49Ado5S/0PVi2HvHsrdrOj6g0E=;
+	s=arc-20240116; t=1762825059; c=relaxed/simple;
+	bh=ofqtRckkAWlzv8J8fZhZv04Mx44eArmvqFf3cJJNmZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oL1DQjKRN81gquXPBXr9HaukFIqaJYUw92ja/t/hrosl7lUHwDdUNzm45l2Gst74UclS10EYZaMUM9eng3GnMuHoJhrjOwQaZZ8uD4arovrvdztukAoSPYdp6py5KxZiK//hXkB+AynBWuwZTrnFqSKZTn/c6Y+nS7mLF8e0wkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdezTBWG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207F1C4CEF5;
-	Tue, 11 Nov 2025 01:19:15 +0000 (UTC)
+	 MIME-Version; b=SlaNzaxwPzkLnMfblmqANyGHD0PgUeFfq/EPha9x99fSklUspwmlPrw7j7cvPanOY5e2GBFXmm+3FWhdpTOxRO+CsfgG4MGibYRU8MM1zjiNS6CuKy5ZVCGeH48/6PIJkVHMQyL3fq108AAODTqYWhCWfSb4Jb+hqRSztLbDli4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyQVqydu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0DBC116D0;
+	Tue, 11 Nov 2025 01:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823956;
-	bh=5qrQg1wDeLCg8qQan49Ado5S/0PVi2HvHsrdrOj6g0E=;
+	s=korg; t=1762825059;
+	bh=ofqtRckkAWlzv8J8fZhZv04Mx44eArmvqFf3cJJNmZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JdezTBWGQPT0fWfe9+nhBpztf252nmR5LwC9oqoAAx1qa48NZPi+LkLNBfi6jxInC
-	 9JeKpOXccqoVAVgtVN2OJq+tTQY99Ft0rDnF/n04KSEkcSsXWj/QDTQ7E/GbvEVVZM
-	 0tFebKeM9xOGhdp7ZgTVIUN7GQsH8Pct96N8bQAA=
+	b=IyQVqyduSx9X9ZlmxGi65VRRy+LTdXYyDr7DIeJTLyQy2/lq2Q2Vj1/+rOgxtLgRb
+	 B3ZnV9lCes/KIMn0TcQBYSkJXN54hAG08qaqo8FIg5WCZmkVDPC+cvYoK8mNQEP7l6
+	 hLKsdVaGFLm9esqdjgZNTT9E4s0hbitC4WLi9oEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Yusuke Goda <yusuke.goda.sx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 357/565] wifi: mt76: mt76_eeprom_override to int
+Subject: [PATCH 6.17 643/849] ASoC: renesas: msiof: set SIFCTR register
 Date: Tue, 11 Nov 2025 09:43:33 +0900
-Message-ID: <20251111004534.902095553@linuxfoundation.org>
+Message-ID: <20251111004551.976735621@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,251 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit c7c682100cec97b699fe24b26d89278fd459cc84 ]
+[ Upstream commit 130947b4681c515a5e5a7961244b502de2de85ca ]
 
-mt76_eeprom_override has of_get_mac_address, which can return
--EPROBE_DEFER if the nvmem driver gets loaded after mt76 for some
-reason.
+Because it uses DMAC, we would like to transfer data if there is any data.
+Set SIFCTR for it.
 
-Make sure this gets passed to probe so that nvmem mac overrides always
-work.
-
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://patch.msgid.link/20250911221619.16035-1-rosenp@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Tested-by: Yusuke Goda <yusuke.goda.sx@renesas.com>
+Link: https://patch.msgid.link/87bjmzyuub.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/eeprom.c        | 9 +++++++--
- drivers/net/wireless/mediatek/mt76/mt76.h          | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c | 3 +--
- drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c | 4 +---
- drivers/net/wireless/mediatek/mt76/mt7615/init.c   | 5 ++++-
- drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c | 6 +++++-
- drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c | 4 +++-
- drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c | 4 +---
- drivers/net/wireless/mediatek/mt76/mt7915/init.c   | 4 +++-
- drivers/net/wireless/mediatek/mt76/mt7921/init.c   | 4 +++-
- drivers/net/wireless/mediatek/mt76/mt7925/init.c   | 4 +++-
- drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c | 3 +--
- drivers/net/wireless/mediatek/mt76/mt7996/init.c   | 4 +++-
- 13 files changed, 36 insertions(+), 20 deletions(-)
+ sound/soc/renesas/rcar/msiof.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index 443517d06c9fa..a987c5e4eff6c 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -163,13 +163,16 @@ static int mt76_get_of_eeprom(struct mt76_dev *dev, void *eep, int len)
- 	return mt76_get_of_data_from_nvmem(dev, eep, "eeprom", len);
- }
- 
--void
-+int
- mt76_eeprom_override(struct mt76_phy *phy)
- {
- 	struct mt76_dev *dev = phy->dev;
- 	struct device_node *np = dev->dev->of_node;
-+	int err;
- 
--	of_get_mac_address(np, phy->macaddr);
-+	err = of_get_mac_address(np, phy->macaddr);
-+	if (err == -EPROBE_DEFER)
-+		return err;
- 
- 	if (!is_valid_ether_addr(phy->macaddr)) {
- 		eth_random_addr(phy->macaddr);
-@@ -177,6 +180,8 @@ mt76_eeprom_override(struct mt76_phy *phy)
- 			 "Invalid MAC address, using random address %pM\n",
- 			 phy->macaddr);
+diff --git a/sound/soc/renesas/rcar/msiof.c b/sound/soc/renesas/rcar/msiof.c
+index 555fdd4fb2513..ede0211daacba 100644
+--- a/sound/soc/renesas/rcar/msiof.c
++++ b/sound/soc/renesas/rcar/msiof.c
+@@ -185,6 +185,12 @@ static int msiof_hw_start(struct snd_soc_component *component,
+ 		msiof_write(priv, SIRMDR3, val);
  	}
+ 
++	/* SIFCTR */
++	if (is_play)
++		msiof_update(priv, SIFCTR, SIFCTR_TFWM, FIELD_PREP(SIFCTR_TFWM, SIFCTR_TFWM_1));
++	else
++		msiof_update(priv, SIFCTR, SIFCTR_RFWM, FIELD_PREP(SIFCTR_RFWM, SIFCTR_RFWM_1));
 +
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(mt76_eeprom_override);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index a6ac8e5512eba..e7ebae0584f55 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1185,7 +1185,7 @@ void mt76_seq_puts_array(struct seq_file *file, const char *str,
- 			 s8 *val, int len);
- 
- int mt76_eeprom_init(struct mt76_dev *dev, int len);
--void mt76_eeprom_override(struct mt76_phy *phy);
-+int mt76_eeprom_override(struct mt76_phy *phy);
- int mt76_get_of_data_from_mtd(struct mt76_dev *dev, void *eep, int offset, int len);
- int mt76_get_of_data_from_nvmem(struct mt76_dev *dev, void *eep,
- 				const char *cell_name, int len);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
-index f5a6b03bc61d0..88382b537a33b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
-@@ -182,7 +182,6 @@ int mt7603_eeprom_init(struct mt7603_dev *dev)
- 		dev->mphy.antenna_mask = 1;
- 
- 	dev->mphy.chainmask = dev->mphy.antenna_mask;
--	mt76_eeprom_override(&dev->mphy);
- 
--	return 0;
-+	return mt76_eeprom_override(&dev->mphy);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-index ccedea7e8a50d..d4bc7e11e772b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-@@ -351,8 +351,6 @@ int mt7615_eeprom_init(struct mt7615_dev *dev, u32 addr)
- 	memcpy(dev->mphy.macaddr, dev->mt76.eeprom.data + MT_EE_MAC_ADDR,
- 	       ETH_ALEN);
- 
--	mt76_eeprom_override(&dev->mphy);
--
--	return 0;
-+	return mt76_eeprom_override(&dev->mphy);
- }
- EXPORT_SYMBOL_GPL(mt7615_eeprom_init);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 66ba3be273434..d0d880f8c0aa4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -570,7 +570,10 @@ int mt7615_register_ext_phy(struct mt7615_dev *dev)
- 	       ETH_ALEN);
- 	mphy->macaddr[0] |= 2;
- 	mphy->macaddr[0] ^= BIT(7);
--	mt76_eeprom_override(mphy);
-+
-+	ret = mt76_eeprom_override(mphy);
-+	if (ret)
-+		return ret;
- 
- 	/* second phy can only handle 5 GHz */
- 	mphy->cap.has_5ghz = true;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-index 4de45a56812d6..d4506b8b46fa5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-@@ -332,7 +332,11 @@ int mt76x0_eeprom_init(struct mt76x02_dev *dev)
- 
- 	memcpy(dev->mphy.macaddr, (u8 *)dev->mt76.eeprom.data + MT_EE_MAC_ADDR,
- 	       ETH_ALEN);
--	mt76_eeprom_override(&dev->mphy);
-+
-+	err = mt76_eeprom_override(&dev->mphy);
-+	if (err)
-+		return err;
-+
- 	mt76x02_mac_setaddr(dev, dev->mphy.macaddr);
- 
- 	mt76x0_set_chip_cap(dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
-index 156b16c17b2b4..221805deb42fa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
-@@ -499,7 +499,9 @@ int mt76x2_eeprom_init(struct mt76x02_dev *dev)
- 
- 	mt76x02_eeprom_parse_hw_cap(dev);
- 	mt76x2_eeprom_get_macaddr(dev);
--	mt76_eeprom_override(&dev->mphy);
-+	ret = mt76_eeprom_override(&dev->mphy);
-+	if (ret)
-+		return ret;
- 	dev->mphy.macaddr[0] &= ~BIT(1);
- 
- 	return 0;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-index 928e0b07a9bf1..b038568e0be91 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-@@ -284,9 +284,7 @@ int mt7915_eeprom_init(struct mt7915_dev *dev)
- 	memcpy(dev->mphy.macaddr, dev->mt76.eeprom.data + MT_EE_MAC_ADDR,
- 	       ETH_ALEN);
- 
--	mt76_eeprom_override(&dev->mphy);
--
--	return 0;
-+	return mt76_eeprom_override(&dev->mphy);
- }
- 
- int mt7915_eeprom_get_target_power(struct mt7915_dev *dev,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index bc983ab10b0c7..83f062fb95d5a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -689,7 +689,9 @@ mt7915_register_ext_phy(struct mt7915_dev *dev, struct mt7915_phy *phy)
- 		mphy->macaddr[0] |= 2;
- 		mphy->macaddr[0] ^= BIT(7);
- 	}
--	mt76_eeprom_override(mphy);
-+	ret = mt76_eeprom_override(mphy);
-+	if (ret)
-+		return ret;
- 
- 	/* init wiphy according to mphy and phy */
- 	mt7915_init_wiphy(phy);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index d1d64fa7d35d0..4bd533c4ba9a1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -182,7 +182,9 @@ static int __mt7921_init_hardware(struct mt792x_dev *dev)
- 	if (ret)
- 		goto out;
- 
--	mt76_eeprom_override(&dev->mphy);
-+	ret = mt76_eeprom_override(&dev->mphy);
-+	if (ret)
-+		goto out;
- 
- 	ret = mt7921_mcu_set_eeprom(dev);
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-index 02899320da5c1..5123a720413ff 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-@@ -132,7 +132,9 @@ static int __mt7925_init_hardware(struct mt792x_dev *dev)
- 	if (ret)
- 		goto out;
- 
--	mt76_eeprom_override(&dev->mphy);
-+	ret = mt76_eeprom_override(&dev->mphy);
-+	if (ret)
-+		goto out;
- 
- 	ret = mt7925_mcu_set_eeprom(dev);
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
-index 4a82371182873..4c4ab0d4065d2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
-@@ -235,9 +235,8 @@ int mt7996_eeprom_init(struct mt7996_dev *dev)
- 		return ret;
- 
- 	memcpy(dev->mphy.macaddr, dev->mt76.eeprom.data + MT_EE_MAC_ADDR, ETH_ALEN);
--	mt76_eeprom_override(&dev->mphy);
- 
--	return 0;
-+	return mt76_eeprom_override(&dev->mphy);
- }
- 
- int mt7996_eeprom_get_target_power(struct mt7996_dev *dev,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 65bd9c32d42c1..5cd2fb7d9835c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -601,7 +601,9 @@ static int mt7996_register_phy(struct mt7996_dev *dev, struct mt7996_phy *phy,
- 		if (band == MT_BAND2)
- 			mphy->macaddr[0] ^= BIT(6);
- 	}
--	mt76_eeprom_override(mphy);
-+	ret = mt76_eeprom_override(mphy);
-+	if (ret)
-+		goto error;
- 
- 	/* init wiphy according to mphy and phy */
- 	mt7996_init_wiphy(mphy->hw, wed);
+ 	/* SIIER */
+ 	if (is_play)
+ 		val = SIIER_TDREQE | SIIER_TDMAE | SISTR_ERR_TX;
 -- 
 2.51.0
 
