@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D637C49F80
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D7EDC49F98
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ABE2534BDAE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA88C3ABDC9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27FC252917;
-	Tue, 11 Nov 2025 00:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F795255E53;
+	Tue, 11 Nov 2025 00:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9ybqPle"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4yZuvfO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E47612DDA1;
-	Tue, 11 Nov 2025 00:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA442AE8D;
+	Tue, 11 Nov 2025 00:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822320; cv=none; b=mel84Mnm80Ixkm5U8MrxUynks4FibXsE2NwQ1+PcNvV8fQjC9yKHci1b0rpLrbx2n9H+z0d1OxAOM57T4fsZBmZY4U7XKQKJbm9EjwJjHaSL4u9fLBNYZKixE+70vnCffreM4r+MsFy3f7CdE+UyNUtj12wweeIRm1wF14Hg0iE=
+	t=1762822325; cv=none; b=pOjbMRi8Ms8WCdVXLnS9MEtg/igS93pakxsLAPTaa9wIcQdmx5i5n5srs8MN8YpOOMGNORuFQ97BdJ9KASRU5S/jjeD8KoJdCPthMyjirWw5YjXJr4zWCCohr38wgh65U3b3T97pcrPfaXJ75OxppMlE0Tqn1yXIcL/OE/a8cE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822320; c=relaxed/simple;
-	bh=QtEcIDfQhUeWXIKL5PPG8jYQ7kD7uikckKM+Gdux9M0=;
+	s=arc-20240116; t=1762822325; c=relaxed/simple;
+	bh=+Vq52yz2wzPrQLe653KsTkrHgVoMASea9S0nq6Kmt1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nxd4xCydk5vN5aDuoUjnztnyjiJagI9FqDehqNQxcKAVCdDIybXvjyctt+EvmBmNnC6K11xJyKIULVhrrmjLLiIwguC85hbHm6MapPkzaKxUdJmhP8JOp6uNFAvB5YjW3k0NQhwU6xIHFK1P0a8lSL5i8ic0PDDus4vyNBdFYmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9ybqPle; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C6DC4CEFB;
-	Tue, 11 Nov 2025 00:51:59 +0000 (UTC)
+	 MIME-Version; b=pVud2yA3e/sVulUb60eusekGEOPOXGXEYMKtHjppqhFHmvpgp4c1q0grg86oZSphV5qxSLPMpaFm7BbRLiZT5Khbyc6dv5l17W69f69TFnJnSQip0S2JuCKslQmRedzstD2qe1R8UjL6kfspvfjqzJlIVheFs+FxnBi8UI1yIXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4yZuvfO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F8E9C19421;
+	Tue, 11 Nov 2025 00:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822320;
-	bh=QtEcIDfQhUeWXIKL5PPG8jYQ7kD7uikckKM+Gdux9M0=;
+	s=korg; t=1762822324;
+	bh=+Vq52yz2wzPrQLe653KsTkrHgVoMASea9S0nq6Kmt1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a9ybqPleCbsctyGyO1r4JhZRXfBQxb6/gerx8NeRJzDdum9AFUbOFIhDQe/aViGfT
-	 vk5kiJ6zVYjkl7sshkUu6zGp3FMAXjsArAV+k6bLU6wjmU/RENYm9vOgsbe31wkKnZ
-	 DxA9SKyv6J1eDVFg1st6h33greLvk8pS4/4KcVGo=
+	b=b4yZuvfOw8onX5Xr9v/mFWd6pdxpFUCrIGUQ4bYw7DRz0AvEzOHgY6SNJzkVwLB2B
+	 se/YgF9eeYZjtI+QgYMqaqsLLnv7UvV1hOShS1C+dh6eHEvg5jNyxeCE/jqcF0WpuU
+	 UdGgI/m4diM8tNNh7tlaJ8646z+WMc5nDcne9JMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/565] ASoC: cs-amp-lib-test: Fix missing include of kunit/test-bug.h
-Date: Tue, 11 Nov 2025 09:38:02 +0900
-Message-ID: <20251111004527.467366868@linuxfoundation.org>
+Subject: [PATCH 6.12 027/565] wifi: mac80211: dont mark keys for inactive links as uploaded
+Date: Tue, 11 Nov 2025 09:38:03 +0900
+Message-ID: <20251111004527.489209007@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,36 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit ec20584f25233bfe292c8e18f9a429dfaff58a49 ]
+[ Upstream commit 63df3956903748c5f374a0dfe7a89490714a4625 ]
 
-cs-amp-lib-test uses functions from kunit/test-bug.h but wasn't
-including it.
+During resume, the driver can call ieee80211_add_gtk_rekey for keys that
+are not programmed into the device, e.g. keys of inactive links.
+Don't mark such a key as uploaded to avoid removing it later from the
+driver/device.
 
-This error was found by smatch.
-
-Fixes: 177862317a98 ("ASoC: cs-amp-lib: Add KUnit test for calibration helpers")
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251016094844.92796-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250709233537.655094412b0b.Iacae31af3ba2a705da0a9baea976c2f799d65dc4@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: ed6a47346ec6 ("wifi: mac80211: fix key tailroom accounting leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs-amp-lib-test.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/key.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs-amp-lib-test.c b/sound/soc/codecs/cs-amp-lib-test.c
-index a6e8348a1bd53..1bc43a4cfe09c 100644
---- a/sound/soc/codecs/cs-amp-lib-test.c
-+++ b/sound/soc/codecs/cs-amp-lib-test.c
-@@ -6,6 +6,7 @@
- //                    Cirrus Logic International Semiconductor Ltd.
+diff --git a/net/mac80211/key.c b/net/mac80211/key.c
+index 67ecfea229829..7809fac6bae5d 100644
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -510,7 +510,8 @@ static int ieee80211_key_replace(struct ieee80211_sub_if_data *sdata,
+ 	} else {
+ 		if (!new->local->wowlan)
+ 			ret = ieee80211_key_enable_hw_accel(new);
+-		else
++		else if (link_id < 0 || !sdata->vif.active_links ||
++			 BIT(link_id) & sdata->vif.active_links)
+ 			new->flags |= KEY_FLAG_UPLOADED_TO_HARDWARE;
+ 	}
  
- #include <kunit/test.h>
-+#include <kunit/test-bug.h>
- #include <kunit/static_stub.h>
- #include <linux/firmware/cirrus/cs_dsp.h>
- #include <linux/firmware/cirrus/wmfw.h>
 -- 
 2.51.0
 
