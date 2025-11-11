@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-194190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8098C4AEB4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5146C4AEB1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 60AF74F95FE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 538921897F59
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3254833F372;
-	Tue, 11 Nov 2025 01:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C82630F7F1;
+	Tue, 11 Nov 2025 01:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrutIoPT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jN+UVrW3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36A530E83E;
-	Tue, 11 Nov 2025 01:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99A326B0B7;
+	Tue, 11 Nov 2025 01:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825017; cv=none; b=oMQRWYLRk/XQOUqvsiCmoT5uF6eDp7aB8X2uFsY6nV0bX/oeX2ODlLPm64qX/TWgBxwHgvMom8vodb4l1XThczlG74vAxMit6oRKJoHGCatACpuikSjuRlymKM42M2Qx/+jNeNbxKxanRaiV7Wif5tsgeSK9e/mV1GS90YXmfL8=
+	t=1762825042; cv=none; b=RxU0TLTIOcU/P5rH58zueAhHKo4NA5utPzGIQj5O4+c7JXtsPGuNz9Y4HjaadrbIpU/k8sQDLdDBLQGR6lntXA4v2mjHDcEVNoPTQ3M639yBzpSwimKMspKLohubnUyHYgKdYK4OO8GAjnx0qQNW9GxDo58cIV8U1If/alMhEOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825017; c=relaxed/simple;
-	bh=0exUASACt2oCGPKlY9oYGHJwAd5xHVxNfy/WquM4zt8=;
+	s=arc-20240116; t=1762825042; c=relaxed/simple;
+	bh=eFmSObKhbqpxNowZgHgOUc1ZcibYvwGSjXLT7T9BbBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uBOt+BbBPzRr2QSCYPNoWG2hLXFInXtXX8Pdi/C4rJf3+FAjt+HOUwLZWQ7zdKQYvmwFM9rRqmCZ1T4HlwksttOFvRl9JGJaLKybDXJNvpT950b+r0JDik3uLrRT/vBLyx45Ixf+GLAFFt1aPZqukZrXL52DKGgDUQO+PIq5OzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrutIoPT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80381C113D0;
-	Tue, 11 Nov 2025 01:36:56 +0000 (UTC)
+	 MIME-Version; b=Ss0Yd8PcUp1fzZhimqTtdruRlOJLqEYPYB8zM1daGAQyUcHeRnmwaJh9Bciu7h6LynFM3L2qBTYoNAp2sUMba4INEVePB+j8kgxJye9NTNTjM0eyS6JNnog0EjFO6GygU8mS8VrrthpdaFtRuGMhYNffVq98jg0RHo8WbQy994Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jN+UVrW3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774A9C16AAE;
+	Tue, 11 Nov 2025 01:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825016;
-	bh=0exUASACt2oCGPKlY9oYGHJwAd5xHVxNfy/WquM4zt8=;
+	s=korg; t=1762825042;
+	bh=eFmSObKhbqpxNowZgHgOUc1ZcibYvwGSjXLT7T9BbBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrutIoPT4cUVWK3og2zw/Bd1a+3UAGZCgwTNEOFJAfs0EpZqMIwyBVswNWY15VY9K
-	 lTHpbEIJxOiRzYOwCuC2bgW0xabgrKMJ8CKY7w6i8t7nLd59MZI6x1jvgXd5IxBjVM
-	 PSdK3V1r8PrVepLTObFkWSsHtkhvbNIhoY7vwt+k=
+	b=jN+UVrW3uw5n4H9Nv4JQn9pT/PwkKtXE0V1HdmgHv1T3OzGGxM0SgfrURIflCgc4N
+	 j6qtfzdyDWwrGVlt6vquRGXgxM77YMWLrdTDdtRTdA2uP9RT3YBAdbe+CSRHyZDAhL
+	 3LgtsaMscXfCh81NdoXkEHHSDyCZZPIDV7wIgGco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
-	Vikas Gupta <vikas.gupta@broadcom.com>,
-	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 618/849] bng_en: make bnge_alloc_ring() self-unwind on failure
-Date: Tue, 11 Nov 2025 09:43:08 +0900
-Message-ID: <20251111004551.373230301@linuxfoundation.org>
+Subject: [PATCH 6.17 619/849] ALSA: usb-audio: dont apply interface quirk to Presonus S1824c
+Date: Tue, 11 Nov 2025 09:43:09 +0900
+Message-ID: <20251111004551.397470490@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,53 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+From: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
 
-[ Upstream commit 9ee5994418bb527788e77361d338af40a126aa21 ]
+[ Upstream commit d1d6ad7f6686e208aba06b7af3feef7a7cba61cf ]
 
-Ensure bnge_alloc_ring() frees any intermediate allocations
-when it fails. This enables later patches to rely on this
-self-unwinding behavior.
+Testing with a Presonus STUDIO 1824c together with
+a Behringer ultragain digital ADAT device shows that
+using all 3 altno settings works fine.
 
-Signed-off-by: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
-Reviewed-by: Vikas Gupta <vikas.gupta@broadcom.com>
-Reviewed-by: Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
-Link: https://patch.msgid.link/20250919174742.24969-2-bhargava.marreddy@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+When selecting sample rate, the driver sets the interface
+to the correct altno setting and the correct number of
+channels is set.
+
+Selecting the correct altno setting via Ardour, Reaper or
+whatever other way to set the sample rate is more convenient
+than re-loading the driver module with device_setup to
+set altno.
+
+Signed-off-by: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnge/bnge_rmem.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ sound/usb/quirks.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_rmem.c b/drivers/net/ethernet/broadcom/bnge/bnge_rmem.c
-index 52ada65943a02..98b4e9f55bcbb 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_rmem.c
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_rmem.c
-@@ -95,7 +95,7 @@ int bnge_alloc_ring(struct bnge_dev *bd, struct bnge_ring_mem_info *rmem)
- 						     &rmem->dma_arr[i],
- 						     GFP_KERNEL);
- 		if (!rmem->pg_arr[i])
--			return -ENOMEM;
-+			goto err_free_ring;
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 766db7d00cbc9..4a35f962527e9 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -1599,9 +1599,6 @@ int snd_usb_apply_interface_quirk(struct snd_usb_audio *chip,
+ 	/* presonus studio 1810c: skip altsets incompatible with device_setup */
+ 	if (chip->usb_id == USB_ID(0x194f, 0x010c))
+ 		return s1810c_skip_setting_quirk(chip, iface, altno);
+-	/* presonus studio 1824c: skip altsets incompatible with device_setup */
+-	if (chip->usb_id == USB_ID(0x194f, 0x010d))
+-		return s1810c_skip_setting_quirk(chip, iface, altno);
  
- 		if (rmem->ctx_mem)
- 			bnge_init_ctx_mem(rmem->ctx_mem, rmem->pg_arr[i],
-@@ -116,10 +116,13 @@ int bnge_alloc_ring(struct bnge_dev *bd, struct bnge_ring_mem_info *rmem)
- 	if (rmem->vmem_size) {
- 		*rmem->vmem = vzalloc(rmem->vmem_size);
- 		if (!(*rmem->vmem))
--			return -ENOMEM;
-+			goto err_free_ring;
- 	}
--
  	return 0;
-+
-+err_free_ring:
-+	bnge_free_ring(bd, rmem);
-+	return -ENOMEM;
  }
- 
- static int bnge_alloc_ctx_one_lvl(struct bnge_dev *bd,
 -- 
 2.51.0
 
