@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D19C4A1A2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:00:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E50C4A13C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7ADDC4F2445
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 200533ACDEE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD391C6FE1;
-	Tue, 11 Nov 2025 00:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B430424A043;
+	Tue, 11 Nov 2025 00:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQhys9oC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cyr+KTMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768EC4C97;
-	Tue, 11 Nov 2025 00:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0614C97;
+	Tue, 11 Nov 2025 00:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822696; cv=none; b=dz58T2cYUH3xjf8uR+vtsTmOy6be3XSFpNtpFaFGhUiBwkUm0sZ1uHOAjsvsCfYaMGGgMao5oSXIDC2/qtzYvvX0j+5M0JQCR0/XD0tZKbk37mDDVZa+81q/AJDe54o9MYC1pQMU9YTvy6Kd/u+2fxJFyVnDmhjsKMSZKYtpGf4=
+	t=1762822701; cv=none; b=WQQYJiZl4H3d1pQeCMhyoFHugpQZIvMGSFuLzeW7JA72o8lYOs+f1qA63syKAbUGbQy/nQyPns6I7b2rpvP3flysY7oD2g/bIsMY4qXkxo2h4RrreSqX8nk9PcvcRt0KrmOPY86FzdZuZzWTZXaTUaUXzDW0q61JS8GUQdoFlqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822696; c=relaxed/simple;
-	bh=N4a0hV2/pW4mZjTPUn6P1OCbmwGehRBwRR0Hy5IJ7Ks=;
+	s=arc-20240116; t=1762822701; c=relaxed/simple;
+	bh=IomGVz87cm44dirXA3Ch8Z8pqyE8FVD/SaKlbQY6rNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dj+4PETsZDcgLfvpSSbXn6q04OQxbvhUzrbOpwmtt8iONkDyN0TLW0PdfzyRSeB5E9KvmLHYaqfCQw+Y5FL1zocanD1mEVu63O9QUp3CruEI63optMImNk3mA9aj1IKfKLHLBznphqoOvCE84cKJ8BQ0lA+BQhIG6zQzxCZSYxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQhys9oC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16664C19422;
-	Tue, 11 Nov 2025 00:58:15 +0000 (UTC)
+	 MIME-Version; b=aev7w1R9/z8xkHL3RUC2sKfCn/y+6IC0fgiH4VeuNQ9fcOznCcYN3KESJgL69Jwi+Ho78QZmAokGXCOhKXudKTfXBm3R7iAl+AHroBlzlgoPRqMl6ribCVtkfOi03PGiZnCb6svMzfTRje0g8HXYcUbY4QuRFR8uO9a+lihNYI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cyr+KTMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FA3C19425;
+	Tue, 11 Nov 2025 00:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822696;
-	bh=N4a0hV2/pW4mZjTPUn6P1OCbmwGehRBwRR0Hy5IJ7Ks=;
+	s=korg; t=1762822701;
+	bh=IomGVz87cm44dirXA3Ch8Z8pqyE8FVD/SaKlbQY6rNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQhys9oC4vV62whYJ/ufymXI562hD1wJASQdxoazmTZ2xQoxHGmantxpRjwSAP+rb
-	 qXA4VNR91T96MzNJvYhWt9AWKicJiLB+ra5wCFwBzZ/OGSkfEhUqGMCb+ZOzPIjsUt
-	 RuCcmxCen0LuhoV7TfMpDKnlQMEF84vciutzcx0o=
+	b=cyr+KTMZqoI5F85+V4lKyVAWYLHLUQoUDUHVGz6RgW62w4iYzidpYtUgnC6tXZ/6m
+	 UHGGaS353Ms8EQsYb2N6ODKIUEmD/8F6USv4Ck6MON0um4r95xxR+TJMjVnYWTyhPj
+	 2ZIiSHvdF1/+4B4inP17JDgcXU0DwDLa3vTEy7Qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 150/849] ACPI: scan: Add Intel CVS ACPI HIDs to acpi_ignore_dep_ids[]
-Date: Tue, 11 Nov 2025 09:35:20 +0900
-Message-ID: <20251111004540.047249160@linuxfoundation.org>
+Subject: [PATCH 6.17 151/849] thermal: gov_step_wise: Allow cooling level to be reduced earlier
+Date: Tue, 11 Nov 2025 09:35:21 +0900
+Message-ID: <20251111004540.074020205@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,50 +66,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 4405a214df146775338a1e6232701a29024b82e1 ]
+[ Upstream commit 2e82368359f63567862a0d438710ddffcb1ace83 ]
 
-Some x86/ACPI laptops with MIPI cameras have a INTC10DE or INTC10E0 ACPI
-device in the _DEP dependency list of the ACPI devices for the camera-
-sensors (which have flags.honor_deps set).
+The current behavior of the Step-wise thermal governor is to increase
+the cooling level one step at a time after trip point threshold passing
+by thermal zone temperature until the temperature stops to rise.  Then,
+nothing is done until the temperature decreases below the (possibly
+updated) trip point threshold, at which point the cooling level is
+reduced straight to the applicable minimum.
 
-These devices are for an Intel Vision CVS chip for which an out of tree
-driver is available [1].
+While this generally works, it is not in agreement with the throttling
+logic description comment in step_wise_manage() any more after some
+relatively recent changes, and in the case of passive cooling, it may
+lead to undesirable performance oscillations between high and low
+levels.
 
-The camera sensor works fine without a driver being loaded for this
-ACPI device on the 2 laptops this was tested on:
+For this reason, modify the governor's cooling device state selection
+function, get_target_state(), to reduce cooling by one level even if
+the temperature is still above the thermal zone threshold, but the
+temperature has started to fall down.  However, ensure that the cooling
+level will remain above the applicable minimum in that case to pull
+the zone temperature further down, possibly until it falls below the
+trip threshold (which may now be equal to the low temperature of the
+trip).
 
-ThinkPad X1 Carbon Gen 12 (Meteor Lake)
-ThinkPad X1 2-in-1 Gen 10 (Arrow Lake)
+Doing so should help higher performance to be restored earlier in some
+cases which is desirable especially for passive trip points with
+relatively high hysteresis values.
 
-For now add these HIDs to acpi_ignore_dep_ids[] so that
-acpi_dev_ready_for_enumeration() will return true once the other _DEP
-dependencies are met and an i2c_client for the camera sensor will get
-instantiated.
-
-Link: https://github.com/intel/vision-drivers/ [1]
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20250829142748.21089-1-hansg@kernel.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/1947735.tdWV9SEqCh@rafael.j.wysocki
+[ rjw: Changelog edits ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/scan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/thermal/gov_step_wise.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index fb1fe9f3b1a36..9865faa996b0d 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -845,6 +845,8 @@ static bool acpi_info_matches_ids(struct acpi_device_info *info,
- static const char * const acpi_ignore_dep_ids[] = {
- 	"PNP0D80", /* Windows-compatible System Power Management Controller */
- 	"INT33BD", /* Intel Baytrail Mailbox Device */
-+	"INTC10DE", /* Intel CVS LNL */
-+	"INTC10E0", /* Intel CVS ARL */
- 	"LATT2021", /* Lattice FW Update Client Driver */
- 	NULL
- };
+diff --git a/drivers/thermal/gov_step_wise.c b/drivers/thermal/gov_step_wise.c
+index d1bb59f1dfbd3..b7938bddd9a6a 100644
+--- a/drivers/thermal/gov_step_wise.c
++++ b/drivers/thermal/gov_step_wise.c
+@@ -20,7 +20,9 @@
+  * If the temperature is higher than a trip point,
+  *    a. if the trend is THERMAL_TREND_RAISING, use higher cooling
+  *       state for this trip point
+- *    b. if the trend is THERMAL_TREND_DROPPING, do nothing
++ *    b. if the trend is THERMAL_TREND_DROPPING, use a lower cooling state
++ *       for this trip point, but keep the cooling state above the applicable
++ *       minimum
+  * If the temperature is lower than a trip point,
+  *    a. if the trend is THERMAL_TREND_RAISING, do nothing
+  *    b. if the trend is THERMAL_TREND_DROPPING, use lower cooling
+@@ -51,6 +53,17 @@ static unsigned long get_target_state(struct thermal_instance *instance,
+ 	if (throttle) {
+ 		if (trend == THERMAL_TREND_RAISING)
+ 			return clamp(cur_state + 1, instance->lower, instance->upper);
++
++		/*
++		 * If the zone temperature is falling, the cooling level can
++		 * be reduced, but it should still be above the lower state of
++		 * the given thermal instance to pull the temperature further
++		 * down.
++		 */
++		if (trend == THERMAL_TREND_DROPPING)
++			return clamp(cur_state - 1,
++				     min(instance->lower + 1, instance->upper),
++				     instance->upper);
+ 	} else if (trend == THERMAL_TREND_DROPPING) {
+ 		if (cur_state <= instance->lower)
+ 			return THERMAL_NO_TARGET;
 -- 
 2.51.0
 
