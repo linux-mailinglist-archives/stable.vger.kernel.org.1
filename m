@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB504C4AA9C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77135C4A426
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E80FB4EEAC6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 598464F6983
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F693469FE;
-	Tue, 11 Nov 2025 01:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A24B25F975;
+	Tue, 11 Nov 2025 01:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOkLKRNH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVnOxR6e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A403469F2;
-	Tue, 11 Nov 2025 01:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35502248F6A;
+	Tue, 11 Nov 2025 01:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824201; cv=none; b=P6YtISn6SM4+14iAQ7VkOgL6okbqtwMX5nOiRpXbRBXfdQjm3eNlWSMUTLqAIXNYjKQZMRO0WsuzAJ6dww4LpPjRcrqx4kELCujLh9R57dbBFDHJ6WoJkw2JkLKnFbrcEzVFssHhKBT8TxBbEYnVfNH6xgKQ7kQ/LKDnRnK5+Yo=
+	t=1762823073; cv=none; b=fueugpi3IzBaifYdfGC9+n4KPBVB01jGQZLiitUt6C0gEvOgs3oPgLbT3gzgS94Ewg3iebYSwJ8RzSh/rS4Ubq5S/I2Ll3lF5SF8nZy1LiLmMvfZFHt2JeDy7OzYFbjL2dQ4jUUNXYOxXNO/85no7mtLIAXOrqaH+F0/WP71e6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824201; c=relaxed/simple;
-	bh=3AR8Vl1OiMR9bSmR14vjmioDL+M6R09T35dKcUAFs/4=;
+	s=arc-20240116; t=1762823073; c=relaxed/simple;
+	bh=Ypw79DOPCc4II0B4MjrRYrY1izB9W7h+K/aKK9OF6KY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gEPiP5FRZyOfk7uD5r4RECd2Hb4Xx+pTNyqmjIVa+Z1smAmkkvCEDcCQztMHQSvEqGV7xfqkAGC6+35sgmVP9nlum8oR02IcA7xCMTvDSLogV6eYmp8CXGGkPtj8U8aEBLGk/zNZGnGmngJX9jMfLUI1SX8GU+nNqYl6Z3iNo54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOkLKRNH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729C0C116B1;
-	Tue, 11 Nov 2025 01:23:20 +0000 (UTC)
+	 MIME-Version; b=l3FuYSaKO4Rmq5Fnj+INODndbQESg7nZJRB6Ct78Uyz7A+IOu6eGjk87PTQv5F41II/9VMlCuSCNGMAI7nQ2havOmviUSOrGnTUPvdbDL31/TMLQFqltVazWzlW14cH3cfx9fpwaMFew8FEEKOMhk5ERtnAmgMhxhTHK6y32Sjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVnOxR6e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8629C19421;
+	Tue, 11 Nov 2025 01:04:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824200;
-	bh=3AR8Vl1OiMR9bSmR14vjmioDL+M6R09T35dKcUAFs/4=;
+	s=korg; t=1762823073;
+	bh=Ypw79DOPCc4II0B4MjrRYrY1izB9W7h+K/aKK9OF6KY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AOkLKRNH9Xo9E9uk4quhHooQ4mr4f4zOSf3A3YFdPCJDogN4YSkobGULtI8ISA0wh
-	 tq5Dl9/ViTW/XbAvKmSXEaQzEcou804bJbZ0929ZOzWl/CIm6o0IOaaS/Cj3SezqG1
-	 VciAykWDMQ6FpfLGH2+mKD/XgN2rut4dGxN0q0Z0=
+	b=ZVnOxR6eNObzVncSYFBBMPbVG36n6Y9dX8g2YezzX3LCzPq9fOXfvo1qhLKkFlXzY
+	 1iR+iodSxJsa1jNcMz7n9+l1JuhUW7hYhtW4nCTKrgVKrvUjFwa7I6ZywbnL68lRts
+	 5Qqmf52FW8we/6JH2Np97cGL656MMJaoWp6rVU/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 452/849] bus: mhi: host: pci_generic: Add support for all Foxconn T99W696 SKU variants
+Subject: [PATCH 6.12 166/565] mfd: stmpe: Remove IRQ domain upon removal
 Date: Tue, 11 Nov 2025 09:40:22 +0900
-Message-ID: <20251111004547.355741066@linuxfoundation.org>
+Message-ID: <20251111004530.671072073@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 376358bb9770e5313d22d8784511497096cdb75f ]
+[ Upstream commit 57bf2a312ab2d0bc8ee0f4e8a447fa94a2fc877d ]
 
-Since there are too many variants available for Foxconn T99W696 modem, and
-they all share the same configuration, use PCI_ANY_ID as the subsystem
-device ID to match each possible SKUs and support all of them.
+The IRQ domain is (optionally) added during stmpe_probe, but never removed.
+Add the call to stmpe_remove.
 
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
-[mani: reworded subject/description and dropped the fixes tag]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250819020013.122162-1-slark_xiao@163.com
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20250725070752.338376-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/pci_generic.c | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+ drivers/mfd/stmpe.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
-index 4edb5bb476baf..4564e2528775e 100644
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -917,20 +917,8 @@ static const struct pci_device_id mhi_pci_id_table[] = {
- 	/* Telit FE990A */
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2015),
- 		.driver_data = (kernel_ulong_t) &mhi_telit_fe990a_info },
--	/* Foxconn T99W696.01, Lenovo Generic SKU */
--	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, PCI_VENDOR_ID_FOXCONN, 0xe142),
--		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w696_info },
--	/* Foxconn T99W696.02, Lenovo X1 Carbon SKU */
--	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, PCI_VENDOR_ID_FOXCONN, 0xe143),
--		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w696_info },
--	/* Foxconn T99W696.03, Lenovo X1 2in1 SKU */
--	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, PCI_VENDOR_ID_FOXCONN, 0xe144),
--		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w696_info },
--	/* Foxconn T99W696.04, Lenovo PRC SKU */
--	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, PCI_VENDOR_ID_FOXCONN, 0xe145),
--		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w696_info },
--	/* Foxconn T99W696.00, Foxconn SKU */
--	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, PCI_VENDOR_ID_FOXCONN, 0xe146),
-+	/* Foxconn T99W696, all variants */
-+	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, PCI_VENDOR_ID_FOXCONN, PCI_ANY_ID),
- 		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w696_info },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0308),
- 		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx65_info },
+diff --git a/drivers/mfd/stmpe.c b/drivers/mfd/stmpe.c
+index 9c3cf58457a7d..be6a84a3062cc 100644
+--- a/drivers/mfd/stmpe.c
++++ b/drivers/mfd/stmpe.c
+@@ -1485,6 +1485,9 @@ int stmpe_probe(struct stmpe_client_info *ci, enum stmpe_partnum partnum)
+ 
+ void stmpe_remove(struct stmpe *stmpe)
+ {
++	if (stmpe->domain)
++		irq_domain_remove(stmpe->domain);
++
+ 	if (!IS_ERR(stmpe->vio) && regulator_is_enabled(stmpe->vio))
+ 		regulator_disable(stmpe->vio);
+ 	if (!IS_ERR(stmpe->vcc) && regulator_is_enabled(stmpe->vcc))
 -- 
 2.51.0
 
