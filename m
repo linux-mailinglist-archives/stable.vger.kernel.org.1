@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BA9C4A2BC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:05:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E329EC4A27D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:04:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E269188F6E3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00E5D188EEBE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5DE255F28;
-	Tue, 11 Nov 2025 01:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1481E25A334;
+	Tue, 11 Nov 2025 01:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wYinfZ8C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAkQ24mU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3B725EF81;
-	Tue, 11 Nov 2025 01:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EFE258EF6;
+	Tue, 11 Nov 2025 01:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823064; cv=none; b=CbnMTZzIW28befDrkcWA4hejIzElbDXmrZtwRgEev+TxlMHaykprj4Ks8NgRkXNe74CDMdIYssQkih0l7ChLwHnM2Ik9gfaQedlLq6I4FRRVuo3sg7QgyS50BJSDgPY7ej3SauYJaABh5mUogcAZlMpzi735uHR+0YnFyy669/4=
+	t=1762822992; cv=none; b=J88zISHB1n0TC25EzmtpipuTyNMW9UBKF2fYaaVTCqx3UTG9S6kkCG6T2iWTp9nt9lX05Qb7yySbmBVJgPSMYo4SQNN07T/nDMvCslIbHwCSbU9K3WupkUBHd8ykoUsaBk6Qyw7Hu2f1Vv+uQI2rZi58/WYlTg+lPeFAqkZ0Kls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823064; c=relaxed/simple;
-	bh=X6a+OkLHUcSdijT2PnJ/7ihUj6L+lffD+c8sJQt0OyU=;
+	s=arc-20240116; t=1762822992; c=relaxed/simple;
+	bh=vqioFOxfZgtLXHGBSIneGoGTsHbleNF28bvpzm6B+jI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mS9OEiKhJ+c0vhhfSljdWlFfsEScXKEfFStv/hZOiRWVv8Iraa/+kDuyrEIfQeTqySpONmTUtAZJ2++MY/fvspWMSQHrXTvgdnaUMjq8Aae6ogegVqZodxG2hiR1j3WA9IhiHUEzUJlfSCj1/I2cjM8cztQC49xGQSsmJ38OtMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wYinfZ8C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D823C113D0;
-	Tue, 11 Nov 2025 01:04:23 +0000 (UTC)
+	 MIME-Version; b=KSZt8WHO8W3SQOn6YUKihS0iVBe+ER9aw1Tdg33Nf6BjQU5SJMw5QCc/8RJKAQDJWnpu/kGoJzNcSqfZCPvOXkCE510EsNlIZMGBaxBWf9Zyth0xG3g96gJFz3iJy7x9twdJiee+KqDZVW5C0Ql0TkkX0V5XZvfj2xunkRWLA3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAkQ24mU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDAEC2BCAF;
+	Tue, 11 Nov 2025 01:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823063;
-	bh=X6a+OkLHUcSdijT2PnJ/7ihUj6L+lffD+c8sJQt0OyU=;
+	s=korg; t=1762822992;
+	bh=vqioFOxfZgtLXHGBSIneGoGTsHbleNF28bvpzm6B+jI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wYinfZ8CXHCAGoRY5LvG6lhJNhH2HJVLRPk193G8XvTnQo0lkXlNkeDg/bS6C+Xe1
-	 Et/tCP1/BP9mHsD1B7OvSZCbhhlPgx6d+6G+hHAw0PLb0nYLV6Z5LXyYPwCdJoBavf
-	 IImBqC7VQyqmyF5UN8wvdN/0PRBwjTg+71YVR/8w=
+	b=PAkQ24mURQ7KpB3QX3lBNphx/Vwhd0Twua1IVCVLsKxy6VKlGS2EbGVmlGSA0apqS
+	 BDa1XV+LoAkpRigyuT/bvf7BHVvDRRspmhEh9JQ4umNb6WFbcSQ8VegoT6E5CSoZwT
+	 +gd7DpY/vLDywmf/jsbwSv2NCy+CiY5V79yMBeIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amery Hung <ameryhung@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 206/849] selftests: drv-net: Pull data before parsing headers
-Date: Tue, 11 Nov 2025 09:36:16 +0900
-Message-ID: <20251111004541.420288295@linuxfoundation.org>
+Subject: [PATCH 6.17 210/849] hwmon: (dell-smm) Remove Dell Precision 490 custom config data
+Date: Tue, 11 Nov 2025 09:36:20 +0900
+Message-ID: <20251111004541.522005486@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,183 +66,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Amery Hung <ameryhung@gmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit efec2e55bdefb889639a6e7fe1f1f2431cdddc6a ]
+[ Upstream commit ddb61e737f04e3c6c8299c1e00bf17a42a7f05cf ]
 
-It is possible for drivers to generate xdp packets with data residing
-entirely in fragments. To keep parsing headers using direct packet
-access, call bpf_xdp_pull_data() to pull headers into the linear data
-area.
+It turns out the second fan on the Dell Precision 490 does not
+really support I8K_FAN_TURBO. Setting the fan state to 3 enables
+automatic fan control, just like on the other two fans.
+The reason why this was misinterpreted as turbo mode was that
+the second fan normally spins faster in automatic mode than
+in the previous fan states. Yet when in state 3, the fan speed
+reacts to heat exposure, exposing the automatic mode setting.
 
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250922233356.3356453-9-ameryhung@gmail.com
+Link: https://github.com/lm-sensors/lm-sensors/pull/383
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20250917181036.10972-2-W_Armin@gmx.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/net/lib/xdp_native.bpf.c        | 89 +++++++++++++++----
- 1 file changed, 74 insertions(+), 15 deletions(-)
+ drivers/hwmon/dell-smm-hwmon.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/tools/testing/selftests/net/lib/xdp_native.bpf.c b/tools/testing/selftests/net/lib/xdp_native.bpf.c
-index 521ba38f2ddda..df4eea5c192b3 100644
---- a/tools/testing/selftests/net/lib/xdp_native.bpf.c
-+++ b/tools/testing/selftests/net/lib/xdp_native.bpf.c
-@@ -14,6 +14,8 @@
- #define MAX_PAYLOAD_LEN 5000
- #define MAX_HDR_LEN 64
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index 1e2c8e2840015..3f61b2d7935e4 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -1331,7 +1331,6 @@ struct i8k_config_data {
  
-+extern int bpf_xdp_pull_data(struct xdp_md *xdp, __u32 len) __ksym __weak;
-+
- enum {
- 	XDP_MODE = 0,
- 	XDP_PORT = 1,
-@@ -68,30 +70,57 @@ static void record_stats(struct xdp_md *ctx, __u32 stat_type)
- 
- static struct udphdr *filter_udphdr(struct xdp_md *ctx, __u16 port)
- {
--	void *data_end = (void *)(long)ctx->data_end;
--	void *data = (void *)(long)ctx->data;
- 	struct udphdr *udph = NULL;
--	struct ethhdr *eth = data;
-+	void *data, *data_end;
-+	struct ethhdr *eth;
-+	int err;
-+
-+	err = bpf_xdp_pull_data(ctx, sizeof(*eth));
-+	if (err)
-+		return NULL;
-+
-+	data_end = (void *)(long)ctx->data_end;
-+	data = eth = (void *)(long)ctx->data;
- 
- 	if (data + sizeof(*eth) > data_end)
- 		return NULL;
- 
- 	if (eth->h_proto == bpf_htons(ETH_P_IP)) {
--		struct iphdr *iph = data + sizeof(*eth);
-+		struct iphdr *iph;
-+
-+		err = bpf_xdp_pull_data(ctx, sizeof(*eth) + sizeof(*iph) +
-+					     sizeof(*udph));
-+		if (err)
-+			return NULL;
-+
-+		data_end = (void *)(long)ctx->data_end;
-+		data = (void *)(long)ctx->data;
-+
-+		iph = data + sizeof(*eth);
- 
- 		if (iph + 1 > (struct iphdr *)data_end ||
- 		    iph->protocol != IPPROTO_UDP)
- 			return NULL;
- 
--		udph = (void *)eth + sizeof(*iph) + sizeof(*eth);
--	} else if (eth->h_proto  == bpf_htons(ETH_P_IPV6)) {
--		struct ipv6hdr *ipv6h = data + sizeof(*eth);
-+		udph = data + sizeof(*iph) + sizeof(*eth);
-+	} else if (eth->h_proto == bpf_htons(ETH_P_IPV6)) {
-+		struct ipv6hdr *ipv6h;
-+
-+		err = bpf_xdp_pull_data(ctx, sizeof(*eth) + sizeof(*ipv6h) +
-+					     sizeof(*udph));
-+		if (err)
-+			return NULL;
-+
-+		data_end = (void *)(long)ctx->data_end;
-+		data = (void *)(long)ctx->data;
-+
-+		ipv6h = data + sizeof(*eth);
- 
- 		if (ipv6h + 1 > (struct ipv6hdr *)data_end ||
- 		    ipv6h->nexthdr != IPPROTO_UDP)
- 			return NULL;
- 
--		udph = (void *)eth + sizeof(*ipv6h) + sizeof(*eth);
-+		udph = data + sizeof(*ipv6h) + sizeof(*eth);
- 	} else {
- 		return NULL;
- 	}
-@@ -145,17 +174,34 @@ static void swap_machdr(void *data)
- 
- static int xdp_mode_tx_handler(struct xdp_md *ctx, __u16 port)
- {
--	void *data_end = (void *)(long)ctx->data_end;
--	void *data = (void *)(long)ctx->data;
- 	struct udphdr *udph = NULL;
--	struct ethhdr *eth = data;
-+	void *data, *data_end;
-+	struct ethhdr *eth;
-+	int err;
-+
-+	err = bpf_xdp_pull_data(ctx, sizeof(*eth));
-+	if (err)
-+		return XDP_PASS;
-+
-+	data_end = (void *)(long)ctx->data_end;
-+	data = eth = (void *)(long)ctx->data;
- 
- 	if (data + sizeof(*eth) > data_end)
- 		return XDP_PASS;
- 
- 	if (eth->h_proto == bpf_htons(ETH_P_IP)) {
--		struct iphdr *iph = data + sizeof(*eth);
--		__be32 tmp_ip = iph->saddr;
-+		struct iphdr *iph;
-+		__be32 tmp_ip;
-+
-+		err = bpf_xdp_pull_data(ctx, sizeof(*eth) + sizeof(*iph) +
-+					     sizeof(*udph));
-+		if (err)
-+			return XDP_PASS;
-+
-+		data_end = (void *)(long)ctx->data_end;
-+		data = (void *)(long)ctx->data;
-+
-+		iph = data + sizeof(*eth);
- 
- 		if (iph + 1 > (struct iphdr *)data_end ||
- 		    iph->protocol != IPPROTO_UDP)
-@@ -169,8 +215,10 @@ static int xdp_mode_tx_handler(struct xdp_md *ctx, __u16 port)
- 			return XDP_PASS;
- 
- 		record_stats(ctx, STATS_RX);
-+		eth = data;
- 		swap_machdr((void *)eth);
- 
-+		tmp_ip = iph->saddr;
- 		iph->saddr = iph->daddr;
- 		iph->daddr = tmp_ip;
- 
-@@ -178,9 +226,19 @@ static int xdp_mode_tx_handler(struct xdp_md *ctx, __u16 port)
- 
- 		return XDP_TX;
- 
--	} else if (eth->h_proto  == bpf_htons(ETH_P_IPV6)) {
--		struct ipv6hdr *ipv6h = data + sizeof(*eth);
-+	} else if (eth->h_proto == bpf_htons(ETH_P_IPV6)) {
- 		struct in6_addr tmp_ipv6;
-+		struct ipv6hdr *ipv6h;
-+
-+		err = bpf_xdp_pull_data(ctx, sizeof(*eth) + sizeof(*ipv6h) +
-+					     sizeof(*udph));
-+		if (err)
-+			return XDP_PASS;
-+
-+		data_end = (void *)(long)ctx->data_end;
-+		data = (void *)(long)ctx->data;
-+
-+		ipv6h = data + sizeof(*eth);
- 
- 		if (ipv6h + 1 > (struct ipv6hdr *)data_end ||
- 		    ipv6h->nexthdr != IPPROTO_UDP)
-@@ -194,6 +252,7 @@ static int xdp_mode_tx_handler(struct xdp_md *ctx, __u16 port)
- 			return XDP_PASS;
- 
- 		record_stats(ctx, STATS_RX);
-+		eth = data;
- 		swap_machdr((void *)eth);
- 
- 		__builtin_memcpy(&tmp_ipv6, &ipv6h->saddr, sizeof(tmp_ipv6));
+ enum i8k_configs {
+ 	DELL_LATITUDE_D520,
+-	DELL_PRECISION_490,
+ 	DELL_STUDIO,
+ 	DELL_XPS,
+ };
+@@ -1341,10 +1340,6 @@ static const struct i8k_config_data i8k_config_data[] __initconst = {
+ 		.fan_mult = 1,
+ 		.fan_max = I8K_FAN_TURBO,
+ 	},
+-	[DELL_PRECISION_490] = {
+-		.fan_mult = 1,
+-		.fan_max = I8K_FAN_TURBO,
+-	},
+ 	[DELL_STUDIO] = {
+ 		.fan_mult = 1,
+ 		.fan_max = I8K_FAN_HIGH,
+@@ -1364,15 +1359,6 @@ static const struct dmi_system_id i8k_config_dmi_table[] __initconst = {
+ 		},
+ 		.driver_data = (void *)&i8k_config_data[DELL_LATITUDE_D520],
+ 	},
+-	{
+-		.ident = "Dell Precision 490",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME,
+-				  "Precision WorkStation 490"),
+-		},
+-		.driver_data = (void *)&i8k_config_data[DELL_PRECISION_490],
+-	},
+ 	{
+ 		.ident = "Dell Studio",
+ 		.matches = {
 -- 
 2.51.0
 
