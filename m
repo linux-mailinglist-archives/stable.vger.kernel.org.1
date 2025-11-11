@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-194015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900CFC4ACA0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65266C4ACE5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 46EFA4F96E9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 509063B15CA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE7DDF76;
-	Tue, 11 Nov 2025 01:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D37340A73;
+	Tue, 11 Nov 2025 01:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7zmO64+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kl5M8mib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F493358C3;
-	Tue, 11 Nov 2025 01:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F241D2D97A4;
+	Tue, 11 Nov 2025 01:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824603; cv=none; b=SXMiLSs8A97AUTYqDaF7beUxiPHVoJWtpT4G3LNmOM/hfXqkloPF4fkE27/gzqp0KSfzw1gRp0mdXxxyo3B8pUXOQDjRY13NmhU4HxZxe2IBMCP88+lpbARaIq8GyH7BWpTNild+0QC0dFZfmBHe/utdY95SFCh7xAl8u8DieB0=
+	t=1762824608; cv=none; b=qUE5sfZ9lHq++Asl1NCn5kLMdM5LVh+FaGMHlPbvFRPc+FQ5exEF9otxCZjLeKoDPK4L5rx1pff9y0VeUiZjIejnH1AlqJU3HFRkDIFTK86OOkc9tM8xi/QO+SDbCiC8EBQw2xn8pc2DlfU5b6f5tA0gMlKE0tC73ReM7YwDPuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824603; c=relaxed/simple;
-	bh=RBOqeJcOIKhJkBU4K5/pGyyIpbpcsJ0WvQ+Tsj9ROds=;
+	s=arc-20240116; t=1762824608; c=relaxed/simple;
+	bh=opcqOgyKk7wKvB0Zj3039oSiCe5j28yUVM4STD2lTPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rRTepfNUKQ7RJNnNVXkZpFJcT+/OXBdphxZx60FtfWGKjzETnAuIkt4Aj+OuT296KwEC9sozT+zyALua3h1gArGwIuA5MuI6K4/6Nc3Mz40ilR5tkBUR8rM1qQyrxAQt6Q6mFDIZs4CirSQ27dB9wm6lo1ZB4IN6tyhfXB54tu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7zmO64+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47F3C4CEFB;
-	Tue, 11 Nov 2025 01:30:02 +0000 (UTC)
+	 MIME-Version; b=KAeFzHQKhHmxYmX1H/wt1cQvI6kmD+D6qpGnirrI2+QNm55NjjguOq8nI0UVbuEfgDCIqv7ePjGQix+DMewoD7bM6dvwXgjmFpvCnU9f5j3XmckEasQ7Gr9MULtboSASHXAXMaXGhHevDmbmgkAa3KRVkJSsxf2fZiNn6agO3G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kl5M8mib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92495C4CEFB;
+	Tue, 11 Nov 2025 01:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824603;
-	bh=RBOqeJcOIKhJkBU4K5/pGyyIpbpcsJ0WvQ+Tsj9ROds=;
+	s=korg; t=1762824607;
+	bh=opcqOgyKk7wKvB0Zj3039oSiCe5j28yUVM4STD2lTPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7zmO64+ZVhlLIkxF1gdZgUVfqrWrDui5VgNY3A92GR7q3CD4VbDmkAWF7G6pDo21
-	 lWfKhOZ0+P/r8TmXS1S3ryMZokiT6H5zjk6aASmZqNxVBJWb0NAwkITYH/1qtdU5Xf
-	 6wv2lsZNaB7Pgvfxqsb3iGUMyiJ+OJeitnbUCPMs=
+	b=Kl5M8mibaQI9+1DsJZq3vYxoJIv4Lg8IBFRSEVKJFYSe8uJb+fAYMrdQ4/42Ma1vd
+	 NbS3H70QPOZj3cddTo4gSId3REJLJSFezAdv3B97p1vfeox7SAw977goUgVdPjfwM3
+	 2TO34WjrEUumjW10UzoFCxam8pHTJdBlZD1Ak6Q8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 532/849] can: rcar_canfd: Update bit rate constants for RZ/G3E and R-Car Gen4
-Date: Tue, 11 Nov 2025 09:41:42 +0900
-Message-ID: <20251111004549.279460618@linuxfoundation.org>
+Subject: [PATCH 6.17 533/849] net: mana: Reduce waiting time if HWC not responding
+Date: Tue, 11 Nov 2025 09:41:43 +0900
+Message-ID: <20251111004549.304594769@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,40 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-[ Upstream commit 100fafc3e46138cb5a6526ddc03dcede8b020c8c ]
+[ Upstream commit c4deabbc1abe452ea230b86d53ed3711e5a8a062 ]
 
-The calculation formula for nominal bit rate of classical CAN is the same as
-that of nominal bit rate of CANFD on the RZ/G3E and R-Car Gen4 SoCs
-compared to other SoCs. Update nominal bit rate constants.
+If HW Channel (HWC) is not responding, reduce the waiting time, so further
+steps will fail quickly.
+This will prevent getting stuck for a long time (30 minutes or more), for
+example, during unloading while HWC is not responding.
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20250908120940.147196-2-biju.das.jz@bp.renesas.com
-[mkl: slightly improve wording of commit message]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Link: https://patch.msgid.link/1757537841-5063-1-git-send-email-haiyangz@linux.microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/rcar/rcar_canfd.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/microsoft/mana/hw_channel.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index 7e8b1d2f1af65..4f3ce948d74da 100644
---- a/drivers/net/can/rcar/rcar_canfd.c
-+++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -1913,7 +1913,10 @@ static int rcar_canfd_channel_probe(struct rcar_canfd_global *gpriv, u32 ch,
- 		priv->can.fd.do_get_auto_tdcv = rcar_canfd_get_auto_tdcv;
- 	} else {
- 		/* Controller starts in Classical CAN only mode */
--		priv->can.bittiming_const = &rcar_canfd_bittiming_const;
-+		if (gpriv->info->shared_can_regs)
-+			priv->can.bittiming_const = gpriv->info->nom_bittiming;
-+		else
-+			priv->can.bittiming_const = &rcar_canfd_bittiming_const;
- 		priv->can.ctrlmode_supported = CAN_CTRLMODE_BERR_REPORTING;
- 	}
+diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+index ef072e24c46d0..ada6c78a2bef4 100644
+--- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
++++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+@@ -881,7 +881,12 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
+ 	if (!wait_for_completion_timeout(&ctx->comp_event,
+ 					 (msecs_to_jiffies(hwc->hwc_timeout)))) {
+ 		if (hwc->hwc_timeout != 0)
+-			dev_err(hwc->dev, "HWC: Request timed out!\n");
++			dev_err(hwc->dev, "HWC: Request timed out: %u ms\n",
++				hwc->hwc_timeout);
++
++		/* Reduce further waiting if HWC no response */
++		if (hwc->hwc_timeout > 1)
++			hwc->hwc_timeout = 1;
  
+ 		err = -ETIMEDOUT;
+ 		goto out;
 -- 
 2.51.0
 
