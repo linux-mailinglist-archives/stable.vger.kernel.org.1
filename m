@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE91C4A57E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:21:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD839C4ACCA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9AA9034BF86
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2CDA18813ED
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A7D261573;
-	Tue, 11 Nov 2025 01:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A8A3446BB;
+	Tue, 11 Nov 2025 01:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLh9eWFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnxTKh3Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C774342CA9;
-	Tue, 11 Nov 2025 01:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93C82E6CA4;
+	Tue, 11 Nov 2025 01:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823560; cv=none; b=Gu33ofsMz08xgbvIeaYwX+yCpN66w6nm2JTV6IUnl0orKCdf0zUq8mClvP6+FOeKHCXb8AmRRlwVsmoLXWrna7PQfBUJs4fBayp1dDg7yBFVKUg8StRXwmo07sNLlMmfKNwNjKT2AzXUL3ufkbMkay5QU0X1yn7/ETXDev1eV0o=
+	t=1762824716; cv=none; b=PiCUKfb4Tr8m3KhCbeZrQDiH/6bUsNCN6RcLk9OpzExOXHznkHN3d5swA3Pq6n1YaeiSUcvWK8QFs7LC1ZAgdNG/V3d2WfCBHIpOJIPNRH9s+Fic+5ql7WKy7g/3G8NTxqut0qbAJs+nn8F12w7iYdP/shQv+9k0snpNXLCaeac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823560; c=relaxed/simple;
-	bh=EMYVeX5kFQj8nCTXOKL8iiD9hgSCvJGLsDP8RZf3z+I=;
+	s=arc-20240116; t=1762824716; c=relaxed/simple;
+	bh=lFYj7BCdNcpTF6vdhxJ15qFR94lzEyBkP4lFmGVhCZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLfQoimXsMgfBy5oY3r1IF2HYiErXTK/GoIgT2QowZjTSoE3Nln+vupwIM5bxtO28rR7gcUs6YEw0a/qRBF376ClrTyq3vZBb8Ki9xNEgLCnhQtA/32+FhRJnQhrqKqhBRXy2Fg5pH87ugySjpoj7eYcE3MYNwVwn+yFcZzV+wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLh9eWFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1354DC16AAE;
-	Tue, 11 Nov 2025 01:12:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dIcWSyC26yWgPgT/p2RyuPSFtcbzfNhlr63ZD+l8r22nB3AqgokSZy9o/70nywNjsK8HNkt0hV8uTQxEUTCNIibWOGGqZhm2DubeTchBb84sHPQgbIawchkvJ6I5CkZIZd/IT9I0YaUgLYULLKiMxMXZXoNKT82BAcjdRajbu2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnxTKh3Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A58C19421;
+	Tue, 11 Nov 2025 01:31:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823560;
-	bh=EMYVeX5kFQj8nCTXOKL8iiD9hgSCvJGLsDP8RZf3z+I=;
+	s=korg; t=1762824716;
+	bh=lFYj7BCdNcpTF6vdhxJ15qFR94lzEyBkP4lFmGVhCZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aLh9eWFPIWOA+cWNDyhPKlSMO9kkxNgD8IXvKnGtK1yXaVibVdSmLou4C7zzDuI6X
-	 qFrUPw+S10mB8sjt7aW/7Ce35NSI/bzbmviASea2ePahDNG6FuzV2XGRq2u7sKkrL6
-	 e/Kli32+IMRH+R2BXMDMUc4lCMy3Wj+fXtNe5kBE=
+	b=mnxTKh3ZRhe5hjxLhH7rVQxA+l0hD5nE2+RRLp3U2JQ7WN7QtT7n0F1QIuek2q9Y9
+	 UeeptUqT7FecyyexvnIqHw5+32DJ95TVtWsPZ2R47ZbrV4QjBn0Xilhz5VkQa5qI3c
+	 4evbOeNfY1ppsL2XJ1gZzHe+vCIbqU6Eh6s7hKyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 270/565] mips: lantiq: danube: add model to EASY50712 dts
+Subject: [PATCH 6.17 556/849] drm/amd/display: Keep PLL0 running on DCE 6.0 and 6.4
 Date: Tue, 11 Nov 2025 09:42:06 +0900
-Message-ID: <20251111004532.961549090@linuxfoundation.org>
+Message-ID: <20251111004549.849736948@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit cb96fd880ef78500b34d10fa76ddd3fa070287d6 ]
+[ Upstream commit 0449726b58ea64ec96b95f95944f0a3650204059 ]
 
-This fixes the following warning:
-arch/mips/boot/dts/lantiq/danube_easy50712.dtb: / (lantiq,xway): 'model' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml#
+DC can turn off the display clock when no displays are connected
+or when all displays are off, for reference see:
+- dce*_validate_bandwidth
 
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+DC also assumes that the DP clock is always on and never powers
+it down, for reference see:
+- dce110_clock_source_power_down
+
+In case of DCE 6.0 and 6.4, PLL0 is the clock source for both
+the engine clock and DP clock, for reference see:
+- radeon_atom_pick_pll
+- atombios_crtc_set_disp_eng_pll
+
+Therefore, PLL0 should be always kept running on DCE 6.0 and 6.4.
+This commit achieves that by ensuring that by setting the display
+clock to the corresponding value in low power state instead of
+zero.
+
+This fixes a page flip timeout on SI with DC which happens when
+all connected displays are blanked.
+
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/lantiq/danube_easy50712.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ .../amd/display/dc/resource/dce60/dce60_resource.c    | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/dts/lantiq/danube_easy50712.dts b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
-index c4d7aa5753b04..ab70028dbefcf 100644
---- a/arch/mips/boot/dts/lantiq/danube_easy50712.dts
-+++ b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
-@@ -4,6 +4,8 @@
- /include/ "danube.dtsi"
- 
- / {
-+	model = "Intel EASY50712";
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
+index f887d59da7c6f..33c1b9b24bb9c 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
+@@ -881,7 +881,16 @@ static enum dc_status dce60_validate_bandwidth(
+ 		context->bw_ctx.bw.dce.dispclk_khz = 681000;
+ 		context->bw_ctx.bw.dce.yclk_khz = 250000 * MEMORY_TYPE_MULTIPLIER_CZ;
+ 	} else {
+-		context->bw_ctx.bw.dce.dispclk_khz = 0;
++		/* On DCE 6.0 and 6.4 the PLL0 is both the display engine clock and
++		 * the DP clock, and shouldn't be turned off. Just select the display
++		 * clock value from its low power mode.
++		 */
++		if (dc->ctx->dce_version == DCE_VERSION_6_0 ||
++			dc->ctx->dce_version == DCE_VERSION_6_4)
++			context->bw_ctx.bw.dce.dispclk_khz = 352000;
++		else
++			context->bw_ctx.bw.dce.dispclk_khz = 0;
 +
- 	chosen {
- 		bootargs = "console=ttyLTQ0,115200 init=/etc/preinit";
- 	};
+ 		context->bw_ctx.bw.dce.yclk_khz = 0;
+ 	}
+ 
 -- 
 2.51.0
 
