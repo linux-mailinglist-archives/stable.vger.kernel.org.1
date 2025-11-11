@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-194156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6545C4ADDE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F29FAC4AF89
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC8801896716
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F11F3B5ECE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBE925EF81;
-	Tue, 11 Nov 2025 01:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6A52DD5E2;
+	Tue, 11 Nov 2025 01:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BiQQD2mN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbcwScUe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65B72D9798;
-	Tue, 11 Nov 2025 01:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED682DC349;
+	Tue, 11 Nov 2025 01:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824935; cv=none; b=kaRbsUlt9U4nFoOurXUhOd9f9P9GcyKKfeym9akN7liqmCLYpGm4c151ATNG4SXTXnuoKu/cvInnCM6mSCRyKKlGFKOiCcedJZiu2hJS9h2jgMf1ufPejeECVF4R9znn0kiCD8v2wXbDPNRfM7tNxJmXlevAxip7y6lPNr6o9Bo=
+	t=1762824961; cv=none; b=ifeBLIPRFsDX18gmoaZzOKN6XoIJAj96RLsic4HhUCHwl3UVZXzwqkBiFucn+XIQq59L6mMcnNE9rGQXYyFuJvD9tt8I+JkTrHJMG5iKUtQmmZnSazRgTNhrQ5A/JXseInidC3N7ePOWiM8xsl9C8j8fEzHWNvhyl2QYf/ARtx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824935; c=relaxed/simple;
-	bh=AztoaQPR3MA4gGW3mfRfB5DsyL746fZvvygBoYo/8Uo=;
+	s=arc-20240116; t=1762824961; c=relaxed/simple;
+	bh=fTOSpdwoxWHWmD/p5cYSAN+fvK27im03bDV7fbec73I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aYY0RW6juRwhS5Eljc2Q7DSZcDpoFNA7TVdVPn3hJnt3YjyJr4WBzI0QpfUVHhFvcQFihiMa6AwudIKhMKFu3aN9lhhbU6nXBEebTk7BSMc95W2/PVo3LmsEYnY7CKlutAGKTPHtFvYTBqubTJup07bmTLpU3ptZ+hTjd81Qi+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BiQQD2mN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45580C16AAE;
-	Tue, 11 Nov 2025 01:35:35 +0000 (UTC)
+	 MIME-Version; b=bTCXS7JntqcGWo0/Qbf8lkmDVFX6X4r72wrG0dKmGzwA2C5ynqTY7vAWhrquyfCUACCTaXvxwaEH+sXqvDmdyv/NvwosUnXHM+n3y/BKPHyB5eEpy5JffOuP2D9qDRepE95w3NbryYOL2UGfvvSTA+9/v+nXd+to2+zMsZW9Xn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbcwScUe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC63C116D0;
+	Tue, 11 Nov 2025 01:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824935;
-	bh=AztoaQPR3MA4gGW3mfRfB5DsyL746fZvvygBoYo/8Uo=;
+	s=korg; t=1762824961;
+	bh=fTOSpdwoxWHWmD/p5cYSAN+fvK27im03bDV7fbec73I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BiQQD2mNj4xWMYAtZWnD6fy+3+cm6HBqjrp5wTrZxsI+0jTUahVv6Tgf4yenWqsCl
-	 T3ya9fxOGC6LqEQO4pdKj6tK7aiFgYQ+4sLsP+8o8KouMjqHjqwtvoFxLhOQPOp1dO
-	 TqXrV+Jwl8TbBmn9n+pT5a494SrUyTTVQ7Ooh0NI=
+	b=qbcwScUe1SOylrucSWTzm7637DEwtOvGsmNM55IsUSdo5fLxeY6NL2SeWn2lOt6Hj
+	 4Z/HS+JpBR/HVclgBc93SZ1P2R6znEpOvnvMcuOcVyCHjwIfvLVzAfsMdDO37Sxmdl
+	 9Am660V3gXFLk2BQZ52vzy7KRAHiMpGcmMfxq7iA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Hongguang Gao <hongguang.gao@broadcom.com>,
-	Shruti Parab <shruti.parab@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Michael Chan <michael.chan@broadcom.com>
-Subject: [PATCH 6.12 530/565] bnxt_en: Add mem_valid bit to struct bnxt_ctx_mem_type
-Date: Tue, 11 Nov 2025 09:46:26 +0900
-Message-ID: <20251111004538.892041139@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 531/565] bnxt_en: Refactor bnxt_free_ctx_mem()
+Date: Tue, 11 Nov 2025 09:46:27 +0900
+Message-ID: <20251111004538.915492367@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -68,71 +67,112 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shruti Parab <shruti.parab@broadcom.com>
+From: Hongguang Gao <hongguang.gao@broadcom.com>
 
-[ Upstream commit 0b350b4927e69d66629099dbb32cad8d2d56a26d ]
+[ Upstream commit 968d2cc07c2fc9a508a53bd2de61200f50206fbc ]
 
-Add a new bit to struct bnxt_ctx_mem_type to indicate that host
-memory has been successfully allocated for this context memory type.
-In the next patches, we'll be adding some additional context memory
-types for FW debugging/logging.  If memory cannot be allocated for
-any of these new types, we will not abort and the cleared mem_valid
-bit will indicate to skip configuring the memory type.
+Add a new function bnxt_free_one_ctx_mem() to free one context
+memory type.  bnxt_free_ctx_mem() now calls the new function in
+the loop to free each context memory type.  There is no change in
+behavior.  Later patches will further make use of the new function.
 
-Reviewed-by: Hongguang Gao <hongguang.gao@broadcom.com>
-Signed-off-by: Shruti Parab <shruti.parab@broadcom.com>
-Signed-of-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20241115151438.550106-3-michael.chan@broadcom.com
+Signed-off-by: Hongguang Gao <hongguang.gao@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20241115151438.550106-4-michael.chan@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Stable-dep-of: 5204943a4c6e ("bnxt_en: Fix warning in bnxt_dl_reload_down()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 5 +++++
- drivers/net/ethernet/broadcom/bnxt/bnxt.h | 1 +
- 2 files changed, 6 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 31 +++++++++++++----------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 30d8e8b34dfb9..abf8984ac5e20 100644
+index abf8984ac5e20..5409ad3cee192 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -8791,6 +8791,8 @@ static int bnxt_setup_ctxm_pg_tbls(struct bnxt *bp,
- 		rc = bnxt_alloc_ctx_pg_tbls(bp, &ctx_pg[i], mem_size, pg_lvl,
- 					    ctxm->init_value ? ctxm : NULL);
- 	}
-+	if (!rc)
-+		ctxm->mem_valid = 1;
- 	return rc;
+@@ -8872,21 +8872,14 @@ static int bnxt_backing_store_cfg_v2(struct bnxt *bp, u32 ena)
+ 	return 0;
  }
  
-@@ -8861,6 +8863,8 @@ static int bnxt_backing_store_cfg_v2(struct bnxt *bp, u32 ena)
- 	for (type = 0 ; type < BNXT_CTX_V2_MAX; type++) {
- 		ctxm = &ctx->ctx_arr[type];
+-void bnxt_free_ctx_mem(struct bnxt *bp)
++static void bnxt_free_one_ctx_mem(struct bnxt *bp,
++				  struct bnxt_ctx_mem_type *ctxm)
+ {
+-	struct bnxt_ctx_mem_info *ctx = bp->ctx;
+-	u16 type;
+-
+-	if (!ctx)
+-		return;
+-
+-	for (type = 0; type < BNXT_CTX_V2_MAX; type++) {
+-		struct bnxt_ctx_mem_type *ctxm = &ctx->ctx_arr[type];
+-		struct bnxt_ctx_pg_info *ctx_pg = ctxm->pg_info;
+-		int i, n = 1;
++	struct bnxt_ctx_pg_info *ctx_pg;
++	int i, n = 1;
  
-+		if (!ctxm->mem_valid)
-+			continue;
- 		rc = bnxt_hwrm_func_backing_store_cfg_v2(bp, ctxm, ctxm->last);
- 		if (rc)
- 			return rc;
-@@ -8890,6 +8894,7 @@ void bnxt_free_ctx_mem(struct bnxt *bp)
- 
- 		kfree(ctx_pg);
+-		if (!ctx_pg)
+-			continue;
++	ctx_pg = ctxm->pg_info;
++	if (ctx_pg) {
+ 		if (ctxm->instance_bmap)
+ 			n = hweight32(ctxm->instance_bmap);
+ 		for (i = 0; i < n; i++)
+@@ -8896,6 +8889,18 @@ void bnxt_free_ctx_mem(struct bnxt *bp)
  		ctxm->pg_info = NULL;
-+		ctxm->mem_valid = 0;
+ 		ctxm->mem_valid = 0;
  	}
++}
++
++void bnxt_free_ctx_mem(struct bnxt *bp)
++{
++	struct bnxt_ctx_mem_info *ctx = bp->ctx;
++	u16 type;
++
++	if (!ctx)
++		return;
++
++	for (type = 0; type < BNXT_CTX_V2_MAX; type++)
++		bnxt_free_one_ctx_mem(bp, &ctx->ctx_arr[type]);
  
  	ctx->flags &= ~BNXT_CTX_FLAG_INITED;
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index cb934f175a3e4..d4e63bf599666 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -1892,6 +1892,7 @@ struct bnxt_ctx_mem_type {
- 	u32	max_entries;
- 	u32	min_entries;
- 	u8	last:1;
-+	u8	mem_valid:1;
- 	u8	split_entry_cnt;
- #define BNXT_MAX_SPLIT_ENTRY	4
- 	union {
+ 	kfree(ctx);
+-- 
+2.51.0
+
+
+
+n.c
+index c93b43f5bc461..e713fc5964b18 100644
+--- a/drivers/usb/mon/mon_bin.c
++++ b/drivers/usb/mon/mon_bin.c
+@@ -68,18 +68,20 @@
+  * The magic limit was calculated so that it allows the monitoring
+  * application to pick data once in two ticks. This way, another application,
+  * which presumably drives the bus, gets to hog CPU, yet we collect our data.
+- * If HZ is 100, a 480 mbit/s bus drives 614 KB every jiffy. USB has an
+- * enormous overhead built into the bus protocol, so we need about 1000 KB.
++ *
++ * Originally, for a 480 Mbit/s bus this required a buffer of about 1 MB. For
++ * modern 20 Gbps buses, this value increases to over 50 MB. The maximum
++ * buffer size is set to 64 MiB to accommodate this.
+  *
+  * This is still too much for most cases, where we just snoop a few
+  * descriptor fetches for enumeration. So, the default is a "reasonable"
+- * amount for systems with HZ=250 and incomplete bus saturation.
++ * amount for typical, low-throughput use cases.
+  *
+  * XXX What about multi-megabyte URBs which take minutes to transfer?
+  */
+-#define BUFF_MAX  CHUNK_ALIGN(1200*1024)
+-#define BUFF_DFL   CHUNK_ALIGN(300*1024)
+-#define BUFF_MIN     CHUNK_ALIGN(8*1024)
++#define BUFF_MAX  CHUNK_ALIGN(64*1024*1024)
++#define BUFF_DFL      CHUNK_ALIGN(300*1024)
++#define BUFF_MIN        CHUNK_ALIGN(8*1024)
+ 
+ /*
+  * The per-event API header (2 per URB).
 -- 
 2.51.0
 
