@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B9CC4AC9A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 993EEC4A71F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B30804F4017
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A7CA3B18F1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF83340287;
-	Tue, 11 Nov 2025 01:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48AF339B58;
+	Tue, 11 Nov 2025 01:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVLWWtfw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZgeTh1e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BEE261573;
-	Tue, 11 Nov 2025 01:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9D6272E7C;
+	Tue, 11 Nov 2025 01:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824594; cv=none; b=X9LpOo2UqVclxuPfOxUJmTaR082Rg9sP2qeMu/31TbTtj0XF7SETNn8xQP491O09BVU10T9pKTeEnltOsMreyKo8ctRxxhyT/t8+FdM+GBC+kDRB+oTl9mxP4nERi/eLYiYY04kiyg20avtVatfHNIHb9tuUCf8WMFrJNZyOOU8=
+	t=1762823428; cv=none; b=a2dmXSmWFvkQzzU5GDQ8uWxFGu6XbCWG82+JBvOAbHYByOtcZj9UYuwJ+ISLO7HVT0teyN13k71p5KWsR6WYbEaH9BI+tvYc/1S4hflqtwyuycwGaosvWWOcPLhzkrMCMf/H2rASUj9jffhVSGtOGcfapxHBQlkgLzeRl9QvNqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824594; c=relaxed/simple;
-	bh=FkpWNA4YnmDg//sMAnbQWI6bH15ZoaLi8Jcou8mSh2Q=;
+	s=arc-20240116; t=1762823428; c=relaxed/simple;
+	bh=I+FMaZUB9MKISY9LvNzfjSHf1uryXSv99VUXsATXMl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/UKAvNAO3vnPmsvTLm97Se0cg2qvT6JXNEtB+qnEX3emqjRnNnrQBMjihXdAPnSUfEJM4HWIrlmxRqMZw3UBMkqSuFnNC31s++3SFwW4x3QvCVhPPfPt9FmJBKwtqCxxlunV7HMQJ2tFFIAEgKJHgY057bwplWLW/tKFZfm4iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVLWWtfw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CADC116B1;
-	Tue, 11 Nov 2025 01:29:53 +0000 (UTC)
+	 MIME-Version; b=F4NGI/vLGQNbTzw8Dtq/jD/ouOi+kdHZE+I2q986ZCI8B0XXr2KPnlJ0oJoNAPmZe9yTMrNL9f/QOow9q3LNJSwO5EY9JLev0xMDKaWw3GbnJSaQhKxjkUdJxle67Fn4rgtdSF/AvrgARdWhw0VPyKTDybMp2IWWa3P6ccxTLBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZgeTh1e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA69C4CEF5;
+	Tue, 11 Nov 2025 01:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824593;
-	bh=FkpWNA4YnmDg//sMAnbQWI6bH15ZoaLi8Jcou8mSh2Q=;
+	s=korg; t=1762823428;
+	bh=I+FMaZUB9MKISY9LvNzfjSHf1uryXSv99VUXsATXMl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WVLWWtfwSKEhAOqQZF+45Sx2g+VM9Ln8mpfSBcxvxn1qbJm2+AV0U1VhSRD5NtUCr
-	 FYjGhieSOuS97BiEI4TWZXidWAi4uaSuP5uxFH+RJV6hB2iMN/VLbSTDBT/iFx3iKJ
-	 13j28wmPxGsyRt53rhzTk1jCel6yL430bbGEfsZQ=
+	b=FZgeTh1exxvO2swIsX5diG/ZiSKLy9iOwFLEs/hMF1l6ONf8ZfgGdqfE7Tn2FQfGA
+	 lmt5m0RzBXIosvMOvoAx+xWiCDHgx3R7fQX4p/mq1Z/9mQ0IihrhpKSUcOarwVfaZz
+	 4waRkLTc5qjGfWwo3aEWZFYwrm3JFWqadkqdmJ+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunseong Kim <ysk@kzalloc.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>
-Subject: [PATCH 6.17 530/849] crypto: ccp - Fix incorrect payload size calculation in psp_poulate_hsti()
-Date: Tue, 11 Nov 2025 09:41:40 +0900
-Message-ID: <20251111004549.231745616@linuxfoundation.org>
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 245/565] net: wangxun: limit tx_max_coalesced_frames_irq
+Date: Tue, 11 Nov 2025 09:41:41 +0900
+Message-ID: <20251111004532.423082537@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunseong Kim <ysk@kzalloc.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 2b0dc40ac6ca16ee0c489927f4856cf9cd3874c7 ]
+[ Upstream commit fd4aa243f154a80bbeb3dd311d2114eeb538f479 ]
 
-payload_size field of the request header is incorrectly calculated using
-sizeof(req). Since 'req' is a pointer (struct hsti_request *), sizeof(req)
-returns the size of the pointer itself (e.g., 8 bytes on a 64-bit system),
-rather than the size of the structure it points to. This leads to an
-incorrect payload size being sent to the Platform Security Processor (PSP),
-potentially causing the HSTI query command to fail.
+Add limitation on tx_max_coalesced_frames_irq as 0 ~ 65535, because
+'wx->tx_work_limit' is declared as a member of type u16.
 
-Fix this by using sizeof(*req) to correctly calculate the size of the
-struct hsti_request.
-
-Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>> ---
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250821023408.53472-3-jiawenwu@trustnetic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/hsti.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/wangxun/libwx/wx_ethtool.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/ccp/hsti.c b/drivers/crypto/ccp/hsti.c
-index 1b39a4fb55c06..0e6b73b55dbf7 100644
---- a/drivers/crypto/ccp/hsti.c
-+++ b/drivers/crypto/ccp/hsti.c
-@@ -88,7 +88,7 @@ static int psp_poulate_hsti(struct psp_device *psp)
- 	if (!req)
- 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index abe5921dde020..87c0af203dc4d 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -319,8 +319,11 @@ int wx_set_coalesce(struct net_device *netdev,
+ 			return -EOPNOTSUPP;
+ 	}
  
--	req->header.payload_size = sizeof(req);
-+	req->header.payload_size = sizeof(*req);
+-	if (ec->tx_max_coalesced_frames_irq)
+-		wx->tx_work_limit = ec->tx_max_coalesced_frames_irq;
++	if (ec->tx_max_coalesced_frames_irq > U16_MAX  ||
++	    !ec->tx_max_coalesced_frames_irq)
++		return -EINVAL;
++
++	wx->tx_work_limit = ec->tx_max_coalesced_frames_irq;
  
- 	ret = psp_send_platform_access_msg(PSP_CMD_HSTI_QUERY, (struct psp_request *)req);
- 	if (ret)
+ 	if (wx->mac.type == wx_mac_sp)
+ 		max_eitr = WX_SP_MAX_EITR;
 -- 
 2.51.0
 
