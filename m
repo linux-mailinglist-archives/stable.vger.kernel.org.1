@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-194261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13862C4B09D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 827A9C4ABA8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3A503B5A39
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0451E3B9053
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62384306482;
-	Tue, 11 Nov 2025 01:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF800346A0A;
+	Tue, 11 Nov 2025 01:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rS1y8o6V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOohhkro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E68B253951;
-	Tue, 11 Nov 2025 01:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803CA3469FA;
+	Tue, 11 Nov 2025 01:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825184; cv=none; b=CFTjV8SMs8WHWf0OU254ntIaDTSfP1zenWLrAmPRdtZnBg42IeHjiB5c7FIRPMiBrSTJljGAnliGL60CoinNXBBTd68/TkLoMavCdUi64zqHjCjQKvmRf4B6CCLjPTlwEveWjH7/H1CtWfl1PQ4cuUWrlDj8blKnCdveq0BckDk=
+	t=1762824198; cv=none; b=Obe8Ak1ptMfKW+bvSwINGPzr1wIPMb/36rkhCXXPqo3oeMtxHaKgVsUN6Mju6KBb/OXxYTkibjt1XEilBZmqNwXQ/wRw2v6eUazM01z0Q3Gvqdvhfsrh8Hq5F/GJJJ8fHXptCnwW9CiItmf29dELyxXS7kbsIzhyWgrevO+Lwkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825184; c=relaxed/simple;
-	bh=fsFc7w2WnvclryUMnPeqlqLjREDN02NZIB5k1XzTAfY=;
+	s=arc-20240116; t=1762824198; c=relaxed/simple;
+	bh=Rh9Lz3TupRVsYFCSuM95PcpMseFNRxdjfwkH14HyPno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OetKatJ0UsLXq9LPl7gVdgkkPWfvt1Z/F6H+Ce9SBdeqZdYibYjhsPI8SzEGNC/sEtfLUyiTH5Y2jnQ7Or00IzdrdjEBgFkOJKWK1yJXybkg8cE7RaMMpac3Qql827PXx1TQdlZf0bPI4679gaH5QytJhSusH+DqaKk5LGgulGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rS1y8o6V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08D4C116D0;
-	Tue, 11 Nov 2025 01:39:43 +0000 (UTC)
+	 MIME-Version; b=TSb/1Dr5qq94oRAA8HKRrSJ5716T4wLwd2de5Lm+0lg5MmVaUoucZOoCDumYHyl9ftFRsm8qJiYnNgWI1PS2+jE03J9w6+aVATRfTGbE3q1uWiT6B9wx31mTNRGf6kNwDktJ4I9UEk6cLQHTNVAN7F5uF/WmJBAGNgzxwhtOe9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOohhkro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1398BC19422;
+	Tue, 11 Nov 2025 01:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825184;
-	bh=fsFc7w2WnvclryUMnPeqlqLjREDN02NZIB5k1XzTAfY=;
+	s=korg; t=1762824198;
+	bh=Rh9Lz3TupRVsYFCSuM95PcpMseFNRxdjfwkH14HyPno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rS1y8o6VLn/74qXjP5gdbbDuMLhIEBQBqSFS5DMhesA2jgeyX9u5aXWXroWdXWO/0
-	 OX8sEMi0UO5BgatpHDR37ad5+cTIMOiSkGLEnSNC73CO5+pftVKnwxeXWfuEh3F+fq
-	 CwW/TXf+4VKjS0ycT5EAJHyLfgetMVSiQ9Sfuqss=
+	b=HOohhkroulrjUdIPzw/pwXn0PL3LYdp+qdplZuRnwOd+zlIG1nkzp3TMyFOQTh7QK
+	 5S46+GH0mSD2egjt9WgmjQRtuucn9JKPXEtWlSGRUGGR4rm/hKSdIK2N7mnq4db1Cm
+	 V+sMHOvXTRoLWJ37K8sjUjUTqpJzj4V3kl6sMcu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
+	David Yang <mmyangfl@gmail.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 695/849] clk: renesas: rzv2h: Re-assert reset on deassert timeout
+Subject: [PATCH 6.12 409/565] selftests: forwarding: Reorder (ar)ping arguments to obey POSIX getopt
 Date: Tue, 11 Nov 2025 09:44:25 +0900
-Message-ID: <20251111004553.234369586@linuxfoundation.org>
+Message-ID: <20251111004536.070622909@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+From: David Yang <mmyangfl@gmail.com>
 
-[ Upstream commit f8c002165ca27d95d3d15e865dd0a47c0a1b14dd ]
+[ Upstream commit 50d51cef555ee42fe47dd51b71366a77895e5f0b ]
 
-Prevent issues during reset deassertion by re-asserting the reset if a
-timeout occurs when trying to deassert. This ensures the reset line is in a
-known state and improves reliability for hardware that may not immediately
-clear the reset monitor bit.
+Quoted from musl wiki:
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Link: https://lore.kernel.org/20250903082757.115778-4-tommaso.merciai.xr@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+  GNU getopt permutes argv to pull options to the front, ahead of
+  non-option arguments. musl and the POSIX standard getopt stop
+  processing options at the first non-option argument with no
+  permutation.
+
+Thus these scripts stop working on musl since non-option arguments for
+tools using getopt() (in this case, (ar)ping) do not always come last.
+Fix it by reordering arguments.
+
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250919053538.1106753-1-mmyangfl@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzv2h-cpg.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ .../selftests/net/forwarding/custom_multipath_hash.sh     | 2 +-
+ .../selftests/net/forwarding/gre_custom_multipath_hash.sh | 2 +-
+ .../selftests/net/forwarding/ip6_forward_instats_vrf.sh   | 6 +++---
+ .../net/forwarding/ip6gre_custom_multipath_hash.sh        | 2 +-
+ tools/testing/selftests/net/forwarding/lib.sh             | 8 ++++----
+ .../selftests/net/forwarding/mirror_gre_bridge_1q_lag.sh  | 2 +-
+ .../selftests/net/forwarding/mirror_gre_vlan_bridge_1q.sh | 4 ++--
+ 7 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/clk/renesas/rzv2h-cpg.c b/drivers/clk/renesas/rzv2h-cpg.c
-index f468afbb54e2d..5dfe660d13422 100644
---- a/drivers/clk/renesas/rzv2h-cpg.c
-+++ b/drivers/clk/renesas/rzv2h-cpg.c
-@@ -864,6 +864,7 @@ static int __rzv2h_cpg_assert(struct reset_controller_dev *rcdev,
- 	u32 mask = BIT(priv->resets[id].reset_bit);
- 	u8 monbit = priv->resets[id].mon_bit;
- 	u32 value = mask << 16;
-+	int ret;
- 
- 	dev_dbg(rcdev->dev, "%s id:%ld offset:0x%x\n",
- 		assert ? "assert" : "deassert", id, reg);
-@@ -875,9 +876,15 @@ static int __rzv2h_cpg_assert(struct reset_controller_dev *rcdev,
- 	reg = GET_RST_MON_OFFSET(priv->resets[id].mon_index);
- 	mask = BIT(monbit);
- 
--	return readl_poll_timeout_atomic(priv->base + reg, value,
--					 assert ? (value & mask) : !(value & mask),
--					 10, 200);
-+	ret = readl_poll_timeout_atomic(priv->base + reg, value,
-+					assert ? (value & mask) : !(value & mask),
-+					10, 200);
-+	if (ret && !assert) {
-+		value = mask << 16;
-+		writel(value, priv->base + GET_RST_OFFSET(priv->resets[id].reset_index));
-+	}
-+
-+	return ret;
+diff --git a/tools/testing/selftests/net/forwarding/custom_multipath_hash.sh b/tools/testing/selftests/net/forwarding/custom_multipath_hash.sh
+index 7d531f7091e6f..5dbfab0e23e3d 100755
+--- a/tools/testing/selftests/net/forwarding/custom_multipath_hash.sh
++++ b/tools/testing/selftests/net/forwarding/custom_multipath_hash.sh
+@@ -226,7 +226,7 @@ send_flowlabel()
+ 	# Generate 16384 echo requests, each with a random flow label.
+ 	ip vrf exec v$h1 sh -c \
+ 		"for _ in {1..16384}; do \
+-			$PING6 2001:db8:4::2 -F 0 -c 1 -q >/dev/null 2>&1; \
++			$PING6 -F 0 -c 1 -q 2001:db8:4::2 >/dev/null 2>&1; \
+ 		done"
  }
  
- static int rzv2h_cpg_assert(struct reset_controller_dev *rcdev,
+diff --git a/tools/testing/selftests/net/forwarding/gre_custom_multipath_hash.sh b/tools/testing/selftests/net/forwarding/gre_custom_multipath_hash.sh
+index dda11a4a9450a..b4f17a5bbc614 100755
+--- a/tools/testing/selftests/net/forwarding/gre_custom_multipath_hash.sh
++++ b/tools/testing/selftests/net/forwarding/gre_custom_multipath_hash.sh
+@@ -321,7 +321,7 @@ send_flowlabel()
+ 	# Generate 16384 echo requests, each with a random flow label.
+ 	ip vrf exec v$h1 sh -c \
+ 		"for _ in {1..16384}; do \
+-			$PING6 2001:db8:2::2 -F 0 -c 1 -q >/dev/null 2>&1; \
++			$PING6 -F 0 -c 1 -q 2001:db8:2::2 >/dev/null 2>&1; \
+ 		done"
+ }
+ 
+diff --git a/tools/testing/selftests/net/forwarding/ip6_forward_instats_vrf.sh b/tools/testing/selftests/net/forwarding/ip6_forward_instats_vrf.sh
+index 49fa94b53a1ca..25036e38043c8 100755
+--- a/tools/testing/selftests/net/forwarding/ip6_forward_instats_vrf.sh
++++ b/tools/testing/selftests/net/forwarding/ip6_forward_instats_vrf.sh
+@@ -95,7 +95,7 @@ ipv6_in_too_big_err()
+ 
+ 	# Send too big packets
+ 	ip vrf exec $vrf_name \
+-		$PING6 -s 1300 2001:1:2::2 -c 1 -w $PING_TIMEOUT &> /dev/null
++		$PING6 -s 1300 -c 1 -w $PING_TIMEOUT 2001:1:2::2 &> /dev/null
+ 
+ 	local t1=$(ipv6_stats_get $rtr1 Ip6InTooBigErrors)
+ 	test "$((t1 - t0))" -ne 0
+@@ -131,7 +131,7 @@ ipv6_in_addr_err()
+ 	# Disable forwarding temporary while sending the packet
+ 	sysctl -qw net.ipv6.conf.all.forwarding=0
+ 	ip vrf exec $vrf_name \
+-		$PING6 2001:1:2::2 -c 1 -w $PING_TIMEOUT &> /dev/null
++		$PING6 -c 1 -w $PING_TIMEOUT 2001:1:2::2 &> /dev/null
+ 	sysctl -qw net.ipv6.conf.all.forwarding=1
+ 
+ 	local t1=$(ipv6_stats_get $rtr1 Ip6InAddrErrors)
+@@ -150,7 +150,7 @@ ipv6_in_discard()
+ 	# Add a policy to discard
+ 	ip xfrm policy add dst 2001:1:2::2/128 dir fwd action block
+ 	ip vrf exec $vrf_name \
+-		$PING6 2001:1:2::2 -c 1 -w $PING_TIMEOUT &> /dev/null
++		$PING6 -c 1 -w $PING_TIMEOUT 2001:1:2::2 &> /dev/null
+ 	ip xfrm policy del dst 2001:1:2::2/128 dir fwd
+ 
+ 	local t1=$(ipv6_stats_get $rtr1 Ip6InDiscards)
+diff --git a/tools/testing/selftests/net/forwarding/ip6gre_custom_multipath_hash.sh b/tools/testing/selftests/net/forwarding/ip6gre_custom_multipath_hash.sh
+index e28b4a079e525..b24acfa52a3a7 100755
+--- a/tools/testing/selftests/net/forwarding/ip6gre_custom_multipath_hash.sh
++++ b/tools/testing/selftests/net/forwarding/ip6gre_custom_multipath_hash.sh
+@@ -323,7 +323,7 @@ send_flowlabel()
+ 	# Generate 16384 echo requests, each with a random flow label.
+ 	ip vrf exec v$h1 sh -c \
+ 		"for _ in {1..16384}; do \
+-			$PING6 2001:db8:2::2 -F 0 -c 1 -q >/dev/null 2>&1; \
++			$PING6 -F 0 -c 1 -q 2001:db8:2::2 >/dev/null 2>&1; \
+ 		done"
+ }
+ 
+diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
+index 195360082d949..c61da12d12e4b 100644
+--- a/tools/testing/selftests/net/forwarding/lib.sh
++++ b/tools/testing/selftests/net/forwarding/lib.sh
+@@ -1360,8 +1360,8 @@ ping_do()
+ 
+ 	vrf_name=$(master_name_get $if_name)
+ 	ip vrf exec $vrf_name \
+-		$PING $args $dip -c $PING_COUNT -i 0.1 \
+-		-w $PING_TIMEOUT &> /dev/null
++		$PING $args -c $PING_COUNT -i 0.1 \
++		-w $PING_TIMEOUT $dip &> /dev/null
+ }
+ 
+ ping_test()
+@@ -1391,8 +1391,8 @@ ping6_do()
+ 
+ 	vrf_name=$(master_name_get $if_name)
+ 	ip vrf exec $vrf_name \
+-		$PING6 $args $dip -c $PING_COUNT -i 0.1 \
+-		-w $PING_TIMEOUT &> /dev/null
++		$PING6 $args -c $PING_COUNT -i 0.1 \
++		-w $PING_TIMEOUT $dip &> /dev/null
+ }
+ 
+ ping6_test()
+diff --git a/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1q_lag.sh b/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1q_lag.sh
+index fe4d7c906a708..04090f4412acf 100755
+--- a/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1q_lag.sh
++++ b/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1q_lag.sh
+@@ -237,7 +237,7 @@ test_lag_slave()
+ 	ip neigh flush dev br1
+ 	setup_wait_dev $up_dev
+ 	setup_wait_dev $host_dev
+-	$ARPING -I br1 192.0.2.130 -qfc 1
++	$ARPING -I br1 -qfc 1 192.0.2.130
+ 	sleep 2
+ 	mirror_test vrf-h1 192.0.2.1 192.0.2.18 $host_dev 1 ">= 10"
+ 
+diff --git a/tools/testing/selftests/net/forwarding/mirror_gre_vlan_bridge_1q.sh b/tools/testing/selftests/net/forwarding/mirror_gre_vlan_bridge_1q.sh
+index 1b902cc579f62..a21c771908b33 100755
+--- a/tools/testing/selftests/net/forwarding/mirror_gre_vlan_bridge_1q.sh
++++ b/tools/testing/selftests/net/forwarding/mirror_gre_vlan_bridge_1q.sh
+@@ -196,7 +196,7 @@ test_span_gre_forbidden_egress()
+ 
+ 	bridge vlan add dev $swp3 vid 555
+ 	# Re-prime FDB
+-	$ARPING -I br1.555 192.0.2.130 -fqc 1
++	$ARPING -I br1.555 -fqc 1 192.0.2.130
+ 	sleep 1
+ 	quick_test_span_gre_dir $tundev
+ 
+@@ -290,7 +290,7 @@ test_span_gre_fdb_roaming()
+ 
+ 	bridge fdb del dev $swp2 $h3mac vlan 555 master 2>/dev/null
+ 	# Re-prime FDB
+-	$ARPING -I br1.555 192.0.2.130 -fqc 1
++	$ARPING -I br1.555 -fqc 1 192.0.2.130
+ 	sleep 1
+ 	quick_test_span_gre_dir $tundev
+ 
 -- 
 2.51.0
 
