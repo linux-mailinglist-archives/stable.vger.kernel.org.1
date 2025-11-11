@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-193145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A744C4A0D6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:56:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FF6C49FF5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 909404F0450
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC85A188C69E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0FC244693;
-	Tue, 11 Nov 2025 00:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2884A214210;
+	Tue, 11 Nov 2025 00:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvRFj63D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhS7sU8g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4B34C97;
-	Tue, 11 Nov 2025 00:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F754C97;
+	Tue, 11 Nov 2025 00:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822404; cv=none; b=UasS5LyKf2Wu9IGhNeV1U/MfAQfGk916wPIuW7tJpLp+ltS0U1ELiHXOKDu2/61EfowG/XAqY4la8dDznPdohUbNVNqiWFEm8Lh7NaI+0CvssE9HHB0A2h71v7W+nHehcvy9GF3GOkL+ccj6Kd7HGyswDltBfLRXCaKqLiRoSSg=
+	t=1762822409; cv=none; b=sTYgUTgYfP00jvySJ68JvOPrTvkSno1wsa2b2n1cRr1a7qBrvFsCeK8P4gtoFK0sQeNr38XJK+cq5y5oTUF2Tq1re6dW0KIYSHwFyeCEvm7rVpVLWGQzKHTcrSWfX6Wdfc6Ze/fiPHh9s9ZHl+AcayZrqn60581AS71jZhjw0Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822404; c=relaxed/simple;
-	bh=JsVEzLrH0rkkkzI8oss3/dNpmy95IXtwFGPQYEH3PEY=;
+	s=arc-20240116; t=1762822409; c=relaxed/simple;
+	bh=NuqdgO724e1HG6QEqX5SD9UVduw7KN5BQM0FHu70DgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FDBdDtsflrJic76YEAS3Fxk7G/2rm/xSzJVR8P0OFFr5C8ocmy+m2ffVF0xkQdlBcJ1dT5EO4KZVZz8BwM+x9JkJqKu7+SREiFszlSU1mWE/pNGm2AAYBz6WSbbXPGi7+/JxXx4fq7jdvtEgmVboZbFERFuNmcbu53wFvCPDUWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvRFj63D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A1B4C19421;
-	Tue, 11 Nov 2025 00:53:24 +0000 (UTC)
+	 MIME-Version; b=G5eboLJh85Wv/NsZMBuybsgS+i3Y+nLEf8z1Yj3Y7ZgC4UvGIPhJMGLXO1K0kWz9huQaIa0yjDh3LEhpN9JI8qjsZr4rRoiq5205SRXKy3bDH6iW+wEcpZtwvZxEx9wLErnfmUYZ14GK0L2KIlFRqqUsGZpS+kPu9YK6IsyqA6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhS7sU8g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EB7C4CEF5;
+	Tue, 11 Nov 2025 00:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822404;
-	bh=JsVEzLrH0rkkkzI8oss3/dNpmy95IXtwFGPQYEH3PEY=;
+	s=korg; t=1762822409;
+	bh=NuqdgO724e1HG6QEqX5SD9UVduw7KN5BQM0FHu70DgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvRFj63DdZLOZ4gIRDGLNZBpDd9S4MGtZeCldH3oklHak1AEdT0p3sLN84JQloQm2
-	 aCkpv1d6oHa9LgBzYF4FzKs2IEfXU/jOMNn0ySFETgauPhbzjEPbR5ga7mWHFpyEAr
-	 x+yAIk2q6TC38L7lVGIdwUIBvxOfVdOZUrCqSQ/Q=
+	b=uhS7sU8gshi5oTiGhjIbGxZOaU0dm+Xc3dgFPL4lod4XUMo6r4hbu3RdhzxxBmTxt
+	 YOstifDKqse+u1brbLgm0kzXVF/6tk1KnclnX50/DEkdIYI8rtJU9KIn6qbM0sExQW
+	 irTEtacyIDIly2KhAcZjSsnBqjWHsREnLqIrbQkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH 6.17 101/849] drm/sched: Fix race in drm_sched_entity_select_rq()
-Date: Tue, 11 Nov 2025 09:34:31 +0900
-Message-ID: <20251111004538.847593803@linuxfoundation.org>
+Subject: [PATCH 6.17 102/849] drm/nouveau: Fix race in nouveau_sched_fini()
+Date: Tue, 11 Nov 2025 09:34:32 +0900
+Message-ID: <20251111004538.871337495@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,38 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 From: Philipp Stanner <phasta@kernel.org>
 
-commit d25e3a610bae03bffc5c14b5d944a5d0cd844678 upstream.
+commit e0023c8a74028739643aa14bd201c41a99866ca4 upstream.
 
-In a past bug fix it was forgotten that entity access must be protected
-by the entity lock. That's a data race and potentially UB.
+nouveau_sched_fini() uses a memory barrier before wait_event().
+wait_event(), however, is a macro which expands to a loop which might
+check the passed condition several times. The barrier would only take
+effect for the first check.
 
-Move the spin_unlock() to the appropriate position.
+Replace the barrier with a function which takes the spinlock.
 
-Cc: stable@vger.kernel.org # v5.13+
-Fixes: ac4eb83ab255 ("drm/sched: select new rq even if there is only one v3")
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: stable@vger.kernel.org # v6.8+
+Fixes: 5f03a507b29e ("drm/nouveau: implement 1:1 scheduler - entity relationship")
+Acked-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://patch.msgid.link/20251022063402.87318-2-phasta@kernel.org
+Link: https://patch.msgid.link/20251024161221.196155-2-phasta@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_sched.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -553,10 +553,11 @@ void drm_sched_entity_select_rq(struct d
- 		drm_sched_rq_remove_entity(entity->rq, entity);
- 		entity->rq = rq;
- 	}
--	spin_unlock(&entity->lock);
- 
- 	if (entity->num_sched_list == 1)
- 		entity->sched_list = NULL;
-+
-+	spin_unlock(&entity->lock);
+--- a/drivers/gpu/drm/nouveau/nouveau_sched.c
++++ b/drivers/gpu/drm/nouveau/nouveau_sched.c
+@@ -482,6 +482,17 @@ nouveau_sched_create(struct nouveau_sche
+ 	return 0;
  }
  
- /**
++static bool
++nouveau_sched_job_list_empty(struct nouveau_sched *sched)
++{
++	bool empty;
++
++	spin_lock(&sched->job.list.lock);
++	empty = list_empty(&sched->job.list.head);
++	spin_unlock(&sched->job.list.lock);
++
++	return empty;
++}
+ 
+ static void
+ nouveau_sched_fini(struct nouveau_sched *sched)
+@@ -489,8 +500,7 @@ nouveau_sched_fini(struct nouveau_sched
+ 	struct drm_gpu_scheduler *drm_sched = &sched->base;
+ 	struct drm_sched_entity *entity = &sched->entity;
+ 
+-	rmb(); /* for list_empty to work without lock */
+-	wait_event(sched->job.wq, list_empty(&sched->job.list.head));
++	wait_event(sched->job.wq, nouveau_sched_job_list_empty(sched));
+ 
+ 	drm_sched_entity_fini(entity);
+ 	drm_sched_fini(drm_sched);
 
 
 
