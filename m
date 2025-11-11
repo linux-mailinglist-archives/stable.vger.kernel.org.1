@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 975C4C4AD9F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D75A5C4B259
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:03:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8E073B3120
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7A5B3BF648
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7048B2DEA77;
-	Tue, 11 Nov 2025 01:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A972DFA5B;
+	Tue, 11 Nov 2025 01:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLjWSfL2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHxgf66S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246C41F09B3;
-	Tue, 11 Nov 2025 01:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2232255F5E;
+	Tue, 11 Nov 2025 01:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824686; cv=none; b=jQiPW3+Wx4yqVHPraY9RparR0SJDv81SY6n/CfF3UIdanT3Znx0XuK1F/qdmLSEP+CSOKfm42CpL4YhHUZL9b5630sGMWw3llUzzSweJMezT0FbqQ+ene/sMsUG+wIYdnANPbOGpTrOE1jBYQ+uudM7vLLYTiA4TltoXq4Rkjbk=
+	t=1762825362; cv=none; b=DHsNH6X5RMR7qNfzH5aKZ9M9md1CmtZkXTu2VvcCAxv04/8B8m87OfUIJ2TWG4tKPxPbsbWN6BH/zr9YhDfCWCfU4j3vP70vdfIIF3mHnRpZU+v7xbrMexLkES3tcuw6FTdWzMTIPZZbIOSZcZU9lRwLJRYoBW6q2Jai5P9bk/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824686; c=relaxed/simple;
-	bh=CG/9mu/FrnTPE3c0WBsyAQ1jagHM6MMDMERdq2zD46Q=;
+	s=arc-20240116; t=1762825362; c=relaxed/simple;
+	bh=UDqpHUsnR50Wgv0VUhMwkDtSitTLUF3pRsma1z6k+JU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EuHwyk9L3fuHuFtXjMIg5esEDxzODnZXEoMz+YWjrLbpo461f2uSsUza19E2EgjXrXgD0CwJRBdeJs9IHK2gIdR2RhP3U8lL4QMkkHaeTiAEi8CBp6koIv3AUCEIG6VXN9C7vCbAThEOukt5AaMggfzxjv2ek6Ll3oR+htPhq/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLjWSfL2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA89C113D0;
-	Tue, 11 Nov 2025 01:31:25 +0000 (UTC)
+	 MIME-Version; b=lciefsRRSHB30vSOPuUNQsLZlP1NZatJU6dsbsP7lscyQhh3iqWxHT6UiV9jMhwELIuE9Gi3HBv4ZmPPO1yHAzj0CbbpcpdVPlSG8u3L2uyQFP/r3lJsZG4Ei8iEn/9ZRl9bSs+2rhJx1LBfUg9I2DKJMvqD4Ew98Mc7m4uVt9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHxgf66S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91744C4CEFB;
+	Tue, 11 Nov 2025 01:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824686;
-	bh=CG/9mu/FrnTPE3c0WBsyAQ1jagHM6MMDMERdq2zD46Q=;
+	s=korg; t=1762825361;
+	bh=UDqpHUsnR50Wgv0VUhMwkDtSitTLUF3pRsma1z6k+JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yLjWSfL2xv0Sg3A8yt0QbfaVofrC0FtilhoDOLpPlXmsQFIUZpj8R5r5TFprU4sWl
-	 65svqhYeWZ59fU0UomlHVKJp+Ybl5oQS4+Ooy8ACDy/kVGcYEvhQURxgvBsFxp2ShX
-	 iUFU5cd7QAQozj/cVGjf7ztq5uA90ydbCIw2F9BU=
+	b=NHxgf66SeC2NiJAXgdJLRT88Z4zbXOIcgeBUjC+JZcIhmjIlophYwgNd6GAyCe7yR
+	 GzzCLQ0Sq8viKhjyfK6W2UB2K0G0tU6ZkhrKIktY4KEVREby31lq0U121eZi0ONFxn
+	 wJEoKSDKeXZ9MH4rpXn30W3c5x31b5HbzOj/vzfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 485/565] tools: lib: thermal: use pkg-config to locate libnl3
+Subject: [PATCH 6.17 771/849] net: dsa: b53: fix enabling ip multicast
 Date: Tue, 11 Nov 2025 09:45:41 +0900
-Message-ID: <20251111004537.839164326@linuxfoundation.org>
+Message-ID: <20251111004555.069106497@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit b31f7f725cd932e2c2b41f3e4b66273653953687 ]
+[ Upstream commit c264294624e956a967a9e2e5fa41e3273340b089 ]
 
-To make libthermal more cross compile friendly use pkg-config to locate
-libnl3. Only if that fails fall back to hardcoded /usr/include/libnl3.
+In the New Control register bit 1 is either reserved, or has a different
+function:
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+    Out of Range Error Discard
+
+    When enabled, the ingress port discards any frames
+    if the Length field is between 1500 and 1536
+    (excluding 1500 and 1536) and with good CRC.
+
+The actual bit for enabling IP multicast is bit 0, which was only
+explicitly enabled for BCM5325 so far.
+
+For older switch chips, this bit defaults to 0, so we want to enable it
+as well, while newer switch chips default to 1, and their documentation
+says "It is illegal to set this bit to zero."
+
+So drop the wrong B53_IPMC_FWD_EN define, enable the IP multicast bit
+also for other switch chips. While at it, rename it to (B53_)IP_MC as
+that is how it is called in Broadcom code.
+
+Fixes: 63cc54a6f073 ("net: dsa: b53: Fix egress flooding settings")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251102100758.28352-2-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/thermal/Makefile | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 4 ++--
+ drivers/net/dsa/b53/b53_regs.h   | 3 +--
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/tools/lib/thermal/Makefile b/tools/lib/thermal/Makefile
-index 1694889847caf..8d21ea1950a31 100644
---- a/tools/lib/thermal/Makefile
-+++ b/tools/lib/thermal/Makefile
-@@ -59,8 +59,12 @@ else
-   CFLAGS := -g -Wall
- endif
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index bb2c6dfa7835d..58c31049c0e7a 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -371,11 +371,11 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
+ 		 * frames should be flooded or not.
+ 		 */
+ 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
+-		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
++		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IP_MC;
+ 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
+ 	} else {
+ 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
+-		mgmt |= B53_IP_MCAST_25;
++		mgmt |= B53_IP_MC;
+ 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
+ 	}
+ }
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index 309fe0e46dadf..8ce1ce72e9385 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -111,8 +111,7 @@
  
-+NL3_CFLAGS = $(shell pkg-config --cflags libnl-3.0 2>/dev/null)
-+ifeq ($(NL3_CFLAGS),)
-+NL3_CFLAGS = -I/usr/include/libnl3
-+endif
-+
- INCLUDES = \
---I/usr/include/libnl3 \
- -I$(srctree)/tools/lib/thermal/include \
- -I$(srctree)/tools/lib/ \
- -I$(srctree)/tools/include \
-@@ -72,6 +76,7 @@ INCLUDES = \
- override CFLAGS += $(EXTRA_WARNINGS)
- override CFLAGS += -Werror -Wall
- override CFLAGS += -fPIC
-+override CFLAGS += $(NL3_CFLAGS)
- override CFLAGS += $(INCLUDES)
- override CFLAGS += -fvisibility=hidden
- override CFGLAS += -Wl,-L.
+ /* IP Multicast control (8 bit) */
+ #define B53_IP_MULTICAST_CTRL		0x21
+-#define  B53_IP_MCAST_25		BIT(0)
+-#define  B53_IPMC_FWD_EN		BIT(1)
++#define  B53_IP_MC			BIT(0)
+ #define  B53_UC_FWD_EN			BIT(6)
+ #define  B53_MC_FWD_EN			BIT(7)
+ 
 -- 
 2.51.0
 
