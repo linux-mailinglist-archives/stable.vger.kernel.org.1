@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC53DC4B115
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A4BC4ACBB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E14A9189B905
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0759B1890202
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CDE2F5474;
-	Tue, 11 Nov 2025 01:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BF634405F;
+	Tue, 11 Nov 2025 01:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XiU1Wa9D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9ESmQvL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C9B34D38E;
-	Tue, 11 Nov 2025 01:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829831D86FF;
+	Tue, 11 Nov 2025 01:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825405; cv=none; b=oYWS6pHSN8aZ6E27oDwBN/NhcpBOEdmV85GVmSiyy3jFOkk9TK/pAEzwCqu2agLiMWc/6Yk7YQQRA1Vylvd/fP6atetgRJ+qMioUg+2xaqFPComCn4kiq5DoNr9LwLKAnxVyg7e4nXHDzv51i2RFYk3krmwxH7jpoUT6Os5isgY=
+	t=1762824702; cv=none; b=j2PYJNopk6eMS30f93hwXuaqmTP2maaHCU2spsn3N8SW/s7sYxXc90cE5Ly2UB4UC545U3caObSOhJNDAZeFE3liBHznXtHAUACj4T6xOMhX1veaqpxLr38e+PwsNfOR725nP5v3Qh3m63gy9AV5l4R3xzi8woxO0BJn+NQMF5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825405; c=relaxed/simple;
-	bh=nfwGKIvSiUuhpqrxzhwbIMpb0LaBhBLpRpqx9P1gTIs=;
+	s=arc-20240116; t=1762824702; c=relaxed/simple;
+	bh=Cm3j8CyV6uvEeXa3I049W+3SD3RRfVGs+kMbI5NCUEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBjIkG9y7hx1t8Ppvw2bTomHx9P+io2PSze0tCJXIR7Q5EUiwWgSTZwoz/Trc5EGBtunK8iHhR+i2HR9wpIZ9ffcs69cc6pjuXbHSqxrQjmpQoKMzJG39T9mWcvS5Oss7kDo6gpNfFS1ArS1HpL+GtdLmnIz3mtCmwPin30uq9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XiU1Wa9D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F27C16AAE;
-	Tue, 11 Nov 2025 01:43:24 +0000 (UTC)
+	 MIME-Version; b=SwnM8tpwIaXuOuqOd+rDoIStw6UuKRMBxYPWjK4jhVwEF3ksaADqIG1UmO1L2LuuNuOrqQKWchmZEIf4YJeSZo2xqpdTd2PngUyuoCMV5/XBdFjyBToV9TeWQb6qrGetSTeszepFMLF3ZvlJlr0Ip78GxVG3Hr3cXawxOHbj2uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9ESmQvL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EEEC19421;
+	Tue, 11 Nov 2025 01:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825405;
-	bh=nfwGKIvSiUuhpqrxzhwbIMpb0LaBhBLpRpqx9P1gTIs=;
+	s=korg; t=1762824702;
+	bh=Cm3j8CyV6uvEeXa3I049W+3SD3RRfVGs+kMbI5NCUEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XiU1Wa9Du/a6AErNKZyAGFg7Ghz01NGjzv+CXqMG2gPScdjfTfmuEAByKC/en4RJH
-	 iiUxpG7UfMlrZI8S+cxHffGAOYY2SR9zAiSSIG9e7t9V7C+k4E1TwWZ/RVpsFgnCmx
-	 SniQK93XBLqTIRpiY1ofKuQfp8b1J5GwsnWn7jsY=
+	b=r9ESmQvLgYd8VrHBruZHhpSpyNZPrD/TMULoUZc4t3RIVDwdUw48A9iFp4B3/36Vo
+	 p6lL5y7xqmBWIC8B1z4QsjZz/hPvadOxKoe57rFdb3TOeX9OTjzQ2TwQulMbSNhopC
+	 gFcgoPTeQXRO393hmYpWLSCsPJfa2UtB86lFquD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Willi <martin@strongswan.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 787/849] wifi: mac80211_hwsim: Limit destroy_on_close radio removal to netgroup
+	Angel4005 <ooara1337@gmail.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 501/565] media: uvcvideo: Use heuristic to find stream entity
 Date: Tue, 11 Nov 2025 09:45:57 +0900
-Message-ID: <20251111004555.463417077@linuxfoundation.org>
+Message-ID: <20251111004538.213498740@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Willi <martin@strongswan.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit c74619e7602e88a0239cd4999571dd31081e9adf ]
+commit 758dbc756aad429da11c569c0d067f7fd032bcf7 upstream.
 
-hwsim radios marked destroy_on_close are removed when the Netlink socket
-that created them is closed. As the portid is not unique across network
-namespaces, closing a socket in one namespace may remove radios in another
-if it has the destroy_on_close flag set.
+Some devices, like the Grandstream GUV3100 webcam, have an invalid UVC
+descriptor where multiple entities share the same ID, this is invalid
+and makes it impossible to make a proper entity tree without heuristics.
 
-Instead of matching the network namespace, match the netgroup of the radio
-to limit radio removal to those that have been created by the closing
-Netlink socket. The netgroup of a radio identifies the network namespace
-it was created in, and matching on it removes a destroy_on_close radio
-even if it has been moved to another namespace.
+We have recently introduced a change in the way that we handle invalid
+entities that has caused a regression on broken devices.
 
-Fixes: 100cb9ff40e0 ("mac80211_hwsim: Allow managing radios from non-initial namespaces")
-Signed-off-by: Martin Willi <martin@strongswan.org>
-Link: https://patch.msgid.link/20251103082436.30483-1-martin@strongswan.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Implement a new heuristic to handle these devices properly.
+
+Reported-by: Angel4005 <ooara1337@gmail.com>
+Closes: https://lore.kernel.org/linux-media/CAOzBiVuS7ygUjjhCbyWg-KiNx+HFTYnqH5+GJhd6cYsNLT=DaA@mail.gmail.com/
+Fixes: 0e2ee70291e6 ("media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 3789d46d56149..0555a6bb3620e 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -6453,14 +6453,15 @@ static struct genl_family hwsim_genl_family __ro_after_init = {
- 	.n_mcgrps = ARRAY_SIZE(hwsim_mcgrps),
- };
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -165,13 +165,26 @@ static struct uvc_entity *uvc_entity_by_
  
--static void remove_user_radios(u32 portid)
-+static void remove_user_radios(u32 portid, int netgroup)
+ static struct uvc_streaming *uvc_stream_by_id(struct uvc_device *dev, int id)
  {
- 	struct mac80211_hwsim_data *entry, *tmp;
- 	LIST_HEAD(list);
+-	struct uvc_streaming *stream;
++	struct uvc_streaming *stream, *last_stream;
++	unsigned int count = 0;
  
- 	spin_lock_bh(&hwsim_radio_lock);
- 	list_for_each_entry_safe(entry, tmp, &hwsim_radios, list) {
--		if (entry->destroy_on_close && entry->portid == portid) {
-+		if (entry->destroy_on_close && entry->portid == portid &&
-+		    entry->netgroup == netgroup) {
- 			list_move(&entry->list, &list);
- 			rhashtable_remove_fast(&hwsim_radios_rht, &entry->rht,
- 					       hwsim_rht_params);
-@@ -6485,7 +6486,7 @@ static int mac80211_hwsim_netlink_notify(struct notifier_block *nb,
- 	if (state != NETLINK_URELEASE)
- 		return NOTIFY_DONE;
+ 	list_for_each_entry(stream, &dev->streams, list) {
++		count += 1;
++		last_stream = stream;
+ 		if (stream->header.bTerminalLink == id)
+ 			return stream;
+ 	}
  
--	remove_user_radios(notify->portid);
-+	remove_user_radios(notify->portid, hwsim_net_get_netgroup(notify->net));
++	/*
++	 * If the streaming entity is referenced by an invalid ID, notify the
++	 * user and use heuristics to guess the correct entity.
++	 */
++	if (count == 1 && id == UVC_INVALID_ENTITY_ID) {
++		dev_warn(&dev->intf->dev,
++			 "UVC non compliance: Invalid USB header. The streaming entity has an invalid ID, guessing the correct one.");
++		return last_stream;
++	}
++
+ 	return NULL;
+ }
  
- 	if (notify->portid == hwsim_net_get_wmediumd(notify->net)) {
- 		printk(KERN_INFO "mac80211_hwsim: wmediumd released netlink"
--- 
-2.51.0
-
 
 
 
