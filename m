@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A64C4AD06
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:37 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9037C4AA1B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A6723B9F39
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:59 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 53ACC34C859
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417B933C502;
-	Tue, 11 Nov 2025 01:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200A033E362;
+	Tue, 11 Nov 2025 01:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izcdrsqB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBm9zKET"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1667333443;
-	Tue, 11 Nov 2025 01:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA7222301;
+	Tue, 11 Nov 2025 01:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824561; cv=none; b=PdL6nvB2kNCv2XTzQyiC8bm8j7Bvfo2nvQNelFwmFG5KeTpW77NF1RrLs2ZsuqzMH8b/hSdmLDKNHhcyo/UsZDfvXpekjfp2c1DHVGwRVU6u9KW+pOybO5rYKjAtDh9fASc10sN/3hvAxGHr5n6roWkbKXUpuL0/QSZTj+vbn40=
+	t=1762824567; cv=none; b=oXCWkiAJgnI/6jS7TRQppQB/oD1Apq2OBFYcYyztYL1TQFXr3BPQUXUcRrnEdGyG0OX3/sHeKvjXGRfDMFn/5fxQxoANiAlNeWQfFpNcSPDt/pyjJ3SUxiOOjwEik6cXR0P5GV8rOv/gQMd0VJd8wRu9pPgog+P2EM93loq5S2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824561; c=relaxed/simple;
-	bh=BOGO2vNtNgVybIhjzuljFkiuiIpM9hKyALPefvffkS4=;
+	s=arc-20240116; t=1762824567; c=relaxed/simple;
+	bh=NfLbOmu8X45X/nwzth9yQ04sIZEB0/4eDa2JWHejbio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cq5Fk0dJJfkVGGvqRNduNLTgJqcyv9OUmLdByTQN/mCQ6XTnP4Hnz427T/RzmmSjqNE7lryTW1X5utcbrgKsZNdMMDbb4JNq37lyh3BaynjrrNzP/LTD4s0sx4SKFwzltKQ2YWlpEQqgMbGSJgsHOOLGqKDA+OSJXolGJqJJqFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izcdrsqB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FA9C4CEFB;
-	Tue, 11 Nov 2025 01:29:20 +0000 (UTC)
+	 MIME-Version; b=FdOJ76P9OsDh1qf/0S+IvZ3Ol35Kkor+6sJXQTpjR2CxxWcoyMMTHhoIHPnI5KlyhRvxrSN4ctwf9T+3klP4XYolqvBWJvbzAVlsZdJdK/HrKeaGDALsvRROKqKrw8egPg9p14iaYBHFuEI4JfrndiDNpw86kRCbLEaP3z/Uamk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBm9zKET; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4DBC4AF0B;
+	Tue, 11 Nov 2025 01:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824560;
-	bh=BOGO2vNtNgVybIhjzuljFkiuiIpM9hKyALPefvffkS4=;
+	s=korg; t=1762824567;
+	bh=NfLbOmu8X45X/nwzth9yQ04sIZEB0/4eDa2JWHejbio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=izcdrsqBtKq6CcKSxhTuO/OHUnX9dCxoUHLUJYnzjwsSXwJeq5eGs16x3BiJST0Ko
-	 KSxioPgVkDRGVt8wUFqY3qyyCSNgN1q4wFm5pggKGZ+ut1o+CgBvHMXCxePQ8uUYGa
-	 UZ9TYbguvRxbstRzzaWvyTrz91EtQLF1A+4jTQmI=
+	b=iBm9zKET+7CMXBAiX5Sigm7rz+ZgoXwDHOoplfAUGn4YwPIfskSLIciMW/zZ/YrH4
+	 rSuZ2+QGYRP/Rb4JojLo3lVpPjtTth/NkL7n18CqTKpFM3gpszuQgquVO0GhjddLOz
+	 MQRi5TZoi6ybE7BzQHLKrDIOjW6tl+xiDIC5DERE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 524/849] selftests: net: lib.sh: Dont defer failed commands
-Date: Tue, 11 Nov 2025 09:41:34 +0900
-Message-ID: <20251111004549.089946665@linuxfoundation.org>
+Subject: [PATCH 6.17 525/849] udp_tunnel: use netdev_warn() instead of netdev_WARN()
+Date: Tue, 11 Nov 2025 09:41:35 +0900
+Message-ID: <20251111004549.113731433@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,115 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit fa57032941d4b451c7264ebf3ad595bc98e3a9a9 ]
+[ Upstream commit dc2f650f7e6857bf384069c1a56b2937a1ee370d ]
 
-Usually the autodefer helpers in lib.sh are expected to be run in context
-where success is the expected outcome. However when using them for feature
-detection, failure can legitimately occur. But the failed command still
-schedules a cleanup, which will likely fail again.
+netdev_WARN() uses WARN/WARN_ON to print a backtrace along with
+file and line information. In this case, udp_tunnel_nic_register()
+returning an error is just a failed operation, not a kernel bug.
 
-Instead, only schedule deferred cleanup when the positive command succeeds.
+udp_tunnel_nic_register() can fail due to a memory allocation
+failure (kzalloc() or udp_tunnel_nic_alloc()).
+This is a normal runtime error and not a kernel bug.
 
-This way of organizing the cleanup has the added benefit that now the
-return code from these functions reflects whether the command passed.
+Replace netdev_WARN() with netdev_warn() accordingly.
 
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/af10a5bb82ea11ead978cf903550089e006d7e70.1757004393.git.petrm@nvidia.com
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250910195031.3784748-1-alok.a.tiwari@oracle.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/lib.sh | 32 +++++++++++++++---------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ net/ipv4/udp_tunnel_nic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
-index c7add0dc4c605..80cf1a75136cf 100644
---- a/tools/testing/selftests/net/lib.sh
-+++ b/tools/testing/selftests/net/lib.sh
-@@ -547,8 +547,8 @@ ip_link_add()
- {
- 	local name=$1; shift
+diff --git a/net/ipv4/udp_tunnel_nic.c b/net/ipv4/udp_tunnel_nic.c
+index ff66db48453cf..944b3cf25468e 100644
+--- a/net/ipv4/udp_tunnel_nic.c
++++ b/net/ipv4/udp_tunnel_nic.c
+@@ -930,7 +930,7 @@ udp_tunnel_nic_netdevice_event(struct notifier_block *unused,
  
--	ip link add name "$name" "$@"
--	defer ip link del dev "$name"
-+	ip link add name "$name" "$@" && \
-+		defer ip link del dev "$name"
- }
- 
- ip_link_set_master()
-@@ -556,8 +556,8 @@ ip_link_set_master()
- 	local member=$1; shift
- 	local master=$1; shift
- 
--	ip link set dev "$member" master "$master"
--	defer ip link set dev "$member" nomaster
-+	ip link set dev "$member" master "$master" && \
-+		defer ip link set dev "$member" nomaster
- }
- 
- ip_link_set_addr()
-@@ -566,8 +566,8 @@ ip_link_set_addr()
- 	local addr=$1; shift
- 
- 	local old_addr=$(mac_get "$name")
--	ip link set dev "$name" address "$addr"
--	defer ip link set dev "$name" address "$old_addr"
-+	ip link set dev "$name" address "$addr" && \
-+		defer ip link set dev "$name" address "$old_addr"
- }
- 
- ip_link_has_flag()
-@@ -590,8 +590,8 @@ ip_link_set_up()
- 	local name=$1; shift
- 
- 	if ! ip_link_is_up "$name"; then
--		ip link set dev "$name" up
--		defer ip link set dev "$name" down
-+		ip link set dev "$name" up && \
-+			defer ip link set dev "$name" down
- 	fi
- }
- 
-@@ -600,8 +600,8 @@ ip_link_set_down()
- 	local name=$1; shift
- 
- 	if ip_link_is_up "$name"; then
--		ip link set dev "$name" down
--		defer ip link set dev "$name" up
-+		ip link set dev "$name" down && \
-+			defer ip link set dev "$name" up
- 	fi
- }
- 
-@@ -609,20 +609,20 @@ ip_addr_add()
- {
- 	local name=$1; shift
- 
--	ip addr add dev "$name" "$@"
--	defer ip addr del dev "$name" "$@"
-+	ip addr add dev "$name" "$@" && \
-+		defer ip addr del dev "$name" "$@"
- }
- 
- ip_route_add()
- {
--	ip route add "$@"
--	defer ip route del "$@"
-+	ip route add "$@" && \
-+		defer ip route del "$@"
- }
- 
- bridge_vlan_add()
- {
--	bridge vlan add "$@"
--	defer bridge vlan del "$@"
-+	bridge vlan add "$@" && \
-+		defer bridge vlan del "$@"
- }
- 
- wait_local_port_listen()
+ 		err = udp_tunnel_nic_register(dev);
+ 		if (err)
+-			netdev_WARN(dev, "failed to register for UDP tunnel offloads: %d", err);
++			netdev_warn(dev, "failed to register for UDP tunnel offloads: %d", err);
+ 		return notifier_from_errno(err);
+ 	}
+ 	/* All other events will need the udp_tunnel_nic state */
 -- 
 2.51.0
 
