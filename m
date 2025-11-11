@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 064EDC4AAE7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:01 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E95C4A66E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:25:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7C50E34C935
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E9B84F6ACB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C2F2E0B5A;
-	Tue, 11 Nov 2025 01:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466AD263F4A;
+	Tue, 11 Nov 2025 01:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkbe1L0u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elJCssSy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5532DC328;
-	Tue, 11 Nov 2025 01:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E8A26560B;
+	Tue, 11 Nov 2025 01:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824674; cv=none; b=hVv4iPpbtlx4eJRDBFmY2sVIzqTTK7Ipvt4omg+QJrtVE2jfPpjUmibH0wI+/TJ4L2lSFhY/QJab+e0amqLkQaeBaUPQiw7aqobBk8bWYAFFj5Q6fS92YRqWXkDcRBCvt/FSDUX1DakBg1TwU44b0/3tG9XwC+fykQSQ7OxcsZk=
+	t=1762823520; cv=none; b=S/2fsNbw3+TwjuWKHHFT77go9atGzqTf6G854m4dECtgE7ekJIIQeBvtdN0vKK954Z9kMXSvCDtONOpdOxw0j7MDHfy6n9GYEyoFq0M8cR5HeIXUcCTpbbzzo5VnfuEWb4viBAgeWV7jMUCMqSCF9u2kPE3SE6aPKm81ui2uuAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824674; c=relaxed/simple;
-	bh=VYC1RVqkIVwwae6u0JZ6gdMmAUb5LbidN8zcCEWgrEQ=;
+	s=arc-20240116; t=1762823520; c=relaxed/simple;
+	bh=wlNTQRC2Nn4lFt54C1GuIFU/CcyeIzcMDWM3p3gqBcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQXLBfd5N2JgRPko7KZEJaQXv+4D1HL3wJt8CBkdg6mmkC8PTtqdYLrYi068P2Ih/YJfThOP0H+i8UbXrW9R5l5cXCAP2cnZyk4ALXfPVkHgnOHiv5QL2PapGYB5yerRHCeq4kZeblNfOqALt4JJe2yUbly1ocjSiVM5GP2ELik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkbe1L0u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4CAC4CEF5;
-	Tue, 11 Nov 2025 01:31:13 +0000 (UTC)
+	 MIME-Version; b=aYewuqL5IHAhdJXajgnjKDEI/4GRQPGbcrLC92AufNbp2SaUgcHv6+JCYgcN1vr9TPyDLA3xNPtvPptcX2VjayxsPaChX9v61BTPPTIVmmkfxtjR9hQLLR7vf4zA3vjllYA2ofOkeKQSogfEoPERk7HNbs35Cks61hRPv3b2BOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elJCssSy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E743C116B1;
+	Tue, 11 Nov 2025 01:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824674;
-	bh=VYC1RVqkIVwwae6u0JZ6gdMmAUb5LbidN8zcCEWgrEQ=;
+	s=korg; t=1762823519;
+	bh=wlNTQRC2Nn4lFt54C1GuIFU/CcyeIzcMDWM3p3gqBcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkbe1L0u5EepmlIKulWjirJOTgTZvFjAN6enHD7Ij3aswnC9qz/VVjkdZplWeKeXb
-	 qcj9IVY2HgpQiGgjWwb7lCJ5FND9ayP+/YCpyzbGSg7zWr0qcuDnPnb5lRzESGYBYu
-	 EcvDYnbapwHM00QLW10sWjVHTxmGlRvgwLWd8lhI=
+	b=elJCssSy9vYC61bXMIqYPUZwd3ozu0ukJzM3VIm0SUQmg+81D+tgmX3Nnh10asWlr
+	 bfOK0YODeSZXeA18UgWuQjIXu+cxCZMytIO0un4Ih0UYE1QglxjGLfAWcaO6G2912p
+	 lyShxU3hJ5xCVbaxS/GM16m0LC1NNcwilNKgjItI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 548/849] drm/amdgpu: Use memdup_array_user in amdgpu_cs_wait_fences_ioctl
+Subject: [PATCH 6.12 262/565] media: fix uninitialized symbol warnings
 Date: Tue, 11 Nov 2025 09:41:58 +0900
-Message-ID: <20251111004549.654274584@linuxfoundation.org>
+Message-ID: <20251111004532.788806624@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
 
-[ Upstream commit dea75df7afe14d6217576dbc28cc3ec1d1f712fb ]
+[ Upstream commit b4c441310c3baaa7c39a5457e305ca93c7a0400d ]
 
-Replace kmalloc_array() + copy_from_user() with memdup_array_user().
+Initialize variables to fix these smatch warnings
+drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
+symbol 'protocol'.
+drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
+symbol 'scancode'.
+drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
+symbol 'toggle'.
+drivers/media/tuners/xc4000.c:1102 xc_debug_dump() error: uninitialized
+symbol 'adc_envelope'.
+drivers/media/tuners/xc4000.c:1108 xc_debug_dump() error: uninitialized
+symbol 'lock_status'.
+drivers/media/tuners/xc4000.c:1123 xc_debug_dump() error: uninitialized
+symbol 'frame_lines'.
+drivers/media/tuners/xc4000.c:1127 xc_debug_dump() error: uninitialized
+symbol 'quality'.
+drivers/media/tuners/xc5000.c:645 xc_debug_dump() error: uninitialized
+symbol 'adc_envelope'.
+drivers/media/tuners/xc5000.c:651 xc_debug_dump() error: uninitialized
+symbol 'lock_status'.
+drivers/media/tuners/xc5000.c:665 xc_debug_dump() error: uninitialized
+symbol 'frame_lines'.
+drivers/media/tuners/xc5000.c:668 xc_debug_dump() error: uninitialized
+symbol 'quality'.
+drivers/media/tuners/xc5000.c:671 xc_debug_dump() error: uninitialized
+symbol 'snr'.
+drivers/media/tuners/xc5000.c:674 xc_debug_dump() error: uninitialized
+symbol 'totalgain'.
 
-This shrinks the source code and improves separation between the kernel
-and userspace slabs.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[hverkuil: dropped ' = 0' from rc in ir-kbd-i2c.c, not needed]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ drivers/media/i2c/ir-kbd-i2c.c |  6 +++---
+ drivers/media/tuners/xc4000.c  |  8 ++++----
+ drivers/media/tuners/xc5000.c  | 12 ++++++------
+ 3 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-index d3f220be2ef9a..d541e214a18c8 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -1767,30 +1767,21 @@ int amdgpu_cs_wait_fences_ioctl(struct drm_device *dev, void *data,
+diff --git a/drivers/media/i2c/ir-kbd-i2c.c b/drivers/media/i2c/ir-kbd-i2c.c
+index c84e1e0e6109a..5588cdd7ec20d 100644
+--- a/drivers/media/i2c/ir-kbd-i2c.c
++++ b/drivers/media/i2c/ir-kbd-i2c.c
+@@ -321,9 +321,9 @@ static int get_key_avermedia_cardbus(struct IR_i2c *ir, enum rc_proto *protocol,
+ 
+ static int ir_key_poll(struct IR_i2c *ir)
  {
- 	struct amdgpu_device *adev = drm_to_adev(dev);
- 	union drm_amdgpu_wait_fences *wait = data;
--	uint32_t fence_count = wait->in.fence_count;
--	struct drm_amdgpu_fence *fences_user;
- 	struct drm_amdgpu_fence *fences;
- 	int r;
+-	enum rc_proto protocol;
+-	u32 scancode;
+-	u8 toggle;
++	enum rc_proto protocol = 0;
++	u32 scancode = 0;
++	u8 toggle = 0;
+ 	int rc;
  
- 	/* Get the fences from userspace */
--	fences = kmalloc_array(fence_count, sizeof(struct drm_amdgpu_fence),
--			GFP_KERNEL);
--	if (fences == NULL)
--		return -ENOMEM;
--
--	fences_user = u64_to_user_ptr(wait->in.fences);
--	if (copy_from_user(fences, fences_user,
--		sizeof(struct drm_amdgpu_fence) * fence_count)) {
--		r = -EFAULT;
--		goto err_free_fences;
--	}
-+	fences = memdup_array_user(u64_to_user_ptr(wait->in.fences),
-+				   wait->in.fence_count,
-+				   sizeof(struct drm_amdgpu_fence));
-+	if (IS_ERR(fences))
-+		return PTR_ERR(fences);
+ 	dev_dbg(&ir->rc->dev, "%s\n", __func__);
+diff --git a/drivers/media/tuners/xc4000.c b/drivers/media/tuners/xc4000.c
+index 3cf54d776d36c..b44c97e4e5ec6 100644
+--- a/drivers/media/tuners/xc4000.c
++++ b/drivers/media/tuners/xc4000.c
+@@ -1087,12 +1087,12 @@ static int check_firmware(struct dvb_frontend *fe, unsigned int type,
  
- 	if (wait->in.wait_all)
- 		r = amdgpu_cs_wait_all_fences(adev, filp, wait, fences);
- 	else
- 		r = amdgpu_cs_wait_any_fence(adev, filp, wait, fences);
+ static void xc_debug_dump(struct xc4000_priv *priv)
+ {
+-	u16	adc_envelope;
++	u16	adc_envelope = 0;
+ 	u32	freq_error_hz = 0;
+-	u16	lock_status;
++	u16	lock_status = 0;
+ 	u32	hsync_freq_hz = 0;
+-	u16	frame_lines;
+-	u16	quality;
++	u16	frame_lines = 0;
++	u16	quality = 0;
+ 	u16	signal = 0;
+ 	u16	noise = 0;
+ 	u8	hw_majorversion = 0, hw_minorversion = 0;
+diff --git a/drivers/media/tuners/xc5000.c b/drivers/media/tuners/xc5000.c
+index ec9a3cd4784e1..a28481edd22ed 100644
+--- a/drivers/media/tuners/xc5000.c
++++ b/drivers/media/tuners/xc5000.c
+@@ -622,14 +622,14 @@ static int xc5000_fwupload(struct dvb_frontend *fe,
  
--err_free_fences:
- 	kfree(fences);
- 
- 	return r;
+ static void xc_debug_dump(struct xc5000_priv *priv)
+ {
+-	u16 adc_envelope;
++	u16 adc_envelope = 0;
+ 	u32 freq_error_hz = 0;
+-	u16 lock_status;
++	u16 lock_status = 0;
+ 	u32 hsync_freq_hz = 0;
+-	u16 frame_lines;
+-	u16 quality;
+-	u16 snr;
+-	u16 totalgain;
++	u16 frame_lines = 0;
++	u16 quality = 0;
++	u16 snr = 0;
++	u16 totalgain = 0;
+ 	u8 hw_majorversion = 0, hw_minorversion = 0;
+ 	u8 fw_majorversion = 0, fw_minorversion = 0;
+ 	u16 fw_buildversion = 0;
 -- 
 2.51.0
 
