@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-193933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6BAC4AB9E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80FD8C4A5F0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7E4A14F7B7D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 379483ADDFB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C57304BA4;
-	Tue, 11 Nov 2025 01:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5EC52F656B;
+	Tue, 11 Nov 2025 01:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Rgvv8jQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0QpGxG/W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36094262FEC;
-	Tue, 11 Nov 2025 01:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709F72E7182;
+	Tue, 11 Nov 2025 01:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824408; cv=none; b=VbWO2v1Z1H9oTD72phhRlRcA5o4y4aCcd04kSlzhbSy/D0OqHhbW41csGr2jfWvFQ3z7epIHycjTHhl+qJi8ydGIk7XYod3YuBMeQeXI9xhTQjCpkamieEaOMpvIoc2yesNVBEygkZ3kFQ4apXT1FfLzOA3D1hQugVYLl+n4FwY=
+	t=1762823245; cv=none; b=gS6F/E/0nr7Mlcu36nZKTQv6D1YM5XhJUzdhW4zw8OO39r72vyQA2x1PQMVJ9gKbBjKjlNKxIAaL7/pHpzN+7ks3Q3ZhHa+TAeDJFbXlkG4G6c6gSoGj1Ab69/Xqi742PP9IHPun8sKSfZxWj0t+kZTlVp0LcTts3O+PK7o8EcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824408; c=relaxed/simple;
-	bh=uAyiYIfBEcEIaw7Xk7TWT+4tpUHPT28ZQtDD6LoOWS0=;
+	s=arc-20240116; t=1762823245; c=relaxed/simple;
+	bh=IEkrwRlz6BaqkqwniGWJ5vn+qmRNSxc0ZqT0tu5855E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IJlfeYoYm1AynCh1IdhV/A3vJBAlHPeIbh8Ft3kXqZAM4cqTTqFnKmj09gnYRDUgVHWF0O7xGhTLPX6id0ne/GqOiIVQSIp//etwLp0/HnEwUWFBKCFpaY2GdXcU+lQgbmlsImxss1Jkfl8yqFjmcBLvzpneQiKQXa2eZHSJPkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Rgvv8jQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2730C19421;
-	Tue, 11 Nov 2025 01:26:47 +0000 (UTC)
+	 MIME-Version; b=eEldj8m6PxzDC2dMSAUi0rJ3mn5FEsgjWMJEmQUv8TAsslHVqtUDSCebnNstLrtZFkmxJOx1AG318V0y60ru96GBJSk9uWUrCXNrlPMXkn7b84SgA/ZFXWRIKf84b2dfgwgypg932BWhBmftHXghiI+3myfgIdzYr3d8N9L3PH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0QpGxG/W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5F9C4CEFB;
+	Tue, 11 Nov 2025 01:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824408;
-	bh=uAyiYIfBEcEIaw7Xk7TWT+4tpUHPT28ZQtDD6LoOWS0=;
+	s=korg; t=1762823245;
+	bh=IEkrwRlz6BaqkqwniGWJ5vn+qmRNSxc0ZqT0tu5855E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Rgvv8jQhRmDNPbaNQXUctnYDOCgZrjYhLimjUFsQ8qynIdurRW7Ce75FmUF0hwWL
-	 4lHkbKLUxLqmTKRjlrYvH4Fext7LdHRCojnAlnurmR9J2Gt0Sf0wlqgToCLs/4JDfn
-	 t4bKd4cLeLctJ5wOgckse+6cG7iwZgRQdW7TAuz4=
+	b=0QpGxG/WkFbOOQgs3NppVsBAreYgvdwlgddKoiN2Rg8NJkpA6ckR65MtmP4s/PsfK
+	 0nEASFdxpqtz8B7ZPF3ZWo6HTdQk5akM8LeC3Z+GuQHcPmkfWgN48gg/cdJP9Q1rqG
+	 w4hNO9mYske05VWE0LO/cxYXTxAtzx5ME5OOh3N4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Mehdi Djait <mehdi.djait@linux.intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 489/849] f2fs: fix wrong layout information on 16KB page
-Date: Tue, 11 Nov 2025 09:40:59 +0900
-Message-ID: <20251111004548.263015750@linuxfoundation.org>
+Subject: [PATCH 6.12 204/565] media: i2c: Kconfig: Ensure a dependency on HAVE_CLK for VIDEO_CAMERA_SENSOR
+Date: Tue, 11 Nov 2025 09:41:00 +0900
+Message-ID: <20251111004531.516742303@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Mehdi Djait <mehdi.djait@linux.intel.com>
 
-[ Upstream commit a33be64b98d0723748d2fab0832b926613e1fce0 ]
+[ Upstream commit 2d240b124cc9df62ccccee6054bc3d1d19018758 ]
 
-This patch fixes to support different block size.
+Both ACPI and DT-based systems are required to obtain the external
+camera sensor clock using the new devm_v4l2_sensor_clk_get() helper
+function.
 
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Ensure a dependency on HAVE_CLK when config VIDEO_CAMERA_SENSOR is
+enabled.
+
+Signed-off-by: Mehdi Djait <mehdi.djait@linux.intel.com>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/sysfs.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/media/i2c/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index f736052dea50a..902ffb3faa1ff 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -1723,12 +1723,15 @@ static int __maybe_unused disk_map_seq_show(struct seq_file *seq,
- 	seq_printf(seq, " Main          : 0x%010x (%10d)\n",
- 			SM_I(sbi)->main_blkaddr,
- 			le32_to_cpu(F2FS_RAW_SUPER(sbi)->segment_count_main));
--	seq_printf(seq, " # of Sections : %12d\n",
--			le32_to_cpu(F2FS_RAW_SUPER(sbi)->section_count));
-+	seq_printf(seq, " Block size    : %12lu KB\n", F2FS_BLKSIZE >> 10);
-+	seq_printf(seq, " Segment size  : %12d MB\n",
-+			(BLKS_PER_SEG(sbi) << (F2FS_BLKSIZE_BITS - 10)) >> 10);
- 	seq_printf(seq, " Segs/Sections : %12d\n",
- 			SEGS_PER_SEC(sbi));
- 	seq_printf(seq, " Section size  : %12d MB\n",
--			SEGS_PER_SEC(sbi) << 1);
-+			(BLKS_PER_SEC(sbi) << (F2FS_BLKSIZE_BITS - 10)) >> 10);
-+	seq_printf(seq, " # of Sections : %12d\n",
-+			le32_to_cpu(F2FS_RAW_SUPER(sbi)->section_count));
+diff --git a/drivers/media/i2c/Kconfig b/drivers/media/i2c/Kconfig
+index 85ecb2aeefdbf..5cb596f38de33 100644
+--- a/drivers/media/i2c/Kconfig
++++ b/drivers/media/i2c/Kconfig
+@@ -27,7 +27,7 @@ config VIDEO_IR_I2C
  
- 	if (!f2fs_is_multi_device(sbi))
- 		return 0;
+ menuconfig VIDEO_CAMERA_SENSOR
+ 	bool "Camera sensor devices"
+-	depends on MEDIA_CAMERA_SUPPORT && I2C
++	depends on MEDIA_CAMERA_SUPPORT && I2C && HAVE_CLK
+ 	select MEDIA_CONTROLLER
+ 	select V4L2_FWNODE
+ 	select VIDEO_V4L2_SUBDEV_API
 -- 
 2.51.0
 
