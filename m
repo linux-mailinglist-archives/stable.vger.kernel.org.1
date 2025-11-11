@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83CFC4AD6C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954A3C4B069
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:54:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71F063AD653
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AD081896643
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D4530498E;
-	Tue, 11 Nov 2025 01:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEEF932AAD4;
+	Tue, 11 Nov 2025 01:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYASD6VX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXf95IrI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A98E262FEC;
-	Tue, 11 Nov 2025 01:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA682D9494;
+	Tue, 11 Nov 2025 01:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824410; cv=none; b=t764SRnQKvZW6QwnmUzOiXo4Z+c3ZcrDr8lQk+W0Xwo5kQYlU2rtN6sW3eNEgs2PJhwAkRA0ksjEx5WF1kxHiYvmIb0585u+FVfv2G12dFWJvaKG3nD0i6pi0CMHIgXaB24hu6Jx3l7gDS22SyflcKpC4vKvFlf2WayGMNrtBRE=
+	t=1762825250; cv=none; b=nUf8yuNSdyJNwb658JPqSC8gRn0IV7V6WznjqeDYmVTg3kg+3tYF284OOVDPErg9b++wJTv35Y3eB5SuCDKXsTyzeWgstWsrMUhN4A51EPQaRHVPhjch1AEHnwgCp+JCmzcJkGzZeFTd+xb+ZT1abdVIQeKJpRldVMOPJRSx2XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824410; c=relaxed/simple;
-	bh=RazG4idSuBpORJ1fscWHubFCF96ISR1Lj9tLRxLpdGI=;
+	s=arc-20240116; t=1762825250; c=relaxed/simple;
+	bh=EOREWAUrDlo+CNOaZHXQ5TiKWLVQfPkW1zPXW/ydhFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fBdLuq8KBkSbKIBmcOA+kSO+S1WXZgS3Q28wbI4MDhM6Blk6+E32MInfH7jUc3TeyLq8lxshyeByumf9odG55EqhFa5MeoUkzfCmBI8ac+KSR+bjFRhLqyxjDd3uS72WTR41Px6isqi47XzofHKN5YOwl1g/BQeQn4TrkVOYbi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYASD6VX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAB6C4CEFB;
-	Tue, 11 Nov 2025 01:26:49 +0000 (UTC)
+	 MIME-Version; b=lvvpkuzQCJ69ZjiaCm403VOoNgtEHBGVAZE1ZjAPj9nEOr8lq3y1IwXr6ZlrdSrlepUtnWQglk2wLCJTAIujkGjZLvViMEqEnTt2C2Gf06XPLlvAlO5AEZPv5FMZdAcfhbxGXk51eSgPe9I6QY1BZwo6lp6GgRlAS/r0Y6nxXHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXf95IrI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2BDC116D0;
+	Tue, 11 Nov 2025 01:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824410;
-	bh=RazG4idSuBpORJ1fscWHubFCF96ISR1Lj9tLRxLpdGI=;
+	s=korg; t=1762825250;
+	bh=EOREWAUrDlo+CNOaZHXQ5TiKWLVQfPkW1zPXW/ydhFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYASD6VXNnI1WFngLmH3lr93+/lDHFE516WzzyAAPxAFlsJtIorfAbtA4uPidAStH
-	 TDnvNAP7+UcMkEAOv+Wh9P7qCZvw19iSpZvDgQB9lmWZoqTTpqBNrCOeK7IsWHjPLn
-	 32kWbvIzCHYN1wnLneCZW53d5VQA3v83vsaNf2fk=
+	b=zXf95IrIXCUdLE3MbxBv7kLPbQyl1DagHeIJA5ovtc5VwlGMAE9TtpPkVdOA76epX
+	 g0OTxM6Wye3BGUV5N9NY4AQsls+3ujb1RCnTJuk+xPa3w6nJvaqPsADovD0TdcC/VL
+	 e8UT4HZ53Ykr766nnFIE7kUn2IHa5RYUKmvQQRKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lu <chris.lu@mediatek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Harini T <harini.t@amd.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 438/565] Bluetooth: btusb: Add new VID/PID 13d3/3633 for MT7922
-Date: Tue, 11 Nov 2025 09:44:54 +0900
-Message-ID: <20251111004536.735457747@linuxfoundation.org>
+Subject: [PATCH 6.17 725/849] rtc: zynqmp: Restore alarm functionality after kexec transition
+Date: Tue, 11 Nov 2025 09:44:55 +0900
+Message-ID: <20251111004553.962307117@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Lu <chris.lu@mediatek.com>
+From: Harini T <harini.t@amd.com>
 
-[ Upstream commit 70cd38d22d4659ca8133c7124528c90678215dda ]
+[ Upstream commit e22f4d1321e0055065f274e20bf6d1dbf4b500f5 ]
 
-Add VID 13d3 & PID 3633 for MediaTek MT7922 USB Bluetooth chip.
+During kexec reboots, RTC alarms that are fired during the kernel
+transition experience delayed execution. The new kernel would eventually
+honor these alarms, but the interrupt handlers would only execute after
+the driver probe is completed rather than at the intended alarm time.
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below.
+This is because pending alarm interrupt status from the previous kernel
+is not properly cleared during driver initialization, causing timing
+discrepancies in alarm delivery.
 
-T:  Bus=06 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=13d3 ProdID=3633 Rev= 1.00
-S:  Manufacturer=MediaTek Inc.
-S:  Product=Wireless_Device
-S:  SerialNumber=000000000
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
-A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
-I:  If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
-E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
+To ensure precise alarm timing across kexec transitions, enhance the
+probe function to:
+1. Clear any pending alarm interrupt status from previous boot.
+2. Detect existing valid alarms and preserve their state.
+3. Re-enable alarm interrupts for future alarms.
 
-Signed-off-by: Chris Lu <chris.lu@mediatek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Harini T <harini.t@amd.com>
+Link: https://lore.kernel.org/r/20250730142110.2354507-1-harini.t@amd.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/rtc/rtc-zynqmp.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index cf5b2a617c771..a734c5135a8be 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -689,6 +689,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3615), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x13d3, 0x3633), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x35f5, 0x7922), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
+diff --git a/drivers/rtc/rtc-zynqmp.c b/drivers/rtc/rtc-zynqmp.c
+index f39102b66eac2..3baa2b481d9f2 100644
+--- a/drivers/rtc/rtc-zynqmp.c
++++ b/drivers/rtc/rtc-zynqmp.c
+@@ -277,6 +277,10 @@ static irqreturn_t xlnx_rtc_interrupt(int irq, void *id)
+ static int xlnx_rtc_probe(struct platform_device *pdev)
+ {
+ 	struct xlnx_rtc_dev *xrtcdev;
++	bool is_alarm_set = false;
++	u32 pending_alrm_irq;
++	u32 current_time;
++	u32 alarm_time;
+ 	int ret;
  
+ 	xrtcdev = devm_kzalloc(&pdev->dev, sizeof(*xrtcdev), GFP_KERNEL);
+@@ -296,6 +300,17 @@ static int xlnx_rtc_probe(struct platform_device *pdev)
+ 	if (IS_ERR(xrtcdev->reg_base))
+ 		return PTR_ERR(xrtcdev->reg_base);
+ 
++	/* Clear any pending alarm interrupts from previous kernel/boot */
++	pending_alrm_irq = readl(xrtcdev->reg_base + RTC_INT_STS) & RTC_INT_ALRM;
++	if (pending_alrm_irq)
++		writel(pending_alrm_irq, xrtcdev->reg_base + RTC_INT_STS);
++
++	/* Check if a valid alarm is already set from previous kernel/boot */
++	alarm_time = readl(xrtcdev->reg_base + RTC_ALRM);
++	current_time = readl(xrtcdev->reg_base + RTC_CUR_TM);
++	if (alarm_time > current_time && alarm_time != 0)
++		is_alarm_set = true;
++
+ 	xrtcdev->alarm_irq = platform_get_irq_byname(pdev, "alarm");
+ 	if (xrtcdev->alarm_irq < 0)
+ 		return xrtcdev->alarm_irq;
+@@ -337,6 +352,10 @@ static int xlnx_rtc_probe(struct platform_device *pdev)
+ 
+ 	xlnx_init_rtc(xrtcdev);
+ 
++	/* Re-enable alarm interrupt if a valid alarm was found */
++	if (is_alarm_set)
++		writel(RTC_INT_ALRM, xrtcdev->reg_base + RTC_INT_EN);
++
+ 	device_init_wakeup(&pdev->dev, true);
+ 
+ 	return devm_rtc_register_device(xrtcdev->rtc);
 -- 
 2.51.0
 
