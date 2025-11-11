@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-193824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5535DC4A9A1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC460C4AFB5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1160A4F88E3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453341899FA2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B7B343D66;
-	Tue, 11 Nov 2025 01:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F4A30103C;
+	Tue, 11 Nov 2025 01:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHCMRd0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfQhgZex"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4353358C3;
-	Tue, 11 Nov 2025 01:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2169530BF77;
+	Tue, 11 Nov 2025 01:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824094; cv=none; b=rXwLnSkCmfnQxmKULvH88rmxTsCiTNWiG8pqrQhUog6oayNlLHY8xYP5e5qNH9g8+esWHB7OdrKCazf/rwt2ZEeV24/oBXkyB7A9OMTJWUXS+iXD9tQb5T3Ye9gMx9FzqdSwF125q2FZpVmRwZdAApxLlu0iNk/AQ9NCW8RGFLI=
+	t=1762825229; cv=none; b=fks4BxkIXgdauRpiKgDwUsHpvZKdGK6VhAgRdnOVF/pW7+Pfw7DPQboQVpEj7LA7JHItKYEhODUwpeDOAolviSy06pSSBeLV0n3jLvP4P1a/XUJSAUDaj5LaYHhXtU1Zpej9WkPwU5d1d9uhRvVJSnDTa0ItbsQFfNTJgCWPzBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824094; c=relaxed/simple;
-	bh=0ZWQ5h+KfAL5sNyNIce/FyTqf1En0+xE9WhPSyThy5s=;
+	s=arc-20240116; t=1762825229; c=relaxed/simple;
+	bh=XeNasxOsVlQaBr4tPumGqqr4VqXvXbwxBcW69IEysLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWBlMuTrZMaCImhZl+TZUWc3ws2V4Dd6iZa8VlSQkM6OzIhW/dp0FQd3SfA5EzwNRjmgNyk4YP/ZBxZFIzj1R5118WB4r02Sgdh9b4uc3eP+zXKLYzhQMCQ8Qiaj8km/ZLiAB4Ix7WU9P4CvempliYdqqdoO6I1cP01IIvReLNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHCMRd0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5986BC4CEF5;
-	Tue, 11 Nov 2025 01:21:34 +0000 (UTC)
+	 MIME-Version; b=FlDa4U51P2v0i6vEr1Y2AY24TRYjQsj+hUAtG60pksrEGqQ5f3u7gd0xBFi4aoLfi9ObAFOATLQnlRAlNmDRXpCadGMK/q+Z7KUuDzdpI3/rMtIoU0v9YZ1RSWB5CsIqYYKv5D1noBSdsyi+X3QDUh4DwRfgOmvCNyHL/6X6X9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfQhgZex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7C1C116B1;
+	Tue, 11 Nov 2025 01:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824094;
-	bh=0ZWQ5h+KfAL5sNyNIce/FyTqf1En0+xE9WhPSyThy5s=;
+	s=korg; t=1762825229;
+	bh=XeNasxOsVlQaBr4tPumGqqr4VqXvXbwxBcW69IEysLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vHCMRd0IS/Fn4fjGvBnNq13yBKl1VJoo5GIP0n5j6bu0oq/Kreb2DCyTm2xUxQn4F
-	 qgOPOgWAkTMoFwODUtoADAMnQSDsd+VGUTysJlF/M6KhU9FW4mD/+hIWWGN0D2UoJA
-	 0BY+GyHegvbiYUJXDBiejMydYAtNBD+51IsBPlhQ=
+	b=RfQhgZex7AMgIZK49Gm7VZTSRx2iTFLBqW4aFfFJAIT5FXEQfMQ6ofEZbId+APOny
+	 qGsTISODRmPIMf2QbHxGYE7TO+UQ60Jh/TUs8dfNEkxI4cEx4sCaCPmfgpglDxs8DZ
+	 ghNGwZGCsHsWw5wLWT6RNxCTGtf2uGgcxpCclbKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Nielsen <nick.kainielsen@free.fr>,
-	grm1 <grm1@mailbox.org>,
-	Niklas Neronin <niklas.neronin@linux.intel.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 386/565] usb: xhci-pci: add support for hosts with zero USB3 ports
+Subject: [PATCH 6.17 672/849] page_pool: Clamp pool size to max 16K pages
 Date: Tue, 11 Nov 2025 09:44:02 +0900
-Message-ID: <20251111004535.555528802@linuxfoundation.org>
+Message-ID: <20251111004552.667513831@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Neronin <niklas.neronin@linux.intel.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-[ Upstream commit 719de070f764e079cdcb4ddeeb5b19b3ddddf9c1 ]
+[ Upstream commit a1b501a8c6a87c9265fd03bd004035199e2e8128 ]
 
-Add xhci support for PCI hosts that have zero USB3 ports.
-Avoid creating a shared Host Controller Driver (HCD) when there is only
-one root hub. Additionally, all references to 'xhci->shared_hcd' are now
-checked before use.
+page_pool_init() returns E2BIG when the page_pool size goes above 32K
+pages. As some drivers are configuring the page_pool size according to
+the MTU and ring size, there are cases where this limit is exceeded and
+the queue creation fails.
 
-Only xhci-pci.c requires modification to accommodate this change, as the
-xhci core already supports configurations with zero USB3 ports. This
-capability was introduced when xHCI Platform and MediaTek added support
-for zero USB3 ports.
+The page_pool size doesn't have to cover a full queue, especially for
+larger ring size. So clamp the size instead of returning an error. Do
+this in the core to avoid having each driver do the clamping.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220181
-Tested-by: Nick Nielsen <nick.kainielsen@free.fr>
-Tested-by: grm1 <grm1@mailbox.org>
-Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250917210726.97100-4-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The current limit was deemed to high [1] so it was reduced to 16K to avoid
+page waste.
+
+[1] https://lore.kernel.org/all/1758532715-820422-3-git-send-email-tariqt@nvidia.com/
+
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250926131605.2276734-2-dtatulea@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-pci.c | 42 +++++++++++++++++++++----------------
- 1 file changed, 24 insertions(+), 18 deletions(-)
+ net/core/page_pool.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index 234efb9731b2c..933d9fdd9516b 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -616,7 +616,7 @@ int xhci_pci_common_probe(struct pci_dev *dev, const struct pci_device_id *id)
- {
- 	int retval;
- 	struct xhci_hcd *xhci;
--	struct usb_hcd *hcd;
-+	struct usb_hcd *hcd, *usb3_hcd;
- 	struct reset_control *reset;
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index e224d2145eed9..1a5edec485f14 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -211,11 +211,7 @@ static int page_pool_init(struct page_pool *pool,
+ 		return -EINVAL;
  
- 	reset = devm_reset_control_get_optional_exclusive(&dev->dev, NULL);
-@@ -642,26 +642,32 @@ int xhci_pci_common_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	hcd = dev_get_drvdata(&dev->dev);
- 	xhci = hcd_to_xhci(hcd);
- 	xhci->reset = reset;
--	xhci->shared_hcd = usb_create_shared_hcd(&xhci_pci_hc_driver, &dev->dev,
--						 pci_name(dev), hcd);
--	if (!xhci->shared_hcd) {
--		retval = -ENOMEM;
--		goto dealloc_usb2_hcd;
--	}
+ 	if (pool->p.pool_size)
+-		ring_qsize = pool->p.pool_size;
+-
+-	/* Sanity limit mem that can be pinned down */
+-	if (ring_qsize > 32768)
+-		return -E2BIG;
++		ring_qsize = min(pool->p.pool_size, 16384);
  
--	retval = xhci_ext_cap_init(xhci);
--	if (retval)
--		goto put_usb3_hcd;
-+	xhci->allow_single_roothub = 1;
-+	if (!xhci_has_one_roothub(xhci)) {
-+		xhci->shared_hcd = usb_create_shared_hcd(&xhci_pci_hc_driver, &dev->dev,
-+							 pci_name(dev), hcd);
-+		if (!xhci->shared_hcd) {
-+			retval = -ENOMEM;
-+			goto dealloc_usb2_hcd;
-+		}
- 
--	retval = usb_add_hcd(xhci->shared_hcd, dev->irq,
--			IRQF_SHARED);
--	if (retval)
--		goto put_usb3_hcd;
--	/* Roothub already marked as USB 3.0 speed */
-+		retval = xhci_ext_cap_init(xhci);
-+		if (retval)
-+			goto put_usb3_hcd;
-+
-+		retval = usb_add_hcd(xhci->shared_hcd, dev->irq, IRQF_SHARED);
-+		if (retval)
-+			goto put_usb3_hcd;
-+	} else {
-+		retval = xhci_ext_cap_init(xhci);
-+		if (retval)
-+			goto dealloc_usb2_hcd;
-+	}
- 
--	if (!(xhci->quirks & XHCI_BROKEN_STREAMS) &&
--			HCC_MAX_PSA(xhci->hcc_params) >= 4)
--		xhci->shared_hcd->can_do_streams = 1;
-+	usb3_hcd = xhci_get_usb3_hcd(xhci);
-+	if (usb3_hcd && !(xhci->quirks & XHCI_BROKEN_STREAMS) && HCC_MAX_PSA(xhci->hcc_params) >= 4)
-+		usb3_hcd->can_do_streams = 1;
- 
- 	/* USB-2 and USB-3 roothubs initialized, allow runtime pm suspend */
- 	pm_runtime_put_noidle(&dev->dev);
+ 	/* DMA direction is either DMA_FROM_DEVICE or DMA_BIDIRECTIONAL.
+ 	 * DMA_BIDIRECTIONAL is for allowing page used for DMA sending,
 -- 
 2.51.0
 
