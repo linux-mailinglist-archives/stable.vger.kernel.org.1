@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-193459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39DA1C4A5A8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E46DC4A5B7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF4F41894787
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:16:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD460189027D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFC32EA481;
-	Tue, 11 Nov 2025 01:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292B2347BDB;
+	Tue, 11 Nov 2025 01:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrrsfqE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Icfci42e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9C734A3A7;
-	Tue, 11 Nov 2025 01:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D958E2EB5BD;
+	Tue, 11 Nov 2025 01:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823234; cv=none; b=rPIvNss4478BKPz0LjQKYNmgvBoZLnK7U6i6t472UcPplj0cbkRs75HQDDSzIYQu1wHD1vstR5TKyP7hxa9Ve0uC+qfeUNHXavkgTrHwZnIp2Hl6zOua1z1vVN/w/Ad3Ou9hCV4FHSHjmevp7yAPV4o6H6Ln7AobCRf19KQQmIE=
+	t=1762823240; cv=none; b=QJdSJqtiTcFk00/SBnPeNztu3uyWa+Fon/I49aAZFjLEG796PebGhN958KGEvjWEeeFLMb2NEZ8TJT3sCbSLEY7GUTxcNW4YRmoCazrBq/InwE/0TKGMD3Ev8kBZRZWlCKV5ha9+ucjcTlgl38NqLr4MMxx4ynZX9one8XpJzPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823234; c=relaxed/simple;
-	bh=0xCZPVD8EQyt4u83QDzNR+sHIomW2r9LD1byuRG/NpE=;
+	s=arc-20240116; t=1762823240; c=relaxed/simple;
+	bh=DmMf6HYXlNU8o+rcT4iVzcTF8Q4CoA+uSBBmt2GSU7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLjG5mBZPWN+3CFOz+MuZ2IN7yqYX0UpwZugsyEUQld2JbQBVLZ3hBUylg8kc6KX0jl5c4IR53nnubKbVvQIpH/ceNufgYm+Rl/tOU/SyxT5dHHHMgTmOODojKWzWmkxq2kx6XJMZhB9FLYp2wm1gfKlF4r7fjnesYRiSAU+jBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrrsfqE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8FFC113D0;
-	Tue, 11 Nov 2025 01:07:13 +0000 (UTC)
+	 MIME-Version; b=b4sfd30ICLQnfCOFbqNG3o8MGQ+qzA0K9QQRjfFB0Rh2UV8Zf8yvIe17e1+r9z3/RFEL/IUS9Q6XchcfL4IQ0l/xjuuu3HttJG69TDe65VE+WCMsiSW5FHPvOhIJIHWmYLpSuaQz35W225eNLJN4wjuMOMn4aGYoRRhqGJ5wsYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Icfci42e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7717AC19421;
+	Tue, 11 Nov 2025 01:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823234;
-	bh=0xCZPVD8EQyt4u83QDzNR+sHIomW2r9LD1byuRG/NpE=;
+	s=korg; t=1762823240;
+	bh=DmMf6HYXlNU8o+rcT4iVzcTF8Q4CoA+uSBBmt2GSU7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vrrsfqE7C2+zwpvZBVve1Zr3HlFI3iJjc59SQ8JU+wkMHwe05PEBjvIqvLZU0MQ7M
-	 lAyUNW7UcEUcFeI8uFPZOB1ciCEXaKIZGMqVamqSQQpXjhH+PvbFGgIH5qLL4pHNGw
-	 3ckh/BHVoaB9v1uAT2zFsh5gGRmyb7VO3gkmH2fw=
+	b=Icfci42eLHt+ApBiOWrctIMtpWXC/qa3tBw0BEM0WqsX7r6pmvZKSiA3X6pj9Nob8
+	 LZnrfCb192r0EggpUiaPVHlFrcSBQq11aJhUA7QU4I4A/v1sG2eINkMKF01EZo4XpJ
+	 0d7HTMOMxRg9WDhECW+DtZBzzKZZEEluZrIYtJM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parth Pancholi <parth.pancholi@toradex.com>,
-	Jayesh Choudhary <j-choudhary@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
 	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 202/565] drm/bridge: cdns-dsi: Dont fail on MIPI_DSI_MODE_VIDEO_BURST
-Date: Tue, 11 Nov 2025 09:40:58 +0900
-Message-ID: <20251111004531.470616268@linuxfoundation.org>
+Subject: [PATCH 6.12 203/565] drm/tidss: Set crtc modesetting parameters with adjusted mode
+Date: Tue, 11 Nov 2025 09:40:59 +0900
+Message-ID: <20251111004531.493464041@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -68,42 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Jayesh Choudhary <j-choudhary@ti.com>
 
-[ Upstream commit 7070f55f294745c5a3c033623b76309f3512be67 ]
+[ Upstream commit cfb29225db20c56432a8525366321c0c09edfb2e ]
 
-While the cdns-dsi does not support DSI burst mode, the burst mode is
-essentially DSI event mode with more versatile clocking and timings.
-Thus cdns-dsi doesn't need to fail if the DSI peripheral driver requests
-MIPI_DSI_MODE_VIDEO_BURST.
+TIDSS uses crtc_* fields to propagate its registers and set the
+clock rates. So set the CRTC modesetting timing parameters with
+the adjusted mode when needed, to set correct values.
 
-In my particular use case, this allows the use of ti-sn65dsi83 driver.
-
-Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
-Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-15-e61cc06074c2@ideasonboard.com
+Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Link: https://lore.kernel.org/r/20250624080402.302526-1-j-choudhary@ti.com
 Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/gpu/drm/tidss/tidss_crtc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-index faa0bdfd19370..ddfbb2009c8d3 100644
---- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-@@ -959,10 +959,6 @@ static int cdns_dsi_attach(struct mipi_dsi_host *host,
- 	if (output->dev)
- 		return -EBUSY;
+diff --git a/drivers/gpu/drm/tidss/tidss_crtc.c b/drivers/gpu/drm/tidss/tidss_crtc.c
+index 1604eca265ef6..36c22d8608527 100644
+--- a/drivers/gpu/drm/tidss/tidss_crtc.c
++++ b/drivers/gpu/drm/tidss/tidss_crtc.c
+@@ -91,7 +91,7 @@ static int tidss_crtc_atomic_check(struct drm_crtc *crtc,
+ 	struct dispc_device *dispc = tidss->dispc;
+ 	struct tidss_crtc *tcrtc = to_tidss_crtc(crtc);
+ 	u32 hw_videoport = tcrtc->hw_videoport;
+-	const struct drm_display_mode *mode;
++	struct drm_display_mode *mode;
+ 	enum drm_mode_status ok;
  
--	/* We do not support burst mode yet. */
--	if (dev->mode_flags & MIPI_DSI_MODE_VIDEO_BURST)
--		return -ENOTSUPP;
--
- 	/*
- 	 * The host <-> device link might be described using an OF-graph
- 	 * representation, in this case we extract the device of_node from
+ 	dev_dbg(ddev->dev, "%s\n", __func__);
+@@ -108,6 +108,9 @@ static int tidss_crtc_atomic_check(struct drm_crtc *crtc,
+ 		return -EINVAL;
+ 	}
+ 
++	if (drm_atomic_crtc_needs_modeset(crtc_state))
++		drm_mode_set_crtcinfo(mode, 0);
++
+ 	return dispc_vp_bus_check(dispc, hw_videoport, crtc_state);
+ }
+ 
 -- 
 2.51.0
 
