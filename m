@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-194422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DB60C4B28F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:04:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1587AC4AE0E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03D4E3B7506
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84F2718975F7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9769308F17;
-	Tue, 11 Nov 2025 01:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72ABC33B955;
+	Tue, 11 Nov 2025 01:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OPdewllW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qw+NeTNQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AFD3081CD;
-	Tue, 11 Nov 2025 01:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C893339B58;
+	Tue, 11 Nov 2025 01:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825566; cv=none; b=B7T1uIGcbLBlAaVvlku/SCWHGfoKQAFUePOGCi8YRsANEBXXdX06MKromfv3miEbp03Ioprd9X5CM0o7a3N+N8X0xkunyjFcWeITVrdhzNHJKQsqNrfIryXfROL7QDTCaUo4q1shxSx65XMKv6ccMhwvdlSe4c0sy8T6KpGRCT8=
+	t=1762824987; cv=none; b=UAC+i1OUqQRcB9O5bM+UKzXWVeeZAnyqZrja18hrc8InBJWTVa73Y3ScLnY8yWgtjwC7gaAvU4RBfdz4oATb47XkwNHDNPEyARv7U6RuGIWoF7dt7z6zfnkXajldC7CQgLFEu/BmiVEGPQOQVsLrBEBstBkPz0mHwvMi/OmquW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825566; c=relaxed/simple;
-	bh=IlZ/wUW6qedHS68arpkeMRJR/KC7r9S/e7y80S3Lz/g=;
+	s=arc-20240116; t=1762824987; c=relaxed/simple;
+	bh=z53kIwrqqJJzbx/u36MA/Dv1zPV2tLQ7A/2O/KchetI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pSy72FIt/Gx4vYlCyWLql6L3oY8F20r9nob88T7pqpKRFocMe/IH77trZltB/bCbOitH1gemuEtsoYCub3qqBVpiynn3kHWylU7GGpHTnonoTBZghkHD85NPvSsi5b0Ykynti347hUCEaphv9tfX8FIEq0cb2roqYPmLxuVGs1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OPdewllW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89ADC113D0;
-	Tue, 11 Nov 2025 01:46:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MFiNTLUz2wV1VAW/znUKPsgmCwm3iPRUlJjDPiPEFqSwgKsWwo4VpKhEdUCqS4QuFjnCrk8gLy+BsWRiiIKWgL4MUem1kEoMMkurCV5NPAyhTgYLUrnU4LiCv1ru4tufqjLKY9bkm/fYcu+5AalZQyyOlRvWJjakUDDFi6r+jX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qw+NeTNQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE92BC19421;
+	Tue, 11 Nov 2025 01:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825566;
-	bh=IlZ/wUW6qedHS68arpkeMRJR/KC7r9S/e7y80S3Lz/g=;
+	s=korg; t=1762824987;
+	bh=z53kIwrqqJJzbx/u36MA/Dv1zPV2tLQ7A/2O/KchetI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OPdewllWDit5QTe15N69VT1+1h+F3oHawx42qjn5xscPbviKWcUDvdW7HwBEiL5e3
-	 rxcigh+4CjM8TS7YcOBgTJaaK2MwmWjgFlxX3MZ+o5N5VecR9bUHEY8MZUmS3GZ+Ru
-	 xfO2UfaMaYm2qRxlCldPECE7ySlveBlwBLmmdZrk=
+	b=Qw+NeTNQAhlVM3Qj1fcN4QoO6NK9fb3xRoGxuaEGp+X5yVdzfQyRE1OeJbV6w8JAR
+	 leC7M4uJzAf1RmM9zGhoZMHgCAw5Mzg46QhbpEYakobdUFjlVCROwmiqKTZhKJDYLc
+	 UCmZwCLTQd3BfXpmaHxIXFir1NsW0H1mlQHcUCa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 848/849] drm/amd/display: Fix black screen with HDMI outputs
-Date: Tue, 11 Nov 2025 09:46:58 +0900
-Message-ID: <20251111004556.920246756@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Subject: [PATCH 6.12 563/565] drm/amdgpu: Fix function header names in amdgpu_connectors.c
+Date: Tue, 11 Nov 2025 09:46:59 +0900
+Message-ID: <20251111004539.686378928@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,46 +63,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit fdc93beeadc2439e5e85d056a8fe681dcced09da upstream.
+commit 38ab33dbea594700c8d6cc81eec0a54e95d3eb2f upstream.
 
-[Why & How]
-This fixes the black screen issue on certain APUs with HDMI,
-accompanied by the following messages:
+Align the function headers for `amdgpu_max_hdmi_pixel_clock` and
+`amdgpu_connector_dvi_mode_valid` with the function implementations so
+they match the expected kdoc style.
 
-amdgpu 0000:c4:00.0: amdgpu: [drm] Failed to setup vendor info
-                     frame on connector DP-1: -22
-amdgpu 0000:c4:00.0: [drm] Cannot find any crtc or sizes [drm]
-                     Cannot find any crtc or sizes
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c:1199: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+ * Returns the maximum supported HDMI (TMDS) pixel clock in KHz.
+drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c:1212: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+ * Validates the given display mode on DVI and HDMI connectors.
 
-Fixes: 489f0f600ce2 ("drm/amd/display: Fix DVI-D/HDMI adapters")
-Suggested-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Fixes: 585b2f685c56 ("drm/amdgpu: Respect max pixel clock for HDMI and DVI-D (v2)")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 678c901443a6d2e909e3b51331a20f9d8f84ce82)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_detection.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-@@ -1141,6 +1141,7 @@ static bool detect_link_and_local_sink(s
- 		    !sink->edid_caps.edid_hdmi)
- 			sink->sink_signal = SIGNAL_TYPE_DVI_SINGLE_LINK;
- 		else if (dc_is_dvi_signal(sink->sink_signal) &&
-+			 dc_is_dvi_signal(link->connector_signal) &&
- 			 aud_support->hdmi_audio_native &&
- 			 sink->edid_caps.edid_hdmi)
- 			sink->sink_signal = SIGNAL_TYPE_HDMI_TYPE_A;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
+@@ -1196,7 +1196,10 @@ static void amdgpu_connector_dvi_force(s
+ }
+ 
+ /**
+- * Returns the maximum supported HDMI (TMDS) pixel clock in KHz.
++ * amdgpu_max_hdmi_pixel_clock - Return max supported HDMI (TMDS) pixel clock
++ * @adev: pointer to amdgpu_device
++ *
++ * Return: maximum supported HDMI (TMDS) pixel clock in KHz.
+  */
+ static int amdgpu_max_hdmi_pixel_clock(const struct amdgpu_device *adev)
+ {
+@@ -1209,8 +1212,14 @@ static int amdgpu_max_hdmi_pixel_clock(c
+ }
+ 
+ /**
+- * Validates the given display mode on DVI and HDMI connectors,
+- * including analog signals on DVI-I.
++ * amdgpu_connector_dvi_mode_valid - Validate a mode on DVI/HDMI connectors
++ * @connector: DRM connector to validate the mode on
++ * @mode: display mode to validate
++ *
++ * Validate the given display mode on DVI and HDMI connectors, including
++ * analog signals on DVI-I.
++ *
++ * Return: drm_mode_status indicating whether the mode is valid.
+  */
+ static enum drm_mode_status amdgpu_connector_dvi_mode_valid(struct drm_connector *connector,
+ 					    struct drm_display_mode *mode)
 
 
 
