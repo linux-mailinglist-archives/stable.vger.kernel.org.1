@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-193447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B943DC4A484
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:14:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A65C4A546
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:19:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5CBED34A9CA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:14:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 370141893403
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411C5346FA7;
-	Tue, 11 Nov 2025 01:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243B7347BC3;
+	Tue, 11 Nov 2025 01:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DE7klhsP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auaqCw6y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEB8346E7B;
-	Tue, 11 Nov 2025 01:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44CB346E58;
+	Tue, 11 Nov 2025 01:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823206; cv=none; b=NsAL2ZxnaDDiNLZqyAPZxowM0FNUwdujmZiQRmTmuL1iXCutOUPsjw04kB8IqSRZpIpu5D7GTOKJq8cH4uFuPtuEeIh0Mko83EM5ozEe5iNr/icyx69uNDkvnhkuq3Mor34QsIoBAEjJPFDdPcaCRzY1JGuQ6lB8vdS4H8SVbeE=
+	t=1762823212; cv=none; b=OwFffBDpzrjz8nYQYsvV6Sjg7ePuD6DKAIiVktXLTMsdJT5BzJ0jV2tCtz6mjTzfcuRr9QY7+79Oo+uKqoYyovTioV94+6SnzZ9J41E488aa3m6eaw4If+wOizW28zKXdV1TYVHphui1a+RAOO+G5xRVAR9c4+72CRRShDKCyNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823206; c=relaxed/simple;
-	bh=CbwnMV6J9nnqGJZRUDvCHW18TDyw/qNYyslG/RD/HDc=;
+	s=arc-20240116; t=1762823212; c=relaxed/simple;
+	bh=FMNQxagkNx4aAsnD5Y9YqHBwncNUcji6/lX6wjdRmYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+QuKdpKv//qel7LpJcM2HzETZuembPk7ubm2+vRi9ork1OppdF6waeXqznDpSjiI/Mc1mEaZtmxZjwqWOSy8Y7WYY+HdIeDCf0ytdNS9YjD3B+2E56HRinahVZ+CBA/JVwodqfUkM/QVf1eA9PcoYBrLG1DGhnrrTzmejsEwdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DE7klhsP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBD1C2BC9E;
-	Tue, 11 Nov 2025 01:06:45 +0000 (UTC)
+	 MIME-Version; b=NPYQ9sz4zyU2tbXsIM7M5fmxOiutktPdjIthoueP2vgtIoOa7hqZ9kfnhqYyP68+r3RyuX5O0cob6M4lMMHOiyGmYFOxqID8gkJoP/Gjtub2hqv9OFBXZHD8xIX/Szw8iyQWt4TmvrZ8Jt1SEIzVbzVyJ4XP+f6ngRt0CYvEEP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auaqCw6y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0A1C116B1;
+	Tue, 11 Nov 2025 01:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823205;
-	bh=CbwnMV6J9nnqGJZRUDvCHW18TDyw/qNYyslG/RD/HDc=;
+	s=korg; t=1762823212;
+	bh=FMNQxagkNx4aAsnD5Y9YqHBwncNUcji6/lX6wjdRmYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DE7klhsPAul6TSigKfQv6LoVF/MuHG0gNJUAyplqzBpSSn2SoIZ4DcXnCa0pN5IQR
-	 ZiUCk/uTrQKTDVXrWRXWx5gIN+bfIwVLTidWq/WwVeiwici7XImxVpMs5s6CN1q76U
-	 jgOUAlNZX3QXkG5iK1pxwZ6bkr4wjtU0s/0s4z7U=
+	b=auaqCw6y3EOOQv1EMzWdTsdghaG5Atq+PK13zYfVj9ag2Ao9WBtWYxERfcVvk2HWW
+	 ZYkaWZML2ieEi01co9Bng3MIGwakDc/e7HzVMuAg7ZN/z0025OzOz3xcaVr+sTcmB5
+	 X2u3z5k5hA5zu/7QcbvFcXNH4NyOI+bFQLBTGTcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mangesh Gadre <Mangesh.Gadre@amd.com>,
-	"Stanley.Yang" <Stanley.Yang@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
+	Yunxiang Li <Yunxiang.Li@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 253/849] drm/amdgpu: Initialize jpeg v5_0_1 ras function
-Date: Tue, 11 Nov 2025 09:37:03 +0900
-Message-ID: <20251111004542.545268313@linuxfoundation.org>
+Subject: [PATCH 6.17 254/849] drm/amdgpu: skip mgpu fan boost for multi-vf
+Date: Tue, 11 Nov 2025 09:37:04 +0900
+Message-ID: <20251111004542.569086454@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,40 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mangesh Gadre <Mangesh.Gadre@amd.com>
+From: Yunxiang Li <Yunxiang.Li@amd.com>
 
-[ Upstream commit 01fa9758c8498d8930df56eca36c88ba3e9493d4 ]
+[ Upstream commit ba5e322b2617157edb757055252a33587b6729e0 ]
 
-Initialize jpeg v5_0_1 ras function
+On multi-vf setup if the VM have two vf assigned, perhaps from two
+different gpus, mgpu fan boost will fail.
 
-Signed-off-by: Mangesh Gadre <Mangesh.Gadre@amd.com>
-Reviewed-by: Stanley.Yang <Stanley.Yang@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
-index 03ec4b741d194..8d74455dab1e2 100644
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
-@@ -196,6 +196,14 @@ static int jpeg_v5_0_1_sw_init(struct amdgpu_ip_block *ip_block)
- 		}
- 	}
- 
-+	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__JPEG)) {
-+		r = amdgpu_jpeg_ras_sw_init(adev);
-+		if (r) {
-+			dev_err(adev->dev, "Failed to initialize jpeg ras block!\n");
-+			return r;
-+		}
-+	}
-+
- 	r = amdgpu_jpeg_reg_dump_init(adev, jpeg_reg_list_5_0_1, ARRAY_SIZE(jpeg_reg_list_5_0_1));
- 	if (r)
- 		return r;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index dfa68cb411966..097ceee79ece6 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3389,7 +3389,7 @@ static int amdgpu_device_enable_mgpu_fan_boost(void)
+ 	for (i = 0; i < mgpu_info.num_dgpu; i++) {
+ 		gpu_ins = &(mgpu_info.gpu_ins[i]);
+ 		adev = gpu_ins->adev;
+-		if (!(adev->flags & AMD_IS_APU) &&
++		if (!(adev->flags & AMD_IS_APU || amdgpu_sriov_multi_vf_mode(adev)) &&
+ 		    !gpu_ins->mgpu_fan_enabled) {
+ 			ret = amdgpu_dpm_enable_mgpu_fan_boost(adev);
+ 			if (ret)
 -- 
 2.51.0
 
