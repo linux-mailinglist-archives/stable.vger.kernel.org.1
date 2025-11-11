@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-193857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EBBEC4AA5A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C7BC4AF94
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B90DF4F4D7F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 195B63BB593
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157D230F7F1;
-	Tue, 11 Nov 2025 01:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF9E2F25F1;
+	Tue, 11 Nov 2025 01:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2plKmpu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loAf+EWi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37BB34676D;
-	Tue, 11 Nov 2025 01:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0442ED17A;
+	Tue, 11 Nov 2025 01:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824169; cv=none; b=KtFNLW9qvE7hrQ4+c1lgfuvG8cwgqv89iaHdvbvI+oJOnIlWWfULZQFz2iGcjdrSXHIKbZgzWaQlI93iRhpxtrM2q5cjEF4G1STrAgWPgxfikDTkLTAi/Zz/hG5LudRmtBZFU7n+kDJQT0Ye6krtKVeW+Ci3lencJClN/MG9qBk=
+	t=1762825075; cv=none; b=XFO6OQzHS4zof6h2wryY4PfI6VYwdbG77iOKhvaUn3qOM9mD9BAOaXCMUD2tO+fs4w8yZMG2s/SvO+yi33vNos5oc4OzRZwsbeKQ5xQtxniG4Ie80e8Wu2OepalflWc9Yb+nQrly9NxSUVZUej2BF2IaAZBo+TivOEZqU+57pCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824169; c=relaxed/simple;
-	bh=U5HNWWi5mIIyUqCtiaimQKo99BLl+miY0KeKWCw7hw8=;
+	s=arc-20240116; t=1762825075; c=relaxed/simple;
+	bh=cssEvAyJnjQqbUG90ogGV+vZDzC2VXVtH6AEw8A7hJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T2i20J+XZshCu+DQrPwEE1Q/2HdD0JA3TlB93c+AZXZow22AuI/aewRWvbSUcCsmOwlf4tD/rWSomB3ZXaM4sSsSBWsBA+EzC/Gi/IorwaYhoxmq0foSKhPYsb7c7+iArtXGv+EfhCrAVyR6iP6MyvC8eDaZ3kvRRoha3nfT4HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2plKmpu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E255EC4CEF5;
-	Tue, 11 Nov 2025 01:22:48 +0000 (UTC)
+	 MIME-Version; b=Eq3ZQdLHxJTzMoTi66XBWUlVyhUms3m6uEfJak9zgDF1ze4QxfrsHGpRoedR15IHkwnaroxj4MuybWPf9AHSkA3gNdy6ls7UmuX1yNiVDciMeE03SmdoHm0YwePEIbaBi71EhWzDtoyM497F2irM9/IfmWiU0AXgS+zZCG4s8fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loAf+EWi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9BCC116B1;
+	Tue, 11 Nov 2025 01:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824169;
-	bh=U5HNWWi5mIIyUqCtiaimQKo99BLl+miY0KeKWCw7hw8=;
+	s=korg; t=1762825075;
+	bh=cssEvAyJnjQqbUG90ogGV+vZDzC2VXVtH6AEw8A7hJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L2plKmpu45l1DrkqBw/kWo3hmXhJ6v0L+eMurMI31EW0jFv+Zil7+OCD//oebP7nF
-	 pRlvAAPCC+8I4mUgSMWLzssBu8/PrKfy8totP64YBp7sYoWL8GFaGNaMfW3CmwlW8F
-	 rBNMePe9KTlOVSp6X8ip6xEgK5SdciwkukvV4nSk=
+	b=loAf+EWilwwtTpheFF1PHK3D2795NIF66HG0kFMCwp24V43mWFlhWE39/u0a/yeGa
+	 5bmGzuTgE0/gYuQJr0tmes1GZFTHly3gntWm0MG84NqNHbKlTk03PGHQHZZEkeY9YC
+	 0Px7hU0svboyeKIFGEDuw9Y5quhl7dA+Jie/xX18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AceLan Kao <acelan.kao@canonical.com>,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Denis Benato <benato.denis96@gmail.com>,
-	=?UTF-8?q?Merthan=20Karaka=C5=9F?= <m3rthn.k@gmail.com>,
-	Eric Naim <dnaim@cachyos.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 363/565] drm/amd: Avoid evicting resources at S5
+Subject: [PATCH 6.17 649/849] ASoC: stm32: sai: manage context in set_sysclk callback
 Date: Tue, 11 Nov 2025 09:43:39 +0900
-Message-ID: <20251111004535.033781019@linuxfoundation.org>
+Message-ID: <20251111004552.117372565@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,50 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Olivier Moysan <olivier.moysan@foss.st.com>
 
-[ Upstream commit 531df041f2a5296174abd8292d298eb62fe1ea97 ]
+[ Upstream commit 27fa1a8b2803dfd88c39f03b0969c55f667cdc43 ]
 
-Normally resources are evicted on dGPUs at suspend or hibernate and
-on APUs at hibernate.  These steps are unnecessary when using the S4
-callbacks to put the system into S5.
+The mclk direction now needs to be specified in endpoint node with
+"system-clock-direction-out" property. However some calls to the
+set_sysclk callback, related to CPU DAI clock, result in unbalanced
+calls to clock API.
+The set_sysclk callback in STM32 SAI driver is intended only for mclk
+management. So it is relevant to ensure that calls to set_sysclk are
+related to mclk only.
+Since the master clock is handled only at runtime, skip the calls to
+set_sysclk in the initialization phase.
 
-Cc: AceLan Kao <acelan.kao@canonical.com>
-Cc: Kai-Heng Feng <kaihengf@nvidia.com>
-Cc: Mark Pearson <mpearson-lenovo@squebb.ca>
-Cc: Denis Benato <benato.denis96@gmail.com>
-Cc: Merthan Karakaş <m3rthn.k@gmail.com>
-Tested-by: Eric Naim <dnaim@cachyos.org>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20250916123118.84175-1-olivier.moysan@foss.st.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/stm/stm32_sai_sub.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 7ff81bd1ec200..7a8a53fbe918c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4731,6 +4731,10 @@ static int amdgpu_device_evict_resources(struct amdgpu_device *adev)
- 	if ((adev->in_s3 || adev->in_s0ix) && (adev->flags & AMD_IS_APU))
- 		return 0;
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index 463a2b7d023b9..0ae1eae2a59e2 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -672,6 +672,14 @@ static int stm32_sai_set_sysclk(struct snd_soc_dai *cpu_dai,
+ 	struct stm32_sai_sub_data *sai = snd_soc_dai_get_drvdata(cpu_dai);
+ 	int ret;
  
-+	/* No need to evict when going to S5 through S4 callbacks */
-+	if (system_state == SYSTEM_POWER_OFF)
++	/*
++	 * The mclk rate is determined at runtime from the audio stream rate.
++	 * Skip calls to the set_sysclk callback that are not relevant during the
++	 * initialization phase.
++	 */
++	if (!snd_soc_card_is_instantiated(cpu_dai->component->card))
 +		return 0;
 +
- 	ret = amdgpu_ttm_evict_resources(adev, TTM_PL_VRAM);
- 	if (ret)
- 		DRM_WARN("evicting device resources failed\n");
+ 	if (dir == SND_SOC_CLOCK_OUT && sai->sai_mclk) {
+ 		ret = stm32_sai_sub_reg_up(sai, STM_SAI_CR1_REGX,
+ 					   SAI_XCR1_NODIV,
 -- 
 2.51.0
 
