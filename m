@@ -1,230 +1,228 @@
-Return-Path: <stable+bounces-194450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2929CC4C657
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1A3C4C658
 	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 09:28:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3CCA3BD100
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 08:19:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2FB854F9868
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 08:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4E82DC335;
-	Tue, 11 Nov 2025 08:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3E813A3F7;
+	Tue, 11 Nov 2025 08:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+L3Fe9p"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="qkoA4HLX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF608A944;
-	Tue, 11 Nov 2025 08:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4B0A944
+	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 08:19:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762849172; cv=none; b=bmG8ZqTOAFGOtHeexalIMvI3lNTyJBuSA2vcPyFVjI3ho8d0VDd2BoaYraMEckNCw06zsIlkI2Ac1+ffKdP1+c1mlDloCBMchxQS+IgCOc8YlGPuluJzDNc1MCDnXcDSEr2A3jySVw9aj8owp9im+WxhsCczY8G6PFkqE3k27oU=
+	t=1762849190; cv=none; b=pc04Ri6Tg3JP5VTNsecbGjqBh3HIzWHEavXmpChkiZrHzmN658SqyOtERTDlBBBCl6N24CIqbxLH3Wmo47FiPT5vHG8DnCUJy5AkWBLz28fGQsx8tSWQmF5C7mZKI58hPOIA3ChOC4UANLPP/H/2FELQbThhYE+DfJxLTNX4NGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762849172; c=relaxed/simple;
-	bh=VstIjK1vfnpN7gjRmI8dp01MjG9QpTrz0bVPQw+b3VU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EG8nAsfVpUaTwNCUJzX+4nG1bKfoQ+dyU36ht9WEl7iQSBHYOtMyUUSej9jmqzckTyaw4Vs14W3EhPtwKvKxBEnZ+o6sSv4W9iQ7OycgcFjNRYqzOcNI7XUK1Z/dP9HoznQGcMZPmLQUvX4gAkPoC+RoHqpbyygoNVYbyGY6Mf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+L3Fe9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE8BC19423;
-	Tue, 11 Nov 2025 08:19:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762849171;
-	bh=VstIjK1vfnpN7gjRmI8dp01MjG9QpTrz0bVPQw+b3VU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=a+L3Fe9pxBPaiamQhdm4lNYcibp3HHiPit3IntdyKfPq3efKSDEXdR/myFYriVM7h
-	 2db9dgrICZ2s7FqFF6m2snCIbTcImEhP4sWEpY1DspRRgRdG0hEEm/soA+EgCcSW1h
-	 G9Wekk6tMFakRC9/BvaA7OlKQBOfM7QD/s2/EsTgtWnltCqdjiL5J/0d9WtM77EiYm
-	 xx8lvh4Etx51gd1YxfsJ3tZs4M2hWh3uMBVl8ZvilqKGyrs25RdV/2f07g0zgnbLYR
-	 u/ab6rkP6WBQYapqxeQFIlqAqc8AcLyvQCFlqwwI7G5ffCTtrC41iICedumfZTm8DZ
-	 UR+Lqx46UC2Eg==
-Message-ID: <31caf9ecda9335a4377f383404b2609a24c8caeb.camel@kernel.org>
-Subject: Re: [PATCH net 6/6] selftests: mptcp: join: properly kill
- background tasks
-From: Geliang Tang <geliang@kernel.org>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, Mat Martineau
- <martineau@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan
- <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Tue, 11 Nov 2025 16:19:25 +0800
-In-Reply-To: <20251110-net-mptcp-sft-join-unstable-v1-6-a4332c714e10@kernel.org>
-References: 
-	<20251110-net-mptcp-sft-join-unstable-v1-0-a4332c714e10@kernel.org>
-	 <20251110-net-mptcp-sft-join-unstable-v1-6-a4332c714e10@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.52.3-0ubuntu1 
+	s=arc-20240116; t=1762849190; c=relaxed/simple;
+	bh=g/yeDjANRp0M33IVvuwIwJP1+XRbH7cig3/vsdiQHZE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Cn0Yad/zBQ4oai/+6etLzm9ja3O2/UlQQZAQWhzudLu31QVRTbB+EU2BdMq52hSnDWcJbwfmG62mxwcInOBOXUlLFlfCXxI0r32wH4OsipcLEZ8G9r0/WB2TvEf2p/nhbJUuwuIYkPaU1Sv6uA/RksgLcPs4q8wc5GIpRshgzPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=qkoA4HLX; arc=none smtp.client-ip=52.34.181.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1762849188; x=1794385188;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ozACx6oRP9hL/YVSD6k1jO+m0WoePjkWX64YKwpZ6BA=;
+  b=qkoA4HLXyuHz/OsP8UPIvErGDsUy2ifVQEKzLL+k2kC/V3NJqBcSu3yQ
+   dUUlGxjxDK1Ni8s9KaXaGKhwxKwnrspX6dg8+Gv8HDjB4QPfmtX3t3B9k
+   NxnrmaB0vDfHOXT9iASHqIEdDBEdC1u1QGqvyFkv8RFaV6JvJ7DSnAMvH
+   v4w7YSQtS+NQD2FNocpkktavy2weQi+brvtsgzn+mkYF+2Bexf8Pt67Mq
+   P6Z7wLbN0C23zHOSMVyiBs0IRrJ5uqdX2ud66pIdnHPTgc8wQtNGajqUB
+   IM27wmmUu3LVlMutPdqBpIphhFB4fCAd3ILyroXkI9IdPfjbS6sHDRVtv
+   g==;
+X-CSE-ConnectionGUID: 2lu9IKPoRlCNFi+U+5eCSA==
+X-CSE-MsgGUID: CQpdfkGeQZGwJKTla2TCOA==
+X-IronPort-AV: E=Sophos;i="6.19,296,1754956800"; 
+   d="scan'208";a="6844198"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 08:19:44 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.51:10198]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.6.26:2525] with esmtp (Farcaster)
+ id d559d42e-6ddc-486d-83b6-5ebc05742278; Tue, 11 Nov 2025 08:19:44 +0000 (UTC)
+X-Farcaster-Flow-ID: d559d42e-6ddc-486d-83b6-5ebc05742278
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Tue, 11 Nov 2025 08:19:43 +0000
+Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
+ (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Tue, 11 Nov 2025
+ 08:19:41 +0000
+From: Jakub Acs <acsjakub@amazon.de>
+To: <stable@vger.kernel.org>
+CC: <acsjakub@amazon.de>, Penglei Jiang <superman.xpt@gmail.com>,
+	<syzbot+f9238a0a31f9b5603fef@syzkaller.appspotmail.com>, Al Viro
+	<viro@zeniv.linux.org.uk>, Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Christian Brauner <brauner@kernel.org>, Felix Moessbauer
+	<felix.moessbauer@siemens.com>, Jeff layton <jlayton@kernel.org>, "Lorenzo
+ Stoakes" <lorenzo.stoakes@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>,
+	Thomas Gleinxer <tglx@linutronix.de>, xu xin <xu.xin16@zte.com.cn>, "Alexey
+ Dobriyan" <adobriyan@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12.y] proc: fix the issue of proc_mem_open returning NULL
+Date: Tue, 11 Nov 2025 08:19:26 +0000
+Message-ID: <20251111081926.8505-1-acsjakub@amazon.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EX19D038UWC001.ant.amazon.com (10.13.139.213) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-Hi Matt,
+From: Penglei Jiang <superman.xpt@gmail.com>
 
-On Mon, 2025-11-10 at 19:23 +0100, Matthieu Baerts (NGI0) wrote:
-> The 'run_tests' function is executed in the background, but killing
-> its
-> associated PID would not kill the children tasks running in the
-> background.
-> 
-> To properly kill all background tasks, 'kill -- -PID' could be used,
-> but
-> this requires kill from procps-ng. Instead, all children tasks are
-> listed using 'ps', and 'kill' is called with all PIDs of this group.
-> 
-> Fixes: 31ee4ad86afd ("selftests: mptcp: join: stop transfer when
-> check is done (part 1)")
-> Cc: stable@vger.kernel.org
-> Fixes: 04b57c9e096a ("selftests: mptcp: join: stop transfer when
-> check is done (part 2)")
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+[ Upstream commit 65c66047259fad1b868d4454bc5af95b46a5f954 ]
 
-This patch looks good to me.
+proc_mem_open() can return an errno, NULL, or mm_struct*.  If it fails to
+acquire mm, it returns NULL, but the caller does not check for the case
+when the return value is NULL.
 
-    Reviewed-by: Geliang Tang <geliang@kernel.org>
+The following conditions lead to failure in acquiring mm:
 
-Thanks,
--Geliang
+  - The task is a kernel thread (PF_KTHREAD)
+  - The task is exiting (PF_EXITING)
 
-> ---
->  tools/testing/selftests/net/mptcp/mptcp_join.sh | 18 +++++++++------
-> ---
->  tools/testing/selftests/net/mptcp/mptcp_lib.sh  | 21
-> +++++++++++++++++++++
->  2 files changed, 30 insertions(+), 9 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> index 01273abfdc89..41503c241989 100755
-> --- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> +++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> @@ -3831,7 +3831,7 @@ userspace_tests()
->  		chk_mptcp_info subflows 0 subflows 0
->  		chk_subflows_total 1 1
->  		kill_events_pids
-> -		mptcp_lib_kill_wait $tests_pid
-> +		mptcp_lib_kill_group_wait $tests_pid
->  	fi
->  
->  	# userspace pm create destroy subflow
-> @@ -3859,7 +3859,7 @@ userspace_tests()
->  		chk_mptcp_info subflows 0 subflows 0
->  		chk_subflows_total 1 1
->  		kill_events_pids
-> -		mptcp_lib_kill_wait $tests_pid
-> +		mptcp_lib_kill_group_wait $tests_pid
->  	fi
->  
->  	# userspace pm create id 0 subflow
-> @@ -3880,7 +3880,7 @@ userspace_tests()
->  		chk_mptcp_info subflows 1 subflows 1
->  		chk_subflows_total 2 2
->  		kill_events_pids
-> -		mptcp_lib_kill_wait $tests_pid
-> +		mptcp_lib_kill_group_wait $tests_pid
->  	fi
->  
->  	# userspace pm remove initial subflow
-> @@ -3904,7 +3904,7 @@ userspace_tests()
->  		chk_mptcp_info subflows 1 subflows 1
->  		chk_subflows_total 1 1
->  		kill_events_pids
-> -		mptcp_lib_kill_wait $tests_pid
-> +		mptcp_lib_kill_group_wait $tests_pid
->  	fi
->  
->  	# userspace pm send RM_ADDR for ID 0
-> @@ -3930,7 +3930,7 @@ userspace_tests()
->  		chk_mptcp_info subflows 1 subflows 1
->  		chk_subflows_total 1 1
->  		kill_events_pids
-> -		mptcp_lib_kill_wait $tests_pid
-> +		mptcp_lib_kill_group_wait $tests_pid
->  	fi
->  }
->  
-> @@ -3960,7 +3960,7 @@ endpoint_tests()
->  		pm_nl_add_endpoint $ns2 10.0.2.2 flags signal
->  		pm_nl_check_endpoint "modif is allowed" \
->  			$ns2 10.0.2.2 id 1 flags signal
-> -		mptcp_lib_kill_wait $tests_pid
-> +		mptcp_lib_kill_group_wait $tests_pid
->  	fi
->  
->  	if reset_with_tcp_filter "delete and re-add" ns2 10.0.3.2
-> REJECT OUTPUT &&
-> @@ -4015,7 +4015,7 @@ endpoint_tests()
->  			chk_mptcp_info subflows 3 subflows 3
->  		done
->  
-> -		mptcp_lib_kill_wait $tests_pid
-> +		mptcp_lib_kill_group_wait $tests_pid
->  
->  		kill_events_pids
->  		chk_evt_nr ns1 MPTCP_LIB_EVENT_LISTENER_CREATED 1
-> @@ -4089,7 +4089,7 @@ endpoint_tests()
->  		wait_mpj $ns2
->  		chk_subflow_nr "after re-re-add ID 0" 3
->  		chk_mptcp_info subflows 3 subflows 3
-> -		mptcp_lib_kill_wait $tests_pid
-> +		mptcp_lib_kill_group_wait $tests_pid
->  
->  		kill_events_pids
->  		chk_evt_nr ns1 MPTCP_LIB_EVENT_LISTENER_CREATED 1
-> @@ -4137,7 +4137,7 @@ endpoint_tests()
->  		wait_mpj $ns2
->  		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
->  		wait_mpj $ns2
-> -		mptcp_lib_kill_wait $tests_pid
-> +		mptcp_lib_kill_group_wait $tests_pid
->  
->  		join_syn_tx=3 join_connect_err=1 \
->  			chk_join_nr 2 2 2
-> diff --git a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-> b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-> index d62e653d48b0..f4388900016a 100644
-> --- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-> +++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-> @@ -350,6 +350,27 @@ mptcp_lib_kill_wait() {
->  	wait "${1}" 2>/dev/null
->  }
->  
-> +# $1: PID
-> +mptcp_lib_pid_list_children() {
-> +	local curr="${1}"
-> +	# evoke 'ps' only once
-> +	local pids="${2:-"$(ps o pid,ppid)"}"
-> +
-> +	echo "${curr}"
-> +
-> +	local pid
-> +	for pid in $(echo "${pids}" | awk "\$2 == ${curr} { print
-> \$1 }"); do
-> +		mptcp_lib_pid_list_children "${pid}" "${pids}"
-> +	done
-> +}
-> +
-> +# $1: PID
-> +mptcp_lib_kill_group_wait() {
-> +	# Some users might not have procps-ng: cannot use "kill -- -
-> PID"
-> +	mptcp_lib_pid_list_children "${1}" | xargs -r kill
-> &>/dev/null
-> +	wait "${1}" 2>/dev/null
-> +}
-> +
->  # $1: IP address
->  mptcp_lib_is_v6() {
->  	[ -z "${1##*:*}" ]
-> 
+Changes:
+
+  - Add documentation comments for the return value of proc_mem_open().
+  - Add checks in the caller to return -ESRCH when proc_mem_open()
+    returns NULL.
+
+Link: https://lkml.kernel.org/r/20250404063357.78891-1-superman.xpt@gmail.com
+Reported-by: syzbot+f9238a0a31f9b5603fef@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000f52642060d4e3750@google.com
+Signed-off-by: Penglei Jiang <superman.xpt@gmail.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Adrian Ratiu <adrian.ratiu@collabora.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Felix Moessbauer <felix.moessbauer@siemens.com>
+Cc: Jeff layton <jlayton@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ acsjakub: applied cleanly ]
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+---
+ fs/proc/base.c       | 12 +++++++++---
+ fs/proc/task_mmu.c   | 12 ++++++------
+ fs/proc/task_nommu.c |  4 ++--
+ 3 files changed, 17 insertions(+), 11 deletions(-)
+
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index a2541f5204af..d060af34a6e8 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -828,7 +828,13 @@ static const struct file_operations proc_single_file_operations = {
+ 	.release	= single_release,
+ };
+ 
+-
++/*
++ * proc_mem_open() can return errno, NULL or mm_struct*.
++ *
++ *   - Returns NULL if the task has no mm (PF_KTHREAD or PF_EXITING)
++ *   - Returns mm_struct* on success
++ *   - Returns error code on failure
++ */
+ struct mm_struct *proc_mem_open(struct inode *inode, unsigned int mode)
+ {
+ 	struct task_struct *task = get_proc_task(inode);
+@@ -853,8 +859,8 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
+ {
+ 	struct mm_struct *mm = proc_mem_open(inode, mode);
+ 
+-	if (IS_ERR(mm))
+-		return PTR_ERR(mm);
++	if (IS_ERR_OR_NULL(mm))
++		return mm ? PTR_ERR(mm) : -ESRCH;
+ 
+ 	file->private_data = mm;
+ 	return 0;
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 8f5ad591d762..08a06fd37f0e 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -212,8 +212,8 @@ static int proc_maps_open(struct inode *inode, struct file *file,
+ 
+ 	priv->inode = inode;
+ 	priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
+-	if (IS_ERR(priv->mm)) {
+-		int err = PTR_ERR(priv->mm);
++	if (IS_ERR_OR_NULL(priv->mm)) {
++		int err = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
+ 
+ 		seq_release_private(inode, file);
+ 		return err;
+@@ -1316,8 +1316,8 @@ static int smaps_rollup_open(struct inode *inode, struct file *file)
+ 
+ 	priv->inode = inode;
+ 	priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
+-	if (IS_ERR(priv->mm)) {
+-		ret = PTR_ERR(priv->mm);
++	if (IS_ERR_OR_NULL(priv->mm)) {
++		ret = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
+ 
+ 		single_release(inode, file);
+ 		goto out_free;
+@@ -2049,8 +2049,8 @@ static int pagemap_open(struct inode *inode, struct file *file)
+ 	struct mm_struct *mm;
+ 
+ 	mm = proc_mem_open(inode, PTRACE_MODE_READ);
+-	if (IS_ERR(mm))
+-		return PTR_ERR(mm);
++	if (IS_ERR_OR_NULL(mm))
++		return mm ? PTR_ERR(mm) : -ESRCH;
+ 	file->private_data = mm;
+ 	return 0;
+ }
+diff --git a/fs/proc/task_nommu.c b/fs/proc/task_nommu.c
+index bce674533000..59bfd61d653a 100644
+--- a/fs/proc/task_nommu.c
++++ b/fs/proc/task_nommu.c
+@@ -260,8 +260,8 @@ static int maps_open(struct inode *inode, struct file *file,
+ 
+ 	priv->inode = inode;
+ 	priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
+-	if (IS_ERR(priv->mm)) {
+-		int err = PTR_ERR(priv->mm);
++	if (IS_ERR_OR_NULL(priv->mm)) {
++		int err = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
+ 
+ 		seq_release_private(inode, file);
+ 		return err;
+-- 
+2.47.3
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Christof Hellmis
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
 
