@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-193476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA6CC4A626
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3972C4A61A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF6EA18882D0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4B373AF85C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0492FF143;
-	Tue, 11 Nov 2025 01:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3859301707;
+	Tue, 11 Nov 2025 01:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5omNOjK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSS0M8OA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB6C248F6A;
-	Tue, 11 Nov 2025 01:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F209248F6A;
+	Tue, 11 Nov 2025 01:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823273; cv=none; b=uZyhKimimkyfVhbiGjGsn6mt0necMuNMY05SuT1WJXNjDVGn0argZQZEsWpqoKqZV+fX2wDhW2epo1D/iNR485JuvfXPeaWa5xpRwF77aIY5K7dQtlLGwjScJB4cYkiiuijuclvnWLbPkcMv8iLSl/4bnPvNYm8oMg2pMKSY0So=
+	t=1762823278; cv=none; b=goZfOf+1BHcVBpTc8FYh5huG2Sd7svF2gEFXYyxAC0XgL1rUsDX2DyRDVzUPfCzCj866l6lcJMcmbcPx1r++sXisD8haQddhRleRVzCc7PnxyfzZnZ4tu15ZL4qQW3PFUJDfZln8nipzLR1zZ122sh3kcEM5oHRLXcYmvcrlfCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823273; c=relaxed/simple;
-	bh=7NRFMsbPybHXfY26HZQ9QyVI53gzGG/igNOeut4qlrc=;
+	s=arc-20240116; t=1762823278; c=relaxed/simple;
+	bh=p8zsIi9iV2Jg/QMyA7YeG4QVH4ttlruPdDlAqAL5NzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EDRvzubYxI+AeKmWvaIepDZ0VNDt1GWiAEl8o7SfKLh4sLxUFuqq7gO4uyqRZmqzervLwlRUdpYgui9Am/quLvk6DvFC2tSAQ9nm5jseX1iyicaicMBDFBAc+rBg9RerC70gjVrQCRqmLebc/Zcw2hU0zhR29wfLxbr7rG8wwnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5omNOjK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDF9C4CEFB;
-	Tue, 11 Nov 2025 01:07:52 +0000 (UTC)
+	 MIME-Version; b=aQko80cQJmqYtyPfeE+pHIAz0uNe+1T//g1xItazQlJiyarTD4aj1MLRBxQtFIWLE0dVT6Yo7cJFwpXH5WYfsyWWjyin1Ww57wd+V9gyctbro7h+uy2yt36J6RX0kXAv68YR8bP+0H+LFxk3T+wG6pKfGDFOl3wcmsR0Jc1hocw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSS0M8OA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C19C4CEFB;
+	Tue, 11 Nov 2025 01:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823273;
-	bh=7NRFMsbPybHXfY26HZQ9QyVI53gzGG/igNOeut4qlrc=;
+	s=korg; t=1762823278;
+	bh=p8zsIi9iV2Jg/QMyA7YeG4QVH4ttlruPdDlAqAL5NzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5omNOjK+eixkw0UDZTGjPtHGWATydEbHhm9QjHRRzQgebyC7mY2I7JSpeu+5ogkL
-	 OSfbP17GcA25cHM+7dwwNlkavQd+4tm9BNWkTIWK1sZbhJqEO4RTQBwY3VmnKzRRRz
-	 x6alsepf0knemxXbRP/XqnazMBEAbbV3OJslreXQ=
+	b=SSS0M8OAF6KWcAj1KTyomC9uJT1NG4u7IB4POgo2JWcde3OF8QJLtpdF5Z6rL2ZX1
+	 7/ObOL33M+afHOZT7ha8ulatN7EeY3cBceadDer58eZdnNm9QthpIAWqGBNerZOi8e
+	 5NNKQ2nJYHGzsMfXTCHzluQh6UPMJNl6ZnSTYHIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	TungYu Lu <tungyu.lu@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 266/849] drm/amdgpu: add to custom amdgpu_drm_release drm_dev_enter/exit
-Date: Tue, 11 Nov 2025 09:37:16 +0900
-Message-ID: <20251111004542.863776332@linuxfoundation.org>
+Subject: [PATCH 6.17 267/849] drm/amd/display: Wait until OTG enable state is cleared
+Date: Tue, 11 Nov 2025 09:37:17 +0900
+Message-ID: <20251111004542.887357803@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -61,52 +63,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+From: TungYu Lu <tungyu.lu@amd.com>
 
-[ Upstream commit c31f486bc8dd6f481adcb9cca4a6e1837b8cf127 ]
+[ Upstream commit e7496c15d830689cc4fc666b976c845ed2c5ed28 ]
 
-User queues are disabled before GEM objects are released
-(protecting against user app crashes).
-No races with PCI hot-unplug (because drm_dev_enter prevents cleanup
-if iewdevice is being removed).
+[Why]
+Customer reported an issue that OS starts and stops device multiple times
+during driver installation. Frequently disabling and enabling OTG may
+prevent OTG from being safely disabled and cause incorrect configuration
+upon the next enablement.
 
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+[How]
+Add a wait until OTG_CURRENT_MASTER_EN_STATE is cleared as a short term
+solution.
+
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: TungYu Lu <tungyu.lu@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index c1792e9ab126d..5e81ff3ffdc3f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2937,11 +2937,14 @@ static int amdgpu_drm_release(struct inode *inode, struct file *filp)
- {
- 	struct drm_file *file_priv = filp->private_data;
- 	struct amdgpu_fpriv *fpriv = file_priv->driver_priv;
-+	struct drm_device *dev = file_priv->minor->dev;
-+	int idx;
+diff --git a/drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c b/drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c
+index ff79c38287df1..5af13706e6014 100644
+--- a/drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c
+@@ -226,6 +226,11 @@ bool optc401_disable_crtc(struct timing_generator *optc)
+ 	REG_UPDATE(CONTROL,
+ 			VTG0_ENABLE, 0);
  
--	if (fpriv) {
-+	if (fpriv && drm_dev_enter(dev, &idx)) {
- 		fpriv->evf_mgr.fd_closing = true;
- 		amdgpu_eviction_fence_destroy(&fpriv->evf_mgr);
- 		amdgpu_userq_mgr_fini(&fpriv->userq_mgr);
-+		drm_dev_exit(idx);
- 	}
- 
- 	return drm_release(inode, filp);
++	// wait until CRTC_CURRENT_MASTER_EN_STATE == 0
++	REG_WAIT(OTG_CONTROL,
++			 OTG_CURRENT_MASTER_EN_STATE,
++			 0, 10, 15000);
++
+ 	/* CRTC disabled, so disable  clock. */
+ 	REG_WAIT(OTG_CLOCK_CONTROL,
+ 			OTG_BUSY, 0,
 -- 
 2.51.0
 
