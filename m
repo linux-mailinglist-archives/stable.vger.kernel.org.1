@@ -1,123 +1,108 @@
-Return-Path: <stable+bounces-194527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 502B9C4FB3A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 21:29:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5721EC4FB43
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 21:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 258C4189FA8A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 20:29:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16A603B90C5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 20:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BEDB33D6E8;
-	Tue, 11 Nov 2025 20:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8652F18A6B0;
+	Tue, 11 Nov 2025 20:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="hOyDctzW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mu73vyL9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CBB33D6E2
-	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 20:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4061133D6F8;
+	Tue, 11 Nov 2025 20:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762892953; cv=none; b=Yn2FpPqYjmpHF+ShID1lGEuHESyzEApLE4+Ffu4EIkbTANbn4L2L+trCXCg/ftbFcbS/bR7BNLf8/S7FnNlP9mYGLwa50kz93Aa+U4RAyJ/XDTpGN+T/5ytvBNsN2sEzZYBkNowhvAeZmKVHQgMyilApyr3hl/pHk9U2L2df9dM=
+	t=1762893075; cv=none; b=d03y6E53jsYL6QBO4VNoQD1Q4v6TJJozKqJGWOPFHDfUx1bP8Ffy1+PEepmS7zZ0FhHqAFWMkXiwtKJKaUC8jBqCjHVNPurP8hHTJme9vbQFN4uZP34eg67oRiC3P3XYp+vw7046E3A4m6+Q4kGNYXCexJ/yvqz25bhpaSn+a1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762892953; c=relaxed/simple;
-	bh=92npXFVKjrhpisCLYsnug9Rxp1dITx02Uvrz+rVkX3c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZTL8SBVYFg6nfRDEIXJBVn6elEmBdcEL3TZjBoSoXbdO4WvZqFXCO68Dz8ds9lRqEIUapWmQ+iBy9qIj6sC6u6KABiDK+/IrgCF7abMExfjud14SGJ6/O+pw6i0zYobj0hWk6c1roU1nHlhQ66i68r7xQnwikLnXqELpM4Q12tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=hOyDctzW; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-297f35be2ffso1002355ad.2
-        for <stable@vger.kernel.org>; Tue, 11 Nov 2025 12:29:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1762892950; x=1763497750; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8Lm0cyy6GpKPtLwlPwfKtxbxoiOSXYguyMaReC5kh3A=;
-        b=hOyDctzWMiHvsab4Pyl7zPenUOlvPSoM6Uv1j93BiHep4oTEgKXEknCOqYqnKncVxX
-         7Ghmr9lvHTHKZ6TCXviEdQtuCQPUxx4NXPhnMX5xNfOu20RGO00HStsmGieRtR8pR1G2
-         jtxQjwaHqV6YHVksC86xOKuEkPYB/FGIp+3Nw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762892950; x=1763497750;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8Lm0cyy6GpKPtLwlPwfKtxbxoiOSXYguyMaReC5kh3A=;
-        b=JQmewkLEKmn32cDzvxmMSD4Nd1QgQifg/cazwjusfNgBx2GJceofob8akNT08JsFC4
-         DZm8o9fzsNYnlTduf54Q/yBeM++ZXebXimBaEURntNAq7UUZTBqPCrr3vxTv6QCT1Xj7
-         /qlIx8v7e97tinyfnJiqyvGYpM9BDdAXKlja1ZNXofxE1DUTkpRhJZB8t+xThSaYW1A+
-         ejjGMVxVyfvCMVQbKLkrZamrkVO/J6pCfB1VIx6l8/TzZGHWqIq4o7n9p4GzMy8+Nn2s
-         ce3mfY6+G6lhkfXQKdNP3QfSR1GgIxe2ao5eCQ3XsSIxTvplOacGOdDBXIAjMaYkT+Ra
-         8uVA==
-X-Gm-Message-State: AOJu0YywXmhMLK19T9+9C8qF2McgqlQp8Dh6lNkS/F67PH4YQtTUUBK/
-	Qn+PkGxljt8/U3GV4pQFzuI+3XiA1dAKkH7j72ghBtd1YCTxU5piwNcD94ziTxyHaQ==
-X-Gm-Gg: ASbGncu15sUuSrhZkWAk6XuboU2gF22XtsH7HMGHE2u4cwh6dykcIb8NPvCildoUDXd
-	n2oAEEVHMOEdE44nOgVK9DMhfLUZEfM3oOf649JEJ5FI7SckmZoabJxzdtfu3GFAZ2xBBwDyT2t
-	m/5U3QSBE+zt29vnBs5jQdp6ewdjhwrLev9SFSEjBMGdByBe+FVZwbl/4wj6dW9rcbxRowjfH0Y
-	dASwMf/JdD+LuD89pOgdWb+0T06h6TDgjRImX0FoPASb6V3wjTIdYOfRjKspg9nSNBZwlrRpIhQ
-	VWNiXULJ4NujxBOtc5iSOM+bJPJL/XQnA+MrAoF8UkWgcXuEffJzHPGRHZlHw+5vef9SFEW6hlk
-	x14S5eLGc1QLf45H2Fi/6D+DPX/ZQFRD+MONYzTXgocqtaha56unSPvhTTj8+yiQUIHH9KEBL8F
-	oUl4XiT8WVusJACBl/S76SV88gQ4UG1EVo
-X-Google-Smtp-Source: AGHT+IFgpJ7ieLN3D+n9X4Ct/IqCjfaNVQEHkLLAGtviQqbMsn3doADs7khGezuYpaPY6qofXBLTlw==
-X-Received: by 2002:a17:903:2ac3:b0:295:39d9:8971 with SMTP id d9443c01a7336-2984ed3410fmr8163715ad.1.1762892950309;
-        Tue, 11 Nov 2025 12:29:10 -0800 (PST)
-Received: from fedora64.linuxtx.org ([216.147.123.202])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2984dcc9f6csm6044815ad.75.2025.11.11.12.29.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 12:29:09 -0800 (PST)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Tue, 11 Nov 2025 13:29:07 -0700
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.17 000/849] 6.17.8-rc1 review
-Message-ID: <aROckxa8DMdqBx0b@fedora64.linuxtx.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+	s=arc-20240116; t=1762893075; c=relaxed/simple;
+	bh=ADQaa9sHdyu7ZOrKR4J4rnxR26WrlTbpv0rZh7Rvzs4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k2z7FNIG1IZMWvpCoLACf0/Rw4enOHZ87c8UJQA1KbvZon4356b0w6efxTcpwbRza21x34Yax6Enn1Vdv5bD5dmbtWMyS65r7CKiHCgcbG067TDq1Lei4PlqOSAxez/uj7hCpBcovW6fbBqsy7Vn82xNGDm+CNcaZp5C3V6rnTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mu73vyL9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1DFC4CEF5;
+	Tue, 11 Nov 2025 20:31:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762893074;
+	bh=ADQaa9sHdyu7ZOrKR4J4rnxR26WrlTbpv0rZh7Rvzs4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Mu73vyL98SfZbW0XLaL1lLDHzfv7CD2IRJog7hFqXanRFkE3u144BBpJ02Kq6DbZl
+	 rcko2K3NWUxAJceXeZOLHAQ1Gg+RMtOsNrPrAIANiZYy9Bo+PBpvSLnBdxWXf0mKpr
+	 CRpS6prtnd23Fm15F2aHyqe3gAYn2fJs4dS02MaliAdNz+2oL/9MiMq47YOqY9zMsF
+	 zgPrAwGd/hObzqyDmK6vhyZmi9hfrbLgDJpi86KhYBmE1qt9GR5RFhDJrjYcuxmltE
+	 BPlMEhYvxYOlb8Bxemv2UL/Cgfroe4VoMYWD8TvTS/RbS7091gjInmzPsAnKEHQDmi
+	 I4BEWVVp0U06Q==
+From: Eric Biggers <ebiggers@kernel.org>
+To: stable@vger.kernel.org
+Cc: linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.17] lib/crypto: arm/curve25519: Disable on CPU_BIG_ENDIAN
+Date: Tue, 11 Nov 2025 12:29:23 -0800
+Message-ID: <20251111202923.242700-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 11, 2025 at 09:32:50AM +0900, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.17.8 release.
-> There are 849 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 13 Nov 2025 00:43:57 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.8-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+commit 44e8241c51f762aafa50ed116da68fd6ecdcc954 upstream.
 
-Verified if you drop
-[PATCH 6.17 145/849] bpftool: Add CET-aware symbol matching for x86_64 architectures
-or add 70f32a10ad423fd19e22e71d05d0968e61316278 everything builds and
-runs.
+On big endian arm kernels, the arm optimized Curve25519 code produces
+incorrect outputs and fails the Curve25519 test.  This has been true
+ever since this code was added.
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+It seems that hardly anyone (or even no one?) actually uses big endian
+arm kernels.  But as long as they're ostensibly supported, we should
+disable this code on them so that it's not accidentally used.
+
+Note: for future-proofing, use !CPU_BIG_ENDIAN instead of
+CPU_LITTLE_ENDIAN.  Both of these are arch-specific options that could
+get removed in the future if big endian support gets dropped.
+
+Fixes: d8f1308a025f ("crypto: arm/curve25519 - wire up NEON implementation")
+Cc: stable@vger.kernel.org
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20251104054906.716914-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
+ arch/arm/crypto/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/crypto/Kconfig b/arch/arm/crypto/Kconfig
+index 1e5f3cdf691c..a00ab9265280 100644
+--- a/arch/arm/crypto/Kconfig
++++ b/arch/arm/crypto/Kconfig
+@@ -2,11 +2,11 @@
+ 
+ menu "Accelerated Cryptographic Algorithms for CPU (arm)"
+ 
+ config CRYPTO_CURVE25519_NEON
+ 	tristate
+-	depends on KERNEL_MODE_NEON
++	depends on KERNEL_MODE_NEON && !CPU_BIG_ENDIAN
+ 	select CRYPTO_KPP
+ 	select CRYPTO_LIB_CURVE25519_GENERIC
+ 	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
+ 	default CRYPTO_LIB_CURVE25519_INTERNAL
+ 	help
+
+base-commit: 7660ce69123ea73b22930fcf20d995ad310049ef
+-- 
+2.51.2
+
 
