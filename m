@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-193151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91F9C49FFE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF99C4A03A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A3E2188C7D2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C34393AC0AB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09833244693;
-	Tue, 11 Nov 2025 00:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74282244693;
+	Tue, 11 Nov 2025 00:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMxz95TI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/MaL702"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6674086A;
-	Tue, 11 Nov 2025 00:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312761D6DB5;
+	Tue, 11 Nov 2025 00:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822418; cv=none; b=j5aMjMdQgbzvEZGnkgQhvzbWUVP7ISZKA0TLgAlXGd7GQsf8Faaqt0zCgoRUaL+MgfkfxJA+8ZbP+0HSqumzobrM7f6lE1JNRQ7dFx6FmdAmeeeduDuOckqi9yFJr9HU52qu9FTm37gn81Q6hNQBQn/DJjoYOgTdynGWDlRgqss=
+	t=1762822470; cv=none; b=bjFR9USfmgaZXcS0IXnvQDHXrwdlsUzOdkYw4mZEPDyDwcM9mu0H2l5E8J8gH3F48DCS4l1tCv3ubFoFnrGdzmNCCvSvuIiMw7O6oPwmAnnYBplGMD2lGC7pQ8VWV20EWQe61HPEnfiVSuXjtlhVNdyZ15Zt37lZhnAaRrWFusk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822418; c=relaxed/simple;
-	bh=SRIPdPswIFD0ENWZJFzxdQaNVmo3Ai6sFl6a7DhwhHQ=;
+	s=arc-20240116; t=1762822470; c=relaxed/simple;
+	bh=RYFlOeIzRr0Ywt/Gxat/4373vS6KnLmULMRSqFBUfwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HEWFv4kPwaVWPxBMHc4kziFAAZrnPGXU5UwV6LkuVb2zG7ZncJr3EDxLgxnXXfTgShmRhzJ4ZdlB/R43FA4c2VbdBGLLtxBzdtdwp26ii83fKuUu6Z3HsGbImHiSpTWcM9UDdiEAtdXjq9vj6C6zQPOZfJB7EakYTXdGYafdf5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMxz95TI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295F7C2BC87;
-	Tue, 11 Nov 2025 00:53:38 +0000 (UTC)
+	 MIME-Version; b=ZUAT6YsVZT1HhWx13xo4BNdfGIkx/vdfY4EzJgWk674N6+7eKokxVS2uSPLplGS5FHCCNAtXfbS8u4ZuKwSu8iuFivfFVhf4QcBkUnBF3j/FOyjjvGWyv8EJbA3qUw/UeMZWf+Ucy/4koCWhvw6RsokIJdqUVN2s720fxNcy3Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/MaL702; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0714C4AF09;
+	Tue, 11 Nov 2025 00:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822418;
-	bh=SRIPdPswIFD0ENWZJFzxdQaNVmo3Ai6sFl6a7DhwhHQ=;
+	s=korg; t=1762822470;
+	bh=RYFlOeIzRr0Ywt/Gxat/4373vS6KnLmULMRSqFBUfwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sMxz95TIHCpvBQVr3TzV2DxtQbhwf/aOy3DfutRDTvAJZcjGwESLDQjVCL4GiDGJK
-	 jeoovJ0n99fNQzbNkcU1D7YJd768qoGGTi3pdi7Qzml5uIrxHsiKcSg4ya7XcJrC+w
-	 KKpnliJbh4EO1wgy4opf8mzezaWmU1QjQCS9JEd8=
+	b=W/MaL702S0C0hFnWjrXp2jamoPkXd1IBkExr+KtGtb3UapFsVMdQaoG/Lzl9SFTVl
+	 8YpyvNZ6dOIkDwjMs9dr80APoSqO8a9LwR0TIIxdQ11VLsyvp6F4PKV42nPX9jNMwe
+	 lHguF+56R239HOWixIcUk9sPSGMMW5oArUNMTrbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 023/565] wifi: ath11k: avoid bit operation on key flags
-Date: Tue, 11 Nov 2025 09:37:59 +0900
-Message-ID: <20251111004527.396038986@linuxfoundation.org>
+Subject: [PATCH 6.12 024/565] drm/msm/a6xx: Fix GMU firmware parser
+Date: Tue, 11 Nov 2025 09:38:00 +0900
+Message-ID: <20251111004527.419225349@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -68,80 +67,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit 9c78e747dd4fee6c36fcc926212e20032055cf9d ]
+[ Upstream commit b4789aac9d3441d9f830f0a4022d8dc122d6cab3 ]
 
-Bitwise operations with WMI_KEY_PAIRWISE (defined as 0) are ineffective
-and misleading. This results in pairwise key validations added in
-commit 97acb0259cc9 ("wifi: ath11k: fix group data packet drops
-during rekey") to always evaluate false and clear key commands for
-pairwise keys are not honored.
+Current parser logic for GMU firmware assumes a dword aligned payload
+size for every block. This is not true for all GMU firmwares. So, fix
+this by using correct 'size' value in the calculation for the offset
+for the next block's header.
 
-Since firmware supports overwriting the new key without explicitly
-clearing the previous one, there is no visible impact currently.
-However, to restore consistency with the previous behavior and improve
-clarity, replace bitwise operations with direct assignments and
-comparisons for key flags.
-
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.9.0.1-02146-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-wireless/aLlaetkalDvWcB7b@stanley.mountain
-Fixes: 97acb0259cc9 ("wifi: ath11k: fix group data packet drops during rekey")
-Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251003092158.1080637-1-rameshkumar.sundaram@oss.qualcomm.com
-[update copyright per current guidance]
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: c6ed04f856a4 ("drm/msm/a6xx: A640/A650 GMU firmware path")
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/674040/
+Message-ID: <20250911-assorted-sept-1-v2-2-a8bf1ee20792@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 3889f08822d41..419c9497800af 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index 8609fa38058ea..bfb1225a47c50 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -730,6 +730,9 @@ static bool fw_block_mem(struct a6xx_gmu_bo *bo, const struct block_header *blk)
+ 	return true;
+ }
  
- #include <net/mac80211.h>
-@@ -4407,9 +4407,9 @@ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	}
++#define NEXT_BLK(blk) \
++	((const struct block_header *)((const char *)(blk) + sizeof(*(blk)) + (blk)->size))
++
+ static int a6xx_gmu_fw_load(struct a6xx_gmu *gmu)
+ {
+ 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
+@@ -760,7 +763,7 @@ static int a6xx_gmu_fw_load(struct a6xx_gmu *gmu)
  
- 	if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE)
--		flags |= WMI_KEY_PAIRWISE;
-+		flags = WMI_KEY_PAIRWISE;
- 	else
--		flags |= WMI_KEY_GROUP;
-+		flags = WMI_KEY_GROUP;
- 
- 	ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
- 		   "%s for peer %pM on vdev %d flags 0x%X, type = %d, num_sta %d\n",
-@@ -4446,7 +4446,7 @@ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 
- 	is_ap_with_no_sta = (vif->type == NL80211_IFTYPE_AP &&
- 			     !arvif->num_stations);
--	if ((flags & WMI_KEY_PAIRWISE) || cmd == SET_KEY || is_ap_with_no_sta) {
-+	if (flags == WMI_KEY_PAIRWISE || cmd == SET_KEY || is_ap_with_no_sta) {
- 		ret = ath11k_install_key(arvif, key, cmd, peer_addr, flags);
- 		if (ret) {
- 			ath11k_warn(ab, "ath11k_install_key failed (%d)\n", ret);
-@@ -4460,7 +4460,7 @@ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 			goto exit;
- 		}
- 
--		if ((flags & WMI_KEY_GROUP) && cmd == SET_KEY && is_ap_with_no_sta)
-+		if (flags == WMI_KEY_GROUP && cmd == SET_KEY && is_ap_with_no_sta)
- 			arvif->reinstall_group_keys = true;
- 	}
+ 	for (blk = (const struct block_header *) fw_image->data;
+ 	     (const u8*) blk < fw_image->data + fw_image->size;
+-	     blk = (const struct block_header *) &blk->data[blk->size >> 2]) {
++	     blk = NEXT_BLK(blk)) {
+ 		if (blk->size == 0)
+ 			continue;
  
 -- 
 2.51.0
