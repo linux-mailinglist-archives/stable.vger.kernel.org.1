@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-194002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A476DC4AD18
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2EAC4ACA3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB9B73B14BB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 94C2D4F943B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B765033F367;
-	Tue, 11 Nov 2025 01:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B795533F8D3;
+	Tue, 11 Nov 2025 01:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOqmXBOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hu8qjpNk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730B626560B;
-	Tue, 11 Nov 2025 01:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7390D33F8A7;
+	Tue, 11 Nov 2025 01:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824572; cv=none; b=Mt0Iqbu2t8lTivdoo9hqqw4h1vECdIGLMejdcroqqs2gpjMYU6tdFvIEm4BGr1zcuW1x9K/wdih2WVGIQyxb45S6QnEK0W5Wyqk8Bb1Cd8S3dbHxGSTqTgLVKZza2i3EAsVkJRbKF7HaTbYiqIWbvDQBLmRWN4/0hEMHO62CITg=
+	t=1762824577; cv=none; b=bIf4fvOHF0evCqnO+Hc3djbvrBO5IeEZH+LqSLt+OWqEtcjmbSLXdvWwJvxmUsMZNFuN82iidgQKPJYNu1xa5PrHj142CvfEbRhq2shP2whzeGqdwGw8yRBpWjsR0xqe/BiTxjAV7f4ZY5VzLdIhcLxpIFrI7LcJ12fQZbmjC7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824572; c=relaxed/simple;
-	bh=dg0C5Poynn2Q7UnDJ/hSJHoAaTGrlYdJ5Jl4yzw2Gy0=;
+	s=arc-20240116; t=1762824577; c=relaxed/simple;
+	bh=iFz4KGk7kNoPxtLjnc0KSJ05HnEmSTVs/kXw+7UHQt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oL9KE45uRevATa4l7EP0HsqVAtFf+Nb9H3RmU/F4ueaAQOJZ/4izk4azRHevGnaKozb4oHDqu1D6z1q1/zzjtODV9kkkxIQ5nkiyX68fAW/2usDRkAA73k9Bpm07tHn2aQ9KUXaNnd+T3IE5MfAXjFno5qt5IPk1o6VjlACRe80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOqmXBOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5226C4CEFB;
-	Tue, 11 Nov 2025 01:29:31 +0000 (UTC)
+	 MIME-Version; b=Uk9Io2b3WH0/HtPAecYSA5YDPFIaSHAVirR3NQ8mXN9JvkRx8gySju+BvR1zzKBMwwaMQ7N4QYiQ3Aj4dt8sIM5djwWwtL7g69Tw0TewApR4zxXuF4SS5qUhoj8g7RQBpnciVM1+S4B08mGkE0Pi9CoaSy9yv4qriwdlCzUpHq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hu8qjpNk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105E7C116D0;
+	Tue, 11 Nov 2025 01:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824572;
-	bh=dg0C5Poynn2Q7UnDJ/hSJHoAaTGrlYdJ5Jl4yzw2Gy0=;
+	s=korg; t=1762824577;
+	bh=iFz4KGk7kNoPxtLjnc0KSJ05HnEmSTVs/kXw+7UHQt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pOqmXBOI8cYnoMNxHwuwjoOlcEajz0Yp5jFuE7TvG5+pb7NK7KH3ed4AgMY6UrZ6j
-	 GvfOESFr++2rRPMgSoMW6L/qgXsIiJyEHKx4gp+aPSDJ3tImkVjL/zSIeOpwF7GR7B
-	 zXwtdF02ydSx+fdX0w4dCz/luDaUCTpLOkmt9j10=
+	b=Hu8qjpNk2h+Nd6f7JI0i/WIVGr7dTNthQmwgCimRZV9jqM96x6LwLGOL4iS6YXSsF
+	 iTWqpNjHAB6a2voTrvMslW+UrEpTtS72YsGRbfvnpBcC6I3JoWRFZfWSThQl9g3HDT
+	 hdO4CEyI7HW3IUulFtpxr8Ou0BonnT3x8oiXGsok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Jiri Kosina <jkosina@suse.com>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Sangwook Shin <sw617.shin@samsung.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 526/849] HID: asus: add Z13 folio to generic group for multitouch to work
-Date: Tue, 11 Nov 2025 09:41:36 +0900
-Message-ID: <20251111004549.136543847@linuxfoundation.org>
+Subject: [PATCH 6.17 527/849] watchdog: s3c2410_wdt: Fix max_timeout being calculated larger
+Date: Tue, 11 Nov 2025 09:41:37 +0900
+Message-ID: <20251111004549.159373375@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,63 +68,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Sangwook Shin <sw617.shin@samsung.com>
 
-[ Upstream commit b595974b4afe0e171dd707da570964ff642742e3 ]
+[ Upstream commit df3c6e0b6d83450563d6266e1dacc7eaf25511f4 ]
 
-The Asus Z13 folio has a multitouch touchpad that needs to bind
-to the hid-multitouch driver in order to work properly. So bind
-it to the HID_GROUP_GENERIC group to release the touchpad and
-move it to the bottom so that the comment applies to it.
+Fix the issue of max_timeout being calculated larger than actual value.
+The calculation result of freq / (S3C2410_WTCON_PRESCALE_MAX + 1) /
+S3C2410_WTCON_MAXDIV is smaller than the actual value because the remainder
+is discarded during the calculation process. This leads to a larger
+calculated value for max_timeout compared to the actual settable value.
+To resolve this issue, the order of calculations in the computation process
+has been adjusted.
 
-While at it, change the generic KEYBOARD3 name to Z13_FOLIO.
-
-Reviewed-by: Luke D. Jones <luke@ljones.dev>
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
+Signed-off-by: Sangwook Shin <sw617.shin@samsung.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-asus.c | 6 +++---
- drivers/hid/hid-ids.h  | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/watchdog/s3c2410_wdt.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index 8db9d4e7c3b0b..a444d41e53b6c 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -1387,9 +1387,6 @@ static const struct hid_device_id asus_devices[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
- 	    USB_DEVICE_ID_ASUSTEK_ROG_NKEY_KEYBOARD2),
- 	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
--	    USB_DEVICE_ID_ASUSTEK_ROG_NKEY_KEYBOARD3),
--	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
- 	    USB_DEVICE_ID_ASUSTEK_ROG_Z13_LIGHTBAR),
- 	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
-@@ -1419,6 +1416,9 @@ static const struct hid_device_id asus_devices[] = {
- 	 * Note bind to the HID_GROUP_GENERIC group, so that we only bind to the keyboard
- 	 * part, while letting hid-multitouch.c handle the touchpad.
- 	 */
-+	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
-+		USB_VENDOR_ID_ASUSTEK, USB_DEVICE_ID_ASUSTEK_ROG_Z13_FOLIO),
-+	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
- 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
- 		USB_VENDOR_ID_ASUSTEK, USB_DEVICE_ID_ASUSTEK_T101HA_KEYBOARD) },
- 	{ }
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index ded5348d190c5..5721b8414bbdf 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -223,7 +223,7 @@
- #define USB_DEVICE_ID_ASUSTEK_ROG_KEYBOARD3 0x1822
- #define USB_DEVICE_ID_ASUSTEK_ROG_NKEY_KEYBOARD	0x1866
- #define USB_DEVICE_ID_ASUSTEK_ROG_NKEY_KEYBOARD2	0x19b6
--#define USB_DEVICE_ID_ASUSTEK_ROG_NKEY_KEYBOARD3	0x1a30
-+#define USB_DEVICE_ID_ASUSTEK_ROG_Z13_FOLIO		0x1a30
- #define USB_DEVICE_ID_ASUSTEK_ROG_Z13_LIGHTBAR		0x18c6
- #define USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY		0x1abe
- #define USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY_X		0x1b4c
+diff --git a/drivers/watchdog/s3c2410_wdt.c b/drivers/watchdog/s3c2410_wdt.c
+index 40901bdac4261..6df7d526c52fb 100644
+--- a/drivers/watchdog/s3c2410_wdt.c
++++ b/drivers/watchdog/s3c2410_wdt.c
+@@ -27,6 +27,7 @@
+ #include <linux/mfd/syscon.h>
+ #include <linux/regmap.h>
+ #include <linux/delay.h>
++#include <linux/math64.h>
+ 
+ #define S3C2410_WTCON		0x00
+ #define S3C2410_WTDAT		0x04
+@@ -410,9 +411,14 @@ static inline unsigned long s3c2410wdt_get_freq(struct s3c2410_wdt *wdt)
+ static inline unsigned int s3c2410wdt_max_timeout(struct s3c2410_wdt *wdt)
+ {
+ 	const unsigned long freq = s3c2410wdt_get_freq(wdt);
++	const u64 n_max = (u64)(S3C2410_WTCON_PRESCALE_MAX + 1) *
++			S3C2410_WTCON_MAXDIV * S3C2410_WTCNT_MAXCNT;
++	u64 t_max = div64_ul(n_max, freq);
+ 
+-	return S3C2410_WTCNT_MAXCNT / (freq / (S3C2410_WTCON_PRESCALE_MAX + 1)
+-				       / S3C2410_WTCON_MAXDIV);
++	if (t_max > UINT_MAX)
++		t_max = UINT_MAX;
++
++	return t_max;
+ }
+ 
+ static int s3c2410wdt_disable_wdt_reset(struct s3c2410_wdt *wdt, bool mask)
 -- 
 2.51.0
 
