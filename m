@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-193081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847E1C49F41
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CD8C49F47
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444703AB483
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F11D3AC1F9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E420A12DDA1;
-	Tue, 11 Nov 2025 00:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E96244693;
+	Tue, 11 Nov 2025 00:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkdctji7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYGLogyn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBE14C97;
-	Tue, 11 Nov 2025 00:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3432AE8D;
+	Tue, 11 Nov 2025 00:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822254; cv=none; b=d5ocINU/Xxu7AJcvdkr8f3QaAqE8pTPzYse3Autylk0IzSGFtqXt7YE+qZvaYUVogp37D87HzjngmDi+OV+HNIP0bFZp4TEVBGzKA77GUXjVO8lrRHGY+21fDbviAhLRKkgdhwOTI+y+QwwJsJ6m72A0Et5sDm2ccLqTv6NzX+E=
+	t=1762822262; cv=none; b=ijNp2Se8CnkKNReRbFFUWx9y0ydukrTH1+EOL4RUu3pGbdiI/ROfXKWmHt97gcQrfbN3FwJ0GUHkGSVJRJSoH82/2YdzLoB6jXrauJiHfTgNES4W8K2SNSgAxzH/eVYJG1LTMGzMtFHIyM0Sc3Oz0ssIUQ6Js4+CWXm2rXbQyC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822254; c=relaxed/simple;
-	bh=2MnJYnUpESVE9t2XRuaSN79O+7PVpWTBiei3RBBPLPQ=;
+	s=arc-20240116; t=1762822262; c=relaxed/simple;
+	bh=FOufYa5A1Wnw7YuUxGQUPRtbQVOsOK7YdpwjN2Ak0fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kYE7ocZz9WMmqQ7wjb6P68fHPxlIYaYBSD+X9GUAsqE21N1qYhNprOdYQdzuCkCb0qoy6ELOY3AUWkHZtmvp5roP3Jh8LBa+zdO05JA7P1I9oaXq/sapkJc7VRK5MOsn7a3YMwZKYXEeQzpka457uo2bV7mTafilbsqgwCDcTBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkdctji7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380BDC116B1;
-	Tue, 11 Nov 2025 00:50:54 +0000 (UTC)
+	 MIME-Version; b=ShBUHhCEno6QQOXldrbL0of5vdOIMVUCieb8MwO6zb6QGHdSWsSmgd2XLIMqag4b1T59kxGTvzSLYi1rEe+Dw4bi0Uz+K9HYPtDgXQTFLuwEr/7cEvyKZmxhQKmGhKzIM5LmyckXXbZ4s0iserxDAGLDSTIS/7uHeFrls/A8iY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYGLogyn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E456BC4CEF5;
+	Tue, 11 Nov 2025 00:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822254;
-	bh=2MnJYnUpESVE9t2XRuaSN79O+7PVpWTBiei3RBBPLPQ=;
+	s=korg; t=1762822262;
+	bh=FOufYa5A1Wnw7YuUxGQUPRtbQVOsOK7YdpwjN2Ak0fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkdctji7+hnpCxFhRyFm/2sW9wDVb/VNV5EfiPGOpBvh8ZA3HBvvLL0srIqLq6JFN
-	 ifMbRVdi47KnVCLQjvoscl659DXTsByDx7OHQauXmRlByIvEDHOVjXz2UMqoWs1AOt
-	 t+Ufub2jfgQHLOrKyZLZPyHETZn1ZAEpa2hrg8fM=
+	b=vYGLogyncqq/VIZtjxLfY+kBLV8ERI5M0wHAAY6RGQdiP5hOvGMzAOe05yKxQwrKs
+	 U1r/0REByZ8Eo0T2EMOSxM9+ijC/Ps+0J5gkz6EAub1OtO9GniGugZebU5S8n2htD8
+	 b64E1F7+q49KOXAlG2hmIeDWpBCjf8LAfRfbXV7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 067/849] drm/msm: Ensure vm is created in VM_BIND ioctl
-Date: Tue, 11 Nov 2025 09:33:57 +0900
-Message-ID: <20251111004538.048432075@linuxfoundation.org>
+Subject: [PATCH 6.17 068/849] ALSA: usb-audio: add mono main switch to Presonus S1824c
+Date: Tue, 11 Nov 2025 09:33:58 +0900
+Message-ID: <20251111004538.070660263@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -65,35 +66,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
 
-[ Upstream commit 00d5f09719aa6c37545be5c05d25a1eaf8f3da7e ]
+[ Upstream commit 659169c4eb21f8d9646044a4f4e1bc314f6f9d0c ]
 
-Since the vm is lazily created, to allow userspace to opt-in to a
-VM_BIND context, we can't assume it is already created.
+The 1824c does not have the A/B switch that the 1810c has,
+but instead it has a mono main switch that sums the two
+main output channels to mono.
 
-Fixes: 2e6a8a1fe2b2 ("drm/msm: Add VM_BIND ioctl")
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/682939/
-Message-ID: <20251022222039.9937-1-robin.clark@oss.qualcomm.com>
+Signed-off-by: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 75cdae446ddf ("ALSA: usb-audio: don't log messages meant for 1810c when initializing 1824c")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem_vma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer_s1810c.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_vma.c b/drivers/gpu/drm/msm/msm_gem_vma.c
-index 381a0853c05ba..b6248f86a5ab1 100644
---- a/drivers/gpu/drm/msm/msm_gem_vma.c
-+++ b/drivers/gpu/drm/msm/msm_gem_vma.c
-@@ -1401,7 +1401,7 @@ msm_ioctl_vm_bind(struct drm_device *dev, void *data, struct drm_file *file)
- 	 * Maybe we could allow just UNMAP ops?  OTOH userspace should just
- 	 * immediately close the device file and all will be torn down.
- 	 */
--	if (to_msm_vm(ctx->vm)->unusable)
-+	if (to_msm_vm(msm_context_vm(dev, ctx))->unusable)
- 		return UERR(EPIPE, dev, "context is unusable");
+diff --git a/sound/usb/mixer_s1810c.c b/sound/usb/mixer_s1810c.c
+index 65bdda0841048..2413a6d96971c 100644
+--- a/sound/usb/mixer_s1810c.c
++++ b/sound/usb/mixer_s1810c.c
+@@ -93,6 +93,7 @@ struct s1810c_ctl_packet {
  
- 	/*
+ #define SC1810C_CTL_LINE_SW	0
+ #define SC1810C_CTL_MUTE_SW	1
++#define SC1824C_CTL_MONO_SW	2
+ #define SC1810C_CTL_AB_SW	3
+ #define SC1810C_CTL_48V_SW	4
+ 
+@@ -123,6 +124,7 @@ struct s1810c_state_packet {
+ #define SC1810C_STATE_48V_SW	58
+ #define SC1810C_STATE_LINE_SW	59
+ #define SC1810C_STATE_MUTE_SW	60
++#define SC1824C_STATE_MONO_SW	61
+ #define SC1810C_STATE_AB_SW	62
+ 
+ struct s1810_mixer_state {
+@@ -502,6 +504,15 @@ static const struct snd_kcontrol_new snd_s1810c_mute_sw = {
+ 	.private_value = (SC1810C_STATE_MUTE_SW | SC1810C_CTL_MUTE_SW << 8)
+ };
+ 
++static const struct snd_kcontrol_new snd_s1824c_mono_sw = {
++	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++	.name = "Mono Main Out Switch",
++	.info = snd_ctl_boolean_mono_info,
++	.get = snd_s1810c_switch_get,
++	.put = snd_s1810c_switch_set,
++	.private_value = (SC1824C_STATE_MONO_SW | SC1824C_CTL_MONO_SW << 8)
++};
++
+ static const struct snd_kcontrol_new snd_s1810c_48v_sw = {
+ 	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
+ 	.name = "48V Phantom Power On Mic Inputs Switch",
+@@ -588,8 +599,17 @@ int snd_sc1810_init_mixer(struct usb_mixer_interface *mixer)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = snd_s1810c_switch_init(mixer, &snd_s1810c_ab_sw);
+-	if (ret < 0)
+-		return ret;
++	// The 1824c has a Mono Main switch instead of a
++	// A/B select switch.
++	if (mixer->chip->usb_id == USB_ID(0x194f, 0x010d)) {
++		ret = snd_s1810c_switch_init(mixer, &snd_s1824c_mono_sw);
++		if (ret < 0)
++			return ret;
++	} else if (mixer->chip->usb_id == USB_ID(0x194f, 0x010c)) {
++		ret = snd_s1810c_switch_init(mixer, &snd_s1810c_ab_sw);
++		if (ret < 0)
++			return ret;
++	}
++
+ 	return ret;
+ }
 -- 
 2.51.0
 
