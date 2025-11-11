@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2573C4A58D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:21:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00F6C4AB83
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73CAD3B5A67
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:15:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4656B4FA4AF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C082DEA77;
-	Tue, 11 Nov 2025 01:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10C526E16C;
+	Tue, 11 Nov 2025 01:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9+Ii1hd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEOlaU1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECD9347FF8;
-	Tue, 11 Nov 2025 01:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC972561A7;
+	Tue, 11 Nov 2025 01:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823220; cv=none; b=ASTp4eujOMBooWTpobrTsl6lu59RZSuxGJEbHNWrLupesDmHroBs96asYEF5RiLqNDkAvGnzj6Mxh2+9PatYUd+rDoJJAqqdbygI9TZgU9LJvHiRQmLyVIAt5j5UK2Hlm6pOw5fHu2acDUcsu8rLm/u4xk0Mq1DoLx2xGtyhhNg=
+	t=1762824387; cv=none; b=nG2oO3Qez0GnrP5qC/0LVAWMZXEyT9kKOFs+TSfCXkLaxZVpKJllJu8/Q1rfl7PY2T0ETNbXnNijYR7HuU9MBTCi6ut+mjW9XUCsP9iaJ8d1RN51aCrM7Jf0zuXlRQ6J/pEJfYqh+iXMy/ZWD1gAX2fmY1pKabKHrEzr+Hb2Hp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823220; c=relaxed/simple;
-	bh=Hk59xLn0zMHI9BHhHcCnOzcbsy3LVte2MDot1uTPgZ0=;
+	s=arc-20240116; t=1762824387; c=relaxed/simple;
+	bh=s+LIl5bwpGjjVMrMi0dEyBqRGFbKUUFv1qeUx7UxONQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rP/nRQC3/8FaS22zZWzNRJzWdC5FM8mdxKn2pmwpYmB7gmI6ArTd5mT2QpvVf307glnFxtjOa8WhqAYG12tyIgRXy0oe4q9lVW2cD5WVrKtSBGFXaLPNtHbeedD7nOlvNCSRKJo/5Gilkc7Iig016j2NLw/m3am9XmfURhG2aTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9+Ii1hd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A575EC19425;
-	Tue, 11 Nov 2025 01:06:59 +0000 (UTC)
+	 MIME-Version; b=RO+RTf5fSmJeYBxkYhGevrL8aCOnNOtn5xFw3z5E8p4F7865hvPv4xj9GDbf/f9MPXE0UV9o7qENSiPEN0YBo04MZq+KohWhfDJ16GUHHgHJtNqN5nSYaOzxnyKJQBJXhD9d86Cbuaifbg/aDUB0TAOjKvpIlmT8HD8a3T0WYOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEOlaU1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C473CC113D0;
+	Tue, 11 Nov 2025 01:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823219;
-	bh=Hk59xLn0zMHI9BHhHcCnOzcbsy3LVte2MDot1uTPgZ0=;
+	s=korg; t=1762824387;
+	bh=s+LIl5bwpGjjVMrMi0dEyBqRGFbKUUFv1qeUx7UxONQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y9+Ii1hd2yQRUQWGT19s0ct+ieAEkQCej19+mI4yyZ9ukqyfu1YkALRyXHVkn9+vw
-	 9LmsdyHd4YNHK2Hkg7DiMjiOK1nAUpTK0ybeyZY7Wfp+/uLqeUaiQrDP3MIadEiCBw
-	 oGmCd59ZlVFUbqPsgT4XfSph9d2Jut6q27qYa3L0=
+	b=UEOlaU1/jXFP4zRvHG7957N1a8O3lxztHnM8k/IqfKGnWIoed9uuRiAAPJ7Gs6vHf
+	 kJM4b3gTjKqxMe8PuQts9/TM3uixRQAkDoaLKnrO692CiOjfUTJztJWumBqsLHFYCw
+	 GRwAe1NFSQtFlMpnepbTwgj3X7h+gryWEiHaxMX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Ming Qian <ming.qian@oss.nxp.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 199/565] media: amphion: Delete v4l2_fh synchronously in .release()
+Subject: [PATCH 6.17 485/849] media: i2c: og01a1b: Specify monochrome media bus format instead of Bayer
 Date: Tue, 11 Nov 2025 09:40:55 +0900
-Message-ID: <20251111004531.405601401@linuxfoundation.org>
+Message-ID: <20251111004548.168098136@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 19fb9c5b815f70eb90d5b545f65b83bc9c490ecd ]
+[ Upstream commit bfbd5aa5347fbd11ade188b316b800bfb27d9e22 ]
 
-The v4l2_fh initialized and added in vpu_v4l2_open() is delete and
-cleaned up when the last reference to the vpu_inst is released. This may
-happen later than at vpu_v4l2_close() time.
+The OmniVision OG01A1B image sensor is a monochrome sensor, it supports
+8-bit and 10-bit RAW output formats only.
 
-Not deleting and cleaning up the v4l2_fh when closing the file handle to
-the video device is not ideal, as the v4l2_fh will still be present in
-the video device's fh_list, and will store a copy of events queued to
-the video device. There may also be other side effects of keeping alive
-an object that represents an open file handle after the file handle is
-closed.
+That said the planar greyscale Y8/Y10 media formats are more appropriate
+for the sensor instead of the originally and arbitrary selected SGRBG one,
+since there is no red, green or blue color components.
 
-The v4l2_fh instance is embedded in the vpu_inst structure, and is
-accessed in two different ways:
-
-- in vpu_notify_eos() and vpu_notify_source_change(), to queue V4L2
-  events to the file handle ; and
-
-- through the driver to access the v4l2_fh.m2m_ctx pointer.
-
-The v4l2_fh.m2m_ctx pointer is not touched by v4l2_fh_del() and
-v4l2_fh_exit(). It is set to NULL by the driver when closing the file
-handle, in vpu_v4l2_close().
-
-The vpu_notify_eos() and vpu_notify_source_change() functions are called
-in vpu_set_last_buffer_dequeued() and vdec_handle_resolution_change()
-respectively, only if the v4l2_fh.m2m_ctx pointer is not NULL. There is
-therefore a guarantee that no new event will be queued to the v4l2_fh
-after vpu_v4l2_close() destroys the m2m_ctx.
-
-The vpu_notify_eos() function is also called from vpu_vb2_buf_finish(),
-which is guaranteed to be called for all queued buffers when
-vpu_v4l2_close() calls v4l2_m2m_ctx_release(), and will not be called
-later.
-
-It is therefore safe to assume that the driver will not touch the
-v4l2_fh, except to check the m2m_ctx pointer, after vpu_v4l2_close()
-destroys the m2m_ctx. We can safely delete and cleanup the v4l2_fh
-synchronously in vpu_v4l2_close().
-
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Ming Qian <ming.qian@oss.nxp.com>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vpu_v4l2.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/media/i2c/og01a1b.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/platform/amphion/vpu_v4l2.c
-index f0b1ec79d2961..7f66bfef2abbe 100644
---- a/drivers/media/platform/amphion/vpu_v4l2.c
-+++ b/drivers/media/platform/amphion/vpu_v4l2.c
-@@ -709,8 +709,6 @@ static int vpu_v4l2_release(struct vpu_inst *inst)
+diff --git a/drivers/media/i2c/og01a1b.c b/drivers/media/i2c/og01a1b.c
+index 78d5d406e4b72..b7d0b677975d5 100644
+--- a/drivers/media/i2c/og01a1b.c
++++ b/drivers/media/i2c/og01a1b.c
+@@ -682,7 +682,7 @@ static void og01a1b_update_pad_format(const struct og01a1b_mode *mode,
+ {
+ 	fmt->width = mode->width;
+ 	fmt->height = mode->height;
+-	fmt->code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	fmt->code = MEDIA_BUS_FMT_Y10_1X10;
+ 	fmt->field = V4L2_FIELD_NONE;
+ }
  
- 	v4l2_ctrl_handler_free(&inst->ctrl_handler);
- 	mutex_destroy(&inst->lock);
--	v4l2_fh_del(&inst->fh);
--	v4l2_fh_exit(&inst->fh);
+@@ -828,7 +828,7 @@ static int og01a1b_enum_mbus_code(struct v4l2_subdev *sd,
+ 	if (code->index > 0)
+ 		return -EINVAL;
  
- 	call_void_vop(inst, cleanup);
- 
-@@ -779,6 +777,8 @@ int vpu_v4l2_open(struct file *file, struct vpu_inst *inst)
+-	code->code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	code->code = MEDIA_BUS_FMT_Y10_1X10;
  
  	return 0;
- error:
-+	v4l2_fh_del(&inst->fh);
-+	v4l2_fh_exit(&inst->fh);
- 	vpu_inst_put(inst);
- 	return ret;
  }
-@@ -798,6 +798,9 @@ int vpu_v4l2_close(struct file *file)
- 	call_void_vop(inst, release);
- 	vpu_inst_unlock(inst);
+@@ -840,7 +840,7 @@ static int og01a1b_enum_frame_size(struct v4l2_subdev *sd,
+ 	if (fse->index >= ARRAY_SIZE(supported_modes))
+ 		return -EINVAL;
  
-+	v4l2_fh_del(&inst->fh);
-+	v4l2_fh_exit(&inst->fh);
-+
- 	vpu_inst_unregister(inst);
- 	vpu_inst_put(inst);
+-	if (fse->code != MEDIA_BUS_FMT_SGRBG10_1X10)
++	if (fse->code != MEDIA_BUS_FMT_Y10_1X10)
+ 		return -EINVAL;
  
+ 	fse->min_width = supported_modes[fse->index].width;
 -- 
 2.51.0
 
