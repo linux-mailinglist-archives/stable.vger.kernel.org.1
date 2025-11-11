@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-194151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A036EC4ADC9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B98C4B238
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:02:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78CC7189606B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A94F4201DE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4E7333730;
-	Tue, 11 Nov 2025 01:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E5A3093C0;
+	Tue, 11 Nov 2025 01:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4hvw909"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7WqNoiy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BC0329399;
-	Tue, 11 Nov 2025 01:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906CF304BDC;
+	Tue, 11 Nov 2025 01:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824923; cv=none; b=iVD/6h6gHXCDaW8j/npiJITHeq45imcYSRfmJpZ9co8qHKtenH87rhF6V2HMjtKd7sr/eriFsd4oz+2woNmqxBMwMU989KvR6+0xracmR/en0al+nbf9Cg+Iw9vhyH3PXToHiqEB8hmgQvBPse2RwYZZz5gkYd9Z+7wEi9I+Uz4=
+	t=1762825524; cv=none; b=pozhKlfDLWLdeF1zN7FAQDW3JToo/r1HVfrmsgrtqW5Rla+wfWDNR7Kbieo4iUh9erDsvWtQGFuJTfLpfNtU/X9ypq1Ew0n5OIFcwRZs69LYl9WTYWij9z5sYXdr6JQv4YaDbrKlZElrk+bPzSH/U7rSbnH4hpxgYQALBQx/Ph4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824923; c=relaxed/simple;
-	bh=PwNjDOUE8Kdw7hKPYH60fIWDJbNCV7WTYG1BiUT0kgg=;
+	s=arc-20240116; t=1762825524; c=relaxed/simple;
+	bh=uLkN/DMyWvuCnEU4u2DRbycyuZbEaubuiZa9DLVH8Lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FtMpvFLilNhBWqpcINlONrBbASenCusYvlTszAQ2LQfK1i49PGEprDD2QPuF62pRMYPCpMIYitv/dxNdGTWkFWVFeq8DAa2m1YDTw/3MUQj5VaurNrsunZDTNjryvEhcDaTwRrPySxDkbQdOeD7avh7rs1wT2Cy7sIHmzUedNcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4hvw909; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E912EC113D0;
-	Tue, 11 Nov 2025 01:35:22 +0000 (UTC)
+	 MIME-Version; b=AGix9vkiKkmEAV0fV7tYlVmyXJAJtxLwS6pviVr9znQIth3pZt+g6KcKGnM8M5ZdMkgKsHbgAau61uHEYUktMfGcntA/r0L5DJPE95ybMrhT/c3fGFb48IucMN336vaR544BuuMwXVXEiWi6A//wDpHDlkmRl09BL7TLbTJGFro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7WqNoiy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9F6C16AAE;
+	Tue, 11 Nov 2025 01:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824923;
-	bh=PwNjDOUE8Kdw7hKPYH60fIWDJbNCV7WTYG1BiUT0kgg=;
+	s=korg; t=1762825524;
+	bh=uLkN/DMyWvuCnEU4u2DRbycyuZbEaubuiZa9DLVH8Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a4hvw909a0bG72FJjS+YMHM2XVtu8coEGoT4OefDAMD4zI2od9bobdOLQyWIY3JU8
-	 JofbVqA8PthJFUp7mZ0cIx7qfn+eDMA60IeUPRu2LpvdYdVLn181+S6j4XqYdLMbTS
-	 NNe53PFyWi8je1s2QX7pPUgVJBgfIghoNaiP3zAQ=
+	b=Z7WqNoiyejGPnzCAeK2ZsqUgs3HRA/nA5vtMVz2+LoiYTV4o68HF8IFoZ2WF+njZO
+	 aPWOHkqbrPV7IbKizEqOaoRdIXD4xklz/1oixcoXzAXl9NdoCcNRpRK/v53mlJDQyn
+	 JAvmJpGODtTD/t1D/Ev8sS5FKMRmk4Xj/1kFyMA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Shin <jaeshin@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 551/565] smb: client: fix potential UAF in smb2_close_cached_fid()
-Date: Tue, 11 Nov 2025 09:46:47 +0900
-Message-ID: <20251111004539.394534776@linuxfoundation.org>
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.17 838/849] ALSA: hda/tas2781: Enable init_profile_id for device initialization
+Date: Tue, 11 Nov 2025 09:46:48 +0900
+Message-ID: <20251111004556.683005115@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henrique Carvalho <henrique.carvalho@suse.com>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-commit 734e99623c5b65bf2c03e35978a0b980ebc3c2f8 upstream.
+commit 7ddb711b6e0d33e0a673b49f69dff0d950ed60b9 upstream.
 
-find_or_create_cached_dir() could grab a new reference after kref_put()
-had seen the refcount drop to zero but before cfid_list_lock is acquired
-in smb2_close_cached_fid(), leading to use-after-free.
+Optimize the time consumption of profile switching, init_profile saves
+the common settings of different profiles, such as the dsp coefficients,
+etc, which can greatly reduce the profile switching time comsumption and
+remove the repetitive settings.
 
-Switch to kref_put_lock() so cfid_release() is called with
-cfid_list_lock held, closing that gap.
-
-Fixes: ebe98f1447bb ("cifs: enable caching of directories for which a lease is held")
-Cc: stable@vger.kernel.org
-Reported-by: Jay Shin <jaeshin@redhat.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: e83dcd139e77 ("ASoC: tas2781: Add keyword "init" in profile section")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cached_dir.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ sound/hda/codecs/side-codecs/tas2781_hda_i2c.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -362,11 +362,11 @@ out:
- 			 * lease. Release one here, and the second below.
- 			 */
- 			cfid->has_lease = false;
--			kref_put(&cfid->refcount, smb2_close_cached_fid);
-+			close_cached_dir(cfid);
- 		}
- 		spin_unlock(&cfids->cfid_list_lock);
+--- a/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
++++ b/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
+@@ -472,6 +472,12 @@ static void tasdevice_dspfw_init(void *c
+ 	if (tas_priv->fmw->nr_configurations > 0)
+ 		tas_priv->cur_conf = 0;
  
--		kref_put(&cfid->refcount, smb2_close_cached_fid);
-+		close_cached_dir(cfid);
- 	} else {
- 		*ret_cfid = cfid;
- 		atomic_inc(&tcon->num_remote_opens);
-@@ -406,12 +406,14 @@ int open_cached_dir_by_dentry(struct cif
- 
- static void
- smb2_close_cached_fid(struct kref *ref)
-+__releases(&cfid->cfids->cfid_list_lock)
- {
- 	struct cached_fid *cfid = container_of(ref, struct cached_fid,
- 					       refcount);
- 	int rc;
- 
--	spin_lock(&cfid->cfids->cfid_list_lock);
-+	lockdep_assert_held(&cfid->cfids->cfid_list_lock);
++	/* Init common setting for different audio profiles */
++	if (tas_priv->rcabin.init_profile_id >= 0)
++		tasdevice_select_cfg_blk(tas_priv,
++			tas_priv->rcabin.init_profile_id,
++			TASDEVICE_BIN_BLK_PRE_POWER_UP);
 +
- 	if (cfid->on_list) {
- 		list_del(&cfid->entry);
- 		cfid->on_list = false;
-@@ -446,7 +448,7 @@ void drop_cached_dir_by_name(const unsig
- 	spin_lock(&cfid->cfids->cfid_list_lock);
- 	if (cfid->has_lease) {
- 		cfid->has_lease = false;
--		kref_put(&cfid->refcount, smb2_close_cached_fid);
-+		close_cached_dir(cfid);
- 	}
- 	spin_unlock(&cfid->cfids->cfid_list_lock);
- 	close_cached_dir(cfid);
-@@ -455,7 +457,7 @@ void drop_cached_dir_by_name(const unsig
+ 	/* If calibrated data occurs error, dsp will still works with default
+ 	 * calibrated data inside algo.
+ 	 */
+@@ -760,6 +766,12 @@ static int tas2781_system_resume(struct
+ 	tasdevice_reset(tas_hda->priv);
+ 	tasdevice_prmg_load(tas_hda->priv, tas_hda->priv->cur_prog);
  
- void close_cached_dir(struct cached_fid *cfid)
- {
--	kref_put(&cfid->refcount, smb2_close_cached_fid);
-+	kref_put_lock(&cfid->refcount, smb2_close_cached_fid, &cfid->cfids->cfid_list_lock);
- }
++	/* Init common setting for different audio profiles */
++	if (tas_hda->priv->rcabin.init_profile_id >= 0)
++		tasdevice_select_cfg_blk(tas_hda->priv,
++			tas_hda->priv->rcabin.init_profile_id,
++			TASDEVICE_BIN_BLK_PRE_POWER_UP);
++
+ 	if (tas_hda->priv->playback_started)
+ 		tasdevice_tuning_switch(tas_hda->priv, 0);
  
- /*
-@@ -566,7 +568,7 @@ cached_dir_offload_close(struct work_str
- 
- 	WARN_ON(cfid->on_list);
- 
--	kref_put(&cfid->refcount, smb2_close_cached_fid);
-+	close_cached_dir(cfid);
- 	cifs_put_tcon(tcon, netfs_trace_tcon_ref_put_cached_close);
- }
- 
-@@ -743,7 +745,7 @@ static void cfids_laundromat_worker(stru
- 			 * Drop the ref-count from above, either the lease-ref (if there
- 			 * was one) or the extra one acquired.
- 			 */
--			kref_put(&cfid->refcount, smb2_close_cached_fid);
-+			close_cached_dir(cfid);
- 	}
- 	queue_delayed_work(cfid_put_wq, &cfids->laundromat_work,
- 			   dir_cache_timeout * HZ);
 
 
 
