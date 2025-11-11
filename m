@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-193618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2776C4A80F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19932C4AD1F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93430188E083
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8527118902C9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C882D97A4;
-	Tue, 11 Nov 2025 01:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6D43043BA;
+	Tue, 11 Nov 2025 01:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+w5OPXm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="laRr7jA8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0C5263F52;
-	Tue, 11 Nov 2025 01:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9F8303A1C;
+	Tue, 11 Nov 2025 01:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823608; cv=none; b=rLbZqDYHWv4uLH7iguuY0J+wehLm/g2NUu/EFHCc0jwa5srP5Z4HMsoA8YEdWnSbND4c2ZN5SbCcxspRxnwp+F/bbEEJrnE1HPYk0+ng3ryKcRpla8LiKAzUiIwU1G6uB0vIYGPMcHO3j32a0uQuIrB4UbXLl7xyU9/K5Z//1TU=
+	t=1762824795; cv=none; b=X6h4s/0LOfK+atMiRLVks1xV3R6uHIXdtP1fPfTC9SgclvMxwcRjUEUvilUoAKaPiWU8IFhlgbi1uXQoXH2or1RqX3aE3T5IZw94ktX9+D/FeWITVVBNJB2wmoIeT8w3/VcxW8DLu6sHTwTIOS4ER5F1VpFbge9TqPm5ftFyNv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823608; c=relaxed/simple;
-	bh=wauE9aZTGxd/FkJuO4pvuzvmBp0eGXz5ZMkzjHnGi4s=;
+	s=arc-20240116; t=1762824795; c=relaxed/simple;
+	bh=VrroIApCN0fTLGiHxq5J03MPJnTVqzB0nW/MLgeAnDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNguCjUX0QfyVtgKUbrjiAKJ+VRI+pwnXebs6qm97HAaN2TgfIhklsVWD2BiLRlmWhYCgfWF8vL2DUFiFYzFBroj7ic8rTzIr4lBe9Oe+jCGNmXmZHf8FS6katZUnDB/qYMWvdFzJe//91xz13OTIB9HuiDaOcXCP9fpS+CcY5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+w5OPXm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35832C4CEF5;
-	Tue, 11 Nov 2025 01:13:28 +0000 (UTC)
+	 MIME-Version; b=OxvQM2hZDxM4MQ46NM6kcHgCBKjmPtwxm+HwVDZK6BkWrP/JXpuKBNoE18PZqBtUVk2l/8RcYkKXOgzcClY+UnAN0iAFPeBaQYcgmo5OUvrhWWKhz6ryz8QTKlVSmYR0slVtVJq1T3Q/dWRVnXMK3wbkxo6y3Uy5Pzo/L1mY+pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=laRr7jA8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593A3C16AAE;
+	Tue, 11 Nov 2025 01:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823608;
-	bh=wauE9aZTGxd/FkJuO4pvuzvmBp0eGXz5ZMkzjHnGi4s=;
+	s=korg; t=1762824795;
+	bh=VrroIApCN0fTLGiHxq5J03MPJnTVqzB0nW/MLgeAnDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1+w5OPXmybj1T+ZIP5tWvZq68HtXoy7eoQ6DoNlO84dIfdjOOjEX1OjZcFV4R/IN5
-	 CQJrIrV6A1naCPe9MWTyuWrs/YsCANMR13uQZo3THcm4UPhobD6yXiPZu4tnPl43sB
-	 PZgs1yVttbyheJU7Aa+QScqEN5DtEBBbdtvpYMuw=
+	b=laRr7jA8tSQxMirsLdkCIVmClVllbbAGeShAiwGkXqGOh1oq9p9VXsPJejerYi/hn
+	 dx9eQhU+S13YgNsNDeVgmvnZjerM9y+OL+ZchIQxLPKhJvy3GmbUWXsbG4L1vTi6Iu
+	 d6nVzTPPudMq/0bglft42IqsF2sMqjBuGip9ArsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Avri Altman <avri.altman@sandisk.com>,
+	Nitin Rawat <quic_nitirawa@quicinc.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 285/565] drm/msm/dsi/phy_7nm: Fix missing initial VCO rate
+Subject: [PATCH 6.17 571/849] scsi: ufs: core: Disable timestamp functionality if not supported
 Date: Tue, 11 Nov 2025 09:42:21 +0900
-Message-ID: <20251111004533.289985963@linuxfoundation.org>
+Message-ID: <20251111004550.219818985@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +66,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 5ddcb0cb9d10e6e70a68e0cb8f0b8e3a7eb8ccaf ]
+[ Upstream commit fb1f4568346153d2f80fdb4ffcfa0cf4fb257d3c ]
 
-Driver unconditionally saves current state on first init in
-dsi_pll_7nm_init(), but does not save the VCO rate, only some of the
-divider registers.  The state is then restored during probe/enable via
-msm_dsi_phy_enable() -> msm_dsi_phy_pll_restore_state() ->
-dsi_7nm_pll_restore_state().
+Some Kioxia UFS 4 devices do not support the qTimestamp attribute.  Set
+the UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT for these devices such that no
+error messages appear in the kernel log about failures to set the
+qTimestamp attribute.
 
-Restoring calls dsi_pll_7nm_vco_set_rate() with
-pll_7nm->vco_current_rate=0, which basically overwrites existing rate of
-VCO and messes with clock hierarchy, by setting frequency to 0 to clock
-tree.  This makes anyway little sense - VCO rate was not saved, so
-should not be restored.
-
-If PLL was not configured configure it to minimum rate to avoid glitches
-and configuring entire in clock hierarchy to 0 Hz.
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/657827/
-Link: https://lore.kernel.org/r/20250610-b4-sm8750-display-v6-9-ee633e3ddbff@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Avri Altman <avri.altman@sandisk.com>
+Tested-by: Nitin Rawat <quic_nitirawa@quicinc.com> # on SM8650-QRD
+Reviewed-by: Nitin Rawat <quic_nitirawa@quicinc.com>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Message-ID: <20250909190614.3531435-1-bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/ufs/core/ufshcd.c | 6 +++++-
+ include/ufs/ufs_quirks.h  | 3 +++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-index ec5aa8cb37d9a..0f8440fa73b4a 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-@@ -814,6 +814,12 @@ static int dsi_pll_7nm_init(struct msm_dsi_phy *phy)
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 8bb6c48216963..bd6d1d4c82427 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -316,6 +316,9 @@ static const struct ufs_dev_quirk ufs_fixups[] = {
+ 	{ .wmanufacturerid = UFS_VENDOR_TOSHIBA,
+ 	  .model = "THGLF2G9D8KBADG",
+ 	  .quirk = UFS_DEVICE_QUIRK_PA_TACTIVATE },
++	{ .wmanufacturerid = UFS_VENDOR_TOSHIBA,
++	  .model = "THGJFJT1E45BATP",
++	  .quirk = UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT },
+ 	{}
+ };
  
- 	/* TODO: Remove this when we have proper display handover support */
- 	msm_dsi_phy_pll_save_state(phy);
-+	/*
-+	 * Store also proper vco_current_rate, because its value will be used in
-+	 * dsi_7nm_pll_restore_state().
-+	 */
-+	if (!dsi_pll_7nm_vco_recalc_rate(&pll_7nm->clk_hw, VCO_REF_CLK_RATE))
-+		pll_7nm->vco_current_rate = pll_7nm->phy->cfg->min_pll_rate;
+@@ -8794,7 +8797,8 @@ static void ufshcd_set_timestamp_attr(struct ufs_hba *hba)
+ 	struct ufs_dev_info *dev_info = &hba->dev_info;
+ 	struct utp_upiu_query_v4_0 *upiu_data;
  
- 	return 0;
- }
+-	if (dev_info->wspecversion < 0x400)
++	if (dev_info->wspecversion < 0x400 ||
++	    hba->dev_quirks & UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT)
+ 		return;
+ 
+ 	ufshcd_dev_man_lock(hba);
+diff --git a/include/ufs/ufs_quirks.h b/include/ufs/ufs_quirks.h
+index f52de5ed1b3b6..83563247c36cb 100644
+--- a/include/ufs/ufs_quirks.h
++++ b/include/ufs/ufs_quirks.h
+@@ -113,4 +113,7 @@ struct ufs_dev_quirk {
+  */
+ #define UFS_DEVICE_QUIRK_PA_HIBER8TIME          (1 << 12)
+ 
++/* Some UFS 4 devices do not support the qTimestamp attribute */
++#define UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT	(1 << 13)
++
+ #endif /* UFS_QUIRKS_H_ */
 -- 
 2.51.0
 
