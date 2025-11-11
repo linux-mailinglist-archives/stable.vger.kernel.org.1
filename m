@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4E9C4A857
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60913C4AEE0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F07818957FF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 371363BB02F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640433446DC;
-	Tue, 11 Nov 2025 01:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEEB3043C7;
+	Tue, 11 Nov 2025 01:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfPDr4xw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDq374Ue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0133446DE;
-	Tue, 11 Nov 2025 01:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989FE262FEC;
+	Tue, 11 Nov 2025 01:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823618; cv=none; b=ZV5on8NGl2KMmOYHVKgqmKCvyHS3SBTQtrK5oaVbOfUASEoolI2aFcGb7i+qGoHDe3pskVH5aQp+GCW6x575e+caGy4xzheZvwiR2UZaWSThj0ubLE6EG8i/bJ2UaSoLpJRK+9YErnvrqj+KssK+5wdPgYBPb2/nslJ2a5BIdKA=
+	t=1762824804; cv=none; b=amxHj6V8zLBK9T2/M08P7uCgr56ZAW/Uxaw0DwPwdttVItSeD0A5gwR5Ge4EviA7efkI61uFMSk24xWUzZ/VitRUhBSSMSCgcNIBFOdAFB37BjZrEPxLT4Ve9eifTcavTtZq30dv7oxXRhMh3hE0kDD29q3kZdeoF9+OQ03oyfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823618; c=relaxed/simple;
-	bh=na8uSJiSgUd2+awJe4dibEW3+zzhjO7a3jAmAVjK4as=;
+	s=arc-20240116; t=1762824804; c=relaxed/simple;
+	bh=Omnva8yei8b0gQISdXgIiXHtfBIPZr0KpUw3MMMSIc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxx7u5+q59iYK6DKMVc+HA35GBuhi7OzH5h3xn8GfHYkh9pBlgnxpfZ8rV8oxTiqJWCMhIocVPn1C2LeN1iv/k95XEXvwbgFBb28cPbRaEO1HhB1VYFjE5FKCVIdyEAl315uXy+iIJ8JgaUNInUhZaWo41mr0zUZfKLroUIHZzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfPDr4xw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B126FC16AAE;
-	Tue, 11 Nov 2025 01:13:37 +0000 (UTC)
+	 MIME-Version; b=X1C3oNBr9hG3a+2kcJJha7efb+sO1py7y8jvv58V4XCW2QDLwMkfuZ+Fk3f+OLm+7CmeuBlSIGV4d129Ml38Stx3UL/sxc39fM/dILba+47cShI9/EllmgTkvw/wvBxvCUxLUGlHVZhRv18DYKNyki9obDdw0/AlMIgwGogdGsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDq374Ue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E08C4CEFB;
+	Tue, 11 Nov 2025 01:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823618;
-	bh=na8uSJiSgUd2+awJe4dibEW3+zzhjO7a3jAmAVjK4as=;
+	s=korg; t=1762824804;
+	bh=Omnva8yei8b0gQISdXgIiXHtfBIPZr0KpUw3MMMSIc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfPDr4xwEUswYVl7JmqBOyz+aMZtlc3rNFCl8lIlEbjZ10ZsVPrIWgiu6aG/YIGQH
-	 uc2MVbd0psRE81JIeOaCSEPffFrk2wXJuItz7OYq17aU3CUNo1SFX+d1DWWei+3cwC
-	 ynr+6lUqri+cFF4Wql74dExcBSVvj6S6rSeSSuFg=
+	b=EDq374UezJMk7XiJYjZFGE5Ubypu9ID22aKuqzCRut4rS7ILwHeSH335alWLUmTDV
+	 jAztEA5zK4G84Ypv0pcMeU05oSLBA7d7/ScDGvXoY8mxeqvHDY0JftQplDDHZ6VGJr
+	 SQYq3odkYSlde2ji++nQVnHc5iRSyTxmBmKeWRhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhanjun Dong <zhanjun.dong@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 287/565] drm/xe/guc: Increase GuC crash dump buffer size
+Subject: [PATCH 6.17 573/849] scsi: lpfc: Decrement ndlp kref after FDISC retries exhausted
 Date: Tue, 11 Nov 2025 09:42:23 +0900
-Message-ID: <20251111004533.334178155@linuxfoundation.org>
+Message-ID: <20251111004550.273093363@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhanjun Dong <zhanjun.dong@intel.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit ad83b1da5b786ee2d245e41ce55cb1c71fed7c22 ]
+[ Upstream commit b5bf6d681fce69cd1a57bfc0f1bdbbb348035117 ]
 
-There are platforms already have a maximum dump size of 12KB, to avoid
-data truncating, increase GuC crash dump buffer size to 16KB.
+The kref for Fabric_DID ndlps is not decremented after repeated FDISC
+failures and exhausting maximum allowed retries.  This can leave the
+ndlp lingering unnecessarily.  Add a test and set bit operation for the
+NLP_DROPPED flag. If not previously set, then a kref is decremented. The
+ndlp is freed when the remaining reference for the completing ELS is
+put.
 
-Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Link: https://lore.kernel.org/r/20250829160427.1245732-1-zhanjun.dong@intel.com
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Message-ID: <20250915180811.137530-6-justintee8345@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_log.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_els.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_log.h b/drivers/gpu/drm/xe/xe_guc_log.h
-index 2d25ab28b4b3a..1c673c2fbd567 100644
---- a/drivers/gpu/drm/xe/xe_guc_log.h
-+++ b/drivers/gpu/drm/xe/xe_guc_log.h
-@@ -15,7 +15,7 @@ struct drm_printer;
- #define DEBUG_BUFFER_SIZE       SZ_8M
- #define CAPTURE_BUFFER_SIZE     SZ_2M
- #else
--#define CRASH_BUFFER_SIZE	SZ_8K
-+#define CRASH_BUFFER_SIZE	SZ_16K
- #define DEBUG_BUFFER_SIZE	SZ_64K
- #define CAPTURE_BUFFER_SIZE	SZ_16K
- #endif
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index fca81e0c7c2e1..4c405bade4f34 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -11259,6 +11259,11 @@ lpfc_cmpl_els_fdisc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+ 		lpfc_vlog_msg(vport, KERN_WARNING, LOG_ELS,
+ 			      "0126 FDISC cmpl status: x%x/x%x)\n",
+ 			      ulp_status, ulp_word4);
++
++		/* drop initial reference */
++		if (!test_and_set_bit(NLP_DROPPED, &ndlp->nlp_flag))
++			lpfc_nlp_put(ndlp);
++
+ 		goto fdisc_failed;
+ 	}
+ 
 -- 
 2.51.0
 
