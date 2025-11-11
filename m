@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-193582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9241C4A7AA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:34 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57701C4A569
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:20:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 303BE1886B3E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D1D6F34BEE9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC8F3431E3;
-	Tue, 11 Nov 2025 01:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFD22C2357;
+	Tue, 11 Nov 2025 01:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpGX9EDh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Si6jTwPx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C535F342CBB;
-	Tue, 11 Nov 2025 01:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2AF342CBC;
+	Tue, 11 Nov 2025 01:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823524; cv=none; b=Ms0NynK1IBT1OpLRCF+LRErVZV2yoAXw/sHAB6oe5oQUKdu+cyuW62Pq65Ne9VqoPbbdhmohZTnoCmun1WBAOlZCm2TmyTdjjllWHcBAkWgLUGE5Pvp6wzZMf7cYZQG2X4h9fy8CJn5UR2s8oRnWUizaJcAZG2rzbOhfGg1Q/zk=
+	t=1762823530; cv=none; b=XAMVFyQ32lzP6S2NT06mzjTUXBQwzEQ7XkrVdUa50FjnZ4/+qjTbNfHOKXU4g5JXkkt7Nx989AK7tUPfPkZUka9WFZvgobDZJsGnY0WI6z8O1ihZziI77IVa9U4kGHOHlqUqgL5Px80Mzn3alaE/RW0HgmdkgTWAiEHmtcHPUFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823524; c=relaxed/simple;
-	bh=dzW6vPopAHg/ll2QICGA7JIMgw0B4PsUo+Hk3Dkxx2A=;
+	s=arc-20240116; t=1762823530; c=relaxed/simple;
+	bh=sy0+hcoknFGYV54hX4DSBMWU+ocaVIupXvQIPQgnLHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xuuuon+HZRXbV/QBxyTmrFRM2L4OnRxj2G9xsSuR27HpKp7Riop1afZPQmH2/45qBlDZRu871r4C9rzQG6N5MkMvmH1n0pPmrzCQWdBy7t2+1uQ79U4GYlt9gxnoWSQL3lNXrG/jk+eZ0l8BAstUaUeJca9yRM/i+UXdd4IydQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpGX9EDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D21C4CEF5;
-	Tue, 11 Nov 2025 01:12:04 +0000 (UTC)
+	 MIME-Version; b=EsyabfaCgG0TDVYnju26vSLA4MslRqpPOelvX5optqB2vdc76zcWFIlfqFT71HZG2j+/xKIBz1ojRaZ+3KG19elhoj0mZKA2/6rjooVPhCFLBp0bp1LYd5v4Z7ijwwIn4Q6QhE8Y25U7duhv76Vfv4vmm1sNQbX2z74wrUpb5kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Si6jTwPx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F63C2BC86;
+	Tue, 11 Nov 2025 01:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823524;
-	bh=dzW6vPopAHg/ll2QICGA7JIMgw0B4PsUo+Hk3Dkxx2A=;
+	s=korg; t=1762823529;
+	bh=sy0+hcoknFGYV54hX4DSBMWU+ocaVIupXvQIPQgnLHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EpGX9EDhc5sAysxTPKIhQgBQ0Es/r5icvYzdTW927dUZb1EBf+snrT9uIm56O7aDD
-	 aJVthDmixK5jLx3sDmS3TQCZwfEva5/e3lcWpxUhD1rdNDBkDUi/GYxXcmopmVguy+
-	 F3v22BvywLu6Pjq4nw7qVxyNg/Xblq+//AvEjrKk=
+	b=Si6jTwPx/xyy4M+fNav0BHH0uD8xVSHuc8g3bkbUgXpVJnnqeVPc4VZ6Uv8wJeQy8
+	 oVjSr4y58dcu2i7rwvroMhbBn5bhX9BN5gs903zXeqOhn2VBftS6Yl8spJ6e0A/uag
+	 q0ZgYFk6igS60a+eJIPS68bfrJ81K3hxjAjPPacI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20T=C5=AFma?= <martin.tuma@digiteqautomotive.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 263/565] media: pci: mgb4: Fix timings comparison in VIDIOC_S_DV_TIMINGS
-Date: Tue, 11 Nov 2025 09:41:59 +0900
-Message-ID: <20251111004532.810001784@linuxfoundation.org>
+Subject: [PATCH 6.12 264/565] ASoC: SOF: ipc4-pcm: Add fixup for channels
+Date: Tue, 11 Nov 2025 09:42:00 +0900
+Message-ID: <20251111004532.832321544@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -60,42 +63,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Tůma <martin.tuma@digiteqautomotive.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 0750649b528ff18d1d68aecb45b34ec22d5ab778 ]
+[ Upstream commit 6ad299a9b968e1c63988e2a327295e522cf6bbf5 ]
 
-Compare the whole v4l2_bt_timings struct, not just the width/height when
-setting new timings. Timings with the same resolution and different
-pixelclock can now be properly set.
+We can have modules in path which can change the number of channels and in
+this case the BE params needs to be adjusted to configure the DAI according
+to the copier configuration.
 
-Signed-off-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Message-ID: <20250829105305.31818-2-peter.ujfalusi@linux.intel.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/mgb4/mgb4_vin.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/sof/ipc4-pcm.c | 56 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-diff --git a/drivers/media/pci/mgb4/mgb4_vin.c b/drivers/media/pci/mgb4/mgb4_vin.c
-index e9332abb31729..cfb6be8a81669 100644
---- a/drivers/media/pci/mgb4/mgb4_vin.c
-+++ b/drivers/media/pci/mgb4/mgb4_vin.c
-@@ -624,8 +624,7 @@ static int vidioc_s_dv_timings(struct file *file, void *fh,
- 	    timings->bt.height < video_timings_cap.bt.min_height ||
- 	    timings->bt.height > video_timings_cap.bt.max_height)
- 		return -EINVAL;
--	if (timings->bt.width == vindev->timings.bt.width &&
--	    timings->bt.height == vindev->timings.bt.height)
-+	if (v4l2_match_dv_timings(timings, &vindev->timings, 0, false))
- 		return 0;
- 	if (vb2_is_busy(&vindev->queue))
- 		return -EBUSY;
+diff --git a/sound/soc/sof/ipc4-pcm.c b/sound/soc/sof/ipc4-pcm.c
+index b11279f9d3c97..5e877dc921b1e 100644
+--- a/sound/soc/sof/ipc4-pcm.c
++++ b/sound/soc/sof/ipc4-pcm.c
+@@ -675,6 +675,58 @@ static int sof_ipc4_pcm_dai_link_fixup_rate(struct snd_sof_dev *sdev,
+ 	return 0;
+ }
+ 
++static int sof_ipc4_pcm_dai_link_fixup_channels(struct snd_sof_dev *sdev,
++						struct snd_pcm_hw_params *params,
++						struct sof_ipc4_copier *ipc4_copier)
++{
++	struct sof_ipc4_pin_format *pin_fmts = ipc4_copier->available_fmt.input_pin_fmts;
++	struct snd_interval *channels = hw_param_interval(params, SNDRV_PCM_HW_PARAM_CHANNELS);
++	int num_input_formats = ipc4_copier->available_fmt.num_input_formats;
++	unsigned int fe_channels = params_channels(params);
++	bool fe_be_match = false;
++	bool single_be_channels = true;
++	unsigned int be_channels, val;
++	int i;
++
++	if (WARN_ON_ONCE(!num_input_formats))
++		return -EINVAL;
++
++	/*
++	 * Copier does not change channels, so we
++	 * need to only consider the input pin information.
++	 */
++	be_channels = SOF_IPC4_AUDIO_FORMAT_CFG_CHANNELS_COUNT(pin_fmts[0].audio_fmt.fmt_cfg);
++	for (i = 0; i < num_input_formats; i++) {
++		val = SOF_IPC4_AUDIO_FORMAT_CFG_CHANNELS_COUNT(pin_fmts[i].audio_fmt.fmt_cfg);
++
++		if (val != be_channels)
++			single_be_channels = false;
++
++		if (val == fe_channels) {
++			fe_be_match = true;
++			break;
++		}
++	}
++
++	/*
++	 * If channels is different than FE channels, topology must contain a
++	 * module which can change the number of channels. But we do require
++	 * topology to define a single channels in the DAI copier config in
++	 * this case (FE channels may be variable).
++	 */
++	if (!fe_be_match) {
++		if (!single_be_channels) {
++			dev_err(sdev->dev, "Unable to select channels for DAI link\n");
++			return -EINVAL;
++		}
++
++		channels->min = be_channels;
++		channels->max = be_channels;
++	}
++
++	return 0;
++}
++
+ static int sof_ipc4_pcm_dai_link_fixup(struct snd_soc_pcm_runtime *rtd,
+ 				       struct snd_pcm_hw_params *params)
+ {
+@@ -738,6 +790,10 @@ static int sof_ipc4_pcm_dai_link_fixup(struct snd_soc_pcm_runtime *rtd,
+ 	if (ret)
+ 		return ret;
+ 
++	ret = sof_ipc4_pcm_dai_link_fixup_channels(sdev, params, ipc4_copier);
++	if (ret)
++		return ret;
++
+ 	if (single_bitdepth) {
+ 		snd_mask_none(fmt);
+ 		valid_bits = SOF_IPC4_AUDIO_FORMAT_CFG_V_BIT_DEPTH(ipc4_fmt->fmt_cfg);
 -- 
 2.51.0
 
