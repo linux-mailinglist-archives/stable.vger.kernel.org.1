@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0ECC4A6B3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C5BC4A716
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8D5A3B10F8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D1023B12DA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6E92701D1;
-	Tue, 11 Nov 2025 01:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CD7334C39;
+	Tue, 11 Nov 2025 01:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDxflP4h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFejr8YZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670512737E3;
-	Tue, 11 Nov 2025 01:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D026E305E3A;
+	Tue, 11 Nov 2025 01:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823371; cv=none; b=pDg521O7Yop8j9UFJAHMNrdgM2/W5OiWWsAH7zuim3E8ygrgY3yCPPiwEEGCBwnRygpv3IAjLL9LMhctVwyDqGQ90q8dcqbWSqUDmh9sr/+ewjwVm7WUGVrrQHY9wr/9KdpkN2c+xorFjdIMCfd9FsglSywsmEJO5MHClNdivMA=
+	t=1762823375; cv=none; b=eSmHBO51Fk3vkIKT+nq7BJgN9c509D67nZ6eSgzFq0t7IyKBlZGGwEUgKByGFn7MDaZ9Lu3S0Xe6UHlTvpn2kIzLftebWtSeipAs25/pv4jQmAAkohaASRuXMNLWc5bziIMlRwq4h31u3YaoioUuh35Z8HNoOx2lG2hGPmTdioc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823371; c=relaxed/simple;
-	bh=if0pW8EFkCtkYL5c3SzP8eNVZZ7aJWSfVHiHBwpM7YE=;
+	s=arc-20240116; t=1762823375; c=relaxed/simple;
+	bh=K4WAVLN7q5rUazgtzb+eX1PwRbikDXtH8nl2umbM/8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCTBYYstnzNfNlsqoFgf+rxA7FLwwA6DdMmFYNlowabAEXSTDEDPDVfBmHZ4ytl/mWQ2rdRmmuClqgoQrsUoAEyrQj2SkxVSaamX0SpKxIdU8xy7lV+tI+2sRpFIM1xYZ4obQcn6vqApP693WaBIkCDZUUdcF9tYOJBe5aH20zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDxflP4h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F4FC19421;
-	Tue, 11 Nov 2025 01:09:30 +0000 (UTC)
+	 MIME-Version; b=b2wKSTUnUW/BcuA2vybJJZCKXdP7u4FDHMHM9iM1dARg06Ux0QEwVcp889I0zOsDlaDuOi08+l/r2LRPHnAzVCUEB+tzEV4HPixS1RuRppHSkwKxPXlhIQFdH5n3u5CdTDSrbk26OBaLjuxX3xkRyY1efdlb+0Ykg12EP/VS85U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFejr8YZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70BE4C113D0;
+	Tue, 11 Nov 2025 01:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823371;
-	bh=if0pW8EFkCtkYL5c3SzP8eNVZZ7aJWSfVHiHBwpM7YE=;
+	s=korg; t=1762823375;
+	bh=K4WAVLN7q5rUazgtzb+eX1PwRbikDXtH8nl2umbM/8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HDxflP4hVyARuM6K1vpQmi1iJMAc1sXEUl+mJatAeV9Qs7p2SPojv0F+523ZiOBZ6
-	 fgk+SkkUYiRex0Wcd5UOPn5xvNkC0QG2FTDTcXnik/3/KrYEmlGXEJU1WSAG1bNfYW
-	 mb2eI2zOwO+WmrOMy6sHLEIaXECAHV/Wtr1ogH0k=
+	b=UFejr8YZ7Q3s3gAW7A35+/93mAwi8FzSf7e5NrgjIL/iKM8AoaNE6celsK1+h/Tnx
+	 4Z4KQEvqfjyGXONqgYpp3VBo54Tik1F2c/RI+V4Y31ErDpCGljWRO415Q+N1Ygnef/
+	 f1wc+UI7QeNOqMa4qLRDkREkf55wy7MKwLhDMQmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Devarsh Thakkar <devarsht@ti.com>,
 	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 285/849] drm/bridge: cdns-dsi: Fix REG_WAKEUP_TIME value
-Date: Tue, 11 Nov 2025 09:37:35 +0900
-Message-ID: <20251111004543.304325688@linuxfoundation.org>
+Subject: [PATCH 6.17 286/849] drm/bridge: cdns-dsi: Dont fail on MIPI_DSI_MODE_VIDEO_BURST
+Date: Tue, 11 Nov 2025 09:37:36 +0900
+Message-ID: <20251111004543.326722257@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -70,54 +70,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit eea4f89b6461294ed6bea1d3285bb3f79c09a041 ]
+[ Upstream commit 7070f55f294745c5a3c033623b76309f3512be67 ]
 
-The driver tries to calculate the value for REG_WAKEUP_TIME. However,
-the calculation itself is not correct, and to add on it, the resulting
-value is almost always larger than the field's size, so the actual
-result is more or less random.
+While the cdns-dsi does not support DSI burst mode, the burst mode is
+essentially DSI event mode with more versatile clocking and timings.
+Thus cdns-dsi doesn't need to fail if the DSI peripheral driver requests
+MIPI_DSI_MODE_VIDEO_BURST.
 
-According to the docs, figuring out the value for REG_WAKEUP_TIME
-requires HW characterization and there's no way to have a generic
-algorithm to come up with the value. That doesn't help at all...
-
-However, we know that the value must be smaller than the line time, and,
-at least in my understanding, the proper value for it is quite small.
-Testing shows that setting it to 1/10 of the line time seems to work
-well. All video modes from my HDMI monitor work with this algorithm.
-
-Hopefully we'll get more information on how to calculate the value, and
-we can then update this.
+In my particular use case, this allows the use of ti-sn65dsi83 driver.
 
 Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
 Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
 Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-11-e61cc06074c2@ideasonboard.com
+Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-15-e61cc06074c2@ideasonboard.com
 Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-index 695b6246b280f..9f1c460d5f0d4 100644
+index 9f1c460d5f0d4..0cc83bdb130fc 100644
 --- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
 +++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-@@ -882,7 +882,13 @@ static void cdns_dsi_bridge_atomic_pre_enable(struct drm_bridge *bridge,
+@@ -1088,10 +1088,6 @@ static int cdns_dsi_attach(struct mipi_dsi_host *host,
+ 	if (output->dev)
+ 		return -EBUSY;
  
- 	tx_byte_period = DIV_ROUND_DOWN_ULL((u64)NSEC_PER_SEC * 8,
- 					    phy_cfg->hs_clk_rate);
--	reg_wakeup = (phy_cfg->hs_prepare + phy_cfg->hs_zero) / tx_byte_period;
-+
-+	/*
-+	 * Estimated time [in clock cycles] to perform LP->HS on D-PHY.
-+	 * It is not clear how to calculate this, so for now,
-+	 * set it to 1/10 of the total number of clocks in a line.
-+	 */
-+	reg_wakeup = dsi_cfg.htotal / nlanes / 10;
- 	writel(REG_WAKEUP_TIME(reg_wakeup) | REG_LINE_DURATION(tmp),
- 	       dsi->regs + VID_DPHY_TIME);
- 
+-	/* We do not support burst mode yet. */
+-	if (dev->mode_flags & MIPI_DSI_MODE_VIDEO_BURST)
+-		return -ENOTSUPP;
+-
+ 	/*
+ 	 * The host <-> device link might be described using an OF-graph
+ 	 * representation, in this case we extract the device of_node from
 -- 
 2.51.0
 
