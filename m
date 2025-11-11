@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-193984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80CDCC4AC4C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A510C4A710
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E965A188DDC3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 615603B7958
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8576F32C954;
-	Tue, 11 Nov 2025 01:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A161338930;
+	Tue, 11 Nov 2025 01:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BblwUibC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yri/6uqf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376B53126B9;
-	Tue, 11 Nov 2025 01:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8D0261B6E;
+	Tue, 11 Nov 2025 01:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824530; cv=none; b=ojZ2xTkqUsZMxCwC6Zii1QWLMcuFdCRMD+FVrzR95Wf/zp75gsKXGe2x3JAc0gKSFGH3lECMRPtvl4hr/qI02Qzl0q5Vrm9d7T+w0hXrcdpLWr6Gmp7Q/RvRY5BTtJyI+K+PBXaBWOonzk+s2iMApTrE651+Pf2Wm2IyyXz6S7k=
+	t=1762823411; cv=none; b=sfBJ6XaATUgnEQ088wg92xoj7RpYKxI62K5YAqPRz2KI/Phrq6FW7UJvgqY+WEMBNVBLzAFsO3qbHg7U08oSM5LhtjHizrXKZOfmxlL9Tq6QtOGHPYTodVmIsRWerIoIDRG9RRp8pli7yZAHz47wc4mshdRynBMRDm2gY+1VEd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824530; c=relaxed/simple;
-	bh=e5BLSzHbe62B2yHgAACsx8uJnU+FAu/kTXZxZQ+aRjo=;
+	s=arc-20240116; t=1762823411; c=relaxed/simple;
+	bh=dsgGlbe4oSJ7P8TMsVY9JEHMaI6rbn19a9o0tiAvX5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHPJQYajPJZAg2rPlNa6HX96X/kMKk0OfGe428iOjB+og0cDNSxUcWEH8tCjyxsK4ahn42RwTaerlozrdSrLHnsnzAliq9fupN6PrMtgPojYSomwsZjCKzBXNZMZNAACVNqHLKl+UPVdZwWkQrTWRYesq6YM17rU7WR/uURdK7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BblwUibC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8E1C113D0;
-	Tue, 11 Nov 2025 01:28:49 +0000 (UTC)
+	 MIME-Version; b=FUOvupkG08ylqaoYwASQUiaLR9wJYSEUhoTf757Fb9e6gRiUNfS23LeOkA0fwdahCYRghE03Qep+A31RlJEwrv3JH+4M8huyxPvWnniPSWvPca8Has+IMdMGN0aHutnj1JDh+57YV0Qzg9w+HgDExclEuqApuL3/neHU5O04NEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yri/6uqf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 730C1C19424;
+	Tue, 11 Nov 2025 01:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824530;
-	bh=e5BLSzHbe62B2yHgAACsx8uJnU+FAu/kTXZxZQ+aRjo=;
+	s=korg; t=1762823409;
+	bh=dsgGlbe4oSJ7P8TMsVY9JEHMaI6rbn19a9o0tiAvX5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BblwUibCn4bohIe/V6PhO7j0oM9TJRlcbXRe7Bnk8HZoXot3w9XlzAgSodVio10UV
-	 vI7K7OoJu1Bi/N2IcI91ZAGGChCUgFYSwREpbOqSzV4HFOdum93o4pZHZDcCOnUH0Y
-	 3Ki1nxlzvquaHfjn73L5MAytVDwKtOgvpzJ/TW5o=
+	b=yri/6uqfvizszcUs6IDWYkn9sTT5K9kFzmvV7GXdVla/jPh7713lmT8ImkW2/ojnH
+	 +lrOmoEKE30MrbweHc1pEu1T7nHIS7TApWuuVgkDVd6OsoqBjVAuHc9dfu2d3a7PJq
+	 KzanblHkxeNDAkJerzYxfKTEVy3HcwrngDmarTpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Huang <kai.huang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Farrah Chen <farrah.chen@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 518/849] x86/virt/tdx: Use precalculated TDVPR page physical address
+Subject: [PATCH 6.12 232/565] dm error: mark as DM_TARGET_PASSES_INTEGRITY
 Date: Tue, 11 Nov 2025 09:41:28 +0900
-Message-ID: <20251111004548.948549149@linuxfoundation.org>
+Message-ID: <20251111004532.135437466@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,179 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Huang <kai.huang@intel.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit e414b1005891d74bb0c3d27684c58dfbfbd1754b ]
+[ Upstream commit 499cbe0f2fb0641cf07a1a8ac9f7317674295fea ]
 
-All of the x86 KVM guest types (VMX, SEV and TDX) do some special context
-tracking when entering guests. This means that the actual guest entry
-sequence must be noinstr.
+Mark dm error as DM_TARGET_PASSES_INTEGRITY so that it can be stacked on
+top of PI capable devices.  The claim is strictly speaking as lie as dm
+error fails all I/O and doesn't pass anything on, but doing the same for
+integrity I/O work just fine :)
 
-Part of entering a TDX guest is passing a physical address to the TDX
-module. Right now, that physical address is stored as a 'struct page'
-and converted to a physical address at guest entry. That page=>phys
-conversion can be complicated, can vary greatly based on kernel
-config, and it is definitely _not_ a noinstr path today.
+This helps to make about two dozen xfstests test cases pass on PI capable
+devices.
 
-There have been a number of tinkering approaches to try and fix this
-up, but they all fall down due to some part of the page=>phys
-conversion infrastructure not being noinstr friendly.
-
-Precalculate the page=>phys conversion and store it in the existing
-'tdx_vp' structure.  Use the new field at every site that needs a
-tdvpr physical address. Remove the now redundant tdx_tdvpr_pa().
-Remove the __flatten remnant from the tinkering.
-
-Note that only one user of the new field is actually noinstr. All
-others can use page_to_phys(). But, they might as well save the effort
-since there is a pre-calculated value sitting there for them.
-
-[ dhansen: rewrite all the text ]
-
-Signed-off-by: Kai Huang <kai.huang@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
-Tested-by: Farrah Chen <farrah.chen@intel.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/tdx.h  |  2 ++
- arch/x86/kvm/vmx/tdx.c      |  9 +++++++++
- arch/x86/virt/vmx/tdx/tdx.c | 21 ++++++++-------------
- 3 files changed, 19 insertions(+), 13 deletions(-)
+ drivers/md/dm-target.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 7ddef3a698668..5e043961fb1d7 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -146,6 +146,8 @@ struct tdx_td {
- struct tdx_vp {
- 	/* TDVP root page */
- 	struct page *tdvpr_page;
-+	/* precalculated page_to_phys(tdvpr_page) for use in noinstr code */
-+	phys_addr_t tdvpr_pa;
- 
- 	/* TD vCPU control structure: */
- 	struct page **tdcx_pages;
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index d91d9d6bb26c1..987c0eb10545c 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -861,6 +861,7 @@ void tdx_vcpu_free(struct kvm_vcpu *vcpu)
- 	if (tdx->vp.tdvpr_page) {
- 		tdx_reclaim_control_page(tdx->vp.tdvpr_page);
- 		tdx->vp.tdvpr_page = 0;
-+		tdx->vp.tdvpr_pa = 0;
- 	}
- 
- 	tdx->state = VCPU_TD_STATE_UNINITIALIZED;
-@@ -2940,6 +2941,13 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
- 		return -ENOMEM;
- 	tdx->vp.tdvpr_page = page;
- 
-+	/*
-+	 * page_to_phys() does not work in 'noinstr' code, like guest
-+	 * entry via tdh_vp_enter(). Precalculate and store it instead
-+	 * of doing it at runtime later.
-+	 */
-+	tdx->vp.tdvpr_pa = page_to_phys(tdx->vp.tdvpr_page);
-+
- 	tdx->vp.tdcx_pages = kcalloc(kvm_tdx->td.tdcx_nr_pages, sizeof(*tdx->vp.tdcx_pages),
- 			       	     GFP_KERNEL);
- 	if (!tdx->vp.tdcx_pages) {
-@@ -3002,6 +3010,7 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
- 	if (tdx->vp.tdvpr_page)
- 		__free_page(tdx->vp.tdvpr_page);
- 	tdx->vp.tdvpr_page = 0;
-+	tdx->vp.tdvpr_pa = 0;
- 
- 	return ret;
- }
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index c7a9a087ccaf5..9767b5821f4d8 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1502,11 +1502,6 @@ static inline u64 tdx_tdr_pa(struct tdx_td *td)
- 	return page_to_phys(td->tdr_page);
- }
- 
--static inline u64 tdx_tdvpr_pa(struct tdx_vp *td)
--{
--	return page_to_phys(td->tdvpr_page);
--}
--
- /*
-  * The TDX module exposes a CLFLUSH_BEFORE_ALLOC bit to specify whether
-  * a CLFLUSH of pages is required before handing them to the TDX module.
-@@ -1518,9 +1513,9 @@ static void tdx_clflush_page(struct page *page)
- 	clflush_cache_range(page_to_virt(page), PAGE_SIZE);
- }
- 
--noinstr __flatten u64 tdh_vp_enter(struct tdx_vp *td, struct tdx_module_args *args)
-+noinstr u64 tdh_vp_enter(struct tdx_vp *td, struct tdx_module_args *args)
- {
--	args->rcx = tdx_tdvpr_pa(td);
-+	args->rcx = td->tdvpr_pa;
- 
- 	return __seamcall_saved_ret(TDH_VP_ENTER, args);
- }
-@@ -1581,7 +1576,7 @@ u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page)
- {
- 	struct tdx_module_args args = {
- 		.rcx = page_to_phys(tdcx_page),
--		.rdx = tdx_tdvpr_pa(vp),
-+		.rdx = vp->tdvpr_pa,
- 	};
- 
- 	tdx_clflush_page(tdcx_page);
-@@ -1650,7 +1645,7 @@ EXPORT_SYMBOL_GPL(tdh_mng_create);
- u64 tdh_vp_create(struct tdx_td *td, struct tdx_vp *vp)
- {
- 	struct tdx_module_args args = {
--		.rcx = tdx_tdvpr_pa(vp),
-+		.rcx = vp->tdvpr_pa,
- 		.rdx = tdx_tdr_pa(td),
- 	};
- 
-@@ -1706,7 +1701,7 @@ EXPORT_SYMBOL_GPL(tdh_mr_finalize);
- u64 tdh_vp_flush(struct tdx_vp *vp)
- {
- 	struct tdx_module_args args = {
--		.rcx = tdx_tdvpr_pa(vp),
-+		.rcx = vp->tdvpr_pa,
- 	};
- 
- 	return seamcall(TDH_VP_FLUSH, &args);
-@@ -1752,7 +1747,7 @@ EXPORT_SYMBOL_GPL(tdh_mng_init);
- u64 tdh_vp_rd(struct tdx_vp *vp, u64 field, u64 *data)
- {
- 	struct tdx_module_args args = {
--		.rcx = tdx_tdvpr_pa(vp),
-+		.rcx = vp->tdvpr_pa,
- 		.rdx = field,
- 	};
- 	u64 ret;
-@@ -1769,7 +1764,7 @@ EXPORT_SYMBOL_GPL(tdh_vp_rd);
- u64 tdh_vp_wr(struct tdx_vp *vp, u64 field, u64 data, u64 mask)
- {
- 	struct tdx_module_args args = {
--		.rcx = tdx_tdvpr_pa(vp),
-+		.rcx = vp->tdvpr_pa,
- 		.rdx = field,
- 		.r8 = data,
- 		.r9 = mask,
-@@ -1782,7 +1777,7 @@ EXPORT_SYMBOL_GPL(tdh_vp_wr);
- u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
- {
- 	struct tdx_module_args args = {
--		.rcx = tdx_tdvpr_pa(vp),
-+		.rcx = vp->tdvpr_pa,
- 		.rdx = initial_rcx,
- 		.r8 = x2apicid,
- 	};
+diff --git a/drivers/md/dm-target.c b/drivers/md/dm-target.c
+index 652627aea11b6..b676fd01a0227 100644
+--- a/drivers/md/dm-target.c
++++ b/drivers/md/dm-target.c
+@@ -263,7 +263,8 @@ static long io_err_dax_direct_access(struct dm_target *ti, pgoff_t pgoff,
+ static struct target_type error_target = {
+ 	.name = "error",
+ 	.version = {1, 7, 0},
+-	.features = DM_TARGET_WILDCARD | DM_TARGET_ZONED_HM,
++	.features = DM_TARGET_WILDCARD | DM_TARGET_ZONED_HM |
++		DM_TARGET_PASSES_INTEGRITY,
+ 	.ctr  = io_err_ctr,
+ 	.dtr  = io_err_dtr,
+ 	.map  = io_err_map,
 -- 
 2.51.0
 
