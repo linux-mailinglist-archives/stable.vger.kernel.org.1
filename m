@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-193943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00667C4ABD5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 624F7C4A421
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BDF514FA74A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 440814F9858
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07A5306D57;
-	Tue, 11 Nov 2025 01:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55F025A334;
+	Tue, 11 Nov 2025 01:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Okso9HLX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtLu2Lsd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D134305E15;
-	Tue, 11 Nov 2025 01:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718BF25C818;
+	Tue, 11 Nov 2025 01:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824431; cv=none; b=Jyy/UwYPm00aALRcx3KOykhqc5k97/xrQYtV2riRWPTu36qav9LaNa7BspzUxd1Q+r61LvJAzdadTo+K/6CPFaY/rVjkAGSUY0Sgvh3l58h7oTgITsrlg0yvU7wzBRo1IAuHL9Kd/WnObn9Cap1j/OnokkZ6vZ35VHAPaIFzhjY=
+	t=1762823061; cv=none; b=s3ZWpoKrSFYWP4L/WR+LJKzMo+5i37egpLdZoIxk9vl54O6JzR6vWnHy0buFhII1oRexsmQLz/LcBLDf2kuzyGBNAm70oBUUk4wpErvin64LsOnrbQE/z8K52bLbMKbSNp2+EKyQRv1fI4Jf/W0sXiQfFfg3cqc2pYqDpD8uR8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824431; c=relaxed/simple;
-	bh=rrSyG3QnM23Kp4w/9W55iriQpK5mQmkdsLq2P+1eAmQ=;
+	s=arc-20240116; t=1762823061; c=relaxed/simple;
+	bh=9lI61FsqKRXAdvcCiF6dJyd2mOdgNC+RPi2wIkFLRcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oll+RIlqZ7LDpaMLmZXkICRjoPA15DciEf5ZZ9W2CPTj35wCcQQR5sMGjE+twyumUMcHyMb7l44SfPfq/3xk9f8Wou/NKXAvfgQ1d1oDIYjB2I88KerLVbCN3Hxi193lnF/RYUlYSkfbuRjXobPf/kkXxqhGCcAdZZlIgeTosMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Okso9HLX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B405C116D0;
-	Tue, 11 Nov 2025 01:27:11 +0000 (UTC)
+	 MIME-Version; b=PvfrUO7PmbfVJIRaVZv5qZCMYFhoPeTDuJXYlkpvGw7Azw+yslLpGWLP8ZzAtqnNvC8Dh9gbbHQn+m/K9FFim/fXRwdA78aH1Vo5X9mdGSFIf8lUUYAJ6kxfPc/2FTuU/ntKq5aPBevuC8j+9P97Bgl1pp2tB+HfaDH9O1EFwyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtLu2Lsd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0B3C113D0;
+	Tue, 11 Nov 2025 01:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824431;
-	bh=rrSyG3QnM23Kp4w/9W55iriQpK5mQmkdsLq2P+1eAmQ=;
+	s=korg; t=1762823061;
+	bh=9lI61FsqKRXAdvcCiF6dJyd2mOdgNC+RPi2wIkFLRcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Okso9HLX2Ti9FTFAOKZqgS0L1R3X4hf+hl4qckRbEGMEztVfVbVns3IbRtzB/VAps
-	 hM+bPuWz6o+8y4M4L9rcmtRb291hY1Vlh4F/0PQX3KmkswJb6xsnnIXAaF4vezktvw
-	 oQUPxTaVkpGVMeRdEtjjLKyblvZRBbpP/g+xS7zo=
+	b=PtLu2LsdzPf403UAtJ0qjsyeU0MvSE15RFmqU0MURNTV5Tp0K+4qnlf9g18znVVXT
+	 xolAStNxcKfdo/nb91EXFTHxOUhybvS9e8Zrcq7G+3rgFg5rHgu7W8k1MOgBEXkmf0
+	 E8xMl4Q4Rx6phwrKgTdx+TikDPhu7w7ZhbMvSHi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sairaj Kodilkar <sarunkod@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 450/849] crypto: ccp: Skip SEV and SNP INIT for kdump boot
+Subject: [PATCH 6.12 164/565] tools/power x86_energy_perf_policy: Enhance HWP enable
 Date: Tue, 11 Nov 2025 09:40:20 +0900
-Message-ID: <20251111004547.311251250@linuxfoundation.org>
+Message-ID: <20251111004530.627270720@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit 8c571019d8a817b701888926529a5d7a826b947b ]
+[ Upstream commit c97c057d357c4b39b153e9e430bbf8976e05bd4e ]
 
-Since SEV or SNP may already be initialized in the previous kernel,
-attempting to initialize them again in the kdump kernel can result
-in SNP initialization failures, which in turn lead to IOMMU
-initialization failures. Moreover, SNP/SEV guests are not run under a
-kdump kernel, so there is no need to initialize SEV or SNP during
-kdump boot.
+On enabling HWP, preserve the reserved bits in MSR_PM_ENABLE.
 
-Skip SNP and SEV INIT if doing kdump boot.
+Also, skip writing the MSR_PM_ENABLE if HWP is already enabled.
 
-Tested-by: Sairaj Kodilkar <sarunkod@amd.com>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Link: https://lore.kernel.org/r/d884eff5f6180d8b8c6698a6168988118cf9cba1.1756157913.git.ashish.kalra@amd.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sev-dev.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../x86_energy_perf_policy/x86_energy_perf_policy.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index 9f5ccc1720cbc..651346db6909d 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -28,6 +28,7 @@
- #include <linux/fs_struct.h>
- #include <linux/psp.h>
- #include <linux/amd-iommu.h>
-+#include <linux/crash_dump.h>
+diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+index c883f211dbcc9..0bda8e3ae7f77 100644
+--- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
++++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+@@ -1166,13 +1166,18 @@ int update_hwp_request_pkg(int pkg)
  
- #include <asm/smp.h>
- #include <asm/cacheflush.h>
-@@ -1345,6 +1346,15 @@ static int _sev_platform_init_locked(struct sev_platform_init_args *args)
- 	if (!psp_master || !psp_master->sev_data)
- 		return -ENODEV;
- 
-+	/*
-+	 * Skip SNP/SEV initialization under a kdump kernel as SEV/SNP
-+	 * may already be initialized in the previous kernel. Since no
-+	 * SNP/SEV guests are run under a kdump kernel, there is no
-+	 * need to initialize SNP or SEV during kdump boot.
-+	 */
-+	if (is_kdump_kernel())
-+		return 0;
+ int enable_hwp_on_cpu(int cpu)
+ {
+-	unsigned long long msr;
++	unsigned long long old_msr, new_msr;
 +
- 	sev = psp_master->sev_data;
++	get_msr(cpu, MSR_PM_ENABLE, &old_msr);
++
++	if (old_msr & 1)
++		return 0;	/* already enabled */
  
- 	if (sev->state == SEV_STATE_INIT)
+-	get_msr(cpu, MSR_PM_ENABLE, &msr);
+-	put_msr(cpu, MSR_PM_ENABLE, 1);
++	new_msr = old_msr | 1;
++	put_msr(cpu, MSR_PM_ENABLE, new_msr);
+ 
+ 	if (verbose)
+-		printf("cpu%d: MSR_PM_ENABLE old: %d new: %d\n", cpu, (unsigned int) msr, 1);
++		printf("cpu%d: MSR_PM_ENABLE old: %llX new: %llX\n", cpu, old_msr, new_msr);
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
