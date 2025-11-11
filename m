@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-193195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 473A4C4A115
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 408D3C4A08B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 011EA4F3230
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEE773AC623
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3131DF258;
-	Tue, 11 Nov 2025 00:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5116E24A043;
+	Tue, 11 Nov 2025 00:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZErg6IH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxCe0Sj+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2728A4C97;
-	Tue, 11 Nov 2025 00:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BDF4C97;
+	Tue, 11 Nov 2025 00:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822525; cv=none; b=iajqqrusVF9MVkyDQUe/Lj7oFnfBCb80V3v8ovshSttH6oqJ+scc9ZiR7PUb2tkPxfnQG82N9AXrhEBT4sT+n/1RXYLGSuLhgo0BQ8x6KbqzrlYep0rkWCGqCUDonk327NuBY2FsAujjfD1W+w8Kp/4ST9h2mgp7UgNiPp4Kwmw=
+	t=1762822530; cv=none; b=l4aYvJt4SaaxS2xhXqsOfIH0WX1lsE5kixpGcA1Zp5MmZ1SmsUtziDBjeoTiwhc0Sw41qY2Hzz4jSawAp3rTp/+aoffx9wOpEHQhMVKb0yWHlPsL2rb73tzc4th27TFBV1vZSWugClDfIUcFpyGzbAVBh/X+TWzoM6nJxQ6C3Mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822525; c=relaxed/simple;
-	bh=PCVNDdstFtVn/p5iofNMV7O9oNXFhvCzmhCrDX9v3Bg=;
+	s=arc-20240116; t=1762822530; c=relaxed/simple;
+	bh=aWeNZT2zFIB4b6hXN+7g5nSt8xSZ/P4G1/YigYr6UXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZuDkYPMFD2AQf640kL0nFYUtccJbjT320XhU6tzJZJhLzE0RR1FdK2DT/FK2qgJ6xE3CfIqXIFtqzm36Of5qG38ZEhPbf6pkUecUUCBq3sgOGW55dB3HFYxXdCfTVa/CR0gaghlGYvGMkg4d1RZ5Gcf3AjMk0OsRPZefXRnrSh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZErg6IH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8620C19424;
-	Tue, 11 Nov 2025 00:55:24 +0000 (UTC)
+	 MIME-Version; b=Gze+AqmCuEyUuwNcTGkljXNiyiohFVAk9tatnBn2cdQdoMtkXWF3mjjTQXntu5FjjCvTXaiwkPSSCqyBm73iwPKCIv3/6q3x6k49Z45Hbb8SSrMjHmW3S5V/3s0fbDMgcBPai6ojRsq+SGpzU8d6jdBD8C+rfTxri0tuYPWZpT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxCe0Sj+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF47C4AF09;
+	Tue, 11 Nov 2025 00:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822525;
-	bh=PCVNDdstFtVn/p5iofNMV7O9oNXFhvCzmhCrDX9v3Bg=;
+	s=korg; t=1762822529;
+	bh=aWeNZT2zFIB4b6hXN+7g5nSt8xSZ/P4G1/YigYr6UXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZErg6IHzNKWNDamVdacxCrhxjDsqX4Lf2T6fagYrh0KzgsOIlKEGqmtfvzfEALpB
-	 S3rAeoSFyEsB0xUizwgBVehOkx300JNOpj5YekI4a2Hcz3vc5SLCMpalf4ys22IGps
-	 GbOpF+EIBWrTaDQF5ovUGU8dZ75GTm6bvdUaFcqk=
+	b=vxCe0Sj+42Dl+HFBXYAu2Y/hF3zZFXBTJGITSwP0CjmwfR4iBRvrSwoCxtu9x4tpA
+	 29s2Bg7t5q4NkikKAEby6+ao739bSExZJAqC2HVnsAuIW0enu7mZq3HZTwt4a9NU2A
+	 YlmMLMVM1Cg9qZAq8PpwW/8SxGUvukCAz3v58mTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Kendall Willis <k-willis@ti.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 130/849] bpf: Use tnums for JEQ/JNE is_branch_taken logic
-Date: Tue, 11 Nov 2025 09:35:00 +0900
-Message-ID: <20251111004539.537809878@linuxfoundation.org>
+Subject: [PATCH 6.17 131/849] firmware: ti_sci: Enable abort handling of entry to LPM
+Date: Tue, 11 Nov 2025 09:35:01 +0900
+Message-ID: <20251111004539.561610240@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,104 +67,153 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Kendall Willis <k-willis@ti.com>
 
-[ Upstream commit f41345f47fb267a9c95ca710c33448f8d0d81d83 ]
+[ Upstream commit 0fdd3240fe5a9bf4785e40506bf86b7e16546b83 ]
 
-In the following toy program (reg states minimized for readability), R0
-and R1 always have different values at instruction 6. This is obvious
-when reading the program but cannot be guessed from ranges alone as
-they overlap (R0 in [0; 0xc0000000], R1 in [1024; 0xc0000400]).
+The PM co-processor (device manager or DM) adds the ability to abort
+entry to a low power mode by clearing the mode selection in the
+latest version of its firmware (11.01.09) [1].
 
-  0: call bpf_get_prandom_u32#7  ; R0_w=scalar()
-  1: w0 = w0                     ; R0_w=scalar(var_off=(0x0; 0xffffffff))
-  2: r0 >>= 30                   ; R0_w=scalar(var_off=(0x0; 0x3))
-  3: r0 <<= 30                   ; R0_w=scalar(var_off=(0x0; 0xc0000000))
-  4: r1 = r0                     ; R1_w=scalar(var_off=(0x0; 0xc0000000))
-  5: r1 += 1024                  ; R1_w=scalar(var_off=(0x400; 0xc0000000))
-  6: if r1 != r0 goto pc+1
+Enable the ti_sci driver to support the LPM abort call which clears the
+low power mode selection of the DM. This fixes an issue where failed
+system suspend attempts would cause subsequent suspends to fail.
 
-Looking at tnums however, we can deduce that R1 is always different from
-R0 because their tnums don't agree on known bits. This patch uses this
-logic to improve is_scalar_branch_taken in case of BPF_JEQ and BPF_JNE.
+After system suspend completes, regardless of if system suspend succeeds
+or fails, the ->complete() hook in TI SCI will be called. In the
+->complete() hook, a message will be sent to the DM to clear the current
+low power mode selection. Clearing the low power mode selection
+unconditionally will not cause any error in the DM.
 
-This change has a tiny impact on complexity, which was measured with
-the Cilium complexity CI test. That test covers 72 programs with
-various build and load time configurations for a total of 970 test
-cases. For 80% of test cases, the patch has no impact. On the other
-test cases, the patch decreases complexity by only 0.08% on average. In
-the best case, the verifier needs to walk 3% less instructions and, in
-the worst case, 1.5% more. Overall, the patch has a small positive
-impact, especially for our largest programs.
+[1] https://software-dl.ti.com/tisci/esd/latest/2_tisci_msgs/pm/lpm.html
 
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/be3ee70b6e489c49881cb1646114b1d861b5c334.1755694147.git.paul.chaignon@gmail.com
+Signed-off-by: Kendall Willis <k-willis@ti.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/20250819195453.1094520-1-k-willis@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/tnum.h  | 3 +++
- kernel/bpf/tnum.c     | 8 ++++++++
- kernel/bpf/verifier.c | 4 ++++
- 3 files changed, 15 insertions(+)
+ drivers/firmware/ti_sci.c | 57 +++++++++++++++++++++++++++++++++++++--
+ drivers/firmware/ti_sci.h |  3 +++
+ 2 files changed, 58 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/tnum.h b/include/linux/tnum.h
-index 57ed3035cc309..0ffb77ffe0e87 100644
---- a/include/linux/tnum.h
-+++ b/include/linux/tnum.h
-@@ -51,6 +51,9 @@ struct tnum tnum_xor(struct tnum a, struct tnum b);
- /* Multiply two tnums, return @a * @b */
- struct tnum tnum_mul(struct tnum a, struct tnum b);
- 
-+/* Return true if the known bits of both tnums have the same value */
-+bool tnum_overlap(struct tnum a, struct tnum b);
-+
- /* Return a tnum representing numbers satisfying both @a and @b */
- struct tnum tnum_intersect(struct tnum a, struct tnum b);
- 
-diff --git a/kernel/bpf/tnum.c b/kernel/bpf/tnum.c
-index fa353c5d550fc..d9328bbb3680b 100644
---- a/kernel/bpf/tnum.c
-+++ b/kernel/bpf/tnum.c
-@@ -143,6 +143,14 @@ struct tnum tnum_mul(struct tnum a, struct tnum b)
- 	return tnum_add(TNUM(acc_v, 0), acc_m);
+diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
+index ae5fd1936ad32..49fd2ae01055d 100644
+--- a/drivers/firmware/ti_sci.c
++++ b/drivers/firmware/ti_sci.c
+@@ -2015,6 +2015,47 @@ static int ti_sci_cmd_set_latency_constraint(const struct ti_sci_handle *handle,
+ 	return ret;
  }
  
-+bool tnum_overlap(struct tnum a, struct tnum b)
++/**
++ * ti_sci_cmd_lpm_abort() - Abort entry to LPM by clearing selection of LPM to enter
++ * @dev:	Device pointer corresponding to the SCI entity
++ *
++ * Return: 0 if all went well, else returns appropriate error value.
++ */
++static int ti_sci_cmd_lpm_abort(struct device *dev)
 +{
-+	u64 mu;
++	struct ti_sci_info *info = dev_get_drvdata(dev);
++	struct ti_sci_msg_hdr *req;
++	struct ti_sci_msg_hdr *resp;
++	struct ti_sci_xfer *xfer;
++	int ret = 0;
 +
-+	mu = ~a.mask & ~b.mask;
-+	return (a.value & mu) == (b.value & mu);
++	xfer = ti_sci_get_one_xfer(info, TI_SCI_MSG_LPM_ABORT,
++				   TI_SCI_FLAG_REQ_ACK_ON_PROCESSED,
++				   sizeof(*req), sizeof(*resp));
++	if (IS_ERR(xfer)) {
++		ret = PTR_ERR(xfer);
++		dev_err(dev, "Message alloc failed(%d)\n", ret);
++		return ret;
++	}
++	req = (struct ti_sci_msg_hdr *)xfer->xfer_buf;
++
++	ret = ti_sci_do_xfer(info, xfer);
++	if (ret) {
++		dev_err(dev, "Mbox send fail %d\n", ret);
++		goto fail;
++	}
++
++	resp = (struct ti_sci_msg_hdr *)xfer->xfer_buf;
++
++	if (!ti_sci_is_response_ack(resp))
++		ret = -ENODEV;
++
++fail:
++	ti_sci_put_one_xfer(&info->minfo, xfer);
++
++	return ret;
 +}
 +
- /* Note that if a and b disagree - i.e. one has a 'known 1' where the other has
-  * a 'known 0' - this will return a 'known 1' for that bit.
-  */
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index ed1457c273409..2844adf4da61a 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -15906,6 +15906,8 @@ static int is_scalar_branch_taken(struct bpf_reg_state *reg1, struct bpf_reg_sta
- 		 */
- 		if (tnum_is_const(t1) && tnum_is_const(t2))
- 			return t1.value == t2.value;
-+		if (!tnum_overlap(t1, t2))
-+			return 0;
- 		/* non-overlapping ranges */
- 		if (umin1 > umax2 || umax1 < umin2)
- 			return 0;
-@@ -15930,6 +15932,8 @@ static int is_scalar_branch_taken(struct bpf_reg_state *reg1, struct bpf_reg_sta
- 		 */
- 		if (tnum_is_const(t1) && tnum_is_const(t2))
- 			return t1.value != t2.value;
-+		if (!tnum_overlap(t1, t2))
-+			return 1;
- 		/* non-overlapping ranges */
- 		if (umin1 > umax2 || umax1 < umin2)
- 			return 1;
+ static int ti_sci_cmd_core_reboot(const struct ti_sci_handle *handle)
+ {
+ 	struct ti_sci_info *info;
+@@ -3739,11 +3780,22 @@ static int __maybe_unused ti_sci_resume_noirq(struct device *dev)
+ 	return 0;
+ }
+ 
++static void __maybe_unused ti_sci_pm_complete(struct device *dev)
++{
++	struct ti_sci_info *info = dev_get_drvdata(dev);
++
++	if (info->fw_caps & MSG_FLAG_CAPS_LPM_ABORT) {
++		if (ti_sci_cmd_lpm_abort(dev))
++			dev_err(dev, "LPM clear selection failed.\n");
++	}
++}
++
+ static const struct dev_pm_ops ti_sci_pm_ops = {
+ #ifdef CONFIG_PM_SLEEP
+ 	.suspend = ti_sci_suspend,
+ 	.suspend_noirq = ti_sci_suspend_noirq,
+ 	.resume_noirq = ti_sci_resume_noirq,
++	.complete = ti_sci_pm_complete,
+ #endif
+ };
+ 
+@@ -3876,10 +3928,11 @@ static int ti_sci_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	ti_sci_msg_cmd_query_fw_caps(&info->handle, &info->fw_caps);
+-	dev_dbg(dev, "Detected firmware capabilities: %s%s%s\n",
++	dev_dbg(dev, "Detected firmware capabilities: %s%s%s%s\n",
+ 		info->fw_caps & MSG_FLAG_CAPS_GENERIC ? "Generic" : "",
+ 		info->fw_caps & MSG_FLAG_CAPS_LPM_PARTIAL_IO ? " Partial-IO" : "",
+-		info->fw_caps & MSG_FLAG_CAPS_LPM_DM_MANAGED ? " DM-Managed" : ""
++		info->fw_caps & MSG_FLAG_CAPS_LPM_DM_MANAGED ? " DM-Managed" : "",
++		info->fw_caps & MSG_FLAG_CAPS_LPM_ABORT ? " LPM-Abort" : ""
+ 	);
+ 
+ 	ti_sci_setup_ops(info);
+diff --git a/drivers/firmware/ti_sci.h b/drivers/firmware/ti_sci.h
+index 053387d7baa06..701c416b2e78f 100644
+--- a/drivers/firmware/ti_sci.h
++++ b/drivers/firmware/ti_sci.h
+@@ -42,6 +42,7 @@
+ #define TI_SCI_MSG_SET_IO_ISOLATION	0x0307
+ #define TI_SCI_MSG_LPM_SET_DEVICE_CONSTRAINT	0x0309
+ #define TI_SCI_MSG_LPM_SET_LATENCY_CONSTRAINT	0x030A
++#define TI_SCI_MSG_LPM_ABORT	0x0311
+ 
+ /* Resource Management Requests */
+ #define TI_SCI_MSG_GET_RESOURCE_RANGE	0x1500
+@@ -147,6 +148,7 @@ struct ti_sci_msg_req_reboot {
+  *		MSG_FLAG_CAPS_GENERIC: Generic capability (LPM not supported)
+  *		MSG_FLAG_CAPS_LPM_PARTIAL_IO: Partial IO in LPM
+  *		MSG_FLAG_CAPS_LPM_DM_MANAGED: LPM can be managed by DM
++ *		MSG_FLAG_CAPS_LPM_ABORT: Abort entry to LPM
+  *
+  * Response to a generic message with message type TI_SCI_MSG_QUERY_FW_CAPS
+  * providing currently available SOC/firmware capabilities. SoC that don't
+@@ -157,6 +159,7 @@ struct ti_sci_msg_resp_query_fw_caps {
+ #define MSG_FLAG_CAPS_GENERIC		TI_SCI_MSG_FLAG(0)
+ #define MSG_FLAG_CAPS_LPM_PARTIAL_IO	TI_SCI_MSG_FLAG(4)
+ #define MSG_FLAG_CAPS_LPM_DM_MANAGED	TI_SCI_MSG_FLAG(5)
++#define MSG_FLAG_CAPS_LPM_ABORT		TI_SCI_MSG_FLAG(9)
+ #define MSG_MASK_CAPS_LPM		GENMASK_ULL(4, 1)
+ 	u64 fw_caps;
+ } __packed;
 -- 
 2.51.0
 
