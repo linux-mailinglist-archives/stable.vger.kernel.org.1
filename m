@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4B5C4A830
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:06 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C29BC4A3B5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3C9AD4F324D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2B03D4F2725
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93FC634B434;
-	Tue, 11 Nov 2025 01:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2BB7262A;
+	Tue, 11 Nov 2025 01:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZWc68Qk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZWbfcOO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A028305E1B;
-	Tue, 11 Nov 2025 01:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2554204E;
+	Tue, 11 Nov 2025 01:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823866; cv=none; b=kQPiB3SuI4+t9hsRaStaXB3p04VvChcq5MjBMZUxvtpg/4bjsUZcMeTqxcxaALXe1+fckfsAI9ZhsK87jkUby4iEuFVAu7MmusAVF8qk1tuEL8rGD7MwnHVCsgT+vnr5ClrvbI1uw52h/xzEOPNOhmtg9ZpjwdKI2knnF8urvTU=
+	t=1762822982; cv=none; b=O+91zcZjzMKmClRw2GrOXenQ1AP4tLThaHIpFjNtJUUUXuLVVw/fNUTU6d3X7CHUItSUsxt5Iej6fRzFbi4qH1YKRD6ltkuoaZkq3qq9DAB3Vx5UOuELrddajVAv2bgs856BqTQPWjFoVNTIQBT2L7MXx50OMjKGb7h/+PX/J7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823866; c=relaxed/simple;
-	bh=5hu6u/6ms9ya3TZWlVUb7avNID/MC8EyAK9hmLALFyA=;
+	s=arc-20240116; t=1762822982; c=relaxed/simple;
+	bh=jUxTuTfghiC6bVrXwafx0x+aHEkYZmrsfdkxFjU3ajA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lune4KiSOV5lAPfP8pFoBN/x5WJLNDlrGGFjkqhMdrua67rCPgwHZ6zOLIH+rX9BVRy04ISHp10bWmEfZfN4j9BmM/PoM4XoWNh1bgmLlTfrg7yY+YQOkkdq12ZCSBI81CizVqpkWzqrhhOvMbA+M0qSZyJA+Cc83ygJ6hDj3v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZWc68Qk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3370C2BCB2;
-	Tue, 11 Nov 2025 01:17:45 +0000 (UTC)
+	 MIME-Version; b=vEFp7s6N91eaNQNztLF3IXyM7IVDgz1v2Vea1sqUThRuqYca76lVaOr3LM1VPfUvZaXcu2HuMKFi36uCoCeadIQFLo8Kn8g3WSwLnpCY+4BmfB/3KJQUnYCB1UBLZhjP4fys75z9k12DbhQnodcOYA3bKHP4QQRJBD5Z2PLyDQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZWbfcOO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FE5C4CEFB;
+	Tue, 11 Nov 2025 01:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823866;
-	bh=5hu6u/6ms9ya3TZWlVUb7avNID/MC8EyAK9hmLALFyA=;
+	s=korg; t=1762822981;
+	bh=jUxTuTfghiC6bVrXwafx0x+aHEkYZmrsfdkxFjU3ajA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZWc68QkwtafwV3KWMr3LYjl/l6KxcwhkBSviHmdGiBedzEiIIISXIwoA2zensmdW
-	 MhFW5+yw+Mz/LoVlJ7EWOGnMsmzfeppaeyJwkdHfSu94UGBNsrp3rp044kEFVCpFFH
-	 FvVGQ6Z+gi/TyvW2EfI19o0u6JP+qi7LbAg74aOM=
+	b=2ZWbfcOOoltHNGtHvjA0j8qyXAPRa5GSJRl6ge7JOWPrldkXb8fazmPPmsLsPVAhh
+	 fjiSPbYdiDgZ3HTLTDZNBcD+2g5e7IGftWwg++s7laQ/PQ3XKgB+lBHmh6RsczirOc
+	 bizJfXG9YMAt8mHSQoiVyljj8mLDl6hvpno3ouH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 387/849] media: fix uninitialized symbol warnings
+Subject: [PATCH 6.12 101/565] io_uring/zctx: check chained notif contexts
 Date: Tue, 11 Nov 2025 09:39:17 +0900
-Message-ID: <20251111004545.789062657@linuxfoundation.org>
+Message-ID: <20251111004529.228376390@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit b4c441310c3baaa7c39a5457e305ca93c7a0400d ]
+[ Upstream commit ab3ea6eac5f45669b091309f592c4ea324003053 ]
 
-Initialize variables to fix these smatch warnings
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'protocol'.
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'scancode'.
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'toggle'.
-drivers/media/tuners/xc4000.c:1102 xc_debug_dump() error: uninitialized
-symbol 'adc_envelope'.
-drivers/media/tuners/xc4000.c:1108 xc_debug_dump() error: uninitialized
-symbol 'lock_status'.
-drivers/media/tuners/xc4000.c:1123 xc_debug_dump() error: uninitialized
-symbol 'frame_lines'.
-drivers/media/tuners/xc4000.c:1127 xc_debug_dump() error: uninitialized
-symbol 'quality'.
-drivers/media/tuners/xc5000.c:645 xc_debug_dump() error: uninitialized
-symbol 'adc_envelope'.
-drivers/media/tuners/xc5000.c:651 xc_debug_dump() error: uninitialized
-symbol 'lock_status'.
-drivers/media/tuners/xc5000.c:665 xc_debug_dump() error: uninitialized
-symbol 'frame_lines'.
-drivers/media/tuners/xc5000.c:668 xc_debug_dump() error: uninitialized
-symbol 'quality'.
-drivers/media/tuners/xc5000.c:671 xc_debug_dump() error: uninitialized
-symbol 'snr'.
-drivers/media/tuners/xc5000.c:674 xc_debug_dump() error: uninitialized
-symbol 'totalgain'.
+Send zc only links ubuf_info for requests coming from the same context.
+There are some ambiguous syz reports, so let's check the assumption on
+notification completion.
 
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[hverkuil: dropped ' = 0' from rc in ir-kbd-i2c.c, not needed]
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/fd527d8638203fe0f1c5ff06ff2e1d8fd68f831b.1755179962.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ir-kbd-i2c.c |  6 +++---
- drivers/media/tuners/xc4000.c  |  8 ++++----
- drivers/media/tuners/xc5000.c  | 12 ++++++------
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ io_uring/notif.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/media/i2c/ir-kbd-i2c.c b/drivers/media/i2c/ir-kbd-i2c.c
-index c84e1e0e6109a..5588cdd7ec20d 100644
---- a/drivers/media/i2c/ir-kbd-i2c.c
-+++ b/drivers/media/i2c/ir-kbd-i2c.c
-@@ -321,9 +321,9 @@ static int get_key_avermedia_cardbus(struct IR_i2c *ir, enum rc_proto *protocol,
- 
- static int ir_key_poll(struct IR_i2c *ir)
+diff --git a/io_uring/notif.c b/io_uring/notif.c
+index d4cf5a1328e63..f50964c7dab82 100644
+--- a/io_uring/notif.c
++++ b/io_uring/notif.c
+@@ -14,10 +14,15 @@ static const struct ubuf_info_ops io_ubuf_ops;
+ static void io_notif_tw_complete(struct io_kiocb *notif, struct io_tw_state *ts)
  {
--	enum rc_proto protocol;
--	u32 scancode;
--	u8 toggle;
-+	enum rc_proto protocol = 0;
-+	u32 scancode = 0;
-+	u8 toggle = 0;
- 	int rc;
+ 	struct io_notif_data *nd = io_notif_to_data(notif);
++	struct io_ring_ctx *ctx = notif->ctx;
++
++	lockdep_assert_held(&ctx->uring_lock);
  
- 	dev_dbg(&ir->rc->dev, "%s\n", __func__);
-diff --git a/drivers/media/tuners/xc4000.c b/drivers/media/tuners/xc4000.c
-index 3cf54d776d36c..b44c97e4e5ec6 100644
---- a/drivers/media/tuners/xc4000.c
-+++ b/drivers/media/tuners/xc4000.c
-@@ -1087,12 +1087,12 @@ static int check_firmware(struct dvb_frontend *fe, unsigned int type,
+ 	do {
+ 		notif = cmd_to_io_kiocb(nd);
  
- static void xc_debug_dump(struct xc4000_priv *priv)
- {
--	u16	adc_envelope;
-+	u16	adc_envelope = 0;
- 	u32	freq_error_hz = 0;
--	u16	lock_status;
-+	u16	lock_status = 0;
- 	u32	hsync_freq_hz = 0;
--	u16	frame_lines;
--	u16	quality;
-+	u16	frame_lines = 0;
-+	u16	quality = 0;
- 	u16	signal = 0;
- 	u16	noise = 0;
- 	u8	hw_majorversion = 0, hw_minorversion = 0;
-diff --git a/drivers/media/tuners/xc5000.c b/drivers/media/tuners/xc5000.c
-index ec9a3cd4784e1..a28481edd22ed 100644
---- a/drivers/media/tuners/xc5000.c
-+++ b/drivers/media/tuners/xc5000.c
-@@ -622,14 +622,14 @@ static int xc5000_fwupload(struct dvb_frontend *fe,
++		if (WARN_ON_ONCE(ctx != notif->ctx))
++			return;
+ 		lockdep_assert(refcount_read(&nd->uarg.refcnt) == 0);
  
- static void xc_debug_dump(struct xc5000_priv *priv)
- {
--	u16 adc_envelope;
-+	u16 adc_envelope = 0;
- 	u32 freq_error_hz = 0;
--	u16 lock_status;
-+	u16 lock_status = 0;
- 	u32 hsync_freq_hz = 0;
--	u16 frame_lines;
--	u16 quality;
--	u16 snr;
--	u16 totalgain;
-+	u16 frame_lines = 0;
-+	u16 quality = 0;
-+	u16 snr = 0;
-+	u16 totalgain = 0;
- 	u8 hw_majorversion = 0, hw_minorversion = 0;
- 	u8 fw_majorversion = 0, fw_minorversion = 0;
- 	u16 fw_buildversion = 0;
+ 		if (unlikely(nd->zc_report) && (nd->zc_copied || !nd->zc_used))
 -- 
 2.51.0
 
