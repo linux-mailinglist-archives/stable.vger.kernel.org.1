@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-193503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2B79C4A50A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1BEC4AC22
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 86CD134A746
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB86D1882DA3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D648230BF77;
-	Tue, 11 Nov 2025 01:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504932750E6;
+	Tue, 11 Nov 2025 01:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHfFl5oP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zu0Jf4m+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E6627054C;
-	Tue, 11 Nov 2025 01:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8A0DDAB;
+	Tue, 11 Nov 2025 01:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823336; cv=none; b=a3SkxjxOpfEU6Nrgc6vet0kiU9gp9Go1S5Gh0uJRCqVBzJciQg8tTfxIZ6MWVZTYfBIupuAN8lAQ1uYERyJyXXgXsZ9okxRocg/5EQvgelVl84o54RUyT6oulZtgp/XWxr9ggP9zFn45HFSL3ncRPUHx66xCDOmy0R+Xa8yLVaY=
+	t=1762824482; cv=none; b=BJkCCqv443Pk6tSXGkrjpFsOJW5clJk3EjE7MsQlmEAt3BocUR3ADOZHy7T91suevLhtJGNVZPTAY6RvdVzMVXRGzNqwymnoXVobyEJdLBAB5CLzus27hLB9A7VNBrHrC4R5CK+SrNZtlE+rUC56mBGTS+2tOCaiyVQiYptszhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823336; c=relaxed/simple;
-	bh=MOuqlRa4NpXvToIdF+npYmDSZsXmUoalQnTjuxzKIJ8=;
+	s=arc-20240116; t=1762824482; c=relaxed/simple;
+	bh=433IKdbzIa3k4oVrZCXlFV23fcojGTwvYrVnxao/lQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rqM1ipG9g5JN0Jse2MFD5+YHfYCFJJFWq3ntBNZJG113HDCZ2nj3iJBCW3qS9lDyRTlSiVnicmceVdS3GgidzL6Rk8DzgD5WfPyCFFGWRLhTauRG/jwKYHTI11PINWYUoTGo6wqI05qmV6guoLK+u8vX0bYmyDQwxq+MkYetR0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHfFl5oP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EAFC116B1;
-	Tue, 11 Nov 2025 01:08:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=coZBtBlGAzQ0G8FAoBpAUZaYM0jcfKmZi/7PCZhCxggdXHXoc87LR3XCZlm2nTLcTQbPSI+qabRTeUtdrEHIsf7pxaob7ZgDSa9LETDbti0rupfCvRz2JWjH3Bt/QuMq/XZrDVrhYxOYzQE1oUv2El2P6X3Lv1xPL1jeGNEDocw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zu0Jf4m+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93847C4CEFB;
+	Tue, 11 Nov 2025 01:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823336;
-	bh=MOuqlRa4NpXvToIdF+npYmDSZsXmUoalQnTjuxzKIJ8=;
+	s=korg; t=1762824481;
+	bh=433IKdbzIa3k4oVrZCXlFV23fcojGTwvYrVnxao/lQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZHfFl5oPPHdc8qCuSxMrWyRsEaoDmyAMs8dL/8QtrQUK6R3+NC+PYxspt7onIpT2D
-	 edAZBBdO7k2wTbY7RFexfkCZhGPhBTx30mxBRLaAdX3hPcNzrDWgtDPrVWbYBSOiLy
-	 oxyigiOfpPG31ObP6VZtHfXyyoKL/YBg6GyAOsdA=
+	b=zu0Jf4m+EF8lplnWtA6PKy5/1pLmbXp5FQmOsd/Poi+zkpU1jHNnz5KRbk6ZvPFkI
+	 EXkz6JKeyZwWlZC+32Vrw0YZJzvRvPgAwD5DJV+7Gs1J9nmbJXYO57Z/Sa/cVFz+Nq
+	 j9QxuGlRqrFKtgBEMa2KpkScMMZoupG2WwhCFNuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	Oleg Makarenko <oleg@makarenk.ooo>,
-	Jiri Kosina <jkosina@suse.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 222/565] HID: pidff: Use direction fix only for conditional effects
-Date: Tue, 11 Nov 2025 09:41:18 +0900
-Message-ID: <20251111004531.917410871@linuxfoundation.org>
+Subject: [PATCH 6.17 509/849] net: sh_eth: Disable WoL if system can not suspend
+Date: Tue, 11 Nov 2025 09:41:19 +0900
+Message-ID: <20251111004548.733288069@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,149 +65,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit f345a4798dab800159b09d088e7bdae0f16076c3 ]
+[ Upstream commit 9c02ea544ac35a9def5827d30594406947ccd81a ]
 
-The already fixed bug in SDL only affected conditional effects. This
-should fix FFB in Forza Horizion 4/5 on Moza Devices as Forza Horizon
-flips the constant force direction instead of using negative magnitude
-values.
+The MAC can't facilitate WoL if the system can't go to sleep. Gate the
+WoL support callbacks in ethtool at compile time using CONFIG_PM_SLEEP.
 
-Changing the direction in the effect directly in pidff_upload_effect()
-would affect it's value in further operations like comparing to the old
-effect and/or just reading the effect values in the user application.
-
-This, in turn, would lead to constant PID_SET_EFFECT spam as the effect
-direction would constantly not match the value that's set by the
-application.
-
-This way, it's still transparent to any software/API.
-
-Only affects conditional effects now so it's better for it to explicitly
-state that in the name. If any HW ever needs fixed direction for other
-effects, we'll add more quirks.
-
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Oleg Makarenko <oleg@makarenk.ooo>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250909085849.3808169-1-niklas.soderlund+renesas@ragnatech.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-universal-pidff.c | 20 ++++++++++----------
- drivers/hid/usbhid/hid-pidff.c    | 28 +++++++++++++++++++++++-----
- drivers/hid/usbhid/hid-pidff.h    |  2 +-
- 3 files changed, 34 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/renesas/sh_eth.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hid/hid-universal-pidff.c b/drivers/hid/hid-universal-pidff.c
-index 5b89ec7b5c26c..dc1b262f28331 100644
---- a/drivers/hid/hid-universal-pidff.c
-+++ b/drivers/hid/hid-universal-pidff.c
-@@ -143,25 +143,25 @@ static int universal_pidff_input_configured(struct hid_device *hdev,
- 
- static const struct hid_device_id universal_pidff_devices[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R3),
--		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
-+		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R3_2),
--		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
-+		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R5),
--		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
-+		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R5_2),
--		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
-+		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R9),
--		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
-+		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R9_2),
--		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
-+		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R12),
--		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
-+		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R12_2),
--		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
-+		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R16_R21),
--		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
-+		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R16_R21_2),
--		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
-+		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CAMMUS, USB_DEVICE_ID_CAMMUS_C5) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CAMMUS, USB_DEVICE_ID_CAMMUS_C12) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_VRS, USB_DEVICE_ID_VRS_DFP),
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 8dfd2c554a276..0e60e4dc9e247 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -205,6 +205,14 @@ struct pidff_device {
- 	u8 effect_count;
- };
- 
-+static int pidff_is_effect_conditional(struct ff_effect *effect)
-+{
-+	return effect->type == FF_SPRING  ||
-+	       effect->type == FF_DAMPER  ||
-+	       effect->type == FF_INERTIA ||
-+	       effect->type == FF_FRICTION;
-+}
-+
- /*
-  * Clamp value for a given field
-  */
-@@ -294,6 +302,20 @@ static void pidff_set_duration(struct pidff_usage *usage, u16 duration)
- 	pidff_set_time(usage, duration);
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index 5fc8027c92c7c..695fa3592c9a2 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -2360,6 +2360,7 @@ static int sh_eth_set_ringparam(struct net_device *ndev,
+ 	return 0;
  }
  
-+static void pidff_set_effect_direction(struct pidff_device *pidff,
-+				       struct ff_effect *effect)
-+{
-+	u16 direction = effect->direction;
-+
-+	/* Use fixed direction if needed */
-+	if (pidff->quirks & HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION &&
-+	    pidff_is_effect_conditional(effect))
-+		direction = PIDFF_FIXED_WHEEL_DIRECTION;
-+
-+	pidff->effect_direction->value[0] =
-+		pidff_rescale(direction, U16_MAX, pidff->effect_direction);
-+}
-+
- /*
-  * Send envelope report to the device
-  */
-@@ -394,11 +416,7 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
- 		pidff->set_effect[PID_GAIN].field->logical_maximum;
- 	pidff->set_effect[PID_DIRECTION_ENABLE].value[0] = 1;
++#ifdef CONFIG_PM_SLEEP
+ static void sh_eth_get_wol(struct net_device *ndev, struct ethtool_wolinfo *wol)
+ {
+ 	struct sh_eth_private *mdp = netdev_priv(ndev);
+@@ -2386,6 +2387,7 @@ static int sh_eth_set_wol(struct net_device *ndev, struct ethtool_wolinfo *wol)
  
--	/* Use fixed direction if needed */
--	pidff->effect_direction->value[0] = pidff_rescale(
--		pidff->quirks & HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION ?
--		PIDFF_FIXED_WHEEL_DIRECTION : effect->direction,
--		U16_MAX, pidff->effect_direction);
-+	pidff_set_effect_direction(pidff, effect);
+ 	return 0;
+ }
++#endif
  
- 	/* Omit setting delay field if it's missing */
- 	if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_DELAY))
-diff --git a/drivers/hid/usbhid/hid-pidff.h b/drivers/hid/usbhid/hid-pidff.h
-index dda571e0a5bd3..e4ab05213ecac 100644
---- a/drivers/hid/usbhid/hid-pidff.h
-+++ b/drivers/hid/usbhid/hid-pidff.h
-@@ -17,7 +17,7 @@
- #define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
+ static const struct ethtool_ops sh_eth_ethtool_ops = {
+ 	.get_regs_len	= sh_eth_get_regs_len,
+@@ -2401,8 +2403,10 @@ static const struct ethtool_ops sh_eth_ethtool_ops = {
+ 	.set_ringparam	= sh_eth_set_ringparam,
+ 	.get_link_ksettings = phy_ethtool_get_link_ksettings,
+ 	.set_link_ksettings = phy_ethtool_set_link_ksettings,
++#ifdef CONFIG_PM_SLEEP
+ 	.get_wol	= sh_eth_get_wol,
+ 	.set_wol	= sh_eth_set_wol,
++#endif
+ };
  
- /* Use fixed 0x4000 direction during SET_EFFECT report upload */
--#define HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION	BIT(3)
-+#define HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION	BIT(3)
- 
- /* Force all periodic effects to be uploaded as SINE */
- #define HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY	BIT(4)
+ /* network device open function */
 -- 
 2.51.0
 
