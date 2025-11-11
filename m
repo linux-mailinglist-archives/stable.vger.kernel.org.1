@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-193860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83162C4AC70
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C932BC4A42E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E44FB3BC0F7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 181534F9DC3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272563451AE;
-	Tue, 11 Nov 2025 01:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B0625F797;
+	Tue, 11 Nov 2025 01:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="daMNiYIO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsgFGAgp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D616F2DEA77;
-	Tue, 11 Nov 2025 01:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F8124E4C6;
+	Tue, 11 Nov 2025 01:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824176; cv=none; b=dFVHl6ffM17dtyr/pNPWR7TBdROEfEmPUgr5iHXbn8bnoUFYNT6plXjNNV1mIvE13cmvXDMFltqaPieA4w+K+4TNNqdZRqj29DhEhFN4889M6+KxedsdtPL2TdIANFBBYsNFlZTNGOK22d1o6aowCApxlPy6Jc1pAs8UHcbI7p0=
+	t=1762823094; cv=none; b=cpx1t/Lq0Z+LdlEgPXAWK0ERy7LDWkmsh2PNckK0NpPWMrAOVjZWGgoK4yxxaFL7bIe63d4L7oK+qq9EVyVGEgOt/DTqaLbN4AJk7MaRXIA4LQ946I/OdBhoTKT0UU9pgY7yQgJXJKqJLKOH85mTWUZ7ze/fFjr/HSs9JevR/Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824176; c=relaxed/simple;
-	bh=K9NlcVqcsS6yfL6I/UCJppz0Ucm6+bBO3KiJU9AGxdM=;
+	s=arc-20240116; t=1762823094; c=relaxed/simple;
+	bh=dkUuDkPIDD99S/m6p97YI4sPlL1/qbqZbvnzjnOPD0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/KlxmVoooQrTgChoHqLIDILv/OWEvW1PRs/GDVxumaJyEpRa3a/fK3TgQewxPEErNgdqhaGVyXWesnY47lz9jhMaesOGA+F7nV8Db9h3hSih6LAIXGWk0h/iJUaNvL2WGMKNboS1lVCgdqULWqJjToIHGLO5JZ7370SY9uOxNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=daMNiYIO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A06FC116D0;
-	Tue, 11 Nov 2025 01:22:55 +0000 (UTC)
+	 MIME-Version; b=efZcghmomms4BFOmZQvUDaJcJYVJL0K40SZCBT9p/bCAKwJKiM0dIa1MoqaiJWS5moE/stG2qXNM2zcFey3SXbyTsgufcT2V0F1FQa1upCNRcORxrqJXzX93lKkfhmYWPKp+j9DOvsTiM8auGUhsYbYPSfG8pLlBhYxkrh2asv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsgFGAgp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A9CC113D0;
+	Tue, 11 Nov 2025 01:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824176;
-	bh=K9NlcVqcsS6yfL6I/UCJppz0Ucm6+bBO3KiJU9AGxdM=;
+	s=korg; t=1762823094;
+	bh=dkUuDkPIDD99S/m6p97YI4sPlL1/qbqZbvnzjnOPD0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=daMNiYIOYioexYAS1Jtev7F398KRQeXiDbWm6OJuYUv6AF6eQ1rA5et3pyz+sSAUr
-	 sr0rDZWesR0JX6y+LRh1/KCNSx4gDDAGUgOA72DbBiR4k/EfbIxyOgcKRD2JAOy5Jq
-	 fj7jE1oie87Amh8EkqJYx1S78ijC9Ec3Dgvs6ZHM=
+	b=IsgFGAgp2nhC/CKdRn7S7dw7lyWaHdYOtyOHAIXknE+RnQU9KDChHXhynBrCl/BLN
+	 zufZ4gfbw102iLzsxcXpSULCWup/7/WKA4RoTpaB7KmQXRUq9MGxWVMSe85NHF/S4C
+	 cLEDW4ScrWLo7jMvthmUp1lujXxwWeO5eYZIF+SQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Bastien Curutchet <bastien.curutchet@bootlin.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 456/849] drm/amdgpu: add support for cyan skillfish gpu_info
+Subject: [PATCH 6.12 170/565] mfd: core: Increment of_nodes refcount before linking it to the platform device
 Date: Tue, 11 Nov 2025 09:40:26 +0900
-Message-ID: <20251111004547.453049173@linuxfoundation.org>
+Message-ID: <20251111004530.758846813@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
 
-[ Upstream commit fa819e3a7c1ee994ce014cc5a991c7fd91bc00f1 ]
+[ Upstream commit 5f4bbee069836e51ed0b6d7e565a292f070ababc ]
 
-Some SOCs which are part of the cyan skillfish family
-rely on an explicit firmware for IP discovery.  Add support
-for the gpu_info firmware.
+When an MFD device is added, a platform_device is allocated. If this
+device is linked to a DT description, the corresponding OF node is linked
+to the new platform device but the OF node's refcount isn't incremented.
+As of_node_put() is called during the platform device release, it leads
+to a refcount underflow.
 
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Call of_node_get() to increment the OF node's refcount when the node is
+linked to the newly created platform device.
+
+Signed-off-by: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Link: https://lore.kernel.org/r/20250820-mfd-refcount-v1-1-6dcb5eb41756@bootlin.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mfd/mfd-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 097ceee79ece6..274bb4d857d36 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -95,6 +95,7 @@ MODULE_FIRMWARE("amdgpu/picasso_gpu_info.bin");
- MODULE_FIRMWARE("amdgpu/raven2_gpu_info.bin");
- MODULE_FIRMWARE("amdgpu/arcturus_gpu_info.bin");
- MODULE_FIRMWARE("amdgpu/navi12_gpu_info.bin");
-+MODULE_FIRMWARE("amdgpu/cyan_skillfish_gpu_info.bin");
+diff --git a/drivers/mfd/mfd-core.c b/drivers/mfd/mfd-core.c
+index 76bd316a50afc..7d14a1e7631ee 100644
+--- a/drivers/mfd/mfd-core.c
++++ b/drivers/mfd/mfd-core.c
+@@ -131,6 +131,7 @@ static int mfd_match_of_node_to_dev(struct platform_device *pdev,
+ 	of_entry->np = np;
+ 	list_add_tail(&of_entry->list, &mfd_of_node_list);
  
- #define AMDGPU_RESUME_MS		2000
- #define AMDGPU_MAX_RETRY_LIMIT		2
-@@ -2595,6 +2596,9 @@ static int amdgpu_device_parse_gpu_info_fw(struct amdgpu_device *adev)
- 			return 0;
- 		chip_name = "navi12";
- 		break;
-+	case CHIP_CYAN_SKILLFISH:
-+		chip_name = "cyan_skillfish";
-+		break;
- 	}
- 
- 	err = amdgpu_ucode_request(adev, &adev->firmware.gpu_info_fw,
++	of_node_get(np);
+ 	device_set_node(&pdev->dev, of_fwnode_handle(np));
+ #endif
+ 	return 0;
 -- 
 2.51.0
 
