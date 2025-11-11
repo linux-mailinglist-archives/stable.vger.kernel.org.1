@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03837C4AD3C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0120FC4A7CC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EC761893D9A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 255283B84EF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8493304BD5;
-	Tue, 11 Nov 2025 01:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907AA3446CC;
+	Tue, 11 Nov 2025 01:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8OGAzK6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhKkc+ec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74597303A1C;
-	Tue, 11 Nov 2025 01:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4162D94B7;
+	Tue, 11 Nov 2025 01:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824800; cv=none; b=dP3v+WaNKNeqQZRhSQufnp8RejGvdujIqnXmduf/Vg2Mz86lUnkg+UlQF8PAYCiK/hOcLX0vkpeW6LJhmGE5lB1nbTyiKDcB5NT5nGhhRP2V9Pi3YhlfN2dNA20rOjwrDlv5JYRFxPWJiCM9ZFSovE6QagCmrnPmJ3Xy/Kee4f0=
+	t=1762823613; cv=none; b=IB/T7HC/nwjD/ODKrmjE2jdjurBUOTm7QJWRcgLF3xIQ3UCFgZ9weFoJGcuZ7rAanjuig3CdRUYzd5WRpEZJduJbv20zm+cNGAjoJsDThyUBVdpRZhcFKx0YnmdQ3EKcPkYNU/OHJUtDW4YMEpkpHzyvIi35PokSVC9wfh2pINk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824800; c=relaxed/simple;
-	bh=qDHnagYyZYxn2tZVLjml829WOO77W50iNUYPatwMW84=;
+	s=arc-20240116; t=1762823613; c=relaxed/simple;
+	bh=v+w0jCj7nOO57CbLDZg9gBz8IDEhDaCWECn18/gpho0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhcGh3QKoSIsejvb1dYyLrdtcjin4c49p5KpaizB6VTJnPi7J0B/Yw7yPDKxZzMTWcqV0RjyPqDTf9gP/jm5EhJYb3xk51cuATB49IsaZF59DGDZf8U9yW/PCoU5HzcW2WM8xUxTqJCkD643Eu0yQLar0z7dPlgEXwvf63yvEHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8OGAzK6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E96C116D0;
-	Tue, 11 Nov 2025 01:33:19 +0000 (UTC)
+	 MIME-Version; b=OlXXLLkTmPjzYJw78Ru0BICD2HNodt+oldSrthpar/k0fe5AENyetszlT9XwUCZSg1lQvX4KDtKOBNVy3/rIuPxLtLNwGSjqeQoFIVSqAt+C/KSjeBODqkzAUArHeulkpBtjXpC4iDGoEfrz1wzy2ZPtcdaUnDd6clkKFGxh7S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhKkc+ec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78F4C4AF09;
+	Tue, 11 Nov 2025 01:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824800;
-	bh=qDHnagYyZYxn2tZVLjml829WOO77W50iNUYPatwMW84=;
+	s=korg; t=1762823613;
+	bh=v+w0jCj7nOO57CbLDZg9gBz8IDEhDaCWECn18/gpho0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8OGAzK65/Eql1s1SgFQDIhq7We9Y4nDfO4xBOHcmFDlQ6f7sR8DzT8aJub9DNkI5
-	 9ZCilA+084C2dkbpdce1A4tTOE+tf7PjmSA0zPHDbmTW5xPTcvfFH2gPgKel0++ADb
-	 DUUppsQ3wISMQ/FSyW7PC5yXCmTKCXdbpWGxvhus=
+	b=nhKkc+ec7LB0uVCQ71AX008tlnrkSRoOVYEaTtfpukvOMpapTKYBiYaR//HtJTLMs
+	 3P/Z8dxU7ctfBmI2mK5nihVIrcT9DCIi9CJqIVTzALTyHnAsTDWyGmXcCe1FnWBtwi
+	 KRnUuchi259vHv3yabagnCU4BPuajyFCG7cJbCPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	David Francis <David.Francis@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 572/849] scsi: lpfc: Clean up allocated queues when queue setup mbox commands fail
+Subject: [PATCH 6.12 286/565] drm/amdgpu: Allow kfd CRIU with no buffer objects
 Date: Tue, 11 Nov 2025 09:42:22 +0900
-Message-ID: <20251111004550.245934883@linuxfoundation.org>
+Message-ID: <20251111004533.312065661@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: David Francis <David.Francis@amd.com>
 
-[ Upstream commit 803dfd83df33b7565f23aef597d5dd036adfa792 ]
+[ Upstream commit 85705b18ae7674347f8675f64b2b3115fb1d5629 ]
 
-lpfc_sli4_queue_setup() does not allocate memory and is used for
-submitting CREATE_QUEUE mailbox commands.  Thus, if such mailbox
-commands fail we should clean up by also freeing the memory allocated
-for the queues with lpfc_sli4_queue_destroy().  Change the intended
-clean up label for the lpfc_sli4_queue_setup() error case to
-out_destroy_queue.
+The kfd CRIU checkpoint ioctl would return an error if trying
+to checkpoint a process with no kfd buffer objects.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Message-ID: <20250915180811.137530-4-justintee8345@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This is a normal case and should not be an error.
+
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: David Francis <David.Francis@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_sli.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index a8fbdf7119d88..d82ea9df098b8 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -8820,7 +8820,7 @@ lpfc_sli4_hba_setup(struct lpfc_hba *phba)
- 	if (unlikely(rc)) {
- 		lpfc_printf_log(phba, KERN_ERR, LOG_TRACE_EVENT,
- 				"0381 Error %d during queue setup.\n", rc);
--		goto out_stop_timers;
-+		goto out_destroy_queue;
- 	}
- 	/* Initialize the driver internal SLI layer lists. */
- 	lpfc_sli4_setup(phba);
-@@ -9103,7 +9103,6 @@ lpfc_sli4_hba_setup(struct lpfc_hba *phba)
- 	lpfc_free_iocb_list(phba);
- out_destroy_queue:
- 	lpfc_sli4_queue_destroy(phba);
--out_stop_timers:
- 	lpfc_stop_hba_timers(phba);
- out_free_mbox:
- 	mempool_free(mboxq, phba->mbox_mem_pool);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index 7fbbc67adfd9e..0e73ec69192c3 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -2572,8 +2572,8 @@ static int criu_restore(struct file *filep,
+ 	pr_debug("CRIU restore (num_devices:%u num_bos:%u num_objects:%u priv_data_size:%llu)\n",
+ 		 args->num_devices, args->num_bos, args->num_objects, args->priv_data_size);
+ 
+-	if (!args->bos || !args->devices || !args->priv_data || !args->priv_data_size ||
+-	    !args->num_devices || !args->num_bos)
++	if ((args->num_bos > 0 && !args->bos) || !args->devices || !args->priv_data ||
++	    !args->priv_data_size || !args->num_devices)
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&p->mutex);
 -- 
 2.51.0
 
