@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A29FDC4A86D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC400C4A911
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F7FD3B8B1F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D6E818961F5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1826346E76;
-	Tue, 11 Nov 2025 01:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72AC346E6B;
+	Tue, 11 Nov 2025 01:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEQEsj0t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zq8GsyT2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D38C346E6C;
-	Tue, 11 Nov 2025 01:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF2230E82E;
+	Tue, 11 Nov 2025 01:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823703; cv=none; b=DSR4AZw+drYbNQnOAV3HFsOtyZfW730OMsCTPEbo/dXmFKeMjCEo1W3sj+CUmceS9G6GDQqngjpUuwOdE2oFcqBb8Bq1GptgvjlFkaSRmlU4zVTT0H7v3ZRH9OXLJ0sZzPrPx2/8nJq3no+M8tZsTVFrBlOcyI8R7QEjyliYO4U=
+	t=1762823711; cv=none; b=sj0zEE1ttuoiy3UCYow34JFNqjVjQRaHIatJUtX3yGi9vUDwTUrnmHREwCCRzVkDutbRbQdBlZbnMHBjtl9MxVO/GGb4QG6C0U+qnbJlX1edCubjPd2PPRew3XHBw8bHoGjYc0upR9gwrFd5ekaWl1qW/oBAVP6nXQ+XbdCfpd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823703; c=relaxed/simple;
-	bh=PZHIm+hXJR6GF0PX/1ws4MM0WvurwfqkNbX+EHxSKMU=;
+	s=arc-20240116; t=1762823711; c=relaxed/simple;
+	bh=DeNMaefLrraRxYvZOAG68/Ca/UbIu1Jz7U9/SSmRQzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mLxLT0pVbOIJWBqcA9Kvzya+/Zrb4VHhxi8iKLKj/DmX25j3SA2Tewip5+7s1QqdbeOPv9K6GQVdb7AzlV48VugpfCEI3w3FNn6kIbm86/BFbEsLOZPcBy6eLpQHTWTaz1ynGfChEwQ5riTXDxA5LQd5Ew+gpAVmY6NQ6JANoUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEQEsj0t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F05BC4CEFB;
-	Tue, 11 Nov 2025 01:15:02 +0000 (UTC)
+	 MIME-Version; b=dQvZKm/A9EQd1jqZrOmye8O1sxPSOdT0mP7eIYoYbfDFwxgHIJ6NMOeBfPFYPGAGhzQo64gfwgxBP66R9qK6ulB+7pW7eZhAHJb6evJYTjCwVJbXChGB1/nIAZbMTRVJDWtYCdC9y+DsGWtNd4i0fKMEE5yxFLSa1SuQYEScCMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zq8GsyT2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DC5C113D0;
+	Tue, 11 Nov 2025 01:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823703;
-	bh=PZHIm+hXJR6GF0PX/1ws4MM0WvurwfqkNbX+EHxSKMU=;
+	s=korg; t=1762823707;
+	bh=DeNMaefLrraRxYvZOAG68/Ca/UbIu1Jz7U9/SSmRQzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OEQEsj0t9v7dlZTI6z+if/Fk7v/DMxp1H15Ataf9oEGAdiIo+7HDr6EApLFEwkigd
-	 Y5VV7d8H4Dv+kUnJ73sS10b2yc4if46mddrV6MsysnIT/obA8z2ju1y/LULhKZ4gu0
-	 djPBJotlZP8JuLF//KoOHdSM8IWZ+rBxnvZkDjTQ=
+	b=zq8GsyT2Cn3vIOwkBQLUUqF482pj/Jpc0/J2voclOY9kG/XRa25/lHFNx7ESq2prz
+	 iwHUg0Qkvw3GPJhjMGnojecPvLgKIYtbBoq18DI28JXUtONQJpT5rrXGtU12mxn/eB
+	 IRlLW24LmddwD4zdbsJNuGh1Ldw/Fa3tzcWID9OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ching-Te Ku <ku920601@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 353/849] scsi: mpi3mr: Fix device loss during enclosure reboot due to zero link speed
-Date: Tue, 11 Nov 2025 09:38:43 +0900
-Message-ID: <20251111004544.955175215@linuxfoundation.org>
+Subject: [PATCH 6.17 354/849] wifi: rtw89: coex: Limit Wi-Fi scan slot cost to avoid A2DP glitch
+Date: Tue, 11 Nov 2025 09:38:44 +0900
+Message-ID: <20251111004544.980152532@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,91 +66,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+From: Ching-Te Ku <ku920601@realtek.com>
 
-[ Upstream commit d6c8e8b7c98c3cb326515ef4bc5c57e16ac5ae4e ]
+[ Upstream commit ebea22c7f1b2f06f4ff0719d76bd19830cf25c9f ]
 
-During enclosure reboot or expander reset, firmware may report a link
-speed of 0 in "Device Add" events while the link is still coming up.
-The driver drops such devices, leaving them missing even after the link
-recovers.
+When Wi-Fi is scanning at 2.4GHz, PTA will abort almost all the BT request.
+Once the Wi-Fi slot stay too long, BT audio device can not get enough data,
+audio glitch will happened. This patch limit 2.4Ghz Wi-Fi slot to 80ms
+while Wi-Fi is scanning to avoid audio glitch.
 
-Fix this by treating link speed 0 as 1.5 Gbps during device addition so
-the device is exposed to the OS. The actual link speed will be updated
-later when link-up events arrive.
-
-Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
-Link: https://lore.kernel.org/r/20250820084138.228471-2-chandrakanth.patil@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250819034428.26307-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_os.c        |  8 ++++----
- drivers/scsi/mpi3mr/mpi3mr_transport.c | 11 +++++++++--
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/wireless/realtek/rtw89/coex.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
-index e467b56949e98..1582cdbc66302 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_os.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -2049,8 +2049,8 @@ static void mpi3mr_fwevt_bh(struct mpi3mr_ioc *mrioc,
- 	if (!fwevt->process_evt)
- 		goto evt_ack;
- 
--	dprint_event_bh(mrioc, "processing event(0x%02x) in the bottom half handler\n",
--	    fwevt->event_id);
-+	dprint_event_bh(mrioc, "processing event(0x%02x) -(0x%08x) in the bottom half handler\n",
-+			fwevt->event_id, fwevt->evt_ctx);
- 
- 	switch (fwevt->event_id) {
- 	case MPI3_EVENT_DEVICE_ADDED:
-@@ -3076,8 +3076,8 @@ void mpi3mr_os_handle_events(struct mpi3mr_ioc *mrioc,
- 	}
- 	if (process_evt_bh || ack_req) {
- 		dprint_event_th(mrioc,
--			"scheduling bottom half handler for event(0x%02x),ack_required=%d\n",
--			evt_type, ack_req);
-+		    "scheduling bottom half handler for event(0x%02x) - (0x%08x), ack_required=%d\n",
-+		    evt_type, le32_to_cpu(event_reply->event_context), ack_req);
- 		sz = event_reply->event_data_length * 4;
- 		fwevt = mpi3mr_alloc_fwevt(sz);
- 		if (!fwevt) {
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_transport.c b/drivers/scsi/mpi3mr/mpi3mr_transport.c
-index c8d6ced5640e9..d70f002d6487d 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_transport.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_transport.c
-@@ -413,9 +413,11 @@ static void mpi3mr_remove_device_by_sas_address(struct mpi3mr_ioc *mrioc,
- 			 sas_address, hba_port);
- 	if (tgtdev) {
- 		if (!list_empty(&tgtdev->list)) {
--			list_del_init(&tgtdev->list);
- 			was_on_tgtdev_list = 1;
--			mpi3mr_tgtdev_put(tgtdev);
-+			if (tgtdev->state == MPI3MR_DEV_REMOVE_HS_STARTED) {
-+				list_del_init(&tgtdev->list);
-+				mpi3mr_tgtdev_put(tgtdev);
-+			}
- 		}
- 	}
- 	spin_unlock_irqrestore(&mrioc->tgtdev_lock, flags);
-@@ -2079,6 +2081,8 @@ int mpi3mr_expander_add(struct mpi3mr_ioc *mrioc, u16 handle)
- 				link_rate = (expander_pg1.negotiated_link_rate &
- 				    MPI3_SAS_NEG_LINK_RATE_LOGICAL_MASK) >>
- 				    MPI3_SAS_NEG_LINK_RATE_LOGICAL_SHIFT;
-+				if (link_rate < MPI3_SAS_NEG_LINK_RATE_1_5)
-+					link_rate = MPI3_SAS_NEG_LINK_RATE_1_5;
- 				mpi3mr_update_links(mrioc, sas_address_parent,
- 				    handle, i, link_rate, hba_port);
- 			}
-@@ -2388,6 +2392,9 @@ int mpi3mr_report_tgtdev_to_sas_transport(struct mpi3mr_ioc *mrioc,
- 
- 	link_rate = mpi3mr_get_sas_negotiated_logical_linkrate(mrioc, tgtdev);
- 
-+	if (link_rate < MPI3_SAS_NEG_LINK_RATE_1_5)
-+		link_rate = MPI3_SAS_NEG_LINK_RATE_1_5;
-+
- 	mpi3mr_update_links(mrioc, sas_address_parent, tgtdev->dev_handle,
- 	    parent_phy_number, link_rate, hba_port);
- 
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+index e4e6daf51a1ba..0f7ae572ef915 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.c
++++ b/drivers/net/wireless/realtek/rtw89/coex.c
+@@ -93,7 +93,7 @@ static const struct rtw89_btc_fbtc_slot s_def[] = {
+ 	[CXST_E2G]	= __DEF_FBTC_SLOT(5,   0xea5a5a5a, SLOT_MIX),
+ 	[CXST_E5G]	= __DEF_FBTC_SLOT(5,   0xffffffff, SLOT_ISO),
+ 	[CXST_EBT]	= __DEF_FBTC_SLOT(5,   0xe5555555, SLOT_MIX),
+-	[CXST_ENULL]	= __DEF_FBTC_SLOT(5,   0xaaaaaaaa, SLOT_ISO),
++	[CXST_ENULL]	= __DEF_FBTC_SLOT(5,   0x55555555, SLOT_MIX),
+ 	[CXST_WLK]	= __DEF_FBTC_SLOT(250, 0xea5a5a5a, SLOT_MIX),
+ 	[CXST_W1FDD]	= __DEF_FBTC_SLOT(50,  0xffffffff, SLOT_ISO),
+ 	[CXST_B1FDD]	= __DEF_FBTC_SLOT(50,  0xffffdfff, SLOT_ISO),
+@@ -4153,6 +4153,7 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
+ 				     s_def[CXST_EBT].cxtbl, s_def[CXST_EBT].cxtype);
+ 			_slot_set_le(btc, CXST_ENULL, s_def[CXST_ENULL].dur,
+ 				     s_def[CXST_ENULL].cxtbl, s_def[CXST_ENULL].cxtype);
++			_slot_set_dur(btc, CXST_EBT, dur_2);
+ 			break;
+ 		case BTC_CXP_OFFE_DEF2:
+ 			_slot_set(btc, CXST_E2G, 20, cxtbl[1], SLOT_ISO);
+@@ -4162,6 +4163,7 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
+ 				     s_def[CXST_EBT].cxtbl, s_def[CXST_EBT].cxtype);
+ 			_slot_set_le(btc, CXST_ENULL, s_def[CXST_ENULL].dur,
+ 				     s_def[CXST_ENULL].cxtbl, s_def[CXST_ENULL].cxtype);
++			_slot_set_dur(btc, CXST_EBT, dur_2);
+ 			break;
+ 		case BTC_CXP_OFFE_2GBWMIXB:
+ 			if (a2dp->exist)
+@@ -4170,6 +4172,7 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
+ 				_slot_set(btc, CXST_E2G, 5, tbl_w1, SLOT_MIX);
+ 			_slot_set_le(btc, CXST_EBT, cpu_to_le16(40),
+ 				     s_def[CXST_EBT].cxtbl, s_def[CXST_EBT].cxtype);
++			_slot_set_dur(btc, CXST_EBT, dur_2);
+ 			break;
+ 		case BTC_CXP_OFFE_WL: /* for 4-way */
+ 			_slot_set(btc, CXST_E2G, 5, cxtbl[1], SLOT_MIX);
 -- 
 2.51.0
 
