@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-194387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7A1FC4B181
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DFDDC4AEA1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3DC5F4F7984
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8A04C4F6220
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7520624A043;
-	Tue, 11 Nov 2025 01:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9AA23FC41;
+	Tue, 11 Nov 2025 01:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttN2JaSS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMyMM913"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB4623C4F2;
-	Tue, 11 Nov 2025 01:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB1827D786;
+	Tue, 11 Nov 2025 01:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825485; cv=none; b=koprFDb0V1t4D7u66GAdQ8+tHF+1Ke7TNTI/PJH6dUN1DQJEpPfGzk4Dt0ky+ldPz6bvV30/1KAsJ/kUAT1lsh68yvvPBe8bkp8Q2L6wRqwU8cByQ9V5TxB5pjEaLKG6Gv9knklv3b94LRzD1S4B55J4Pn9Zbg6Rq9NthrIOf9E=
+	t=1762824851; cv=none; b=OnIT8tnSFZTJRab8WZQSFdPvUPHfzlkuSycWv0zIjyYTJB1TeXolxvyA2in8N/o0DQj5zUFZdG1ltHbHQqhRDr5xckiIS+OxYe0XNI096FHRQTSGStcv/gzSiyER/NghmHrRdVx5pBQHl0KmfxkZ/I9MZ3U1ncsKCcyIiyarGKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825485; c=relaxed/simple;
-	bh=L/8qgXthGKer8T/POqdItO8gMX7GSIR/vWVrOhF2nT8=;
+	s=arc-20240116; t=1762824851; c=relaxed/simple;
+	bh=Xkr3204OYgsOvX83T1ScuoqdqAe+59kpa0Nmi5iSQOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uwrpNHeg1hlKYjad4Hxg8vJ5nTw1ZEdZKB1cKIlDMVjL2tKCRQB7pUNGq9bo5hjWeNzZ1PIzcnntlhPJtmRp9WbdiE1+Y1Om5U4gjBvK+iCkwYUjg0e11jy1GpKMhkf7tkSXPZUYvBIp4Ew2pbJihmLyQgVadxN8YTdbmlNX0Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttN2JaSS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1ACBC4CEFB;
-	Tue, 11 Nov 2025 01:44:44 +0000 (UTC)
+	 MIME-Version; b=WmzSSQmrtVK00h7Z4XC31kjWHbAttqx9HPSDzEWvLMP654CSXY0LhWp4w4j+HyqxSp8rVcJiVQ+CQEXjKxkLDgMDl95FWbqEuowbXIH2cBdfHjPurKSlGT75RxhsWjiSTvnP3dKv5wmm95hNzN9BMAlnwsMhBiycsMCunOYPbbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dMyMM913; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33A9C116D0;
+	Tue, 11 Nov 2025 01:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825485;
-	bh=L/8qgXthGKer8T/POqdItO8gMX7GSIR/vWVrOhF2nT8=;
+	s=korg; t=1762824851;
+	bh=Xkr3204OYgsOvX83T1ScuoqdqAe+59kpa0Nmi5iSQOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ttN2JaSSkG9/AJQv6Ail8tlorknUQkGtXI4an/7VCHVavxypW4O6CiDBIdhBSLoD+
-	 XH7jF9I6XfIpooSCXyCoYu02P3SsR7jCD3DU3MEufwoxGAlAMvrD+MHA6QRteKjzvZ
-	 Bu0+P2YfTfPxjBkaBZ4en5zvF9lEuoR6Dyc7+s6g=
+	b=dMyMM913kkUwY5tV6UV5YAf9yoMJlYdxe26edbuAi7SDDO/ltjA3LRt/q0v+UiqrV
+	 Le71k0y9AufoVkFb6kXV8/7cos1AgnbVYOvb3VgRbRGkvbTxXwUyf1YBYv2RwKCbrt
+	 tSAVw4yMSgJEiogj+0eXEExGWmmoHtibPinfG8mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.17 822/849] x86/CPU/AMD: Add missing terminator for zen5_rdseed_microcode
-Date: Tue, 11 Nov 2025 09:46:32 +0900
-Message-ID: <20251111004556.299142883@linuxfoundation.org>
+	Herve Codina <herve.codina@bootlin.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 537/565] net: wan: framer: pef2256: Switch to devm_mfd_add_devices()
+Date: Tue, 11 Nov 2025 09:46:33 +0900
+Message-ID: <20251111004539.053242725@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit f1fdffe0afea02ba783acfe815b6a60e7180df40 upstream.
+[ Upstream commit 4d6ec3a7932ca5b168426f7b5b40abab2b41d2da ]
 
-Running x86_match_min_microcode_rev() on a Zen5 CPU trips up KASAN for an out
-of bounds access.
+The driver calls mfd_add_devices() but fails to call mfd_remove_devices()
+in error paths after successful MFD device registration and in the remove
+function. This leads to resource leaks where MFD child devices are not
+properly unregistered.
 
-Fixes: 607b9fb2ce248 ("x86/CPU/AMD: Add RDSEED fix for Zen5")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251104161007.269885-1-mario.limonciello@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace mfd_add_devices with devm_mfd_add_devices to automatically
+manage the device resources.
+
+Fixes: c96e976d9a05 ("net: wan: framer: Add support for the Lantiq PEF2256 framer")
+Suggested-by: Herve Codina <herve.codina@bootlin.com>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Acked-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://patch.msgid.link/20251105034716.662-1-vulab@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/amd.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wan/framer/pef2256/pef2256.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1021,6 +1021,7 @@ static void init_amd_zen4(struct cpuinfo
- static const struct x86_cpu_id zen5_rdseed_microcode[] = {
- 	ZEN_MODEL_STEP_UCODE(0x1a, 0x02, 0x1, 0x0b00215a),
- 	ZEN_MODEL_STEP_UCODE(0x1a, 0x11, 0x0, 0x0b101054),
-+	{},
- };
+diff --git a/drivers/net/wan/framer/pef2256/pef2256.c b/drivers/net/wan/framer/pef2256/pef2256.c
+index 413a3c1d15bbe..dc6466542e2c0 100644
+--- a/drivers/net/wan/framer/pef2256/pef2256.c
++++ b/drivers/net/wan/framer/pef2256/pef2256.c
+@@ -637,7 +637,8 @@ static int pef2256_add_audio_devices(struct pef2256 *pef2256)
+ 		audio_devs[i].id = i;
+ 	}
  
- static void init_amd_zen5(struct cpuinfo_x86 *c)
+-	ret = mfd_add_devices(pef2256->dev, 0, audio_devs, count, NULL, 0, NULL);
++	ret = devm_mfd_add_devices(pef2256->dev, 0, audio_devs, count,
++				   NULL, 0, NULL);
+ 	kfree(audio_devs);
+ 	return ret;
+ }
+@@ -812,8 +813,8 @@ static int pef2256_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, pef2256);
+ 
+-	ret = mfd_add_devices(pef2256->dev, 0, pef2256_devs,
+-			      ARRAY_SIZE(pef2256_devs), NULL, 0, NULL);
++	ret = devm_mfd_add_devices(pef2256->dev, 0, pef2256_devs,
++				   ARRAY_SIZE(pef2256_devs), NULL, 0, NULL);
+ 	if (ret) {
+ 		dev_err(pef2256->dev, "add devices failed (%d)\n", ret);
+ 		return ret;
+-- 
+2.51.0
+
 
 
 
