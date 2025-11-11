@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A75C4A958
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEFEFC4ADF3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EFFA33493DC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73C133B963F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6227F3081C7;
-	Tue, 11 Nov 2025 01:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAAA3093A5;
+	Tue, 11 Nov 2025 01:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jImMS6t4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Balxg6GR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAA925A64C;
-	Tue, 11 Nov 2025 01:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066CA308F2E;
+	Tue, 11 Nov 2025 01:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824460; cv=none; b=g4B8bmv+sVkTt2l7qRhyZD47XXhuxjU3cr+rZ6GRsWQWJRu20o6i25t+YxM7yr4PqaoJ2akJX5IOYMg2GTgnrXBa12vckp1CXyxK7p16iPbsX1HiYQWIo2YbHm1XXN/N0bF4qzeZvayUVU1rOb9JbRUrOCkNu6gBMF4hbmJnM5E=
+	t=1762824490; cv=none; b=RVSTt7JRtgU+A/KQCrchfcryJ1U3WbKh5ZKtNmvANj0Ae7qsn0m/Y1BhNLpHdqqJn8KwOUuhnF5y90Gp657mIW62GiM7ybSI6HfbqEtI8SC3BTKjVCsrHix+m+DuJL+ZokZtDxm6FIfTmwImkCwxLDxfAbWTU5BPt5abapy+2p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824460; c=relaxed/simple;
-	bh=NEWb/2wXl4OhFYXBfMGSa0bRE0JU+qs2z3Q6295fXSE=;
+	s=arc-20240116; t=1762824490; c=relaxed/simple;
+	bh=1wmy1QnBY8106ZopRprJmlZ4tjpi835NsRFkCGCvC0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mEWUOb+lEeLokkqY1gGdFTNAQ0GBkMcTg7nldcv0dLPnNlAsJGYGazREXTwOb3FyoFsDaxzX3AEJIYKGtTplkQWwyRw049V7y2Yw+GB6ho3IMKoL9pW4agTL6aEh2F4sfUIgxz1vNVN/vRhgF4vD29UML+QnvtU6N/Y5cgd4JVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jImMS6t4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE89C116D0;
-	Tue, 11 Nov 2025 01:27:39 +0000 (UTC)
+	 MIME-Version; b=qVcDjA1GTuYAOOT7/SlFjGCtQ4ZBSXlsWEa1vJ1oGFJwusEtdiu18kC+d1xABUGhlS8gD+RxC6h0V/cnsYnYDMWz2FXWP1x89q9rawLiRaX8A0Fg6FOtCCkoDLViCj9jkGA0IZ53cvP+a2AymhxrC7FWa8VKb7Dnt/JNqh6HEjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Balxg6GR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F40C2BC86;
+	Tue, 11 Nov 2025 01:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824460;
-	bh=NEWb/2wXl4OhFYXBfMGSa0bRE0JU+qs2z3Q6295fXSE=;
+	s=korg; t=1762824486;
+	bh=1wmy1QnBY8106ZopRprJmlZ4tjpi835NsRFkCGCvC0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jImMS6t4pjUsgLFHgTSrRsZ0M0QirTpPYa3ot0+pJox2heyefV/0jrhcEht0ccm6X
-	 8GLxdmqxzEHj5KM4h0nttWFa/2RiNINAGdK6uIw4h6k9kYTdBY2YBenscfU2vy/eq1
-	 alWvqoYK+BpSXdpbI/erEE/ECdp87ElwpgekPUNI=
+	b=Balxg6GRo1rXWhKbRcySqiIbYJ+1XndCK4tSsbmDJ9OxaFeCQ0Nl19Kglib0eEtAT
+	 qlf7lHzumKlQc2Ks6kpyoufuuyrxL4RfBa+FOv+e6HwPBUtjZ8feO8n9ZSFEdJi9f4
+	 NuNPkKrcgBl6YxSdoYOvCweZkDcU1NIuduMZj7BI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Rohan G Thomas <rohan.g.thomas@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 495/849] scsi: ufs: host: mediatek: Enhance recovery on hibernation exit failure
-Date: Tue, 11 Nov 2025 09:41:05 +0900
-Message-ID: <20251111004548.405321671@linuxfoundation.org>
+Subject: [PATCH 6.17 496/849] net: phy: marvell: Fix 88e1510 downshift counter errata
+Date: Tue, 11 Nov 2025 09:41:06 +0900
+Message-ID: <20251111004548.427976144@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,96 +68,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Rohan G Thomas <rohan.g.thomas@altera.com>
 
-[ Upstream commit faac32d4ece30609f1a0930ca0ae951cf6dc1786 ]
+[ Upstream commit deb105f49879dd50d595f7f55207d6e74dec34e6 ]
 
-Improve the recovery process for hibernation exit failures. Trigger the
-error handler and break the suspend operation to ensure effective
-recovery from hibernation errors. Activate the error handling mechanism
-by ufshcd_force_error_recovery and scheduling the error handler work.
+The 88e1510 PHY has an erratum where the phy downshift counter is not
+cleared after phy being suspended(BMCR_PDOWN set) and then later
+resumed(BMCR_PDOWN cleared). This can cause the gigabit link to
+intermittently downshift to a lower speed.
 
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Disabling and re-enabling the downshift feature clears the counter,
+allowing the PHY to retry gigabit link negotiation up to the programmed
+retry count times before downshifting. This behavior has been observed
+on copper links.
+
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250906-marvell_fix-v2-1-f6efb286937f@altera.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c       |  3 ++-
- drivers/ufs/host/ufs-mediatek.c | 14 +++++++++++---
- include/ufs/ufshcd.h            |  1 +
- 3 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/net/phy/marvell.c | 39 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 52f2c599a348e..8bb6c48216963 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -6462,13 +6462,14 @@ void ufshcd_schedule_eh_work(struct ufs_hba *hba)
- 	}
+diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+index 623292948fa70..0ea366c1217eb 100644
+--- a/drivers/net/phy/marvell.c
++++ b/drivers/net/phy/marvell.c
+@@ -1902,6 +1902,43 @@ static int marvell_resume(struct phy_device *phydev)
+ 	return err;
  }
  
--static void ufshcd_force_error_recovery(struct ufs_hba *hba)
-+void ufshcd_force_error_recovery(struct ufs_hba *hba)
- {
- 	spin_lock_irq(hba->host->host_lock);
- 	hba->force_reset = true;
- 	ufshcd_schedule_eh_work(hba);
- 	spin_unlock_irq(hba->host->host_lock);
- }
-+EXPORT_SYMBOL_GPL(ufshcd_force_error_recovery);
- 
- static void ufshcd_clk_scaling_allow(struct ufs_hba *hba, bool allow)
- {
-diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
-index 055b24758ca3d..6bdbbee1f0708 100644
---- a/drivers/ufs/host/ufs-mediatek.c
-+++ b/drivers/ufs/host/ufs-mediatek.c
-@@ -1646,7 +1646,7 @@ static void ufs_mtk_dev_vreg_set_lpm(struct ufs_hba *hba, bool lpm)
- 	}
- }
- 
--static void ufs_mtk_auto_hibern8_disable(struct ufs_hba *hba)
-+static int ufs_mtk_auto_hibern8_disable(struct ufs_hba *hba)
- {
- 	int ret;
- 
-@@ -1657,8 +1657,16 @@ static void ufs_mtk_auto_hibern8_disable(struct ufs_hba *hba)
- 	ufs_mtk_wait_idle_state(hba, 5);
- 
- 	ret = ufs_mtk_wait_link_state(hba, VS_LINK_UP, 100);
--	if (ret)
-+	if (ret) {
- 		dev_warn(hba->dev, "exit h8 state fail, ret=%d\n", ret);
++/* m88e1510_resume
++ *
++ * The 88e1510 PHY has an erratum where the phy downshift counter is not cleared
++ * after phy being suspended(BMCR_PDOWN set) and then later resumed(BMCR_PDOWN
++ * cleared). This can cause the link to intermittently downshift to a lower speed.
++ *
++ * Disabling and re-enabling the downshift feature clears the counter, allowing
++ * the PHY to retry gigabit link negotiation up to the programmed retry count
++ * before downshifting. This behavior has been observed on copper links.
++ */
++static int m88e1510_resume(struct phy_device *phydev)
++{
++	int err;
++	u8 cnt = 0;
 +
-+		ufshcd_force_error_recovery(hba);
++	err = marvell_resume(phydev);
++	if (err < 0)
++		return err;
 +
-+		/* trigger error handler and break suspend */
-+		ret = -EBUSY;
++	/* read downshift counter value */
++	err = m88e1011_get_downshift(phydev, &cnt);
++	if (err < 0)
++		return err;
++
++	if (cnt) {
++		/* downshift disabled */
++		err = m88e1011_set_downshift(phydev, 0);
++		if (err < 0)
++			return err;
++
++		/* downshift enabled, with previous counter value */
++		err = m88e1011_set_downshift(phydev, cnt);
 +	}
 +
-+	return ret;
- }
- 
- static int ufs_mtk_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
-@@ -1669,7 +1677,7 @@ static int ufs_mtk_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
- 
- 	if (status == PRE_CHANGE) {
- 		if (ufshcd_is_auto_hibern8_supported(hba))
--			ufs_mtk_auto_hibern8_disable(hba);
-+			return ufs_mtk_auto_hibern8_disable(hba);
- 		return 0;
- 	}
- 
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index a3fa98540d184..a4eb5bde46e88 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -1511,5 +1511,6 @@ int __ufshcd_write_ee_control(struct ufs_hba *hba, u32 ee_ctrl_mask);
- int ufshcd_write_ee_control(struct ufs_hba *hba);
- int ufshcd_update_ee_control(struct ufs_hba *hba, u16 *mask,
- 			     const u16 *other_mask, u16 set, u16 clr);
-+void ufshcd_force_error_recovery(struct ufs_hba *hba);
- 
- #endif /* End of Header */
++	return err;
++}
++
+ static int marvell_aneg_done(struct phy_device *phydev)
+ {
+ 	int retval = phy_read(phydev, MII_M1011_PHY_STATUS);
+@@ -3923,7 +3960,7 @@ static struct phy_driver marvell_drivers[] = {
+ 		.handle_interrupt = marvell_handle_interrupt,
+ 		.get_wol = m88e1318_get_wol,
+ 		.set_wol = m88e1318_set_wol,
+-		.resume = marvell_resume,
++		.resume = m88e1510_resume,
+ 		.suspend = marvell_suspend,
+ 		.read_page = marvell_read_page,
+ 		.write_page = marvell_write_page,
 -- 
 2.51.0
 
