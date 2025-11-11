@@ -1,171 +1,86 @@
-Return-Path: <stable+bounces-194454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C592C4CBB9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 10:43:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB56C4CCA3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 10:55:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E11B3A7D72
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 09:37:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEF5E42202C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 09:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3102EBBAF;
-	Tue, 11 Nov 2025 09:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B9D2F39A5;
+	Tue, 11 Nov 2025 09:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TWEP18O2"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ckeyb71l"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AE4252917;
-	Tue, 11 Nov 2025 09:37:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E85A2EB872;
+	Tue, 11 Nov 2025 09:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762853840; cv=none; b=jXbEYPPuMFBb/KbDvN5gAuPHOn+cR7hOKrQB8yO2bRnL4ySXLZ4yBsmwLF6Y/xbfP3dB1s3mZewb+INwvZzTH4tQLS6nH+hRZLbCwj62LqXtWr25BFp6AMKMmlpaLxVKIS+awuWYsVbJlOgTktIvoefagiXFtwH5n+W9D6mlD/I=
+	t=1762854464; cv=none; b=i9/5Qa37yNClkjM8cZC/YsR9wXfDkiggRKVqEhxldsFinAciJp9+NZIaEO38VtqS/5mnhGWxWxxFIFJVnDxN0+wwddkGcnOOMiMXYzD0tKZD1SLmGng8C5g2NhpHLa+MTfwvlb0kiQujexlGVOq02ib3eOAUXQc15NgVE++BNF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762853840; c=relaxed/simple;
-	bh=hBswxWwybuZIgK/oU6jdvi5SVM4HjiW7Dn5p6TuCD2I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dGwHY6bLGUbkX0wwJz3Eg2IP5/EmnpAs1h5m8pYuhqP+9CALzC9XYhdZuC087A/mA9PU0X/VLHUgCLW3TmQusboyb6HlM2N1KOj+2sgbaklDZYc3eaOkDA1F7gaDTOjfg+k8n6D4PYgSORedUM82grg7gek9+Nh0oVtNoBkQBtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TWEP18O2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C0AC116B1;
-	Tue, 11 Nov 2025 09:37:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762853840;
-	bh=hBswxWwybuZIgK/oU6jdvi5SVM4HjiW7Dn5p6TuCD2I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TWEP18O2jujguz/unAMLA8YV9mO9nkPp/+bnpi3XZ16mItZD4Sd0Zm8TKO64f7YRO
-	 2h91P+GoRDZ55WZIdzHElmpYftKdF3DdGNuYGgAFp43xC2wfI6kDiIKY8HRKAa9rBq
-	 rTvvRpmm2HEP5EnDpfcQO+ZGn1ImPSlRzrpgBZLsEMQPcft0vl8y5cpBQqg7ih2I/m
-	 TYsFjwKf+neGSzLCW/QtF63TIDd2CykFlXqTWaoh6/qUKhMwoVyhwc4TLq46HNIWHO
-	 Vun6ED4hmLYYccF3z0rbgvzciIR4d/iqin3tLRYN3F4n7UWjp0BRXXFyeswBf99kLw
-	 3meBulZABDq4A==
-Message-ID: <10440fd8-aa78-4d73-a927-1f808fbc42c7@kernel.org>
-Date: Tue, 11 Nov 2025 10:37:16 +0100
+	s=arc-20240116; t=1762854464; c=relaxed/simple;
+	bh=ohd9pdrMVmles/05qOjVwCvl5qGyPbg0cYR2z6zquEs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bvx+I3tB5NEWv7+EZY91P+ayT7wtOlhziDUP52MULS11U8EbsJQ+11uQ/gWMzqvGqzX8kC/hdoV5F9i+uL/X2YtOw/gBiHUJOYgrt0LsSWTnElQ0Mebs0n+S6E6WA/2BV8Ly23Y258sPrTs1R7TY7yUYDG0pBpgfLpYGCiizLwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ckeyb71l; arc=none smtp.client-ip=220.197.32.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=XXkLRI0g65UAMkaqYzjM8MbTk3dgR2IEiJk+nolN7Bg=;
+	b=ckeyb71lGo1/OFEuPgVLJStCZXixLHM+k/OiY2qCmam22s5Ibto5T8vJmY9+uA
+	mqwDfDtUWt4jPNk9QznDPQI1kFNRPYu2aqFQ7cywpCMeqKgm77825GZhDvxu8xFl
+	ExtOiDMCJ7yt0zS/XHOrHDl7cC7lqoop7Y0uGiHIe4y2Q=
+Received: from dragon (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id M88vCgDnLZcKBhNpcL_DAQ--.5228S3;
+	Tue, 11 Nov 2025 17:46:52 +0800 (CST)
+Date: Tue, 11 Nov 2025 17:46:49 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Maarten Zanders <maarten@zanders.be>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Lothar =?iso-8859-1?Q?Wa=DFmann?= <LW@karo-electronics.de>,
+	stable@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: nxp: imx6ul: correct SAI3 interrupt line
+Message-ID: <aRMGCbDMDkasXMlU@dragon>
+References: <20251024142106.608225-1-maarten@zanders.be>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] w1: therm: Fix off-by-one buffer overflow in
- alarms_store
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: David Laight <david.laight.linux@gmail.com>,
- Huisong Li <lihuisong@huawei.com>, Akira Shimahara <akira215corp@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20251030155614.447905-1-thorsten.blum@linux.dev>
- <cac46c65-4510-4988-8ba2-507540363ad4@kernel.org>
- <9DA6251C-C725-46F2-899A-5CF2BE39982E@linux.dev>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <9DA6251C-C725-46F2-899A-5CF2BE39982E@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251024142106.608225-1-maarten@zanders.be>
+X-CM-TRANSID:M88vCgDnLZcKBhNpcL_DAQ--.5228S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUYJPEUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNgyjCWkTBgwY6gAA3S
 
-On 09/11/2025 23:11, Thorsten Blum wrote:
-> On 9. Nov 2025, at 19:29, Krzysztof Kozlowski wrote:
->> On 30/10/2025 16:56, Thorsten Blum wrote:
->>> -	/* Convert 2nd entry to int */
->>> -	ret = kstrtoint (token, 10, &temp);
->>> -	if (ret) {
->>> -		dev_info(device,
->>> -			"%s: error parsing args %d\n", __func__, ret);
->>> -		goto free_m;
->>> +	p = endp + 1;
->>> +	temp = simple_strtol(p, &endp, 10);
->>> +	if (temp < INT_MIN || temp > INT_MAX || p == endp) {
->>> +		dev_info(device, "%s: error parsing args %d\n",
->>> +			 __func__, -EINVAL);
->>> +		goto err;
->>> 	}
->>> +	/* Cast to short to eliminate out of range values */
->>> +	th = int_to_short((int)temp);
->>>
->>> -	/* Prepare to cast to short by eliminating out of range values */
->>> -	th = int_to_short(temp);
->>> -
->>> -	/* Reorder if required th and tl */
->>> +	/* Reorder if required */
->>> 	if (tl > th)
->>> 		swap(tl, th);
->>>
->>> @@ -1897,35 +1870,30 @@ static ssize_t alarms_store(struct device *device,
->>> 	 * (th : byte 2 - tl: byte 3)
->>> 	 */
->>> 	ret = read_scratchpad(sl, &info);
->>> -	if (!ret) {
->>> -		new_config_register[0] = th;	/* Byte 2 */
->>> -		new_config_register[1] = tl;	/* Byte 3 */
->>> -		new_config_register[2] = info.rom[4];/* Byte 4 */
->>> -	} else {
->>> -		dev_info(device,
->>> -			"%s: error reading from the slave device %d\n",
->>> -			__func__, ret);
->>> -		goto free_m;
->>> +	if (ret) {
->>> +		dev_info(device, "%s: error reading from the slave device %d\n",
->>> +			 __func__, ret);
->>> +		goto err;
->>> 	}
->>> +	new_config_register[0] = th;		/* Byte 2 */
->>> +	new_config_register[1] = tl;		/* Byte 3 */
->>> +	new_config_register[2] = info.rom[4];	/* Byte 4 *
->>
->> How is this change related?
+On Fri, Oct 24, 2025 at 04:21:06PM +0200, Maarten Zanders wrote:
+> The i.MX6UL reference manual lists two possible interrupt lines for
+> SAI3 (56 and 57, offset +32). The current device tree entry uses
+> the first one (24), which prevents IRQs from being handled properly.
 > 
-> Not related, but I thought when I'm already rewriting 80% of the
-> function, I might as well just improve the indentation/formatting.
+> Use the second interrupt line (25), which does allow interrupts
+> to work as expected.
+> 
+> Fixes: 36e2edf6ac07 ("ARM: dts: imx6ul: add sai support")
+> Signed-off-by: Maarten Zanders <maarten@zanders.be>
+> Cc: stable@vger.kernel.org
 
-Fix of buffer overflow should not contain any style changes. And
-definitely changing if/else logic is just style.
+Applied, thanks!
 
-Best regards,
-Krzysztof
 
