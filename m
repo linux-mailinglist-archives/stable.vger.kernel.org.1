@@ -1,52 +1,57 @@
-Return-Path: <stable+bounces-193196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DE5C4A088
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:29 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1004EC4A122
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82E13188DA81
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EB3724F3F44
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13D4244693;
-	Tue, 11 Nov 2025 00:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012A0246333;
+	Tue, 11 Nov 2025 00:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D2QsdIT5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmz6hygY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDB84C97;
-	Tue, 11 Nov 2025 00:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12DD4086A;
+	Tue, 11 Nov 2025 00:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822527; cv=none; b=ksvFBFmQAsFp6ouaXPQrIcSVhkMEgDbuLITY5C/+Hfaqduw4G9kUcYFJRK6VGllD2gO4/43Ekp5KpOzBdW8rxVx7OJVmOk2KPcWqKXg3gilBIn0k/Txv+IbA4m+LgH0f/EIi2cRlv8JX54eRyVim3cmOQdtgAHOurJ0FCUDTbDk=
+	t=1762822533; cv=none; b=BsgjC/ZC+NJ/bg8S0OGAwYNAfN3yI1kNZRAuRbzVP7tB0v4znHbynDkUJ/kG797o4inybhzyDib17aS+kjBbmBKzwjk+qD1RALZPcg1SPBYMmbB+jfvq8A0P9/RV53YiCcmdX9tHtX2/nrwo469JQnBMHR1kl6pHrAEamdsYZDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822527; c=relaxed/simple;
-	bh=dKSVGaozOVo4Bom0HD3QOrMbs/AGYuCDP9161RhQ1lU=;
+	s=arc-20240116; t=1762822533; c=relaxed/simple;
+	bh=xjCBFBCNWsusTBdUvRI8LkS5ucvS2f16SQ3Su/D3KC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jq/LnvMW4Z8Lww/5ws279Y9CDYJF4cjnTumBIYjqdNbn6uzQWxP7j7o6pLa9VVxDa1uUzPrkaMkLeApmHb1DGG63uqZOg7s5fYI3F1FDN6CnxWzsLeNGOXENFIKdvA5fggICDbEjYPSn2jo0PrO+zL3fhymb3zWrT7fMfqPabmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D2QsdIT5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B96DC4CEF5;
-	Tue, 11 Nov 2025 00:55:26 +0000 (UTC)
+	 MIME-Version; b=Fc2hnLTi/70V4QXkiue4zLPrj+SOXncenl3KE8fjH5yf02GdySZknWBluAuw+fFDsw6QQKZTEmuqqswXQNddvj1RN4PVddlyokCWOHO1jTBM4HRkK8jydLk3he9++KvwsBabD0GllJz6uPjp3VxIgnlalBNy/QAEDW5sQTXTQ/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmz6hygY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8FCC116B1;
+	Tue, 11 Nov 2025 00:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822527;
-	bh=dKSVGaozOVo4Bom0HD3QOrMbs/AGYuCDP9161RhQ1lU=;
+	s=korg; t=1762822532;
+	bh=xjCBFBCNWsusTBdUvRI8LkS5ucvS2f16SQ3Su/D3KC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D2QsdIT509v1vFqsbWFUS5L3olaRsVGjRRIvMRn502T9BoevADz61ZzGl2erbq6r0
-	 jsHimRnxTRsBMbwsE1uotAzY+G+QesUG9Cdc2sc1TFXuaeKLMt7nnzekNRQdMN2ewX
-	 mhPTsuiFsHHI1j3ifKmUy6LXGTaQu78NdCDeseRg=
+	b=rmz6hygYrJ1xlI6NlA0G+sCTqYiVPU3DdyqLLhPYUf6QVic27/lhjUgRYWXJOjiXl
+	 Ynvm/M5J/TsJkvbzWCQEefduP1YEUWcT3v5wYwXjt4q+/PhyfwReCp6yXmb2sfpP9d
+	 q8DVp8jBJ1V8Hh2BteQtNV6Q9Lwrr7tg9iSFU1rQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
-	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH 6.12 068/565] drm/nouveau: Fix race in nouveau_sched_fini()
-Date: Tue, 11 Nov 2025 09:38:44 +0900
-Message-ID: <20251111004528.478421094@linuxfoundation.org>
+	Sjoerd Simons <sjoerd@collabora.com>,
+	Ma Ke <make24@iscas.ac.cn>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Johan Hovold <johan@kernel.org>,
+	Ritesh Raj Sarraf <ritesh.sarraf@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Subject: [PATCH 6.12 069/565] drm/mediatek: Fix device use-after-free on unbind
+Date: Tue, 11 Nov 2025 09:38:45 +0900
+Message-ID: <20251111004528.502494715@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -65,57 +70,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Philipp Stanner <phasta@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit e0023c8a74028739643aa14bd201c41a99866ca4 upstream.
+commit 926d002e6d7e2f1fd5c1b53cf6208153ee7d380d upstream.
 
-nouveau_sched_fini() uses a memory barrier before wait_event().
-wait_event(), however, is a macro which expands to a loop which might
-check the passed condition several times. The barrier would only take
-effect for the first check.
+A recent change fixed device reference leaks when looking up drm
+platform device driver data during bind() but failed to remove a partial
+fix which had been added by commit 80805b62ea5b ("drm/mediatek: Fix
+kobject put for component sub-drivers").
 
-Replace the barrier with a function which takes the spinlock.
+This results in a reference imbalance on component bind() failures and
+on unbind() which could lead to a user-after-free.
 
-Cc: stable@vger.kernel.org # v6.8+
-Fixes: 5f03a507b29e ("drm/nouveau: implement 1:1 scheduler - entity relationship")
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://patch.msgid.link/20251024161221.196155-2-phasta@kernel.org
+Make sure to only drop the references after retrieving the driver data
+by effectively reverting the previous partial fix.
+
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
+
+Fixes: 1f403699c40f ("drm/mediatek: Fix device/node reference count leaks in mtk_drm_get_all_drm_priv")
+Reported-by: Sjoerd Simons <sjoerd@collabora.com>
+Closes: https://lore.kernel.org/r/20251003-mtk-drm-refcount-v1-1-3b3f2813b0db@collabora.com
+Cc: stable@vger.kernel.org
+Cc: Ma Ke <make24@iscas.ac.cn>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Sjoerd Simons <sjoerd@collabora.com>
+Tested-by: Sjoerd Simons <sjoerd@collabora.com>
+Tested-by: Ritesh Raj Sarraf <ritesh.sarraf@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20251006093937.27869-1-johan@kernel.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_sched.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c |   10 ----------
+ 1 file changed, 10 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_sched.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_sched.c
-@@ -475,6 +475,17 @@ nouveau_sched_create(struct nouveau_sche
- 	return 0;
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -684,10 +684,6 @@ err_free:
+ 	for (i = 0; i < private->data->mmsys_dev_num; i++)
+ 		private->all_drm_private[i]->drm = NULL;
+ err_put_dev:
+-	for (i = 0; i < private->data->mmsys_dev_num; i++) {
+-		/* For device_find_child in mtk_drm_get_all_priv() */
+-		put_device(private->all_drm_private[i]->dev);
+-	}
+ 	put_device(private->mutex_dev);
+ 	return ret;
  }
+@@ -695,18 +691,12 @@ err_put_dev:
+ static void mtk_drm_unbind(struct device *dev)
+ {
+ 	struct mtk_drm_private *private = dev_get_drvdata(dev);
+-	int i;
  
-+static bool
-+nouveau_sched_job_list_empty(struct nouveau_sched *sched)
-+{
-+	bool empty;
-+
-+	spin_lock(&sched->job.list.lock);
-+	empty = list_empty(&sched->job.list.head);
-+	spin_unlock(&sched->job.list.lock);
-+
-+	return empty;
-+}
- 
- static void
- nouveau_sched_fini(struct nouveau_sched *sched)
-@@ -482,8 +493,7 @@ nouveau_sched_fini(struct nouveau_sched
- 	struct drm_gpu_scheduler *drm_sched = &sched->base;
- 	struct drm_sched_entity *entity = &sched->entity;
- 
--	rmb(); /* for list_empty to work without lock */
--	wait_event(sched->job.wq, list_empty(&sched->job.list.head));
-+	wait_event(sched->job.wq, nouveau_sched_job_list_empty(sched));
- 
- 	drm_sched_entity_fini(entity);
- 	drm_sched_fini(drm_sched);
+ 	/* for multi mmsys dev, unregister drm dev in mmsys master */
+ 	if (private->drm_master) {
+ 		drm_dev_unregister(private->drm);
+ 		mtk_drm_kms_deinit(private->drm);
+ 		drm_dev_put(private->drm);
+-
+-		for (i = 0; i < private->data->mmsys_dev_num; i++) {
+-			/* For device_find_child in mtk_drm_get_all_priv() */
+-			put_device(private->all_drm_private[i]->dev);
+-		}
+ 		put_device(private->mutex_dev);
+ 	}
+ 	private->mtk_drm_bound = false;
 
 
 
