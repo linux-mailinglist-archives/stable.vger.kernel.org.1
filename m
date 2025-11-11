@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-193271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C75C4A189
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:59:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E90BC4A1AB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:00:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEE20188E1D9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E98B5188E2AA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8475C257842;
-	Tue, 11 Nov 2025 00:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A65246768;
+	Tue, 11 Nov 2025 01:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKK+BKEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x76YPgo0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67EA1C6FE1;
-	Tue, 11 Nov 2025 00:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248F91C28E;
+	Tue, 11 Nov 2025 01:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822772; cv=none; b=Kfggs+aP8MN6iWoLGVpXGUm6LT+0IVotsIs5W+bXtGbQrBaNKsuZux4oZcE9B4hpnVh3iFsJ2fWMd+e+IAySLpKojQwGt06ERsfI88AhI6Pi72mpqjk9k+mZMIrHki5uksIVqLCSe2nuBjqJu6X1vW5heGiQKME17v753oZXE/s=
+	t=1762822827; cv=none; b=kYUkm3fbQLkl7FHKMo19un286ipF2ENPom5gwcNMFlm7lqvBsGOkueZDO14uwiLqtbZPWMhiXw40IOAxkMr3NkBNCBAZYUj6bzV78jND8YEnumasv5yO+Lzu29IPDn3aPQdqWD1S+Vxel7AmLNmndJM6iPWIsFznLWPNqgy2XL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822772; c=relaxed/simple;
-	bh=hFI320JiMLbZMjk+H8wq24MvTz43ZMJq/rQytYxuk7o=;
+	s=arc-20240116; t=1762822827; c=relaxed/simple;
+	bh=ag2gKjFIffvOWv2EW+bn/C+mCJMFpHAnH6gWL9/TcE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k3er4SumgVPBOjFoF58XxA5b3wrlrJ+c0FiViadtA0oIJxnSOcLqJsscbm22VSR+CkkGyb4Az0NXwUNt6sHJOQAmid36atrdsx68pZnZ0/OnVdw4qIRwBBLWIWkMfJqcS336TALo1V4UnBDcUco5wIqujwx4S/aXbuPRZQiiHlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKK+BKEM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86313C113D0;
-	Tue, 11 Nov 2025 00:59:31 +0000 (UTC)
+	 MIME-Version; b=KFc70odQAvczVVnVnXX7GKqbj+tiattKh5FEMhWhGDgFJZ1FcFC6SsnBfVyG2Txi4znQH8bDBTeBieUbOJVYiQkFTOnYnaEcs2wrmTwxgKZWBsv0siCAYNJl9RCpMroUrxFN0dOkAUDJ/MqTW3fdA9MuY5rfzwwJ125B/PeAkXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x76YPgo0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AADC116B1;
+	Tue, 11 Nov 2025 01:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822771;
-	bh=hFI320JiMLbZMjk+H8wq24MvTz43ZMJq/rQytYxuk7o=;
+	s=korg; t=1762822827;
+	bh=ag2gKjFIffvOWv2EW+bn/C+mCJMFpHAnH6gWL9/TcE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LKK+BKEM2A57225oe5UGneK4xgpbtqM4IO2l/pdp0mFWk9vE1yvNDJudjlElbtm0G
-	 TmVd7hugNj4o3Kt5uTiiKtTSoMB4yyIkH4QSm1krZ7AYQvxcCBVAKAVeyTCJJ0Ol2T
-	 RCg+Yqg19CIPBkCGZI8T7loz1iXcTbK8L0bWlLLY=
+	b=x76YPgo07v0nhfw55znHe2Qhhypk2zPzgERcmrXGdBzjxWDY6wRUDe0APkS1O45DB
+	 Hn4hgKEQHOoJbUNFPUZpquteyB0V9ppOfP5y2skkp9RAo6UqTs0wtHNOYK6CunCq72
+	 sO41kIb6Q78nsFSww1aH8eyUgaBE/QwQGbdNx85M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Ming Wang <wangming01@loongson.cn>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 164/849] block: check for valid bio while splitting
-Date: Tue, 11 Nov 2025 09:35:34 +0900
-Message-ID: <20251111004540.397994402@linuxfoundation.org>
+Subject: [PATCH 6.17 165/849] irqchip/loongson-pch-lpc: Use legacy domain for PCH-LPC IRQ controller
+Date: Tue, 11 Nov 2025 09:35:35 +0900
+Message-ID: <20251111004540.423361664@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,137 +66,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Ming Wang <wangming01@loongson.cn>
 
-[ Upstream commit fec2e705729dc93de5399d8b139e4746805c3d81 ]
+[ Upstream commit c33c43f71bda362b292a6e57ac41b64342dc87b3 ]
 
-We're already iterating every segment, so check these for a valid IO
-lengths at the same time. Individual segment lengths will not be checked
-on passthrough commands. The read/write command segments must be sized
-to the dma alignment.
+On certain Loongson platforms, drivers attempting to request a legacy
+ISA IRQ directly via request_irq() (e.g., IRQ 4) may fail. The
+virtual IRQ descriptor is not fully initialized and lacks a valid irqchip.
 
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This issue does not affect ACPI-enumerated devices described in DSDT,
+as their interrupts are properly mapped via the GSI translation path.
+This indicates the LPC irqdomain itself is functional but is not correctly
+handling direct VIRQ-to-HWIRQ mappings.
+
+The root cause is the use of irq_domain_create_linear(). This API sets
+up a domain for dynamic, on-demand mapping, typically triggered by a GSI
+request. It does not pre-populate the mappings for the legacy VIRQ range
+(0-15). Consequently, if no ACPI device claims a specific GSI
+(e.g., GSI 4), the corresponding VIRQ (e.g., VIRQ 4) is never mapped to
+the LPC domain. A direct call to request_irq(4, ...) then fails because
+the kernel cannot resolve this VIRQ to a hardware interrupt managed by
+the LPC controller.
+
+The PCH-LPC interrupt controller is an i8259-compatible legacy device
+that requires a deterministic, static 1-to-1 mapping for IRQs 0-15 to
+support legacy drivers.
+
+Fix this by replacing irq_domain_create_linear() with
+irq_domain_create_legacy(). This API is specifically designed for such
+controllers. It establishes the required static 1-to-1 VIRQ-to-HWIRQ
+mapping for the entire legacy range (0-15) immediately upon domain
+creation. This ensures that any VIRQ in this range is always resolvable,
+making direct calls to request_irq() for legacy IRQs function correctly.
+
+Signed-off-by: Ming Wang <wangming01@loongson.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-map.c        |  2 +-
- block/blk-merge.c      | 21 +++++++++++++++++----
- include/linux/bio.h    |  4 ++--
- include/linux/blkdev.h |  7 +++++++
- 4 files changed, 27 insertions(+), 7 deletions(-)
+ drivers/irqchip/irq-loongson-pch-lpc.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-map.c b/block/blk-map.c
-index 23e5d5ebe59ec..6d1268aa82715 100644
---- a/block/blk-map.c
-+++ b/block/blk-map.c
-@@ -443,7 +443,7 @@ int blk_rq_append_bio(struct request *rq, struct bio *bio)
- 	int ret;
+diff --git a/drivers/irqchip/irq-loongson-pch-lpc.c b/drivers/irqchip/irq-loongson-pch-lpc.c
+index 2d4c3ec128b8f..912bf50a5c7ca 100644
+--- a/drivers/irqchip/irq-loongson-pch-lpc.c
++++ b/drivers/irqchip/irq-loongson-pch-lpc.c
+@@ -200,8 +200,13 @@ int __init pch_lpc_acpi_init(struct irq_domain *parent,
+ 		goto iounmap_base;
+ 	}
  
- 	/* check that the data layout matches the hardware restrictions */
--	ret = bio_split_rw_at(bio, lim, &nr_segs, max_bytes);
-+	ret = bio_split_io_at(bio, lim, &nr_segs, max_bytes, 0);
- 	if (ret) {
- 		/* if we would have to split the bio, copy instead */
- 		if (ret > 0)
-diff --git a/block/blk-merge.c b/block/blk-merge.c
-index 77488f11a9441..37864c5d287ef 100644
---- a/block/blk-merge.c
-+++ b/block/blk-merge.c
-@@ -303,25 +303,30 @@ static unsigned int bio_split_alignment(struct bio *bio,
- }
- 
- /**
-- * bio_split_rw_at - check if and where to split a read/write bio
-+ * bio_split_io_at - check if and where to split a bio
-  * @bio:  [in] bio to be split
-  * @lim:  [in] queue limits to split based on
-  * @segs: [out] number of segments in the bio with the first half of the sectors
-  * @max_bytes: [in] maximum number of bytes per bio
-+ * @len_align_mask: [in] length alignment mask for each vector
-  *
-  * Find out if @bio needs to be split to fit the queue limits in @lim and a
-  * maximum size of @max_bytes.  Returns a negative error number if @bio can't be
-  * split, 0 if the bio doesn't have to be split, or a positive sector offset if
-  * @bio needs to be split.
-  */
--int bio_split_rw_at(struct bio *bio, const struct queue_limits *lim,
--		unsigned *segs, unsigned max_bytes)
-+int bio_split_io_at(struct bio *bio, const struct queue_limits *lim,
-+		unsigned *segs, unsigned max_bytes, unsigned len_align_mask)
- {
- 	struct bio_vec bv, bvprv, *bvprvp = NULL;
- 	struct bvec_iter iter;
- 	unsigned nsegs = 0, bytes = 0;
- 
- 	bio_for_each_bvec(bv, bio, iter) {
-+		if (bv.bv_offset & lim->dma_alignment ||
-+		    bv.bv_len & len_align_mask)
-+			return -EINVAL;
-+
- 		/*
- 		 * If the queue doesn't support SG gaps and adding this
- 		 * offset would create a gap, disallow it.
-@@ -363,8 +368,16 @@ int bio_split_rw_at(struct bio *bio, const struct queue_limits *lim,
- 	 * Individual bvecs might not be logical block aligned. Round down the
- 	 * split size so that each bio is properly block size aligned, even if
- 	 * we do not use the full hardware limits.
-+	 *
-+	 * It is possible to submit a bio that can't be split into a valid io:
-+	 * there may either be too many discontiguous vectors for the max
-+	 * segments limit, or contain virtual boundary gaps without having a
-+	 * valid block sized split. A zero byte result means one of those
-+	 * conditions occured.
- 	 */
- 	bytes = ALIGN_DOWN(bytes, bio_split_alignment(bio, lim));
-+	if (!bytes)
-+		return -EINVAL;
- 
- 	/*
- 	 * Bio splitting may cause subtle trouble such as hang when doing sync
-@@ -374,7 +387,7 @@ int bio_split_rw_at(struct bio *bio, const struct queue_limits *lim,
- 	bio_clear_polled(bio);
- 	return bytes >> SECTOR_SHIFT;
- }
--EXPORT_SYMBOL_GPL(bio_split_rw_at);
-+EXPORT_SYMBOL_GPL(bio_split_io_at);
- 
- struct bio *bio_split_rw(struct bio *bio, const struct queue_limits *lim,
- 		unsigned *nr_segs)
-diff --git a/include/linux/bio.h b/include/linux/bio.h
-index 46ffac5caab78..519a1d59805f8 100644
---- a/include/linux/bio.h
-+++ b/include/linux/bio.h
-@@ -322,8 +322,8 @@ static inline void bio_next_folio(struct folio_iter *fi, struct bio *bio)
- void bio_trim(struct bio *bio, sector_t offset, sector_t size);
- extern struct bio *bio_split(struct bio *bio, int sectors,
- 			     gfp_t gfp, struct bio_set *bs);
--int bio_split_rw_at(struct bio *bio, const struct queue_limits *lim,
--		unsigned *segs, unsigned max_bytes);
-+int bio_split_io_at(struct bio *bio, const struct queue_limits *lim,
-+		unsigned *segs, unsigned max_bytes, unsigned len_align);
- 
- /**
-  * bio_next_split - get next @sectors from a bio, splitting if necessary
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index cc221318712e7..37fa7169fa9f4 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1872,6 +1872,13 @@ bdev_atomic_write_unit_max_bytes(struct block_device *bdev)
- 	return queue_atomic_write_unit_max_bytes(bdev_get_queue(bdev));
- }
- 
-+static inline int bio_split_rw_at(struct bio *bio,
-+		const struct queue_limits *lim,
-+		unsigned *segs, unsigned max_bytes)
-+{
-+	return bio_split_io_at(bio, lim, segs, max_bytes, lim->dma_alignment);
-+}
-+
- #define DEFINE_IO_COMP_BATCH(name)	struct io_comp_batch name = { }
- 
- #endif /* _LINUX_BLKDEV_H */
+-	priv->lpc_domain = irq_domain_create_linear(irq_handle, LPC_COUNT,
+-					&pch_lpc_domain_ops, priv);
++	/*
++	 * The LPC interrupt controller is a legacy i8259-compatible device,
++	 * which requires a static 1:1 mapping for IRQs 0-15.
++	 * Use irq_domain_create_legacy to establish this static mapping early.
++	 */
++	priv->lpc_domain = irq_domain_create_legacy(irq_handle, LPC_COUNT, 0, 0,
++						    &pch_lpc_domain_ops, priv);
+ 	if (!priv->lpc_domain) {
+ 		pr_err("Failed to create IRQ domain\n");
+ 		goto free_irq_handle;
 -- 
 2.51.0
 
