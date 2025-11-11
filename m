@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6124CC49FB3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4210C49FBA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 654833A5050
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B5B43A6E2C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115C54C97;
-	Tue, 11 Nov 2025 00:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA3325392D;
+	Tue, 11 Nov 2025 00:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQcCw+ZH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEcXJ+sv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15D524113D;
-	Tue, 11 Nov 2025 00:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273B51DF258;
+	Tue, 11 Nov 2025 00:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822360; cv=none; b=lz3ZEm0ex37ZFzd4KiPxebGLpGRCIHnoGLQphOuR+pGG6WIvsrwE6aDPMxoNU1Jq09KAfSp2VjgwHnpZS+20NTvvQ1RsDuffyOOKUfg9SOd3pqllN9OAv5QRt15Wk9OQj9DnebNExvE70Z/OCrwA0WIlNvaC0Iqh4yHyP2LXJKg=
+	t=1762822365; cv=none; b=Qs5uXNHkGOo/KTrJZPPwv+kgt94OuDv7HP3iNARxJhmJSIQ4hkfzpDSeRHqArP5lPguTZDHL1oQwq7mVXpCJGb3irskcV17cCy7klhNydnZi5fLQdgGQqXPFNR0OIm16mdCeUp/AxjHvoNdUmMiZ1BLQ/kwrPau4acKkC9I9yJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822360; c=relaxed/simple;
-	bh=D44oObjobkoBdE6Y9Hr72kGXTViRPQZzwlV3mq+s7yI=;
+	s=arc-20240116; t=1762822365; c=relaxed/simple;
+	bh=gvNCk0REYAz+osSDyZpXzUM2IJHsnVOQMHalYSxYFCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TRiTrAHOSdbGozKLtuVeMVEs9O+zIhF7cMJbGSQpNb/mZrhTuJ1D4Hl3iyzvf3qLKhl6zxxmEmDMm8/aIh0VQa0xeIXzni8sUYAn9cPTaIDApH+cXDERvDNQeIuVm3sXeSs+m86a3dRHseN5JmkizflhxWf7dTw4rQjh1TTUI/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQcCw+ZH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CFFC19425;
-	Tue, 11 Nov 2025 00:52:39 +0000 (UTC)
+	 MIME-Version; b=DMDeT3UPBVzDB0roO0JX/asRGWXhTrOyb/BKmt+OY5If48OS7yd146zVuC/Y+Yo5h845Y19/dEcYY/rcB+cyJEnKArxKd9fv6olQdYwtX35q9EUwE8Gg8jNT+FlK1+fRjQITKMTq0jvUbLZuAYyTdIYTthAtqql+Vj3WFfXnCYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEcXJ+sv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8221FC4CEF5;
+	Tue, 11 Nov 2025 00:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822360;
-	bh=D44oObjobkoBdE6Y9Hr72kGXTViRPQZzwlV3mq+s7yI=;
+	s=korg; t=1762822364;
+	bh=gvNCk0REYAz+osSDyZpXzUM2IJHsnVOQMHalYSxYFCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OQcCw+ZHY2OR1Q/IaW0AA4OSvibwTh7CAH6QSvBw6L3ang7cf7zN8kc1SRvJvSQXd
-	 DcS6VDrySOCTZPYSmxF1/8wIs9vhPUH0CDqVnYJ4V4AzNrkAAy8i8Ef6sbhYuJlWE+
-	 sAwbSGX2dkE6/ENx3IXvaM+TPhctDnC1sFxZZfK0=
+	b=tEcXJ+sv1fyY6zEhB5fD3Br+TCSbpwvLebkFBJT9j6Jx0Yimx1LY5bmZW+wTnIguI
+	 4KCPs2a5fd2u2erc+ZcPbZfIqmrb6EERV9WRHZDDt10bV6ujO2CQGNT4Vlvm121t0W
+	 Zc6Nxd1bz6bVnNAv6M/ACsw+kirkZi0Nybt/hfHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 034/565] bpf: Do not audit capability check in do_jit()
-Date: Tue, 11 Nov 2025 09:38:10 +0900
-Message-ID: <20251111004527.652267814@linuxfoundation.org>
+Subject: [PATCH 6.12 035/565] crypto: aspeed - fix double free caused by devm
+Date: Tue, 11 Nov 2025 09:38:11 +0900
+Message-ID: <20251111004527.675662137@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,48 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 881a9c9cb7856b24e390fad9f59acfd73b98b3b2 ]
+[ Upstream commit 3c9bf72cc1ced1297b235f9422d62b613a3fdae9 ]
 
-The failure of this check only results in a security mitigation being
-applied, slightly affecting performance of the compiled BPF program. It
-doesn't result in a failed syscall, an thus auditing a failed LSM
-permission check for it is unwanted. For example with SELinux, it causes
-a denial to be reported for confined processes running as root, which
-tends to be flagged as a problem to be fixed in the policy. Yet
-dontauditing or allowing CAP_SYS_ADMIN to the domain may not be
-desirable, as it would allow/silence also other checks - either going
-against the principle of least privilege or making debugging potentially
-harder.
+The clock obtained via devm_clk_get_enabled() is automatically managed
+by devres and will be disabled and freed on driver detach. Manually
+calling clk_disable_unprepare() in error path and remove function
+causes double free.
 
-Fix it by changing it from capable() to ns_capable_noaudit(), which
-instructs the LSMs to not audit the resulting denials.
+Remove the manual clock cleanup in both aspeed_acry_probe()'s error
+path and aspeed_acry_remove().
 
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2369326
-Fixes: d4e89d212d40 ("x86/bpf: Call branch history clearing sequence on exit")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Reviewed-by: Paul Moore <paul@paul-moore.com>
-Link: https://lore.kernel.org/r/20251021122758.2659513-1-omosnace@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 2f1cf4e50c95 ("crypto: aspeed - Add ACRY RSA driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/net/bpf_jit_comp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/aspeed/aspeed-acry.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
-index 9a861ac77f8eb..8cbc26081bdb2 100644
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -2453,7 +2453,7 @@ st:			if (is_imm8(insn->off))
- 			/* Update cleanup_addr */
- 			ctx->cleanup_addr = proglen;
- 			if (bpf_prog_was_classic(bpf_prog) &&
--			    !capable(CAP_SYS_ADMIN)) {
-+			    !ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN)) {
- 				u8 *ip = image + addrs[i - 1];
+diff --git a/drivers/crypto/aspeed/aspeed-acry.c b/drivers/crypto/aspeed/aspeed-acry.c
+index b4613bd4ad964..8ca0913d94abf 100644
+--- a/drivers/crypto/aspeed/aspeed-acry.c
++++ b/drivers/crypto/aspeed/aspeed-acry.c
+@@ -789,7 +789,6 @@ static int aspeed_acry_probe(struct platform_device *pdev)
+ err_engine_rsa_start:
+ 	crypto_engine_exit(acry_dev->crypt_engine_rsa);
+ clk_exit:
+-	clk_disable_unprepare(acry_dev->clk);
  
- 				if (emit_spectre_bhb_barrier(&prog, ip, bpf_prog))
+ 	return rc;
+ }
+@@ -801,7 +800,6 @@ static void aspeed_acry_remove(struct platform_device *pdev)
+ 	aspeed_acry_unregister(acry_dev);
+ 	crypto_engine_exit(acry_dev->crypt_engine_rsa);
+ 	tasklet_kill(&acry_dev->done_task);
+-	clk_disable_unprepare(acry_dev->clk);
+ }
+ 
+ MODULE_DEVICE_TABLE(of, aspeed_acry_of_matches);
 -- 
 2.51.0
 
