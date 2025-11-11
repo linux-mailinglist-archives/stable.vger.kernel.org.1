@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-193165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9922C4A029
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:13 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BABC4A0F1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A08C188CD07
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1B96D4F39F1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA53924A043;
-	Tue, 11 Nov 2025 00:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B791244693;
+	Tue, 11 Nov 2025 00:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hfKtPQKR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYpSd164"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7644086A;
-	Tue, 11 Nov 2025 00:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378964C97;
+	Tue, 11 Nov 2025 00:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822451; cv=none; b=CLrS5PoMIovVBZf8706NOzrXMyO3wu8jHztZhQhlyhOHurqNrND6QLQZR8rbq8sUovaiOdaA6IHT6lenovG2et4ywH8yzYJ16rZAwaFjfcUG2zxDXbOl4LQjq3Ox03UWRqfmMUURQxsn2l6X7g/8H4qNruKN5G8yvvdOqgGER+8=
+	t=1762822456; cv=none; b=NQ4pwifnKmBy55o+R5trhASaMjt1/wPwrTI/1rXUhAEasCoo6bf4F3EfFZbVL8YlJNuqXdwp6lbyi21xKqvgepL33l0XczJOrnfw7TN+gVrK41NIsYZdk1kDtah2D51MmfamheJ9Cwq/BmUbKvk41PIgXwA1bsrlU4uj3Y3Blvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822451; c=relaxed/simple;
-	bh=T8mdGEQsl/CxE2+heU2/k3zqDjt7mpgDrU0zoEMIX5o=;
+	s=arc-20240116; t=1762822456; c=relaxed/simple;
+	bh=98EQEt4bQ3INBvq+i+HPZn0oSW/ctpWV1LgFaUqOzIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j63UFkrw044RBiJLT+mBj2/LtObigZOsKgL05PFbHoHQn8OOPIoGiGun3tmwl9qR8LY2FIaIL0rRLHw/n+KMbsBX6ZUIaODBAphtcK5e/UBzCSr6YxUYBgaVI796Pn9b2L8XGIady5Ctc+4t03tp4aBQEcO2QovVfqOBRtjHhsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hfKtPQKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11881C19421;
-	Tue, 11 Nov 2025 00:54:10 +0000 (UTC)
+	 MIME-Version; b=kLV2OjFmwVxBz7djgWR5Z6OdA9plPeEuJHztTBAFLi4Y+P5/PQGLx+le8C8oBJ4WRe0zZvTpqW98v4uB+kIMP7+/oWLVY1l8zL74vXCHOUALIQQPm/csYHerOuLevWSvMJQWC6GQ2IPmIFeBDTHZPBZ6I2zCt+asi8HkbKxccNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYpSd164; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E90C4CEF5;
+	Tue, 11 Nov 2025 00:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822451;
-	bh=T8mdGEQsl/CxE2+heU2/k3zqDjt7mpgDrU0zoEMIX5o=;
+	s=korg; t=1762822456;
+	bh=98EQEt4bQ3INBvq+i+HPZn0oSW/ctpWV1LgFaUqOzIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hfKtPQKRv96plkh0xsnL6b00wIREEyaBNw6Lp1K7JEuJ9AEoSGSd7PXtvIFTP5v6N
-	 ec4XSTdMZSBtiYPvOqAls9wqcdaBS4NmOj9hunhxlWik4IXZ05+lnH1s+1kXKRcmfT
-	 h4k4fXLzZakp3ES1bF3ALM1LR56Ybg5I46uVxHv0=
+	b=UYpSd164KKY6k2XP+RVKl7dSRen2eIwwwv0TDMSdjem2gf7s2WVatzE9PpKUSykX1
+	 9LlKH4zryAMyyzNdmvu3wpGJZuAUOHGlrL+iKP8MlLkOJ8iVejSNAYWbgAk30nVi3d
+	 0ISmvUvB37qoiS9PLQeCTR8SsQC/etMCUTNRC8jQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Geliang Tang <geliang@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 110/849] mptcp: leverage skb deferral free
-Date: Tue, 11 Nov 2025 09:34:40 +0900
-Message-ID: <20251111004539.054173046@linuxfoundation.org>
+Subject: [PATCH 6.17 111/849] mptcp: fix MSG_PEEK stream corruption
+Date: Tue, 11 Nov 2025 09:34:41 +0900
+Message-ID: <20251111004539.077847171@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -70,46 +71,115 @@ Content-Transfer-Encoding: 8bit
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 9aa59323f2709370cb4f01acbba599a9167f317b ]
+[ Upstream commit 8e04ce45a8db7a080220e86e249198fa676b83dc ]
 
-Usage of the skb deferral API is straight-forward; with multiple
-subflows actives this allow moving part of the received application
-load into multiple CPUs.
+If a MSG_PEEK | MSG_WAITALL read operation consumes all the bytes in the
+receive queue and recvmsg() need to waits for more data - i.e. it's a
+blocking one - upon arrival of the next packet the MPTCP protocol will
+start again copying the oldest data present in the receive queue,
+corrupting the data stream.
 
-Also fix a typo in the related comment.
+Address the issue explicitly tracking the peeked sequence number,
+restarting from the last peeked byte.
 
+Fixes: ca4fb892579f ("mptcp: add MSG_PEEK support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Geliang Tang <geliang@kernel.org>
 Tested-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250927-net-next-mptcp-rcv-path-imp-v1-1-5da266aa9c1a@kernel.org
+Link: https://patch.msgid.link/20251028-net-mptcp-send-timeout-v1-2-38ffff5a9ec8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8e04ce45a8db ("mptcp: fix MSG_PEEK stream corruption")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/mptcp/protocol.c |   38 +++++++++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 13 deletions(-)
 
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -1934,12 +1934,13 @@ static int __mptcp_recvmsg_mskq(struct s
- 		}
+@@ -1892,22 +1892,36 @@ do_error:
  
- 		if (!(flags & MSG_PEEK)) {
--			/* avoid the indirect call, we know the destructor is sock_wfree */
-+			/* avoid the indirect call, we know the destructor is sock_rfree */
+ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied);
+ 
+-static int __mptcp_recvmsg_mskq(struct sock *sk,
+-				struct msghdr *msg,
+-				size_t len, int flags,
++static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
++				size_t len, int flags, int copied_total,
+ 				struct scm_timestamping_internal *tss,
+ 				int *cmsg_flags)
+ {
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 	struct sk_buff *skb, *tmp;
++	int total_data_len = 0;
+ 	int copied = 0;
+ 
+ 	skb_queue_walk_safe(&sk->sk_receive_queue, skb, tmp) {
+-		u32 offset = MPTCP_SKB_CB(skb)->offset;
++		u32 delta, offset = MPTCP_SKB_CB(skb)->offset;
+ 		u32 data_len = skb->len - offset;
+-		u32 count = min_t(size_t, len - copied, data_len);
++		u32 count;
+ 		int err;
+ 
++		if (flags & MSG_PEEK) {
++			/* skip already peeked skbs */
++			if (total_data_len + data_len <= copied_total) {
++				total_data_len += data_len;
++				continue;
++			}
++
++			/* skip the already peeked data in the current skb */
++			delta = copied_total - total_data_len;
++			offset += delta;
++			data_len -= delta;
++		}
++
++		count = min_t(size_t, len - copied, data_len);
+ 		if (!(flags & MSG_TRUNC)) {
+ 			err = skb_copy_datagram_msg(skb, offset, msg, count);
+ 			if (unlikely(err < 0)) {
+@@ -1924,16 +1938,14 @@ static int __mptcp_recvmsg_mskq(struct s
+ 
+ 		copied += count;
+ 
+-		if (count < data_len) {
+-			if (!(flags & MSG_PEEK)) {
++		if (!(flags & MSG_PEEK)) {
++			msk->bytes_consumed += count;
++			if (count < data_len) {
+ 				MPTCP_SKB_CB(skb)->offset += count;
+ 				MPTCP_SKB_CB(skb)->map_seq += count;
+-				msk->bytes_consumed += count;
++				break;
+ 			}
+-			break;
+-		}
+ 
+-		if (!(flags & MSG_PEEK)) {
+ 			/* avoid the indirect call, we know the destructor is sock_rfree */
  			skb->destructor = NULL;
-+			skb->sk = NULL;
- 			atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
+ 			skb->sk = NULL;
+@@ -1941,7 +1953,6 @@ static int __mptcp_recvmsg_mskq(struct s
  			sk_mem_uncharge(sk, skb->truesize);
  			__skb_unlink(skb, &sk->sk_receive_queue);
--			__kfree_skb(skb);
-+			skb_attempt_defer_free(skb);
- 			msk->bytes_consumed += count;
+ 			skb_attempt_defer_free(skb);
+-			msk->bytes_consumed += count;
  		}
  
+ 		if (copied >= len)
+@@ -2164,7 +2175,8 @@ static int mptcp_recvmsg(struct sock *sk
+ 	while (copied < len) {
+ 		int err, bytes_read;
+ 
+-		bytes_read = __mptcp_recvmsg_mskq(sk, msg, len - copied, flags, &tss, &cmsg_flags);
++		bytes_read = __mptcp_recvmsg_mskq(sk, msg, len - copied, flags,
++						  copied, &tss, &cmsg_flags);
+ 		if (unlikely(bytes_read < 0)) {
+ 			if (!copied)
+ 				copied = bytes_read;
 
 
 
