@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-193931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6CAC4AE08
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39DA1C4A5A8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C20673B6167
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF4F41894787
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B04303A0D;
-	Tue, 11 Nov 2025 01:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFC32EA481;
+	Tue, 11 Nov 2025 01:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCL0gdtb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrrsfqE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB90262FEC;
-	Tue, 11 Nov 2025 01:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9C734A3A7;
+	Tue, 11 Nov 2025 01:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824403; cv=none; b=YkI6BmlBg8EPU5YKcsONMqm6ispWXPJfdKxAqJVfW7A+YNW/bSlbYnTheXa8uPSmzTRCbtUWPbF1FVYk2Rizrz/iXIeiI8BjGgE5MvHWPN+F1TCHl1aPhNPw6Nv5anYMCN9/OJbANo+TN0I67trd3ujJmBHVWAvgh8Q4OyZvVDY=
+	t=1762823234; cv=none; b=rPIvNss4478BKPz0LjQKYNmgvBoZLnK7U6i6t472UcPplj0cbkRs75HQDDSzIYQu1wHD1vstR5TKyP7hxa9Ve0uC+qfeUNHXavkgTrHwZnIp2Hl6zOua1z1vVN/w/Ad3Ou9hCV4FHSHjmevp7yAPV4o6H6Ln7AobCRf19KQQmIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824403; c=relaxed/simple;
-	bh=nRCna5ioKCg847gjYyUaw5yhCenL/BIWr1SIsvqyKmE=;
+	s=arc-20240116; t=1762823234; c=relaxed/simple;
+	bh=0xCZPVD8EQyt4u83QDzNR+sHIomW2r9LD1byuRG/NpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3shbxT6EhqR+XMvvUSc533clMIL1Xtqku/abO9fOnQnirPVNQ8Inl6J+MaGwWquQBWR37vJt60Rd+gli0zxJrfnMg2jfYHZeF0WdRfvhi/+4zulS0PySz3a84DOVa1sLNSEjrT9e0yclcQNR2nWMKSUs5PEWda6jqdu+HKpyrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCL0gdtb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D2EC19421;
-	Tue, 11 Nov 2025 01:26:42 +0000 (UTC)
+	 MIME-Version; b=aLjG5mBZPWN+3CFOz+MuZ2IN7yqYX0UpwZugsyEUQld2JbQBVLZ3hBUylg8kc6KX0jl5c4IR53nnubKbVvQIpH/ceNufgYm+Rl/tOU/SyxT5dHHHMgTmOODojKWzWmkxq2kx6XJMZhB9FLYp2wm1gfKlF4r7fjnesYRiSAU+jBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrrsfqE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8FFC113D0;
+	Tue, 11 Nov 2025 01:07:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824403;
-	bh=nRCna5ioKCg847gjYyUaw5yhCenL/BIWr1SIsvqyKmE=;
+	s=korg; t=1762823234;
+	bh=0xCZPVD8EQyt4u83QDzNR+sHIomW2r9LD1byuRG/NpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bCL0gdtbnyhhs6v3DURlP1isqN7nNpv8hKyahzebZRrrxfptH9wu2Je0xya5tccQU
-	 rO5ZTpulPFmEy6vhRRRkOiSKZlt8GNxjm8VlptdjdzjVDhXaHQL/JZ1est2T57KqBd
-	 qgbg+pnaMKMV5OHs2YkaoboxMEkj7T0pp5QgwCXc=
+	b=vrrsfqE7C2+zwpvZBVve1Zr3HlFI3iJjc59SQ8JU+wkMHwe05PEBjvIqvLZU0MQ7M
+	 lAyUNW7UcEUcFeI8uFPZOB1ciCEXaKIZGMqVamqSQQpXjhH+PvbFGgIH5qLL4pHNGw
+	 3ckh/BHVoaB9v1uAT2zFsh5gGRmyb7VO3gkmH2fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
+	Parth Pancholi <parth.pancholi@toradex.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 488/849] drm/xe/guc: Always add CT disable action during second init step
+Subject: [PATCH 6.12 202/565] drm/bridge: cdns-dsi: Dont fail on MIPI_DSI_MODE_VIDEO_BURST
 Date: Tue, 11 Nov 2025 09:40:58 +0900
-Message-ID: <20251111004548.238097503@linuxfoundation.org>
+Message-ID: <20251111004531.470616268@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 955f3bc4af440bb950c7a1567197aaf6aa2213ae ]
+[ Upstream commit 7070f55f294745c5a3c033623b76309f3512be67 ]
 
-On DGFX, during init_post_hwconfig() step, we are reinitializing
-CTB BO in VRAM and we have to replace cleanup action to disable CT
-communication prior to release of underlying BO.
+While the cdns-dsi does not support DSI burst mode, the burst mode is
+essentially DSI event mode with more versatile clocking and timings.
+Thus cdns-dsi doesn't need to fail if the DSI peripheral driver requests
+MIPI_DSI_MODE_VIDEO_BURST.
 
-But that introduces some discrepancy between DGFX and iGFX, as for
-iGFX we keep previously added disable CT action that would be called
-during unwind much later.
+In my particular use case, this allows the use of ti-sn65dsi83 driver.
 
-To keep the same flow on both types of platforms, always replace old
-cleanup action and register new one.
-
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Link: https://lore.kernel.org/r/20250908102053.539-2-michal.wajdeczko@intel.com
+Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
+Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-15-e61cc06074c2@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_ct.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index ff622628d823f..22eff8476ad48 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -300,12 +300,11 @@ int xe_guc_ct_init_post_hwconfig(struct xe_guc_ct *ct)
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+index faa0bdfd19370..ddfbb2009c8d3 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+@@ -959,10 +959,6 @@ static int cdns_dsi_attach(struct mipi_dsi_host *host,
+ 	if (output->dev)
+ 		return -EBUSY;
  
- 	xe_assert(xe, !xe_guc_ct_enabled(ct));
- 
--	if (!IS_DGFX(xe))
--		return 0;
+-	/* We do not support burst mode yet. */
+-	if (dev->mode_flags & MIPI_DSI_MODE_VIDEO_BURST)
+-		return -ENOTSUPP;
 -
--	ret = xe_managed_bo_reinit_in_vram(xe, tile, &ct->bo);
--	if (ret)
--		return ret;
-+	if (IS_DGFX(xe)) {
-+		ret = xe_managed_bo_reinit_in_vram(xe, tile, &ct->bo);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	devm_release_action(xe->drm.dev, guc_action_disable_ct, ct);
- 	return devm_add_action_or_reset(xe->drm.dev, guc_action_disable_ct, ct);
+ 	/*
+ 	 * The host <-> device link might be described using an OF-graph
+ 	 * representation, in this case we extract the device of_node from
 -- 
 2.51.0
 
