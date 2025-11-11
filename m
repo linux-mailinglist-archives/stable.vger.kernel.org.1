@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF46FC49F84
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E58DC49F92
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5344188BF11
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACFE03AB17B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EA524BBEB;
-	Tue, 11 Nov 2025 00:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C67824EA90;
+	Tue, 11 Nov 2025 00:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VH2ayWiX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huZ/8qQI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658272AE8D;
-	Tue, 11 Nov 2025 00:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC303192B75;
+	Tue, 11 Nov 2025 00:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822318; cv=none; b=vCEzvKtkuJsY7DqAaNSTv1FXcm6D5JLimY4pcrdBaj5VyjD4C2gLm9e02ORgsj3RgIUP+d4ZJeANPkcWzS4bWklHvxXstA5mtWTseyJRISzVOTsGIRQgYI6PWFKsqLJThzIi16hNrwl+loJvzP330pUX7M5RPoAHM1dxcVkebX8=
+	t=1762822323; cv=none; b=Vbjbnd3zku+nI8EbUc4xZM2iwOr06J2u63b5TbdCD1qZ/HvRgh5A/+FfCK7c/FA/FzRsELW2yDgUVVzuzzJFRG6La9Gadtwyf7t95hgwLLYM43wkL6Z1l74h9Oo44XMvzhBxrg8wv9YdwBaR9lf85kQLsHhKEUxpU+V+cIiqjPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822318; c=relaxed/simple;
-	bh=vwyehnNZUn1OZj+58BBZBSsVJtCJGA5NDZmqH9Wdg6g=;
+	s=arc-20240116; t=1762822323; c=relaxed/simple;
+	bh=919nmATKQat69N40qNRi55ijvXxD9vTMGJcsojH2SSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlawIvZRiUdqYntndGDb2LPIdnKfxMiINV+UyPP4k61DwuTCfv67hdUokOdhm0EdN1Vy4WWNedqEL1HdOAxxuBhEXoeUYZdkMdyFLsdG/mBjMhWeITdHS1J4xhVgTGA5Nv1mUATUET8O+45bVehK9yEYn2q+CB8XCpWm+Hq35UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VH2ayWiX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2732C113D0;
-	Tue, 11 Nov 2025 00:51:57 +0000 (UTC)
+	 MIME-Version; b=U0/11o6S/wOYh0PISFb1f8grMx/z3yqIYKxxQTT+bxFRhaYH1gz3g77SHB2/oav4NoPBL1KuG+OBemM3biIGyF7ld7N/kbsMjT2ekLyZKW8no0QSxtcWZet64SqQXaLJFEjXiGg2kP3y46x0jeWf4XRieOOhlFTHaucE6xfiAQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huZ/8qQI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40063C19422;
+	Tue, 11 Nov 2025 00:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822317;
-	bh=vwyehnNZUn1OZj+58BBZBSsVJtCJGA5NDZmqH9Wdg6g=;
+	s=korg; t=1762822322;
+	bh=919nmATKQat69N40qNRi55ijvXxD9vTMGJcsojH2SSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VH2ayWiXXxAIy2LsKrDVoHYUATZfcxfvQ5MLjAqb9RxgNi2ShjYQe90Esag2FwZho
-	 +ESlBIdbmyTi4XNWA9pGdRmmEc2ZvAq+yZA1zGDaNGOmf1yNN6QQUouuce3m8hZBlX
-	 FZFPAeI0lQpbPf+aJ2SxvbDyKG82L+qxIC0KUBY8=
+	b=huZ/8qQIrfQHJQOmFfUp+qGx+44KJI6PMQXmYcm2/OcVXj0T4pwucAfNNAicUvZkd
+	 0UL4SIHqhG9EJfo+l2oGQ1aB7w6GxDSMaAiPCYLVtrzT7ihLRyJnR0PlzPhCLEroA5
+	 PMZI4iZ767xpRMZx0S5PQxwFDas8ObFrBTFMK2lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 084/849] drm/amdgpu: fix SPDX headers on amdgpu_cper.c/h
-Date: Tue, 11 Nov 2025 09:34:14 +0900
-Message-ID: <20251111004538.451341242@linuxfoundation.org>
+Subject: [PATCH 6.17 085/849] drm/amdgpu: fix SPDX header on amd_cper.h
+Date: Tue, 11 Nov 2025 09:34:15 +0900
+Message-ID: <20251111004538.474395440@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,37 +68,26 @@ Content-Transfer-Encoding: 8bit
 
 From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit f3b37ebf2c94e3a3d7bbf5e3788ad86cf30fc7be ]
+[ Upstream commit 964f8ff276a54ad7fb09168141fb6a8d891d548a ]
 
-These should be MIT.  The driver in general is MIT and
-the license text at the top of the files is MIT so fix
+This should be MIT.  The driver in general is MIT and
+the license text at the top of the file is MIT so fix
 it.
 
-Fixes: 92d5d2a09de1 ("drm/amdgpu: Introduce funcs for populating CPER")
+Fixes: 523b69c65445 ("drm/amd/include: Add amd cper header")
 Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4654
 Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit abd3f876404cafb107cb34bacb74706bfee11cbe)
+(cherry picked from commit 72c5482cb0f3d3c772c9de50e5a4265258a53f81)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c | 2 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu_cper.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/include/amd_cper.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
-index 25252231a68a9..48a8aa1044b15 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
-@@ -1,4 +1,4 @@
--// SPDX-License-Identifier: GPL-2.0
-+// SPDX-License-Identifier: MIT
- /*
-  * Copyright 2025 Advanced Micro Devices, Inc.
-  *
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.h
-index bcb97d245673b..353421807387e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.h
+diff --git a/drivers/gpu/drm/amd/include/amd_cper.h b/drivers/gpu/drm/amd/include/amd_cper.h
+index 086869264425c..a252ee4c7874c 100644
+--- a/drivers/gpu/drm/amd/include/amd_cper.h
++++ b/drivers/gpu/drm/amd/include/amd_cper.h
 @@ -1,4 +1,4 @@
 -/* SPDX-License-Identifier: GPL-2.0 */
 +/* SPDX-License-Identifier: MIT */
