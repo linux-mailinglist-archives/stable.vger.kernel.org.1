@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D3BC4A677
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:25:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F03CC4A63E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF236189107C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FCBF3AFA6A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8A73081BE;
-	Tue, 11 Nov 2025 01:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5C6305976;
+	Tue, 11 Nov 2025 01:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvu+PTnB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5Tg9/sH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0FC3043C0;
-	Tue, 11 Nov 2025 01:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0947225F797;
+	Tue, 11 Nov 2025 01:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823309; cv=none; b=JXmnm9mPLgqnpEKTFrtWFPV4oivH/MhMBxWA8PXrG0b/MsWPX0Gi2CY7+to3QDsQcvVHi9M7/7VuRoH3yq/RgYsC6sSV7N8qoChJh8KWbKh8VQ9SqPwdy4g/qjpTrY/Shhn/aWOhZm5a4TZxWn7coo4Ej13WGes0m9oTqsWEp7Q=
+	t=1762823316; cv=none; b=ajTNZhmt3dsQ4fCJ6EwYaHyYgo5sxVQDhHqOleKt8TKcsrBiFuhPxl4ExWJptz7KShRi1fYxKrV1PHlh6XH727KyuPHn21ohOKNOmwCd/BwmjQgsLFeFD98KU6tMJLZ2EKYKYBwPzOJt4vfBLlYZPOnNsMa2sboq0zXc4nL5jEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823309; c=relaxed/simple;
-	bh=t0L0aUeulu6TJIghlfADSsNZGym8kO7Oo2POKvhiOkc=;
+	s=arc-20240116; t=1762823316; c=relaxed/simple;
+	bh=kN48xLI2kl7w8jxbGAzW4o1yS2vCOeFkQ9yjAVEHY4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejqrZlEVy5yVJhI5ajhX4fCvoB/+M+7Pvj6jS/qXN1iYbneyMZcwTCwpo6BQI16HXkYtZ3PWChnC6AlFGyUynfaAz6hEo/nSaDq4HjJnM/+cKiLZFJI/AjXjQ7e8SGEDnL44UTplPT3UB71m4YKhJXUlG5Xp3XJfwBQPU8kGtHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvu+PTnB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4640C113D0;
-	Tue, 11 Nov 2025 01:08:28 +0000 (UTC)
+	 MIME-Version; b=o31ai3239PlL9edcrJ3ot8l84UBcQvRKICGXWzeorJOQkGt5cZ2f+WdWFwi3l2SJQAfN/m4MIRVcRs+tsIwJIrlLsI5++GT0TcV1aPXSMv3BPeJr6dvHQiwllh5aOcWOMFgQySEnVArkosPeOT67w5h87/OTwPSE0AE4ygJItH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5Tg9/sH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96356C19422;
+	Tue, 11 Nov 2025 01:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823309;
-	bh=t0L0aUeulu6TJIghlfADSsNZGym8kO7Oo2POKvhiOkc=;
+	s=korg; t=1762823315;
+	bh=kN48xLI2kl7w8jxbGAzW4o1yS2vCOeFkQ9yjAVEHY4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zvu+PTnBXg2JllDFTbEOZXFFfKNqLQL/VuOaRsyQfgcCtzbqAjIEzKHho4VLkX8Ae
-	 +qZxgY/X56bH/U7x40AYu/xyWtC06psy5107JCO4H6pU3N2WJgMavbVsT1Jtjf5XXm
-	 0LtRABufdsVB3D9OW7qmJH56RcZrId+69LcZxGsY=
+	b=m5Tg9/sHVLYSOx2q8ae+ES4XkDCb4B7qJhooQlvTph5OtudSMx9bLQKkSWr0+X339
+	 Mph0Eqe3VAOhlRGzmJ0+5B/cA3r6v3nDitGJa3Wg/TE5t3Qy5q4d0V9oQLbYcTdsnG
+	 azAn3udMO/kDoU2L6GFDs+BO+LOTy0IPWNM48dqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Orr <chris.orr@gmail.com>,
-	Douglas Anderson <dianders@chromium.org>,
+	Wake Liu <wakel@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 273/849] drm/panel-edp: Add SHP LQ134Z1 panel for Dell XPS 9345
-Date: Tue, 11 Nov 2025 09:37:23 +0900
-Message-ID: <20251111004543.030641840@linuxfoundation.org>
+Subject: [PATCH 6.17 274/849] selftests/net: Replace non-standard __WORDSIZE with sizeof(long) * 8
+Date: Tue, 11 Nov 2025 09:37:24 +0900
+Message-ID: <20251111004543.052617833@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,57 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christopher Orr <chris.orr@gmail.com>
+From: Wake Liu <wakel@google.com>
 
-[ Upstream commit 754dbf164acd4d22dd7a5241b1880f54546d68f2 ]
+[ Upstream commit c36748e8733ef9c5f4cd1d7c4327994e5b88b8df ]
 
-Introduce high-res OLED panel for the Dell XPS 9345
+The `__WORDSIZE` macro, defined in the non-standard `<bits/wordsize.h>`
+header, is a GNU extension and not universally available with all
+toolchains, such as Clang when used with musl libc.
 
-These timings were selected based on Alex Vinarkskis' commit,
-(6b3815c6815f07acc7eeffa8ae734d1a1c0ee817) for the LQ134N1
-and seem to work fine for the high-res OLED panel on the 9345.
+This can lead to build failures in environments where this header is
+missing.
 
-The raw edid for this SHP panel is:
+The intention of the code is to determine the bit width of a C `long`.
+Replace the non-portable `__WORDSIZE` with the standard and portable
+`sizeof(long) * 8` expression to achieve the same result.
 
-00 ff ff ff ff ff ff 00 4d 10 8f 15 00 00 00 00
-2e 21 01 04 b5 1d 12 78 03 0f 95 ae 52 43 b0 26
-0f 50 54 00 00 00 01 01 01 01 01 01 01 01 01 01
-01 01 01 01 01 01 fd d7 00 a0 a0 40 fc 66 30 20
-36 00 20 b4 10 00 00 18 00 00 00 fd 00 1e 78 cc
-cc 38 01 0a 20 20 20 20 20 20 00 00 00 fe 00 43
-37 31 4d 31 81 4c 51 31 33 34 5a 31 00 00 00 00
-00 02 41 0c 32 01 01 00 00 0b 41 0a 20 20 01 ea
+This change also removes the inclusion of the now-unused
+`<bits/wordsize.h>` header.
 
-70 20 79 02 00 20 00 13 8c 52 19 8f 15 00 00 00
-00 2e 17 07 4c 51 31 33 34 5a 31 21 00 1d 40 0b
-08 07 00 0a 40 06 88 e1 fa 51 3d a4 b0 66 62 0f
-02 45 54 d0 5f d0 5f 00 34 13 78 26 00 09 06 00
-00 00 00 00 41 00 00 22 00 14 d9 6f 08 05 ff 09
-9f 00 2f 00 1f 00 3f 06 5d 00 02 00 05 00 25 01
-09 d9 6f 08 d9 6f 08 1e 78 80 81 00 0b e3 05 80
-00 e6 06 05 01 6a 6a 39 00 00 00 00 00 00 58 90
-
-Signed-off-by: Christopher Orr <chris.orr@gmail.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/aJKvm3SlhLGHW4qn@jander
+Signed-off-by: Wake Liu <wakel@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-edp.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/psock_tpacket.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
-index d0aa602ecc9de..a926f81f7a2e1 100644
---- a/drivers/gpu/drm/panel/panel-edp.c
-+++ b/drivers/gpu/drm/panel/panel-edp.c
-@@ -2035,6 +2035,7 @@ static const struct edp_panel_entry edp_panels[] = {
- 	EDP_PANEL_ENTRY('S', 'H', 'P', 0x1523, &delay_80_500_e50, "LQ140M1JW46"),
- 	EDP_PANEL_ENTRY('S', 'H', 'P', 0x153a, &delay_200_500_e50, "LQ140T1JH01"),
- 	EDP_PANEL_ENTRY('S', 'H', 'P', 0x154c, &delay_200_500_p2e100, "LQ116M1JW10"),
-+	EDP_PANEL_ENTRY('S', 'H', 'P', 0x158f, &delay_200_500_p2e100, "LQ134Z1"),
- 	EDP_PANEL_ENTRY('S', 'H', 'P', 0x1593, &delay_200_500_p2e100, "LQ134N1"),
+diff --git a/tools/testing/selftests/net/psock_tpacket.c b/tools/testing/selftests/net/psock_tpacket.c
+index 221270cee3eaa..0dd909e325d93 100644
+--- a/tools/testing/selftests/net/psock_tpacket.c
++++ b/tools/testing/selftests/net/psock_tpacket.c
+@@ -33,7 +33,6 @@
+ #include <ctype.h>
+ #include <fcntl.h>
+ #include <unistd.h>
+-#include <bits/wordsize.h>
+ #include <net/ethernet.h>
+ #include <netinet/ip.h>
+ #include <arpa/inet.h>
+@@ -785,7 +784,7 @@ static int test_kernel_bit_width(void)
  
- 	EDP_PANEL_ENTRY('S', 'T', 'A', 0x0004, &delay_200_500_e200, "116KHD024006"),
+ static int test_user_bit_width(void)
+ {
+-	return __WORDSIZE;
++	return sizeof(long) * 8;
+ }
+ 
+ static const char *tpacket_str[] = {
 -- 
 2.51.0
 
