@@ -1,125 +1,213 @@
-Return-Path: <stable+bounces-194534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A207C4FBA0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 21:41:33 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A19AC4FBCA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 21:45:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48F103B8D33
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 20:41:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2108234D323
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 20:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B65A2EAB71;
-	Tue, 11 Nov 2025 20:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A8F22DFB8;
+	Tue, 11 Nov 2025 20:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aaXNtQQV"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="BvKDE/yg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11D833D6D5
-	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 20:41:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F09233D6FE
+	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 20:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762893687; cv=none; b=Dira/QxFbiaFx+cqMA7x5AEkd3CJXqQV5H8afpJecCD6USlud3g2Wc8SG5SiYqcD8otTxHJ5rEchFdVQz/E86WYTdPtZJfs0GLcm4UHxPXQMfv045Zu1zXddx/0hK6QCXxTBA4DJh0KEDc0Ue1wRXDppwtM2IjbvWm2jYbwcWWw=
+	t=1762893934; cv=none; b=CO+AmB/aiU43IBEzBxKW4nEXUXxaS98fYyijGldFMzAib7oEQftWH0+TXIfvqcqsX+VCTjfsAMBtJmU2koOwoD/5bxVgaSwbC12s46jPA2kYBjuBdzRIuh8vJFaTik3H6EqAayBCci2baXaiR5BAPgivL3HcQqVcnk6h6B+aQDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762893687; c=relaxed/simple;
-	bh=YEr04aoMcmyecPDZJfLTTNm/R81XpSd91kOBrbpoX5s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DhNj83eadkAl4II0ezDwJSwHG6+y6wg+IGIKzP9iA2ZghRGSu4Uszu+t6WB5OLYTKuEdWzzmSYS81CNv4wSB7a55y/M7lc0EUUxQbM3+mWoVeD//rmbSv9rNsEs3o+gLy+ZXDd5K1gS5WRQbDNEyO3z5/tqktS5rXhtlwRM/4dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aaXNtQQV; arc=none smtp.client-ip=209.85.166.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-93e2c9821fcso10952039f.3
-        for <stable@vger.kernel.org>; Tue, 11 Nov 2025 12:41:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1762893685; x=1763498485; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5r/++3mVCJ9xD+Mh5hsq3AQxsTxN+uDvyJmdcqTQc8I=;
-        b=aaXNtQQVT0QVZ74s0Bb2mWmlC27v3Ww1CcjHi9IRDMJQfXaIJLQwAfi2yb8ibsKBvE
-         OG+Y5fudBEJy+JgiMEZbxpdGQhZ5cBABrHNUsHlGJF7acxt0YiMrlVT7peqeGO7QOlaR
-         ukkgbEvwdobj6n79HUmW1TEmS8jzT8qLvdP7A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762893685; x=1763498485;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5r/++3mVCJ9xD+Mh5hsq3AQxsTxN+uDvyJmdcqTQc8I=;
-        b=pj4yK+h/cOWkJyEjL41pXmpX+sg7qRS0b9smk5fC4bh1qOJ8nQHHhSvD0BOzyDOe4F
-         n1rFsUbtw6AjRMEb0Zza8ne/1jpkgoaZYOWUycLNLQ54LaC0vlItyhj7sxE+zEnhZ+Lk
-         WFDPdINELDvBREsPbMi+eW3+D1wbayBl0k+9Mpb4tiC1fd8TpciXfSjG9oURcwsaI8eo
-         RMroDpALTkM3A4OckKLxudnSWv7+rUXBp+VTEe8CIJoSsvZ5zLlIW4wrMPaqlrKcwGzE
-         kTF9JvbhLTqM2z5oTA3inI4pvuSDtxCFbHJc+ra00oJTp49A3SwZAPhCPb7Qy+wqOD/o
-         ZIbg==
-X-Forwarded-Encrypted: i=1; AJvYcCWG1+0A6PUM84KyKBzOkyjH9qHPAeL+DOy10oZevyoL68rdg/d2adA/6Ud+JW8L0Xkp/3C3tSM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXv4HeEweo4+z3u7JPMFYeymkG+ccBVymzsXedsuwBlWeisufu
-	sQBUT0YLZ1Sgx61TJoV8LDri0Jw+j/OLz457CYoFikVl6ML/oI/hqvEzSMB9+GhBE6k=
-X-Gm-Gg: ASbGncsweIwnb7nB1m45C2PxxfGvZZuM8WEMuRryqzU2Y65SkVpGqxQZhH9Y1BV/t+H
-	odRE/L1CJgW2Dk84otbyNh5j6x/yoBrc7LDC1IgxlBaBCTVnBBW9fSw/mHvqyycC35aig2jWEwp
-	9Ouxf6rNXRie0vtDVdNr/YwULfX5K/hJ+1O44Cfl7wa0VFhCTQZKoaRZsN1Uie2CPMC5S17nTBq
-	PUXwAPV2fvE2PeDzrDNeuadQ5UckpEG2sMctKFRYf8Scp182YmqSpHhexinFi48qVpX1UEuJ/bQ
-	PRFKCqefDJSX85669kJRq7TMrsmkAbIqPGI0ivcPmye1lEdyVna23OuOCbbIkIJL2U9QB8pvxLw
-	aGdkHErNY29pwXyeZHrTF1Dlk9RLdgwwM/wDff3TBduxI6sWaKEaGegkzkL4dCKqKY/NcDIq4I9
-	FL/vq1FieoK8cyR17TOcwiXvg=
-X-Google-Smtp-Source: AGHT+IHc85hYIBG9ds9G2pphrlClRxY7dfT0RUGyDwgFy2LVDtnEan/ZgMhySlr1XPzoCUV2ctuLfA==
-X-Received: by 2002:a05:6e02:174e:b0:433:5e33:d424 with SMTP id e9e14a558f8ab-43473cff5demr8186165ab.2.1762893684483;
-        Tue, 11 Nov 2025 12:41:24 -0800 (PST)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-4347338d4d7sm2687265ab.20.2025.11.11.12.41.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Nov 2025 12:41:24 -0800 (PST)
-Message-ID: <b7cc8106-6383-4035-bf9a-f3abcf0b7da3@linuxfoundation.org>
-Date: Tue, 11 Nov 2025 13:41:22 -0700
+	s=arc-20240116; t=1762893934; c=relaxed/simple;
+	bh=KOxvBf3xtKRfyDsHFKclQyBpBw5vaD5V/kUzc5jV4pw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PTEdxc52k0qaiy+wBwCaW4/paN0FFi56OwYZJKUyAn1psIopiH5YwMSodPDBXB6U6YJFbdjWJS4zyP5inz/OkTx4rQLFEcb/XDpiAlvx93F504advzrmaBcJTi+moTlhjKIpl14uIvkQuM4t6gVWXP761beb3kVrM1sHpIqvKGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BvKDE/yg; arc=none smtp.client-ip=91.218.175.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762893920;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3GcDNxbMQFbHzyEo8vijDERUnbmPZ0QtGgqSGoFrXLA=;
+	b=BvKDE/ygr+P7Xc5P5wUjAOFuPVKS6Zg2Dv70U77SYUefGEwosf9hoqN/HqQo3FpruemLjo
+	pTiq/c6gDpR/8TbeQHfAIH6dcZmP6vnJiYiF73ME+g2xISwEHyG6P8j10pOJKymTJ4ZaeK
+	vUfMq0WcAORWtxekTVCOF+budWCH+44=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: David Laight <david.laight.linux@gmail.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Huisong Li <lihuisong@huawei.com>,
+	Akira Shimahara <akira215corp@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4] w1: therm: Fix off-by-one buffer overflow in alarms_store
+Date: Tue, 11 Nov 2025 21:44:18 +0100
+Message-ID: <20251111204422.41993-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/565] 6.12.58-rc1 review
-To: Slade Watkins <sr@sladewatkins.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
- <641427c7-0069-4bee-8e6a-53347654a926@linuxfoundation.org>
- <07d63659-72b1-43d0-9139-2a0b6d73edd4@sladewatkins.com>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <07d63659-72b1-43d0-9139-2a0b6d73edd4@sladewatkins.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 11/11/25 12:47, Slade Watkins wrote:
-> On 11/11/2025 1:00 PM, Shuah Khan wrote:
->> I am seeing a build failure on my system - the following
->> commit could be the reason.
->>
->>>
->>> Heiner Kallweit <hkallweit1@gmail.com>
->>>      net: phy: fix phy_disable_eee
->>>
-> 
-> Hey Shuah,
-> 
-> Just to save you some time, this patch was already dropped from 6.12.58-rc2! :)
-> 
-> rc2: https://lore.kernel.org/stable/20251111012348.571643096@linuxfoundation.org/
-> 
+The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
+bytes and a NUL terminator is appended. However, the 'size' argument
+does not account for this extra byte. The original code then allocated
+'size' bytes and used strcpy() to copy 'buf', which always writes one
+byte past the allocated buffer since strcpy() copies until the NUL
+terminator at index 'size'.
 
-Thanks. I noticed that right after sending the email. I am building
-rc2 now.
+Fix this by parsing the 'buf' parameter directly using simple_strtoll()
+without allocating any intermediate memory or string copying. This
+removes the overflow while simplifying the code.
 
-thanks,
--- Shuah
+Cc: stable@vger.kernel.org
+Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+Compile-tested only.
+
+Changes in v4:
+- Use simple_strtoll because kstrtoint also parses long long internally
+- Return -ERANGE in addition to -EINVAL to match kstrtoint's behavior
+- Remove any changes unrelated to fixing the buffer overflow (Krzysztof)
+  while maintaining the same behavior and return values as before
+- Link to v3: https://lore.kernel.org/lkml/20251030155614.447905-1-thorsten.blum@linux.dev/
+
+Changes in v3:
+- Add integer range check for 'temp' to match kstrtoint() behavior
+- Explicitly cast 'temp' to int when calling int_to_short()
+- Link to v2: https://lore.kernel.org/lkml/20251029130045.70127-2-thorsten.blum@linux.dev/
+
+Changes in v2:
+- Fix buffer overflow instead of truncating the copy using strscpy()
+- Parse buffer directly using simple_strtol() as suggested by David
+- Update patch subject and description
+- Link to v1: https://lore.kernel.org/lkml/20251017170047.114224-2-thorsten.blum@linux.dev/
+---
+ drivers/w1/slaves/w1_therm.c | 64 ++++++++++++------------------------
+ 1 file changed, 21 insertions(+), 43 deletions(-)
+
+diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
+index 9ccedb3264fb..5707fa34e804 100644
+--- a/drivers/w1/slaves/w1_therm.c
++++ b/drivers/w1/slaves/w1_therm.c
+@@ -1836,55 +1836,36 @@ static ssize_t alarms_store(struct device *device,
+ 	struct w1_slave *sl = dev_to_w1_slave(device);
+ 	struct therm_info info;
+ 	u8 new_config_register[3];	/* array of data to be written */
+-	int temp, ret;
+-	char *token = NULL;
++	long long temp;
++	int ret = 0;
+ 	s8 tl, th;	/* 1 byte per value + temp ring order */
+-	char *p_args, *orig;
+-
+-	p_args = orig = kmalloc(size, GFP_KERNEL);
+-	/* Safe string copys as buf is const */
+-	if (!p_args) {
+-		dev_warn(device,
+-			"%s: error unable to allocate memory %d\n",
+-			__func__, -ENOMEM);
+-		return size;
+-	}
+-	strcpy(p_args, buf);
+-
+-	/* Split string using space char */
+-	token = strsep(&p_args, " ");
+-
+-	if (!token)	{
+-		dev_info(device,
+-			"%s: error parsing args %d\n", __func__, -EINVAL);
+-		goto free_m;
+-	}
+-
+-	/* Convert 1st entry to int */
+-	ret = kstrtoint (token, 10, &temp);
++	const char *p = buf;
++	char *endp;
++
++	temp = simple_strtoll(p, &endp, 10);
++	if (p == endp || *endp != ' ')
++		ret = -EINVAL;
++	else if (temp < INT_MIN || temp > INT_MAX)
++		ret = -ERANGE;
+ 	if (ret) {
+ 		dev_info(device,
+ 			"%s: error parsing args %d\n", __func__, ret);
+-		goto free_m;
++		goto err;
+ 	}
+ 
+ 	tl = int_to_short(temp);
+ 
+-	/* Split string using space char */
+-	token = strsep(&p_args, " ");
+-	if (!token)	{
+-		dev_info(device,
+-			"%s: error parsing args %d\n", __func__, -EINVAL);
+-		goto free_m;
+-	}
+-	/* Convert 2nd entry to int */
+-	ret = kstrtoint (token, 10, &temp);
++	p = endp + 1;
++	temp = simple_strtoll(p, &endp, 10);
++	if (p == endp)
++		ret = -EINVAL;
++	else if (temp < INT_MIN || temp > INT_MAX)
++		ret = -ERANGE;
+ 	if (ret) {
+ 		dev_info(device,
+ 			"%s: error parsing args %d\n", __func__, ret);
+-		goto free_m;
++		goto err;
+ 	}
+-
+ 	/* Prepare to cast to short by eliminating out of range values */
+ 	th = int_to_short(temp);
+ 
+@@ -1905,7 +1886,7 @@ static ssize_t alarms_store(struct device *device,
+ 		dev_info(device,
+ 			"%s: error reading from the slave device %d\n",
+ 			__func__, ret);
+-		goto free_m;
++		goto err;
+ 	}
+ 
+ 	/* Write data in the device RAM */
+@@ -1913,7 +1894,7 @@ static ssize_t alarms_store(struct device *device,
+ 		dev_info(device,
+ 			"%s: Device not supported by the driver %d\n",
+ 			__func__, -ENODEV);
+-		goto free_m;
++		goto err;
+ 	}
+ 
+ 	ret = SLAVE_SPECIFIC_FUNC(sl)->write_data(sl, new_config_register);
+@@ -1922,10 +1903,7 @@ static ssize_t alarms_store(struct device *device,
+ 			"%s: error writing to the slave device %d\n",
+ 			__func__, ret);
+ 
+-free_m:
+-	/* free allocated memory */
+-	kfree(orig);
+-
++err:
+ 	return size;
+ }
+ 
+-- 
+2.51.1
+
 
