@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-193564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165D5C4A65C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:25:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3C6C4A74F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6584A4F0073
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FFDF1893B02
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6E3340DAC;
-	Tue, 11 Nov 2025 01:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B339341642;
+	Tue, 11 Nov 2025 01:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBBBweEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tAolOegq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652542857F0;
-	Tue, 11 Nov 2025 01:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA305335081;
+	Tue, 11 Nov 2025 01:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823482; cv=none; b=bQHYLTUC1DkaXDFY6B0du9QGUrKBa9J7FSi3NEmIxmiTw+23X7rNDxuKphm4hnRx8utlqOsXgZrX2p/0A0mBNORdVOXUsZAYZGlB5KcO+UEpa3J9crzdodgqO1nceULh5P5xVyOPKJe6mtG4FaCEAn8mDVR/hw0cEcUW63VuwOo=
+	t=1762823486; cv=none; b=DPEGuOh8wN9YqZXKXq01DMFCDM0KKwJ5qenMZ3M50AUnc4+aqWS0yOomoR6ycM0c9PyJ3hujq3Xr9wHoSz+5lC2CwGRMzrq7loOm4qD0HnwQc5LaLx5JnaYZ/XVWRm8OO78SORHK3o4wdM723MH3BQfqVl5aJham0dRNzpGuQmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823482; c=relaxed/simple;
-	bh=oDuLshvQ9iWE/T5St0n//bXxfqJFNwvzFK2iG1oFYTk=;
+	s=arc-20240116; t=1762823486; c=relaxed/simple;
+	bh=+oJdBj1vSf6WXPZcipb0aqE9AvqN3LW2gBZkN6kGtcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuxf8OcaH6MYETg21W7RjmAUIPiAoUhXtd6IVn95wOtS7+g2AF9cOQS142Z0pdT2h3axLyqA/5NYMgt6j/ypiDV0614ZX88E0KUa3WJBjbNP8MzjwExtJpggeASq9vequTGQqXkO9C0hdiOCfEpeOwZrP8lGxqp5OI5Y1pXGFlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBBBweEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EB1C2BC86;
-	Tue, 11 Nov 2025 01:11:21 +0000 (UTC)
+	 MIME-Version; b=Kn+gyF0hd54SW6VCIQ3eAt9wBvwPt+ufIsfK2TfHpJXZLGq7r+rhBWFl4zrom6BHU3q/+DQiNLfpaWX1VrSeSDN2AnSgFJTP18OgpTytBofXyk4pC4Pyg5xAS04S131fVHHHRFtjAfzkjH1u1aZ/eYHKVzysqtHNpzG3XFHLRBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tAolOegq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EA4C4CEF5;
+	Tue, 11 Nov 2025 01:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823482;
-	bh=oDuLshvQ9iWE/T5St0n//bXxfqJFNwvzFK2iG1oFYTk=;
+	s=korg; t=1762823486;
+	bh=+oJdBj1vSf6WXPZcipb0aqE9AvqN3LW2gBZkN6kGtcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBBBweEB2iFYgilu7KIqyGY505X/CDDZ0ac69rSB6JMzEZVtA/N+cVQ7+fu00gwHF
-	 0VVtZ4ZBa8IYRZkOF7VhMeZhEt9vlK49AsKxpqL9GRvMIPX6D5jWekrvBtpPsZj7VX
-	 Z7qt4SF0FwkfsYJ/Pia2kbQPCrnDUB4YdmWDBAjI=
+	b=tAolOegqNBSgQjji8LJB1y/9QJtmQW4WNgc3Smhb9r4rCUvFdLAXRStErUpmrl0Gf
+	 hniI6ANNMExvP9b7EEzm+w8kWyR7pfBsuyMANECk1T8OlxfaCQCXwjRe9aeaippUdp
+	 7CiPbOsHAPD5WxXXGfz6zqsPG5BhyiaGjYfTHOCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunsheng Luo <luochunsheng@ustc.edu>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Ce Sun <cesun102@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 255/565] fuse: zero initialize inode private data
-Date: Tue, 11 Nov 2025 09:41:51 +0900
-Message-ID: <20251111004532.639130626@linuxfoundation.org>
+Subject: [PATCH 6.12 256/565] drm/amdgpu: Correct the counts of nr_banks and nr_errors
+Date: Tue, 11 Nov 2025 09:41:52 +0900
+Message-ID: <20251111004532.660504912@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,44 +68,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Ce Sun <cesun102@amd.com>
 
-[ Upstream commit 3ca1b311181072415b6432a169de765ac2034e5a ]
+[ Upstream commit 907813e5d7cadfeafab12467d748705a5309efb0 ]
 
-This is slightly tricky, since the VFS uses non-zeroing allocation to
-preserve some fields that are left in a consistent state.
+Correct the counts of nr_banks and nr_errors
 
-Reported-by: Chunsheng Luo <luochunsheng@ustc.edu>
-Closes: https://lore.kernel.org/all/20250818083224.229-1-luochunsheng@ustc.edu/
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Ce Sun <cesun102@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/inode.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index fd3321e29a3e5..153f3102f167d 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -94,14 +94,11 @@ static struct inode *fuse_alloc_inode(struct super_block *sb)
- 	if (!fi)
- 		return NULL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
+index a95f45d063144..a7ecc33ddf223 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
+@@ -86,6 +86,7 @@ static void aca_banks_release(struct aca_banks *banks)
+ 	list_for_each_entry_safe(node, tmp, &banks->list, node) {
+ 		list_del(&node->node);
+ 		kvfree(node);
++		banks->nr_banks--;
+ 	}
+ }
  
--	fi->i_time = 0;
-+	/* Initialize private data (i.e. everything except fi->inode) */
-+	BUILD_BUG_ON(offsetof(struct fuse_inode, inode) != 0);
-+	memset((void *) fi + sizeof(fi->inode), 0, sizeof(*fi) - sizeof(fi->inode));
-+
- 	fi->inval_mask = ~0;
--	fi->nodeid = 0;
--	fi->nlookup = 0;
--	fi->attr_version = 0;
--	fi->orig_ino = 0;
--	fi->state = 0;
--	fi->submount_lookup = NULL;
- 	mutex_init(&fi->mutex);
- 	spin_lock_init(&fi->lock);
- 	fi->forget = fuse_alloc_forget();
+@@ -236,6 +237,7 @@ static struct aca_bank_error *new_bank_error(struct aca_error *aerr, struct aca_
+ 
+ 	mutex_lock(&aerr->lock);
+ 	list_add_tail(&bank_error->node, &aerr->list);
++	aerr->nr_errors++;
+ 	mutex_unlock(&aerr->lock);
+ 
+ 	return bank_error;
 -- 
 2.51.0
 
