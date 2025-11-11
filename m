@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-193203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A8EC4A09A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C069C4A0A0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8153C3AC835
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65601188DE68
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4ACB244693;
-	Tue, 11 Nov 2025 00:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4107244693;
+	Tue, 11 Nov 2025 00:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/787uDe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFs2v1ov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7804C97;
-	Tue, 11 Nov 2025 00:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4014C97;
+	Tue, 11 Nov 2025 00:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822543; cv=none; b=nfX581jX9E7dQ8fXmjLv4DHI4CEsdBzy2b+UHJ4n/YIjqNGtFJMGjPphPaiLfYWdn4prNxTS+Zi441pKTksOainYQ6eJoVBMtm5YulUeGXahCueWc1NRZ69elohgCJtTinNqtlk+vqSic/b51kyABuQZDH9dZrj0umBfhdwDY4Y=
+	t=1762822548; cv=none; b=AazXgKx1H50Vjjs6MWXfHp6e8w/5jTdY+FshW359NRMYuUk0Fl2wE9kLvsKsjf5vZKd8sHsa5zW4vNvYasG02A1QFBwzxmFZ75Tcrxi+FygKO7LVO5CcTOLpiD2oIRxJB2I0ac7caKQwWUEn8uPNDUZSi5vqyyR8FH9tjYf0gjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822543; c=relaxed/simple;
-	bh=LsE2qmxSKAfA8bqdIpPJFa9TCPEF82XYH/Sk+c1duvk=;
+	s=arc-20240116; t=1762822548; c=relaxed/simple;
+	bh=IvwAjSB/M0aE4ZxE2iEHYWPLGHIKB3hNo1SCt/08fhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEyWEauG0EoZfZOGvsF1XQ10dI+NoOfUSJ6WPjeQtqNoUjH7LsV3B31TLSHQP3ZU7XWPy51+wVh8vY1aOBDIcDRBj6Gls5mMjSj227SBFCfHENYUfCCCRZ1/DdVwqnBWKv7iswSFhNCepflaxNQJMyBv0Zl88aCeQngC9BVgAMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/787uDe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1B5C4CEFB;
-	Tue, 11 Nov 2025 00:55:43 +0000 (UTC)
+	 MIME-Version; b=e0AISqikjQKCrcNub+DlIFJU3UBCuqit4E39DtlNUIsIS4G2scJlCTgU5dB9sXu79MpWtYGwoyQ6YtVQKpb+YN+5xXTCpavSZnAY1YEnwS9FvR1Yu6/u3jfygZb16mYJehc6GsZmQYHushcnzoJJOE2ORdW0M7G1XiTWsIwFtB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFs2v1ov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A31C113D0;
+	Tue, 11 Nov 2025 00:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822543;
-	bh=LsE2qmxSKAfA8bqdIpPJFa9TCPEF82XYH/Sk+c1duvk=;
+	s=korg; t=1762822548;
+	bh=IvwAjSB/M0aE4ZxE2iEHYWPLGHIKB3hNo1SCt/08fhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/787uDeZWU1HI9IarBh1Oky4KodYS77xgrdvfCrTYqyECi3rU58mBE/8bu+IeCps
-	 94T4NRqexEjoUjaNNdkvkiwiy8DsIPxIjwDjbHLD74yUHLXOuvWys+28RblMfP81sO
-	 Y6T+epQZbiwwyKScmOldS621gDAJEwOYvP8KgDsU=
+	b=MFs2v1ovVZ5lVoI7hGmWy8HGMRvqcRV0Ib1j6UgUteakHrx4nzKGMS6cISz0pdBhm
+	 h2yqjJCKyegrMO2jvl5lLKNp+7AGtLFSCDK8zHXyzxhKHeRh3X/LsEb1/vEpvTS7Jp
+	 NWLpGAnORWowQMNp4P1pylWUBMIY13UfFSTLgnKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peyton.Lee@amd.com,
-	Sultan Alsawaf <sultan@kerneltoast.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 071/565] drm/amd: Check that VPE has reached DPM0 in idle handler
-Date: Tue, 11 Nov 2025 09:38:47 +0900
-Message-ID: <20251111004528.550064213@linuxfoundation.org>
+Subject: [PATCH 6.12 072/565] drm/amd/display: Fix incorrect return of vblank enable on unconfigured crtc
+Date: Tue, 11 Nov 2025 09:38:48 +0900
+Message-ID: <20251111004528.572630949@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -68,93 +68,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Ivan Lipski <ivan.lipski@amd.com>
 
-commit ba10f8d92a2c026b1052b4c0fa2cd7538838c965 upstream.
+commit b3656b355b5522cef1b52a7469010009c98156db upstream.
 
-[Why]
-Newer VPE microcode has functionality that will decrease DPM level
-only when a workload has run for 2 or more seconds.  If VPE is turned
-off before this DPM decrease and the PMFW doesn't reset it when
-power gating VPE, the SOC can get stuck with a higher DPM level.
+[Why&How]
+Return -EINVAL when userspace asks us to enable vblank on a crtc that is
+not yet enabled.
 
-This can happen from amdgpu's ring buffer test because it's a short
-quick workload for VPE and VPE is turned off after 1s.
-
-[How]
-In idle handler besides checking fences are drained check PMFW version
-to determine if it will reset DPM when power gating VPE.  If PMFW will
-not do this, then check VPE DPM level. If it is not DPM0 reschedule
-delayed work again until it is.
-
-v2: squash in return fix (Alex)
-
-Cc: Peyton.Lee@amd.com
-Reported-by: Sultan Alsawaf <sultan@kerneltoast.com>
-Reviewed-by: Sultan Alsawaf <sultan@kerneltoast.com>
-Tested-by: Sultan Alsawaf <sultan@kerneltoast.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4615
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Suggested-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1856
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3ac635367eb589bee8edcc722f812a89970e14b7)
+(cherry picked from commit cb57b8cdb072dc37723b6906da1c37ff9cbc2da4)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c |   34 ++++++++++++++++++++++++++++----
- 1 file changed, 30 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
-@@ -321,6 +321,26 @@ static int vpe_early_init(void *handle)
- 	return 0;
- }
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+@@ -296,8 +296,12 @@ static inline int amdgpu_dm_crtc_set_vbl
+ 	int irq_type;
+ 	int rc = 0;
  
-+static bool vpe_need_dpm0_at_power_down(struct amdgpu_device *adev)
-+{
-+	switch (amdgpu_ip_version(adev, VPE_HWIP, 0)) {
-+	case IP_VERSION(6, 1, 1):
-+		return adev->pm.fw_version < 0x0a640500;
-+	default:
-+		return false;
+-	if (acrtc->otg_inst == -1)
+-		goto skip;
++	if (enable && !acrtc->base.enabled) {
++		drm_dbg_vbl(crtc->dev,
++				"Reject vblank enable on unconfigured CRTC %d (enabled=%d)\n",
++				acrtc->crtc_id, acrtc->base.enabled);
++		return -EINVAL;
 +	}
-+}
-+
-+static int vpe_get_dpm_level(struct amdgpu_device *adev)
-+{
-+	struct amdgpu_vpe *vpe = &adev->vpe;
-+
-+	if (!adev->pm.dpm_enabled)
-+		return 0;
-+
-+	return RREG32(vpe_get_reg_offset(vpe, 0, vpe->regs.dpm_request_lv));
-+}
-+
- static void vpe_idle_work_handler(struct work_struct *work)
- {
- 	struct amdgpu_device *adev =
-@@ -328,11 +348,17 @@ static void vpe_idle_work_handler(struct
- 	unsigned int fences = 0;
  
- 	fences += amdgpu_fence_count_emitted(&adev->vpe.ring);
-+	if (fences)
-+		goto reschedule;
-+
-+	if (vpe_need_dpm0_at_power_down(adev) && vpe_get_dpm_level(adev) != 0)
-+		goto reschedule;
-+
-+	amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VPE, AMD_PG_STATE_GATE);
-+	return;
+ 	irq_type = amdgpu_display_crtc_idx_to_irq_type(adev, acrtc->crtc_id);
  
--	if (fences == 0)
--		amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VPE, AMD_PG_STATE_GATE);
--	else
--		schedule_delayed_work(&adev->vpe.idle_work, VPE_IDLE_TIMEOUT);
-+reschedule:
-+	schedule_delayed_work(&adev->vpe.idle_work, VPE_IDLE_TIMEOUT);
- }
+@@ -378,7 +382,7 @@ static inline int amdgpu_dm_crtc_set_vbl
+ 			return rc;
+ 	}
+ #endif
+-skip:
++
+ 	if (amdgpu_in_reset(adev))
+ 		return 0;
  
- static int vpe_common_init(struct amdgpu_vpe *vpe)
 
 
 
