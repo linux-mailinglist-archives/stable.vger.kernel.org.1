@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-193135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E33EC49FC8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4E5C49FD7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AEEB434BD84
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDCD43AC55D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FE624A043;
-	Tue, 11 Nov 2025 00:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FE8246333;
+	Tue, 11 Nov 2025 00:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8BbjFmz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BD9/uGNI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B62214210;
-	Tue, 11 Nov 2025 00:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D535B4086A;
+	Tue, 11 Nov 2025 00:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822381; cv=none; b=tgm+jPZGlryqLGlw/xzlELnPa4FCHQ9IA2bh4A8MnsmGkr0z7QE/D2MsoC5wgWGyiW4TTYT0H55ySBuzmQUbceh6syNO2JQeJq3wuoxg/2yNsH2dSJmhudfRbcTdUlnj2Q4E2A77euJ4zPcpDizPYr9QkRRfZvzSlFpzVDzRlW0=
+	t=1762822385; cv=none; b=hpT8mJ0vEOvJZnWby/anpoHQY0+hu02utyphVkevv5ar4+KXnHYKDX6mw1N5EsliRN+zvImPJoTZa72X/s+PqVST6k8Of97e3jB/J5ROQtrp+gZZcCYaq7HDODGfXJ+Jol6iN8JIOt5h/THQLA8U/p8ZzwvicHelVqj49EU67EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822381; c=relaxed/simple;
-	bh=MULBda9FXiu8hpGZPpEbREbRYW6BtbIUwrgj2FfaN30=;
+	s=arc-20240116; t=1762822385; c=relaxed/simple;
+	bh=wm5pWua1L2ku1f+91qbIYpD8MC4Zj5iIdyBwAOqML/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7c/ViWZytEy38SYjJAKZMyc+UbTpzdXaL2Sa4HoKpE0dSIxhN70INSNwpE3XphIgORWCd7lr02C+TtKZymQT5a9uXjI32Rr1gbMXwlP+ztZEP0+GAB/mmGclUkS4nbWbU+P00CiockOL1lJS+EIEvigBbz1BiH90VO57seL5Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8BbjFmz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC67AC16AAE;
-	Tue, 11 Nov 2025 00:53:00 +0000 (UTC)
+	 MIME-Version; b=XdtL9XMAk7mX/mY7Oxj8Cau/ubAQg6zW0San7ee37aLSGPhPYa9WNb2boprLKVShpXGTaIpX3fCgvcsG9V6jOojltH8z0LNqaL4YBNEMnlZUi45Pqpgdp6sbZZODTrUWw4oqgfWcNFxOAo0tle7Nr3a/EgB63YWCxVrxu0p66TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BD9/uGNI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB31C19422;
+	Tue, 11 Nov 2025 00:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822381;
-	bh=MULBda9FXiu8hpGZPpEbREbRYW6BtbIUwrgj2FfaN30=;
+	s=korg; t=1762822385;
+	bh=wm5pWua1L2ku1f+91qbIYpD8MC4Zj5iIdyBwAOqML/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e8BbjFmzUcEh3Bs9NRUwXAF2pKZa4zR5sHr34lkZNH4pcb1H+bo3AFGxPwVqE9Nro
-	 D1t2wDv3BcsIGM/TqpluNLFdM98aipbxYwtOeWIsYSf10NG38BrEBhVBKiSw5MsVdR
-	 y5Dcop2XS5lAOdmIQ39CEf07NXQJciUXRHA7Hwyc=
+	b=BD9/uGNIRtgz1LJn0XAlybapE1IC07pW4j71WvJUbo0mWup/8fHfyyrigl1o5tzUV
+	 xiCLZsfV7wGT67BlDonqN4J5kGqG5Xa+m42vLEM/KPOTD0w8ZSXK1a4/RMvyYcvde1
+	 xQxrdu7zdHXtdfR6aA+jllLaUCk0b0ubPT4bmvfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.17 097/849] s390/mm: Fix memory leak in add_marker() when kvrealloc() fails
-Date: Tue, 11 Nov 2025 09:34:27 +0900
-Message-ID: <20251111004538.753043770@linuxfoundation.org>
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.17 098/849] drm/xe: Do not wake device during a GT reset
+Date: Tue, 11 Nov 2025 09:34:28 +0900
+Message-ID: <20251111004538.775030914@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -65,70 +66,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-commit 07ad45e06b4039adf96882aefcb1d3299fb7c305 upstream.
+commit b3fbda1a630a9439c885b2a5dc5230cc49a87e9e upstream.
 
-The function has a memory leak when kvrealloc() fails.
-The function directly assigns NULL to the markers pointer, losing the
-reference to the previously allocated memory. This causes kvfree() in
-pt_dump_init() to free NULL instead of the leaked memory.
+Waking the device during a GT reset can lead to unintended memory
+allocation, which is not allowed since GT resets occur in the reclaim
+path. Prevent this by holding a PM reference while a reset is in flight.
 
-Fix by:
-1. Using kvrealloc() uniformly for all allocations
-2. Using a temporary variable to preserve the original pointer until
-   allocation succeeds
-3. Removing the error path that sets markers_cnt=0 to keep
-   consistency between markers and markers_cnt
-
-Found via static analysis and this is similar to commit 42378a9ca553
-("bpf, verifier: Fix memory leak in array reallocation for stack state")
-
-Fixes: d0e7915d2ad3 ("s390/mm/ptdump: Generate address marker array dynamically")
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://lore.kernel.org/r/20251022005538.828980-3-matthew.brost@intel.com
+(cherry picked from commit 480b358e7d8ef69fd8f1b0cad6e07c7d70a36ee4)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/mm/dump_pagetables.c |   19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/xe/xe_gt.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/arch/s390/mm/dump_pagetables.c
-+++ b/arch/s390/mm/dump_pagetables.c
-@@ -291,16 +291,14 @@ static int ptdump_cmp(const void *a, con
+--- a/drivers/gpu/drm/xe/xe_gt.c
++++ b/drivers/gpu/drm/xe/xe_gt.c
+@@ -810,17 +810,19 @@ static int gt_reset(struct xe_gt *gt)
+ 	unsigned int fw_ref;
+ 	int err;
  
- static int add_marker(unsigned long start, unsigned long end, const char *name)
- {
--	size_t oldsize, newsize;
-+	struct addr_marker *new;
-+	size_t newsize;
+-	if (xe_device_wedged(gt_to_xe(gt)))
+-		return -ECANCELED;
++	if (xe_device_wedged(gt_to_xe(gt))) {
++		err = -ECANCELED;
++		goto err_pm_put;
++	}
  
--	oldsize = markers_cnt * sizeof(*markers);
--	newsize = oldsize + 2 * sizeof(*markers);
--	if (!oldsize)
--		markers = kvmalloc(newsize, GFP_KERNEL);
--	else
--		markers = kvrealloc(markers, newsize, GFP_KERNEL);
--	if (!markers)
--		goto error;
-+	newsize = (markers_cnt + 2) * sizeof(*markers);
-+	new = kvrealloc(markers, newsize, GFP_KERNEL);
-+	if (!new)
-+		return -ENOMEM;
-+	markers = new;
- 	markers[markers_cnt].is_start = 1;
- 	markers[markers_cnt].start_address = start;
- 	markers[markers_cnt].size = end - start;
-@@ -312,9 +310,6 @@ static int add_marker(unsigned long star
- 	markers[markers_cnt].name = name;
- 	markers_cnt++;
- 	return 0;
--error:
--	markers_cnt = 0;
--	return -ENOMEM;
+ 	/* We only support GT resets with GuC submission */
+-	if (!xe_device_uc_enabled(gt_to_xe(gt)))
+-		return -ENODEV;
++	if (!xe_device_uc_enabled(gt_to_xe(gt))) {
++		err = -ENODEV;
++		goto err_pm_put;
++	}
+ 
+ 	xe_gt_info(gt, "reset started\n");
+ 
+-	xe_pm_runtime_get(gt_to_xe(gt));
+-
+ 	if (xe_fault_inject_gt_reset()) {
+ 		err = -ECANCELED;
+ 		goto err_fail;
+@@ -867,6 +869,7 @@ err_fail:
+ 	xe_gt_err(gt, "reset failed (%pe)\n", ERR_PTR(err));
+ 
+ 	xe_device_declare_wedged(gt_to_xe(gt));
++err_pm_put:
+ 	xe_pm_runtime_put(gt_to_xe(gt));
+ 
+ 	return err;
+@@ -888,7 +891,9 @@ void xe_gt_reset_async(struct xe_gt *gt)
+ 		return;
+ 
+ 	xe_gt_info(gt, "reset queued\n");
+-	queue_work(gt->ordered_wq, &gt->reset.worker);
++	xe_pm_runtime_get_noresume(gt_to_xe(gt));
++	if (!queue_work(gt->ordered_wq, &gt->reset.worker))
++		xe_pm_runtime_put(gt_to_xe(gt));
  }
  
- static int pt_dump_init(void)
+ void xe_gt_suspend_prepare(struct xe_gt *gt)
 
 
 
