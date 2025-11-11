@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-194145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E7DC4ADB8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9685FC4B283
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:04:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A268188647A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BBF73B3730
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B776230C36F;
-	Tue, 11 Nov 2025 01:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B1D3043BA;
+	Tue, 11 Nov 2025 01:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIYOXzUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4ji82X9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7488F30ACFA;
-	Tue, 11 Nov 2025 01:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C27303A1C;
+	Tue, 11 Nov 2025 01:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824909; cv=none; b=Azb5JLWhNV4ee9gjkjuxTwC4boGKUfJC887rFCXkXEsIJJuHjvv0GS3JihLvDA4a4H0jnd28adroHRXYnjWJ1TMpuA1FZLjj30c0CErmDUk+lU6Qh1mjjZ3NUd0hOxeXvbgna4n6D+bC98VO9gWNM12HkrG0IE2GOZsl+ywqqx8=
+	t=1762825466; cv=none; b=o7nXXfXtgCxe4ExyV+gnWSAC+n/D/uhPttn1AeOJph6r05Y2dWarrS60xecFRNenLAiIhurwfuzarL60NZCsIsqHXrMFHrwRyFJUiCH4fKVFZaVnzMdWHqm6o4Z351wunEaxw3D0b1gu1AdzvSaFQfkwFiQMQqOhLl7k0jEAuMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824909; c=relaxed/simple;
-	bh=9DjPcGxZjKHvfBLgAHkFuqsfmXWJgrKbUZv0AJ4l9pw=;
+	s=arc-20240116; t=1762825466; c=relaxed/simple;
+	bh=QSfxZqTAxiaash0CcXlxooNuhvHhYcGpmYzGMTI5zD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9PhA/9pB1RL0CqnHpJuT/jKrOyUK6Xi7RUEoOAWzmN6zJQ0Lf5H4lHqd9KwApzGUWvalbRn2fUQ0aydOBMfUyFv5LJTSpf3YRfxdExlK/G3uzFfLfACVNQTbj6qNHm12Wc+Yt/1eQgu+SVHDCLJgRoSQxRj+yHtkyUVSdDY9X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIYOXzUc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4F3C19422;
-	Tue, 11 Nov 2025 01:35:08 +0000 (UTC)
+	 MIME-Version; b=mTWkTmQiLLUF8bxiiHjxcAdrsPTJcOg5iB8jBMuOFOl0itHXT81dlApMw8F1KFi1a9qLYXEciai6/GpWZunZmVgCXc9i4PEO+248oDlZrDzXAeZn8KMYptyk2Jmv0lTnBz1lV8macPCcrcqk6qD0kdQQkNKeHgErsYnXlOjDAec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4ji82X9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC7EC4CEF5;
+	Tue, 11 Nov 2025 01:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824909;
-	bh=9DjPcGxZjKHvfBLgAHkFuqsfmXWJgrKbUZv0AJ4l9pw=;
+	s=korg; t=1762825466;
+	bh=QSfxZqTAxiaash0CcXlxooNuhvHhYcGpmYzGMTI5zD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xIYOXzUcBleMGeUG4OCIcl68cIeeMzGBHtCCatpxZHq2rlu1fKd42fFsp6N5iybxB
-	 CMFa7nwQgzEkPz7B6wN+t+RNkWu+OHYO2hEQSKIFnT/jfbPjdXD1GT5bUKlhxenWYZ
-	 ETHEt2kBr+QncgHJJVF8g7+N2CeU4QUB1wx/dXHE=
+	b=f4ji82X9Ty5xKD2LygD7QxfrziVpSPfqGl1Rl2xBTyoMJMPvCcTfXlgrvvpoToVXj
+	 PA58sPZGsZiXnPibAabGXSiZXjUikWhR/3i/CyrH60iQEwpO7vr3zVItEGkF+WFrgK
+	 Mz1xathkFl/CY6DkuFPNNw6WQ1nsrRFT+2gJOQmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 529/565] bnxt_en: Fix a possible memory leak in bnxt_ptp_init
+	Joshua Rogers <linux@joshua.hu>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.17 815/849] smb: client: validate change notify buffer before copy
 Date: Tue, 11 Nov 2025 09:46:25 +0900
-Message-ID: <20251111004538.870387179@linuxfoundation.org>
+Message-ID: <20251111004556.130343674@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Joshua Rogers <linux@joshua.hu>
 
-[ Upstream commit deb8eb39164382f1f67ef8e8af9176baf5e10f2d ]
+commit 4012abe8a78fbb8869634130024266eaef7081fe upstream.
 
-In bnxt_ptp_init(), when ptp_clock_register() fails, the driver is
-not freeing the memory allocated for ptp_info->pin_config.  Fix it
-to unconditionally free ptp_info->pin_config in bnxt_ptp_free().
+SMB2_change_notify called smb2_validate_iov() but ignored the return
+code, then kmemdup()ed using server provided OutputBufferOffset/Length.
 
-Fixes: caf3eedbcd8d ("bnxt_en: 1PPS support for 5750X family chips")
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20251104005700.542174-3-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Check the return of smb2_validate_iov() and bail out on error.
+
+Discovered with help from the ZeroPath security tooling.
+
+Signed-off-by: Joshua Rogers <linux@joshua.hu>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Cc: stable@vger.kernel.org
+Fixes: e3e9463414f61 ("smb3: improve SMB3 change notification support")
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/smb2pdu.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-index 650034a4bb46d..6dfa0ab74c332 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-@@ -1040,9 +1040,9 @@ static void bnxt_ptp_free(struct bnxt *bp)
- 	if (ptp->ptp_clock) {
- 		ptp_clock_unregister(ptp->ptp_clock);
- 		ptp->ptp_clock = NULL;
--		kfree(ptp->ptp_info.pin_config);
--		ptp->ptp_info.pin_config = NULL;
- 	}
-+	kfree(ptp->ptp_info.pin_config);
-+	ptp->ptp_info.pin_config = NULL;
- }
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4054,9 +4054,12 @@ replay_again:
  
- int bnxt_ptp_init(struct bnxt *bp)
--- 
-2.51.0
-
+ 		smb_rsp = (struct smb2_change_notify_rsp *)rsp_iov.iov_base;
+ 
+-		smb2_validate_iov(le16_to_cpu(smb_rsp->OutputBufferOffset),
+-				le32_to_cpu(smb_rsp->OutputBufferLength), &rsp_iov,
++		rc = smb2_validate_iov(le16_to_cpu(smb_rsp->OutputBufferOffset),
++				le32_to_cpu(smb_rsp->OutputBufferLength),
++				&rsp_iov,
+ 				sizeof(struct file_notify_information));
++		if (rc)
++			goto cnotify_exit;
+ 
+ 		*out_data = kmemdup((char *)smb_rsp + le16_to_cpu(smb_rsp->OutputBufferOffset),
+ 				le32_to_cpu(smb_rsp->OutputBufferLength), GFP_KERNEL);
 
 
 
