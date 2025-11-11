@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CFE5C4B151
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7F4C4AC73
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16DB61894CEA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A5021890E11
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ABC12FF672;
-	Tue, 11 Nov 2025 01:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FF6340D93;
+	Tue, 11 Nov 2025 01:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WkSEQjf4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjiz9jxe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3C341C69;
-	Tue, 11 Nov 2025 01:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4BD30FC3D;
+	Tue, 11 Nov 2025 01:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825452; cv=none; b=mddF9QvVzsmwUEeEHtanxh1/toH1JXuMPoh4gC+dG6/u9Yz9qpx2SEYOA/yk2RKdNA4t+ZzFfBW1gS+L+1nUceT6tw7BCxuNKQgGT/hJJoDJQk8k3MMPZmFUx9+YSuqZ+yXp5cSJlPmJcqVApoXT23X945IESx+sZizE24bUw7w=
+	t=1762824605; cv=none; b=OqAkbKPZa0aN8V0Zk+A3C/FtIS4J0gFAOX1AxfHxQ0/7cUn3vy7Tk+44PzS/osjTno3soxCY2t7XOy2NYPuN1oD9q3uFmIIqI9mmFo4kJHzcmcWQZ2I+ZhHNCSNHgGlHfA/rssmsoe74W6oeHonEagzxDoG56lQf9fpcPcFginY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825452; c=relaxed/simple;
-	bh=3KQ8HWD0UFg0qpPhqOVXjiiPW6W8dhnBp1ZhN9AbGg4=;
+	s=arc-20240116; t=1762824605; c=relaxed/simple;
+	bh=kexhX7+9n32yJILKSDP7znhUKDmCuPshhlYTWkroTBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/tQ0Gh2ndZbXVJk3fOqyAmE4Yckx5cUjLZc44m27vzIQRgNujGeGjHl1wk2xQTPIRRfCtn4UuhMhsAMo3feEjA7tsStDlZ0Cheov6EMqTXyHA60siTRESWupspkZYVA10eGqCYIwHv6hTiHVaXESLLn7oocRARAsZFc/HU9aVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WkSEQjf4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD35C116B1;
-	Tue, 11 Nov 2025 01:44:11 +0000 (UTC)
+	 MIME-Version; b=auqpfKMldFuSltfX+t3fvluUf0/NCm3YhDXAqu6ta09kLxIDsKPQWPmvhglU+QDMaLQ/YI40vWIYjSdToKyO2HIJzOYJ7lmCbBGn+HjMnR7r6cn4JPI7LkUquVOX/WxAr6JVlhT0GiMs+AF9gfWVQX+E5eTwOef9ZHE3+2YfcKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjiz9jxe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFD0C116B1;
+	Tue, 11 Nov 2025 01:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825452;
-	bh=3KQ8HWD0UFg0qpPhqOVXjiiPW6W8dhnBp1ZhN9AbGg4=;
+	s=korg; t=1762824605;
+	bh=kexhX7+9n32yJILKSDP7znhUKDmCuPshhlYTWkroTBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WkSEQjf4ytWKc0w3nruPh4jLtoNQQl/Za7lI55aSEu//+QXbPeLHENIQpKEoLVd++
-	 JUx6gWeT3RE1b4BQRaFUgj+5m2leEFyJihlK2b4gscYtOgNeAxHCUqLuB8VZj7VC7M
-	 HicGokwQAjwnrmTUcl1LbSQqdjjfZpUKBc9bOS0w=
+	b=kjiz9jxek2a2kr+mxBhMRwUneoZZw7UW3A8X5YGDeI/IhnkYcG1O4x7cI2XErbrnk
+	 3OJpkAssM/D37U7rAu2NYiLO40olt5fVwFvDUBvQCCS9FujoWzk1QXuurfZ5OrMee2
+	 1fZYUaXJFe9VytKXTshcLOLjW1PgAPebczC+Wyug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 764/849] net: vlan: sync VLAN features with lower device
+Subject: [PATCH 6.12 478/565] cpufreq: tegra186: Initialize all cores to max frequencies
 Date: Tue, 11 Nov 2025 09:45:34 +0900
-Message-ID: <20251111004554.903325473@linuxfoundation.org>
+Message-ID: <20251111004537.670279422@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit c211f5d7cbd5cb34489d526648bb9c8ecc907dee ]
+[ Upstream commit ba6018929165fc914c665f071f8e8cdbac844a49 ]
 
-After registering a VLAN device and setting its feature flags, we need to
-synchronize the VLAN features with the lower device. For example, the VLAN
-device does not have the NETIF_F_LRO flag, it should be synchronized with
-the lower device based on the NETIF_F_UPPER_DISABLES definition.
+During initialization, the EDVD_COREx_VOLT_FREQ registers for some cores
+are still at reset values and not reflecting the actual frequency. This
+causes get calls to fail. Set all cores to their respective max
+frequency during probe to initialize the registers to working values.
 
-As the dev->vlan_features has changed, we need to call
-netdev_update_features(). The caller must run after netdev_upper_dev_link()
-links the lower devices, so this patch adds the netdev_update_features()
-call in register_vlan_dev().
-
-Fixes: fd867d51f889 ("net/core: generic support for disabling netdev features down stack")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20251030073539.133779-1-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/8021q/vlan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/cpufreq/tegra186-cpufreq.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-index fda3a80e9340c..2b74ed56eb166 100644
---- a/net/8021q/vlan.c
-+++ b/net/8021q/vlan.c
-@@ -193,6 +193,8 @@ int register_vlan_dev(struct net_device *dev, struct netlink_ext_ack *extack)
- 	vlan_group_set_device(grp, vlan->vlan_proto, vlan_id, dev);
- 	grp->nr_vlan_devs++;
+diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
+index 39186008afbfd..233c82a834086 100644
+--- a/drivers/cpufreq/tegra186-cpufreq.c
++++ b/drivers/cpufreq/tegra186-cpufreq.c
+@@ -132,13 +132,14 @@ static struct cpufreq_driver tegra186_cpufreq_driver = {
  
-+	netdev_update_features(dev);
+ static struct cpufreq_frequency_table *init_vhint_table(
+ 	struct platform_device *pdev, struct tegra_bpmp *bpmp,
+-	struct tegra186_cpufreq_cluster *cluster, unsigned int cluster_id)
++	struct tegra186_cpufreq_cluster *cluster, unsigned int cluster_id,
++	int *num_rates)
+ {
+ 	struct cpufreq_frequency_table *table;
+ 	struct mrq_cpu_vhint_request req;
+ 	struct tegra_bpmp_message msg;
+ 	struct cpu_vhint_data *data;
+-	int err, i, j, num_rates = 0;
++	int err, i, j;
+ 	dma_addr_t phys;
+ 	void *virt;
+ 
+@@ -168,6 +169,7 @@ static struct cpufreq_frequency_table *init_vhint_table(
+ 		goto free;
+ 	}
+ 
++	*num_rates = 0;
+ 	for (i = data->vfloor; i <= data->vceil; i++) {
+ 		u16 ndiv = data->ndiv[i];
+ 
+@@ -178,10 +180,10 @@ static struct cpufreq_frequency_table *init_vhint_table(
+ 		if (i > 0 && ndiv == data->ndiv[i - 1])
+ 			continue;
+ 
+-		num_rates++;
++		(*num_rates)++;
+ 	}
+ 
+-	table = devm_kcalloc(&pdev->dev, num_rates + 1, sizeof(*table),
++	table = devm_kcalloc(&pdev->dev, *num_rates + 1, sizeof(*table),
+ 			     GFP_KERNEL);
+ 	if (!table) {
+ 		table = ERR_PTR(-ENOMEM);
+@@ -223,7 +225,9 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
+ {
+ 	struct tegra186_cpufreq_data *data;
+ 	struct tegra_bpmp *bpmp;
+-	unsigned int i = 0, err;
++	unsigned int i = 0, err, edvd_offset;
++	int num_rates = 0;
++	u32 edvd_val, cpu;
+ 
+ 	data = devm_kzalloc(&pdev->dev,
+ 			    struct_size(data, clusters, TEGRA186_NUM_CLUSTERS),
+@@ -246,10 +250,21 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
+ 	for (i = 0; i < TEGRA186_NUM_CLUSTERS; i++) {
+ 		struct tegra186_cpufreq_cluster *cluster = &data->clusters[i];
+ 
+-		cluster->table = init_vhint_table(pdev, bpmp, cluster, i);
++		cluster->table = init_vhint_table(pdev, bpmp, cluster, i, &num_rates);
+ 		if (IS_ERR(cluster->table)) {
+ 			err = PTR_ERR(cluster->table);
+ 			goto put_bpmp;
++		} else if (!num_rates) {
++			err = -EINVAL;
++			goto put_bpmp;
++		}
 +
- 	return 0;
++		for (cpu = 0; cpu < ARRAY_SIZE(tegra186_cpus); cpu++) {
++			if (data->cpus[cpu].bpmp_cluster_id == i) {
++				edvd_val = cluster->table[num_rates - 1].driver_data;
++				edvd_offset = data->cpus[cpu].edvd_offset;
++				writel(edvd_val, data->regs + edvd_offset);
++			}
+ 		}
+ 	}
  
- out_unregister_netdev:
 -- 
 2.51.0
 
