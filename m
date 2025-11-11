@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-194016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7F4C4AC73
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:47 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5366C4ACFD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A5021890E11
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9AC584F4E13
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FF6340D93;
-	Tue, 11 Nov 2025 01:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EECC2D9EF9;
+	Tue, 11 Nov 2025 01:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjiz9jxe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FN+jecV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4BD30FC3D;
-	Tue, 11 Nov 2025 01:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE15C26ED4A;
+	Tue, 11 Nov 2025 01:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824605; cv=none; b=OqAkbKPZa0aN8V0Zk+A3C/FtIS4J0gFAOX1AxfHxQ0/7cUn3vy7Tk+44PzS/osjTno3soxCY2t7XOy2NYPuN1oD9q3uFmIIqI9mmFo4kJHzcmcWQZ2I+ZhHNCSNHgGlHfA/rssmsoe74W6oeHonEagzxDoG56lQf9fpcPcFginY=
+	t=1762824610; cv=none; b=lTu7QeGTSmd57iXuqk1AQwlhI1fXbEMxRK1WpsVd/lO9b0yqqkFBKe7vg6jHz8BFDzQGyuRUH2ORnBCtYOTGgtmPyyehh4+6JvKkjGdU7KJwuxubquTBQoJSv4CsOPcvE5JNcu/Ypxh9WrUq1csXhi7HtWIBSTVU4YafdUtw8v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824605; c=relaxed/simple;
-	bh=kexhX7+9n32yJILKSDP7znhUKDmCuPshhlYTWkroTBw=;
+	s=arc-20240116; t=1762824610; c=relaxed/simple;
+	bh=pbxF12dU4kM9r60W70vVzYGjiXw5/iSALZEFNe8WUYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auqpfKMldFuSltfX+t3fvluUf0/NCm3YhDXAqu6ta09kLxIDsKPQWPmvhglU+QDMaLQ/YI40vWIYjSdToKyO2HIJzOYJ7lmCbBGn+HjMnR7r6cn4JPI7LkUquVOX/WxAr6JVlhT0GiMs+AF9gfWVQX+E5eTwOef9ZHE3+2YfcKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjiz9jxe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFD0C116B1;
-	Tue, 11 Nov 2025 01:30:05 +0000 (UTC)
+	 MIME-Version; b=PQV6AfdV4XnVbSZeVboYk/W9J5llTotjTtd6ccmKFkyrp5uRRofMXpMrixlxQoZ8sfVXjnN7ePDhjKRP3Tny6b9QaQHahyxQ8nvyiqmYqfd/syWm3Hxc5rMMebwRFD3aUjtWDh1YDKP25tgKHQ+NZNJofibPeYmp/rK8VXyrSFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FN+jecV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E47C16AAE;
+	Tue, 11 Nov 2025 01:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824605;
-	bh=kexhX7+9n32yJILKSDP7znhUKDmCuPshhlYTWkroTBw=;
+	s=korg; t=1762824610;
+	bh=pbxF12dU4kM9r60W70vVzYGjiXw5/iSALZEFNe8WUYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjiz9jxek2a2kr+mxBhMRwUneoZZw7UW3A8X5YGDeI/IhnkYcG1O4x7cI2XErbrnk
-	 3OJpkAssM/D37U7rAu2NYiLO40olt5fVwFvDUBvQCCS9FujoWzk1QXuurfZ5OrMee2
-	 1fZYUaXJFe9VytKXTshcLOLjW1PgAPebczC+Wyug=
+	b=1FN+jecVVIBOam7s0FBFQUqe7rCewk+cR45LH/mQie4YgOGFv6fZJa4kRb2ySYieU
+	 JjXecjqntmvv4K5Hpn0IRHKnobvRvp0Gzklixor6cwfP1QlINMqlRGJMy2j12rXTN8
+	 faVzISg+3wbtuhmUfVr7Q2baLGn7HgOBfReQxmSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Randall P. Embry" <rpembry@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 478/565] cpufreq: tegra186: Initialize all cores to max frequencies
-Date: Tue, 11 Nov 2025 09:45:34 +0900
-Message-ID: <20251111004537.670279422@linuxfoundation.org>
+Subject: [PATCH 6.12 479/565] 9p: sysfs_init: dont hardcode error to ENOMEM
+Date: Tue, 11 Nov 2025 09:45:35 +0900
+Message-ID: <20251111004537.694728044@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,100 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aaron Kling <webgeek1234@gmail.com>
+From: Randall P. Embry <rpembry@gmail.com>
 
-[ Upstream commit ba6018929165fc914c665f071f8e8cdbac844a49 ]
+[ Upstream commit 528f218b31aac4bbfc58914d43766a22ab545d48 ]
 
-During initialization, the EDVD_COREx_VOLT_FREQ registers for some cores
-are still at reset values and not reflecting the actual frequency. This
-causes get calls to fail. Set all cores to their respective max
-frequency during probe to initialize the registers to working values.
+v9fs_sysfs_init() always returned -ENOMEM on failure;
+return the actual sysfs_create_group() error instead.
 
-Suggested-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Randall P. Embry <rpembry@gmail.com>
+Message-ID: <20250926-v9fs_misc-v1-3-a8b3907fc04d@codewreck.org>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/tegra186-cpufreq.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ fs/9p/v9fs.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
-index 39186008afbfd..233c82a834086 100644
---- a/drivers/cpufreq/tegra186-cpufreq.c
-+++ b/drivers/cpufreq/tegra186-cpufreq.c
-@@ -132,13 +132,14 @@ static struct cpufreq_driver tegra186_cpufreq_driver = {
+diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+index e35b30534787d..ccf00a948146a 100644
+--- a/fs/9p/v9fs.c
++++ b/fs/9p/v9fs.c
+@@ -597,13 +597,16 @@ static const struct attribute_group v9fs_attr_group = {
  
- static struct cpufreq_frequency_table *init_vhint_table(
- 	struct platform_device *pdev, struct tegra_bpmp *bpmp,
--	struct tegra186_cpufreq_cluster *cluster, unsigned int cluster_id)
-+	struct tegra186_cpufreq_cluster *cluster, unsigned int cluster_id,
-+	int *num_rates)
+ static int __init v9fs_sysfs_init(void)
  {
- 	struct cpufreq_frequency_table *table;
- 	struct mrq_cpu_vhint_request req;
- 	struct tegra_bpmp_message msg;
- 	struct cpu_vhint_data *data;
--	int err, i, j, num_rates = 0;
-+	int err, i, j;
- 	dma_addr_t phys;
- 	void *virt;
- 
-@@ -168,6 +169,7 @@ static struct cpufreq_frequency_table *init_vhint_table(
- 		goto free;
- 	}
- 
-+	*num_rates = 0;
- 	for (i = data->vfloor; i <= data->vceil; i++) {
- 		u16 ndiv = data->ndiv[i];
- 
-@@ -178,10 +180,10 @@ static struct cpufreq_frequency_table *init_vhint_table(
- 		if (i > 0 && ndiv == data->ndiv[i - 1])
- 			continue;
- 
--		num_rates++;
-+		(*num_rates)++;
- 	}
- 
--	table = devm_kcalloc(&pdev->dev, num_rates + 1, sizeof(*table),
-+	table = devm_kcalloc(&pdev->dev, *num_rates + 1, sizeof(*table),
- 			     GFP_KERNEL);
- 	if (!table) {
- 		table = ERR_PTR(-ENOMEM);
-@@ -223,7 +225,9 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
- {
- 	struct tegra186_cpufreq_data *data;
- 	struct tegra_bpmp *bpmp;
--	unsigned int i = 0, err;
-+	unsigned int i = 0, err, edvd_offset;
-+	int num_rates = 0;
-+	u32 edvd_val, cpu;
- 
- 	data = devm_kzalloc(&pdev->dev,
- 			    struct_size(data, clusters, TEGRA186_NUM_CLUSTERS),
-@@ -246,10 +250,21 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
- 	for (i = 0; i < TEGRA186_NUM_CLUSTERS; i++) {
- 		struct tegra186_cpufreq_cluster *cluster = &data->clusters[i];
- 
--		cluster->table = init_vhint_table(pdev, bpmp, cluster, i);
-+		cluster->table = init_vhint_table(pdev, bpmp, cluster, i, &num_rates);
- 		if (IS_ERR(cluster->table)) {
- 			err = PTR_ERR(cluster->table);
- 			goto put_bpmp;
-+		} else if (!num_rates) {
-+			err = -EINVAL;
-+			goto put_bpmp;
-+		}
++	int ret;
 +
-+		for (cpu = 0; cpu < ARRAY_SIZE(tegra186_cpus); cpu++) {
-+			if (data->cpus[cpu].bpmp_cluster_id == i) {
-+				edvd_val = cluster->table[num_rates - 1].driver_data;
-+				edvd_offset = data->cpus[cpu].edvd_offset;
-+				writel(edvd_val, data->regs + edvd_offset);
-+			}
- 		}
+ 	v9fs_kobj = kobject_create_and_add("9p", fs_kobj);
+ 	if (!v9fs_kobj)
+ 		return -ENOMEM;
+ 
+-	if (sysfs_create_group(v9fs_kobj, &v9fs_attr_group)) {
++	ret = sysfs_create_group(v9fs_kobj, &v9fs_attr_group);
++	if (ret) {
+ 		kobject_put(v9fs_kobj);
+-		return -ENOMEM;
++		return ret;
  	}
  
+ 	return 0;
 -- 
 2.51.0
 
