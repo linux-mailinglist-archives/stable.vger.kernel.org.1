@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-193589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC22C4A7A6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC07FC4A6A7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E11F23B3626
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E58104F7046
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12571343207;
-	Tue, 11 Nov 2025 01:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3438A34405F;
+	Tue, 11 Nov 2025 01:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6cSlUlX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BTTYV1RQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F3B3431FD;
-	Tue, 11 Nov 2025 01:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15EF34402F;
+	Tue, 11 Nov 2025 01:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823541; cv=none; b=ryE8b++Zf7kUNl/PhFR4z7/TbbiajCNU5/74AQy4hzA8p0LnwRgJwup6GAEDSi453KTJ/8CjunvszI0uQ4MdcNNtJd8EgHrZPYi75eqvWQcSzpiqaMj3OAfBDpWvAQuOi1/HXCv0oG/bV5JSHaH4GONZdokTVEy4mWQYy1ipu0U=
+	t=1762823577; cv=none; b=qqHtRIYw73oRXRVY3dJffzniHXGRX9Qrlf0Z+CdoiTjZKNYHkS19dvsafXO0ZjZAEzJZKpWE9op6N1HRWAZwpYvibmnqddcjxPogdEVUTZtsc1yN1+KVwq5Kgf8IgsZ0o+1DUWEJsgThs+8edNAR+8zN/87DBWm9ndtpH4uD2SE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823541; c=relaxed/simple;
-	bh=usrnoDow3Y1z6gGrOBlOKlbSJejc/1p+B2FR4t7fBQc=;
+	s=arc-20240116; t=1762823577; c=relaxed/simple;
+	bh=A0OTyj9pKIEEROtY7mluokDlXwe7BVJQJe1XZ+jo1ak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZsGlTjNt0JrUuD5iSJtzvvBOaxxs+dnTc3Z9IJTbT88QbUjkYBW1dlpQqVEdZE570Tc749ck+xKkjCXSYQmNs+Ssm/sop7ES/rGLRQm+Rr/szr22nxRot1gMP553ONVsyuhRI7qR9gp1HBa9j+zj9ZdNIdjWyKrD6y1C1h7Ltn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6cSlUlX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53782C4CEF5;
-	Tue, 11 Nov 2025 01:12:21 +0000 (UTC)
+	 MIME-Version; b=LMKZw0Ve0yhGxXuaxxShK2OGj2zzBa/bFE10mxMVu3cqR4LRvuGVu2BU6Nr8VxnCFTWz3pboF77xs8b0u7RqfSfp0VZxipAzpReJj3CAOPI0XLbD8vk0/pynKop9RoeXr/iBKQ+WVrTI2TuKQGeIbyWHefv7mBn1cjdXf/ePazw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTTYV1RQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1D6C113D0;
+	Tue, 11 Nov 2025 01:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823541;
-	bh=usrnoDow3Y1z6gGrOBlOKlbSJejc/1p+B2FR4t7fBQc=;
+	s=korg; t=1762823576;
+	bh=A0OTyj9pKIEEROtY7mluokDlXwe7BVJQJe1XZ+jo1ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f6cSlUlXh1bW+t6CM2JDuh+omXjimPkMcMuDP6ehPmweey6Sm7el1SBT6kjqQjdde
-	 vGsBFDAf8Srm4GaKyplk0q+FueYHUag5pGR5rERXpMp1l94hZ0bAFi29WHnxDkAk3k
-	 SB75vVhOzFRWbEYFo+lpPUxf0KgYRWZRTk7lQMZE=
+	b=BTTYV1RQpehmawPTlAn6xAX21rxhOeAbbWeNuLvlnharsJ0wECN/sdTbo3WoE2poa
+	 I96RJ8vcFgzECgYQL8GJBduwacOOg3re12PwmUFm6vn7HQVzFaAEhAuezx+dws4TgN
+	 mgKhrSNsohHV8Wbyyc4fCswM+AQgUBXhoImfIMNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Paasch <cpaasch@openai.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 235/565] net: When removing nexthops, dont call synchronize_net if it is not necessary
-Date: Tue, 11 Nov 2025 09:41:31 +0900
-Message-ID: <20251111004532.200152746@linuxfoundation.org>
+Subject: [PATCH 6.12 236/565] net: stmmac: Correctly handle Rx checksum offload errors
+Date: Tue, 11 Nov 2025 09:41:32 +0900
+Message-ID: <20251111004532.222503719@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -70,95 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Paasch <cpaasch@openai.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit b0ac6d3b56a2384db151696cfda2836a8a961b6d ]
+[ Upstream commit ee0aace5f844ef59335148875d05bec8764e71e8 ]
 
-When removing a nexthop, commit
-90f33bffa382 ("nexthops: don't modify published nexthop groups") added a
-call to synchronize_rcu() (later changed to _net()) to make sure
-everyone sees the new nexthop-group before the rtnl-lock is released.
+The stmmac_rx function would previously set skb->ip_summed to
+CHECKSUM_UNNECESSARY if hardware checksum offload (CoE) was enabled
+and the packet was of a known IP ethertype.
 
-When one wants to delete a large number of groups and nexthops, it is
-fastest to first flush the groups (ip nexthop flush groups) and then
-flush the nexthops themselves (ip -6 nexthop flush). As that way the
-groups don't need to be rebalanced.
+However, this logic failed to check if the hardware had actually
+reported a checksum error. The hardware status, indicating a header or
+payload checksum failure, was being ignored at this stage. This could
+cause corrupt packets to be passed up the network stack as valid.
 
-However, `ip -6 nexthop flush` will still take a long time if there is
-a very large number of nexthops because of the call to
-synchronize_net(). Now, if there are no more groups, there is no point
-in calling synchronize_net(). So, let's skip that entirely by checking
-if nh->grp_list is empty.
+This patch corrects the logic by checking the `csum_none` status flag,
+which is set when the hardware reports a checksum error. If this flag
+is set, skb->ip_summed is now correctly set to CHECKSUM_NONE,
+ensuring the kernel's network stack will perform its own validation and
+properly handle the corrupt packet.
 
-This gives us a nice speedup:
-
-BEFORE:
-=======
-
-$ time sudo ip -6 nexthop flush
-Dump was interrupted and may be inconsistent.
-Flushed 2097152 nexthops
-
-real	1m45.345s
-user	0m0.001s
-sys	0m0.005s
-
-$ time sudo ip -6 nexthop flush
-Dump was interrupted and may be inconsistent.
-Flushed 4194304 nexthops
-
-real	3m10.430s
-user	0m0.002s
-sys	0m0.004s
-
-AFTER:
-======
-
-$ time sudo ip -6 nexthop flush
-Dump was interrupted and may be inconsistent.
-Flushed 2097152 nexthops
-
-real	0m17.545s
-user	0m0.003s
-sys	0m0.003s
-
-$ time sudo ip -6 nexthop flush
-Dump was interrupted and may be inconsistent.
-Flushed 4194304 nexthops
-
-real	0m35.823s
-user	0m0.002s
-sys	0m0.004s
-
-Signed-off-by: Christoph Paasch <cpaasch@openai.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250816-nexthop_dump-v2-2-491da3462118@openai.com
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20250818090217.2789521-2-o.rempel@pengutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/nexthop.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index c52ff9364ae8d..ee2e62ac0dcfe 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -2074,6 +2074,12 @@ static void remove_nexthop_from_groups(struct net *net, struct nexthop *nh,
- {
- 	struct nh_grp_entry *nhge, *tmp;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 16f76a89cb0d0..04bacb04770fa 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5658,7 +5658,8 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
  
-+	/* If there is nothing to do, let's avoid the costly call to
-+	 * synchronize_net()
-+	 */
-+	if (list_empty(&nh->grp_list))
-+		return;
-+
- 	list_for_each_entry_safe(nhge, tmp, &nh->grp_list, nh_list)
- 		remove_nh_grp_entry(net, nhge, nlinfo);
+ 		skb->protocol = eth_type_trans(skb, priv->dev);
  
+-		if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
++		if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb) ||
++		    (status & csum_none))
+ 			skb_checksum_none_assert(skb);
+ 		else
+ 			skb->ip_summed = CHECKSUM_UNNECESSARY;
 -- 
 2.51.0
 
