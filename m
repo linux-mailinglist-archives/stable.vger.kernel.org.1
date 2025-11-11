@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-193803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A718C4A7FA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4500CC4A397
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3FA4A34C317
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 454FB4F1B4C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4011341AC6;
-	Tue, 11 Nov 2025 01:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDD224E4A1;
+	Tue, 11 Nov 2025 01:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tog16TCa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1waj5UCu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0A1341650;
-	Tue, 11 Nov 2025 01:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9874086A;
+	Tue, 11 Nov 2025 01:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824043; cv=none; b=FwhxlLjsL/TQ71zqr6A27vEfKMZ02qwWjbqoUgy7gVoL+V5kBpN1PUj/kQsgPgLEsCxznrxPkkevWZ/aoaTRLKehLC1pCfw2Hkcahsl6vFI3e4uA/sozgdmDXY3OG+7lpC1w3uHqjAC7RSRY68wnzByJuok1T2qqhWHETAYRYK8=
+	t=1762822953; cv=none; b=cxWJ7nll1iasEfO32XPxZioBC7FFdcuF075p5AtunCbl3iI0ckokhrqKwJlJcId7vdZLgqWcQRAB6lMbOOBHCUCpPOkPb8IOgMyZHYmeWGqJk9VO+zdppCTT4VqOW9H+30BItt0kNDl0oiLQwPyghMG9fS7IiaT560MNiBVLkpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824043; c=relaxed/simple;
-	bh=xYsb7htl5kWtAzYEukzqL/1GEckej4TRpn/MN4Oa7pg=;
+	s=arc-20240116; t=1762822953; c=relaxed/simple;
+	bh=4mnhxd5aKvjfrZzQGnabQXHYKUcwQoJ5TEKXRnCiyw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9roldlexXs5D3hBGqmO9j3Xin7CU0sT3FSma8SI46PLluzp1ezeFKXTStsH2f++4q6pK+C9cr01vXFBuktTKsqiRgE8g2T4M4GJiB73MpnMmof1DQYNvTqc3Ygq0dd5x5blyQezBByQlYhZq3P32ZLsFDAo22x6OjtrPPZ6/Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tog16TCa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E4AC113D0;
-	Tue, 11 Nov 2025 01:20:42 +0000 (UTC)
+	 MIME-Version; b=CTqp7xmkHtuAa0vKgYAXrvg2oVdUgZ5GoTinKtJezdLkj8PExSPLi9sbuKGrlguXSZViQPdwK4Qsig//BLLchXfsrBHDaJ3hCm5gR5WBc1C9+F8Jep4ZRhLKcYNQOkbASU3N0ru75A7/ERURsUO5gUTielG67FXZG51Xt8UECKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1waj5UCu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EA4C19422;
+	Tue, 11 Nov 2025 01:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824043;
-	bh=xYsb7htl5kWtAzYEukzqL/1GEckej4TRpn/MN4Oa7pg=;
+	s=korg; t=1762822953;
+	bh=4mnhxd5aKvjfrZzQGnabQXHYKUcwQoJ5TEKXRnCiyw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tog16TCazeP05ozWF8XP0wbr+q0sraUBulMXehC8DOOUN4LsskqVgbd0ifWChvuzk
-	 c/VYTuN+Ao8IjgiY9nXHUw+Q/uUYtiAGdSjv70Rm40n/C/Hjkyg/9Iv6ZCuxzuTLC0
-	 5lA4qzGJH7gh+OVAZA4++nvKI2bgZ3ukKNqPNFFg=
+	b=1waj5UCu34J5wktNt/WlOEqzkN7AiS3HSwhl5BM+bigHuDUU70wpdhtMVv45XBAlX
+	 yJa4QEGKTAOD+pwjouBQm+4zEOQu+G2/U0+Rdykb13d3oB7RBY9mBaC/IdQ0cFP8X7
+	 zPE9OlqEEJ0FrML5iVDX06hBp1QPWJaRD9AAufRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Atwood <matthew.s.atwood@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 426/849] drm/xe: Extend Wa_22021007897 to Xe3 platforms
+Subject: [PATCH 6.12 140/565] i3c: mipi-i3c-hci-pci: Add support for Intel Wildcat Lake-U I3C
 Date: Tue, 11 Nov 2025 09:39:56 +0900
-Message-ID: <20251111004546.735663149@linuxfoundation.org>
+Message-ID: <20251111004530.092662092@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-[ Upstream commit 8d6f16f1f082881aa50ea7ae537b604dec647ed6 ]
+[ Upstream commit d515503f3c8a8475b2f78782534aad09722904e1 ]
 
-WA 22021007897 should also be applied to Graphics Versions 30.00, 30.01
-and 30.03. To make it simple, simply use the range [3000, 3003] that
-should be ok as there isn't a 3002 and if it's added, the WA list would
-need to be revisited anyway.
+Add I3C controller PCI IDs on Intel Wildcat Lake-U.
 
-Cc: Matt Atwood <matthew.s.atwood@intel.com>
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>
-Signed-off-by: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
-Reviewed-by: Matt Atwood <matthew.s.atwood@intel.com>
-Link: https://lore.kernel.org/r/20250827-wa-22021007897-v1-1-96922eb52af4@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250808131732.1213227-1-jarkko.nikula@linux.intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_wa.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i3c/master/mipi-i3c-hci/mipi-i3c-hci-pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
-index 535067e7fb0c9..f14bdaac674bb 100644
---- a/drivers/gpu/drm/xe/xe_wa.c
-+++ b/drivers/gpu/drm/xe/xe_wa.c
-@@ -879,6 +879,10 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
- 			     DIS_PARTIAL_AUTOSTRIP |
- 			     DIS_AUTOSTRIP))
- 	},
-+	{ XE_RTP_NAME("22021007897"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(3000, 3003), ENGINE_CLASS(RENDER)),
-+	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN4, SBE_PUSH_CONSTANT_BEHIND_FIX_ENABLE))
-+	},
- };
+diff --git a/drivers/i3c/master/mipi-i3c-hci/mipi-i3c-hci-pci.c b/drivers/i3c/master/mipi-i3c-hci/mipi-i3c-hci-pci.c
+index c6c3a3ec11eae..08e6cbdf89cea 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/mipi-i3c-hci-pci.c
++++ b/drivers/i3c/master/mipi-i3c-hci/mipi-i3c-hci-pci.c
+@@ -124,6 +124,9 @@ static void mipi_i3c_hci_pci_remove(struct pci_dev *pci)
+ }
  
- static __maybe_unused const struct xe_rtp_entry oob_was[] = {
+ static const struct pci_device_id mipi_i3c_hci_pci_devices[] = {
++	/* Wildcat Lake-U */
++	{ PCI_VDEVICE(INTEL, 0x4d7c), (kernel_ulong_t)&intel_info},
++	{ PCI_VDEVICE(INTEL, 0x4d6f), (kernel_ulong_t)&intel_info},
+ 	/* Panther Lake-H */
+ 	{ PCI_VDEVICE(INTEL, 0xe37c), (kernel_ulong_t)&intel_info},
+ 	{ PCI_VDEVICE(INTEL, 0xe36f), (kernel_ulong_t)&intel_info},
 -- 
 2.51.0
 
