@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-193446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A17C4A508
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBFEC4AC19
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AFAE1891922
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:14:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9FAC189080C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE25346E60;
-	Tue, 11 Nov 2025 01:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608A42FD1C5;
+	Tue, 11 Nov 2025 01:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmskJVX9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkq17eUQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7282D9EC4;
-	Tue, 11 Nov 2025 01:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C48B26D4DF;
+	Tue, 11 Nov 2025 01:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823203; cv=none; b=Q7zZS9KpqwdQnO1kq/Eg9XXVitTgU+XAV9lIdhfd6a/5Kd5/wUWU3bLUoCfVdqweCPV+XVd94byz/5/qyXrUcxtBzjXzyR7DhYngMj9XlyakkfmqOgwb7gGvAqt+ZRvy2rCT/V+LX18es+MyGByy7fLOlUH1b/JedQdxI9u9KmQ=
+	t=1762824373; cv=none; b=TYe3pokQznZdl0ZTGVhSoZoOOwqPCdxslwDXc/oavM5wXog4m2IfoXIc/cwn4nN0cLXSnjyIuxM++YKIeHVkHEMPj2SZ/2xOupYqNtTFortJtZu9Zg0pOXNSo+lLX7kbHimTJ26i0lljLDXrEWwrt/kM7+mdh6OahIj/WZNJkgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823203; c=relaxed/simple;
-	bh=4Mep6/Hc1duidYJuw/+vgLX7PDb1v8DQFUDCmEcMC50=;
+	s=arc-20240116; t=1762824373; c=relaxed/simple;
+	bh=D+J05+i+oifaNjwTcpFUuTQR/2EmloALNTodOpV7A3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Isr5WHOfyr0I4JSk+nSqLPlqRWNpuaQJPSA4uaSAeJv2OTEbQEqSAO+3BRNWAYXcvPHvKHyfoMazlZn7tW/bBmGgCRuH1kUpB3IOc2svfrtEYLBr5Mj0tHqqt/zQ8CfN7sCcc4WRfwmH4E3r61xd+MgJJaER5pIlREfsEuYZGCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmskJVX9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A310DC19422;
-	Tue, 11 Nov 2025 01:06:42 +0000 (UTC)
+	 MIME-Version; b=UC1L7VTWL3WDtAGpyHuUGVcQBSKZcjxib0tt0UV6xyuEo7Pu+vzpZkmTjk3KC+HU49BznU6BMhNrd36vVaZC6gJhGYaz9jZIcadmjZMfdG9DtQpn2wMKHPwJQrqQsVBGf6fgHXW/dR+U+m4ZedpP8+MvG2P4x+zNFJKsMAVFf6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkq17eUQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6C7C19422;
+	Tue, 11 Nov 2025 01:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823203;
-	bh=4Mep6/Hc1duidYJuw/+vgLX7PDb1v8DQFUDCmEcMC50=;
+	s=korg; t=1762824372;
+	bh=D+J05+i+oifaNjwTcpFUuTQR/2EmloALNTodOpV7A3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vmskJVX9JFmXvXYI5mT5bIOFRlx/q/4H9FD0ibc6niHRyTbKcaAbzsXJC/eWiCB9M
-	 0Z7nKWMWClgV8o0lCl+P7Cj6b75qjoVB6RZbFF0XFJOTCsML1qbtuPQkr6YTh2JiRJ
-	 t7mBM5O2ZeDlGONmU3nR/F1oeaKHn1S1PeIYpvY8=
+	b=dkq17eUQAOiAIplZHNQdehQZKdpCYCOHOQw3EYGBEiRSMITuWOIVjzq2zdNUAGmg4
+	 Jup2F4GSuBDxoy5dopCy0OrKI/LBpJl4BqEfqeHCqgEvuJPdeuYkXNAZGREiXAxiNm
+	 +KxpydLus4aRaWKBL8CtsyXeuLb1AYpw8iNBYopg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Piotr Oniszczuk <piotr.oniszczuk@gmail.com>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Nidhish A N <nidhish.a.n@intel.com>,
+	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 196/565] wifi: rtw88: sdio: use indirect IO for device registers before power-on
+Subject: [PATCH 6.17 482/849] wifi: iwlwifi: fw: Add ASUS to PPAG and TAS list
 Date: Tue, 11 Nov 2025 09:40:52 +0900
-Message-ID: <20251111004531.337909596@linuxfoundation.org>
+Message-ID: <20251111004548.095756985@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Nidhish A N <nidhish.a.n@intel.com>
 
-[ Upstream commit 58de1f91e033b1fface8d8948984583125f93736 ]
+[ Upstream commit c5318e6e1c6436ce35ba521d96975e13cc5119f7 ]
 
-The register REG_SYS_CFG1 is used to determine chip basic information
-as arguments of following flows, such as download firmware and load PHY
-parameters, so driver read the value early (before power-on).
+Add ASUS to the list of OEMs that are allowed to use
+the PPAG and TAS feature.
 
-However, the direct IO is disallowed before power-on, or it causes wrong
-values, which driver recognizes a chip as a wrong type RF_1T1R, but
-actually RF_2T2R, causing driver warns:
-
-  rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-
-Fix it by using indirect IO before power-on.
-
-Reported-by: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
-Closes: https://lore.kernel.org/linux-wireless/699C22B4-A3E3-4206-97D0-22AB3348EBF6@gmail.com/T/#t
-Suggested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Tested-by: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250724004815.7043-1-pkshih@realtek.com
+Signed-off-by: Nidhish A N <nidhish.a.n@intel.com>
+Reviewed-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250909061931.499af6568e89.Iafb2cb1c83ff82712c0e9d5529f76bc226ed12dd@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/sdio.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/regulatory.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
-index 787fa09fd063a..d6bea5ec8e24d 100644
---- a/drivers/net/wireless/realtek/rtw88/sdio.c
-+++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-@@ -144,6 +144,10 @@ static u32 rtw_sdio_to_io_address(struct rtw_dev *rtwdev, u32 addr,
- 
- static bool rtw_sdio_use_direct_io(struct rtw_dev *rtwdev, u32 addr)
- {
-+	if (!test_bit(RTW_FLAG_POWERON, rtwdev->flags) &&
-+	    !rtw_sdio_is_bus_addr(addr))
-+		return false;
-+
- 	return !rtw_sdio_is_sdio30_supported(rtwdev) ||
- 		rtw_sdio_is_bus_addr(addr);
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
+index 3d6d1a85bb51b..a59f7f6b24da0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
+@@ -59,11 +59,16 @@ static const struct dmi_system_id dmi_ppag_approved_list[] = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
+ 		},
+ 	},
+-	{ .ident = "ASUS",
++	{ .ident = "ASUSTEK",
+ 	  .matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+ 		},
+ 	},
++	{ .ident = "ASUS",
++	  .matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUS"),
++		},
++	},
+ 	{ .ident = "GOOGLE-HP",
+ 	  .matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Google"),
+@@ -141,11 +146,16 @@ static const struct dmi_system_id dmi_tas_approved_list[] = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+ 		},
+ 	},
+-	{ .ident = "ASUS",
++	{ .ident = "ASUSTEK",
+ 	  .matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+ 		},
+ 	},
++	{ .ident = "ASUS",
++	  .matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUS"),
++		},
++	},
+ 	{ .ident = "GOOGLE-HP",
+ 	  .matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Google"),
 -- 
 2.51.0
 
