@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F14C8C4ADC3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:04 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70DA1C4B1CC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89AC51895038
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 588B04F7A5D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08DA307AE4;
-	Tue, 11 Nov 2025 01:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6182DC32A;
+	Tue, 11 Nov 2025 01:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsP2uGcg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gi2O30IY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B435307ACF;
-	Tue, 11 Nov 2025 01:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085A03054DF;
+	Tue, 11 Nov 2025 01:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824888; cv=none; b=gub59Q2feGMB3TOvpkNfQVo1AHtvhLl33ZUZOJ1A+NscmCCsNxj7Fig09BqaeKXLHXhbhQL6lajLxDOdDJCHg+uCI3obYpmGq9IqGc/TCViKPytjnmiBeYioDmW5dl6A0mHJ2BEdaomGbYJmecxUJavAak8eWLwIEknb7Z+EFPc=
+	t=1762825504; cv=none; b=S4AOqCxMjmxPXadNv5J4ddkUMts+RuvZ9pSv1VE25J4EDkbIVEba95t7kV20gAZ+dZ5a/5QbVypwlWMKWV6YWiXfY8DkybtdPVtgWVZHFLRFK/bgcTuWikmkITsF+HR2OGWZMppxcVOe6sodAYwjc3VsiFA+T0Y8tApNQEBs9bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824888; c=relaxed/simple;
-	bh=VKUIKsO/icmh7avD06b9UUVIJze0e/oRXNXUlsBnnxU=;
+	s=arc-20240116; t=1762825504; c=relaxed/simple;
+	bh=g1Nxlx/F2XWa576eVsrF+O87w0ALUIGR0zxZ8cDImik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tOWYlndc+nCONXHIABwXRhl5rLepdxB74nDqMGPWZgkgIWfLn4JImhVITpj+NuroXtYPNqX5DBpXw3JbNZ8T7bbVApK4YR2IWIGVCYPYUqRQiUzKsX1vCYsOwVcvfKEg2kZgoI9+wuTqmShjaA+jigBq+I9K9neEe/VvQBclgoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsP2uGcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B660C4CEF5;
-	Tue, 11 Nov 2025 01:34:47 +0000 (UTC)
+	 MIME-Version; b=YiAVQW51SxyYQrUKAIVqbQjacjh/DCLLG+++8x76R/Dk5Q4UcWV8raJp1ScmbILBzgP7dZaapZyAKUbQvzjJvjPLh+KhoX2zOfbhWNho+4ZVY8w9vv3ZOtE7TbJExBUaLEoZoTfiHuW2qk+/vwCmx3BJp9uIhe3YInO2D4kOyfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gi2O30IY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A8AC19424;
+	Tue, 11 Nov 2025 01:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824888;
-	bh=VKUIKsO/icmh7avD06b9UUVIJze0e/oRXNXUlsBnnxU=;
+	s=korg; t=1762825503;
+	bh=g1Nxlx/F2XWa576eVsrF+O87w0ALUIGR0zxZ8cDImik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jsP2uGcg6VE3ukyw/Rprlkyo6DltWa36+Ni9uBhXZyHyMwzwig4nKguTCYQ0as1fm
-	 1AR+M14jHsmbv6mr+7lAzk/3M5Ul5R6fUULIJtEGcXfRSOoem6FcIaTYRI1GJTJDts
-	 pytutTGnDonp4u+/qFfnMxQKIbAzADsKRxehCDv4=
+	b=gi2O30IYPK7iDjES87zjTeL5HU/IE9m//0f64+fRr8jwxHVckvDVLpXXq7oIw6VMU
+	 D1EF0UADpvkxeLXfnYUJdvBgVE32YAncEP3oNu4J+BOzGcDFJdONdqRKM1LJlW1/Ih
+	 4w2477BUDjh3Z8C+z6yebEYQRH6y5zbYf9iBUpmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH 6.12 544/565] drm/sched: Fix deadlock in drm_sched_entity_kill_jobs_cb
+	Nathan Chancellor <nathan@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.17 830/849] lib/crypto: curve25519-hacl64: Fix older clang KASAN workaround for GCC
 Date: Tue, 11 Nov 2025 09:46:40 +0900
-Message-ID: <20251111004539.225868517@linuxfoundation.org>
+Message-ID: <20251111004556.493788997@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,124 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 487df8b698345dd5a91346335f05170ed5f29d4e upstream.
+commit 2b81082ad37cc3f28355fb73a6a69b91ff7dbf20 upstream.
 
-The Mesa issue referenced below pointed out a possible deadlock:
+Commit 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with
+clang-17 and older") inadvertently disabled KASAN in curve25519-hacl64.o
+for GCC unconditionally because clang-min-version will always evaluate
+to nothing for GCC. Add a check for CONFIG_CC_IS_CLANG to avoid applying
+the workaround for GCC, which is only needed for clang-17 and older.
 
-[ 1231.611031]  Possible interrupt unsafe locking scenario:
-
-[ 1231.611033]        CPU0                    CPU1
-[ 1231.611034]        ----                    ----
-[ 1231.611035]   lock(&xa->xa_lock#17);
-[ 1231.611038]                                local_irq_disable();
-[ 1231.611039]                                lock(&fence->lock);
-[ 1231.611041]                                lock(&xa->xa_lock#17);
-[ 1231.611044]   <Interrupt>
-[ 1231.611045]     lock(&fence->lock);
-[ 1231.611047]
-                *** DEADLOCK ***
-
-In this example, CPU0 would be any function accessing job->dependencies
-through the xa_* functions that don't disable interrupts (eg:
-drm_sched_job_add_dependency(), drm_sched_entity_kill_jobs_cb()).
-
-CPU1 is executing drm_sched_entity_kill_jobs_cb() as a fence signalling
-callback so in an interrupt context. It will deadlock when trying to
-grab the xa_lock which is already held by CPU0.
-
-Replacing all xa_* usage by their xa_*_irq counterparts would fix
-this issue, but Christian pointed out another issue: dma_fence_signal
-takes fence.lock and so does dma_fence_add_callback.
-
-  dma_fence_signal() // locks f1.lock
-  -> drm_sched_entity_kill_jobs_cb()
-  -> foreach dependencies
-     -> dma_fence_add_callback() // locks f2.lock
-
-This will deadlock if f1 and f2 share the same spinlock.
-
-To fix both issues, the code iterating on dependencies and re-arming them
-is moved out to drm_sched_entity_kill_jobs_work().
-
-Cc: stable@vger.kernel.org # v6.2+
-Fixes: 2fdb8a8f07c2 ("drm/scheduler: rework entity flush, kill and fini")
-Link: https://gitlab.freedesktop.org/mesa/mesa/-/issues/13908
-Reported-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-[phasta: commit message nits]
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://patch.msgid.link/20251104095358.15092-1-pierre-eric.pelloux-prayer@amd.com
+Cc: stable@vger.kernel.org
+Fixes: 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with clang-17 and older")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20251103-curve25519-hacl64-fix-kasan-workaround-v2-1-ab581cbd8035@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |   34 +++++++++++++++++--------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ lib/crypto/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -186,26 +186,15 @@ int drm_sched_entity_error(struct drm_sc
- }
- EXPORT_SYMBOL(drm_sched_entity_error);
+--- a/lib/crypto/Makefile
++++ b/lib/crypto/Makefile
+@@ -48,7 +48,7 @@ libcurve25519-generic-y				:= curve25519
+ libcurve25519-generic-$(CONFIG_ARCH_SUPPORTS_INT128)	:= curve25519-hacl64.o
+ libcurve25519-generic-y				+= curve25519-generic.o
+ # clang versions prior to 18 may blow out the stack with KASAN
+-ifeq ($(call clang-min-version, 180000),)
++ifeq ($(CONFIG_CC_IS_CLANG)_$(call clang-min-version, 180000),y_)
+ KASAN_SANITIZE_curve25519-hacl64.o := n
+ endif
  
-+static void drm_sched_entity_kill_jobs_cb(struct dma_fence *f,
-+					  struct dma_fence_cb *cb);
-+
- static void drm_sched_entity_kill_jobs_work(struct work_struct *wrk)
- {
- 	struct drm_sched_job *job = container_of(wrk, typeof(*job), work);
--
--	drm_sched_fence_scheduled(job->s_fence, NULL);
--	drm_sched_fence_finished(job->s_fence, -ESRCH);
--	WARN_ON(job->s_fence->parent);
--	job->sched->ops->free_job(job);
--}
--
--/* Signal the scheduler finished fence when the entity in question is killed. */
--static void drm_sched_entity_kill_jobs_cb(struct dma_fence *f,
--					  struct dma_fence_cb *cb)
--{
--	struct drm_sched_job *job = container_of(cb, struct drm_sched_job,
--						 finish_cb);
-+	struct dma_fence *f;
- 	unsigned long index;
- 
--	dma_fence_put(f);
--
- 	/* Wait for all dependencies to avoid data corruptions */
- 	xa_for_each(&job->dependencies, index, f) {
- 		struct drm_sched_fence *s_fence = to_drm_sched_fence(f);
-@@ -233,6 +222,21 @@ static void drm_sched_entity_kill_jobs_c
- 		dma_fence_put(f);
- 	}
- 
-+	drm_sched_fence_scheduled(job->s_fence, NULL);
-+	drm_sched_fence_finished(job->s_fence, -ESRCH);
-+	WARN_ON(job->s_fence->parent);
-+	job->sched->ops->free_job(job);
-+}
-+
-+/* Signal the scheduler finished fence when the entity in question is killed. */
-+static void drm_sched_entity_kill_jobs_cb(struct dma_fence *f,
-+					  struct dma_fence_cb *cb)
-+{
-+	struct drm_sched_job *job = container_of(cb, struct drm_sched_job,
-+						 finish_cb);
-+
-+	dma_fence_put(f);
-+
- 	INIT_WORK(&job->work, drm_sched_entity_kill_jobs_work);
- 	schedule_work(&job->work);
- }
 
 
 
