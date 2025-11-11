@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-193577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00706C4A75E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF35C4AD24
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CAA31893E2D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B07DA4F9D3A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEF0342C98;
-	Tue, 11 Nov 2025 01:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B034C34402B;
+	Tue, 11 Nov 2025 01:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZ6h1FOz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbM71Pf6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D68342C8F;
-	Tue, 11 Nov 2025 01:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627661F4617;
+	Tue, 11 Nov 2025 01:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823512; cv=none; b=twIDTCTpYnr/68phdTJnSVk16D8RNvNFKZ1qHgLZAlptm9Z7uZsEMmtjn1CE+Cp24qRdl0YWYYLFnpmgf5EE9jOqyrKP4eiMu/UyZDyamEFH9FjxBAE2ebcnaPbY80vX19jeQDfWwlqZC9yBznNMvUEsRBYBTzy+++2cabYtDdQ=
+	t=1762824669; cv=none; b=i5wea0LETjWhlKrugAtbj2jtESycY9q0oTcReKfABOtVaxpPwQl4NoRKJbu158aSqhgALR58OtX5xcr4ZbG8TC9bVz+YaihpUC0Leg6EIWJKC4ngZW+QhEy/G0TEKDXJsdEtRbjAXkxpy5JWX+ep32khp5iFwlEhxOsKfsJfKxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823512; c=relaxed/simple;
-	bh=3hyLZpK3etgK03UQVPFxz3gcD/N2SOKjt7idMnpaxek=;
+	s=arc-20240116; t=1762824669; c=relaxed/simple;
+	bh=3sM9FB6aRxBJJQ7/sINecKX/V5GI2hBDfvUvWmsMaSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASdiczz5mGuPmvczBQoAy20eyWFvitssqQmVMMWN9CRA28f6uDPMw5G2fwA5Eh4vZDcADdG2N6EMc9tOmU9qd2fD6N+RchBTj5YixHOOLX/wfse6VN5m5r4x1u3ilsuk/mjYXUGvZ00OrgWxVmZSAtXO+Bn0b+HEs7x6+ugwPFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZ6h1FOz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E010C4CEFB;
-	Tue, 11 Nov 2025 01:11:52 +0000 (UTC)
+	 MIME-Version; b=LdmyPl7xv/uHjcGI8hz5e7KfJv8Z5sxEDbvsfUqNo5MxHuvWQvJvN/c+VoJdpyr2OU6P1GDuAfexTRYdHmoKpQkEUCVyz6U6NySmLdq1ZEWsMR8JCTx6p/rYIEybaMz5WgodmhzE5E/9TVYanxVJFZL30Qr1t/ZiBcW9SCwGmOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbM71Pf6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB550C113D0;
+	Tue, 11 Nov 2025 01:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823512;
-	bh=3hyLZpK3etgK03UQVPFxz3gcD/N2SOKjt7idMnpaxek=;
+	s=korg; t=1762824669;
+	bh=3sM9FB6aRxBJJQ7/sINecKX/V5GI2hBDfvUvWmsMaSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kZ6h1FOzYkZHjy2C7M0xCH5pbKtkz2zQKSbH6YL8Hbo88WbP6gS+K6OFrbeQMCv5n
-	 PnrRLzfanTj+NpmQhcyrW0N4JwvU+dGzkXY7GsErw4GbpJLX6Wvi38HhqnfKvtl7Mi
-	 7pPbvxCebi+a9NgO3coi+IsupTSJyZgnmrYu6EL0=
+	b=EbM71Pf6bGCrw6WKt7Eeb9Yo1A38HxVYityPX2rEBYKfEXZF201xGzFqQUAD3YPEn
+	 XnQFBwIo59gc4iVvxrgZ81mqEh0s7zMvx58wtVjXwIXoa50I6TqbmH9/zBYBEj7KXF
+	 WEmvIlClAzAZiq7lnXpWOapaMWx45ndm9YGWXegU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 261/565] selftests: drv-net: rss_ctx: fix the queue count check
+Subject: [PATCH 6.17 547/849] wifi: mt76: improve phy reset on hw restart
 Date: Tue, 11 Nov 2025 09:41:57 +0900
-Message-ID: <20251111004532.767844398@linuxfoundation.org>
+Message-ID: <20251111004549.631288587@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit c158b5a570a188b990ef10ded172b8b93e737826 ]
+[ Upstream commit 3f34cced88a429872d1eefc393686f9a48ec01d9 ]
 
-Commit 0d6ccfe6b319 ("selftests: drv-net: rss_ctx: check for all-zero keys")
-added a skip exception if NIC has fewer than 3 queues enabled,
-but it's just constructing the object, it's not actually rising
-this exception.
+- fix number of station accounting for scanning code.
+- reset channel context
 
-Before:
-
-  # Exception| net.lib.py.utils.CmdExitFailure: Command failed: ethtool -X enp1s0 equal 3 hkey d1:cc:77:47:9d:ea:15:f2:b9:6c:ef:68:62:c0:45:d5:b0:99:7d:cf:29:53:40:06:3d:8e:b9:bc:d4:70:89:b8:8d:59:04:ea:a9:c2:21:b3:55:b8:ab:6b:d9:48:b4:bd:4c:ff:a5:f0:a8:c2
-  not ok 1 rss_ctx.test_rss_key_indir
-
-After:
-
-  ok 1 rss_ctx.test_rss_key_indir # SKIP Device has fewer than 3 queues (or doesn't support queue stats)
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250827173558.3259072-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20250915075910.47558-14-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/hw/rss_ctx.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/drivers/net/hw/rss_ctx.py b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-index 9d7adb3cf33b9..4a986a5524a30 100755
---- a/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-+++ b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-@@ -101,7 +101,7 @@ def test_rss_key_indir(cfg):
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 59adf33126170..4fa045e87a81f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -824,6 +824,8 @@ static void mt76_reset_phy(struct mt76_phy *phy)
+ 		return;
  
-     qcnt = len(_get_rx_cnts(cfg))
-     if qcnt < 3:
--        KsftSkipEx("Device has fewer than 3 queues (or doesn't support queue stats)")
-+        raise KsftSkipEx("Device has fewer than 3 queues (or doesn't support queue stats)")
+ 	INIT_LIST_HEAD(&phy->tx_list);
++	phy->num_sta = 0;
++	phy->chanctx = NULL;
+ }
  
-     data = get_rss(cfg)
-     want_keys = ['rss-hash-key', 'rss-hash-function', 'rss-indirection-table']
+ void mt76_reset_device(struct mt76_dev *dev)
 -- 
 2.51.0
 
