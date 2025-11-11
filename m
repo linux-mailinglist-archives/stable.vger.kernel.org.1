@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A18C4AE32
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F343AC4A8B7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D6111897297
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B03E64F28AE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF84337BAE;
-	Tue, 11 Nov 2025 01:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB1C3358C6;
+	Tue, 11 Nov 2025 01:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qFkEH/vr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NoivM7jU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D862BB17;
-	Tue, 11 Nov 2025 01:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46155272E7C;
+	Tue, 11 Nov 2025 01:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824970; cv=none; b=K+W56R6Rpq/TkM1gIO+VQQG+4qlLqe+G9UYth5pSWXXYRsIQz4cDVSXj3RDfmHpdzdcRomEttpLJmeaUy+LZj6sNgrvkrBun4bkM/PP8hZXDlgFsf7qaDAmXcBMK8FvJNzOSa0AQQUqSm4dOfsxY+EIy0f3qg6ov/zRogdztiF8=
+	t=1762823961; cv=none; b=u2nCeemYujq2Gffzo2ss1VfoS4WBCYNUj8etz1ataG+FVsfP1emOTB2nuMYDz1M6OC4VG8XNAtuD5V4qNB4FZAxmiu1KzzPpaV+mS4B3VcIdjYSXRAD/VTUf/0M69EejpbnwQ2RqN8GZPkO4cjQhJnyvGyJQHL6nniZEx4+zggA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824970; c=relaxed/simple;
-	bh=ok6M+oYbjteZO0B0sgcWpfmO2O74WaHSZX3shj+qXQ0=;
+	s=arc-20240116; t=1762823961; c=relaxed/simple;
+	bh=ekX3ODG7w98dyd2A5F9iHRXBIox3VoUZKzhRWv7f9GE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q5eoYoZTBftlsnbgn9gx37MCk26yw9PVP23L1o4mvyDIy0fina5Z+G8et8tzATOWGmIEKgrCr3gbLS2brwN2ltCcq1XMq3xw3MgS8Z6IvLcyPF6uRkty9rARVrLOqyfFC/UK789f/TqnMJRCUmS87x0tc5A7FWBFpZsL9R2AWu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qFkEH/vr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E994C19425;
-	Tue, 11 Nov 2025 01:36:09 +0000 (UTC)
+	 MIME-Version; b=DbDZBavyhGigvrO3gAeDwLWBnmN3uSdqD3ingdT05sx1rWbAXBPQpGK3bxoF0lCxk8eyxb6dCwdeGmdIoJgi2Ie5jDHDijxmeu0g+nWMicpP9ep+kOWUEEY9m1LrT1G8SBSECpDtmr45MnkWwctl8yEUQdTu7VbH01kBJtz2tn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NoivM7jU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF62C4AF09;
+	Tue, 11 Nov 2025 01:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824970;
-	bh=ok6M+oYbjteZO0B0sgcWpfmO2O74WaHSZX3shj+qXQ0=;
+	s=korg; t=1762823961;
+	bh=ekX3ODG7w98dyd2A5F9iHRXBIox3VoUZKzhRWv7f9GE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qFkEH/vrPMNJlft4sZ0OtPrODEo41C1Pjqnc8i1CLJZ/6xg5Hx+tajYMOpdLm5R30
-	 SypD1RqFLTbfakEobECa0x2qdmMRWD2rMX6zF8m6Nn67SRZS0cJ7bPOQLPvRarRaE0
-	 hUyGrmbzYYngQCWrve3dSON+weA2asYOGZRrI56A=
+	b=NoivM7jUde0W9yfhEebBGLJHFUoXNhkNmw9VBbPtnlXQQ17L9pylKf/Mb0P1hiQJP
+	 Mhcuo9ysPncK1TyQVSq76h4GmUwSGFS2haiSSS3D+k356whHBe+OFWNqufO5CG/8Md
+	 Kdz34hw8BPAT0jggw5ibmwf3vfZ2ROfnaX9Tveys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Andreas Larsson <andreas@gaisler.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 607/849] sparc64: fix prototypes of reads[bwl]()
-Date: Tue, 11 Nov 2025 09:42:57 +0900
-Message-ID: <20251111004551.095496162@linuxfoundation.org>
+Subject: [PATCH 6.12 322/565] scsi: ufs: host: mediatek: Enhance recovery on resume failure
+Date: Tue, 11 Nov 2025 09:42:58 +0900
+Message-ID: <20251111004534.129637046@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 7205ef77dfe167df1b83aea28cf00fc02d662990 ]
+[ Upstream commit 15ef3f5aa822f32524cba1463422a2c9372443f0 ]
 
-Conventions for readsl() are the same as for readl() - any __iomem
-pointer is acceptable, both const and volatile ones being OK.  Same
-for readsb() and readsw().
+Improve the recovery process for failed resume operations. Log the
+device's power status and return 0 if both resume and recovery fail to
+prevent I/O hang.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com> # Making sparc64 subject prefix
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/include/asm/io_64.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/ufs/host/ufs-mediatek.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sparc/include/asm/io_64.h b/arch/sparc/include/asm/io_64.h
-index c9528e4719cd2..d8ed296624afd 100644
---- a/arch/sparc/include/asm/io_64.h
-+++ b/arch/sparc/include/asm/io_64.h
-@@ -250,19 +250,19 @@ void insl(unsigned long, void *, unsigned long);
- #define insw insw
- #define insl insl
+diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
+index 2be74662f960b..7d7664f5b72a5 100644
+--- a/drivers/ufs/host/ufs-mediatek.c
++++ b/drivers/ufs/host/ufs-mediatek.c
+@@ -1564,8 +1564,21 @@ static int ufs_mtk_resume(struct ufs_hba *hba, enum ufs_pm_op pm_op)
+ 	}
  
--static inline void readsb(void __iomem *port, void *buf, unsigned long count)
-+static inline void readsb(const volatile void __iomem *port, void *buf, unsigned long count)
- {
- 	insb((unsigned long __force)port, buf, count);
+ 	return 0;
++
+ fail:
+-	return ufshcd_link_recovery(hba);
++	/*
++	 * Check if the platform (parent) device has resumed, and ensure that
++	 * power, clock, and MTCMOS are all turned on.
++	 */
++	err = ufshcd_link_recovery(hba);
++	if (err) {
++		dev_err(hba->dev, "Device PM: req=%d, status:%d, err:%d\n",
++			hba->dev->power.request,
++			hba->dev->power.runtime_status,
++			hba->dev->power.runtime_error);
++	}
++
++	return 0; /* Cannot return a failure, otherwise, the I/O will hang. */
  }
- #define readsb readsb
  
--static inline void readsw(void __iomem *port, void *buf, unsigned long count)
-+static inline void readsw(const volatile void __iomem *port, void *buf, unsigned long count)
- {
- 	insw((unsigned long __force)port, buf, count);
- }
- #define readsw readsw
- 
--static inline void readsl(void __iomem *port, void *buf, unsigned long count)
-+static inline void readsl(const volatile void __iomem *port, void *buf, unsigned long count)
- {
- 	insl((unsigned long __force)port, buf, count);
- }
+ static void ufs_mtk_dbg_register_dump(struct ufs_hba *hba)
 -- 
 2.51.0
 
