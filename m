@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-193760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FD4C4AA69
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE63C4AFDC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:52:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B27D31897E6F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63C2B3B8150
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B217332BF46;
-	Tue, 11 Nov 2025 01:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DE226C399;
+	Tue, 11 Nov 2025 01:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OpI8cQx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYHisdVp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9F727E040;
-	Tue, 11 Nov 2025 01:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559442E173B;
+	Tue, 11 Nov 2025 01:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823942; cv=none; b=C2LgjClDrx/SqI0jvyZeFbyAYLUyhuVfbSWSrCWHfp+/Jof0+3NXojgIpzVG7mr3Aiue7ttR0ywu4QcUx4twIvM82gtIlzQh7r1V5TaZ7zCLsfZL2Nq6mCScv0JR0L0wRp0hy8iNyEhcVLahdR7gpueOMLEI1+Uka8fYiUJR/p8=
+	t=1762825054; cv=none; b=PEXO5UeH3KsXvFvwY7vKnvz7IXcJk3Rv+0nDOB+E3Rrx2rAiEz/HJ2nZGK8guG2+tVyRif7GUnoiEsY/+QerPQaFk6d1pCNhBnpUyLA6vf5m5szLqTtBx+mR7x5pAqfy7mP33lYQzejPdPWpjXgQr2mLL7GU0XnRdY4j8NWyat0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823942; c=relaxed/simple;
-	bh=gpIKHO6uvRpFwD/Jsh7lhmBouexOW32Bx2z01K/VeGk=;
+	s=arc-20240116; t=1762825054; c=relaxed/simple;
+	bh=GhecjbY0axHri7hWSWLD9/Dlxa+HpJeq2mBFrpzZMPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sptpBxWnhxiw5lah7qbeH5qQHN3It0QaeBfiGbbXwHlXh40FlazEQpvffihMzfnpiBLg27+eoHJLyN0LKk1kJnZqckbNNCDYo8f42NRlctlxCrufCpqCzWwuDOs0Z/2t3CN6KYbNQpNKSfDgvGwDRcxr4UvC9Y8ucBURWNfaXO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OpI8cQx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE36C4CEFB;
-	Tue, 11 Nov 2025 01:19:01 +0000 (UTC)
+	 MIME-Version; b=bzRJtPNtk/PlZvd+qrgg5zRoZ7UtZu0VCF5A/cMxgKL+h1qNN1tl6wjHK1MwSVJTGlARFs5FzpdhluPpZE09DIoElm9MlLPsBun+duPPholak/1WodjsSOTl52rox/cGozBm++FtPj8oQjtHpHSw61nmkcDzG50Dr+npsWAR+s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYHisdVp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A7CC19422;
+	Tue, 11 Nov 2025 01:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823942;
-	bh=gpIKHO6uvRpFwD/Jsh7lhmBouexOW32Bx2z01K/VeGk=;
+	s=korg; t=1762825054;
+	bh=GhecjbY0axHri7hWSWLD9/Dlxa+HpJeq2mBFrpzZMPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0OpI8cQxic3ErkmrIvyIDPqZzgDB6z4vVfgAzySB9FDTmYc9b6XbqzP/BtcoNYuCG
-	 iAGJqI6sygRUYZcoBu0PQ411aU1P0XtBxwq+wGAFB0/yNOPzrUGyl0wsawmPXBbJ44
-	 Le49dvI+zgo9XJLr0CDe0QRpC9ESUhddXRf9Iz5I=
+	b=hYHisdVp8EfnhtDSeaohvPaKq9u9RYr+/YKP8worawTT0pWpEfMUtJuNLkoecdTAP
+	 JFTlnCkeNYS8mhs/M6F/a0YbFJOk2vl7IjAAupiKIwvLOf38lwSkpDrX7i9rELvKEd
+	 qQD1VJsAEb6zwlsYvFJfOYcyfvzD9lv83R1msRLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Thomas Graf <tgraf@suug.ch>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Yusuke Goda <yusuke.goda.sx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 354/565] net/cls_cgroup: Fix task_get_classid() during qdisc run
-Date: Tue, 11 Nov 2025 09:43:30 +0900
-Message-ID: <20251111004534.835951592@linuxfoundation.org>
+Subject: [PATCH 6.17 641/849] ASoC: renesas: msiof: use reset controller
+Date: Tue, 11 Nov 2025 09:43:31 +0900
+Message-ID: <20251111004551.927682469@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,109 +63,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 66048f8b3cc7e462953c04285183cdee43a1cb89 ]
+[ Upstream commit 25226abc1affd4bf4f6dd415d475b76e7a273fa8 ]
 
-During recent testing with the netem qdisc to inject delays into TCP
-traffic, we observed that our CLS BPF program failed to function correctly
-due to incorrect classid retrieval from task_get_classid(). The issue
-manifests in the following call stack:
+MSIOF has TXRST/RXRST to reset FIFO, but it shouldn't be used during SYNC
+signal was asserted, because it will be cause of HW issue.
 
-        bpf_get_cgroup_classid+5
-        cls_bpf_classify+507
-        __tcf_classify+90
-        tcf_classify+217
-        __dev_queue_xmit+798
-        bond_dev_queue_xmit+43
-        __bond_start_xmit+211
-        bond_start_xmit+70
-        dev_hard_start_xmit+142
-        sch_direct_xmit+161
-        __qdisc_run+102             <<<<< Issue location
-        __dev_xmit_skb+1015
-        __dev_queue_xmit+637
-        neigh_hh_output+159
-        ip_finish_output2+461
-        __ip_finish_output+183
-        ip_finish_output+41
-        ip_output+120
-        ip_local_out+94
-        __ip_queue_xmit+394
-        ip_queue_xmit+21
-        __tcp_transmit_skb+2169
-        tcp_write_xmit+959
-        __tcp_push_pending_frames+55
-        tcp_push+264
-        tcp_sendmsg_locked+661
-        tcp_sendmsg+45
-        inet_sendmsg+67
-        sock_sendmsg+98
-        sock_write_iter+147
-        vfs_write+786
-        ksys_write+181
-        __x64_sys_write+25
-        do_syscall_64+56
-        entry_SYSCALL_64_after_hwframe+100
+When MSIOF is used as Sound driver, this driver is assuming it is used as
+clock consumer mode (= Codec is clock provider). This means, it can't
+control SYNC signal by itself.
 
-The problem occurs when multiple tasks share a single qdisc. In such cases,
-__qdisc_run() may transmit skbs created by different tasks. Consequently,
-task_get_classid() retrieves an incorrect classid since it references the
-current task's context rather than the skb's originating task.
+We need to use SW reset (= reset_control_xxx()) instead of TXRST/RXRST.
 
-Given that dev_queue_xmit() always executes with bh disabled, we can use
-softirq_count() instead to obtain the correct classid.
-
-The simple steps to reproduce this issue:
-1. Add network delay to the network interface:
-  such as: tc qdisc add dev bond0 root netem delay 1.5ms
-2. Build two distinct net_cls cgroups, each with a network-intensive task
-3. Initiate parallel TCP streams from both tasks to external servers.
-
-Under this specific condition, the issue reliably occurs. The kernel
-eventually dequeues an SKB that originated from Task-A while executing in
-the context of Task-B.
-
-It is worth noting that it will change the established behavior for a
-slightly different scenario:
-
-  <sock S is created by task A>
-  <class ID for task A is changed>
-  <skb is created by sock S xmit and classified>
-
-prior to this patch the skb will be classified with the 'new' task A
-classid, now with the old/original one. The bpf_get_cgroup_classid_curr()
-function is a more appropriate choice for this case.
-
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Thomas Graf <tgraf@suug.ch>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250902062933.30087-1-laoar.shao@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Tested-by: Yusuke Goda <yusuke.goda.sx@renesas.com>
+Link: https://patch.msgid.link/87cy7fyuug.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/cls_cgroup.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/renesas/rcar/msiof.c | 39 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/cls_cgroup.h b/include/net/cls_cgroup.h
-index 7e78e7d6f0152..668aeee9b3f66 100644
---- a/include/net/cls_cgroup.h
-+++ b/include/net/cls_cgroup.h
-@@ -63,7 +63,7 @@ static inline u32 task_get_classid(const struct sk_buff *skb)
- 	 * calls by looking at the number of nested bh disable calls because
- 	 * softirqs always disables bh.
- 	 */
--	if (in_serving_softirq()) {
-+	if (softirq_count()) {
- 		struct sock *sk = skb_to_full_sk(skb);
+diff --git a/sound/soc/renesas/rcar/msiof.c b/sound/soc/renesas/rcar/msiof.c
+index 7a9ecc73231a8..3a1a6496637dd 100644
+--- a/sound/soc/renesas/rcar/msiof.c
++++ b/sound/soc/renesas/rcar/msiof.c
+@@ -24,12 +24,25 @@
+  * Clock/Frame Consumer Mode.
+  */
  
- 		/* If there is an sock_cgroup_classid we'll use that. */
++/*
++ * [NOTE-RESET]
++ *
++ * MSIOF has TXRST/RXRST to reset FIFO, but it shouldn't be used during SYNC signal was asserted,
++ * because it will be cause of HW issue.
++ *
++ * When MSIOF is used as Sound driver, this driver is assuming it is used as clock consumer mode
++ * (= Codec is clock provider). This means, it can't control SYNC signal by itself.
++ *
++ * We need to use SW reset (= reset_control_xxx()) instead of TXRST/RXRST.
++ */
++
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_dma.h>
+ #include <linux/of_graph.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
++#include <linux/reset.h>
+ #include <linux/spi/sh_msiof.h>
+ #include <sound/dmaengine_pcm.h>
+ #include <sound/soc.h>
+@@ -61,10 +74,13 @@
+ struct msiof_priv {
+ 	struct device *dev;
+ 	struct snd_pcm_substream *substream[SNDRV_PCM_STREAM_LAST + 1];
++	struct reset_control *reset;
+ 	spinlock_t lock;
+ 	void __iomem *base;
+ 	resource_size_t phy_addr;
+ 
++	int count;
++
+ 	/* for error */
+ 	int err_syc[SNDRV_PCM_STREAM_LAST + 1];
+ 	int err_ovf[SNDRV_PCM_STREAM_LAST + 1];
+@@ -126,6 +142,16 @@ static int msiof_hw_start(struct snd_soc_component *component,
+ 	 *	RX: Fig 109.15
+ 	 */
+ 
++	/*
++	 * Use reset_control_xx() instead of TXRST/RXRST.
++	 * see
++	 *	[NOTE-RESET]
++	 */
++	if (!priv->count)
++		reset_control_deassert(priv->reset);
++
++	priv->count++;
++
+ 	/* reset errors */
+ 	priv->err_syc[substream->stream] =
+ 	priv->err_ovf[substream->stream] =
+@@ -144,7 +170,6 @@ static int msiof_hw_start(struct snd_soc_component *component,
+ 		val = FIELD_PREP(SIMDR2_BITLEN1, width - 1);
+ 		msiof_write(priv, SITMDR2, val | FIELD_PREP(SIMDR2_GRP, 1));
+ 		msiof_write(priv, SITMDR3, val);
+-
+ 	}
+ 	/* SIRMDRx */
+ 	else {
+@@ -217,6 +242,11 @@ static int msiof_hw_stop(struct snd_soc_component *component,
+ 			 priv->err_ovf[substream->stream],
+ 			 priv->err_udf[substream->stream]);
+ 
++	priv->count--;
++
++	if (!priv->count)
++		reset_control_assert(priv->reset);
++
+ 	return 0;
+ }
+ 
+@@ -493,12 +523,19 @@ static int msiof_probe(struct platform_device *pdev)
+ 	if (IS_ERR(priv->base))
+ 		return PTR_ERR(priv->base);
+ 
++	priv->reset = devm_reset_control_get_exclusive(dev, NULL);
++	if (IS_ERR(priv->reset))
++		return PTR_ERR(priv->reset);
++
++	reset_control_assert(priv->reset);
++
+ 	ret = devm_request_irq(dev, irq, msiof_interrupt, 0, dev_name(dev), priv);
+ 	if (ret)
+ 		return ret;
+ 
+ 	priv->dev	= dev;
+ 	priv->phy_addr	= res->start;
++	priv->count	= 0;
+ 
+ 	spin_lock_init(&priv->lock);
+ 	platform_set_drvdata(pdev, priv);
 -- 
 2.51.0
 
