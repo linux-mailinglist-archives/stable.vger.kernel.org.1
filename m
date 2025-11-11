@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-193516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521AFC4A611
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0ECC4A6B3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 37EA74F219D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8D5A3B10F8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F89C333452;
-	Tue, 11 Nov 2025 01:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6E92701D1;
+	Tue, 11 Nov 2025 01:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/amaeRv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDxflP4h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0152701D1;
-	Tue, 11 Nov 2025 01:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670512737E3;
+	Tue, 11 Nov 2025 01:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823366; cv=none; b=LeaJA07WEdNu+3Nh3+vK6Rf5WJGZrRSDLxRZvCQyuZ4GvL0XvXWSK8jjCx4AyjA8Gfqa2Auw7Y+DFMaKUyq9p7OtKGJZvumTzMTFHT8rLjwsVsXCyv80cmGVrUc9t99hrQsCzpasSCAWa23MJcYqZyeY3yVfIR355sAOAnS62s4=
+	t=1762823371; cv=none; b=pDg521O7Yop8j9UFJAHMNrdgM2/W5OiWWsAH7zuim3E8ygrgY3yCPPiwEEGCBwnRygpv3IAjLL9LMhctVwyDqGQ90q8dcqbWSqUDmh9sr/+ewjwVm7WUGVrrQHY9wr/9KdpkN2c+xorFjdIMCfd9FsglSywsmEJO5MHClNdivMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823366; c=relaxed/simple;
-	bh=bp/SWDKgqEM3bWxtajt/MMHC0W6vofcgyTr4zsvTpVs=;
+	s=arc-20240116; t=1762823371; c=relaxed/simple;
+	bh=if0pW8EFkCtkYL5c3SzP8eNVZZ7aJWSfVHiHBwpM7YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKYZ4J5dsaFPlBpjhWHkHKd3FZLYx2obWewqYARUoIAV+/G5QT6gGCEOoAO8MCkTruWx03xrxSc5N2/rYjSPhmS44motk2os0obNSv5XE//yzSn2h0K6kWbsP4MZtTzMy+aoC8ZovVvEwqZvTqJ2vY5ux0t/lMdRYOmUmjWnhhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/amaeRv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7F5C2BCAF;
-	Tue, 11 Nov 2025 01:09:26 +0000 (UTC)
+	 MIME-Version; b=WCTBYYstnzNfNlsqoFgf+rxA7FLwwA6DdMmFYNlowabAEXSTDEDPDVfBmHZ4ytl/mWQ2rdRmmuClqgoQrsUoAEyrQj2SkxVSaamX0SpKxIdU8xy7lV+tI+2sRpFIM1xYZ4obQcn6vqApP693WaBIkCDZUUdcF9tYOJBe5aH20zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDxflP4h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F4FC19421;
+	Tue, 11 Nov 2025 01:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823366;
-	bh=bp/SWDKgqEM3bWxtajt/MMHC0W6vofcgyTr4zsvTpVs=;
+	s=korg; t=1762823371;
+	bh=if0pW8EFkCtkYL5c3SzP8eNVZZ7aJWSfVHiHBwpM7YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h/amaeRvwuY3ESjKF9inuafNgu7r6NNwj4FrceyuHdW+T+FaoR45Pazy6/SJ4Wim1
-	 S+lQdEqv17rrAWqOGQKSgSPYns/KUkd84bNEDFs54DXhdnczqlaiTDGDUj23QPu1qA
-	 F5eVym2RidyiKFgZiKmkut0DO6smOUxtIxmqZAgg=
+	b=HDxflP4hVyARuM6K1vpQmi1iJMAc1sXEUl+mJatAeV9Qs7p2SPojv0F+523ZiOBZ6
+	 fgk+SkkUYiRex0Wcd5UOPn5xvNkC0QG2FTDTcXnik/3/KrYEmlGXEJU1WSAG1bNfYW
+	 mb2eI2zOwO+WmrOMy6sHLEIaXECAHV/Wtr1ogH0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
 	Parth Pancholi <parth.pancholi@toradex.com>,
 	Jayesh Choudhary <j-choudhary@ti.com>,
 	Devarsh Thakkar <devarsht@ti.com>,
 	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 284/849] drm/tidss: Use the crtc_* timings when programming the HW
-Date: Tue, 11 Nov 2025 09:37:34 +0900
-Message-ID: <20251111004543.282532059@linuxfoundation.org>
+Subject: [PATCH 6.17 285/849] drm/bridge: cdns-dsi: Fix REG_WAKEUP_TIME value
+Date: Tue, 11 Nov 2025 09:37:35 +0900
+Message-ID: <20251111004543.304325688@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -71,72 +70,54 @@ Content-Transfer-Encoding: 8bit
 
 From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 478306edc23eec4f0ec24a46222485910c66212d ]
+[ Upstream commit eea4f89b6461294ed6bea1d3285bb3f79c09a041 ]
 
-Use the crtc_* fields from drm_display_mode, instead of the "logical"
-fields. This shouldn't change anything in practice, but afaiu the crtc_*
-fields are the correct ones to use here.
+The driver tries to calculate the value for REG_WAKEUP_TIME. However,
+the calculation itself is not correct, and to add on it, the resulting
+value is almost always larger than the field's size, so the actual
+result is more or less random.
 
-Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+According to the docs, figuring out the value for REG_WAKEUP_TIME
+requires HW characterization and there's no way to have a generic
+algorithm to come up with the value. That doesn't help at all...
+
+However, we know that the value must be smaller than the line time, and,
+at least in my understanding, the proper value for it is quite small.
+Testing shows that setting it to 1/10 of the line time seems to work
+well. All video modes from my HDMI monitor work with this algorithm.
+
+Hopefully we'll get more information on how to calculate the value, and
+we can then update this.
+
 Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
 Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
 Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-3-e61cc06074c2@ideasonboard.com
+Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-11-e61cc06074c2@ideasonboard.com
 Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_crtc.c  |  2 +-
- drivers/gpu/drm/tidss/tidss_dispc.c | 16 ++++++++--------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_crtc.c b/drivers/gpu/drm/tidss/tidss_crtc.c
-index a2f40a5c77030..17efd77ce7f23 100644
---- a/drivers/gpu/drm/tidss/tidss_crtc.c
-+++ b/drivers/gpu/drm/tidss/tidss_crtc.c
-@@ -225,7 +225,7 @@ static void tidss_crtc_atomic_enable(struct drm_crtc *crtc,
- 	tidss_runtime_get(tidss);
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+index 695b6246b280f..9f1c460d5f0d4 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+@@ -882,7 +882,13 @@ static void cdns_dsi_bridge_atomic_pre_enable(struct drm_bridge *bridge,
  
- 	r = dispc_vp_set_clk_rate(tidss->dispc, tcrtc->hw_videoport,
--				  mode->clock * 1000);
-+				  mode->crtc_clock * 1000);
- 	if (r != 0)
- 		return;
+ 	tx_byte_period = DIV_ROUND_DOWN_ULL((u64)NSEC_PER_SEC * 8,
+ 					    phy_cfg->hs_clk_rate);
+-	reg_wakeup = (phy_cfg->hs_prepare + phy_cfg->hs_zero) / tx_byte_period;
++
++	/*
++	 * Estimated time [in clock cycles] to perform LP->HS on D-PHY.
++	 * It is not clear how to calculate this, so for now,
++	 * set it to 1/10 of the total number of clocks in a line.
++	 */
++	reg_wakeup = dsi_cfg.htotal / nlanes / 10;
+ 	writel(REG_WAKEUP_TIME(reg_wakeup) | REG_LINE_DURATION(tmp),
+ 	       dsi->regs + VID_DPHY_TIME);
  
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index c0277fa36425e..3f6cff2ab1b29 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -1215,13 +1215,13 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
- 
- 	dispc_set_num_datalines(dispc, hw_videoport, fmt->data_width);
- 
--	hfp = mode->hsync_start - mode->hdisplay;
--	hsw = mode->hsync_end - mode->hsync_start;
--	hbp = mode->htotal - mode->hsync_end;
-+	hfp = mode->crtc_hsync_start - mode->crtc_hdisplay;
-+	hsw = mode->crtc_hsync_end - mode->crtc_hsync_start;
-+	hbp = mode->crtc_htotal - mode->crtc_hsync_end;
- 
--	vfp = mode->vsync_start - mode->vdisplay;
--	vsw = mode->vsync_end - mode->vsync_start;
--	vbp = mode->vtotal - mode->vsync_end;
-+	vfp = mode->crtc_vsync_start - mode->crtc_vdisplay;
-+	vsw = mode->crtc_vsync_end - mode->crtc_vsync_start;
-+	vbp = mode->crtc_vtotal - mode->crtc_vsync_end;
- 
- 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_TIMING_H,
- 		       FLD_VAL(hsw - 1, 7, 0) |
-@@ -1263,8 +1263,8 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
- 		       FLD_VAL(ivs, 12, 12));
- 
- 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_SIZE_SCREEN,
--		       FLD_VAL(mode->hdisplay - 1, 11, 0) |
--		       FLD_VAL(mode->vdisplay - 1, 27, 16));
-+		       FLD_VAL(mode->crtc_hdisplay - 1, 11, 0) |
-+		       FLD_VAL(mode->crtc_vdisplay - 1, 27, 16));
- 
- 	VP_REG_FLD_MOD(dispc, hw_videoport, DISPC_VP_CONTROL, 1, 0, 0);
- }
 -- 
 2.51.0
 
