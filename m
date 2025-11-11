@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-194120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A587AC4AED1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5243EC4A708
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39A5E3AE06B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 779054F1A29
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EE8305940;
-	Tue, 11 Nov 2025 01:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC62C346E45;
+	Tue, 11 Nov 2025 01:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axZ1YLVa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vU4yYShY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652E327D786;
-	Tue, 11 Nov 2025 01:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AB62DC78C;
+	Tue, 11 Nov 2025 01:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824853; cv=none; b=Uw7cG6zlzJSfgMeWSWu4LnAT8LD8XTTnuznUqEtYQMb9XiSto4rFpGYCcVQiqSzIbH/PFS0zOyC5yl05ZNPaUjN870SQe7DwBxdKQme5diIXDScqK/b45++wPTij2JNrX4pSDlpxGRdRGXmKPinmuAfuGUCl30yUFhiNr9AtzeM=
+	t=1762823685; cv=none; b=Ou0SYtdOrGJzY0NV+JzJc512BmM6q+oOhakV/eFKS7DNqeEaoqjcYRql/Am9f4nIrQd4HlgufRRfMoYu7DVin7VBVqvrz0eZC6VUNKxDzMBjOFkuTvMvokE+I62xbvctuKWiBuOxL1DuH7VKSakv+jn6P+WzmNhOfuVmHNupMHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824853; c=relaxed/simple;
-	bh=mmz9loR48Y1ezoV67N8UpCDRx7yjlSKbSiaq6OCsGVI=;
+	s=arc-20240116; t=1762823685; c=relaxed/simple;
+	bh=A+mLEOrpyDcpOQwPooW8/ogx3fjFipcfRp2qHJarwQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PP0Va44xmm359BBoQHso3vn3J+pGrH7ljFZpo+C6RoJgMzAvK3EUVTUEIgHi0rkUA316z0eI3yOZP8eaPxIrkOim/HQeSpp54rWZnuP9DtzT1nLzLQOul0ptobUK/UiWQy51qQV9TJhWqhWFBIVHW0DzHSuOXEVDGZQw3QLyMBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axZ1YLVa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DE6C16AAE;
-	Tue, 11 Nov 2025 01:34:12 +0000 (UTC)
+	 MIME-Version; b=DC1HzweAUrPYmrKowsskOQvsPZZM5g/Cbu16ms5AmAM+EtRjd0F8vokLb4J9mdddaFuHeZiIycbq8Gnp9ocKKtxiHmHo9x2jiVuf0NpBiyrgVhmRhfGyZPNspKNydBpUivry9FRRVl+dTCaEtNHzwyIKRhQ8RCQ1QlbJD5fxBcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vU4yYShY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D7FC113D0;
+	Tue, 11 Nov 2025 01:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824853;
-	bh=mmz9loR48Y1ezoV67N8UpCDRx7yjlSKbSiaq6OCsGVI=;
+	s=korg; t=1762823685;
+	bh=A+mLEOrpyDcpOQwPooW8/ogx3fjFipcfRp2qHJarwQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=axZ1YLVa0kg4Wm8ZcoBa6QI3r4HM40BY4NlvQSe6Dx7QgrkBIaEswRd12u8hqxXY+
-	 R6yZyJUoJWr5BlajGJipq7qpfkj3ZoCoxp4iBSTZZXyv7q4IMR19h2llDmXEhLSCNl
-	 PYZW77L3CAR8Nz+/6S7JRZ7XQhE0jhDq7I3BTcMY=
+	b=vU4yYShYvndbKA4mUkxf20TclVFbHCZ3rm0MZ2K4mSCxscrHPhDefvozuobpDyfvo
+	 S+hrjlOCxDp2N0rgZqDcfbuGibPKKOOQk5AG1BQue1IlGMyzcKDNPwrSeL9yBidnqH
+	 WLvtdTVd6mzXUFqKq39KsplzyXkEHkFNOvR/R+5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Nielsen <nick.kainielsen@free.fr>,
-	grm1 <grm1@mailbox.org>,
-	Niklas Neronin <niklas.neronin@linux.intel.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Julia Filipchuk <julia.filipchuk@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 585/849] usb: xhci-pci: add support for hosts with zero USB3 ports
-Date: Tue, 11 Nov 2025 09:42:35 +0900
-Message-ID: <20251111004550.563791234@linuxfoundation.org>
+Subject: [PATCH 6.12 300/565] drm/xe/guc: Set upper limit of H2G retries over CTB
+Date: Tue, 11 Nov 2025 09:42:36 +0900
+Message-ID: <20251111004533.627665443@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Neronin <niklas.neronin@linux.intel.com>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit 719de070f764e079cdcb4ddeeb5b19b3ddddf9c1 ]
+[ Upstream commit 2506af5f8109a387a5e8e9e3d7c498480b8033db ]
 
-Add xhci support for PCI hosts that have zero USB3 ports.
-Avoid creating a shared Host Controller Driver (HCD) when there is only
-one root hub. Additionally, all references to 'xhci->shared_hcd' are now
-checked before use.
+The GuC communication protocol allows GuC to send NO_RESPONSE_RETRY
+reply message to indicate that due to some interim condition it can
+not handle incoming H2G request and the host shall resend it.
 
-Only xhci-pci.c requires modification to accommodate this change, as the
-xhci core already supports configurations with zero USB3 ports. This
-capability was introduced when xHCI Platform and MediaTek added support
-for zero USB3 ports.
+But in some cases, due to errors, this unsatisfied condition might
+be final and this could lead to endless retries as it was recently
+seen on the CI:
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220181
-Tested-by: Nick Nielsen <nick.kainielsen@free.fr>
-Tested-by: grm1 <grm1@mailbox.org>
-Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250917210726.97100-4-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ [drm] GT0: PF: VF1 FLR didn't finish in 5000 ms (-ETIMEDOUT)
+ [drm] GT0: PF: VF1 resource sanitizing failed (-ETIMEDOUT)
+ [drm] GT0: PF: VF1 FLR failed!
+ [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
+ [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
+ [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
+ [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
+
+To avoid such dangerous loops allow only limited number of retries
+(for now 50) and add some delays (n * 5ms) to slow down the rate of
+resending this repeated request.
+
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Reviewed-by: Julia Filipchuk <julia.filipchuk@intel.com>
+Link: https://lore.kernel.org/r/20250903223330.6408-1-michal.wajdeczko@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-pci.c | 42 +++++++++++++++++++++----------------
- 1 file changed, 24 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_ct.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index 00fac8b233d2a..5c8ab519f497d 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -610,7 +610,7 @@ int xhci_pci_common_probe(struct pci_dev *dev, const struct pci_device_id *id)
- {
- 	int retval;
- 	struct xhci_hcd *xhci;
--	struct usb_hcd *hcd;
-+	struct usb_hcd *hcd, *usb3_hcd;
- 	struct reset_control *reset;
+diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
+index f1ce4e14dcb5f..d692e279d9fbf 100644
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -977,11 +977,15 @@ static bool retry_failure(struct xe_guc_ct *ct, int ret)
+ 	return true;
+ }
  
- 	reset = devm_reset_control_get_optional_exclusive(&dev->dev, NULL);
-@@ -636,26 +636,32 @@ int xhci_pci_common_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	hcd = dev_get_drvdata(&dev->dev);
- 	xhci = hcd_to_xhci(hcd);
- 	xhci->reset = reset;
--	xhci->shared_hcd = usb_create_shared_hcd(&xhci_pci_hc_driver, &dev->dev,
--						 pci_name(dev), hcd);
--	if (!xhci->shared_hcd) {
--		retval = -ENOMEM;
--		goto dealloc_usb2_hcd;
--	}
- 
--	retval = xhci_ext_cap_init(xhci);
--	if (retval)
--		goto put_usb3_hcd;
-+	xhci->allow_single_roothub = 1;
-+	if (!xhci_has_one_roothub(xhci)) {
-+		xhci->shared_hcd = usb_create_shared_hcd(&xhci_pci_hc_driver, &dev->dev,
-+							 pci_name(dev), hcd);
-+		if (!xhci->shared_hcd) {
-+			retval = -ENOMEM;
-+			goto dealloc_usb2_hcd;
-+		}
- 
--	retval = usb_add_hcd(xhci->shared_hcd, dev->irq,
--			IRQF_SHARED);
--	if (retval)
--		goto put_usb3_hcd;
--	/* Roothub already marked as USB 3.0 speed */
-+		retval = xhci_ext_cap_init(xhci);
-+		if (retval)
-+			goto put_usb3_hcd;
++#define GUC_SEND_RETRY_LIMIT	50
++#define GUC_SEND_RETRY_MSLEEP	5
 +
-+		retval = usb_add_hcd(xhci->shared_hcd, dev->irq, IRQF_SHARED);
-+		if (retval)
-+			goto put_usb3_hcd;
-+	} else {
-+		retval = xhci_ext_cap_init(xhci);
-+		if (retval)
-+			goto dealloc_usb2_hcd;
-+	}
+ static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
+ 			    u32 *response_buffer, bool no_fail)
+ {
+ 	struct xe_gt *gt = ct_to_gt(ct);
+ 	struct g2h_fence g2h_fence;
++	unsigned int retries = 0;
+ 	int ret = 0;
  
--	if (!(xhci->quirks & XHCI_BROKEN_STREAMS) &&
--			HCC_MAX_PSA(xhci->hcc_params) >= 4)
--		xhci->shared_hcd->can_do_streams = 1;
-+	usb3_hcd = xhci_get_usb3_hcd(xhci);
-+	if (usb3_hcd && !(xhci->quirks & XHCI_BROKEN_STREAMS) && HCC_MAX_PSA(xhci->hcc_params) >= 4)
-+		usb3_hcd->can_do_streams = 1;
- 
- 	/* USB-2 and USB-3 roothubs initialized, allow runtime pm suspend */
- 	pm_runtime_put_noidle(&dev->dev);
+ 	/*
+@@ -1065,6 +1069,12 @@ static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
+ 		xe_gt_dbg(gt, "H2G action %#x retrying: reason %#x\n",
+ 			  action[0], g2h_fence.reason);
+ 		mutex_unlock(&ct->lock);
++		if (++retries > GUC_SEND_RETRY_LIMIT) {
++			xe_gt_err(gt, "H2G action %#x reached retry limit=%u, aborting\n",
++				  action[0], GUC_SEND_RETRY_LIMIT);
++			return -ELOOP;
++		}
++		msleep(GUC_SEND_RETRY_MSLEEP * retries);
+ 		goto retry;
+ 	}
+ 	if (g2h_fence.fail) {
 -- 
 2.51.0
 
