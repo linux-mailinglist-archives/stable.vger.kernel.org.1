@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-194036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D0DCC4AD84
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B83C4A78B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DDBBF4F5874
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:36:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EF991893DA6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238C43431F8;
-	Tue, 11 Nov 2025 01:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2EB2C0F68;
+	Tue, 11 Nov 2025 01:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yD+Jbp19"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aV56JjKj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E353431E6;
-	Tue, 11 Nov 2025 01:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969B22472A6;
+	Tue, 11 Nov 2025 01:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824652; cv=none; b=oYKvYVtorYLBfhH8Mej33TWiDZkPb+nQR6oT9/u54KQSwuvzSfJvQrymStT+dBMGHbE9xB4FIfqGy43y0/5gmjIAGpjxW6OzQl2KLS1t9MGmCZOAKlSfdK1/AKcYF4J6vyADwsAG+F71nv7XO094cJ0jJKo8wqpXGJoZqMRAOus=
+	t=1762823503; cv=none; b=WqcDjpYnEqr+9Sf7L3piRSuCn6gILxWBP3w3LQzt1ahy39FPg263Mr79aVtVkNHJc8YUCbPY7XKhKGoxxO9oGT4tJbFQdYTyM4LHL6RmUIrlRtOU3Kn6D+3peWVAbV075kMolF5odQqV2oNr5YyAvIsMI2bXRPU12jpixEnC6wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824652; c=relaxed/simple;
-	bh=X/pBxV5DpceVL762Tafd7ON19gQ+7Eq4VTq/PAnE+cU=;
+	s=arc-20240116; t=1762823503; c=relaxed/simple;
+	bh=cTMhbSbDAfMPNSOim0OmA/52SHKXNP6ReOc7zH1OVDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERlpaIDANozpR+aEiOuDsIkefw3FeYHhu2nD9H5HsZQQkfG7X0EmvGIiwoNgYNaQHQH7emD8QsSEkO4u1QBJ738b1FVsHI+fapORKcI9BfRNKvfftz1mqVWPfPekCWErMmPNUjf7qH+jTN0TjCh3XIGQdvPon2S3Rbh4OiMbvfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yD+Jbp19; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F06C19424;
-	Tue, 11 Nov 2025 01:30:52 +0000 (UTC)
+	 MIME-Version; b=uj+Yjd7c/f9xaL8Urb9xENGk8uPg4WAHPUjqdRzzVm2ccwuKPbuxrimohxutwEUUABfUvfbZzQ+IpyZY4a6u8OW31/tcMwlPoigU0sGEdd4fHogzBIaqqjBcHon5WIxdleEmomqKsLL9Pv50h7bbwPjr0KvMO3fHSkKqHJCxq5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aV56JjKj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CCEC19424;
+	Tue, 11 Nov 2025 01:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824652;
-	bh=X/pBxV5DpceVL762Tafd7ON19gQ+7Eq4VTq/PAnE+cU=;
+	s=korg; t=1762823503;
+	bh=cTMhbSbDAfMPNSOim0OmA/52SHKXNP6ReOc7zH1OVDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yD+Jbp19y2z4QayUPCK0wMS+oizImYzfXGoH5vLtvhy8wvM5i5hXSgNs310EmRXAM
-	 t86Krxq2eK9EBtO9r9eKf2NfJkY7YQ+GO/Ib26e8WITPP+KpcvqmZ0gj11D/nMVnQ6
-	 yAhO0aVSavTMWqOlAYkkphIPptfQCwIcouZnTLnM=
+	b=aV56JjKjq12Wfc/jOs7LRmRvUlksQTTaAnCWFoDWlUZD+pooI3IV2Y8I1dgzfzXLO
+	 fLowHtZSAQfowviCj85C+a9LLmBMmIM+FcKacia4zRUEY0Tr9c62idtQRdk3+xZq5W
+	 Vi36p/QVF8/NVaO8rSdd/Z4mWfIsCQ1NTyIZFVI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Amber Lin <Amber.Lin@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 544/849] wifi: mt76: mt7996: fix memory leak on mt7996_mcu_sta_key_tlv error
-Date: Tue, 11 Nov 2025 09:41:54 +0900
-Message-ID: <20251111004549.562383947@linuxfoundation.org>
+Subject: [PATCH 6.12 259/565] drm/amdkfd: Tie UNMAP_LATENCY to queue_preemption
+Date: Tue, 11 Nov 2025 09:41:55 +0900
+Message-ID: <20251111004532.722993847@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Amber Lin <Amber.Lin@amd.com>
 
-[ Upstream commit 7c0f63fe37a5da2c13fc35c89053b31be8ead895 ]
+[ Upstream commit f3820e9d356132e18405cd7606e22dc87ccfa6d1 ]
 
-Free the allocated skb on error
+When KFD asks CP to preempt queues, other than preempt CP queues, CP
+also requests SDMA to preempt SDMA queues with UNMAP_LATENCY timeout.
+Currently queue_preemption_timeout_ms is 9000 ms by default but can be
+configured via module parameter. KFD_UNMAP_LATENCY_MS is hard coded as
+4000 ms though. This patch ties KFD_UNMAP_LATENCY_MS to
+queue_preemption_timeout_ms so in a slow system such as emulator, both
+CP and SDMA slowness are taken into account.
 
-Link: https://patch.msgid.link/20250915075910.47558-5-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Amber Lin <Amber.Lin@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_priv.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index aad58f7831c7b..0d688ec5a8163 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -2535,8 +2535,10 @@ int mt7996_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
- 		return PTR_ERR(skb);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+index 75523f30cd38b..5041860e2737c 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+@@ -111,7 +111,14 @@
  
- 	ret = mt7996_mcu_sta_key_tlv(wcid, skb, key, cmd);
--	if (ret)
-+	if (ret) {
-+		dev_kfree_skb(skb);
- 		return ret;
-+	}
+ #define KFD_KERNEL_QUEUE_SIZE 2048
  
- 	return mt76_mcu_skb_send_msg(dev, skb, mcu_cmd, true);
- }
+-#define KFD_UNMAP_LATENCY_MS	(4000)
++/*  KFD_UNMAP_LATENCY_MS is the timeout CP waiting for SDMA preemption. One XCC
++ *  can be associated to 2 SDMA engines. queue_preemption_timeout_ms is the time
++ *  driver waiting for CP returning the UNMAP_QUEUE fence. Thus the math is
++ *  queue_preemption_timeout_ms = sdma_preemption_time * 2 + cp workload
++ *  The format here makes CP workload 10% of total timeout
++ */
++#define KFD_UNMAP_LATENCY_MS	\
++	((queue_preemption_timeout_ms - queue_preemption_timeout_ms / 10) >> 1)
+ 
+ #define KFD_MAX_SDMA_QUEUES	128
+ 
 -- 
 2.51.0
 
