@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B644C4AD87
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C77FAC4AC40
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06C963B82E5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 448B43B5A36
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D35626561E;
-	Tue, 11 Nov 2025 01:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D87344052;
+	Tue, 11 Nov 2025 01:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ujc8ZOhU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKhgDr7v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A47E2D979C;
-	Tue, 11 Nov 2025 01:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20252DA757;
+	Tue, 11 Nov 2025 01:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824116; cv=none; b=kQQJYRUZ/Z+HQDtdjuzIBQrZShX06Jsn+vzRiPxnNXT/8i/U3L8fEh2LeN7tM/Ewz/iv5oEPOuxka53uMWzuZgdBG88vgn6FNdbAGAUko1GlqTWcLqIFYBfEseAkuUlFKxT3UcxYPCx16v3+l+ibMTN1siAE++JWog7IP+SlbPI=
+	t=1762824120; cv=none; b=dB9ajDuDmtxR1f2D4ichk+T9ABTrZ7EqeED8CCaEsVasKaxYikRDH++k7jFDd87Dt9p5p4SPxHNz2CxcsKag4KFsoL3owkYz/gMVop6so6qVV9gh3U2ipvF4F3SDr+DeAxsiag3TWU/wW/I7QpWXYRcWs3ZwqqIl3WzIcaZx/QM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824116; c=relaxed/simple;
-	bh=Oa2pJR8K2KnrgDDAUuC13rnIXhXDDU0ULlbi1g8ttfE=;
+	s=arc-20240116; t=1762824120; c=relaxed/simple;
+	bh=QSuCtokbByleE4sD52qVbO9iShJ9EETOcNQAEIkV8Wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMnzKsnAblZOizKgAjZgja+sCh4ZU1tamLXgulweqG9cZcJsYwyGVQTXRR6bPNkFMxEnP8zMYAO61yDKwciiinjCuzVjTBhsAKyeOYH594bn4KQ0vzxFAabDcrWme9i5omjJyiRDk/9w2RmRmPWKqkCxTheOtb9b5jLG1Bz4jbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ujc8ZOhU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAEEC19421;
-	Tue, 11 Nov 2025 01:21:55 +0000 (UTC)
+	 MIME-Version; b=JT+AouvddQFg/eF373s8ntQGdZHgH0cGBV4vM6jM+d3YV7y0dt5HHudV/f8EDS1IWzkVoSXJ5zDZNNI9mbC+PoxFwXx7BJLTfAnvfMc1N1n965OJliEkOd+FcyWs6ZOQpkmaqtcOxnKSrwSKt9xrpsuF/Kwp09mmrm4OIoB5UmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKhgDr7v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E19C113D0;
+	Tue, 11 Nov 2025 01:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824116;
-	bh=Oa2pJR8K2KnrgDDAUuC13rnIXhXDDU0ULlbi1g8ttfE=;
+	s=korg; t=1762824120;
+	bh=QSuCtokbByleE4sD52qVbO9iShJ9EETOcNQAEIkV8Wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ujc8ZOhUXyRXPZW9qSpPazCnHQPpjdJoRdjgYAac5uvOwCd8ATrUVe0Xxc6e/CvEZ
-	 2vJJVbqCMtuTfilgXZAY4rJJUntA699zIKcniuk1B+Pl9dzxmP5Hg2mB4d6ixcz9Rh
-	 67inEz4uTzdBd4O00BPOA9SUctaQ1nCpjWTsZcLM=
+	b=hKhgDr7vGGfX1oZFKIU4pmC10tp+J+OPrAnzzqv9CUdF0bQCk7B0uc0BgyqW0e6+a
+	 SZsdRHoN8gklNRx7zGEs54MnEU3QuuWSXCXjJlCdimd97QGY0o9D4t6qQO3DnnuV4F
+	 L5VWCN/6oCG01lM88UHWOccDR7tpmreV44Lb0ehU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot+c4f3462d8b2ad7977bea@syzkaller.appspotmail.com,
+	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
 	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 390/565] jfs: Verify inode mode when loading from disk
-Date: Tue, 11 Nov 2025 09:44:06 +0900
-Message-ID: <20251111004535.645913511@linuxfoundation.org>
+Subject: [PATCH 6.12 391/565] jfs: fix uninitialized waitqueue in transaction manager
+Date: Tue, 11 Nov 2025 09:44:07 +0900
+Message-ID: <20251111004535.668292559@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,44 +67,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
 
-[ Upstream commit 7a5aa54fba2bd591b22b9b624e6baa9037276986 ]
+[ Upstream commit 300b072df72694ea330c4c673c035253e07827b8 ]
 
-The inode mode loaded from corrupted disk can be invalid. Do like what
-commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
-does.
+The transaction manager initialization in txInit() was not properly
+initializing TxBlock[0].waitor waitqueue, causing a crash when
+txEnd(0) is called on read-only filesystems.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+When a filesystem is mounted read-only, txBegin() returns tid=0 to
+indicate no transaction. However, txEnd(0) still gets called and
+tries to access TxBlock[0].waitor via tid_to_tblock(0), but this
+waitqueue was never initialized because the initialization loop
+started at index 1 instead of 0.
+
+This causes a 'non-static key' lockdep warning and system crash:
+  INFO: trying to register non-static key in txEnd
+
+Fix by ensuring all transaction blocks including TxBlock[0] have
+their waitqueues properly initialized during txInit().
+
+Reported-by: syzbot+c4f3462d8b2ad7977bea@syzkaller.appspotmail.com
+
+Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
 Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/inode.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/jfs/jfs_txnmgr.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
-index 5fe8cb4742c21..8ee653aa07ced 100644
---- a/fs/jfs/inode.c
-+++ b/fs/jfs/inode.c
-@@ -59,9 +59,15 @@ struct inode *jfs_iget(struct super_block *sb, unsigned long ino)
- 			 */
- 			inode->i_link[inode->i_size] = '\0';
- 		}
--	} else {
-+	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
-+		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
- 		inode->i_op = &jfs_file_inode_operations;
- 		init_special_inode(inode, inode->i_mode, inode->i_rdev);
-+	} else {
-+		printk(KERN_DEBUG "JFS: Invalid file type 0%04o for inode %lu.\n",
-+		       inode->i_mode, inode->i_ino);
-+		iget_failed(inode);
-+		return ERR_PTR(-EIO);
+diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
+index be17e3c43582f..7840a03e5bcb7 100644
+--- a/fs/jfs/jfs_txnmgr.c
++++ b/fs/jfs/jfs_txnmgr.c
+@@ -272,14 +272,15 @@ int txInit(void)
+ 	if (TxBlock == NULL)
+ 		return -ENOMEM;
+ 
+-	for (k = 1; k < nTxBlock - 1; k++) {
+-		TxBlock[k].next = k + 1;
++	for (k = 0; k < nTxBlock; k++) {
+ 		init_waitqueue_head(&TxBlock[k].gcwait);
+ 		init_waitqueue_head(&TxBlock[k].waitor);
  	}
- 	unlock_new_inode(inode);
- 	return inode;
++
++	for (k = 1; k < nTxBlock - 1; k++) {
++		TxBlock[k].next = k + 1;
++	}
+ 	TxBlock[k].next = 0;
+-	init_waitqueue_head(&TxBlock[k].gcwait);
+-	init_waitqueue_head(&TxBlock[k].waitor);
+ 
+ 	TxAnchor.freetid = 1;
+ 	init_waitqueue_head(&TxAnchor.freewait);
 -- 
 2.51.0
 
