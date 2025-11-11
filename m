@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-193878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17384C4ABAD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD13C4AFF7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:52:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BDA31895232
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA2A51895364
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E85346E48;
-	Tue, 11 Nov 2025 01:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6879130649C;
+	Tue, 11 Nov 2025 01:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDTyTa1v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8pKNO/S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B191D86FF;
-	Tue, 11 Nov 2025 01:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E9C1096F;
+	Tue, 11 Nov 2025 01:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824219; cv=none; b=GoaftnJaL6dj+KYamqmyvPMEsZ3LKc/ia1jh38rwHsWpHhRmTvZqCMdNj0qrok1PJuy+1PhFKvsh8I6mZpBPYnSzNKQgXsOMP3RjZ8P3FBtF37mvd4/L7965lAnvZeBlw2ag+a2XVoMQBKZXmbp85yovxF0ZrvWpVZBT+7I2KBQ=
+	t=1762825193; cv=none; b=Qo8X/szd7zCom/4LEGax111UPwd26b3Ch622yrHj0xeafksNE17Aj8MDmpT5suqbhbfsXS+eCX/aH2TAyTualSZBoD+ONBIlefiZagbV9hx9QzFZnaiaLYN/N2R7wk6QNRQg5wn9Jj6dJnnBRPKGCGHM5+V78cA6MP429XynKVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824219; c=relaxed/simple;
-	bh=pyFUXsJq/eqJLg0q8Ne9N/wBi0U2QRzEyTlNxtVMXFM=;
+	s=arc-20240116; t=1762825193; c=relaxed/simple;
+	bh=cyGUEoA8c34u38kku1lAnQvJmqF3XwMLC7yACHxZSKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqgcx9k0Ttb2o90K8eNd7RbHVMKv9KtG49wa+biuszsYThDBNpJxb9u9JdZaGgfv3cZ8KRA2BgxbI+/Fx5sgPJNAoAbqdVCxCVDCGYd/uVrqsVclaTFW+BCp2SxsDkdPAjZb2SETz8abgkGCxfPNOkFY0HVWevyHgvsZuq5rKIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDTyTa1v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255AAC4CEFB;
-	Tue, 11 Nov 2025 01:23:39 +0000 (UTC)
+	 MIME-Version; b=fU8fTuHoql582gxk8hHT+wlP16r1F5NB+3AOLDOV04JnDWGxmea1x3HM2/x5aXqvs+WfEMFVsntYlMzhmEYWrI4bS0O7w08TGmpFxEqG94SHuRY6LLDKCdXbIwRn0zDA5+w6g7nFiopKmoOorbchW/rFM97odoLa0Uy0iSqD1a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8pKNO/S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6021C113D0;
+	Tue, 11 Nov 2025 01:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824219;
-	bh=pyFUXsJq/eqJLg0q8Ne9N/wBi0U2QRzEyTlNxtVMXFM=;
+	s=korg; t=1762825193;
+	bh=cyGUEoA8c34u38kku1lAnQvJmqF3XwMLC7yACHxZSKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDTyTa1vHg4wXnH9XZGZes76zhcUQiDUXb0CfRP9K95jWofQg/vmbpCP24pUwl6u6
-	 /wpNFAxYzO3WWH6T5xlhE5q60h2mnKkDtS9f8lymUBx5fX9X37b+NBTpgcBDswcyAn
-	 BVrwFc0lJa6elh6z/ka/C9w3x7mFuaqtOBrFl+ps=
+	b=A8pKNO/SN4TN/IRj/rHTAtLd3K5ZddnUVhlb24vIS6ykFwj6MnUxS6+Prl4g1BPri
+	 AuWwzTXY5Vd2+L6HpkRlfPZ+CztsXyxNmikMNthSTSql3DCMyntMkcflG8apXXoVwM
+	 vzhyoZXCaQhhOeu7eyoevlx11IrEH6LW1EZcF5hI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aric Cyr <aric.cyr@amd.com>,
-	Karthi Kandasamy <karthi.kandasamy@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Nuno Das Neves <nunodasneves@linux.microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 413/565] drm/amd/display: Add AVI infoframe copy in copy_stream_update_to_stream
+Subject: [PATCH 6.17 699/849] hyperv: Add missing field to hv_output_map_device_interrupt
 Date: Tue, 11 Nov 2025 09:44:29 +0900
-Message-ID: <20251111004536.158044109@linuxfoundation.org>
+Message-ID: <20251111004553.333544886@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,106 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karthi Kandasamy <karthi.kandasamy@amd.com>
+From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
 
-[ Upstream commit c8bedab2d9a1a0daa49ac20f9928a943f7205582 ]
+[ Upstream commit 4cd661c248b6671914ad59e16760bb6d908dfc61 ]
 
-[WHY]
-Ensure AVI infoframe updates from stream updates are applied to the active
-stream so OS overrides are not lost.
+This field is unused, but the correct structure size is needed
+when computing the amount of space for the output argument to
+reside, so that it does not cross a page boundary.
 
-[HOW]
-Copy avi_infopacket to stream when valid flag is set.
-Follow existing infopacket copy pattern and perform a basic validity check before assignment.
-
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Signed-off-by: Karthi Kandasamy <karthi.kandasamy@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c          | 7 ++++++-
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 6 ++++++
- drivers/gpu/drm/amd/display/dc/dc_stream.h        | 3 +++
- 3 files changed, 15 insertions(+), 1 deletion(-)
+ include/hyperv/hvhdk_mini.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 426912d82179c..257d77aa7c979 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -3035,6 +3035,9 @@ static void copy_stream_update_to_stream(struct dc *dc,
- 	if (update->adaptive_sync_infopacket)
- 		stream->adaptive_sync_infopacket = *update->adaptive_sync_infopacket;
+diff --git a/include/hyperv/hvhdk_mini.h b/include/hyperv/hvhdk_mini.h
+index 42e7876455b5b..858f6a3925b30 100644
+--- a/include/hyperv/hvhdk_mini.h
++++ b/include/hyperv/hvhdk_mini.h
+@@ -301,6 +301,7 @@ struct hv_input_map_device_interrupt {
+ /* HV_OUTPUT_MAP_DEVICE_INTERRUPT */
+ struct hv_output_map_device_interrupt {
+ 	struct hv_interrupt_entry interrupt_entry;
++	u64 ext_status_deprecated[5];
+ } __packed;
  
-+	if (update->avi_infopacket)
-+		stream->avi_infopacket = *update->avi_infopacket;
-+
- 	if (update->dither_option)
- 		stream->dither_option = *update->dither_option;
- 
-@@ -3325,7 +3328,8 @@ static void commit_planes_do_stream_update(struct dc *dc,
- 					stream_update->vsp_infopacket ||
- 					stream_update->hfvsif_infopacket ||
- 					stream_update->adaptive_sync_infopacket ||
--					stream_update->vtem_infopacket) {
-+					stream_update->vtem_infopacket ||
-+					stream_update->avi_infopacket) {
- 				resource_build_info_frame(pipe_ctx);
- 				dc->hwss.update_info_frame(pipe_ctx);
- 
-@@ -4759,6 +4763,7 @@ static bool full_update_required(struct dc *dc,
- 			stream_update->hfvsif_infopacket ||
- 			stream_update->vtem_infopacket ||
- 			stream_update->adaptive_sync_infopacket ||
-+			stream_update->avi_infopacket ||
- 			stream_update->dpms_off ||
- 			stream_update->allow_freesync ||
- 			stream_update->vrr_active_variable ||
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index 36f8eb37e6710..07473e9604277 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -4156,8 +4156,14 @@ static void set_avi_info_frame(
- 	unsigned int fr_ind = pipe_ctx->stream->timing.fr_index;
- 	enum dc_timing_3d_format format;
- 
-+	if (stream->avi_infopacket.valid) {
-+		*info_packet = stream->avi_infopacket;
-+		return;
-+	}
-+
- 	memset(&hdmi_info, 0, sizeof(union hdmi_info_packet));
- 
-+
- 	color_space = pipe_ctx->stream->output_color_space;
- 	if (color_space == COLOR_SPACE_UNKNOWN)
- 		color_space = (stream->timing.pixel_encoding == PIXEL_ENCODING_RGB) ?
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_stream.h b/drivers/gpu/drm/amd/display/dc/dc_stream.h
-index 8b9af1a6a0316..1ecf956a71020 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_stream.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_stream.h
-@@ -200,6 +200,7 @@ struct dc_stream_state {
- 	struct dc_info_packet hfvsif_infopacket;
- 	struct dc_info_packet vtem_infopacket;
- 	struct dc_info_packet adaptive_sync_infopacket;
-+	struct dc_info_packet avi_infopacket;
- 	uint8_t dsc_packed_pps[128];
- 	struct rect src; /* composition area */
- 	struct rect dst; /* stream addressable area */
-@@ -331,6 +332,8 @@ struct dc_stream_update {
- 	struct dc_info_packet *hfvsif_infopacket;
- 	struct dc_info_packet *vtem_infopacket;
- 	struct dc_info_packet *adaptive_sync_infopacket;
-+	struct dc_info_packet *avi_infopacket;
-+
- 	bool *dpms_off;
- 	bool integer_scaling_update;
- 	bool *allow_freesync;
+ /* HV_INPUT_UNMAP_DEVICE_INTERRUPT */
 -- 
 2.51.0
 
