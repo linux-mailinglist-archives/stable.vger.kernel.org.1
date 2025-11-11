@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-193424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3D6C4A3F7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:09:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D33E5C4A41E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:10:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56CBA188FA0C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:08:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED0CE188F788
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9908307499;
-	Tue, 11 Nov 2025 01:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB9A2727FD;
+	Tue, 11 Nov 2025 01:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OgDEKsew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1hyYvaT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853043064AB;
-	Tue, 11 Nov 2025 01:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A0B3314C8;
+	Tue, 11 Nov 2025 01:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823151; cv=none; b=oOsrDaa4y31bO/Wd2J3Njye2YoOssksOoqSluK5mjGf4IX29AnpZ3CSAa81q2N91mHDsRrAfgXhybmZVFouOF6pjsvK8dyBEU3+Mpmo4IReVMqAnBtRnlegi2FZqGURQDqW79ZkUvsSpy80TEULhirlqu+zu4bMCbHCZh/Rfu6U=
+	t=1762823156; cv=none; b=bWsGt6zL1eBNHN4jd1wfa9sHB5ig2/lD8Ivt1CsL+4754xBoMcwNVn1gOmDO4AuW2sMCNlUH/zaDSJpPUvLbJh+Lgp8Cc4gJ0h91XbwOovgU+BmyHKW/DmZQkE+PgOOlB3LiRrLsHLu1JhebX9kaLe/XUGLbsoAnGjHAVPCiPzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823151; c=relaxed/simple;
-	bh=bi1XfDS6ZfSof7koK2lfvWbhjWrmJOl15nd+E8BIJrA=;
+	s=arc-20240116; t=1762823156; c=relaxed/simple;
+	bh=cvh7C0jxFWHm4SAN1bx9ikKSwlUhNqNM5KzlHtRwSc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFbpPD3UW+8x+VQMp8Mgr1/0o3WjHzggMdkwI/tXvmGyq/bgV931qor06ZpsXouaoywe6mEO3aE6jKAX/Q4gJLU8WmbFq7oZF2evFxhNJCvNuEpQ5e9Z/LXg03B0g8UStjF8byn2ZqyTRwiTxCwETXKfntezR4S6s/MHoTvy9u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OgDEKsew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDEBC16AAE;
-	Tue, 11 Nov 2025 01:05:50 +0000 (UTC)
+	 MIME-Version; b=YKpUX6U09PdDYVtU47ofYJekehR8icFkjujgAfaS+pJW2J62BJ+NmgB0kPE8G0Qho6EVXd1FKZ1YXV95pylN2yK4p0uDZDWyMqimok3OMeeQakNh2Q8UGeM6P42qDb9LBKAJ0wOWt/yzQGgfmvpWeW/AA/MhAs6yaUkcK9VS1YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1hyYvaT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B451CC4CEFB;
+	Tue, 11 Nov 2025 01:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823151;
-	bh=bi1XfDS6ZfSof7koK2lfvWbhjWrmJOl15nd+E8BIJrA=;
+	s=korg; t=1762823156;
+	bh=cvh7C0jxFWHm4SAN1bx9ikKSwlUhNqNM5KzlHtRwSc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OgDEKsew0cUXwj58P+ji/8UoQkG/7snd+yETYvdwT2ft9PEq1BPIaH+LFydQXWQRV
-	 sPzhu8E/5/fiKoR9n7fFsWTa60hrA2hZ3y9h6Dh6M/TqKcf8/RgQ+VQ1V2u16tL28R
-	 SwiFQDRmOTjogdYke8u+ALPpv4YE0aGf5r8KgrrU=
+	b=S1hyYvaT75UhhbMgiunq/hE38ONPAaq+rR1QIcpTZi56IyUn/VuoFHyUL4qK7iP2x
+	 XznGzONkv8aZpovNSmpWELH5SS4XWPqHXRa+eG7Z+MjCT8JEzgCAljdOLo4MLk3pCb
+	 VqBU08XmcpDIt+tMTW8NFFQqLp5cViIqsHMyQAiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Michael Strauss <michael.strauss@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 240/849] drm/amd/display: Cache streams targeting link when performing LT automation
-Date: Tue, 11 Nov 2025 09:36:50 +0900
-Message-ID: <20251111004542.239431181@linuxfoundation.org>
+Subject: [PATCH 6.17 241/849] drm/xe/guc: Add more GuC load error status codes
+Date: Tue, 11 Nov 2025 09:36:51 +0900
+Message-ID: <20251111004542.262994327@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -69,66 +66,101 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Strauss <michael.strauss@amd.com>
+From: John Harrison <John.C.Harrison@Intel.com>
 
-[ Upstream commit f5b69101f956f5b89605a13cb15f093a7906f2a1 ]
+[ Upstream commit 45fbb51050e72723c2bdcedc1ce32305256c70ed ]
 
-[WHY]
-Last LT automation update can cause crash by referencing current_state and
-calling into dc_update_planes_and_stream which may clobber current_state.
+The GuC load process will abort if certain status codes (which are
+indicative of a fatal error) are reported. Otherwise, it keeps waiting
+until the 'success' code is returned. New error codes have been added
+in recent GuC releases, so add support for aborting on those as well.
 
-[HOW]
-Cache relevant stream pointers and iterate through them instead of relying
-on the current_state.
+v2: Shuffle HWCONFIG_START to the front of the switch to keep the
+ordering as per the enum define for clarity (review feedback by
+Jonathan). Also add a description for the basic 'invalid init data'
+code which was missing.
 
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: Michael Strauss <michael.strauss@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Link: https://lore.kernel.org/r/20250726024337.4056272-1-John.C.Harrison@Intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/link/accessories/link_dp_cts.c  | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/abi/guc_errors_abi.h |  3 +++
+ drivers/gpu/drm/xe/xe_guc.c             | 19 +++++++++++++++++--
+ 2 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
-index b12d61701d4d9..23f41c99fa38c 100644
---- a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
-@@ -76,6 +76,9 @@ static void dp_retrain_link_dp_test(struct dc_link *link,
- 	uint8_t count;
- 	int i;
+diff --git a/drivers/gpu/drm/xe/abi/guc_errors_abi.h b/drivers/gpu/drm/xe/abi/guc_errors_abi.h
+index ecf748fd87df3..ad76b4baf42e9 100644
+--- a/drivers/gpu/drm/xe/abi/guc_errors_abi.h
++++ b/drivers/gpu/drm/xe/abi/guc_errors_abi.h
+@@ -63,6 +63,7 @@ enum xe_guc_load_status {
+ 	XE_GUC_LOAD_STATUS_HWCONFIG_START                   = 0x05,
+ 	XE_GUC_LOAD_STATUS_HWCONFIG_DONE                    = 0x06,
+ 	XE_GUC_LOAD_STATUS_HWCONFIG_ERROR                   = 0x07,
++	XE_GUC_LOAD_STATUS_BOOTROM_VERSION_MISMATCH         = 0x08,
+ 	XE_GUC_LOAD_STATUS_GDT_DONE                         = 0x10,
+ 	XE_GUC_LOAD_STATUS_IDT_DONE                         = 0x20,
+ 	XE_GUC_LOAD_STATUS_LAPIC_DONE                       = 0x30,
+@@ -75,6 +76,8 @@ enum xe_guc_load_status {
+ 	XE_GUC_LOAD_STATUS_INVALID_INIT_DATA_RANGE_START,
+ 	XE_GUC_LOAD_STATUS_MPU_DATA_INVALID                 = 0x73,
+ 	XE_GUC_LOAD_STATUS_INIT_MMIO_SAVE_RESTORE_INVALID   = 0x74,
++	XE_GUC_LOAD_STATUS_KLV_WORKAROUND_INIT_ERROR        = 0x75,
++	XE_GUC_LOAD_STATUS_INVALID_FTR_FLAG                 = 0x76,
+ 	XE_GUC_LOAD_STATUS_INVALID_INIT_DATA_RANGE_END,
  
-+	struct dc_stream_state *streams_on_link[MAX_PIPES];
-+	int num_streams_on_link = 0;
-+
- 	needs_divider_update = (link->dc->link_srv->dp_get_encoding_format(link_setting) !=
- 	link->dc->link_srv->dp_get_encoding_format((const struct dc_link_settings *) &link->cur_link_settings));
+ 	XE_GUC_LOAD_STATUS_READY                            = 0xF0,
+diff --git a/drivers/gpu/drm/xe/xe_guc.c b/drivers/gpu/drm/xe/xe_guc.c
+index 270fc37924936..9e0ed8fabcd54 100644
+--- a/drivers/gpu/drm/xe/xe_guc.c
++++ b/drivers/gpu/drm/xe/xe_guc.c
+@@ -990,11 +990,14 @@ static int guc_load_done(u32 status)
+ 	case XE_GUC_LOAD_STATUS_GUC_PREPROD_BUILD_MISMATCH:
+ 	case XE_GUC_LOAD_STATUS_ERROR_DEVID_INVALID_GUCTYPE:
+ 	case XE_GUC_LOAD_STATUS_HWCONFIG_ERROR:
++	case XE_GUC_LOAD_STATUS_BOOTROM_VERSION_MISMATCH:
+ 	case XE_GUC_LOAD_STATUS_DPC_ERROR:
+ 	case XE_GUC_LOAD_STATUS_EXCEPTION:
+ 	case XE_GUC_LOAD_STATUS_INIT_DATA_INVALID:
+ 	case XE_GUC_LOAD_STATUS_MPU_DATA_INVALID:
+ 	case XE_GUC_LOAD_STATUS_INIT_MMIO_SAVE_RESTORE_INVALID:
++	case XE_GUC_LOAD_STATUS_KLV_WORKAROUND_INIT_ERROR:
++	case XE_GUC_LOAD_STATUS_INVALID_FTR_FLAG:
+ 		return -1;
+ 	}
  
-@@ -138,12 +141,19 @@ static void dp_retrain_link_dp_test(struct dc_link *link,
- 		pipes[i]->stream_res.tg->funcs->enable_crtc(pipes[i]->stream_res.tg);
- 
- 	// Set DPMS on with stream update
--	for (i = 0; i < state->stream_count; i++)
--		if (state->streams[i] && state->streams[i]->link && state->streams[i]->link == link) {
--			stream_update.stream = state->streams[i];
-+	// Cache all streams on current link since dc_update_planes_and_stream might kill current_state
-+	for (i = 0; i < MAX_PIPES; i++) {
-+		if (state->streams[i] && state->streams[i]->link && state->streams[i]->link == link)
-+			streams_on_link[num_streams_on_link++] = state->streams[i];
-+	}
-+
-+	for (i = 0; i < num_streams_on_link; i++) {
-+		if (streams_on_link[i] && streams_on_link[i]->link && streams_on_link[i]->link == link) {
-+			stream_update.stream = streams_on_link[i];
- 			stream_update.dpms_off = &dpms_off;
--			dc_update_planes_and_stream(state->clk_mgr->ctx->dc, NULL, 0, state->streams[i], &stream_update);
-+			dc_update_planes_and_stream(state->clk_mgr->ctx->dc, NULL, 0, streams_on_link[i], &stream_update);
+@@ -1134,17 +1137,29 @@ static void guc_wait_ucode(struct xe_guc *guc)
  		}
-+	}
- }
  
- static void dp_test_send_link_training(struct dc_link *link)
+ 		switch (ukernel) {
++		case XE_GUC_LOAD_STATUS_HWCONFIG_START:
++			xe_gt_err(gt, "still extracting hwconfig table.\n");
++			break;
++
+ 		case XE_GUC_LOAD_STATUS_EXCEPTION:
+ 			xe_gt_err(gt, "firmware exception. EIP: %#x\n",
+ 				  xe_mmio_read32(mmio, SOFT_SCRATCH(13)));
+ 			break;
+ 
++		case XE_GUC_LOAD_STATUS_INIT_DATA_INVALID:
++			xe_gt_err(gt, "illegal init/ADS data\n");
++			break;
++
+ 		case XE_GUC_LOAD_STATUS_INIT_MMIO_SAVE_RESTORE_INVALID:
+ 			xe_gt_err(gt, "illegal register in save/restore workaround list\n");
+ 			break;
+ 
+-		case XE_GUC_LOAD_STATUS_HWCONFIG_START:
+-			xe_gt_err(gt, "still extracting hwconfig table.\n");
++		case XE_GUC_LOAD_STATUS_KLV_WORKAROUND_INIT_ERROR:
++			xe_gt_err(gt, "illegal workaround KLV data\n");
++			break;
++
++		case XE_GUC_LOAD_STATUS_INVALID_FTR_FLAG:
++			xe_gt_err(gt, "illegal feature flag specified\n");
+ 			break;
+ 		}
+ 
 -- 
 2.51.0
 
