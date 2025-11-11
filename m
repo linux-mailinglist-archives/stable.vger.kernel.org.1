@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-194126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D42CC4AFBB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:40 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B869C4A5C3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1C0B3A76A6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:37 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 27FEC34504B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B03F2BCF43;
-	Tue, 11 Nov 2025 01:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3419346E58;
+	Tue, 11 Nov 2025 01:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSCR/kRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POuAzF/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567CF30649C;
-	Tue, 11 Nov 2025 01:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7152DC32A;
+	Tue, 11 Nov 2025 01:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824867; cv=none; b=VkUkk1626XsxqU81SmWWLcbhXZ91CWJp6qjXkMtJqNlZ7gyKRFoVmaACgLmoYgLOWl7y7al4CMLzJz7/fs5/7T5RMvv+xVi53KO6HzYWrjFhZed3lpFyFVC43yAO4IvWu4bHHahvheOB0YXhMnjrsFvglVBC15BMXi9EqIZA7eA=
+	t=1762823695; cv=none; b=Vs/GW/lByt0dulNZSXX5k8QayAGPK5DREP+YcIEz17I3ryJvUGy2TRqISYn8r78qleO4l5t8PT/zY0DfT30D/SgZ92iLwQpjTPB1+caTDdK6AwbfsiTBhZ/J9/ThZ1R9TCX/ZKLP0PwufRj4FsviOpmfcIPTdrIM1WO3Rhxm2aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824867; c=relaxed/simple;
-	bh=yPxLJ7fOjLunEcT2Zioy2wbl3ONiV8kJO6DRiw808EY=;
+	s=arc-20240116; t=1762823695; c=relaxed/simple;
+	bh=bufA4e2q/eVbxe+KPHeiCSO1uaFVFqfuiJ6n/Fz13GM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HsL05EIq+HDcX0s5pPBoUhduT9yENhjhW70ZNOw5s9UJFm3xiv63Vdu/u1MiF9zrecf1gFssSjK7RL5ADHXnX3nf8qMqugjfoHA7ZXdJTeAoen+7dOnOWY413qJRWZVsmiOaWc6NjN10RG8+7nQqNHgdQwSNGdRFqIWSsYULoeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSCR/kRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78D9C16AAE;
-	Tue, 11 Nov 2025 01:34:26 +0000 (UTC)
+	 MIME-Version; b=rROy5UWOMl9BfZFcKfzxOUklYMSPD0atkRhuFx3Gf0+IN4Xt1xPD8HfElUU79FqotXYzmo7T2rxul9p/pM7i9Ur0l6sWgOlWzC2r+GAddM9ornDXymHNEZogeTwaJ+Se/0olQtovLQXwb+b7PQXHhHEliab+XGgkanuFjJinpRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POuAzF/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E698C19422;
+	Tue, 11 Nov 2025 01:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824867;
-	bh=yPxLJ7fOjLunEcT2Zioy2wbl3ONiV8kJO6DRiw808EY=;
+	s=korg; t=1762823695;
+	bh=bufA4e2q/eVbxe+KPHeiCSO1uaFVFqfuiJ6n/Fz13GM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSCR/kRrusIUZvEI7/OWBNX7zRzXXr68psNfp0KyY6wH/10r4mNSnolK4NRXal5AM
-	 R+RYbsReqWss/lzseIfm9iylIWS+ViX9rhu1Lep3hxIWZSru6mZ9wDwzW2w7f9aTEm
-	 l5OAPsHXgQzhmfwC4br5RAEN2fUGrkGw3d+w00Tk=
+	b=POuAzF/O3UEJuGtwBlnOwqqLa5kGTNlowTyv9RsLUFhaCg6ZT8ma1IAg55YZ3vtv8
+	 X78BTS22/V9s/DDqoeZOQlq25edgYaYTINs/zAH0ZEvDn/eY3Dj3M2DV2vnhxGd2DK
+	 WI9FZfmGSMj+A4t1W+Gb5iBji15PLlqDva/7ueD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Edward Srouji <edwards@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Colin Foster <colin.foster@in-advantage.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 588/849] IB/ipoib: Ignore L3 master device
+Subject: [PATCH 6.12 302/565] smsc911x: add second read of EEPROM mac when possible corruption seen
 Date: Tue, 11 Nov 2025 09:42:38 +0900
-Message-ID: <20251111004550.638750813@linuxfoundation.org>
+Message-ID: <20251111004533.671982343@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+From: Colin Foster <colin.foster@in-advantage.com>
 
-[ Upstream commit 42f993d3439827c4959ea77e60620d7ebfb3a477 ]
+[ Upstream commit 69777753a8919b0b8313c856e707e1d1fe5ced85 ]
 
-Currently, all master upper netdevices (e.g., bond, VRF) are treated
-equally.
+When the EEPROM MAC is read by way of ADDRH, it can return all 0s the
+first time. Subsequent reads succeed.
 
-When a VRF netdevice is used over an IPoIB netdevice, the expected
-netdev resolution is on the lower IPoIB device which has the IP address
-assigned to it and not the VRF device.
+This is fully reproduceable on the Phytec PCM049 SOM.
 
-The rdma_cm module (CMA) tries to match incoming requests to a
-particular netdevice. When successful, it also validates that the return
-path points to the same device by performing a routing table lookup.
-Currently, the former would resolve to the VRF netdevice, while the
-latter to the correct lower IPoIB netdevice, leading to failure in
-rdma_cm.
+Re-read the ADDRH when this behaviour is observed, in an attempt to
+correctly apply the EEPROM MAC address.
 
-Improve this by ignoring the VRF master netdevice, if it exists, and
-instead return the lower IPoIB device.
-
-Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
-Reviewed-by: Parav Pandit <parav@nvidia.com>
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
-Link: https://patch.msgid.link/20250916111103.84069-5-edwards@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
+Link: https://patch.msgid.link/20250903132610.966787-1-colin.foster@in-advantage.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_main.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/smsc/smsc911x.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_main.c b/drivers/infiniband/ulp/ipoib/ipoib_main.c
-index 7acafc5c0e09a..5b4d76e97437d 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_main.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_main.c
-@@ -351,26 +351,27 @@ static bool ipoib_is_dev_match_addr_rcu(const struct sockaddr *addr,
- }
- 
- /*
-- * Find the master net_device on top of the given net_device.
-+ * Find the L2 master net_device on top of the given net_device.
-  * @dev: base IPoIB net_device
-  *
-- * Returns the master net_device with a reference held, or the same net_device
-- * if no master exists.
-+ * Returns the L2 master net_device with reference held if the L2 master
-+ * exists (such as bond netdevice), or returns same netdev with reference
-+ * held when master does not exist or when L3 master (such as VRF netdev).
-  */
- static struct net_device *ipoib_get_master_net_dev(struct net_device *dev)
+diff --git a/drivers/net/ethernet/smsc/smsc911x.c b/drivers/net/ethernet/smsc/smsc911x.c
+index 74f1ccc964599..7e8cad0515e86 100644
+--- a/drivers/net/ethernet/smsc/smsc911x.c
++++ b/drivers/net/ethernet/smsc/smsc911x.c
+@@ -2163,10 +2163,20 @@ static const struct net_device_ops smsc911x_netdev_ops = {
+ static void smsc911x_read_mac_address(struct net_device *dev)
  {
- 	struct net_device *master;
+ 	struct smsc911x_data *pdata = netdev_priv(dev);
+-	u32 mac_high16 = smsc911x_mac_read(pdata, ADDRH);
+-	u32 mac_low32 = smsc911x_mac_read(pdata, ADDRL);
++	u32 mac_high16, mac_low32;
+ 	u8 addr[ETH_ALEN];
  
- 	rcu_read_lock();
++	mac_high16 = smsc911x_mac_read(pdata, ADDRH);
++	mac_low32 = smsc911x_mac_read(pdata, ADDRL);
 +
- 	master = netdev_master_upper_dev_get_rcu(dev);
-+	if (!master || netif_is_l3_master(master))
-+		master = dev;
++	/* The first mac_read in some setups can incorrectly read 0. Re-read it
++	 * to get the full MAC if this is observed.
++	 */
++	if (mac_high16 == 0) {
++		SMSC_TRACE(pdata, probe, "Re-read MAC ADDRH\n");
++		mac_high16 = smsc911x_mac_read(pdata, ADDRH);
++	}
 +
- 	dev_hold(master);
- 	rcu_read_unlock();
- 
--	if (master)
--		return master;
--
--	dev_hold(dev);
--	return dev;
-+	return master;
- }
- 
- struct ipoib_walk_data {
-@@ -522,7 +523,7 @@ static struct net_device *ipoib_get_net_dev_by_params(
- 	if (ret)
- 		return NULL;
- 
--	/* See if we can find a unique device matching the L2 parameters */
-+	/* See if we can find a unique device matching the pkey and GID */
- 	matches = __ipoib_get_net_dev_by_params(dev_list, port, pkey_index,
- 						gid, NULL, &net_dev);
- 
-@@ -535,7 +536,7 @@ static struct net_device *ipoib_get_net_dev_by_params(
- 
- 	dev_put(net_dev);
- 
--	/* Couldn't find a unique device with L2 parameters only. Use L3
-+	/* Couldn't find a unique device with pkey and GID only. Use L3
- 	 * address to uniquely match the net device */
- 	matches = __ipoib_get_net_dev_by_params(dev_list, port, pkey_index,
- 						gid, addr, &net_dev);
+ 	addr[0] = (u8)(mac_low32);
+ 	addr[1] = (u8)(mac_low32 >> 8);
+ 	addr[2] = (u8)(mac_low32 >> 16);
 -- 
 2.51.0
 
