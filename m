@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D77BC4A638
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0737C4A5D2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B749918903B4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 954254F3D76
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9572F30276C;
-	Tue, 11 Nov 2025 01:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1552B26E16C;
+	Tue, 11 Nov 2025 01:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QT2luHl8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJWQBkJU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497C3303CAC;
-	Tue, 11 Nov 2025 01:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C49303CAE;
+	Tue, 11 Nov 2025 01:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823290; cv=none; b=RK+tXUML0EItG2yD7c84giCmfU5WU5YHoKVWvFThAEZFLHE3UYX/2FeSlYtnGXC9+h690CmwrmUItwYEbEyi3vvLa08Ngs2zKVJIDT7sKur+u969zR6uM1xQ1kmPMYB151Fo3qy05T1KIyW1k36lQyqWXvHJOIXuNyJEg4wTO1E=
+	t=1762823294; cv=none; b=We56jNmqQ3rIVyI/e73Kt7Uv5FTbt5YZBPjzYLi8/q1wLMijB78UVZyaaoSR1nQt7QN1FW6k6DDS0Hl/IxZZ09MkvknFTOT1UJprCATAdNfSrCM7Gs3gNgt9GgoK4H0jrHFdY4CGtZEXIrAqM1Gswc3jkptxS8oZRRYHRG/HnSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823290; c=relaxed/simple;
-	bh=ajYPGhfw60txX942CdzmsRFF4Y1q7FfqhqsZZHxX5E0=;
+	s=arc-20240116; t=1762823294; c=relaxed/simple;
+	bh=3iXnmmi16rEpRBDcRIA0W0fdnYWw5WC6Zl03GVUBg+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u64SHJyse3SzfLP/wJdJhEAYhKsS9x2gE3Mdk1Cmi3+ZJlKKOTrvoVzoBMCxiZMlc/XJ5tfFUrn88xdGD418uQN49AGvDQ92RhFYcohf6vFQPF4f5sVVJE1fDsn9R1gvvdVIqh5u3cuzSh61BOZCcPOq4rtP2okZvYlKaFiE9YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QT2luHl8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF0EC4AF0B;
-	Tue, 11 Nov 2025 01:08:09 +0000 (UTC)
+	 MIME-Version; b=UODVBbs0R3r5ZGs4kwZ8dd8aJS9Y922wfiJmsBnw+GqE7sp0LK4j9L4z9xFKxjadd95qtCIKRtz6huJnj4tZS7V4m+Ud8NxpeEX39AT+InSM9CFugrT+/CvqVAFGDsgisX47ha6ac4gr0xBR/3xJbs/SyvuSKF+GG03qo6RaRTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJWQBkJU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2973FC4CEFB;
+	Tue, 11 Nov 2025 01:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823289;
-	bh=ajYPGhfw60txX942CdzmsRFF4Y1q7FfqhqsZZHxX5E0=;
+	s=korg; t=1762823294;
+	bh=3iXnmmi16rEpRBDcRIA0W0fdnYWw5WC6Zl03GVUBg+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QT2luHl8cmdN1inc4zpyKdP4S/mKmWyPZyTgkjW4t1FPwQvUrEHTp2y5LmYuyZtQB
-	 Ifas0WVkW0CwRq4c0PUfKK1ssgUmhClx8YRed2Aaud2g0G0TgQ/vkLqcczxLo0+gbb
-	 7/ComXhBkZ2rr1VDSG/QkY7xEMb4cMmU/PYxsYl0=
+	b=oJWQBkJUvflz5EteC/ABNs7/PC630maPg7KDIFgMtQQbeMvt3ZSn8Z16yaODTWbQD
+	 W96HrzJgO9++Yvm4Ilt012BTuKmMz9lW+2duO+Vtgmgn5Px5NWznDYpkP4Ap6TQPGj
+	 N2CtKDIwCh/FfeIUj8eprk6LMMXUo+Ldrji0iDGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 269/849] docs: kernel-doc: avoid script crash on ancient Python
-Date: Tue, 11 Nov 2025 09:37:19 +0900
-Message-ID: <20251111004542.934930071@linuxfoundation.org>
+Subject: [PATCH 6.17 270/849] drm/sharp-memory: Do not access GEM-DMA vaddr directly
+Date: Tue, 11 Nov 2025 09:37:20 +0900
+Message-ID: <20251111004542.957821040@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,144 +66,137 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit fc973dcd73f242480c61eccb1aa7306adafd2907 ]
+[ Upstream commit 136c374d8c80378d2982a46b2adabfc007299641 ]
 
-While we do need at least 3.6 for kernel-doc to work, and at least
-3.7 for it to output functions and structs with parameters at the
-right order, let the python binary be compatible with legacy
-versions.
+Use DRM's shadow-plane helper to map and access the GEM object's buffer
+within kernel address space. Encapsulates the vmap logic in the GEM-DMA
+helpers.
 
-The rationale is that the Kernel build nowadays calls kernel-doc
-with -none on some places. Better not to bail out when older
-versions are found.
+The sharp-memory driver currently reads the vaddr field from the GME
+buffer object directly. This only works because GEM code 'automagically'
+sets vaddr.
 
-With that, potentially this will run with python 2.7 and 3.2+,
-according with vermin:
+Shadow-plane helpers perform the same steps, but with correct abstraction
+behind drm_gem_vmap(). The shadow-plane state provides the buffer address
+in kernel address space and the format-conversion state.
 
-	$ vermin --no-tips -v ./scripts/kernel-doc
-	Detecting python files..
-	Analyzing using 24 processes..
-	2.7, 3.2     /new_devel/v4l/docs/scripts/kernel-doc
-	Minimum required versions: 2.7, 3.2
+v2:
+- fix typo in commit description
 
-3.2 minimal requirement is due to argparse.
-
-The minimal version I could check was version 3.4
-(using anaconda). Anaconda doesn't support 3.2 or 3.3
-anymore, and 3.2 doesn't even compile (I tested compiling
-Python 3.2 on Fedora 42 and on Fedora 32 - no show).
-
-With 3.4, the script didn't crash and emitted the right warning:
-
-	$ conda create -n py34 python=3.4
-	$ conda activate py34
-	python --version
-        Python 3.4.5
-        $ python ./scripts/kernel-doc --none include/media
-	Error: Python 3.6 or later is required by kernel-doc
-	$ conda deactivate
-
-	$ python --version
-	Python 3.13.5
-        $ python ./scripts/kernel-doc --none include/media
-	(no warnings and script ran properly)
-
-Supporting 2.7 is out of scope, as it is EOL for 5 years, and
-changing shebang to point to "python" instead of "python3"
-would have a wider impact.
-
-I did some extra checks about the differences from 3.2 and
-3.4, and didn't find anything that would cause troubles:
-
-	grep -rE "yield from|asyncio|pathlib|async|await|enum" scripts/kernel-doc
-
-Also, it doesn't use "@" operator. So, I'm confident that it
-should run (producing the exit warning) since Python 3.2.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/87d55e76b0b1391cb7a83e3e965dbddb83fa9786.1753806485.git.mchehab+huawei@kernel.org
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://lore.kernel.org/r/20250627152327.8244-1-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kernel-doc.py | 34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/tiny/sharp-memory.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/scripts/kernel-doc.py b/scripts/kernel-doc.py
-index fc3d46ef519f8..d9fe2bcbd39cc 100755
---- a/scripts/kernel-doc.py
-+++ b/scripts/kernel-doc.py
-@@ -2,8 +2,17 @@
- # SPDX-License-Identifier: GPL-2.0
- # Copyright(c) 2025: Mauro Carvalho Chehab <mchehab@kernel.org>.
- #
--# pylint: disable=C0103,R0915
--#
-+# pylint: disable=C0103,R0912,R0914,R0915
-+
-+# NOTE: While kernel-doc requires at least version 3.6 to run, the
-+#       command line should work with Python 3.2+ (tested with 3.4).
-+#       The rationale is that it shall fail gracefully during Kernel
-+#       compilation with older Kernel versions. Due to that:
-+#       - encoding line is needed here;
-+#       - no f-strings can be used on this file.
-+#       - the libraries that require newer versions can only be included
-+#         after Python version is checked.
-+
- # Converted from the kernel-doc script originally written in Perl
- # under GPLv2, copyrighted since 1998 by the following authors:
- #
-@@ -107,9 +116,6 @@ SRC_DIR = os.path.dirname(os.path.realpath(__file__))
+diff --git a/drivers/gpu/drm/tiny/sharp-memory.c b/drivers/gpu/drm/tiny/sharp-memory.c
+index 03d2850310c47..64272cd0f6e22 100644
+--- a/drivers/gpu/drm/tiny/sharp-memory.c
++++ b/drivers/gpu/drm/tiny/sharp-memory.c
+@@ -126,28 +126,28 @@ static inline void sharp_memory_set_tx_buffer_addresses(u8 *buffer,
  
- sys.path.insert(0, os.path.join(SRC_DIR, LIB_DIR))
+ static void sharp_memory_set_tx_buffer_data(u8 *buffer,
+ 					    struct drm_framebuffer *fb,
++					    const struct iosys_map *vmap,
+ 					    struct drm_rect clip,
+ 					    u32 pitch,
+ 					    struct drm_format_conv_state *fmtcnv_state)
+ {
+ 	int ret;
+-	struct iosys_map dst, vmap;
+-	struct drm_gem_dma_object *dma_obj = drm_fb_dma_get_gem_obj(fb, 0);
++	struct iosys_map dst;
  
--from kdoc_files import KernelFiles                      # pylint: disable=C0413
--from kdoc_output import RestFormat, ManFormat           # pylint: disable=C0413
+ 	ret = drm_gem_fb_begin_cpu_access(fb, DMA_FROM_DEVICE);
+ 	if (ret)
+ 		return;
+ 
+ 	iosys_map_set_vaddr(&dst, buffer);
+-	iosys_map_set_vaddr(&vmap, dma_obj->vaddr);
+ 
+-	drm_fb_xrgb8888_to_mono(&dst, &pitch, &vmap, fb, &clip, fmtcnv_state);
++	drm_fb_xrgb8888_to_mono(&dst, &pitch, vmap, fb, &clip, fmtcnv_state);
+ 
+ 	drm_gem_fb_end_cpu_access(fb, DMA_FROM_DEVICE);
+ }
+ 
+ static int sharp_memory_update_display(struct sharp_memory_device *smd,
+ 				       struct drm_framebuffer *fb,
++				       const struct iosys_map *vmap,
+ 				       struct drm_rect clip,
+ 				       struct drm_format_conv_state *fmtcnv_state)
+ {
+@@ -163,7 +163,7 @@ static int sharp_memory_update_display(struct sharp_memory_device *smd,
+ 	sharp_memory_set_tx_buffer_mode(&tx_buffer[0],
+ 					SHARP_MEMORY_DISPLAY_UPDATE_MODE, vcom);
+ 	sharp_memory_set_tx_buffer_addresses(&tx_buffer[1], clip, pitch);
+-	sharp_memory_set_tx_buffer_data(&tx_buffer[2], fb, clip, pitch, fmtcnv_state);
++	sharp_memory_set_tx_buffer_data(&tx_buffer[2], fb, vmap, clip, pitch, fmtcnv_state);
+ 
+ 	ret = sharp_memory_spi_write(smd->spi, tx_buffer, tx_buffer_size);
+ 
+@@ -206,7 +206,8 @@ static int sharp_memory_clear_display(struct sharp_memory_device *smd)
+ 	return ret;
+ }
+ 
+-static void sharp_memory_fb_dirty(struct drm_framebuffer *fb, struct drm_rect *rect,
++static void sharp_memory_fb_dirty(struct drm_framebuffer *fb, const struct iosys_map *vmap,
++				  struct drm_rect *rect,
+ 				  struct drm_format_conv_state *fmtconv_state)
+ {
+ 	struct drm_rect clip;
+@@ -218,7 +219,7 @@ static void sharp_memory_fb_dirty(struct drm_framebuffer *fb, struct drm_rect *r
+ 	clip.y1 = rect->y1;
+ 	clip.y2 = rect->y2;
+ 
+-	sharp_memory_update_display(smd, fb, clip, fmtconv_state);
++	sharp_memory_update_display(smd, fb, vmap, clip, fmtconv_state);
+ }
+ 
+ static int sharp_memory_plane_atomic_check(struct drm_plane *plane,
+@@ -242,7 +243,7 @@ static void sharp_memory_plane_atomic_update(struct drm_plane *plane,
+ {
+ 	struct drm_plane_state *old_state = drm_atomic_get_old_plane_state(state, plane);
+ 	struct drm_plane_state *plane_state = plane->state;
+-	struct drm_format_conv_state fmtcnv_state = DRM_FORMAT_CONV_STATE_INIT;
++	struct drm_shadow_plane_state *shadow_plane_state = to_drm_shadow_plane_state(plane_state);
+ 	struct sharp_memory_device *smd;
+ 	struct drm_rect rect;
+ 
+@@ -251,15 +252,15 @@ static void sharp_memory_plane_atomic_update(struct drm_plane *plane,
+ 		return;
+ 
+ 	if (drm_atomic_helper_damage_merged(old_state, plane_state, &rect))
+-		sharp_memory_fb_dirty(plane_state->fb, &rect, &fmtcnv_state);
 -
- DESC = """
- Read C language source or header FILEs, extract embedded documentation comments,
- and print formatted documentation to standard output.
-@@ -273,14 +279,22 @@ def main():
+-	drm_format_conv_state_release(&fmtcnv_state);
++		sharp_memory_fb_dirty(plane_state->fb, shadow_plane_state->data,
++				      &rect, &shadow_plane_state->fmtcnv_state);
+ }
  
-     python_ver = sys.version_info[:2]
-     if python_ver < (3,6):
--        logger.warning("Python 3.6 or later is required by kernel-doc")
-+        # Depending on Kernel configuration, kernel-doc --none is called at
-+        # build time. As we don't want to break compilation due to the
-+        # usage of an old Python version, return 0 here.
-+        if args.none:
-+            logger.error("Python 3.6 or later is required by kernel-doc. skipping checks")
-+            sys.exit(0)
+ static const struct drm_plane_helper_funcs sharp_memory_plane_helper_funcs = {
+ 	.prepare_fb = drm_gem_plane_helper_prepare_fb,
+ 	.atomic_check = sharp_memory_plane_atomic_check,
+ 	.atomic_update = sharp_memory_plane_atomic_update,
++	DRM_GEM_SHADOW_PLANE_HELPER_FUNCS,
+ };
  
--        # Return 0 here to avoid breaking compilation
--        sys.exit(0)
-+        sys.exit("Python 3.6 or later is required by kernel-doc. Aborting.")
+ static bool sharp_memory_format_mod_supported(struct drm_plane *plane,
+@@ -273,9 +274,7 @@ static const struct drm_plane_funcs sharp_memory_plane_funcs = {
+ 	.update_plane = drm_atomic_helper_update_plane,
+ 	.disable_plane = drm_atomic_helper_disable_plane,
+ 	.destroy = drm_plane_cleanup,
+-	.reset = drm_atomic_helper_plane_reset,
+-	.atomic_duplicate_state	= drm_atomic_helper_plane_duplicate_state,
+-	.atomic_destroy_state = drm_atomic_helper_plane_destroy_state,
++	DRM_GEM_SHADOW_PLANE_FUNCS,
+ 	.format_mod_supported = sharp_memory_format_mod_supported,
+ };
  
-     if python_ver < (3,7):
-         logger.warning("Python 3.7 or later is required for correct results")
- 
-+    # Import kernel-doc libraries only after checking Python version
-+    from kdoc_files import KernelFiles                  # pylint: disable=C0415
-+    from kdoc_output import RestFormat, ManFormat       # pylint: disable=C0415
-+
-     if args.man:
-         out_style = ManFormat(modulename=args.modulename)
-     elif args.none:
-@@ -308,11 +322,11 @@ def main():
-         sys.exit(0)
- 
-     if args.werror:
--        print(f"{error_count} warnings as errors")
-+        print("%s warnings as errors" % error_count)    # pylint: disable=C0209
-         sys.exit(error_count)
- 
-     if args.verbose:
--        print(f"{error_count} errors")
-+        print("%s errors" % error_count)                # pylint: disable=C0209
- 
-     if args.none:
-         sys.exit(0)
 -- 
 2.51.0
 
