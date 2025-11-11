@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECE8C4AF1F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:51 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BD52C4A9AA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 723581890CCC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ACD2F4F351B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1236B3043BF;
-	Tue, 11 Nov 2025 01:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C409E342CAF;
+	Tue, 11 Nov 2025 01:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hq3tG1at"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdytfc1h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20463009F1;
-	Tue, 11 Nov 2025 01:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D26253944;
+	Tue, 11 Nov 2025 01:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825129; cv=none; b=IxjMl6uW7pJR8Lg2EAAbZFDKo5mYlhTzXsYzL10yljYS70Xz3nbbegXyIk1Dcy4AxDXn4otLMsVJMzPpsAoiyzKgOe1eyWDfNIV0Aif7Hd5GkpnBho0+nqUUdx6ITk71Mu7ktQnp/wn7cgbGodpwPFJ0Hay21gmttrGyZTaSvJw=
+	t=1762824104; cv=none; b=SW8KvaKJks/s1onz+i3BBfDPjj6XzZXLv+ewauHkPD7ygeYtji8RR1uQQXib0N/yPlpmmS99pWk07FhixRc885igs1yxfRVTB3sQtJiEheqeFgL5LJhxHwMNMwjbhMNpQUGFk0hutQ6vTok8sFDFZLs8pzcq+vw/hqA60x2m9Qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825129; c=relaxed/simple;
-	bh=DnUWpZaFlb7VqkW+Cmj8JVQ6vjdWelmI2uTjpQyo9C8=;
+	s=arc-20240116; t=1762824104; c=relaxed/simple;
+	bh=lV1mpWq12QNLkCPfkt0EajkhOwouBaigRLkEDKsIbb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZxjJtJG/SR3EJdcmJfN1GwSm53xWasEgyWUrpd42/f+Q53525LabhCRxAiGlaJZ7wHd4DEeUifgfuvBlc9o3IOVGOoWUDpxJp0oh9eOIXidtinG+mf6BGqzral+065ea5KNvN3m35ggguO6a4HRFOndOrao0MVCgVawsiYfGy88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hq3tG1at; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEEC7C2BCAF;
-	Tue, 11 Nov 2025 01:38:48 +0000 (UTC)
+	 MIME-Version; b=BfJxoSey4xxZ4wZW/Jb8gUsODe/djGZucsplQlQ4Govd32oKAU2avEAHtJdlTFuKoGdOQoc6mup+1RxbSERzcYJpYacoawqCM7ZzSwXmoiGybFYd191Kq11G4KvXZKjaqUDJhq1B+K9Vpsenxk7ssrcrlthdwocdXvK6yz0pfpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdytfc1h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C20C113D0;
+	Tue, 11 Nov 2025 01:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825129;
-	bh=DnUWpZaFlb7VqkW+Cmj8JVQ6vjdWelmI2uTjpQyo9C8=;
+	s=korg; t=1762824104;
+	bh=lV1mpWq12QNLkCPfkt0EajkhOwouBaigRLkEDKsIbb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hq3tG1atvcUF3el4tMXXr5yVT0krMeWLP1s5DcuypnBpjee38bFPcS8R3ZwYvqXyJ
-	 rbFjyFIceD6opMq4zCTKM8kkSPMsFdF+lDJoBtF6/EK/20xCaxzENPQWJ7CHcdLRgg
-	 2R5CgVYXE+yvFurm4LtmtMGzfpA1Twf4D9ou3/yQ=
+	b=hdytfc1hE7SjRfh+8Z6c++4XcHCju6jnVh9ASAe9Nsh0Mx5Grkacv+ht+k6lAPnci
+	 mXs+c9SA7PQqjqobW1ubrYZSauEAvTmfmBSpxKrzTTQvsxyzx+59kEsf1KjdL6buum
+	 xX8GWhGT1/u6Gn06sm9HckDEeKR17MOA2Aj86gqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Jacob Moroni <jmoroni@google.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 674/849] ftrace: Fix softlockup in ftrace_module_enable
+Subject: [PATCH 6.12 388/565] RDMA/irdma: Update Kconfig
 Date: Tue, 11 Nov 2025 09:44:04 +0900
-Message-ID: <20251111004552.714729918@linuxfoundation.org>
+Message-ID: <20251111004535.599027257@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
 
-[ Upstream commit 4099b98203d6b33d990586542fa5beee408032a3 ]
+[ Upstream commit 060842fed53f77a73824c9147f51dc6746c1267a ]
 
-A soft lockup was observed when loading amdgpu module.
-If a module has a lot of tracable functions, multiple calls
-to kallsyms_lookup can spend too much time in RCU critical
-section and with disabled preemption, causing kernel panic.
-This is the same issue that was fixed in
-commit d0b24b4e91fc ("ftrace: Prevent RCU stall on PREEMPT_VOLUNTARY
-kernels") and commit 42ea22e754ba ("ftrace: Add cond_resched() to
-ftrace_graph_set_hash()").
+Update Kconfig to add dependency on idpf module and
+add IPU E2000 to the list of supported devices.
 
-Fix it the same way by adding cond_resched() in ftrace_module_enable.
-
-Link: https://lore.kernel.org/aMQD9_lxYmphT-up@vova-pc
-Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Link: https://patch.msgid.link/20250827152545.2056-17-tatyana.e.nikolova@intel.com
+Tested-by: Jacob Moroni <jmoroni@google.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/irdma/Kconfig | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index a69067367c296..42bd2ba68a821 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -7535,6 +7535,8 @@ void ftrace_module_enable(struct module *mod)
- 		if (!within_module(rec->ip, mod))
- 			break;
- 
-+		cond_resched();
-+
- 		/* Weak functions should still be ignored */
- 		if (!test_for_valid_rec(rec)) {
- 			/* Clear all other flags. Should not be enabled anyway */
+diff --git a/drivers/infiniband/hw/irdma/Kconfig b/drivers/infiniband/hw/irdma/Kconfig
+index b6f9c41bca51d..41660203e0049 100644
+--- a/drivers/infiniband/hw/irdma/Kconfig
++++ b/drivers/infiniband/hw/irdma/Kconfig
+@@ -4,9 +4,10 @@ config INFINIBAND_IRDMA
+ 	depends on INET
+ 	depends on IPV6 || !IPV6
+ 	depends on PCI
+-	depends on ICE && I40E
++	depends on IDPF && ICE && I40E
+ 	select GENERIC_ALLOCATOR
+ 	select AUXILIARY_BUS
+ 	help
+-	  This is an Intel(R) Ethernet Protocol Driver for RDMA driver
+-	  that support E810 (iWARP/RoCE) and X722 (iWARP) network devices.
++	  This is an Intel(R) Ethernet Protocol Driver for RDMA that
++	  supports IPU E2000 (RoCEv2), E810 (iWARP/RoCEv2) and X722 (iWARP)
++	  network devices.
 -- 
 2.51.0
 
