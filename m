@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-193163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE20C4A022
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9922C4A029
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C39083AAC6D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A08C188CD07
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EA024BBEB;
-	Tue, 11 Nov 2025 00:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA53924A043;
+	Tue, 11 Nov 2025 00:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXG2Oqsn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hfKtPQKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EFC1D6DB5;
-	Tue, 11 Nov 2025 00:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7644086A;
+	Tue, 11 Nov 2025 00:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822447; cv=none; b=FCnYtLFQAwrtprd0TsBwG5VWJa5RWmXqxPkej2JND+Lfjb77yQv6zHTjkFDFMr1KtAktOXXWUG4h/FV26pGiVRvZf84MpPxno90jM5y0B7aSkG+u6phggPSUiwRAoBa5QXz33wZ73wCsxnaXmLj+Ohi8Z4bkU54/M7NV3gvy1YU=
+	t=1762822451; cv=none; b=CLrS5PoMIovVBZf8706NOzrXMyO3wu8jHztZhQhlyhOHurqNrND6QLQZR8rbq8sUovaiOdaA6IHT6lenovG2et4ywH8yzYJ16rZAwaFjfcUG2zxDXbOl4LQjq3Ox03UWRqfmMUURQxsn2l6X7g/8H4qNruKN5G8yvvdOqgGER+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822447; c=relaxed/simple;
-	bh=R1HZLa7ECdZav7R4Q6yIXuTsey886sRppXunLrrxJ/I=;
+	s=arc-20240116; t=1762822451; c=relaxed/simple;
+	bh=T8mdGEQsl/CxE2+heU2/k3zqDjt7mpgDrU0zoEMIX5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mW1Bjf/qCHRGB+G2pcNGGfih7wVcF/VtsvuB8yGXmUdnJHkN6kzskItt5o8cUeBkifJ5Uz8VE5Qi5XI2TsndhoDeZCT1MqRMVD61EpAUPWFwsVrIMkCTUBkE5didZeErwp1rOq7DP6y0AsLAFmX5saRSopFh9+1kmI7PTFHUQ80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXG2Oqsn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805F3C16AAE;
-	Tue, 11 Nov 2025 00:54:06 +0000 (UTC)
+	 MIME-Version; b=j63UFkrw044RBiJLT+mBj2/LtObigZOsKgL05PFbHoHQn8OOPIoGiGun3tmwl9qR8LY2FIaIL0rRLHw/n+KMbsBX6ZUIaODBAphtcK5e/UBzCSr6YxUYBgaVI796Pn9b2L8XGIady5Ctc+4t03tp4aBQEcO2QovVfqOBRtjHhsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hfKtPQKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11881C19421;
+	Tue, 11 Nov 2025 00:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822446;
-	bh=R1HZLa7ECdZav7R4Q6yIXuTsey886sRppXunLrrxJ/I=;
+	s=korg; t=1762822451;
+	bh=T8mdGEQsl/CxE2+heU2/k3zqDjt7mpgDrU0zoEMIX5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qXG2OqsnCFrOrZPEL2xcbAGbbyprsU2AeeKtGQMdbWaDBz7t0TyS7PK4HUFaNPQ7z
-	 gElTKxjEacS8305/2HmvXPzu5+QdQqASCOXwQd8YX2LCsG2iKv6rra6y+9kSniljgZ
-	 jI8NHmvOacaOD8OR5YRXAq5JTT+jkg+dBhTrsln4=
+	b=hfKtPQKRv96plkh0xsnL6b00wIREEyaBNw6Lp1K7JEuJ9AEoSGSd7PXtvIFTP5v6N
+	 ec4XSTdMZSBtiYPvOqAls9wqcdaBS4NmOj9hunhxlWik4IXZ05+lnH1s+1kXKRcmfT
+	 h4k4fXLzZakp3ES1bF3ALM1LR56Ybg5I46uVxHv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 109/849] drm/amd/display: Add HDR workaround for a specific eDP
-Date: Tue, 11 Nov 2025 09:34:39 +0900
-Message-ID: <20251111004539.030889026@linuxfoundation.org>
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 110/849] mptcp: leverage skb deferral free
+Date: Tue, 11 Nov 2025 09:34:40 +0900
+Message-ID: <20251111004539.054173046@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,40 +68,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 7d08c3b1731014dd1cfd0bf8b0cb1cef9dfd191e upstream.
+[ Upstream commit 9aa59323f2709370cb4f01acbba599a9167f317b ]
 
-[WHY & HOW]
-Some eDP panels suffer from flicking when HDR is enabled in KDE or
-Gnome.
+Usage of the skb deferral API is straight-forward; with multiple
+subflows actives this allow moving part of the received application
+load into multiple CPUs.
 
-This add another quirk to worksaround to skip VSC that is incompatible
-with an eDP panel.
+Also fix a typo in the related comment.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/4452
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 99441824bec63549a076cd86631d138ec9a0c71c)
-Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Tested-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250927-net-next-mptcp-rcv-path-imp-v1-1-5da266aa9c1a@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8e04ce45a8db ("mptcp: fix MSG_PEEK stream corruption")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/mptcp/protocol.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-@@ -82,6 +82,7 @@ static void apply_edid_quirks(struct drm
- 		edid_caps->panel_patch.remove_sink_ext_caps = true;
- 		break;
- 	case drm_edid_encode_panel_id('S', 'D', 'C', 0x4154):
-+	case drm_edid_encode_panel_id('S', 'D', 'C', 0x4171):
- 		drm_dbg_driver(dev, "Disabling VSC on monitor with panel id %X\n", panel_id);
- 		edid_caps->panel_patch.disable_colorimetry = true;
- 		break;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1934,12 +1934,13 @@ static int __mptcp_recvmsg_mskq(struct s
+ 		}
+ 
+ 		if (!(flags & MSG_PEEK)) {
+-			/* avoid the indirect call, we know the destructor is sock_wfree */
++			/* avoid the indirect call, we know the destructor is sock_rfree */
+ 			skb->destructor = NULL;
++			skb->sk = NULL;
+ 			atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
+ 			sk_mem_uncharge(sk, skb->truesize);
+ 			__skb_unlink(skb, &sk->sk_receive_queue);
+-			__kfree_skb(skb);
++			skb_attempt_defer_free(skb);
+ 			msk->bytes_consumed += count;
+ 		}
+ 
 
 
 
