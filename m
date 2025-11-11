@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-193037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E70ABC49EDA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEEFDC49E9E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDDB23ACA87
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:49:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB54D3A9FF8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFBA192B75;
-	Tue, 11 Nov 2025 00:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A351192B75;
+	Tue, 11 Nov 2025 00:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKC5uvQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0w9Jzdd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391B82AE8D;
-	Tue, 11 Nov 2025 00:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540532BB17;
+	Tue, 11 Nov 2025 00:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822148; cv=none; b=HxnSQduIwnhTLE01F177PZoHMWMxVnnl9rtiHLpmAqVvP0z4AyIvf+WCWNnSeh09R8mVstipgNWX1gq8+tbXn3FlWuerwYeceVZJDl8V/j8yR+IelPOs+sPqbh4y8J9bvQFygrMPAL2vE+oDip/M4SO3SEFw4v2Kg+nnsDtbOWs=
+	t=1762822088; cv=none; b=bl9AHHN9XOAst/ijbJ71C+NkICsS5uA4HdrUlKuxgCCqvMeNqluCFxW98jDAnEMoUgX5VYW9ysGWfZW9/IFcPASoXByNgKXP6P5v57ZoxkGf7wYQzTyCFd5shywmnF7TqSjK26XeR+ZN1HLQm3BJRyOS8nW8D5X6oc0otpE1E+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822148; c=relaxed/simple;
-	bh=gupxntolVK0kgJwU7VOyDEzUpoIYhY06reuvsCzUI+0=;
+	s=arc-20240116; t=1762822088; c=relaxed/simple;
+	bh=bcJ3qbmr5dascvKcEGYzq8zjCzQ4eq96Uc4/I5yAnDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bf3KGpQQ0yP45KYprKxEOR94wAdT+zZOt6VTjT9PSatipjLU7lJ9ch7SxNR7+aASr3z6mN1ppvLdXlhON6ihF7euSkvQ4wgeAQySZiKQG3q2YMwilZxk2M8yP2SfqzW+QAli78pGimKzcxfjKjFSDfHl8s+ifT1A5v/9KyKh+ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKC5uvQm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89A9C4CEFB;
-	Tue, 11 Nov 2025 00:49:07 +0000 (UTC)
+	 MIME-Version; b=ldiEx4qM/jA7z+jNBUh34S7BAhqc0T8Q+k7MNFeTeSTH7TDJTXi6ArR5YuLV3zq2IxsngSBFg8n9lhPyN5vL7oTPfJhGWlL9uW0p8Sgmz8LvfJmb6OSm+3SdzKvjyLFK9GPBjF1Xeffjtc2eaPQ8nTAiPjsXSkz6GhS3qYFoLBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0w9Jzdd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823AAC113D0;
+	Tue, 11 Nov 2025 00:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822148;
-	bh=gupxntolVK0kgJwU7VOyDEzUpoIYhY06reuvsCzUI+0=;
+	s=korg; t=1762822087;
+	bh=bcJ3qbmr5dascvKcEGYzq8zjCzQ4eq96Uc4/I5yAnDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uKC5uvQmFEft7KkFSGxtkyq5zFJ+FbeWCo7afNdCmwWE9rkaiweBBucwPHTN7/MA9
-	 LQvcwBqBiQSbljsvaM6EqYPH72SciZFksv0WCB7yneeMLs2XnEtpXzSjw6KUAvcB4N
-	 x3YQ6WwQj1Hpkf8ulk/jhnOWEkZMNXOzPGoZLg9k=
+	b=x0w9Jzdd9zXVy4q7xUkiRkubPPW5xaE6rzSkT9Ypi2N1vHm6f7hdIiPYSTlEDCzVz
+	 tIxjCCLMNcE1hd2GLc+fHcAuubiVqSbBg7cR4dh2lJL7AFGscPnPOhkYEApGw5exaO
+	 +yuaeFO3jZ/e+hW82FoDttjEF8CVA2j3EqObwlIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.17 003/849] NFSD: Define actions for the new time_deleg FATTR4 attributes
-Date: Tue, 11 Nov 2025 09:32:53 +0900
-Message-ID: <20251111004536.547674614@linuxfoundation.org>
+Subject: [PATCH 6.17 004/849] NFSD: Fix crash in nfsd4_read_release()
+Date: Tue, 11 Nov 2025 09:32:54 +0900
+Message-ID: <20251111004536.569758099@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,70 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 4f76435fd517981f01608678c06ad9718a86ee98 upstream.
+commit abb1f08a2121dd270193746e43b2a9373db9ad84 upstream.
 
-NFSv4 clients won't send legitimate GETATTR requests for these new
-attributes because they are intended to be used only with CB_GETATTR
-and SETATTR. But NFSD has to do something besides crashing if it
-ever sees a GETATTR request that queries these attributes.
+When tracing is enabled, the trace_nfsd_read_done trace point
+crashes during the pynfs read.testNoFh test.
 
-RFC 8881 Section 18.7.3 states:
-
-> The server MUST return a value for each attribute that the client
-> requests if the attribute is supported by the server for the
-> target file system. If the server does not support a particular
-> attribute on the target file system, then it MUST NOT return the
-> attribute value and MUST NOT set the attribute bit in the result
-> bitmap. The server MUST return an error if it supports an
-> attribute on the target but cannot obtain its value. In that case,
-> no attribute values will be returned.
-
-Further, RFC 9754 Section 5 states:
-
-> These new attributes are invalid to be used with GETATTR, VERIFY,
-> and NVERIFY, and they can only be used with CB_GETATTR and SETATTR
-> by a client holding an appropriate delegation.
-
-Thus there does not appear to be a specific server response mandated
-by specification. Taking the guidance that querying these attributes
-via GETATTR is "invalid", NFSD will return nfserr_inval, failing the
-request entirely.
-
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Closes: https://lore.kernel.org/linux-nfs/7819419cf0cb50d8130dc6b747765d2b8febc88a.camel@kernel.org/T/#t
-Fixes: 51c0d4f7e317 ("nfsd: add support for FATTR4_OPEN_ARGUMENTS")
+Fixes: 15a8b55dbb1b ("nfsd: call op_release, even when op_func returns an error")
 Cc: stable@vger.kernel.org
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/nfsd/nfs4proc.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -2939,6 +2939,12 @@ struct nfsd4_fattr_args {
- typedef __be32(*nfsd4_enc_attr)(struct xdr_stream *xdr,
- 				const struct nfsd4_fattr_args *args);
- 
-+static __be32 nfsd4_encode_fattr4__inval(struct xdr_stream *xdr,
-+					 const struct nfsd4_fattr_args *args)
-+{
-+	return nfserr_inval;
-+}
-+
- static __be32 nfsd4_encode_fattr4__noop(struct xdr_stream *xdr,
- 					const struct nfsd4_fattr_args *args)
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -988,10 +988,11 @@ nfsd4_read(struct svc_rqst *rqstp, struc
+ static void
+ nfsd4_read_release(union nfsd4_op_u *u)
  {
-@@ -3560,6 +3566,8 @@ static const nfsd4_enc_attr nfsd4_enc_fa
+-	if (u->read.rd_nf)
++	if (u->read.rd_nf) {
++		trace_nfsd_read_done(u->read.rd_rqstp, u->read.rd_fhp,
++				     u->read.rd_offset, u->read.rd_length);
+ 		nfsd_file_put(u->read.rd_nf);
+-	trace_nfsd_read_done(u->read.rd_rqstp, u->read.rd_fhp,
+-			     u->read.rd_offset, u->read.rd_length);
++	}
+ }
  
- 	[FATTR4_MODE_UMASK]		= nfsd4_encode_fattr4__noop,
- 	[FATTR4_XATTR_SUPPORT]		= nfsd4_encode_fattr4_xattr_support,
-+	[FATTR4_TIME_DELEG_ACCESS]	= nfsd4_encode_fattr4__inval,
-+	[FATTR4_TIME_DELEG_MODIFY]	= nfsd4_encode_fattr4__inval,
- 	[FATTR4_OPEN_ARGUMENTS]		= nfsd4_encode_fattr4_open_arguments,
- };
- 
+ static __be32
 
 
 
