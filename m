@@ -1,79 +1,77 @@
-Return-Path: <stable+bounces-194429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCFDC4B61E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 04:59:18 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE30C4B621
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 04:59:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7C78B4F1BFC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:59:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A1C8234DCE5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450E431354A;
-	Tue, 11 Nov 2025 03:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4493732E148;
+	Tue, 11 Nov 2025 03:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="uwc6dYkp"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="HuBg940T"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D8431280E
-	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 03:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821A82FD67A
+	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 03:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762833550; cv=none; b=gaoqJ8f8JYf8jz8OVwA+tO5Ed8i4+ZQQ/7sGO1JuNlPZt9B4cYbLJYADOHLDtO1RE+nxYp4huPH52pNTXBdfSVij0HCYdaZspSW63TZyvzc29IEZKTCTZT/8dF6cHD//rT21bvY879yXXTkomlGRN1cHchwGEjM7CMGY6Uk7IWg=
+	t=1762833551; cv=none; b=twWrHzfpKDsop9TSYJ7yFPASUxCh4Dyhxm8Itg+pOorpTqmHq9/Jqv8qS4jcPJ3yLh3vJoYUk5iat6lM7oabGZW6JYq9rKAWWAvLyxF+HIB1YZ+VKbHryB8skGouWekZH6ChZ+A5u5RBQMtb8s9VWN+KFfrrSbku7np61MTZL6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762833550; c=relaxed/simple;
-	bh=+UF0U9ktVBob3A/lcfxhzsJESRA/QtoDYtlBSNJ4Tyo=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=Z4IcobF55qZqRiFwUfBxbneXEijaYfE05Mk13BaKVbawMlN3JMlXKhkLSaoihQ4fpRH/gfhdBi9Iz0IlFH8nU7uKE/r3XewLTLkOCWq8oGPvLHV1Uppvpp8EXi7LYPQXWHA4/mWmvg4RYMzYR9J4A+bYkcfUCwGeJT6Y+hMnXIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=uwc6dYkp; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1762833551; c=relaxed/simple;
+	bh=d7zt3o0fBF6z6ShTsIJHtkmGWSkuGiwNwAa0lxT8sZA=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=BnsF6q1RaGZ/dbZr6XV3eJDF8YlMxEeZJO1qp86fv5jukz/0qOGFbvAfsmT6m8YY1rWIBQRiUXVACq6B5cblrmP9E7w1zkv0Z2tdlG7Xg9iLzXXutX51hVK+lJf7jJ34jBtb0WVumPrrz6HAHWEf8+tm5o/d5d3L3is4L9udo6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=HuBg940T; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-297f35be2ffso30537065ad.2
-        for <stable@vger.kernel.org>; Mon, 10 Nov 2025 19:59:06 -0800 (PST)
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7a9fb6fccabso3022142b3a.0
+        for <stable@vger.kernel.org>; Mon, 10 Nov 2025 19:59:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1762833546; x=1763438346; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1762833548; x=1763438348; darn=vger.kernel.org;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Zaki1dJRjP74wUpIytuVOLgp00ZkGBIrjulzCXlFmaI=;
-        b=uwc6dYkpLCJ3VVBa58gsnp584KBYivs18aWCAMTQR6Bl6soM/Gmoyyyy13PlFcB/Vb
-         Y0TUsOvS38fhHTbgID4W0PxeuH5psxInu0TViJc4FkhNXuvyP/1qGoHBmILQ5IV16f/g
-         C2UHJNOl2z/4zYp7ySpkOEjRcjhNYs+x83medJzZOJt12fExCHSxclLGOBPBKUi/Ffs+
-         I0dAANmgBWNTgeCXmi+PjiBBYSYb4TcvMr2Yo57lDtF8VqwaIanzCf/8N6mrsdECEk4V
-         siiCDDtrPq/AeLz6wLKvNUGgJGGFfrOQ1gI4Fa52yIpizHzbtWKm6iJKOcMcXoeKa0Te
-         1OQQ==
+        bh=MVq8XgnIawzQ6hyOOJg0ZOu49Gf2C7JiH6qxLrR20tU=;
+        b=HuBg940TAcsPZN1vOAqwCUU0jUOQDtdDpgv6j/zTg0+Ys+wlqreJytZiCcMK9ZYv7x
+         XYbBB8fBSdogeVahUeBGSZs0TycSRmxw6jCRubSpAaS3D1ThD+WF6ZAFSeVsup0THHEd
+         TWUtjxcG/ym1Nw9kJlRryteBWUpi1F5FqO6kQ2ZaZNGW7jI1VELnlIsLMEIgz1g2Pbzo
+         oOeHnBrRSC48TQiuu5nZTzLY3j234swUo5kkQTjY3pmyZyJHKjQrGiyLiI8Mn2sDE+yc
+         ug8S66hCNufq1/oPZoJaBklJZD8PaN6APO2tJvecX8UadWCEAtcS6QA8Qe84fvGH98Si
+         4FtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762833546; x=1763438346;
+        d=1e100.net; s=20230601; t=1762833548; x=1763438348;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Zaki1dJRjP74wUpIytuVOLgp00ZkGBIrjulzCXlFmaI=;
-        b=FqnDIWisjuT3NBB+bjIOMZ6NFqrzmcuxPl88zcsP/+Axt9J/8K/1pCcPFDXjpQv0EK
-         3IYfVFvSR7+4lxINazE+3Ujpt2hRLTw89TeT92HLx+VCrfPe7IodLTDFiikHKCGpCP2Y
-         IFceT2VhMwexjM28TnObVBHjLJ7h0hIhsdaHEZGLcIy6Bjd6IYXvTNhEsSz8tDngHe+A
-         LuUPKsUK+S5EjI9cZyu6OGPXXNZ6rcUlSzjgwDnJ5gf15yLHqgVV4GN5ZtJC+tq7teoE
-         3RSkz+a/IhsbqxIgfo/kn8QIJbf49UXkMh5zzIXKAPpTZtoMBSmaTAdaEnGS45twnEgV
-         EoaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX8hCw6hJ87F4L2vEix3YCOy/GVCYq7kHaA0D5oDA4KX5Tvu5VaVIUWIompALlY/g/x5Ozt2y0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzByXiGcSy2O0MJb5M2mSVEMzc1+TPZLT7CZ9i9h5yr9zBXhbrM
-	tHY0oAxw6GFqVdfkv6uuWWeJLwQ2dWs7H2YU/tSOeqxMzIf0kylTrLGJKyM2Fotj4tHPPpMQFbK
-	QyrkP
-X-Gm-Gg: ASbGncvqCot4tt04MFKkSl/zX+9OUFiNH41R+dKpQK+7yqz4VPbHhm2r7zu/OKKDIDq
-	EWqocKfSkKDS08KHpslmR8zLIvcJH5MPRG8mwV8JODBflG/9v6lTBgs1F++wA/vErzxBVGgrI5m
-	ylBv1wBQJ3zk8E82+VQ+2T566rgm2LlimN0ZakQPlLjJXByXrCQK/u4ZWS51XOwlTe5/+H6hkOI
-	44Hv/vUN6Ih9i4xZLtjBJ2a+L7PRK10V6HaDgw8lF56Nk0QvfLQkHNAhDh6/Gmwk0BLFYoIvbZg
-	3zaj5ieIbmYb3sEVT3NKxHqpdTdwjPuGhHHpcdhDIOi9g1ppi0FgcslFPvkwXELNksQhrDOzwgn
-	+fymD3goe6NPZSLxl2iwX9Qipp+/TVzte7o/9GpwPYMPvn2VVpxwNuffukPUEdG9OaWnkb9jMTL
-	Fx+VY5
-X-Google-Smtp-Source: AGHT+IE9dckM/lpvYIEDg0p2eRqp9MywsmXo0hss80hXMoZRXKWDhJP/+h2caPDJG3Rin8ijJUrKhg==
-X-Received: by 2002:a17:903:244a:b0:295:6511:c0a0 with SMTP id d9443c01a7336-297e56b8511mr133329605ad.33.1762833546280;
-        Mon, 10 Nov 2025 19:59:06 -0800 (PST)
+        bh=MVq8XgnIawzQ6hyOOJg0ZOu49Gf2C7JiH6qxLrR20tU=;
+        b=Kno1OmhlTI56yYVdmYKs6j9x5fr62lIrd8eGhLz+IQ+WTi0TWm1CgSJ/Hi1H5BOiQj
+         Nv5IHC/nNk84x0WWMZGxu6CoezHJOnaPJnT9SMh0shctHxGq1truKTGEoriT7rQzEfEF
+         ACklX+uQ20pCRqVmsDBiO+c9oLYDkakPd5RkzptxB0j2+Afq+CVWj9HgIbqmB6var9YF
+         BEgIevieRSAr2AnI6k1KFx2Q9d4vTwBTp0Ei0/f7m6lghKtNX3DoqQ1rJELru+0ELMYs
+         kCe6CkzmFlJPWfuYnr0UdJn/BQRDzLnYbPWwqM+KBvIIoQ7WZWLSTfyH9hYKf7RgPhKU
+         MsNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW7xMPo5YeqwQ2bx+iNhdAIRot78XcOp/xX1texFXyHxMrAwY1BA2GBUM7YayNsOePKDDjTBY0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTyOFN47zigpw8irOEdMJT8OpSngKCJeyfWMtTrukoZ08mdpe4
+	IeFg9HCq7PDEcZz5YB/KUON252IlMIdwXMRK309wQtezPsVXWO9PzA5yzcYBFN3ng2Y=
+X-Gm-Gg: ASbGnct3vZfZlYfBjcnhY9D480imc9v8tC17GaeQvYsp5nLXhp4EUurEL/EYPB4hZNY
+	3LZH7opSu6yHpliPnx4d/Lm2NTEVgvZWPWC7oF9K0EdkBFQAx//czDs21kp1zfze00jtmuhyuWq
+	LfTO4m+7Vr02D0zOAdpi1cwFspaMAnBwLNmfdE8foCRtRO8udI+FZO71DNyNX/lsHfISIaXSxh9
+	N/4oRrlecDSjJslgPVEOodruvjK6+yXFgR1C4cFdbWxLbyrhwUd56q9W/TWhwc54uPlyFDXFL/z
+	rYwvXAnE5ThBSjbR83t6qdL5sV0ldGUoDbWNXWqhm3CD0ezwMQcElkIGH9XxuYxpmon8i1Ohw61
+	zCi0BuChShgXWssDfYJPRqoOFOVgWEdaeyT2JuSqna4thePEB2h65WX5Mrg/oVpSuFC814w==
+X-Google-Smtp-Source: AGHT+IFoqF9ZsFyouRF7AcoNeKJ72tcSc0iERyssRBJhE+Bolo78A4YMgkOvy/CIBISmSdJj4Gqtpg==
+X-Received: by 2002:a05:6a00:1910:b0:7aa:8397:7750 with SMTP id d2e1a72fcca58-7b225b6fc10mr13734061b3a.12.1762833547716;
+        Mon, 10 Nov 2025 19:59:07 -0800 (PST)
 Received: from efdf33580483 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-297d83c941esm109187725ad.44.2025.11.10.19.59.05
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b0ccd4edc3sm13553449b3a.66.2025.11.10.19.59.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Nov 2025 19:59:05 -0800 (PST)
+        Mon, 10 Nov 2025 19:59:07 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -81,16 +79,17 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: [REGRESSION] stable-rc/linux-6.12.y: (build) incompatible integer to
- pointer
- conversion passing 'u32' (aka 'uns...
+Content-Transfer-Encoding: 8bit
+Subject: 
+ =?utf-8?q?=5BREGRESSION=5D_stable-rc/linux-6=2E12=2Ey=3A_=28build=29_passing?=
+ =?utf-8?q?_argument_1_of_=E2=80=98linkmode=5Ffill=E2=80=99_makes_pointer_fr?=
+ =?utf-8?q?om_integer_w=2E=2E=2E?=
 From: KernelCI bot <bot@kernelci.org>
 To: kernelci-results@groups.io
 Cc: gus@collabora.com, stable@vger.kernel.org
 Reply-To: kernelci@lists.linux.dev
-Date: Tue, 11 Nov 2025 03:59:05 -0000
-Message-ID: <176283354519.6732.6112901271453838446@efdf33580483>
+Date: Tue, 11 Nov 2025 03:59:06 -0000
+Message-ID: <176283354647.6732.10598152842717227667@efdf33580483>
 
 
 
@@ -101,10 +100,10 @@ Hello,
 New build issue found on stable-rc/linux-6.12.y:
 
 ---
- incompatible integer to pointer conversion passing 'u32' (aka 'unsigned int') to parameter of type 'unsigned long *' [-Wint-conversion] in drivers/net/phy/phy_device.o (drivers/net/phy/phy_device.c) [logspec:kbuild,kbuild.compiler.error]
+ passing argument 1 of ‘linkmode_fill’ makes pointer from integer without a cast [-Werror=int-conversion] in drivers/net/phy/phy_device.o (drivers/net/phy/phy_device.c) [logspec:kbuild,kbuild.compiler.error]
 ---
 
-- dashboard: https://d.kernelci.org/i/maestro:ca6f6d9806fc2b70ae08b439179af266398dd55e
+- dashboard: https://d.kernelci.org/i/maestro:5904322dbb62197106ccc331a9b38bcced1cdf30
 - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
 - commit HEAD:  44c21f603a9a2b315280fc66ec569fb726e51fac
 
@@ -112,42 +111,67 @@ New build issue found on stable-rc/linux-6.12.y:
 
 Log excerpt:
 =====================================================
-drivers/net/phy/phy_device.c:3061:16: error: incompatible integer to pointer conversion passing 'u32' (aka 'unsigned int') to parameter of type 'unsigned long *' [-Wint-conversion]
+drivers/net/phy/phy_device.c:3061:29: error: passing argument 1 of ‘linkmode_fill’ makes pointer from integer without a cast [-Werror=int-conversion]
  3061 |         linkmode_fill(phydev->eee_broken_modes);
-      |                       ^~~~~~~~~~~~~~~~~~~~~~~~
-./include/linux/linkmode.h:13:49: note: passing argument to parameter 'dst' here
+      |                       ~~~~~~^~~~~~~~~~~~~~~~~~
+      |                             |
+      |                             u32 {aka unsigned int}
+In file included from ./include/linux/mii.h:13,
+                 from ./include/uapi/linux/mdio.h:15,
+                 from ./include/linux/mdio.h:9,
+                 from drivers/net/phy/phy_device.c:23:
+./include/linux/linkmode.h:13:49: note: expected ‘long unsigned int *’ but argument is of type ‘u32’ {aka ‘unsigned int’}
    13 | static inline void linkmode_fill(unsigned long *dst)
-      |                                                 ^
-  CC      drivers/gpu/drm/i915/gt/intel_gtt.o
-1 error generated.
+      |                                  ~~~~~~~~~~~~~~~^~~
+  CC      drivers/input/ff-core.o
+  CC      drivers/net/phy/linkmode.o
+  AR      drivers/input/touchscreen/built-in.a
+  CC      drivers/input/touchscreen.o
+  CC      drivers/input/ff-memless.o
+  CC      drivers/rtc/nvmem.o
+  CC      drivers/input/matrix-keymap.o
+  CC      drivers/mtd/mtdchar.o
+  CC      drivers/net/phy/phy_link_topology.o
+  CC      drivers/input/vivaldi-fmap.o
+cc1: all warnings being treated as errors
 
 =====================================================
 
 
 # Builds where the incident occurred:
 
-## defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (arm):
-- compiler: clang-17
-- config: https://files.kernelci.org/kbuild-clang-17-arm-allmodconfig-6912921d2fd2377ea9956acc/.config
-- dashboard: https://d.kernelci.org/build/maestro:6912921d2fd2377ea9956acc
+## cros://chromeos-6.12/arm64/chromiumos-mediatek.flavour.config+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y on (arm64):
+- compiler: gcc-12
+- config: https://files.kernelci.org/kbuild-gcc-12-arm64-chromeos-mediatek-691292a32fd2377ea9956eb0/.config
+- dashboard: https://d.kernelci.org/build/maestro:691292a32fd2377ea9956eb0
 
-## i386_defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (i386):
-- compiler: clang-17
-- config: https://files.kernelci.org/kbuild-clang-17-i386-allmodconfig-6912926a2fd2377ea9956bce/.config
-- dashboard: https://d.kernelci.org/build/maestro:6912926a2fd2377ea9956bce
+## cros://chromeos-6.12/arm64/chromiumos-qualcomm.flavour.config+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y on (arm64):
+- compiler: gcc-12
+- config: https://files.kernelci.org/kbuild-gcc-12-arm64-chromeos-qualcomm-691292a82fd2377ea9956ed3/.config
+- dashboard: https://d.kernelci.org/build/maestro:691292a82fd2377ea9956ed3
 
-## multi_v7_defconfig on (arm):
-- compiler: clang-17
-- config: https://files.kernelci.org/kbuild-clang-17-arm-691292192fd2377ea9956ac9/.config
-- dashboard: https://d.kernelci.org/build/maestro:691292192fd2377ea9956ac9
+## cros://chromeos-6.12/x86_64/chromeos-amd-stoneyridge.flavour.config+lab-setup+x86-board+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y on (x86_64):
+- compiler: gcc-12
+- config: https://files.kernelci.org/kbuild-gcc-12-x86-chromeos-amd-691292ad2fd2377ea9956ed6/.config
+- dashboard: https://d.kernelci.org/build/maestro:691292ad2fd2377ea9956ed6
 
-## x86_64_defconfig on (x86_64):
-- compiler: clang-17
-- config: https://files.kernelci.org/kbuild-clang-17-x86-691292272fd2377ea9956ad4/.config
-- dashboard: https://d.kernelci.org/build/maestro:691292272fd2377ea9956ad4
+## cros://chromeos-6.12/x86_64/chromeos-intel-pineview.flavour.config+lab-setup+x86-board+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y on (x86_64):
+- compiler: gcc-12
+- config: https://files.kernelci.org/kbuild-gcc-12-x86-chromeos-intel-691292b32fd2377ea9956ee6/.config
+- dashboard: https://d.kernelci.org/build/maestro:691292b32fd2377ea9956ee6
+
+## defconfig+kcidebug+x86-board on (i386):
+- compiler: gcc-12
+- config: https://files.kernelci.org/kbuild-gcc-12-x86-kcidebug-691292932fd2377ea9956e4c/.config
+- dashboard: https://d.kernelci.org/build/maestro:691292932fd2377ea9956e4c
+
+## x86_64_defconfig+lab-setup+x86-board+kselftest on (x86_64):
+- compiler: gcc-12
+- config: https://files.kernelci.org/kbuild-gcc-12-x86-691292892fd2377ea9956e40/.config
+- dashboard: https://d.kernelci.org/build/maestro:691292892fd2377ea9956e40
 
 
-#kernelci issue maestro:ca6f6d9806fc2b70ae08b439179af266398dd55e
+#kernelci issue maestro:5904322dbb62197106ccc331a9b38bcced1cdf30
 
 Reported-by: kernelci.org bot <bot@kernelci.org>
 
