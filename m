@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A207EC4AD4E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC48AC4A79D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15DA3188EB79
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1F1C18939D6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C092737E3;
-	Tue, 11 Nov 2025 01:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3074A340D93;
+	Tue, 11 Nov 2025 01:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTWQ7oKj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ix9c9yRb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972A725F797;
-	Tue, 11 Nov 2025 01:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77CF27FD54;
+	Tue, 11 Nov 2025 01:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824816; cv=none; b=kGFdhwkwk86keSojuRaypW0+T7tL4eRwJTUECOdcD/prps4uYmh3IS1jcrz8miherD5LpQagUw4CNiA5nVIzOhcd6nnPGT/2tFExLFzJ1+WlSWLTlvBGKFkVjisW4egeMqHWYn8p4vEJO8KREEQ0nnTxE+AR4V1VkYETNJx3D9E=
+	t=1762823473; cv=none; b=Q7bQz8GREMaP1V3FuwUjqTpRulESFLJKUa3avR1LazdOJ9kyCyA7JZ0BK1ON8Nn1uBhmUdFGBlOj6y6gEgtphr5p1mB+R9qAk58JS6A3j1sl64nymNnOSBlJ174daQiS/bQEeac6wzxAlO5ynND0zFTIypovUPwJIlnbfRHHj5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824816; c=relaxed/simple;
-	bh=Oo0aXP6R45i9LaB3I9rtLDp9jio4r+uCVYsImVSCenc=;
+	s=arc-20240116; t=1762823473; c=relaxed/simple;
+	bh=7w+NS156tK3pGcF+IxjH7aqqA+zlaiQ+QulxYwT2V0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qS25IGorTKLsOYg1Ge4zwmbzjWRRzwh/Izo0egZm/vz1CXOUR/muilyWl7tQX3Q+PhX1LJMLUtNfpHSRv5/d4kFlxkKuBti68heRmQumtSIjg3kLQeaWU9uzUJJ+7MFn1cKiPpX2O5BPO3CwghKWyl3X3Q+8mf3PlnZuf/j4OJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTWQ7oKj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3652CC113D0;
-	Tue, 11 Nov 2025 01:33:36 +0000 (UTC)
+	 MIME-Version; b=ksU41Sya0tAt13MJDS4pVPa96/0EschBOyMzxVqCbd0Kt2jdGmQfPMtPLedb8yEKP912d8dYebzdg2uud6N3GdkIzEsK3Aj2GuLnklAJzzm9i3EGyC2BnGJThlqOJE5hUrT4xrkoPeJ/3brcb15I0Yjc7+wehiSjgq04bluy9Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ix9c9yRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746B7C116B1;
+	Tue, 11 Nov 2025 01:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824816;
-	bh=Oo0aXP6R45i9LaB3I9rtLDp9jio4r+uCVYsImVSCenc=;
+	s=korg; t=1762823472;
+	bh=7w+NS156tK3pGcF+IxjH7aqqA+zlaiQ+QulxYwT2V0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UTWQ7oKjX55DBx1ZhhAgGBnBtR6yIFZc9v8mn3I3gIn6tErs1Lp5gl+F3y9u0DC/S
-	 ipu3pjCZha/RV0woUAa2XU+htbGFav5L/Q1g2c4uSU8+VACiZN6/gdPYEGTTEA3kf/
-	 9R0jO5f8TXHial9j4jhYt2Ur5MyhgkYIlJTIA+SQ=
+	b=Ix9c9yRbj5cQ95w5RgXjcoIsqAcrjYVahzKbeEAiohEu8OdPnKZ+HJw4FpJ1OKjJf
+	 lz/D4fazIhr2Y381kFK52AMV3fPyMov4sVKU9zy3o3yYfZVf48zwlyi7G9WSEII5tS
+	 6W/dNagxtRO0jMH42WjUjctmBrdxPFhRzexIIKgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Andrew Davis <afd@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 539/849] wifi: mt76: mt7996: Set def_wcid pointer in mt7996_mac_sta_init_link()
+Subject: [PATCH 6.12 253/565] remoteproc: wkup_m3: Use devm_pm_runtime_enable() helper
 Date: Tue, 11 Nov 2025 09:41:49 +0900
-Message-ID: <20251111004549.446262138@linuxfoundation.org>
+Message-ID: <20251111004532.597001627@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit a70b5903c57308fff525cbd62654f6104aa7ecbf ]
+[ Upstream commit 461edcf73eec57bc0006fbb5209f5012c514c58b ]
 
-In order to get the ieee80211_sta pointer from wcid struct for a MLO
-client, set def_wcid pointer in mt7996_mac_sta_init_link routine.
+Use device life-cycle managed runtime enable function to simplify probe
+and exit paths.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Tested-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Link: https://patch.msgid.link/20250731-mt7996-mlo-devel-v1-1-7ff4094285d0@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20250814153940.670564-1-afd@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/remoteproc/wkup_m3_rproc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index d01b5778da20e..4693d376e64ee 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -969,6 +969,7 @@ mt7996_mac_sta_init_link(struct mt7996_dev *dev,
- 	msta_link->wcid.sta = 1;
- 	msta_link->wcid.idx = idx;
- 	msta_link->wcid.link_id = link_id;
-+	msta_link->wcid.def_wcid = &msta->deflink.wcid;
+diff --git a/drivers/remoteproc/wkup_m3_rproc.c b/drivers/remoteproc/wkup_m3_rproc.c
+index 36a55f7ffa64d..c39bd2bf2c1e7 100644
+--- a/drivers/remoteproc/wkup_m3_rproc.c
++++ b/drivers/remoteproc/wkup_m3_rproc.c
+@@ -148,7 +148,9 @@ static int wkup_m3_rproc_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
  
- 	ewma_avg_signal_init(&msta_link->avg_ack_signal);
- 	ewma_signal_init(&msta_link->wcid.rssi);
+-	pm_runtime_enable(&pdev->dev);
++	ret = devm_pm_runtime_enable(dev);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Failed to enable runtime PM\n");
+ 	ret = pm_runtime_get_sync(&pdev->dev);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "pm_runtime_get_sync() failed\n");
+@@ -219,7 +221,6 @@ static int wkup_m3_rproc_probe(struct platform_device *pdev)
+ 	rproc_free(rproc);
+ err:
+ 	pm_runtime_put_noidle(dev);
+-	pm_runtime_disable(dev);
+ 	return ret;
+ }
+ 
+@@ -230,7 +231,6 @@ static void wkup_m3_rproc_remove(struct platform_device *pdev)
+ 	rproc_del(rproc);
+ 	rproc_free(rproc);
+ 	pm_runtime_put_sync(&pdev->dev);
+-	pm_runtime_disable(&pdev->dev);
+ }
+ 
+ #ifdef CONFIG_PM
 -- 
 2.51.0
 
