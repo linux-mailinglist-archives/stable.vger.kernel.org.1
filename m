@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F24C4AD7B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6B5C4B1FF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3B74188F541
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB9013BFFCB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01922857F0;
-	Tue, 11 Nov 2025 01:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A79F1F7580;
+	Tue, 11 Nov 2025 01:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFqkmfno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhn3wwrK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAC72472A6;
-	Tue, 11 Nov 2025 01:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2278A27FD4A;
+	Tue, 11 Nov 2025 01:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824876; cv=none; b=W4MUkfmgsSxqVNcR+oNytdqwj1QVLjSRnZfOC1lFYlF0dNmziHyJ/rpjwRIeQQdZAcc/IWPdwF4N63XIqmpSBwJrBtmOrxC7psSrdyBBI9rY+4f3NKRq8AZMMD8wW/i6f8r7Lel7JzzRpJhnb4r8tI4RZOc3/8T6tvGodVxv6Wg=
+	t=1762825499; cv=none; b=NsNRXOEKT74LsnLH7ZNPx3WPQjuenuRUdd6gO2fUQ9tTyhmi4tb9+fYQZ7cngRtzMbQEdHVGoAUOeKVIPNMfoi4hZTNXStNofw6rHZlDCKMRfgDwb7AqfoaL6GYlg+eL9WJGD+um4enTH7kJ9Lbpu6suFwZRKvDHcJH3+I7ALxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824876; c=relaxed/simple;
-	bh=kl5GYNfS9EcXdMYoZ+stpHUoCe/hsj7BnCGT3OsKHO0=;
+	s=arc-20240116; t=1762825499; c=relaxed/simple;
+	bh=1QjS+so41qFLO8No/jh5ta5GLLtCb5qNtGNcuR4a4FI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llMkq1LAsOxhxMCSAY5M70BAGa41TCPBVJFVefdMX5iNR8hGTKHz+lqzxc4uYeFd3DbpyeqBM/DGRswd0xMdi/wrRK1qfeN/tHFpAuGvvl5ra9TgbcJEOyAjO/W/a9xf2flNnCrmLrng01r/MFqfscVJGRE11CjxNgl+Kx3j+8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFqkmfno; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3E5C4CEFB;
-	Tue, 11 Nov 2025 01:34:35 +0000 (UTC)
+	 MIME-Version; b=RZ4FHy7zFSvbv8B+USIjhqsCr74ZG0kMuEvbTdzzqQRqg+3m9oQOb13lN4cOzlZomjOhXtAkO0QC1ob1S6mp38xytFCcxv+kWiXF9ZJtBG4uwaHruFY8tEpLENGq6z8yLxLUZIIRjzbD5llto7MBMjT1uCBeuunDUS+If6oyOKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhn3wwrK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83808C19424;
+	Tue, 11 Nov 2025 01:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824876;
-	bh=kl5GYNfS9EcXdMYoZ+stpHUoCe/hsj7BnCGT3OsKHO0=;
+	s=korg; t=1762825498;
+	bh=1QjS+so41qFLO8No/jh5ta5GLLtCb5qNtGNcuR4a4FI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFqkmfno7OX7bavF2+/GbWoohkt8fws7itbNNj7lt3SIRndDSeQBw9F1auRJuAsSI
-	 twOVSfHEx3W98Qrp8hJrYuB1wGTL+I9speAa5+V5pTP5Q81Tgf1OB+JC80tPLy9t3L
-	 M1BNCc7UXb+N0vWHBOOm9WhAmZCfo/VmaptqHDwg=
+	b=fhn3wwrKve/YNrroBjLlakordH+DoV+9QpRsHjRgCijSMkDHW+94Ap8I8fQfYGcHW
+	 ga+mMfOdaIuXeL6RLmmWDJZ5KyTO3jFWleUUkm5MmbLSd0RMgaULXsfTs0Xb3tKCnm
+	 HqmPs84Cneg/bm0zHwbhPLpYIXqu79sjSTmLB8bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 542/565] tracing: Fix memory leaks in create_field_var()
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Lei Yang <leiyang@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 828/849] virtio-net: fix received length check in big packets
 Date: Tue, 11 Nov 2025 09:46:38 +0900
-Message-ID: <20251111004539.178291240@linuxfoundation.org>
+Message-ID: <20251111004556.445914620@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit 80f0d631dcc76ee1b7755bfca1d8417d91d71414 ]
+commit 0c716703965ffc5ef4311b65cb5d84a703784717 upstream.
 
-The function create_field_var() allocates memory for 'val' through
-create_hist_field() inside parse_atom(), and for 'var' through
-create_var(), which in turn allocates var->type and var->var.name
-internally. Simply calling kfree() to release these structures will
-result in memory leaks.
+Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
+for big packets"), when guest gso is off, the allocated size for big
+packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
+negotiated MTU. The number of allocated frags for big packets is stored
+in vi->big_packets_num_skbfrags.
 
-Use destroy_hist_field() to properly free 'val', and explicitly release
-the memory of var->type and var->var.name before freeing 'var' itself.
+Because the host announced buffer length can be malicious (e.g. the host
+vhost_net driver's get_rx_bufs is modified to announce incorrect
+length), we need a check in virtio_net receive path. Currently, the
+check is not adapted to the new change which can lead to NULL page
+pointer dereference in the below while loop when receiving length that
+is larger than the allocated one.
 
-Link: https://patch.msgid.link/20251106120132.3639920-1-zilin@seu.edu.cn
-Fixes: 02205a6752f22 ("tracing: Add support for 'field variables'")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit fixes the received length check corresponding to the new
+change.
+
+Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Link: https://patch.msgid.link/20251030144438.7582-1-minhquangbui99@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_hist.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/virtio_net.c |   25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 3379e14d38e9b..84954b8918156 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -3251,14 +3251,16 @@ static struct field_var *create_field_var(struct hist_trigger_data *hist_data,
- 	var = create_var(hist_data, file, field_name, val->size, val->type);
- 	if (IS_ERR(var)) {
- 		hist_err(tr, HIST_ERR_VAR_CREATE_FIND_FAIL, errpos(field_name));
--		kfree(val);
-+		destroy_hist_field(val, 0);
- 		ret = PTR_ERR(var);
- 		goto err;
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -910,17 +910,6 @@ static struct sk_buff *page_to_skb(struc
+ 		goto ok;
  	}
  
- 	field_var = kzalloc(sizeof(struct field_var), GFP_KERNEL);
- 	if (!field_var) {
--		kfree(val);
-+		destroy_hist_field(val, 0);
-+		kfree_const(var->type);
-+		kfree(var->var.name);
- 		kfree(var);
- 		ret =  -ENOMEM;
+-	/*
+-	 * Verify that we can indeed put this data into a skb.
+-	 * This is here to handle cases when the device erroneously
+-	 * tries to receive more than is possible. This is usually
+-	 * the case of a broken device.
+-	 */
+-	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
+-		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
+-		dev_kfree_skb(skb);
+-		return NULL;
+-	}
+ 	BUG_ON(offset >= PAGE_SIZE);
+ 	while (len) {
+ 		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
+@@ -2112,9 +2101,19 @@ static struct sk_buff *receive_big(struc
+ 				   struct virtnet_rq_stats *stats)
+ {
+ 	struct page *page = buf;
+-	struct sk_buff *skb =
+-		page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
++	struct sk_buff *skb;
++
++	/* Make sure that len does not exceed the size allocated in
++	 * add_recvbuf_big.
++	 */
++	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
++		pr_debug("%s: rx error: len %u exceeds allocated size %lu\n",
++			 dev->name, len,
++			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
++		goto err;
++	}
+ 
++	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
+ 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
+ 	if (unlikely(!skb))
  		goto err;
--- 
-2.51.0
-
 
 
 
