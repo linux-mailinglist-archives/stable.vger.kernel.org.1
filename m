@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA47C4A7B2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D1C5C4A72B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E17C3B11E1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 537841883B5D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8BB2820A0;
-	Tue, 11 Nov 2025 01:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B72340D9A;
+	Tue, 11 Nov 2025 01:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1SOfTNX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEQeWJ5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E4733C534;
-	Tue, 11 Nov 2025 01:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6F9274FF1;
+	Tue, 11 Nov 2025 01:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823461; cv=none; b=sAtXG4BmVX6pqCCVK7qCnUx4/RqCIKB0hDmWmg/OoR7meSA84arAk1LCTQ/uzBMkv/E/Y8ekCaFdGSI5yAQ6am2sS+JUuwv3iMhPnIBUEjkceP3/LsHLE4qkPNXAMVK78wn1zaD3uKXWQjbNu0nLH+4RM2kRKUw/ciTiYQIuFec=
+	t=1762823468; cv=none; b=lKs/3aOsjf5fyaXAlIcHFB8ushsBIT4X34qtpi/mnX/paEtOUB1VO1TYbcnkDzV5So4BJ0seXv9evFu7ST4JSoZDXQxQe2VXrC0Orj4SnQmu2vs5l0C3eRGVzkL3YHBGwztUPotDk6xEvRG8gRep0YuIVRPeEUiY9eIv0znWk5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823461; c=relaxed/simple;
-	bh=tKr5Qs44xTy7AB5CFwKsw7cbhapNOzA0420aeCCgMOc=;
+	s=arc-20240116; t=1762823468; c=relaxed/simple;
+	bh=aVNAsh1kefvhA7Nfk/q+5WcJ8xI5+0r2coj3X/JyDc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UHjGJldzfNMT9/6CPRVhQC57Y4Dg743gySVPJTo0fTdbEBP5ef+zpWliRWCoXrY1qpd8R/4z9pLaY+jDqpt5s+I/Gr5guxaPD1E5S3zcSTl4vi/LW8Nbkn2uxRueT0+7arx+H/5ioZN3QIVUpf9A755Ugo5R4gz8AwtkblrS02U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1SOfTNX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FF6C4CEF5;
-	Tue, 11 Nov 2025 01:11:00 +0000 (UTC)
+	 MIME-Version; b=uPitsHbkvFWBYrHhQY3nw/Sxb2svLFvMxQ7uadVQXG28OVhiofT8fDXkfQfJx5GezjsZMPVE7AMhtrVd95Pg3ZA3qty4xRfHEaQPdUHyCv0ph0g44yKrTQemKEiXFJAKA8TEf/eLfIMWYwt7MAuWONLzVUfgPBYtaXtFLotuNc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEQeWJ5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2566C116B1;
+	Tue, 11 Nov 2025 01:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823461;
-	bh=tKr5Qs44xTy7AB5CFwKsw7cbhapNOzA0420aeCCgMOc=;
+	s=korg; t=1762823468;
+	bh=aVNAsh1kefvhA7Nfk/q+5WcJ8xI5+0r2coj3X/JyDc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S1SOfTNXoV6GZOwZ3G2v0q/4PLDEVtKC3V9ul2mEmCOaLq7bpeajzUNoMrxeCYt12
-	 xEA1yavAXtjTsmwQbJvKasjVMrlESgws0bcEdF8UEexyivYFyfNV9kYDaHDryBtD+z
-	 GSadn3YZRgrcV0riCUSqs+CvtuK7wqVX0fMMqvO8=
+	b=nEQeWJ5FIIemVbc8EZBhXmPlXG+iixobf6ffKDQCs1gkDsjzpnM+QAvgr97m9sAcg
+	 uZwK8H3l8ZAIyqogeDl9mrUflXCaf7sByBm2jNdIu/OrCFqIq1TULGSwwUZhs10z8A
+	 QzDP/U6k2L19F9wpJkpvEuJ9Oq/GXAajlYjsp6FQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francisco Gutierrez <frankramirez@google.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 251/565] scsi: pm80xx: Fix race condition caused by static variables
-Date: Tue, 11 Nov 2025 09:41:47 +0900
-Message-ID: <20251111004532.553732427@linuxfoundation.org>
+Subject: [PATCH 6.12 252/565] extcon: adc-jack: Fix wakeup source leaks on device unbind
+Date: Tue, 11 Nov 2025 09:41:48 +0900
+Message-ID: <20251111004532.575717360@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,92 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Francisco Gutierrez <frankramirez@google.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit d6477ee38ccfbeaed885733c13f41d9076e2f94a ]
+[ Upstream commit 78b6a991eb6c6f19ed7d0ac91cda3b3b117fda8f ]
 
-Eliminate the use of static variables within the log pull implementation
-to resolve a race condition and prevent data gaps when pulling logs from
-multiple controllers in parallel, ensuring each operation is properly
-isolated.
+Device can be unbound, so driver must also release memory for the wakeup
+source.  Do not use devm interface, because it would change the order of
+cleanup.
 
-Signed-off-by: Francisco Gutierrez <frankramirez@google.com>
-Link: https://lore.kernel.org/r/20250723183543.1443301-1-frankramirez@google.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/lkml/20250501-device-wakeup-leak-extcon-v2-1-7af77802cbea@linaro.org/
+Acked-by: MyungJoo Ham <myungjoo.ham@samsung.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/pm8001/pm8001_ctl.c  | 22 ++++++++++++----------
- drivers/scsi/pm8001/pm8001_init.c |  1 +
- drivers/scsi/pm8001/pm8001_sas.h  |  4 ++++
- 3 files changed, 17 insertions(+), 10 deletions(-)
+ drivers/extcon/extcon-adc-jack.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/pm8001/pm8001_ctl.c b/drivers/scsi/pm8001/pm8001_ctl.c
-index 85ff95c6543a5..0e7497e490f40 100644
---- a/drivers/scsi/pm8001/pm8001_ctl.c
-+++ b/drivers/scsi/pm8001/pm8001_ctl.c
-@@ -534,23 +534,25 @@ static ssize_t pm8001_ctl_iop_log_show(struct device *cdev,
- 	char *str = buf;
- 	u32 read_size =
- 		pm8001_ha->main_cfg_tbl.pm80xx_tbl.event_log_size / 1024;
--	static u32 start, end, count;
- 	u32 max_read_times = 32;
- 	u32 max_count = (read_size * 1024) / (max_read_times * 4);
- 	u32 *temp = (u32 *)pm8001_ha->memoryMap.region[IOP].virt_ptr;
+diff --git a/drivers/extcon/extcon-adc-jack.c b/drivers/extcon/extcon-adc-jack.c
+index 125016da7fde3..c7b5f3f0da2ef 100644
+--- a/drivers/extcon/extcon-adc-jack.c
++++ b/drivers/extcon/extcon-adc-jack.c
+@@ -164,6 +164,7 @@ static void adc_jack_remove(struct platform_device *pdev)
+ {
+ 	struct adc_jack_data *data = platform_get_drvdata(pdev);
  
--	if ((count % max_count) == 0) {
--		start = 0;
--		end = max_read_times;
--		count = 0;
-+	mutex_lock(&pm8001_ha->iop_log_lock);
-+
-+	if ((pm8001_ha->iop_log_count % max_count) == 0) {
-+		pm8001_ha->iop_log_start = 0;
-+		pm8001_ha->iop_log_end = max_read_times;
-+		pm8001_ha->iop_log_count = 0;
- 	} else {
--		start = end;
--		end = end + max_read_times;
-+		pm8001_ha->iop_log_start = pm8001_ha->iop_log_end;
-+		pm8001_ha->iop_log_end = pm8001_ha->iop_log_end + max_read_times;
- 	}
- 
--	for (; start < end; start++)
--		str += sprintf(str, "%08x ", *(temp+start));
--	count++;
-+	for (; pm8001_ha->iop_log_start < pm8001_ha->iop_log_end; pm8001_ha->iop_log_start++)
-+		str += sprintf(str, "%08x ", *(temp+pm8001_ha->iop_log_start));
-+	pm8001_ha->iop_log_count++;
-+	mutex_unlock(&pm8001_ha->iop_log_lock);
- 	return str - buf;
++	device_init_wakeup(&pdev->dev, false);
+ 	free_irq(data->irq, data);
+ 	cancel_work_sync(&data->handler.work);
  }
- static DEVICE_ATTR(iop_log, S_IRUGO, pm8001_ctl_iop_log_show, NULL);
-diff --git a/drivers/scsi/pm8001/pm8001_init.c b/drivers/scsi/pm8001/pm8001_init.c
-index b53b1ae5b74c3..5317f82c51fd4 100644
---- a/drivers/scsi/pm8001/pm8001_init.c
-+++ b/drivers/scsi/pm8001/pm8001_init.c
-@@ -550,6 +550,7 @@ static struct pm8001_hba_info *pm8001_pci_alloc(struct pci_dev *pdev,
- 	pm8001_ha->id = pm8001_id++;
- 	pm8001_ha->logging_level = logging_level;
- 	pm8001_ha->non_fatal_count = 0;
-+	mutex_init(&pm8001_ha->iop_log_lock);
- 	if (link_rate >= 1 && link_rate <= 15)
- 		pm8001_ha->link_rate = (link_rate << 8);
- 	else {
-diff --git a/drivers/scsi/pm8001/pm8001_sas.h b/drivers/scsi/pm8001/pm8001_sas.h
-index c46470e0cf63b..efb6dc26bc35b 100644
---- a/drivers/scsi/pm8001/pm8001_sas.h
-+++ b/drivers/scsi/pm8001/pm8001_sas.h
-@@ -537,6 +537,10 @@ struct pm8001_hba_info {
- 	u32 ci_offset;
- 	u32 pi_offset;
- 	u32 max_memcnt;
-+	u32 iop_log_start;
-+	u32 iop_log_end;
-+	u32 iop_log_count;
-+	struct mutex iop_log_lock;
- };
- 
- struct pm8001_work {
 -- 
 2.51.0
 
