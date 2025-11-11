@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95644C4B136
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCDBDC4AB8F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 334384F6F56
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0910D4FA3E4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBABB34889B;
-	Tue, 11 Nov 2025 01:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A0526ED58;
+	Tue, 11 Nov 2025 01:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WddZbDj3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3SveItE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8645334A790;
-	Tue, 11 Nov 2025 01:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBA02561A7;
+	Tue, 11 Nov 2025 01:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825338; cv=none; b=msClpCoCO73FFkriKH1KZqryy4EbTbIVyRkuYQPUU2T37308YHbtomxu9zIxbL+cmDajeXrQZQ8lodJJ22A9QzTHV4CCKZPps140zM0YexfrVxK5/8nXPHFtlH6Xqn9p9VPtqdal8t+sS7lN54xQM9cdPRPjWCteZAQsjaOFkcw=
+	t=1762824375; cv=none; b=iJgGVMtPJHUnrQa8EGF0EvY/yX1MpCCvK2YN2pe9VvY2ORUexcYE1vjKnyovYNrqWDj5WF4ZLfnXXF84NXz6U3JRJhFNyYGvXdfMtaWgq3YcDm37HsS3wf8d8lEDK8OHpkIS2/ZhUcXtleBBzVvgSiPLJV7MZCuwIEfFzYAkuR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825338; c=relaxed/simple;
-	bh=qpGs6pJI7KmnothcuDfNPt+Eo9V57CkCHWeZc7xVkiY=;
+	s=arc-20240116; t=1762824375; c=relaxed/simple;
+	bh=AexHzTZn47pOc5a3Isov79qr6YAS89YALdoFc20YTTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYV1Y8XxsLtb+022WSBgyNdyMOBIng4/bVdyE57BubUy/puJPSu9Am6TbH84ZL+JbFCUu1hB6jhbVbcNt0Zd9+eXBgfQ58jgLtD3CCoNMxE6vgZgJfeTkksNCCCtW//HT7N8fpieaN2p/Zr68PWK9e0ne4HwiJKsTH95OXUn32I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WddZbDj3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26AF1C4CEFB;
-	Tue, 11 Nov 2025 01:42:18 +0000 (UTC)
+	 MIME-Version; b=cnG+uWzDvhF+8DM6c5hJ9BX62J4hSkUn20tdmxZwWDx6Xn51f5YhQCGQr2sQWdG1U6yOSbh90irgL0vdW1CNOenH6DFhC36qev41ucNWGqHmoUm5z0RWAtG3GBsLsuWEomk4FpI07ARl/qLvnRrF+b4YbFiQt3FfCGKniDjYtHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3SveItE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4CB0C4AF09;
+	Tue, 11 Nov 2025 01:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825338;
-	bh=qpGs6pJI7KmnothcuDfNPt+Eo9V57CkCHWeZc7xVkiY=;
+	s=korg; t=1762824375;
+	bh=AexHzTZn47pOc5a3Isov79qr6YAS89YALdoFc20YTTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WddZbDj3DMZmiDFy/HksPiHN37GCwMX4IPfBo3RXJ52f7yu0xL+2zP9kXYQLDPwgv
-	 I5StZVzyThYw7wTR0M/1S8paQ34XSNglvk/dfjM0L1C0aGSECUon8zemhRR6ub8uv3
-	 d8IKQJgQ+m5H7FcOrkE09aX9SI50NTwVVHsNGqT0=
+	b=v3SveItEouEtp+R22xBBJPnIcKgM4Pe9Mdw5OsNbWhRESrrU+KMIAXtv77iAiKNxa
+	 +N5RtDFVB+k6uyZ4jk044ZSxHoQJBVSU1iDKu8nFcDXrzxg4idblhbiLnx7bNtuUKZ
+	 sRY0V8haLLttEdn4IQCvC/HFPAhaTzCoCww+IPD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zsolt Kajtar <soci@c64.rulez.org>,
-	Helge Deller <deller@gmx.de>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 717/849] fbdev: core: Fix ubsan warning in pixel_to_pat
+Subject: [PATCH 6.12 431/565] ASoC: tlv320aic3x: Fix class-D initialization for tlv320aic3007
 Date: Tue, 11 Nov 2025 09:44:47 +0900
-Message-ID: <20251111004553.766207014@linuxfoundation.org>
+Message-ID: <20251111004536.568574585@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zsolt Kajtar <soci@c64.rulez.org>
+From: Primoz Fiser <primoz.fiser@norik.com>
 
-[ Upstream commit aad1d99beaaf132e2024a52727c24894cdf9474a ]
+[ Upstream commit 733a763dd8b3ac2858dd238a91bb3a2fdff4739e ]
 
-It could be triggered on 32 bit big endian machines at 32 bpp in the
-pattern realignment. In this case just return early as the result is
-an identity.
+The problem of having class-D initialization sequence in probe using
+regmap_register_patch() is that it will do hardware register writes
+immediately after being called as it bypasses regcache. Afterwards, in
+aic3x_init() we also perform codec soft reset, rendering class-D init
+sequence pointless. This issue is even more apparent when using reset
+GPIO line, since in that case class-D amplifier initialization fails
+with "Failed to init class D: -5" message as codec is already held in
+reset state after requesting the reset GPIO and hence hardware I/O
+fails with -EIO errno.
 
-Signed-off-by: Zsolt Kajtar <soci@c64.rulez.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Thus move class-D amplifier initialization sequence from probe function
+to aic3x_set_power() just before the usual regcache sync. Use bypassed
+regmap_multi_reg_write_bypassed() function to make sure, class-D init
+sequence is performed in proper order as described in the datasheet.
+
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+Link: https://patch.msgid.link/20250925085929.2581749-1-primoz.fiser@norik.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fb_fillrect.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/codecs/tlv320aic3x.c | 32 ++++++++++++++------------------
+ 1 file changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fb_fillrect.h b/drivers/video/fbdev/core/fb_fillrect.h
-index 66042e534de77..f366670a53af8 100644
---- a/drivers/video/fbdev/core/fb_fillrect.h
-+++ b/drivers/video/fbdev/core/fb_fillrect.h
-@@ -92,8 +92,7 @@ static unsigned long pixel_to_pat(int bpp, u32 color)
- 		pattern = pattern | pattern << bpp;
- 		break;
- 	default:
--		pattern = color;
--		break;
-+		return color;
+diff --git a/sound/soc/codecs/tlv320aic3x.c b/sound/soc/codecs/tlv320aic3x.c
+index 56e795a00e22f..591f6c9f9d3a6 100644
+--- a/sound/soc/codecs/tlv320aic3x.c
++++ b/sound/soc/codecs/tlv320aic3x.c
+@@ -121,6 +121,16 @@ static const struct reg_default aic3x_reg[] = {
+ 	{ 108, 0x00 }, { 109, 0x00 },
+ };
+ 
++static const struct reg_sequence aic3007_class_d[] = {
++	/* Class-D speaker driver init; datasheet p. 46 */
++	{ AIC3X_PAGE_SELECT, 0x0D },
++	{ 0xD, 0x0D },
++	{ 0x8, 0x5C },
++	{ 0x8, 0x5D },
++	{ 0x8, 0x5C },
++	{ AIC3X_PAGE_SELECT, 0x00 },
++};
++
+ static bool aic3x_volatile_reg(struct device *dev, unsigned int reg)
+ {
+ 	switch (reg) {
+@@ -1393,6 +1403,10 @@ static int aic3x_set_power(struct snd_soc_component *component, int power)
+ 			gpiod_set_value(aic3x->gpio_reset, 0);
+ 		}
+ 
++		if (aic3x->model == AIC3X_MODEL_3007)
++			regmap_multi_reg_write_bypassed(aic3x->regmap, aic3007_class_d,
++							ARRAY_SIZE(aic3007_class_d));
++
+ 		/* Sync reg_cache with the hardware */
+ 		regcache_cache_only(aic3x->regmap, false);
+ 		regcache_sync(aic3x->regmap);
+@@ -1723,17 +1737,6 @@ static void aic3x_configure_ocmv(struct device *dev, struct aic3x_priv *aic3x)
  	}
- #ifndef __LITTLE_ENDIAN
- 	pattern <<= (BITS_PER_LONG % bpp);
+ }
+ 
+-
+-static const struct reg_sequence aic3007_class_d[] = {
+-	/* Class-D speaker driver init; datasheet p. 46 */
+-	{ AIC3X_PAGE_SELECT, 0x0D },
+-	{ 0xD, 0x0D },
+-	{ 0x8, 0x5C },
+-	{ 0x8, 0x5D },
+-	{ 0x8, 0x5C },
+-	{ AIC3X_PAGE_SELECT, 0x00 },
+-};
+-
+ int aic3x_probe(struct device *dev, struct regmap *regmap, kernel_ulong_t driver_data)
+ {
+ 	struct aic3x_priv *aic3x;
+@@ -1825,13 +1828,6 @@ int aic3x_probe(struct device *dev, struct regmap *regmap, kernel_ulong_t driver
+ 
+ 	aic3x_configure_ocmv(dev, aic3x);
+ 
+-	if (aic3x->model == AIC3X_MODEL_3007) {
+-		ret = regmap_register_patch(aic3x->regmap, aic3007_class_d,
+-					    ARRAY_SIZE(aic3007_class_d));
+-		if (ret != 0)
+-			dev_err(dev, "Failed to init class D: %d\n", ret);
+-	}
+-
+ 	ret = devm_snd_soc_register_component(dev, &soc_component_dev_aic3x, &aic3x_dai, 1);
+ 	if (ret)
+ 		return ret;
 -- 
 2.51.0
 
