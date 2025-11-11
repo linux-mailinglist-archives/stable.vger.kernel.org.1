@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-193396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98AB1C4A361
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDDDC4ABA6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 525F03AF713
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5EFC44F7D66
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF94263F4E;
-	Tue, 11 Nov 2025 01:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A406B3054E8;
+	Tue, 11 Nov 2025 01:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eL5KYplt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgyptyUH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CADB261B6E;
-	Tue, 11 Nov 2025 01:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608F7304BDB;
+	Tue, 11 Nov 2025 01:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823082; cv=none; b=h0IohCga8PhwVjCF3V5vES+JiLruoeMtoj80G4kPGoMDe5bEVs8Aj7kkUxoXea2dwkPRNeq2hBMTHob8HPOiyxKXkx9pB9tzS+pAF6jl59H6FisK0Cw+3LN4rEks/qFA/OgYzhOojXOm16HKkOTj8qcRnJgu835E0IKF0yOoDQo=
+	t=1762824417; cv=none; b=ot1Cis703ooWcVvfJEHoZb+zwZ09h0qiY5MgyD1QxNiX24m+Y0s33Nz0RBJmaZqlHwij5dQEXuukHuT5p9cB8YvUXIG+cD7j9woNbsyjo+N0PYWOVpjEUwiLHw66oX2W5jGejQoVooWxrv4f/zGNLX4DJpXb3F/0zdmDQjzPll8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823082; c=relaxed/simple;
-	bh=57IlWoiE+unP0kkp7hCj8aF0295Y+nXxKAjMNB2aiNw=;
+	s=arc-20240116; t=1762824417; c=relaxed/simple;
+	bh=krjBI1iW/svi+kDvXRlTC0nItvDHVHJbLmpN3vCM2Vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jElv2IkHhynDydH1pLMHu+o/v8/BISjSrO+1QOBI1k2BH6On5NTz9aGYJ9oLMQRktNN8PjKOl4g/ZPbJeis7R7j9eBbnqlDfzbYZBI9ESdQIB8siT2dZxO1LZl1kaYVFxlg8EmLu8hL2Nkbq/VKfhPgb18SyRNb/Hshp76pNu1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eL5KYplt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E44C4CEF5;
-	Tue, 11 Nov 2025 01:04:42 +0000 (UTC)
+	 MIME-Version; b=a0a5bnZQT/JuOf9Fz17TlR6wKWrE19ZprUFrydFPmxiPhRYR/RbZQ+b4YnlzXt9XmI+kgD9EFIexcCgJFjGzydrBO1oz4PMSWwEjb7efWXqK2FdF/2UjFi++I+6iPm4lWiXwrJobzWZao8kWeRQIwTCecgaV3yTwGQ6oX5Z6jzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgyptyUH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86D8C4AF0C;
+	Tue, 11 Nov 2025 01:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823082;
-	bh=57IlWoiE+unP0kkp7hCj8aF0295Y+nXxKAjMNB2aiNw=;
+	s=korg; t=1762824417;
+	bh=krjBI1iW/svi+kDvXRlTC0nItvDHVHJbLmpN3vCM2Vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eL5KYpltPKXJup8qDGVPQ9hy4+rKefXop3JywTfdVFaaEGKtdV3J1qzeoE5b1JWvQ
-	 v00ohL/aAIWo5G5E5Gpk+szEFEhSg2Uy1CWBwLgUr4/695IJYDzYG/oR68KNkyAYsJ
-	 pnGRCsJRrF0mvekd+RVCn6iZmtWP5BFwZ0Aeb6fk=
+	b=vgyptyUHBwjO3N1Vy6OgArep/7K2zZrn1Wg1Lv5P74l14DQLkbMDosgc3Mb01tTZz
+	 hMQQ5Cuv8uinrIli/obdo1jLSejNoR6n1fJRXE9UtxjynCvd7W5VzVuOBVHjftxcpF
+	 fMvRJMlZnmNtTFBwQpunDcUwePJswO1ZEbkn4Oz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Lee Jones <lee@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 168/565] mfd: madera: Work around false-positive -Wininitialized warning
-Date: Tue, 11 Nov 2025 09:40:24 +0900
-Message-ID: <20251111004530.714261109@linuxfoundation.org>
+Subject: [PATCH 6.17 455/849] drm/amdgpu: dont enable SMU on cyan skillfish
+Date: Tue, 11 Nov 2025 09:40:25 +0900
+Message-ID: <20251111004547.429016758@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 364752aa0c6ab0a06a2d5bfdb362c1ca407f1a30 ]
+[ Upstream commit 94bd7bf2c920998b4c756bc8a54fd3dbdf7e4360 ]
 
-clang-21 warns about one uninitialized variable getting dereferenced
-in madera_dev_init:
+Cyan skillfish uses different SMU firmware.
 
-drivers/mfd/madera-core.c:739:10: error: variable 'mfd_devs' is uninitialized when used here [-Werror,-Wuninitialized]
-  739 |                               mfd_devs, n_devs,
-      |                               ^~~~~~~~
-drivers/mfd/madera-core.c:459:33: note: initialize the variable 'mfd_devs' to silence this warning
-  459 |         const struct mfd_cell *mfd_devs;
-      |                                        ^
-      |                                         = NULL
-
-The code is actually correct here because n_devs is only nonzero
-when mfd_devs is a valid pointer, but this is impossible for the
-compiler to see reliably.
-
-Change the logic to check for the pointer as well, to make this easier
-for the compiler to follow.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20250807071932.4085458-1-arnd@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/madera-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/madera-core.c b/drivers/mfd/madera-core.c
-index bdbd5bfc97145..2f74a8c644a32 100644
---- a/drivers/mfd/madera-core.c
-+++ b/drivers/mfd/madera-core.c
-@@ -456,7 +456,7 @@ int madera_dev_init(struct madera *madera)
- 	struct device *dev = madera->dev;
- 	unsigned int hwid;
- 	int (*patch_fn)(struct madera *) = NULL;
--	const struct mfd_cell *mfd_devs;
-+	const struct mfd_cell *mfd_devs = NULL;
- 	int n_devs = 0;
- 	int i, ret;
- 
-@@ -670,7 +670,7 @@ int madera_dev_init(struct madera *madera)
- 		goto err_reset;
- 	}
- 
--	if (!n_devs) {
-+	if (!n_devs || !mfd_devs) {
- 		dev_err(madera->dev, "Device ID 0x%x not a %s\n", hwid,
- 			madera->type_name);
- 		ret = -ENODEV;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+index e814da2b14225..dd7b2b796427c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+@@ -2126,7 +2126,6 @@ static int amdgpu_discovery_set_smu_ip_blocks(struct amdgpu_device *adev)
+ 	case IP_VERSION(11, 0, 5):
+ 	case IP_VERSION(11, 0, 9):
+ 	case IP_VERSION(11, 0, 7):
+-	case IP_VERSION(11, 0, 8):
+ 	case IP_VERSION(11, 0, 11):
+ 	case IP_VERSION(11, 0, 12):
+ 	case IP_VERSION(11, 0, 13):
+@@ -2134,6 +2133,10 @@ static int amdgpu_discovery_set_smu_ip_blocks(struct amdgpu_device *adev)
+ 	case IP_VERSION(11, 5, 2):
+ 		amdgpu_device_ip_block_add(adev, &smu_v11_0_ip_block);
+ 		break;
++	case IP_VERSION(11, 0, 8):
++		if (adev->apu_flags & AMD_APU_IS_CYAN_SKILLFISH2)
++			amdgpu_device_ip_block_add(adev, &smu_v11_0_ip_block);
++		break;
+ 	case IP_VERSION(12, 0, 0):
+ 	case IP_VERSION(12, 0, 1):
+ 		amdgpu_device_ip_block_add(adev, &smu_v12_0_ip_block);
 -- 
 2.51.0
 
