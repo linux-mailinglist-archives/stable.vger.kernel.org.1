@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-193856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE991C4ABAB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA94EC4B08E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:54:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 363613BBEC8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC4CC3B499F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55ED5345CBD;
-	Tue, 11 Nov 2025 01:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F00342CB2;
+	Tue, 11 Nov 2025 01:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSDs5FNj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhH7BDPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE4E345CBE;
-	Tue, 11 Nov 2025 01:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593A3342CAD;
+	Tue, 11 Nov 2025 01:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824167; cv=none; b=Vft9FFEj6p+1PB4d9z+3diNdWZKPbjDfvviFs65HiY9sObxGV8QH6P0GUUUfyb+Z5D9lkZCAeRAWjOsFP+vSOxdXZcbpATRMNzyrzTbEsjC/3d4EY0NW2HQeM7t8m/1ig6mkZTsqhT4/oo1wEIuLFAEmOQl8qRzq9/G6XubZphI=
+	t=1762825163; cv=none; b=NT5eHMFKpycE7FBsDMSHWo9+XOq7uGfPHXqUU0GSLxIryDEoh/8bkbG/7ScFBDsIlsjpVYMrq8EKcjmw+006eDAtUU3mCkWSOjGnptf/NV5TQE0kvBLHE7YsX7n1lReAy7qstWVgF9YFwvUlAyAwEd9t/uyTgn+UWHzl0YMPxDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824167; c=relaxed/simple;
-	bh=BNnXRM1DV1Hpd3DirFFP0fTk3C7xm6ty3mTafVSHHsM=;
+	s=arc-20240116; t=1762825163; c=relaxed/simple;
+	bh=o37TYFAO5N+ll9Yn+XEFXbOhObjE9Wxwlx7QVv9ixoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oj1kQNUWPiW4aoHLqveyfoQspcGI9ilY6k2KNJn1Zc9MYIGlUyqan7hMeGZ/doBqqkcxrX2uKP+fXgj+8+B6LdGIcJodaPUYwgwWMUJBq1FaxkjZaODI2bmuzZfXliqYiyLuVsJQiNh/c4zy1/obyJPnzeIUly35M2cMu6NvSZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSDs5FNj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991ACC19424;
-	Tue, 11 Nov 2025 01:22:46 +0000 (UTC)
+	 MIME-Version; b=QovpItjArlcHa/DFaLY/V5KXFWL3sKkI+IHNh2VU294lOigNI+01IjVGKFpBDZ11pRMiASjD9HxyX6x1vaxbZB5usvJijMRXjld2Zq0YAjsfPnRSDPXg1k/r1uYAdfoxCmLadIjEGfgpwnSmjay07z1IrVT2M8BhZg5moeHaUYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhH7BDPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB8BC4AF09;
+	Tue, 11 Nov 2025 01:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824166;
-	bh=BNnXRM1DV1Hpd3DirFFP0fTk3C7xm6ty3mTafVSHHsM=;
+	s=korg; t=1762825163;
+	bh=o37TYFAO5N+ll9Yn+XEFXbOhObjE9Wxwlx7QVv9ixoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CSDs5FNjVfurmcz1KTE0jzqr7N37+2HKx76ndMjydeG6VOeKDf68XqQQ23tQrKfaO
-	 iX7lP565fxRvby/k1I/SHS9JraoZKrbUJe4csy2qL2eCu7AzIcVpuVAybj6h4r0JSg
-	 BSycOBZV0TGgYNctoZk+0qOsR07Kei6MLxSXr4mM=
+	b=PhH7BDPNDuqvcuhvaqe6+IZ52vpMYJBQQPOsuyBL6zJeGT8iwHiIdXlxHMXE9gUza
+	 TvtNPraKKGuLaGjGNDZoU1zJTfNCP559OnD75QJbYdjJGkm92anbiyJ4DUS93aebGH
+	 Tl4pd695EnORhkBv+s4Wu5lWZNIGFFiZRDEewiH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Brahmajit Das <listout@listout.xyz>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 400/565] net: intel: fm10k: Fix parameter idx set but not used
-Date: Tue, 11 Nov 2025 09:44:16 +0900
-Message-ID: <20251111004535.869904497@linuxfoundation.org>
+Subject: [PATCH 6.17 687/849] RDMA/uverbs: Fix umem release in UVERBS_METHOD_CQ_CREATE
+Date: Tue, 11 Nov 2025 09:44:17 +0900
+Message-ID: <20251111004553.035480885@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <listout@listout.xyz>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-[ Upstream commit 99e9c5ffbbee0f258a1da4eadf602b943f8c8300 ]
+[ Upstream commit d8713158faad0fd4418cb2f4e432c3876ad53a1f ]
 
-Variable idx is set in the loop, but is never used resulting in dead
-code. Building with GCC 16, which enables
--Werror=unused-but-set-parameter= by default results in build error.
-This patch removes the idx parameter, since all the callers of the
-fm10k_unbind_hw_stats_q as 0 as idx anyways.
+In `UVERBS_METHOD_CQ_CREATE`, umem should be released if anything goes
+wrong. Currently, if `create_cq_umem` fails, umem would not be
+released or referenced, causing a possible leak.
 
-Suggested-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+In this patch, we release umem at `UVERBS_METHOD_CQ_CREATE`, the driver
+should not release umem if it returns an error code.
+
+Fixes: 1a40c362ae26 ("RDMA/uverbs: Add a common way to create CQ with umem")
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Link: https://patch.msgid.link/aOh1le4YqtYwj-hH@osx.local
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/fm10k/fm10k_common.c | 5 ++---
- drivers/net/ethernet/intel/fm10k/fm10k_common.h | 2 +-
- drivers/net/ethernet/intel/fm10k/fm10k_pf.c     | 2 +-
- drivers/net/ethernet/intel/fm10k/fm10k_vf.c     | 2 +-
- 4 files changed, 5 insertions(+), 6 deletions(-)
+ drivers/infiniband/core/uverbs_std_types_cq.c |  1 +
+ drivers/infiniband/hw/efa/efa_verbs.c         | 16 +++++++---------
+ 2 files changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.c b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
-index f51a63fca513e..1f919a50c7653 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_common.c
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
-@@ -447,17 +447,16 @@ void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
- /**
-  *  fm10k_unbind_hw_stats_q - Unbind the queue counters from their queues
-  *  @q: pointer to the ring of hardware statistics queue
-- *  @idx: index pointing to the start of the ring iteration
-  *  @count: number of queues to iterate over
-  *
-  *  Function invalidates the index values for the queues so any updates that
-  *  may have happened are ignored and the base for the queue stats is reset.
-  **/
--void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count)
-+void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count)
- {
- 	u32 i;
+diff --git a/drivers/infiniband/core/uverbs_std_types_cq.c b/drivers/infiniband/core/uverbs_std_types_cq.c
+index 37cd375565104..fab5d914029dd 100644
+--- a/drivers/infiniband/core/uverbs_std_types_cq.c
++++ b/drivers/infiniband/core/uverbs_std_types_cq.c
+@@ -206,6 +206,7 @@ static int UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE)(
+ 	return ret;
  
--	for (i = 0; i < count; i++, idx++, q++) {
-+	for (i = 0; i < count; i++, q++) {
- 		q->rx_stats_idx = 0;
- 		q->tx_stats_idx = 0;
- 	}
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.h b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
-index 4c48fb73b3e78..13fca6a91a01b 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_common.h
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
-@@ -43,6 +43,6 @@ u32 fm10k_read_hw_stats_32b(struct fm10k_hw *hw, u32 addr,
- void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
- 			     u32 idx, u32 count);
- #define fm10k_unbind_hw_stats_32b(s) ((s)->base_h = 0)
--void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count);
-+void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count);
- s32 fm10k_get_host_state_generic(struct fm10k_hw *hw, bool *host_ready);
- #endif /* _FM10K_COMMON_H_ */
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
-index 98861cc6df7cc..797b99af0c453 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
-@@ -1509,7 +1509,7 @@ static void fm10k_rebind_hw_stats_pf(struct fm10k_hw *hw,
- 	fm10k_unbind_hw_stats_32b(&stats->nodesc_drop);
+ err_free:
++	ib_umem_release(umem);
+ 	rdma_restrack_put(&cq->res);
+ 	kfree(cq);
+ err_event_file:
+diff --git a/drivers/infiniband/hw/efa/efa_verbs.c b/drivers/infiniband/hw/efa/efa_verbs.c
+index 886923d5fe506..542d25e191ea6 100644
+--- a/drivers/infiniband/hw/efa/efa_verbs.c
++++ b/drivers/infiniband/hw/efa/efa_verbs.c
+@@ -1216,13 +1216,13 @@ int efa_create_cq_umem(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
+ 		if (umem->length < cq->size) {
+ 			ibdev_dbg(&dev->ibdev, "External memory too small\n");
+ 			err = -EINVAL;
+-			goto err_free_mem;
++			goto err_out;
+ 		}
  
- 	/* Unbind Queue Statistics */
--	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
-+	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
+ 		if (!ib_umem_is_contiguous(umem)) {
+ 			ibdev_dbg(&dev->ibdev, "Non contiguous CQ unsupported\n");
+ 			err = -EINVAL;
+-			goto err_free_mem;
++			goto err_out;
+ 		}
  
- 	/* Reinitialize bases for all stats */
- 	fm10k_update_hw_stats_pf(hw, stats);
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
-index 7fb1961f29210..6861a0bdc14e1 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
-@@ -465,7 +465,7 @@ static void fm10k_rebind_hw_stats_vf(struct fm10k_hw *hw,
- 				     struct fm10k_hw_stats *stats)
- {
- 	/* Unbind Queue Statistics */
--	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
-+	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
+ 		cq->cpu_addr = NULL;
+@@ -1251,7 +1251,7 @@ int efa_create_cq_umem(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
  
- 	/* Reinitialize bases for all stats */
- 	fm10k_update_hw_stats_vf(hw, stats);
+ 	err = efa_com_create_cq(&dev->edev, &params, &result);
+ 	if (err)
+-		goto err_free_mem;
++		goto err_free_mapped;
+ 
+ 	resp.db_off = result.db_off;
+ 	resp.cq_idx = result.cq_idx;
+@@ -1299,12 +1299,10 @@ int efa_create_cq_umem(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
+ 	efa_cq_user_mmap_entries_remove(cq);
+ err_destroy_cq:
+ 	efa_destroy_cq_idx(dev, cq->cq_idx);
+-err_free_mem:
+-	if (umem)
+-		ib_umem_release(umem);
+-	else
+-		efa_free_mapped(dev, cq->cpu_addr, cq->dma_addr, cq->size, DMA_FROM_DEVICE);
+-
++err_free_mapped:
++	if (!umem)
++		efa_free_mapped(dev, cq->cpu_addr, cq->dma_addr, cq->size,
++				DMA_FROM_DEVICE);
+ err_out:
+ 	atomic64_inc(&dev->stats.create_cq_err);
+ 	return err;
 -- 
 2.51.0
 
