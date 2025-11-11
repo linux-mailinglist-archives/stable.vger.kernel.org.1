@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-193528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA9AC4A6DD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:31 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B792C4A530
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 631D01892ED4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CC2FE34BE02
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64790336EF2;
-	Tue, 11 Nov 2025 01:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6766C337B8A;
+	Tue, 11 Nov 2025 01:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vk3km2cJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcaVvvZw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5D726056C;
-	Tue, 11 Nov 2025 01:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239832750E6;
+	Tue, 11 Nov 2025 01:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823395; cv=none; b=Z1JE933PZxEug5riPocNNhHmv2rUnr2hCb9sgBnPCjBurMCDIlYX6uQGmbX18vO2YyJMb82ZpyKXhhFFsG1PCCejGouEmlLzrcWJE4yMcAsJAEGRuBOFMk7xBGeX8hge/aTGh1Q2xqJdzzSN5549zLgLQDmDln4UWOqLEpS0vSM=
+	t=1762823400; cv=none; b=mkPoUQN+UjCwLYY/lp08w33fSqbstlxVZ3poOWlzkqLTczwffr6x2VXRJjl/2taMXSK+k7GrSyImZAKNCdCc3/nboTk3jH3D6t00WKl0wKNdjemGnv0NPiwBrqlubDb4nqm5iduxXkVYY2195ziQYwsSG71axcs9COt2MN09pbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823395; c=relaxed/simple;
-	bh=BODOqef5+JbkAcBzobPJCEfRMFW6Dop69jnw/5utqWY=;
+	s=arc-20240116; t=1762823400; c=relaxed/simple;
+	bh=6ZqC98vG/lvvPHQxd0BcoKc8VaN3ogMTBgvbsdup0fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9mNIPcjREXevD3e3V0/g5ddiIToql8O7PIMRM+i01VWJt6+IFVGZqchixliEOzMqOWRuSrEbET2JOH20iHWYuiQSBtfRoRoZ0CT1atKZENvUwANpuhQcuCQ0ns1akPbDZg5AzGOcR0S4ZhLN28ktyQRSDYRkwh9Aeqz6hYMcS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vk3km2cJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DDEC19421;
-	Tue, 11 Nov 2025 01:09:54 +0000 (UTC)
+	 MIME-Version; b=Pqs+SUHprlI1DoZ7aPEM/4A6ua1nSxjXf48cLkPENgytRRUHzJhdQY5FYSvAOgxliW+rYzHZvh6vVE8h8R3WaY0JItz8tP42OVOcpK7LbX3EqMnSCkeZZ65bie0aRDNQ9P2mXA44fWVMNu8w8gLW8YkLp3zQDX4tXWh1Wd12dm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcaVvvZw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BADDC116B1;
+	Tue, 11 Nov 2025 01:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823395;
-	bh=BODOqef5+JbkAcBzobPJCEfRMFW6Dop69jnw/5utqWY=;
+	s=korg; t=1762823399;
+	bh=6ZqC98vG/lvvPHQxd0BcoKc8VaN3ogMTBgvbsdup0fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vk3km2cJmlN6ni8c5Ri70OCC/j/pEV+IES9ZPxwx8XOjs9HWJQOfeffuwA52o9DQR
-	 n4m5Xh3lLb2GKAai7fiiG8gzQXrb+RvNwEMSYNi7Q4JAC9Ujilxo20sy2Mia+HCKoz
-	 OkeL0uVwq82BNju/sB+X0sThQ8PNfPdhXhalcq5k=
+	b=KcaVvvZwVSS89MVhDbdEFuFQA433KytinWdJ6xbKAtNzh4YYqCL63vykErk3RRBkL
+	 6cm3rMa1A21UXsYLvVq299Iv3reuggL9H02sLAmJ1IEIHLbIihzQmPlHKzaDCl8LxL
+	 YVLvRDMcaPEJXF7LtBiWDjWTSpdkj1DyURjfeeSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Dave Hansen <dave.hansen@intel.com>
-Subject: [PATCH 6.17 292/849] x86/vsyscall: Do not require X86_PF_INSTR to emulate vsyscall
-Date: Tue, 11 Nov 2025 09:37:42 +0900
-Message-ID: <20251111004543.467441879@linuxfoundation.org>
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 293/849] net: stmmac: Check stmmac_hw_setup() in stmmac_resume()
+Date: Tue, 11 Nov 2025 09:37:43 +0900
+Message-ID: <20251111004543.490932570@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,77 +68,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 8ba38a7a9a699905b84fa97578a8291010dec273 ]
+[ Upstream commit 6896c2449a1858acb643014894d01b3a1223d4e5 ]
 
-emulate_vsyscall() expects to see X86_PF_INSTR in PFEC on a vsyscall
-page fault, but the CPU does not report X86_PF_INSTR if neither
-X86_FEATURE_NX nor X86_FEATURE_SMEP are enabled.
+stmmac_hw_setup() may return 0 on success and an appropriate negative
+integer as defined in errno.h file on failure, just check it and then
+return early if failed in stmmac_resume().
 
-X86_FEATURE_NX should be enabled on nearly all 64-bit CPUs, except for
-early P4 processors that did not support this feature.
-
-Instead of explicitly checking for X86_PF_INSTR, compare the fault
-address to RIP.
-
-On machines with X86_FEATURE_NX enabled, issue a warning if RIP is equal
-to fault address but X86_PF_INSTR is absent.
-
-[ dhansen: flesh out code comments ]
-
-Originally-by: Dave Hansen <dave.hansen@intel.com>
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Link: https://lore.kernel.org/all/bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com
-Link: https://lore.kernel.org/all/20250624145918.2720487-1-kirill.shutemov%40linux.intel.com
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://patch.msgid.link/20250811073506.27513-2-yangtiezhu@loongson.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/entry/vsyscall/vsyscall_64.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
-index c9103a6fa06e8..6e6c0a7408371 100644
---- a/arch/x86/entry/vsyscall/vsyscall_64.c
-+++ b/arch/x86/entry/vsyscall/vsyscall_64.c
-@@ -124,7 +124,12 @@ bool emulate_vsyscall(unsigned long error_code,
- 	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
- 		return false;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 7b16d1207b80c..b9f55e4e360fb 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -7977,7 +7977,14 @@ int stmmac_resume(struct device *dev)
+ 	stmmac_free_tx_skbufs(priv);
+ 	stmmac_clear_descriptors(priv, &priv->dma_conf);
  
--	if (!(error_code & X86_PF_INSTR)) {
-+	/*
-+	 * Assume that faults at regs->ip are because of an
-+	 * instruction fetch. Return early and avoid
-+	 * emulation for faults during data accesses:
-+	 */
-+	if (address != regs->ip) {
- 		/* Failed vsyscall read */
- 		if (vsyscall_mode == EMULATE)
- 			return false;
-@@ -136,13 +141,19 @@ bool emulate_vsyscall(unsigned long error_code,
- 		return false;
- 	}
- 
-+	/*
-+	 * X86_PF_INSTR is only set when NX is supported.  When
-+	 * available, use it to double-check that the emulation code
-+	 * is only being used for instruction fetches:
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_NX))
-+		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
+-	stmmac_hw_setup(ndev, false);
++	ret = stmmac_hw_setup(ndev, false);
++	if (ret < 0) {
++		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
++		mutex_unlock(&priv->lock);
++		rtnl_unlock();
++		return ret;
++	}
 +
- 	/*
- 	 * No point in checking CS -- the only way to get here is a user mode
- 	 * trap to a high address, which means that we're in 64-bit user code.
- 	 */
- 
--	WARN_ON_ONCE(address != regs->ip);
--
- 	if (vsyscall_mode == NONE) {
- 		warn_bad_vsyscall(KERN_INFO, regs,
- 				  "vsyscall attempted with vsyscall=none");
+ 	stmmac_init_coalesce(priv);
+ 	phylink_rx_clk_stop_block(priv->phylink);
+ 	stmmac_set_rx_mode(ndev);
 -- 
 2.51.0
 
