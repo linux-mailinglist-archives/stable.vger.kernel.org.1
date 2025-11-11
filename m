@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2107EC4AA21
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4382CC4AAB1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC83D3BA1F0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FC483BA25D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1EB34B41C;
-	Tue, 11 Nov 2025 01:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C67026ED58;
+	Tue, 11 Nov 2025 01:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzLXP4jg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGa3bXUz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC1A2FD7CA;
-	Tue, 11 Nov 2025 01:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49402E9EB1;
+	Tue, 11 Nov 2025 01:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823818; cv=none; b=VheZsvzcurj3eYhIbIVYbQeXAk6x/LoKyyWblThdtDMo5/sbdjfE/lq34rvaORs7BD6Zh5IDjxCka0X/TK2tE7JC3s4RqXCOKtuDn/SNmROXftGoJaOikNkOjHipUNBOXzsYI+Jovg9MBRwDwOFRPUhKg8tCkmk44Ox4Uot6Fis=
+	t=1762823823; cv=none; b=O1D2A9lT4d24GnjLHi4u5hwIdIsroyXUPmz1iIZCjyo+1hMLlAcPP5MpIfbjqVfnxdqtmeNacFP/GUX6fSa9jJJPA0i1UVxVB90NAJSRIJdiGvVx/9viQXpF+uQNNt2qba/yzEb2gPSnpnWKl+Df/EDbHDXufk24DWLacdv+SOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823818; c=relaxed/simple;
-	bh=tlBkSAMKx+g8d+ejllrr4WhH2IKJq95cd48RJxc6ZJU=;
+	s=arc-20240116; t=1762823823; c=relaxed/simple;
+	bh=GgJcYL//oSEcrBbxg43O8gsHS579786yilEng3sKe9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SGw0JMWUszCL1Y0wVYeqcx0W0S7cVSqZFHPFH82ODpnXGhergl99SLilGsnSOrNLELYdncfISMUaXseEXmTG0kJLdgRMd4sm6zUCJXa1gd7Tsye+3D4Crr1HjL9upqL5WEp0nl8Xv8PAOzqFINYexIBYVHcBtXZuLXB1HG7WIlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzLXP4jg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4156CC4CEFB;
-	Tue, 11 Nov 2025 01:16:58 +0000 (UTC)
+	 MIME-Version; b=g1O8BvxLqQY4+7AafXyZaAuNgkXBbo1dk5RLjTzoIAD3XwHSlY9V6fh07Pj0D5ZNnRE4dOSVMoaOiEcr7+YXvOtwXzAnJa05yWuH4k0xIVP93D4OSxqDDvfxzrJE7AJpOaMJo2ZEQqTJn9DAAM2VUQNud510qdmdTTSWLLz+gr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGa3bXUz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096BCC16AAE;
+	Tue, 11 Nov 2025 01:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823818;
-	bh=tlBkSAMKx+g8d+ejllrr4WhH2IKJq95cd48RJxc6ZJU=;
+	s=korg; t=1762823823;
+	bh=GgJcYL//oSEcrBbxg43O8gsHS579786yilEng3sKe9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xzLXP4jgUkSMA4s5bnUxn8rwAog2hSOSLyxZGAIEX1XFX3RAoQifTdXzyX8eyxo0Q
-	 pFwLR348casr9BTB8HB4WOzWJO/doc/zbVsLZzXfyijALFU/vftLE0WirvXpjtwKNG
-	 e5j4WWas4P6JpARJZBbwqI8bPMamv+eHQXMSu76c=
+	b=DGa3bXUzxt/dQz7MTMosujnHt4G1nr233KSVt3phCoSEp7RlpiX9CR4VtjmXcRANU
+	 +mgDR5kLsRKm4CBFmIJg1xt4c9oTq/m4rwerBilmuRzCdZg37wOOehWxo+7jMSX2/d
+	 GJzVK/65GIsZtKfMCbO2xxaPr2rIRZsMF6+GBO/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 378/849] drm/amdgpu/vpe: cancel delayed work in hw_fini
-Date: Tue, 11 Nov 2025 09:39:08 +0900
-Message-ID: <20251111004545.571281700@linuxfoundation.org>
+Subject: [PATCH 6.17 379/849] drm/xe: Cancel pending TLB inval workers on teardown
+Date: Tue, 11 Nov 2025 09:39:09 +0900
+Message-ID: <20251111004545.593599495@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,45 +66,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Stuart Summers <stuart.summers@intel.com>
 
-[ Upstream commit ec813f384b1a9df332e86ff46c422e5d2d00217f ]
+[ Upstream commit 76186a253a4b9eb41c5a83224c14efdf30960a71 ]
 
-We need to cancel any outstanding work at both suspend
-and driver teardown. Move the cancel to hw_fini which
-gets called in both cases.
+Add a new _fini() routine on the GT TLB invalidation
+side to handle this worker cleanup on driver teardown.
 
-Reviewed-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+v2: Move the TLB teardown to the gt fini() routine called during
+    gt_init rather than in gt_alloc. This way the GT structure stays
+    alive for while we reset the TLB state.
+
+Signed-off-by: Stuart Summers <stuart.summers@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://lore.kernel.org/r/20250826182911.392550-3-stuart.summers@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/xe_gt.c                  |  2 ++
+ drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c | 12 ++++++++++++
+ drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h |  1 +
+ 3 files changed, 15 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
-index 7538c4738af34..118fbe38b33ab 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
-@@ -461,6 +461,8 @@ static int vpe_hw_fini(struct amdgpu_ip_block *ip_block)
- 	struct amdgpu_device *adev = ip_block->adev;
- 	struct amdgpu_vpe *vpe = &adev->vpe;
+diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
+index 4d74a4983fd07..2f4c52716e75b 100644
+--- a/drivers/gpu/drm/xe/xe_gt.c
++++ b/drivers/gpu/drm/xe/xe_gt.c
+@@ -605,6 +605,8 @@ static void xe_gt_fini(void *arg)
+ 	struct xe_gt *gt = arg;
+ 	int i;
  
-+	cancel_delayed_work_sync(&adev->vpe.idle_work);
++	xe_gt_tlb_invalidation_fini(gt);
 +
- 	vpe_ring_stop(vpe);
+ 	for (i = 0; i < XE_ENGINE_CLASS_MAX; ++i)
+ 		xe_hw_fence_irq_finish(&gt->fence_irq[i]);
  
- 	/* Power off VPE */
-@@ -471,10 +473,6 @@ static int vpe_hw_fini(struct amdgpu_ip_block *ip_block)
- 
- static int vpe_suspend(struct amdgpu_ip_block *ip_block)
- {
--	struct amdgpu_device *adev = ip_block->adev;
--
--	cancel_delayed_work_sync(&adev->vpe.idle_work);
--
- 	return vpe_hw_fini(ip_block);
+diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+index 086c12ee3d9de..64cd6cf0ab8df 100644
+--- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
++++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+@@ -173,6 +173,18 @@ void xe_gt_tlb_invalidation_reset(struct xe_gt *gt)
+ 	mutex_unlock(&gt->uc.guc.ct.lock);
  }
  
++/**
++ *
++ * xe_gt_tlb_invalidation_fini - Clean up GT TLB invalidation state
++ *
++ * Cancel pending fence workers and clean up any additional
++ * GT TLB invalidation state.
++ */
++void xe_gt_tlb_invalidation_fini(struct xe_gt *gt)
++{
++	xe_gt_tlb_invalidation_reset(gt);
++}
++
+ static bool tlb_invalidation_seqno_past(struct xe_gt *gt, int seqno)
+ {
+ 	int seqno_recv = READ_ONCE(gt->tlb_invalidation.seqno_recv);
+diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
+index f7f0f2eaf4b59..3e4cff3922d6f 100644
+--- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
++++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
+@@ -16,6 +16,7 @@ struct xe_vm;
+ struct xe_vma;
+ 
+ int xe_gt_tlb_invalidation_init_early(struct xe_gt *gt);
++void xe_gt_tlb_invalidation_fini(struct xe_gt *gt);
+ 
+ void xe_gt_tlb_invalidation_reset(struct xe_gt *gt);
+ int xe_gt_tlb_invalidation_ggtt(struct xe_gt *gt);
 -- 
 2.51.0
 
