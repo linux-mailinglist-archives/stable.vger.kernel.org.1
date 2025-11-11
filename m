@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CA6EC4ADA5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:34 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 872D1C4AB48
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 283323B0E07
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E70F13417E4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6329D3446CA;
-	Tue, 11 Nov 2025 01:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135413451A6;
+	Tue, 11 Nov 2025 01:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnsn8130"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mz3/WfcE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1249B1D86FF;
-	Tue, 11 Nov 2025 01:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C360E1DF258;
+	Tue, 11 Nov 2025 01:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824731; cv=none; b=rT+jqBfvkdsd7dU9HOY40lGXePmWjg6AEFD7SLR6/8XXLtl8/nVula7jaCg7Q3tqYqRwfbl+Qs7hnl5WzXCwEumpoiskhvT/f2ooa6Iicexzfqzppi6uYtCCOHh+lPzZlSixF1nvf8XyenmiOcScjNBDl0mbdauzcOA3TE7gTNY=
+	t=1762824735; cv=none; b=cAx5dwgzvfu3/2ztvJT/0aI/c8t4wGYv3vTn3aTVHyYExLY9fkQ+/61fjZ/GhQUVZPKdQZ4kLs7hpq04EvuUf7psv5VBbUNhNwRWqN2QdMOM8A+XRhvb2ZWcQtsj12AEgFuURBu6t0UcUzVEWIBRrhE1/3o338/SAqTCo0L0j4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824731; c=relaxed/simple;
-	bh=NmOsgLiDgu8G5787qnntXzk+xC3ufACIxVlaHuPQm20=;
+	s=arc-20240116; t=1762824735; c=relaxed/simple;
+	bh=uS5ywFPnDpYgkxwWRBBN+l/8natZwRQzYtnPXWw5X+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXIzy9uNNDAbFHoTkrrS3OJohtEk1vB+vAN4EnfM9MfWjg18W2Xb5muLocqNBJ3OsL8TmOCMhLGrVHMkTmY2y33ER6dlTHPOn7Zj8bmGzXs1feqw4u9GhtON9IvGpKSvp/pOMSZgtAmVdjB7CynVzr33JctYxF/lTg3XHPvY/SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnsn8130; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCE4C4CEFB;
-	Tue, 11 Nov 2025 01:32:10 +0000 (UTC)
+	 MIME-Version; b=Pi9V6cO3W662Qt/yn6GORCcqNd3CjQ+aDtXVTPqaDtwnhdmRR2RRA8XtpnzVbfuXA75I03eN5lbVS07/hAwRUjQn3xsDwb4zdr6nsNE7j7/aWY2Lwui+V0ESlZFMbNN/yCy4hJSP3nDB9jZQnTLYmf4Dw/wD5QQvfmu65i/Vbmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mz3/WfcE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AD8C4CEF5;
+	Tue, 11 Nov 2025 01:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824730;
-	bh=NmOsgLiDgu8G5787qnntXzk+xC3ufACIxVlaHuPQm20=;
+	s=korg; t=1762824735;
+	bh=uS5ywFPnDpYgkxwWRBBN+l/8natZwRQzYtnPXWw5X+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vnsn8130YDhuNhy9y9O/dLDuZ9O5lkCOsOCqQUQTnCoFF08Zbvg+Koh9zzoz0vAqZ
-	 vZBdxd0CmBrgEWXKxhXDbAYhKGikTdqL+sbLAt5+B9eNN/oqnVZbl/3croZRsdHHOB
-	 Y/8sw5GuEPk4mxqUDwg3AnCeWKnzXPDtC+tS7OHo=
+	b=mz3/WfcEXYEteWfJBg8Ty7ZKd8fVRfxEzFTyXktXmcmhRiy/cUvs1SwZMgx5HN0bX
+	 1gWaTmwNS7Il9AGW7WCXoC0WIhWeT/v2I2GnkD7UQHPjSxs349cbBcReTb3+Zf68KL
+	 XYIQD+/tvyKNTSNcG0FEVzQMLTN+oxxtV4Cmxr+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asiacn <710187964@qq.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	"Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 559/849] drm/amd/display/dml2: Guard dml21_map_dc_state_into_dml_display_cfg with DC_FP_START
-Date: Tue, 11 Nov 2025 09:42:09 +0900
-Message-ID: <20251111004549.926540023@linuxfoundation.org>
+Subject: [PATCH 6.17 560/849] net: phy: clear EEE runtime state in PHY_HALTED/PHY_ERROR
+Date: Tue, 11 Nov 2025 09:42:10 +0900
+Message-ID: <20251111004549.951598349@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -69,68 +69,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit c97a7dccb3ed680031011cfc1457506e6de49c9a ]
+[ Upstream commit 0915cb22452723407ca9606b7e5cc3fe6ce767d5 ]
 
-dml21_map_dc_state_into_dml_display_cfg calls (the call is usually
-inlined by the compiler) populate_dml21_surface_config_from_plane_state
-and populate_dml21_plane_config_from_plane_state which may use FPU.  In
-a x86-64 build:
+Clear EEE runtime flags when the PHY transitions to HALTED or ERROR
+and the state machine drops the link. This avoids stale EEE state being
+reported via ethtool after the PHY is stopped or hits an error.
 
-    $ objdump --disassemble=dml21_map_dc_state_into_dml_display_cfg \
-    > drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.o |
-    > grep %xmm -c
-    63
+This change intentionally only clears software runtime flags and avoids
+MDIO accesses in HALTED/ERROR. A follow-up patch will address other
+link state variables.
 
-Thus it needs to be guarded with DC_FP_START.  But we must note that the
-current code quality of the in-kernel FPU use in AMD dml2 is very much
-problematic: we are actually calling DC_FP_START in dml21_wrapper.c
-here, and this translation unit is built with CC_FLAGS_FPU.  Strictly
-speaking this does not make any sense: with CC_FLAGS_FPU the compiler is
-allowed to generate FPU uses anywhere in the translated code, perhaps
-out of the DC_FP_START guard.  This problematic pattern also occurs in
-at least dml2_wrapper.c, dcn35_fpu.c, and dcn351_fpu.c.  Thus we really
-need a careful audit and refactor for the in-kernel FPU uses, and this
-patch is simply whacking a mole.  However per the reporter, whacking
-this mole is enough to make a 9060XT "just work."
-
-Reported-by: Asiacn <710187964@qq.com>
-Closes: https://github.com/loongson-community/discussions/issues/102
-Tested-by: Asiacn <710187964@qq.com>
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20250912132000.1598234-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/phy/phy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-index 03de3cf06ae59..059ede6ff2561 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-@@ -224,7 +224,9 @@ static bool dml21_mode_check_and_programming(const struct dc *in_dc, struct dc_s
- 	dml_ctx->config.svp_pstate.callbacks.release_phantom_streams_and_planes(in_dc, context);
- 
- 	/* Populate stream, plane mappings and other fields in display config. */
-+	DC_FP_START();
- 	result = dml21_map_dc_state_into_dml_display_cfg(in_dc, context, dml_ctx);
-+	DC_FP_END();
- 	if (!result)
- 		return false;
- 
-@@ -279,7 +281,9 @@ static bool dml21_check_mode_support(const struct dc *in_dc, struct dc_state *co
- 	dml_ctx->config.svp_pstate.callbacks.release_phantom_streams_and_planes(in_dc, context);
- 
- 	mode_support->dml2_instance = dml_init->dml2_instance;
-+	DC_FP_START();
- 	dml21_map_dc_state_into_dml_display_cfg(in_dc, context, dml_ctx);
-+	DC_FP_END();
- 	dml_ctx->v21.mode_programming.dml2_instance->scratch.build_mode_programming_locals.mode_programming_params.programming = dml_ctx->v21.mode_programming.programming;
- 	DC_FP_START();
- 	is_supported = dml2_check_mode_supported(mode_support);
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index c02da57a4da5e..e046dd858f151 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -1551,6 +1551,8 @@ static enum phy_state_work _phy_state_machine(struct phy_device *phydev)
+ 	case PHY_ERROR:
+ 		if (phydev->link) {
+ 			phydev->link = 0;
++			phydev->eee_active = false;
++			phydev->enable_tx_lpi = false;
+ 			phy_link_down(phydev);
+ 		}
+ 		state_work = PHY_STATE_WORK_SUSPEND;
 -- 
 2.51.0
 
