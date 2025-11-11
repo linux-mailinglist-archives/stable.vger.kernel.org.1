@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-193064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E622C49EF0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1080C49EF6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25FA31889C2E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A8E2188A2A1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96765244693;
-	Tue, 11 Nov 2025 00:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C17324BBEB;
+	Tue, 11 Nov 2025 00:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElLcs5rF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiMBAOyF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540AB4C97;
-	Tue, 11 Nov 2025 00:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007CC12DDA1;
+	Tue, 11 Nov 2025 00:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822215; cv=none; b=qfi/xff/dzXtlKcFI5PVK9OKKpwBvfRXa6Q5/L42naoLmuSxxvdNz0mSaAsHUyS0jBNwlmdasXvoxsbrE+2ROQV9bbNr++9Ac8/SiYPiuSncxTIzycoCfQHpPrb693qL1jiPV0+ZMH0FWqQkl+95Yq5e1B3PJHPFVbU6ullvmf0=
+	t=1762822220; cv=none; b=VXTzCVIrsbVltl9GVAdDFJBT8Sx/vtYQpiyshw0UUGcCyq9fbSB45hcWCldIyDU+uDMoO2OMyAAo8Yd3Kauxkbe6YY2ngA6kRuBQafAAcg4AOOw9m38gxrosQKJbVD1FoFgWbOnL5/qcLqC897CS+mCRrp8j2Yu3tuJOQiOtMXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822215; c=relaxed/simple;
-	bh=klUJ310fL6TTrXiTBtOYkIEMjQhjaXyCxH+7eUE6w/c=;
+	s=arc-20240116; t=1762822220; c=relaxed/simple;
+	bh=tbaWQ/rWTlYv70a9h6PxsnblML2lOmNLLp5ZnCu0ssA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lVywPMmCr0ddqvpOXLbKvJXNiKjh/QZbxRGRPI+LezC54WliIi57oa7clv81xbUuyTnRJxUWTEANR73qwYf8QqBO9w496eEPvw5KFu0quFNlNIH9MqwDgJSdl0mcXnD2EP5E9r6nECmVd5ED1F1xswuUSP0GlhpyvFyaFN1H1WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElLcs5rF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23C1C4CEFB;
-	Tue, 11 Nov 2025 00:50:14 +0000 (UTC)
+	 MIME-Version; b=gUsW0ZDUNoboX3kAfxIUMvX3ca74ypi4fPjdSv4Z7giKOlArB8/tvZBJ4ZP6ODJiPNWSJRseRHfgeSneGJ9pgjUeClPjwsT5XEzaIYyqI1vqja0rKSv6VqaaT8z3ZdT2fB4FxNsZaXaLa89wNcsF8WOhS9nhHbVW8dtSq3IMPj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiMBAOyF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B30C19421;
+	Tue, 11 Nov 2025 00:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822215;
-	bh=klUJ310fL6TTrXiTBtOYkIEMjQhjaXyCxH+7eUE6w/c=;
+	s=korg; t=1762822219;
+	bh=tbaWQ/rWTlYv70a9h6PxsnblML2lOmNLLp5ZnCu0ssA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ElLcs5rFd6cnl3PebNtYQLbLmEzbCUhI7oNAILP8L6ZdFzJelbsK+xqZ48W7ByLhz
-	 1DRy8TpIwe04VZclX1WbbhRsDHp12HkOoYNJx9hn7YoPCk8P/pfVw2+c78RRCI1YU5
-	 zKScNC7GsPDswAtJl3w6scBEXZZoQHX0pLPOPzxo=
+	b=LiMBAOyF8wZIyplDhSlINy7Xzz5Pn1hRKnyHMIY8C9RsdQcD4yy6tpAhH2spDmfSd
+	 yopbtkEf2FRbIW0UtsokImUiEF1fypagSEQMZO9xbfHz+EC4YMOaA8zRpe3J/diXYC
+	 cqsh0dOBBuSfTlu5176wkdQKqabPp3fzPMVNqw8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lu <chris.lu@mediatek.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 059/849] Bluetooth: btmtksdio: Add pmctrl handling for BT closed state during reset
-Date: Tue, 11 Nov 2025 09:33:49 +0900
-Message-ID: <20251111004537.861777105@linuxfoundation.org>
+Subject: [PATCH 6.17 060/849] Bluetooth: HCI: Fix tracking of advertisement set/instance 0x00
+Date: Tue, 11 Nov 2025 09:33:50 +0900
+Message-ID: <20251111004537.885093479@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,58 +65,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chris Lu <chris.lu@mediatek.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 77343b8b4f87560f8f03e77b98a81ff3a147b262 ]
+[ Upstream commit 0d92808024b4e9868cef68d16f121d509843e80e ]
 
-This patch adds logic to handle power management control when the
-Bluetooth function is closed during the SDIO reset sequence.
+This fixes the state tracking of advertisement set/instance 0x00 which
+is considered a legacy instance and is not tracked individually by
+adv_instances list, previously it was assumed that hci_dev itself would
+track it via HCI_LE_ADV but that is a global state not specifc to
+instance 0x00, so to fix it a new flag is introduced that only tracks the
+state of instance 0x00.
 
-Specifically, if BT is closed before reset, the driver enables the
-SDIO function and sets driver pmctrl. After reset, if BT remains
-closed, the driver sets firmware pmctrl and disables the SDIO function.
-
-These changes ensure proper power management and device state consistency
-across the reset flow.
-
-Fixes: 8fafe702253d ("Bluetooth: mt7921s: support bluetooth reset mechanism")
-Signed-off-by: Chris Lu <chris.lu@mediatek.com>
+Fixes: 1488af7b8b5f ("Bluetooth: hci_sync: Fix hci_resume_advertising_sync")
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btmtksdio.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ include/net/bluetooth/hci.h | 1 +
+ net/bluetooth/hci_event.c   | 4 ++++
+ net/bluetooth/hci_sync.c    | 5 ++---
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bluetooth/btmtksdio.c b/drivers/bluetooth/btmtksdio.c
-index 4fc673640bfce..24ce1bf660669 100644
---- a/drivers/bluetooth/btmtksdio.c
-+++ b/drivers/bluetooth/btmtksdio.c
-@@ -1270,6 +1270,12 @@ static void btmtksdio_reset(struct hci_dev *hdev)
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index df1847b74e55e..dca650cede3c4 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -434,6 +434,7 @@ enum {
+ 	HCI_USER_CHANNEL,
+ 	HCI_EXT_CONFIGURED,
+ 	HCI_LE_ADV,
++	HCI_LE_ADV_0,
+ 	HCI_LE_PER_ADV,
+ 	HCI_LE_SCAN,
+ 	HCI_SSP_ENABLED,
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index fe49e8a7969ff..e1b7eabe72744 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -1609,6 +1609,8 @@ static u8 hci_cc_le_set_ext_adv_enable(struct hci_dev *hdev, void *data,
  
- 	sdio_claim_host(bdev->func);
+ 		if (adv && !adv->periodic)
+ 			adv->enabled = true;
++		else if (!set->handle)
++			hci_dev_set_flag(hdev, HCI_LE_ADV_0);
  
-+	/* set drv_pmctrl if BT is closed before doing reset */
-+	if (!test_bit(BTMTKSDIO_FUNC_ENABLED, &bdev->tx_state)) {
-+		sdio_enable_func(bdev->func);
-+		btmtksdio_drv_pmctrl(bdev);
-+	}
-+
- 	sdio_writel(bdev->func, C_INT_EN_CLR, MTK_REG_CHLPCR, NULL);
- 	skb_queue_purge(&bdev->txq);
- 	cancel_work_sync(&bdev->txrx_work);
-@@ -1285,6 +1291,12 @@ static void btmtksdio_reset(struct hci_dev *hdev)
- 		goto err;
- 	}
+ 		conn = hci_lookup_le_connect(hdev);
+ 		if (conn)
+@@ -1619,6 +1621,8 @@ static u8 hci_cc_le_set_ext_adv_enable(struct hci_dev *hdev, void *data,
+ 		if (cp->num_of_sets) {
+ 			if (adv)
+ 				adv->enabled = false;
++			else if (!set->handle)
++				hci_dev_clear_flag(hdev, HCI_LE_ADV_0);
  
-+	/* set fw_pmctrl back if BT is closed after doing reset */
-+	if (!test_bit(BTMTKSDIO_FUNC_ENABLED, &bdev->tx_state)) {
-+		btmtksdio_fw_pmctrl(bdev);
-+		sdio_disable_func(bdev->func);
-+	}
-+
- 	clear_bit(BTMTKSDIO_PATCH_ENABLED, &bdev->tx_state);
- err:
- 	sdio_release_host(bdev->func);
+ 			/* If just one instance was disabled check if there are
+ 			 * any other instance enabled before clearing HCI_LE_ADV
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index d160e5e1fe8ab..28ad08cd7d706 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2606,9 +2606,8 @@ static int hci_resume_advertising_sync(struct hci_dev *hdev)
+ 		/* If current advertising instance is set to instance 0x00
+ 		 * then we need to re-enable it.
+ 		 */
+-		if (!hdev->cur_adv_instance)
+-			err = hci_enable_ext_advertising_sync(hdev,
+-							      hdev->cur_adv_instance);
++		if (hci_dev_test_and_clear_flag(hdev, HCI_LE_ADV_0))
++			err = hci_enable_ext_advertising_sync(hdev, 0x00);
+ 	} else {
+ 		/* Schedule for most recent instance to be restarted and begin
+ 		 * the software rotation loop
 -- 
 2.51.0
 
