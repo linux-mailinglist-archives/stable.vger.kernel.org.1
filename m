@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-193612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01AFBC4A6B6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:21 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CCF9C4A599
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:21:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9EAF04F19D5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 19BC634BFF3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B583253944;
-	Tue, 11 Nov 2025 01:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14862D9EF9;
+	Tue, 11 Nov 2025 01:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1B+4NiDv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKe5JHgi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3E22D8DDA;
-	Tue, 11 Nov 2025 01:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECCB343D67;
+	Tue, 11 Nov 2025 01:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823594; cv=none; b=SOMbqt94axfD5Ixkf9wiNciiKymMOPgtzFj9FNnQzoug4rlhp8kv7bySd61g4bJ1tqxp8i50kLK6dMQBXJaIOHAQfVeZpf9EDqePUK24/E95hq3RvSwjlcU6rmAjc6q/rWRcstkbn1SERqcu81lGNU12i5MLlk/IIW7EyKIr9os=
+	t=1762823599; cv=none; b=DoxSou/98RQFQNfRWuBlG9hzhEJSp+w+vOFJw2EHRitk3QDW8HmUFRi+bt1xlmMzkcTCxpAlpm+awrY3By+dFCrUcD5wbmaGL5V3S/jnO944zoCMEQseF3K92twHzMdHZofVxb+lCTwh7d3BdaLx8fB7YQe4QRknis9fdBoksbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823594; c=relaxed/simple;
-	bh=0qheAxGUoJPUHvFu1lNK/0FYj5M+NDvhw2ZOw/sFcKM=;
+	s=arc-20240116; t=1762823599; c=relaxed/simple;
+	bh=vHPYdzg5lmy1xvrkKITrTkitomBh0eKuOJDs5NetCf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ryNlPbiVU5Zyuw5CK2SIK90XfN+Rv0AVGNUVBOvGkuvUFC9xj1eiM4A/iziXp5pLJhqxdqtYdFkuaMoyZovEKN54fvPvmr7TI6mz85YNNyfSCQuby5Ut7dyqs7p0AHzwGmuSFNBaQQcgTB/j1W3B1DNULKvDVj01Mfl88Qy24tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1B+4NiDv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A4EC4CEFB;
-	Tue, 11 Nov 2025 01:13:14 +0000 (UTC)
+	 MIME-Version; b=NamsjEGjwyVZu6jyMER7Pi828Ms29akP5EJhuZvvi2k2Le06lmTIBG1cnBmbKErGkttrdbOAZOKopicA/J3K/XTlYNJIYJrXnelByRYIM6VCbIZYCzbp8KWrKYD3nZ7sH9Uzr4eebPJyHVjQvaxkMwF6tpufV3O1rvdahH02MXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GKe5JHgi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00298C116B1;
+	Tue, 11 Nov 2025 01:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823594;
-	bh=0qheAxGUoJPUHvFu1lNK/0FYj5M+NDvhw2ZOw/sFcKM=;
+	s=korg; t=1762823599;
+	bh=vHPYdzg5lmy1xvrkKITrTkitomBh0eKuOJDs5NetCf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1B+4NiDvfO5/Jj2ZCJ1UEH1et3OSYMn1ZcUy05r1wRuQzIxgyUlU3fsCLLDsO/JbY
-	 CzB4uhtLkpxM7SjAUnmxwNNDiuXWa3rGM8v1P2u11uK462+CWIMLfjlY5AotcBwaYr
-	 cX4rDNhu3PlGBlBEfgnvp7QDvleLEVPMAWW+3c4o=
+	b=GKe5JHgiTze7BkDBJPPziuSGIZpP8eAg+4h9BsKL3yh7gZz6eacIFsJioR59WMVET
+	 83p9AAkgUvnpv9fbII/71nDbwry84XGsY6mnwjem01mVRchyYe5yy5tziT79mi0D4O
+	 Lg2zxNj1Qn7nZhaITGIHKw1v4vXb3grRsd6ZBKqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Zijun Hu <zijun.hu@oss.qualcomm.com>,
+	Christoph Paasch <cpaasch@openai.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 332/849] char: misc: Does not request module for miscdevice with dynamic minor
-Date: Tue, 11 Nov 2025 09:38:22 +0900
-Message-ID: <20251111004544.444096120@linuxfoundation.org>
+Subject: [PATCH 6.17 333/849] net: When removing nexthops, dont call synchronize_net if it is not necessary
+Date: Tue, 11 Nov 2025 09:38:23 +0900
+Message-ID: <20251111004544.467774433@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,56 +70,95 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
+From: Christoph Paasch <cpaasch@openai.com>
 
-[ Upstream commit 1ba0fb42aa6a5f072b1b8c0b0520b32ad4ef4b45 ]
+[ Upstream commit b0ac6d3b56a2384db151696cfda2836a8a961b6d ]
 
-misc_open() may request module for miscdevice with dynamic minor, which
-is meaningless since:
+When removing a nexthop, commit
+90f33bffa382 ("nexthops: don't modify published nexthop groups") added a
+call to synchronize_rcu() (later changed to _net()) to make sure
+everyone sees the new nexthop-group before the rtnl-lock is released.
 
-- The dynamic minor allocated is unknown in advance without registering
-  miscdevice firstly.
-- Macro MODULE_ALIAS_MISCDEV() is not applicable for dynamic minor.
+When one wants to delete a large number of groups and nexthops, it is
+fastest to first flush the groups (ip nexthop flush groups) and then
+flush the nexthops themselves (ip -6 nexthop flush). As that way the
+groups don't need to be rebalanced.
 
-Fix by only requesting module for miscdevice with fixed minor.
+However, `ip -6 nexthop flush` will still take a long time if there is
+a very large number of nexthops because of the call to
+synchronize_net(). Now, if there are no more groups, there is no point
+in calling synchronize_net(). So, let's skip that entirely by checking
+if nh->grp_list is empty.
 
-Acked-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250714-rfc_miscdev-v6-6-2ed949665bde@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This gives us a nice speedup:
+
+BEFORE:
+=======
+
+$ time sudo ip -6 nexthop flush
+Dump was interrupted and may be inconsistent.
+Flushed 2097152 nexthops
+
+real	1m45.345s
+user	0m0.001s
+sys	0m0.005s
+
+$ time sudo ip -6 nexthop flush
+Dump was interrupted and may be inconsistent.
+Flushed 4194304 nexthops
+
+real	3m10.430s
+user	0m0.002s
+sys	0m0.004s
+
+AFTER:
+======
+
+$ time sudo ip -6 nexthop flush
+Dump was interrupted and may be inconsistent.
+Flushed 2097152 nexthops
+
+real	0m17.545s
+user	0m0.003s
+sys	0m0.003s
+
+$ time sudo ip -6 nexthop flush
+Dump was interrupted and may be inconsistent.
+Flushed 4194304 nexthops
+
+real	0m35.823s
+user	0m0.002s
+sys	0m0.004s
+
+Signed-off-by: Christoph Paasch <cpaasch@openai.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250816-nexthop_dump-v2-2-491da3462118@openai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/misc.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/ipv4/nexthop.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/char/misc.c b/drivers/char/misc.c
-index 255a164eec86d..4c276b8066ff8 100644
---- a/drivers/char/misc.c
-+++ b/drivers/char/misc.c
-@@ -132,7 +132,8 @@ static int misc_open(struct inode *inode, struct file *file)
- 		break;
- 	}
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 34137768e7f9a..15acfb74fd238 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -2087,6 +2087,12 @@ static void remove_nexthop_from_groups(struct net *net, struct nexthop *nh,
+ {
+ 	struct nh_grp_entry *nhge, *tmp;
  
--	if (!new_fops) {
-+	/* Only request module for fixed minor code */
-+	if (!new_fops && minor < MISC_DYNAMIC_MINOR) {
- 		mutex_unlock(&misc_mtx);
- 		request_module("char-major-%d-%d", MISC_MAJOR, minor);
- 		mutex_lock(&misc_mtx);
-@@ -144,10 +145,11 @@ static int misc_open(struct inode *inode, struct file *file)
- 			new_fops = fops_get(iter->fops);
- 			break;
- 		}
--		if (!new_fops)
--			goto fail;
- 	}
- 
-+	if (!new_fops)
-+		goto fail;
++	/* If there is nothing to do, let's avoid the costly call to
++	 * synchronize_net()
++	 */
++	if (list_empty(&nh->grp_list))
++		return;
 +
- 	/*
- 	 * Place the miscdevice in the file's
- 	 * private_data so it can be used by the
+ 	list_for_each_entry_safe(nhge, tmp, &nh->grp_list, nh_list)
+ 		remove_nh_grp_entry(net, nhge, nlinfo);
+ 
 -- 
 2.51.0
 
