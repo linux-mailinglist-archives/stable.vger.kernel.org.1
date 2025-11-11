@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10139C49F35
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8047C49FF8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B087834BD64
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C82DE4F1BC7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2613B1FDA92;
-	Tue, 11 Nov 2025 00:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E379E1FDA92;
+	Tue, 11 Nov 2025 00:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxEHByVB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcj94vco"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D680C12DDA1;
-	Tue, 11 Nov 2025 00:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AFE4C97;
+	Tue, 11 Nov 2025 00:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822266; cv=none; b=m04u8+sHarDy8EDTlniqC0bacWIeJV1vcQdEq/UoihIKJA0wVuSFpoOGMoEnzbvX9vFb1ROi6wUAr6vRkJX21GGxDHiAhkVu7+3NSfnzlTxfzkSgEooMgO9KaJfzSO+kav43IBMuMb6/WGtgPx9yoZYRrr2PBqTSl4xSWEOM/x8=
+	t=1762822271; cv=none; b=XwDKLACZqImu92PTFfgytO/jYgqk9Z/Rw2coxm8Of15SRNs9TxQT8tH4Q4jUq8/UM49kNP52B006cZeqabsB0ZaGmuwZzUNxgdymoX3Fiby94eocFqTPtbwPTKsCMp8zs4WSoJXwstCiJNvacw5bUxDyLeqKkGD1hDc3iNSiKMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822266; c=relaxed/simple;
-	bh=eOmjF8VLW4B8wMyWobjFrutIFlU2Bx4A9ByDHp0aFrM=;
+	s=arc-20240116; t=1762822271; c=relaxed/simple;
+	bh=D0qnVgigPLDNTSnOHEaS4QmAALhCWwnd+hi6sbhlawg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKdzSvGSmOzu4Whb4HrvWl+szHhs5jn6SQS0X1TQ444eIf8sQQ5sNMfFrmoimh28Vuo2ZJkWru+Q/4yv9s/N3ZQXlZ19lSLDzDiLhGV5dBwLAkGmz6PdEI7vp+cxfMtUMZts/oAJoYSV68jVdPhfhf74SI2iEsfl2sCReve2ZDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxEHByVB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73BF1C116B1;
-	Tue, 11 Nov 2025 00:51:06 +0000 (UTC)
+	 MIME-Version; b=BePhaDS7FiVpIPPo+LpO1h9+FaQt4kGdWvyUk4wOx4ytRhJyhnirJIbIZck5hDrADLGPAwe0DSmc+Cgzg09rb80SYQNj+drmMwHZLgKdO7YCUQITOLpODUasnI9Z44YbYlrn8coAhN4yaxFomkvxv3dzz7NJNjvZqmZSXct2vDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcj94vco; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF95C113D0;
+	Tue, 11 Nov 2025 00:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822266;
-	bh=eOmjF8VLW4B8wMyWobjFrutIFlU2Bx4A9ByDHp0aFrM=;
+	s=korg; t=1762822271;
+	bh=D0qnVgigPLDNTSnOHEaS4QmAALhCWwnd+hi6sbhlawg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxEHByVBjJ8zn9YhWaDGO5JXKJApz5ZqmCMokWxeHoerGNGXwRO4LXvXZDKjfJmEX
-	 LlijnDPvpxJXD72YFK58AU8igDcxDPZw4vGokV5R2YI2GnSbtJ57NAn+z277LZ/WBY
-	 NAwpX6IYnQT/wZUGeipsw80IU4XiEl+fhsix/HLU=
+	b=wcj94vcoDgAfvVYeph9D3LjDtHoDowiLOEyTcvZW8wA5LU+sKJ1s1KI9otQn7w8Pn
+	 d76bUzyYnOczxSHXIzYtbQYwKoDrINHtjIO/8r1QqOqwITgGrYp9n78ufEV77TQ6Nt
+	 8fjc9iDrTrjvcbf4OQhf8as07ZPs25zMQOubw8b8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Tony Luck <tony.luck@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 069/849] ALSA: usb-audio: dont log messages meant for 1810c when initializing 1824c
-Date: Tue, 11 Nov 2025 09:33:59 +0900
-Message-ID: <20251111004538.095004192@linuxfoundation.org>
+Subject: [PATCH 6.17 070/849] ACPI: MRRM: Check revision of MRRM table
+Date: Tue, 11 Nov 2025 09:34:00 +0900
+Message-ID: <20251111004538.118947355@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,81 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
+From: Tony Luck <tony.luck@intel.com>
 
-[ Upstream commit 75cdae446ddffe0a6a991bbb146dee51d9d4c865 ]
+[ Upstream commit dc131bcd8d9219f7da533918abcb0d32951b7702 ]
 
-The log messages for the PreSonus STUDIO 1810c about
-device_setup are not applicable to the 1824c, and should
-not be logged when 1824c initializes.
+Before trying to parse the MRRM table, check that the table revision
+is the one that is expected.
 
-Refactor from if statement to switch statement as there
-might be more STUDIO series devices added later.
-
-Fixes: 080564558eb1 ("ALSA: usb-audio: enable support for Presonus Studio 1824c within 1810c file")
-Signed-off-by: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
-Link: https://patch.msgid.link/aPaYTP7ceuABf8c7@ark
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: b9020bdb9f76 ("ACPI: MRRM: Minimal parse of ACPI MRRM table")
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://patch.msgid.link/20251022204523.10752-1-tony.luck@intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_s1810c.c | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ drivers/acpi/acpi_mrrm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/usb/mixer_s1810c.c b/sound/usb/mixer_s1810c.c
-index 2413a6d96971c..5b187f89c7f8e 100644
---- a/sound/usb/mixer_s1810c.c
-+++ b/sound/usb/mixer_s1810c.c
-@@ -562,15 +562,6 @@ int snd_sc1810_init_mixer(struct usb_mixer_interface *mixer)
- 	if (!list_empty(&chip->mixer_list))
- 		return 0;
+diff --git a/drivers/acpi/acpi_mrrm.c b/drivers/acpi/acpi_mrrm.c
+index 47ea3ccc21424..a6dbf623e5571 100644
+--- a/drivers/acpi/acpi_mrrm.c
++++ b/drivers/acpi/acpi_mrrm.c
+@@ -63,6 +63,9 @@ static __init int acpi_parse_mrrm(struct acpi_table_header *table)
+ 	if (!mrrm)
+ 		return -ENODEV;
  
--	dev_info(&dev->dev,
--		 "Presonus Studio 1810c, device_setup: %u\n", chip->setup);
--	if (chip->setup == 1)
--		dev_info(&dev->dev, "(8out/18in @ 48kHz)\n");
--	else if (chip->setup == 2)
--		dev_info(&dev->dev, "(6out/8in @ 192kHz)\n");
--	else
--		dev_info(&dev->dev, "(8out/14in @ 96kHz)\n");
--
- 	ret = snd_s1810c_init_mixer_maps(chip);
- 	if (ret < 0)
- 		return ret;
-@@ -599,16 +590,28 @@ int snd_sc1810_init_mixer(struct usb_mixer_interface *mixer)
- 	if (ret < 0)
- 		return ret;
++	if (mrrm->header.revision != 1)
++		return -EINVAL;
++
+ 	if (mrrm->flags & ACPI_MRRM_FLAGS_REGION_ASSIGNMENT_OS)
+ 		return -EOPNOTSUPP;
  
--	// The 1824c has a Mono Main switch instead of a
--	// A/B select switch.
--	if (mixer->chip->usb_id == USB_ID(0x194f, 0x010d)) {
--		ret = snd_s1810c_switch_init(mixer, &snd_s1824c_mono_sw);
-+	switch (chip->usb_id) {
-+	case USB_ID(0x194f, 0x010c): /* Presonus Studio 1810c */
-+		dev_info(&dev->dev,
-+			 "Presonus Studio 1810c, device_setup: %u\n", chip->setup);
-+		if (chip->setup == 1)
-+			dev_info(&dev->dev, "(8out/18in @ 48kHz)\n");
-+		else if (chip->setup == 2)
-+			dev_info(&dev->dev, "(6out/8in @ 192kHz)\n");
-+		else
-+			dev_info(&dev->dev, "(8out/14in @ 96kHz)\n");
-+
-+		ret = snd_s1810c_switch_init(mixer, &snd_s1810c_ab_sw);
- 		if (ret < 0)
- 			return ret;
--	} else if (mixer->chip->usb_id == USB_ID(0x194f, 0x010c)) {
--		ret = snd_s1810c_switch_init(mixer, &snd_s1810c_ab_sw);
-+
-+		break;
-+	case USB_ID(0x194f, 0x010d): /* Presonus Studio 1824c */
-+		ret = snd_s1810c_switch_init(mixer, &snd_s1824c_mono_sw);
- 		if (ret < 0)
- 			return ret;
-+
-+		break;
- 	}
- 
- 	return ret;
 -- 
 2.51.0
 
