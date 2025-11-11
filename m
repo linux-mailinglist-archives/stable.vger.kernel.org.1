@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13772C4B1A8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A036EC4ADC9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 397374EE341
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78CC7189606B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D999304BBD;
-	Tue, 11 Nov 2025 01:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4E7333730;
+	Tue, 11 Nov 2025 01:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNjVs5Fb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4hvw909"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D8718DF80;
-	Tue, 11 Nov 2025 01:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BC0329399;
+	Tue, 11 Nov 2025 01:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825522; cv=none; b=dNJIqP63DmPItPMwSzc1afGyfFYhf1aXeID8aGZVVUd3qdC64BvHU02BZylpubcmmj0PweeT9xwGYva5KW1hhX7Rc9Afvurs/DsoF9/pHrz53/gegghudlKe9NiecQXe7kjHF+OtPvkV1BPO5vBZ7VhZUA+9HEOqYbqx3LCuD+Q=
+	t=1762824923; cv=none; b=iVD/6h6gHXCDaW8j/npiJITHeq45imcYSRfmJpZ9co8qHKtenH87rhF6V2HMjtKd7sr/eriFsd4oz+2woNmqxBMwMU989KvR6+0xracmR/en0al+nbf9Cg+Iw9vhyH3PXToHiqEB8hmgQvBPse2RwYZZz5gkYd9Z+7wEi9I+Uz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825522; c=relaxed/simple;
-	bh=Hse+jJk7DQ4nKfqx/Uo1SuN0r5eEa3Hi80B4fISffvc=;
+	s=arc-20240116; t=1762824923; c=relaxed/simple;
+	bh=PwNjDOUE8Kdw7hKPYH60fIWDJbNCV7WTYG1BiUT0kgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b2WDE5xkQI4Wfy0YQy73mpVgJRpAVnOclRrovUc6IVY9YDomtHMULUF5Ug0Yndu7Kn0IvsnmusmisQKTD7WSZSNjVWSHVuhM/vXV/CO0Z/gz1z+aGH1RrB/ge3knK2N67+mW3AfvdOncFpbFpr1k2WUSx2AlPITkXRi4zYJDrRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNjVs5Fb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB172C4CEF5;
-	Tue, 11 Nov 2025 01:45:21 +0000 (UTC)
+	 MIME-Version; b=FtMpvFLilNhBWqpcINlONrBbASenCusYvlTszAQ2LQfK1i49PGEprDD2QPuF62pRMYPCpMIYitv/dxNdGTWkFWVFeq8DAa2m1YDTw/3MUQj5VaurNrsunZDTNjryvEhcDaTwRrPySxDkbQdOeD7avh7rs1wT2Cy7sIHmzUedNcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4hvw909; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E912EC113D0;
+	Tue, 11 Nov 2025 01:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825522;
-	bh=Hse+jJk7DQ4nKfqx/Uo1SuN0r5eEa3Hi80B4fISffvc=;
+	s=korg; t=1762824923;
+	bh=PwNjDOUE8Kdw7hKPYH60fIWDJbNCV7WTYG1BiUT0kgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNjVs5Fb0yFQ3GeogJumFJoqQomfprRi9B+hhHEb4WmKvP39jS13rbXg/aXC3SIR3
-	 qJWMrDjYUUUQ8aPZyQZVw8sbgoOD7JqpC/p3sz36CxWepeDjD1mcFtdSFkd2OhISHF
-	 MQu+9FMK9czw/sioUoNj3aBLsAhdqzm0xMuGN6bc=
+	b=a4hvw909a0bG72FJjS+YMHM2XVtu8coEGoT4OefDAMD4zI2od9bobdOLQyWIY3JU8
+	 JofbVqA8PthJFUp7mZ0cIx7qfn+eDMA60IeUPRu2LpvdYdVLn181+S6j4XqYdLMbTS
+	 NNe53PFyWi8je1s2QX7pPUgVJBgfIghoNaiP3zAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	David Gow <davidgow@google.com>
-Subject: [PATCH 6.17 837/849] kunit: Extend kconfig help text for KUNIT_UML_PCI
+	Jay Shin <jaeshin@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 551/565] smb: client: fix potential UAF in smb2_close_cached_fid()
 Date: Tue, 11 Nov 2025 09:46:47 +0900
-Message-ID: <20251111004556.661878485@linuxfoundation.org>
+Message-ID: <20251111004539.394534776@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-commit 285cae57a51664cc94e85de0ff994f9965b3aca8 upstream.
+commit 734e99623c5b65bf2c03e35978a0b980ebc3c2f8 upstream.
 
-Checkpatch.pl expects at least 4 lines of help text.
+find_or_create_cached_dir() could grab a new reference after kref_put()
+had seen the refcount drop to zero but before cfid_list_lock is acquired
+in smb2_close_cached_fid(), leading to use-after-free.
 
-Extend the help text to make checkpatch.pl happy.
+Switch to kref_put_lock() so cfid_release() is called with
+cfid_list_lock held, closing that gap.
 
-Link: https://lore.kernel.org/r/20250916-kunit-pci-kconfig-v1-1-6d1369f06f2a@linutronix.de
-Fixes: 031cdd3bc3f3 ("kunit: Enable PCI on UML without triggering WARN()")
-Suggested-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://lore.kernel.org/lkml/3dc95227-2be9-48a0-bdea-3f283d9b2a38@linuxfoundation.org/
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: ebe98f1447bb ("cifs: enable caching of directories for which a lease is held")
+Cc: stable@vger.kernel.org
+Reported-by: Jay Shin <jaeshin@redhat.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/kunit/Kconfig | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/client/cached_dir.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
-index 1823539e96da..7a6af361d2fc 100644
---- a/lib/kunit/Kconfig
-+++ b/lib/kunit/Kconfig
-@@ -112,5 +112,9 @@ config KUNIT_UML_PCI
- 	select UML_PCI
- 	help
- 	  Enables the PCI subsystem on UML for use by KUnit tests.
-+	  Some KUnit tests require the PCI core which is not enabled by
-+	  default on UML.
-+
-+	  If unsure, say N.
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -362,11 +362,11 @@ out:
+ 			 * lease. Release one here, and the second below.
+ 			 */
+ 			cfid->has_lease = false;
+-			kref_put(&cfid->refcount, smb2_close_cached_fid);
++			close_cached_dir(cfid);
+ 		}
+ 		spin_unlock(&cfids->cfid_list_lock);
  
- endif # KUNIT
--- 
-2.51.2
-
+-		kref_put(&cfid->refcount, smb2_close_cached_fid);
++		close_cached_dir(cfid);
+ 	} else {
+ 		*ret_cfid = cfid;
+ 		atomic_inc(&tcon->num_remote_opens);
+@@ -406,12 +406,14 @@ int open_cached_dir_by_dentry(struct cif
+ 
+ static void
+ smb2_close_cached_fid(struct kref *ref)
++__releases(&cfid->cfids->cfid_list_lock)
+ {
+ 	struct cached_fid *cfid = container_of(ref, struct cached_fid,
+ 					       refcount);
+ 	int rc;
+ 
+-	spin_lock(&cfid->cfids->cfid_list_lock);
++	lockdep_assert_held(&cfid->cfids->cfid_list_lock);
++
+ 	if (cfid->on_list) {
+ 		list_del(&cfid->entry);
+ 		cfid->on_list = false;
+@@ -446,7 +448,7 @@ void drop_cached_dir_by_name(const unsig
+ 	spin_lock(&cfid->cfids->cfid_list_lock);
+ 	if (cfid->has_lease) {
+ 		cfid->has_lease = false;
+-		kref_put(&cfid->refcount, smb2_close_cached_fid);
++		close_cached_dir(cfid);
+ 	}
+ 	spin_unlock(&cfid->cfids->cfid_list_lock);
+ 	close_cached_dir(cfid);
+@@ -455,7 +457,7 @@ void drop_cached_dir_by_name(const unsig
+ 
+ void close_cached_dir(struct cached_fid *cfid)
+ {
+-	kref_put(&cfid->refcount, smb2_close_cached_fid);
++	kref_put_lock(&cfid->refcount, smb2_close_cached_fid, &cfid->cfids->cfid_list_lock);
+ }
+ 
+ /*
+@@ -566,7 +568,7 @@ cached_dir_offload_close(struct work_str
+ 
+ 	WARN_ON(cfid->on_list);
+ 
+-	kref_put(&cfid->refcount, smb2_close_cached_fid);
++	close_cached_dir(cfid);
+ 	cifs_put_tcon(tcon, netfs_trace_tcon_ref_put_cached_close);
+ }
+ 
+@@ -743,7 +745,7 @@ static void cfids_laundromat_worker(stru
+ 			 * Drop the ref-count from above, either the lease-ref (if there
+ 			 * was one) or the extra one acquired.
+ 			 */
+-			kref_put(&cfid->refcount, smb2_close_cached_fid);
++			close_cached_dir(cfid);
+ 	}
+ 	queue_delayed_work(cfid_put_wq, &cfids->laundromat_work,
+ 			   dir_cache_timeout * HZ);
 
 
 
