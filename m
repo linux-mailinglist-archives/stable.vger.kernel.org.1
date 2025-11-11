@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07308C4A1E1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CCB2C4A16E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:59:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 07D054F4053
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCB4D188E302
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B51E24A043;
-	Tue, 11 Nov 2025 00:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3302F23FC41;
+	Tue, 11 Nov 2025 00:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkilf0gr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSa3zJtU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCB01C6FE1;
-	Tue, 11 Nov 2025 00:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96F524BBEB;
+	Tue, 11 Nov 2025 00:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822732; cv=none; b=QuhD+05gpPpADaWPjzWoilhJs/V6M5zQsXE6e4KC3jdv8zIauU6HvnRh/fkIc0u7B19b5x2T3497GThhkr/q/fMggykOlsgKvgDXk5dl6kxjx+tlrGE3quZT+P/RsA0s3KDUMnf0O8CIlf15LiGY6wNUH/l2Yjbn9OxGJBj9qpY=
+	t=1762822739; cv=none; b=aiQj0HtMlyWhb8UmoA+AtHG227vuBoVF4uTka/YUM3kX80mP8yeKsyJwwhzkpXKmliHt6IzogwQKl2Eohm3y390RK348Dd4/b8LnY96e1n6Vc78ia7wjFgaahnNuykKidPgozurltxTP0QkMmfsWRZXthhxMHjvvafQpwqQH0qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822732; c=relaxed/simple;
-	bh=D6MxCog94nroTO5GT45KqCrpsGtMJ1TVsuBfUufFNzE=;
+	s=arc-20240116; t=1762822739; c=relaxed/simple;
+	bh=zpObJASxcMqjs8o16jg2GPNab67gmtTecO4Sj73QSS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAwJA/wbQ+jta3ahkW0rD12xz/iyU2RF4fB39crHo46E7fWCoVk/PJuc7cqqjXK6GU8VtX+l8lkELgDI0iTRY8S6N8kVPOJAJCxGYKpykv3vH3oCa6B5F3e3VnCjUsVIQVTV8i5tXoyez24cF92gxri6h9bg5sC7qIvlylg6nds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkilf0gr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88AA6C113D0;
-	Tue, 11 Nov 2025 00:58:51 +0000 (UTC)
+	 MIME-Version; b=W0OvDjGWOgIdjs31BsC8/WkJNx6BhNXwbfodvZ8JHIb2qbv9bzjszv1nILLoQWcD6NNmGXYVfUEstJ/ipmGX00410YX1aTkegx7FMUyZ4rbDxnZMNeoJJUCEiOTQX1bGzZMMIXD4DGhS/W2Bdjfz1WoJh61HROdQDkdzMcJx5aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSa3zJtU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FEC0C16AAE;
+	Tue, 11 Nov 2025 00:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822731;
-	bh=D6MxCog94nroTO5GT45KqCrpsGtMJ1TVsuBfUufFNzE=;
+	s=korg; t=1762822738;
+	bh=zpObJASxcMqjs8o16jg2GPNab67gmtTecO4Sj73QSS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mkilf0grFAt/WYaGPSoiXDB9wmdfXqeSYCuKBQ/7RcOts956C2tRADS0+fG+B4Upy
-	 QRi4LM6XNg5aT6c5SbXsgSL6+AOKHUMPZaEqr/NZV2Eg5egtqzxUhFaOKzHUmnHlWB
-	 P8wUJbzvDKaVqPx1XVovMIrqj2gI86L6tWVgBTqg=
+	b=NSa3zJtU4duQZNy1lM4XuAV1oa5gYLpnGZCr1IovWbvrBC+H4a4pJgHIQ5VmXl3+Q
+	 fXnPn2YNkKoyleaIu+kxa1fOyTxRCz06jTfU16aSbVs4LuJmqy2733DdS2jlFNKVH7
+	 WXUpJzhqhNxQgXALuXl4aUq7Nhvw+vGkZSY4toPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuande Chen <chuachen@cisco.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 157/849] hwmon: (sbtsi_temp) AMD CPU extended temperature range support
-Date: Tue, 11 Nov 2025 09:35:27 +0900
-Message-ID: <20251111004540.229751468@linuxfoundation.org>
+Subject: [PATCH 6.17 158/849] pinctrl: renesas: rzg2l: Add suspend/resume support for Schmitt control registers
+Date: Tue, 11 Nov 2025 09:35:28 +0900
+Message-ID: <20251111004540.252847925@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,138 +67,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuande Chen <chuachen@cisco.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit d9d61f1da35038793156c04bb13f0a1350709121 ]
+[ Upstream commit 837afa592c6234be82acb5d23e0a39e9befdaa85 ]
 
-Many AMD CPUs can support this feature now. We would get a wrong CPU DIE
-temperature if don't consider this. In low-temperature environments,
-the CPU die temperature can drop below zero. So many platforms would like
-to make extended temperature range as their default configuration.
-Default temperature range (0C to 255.875C).
-Extended temperature range (-49C to +206.875C).
-Ref Doc: AMD V3000 PPR (Doc ID #56558).
+Renesas RZ/G3E supports a power-saving mode where power to most of the
+SoC components is lost, including the PIN controller.  Save and restore
+the Schmitt control register contents to ensure the functionality is
+preserved after a suspend/resume cycle.
 
-Signed-off-by: Chuande Chen <chuachen@cisco.com>
-Link: https://lore.kernel.org/r/20250814053940.96764-1-chenchuande@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com> # on RZ/G3S
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250819084022.20512-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/sbtsi_temp.c | 46 +++++++++++++++++++++++++-------------
- 1 file changed, 31 insertions(+), 15 deletions(-)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/sbtsi_temp.c b/drivers/hwmon/sbtsi_temp.c
-index 3c839f56c4603..a6c439e376ff7 100644
---- a/drivers/hwmon/sbtsi_temp.c
-+++ b/drivers/hwmon/sbtsi_temp.c
-@@ -14,6 +14,7 @@
- #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/of.h>
-+#include <linux/bitfield.h>
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index 22bc5b8f65fde..289917a0e8725 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -320,6 +320,7 @@ struct rzg2l_pinctrl_pin_settings {
+  * @iolh: IOLH registers cache
+  * @pupd: PUPD registers cache
+  * @ien: IEN registers cache
++ * @smt: SMT registers cache
+  * @sd_ch: SD_CH registers cache
+  * @eth_poc: ET_POC registers cache
+  * @eth_mode: ETH_MODE register cache
+@@ -333,6 +334,7 @@ struct rzg2l_pinctrl_reg_cache {
+ 	u32	*iolh[2];
+ 	u32	*ien[2];
+ 	u32	*pupd[2];
++	u32	*smt;
+ 	u8	sd_ch[2];
+ 	u8	eth_poc[2];
+ 	u8	eth_mode;
+@@ -2719,6 +2721,10 @@ static int rzg2l_pinctrl_reg_cache_alloc(struct rzg2l_pinctrl *pctrl)
+ 	if (!cache->pfc)
+ 		return -ENOMEM;
  
- /*
-  * SB-TSI registers only support SMBus byte data access. "_INT" registers are
-@@ -29,8 +30,22 @@
- #define SBTSI_REG_TEMP_HIGH_DEC		0x13 /* RW */
- #define SBTSI_REG_TEMP_LOW_DEC		0x14 /* RW */
- 
-+/*
-+ * Bit for reporting value with temperature measurement range.
-+ * bit == 0: Use default temperature range (0C to 255.875C).
-+ * bit == 1: Use extended temperature range (-49C to +206.875C).
-+ */
-+#define SBTSI_CONFIG_EXT_RANGE_SHIFT	2
-+/*
-+ * ReadOrder bit specifies the reading order of integer and decimal part of
-+ * CPU temperature for atomic reads. If bit == 0, reading integer part triggers
-+ * latching of the decimal part, so integer part should be read first.
-+ * If bit == 1, read order should be reversed.
-+ */
- #define SBTSI_CONFIG_READ_ORDER_SHIFT	5
- 
-+#define SBTSI_TEMP_EXT_RANGE_ADJ	49000
++	cache->smt = devm_kcalloc(pctrl->dev, nports, sizeof(*cache->smt), GFP_KERNEL);
++	if (!cache->smt)
++		return -ENOMEM;
 +
- #define SBTSI_TEMP_MIN	0
- #define SBTSI_TEMP_MAX	255875
+ 	for (u8 i = 0; i < 2; i++) {
+ 		u32 n_dedicated_pins = pctrl->data->n_dedicated_pins;
  
-@@ -38,6 +53,8 @@
- struct sbtsi_data {
- 	struct i2c_client *client;
- 	struct mutex lock;
-+	bool ext_range_mode;
-+	bool read_order;
- };
+@@ -2980,7 +2986,7 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
+ 	struct rzg2l_pinctrl_reg_cache *cache = pctrl->cache;
  
- /*
-@@ -74,23 +91,11 @@ static int sbtsi_read(struct device *dev, enum hwmon_sensor_types type,
- {
- 	struct sbtsi_data *data = dev_get_drvdata(dev);
- 	s32 temp_int, temp_dec;
--	int err;
+ 	for (u32 port = 0; port < nports; port++) {
+-		bool has_iolh, has_ien, has_pupd;
++		bool has_iolh, has_ien, has_pupd, has_smt;
+ 		u32 off, caps;
+ 		u8 pincnt;
+ 		u64 cfg;
+@@ -2993,6 +2999,7 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
+ 		has_iolh = !!(caps & (PIN_CFG_IOLH_A | PIN_CFG_IOLH_B | PIN_CFG_IOLH_C));
+ 		has_ien = !!(caps & PIN_CFG_IEN);
+ 		has_pupd = !!(caps & PIN_CFG_PUPD);
++		has_smt = !!(caps & PIN_CFG_SMT);
  
- 	switch (attr) {
- 	case hwmon_temp_input:
--		/*
--		 * ReadOrder bit specifies the reading order of integer and
--		 * decimal part of CPU temp for atomic reads. If bit == 0,
--		 * reading integer part triggers latching of the decimal part,
--		 * so integer part should be read first. If bit == 1, read
--		 * order should be reversed.
--		 */
--		err = i2c_smbus_read_byte_data(data->client, SBTSI_REG_CONFIG);
--		if (err < 0)
--			return err;
--
- 		mutex_lock(&data->lock);
--		if (err & BIT(SBTSI_CONFIG_READ_ORDER_SHIFT)) {
-+		if (data->read_order) {
- 			temp_dec = i2c_smbus_read_byte_data(data->client, SBTSI_REG_TEMP_DEC);
- 			temp_int = i2c_smbus_read_byte_data(data->client, SBTSI_REG_TEMP_INT);
- 		} else {
-@@ -122,6 +127,8 @@ static int sbtsi_read(struct device *dev, enum hwmon_sensor_types type,
- 		return temp_dec;
- 
- 	*val = sbtsi_reg_to_mc(temp_int, temp_dec);
-+	if (data->ext_range_mode)
-+		*val -= SBTSI_TEMP_EXT_RANGE_ADJ;
- 
- 	return 0;
- }
-@@ -146,6 +153,8 @@ static int sbtsi_write(struct device *dev, enum hwmon_sensor_types type,
- 		return -EINVAL;
+ 		if (suspend)
+ 			RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + PFC(off), cache->pfc[port]);
+@@ -3031,6 +3038,9 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
+ 							 cache->ien[1][port]);
+ 			}
+ 		}
++
++		if (has_smt)
++			RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + SMT(off), cache->smt[port]);
  	}
- 
-+	if (data->ext_range_mode)
-+		val += SBTSI_TEMP_EXT_RANGE_ADJ;
- 	val = clamp_val(val, SBTSI_TEMP_MIN, SBTSI_TEMP_MAX);
- 	sbtsi_mc_to_reg(val, &temp_int, &temp_dec);
- 
-@@ -203,6 +212,7 @@ static int sbtsi_probe(struct i2c_client *client)
- 	struct device *dev = &client->dev;
- 	struct device *hwmon_dev;
- 	struct sbtsi_data *data;
-+	int err;
- 
- 	data = devm_kzalloc(dev, sizeof(struct sbtsi_data), GFP_KERNEL);
- 	if (!data)
-@@ -211,8 +221,14 @@ static int sbtsi_probe(struct i2c_client *client)
- 	data->client = client;
- 	mutex_init(&data->lock);
- 
--	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name, data, &sbtsi_chip_info,
--							 NULL);
-+	err = i2c_smbus_read_byte_data(data->client, SBTSI_REG_CONFIG);
-+	if (err < 0)
-+		return err;
-+	data->ext_range_mode = FIELD_GET(BIT(SBTSI_CONFIG_EXT_RANGE_SHIFT), err);
-+	data->read_order = FIELD_GET(BIT(SBTSI_CONFIG_READ_ORDER_SHIFT), err);
-+
-+	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name, data,
-+							 &sbtsi_chip_info, NULL);
- 
- 	return PTR_ERR_OR_ZERO(hwmon_dev);
  }
+ 
 -- 
 2.51.0
 
