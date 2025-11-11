@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-193504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2DFAC4A50B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:06 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F864C4A926
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 04F52348FDD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:06 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 47E49342D9D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D84E27054C;
-	Tue, 11 Nov 2025 01:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3898426E6F2;
+	Tue, 11 Nov 2025 01:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCySzkmG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcVQ2Ekj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6A726FDBD;
-	Tue, 11 Nov 2025 01:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E890C26E158;
+	Tue, 11 Nov 2025 01:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823338; cv=none; b=g2MZQ9nMzpeI4nw+KGtVXMfiVk7wuuEaPf05zQtGWl6SYzIiM303CVppYDC8zW/id+qurIxm4l3wnlpM5tC/Yx1St2JXnp6YYiUSsvngrkrBSR9izQniMgm2r1Ts/5Lj9RorpuGOuVIJEszDAtkVLFQQQ/P2yX79wLg6WIARAmc=
+	t=1762824349; cv=none; b=HXK24yJ1UtzSd6cD0eNe/LD6ngi4Zd+LgNBLFedPRxJ06UWKNTdugnpS5fyjMnwwOaZBye+1Lxh+iM2JjPUqsnQl7ani8VVTNhpG8paf3reZN+K2hfLLeu9aD0IYXM9RkBUOHhWWBh9/jNAmp8rHsn5zwdP1ebufMUu7bX4BvaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823338; c=relaxed/simple;
-	bh=XennKgp2m1j58Yz3lq5AMRws05mtr81NBlwMZbBGZyk=;
+	s=arc-20240116; t=1762824349; c=relaxed/simple;
+	bh=M3xNntnYqHTPMjLyYSjym8YpWq4SE6NCavUArnwhQM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nV+mGvuNvArlo++YgLO0ORAEsE5217+vaI2x9iaoi25nulIFJawHSa+b/kxEfGrrRlnmHGba46W/Hepa8lV6/++tkVCDsC8v+5JpinnkC22/aw1nx2icJTEsNPQPogwudfnfSZ0MHZVcfjteAV1LaiNY62OG9lKtyEH2MV4WH90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCySzkmG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9C2C4CEF5;
-	Tue, 11 Nov 2025 01:08:58 +0000 (UTC)
+	 MIME-Version; b=STCb3OpX+EEx4FlRsShMYDlOjVfvSuofHfA2Th4wuU8rcKF50//1OS23dnlOthZ7EXtI04HNZRiHzHOKOi10ABJtuwrK/76nRxEf3LZYP2J7WssrYL2DBJxrBHR1d6pyx0LE3dnSAT5KX2VEQ9Dy9uT2YvvagfFQF51vVIjAdyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcVQ2Ekj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B11FC19422;
+	Tue, 11 Nov 2025 01:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823338;
-	bh=XennKgp2m1j58Yz3lq5AMRws05mtr81NBlwMZbBGZyk=;
+	s=korg; t=1762824348;
+	bh=M3xNntnYqHTPMjLyYSjym8YpWq4SE6NCavUArnwhQM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JCySzkmGhSarQ/zsreTbADoU6NiL0cBm0JLFGQ4xbUJ5P+LX1GVfMgxECa/d7nKL+
-	 zui9y76thY84wU9qd26gitqOylT2ICGrsWFcxbFWpmMN4/7m7xWffHfX7oh/r7GsZQ
-	 Zw4cvtzkwHc+9b6NRZ7dl0wTG6ch6eE39GnPZWL0=
+	b=TcVQ2EkjxqdBeKh4lKwY+8Dkh0urPlRFHZ7OaY97rylTOYIliTzQBgXh+UuiaU9s4
+	 YF8LgzWXVwm0VVLpkCyafHSPFhYcHxkBLFdWiXgYFVSfWBNLqutJH87B9u+cgeH+jQ
+	 MLU6mGV7G/DEjmHuG/q9LZDrvdEORaPKbfUhth1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dillon Varone <dillon.varone@amd.com>,
-	TungYu Lu <tungyu.lu@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 191/565] drm/amd/display: Wait until OTG enable state is cleared
-Date: Tue, 11 Nov 2025 09:40:47 +0900
-Message-ID: <20251111004531.226883133@linuxfoundation.org>
+Subject: [PATCH 6.17 478/849] selftests: net: make the dump test less sensitive to mem accounting
+Date: Tue, 11 Nov 2025 09:40:48 +0900
+Message-ID: <20251111004548.000663918@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +61,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: TungYu Lu <tungyu.lu@amd.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit e7496c15d830689cc4fc666b976c845ed2c5ed28 ]
+[ Upstream commit 27bc5eaf004c437309dee1b9af24806262631d57 ]
 
-[Why]
-Customer reported an issue that OS starts and stops device multiple times
-during driver installation. Frequently disabling and enabling OTG may
-prevent OTG from being safely disabled and cause incorrect configuration
-upon the next enablement.
+Recent changes to make netlink socket memory accounting must
+have broken the implicit assumption of the netlink-dump test
+that we can fit exactly 64 dumps into the socket. Handle the
+failure mode properly, and increase the dump count to 80
+to make sure we still run into the error condition if
+the default buffer size increases in the future.
 
-[How]
-Add a wait until OTG_CURRENT_MASTER_EN_STATE is cleared as a short term
-solution.
-
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: TungYu Lu <tungyu.lu@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://patch.msgid.link/20250906211351.3192412-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/testing/selftests/net/netlink-dumps.c | 43 ++++++++++++++++-----
+ 1 file changed, 33 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c b/drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c
-index a5d6a7dca554c..27a9ec55d53ec 100644
---- a/drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c
-+++ b/drivers/gpu/drm/amd/display/dc/optc/dcn401/dcn401_optc.c
-@@ -226,6 +226,11 @@ static bool optc401_disable_crtc(struct timing_generator *optc)
- 	REG_UPDATE(CONTROL,
- 			VTG0_ENABLE, 0);
+diff --git a/tools/testing/selftests/net/netlink-dumps.c b/tools/testing/selftests/net/netlink-dumps.c
+index 07423f256f963..7618ebe528a4c 100644
+--- a/tools/testing/selftests/net/netlink-dumps.c
++++ b/tools/testing/selftests/net/netlink-dumps.c
+@@ -31,9 +31,18 @@ struct ext_ack {
+ 	const char *str;
+ };
  
-+	// wait until CRTC_CURRENT_MASTER_EN_STATE == 0
-+	REG_WAIT(OTG_CONTROL,
-+			 OTG_CURRENT_MASTER_EN_STATE,
-+			 0, 10, 15000);
+-/* 0: no done, 1: done found, 2: extack found, -1: error */
+-static int nl_get_extack(char *buf, size_t n, struct ext_ack *ea)
++enum get_ea_ret {
++	ERROR = -1,
++	NO_CTRL = 0,
++	FOUND_DONE,
++	FOUND_ERR,
++	FOUND_EXTACK,
++};
 +
- 	/* CRTC disabled, so disable  clock. */
- 	REG_WAIT(OTG_CLOCK_CONTROL,
- 			OTG_BUSY, 0,
++static enum get_ea_ret
++nl_get_extack(char *buf, size_t n, struct ext_ack *ea)
+ {
++	enum get_ea_ret ret = NO_CTRL;
+ 	const struct nlmsghdr *nlh;
+ 	const struct nlattr *attr;
+ 	ssize_t rem;
+@@ -41,15 +50,19 @@ static int nl_get_extack(char *buf, size_t n, struct ext_ack *ea)
+ 	for (rem = n; rem > 0; NLMSG_NEXT(nlh, rem)) {
+ 		nlh = (struct nlmsghdr *)&buf[n - rem];
+ 		if (!NLMSG_OK(nlh, rem))
+-			return -1;
++			return ERROR;
+ 
+-		if (nlh->nlmsg_type != NLMSG_DONE)
++		if (nlh->nlmsg_type == NLMSG_ERROR)
++			ret = FOUND_ERR;
++		else if (nlh->nlmsg_type == NLMSG_DONE)
++			ret = FOUND_DONE;
++		else
+ 			continue;
+ 
+ 		ea->err = -*(int *)NLMSG_DATA(nlh);
+ 
+ 		if (!(nlh->nlmsg_flags & NLM_F_ACK_TLVS))
+-			return 1;
++			return ret;
+ 
+ 		ynl_attr_for_each(attr, nlh, sizeof(int)) {
+ 			switch (ynl_attr_type(attr)) {
+@@ -68,10 +81,10 @@ static int nl_get_extack(char *buf, size_t n, struct ext_ack *ea)
+ 			}
+ 		}
+ 
+-		return 2;
++		return FOUND_EXTACK;
+ 	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static const struct {
+@@ -99,9 +112,9 @@ static const struct {
+ TEST(dump_extack)
+ {
+ 	int netlink_sock;
++	int i, cnt, ret;
+ 	char buf[8192];
+ 	int one = 1;
+-	int i, cnt;
+ 	ssize_t n;
+ 
+ 	netlink_sock = socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
+@@ -118,7 +131,7 @@ TEST(dump_extack)
+ 	ASSERT_EQ(n, 0);
+ 
+ 	/* Dump so many times we fill up the buffer */
+-	cnt = 64;
++	cnt = 80;
+ 	for (i = 0; i < cnt; i++) {
+ 		n = send(netlink_sock, &dump_neigh_bad,
+ 			 sizeof(dump_neigh_bad), 0);
+@@ -140,10 +153,20 @@ TEST(dump_extack)
+ 		}
+ 		ASSERT_GE(n, (ssize_t)sizeof(struct nlmsghdr));
+ 
+-		EXPECT_EQ(nl_get_extack(buf, n, &ea), 2);
++		ret = nl_get_extack(buf, n, &ea);
++		/* Once we fill the buffer we'll see one ENOBUFS followed
++		 * by a number of EBUSYs. Then the last recv() will finally
++		 * trigger and complete the dump.
++		 */
++		if (ret == FOUND_ERR && (ea.err == ENOBUFS || ea.err == EBUSY))
++			continue;
++		EXPECT_EQ(ret, FOUND_EXTACK);
++		EXPECT_EQ(ea.err, EINVAL);
+ 		EXPECT_EQ(ea.attr_offs,
+ 			  sizeof(struct nlmsghdr) + sizeof(struct ndmsg));
+ 	}
++	/* Make sure last message was a full DONE+extack */
++	EXPECT_EQ(ret, FOUND_EXTACK);
+ }
+ 
+ static const struct {
 -- 
 2.51.0
 
