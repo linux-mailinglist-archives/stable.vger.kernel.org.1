@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-194141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A665EC4AE02
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C23C4AF46
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E536D4F89E6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D2503B083D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 888413090CB;
-	Tue, 11 Nov 2025 01:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A968C309EF2;
+	Tue, 11 Nov 2025 01:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qewgp2rY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UhFJhfCG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44603255F28;
-	Tue, 11 Nov 2025 01:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650452BE7B8;
+	Tue, 11 Nov 2025 01:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824900; cv=none; b=KU4OuQkbKJxeXtRvt2IW1SQnBdlhQ5QYdfPn5Lz+bb4rx4fndwdpjCQvf3ZnMidLyk/Vst/KB7mIKp7GlrzXAbkUwsvh51BCBnCHPyUirTxNNNqBlQbM3HeWPYKHL+n2lGVqox3ZMAKMuFPjkmYHwMZftVQZw0K+H+PYMP8oJ68=
+	t=1762824904; cv=none; b=QeminNBWgac8+f81IylV8RWYq0AS/W7R6M00/FbT2wWH8Iy1QvcUVxahn2ZXTBQr8yrjQeD0/DPfF03ZahoamjU/zUT7UdnCy8solD0pJcLcsmC0EUr3XZFpV8942XZSlzTwqA1UU4Gflk7/YRBq4YiRUowMHCJ11RieN/oKdeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824900; c=relaxed/simple;
-	bh=/l9k3s4R5xTvRJKTyyz9DKkxImFguyCcSKeAk8giSFI=;
+	s=arc-20240116; t=1762824904; c=relaxed/simple;
+	bh=vxMEefYS6s6wdiorTMsU9JjdLaMqW+rFlbaIR0DKgA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUAUmLAfnsfthD6u7IUbbBAvl4uxfk56X3if+xUpydU7a+OdcbFjX+WM9P0G3gieRfy6qyPY7UC1tIVoto8MPaIhMhg5ZNmvY2kFFPEH5WeoRTmQjxIkZ0MMpJ+2p12VkyJl6xo8eE8wao2Jjnnx8Wis+Ubceb+D4Q6wYNJtMx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qewgp2rY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A4CC19421;
-	Tue, 11 Nov 2025 01:34:59 +0000 (UTC)
+	 MIME-Version; b=arADdtTzIGOMdqSerqirr0AUhvtGfEGQ/dpmIl547SxdF99fp8pMmEMRrpn9ZdcmoImWJ9QtGBfrgX+bBpLWAryVslzxLCuvjlNu8skQxt1ZKD7suJJz6tLcLCT/agOIfRZMUZsKURVUhDrffl3YzaCeZjYMlZqrKCQYP2ErivQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UhFJhfCG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2837C116D0;
+	Tue, 11 Nov 2025 01:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824899;
-	bh=/l9k3s4R5xTvRJKTyyz9DKkxImFguyCcSKeAk8giSFI=;
+	s=korg; t=1762824904;
+	bh=vxMEefYS6s6wdiorTMsU9JjdLaMqW+rFlbaIR0DKgA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qewgp2rYJNkVp8uDKTVb0DxZMrNrn8hNpghcZfj9BKlEfoOx0t3f/7WrOncqB43Uz
-	 FQqTO1OxJNlPuCfb1UdrlCAhe135/E/YWDGP2sk2Ks3lDIOuxol/3c095AcxXyaqjf
-	 xkbJTrQbtJePNVSeJKrZY44fhqM8fpNnjfi4GnHc=
+	b=UhFJhfCGnyv8RRKttMVQPTAbDX3fVp55i/VhIsUsnXleXJMpQRccJ26KBqhsBR9Sq
+	 I0JagDfxPpsRABUopXyHBQgv1+UF1MVmZTCQdSNq4N69k3EXgoO9hI4cYtY3WxV4le
+	 WkHycaMOfcg0j+ONSFUjUHIWNamrjnqmWKbxFJM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 594/849] ASoC: qcom: sc8280xp: explicitly set S16LE format in sc8280xp_be_hw_params_fixup()
-Date: Tue, 11 Nov 2025 09:42:44 +0900
-Message-ID: <20251111004550.783198977@linuxfoundation.org>
+Subject: [PATCH 6.17 595/849] net: phy: clear link parameters on admin link down
+Date: Tue, 11 Nov 2025 09:42:45 +0900
+Message-ID: <20251111004550.806945427@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,44 +67,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 9565c9d53c5b440f0dde6fa731a99c1b14d879d2 ]
+[ Upstream commit 60f887b1290b43a4f5a3497982a725687b193fa4 ]
 
-Setting format to s16le is required for compressed playback on compatible
-soundcards.
+When a PHY is halted (e.g. `ip link set dev lan2 down`), several
+fields in struct phy_device may still reflect the last active
+connection. This leads to ethtool showing stale values even though
+the link is down.
 
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://patch.msgid.link/20250911154340.2798304-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reset selected fields in _phy_state_machine() when transitioning
+to PHY_HALTED and the link was previously up:
+
+- speed/duplex -> UNKNOWN, but only in autoneg mode (in forced mode
+  these fields carry configuration, not status)
+- master_slave_state -> UNKNOWN if previously supported
+- mdix -> INVALID (state only, same meaning as "unknown")
+- lp_advertising -> always cleared
+
+The cleanup is skipped if the PHY is in PHY_ERROR state, so the
+last values remain available for diagnostics.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250917094751.2101285-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/sc8280xp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/phy/phy.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/sound/soc/qcom/sc8280xp.c b/sound/soc/qcom/sc8280xp.c
-index 6847ae4acbd18..78e327bc2f077 100644
---- a/sound/soc/qcom/sc8280xp.c
-+++ b/sound/soc/qcom/sc8280xp.c
-@@ -7,6 +7,7 @@
- #include <sound/soc.h>
- #include <sound/soc-dapm.h>
- #include <sound/pcm.h>
-+#include <sound/pcm_params.h>
- #include <linux/soundwire/sdw.h>
- #include <sound/jack.h>
- #include <linux/input-event-codes.h>
-@@ -86,8 +87,10 @@ static int sc8280xp_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
- 					SNDRV_PCM_HW_PARAM_RATE);
- 	struct snd_interval *channels = hw_param_interval(params,
- 					SNDRV_PCM_HW_PARAM_CHANNELS);
-+	struct snd_mask *fmt = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
- 
- 	rate->min = rate->max = 48000;
-+	snd_mask_set_format(fmt, SNDRV_PCM_FORMAT_S16_LE);
- 	channels->min = 2;
- 	channels->max = 2;
- 	switch (cpu_dai->id) {
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index e046dd858f151..02da4a203ddd4 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -1548,6 +1548,19 @@ static enum phy_state_work _phy_state_machine(struct phy_device *phydev)
+ 		}
+ 		break;
+ 	case PHY_HALTED:
++		if (phydev->link) {
++			if (phydev->autoneg == AUTONEG_ENABLE) {
++				phydev->speed = SPEED_UNKNOWN;
++				phydev->duplex = DUPLEX_UNKNOWN;
++			}
++			if (phydev->master_slave_state !=
++						MASTER_SLAVE_STATE_UNSUPPORTED)
++				phydev->master_slave_state =
++						MASTER_SLAVE_STATE_UNKNOWN;
++			phydev->mdix = ETH_TP_MDI_INVALID;
++			linkmode_zero(phydev->lp_advertising);
++		}
++		fallthrough;
+ 	case PHY_ERROR:
+ 		if (phydev->link) {
+ 			phydev->link = 0;
 -- 
 2.51.0
 
