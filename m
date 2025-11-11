@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-193238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC7AC4A198
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:00:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD138C4A12E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 83F564F22A0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 721FC188CD14
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DBAE214210;
-	Tue, 11 Nov 2025 00:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1484A214210;
+	Tue, 11 Nov 2025 00:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hv3vADfU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nY6OvaxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EED4C97;
-	Tue, 11 Nov 2025 00:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D504C97;
+	Tue, 11 Nov 2025 00:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822694; cv=none; b=n+kMZ8vqT3EWkoQWXrNEI8XrARRpnGdZ3dtVFItBNa1UvViUOiBOujNuvM1e+yBWUndo65TesToLOzGUak100SiAss068Uf8mTxvJSJ40bQMieiYvCEqQaxCdLjGmwzNWOzrkrjfNbs5T9TWDC0iefM0Xgs4BmVSZBOUjj03GPU=
+	t=1762822698; cv=none; b=NHImtFuK8WodDtRT0KdEcUjvlcmanWYyizzNpC0An5XRtulpHqaEWCcJTH2khRwJOV+e+qngv3nzU/K33tardfQ01MphfpZnjNk1ye06As9EJZuEi59kJTPirbSv0AjeTEm7Si4Ji5mMA+LIZhYXfeCMwuvVpAdS79gYh2xFJgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822694; c=relaxed/simple;
-	bh=Kj0iL01oUYaqP0hsZJdPyeRuuFU4d/ibAgtx0H8e3tY=;
+	s=arc-20240116; t=1762822698; c=relaxed/simple;
+	bh=IFnm84dQs5BWuwb0TO4mdJTcothIXyi6JAxjDxhc5Ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2JQSyxOFdn0YXX89MZG4cxbubdsGmYvfxHjqBG27ezijll6gxLUL7vrXGkyIjR33i+UqdrH5Z7CfxRXi9/0UupQJp49XwmDu1Lya1QCvIbbZ2IomgIuVeJi/51dap/w0xovlghgEbzPGSBBGfU8o8yxDk9LdYm3ojTt6GGL31E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hv3vADfU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADAE3C4CEFB;
-	Tue, 11 Nov 2025 00:58:13 +0000 (UTC)
+	 MIME-Version; b=SGB/NL7nOYv6xSGMFKzbTKmA1Y5Ij9fHVV9iwBUPec663JrSN+uwYizAzz+8eBYOYZ0b9vEZ3sNS6FM6hkaUy7fd6wNOjcg44q/NHx+ZGEv8xuqJcGLtt+0ZjLo0dIgCCSuigk8yGyBAd2ZcVfssjqJSi0N3a/7lMWvWx1hYTZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nY6OvaxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62025C19422;
+	Tue, 11 Nov 2025 00:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822694;
-	bh=Kj0iL01oUYaqP0hsZJdPyeRuuFU4d/ibAgtx0H8e3tY=;
+	s=korg; t=1762822698;
+	bh=IFnm84dQs5BWuwb0TO4mdJTcothIXyi6JAxjDxhc5Ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hv3vADfUJcSXNvqz7ZTbjeNF/pW2Qt0qNZJryTc9TGxZkHjFqLXj4+cqVSS48xmTx
-	 nqvx6TL0QZwhwu1BcKPmJj91oJpALm1yPNc2HHhy1EpXXuksn8ubDpY+iGADNgYtQD
-	 tpQbZq8/iei6PzSQhipobp5zNpK5wsWLxm4lyQAc=
+	b=nY6OvaxLWtBJsfYrM7kR5ZqKg+lV4b8f/+/WPj1IldXDX5cCsD7ix0PdvMzYDaT6V
+	 alVoBTS0AUC7RKqIrKpMgK8g700KEKt4ig6S93lCESbJcCgFGb2/djRtbJpOVxZ0ob
+	 7C/AyuAnsNG3WCTHfbdxlVvdpm3rEOkvcdJ7WIFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Capitulino <luizcap@redhat.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Ryan Chen <ryan_chen@aspeedtech.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/565] s390: Disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
-Date: Tue, 11 Nov 2025 09:39:03 +0900
-Message-ID: <20251111004528.926371765@linuxfoundation.org>
+Subject: [PATCH 6.12 088/565] soc: aspeed: socinfo: Add AST27xx silicon IDs
+Date: Tue, 11 Nov 2025 09:39:04 +0900
+Message-ID: <20251111004528.949944768@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -68,55 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Ryan Chen <ryan_chen@aspeedtech.com>
 
-[ Upstream commit 64e2f60f355e556337fcffe80b9bcff1b22c9c42 ]
+[ Upstream commit c30dcfd4b5a0f0e3fe7138bf287f6de6b1b00278 ]
 
-As reported by Luiz Capitulino enabling HVO on s390 leads to reproducible
-crashes. The problem is that kernel page tables are modified without
-flushing corresponding TLB entries.
+Extend the ASPEED SoC info driver to support AST27XX silicon IDs.
 
-Even if it looks like the empty flush_tlb_all() implementation on s390 is
-the problem, it is actually a different problem: on s390 it is not allowed
-to replace an active/valid page table entry with another valid page table
-entry without the detour over an invalid entry. A direct replacement may
-lead to random crashes and/or data corruption.
-
-In order to invalidate an entry special instructions have to be used
-(e.g. ipte or idte). Alternatively there are also special instructions
-available which allow to replace a valid entry with a different valid
-entry (e.g. crdte or cspg).
-
-Given that the HVO code currently does not provide the hooks to allow for
-an implementation which is compliant with the s390 architecture
-requirements, disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP again, which is
-basically a revert of the original patch which enabled it.
-
-Reported-by: Luiz Capitulino <luizcap@redhat.com>
-Closes: https://lore.kernel.org/all/20251028153930.37107-1-luizcap@redhat.com/
-Fixes: 00a34d5a99c0 ("s390: select ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP")
-Cc: stable@vger.kernel.org
-Tested-by: Luiz Capitulino <luizcap@redhat.com>
-Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-[ Adjust context ]
+Signed-off-by: Ryan Chen <ryan_chen@aspeedtech.com>
+Link: https://patch.msgid.link/20250807005208.3517283-1-ryan_chen@aspeedtech.com
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/Kconfig |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/soc/aspeed/aspeed-socinfo.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -135,7 +135,6 @@ config S390
- 	select ARCH_WANT_IPC_PARSE_VERSION
- 	select ARCH_WANT_KERNEL_PMD_MKWRITE
- 	select ARCH_WANT_LD_ORPHAN_WARN
--	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
- 	select BUILDTIME_TABLE_SORT
- 	select CLONE_BACKWARDS2
- 	select DCACHE_WORD_ACCESS if !KMSAN
+diff --git a/drivers/soc/aspeed/aspeed-socinfo.c b/drivers/soc/aspeed/aspeed-socinfo.c
+index 3f759121dc00a..67e9ac3d08ecc 100644
+--- a/drivers/soc/aspeed/aspeed-socinfo.c
++++ b/drivers/soc/aspeed/aspeed-socinfo.c
+@@ -27,6 +27,10 @@ static struct {
+ 	{ "AST2620", 0x05010203 },
+ 	{ "AST2605", 0x05030103 },
+ 	{ "AST2625", 0x05030403 },
++	/* AST2700 */
++	{ "AST2750", 0x06000003 },
++	{ "AST2700", 0x06000103 },
++	{ "AST2720", 0x06000203 },
+ };
+ 
+ static const char *siliconid_to_name(u32 siliconid)
+-- 
+2.51.0
+
 
 
 
