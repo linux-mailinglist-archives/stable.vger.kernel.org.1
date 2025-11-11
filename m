@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-193994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB5BFC4AA12
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4675C4B0C1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 786E434C838
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C0101893396
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7246733B6C4;
-	Tue, 11 Nov 2025 01:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5BF34A766;
+	Tue, 11 Nov 2025 01:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNH62QZx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGR8bLZ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6DA333443;
-	Tue, 11 Nov 2025 01:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF0334A3CD;
+	Tue, 11 Nov 2025 01:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824554; cv=none; b=EG9O8K5fhscYq8SqDo/2J2UY+bzNRYwfYrwGujJxyBIyKKFtTTOdzoqylP7stnigyU/3R/ARFe8z8FsdzAgyc12YJbUlMTb5nKy/na1kD+8/cyhTh6ugVxrZ7czLEXqILLIbM4N1tYOy7eICKZ52uHI/YY19kksndcPAjAKA3H4=
+	t=1762825331; cv=none; b=ep0nio3bzu6MSQ7Z9pHWR2OhKouqCs03pW6srnUsz6RwpRkqhyKw36DNq091DS7cVg2nJtp8iyQhBvRCKODdepX3FXlqYSJcO8zE9p2ZNPn4fso6ACz7gXhjwsO0XchkKNf1/cShSSA0uA7W9tw3qkRnAtJQUYNUL+gD9CCgmIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824554; c=relaxed/simple;
-	bh=1ZS5WDExK27thcnymUTqHvAS+2whPudeKzdsfcEBUA4=;
+	s=arc-20240116; t=1762825331; c=relaxed/simple;
+	bh=TqsxLAC8AnZcgkA8sux/4w9D71Yp2//H9JNlc9j5v3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUHgEZ9AlFD/r3zUvhIKKF7jKqQMUrHJpAHUAU3tWBOrm9seZMO0cRSzNge2xzkWmJx5roJzYBWQp2GB1pFeR6okMghOFUFLpAQHQf4C0XuVShidkhjAJF/k6xnaY/1invUyivrQ+vh3jU82lg8PQ1osFMR+e0Gss065vsD3BLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNH62QZx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09ABC116B1;
-	Tue, 11 Nov 2025 01:29:13 +0000 (UTC)
+	 MIME-Version; b=oCuLTeUuuWyPzyB8ItTj1iEGLfBLHuOgfmeG2Pd9hWOnq2+m+gsVp0lKTcjPCwXz5mDwdkLZNF+KmmnvDZaBWNbMwuVklJpxJ5Wp5xPEtlUAXdEkJF7MSneLX8fRpijN6kzvMscDuRK84ZnC9bTd9aF/TmJvnqmhdNuaPiiQFdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGR8bLZ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76636C4CEF5;
+	Tue, 11 Nov 2025 01:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824554;
-	bh=1ZS5WDExK27thcnymUTqHvAS+2whPudeKzdsfcEBUA4=;
+	s=korg; t=1762825328;
+	bh=TqsxLAC8AnZcgkA8sux/4w9D71Yp2//H9JNlc9j5v3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zNH62QZxlA0/sEh/3EtTv4pA0wa0v3jYm1kC3iZfGdP7Ta4fvBJ98RtFoHtcBYg/x
-	 S+kRa/oLieO5LdRl238101g9OKx2+E9uNaB7pIZt0JM+4jKAZRx1OA9U+rcpqBdaMH
-	 s36vjqNbQ2beZlB291eC5BnEHqjpfWtEoYUrypVo=
+	b=tGR8bLZ+i6IIjDYKypahUCFItNm1+prOqEKv4JRLXExqsNQr3Et5xt3RE122KBWQh
+	 x+LBVnQjNpUuJCri97aL+4HU4YKCf2X1X9vLZmalMrxazAv00D6XZ0klUkVER+zXIk
+	 F5Qyyw4NlmZFUq/IDsCgTJa76cyexh5tkyzpiJyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Cristian Birsan <cristian.birsan@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Ross Brown <true.robot.ross@gmail.com>,
+	Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 468/565] ARM: at91: pm: save and restore ACR during PLL disable/enable
+Subject: [PATCH 6.17 754/849] Revert "wifi: ath12k: Fix missing station power save configuration"
 Date: Tue, 11 Nov 2025 09:45:24 +0900
-Message-ID: <20251111004537.431382915@linuxfoundation.org>
+Message-ID: <20251111004554.661735733@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +64,201 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
+From: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
 
-[ Upstream commit 0c01fe49651d387776abed6a28541e80c8a93319 ]
+[ Upstream commit 9222582ec524707fbb9d076febead5b6a07611ed ]
 
-Add a new word in assembly to store ACR value during the calls
-to at91_plla_disable/at91_plla_enable macros and use it.
+This reverts commit 4b66d18918f8e4d85e51974a9e3ce9abad5c7c3d.
 
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-[cristian.birsan@microchip.com: remove ACR_DEFAULT_PLLA loading]
-Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
-Link: https://lore.kernel.org/r/20250827145427.46819-4-nicolas.ferre@microchip.com
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+In [1], Ross Brown reports poor performance of WCN7850 after enabling
+power save. Temporarily revert the fix; it will be re-enabled once
+the issue is resolved.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.IOE_HMT.1.1-00011-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+
+Fixes: 4b66d18918f8 ("wifi: ath12k: Fix missing station power save configuration")
+Reported-by: Ross Brown <true.robot.ross@gmail.com>
+Closes: https://lore.kernel.org/all/CAMn66qZENLhDOcVJuwUZ3ir89PVtVnQRq9DkV5xjJn1p6BKB9w@mail.gmail.com/ # [1]
+Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251028060744.897198-1-miaoqing.pan@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-at91/pm_suspend.S | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 122 ++++++++++++--------------
+ 1 file changed, 55 insertions(+), 67 deletions(-)
 
-diff --git a/arch/arm/mach-at91/pm_suspend.S b/arch/arm/mach-at91/pm_suspend.S
-index 94dece1839af3..99aaf5cf89696 100644
---- a/arch/arm/mach-at91/pm_suspend.S
-+++ b/arch/arm/mach-at91/pm_suspend.S
-@@ -689,6 +689,10 @@ sr_dis_exit:
- 	bic	tmp2, tmp2, #AT91_PMC_PLL_UPDT_ID
- 	str	tmp2, [pmc, #AT91_PMC_PLL_UPDT]
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index d717e74b01c89..fd584633392c1 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -4078,68 +4078,12 @@ static int ath12k_mac_fils_discovery(struct ath12k_link_vif *arvif,
+ 	return ret;
+ }
  
-+	/* save acr */
-+	ldr	tmp2, [pmc, #AT91_PMC_PLL_ACR]
-+	str	tmp2, .saved_acr
+-static void ath12k_mac_vif_setup_ps(struct ath12k_link_vif *arvif)
+-{
+-	struct ath12k *ar = arvif->ar;
+-	struct ieee80211_vif *vif = arvif->ahvif->vif;
+-	struct ieee80211_conf *conf = &ath12k_ar_to_hw(ar)->conf;
+-	enum wmi_sta_powersave_param param;
+-	struct ieee80211_bss_conf *info;
+-	enum wmi_sta_ps_mode psmode;
+-	int ret;
+-	int timeout;
+-	bool enable_ps;
+-
+-	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+-
+-	if (vif->type != NL80211_IFTYPE_STATION)
+-		return;
+-
+-	enable_ps = arvif->ahvif->ps;
+-	if (enable_ps) {
+-		psmode = WMI_STA_PS_MODE_ENABLED;
+-		param = WMI_STA_PS_PARAM_INACTIVITY_TIME;
+-
+-		timeout = conf->dynamic_ps_timeout;
+-		if (timeout == 0) {
+-			info = ath12k_mac_get_link_bss_conf(arvif);
+-			if (!info) {
+-				ath12k_warn(ar->ab, "unable to access bss link conf in setup ps for vif %pM link %u\n",
+-					    vif->addr, arvif->link_id);
+-				return;
+-			}
+-
+-			/* firmware doesn't like 0 */
+-			timeout = ieee80211_tu_to_usec(info->beacon_int) / 1000;
+-		}
+-
+-		ret = ath12k_wmi_set_sta_ps_param(ar, arvif->vdev_id, param,
+-						  timeout);
+-		if (ret) {
+-			ath12k_warn(ar->ab, "failed to set inactivity time for vdev %d: %i\n",
+-				    arvif->vdev_id, ret);
+-			return;
+-		}
+-	} else {
+-		psmode = WMI_STA_PS_MODE_DISABLED;
+-	}
+-
+-	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac vdev %d psmode %s\n",
+-		   arvif->vdev_id, psmode ? "enable" : "disable");
+-
+-	ret = ath12k_wmi_pdev_set_ps_mode(ar, arvif->vdev_id, psmode);
+-	if (ret)
+-		ath12k_warn(ar->ab, "failed to set sta power save mode %d for vdev %d: %d\n",
+-			    psmode, arvif->vdev_id, ret);
+-}
+-
+ static void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
+ 					  struct ieee80211_vif *vif,
+ 					  u64 changed)
+ {
+ 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
+ 	unsigned long links = ahvif->links_map;
+-	struct ieee80211_vif_cfg *vif_cfg;
+ 	struct ieee80211_bss_conf *info;
+ 	struct ath12k_link_vif *arvif;
+ 	struct ieee80211_sta *sta;
+@@ -4203,24 +4147,61 @@ static void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
+ 			}
+ 		}
+ 	}
++}
+ 
+-	if (changed & BSS_CHANGED_PS) {
+-		links = ahvif->links_map;
+-		vif_cfg = &vif->cfg;
++static void ath12k_mac_vif_setup_ps(struct ath12k_link_vif *arvif)
++{
++	struct ath12k *ar = arvif->ar;
++	struct ieee80211_vif *vif = arvif->ahvif->vif;
++	struct ieee80211_conf *conf = &ath12k_ar_to_hw(ar)->conf;
++	enum wmi_sta_powersave_param param;
++	struct ieee80211_bss_conf *info;
++	enum wmi_sta_ps_mode psmode;
++	int ret;
++	int timeout;
++	bool enable_ps;
+ 
+-		for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS) {
+-			arvif = wiphy_dereference(hw->wiphy, ahvif->link[link_id]);
+-			if (!arvif || !arvif->ar)
+-				continue;
++	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+ 
+-			ar = arvif->ar;
++	if (vif->type != NL80211_IFTYPE_STATION)
++		return;
 +
- 	/* save div. */
- 	mov	tmp1, #0
- 	ldr	tmp2, [pmc, #AT91_PMC_PLL_CTRL0]
-@@ -758,7 +762,7 @@ sr_dis_exit:
- 	str	tmp1, [pmc, #AT91_PMC_PLL_UPDT]
++	enable_ps = arvif->ahvif->ps;
++	if (enable_ps) {
++		psmode = WMI_STA_PS_MODE_ENABLED;
++		param = WMI_STA_PS_PARAM_INACTIVITY_TIME;
  
- 	/* step 2. */
--	ldr	tmp1, =AT91_PMC_PLL_ACR_DEFAULT_PLLA
-+	ldr	tmp1, .saved_acr
- 	str	tmp1, [pmc, #AT91_PMC_PLL_ACR]
+-			if (ar->ab->hw_params->supports_sta_ps) {
+-				ahvif->ps = vif_cfg->ps;
+-				ath12k_mac_vif_setup_ps(arvif);
++		timeout = conf->dynamic_ps_timeout;
++		if (timeout == 0) {
++			info = ath12k_mac_get_link_bss_conf(arvif);
++			if (!info) {
++				ath12k_warn(ar->ab, "unable to access bss link conf in setup ps for vif %pM link %u\n",
++					    vif->addr, arvif->link_id);
++				return;
+ 			}
++
++			/* firmware doesn't like 0 */
++			timeout = ieee80211_tu_to_usec(info->beacon_int) / 1000;
+ 		}
++
++		ret = ath12k_wmi_set_sta_ps_param(ar, arvif->vdev_id, param,
++						  timeout);
++		if (ret) {
++			ath12k_warn(ar->ab, "failed to set inactivity time for vdev %d: %i\n",
++				    arvif->vdev_id, ret);
++			return;
++		}
++	} else {
++		psmode = WMI_STA_PS_MODE_DISABLED;
+ 	}
++
++	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac vdev %d psmode %s\n",
++		   arvif->vdev_id, psmode ? "enable" : "disable");
++
++	ret = ath12k_wmi_pdev_set_ps_mode(ar, arvif->vdev_id, psmode);
++	if (ret)
++		ath12k_warn(ar->ab, "failed to set sta power save mode %d for vdev %d: %d\n",
++			    psmode, arvif->vdev_id, ret);
+ }
  
- 	/* step 3. */
-@@ -1134,6 +1138,8 @@ ENDPROC(at91_pm_suspend_in_sram)
- 	.word 0
- .saved_mckr:
- 	.word 0
-+.saved_acr:
-+	.word 0
- .saved_pllar:
- 	.word 0
- .saved_sam9_lpr:
+ static bool ath12k_mac_supports_tpc(struct ath12k *ar, struct ath12k_vif *ahvif,
+@@ -4242,6 +4223,7 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
+ {
+ 	struct ath12k_vif *ahvif = arvif->ahvif;
+ 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
++	struct ieee80211_vif_cfg *vif_cfg = &vif->cfg;
+ 	struct cfg80211_chan_def def;
+ 	u32 param_id, param_value;
+ 	enum nl80211_band band;
+@@ -4528,6 +4510,12 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
+ 	}
+ 
+ 	ath12k_mac_fils_discovery(arvif, info);
++
++	if (changed & BSS_CHANGED_PS &&
++	    ar->ab->hw_params->supports_sta_ps) {
++		ahvif->ps = vif_cfg->ps;
++		ath12k_mac_vif_setup_ps(arvif);
++	}
+ }
+ 
+ static struct ath12k_vif_cache *ath12k_ahvif_get_link_cache(struct ath12k_vif *ahvif,
 -- 
 2.51.0
 
