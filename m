@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-193279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8600C4A23B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:02:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2346C4A1B7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:00:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 19FB04F5143
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F5153AD133
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DBE252917;
-	Tue, 11 Nov 2025 00:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5D24C97;
+	Tue, 11 Nov 2025 00:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nn0GPdr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQ2g9Zs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B75023FC41;
-	Tue, 11 Nov 2025 00:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71F8244693;
+	Tue, 11 Nov 2025 00:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822791; cv=none; b=crq6nhBCcLaOX7nCDqMqf73QgV+lJYswauFfJNE0xzLNjuH+5s/dqNEqGQHsSJ0/u9y/eW1C9T7jl/5ZLA8zHWwin89wjhYXlnQEkDP6RW4/HqhOWYnRNl4UIrA++8vxN5Eo/PwbayWNOxnZmRTXCQdMKcUnWyTUM+u+H1to//g=
+	t=1762822795; cv=none; b=pwEABbNeGwj3BWoEUrX7V5uIURQmXjnMt3ljJAV3n/Wb8ehoWSkxPV6yrxIF3TE+pUm8VkcNXJmINbNyMoYhqkaphAyMRcr8JcVUZRq8Nt05E4fB+9LKVSM9XlSUVxByCwbXrJUu/nHbhsnR5Wc/qiGX8hbMBVg39ZO+saetSjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822791; c=relaxed/simple;
-	bh=PALLMKo/56UDUE4qVlVelMGCVEoFdHzUEZThhonwWGM=;
+	s=arc-20240116; t=1762822795; c=relaxed/simple;
+	bh=27OVNvLiVGlmnfBD5YG8DviGxivhjxZOSzzng1rtyUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1jIzz5mJt3zSjLpBb7ui50QxXs327kckIMIMrQ6wOYqLVozS+MgxNgSiA4gpzBqoR5k9zMwQNzLvxiP1RhK8Lnp3UVNvpyhpZbCjhes9ntmnaiutDZYbJljEaeEKylUlAdE94ObsL+zpNNynx9rWhyNiQbc8qgleXEgdDRyyOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nn0GPdr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D28C19422;
-	Tue, 11 Nov 2025 00:59:50 +0000 (UTC)
+	 MIME-Version; b=cYNgm7xBjNmt7QxOJjMgafiKKGE3SkKELaJ5AqM+gMusxue/OyRv2H8CaGAoYgTNXICxEyKvyEWq5wk4oDGeRd6rH12T8RTAJEm5OQ3P1fy1vJPvOfHrJpzibeRLnsZTu01RDrYNx0nRBNakN9oI/167jXGMBArlhVlsSkFgkgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQ2g9Zs5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CA2C4CEF5;
+	Tue, 11 Nov 2025 00:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822790;
-	bh=PALLMKo/56UDUE4qVlVelMGCVEoFdHzUEZThhonwWGM=;
+	s=korg; t=1762822795;
+	bh=27OVNvLiVGlmnfBD5YG8DviGxivhjxZOSzzng1rtyUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nn0GPdr81AnzK9Y0TkVwPiPNvMhmHR9Ui6PHniV0tWmqZQ/cpcNA8VClcMsX5m91D
-	 ccJU6FS/0ppFDcKhVB54tj6XAUKyNqkMkVVGMKVRM+KkzEF21chTw9x+Dv/wp33Deq
-	 ZO8EBih1oDYGTiskX2D/hcMZOWBiwqGgEcODOXVc=
+	b=rQ2g9Zs5FmP6pcsVpVw4lAuQowug9mwztp1o6Q8byFRmBkwPTzC2PsLEWixom2IDH
+	 H8Tw6Xfcgo2DkoTzveXFEeH2M/pwkSqNhaLu2jGEp/JTFqft3MlH7xqvF3dEK4lQad
+	 sulwrz80OFGgQ9SfQlemfefxy3tn5EpQ+Ou8qwW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Svyatoslav Ryhel <clamor95@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Winona Schroeer-Smith <wolfizen@wolfizen.net>,
-	Antoni Aloy Torrens <aaloytorrens@gmail.com>
-Subject: [PATCH 6.17 172/849] ARM: tegra: transformer-20: fix audio-codec interrupt
-Date: Tue, 11 Nov 2025 09:35:42 +0900
-Message-ID: <20251111004540.594734782@linuxfoundation.org>
+	Nikita Travkin <nikita@trvn.ru>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 173/849] firmware: qcom: tzmem: disable sc7180 platform
+Date: Tue, 11 Nov 2025 09:35:43 +0900
+Message-ID: <20251111004540.619399923@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,35 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Svyatoslav Ryhel <clamor95@gmail.com>
+From: Nikita Travkin <nikita@trvn.ru>
 
-[ Upstream commit 3f973d78d176768fa7456def97f0b9824235024f ]
+[ Upstream commit 3cc9a8cadaf66e1a53e5fee48f8bcdb0a3fd5075 ]
 
-Correct audio-codec interrupt should be PX3 while PX1 is used for external
-microphone detection.
+When SHM bridge is enabled, assigning RMTFS memory causes the calling
+core to hang if the system is running in EL1.
 
-Tested-by: Winona Schroeer-Smith <wolfizen@wolfizen.net> # ASUS SL101
-Tested-by: Antoni Aloy Torrens <aaloytorrens@gmail.com> # ASUS TF101
-Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Disable SHM bridge on sc7180 devices to avoid that hang.
+
+Signed-off-by: Nikita Travkin <nikita@trvn.ru>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250721-sc7180-shm-hang-v1-1-99ad9ffeb5b4@trvn.ru
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/qcom/qcom_tzmem.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts b/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts
-index 39008816fe5ee..efd8838f9644f 100644
---- a/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts
-+++ b/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts
-@@ -518,7 +518,7 @@
- 			reg = <0x1a>;
+diff --git a/drivers/firmware/qcom/qcom_tzmem.c b/drivers/firmware/qcom/qcom_tzmem.c
+index ea0a353556570..12e448669b8bd 100644
+--- a/drivers/firmware/qcom/qcom_tzmem.c
++++ b/drivers/firmware/qcom/qcom_tzmem.c
+@@ -77,6 +77,7 @@ static bool qcom_tzmem_using_shm_bridge;
  
- 			interrupt-parent = <&gpio>;
--			interrupts = <TEGRA_GPIO(X, 1) IRQ_TYPE_EDGE_BOTH>;
-+			interrupts = <TEGRA_GPIO(X, 3) IRQ_TYPE_EDGE_BOTH>;
- 
- 			gpio-controller;
- 			#gpio-cells = <2>;
+ /* List of machines that are known to not support SHM bridge correctly. */
+ static const char *const qcom_tzmem_blacklist[] = {
++	"qcom,sc7180", /* hang in rmtfs memory assignment */
+ 	"qcom,sc8180x",
+ 	"qcom,sdm670", /* failure in GPU firmware loading */
+ 	"qcom,sdm845", /* reset in rmtfs memory assignment */
 -- 
 2.51.0
 
