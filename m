@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-193407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606E0C4A44B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:12:07 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E397AC4A8AB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4A88C4F9FB9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8D75934C584
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F54225F797;
-	Tue, 11 Nov 2025 01:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA384345CBE;
+	Tue, 11 Nov 2025 01:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNO1dBle"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdBoJxWI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C017D248F6A;
-	Tue, 11 Nov 2025 01:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A872DFA5B;
+	Tue, 11 Nov 2025 01:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823108; cv=none; b=SIYKnrJtp4ManDA8fwq+qb/wduk15wpRRq2BEWnsojNihYCou+2SmhDpiBOmnr5gTXN1d/Su9BDggoyuw5DgPnAvppt6HXTyvrKXR8HSpavC/DCwyjQvPdJGCpajWCidpxq9YKYeXpZkhEsp8utIH+PZBVl3mYTt/piydTb63Sg=
+	t=1762824191; cv=none; b=cwGOw4oWDLoEI8AawZiHiYKCZfFyGOmucXGpbXiTZ0j1vtrsdtV0lDjggj0AV2S/vgQsIBk4ZhBhQ7Djv8xhpEqw/foNMIdgWsfsRekEV30dUSq5wWRk3Dqa4LMNuQ392GCl6qezqVyBJS6o74U1akTim8w+fiv8lmc40y7c+3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823108; c=relaxed/simple;
-	bh=asCV9lEZjK5pDHWDwa69hnRQwPLpN6TuToUo3/sVF0k=;
+	s=arc-20240116; t=1762824191; c=relaxed/simple;
+	bh=wdLjeDiCRy08WmLbexUu/BwbbYOPA9Dc0w3QX2bZ6z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qgi1SKXuTwKjbXrkNBH3JTtdiY0yHsG3lcg120S0OYSd6+MzmD9wb8IJgY0pFjWaF63mVKc+cv4twDiFR07ED8kWMs4TLommjqQ/ZJy10jNpzeA9PaRQ/ppzATkSQV50h/7Smc7ClfFmIXD+LsN2tBx0ARQBYd5IGpwtOSt88/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNO1dBle; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49563C19421;
-	Tue, 11 Nov 2025 01:05:08 +0000 (UTC)
+	 MIME-Version; b=i5gieKMFigU7/KyV908mtXxrhI6IA3R8rvP71o44/WkS9wC9dZ9W5QFLZC+Gb26WpEGYl9QttyIbYE5TXsGJNhj+5k23XH4npUXjuq5Ar9kpzZTTAJ+w2JTdW7pnNiKJNqMPO2hpFpqzvtZXtx4Kpt66NkXKEmFuY4FA6UXJ9mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdBoJxWI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031A0C4CEFB;
+	Tue, 11 Nov 2025 01:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823108;
-	bh=asCV9lEZjK5pDHWDwa69hnRQwPLpN6TuToUo3/sVF0k=;
+	s=korg; t=1762824191;
+	bh=wdLjeDiCRy08WmLbexUu/BwbbYOPA9Dc0w3QX2bZ6z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VNO1dBle3ml0uMIovIRX4B83RZqu1XNzYOAc0tKdBAR2egP5CwCiJVnLD5oIoda3y
-	 7HjHSIkQpKuTgZrDoDGZPynnmtZPi7gPdhWfRbiGliW/xDgfIfpkN/Ue1EMgqAMQ9B
-	 vmdHZ19JenX6pr14hRMAKJekgYM6qM1XQ5OPMjOc=
+	b=DdBoJxWI17iVqa8gnf22PGIeQtK3d+NuAc5hgv6jk5cnEbQWJy+jd2yqLo6k0uXJU
+	 PHP/0fxHkboTEjpwCcKs3G7Adqt8pC6G7B0RKhe7F6UMqMwWskFZfkQShjH86Yxd1N
+	 Zb578hLe8I5V+oiwi+4GKRmTqYQT74Nx2Kxf+y9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Clay King <clayking@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 173/565] drm/amd/display: ensure committing streams is seamless
+Subject: [PATCH 6.17 459/849] drm/amd/pm: refine amdgpu pm sysfs node error code
 Date: Tue, 11 Nov 2025 09:40:29 +0900
-Message-ID: <20251111004530.827229913@linuxfoundation.org>
+Message-ID: <20251111004547.525220241@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clay King <clayking@amd.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit ca74cc428f2b9d0170c56b473dbcfd7fa01daf2d ]
+[ Upstream commit cf32515a70618c0fb2319bd4a855f4d9447940a8 ]
 
-[Why]
-When transitioning between topologies such as multi-display to single
-display ODM 2:1, pipes might not be freed before use.
+v1:
+Returns different error codes based on the scenario to help the user app understand
+the AMDGPU device status when an exception occurs.
 
-[How]
-In dc_commit_streams, commit an additional, minimal transition if
-original transition is not seamless to ensure pipes are freed.
+v2:
+change -NODEV to -EBUSY.
 
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Clay King <clayking@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/amd/pm/amdgpu_pm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 13d5f0451fecf..bdcbebd5722d4 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -2182,6 +2182,18 @@ enum dc_status dc_commit_streams(struct dc *dc, struct dc_commit_streams_params
- 		goto fail;
- 	}
+diff --git a/drivers/gpu/drm/amd/pm/amdgpu_pm.c b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+index 5fbfe7333b54d..1fca183827c7c 100644
+--- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+@@ -110,9 +110,10 @@ static int amdgpu_pm_dev_state_check(struct amdgpu_device *adev, bool runpm)
+ 	bool runpm_check = runpm ? adev->in_runpm : false;
  
-+	/*
-+	 * If not already seamless, make transition seamless by inserting intermediate minimal transition
-+	 */
-+	if (dc->hwss.is_pipe_topology_transition_seamless &&
-+			!dc->hwss.is_pipe_topology_transition_seamless(dc, dc->current_state, context)) {
-+		res = commit_minimal_transition_state(dc, context);
-+		if (res != DC_OK) {
-+			BREAK_TO_DEBUGGER();
-+			goto fail;
-+		}
-+	}
+ 	if (amdgpu_in_reset(adev))
+-		return -EPERM;
++		return -EBUSY;
 +
- 	res = dc_commit_state_no_check(dc, context);
+ 	if (adev->in_suspend && !runpm_check)
+-		return -EPERM;
++		return -EBUSY;
  
- 	for (i = 0; i < params->stream_count; i++) {
+ 	return 0;
+ }
 -- 
 2.51.0
 
