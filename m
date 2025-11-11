@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6307DC4A2AD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:05:16 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E5BC4A2EC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:05:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09DD93A8344
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9BC3C4F71EF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96219248F6A;
-	Tue, 11 Nov 2025 01:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4334F2E403;
+	Tue, 11 Nov 2025 01:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0Z3n+eo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gwxe7RBT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520094204E;
-	Tue, 11 Nov 2025 01:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F288624E4A1;
+	Tue, 11 Nov 2025 01:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823035; cv=none; b=pPwHhbkq4oQKMFdcKBSjsUfLzaLb53brhV7QUH74NP3LNGr5m3DkLO9sa3B6K5hElzbyhSyEg5cch/7eyowpgM1tmig9+oWGG5rafMixfrROBILcNMACdE8FONyYG6CSyBKdG1jR0vDn70IkmYIhLkCM+W7dOHKZq4MbA+au1uY=
+	t=1762822880; cv=none; b=M+XL32dxykpLKYjrEMsoCCox1C20BW8bG2QRkitPulRQoIud2MH9expdqJlsoc+TwMNgWBQBq8mfaCC3EyWx8MWIv4fZcIFkTn1kq8k/JtuhCUhHg3uqTVT8S2hTRRpJM3JQWN3DawKumMb+P+GA/WS1sOFJbZ1ne5JHwsViftE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823035; c=relaxed/simple;
-	bh=LBsbVQdBNXRT2evGwCTQdYzgF4GBfYmL/xxQKN9bhGU=;
+	s=arc-20240116; t=1762822880; c=relaxed/simple;
+	bh=1NExgAhkHNtToTwcM3y1G+BC16TCFthYhGJDMhrmvlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kjjh4/EYch2K3VKo8Y5IdkqpuZHykJR1KAXF/m54Iaw2CwgfxWXv2UD5ep7kyRPKbNwKVx4ZED7A07PHtXLIHT+3oP/m3hDOqAy16dBp2D2WiHDRD0s5UQl94qDuiBpwDaioWjAy2t3xMD35+9IGeL1JBzTpnl1FTg50BPFLcsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0Z3n+eo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E549BC4CEF5;
-	Tue, 11 Nov 2025 01:03:54 +0000 (UTC)
+	 MIME-Version; b=T4VyoQ2be8809YcXAkcwDkiXYmD9727tidw4zG7dg5hvwMzUUxrMcng/ztgJqQM/VEA37+TV3Z4mkmxeBFKj9xisYCEl7zQ3fgiNBeIXrgEvv5T0tCxIZ6sOCdjR9p1af4i19+pKUpxTPio2DrL+Jx8mxCXwvELF/Xk30zw6SnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gwxe7RBT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF12C19424;
+	Tue, 11 Nov 2025 01:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823035;
-	bh=LBsbVQdBNXRT2evGwCTQdYzgF4GBfYmL/xxQKN9bhGU=;
+	s=korg; t=1762822879;
+	bh=1NExgAhkHNtToTwcM3y1G+BC16TCFthYhGJDMhrmvlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0Z3n+eoYW7K5Qn5uCymoR424n6GmlBBPN/oxpZTP8iHztPMOSSWSyFIRX1qDZesC
-	 sKBE0I/pDxctuxK8GEVAopt59izVnvQhqraXB4Z24w8y6iN2sEgBApYuStQiNRw8ec
-	 CvY+Km7wS4LirgoyNYch0ChfjvD2mjDj7/Da6jVw=
+	b=Gwxe7RBT2Rht0l/e683aHwynHeItEzUrhYfVD7ViTxAN67fe6kfgB+GCIIhXfCTkr
+	 zRPdvSHkEbkf+1nSyLL4UHqnC766NBrGSPBT+JVQLoUb8MpY//C5I+iyJcRz1onVfM
+	 MiLQIwtoErnvV9yqa4QnHwST8dRz9nvUf/aszLKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Copeland <ben.copeland@linaro.org>,
-	Eugene Shalygin <eugene.shalygin@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 159/565] hwmon: (asus-ec-sensors) increase timeout for locking ACPI mutex
-Date: Tue, 11 Nov 2025 09:40:15 +0900
-Message-ID: <20251111004530.512402261@linuxfoundation.org>
+Subject: [PATCH 6.17 166/849] cpufreq: ondemand: Update the efficient idle check for Intel extended Families
+Date: Tue, 11 Nov 2025 09:35:36 +0900
+Message-ID: <20251111004540.448436896@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Copeland <ben.copeland@linaro.org>
+From: Sohil Mehta <sohil.mehta@intel.com>
 
-[ Upstream commit 584d55be66ef151e6ef9ccb3dcbc0a2155559be1 ]
+[ Upstream commit 7f3cfb7943d27a7b61bdac8db739cf0bdc28e87d ]
 
-Some motherboards require more time to acquire the ACPI mutex,
-causing "Failed to acquire mutex" messages to appear in the kernel log.
-Increase the timeout from 500ms to 800ms to accommodate these cases.
+IO time is considered busy by default for modern Intel processors. The
+current check covers recent Family 6 models but excludes the brand new
+Families 18 and 19.
 
-Signed-off-by: Ben Copeland <ben.copeland@linaro.org>
-Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
-Link: https://lore.kernel.org/r/20250923192935.11339-3-eugene.shalygin@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+According to Arjan van de Ven, the model check was mainly due to a lack
+of testing on systems before INTEL_CORE2_MEROM. He suggests considering
+all Intel processors as having an efficient idle.
+
+Extend the IO busy classification to all Intel processors starting with
+Family 6, including Family 15 (Pentium 4s) and upcoming Families 18/19.
+
+Use an x86 VFM check and move the function to the header file to avoid
+using arch-specific #ifdefs in the C file.
+
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+Link: https://patch.msgid.link/20250908230655.2562440-1-sohil.mehta@intel.com
+[ rjw: Added empty line after #include ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/asus-ec-sensors.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq_ondemand.c | 25 +------------------------
+ drivers/cpufreq/cpufreq_ondemand.h | 23 +++++++++++++++++++++++
+ 2 files changed, 24 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
-index fdc157c7394d9..483dfb806cc51 100644
---- a/drivers/hwmon/asus-ec-sensors.c
-+++ b/drivers/hwmon/asus-ec-sensors.c
-@@ -49,7 +49,7 @@ static char *mutex_path_override;
-  */
- #define ASUS_EC_MAX_BANK	3
+diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpufreq_ondemand.c
+index 0e65d37c92311..a6ecc203f7b7f 100644
+--- a/drivers/cpufreq/cpufreq_ondemand.c
++++ b/drivers/cpufreq/cpufreq_ondemand.c
+@@ -29,29 +29,6 @@ static struct od_ops od_ops;
  
--#define ACPI_LOCK_DELAY_MS	500
-+#define ACPI_LOCK_DELAY_MS	800
+ static unsigned int default_powersave_bias;
  
- /* ACPI mutex for locking access to the EC for the firmware */
- #define ASUS_HW_ACCESS_MUTEX_ASMX	"\\AMW0.ASMX"
+-/*
+- * Not all CPUs want IO time to be accounted as busy; this depends on how
+- * efficient idling at a higher frequency/voltage is.
+- * Pavel Machek says this is not so for various generations of AMD and old
+- * Intel systems.
+- * Mike Chan (android.com) claims this is also not true for ARM.
+- * Because of this, whitelist specific known (series) of CPUs by default, and
+- * leave all others up to the user.
+- */
+-static int should_io_be_busy(void)
+-{
+-#if defined(CONFIG_X86)
+-	/*
+-	 * For Intel, Core 2 (model 15) and later have an efficient idle.
+-	 */
+-	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL &&
+-			boot_cpu_data.x86 == 6 &&
+-			boot_cpu_data.x86_model >= 15)
+-		return 1;
+-#endif
+-	return 0;
+-}
+-
+ /*
+  * Find right freq to be set now with powersave_bias on.
+  * Returns the freq_hi to be used right now and will set freq_hi_delay_us,
+@@ -377,7 +354,7 @@ static int od_init(struct dbs_data *dbs_data)
+ 	dbs_data->sampling_down_factor = DEF_SAMPLING_DOWN_FACTOR;
+ 	dbs_data->ignore_nice_load = 0;
+ 	tuners->powersave_bias = default_powersave_bias;
+-	dbs_data->io_is_busy = should_io_be_busy();
++	dbs_data->io_is_busy = od_should_io_be_busy();
+ 
+ 	dbs_data->tuners = tuners;
+ 	return 0;
+diff --git a/drivers/cpufreq/cpufreq_ondemand.h b/drivers/cpufreq/cpufreq_ondemand.h
+index 1af8e5c4b86fd..2ca8f1aaf2e34 100644
+--- a/drivers/cpufreq/cpufreq_ondemand.h
++++ b/drivers/cpufreq/cpufreq_ondemand.h
+@@ -24,3 +24,26 @@ static inline struct od_policy_dbs_info *to_dbs_info(struct policy_dbs_info *pol
+ struct od_dbs_tuners {
+ 	unsigned int powersave_bias;
+ };
++
++#ifdef CONFIG_X86
++#include <asm/cpu_device_id.h>
++
++/*
++ * Not all CPUs want IO time to be accounted as busy; this depends on
++ * how efficient idling at a higher frequency/voltage is.
++ *
++ * Pavel Machek says this is not so for various generations of AMD and
++ * old Intel systems. Mike Chan (android.com) claims this is also not
++ * true for ARM.
++ *
++ * Because of this, select a known series of Intel CPUs (Family 6 and
++ * later) by default, and leave all others up to the user.
++ */
++static inline bool od_should_io_be_busy(void)
++{
++	return (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL &&
++		boot_cpu_data.x86_vfm >= INTEL_PENTIUM_PRO);
++}
++#else
++static inline bool od_should_io_be_busy(void) { return false; }
++#endif
 -- 
 2.51.0
 
