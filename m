@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 282FCC4A827
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:58 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B6FC4A587
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:21:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5B8E1887980
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:27 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E676834BF1B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4855B343D78;
-	Tue, 11 Nov 2025 01:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2C6343D86;
+	Tue, 11 Nov 2025 01:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBovI5f9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYQ9NVCF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037EF343D64;
-	Tue, 11 Nov 2025 01:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A77342CA9;
+	Tue, 11 Nov 2025 01:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823563; cv=none; b=W2jpk9wOdeB0A/w9PFmeP3k5VGtN37JQmfA3f1aonsOFuJOYk9NpyCazkV/kgEoqaHJpAwyC13301d+KwVEvvhc+4SYhSKEKXQZnSJvfTIyhHRb/kqXSeHaiA0bcKqEcPIn1IIYfJx44lWHvCMoAAn+E/1Cyk8gHpC/2BscHqJ4=
+	t=1762823570; cv=none; b=gVyXL8Vr/4G94mzWQiJoMyz1fUV3IK/pe24xN+cq0ufpAHhA3jn68u6TXY0F6AaZrk5eWdxY6qCUBNJlOMoQaA1DLX0yDj11XBC/TsWtwNuTS2Igs5MBiOHThi34VLQ/1MN4FNLG7clUyrGacKpzT4Hf3Snk+r0OXQFAnvIp0Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823563; c=relaxed/simple;
-	bh=qYzDM1KonEN+9embHYg+Cp53a68LxojNzZV78I6OYmU=;
+	s=arc-20240116; t=1762823570; c=relaxed/simple;
+	bh=aYua0xPsDXO2Wfx3GPi3rU/rHx4TV2A9Nu/EQZgb1i8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hPL4VTRGhGSkhgoOfuhoKMz/zS2M0UB0rgZdU/OqCAT7vBCi6CouU2MiWNwVbANp+zT7omjHaQ0FO/XJfXbcwtUuGNeu1NC9lP+Dm7oJj35g03n+WNH2U+KTKnYYXSOv/dRA0CrRcdIeDjCpxm2lEJ99hQRUZCDP08xHjHNYhAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBovI5f9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEA4C116B1;
-	Tue, 11 Nov 2025 01:12:42 +0000 (UTC)
+	 MIME-Version; b=RArV3VtEADxz/liRTpMFwsirBCZQRC+nCIr8rD7pS8H/HJleHnMaGitf+FN5CB++ZGaNrn76ySMTsz2EpylYZ18x9Tknh6xRuy4eWDAhrWArR4Q6UrcdVmv5LI1whK5vaatdEs723068bbWjXC7PAGtN/HY23q9A4NOrxL7t2iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYQ9NVCF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F699C113D0;
+	Tue, 11 Nov 2025 01:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823562;
-	bh=qYzDM1KonEN+9embHYg+Cp53a68LxojNzZV78I6OYmU=;
+	s=korg; t=1762823569;
+	bh=aYua0xPsDXO2Wfx3GPi3rU/rHx4TV2A9Nu/EQZgb1i8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KBovI5f9k5M6oKEpw8w5aeJqxQcU1BIR770hZzsIHtsdx3KPMZOrK0JZfP2l8XcuS
-	 ap1VViRD3S8K9VLYqtbHWdnmsRxc//0QLPqUym1Ayghf6ZIbjfeXRcJXDZqvvlDf5e
-	 lWjf49aqbLsknDtdnl+eqKpzjgOwelWWr1omLYs0=
+	b=SYQ9NVCFmcehRQiM+LpD4PiGUKY4/UtbhoyjAyW5bXGDR+B8UNjE+DT6RiyqOqIhq
+	 V/LkilQRLmrdPrhX8tRBOcekLwZH29KlVtyRwS8d3F1Qz2e8YaxlEF1Txd7tb5FOBq
+	 gP7acDhxO5d5IDX3KU3aCU/XDqOOfhLVMSMv/Bic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mohammad Rafi Shaik <quic_mohs@quicinc.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 324/849] ASoC: Intel: avs: Do not share the name pointer between components
-Date: Tue, 11 Nov 2025 09:38:14 +0900
-Message-ID: <20251111004544.252076730@linuxfoundation.org>
+Subject: [PATCH 6.17 325/849] ASoC: codecs: wsa883x: Handle shared reset GPIO for WSA883x speakers
+Date: Tue, 11 Nov 2025 09:38:15 +0900
+Message-ID: <20251111004544.274700542@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -61,62 +62,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Mohammad Rafi Shaik <quic_mohs@quicinc.com>
 
-[ Upstream commit 4dee5c1cc439b0d5ef87f741518268ad6a95b23d ]
+[ Upstream commit cf65182247761f7993737b710afe8c781699356b ]
 
-By sharing 'name' directly, tearing down components may lead to
-use-after-free errors. Duplicate the name to avoid that.
+On some Qualcomm platforms such as QCS6490-RB3Gen2, the multiple
+WSA8830/WSA8835 speaker amplifiers share a common reset (shutdown) GPIO.
 
-At the same time, update the order of operations - since commit
-cee28113db17 ("ASoC: dmaengine_pcm: Allow passing component name via
-config") the framework does not override component->name if set before
-invoking the initializer.
+To handle such scenario, use the reset controller framework and its
+"reset-gpio" driver to handle such case. This allows proper handling
+of all WSA883x speaker amplifiers on QCS6490-RB3Gen2 board.
 
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250818104126.526442-4-cezary.rojewski@intel.com
+Signed-off-by: Mohammad Rafi Shaik <quic_mohs@quicinc.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250815172353.2430981-3-mohammad.rafi.shaik@oss.qualcomm.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/pcm.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ sound/soc/codecs/wsa883x.c | 57 ++++++++++++++++++++++++++++++++------
+ 1 file changed, 49 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/intel/avs/pcm.c b/sound/soc/intel/avs/pcm.c
-index 0180cf7d5fe15..306c94911a775 100644
---- a/sound/soc/intel/avs/pcm.c
-+++ b/sound/soc/intel/avs/pcm.c
-@@ -1393,16 +1393,18 @@ int avs_soc_component_register(struct device *dev, const char *name,
- 	if (!acomp)
- 		return -ENOMEM;
+diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
+index 188363b03b937..ca4520ade79aa 100644
+--- a/sound/soc/codecs/wsa883x.c
++++ b/sound/soc/codecs/wsa883x.c
+@@ -14,6 +14,7 @@
+ #include <linux/printk.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
++#include <linux/reset.h>
+ #include <linux/slab.h>
+ #include <linux/soundwire/sdw.h>
+ #include <linux/soundwire/sdw_registers.h>
+@@ -468,6 +469,7 @@ struct wsa883x_priv {
+ 	struct sdw_stream_runtime *sruntime;
+ 	struct sdw_port_config port_config[WSA883X_MAX_SWR_PORTS];
+ 	struct gpio_desc *sd_n;
++	struct reset_control *sd_reset;
+ 	bool port_prepared[WSA883X_MAX_SWR_PORTS];
+ 	bool port_enable[WSA883X_MAX_SWR_PORTS];
+ 	int active_ports;
+@@ -1546,6 +1548,46 @@ static const struct hwmon_chip_info wsa883x_hwmon_chip_info = {
+ 	.info	= wsa883x_hwmon_info,
+ };
  
--	ret = snd_soc_component_initialize(&acomp->base, drv, dev);
--	if (ret < 0)
--		return ret;
-+	acomp->base.name = devm_kstrdup(dev, name, GFP_KERNEL);
-+	if (!acomp->base.name)
-+		return -ENOMEM;
- 
--	/* force name change after ASoC is done with its init */
--	acomp->base.name = name;
- 	INIT_LIST_HEAD(&acomp->node);
- 
- 	drv->use_dai_pcm_id = !obsolete_card_names;
- 
-+	ret = snd_soc_component_initialize(&acomp->base, drv, dev);
-+	if (ret < 0)
-+		return ret;
++static void wsa883x_reset_assert(void *data)
++{
++	struct wsa883x_priv *wsa883x = data;
 +
- 	return snd_soc_add_component(&acomp->base, cpu_dais, num_cpu_dais);
- }
++	if (wsa883x->sd_reset)
++		reset_control_assert(wsa883x->sd_reset);
++	else
++		gpiod_direction_output(wsa883x->sd_n, 1);
++}
++
++static void wsa883x_reset_deassert(struct wsa883x_priv *wsa883x)
++{
++	if (wsa883x->sd_reset)
++		reset_control_deassert(wsa883x->sd_reset);
++	else
++		gpiod_direction_output(wsa883x->sd_n, 0);
++}
++
++static int wsa883x_get_reset(struct device *dev, struct wsa883x_priv *wsa883x)
++{
++	wsa883x->sd_reset = devm_reset_control_get_optional_shared(dev, NULL);
++	if (IS_ERR(wsa883x->sd_reset))
++		return dev_err_probe(dev, PTR_ERR(wsa883x->sd_reset),
++				     "Failed to get reset\n");
++	/*
++	 * if sd_reset: NULL, so use the backwards compatible way for powerdown-gpios,
++	 * which does not handle sharing GPIO properly.
++	 */
++	if (!wsa883x->sd_reset) {
++		wsa883x->sd_n = devm_gpiod_get_optional(dev, "powerdown",
++							GPIOD_FLAGS_BIT_NONEXCLUSIVE |
++							GPIOD_OUT_HIGH);
++		if (IS_ERR(wsa883x->sd_n))
++			return dev_err_probe(dev, PTR_ERR(wsa883x->sd_n),
++					     "Shutdown Control GPIO not found\n");
++	}
++
++	return 0;
++}
++
+ static int wsa883x_probe(struct sdw_slave *pdev,
+ 			 const struct sdw_device_id *id)
+ {
+@@ -1566,13 +1608,9 @@ static int wsa883x_probe(struct sdw_slave *pdev,
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to enable vdd regulator\n");
  
+-	wsa883x->sd_n = devm_gpiod_get_optional(dev, "powerdown",
+-						GPIOD_FLAGS_BIT_NONEXCLUSIVE | GPIOD_OUT_HIGH);
+-	if (IS_ERR(wsa883x->sd_n)) {
+-		ret = dev_err_probe(dev, PTR_ERR(wsa883x->sd_n),
+-				    "Shutdown Control GPIO not found\n");
++	ret = wsa883x_get_reset(dev, wsa883x);
++	if (ret)
+ 		goto err;
+-	}
+ 
+ 	dev_set_drvdata(dev, wsa883x);
+ 	wsa883x->slave = pdev;
+@@ -1595,11 +1633,14 @@ static int wsa883x_probe(struct sdw_slave *pdev,
+ 	pdev->prop.simple_clk_stop_capable = true;
+ 	pdev->prop.sink_dpn_prop = wsa_sink_dpn_prop;
+ 	pdev->prop.scp_int1_mask = SDW_SCP_INT1_BUS_CLASH | SDW_SCP_INT1_PARITY;
+-	gpiod_direction_output(wsa883x->sd_n, 0);
++
++	wsa883x_reset_deassert(wsa883x);
++	ret = devm_add_action_or_reset(dev, wsa883x_reset_assert, wsa883x);
++	if (ret)
++		return ret;
+ 
+ 	wsa883x->regmap = devm_regmap_init_sdw(pdev, &wsa883x_regmap_config);
+ 	if (IS_ERR(wsa883x->regmap)) {
+-		gpiod_direction_output(wsa883x->sd_n, 1);
+ 		ret = dev_err_probe(dev, PTR_ERR(wsa883x->regmap),
+ 				    "regmap_init failed\n");
+ 		goto err;
 -- 
 2.51.0
 
