@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA1BDC4AAF1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 330B3C4AB03
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 174334F237E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8C3E84F9E88
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFAE346FCA;
-	Tue, 11 Nov 2025 01:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD3B346FD4;
+	Tue, 11 Nov 2025 01:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owYnGxQA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GckgA9R7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEE72E8B78;
-	Tue, 11 Nov 2025 01:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361CE26C399;
+	Tue, 11 Nov 2025 01:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824261; cv=none; b=VQWFOq8UG9oib/tS57btniFQVW914iISogg+LONd+KHVL7wSdXpeIbYY05oOSzNqOPR2RPgNwCPbThJYDClC509X0Zww+aklFagLiBcb0vnopMPfTrqB5QWu+T2x4pLfsLKI6KDHl1vlvi0uQ53h7FVfxC+hQTusKwMbPjf4pic=
+	t=1762824266; cv=none; b=Pml4xotZ4py+QXbSU7vNZqofFBMwkWTuUxisgfS/XQKPhS3ToMbJkfpLb+Puy7xzstZeTM3nzDJCdieFoVOr99N8Epte5qPYUjxjdIM21mjkpgnIGJTrhxe0lFBO9BFwVKHY9RIzvTRR2mnujB+y22NHfX/ul9rwJ58WtkcrjkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824261; c=relaxed/simple;
-	bh=sfTwaKChhiLW9tgNqwJ2HBue1+WnDHQC5UXLwV3jK6Q=;
+	s=arc-20240116; t=1762824266; c=relaxed/simple;
+	bh=7dw6EtSQuqKn74qnH9YjVl6YhXQ/x5WyeFdQKIkP6D4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pLx6nieef3pj9mg5Mixi9o+lRvbLvOCIBHra5cOsa+a9W9T8dgieXzQF6yEv26smtnDFplmadJZEYsdZpCnBB1OOsxsRABwdI0LfQHG8yLBeZ9/FQBRcQbgtCXW2kaLVIsWepXo1y2rikCESPtb9Ck8sFYzJooZ3HUCfQbNOb/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owYnGxQA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF33CC4CEF5;
-	Tue, 11 Nov 2025 01:24:20 +0000 (UTC)
+	 MIME-Version; b=paF71IdiCOS1Rd8z9EYpFBZ1oJKI1AI0J9xSUVoFafuCkOCMf8CYoMa0rZb5YmjXR2tc08ULYKXCAl2Wz85z8lmen6/RmYOQgC5Y40rG7nZNshPwhcQOTwbTgBTpAJ/496wouQNSc9pGIRqycFnOEQJJrhyl+QjIdmBlonAzC9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GckgA9R7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF87C16AAE;
+	Tue, 11 Nov 2025 01:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824261;
-	bh=sfTwaKChhiLW9tgNqwJ2HBue1+WnDHQC5UXLwV3jK6Q=;
+	s=korg; t=1762824265;
+	bh=7dw6EtSQuqKn74qnH9YjVl6YhXQ/x5WyeFdQKIkP6D4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=owYnGxQAAKa+gPOtQQoE9GVjNZiWE7A4Qgpf+B4PJbcWAjE/RF/MGI94hGKb2Qsw5
-	 LTufwmmp/ZVnCQY6EV51/7E9Leau/8i8cw5oVMol6PBe21HP53Q75wJ7FyFjKXn1kb
-	 WUtJHCi4WpfBZKaVGebauoefF8SNSsealA419MqI=
+	b=GckgA9R7SH05w7dGVgSbm2QaBF54pWgCTtaWqe+M+tiyxZ9KJvh+uMnvEdapcqbZK
+	 7txmbeyEB4s4j7PwORgKnQarnFrJcZd4yinxXqNJImEqsc7DqPDVGrfzVhb8TWAJhi
+	 GfgcyIcEa49iFfrNkG+DxGcAadV4KNppmh7EpYl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Vered Yavniely <vered.yavniely@intel.com>,
+	Koby Elbaz <koby.elbaz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 421/565] scsi: libfc: Fix potential buffer overflow in fc_ct_ms_fill()
-Date: Tue, 11 Nov 2025 09:44:37 +0900
-Message-ID: <20251111004536.332748878@linuxfoundation.org>
+Subject: [PATCH 6.12 422/565] accel/habanalabs/gaudi2: fix BMON disable configuration
+Date: Tue, 11 Nov 2025 09:44:38 +0900
+Message-ID: <20251111004536.356629948@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -60,72 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Vered Yavniely <vered.yavniely@intel.com>
 
-[ Upstream commit 072fdd4b0be9b9051bdf75f36d0227aa705074ba ]
+[ Upstream commit b4fd8e56c9a3b614370fde2d45aec1032eb67ddd ]
 
-The fc_ct_ms_fill() helper currently formats the OS name and version
-into entry->value using "%s v%s". Since init_utsname()->sysname and
-->release are unbounded strings, snprintf() may attempt to write more
-than FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN bytes, triggering a
--Wformat-truncation warning with W=1.
+Change the BMON_CR register value back to its original state before
+enabling, so that BMON does not continue to collect information
+after being disabled.
 
-In file included from drivers/scsi/libfc/fc_elsct.c:18:
-drivers/scsi/libfc/fc_encode.h: In function ‘fc_ct_ms_fill.constprop’:
-drivers/scsi/libfc/fc_encode.h:359:30: error: ‘%s’ directive output may
-be truncated writing up to 64 bytes into a region of size between 62
-and 126 [-Werror=format-truncation=]
-  359 |                         "%s v%s",
-      |                              ^~
-  360 |                         init_utsname()->sysname,
-  361 |                         init_utsname()->release);
-      |                         ~~~~~~~~~~~~~~~~~~~~~~~
-drivers/scsi/libfc/fc_encode.h:357:17: note: ‘snprintf’ output between
-3 and 131 bytes into a destination of size 128
-  357 |                 snprintf((char *)&entry->value,
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  358 |                         FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN,
-      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  359 |                         "%s v%s",
-      |                         ~~~~~~~~~
-  360 |                         init_utsname()->sysname,
-      |                         ~~~~~~~~~~~~~~~~~~~~~~~~
-  361 |                         init_utsname()->release);
-      |                         ~~~~~~~~~~~~~~~~~~~~~~~~
-
-Fix this by using "%.62s v%.62s", which ensures sysname and release are
-truncated to fit within the 128-byte field defined by
-FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN.
-
-[mkp: clarified commit description]
-
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Vered Yavniely <vered.yavniely@intel.com>
+Reviewed-by: Koby Elbaz <koby.elbaz@intel.com>
+Signed-off-by: Koby Elbaz <koby.elbaz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libfc/fc_encode.h | 2 +-
+ drivers/accel/habanalabs/gaudi2/gaudi2_coresight.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/libfc/fc_encode.h b/drivers/scsi/libfc/fc_encode.h
-index 02e31db31d68e..e046091a549ae 100644
---- a/drivers/scsi/libfc/fc_encode.h
-+++ b/drivers/scsi/libfc/fc_encode.h
-@@ -356,7 +356,7 @@ static inline int fc_ct_ms_fill(struct fc_lport *lport,
- 		put_unaligned_be16(len, &entry->len);
- 		snprintf((char *)&entry->value,
- 			FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN,
--			"%s v%s",
-+			"%.62s v%.62s",
- 			init_utsname()->sysname,
- 			init_utsname()->release);
+diff --git a/drivers/accel/habanalabs/gaudi2/gaudi2_coresight.c b/drivers/accel/habanalabs/gaudi2/gaudi2_coresight.c
+index 2423620ff358f..bc3c57bda5cda 100644
+--- a/drivers/accel/habanalabs/gaudi2/gaudi2_coresight.c
++++ b/drivers/accel/habanalabs/gaudi2/gaudi2_coresight.c
+@@ -2426,7 +2426,7 @@ static int gaudi2_config_bmon(struct hl_device *hdev, struct hl_debug_params *pa
+ 		WREG32(base_reg + mmBMON_ADDRH_E3_OFFSET, 0);
+ 		WREG32(base_reg + mmBMON_REDUCTION_OFFSET, 0);
+ 		WREG32(base_reg + mmBMON_STM_TRC_OFFSET, 0x7 | (0xA << 8));
+-		WREG32(base_reg + mmBMON_CR_OFFSET, 0x77 | 0xf << 24);
++		WREG32(base_reg + mmBMON_CR_OFFSET, 0x41);
+ 	}
  
+ 	return 0;
 -- 
 2.51.0
 
