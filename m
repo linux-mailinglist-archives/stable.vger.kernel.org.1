@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-193961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9895CC4ABAF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 181B9C4A6CE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E81B54F0648
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D03F33AF8D7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F1F24E4A1;
-	Tue, 11 Nov 2025 01:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA2130C60B;
+	Tue, 11 Nov 2025 01:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdfuNdL/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STi6UwwB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B24DDAB;
-	Tue, 11 Nov 2025 01:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5660A30C639;
+	Tue, 11 Nov 2025 01:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824474; cv=none; b=AnnZ7Q4UpMcqlIhWLy5oTT+Akw0BvKwevurrHQk0t03et/njTOOvOGxachDPCVvsWPUtky7/Z8NsnBvfBkYHoskl3oToGWmpVh7wB/p9G67vNKu5X1VpzIEm4HVjq9ZZio7YGs4BE+OPxwVWZ3CyRitsuFiA5Pf1maqgDzS9osw=
+	t=1762823332; cv=none; b=paDeUGR//K5feMZ0HkJwxeTRpQ/TszMHyF0oBXAHufzFIjD6xtp7epNcJL+pP5tB10wMyPEvcUllH0eS+YexPEG7K3XreTrmJxVMposCTgjishednZShH+qsrf9LmnRERAiokYCNbRIBVvVtnC1Mk+8AWPUj5ZcI5Repez94u2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824474; c=relaxed/simple;
-	bh=Ca2ft1mwyrcdgnM2gaUBtDkpeUeRRVgcJzGMy+0zbm8=;
+	s=arc-20240116; t=1762823332; c=relaxed/simple;
+	bh=6MTOrpLhNN2FewpT1IzX2LFNivcTjVheNR56ZyxZV0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/7rTGcsE/wPZD9BGQ61kS8Vmz4iXZrJwH0XRqnOidRKmhu4EiA18UJmkrYjJpwi0Qv3FxAeYluZ1FYfQIFgjB5Q308y/mWCUCAwDsNBp8RkHFy3U8wK8oOlfLCqzg7fwrmkzGkysu8Twj5TQN2PfzVEmCKLAmZrDNLY1kxBoPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdfuNdL/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB1CC116D0;
-	Tue, 11 Nov 2025 01:27:53 +0000 (UTC)
+	 MIME-Version; b=Fg8hm8MU3ef1Os9OjLvOb/mK/Dh15yM9Sr8MMgWS/ojYF8P6B07rhbI7ZU2y/gwRvjcGA+0V2oc7qX3ZZC9H6F0tfejT681a2kkWW3y8oRJdLEjUB9o5KswpoboVAN+FixpizDaR038DNdqRR4YyxYvTXGFknO+xty1UzwobRY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STi6UwwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0DEC4CEFB;
+	Tue, 11 Nov 2025 01:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824474;
-	bh=Ca2ft1mwyrcdgnM2gaUBtDkpeUeRRVgcJzGMy+0zbm8=;
+	s=korg; t=1762823331;
+	bh=6MTOrpLhNN2FewpT1IzX2LFNivcTjVheNR56ZyxZV0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LdfuNdL/m0K3+9xBt+0TH67TrBfINEwFy4KCffeZZ+A+R/KKYWIXbOb+GUBDacrv8
-	 4hbiLez/7foBK2sP+OSIL7bND773hWtHshnTh9OUUka5kaj8WWelY7zMVKTL3kP5jL
-	 7DPCU5jWMaWt5j4U+m/zn5QpKKNBvE5oh2mD4JQo=
+	b=STi6UwwBJoCqndsioBWe9w6mXwJsnoIpQr6I1ins1X9tvdkO7YwekwNjYXgRLxANw
+	 CQ5yQWE7q9Z2zBDQp9e9WxSSZ3ztI9IEUDGknvz+zrCLax2xOjATU4UQcuDDVps8t9
+	 /Pxnjgtm9LdGue/T0enEDIS1iWXmi2TlS353wfBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Michael Riesch <michael.riesch@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Dennis Tsiang <dennis.tsiang@arm.com>,
+	Karunika Choo <karunika.choo@arm.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 507/849] phy: rockchip: phy-rockchip-inno-csidphy: allow writes to grf register 0
+Subject: [PATCH 6.12 221/565] drm/panthor: Serialize GPU cache flush operations
 Date: Tue, 11 Nov 2025 09:41:17 +0900
-Message-ID: <20251111004548.686529912@linuxfoundation.org>
+Message-ID: <20251111004531.895566624@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Riesch <michael.riesch@collabora.com>
+From: Karunika Choo <karunika.choo@arm.com>
 
-[ Upstream commit 8c7c19466c854fa86b82d2148eaa9bf0e6531423 ]
+[ Upstream commit e322a4844811b54477b7072eb40dc9e402a1725d ]
 
-The driver for the Rockchip MIPI CSI-2 DPHY uses GRF register offset
-value 0 to sort out undefined registers. However, the RK3588 CSIDPHY GRF
-this offset is perfectly fine (in fact, register 0 is the only one in
-this register file).
-Introduce a boolean variable to indicate valid registers and allow writes
-to register 0.
+In certain scenarios, it is possible for multiple cache flushes to be
+requested before the previous one completes. This patch introduces the
+cache_flush_lock mutex to serialize these operations and ensure that
+any requested cache flushes are completed instead of dropped.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
-Link: https://lore.kernel.org/r/20250616-rk3588-csi-dphy-v4-4-a4f340a7f0cf@collabora.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Co-developed-by: Dennis Tsiang <dennis.tsiang@arm.com>
+Signed-off-by: Dennis Tsiang <dennis.tsiang@arm.com>
+Signed-off-by: Karunika Choo <karunika.choo@arm.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://lore.kernel.org/r/20250807162633.3666310-6-karunika.choo@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-csidphy.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panthor/panthor_gpu.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
-index 2ab99e1d47ebe..75533d0710250 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
-@@ -87,10 +87,11 @@ struct dphy_reg {
- 	u32 offset;
- 	u32 mask;
- 	u32 shift;
-+	u8 valid;
+diff --git a/drivers/gpu/drm/panthor/panthor_gpu.c b/drivers/gpu/drm/panthor/panthor_gpu.c
+index 5251d8764e7d7..1ca2924e6d552 100644
+--- a/drivers/gpu/drm/panthor/panthor_gpu.c
++++ b/drivers/gpu/drm/panthor/panthor_gpu.c
+@@ -35,6 +35,9 @@ struct panthor_gpu {
+ 
+ 	/** @reqs_acked: GPU request wait queue. */
+ 	wait_queue_head_t reqs_acked;
++
++	/** @cache_flush_lock: Lock to serialize cache flushes */
++	struct mutex cache_flush_lock;
  };
  
- #define PHY_REG(_offset, _width, _shift) \
--	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, }
-+	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, .valid = 1, }
+ /**
+@@ -201,6 +204,7 @@ int panthor_gpu_init(struct panthor_device *ptdev)
  
- static const struct dphy_reg rk1808_grf_dphy_regs[] = {
- 	[GRF_DPHY_CSIPHY_FORCERXMODE] = PHY_REG(RK1808_GRF_PD_VI_CON_OFFSET, 4, 0),
-@@ -145,7 +146,7 @@ static inline void write_grf_reg(struct rockchip_inno_csidphy *priv,
- 	const struct dphy_drv_data *drv_data = priv->drv_data;
- 	const struct dphy_reg *reg = &drv_data->grf_regs[index];
+ 	spin_lock_init(&gpu->reqs_lock);
+ 	init_waitqueue_head(&gpu->reqs_acked);
++	mutex_init(&gpu->cache_flush_lock);
+ 	ptdev->gpu = gpu;
+ 	panthor_gpu_init_info(ptdev);
  
--	if (reg->offset)
-+	if (reg->valid)
- 		regmap_write(priv->grf, reg->offset,
- 			     HIWORD_UPDATE(value, reg->mask, reg->shift));
- }
+@@ -383,6 +387,9 @@ int panthor_gpu_flush_caches(struct panthor_device *ptdev,
+ 	bool timedout = false;
+ 	unsigned long flags;
+ 
++	/* Serialize cache flush operations. */
++	guard(mutex)(&ptdev->gpu->cache_flush_lock);
++
+ 	spin_lock_irqsave(&ptdev->gpu->reqs_lock, flags);
+ 	if (!drm_WARN_ON(&ptdev->base,
+ 			 ptdev->gpu->pending_reqs & GPU_IRQ_CLEAN_CACHES_COMPLETED)) {
 -- 
 2.51.0
 
