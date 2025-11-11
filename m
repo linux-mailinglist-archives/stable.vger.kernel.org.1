@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-193979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE8EC4AC5B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1609CC4B0AC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D8CF3B9E83
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C3E504FAE39
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF67A30EF63;
-	Tue, 11 Nov 2025 01:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA18F347BD7;
+	Tue, 11 Nov 2025 01:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZT8P38u9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDIYshuQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AE730E0F6;
-	Tue, 11 Nov 2025 01:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73DF335095;
+	Tue, 11 Nov 2025 01:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824518; cv=none; b=ZGGIo2xsiSe0VcH26ITF/Dzz+RmQk4PpBwtNkfVGyrCQeF+T7DXkwNd2m2vk9rhE1SyKyPa2ExMXQtcNQfjgktplf2L4BIOfl3SZhoYFy6Uw/ggccofTEK6sXRTohj4dgVrSPPBlmzVyDdNAzPqD/5MDPlz/foFp1NPzjzFzdeE=
+	t=1762825309; cv=none; b=XxU9AR+qobOIrjHSSL1sbNc9PSoAgqQtMCAZY4AYiD5R5HTb9H0fcMrTZIVxxa6cq0NNlYQRQ4VxubwyIy/CbCNxt4my2KS10ZpDWGJIfcYeKmyLQsZD3WtzvgmSzvSp8y/f5d8uY98t/Ff9BPlxr0JPmCq75WaaRV07W3FTISk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824518; c=relaxed/simple;
-	bh=cSur7KQ2d8sY24UE8ZBzUoPxs3pfkNqk5zFx2eui8QU=;
+	s=arc-20240116; t=1762825309; c=relaxed/simple;
+	bh=onvhz68yEVLUK//9KDx5TM9RGeswb3KZ4bC+ORPB5og=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c6PNj+WlAzdx52ECV6adBqLnL6dEDUuqEIfIOQQwcCbo+g0MUdmVxAY36wIStviMfNRmK6eemLzG9AMDTSHhxLJlZhpXvYQSAo3PG3Dxm8tFCXEw10DYu1NGungSOp3fLiRsh3+mZKBacsQaqCyBhGH6WQzT+iI2IBEdfxU5rW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZT8P38u9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D5DC113D0;
-	Tue, 11 Nov 2025 01:28:38 +0000 (UTC)
+	 MIME-Version; b=CD/zKsE6ZfwC0xsCYpd8zqOdO5wolkWIUUPUmyi7gdchTx+Tg4v5g0msva1sNuKqySME1ZjNBPuzwqWSB51lkI9ffm4iEwLqybPCfgFRzrkhreCynl1WxITTx7RpNzDTZnJ4DHBug1u4GHmOwwfhTshttFFCmvo0+V6DWQ/7UCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDIYshuQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D17EC113D0;
+	Tue, 11 Nov 2025 01:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824518;
-	bh=cSur7KQ2d8sY24UE8ZBzUoPxs3pfkNqk5zFx2eui8QU=;
+	s=korg; t=1762825309;
+	bh=onvhz68yEVLUK//9KDx5TM9RGeswb3KZ4bC+ORPB5og=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZT8P38u9LXcJv84KT+gxdasQC94v9tXsMFvSPEazTimb90B7uoHKRufbiL0V+umO2
-	 TZ93EsO9l1s0jQEq8qvjNBxpZJU4j8/CMCghNZ41b+BQgRDsQQpQCOckLjdVGrIvSo
-	 sA69i6hOhFjxWeUjqve6RHRsnBy7EXls549XqqxE=
+	b=bDIYshuQfoMPoyCZ4fc5nRiPeSAcfe9C7XDlyHranlkfg9bewFwlV7CR00NzRs+Ez
+	 QlnN51OItj3D/9lobtexTEQlXF12wQFIBUJ9hvQYuvDmc99mWQ2dL3jznS+oTKg+H3
+	 E+bRELsIDR2cB/ML1OtWXtjz8vmj1AYCZjetmqw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Shardul Bankar <shardulsb08@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 461/565] btrfs: fix memory leak of qgroup_list in btrfs_add_qgroup_relation
+	Beau Belgrave <beaub@linux.microsoft.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.17 747/849] tracing: tprobe-events: Fix to register tracepoint correctly
 Date: Tue, 11 Nov 2025 09:45:17 +0900
-Message-ID: <20251111004537.268366487@linuxfoundation.org>
+Message-ID: <20251111004554.497407349@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shardul Bankar <shardulsb08@gmail.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit f260c6aff0b8af236084012d14f9f1bf792ea883 ]
+commit 10d9dda426d684e98b17161f02f77894c6de9b60 upstream.
 
-When btrfs_add_qgroup_relation() is called with invalid qgroup levels
-(src >= dst), the function returns -EINVAL directly without freeing the
-preallocated qgroup_list structure passed by the caller. This causes a
-memory leak because the caller unconditionally sets the pointer to NULL
-after the call, preventing any cleanup.
+Since __tracepoint_user_init() calls tracepoint_user_register() without
+initializing tuser->tpoint with given tracpoint, it does not register
+tracepoint stub function as callback correctly, and tprobe does not work.
 
-The issue occurs because the level validation check happens before the
-mutex is acquired and before any error handling path that would free
-the prealloc pointer. On this early return, the cleanup code at the
-'out' label (which includes kfree(prealloc)) is never reached.
+Initializing tuser->tpoint correctly before tracepoint_user_register()
+so that it sets up tracepoint callback.
 
-In btrfs_ioctl_qgroup_assign(), the code pattern is:
+I confirmed below example works fine again.
 
-    prealloc = kzalloc(sizeof(*prealloc), GFP_KERNEL);
-    ret = btrfs_add_qgroup_relation(trans, sa->src, sa->dst, prealloc);
-    prealloc = NULL;  // Always set to NULL regardless of return value
-    ...
-    kfree(prealloc);  // This becomes kfree(NULL), does nothing
+echo "t sched_switch preempt prev_pid=prev->pid next_pid=next->pid" > /sys/kernel/tracing/dynamic_events
+echo 1 > /sys/kernel/tracing/events/tracepoints/sched_switch/enable
+cat /sys/kernel/tracing/trace_pipe
 
-When the level check fails, 'prealloc' is never freed by either the
-callee or the caller, resulting in a 64-byte memory leak per failed
-operation. This can be triggered repeatedly by an unprivileged user
-with access to a writable btrfs mount, potentially exhausting kernel
-memory.
+Link: https://lore.kernel.org/all/176244793514.155515.6466348656998627773.stgit@devnote2/
 
-Fix this by freeing prealloc before the early return, ensuring prealloc
-is always freed on all error paths.
-
-Fixes: 4addc1ffd67a ("btrfs: qgroup: preallocate memory before adding a relation")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Shardul Bankar <shardulsb08@gmail.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2867495dea86 ("tracing: tprobe-events: Register tracepoint when enable tprobe event")
+Reported-by: Beau Belgrave <beaub@linux.microsoft.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Tested-by: Beau Belgrave <beaub@linux.microsoft.com>
+Reviewed-by: Beau Belgrave <beaub@linux.microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/trace/trace_fprobe.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 2c9b38ae40da2..3c77f3506faf3 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1585,8 +1585,10 @@ int btrfs_add_qgroup_relation(struct btrfs_trans_handle *trans, u64 src, u64 dst
- 	ASSERT(prealloc);
+diff --git a/kernel/trace/trace_fprobe.c b/kernel/trace/trace_fprobe.c
+index ad9d6347b5fa..fd1b108ab639 100644
+--- a/kernel/trace/trace_fprobe.c
++++ b/kernel/trace/trace_fprobe.c
+@@ -106,13 +106,14 @@ static struct tracepoint_user *__tracepoint_user_init(const char *name, struct t
+ 	if (!tuser->name)
+ 		return NULL;
  
- 	/* Check the level of src and dst first */
--	if (btrfs_qgroup_level(src) >= btrfs_qgroup_level(dst))
-+	if (btrfs_qgroup_level(src) >= btrfs_qgroup_level(dst)) {
-+		kfree(prealloc);
- 		return -EINVAL;
-+	}
++	/* Register tracepoint if it is loaded. */
+ 	if (tpoint) {
++		tuser->tpoint = tpoint;
+ 		ret = tracepoint_user_register(tuser);
+ 		if (ret)
+ 			return ERR_PTR(ret);
+ 	}
  
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	if (!fs_info->quota_root) {
+-	tuser->tpoint = tpoint;
+ 	tuser->refcount = 1;
+ 	INIT_LIST_HEAD(&tuser->list);
+ 	list_add(&tuser->list, &tracepoint_user_list);
 -- 
-2.51.0
+2.51.2
 
 
 
