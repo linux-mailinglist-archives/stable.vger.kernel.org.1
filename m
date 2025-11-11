@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999EEC4A869
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F05C4A3FF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:09:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DC27D34C50A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4536E4F3477
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12AF02D879A;
-	Tue, 11 Nov 2025 01:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA512505AA;
+	Tue, 11 Nov 2025 01:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGZ2MjuA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="quqKr/Cl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF0E3446B5;
-	Tue, 11 Nov 2025 01:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C057262A;
+	Tue, 11 Nov 2025 01:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824143; cv=none; b=VzFmxQkZmUbG7l4Sxaud9h4d8W/LNSC9Yq7edHqPlwBQ+z5FbiW4QstFvNzYKrvd7j3Vy/s416aTCjhr7sGhE+dGGph1DoBBTACW30bzenTf3tZMxfjJCD8K2bkkI1hjCS5/KITiC1AyAo1jQrsqxiJAv9Zbaqt4/KxDB8qp/eg=
+	t=1762823042; cv=none; b=gDfwjA1J1Ls6EvGRk10oKv6pp7uG7pBfAqVGhkoWtkufV2lvekV0m3pRtkO8SpO5zbq6r5q4yIB8fkGn5XnYMI8ZjkcJWWkdzKlyOjd7ltntMAQo97N8HnuMReJSyd3i5W/fGbOxorpekG4YhaX7aQaweUwQw/ZnHkrrjJwbBoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824143; c=relaxed/simple;
-	bh=xZwbSjYMk3+f5dPTVZ26+tQA5LXEt8QzVFQnE52Cqx0=;
+	s=arc-20240116; t=1762823042; c=relaxed/simple;
+	bh=+fZPIUJ2DptVX0tUVBu7pnDy+99KZBoMcPm2yrMcDNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PmYe9ZLRb++hrvr66EKDsDVMLMK/3m8+/j9r8P28TftldqWwT8ekN3P612bmT3a90PATqM0K0Wp3rTDiu38zQHfU+JmCX+iAG5sHINAbO7dYONsSjC4XgcD/i9RKmXjBppwWS9yxzPSrDc7nCDeCNLxFZpVj/vc8U7VTzzvBb2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGZ2MjuA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ADB8C4CEF5;
-	Tue, 11 Nov 2025 01:22:23 +0000 (UTC)
+	 MIME-Version; b=Sedk9uiT4RpKKYcjQB3hyNXigAUpxWViojPU3DxZqp49MqZ6PwBPP1BY9hyTy7FDObMbHOTxsY4pVCv1CI5/KKAWmT699g9isNub9ElD7E+z6eXhbo7pYne7XAfm83ODA25mnz+XZRBPhiCtju5WgeJKXHxG3gpB7n/jyENyASU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quqKr/Cl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E326DC4CEF5;
+	Tue, 11 Nov 2025 01:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824143;
-	bh=xZwbSjYMk3+f5dPTVZ26+tQA5LXEt8QzVFQnE52Cqx0=;
+	s=korg; t=1762823042;
+	bh=+fZPIUJ2DptVX0tUVBu7pnDy+99KZBoMcPm2yrMcDNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EGZ2MjuA//AbLUE15uRvK/B1mxhDg+bGkt1eH0ZWFLhJ9mFFknu9DRYiY3pQSkrqo
-	 71E6whsbqPbpYqoiIj+GXq+FPGqN96HvqA9XvZvGVl4bdHtgx56pmTyxTdU9vn9owt
-	 VEYpvJcAFzvqO0Z8dHeiCyLqRg8Ao+PMqC0O+hmY=
+	b=quqKr/CluiiA9hOVoYSn2q/mFkMfUgDWpC9RrU23sLi8+QS0GpTXCROkTGKozCmae
+	 MpGbM6xHMCVX2sgAcGgBfPSxjuwyBS0sb/5lbCNDBKSUtKTMWXxg8cyVaODrmoSeCJ
+	 TaAdD3DlXq5qAqE2nNXLEfaS9UjBsYN6ZIxoWKkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 445/849] drm/gpusvm: fix hmm_pfn_to_map_order() usage
-Date: Tue, 11 Nov 2025 09:40:15 +0900
-Message-ID: <20251111004547.193943693@linuxfoundation.org>
+Subject: [PATCH 6.12 160/565] hwmon: (dell-smm) Remove Dell Precision 490 custom config data
+Date: Tue, 11 Nov 2025 09:40:16 +0900
+Message-ID: <20251111004530.536123454@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit c50729c68aaf93611c855752b00e49ce1fdd1558 ]
+[ Upstream commit ddb61e737f04e3c6c8299c1e00bf17a42a7f05cf ]
 
-Handle the case where the hmm range partially covers a huge page (like
-2M), otherwise we can potentially end up doing something nasty like
-mapping memory which is outside the range, and maybe not even mapped by
-the mm. Fix is based on the xe userptr code, which in a future patch
-will directly use gpusvm, so needs alignment here.
+It turns out the second fan on the Dell Precision 490 does not
+really support I8K_FAN_TURBO. Setting the fan state to 3 enables
+automatic fan control, just like on the other two fans.
+The reason why this was misinterpreted as turbo mode was that
+the second fan normally spins faster in automatic mode than
+in the previous fan states. Yet when in state 3, the fan speed
+reacts to heat exposure, exposing the automatic mode setting.
 
-v2:
-  - Add kernel-doc (Matt B)
-  - s/fls/ilog2/ (Thomas)
-
-Reported-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://lore.kernel.org/r/20250828142430.615826-11-matthew.auld@intel.com
+Link: https://github.com/lm-sensors/lm-sensors/pull/383
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20250917181036.10972-2-W_Armin@gmx.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_gpusvm.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ drivers/hwmon/dell-smm-hwmon.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_gpusvm.c b/drivers/gpu/drm/drm_gpusvm.c
-index 5bb4c77db2c3c..1dd8f3b593df6 100644
---- a/drivers/gpu/drm/drm_gpusvm.c
-+++ b/drivers/gpu/drm/drm_gpusvm.c
-@@ -708,6 +708,35 @@ drm_gpusvm_range_alloc(struct drm_gpusvm *gpusvm,
- 	return range;
- }
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index b043fbd15c9da..f73f461937482 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -1324,7 +1324,6 @@ struct i8k_config_data {
  
-+/**
-+ * drm_gpusvm_hmm_pfn_to_order() - Get the largest CPU mapping order.
-+ * @hmm_pfn: The current hmm_pfn.
-+ * @hmm_pfn_index: Index of the @hmm_pfn within the pfn array.
-+ * @npages: Number of pages within the pfn array i.e the hmm range size.
-+ *
-+ * To allow skipping PFNs with the same flags (like when they belong to
-+ * the same huge PTE) when looping over the pfn array, take a given a hmm_pfn,
-+ * and return the largest order that will fit inside the CPU PTE, but also
-+ * crucially accounting for the original hmm range boundaries.
-+ *
-+ * Return: The largest order that will safely fit within the size of the hmm_pfn
-+ * CPU PTE.
-+ */
-+static unsigned int drm_gpusvm_hmm_pfn_to_order(unsigned long hmm_pfn,
-+						unsigned long hmm_pfn_index,
-+						unsigned long npages)
-+{
-+	unsigned long size;
-+
-+	size = 1UL << hmm_pfn_to_map_order(hmm_pfn);
-+	size -= (hmm_pfn & ~HMM_PFN_FLAGS) & (size - 1);
-+	hmm_pfn_index += size;
-+	if (hmm_pfn_index > npages)
-+		size -= (hmm_pfn_index - npages);
-+
-+	return ilog2(size);
-+}
-+
- /**
-  * drm_gpusvm_check_pages() - Check pages
-  * @gpusvm: Pointer to the GPU SVM structure
-@@ -766,7 +795,7 @@ static bool drm_gpusvm_check_pages(struct drm_gpusvm *gpusvm,
- 			err = -EFAULT;
- 			goto err_free;
- 		}
--		i += 0x1 << hmm_pfn_to_map_order(pfns[i]);
-+		i += 0x1 << drm_gpusvm_hmm_pfn_to_order(pfns[i], i, npages);
- 	}
- 
- err_free:
-@@ -1342,7 +1371,7 @@ int drm_gpusvm_range_get_pages(struct drm_gpusvm *gpusvm,
- 	for (i = 0, j = 0; i < npages; ++j) {
- 		struct page *page = hmm_pfn_to_page(pfns[i]);
- 
--		order = hmm_pfn_to_map_order(pfns[i]);
-+		order = drm_gpusvm_hmm_pfn_to_order(pfns[i], i, npages);
- 		if (is_device_private_page(page) ||
- 		    is_device_coherent_page(page)) {
- 			if (zdd != page->zone_device_data && i > 0) {
+ enum i8k_configs {
+ 	DELL_LATITUDE_D520,
+-	DELL_PRECISION_490,
+ 	DELL_STUDIO,
+ 	DELL_XPS,
+ };
+@@ -1334,10 +1333,6 @@ static const struct i8k_config_data i8k_config_data[] __initconst = {
+ 		.fan_mult = 1,
+ 		.fan_max = I8K_FAN_TURBO,
+ 	},
+-	[DELL_PRECISION_490] = {
+-		.fan_mult = 1,
+-		.fan_max = I8K_FAN_TURBO,
+-	},
+ 	[DELL_STUDIO] = {
+ 		.fan_mult = 1,
+ 		.fan_max = I8K_FAN_HIGH,
+@@ -1357,15 +1352,6 @@ static const struct dmi_system_id i8k_config_dmi_table[] __initconst = {
+ 		},
+ 		.driver_data = (void *)&i8k_config_data[DELL_LATITUDE_D520],
+ 	},
+-	{
+-		.ident = "Dell Precision 490",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME,
+-				  "Precision WorkStation 490"),
+-		},
+-		.driver_data = (void *)&i8k_config_data[DELL_PRECISION_490],
+-	},
+ 	{
+ 		.ident = "Dell Studio",
+ 		.matches = {
 -- 
 2.51.0
 
