@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-193167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BABC4A0F1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C32C4A0F7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1B96D4F39F1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EDB824F25E6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B791244693;
-	Tue, 11 Nov 2025 00:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5973824A043;
+	Tue, 11 Nov 2025 00:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYpSd164"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uWvtCWL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378964C97;
-	Tue, 11 Nov 2025 00:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1594C97;
+	Tue, 11 Nov 2025 00:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822456; cv=none; b=NQ4pwifnKmBy55o+R5trhASaMjt1/wPwrTI/1rXUhAEasCoo6bf4F3EfFZbVL8YlJNuqXdwp6lbyi21xKqvgepL33l0XczJOrnfw7TN+gVrK41NIsYZdk1kDtah2D51MmfamheJ9Cwq/BmUbKvk41PIgXwA1bsrlU4uj3Y3Blvo=
+	t=1762822461; cv=none; b=cL7bNTcs7m7RtvaMeeMyv6xejewEEfS+s2hdANQzB6fNQ7nZ+ah5R+mmlRk4xAeXwHY72cq4UKdN59JZDoQIqsngf2EZ8+PgXLHIUIF4q7KLEE+76hypOdNXq+y0yWgou7eCcSRrvdgIM9EbMhohqKNo8GaS4vDk1tjt8PXbFUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822456; c=relaxed/simple;
-	bh=98EQEt4bQ3INBvq+i+HPZn0oSW/ctpWV1LgFaUqOzIc=;
+	s=arc-20240116; t=1762822461; c=relaxed/simple;
+	bh=mvUcSCKbsw0EMw96wBPEYFmS4tb8tdUi1Buqcc+hhgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kLV2OjFmwVxBz7djgWR5Z6OdA9plPeEuJHztTBAFLi4Y+P5/PQGLx+le8C8oBJ4WRe0zZvTpqW98v4uB+kIMP7+/oWLVY1l8zL74vXCHOUALIQQPm/csYHerOuLevWSvMJQWC6GQ2IPmIFeBDTHZPBZ6I2zCt+asi8HkbKxccNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYpSd164; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E90C4CEF5;
-	Tue, 11 Nov 2025 00:54:15 +0000 (UTC)
+	 MIME-Version; b=m5j0JEjGTe2PByLARW9Eu+WRpl9bY/BwsedXt6uLUH8A0j7zAlQJIizjYQEylCTFcLBtYBrIOBZIT68DPr7+q7bDBwIgEKVA3vpIm1wAuwld/rcpgAZnVbQLp44tkea3Xvqf82ViGRlG9vsVBgi2Vk2Z0IjLtxVPdpkehC6bXv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uWvtCWL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D51C113D0;
+	Tue, 11 Nov 2025 00:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822456;
-	bh=98EQEt4bQ3INBvq+i+HPZn0oSW/ctpWV1LgFaUqOzIc=;
+	s=korg; t=1762822460;
+	bh=mvUcSCKbsw0EMw96wBPEYFmS4tb8tdUi1Buqcc+hhgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYpSd164KKY6k2XP+RVKl7dSRen2eIwwwv0TDMSdjem2gf7s2WVatzE9PpKUSykX1
-	 9LlKH4zryAMyyzNdmvu3wpGJZuAUOHGlrL+iKP8MlLkOJ8iVejSNAYWbgAk30nVi3d
-	 0ISmvUvB37qoiS9PLQeCTR8SsQC/etMCUTNRC8jQ=
+	b=2uWvtCWLxqaE+Q8mi6pvsC5q4QimFmYVcuhVTkOBOCk00wykvBhEbiguFfLsnIRS0
+	 m7bi0IPITw0fKHdaxr7+xIbnageQvt0ssjbmMKJ66Jmd7TIsTbPmYOfKgf9z4Xu5Em
+	 EB1Q23l6qtIPfTkDZw5E+uOAgs1J6jbJlwASMxtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliang@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 111/849] mptcp: fix MSG_PEEK stream corruption
-Date: Tue, 11 Nov 2025 09:34:41 +0900
-Message-ID: <20251111004539.077847171@linuxfoundation.org>
+Subject: [PATCH 6.17 112/849] cpuidle: governors: menu: Rearrange main loop in menu_select()
+Date: Tue, 11 Nov 2025 09:34:42 +0900
+Message-ID: <20251111004539.103669751@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -69,117 +66,109 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 8e04ce45a8db7a080220e86e249198fa676b83dc ]
+[ Upstream commit 17224c1d2574d29668c4879e1fbf36d6f68cd22b ]
 
-If a MSG_PEEK | MSG_WAITALL read operation consumes all the bytes in the
-receive queue and recvmsg() need to waits for more data - i.e. it's a
-blocking one - upon arrival of the next packet the MPTCP protocol will
-start again copying the oldest data present in the receive queue,
-corrupting the data stream.
+Reduce the indentation level in the main loop of menu_select() by
+rearranging some checks and assignments in it.
 
-Address the issue explicitly tracking the peeked sequence number,
-restarting from the last peeked byte.
+No intentional functional impact.
 
-Fixes: ca4fb892579f ("mptcp: add MSG_PEEK support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Tested-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251028-net-mptcp-send-timeout-v1-2-38ffff5a9ec8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/2389215.ElGaqSPkdT@rafael.j.wysocki
+Stable-dep-of: db86f55bf81a ("cpuidle: governors: menu: Select polling state in some more cases")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   38 +++++++++++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 13 deletions(-)
+ drivers/cpuidle/governors/menu.c |   70 ++++++++++++++++++++-------------------
+ 1 file changed, 36 insertions(+), 34 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1892,22 +1892,36 @@ do_error:
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -311,45 +311,47 @@ static int menu_select(struct cpuidle_dr
+ 		if (s->exit_latency_ns > latency_req)
+ 			break;
  
- static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied);
- 
--static int __mptcp_recvmsg_mskq(struct sock *sk,
--				struct msghdr *msg,
--				size_t len, int flags,
-+static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
-+				size_t len, int flags, int copied_total,
- 				struct scm_timestamping_internal *tss,
- 				int *cmsg_flags)
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	struct sk_buff *skb, *tmp;
-+	int total_data_len = 0;
- 	int copied = 0;
- 
- 	skb_queue_walk_safe(&sk->sk_receive_queue, skb, tmp) {
--		u32 offset = MPTCP_SKB_CB(skb)->offset;
-+		u32 delta, offset = MPTCP_SKB_CB(skb)->offset;
- 		u32 data_len = skb->len - offset;
--		u32 count = min_t(size_t, len - copied, data_len);
-+		u32 count;
- 		int err;
- 
-+		if (flags & MSG_PEEK) {
-+			/* skip already peeked skbs */
-+			if (total_data_len + data_len <= copied_total) {
-+				total_data_len += data_len;
-+				continue;
-+			}
-+
-+			/* skip the already peeked data in the current skb */
-+			delta = copied_total - total_data_len;
-+			offset += delta;
-+			data_len -= delta;
+-		if (s->target_residency_ns > predicted_ns) {
+-			/*
+-			 * Use a physical idle state, not busy polling, unless
+-			 * a timer is going to trigger soon enough.
+-			 */
+-			if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) &&
+-			    s->target_residency_ns <= data->next_timer_ns) {
+-				predicted_ns = s->target_residency_ns;
+-				idx = i;
+-				break;
+-			}
+-			if (predicted_ns < TICK_NSEC)
+-				break;
+-
+-			if (!tick_nohz_tick_stopped()) {
+-				/*
+-				 * If the state selected so far is shallow,
+-				 * waking up early won't hurt, so retain the
+-				 * tick in that case and let the governor run
+-				 * again in the next iteration of the loop.
+-				 */
+-				predicted_ns = drv->states[idx].target_residency_ns;
+-				break;
+-			}
++		if (s->target_residency_ns <= predicted_ns) {
++			idx = i;
++			continue;
 +		}
 +
-+		count = min_t(size_t, len - copied, data_len);
- 		if (!(flags & MSG_TRUNC)) {
- 			err = skb_copy_datagram_msg(skb, offset, msg, count);
- 			if (unlikely(err < 0)) {
-@@ -1924,16 +1938,14 @@ static int __mptcp_recvmsg_mskq(struct s
++		/*
++		 * Use a physical idle state, not busy polling, unless a timer
++		 * is going to trigger soon enough.
++		 */
++		if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) &&
++		    s->target_residency_ns <= data->next_timer_ns) {
++			predicted_ns = s->target_residency_ns;
++			idx = i;
++			break;
++		}
  
- 		copied += count;
- 
--		if (count < data_len) {
--			if (!(flags & MSG_PEEK)) {
-+		if (!(flags & MSG_PEEK)) {
-+			msk->bytes_consumed += count;
-+			if (count < data_len) {
- 				MPTCP_SKB_CB(skb)->offset += count;
- 				MPTCP_SKB_CB(skb)->map_seq += count;
--				msk->bytes_consumed += count;
-+				break;
- 			}
--			break;
--		}
- 
--		if (!(flags & MSG_PEEK)) {
- 			/* avoid the indirect call, we know the destructor is sock_rfree */
- 			skb->destructor = NULL;
- 			skb->sk = NULL;
-@@ -1941,7 +1953,6 @@ static int __mptcp_recvmsg_mskq(struct s
- 			sk_mem_uncharge(sk, skb->truesize);
- 			__skb_unlink(skb, &sk->sk_receive_queue);
- 			skb_attempt_defer_free(skb);
--			msk->bytes_consumed += count;
++		if (predicted_ns < TICK_NSEC)
++			break;
++
++		if (!tick_nohz_tick_stopped()) {
+ 			/*
+-			 * If the state selected so far is shallow and this
+-			 * state's target residency matches the time till the
+-			 * closest timer event, select this one to avoid getting
+-			 * stuck in the shallow one for too long.
++			 * If the state selected so far is shallow, waking up
++			 * early won't hurt, so retain the tick in that case and
++			 * let the governor run again in the next iteration of
++			 * the idle loop.
+ 			 */
+-			if (drv->states[idx].target_residency_ns < TICK_NSEC &&
+-			    s->target_residency_ns <= delta_tick)
+-				idx = i;
+-
+-			return idx;
++			predicted_ns = drv->states[idx].target_residency_ns;
++			break;
  		}
  
- 		if (copied >= len)
-@@ -2164,7 +2175,8 @@ static int mptcp_recvmsg(struct sock *sk
- 	while (copied < len) {
- 		int err, bytes_read;
+-		idx = i;
++		/*
++		 * If the state selected so far is shallow and this state's
++		 * target residency matches the time till the closest timer
++		 * event, select this one to avoid getting stuck in the shallow
++		 * one for too long.
++		 */
++		if (drv->states[idx].target_residency_ns < TICK_NSEC &&
++		    s->target_residency_ns <= delta_tick)
++			idx = i;
++
++		return idx;
+ 	}
  
--		bytes_read = __mptcp_recvmsg_mskq(sk, msg, len - copied, flags, &tss, &cmsg_flags);
-+		bytes_read = __mptcp_recvmsg_mskq(sk, msg, len - copied, flags,
-+						  copied, &tss, &cmsg_flags);
- 		if (unlikely(bytes_read < 0)) {
- 			if (!copied)
- 				copied = bytes_read;
+ 	if (idx == -1)
 
 
 
