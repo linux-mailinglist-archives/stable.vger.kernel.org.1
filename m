@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-193591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F36C4A572
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:20:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A76F3C4ACBF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AE9DF34BF2A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 498ED188A0AF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9411E343216;
-	Tue, 11 Nov 2025 01:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A573446AA;
+	Tue, 11 Nov 2025 01:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zR88Qf/e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O01TN+7G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDF5343214;
-	Tue, 11 Nov 2025 01:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0512E6CA4;
+	Tue, 11 Nov 2025 01:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823546; cv=none; b=hIZBevyKAkUo2dsa6qXK4Ade8UhupetADp9rBbwKiKA6xgPNG5vpTqvXAb9Scx5y2Rz1ew0/QMSO1OHM/Z68d4uX6qv0kPVSqd1LwlnKv5tUPkqv5DGIlW+XNmDEiM7X+DdnsBH5tXngk+I/Io3KOknDFMXCDc7AcxmxEtpwOK8=
+	t=1762824704; cv=none; b=jyaHh+LAIYB5OPbRj6FQvJeq+hai+Te+UoFhb2vgTwTKJXhta7+kETia9t6GXZ8RWMzwtnt982zgZcgWWu9RvLQBvtRo0M1TXmkPOaL2Dz5pXwoRAxxvIVvaTtQ70iF4jehyc+QkATxdwk25h0y+uGaSRe7VEo7GLGJMDya1VSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823546; c=relaxed/simple;
-	bh=EmL/HGVTUBDdvBcsWNqKGgebFsFYvfJXcuz027NTOo0=;
+	s=arc-20240116; t=1762824704; c=relaxed/simple;
+	bh=mPNRHLMw1NUjAflDT9gul4zv5Cz9MnOQIL6InIp3SR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pbTJR8VwigGOkTTqZV92esM5WXYd7MW4DiDRnuEmEEHnggR+P3JtDjxzBY3CIFAuijXEqRtO7mbZ/uXapXxb5ylRgrI5ZHXY7xR8b8+2ux00Yx3x04+WVKRsVCG1O4M2FwifYYXGSqvn1L+lGd6yAU1J+qsaI/4qGM2cawh2J7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zR88Qf/e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53F0C4CEFB;
-	Tue, 11 Nov 2025 01:12:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s8A1pXpDaJhrFiPOi2dAVfLxy0Exq39eAy4c3rNFFmmS7pk02IbPt4dWWsVrlPbNiRCWP67MnOeAAFXW9xO6YshzPRzBhNcXq/bLteKhTwXKvNaqqLlGAwYlqb7KsLa6hwCThaTrSjSk7JaE7HR0wBXTfHqPEWyU/HzmbgdaMqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O01TN+7G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE90C4AF0B;
+	Tue, 11 Nov 2025 01:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823546;
-	bh=EmL/HGVTUBDdvBcsWNqKGgebFsFYvfJXcuz027NTOo0=;
+	s=korg; t=1762824704;
+	bh=mPNRHLMw1NUjAflDT9gul4zv5Cz9MnOQIL6InIp3SR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zR88Qf/ei6+dneSJrMn2SDq8ZyF8sc4ePnv4gM6NzIGSaUiBVcUfnAQK4Tg3VuMr7
-	 /8YroRaDO3MQVWrSb3N2oBavUZj0BvXG0Sv+o6vKZ+adAK3RHBoP3sHj71gJRcQTt4
-	 +sIEsffbhgfRA3qI9/jZ2MdcjR6jSoCs703SUQ5A=
+	b=O01TN+7GAovCFnoinlMoFgoQjs66PCAuoO/wmcA3LPkccpm1N/45Jlfafd9fzNuaV
+	 kVcFrTvf4geR8AJi4CO5u3UxnNk+RU/l6CK5fK/5wbWeDp4KC3aOHwu7w8OnPkoI18
+	 603P9qwRl0LsZXkaopQb64g3D/qLqMGe1h67Dji8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mangesh Gadre <Mangesh.Gadre@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
+	AceLan Kao <acelan.kao@canonical.com>,
+	Kai-Heng Feng <kaihengf@nvidia.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Denis Benato <benato.denis96@gmail.com>,
+	=?UTF-8?q?Merthan=20Karaka=C5=9F?= <m3rthn.k@gmail.com>,
+	Eric Naim <dnaim@cachyos.org>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 267/565] drm/amdgpu: Avoid vcn v5.0.1 poison irq call trace on sriov guest
-Date: Tue, 11 Nov 2025 09:42:03 +0900
-Message-ID: <20251111004532.896881354@linuxfoundation.org>
+Subject: [PATCH 6.17 554/849] drm/amd: Avoid evicting resources at S5
+Date: Tue, 11 Nov 2025 09:42:04 +0900
+Message-ID: <20251111004549.802337279@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +66,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mangesh Gadre <Mangesh.Gadre@amd.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 37551277dfed796b6749e4fa52bdb62403cfdb42 ]
+[ Upstream commit 531df041f2a5296174abd8292d298eb62fe1ea97 ]
 
-Sriov guest side doesn't init ras feature hence the poison irq shouldn't
-be put during hw fini
+Normally resources are evicted on dGPUs at suspend or hibernate and
+on APUs at hibernate.  These steps are unnecessary when using the S4
+callbacks to put the system into S5.
 
-Signed-off-by: Mangesh Gadre <Mangesh.Gadre@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: AceLan Kao <acelan.kao@canonical.com>
+Cc: Kai-Heng Feng <kaihengf@nvidia.com>
+Cc: Mark Pearson <mpearson-lenovo@squebb.ca>
+Cc: Denis Benato <benato.denis96@gmail.com>
+Cc: Merthan Karakaş <m3rthn.k@gmail.com>
+Tested-by: Eric Naim <dnaim@cachyos.org>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-index d8bbb93767318..0034e71283964 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-@@ -284,7 +284,7 @@ static int vcn_v5_0_1_hw_fini(struct amdgpu_ip_block *ip_block)
- 			vinst->set_pg_state(vinst, AMD_PG_STATE_GATE);
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 56a737df87cc7..1115af343e013 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5016,6 +5016,10 @@ static int amdgpu_device_evict_resources(struct amdgpu_device *adev)
+ 	if (!adev->in_s4 && (adev->flags & AMD_IS_APU))
+ 		return 0;
  
--	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__VCN))
-+	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__VCN) && !amdgpu_sriov_vf(adev))
- 		amdgpu_irq_put(adev, &adev->vcn.inst->ras_poison_irq, 0);
- 
- 	return 0;
++	/* No need to evict when going to S5 through S4 callbacks */
++	if (system_state == SYSTEM_POWER_OFF)
++		return 0;
++
+ 	ret = amdgpu_ttm_evict_resources(adev, TTM_PL_VRAM);
+ 	if (ret) {
+ 		dev_warn(adev->dev, "evicting device resources failed\n");
 -- 
 2.51.0
 
