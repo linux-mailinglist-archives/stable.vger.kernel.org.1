@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474A4C4A8E8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55928C4AEE5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 714EE4F5B77
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A5964FAEAD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F9833BBB5;
-	Tue, 11 Nov 2025 01:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D9F2EA481;
+	Tue, 11 Nov 2025 01:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GwNHlCE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMZ2yFlN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081A925CC40;
-	Tue, 11 Nov 2025 01:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E600F4086A;
+	Tue, 11 Nov 2025 01:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824001; cv=none; b=kRNxH8bQS/FTDQzirgyRgmpVH1cWWsRy+EG7NhA/fqq+dDMaqhNfS0Y/MT258/CUjeetAhq5VYd6N8wGE1Kb1UZiLywe5ELHKWKuFBj953YAjsq3cLU2TObhQ4ZXyWY3q9bpajpPC1W4E6ACFY4wPJfMW2xij13tKpHrjYE0Llk=
+	t=1762825066; cv=none; b=W4wUyzQrC8z57LPqlkUA5ECzQs6QCl5GWzKbWLYONeLl4La5D9RF3kiHAoR+lsMJR7flLA4aMk7urjIEygRT83VpeyXc57IJ5R/DXJEZLHGA4iX1rGCSgnjs6utHzfYiE9MWzVrlcFiQGNGjgMZVPjFVQOCrLuz77M2YLrbzR88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824001; c=relaxed/simple;
-	bh=meN4BPqI428n9/wURJ2Jagp0ZHMR+WPn/Mpf6nHDoKQ=;
+	s=arc-20240116; t=1762825066; c=relaxed/simple;
+	bh=3FJOFnUPClrpH/yuueuuUtQT6L+4znF1UYL4dqN9PhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QvPlv1tDKWjuXP3G2wsVwrUrvpjcWieEz0zf4TSriyWHiyaFAMn1fvggKh3rx929EyD7kRlOvz0Ah0cTNIByTvVpFSQhGYMjxs/LppXK04SnXmgUp3B4NxJbV25Wy2HosUb1BlNqmL9quA9vOQ+VKdSXjpfbRyOaIkm8YJn81Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GwNHlCE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C4CFC4CEF5;
-	Tue, 11 Nov 2025 01:20:00 +0000 (UTC)
+	 MIME-Version; b=NQwyai2Jx7XuFm8QkTKjouZo5jJCc4dopaK+drxtfJmO7RWKXcUQUrDDGmVXrj3/jUtvyc+MM1NeKTFFr0ZSpHS2XVvf+EvHK8xlGaDg/6Wft8AQ4UuUqyZZ2oAUFhYsgP/M2xBpXUrf7YpEeOF/jSzXOo4vUIResNZSUzZrM2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMZ2yFlN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8719CC19425;
+	Tue, 11 Nov 2025 01:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824000;
-	bh=meN4BPqI428n9/wURJ2Jagp0ZHMR+WPn/Mpf6nHDoKQ=;
+	s=korg; t=1762825065;
+	bh=3FJOFnUPClrpH/yuueuuUtQT6L+4znF1UYL4dqN9PhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1GwNHlCEMmuNJvsynC3wPDsVJJCrtP+HEl55JhAZIa60OJ81HNP3GLbr3q9fYgPbJ
-	 S+xW5OOJW+RgkeRXwVxPPl57pWhIYAdGmt3KMm7QCp+n6sq5EKIN1+Q1+qpJyworOF
-	 e7DiRvQ1Ch9ORlBi5W+XdoM409gCfO7WMSQ89ejo=
+	b=LMZ2yFlNdCqXfYQXtz88IM1gt9VfPdtx3fzG7Ve5PY+4177PslTTkRPCCLhCo5Gqo
+	 Mjc/ueNDCmRN4uesnRS5aDdaNzM1j48fbaceEbZVixhqI4FFiYTIp6armuGzXTnbyF
+	 sxVfJ5biV6CPNsfN1ciWR6/K//nm+55xC0NafKiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 360/565] drm/amdgpu: Use memdup_array_user in amdgpu_cs_wait_fences_ioctl
+Subject: [PATCH 6.17 646/849] amd/amdkfd: resolve a race in amdgpu_amdkfd_device_fini_sw
 Date: Tue, 11 Nov 2025 09:43:36 +0900
-Message-ID: <20251111004534.966362312@linuxfoundation.org>
+Message-ID: <20251111004552.044722088@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Yifan Zhang <yifan1.zhang@amd.com>
 
-[ Upstream commit dea75df7afe14d6217576dbc28cc3ec1d1f712fb ]
+[ Upstream commit 99d7181bca34e96fbf61bdb6844918bdd4df2814 ]
 
-Replace kmalloc_array() + copy_from_user() with memdup_array_user().
+There is race in amdgpu_amdkfd_device_fini_sw and interrupt.
+if amdgpu_amdkfd_device_fini_sw run in b/w kfd_cleanup_nodes and
+  kfree(kfd), and KGD interrupt generated.
 
-This shrinks the source code and improves separation between the kernel
-and userspace slabs.
+kernel panic log:
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+BUG: kernel NULL pointer dereference, address: 0000000000000098
+amdgpu 0000:c8:00.0: amdgpu: Requesting 4 partitions through PSP
+
+PGD d78c68067 P4D d78c68067
+
+kfd kfd: amdgpu: Allocated 3969056 bytes on gart
+
+PUD 1465b8067 PMD @
+
+Oops: @002 [#1] SMP NOPTI
+
+kfd kfd: amdgpu: Total number of KFD nodes to be created: 4
+CPU: 115 PID: @ Comm: swapper/115 Kdump: loaded Tainted: G S W OE K
+
+RIP: 0010:_raw_spin_lock_irqsave+0x12/0x40
+
+Code: 89 e@ 41 5c c3 cc cc cc cc 66 66 2e Of 1f 84 00 00 00 00 00 OF 1f 40 00 Of 1f 44% 00 00 41 54 9c 41 5c fa 31 cO ba 01 00 00 00 <fO> OF b1 17 75 Ba 4c 89 e@ 41 Sc
+
+89 c6 e8 07 38 5d
+
+RSP: 0018: ffffc90@1a6b0e28 EFLAGS: 00010046
+
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000018
+0000000000000001 RSI: ffff8883bb623e00 RDI: 0000000000000098
+ffff8883bb000000 RO8: ffff888100055020 ROO: ffff888100055020
+0000000000000000 R11: 0000000000000000 R12: 0900000000000002
+ffff888F2b97da0@ R14: @000000000000098 R15: ffff8883babdfo00
+
+CS: 010 DS: 0000 ES: 0000 CRO: 0000000080050033
+
+CR2: 0000000000000098 CR3: 0000000e7cae2006 CR4: 0000000002770ce0
+0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+0000000000000000 DR6: 00000000fffeO7FO DR7: 0000000000000400
+
+PKRU: 55555554
+
+Call Trace:
+
+<IRQ>
+
+kgd2kfd_interrupt+@x6b/0x1f@ [amdgpu]
+
+? amdgpu_fence_process+0xa4/0x150 [amdgpu]
+
+kfd kfd: amdgpu: Node: 0, interrupt_bitmap: 3 YcpxFl Rant tErace
+
+amdgpu_irq_dispatch+0x165/0x210 [amdgpu]
+
+amdgpu_ih_process+0x80/0x100 [amdgpu]
+
+amdgpu: Virtual CRAT table created for GPU
+
+amdgpu_irq_handler+0x1f/@x60 [amdgpu]
+
+__handle_irq_event_percpu+0x3d/0x170
+
+amdgpu: Topology: Add dGPU node [0x74a2:0x1002]
+
+handle_irq_event+0x5a/@xcO
+
+handle_edge_irq+0x93/0x240
+
+kfd kfd: amdgpu: KFD node 1 partition @ size 49148M
+
+asm_call_irq_on_stack+0xf/@x20
+
+</IRQ>
+
+common_interrupt+0xb3/0x130
+
+asm_common_interrupt+0x1le/0x40
+
+5.10.134-010.a1i5000.a18.x86_64 #1
+
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Reviewed-by: Philip Yang<Philip.Yang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-index 5df21529b3b13..187263c0406ef 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -1737,30 +1737,21 @@ int amdgpu_cs_wait_fences_ioctl(struct drm_device *dev, void *data,
- {
- 	struct amdgpu_device *adev = drm_to_adev(dev);
- 	union drm_amdgpu_wait_fences *wait = data;
--	uint32_t fence_count = wait->in.fence_count;
--	struct drm_amdgpu_fence *fences_user;
- 	struct drm_amdgpu_fence *fences;
- 	int r;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+index 349c351e242b5..051a00152b089 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -1133,7 +1133,15 @@ void kgd2kfd_interrupt(struct kfd_dev *kfd, const void *ih_ring_entry)
+ 	}
  
- 	/* Get the fences from userspace */
--	fences = kmalloc_array(fence_count, sizeof(struct drm_amdgpu_fence),
--			GFP_KERNEL);
--	if (fences == NULL)
--		return -ENOMEM;
--
--	fences_user = u64_to_user_ptr(wait->in.fences);
--	if (copy_from_user(fences, fences_user,
--		sizeof(struct drm_amdgpu_fence) * fence_count)) {
--		r = -EFAULT;
--		goto err_free_fences;
--	}
-+	fences = memdup_array_user(u64_to_user_ptr(wait->in.fences),
-+				   wait->in.fence_count,
-+				   sizeof(struct drm_amdgpu_fence));
-+	if (IS_ERR(fences))
-+		return PTR_ERR(fences);
+ 	for (i = 0; i < kfd->num_nodes; i++) {
+-		node = kfd->nodes[i];
++		/* Race if another thread in b/w
++		 * kfd_cleanup_nodes and kfree(kfd),
++		 * when kfd->nodes[i] = NULL
++		 */
++		if (kfd->nodes[i])
++			node = kfd->nodes[i];
++		else
++			return;
++
+ 		spin_lock_irqsave(&node->interrupt_lock, flags);
  
- 	if (wait->in.wait_all)
- 		r = amdgpu_cs_wait_all_fences(adev, filp, wait, fences);
- 	else
- 		r = amdgpu_cs_wait_any_fence(adev, filp, wait, fences);
- 
--err_free_fences:
- 	kfree(fences);
- 
- 	return r;
+ 		if (node->interrupts_active
 -- 
 2.51.0
 
