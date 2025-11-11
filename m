@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABFDDC4A03D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EADD2C4A100
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BB1F3AC383
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 715D34F3D33
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B550024A043;
-	Tue, 11 Nov 2025 00:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6981DF258;
+	Tue, 11 Nov 2025 00:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1i2TftKP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlJ7Fl1+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A844C97;
-	Tue, 11 Nov 2025 00:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68ECF4C97;
+	Tue, 11 Nov 2025 00:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822472; cv=none; b=j010GQquaZxR4rXzpGehBVuJnM/eyW07J7IwBnxKN4jjLN5LXcC+JgnVL2s2vSaFns7CZ519mKTjf9h9boMILAFVV+90ICd34Xtn7nBRdlsCSwqqpyTkNO/L1gy8dz7M7naky1takPfCxYdCvmFA5W2LWIPJMxj3pb/0ZJBU6ZI=
+	t=1762822477; cv=none; b=fejNe9dsmeEiMrvosKuMaeQYf5HI55X9dmNLbx+Lp/Q2v+Rm9PnFju5s6cFTJ6pUsS8JfDE/PeoD2CExF11ZnUTNVNqlt8jga50w2BKmFY2w/qHmE9104Gdw5ZFR1UQ+x4VXcY/dZU7RTPhtbebStx80cUEXhQR8sVmaqglW8uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822472; c=relaxed/simple;
-	bh=rWFELUsl/cJJIgiH7M4phPUuPl7k/G1WfnDb7phk/j8=;
+	s=arc-20240116; t=1762822477; c=relaxed/simple;
+	bh=R4d/Ev0S9nVt4jqlfiSgTN9nNBpVhbA5+DrAny40TZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iHCHRHWex/jbwH0eCIUtFxVEMI+3aclSHrjkdHjsrI15GD5f9dE/9pcjrjlExGKuhXQkE/WaPmruRqEg0bRCb3VcbWv3EvJlip0WDHdh1kFSR5SXuCdATV6eMF+WB/nqNMK2wl8Vv38haM19iwS9q4iAJom6EcWM0cwJj/K4LQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1i2TftKP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C99C116B1;
-	Tue, 11 Nov 2025 00:54:31 +0000 (UTC)
+	 MIME-Version; b=fNC5lqjOdc/UwlHjlsa6v6P34OC97U7S4EkiM7vo7EcaemV4zk2C5F8JpPNk/swXx957rmSojL4u+D1ai4lA6nZ/FmLIu01ebPxMU1uxNVOtrjHYcywwDZ8NPQuQJQRmPM6p0Gm7qjwUEIA0hCbm5NXg4qPxvbFKNFNKmP7UDj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlJ7Fl1+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB14C116B1;
+	Tue, 11 Nov 2025 00:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822472;
-	bh=rWFELUsl/cJJIgiH7M4phPUuPl7k/G1WfnDb7phk/j8=;
+	s=korg; t=1762822477;
+	bh=R4d/Ev0S9nVt4jqlfiSgTN9nNBpVhbA5+DrAny40TZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1i2TftKPcRZcTGM3w9NUicf9pVU8eOrcQ9DO+r4BMVpugMQ4JNmvNA3LFath3s+Uf
-	 p+R4bwD5H9s96qpAHz9S5rVZ48OxZqUcUr5FiZ8NX8y1QEAw/3Om64D0Ol50y9dqYK
-	 vUEW3BG399bjhZEDWi+mvBhMvBP172wXxKMeQZxE=
+	b=TlJ7Fl1+heUcgj1KRzLh8xS0ABNov9pEspWiVZPzg+/2kOQt9DP8aoEc6LbNSrabt
+	 BeVrOmso61qSwEIv60NFnRQux2qeQuQuggHqB0M+SIwJDQm1+1htmy+OjQS+EhjH+B
+	 FEIEWItXfrg2Krs7RfDfO8TCnzBaQzkPLviAX0wQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Askar Safin <safinaskar@gmail.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	"Mario Limonciello (AMD)" <superm1@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 114/849] PM: hibernate: Combine return paths in power_down()
-Date: Tue, 11 Nov 2025 09:34:44 +0900
-Message-ID: <20251111004539.155488923@linuxfoundation.org>
+Subject: [PATCH 6.17 115/849] PM: sleep: Allow pm_restrict_gfp_mask() stacking
+Date: Tue, 11 Nov 2025 09:34:45 +0900
+Message-ID: <20251111004539.178673529@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,83 +69,106 @@ Content-Transfer-Encoding: 8bit
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 1f5bcfe91ffce71bdd1022648b9d501d46d20c09 ]
+[ Upstream commit 35e4a69b2003f20a69e7d19ae96ab1eef1aa8e8d ]
 
-To avoid code duplication and improve clarity, combine the code
-paths in power_down() leading to a return from that function.
+Allow pm_restrict_gfp_mask() to be called many times in a row to avoid
+issues with calling dpm_suspend_start() when the GFP mask has been
+already restricted.
 
-No intentional functional impact.
+Only the first invocation of pm_restrict_gfp_mask() will actually
+restrict the GFP mask and the subsequent calls will warn if there is
+a mismatch between the expected allowed GFP mask and the actual one.
 
+Moreover, if pm_restrict_gfp_mask() is called many times in a row,
+pm_restore_gfp_mask() needs to be called matching number of times in
+a row to actually restore the GFP mask.  Calling it when the GFP mask
+has not been restricted will cause it to warn.
+
+This is necessary for the GFP mask restriction starting in
+hibernation_snapshot() to continue throughout the entire hibernation
+flow until it completes or it is aborted (either by a wakeup event or
+by an error).
+
+Fixes: 449c9c02537a1 ("PM: hibernate: Restrict GFP mask in hibernation_snapshot()")
+Fixes: 469d80a3712c ("PM: hibernate: Fix hybrid-sleep")
+Reported-by: Askar Safin <safinaskar@gmail.com>
+Closes: https://lore.kernel.org/linux-pm/20251025050812.421905-1-safinaskar@gmail.com/
+Link: https://lore.kernel.org/linux-pm/20251028111730.2261404-1-safinaskar@gmail.com/
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/3571055.QJadu78ljV@rafael.j.wysocki
-[ rjw: Changed the new label name to "exit" ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 35e4a69b2003 ("PM: sleep: Allow pm_restrict_gfp_mask() stacking")
+Tested-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Cc: 6.16+ <stable@vger.kernel.org> # 6.16+
+Link: https://patch.msgid.link/5935682.DvuYhMxLoT@rafael.j.wysocki
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/power/hibernate.c |   32 ++++++++++++++------------------
- 1 file changed, 14 insertions(+), 18 deletions(-)
+ kernel/power/hibernate.c |    4 ----
+ kernel/power/main.c      |   22 +++++++++++++++++-----
+ 2 files changed, 17 insertions(+), 9 deletions(-)
 
 --- a/kernel/power/hibernate.c
 +++ b/kernel/power/hibernate.c
-@@ -708,21 +708,11 @@ static void power_down(void)
+@@ -706,7 +706,6 @@ static void power_down(void)
+ 
+ #ifdef CONFIG_SUSPEND
  	if (hibernation_mode == HIBERNATION_SUSPEND) {
- 		pm_restore_gfp_mask();
+-		pm_restore_gfp_mask();
  		error = suspend_devices_and_enter(mem_sleep_current);
--		if (error) {
--			hibernation_mode = hibernation_ops ?
--						HIBERNATION_PLATFORM :
--						HIBERNATION_SHUTDOWN;
--		} else {
--			/* Match pm_restore_gfp_mask() call in hibernate() */
--			pm_restrict_gfp_mask();
-+		if (!error)
-+			goto exit;
- 
--			/* Restore swap signature. */
--			error = swsusp_unmark();
--			if (error)
--				pr_err("Swap will be unusable! Try swapon -a.\n");
--
--			return;
--		}
-+		hibernation_mode = hibernation_ops ? HIBERNATION_PLATFORM :
-+						     HIBERNATION_SHUTDOWN;
- 	}
- #endif
- 
-@@ -733,12 +723,9 @@ static void power_down(void)
- 	case HIBERNATION_PLATFORM:
- 		error = hibernation_platform_enter();
- 		if (error == -EAGAIN || error == -EBUSY) {
--			/* Match pm_restore_gfp_mask() in hibernate(). */
--			pm_restrict_gfp_mask();
--			swsusp_unmark();
- 			events_check_enabled = false;
- 			pr_info("Wakeup event detected during hibernation, rolling back.\n");
--			return;
-+			goto exit;
- 		}
- 		fallthrough;
- 	case HIBERNATION_SHUTDOWN:
-@@ -757,6 +744,15 @@ static void power_down(void)
- 	pr_crit("Power down manually\n");
- 	while (1)
+ 		if (!error)
+ 			goto exit;
+@@ -746,9 +745,6 @@ static void power_down(void)
  		cpu_relax();
+ 
+ exit:
+-	/* Match the pm_restore_gfp_mask() call in hibernate(). */
+-	pm_restrict_gfp_mask();
+-
+ 	/* Restore swap signature. */
+ 	error = swsusp_unmark();
+ 	if (error)
+--- a/kernel/power/main.c
++++ b/kernel/power/main.c
+@@ -31,23 +31,35 @@
+  * held, unless the suspend/hibernate code is guaranteed not to run in parallel
+  * with that modification).
+  */
++static unsigned int saved_gfp_count;
+ static gfp_t saved_gfp_mask;
+ 
+ void pm_restore_gfp_mask(void)
+ {
+ 	WARN_ON(!mutex_is_locked(&system_transition_mutex));
+-	if (saved_gfp_mask) {
+-		gfp_allowed_mask = saved_gfp_mask;
+-		saved_gfp_mask = 0;
+-	}
 +
-+exit:
-+	/* Match the pm_restore_gfp_mask() call in hibernate(). */
-+	pm_restrict_gfp_mask();
++	if (WARN_ON(!saved_gfp_count) || --saved_gfp_count)
++		return;
 +
-+	/* Restore swap signature. */
-+	error = swsusp_unmark();
-+	if (error)
-+		pr_err("Swap will be unusable! Try swapon -a.\n");
++	gfp_allowed_mask = saved_gfp_mask;
++	saved_gfp_mask = 0;
++
++	pm_pr_dbg("GFP mask restored\n");
  }
  
- static int load_image_and_restore(void)
+ void pm_restrict_gfp_mask(void)
+ {
+ 	WARN_ON(!mutex_is_locked(&system_transition_mutex));
+-	WARN_ON(saved_gfp_mask);
++
++	if (saved_gfp_count++) {
++		WARN_ON((saved_gfp_mask & ~(__GFP_IO | __GFP_FS)) != gfp_allowed_mask);
++		return;
++	}
++
+ 	saved_gfp_mask = gfp_allowed_mask;
+ 	gfp_allowed_mask &= ~(__GFP_IO | __GFP_FS);
++
++	pm_pr_dbg("GFP mask restricted\n");
+ }
+ 
+ unsigned int lock_system_sleep(void)
 
 
 
