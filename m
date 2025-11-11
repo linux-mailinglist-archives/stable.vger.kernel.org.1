@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-193225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331BEC4A0D9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:56:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB4EC4A180
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:59:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06B19188DEBC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:57:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E179B4F1A61
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE0F24113D;
-	Tue, 11 Nov 2025 00:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27CD024113D;
+	Tue, 11 Nov 2025 00:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bz7KHwTK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2zEBvXI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1014C97;
-	Tue, 11 Nov 2025 00:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E824C97;
+	Tue, 11 Nov 2025 00:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822595; cv=none; b=jFyaIfA/NHyqUharPTN7Yscd2AS5cKiNNFY4D8qus00EVGtjka6sk1hDDD8VlYhopmhE+EZd4JEfg/54HblckfL04cBXNLgC55OqfYhLwX+Zs0Y0sY/9Wl1WS1gRAkN6S1GJwrRz5IODrg2VZtwiyAt9TQ1/PyaLPU2IuEwLz8Y=
+	t=1762822599; cv=none; b=c22WXa8dMvt7SyC2krIa7JiCnciuvwvM3OJZLgfieax5zF8z39yTZvF1Hubm1dxU0loI7gfJhml+NClEBfw6D4EJ8ACjAbC1D67MLAdSZYNP4JRjMN++oTiCBeZbyVA77ltxnJ62H0zbAFup+/zLIBGmK29NCu/VRoZy9nj8bEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822595; c=relaxed/simple;
-	bh=X4bHshdUPSahY1+xvfvgsQP8sE/bWi76sCWOjyQ0Rxk=;
+	s=arc-20240116; t=1762822599; c=relaxed/simple;
+	bh=APn0V5kaqnhZClzem5ZZRBp0TAQaw3BAGv7YesHevPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n2vw6qNrCI3ygt2cMWQyh/uBIblES00HC1feTEcOIlIQnQciYk8VpLQ2HMc2oq8xB/PzM3LWKTze6u2gdEqDx9LF9/4FIFkYe8h8NWDmyeMTEZUKxBhaX32TIOuirOX+uoYEvxTaC5P6qSqxzI3hX9EEqvCdjPDemuOyu+2PWtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bz7KHwTK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8526DC19421;
-	Tue, 11 Nov 2025 00:56:34 +0000 (UTC)
+	 MIME-Version; b=pI9ODT8ZZaSSkLL8zoHokdtMgQMW+f6/BnNcTkfm/8CNM0sucs1jj7NDInOYXJk9THQKb7pYWLUVO49r/2epDM2GgenmTTSMX5ObpoXN7zOsMwrlP6Lkf0wtMW0PII4w6N6tJV2H+1PVkH0IwlMuKQuP4Tf9hf3261sWCuGpHL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2zEBvXI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7A4C4CEF5;
+	Tue, 11 Nov 2025 00:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822594;
-	bh=X4bHshdUPSahY1+xvfvgsQP8sE/bWi76sCWOjyQ0Rxk=;
+	s=korg; t=1762822599;
+	bh=APn0V5kaqnhZClzem5ZZRBp0TAQaw3BAGv7YesHevPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bz7KHwTK9ok+Rft4GGfmVMt8witjUz4+4Po+3GJ9OFSeVWobW9/TUFUArzQOE5JQQ
-	 ayir05I8k10sWq9W2+ncC+SCucF7CvDUmnZhv4IdeOu19FkW0pIsVS+G7UCYdV11hD
-	 WuoltDUFod/mnpntdgECc4MQHAJPgj3MUVx3aw5s=
+	b=a2zEBvXI6tEWKUGdyxP5UPoF1wm706pcjg+o+EEt2mDY1+LiYIMPq4RuilZAkaGsX
+	 MFtcE16L9PE8JrZgpuw6ymPnWEwLLYX7N2KfQWYnFgceahD3+t1QcTXlNCJucPl2ZT
+	 uHS1upjRLjVDFMzHhIAbOcZht/9EV+Lyg8PW6nLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Price <gourry@gourry.net>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.12 081/565] x86/CPU/AMD: Add RDSEED fix for Zen5
-Date: Tue, 11 Nov 2025 09:38:57 +0900
-Message-ID: <20251111004528.790455929@linuxfoundation.org>
+	Owen Gu <guhuinan@xiaomi.com>
+Subject: [PATCH 6.12 082/565] usb: gadget: f_fs: Fix epfile null pointer access after ep enable.
+Date: Tue, 11 Nov 2025 09:38:58 +0900
+Message-ID: <20251111004528.813359854@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -65,76 +64,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gregory Price <gourry@gourry.net>
+From: Owen Gu <guhuinan@xiaomi.com>
 
-commit 607b9fb2ce248cc5b633c5949e0153838992c152 upstream.
+commit cfd6f1a7b42f62523c96d9703ef32b0dbc495ba4 upstream.
 
-There's an issue with RDSEED's 16-bit and 32-bit register output
-variants on Zen5 which return a random value of 0 "at a rate inconsistent
-with randomness while incorrectly signaling success (CF=1)". Search the
-web for AMD-SB-7055 for more detail.
+A race condition occurs when ffs_func_eps_enable() runs concurrently
+with ffs_data_reset(). The ffs_data_clear() called in ffs_data_reset()
+sets ffs->epfiles to NULL before resetting ffs->eps_count to 0, leading
+to a NULL pointer dereference when accessing epfile->ep in
+ffs_func_eps_enable() after successful usb_ep_enable().
 
-Add a fix glue which checks microcode revisions.
+The ffs->epfiles pointer is set to NULL in both ffs_data_clear() and
+ffs_data_close() functions, and its modification is protected by the
+spinlock ffs->eps_lock. And the whole ffs_func_eps_enable() function
+is also protected by ffs->eps_lock.
 
-  [ bp: Add microcode revisions checking, rewrite. ]
+Thus, add NULL pointer handling for ffs->epfiles in the
+ffs_func_eps_enable() function to fix issues
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20251018024010.4112396-1-gourry@gourry.net
-[ bp: 6.12 backport: use the alternative microcode version checking. ]
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
+Link: https://lore.kernel.org/r/20250915092907.17802-1-guhuinan@xiaomi.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c |   35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ drivers/usb/gadget/function/f_fs.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1018,8 +1018,43 @@ static void init_amd_zen4(struct cpuinfo
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -2418,7 +2418,12 @@ static int ffs_func_eps_enable(struct ff
+ 	ep = func->eps;
+ 	epfile = ffs->epfiles;
+ 	count = ffs->eps_count;
+-	while(count--) {
++	if (!epfile) {
++		ret = -ENOMEM;
++		goto done;
++	}
++
++	while (count--) {
+ 		ep->ep->driver_data = ep;
+ 
+ 		ret = config_ep_by_speed(func->gadget, &func->function, ep->ep);
+@@ -2442,6 +2447,7 @@ static int ffs_func_eps_enable(struct ff
  	}
- }
  
-+static bool check_rdseed_microcode(void)
-+{
-+	struct cpuinfo_x86 *c = &boot_cpu_data;
-+	union zen_patch_rev p;
-+	u32 min_rev = 0;
-+
-+	p.ext_fam	= c->x86 - 0xf;
-+	p.model		= c->x86_model;
-+	p.ext_model	= c->x86_model >> 4;
-+	p.stepping	= c->x86_stepping;
-+	/* reserved bits are expected to be 0 in test below */
-+	p.__reserved	= 0;
-+
-+	if (cpu_has(c, X86_FEATURE_ZEN5)) {
-+		switch (p.ucode_rev >> 8) {
-+		case 0xb0021:	min_rev = 0xb00215a; break;
-+		case 0xb1010:	min_rev = 0xb101054; break;
-+		default:
-+			pr_debug("%s: ucode_rev: 0x%x, current revision: 0x%x\n",
-+				 __func__, p.ucode_rev, c->microcode);
-+			return false;
-+		}
-+	}
-+
-+	if (!min_rev)
-+		return false;
-+
-+	return c->microcode >= min_rev;
-+}
-+
- static void init_amd_zen5(struct cpuinfo_x86 *c)
- {
-+	if (!check_rdseed_microcode()) {
-+		clear_cpu_cap(c, X86_FEATURE_RDSEED);
-+		msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
-+		pr_emerg_once("RDSEED32 is broken. Disabling the corresponding CPUID bit.\n");
-+	}
- }
+ 	wake_up_interruptible(&ffs->wait);
++done:
+ 	spin_unlock_irqrestore(&func->ffs->eps_lock, flags);
  
- static void init_amd(struct cpuinfo_x86 *c)
+ 	return ret;
 
 
 
