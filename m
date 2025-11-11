@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F55C4A5F3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9895CC4ABAF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5379A4F1716
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E81B54F0648
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8C730AAC9;
-	Tue, 11 Nov 2025 01:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F1F24E4A1;
+	Tue, 11 Nov 2025 01:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m127gS+8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdfuNdL/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B9C26FDBD;
-	Tue, 11 Nov 2025 01:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B24DDAB;
+	Tue, 11 Nov 2025 01:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823327; cv=none; b=VMeK03c4z91b7mjKmtmL9Ce8MRJ3exnNgSi3wcVzXBHmLXEk0l4XDYoc872sxle8TdjJ3ELmFqU4GjVBEkIiRNipMh0digtpzQ37n3OpywZTtUeg3zbO3jAkN+mnK7gJzSEAw44h7rSQNTfen1MMmfo+BBg7xCJIvM502ph0A70=
+	t=1762824474; cv=none; b=AnnZ7Q4UpMcqlIhWLy5oTT+Akw0BvKwevurrHQk0t03et/njTOOvOGxachDPCVvsWPUtky7/Z8NsnBvfBkYHoskl3oToGWmpVh7wB/p9G67vNKu5X1VpzIEm4HVjq9ZZio7YGs4BE+OPxwVWZ3CyRitsuFiA5Pf1maqgDzS9osw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823327; c=relaxed/simple;
-	bh=6fhgFRErNl6ks6QXUsJbfF6njhiuBB+ffqPddLXyx5U=;
+	s=arc-20240116; t=1762824474; c=relaxed/simple;
+	bh=Ca2ft1mwyrcdgnM2gaUBtDkpeUeRRVgcJzGMy+0zbm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TTurdYhnx/ps7dKzfl5pDYOjLBL6DtL/1Bv96yf5xLldo78g0tr10GbC8Iig6Rs9fLOKfpSdAuTTOIXt3JGMQNjG/pGFPnlxJbCT4RdZneMM0CtlOGbr2HlILjH9VqzFO9O6xV8op9IqGkvFAWS9mqOvcQGBoNWCaiPS3saq0Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m127gS+8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1701FC19425;
-	Tue, 11 Nov 2025 01:08:46 +0000 (UTC)
+	 MIME-Version; b=r/7rTGcsE/wPZD9BGQ61kS8Vmz4iXZrJwH0XRqnOidRKmhu4EiA18UJmkrYjJpwi0Qv3FxAeYluZ1FYfQIFgjB5Q308y/mWCUCAwDsNBp8RkHFy3U8wK8oOlfLCqzg7fwrmkzGkysu8Twj5TQN2PfzVEmCKLAmZrDNLY1kxBoPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdfuNdL/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB1CC116D0;
+	Tue, 11 Nov 2025 01:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823327;
-	bh=6fhgFRErNl6ks6QXUsJbfF6njhiuBB+ffqPddLXyx5U=;
+	s=korg; t=1762824474;
+	bh=Ca2ft1mwyrcdgnM2gaUBtDkpeUeRRVgcJzGMy+0zbm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m127gS+8sGdJP36W/2xnESKbeGfy8xvegwq9/AX4UZKDpt1VT/+xHqJENaja+8vYY
-	 bZQuxvhKrvUv13M7Z1RyGd6XQUKbruCV9ngBhGQ8bIJ7RmZimuP+FGE0JB1ctcW1/w
-	 PLUNYs4KdqTBuAewFzgSu23BU+vo5JBsDzWMPkuo=
+	b=LdfuNdL/m0K3+9xBt+0TH67TrBfINEwFy4KCffeZZ+A+R/KKYWIXbOb+GUBDacrv8
+	 4hbiLez/7foBK2sP+OSIL7bND773hWtHshnTh9OUUka5kaj8WWelY7zMVKTL3kP5jL
+	 7DPCU5jWMaWt5j4U+m/zn5QpKKNBvE5oh2mD4JQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 220/565] media: imon: make send_packet() more robust
-Date: Tue, 11 Nov 2025 09:41:16 +0900
-Message-ID: <20251111004531.872795114@linuxfoundation.org>
+Subject: [PATCH 6.17 507/849] phy: rockchip: phy-rockchip-inno-csidphy: allow writes to grf register 0
+Date: Tue, 11 Nov 2025 09:41:17 +0900
+Message-ID: <20251111004548.686529912@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,186 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Michael Riesch <michael.riesch@collabora.com>
 
-[ Upstream commit eecd203ada43a4693ce6fdd3a58ae10c7819252c ]
+[ Upstream commit 8c7c19466c854fa86b82d2148eaa9bf0e6531423 ]
 
-syzbot is reporting that imon has three problems which result in
-hung tasks due to forever holding device lock [1].
+The driver for the Rockchip MIPI CSI-2 DPHY uses GRF register offset
+value 0 to sort out undefined registers. However, the RK3588 CSIDPHY GRF
+this offset is perfectly fine (in fact, register 0 is the only one in
+this register file).
+Introduce a boolean variable to indicate valid registers and allow writes
+to register 0.
 
-First problem is that when usb_rx_callback_intf0() once got -EPROTO error
-after ictx->dev_present_intf0 became true, usb_rx_callback_intf0()
-resubmits urb after printk(), and resubmitted urb causes
-usb_rx_callback_intf0() to again get -EPROTO error. This results in
-printk() flooding (RCU stalls).
-
-Alan Stern commented [2] that
-
-  In theory it's okay to resubmit _if_ the driver has a robust
-  error-recovery scheme (such as giving up after some fixed limit on the
-  number of errors or after some fixed time has elapsed, perhaps with a
-  time delay to prevent a flood of errors).  Most drivers don't bother to
-  do this; they simply give up right away.  This makes them more
-  vulnerable to short-term noise interference during USB transfers, but in
-  reality such interference is quite rare.  There's nothing really wrong
-  with giving up right away.
-
-but imon has a poor error-recovery scheme which just retries forever;
-this behavior should be fixed.
-
-Since I'm not sure whether it is safe for imon users to give up upon any
-error code, this patch takes care of only union of error codes chosen from
-modules in drivers/media/rc/ directory which handle -EPROTO error (i.e.
-ir_toy, mceusb and igorplugusb).
-
-Second problem is that when usb_rx_callback_intf0() once got -EPROTO error
-before ictx->dev_present_intf0 becomes true, usb_rx_callback_intf0() always
-resubmits urb due to commit 8791d63af0cf ("[media] imon: don't wedge
-hardware after early callbacks"). Move the ictx->dev_present_intf0 test
-introduced by commit 6f6b90c9231a ("[media] imon: don't parse scancodes
-until intf configured") to immediately before imon_incoming_packet(), or
-the first problem explained above happens without printk() flooding (i.e.
-hung task).
-
-Third problem is that when usb_rx_callback_intf0() is not called for some
-reason (e.g. flaky hardware; the reproducer for this problem sometimes
-prevents usb_rx_callback_intf0() from being called),
-wait_for_completion_interruptible() in send_packet() never returns (i.e.
-hung task). As a workaround for such situation, change send_packet() to
-wait for completion with timeout of 10 seconds.
-
-Link: https://syzkaller.appspot.com/bug?extid=592e2ab8775dbe0bf09a [1]
-Link: https://lkml.kernel.org/r/d6da6709-d799-4be3-a695-850bddd6eb24@rowland.harvard.edu [2]
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
+Link: https://lore.kernel.org/r/20250616-rk3588-csi-dphy-v4-4-a4f340a7f0cf@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/imon.c | 61 +++++++++++++++++++++++++----------------
- 1 file changed, 37 insertions(+), 24 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-inno-csidphy.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/rc/imon.c b/drivers/media/rc/imon.c
-index 1e7f800701331..ddb1304cb77b8 100644
---- a/drivers/media/rc/imon.c
-+++ b/drivers/media/rc/imon.c
-@@ -650,12 +650,15 @@ static int send_packet(struct imon_context *ictx)
- 		smp_rmb(); /* ensure later readers know we're not busy */
- 		pr_err_ratelimited("error submitting urb(%d)\n", retval);
- 	} else {
--		/* Wait for transmission to complete (or abort) */
--		retval = wait_for_completion_interruptible(
--				&ictx->tx.finished);
--		if (retval) {
-+		/* Wait for transmission to complete (or abort or timeout) */
-+		retval = wait_for_completion_interruptible_timeout(&ictx->tx.finished, 10 * HZ);
-+		if (retval <= 0) {
- 			usb_kill_urb(ictx->tx_urb);
- 			pr_err_ratelimited("task interrupted\n");
-+			if (retval < 0)
-+				ictx->tx.status = retval;
-+			else
-+				ictx->tx.status = -ETIMEDOUT;
- 		}
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
+index 2ab99e1d47ebe..75533d0710250 100644
+--- a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
+@@ -87,10 +87,11 @@ struct dphy_reg {
+ 	u32 offset;
+ 	u32 mask;
+ 	u32 shift;
++	u8 valid;
+ };
  
- 		ictx->tx.busy = false;
-@@ -1754,14 +1757,6 @@ static void usb_rx_callback_intf0(struct urb *urb)
- 	if (!ictx)
- 		return;
+ #define PHY_REG(_offset, _width, _shift) \
+-	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, }
++	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, .valid = 1, }
  
--	/*
--	 * if we get a callback before we're done configuring the hardware, we
--	 * can't yet process the data, as there's nowhere to send it, but we
--	 * still need to submit a new rx URB to avoid wedging the hardware
--	 */
--	if (!ictx->dev_present_intf0)
--		goto out;
--
- 	switch (urb->status) {
- 	case -ENOENT:		/* usbcore unlink successful! */
- 		return;
-@@ -1770,16 +1765,29 @@ static void usb_rx_callback_intf0(struct urb *urb)
- 		break;
+ static const struct dphy_reg rk1808_grf_dphy_regs[] = {
+ 	[GRF_DPHY_CSIPHY_FORCERXMODE] = PHY_REG(RK1808_GRF_PD_VI_CON_OFFSET, 4, 0),
+@@ -145,7 +146,7 @@ static inline void write_grf_reg(struct rockchip_inno_csidphy *priv,
+ 	const struct dphy_drv_data *drv_data = priv->drv_data;
+ 	const struct dphy_reg *reg = &drv_data->grf_regs[index];
  
- 	case 0:
--		imon_incoming_packet(ictx, urb, intfnum);
-+		/*
-+		 * if we get a callback before we're done configuring the hardware, we
-+		 * can't yet process the data, as there's nowhere to send it, but we
-+		 * still need to submit a new rx URB to avoid wedging the hardware
-+		 */
-+		if (ictx->dev_present_intf0)
-+			imon_incoming_packet(ictx, urb, intfnum);
- 		break;
- 
-+	case -ECONNRESET:
-+	case -EILSEQ:
-+	case -EPROTO:
-+	case -EPIPE:
-+		dev_warn(ictx->dev, "imon %s: status(%d)\n",
-+			 __func__, urb->status);
-+		return;
-+
- 	default:
- 		dev_warn(ictx->dev, "imon %s: status(%d): ignored\n",
- 			 __func__, urb->status);
- 		break;
- 	}
- 
--out:
- 	usb_submit_urb(ictx->rx_urb_intf0, GFP_ATOMIC);
+-	if (reg->offset)
++	if (reg->valid)
+ 		regmap_write(priv->grf, reg->offset,
+ 			     HIWORD_UPDATE(value, reg->mask, reg->shift));
  }
- 
-@@ -1795,14 +1803,6 @@ static void usb_rx_callback_intf1(struct urb *urb)
- 	if (!ictx)
- 		return;
- 
--	/*
--	 * if we get a callback before we're done configuring the hardware, we
--	 * can't yet process the data, as there's nowhere to send it, but we
--	 * still need to submit a new rx URB to avoid wedging the hardware
--	 */
--	if (!ictx->dev_present_intf1)
--		goto out;
--
- 	switch (urb->status) {
- 	case -ENOENT:		/* usbcore unlink successful! */
- 		return;
-@@ -1811,16 +1811,29 @@ static void usb_rx_callback_intf1(struct urb *urb)
- 		break;
- 
- 	case 0:
--		imon_incoming_packet(ictx, urb, intfnum);
-+		/*
-+		 * if we get a callback before we're done configuring the hardware, we
-+		 * can't yet process the data, as there's nowhere to send it, but we
-+		 * still need to submit a new rx URB to avoid wedging the hardware
-+		 */
-+		if (ictx->dev_present_intf1)
-+			imon_incoming_packet(ictx, urb, intfnum);
- 		break;
- 
-+	case -ECONNRESET:
-+	case -EILSEQ:
-+	case -EPROTO:
-+	case -EPIPE:
-+		dev_warn(ictx->dev, "imon %s: status(%d)\n",
-+			 __func__, urb->status);
-+		return;
-+
- 	default:
- 		dev_warn(ictx->dev, "imon %s: status(%d): ignored\n",
- 			 __func__, urb->status);
- 		break;
- 	}
- 
--out:
- 	usb_submit_urb(ictx->rx_urb_intf1, GFP_ATOMIC);
- }
- 
 -- 
 2.51.0
 
