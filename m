@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10E0C4A340
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F8FC4A34F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3266D3AF4B6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDBAE3AF536
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65881263F4A;
-	Tue, 11 Nov 2025 01:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0DB246768;
+	Tue, 11 Nov 2025 01:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7NmB68a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmjJwLvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2142125A334;
-	Tue, 11 Nov 2025 01:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BB8248F6A;
+	Tue, 11 Nov 2025 01:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823059; cv=none; b=c9Lmp3kpGb2kcLXmStXrzv4PAOXu/vV7OGAbWr+zRvozLaZYWCXIkp/+PjgdgaWs4nyAgE92xNn7aLNuEpVjhg3VfsPFTxyKCHoCfcCS439GkZVY8X4oeXb4bO9ZMLAWzJpV36ki+YVifFgUAUWOq5ogrl1Ukw9EUENwd5n+5JE=
+	t=1762823071; cv=none; b=EdBT6Kb0lw7xGpxanyaZnnk2OJvoTJ114gYAqcVSv4W7MBj9jWdlznwV31s6stshbCcq662GR5moEUsycjZmLN/AJ2/Ywb1g+2DhQgqnSC8yqS7pKE9Y9nH3xWM6yCjnuCrVq9VjuD/wOyMJwu5HtLQ1RVKPcBFvwxAYF7p0Cqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823059; c=relaxed/simple;
-	bh=gtiCdxf1o8XwrFQGpkEjE6Mvqf13C7c1WLcGNCBqhTI=;
+	s=arc-20240116; t=1762823071; c=relaxed/simple;
+	bh=HOcXWopndfJpQap5verJu69ovCf7uEh9Lk1gZVJuXno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lrjdeBnEZqj+JkMTn04A0KCsf6gBJEgn+Uzo6joFjGZvNhaZdNPA3HxVcfebRtyFY1UEYsoq2EuSc3prnVN0ZNvM2c7XX2oneKb253FstSDXDZKpeLIaen7wz1yMrkJJ7eRvtfWVLiO5YDZi6ewE7d4p6xljpIUX5McuytW5sfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7NmB68a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3844C113D0;
-	Tue, 11 Nov 2025 01:04:18 +0000 (UTC)
+	 MIME-Version; b=OpIBMlAapmt+xkLvNphO6ImfoKhbuWCznWtq3m91j/mwDktTA62J6Y2CbmyWVQ7nogB90dX+QOofZdAbi5Sk99sP9tLKuvKzqppBbs8HV+LcoFEw5caQx4TzBk+CDhqx0aXlGVwE1FfSg/NcK8UcEoztbm4iUNQyLBBywKeEBhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmjJwLvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE8AC16AAE;
+	Tue, 11 Nov 2025 01:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823059;
-	bh=gtiCdxf1o8XwrFQGpkEjE6Mvqf13C7c1WLcGNCBqhTI=;
+	s=korg; t=1762823070;
+	bh=HOcXWopndfJpQap5verJu69ovCf7uEh9Lk1gZVJuXno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7NmB68aIaRCdlwqk6vuyB2rNHR8WgRM/0IilgI3x3UlPlpU9HihDs53WV66hm8A3
-	 uUA2sjQPYeG3u4H3bm53DAraasStf6NStooBy3dQvF4uqEDDeSSp2zHiSVBO7R+iHF
-	 sySryh3evJ4AFr7eIMd1ngVaqELTaZ7dUzYg0BXU=
+	b=UmjJwLvYLXbMjx2o/1kGMo7T3cY5/a0RckBGTCbbuLe1rIswzzFgBv2ArpzciU6+t
+	 kpywOb1cnNQzrCd3gdxT9gzHXoQ5wk06NmpseH6bmZGq7ijcZwJnaqqFpKvsuIttv6
+	 rvgTaAYrwwiZI5zvsnaym78ZSo8zBopW0TPZku3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Janne Grunau <j@jannau.net>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 223/849] mfd: madera: Work around false-positive -Wininitialized warning
-Date: Tue, 11 Nov 2025 09:36:33 +0900
-Message-ID: <20251111004541.836059428@linuxfoundation.org>
+Subject: [PATCH 6.17 225/849] mfd: macsmc: Add "apple,t8103-smc" compatible
+Date: Tue, 11 Nov 2025 09:36:35 +0900
+Message-ID: <20251111004541.883755040@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,59 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Janne Grunau <j@jannau.net>
 
-[ Upstream commit 364752aa0c6ab0a06a2d5bfdb362c1ca407f1a30 ]
+[ Upstream commit 9b959e525fa7e8518e57554b6e17849942938dfc ]
 
-clang-21 warns about one uninitialized variable getting dereferenced
-in madera_dev_init:
+After discussion with the devicetree maintainers we agreed to not extend
+lists with the generic compatible "apple,smc" anymore [1]. Use
+"apple,t8103-smc" as base compatible as it is the SoC the driver and
+bindings were written for.
 
-drivers/mfd/madera-core.c:739:10: error: variable 'mfd_devs' is uninitialized when used here [-Werror,-Wuninitialized]
-  739 |                               mfd_devs, n_devs,
-      |                               ^~~~~~~~
-drivers/mfd/madera-core.c:459:33: note: initialize the variable 'mfd_devs' to silence this warning
-  459 |         const struct mfd_cell *mfd_devs;
-      |                                        ^
-      |                                         = NULL
+[1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@kernel.org/
 
-The code is actually correct here because n_devs is only nonzero
-when mfd_devs is a valid pointer, but this is impossible for the
-compiler to see reliably.
-
-Change the logic to check for the pointer as well, to make this easier
-for the compiler to follow.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20250807071932.4085458-1-arnd@kernel.org
+Signed-off-by: Janne Grunau <j@jannau.net>
+Link: https://lore.kernel.org/r/20250828-dt-apple-t6020-v1-18-507ba4c4b98e@jannau.net
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/madera-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mfd/macsmc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/madera-core.c b/drivers/mfd/madera-core.c
-index bdbd5bfc97145..2f74a8c644a32 100644
---- a/drivers/mfd/madera-core.c
-+++ b/drivers/mfd/madera-core.c
-@@ -456,7 +456,7 @@ int madera_dev_init(struct madera *madera)
- 	struct device *dev = madera->dev;
- 	unsigned int hwid;
- 	int (*patch_fn)(struct madera *) = NULL;
--	const struct mfd_cell *mfd_devs;
-+	const struct mfd_cell *mfd_devs = NULL;
- 	int n_devs = 0;
- 	int i, ret;
+diff --git a/drivers/mfd/macsmc.c b/drivers/mfd/macsmc.c
+index 870c8b2028a8f..a5e0b99484830 100644
+--- a/drivers/mfd/macsmc.c
++++ b/drivers/mfd/macsmc.c
+@@ -478,6 +478,7 @@ static int apple_smc_probe(struct platform_device *pdev)
+ }
  
-@@ -670,7 +670,7 @@ int madera_dev_init(struct madera *madera)
- 		goto err_reset;
- 	}
- 
--	if (!n_devs) {
-+	if (!n_devs || !mfd_devs) {
- 		dev_err(madera->dev, "Device ID 0x%x not a %s\n", hwid,
- 			madera->type_name);
- 		ret = -ENODEV;
+ static const struct of_device_id apple_smc_of_match[] = {
++	{ .compatible = "apple,t8103-smc" },
+ 	{ .compatible = "apple,smc" },
+ 	{},
+ };
 -- 
 2.51.0
 
