@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6FBC4A746
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A57CC4AB38
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4A408349A96
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:27:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 219891894F1F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA28430C60B;
-	Tue, 11 Nov 2025 01:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BC930E0FB;
+	Tue, 11 Nov 2025 01:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWiJDtDT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7lYQKZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F3B25A64C;
-	Tue, 11 Nov 2025 01:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B91308F1D;
+	Tue, 11 Nov 2025 01:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823901; cv=none; b=mL0Nct8Y6phFPVjW8qO8a7lZAmhe+pOqExPf+h4+LiYyZciNg0zQ+8unNjfYVbxF2eoNqGiFILrUv1c6tZwfs/3FYqU00oUc5GICGxlfqhsvVJ7MHpaC0lHxHf2g+Xb/lh3YihFuiGRcHHBMNkcQlEuIS566EQ1yPM8JKQJtFCg=
+	t=1762823906; cv=none; b=owyERSmKr+uouUGak3wKkBqfN0ka+PsGEoEJllsk9GBi9LCHoXBWRO5O0z4UT0TpGf1TDcC1U2X7sErul0MvXGclaJjQyVfp52AJhXjRV8c13rUu2poHm0amcf8fDWLcfXrbvQeqkJ2ossUasn8FWCW/yDrxAy9Ug8z4MehLlAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823901; c=relaxed/simple;
-	bh=YtmJ5HRAXavhIhK9F9N/IhLbSxjaYymmvGhjzj0AlR0=;
+	s=arc-20240116; t=1762823906; c=relaxed/simple;
+	bh=YN3V0aLWeUh19GMjw11WilCo4iXvO9Hk3X2+sQHGNNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tX+cmsB7DZDoaUAjLO/Cwg48BG2XA2k22E5gTC3794+idWENN1tUwCGannvPY2D0wEps3PP4tJT85iyLMBM8PxYqlAvari8diNl4JTmhRX1PNEF6mYkjPWKfJTn371wttZRbNpoQVsJqgKlID8wapyoNcGOuQbq1eNShJbI48zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWiJDtDT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478C5C16AAE;
-	Tue, 11 Nov 2025 01:18:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IfwhVd+SEVxzCh+Rk6EQCMKINRKG4A7l5fl32npGy1aKqc0GrUB4TA9bPjtiIcaBR5ileo3DwotHrAziMtXbbhY92UScnEGHkC9bOCqdkOUS/CRC+2lMYivhgnoWJCL0SNTZVqdsnL2tUp/vre42W9Mn/3tmsWBN3KNCHnW2CWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7lYQKZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04EAC19422;
+	Tue, 11 Nov 2025 01:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823901;
-	bh=YtmJ5HRAXavhIhK9F9N/IhLbSxjaYymmvGhjzj0AlR0=;
+	s=korg; t=1762823906;
+	bh=YN3V0aLWeUh19GMjw11WilCo4iXvO9Hk3X2+sQHGNNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWiJDtDTucL1CkHP1sETL9vAc6h7mdwiicZr/jae8poQBvWbZQfvhsb+t2tSkQNjG
-	 haRuAz6RjmGpqE7rRmdKAWjFf9AuSTmk3EWWOKJGoZ//s8B0t/1Z1bc54JMjG+kiqS
-	 MIixvWLncvoJ8aBjgluNJVn8CitkDdBUVGvGu5jg=
+	b=A7lYQKZ1+ZdObQysIkqr+gHsBDze5Z3Wq9vYin3fGOhejnmtRTCDoRjYF4IkfFCJF
+	 +SGc77t3Z2T59xN80NaR34H+1zvUrOclEsO5CSzPbKujTKSq3NZQQhQDLctMB7wrBo
+	 EuN/NDsw+40vmHqoluNkHPz6R7CmVbZdxi2482MQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mangesh Gadre <Mangesh.Gadre@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 394/849] drm/amdgpu: Avoid vcn v5.0.1 poison irq call trace on sriov guest
-Date: Tue, 11 Nov 2025 09:39:24 +0900
-Message-ID: <20251111004545.962181133@linuxfoundation.org>
+Subject: [PATCH 6.17 395/849] drm/amdgpu: Respect max pixel clock for HDMI and DVI-D (v2)
+Date: Tue, 11 Nov 2025 09:39:25 +0900
+Message-ID: <20251111004545.985890565@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -61,40 +60,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mangesh Gadre <Mangesh.Gadre@amd.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 37551277dfed796b6749e4fa52bdb62403cfdb42 ]
+[ Upstream commit 585b2f685c56c5095cc22c7202bf74d8e9a73cdd ]
 
-Sriov guest side doesn't init ras feature hence the poison irq shouldn't
-be put during hw fini
+Update the legacy (non-DC) display code to respect the maximum
+pixel clock for HDMI and DVI-D. Reject modes that would require
+a higher pixel clock than can be supported.
 
-Signed-off-by: Mangesh Gadre <Mangesh.Gadre@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Also update the maximum supported HDMI clock value depending on
+the ASIC type.
+
+For reference, see the DC code:
+check max_hdmi_pixel_clock in dce*_resource.c
+
+v2:
+Fix maximum clocks for DVI-D and DVI/HDMI adapters.
+
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../gpu/drm/amd/amdgpu/amdgpu_connectors.c    | 57 ++++++++++++++-----
+ 1 file changed, 44 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-index cb560d64da08c..8ef4a8b2fae99 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-@@ -284,7 +284,7 @@ static int vcn_v5_0_1_hw_fini(struct amdgpu_ip_block *ip_block)
- 			vinst->set_pg_state(vinst, AMD_PG_STATE_GATE);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
+index 5e375e9c4f5de..a381de8648e54 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
+@@ -1195,29 +1195,60 @@ static void amdgpu_connector_dvi_force(struct drm_connector *connector)
+ 		amdgpu_connector->use_digital = true;
+ }
+ 
++/**
++ * Returns the maximum supported HDMI (TMDS) pixel clock in KHz.
++ */
++static int amdgpu_max_hdmi_pixel_clock(const struct amdgpu_device *adev)
++{
++	if (adev->asic_type >= CHIP_POLARIS10)
++		return 600000;
++	else if (adev->asic_type >= CHIP_TONGA)
++		return 300000;
++	else
++		return 297000;
++}
++
++/**
++ * Validates the given display mode on DVI and HDMI connectors,
++ * including analog signals on DVI-I.
++ */
+ static enum drm_mode_status amdgpu_connector_dvi_mode_valid(struct drm_connector *connector,
+ 					    const struct drm_display_mode *mode)
+ {
+ 	struct drm_device *dev = connector->dev;
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+ 	struct amdgpu_connector *amdgpu_connector = to_amdgpu_connector(connector);
++	const int max_hdmi_pixel_clock = amdgpu_max_hdmi_pixel_clock(adev);
++	const int max_dvi_single_link_pixel_clock = 165000;
++	int max_digital_pixel_clock_khz;
+ 
+ 	/* XXX check mode bandwidth */
+ 
+-	if (amdgpu_connector->use_digital && (mode->clock > 165000)) {
+-		if ((amdgpu_connector->connector_object_id == CONNECTOR_OBJECT_ID_DUAL_LINK_DVI_I) ||
+-		    (amdgpu_connector->connector_object_id == CONNECTOR_OBJECT_ID_DUAL_LINK_DVI_D) ||
+-		    (amdgpu_connector->connector_object_id == CONNECTOR_OBJECT_ID_HDMI_TYPE_B)) {
+-			return MODE_OK;
+-		} else if (connector->display_info.is_hdmi) {
+-			/* HDMI 1.3+ supports max clock of 340 Mhz */
+-			if (mode->clock > 340000)
+-				return MODE_CLOCK_HIGH;
+-			else
+-				return MODE_OK;
+-		} else {
+-			return MODE_CLOCK_HIGH;
++	if (amdgpu_connector->use_digital) {
++		switch (amdgpu_connector->connector_object_id) {
++		case CONNECTOR_OBJECT_ID_HDMI_TYPE_A:
++			max_digital_pixel_clock_khz = max_hdmi_pixel_clock;
++			break;
++		case CONNECTOR_OBJECT_ID_SINGLE_LINK_DVI_I:
++		case CONNECTOR_OBJECT_ID_SINGLE_LINK_DVI_D:
++			max_digital_pixel_clock_khz = max_dvi_single_link_pixel_clock;
++			break;
++		case CONNECTOR_OBJECT_ID_DUAL_LINK_DVI_I:
++		case CONNECTOR_OBJECT_ID_DUAL_LINK_DVI_D:
++		case CONNECTOR_OBJECT_ID_HDMI_TYPE_B:
++			max_digital_pixel_clock_khz = max_dvi_single_link_pixel_clock * 2;
++			break;
+ 		}
++
++		/* When the display EDID claims that it's an HDMI display,
++		 * we use the HDMI encoder mode of the display HW,
++		 * so we should verify against the max HDMI clock here.
++		 */
++		if (connector->display_info.is_hdmi)
++			max_digital_pixel_clock_khz = max_hdmi_pixel_clock;
++
++		if (mode->clock > max_digital_pixel_clock_khz)
++			return MODE_CLOCK_HIGH;
  	}
  
--	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__VCN))
-+	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__VCN) && !amdgpu_sriov_vf(adev))
- 		amdgpu_irq_put(adev, &adev->vcn.inst->ras_poison_irq, 0);
- 
- 	return 0;
+ 	/* check against the max pixel clock */
 -- 
 2.51.0
 
