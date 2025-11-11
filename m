@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-193066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1080C49EF6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35C8C49EFF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A8E2188A2A1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A79D188A383
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C17324BBEB;
-	Tue, 11 Nov 2025 00:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEF124EA90;
+	Tue, 11 Nov 2025 00:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiMBAOyF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYlG+GGS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007CC12DDA1;
-	Tue, 11 Nov 2025 00:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B89E2AE8D;
+	Tue, 11 Nov 2025 00:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822220; cv=none; b=VXTzCVIrsbVltl9GVAdDFJBT8Sx/vtYQpiyshw0UUGcCyq9fbSB45hcWCldIyDU+uDMoO2OMyAAo8Yd3Kauxkbe6YY2ngA6kRuBQafAAcg4AOOw9m38gxrosQKJbVD1FoFgWbOnL5/qcLqC897CS+mCRrp8j2Yu3tuJOQiOtMXs=
+	t=1762822224; cv=none; b=sZqZl6q4t7naA4qMJx5S29LRv6KvLPpUOMfsXpzgo0Vhl5SAiGFBGjKIYbMNG/uz1AoRl7hc8A9T19R582t9vrw3J+CLu5NFVMsnCKfFDl1oZpAtMZAZorU1I6vz6UhEl/nSUTHQ359enqX3BFK/tVZBox2SyvQqvdOfKLdZ+s4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822220; c=relaxed/simple;
-	bh=tbaWQ/rWTlYv70a9h6PxsnblML2lOmNLLp5ZnCu0ssA=;
+	s=arc-20240116; t=1762822224; c=relaxed/simple;
+	bh=SG6532gCO7hawQ2BgbHHYJB193iv2g3sOsl7WY1WB0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gUsW0ZDUNoboX3kAfxIUMvX3ca74ypi4fPjdSv4Z7giKOlArB8/tvZBJ4ZP6ODJiPNWSJRseRHfgeSneGJ9pgjUeClPjwsT5XEzaIYyqI1vqja0rKSv6VqaaT8z3ZdT2fB4FxNsZaXaLa89wNcsF8WOhS9nhHbVW8dtSq3IMPj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiMBAOyF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B30C19421;
-	Tue, 11 Nov 2025 00:50:19 +0000 (UTC)
+	 MIME-Version; b=C8N5UkAWdOMvj8ylvJgbujWGwq3beWUEBZEs93qRPt99zfKFQkdAUNxx/KDADZJwf4CQ0fxwceutrHSMqavedniA2+FYqop9BUMrGsiX5HTTg0SVCDcSTH7DXj0SiEX+cz1jQz0gF0NyRVpfD+H4xcRSbty3DaJ88lIKBL54aHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYlG+GGS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2956AC16AAE;
+	Tue, 11 Nov 2025 00:50:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822219;
-	bh=tbaWQ/rWTlYv70a9h6PxsnblML2lOmNLLp5ZnCu0ssA=;
+	s=korg; t=1762822224;
+	bh=SG6532gCO7hawQ2BgbHHYJB193iv2g3sOsl7WY1WB0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LiMBAOyF8wZIyplDhSlINy7Xzz5Pn1hRKnyHMIY8C9RsdQcD4yy6tpAhH2spDmfSd
-	 yopbtkEf2FRbIW0UtsokImUiEF1fypagSEQMZO9xbfHz+EC4YMOaA8zRpe3J/diXYC
-	 cqsh0dOBBuSfTlu5176wkdQKqabPp3fzPMVNqw8A=
+	b=YYlG+GGSZu1JSUviFqB9+tR26GnK8wpcWY85qd5eQjaaFLMIh8Ar+2D5QveL73l5v
+	 fG5CxBISzA65CtaZ6Mw7XDoS3XFnu4idLAnygRsjGDXzMqoEhk4Jl7OKREI8ER91vh
+	 itFzhcEI0P1ca1MHrPxca07GIRMM2LnZp6kvzho4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Pauli Virtanen <pav@iki.fi>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 060/849] Bluetooth: HCI: Fix tracking of advertisement set/instance 0x00
-Date: Tue, 11 Nov 2025 09:33:50 +0900
-Message-ID: <20251111004537.885093479@linuxfoundation.org>
+Subject: [PATCH 6.17 061/849] Bluetooth: MGMT: fix crash in set_mesh_sync and set_mesh_complete
+Date: Tue, 11 Nov 2025 09:33:51 +0900
+Message-ID: <20251111004537.908463619@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -65,76 +67,112 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 0d92808024b4e9868cef68d16f121d509843e80e ]
+[ Upstream commit e8785404de06a69d89dcdd1e9a0b6ea42dc6d327 ]
 
-This fixes the state tracking of advertisement set/instance 0x00 which
-is considered a legacy instance and is not tracked individually by
-adv_instances list, previously it was assumed that hci_dev itself would
-track it via HCI_LE_ADV but that is a global state not specifc to
-instance 0x00, so to fix it a new flag is introduced that only tracks the
-state of instance 0x00.
+There is a BUG: KASAN: stack-out-of-bounds in set_mesh_sync due to
+memcpy from badly declared on-stack flexible array.
 
-Fixes: 1488af7b8b5f ("Bluetooth: hci_sync: Fix hci_resume_advertising_sync")
+Another crash is in set_mesh_complete() due to double list_del via
+mgmt_pending_valid + mgmt_pending_remove.
+
+Use DEFINE_FLEX to declare the flexible array right, and don't memcpy
+outside bounds.
+
+As mgmt_pending_valid removes the cmd from list, use mgmt_pending_free,
+and also report status on error.
+
+Fixes: 302a1f674c00d ("Bluetooth: MGMT: Fix possible UAFs")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci.h | 1 +
- net/bluetooth/hci_event.c   | 4 ++++
- net/bluetooth/hci_sync.c    | 5 ++---
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ include/net/bluetooth/mgmt.h |  2 +-
+ net/bluetooth/mgmt.c         | 26 +++++++++++++++-----------
+ 2 files changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index df1847b74e55e..dca650cede3c4 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -434,6 +434,7 @@ enum {
- 	HCI_USER_CHANNEL,
- 	HCI_EXT_CONFIGURED,
- 	HCI_LE_ADV,
-+	HCI_LE_ADV_0,
- 	HCI_LE_PER_ADV,
- 	HCI_LE_SCAN,
- 	HCI_SSP_ENABLED,
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index fe49e8a7969ff..e1b7eabe72744 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -1609,6 +1609,8 @@ static u8 hci_cc_le_set_ext_adv_enable(struct hci_dev *hdev, void *data,
+diff --git a/include/net/bluetooth/mgmt.h b/include/net/bluetooth/mgmt.h
+index 3575cd16049a8..6095cbb03811d 100644
+--- a/include/net/bluetooth/mgmt.h
++++ b/include/net/bluetooth/mgmt.h
+@@ -848,7 +848,7 @@ struct mgmt_cp_set_mesh {
+ 	__le16 window;
+ 	__le16 period;
+ 	__u8   num_ad_types;
+-	__u8   ad_types[];
++	__u8   ad_types[] __counted_by(num_ad_types);
+ } __packed;
+ #define MGMT_SET_MESH_RECEIVER_SIZE	6
  
- 		if (adv && !adv->periodic)
- 			adv->enabled = true;
-+		else if (!set->handle)
-+			hci_dev_set_flag(hdev, HCI_LE_ADV_0);
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index a3d16eece0d23..24e335e3a7271 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2175,19 +2175,24 @@ static void set_mesh_complete(struct hci_dev *hdev, void *data, int err)
+ 	sk = cmd->sk;
  
- 		conn = hci_lookup_le_connect(hdev);
- 		if (conn)
-@@ -1619,6 +1621,8 @@ static u8 hci_cc_le_set_ext_adv_enable(struct hci_dev *hdev, void *data,
- 		if (cp->num_of_sets) {
- 			if (adv)
- 				adv->enabled = false;
-+			else if (!set->handle)
-+				hci_dev_clear_flag(hdev, HCI_LE_ADV_0);
+ 	if (status) {
++		mgmt_cmd_status(cmd->sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
++				status);
+ 		mgmt_pending_foreach(MGMT_OP_SET_MESH_RECEIVER, hdev, true,
+ 				     cmd_status_rsp, &status);
+-		return;
++		goto done;
+ 	}
  
- 			/* If just one instance was disabled check if there are
- 			 * any other instance enabled before clearing HCI_LE_ADV
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index d160e5e1fe8ab..28ad08cd7d706 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -2606,9 +2606,8 @@ static int hci_resume_advertising_sync(struct hci_dev *hdev)
- 		/* If current advertising instance is set to instance 0x00
- 		 * then we need to re-enable it.
- 		 */
--		if (!hdev->cur_adv_instance)
--			err = hci_enable_ext_advertising_sync(hdev,
--							      hdev->cur_adv_instance);
-+		if (hci_dev_test_and_clear_flag(hdev, HCI_LE_ADV_0))
-+			err = hci_enable_ext_advertising_sync(hdev, 0x00);
- 	} else {
- 		/* Schedule for most recent instance to be restarted and begin
- 		 * the software rotation loop
+-	mgmt_pending_remove(cmd);
+ 	mgmt_cmd_complete(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER, 0, NULL, 0);
++
++done:
++	mgmt_pending_free(cmd);
+ }
+ 
+ static int set_mesh_sync(struct hci_dev *hdev, void *data)
+ {
+ 	struct mgmt_pending_cmd *cmd = data;
+-	struct mgmt_cp_set_mesh cp;
++	DEFINE_FLEX(struct mgmt_cp_set_mesh, cp, ad_types, num_ad_types,
++		    sizeof(hdev->mesh_ad_types));
+ 	size_t len;
+ 
+ 	mutex_lock(&hdev->mgmt_pending_lock);
+@@ -2197,27 +2202,26 @@ static int set_mesh_sync(struct hci_dev *hdev, void *data)
+ 		return -ECANCELED;
+ 	}
+ 
+-	memcpy(&cp, cmd->param, sizeof(cp));
++	len = cmd->param_len;
++	memcpy(cp, cmd->param, min(__struct_size(cp), len));
+ 
+ 	mutex_unlock(&hdev->mgmt_pending_lock);
+ 
+-	len = cmd->param_len;
+-
+ 	memset(hdev->mesh_ad_types, 0, sizeof(hdev->mesh_ad_types));
+ 
+-	if (cp.enable)
++	if (cp->enable)
+ 		hci_dev_set_flag(hdev, HCI_MESH);
+ 	else
+ 		hci_dev_clear_flag(hdev, HCI_MESH);
+ 
+-	hdev->le_scan_interval = __le16_to_cpu(cp.period);
+-	hdev->le_scan_window = __le16_to_cpu(cp.window);
++	hdev->le_scan_interval = __le16_to_cpu(cp->period);
++	hdev->le_scan_window = __le16_to_cpu(cp->window);
+ 
+-	len -= sizeof(cp);
++	len -= sizeof(struct mgmt_cp_set_mesh);
+ 
+ 	/* If filters don't fit, forward all adv pkts */
+ 	if (len <= sizeof(hdev->mesh_ad_types))
+-		memcpy(hdev->mesh_ad_types, cp.ad_types, len);
++		memcpy(hdev->mesh_ad_types, cp->ad_types, len);
+ 
+ 	hci_update_passive_scan_sync(hdev);
+ 	return 0;
 -- 
 2.51.0
 
