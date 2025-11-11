@@ -1,57 +1,81 @@
-Return-Path: <stable+bounces-194333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D479C4B1CF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:00 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17DF1C4AA72
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DA583B8118
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8B04034C963
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659C52E0924;
-	Tue, 11 Nov 2025 01:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E46B30FC3D;
+	Tue, 11 Nov 2025 01:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHhNfX2h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZ/xyKD1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DEF1F874C;
-	Tue, 11 Nov 2025 01:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F61A944;
+	Tue, 11 Nov 2025 01:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825357; cv=none; b=d4jceFUdQy0OVk7TnNjerEv8YGZLmEbFlQ2XF5gx5D/aMMohzSE8tPtR81HeOdeBfPyS+PNCTU3oly6EMMr7D9PHvALd+Ncdp3GJUD1ZjksYwhpCE3lp3NpfYjZb+8ct9JTcoZbYeERLP5dxBmm46AZ0VgqA2Y9RpiQYrg/L4DY=
+	t=1762824631; cv=none; b=SkNj4S35J/yCPuJ+lF/VW6E41aT8W3/FFSXw5ZM+HWYjy7seBrVH3fJ3GSok397sexlLQ4WwEeKdD5CpvbicFhjaibwIN7OewUomxJyN1CzO6y/LIAXT4ZDPg5B2oOzsjeOHzhWtlxAH2Cen6UZKBL1cyQcguOrbVGI5qkUl8s8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825357; c=relaxed/simple;
-	bh=Q5WsC4IUE1iUCfYFTYW9ZsyLdJLAMAIG2ZS/hWcfXy0=;
+	s=arc-20240116; t=1762824631; c=relaxed/simple;
+	bh=/X43xbv2Qu5tyTaKOlui/HvzjjmqTz3vK5gwCmdipOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4UACQyQlIwOxRSGO6w0hvMH2SLGLreHQFIh7GfGwCu2sdg92ND+Re7QVril4n7r2bT10QbhSAOq/3WPTooY29m1UojP3CeOgUsjoC5Ipt/MMNtFLEV+gOybvILLz1atsAiws6nU/fSMJXfYIPVC/Q3aT1UNldjEKd8a9d+KQ7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHhNfX2h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4973C2BC87;
-	Tue, 11 Nov 2025 01:42:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Oa7n+Nvp6IEoCUagvZXz/ZadmonQpCR8Hp5NhDnGlc+O5YqhLZd/6eL7ulCIk6d2hR2FMBGy0a+lCDq5Q6nGfMGC5sLGOjjnS4lbK4dj8xVj3Zzrl5RY33ajr3qh8K4xYlYkMqF1J13yyk3z+xZrcTZuhxaVrn6yvB89BgGOkYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZ/xyKD1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07F0C4CEF5;
+	Tue, 11 Nov 2025 01:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825357;
-	bh=Q5WsC4IUE1iUCfYFTYW9ZsyLdJLAMAIG2ZS/hWcfXy0=;
+	s=korg; t=1762824631;
+	bh=/X43xbv2Qu5tyTaKOlui/HvzjjmqTz3vK5gwCmdipOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fHhNfX2hdplfuZJg9P5uUFwRij+LVxEspyQH7J3+CQ2Ut77Oloa7liy4NZifyJV1I
-	 N3fRCK4LSxktlQOnyi1diiQWluXMP+aBb1CngQ7JzIyg/LbhrDt7cQ7yJ1O0gZwPhy
-	 xLazTEag8R/rSViyo8sAOoszSMl/KTKYqzzMrlZc=
+	b=gZ/xyKD1aGFr4FIQkveOl8byc7wfYYa/eFQLL7ixXb1kk53nVviWlVDiN2XhGn/1p
+	 fJJccv73b0FFzJ0c020/XD6sKIok/plovu8m3loGDDkT2gzr3yVjexlSGk7Qy+xyxi
+	 /FBVFD1xHMOG76CJs0vrae5IbH+wacYvojFDL6HI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ian Rogers <irogers@google.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Darren Hart <dvhart@infradead.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Ingo Molnar <mingo@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Jonas Gottlieb <jonas.gottlieb@stackit.cloud>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Maurice Lambert <mauricelambert434@gmail.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Yuyang Huang <yuyanghuang@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 769/849] net: dsa: b53: fix resetting speed and pause on forced link
+Subject: [PATCH 6.12 483/565] tools bitmap: Add missing asm-generic/bitsperlong.h include
 Date: Tue, 11 Nov 2025 09:45:39 +0900
-Message-ID: <20251111004555.022570250@linuxfoundation.org>
+Message-ID: <20251111004537.790876231@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +85,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit b6a8a5477fe9bd6be2b594a88f82f8bba41e6d54 ]
+[ Upstream commit f38ce0209ab4553906b44bd1159e35c740a84161 ]
 
-There is no guarantee that the port state override registers have their
-default values, as not all switches support being reset via register or
-have a reset GPIO.
+small_const_nbits is defined in asm-generic/bitsperlong.h which
+bitmap.h uses but doesn't include causing build failures in some build
+systems. Add the missing #include.
 
-So when forcing port config, we need to make sure to clear all fields,
-which we currently do not do for the speed and flow control
-configuration. This can cause flow control stay enabled, or in the case
-of speed becoming an illegal value, e.g. configured for 1G (0x2), then
-setting 100M (0x1), results in 0x3 which is invalid.
+Note the bitmap.h in tools has diverged from that of the kernel, so no
+changes are made there.
 
-For PORT_OVERRIDE_SPEED_2000M we need to make sure to only clear it on
-supported chips, as the bit can have different meanings on other chips,
-e.g. for BCM5389 this controls scanning PHYs for link/speed
-configuration.
-
-Fixes: 5e004460f874 ("net: dsa: b53: Add helper to set link parameters")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251101132807.50419-2-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Yury Norov <yury.norov@gmail.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: André Almeida <andrealmeid@igalia.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Darren Hart <dvhart@infradead.org>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Jason Xing <kerneljasonxing@gmail.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Jonas Gottlieb <jonas.gottlieb@stackit.cloud>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Maurice Lambert <mauricelambert434@gmail.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Petr Machata <petrm@nvidia.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Yuyang Huang <yuyanghuang@google.com>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/include/linux/bitmap.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 2f846381d5a76..cb28256ef3cc3 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1372,6 +1372,10 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 	else
- 		reg &= ~PORT_OVERRIDE_FULL_DUPLEX;
+diff --git a/tools/include/linux/bitmap.h b/tools/include/linux/bitmap.h
+index 2a7f260ef9dc5..7081f4a8d634b 100644
+--- a/tools/include/linux/bitmap.h
++++ b/tools/include/linux/bitmap.h
+@@ -3,6 +3,7 @@
+ #define _TOOLS_LINUX_BITMAP_H
  
-+	reg &= ~(0x3 << GMII_PO_SPEED_S);
-+	if (is5301x(dev) || is58xx(dev))
-+		reg &= ~PORT_OVERRIDE_SPEED_2000M;
-+
- 	switch (speed) {
- 	case 2000:
- 		reg |= PORT_OVERRIDE_SPEED_2000M;
-@@ -1390,6 +1394,11 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 		return;
- 	}
- 
-+	if (is5325(dev))
-+		reg &= ~PORT_OVERRIDE_LP_FLOW_25;
-+	else
-+		reg &= ~(PORT_OVERRIDE_RX_FLOW | PORT_OVERRIDE_TX_FLOW);
-+
- 	if (rx_pause) {
- 		if (is5325(dev))
- 			reg |= PORT_OVERRIDE_LP_FLOW_25;
+ #include <string.h>
++#include <asm-generic/bitsperlong.h>
+ #include <linux/align.h>
+ #include <linux/bitops.h>
+ #include <linux/find.h>
 -- 
 2.51.0
 
