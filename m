@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-193510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A869C4A608
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:55 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3997C4AC67
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 045D04F21DF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9BF6F4F8840
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1702632AAC6;
-	Tue, 11 Nov 2025 01:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C43A261B6E;
+	Tue, 11 Nov 2025 01:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/LnFE1E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRrTkMte"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F27328602;
-	Tue, 11 Nov 2025 01:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566DB27FD72;
+	Tue, 11 Nov 2025 01:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823352; cv=none; b=FgVzd8JTK/PtwLVgUko7cm2e6Vu5kO2NwlbJUANpuuVJwaM7BN8zlQKsNiaLHfRR1hCSsv5JhiJFBA6mQqY6XOp34qTjZ8BEB4YePe2QSNGO3uyofa2drl51IjOy/5Fw7L4DCjxB3VGdL8K2Gpkput1rzQZNOMz7jPSKC4lT/Tc=
+	t=1762824499; cv=none; b=AqLeV42K7AjApFyuly9r3TAYlxsPVp+5L5bLf4OLJzpANZoa+daEG4FofLGsxfYrrFWuy1Be0BHVkESN5oSoG9xve8DPq/Vvjgi4SOcnNKgI+MGpmkSICGkwpK/MkgwuNh2vYeSHi3f3nWF6dk6BCQ9ueP7BtDZNisQrhnrBBQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823352; c=relaxed/simple;
-	bh=kiZ3a6xPgXBhPRsl90CbqyANvpMT9HkqtNw+05FC2I8=;
+	s=arc-20240116; t=1762824499; c=relaxed/simple;
+	bh=/t0rQEmCOrBqhsF9zLFOZrC7OkqjHpKBAH0iw8qiHRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H+VdSG1Ln8JzbiooHHM+/gPgpTRD5WPGAZRdnfWmke8QXiSSPjpOmHYTfiZdfg9zgEFlY6JV2XIkYM9oT38LirJPlebmaBCJVRdOKnl9BqMSUCLTUSyNqWEYJnanaT4EwPtVNdTnQPOpq3qWwApNMIXhXRUozGJmSIiMWHDAKbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/LnFE1E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EE9C4CEFB;
-	Tue, 11 Nov 2025 01:09:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k8+TxhyjqP1zJ/MbO+qBpwaJTE12+ebPo1JPT8e3oq8J+A6W2urmIT0HKq7Dm21sG9JWgqdsGFcA6X/yrFY2XEzYKl6hahDCHSwmCSmB0QWuLKZfEquIndMqePgHO+mAcoO5Y8pCZxY17q7iTVQ6LwaTqCPGQlqgRBQcP04j6+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRrTkMte; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A79C116D0;
+	Tue, 11 Nov 2025 01:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823352;
-	bh=kiZ3a6xPgXBhPRsl90CbqyANvpMT9HkqtNw+05FC2I8=;
+	s=korg; t=1762824499;
+	bh=/t0rQEmCOrBqhsF9zLFOZrC7OkqjHpKBAH0iw8qiHRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/LnFE1EsQDXt3/Bpg/dZVhMkatgFj/zc33zY8OtCsMbqYHzvAk/cyq3l4c/OyUa4
-	 vf0/Q7w24+k9oSltWuGwRDgPPt2+6FM3/LzuTWV9kWTXzqzHfN1aRYAhlD0Ff7uyba
-	 cV9zdAHBUZHJhwRELgb01tyNnLHOyitCpJRNrMYw=
+	b=dRrTkMteILK+DRMgBlRm7+F8Ry+c8xZg5X+RqnQGqjvbVsi+QEzTZwI/2xvG2Jpc8
+	 g3QABm41gahAUwrVFLuiFZNAnH/EXb+UzPHLQEpxdZuDCJaE3ichxwTKpcx5LITyLb
+	 k5UM2ICKvJVrdSift7xe+86FN5oWWtIxYWePpZWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heng Zhou <Heng.Zhou@amd.com>,
-	"Kasiviswanathan, Harish" <Harish.Kasiviswanathan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Patil Rajesh Reddy <Patil.Reddy@amd.com>,
+	Yijun Shen <Yijun.Shen@Dell.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 225/565] drm/amdgpu: fix nullptr err of vm_handle_moved
-Date: Tue, 11 Nov 2025 09:41:21 +0900
-Message-ID: <20251111004531.980649410@linuxfoundation.org>
+Subject: [PATCH 6.17 512/849] platform/x86/amd/pmf: Fix the custom bios input handling mechanism
+Date: Tue, 11 Nov 2025 09:41:22 +0900
+Message-ID: <20251111004548.809078779@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,156 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heng Zhou <Heng.Zhou@amd.com>
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-[ Upstream commit 859958a7faefe5b7742b7b8cdbc170713d4bf158 ]
+[ Upstream commit d82e3d2dd0ba019ac6cdd81e47bf4c8ac895cfa0 ]
 
-If a amdgpu_bo_va is fpriv->prt_va, the bo of this one is always NULL.
-So, such kind of amdgpu_bo_va should be updated separately before
-amdgpu_vm_handle_moved.
+Originally, the 'amd_pmf_get_custom_bios_inputs()' function was written
+under the assumption that the BIOS would only send a single pending
+request for the driver to process. However, following OEM enablement, it
+became clear that multiple pending requests for custom BIOS inputs might
+be sent at the same time, a scenario that the current code logic does not
+support when it comes to handling multiple custom BIOS inputs.
 
-Signed-off-by: Heng Zhou <Heng.Zhou@amd.com>
-Reviewed-by: Kasiviswanathan, Harish <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+To address this, the code logic needs to be improved to not only manage
+multiple simultaneous custom BIOS inputs but also to ensure it is scalable
+for future additional inputs.
+
+Co-developed-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Tested-by: Yijun Shen <Yijun.Shen@Dell.com>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://patch.msgid.link/20250901110140.2519072-3-Shyam-sundar.S-k@amd.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmf/pmf.h | 15 +++++-----
+ drivers/platform/x86/amd/pmf/spc.c | 48 +++++++++++++++++++++++-------
+ 2 files changed, 44 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-index d349a4816e537..fff89288e2f4b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -3001,9 +3001,22 @@ int amdgpu_amdkfd_gpuvm_restore_process_bos(void *info, struct dma_fence __rcu *
- 		struct amdgpu_device *adev = amdgpu_ttm_adev(
- 			peer_vm->root.bo->tbo.bdev);
+diff --git a/drivers/platform/x86/amd/pmf/pmf.h b/drivers/platform/x86/amd/pmf/pmf.h
+index 45b60238d5277..df1b4a4f9586b 100644
+--- a/drivers/platform/x86/amd/pmf/pmf.h
++++ b/drivers/platform/x86/amd/pmf/pmf.h
+@@ -621,14 +621,14 @@ enum ta_slider {
+ 	TA_MAX,
+ };
  
-+		struct amdgpu_fpriv *fpriv =
-+			container_of(peer_vm, struct amdgpu_fpriv, vm);
-+
-+		ret = amdgpu_vm_bo_update(adev, fpriv->prt_va, false);
-+		if (ret) {
-+			dev_dbg(adev->dev,
-+				"Memory eviction: handle PRT moved failed, pid %8d. Try again.\n",
-+				pid_nr(process_info->pid));
-+			goto validate_map_fail;
-+		}
-+
- 		ret = amdgpu_vm_handle_moved(adev, peer_vm, &exec.ticket);
- 		if (ret) {
--			pr_debug("Memory eviction: handle moved failed. Try again\n");
-+			dev_dbg(adev->dev,
-+				"Memory eviction: handle moved failed, pid %8d. Try again.\n",
-+				pid_nr(process_info->pid));
- 			goto validate_map_fail;
- 		}
+-enum apmf_smartpc_custom_bios_inputs {
+-	APMF_SMARTPC_CUSTOM_BIOS_INPUT1,
+-	APMF_SMARTPC_CUSTOM_BIOS_INPUT2,
++struct amd_pmf_pb_bitmap {
++	const char *name;
++	u32 bit_mask;
+ };
+ 
+-enum apmf_preq_smartpc {
+-	NOTIFY_CUSTOM_BIOS_INPUT1 = 5,
+-	NOTIFY_CUSTOM_BIOS_INPUT2,
++static const struct amd_pmf_pb_bitmap custom_bios_inputs[] __used = {
++	{"NOTIFY_CUSTOM_BIOS_INPUT1",     BIT(5)},
++	{"NOTIFY_CUSTOM_BIOS_INPUT2",     BIT(6)},
+ };
+ 
+ enum platform_type {
+@@ -686,8 +686,7 @@ struct ta_pmf_condition_info {
+ 	u32 power_slider;
+ 	u32 lid_state;
+ 	bool user_present;
+-	u32 bios_input1;
+-	u32 bios_input2;
++	u32 bios_input_1[2];
+ 	u32 monitor_count;
+ 	u32 rsvd2[2];
+ 	u32 bat_design;
+diff --git a/drivers/platform/x86/amd/pmf/spc.c b/drivers/platform/x86/amd/pmf/spc.c
+index 1d90f9382024b..869b4134513f3 100644
+--- a/drivers/platform/x86/amd/pmf/spc.c
++++ b/drivers/platform/x86/amd/pmf/spc.c
+@@ -70,8 +70,20 @@ static const char *ta_slider_as_str(unsigned int state)
  	}
+ }
+ 
++static u32 amd_pmf_get_ta_custom_bios_inputs(struct ta_pmf_enact_table *in, int index)
++{
++	switch (index) {
++	case 0 ... 1:
++		return in->ev_info.bios_input_1[index];
++	default:
++		return 0;
++	}
++}
++
+ void amd_pmf_dump_ta_inputs(struct amd_pmf_dev *dev, struct ta_pmf_enact_table *in)
+ {
++	int i;
++
+ 	dev_dbg(dev->dev, "==== TA inputs START ====\n");
+ 	dev_dbg(dev->dev, "Slider State: %s\n", ta_slider_as_str(in->ev_info.power_slider));
+ 	dev_dbg(dev->dev, "Power Source: %s\n", amd_pmf_source_as_str(in->ev_info.power_source));
+@@ -90,29 +102,43 @@ void amd_pmf_dump_ta_inputs(struct amd_pmf_dev *dev, struct ta_pmf_enact_table *
+ 	dev_dbg(dev->dev, "Platform type: %s\n", platform_type_as_str(in->ev_info.platform_type));
+ 	dev_dbg(dev->dev, "Laptop placement: %s\n",
+ 		laptop_placement_as_str(in->ev_info.device_state));
+-	dev_dbg(dev->dev, "Custom BIOS input1: %u\n", in->ev_info.bios_input1);
+-	dev_dbg(dev->dev, "Custom BIOS input2: %u\n", in->ev_info.bios_input2);
++	for (i = 0; i < ARRAY_SIZE(custom_bios_inputs); i++)
++		dev_dbg(dev->dev, "Custom BIOS input%d: %u\n", i + 1,
++			amd_pmf_get_ta_custom_bios_inputs(in, i));
+ 	dev_dbg(dev->dev, "==== TA inputs END ====\n");
+ }
+ #else
+ void amd_pmf_dump_ta_inputs(struct amd_pmf_dev *dev, struct ta_pmf_enact_table *in) {}
+ #endif
+ 
++/*
++ * This helper function sets the appropriate BIOS input value in the TA enact
++ * table based on the provided index. We need this approach because the custom
++ * BIOS input array is not continuous, due to the existing TA structure layout.
++ */
++static void amd_pmf_set_ta_custom_bios_input(struct ta_pmf_enact_table *in, int index, u32 value)
++{
++	switch (index) {
++	case 0 ... 1:
++		in->ev_info.bios_input_1[index] = value;
++		break;
++	default:
++		return;
++	}
++}
++
+ static void amd_pmf_get_custom_bios_inputs(struct amd_pmf_dev *pdev,
+ 					   struct ta_pmf_enact_table *in)
+ {
++	unsigned int i;
++
+ 	if (!pdev->req.pending_req)
+ 		return;
+ 
+-	switch (pdev->req.pending_req) {
+-	case BIT(NOTIFY_CUSTOM_BIOS_INPUT1):
+-		in->ev_info.bios_input1 = pdev->req.custom_policy[APMF_SMARTPC_CUSTOM_BIOS_INPUT1];
+-		break;
+-	case BIT(NOTIFY_CUSTOM_BIOS_INPUT2):
+-		in->ev_info.bios_input2 = pdev->req.custom_policy[APMF_SMARTPC_CUSTOM_BIOS_INPUT2];
+-		break;
+-	default:
+-		dev_dbg(pdev->dev, "Invalid preq for BIOS input: 0x%x\n", pdev->req.pending_req);
++	for (i = 0; i < ARRAY_SIZE(custom_bios_inputs); i++) {
++		if (!(pdev->req.pending_req & custom_bios_inputs[i].bit_mask))
++			continue;
++		amd_pmf_set_ta_custom_bios_input(in, i, pdev->req.custom_policy[i]);
+ 	}
+ 
+ 	/* Clear pending requests after handling */
 -- 
 2.51.0
 
