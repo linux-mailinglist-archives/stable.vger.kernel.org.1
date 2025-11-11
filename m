@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52596C4AD1B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE50C4A3D8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:08:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57BAC3BB947
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DF7CF4F57A8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4643A2D9EF9;
-	Tue, 11 Nov 2025 01:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A9625A64C;
+	Tue, 11 Nov 2025 01:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TnhG3FN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlo+yRw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E8F258EF6;
-	Tue, 11 Nov 2025 01:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F4E258EF6;
+	Tue, 11 Nov 2025 01:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824102; cv=none; b=riq7ARQ/qrUPsEfH6GVYgooC4T0wA1M6IfzzKEdhXdInimXImoC68s0XDByoa2udoqC/mcLh9nvct9lXWa/ZSmGiGpRmO5tpYdAG1Wglk/aKYfv0OaMUKVl22zwss5QHO0kC+QLcM+AhJs4bA4cYDU+LGTMXsDne1iO4w23FkqE=
+	t=1762822995; cv=none; b=QM95Dh5Oihya/gnEtsM4bqJE/epFD1YgC5QE/CLZkdotiozQEWUnmwdQKQPDRm4mC8VPYrJy+i+4FznxjGevf7VuyZSnua03jE3Gez3kyHmnPKa8xe3hn8uNWyKKidb8+C7X42X13/i5WYgByU4hqhucMAR4L6tnb3ClSU1+L0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824102; c=relaxed/simple;
-	bh=EZShQ55Zbxax+Em9AeJfmU+82x3WCzyrpkW53sZlAD4=;
+	s=arc-20240116; t=1762822995; c=relaxed/simple;
+	bh=stQbRNPWyZz+ZXOKthJEDoi4It3//vhhhOayAVcRfKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IffAtEPif0cT33KxaTnP6yVWN/gRZ//nRAT9dCCQu+FVP0cIh+nS6qNiuxLehSasFVZZ+RNEbquBAfKlHcEeT8BGzc/9TKIrd6L+yGE8ov8CcGWtlHCd2JQCLL6gCg5ByQ4Z3nQubmn2GtaRKmdbz5J5ubK55WxWwbNltfymdew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TnhG3FN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB55C4CEFB;
-	Tue, 11 Nov 2025 01:21:41 +0000 (UTC)
+	 MIME-Version; b=aSl6qgmknSUK75SNmu2h1zPBYOb2OkLYMGdNGJGuuPkonJHnZk36shqK/tHLFvzWW+7b1pR26xEQiw61Kvk8E7udIcRb4pn1mCe4ubjan6VMHbLBScWgPwBXLrcQXYNtQ63hfu/AXqHe8x9rZNRQw9DwrhiaZG6qhlCG5oGhHtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dlo+yRw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F73DC19424;
+	Tue, 11 Nov 2025 01:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824101;
-	bh=EZShQ55Zbxax+Em9AeJfmU+82x3WCzyrpkW53sZlAD4=;
+	s=korg; t=1762822994;
+	bh=stQbRNPWyZz+ZXOKthJEDoi4It3//vhhhOayAVcRfKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1TnhG3FNBCqPVbAuGZmqa1ezKtW+x3lbVyqEXTD/Dlt2HntdkZ1QtKuGAJLxgQHpq
-	 nNrVqvOdGVEVVMuQtvuU5DhTmZQRl+qOqod03x+sAsmh8f4g2K3YJHLV6rYxF+amQg
-	 OswLdvnnknc011bLFydtD7SrpiR2qWFVeZKPgW+A=
+	b=dlo+yRw1MyJOIpRn5DZYlWQUWBG+31Pv5ZuYPhx0K95zV5ZreOXTILsc5HBOwRkB1
+	 YrfQMuh+RthHZaJrBvE4vDXUgfwbMF8CF+h4QgGDqTl19RtkqOjQWndZVxFg0bFsJl
+	 L+wOQwCDDUDDdDu/HdA9Oz5XGAh3+8Cpzn9xV2SA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 437/849] wifi: mac80211: Fix 6 GHz Band capabilities element advertisement in lower bands
+Subject: [PATCH 6.12 151/565] clocksource/drivers/vf-pit: Replace raw_readl/writel to readl/writel
 Date: Tue, 11 Nov 2025 09:40:07 +0900
-Message-ID: <20251111004546.997529381@linuxfoundation.org>
+Message-ID: <20251111004530.337853354@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-[ Upstream commit e53f8b12a21c2974b66fa8c706090182da06fff3 ]
+[ Upstream commit 0b781f527d6f99e68e5b3780ae03cd69a7cb5c0c ]
 
-Currently, when adding the 6 GHz Band Capabilities element, the channel
-list of the wiphy is checked to determine if 6 GHz is supported for a given
-virtual interface. However, in a multi-radio wiphy (e.g., one that has
-both lower bands and 6 GHz combined), the wiphy advertises support for
-all bands. As a result, the 6 GHz Band Capabilities element is incorrectly
-included in mesh beacon and station's association request frames of
-interfaces operating in lower bands, without verifying whether the
-interface is actually operating in a 6 GHz channel.
+The driver uses the raw_readl() and raw_writel() functions. Those are
+not for MMIO devices. Replace them with readl() and writel()
 
-Fix this by verifying if the interface operates on 6 GHz channel
-before adding the element. Note that this check cannot be placed
-directly in ieee80211_put_he_6ghz_cap() as the same function is used to
-add probe request elements while initiating scan in which case the
-interface may not be operating in any band's channel.
+[ dlezcano: Fixed typo in the subject s/reald/readl/ ]
 
-Signed-off-by: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
-Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250606104436.326654-1-rameshkumar.sundaram@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20250804152344.1109310-2-daniel.lezcano@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh.c | 3 +++
- net/mac80211/mlme.c | 3 ++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-vf-pit.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index a4a715f6f1c32..f37068a533f4e 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -624,6 +624,9 @@ int mesh_add_he_6ghz_cap_ie(struct ieee80211_sub_if_data *sdata,
- 	if (!sband)
- 		return -EINVAL;
+diff --git a/drivers/clocksource/timer-vf-pit.c b/drivers/clocksource/timer-vf-pit.c
+index 911c92146eca6..8041a8f62d1fa 100644
+--- a/drivers/clocksource/timer-vf-pit.c
++++ b/drivers/clocksource/timer-vf-pit.c
+@@ -35,30 +35,30 @@ static unsigned long cycle_per_jiffy;
  
-+	if (sband->band != NL80211_BAND_6GHZ)
-+		return 0;
-+
- 	iftd = ieee80211_get_sband_iftype_data(sband,
- 					       NL80211_IFTYPE_MESH_POINT);
- 	/* The device doesn't support HE in mesh mode or at all */
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index f38881b927d17..c1b13b3411cdb 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1850,7 +1850,8 @@ ieee80211_add_link_elems(struct ieee80211_sub_if_data *sdata,
- 		ieee80211_put_he_cap(skb, sdata, sband,
- 				     &assoc_data->link[link_id].conn);
- 		ADD_PRESENT_EXT_ELEM(WLAN_EID_EXT_HE_CAPABILITY);
--		ieee80211_put_he_6ghz_cap(skb, sdata, smps_mode);
-+		if (sband->band == NL80211_BAND_6GHZ)
-+			ieee80211_put_he_6ghz_cap(skb, sdata, smps_mode);
- 	}
+ static inline void pit_timer_enable(void)
+ {
+-	__raw_writel(PITTCTRL_TEN | PITTCTRL_TIE, clkevt_base + PITTCTRL);
++	writel(PITTCTRL_TEN | PITTCTRL_TIE, clkevt_base + PITTCTRL);
+ }
  
- 	/*
+ static inline void pit_timer_disable(void)
+ {
+-	__raw_writel(0, clkevt_base + PITTCTRL);
++	writel(0, clkevt_base + PITTCTRL);
+ }
+ 
+ static inline void pit_irq_acknowledge(void)
+ {
+-	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
++	writel(PITTFLG_TIF, clkevt_base + PITTFLG);
+ }
+ 
+ static u64 notrace pit_read_sched_clock(void)
+ {
+-	return ~__raw_readl(clksrc_base + PITCVAL);
++	return ~readl(clksrc_base + PITCVAL);
+ }
+ 
+ static int __init pit_clocksource_init(unsigned long rate)
+ {
+ 	/* set the max load value and start the clock source counter */
+-	__raw_writel(0, clksrc_base + PITTCTRL);
+-	__raw_writel(~0UL, clksrc_base + PITLDVAL);
+-	__raw_writel(PITTCTRL_TEN, clksrc_base + PITTCTRL);
++	writel(0, clksrc_base + PITTCTRL);
++	writel(~0UL, clksrc_base + PITLDVAL);
++	writel(PITTCTRL_TEN, clksrc_base + PITTCTRL);
+ 
+ 	sched_clock_register(pit_read_sched_clock, 32, rate);
+ 	return clocksource_mmio_init(clksrc_base + PITCVAL, "vf-pit", rate,
+@@ -76,7 +76,7 @@ static int pit_set_next_event(unsigned long delta,
+ 	 * hardware requirement.
+ 	 */
+ 	pit_timer_disable();
+-	__raw_writel(delta - 1, clkevt_base + PITLDVAL);
++	writel(delta - 1, clkevt_base + PITLDVAL);
+ 	pit_timer_enable();
+ 
+ 	return 0;
+@@ -125,8 +125,8 @@ static struct clock_event_device clockevent_pit = {
+ 
+ static int __init pit_clockevent_init(unsigned long rate, int irq)
+ {
+-	__raw_writel(0, clkevt_base + PITTCTRL);
+-	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
++	writel(0, clkevt_base + PITTCTRL);
++	writel(PITTFLG_TIF, clkevt_base + PITTFLG);
+ 
+ 	BUG_ON(request_irq(irq, pit_timer_interrupt, IRQF_TIMER | IRQF_IRQPOLL,
+ 			   "VF pit timer", &clockevent_pit));
+@@ -183,7 +183,7 @@ static int __init pit_timer_init(struct device_node *np)
+ 	cycle_per_jiffy = clk_rate / (HZ);
+ 
+ 	/* enable the pit module */
+-	__raw_writel(~PITMCR_MDIS, timer_base + PITMCR);
++	writel(~PITMCR_MDIS, timer_base + PITMCR);
+ 
+ 	ret = pit_clocksource_init(clk_rate);
+ 	if (ret)
 -- 
 2.51.0
 
