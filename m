@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-194314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D54C4B0B8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:29 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 874FCC4A9B0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2533189287C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 06FFD34C735
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A7D347FD7;
-	Tue, 11 Nov 2025 01:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B284230E0F6;
+	Tue, 11 Nov 2025 01:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmKJeUBz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qf3pzddb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1C9337BB4;
-	Tue, 11 Nov 2025 01:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6F9274FF1;
+	Tue, 11 Nov 2025 01:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825312; cv=none; b=jnnQmn2JE3fNeBn4ldUb5vMWZ4xkikRNN06XZ+eZZ+RwI81RdswEiMLFJcxYz7/5gOhFLEV7ysdStjJKlpzjkc83jxVzGKAdOF7LEZmSk3GkgdT7PQrC/7BsarFWEpw6eru+Gh9WT5iixRNNAPduPcBGj2TtRR+YCQE87ypHnX0=
+	t=1762824523; cv=none; b=e/2ShAjeL45+3QkiU6w9KDMlxoutF+FtBwvHtyGsozyvNCI+33PIVxNeSB207ZdvDXTllq8pY3/eVXSCxzkYxC3I9jtcobp01zE1p5J+cRUcRk2jK6StxeETJGhORPkCRtcoTtql01zXagKGtpEuR17odNE64tcHrYtXF7QPpQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825312; c=relaxed/simple;
-	bh=2jhp47A2ZnYUS3WAGFs0mKespybatzglls4I4lxxhm0=;
+	s=arc-20240116; t=1762824523; c=relaxed/simple;
+	bh=hCv1UgBf3efpySSNpVQGKzErm61WBY7I7KA8QhkMk98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USBDBrC+xVF2L5lo2EJ6izmYcrotNdviFxCihbRlG7zyiBTL6MNa/YxlxFfWbbOL0jPLVydPWsXNTMhu8hsiw5CdP+3WcAN8lkzs3IDBFc807GUI9vCi3yAMgTBAzFNO6Us/DnCAIBhBUiNS0yMBl/ZUAG8y1PqjKLRFGgrT4Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmKJeUBz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2681C4CEFB;
-	Tue, 11 Nov 2025 01:41:51 +0000 (UTC)
+	 MIME-Version; b=SeEWl70cmgvGKN+U7ESRWMqyJy9XkEi1Jcbw1dct4y/4zL+Hxme3ZheQmnN3kXO/wzVBaNDQng9fyfbFCReGSk/G31dBPn5YDZit8acRE1OtibfaJ15SY41WZWzijEREBIrHO6hTBn5x8bUbzgV15i4i//BVP21XOeQqnmv5ZZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qf3pzddb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF22DC4CEFB;
+	Tue, 11 Nov 2025 01:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825312;
-	bh=2jhp47A2ZnYUS3WAGFs0mKespybatzglls4I4lxxhm0=;
+	s=korg; t=1762824523;
+	bh=hCv1UgBf3efpySSNpVQGKzErm61WBY7I7KA8QhkMk98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gmKJeUBzL7ihvbFKHpFWg1DNJmoAQuC3Jsbd2g1+wwlGb+3PlAR92IoI0UeuML/aP
-	 ykPlEVADr8S4rE2EH/54peFTg3vQNPNnybx5jzqnbM/id6TEjrOx4ixNSqR5PRcN90
-	 R4cOSIVpMS5yypNO+tPN2W6fi7He9yih16yHix1w=
+	b=qf3pzddbsuWeyNrVcBZf7VPAgiDbZX+X5zokDT6KhZ2bcxtqFoMhXSXaak4YR3bKe
+	 /ZVWj02UhAB0P0Ec+E5GQFtb0ybbymcZyfxkC0OYuOEDyTB9pHATgv3iIGQafv2/l/
+	 BUsAMHdITUevQ4CYyanGy5nUgF8Cro0hYnvbOz74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Beau Belgrave <beaub@linux.microsoft.com>
-Subject: [PATCH 6.17 748/849] tracing: tprobe-events: Fix to put tracepoint_user when disable the tprobe
+	austinchang <austinchang@synology.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 462/565] btrfs: mark dirty extent range for out of bound prealloc extents
 Date: Tue, 11 Nov 2025 09:45:18 +0900
-Message-ID: <20251111004554.520308026@linuxfoundation.org>
+Message-ID: <20251111004537.292059372@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: austinchang <austinchang@synology.com>
 
-commit c91afa7610235f89a5e8f5686aac23892ab227ed upstream.
+[ Upstream commit 3b1a4a59a2086badab391687a6a0b86e03048393 ]
 
-__unregister_trace_fprobe() checks tf->tuser to put it when removing
-tprobe. However, disable_trace_fprobe() does not use it and only calls
-unregister_fprobe(). Thus it forgets to disable tracepoint_user.
+In btrfs_fallocate(), when the allocated range overlaps with a prealloc
+extent and the extent starts after i_size, the range doesn't get marked
+dirty in file_extent_tree. This results in persisting an incorrect
+disk_i_size for the inode when not using the no-holes feature.
 
-If the trace_fprobe has tuser, put it for unregistering the tracepoint
-callbacks when disabling tprobe correctly.
+This is reproducible since commit 41a2ee75aab0 ("btrfs: introduce
+per-inode file extent tree"), then became hidden since commit 3d7db6e8bd22
+("btrfs: don't allocate file extent tree for non regular files") and then
+visible again after commit 8679d2687c35 ("btrfs: initialize
+inode::file_extent_tree after i_mode has been set"), which fixes the
+previous commit.
 
-Link: https://lore.kernel.org/all/176244794466.155515.3971904050506100243.stgit@devnote2/
+The following reproducer triggers the problem:
 
-Fixes: 2867495dea86 ("tracing: tprobe-events: Register tracepoint when enable tprobe event")
-Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Tested-by: Beau Belgrave <beaub@linux.microsoft.com>
-Reviewed-by: Beau Belgrave <beaub@linux.microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+$ cat test.sh
+
+MNT=/mnt/test
+DEV=/dev/vdb
+
+mkdir -p $MNT
+
+mkfs.btrfs -f -O ^no-holes $DEV
+mount $DEV $MNT
+
+touch $MNT/file1
+fallocate -n -o 1M -l 2M $MNT/file1
+
+umount $MNT
+mount $DEV $MNT
+
+len=$((1 * 1024 * 1024))
+
+fallocate -o 1M -l $len $MNT/file1
+
+du --bytes $MNT/file1
+
+umount $MNT
+mount $DEV $MNT
+
+du --bytes $MNT/file1
+
+umount $MNT
+
+Running the reproducer gives the following result:
+
+$ ./test.sh
+(...)
+2097152 /mnt/test/file1
+1048576 /mnt/test/file1
+
+The difference is exactly 1048576 as we assigned.
+
+Fix by adding a call to btrfs_inode_set_file_extent_range() in
+btrfs_fallocate_update_isize().
+
+Fixes: 41a2ee75aab0 ("btrfs: introduce per-inode file extent tree")
+Signed-off-by: austinchang <austinchang@synology.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_fprobe.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/btrfs/file.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/kernel/trace/trace_fprobe.c b/kernel/trace/trace_fprobe.c
-index fd1b108ab639..8001dbf16891 100644
---- a/kernel/trace/trace_fprobe.c
-+++ b/kernel/trace/trace_fprobe.c
-@@ -1514,6 +1514,10 @@ static int disable_trace_fprobe(struct trace_event_call *call,
- 	if (!trace_probe_is_enabled(tp)) {
- 		list_for_each_entry(tf, trace_probe_probe_list(tp), tp.list) {
- 			unregister_fprobe(&tf->fp);
-+			if (tf->tuser) {
-+				tracepoint_user_put(tf->tuser);
-+				tf->tuser = NULL;
-+			}
- 		}
- 	}
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index 0e63603ac5c78..9ed2771f303c9 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -2839,12 +2839,22 @@ static int btrfs_fallocate_update_isize(struct inode *inode,
+ {
+ 	struct btrfs_trans_handle *trans;
+ 	struct btrfs_root *root = BTRFS_I(inode)->root;
++	u64 range_start;
++	u64 range_end;
+ 	int ret;
+ 	int ret2;
  
+ 	if (mode & FALLOC_FL_KEEP_SIZE || end <= i_size_read(inode))
+ 		return 0;
+ 
++	range_start = round_down(i_size_read(inode), root->fs_info->sectorsize);
++	range_end = round_up(end, root->fs_info->sectorsize);
++
++	ret = btrfs_inode_set_file_extent_range(BTRFS_I(inode), range_start,
++						range_end - range_start);
++	if (ret)
++		return ret;
++
+ 	trans = btrfs_start_transaction(root, 1);
+ 	if (IS_ERR(trans))
+ 		return PTR_ERR(trans);
 -- 
-2.51.2
+2.51.0
 
 
 
