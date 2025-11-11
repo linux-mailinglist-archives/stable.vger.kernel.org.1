@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-193873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0748BC4AAA8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DD74C4A328
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 576724F26A1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 198CD188EF3D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:06:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588AD2E0924;
-	Tue, 11 Nov 2025 01:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275AC261B6E;
+	Tue, 11 Nov 2025 01:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NlzvkRXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ls1E8nUp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A7026D4C1;
-	Tue, 11 Nov 2025 01:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88BC27E7EB;
+	Tue, 11 Nov 2025 01:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824208; cv=none; b=JpKQcw/tRme/bJ2Hti4betTiRyTEX+RynrAD6Luq9n1zYZ4CnZ8lO9FDTZDncpm+TYaQjIO62fqnH6wIjh4qVd0CfwGSg/me7JVuuwmQg54zcfTfhQzGyFmP8JaOadubKxCToz1W2SHOLhZeSnjcKru16gztIZmaG5UwsSqtmTw=
+	t=1762823125; cv=none; b=fzGTBJ7DG+/9MyTM56PuPiv2iPKldGdzk0/kOTkPgEgcK63GGEKnpVxuoTfzG8WnpSAg0EvaPxZ1smPnZB8PCgAFIa8WLdHSAnuXqyYqqlzqQe5t3BBoGCaVsQbvF2j51Ty8eJa6TjR5UOGB2mty1yYdt909amqi4jdwWlLb5o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824208; c=relaxed/simple;
-	bh=elFJri/nCeLqO0D8bV9P/sdDKlpVzMMaKgyCyoSUwjQ=;
+	s=arc-20240116; t=1762823125; c=relaxed/simple;
+	bh=t+KY48PtpUdH9WfRCMd9Ty4dKxzxadZtKrhQrGgNH8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cxIGiTlyLJwr+a+1SCHQbNMZaw1mkhjFxoSnh9vODH6tyD2xqz2BLCE7ZKSfKBPwVnQV/4GfM4g4cyESjonnvLzM7Hg5jiwhZX28wvwGdpAy6h3yFP8ITHIdxh/LSpBirkEIKSK4PwXfoaQ3RG5CVUcDTS6d/a/sgHi2J0sYphc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NlzvkRXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC88C4CEF5;
-	Tue, 11 Nov 2025 01:23:27 +0000 (UTC)
+	 MIME-Version; b=PxdParuNWfAYCo5X2/yV/JVT/jy1oOv5u8vVKw3ftnsW/G751K6zmNqbHEAkVDJe5fCfKVnPspiapk35giw96W8HFy+KrPfTfXOgZrZjbZ9LWU6EUIZNB8vwV3WCAuw/dEKcofNxqghLSMXpj1/IF3T+kvSHDuxXw/qclpY4yQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ls1E8nUp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E07C2BC87;
+	Tue, 11 Nov 2025 01:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824207;
-	bh=elFJri/nCeLqO0D8bV9P/sdDKlpVzMMaKgyCyoSUwjQ=;
+	s=korg; t=1762823125;
+	bh=t+KY48PtpUdH9WfRCMd9Ty4dKxzxadZtKrhQrGgNH8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NlzvkRXVkf30nF6L7nDIEN4xLQnRwEQcujUsFLv9YS1g20vqj4uAVB0OJ7hfC+c3R
-	 fTO5dTUU0i4fG+/7C3OdB21kNiOjKB6PoCKJNyOJRsTYe+4Rm5LyB4MfsyrjNyZpLI
-	 76zVQwo4ZMZ3B2v574dsttQhbTYnwWDXPJ9Tg0yg=
+	b=ls1E8nUpbYrw34uCcppM2Ge6VRw9YihkrgB4Us7EaBaXpvBCIPUni2h9wayw5vCNP
+	 tPEmSfNCnz9xFvbF1C+BikUdl0x92eQvEmMBMaSP02RurTZ//GM2jTulRFn3h+rtnH
+	 gqNnaOrB6c9y3xJ5PK1xvowuNCpPlwynlx0z2Yas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Ovidiu (Ovi) Bunea" <ovidiu.bunea@amd.com>,
+	Michael Strauss <michael.strauss@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 462/849] net: dsa: felix: support phy-mode = "10g-qxgmii"
+Subject: [PATCH 6.12 176/565] drm/amd/display: Move setup_stream_attribute
 Date: Tue, 11 Nov 2025 09:40:32 +0900
-Message-ID: <20251111004547.596854857@linuxfoundation.org>
+Message-ID: <20251111004530.892902463@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +65,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Michael Strauss <michael.strauss@amd.com>
 
-[ Upstream commit 6f616757dd306fce4b55131df23737732e347d8f ]
+[ Upstream commit 2681bf4ae8d24df950138b8c9ea9c271cd62e414 ]
 
-The "usxgmii" phy-mode that the Felix switch ports support on LS1028A is
-not quite USXGMII, it is defined by the USXGMII multiport specification
-document as 10G-QXGMII. It uses the same signaling as USXGMII, but it
-multiplexes 4 ports over the link, resulting in a maximum speed of 2.5G
-per port.
+[WHY]
+If symclk RCO is enabled, stream encoder may not be receiving an ungated
+clock by the time we attempt to set stream attributes when setting dpms
+on. Since the clock is gated, register writes to the stream encoder fail.
 
-This change is needed in preparation for the lynx-10g SerDes driver on
-LS1028A, which will make a more clear distinction between usxgmii
-(supported on lane 0) and 10g-qxgmii (supported on lane 1). These
-protocols have their configuration in different PCCR registers (PCCRB vs
-PCCR9).
+[HOW]
+Move set_stream_attribute call into enable_stream, just after the point
+where symclk32_se is ungated.
+Logically there is no need to set stream attributes as early as is
+currently done in link_set_dpms_on, so this should have no impact beyond
+the RCO fix.
 
-Continue parsing and supporting single-port-per-lane USXGMII when found
-in the device tree as usual (because it works), but add support for
-10G-QXGMII too. Using phy-mode = "10g-qxgmii" will be required when
-modifying the device trees to specify a "phys" phandle to the SerDes
-lane. The result when the "phys" phandle is present but the phy-mode is
-wrong is undefined.
-
-The only PHY driver in known use with this phy-mode, AQR412C, will gain
-logic to transition from "usxgmii" to "10g-qxgmii" in a future change.
-Prepare the driver by also setting PHY_INTERFACE_MODE_10G_QXGMII in
-supported_interfaces when PHY_INTERFACE_MODE_USXGMII is there, to
-prevent breakage with existing device trees.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250903130730.2836022-3-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Ovidiu (Ovi) Bunea <ovidiu.bunea@amd.com>
+Signed-off-by: Michael Strauss <michael.strauss@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/ocelot/felix.c         | 4 ++++
- drivers/net/dsa/ocelot/felix.h         | 3 ++-
- drivers/net/dsa/ocelot/felix_vsc9959.c | 3 ++-
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c  | 1 +
+ drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c    | 2 ++
+ drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c  | 2 ++
+ drivers/gpu/drm/amd/display/dc/link/link_dpms.c            | 3 ---
+ .../drm/amd/display/dc/virtual/virtual_stream_encoder.c    | 7 +++++++
+ 5 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
-index 2dd4e56e1cf11..20ab558fde247 100644
---- a/drivers/net/dsa/ocelot/felix.c
-+++ b/drivers/net/dsa/ocelot/felix.c
-@@ -1153,6 +1153,9 @@ static void felix_phylink_get_caps(struct dsa_switch *ds, int port,
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+index 03b22e9115ea8..9e5cb609e89ee 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -670,6 +670,7 @@ void dce110_enable_stream(struct pipe_ctx *pipe_ctx)
+ 	uint32_t early_control = 0;
+ 	struct timing_generator *tg = pipe_ctx->stream_res.tg;
  
- 	__set_bit(ocelot->ports[port]->phy_mode,
- 		  config->supported_interfaces);
-+	if (ocelot->ports[port]->phy_mode == PHY_INTERFACE_MODE_USXGMII)
-+		__set_bit(PHY_INTERFACE_MODE_10G_QXGMII,
-+			  config->supported_interfaces);
- }
++	link_hwss->setup_stream_attribute(pipe_ctx);
+ 	link_hwss->setup_stream_encoder(pipe_ctx);
  
- static void felix_phylink_mac_config(struct phylink_config *config,
-@@ -1359,6 +1362,7 @@ static const u32 felix_phy_match_table[PHY_INTERFACE_MODE_MAX] = {
- 	[PHY_INTERFACE_MODE_SGMII] = OCELOT_PORT_MODE_SGMII,
- 	[PHY_INTERFACE_MODE_QSGMII] = OCELOT_PORT_MODE_QSGMII,
- 	[PHY_INTERFACE_MODE_USXGMII] = OCELOT_PORT_MODE_USXGMII,
-+	[PHY_INTERFACE_MODE_10G_QXGMII] = OCELOT_PORT_MODE_10G_QXGMII,
- 	[PHY_INTERFACE_MODE_1000BASEX] = OCELOT_PORT_MODE_1000BASEX,
- 	[PHY_INTERFACE_MODE_2500BASEX] = OCELOT_PORT_MODE_2500BASEX,
- };
-diff --git a/drivers/net/dsa/ocelot/felix.h b/drivers/net/dsa/ocelot/felix.h
-index 211991f494e35..a657b190c5d7b 100644
---- a/drivers/net/dsa/ocelot/felix.h
-+++ b/drivers/net/dsa/ocelot/felix.h
-@@ -12,8 +12,9 @@
- #define OCELOT_PORT_MODE_SGMII		BIT(1)
- #define OCELOT_PORT_MODE_QSGMII		BIT(2)
- #define OCELOT_PORT_MODE_2500BASEX	BIT(3)
--#define OCELOT_PORT_MODE_USXGMII	BIT(4)
-+#define OCELOT_PORT_MODE_USXGMII	BIT(4) /* compatibility */
- #define OCELOT_PORT_MODE_1000BASEX	BIT(5)
-+#define OCELOT_PORT_MODE_10G_QXGMII	BIT(6)
+ 	dc->hwss.update_info_frame(pipe_ctx);
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+index d96f52a551940..55f067c9e4948 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+@@ -3009,6 +3009,8 @@ void dcn20_enable_stream(struct pipe_ctx *pipe_ctx)
+ 						      link_enc->transmitter - TRANSMITTER_UNIPHY_A);
+ 	}
  
- struct device_node;
++	link_hwss->setup_stream_attribute(pipe_ctx);
++
+ 	if (dc->res_pool->dccg->funcs->set_pixel_rate_div)
+ 		dc->res_pool->dccg->funcs->set_pixel_rate_div(
+ 			dc->res_pool->dccg,
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
+index bcb296a954f2b..f1a3e70893805 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
+@@ -1019,6 +1019,8 @@ void dcn401_enable_stream(struct pipe_ctx *pipe_ctx)
+ 		}
+ 	}
  
-diff --git a/drivers/net/dsa/ocelot/felix_vsc9959.c b/drivers/net/dsa/ocelot/felix_vsc9959.c
-index 7b35d24c38d76..8cf4c89865876 100644
---- a/drivers/net/dsa/ocelot/felix_vsc9959.c
-+++ b/drivers/net/dsa/ocelot/felix_vsc9959.c
-@@ -34,7 +34,8 @@
- 					 OCELOT_PORT_MODE_QSGMII | \
- 					 OCELOT_PORT_MODE_1000BASEX | \
- 					 OCELOT_PORT_MODE_2500BASEX | \
--					 OCELOT_PORT_MODE_USXGMII)
-+					 OCELOT_PORT_MODE_USXGMII | \
-+					 OCELOT_PORT_MODE_10G_QXGMII)
++	link_hwss->setup_stream_attribute(pipe_ctx);
++
+ 	if (dc->res_pool->dccg->funcs->set_pixel_rate_div) {
+ 		dc->res_pool->dccg->funcs->set_pixel_rate_div(
+ 			dc->res_pool->dccg,
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+index 9d740659521a4..f6ab52979e331 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+@@ -2447,7 +2447,6 @@ void link_set_dpms_on(
+ 	struct link_encoder *link_enc;
+ 	enum otg_out_mux_dest otg_out_dest = OUT_MUX_DIO;
+ 	struct vpg *vpg = pipe_ctx->stream_res.stream_enc->vpg;
+-	const struct link_hwss *link_hwss = get_link_hwss(link, &pipe_ctx->link_res);
+ 	bool apply_edp_fast_boot_optimization =
+ 		pipe_ctx->stream->apply_edp_fast_boot_optimization;
  
- static const u32 vsc9959_port_modes[VSC9959_NUM_PORTS] = {
- 	VSC9959_PORT_MODE_SERDES,
+@@ -2490,8 +2489,6 @@ void link_set_dpms_on(
+ 		pipe_ctx->stream_res.tg->funcs->set_out_mux(pipe_ctx->stream_res.tg, otg_out_dest);
+ 	}
+ 
+-	link_hwss->setup_stream_attribute(pipe_ctx);
+-
+ 	pipe_ctx->stream->apply_edp_fast_boot_optimization = false;
+ 
+ 	// Enable VPG before building infoframe
+diff --git a/drivers/gpu/drm/amd/display/dc/virtual/virtual_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/virtual/virtual_stream_encoder.c
+index ad088d70e1893..6ffc74fc9dcd8 100644
+--- a/drivers/gpu/drm/amd/display/dc/virtual/virtual_stream_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/virtual/virtual_stream_encoder.c
+@@ -44,6 +44,11 @@ static void virtual_stream_encoder_dvi_set_stream_attribute(
+ 	struct dc_crtc_timing *crtc_timing,
+ 	bool is_dual_link) {}
+ 
++static void virtual_stream_encoder_lvds_set_stream_attribute(
++	struct stream_encoder *enc,
++	struct dc_crtc_timing *crtc_timing)
++{}
++
+ static void virtual_stream_encoder_set_throttled_vcp_size(
+ 	struct stream_encoder *enc,
+ 	struct fixed31_32 avg_time_slots_per_mtp)
+@@ -115,6 +120,8 @@ static const struct stream_encoder_funcs virtual_str_enc_funcs = {
+ 		virtual_stream_encoder_hdmi_set_stream_attribute,
+ 	.dvi_set_stream_attribute =
+ 		virtual_stream_encoder_dvi_set_stream_attribute,
++	.lvds_set_stream_attribute =
++		virtual_stream_encoder_lvds_set_stream_attribute,
+ 	.set_throttled_vcp_size =
+ 		virtual_stream_encoder_set_throttled_vcp_size,
+ 	.update_hdmi_info_packets =
 -- 
 2.51.0
 
