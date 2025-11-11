@@ -1,78 +1,55 @@
-Return-Path: <stable+bounces-194027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17DF1C4AA72
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:49 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F05EC4AD07
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8B04034C963
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 804714FC788
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E46B30FC3D;
-	Tue, 11 Nov 2025 01:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1861A343D71;
+	Tue, 11 Nov 2025 01:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZ/xyKD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFfBoHha"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F61A944;
-	Tue, 11 Nov 2025 01:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A15343D6D;
+	Tue, 11 Nov 2025 01:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824631; cv=none; b=SkNj4S35J/yCPuJ+lF/VW6E41aT8W3/FFSXw5ZM+HWYjy7seBrVH3fJ3GSok397sexlLQ4WwEeKdD5CpvbicFhjaibwIN7OewUomxJyN1CzO6y/LIAXT4ZDPg5B2oOzsjeOHzhWtlxAH2Cen6UZKBL1cyQcguOrbVGI5qkUl8s8=
+	t=1762824657; cv=none; b=FPOscq4YE4cGAbFwcbImEY8TmjzlaOs6mPDaOPIXDTC9XL2LDNXE0e5CaFGFJIO1EqKv8M0oM5jMfbTQnyvAkZS74lc0afQqRp0JSsvbYLkI/Tw3Hkpe/1yMVNyPvlpTIJ8bUAY60T8M4bBoy99qjxo0HGfmpBzuHoMI6pvi/74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824631; c=relaxed/simple;
-	bh=/X43xbv2Qu5tyTaKOlui/HvzjjmqTz3vK5gwCmdipOE=;
+	s=arc-20240116; t=1762824657; c=relaxed/simple;
+	bh=buFIL69bNZOu6JQWyMwJCrK9z+t4SpsHt5ZZgqy6agM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Oa7n+Nvp6IEoCUagvZXz/ZadmonQpCR8Hp5NhDnGlc+O5YqhLZd/6eL7ulCIk6d2hR2FMBGy0a+lCDq5Q6nGfMGC5sLGOjjnS4lbK4dj8xVj3Zzrl5RY33ajr3qh8K4xYlYkMqF1J13yyk3z+xZrcTZuhxaVrn6yvB89BgGOkYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZ/xyKD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07F0C4CEF5;
-	Tue, 11 Nov 2025 01:30:30 +0000 (UTC)
+	 MIME-Version; b=bTfVKDJKuUClW05dCSxw7Js6fF6r+bPTMjyj/fUfhSKhMbZCPHOXLovwysP542CeuGTuA+1sYDAq+beelEBVngdjC/HhPGWC5o7Udsb3xAEKYQ6KFk5sznm+9Zee7uTjLRqI2SQwtH2tf8Z+M05z36+6CrboddteQCSI5v1I7DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFfBoHha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B233C4CEFB;
+	Tue, 11 Nov 2025 01:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824631;
-	bh=/X43xbv2Qu5tyTaKOlui/HvzjjmqTz3vK5gwCmdipOE=;
+	s=korg; t=1762824657;
+	bh=buFIL69bNZOu6JQWyMwJCrK9z+t4SpsHt5ZZgqy6agM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gZ/xyKD1aGFr4FIQkveOl8byc7wfYYa/eFQLL7ixXb1kk53nVviWlVDiN2XhGn/1p
-	 fJJccv73b0FFzJ0c020/XD6sKIok/plovu8m3loGDDkT2gzr3yVjexlSGk7Qy+xyxi
-	 /FBVFD1xHMOG76CJs0vrae5IbH+wacYvojFDL6HI=
+	b=sFfBoHha39f6rXnQbMAm+mjXplxgmvdwmzyGtCxWxhFajUdaKxWX+usBZzrVcyYEC
+	 ScZ9T+1uD5GPPsGGLzzdsI8PrPSN8zbdiEh2vPNPkuR0DFxHLTlTUoksqPhTxU9kKa
+	 Iy2jEBddA9Kn20R0oO1xIVvIYwG4cC7A/E8drqOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Darren Hart <dvhart@infradead.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Jonas Gottlieb <jonas.gottlieb@stackit.cloud>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Maurice Lambert <mauricelambert434@gmail.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Petr Machata <petrm@nvidia.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Yuyang Huang <yuyanghuang@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Emil Dahl Juhl <juhl.emildahl@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 483/565] tools bitmap: Add missing asm-generic/bitsperlong.h include
-Date: Tue, 11 Nov 2025 09:45:39 +0900
-Message-ID: <20251111004537.790876231@linuxfoundation.org>
+Subject: [PATCH 6.12 484/565] tools: lib: thermal: dont preserve owner in install
+Date: Tue, 11 Nov 2025 09:45:40 +0900
+Message-ID: <20251111004537.814876591@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -85,68 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Emil Dahl Juhl <juhl.emildahl@gmail.com>
 
-[ Upstream commit f38ce0209ab4553906b44bd1159e35c740a84161 ]
+[ Upstream commit 1375152bb02ab2a8435e87ea27034482dbc95f57 ]
 
-small_const_nbits is defined in asm-generic/bitsperlong.h which
-bitmap.h uses but doesn't include causing build failures in some build
-systems. Add the missing #include.
+Instead of preserving mode, timestamp, and owner, for the object files
+during installation, just preserve the mode and timestamp.
 
-Note the bitmap.h in tools has diverged from that of the kernel, so no
-changes are made there.
+When installing as root, the installed files should be owned by root.
+When installing as user, --preserve=ownership doesn't work anyway. This
+makes --preserve=ownership rather pointless.
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Yury Norov <yury.norov@gmail.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: André Almeida <andrealmeid@igalia.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Darren Hart <dvhart@infradead.org>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Ido Schimmel <idosch@nvidia.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jason Xing <kerneljasonxing@gmail.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Jonas Gottlieb <jonas.gottlieb@stackit.cloud>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Maurice Lambert <mauricelambert434@gmail.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Petr Machata <petrm@nvidia.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Yuyang Huang <yuyanghuang@google.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Emil Dahl Juhl <juhl.emildahl@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/linux/bitmap.h | 1 +
- 1 file changed, 1 insertion(+)
+ tools/lib/thermal/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/include/linux/bitmap.h b/tools/include/linux/bitmap.h
-index 2a7f260ef9dc5..7081f4a8d634b 100644
---- a/tools/include/linux/bitmap.h
-+++ b/tools/include/linux/bitmap.h
-@@ -3,6 +3,7 @@
- #define _TOOLS_LINUX_BITMAP_H
+diff --git a/tools/lib/thermal/Makefile b/tools/lib/thermal/Makefile
+index 8890fd57b110c..1694889847caf 100644
+--- a/tools/lib/thermal/Makefile
++++ b/tools/lib/thermal/Makefile
+@@ -147,7 +147,7 @@ endef
+ install_lib: libs
+ 	$(call QUIET_INSTALL, $(LIBTHERMAL_ALL)) \
+ 		$(call do_install_mkdir,$(libdir_SQ)); \
+-		cp -fpR $(LIBTHERMAL_ALL) $(DESTDIR)$(libdir_SQ)
++		cp -fR --preserve=mode,timestamp $(LIBTHERMAL_ALL) $(DESTDIR)$(libdir_SQ)
  
- #include <string.h>
-+#include <asm-generic/bitsperlong.h>
- #include <linux/align.h>
- #include <linux/bitops.h>
- #include <linux/find.h>
+ install_headers:
+ 	$(call QUIET_INSTALL, headers) \
 -- 
 2.51.0
 
