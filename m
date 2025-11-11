@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE42C4B145
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACB8C4AD5D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4CAD64F7D5E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CCFB18901DA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DD02DEA67;
-	Tue, 11 Nov 2025 01:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA067274FCB;
+	Tue, 11 Nov 2025 01:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G4HA1K0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzGG63Eo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62191F874C;
-	Tue, 11 Nov 2025 01:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AD3DDAB;
+	Tue, 11 Nov 2025 01:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825355; cv=none; b=dhhJNxPJaL72FYirzubug7c/lqxP33QH7TAV46aUcxMzReLrPnqL31lv/vzqWsgnb1YtzC6Lwps091UZivsoIq4ccBl6N855kSKjp5qzAVmKA40ymDQfww7p5yxOrk4NYvW0g4Oe8fJoTGs1Ad90LVoktioHROYZv43t/fnEvnE=
+	t=1762824830; cv=none; b=BDw8IeQeHc5aeAlvniYL22cgUxHqOy8vOh1HSEa9DeG9OEilEz8Meskvgz8+lBkePcZsVe3fR9FWTeJXAQ3frJPFJCfiHJpodxrYyOZkolzdKMno/Rbg1JglbKmeRVelq/pKRkLGi+v3+E2+XgAALs8FKAHaeWa1bgEPNRpSMbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825355; c=relaxed/simple;
-	bh=VZjfb/97u9E6+ILv/NUK5vtggt5DkBjfowBEVx3EqUs=;
+	s=arc-20240116; t=1762824830; c=relaxed/simple;
+	bh=hTaeJkrXWbLIa8dnpeSz18k9t7iiub3LcgpuB0Yffg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R1uUhUcJv8ZjWsonhgx/u2x4OK4x6txxqLC2xDJmh50xgAk7Be/bDOHPIlJIPfzFbQCEXSClXIAsRSAlVikTfTeqXNQ2yLv6Ev38r/UWC2TmhLuANWjtN2GbGXZ/cesJfeE2VJ5gETz2bCiKXHPwL5GiEo7sb5+deG/z/3IykwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G4HA1K0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7F9C116D0;
-	Tue, 11 Nov 2025 01:42:34 +0000 (UTC)
+	 MIME-Version; b=cMksdCrkYhY43givT6Ok/m8ZQjobR34KVjvD9Im+kBcurryYxHVkrOz/uug7Y1mys+BpHqYq6ug2yaoDQXfMXdQdQcXskyFvX0RP0uODu4drihzVbBrRlOY6JvVcnAwks0Xtkc2GvsxLw5S36VHyhGkE2NlZRlEBsr490nFs1Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzGG63Eo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C404C116D0;
+	Tue, 11 Nov 2025 01:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825354;
-	bh=VZjfb/97u9E6+ILv/NUK5vtggt5DkBjfowBEVx3EqUs=;
+	s=korg; t=1762824830;
+	bh=hTaeJkrXWbLIa8dnpeSz18k9t7iiub3LcgpuB0Yffg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G4HA1K0P/7x3cKCuLeezKiNYdJPiBt0jR9Vr5kUfrX62cGBwD/qlqFBCLQRqaBY/M
-	 IVU7S5TOQEUjP3AEBpI46X3REgDROaPuqo2MMA0AqQGZcbuwB46mSCvc6OXs+kuId5
-	 N4ChhEfqtystO7K72SC9bhtioWfQEEcsRSqwTj+A=
+	b=kzGG63EobJDDAXwYF2SgbW5jTKGj7rPqLhPEib41EfpyZ77s/6mAkmzb3uFysVQcM
+	 u9G5TDSMrZzXwMY64erthwBkXXRC7gsPO5XCLzA3lhRcX2cZ+ccrzTYdRf66OxUJX4
+	 NjFMzyq6qYp4M/FdQIfYYF+Fzj1MNxe6BY+2K0xQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 768/849] net: mdio: Check regmap pointer returned by device_node_to_regmap()
+Subject: [PATCH 6.12 482/565] LoongArch: Handle new atomic instructions for probes
 Date: Tue, 11 Nov 2025 09:45:38 +0900
-Message-ID: <20251111004554.996224176@linuxfoundation.org>
+Message-ID: <20251111004537.767447256@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit b2b526c2cf57d14ee269e012ed179081871f45a1 ]
+[ Upstream commit db740f5689e61f2e75b73e5c8e7c985a3b4bc045 ]
 
-The call to device_node_to_regmap() in airoha_mdio_probe() can return
-an ERR_PTR() if regmap initialization fails. Currently, the driver
-stores the pointer without validation, which could lead to a crash
-if it is later dereferenced.
+The atomic instructions sc.q, llacq.{w/d}, screl.{w/d} were newly added
+in the LoongArch Reference Manual v1.10, it is necessary to handle them
+in insns_not_supported() to avoid putting a breakpoint in the middle of
+a ll/sc atomic sequence, otherwise it will loop forever for kprobes and
+uprobes.
 
-Add an IS_ERR() check and return the corresponding error code to make
-the probe path more robust.
-
-Fixes: 67e3ba978361 ("net: mdio: Add MDIO bus controller for Airoha AN7583")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251031161607.58581-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mdio/mdio-airoha.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/loongarch/include/asm/inst.h |  5 +++++
+ arch/loongarch/kernel/inst.c      | 12 ++++++++++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/drivers/net/mdio/mdio-airoha.c b/drivers/net/mdio/mdio-airoha.c
-index 1dc9939c8d7d4..52e7475121eaf 100644
---- a/drivers/net/mdio/mdio-airoha.c
-+++ b/drivers/net/mdio/mdio-airoha.c
-@@ -219,6 +219,8 @@ static int airoha_mdio_probe(struct platform_device *pdev)
- 	priv = bus->priv;
- 	priv->base_addr = addr;
- 	priv->regmap = device_node_to_regmap(dev->parent->of_node);
-+	if (IS_ERR(priv->regmap))
-+		return PTR_ERR(priv->regmap);
+diff --git a/arch/loongarch/include/asm/inst.h b/arch/loongarch/include/asm/inst.h
+index 3089785ca97e7..bec5b63e46888 100644
+--- a/arch/loongarch/include/asm/inst.h
++++ b/arch/loongarch/include/asm/inst.h
+@@ -77,6 +77,10 @@ enum reg2_op {
+ 	iocsrwrh_op     = 0x19205,
+ 	iocsrwrw_op     = 0x19206,
+ 	iocsrwrd_op     = 0x19207,
++	llacqw_op	= 0xe15e0,
++	screlw_op	= 0xe15e1,
++	llacqd_op	= 0xe15e2,
++	screld_op	= 0xe15e3,
+ };
  
- 	priv->clk = devm_clk_get_enabled(dev, NULL);
- 	if (IS_ERR(priv->clk))
+ enum reg2i5_op {
+@@ -189,6 +193,7 @@ enum reg3_op {
+ 	fldxd_op	= 0x7068,
+ 	fstxs_op	= 0x7070,
+ 	fstxd_op	= 0x7078,
++	scq_op		= 0x70ae,
+ 	amswapw_op	= 0x70c0,
+ 	amswapd_op	= 0x70c1,
+ 	amaddw_op	= 0x70c2,
+diff --git a/arch/loongarch/kernel/inst.c b/arch/loongarch/kernel/inst.c
+index 14d7d700bcb98..e6896a40017ea 100644
+--- a/arch/loongarch/kernel/inst.c
++++ b/arch/loongarch/kernel/inst.c
+@@ -139,6 +139,9 @@ bool insns_not_supported(union loongarch_instruction insn)
+ 	case amswapw_op ... ammindbdu_op:
+ 		pr_notice("atomic memory access instructions are not supported\n");
+ 		return true;
++	case scq_op:
++		pr_notice("sc.q instruction is not supported\n");
++		return true;
+ 	}
+ 
+ 	switch (insn.reg2i14_format.opcode) {
+@@ -150,6 +153,15 @@ bool insns_not_supported(union loongarch_instruction insn)
+ 		return true;
+ 	}
+ 
++	switch (insn.reg2_format.opcode) {
++	case llacqw_op:
++	case llacqd_op:
++	case screlw_op:
++	case screld_op:
++		pr_notice("llacq and screl instructions are not supported\n");
++		return true;
++	}
++
+ 	switch (insn.reg1i21_format.opcode) {
+ 	case bceqz_op:
+ 		pr_notice("bceqz and bcnez instructions are not supported\n");
 -- 
 2.51.0
 
