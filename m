@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-193299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6303EC4A1F3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0D7C4A286
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:04:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D8B53AED1D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7FABA4F646F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2C12561A7;
-	Tue, 11 Nov 2025 01:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7046A2652AF;
+	Tue, 11 Nov 2025 01:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKTWpnwv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3o2iYdY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BA41C28E;
-	Tue, 11 Nov 2025 01:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DF425A341;
+	Tue, 11 Nov 2025 01:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822841; cv=none; b=kAAAm2m1r9FBH61ysV2k4xJqU4tYqxhq4jHpWIbXbSVRjCYS65zazhmvJOeYCJ3v5Z516eLIJFMlUkitTueEWiuJaQFP+c/mZ1TMNlTTj1UcuXnVasj0m4u8BWs8kuuDsXntBgxQIjqhGiMZPun6le2lviM71fg7R3ddtRv2AVg=
+	t=1762822846; cv=none; b=BuVGFRz1pEBOBeJQBL+IAYksckR+iEraMEziFt5oFGS2ABR7LJteDkOJLY30k5BCos2FQ7jDljbsEms4BWLxixIVuRl9GKRYInBz7rYv3Lhcsy2msuIlFyyMOzbWRosXmMNfp+vEoqjrXplA3WLx45ZwNfVNWT/bfPkndn8O+kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822841; c=relaxed/simple;
-	bh=sIBOoXVEl1GqHpIr2N7cGdkTZ1ztsmNlS15MiqLc5Ic=;
+	s=arc-20240116; t=1762822846; c=relaxed/simple;
+	bh=Pd8sEaBoHJoNekoN1UVzRXHrjtFCgOwSH0QECMH3sR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i593Wr1e9GiZrEocVWPs0/Bf5F7L7x7HGjqgmQQUrSM6FUzbu+epXDSWiDcOTlBvBmx065UNCEJ2FGA0syZj5PCISnuVSiwgLK/Hc5Sb2HT6XpLfAQBExkdXJJWGnRIO5vhvKE8O3TWeINE08flmWRGZ11YZDa/F68cNKNdTuT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKTWpnwv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C786CC4CEFB;
-	Tue, 11 Nov 2025 01:00:40 +0000 (UTC)
+	 MIME-Version; b=hU0/tQ/NWCGFK+YG5DLmWzs73s6eVXqedVROH6MCfaI/Vag+OiyUtsDZmA+rl1m0hDsqAhkAngltoTqGpxuoAY9XN+PpZvqBdzwrtnyC9XEynMcccyWjdPZl4q6xjZZWUtgYp3wp4e2YwXNItIrPvy1M/9zSIlAZhxvZzxGF4HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3o2iYdY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A867C19424;
+	Tue, 11 Nov 2025 01:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822841;
-	bh=sIBOoXVEl1GqHpIr2N7cGdkTZ1ztsmNlS15MiqLc5Ic=;
+	s=korg; t=1762822846;
+	bh=Pd8sEaBoHJoNekoN1UVzRXHrjtFCgOwSH0QECMH3sR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RKTWpnwvjfJ2KmtB81CCQ4Wj4v7Zp+i61MfbcpWzST553fJFkcpmuub8AACqjYhiD
-	 LRaQwpS/UBUmBFY+XSenLY+ErtFy51Lak/x7b1OfDBZXj4xgwWYIr7swJu7GR9t0DY
-	 3o4yGgoyiaHlRbXD9Yw0wcxe73XQ75T2WzYnWhXA=
+	b=v3o2iYdYYpUokDUliNKw0Tbez5vY2/t17y5aZ7+JS+JpdMEiMcE2va9FQh3swKAtS
+	 opgv5TvfGsOSqJd9XfunglDmMTubDRxRRUhAK4Ag4MpML1jgPFUHbFtwHpTciiL6Qb
+	 jCiCR79QWFBirfV5qFtI3ytv6YSioI498Mr93B1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 181/849] kunit: Enable PCI on UML without triggering WARN()
-Date: Tue, 11 Nov 2025 09:35:51 +0900
-Message-ID: <20251111004540.806788014@linuxfoundation.org>
+Subject: [PATCH 6.17 182/849] selftests/bpf: Fix arena_spin_lock selftest failure
+Date: Tue, 11 Nov 2025 09:35:52 +0900
+Message-ID: <20251111004540.830789409@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -62,80 +61,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
 
-[ Upstream commit 031cdd3bc3f369553933c1b0f4cb18000162c8ff ]
+[ Upstream commit a9d4e9f0e871352a48a82da11a50df7196fe567a ]
 
-Various KUnit tests require PCI infrastructure to work. All normal
-platforms enable PCI by default, but UML does not. Enabling PCI from
-.kunitconfig files is problematic as it would not be portable. So in
-commit 6fc3a8636a7b ("kunit: tool: Enable virtio/PCI by default on UML")
-PCI was enabled by way of CONFIG_UML_PCI_OVER_VIRTIO=y. However
-CONFIG_UML_PCI_OVER_VIRTIO requires additional configuration of
-CONFIG_UML_PCI_OVER_VIRTIO_DEVICE_ID or will otherwise trigger a WARN() in
-virtio_pcidev_init(). However there is no one correct value for
-UML_PCI_OVER_VIRTIO_DEVICE_ID which could be used by default.
+For systems having CONFIG_NR_CPUS set to > 1024 in kernel config
+the selftest fails as arena_spin_lock_irqsave() returns EOPNOTSUPP.
+(eg - incase of powerpc default value for CONFIG_NR_CPUS is 8192)
 
-This warning is confusing when debugging test failures.
+The selftest is skipped incase bpf program returns EOPNOTSUPP,
+with a descriptive message logged.
 
-On the other hand, the functionality of CONFIG_UML_PCI_OVER_VIRTIO is not
-used at all, given that it is completely non-functional as indicated by
-the WARN() in question. Instead it is only used as a way to enable
-CONFIG_UML_PCI which itself is not directly configurable.
-
-Instead of going through CONFIG_UML_PCI_OVER_VIRTIO, introduce a custom
-configuration option which enables CONFIG_UML_PCI without triggering
-warnings or building dead code.
-
-Link: https://lore.kernel.org/r/20250908-kunit-uml-pci-v2-1-d8eba5f73c9d@linutronix.de
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250913091337.1841916-1-skb99@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/Kconfig                           | 7 +++++++
- tools/testing/kunit/configs/arch_uml.config | 5 ++---
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ .../selftests/bpf/prog_tests/arena_spin_lock.c      | 13 +++++++++++++
+ tools/testing/selftests/bpf/progs/arena_spin_lock.c |  5 ++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
-index c10ede4b1d220..1823539e96da3 100644
---- a/lib/kunit/Kconfig
-+++ b/lib/kunit/Kconfig
-@@ -106,4 +106,11 @@ config KUNIT_DEFAULT_TIMEOUT
- 	  If unsure, the default timeout of 300 seconds is suitable for most
- 	  cases.
+diff --git a/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c b/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c
+index 0223fce4db2bc..693fd86fbde62 100644
+--- a/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c
++++ b/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c
+@@ -40,8 +40,13 @@ static void *spin_lock_thread(void *arg)
  
-+config KUNIT_UML_PCI
-+	bool "KUnit UML PCI Support"
-+	depends on UML
-+	select UML_PCI
-+	help
-+	  Enables the PCI subsystem on UML for use by KUnit tests.
+ 	err = bpf_prog_test_run_opts(prog_fd, &topts);
+ 	ASSERT_OK(err, "test_run err");
 +
- endif # KUNIT
-diff --git a/tools/testing/kunit/configs/arch_uml.config b/tools/testing/kunit/configs/arch_uml.config
-index 54ad8972681a2..28edf816aa70e 100644
---- a/tools/testing/kunit/configs/arch_uml.config
-+++ b/tools/testing/kunit/configs/arch_uml.config
-@@ -1,8 +1,7 @@
- # Config options which are added to UML builds by default
++	if (topts.retval == -EOPNOTSUPP)
++		goto end;
++
+ 	ASSERT_EQ((int)topts.retval, 0, "test_run retval");
  
--# Enable virtio/pci, as a lot of tests require it.
--CONFIG_VIRTIO_UML=y
--CONFIG_UML_PCI_OVER_VIRTIO=y
-+# Enable pci, as a lot of tests require it.
-+CONFIG_KUNIT_UML_PCI=y
++end:
+ 	pthread_exit(arg);
+ }
  
- # Enable FORTIFY_SOURCE for wider checking.
- CONFIG_FORTIFY_SOURCE=y
+@@ -63,6 +68,7 @@ static void test_arena_spin_lock_size(int size)
+ 	skel = arena_spin_lock__open_and_load();
+ 	if (!ASSERT_OK_PTR(skel, "arena_spin_lock__open_and_load"))
+ 		return;
++
+ 	if (skel->data->test_skip == 2) {
+ 		test__skip();
+ 		goto end;
+@@ -86,6 +92,13 @@ static void test_arena_spin_lock_size(int size)
+ 			goto end_barrier;
+ 	}
+ 
++	if (skel->data->test_skip == 3) {
++		printf("%s:SKIP: CONFIG_NR_CPUS exceed the maximum supported by arena spinlock\n",
++		       __func__);
++		test__skip();
++		goto end_barrier;
++	}
++
+ 	ASSERT_EQ(skel->bss->counter, repeat * nthreads, "check counter value");
+ 
+ end_barrier:
+diff --git a/tools/testing/selftests/bpf/progs/arena_spin_lock.c b/tools/testing/selftests/bpf/progs/arena_spin_lock.c
+index c4500c37f85e0..086b57a426cf5 100644
+--- a/tools/testing/selftests/bpf/progs/arena_spin_lock.c
++++ b/tools/testing/selftests/bpf/progs/arena_spin_lock.c
+@@ -37,8 +37,11 @@ int prog(void *ctx)
+ #if defined(ENABLE_ATOMICS_TESTS) && defined(__BPF_FEATURE_ADDR_SPACE_CAST)
+ 	unsigned long flags;
+ 
+-	if ((ret = arena_spin_lock_irqsave(&lock, flags)))
++	if ((ret = arena_spin_lock_irqsave(&lock, flags))) {
++		if (ret == -EOPNOTSUPP)
++			test_skip = 3;
+ 		return ret;
++	}
+ 	if (counter != limit)
+ 		counter++;
+ 	bpf_repeat(cs_count);
 -- 
 2.51.0
 
