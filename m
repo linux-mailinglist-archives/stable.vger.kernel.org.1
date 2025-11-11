@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-193929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF82AC4ABA4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 360FAC4A593
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:21:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9661B4F7AB7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 245511894540
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2E230276C;
-	Tue, 11 Nov 2025 01:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA3F34A3D8;
+	Tue, 11 Nov 2025 01:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwGByNTU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqTXxDl6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9AA30103C;
-	Tue, 11 Nov 2025 01:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273CC34A77A;
+	Tue, 11 Nov 2025 01:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824398; cv=none; b=Dpn1tRJ0m1pQw6spIARdSAomz8XLG/RLywfn9BuxlUqkXzi3OYGo4La3+Cm7nKILwf6fLeRiV12kO/ruIlzwy9OOU/7BiBiMrzWTqKoW6mphKr5iJ0hKWrvb1NAUAyLNmfHOZX+DNtBcFHe7O6cYuYxs0KJ18Sdv6zY4b+TnB2o=
+	t=1762823230; cv=none; b=h2jPuJhMUkeakpKmqGu65/nMyHNcr/cXFdygTN47ypAuDtMiGhJgN3gK30mEMFAgnZ9hZHn8w9oe1GwsHWFXiBTP9BDuW9tGR0gqUGF5jl0qKciE2Qdb0+/gAGqJ2/SAvRCraWFXP8Da7xEWfn5sytuLX6Gr4ZJZKC8MUcwhL9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824398; c=relaxed/simple;
-	bh=J0rmfD8uOa8neT7MjE04ryRGymDMsWrFeyQASAnklVQ=;
+	s=arc-20240116; t=1762823230; c=relaxed/simple;
+	bh=Bqw9tZfAv5SartoohybGiZgHWyFA15My85vxsVgsuKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2Ry7pVKidCozweHsahdPVd3M6OWsorjdqw1lx2FeJdyNIY8OfQ1tFzuZsDlatzkVwaJOx84qNh5cRL8Jgls19oIZkZxZVCoTgJXho54Z2Ae68vrFk1UuaXJm6bjSt3tYR5hmWUTOFoY8fOo2pKismCaCIZVGoz0V6iVQEVvi2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwGByNTU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5977CC113D0;
-	Tue, 11 Nov 2025 01:26:38 +0000 (UTC)
+	 MIME-Version; b=IgoHvhdCGWSVpxGWKcu9fARX7P0WGOiqEmUjbwIpZ879lAFEdcOjyJxeW7P+9zrCYoxIH9PTrrwzrm+TSRUnZecn72EYX5flpp2hpfAGw+2XesB/8uO+Mi5BT37SDZv4JIaJY1xR8424Bifw7Rr9Uy0Faf4OgLYyahso9JjCtAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqTXxDl6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B470C16AAE;
+	Tue, 11 Nov 2025 01:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824398;
-	bh=J0rmfD8uOa8neT7MjE04ryRGymDMsWrFeyQASAnklVQ=;
+	s=korg; t=1762823229;
+	bh=Bqw9tZfAv5SartoohybGiZgHWyFA15My85vxsVgsuKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BwGByNTUcG0v5RxxpPwDC+7zt7hituY8OvJGgTKGe7GXE6QxosChhBPccaKfkK2pO
-	 aBy4xox+fOa+/1Pkm+sL45guQQKCfbAczHipVNuW0FMscKi6N0vTiGbGEECq9rhxwL
-	 /m4+CKNag95WLhRaHbOqZwnJVWCGO1nWjsBQY5qA=
+	b=zqTXxDl6Vimr5pWMZvTKoBDYIbXgi8cc0ZVJRnbfg36FD2xx1N7ZZVHeJrYvgr9cp
+	 1/qe+1OuRpUMdAo8X2z26HdMOkc3Cghx9uPZA2TgSsS+fWWqsREbl0QWdt8k6VTbaG
+	 fnXBigsWfjQRGdCeC9hAXL2hfA2R/dbS3Dxlgof8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Parth Pancholi <parth.pancholi@toradex.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 487/849] drm/bridge: write full Audio InfoFrame
+Subject: [PATCH 6.12 201/565] drm/bridge: cdns-dsi: Fix REG_WAKEUP_TIME value
 Date: Tue, 11 Nov 2025 09:40:57 +0900
-Message-ID: <20251111004548.215037742@linuxfoundation.org>
+Message-ID: <20251111004531.449320247@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit f0e7f358e72b10b01361787134ebcbd9e9aa72d9 ]
+[ Upstream commit eea4f89b6461294ed6bea1d3285bb3f79c09a041 ]
 
-Instead of writing the first byte of the infoframe (and hoping that the
-rest is default / zeroes), hook Audio InfoFrame support into the
-write_infoframe / clear_infoframes callbacks and use
-drm_atomic_helper_connector_hdmi_update_audio_infoframe() to write the
-frame.
+The driver tries to calculate the value for REG_WAKEUP_TIME. However,
+the calculation itself is not correct, and to add on it, the resulting
+value is almost always larger than the field's size, so the actual
+result is more or less random.
 
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Link: https://lore.kernel.org/r/20250903-adv7511-audio-infoframe-v1-2-05b24459b9a4@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+According to the docs, figuring out the value for REG_WAKEUP_TIME
+requires HW characterization and there's no way to have a generic
+algorithm to come up with the value. That doesn't help at all...
+
+However, we know that the value must be smaller than the line time, and,
+at least in my understanding, the proper value for it is quite small.
+Testing shows that setting it to 1/10 of the line time seems to work
+well. All video modes from my HDMI monitor work with this algorithm.
+
+Hopefully we'll get more information on how to calculate the value, and
+we can then update this.
+
+Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
+Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-11-e61cc06074c2@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/bridge/adv7511/adv7511_audio.c    | 23 +++++--------------
- drivers/gpu/drm/bridge/adv7511/adv7511_drv.c  | 18 +++++++++++++++
- 2 files changed, 24 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-index 766b1c96bc887..87e7e820810a8 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-@@ -12,6 +12,8 @@
- #include <sound/soc.h>
- #include <linux/of_graph.h>
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+index 89eed0668bfb2..faa0bdfd19370 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+@@ -833,7 +833,13 @@ static void cdns_dsi_bridge_enable(struct drm_bridge *bridge)
  
-+#include <drm/display/drm_hdmi_state_helper.h>
+ 	tx_byte_period = DIV_ROUND_DOWN_ULL((u64)NSEC_PER_SEC * 8,
+ 					    phy_cfg->hs_clk_rate);
+-	reg_wakeup = (phy_cfg->hs_prepare + phy_cfg->hs_zero) / tx_byte_period;
 +
- #include "adv7511.h"
++	/*
++	 * Estimated time [in clock cycles] to perform LP->HS on D-PHY.
++	 * It is not clear how to calculate this, so for now,
++	 * set it to 1/10 of the total number of clocks in a line.
++	 */
++	reg_wakeup = dsi_cfg.htotal / nlanes / 10;
+ 	writel(REG_WAKEUP_TIME(reg_wakeup) | REG_LINE_DURATION(tmp),
+ 	       dsi->regs + VID_DPHY_TIME);
  
- static void adv7511_calc_cts_n(unsigned int f_tmds, unsigned int fs,
-@@ -155,17 +157,8 @@ int adv7511_hdmi_audio_prepare(struct drm_bridge *bridge,
- 	regmap_update_bits(adv7511->regmap, ADV7511_REG_I2C_FREQ_ID_CFG,
- 			   ADV7511_I2C_FREQ_ID_CFG_RATE_MASK, rate << 4);
- 
--	/* send current Audio infoframe values while updating */
--	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
--			   BIT(5), BIT(5));
--
--	regmap_write(adv7511->regmap, ADV7511_REG_AUDIO_INFOFRAME(0), 0x1);
--
--	/* use Audio infoframe updated info */
--	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
--			   BIT(5), 0);
--
--	return 0;
-+	return drm_atomic_helper_connector_hdmi_update_audio_infoframe(connector,
-+								       &hparms->cea);
- }
- 
- int adv7511_hdmi_audio_startup(struct drm_bridge *bridge,
-@@ -188,15 +181,9 @@ int adv7511_hdmi_audio_startup(struct drm_bridge *bridge,
- 	/* not copyrighted */
- 	regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CFG1,
- 				BIT(5), BIT(5));
--	/* enable audio infoframes */
--	regmap_update_bits(adv7511->regmap, ADV7511_REG_PACKET_ENABLE1,
--				BIT(3), BIT(3));
- 	/* AV mute disable */
- 	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(0),
- 				BIT(7) | BIT(6), BIT(7));
--	/* use Audio infoframe updated info */
--	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
--				BIT(5), 0);
- 
- 	/* enable SPDIF receiver */
- 	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
-@@ -214,4 +201,6 @@ void adv7511_hdmi_audio_shutdown(struct drm_bridge *bridge,
- 	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
- 		regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CONFIG,
- 				   BIT(7), 0);
-+
-+	drm_atomic_helper_connector_hdmi_clear_audio_infoframe(connector);
- }
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-index 00d6417c177b4..9081c09fc136b 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-@@ -886,6 +886,9 @@ static int adv7511_bridge_hdmi_clear_infoframe(struct drm_bridge *bridge,
- 	struct adv7511 *adv7511 = bridge_to_adv7511(bridge);
- 
- 	switch (type) {
-+	case HDMI_INFOFRAME_TYPE_AUDIO:
-+		adv7511_packet_disable(adv7511, ADV7511_PACKET_ENABLE_AUDIO_INFOFRAME);
-+		break;
- 	case HDMI_INFOFRAME_TYPE_AVI:
- 		adv7511_packet_disable(adv7511, ADV7511_PACKET_ENABLE_AVI_INFOFRAME);
- 		break;
-@@ -906,6 +909,21 @@ static int adv7511_bridge_hdmi_write_infoframe(struct drm_bridge *bridge,
- 	adv7511_bridge_hdmi_clear_infoframe(bridge, type);
- 
- 	switch (type) {
-+	case HDMI_INFOFRAME_TYPE_AUDIO:
-+		/* send current Audio infoframe values while updating */
-+		regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
-+				   BIT(5), BIT(5));
-+
-+		/* The Audio infoframe id is not configurable */
-+		regmap_bulk_write(adv7511->regmap, ADV7511_REG_AUDIO_INFOFRAME_VERSION,
-+				  buffer + 1, len - 1);
-+
-+		/* use Audio infoframe updated info */
-+		regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
-+				   BIT(5), 0);
-+
-+		adv7511_packet_enable(adv7511, ADV7511_PACKET_ENABLE_AUDIO_INFOFRAME);
-+		break;
- 	case HDMI_INFOFRAME_TYPE_AVI:
- 		/* The AVI infoframe id is not configurable */
- 		regmap_bulk_write(adv7511->regmap, ADV7511_REG_AVI_INFOFRAME_VERSION,
 -- 
 2.51.0
 
