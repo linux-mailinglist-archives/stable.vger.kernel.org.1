@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-193571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE3AC4A55A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:20:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D0DCC4AD84
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4407934BF1E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DDBBF4F5874
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B133229B78F;
-	Tue, 11 Nov 2025 01:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238C43431F8;
+	Tue, 11 Nov 2025 01:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1PrWFk1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yD+Jbp19"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D31D26FA67;
-	Tue, 11 Nov 2025 01:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E353431E6;
+	Tue, 11 Nov 2025 01:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823498; cv=none; b=Do/w8oO/pKeNTiZNdirrfNG7eO+BTnWqEEZztGDkgUAXjmOHVjSeL8VnHyJmEazmuZEeG6PLVB6c+8ZPA/j9+1GkKmcgGtJhll0ULxNl+mQHaBHAcUwbp97RQnmj8XwyMW90U+3XvEjfCRv4ra4/TrhJs1nQs8UEdHDBkBcLZEo=
+	t=1762824652; cv=none; b=oYKvYVtorYLBfhH8Mej33TWiDZkPb+nQR6oT9/u54KQSwuvzSfJvQrymStT+dBMGHbE9xB4FIfqGy43y0/5gmjIAGpjxW6OzQl2KLS1t9MGmCZOAKlSfdK1/AKcYF4J6vyADwsAG+F71nv7XO094cJ0jJKo8wqpXGJoZqMRAOus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823498; c=relaxed/simple;
-	bh=m4KI9kBaEgxZDksjkYLA8bCYVeCJahpWN3FwZr02gZY=;
+	s=arc-20240116; t=1762824652; c=relaxed/simple;
+	bh=X/pBxV5DpceVL762Tafd7ON19gQ+7Eq4VTq/PAnE+cU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1uvhMN3jQjAMReNdjud0dbdAcoDCgmlb76RdLaxaIoe7Vd77fE+YMHiSOAkAP1ui9JH89luuujnswAxiK3ipOmxUFFldgHw9D98byYTE0B9QW14i9gGYS+x7mcqk3UyS076Jxor6HdTQ6kipF3Dsqh/blCATHYNiUBj4msaXrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1PrWFk1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D853C4CEF5;
-	Tue, 11 Nov 2025 01:11:37 +0000 (UTC)
+	 MIME-Version; b=ERlpaIDANozpR+aEiOuDsIkefw3FeYHhu2nD9H5HsZQQkfG7X0EmvGIiwoNgYNaQHQH7emD8QsSEkO4u1QBJ738b1FVsHI+fapORKcI9BfRNKvfftz1mqVWPfPekCWErMmPNUjf7qH+jTN0TjCh3XIGQdvPon2S3Rbh4OiMbvfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yD+Jbp19; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F06C19424;
+	Tue, 11 Nov 2025 01:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823498;
-	bh=m4KI9kBaEgxZDksjkYLA8bCYVeCJahpWN3FwZr02gZY=;
+	s=korg; t=1762824652;
+	bh=X/pBxV5DpceVL762Tafd7ON19gQ+7Eq4VTq/PAnE+cU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1PrWFk1KxOI5pISA788d5GGNGHkNZN23zSfvzXJ9dywV8ztIS+7PzThNgZBq7tzT
-	 vgrczWAEqE9f4/o5TXHaZgWbjyav1fJXL9x8cwQg373RcwfdWrvcwl9mrtqpgIIcrS
-	 E+vn/O5/mgezsv9vNVonvzqqUAfORNmGK3pWMb4M=
+	b=yD+Jbp19y2z4QayUPCK0wMS+oizImYzfXGoH5vLtvhy8wvM5i5hXSgNs310EmRXAM
+	 t86Krxq2eK9EBtO9r9eKf2NfJkY7YQ+GO/Ib26e8WITPP+KpcvqmZ0gj11D/nMVnQ6
+	 yAhO0aVSavTMWqOlAYkkphIPptfQCwIcouZnTLnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 258/565] drm/amd/display: Support HW cursor 180 rot for any number of pipe splits
+Subject: [PATCH 6.17 544/849] wifi: mt76: mt7996: fix memory leak on mt7996_mcu_sta_key_tlv error
 Date: Tue, 11 Nov 2025 09:41:54 +0900
-Message-ID: <20251111004532.701908045@linuxfoundation.org>
+Message-ID: <20251111004549.562383947@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,163 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Lipski <ivan.lipski@amd.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 8a359f0f138d5ac7ceffd21b73279be50e516c0a ]
+[ Upstream commit 7c0f63fe37a5da2c13fc35c89053b31be8ead895 ]
 
-[Why]
-For the HW cursor, its current position in the pipe_ctx->stream struct is
-not affected by the 180 rotation, i. e. the top left corner is still at
-0,0. However, the DPP & HUBP set_cursor_position functions require rotated
-position.
+Free the allocated skb on error
 
-The current approach is hard-coded for ODM 2:1, thus it's failing for
-ODM 4:1, resulting in a double cursor.
-
-[How]
-Instead of calculating the new cursor position relatively to the
-viewports, we calculate it using a viewavable clip_rect of each plane.
-
-The clip_rects are first offset and scaled to the same space as the
-src_rect, i. e. Stream space -> Plane space.
-
-In case of a pipe split, which divides the plane into 2 or more viewports,
-the clip_rect is the union of all the viewports of the given plane.
-
-With the assumption that the viewports in HUBP's set_cursor_position are
-in the Plane space as well, it should produce a correct cursor position
-for any number of pipe splits.
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Signed-off-by: Leo Li <sunpeng.li@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://patch.msgid.link/20250915075910.47558-5-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/hwss/dcn10/dcn10_hwseq.c   | 73 +++++++------------
- 1 file changed, 27 insertions(+), 46 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-index 00be0b26689d3..d33bdefca05bb 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-@@ -3494,6 +3494,8 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
- 	int y_plane = pipe_ctx->plane_state->dst_rect.y;
- 	int x_pos = pos_cpy.x;
- 	int y_pos = pos_cpy.y;
-+	int clip_x = pipe_ctx->plane_state->clip_rect.x;
-+	int clip_width = pipe_ctx->plane_state->clip_rect.width;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index aad58f7831c7b..0d688ec5a8163 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -2535,8 +2535,10 @@ int mt7996_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
+ 		return PTR_ERR(skb);
  
- 	if ((pipe_ctx->top_pipe != NULL) || (pipe_ctx->bottom_pipe != NULL)) {
- 		if ((pipe_ctx->plane_state->src_rect.width != pipe_ctx->plane_res.scl_data.viewport.width) ||
-@@ -3512,7 +3514,7 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
- 	 */
+ 	ret = mt7996_mcu_sta_key_tlv(wcid, skb, key, cmd);
+-	if (ret)
++	if (ret) {
++		dev_kfree_skb(skb);
+ 		return ret;
++	}
  
- 	/**
--	 * Translate cursor from stream space to plane space.
-+	 * Translate cursor and clip offset from stream space to plane space.
- 	 *
- 	 * If the cursor is scaled then we need to scale the position
- 	 * to be in the approximately correct place. We can't do anything
-@@ -3529,6 +3531,10 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
- 				pipe_ctx->plane_state->dst_rect.width;
- 		y_pos = (y_pos - y_plane) * pipe_ctx->plane_state->src_rect.height /
- 				pipe_ctx->plane_state->dst_rect.height;
-+		clip_x = (clip_x - x_plane) * pipe_ctx->plane_state->src_rect.width /
-+				pipe_ctx->plane_state->dst_rect.width;
-+		clip_width = clip_width * pipe_ctx->plane_state->src_rect.width /
-+				pipe_ctx->plane_state->dst_rect.width;
- 	}
- 
- 	/**
-@@ -3575,30 +3581,18 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
- 
- 
- 	if (param.rotation == ROTATION_ANGLE_0) {
--		int viewport_width =
--			pipe_ctx->plane_res.scl_data.viewport.width;
--		int viewport_x =
--			pipe_ctx->plane_res.scl_data.viewport.x;
- 
- 		if (param.mirror) {
--			if (pipe_split_on || odm_combine_on) {
--				if (pos_cpy.x >= viewport_width + viewport_x) {
--					pos_cpy.x = 2 * viewport_width
--							- pos_cpy.x + 2 * viewport_x;
--				} else {
--					uint32_t temp_x = pos_cpy.x;
--
--					pos_cpy.x = 2 * viewport_x - pos_cpy.x;
--					if (temp_x >= viewport_x +
--						(int)hubp->curs_attr.width || pos_cpy.x
--						<= (int)hubp->curs_attr.width +
--						pipe_ctx->plane_state->src_rect.x) {
--						pos_cpy.x = 2 * viewport_width - temp_x;
--					}
--				}
--			} else {
--				pos_cpy.x = viewport_width - pos_cpy.x + 2 * viewport_x;
--			}
-+			/*
-+			 * The plane is split into multiple viewports.
-+			 * The combination of all viewports span the
-+			 * entirety of the clip rect.
-+			 *
-+			 * For no pipe_split, viewport_width is represents
-+			 * the full width of the clip_rect, so we can just
-+			 * mirror it.
-+			 */
-+			pos_cpy.x = clip_width - pos_cpy.x + 2 * clip_x;
- 		}
- 	}
- 	// Swap axis and mirror horizontally
-@@ -3668,30 +3662,17 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
- 	}
- 	// Mirror horizontally and vertically
- 	else if (param.rotation == ROTATION_ANGLE_180) {
--		int viewport_width =
--			pipe_ctx->plane_res.scl_data.viewport.width;
--		int viewport_x =
--			pipe_ctx->plane_res.scl_data.viewport.x;
--
- 		if (!param.mirror) {
--			if (pipe_split_on || odm_combine_on) {
--				if (pos_cpy.x >= viewport_width + viewport_x) {
--					pos_cpy.x = 2 * viewport_width
--							- pos_cpy.x + 2 * viewport_x;
--				} else {
--					uint32_t temp_x = pos_cpy.x;
--
--					pos_cpy.x = 2 * viewport_x - pos_cpy.x;
--					if (temp_x >= viewport_x +
--						(int)hubp->curs_attr.width || pos_cpy.x
--						<= (int)hubp->curs_attr.width +
--						pipe_ctx->plane_state->src_rect.x) {
--						pos_cpy.x = temp_x + viewport_width;
--					}
--				}
--			} else {
--				pos_cpy.x = viewport_width - pos_cpy.x + 2 * viewport_x;
--			}
-+			/*
-+			 * The plane is split into multiple viewports.
-+			 * The combination of all viewports span the
-+			 * entirety of the clip rect.
-+			 *
-+			 * For no pipe_split, viewport_width is represents
-+			 * the full width of the clip_rect, so we can just
-+			 * mirror it.
-+			 */
-+			pos_cpy.x = clip_width - pos_cpy.x + 2 * clip_x;
- 		}
- 
- 		/**
+ 	return mt76_mcu_skb_send_msg(dev, skb, mcu_cmd, true);
+ }
 -- 
 2.51.0
 
