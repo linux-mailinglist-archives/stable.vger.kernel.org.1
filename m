@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B38C4AB5C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4EAAC4B10C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:56:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C2E394F71E7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F18024F70EB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DEDA2F7AA4;
-	Tue, 11 Nov 2025 01:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A164D34A79E;
+	Tue, 11 Nov 2025 01:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pjcoiybg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUa8iUbu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2212E7182;
-	Tue, 11 Nov 2025 01:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6DC34A796;
+	Tue, 11 Nov 2025 01:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824363; cv=none; b=rUvdGSnZ71BO0YDeA6Gyng0iCLvk0Ei1t5Jr8xhSsnfU7GyfzK4HI1D/VFkOJABPOHS8qgh5G8HYJC/QmvoNHLcDsQS0sr0Wvu1ceLmRFm6yjDFk9bEIbugQNUdufk8lb/9NMXuXPD7FPqk9XDuip/zK1SzWzEzdNq6kWF5anmM=
+	t=1762825336; cv=none; b=oKIqHfvI393XwF2lCVnuUYFmfDRQ3/Dxf/2Po7fg9yRapQNjjb4U3oc9VKKMq1yzQZlXkSWJY5yZtcX8Jq0UGBc7jCVetKx8uoQRAYBOaAIpo1n8SvW8NWUn0tvrUYFvNDfou/QJD9x57f9bsxuU32x9pj62JXZXOIi/GOxCFBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824363; c=relaxed/simple;
-	bh=xmN+xCPKoEmY/WGxr0PTfnYVqceTse2dr3u9BSIe044=;
+	s=arc-20240116; t=1762825336; c=relaxed/simple;
+	bh=3XfSQ+drwwxRNKDBB/o9qqTEjEP6XdsmiGnb7t58qfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uSBXVu1aDmOg18DEctiPCoxT/x0KVw+DSoV8e+ygJKtBqw8pgEMg0AVrkUQr2KpAJBoFY0TDW0CDStoMv9XUAJVi4CJyIWeyvzhLo8wzSGJ4oUqwTwfdnmGycazgTdNxMmWnBQlQoCL60dJrMuxiW6Bk+hMfFeXLsrt29qTvjxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pjcoiybg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11A8C116B1;
-	Tue, 11 Nov 2025 01:26:02 +0000 (UTC)
+	 MIME-Version; b=dxGGm0Ue8qGl6FGPnTvYrnWw20Qc+9S3B7d1lQnEMrKiqZy4e4R9kFiMTbxZ7UwYUlzJkkkFtpiReftQ/IEySfXQtKdAMOG/6freQdpXteiXIauKHK4wzhiQypfjlZibE8Qb9Nr3RpJkhYAxH1tYVJID93TMBzqU9UkfktEsAb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUa8iUbu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8913C116D0;
+	Tue, 11 Nov 2025 01:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824363;
-	bh=xmN+xCPKoEmY/WGxr0PTfnYVqceTse2dr3u9BSIe044=;
+	s=korg; t=1762825336;
+	bh=3XfSQ+drwwxRNKDBB/o9qqTEjEP6XdsmiGnb7t58qfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pjcoiybgnwb1cgovbVOpIBDqrIStu2yJXn04rdu9QbpoBtu8Y8mt8K6VMkg6pDbaG
-	 JG0hH8Z+M7hyq4bCz2V2J8GiGMqqDFyc7IPbDDP8g8dHM2Jmsv2uGSQTirz2LKQwlR
-	 kJHKCpmCdR4dJVOdAafombRw2Gg1xzBH1RrTfDXw=
+	b=DUa8iUbuvWQfo/HSSa9crraMXw/sDZ/h17z1S9W75i4QnWKt4sdejjxPKRAOZ1qJH
+	 3FeJNIGNSvY8WJxRdiVn1UJCpP9ekfxv1dwpg/cM5RQGm4cfdTbqJQGXP9z6vwRvN2
+	 +NomPDW+XDCG+oe3ZehcACqT9jw9FdSO/pc6mU/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Hoyoung Seo <hy50.seo@samsung.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 429/565] amd/amdkfd: resolve a race in amdgpu_amdkfd_device_fini_sw
-Date: Tue, 11 Nov 2025 09:44:45 +0900
-Message-ID: <20251111004536.521372969@linuxfoundation.org>
+Subject: [PATCH 6.17 716/849] scsi: ufs: core: Include UTP error in INT_FATAL_ERRORS
+Date: Tue, 11 Nov 2025 09:44:46 +0900
+Message-ID: <20251111004553.743809799@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yifan Zhang <yifan1.zhang@amd.com>
+From: Hoyoung Seo <hy50.seo@samsung.com>
 
-[ Upstream commit 99d7181bca34e96fbf61bdb6844918bdd4df2814 ]
+[ Upstream commit 558ae4579810fa0fef011944230c65a6f3087f85 ]
 
-There is race in amdgpu_amdkfd_device_fini_sw and interrupt.
-if amdgpu_amdkfd_device_fini_sw run in b/w kfd_cleanup_nodes and
-  kfree(kfd), and KGD interrupt generated.
+When a UTP error occurs in isolation, UFS is not currently recoverable.
+This is because the UTP error is not considered fatal in the error
+handling code, leading to either an I/O timeout or an OCS error.
 
-kernel panic log:
+Add the UTP error flag to INT_FATAL_ERRORS so the controller will be
+reset in this situation.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000098
-amdgpu 0000:c8:00.0: amdgpu: Requesting 4 partitions through PSP
+  sd 0:0:0:0: [sda] tag#38 UNKNOWN(0x2003) Result: hostbyte=0x07
+  driverbyte=DRIVER_OK cmd_age=0s
+  sd 0:0:0:0: [sda] tag#38 CDB: opcode=0x28 28 00 00 51 24 e2 00 00 08 00
+  I/O error, dev sda, sector 42542864 op 0x0:(READ) flags 0x80700 phys_seg
+  8 prio class 2
+  OCS error from controller = 9 for tag 39
+  pa_err[1] = 0x80000010 at 2667224756 us
+  pa_err: total cnt=2
+  dl_err[0] = 0x80000002 at 2667148060 us
+  dl_err[1] = 0x80002000 at 2667282844 us
+  No record of nl_err
+  No record of tl_err
+  No record of dme_err
+  No record of auto_hibern8_err
+  fatal_err[0] = 0x804 at 2667282836 us
 
-PGD d78c68067 P4D d78c68067
+  ---------------------------------------------------
+  		REGISTER
+  ---------------------------------------------------
+                             NAME	      OFFSET	         VALUE
+                      STD HCI SFR	  0xfffffff0	           0x0
+                             AHIT	        0x18	         0x814
+                 INTERRUPT STATUS	        0x20	        0x1000
+                 INTERRUPT ENABLE	        0x24	       0x70ef5
 
-kfd kfd: amdgpu: Allocated 3969056 bytes on gart
+[mkp: commit desc]
 
-PUD 1465b8067 PMD @
-
-Oops: @002 [#1] SMP NOPTI
-
-kfd kfd: amdgpu: Total number of KFD nodes to be created: 4
-CPU: 115 PID: @ Comm: swapper/115 Kdump: loaded Tainted: G S W OE K
-
-RIP: 0010:_raw_spin_lock_irqsave+0x12/0x40
-
-Code: 89 e@ 41 5c c3 cc cc cc cc 66 66 2e Of 1f 84 00 00 00 00 00 OF 1f 40 00 Of 1f 44% 00 00 41 54 9c 41 5c fa 31 cO ba 01 00 00 00 <fO> OF b1 17 75 Ba 4c 89 e@ 41 Sc
-
-89 c6 e8 07 38 5d
-
-RSP: 0018: ffffc90@1a6b0e28 EFLAGS: 00010046
-
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000018
-0000000000000001 RSI: ffff8883bb623e00 RDI: 0000000000000098
-ffff8883bb000000 RO8: ffff888100055020 ROO: ffff888100055020
-0000000000000000 R11: 0000000000000000 R12: 0900000000000002
-ffff888F2b97da0@ R14: @000000000000098 R15: ffff8883babdfo00
-
-CS: 010 DS: 0000 ES: 0000 CRO: 0000000080050033
-
-CR2: 0000000000000098 CR3: 0000000e7cae2006 CR4: 0000000002770ce0
-0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-0000000000000000 DR6: 00000000fffeO7FO DR7: 0000000000000400
-
-PKRU: 55555554
-
-Call Trace:
-
-<IRQ>
-
-kgd2kfd_interrupt+@x6b/0x1f@ [amdgpu]
-
-? amdgpu_fence_process+0xa4/0x150 [amdgpu]
-
-kfd kfd: amdgpu: Node: 0, interrupt_bitmap: 3 YcpxFl Rant tErace
-
-amdgpu_irq_dispatch+0x165/0x210 [amdgpu]
-
-amdgpu_ih_process+0x80/0x100 [amdgpu]
-
-amdgpu: Virtual CRAT table created for GPU
-
-amdgpu_irq_handler+0x1f/@x60 [amdgpu]
-
-__handle_irq_event_percpu+0x3d/0x170
-
-amdgpu: Topology: Add dGPU node [0x74a2:0x1002]
-
-handle_irq_event+0x5a/@xcO
-
-handle_edge_irq+0x93/0x240
-
-kfd kfd: amdgpu: KFD node 1 partition @ size 49148M
-
-asm_call_irq_on_stack+0xf/@x20
-
-</IRQ>
-
-common_interrupt+0xb3/0x130
-
-asm_common_interrupt+0x1le/0x40
-
-5.10.134-010.a1i5000.a18.x86_64 #1
-
-Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
-Reviewed-by: Philip Yang<Philip.Yang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Hoyoung Seo <hy50.seo@samsung.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Message-Id: <20250930061428.617955-1-hy50.seo@samsung.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ include/ufs/ufshci.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-index 07eadab4c1c4d..b536ec72cffb7 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-@@ -1084,7 +1084,15 @@ void kgd2kfd_interrupt(struct kfd_dev *kfd, const void *ih_ring_entry)
- 	}
+diff --git a/include/ufs/ufshci.h b/include/ufs/ufshci.h
+index 612500a7088f0..e64b701321010 100644
+--- a/include/ufs/ufshci.h
++++ b/include/ufs/ufshci.h
+@@ -180,6 +180,7 @@ static inline u32 ufshci_version(u32 major, u32 minor)
+ #define UTP_TASK_REQ_COMPL			0x200
+ #define UIC_COMMAND_COMPL			0x400
+ #define DEVICE_FATAL_ERROR			0x800
++#define UTP_ERROR				0x1000
+ #define CONTROLLER_FATAL_ERROR			0x10000
+ #define SYSTEM_BUS_FATAL_ERROR			0x20000
+ #define CRYPTO_ENGINE_FATAL_ERROR		0x40000
+@@ -199,7 +200,8 @@ static inline u32 ufshci_version(u32 major, u32 minor)
+ 				CONTROLLER_FATAL_ERROR |\
+ 				SYSTEM_BUS_FATAL_ERROR |\
+ 				CRYPTO_ENGINE_FATAL_ERROR |\
+-				UIC_LINK_LOST)
++				UIC_LINK_LOST |\
++				UTP_ERROR)
  
- 	for (i = 0; i < kfd->num_nodes; i++) {
--		node = kfd->nodes[i];
-+		/* Race if another thread in b/w
-+		 * kfd_cleanup_nodes and kfree(kfd),
-+		 * when kfd->nodes[i] = NULL
-+		 */
-+		if (kfd->nodes[i])
-+			node = kfd->nodes[i];
-+		else
-+			return;
-+
- 		spin_lock_irqsave(&node->interrupt_lock, flags);
- 
- 		if (node->interrupts_active
+ /* HCS - Host Controller Status 30h */
+ #define DEVICE_PRESENT				0x1
 -- 
 2.51.0
 
