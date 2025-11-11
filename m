@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-193341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAF62C4A38B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D618C4A391
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9DA1F4F4BBB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 689ED4ECAB5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E295F246768;
-	Tue, 11 Nov 2025 01:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A405D248F6A;
+	Tue, 11 Nov 2025 01:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ee6rpxh7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWiCgst6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E73B4086A;
-	Tue, 11 Nov 2025 01:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6007F1F5F6;
+	Tue, 11 Nov 2025 01:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822941; cv=none; b=n3/GkOcX1GHNDTiTSFcEeQD7wUnoTpf8ZDj6PR5JslPsjH/rt6KXZ09tbx3s+yrgfPQ47G5P0WLVUNiNrSNKidaJu2mxJHnP89zcdgcppNFQpdlZWFnGQu5+jzaby/JAYfqncH9GkQXclicR7xwzwS4HWrBfo8A3YTYyzW+8XT0=
+	t=1762822946; cv=none; b=a6T65GcJpAYjCiPtk2jiNPihFEcb3569iy4aroQGxF24oFdCotXXrFqFghQcctgU+XyYwV9cO2MrzVQvwM2c3P2ZM0OCVEc03sGwxetHmxWCHWJ5Y6db3LMafI+OEGbOuqEFx/Bdh61zCq5nX6lK592Hx8635OSfiKcg3ANcqzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822941; c=relaxed/simple;
-	bh=wt6WzdyRrs1hsT1itaH++QhPsR6gtT1WMTYw8TDhADc=;
+	s=arc-20240116; t=1762822946; c=relaxed/simple;
+	bh=y5HLT6x+cffx4M8f6zd+HE1omEuHqCKQGq5Npd2v5IM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aklBg2VsMdtUNyuzTJ8E++d+K5RdcP0Cf/iv692uCPsBmvbixwRtFslS69qAB9bp2Ved5BpuNs+5giFiYKXJAVm+dwzgVr/iy0vo6fUvp+2zHxwMnlgACI3Cnv/vuiGxLBwgyer2x1iFy3gxZJNBcVCmgX4M5kIEyPipHtW7UXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ee6rpxh7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431BEC19422;
-	Tue, 11 Nov 2025 01:02:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NvEiWNi7oAasPXbpjr8oU7YQT2mRYb4pVRAw8I8UNnDLLHTf2n6jdka8bApoGCnrJkr/Tg86thvjPp6m7a1e0HV/94YIi9+7+5c3YjEllZ/rTEkKofz/QDmgzXMoS7V83Elgb1FogbKDmsS81k0lNgRpfEvre+RvEZ0i5JvOeD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWiCgst6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2830C116B1;
+	Tue, 11 Nov 2025 01:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822941;
-	bh=wt6WzdyRrs1hsT1itaH++QhPsR6gtT1WMTYw8TDhADc=;
+	s=korg; t=1762822946;
+	bh=y5HLT6x+cffx4M8f6zd+HE1omEuHqCKQGq5Npd2v5IM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ee6rpxh7ZJSITW+qcPtef7jzacXp9M4mq5Io8mK4+Pp3XlmqzfqMyaW3TgVPL+lXg
-	 B3Bc15EC16fdvVZUAfOCFbjW51KWqDSowqOA7l3KcBK7OysaW9Ga7captn44YsyYCH
-	 EjRXs/bzrt0KRgNJi0wmsAIu63EYkRRUUQ69nvMo=
+	b=jWiCgst69a+kMbBtWtzPthkulKfrazwVbqeYWCxgwfuM7GbputbRZtEFM0g4SxdIu
+	 kzw0vi3sC6uLMpvSM7OjkZjf31c8sr1rujgC08zcgiFHVOxp9eI3L6mgS3QM2qgdTz
+	 HBePCmdoA9fWzA6hJr1Eg5b6uxU2ZnSB80chUd4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Markus Stockhausen <markus.stockhausen@gmx.de>,
 	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Stephen Howell <howels@allthatwemight.be>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 200/849] clocksource/drivers/vf-pit: Replace raw_readl/writel to readl/writel
-Date: Tue, 11 Nov 2025 09:36:10 +0900
-Message-ID: <20251111004541.273600703@linuxfoundation.org>
+Subject: [PATCH 6.17 201/849] clocksource/drivers/timer-rtl-otto: Work around dying timers
+Date: Tue, 11 Nov 2025 09:36:11 +0900
+Message-ID: <20251111004541.297484870@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -60,101 +62,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Markus Stockhausen <markus.stockhausen@gmx.de>
 
-[ Upstream commit 0b781f527d6f99e68e5b3780ae03cd69a7cb5c0c ]
+[ Upstream commit e7a25106335041aeca4fdf50a84804c90142c886 ]
 
-The driver uses the raw_readl() and raw_writel() functions. Those are
-not for MMIO devices. Replace them with readl() and writel()
+The OpenWrt distribution has switched from kernel longterm 6.6 to
+6.12. Reports show that devices with the Realtek Otto switch platform
+die during operation and are rebooted by the watchdog. Sorting out
+other possible reasons the Otto timer is to blame. The platform
+currently consists of 4 targets with different hardware revisions.
+It is not 100% clear which devices and revisions are affected.
 
-[ dlezcano: Fixed typo in the subject s/reald/readl/ ]
+Analysis shows:
 
+A more aggressive sched/deadline handling leads to more timer starts
+with small intervals. This increases the bug chances. See
+https://marc.info/?l=linux-kernel&m=175276556023276&w=2
+
+Focusing on the real issue a hardware limitation on some devices was
+found. There is a minimal chance that a timer ends without firing an
+interrupt if it is reprogrammed within the 5us before its expiration
+time. Work around this issue by introducing a bounce() function. It
+restarts the timer directly before the normal restart functions as
+follows:
+
+- Stop timer
+- Restart timer with a slow frequency.
+- Target time will be >5us
+- The subsequent normal restart is outside the critical window
+
+Downstream has already tested and confirmed a patch. See
+https://github.com/openwrt/openwrt/pull/19468
+https://forum.openwrt.org/t/support-for-rtl838x-based-managed-switches/57875/3788
+
+Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20250804152344.1109310-2-daniel.lezcano@linaro.org
+Tested-by: Stephen Howell <howels@allthatwemight.be>
+Tested-by: Bjørn Mork <bjorn@mork.no>
+Link: https://lore.kernel.org/r/20250804080328.2609287-2-markus.stockhausen@gmx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-vf-pit.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/clocksource/timer-rtl-otto.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/clocksource/timer-vf-pit.c b/drivers/clocksource/timer-vf-pit.c
-index 911c92146eca6..8041a8f62d1fa 100644
---- a/drivers/clocksource/timer-vf-pit.c
-+++ b/drivers/clocksource/timer-vf-pit.c
-@@ -35,30 +35,30 @@ static unsigned long cycle_per_jiffy;
+diff --git a/drivers/clocksource/timer-rtl-otto.c b/drivers/clocksource/timer-rtl-otto.c
+index 8a3068b36e752..8be45a11fb8b6 100644
+--- a/drivers/clocksource/timer-rtl-otto.c
++++ b/drivers/clocksource/timer-rtl-otto.c
+@@ -38,6 +38,7 @@
+ #define RTTM_BIT_COUNT		28
+ #define RTTM_MIN_DELTA		8
+ #define RTTM_MAX_DELTA		CLOCKSOURCE_MASK(28)
++#define RTTM_MAX_DIVISOR	GENMASK(15, 0)
  
- static inline void pit_timer_enable(void)
- {
--	__raw_writel(PITTCTRL_TEN | PITTCTRL_TIE, clkevt_base + PITTCTRL);
-+	writel(PITTCTRL_TEN | PITTCTRL_TIE, clkevt_base + PITTCTRL);
+ /*
+  * Timers are derived from the LXB clock frequency. Usually this is a fixed
+@@ -112,6 +113,22 @@ static irqreturn_t rttm_timer_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
  }
  
- static inline void pit_timer_disable(void)
++static void rttm_bounce_timer(void __iomem *base, u32 mode)
++{
++	/*
++	 * When a running timer has less than ~5us left, a stop/start sequence
++	 * might fail. While the details are unknown the most evident effect is
++	 * that the subsequent interrupt will not be fired.
++	 *
++	 * As a workaround issue an intermediate restart with a very slow
++	 * frequency of ~3kHz keeping the target counter (>=8). So the follow
++	 * up restart will always be issued outside the critical window.
++	 */
++
++	rttm_disable_timer(base);
++	rttm_enable_timer(base, mode, RTTM_MAX_DIVISOR);
++}
++
+ static void rttm_stop_timer(void __iomem *base)
  {
--	__raw_writel(0, clkevt_base + PITTCTRL);
-+	writel(0, clkevt_base + PITTCTRL);
- }
+ 	rttm_disable_timer(base);
+@@ -129,6 +146,7 @@ static int rttm_next_event(unsigned long delta, struct clock_event_device *clkev
+ 	struct timer_of *to = to_timer_of(clkevt);
  
- static inline void pit_irq_acknowledge(void)
- {
--	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
-+	writel(PITTFLG_TIF, clkevt_base + PITTFLG);
- }
+ 	RTTM_DEBUG(to->of_base.base);
++	rttm_bounce_timer(to->of_base.base, RTTM_CTRL_COUNTER);
+ 	rttm_stop_timer(to->of_base.base);
+ 	rttm_set_period(to->of_base.base, delta);
+ 	rttm_start_timer(to, RTTM_CTRL_COUNTER);
+@@ -141,6 +159,7 @@ static int rttm_state_oneshot(struct clock_event_device *clkevt)
+ 	struct timer_of *to = to_timer_of(clkevt);
  
- static u64 notrace pit_read_sched_clock(void)
- {
--	return ~__raw_readl(clksrc_base + PITCVAL);
-+	return ~readl(clksrc_base + PITCVAL);
- }
+ 	RTTM_DEBUG(to->of_base.base);
++	rttm_bounce_timer(to->of_base.base, RTTM_CTRL_COUNTER);
+ 	rttm_stop_timer(to->of_base.base);
+ 	rttm_set_period(to->of_base.base, RTTM_TICKS_PER_SEC / HZ);
+ 	rttm_start_timer(to, RTTM_CTRL_COUNTER);
+@@ -153,6 +172,7 @@ static int rttm_state_periodic(struct clock_event_device *clkevt)
+ 	struct timer_of *to = to_timer_of(clkevt);
  
- static int __init pit_clocksource_init(unsigned long rate)
- {
- 	/* set the max load value and start the clock source counter */
--	__raw_writel(0, clksrc_base + PITTCTRL);
--	__raw_writel(~0UL, clksrc_base + PITLDVAL);
--	__raw_writel(PITTCTRL_TEN, clksrc_base + PITTCTRL);
-+	writel(0, clksrc_base + PITTCTRL);
-+	writel(~0UL, clksrc_base + PITLDVAL);
-+	writel(PITTCTRL_TEN, clksrc_base + PITTCTRL);
- 
- 	sched_clock_register(pit_read_sched_clock, 32, rate);
- 	return clocksource_mmio_init(clksrc_base + PITCVAL, "vf-pit", rate,
-@@ -76,7 +76,7 @@ static int pit_set_next_event(unsigned long delta,
- 	 * hardware requirement.
- 	 */
- 	pit_timer_disable();
--	__raw_writel(delta - 1, clkevt_base + PITLDVAL);
-+	writel(delta - 1, clkevt_base + PITLDVAL);
- 	pit_timer_enable();
- 
- 	return 0;
-@@ -125,8 +125,8 @@ static struct clock_event_device clockevent_pit = {
- 
- static int __init pit_clockevent_init(unsigned long rate, int irq)
- {
--	__raw_writel(0, clkevt_base + PITTCTRL);
--	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
-+	writel(0, clkevt_base + PITTCTRL);
-+	writel(PITTFLG_TIF, clkevt_base + PITTFLG);
- 
- 	BUG_ON(request_irq(irq, pit_timer_interrupt, IRQF_TIMER | IRQF_IRQPOLL,
- 			   "VF pit timer", &clockevent_pit));
-@@ -183,7 +183,7 @@ static int __init pit_timer_init(struct device_node *np)
- 	cycle_per_jiffy = clk_rate / (HZ);
- 
- 	/* enable the pit module */
--	__raw_writel(~PITMCR_MDIS, timer_base + PITMCR);
-+	writel(~PITMCR_MDIS, timer_base + PITMCR);
- 
- 	ret = pit_clocksource_init(clk_rate);
- 	if (ret)
+ 	RTTM_DEBUG(to->of_base.base);
++	rttm_bounce_timer(to->of_base.base, RTTM_CTRL_TIMER);
+ 	rttm_stop_timer(to->of_base.base);
+ 	rttm_set_period(to->of_base.base, RTTM_TICKS_PER_SEC / HZ);
+ 	rttm_start_timer(to, RTTM_CTRL_TIMER);
 -- 
 2.51.0
 
