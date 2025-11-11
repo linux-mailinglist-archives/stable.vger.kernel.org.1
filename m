@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E667C4A755
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09237C4A977
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9CFCD4F472D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8BDD3B665A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337BA347FD7;
-	Tue, 11 Nov 2025 01:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADBD2E62C4;
+	Tue, 11 Nov 2025 01:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQT9OOxv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tm0o7Ed5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E531E2DE707;
-	Tue, 11 Nov 2025 01:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5C326B0B7;
+	Tue, 11 Nov 2025 01:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823752; cv=none; b=kWbfRwlR8QDExYpV+M77XIFR/J9GUeEQkIMZvM7t17mN8TDAfydNATWodWBvWoLKf9tGjUhVL5FJhUqOoqAFaymLD8BzttozveXoCEElBz4GUxx7WbcnTivOz6AJrA4MkcNhfC16ZY396fzlqE5WzHngKoutHH0Ut73qUuH4A/c=
+	t=1762823756; cv=none; b=hQg6PFCj2cbFt9NP37D236Kn5dX1UCllr9f/weYVKVQHLSz7dU1DDBkzzKgAjV9glFBa9lJ8V73BIz8VdfpcO8x+2yrZKGdH+jEcVE2nVpgoc+UKs8OF/eR6gAMg97aJOaBEOM0Ur728PBOUV/X7rPZsAbBgW8UGVzpwvL1BKcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823752; c=relaxed/simple;
-	bh=Bb10hC2qw0/6duv+HAKOKPhr0VjJdlqJ9ONuYoXDB48=;
+	s=arc-20240116; t=1762823756; c=relaxed/simple;
+	bh=zhFJ6wo+/hiEnUa8aPse4rQED0PTb9RjRsQz4+wTrF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBNHMCCf6vherxxLk0Bi4B0p2euoFOUykWp8mkxz1Lik37vodD1nxdMf61H7B5QTcfch+i+SyD/p9uAOMCMc4pYnj6jDWjHqWk2U0AXFp5Y0GBCrfAyNDOOcLM6IdAC1veoJWwpwyq5heZmb2K3c30NSxsKKqiP0jUiAd2MilV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQT9OOxv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87321C4CEF5;
-	Tue, 11 Nov 2025 01:15:51 +0000 (UTC)
+	 MIME-Version; b=REk7+nkMHGK+F777ILRBbubj7xordHyFC0f7AOk0vDZOJXtCIjeZh7xMwiePnWJ2yuqv2fxzuzjY+GQ/qF//B7XawzAOOsiqn3FATdYdkWGlw/3vaxdvk1I0neNI1vJtSZwgzwkpZOAw6HJ5hlNnGwAKV+J2+GEOwAMkuNf+QPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tm0o7Ed5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8E1C4CEF5;
+	Tue, 11 Nov 2025 01:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823751;
-	bh=Bb10hC2qw0/6duv+HAKOKPhr0VjJdlqJ9ONuYoXDB48=;
+	s=korg; t=1762823756;
+	bh=zhFJ6wo+/hiEnUa8aPse4rQED0PTb9RjRsQz4+wTrF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQT9OOxvLTm7tqEAmw8ORqLN7/Ta4Ni7r2i5FF6/3crNtn5mZcLQ+vEU8oEnJOwtr
-	 Y7wBL0BJ66XFceDzDpahDP0LOfhCHsqQ8At0XB2ZwBJP5kiNfhvxJTO0WxfwJrsEHh
-	 vakCGtDNNoDpgMfWiDVJLsZ+9Il9LPFO0DZCKenE=
+	b=tm0o7Ed5RAWTaKp0TLNyJM+AZbqnh+GBnUvpEPcy2s2SHsAazsXWatqLEDU6b1NvY
+	 yoBkXW1B3RquzR8+c0+ikLelzv2pRYgC/3kuLkR453vWhRjM9myXmd1drutzfmot1X
+	 OcV+GAcXm452icCjzVI9fkIjvFZRtkRarzb+TFj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Davis <afd@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+	Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 362/849] remoteproc: wkup_m3: Use devm_pm_runtime_enable() helper
-Date: Tue, 11 Nov 2025 09:38:52 +0900
-Message-ID: <20251111004545.170008282@linuxfoundation.org>
+Subject: [PATCH 6.17 363/849] drm/xe/wcl: Extend L3bank mask workaround
+Date: Tue, 11 Nov 2025 09:38:53 +0900
+Message-ID: <20251111004545.194705091@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,52 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrew Davis <afd@ti.com>
+From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 
-[ Upstream commit 461edcf73eec57bc0006fbb5209f5012c514c58b ]
+[ Upstream commit d738e1be2b2b4364403babc43ae7343d45e99d41 ]
 
-Use device life-cycle managed runtime enable function to simplify probe
-and exit paths.
+The commit 9ab440a9d042 ("drm/xe/ptl: L3bank mask is not
+available on the media GT") added a workaround to ignore
+the fuse register that L3 bank availability as it did not
+contain valid values. Same is true for WCL therefore extend
+the workaround to cover it.
 
-Signed-off-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20250814153940.670564-1-afd@ti.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Reviewed-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+Link: https://lore.kernel.org/r/20250822002512.1129144-1-chaitanya.kumar.borah@intel.com
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/wkup_m3_rproc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_wa_oob.rules | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/wkup_m3_rproc.c b/drivers/remoteproc/wkup_m3_rproc.c
-index d8be21e717212..35c2145b12db7 100644
---- a/drivers/remoteproc/wkup_m3_rproc.c
-+++ b/drivers/remoteproc/wkup_m3_rproc.c
-@@ -148,7 +148,9 @@ static int wkup_m3_rproc_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
--	pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(dev);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to enable runtime PM\n");
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "pm_runtime_get_sync() failed\n");
-@@ -219,7 +221,6 @@ static int wkup_m3_rproc_probe(struct platform_device *pdev)
- 	rproc_free(rproc);
- err:
- 	pm_runtime_put_noidle(dev);
--	pm_runtime_disable(dev);
- 	return ret;
- }
- 
-@@ -230,7 +231,6 @@ static void wkup_m3_rproc_remove(struct platform_device *pdev)
- 	rproc_del(rproc);
- 	rproc_free(rproc);
- 	pm_runtime_put_sync(&pdev->dev);
--	pm_runtime_disable(&pdev->dev);
- }
- 
- #ifdef CONFIG_PM
+diff --git a/drivers/gpu/drm/xe/xe_wa_oob.rules b/drivers/gpu/drm/xe/xe_wa_oob.rules
+index 48c7a42e2fcad..382719ac4a779 100644
+--- a/drivers/gpu/drm/xe/xe_wa_oob.rules
++++ b/drivers/gpu/drm/xe/xe_wa_oob.rules
+@@ -47,7 +47,7 @@
+ 16023588340	GRAPHICS_VERSION(2001), FUNC(xe_rtp_match_not_sriov_vf)
+ 14019789679	GRAPHICS_VERSION(1255)
+ 		GRAPHICS_VERSION_RANGE(1270, 2004)
+-no_media_l3	MEDIA_VERSION(3000)
++no_media_l3	MEDIA_VERSION_RANGE(3000, 3002)
+ 14022866841	GRAPHICS_VERSION(3000), GRAPHICS_STEP(A0, B0)
+ 		MEDIA_VERSION(3000), MEDIA_STEP(A0, B0)
+ 16021333562	GRAPHICS_VERSION_RANGE(1200, 1274)
 -- 
 2.51.0
 
