@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C677C4A2E1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:05:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C34C4A2F5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:05:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9AE604F716D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 57B284E5F72
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8187262A;
-	Tue, 11 Nov 2025 01:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2842025EF81;
+	Tue, 11 Nov 2025 01:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2upEfMh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WiGtS/20"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1BE1482E8;
-	Tue, 11 Nov 2025 01:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45163AC3B;
+	Tue, 11 Nov 2025 01:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822877; cv=none; b=sFNYtN2+p0ChUFFplEXfUB088uJIiRLolOwZ5WlOIqSNU6CRPIbTv9ij4ciyPnOimrC6OcwKzmPrnpQSVRsPRvSNC9ZVWnDXyko2byNPbinqwEFquXkdB5iTWGyPOSaADd9cLMR9Qxw35emnSR+apk0zZDJJ0diO44oUdZEnF/c=
+	t=1762822884; cv=none; b=TbZDRiV8YxR0RnUqy1FLhHszNE3z01gjy+7k8Ct8wwzkys6dAfFB7kbkFiqd0hXHdrxXp7tx6TpZC57Nx9PHlfcAeDJcpnRtw3JY3yaiaZ3V3xnZ/BjPoNm42wePcxN7OeMM3zIpZCTKL/CmVOjiTxCcsBI6H2I4mpr5lF0vk2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822877; c=relaxed/simple;
-	bh=mI71i+blKKxjdw3Afq5jhh3LpzmWd7uWBmzCSenYacA=;
+	s=arc-20240116; t=1762822884; c=relaxed/simple;
+	bh=wNHpvYqTD8lC6twzBml9J1O53EKBV3lJAbxxCuo/Lbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/Ml2+dhLZiRRnBGseWiJorRv00z733LlPlyG9wj0+zhV7xHLTkkGiFH0IkIIJVstkXp6RKaI1C/raZg2tMSdgJv23NkNGPsaX+LTLgbHqTmXGGO+4rikl+pevQHcEG6+gk7bVVsJxN4OoHC0GdjvDVquv4AYGsQGLOa5bMoC4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2upEfMh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397C1C16AAE;
-	Tue, 11 Nov 2025 01:01:17 +0000 (UTC)
+	 MIME-Version; b=Td+0a6hJSeNVURB6CuMFHH3E4wFCPCCcTjSZ6F7Er/SmkKVY442gL1X2ZaN7zGYVImIZQ0/CgUjgfmi9ueU/HnYvZJpoUnajIKZfhKl0FMrdfJdL+5xj8yjgF9Nfv0+AbBceJHi1f6Mk2NDRZYVw/18qjx25YXZ3vEos6fXsRZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WiGtS/20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD29C16AAE;
+	Tue, 11 Nov 2025 01:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822877;
-	bh=mI71i+blKKxjdw3Afq5jhh3LpzmWd7uWBmzCSenYacA=;
+	s=korg; t=1762822884;
+	bh=wNHpvYqTD8lC6twzBml9J1O53EKBV3lJAbxxCuo/Lbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m2upEfMhJY5nK08o7y/loKx6ZC/QNBQUCWu919LalkhdtsWlfVEOOo3a6aLdulrwg
-	 nytvDBloH5Et2e6VleCyrmuiuLiQUtOBjKvNMs+QJqBGLcGEbIQ/hAIsxhKG6e01gy
-	 Y5R9GTUdchS/fLjBmc11DkpzURKYGi5yQYo69/l4=
+	b=WiGtS/20w50pOgiblS6ZFDp8h+dih2q7wCZII/oovMCA3nLHe88XVQkxyPi3RdoKq
+	 zxiWUBmAGuwpypsGpym8Di/rbp2pWmq2sY/vPFVPrRWOqZ5M8zfTxfG+qOBjZLWeIc
+	 nlIbOXT+1gG+/fZ1N3KSbKxU7oWGgtuPGvTA4nHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 188/849] io_uring/zcrx: check all niovs filled with dma addresses
-Date: Tue, 11 Nov 2025 09:35:58 +0900
-Message-ID: <20251111004540.971994978@linuxfoundation.org>
+Subject: [PATCH 6.17 189/849] tools/cpupower: fix error return value in cpupower_write_sysfs()
+Date: Tue, 11 Nov 2025 09:35:59 +0900
+Message-ID: <20251111004540.995979859@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,34 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit d7ae46b454eb05e3df0d46c2ac9c61416a4d9057 ]
+[ Upstream commit 57b100d4cf14276e0340eecb561005c07c129eb8 ]
 
-Add a warning if io_populate_area_dma() can't fill in all net_iovs, it
-should never happen.
+The cpupower_write_sysfs() function currently returns -1 on
+write failure, but the function signature indicates it should
+return an unsigned int. Returning -1 from an unsigned function
+results in a large positive value rather than indicating
+an error condition.
 
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fix this by returning 0 on failure, which is more appropriate
+for an unsigned return type and maintains consistency with typical
+success/failure semantics where 0 indicates failure and non-zero
+indicates success (bytes written).
+
+Link: https://lore.kernel.org/r/20250828063000.803229-1-kaushlendra.kumar@intel.com
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/zcrx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/power/cpupower/lib/cpupower.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 2035c77a16357..23ffc95caa427 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -75,6 +75,9 @@ static int io_populate_area_dma(struct io_zcrx_ifq *ifq,
- 			niov_idx++;
- 		}
+diff --git a/tools/power/cpupower/lib/cpupower.c b/tools/power/cpupower/lib/cpupower.c
+index ce8dfb8e46abd..d7f7ec6f151c2 100644
+--- a/tools/power/cpupower/lib/cpupower.c
++++ b/tools/power/cpupower/lib/cpupower.c
+@@ -56,7 +56,7 @@ unsigned int cpupower_write_sysfs(const char *path, char *buf, size_t buflen)
+ 	if (numwritten < 1) {
+ 		perror(path);
+ 		close(fd);
+-		return -1;
++		return 0;
  	}
-+
-+	if (WARN_ON_ONCE(niov_idx != area->nia.num_niovs))
-+		return -EFAULT;
- 	return 0;
- }
  
+ 	close(fd);
 -- 
 2.51.0
 
