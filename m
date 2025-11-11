@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-193862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F2EC4ABA9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C685C4A445
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BE0C18855C8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1B7184F6B88
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0728C2E0B5A;
-	Tue, 11 Nov 2025 01:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E41E2609FD;
+	Tue, 11 Nov 2025 01:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNPfaqwL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWdOpt9e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B638526AC3;
-	Tue, 11 Nov 2025 01:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4AC248F6A;
+	Tue, 11 Nov 2025 01:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824181; cv=none; b=pBTFex8zEWSsxgzse5f6S8otDR+wyAmuY9WfzpnKVQOjmN+KzoHSyLwpYgRVAtDZXoDXKH/qjC6M3g/t2QT17TGNOtEk93i1/3h3j1P2Sbuf1AkHJ61cr5xpWB0ipHS795iXt1eP4Ys9+N7bnJTJs8meS9Vfajz4FBFzT+n0qSs=
+	t=1762823099; cv=none; b=FKyr0VhWE6tW/kgmHkydBBqNIDuoCjfWgWc85A6996q3ETvZNiViAWcwjkzKZ0yoLzITyvtq2auJNhxoPL/fpzUdzNNAIm2kf9hYFAyhucwsY4HYHyB6vdcRcme1ySqxauiOlygvWWxjU9LI5gb0/ZzSddMGgjBvztGIZDQEvGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824181; c=relaxed/simple;
-	bh=OzdyECXGHv10qXSQ/xA/NcxIXVK7XIG/0eAwlLsTYHU=;
+	s=arc-20240116; t=1762823099; c=relaxed/simple;
+	bh=3brse65hJtJK64b02XzGUfr5Tp3yo2jmz7AW+ZztDVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzF++Da7pyYxzY3502j41ayACK/iSImebrsPw2LXQn+xVPd/kW0Kvy/rgPO7vNsJmR9OlFr3DSp34WsQRAKTis80xEmuZLyENcsGiWW6T8xzMNY3m3at6WfKgiq8OvUIcylOeRaxtlO+HjZGvKwrnx1Va4Z1dSixZNnbtOlD+5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNPfaqwL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B77C116D0;
-	Tue, 11 Nov 2025 01:23:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kLSZrYppGZ5e7CzVLfG+6csu3D8td7EidI1L+Gjcyy9YsPLDG9+qDW82XyWe/58Eo2DhSZZP5KcR3e+7sqs81uZlaadBaw6Ka1nK3mMw2yyQCs/CpYFG+86amwT+xrx9QCrP+boHj2LgzNDnSdHqssGuCgzWBVvFoi5fpTZtcTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWdOpt9e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA08C4CEFB;
+	Tue, 11 Nov 2025 01:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824181;
-	bh=OzdyECXGHv10qXSQ/xA/NcxIXVK7XIG/0eAwlLsTYHU=;
+	s=korg; t=1762823098;
+	bh=3brse65hJtJK64b02XzGUfr5Tp3yo2jmz7AW+ZztDVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gNPfaqwL6lDA2zjWeWVp0wyd81mrJ/7m7gqtVGVEr0LAAWgO4N0Suvv1ViLe+pe2d
-	 rCvio7aCy9/scQfx2OiesnQ7J7eIlSDM94pkaBU5WS8F+cKld5qGnwc07upFFD7AQO
-	 oPeH9iOwfnFEZ9Gtid8N8NyzbsVQK0LZq4Yeakig=
+	b=MWdOpt9euiRRg3cJaZYvDYNOzwwrn/psLPqAP12/4TNltX5VGXnYFR1YWf6KPUYUT
+	 GC4YAPnSezqw7kxbGe6lnZ45UQF6EbFopCdBZIdsq2GbXdRnjv7/dwoBBuFCVud6ho
+	 RTB5qD+SnAylM6pq9aBaTyP+mH9OZ8pPQdh+3NE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Fangzhi Zuo <Jerry.Zuo@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 457/849] drm/amd/display: Fix pbn_div Calculation Error
+Subject: [PATCH 6.12 171/565] mfd: intel-lpss: Add Intel Wildcat Lake LPSS PCI IDs
 Date: Tue, 11 Nov 2025 09:40:27 +0900
-Message-ID: <20251111004547.478230959@linuxfoundation.org>
+Message-ID: <20251111004530.781200738@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangzhi Zuo <Jerry.Zuo@amd.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 12cdfb61b32a7be581ec5932e0b6a482cb098204 ]
+[ Upstream commit c91a0e4e549d0457c61f2199fcd84d699400bee1 ]
 
-[Why]
-dm_mst_get_pbn_divider() returns value integer coming from
-the cast from fixed point, but the casted integer will then be used
-in dfixed_const to be multiplied by 4096. The cast from fixed point to integer
-causes the calculation error becomes bigger when multiplied by 4096.
+Add Intel Wildcat Lake PCI IDs.
 
-That makes the calculated pbn_div value becomes smaller than
-it should be, which leads to the req_slot number becomes bigger.
-
-Such error is getting reflected in 8k30 timing,
-where the correct and incorrect calculated req_slot 62.9 Vs 63.1.
-That makes the wrong calculation failed to light up 8k30
-after a dock under HBR3 x 4.
-
-[How]
-Restore the accuracy by keeping the fraction part
-calculated for the left shift operation.
-
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250915112936.10696-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c   |  2 +-
- .../drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 13 ++++++++++---
- .../drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h |  2 +-
- 3 files changed, 12 insertions(+), 5 deletions(-)
+ drivers/mfd/intel-lpss-pci.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index aca57cc815514..afe3a8279c3a9 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -7974,7 +7974,7 @@ static int dm_encoder_helper_atomic_check(struct drm_encoder *encoder,
- 	if (IS_ERR(mst_state))
- 		return PTR_ERR(mst_state);
- 
--	mst_state->pbn_div.full = dfixed_const(dm_mst_get_pbn_divider(aconnector->mst_root->dc_link));
-+	mst_state->pbn_div.full = dm_mst_get_pbn_divider(aconnector->mst_root->dc_link);
- 
- 	if (!state->duplicated) {
- 		int max_bpc = conn_state->max_requested_bpc;
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index 77a9d2c7d3185..5412bf046062c 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -822,13 +822,20 @@ void amdgpu_dm_initialize_dp_connector(struct amdgpu_display_manager *dm,
- 	drm_connector_attach_dp_subconnector_property(&aconnector->base);
- }
- 
--int dm_mst_get_pbn_divider(struct dc_link *link)
-+uint32_t dm_mst_get_pbn_divider(struct dc_link *link)
- {
-+	uint32_t pbn_div_x100;
-+	uint64_t dividend, divisor;
-+
- 	if (!link)
- 		return 0;
- 
--	return dc_link_bandwidth_kbps(link,
--			dc_link_get_link_cap(link)) / (8 * 1000 * 54);
-+	dividend = (uint64_t)dc_link_bandwidth_kbps(link, dc_link_get_link_cap(link)) * 100;
-+	divisor = 8 * 1000 * 54;
-+
-+	pbn_div_x100 = div64_u64(dividend, divisor);
-+
-+	return dfixed_const(pbn_div_x100) / 100;
- }
- 
- struct dsc_mst_fairness_params {
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h
-index 600d6e2210111..179f622492dbf 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h
-@@ -59,7 +59,7 @@ enum mst_msg_ready_type {
- struct amdgpu_display_manager;
- struct amdgpu_dm_connector;
- 
--int dm_mst_get_pbn_divider(struct dc_link *link);
-+uint32_t dm_mst_get_pbn_divider(struct dc_link *link);
- 
- void amdgpu_dm_initialize_dp_connector(struct amdgpu_display_manager *dm,
- 				       struct amdgpu_dm_connector *aconnector,
+diff --git a/drivers/mfd/intel-lpss-pci.c b/drivers/mfd/intel-lpss-pci.c
+index 1d8cdc4d5819b..5b1c13fb23468 100644
+--- a/drivers/mfd/intel-lpss-pci.c
++++ b/drivers/mfd/intel-lpss-pci.c
+@@ -367,6 +367,19 @@ static const struct pci_device_id intel_lpss_pci_ids[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x4b79), (kernel_ulong_t)&ehl_i2c_info },
+ 	{ PCI_VDEVICE(INTEL, 0x4b7a), (kernel_ulong_t)&ehl_i2c_info },
+ 	{ PCI_VDEVICE(INTEL, 0x4b7b), (kernel_ulong_t)&ehl_i2c_info },
++	/* WCL */
++	{ PCI_VDEVICE(INTEL, 0x4d25), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x4d26), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x4d27), (kernel_ulong_t)&tgl_spi_info },
++	{ PCI_VDEVICE(INTEL, 0x4d30), (kernel_ulong_t)&tgl_spi_info },
++	{ PCI_VDEVICE(INTEL, 0x4d46), (kernel_ulong_t)&tgl_spi_info },
++	{ PCI_VDEVICE(INTEL, 0x4d50), (kernel_ulong_t)&ehl_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x4d51), (kernel_ulong_t)&ehl_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x4d52), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x4d78), (kernel_ulong_t)&ehl_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x4d79), (kernel_ulong_t)&ehl_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x4d7a), (kernel_ulong_t)&ehl_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x4d7b), (kernel_ulong_t)&ehl_i2c_info },
+ 	/* JSL */
+ 	{ PCI_VDEVICE(INTEL, 0x4da8), (kernel_ulong_t)&spt_uart_info },
+ 	{ PCI_VDEVICE(INTEL, 0x4da9), (kernel_ulong_t)&spt_uart_info },
 -- 
 2.51.0
 
