@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-193316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764F2C4A307
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 472D3C4AA84
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9BFC44F731B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46E911887581
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CCE253944;
-	Tue, 11 Nov 2025 01:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B31272E7C;
+	Tue, 11 Nov 2025 01:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="At4VEnVC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0x+OfHl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE1E244693;
-	Tue, 11 Nov 2025 01:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0F1261B77;
+	Tue, 11 Nov 2025 01:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822882; cv=none; b=JklCx2efr3W28Jl6DzQlDcOkaEKyhMLrEdcm7lnYLi0a5pd5XiRrpE3k5UlKvFZOXKaMMB+bMyc6UEmA3QBUgeJELkmd3OT6Se508v7n6KX13yhX+xFeKc19cYWSdIunbbbwI6Ez+JQIDwVe7Zr3NPtuLTviowixXDDu+jgJbsM=
+	t=1762823977; cv=none; b=orvSs/fNsHsu8KqNmuVrHcvwDkLkwAbsmiRPAXGdmdd/F5GbkErywgfpkomC+BYh4PKpg/rO6CMiH5kG/GyLnkn3HvEvnbnajCul0wZynihTrxCBs1LsdU4M+8MonSNgIN3/xvx285Eo4dRJAhF6q3YGPuhtp2UIvAj13juylAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822882; c=relaxed/simple;
-	bh=dXhv9ZURsnVCP/yj5fPTP1F1x2dZ73q8gvlrrTQp0+k=;
+	s=arc-20240116; t=1762823977; c=relaxed/simple;
+	bh=eHXRCrpi6KcAO5j6r5dwSMYL9sQ1XwG0xZ4sM6JbJgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lfz64HgMCzndjhUg1PmNz+Y5oWCwmkFCO2NsMtVdV8tePVrqJuEa+sawoW2ZW7Ki5WE4H1Zk5wIP2VP2ZU6WhDnom67zndQctXQdlH0vqsPIEjAQpJhtwfVzEHGOKg/jes0deW/1DgOhwkwNU4ZgmfXU1QVfgVkJPZ1fK9NBPuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=At4VEnVC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04AA3C116B1;
-	Tue, 11 Nov 2025 01:01:21 +0000 (UTC)
+	 MIME-Version; b=MXpiILAxTWuvULvH0SJlgQoAPxzmYyahwowr2giYurAaMM2vYRuSckjoEP0p2cNKdv71xJ3CB7f5b+Y4hOmZBr1M2LUIG15EE0l/PtkMB3wDGazyczfW6RgEMLl0agcbPCE7invLiXAvUN8SmAQFB/HrY+RZQubxVS8+75kLocM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0x+OfHl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCF6C19424;
+	Tue, 11 Nov 2025 01:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822882;
-	bh=dXhv9ZURsnVCP/yj5fPTP1F1x2dZ73q8gvlrrTQp0+k=;
+	s=korg; t=1762823977;
+	bh=eHXRCrpi6KcAO5j6r5dwSMYL9sQ1XwG0xZ4sM6JbJgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=At4VEnVCQcwZKc4Yaony1bYOlHPwPeNwdU3K0TkSgNzA0w7YTySvkUGO+8NjfmKjN
-	 bCCJeXGOnc9WgAOwjIvJbb72cLpsn8goYypmutM4KkyWC0T6T18EoFE1Vvv6yjnYMe
-	 wvKIozWT1hgq4MKSGxOaWc8loBCUh6ihL3YOZNBY=
+	b=O0x+OfHlYXo5WUlAUTYY3C9742URjbW1LAKu6qw2R8y/yZ/Hm0TFuGWChFSuMG+PL
+	 yfvSfLvUNcL0pTm+2YC+2gsxPMl2oayA6rtkSG23GfxDkR9qVuBlqHlYfCLOkHEDg6
+	 qkLnIhNcP7hTMsRhy5u9sUNVWI2/8Gtlmp1Uc4HQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quanyang Wang <quanyang.wang@windriver.com>,
-	Michal Simek <michal.simek@amd.com>,
+	Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Summers Stuart <stuart.summers@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/565] arm64: zynqmp: Disable coresight by default
-Date: Tue, 11 Nov 2025 09:39:42 +0900
-Message-ID: <20251111004529.787960545@linuxfoundation.org>
+Subject: [PATCH 6.17 413/849] drm/xe/guc: Add devm release action to safely tear down CT
+Date: Tue, 11 Nov 2025 09:39:43 +0900
+Message-ID: <20251111004546.425355633@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +65,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quanyang Wang <quanyang.wang@windriver.com>
+From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 
-[ Upstream commit 0e3f9140ad04dca9a6a93dd6a6decdc53fd665ca ]
+[ Upstream commit ee4b32220a6b41e71512e8804585325e685456ba ]
 
-When secure-boot mode of bootloader is enabled, the registers of
-coresight are not permitted to access that's why disable it by default.
+When a buffer object (BO) is allocated with the XE_BO_FLAG_GGTT_INVALIDATE
+flag, the driver initiates TLB invalidation requests via the CTB mechanism
+while releasing the BO. However a premature release of the CTB BO can lead
+to system crashes, as observed in:
 
-Signed-off-by: Quanyang Wang <quanyang.wang@windriver.com>
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/r/7e308b8efe977c4912079b4d1b1ab3d24908559e.1756799774.git.michal.simek@amd.com
+Oops: Oops: 0000 [#1] SMP NOPTI
+RIP: 0010:h2g_write+0x2f3/0x7c0 [xe]
+Call Trace:
+ guc_ct_send_locked+0x8b/0x670 [xe]
+ xe_guc_ct_send_locked+0x19/0x60 [xe]
+ send_tlb_invalidation+0xb4/0x460 [xe]
+ xe_gt_tlb_invalidation_ggtt+0x15e/0x2e0 [xe]
+ ggtt_invalidate_gt_tlb.part.0+0x16/0x90 [xe]
+ ggtt_node_remove+0x110/0x140 [xe]
+ xe_ggtt_node_remove+0x40/0xa0 [xe]
+ xe_ggtt_remove_bo+0x87/0x250 [xe]
+
+Introduce a devm-managed release action during xe_guc_ct_init() and
+xe_guc_ct_init_post_hwconfig() to ensure proper CTB disablement before
+resource deallocation, preventing the use-after-free scenario.
+
+Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Summers Stuart <stuart.summers@intel.com>
+Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Link: https://lore.kernel.org/r/20250901072541.31461-1-satyanarayana.k.v.p@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/xilinx/zynqmp.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/xe/xe_guc.c    |  8 +++----
+ drivers/gpu/drm/xe/xe_guc_ct.c | 41 +++++++++++++++++++++++++++++++++-
+ drivers/gpu/drm/xe/xe_guc_ct.h |  1 +
+ 3 files changed, 45 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-index b1b31dcf6291b..e2ad5fb2cb0a4 100644
---- a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-+++ b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-@@ -450,6 +450,7 @@
- 			reg = <0x0 0xfec10000 0x0 0x1000>;
- 			clock-names = "apb_pclk";
- 			cpu = <&cpu0>;
-+			status = "disabled";
- 		};
+diff --git a/drivers/gpu/drm/xe/xe_guc.c b/drivers/gpu/drm/xe/xe_guc.c
+index 9e0ed8fabcd54..62c76760fd26f 100644
+--- a/drivers/gpu/drm/xe/xe_guc.c
++++ b/drivers/gpu/drm/xe/xe_guc.c
+@@ -701,10 +701,6 @@ static int xe_guc_realloc_post_hwconfig(struct xe_guc *guc)
+ 	if (ret)
+ 		return ret;
  
- 		cpu1_debug: debug@fed10000 {
-@@ -457,6 +458,7 @@
- 			reg = <0x0 0xfed10000 0x0 0x1000>;
- 			clock-names = "apb_pclk";
- 			cpu = <&cpu1>;
-+			status = "disabled";
- 		};
+-	ret = xe_managed_bo_reinit_in_vram(xe, tile, &guc->ct.bo);
+-	if (ret)
+-		return ret;
+-
+ 	return 0;
+ }
  
- 		cpu2_debug: debug@fee10000 {
-@@ -464,6 +466,7 @@
- 			reg = <0x0 0xfee10000 0x0 0x1000>;
- 			clock-names = "apb_pclk";
- 			cpu = <&cpu2>;
-+			status = "disabled";
- 		};
+@@ -839,6 +835,10 @@ int xe_guc_init_post_hwconfig(struct xe_guc *guc)
+ 	if (ret)
+ 		return ret;
  
- 		cpu3_debug: debug@fef10000 {
-@@ -471,6 +474,7 @@
- 			reg = <0x0 0xfef10000 0x0 0x1000>;
- 			clock-names = "apb_pclk";
- 			cpu = <&cpu3>;
-+			status = "disabled";
- 		};
++	ret = xe_guc_ct_init_post_hwconfig(&guc->ct);
++	if (ret)
++		return ret;
++
+ 	guc_init_params_post_hwconfig(guc);
  
- 		/* GDMA */
+ 	ret = xe_guc_submit_init(guc, ~0);
+diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
+index 3f4e6a46ff163..6d70dd1c106d4 100644
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -39,6 +39,8 @@ static void receive_g2h(struct xe_guc_ct *ct);
+ static void g2h_worker_func(struct work_struct *w);
+ static void safe_mode_worker_func(struct work_struct *w);
+ static void ct_exit_safe_mode(struct xe_guc_ct *ct);
++static void guc_ct_change_state(struct xe_guc_ct *ct,
++				enum xe_guc_ct_state state);
+ 
+ #if IS_ENABLED(CONFIG_DRM_XE_DEBUG)
+ enum {
+@@ -252,6 +254,13 @@ int xe_guc_ct_init_noalloc(struct xe_guc_ct *ct)
+ }
+ ALLOW_ERROR_INJECTION(xe_guc_ct_init_noalloc, ERRNO); /* See xe_pci_probe() */
+ 
++static void guc_action_disable_ct(void *arg)
++{
++	struct xe_guc_ct *ct = arg;
++
++	guc_ct_change_state(ct, XE_GUC_CT_STATE_DISABLED);
++}
++
+ int xe_guc_ct_init(struct xe_guc_ct *ct)
+ {
+ 	struct xe_device *xe = ct_to_xe(ct);
+@@ -268,10 +277,40 @@ int xe_guc_ct_init(struct xe_guc_ct *ct)
+ 		return PTR_ERR(bo);
+ 
+ 	ct->bo = bo;
+-	return 0;
++
++	return devm_add_action_or_reset(xe->drm.dev, guc_action_disable_ct, ct);
+ }
+ ALLOW_ERROR_INJECTION(xe_guc_ct_init, ERRNO); /* See xe_pci_probe() */
+ 
++/**
++ * xe_guc_ct_init_post_hwconfig - Reinitialize the GuC CTB in VRAM
++ * @ct: the &xe_guc_ct
++ *
++ * Allocate a new BO in VRAM and free the previous BO that was allocated
++ * in system memory (SMEM). Applicable only for DGFX products.
++ *
++ * Return: 0 on success, or a negative errno on failure.
++ */
++int xe_guc_ct_init_post_hwconfig(struct xe_guc_ct *ct)
++{
++	struct xe_device *xe = ct_to_xe(ct);
++	struct xe_gt *gt = ct_to_gt(ct);
++	struct xe_tile *tile = gt_to_tile(gt);
++	int ret;
++
++	xe_assert(xe, !xe_guc_ct_enabled(ct));
++
++	if (!IS_DGFX(xe))
++		return 0;
++
++	ret = xe_managed_bo_reinit_in_vram(xe, tile, &ct->bo);
++	if (ret)
++		return ret;
++
++	devm_release_action(xe->drm.dev, guc_action_disable_ct, ct);
++	return devm_add_action_or_reset(xe->drm.dev, guc_action_disable_ct, ct);
++}
++
+ #define desc_read(xe_, guc_ctb__, field_)			\
+ 	xe_map_rd_field(xe_, &guc_ctb__->desc, 0,		\
+ 			struct guc_ct_buffer_desc, field_)
+diff --git a/drivers/gpu/drm/xe/xe_guc_ct.h b/drivers/gpu/drm/xe/xe_guc_ct.h
+index 18d4225e65024..cf41210ab30ae 100644
+--- a/drivers/gpu/drm/xe/xe_guc_ct.h
++++ b/drivers/gpu/drm/xe/xe_guc_ct.h
+@@ -13,6 +13,7 @@ struct xe_device;
+ 
+ int xe_guc_ct_init_noalloc(struct xe_guc_ct *ct);
+ int xe_guc_ct_init(struct xe_guc_ct *ct);
++int xe_guc_ct_init_post_hwconfig(struct xe_guc_ct *ct);
+ int xe_guc_ct_enable(struct xe_guc_ct *ct);
+ void xe_guc_ct_disable(struct xe_guc_ct *ct);
+ void xe_guc_ct_stop(struct xe_guc_ct *ct);
 -- 
 2.51.0
 
