@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF5CC4A6D4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A49BC4A683
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:25:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19CCB3B735A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88156189113B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7A130C36F;
-	Tue, 11 Nov 2025 01:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE8C30E0F7;
+	Tue, 11 Nov 2025 01:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTjxIP7u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULLGiIDT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B51227054C;
-	Tue, 11 Nov 2025 01:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A07926FDBD;
+	Tue, 11 Nov 2025 01:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823334; cv=none; b=W4+Rlc14AVN1sR19xWJHMPVLEDfv2AutK+6uR2MmXMi4Yh4+P5TSDh9IBIs6ffBHdFJlyQhFR+DIJ3/YrYBQk41pgY+9Av+mcbK8AUpY55dl4ysO2X/i7kbT2xdqBQff8ruyo8GMKZH8/VYyHksRATv8fZFvK5hZZcys/2vWmSY=
+	t=1762823341; cv=none; b=ArxQlyVT9m8SDaVEpMqfZFXvr6iQLvmzLwCMfh5BVjzLl30vSx2X5a+ZzyguX1VkvSfhPygmJjyM0J3Lv/JcIa967fGD2bxzVtlknGL7Tov2ryt+E1cGDlW+EAb2KjkownNOQgKAfO1hQlmO9C5+MY4KzancfVtnIkOl3zFuAIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823334; c=relaxed/simple;
-	bh=a2yDht++kmJE83HbJ8CLSRIozXGQNiSjcS/HftZ5/d8=;
+	s=arc-20240116; t=1762823341; c=relaxed/simple;
+	bh=tG3Eyo1KGnaDhRirrHi4zuwuqVhI7F2XacxMMleK7zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ly7ik+6XcqodwFZzkLEaEljpPfj0dACX8Ub2a0QtmBYzOjtXAE8x8tS80GfAUWZ6SyNJMgSJrWDgy1V+WN9v0EjAY+BWZeXzNQvOI0gs2Y+AzqndtNuJMtT5kAj/7uxjNzaUPEm8dmBOM9ihMxWd5onyrJrNTx6l9Lkg8QauyDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTjxIP7u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBD0C4CEF5;
-	Tue, 11 Nov 2025 01:08:53 +0000 (UTC)
+	 MIME-Version; b=BOj8bdY/vUfek6Y/SkXbFGF3wF8t7CddcQEONN++cKHkktjc8NCC9SjFpe1YFYuGUbJOHdNh4StLKDv7apqeK8bs1UlAIkXpCnJNvdirypGIbYyQkRN4ib7L+aPGiIehurCV28bCswevyiJkRHOT92RqtV2g9a9XQzGymK8weJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULLGiIDT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1407C19422;
+	Tue, 11 Nov 2025 01:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823334;
-	bh=a2yDht++kmJE83HbJ8CLSRIozXGQNiSjcS/HftZ5/d8=;
+	s=korg; t=1762823341;
+	bh=tG3Eyo1KGnaDhRirrHi4zuwuqVhI7F2XacxMMleK7zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qTjxIP7uFMAwYJexHOAdmJn5cGV881B4VUWs5rXmsZNcXy912MxiX/WqPaM50aH2d
-	 L+5OOFHLyzEp822rVkp/pXWzsD6vfJvSK1mSBq1gUsw05uQQqNzph25hV2+bMSbEJ5
-	 B+PaOWfbYemVz02lEqbz73DxBpBvYODwyVBEigvM=
+	b=ULLGiIDTaVMgyMTHKVjg/R6InoRN+3t4NFFMrp9axV1iFfUeVo9aK9Wgps2TYvo4E
+	 jry7H7qNpap4610qeqso4J12A+wT1AUGtScBh9SgGTOq0kiKCYW8iUmxkeBQxTZbGN
+	 sWhIrJoJHMrk0N3DZBLu0TFw3xRW4v4c9psPVoho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Geoffrey McRae <geoffrey.mcrae@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 278/849] wifi: rtw89: add dummy C2H handlers for BCN resend and update done
-Date: Tue, 11 Nov 2025 09:37:28 +0900
-Message-ID: <20251111004543.145925787@linuxfoundation.org>
+Subject: [PATCH 6.17 279/849] drm/amdkfd: return -ENOTTY for unsupported IOCTLs
+Date: Tue, 11 Nov 2025 09:37:29 +0900
+Message-ID: <20251111004543.170751749@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,85 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Geoffrey McRae <geoffrey.mcrae@amd.com>
 
-[ Upstream commit 04a2de8cfc95076d6c65d4d6d06d0f9d964a2105 ]
+[ Upstream commit 57af162bfc8c05332a28c4d458d246cc46d2746d ]
 
-Two C2H events are not listed, and driver throws
+Some kfd ioctls may not be available depending on the kernel version the
+user is running, as such we need to report -ENOTTY so userland can
+determine the cause of the ioctl failure.
 
-  MAC c2h class 0 func 6 not support
-  MAC c2h class 1 func 3 not support
-
-Since the implementation in vendor driver does nothing, add two dummy
-functions for them.
-
-Reported-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Closes: https://lore.kernel.org/linux-wireless/d2d62793-046c-4b55-93ed-1d1f43cff7f2@gmail.com/
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250804012234.8913-3-pkshih@realtek.com
+Signed-off-by: Geoffrey McRae <geoffrey.mcrae@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c | 13 ++++++++++++-
- drivers/net/wireless/realtek/rtw89/mac.h |  1 +
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index ef17a307b7702..33a7dd9d6f0e6 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -5235,6 +5235,11 @@ rtw89_mac_c2h_bcn_cnt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
- {
- }
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index 828a9ceef1e76..79ed3be63d0dd 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -3252,8 +3252,10 @@ static long kfd_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ 	int retcode = -EINVAL;
+ 	bool ptrace_attached = false;
  
-+static void
-+rtw89_mac_c2h_bcn_upd_done(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
-+{
-+}
-+
- static void
- rtw89_mac_c2h_pkt_ofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *skb_c2h,
- 			   u32 len)
-@@ -5257,6 +5262,11 @@ rtw89_mac_c2h_pkt_ofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *skb_c2h,
- 	rtw89_complete_cond(wait, cond, &data);
- }
+-	if (nr >= AMDKFD_CORE_IOCTL_COUNT)
++	if (nr >= AMDKFD_CORE_IOCTL_COUNT) {
++		retcode = -ENOTTY;
+ 		goto err_i1;
++	}
  
-+static void
-+rtw89_mac_c2h_bcn_resend(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
-+{
-+}
-+
- static void
- rtw89_mac_c2h_tx_duty_rpt(struct rtw89_dev *rtwdev, struct sk_buff *skb_c2h, u32 len)
- {
-@@ -5646,7 +5656,7 @@ void (* const rtw89_mac_c2h_ofld_handler[])(struct rtw89_dev *rtwdev,
- 	[RTW89_MAC_C2H_FUNC_EFUSE_DUMP] = NULL,
- 	[RTW89_MAC_C2H_FUNC_READ_RSP] = NULL,
- 	[RTW89_MAC_C2H_FUNC_PKT_OFLD_RSP] = rtw89_mac_c2h_pkt_ofld_rsp,
--	[RTW89_MAC_C2H_FUNC_BCN_RESEND] = NULL,
-+	[RTW89_MAC_C2H_FUNC_BCN_RESEND] = rtw89_mac_c2h_bcn_resend,
- 	[RTW89_MAC_C2H_FUNC_MACID_PAUSE] = rtw89_mac_c2h_macid_pause,
- 	[RTW89_MAC_C2H_FUNC_SCANOFLD_RSP] = rtw89_mac_c2h_scanofld_rsp,
- 	[RTW89_MAC_C2H_FUNC_TX_DUTY_RPT] = rtw89_mac_c2h_tx_duty_rpt,
-@@ -5661,6 +5671,7 @@ void (* const rtw89_mac_c2h_info_handler[])(struct rtw89_dev *rtwdev,
- 	[RTW89_MAC_C2H_FUNC_DONE_ACK] = rtw89_mac_c2h_done_ack,
- 	[RTW89_MAC_C2H_FUNC_C2H_LOG] = rtw89_mac_c2h_log,
- 	[RTW89_MAC_C2H_FUNC_BCN_CNT] = rtw89_mac_c2h_bcn_cnt,
-+	[RTW89_MAC_C2H_FUNC_BCN_UPD_DONE] = rtw89_mac_c2h_bcn_upd_done,
- };
+ 	if ((nr >= AMDKFD_COMMAND_START) && (nr < AMDKFD_COMMAND_END)) {
+ 		u32 amdkfd_size;
+@@ -3266,8 +3268,10 @@ static long kfd_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ 			asize = amdkfd_size;
  
- static
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 241e89983c4ad..25fe5e5c8a979 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -419,6 +419,7 @@ enum rtw89_mac_c2h_info_func {
- 	RTW89_MAC_C2H_FUNC_DONE_ACK,
- 	RTW89_MAC_C2H_FUNC_C2H_LOG,
- 	RTW89_MAC_C2H_FUNC_BCN_CNT,
-+	RTW89_MAC_C2H_FUNC_BCN_UPD_DONE = 0x06,
- 	RTW89_MAC_C2H_FUNC_INFO_MAX,
- };
+ 		cmd = ioctl->cmd;
+-	} else
++	} else {
++		retcode = -ENOTTY;
+ 		goto err_i1;
++	}
+ 
+ 	dev_dbg(kfd_device, "ioctl cmd 0x%x (#0x%x), arg 0x%lx\n", cmd, nr, arg);
  
 -- 
 2.51.0
