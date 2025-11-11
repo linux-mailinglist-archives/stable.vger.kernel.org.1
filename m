@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D75A5C4B259
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:03:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C06F4C4AD27
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7A5B3BF648
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 805174FD155
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A972DFA5B;
-	Tue, 11 Nov 2025 01:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3BC3446DF;
+	Tue, 11 Nov 2025 01:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHxgf66S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmK/A6k8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2232255F5E;
-	Tue, 11 Nov 2025 01:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550721D86FF;
+	Tue, 11 Nov 2025 01:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825362; cv=none; b=DHsNH6X5RMR7qNfzH5aKZ9M9md1CmtZkXTu2VvcCAxv04/8B8m87OfUIJ2TWG4tKPxPbsbWN6BH/zr9YhDfCWCfU4j3vP70vdfIIF3mHnRpZU+v7xbrMexLkES3tcuw6FTdWzMTIPZZbIOSZcZU9lRwLJRYoBW6q2Jai5P9bk/A=
+	t=1762824738; cv=none; b=ClZy5kh/OeKL1vgfV/+Z9K6B6R4RyCRizSOoGv0m/hAoU/6YkHOPiaR/ZTlZzjYUOT4cONMCcWRuBrNYJhQuqJq8euOKxKHesvGAHAcyfmtVuRpwUJt+KAZHpIMGFcrylZD6zIKlEQHhjrJlN2vzXR/HVdMhpR9BAhMRj5ZwbYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825362; c=relaxed/simple;
-	bh=UDqpHUsnR50Wgv0VUhMwkDtSitTLUF3pRsma1z6k+JU=;
+	s=arc-20240116; t=1762824738; c=relaxed/simple;
+	bh=8evNlnGNjzIotd7rf50sSIoub0w4FbepamDhgxC3eMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lciefsRRSHB30vSOPuUNQsLZlP1NZatJU6dsbsP7lscyQhh3iqWxHT6UiV9jMhwELIuE9Gi3HBv4ZmPPO1yHAzj0CbbpcpdVPlSG8u3L2uyQFP/r3lJsZG4Ei8iEn/9ZRl9bSs+2rhJx1LBfUg9I2DKJMvqD4Ew98Mc7m4uVt9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHxgf66S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91744C4CEFB;
-	Tue, 11 Nov 2025 01:42:41 +0000 (UTC)
+	 MIME-Version; b=qO8nTs2y/b9WfO6wuo0ZQ4aVxIXH8sKgK5EOKSwrjQmI4fufrkU6hIirMtldSrtpSJCUB/dRUURrVYC8xIAcUniB4mrtJ5CagfMqSzGBE0jmQPw4GTV6O3OPlJrvO3CaNn8Oqe8BQPdOTLdKNTsHDEHBvL6evR2NJN1lPs40DnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmK/A6k8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF641C19421;
+	Tue, 11 Nov 2025 01:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825361;
-	bh=UDqpHUsnR50Wgv0VUhMwkDtSitTLUF3pRsma1z6k+JU=;
+	s=korg; t=1762824738;
+	bh=8evNlnGNjzIotd7rf50sSIoub0w4FbepamDhgxC3eMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NHxgf66SeC2NiJAXgdJLRT88Z4zbXOIcgeBUjC+JZcIhmjIlophYwgNd6GAyCe7yR
-	 GzzCLQ0Sq8viKhjyfK6W2UB2K0G0tU6ZkhrKIktY4KEVREby31lq0U121eZi0ONFxn
-	 wJEoKSDKeXZ9MH4rpXn30W3c5x31b5HbzOj/vzfE=
+	b=bmK/A6k8O0AC0KVf/P3yf17rQiT+febe78JA9Oo0Cjt4q9Tt5xjzp9rtibiRXwuEC
+	 4hs0P9PatcdwO2hBYytH3Q++lT/CQ5Za7G71d2+615Q5Wkg+S2HrsAZmh33Xre3eRG
+	 vjGNSpzYv/Mjp6/+L8eCi/nXuIVZH8/CpPQ/3jqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+48b0652a95834717f190@syzkaller.appspotmail.com,
+	Helge Deller <deller@gmx.de>,
+	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 771/849] net: dsa: b53: fix enabling ip multicast
-Date: Tue, 11 Nov 2025 09:45:41 +0900
-Message-ID: <20251111004555.069106497@linuxfoundation.org>
+Subject: [PATCH 6.12 486/565] fbdev: Add bounds checking in bit_putcs to fix vmalloc-out-of-bounds
+Date: Tue, 11 Nov 2025 09:45:42 +0900
+Message-ID: <20251111004537.861841101@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
 
-[ Upstream commit c264294624e956a967a9e2e5fa41e3273340b089 ]
+[ Upstream commit 3637d34b35b287ab830e66048841ace404382b67 ]
 
-In the New Control register bit 1 is either reserved, or has a different
-function:
+Add bounds checking to prevent writes past framebuffer boundaries when
+rendering text near screen edges. Return early if the Y position is off-screen
+and clip image height to screen boundary. Break from the rendering loop if the
+X position is off-screen. When clipping image width to fit the screen, update
+the character count to match the clipped width to prevent buffer size
+mismatches.
 
-    Out of Range Error Discard
+Without the character count update, bit_putcs_aligned and bit_putcs_unaligned
+receive mismatched parameters where the buffer is allocated for the clipped
+width but cnt reflects the original larger count, causing out-of-bounds writes.
 
-    When enabled, the ingress port discards any frames
-    if the Length field is between 1500 and 1536
-    (excluding 1500 and 1536) and with good CRC.
-
-The actual bit for enabling IP multicast is bit 0, which was only
-explicitly enabled for BCM5325 so far.
-
-For older switch chips, this bit defaults to 0, so we want to enable it
-as well, while newer switch chips default to 1, and their documentation
-says "It is illegal to set this bit to zero."
-
-So drop the wrong B53_IPMC_FWD_EN define, enable the IP multicast bit
-also for other switch chips. While at it, rename it to (B53_)IP_MC as
-that is how it is called in Broadcom code.
-
-Fixes: 63cc54a6f073 ("net: dsa: b53: Fix egress flooding settings")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251102100758.28352-2-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+48b0652a95834717f190@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=48b0652a95834717f190
+Suggested-by: Helge Deller <deller@gmx.de>
+Tested-by: syzbot+48b0652a95834717f190@syzkaller.appspotmail.com
+Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 4 ++--
- drivers/net/dsa/b53/b53_regs.h   | 3 +--
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/core/bitblit.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index bb2c6dfa7835d..58c31049c0e7a 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -371,11 +371,11 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
- 		 * frames should be flooded or not.
- 		 */
- 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
-+		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IP_MC;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
- 	} else {
- 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--		mgmt |= B53_IP_MCAST_25;
-+		mgmt |= B53_IP_MC;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
- 	}
- }
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index 309fe0e46dadf..8ce1ce72e9385 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -111,8 +111,7 @@
+diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
+index 2e46c41a706a2..dc5ad3fcc7be4 100644
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
+@@ -168,6 +168,11 @@ static void bit_putcs(struct vc_data *vc, struct fb_info *info,
+ 	image.height = vc->vc_font.height;
+ 	image.depth = 1;
  
- /* IP Multicast control (8 bit) */
- #define B53_IP_MULTICAST_CTRL		0x21
--#define  B53_IP_MCAST_25		BIT(0)
--#define  B53_IPMC_FWD_EN		BIT(1)
-+#define  B53_IP_MC			BIT(0)
- #define  B53_UC_FWD_EN			BIT(6)
- #define  B53_MC_FWD_EN			BIT(7)
++	if (image.dy >= info->var.yres)
++		return;
++
++	image.height = min(image.height, info->var.yres - image.dy);
++
+ 	if (attribute) {
+ 		buf = kmalloc(cellsize, GFP_ATOMIC);
+ 		if (!buf)
+@@ -181,6 +186,18 @@ static void bit_putcs(struct vc_data *vc, struct fb_info *info,
+ 			cnt = count;
  
+ 		image.width = vc->vc_font.width * cnt;
++
++		if (image.dx >= info->var.xres)
++			break;
++
++		if (image.dx + image.width > info->var.xres) {
++			image.width = info->var.xres - image.dx;
++			cnt = image.width / vc->vc_font.width;
++			if (cnt == 0)
++				break;
++			image.width = cnt * vc->vc_font.width;
++		}
++
+ 		pitch = DIV_ROUND_UP(image.width, 8) + scan_align;
+ 		pitch &= ~scan_align;
+ 		size = pitch * image.height + buf_align;
 -- 
 2.51.0
 
