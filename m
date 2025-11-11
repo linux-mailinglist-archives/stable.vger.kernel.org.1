@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-193920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911E7C4ADDB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E86C4AB6B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D48C3B99DD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9A36F4F7781
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084922F2612;
-	Tue, 11 Nov 2025 01:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F9A28D829;
+	Tue, 11 Nov 2025 01:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ae8eLELt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXcfM+Q9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F192FD7CA;
-	Tue, 11 Nov 2025 01:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFAF2561A7;
+	Tue, 11 Nov 2025 01:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824377; cv=none; b=Zi5EQy+DgI3JwDpQeowmb9e/etnt3Zi+1faGQbOtOlTFglYamfaAwxXBpDGKK2snxjxG97YivWFAV5ZVO5udWO2IKbi+prx7vt+tMXDruCAfotji+0t6GEMWIVS72V1LWxNGeq+3ULaJDDywAGDLSOzK7GNLkZdMf6mNE9RuQCE=
+	t=1762824382; cv=none; b=D4msO09Y3JjvNKQ0M/aSS0JN1rG0FtyN0j/XaJ0TK0dNplIxzSkzNHnUWIPlPP7K8DHavmUHkkqslX69XVLGnUdqlrztrzrEo5jJ4b4E6U94DsuW+sp+qpYhFJ9hgojVxTEXdARGsU3v51+Gut18xVRUKT2An+TMKxXQkNnmrV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824377; c=relaxed/simple;
-	bh=gb2lo9eafL3inZ/vR5F+jbHMTdNoAQuoXvjdabHz1HM=;
+	s=arc-20240116; t=1762824382; c=relaxed/simple;
+	bh=LNA7VhGLp9fF1Zx+k1Bw5lwboeTJoSxzfVCg3Dpvg38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4jsQn2hOqf4pc/jhuybw+UlAF/h24daeg/DRrkQipb9dftuATbOQTL3xVVGA2L3RIJaO8dR1bMnCUmsRT268eYGOixl3KITfu7kquddntrGUNC8ejbZv/cz+Z+TL8y+kGEblogUO0cynOqzrLVTLLOhuS64SR/OF2bNt0QjpdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ae8eLELt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39206C116B1;
-	Tue, 11 Nov 2025 01:26:17 +0000 (UTC)
+	 MIME-Version; b=DprxXcKYr4PKGsUpbaL+xUIxiSJJhWrU3baf2ccl4+W61ycf8q3QGvChjl6N8B0pWjATnuDBwC8+o1XwG+ILsGjGTY6m7WTZxbdZe/JDmSHE2sBbU6WA4JyKWnCygcGeIcRsGZQmkBQpQdosrOu9M3lCU4ScnKJl5PNGbi9aRp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXcfM+Q9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1283C4AF0B;
+	Tue, 11 Nov 2025 01:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824377;
-	bh=gb2lo9eafL3inZ/vR5F+jbHMTdNoAQuoXvjdabHz1HM=;
+	s=korg; t=1762824382;
+	bh=LNA7VhGLp9fF1Zx+k1Bw5lwboeTJoSxzfVCg3Dpvg38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ae8eLELtv+4YUt3FR2ctLq8TeHM8qxmuxH/Xnem8aq7Z2A0YgdkIqIcjRfLbCJFj9
-	 wytLeC4AbEu1yNFahJdomY341bUMujNMNlHqM1CobzPsnaNqVhHhKxjB3ofStL6RAq
-	 P3hLEwlbUZ2iYgwpjkBDRISMNlkfn0RUsMx+b4qo=
+	b=ZXcfM+Q94uUe8eEexEhtPJi5b4tENNscJCudWKwJqzumSUanbDoSGhyvc//vuNZVb
+	 CD6EQsGDTIvaixk97xABX/NAtub4okWnaNOkQZ399kercWes/ORrj7Dlt8MxeEFYKa
+	 282sCtZ2iGUHMTkzRztSn2gjLyzFoogr4UVpqKFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raag Jadav <raag.jadav@intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Hao Yao <hao.yao@intel.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 483/849] drm/xe/i2c: Enable bus mastering
-Date: Tue, 11 Nov 2025 09:40:53 +0900
-Message-ID: <20251111004548.118828098@linuxfoundation.org>
+Subject: [PATCH 6.17 484/849] media: ov08x40: Fix the horizontal flip control
+Date: Tue, 11 Nov 2025 09:40:54 +0900
+Message-ID: <20251111004548.141717101@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,35 +69,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Raag Jadav <raag.jadav@intel.com>
+From: Hao Yao <hao.yao@intel.com>
 
-[ Upstream commit fce99326c9cf5a0e57c4283a61c6b622ef5b0de8 ]
+[ Upstream commit c7df6f339af94689fdc433887f9fbb480bf8a4ed ]
 
-Enable bus mastering for I2C controller to support device initiated
-in-band transactions.
+The datasheet of ov08x40 doesn't match the hardware behavior.
+0x3821[2] == 1 is the original state and 0 the horizontal flip enabled.
 
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250908055320.2549722-1-raag.jadav@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Hao Yao <hao.yao@intel.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Tested-by: Hans de Goede <hansg@kernel.org> # ThinkPad X1 Carbon Gen 12 & Gen 13
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_i2c.c | 2 +-
+ drivers/media/i2c/ov08x40.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_i2c.c b/drivers/gpu/drm/xe/xe_i2c.c
-index bc7dc2099470c..983e8e08e4739 100644
---- a/drivers/gpu/drm/xe/xe_i2c.c
-+++ b/drivers/gpu/drm/xe/xe_i2c.c
-@@ -245,7 +245,7 @@ void xe_i2c_pm_resume(struct xe_device *xe, bool d3cold)
- 		return;
+diff --git a/drivers/media/i2c/ov08x40.c b/drivers/media/i2c/ov08x40.c
+index e0094305ca2ab..90887fc54fb0e 100644
+--- a/drivers/media/i2c/ov08x40.c
++++ b/drivers/media/i2c/ov08x40.c
+@@ -1648,7 +1648,7 @@ static int ov08x40_set_ctrl_hflip(struct ov08x40 *ov08x, u32 ctrl_val)
  
- 	if (d3cold)
--		xe_mmio_rmw32(mmio, I2C_CONFIG_CMD, 0, PCI_COMMAND_MEMORY);
-+		xe_mmio_rmw32(mmio, I2C_CONFIG_CMD, 0, PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER);
+ 	return ov08x40_write_reg(ov08x, OV08X40_REG_MIRROR,
+ 				 OV08X40_REG_VALUE_08BIT,
+-				 ctrl_val ? val | BIT(2) : val & ~BIT(2));
++				 ctrl_val ? val & ~BIT(2) : val | BIT(2));
+ }
  
- 	xe_mmio_rmw32(mmio, I2C_CONFIG_PMCSR, PCI_PM_CTRL_STATE_MASK, (__force u32)PCI_D0);
- 	drm_dbg(&xe->drm, "pmcsr: 0x%08x\n", xe_mmio_read32(mmio, I2C_CONFIG_PMCSR));
+ static int ov08x40_set_ctrl_vflip(struct ov08x40 *ov08x, u32 ctrl_val)
 -- 
 2.51.0
 
