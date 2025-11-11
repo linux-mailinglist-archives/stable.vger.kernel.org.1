@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-193901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CCA5C4ADE4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E8BC4B0E8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:56:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DDBB3B5F58
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 329D71899482
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB08C347FED;
-	Tue, 11 Nov 2025 01:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12C534AB0B;
+	Tue, 11 Nov 2025 01:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyWdRIzV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJrCWJe9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED8A2DE70D;
-	Tue, 11 Nov 2025 01:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8E133F382;
+	Tue, 11 Nov 2025 01:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824330; cv=none; b=YeFpPxMNPlcx/hrhjJcpdNcWxmDnn65Hc+PDE0b5UsKm7KmoYiZZ/khe9uMnPyr3FaMeuCqniyrLMOI1aCU3uUplbL0PGpXu0S5Zr/Jw/uIm0Wk80YvcVSdQFh0FN2aF7zzj5xozdylpfW6n75GmAe9Xbbsh2ZUUbLzlLcPoqsg=
+	t=1762825343; cv=none; b=mRwf+WhUQrb9ByfVXGvnhFGkqZQ219VeMzrg6AxS7rtK6Kt5lKGZjeip984y1udVgSjGxfy29zQwh5ycfMH0Jv4AA6ZrlSDCfxB8ogKfv2fojaxI63Fk+6oOsuUV2HyA0YQPLoxoXvw5m/liqJRINa86eC4pswfWnkSlongXxu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824330; c=relaxed/simple;
-	bh=QZvtXF9LaihNS/Ryga+pBhxzjr1RENPlr0x8trroDDo=;
+	s=arc-20240116; t=1762825343; c=relaxed/simple;
+	bh=u7SGvKR7+BEG4Hxvsr/EXCKgCD/XY3/n5eAxjI3talg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CuZ5gDNEzMF9Ar73IW5WZUrX/msQseg/9o4EmKTz4KCFenBPJ1VRIA1OW6DZ4hpWsyS+WJGSMvw18aexMpXoDPmsvj18pkh2JcDrv/7yw75Dxa1wSVMsoJenwJxQ8Ag6e10NkQcCf12aTvvOYKkdIFrJe+H+1vibHCb4OUo3Qk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyWdRIzV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4ED5C116B1;
-	Tue, 11 Nov 2025 01:25:29 +0000 (UTC)
+	 MIME-Version; b=EDfNCjvhhMXDI+2ISIpFhhBWFEG1KctKRiZEHaFGtASVR4OZsjoMP0MW4ceJhYCGlRbdC0sVjlDyxRI+QyYCtHya8bzPPXn4ZP3fOStRx9HsFst6BK7kJ1X7gqaHKrSQCVsxIjyQ8G3Aeob88gapjlLpilZWrGOjCv/ja1WTuE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJrCWJe9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D79C4CEF5;
+	Tue, 11 Nov 2025 01:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824330;
-	bh=QZvtXF9LaihNS/Ryga+pBhxzjr1RENPlr0x8trroDDo=;
+	s=korg; t=1762825343;
+	bh=u7SGvKR7+BEG4Hxvsr/EXCKgCD/XY3/n5eAxjI3talg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hyWdRIzV9b5mXo8nTsvFfbuunRgK69e7zP2SVjiASiXFCJ812+Z0f7Juv2jQM5zYe
-	 nCCr8HeECxhRwHWA0ycKs3UfrRUplgWRKdeV3lcZGynjvVTwL4hhhFpweCHGzzus5w
-	 /UC66+hXus9vPCaUR8hsYta5UirgeEuE0f3nK9kM=
+	b=lJrCWJe9P03Z4/xvSm4MLFHVRMvBQL4QAqQwsVb83BDVcpIZcBC4mkz9YGBawhO2C
+	 aQLQT1/gzgEMkADdUDdfojf0NkKkhVWX35QylNbFT4VCW8EARJuvLwxiTyGnoaOlRe
+	 MPqyMdYP7gsw34eyM4//BWlUPmedc3td8bNzr92I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Matthias Schiffer <matthias.schiffer@tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 423/565] scsi: mpt3sas: Add support for 22.5 Gbps SAS link rate
+Subject: [PATCH 6.17 709/849] clk: ti: am33xx: keep WKUP_DEBUGSS_CLKCTRL enabled
 Date: Tue, 11 Nov 2025 09:44:39 +0900
-Message-ID: <20251111004536.378950401@linuxfoundation.org>
+Message-ID: <20251111004553.578622616@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Matthias Schiffer <matthias.schiffer@tq-group.com>
 
-[ Upstream commit 4be7599d6b27bade41bfccca42901b917c01c30c ]
+[ Upstream commit 1e0d75258bd09323cb452655549e03975992b29e ]
 
-Add handling for MPI26_SAS_NEG_LINK_RATE_22_5 in
-_transport_convert_phy_link_rate(). This maps the new 22.5 Gbps
-negotiated rate to SAS_LINK_RATE_22_5_GBPS, to get correct PHY link
-speeds.
+As described in AM335x Errata Advisory 1.0.42, WKUP_DEBUGSS_CLKCTRL
+can't be disabled - the clock module will just be stuck in transitioning
+state forever, resulting in the following warning message after the wait
+loop times out:
 
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Message-Id: <20250922095113.281484-4-ranjan.kumar@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+    l3-aon-clkctrl:0000:0: failed to disable
+
+Just add the clock to enable_init_clks, so no attempt is made to disable
+it.
+
+Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Acked-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_transport.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/ti/clk-33xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_transport.c b/drivers/scsi/mpt3sas/mpt3sas_transport.c
-index 421db8996927b..7faa971856fbc 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_transport.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_transport.c
-@@ -166,6 +166,9 @@ _transport_convert_phy_link_rate(u8 link_rate)
- 	case MPI25_SAS_NEG_LINK_RATE_12_0:
- 		rc = SAS_LINK_RATE_12_0_GBPS;
- 		break;
-+	case MPI26_SAS_NEG_LINK_RATE_22_5:
-+		rc = SAS_LINK_RATE_22_5_GBPS;
-+		break;
- 	case MPI2_SAS_NEG_LINK_RATE_PHY_DISABLED:
- 		rc = SAS_PHY_DISABLED;
- 		break;
+diff --git a/drivers/clk/ti/clk-33xx.c b/drivers/clk/ti/clk-33xx.c
+index 85c50ea39e6da..9269e6a0db6a4 100644
+--- a/drivers/clk/ti/clk-33xx.c
++++ b/drivers/clk/ti/clk-33xx.c
+@@ -258,6 +258,8 @@ static const char *enable_init_clks[] = {
+ 	"dpll_ddr_m2_ck",
+ 	"dpll_mpu_m2_ck",
+ 	"l3_gclk",
++	/* WKUP_DEBUGSS_CLKCTRL - disable fails, AM335x Errata Advisory 1.0.42 */
++	"l3-aon-clkctrl:0000:0",
+ 	/* AM3_L3_L3_MAIN_CLKCTRL, needed during suspend */
+ 	"l3-clkctrl:00bc:0",
+ 	"l4hs_gclk",
 -- 
 2.51.0
 
