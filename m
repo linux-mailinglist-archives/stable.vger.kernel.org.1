@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49FCC4A019
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0830BC4A01F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 18FB74F1EE3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E43C4F2203
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525B44C97;
-	Tue, 11 Nov 2025 00:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93D5246333;
+	Tue, 11 Nov 2025 00:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iU6uEtu0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMgczzDw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F15D2AE8D;
-	Tue, 11 Nov 2025 00:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BAB12DDA1;
+	Tue, 11 Nov 2025 00:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822290; cv=none; b=QGcbx+y5kt7wveCxVyyscziQ6LJSK/2KyisJTv3accY5qPCZozn4GSBU5MNSiIgyw+j1JNvWZbZd10n7AudZkWCQOodEsXkF1wja9W1hvVnF1i8HHLvZ/t2zymP/Z/Uq428u9KGyn9ue2Hz7q76A9lJtGyZYtf6sqRuqXbU6xzM=
+	t=1762822294; cv=none; b=FNCmBRAPdq1zZmY7Qy9qm+qcRqjTQDWgqBx4FpyoWON+caDPzzBTob7W9YRn+6OSzH5lqy8u+b6Zd60WYdRkjlIL8eNYKRv0tEHWvuRQqvD0ehwfna61RVtf3WaHgGI683XoHgw0rbglxBjR1Bx9kmExbZgT7PE1W/ZfZdLwGuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822290; c=relaxed/simple;
-	bh=xKVKudnfb0CS3YoOePYnqv2cL1YyReHD9t293nmhl1A=;
+	s=arc-20240116; t=1762822294; c=relaxed/simple;
+	bh=vKSoNeer2cw3zHSSRrrS2StK2b0ObShHLFz57fRERoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tkthZcV2mB55LDuJb3mqJ2MBw9Se3NYIiu9AzHc0PdjlnNedKS9w30b3CWEs3fM4OgbQIGifYhJyphflV8CD5alTCu9EyFcS8THkcl06WdV+WTjbtXWzAXKSWIxiFCPI6lSIEbjnKETXCRPyg9DypNqYBmnb7gWpoi42umHqYFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iU6uEtu0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59AAC116B1;
-	Tue, 11 Nov 2025 00:51:29 +0000 (UTC)
+	 MIME-Version; b=X1ZhvPcCOtHdvzNKom3k1vN5a+47okbJkJu9H6kTIe27UBYlRN0guDEIhw31Xl4/8vzhr8LQb4772H9W/ZnlfWDY1v2KtLZh/PI+m8Lm59Z1Jz7ibDUgx6QpohkUiA0SWJTi9grMgrLtwDykgpgHhRelDd0uVgiEWLA+r7kJbyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMgczzDw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22769C4CEF5;
+	Tue, 11 Nov 2025 00:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822289;
-	bh=xKVKudnfb0CS3YoOePYnqv2cL1YyReHD9t293nmhl1A=;
+	s=korg; t=1762822294;
+	bh=vKSoNeer2cw3zHSSRrrS2StK2b0ObShHLFz57fRERoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iU6uEtu00MfyroP0kZiCqgH8WvbNoFD+eF1PeljZNF0m5ahUvu/R2bMBeXabd8rr6
-	 LPpQ5iML6QG09Hs+2ETVPH+ity9pJK9Tx0zfFWDQcKsyJpLzcMGLggPld94C8cZaSN
-	 KR/LvpmMzK+vWbRYtobZOERQ2WBWYjuHHQPn5j+A=
+	b=fMgczzDw/tUXVFV9sipgUszVOxQaewLg5LlUqboorwrV65f50GyQDlTfzccCYrdSM
+	 CPhaunfcdg35sNEX2E7lZpnwho1Hwd355Q6+slOh77m2y7Tt0tVcTzroXjLdCedlCp
+	 C/tHrVPoxu0Zl5fcHyja72WNAPjj2GdZ4AhbRCKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
 	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/565] wifi: ath10k: Fix memory leak on unsupported WMI command
-Date: Tue, 11 Nov 2025 09:37:55 +0900
-Message-ID: <20251111004527.302767099@linuxfoundation.org>
+Subject: [PATCH 6.12 020/565] wifi: ath11k: Add missing platform IDs for quirk table
+Date: Tue, 11 Nov 2025 09:37:56 +0900
+Message-ID: <20251111004527.326010628@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,39 +67,124 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 2e9c1da4ee9d0acfca2e0a3d78f3d8cb5802da1b ]
+[ Upstream commit 0eb002c93c3b47f88244cecb1e356eaeab61a6bf ]
 
-ath10k_wmi_cmd_send takes ownership of the passed buffer (skb) and has the
-responsibility to release it in case of error. This patch fixes missing
-free in case of early error due to unhandled WMI command ID.
+Lenovo platforms can come with one of two different IDs.
+The pm_quirk table was missing the second ID for each platform.
 
-Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
+Add missing ID and some extra platform identification comments.
+Reported on https://bugzilla.kernel.org/show_bug.cgi?id=219196
 
-Fixes: 553215592f14 ("ath10k: warn if give WMI command is not supported")
-Suggested-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Tested-on: P14s G4 AMD.
+
+Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine model")
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219196
 Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250926195656.187970-1-loic.poulain@oss.qualcomm.com
+Link: https://patch.msgid.link/20250929192146.1789648-1-mpearson-lenovo@squebb.ca
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath11k/core.c | 54 +++++++++++++++++++++++---
+ 1 file changed, 48 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index fdab67a56e438..32754f894f0b0 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -1937,6 +1937,7 @@ int ath10k_wmi_cmd_send(struct ath10k *ar, struct sk_buff *skb, u32 cmd_id)
- 	if (cmd_id == WMI_CMD_UNSUPPORTED) {
- 		ath10k_warn(ar, "wmi command %d is not supported by firmware\n",
- 			    cmd_id);
-+		dev_kfree_skb_any(skb);
- 		return ret;
- 	}
- 
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index afac4a1e9a1db..735032c353b2d 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -814,42 +814,84 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
+ 	{
+ 		.driver_data = (void *)ATH11K_PM_WOW,
+-		.matches = {
++		.matches = { /* X13 G4 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21J3"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* X13 G4 AMD #2 */
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21J4"),
+ 		},
+ 	},
+ 	{
+ 		.driver_data = (void *)ATH11K_PM_WOW,
+-		.matches = {
++		.matches = { /* T14 G4 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K3"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* T14 G4 AMD #2 */
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21K4"),
+ 		},
+ 	},
+ 	{
+ 		.driver_data = (void *)ATH11K_PM_WOW,
+-		.matches = {
++		.matches = { /* P14s G4 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K5"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* P14s G4 AMD #2 */
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21K6"),
+ 		},
+ 	},
+ 	{
+ 		.driver_data = (void *)ATH11K_PM_WOW,
+-		.matches = {
++		.matches = { /* T16 G2 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K7"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* T16 G2 AMD #2 */
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21K8"),
+ 		},
+ 	},
+ 	{
+ 		.driver_data = (void *)ATH11K_PM_WOW,
+-		.matches = {
++		.matches = { /* P16s G2 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K9"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* P16s G2 AMD #2 */
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21KA"),
+ 		},
+ 	},
+ 	{
+ 		.driver_data = (void *)ATH11K_PM_WOW,
+-		.matches = {
++		.matches = { /* T14s G4 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21F8"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* T14s G4 AMD #2 */
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21F9"),
+ 		},
 -- 
 2.51.0
 
