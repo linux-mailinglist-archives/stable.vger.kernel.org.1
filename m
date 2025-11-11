@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A03F8C4AA57
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:31 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B377FC4A355
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F06B53BB28B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 118024F1A61
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6057A33F8D2;
-	Tue, 11 Nov 2025 01:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D0D260566;
+	Tue, 11 Nov 2025 01:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQEF67Ff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQ2W5y1f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA8C33F39D;
-	Tue, 11 Nov 2025 01:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42135256C8D;
+	Tue, 11 Nov 2025 01:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824008; cv=none; b=I2wiLl7gV7fWy7vaxm9YIEJ9SJZxl0Rd51jN7LfGpUmzNDRCFGI5+MnQ11NPhJB7bW5bwBO48AnZhAvOdQkWfzexXS6xbM6P42eMs7JWFkwBwlSjQiiyaVG1pkgcNXsbxP/G9urRKHu+eKoPEWpLJ07kyUsy0VtUVzGJWzacNP8=
+	t=1762822918; cv=none; b=EahJ9Gl4j050aQL+IvV2V3Ji6CiVMBrUenKTzrhw//PP1eoxjyxsFUX5GKcJQdqo6Q6vwu6oMzQ7XmJ62NXLDAamK02mYQIUb3m8o5IjL2G9z8oDjbFOM1cybGh+9RPrIVUS8iGTpWSzkhHLQqcpoUEwKqIE18jOtL5XniV8ckA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824008; c=relaxed/simple;
-	bh=YyIymvxzxpccLWmULbu16ovYvF+yxEiT0oVJtKYpPTM=;
+	s=arc-20240116; t=1762822918; c=relaxed/simple;
+	bh=dDwTpTWVqiyrq4t1Aw8YdeWgtF249MaBp4o5B/OFDJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z7M7nqM2uk71DfqBorWz7vqBUPPUp5kD5K62OHJP3dG6XlG3PPj7iNzmLhguN3I1PJEkX4iO4qWSuj6j5yKvNGGgP9Ve0niJm/jRIJ44V7n9DIoh6ifpALi51F2eQICnY7zDeN/1Kx+OAkCzZx9AyFDXLUi6mWisWh85es7mW4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQEF67Ff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0CCC116B1;
-	Tue, 11 Nov 2025 01:20:07 +0000 (UTC)
+	 MIME-Version; b=hjdMboO3048IRmUlFVeoXlP3oQUo4Wt4LjcHMEh9w3MWxflYmLslsWAaqtxdTRoIL5xDWu8V3Ml7MAGdXkKCxF+RztQwPXCtlqF69El023xmqXyt8xAcohLB7SJbUvWT7Iejw9SITj7o4kXwGGz/kEog8biOdzdEf9p+EyOH/L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQ2W5y1f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AFEDC4CEF5;
+	Tue, 11 Nov 2025 01:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824008;
-	bh=YyIymvxzxpccLWmULbu16ovYvF+yxEiT0oVJtKYpPTM=;
+	s=korg; t=1762822917;
+	bh=dDwTpTWVqiyrq4t1Aw8YdeWgtF249MaBp4o5B/OFDJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lQEF67FfU9S2isZ8/pMwc+iSTToN+UVuwaWQqdHegXBFAGOFf/bc9np6GW9AyuP7U
-	 aa4y1RqECxeF+l9V8M2eHOoD6Aim5IV/g1HwOtiNvy7zxjxKFyF2AX9tTpCaXCO7ch
-	 TgM4BBfS/4cOnRZOUrCTp37emh9NlRQax28L0DUI=
+	b=fQ2W5y1f1GOPxKXn5lG7xu7aNNmvPdMn/lmmf4uziefcAkK2bl1EZ+I21aLtRLKwE
+	 7KBOZa37X5wSwI7XXdxhK8TySv9VmD83+FTY+/hqfoFniOqVblA7c/Er5z8WLPg5tH
+	 HmsLEGJ4aDMPuIT70X6XLRh6Tfietdx2iy0Ey/IQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sarthak Garg <quic_sartgarg@quicinc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 419/849] drm/msm/dsi/phy_7nm: Fix missing initial VCO rate
+Subject: [PATCH 6.12 133/565] mmc: sdhci-msm: Enable tuning for SDR50 mode for SD card
 Date: Tue, 11 Nov 2025 09:39:49 +0900
-Message-ID: <20251111004546.571174060@linuxfoundation.org>
+Message-ID: <20251111004529.940940637@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Sarthak Garg <quic_sartgarg@quicinc.com>
 
-[ Upstream commit 5ddcb0cb9d10e6e70a68e0cb8f0b8e3a7eb8ccaf ]
+[ Upstream commit 08b68ca543ee9d5a8d2dc406165e4887dd8f170b ]
 
-Driver unconditionally saves current state on first init in
-dsi_pll_7nm_init(), but does not save the VCO rate, only some of the
-divider registers.  The state is then restored during probe/enable via
-msm_dsi_phy_enable() -> msm_dsi_phy_pll_restore_state() ->
-dsi_7nm_pll_restore_state().
+For Qualcomm SoCs which needs level shifter for SD card, extra delay is
+seen on receiver data path.
 
-Restoring calls dsi_pll_7nm_vco_set_rate() with
-pll_7nm->vco_current_rate=0, which basically overwrites existing rate of
-VCO and messes with clock hierarchy, by setting frequency to 0 to clock
-tree.  This makes anyway little sense - VCO rate was not saved, so
-should not be restored.
+To compensate this delay enable tuning for SDR50 mode for targets which
+has level shifter. SDHCI_SDR50_NEEDS_TUNING caps will be set for targets
+with level shifter on Qualcomm SOC's.
 
-If PLL was not configured configure it to minimum rate to avoid glitches
-and configuring entire in clock hierarchy to 0 Hz.
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/657827/
-Link: https://lore.kernel.org/r/20250610-b4-sm8750-display-v6-9-ee633e3ddbff@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sarthak Garg <quic_sartgarg@quicinc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mmc/host/sdhci-msm.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-index 6b765f3fd529a..5c8a3394c3da0 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-@@ -843,6 +843,12 @@ static int dsi_pll_7nm_init(struct msm_dsi_phy *phy)
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index c2144a3efb308..74234ee5f6089 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -81,6 +81,7 @@
+ #define CORE_IO_PAD_PWR_SWITCH_EN	BIT(15)
+ #define CORE_IO_PAD_PWR_SWITCH	BIT(16)
+ #define CORE_HC_SELECT_IN_EN	BIT(18)
++#define CORE_HC_SELECT_IN_SDR50	(4 << 19)
+ #define CORE_HC_SELECT_IN_HS400	(6 << 19)
+ #define CORE_HC_SELECT_IN_MASK	(7 << 19)
  
- 	/* TODO: Remove this when we have proper display handover support */
- 	msm_dsi_phy_pll_save_state(phy);
-+	/*
-+	 * Store also proper vco_current_rate, because its value will be used in
-+	 * dsi_7nm_pll_restore_state().
-+	 */
-+	if (!dsi_pll_7nm_vco_recalc_rate(&pll_7nm->clk_hw, VCO_REF_CLK_RATE))
-+		pll_7nm->vco_current_rate = pll_7nm->phy->cfg->min_pll_rate;
+@@ -1133,6 +1134,10 @@ static bool sdhci_msm_is_tuning_needed(struct sdhci_host *host)
+ {
+ 	struct mmc_ios *ios = &host->mmc->ios;
  
- 	return 0;
- }
++	if (ios->timing == MMC_TIMING_UHS_SDR50 &&
++	    host->flags & SDHCI_SDR50_NEEDS_TUNING)
++		return true;
++
+ 	/*
+ 	 * Tuning is required for SDR104, HS200 and HS400 cards and
+ 	 * if clock frequency is greater than 100MHz in these modes.
+@@ -1201,6 +1206,8 @@ static int sdhci_msm_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ 	struct mmc_ios ios = host->mmc->ios;
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	const struct sdhci_msm_offset *msm_offset = msm_host->offset;
++	u32 config;
+ 
+ 	if (!sdhci_msm_is_tuning_needed(host)) {
+ 		msm_host->use_cdr = false;
+@@ -1217,6 +1224,14 @@ static int sdhci_msm_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ 	 */
+ 	msm_host->tuning_done = 0;
+ 
++	if (ios.timing == MMC_TIMING_UHS_SDR50 &&
++	    host->flags & SDHCI_SDR50_NEEDS_TUNING) {
++		config = readl_relaxed(host->ioaddr + msm_offset->core_vendor_spec);
++		config &= ~CORE_HC_SELECT_IN_MASK;
++		config |= CORE_HC_SELECT_IN_EN | CORE_HC_SELECT_IN_SDR50;
++		writel_relaxed(config, host->ioaddr + msm_offset->core_vendor_spec);
++	}
++
+ 	/*
+ 	 * For HS400 tuning in HS200 timing requires:
+ 	 * - select MCLK/2 in VENDOR_SPEC
 -- 
 2.51.0
 
