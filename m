@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-194348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFBA3C4B241
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:02:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B618C4AD10
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 409EE3BF829
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2197F4F5BFF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BD0A944;
-	Tue, 11 Nov 2025 01:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6D930EF87;
+	Tue, 11 Nov 2025 01:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOWbOqy3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YID9aUrQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15F92F5A10;
-	Tue, 11 Nov 2025 01:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6001F419F;
+	Tue, 11 Nov 2025 01:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825393; cv=none; b=nvQ5CTlOelPb9V3u3MzEgYUw6pbXFz4/zORwRVu1CxLHAKrAAefrX679QX3G2nGddY9goMbmKGGOYdgVKKKX3ykhU+f6moJbx9trbigR6WjVCE+BgKr5hy4se+JQsowmuypYHnMM29DHSqXTQ/J+Ts8vfMxubxgmgQO1pjgywXQ=
+	t=1762824680; cv=none; b=nmS1BewMfUeJX9S3V7eNaPZSXeuFSchhA66dp9Yhhu4h/AzCNLcyckQD3LkfTn+zVKkYLoDfR2ElgAYBzg6dA7b3mE3017dCLNki4osiUcHvOPBOhDXuFsUThV43kCnpHJSmgr1AKIVEm1o8PJOueZzvrErFRrEPSdtNY1Ds8Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825393; c=relaxed/simple;
-	bh=qO/cQsTqArRwvyNo1CWSPoKh0eLARbE3FuPt5sI0mM4=;
+	s=arc-20240116; t=1762824680; c=relaxed/simple;
+	bh=e7rW7qSX9cFCWm+CqUnTj4Xy9wtcix9cYVp8AEQkcqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUyWmuPOb2evNA/o2r1KChUREe6UPe6oo5kYDVbVB2Qeg4X3E42NRM4xVBW06B3Wp9twQ7DvLWvF6hVT0aezw9ibCfLiceyTeyXpWQ5xrmPwNWDbkwdBd740Uv8OA+sUK9slzYZsqIWOKQd7uld3xzZ/LAfv+PVJ+Z2LMs32Ybo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOWbOqy3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A33C4CEFB;
-	Tue, 11 Nov 2025 01:43:13 +0000 (UTC)
+	 MIME-Version; b=I9pZU3RLpyDg6oiyXcQHaXIPMKVFJo0vWkt2eHBHbl+D2qWhFawsthUOha0PXkIN9oboS/aKrMSjJxxuQGIR8IwPxQYwgCqB7heBWAgaxTzny1sAP+A1AuiXyUN5ZPZFCPhSTZOLf6NYUOGOuD79RxslNE3W/VWOILhiumQEr78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YID9aUrQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CB1C19422;
+	Tue, 11 Nov 2025 01:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825393;
-	bh=qO/cQsTqArRwvyNo1CWSPoKh0eLARbE3FuPt5sI0mM4=;
+	s=korg; t=1762824680;
+	bh=e7rW7qSX9cFCWm+CqUnTj4Xy9wtcix9cYVp8AEQkcqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TOWbOqy3Z5xJcVKl2IOGLX1tHwK7UdyxC+wynEVaG2RQNvhn7AGA6kxzZwX189WYl
-	 n8lDBK5v0PK3W3qWxO7yl222q78iqNK85EpbyyvSI1rMoXJzxk+RFd73czyb2uwB/E
-	 R/5Ky3TS86u3Dz/RE5W/WYu3cH2vI7PgC1he+ZgA=
+	b=YID9aUrQNkytWQNDSZ53XzI3JIHEuxqWRhHKhin4KkXIbOGZuCAKWnEQbJ9GH4Wwq
+	 JXRkn01sXHGax4Rfh9uHXV8DCC/3aIrZPttm+AStL5ZEe55uyxd9/JJLtpu01rwIkb
+	 FJw1LK4zMhu2t+7XHsX74hGzg1BaxYj4BViOWRfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Shruti Parab <shruti.parab@broadcom.com>,
-	Gautam R A <gautam-r.a@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 783/849] bnxt_en: Fix null pointer dereference in bnxt_bs_trace_check_wrap()
+Subject: [PATCH 6.12 497/565] x86/runtime-const: Add the RUNTIME_CONST_PTR assembly macro
 Date: Tue, 11 Nov 2025 09:45:53 +0900
-Message-ID: <20251111004555.364110417@linuxfoundation.org>
+Message-ID: <20251111004538.118878049@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam R A <gautam-r.a@broadcom.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit ff02be05f78399c766be68ab0b2285ff90b2aaa8 ]
+[ Upstream commit bd72baff229920da1d57c14364c11ecdbaf5b458 ]
 
-With older FW, we may get the ASYNC_EVENT_CMPL_EVENT_ID_DBG_BUF_PRODUCER
-for FW trace data type that has not been initialized.  This will result
-in a crash in bnxt_bs_trace_type_wrap().  Add a guard to check for a
-valid magic_byte pointer before proceeding.
+Add an assembly macro to refer runtime cost. It hides linker magic and
+makes assembly more readable.
 
-Fixes: 84fcd9449fd7 ("bnxt_en: Manage the FW trace context memory")
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Reviewed-by: Shruti Parab <shruti.parab@broadcom.com>
-Signed-off-by: Gautam R A <gautam-r.a@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20251104005700.542174-4-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250304153342.2016569-1-kirill.shutemov@linux.intel.com
+Stable-dep-of: 284922f4c563 ("x86: uaccess: don't use runtime-const rewriting in modules")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/runtime-const.h | 13 +++++++++++++
+ arch/x86/lib/getuser.S               |  7 ++-----
+ 2 files changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index 2317172166c7d..6b751eb29c2d4 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -2148,7 +2148,7 @@ struct bnxt_bs_trace_info {
- static inline void bnxt_bs_trace_check_wrap(struct bnxt_bs_trace_info *bs_trace,
- 					    u32 offset)
- {
--	if (!bs_trace->wrapped &&
-+	if (!bs_trace->wrapped && bs_trace->magic_byte &&
- 	    *bs_trace->magic_byte != BNXT_TRACE_BUF_MAGIC_BYTE)
- 		bs_trace->wrapped = 1;
- 	bs_trace->last_offset = offset;
+diff --git a/arch/x86/include/asm/runtime-const.h b/arch/x86/include/asm/runtime-const.h
+index 6652ebddfd02f..8d983cfd06ea6 100644
+--- a/arch/x86/include/asm/runtime-const.h
++++ b/arch/x86/include/asm/runtime-const.h
+@@ -2,6 +2,18 @@
+ #ifndef _ASM_RUNTIME_CONST_H
+ #define _ASM_RUNTIME_CONST_H
+ 
++#ifdef __ASSEMBLY__
++
++.macro RUNTIME_CONST_PTR sym reg
++	movq	$0x0123456789abcdef, %\reg
++	1:
++	.pushsection runtime_ptr_\sym, "a"
++	.long	1b - 8 - .
++	.popsection
++.endm
++
++#else /* __ASSEMBLY__ */
++
+ #define runtime_const_ptr(sym) ({				\
+ 	typeof(sym) __ret;					\
+ 	asm_inline("mov %1,%0\n1:\n"				\
+@@ -58,4 +70,5 @@ static inline void runtime_const_fixup(void (*fn)(void *, unsigned long),
+ 	}
+ }
+ 
++#endif /* __ASSEMBLY__ */
+ #endif
+diff --git a/arch/x86/lib/getuser.S b/arch/x86/lib/getuser.S
+index 89ecd57c9d423..853a2e6287698 100644
+--- a/arch/x86/lib/getuser.S
++++ b/arch/x86/lib/getuser.S
+@@ -34,16 +34,13 @@
+ #include <asm/thread_info.h>
+ #include <asm/asm.h>
+ #include <asm/smap.h>
++#include <asm/runtime-const.h>
+ 
+ #define ASM_BARRIER_NOSPEC ALTERNATIVE "", "lfence", X86_FEATURE_LFENCE_RDTSC
+ 
+ .macro check_range size:req
+ .if IS_ENABLED(CONFIG_X86_64)
+-	movq $0x0123456789abcdef,%rdx
+-  1:
+-  .pushsection runtime_ptr_USER_PTR_MAX,"a"
+-	.long 1b - 8 - .
+-  .popsection
++	RUNTIME_CONST_PTR USER_PTR_MAX, rdx
+ 	cmp %rdx, %rax
+ 	cmova %rdx, %rax
+ .else
 -- 
 2.51.0
 
