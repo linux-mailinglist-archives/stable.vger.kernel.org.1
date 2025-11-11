@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E460C4A82A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:01 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F928C4A4F4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:17:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AE48534C3CB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C46024F6631
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C2234321E;
-	Tue, 11 Nov 2025 01:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E5C342CB1;
+	Tue, 11 Nov 2025 01:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12PlZhYD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEeNEYZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715F72D979C;
-	Tue, 11 Nov 2025 01:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B62D342CA9;
+	Tue, 11 Nov 2025 01:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824092; cv=none; b=qyFJLCW6mHry4igy5Wr9VSkY2mvjhKwWJn1igOP7d3WY8iZ1kux3c4efn95ZFk5+pXAHUz/7KndpXCYe+WGeC8Tv1PxaRqM2V3us1Z/3QlJEoRT6AXeLZ5M9oNCtK448JuYd6GnGXAtNA1j4q7Um0rccekholR7z1c41K/hfYTs=
+	t=1762823179; cv=none; b=KX0Q4yEyKE3yzx8A7wj+kqDiJaeXo+pJUOecmR3f6E3zgd4xdIAcC1pNz9ozZ50vViGRjMuXlw4NtPFXpDSszRmi48LLNZsu99VbpreLGr0S1xbSkveOj5fHLJ+IH+CogG7FFVWQOCU8HreoNoFavxxb1VidtJQVaOSpYZQf7Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824092; c=relaxed/simple;
-	bh=WdvUI/2yHQF4Wdz3BIubOHQK6kRY2PqvFeZFn3biam0=;
+	s=arc-20240116; t=1762823179; c=relaxed/simple;
+	bh=mqDGC/Yq0TJQm+mPe30IH4RiGtPpLJeJ+SL5OfbIPLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E2QB8qX2yE2I80LLlgcw0QHUzmG6YjQyRoCrHdM2H39i01luyP0imNBbmM4vhXKu1uTk+rgy6jI5ONQoSSh4uPwDG6AP7ygZQUaTbbK3lIbK4lA5AmSfK5cI/VUD+JYMqwoQN9nAWmyJNxpCz8/21j7g9heFOxZF2HRz17D7pvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12PlZhYD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0921EC113D0;
-	Tue, 11 Nov 2025 01:21:31 +0000 (UTC)
+	 MIME-Version; b=Gqjw7CLyH+2KF79A3pYPxh4xc+Ydve381B5bgyZtJxW9qR+v99I3SLEcoQxSTyFsXfjjX8wbPBIhw9T/HnqtP8eJ7LjSf84WM9GnweHvZKacqhi4ZRsbNyKwAzRa5KikLbMFfWOeXBl5tfnkU45DRbYbzZmxv96ArjqQfn4qO/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEeNEYZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6963C2BCAF;
+	Tue, 11 Nov 2025 01:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824092;
-	bh=WdvUI/2yHQF4Wdz3BIubOHQK6kRY2PqvFeZFn3biam0=;
+	s=korg; t=1762823179;
+	bh=mqDGC/Yq0TJQm+mPe30IH4RiGtPpLJeJ+SL5OfbIPLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=12PlZhYDUN+BnzxQgj4McqU/6ru/yD+MBfh0zXVUxwLgh7+zVX0xmKCPMAOmRpv2v
-	 2tNHwpZlnaHsdtUwtaVRZBCm64j94ilXDP4RsBXCz76e0IlcVNBcpDjr/7jNZ9nMn9
-	 srSUQ+onMYsgSkKs9VOvJGiP9B8zW2LiM/GEusWw=
+	b=JEeNEYZ1EO05yOBR+YHvAzo+aHMW/OcIFnbn9tqyiu1PQ/k8WJrCpWncfVJBC2Q/4
+	 7OwMvbsvSPWEGv8yncOKdBbltqeRpO7fiFIjuihk5fVASWhliGcmPKrxgbKCqsrBw8
+	 r9CwZtVyvKoyzuj5eUN1/LsiGZ02Z2Nv5iu9/QfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 435/849] media: adv7180: Only validate format in querystd
+Subject: [PATCH 6.12 149/565] spi: rpc-if: Add resume support for RZ/G3E
 Date: Tue, 11 Nov 2025 09:40:05 +0900
-Message-ID: <20251111004546.947597363@linuxfoundation.org>
+Message-ID: <20251111004530.292473970@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 91c5d7c849273d14bc4bae1b92666bdb5409294a ]
+[ Upstream commit ad4728740bd68d74365a43acc25a65339a9b2173 ]
 
-The .querystd callback should not program the device with the detected
-standard, it should only report the standard to user-space. User-space
-may then use .s_std to set the standard, if it wants to use it.
+On RZ/G3E using PSCI, s2ram powers down the SoC. After resume,
+reinitialize the hardware for SPI operations.
 
-All that is required of .querystd is to setup the auto detection of
-standards and report its findings.
-
-While at it add some documentation on why this can't happen while
-streaming and improve the error handling using a scoped guard.
-
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patch.msgid.link/20250921112649.104516-3-biju.das.jz@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/adv7180.c | 37 ++++++++++++++++---------------------
- 1 file changed, 16 insertions(+), 21 deletions(-)
+ drivers/spi/spi-rpc-if.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
-index 8100fe6b0f1d4..5accf3020e076 100644
---- a/drivers/media/i2c/adv7180.c
-+++ b/drivers/media/i2c/adv7180.c
-@@ -357,32 +357,27 @@ static inline struct adv7180_state *to_state(struct v4l2_subdev *sd)
- static int adv7180_querystd(struct v4l2_subdev *sd, v4l2_std_id *std)
+diff --git a/drivers/spi/spi-rpc-if.c b/drivers/spi/spi-rpc-if.c
+index c24dad51a0e96..43e829251af59 100644
+--- a/drivers/spi/spi-rpc-if.c
++++ b/drivers/spi/spi-rpc-if.c
+@@ -193,6 +193,8 @@ static int __maybe_unused rpcif_spi_resume(struct device *dev)
  {
- 	struct adv7180_state *state = to_state(sd);
--	int err = mutex_lock_interruptible(&state->mutex);
--	if (err)
--		return err;
--
--	if (state->streaming) {
--		err = -EBUSY;
--		goto unlock;
--	}
-+	int ret;
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
  
--	err = adv7180_set_video_standard(state,
--			ADV7180_STD_AD_PAL_BG_NTSC_J_SECAM);
--	if (err)
--		goto unlock;
-+	guard(mutex)(&state->mutex);
- 
--	msleep(100);
--	__adv7180_status(state, NULL, std);
-+	/*
-+	 * We can't sample the standard if the device is streaming as that would
-+	 * interfere with the capture session as the VID_SEL reg is touched.
-+	 */
-+	if (state->streaming)
-+		return -EBUSY;
- 
--	err = v4l2_std_to_adv7180(state->curr_norm);
--	if (err < 0)
--		goto unlock;
-+	/* Set the standard to autodetect PAL B/G/H/I/D, NTSC J or SECAM */
-+	ret = adv7180_set_video_standard(state,
-+					 ADV7180_STD_AD_PAL_BG_NTSC_J_SECAM);
-+	if (ret)
-+		return ret;
- 
--	err = adv7180_set_video_standard(state, err);
-+	/* Allow some time for the autodetection to run. */
-+	msleep(100);
- 
--unlock:
--	mutex_unlock(&state->mutex);
--	return err;
-+	return __adv7180_status(state, NULL, std);
++	rpcif_hw_init(dev, false);
++
+ 	return spi_controller_resume(ctlr);
  }
  
- static int adv7180_s_routing(struct v4l2_subdev *sd, u32 input,
 -- 
 2.51.0
 
