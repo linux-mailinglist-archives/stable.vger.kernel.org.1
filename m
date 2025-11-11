@@ -1,159 +1,105 @@
-Return-Path: <stable+bounces-194536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3A5C4FBCD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 21:46:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 099B7C4FC09
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 21:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E58473B529D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 20:46:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B4FE44E5444
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 20:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5374824113D;
-	Tue, 11 Nov 2025 20:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54D13A8D6F;
+	Tue, 11 Nov 2025 20:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MdZZoZF0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X1fZaOfF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E420933D6F9;
-	Tue, 11 Nov 2025 20:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFA2361DD6;
+	Tue, 11 Nov 2025 20:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762893964; cv=none; b=uUVbBtzePYX/EntNhROxTQPwRyvPPOSaLT3SRulrtzVr5gZ4SGgiX0CvABXUM+1K59GmzTP6J8BZZyBiMz+j5VXMNzPiHtlGwhiJclZpmRKB2uUgw4ugguDAYlawp2wEPH2l5067D5trU7IvoPl37DrqxFesvf0vWhUEHmem10Q=
+	t=1762894654; cv=none; b=bDgDpFHfcYGXDlua19UVhEALqx7VRgAeUsHyT7TGO9iKArXha8DD+ZlVcPGtY82+HVTJFbVbuyrs/GCRXqlj/A4Fak+MrCfK4Y2fHPPW99NKXc3FDlGVX0Hr/YhwEgZC3qsE26I9Fs38uPnA2H4Kuvnbq8jvYEeX6C/1mxUnUbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762893964; c=relaxed/simple;
-	bh=NIWTxMQS9jFvAervRzPIb4HAcewHjt9dt19VCk6IElU=;
-	h=Date:To:From:Subject:Message-Id; b=GY09/d6bkcjqyV4vrXgzo7Grz499ITI0yLVSmkZpvixPNftb5Ecjn1au4MAuIqmiJmHJzlkjvb5QeCHBel+QUna/FdzOoi7zrXbQsozqp/KOSto3Oa6fwQMy1LBRNp9MEpkUj95DzXdAAmM0Qnhm2xfLG6Dlut/4E04LNtX6GaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MdZZoZF0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B14C4CEF5;
-	Tue, 11 Nov 2025 20:46:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762893963;
-	bh=NIWTxMQS9jFvAervRzPIb4HAcewHjt9dt19VCk6IElU=;
-	h=Date:To:From:Subject:From;
-	b=MdZZoZF0141ew0S6GCvQn7Nk4EcHgi98pLGdsuE5NVmO0Efqjgx3fwNJ7J8HhZOwH
-	 qREpoLlVkqSr+eO2IK+7SnhrlsNLqtxdO6UO8wjiw3geLVEdHcfFGPDWWmguOqhh4T
-	 Z7fIxizOl9f2KPjlDa8VPgr6dsqtvH5K7LR+cwZY=
-Date: Tue, 11 Nov 2025 12:46:02 -0800
-To: mm-commits@vger.kernel.org,ying.huang@linux.alibaba.com,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,chrisl@kernel.org,bhe@redhat.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-swap-fix-potential-uaf-issue-for-vma-readahead.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251111204603.56B14C4CEF5@smtp.kernel.org>
+	s=arc-20240116; t=1762894654; c=relaxed/simple;
+	bh=eDxmszbWb19E1WNP67IbuAVTsXtliv6CkC4VxW7yHEs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P7SII994Zq2tChKhEBFt27fk21VwK1iZDLgf8QRpkUhtyZ6s8aia9UdDkr2YUC+lIynmjgLYuY18OXU726eEQey7faOUTDpU+c930gbjwMIiui8buslYs7NJqRvL0FgJxe/rulUzh+OfLewtAaI3HXJHu3mD//p9fOFZS5g9BeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X1fZaOfF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11949C4CEF5;
+	Tue, 11 Nov 2025 20:57:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762894654;
+	bh=eDxmszbWb19E1WNP67IbuAVTsXtliv6CkC4VxW7yHEs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=X1fZaOfFNPdnVnnYgS934OSAZphKo12pEwMgeRtO1ntxcmJlBP0gt7Z72PQhaNTj/
+	 zW0rQTyhEG4h2FIU+OwZeWZMfGpneRmoCZB1wzh0Mqu6Bn6k8kDTWrseM4rDpXk8dG
+	 Qo6B2Z6aNVOYZ8LWs7cXT/y1xiL5J0LyZD4XO0WG71aOES+qCvDRim9RRsbacWEr8a
+	 auPCCLTSFX8OrVGasLes7DWJuc/va+0QRf3i5x+sEJ1j6YC7qqMPvKV87To9bNxoFf
+	 X1kZwaDlnN2tkT+cnmXWePeQCP3JvmKB9arYXB17FNltl43r25WhTAU2yadB7nRutL
+	 lXmg8E/j68L9w==
+Date: Tue, 11 Nov 2025 10:57:32 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH cgroup/for-6.18-fixes] cgroup: Skip showing PID 0 in
+ cgroup.procs and cgroup.threads
+Message-ID: <aROjPBLaJVSrNRvN@slm.duckdns.org>
+References: <2016aece61b4da7ad86c6eca2dbcfd16@kernel.org>
+ <5r6yyuleoru7h6wcbdw673nlfzzbsc24sltmfg5hk2mj6a34xa@2xo7a3jhhkef>
+ <aQ31cwAFCS4Tvb7T@slm.duckdns.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aQ31cwAFCS4Tvb7T@slm.duckdns.org>
 
+On Fri, Nov 07, 2025 at 03:34:43AM -1000, Tejun Heo wrote:
+> Hello,
+> 
+> On Fri, Nov 07, 2025 at 10:57:54AM +0100, Michal Koutný wrote:
+> > On Thu, Nov 06, 2025 at 12:07:45PM -1000, Tejun Heo <tj@kernel.org> wrote:
+> > > css_task_iter_next() pins and returns a task, but the task can do whatever
+> > > between that and cgroup_procs_show() being called, including dying and
+> > > losing its PID. When that happens, task_pid_vnr() returns 0.
+> > 
+> > task_pid_vnr() would return 0 also when the process is not from reader's
+> > pidns (IMO more common than the transitional effect).
+> 
+> Hmm... haven't thought about that.
+> 
+> > > Showing "0" in cgroup.procs or cgroup.threads is confusing and can lead to
+> > > surprising outcomes. For example, if a user tries to kill PID 0, it kills
+> > > all processes in the current process group.
+> > 
+> > It's still info about present processes.
+> > 
+> > > 
+> > > Skip entries with PID 0 by returning SEQ_SKIP.
+> > 
+> > It's likely OK to skip for these exiting tasks but with the external pidns tasks
+> > in mind, reading cgroup.procs now may give false impression of an empty
+> > cgroup.
+> > 
+> > Where does the 0 from of the exiting come from? (Could it be
+> > distinguished from foreign pidns?)
+> 
+> Yeah, I think it can be distinguished. We just need to check whether the
+> task has pid attached at all after getting 0 return from task_pid_vnr().
 
-The patch titled
-     Subject: mm, swap: fix potential UAF issue for VMA readahead
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-swap-fix-potential-uaf-issue-for-vma-readahead.patch
+Let me drop this patch for now.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap-fix-potential-uaf-issue-for-vma-readahead.patch
+Thanks.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Kairui Song <kasong@tencent.com>
-Subject: mm, swap: fix potential UAF issue for VMA readahead
-Date: Tue, 11 Nov 2025 21:36:08 +0800
-
-Since commit 78524b05f1a3 ("mm, swap: avoid redundant swap device
-pinning"), the common helper for allocating and preparing a folio in the
-swap cache layer no longer tries to get a swap device reference
-internally, because all callers of __read_swap_cache_async are already
-holding a swap entry reference.  The repeated swap device pinning isn't
-needed on the same swap device.
-
-Caller of VMA readahead is also holding a reference to the target entry's
-swap device, but VMA readahead walks the page table, so it might encounter
-swap entries from other devices, and call __read_swap_cache_async on
-another device without holding a reference to it.
-
-So it is possible to cause a UAF when swapoff of device A raced with
-swapin on device B, and VMA readahead tries to read swap entries from
-device A.  It's not easy to trigger, but in theory, it could cause real
-issues.
-
-Make VMA readahead try to get the device reference first if the swap
-device is a different one from the target entry.
-
-Link: https://lkml.kernel.org/r/20251111-swap-fix-vma-uaf-v1-1-41c660e58562@tencent.com
-Fixes: 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning")
-Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/swap_state.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
---- a/mm/swap_state.c~mm-swap-fix-potential-uaf-issue-for-vma-readahead
-+++ a/mm/swap_state.c
-@@ -748,6 +748,8 @@ static struct folio *swap_vma_readahead(
- 
- 	blk_start_plug(&plug);
- 	for (addr = start; addr < end; ilx++, addr += PAGE_SIZE) {
-+		struct swap_info_struct *si = NULL;
-+
- 		if (!pte++) {
- 			pte = pte_offset_map(vmf->pmd, addr);
- 			if (!pte)
-@@ -761,8 +763,19 @@ static struct folio *swap_vma_readahead(
- 			continue;
- 		pte_unmap(pte);
- 		pte = NULL;
-+		/*
-+		 * Readahead entry may come from a device that we are not
-+		 * holding a reference to, try to grab a reference, or skip.
-+		 */
-+		if (swp_type(entry) != swp_type(targ_entry)) {
-+			si = get_swap_device(entry);
-+			if (!si)
-+				continue;
-+		}
- 		folio = __read_swap_cache_async(entry, gfp_mask, mpol, ilx,
- 						&page_allocated, false);
-+		if (si)
-+			put_swap_device(si);
- 		if (!folio)
- 			continue;
- 		if (page_allocated) {
-_
-
-Patches currently in -mm which might be from kasong@tencent.com are
-
-mm-swap-fix-potential-uaf-issue-for-vma-readahead.patch
-mm-swap-do-not-perform-synchronous-discard-during-allocation.patch
-mm-swap-rename-helper-for-setup-bad-slots.patch
-mm-swap-cleanup-swap-entry-allocation-parameter.patch
-mm-migrate-swap-drop-usage-of-folio_index.patch
-mm-swap-remove-redundant-argument-for-isolating-a-cluster.patch
-revert-mm-swap-avoid-redundant-swap-device-pinning.patch
-
+-- 
+tejun
 
