@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-194142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB76C4ADC0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6576C4B1F7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 387D1188ED8E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84FF04200DB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE30263F4A;
-	Tue, 11 Nov 2025 01:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DEA81DE4F6;
+	Tue, 11 Nov 2025 01:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EN99hwV2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flTbPgJ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2189D2BE7B8;
-	Tue, 11 Nov 2025 01:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2787E2E413;
+	Tue, 11 Nov 2025 01:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824902; cv=none; b=omC/XzYxmC2WYdb3K1esZFOzY6dNWECm1HA8iYn56r2h2qwm15g4izeC+q6ap0DJT41Ul0lR0Zy6bHMa7kzr6LZ4aFTvQ1msOVaIO8OLVa4QD+dy9VTalVNf5IYzP0katZERgESV/xNsQiFgC9aJeyXCSUPfUpWx+lBqO42eYJw=
+	t=1762825513; cv=none; b=CWfvY/MSNtOXrUtXSy3e2bc7abeliXYOyto2zo6vYhPQYB4R0IhZsEgK9PCfrXUJ0OtuD3BGf0y2XkpzPywZkgjXNagon5U93LakcCi8Xnj8NuYieXRr1oMdU/d6mWfEZDDITLdWsK9A9VtD/Sztq9NdolcqPMD0ckZnPqbJ8iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824902; c=relaxed/simple;
-	bh=A3Wbc1lHIKVxJfLyM4YDp7ATYOVOY7MiN7ayuNJEZiM=;
+	s=arc-20240116; t=1762825513; c=relaxed/simple;
+	bh=dA6vPA8CHK+A4E32FfcOu3kLpEApP3FCysAX9r54HWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2rOrAYMao7SFtU0+/zw/yBf9mHiprnWBDNFYJilmeLsk7LeYLD05btyGn9Gay7G10YgXoZjW5hZgMm/6y49aJFKxKbXvpLCXD4tEhF8PNqhzIfNtmVukaS1XCuUkGnNQq7orfXp7CsyxM81Me/JKQLW4yf/X8QzmexSvVhaUYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EN99hwV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B520BC16AAE;
-	Tue, 11 Nov 2025 01:35:01 +0000 (UTC)
+	 MIME-Version; b=bEt8KmK6ojy66K/kTeP2pKQNtXtblEcXc99v/7whZ6eX8EoCkYoz/l6blaPpud2jHuEtGNgTdaoVdbpPOASrx9irdNozwcAsloPPi2x06r68O9a8tixiJWnGpI288nSsVB5WgUtTFGDZSba+l/ZgnYMlPD4LGhpKKIByRj3IbaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flTbPgJ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FF6C4CEF5;
+	Tue, 11 Nov 2025 01:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824902;
-	bh=A3Wbc1lHIKVxJfLyM4YDp7ATYOVOY7MiN7ayuNJEZiM=;
+	s=korg; t=1762825512;
+	bh=dA6vPA8CHK+A4E32FfcOu3kLpEApP3FCysAX9r54HWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EN99hwV2woBfYDiO7T8tprFrx1JPjd9o7gTPSZmOacrR0UvHvQUZ6uSwylUDyWa5O
-	 gyQWSqXYxVQbRYl4M/Pd8aZJGnBJln2AiJqIjsi91OnuV48RLtf8/wEJLCOP9Re4Hm
-	 3xpjS8zHQbkbsQfhbzFYiUDeYNGUQQ7d3PV3QPPI=
+	b=flTbPgJ7cPCRTdRjNRsNqOqb57LPJTVagFJHxCq8c8oymkRiMfe6MEVgPbDTDkcwS
+	 NFyG1XprllaGUvBeiI/pSIWdfKBe0ZgSZOrebkNLO9XQvZFsQ0CLUdO1ki5Mo2qxEi
+	 Kaww5GNAuFbWYr+EmaUrSB5qvKE+4diyXRaOM0D4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.12 547/565] parisc: Avoid crash due to unaligned access in unwinder
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.17 833/849] scsi: ufs: core: Add a quirk to suppress link_startup_again
 Date: Tue, 11 Nov 2025 09:46:43 +0900
-Message-ID: <20251111004539.300134028@linuxfoundation.org>
+Message-ID: <20251111004556.565158758@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit fd9f30d1038ee1624baa17a6ff11effe5f7617cb upstream.
+commit d34caa89a132cd69efc48361d4772251546fdb88 upstream.
 
-Guenter Roeck reported this kernel crash on his emulated B160L machine:
+ufshcd_link_startup() has a facility (link_startup_again) to issue
+DME_LINKSTARTUP a 2nd time even though the 1st time was successful.
 
-Starting network: udhcpc: started, v1.36.1
- Backtrace:
-  [<104320d4>] unwind_once+0x1c/0x5c
-  [<10434a00>] walk_stackframe.isra.0+0x74/0xb8
-  [<10434a6c>] arch_stack_walk+0x28/0x38
-  [<104e5efc>] stack_trace_save+0x48/0x5c
-  [<105d1bdc>] set_track_prepare+0x44/0x6c
-  [<105d9c80>] ___slab_alloc+0xfc4/0x1024
-  [<105d9d38>] __slab_alloc.isra.0+0x58/0x90
-  [<105dc80c>] kmem_cache_alloc_noprof+0x2ac/0x4a0
-  [<105b8e54>] __anon_vma_prepare+0x60/0x280
-  [<105a823c>] __vmf_anon_prepare+0x68/0x94
-  [<105a8b34>] do_wp_page+0x8cc/0xf10
-  [<105aad88>] handle_mm_fault+0x6c0/0xf08
-  [<10425568>] do_page_fault+0x110/0x440
-  [<10427938>] handle_interruption+0x184/0x748
-  [<11178398>] schedule+0x4c/0x190
-  BUG: spinlock recursion on CPU#0, ifconfig/2420
-  lock: terminate_lock.2+0x0/0x1c, .magic: dead4ead, .owner: ifconfig/2420, .owner_cpu: 0
+Some older hardware benefits from that, however the behaviour is
+non-standard, and has been found to cause link startup to be unreliable
+for some Intel Alder Lake based host controllers.
 
-While creating the stack trace, the unwinder uses the stack pointer to guess
-the previous frame to read the previous stack pointer from memory.  The crash
-happens, because the unwinder tries to read from unaligned memory and as such
-triggers the unalignment trap handler which then leads to the spinlock
-recursion and finally to a deadlock.
+Add UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE to suppress
+link_startup_again, in preparation for setting the quirk for affected
+controllers.
 
-Fix it by checking the alignment before accessing the memory.
-
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Cc: stable@vger.kernel.org # v6.12+
+Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251024085918.31825-3-adrian.hunter@intel.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/unwind.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/ufs/core/ufshcd.c |    3 ++-
+ include/ufs/ufshcd.h      |    7 +++++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/parisc/kernel/unwind.c b/arch/parisc/kernel/unwind.c
-index f7e0fee5ee55..7ac88ff13d3c 100644
---- a/arch/parisc/kernel/unwind.c
-+++ b/arch/parisc/kernel/unwind.c
-@@ -35,6 +35,8 @@
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -5060,7 +5060,8 @@ static int ufshcd_link_startup(struct uf
+ 	 * If UFS device isn't active then we will have to issue link startup
+ 	 * 2 times to make sure the device state move to active.
+ 	 */
+-	if (!ufshcd_is_ufs_dev_active(hba))
++	if (!(hba->quirks & UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE) &&
++	    !ufshcd_is_ufs_dev_active(hba))
+ 		link_startup_again = true;
  
- #define KERNEL_START (KERNEL_BINARY_TEXT_START)
- 
-+#define ALIGNMENT_OK(ptr, type) (((ptr) & (sizeof(type) - 1)) == 0)
+ link_startup:
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -689,6 +689,13 @@ enum ufshcd_quirks {
+ 	 * single doorbell mode.
+ 	 */
+ 	UFSHCD_QUIRK_BROKEN_LSDBS_CAP			= 1 << 25,
 +
- extern struct unwind_table_entry __start___unwind[];
- extern struct unwind_table_entry __stop___unwind[];
++	/*
++	 * This quirk indicates that DME_LINKSTARTUP should not be issued a 2nd
++	 * time (refer link_startup_again) after the 1st time was successful,
++	 * because it causes link startup to become unreliable.
++	 */
++	UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE		= 1 << 26,
+ };
  
-@@ -257,12 +259,15 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
- 	if (pc_is_kernel_fn(pc, _switch_to) ||
- 	    pc == (unsigned long)&_switch_to_ret) {
- 		info->prev_sp = info->sp - CALLEE_SAVE_FRAME_SIZE;
--		info->prev_ip = *(unsigned long *)(info->prev_sp - RP_OFFSET);
-+		if (ALIGNMENT_OK(info->prev_sp, long))
-+			info->prev_ip = *(unsigned long *)(info->prev_sp - RP_OFFSET);
-+		else
-+			info->prev_ip = info->prev_sp = 0;
- 		return 1;
- 	}
- 
- #ifdef CONFIG_IRQSTACKS
--	if (pc == (unsigned long)&_call_on_stack) {
-+	if (pc == (unsigned long)&_call_on_stack && ALIGNMENT_OK(info->sp, long)) {
- 		info->prev_sp = *(unsigned long *)(info->sp - FRAME_SIZE - REG_SZ);
- 		info->prev_ip = *(unsigned long *)(info->sp - FRAME_SIZE - RP_OFFSET);
- 		return 1;
-@@ -370,8 +375,10 @@ static void unwind_frame_regs(struct unwind_frame_info *info)
- 			info->prev_sp = info->sp - frame_size;
- 			if (e->Millicode)
- 				info->rp = info->r31;
--			else if (rpoffset)
-+			else if (rpoffset && ALIGNMENT_OK(info->prev_sp, long))
- 				info->rp = *(unsigned long *)(info->prev_sp - rpoffset);
-+			else
-+				info->rp = 0;
- 			info->prev_ip = info->rp;
- 			info->rp = 0;
- 		}
--- 
-2.51.2
-
+ enum ufshcd_caps {
 
 
 
