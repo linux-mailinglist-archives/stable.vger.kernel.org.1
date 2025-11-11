@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-194380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A02C4B21D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:01:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6545C4ADDE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 804063B4357
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC8801896716
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F0341C69;
-	Tue, 11 Nov 2025 01:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBE925EF81;
+	Tue, 11 Nov 2025 01:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPyQRWbk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BiQQD2mN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EE3303A0D;
-	Tue, 11 Nov 2025 01:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65B72D9798;
+	Tue, 11 Nov 2025 01:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825469; cv=none; b=gg9VgQVGOfkb6NgIAIW6A0+0jKJ4PZef/DuvDapJ/yAfz2FgB/E4Kr13cD375xlnEG3/3tp7LhERvokbZlm5BOPYFzYS/Gv492H0hYQSZ6Ly26b5kqUPdf6A1LnNfG15Ba+NhPC+gYh962J5vQGz+q5Af+h0s6wHSoKaF0S4CZU=
+	t=1762824935; cv=none; b=kaRbsUlt9U4nFoOurXUhOd9f9P9GcyKKfeym9akN7liqmCLYpGm4c151ATNG4SXTXnuoKu/cvInnCM6mSCRyKKlGFKOiCcedJZiu2hJS9h2jgMf1ufPejeECVF4R9znn0kiCD8v2wXbDPNRfM7tNxJmXlevAxip7y6lPNr6o9Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825469; c=relaxed/simple;
-	bh=h9CYyIDDOQ1MpAwJm5AB7KXs4lbF7JdBVBXI2iq25p4=;
+	s=arc-20240116; t=1762824935; c=relaxed/simple;
+	bh=AztoaQPR3MA4gGW3mfRfB5DsyL746fZvvygBoYo/8Uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QcyIqNIU17tPWoWGeOJPqqNN8pEczqwI003U5WV7+1A05Y8h0BbkhQ1fjnCIuskGZe+D3JK5yj732ybMWaLeo22XPKz5bi7iJTo2d11QCD9RAhAMOtHTwWzWBxB5AuvZc8wzgL5RT44AmrRyUL4XjYa7nwP9bxwepj2IleQJcLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPyQRWbk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2BE1C116B1;
-	Tue, 11 Nov 2025 01:44:28 +0000 (UTC)
+	 MIME-Version; b=aYY0RW6juRwhS5Eljc2Q7DSZcDpoFNA7TVdVPn3hJnt3YjyJr4WBzI0QpfUVHhFvcQFihiMa6AwudIKhMKFu3aN9lhhbU6nXBEebTk7BSMc95W2/PVo3LmsEYnY7CKlutAGKTPHtFvYTBqubTJup07bmTLpU3ptZ+hTjd81Qi+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BiQQD2mN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45580C16AAE;
+	Tue, 11 Nov 2025 01:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825469;
-	bh=h9CYyIDDOQ1MpAwJm5AB7KXs4lbF7JdBVBXI2iq25p4=;
+	s=korg; t=1762824935;
+	bh=AztoaQPR3MA4gGW3mfRfB5DsyL746fZvvygBoYo/8Uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPyQRWbkI5GddLa7fhndbGTQMTktqZpN/vXV5h0WoGggSyWzHgq8MPLb8U0s+dGsx
-	 NWPRf/od1FTW2G3AFouFIsHmUBWOWPjI1eC/7Eo5D7EgsaZ5MuWn+C5Ztcyo9dRgv/
-	 fivWcFU405zd3X3tAf0HnNTBvF4qOCAVHFRGNckI=
+	b=BiQQD2mNj4xWMYAtZWnD6fy+3+cm6HBqjrp5wTrZxsI+0jTUahVv6Tgf4yenWqsCl
+	 T3ya9fxOGC6LqEQO4pdKj6tK7aiFgYQ+4sLsP+8o8KouMjqHjqwtvoFxLhOQPOp1dO
+	 TqXrV+Jwl8TbBmn9n+pT5a494SrUyTTVQ7Ooh0NI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Google Big Sleep <big-sleep-vuln-reports+bigsleep-458654612@google.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.17 816/849] io_uring: fix regbuf vector size truncation
+	Hongguang Gao <hongguang.gao@broadcom.com>,
+	Shruti Parab <shruti.parab@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Michael Chan <michael.chan@broadcom.com>
+Subject: [PATCH 6.12 530/565] bnxt_en: Add mem_valid bit to struct bnxt_ctx_mem_type
 Date: Tue, 11 Nov 2025 09:46:26 +0900
-Message-ID: <20251111004556.154483395@linuxfoundation.org>
+Message-ID: <20251111004538.892041139@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Shruti Parab <shruti.parab@broadcom.com>
 
-commit 146eb58629f45f8297e83d69e64d4eea4b28d972 upstream.
+[ Upstream commit 0b350b4927e69d66629099dbb32cad8d2d56a26d ]
 
-There is a report of io_estimate_bvec_size() truncating the calculated
-number of segments that leads to corruption issues. Check it doesn't
-overflow "int"s used later. Rough but simple, can be improved on top.
+Add a new bit to struct bnxt_ctx_mem_type to indicate that host
+memory has been successfully allocated for this context memory type.
+In the next patches, we'll be adding some additional context memory
+types for FW debugging/logging.  If memory cannot be allocated for
+any of these new types, we will not abort and the cleared mem_valid
+bit will indicate to skip configuring the memory type.
 
-Cc: stable@vger.kernel.org
-Fixes: 9ef4cbbcb4ac3 ("io_uring: add infra for importing vectored reg buffers")
-Reported-by: Google Big Sleep <big-sleep-vuln-reports+bigsleep-458654612@google.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Günther Noack <gnoack@google.com>
-Tested-by: Günther Noack <gnoack@google.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Hongguang Gao <hongguang.gao@broadcom.com>
+Signed-off-by: Shruti Parab <shruti.parab@broadcom.com>
+Signed-of-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20241115151438.550106-3-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 5204943a4c6e ("bnxt_en: Fix warning in bnxt_dl_reload_down()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rsrc.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 5 +++++
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h | 1 +
+ 2 files changed, 6 insertions(+)
 
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -1402,8 +1402,11 @@ static int io_estimate_bvec_size(struct
- 	size_t max_segs = 0;
- 	unsigned i;
- 
--	for (i = 0; i < nr_iovs; i++)
-+	for (i = 0; i < nr_iovs; i++) {
- 		max_segs += (iov[i].iov_len >> shift) + 2;
-+		if (max_segs > INT_MAX)
-+			return -EOVERFLOW;
-+	}
- 	return max_segs;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 30d8e8b34dfb9..abf8984ac5e20 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -8791,6 +8791,8 @@ static int bnxt_setup_ctxm_pg_tbls(struct bnxt *bp,
+ 		rc = bnxt_alloc_ctx_pg_tbls(bp, &ctx_pg[i], mem_size, pg_lvl,
+ 					    ctxm->init_value ? ctxm : NULL);
+ 	}
++	if (!rc)
++		ctxm->mem_valid = 1;
+ 	return rc;
  }
  
-@@ -1509,7 +1512,11 @@ int io_import_reg_vec(int ddir, struct i
- 		if (unlikely(ret))
- 			return ret;
- 	} else {
--		nr_segs = io_estimate_bvec_size(iov, nr_iovs, imu);
-+		int ret = io_estimate_bvec_size(iov, nr_iovs, imu);
-+
-+		if (ret < 0)
-+			return ret;
-+		nr_segs = ret;
+@@ -8861,6 +8863,8 @@ static int bnxt_backing_store_cfg_v2(struct bnxt *bp, u32 ena)
+ 	for (type = 0 ; type < BNXT_CTX_V2_MAX; type++) {
+ 		ctxm = &ctx->ctx_arr[type];
+ 
++		if (!ctxm->mem_valid)
++			continue;
+ 		rc = bnxt_hwrm_func_backing_store_cfg_v2(bp, ctxm, ctxm->last);
+ 		if (rc)
+ 			return rc;
+@@ -8890,6 +8894,7 @@ void bnxt_free_ctx_mem(struct bnxt *bp)
+ 
+ 		kfree(ctx_pg);
+ 		ctxm->pg_info = NULL;
++		ctxm->mem_valid = 0;
  	}
  
- 	if (sizeof(struct bio_vec) > sizeof(struct iovec)) {
+ 	ctx->flags &= ~BNXT_CTX_FLAG_INITED;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index cb934f175a3e4..d4e63bf599666 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -1892,6 +1892,7 @@ struct bnxt_ctx_mem_type {
+ 	u32	max_entries;
+ 	u32	min_entries;
+ 	u8	last:1;
++	u8	mem_valid:1;
+ 	u8	split_entry_cnt;
+ #define BNXT_MAX_SPLIT_ENTRY	4
+ 	union {
+-- 
+2.51.0
+
 
 
 
