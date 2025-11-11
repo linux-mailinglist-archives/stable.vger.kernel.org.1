@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-194040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824BAC4ADB1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09482C4B289
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:04:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 13A294FC9CF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:36:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0A693B629D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B83344032;
-	Tue, 11 Nov 2025 01:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164B226E158;
+	Tue, 11 Nov 2025 01:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gdua0/R3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deOG7KhX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8D2343D9E;
-	Tue, 11 Nov 2025 01:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C676FA944;
+	Tue, 11 Nov 2025 01:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824663; cv=none; b=aWd2sG4vVIaqbvCsRsXdBObbarvXyq28Fuf7TMYu0FLdWbGkFb3vxY5nC5sL6FQ1fcEeQUqJFgVEjFpo+DXc/7wsWtGvhLggrbCiCufng/p5KPv346tBloYml0uMOZieel11Ql7sPOZ4wwPugGKuBB8KmcmDDAzp1VGr7jsqFnc=
+	t=1762825388; cv=none; b=guXQmLByUa6Cxj4ZaKql9mTW/f0MUJWreF+akN0XfF9YKRxkU4Y0qT4tLPALlJLLxKKxRs+3GFChYajK13dzykgEzLpLVYKvW7S3vxrx4b49eE5cUm5G3op9KOl+vWlUpQ46//EweB1fud0Zeki39UiVCTNRUHgyR7XpqX5SsBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824663; c=relaxed/simple;
-	bh=nO8REVMcAOF44XwLiJM2T7QNhQlZCdPAam1juqmJMUc=;
+	s=arc-20240116; t=1762825388; c=relaxed/simple;
+	bh=9G7ML6Zw2ylN/HCmlmgouoM2B5lFWDgXjZE9cHbC19c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRNk5zKSD5XqFk+0vO3wZoCV3rQrpCyNtWjoul8UJFVfwSyOZI1aSycRA/4uh8QyYc+Dn0nbYAoqjPLPCY04dBlW6sBsCxJy/egym1lqtg7UcbDhKqhGNEYcZNzW9+a2Hc/AI+TxgfY88c82z/LBt3ZuRuThx5MI+EBnKzrO5gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gdua0/R3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129F9C4CEFB;
-	Tue, 11 Nov 2025 01:31:02 +0000 (UTC)
+	 MIME-Version; b=sJuw4mMYw+dy4VBqITcCgNEymNIAPpXImddLYMMpxVTB82R8Ju2L0sST0CTY8WyMcJN5QobO6GZIV3KhX9xKVTDdzKvL6IV3gZG4tT1Kq1YjsVr/OFBaXu/NLk6xahifmEtlIxNWKiLSCjASar6z6fOXkBY5FdDZGUbUfg9rIKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deOG7KhX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656B6C116D0;
+	Tue, 11 Nov 2025 01:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824663;
-	bh=nO8REVMcAOF44XwLiJM2T7QNhQlZCdPAam1juqmJMUc=;
+	s=korg; t=1762825388;
+	bh=9G7ML6Zw2ylN/HCmlmgouoM2B5lFWDgXjZE9cHbC19c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gdua0/R3Yg1siZ12DGuI2N1hZ8vn1hiDjKJasjptwQw3aX7cI1Zqcv6f3IOIRxWfa
-	 8HDuSbLTCLWqlTAjxdU10YTayvpLA3eJnrUN0/WJelIlRJI1zqkwpIOJTDRyic1QUk
-	 VHfiUYnSeClbVrXp7KMs1jixcbzUiaqLjMihb/B0=
+	b=deOG7KhXLtnZDaqQoGYxzqnwt6Wrew+TNwx1UpazSRhHkv0O/FoQIvQxZ4Q2kJ0ma
+	 wcOVVo6eaGdpg2pH9xBIkm+87AmRUCUpIyWMWmDNvW38WzYXojEdOfAz5Bb7D1WYcC
+	 SATC8mhXG0OIMkjIL/0D3WO59ErK4yRRJZITcAYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Jakub Kicinski <kicinski@meta.com>,
+	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 494/565] ceph: refactor wake_up_bit() pattern of calling
-Date: Tue, 11 Nov 2025 09:45:50 +0900
-Message-ID: <20251111004538.047384349@linuxfoundation.org>
+Subject: [PATCH 6.17 781/849] bnxt_en: Shutdown FW DMA in bnxt_shutdown()
+Date: Tue, 11 Nov 2025 09:45:51 +0900
+Message-ID: <20251111004555.309589843@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +66,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+From: Michael Chan <michael.chan@broadcom.com>
 
-[ Upstream commit 53db6f25ee47cb1265141d31562604e56146919a ]
+[ Upstream commit bc7208ca805ae6062f353a4753467d913d963bc6 ]
 
-The wake_up_bit() is called in ceph_async_unlink_cb(),
-wake_async_create_waiters(), and ceph_finish_async_create().
-It makes sense to switch on clear_bit() function, because
-it makes the code much cleaner and easier to understand.
-More important rework is the adding of smp_mb__after_atomic()
-memory barrier after the bit modification and before
-wake_up_bit() call. It can prevent potential race condition
-of accessing the modified bit in other threads. Luckily,
-clear_and_wake_up_bit() already implements the required
-functionality pattern:
+The netif_close() call in bnxt_shutdown() only stops packet DMA.  There
+may be FW DMA for trace logging (recently added) that will continue.  If
+we kexec to a new kernel, the DMA will corrupt memory in the new kernel.
 
-static inline void clear_and_wake_up_bit(int bit, unsigned long *word)
-{
-	clear_bit_unlock(bit, word);
-	/* See wake_up_bit() for which memory barrier you need to use. */
-	smp_mb__after_atomic();
-	wake_up_bit(word, bit);
-}
+Add bnxt_hwrm_func_drv_unrgtr() to unregister the driver from the FW.
+This will stop the FW DMA.  In case the call fails, call pcie_flr() to
+reset the function and stop the DMA.
 
-Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Fixes: 24d694aec139 ("bnxt_en: Allocate backing store memory for FW trace logs")
+Reported-by: Jakub Kicinski <kicinski@meta.com>
+Reviewed-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20251104005700.542174-2-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/dir.c  | 3 +--
- fs/ceph/file.c | 6 ++----
- 2 files changed, 3 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/ceph/dir.c b/fs/ceph/dir.c
-index 16c25c48465e5..ba960a9bfbc8b 100644
---- a/fs/ceph/dir.c
-+++ b/fs/ceph/dir.c
-@@ -1252,8 +1252,7 @@ static void ceph_async_unlink_cb(struct ceph_mds_client *mdsc,
- 	spin_unlock(&fsc->async_unlink_conflict_lock);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 60e20b7642174..6a97753c618de 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -16869,6 +16869,10 @@ static void bnxt_shutdown(struct pci_dev *pdev)
+ 	if (netif_running(dev))
+ 		netif_close(dev);
  
- 	spin_lock(&dentry->d_lock);
--	di->flags &= ~CEPH_DENTRY_ASYNC_UNLINK;
--	wake_up_bit(&di->flags, CEPH_DENTRY_ASYNC_UNLINK_BIT);
-+	clear_and_wake_up_bit(CEPH_DENTRY_ASYNC_UNLINK_BIT, &di->flags);
- 	spin_unlock(&dentry->d_lock);
- 
- 	synchronize_rcu();
-diff --git a/fs/ceph/file.c b/fs/ceph/file.c
-index 6587c2d5af1e0..147126d2fa0c7 100644
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -579,8 +579,7 @@ static void wake_async_create_waiters(struct inode *inode,
- 
- 	spin_lock(&ci->i_ceph_lock);
- 	if (ci->i_ceph_flags & CEPH_I_ASYNC_CREATE) {
--		ci->i_ceph_flags &= ~CEPH_I_ASYNC_CREATE;
--		wake_up_bit(&ci->i_ceph_flags, CEPH_ASYNC_CREATE_BIT);
-+		clear_and_wake_up_bit(CEPH_ASYNC_CREATE_BIT, &ci->i_ceph_flags);
- 
- 		if (ci->i_ceph_flags & CEPH_I_ASYNC_CHECK_CAPS) {
- 			ci->i_ceph_flags &= ~CEPH_I_ASYNC_CHECK_CAPS;
-@@ -762,8 +761,7 @@ static int ceph_finish_async_create(struct inode *dir, struct inode *inode,
- 	}
- 
- 	spin_lock(&dentry->d_lock);
--	di->flags &= ~CEPH_DENTRY_ASYNC_CREATE;
--	wake_up_bit(&di->flags, CEPH_DENTRY_ASYNC_CREATE_BIT);
-+	clear_and_wake_up_bit(CEPH_DENTRY_ASYNC_CREATE_BIT, &di->flags);
- 	spin_unlock(&dentry->d_lock);
- 
- 	return ret;
++	if (bnxt_hwrm_func_drv_unrgtr(bp)) {
++		pcie_flr(pdev);
++		goto shutdown_exit;
++	}
+ 	bnxt_ptp_clear(bp);
+ 	bnxt_clear_int_mode(bp);
+ 	pci_disable_device(pdev);
 -- 
 2.51.0
 
