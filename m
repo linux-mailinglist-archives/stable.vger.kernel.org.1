@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-194311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8733DC4B0E2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:56:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6505DC4AC34
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BA121898916
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 732FD18839B2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C613090F7;
-	Tue, 11 Nov 2025 01:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF35930C639;
+	Tue, 11 Nov 2025 01:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRpJY8or"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywLaJghn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A058329B78F;
-	Tue, 11 Nov 2025 01:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC9C30BF66;
+	Tue, 11 Nov 2025 01:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825304; cv=none; b=HKO45NhgNAaC/cAI9KiezROjcYmVegAuXaBMELXqPLQBMP/p4hrbrIKe0d1G/mtqm5plr/mefT4w4K9qxKjjWc6m6FGzDHi2W6YdwgTGaojFHGIRR/thAhjBnFOG2Lb9vWxCg56JgbPiZ9KoKfl8bMNSsV4y79mup7yuqnZxhPg=
+	t=1762824506; cv=none; b=bvsIXbez+yDY2joxnFgOQ6PhHPmbPg5LSihPuFeat3dP5KEAXIOG+DW1AWWeOxVgNVRhN/OYS/zFaWD0E34Yk2cuNSqj1548H7dSlBYbYmIHBzCZn0XkiA569NJBeKpiYdbLh7BmrI+JBckjbhD27JCySPE3TAAaW5huTBHKZpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825304; c=relaxed/simple;
-	bh=0mepcxHUdgkYNZEy8YiBXpctyAMwb2SFtmwLPgFq4Fg=;
+	s=arc-20240116; t=1762824506; c=relaxed/simple;
+	bh=GJDjOwl/RLse9PcpjRrx5BmgzJADvk3ZAPwDO8ioO9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+MVHeffNncV4tl0WbSbX/i3+GMkvFghft690ICil2dCN4iV6Rdd8EIrfmCdQeeFYtmEPAx41/YxeYD4/FXJ8jY8SwLWPxj8zSRfdCz3AZRimlm0ichBz0Exib9B+d1HIUbjbnmNtSFqI045Pd+PKG4CcKtBqWIWpY/tb5Y7MNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRpJY8or; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37355C116B1;
-	Tue, 11 Nov 2025 01:41:44 +0000 (UTC)
+	 MIME-Version; b=An19mhz+ptzobS44oAFpsNtmd+tb1nqRBMgkQYDGomeBFy+4TlmgtIt9a0Ll9wft8OSCrwqqZIzV42WMhfS5X9jljSKaiqhsUw6hUcDgFtue3W+TolChVb4mql3CFFBBXTuF9TnP//MSjdxBSN/F4aIbQ3RHjK4ZT8WR2L/NArQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywLaJghn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27146C4CEFB;
+	Tue, 11 Nov 2025 01:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825304;
-	bh=0mepcxHUdgkYNZEy8YiBXpctyAMwb2SFtmwLPgFq4Fg=;
+	s=korg; t=1762824506;
+	bh=GJDjOwl/RLse9PcpjRrx5BmgzJADvk3ZAPwDO8ioO9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oRpJY8orDWXBDUEJ4cKjSV5S/J7dm03r4lSrCuW29FC9dyTIxofOdWf1o/VvooqTj
-	 6/Ra+o14w4oiazVVeY/tIXMPXa9eLVscdBcDLUcr/cs9eMEm2VGDmbThzXMYcCHbDq
-	 j52TUIXofO6qB6d35H/rNpiGnVGiKOjeP4Xev200=
+	b=ywLaJghn9Smak+Qhiz/lGfVKDtFBlkEqvcrdNM9Puf+DkJNa2H1wlLGeFJjvv5F/G
+	 Vev9lcBrlYMnvWeFsOl+dHtVWBPHvmwFXo6Fioo7GIvin9nuMm7JE6ts5yFaomt9vi
+	 8ClnmXc7nZXOfGSkp8vEMY7qN1rWFPwkqGgVw+kY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ariel DAlessandro <ariel.dalessandro@collabora.com>,
-	Daniel Stone <daniels@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Macpaul Lin <macpaul.lin@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Subject: [PATCH 6.17 745/849] drm/mediatek: Disable AFBC support on Mediatek DRM driver
+	wenglianfa <wenglianfa@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 459/565] RDMA/hns: Fix the modification of max_send_sge
 Date: Tue, 11 Nov 2025 09:45:15 +0900
-Message-ID: <20251111004554.447446861@linuxfoundation.org>
+Message-ID: <20251111004537.223227930@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+From: wenglianfa <wenglianfa@huawei.com>
 
-commit 9882a40640036d5bbc590426a78981526d4f2345 upstream.
+[ Upstream commit f5a7cbea5411668d429eb4ffe96c4063fe8dac9e ]
 
-Commit c410fa9b07c3 ("drm/mediatek: Add AFBC support to Mediatek DRM
-driver") added AFBC support to Mediatek DRM and enabled the
-32x8/split/sparse modifier.
+The actual sge number may exceed the value specified in init_attr->cap
+when HW needs extra sge to enable inline feature. Since these extra
+sges are not expected by ULP, return the user-specified value to ULP
+instead of the expanded sge number.
 
-However, this is currently broken on Mediatek MT8188 (Genio 700 EVK
-platform); tested using upstream Kernel and Mesa (v25.2.1), AFBC is used by
-default since Mesa v25.0.
-
-Kernel trace reports vblank timeouts constantly, and the render is garbled:
-
-```
-[CRTC:62:crtc-0] vblank wait timed out
-WARNING: CPU: 7 PID: 70 at drivers/gpu/drm/drm_atomic_helper.c:1835 drm_atomic_helper_wait_for_vblanks.part.0+0x24c/0x27c
-[...]
-Hardware name: MediaTek Genio-700 EVK (DT)
-Workqueue: events_unbound commit_work
-pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : drm_atomic_helper_wait_for_vblanks.part.0+0x24c/0x27c
-lr : drm_atomic_helper_wait_for_vblanks.part.0+0x24c/0x27c
-sp : ffff80008337bca0
-x29: ffff80008337bcd0 x28: 0000000000000061 x27: 0000000000000000
-x26: 0000000000000001 x25: 0000000000000000 x24: ffff0000c9dcc000
-x23: 0000000000000001 x22: 0000000000000000 x21: ffff0000c66f2f80
-x20: ffff0000c0d7d880 x19: 0000000000000000 x18: 000000000000000a
-x17: 000000040044ffff x16: 005000f2b5503510 x15: 0000000000000000
-x14: 0000000000000000 x13: 74756f2064656d69 x12: 742074696177206b
-x11: 0000000000000058 x10: 0000000000000018 x9 : ffff800082396a70
-x8 : 0000000000057fa8 x7 : 0000000000000cce x6 : ffff8000823eea70
-x5 : ffff0001fef5f408 x4 : ffff80017ccee000 x3 : ffff0000c12cb480
-x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c12cb480
-Call trace:
- drm_atomic_helper_wait_for_vblanks.part.0+0x24c/0x27c (P)
- drm_atomic_helper_commit_tail_rpm+0x64/0x80
- commit_tail+0xa4/0x1a4
- commit_work+0x14/0x20
- process_one_work+0x150/0x290
- worker_thread+0x2d0/0x3ec
- kthread+0x12c/0x210
- ret_from_fork+0x10/0x20
----[ end trace 0000000000000000 ]---
-```
-
-Until this gets fixed upstream, disable AFBC support on this platform, as
-it's currently broken with upstream Mesa.
-
-Fixes: c410fa9b07c3 ("drm/mediatek: Add AFBC support to Mediatek DRM driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-Reviewed-by: Daniel Stone <daniels@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: Macpaul Lin <macpaul.lin@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20251024202756.811425-1-ariel.dalessandro@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0c5e259b06a8 ("RDMA/hns: Fix incorrect sge nums calculation")
+Signed-off-by: wenglianfa <wenglianfa@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20251016114051.1963197-3-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_plane.c |   24 +-----------------------
- 1 file changed, 1 insertion(+), 23 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_qp.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_plane.c
-+++ b/drivers/gpu/drm/mediatek/mtk_plane.c
-@@ -21,9 +21,6 @@
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index 8901c142c1b65..66d4c693694e9 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -662,7 +662,6 @@ static int set_user_sq_size(struct hns_roce_dev *hr_dev,
  
- static const u64 modifiers[] = {
- 	DRM_FORMAT_MOD_LINEAR,
--	DRM_FORMAT_MOD_ARM_AFBC(AFBC_FORMAT_MOD_BLOCK_SIZE_32x8 |
--				AFBC_FORMAT_MOD_SPLIT |
--				AFBC_FORMAT_MOD_SPARSE),
- 	DRM_FORMAT_MOD_INVALID,
- };
+ 	hr_qp->sq.wqe_shift = ucmd->log_sq_stride;
+ 	hr_qp->sq.wqe_cnt = cnt;
+-	cap->max_send_sge = hr_qp->sq.max_gs;
  
-@@ -71,26 +68,7 @@ static bool mtk_plane_format_mod_support
- 					   uint32_t format,
- 					   uint64_t modifier)
- {
--	if (modifier == DRM_FORMAT_MOD_LINEAR)
--		return true;
--
--	if (modifier != DRM_FORMAT_MOD_ARM_AFBC(
--				AFBC_FORMAT_MOD_BLOCK_SIZE_32x8 |
--				AFBC_FORMAT_MOD_SPLIT |
--				AFBC_FORMAT_MOD_SPARSE))
--		return false;
--
--	if (format != DRM_FORMAT_XRGB8888 &&
--	    format != DRM_FORMAT_ARGB8888 &&
--	    format != DRM_FORMAT_BGRX8888 &&
--	    format != DRM_FORMAT_BGRA8888 &&
--	    format != DRM_FORMAT_ABGR8888 &&
--	    format != DRM_FORMAT_XBGR8888 &&
--	    format != DRM_FORMAT_RGB888 &&
--	    format != DRM_FORMAT_BGR888)
--		return false;
--
--	return true;
-+	return modifier == DRM_FORMAT_MOD_LINEAR;
+ 	return 0;
  }
+@@ -744,7 +743,6 @@ static int set_kernel_sq_size(struct hns_roce_dev *hr_dev,
  
- static void mtk_plane_destroy_state(struct drm_plane *plane,
+ 	/* sync the parameters of kernel QP to user's configuration */
+ 	cap->max_send_wr = cnt;
+-	cap->max_send_sge = hr_qp->sq.max_gs;
+ 
+ 	return 0;
+ }
+-- 
+2.51.0
+
 
 
 
