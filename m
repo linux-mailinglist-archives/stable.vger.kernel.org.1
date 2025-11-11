@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-193848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D473EC4ABA5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AFBDC4A40C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:10:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC6BB18943B1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5AAB44F8C18
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37063446C9;
-	Tue, 11 Nov 2025 01:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A39263F28;
+	Tue, 11 Nov 2025 01:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNdE00/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIFSjCSr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13D43446B6;
-	Tue, 11 Nov 2025 01:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF56A258EF6;
+	Tue, 11 Nov 2025 01:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824148; cv=none; b=EJTY76sq4U3y5WDeSyi5Zg9Boo9A7NStTkDqKkYyVBYmo5T+XpHGaCcG/Nf09LXA+pi/EEYgXMyPB0M5xUXSJs5nFhcj1o0+teBk7q4KqGR05wpF+hV6UeILnJ2bqcnXrgdEeYFerWC6HQS3sHxXCBjXkXr0vRyCVdWSwlPaWi8=
+	t=1762823048; cv=none; b=CX2LfxcSEBfS3w96enDcETurwnY74cYkMoiwFxRkmmRYDzcVvKE0vNAXs0iXeLZSqe1bwf58OTMS++UMy87BSWBv8Ltv5BQVRPmV1SujEKPiiQhU0P4+SiBXudznp74y5WpSMfZyUoluVAiqh5kfsUmKqQhbBiznC1iwqpjbJbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824148; c=relaxed/simple;
-	bh=ifeYbH6muKQp5+fn3TB3pCocSfakFzXpylntssnGTNM=;
+	s=arc-20240116; t=1762823048; c=relaxed/simple;
+	bh=GDuCKFP6H5YHx6iyK/mfCKiVvZV+2lIA8m9nyrnVUV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hH02NCYEgnfb1OyzJEaeyxSdjsgm+qaQRYkTG4GPlgVak9JCh8rxHR790HsPAPy7oEOL7od0JE7km2LSFUcA+cTaP4gJH07CXRhN1lxe8S79OK81Xhs18SmwRP8t7KPv/wNOhkoQc3LsdsZcjp2sThbzN/RHJUujCo8Z+DNQc5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNdE00/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD36BC19422;
-	Tue, 11 Nov 2025 01:22:27 +0000 (UTC)
+	 MIME-Version; b=kotbzK6wxBtau1Nej8g+0BJca6sPu+9WCJqmDmofl/PRVhOj/l6+iUdINJjsiEQYaMxxTEjHo29u5IbhBSEgbjXEVtwsgv2yn6Yibyz4hNmZc2lhHJBoEQqSX0sYR9FT3XghkhQB17VYLlU6j66jlfo53ZFK5AB685dPdpBae2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIFSjCSr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4CAC19422;
+	Tue, 11 Nov 2025 01:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824148;
-	bh=ifeYbH6muKQp5+fn3TB3pCocSfakFzXpylntssnGTNM=;
+	s=korg; t=1762823047;
+	bh=GDuCKFP6H5YHx6iyK/mfCKiVvZV+2lIA8m9nyrnVUV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNdE00/M1AdyAYZ3Q68UHWD3Bh2y85boWTOpFZ2JpfjDNO6Bhq9xZNMfJ6ZOb8aR+
-	 gadDYY7yE+UmBBNiM6J+6rnOlnvYi3aRjOu8qzRfFxSnMGaQ88HhpqlB3S+zlauGpj
-	 joG948w2gUFQxA5n8hZpWJFPCpzt6TBG5OuCuf3o=
+	b=QIFSjCSrdoszphiWDr7fpYrJuacAuMxgZM5wjaw1NzPo7Vw7QZGp+qBg2BVpDhH0w
+	 Zd6qhqq2RIZBhpudZKWjkcxjwuJxff+1bzDSHudLUTqmkYKl1m5Rs7glt4MsccbPWB
+	 QgbObjKDAROVy+LZMlXzfqSMA2iijlp8YN6frbxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 446/849] drm/xe: improve dma-resv handling for backup object
-Date: Tue, 11 Nov 2025 09:40:16 +0900
-Message-ID: <20251111004547.217717802@linuxfoundation.org>
+Subject: [PATCH 6.12 161/565] tools/cpupower: Fix incorrect size in cpuidle_state_disable()
+Date: Tue, 11 Nov 2025 09:40:17 +0900
+Message-ID: <20251111004530.557949992@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit edb1745fc618ba8ef63a45ce3ae60de1bdf29231 ]
+[ Upstream commit 23199d2aa6dcaf6dd2da772f93d2c94317d71459 ]
 
-Since the dma-resv is shared we don't need to reserve and add a fence
-slot fence twice, plus no need to loop through the dependencies.
+Fix incorrect size parameter passed to cpuidle_state_write_file() in
+cpuidle_state_disable().
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://lore.kernel.org/r/20250829164715.720735-2-matthew.auld@intel.com
+The function was incorrectly using sizeof(disable) which returns the
+size of the unsigned int variable (4 bytes) instead of the actual
+length of the string stored in the 'value' buffer.
+
+Since 'value' is populated with snprintf() to contain the string
+representation of the disable value, we should use the length
+returned by snprintf() to get the correct string length for
+writing to the sysfs file.
+
+This ensures the correct number of bytes is written to the cpuidle
+state disable file in sysfs.
+
+Link: https://lore.kernel.org/r/20250917050820.1785377-1-kaushlendra.kumar@intel.com
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c      | 13 +------------
- drivers/gpu/drm/xe/xe_migrate.c |  2 +-
- 2 files changed, 2 insertions(+), 13 deletions(-)
+ tools/power/cpupower/lib/cpuidle.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index d07e23eb1a54d..5a61441d68af5 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -1242,14 +1242,11 @@ int xe_bo_evict_pinned(struct xe_bo *bo)
- 		else
- 			migrate = mem_type_to_migrate(xe, bo->ttm.resource->mem_type);
+diff --git a/tools/power/cpupower/lib/cpuidle.c b/tools/power/cpupower/lib/cpuidle.c
+index 0ecac009273ce..f2c1139adf716 100644
+--- a/tools/power/cpupower/lib/cpuidle.c
++++ b/tools/power/cpupower/lib/cpuidle.c
+@@ -233,6 +233,7 @@ int cpuidle_state_disable(unsigned int cpu,
+ {
+ 	char value[SYSFS_PATH_MAX];
+ 	int bytes_written;
++	int len;
  
-+		xe_assert(xe, bo->ttm.base.resv == backup->ttm.base.resv);
- 		ret = dma_resv_reserve_fences(bo->ttm.base.resv, 1);
- 		if (ret)
- 			goto out_backup;
+ 	if (cpuidle_state_count(cpu) <= idlestate)
+ 		return -1;
+@@ -241,10 +242,10 @@ int cpuidle_state_disable(unsigned int cpu,
+ 				 idlestate_value_files[IDLESTATE_DISABLE]))
+ 		return -2;
  
--		ret = dma_resv_reserve_fences(backup->ttm.base.resv, 1);
--		if (ret)
--			goto out_backup;
--
- 		fence = xe_migrate_copy(migrate, bo, backup, bo->ttm.resource,
- 					backup->ttm.resource, false);
- 		if (IS_ERR(fence)) {
-@@ -1259,8 +1256,6 @@ int xe_bo_evict_pinned(struct xe_bo *bo)
+-	snprintf(value, SYSFS_PATH_MAX, "%u", disable);
++	len = snprintf(value, SYSFS_PATH_MAX, "%u", disable);
  
- 		dma_resv_add_fence(bo->ttm.base.resv, fence,
- 				   DMA_RESV_USAGE_KERNEL);
--		dma_resv_add_fence(backup->ttm.base.resv, fence,
--				   DMA_RESV_USAGE_KERNEL);
- 		dma_fence_put(fence);
- 	} else {
- 		ret = xe_bo_vmap(backup);
-@@ -1338,10 +1333,6 @@ int xe_bo_restore_pinned(struct xe_bo *bo)
- 		if (ret)
- 			goto out_unlock_bo;
- 
--		ret = dma_resv_reserve_fences(backup->ttm.base.resv, 1);
--		if (ret)
--			goto out_unlock_bo;
--
- 		fence = xe_migrate_copy(migrate, backup, bo,
- 					backup->ttm.resource, bo->ttm.resource,
- 					false);
-@@ -1352,8 +1343,6 @@ int xe_bo_restore_pinned(struct xe_bo *bo)
- 
- 		dma_resv_add_fence(bo->ttm.base.resv, fence,
- 				   DMA_RESV_USAGE_KERNEL);
--		dma_resv_add_fence(backup->ttm.base.resv, fence,
--				   DMA_RESV_USAGE_KERNEL);
- 		dma_fence_put(fence);
- 	} else {
- 		ret = xe_bo_vmap(backup);
-diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
-index 2a627ed64b8f8..ba9b8590eccb2 100644
---- a/drivers/gpu/drm/xe/xe_migrate.c
-+++ b/drivers/gpu/drm/xe/xe_migrate.c
-@@ -901,7 +901,7 @@ struct dma_fence *xe_migrate_copy(struct xe_migrate *m,
- 		if (!fence) {
- 			err = xe_sched_job_add_deps(job, src_bo->ttm.base.resv,
- 						    DMA_RESV_USAGE_BOOKKEEP);
--			if (!err && src_bo != dst_bo)
-+			if (!err && src_bo->ttm.base.resv != dst_bo->ttm.base.resv)
- 				err = xe_sched_job_add_deps(job, dst_bo->ttm.base.resv,
- 							    DMA_RESV_USAGE_BOOKKEEP);
- 			if (err)
+ 	bytes_written = cpuidle_state_write_file(cpu, idlestate, "disable",
+-						   value, sizeof(disable));
++						   value, len);
+ 	if (bytes_written)
+ 		return 0;
+ 	return -3;
 -- 
 2.51.0
 
