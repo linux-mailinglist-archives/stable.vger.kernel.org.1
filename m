@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-194045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16F3C4AD00
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBA3C4B241
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:02:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 218744F0DB2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 409EE3BF829
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1755D26AC3;
-	Tue, 11 Nov 2025 01:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BD0A944;
+	Tue, 11 Nov 2025 01:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLY3LoTd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOWbOqy3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE372DC328;
-	Tue, 11 Nov 2025 01:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15F92F5A10;
+	Tue, 11 Nov 2025 01:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824678; cv=none; b=LSdmgzzkJSsnE9KWFiLAQSYVNl5CBSfr76eq2QQqT3NIdyVOl6NA4BHO1C6hhz5MucRTcdpZgykBamZR9NNKLoPBbXak/EWHZJbn6cz01jNe1docvE+D++sH4Zslm8H9Nk5ttmtF5M99IropcBPDWft0zgVpKxOct9Lo4huFMfg=
+	t=1762825393; cv=none; b=nvQ5CTlOelPb9V3u3MzEgYUw6pbXFz4/zORwRVu1CxLHAKrAAefrX679QX3G2nGddY9goMbmKGGOYdgVKKKX3ykhU+f6moJbx9trbigR6WjVCE+BgKr5hy4se+JQsowmuypYHnMM29DHSqXTQ/J+Ts8vfMxubxgmgQO1pjgywXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824678; c=relaxed/simple;
-	bh=Fl0X1T9ynt1ZNeyiKqZfqNOjb+rNGdeJrxUC2GbLMLc=;
+	s=arc-20240116; t=1762825393; c=relaxed/simple;
+	bh=qO/cQsTqArRwvyNo1CWSPoKh0eLARbE3FuPt5sI0mM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ejrKF/xnxLwRiE+Jf/IGJtPkOJDdCqvGDuf1791PJC9H3x93Z54+ZWUetT5RZgw/6YUWynQds/3Lhfk8r+1AsmsrZVKv13gzs0NdeEFgJDWlLASlEOVy7YdLiclU0/OQonFKcG1qBpckHqjNdWTLEohV3vvLC5q6UTj0gFvzk1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLY3LoTd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C28C4CEFB;
-	Tue, 11 Nov 2025 01:31:15 +0000 (UTC)
+	 MIME-Version; b=mUyWmuPOb2evNA/o2r1KChUREe6UPe6oo5kYDVbVB2Qeg4X3E42NRM4xVBW06B3Wp9twQ7DvLWvF6hVT0aezw9ibCfLiceyTeyXpWQ5xrmPwNWDbkwdBd740Uv8OA+sUK9slzYZsqIWOKQd7uld3xzZ/LAfv+PVJ+Z2LMs32Ybo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOWbOqy3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A33C4CEFB;
+	Tue, 11 Nov 2025 01:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824676;
-	bh=Fl0X1T9ynt1ZNeyiKqZfqNOjb+rNGdeJrxUC2GbLMLc=;
+	s=korg; t=1762825393;
+	bh=qO/cQsTqArRwvyNo1CWSPoKh0eLARbE3FuPt5sI0mM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yLY3LoTd740L8YJlcFmxdpX2h/jfPCUd5XErROUlvTGfSwJOdj1oUcsWnIO9f5jTc
-	 iBwMONMztEJsnpyEUUCpT6G0cy9byGVDzBPW1ZImYi4t+Pty9jvC8ryS/nqT5qddnh
-	 YfvhvSJHcmPQDuvmJ6KaKATYrKUaRLEYhprhI4Ws=
+	b=TOWbOqy3Z5xJcVKl2IOGLX1tHwK7UdyxC+wynEVaG2RQNvhn7AGA6kxzZwX189WYl
+	 n8lDBK5v0PK3W3qWxO7yl222q78iqNK85EpbyyvSI1rMoXJzxk+RFd73czyb2uwB/E
+	 R/5Ky3TS86u3Dz/RE5W/WYu3cH2vI7PgC1he+ZgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <David.Laight@aculab.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Shruti Parab <shruti.parab@broadcom.com>,
+	Gautam R A <gautam-r.a@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 496/565] x86: use cmov for user address masking
-Date: Tue, 11 Nov 2025 09:45:52 +0900
-Message-ID: <20251111004538.094514120@linuxfoundation.org>
+Subject: [PATCH 6.17 783/849] bnxt_en: Fix null pointer dereference in bnxt_bs_trace_check_wrap()
+Date: Tue, 11 Nov 2025 09:45:53 +0900
+Message-ID: <20251111004555.364110417@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +63,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Gautam R A <gautam-r.a@broadcom.com>
 
-[ Upstream commit 91309a70829d94c735c8bb1cc383e78c96127a16 ]
+[ Upstream commit ff02be05f78399c766be68ab0b2285ff90b2aaa8 ]
 
-This was a suggestion by David Laight, and while I was slightly worried
-that some micro-architecture would predict cmov like a conditional
-branch, there is little reason to actually believe any core would be
-that broken.
+With older FW, we may get the ASYNC_EVENT_CMPL_EVENT_ID_DBG_BUF_PRODUCER
+for FW trace data type that has not been initialized.  This will result
+in a crash in bnxt_bs_trace_type_wrap().  Add a guard to check for a
+valid magic_byte pointer before proceeding.
 
-Intel documents that their existing cores treat CMOVcc as a data
-dependency that will constrain speculation in their "Speculative
-Execution Side Channel Mitigations" whitepaper:
-
-  "Other instructions such as CMOVcc, AND, ADC, SBB and SETcc can also
-   be used to prevent bounds check bypass by constraining speculative
-   execution on current family 6 processors (Intel® Core™, Intel® Atom™,
-   Intel® Xeon® and Intel® Xeon Phi™ processors)"
-
-and while that leaves the future uarch issues open, that's certainly
-true of our traditional SBB usage too.
-
-Any core that predicts CMOV will be unusable for various crypto
-algorithms that need data-independent timing stability, so let's just
-treat CMOV as the safe choice that simplifies the address masking by
-avoiding an extra instruction and doesn't need a temporary register.
-
-Suggested-by: David Laight <David.Laight@aculab.com>
-Link: https://www.intel.com/content/dam/develop/external/us/en/documents/336996-speculative-execution-side-channel-mitigations.pdf
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 284922f4c563 ("x86: uaccess: don't use runtime-const rewriting in modules")
+Fixes: 84fcd9449fd7 ("bnxt_en: Manage the FW trace context memory")
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Shruti Parab <shruti.parab@broadcom.com>
+Signed-off-by: Gautam R A <gautam-r.a@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20251104005700.542174-4-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/uaccess_64.h | 12 ++++++------
- arch/x86/lib/getuser.S            |  5 ++---
- 2 files changed, 8 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
-index b0a887209400d..c52f0133425b9 100644
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -63,13 +63,13 @@ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm,
-  */
- static inline void __user *mask_user_address(const void __user *ptr)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index 2317172166c7d..6b751eb29c2d4 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -2148,7 +2148,7 @@ struct bnxt_bs_trace_info {
+ static inline void bnxt_bs_trace_check_wrap(struct bnxt_bs_trace_info *bs_trace,
+ 					    u32 offset)
  {
--	unsigned long mask;
-+	void __user *ret;
- 	asm("cmp %1,%0\n\t"
--	    "sbb %0,%0"
--		:"=r" (mask)
--		:"r" (ptr),
--		 "0" (runtime_const_ptr(USER_PTR_MAX)));
--	return (__force void __user *)(mask | (__force unsigned long)ptr);
-+	    "cmova %1,%0"
-+		:"=r" (ret)
-+		:"r" (runtime_const_ptr(USER_PTR_MAX)),
-+		 "0" (ptr));
-+	return ret;
- }
- #define masked_user_access_begin(x) ({				\
- 	__auto_type __masked_ptr = (x);				\
-diff --git a/arch/x86/lib/getuser.S b/arch/x86/lib/getuser.S
-index 4357ec2a0bfc2..89ecd57c9d423 100644
---- a/arch/x86/lib/getuser.S
-+++ b/arch/x86/lib/getuser.S
-@@ -44,9 +44,8 @@
-   .pushsection runtime_ptr_USER_PTR_MAX,"a"
- 	.long 1b - 8 - .
-   .popsection
--	cmp %rax, %rdx
--	sbb %rdx, %rdx
--	or %rdx, %rax
-+	cmp %rdx, %rax
-+	cmova %rdx, %rax
- .else
- 	cmp $TASK_SIZE_MAX-\size+1, %eax
- 	jae .Lbad_get_user
+-	if (!bs_trace->wrapped &&
++	if (!bs_trace->wrapped && bs_trace->magic_byte &&
+ 	    *bs_trace->magic_byte != BNXT_TRACE_BUF_MAGIC_BYTE)
+ 		bs_trace->wrapped = 1;
+ 	bs_trace->last_offset = offset;
 -- 
 2.51.0
 
