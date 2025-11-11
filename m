@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1587AC4AE0E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B79C4B200
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84F2718975F7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 952663B8260
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72ABC33B955;
-	Tue, 11 Nov 2025 01:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9379A341657;
+	Tue, 11 Nov 2025 01:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qw+NeTNQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVNvII3R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C893339B58;
-	Tue, 11 Nov 2025 01:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460B030748A;
+	Tue, 11 Nov 2025 01:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824987; cv=none; b=UAC+i1OUqQRcB9O5bM+UKzXWVeeZAnyqZrja18hrc8InBJWTVa73Y3ScLnY8yWgtjwC7gaAvU4RBfdz4oATb47XkwNHDNPEyARv7U6RuGIWoF7dt7z6zfnkXajldC7CQgLFEu/BmiVEGPQOQVsLrBEBstBkPz0mHwvMi/OmquW0=
+	t=1762825564; cv=none; b=qY0Ed/FvvwOPtBhxVJxCWTP4Vo6fS3NQeD1ljsWv1DsLiUybe10vG+Oy+bBKrM4IGTlFbGkKSHu+wUrte+KYN3ra4Buah0jC2bEgEkpCHNaCsEX4slmkFzrQGmM4fXF51YlJOZLW5oWmAqaV5yUWMmnj1ECQurNVfLHAqBKlyG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824987; c=relaxed/simple;
-	bh=z53kIwrqqJJzbx/u36MA/Dv1zPV2tLQ7A/2O/KchetI=;
+	s=arc-20240116; t=1762825564; c=relaxed/simple;
+	bh=1pR4YrtN+4ogmSGKp6tmEwJY8s6jfnxhkz+zGwj7AA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MFiNTLUz2wV1VAW/znUKPsgmCwm3iPRUlJjDPiPEFqSwgKsWwo4VpKhEdUCqS4QuFjnCrk8gLy+BsWRiiIKWgL4MUem1kEoMMkurCV5NPAyhTgYLUrnU4LiCv1ru4tufqjLKY9bkm/fYcu+5AalZQyyOlRvWJjakUDDFi6r+jX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qw+NeTNQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE92BC19421;
-	Tue, 11 Nov 2025 01:36:26 +0000 (UTC)
+	 MIME-Version; b=TbMwllpks22gVsNBwxt9fSgc5Zo9xVIiuujiJGXm5WMGkfblO+zJsZCYqEq1bRggn/A5YcXOSv+CxuWV5/M8QILhM33cKoadwm3s9kYpVO8oNa4Dp1hN1iz/vGIsU6rqYtcowwaKviHNRSWU2IttS9onlpbW9uhQoBDgsy9oxu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FVNvII3R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A1DC113D0;
+	Tue, 11 Nov 2025 01:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824987;
-	bh=z53kIwrqqJJzbx/u36MA/Dv1zPV2tLQ7A/2O/KchetI=;
+	s=korg; t=1762825564;
+	bh=1pR4YrtN+4ogmSGKp6tmEwJY8s6jfnxhkz+zGwj7AA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qw+NeTNQAhlVM3Qj1fcN4QoO6NK9fb3xRoGxuaEGp+X5yVdzfQyRE1OeJbV6w8JAR
-	 leC7M4uJzAf1RmM9zGhoZMHgCAw5Mzg46QhbpEYakobdUFjlVCROwmiqKTZhKJDYLc
-	 UCmZwCLTQd3BfXpmaHxIXFir1NsW0H1mlQHcUCa4=
+	b=FVNvII3RgDyCqGH7stY1vSZvUMjhidk7c8jlt1FiWfEFsQdmplaDNRUeLXrgC4ue9
+	 4s3UEkswVuyrlBKpAsdiAI+ksf0JEfTVV4FG+8P5nINv/4skQ+Bccxfk8D+CqRHOj3
+	 3l2KUslfex8s00VChjU/Nj48PTzLgip+hX8dYq7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Subject: [PATCH 6.12 563/565] drm/amdgpu: Fix function header names in amdgpu_connectors.c
+	Amery Hung <ameryhung@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 849/849] selftests: drv-net: Reload pkt pointer after calling filter_udphdr
 Date: Tue, 11 Nov 2025 09:46:59 +0900
-Message-ID: <20251111004539.686378928@linuxfoundation.org>
+Message-ID: <20251111004556.943064230@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Amery Hung <ameryhung@gmail.com>
 
-commit 38ab33dbea594700c8d6cc81eec0a54e95d3eb2f upstream.
+commit 11ae737efea10a8cc1c48b6288bde93180946b8c upstream.
 
-Align the function headers for `amdgpu_max_hdmi_pixel_clock` and
-`amdgpu_connector_dvi_mode_valid` with the function implementations so
-they match the expected kdoc style.
+Fix a verification failure. filter_udphdr() calls bpf_xdp_pull_data(),
+which will invalidate all pkt pointers. Therefore, all ctx->data loaded
+before filter_udphdr() cannot be used. Reload it to prevent verification
+errors.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c:1199: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- * Returns the maximum supported HDMI (TMDS) pixel clock in KHz.
-drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c:1212: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- * Validates the given display mode on DVI and HDMI connectors.
+The error may not appear on some compiler versions if they decide to
+load ctx->data after filter_udphdr() when it is first used.
 
-Fixes: 585b2f685c56 ("drm/amdgpu: Respect max pixel clock for HDMI and DVI-D (v2)")
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: efec2e55bdef ("selftests: drv-net: Pull data before parsing headers")
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250925161452.1290694-1-ameryhung@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/lib/xdp_native.bpf.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-@@ -1196,7 +1196,10 @@ static void amdgpu_connector_dvi_force(s
- }
+diff --git a/tools/testing/selftests/net/lib/xdp_native.bpf.c b/tools/testing/selftests/net/lib/xdp_native.bpf.c
+index df4eea5c192b..c368fc045f4b 100644
+--- a/tools/testing/selftests/net/lib/xdp_native.bpf.c
++++ b/tools/testing/selftests/net/lib/xdp_native.bpf.c
+@@ -420,7 +420,6 @@ static int xdp_adjst_tail_grow_data(struct xdp_md *ctx, __u16 offset)
  
- /**
-- * Returns the maximum supported HDMI (TMDS) pixel clock in KHz.
-+ * amdgpu_max_hdmi_pixel_clock - Return max supported HDMI (TMDS) pixel clock
-+ * @adev: pointer to amdgpu_device
-+ *
-+ * Return: maximum supported HDMI (TMDS) pixel clock in KHz.
-  */
- static int amdgpu_max_hdmi_pixel_clock(const struct amdgpu_device *adev)
+ static int xdp_adjst_tail(struct xdp_md *ctx, __u16 port)
  {
-@@ -1209,8 +1212,14 @@ static int amdgpu_max_hdmi_pixel_clock(c
- }
+-	void *data = (void *)(long)ctx->data;
+ 	struct udphdr *udph = NULL;
+ 	__s32 *adjust_offset, *val;
+ 	__u32 key, hdr_len;
+@@ -432,7 +431,8 @@ static int xdp_adjst_tail(struct xdp_md *ctx, __u16 port)
+ 	if (!udph)
+ 		return XDP_PASS;
  
- /**
-- * Validates the given display mode on DVI and HDMI connectors,
-- * including analog signals on DVI-I.
-+ * amdgpu_connector_dvi_mode_valid - Validate a mode on DVI/HDMI connectors
-+ * @connector: DRM connector to validate the mode on
-+ * @mode: display mode to validate
-+ *
-+ * Validate the given display mode on DVI and HDMI connectors, including
-+ * analog signals on DVI-I.
-+ *
-+ * Return: drm_mode_status indicating whether the mode is valid.
-  */
- static enum drm_mode_status amdgpu_connector_dvi_mode_valid(struct drm_connector *connector,
- 					    struct drm_display_mode *mode)
+-	hdr_len = (void *)udph - data + sizeof(struct udphdr);
++	hdr_len = (void *)udph - (void *)(long)ctx->data +
++		  sizeof(struct udphdr);
+ 	key = XDP_ADJST_OFFSET;
+ 	adjust_offset = bpf_map_lookup_elem(&map_xdp_setup, &key);
+ 	if (!adjust_offset)
+@@ -572,8 +572,6 @@ static int xdp_adjst_head_grow_data(struct xdp_md *ctx, __u64 hdr_len,
+ 
+ static int xdp_head_adjst(struct xdp_md *ctx, __u16 port)
+ {
+-	void *data_end = (void *)(long)ctx->data_end;
+-	void *data = (void *)(long)ctx->data;
+ 	struct udphdr *udph_ptr = NULL;
+ 	__u32 key, size, hdr_len;
+ 	__s32 *val;
+@@ -584,7 +582,8 @@ static int xdp_head_adjst(struct xdp_md *ctx, __u16 port)
+ 	if (!udph_ptr)
+ 		return XDP_PASS;
+ 
+-	hdr_len = (void *)udph_ptr - data + sizeof(struct udphdr);
++	hdr_len = (void *)udph_ptr - (void *)(long)ctx->data +
++		  sizeof(struct udphdr);
+ 
+ 	key = XDP_ADJST_OFFSET;
+ 	val = bpf_map_lookup_elem(&map_xdp_setup, &key);
+-- 
+2.51.2
+
 
 
 
