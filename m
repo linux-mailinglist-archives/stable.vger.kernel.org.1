@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-193706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78145C4A98F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA08C4AEDB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F5F4188EF45
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4E39F4F36F7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831BF2FE071;
-	Tue, 11 Nov 2025 01:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71E833EAFD;
+	Tue, 11 Nov 2025 01:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAc2oJsh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vaQuIC82"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5AD2E9EB1;
-	Tue, 11 Nov 2025 01:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947F32DC78C;
+	Tue, 11 Nov 2025 01:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823816; cv=none; b=HiqPMlACOTGcPe99wYn0fEqyDqv4USkLIavM1AITPJC3h45930Nfb5E5u5j7wzEZFF+qFeE58pV488+kupbvyQuDsSoW/fGt9q5FfGAnI8j4Wjrta65mS/8gYye/r6bVO0I2lWoAWcM+ZZ9SbuzRVeD6185ic3GJ6qK3Scs6n2U=
+	t=1762825007; cv=none; b=aDcbET8uoSlz7aEtzVwhwsFRVV3VaBdv2KvXFwCCYmvj7jgsw7dOvwBW+EkmFtNMu2hX2TtcEC4JBOHsUElKbW3lYt5tv6xdFcdf4eczH1ZC/X6lGQ65rDDvBUcogvrJHbGfnt6kLxl5R676reM3+oqrREJr3TDM0BCKuh4Nkrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823816; c=relaxed/simple;
-	bh=fF5KPeyNwXftviB+jvhP15DXFHlrPf47RVW8uicLnVw=;
+	s=arc-20240116; t=1762825007; c=relaxed/simple;
+	bh=4o71WmC4OV8HqdpG6cg+O46gO/X/mkTF28593C774QU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BM2YMC/tm0VKePBxwXAZMoXvDrkRkM4VxjCeli7H3IpJ80BF1euafrrf7FfYtO9JRZBcJZ/JQFZHI/amhvIei++ZQ457drVVNEzl8TXy9e/HAFO8apUKMQQxNCnH4K+3O0gma9PqieR2s7MyMjF/YjjsBarE81ieP+rTi3nsyFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAc2oJsh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02E9C2BC86;
-	Tue, 11 Nov 2025 01:16:55 +0000 (UTC)
+	 MIME-Version; b=d60DgsXEjeGCVanuFpuD7U1BfVQ4dLTl4Afzt/6nzqyCzUuGJtqh8If9q7nNx5XvqRDn0xFdRxmVUhg19f0+BBXipJWRbDqavLDA/IZQW+rl0niVsAaxNoOKmWtXXUR09LUcs1C3rk9o1VZpa8l0ZPCEcmrk9I8IXyrJrvZXTcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaQuIC82; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DAAC19422;
+	Tue, 11 Nov 2025 01:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823816;
-	bh=fF5KPeyNwXftviB+jvhP15DXFHlrPf47RVW8uicLnVw=;
+	s=korg; t=1762825007;
+	bh=4o71WmC4OV8HqdpG6cg+O46gO/X/mkTF28593C774QU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dAc2oJshDp/uEsssABfbFXLORYy9qN5hVPwa49yLf5svHeTanY7Vs5AXbVr4CPVQL
-	 6A4leZ24aPdNEim+FPnUhzTchH/9zeJjhwC92bjIwbb1kVj9Dt1/QC2AhV5uhnIhYk
-	 /V8C2Vs/c77gU9BlFrxiBSANWcB+JHgFnHNJzH2g=
+	b=vaQuIC824wsogkP88/w8KsTHj8vFqTPkEl0IQqdUHM/MZ7BaRDC4q8s3OSKcLU73n
+	 EzAmZM63mnfwdHcQa+7Efr0j+UF+bzYFpH3y23rZqzyCLcyVS/LYKecm2i98zCXrUC
+	 m8rB9ttwC5OECelcpFugpcuD/t0oXl8GPE7fhKPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Udit Kumar <u-kumar1@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Harikrishna Shenoy <h-shenoy@ti.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 330/565] phy: cadence: cdns-dphy: Enable lower resolutions in dphy
+Subject: [PATCH 6.17 616/849] wifi: ath12k: Increase DP_REO_CMD_RING_SIZE to 256
 Date: Tue, 11 Nov 2025 09:43:06 +0900
-Message-ID: <20251111004534.309833853@linuxfoundation.org>
+Message-ID: <20251111004551.323091879@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harikrishna Shenoy <h-shenoy@ti.com>
+From: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
 
-[ Upstream commit 43bd2c44515f8ee5c019ce6e6583f5640387a41b ]
+[ Upstream commit 82993345aef6987a916337ebd2fca3ff4a6250a7 ]
 
-Enable support for data lane rates between 80-160 Mbps cdns dphy
-as mentioned in TRM [0] by setting the pll_opdiv field to 16.
-This change enables lower resolutions like 640x480 at 60Hz.
+Increase DP_REO_CMD_RING_SIZE from 128 to 256 to avoid
+queuing failures observed during stress test scenarios.
 
-[0]: https://www.ti.com/lit/zip/spruil1
-(Table 12-552. DPHY_TX_PLL_CTRL Register Field Descriptions)
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Signed-off-by: Harikrishna Shenoy <h-shenoy@ti.com>
-Link: https://lore.kernel.org/r/20250807052002.717807-1-h-shenoy@ti.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250806111750.3214584-2-nithyanantham.paramasivam@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/cadence/cdns-dphy.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/dp.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/cadence/cdns-dphy.c b/drivers/phy/cadence/cdns-dphy.c
-index 8d93a830ab8bf..a24df36e5c376 100644
---- a/drivers/phy/cadence/cdns-dphy.c
-+++ b/drivers/phy/cadence/cdns-dphy.c
-@@ -145,7 +145,7 @@ static int cdns_dsi_get_dphy_pll_cfg(struct cdns_dphy *dphy,
- 
- 	dlane_bps = opts->hs_clk_rate;
- 
--	if (dlane_bps > 2500000000UL || dlane_bps < 160000000UL)
-+	if (dlane_bps > 2500000000UL || dlane_bps < 80000000UL)
- 		return -EINVAL;
- 	else if (dlane_bps >= 1250000000)
- 		cfg->pll_opdiv = 1;
-@@ -155,6 +155,8 @@ static int cdns_dsi_get_dphy_pll_cfg(struct cdns_dphy *dphy,
- 		cfg->pll_opdiv = 4;
- 	else if (dlane_bps >= 160000000)
- 		cfg->pll_opdiv = 8;
-+	else if (dlane_bps >= 80000000)
-+		cfg->pll_opdiv = 16;
- 
- 	cfg->pll_fbdiv = DIV_ROUND_UP_ULL(dlane_bps * 2 * cfg->pll_opdiv *
- 					  cfg->pll_ipdiv,
+diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
+index 7baa48b86f7ad..10093b4515882 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.h
++++ b/drivers/net/wireless/ath/ath12k/dp.h
+@@ -184,7 +184,7 @@ struct ath12k_pdev_dp {
+ #define DP_REO_REINJECT_RING_SIZE	32
+ #define DP_RX_RELEASE_RING_SIZE		1024
+ #define DP_REO_EXCEPTION_RING_SIZE	128
+-#define DP_REO_CMD_RING_SIZE		128
++#define DP_REO_CMD_RING_SIZE		256
+ #define DP_REO_STATUS_RING_SIZE		2048
+ #define DP_RXDMA_BUF_RING_SIZE		4096
+ #define DP_RX_MAC_BUF_RING_SIZE		2048
 -- 
 2.51.0
 
