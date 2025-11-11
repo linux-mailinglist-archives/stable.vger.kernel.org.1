@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-194267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE693C4AFA9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:26 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A77B8C4AABE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7A4FF4FB976
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7A4974F6733
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C322306B39;
-	Tue, 11 Nov 2025 01:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E4626D4C7;
+	Tue, 11 Nov 2025 01:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X++MS0Z+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ES5nLR31"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5562857F0;
-	Tue, 11 Nov 2025 01:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEED1D86FF;
+	Tue, 11 Nov 2025 01:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825197; cv=none; b=CAv2fhpBi0vF0VbtGCIb/qeTnj4Tm33RMm6by2eeRySCICghdydzsEwrB+qBORuJ9PYvAaB2dNq9HFtO4HyVTCurrJtygXI0unzLRIy15jBZfulcjm1gPO5JpLPgPApU269HzIQwPYt5L8qzJHOiVUplF4wkLVxp9vbvCHCAox8=
+	t=1762824231; cv=none; b=kZ7+fMOyhAovjbr27ZpKNVEWmfcLgGAd3RDX1vsUYWKi4j/AfwciRq7AGyW4r/Q4lV3lxMIbyH5wfAMOHuKiZvNVZd+hucNJqeivFYBG1B+SgtUCi6gNyBF21XRpJI4hmp8XhCnIxKDL71GDhY20A0uDxq8ieZgQm/havgAKT78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825197; c=relaxed/simple;
-	bh=7Ic085ERdRIoY8KIGYFY8epiciHOxTs2C6tm97bOwCM=;
+	s=arc-20240116; t=1762824231; c=relaxed/simple;
+	bh=O25uRdn8PHlDkGlnMyQTJ7i97k0Y/wKHUExqjdiUDug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NeyVbHTcMYY30nUxsGdAzOQ6wJ8o/hm72BsaoDWCttMl6XKEXLPIOS7qQtfizZR1N+LofDz8wMj/6DXMhB4EoJL2oLH5gN4e5IfZCEK6XUJC6ofzf4JV4CI9kyFRFAM6gLl8f194+ONC0IO8TzTeMb2K3k5dslSB2j2Q7mWEDRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X++MS0Z+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587BAC2BC86;
-	Tue, 11 Nov 2025 01:39:57 +0000 (UTC)
+	 MIME-Version; b=rnBb92LiMRHyLiP8SN9oKZmqdOKdNapAIsC4Gz0GoWwX+Wp9EAXnnnpZbFuoF0UFqyktc4G+VrL0/t4kvvA/rDr1H+ZMv/SNU3NMb5R/jxY/RUr8510JdPCDB6U3Xs6solKewQYAk0sY7TxadeQ3mnkWlv1pC3vyzucJ45kJg8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ES5nLR31; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E4AC4CEF5;
+	Tue, 11 Nov 2025 01:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825197;
-	bh=7Ic085ERdRIoY8KIGYFY8epiciHOxTs2C6tm97bOwCM=;
+	s=korg; t=1762824231;
+	bh=O25uRdn8PHlDkGlnMyQTJ7i97k0Y/wKHUExqjdiUDug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X++MS0Z+vpJjQln3l94UCkkek8+SHMzVLKFwvs99TEUijlsaUX6SFIJWzwbZe6XiP
-	 qEuK5ZzYU059dirotuboOdlYhDkiz7vcCsWCe7uheyGjVkLJFzVeWu2UwkRnFsCs/E
-	 QIP1au1YREJQTfoaZSKGvE0ADy8ny22eF7kkwqgY=
+	b=ES5nLR31EuDwGA7dE1cG/W0JVpAgvzEej7tX3hx19avgmV/qYADke3lBy+0TNGZ9J
+	 qKEzgLWm48/rl6mIHb3vAx5Fun4A0liwtpvt6X24Sx065A2MRvfX+D/i0yk91LwCl6
+	 SwFHXPwoI/5K+hctE6fGrJV5715ANcFjfZN9lFyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Sridevi Arvindekar <sarvinde@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 701/849] clk: sunxi-ng: sun6i-rtc: Add A523 specifics
+Subject: [PATCH 6.12 415/565] drm/amd/display: Fix for test crash due to power gating
 Date: Tue, 11 Nov 2025 09:44:31 +0900
-Message-ID: <20251111004553.381190311@linuxfoundation.org>
+Message-ID: <20251111004536.201533753@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wens@csie.org>
+From: Sridevi Arvindekar <sarvinde@amd.com>
 
-[ Upstream commit 7aa8781f379c32c31bd78f1408a31765b2297c43 ]
+[ Upstream commit 0bf6b216d4783cb51f9af05a49d3cce4fc22dc24 ]
 
-The A523's RTC block is backward compatible with the R329's, but it also
-has a calibration function for its internal oscillator, which would
-allow it to provide a clock rate closer to the desired 32.768 KHz. This
-is useful on the Radxa Cubie A5E, which does not have an external 32.768
-KHz crystal.
+[Why/How]
+Call power gating routine only if it is defined.
 
-Add new compatible-specific data for it.
-
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20250909170947.2221611-1-wens@kernel.org
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Sridevi Arvindekar <sarvinde@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun6i-rtc.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c b/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c
-index 0536e880b80fe..f6bfeba009e8e 100644
---- a/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c
-@@ -325,6 +325,13 @@ static const struct sun6i_rtc_match_data sun50i_r329_rtc_ccu_data = {
- 	.osc32k_fanout_nparents	= ARRAY_SIZE(sun50i_r329_osc32k_fanout_parents),
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+index 55f067c9e4948..8a1ba78c27f97 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+@@ -3086,7 +3086,8 @@ void dcn20_fpga_init_hw(struct dc *dc)
+ 		res_pool->dccg->funcs->dccg_init(res_pool->dccg);
  
-+static const struct sun6i_rtc_match_data sun55i_a523_rtc_ccu_data = {
-+	.have_ext_osc32k	= true,
-+	.have_iosc_calibration	= true,
-+	.osc32k_fanout_parents	= sun50i_r329_osc32k_fanout_parents,
-+	.osc32k_fanout_nparents	= ARRAY_SIZE(sun50i_r329_osc32k_fanout_parents),
-+};
-+
- static const struct of_device_id sun6i_rtc_ccu_match[] = {
- 	{
- 		.compatible	= "allwinner,sun50i-h616-rtc",
-@@ -334,6 +341,10 @@ static const struct of_device_id sun6i_rtc_ccu_match[] = {
- 		.compatible	= "allwinner,sun50i-r329-rtc",
- 		.data		= &sun50i_r329_rtc_ccu_data,
- 	},
-+	{
-+		.compatible	= "allwinner,sun55i-a523-rtc",
-+		.data		= &sun55i_a523_rtc_ccu_data,
-+	},
- 	{},
- };
- MODULE_DEVICE_TABLE(of, sun6i_rtc_ccu_match);
+ 	//Enable ability to power gate / don't force power on permanently
+-	hws->funcs.enable_power_gating_plane(hws, true);
++	if (hws->funcs.enable_power_gating_plane)
++		hws->funcs.enable_power_gating_plane(hws, true);
+ 
+ 	// Specific to FPGA dccg and registers
+ 	REG_WRITE(RBBMIF_TIMEOUT_DIS, 0xFFFFFFFF);
 -- 
 2.51.0
 
