@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F57C4A800
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F077AC4AC0D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A007234C3BF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E23043BBA32
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E42A34217C;
-	Tue, 11 Nov 2025 01:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D6B343D79;
+	Tue, 11 Nov 2025 01:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nq5wzLm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5BGUO0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390D92D29D6;
-	Tue, 11 Nov 2025 01:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125002DA743;
+	Tue, 11 Nov 2025 01:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824055; cv=none; b=ala+eb8WtA4GX6ArjcWuyXk5k2D9ra1ATR4eqaCUeJlisAwm/HTbo42xzaYbHRRug5SoO6W2zsj8E5lU0j1+y1Ahff6N5VpFXMrGx8b8y61XkJXbA/ykmDRCI/YP9RyOa5UYE5ozz5H+npXF2VBgGDRvbxnbG8wMO1Qi96aoulA=
+	t=1762824107; cv=none; b=IYo3GqXjKHGyvDvcxZ+PtQv/D95f1HLXw7+N4mnmuHgw/Bvwr9syVKn2mYe3fApqWZchu846uLCjFVKqTByG9yYf6ubk1Q79MbW4ENcDZktQsYr32XwaLd68Vq6dr7WaSPfQ+X/nGqcw+RP7kk42gxag+CVtEyCL0qhWsLEtmhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824055; c=relaxed/simple;
-	bh=dZHKEU5/+50oroupJkqJCtm41mdrlarp2f3kao4ulpE=;
+	s=arc-20240116; t=1762824107; c=relaxed/simple;
+	bh=G/Zr4yifU8HQDRDZsEYzc8YZICeISSo/HYPbvaJFEU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZqYJ6XgBhaHRnMX4cUMqQTIlCJe93c7IEtBwSA1jrigCSfLbuf7Dxq4tDx5z87tmAzTm5FpAG04RseVIvHR/Yp34J2b3VxkKHG4we7v+vQozMSaJaZnFGaF9yT64rhY9WZAhChCQEcaUI3amhEU+hWBiOKfKXYLyWcYoJ5WUMOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nq5wzLm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA32C4CEF5;
-	Tue, 11 Nov 2025 01:20:54 +0000 (UTC)
+	 MIME-Version; b=uVg1WTcqJmobcKVcOX6fzr4Y2dgMrlSxCLtwBpTavrEX+aB/DadABcTUjY7Rsn8zuutpmoImkM3txmSGTZmDsvpoWAdML2KfpRzwFICycr9i2l8UDV9SCe3CcPAY7pWnjt1UZH0F6ob2ZgTMcZ1cGq/N1XQQ99yjOAbyjxzX/5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5BGUO0Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD8AC16AAE;
+	Tue, 11 Nov 2025 01:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824055;
-	bh=dZHKEU5/+50oroupJkqJCtm41mdrlarp2f3kao4ulpE=;
+	s=korg; t=1762824106;
+	bh=G/Zr4yifU8HQDRDZsEYzc8YZICeISSo/HYPbvaJFEU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nq5wzLm0sErCD/IOA6NOHwnW0rbMVUr53hTB8zsI2ktHQS5SqknKXQNsR9+HpUSWc
-	 wZafDmoAMEMzFJ33yG1MpPpKiI81NoZ5D3Zf0IpnxZEtUaEtAXZwXFQ3rfmOlA3+XI
-	 lh5TGJF9YsX83Yib8ButwZWFPZ7lydgiR2a9zCTA=
+	b=E5BGUO0Yu/FNaMi55VGsJuHh0QCfrOj2+TuGUAoCKd7PC2j5bZ3G/w0aaE6V+0wgp
+	 7sS6sJoW+h8cktLGeUINpK1qNgwHXcvtcoNUMDxEWxS4M90HRIjcKIszWDp42adYlK
+	 jDUOBGXJKCRogk0DJrPLn9oVaL7rGf6yU6mz0ZbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yedidya Ben Shimol <yedidya.ben.shimol@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 410/849] wifi: iwlwifi: pcie: remember when interrupts are disabled
-Date: Tue, 11 Nov 2025 09:39:40 +0900
-Message-ID: <20251111004546.354618741@linuxfoundation.org>
+Subject: [PATCH 6.17 411/849] drm/st7571-i2c: add support for inverted pixel format
+Date: Tue, 11 Nov 2025 09:39:41 +0900
+Message-ID: <20251111004546.378760947@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,45 +66,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
 
-[ Upstream commit 1a33efe4fc64b8135fe94e22299761cc69333404 ]
+[ Upstream commit e61c35157d32b4b422f0a4cbc3c40d04d883a9c9 ]
 
-trans_pcie::fh_mask and hw_mask indicates what are the interrupts are
-currently enabled (unmasked).
-When we disable all interrupts, those should be set to 0, so if, for
-some reason, we get an interrupt even though it was disabled, we will
-know to ignore.
+Depending on which display that is connected to the controller, an
+"1" means either a black or a white pixel.
 
-Reviewed-by: Yedidya Ben Shimol <yedidya.ben.shimol@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250828111032.e293d6a8385b.I919375e5ad7bd7e4fee4a95ce6ce6978653d6b16@changeid
+The supported formats (R1/R2/XRGB8888) expects the pixels
+to map against (4bit):
+    00 => Black
+    01 => Dark Gray
+    10 => Light Gray
+    11 => White
+
+If this is not what the display map against, make it possible to invert
+the pixels.
+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Link: https://lore.kernel.org/r/20250721-st7571-format-v2-4-159f4134098c@gmail.com
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/sitronix/st7571-i2c.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
-index f48aeebb151cc..86edc79ac09f8 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
-@@ -818,6 +818,8 @@ static inline void _iwl_disable_interrupts(struct iwl_trans *trans)
- 			    trans_pcie->fh_init_mask);
- 		iwl_write32(trans, CSR_MSIX_HW_INT_MASK_AD,
- 			    trans_pcie->hw_init_mask);
-+		trans_pcie->fh_mask = 0;
-+		trans_pcie->hw_mask = 0;
- 	}
- 	IWL_DEBUG_ISR(trans, "Disabled interrupts\n");
- }
-@@ -1000,6 +1002,7 @@ static inline void iwl_enable_rfkill_int(struct iwl_trans *trans)
- 	} else {
- 		iwl_write32(trans, CSR_MSIX_FH_INT_MASK_AD,
- 			    trans_pcie->fh_init_mask);
-+		trans_pcie->fh_mask = 0;
- 		iwl_enable_hw_int_msk_msix(trans,
- 					   MSIX_HW_INT_CAUSES_REG_RF_KILL);
- 	}
+diff --git a/drivers/gpu/drm/sitronix/st7571-i2c.c b/drivers/gpu/drm/sitronix/st7571-i2c.c
+index 453eb7e045e5f..125e810df1391 100644
+--- a/drivers/gpu/drm/sitronix/st7571-i2c.c
++++ b/drivers/gpu/drm/sitronix/st7571-i2c.c
+@@ -151,6 +151,7 @@ struct st7571_device {
+ 	bool ignore_nak;
+ 
+ 	bool grayscale;
++	bool inverted;
+ 	u32 height_mm;
+ 	u32 width_mm;
+ 	u32 startline;
+@@ -792,6 +793,7 @@ static int st7567_parse_dt(struct st7571_device *st7567)
+ 
+ 	of_property_read_u32(np, "width-mm", &st7567->width_mm);
+ 	of_property_read_u32(np, "height-mm", &st7567->height_mm);
++	st7567->inverted = of_property_read_bool(np, "sitronix,inverted");
+ 
+ 	st7567->pformat = &st7571_monochrome;
+ 	st7567->bpp = 1;
+@@ -819,6 +821,7 @@ static int st7571_parse_dt(struct st7571_device *st7571)
+ 	of_property_read_u32(np, "width-mm", &st7571->width_mm);
+ 	of_property_read_u32(np, "height-mm", &st7571->height_mm);
+ 	st7571->grayscale = of_property_read_bool(np, "sitronix,grayscale");
++	st7571->inverted = of_property_read_bool(np, "sitronix,inverted");
+ 
+ 	if (st7571->grayscale) {
+ 		st7571->pformat = &st7571_grayscale;
+@@ -873,7 +876,7 @@ static int st7567_lcd_init(struct st7571_device *st7567)
+ 		ST7571_SET_POWER(0x6),	/* Power Control, VC: ON, VR: ON, VF: OFF */
+ 		ST7571_SET_POWER(0x7),	/* Power Control, VC: ON, VR: ON, VF: ON */
+ 
+-		ST7571_SET_REVERSE(0),
++		ST7571_SET_REVERSE(st7567->inverted ? 1 : 0),
+ 		ST7571_SET_ENTIRE_DISPLAY_ON(0),
+ 	};
+ 
+@@ -917,7 +920,7 @@ static int st7571_lcd_init(struct st7571_device *st7571)
+ 		ST7571_SET_COLOR_MODE(st7571->pformat->mode),
+ 		ST7571_COMMAND_SET_NORMAL,
+ 
+-		ST7571_SET_REVERSE(0),
++		ST7571_SET_REVERSE(st7571->inverted ? 1 : 0),
+ 		ST7571_SET_ENTIRE_DISPLAY_ON(0),
+ 	};
+ 
 -- 
 2.51.0
 
