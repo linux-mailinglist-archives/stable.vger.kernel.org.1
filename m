@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E66C4AE1A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48F49C4A95E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37891188DD1D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8583B0F49
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578362DC79D;
-	Tue, 11 Nov 2025 01:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E0F30498E;
+	Tue, 11 Nov 2025 01:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBuZn3Na"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deNIwrM0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162F02BB17;
-	Tue, 11 Nov 2025 01:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6426E3043CD;
+	Tue, 11 Nov 2025 01:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824964; cv=none; b=qZWgtxzCqahb02+T4gRcoaxxgilpXv+55xeihvZBa3WD9Xgw6zzcdS3OqZjIjx22xB4uRvlh5ST6FIc3ErWlFMhhQRgk6r4wngTg0O8YYH1xeLfBLzZeVAXQOR7WL7k49jXkHMhHl0bB+F2tzY8EryHE66hhvlSkTRYRPsil3RI=
+	t=1762823856; cv=none; b=MgJ8Yl+HTq+0bBog/YSjqBd8j9fYPHROHQoVQnlD3g4AfdhX8iugSfi1q/i+5ngpkkZAyWLHOegQOGQ9evX4OlWPERarSI4Mr5l0tsMl5z/wqBs/r6lzCIX1CwH5foUTMlu0GHfwyCn51k4Hh+6rb5cvN4QUaUC2KvrQfOteQsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824964; c=relaxed/simple;
-	bh=UKnQjszi38AztQsb8m4Fy7BPkz8MDvnsULDopIkVmi8=;
+	s=arc-20240116; t=1762823856; c=relaxed/simple;
+	bh=vRRlQZzaLxiowKK6nPmemeLZxI7aMYpZm/sTYx2w0eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5ZCBGaVA+NOzvr8Ki97P460pVnUf26rSO3JPXa2jSZVgsl3nHAHjsnNmXM8tvN3jtr/ALp6/1P8+KBbstfyv00hs4mEq6Tk0enLNQuNzHs4z42KvMmCMG+Kyx8VW7zF8/Zfny6053HIdDeL3JJzOzEycXOgeCjp/4zMiz90Quc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBuZn3Na; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DCCC116B1;
-	Tue, 11 Nov 2025 01:36:03 +0000 (UTC)
+	 MIME-Version; b=N0U2DqEGVJd9k4cwjdZ2zK2FD9ssa8iQ2nEmr+7336uUlmQg3T0eZeYuYUZ/95+MJnsEm8SiTBP49r4lESxlvfxU8TQOYx0u/4JIwL6q5CwCT3OU8nIaIknZ93WskQPJSNBMZF1vhsJbpz8lDUzhiIeQM1pYGPwRNp3Zg1Jlfa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deNIwrM0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040A2C16AAE;
+	Tue, 11 Nov 2025 01:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824964;
-	bh=UKnQjszi38AztQsb8m4Fy7BPkz8MDvnsULDopIkVmi8=;
+	s=korg; t=1762823856;
+	bh=vRRlQZzaLxiowKK6nPmemeLZxI7aMYpZm/sTYx2w0eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IBuZn3NaL2eTq+/wxZKvIxp1rePYQFQjTT/v4H8EPh4lpViw++7/zHFl++zSSux5F
-	 ETy1Qdew+yZq/qeeG5dPVLtKEh3psnvT2rk2lIsYu/wI6ztGlMs7hFVP1tKpKB2WMm
-	 XLLDWQa9ZixlZ0i58lJwdFbKiujOxY9ohjbEM1Ng=
+	b=deNIwrM0NWRbFr5qkj1GlCrQmbma1XZ0OocctFAjIq5GpTaOK9UKPwBX41rZnrkd7
+	 gmNf0CU0aj/7rhh+IZzeQMdF3XxNEUInp1EP8bMt1VPplocioNo0RO6ksSsOylDi//
+	 kcBypWNYlUq9H+XXhG3PbYmooYxou+Vt+sgZEAMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koakuma <koachan@protonmail.com>,
-	Andreas Larsson <andreas@gaisler.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 606/849] sparc/module: Add R_SPARC_UA64 relocation handling
+Subject: [PATCH 6.12 320/565] f2fs: fix wrong layout information on 16KB page
 Date: Tue, 11 Nov 2025 09:42:56 +0900
-Message-ID: <20251111004551.071861617@linuxfoundation.org>
+Message-ID: <20251111004534.085893959@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koakuma <koachan@protonmail.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 05457d96175d25c976ab6241c332ae2eb5e07833 ]
+[ Upstream commit a33be64b98d0723748d2fab0832b926613e1fce0 ]
 
-This is needed so that the kernel can handle R_SPARC_UA64 relocations,
-which is emitted by LLVM's IAS.
+This patch fixes to support different block size.
 
-Signed-off-by: Koakuma <koachan@protonmail.com>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/include/asm/elf_64.h | 1 +
- arch/sparc/kernel/module.c      | 1 +
- 2 files changed, 2 insertions(+)
+ fs/f2fs/sysfs.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/sparc/include/asm/elf_64.h b/arch/sparc/include/asm/elf_64.h
-index 8fb09eec8c3e7..694ed081cf8d9 100644
---- a/arch/sparc/include/asm/elf_64.h
-+++ b/arch/sparc/include/asm/elf_64.h
-@@ -58,6 +58,7 @@
- #define R_SPARC_7		43
- #define R_SPARC_5		44
- #define R_SPARC_6		45
-+#define R_SPARC_UA64		54
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index eb84b9418ac11..b3c04ecc3a271 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -1623,12 +1623,15 @@ static int __maybe_unused disk_map_seq_show(struct seq_file *seq,
+ 	seq_printf(seq, " Main          : 0x%010x (%10d)\n",
+ 			SM_I(sbi)->main_blkaddr,
+ 			le32_to_cpu(F2FS_RAW_SUPER(sbi)->segment_count_main));
+-	seq_printf(seq, " # of Sections : %12d\n",
+-			le32_to_cpu(F2FS_RAW_SUPER(sbi)->section_count));
++	seq_printf(seq, " Block size    : %12lu KB\n", F2FS_BLKSIZE >> 10);
++	seq_printf(seq, " Segment size  : %12d MB\n",
++			(BLKS_PER_SEG(sbi) << (F2FS_BLKSIZE_BITS - 10)) >> 10);
+ 	seq_printf(seq, " Segs/Sections : %12d\n",
+ 			SEGS_PER_SEC(sbi));
+ 	seq_printf(seq, " Section size  : %12d MB\n",
+-			SEGS_PER_SEC(sbi) << 1);
++			(BLKS_PER_SEC(sbi) << (F2FS_BLKSIZE_BITS - 10)) >> 10);
++	seq_printf(seq, " # of Sections : %12d\n",
++			le32_to_cpu(F2FS_RAW_SUPER(sbi)->section_count));
  
- /* Bits present in AT_HWCAP, primarily for Sparc32.  */
- #define HWCAP_SPARC_FLUSH       0x00000001
-diff --git a/arch/sparc/kernel/module.c b/arch/sparc/kernel/module.c
-index b8c51cc23d969..6e3d4dde4f9ab 100644
---- a/arch/sparc/kernel/module.c
-+++ b/arch/sparc/kernel/module.c
-@@ -87,6 +87,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs,
- 			break;
- #ifdef CONFIG_SPARC64
- 		case R_SPARC_64:
-+		case R_SPARC_UA64:
- 			location[0] = v >> 56;
- 			location[1] = v >> 48;
- 			location[2] = v >> 40;
+ 	if (!f2fs_is_multi_device(sbi))
+ 		return 0;
 -- 
 2.51.0
 
