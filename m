@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-193602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513C2C4A83C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10285C4AB3B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 163373B59CB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:07 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 801F334C2A3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99436343D8E;
-	Tue, 11 Nov 2025 01:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588D626D4DE;
+	Tue, 11 Nov 2025 01:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dwtfsh3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLADWEsB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544112D9780;
-	Tue, 11 Nov 2025 01:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1413D2DEA9D;
+	Tue, 11 Nov 2025 01:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823572; cv=none; b=Sqi29VW9+yZE64dt7ECSaWu0ytZD4nk1w6EdwjtnxUdt6txVcHps5YZTjyozI+9fMB59tLsx5++1Xbd/ohvAD+yQCcdG1qQlp0Qi6DQq6Wt6LgyZyc1sbjB1rX9AGYTaYn4x/78sebultti/CFehAXQWn36iJSARSamvnNC2UAE=
+	t=1762824726; cv=none; b=hd2bHVaE5wgMmu6AKT5V3f4007jIVRGBXS56mAgwRKUUOMw4xcIpivTryihdNIqbrrLnm7arJfh5gI2QNEgTJDI9zf/mfMfltqTnNnctYORNJeWD/Qa6f+F7k+24px3xfWbhiIDXyDNLtF/+ZR5IiDgHOpd20TpR17EJn0ufEAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823572; c=relaxed/simple;
-	bh=3TlaJQ6kPlLj+xPxfjt0AaQY4vydvKhsBGOGxlpvnYo=;
+	s=arc-20240116; t=1762824726; c=relaxed/simple;
+	bh=mocRgeCdZXQtIrtLFTLZoTIB05SUaPY8/pfOe3vUvpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SRCq/HKNHedYfgfn/iGV++OevtOvt9G/HU852D3yBW+fTFObw5bPpZCYtCTT/mbYEAwjlZKDO6XXk6rO0viH90mYf9kgLoqrmhMACzWmzTrS51d5CrBgX1rE8vh90iKvpSQxCeGDrx1FGA2bYqqZj4WAAydxeyAmykvL7AQkMX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dwtfsh3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6FCC19421;
-	Tue, 11 Nov 2025 01:12:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hbKN1TcR5nkjlug7WDa88MjJWEfWcpMPcVuApXXFSgsheLw+ZPrDAK6dcfU/E+7VKg5tbHSAX+4ldUpLxgG0/Iq486RHsBJ/R+igHmfINTpbifgAuG7HA1QmtCi1UxNHxta3iE2+udOQ2hd5JAaOtdyHJC9Bi1k47+XvQxvGFkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLADWEsB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7100C113D0;
+	Tue, 11 Nov 2025 01:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823572;
-	bh=3TlaJQ6kPlLj+xPxfjt0AaQY4vydvKhsBGOGxlpvnYo=;
+	s=korg; t=1762824726;
+	bh=mocRgeCdZXQtIrtLFTLZoTIB05SUaPY8/pfOe3vUvpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dwtfsh3iGAQouseXHnKI2cIOragFMplRQkQOrH0kZHeyPUX48vB1eumgOTtz1O50b
-	 bexD6Vl0HNiMcNARmk+RKP4P45K5Plqw703/6ZUZBQQD+TLYzW2vM+qijK5HMPbPlj
-	 RF90fKAvKrAxdiCOVyb6BxyUz2nygmBTx92p7awc=
+	b=aLADWEsBw4EC4N+5Y1w7rKSrQnX2FfFpIK6QZw5r+0FRoT0t4tkkWfYKJGFYB5h2b
+	 BrevT36almEwogkSekmFGGoweR5v4jMMnpQtym4yJtCP/uQ1N5VWzXTv/LcXyoWwvh
+	 qZGiAoKQQPIqW8QPqvvInz8N0gkyPZEbQiaC0uXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 272/565] mips: lantiq: xway: sysctrl: rename stp clock
+Subject: [PATCH 6.17 558/849] drm/amd/display: Disable VRR on DCE 6
 Date: Tue, 11 Nov 2025 09:42:08 +0900
-Message-ID: <20251111004533.005140197@linuxfoundation.org>
+Message-ID: <20251111004549.901173928@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +65,78 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit b0d04fe6a633ada2c7bc1b5ddd011cbd85961868 ]
+[ Upstream commit 043c87d7d56e135393f8aab927148096e2d17589 ]
 
-Bindig requires a node name matching ‘^gpio@[0-9a-f]+$’. This patch
-changes the clock name from “stp” to “gpio”.
+DCE 6 was not advertised as being able to support VRR,
+so let's mark it as unsupported for now.
 
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+The VRR implementation in amdgpu_dm depends on the VUPDATE
+interrupt which is not registered for DCE 6.
+
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/lantiq/xway/sysctrl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 +++-
+ drivers/gpu/drm/amd/display/dc/dc_helper.c        | 5 +++++
+ drivers/gpu/drm/amd/display/dc/dm_services.h      | 2 ++
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-index 6031a0272d874..d9aa80afdf9d6 100644
---- a/arch/mips/lantiq/xway/sysctrl.c
-+++ b/arch/mips/lantiq/xway/sysctrl.c
-@@ -485,7 +485,7 @@ void __init ltq_soc_init(void)
- 	/* add our generic xway clocks */
- 	clkdev_add_pmu("10000000.fpi", NULL, 0, 0, PMU_FPI);
- 	clkdev_add_pmu("1e100a00.gptu", NULL, 1, 0, PMU_GPT);
--	clkdev_add_pmu("1e100bb0.stp", NULL, 1, 0, PMU_STP);
-+	clkdev_add_pmu("1e100bb0.gpio", NULL, 1, 0, PMU_STP);
- 	clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
- 	clkdev_add_pmu("1e104100.dma", NULL, 1, 0, PMU_DMA);
- 	clkdev_add_pmu("1e100800.spi", NULL, 1, 0, PMU_SPI);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index f450bcb43c9c1..57b46572fba27 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -10787,6 +10787,8 @@ static void get_freesync_config_for_crtc(
+ 		} else {
+ 			config.state = VRR_STATE_INACTIVE;
+ 		}
++	} else {
++		config.state = VRR_STATE_UNSUPPORTED;
+ 	}
+ out:
+ 	new_crtc_state->freesync_config = config;
+@@ -12688,7 +12690,7 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
+ 
+ 	dm_con_state = to_dm_connector_state(connector->state);
+ 
+-	if (!adev->dm.freesync_module)
++	if (!adev->dm.freesync_module || !dc_supports_vrr(sink->ctx->dce_version))
+ 		goto update;
+ 
+ 	edid = drm_edid_raw(drm_edid); // FIXME: Get rid of drm_edid_raw()
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_helper.c b/drivers/gpu/drm/amd/display/dc/dc_helper.c
+index 7217de2588511..4d2e5c89577d0 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dc_helper.c
+@@ -755,3 +755,8 @@ char *dce_version_to_string(const int version)
+ 		return "Unknown";
+ 	}
+ }
++
++bool dc_supports_vrr(const enum dce_version v)
++{
++	return v >= DCE_VERSION_8_0;
++}
+diff --git a/drivers/gpu/drm/amd/display/dc/dm_services.h b/drivers/gpu/drm/amd/display/dc/dm_services.h
+index 7b9c22c45453d..7b398d4f44398 100644
+--- a/drivers/gpu/drm/amd/display/dc/dm_services.h
++++ b/drivers/gpu/drm/amd/display/dc/dm_services.h
+@@ -311,4 +311,6 @@ void dm_dtn_log_end(struct dc_context *ctx,
+ 
+ char *dce_version_to_string(const int version);
+ 
++bool dc_supports_vrr(const enum dce_version v);
++
+ #endif /* __DM_SERVICES_H__ */
 -- 
 2.51.0
 
