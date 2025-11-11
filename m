@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-193363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F9AC4A3E8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:09:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F29C4ABDA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 796984F2E97
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 536611894792
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA8624E4A1;
-	Tue, 11 Nov 2025 01:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3E1344047;
+	Tue, 11 Nov 2025 01:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtGAfn7H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHBj9pZo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2562E1F5F6;
-	Tue, 11 Nov 2025 01:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55772263F52;
+	Tue, 11 Nov 2025 01:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823005; cv=none; b=eRKf30irIzX0GUdP4CsnrpAG5HeF+ytWbkDXIeIFyJBQrxx3ePDgm9ufZGYMTOgL9NQPTXB9781dkL6UBv3fy87vQj9VIjQoIQg23eO9xR1z6hbCf0ZKJf9gV4iamlrEYgQqjs/42j5vzG5PczEuCkJiH7HLphJ6KX7cOVSCnGw=
+	t=1762824118; cv=none; b=fxWFr7FqUf5LFQz9+YA8U/qlN0IdYQGCNVFM+9fuke8fR2M9UOV+ZJjFxPQ3SPdJCSTO8SgZAWEFkQ5sLwU8G0AcB6DAtgoC6amxj9VAyY38YiBCSO0fpvRiUlfg/QDcwVYigOhweD/HMcnrg0DsR/wF/RAffh7unQWmKextKp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823005; c=relaxed/simple;
-	bh=YvXiwM6FGBqPPbW/RQ3Bouz2gzRL9AU5xqbMu7SeSOw=;
+	s=arc-20240116; t=1762824118; c=relaxed/simple;
+	bh=f1iQezGCEkwfUE1msxHjfwvQw0ZW9YsWSKjfIZrHL5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VXtkH1lhz/o2c5/1mYG2FB4a9I2ukGH9y6NBPuVsZvJ80z+ZAz2nbpxRs862F2ZFDrdnPyjUP5vq66kMTO86rMnFbyVJElKzxyJ55z+ooeewJPVq9A7g6Is8oBOvrznHoE+vOMvWVigQfsPoDm4/7U/+82P9Z6iIDoGTqN2oNUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtGAfn7H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2613FC2BC87;
-	Tue, 11 Nov 2025 01:03:24 +0000 (UTC)
+	 MIME-Version; b=j5UjhW+jVtNi2QQSUfEmxlARTnf+SqUg4U0EIXq11gDPFmqraUxKSLXxPvKDio5YKyUBq3XiyfDX+4TmrprWyC/UUMt934mzsh180Mv4743BvQlIjoTghAzjVKZ0kAUd+N5THcUFWMuokZikn0QUmsrJUNVIS9UWRrm1DNFMbhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHBj9pZo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81EDC19422;
+	Tue, 11 Nov 2025 01:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823004;
-	bh=YvXiwM6FGBqPPbW/RQ3Bouz2gzRL9AU5xqbMu7SeSOw=;
+	s=korg; t=1762824118;
+	bh=f1iQezGCEkwfUE1msxHjfwvQw0ZW9YsWSKjfIZrHL5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jtGAfn7HWzG5yxrm90q2VzbFKMZKuZ0huefjvwwf82/XZ1ESNyVYWBdhrMUQDUV1d
-	 kL2xeoiyj1nlHiGeYKe3bT5jt0+SDGJ9A2mkzy1XwATGPeKWHmIgB1VWZMT1YT/7EB
-	 a3+Gc7pKUGH6YHPh8dTKiSsFo5z5T9P+VmeaScqU=
+	b=CHBj9pZoH9p4V3LFiIetEYSqqcjzqyqptzYRzZMqUsBfHvV5xGp0u5WgTG88WCdFL
+	 hZbNV1pGGHqCdeKFEuYh5gbjE4ELv0mVTG4cBdMHIay9gEuzYFLUa8UZ3+wwuay8FR
+	 VjWcGVrzUw5exoHI3suhegREhTvUt9JmlUoFj+ZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Stockhausen <markus.stockhausen@gmx.de>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Stephen Howell <howels@allthatwemight.be>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	Guoli An <anguoli@uniontech.com>,
+	Cryolitia PukNgae <cryolitia@uniontech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 153/565] clocksource/drivers/timer-rtl-otto: Do not interfere with interrupts
-Date: Tue, 11 Nov 2025 09:40:09 +0900
-Message-ID: <20251111004530.381195347@linuxfoundation.org>
+Subject: [PATCH 6.17 440/849] ALSA: usb-audio: apply quirk for MOONDROP Quark2
+Date: Tue, 11 Nov 2025 09:40:10 +0900
+Message-ID: <20251111004547.071456245@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Stockhausen <markus.stockhausen@gmx.de>
+From: Cryolitia PukNgae <cryolitia@uniontech.com>
 
-[ Upstream commit c445bffbf28f721e05d0ce06895045fc62aaff7c ]
+[ Upstream commit a73349c5dd27bc544b048e2e2c8ef6394f05b793 ]
 
-During normal operation the timers are reprogrammed including an
-interrupt acknowledgement. This has no effect as the whole timer
-is setup from scratch afterwards. Especially in an interrupt this
-has already been done by rttm_timer_interrupt().
+It reports a MIN value -15360 for volume control, but will mute when
+setting it less than -14208
 
-Change the behaviour as follows:
-
-- Use rttm_disable_timer() during reprogramming
-- Keep rttm_stop_timer() for all other use cases.
-
-Downstream has already tested and confirmed a patch. See
-https://github.com/openwrt/openwrt/pull/19468
-https://forum.openwrt.org/t/support-for-rtl838x-based-managed-switches/57875/3788
-
-Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Tested-by: Stephen Howell <howels@allthatwemight.be>
-Tested-by: Bjørn Mork <bjorn@mork.no>
-Link: https://lore.kernel.org/r/20250804080328.2609287-4-markus.stockhausen@gmx.de
+Tested-by: Guoli An <anguoli@uniontech.com>
+Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250903-sound-v1-4-d4ca777b8512@uniontech.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-rtl-otto.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/usb/mixer.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/clocksource/timer-rtl-otto.c b/drivers/clocksource/timer-rtl-otto.c
-index 8be45a11fb8b6..24c4aa6a30131 100644
---- a/drivers/clocksource/timer-rtl-otto.c
-+++ b/drivers/clocksource/timer-rtl-otto.c
-@@ -147,7 +147,7 @@ static int rttm_next_event(unsigned long delta, struct clock_event_device *clkev
- 
- 	RTTM_DEBUG(to->of_base.base);
- 	rttm_bounce_timer(to->of_base.base, RTTM_CTRL_COUNTER);
--	rttm_stop_timer(to->of_base.base);
-+	rttm_disable_timer(to->of_base.base);
- 	rttm_set_period(to->of_base.base, delta);
- 	rttm_start_timer(to, RTTM_CTRL_COUNTER);
- 
-@@ -160,7 +160,7 @@ static int rttm_state_oneshot(struct clock_event_device *clkevt)
- 
- 	RTTM_DEBUG(to->of_base.base);
- 	rttm_bounce_timer(to->of_base.base, RTTM_CTRL_COUNTER);
--	rttm_stop_timer(to->of_base.base);
-+	rttm_disable_timer(to->of_base.base);
- 	rttm_set_period(to->of_base.base, RTTM_TICKS_PER_SEC / HZ);
- 	rttm_start_timer(to, RTTM_CTRL_COUNTER);
- 
-@@ -173,7 +173,7 @@ static int rttm_state_periodic(struct clock_event_device *clkevt)
- 
- 	RTTM_DEBUG(to->of_base.base);
- 	rttm_bounce_timer(to->of_base.base, RTTM_CTRL_TIMER);
--	rttm_stop_timer(to->of_base.base);
-+	rttm_disable_timer(to->of_base.base);
- 	rttm_set_period(to->of_base.base, RTTM_TICKS_PER_SEC / HZ);
- 	rttm_start_timer(to, RTTM_CTRL_TIMER);
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index 63b300bc67ba9..cf296decefefc 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1191,6 +1191,13 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
+ 			cval->res = 1;
+ 		}
+ 		break;
++	case USB_ID(0x3302, 0x12db): /* MOONDROP Quark2 */
++		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
++			usb_audio_info(chip,
++				"set volume quirk for MOONDROP Quark2\n");
++			cval->min = -14208; /* Mute under it */
++		}
++		break;
+ 	}
+ }
  
 -- 
 2.51.0
