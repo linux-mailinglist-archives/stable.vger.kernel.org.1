@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-193816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50A7C4A986
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC7B4C4B045
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:53:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AFA514F8715
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6FBF189534A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DA53431F5;
-	Tue, 11 Nov 2025 01:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FC330C639;
+	Tue, 11 Nov 2025 01:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zE/iOjs8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VeVnw/xx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E973342CA9;
-	Tue, 11 Nov 2025 01:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962D2255F28;
+	Tue, 11 Nov 2025 01:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824076; cv=none; b=icBeZpfr9cVCvi1pMsxWMU93NC0rsS2afL9cplQlMxwJHO5ycoi28q7tnPTNQi0q/j9XF2oLFZHlceB97Pd+dc4VDhj49BVon02JyLApxXZNA9USdQax4CT9sX7uhzC37YUH0hYLl41batkPzpTJaSLVjX9Ksqv+Qu2/1OIHEaM=
+	t=1762825224; cv=none; b=T3cSy3HzkY8Qp+s+FhyWxmP4uT0mCiHuqr9OL4lUvRgj//OfnlB0B6Yf29wDCY9D67XJC8YTP+swoXpN4C0idOsOV4Q38BBCd1WnoRzrsQ+lX/NX9CjxEuS0zvPVFjfYPJymlXjyGUBHQOOZZvuo9HfBcNAIoJ4bCOB5aJb6KB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824076; c=relaxed/simple;
-	bh=9TL6bp5v3KwUkLsavePNwzxOVN0TUhm1Uv0na+YW/oc=;
+	s=arc-20240116; t=1762825224; c=relaxed/simple;
+	bh=i1feWGyNxKDtnd4mc+OnqdsCD7E1R0M8lv83oWWO4aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RS3g/PnvF9XnxOmGG7xVuX4chbfaKcD6zb2Hv+0Nl5+TceOR9lSaG0RvPa2IMT37wEYm8r0WZXJmomJeppeKrO2ItQ9Uw7ns/A7Sgme6nahtHzX84xWOM4BAiCc2mnEUd0uoojR38HbRjNCshKiNUOZPflQBG0MVhSmcFTv9yJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zE/iOjs8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9573C4CEF5;
-	Tue, 11 Nov 2025 01:21:15 +0000 (UTC)
+	 MIME-Version; b=l3c76dvbaS+Tx7lV2QiT3xzcrLHbtnTJKBzDppsoKUC3gVjs5cB9+pjPdpHLwJgFe5CVLfklKyKlcJOUMLy2c4rpHOV48DSBmDBjf0GFWxMFrKw7EoIFCA/TZlQlyCu7yr4KjGIn5Bw6xCCbUUQdIAdvd/J6kkiWXtnxVqnEmGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VeVnw/xx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33767C116B1;
+	Tue, 11 Nov 2025 01:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824076;
-	bh=9TL6bp5v3KwUkLsavePNwzxOVN0TUhm1Uv0na+YW/oc=;
+	s=korg; t=1762825224;
+	bh=i1feWGyNxKDtnd4mc+OnqdsCD7E1R0M8lv83oWWO4aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zE/iOjs86r0Pqhk4GGpjnadoXmxlPGvUc4v4SJ9U5TQwlLLy9LkVB8PxanVEHrRNm
-	 HTXBXy7+0SRanouMn2IbtWHBCzi3i2XK+vlZOMZLlQBFReYb5zuD9JWF02HOhGqR52
-	 7cgDzki3q/djmZQK2GASXfwYt69wuimy9Gn0yZjc=
+	b=VeVnw/xxlOAbO/H6wjkcE9WzmEpJ8/VJNUi2upzrCL2n9jBo9AmH1XB/jn3w/vGqp
+	 x+55YnQbT7/kOksVHVsn03r4uTVmByIYGcH5dN2nMtHSWe4L/SIKMO58st8VOOlWyD
+	 7pmLLajAs3Hst2YfReF2tLNrI7Ui0m6SKdmblaiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangzijie <wangzijie1@honor.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	syzbot+a725ab460fc1def9896f@syzkaller.appspotmail.com,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 383/565] f2fs: fix infinite loop in __insert_extent_tree()
-Date: Tue, 11 Nov 2025 09:43:59 +0900
-Message-ID: <20251111004535.486124435@linuxfoundation.org>
+Subject: [PATCH 6.17 670/849] exfat: validate cluster allocation bits of the allocation bitmap
+Date: Tue, 11 Nov 2025 09:44:00 +0900
+Message-ID: <20251111004552.618679163@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangzijie <wangzijie1@honor.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 23361bd54966b437e1ed3eb1a704572f4b279e58 ]
+[ Upstream commit 79c1587b6cda74deb0c86fc7ba194b92958c793c ]
 
-When we get wrong extent info data, and look up extent_node in rb tree,
-it will cause infinite loop (CONFIG_F2FS_CHECK_FS=n). Avoiding this by
-return NULL and print some kernel messages in that case.
+syzbot created an exfat image with cluster bits not set for the allocation
+bitmap. exfat-fs reads and uses the allocation bitmap without checking
+this. The problem is that if the start cluster of the allocation bitmap
+is 6, cluster 6 can be allocated when creating a directory with mkdir.
+exfat zeros out this cluster in exfat_mkdir, which can delete existing
+entries. This can reallocate the allocated entries. In addition,
+the allocation bitmap is also zeroed out, so cluster 6 can be reallocated.
+This patch adds exfat_test_bitmap_range to validate that clusters used for
+the allocation bitmap are correctly marked as in-use.
 
-Signed-off-by: wangzijie <wangzijie1@honor.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Reported-by: syzbot+a725ab460fc1def9896f@syzkaller.appspotmail.com
+Tested-by: syzbot+a725ab460fc1def9896f@syzkaller.appspotmail.com
+Reviewed-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/extent_cache.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/exfat/balloc.c | 72 +++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 60 insertions(+), 12 deletions(-)
 
-diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
-index 2ccc868750994..fe5e91c6e910d 100644
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -561,7 +561,13 @@ static struct extent_node *__insert_extent_tree(struct f2fs_sb_info *sbi,
- 			p = &(*p)->rb_right;
- 			leftmost = false;
- 		} else {
-+			f2fs_err_ratelimited(sbi, "%s: corrupted extent, type: %d, "
-+				"extent node in rb tree [%u, %u, %u], age [%llu, %llu], "
-+				"extent node to insert [%u, %u, %u], age [%llu, %llu]",
-+				__func__, et->type, en->ei.fofs, en->ei.blk, en->ei.len, en->ei.age,
-+				en->ei.last_blocks, ei->fofs, ei->blk, ei->len, ei->age, ei->last_blocks);
- 			f2fs_bug_on(sbi, 1);
-+			return NULL;
- 		}
+diff --git a/fs/exfat/balloc.c b/fs/exfat/balloc.c
+index cc01556c9d9b3..071448adbd5d9 100644
+--- a/fs/exfat/balloc.c
++++ b/fs/exfat/balloc.c
+@@ -26,12 +26,55 @@
+ /*
+  *  Allocation Bitmap Management Functions
+  */
++static bool exfat_test_bitmap_range(struct super_block *sb, unsigned int clu,
++		unsigned int count)
++{
++	struct exfat_sb_info *sbi = EXFAT_SB(sb);
++	unsigned int start = clu;
++	unsigned int end = clu + count;
++	unsigned int ent_idx, i, b;
++	unsigned int bit_offset, bits_to_check;
++	__le_long *bitmap_le;
++	unsigned long mask, word;
++
++	if (!is_valid_cluster(sbi, start) || !is_valid_cluster(sbi, end - 1))
++		return false;
++
++	while (start < end) {
++		ent_idx = CLUSTER_TO_BITMAP_ENT(start);
++		i = BITMAP_OFFSET_SECTOR_INDEX(sb, ent_idx);
++		b = BITMAP_OFFSET_BIT_IN_SECTOR(sb, ent_idx);
++
++		bitmap_le = (__le_long *)sbi->vol_amap[i]->b_data;
++
++		/* Calculate how many bits we can check in the current word */
++		bit_offset = b % BITS_PER_LONG;
++		bits_to_check = min(end - start,
++				    (unsigned int)(BITS_PER_LONG - bit_offset));
++
++		/* Create a bitmask for the range of bits to check */
++		if (bits_to_check >= BITS_PER_LONG)
++			mask = ~0UL;
++		else
++			mask = ((1UL << bits_to_check) - 1) << bit_offset;
++		word = lel_to_cpu(bitmap_le[b / BITS_PER_LONG]);
++
++		/* Check if all bits in the mask are set */
++		if ((word & mask) != mask)
++			return false;
++
++		start += bits_to_check;
++	}
++
++	return true;
++}
++
+ static int exfat_allocate_bitmap(struct super_block *sb,
+ 		struct exfat_dentry *ep)
+ {
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+ 	long long map_size;
+-	unsigned int i, need_map_size;
++	unsigned int i, j, need_map_size;
+ 	sector_t sector;
+ 
+ 	sbi->map_clu = le32_to_cpu(ep->dentry.bitmap.start_clu);
+@@ -58,20 +101,25 @@ static int exfat_allocate_bitmap(struct super_block *sb,
+ 	sector = exfat_cluster_to_sector(sbi, sbi->map_clu);
+ 	for (i = 0; i < sbi->map_sectors; i++) {
+ 		sbi->vol_amap[i] = sb_bread(sb, sector + i);
+-		if (!sbi->vol_amap[i]) {
+-			/* release all buffers and free vol_amap */
+-			int j = 0;
+-
+-			while (j < i)
+-				brelse(sbi->vol_amap[j++]);
+-
+-			kvfree(sbi->vol_amap);
+-			sbi->vol_amap = NULL;
+-			return -EIO;
+-		}
++		if (!sbi->vol_amap[i])
++			goto err_out;
  	}
  
++	if (exfat_test_bitmap_range(sb, sbi->map_clu,
++		EXFAT_B_TO_CLU_ROUND_UP(map_size, sbi)) == false)
++		goto err_out;
++
+ 	return 0;
++
++err_out:
++	j = 0;
++	/* release all buffers and free vol_amap */
++	while (j < i)
++		brelse(sbi->vol_amap[j++]);
++
++	kvfree(sbi->vol_amap);
++	sbi->vol_amap = NULL;
++	return -EIO;
+ }
+ 
+ int exfat_load_bitmap(struct super_block *sb)
 -- 
 2.51.0
 
