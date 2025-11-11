@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95149C4A791
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 269E6C4A831
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BC813B20A8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 980353B32F2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88F6340A7A;
-	Tue, 11 Nov 2025 01:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2D4342CA2;
+	Tue, 11 Nov 2025 01:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zONq/H/1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgiAx535"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A0E33C534;
-	Tue, 11 Nov 2025 01:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055E226560B;
+	Tue, 11 Nov 2025 01:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823463; cv=none; b=C4qwjK+5FBLOLJFFQdHyG5SzIG3K7OWiBdgC1Dwyi9YxOgAtkW7r44cIgsT9uuQB7Fh5/SVCosSmIE8ehww23b3N5is8tFwoSC5XHW//CyaHftw6obdJl3SToHyv1z85NF/VqRX6a8yGOo5Lv9M9pY8Lh7q/vmO8ZMXLkGfADxI=
+	t=1762823515; cv=none; b=t5/RAM5ReicTEqBK7ob5Apd4OsFxRoIpt0qH8oEr1egRMNyxIPwFg5Fpm6Z6iUxWUjzJGQCleM0BOmZXR52lcqCOAbesq1A9JoYDaM9B97ZPfDoz4DNwokJVN16yP9iZ3MLxIo+EppSXEmDKjv2RHpSHXDoPc2olsiS1s2+JLCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823463; c=relaxed/simple;
-	bh=MtbDxVtBzV9vnhr+zrenADOYhvDEq5+oNg9Js5x79YM=;
+	s=arc-20240116; t=1762823515; c=relaxed/simple;
+	bh=0W68SUFM0hBj/JgO714gAoM3lpsCuggEtC69pqdIrh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UrtUnqyCog4dOD64jfwburtTLaDqjAqAgCB6VS42pmNr4ZiwrZmDnm1Z1SYAsR7RyWNLL+o6FaXkSxeTkheZcCawfccTDEDJJeKLRfAgNNvd/CBwd9V+t8++9hSIeKl3XgVPi4lNVYg45+zWq5l4Qgum/mAprs4iviqtgbC4PT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zONq/H/1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BB1C113D0;
-	Tue, 11 Nov 2025 01:11:02 +0000 (UTC)
+	 MIME-Version; b=uQjJRD/IxF2rgtKxugT2pzduKBNAWNjwn6DHEHxgevdZ54U5VY0a3oQMiSX4TkH8uP1oAdn3rN0MmyIzWB10lOKrMV/DXizcAExwEo/wZ9c2T2oSkKFwcO5tgtTfhRTNFFqtqbdGputKd0j6kbMPWGAZkRWQwM7alcSEJ9Awtr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgiAx535; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB84C4AF09;
+	Tue, 11 Nov 2025 01:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823463;
-	bh=MtbDxVtBzV9vnhr+zrenADOYhvDEq5+oNg9Js5x79YM=;
+	s=korg; t=1762823514;
+	bh=0W68SUFM0hBj/JgO714gAoM3lpsCuggEtC69pqdIrh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zONq/H/1ax83ax4wqQLUM0F7Kn9BpjEWem/y11Fuq1hiL7gFDwS+3uv9199MWvdfH
-	 uHoUL2CQi9ngsvgFT1cv7DtxJYjGsLk8UnfBOpCH4+Mf5RXjbcM6Ytia4lmSCfFttW
-	 hrtfUYOJMFmtnN58hQtEjkB8Q1HRHFENa/t/zP38=
+	b=bgiAx535pr+Hc7lyJTnceQIT0I1rBB1Jx1OEBnQnYKlSrrbOSl4T+oS3Za2+jBOx7
+	 SFUdjvmdZI4lxkEQzSGBTMfBmmtAIrE4wf0AXGl1jnpchqlZYG+q6dq8jH3Gq4IxP0
+	 ZNEfaHzKP0Jw3FNRjx+BfXc9KX4atWsqD4WrCBfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Javier Martinez Canillas <javierm@redhat.com>,
 	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Jayesh Choudhary <j-choudhary@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 287/849] drm/tidss: Set crtc modesetting parameters with adjusted mode
-Date: Tue, 11 Nov 2025 09:37:37 +0900
-Message-ID: <20251111004543.350929348@linuxfoundation.org>
+Subject: [PATCH 6.17 288/849] drm/tidss: Remove early fb
+Date: Tue, 11 Nov 2025 09:37:38 +0900
+Message-ID: <20251111004543.372677008@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,45 +66,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jayesh Choudhary <j-choudhary@ti.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit cfb29225db20c56432a8525366321c0c09edfb2e ]
+[ Upstream commit 942e54a372b44da3ffb0191b4d289d476256c861 ]
 
-TIDSS uses crtc_* fields to propagate its registers and set the
-clock rates. So set the CRTC modesetting timing parameters with
-the adjusted mode when needed, to set correct values.
+Add a call to drm_aperture_remove_framebuffers() to drop the possible
+early fb (simplefb).
 
-Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
-Link: https://lore.kernel.org/r/20250624080402.302526-1-j-choudhary@ti.com
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://lore.kernel.org/r/20250416-tidss-splash-v1-2-4ff396eb5008@ideasonboard.com
 Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_crtc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tidss/tidss_drv.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_crtc.c b/drivers/gpu/drm/tidss/tidss_crtc.c
-index 17efd77ce7f23..da89fd01c3376 100644
---- a/drivers/gpu/drm/tidss/tidss_crtc.c
-+++ b/drivers/gpu/drm/tidss/tidss_crtc.c
-@@ -91,7 +91,7 @@ static int tidss_crtc_atomic_check(struct drm_crtc *crtc,
- 	struct dispc_device *dispc = tidss->dispc;
- 	struct tidss_crtc *tcrtc = to_tidss_crtc(crtc);
- 	u32 hw_videoport = tcrtc->hw_videoport;
--	const struct drm_display_mode *mode;
-+	struct drm_display_mode *mode;
- 	enum drm_mode_status ok;
+diff --git a/drivers/gpu/drm/tidss/tidss_drv.c b/drivers/gpu/drm/tidss/tidss_drv.c
+index a1b12e52aca47..27d9a8fd541fc 100644
+--- a/drivers/gpu/drm/tidss/tidss_drv.c
++++ b/drivers/gpu/drm/tidss/tidss_drv.c
+@@ -8,6 +8,7 @@
+ #include <linux/of.h>
+ #include <linux/module.h>
+ #include <linux/pm_runtime.h>
++#include <linux/aperture.h>
  
- 	dev_dbg(ddev->dev, "%s\n", __func__);
-@@ -108,6 +108,9 @@ static int tidss_crtc_atomic_check(struct drm_crtc *crtc,
- 		return -EINVAL;
+ #include <drm/clients/drm_client_setup.h>
+ #include <drm/drm_atomic.h>
+@@ -192,12 +193,20 @@ static int tidss_probe(struct platform_device *pdev)
+ 		goto err_irq_uninstall;
  	}
  
-+	if (drm_atomic_crtc_needs_modeset(crtc_state))
-+		drm_mode_set_crtcinfo(mode, 0);
++	/* Remove possible early fb before setting up the fbdev */
++	ret = aperture_remove_all_conflicting_devices(tidss_driver.name);
++	if (ret)
++		goto err_drm_dev_unreg;
 +
- 	return dispc_vp_bus_check(dispc, hw_videoport, crtc_state);
- }
+ 	drm_client_setup(ddev, NULL);
+ 
+ 	dev_dbg(dev, "%s done\n", __func__);
+ 
+ 	return 0;
+ 
++err_drm_dev_unreg:
++	drm_dev_unregister(ddev);
++
+ err_irq_uninstall:
+ 	tidss_irq_uninstall(ddev);
  
 -- 
 2.51.0
