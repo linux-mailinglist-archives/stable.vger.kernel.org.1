@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-193890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD92C4AAD8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A813C4A442
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6F56F4F68A8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 372BF18912AF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E864C346FA8;
-	Tue, 11 Nov 2025 01:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178D027FD5B;
+	Tue, 11 Nov 2025 01:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMRHeq3f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZ5RCpGL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DCF346E7E;
-	Tue, 11 Nov 2025 01:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47AA27E040;
+	Tue, 11 Nov 2025 01:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824247; cv=none; b=ZTgmYIwZNN7f+d9pJ5Wf0YiF8m23YiZRRCE4oHGt7jCe854EsbPGQbWZNtgxLcWaPZu0rn/r/2hEdxpQ58lgRXsWL4I8gscvgfzhCb7CBPfaX4CVDsVk8FvGHGvHZCcLVwm99XMuwoUrz/askrxqwEzBDiJtFH8dINxYSw9rKhE=
+	t=1762823167; cv=none; b=A14U+mVeLsGc6/uIuUNcZOlwVQvq3ZpqG/xKvGfgZYla9hbt/qFmtcFMAiSgIU2i6nQA4jwFLf7jePsvQM0Lc0mhxTf8JOUR+VZIo6Dx9OdCVuqC+V94DEEcZ/JlHjONSbnmZgNoFeMfqwyV3wZ8ut91LKSiN1kZmI+86ohMi1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824247; c=relaxed/simple;
-	bh=N8S9gLUyRgQFtUHEjTIIwMQf/EwS2wcOuEVL2Bmgh/g=;
+	s=arc-20240116; t=1762823167; c=relaxed/simple;
+	bh=eN9uokiQjfzbCbeRQFz9+eHGSXj9O/RUI9aawtVWrLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UqjdpzDsuS16ePYbl6XTIjdInJGtVyq4KpDgFnGuhupSDKWpIpxUvGjDrzXXunWxZ4PXODvJU13/Y6vuvjymcFrIeMFgPJChKr9gYrc8Jfk634vWMDZdLBTjYkRpQv8+hiCpA1WtRm/3i94IXEuQvzDxkf/PKblkzccvpb6m2+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMRHeq3f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E0DC116D0;
-	Tue, 11 Nov 2025 01:24:07 +0000 (UTC)
+	 MIME-Version; b=T450uL3hQdgHv/z85t+Jv2FaWWx6ok1RoCYu5KvldvA9MmhSKD0NFBGzNIlQ0yq/KX5g06CsCrCvOcJstDsaMapEsvXW/FYVLWGsJgO833gb+Z30DOb+tBNlho8F2/UtO1WEXrrIPjqMTvYwkaRgiBmVz1UHpcWiSjJg2c+I2pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZ5RCpGL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53689C2BC87;
+	Tue, 11 Nov 2025 01:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824247;
-	bh=N8S9gLUyRgQFtUHEjTIIwMQf/EwS2wcOuEVL2Bmgh/g=;
+	s=korg; t=1762823167;
+	bh=eN9uokiQjfzbCbeRQFz9+eHGSXj9O/RUI9aawtVWrLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pMRHeq3fQf4BcXw3jeekAFh44T98eOuVsKIGwRMcfbLulsdlONjrFuKNZWXToGrvY
-	 yv2mgTI+LsvtVvrPFd/l7NQp9D2lWN1WB2ELILfvU6jkoBv+NHRZAGqUObB85rpoSA
-	 TccX5X0/A09Xnw4g0KyaMRVRuXDtEXpUfVsvWKEQ=
+	b=eZ5RCpGLvgS2kg+ieXBaKBe/R18CL8KL6PH1fHRTKaGRKTsW+3M5WZeGPZ1tjzAU2
+	 ll0du3beZ8rIPoNlD1olaJI4Cx+b5HdKsDpKwMGxbnTEK1WWRknygCdV5yG1UfcFyL
+	 jrmXKvqrjqVCSGGnbxMXgvRJwqUjYZYZoEH67XfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Connor Abbott <cwabbott0@gmail.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Paul Hsieh <Paul.Hsieh@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 470/849] drm/msm: Fix 32b size truncation
+Subject: [PATCH 6.12 184/565] drm/amd/display: update dpp/disp clock from smu clock table
 Date: Tue, 11 Nov 2025 09:40:40 +0900
-Message-ID: <20251111004547.811909015@linuxfoundation.org>
+Message-ID: <20251111004531.073665487@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,136 +65,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Paul Hsieh <Paul.Hsieh@amd.com>
 
-[ Upstream commit 6d6a29a19b232e29b61a14d58b71fefc2e003fa4 ]
+[ Upstream commit 2e72fdba8a32ce062a86571edff4592710c26215 ]
 
-Somehow we never noticed this when arm64 became a thing, many years ago.
+[Why]
+The reason some high-resolution monitors fail to display properly
+is that this platform does not support sufficiently high DPP and
+DISP clock frequencies
 
-v2: also fix npages
+[How]
+Update DISP and DPP clocks from the smu clock table then DML can
+filter these mode if not support.
 
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Tested-by: Connor Abbott <cwabbott0@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/669785/
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Paul Hsieh <Paul.Hsieh@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem.c       | 21 ++++++++++-----------
- drivers/gpu/drm/msm/msm_gem.h       |  6 +++---
- drivers/gpu/drm/msm/msm_gem_prime.c |  2 +-
- 3 files changed, 14 insertions(+), 15 deletions(-)
+ .../display/dc/clk_mgr/dcn301/vg_clk_mgr.c    | 16 +++++++++++++++
+ .../amd/display/dc/dml/dcn301/dcn301_fpu.c    | 20 ++++++++++++++++---
+ 2 files changed, 33 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem.c b/drivers/gpu/drm/msm/msm_gem.c
-index 0745d958f3987..9f7fbe577abb1 100644
---- a/drivers/gpu/drm/msm/msm_gem.c
-+++ b/drivers/gpu/drm/msm/msm_gem.c
-@@ -191,7 +191,7 @@ static struct page **get_pages(struct drm_gem_object *obj)
- 	if (!msm_obj->pages) {
- 		struct drm_device *dev = obj->dev;
- 		struct page **p;
--		int npages = obj->size >> PAGE_SHIFT;
-+		size_t npages = obj->size >> PAGE_SHIFT;
- 
- 		p = drm_gem_get_pages(obj);
- 
-@@ -1152,7 +1152,7 @@ static int msm_gem_object_mmap(struct drm_gem_object *obj, struct vm_area_struct
- 
- /* convenience method to construct a GEM buffer object, and userspace handle */
- int msm_gem_new_handle(struct drm_device *dev, struct drm_file *file,
--		uint32_t size, uint32_t flags, uint32_t *handle,
-+		size_t size, uint32_t flags, uint32_t *handle,
- 		char *name)
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn301/vg_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn301/vg_clk_mgr.c
+index 9e2ef0e724fcf..7aee02d562923 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn301/vg_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn301/vg_clk_mgr.c
+@@ -563,6 +563,7 @@ static void vg_clk_mgr_helper_populate_bw_params(
  {
- 	struct drm_gem_object *obj;
-@@ -1218,9 +1218,8 @@ static const struct drm_gem_object_funcs msm_gem_object_funcs = {
- 	.vm_ops = &vm_ops,
- };
+ 	int i, j;
+ 	struct clk_bw_params *bw_params = clk_mgr->base.bw_params;
++	uint32_t max_dispclk = 0, max_dppclk = 0;
  
--static int msm_gem_new_impl(struct drm_device *dev,
--		uint32_t size, uint32_t flags,
--		struct drm_gem_object **obj)
-+static int msm_gem_new_impl(struct drm_device *dev, uint32_t flags,
-+			    struct drm_gem_object **obj)
- {
- 	struct msm_drm_private *priv = dev->dev_private;
- 	struct msm_gem_object *msm_obj;
-@@ -1254,7 +1253,7 @@ static int msm_gem_new_impl(struct drm_device *dev,
- 	return 0;
- }
+ 	j = -1;
  
--struct drm_gem_object *msm_gem_new(struct drm_device *dev, uint32_t size, uint32_t flags)
-+struct drm_gem_object *msm_gem_new(struct drm_device *dev, size_t size, uint32_t flags)
- {
- 	struct msm_drm_private *priv = dev->dev_private;
- 	struct msm_gem_object *msm_obj;
-@@ -1269,7 +1268,7 @@ struct drm_gem_object *msm_gem_new(struct drm_device *dev, uint32_t size, uint32
- 	if (size == 0)
- 		return ERR_PTR(-EINVAL);
+@@ -584,6 +585,15 @@ static void vg_clk_mgr_helper_populate_bw_params(
+ 		return;
+ 	}
  
--	ret = msm_gem_new_impl(dev, size, flags, &obj);
-+	ret = msm_gem_new_impl(dev, flags, &obj);
- 	if (ret)
- 		return ERR_PTR(ret);
++	/* dispclk and dppclk can be max at any voltage, same number of levels for both */
++	if (clock_table->NumDispClkLevelsEnabled <= VG_NUM_DISPCLK_DPM_LEVELS &&
++	    clock_table->NumDispClkLevelsEnabled <= VG_NUM_DPPCLK_DPM_LEVELS) {
++		max_dispclk = find_max_clk_value(clock_table->DispClocks, clock_table->NumDispClkLevelsEnabled);
++		max_dppclk = find_max_clk_value(clock_table->DppClocks, clock_table->NumDispClkLevelsEnabled);
++	} else {
++		ASSERT(0);
++	}
++
+ 	bw_params->clk_table.num_entries = j + 1;
  
-@@ -1309,12 +1308,12 @@ struct drm_gem_object *msm_gem_import(struct drm_device *dev,
- 	struct msm_drm_private *priv = dev->dev_private;
- 	struct msm_gem_object *msm_obj;
- 	struct drm_gem_object *obj;
--	uint32_t size;
--	int ret, npages;
-+	size_t size, npages;
-+	int ret;
+ 	for (i = 0; i < bw_params->clk_table.num_entries - 1; i++, j--) {
+@@ -591,11 +601,17 @@ static void vg_clk_mgr_helper_populate_bw_params(
+ 		bw_params->clk_table.entries[i].memclk_mhz = clock_table->DfPstateTable[j].memclk;
+ 		bw_params->clk_table.entries[i].voltage = clock_table->DfPstateTable[j].voltage;
+ 		bw_params->clk_table.entries[i].dcfclk_mhz = find_dcfclk_for_voltage(clock_table, clock_table->DfPstateTable[j].voltage);
++
++		/* Now update clocks we do read */
++		bw_params->clk_table.entries[i].dispclk_mhz = max_dispclk;
++		bw_params->clk_table.entries[i].dppclk_mhz = max_dppclk;
+ 	}
+ 	bw_params->clk_table.entries[i].fclk_mhz = clock_table->DfPstateTable[j].fclk;
+ 	bw_params->clk_table.entries[i].memclk_mhz = clock_table->DfPstateTable[j].memclk;
+ 	bw_params->clk_table.entries[i].voltage = clock_table->DfPstateTable[j].voltage;
+ 	bw_params->clk_table.entries[i].dcfclk_mhz = find_max_clk_value(clock_table->DcfClocks, VG_NUM_DCFCLK_DPM_LEVELS);
++	bw_params->clk_table.entries[i].dispclk_mhz = find_max_clk_value(clock_table->DispClocks, VG_NUM_DISPCLK_DPM_LEVELS);
++	bw_params->clk_table.entries[i].dppclk_mhz = find_max_clk_value(clock_table->DppClocks, VG_NUM_DPPCLK_DPM_LEVELS);
  
- 	size = PAGE_ALIGN(dmabuf->size);
+ 	bw_params->vram_type = bios_info->memory_type;
+ 	bw_params->num_channels = bios_info->ma_channel_number;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn301/dcn301_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn301/dcn301_fpu.c
+index 0c0b2d67c9cd9..2066a65c69bbc 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn301/dcn301_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn301/dcn301_fpu.c
+@@ -326,7 +326,7 @@ void dcn301_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
+ 	struct dcn301_resource_pool *pool = TO_DCN301_RES_POOL(dc->res_pool);
+ 	struct clk_limit_table *clk_table = &bw_params->clk_table;
+ 	unsigned int i, closest_clk_lvl;
+-	int j;
++	int j = 0, max_dispclk_mhz = 0, max_dppclk_mhz = 0;
  
--	ret = msm_gem_new_impl(dev, size, MSM_BO_WC, &obj);
-+	ret = msm_gem_new_impl(dev, MSM_BO_WC, &obj);
- 	if (ret)
- 		return ERR_PTR(ret);
+ 	dc_assert_fp_enabled();
  
-@@ -1357,7 +1356,7 @@ struct drm_gem_object *msm_gem_import(struct drm_device *dev,
- 	return ERR_PTR(ret);
- }
+@@ -338,6 +338,15 @@ void dcn301_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
+ 	dcn3_01_soc.num_chans = bw_params->num_channels;
  
--void *msm_gem_kernel_new(struct drm_device *dev, uint32_t size, uint32_t flags,
-+void *msm_gem_kernel_new(struct drm_device *dev, size_t size, uint32_t flags,
- 			 struct drm_gpuvm *vm, struct drm_gem_object **bo,
- 			 uint64_t *iova)
- {
-diff --git a/drivers/gpu/drm/msm/msm_gem.h b/drivers/gpu/drm/msm/msm_gem.h
-index 751c3b4965bcd..a4cf31853c500 100644
---- a/drivers/gpu/drm/msm/msm_gem.h
-+++ b/drivers/gpu/drm/msm/msm_gem.h
-@@ -297,10 +297,10 @@ bool msm_gem_active(struct drm_gem_object *obj);
- int msm_gem_cpu_prep(struct drm_gem_object *obj, uint32_t op, ktime_t *timeout);
- int msm_gem_cpu_fini(struct drm_gem_object *obj);
- int msm_gem_new_handle(struct drm_device *dev, struct drm_file *file,
--		uint32_t size, uint32_t flags, uint32_t *handle, char *name);
-+		size_t size, uint32_t flags, uint32_t *handle, char *name);
- struct drm_gem_object *msm_gem_new(struct drm_device *dev,
--		uint32_t size, uint32_t flags);
--void *msm_gem_kernel_new(struct drm_device *dev, uint32_t size, uint32_t flags,
-+		size_t size, uint32_t flags);
-+void *msm_gem_kernel_new(struct drm_device *dev, size_t size, uint32_t flags,
- 			 struct drm_gpuvm *vm, struct drm_gem_object **bo,
- 			 uint64_t *iova);
- void msm_gem_kernel_put(struct drm_gem_object *bo, struct drm_gpuvm *vm);
-diff --git a/drivers/gpu/drm/msm/msm_gem_prime.c b/drivers/gpu/drm/msm/msm_gem_prime.c
-index c0a33ac839cb6..036d34c674d9a 100644
---- a/drivers/gpu/drm/msm/msm_gem_prime.c
-+++ b/drivers/gpu/drm/msm/msm_gem_prime.c
-@@ -15,7 +15,7 @@
- struct sg_table *msm_gem_prime_get_sg_table(struct drm_gem_object *obj)
- {
- 	struct msm_gem_object *msm_obj = to_msm_bo(obj);
--	int npages = obj->size >> PAGE_SHIFT;
-+	size_t npages = obj->size >> PAGE_SHIFT;
+ 	ASSERT(clk_table->num_entries);
++
++	/* Prepass to find max clocks independent of voltage level. */
++	for (i = 0; i < clk_table->num_entries; ++i) {
++		if (clk_table->entries[i].dispclk_mhz > max_dispclk_mhz)
++			max_dispclk_mhz = clk_table->entries[i].dispclk_mhz;
++		if (clk_table->entries[i].dppclk_mhz > max_dppclk_mhz)
++			max_dppclk_mhz = clk_table->entries[i].dppclk_mhz;
++	}
++
+ 	for (i = 0; i < clk_table->num_entries; i++) {
+ 		/* loop backwards*/
+ 		for (closest_clk_lvl = 0, j = dcn3_01_soc.num_states - 1; j >= 0; j--) {
+@@ -353,8 +362,13 @@ void dcn301_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
+ 		s[i].socclk_mhz = clk_table->entries[i].socclk_mhz;
+ 		s[i].dram_speed_mts = clk_table->entries[i].memclk_mhz * 2;
  
- 	if (msm_obj->flags & MSM_BO_NO_SHARE)
- 		return ERR_PTR(-EINVAL);
+-		s[i].dispclk_mhz = dcn3_01_soc.clock_limits[closest_clk_lvl].dispclk_mhz;
+-		s[i].dppclk_mhz = dcn3_01_soc.clock_limits[closest_clk_lvl].dppclk_mhz;
++		/* Clocks independent of voltage level. */
++		s[i].dispclk_mhz = max_dispclk_mhz ? max_dispclk_mhz :
++			dcn3_01_soc.clock_limits[closest_clk_lvl].dispclk_mhz;
++
++		s[i].dppclk_mhz = max_dppclk_mhz ? max_dppclk_mhz :
++			dcn3_01_soc.clock_limits[closest_clk_lvl].dppclk_mhz;
++
+ 		s[i].dram_bw_per_chan_gbps =
+ 			dcn3_01_soc.clock_limits[closest_clk_lvl].dram_bw_per_chan_gbps;
+ 		s[i].dscclk_mhz = dcn3_01_soc.clock_limits[closest_clk_lvl].dscclk_mhz;
 -- 
 2.51.0
 
