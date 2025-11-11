@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A767FC4A43C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F92C4A373
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 62D9D4F9B78
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9456C3B09F1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80835265CA8;
-	Tue, 11 Nov 2025 01:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960E5266EFC;
+	Tue, 11 Nov 2025 01:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5GD/oX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxU4gUvR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE48262FEC;
-	Tue, 11 Nov 2025 01:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526D126561E;
+	Tue, 11 Nov 2025 01:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823080; cv=none; b=S0bO5Ny7uhCxQxGyk1tJQHLezHTZ3zYcJGAP0aCFGfidfucNg9Z+K7SZ0h+/A3TsCQcv9xmbuE0xMYsDLpNHsNaL4poRsKArxHI/Ykz+KZ/mrNnSQEFHVL38Bupjo8uIWnLhpt1uEKdPwqaIyTA8oXX/EOUOHf4X4Biog6FVh9U=
+	t=1762823085; cv=none; b=rXFn6BOu/SZ2wckeJg6X1fLt+yhRCYyT+u64Z3eDLPVev5P440V3K+DrVHTkzYJ2h1IwFpQuL0jtOpSFnkXK+MAqL/yCg5AGyTVmLWSwhytAL4Tqhz/9Zq8G2UFmf6gALB9zU3Sv2a3OWoC9FbqcAHj3pmKZ+9BGNNvtHpx76kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823080; c=relaxed/simple;
-	bh=kKONOwfPg1seRgTrCaGvjGWxhvTkwU1ckVCPA2dJ5Q0=;
+	s=arc-20240116; t=1762823085; c=relaxed/simple;
+	bh=6m6ij2CubO7b72HeuruNIUWC/msJc6qSu/YT3bbYeOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlOESKfTjXO1OlezaVVc+1h/ptCGWg46Xi0HoIja94Y5vA3tYIL10q4DQ78+EJgYlBaP8mxFwi0VJaQd+6pJhFldgkZZGd/tPoZ34ftd7qgdEX4iYpNcaElvwDv/A+kz9BLh1Yb7zpWEqbQPsj15g9UwHftgCaRaOyEJLXswy18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5GD/oX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB332C4AF0B;
-	Tue, 11 Nov 2025 01:04:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SPD88gM/ergpvB2E0xS3y8FJ69B7ui0kd0uyvHKYPIQwcsAtTECR6AkJAuReg/V07gS37m7vJdtRq6iW+nBbh317UX5p/xnsvHJIOljAIa8b1tPifx+qzWOlBVKlXWgpOjIbYCGIyltdUPw/uDBniMQS7B/TNqiJkH/dGCN/lBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxU4gUvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B760C116B1;
+	Tue, 11 Nov 2025 01:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823080;
-	bh=kKONOwfPg1seRgTrCaGvjGWxhvTkwU1ckVCPA2dJ5Q0=;
+	s=korg; t=1762823084;
+	bh=6m6ij2CubO7b72HeuruNIUWC/msJc6qSu/YT3bbYeOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s5GD/oX6ERnqT8rtaZF9FKXG4vyhaYd5yUwE6kJCc9kA12tbnkKQERj5bR2GOzVyL
-	 tOVYmv1tWHcjHgCkDmpWWndLb58R2Rqn5sRPZ1jJ8RlSju2OIb6izva2HjLaamhpL0
-	 3ShrdtXJbAZDk9Ml5aodtbcHelytVl6oY8TrvZSo=
+	b=UxU4gUvRma+eiO4zCXptPWMWwOV3uuw+bBERrZi67DNAvcO1zK8dUXx8aWQkMEHyb
+	 vnaXAgxO8k+NwHHaYAN7IPqGXjysJS7C8+JIyNTDIYSZXbQ2Z7Q/Y7R4KA9wk3teLc
+	 62X6gw7Zg2+OxBRGP4iQQT0uJd883Kd9PgETDwrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 227/849] mfd: cs42l43: Move IRQ enable/disable to encompass force suspend
-Date: Tue, 11 Nov 2025 09:36:37 +0900
-Message-ID: <20251111004541.929795836@linuxfoundation.org>
+Subject: [PATCH 6.17 228/849] mfd: intel-lpss: Add Intel Wildcat Lake LPSS PCI IDs
+Date: Tue, 11 Nov 2025 09:36:38 +0900
+Message-ID: <20251111004541.952698650@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -60,70 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 62aec8a0a5b61f149bbe518c636e38e484812499 ]
+[ Upstream commit c91a0e4e549d0457c61f2199fcd84d699400bee1 ]
 
-As pm_runtime_force_suspend() will force the device state to suspend,
-the driver needs to ensure no IRQ handlers are currently running. If not
-those handlers may find they are now running on suspended hardware
-despite holding a PM runtime reference. disable_irq() will sync any
-currently running handlers, so move the IRQ disabling to cover the whole
-of the forced suspend state to avoid such race conditions.
+Add Intel Wildcat Lake PCI IDs.
 
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20250903094549.271068-6-ckeepax@opensource.cirrus.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250915112936.10696-1-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/cs42l43.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mfd/intel-lpss-pci.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/mfd/cs42l43.c b/drivers/mfd/cs42l43.c
-index 07c8f1b8183ee..959298c8232f4 100644
---- a/drivers/mfd/cs42l43.c
-+++ b/drivers/mfd/cs42l43.c
-@@ -1151,6 +1151,8 @@ static int cs42l43_suspend(struct device *dev)
- 		return ret;
- 	}
- 
-+	disable_irq(cs42l43->irq);
-+
- 	ret = pm_runtime_force_suspend(dev);
- 	if (ret) {
- 		dev_err(cs42l43->dev, "Failed to force suspend: %d\n", ret);
-@@ -1164,8 +1166,6 @@ static int cs42l43_suspend(struct device *dev)
- 	if (ret)
- 		return ret;
- 
--	disable_irq(cs42l43->irq);
--
- 	return 0;
- }
- 
-@@ -1196,14 +1196,14 @@ static int cs42l43_resume(struct device *dev)
- 	if (ret)
- 		return ret;
- 
--	enable_irq(cs42l43->irq);
--
- 	ret = pm_runtime_force_resume(dev);
- 	if (ret) {
- 		dev_err(cs42l43->dev, "Failed to force resume: %d\n", ret);
- 		return ret;
- 	}
- 
-+	enable_irq(cs42l43->irq);
-+
- 	return 0;
- }
- 
+diff --git a/drivers/mfd/intel-lpss-pci.c b/drivers/mfd/intel-lpss-pci.c
+index 1a5b8b13f8d0b..8d92c895d3aef 100644
+--- a/drivers/mfd/intel-lpss-pci.c
++++ b/drivers/mfd/intel-lpss-pci.c
+@@ -367,6 +367,19 @@ static const struct pci_device_id intel_lpss_pci_ids[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x4b79), (kernel_ulong_t)&ehl_i2c_info },
+ 	{ PCI_VDEVICE(INTEL, 0x4b7a), (kernel_ulong_t)&ehl_i2c_info },
+ 	{ PCI_VDEVICE(INTEL, 0x4b7b), (kernel_ulong_t)&ehl_i2c_info },
++	/* WCL */
++	{ PCI_VDEVICE(INTEL, 0x4d25), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x4d26), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x4d27), (kernel_ulong_t)&tgl_spi_info },
++	{ PCI_VDEVICE(INTEL, 0x4d30), (kernel_ulong_t)&tgl_spi_info },
++	{ PCI_VDEVICE(INTEL, 0x4d46), (kernel_ulong_t)&tgl_spi_info },
++	{ PCI_VDEVICE(INTEL, 0x4d50), (kernel_ulong_t)&ehl_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x4d51), (kernel_ulong_t)&ehl_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x4d52), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x4d78), (kernel_ulong_t)&ehl_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x4d79), (kernel_ulong_t)&ehl_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x4d7a), (kernel_ulong_t)&ehl_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x4d7b), (kernel_ulong_t)&ehl_i2c_info },
+ 	/* JSL */
+ 	{ PCI_VDEVICE(INTEL, 0x4da8), (kernel_ulong_t)&spt_uart_info },
+ 	{ PCI_VDEVICE(INTEL, 0x4da9), (kernel_ulong_t)&spt_uart_info },
 -- 
 2.51.0
 
