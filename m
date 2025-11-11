@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C000CC4A749
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:33 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 841B5C4AC94
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3EA218837E8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 728B84F4ED4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2ADB340A51;
-	Tue, 11 Nov 2025 01:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9139914286;
+	Tue, 11 Nov 2025 01:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GEg0yjG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXxcT8Mp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D18D33C534;
-	Tue, 11 Nov 2025 01:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB41A944;
+	Tue, 11 Nov 2025 01:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823456; cv=none; b=QbAOKNo7/DzJ+K9SFXFcuBBkICX9UU/GSQZarwGhmrZJZA+ONOig3NLP9J2OZKcIzVIQNQXZ3QzLuNfO7kwT1mBDSZ1UD96rg5CIMRrJeP5O62jyXIOD5KzojehjM9JX3lRFVtq1uVZ98+PTq2XO5+I0c4zlc3ax2nfI2HgdPiI=
+	t=1762824624; cv=none; b=CUGofZvsePBIndiqly3rmJVP/XtOdwIVG3o8TjrJ4jtkhb178fK6bfN6xz65bb3v96eOWFeFgudDYcgz+iiCM6HFm7XBG93Cs3fFUSr+5JoK8DaxTc66U0ZZb5gR74PVXgPaQtEHmijBneeSPZMTxIgg2oVmMuwvZfxc/veAS6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823456; c=relaxed/simple;
-	bh=wsm62C6ED7zR6GQa05AiTQVT3c9LFW/x2I9400k8GmM=;
+	s=arc-20240116; t=1762824624; c=relaxed/simple;
+	bh=4riI1w7/zpXtsB4kooB1M0kaejTXeJvCX4o4LoQoYLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LeYVu5BJ6JCoHJUJbIuSXslwrXrwx3ujSp/+cVxNtcB9nkrhFJ14Tddu0GebL3oRmoOoegWFnlK+bEk1i7mO6bifYVzqGTdwykZN+V5XWEd/qBafqcuq45fnVgCDN5UmMGQacARICNFssKnU+C2gLxMn127ahQSG3QSW9q8eMYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GEg0yjG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F81EC19424;
-	Tue, 11 Nov 2025 01:10:55 +0000 (UTC)
+	 MIME-Version; b=e8SDi9fFqVr1MeJN0BvmSVmFY6cvgSphDlHSD6KJySblv9SkiKEtOxMvOaTErIrtMVdZajf27HVtiE5zHw+TFrzE9ht38Od9dl1NZ84/MgH5ZQVe3e8h+rUSZAnGr2en1oy9Cdebv89uD2Nmg7fePf9cwYuEGhqlKZnwVYVZpYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXxcT8Mp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1A2C116B1;
+	Tue, 11 Nov 2025 01:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823456;
-	bh=wsm62C6ED7zR6GQa05AiTQVT3c9LFW/x2I9400k8GmM=;
+	s=korg; t=1762824624;
+	bh=4riI1w7/zpXtsB4kooB1M0kaejTXeJvCX4o4LoQoYLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0GEg0yjGkhTS/NXQqQw4kVaompehdoe2wRPbSwygwtAkurw2pujhU2X9p4UK4/JTa
-	 Pu7NPmibSKEWC32V+OIq38B3DpWrAAw4B8jLO+VwDM7VGfRGtjlcVRgdBBUFWv4qnU
-	 DAPt2vhu9WCwqkFDCkdzRDvQg2Z6td/pcVWmvQm4=
+	b=AXxcT8MpAv6CP1gexcub8qNa9RQFgSi4m3E9WAuVG0D6wpUNBcTOCL078S0Yh0cTm
+	 ef0uAt/NT0InUP2VE8fVFcNzArxyr3VSr9YisAO9JTB2y3a87zGy2sEex/PspF2QXh
+	 wn7FoV/0bkJYYrgW3iURO9dkL2SpHtCQwzD98KpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Quan Zhou <quan.zhou@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 250/565] scsi: mpi3mr: Fix controller init failure on fault during queue creation
+Subject: [PATCH 6.17 536/849] wifi: mt76: mt7921: Add 160MHz beamformee capability for mt7922 device
 Date: Tue, 11 Nov 2025 09:41:46 +0900
-Message-ID: <20251111004532.531604839@linuxfoundation.org>
+Message-ID: <20251111004549.375436388@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+From: Quan Zhou <quan.zhou@mediatek.com>
 
-[ Upstream commit 829fa1582b6ff607b0e2fe41ba1c45c77f686618 ]
+[ Upstream commit 25ef5b5d02ac03fe8dd91cf25bd011a570fbeba2 ]
 
-Firmware can enter a transient fault while creating operational queues.
-The driver fails the load immediately.
+Enable 160MHz beamformee support on mt7922 by updating HE capability
+element configuration. Previously, only 160MHz channel width was set,
+but beamformee for 160MHz was not properly advertised. This patch
+adds BEAMFORMEE_MAX_STS_ABOVE_80MHZ_4 capability to allow devices
+to utilize 160MHz BW for beamforming.
 
-Add a retry loop that checks controller status and history bit after
-queue creation. If either indicates a fault, retry init up to a set
-limit before failing.
+Tested by connecting to 160MHz-bandwidth beamforming AP and verified
+HE capability.
 
-Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
-Link: https://lore.kernel.org/r/20250820084138.228471-3-chandrakanth.patil@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+Link: https://patch.msgid.link/ae637afaffed387018fdc43709470ef65898ff0b.1756383627.git.quan.zhou@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index 82cbe98e8a044..acb2f7b04fb8f 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -2337,6 +2337,8 @@ static int mpi3mr_create_op_queues(struct mpi3mr_ioc *mrioc)
- {
- 	int retval = 0;
- 	u16 num_queues = 0, i = 0, msix_count_op_q = 1;
-+	u32 ioc_status;
-+	enum mpi3mr_iocstate ioc_state;
- 
- 	num_queues = min_t(int, mrioc->facts.max_op_reply_q,
- 	    mrioc->facts.max_op_req_q);
-@@ -2392,6 +2394,14 @@ static int mpi3mr_create_op_queues(struct mpi3mr_ioc *mrioc)
- 		retval = -1;
- 		goto out_failed;
- 	}
-+	ioc_status = readl(&mrioc->sysif_regs->ioc_status);
-+	ioc_state = mpi3mr_get_iocstate(mrioc);
-+	if ((ioc_status & MPI3_SYSIF_IOC_STATUS_RESET_HISTORY) ||
-+	    ioc_state != MRIOC_STATE_READY) {
-+		mpi3mr_print_fault_info(mrioc);
-+		retval = -1;
-+		goto out_failed;
-+	}
- 	mrioc->num_op_reply_q = mrioc->num_op_req_q = i;
- 	ioc_info(mrioc,
- 	    "successfully created %d operational queue pairs(default/polled) queue = (%d/%d)\n",
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 5881040ac1952..67383c41a3199 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -135,6 +135,8 @@ mt7921_init_he_caps(struct mt792x_phy *phy, enum nl80211_band band,
+ 			if (is_mt7922(phy->mt76->dev)) {
+ 				he_cap_elem->phy_cap_info[0] |=
+ 					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G;
++				he_cap_elem->phy_cap_info[4] |=
++					IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_ABOVE_80MHZ_4;
+ 				he_cap_elem->phy_cap_info[8] |=
+ 					IEEE80211_HE_PHY_CAP8_20MHZ_IN_160MHZ_HE_PPDU |
+ 					IEEE80211_HE_PHY_CAP8_80MHZ_IN_160MHZ_HE_PPDU;
 -- 
 2.51.0
 
