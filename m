@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-193521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAEF0C4A614
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDAD7C4AD1E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ED1884F5474
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE2A83B45F9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F89E33469A;
-	Tue, 11 Nov 2025 01:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1A02F693C;
+	Tue, 11 Nov 2025 01:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6CCtaPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvhB57LY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4997C26ED5E;
-	Tue, 11 Nov 2025 01:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C0726E703;
+	Tue, 11 Nov 2025 01:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823378; cv=none; b=AVL6iX7HsXSwfVFhu2t66Ygt79ncD7t2gF6Xzv62YVELf58Dj2CuD5Xao1J5TnY+4kkAYVDewbZMKmS+L8gxTKSDlQ6QB+ntgUxXiQOO3ptYtfw/qgPS4NK+RC6ZFXSFLeSN2/dW+WjPByl9UVoxlJ+yXyN8UbuHpbhcagfurKU=
+	t=1762824354; cv=none; b=CoakScH5s4D4q1mZXR5DtrZb7KWD5/QOc/zs6TkNOdugOhdr88/A46ghm7D+FciH0UY5tnKjCfUnEvNeeLPds1E0LRiieUAVi5nO0tIPGTBwEdl/IuidLCIk2X93C3YJtjcMUqiinkgCfVdgYTMIen/Gxt2d1MIX3WaLUpnxTE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823378; c=relaxed/simple;
-	bh=He3eKPcpLM8NlRJcMVptUSQGTraR+EAhSuafU6FX9i0=;
+	s=arc-20240116; t=1762824354; c=relaxed/simple;
+	bh=GHpBvTO86YQbO5Z5kvjhV8vONaBQPWRlvQ7hw+Jn1JI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jh5thxG18etrNZwiSYnZjfUPV33qMyoU7EjwkTMZF1dEb4PH/+nnsIJmWZGMtMFcCGZgRQVqHYCW3wJvN5VzbUxIAzwGr4SZe0GmiwDuO1vzBHV0IExQW0vYrECRhRAmN2iva90sW0Plh8y5AD49Bi2uuW8NXaVqOXcA8RwCkjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6CCtaPx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D59C116B1;
-	Tue, 11 Nov 2025 01:09:37 +0000 (UTC)
+	 MIME-Version; b=QreVzHufPY/62hn33KOUu5dq/V8Mz+OME4lRmtNCUg76LtW5I9cSoa2zeVFKh3KMayc6d2fAram5ksnSKt9dNJM/26BWtamPjHCOumtLx7eCbzrjpPF6PT/48M5fO04K0QgTwzqXcX23UXwbLu0IFxnhxM/ObNHx3usV6oSodY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvhB57LY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E9FC19421;
+	Tue, 11 Nov 2025 01:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823378;
-	bh=He3eKPcpLM8NlRJcMVptUSQGTraR+EAhSuafU6FX9i0=;
+	s=korg; t=1762824353;
+	bh=GHpBvTO86YQbO5Z5kvjhV8vONaBQPWRlvQ7hw+Jn1JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K6CCtaPxd3/vd5/gFxAl21cfjxZ5Gj64bp8ruJkldWzF65VOpux9FeMDmEL5OHGDq
-	 pEZ3Ub4eYn5o9ZxnRe0GxCRQ1gDiZpOtbOjXHC8pl3NDT7lDgFrn8ARyNY8yztTWXz
-	 bX+Y4bezm282bTCIRNTftEenApnW0ssiEVXYUpnA=
+	b=zvhB57LYdm9vZlhXVDksCoAq+Quo3yZapYHyGyPZM4xlfvY6uETXsvbRZ26l3JA54
+	 5kMaVHU8rBHm+xMwAGduVT0J4LZHrIgwY70PzlXFjlu6iy4bh1wyOoT6kvntqAUCo1
+	 gbpHw9YolWRvzwmr4wIoBOzeB9+l/QvyIsvdokt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcos Del Sol Vives <marcos@orca.pet>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 192/565] PCI: Disable MSI on RDC PCI to PCIe bridges
-Date: Tue, 11 Nov 2025 09:40:48 +0900
-Message-ID: <20251111004531.247305531@linuxfoundation.org>
+Subject: [PATCH 6.17 479/849] PCI: endpoint: pci-epf-test: Limit PCIe BAR size for fixed BARs
+Date: Tue, 11 Nov 2025 09:40:49 +0900
+Message-ID: <20251111004548.024391297@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcos Del Sol Vives <marcos@orca.pet>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit ebc7086b39e5e4f3d3ca82caaea20538c9b62d42 ]
+[ Upstream commit d5f6bd3ee3f5048f272182dc91675c082773999e ]
 
-RDC PCI to PCIe bridges, present on Vortex86DX3 and Vortex86EX2 SoCs, do
-not support MSIs. If enabled, interrupts generated by PCIe devices never
-reach the processor.
+Currently, the test allocates BAR sizes according to fixed table bar_size.
+This does not work with controllers which have fixed size BARs that are
+smaller than the requested BAR size. One such controller is Renesas R-Car
+V4H PCIe controller, which has BAR4 size limited to 256 bytes, which is
+much less than one of the BAR size, 131072 currently requested by this
+test. A lot of controllers drivers in-tree have fixed size BARs, and they
+do work perfectly fine, but it is only because their fixed size is larger
+than the size requested by pci-epf-test.c
 
-I have contacted the manufacturer (DM&P) and they confirmed that PCI MSIs
-need to be disabled for them.
+Adjust the test such that in case a fixed size BAR is detected, the fixed
+BAR size is used, as that is the only possible option.
 
-Signed-off-by: Marcos Del Sol Vives <marcos@orca.pet>
+This helps with test failures reported as follows:
+
+  pci_epf_test pci_epf_test.0: requested BAR size is larger than fixed size
+  pci_epf_test pci_epf_test.0: Failed to allocate space for BAR4
+
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+[mani: reworded description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20250705233209.721507-1-marcos@orca.pet
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Link: https://patch.msgid.link/20250905184240.144431-1-marek.vasut+renesas@mailbox.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/endpoint/functions/pci-epf-test.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index db609d26811ba..aa4733787cd7e 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -2719,6 +2719,7 @@ static void quirk_disable_msi(struct pci_dev *dev)
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_8131_BRIDGE, quirk_disable_msi);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_VIA, 0xa238, quirk_disable_msi);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x5a3f, quirk_disable_msi);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_RDC, 0x1031, quirk_disable_msi);
+diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+index 044f5ea0716d1..31617772ad516 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -1067,7 +1067,12 @@ static int pci_epf_test_alloc_space(struct pci_epf *epf)
+ 		if (bar == test_reg_bar)
+ 			continue;
  
- /*
-  * The APC bridge device in AMD 780 family northbridges has some random
+-		base = pci_epf_alloc_space(epf, bar_size[bar], bar,
++		if (epc_features->bar[bar].type == BAR_FIXED)
++			test_reg_size = epc_features->bar[bar].fixed_size;
++		else
++			test_reg_size = bar_size[bar];
++
++		base = pci_epf_alloc_space(epf, test_reg_size, bar,
+ 					   epc_features, PRIMARY_INTERFACE);
+ 		if (!base)
+ 			dev_err(dev, "Failed to allocate space for BAR%d\n",
 -- 
 2.51.0
 
