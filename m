@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66227C4ADCC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE69C4B27D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:04:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EA6C1896939
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 272163B8DC5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16866334C20;
-	Tue, 11 Nov 2025 01:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BED3305976;
+	Tue, 11 Nov 2025 01:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="of/n+cMC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6ly9StY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBF32FFFA2;
-	Tue, 11 Nov 2025 01:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD41918DF80;
+	Tue, 11 Nov 2025 01:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824940; cv=none; b=GxKeO5KhsPjLYOkL4/+0tbWvdpUnYE102SRFBJTSNPvNBnVvhbYEMPN9x439gKqbPKVOOKmKtGqhdJ3KaeO3j2tBKFI/0O6z2nTy73l9bA/o7epTx/6bg/mYawFPct9s0zo3VkSzFLe56IykGAsovzn67JOLHykmFfMW3ei5x70=
+	t=1762825532; cv=none; b=fvunGaQPJxDI8frEYwkpQQjpiyecoxQOaT6mUDqjzilPIXJPJCtAk4WjsLpE9lHVOmZpxGscjp11wS+wzK/8R8c+vJ2vxkw0PbKrh9kQ+jbIaXIH6HA9K3F/Upg4dBL9yHqY512ftlRisIZ77pP1Yj9OLrJoGYWtrbKDgSgiY8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824940; c=relaxed/simple;
-	bh=rOGvzcoJg2PhWzLU3DV7eru5eJhgZmBOmrcmVHUwR+o=;
+	s=arc-20240116; t=1762825532; c=relaxed/simple;
+	bh=xNo6MFK1GAftxy9g7PKbmWsuZCH+52iM00blEXI8FPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NsTuGNUJS1nALjoClUxKE8JcisfAmlP7upijtbA09BZgRizsdVr1zn7djToP5Y77JdeulIidgSYlr+hQiazXFZtc5u1GJnQauBLG/n+26x0QKr7agQEFS5irKg71HIQbOIeUpwHpF/N0K9TBJj/c/vIVDbacbuyFKxckZIRk3PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=of/n+cMC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35761C4CEFB;
-	Tue, 11 Nov 2025 01:35:40 +0000 (UTC)
+	 MIME-Version; b=Ky3rQ7dS9MXPT4vG8cPdeSBzMgcpL8pkQ6esXe8P1VUoU6aev6uc98GsAn0Klaoni04EFIK/NYAujdWPROnrWuyTJAyIqm9OsmRwx3qFJXEfCK9PxSr5ADIQeMZtFwtusO0AGDU94dQhoMYG3D1jUO1zHxF59OK0FnIk6x70zC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6ly9StY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0548CC4CEFB;
+	Tue, 11 Nov 2025 01:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824940;
-	bh=rOGvzcoJg2PhWzLU3DV7eru5eJhgZmBOmrcmVHUwR+o=;
+	s=korg; t=1762825531;
+	bh=xNo6MFK1GAftxy9g7PKbmWsuZCH+52iM00blEXI8FPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=of/n+cMC9wFpTG6e7JneKvIzz9R61x9Hs0hOeM43x/Vb/mJtFGlyiMO2SBVPhI/c6
-	 yRnnvKBkTogt3apDk4UspBPHUeqvvY7j8mYMVy78wba2Y9kXUSMXCD5CJrK9fi8B6j
-	 qy+D9fCX8TmPgy/KCUE8NJPEZ9AaaWUFv3+2UtwI=
+	b=X6ly9StYfF+V9DO5LNiSboAmK9c/uGZRpBLYgccOOowOMhQV7sZd1GModt9vy+j7x
+	 /aH85sh5wl3GUVmHgoX0O0YR/ClSvVbBVA09cqwCBrhlWEFfRTTVcgLWG5FqJbCVsp
+	 9hNpSpbI2kaPJQ7uEKWs22RjSdKTMJPsrEylHvqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Lei Yang <leiyang@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 554/565] virtio-net: fix received length check in big packets
-Date: Tue, 11 Nov 2025 09:46:50 +0900
-Message-ID: <20251111004539.467092243@linuxfoundation.org>
+	Sathishkumar S <sathishkumar.sundararaju@amd.com>,
+	Leo Liu <leo.liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.17 841/849] drm/amdgpu: Fix unintended error log in VCN5_0_0
+Date: Tue, 11 Nov 2025 09:46:51 +0900
+Message-ID: <20251111004556.754078226@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Sathishkumar S <sathishkumar.sundararaju@amd.com>
 
-commit 0c716703965ffc5ef4311b65cb5d84a703784717 upstream.
+commit 46b0e6b9d749cfa891e6969d6565be1131c53aa2 upstream.
 
-Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
-for big packets"), when guest gso is off, the allocated size for big
-packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
-negotiated MTU. The number of allocated frags for big packets is stored
-in vi->big_packets_num_skbfrags.
+The error log is supposed to be gaurded under if failure condition.
 
-Because the host announced buffer length can be malicious (e.g. the host
-vhost_net driver's get_rx_bufs is modified to announce incorrect
-length), we need a check in virtio_net receive path. Currently, the
-check is not adapted to the new change which can lead to NULL page
-pointer dereference in the below while loop when receiving length that
-is larger than the allocated one.
-
-This commit fixes the received length check corresponding to the new
-change.
-
-Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
-Link: https://patch.msgid.link/20251030144438.7582-1-minhquangbui99@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: faab5ea08367 ("drm/amdgpu: Check vcn sram load return value")
+Signed-off-by: Sathishkumar S <sathishkumar.sundararaju@amd.com>
+Reviewed-by: Leo Liu <leo.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c |   25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -868,17 +868,6 @@ static struct sk_buff *page_to_skb(struc
- 		goto ok;
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
+@@ -769,9 +769,10 @@ static int vcn_v5_0_0_start_dpg_mode(str
+ 
+ 	if (indirect) {
+ 		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
+-		dev_err(adev->dev, "%s: vcn sram load failed %d\n", __func__, ret);
+-		if (ret)
++		if (ret) {
++			dev_err(adev->dev, "%s: vcn sram load failed %d\n", __func__, ret);
+ 			return ret;
++		}
  	}
  
--	/*
--	 * Verify that we can indeed put this data into a skb.
--	 * This is here to handle cases when the device erroneously
--	 * tries to receive more than is possible. This is usually
--	 * the case of a broken device.
--	 */
--	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
--		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
--		dev_kfree_skb(skb);
--		return NULL;
--	}
- 	BUG_ON(offset >= PAGE_SIZE);
- 	while (len) {
- 		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
-@@ -1928,9 +1917,19 @@ static struct sk_buff *receive_big(struc
- 				   struct virtnet_rq_stats *stats)
- {
- 	struct page *page = buf;
--	struct sk_buff *skb =
--		page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
-+	struct sk_buff *skb;
-+
-+	/* Make sure that len does not exceed the size allocated in
-+	 * add_recvbuf_big.
-+	 */
-+	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
-+		pr_debug("%s: rx error: len %u exceeds allocated size %lu\n",
-+			 dev->name, len,
-+			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
-+		goto err;
-+	}
- 
-+	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
- 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
- 	if (unlikely(!skb))
- 		goto err;
+ 	ring = &adev->vcn.inst[inst_idx].ring_enc[0];
 
 
 
