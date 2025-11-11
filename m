@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1994EC4A83F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4473CC4A87B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 535533B8807
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 412D43B8868
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2B4346A1E;
-	Tue, 11 Nov 2025 01:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787962D879A;
+	Tue, 11 Nov 2025 01:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+mAeTBh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KsnmgmyI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3E7346A01;
-	Tue, 11 Nov 2025 01:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305012DC328;
+	Tue, 11 Nov 2025 01:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823661; cv=none; b=P4fcO20ivZHAqbK52zW/fZDv4aCz/ikmQHvJ+DW36QBgNax26H5I6xHSxojeMZmkHZZU+HmDWd95gUqCIpltEIgAP3F/8yaLevUQ3w5HK1A13TYFv/FdpoUzR9Pm8kiSfLD04oyMLi0ORnSKxwPuenlTVx8lv6HHo60/4DOx8RI=
+	t=1762823667; cv=none; b=k5zsg3UAoJAlAoikOy7DjQQo5iFIIDP6eDTDwu9RNjk9Aw362WNUqKK6d1AdvX4jaDYRDg60OEVv9vqMeD6jlyPMzA+MxD0ateP4p3ImBV2d8KIR8TQPZFVq1qjnpQvvI6pHd2VIi7ghvPd07dyPeYIfjO2Ud4W7mVVwMs5zm70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823661; c=relaxed/simple;
-	bh=f0vtjkmlmmg93Ga65c11F0I+PTpToCWAsDqJUftIvLI=;
+	s=arc-20240116; t=1762823667; c=relaxed/simple;
+	bh=1Kyum33o7pMYV2OAoH3MMpV/ZbfGYDqSArgTtXepRAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2ZGtDLCLiSfp3I2kOCkofCuxTBK33/BjZ87rRqwGtgIrV5c88B0MLiApAYgSVFUNu/AqxazzHuokbXFm5D7bNSmfoxwZEdA4NWt1HOfqzpgiJZh6uudSkBv7BDznAMdg+RLJT2k2FG4HbDT+PGntpuRtt+k+0749xP2G7IOozM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+mAeTBh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74EABC4AF09;
-	Tue, 11 Nov 2025 01:14:21 +0000 (UTC)
+	 MIME-Version; b=neA3myHcD6MggR7K2gbVvZ3blJTiPreScZTgNEFY+NF0LWB+6h4duFsHV44W0O1nRgc/MS+ANrJVT+p+F1mXETHSzkD3MMduJBGkY0Kx9FA7RpkfO8mRwcfyfhYXQzLafX4yjFz8I6+cSyJRnmBzlLHzv0h+CDjdu7A8nHkE5hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KsnmgmyI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5ADC116B1;
+	Tue, 11 Nov 2025 01:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823661;
-	bh=f0vtjkmlmmg93Ga65c11F0I+PTpToCWAsDqJUftIvLI=;
+	s=korg; t=1762823666;
+	bh=1Kyum33o7pMYV2OAoH3MMpV/ZbfGYDqSArgTtXepRAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+mAeTBhiVEFIWFYCtAoeWQ8u+z7iuR+8u8xpm4kAXerNEuZCYhNZMJj+GMax5QZS
-	 +TdL0MLin2LROr9kb0qfqAXegffTZ3DQP+EI+CyGjrijbXccPVqkOSvWnI0fFEzoDK
-	 wUmiKoJkT9z+DXXKruDl1mUx8O6N1viiG8zoQTu0=
+	b=KsnmgmyId5eHz5MY5LpGV9ptztgJroM2rHhKgrilXQ1vU+Q9x99YR+aK7Qhh4ITat
+	 lkVsXHHyydZ7UlIoRzwBwpLL1voSYkeGEq90j4Ia8UyEjls2wOR+wdmi5EQ5nAP2Zo
+	 5F1ghrKq+0vp896Mrpm0lk33O8dQHQMBrq3GrDDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 345/849] drm/panel: ilitek-ili9881c: turn off power-supply when init fails
-Date: Tue, 11 Nov 2025 09:38:35 +0900
-Message-ID: <20251111004544.761025411@linuxfoundation.org>
+Subject: [PATCH 6.17 346/849] drm/panel: ilitek-ili9881c: move display_on/_off dcs calls to (un-)prepare
+Date: Tue, 11 Nov 2025 09:38:36 +0900
+Message-ID: <20251111004544.784057282@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,59 +68,89 @@ Content-Transfer-Encoding: 8bit
 
 From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 6c66eba502709a78281333187c1add7b71f7201f ]
+[ Upstream commit 5efa82492066fcb32308210fb3f0b752af74334f ]
 
-The prepare function turns on the power-supply regulator first, when
-preparing the display. But in an error case, just returns the error
-code, but does not power off the regulator again, fix that.
+At least for panel-bridges, the atomic_enable call is defined as being
+called right after the preceding element in the display pipe is enabled.
+
+It is also stated that "The bridge can assume that the display pipe (i.e.
+clocks and timing signals) feeding it is running when this callback is
+called"
+
+This means the DSI controller driving this display would have already
+switched over to video-mode from command mode and thus dcs functions
+should not be called anymore at this point.
+
+This caused a non-working display for me, when trying to enable
+the rk3576 dsi controller using a display using this controller.
+
+Therefore move the display_on/off calls the more appropriate
+prepare/unprepare callbacks.
 
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250707164906.1445288-2-heiko@sntech.de
+Link: https://lore.kernel.org/r/20250707164906.1445288-3-heiko@sntech.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-ilitek-ili9881c.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/panel/panel-ilitek-ili9881c.c | 27 +++++--------------
+ 1 file changed, 7 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
-index ac433345a1794..3af22a5f5700c 100644
+index 3af22a5f5700c..7ed65d6762d86 100644
 --- a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
 +++ b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
-@@ -1486,7 +1486,7 @@ static int ili9881c_prepare(struct drm_panel *panel)
- 						      instr->arg.cmd.data);
- 
- 		if (ret)
--			return ret;
-+			goto disable_power;
- 	}
- 
- 	ret = ili9881c_switch_page(ctx, 0);
-@@ -1498,18 +1498,22 @@ static int ili9881c_prepare(struct drm_panel *panel)
- 					 &ctx->address_mode,
- 					 sizeof(ctx->address_mode));
- 		if (ret < 0)
--			return ret;
-+			goto disable_power;
- 	}
- 
- 	ret = mipi_dsi_dcs_set_tear_on(ctx->dsi, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
+@@ -1509,35 +1509,24 @@ static int ili9881c_prepare(struct drm_panel *panel)
  	if (ret)
--		return ret;
-+		goto disable_power;
+ 		goto disable_power;
  
- 	ret = mipi_dsi_dcs_exit_sleep_mode(ctx->dsi);
- 	if (ret)
--		return ret;
+-	return 0;
+-
+-disable_power:
+-	regulator_disable(ctx->power);
+-	return ret;
+-}
+-
+-static int ili9881c_enable(struct drm_panel *panel)
+-{
+-	struct ili9881c *ctx = panel_to_ili9881c(panel);
+-
+ 	msleep(120);
+ 
+-	mipi_dsi_dcs_set_display_on(ctx->dsi);
++	ret = mipi_dsi_dcs_set_display_on(ctx->dsi);
++	if (ret)
 +		goto disable_power;
  
  	return 0;
-+
+-}
+ 
+-static int ili9881c_disable(struct drm_panel *panel)
+-{
+-	struct ili9881c *ctx = panel_to_ili9881c(panel);
+-
+-	return mipi_dsi_dcs_set_display_off(ctx->dsi);
 +disable_power:
 +	regulator_disable(ctx->power);
 +	return ret;
  }
  
- static int ili9881c_enable(struct drm_panel *panel)
+ static int ili9881c_unprepare(struct drm_panel *panel)
+ {
+ 	struct ili9881c *ctx = panel_to_ili9881c(panel);
+ 
++	mipi_dsi_dcs_set_display_off(ctx->dsi);
+ 	mipi_dsi_dcs_enter_sleep_mode(ctx->dsi);
+ 	regulator_disable(ctx->power);
+ 	gpiod_set_value_cansleep(ctx->reset, 1);
+@@ -1710,8 +1699,6 @@ static enum drm_panel_orientation ili9881c_get_orientation(struct drm_panel *pan
+ static const struct drm_panel_funcs ili9881c_funcs = {
+ 	.prepare	= ili9881c_prepare,
+ 	.unprepare	= ili9881c_unprepare,
+-	.enable		= ili9881c_enable,
+-	.disable	= ili9881c_disable,
+ 	.get_modes	= ili9881c_get_modes,
+ 	.get_orientation = ili9881c_get_orientation,
+ };
 -- 
 2.51.0
 
