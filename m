@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-194087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D59C4AE4A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C84EC4B192
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EB3644F70BE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 050B64FCB2E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD057346792;
-	Tue, 11 Nov 2025 01:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC18234029E;
+	Tue, 11 Nov 2025 01:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqM7GyaD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ey91ppTM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8933D346778;
-	Tue, 11 Nov 2025 01:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E622FF672;
+	Tue, 11 Nov 2025 01:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824776; cv=none; b=SKKNlJOqvBaVg2AaKEztO5V9xgRY5TdEkpb7WzoTqXpwB+bAb65q7QtsR5KV2lItfeZsa25sFRYL3bOFHpAbc59KMrjo8VBox3b0hFOVqfTLFHzCzvO/v13mSFrhncepTJjkYgVUeqQHArsXiFGgHC1vbwr2kiPU9IiGyXoP0q0=
+	t=1762825440; cv=none; b=KEFf/xhvHr0I7r9mrJIRifl7bkb8pWLHHdvtst5WmKulB0FrzVSi/K/W5btgtkl78GkoNDE+IVxxVIbHTazwz2ZIxIX1DEsAwhLI3JPd79CgtZfw/W/Ow40zito2zLIN2NE5sXoooEoE9j2bIqTQD63awYG5b721Au2o4WiM+Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824776; c=relaxed/simple;
-	bh=7buMQpt9C6iDYKyZK2WHiGVM0PGKcEhwfFrBjxPI/f0=;
+	s=arc-20240116; t=1762825440; c=relaxed/simple;
+	bh=g4AhtdM1CryErsE127K7tZS9nWwKlxWxSBAPN4JcKdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tbfdVoE7NmG3NyDs+qZlY51NdpAYQ6NqN76nwPRWN6qbCybtysNXml6gi6ZBN2vGAmAn5X8dk798Oawy2jMV1rq5BYS86fisxz1NF9JleHk/MwklWEUhiYb1vi4f4Q7AK2THe6VqSxkkZn4mxv7Xjgc56YEzPDwo8TgVkoJxvX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqM7GyaD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17158C4CEFB;
-	Tue, 11 Nov 2025 01:32:55 +0000 (UTC)
+	 MIME-Version; b=czpml9L7nr58NHKnMMt/zr5qDf2dcZsGhGqazrOMwtt1zLGxprZ+cH408oBhyZo3m/b7YC/4QIUtm6fiO1nMaUofBj2F/Uefcv8hcbSfUom11mFYJzG2g19u0RHEQP69q5pvuXsvdL48yKhpjCLyKZ8tPgLA7q32NqG39DsL3Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ey91ppTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BC2C19422;
+	Tue, 11 Nov 2025 01:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824776;
-	bh=7buMQpt9C6iDYKyZK2WHiGVM0PGKcEhwfFrBjxPI/f0=;
+	s=korg; t=1762825440;
+	bh=g4AhtdM1CryErsE127K7tZS9nWwKlxWxSBAPN4JcKdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqM7GyaDsdzOxwXP1hsA+xFbvdXa51u73IVXXxWEwzAKmNCSY8u9Foun9FLj9VcL/
-	 pvWO3oSgJWk4Cw87QPRJGt/f0QW6WKk/Qq9/pOX8yoKhMbLn7ahuWDaKum9jTGUitG
-	 zwGI0VpFZAPN9WaKq6ec95svIAa2qU5c9wt2w3cY=
+	b=Ey91ppTMZGrtzu6HO1Z/wE7HeMGQhcdX39veFqs404nNlguC2rHZUm6sIUb80RPDr
+	 xIOxh+2JRwWU5PvNVDL8WbnFuJWhj93zrnvJqJJXHk5AZyKEjAH6TfwRglahkLDdM1
+	 A+5aTBlRDweFVwlh4ny117EtQ8GPO6fKOsbjj85Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 515/565] selftests: netdevsim: Fix ethtool-coalesce.sh fail by installing ethtool-common.sh
+	Fangzhi Zuo <jerry.zuo@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>
+Subject: [PATCH 6.17 801/849] drm/amd/display: Enable mst when its detected but yet to be initialized
 Date: Tue, 11 Nov 2025 09:46:11 +0900
-Message-ID: <20251111004538.545694859@linuxfoundation.org>
+Message-ID: <20251111004555.796937869@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-[ Upstream commit d01f8136d46b925798abcf86b35a4021e4cfb8bb ]
+commit 3c6a743c6961cc2cab453b343bb157d6bbbf8120 upstream.
 
-The script "ethtool-common.sh" is not installed in INSTALL_PATH, and
-triggers some errors when I try to run the test
-'drivers/net/netdevsim/ethtool-coalesce.sh':
+[Why]
+drm_dp_mst_topology_queue_probe() is used under the assumption that
+mst is already initialized. If we connect system with SST first
+then switch to the mst branch during suspend, we will fail probing
+topology by calling the wrong API since the mst manager is yet to
+be initialized.
 
-  TAP version 13
-  1..1
-  # timeout set to 600
-  # selftests: drivers/net/netdevsim: ethtool-coalesce.sh
-  # ./ethtool-coalesce.sh: line 4: ethtool-common.sh: No such file or directory
-  # ./ethtool-coalesce.sh: line 25: make_netdev: command not found
-  # ethtool: bad command line argument(s)
-  # ./ethtool-coalesce.sh: line 124: check: command not found
-  # ./ethtool-coalesce.sh: line 126: [: -eq: unary operator expected
-  # FAILED /0 checks
-  not ok 1 selftests: drivers/net/netdevsim: ethtool-coalesce.sh # exit=1
+[How]
+At dm_resume(), once it's detected as mst branc connected, check if
+the mst is initialized already. If not, call
+dm_helpers_dp_mst_start_top_mgr() instead to initialize mst
 
-Install this file to avoid this error. After this patch:
+V2: Adjust the commit msg a bit
 
-  TAP version 13
-  1..1
-  # timeout set to 600
-  # selftests: drivers/net/netdevsim: ethtool-coalesce.sh
-  # PASSED all 22 checks
-  ok 1 selftests: drivers/net/netdevsim: ethtool-coalesce.sh
-
-Fixes: fbb8531e58bd ("selftests: extract common functions in ethtool-common.sh")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Link: https://patch.msgid.link/20251030040340.3258110-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bc068194f548 ("drm/amd/display: Don't write DP_MSTM_CTRL after LT")
+Cc: Fangzhi Zuo <jerry.zuo@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 62320fb8d91a0bddc44a228203cfa9bfbb5395bd)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/drivers/net/netdevsim/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/Makefile b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-index 5bace0b7fb570..d7800f0703bcf 100644
---- a/tools/testing/selftests/drivers/net/netdevsim/Makefile
-+++ b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-@@ -15,4 +15,8 @@ TEST_PROGS = devlink.sh \
- 	tc-mq-visibility.sh \
- 	udp_tunnel_nic.sh \
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3574,6 +3574,7 @@ static int dm_resume(struct amdgpu_ip_bl
+ 	/* Do mst topology probing after resuming cached state*/
+ 	drm_connector_list_iter_begin(ddev, &iter);
+ 	drm_for_each_connector_iter(connector, &iter) {
++		bool init = false;
  
-+TEST_FILES := \
-+	ethtool-common.sh
-+# end of TEST_FILES
-+
- include ../../../lib.mk
--- 
-2.51.0
-
+ 		if (connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
+ 			continue;
+@@ -3583,7 +3584,14 @@ static int dm_resume(struct amdgpu_ip_bl
+ 		    aconnector->mst_root)
+ 			continue;
+ 
+-		drm_dp_mst_topology_queue_probe(&aconnector->mst_mgr);
++		scoped_guard(mutex, &aconnector->mst_mgr.lock) {
++			init = !aconnector->mst_mgr.mst_primary;
++		}
++		if (init)
++			dm_helpers_dp_mst_start_top_mgr(aconnector->dc_link->ctx,
++				aconnector->dc_link, false);
++		else
++			drm_dp_mst_topology_queue_probe(&aconnector->mst_mgr);
+ 	}
+ 	drm_connector_list_iter_end(&iter);
+ 
 
 
 
