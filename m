@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-193875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8FEEC4A8C3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:27 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E60C4A48D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:14:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 65E2634C570
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 92D234FB7DD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415A4346A14;
-	Tue, 11 Nov 2025 01:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3121E26561E;
+	Tue, 11 Nov 2025 01:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iuj3OmeX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jha4smoH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CF81D86FF;
-	Tue, 11 Nov 2025 01:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10EE2DA768;
+	Tue, 11 Nov 2025 01:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824213; cv=none; b=QtnhFSJ1P9PQ+utofF6UgWC8sS/WAoPBlYfz/eh6QpV0NGvkAWfy1JpeGT3LHwRCQculJ6MZhWjIAT/ozCQd0boGnabjLXwuhL0lL/7EuSY1jPsoHGGY6WdncSR3hLgnW2ZDB423MtiM8q/Pup3JmRoq4HuSKMejsXeyk38sJJE=
+	t=1762823132; cv=none; b=d9nkHDPrnrNHT6cVv7cnMVQVMLhECPJtwL8e3Cc5Lo03AsfPVakFrD4nphAkcFKLK51wi0AzuQuldMVm25noQR7od4kdFf8NyL+eLf0jqonl2Sf1+mmlqONnIu36abkx6nQVJ8tU0B3ztgrdqs4pNs4bfg/I5uDfmcvnbzASNI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824213; c=relaxed/simple;
-	bh=omJjpcDGGgqO6+97A+NIWZkZ5uV69sWZJ1Rn2YyOI3M=;
+	s=arc-20240116; t=1762823132; c=relaxed/simple;
+	bh=AMwDVL1tejcgZVnvaPA5I/JAQxGevlcUZgZzS4v5UXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CnGgGjSAwVOeNuw1WEcq6BSfal6Bv+noUCKFh9Orbq3hu1p2Vcdf57DBWcvO2kSZplxr6n8AAVIK7rOS0yEgA37rZQgF6YL7KHGSD/V1UNIOS5i3tNAWEpmkXhS/mPS1SiRtASvePalpvd9H6yFtmZErGR22izMohXwb9//M+64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iuj3OmeX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2917EC19422;
-	Tue, 11 Nov 2025 01:23:32 +0000 (UTC)
+	 MIME-Version; b=dvLyhpXaSpRj5F6vLEBEjwdmRpO3MOa/yaam1LDgdW+b403QuouRTgxWwieY5e1ukd+WkP/LIUb6hnJdInpKN81joNFVJWPpE0SE8KI7r6vlwBvOj7kUO3wQSWRPASq6s9AoLV44asaKLO4Z+k4g7eExbUAKqgXQYKgTTQ48Crs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jha4smoH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2EFC4CEF5;
+	Tue, 11 Nov 2025 01:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824212;
-	bh=omJjpcDGGgqO6+97A+NIWZkZ5uV69sWZJ1Rn2YyOI3M=;
+	s=korg; t=1762823132;
+	bh=AMwDVL1tejcgZVnvaPA5I/JAQxGevlcUZgZzS4v5UXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iuj3OmeXjV6rc0qqwlukkMaFl5B7IjNlE1/+MplqFbBL56lhV6zdhtjSc7NaSDw0g
-	 eNPVynPUeBHFWNl331E6mq+pAiwqEMpmr12NbIJNIc4rGUSwAbtKcI6L3NDbfVsb1T
-	 OtL8mSOXCGVAui4kkMf0hfYRQFC1m4rqpMa6RHHE=
+	b=jha4smoHxC+zIYQ24c5fqwGyMbDo/Btwb4W8N4YzG64hX+AMsoIak/DYKJbxIKg3B
+	 HOJuifL7TxihK7GFm/xqxcfuR4XHHCZQvAs6N3BLAeZmlvfccEkN5jbYi017Sz37aR
+	 pHpnJMcncrn1ckZOuOyTfluza4q5vF+z7o75axU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Wu <william.wu@rock-chips.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Michael Strauss <michael.strauss@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 463/849] usb: gadget: f_hid: Fix zero length packet transfer
+Subject: [PATCH 6.12 177/565] drm/amd/display: Increase AUX Intra-Hop Done Max Wait Duration
 Date: Tue, 11 Nov 2025 09:40:33 +0900
-Message-ID: <20251111004547.622673197@linuxfoundation.org>
+Message-ID: <20251111004530.915687661@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Wu <william.wu@rock-chips.com>
+From: Michael Strauss <michael.strauss@amd.com>
 
-[ Upstream commit ed6f727c575b1eb8136e744acfd5e7306c9548f6 ]
+[ Upstream commit e3419e1e44b87d4176fb98679a77301b1ca40f63 ]
 
-Set the hid req->zero flag of ep0/in_ep to true by default,
-then the UDC drivers can transfer a zero length packet at
-the end if the hid transfer with size divisible to EPs max
-packet size according to the USB 2.0 spec.
+[WHY]
+In the worst case, AUX intra-hop done can take hundreds of milliseconds as
+each retimer in a link might have to wait a full AUX_RD_INTERVAL to send
+LT abort downstream.
 
-Signed-off-by: William Wu <william.wu@rock-chips.com>
-Link: https://lore.kernel.org/r/1756204087-26111-1-git-send-email-william.wu@rock-chips.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[HOW]
+Wait 300ms for each retimer in a link to allow time to propagate a LT abort
+without infinitely waiting on intra-hop done.
+For no-retimer case, keep the max duration at 10ms.
+
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: Michael Strauss <michael.strauss@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_hid.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../drm/amd/display/dc/link/protocols/link_dp_training.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
-index 8e1d1e8840503..307ea563af95e 100644
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -511,7 +511,7 @@ static ssize_t f_hidg_write(struct file *file, const char __user *buffer,
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
+index 9385a32a471b8..16b5e6b64162a 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
+@@ -1012,7 +1012,12 @@ static enum link_training_result dpcd_exit_training_mode(struct dc_link *link, e
+ {
+ 	enum dc_status status;
+ 	uint8_t sink_status = 0;
+-	uint8_t i;
++	uint32_t i;
++	uint8_t lttpr_count = dp_parse_lttpr_repeater_count(link->dpcd_caps.lttpr_caps.phy_repeater_cnt);
++	uint32_t intra_hop_disable_time_ms = (lttpr_count > 0 ? lttpr_count * 300 : 10);
++
++	// Each hop could theoretically take over 256ms (max 128b/132b AUX RD INTERVAL)
++	// To be safe, allow 300ms per LTTPR and 10ms for no LTTPR case
  
- 	req->status   = 0;
--	req->zero     = 0;
-+	req->zero     = 1;
- 	req->length   = count;
- 	req->complete = f_hidg_req_complete;
- 	req->context  = hidg;
-@@ -967,7 +967,7 @@ static int hidg_setup(struct usb_function *f,
- 	return -EOPNOTSUPP;
+ 	/* clear training pattern set */
+ 	status = dpcd_set_training_pattern(link, DP_TRAINING_PATTERN_VIDEOIDLE);
+@@ -1022,7 +1027,7 @@ static enum link_training_result dpcd_exit_training_mode(struct dc_link *link, e
  
- respond:
--	req->zero = 0;
-+	req->zero = 1;
- 	req->length = length;
- 	status = usb_ep_queue(cdev->gadget->ep0, req, GFP_ATOMIC);
- 	if (status < 0)
+ 	if (encoding == DP_128b_132b_ENCODING) {
+ 		/* poll for intra-hop disable */
+-		for (i = 0; i < 10; i++) {
++		for (i = 0; i < intra_hop_disable_time_ms; i++) {
+ 			if ((core_link_read_dpcd(link, DP_SINK_STATUS, &sink_status, 1) == DC_OK) &&
+ 					(sink_status & DP_INTRA_HOP_AUX_REPLY_INDICATION) == 0)
+ 				break;
 -- 
 2.51.0
 
