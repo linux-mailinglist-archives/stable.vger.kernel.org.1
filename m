@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C211FC4A3A9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32187C4A466
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:12:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BABEB4F1ECE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 805964FA0B9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F3C246768;
-	Tue, 11 Nov 2025 01:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8023925A334;
+	Tue, 11 Nov 2025 01:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gV6z2dpB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycxDG7SH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E467262A;
-	Tue, 11 Nov 2025 01:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD1A24E4C6;
+	Tue, 11 Nov 2025 01:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822972; cv=none; b=tYjFUWyxrkr+A07E8x/lF32AwdvF5BCyS8MI+v4lv1MDDL8M4RAMhrKukaLTIcG/EFVMrHIZ0ZolBMkhkJO+F9Knuk6ys/0mT85WvLxE0C00W/wLMYH4Wjq52MfMTWUo0wNviF5WQFwur0UP2s3R5wUXXWHTwZ/Rt9wbH472IME=
+	t=1762823116; cv=none; b=DrfditQo/29lDK3kw2BkIM3LaYNUTy2xBQMqarzsGuApOf3h2Xe0hFcsNKJ3iKJHLAfU8CXi4aO4vb74loytlo0tm/X40lPCpsZUltRH+REuevGxg1QyXML+1F96MM2Q+QgkG7lO1Ac8TZfTr10sUzLYHcQ2/bFNgFbved8Xe/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822972; c=relaxed/simple;
-	bh=fX8ndYhZlgl51+iGVdj3PmsOoBKd0Ios6w4VL5zYr4k=;
+	s=arc-20240116; t=1762823116; c=relaxed/simple;
+	bh=Kl2BoAigreeED37y1R3N3sJ+TBcUZO0bywx0/y16jeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnK8ZEBw9DQfeqWWFTh7eHUGVtnzs/OQy2luTFICXYe9h/cnR54q/o1kGkTiigypAcMyZzMYTNX+y0zzUM0SfrvbR3gfYjVzj6Wrk+6hzz/L8toVu4c+r+zy49qjYMPoh3Z6iZLWLZZupVc0NXFZMwSuDnuTVvvyzUvLiwQqj/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gV6z2dpB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C74C116B1;
-	Tue, 11 Nov 2025 01:02:52 +0000 (UTC)
+	 MIME-Version; b=Ni8fELnis+2YBX1VQnPnYNakjjOoNoJgaHaSpVU5JvbhRxSYpTGQaU9ifTDXcj8rv8jd7jeaaUAeH99wzPXTqoAQCe/F8+AVHLobuqVnu3rguyvTd6HVFz4PmXacGNnuHzuxfbV9Iv4axIDfHpULqFLmFN/t01IBoz8XuHAcFkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycxDG7SH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F08BC19425;
+	Tue, 11 Nov 2025 01:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822972;
-	bh=fX8ndYhZlgl51+iGVdj3PmsOoBKd0Ios6w4VL5zYr4k=;
+	s=korg; t=1762823115;
+	bh=Kl2BoAigreeED37y1R3N3sJ+TBcUZO0bywx0/y16jeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gV6z2dpBUhir5d0wxT3WNCrNy8PpOrMl9MjL5OwZWecTVIuZru5aevRXy3iBZgrnm
-	 YtSn2xeu2YCl821q0+QWsRpYKfFbXAsulP9cMv7QEh+cCbuFdYykYZGpQO0/MfSSz7
-	 PuglWEfu9hLt/gRrtPSecYQXmhnoYO09idNbpmnw=
+	b=ycxDG7SHweTaGyU4DNtrRbIyqratQnFFyFLHuJwgqeDzMrPXlDCgl/tOUYKCFYIfd
+	 2f+R6z25N+ggHWN2LjzmQQEpXh4V5MXpgXzTHc0cV4mvVXnF+A0ERC/3MYyr7WiQv+
+	 KZtiuGMLkU2U3bpI4lkp1W+9EKjGiWjcJWSAWiS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghao Duan <duanchenghao@kylinos.cn>,
-	Pu Lehui <pulehui@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 204/849] riscv: bpf: Fix uninitialized symbol retval_off
-Date: Tue, 11 Nov 2025 09:36:14 +0900
-Message-ID: <20251111004541.371410650@linuxfoundation.org>
+Subject: [PATCH 6.17 207/849] nvme: Use non zero KATO for persistent discovery connections
+Date: Tue, 11 Nov 2025 09:36:17 +0900
+Message-ID: <20251111004541.446168391@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,46 +68,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chenghao Duan <duanchenghao@kylinos.cn>
+From: Alistair Francis <alistair.francis@wdc.com>
 
-[ Upstream commit d0bf7cd5df18466d969bb60e8890b74cf96081ca ]
+[ Upstream commit 2e482655019ab6fcfe8865b62432c6d03f0b5f80 ]
 
-In the __arch_prepare_bpf_trampoline() function, retval_off is only
-meaningful when save_ret is true, so the current logic is correct.
-However, in the original logic, retval_off is only initialized under
-certain conditions; for example, in the fmod_ret logic, the compiler is
-not aware that the flags of the fmod_ret program (prog) have set
-BPF_TRAMP_F_CALL_ORIG, which results in an uninitialized symbol
-compilation warning.
+The NVMe Base Specification 2.1 states that:
 
-So initialize retval_off unconditionally to fix it.
+"""
+A host requests an explicit persistent connection ... by specifying a
+non-zero Keep Alive Timer value in the Connect command.
+"""
 
-Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
-Reviewed-by: Pu Lehui <pulehui@huawei.com>
-Link: https://lore.kernel.org/r/20250922062244.822937-2-duanchenghao@kylinos.cn
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+As such if we are starting a persistent connection to a discovery
+controller and the KATO is currently 0 we need to update KATO to a non
+zero value to avoid continuous timeouts on the target.
+
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/net/bpf_jit_comp64.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/nvme/host/core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
-index f1efa4d6b27f3..bad8c47ed4a7f 100644
---- a/arch/riscv/net/bpf_jit_comp64.c
-+++ b/arch/riscv/net/bpf_jit_comp64.c
-@@ -1112,10 +1112,9 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
- 	stack_size += 16;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 6b7493934535a..5714d49932822 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4990,8 +4990,14 @@ void nvme_start_ctrl(struct nvme_ctrl *ctrl)
+ 	 * checking that they started once before, hence are reconnecting back.
+ 	 */
+ 	if (test_bit(NVME_CTRL_STARTED_ONCE, &ctrl->flags) &&
+-	    nvme_discovery_ctrl(ctrl))
++	    nvme_discovery_ctrl(ctrl)) {
++		if (!ctrl->kato) {
++			nvme_stop_keep_alive(ctrl);
++			ctrl->kato = NVME_DEFAULT_KATO;
++			nvme_start_keep_alive(ctrl);
++		}
+ 		nvme_change_uevent(ctrl, "NVME_EVENT=rediscover");
++	}
  
- 	save_ret = flags & (BPF_TRAMP_F_CALL_ORIG | BPF_TRAMP_F_RET_FENTRY_RET);
--	if (save_ret) {
-+	if (save_ret)
- 		stack_size += 16; /* Save both A5 (BPF R0) and A0 */
--		retval_off = stack_size;
--	}
-+	retval_off = stack_size;
- 
- 	stack_size += nr_arg_slots * 8;
- 	args_off = stack_size;
+ 	if (ctrl->queue_count > 1) {
+ 		nvme_queue_scan(ctrl);
 -- 
 2.51.0
 
