@@ -1,58 +1,53 @@
-Return-Path: <stable+bounces-193921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CC0C4AB6E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF38C4ABFB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E75D4F7767
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B14F53BC84B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8832A2FD7CA;
-	Tue, 11 Nov 2025 01:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192962FF143;
+	Tue, 11 Nov 2025 01:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yfzhtj6n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBUFyxXJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BCD34D38E;
-	Tue, 11 Nov 2025 01:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C887026CE04;
+	Tue, 11 Nov 2025 01:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824380; cv=none; b=iMCeJmzjy5ijVoBuiXKyNIbvybdqjkcTz3jm20ZbgAlWHiWDIfFqnitw12uoLpeBeZePzMZq0nmxNsDhAU/8FeTEJpma7AYfq3htEFljf99aazxDjc9TUwa3AgCJ/i6uVmmfrzr13hrUIFrH64ql7OqFNVIRXuedzE52X7zmWQs=
+	t=1762824384; cv=none; b=hJRVDWC4rjSOFLS9z+fwRwlW5szxOr1a46jwud1SlFJ7/HFQf/d39tPY4ESL80IKtacCHp1YRpkQDpj0rctFet3D6UHyNfywAjf9KTW1D94WpxBblNTKHaSwykIxLiOVYniApkCdLYiazWtJ18hEcaxhn6BY319C9QauW3bmC/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824380; c=relaxed/simple;
-	bh=wMuM6b4bCUOOVRJpI85pk7+NcnkzRN7kmbG7hW8l7S4=;
+	s=arc-20240116; t=1762824384; c=relaxed/simple;
+	bh=If2jfMna7+U3SlcUA/pnMKvzx0bNIhcQEnmG3zbexBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QP/fkYwOo3sXnht7AcZLyh5BQ7AXWiC0z8i/3R46GbcZQt58sLB3c959KinYtnizozGPRekeDQpX2WWJq8toDvapIBA6IvxV8dZvEHh4qDpZBA4qe6Eg9rfeLB9Nu7BP47ReehNpbV3x2WKN7cM2DT7UN0IghlA6e2GHI7f+YqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yfzhtj6n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B76C113D0;
-	Tue, 11 Nov 2025 01:26:19 +0000 (UTC)
+	 MIME-Version; b=PU9/jQOVYCXjGSzURU6K6dOSYuYrde9KAQ4OAUBEPCD7eEc6jaV9B3gBkvJUZCKbiNzqAp85hj+O/llyevKomvxrMflDBAiAXpDpe09eIOsAAOuLnoSTfq8N60yc+ru+Dtzf5BSnotl+6abGmnk1A9LNf6yeJF9nJIcXDODcLh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBUFyxXJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670FDC4CEFB;
+	Tue, 11 Nov 2025 01:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824379;
-	bh=wMuM6b4bCUOOVRJpI85pk7+NcnkzRN7kmbG7hW8l7S4=;
+	s=korg; t=1762824384;
+	bh=If2jfMna7+U3SlcUA/pnMKvzx0bNIhcQEnmG3zbexBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yfzhtj6n3Rrb5YsFvX3zfzCtNPxqMiYQTjrUzUfcHIOn+hj9MepJQDKGKpt2T9aJK
-	 CIUZWQFHV+TekwGJdt+C4JSNEDUs0DqsdgpZ67G+U//mTmcoAO3Su5OtGaQtiUaJyp
-	 GdtGqrqQOxSYs136/eHPCgB5pb+87IdRHsDn2GV8=
+	b=nBUFyxXJy/1RqKsSl5nMpJQ+kpVj8G6mlsHKOplDXJoAQSHs4Koc+hUPa+UmpBdPX
+	 waGSOKXf2AijobBePOqLQN2Z308InkxyAbLYCgVFAgbiefvuDdFRuqrE2lDZKn+UAe
+	 IRdkf7CYiioYDkjuRi1BE3EDmyCDgzYQ9WZmO9DQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atish Patra <atishp@rivosinc.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sunil V L <sunilvl@ventanamicro.com>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 432/565] ACPI: scan: Update honor list for RPMI System MSI
-Date: Tue, 11 Nov 2025 09:44:48 +0900
-Message-ID: <20251111004536.592577455@linuxfoundation.org>
+Subject: [PATCH 6.12 433/565] vfio/pci: Fix INTx handling on legacy non-PCI 2.3 devices
+Date: Tue, 11 Nov 2025 09:44:49 +0900
+Message-ID: <20251111004536.615917339@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -71,43 +66,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sunil V L <sunilvl@ventanamicro.com>
+From: Timothy Pearson <tpearson@raptorengineering.com>
 
-[ Upstream commit 4215d1cf59e4b272755f4277a05cd5967935a704 ]
+[ Upstream commit 8b9f128947dd72e0fcf256088a673abac9b720bf ]
 
-The RPMI System MSI interrupt controller (just like PLIC and APLIC)
-needs to probed prior to devices like GED which use interrupts provided
-by it. Also, it has dependency on the SBI MPXY mailbox device.
+PCI devices prior to PCI 2.3 both use level interrupts and do not support
+interrupt masking, leading to a failure when passed through to a KVM guest on
+at least the ppc64 platform. This failure manifests as receiving and
+acknowledging a single interrupt in the guest, while the device continues to
+assert the level interrupt indicating a need for further servicing.
 
-Add HIDs of RPMI System MSI and SBI MPXY mailbox devices to the honor
-list so that those dependencies are handled.
+When lazy IRQ masking is used on DisINTx- (non-PCI 2.3) hardware, the following
+sequence occurs:
 
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Acked-by: Jassi Brar <jassisinghbrar@gmail.com>
-Link: https://lore.kernel.org/r/20250818040920.272664-17-apatel@ventanamicro.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+ * Level IRQ assertion on device
+ * IRQ marked disabled in kernel
+ * Host interrupt handler exits without clearing the interrupt on the device
+ * Eventfd is delivered to userspace
+ * Guest processes IRQ and clears device interrupt
+ * Device de-asserts INTx, then re-asserts INTx while the interrupt is masked
+ * Newly asserted interrupt acknowledged by kernel VMM without being handled
+ * Software mask removed by VFIO driver
+ * Device INTx still asserted, host controller does not see new edge after EOI
+
+The behavior is now platform-dependent.  Some platforms (amd64) will continue
+to spew IRQs for as long as the INTX line remains asserted, therefore the IRQ
+will be handled by the host as soon as the mask is dropped.  Others (ppc64) will
+only send the one request, and if it is not handled no further interrupts will
+be sent.  The former behavior theoretically leaves the system vulnerable to
+interrupt storm, and the latter will result in the device stalling after
+receiving exactly one interrupt in the guest.
+
+Work around this by disabling lazy IRQ masking for DisINTx- INTx devices.
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+Link: https://lore.kernel.org/r/333803015.1744464.1758647073336.JavaMail.zimbra@raptorengineeringinc.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/scan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/vfio/pci/vfio_pci_intrs.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 4ef94d06365fc..ba98763ced7d4 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -862,6 +862,8 @@ static const char * const acpi_honor_dep_ids[] = {
- 	"INTC10CF", /* IVSC (MTL) driver must be loaded to allow i2c access to camera sensors */
- 	"RSCV0001", /* RISC-V PLIC */
- 	"RSCV0002", /* RISC-V APLIC */
-+	"RSCV0005", /* RISC-V SBI MPXY MBOX */
-+	"RSCV0006", /* RISC-V RPMI SYSMSI */
- 	"PNP0C0F",  /* PCI Link Device */
- 	NULL
- };
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index 565966351dfad..b2cf1af7fb0c7 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -304,9 +304,14 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
+ 
+ 	vdev->irq_type = VFIO_PCI_INTX_IRQ_INDEX;
+ 
++	if (!vdev->pci_2_3)
++		irq_set_status_flags(pdev->irq, IRQ_DISABLE_UNLAZY);
++
+ 	ret = request_irq(pdev->irq, vfio_intx_handler,
+ 			  irqflags, ctx->name, ctx);
+ 	if (ret) {
++		if (!vdev->pci_2_3)
++			irq_clear_status_flags(pdev->irq, IRQ_DISABLE_UNLAZY);
+ 		vdev->irq_type = VFIO_PCI_NUM_IRQS;
+ 		kfree(name);
+ 		vfio_irq_ctx_free(vdev, ctx, 0);
+@@ -352,6 +357,8 @@ static void vfio_intx_disable(struct vfio_pci_core_device *vdev)
+ 		vfio_virqfd_disable(&ctx->unmask);
+ 		vfio_virqfd_disable(&ctx->mask);
+ 		free_irq(pdev->irq, ctx);
++		if (!vdev->pci_2_3)
++			irq_clear_status_flags(pdev->irq, IRQ_DISABLE_UNLAZY);
+ 		if (ctx->trigger)
+ 			eventfd_ctx_put(ctx->trigger);
+ 		kfree(ctx->name);
 -- 
 2.51.0
 
