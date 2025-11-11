@@ -1,51 +1,57 @@
-Return-Path: <stable+bounces-193227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB4EC4A180
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:59:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2232EC4A10C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E179B4F1A61
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:56:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E8DE188CE20
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27CD024113D;
-	Tue, 11 Nov 2025 00:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2144124A043;
+	Tue, 11 Nov 2025 00:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2zEBvXI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvOdmjGA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E824C97;
-	Tue, 11 Nov 2025 00:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98721DF258;
+	Tue, 11 Nov 2025 00:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822599; cv=none; b=c22WXa8dMvt7SyC2krIa7JiCnciuvwvM3OJZLgfieax5zF8z39yTZvF1Hubm1dxU0loI7gfJhml+NClEBfw6D4EJ8ACjAbC1D67MLAdSZYNP4JRjMN++oTiCBeZbyVA77ltxnJ62H0zbAFup+/zLIBGmK29NCu/VRoZy9nj8bEE=
+	t=1762822672; cv=none; b=q1NVbeXefr8rfWAxPFG5nHW910q+syThwsiyh+5NtjWQciB8xyBSdvaEUUhMzy23K4R0DE/aSSdxpqbfSrHheO9dF6Fxfuyc1VTdtvIjk4Y7RcqzwBvMBdbD6apRIbvhVdOxz96ZI/fIwdfcZ8K99Fm/YHz9yFx5NAODWI8U0lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822599; c=relaxed/simple;
-	bh=APn0V5kaqnhZClzem5ZZRBp0TAQaw3BAGv7YesHevPo=;
+	s=arc-20240116; t=1762822672; c=relaxed/simple;
+	bh=LJRWELax0r8vZxNJTrqabuzlN5OQfBgIJwsQIHh3PGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pI9ODT8ZZaSSkLL8zoHokdtMgQMW+f6/BnNcTkfm/8CNM0sucs1jj7NDInOYXJk9THQKb7pYWLUVO49r/2epDM2GgenmTTSMX5ObpoXN7zOsMwrlP6Lkf0wtMW0PII4w6N6tJV2H+1PVkH0IwlMuKQuP4Tf9hf3261sWCuGpHL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2zEBvXI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7A4C4CEF5;
-	Tue, 11 Nov 2025 00:56:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pGiI+Z/cjj2MrJyAmZkicX9k3gaALM6ifDp9IvJXRA/s0hM92bUM4Wio9L+FIfM/QnHKpngaFYN7C8vwxoKFX+p8gAAqlYmN97xgZcDqiJJUmKcHu/NlMmhxRHBW/GvpHeRM00VWHcvXZMwIIOPmP2I04R3nPtMwyPCTYhB4Wv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvOdmjGA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66698C4CEFB;
+	Tue, 11 Nov 2025 00:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822599;
-	bh=APn0V5kaqnhZClzem5ZZRBp0TAQaw3BAGv7YesHevPo=;
+	s=korg; t=1762822672;
+	bh=LJRWELax0r8vZxNJTrqabuzlN5OQfBgIJwsQIHh3PGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2zEBvXI6tEWKUGdyxP5UPoF1wm706pcjg+o+EEt2mDY1+LiYIMPq4RuilZAkaGsX
-	 MFtcE16L9PE8JrZgpuw6ymPnWEwLLYX7N2KfQWYnFgceahD3+t1QcTXlNCJucPl2ZT
-	 uHS1upjRLjVDFMzHhIAbOcZht/9EV+Lyg8PW6nLQ=
+	b=XvOdmjGAYkstEEZ8TLqDTMUUpf8rdz45+k3KxONKyB5cVZJHEhc+ULjrEIRtU2W6G
+	 q7sgOGYR37EPKcm6I0iZkR2JoEJawLP2ecw8UKOIPBFCk6uqHhdwshMG9Qlhp+9rWJ
+	 uaghFh1/fNt8Fb1W2hHOwZHd239KVX9f+JVM1dLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Owen Gu <guhuinan@xiaomi.com>
-Subject: [PATCH 6.12 082/565] usb: gadget: f_fs: Fix epfile null pointer access after ep enable.
-Date: Tue, 11 Nov 2025 09:38:58 +0900
-Message-ID: <20251111004528.813359854@linuxfoundation.org>
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Luben Tuikov <ltuikov89@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 083/565] drm/sched: Optimise drm_sched_entity_push_job
+Date: Tue, 11 Nov 2025 09:38:59 +0900
+Message-ID: <20251111004528.834203751@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -58,61 +64,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Owen Gu <guhuinan@xiaomi.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-commit cfd6f1a7b42f62523c96d9703ef32b0dbc495ba4 upstream.
+[ Upstream commit d42a254633c773921884a19e8a1a0f53a31150c3 ]
 
-A race condition occurs when ffs_func_eps_enable() runs concurrently
-with ffs_data_reset(). The ffs_data_clear() called in ffs_data_reset()
-sets ffs->epfiles to NULL before resetting ffs->eps_count to 0, leading
-to a NULL pointer dereference when accessing epfile->ep in
-ffs_func_eps_enable() after successful usb_ep_enable().
+In FIFO mode (which is the default), both drm_sched_entity_push_job() and
+drm_sched_rq_update_fifo(), where the latter calls the former, are
+currently taking and releasing the same entity->rq_lock.
 
-The ffs->epfiles pointer is set to NULL in both ffs_data_clear() and
-ffs_data_close() functions, and its modification is protected by the
-spinlock ffs->eps_lock. And the whole ffs_func_eps_enable() function
-is also protected by ffs->eps_lock.
+We can avoid that design inelegance, and also have a miniscule
+efficiency improvement on the submit from idle path, by introducing a new
+drm_sched_rq_update_fifo_locked() helper and pulling up the lock taking to
+its callers.
 
-Thus, add NULL pointer handling for ffs->epfiles in the
-ffs_func_eps_enable() function to fix issues
+v2:
+ * Remove drm_sched_rq_update_fifo() altogether. (Christian)
 
-Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
-Link: https://lore.kernel.org/r/20250915092907.17802-1-guhuinan@xiaomi.com
+v3:
+ * Improved commit message. (Philipp)
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Luben Tuikov <ltuikov89@gmail.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Philipp Stanner <pstanner@redhat.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241016122013.7857-2-tursulin@igalia.com
+Stable-dep-of: d25e3a610bae ("drm/sched: Fix race in drm_sched_entity_select_rq()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_fs.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/scheduler/sched_entity.c |   13 +++++++++----
+ drivers/gpu/drm/scheduler/sched_main.c   |    6 +++---
+ include/drm/gpu_scheduler.h              |    2 +-
+ 3 files changed, 13 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -2418,7 +2418,12 @@ static int ffs_func_eps_enable(struct ff
- 	ep = func->eps;
- 	epfile = ffs->epfiles;
- 	count = ffs->eps_count;
--	while(count--) {
-+	if (!epfile) {
-+		ret = -ENOMEM;
-+		goto done;
-+	}
-+
-+	while (count--) {
- 		ep->ep->driver_data = ep;
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -506,8 +506,12 @@ struct drm_sched_job *drm_sched_entity_p
+ 		struct drm_sched_job *next;
  
- 		ret = config_ep_by_speed(func->gadget, &func->function, ep->ep);
-@@ -2442,6 +2447,7 @@ static int ffs_func_eps_enable(struct ff
+ 		next = to_drm_sched_job(spsc_queue_peek(&entity->job_queue));
+-		if (next)
+-			drm_sched_rq_update_fifo(entity, next->submit_ts);
++		if (next) {
++			spin_lock(&entity->rq_lock);
++			drm_sched_rq_update_fifo_locked(entity,
++							next->submit_ts);
++			spin_unlock(&entity->rq_lock);
++		}
  	}
  
- 	wake_up_interruptible(&ffs->wait);
-+done:
- 	spin_unlock_irqrestore(&func->ffs->eps_lock, flags);
+ 	/* Jobs and entities might have different lifecycles. Since we're
+@@ -607,10 +611,11 @@ void drm_sched_entity_push_job(struct dr
+ 		sched = rq->sched;
  
- 	return ret;
+ 		drm_sched_rq_add_entity(rq, entity);
+-		spin_unlock(&entity->rq_lock);
+ 
+ 		if (drm_sched_policy == DRM_SCHED_POLICY_FIFO)
+-			drm_sched_rq_update_fifo(entity, submit_ts);
++			drm_sched_rq_update_fifo_locked(entity, submit_ts);
++
++		spin_unlock(&entity->rq_lock);
+ 
+ 		drm_sched_wakeup(sched);
+ 	}
+--- a/drivers/gpu/drm/scheduler/sched_main.c
++++ b/drivers/gpu/drm/scheduler/sched_main.c
+@@ -169,14 +169,15 @@ static inline void drm_sched_rq_remove_f
+ 	}
+ }
+ 
+-void drm_sched_rq_update_fifo(struct drm_sched_entity *entity, ktime_t ts)
++void drm_sched_rq_update_fifo_locked(struct drm_sched_entity *entity, ktime_t ts)
+ {
+ 	/*
+ 	 * Both locks need to be grabbed, one to protect from entity->rq change
+ 	 * for entity from within concurrent drm_sched_entity_select_rq and the
+ 	 * other to update the rb tree structure.
+ 	 */
+-	spin_lock(&entity->rq_lock);
++	lockdep_assert_held(&entity->rq_lock);
++
+ 	spin_lock(&entity->rq->lock);
+ 
+ 	drm_sched_rq_remove_fifo_locked(entity);
+@@ -187,7 +188,6 @@ void drm_sched_rq_update_fifo(struct drm
+ 		      drm_sched_entity_compare_before);
+ 
+ 	spin_unlock(&entity->rq->lock);
+-	spin_unlock(&entity->rq_lock);
+ }
+ 
+ /**
+--- a/include/drm/gpu_scheduler.h
++++ b/include/drm/gpu_scheduler.h
+@@ -593,7 +593,7 @@ void drm_sched_rq_add_entity(struct drm_
+ void drm_sched_rq_remove_entity(struct drm_sched_rq *rq,
+ 				struct drm_sched_entity *entity);
+ 
+-void drm_sched_rq_update_fifo(struct drm_sched_entity *entity, ktime_t ts);
++void drm_sched_rq_update_fifo_locked(struct drm_sched_entity *entity, ktime_t ts);
+ 
+ int drm_sched_entity_init(struct drm_sched_entity *entity,
+ 			  enum drm_sched_priority priority,
 
 
 
