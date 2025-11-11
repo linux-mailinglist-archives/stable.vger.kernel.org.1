@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98320C4AC79
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D4EC4B0F2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:56:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 31A364FB1FB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C7551884D84
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F113E331A74;
-	Tue, 11 Nov 2025 01:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E4B3491D0;
+	Tue, 11 Nov 2025 01:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRO4TlEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXrIMe0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB84E263F28;
-	Tue, 11 Nov 2025 01:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E6E348894;
+	Tue, 11 Nov 2025 01:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824544; cv=none; b=Jb1MyvdbpmM4wEw7Te5Pmqm8lhszyrzcr+C2+/NPlRIJbDl7bOUJHTw06oj/wuZeDHUbcg2GeGIZ3ObH7NGsDa59CiIcxVZxv32E04jzWTGZHp0jS29+zZBvQouIEP3D1NP77ABUDq7PzwxJYk8vlDz6ARFh+rvK5pvd86TbpQM=
+	t=1762825324; cv=none; b=fn0tQ7g1Af+umpcUxA81plhAP1d4MBTpApKCcyzrYjeYZa4P73N22RsId+KY0zzdxskIwUHm8frHB2Gd9IoODsgrC4FK5jZ++W8QaK89yAl+orhDu7Bn4eENaHXX7hbRE/ECSmXifHD5LnYkk9M9xC5PLREIcqu3wlkFih0VIKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824544; c=relaxed/simple;
-	bh=Ty+nRpOiBBeQn29wGZuUzB+8T2aiRwob0zeFSRNzwl4=;
+	s=arc-20240116; t=1762825324; c=relaxed/simple;
+	bh=flV0s+vc0KIYUJOvIky4GSf7VDWasQBJsuakD+PeMYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rd15gNkK+qWdEcNidkgWQnvoaSy4uzoWD0NQYhkxgUAOlC+3BpnN0vf9YngxF91BLbD9DaerFBCWqXX8zRe4jFMFO6o8X1pe9SOaqPnMsQPD/NhL9e535OGWLAJPVzTBixhf5ESI8kBty/Y4YdGzj/GkCJg/OH6kkBSMN+XKUZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRO4TlEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8CAC116D0;
-	Tue, 11 Nov 2025 01:29:04 +0000 (UTC)
+	 MIME-Version; b=iyb2ZPyLUVBwvwvIN8TRUFxIrcXn7wmz151VBa8ecHi2mwP5jhhlClIsXzkav7hhyM4kQujS3HzioN+3F7ZfBbEDnb0hEqR2Nne5IZOEpNKYvz3nWx7pmgskasAn0bTP3xbfwFkEjz58/yctJ5P4GVuK+AIvobwFxgVgly+oh3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXrIMe0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC315C4CEF5;
+	Tue, 11 Nov 2025 01:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824544;
-	bh=Ty+nRpOiBBeQn29wGZuUzB+8T2aiRwob0zeFSRNzwl4=;
+	s=korg; t=1762825324;
+	bh=flV0s+vc0KIYUJOvIky4GSf7VDWasQBJsuakD+PeMYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gRO4TlEF/n6QiH8sj1EYpi2uB1FJb2een2vVc/h0zLtAPfHqhZAr0ZPLW2JPuPGSz
-	 6U8sqpMbNwtlrHJyvkrH0sN/Lv9YYOg9hzcIl78cJHSMTxSz6eljT3CZCbG6SWDHpQ
-	 heXhuc2lZZdeoZBD4ErANcFPB2MPPe21hKGB9s2I=
+	b=YXrIMe0hN8LszHKFdCPtlMVWN2k8t0wgDpOiV7a5ShDO7dNngaJkFZtkY1SRUp/sF
+	 y3J9FabEJj8jszGnr8tCLwulVxym9IFaeYjMjfLhA92ukoD2ohmvCFGBOsIJ6+rkGz
+	 o3693bqFv20fIllHog38tzsgOyMNC+M+Y5J4H1XM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Jiakai Xu <xujiakai2025@iscas.ac.cn>,
+	Chunyan Zhang <zhangchunyan@iscas.ac.cn>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 466/565] clk: sunxi-ng: sun6i-rtc: Add A523 specifics
+Subject: [PATCH 6.17 752/849] riscv: stacktrace: Disable KASAN checks for non-current tasks
 Date: Tue, 11 Nov 2025 09:45:22 +0900
-Message-ID: <20251111004537.385017383@linuxfoundation.org>
+Message-ID: <20251111004554.613480498@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wens@csie.org>
+From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 
-[ Upstream commit 7aa8781f379c32c31bd78f1408a31765b2297c43 ]
+[ Upstream commit 060ea84a484e852b52b938f234bf9b5503a6c910 ]
 
-The A523's RTC block is backward compatible with the R329's, but it also
-has a calibration function for its internal oscillator, which would
-allow it to provide a clock rate closer to the desired 32.768 KHz. This
-is useful on the Radxa Cubie A5E, which does not have an external 32.768
-KHz crystal.
+Unwinding the stack of a task other than current, KASAN would report
+"BUG: KASAN: out-of-bounds in walk_stackframe+0x41c/0x460"
 
-Add new compatible-specific data for it.
+There is a same issue on x86 and has been resolved by the commit
+84936118bdf3 ("x86/unwind: Disable KASAN checks for non-current tasks")
+The solution could be applied to RISC-V too.
 
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20250909170947.2221611-1-wens@kernel.org
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+This patch also can solve the issue:
+https://seclists.org/oss-sec/2025/q4/23
+
+Fixes: 5d8544e2d007 ("RISC-V: Generic library routines and assembly")
+Co-developed-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20251022072608.743484-1-zhangchunyan@iscas.ac.cn
+[pjw@kernel.org: clean up checkpatch issues]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun6i-rtc.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/riscv/kernel/stacktrace.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c b/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c
-index 87e23d16ed0f3..50a85f33b8fbb 100644
---- a/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c
-@@ -325,6 +325,13 @@ static const struct sun6i_rtc_match_data sun50i_r329_rtc_ccu_data = {
- 	.osc32k_fanout_nparents	= ARRAY_SIZE(sun50i_r329_osc32k_fanout_parents),
- };
+diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
+index 3fe9e6edef8f1..b41b6255751cb 100644
+--- a/arch/riscv/kernel/stacktrace.c
++++ b/arch/riscv/kernel/stacktrace.c
+@@ -16,6 +16,22 @@
  
-+static const struct sun6i_rtc_match_data sun55i_a523_rtc_ccu_data = {
-+	.have_ext_osc32k	= true,
-+	.have_iosc_calibration	= true,
-+	.osc32k_fanout_parents	= sun50i_r329_osc32k_fanout_parents,
-+	.osc32k_fanout_nparents	= ARRAY_SIZE(sun50i_r329_osc32k_fanout_parents),
-+};
+ #ifdef CONFIG_FRAME_POINTER
+ 
++/*
++ * This disables KASAN checking when reading a value from another task's stack,
++ * since the other task could be running on another CPU and could have poisoned
++ * the stack in the meantime.
++ */
++#define READ_ONCE_TASK_STACK(task, x)			\
++({							\
++	unsigned long val;				\
++	unsigned long addr = x;				\
++	if ((task) == current)				\
++		val = READ_ONCE(addr);			\
++	else						\
++		val = READ_ONCE_NOCHECK(addr);		\
++	val;						\
++})
 +
- static const struct of_device_id sun6i_rtc_ccu_match[] = {
- 	{
- 		.compatible	= "allwinner,sun50i-h616-rtc",
-@@ -334,6 +341,10 @@ static const struct of_device_id sun6i_rtc_ccu_match[] = {
- 		.compatible	= "allwinner,sun50i-r329-rtc",
- 		.data		= &sun50i_r329_rtc_ccu_data,
- 	},
-+	{
-+		.compatible	= "allwinner,sun55i-a523-rtc",
-+		.data		= &sun55i_a523_rtc_ccu_data,
-+	},
- 	{},
- };
- MODULE_DEVICE_TABLE(of, sun6i_rtc_ccu_match);
+ extern asmlinkage void handle_exception(void);
+ extern unsigned long ret_from_exception_end;
+ 
+@@ -69,8 +85,9 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
+ 			fp = frame->ra;
+ 			pc = regs->ra;
+ 		} else {
+-			fp = frame->fp;
+-			pc = ftrace_graph_ret_addr(current, &graph_idx, frame->ra,
++			fp = READ_ONCE_TASK_STACK(task, frame->fp);
++			pc = READ_ONCE_TASK_STACK(task, frame->ra);
++			pc = ftrace_graph_ret_addr(current, &graph_idx, pc,
+ 						   &frame->ra);
+ 			if (pc >= (unsigned long)handle_exception &&
+ 			    pc < (unsigned long)&ret_from_exception_end) {
 -- 
 2.51.0
 
