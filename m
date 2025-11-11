@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD047C4A79E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCDD2C4A782
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A14C3B592D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0CA33B3806
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB40343D6D;
-	Tue, 11 Nov 2025 01:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52040343D72;
+	Tue, 11 Nov 2025 01:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqzXpqiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8Llrs/a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CAF342CA9;
-	Tue, 11 Nov 2025 01:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEA9343D66;
+	Tue, 11 Nov 2025 01:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823553; cv=none; b=I5ZwZmG19hNndWBbbEZFlczZlRtDpG1udTUH+Me65TTY+ly6dAcPyN4KohPFIyw5hV7yk99+C8lysuZPhjlaV7+LWFvV2YvS3n1/fT+kXHlz7fpOc1wLjW55+N4ktEVj3KJRhmXUsEEjpzjfcyOdIq0DU10QhFjhJ3NgUSLRQAk=
+	t=1762823558; cv=none; b=d4t9Us+j6rvwuDUHXKEr0kN6Gkcmg1hnyz7a55diw6IpYH0Z2r+ldevNpsRSfbjLnbuhMMva4QAccPU1udfxfT+Zz6TN3KSTBVza6/2WgDpr9SgXiRXMpT2h71xYS1Xtt6gLvWruLKLCTVkYk0lNpOaNis0Ezq0SZwjbg8GTB3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823553; c=relaxed/simple;
-	bh=MyZtydjstefYDgqRaQmj6SvhWx5OJZ6w0lWCYKnrCEs=;
+	s=arc-20240116; t=1762823558; c=relaxed/simple;
+	bh=FByFioaCLrMoqtCg/JOlzi+S/zs+/3ZkBeCQbJUYHmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJMruMjM06xrNYOHP8S8gAfMYSelRNTS1KBJbFt+6VY0AoAHR5Ir6neycPDZo8jnuWDzVXIFbM6hUBVaIOY+jz0Eby4k7EsZq5gzcettney9GeNU/Y5xbMAM8IqH6Skf0OGNwugLxJHz2t7xoq6b+m6QxW91zZhMjlG0WOT2wqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqzXpqiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81FDC116B1;
-	Tue, 11 Nov 2025 01:12:32 +0000 (UTC)
+	 MIME-Version; b=b9F7mA01ySy9yoY+USmYv0GMHwQXc4XhRFqFn5sCrBKM54/dpThY4dNxiyPKeMGKwGnuc5R0jAewRdHptDYcqBbNCBdNRoMGnc5yQS8nI1iFkt7a32gEIufMTYd0wnzkJWmiAcwZGh0cNECkWnvLINtvvyw/0wEMJ+/hOkTAP3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8Llrs/a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E15AC4AF09;
+	Tue, 11 Nov 2025 01:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823553;
-	bh=MyZtydjstefYDgqRaQmj6SvhWx5OJZ6w0lWCYKnrCEs=;
+	s=korg; t=1762823557;
+	bh=FByFioaCLrMoqtCg/JOlzi+S/zs+/3ZkBeCQbJUYHmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FqzXpqiSDhzncuaItgi/GtXefGJxRjOWIYr4JLokd5lj7tHlfzIU3sYKY3B7t1rcq
-	 nCR3CePwHcjBYNCuCn2sfw56CN9UsvXYR5PDLIlZoTuWvmhMOAIr08bpQ9jhVz9g6c
-	 0+n5weDqxMCEurScLPUqPAsf9SSdWx7P9LZdk2KY=
+	b=W8Llrs/a2lzBmjqZB/EaN6HeKOV10yz67CxzcG0iD4QHXggcLtQBMrSNeQSZ1/64X
+	 I6tXfsD2O4eSORhEvxCWiqjjaA25pctWznhNwcZIXrDCpKYusyXOwLHildObvp1t/e
+	 jpHC190HzCoW1FH7hKe4Ysw7jZ3XeK87AcoYmCHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Shimrra Shai <shimrrashai@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 322/849] ASoC: es8323: remove DAC enablement write from es8323_probe
-Date: Tue, 11 Nov 2025 09:38:12 +0900
-Message-ID: <20251111004544.200323304@linuxfoundation.org>
+Subject: [PATCH 6.17 323/849] ASoC: es8323: add proper left/right mixer controls via DAPM
+Date: Tue, 11 Nov 2025 09:38:13 +0900
+Message-ID: <20251111004544.226194401@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,32 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 From: Shimrra Shai <shimrrashai@gmail.com>
 
-[ Upstream commit 33bc29123d26f7caa7d11f139e153e39104afc6c ]
+[ Upstream commit 7e39ca4056d11fef6b90aedd9eeeb3e070d3ce9f ]
 
-Remove initialization of the DAC and mixer enablement bits from the
-es8323_probe routine. This really should be handled by the DAPM
-subsystem.
+Add proper DAC and mixer controls to DAPM; no initialization in
+es8323_probe.
 
 Signed-off-by: Shimrra Shai <shimrrashai@gmail.com>
-Link: https://patch.msgid.link/20250815042023.115485-2-shimrrashai@gmail.com
+Link: https://patch.msgid.link/20250815042023.115485-3-shimrrashai@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/es8323.c | 1 -
- 1 file changed, 1 deletion(-)
+ sound/soc/codecs/es8323.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/sound/soc/codecs/es8323.c b/sound/soc/codecs/es8323.c
-index 70d348ff3b437..4c15fffda733c 100644
+index 4c15fffda733c..eb85b71e87f39 100644
 --- a/sound/soc/codecs/es8323.c
 +++ b/sound/soc/codecs/es8323.c
-@@ -632,7 +632,6 @@ static int es8323_probe(struct snd_soc_component *component)
+@@ -182,13 +182,13 @@ static const struct snd_kcontrol_new es8323_mono_adc_mux_controls =
  
- 	snd_soc_component_write(component, ES8323_CONTROL2, 0x60);
- 	snd_soc_component_write(component, ES8323_CHIPPOWER, 0x00);
--	snd_soc_component_write(component, ES8323_DACCONTROL17, 0xB8);
+ /* Left Mixer */
+ static const struct snd_kcontrol_new es8323_left_mixer_controls[] = {
+-	SOC_DAPM_SINGLE("Left Playback Switch", SND_SOC_NOPM, 7, 1, 1),
++	SOC_DAPM_SINGLE("Left Playback Switch", ES8323_DACCONTROL17, 7, 1, 0),
+ 	SOC_DAPM_SINGLE("Left Bypass Switch", ES8323_DACCONTROL17, 6, 1, 0),
+ };
  
- 	return 0;
- }
+ /* Right Mixer */
+ static const struct snd_kcontrol_new es8323_right_mixer_controls[] = {
+-	SOC_DAPM_SINGLE("Right Playback Switch", SND_SOC_NOPM, 6, 1, 1),
++	SOC_DAPM_SINGLE("Right Playback Switch", ES8323_DACCONTROL20, 7, 1, 0),
+ 	SOC_DAPM_SINGLE("Right Bypass Switch", ES8323_DACCONTROL20, 6, 1, 0),
+ };
+ 
 -- 
 2.51.0
 
