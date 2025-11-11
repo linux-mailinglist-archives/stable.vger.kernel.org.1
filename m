@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17E4C4A90B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A82A4C4A893
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D26913B89B6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 042CE1896C50
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166C3346A16;
-	Tue, 11 Nov 2025 01:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 306CD347BB4;
+	Tue, 11 Nov 2025 01:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2I3CGSiU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yy54Q9N8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EAD2DC79D;
-	Tue, 11 Nov 2025 01:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBD82DEA67;
+	Tue, 11 Nov 2025 01:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823682; cv=none; b=RvLe07v8ZKEe5bO7DinoMzeyQxWlg02K0J77CixjrMc3d11CHgDM/EVknKutfmXeHwV/SBMZ+AM5RhOJg2PwKjrp8/8fJc3yMf8Dh3l59ScmU0MU/W9i2S0M//3DsumsxKON79IERGGJ3C5ubIUjL7ObkkMANhi08iDNs6NfgvM=
+	t=1762823736; cv=none; b=u4+x2bFwni5HxTauaBkGRqexicYZdaj8Q4LXlkFO3yEkkItnkdOUiDWIKq3zLeoFDff1LGWZjX6jJtu6B+uSZtV2Vg2E6/r2TjX4E4AcphcS/ueKKa2b/Z/jecTzaPNYyGJqP27ibvLfKGBU2GkmzqjcwQ2q+wDF/I2IHA0ErEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823682; c=relaxed/simple;
-	bh=sRgnQnqO5NT70cLdDKIV/wFJdy4G/XwEuAcw7B5R7ls=;
+	s=arc-20240116; t=1762823736; c=relaxed/simple;
+	bh=yzKQTa0gD7LRseAKfp5wmyoM5Ft5Jm5CgmlcfXvcbzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAbJw4WwAcHSRjNZ4xCf4jS6gLdrowRwpCwTHOErPcOBzYvsiiDmBNWEQ8BcUEc7upRR3XXpBRLJw3eg9C59Prc5t6XTl03KTSlT1LYhVfpi/7ed6v3qs+wjh+GyfcUfMekjAqw7P+++kOdX44zu0qdhXRGV61s/9AuCKPoi2Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2I3CGSiU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A77C19424;
-	Tue, 11 Nov 2025 01:14:42 +0000 (UTC)
+	 MIME-Version; b=DHV/6ofjoViYUaEEFByVJYp7niYylY6HuLM0mz8lCWPVrnwxwnek0uVy8DRZ7MdDeZHVGYQVS7MPk4WnK8abBqs7ofed4yDWYzt8I1Dw3G097B/99uDOzeefMfy6CVzzqtatjf7a27GlcNjAdaa1EodZ75ZHoWm8amkEzd2cudI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yy54Q9N8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D7FC19425;
+	Tue, 11 Nov 2025 01:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823682;
-	bh=sRgnQnqO5NT70cLdDKIV/wFJdy4G/XwEuAcw7B5R7ls=;
+	s=korg; t=1762823735;
+	bh=yzKQTa0gD7LRseAKfp5wmyoM5Ft5Jm5CgmlcfXvcbzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2I3CGSiUT8kNEA1q4n5Eee9lBoEn+qcwKvuHMDNm9tLeFjYQg8wH+A79Y2xFMYkJN
-	 OS734Z9ZS7HEaLUNaSPij7DGGREUS1fpy1LNxHjXn5tHZMuHmqm5P/UWfLYmZKRQax
-	 MQfC+EY2nyuQMzmNnHk61Ucr82eOe73qT3s9ZtOg=
+	b=yy54Q9N8/h2NBjzrrjAQkkQHF8bvs0QgUmbdorc5QiNGeZacZLW+7nIqipZyfUvFj
+	 tulbRn3Tjh0OZNTT8BEdWXLvNfA7NJ6ESV3GFixp7VIL3NP0xVmVcilmEvEYkL1Ab3
+	 lJtzWk7VvlWRTnNvkLfvPADUS0+zZ75mIpmPQKrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kuan-Chung Chen <damon.chen@realtek.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 327/849] wifi: rtw89: wow: remove notify during WoWLAN net-detect
-Date: Tue, 11 Nov 2025 09:38:17 +0900
-Message-ID: <20251111004544.324098027@linuxfoundation.org>
+Subject: [PATCH 6.17 328/849] wifi: rtw89: fix BSSID comparison for non-transmitted BSSID
+Date: Tue, 11 Nov 2025 09:38:18 +0900
+Message-ID: <20251111004544.349141162@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,41 +68,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuan-Chung Chen <damon.chen@realtek.com>
 
-[ Upstream commit 38846585f9df9af1f7261d85134a5510fc079458 ]
+[ Upstream commit c4c16c88e78417424b4e3f33177e84baf0bc9a99 ]
 
-In WoWLAN net-detect mode, the firmware periodically performs scans
-and sends scan reports via C2H, which driver does not need. These
-unnecessary C2H events cause firmware watchdog timeout, leading
-to unexpected wakeups and SER 0x2599 on 8922AE.
+For non-transmitted connections, beacons are received from the
+transmitted BSSID. Fix this to avoid missing beacon statistics.
 
 Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250811123744.15361-4-pkshih@realtek.com
+Link: https://patch.msgid.link/20250811123950.15697-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 16e59a4a486e6..e6f8fab799fc1 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -7123,7 +7123,6 @@ static void rtw89_pno_scan_add_chan_ax(struct rtw89_dev *rtwdev,
- 	struct rtw89_pktofld_info *info;
- 	u8 probe_count = 0;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 5dd05b296e71c..0f7a467671ca8 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -2246,6 +2246,7 @@ static void rtw89_vif_rx_stats_iter(void *data, u8 *mac,
+ 	struct ieee80211_bss_conf *bss_conf;
+ 	struct rtw89_vif_link *rtwvif_link;
+ 	const u8 *bssid = iter_data->bssid;
++	const u8 *target_bssid;
  
--	ch_info->notify_action = RTW89_SCANOFLD_DEBUG_MASK;
- 	ch_info->dfs_ch = chan_type == RTW89_CHAN_DFS;
- 	ch_info->bw = RTW89_SCAN_WIDTH;
- 	ch_info->tx_pkt = true;
-@@ -7264,7 +7263,6 @@ static void rtw89_pno_scan_add_chan_be(struct rtw89_dev *rtwdev, int chan_type,
- 	struct rtw89_pktofld_info *info;
- 	u8 probe_count = 0, i;
+ 	if (rtwdev->scanning &&
+ 	    (ieee80211_is_beacon(hdr->frame_control) ||
+@@ -2267,7 +2268,10 @@ static void rtw89_vif_rx_stats_iter(void *data, u8 *mac,
+ 		goto out;
+ 	}
  
--	ch_info->notify_action = RTW89_SCANOFLD_DEBUG_MASK;
- 	ch_info->dfs_ch = chan_type == RTW89_CHAN_DFS;
- 	ch_info->bw = RTW89_SCAN_WIDTH;
- 	ch_info->tx_null = false;
+-	if (!ether_addr_equal(bss_conf->bssid, bssid))
++	target_bssid = ieee80211_is_beacon(hdr->frame_control) &&
++		       bss_conf->nontransmitted ?
++		       bss_conf->transmitter_bssid : bss_conf->bssid;
++	if (!ether_addr_equal(target_bssid, bssid))
+ 		goto out;
+ 
+ 	if (is_mld) {
 -- 
 2.51.0
 
