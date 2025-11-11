@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-194386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1878CC4B1B7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:33 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5A0CC4AE47
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1590B4FD01F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E1AF54F7891
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750382741C9;
-	Tue, 11 Nov 2025 01:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90496303A0D;
+	Tue, 11 Nov 2025 01:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPjan6xy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qez51ZZB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195CA24A043;
-	Tue, 11 Nov 2025 01:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAA1262FEC;
+	Tue, 11 Nov 2025 01:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825483; cv=none; b=n/iuF+22LSnnzX/WvbRmRuPZ5QiGPP7wAkbtd7l1VZzHsW6C2j99EG7RzvWx1ywncpGCI3uYXgVlR93ai/jrhXiy9S2DbxCPBgEjguKD6spkGoxkcvP8NwbOlBluYAKW+WdzepA1idlFEju5OhkAA+AlrQnyA6SmTWSz7Y122Ok=
+	t=1762824793; cv=none; b=FMd0Hh9EQpzTbJp/gdyWaAikfRMApjCJes7h0SSd7ITV924vl4vLcaZiJPiL9jNHQIH/fPQu9dgMzHiwOELIaKOnx6d+/I4q28Te4+YfCw9QMyH6AM6REjYtrbfli07TKzBrsH7negOzzy4aMFuVrBdWE7STLhbStNsKeuoCJdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825483; c=relaxed/simple;
-	bh=3pyB7iweHj8ROjnXrc1+/ZH4m0pIxBsZoBE4x0/yrf4=;
+	s=arc-20240116; t=1762824793; c=relaxed/simple;
+	bh=Coezu9Wl/JWNJGcI6x+JYiUftPatNoMBQDrvLsoGTOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hDsMKi9FtqeSNOuyh/HJIutjET5oszXk8jAL8xT2Ndej89HqqxaRPXrpxR3J1GWcd6vkKvCdsqIgEr1D0LWc4aFXZVPafrbxptqr8cjwu18wroIXbpj1De03pJAeQd+lEIVa97wwiuU9BtcfHKPNd68BIgsDwjDKZFSo6ck/TCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPjan6xy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E182C113D0;
-	Tue, 11 Nov 2025 01:44:42 +0000 (UTC)
+	 MIME-Version; b=DY17YfxpBlWqw0fYMOsIylfu8N19ynRIa62jDNmbiIlz2vsI940D4CWvFxzhRsLiZ/Dpi/hqYVtloX/sM6e7p9VEPgO6nK3cOLLDjDyOYlJoIgzzP7ZaJPXjksJyyeU3zn5KQei1G+oEOjjldN4RQj3eYnW8AyBaWxhF5U58/e0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qez51ZZB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5A0C4CEF5;
+	Tue, 11 Nov 2025 01:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825482;
-	bh=3pyB7iweHj8ROjnXrc1+/ZH4m0pIxBsZoBE4x0/yrf4=;
+	s=korg; t=1762824793;
+	bh=Coezu9Wl/JWNJGcI6x+JYiUftPatNoMBQDrvLsoGTOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jPjan6xyn2JahGBqhB+3OR8pcxitJmg1AsHQfjuHcmtpBsO9yt7DnyceSNcUChuFo
-	 kZh9MtDmQKUigrJ8/Wejo5XGq8n3enYHl2GNfzXLpUNr5+J+tuhfbaOYLT4Em+wq98
-	 xXmGNwjjybXsGLjv6SkUDAikNLuSCFNUG/u3odl8=
+	b=qez51ZZBvYrXlGjnBv90rbAgP0cQejWvB3izmJS0FsSYPd+QWrrxDNJgnouu6rGh/
+	 syHh9D4ommjkFElw6S0myUkz80ih3v4B/JtaVOdlLu0X7SK5yAZfuTBdfhUArMFNpa
+	 BwY4FcYuz4HjPhmKanNFHIUyxNDXSpb7SH+eRKSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu Wenbo <qiuwenbo@kylinsec.com.cn>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.17 804/849] platform/x86: int3472: Fix double free of GPIO device during unregister
+	Linus Walleij <linus.walleij@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 518/565] gpiolib: fix invalid pointer access in debugfs
 Date: Tue, 11 Nov 2025 09:46:14 +0900
-Message-ID: <20251111004555.868602484@linuxfoundation.org>
+Message-ID: <20251111004538.612759596@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu Wenbo <qiuwenbo@kylinsec.com.cn>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit f0f7a3f542c1698edb69075f25a3f846207facba upstream.
+[ Upstream commit 2f6115ad8864cf3f48598f26c74c7c8e5c391919 ]
 
-regulator_unregister() already frees the associated GPIO device. On
-ThinkPad X9 (Lunar Lake), this causes a double free issue that leads to
-random failures when other drivers (typically Intel THC) attempt to
-allocate interrupts. The root cause is that the reference count of the
-pinctrl_intel_platform module unexpectedly drops to zero when this
-driver defers its probe.
+If the memory allocation in gpiolib_seq_start() fails, the s->private
+field remains uninitialized and is later dereferenced without checking
+in gpiolib_seq_stop(). Initialize s->private to NULL before calling
+kzalloc() and check it before dereferencing it.
 
-This behavior can also be reproduced by unloading the module directly.
-
-Fix the issue by removing the redundant release of the GPIO device
-during regulator unregistration.
-
-Cc: stable@vger.kernel.org
-Fixes: 1e5d088a52c2 ("platform/x86: int3472: Stop using devm_gpiod_get()")
-Signed-off-by: Qiu Wenbo <qiuwenbo@kylinsec.com.cn>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Link: https://patch.msgid.link/20251028063009.289414-1-qiuwenbo@gnome.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e348544f7994 ("gpio: protect the list of GPIO devices with SRCU")
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20251103141132.53471-1-brgl@bgdev.pl
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/int3472/clk_and_regulator.c | 5 +----
- include/linux/platform_data/x86/int3472.h              | 1 -
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpio/gpiolib.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/int3472/clk_and_regulator.c b/drivers/platform/x86/intel/int3472/clk_and_regulator.c
-index 476ec24d3702..9e052b164a1a 100644
---- a/drivers/platform/x86/intel/int3472/clk_and_regulator.c
-+++ b/drivers/platform/x86/intel/int3472/clk_and_regulator.c
-@@ -245,15 +245,12 @@ int skl_int3472_register_regulator(struct int3472_discrete_device *int3472,
- 	if (IS_ERR(regulator->rdev))
- 		return PTR_ERR(regulator->rdev);
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index e5d0d2b0d7989..967ff661e4c96 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -4997,6 +4997,8 @@ static void *gpiolib_seq_start(struct seq_file *s, loff_t *pos)
+ 	struct gpio_device *gdev;
+ 	loff_t index = *pos;
  
--	int3472->regulators[int3472->n_regulator_gpios].ena_gpio = gpio;
- 	int3472->n_regulator_gpios++;
- 	return 0;
- }
++	s->private = NULL;
++
+ 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return NULL;
+@@ -5030,7 +5032,11 @@ static void *gpiolib_seq_next(struct seq_file *s, void *v, loff_t *pos)
  
- void skl_int3472_unregister_regulator(struct int3472_discrete_device *int3472)
+ static void gpiolib_seq_stop(struct seq_file *s, void *v)
  {
--	for (int i = 0; i < int3472->n_regulator_gpios; i++) {
-+	for (int i = 0; i < int3472->n_regulator_gpios; i++)
- 		regulator_unregister(int3472->regulators[i].rdev);
--		gpiod_put(int3472->regulators[i].ena_gpio);
--	}
- }
-diff --git a/include/linux/platform_data/x86/int3472.h b/include/linux/platform_data/x86/int3472.h
-index 1571e9157fa5..b1b837583d54 100644
---- a/include/linux/platform_data/x86/int3472.h
-+++ b/include/linux/platform_data/x86/int3472.h
-@@ -100,7 +100,6 @@ struct int3472_gpio_regulator {
- 	struct regulator_consumer_supply supply_map[GPIO_REGULATOR_SUPPLY_MAP_COUNT * 2];
- 	char supply_name_upper[GPIO_SUPPLY_NAME_LENGTH];
- 	char regulator_name[GPIO_REGULATOR_NAME_LENGTH];
--	struct gpio_desc *ena_gpio;
- 	struct regulator_dev *rdev;
- 	struct regulator_desc rdesc;
- };
+-	struct gpiolib_seq_priv *priv = s->private;
++	struct gpiolib_seq_priv *priv;
++
++	priv = s->private;
++	if (!priv)
++		return;
+ 
+ 	srcu_read_unlock(&gpio_devices_srcu, priv->idx);
+ 	kfree(priv);
 -- 
-2.51.2
+2.51.0
 
 
 
