@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550CAC4ADAE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC68C4B178
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 134FC4F5429
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:36:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B67D5188F284
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6772F343215;
-	Tue, 11 Nov 2025 01:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32B52DE70D;
+	Tue, 11 Nov 2025 01:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3bU1g20"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kw3u9onF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253DA342CAF;
-	Tue, 11 Nov 2025 01:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B7B26E158;
+	Tue, 11 Nov 2025 01:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824655; cv=none; b=IHV2lbTRviB+RXes+qXdD8IjG5MOcjlxiLbXrvNz7Lqel4hAehelLVW1tJZ5meonjZEdyRB8ctNPk7m4wpQt1YtTr4OpGPzUXj5HwqFXKrMAZWfxyJsYCr3QjYRXAfEubEBQhqMWCirx1yj/lFH7VhMxudiGo+UXfIju8gWcz4k=
+	t=1762825386; cv=none; b=PLSpRV/nlGAp5N0K3+QcYg1QsdbHgLPJJ4JZSSZ/vCMVNCmTXpba3itOMNSD/VH4Abo4M+QSHBONj4jx7lsXA8CZ+XLX8UpUTvSXb+Vz3jzEh+BJ/ga2yzxnotbiQSdksQ5Jut0UCro9i+EdKCuT7SYXHmzLwSaUuY8JZi6Q1o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824655; c=relaxed/simple;
-	bh=RAWj0yeuDOC1ALKlnUNGg8cqR5aSEJ6B5gM+EOe6sgI=;
+	s=arc-20240116; t=1762825386; c=relaxed/simple;
+	bh=Yc1+suwgxImf7lazx5u78wKoBwsOAhuoGZMjCeiTt8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otXzXUBvC6158eXAsRKlfpwBNMk1j0OqjaPcbK0yaKBoFrhlw3JLjlqp4B2KqPOcR//I9PIn1PGy9r0DMCGlmFHLpGpbPXMS5EJcb4bkMUxo/9tFhB9wJw0OvZcI+fRMm0hu96qb7kn88SECdMUpyCGX/HYorVkRqM22uQDFlIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3bU1g20; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BC2C113D0;
-	Tue, 11 Nov 2025 01:30:54 +0000 (UTC)
+	 MIME-Version; b=DdGGqT2zw8GkkknQ8VNohhnJRPBGKEWzSWO6KmyEVg6RFEMBhVKEfaeB06rgQpj/M32+c3M4Xal7yvXsUEVB7MhEbqLT6kF5jUbFv59TPt1jTIPOg9IEdVkAMH55k1n0oimE/UoEfDYXxVBbPQE3kqx0pIJnhXulpqmQYyIvUAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kw3u9onF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31218C113D0;
+	Tue, 11 Nov 2025 01:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824654;
-	bh=RAWj0yeuDOC1ALKlnUNGg8cqR5aSEJ6B5gM+EOe6sgI=;
+	s=korg; t=1762825386;
+	bh=Yc1+suwgxImf7lazx5u78wKoBwsOAhuoGZMjCeiTt8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3bU1g20LGgb0b1VWJZjRnzsVK/gkLU3l2s5G1/mhUsmBsWxbj8LzKjBRH+VmbGUl
-	 AiFrWncReQnBUejQmD8mVjwznPDIAULxaqMIwEzpV8e9oELM5tP/uCE0CqemGX/uaE
-	 5sUMtrWiUdvDsNj4ERI1c3WZn9SMdmD2fStxtWTw=
+	b=Kw3u9onF310CMPAVZj3SmXjUu+MA9xwgBXXgxXnfI+EOgdViqrpirQ4KGO9CgnmV9
+	 4u/Go1KatNqOeOMr7UYY2fAVRSVMYFB+I3WMibtPf7WxpVkqEO2g4VcYzHOZcKcK4Z
+	 GNywrWwjxDfaj+tRPPNOyb7gOgiZO/NfSufOFX1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Qendrim Maxhuni <qendrim.maxhuni@garderos.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 493/565] ceph: fix potential race condition in ceph_ioctl_lazyio()
-Date: Tue, 11 Nov 2025 09:45:49 +0900
-Message-ID: <20251111004538.023992037@linuxfoundation.org>
+Subject: [PATCH 6.17 780/849] net: usb: qmi_wwan: initialize MAC header offset in qmimux_rx_fixup
+Date: Tue, 11 Nov 2025 09:45:50 +0900
+Message-ID: <20251111004555.285842327@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+From: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
 
-[ Upstream commit 5824ccba9a39a3ad914fc9b2972a2c1119abaac9 ]
+[ Upstream commit e120f46768d98151ece8756ebd688b0e43dc8b29 ]
 
-The Coverity Scan service has detected potential
-race condition in ceph_ioctl_lazyio() [1].
+Raw IP packets have no MAC header, leaving skb->mac_header uninitialized.
+This can trigger kernel panics on ARM64 when xfrm or other subsystems
+access the offset due to strict alignment checks.
 
-The CID 1591046 contains explanation: "Check of thread-shared
-field evades lock acquisition (LOCK_EVASION). Thread1 sets
-fmode to a new value. Now the two threads have an inconsistent
-view of fmode and updates to fields correlated with fmode
-may be lost. The data guarded by this critical section may
-be read while in an inconsistent state or modified by multiple
-racing threads. In ceph_ioctl_lazyio: Checking the value of
-a thread-shared field outside of a locked region to determine
-if a locked operation involving that thread shared field
-has completed. (CWE-543)".
+Initialize the MAC header to prevent such crashes.
 
-The patch places fi->fmode field access under ci->i_ceph_lock
-protection. Also, it introduces the is_file_already_lazy
-variable that is set under the lock and it is checked later
-out of scope of critical section.
+This can trigger kernel panics on ARM when running IPsec over the
+qmimux0 interface.
 
-[1] https://scan5.scan.coverity.com/#/project-view/64304/10063?selectedIssue=1591046
+Example trace:
 
-Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+    Internal error: Oops: 000000009600004f [#1] SMP
+    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.34-gbe78e49cb433 #1
+    Hardware name: LS1028A RDB Board (DT)
+    pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+    pc : xfrm_input+0xde8/0x1318
+    lr : xfrm_input+0x61c/0x1318
+    sp : ffff800080003b20
+    Call trace:
+     xfrm_input+0xde8/0x1318
+     xfrm6_rcv+0x38/0x44
+     xfrm6_esp_rcv+0x48/0xa8
+     ip6_protocol_deliver_rcu+0x94/0x4b0
+     ip6_input_finish+0x44/0x70
+     ip6_input+0x44/0xc0
+     ipv6_rcv+0x6c/0x114
+     __netif_receive_skb_one_core+0x5c/0x8c
+     __netif_receive_skb+0x18/0x60
+     process_backlog+0x78/0x17c
+     __napi_poll+0x38/0x180
+     net_rx_action+0x168/0x2f0
+
+Fixes: c6adf77953bc ("net: usb: qmi_wwan: add qmap mux protocol support")
+Signed-off-by: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
+Link: https://patch.msgid.link/20251029075744.105113-1-qendrim.maxhuni@garderos.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/ioctl.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/ceph/ioctl.c b/fs/ceph/ioctl.c
-index e861de3c79b9e..15cde055f3da1 100644
---- a/fs/ceph/ioctl.c
-+++ b/fs/ceph/ioctl.c
-@@ -246,21 +246,28 @@ static long ceph_ioctl_lazyio(struct file *file)
- 	struct ceph_inode_info *ci = ceph_inode(inode);
- 	struct ceph_mds_client *mdsc = ceph_inode_to_fs_client(inode)->mdsc;
- 	struct ceph_client *cl = mdsc->fsc->client;
-+	bool is_file_already_lazy = false;
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 11352d85475ae..3a4985b582cb1 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -192,6 +192,12 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 		if (!skbn)
+ 			return 0;
  
-+	spin_lock(&ci->i_ceph_lock);
- 	if ((fi->fmode & CEPH_FILE_MODE_LAZY) == 0) {
--		spin_lock(&ci->i_ceph_lock);
- 		fi->fmode |= CEPH_FILE_MODE_LAZY;
- 		ci->i_nr_by_mode[ffs(CEPH_FILE_MODE_LAZY)]++;
- 		__ceph_touch_fmode(ci, mdsc, fi->fmode);
--		spin_unlock(&ci->i_ceph_lock);
-+	} else {
-+		is_file_already_lazy = true;
-+	}
-+	spin_unlock(&ci->i_ceph_lock);
++	       /* Raw IP packets don't have a MAC header, but other subsystems
++		* (like xfrm) may still access MAC header offsets, so they must
++		* be initialized.
++		*/
++		skb_reset_mac_header(skbn);
 +
-+	if (is_file_already_lazy) {
-+		doutc(cl, "file %p %p %llx.%llx already lazy\n", file, inode,
-+		      ceph_vinop(inode));
-+	} else {
- 		doutc(cl, "file %p %p %llx.%llx marked lazy\n", file, inode,
- 		      ceph_vinop(inode));
- 
- 		ceph_check_caps(ci, 0);
--	} else {
--		doutc(cl, "file %p %p %llx.%llx already lazy\n", file, inode,
--		      ceph_vinop(inode));
- 	}
-+
- 	return 0;
- }
- 
+ 		switch (skb->data[offset + qmimux_hdr_sz] & 0xf0) {
+ 		case 0x40:
+ 			skbn->protocol = htons(ETH_P_IP);
 -- 
 2.51.0
 
