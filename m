@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-194361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E56C4B1B1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C566EC4AEDC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55DAA1894EC7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8283B3B7625
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4DC33FE12;
-	Tue, 11 Nov 2025 01:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF622340274;
+	Tue, 11 Nov 2025 01:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNavkdU7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HG7yajO+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2979A26CE04;
-	Tue, 11 Nov 2025 01:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C408261B8D;
+	Tue, 11 Nov 2025 01:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825424; cv=none; b=flFFXay0GhdQH6sw3ff6mcvcXbTbiuKwni36jS7K1fuUjprnQ5RCTHeV39Y5rLLFQk6rN57f8Ae/AsaAb2DvaLKKSZTN4fTmtHkPzZSf9vn+ARNazPDczILnnsTGekjt/Whkjqa4ZG4S//dcZPcO63LUarCdtakxonFD1yPBF78=
+	t=1762824584; cv=none; b=l8To/w6eoNKhoVM0VyR4Yd4uJUZe1M+Lf1Wu9F+AABAbQpQVSby/GDbmE9XkA4mRvcef46Z0uDOYA5qMX1GjJSET/Zn1zLyEz3OG2qKRRkKlInUc7zWssBro206BBSI3c8flXiMGYDFiXe4dCjgew0itHfMhnyHMvw9iXwm2maM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825424; c=relaxed/simple;
-	bh=b2cfvkWSz90q/8oiwsJJT6rcH++g3msIBfPpQrpWmdk=;
+	s=arc-20240116; t=1762824584; c=relaxed/simple;
+	bh=tUk8L6X2HkPR1NUCXwbB4wmu9NnI1CKTtsT485z/CyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lZSOK5t+ewxTfUjW8AFALkhbxWYxqL3ZLUsL5IN/OuLeu/eJZJoNwlCwbUWJ5WOIkwLlbUYaJjm+16TTt+rYTqqkHix71NY6h7+m+OM+PRq2irRUXCYd5M9p311RH6DRJYFd2Ve2qOftQ8GvGBvIUM4pg3hUkrLezy1/nLQRH3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oNavkdU7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92829C113D0;
-	Tue, 11 Nov 2025 01:43:43 +0000 (UTC)
+	 MIME-Version; b=ThX8IJfmkhTkljT0oMPmv+T7I1rm+WIjub5cIUMyuryop+hNu/2fxhHb1vklD1AfxXVk8Q3Zil8wmoNY7LJ9RjKsTQAXGSjVS5h3IuiRUmJDiTHoCGbBQGjWF+BnSnLW9dfUxQKqxh/9Ca4yPzhyffHyiiF5oKvnbkdoc1JR1lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HG7yajO+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A83FC116D0;
+	Tue, 11 Nov 2025 01:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825423;
-	bh=b2cfvkWSz90q/8oiwsJJT6rcH++g3msIBfPpQrpWmdk=;
+	s=korg; t=1762824584;
+	bh=tUk8L6X2HkPR1NUCXwbB4wmu9NnI1CKTtsT485z/CyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oNavkdU7N6+vs9Evf33Rdc77ocbieLrhP57o3egMUAx9nMZCZxocsl0+CAg5VWd9u
-	 QcVz1cf1clUf/1eRbYn0HBWtF/YhBdff96aM3q1CBRFMtHZSz2XWOkm4huYFzWWcmC
-	 U9rByOBO1kk7l3tzvDVhKm/IKl/b5bF0czrVwicA=
+	b=HG7yajO+BNgfqxGeCXJX6OeyYgLM8vGXcvdjtarLeiBRb5xOn5D6lxf92yplv6gQK
+	 ecOfWk5J59hlf43uo5JbWPx3iCIimbaP2vcPqJ7qz+smGEdcxfVKFliQuqpnFMUeks
+	 +3cp0vjhDu13qbNFYHsNy/RmkC1q6WOUId04Kb8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a546141ca6d53b90aba3@syzkaller.appspotmail.com,
-	Tim Hostetler <thostet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 759/849] gve: Implement settime64 with -EOPNOTSUPP
-Date: Tue, 11 Nov 2025 09:45:29 +0900
-Message-ID: <20251111004554.784138922@linuxfoundation.org>
+Subject: [PATCH 6.12 474/565] clk: scmi: Add duty cycle ops only when duty cycle is supported
+Date: Tue, 11 Nov 2025 09:45:30 +0900
+Message-ID: <20251111004537.576069579@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Hostetler <thostet@google.com>
+From: Jacky Bai <ping.bai@nxp.com>
 
-[ Upstream commit 329d050bbe63c2999f657cf2d3855be11a473745 ]
+[ Upstream commit 18db1ff2dea0f97dedaeadd18b0cb0a0d76154df ]
 
-ptp_clock_settime() assumes every ptp_clock has implemented settime64().
-Stub it with -EOPNOTSUPP to prevent a NULL dereference.
+For some of the SCMI based platforms, the oem extended config may be
+supported, but not for duty cycle purpose. Skip the duty cycle ops if
+err return when trying to get duty cycle info.
 
-Fixes: acd16380523b ("gve: Add initial PTP device support")
-Reported-by: syzbot+a546141ca6d53b90aba3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a546141ca6d53b90aba3
-Signed-off-by: Tim Hostetler <thostet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Link: https://patch.msgid.link/20251029184555.3852952-3-joshwash@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_ptp.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/clk/clk-scmi.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_ptp.c b/drivers/net/ethernet/google/gve/gve_ptp.c
-index 19ae699d4b18d..a384a9ed4914e 100644
---- a/drivers/net/ethernet/google/gve/gve_ptp.c
-+++ b/drivers/net/ethernet/google/gve/gve_ptp.c
-@@ -33,6 +33,12 @@ static int gve_ptp_gettimex64(struct ptp_clock_info *info,
- 	return -EOPNOTSUPP;
- }
- 
-+static int gve_ptp_settime64(struct ptp_clock_info *info,
-+			     const struct timespec64 *ts)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static long gve_ptp_do_aux_work(struct ptp_clock_info *info)
+diff --git a/drivers/clk/clk-scmi.c b/drivers/clk/clk-scmi.c
+index 1b1561c84127b..7b7ea36333a6b 100644
+--- a/drivers/clk/clk-scmi.c
++++ b/drivers/clk/clk-scmi.c
+@@ -349,6 +349,8 @@ scmi_clk_ops_select(struct scmi_clk *sclk, bool atomic_capable,
+ 		    unsigned int atomic_threshold_us,
+ 		    const struct clk_ops **clk_ops_db, size_t db_size)
  {
- 	const struct gve_ptp *ptp = container_of(info, struct gve_ptp, info);
-@@ -55,6 +61,7 @@ static const struct ptp_clock_info gve_ptp_caps = {
- 	.owner          = THIS_MODULE,
- 	.name		= "gve clock",
- 	.gettimex64	= gve_ptp_gettimex64,
-+	.settime64	= gve_ptp_settime64,
- 	.do_aux_work	= gve_ptp_do_aux_work,
- };
++	int ret;
++	u32 val;
+ 	const struct scmi_clock_info *ci = sclk->info;
+ 	unsigned int feats_key = 0;
+ 	const struct clk_ops *ops;
+@@ -370,8 +372,13 @@ scmi_clk_ops_select(struct scmi_clk *sclk, bool atomic_capable,
+ 	if (!ci->parent_ctrl_forbidden)
+ 		feats_key |= BIT(SCMI_CLK_PARENT_CTRL_SUPPORTED);
  
+-	if (ci->extended_config)
+-		feats_key |= BIT(SCMI_CLK_DUTY_CYCLE_SUPPORTED);
++	if (ci->extended_config) {
++		ret = scmi_proto_clk_ops->config_oem_get(sclk->ph, sclk->id,
++						 SCMI_CLOCK_CFG_DUTY_CYCLE,
++						 &val, NULL, false);
++		if (!ret)
++			feats_key |= BIT(SCMI_CLK_DUTY_CYCLE_SUPPORTED);
++	}
+ 
+ 	if (WARN_ON(feats_key >= db_size))
+ 		return NULL;
 -- 
 2.51.0
 
