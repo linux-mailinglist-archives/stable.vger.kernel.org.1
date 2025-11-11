@@ -1,111 +1,115 @@
-Return-Path: <stable+bounces-194489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C30EC4E442
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 14:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1EBC4E457
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 15:00:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 142BA4E68FB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 13:59:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 04AE14E2F7C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 14:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313D4359703;
-	Tue, 11 Nov 2025 13:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DCD35A943;
+	Tue, 11 Nov 2025 14:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YZsUgUUo"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="bn0JuxZ5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84044357728
-	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 13:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94C83AA195;
+	Tue, 11 Nov 2025 14:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762869542; cv=none; b=cfMoCnAfcQrnOTAkYcxYQpDp4nb3xAT5EJjjK6hFEdX4gYKkqYTQHioNNU0AT67Epz2qaGgps4toxHX7Z98UxvZlNF3bGZlpxsIS3nRixT3uOrvMReCjCkMklMajoUWjZnrR3PQNRJR+hh0ioprOcCqz+dwdfPe7e0hBmcjzMwQ=
+	t=1762869609; cv=none; b=r/ZNnzzPtXN6qA/q2zXlSOfsqVxU8/QviZeZbhqdib0wbuQswRCEIjTJ7aWHHhCMJVw6Xm+sPDzYqV+/bLgwMTcALXCkHKacAi25m8BOR+p1XOwYPT3qSIQoLoyh4O3+ppVFpTP0ma+m/JEqldHouXOkd2uKulxqeLx/nDwHcms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762869542; c=relaxed/simple;
-	bh=hRUmzVbCzzL89fOTZQBAaUfGAwTMnx1MK/93dcHh+is=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cfA7CG8ijWuDP4Hv9GZLVzFm6I+F7DuIIeYpHl5Mbv28qm1jFFHiobVWzFgDFThbCcDb7Wl54C/IrizlMEVOqVBlOwt9tE4YYTUqyT+i4EKo3jNhfDrMfWSAQxZFpHxszYeHy1enIIo72Lpl41vxiTVnIUDz0QX4Z2SAKOntZUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YZsUgUUo; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29800ac4ef3so4076205ad.1
-        for <stable@vger.kernel.org>; Tue, 11 Nov 2025 05:59:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762869540; x=1763474340; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hRUmzVbCzzL89fOTZQBAaUfGAwTMnx1MK/93dcHh+is=;
-        b=YZsUgUUoLezCFU0P/y4ACxySgN2oXPKkH5rAUf5K/Knu+yjMKYIEAtI7YWLE1CRREH
-         G4CuuxoaTEockrL6hXAlWf0lY4nQRzzL80T1q7fmEJSsVau+53U9PGuFNWSL/5ALXvZ9
-         gY4Gy8aWTsH+WCrDPGfy3++IOkelaCvSmWKF5ReNu5O7A3o5fX0ZZx4+cq0XO63GN9qd
-         bYV9JSbp9+UvllV9KKNUO+tyGt51I3QqMtssFeRcwbmHn5h+RNSgJkV/O2Rnzmtfj4zK
-         CVY9Huk2VfkwFwl9kJtqYxHo8j5N51q9r4sCHWCJUmcuSGkPkMEVb2wS/9+OgyV+2kBx
-         vg9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762869540; x=1763474340;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hRUmzVbCzzL89fOTZQBAaUfGAwTMnx1MK/93dcHh+is=;
-        b=S7BTuxnZbKWElCj09sgdpSDcB5jWPsqsKqc49Ab6EhF0x9hDXVLntohmx6kavF8EMA
-         s1fu6+rodFY62NFVmZkocTNYttcSPfyXquLw/iq+NQAQMaJApxNrECQVLAZebDKYtIoA
-         RERcfwrbptU/hOXdLhh1tCAXtaiyhrOqpGq0xdNE2ij7hP4xEbNAEsNuTdqgO4gEddi0
-         c2lPmpFYSoejZBmEzULtU6esorM4vct/4dhlqa2HPZjspk9AlMdYYU+r4svPl3Y5fesn
-         pFiHKVKMfWD5DKLMyUby2uAGIFsm4Umj/iFdGjD0oWr/mLyKX4O5GtDuglurBin60owc
-         QVtw==
-X-Forwarded-Encrypted: i=1; AJvYcCWRQeyyJ3ulOl+08F8j5eMKfgKs0CUhlrbg9HFDdDcCH1876zyXTDYbN3Q2hz5FII18HSMQxCc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFk6dnVX9/U28dmIrhZJJWgIH6+mbOjuAngjZEv2wKKak0M98l
-	GREYRfV+VXXnb0+T/SWX7s2GQNq5YSRMfVpGTDvXU2UtRbZ4NKYfawevpmxTxE7o/toYkN26q/f
-	NS/iE63gyl//GR0PQddRDVZ4B5F1IplU=
-X-Gm-Gg: ASbGncvWpBIKtvah9CDJO+PXnNRmyRelMEWemi+t4f/wFiaUH01D1uP4wpMBhPquPIv
-	zvrco7LFTOupJz9umxAWHn8IBxv22ZZ6N0BqTgNm+uTUlqyHqk0E60M0wntE3on8gnPRko8UCsA
-	CqTueVidJU4T/mvbmkxDWFHpSHoGEMuSA2tnyVoqJt2dPYUVcE2u1QFVy0LSZUq+HdAN8e9mIof
-	b4ITS7l20u7k/35TH0smfYVngaAWgkDDVdHxhnnfO/P6ivUFI9Daxe2elAIQp/Gwr/CS5IkOouc
-	LHv/oOnDZEgyjZ1cK8QXjXjPRLTUA0egzxg9/MwpCtbcP4ybm8Aqt2GJHXSE1uJMqD7Jlj8l21r
-	iBxFW0/nx6c/fug==
-X-Google-Smtp-Source: AGHT+IHYXxM/I5GaOybb6g1yecFYohV3zCOa1VEm8f2yGvBo9rJ8osfE6aj7FDf3tvSiEZ9Z9+sidUs9ZqMaIBw6rqE=
-X-Received: by 2002:a17:902:d48f:b0:295:54cd:d2e2 with SMTP id
- d9443c01a7336-297e4d096a4mr91553105ad.0.1762869539841; Tue, 11 Nov 2025
- 05:58:59 -0800 (PST)
+	s=arc-20240116; t=1762869609; c=relaxed/simple;
+	bh=cF3UDCrQejavFDcic3XHyemHWcv82tiOF5VKo1Nlqfc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bJT54/RaTOsfj77Bu5cpJdVVdcQp6jakiP+iNQt/rpYIY7nu7AVg6+FVkUwplKgRZK6vstCKPRFT0aii56hwOElcuEAq5lrILHKuV7MPZzLrIPr5LSPSgB63uy2ErO149Ss/1afheO75hj/PLZBcLn7eXi6o7lexOmtoDdDEQfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=bn0JuxZ5; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A44BB40E01A8;
+	Tue, 11 Nov 2025 14:00:04 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id gFB325oj--ej; Tue, 11 Nov 2025 14:00:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1762869599; bh=DVda1F0A/H/TQAbUvsduEWnI3b2Zm6i5TYT5FnHqBDw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bn0JuxZ5crAkQ77fFPdkbaERlWl4ClYYZCINWvdeOGU+/l8JIutiaLNfOkJjh7U3+
+	 4mf9LoJuELBn3bal34Ecs7yj7QmCzpMbSF7TboUFrilVwZCfoZkK6jBpg8tj9RGbO0
+	 WX7LDvEr0QPTVvBoyUtYuHmeRD0XQzp4obrlbtz6gBRBqQv9u57xkM+TIsgTTKfOcU
+	 BlJYSRLwFzmMxBtXjH6RO34tjkfY8AbNETCprlFe3I8/xbqiWxMl8zKjgfXw04i9dd
+	 0sC0we9H6Cdi61vz9iuS6fgVf9Xat998iqLZOPu2FkjE/cKgtTy1upxLokHrJ6mHPX
+	 59R5eg9CnXI/U3eNIY137hdanYLP0gj+qpRglr4gjT+YK1rTx3znXyv+/wBuq/XA/j
+	 IHWOoJXVgX18ZVcRiNpew1zDkyb/IOE3Aqibc1pcgmA96ujbn57Jn7SRAgi3pAaZSF
+	 ueTKIX1Yz2HFSoors6S7qGGcVtQo0tnDer03f1ZowunlOOgR+BifpIYJUv1k88b6Sh
+	 ITdY7QyNsccNzj8JPg+LIsOXeud/JSd4MLDnE2WtrbisdMpo7fLo61ePi0pr36WCbz
+	 i5WqCR3+N3ARju2cqMhFBm19W0xONK6RlFxDj4LJIlCuteFVXO8XE8Lu/KHFb0HTcw
+	 wUPzKkkjwVfJBAaqvQzrSDsA=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 59ACC40E016E;
+	Tue, 11 Nov 2025 13:59:53 +0000 (UTC)
+Date: Tue, 11 Nov 2025 14:59:52 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: niravkumarlaxmidas.rabara@altera.com
+Cc: dinguyen@kernel.org, tony.luck@intel.com, linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] EDAC/altera: Use INTTEST register for Ethernet and
+ USB SBE injection
+Message-ID: <20251111135952.GBaRNBWEoHvOQKcEF8@fat_crate.local>
+References: <20251111081333.1279635-1-niravkumarlaxmidas.rabara@altera.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251110131913.1789896-1-ojeda@kernel.org> <CANiq72mjFobjfQEtNvk9aA+757RkLpcfmCCEJAH69ZYsr67GdA@mail.gmail.com>
-In-Reply-To: <CANiq72mjFobjfQEtNvk9aA+757RkLpcfmCCEJAH69ZYsr67GdA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 11 Nov 2025 14:58:47 +0100
-X-Gm-Features: AWmQ_bmjChoTwnLfQhUmk8zTDZP6XuF3N7zYh0KKb3TDMGl3YRN3n87n4dAkPXU
-Message-ID: <CANiq72kaoYYMq+ghFsa+YrRbTE13M2TrtOMwAK1eV1Sk9tEQzg@mail.gmail.com>
-Subject: Re: [PATCH v2] gendwarfksyms: Skip files with no exports
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Sami Tolvanen <samitolvanen@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
-	Haiyue Wang <haiyuewa@163.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251111081333.1279635-1-niravkumarlaxmidas.rabara@altera.com>
 
-On Tue, Nov 11, 2025 at 2:54=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> I will send a couple other fixes to Linus this week, so if nobody
-> shouts, I will be picking this one.
+On Tue, Nov 11, 2025 at 04:13:33PM +0800, niravkumarlaxmidas.rabara@altera.com wrote:
+> From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+> 
+> The current single-bit error injection mechanism flips bits directly in
+> ECC RAM by performing write and read operations. When the ECC RAM is
+> actively used by the Ethernet or USB controller, this approach sometimes
+> trigger a false double-bit error.
+> 
+> Switch both Ethernet and USB EDAC devices to use the INTTEST register
+> (altr_edac_a10_device_inject_fops) for single-bit error injection,
+> similar to the existing double-bit error injection method.
+> 
+> Fixes: 064acbd4f4ab ("EDAC, altera: Add Stratix10 peripheral support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+> ---
+> 
+> v2 changes:
+>  - Add missing Cc tag
+> 
+> v1 link:
+> https://lore.kernel.org/all/20251101051723.917688-1-niravkumarlaxmidas.rabara@altera.com/
+> 
+>  drivers/edac/altera_edac.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Of course, if someone else (thanks Haiyue!) wants to give tag or two,
-I can still pick those up, and that would be very welcome.
+Applied, thanks.
 
-Cheers,
-Miguel
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
