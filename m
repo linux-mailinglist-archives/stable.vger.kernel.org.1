@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-193584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57701C4A569
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:20:43 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A58C4AAFC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D1D6F34BEE9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 50E3534CB2B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFD22C2357;
-	Tue, 11 Nov 2025 01:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329C726980F;
+	Tue, 11 Nov 2025 01:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Si6jTwPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fslSfwt4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2AF342CBC;
-	Tue, 11 Nov 2025 01:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33FA1C4A24;
+	Tue, 11 Nov 2025 01:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823530; cv=none; b=XAMVFyQ32lzP6S2NT06mzjTUXBQwzEQ7XkrVdUa50FjnZ4/+qjTbNfHOKXU4g5JXkkt7Nx989AK7tUPfPkZUka9WFZvgobDZJsGnY0WI6z8O1ihZziI77IVa9U4kGHOHlqUqgL5Px80Mzn3alaE/RW0HgmdkgTWAiEHmtcHPUFU=
+	t=1762824684; cv=none; b=P9OLSdO489PUbkJPzWYWdyURCYRyCaUKvnAUVsU8R89M5LD7T2UnV78Lypzw79MZrdDvTocqVrJNyxkXrZTwdYgDbHae9AkfdXbUDVThwldyCV1NevWvHmzjnNWwZFyoh2f7GZ4lbzgueONVsWUmWCaiqmuYKZrtac+zIZxJRTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823530; c=relaxed/simple;
-	bh=sy0+hcoknFGYV54hX4DSBMWU+ocaVIupXvQIPQgnLHQ=;
+	s=arc-20240116; t=1762824684; c=relaxed/simple;
+	bh=L5BXdPRY6l+a7/wnxJuhMCUJr109/IPtshG8S7bKvso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EsyabfaCgG0TDVYnju26vSLA4MslRqpPOelvX5optqB2vdc76zcWFIlfqFT71HZG2j+/xKIBz1ojRaZ+3KG19elhoj0mZKA2/6rjooVPhCFLBp0bp1LYd5v4Z7ijwwIn4Q6QhE8Y25U7duhv76Vfv4vmm1sNQbX2z74wrUpb5kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Si6jTwPx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F63C2BC86;
-	Tue, 11 Nov 2025 01:12:09 +0000 (UTC)
+	 MIME-Version; b=OKc1b+zNKhFzK3dlOMt3gB1O37Q44C1kyAeCAeXZ+hCd4z11mv7n8NJs3TK57TSMGAXuO+2Y3Q9RQiQnuAbABhPTTrPe59aEHu8ByhD8ciEUJx2x1HPQcFzIEuevZJ1N+J+1jZeBDYp5IJ6yZdrcrqp7czSsbfigcLgJQj9uWr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fslSfwt4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC6FC19421;
+	Tue, 11 Nov 2025 01:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823529;
-	bh=sy0+hcoknFGYV54hX4DSBMWU+ocaVIupXvQIPQgnLHQ=;
+	s=korg; t=1762824683;
+	bh=L5BXdPRY6l+a7/wnxJuhMCUJr109/IPtshG8S7bKvso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Si6jTwPx/xyy4M+fNav0BHH0uD8xVSHuc8g3bkbUgXpVJnnqeVPc4VZ6Uv8wJeQy8
-	 oVjSr4y58dcu2i7rwvroMhbBn5bhX9BN5gs903zXeqOhn2VBftS6Yl8spJ6e0A/uag
-	 q0ZgYFk6igS60a+eJIPS68bfrJ81K3hxjAjPPacI=
+	b=fslSfwt4Y6VeoSmLyckvO5hImBcDd+cOsiWNaw9JdYB4SRXsaJeBanNw0HiccvHde
+	 yKkmvdT4vOSocueUhLaMrV+EdEzuKCcRNyU9HhUvC98vEo16XhwEz3goJl/AspBOOj
+	 7xF3DVpswjYV6c5IDzMonDOW+j/5DKTJ6VrvDFp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Ce Sun <cesun102@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 264/565] ASoC: SOF: ipc4-pcm: Add fixup for channels
+Subject: [PATCH 6.17 550/849] drm/amdgpu: Release hive reference properly
 Date: Tue, 11 Nov 2025 09:42:00 +0900
-Message-ID: <20251111004532.832321544@linuxfoundation.org>
+Message-ID: <20251111004549.703042603@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 6ad299a9b968e1c63988e2a327295e522cf6bbf5 ]
+[ Upstream commit c1456fadce0c99175f97e66c2b982dd051e01aa2 ]
 
-We can have modules in path which can change the number of channels and in
-this case the BE params needs to be adjusted to configure the DAI according
-to the copier configuration.
+xgmi hive reference is taken on function entry, but not released
+correctly for all paths. Use __free() to release reference properly.
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Message-ID: <20250829105305.31818-2-peter.ujfalusi@linux.intel.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Ce Sun <cesun102@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc4-pcm.c | 56 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 7 +++----
+ drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.h   | 4 ++++
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/sof/ipc4-pcm.c b/sound/soc/sof/ipc4-pcm.c
-index b11279f9d3c97..5e877dc921b1e 100644
---- a/sound/soc/sof/ipc4-pcm.c
-+++ b/sound/soc/sof/ipc4-pcm.c
-@@ -675,6 +675,58 @@ static int sof_ipc4_pcm_dai_link_fixup_rate(struct snd_sof_dev *sdev,
- 	return 0;
- }
- 
-+static int sof_ipc4_pcm_dai_link_fixup_channels(struct snd_sof_dev *sdev,
-+						struct snd_pcm_hw_params *params,
-+						struct sof_ipc4_copier *ipc4_copier)
-+{
-+	struct sof_ipc4_pin_format *pin_fmts = ipc4_copier->available_fmt.input_pin_fmts;
-+	struct snd_interval *channels = hw_param_interval(params, SNDRV_PCM_HW_PARAM_CHANNELS);
-+	int num_input_formats = ipc4_copier->available_fmt.num_input_formats;
-+	unsigned int fe_channels = params_channels(params);
-+	bool fe_be_match = false;
-+	bool single_be_channels = true;
-+	unsigned int be_channels, val;
-+	int i;
-+
-+	if (WARN_ON_ONCE(!num_input_formats))
-+		return -EINVAL;
-+
-+	/*
-+	 * Copier does not change channels, so we
-+	 * need to only consider the input pin information.
-+	 */
-+	be_channels = SOF_IPC4_AUDIO_FORMAT_CFG_CHANNELS_COUNT(pin_fmts[0].audio_fmt.fmt_cfg);
-+	for (i = 0; i < num_input_formats; i++) {
-+		val = SOF_IPC4_AUDIO_FORMAT_CFG_CHANNELS_COUNT(pin_fmts[i].audio_fmt.fmt_cfg);
-+
-+		if (val != be_channels)
-+			single_be_channels = false;
-+
-+		if (val == fe_channels) {
-+			fe_be_match = true;
-+			break;
-+		}
-+	}
-+
-+	/*
-+	 * If channels is different than FE channels, topology must contain a
-+	 * module which can change the number of channels. But we do require
-+	 * topology to define a single channels in the DAI copier config in
-+	 * this case (FE channels may be variable).
-+	 */
-+	if (!fe_be_match) {
-+		if (!single_be_channels) {
-+			dev_err(sdev->dev, "Unable to select channels for DAI link\n");
-+			return -EINVAL;
-+		}
-+
-+		channels->min = be_channels;
-+		channels->max = be_channels;
-+	}
-+
-+	return 0;
-+}
-+
- static int sof_ipc4_pcm_dai_link_fixup(struct snd_soc_pcm_runtime *rtd,
- 				       struct snd_pcm_hw_params *params)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 274bb4d857d36..56a737df87cc7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -6880,7 +6880,8 @@ pci_ers_result_t amdgpu_pci_error_detected(struct pci_dev *pdev, pci_channel_sta
  {
-@@ -738,6 +790,10 @@ static int sof_ipc4_pcm_dai_link_fixup(struct snd_soc_pcm_runtime *rtd,
- 	if (ret)
- 		return ret;
+ 	struct drm_device *dev = pci_get_drvdata(pdev);
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+-	struct amdgpu_hive_info *hive = amdgpu_get_xgmi_hive(adev);
++	struct amdgpu_hive_info *hive __free(xgmi_put_hive) =
++		amdgpu_get_xgmi_hive(adev);
+ 	struct amdgpu_reset_context reset_context;
+ 	struct list_head device_list;
  
-+	ret = sof_ipc4_pcm_dai_link_fixup_channels(sdev, params, ipc4_copier);
-+	if (ret)
-+		return ret;
+@@ -6911,10 +6912,8 @@ pci_ers_result_t amdgpu_pci_error_detected(struct pci_dev *pdev, pci_channel_sta
+ 		amdgpu_device_recovery_get_reset_lock(adev, &device_list);
+ 		amdgpu_device_halt_activities(adev, NULL, &reset_context, &device_list,
+ 					      hive, false);
+-		if (hive) {
++		if (hive)
+ 			mutex_unlock(&hive->hive_lock);
+-			amdgpu_put_xgmi_hive(hive);
+-		}
+ 		return PCI_ERS_RESULT_NEED_RESET;
+ 	case pci_channel_io_perm_failure:
+ 		/* Permanent error, prepare for device removal */
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.h
+index bba0b26fee8f1..5f36aff17e79e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.h
+@@ -126,4 +126,8 @@ uint32_t amdgpu_xgmi_get_max_bandwidth(struct amdgpu_device *adev);
+ 
+ void amgpu_xgmi_set_max_speed_width(struct amdgpu_device *adev,
+ 				    uint16_t max_speed, uint8_t max_width);
 +
- 	if (single_bitdepth) {
- 		snd_mask_none(fmt);
- 		valid_bits = SOF_IPC4_AUDIO_FORMAT_CFG_V_BIT_DEPTH(ipc4_fmt->fmt_cfg);
++/* Cleanup macro for use with __free(xgmi_put_hive) */
++DEFINE_FREE(xgmi_put_hive, struct amdgpu_hive_info *, if (_T) amdgpu_put_xgmi_hive(_T))
++
+ #endif
 -- 
 2.51.0
 
