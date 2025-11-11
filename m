@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-194165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 698E7C4AE57
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E66C4AE1A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 953041897085
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37891188DD1D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83452266B6F;
-	Tue, 11 Nov 2025 01:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578362DC79D;
+	Tue, 11 Nov 2025 01:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUo7Iqqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBuZn3Na"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DCC52BB17;
-	Tue, 11 Nov 2025 01:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162F02BB17;
+	Tue, 11 Nov 2025 01:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824957; cv=none; b=SxSP7KOhpvCMyWmqmzONsAlZ4RGbNN4NhFLmBA2M6stdsDg0G9Y3vmVKr2500UMGhyeJ/kuN3LdefXvCmjjGy7lcWsepsOZbpApxJQ43ka4inX3qvWPV8ANzP/Stl4rYXpmyTXrpVBsRAP3Ojg8ccKVLDEZe9INlQbloqR1T6FM=
+	t=1762824964; cv=none; b=qZWgtxzCqahb02+T4gRcoaxxgilpXv+55xeihvZBa3WD9Xgw6zzcdS3OqZjIjx22xB4uRvlh5ST6FIc3ErWlFMhhQRgk6r4wngTg0O8YYH1xeLfBLzZeVAXQOR7WL7k49jXkHMhHl0bB+F2tzY8EryHE66hhvlSkTRYRPsil3RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824957; c=relaxed/simple;
-	bh=c7p/Qci0vkUXYMf2FUvfBxYYebZUPuWJCUEpTCZESu8=;
+	s=arc-20240116; t=1762824964; c=relaxed/simple;
+	bh=UKnQjszi38AztQsb8m4Fy7BPkz8MDvnsULDopIkVmi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=II4QopvxOCVodQ6z62ygK7bmX57eKxmBfnvQKcyrDqQcBr4aEZ4SAe/Jopc24ROAw7J115Gyup//bmV7XSYLKlFXqltJ+TDsH/SZrn1JjxsLEKj5yiyOjx4OTi10a6FrUZux7oHZxcse/Zv8GJxH9+N0YmosKWrsMrCkUMlhAqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUo7Iqqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4ECC4AF09;
-	Tue, 11 Nov 2025 01:35:56 +0000 (UTC)
+	 MIME-Version; b=d5ZCBGaVA+NOzvr8Ki97P460pVnUf26rSO3JPXa2jSZVgsl3nHAHjsnNmXM8tvN3jtr/ALp6/1P8+KBbstfyv00hs4mEq6Tk0enLNQuNzHs4z42KvMmCMG+Kyx8VW7zF8/Zfny6053HIdDeL3JJzOzEycXOgeCjp/4zMiz90Quc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBuZn3Na; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DCCC116B1;
+	Tue, 11 Nov 2025 01:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824957;
-	bh=c7p/Qci0vkUXYMf2FUvfBxYYebZUPuWJCUEpTCZESu8=;
+	s=korg; t=1762824964;
+	bh=UKnQjszi38AztQsb8m4Fy7BPkz8MDvnsULDopIkVmi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lUo7Iqqhhu637aAMI9YUN3+Tdd6tFK61nkXv3axVS3tMKP/77CToBCvDZ+J9C79N6
-	 tsfU42fkey5s9vi9JAbTkXif890c5Niv2cANVKXHKTaDQFbYly4vOsVw1IbFPa0LrQ
-	 b58EMsk44td2pm9gCCVY/veYyM5dYYTfvjaRmB7w=
+	b=IBuZn3NaL2eTq+/wxZKvIxp1rePYQFQjTT/v4H8EPh4lpViw++7/zHFl++zSSux5F
+	 ETy1Qdew+yZq/qeeG5dPVLtKEh3psnvT2rk2lIsYu/wI6ztGlMs7hFVP1tKpKB2WMm
+	 XLLDWQa9ZixlZ0i58lJwdFbKiujOxY9ohjbEM1Ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Koakuma <koachan@protonmail.com>,
+	Andreas Larsson <andreas@gaisler.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 605/849] PCI: cadence: Check for the existence of cdns_pcie::ops before using it
-Date: Tue, 11 Nov 2025 09:42:55 +0900
-Message-ID: <20251111004551.048066397@linuxfoundation.org>
+Subject: [PATCH 6.17 606/849] sparc/module: Add R_SPARC_UA64 relocation handling
+Date: Tue, 11 Nov 2025 09:42:56 +0900
+Message-ID: <20251111004551.071861617@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,91 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Wang <unicorn_wang@outlook.com>
+From: Koakuma <koachan@protonmail.com>
 
-[ Upstream commit 49a6c160ad4812476f8ae1a8f4ed6d15adfa6c09 ]
+[ Upstream commit 05457d96175d25c976ab6241c332ae2eb5e07833 ]
 
-cdns_pcie::ops might not be populated by all the Cadence glue drivers. This
-is going to be true for the upcoming Sophgo platform which doesn't set the
-ops.
+This is needed so that the kernel can handle R_SPARC_UA64 relocations,
+which is emitted by LLVM's IAS.
 
-Hence, add a check to prevent NULL pointer dereference.
-
-Signed-off-by: Chen Wang <unicorn_wang@outlook.com>
-[mani: reworded subject and description]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/35182ee1d972dfcd093a964e11205efcebbdc044.1757643388.git.unicorn_wang@outlook.com
+Signed-off-by: Koakuma <koachan@protonmail.com>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-host.c | 2 +-
- drivers/pci/controller/cadence/pcie-cadence.c      | 4 ++--
- drivers/pci/controller/cadence/pcie-cadence.h      | 6 +++---
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ arch/sparc/include/asm/elf_64.h | 1 +
+ arch/sparc/kernel/module.c      | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
-index 59a4631de79fe..fffd63d6665e8 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-host.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
-@@ -531,7 +531,7 @@ static int cdns_pcie_host_init_address_translation(struct cdns_pcie_rc *rc)
- 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_PCI_ADDR1(0), addr1);
- 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(0), desc1);
+diff --git a/arch/sparc/include/asm/elf_64.h b/arch/sparc/include/asm/elf_64.h
+index 8fb09eec8c3e7..694ed081cf8d9 100644
+--- a/arch/sparc/include/asm/elf_64.h
++++ b/arch/sparc/include/asm/elf_64.h
+@@ -58,6 +58,7 @@
+ #define R_SPARC_7		43
+ #define R_SPARC_5		44
+ #define R_SPARC_6		45
++#define R_SPARC_UA64		54
  
--	if (pcie->ops->cpu_addr_fixup)
-+	if (pcie->ops && pcie->ops->cpu_addr_fixup)
- 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
- 
- 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(12) |
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.c b/drivers/pci/controller/cadence/pcie-cadence.c
-index 70a19573440ee..61806bbd8aa32 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence.c
-@@ -92,7 +92,7 @@ void cdns_pcie_set_outbound_region(struct cdns_pcie *pcie, u8 busnr, u8 fn,
- 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(r), desc1);
- 
- 	/* Set the CPU address */
--	if (pcie->ops->cpu_addr_fixup)
-+	if (pcie->ops && pcie->ops->cpu_addr_fixup)
- 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
- 
- 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(nbits) |
-@@ -123,7 +123,7 @@ void cdns_pcie_set_outbound_region_for_normal_msg(struct cdns_pcie *pcie,
- 	}
- 
- 	/* Set the CPU address */
--	if (pcie->ops->cpu_addr_fixup)
-+	if (pcie->ops && pcie->ops->cpu_addr_fixup)
- 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
- 
- 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(17) |
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
-index 1d81c4bf6c6db..2f07ba661bda7 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.h
-+++ b/drivers/pci/controller/cadence/pcie-cadence.h
-@@ -468,7 +468,7 @@ static inline u32 cdns_pcie_ep_fn_readl(struct cdns_pcie *pcie, u8 fn, u32 reg)
- 
- static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
- {
--	if (pcie->ops->start_link)
-+	if (pcie->ops && pcie->ops->start_link)
- 		return pcie->ops->start_link(pcie);
- 
- 	return 0;
-@@ -476,13 +476,13 @@ static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
- 
- static inline void cdns_pcie_stop_link(struct cdns_pcie *pcie)
- {
--	if (pcie->ops->stop_link)
-+	if (pcie->ops && pcie->ops->stop_link)
- 		pcie->ops->stop_link(pcie);
- }
- 
- static inline bool cdns_pcie_link_up(struct cdns_pcie *pcie)
- {
--	if (pcie->ops->link_up)
-+	if (pcie->ops && pcie->ops->link_up)
- 		return pcie->ops->link_up(pcie);
- 
- 	return true;
+ /* Bits present in AT_HWCAP, primarily for Sparc32.  */
+ #define HWCAP_SPARC_FLUSH       0x00000001
+diff --git a/arch/sparc/kernel/module.c b/arch/sparc/kernel/module.c
+index b8c51cc23d969..6e3d4dde4f9ab 100644
+--- a/arch/sparc/kernel/module.c
++++ b/arch/sparc/kernel/module.c
+@@ -87,6 +87,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs,
+ 			break;
+ #ifdef CONFIG_SPARC64
+ 		case R_SPARC_64:
++		case R_SPARC_UA64:
+ 			location[0] = v >> 56;
+ 			location[1] = v >> 48;
+ 			location[2] = v >> 40;
 -- 
 2.51.0
 
