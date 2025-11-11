@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-193575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6F1C4A795
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE8EC4ACAC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 144471893DDF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 409E218919E9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E62C2BE7B8;
-	Tue, 11 Nov 2025 01:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626D2344044;
+	Tue, 11 Nov 2025 01:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHJBRddt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1v3NJ+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C249246768;
-	Tue, 11 Nov 2025 01:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D62234402B;
+	Tue, 11 Nov 2025 01:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823508; cv=none; b=TwK3ESzA0IboUJ5dTv9i1a5bPGmePVU+urV/C/Qo4owW6dRO1dFuO8dtkAbYW+5JlayYcGr0oq9M2tYw0TOiu4/etPjYD3GG6gyd92qd3QnxnfgWzrk9hAVWIUxADalA6nHBW1IxyXhroFf4NuTWE6Sya01aXC3xf2TuV9ACiN4=
+	t=1762824668; cv=none; b=InJ9puRyaPkAcU3EO3TTahc4lymOT3dYh1XkhTaZQD3k37Di+PJwBU9NIzfXNCY6F07CL2XKNhJiDWkpNTQEDQ820XZueNm2sgmuWtxteTZ28DIJLUngltBiaaz4zh0AtmMHNpkgKKjjQEqrohc+sebfASjMe4Qx+Cm+NuroeBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823508; c=relaxed/simple;
-	bh=KIG63C4NLAX9XNMm+A/TWqCXwzrIAUNPwzHS8XiwrpQ=;
+	s=arc-20240116; t=1762824668; c=relaxed/simple;
+	bh=gkKwe39/QS2TxLOdU4aCmqThknfEKquFZhyvaB4WKlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ayX8HmWklEHAa/KiXy+U+6VHtwEcXFKh7HDlfN5Ca8O9EiJ02A5SiX5aOT2Q1SqN0jXfkTzjuPIm/pIj0l26pQ36IPdOCE3rVnY5IpmhEEbgEs5IRoEzOW21gnPWyISmOcqLgK4noi5VfWxmLUeXfXJTuGnW05/AQKKXOfp6uIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHJBRddt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FAF9C116B1;
-	Tue, 11 Nov 2025 01:11:47 +0000 (UTC)
+	 MIME-Version; b=XZsE8XrIZvBcXCUQJCV1k/8UW/9rgo1rJwuDMiHZTmau4YppGDe9IbYV47rI66Co+3e75qLAVA2JBhTHrLuwPvbIiNpfKmVzRK+tToquVurSJZxCdxFjWmSMsh4nPBAp0YjSwjuKZsauFcyUkufYRB3SkrpbFFryojo25+aWPlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1v3NJ+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A0C2C4CEFB;
+	Tue, 11 Nov 2025 01:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823507;
-	bh=KIG63C4NLAX9XNMm+A/TWqCXwzrIAUNPwzHS8XiwrpQ=;
+	s=korg; t=1762824666;
+	bh=gkKwe39/QS2TxLOdU4aCmqThknfEKquFZhyvaB4WKlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XHJBRddtz9T/UHAhhBWQHRcFjbYtsozKciTTx7rgn8j6ybBiRWsLRWIKj0yCrEnCY
-	 pMSAMEH82qH76zU1e9qXznCrrSnur6pGzc72qL0YxGqAkrB6lDwyMCVRfCjvl7aYxF
-	 i7c9P8hLPJSgWUefvglso/lpIq3l28PD+sgy/ASE=
+	b=M1v3NJ+Wfbtsfk5sXlKbsEISPjb+SiDCF5B6MJMhbDT8YFfUjtjY2/ZMDSYyi4DoD
+	 Au22WYEvWY5lol3xpnHozhXqKMeW9o49FdPcDcK9+k7m3QwLCTZlRdyydpdfhJ1/M9
+	 /5BZsh2RSSzyI/1+mGD8S0ZgSN2t1N1aVjGgSOpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 260/565] platform/x86/intel-uncore-freq: Fix warning in partitioned system
+Subject: [PATCH 6.17 546/849] wifi: mt76: use altx queue for offchannel tx on connac+
 Date: Tue, 11 Nov 2025 09:41:56 +0900
-Message-ID: <20251111004532.746617295@linuxfoundation.org>
+Message-ID: <20251111004549.607173568@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 6d47b4f08436cb682fb2644e6265a3897fd42a77 ]
+[ Upstream commit 12911593efa97abc27b75e98c530b8b1193c384b ]
 
-A partitioned system configured with only one package and one compute
-die, warning will be generated for duplicate sysfs entry. This typically
-occurs during the platform bring-up phase.
+This ensures that packets are sent out immediately and are not held by
+firmware internal buffering.
 
-Partitioned systems expose dies, equivalent to TPMI compute domains,
-through the CPUID. Each partitioned system must contains at least one
-compute die per partition, resulting in a minimum of two dies per
-package. Hence the function topology_max_dies_per_package() returns at
-least two, and the condition "topology_max_dies_per_package() > 1"
-prevents the creation of a root domain.
-
-In this case topology_max_dies_per_package() will return 1 and root
-domain will be created for partition 0 and a duplicate sysfs warning
-for partition 1 as both partitions have same package ID.
-
-To address this also check for non zero partition in addition to
-topology_max_dies_per_package() > 1.
-
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://lore.kernel.org/r/20250819211034.3776284-1-srinivas.pandruvada@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20250915075910.47558-9-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-index 9a5ff9163988d..e36ae804e21e6 100644
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-@@ -589,7 +589,7 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
+diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
+index 8ab5840fee57f..b78ae6a34b658 100644
+--- a/drivers/net/wireless/mediatek/mt76/tx.c
++++ b/drivers/net/wireless/mediatek/mt76/tx.c
+@@ -618,7 +618,8 @@ mt76_txq_schedule_pending_wcid(struct mt76_phy *phy, struct mt76_wcid *wcid,
+ 		    !(info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP) &&
+ 		    !ieee80211_is_data(hdr->frame_control) &&
+ 		    (!ieee80211_is_bufferable_mmpdu(skb) ||
+-		     ieee80211_is_deauth(hdr->frame_control)))
++		     ieee80211_is_deauth(hdr->frame_control) ||
++		     head == &wcid->tx_offchannel))
+ 			qid = MT_TXQ_PSD;
  
- 	auxiliary_set_drvdata(auxdev, tpmi_uncore);
- 
--	if (topology_max_dies_per_package() > 1)
-+	if (topology_max_dies_per_package() > 1 || plat_info->partition)
- 		return 0;
- 
- 	tpmi_uncore->root_cluster.root_domain = true;
+ 		q = phy->q_tx[qid];
 -- 
 2.51.0
 
