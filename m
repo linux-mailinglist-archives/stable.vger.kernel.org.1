@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5399BC4A025
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FF07C4A0EE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10B293AABF3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F0C194F24CE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1E9214210;
-	Tue, 11 Nov 2025 00:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343C6214210;
+	Tue, 11 Nov 2025 00:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlIUlN09"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEntDElM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8924C97;
-	Tue, 11 Nov 2025 00:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FCF4C97;
+	Tue, 11 Nov 2025 00:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822449; cv=none; b=J08YWUnfdiXhSSSx+oc3JDmKmqGm/cXDob/sJUP9bsFrp3Sl6viu4QShBX/t8qy3nyVFa3A4NmNICsfajrpgWYZDv5syDSCp3mh4h4GA2Vv4xrHcdcXgmeCcyft5eJQpFdtoI9Uku0PG/cHjpXLrg42q11FQPsDNZOT6B8qedEU=
+	t=1762822454; cv=none; b=VR0ZG34uUKiA6bRfFf5YtT3ULeHcAXIrxjSN+HsATNQlneLPIFmg588wMP67PYmJEv3q3Tx6Uw/PTyovyIJgrNxlX2AGnyihIKxvru8GAJPyyXebtrkQFPrTeqSzpbfUOSw0+gYCHQ1XLppf2+Yhrid6kUk4XSL/Kqws5jlTxck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822449; c=relaxed/simple;
-	bh=69nsx3wyqR6hQsbdBmmAFopHofkmRiF2XaK5IxjBnPk=;
+	s=arc-20240116; t=1762822454; c=relaxed/simple;
+	bh=rJxM9DM0FC1tYeBS156NSQp4+pehyce7i1qERKunPIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYFfhA0LHzKb3VZOh80I5GpyRhuSsJCF/K1jBTEs8jNoyu4LYf7PqfxeTX/uBYHmOXqGA2pZQbq0l/UAh0iHIAm+4kNqlaufgqeAw66W67Cpa4PTCD+Bd7VRjyjSqGK4HFLAPik4HkniIDKVzebUL+E40kgjxzkoYJ0yls3p1LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlIUlN09; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE33FC19421;
-	Tue, 11 Nov 2025 00:54:08 +0000 (UTC)
+	 MIME-Version; b=TsQiQy6IlfzkgWab+uNY3SMkTxbTISzjMjt4EOBV7KfvWHH0IaOyqIxDGb6PeJN0SKbgA53o7yNBxdscYjMhXDO5O3MuTIJ3Kvlr2CI2W2AOWGUG3S3tRziFo0NuTcAIPaqlhw2bwyQHpZK4iNulHpT5gH1In6dsEgxU3sa0IRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEntDElM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF72C4AF0B;
+	Tue, 11 Nov 2025 00:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822449;
-	bh=69nsx3wyqR6hQsbdBmmAFopHofkmRiF2XaK5IxjBnPk=;
+	s=korg; t=1762822453;
+	bh=rJxM9DM0FC1tYeBS156NSQp4+pehyce7i1qERKunPIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RlIUlN09YEyohNZlVz2mXLR+up+pK3sgbRiUrtVFi+XkDMx0Og4o3Zz6VToW0DdRZ
-	 a5YGi0ggHXyBybFC+Tx5eFW8dfwS8hM8cH9fTBOvXJVhpW5RpoCUuvRClxkc71aMqP
-	 Po114HbYsUb3mkKqKCruD0dEaYPGCCBxFbVsvZYk=
+	b=WEntDElMFoA16AdqtGyJNLFaKT5uwufk1GlId263iGn8GTH/lbmP2ZlSAmTu92PJB
+	 Q6t4rU1IIPUFWcz+w78R1/9zc8kKI1CwXbO6QYKdjoz986O5sWHEazAkUBQhMGQSw0
+	 p92puT1gk0dyna0jQmuuymgAhYjq8wIpgSFGymv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Maarten Zanders <maarten@zanders.be>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/565] dpll: spec: add missing module-name and clock-id to pin-get reply
-Date: Tue, 11 Nov 2025 09:38:28 +0900
-Message-ID: <20251111004528.083598856@linuxfoundation.org>
+Subject: [PATCH 6.12 053/565] ASoC: fsl_sai: Fix sync error in consumer mode
+Date: Tue, 11 Nov 2025 09:38:29 +0900
+Message-ID: <20251111004528.106449955@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,44 +67,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Maarten Zanders <maarten@zanders.be>
 
-[ Upstream commit 520ad9e96937e825a117e9f00dd35a3e199d67b5 ]
+[ Upstream commit b2dd1d0d322dce5f331961c927e775b84014d5ab ]
 
-The dpll.yaml spec incorrectly omitted module-name and clock-id from the
-pin-get operation reply specification, even though the kernel DPLL
-implementation has always included these attributes in pin-get responses
-since the initial implementation.
+When configured for default synchronisation (Rx syncs to Tx) and the
+SAI operates in consumer mode (clocks provided externally to Tx), a
+synchronisation error occurs on Tx on the first attempt after device
+initialisation when the playback stream is started while a capture
+stream is already active. This results in channel shift/swap on the
+playback stream.
+Subsequent streams (ie after that first failing one) always work
+correctly, no matter the order, with or without the other stream active.
 
-This spec inconsistency caused issues with the C YNL code generator.
-The generated dpll_pin_get_rsp structure was missing these fields.
+This issue was observed (and fix tested) on an i.MX6UL board connected
+to an ADAU1761 codec, where the codec provides both frame and bit clock
+(connected to TX pins).
 
-Fix the spec by adding module-name and clock-id to the pin-attrs reply
-specification to match the actual kernel behavior.
+To fix this, always initialize the 'other' xCR4 and xCR5 registers when
+we're starting a stream which is synced to the opposite one, irregardless
+of the producer/consumer status.
 
-Fixes: 3badff3a25d8 ("dpll: spec: Add Netlink spec in YAML")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Ivan Vecera <ivecera@redhat.com>
-Link: https://patch.msgid.link/20251024185512.363376-1-poros@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 51659ca069ce ("ASoC: fsl-sai: set xCR4/xCR5/xMR for SAI master mode")
+
+Signed-off-by: Maarten Zanders <maarten@zanders.be>
+Reviewed-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+Link: https://patch.msgid.link/20251024135716.584265-1-maarten@zanders.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/dpll.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/fsl/fsl_sai.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/netlink/specs/dpll.yaml b/Documentation/netlink/specs/dpll.yaml
-index f2894ca35de84..860350e61edb5 100644
---- a/Documentation/netlink/specs/dpll.yaml
-+++ b/Documentation/netlink/specs/dpll.yaml
-@@ -517,6 +517,8 @@ operations:
-         reply: &pin-attrs
-           attributes:
-             - id
-+            - module-name
-+            - clock-id
-             - board-label
-             - panel-label
-             - package-label
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 7e4338762f085..bc3bf1c55d3c1 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -620,12 +620,12 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 		val_cr4 |= FSL_SAI_CR4_CHMOD;
+ 
+ 	/*
+-	 * For SAI provider mode, when Tx(Rx) sync with Rx(Tx) clock, Rx(Tx) will
+-	 * generate bclk and frame clock for Tx(Rx), we should set RCR4(TCR4),
+-	 * RCR5(TCR5) for playback(capture), or there will be sync error.
++	 * When Tx(Rx) sync with Rx(Tx) clock, Rx(Tx) will provide bclk and
++	 * frame clock for Tx(Rx). We should set RCR4(TCR4), RCR5(TCR5)
++	 * for playback(capture), or there will be sync error.
+ 	 */
+ 
+-	if (!sai->is_consumer_mode[tx] && fsl_sai_dir_is_synced(sai, adir)) {
++	if (fsl_sai_dir_is_synced(sai, adir)) {
+ 		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(!tx, ofs),
+ 				   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK |
+ 				   FSL_SAI_CR4_CHMOD_MASK,
 -- 
 2.51.0
 
