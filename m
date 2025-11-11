@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-193222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0264C4A0CD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:56:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B40C4A11B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 605953AC9E9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:56:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 175203ACB67
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE015252917;
-	Tue, 11 Nov 2025 00:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9105D244693;
+	Tue, 11 Nov 2025 00:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXTR/ffS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IcKD+nSy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEA824113D;
-	Tue, 11 Nov 2025 00:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CB34C97;
+	Tue, 11 Nov 2025 00:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822587; cv=none; b=nw58luq8CTZMkW57l+q58hI62RrJOWx6vvQ+vzpJT0Q09hIez8C61WM6ZOGamOAI9fU2IsLWFcHSLLNLSr52/xdHlIJcly6GAnH86SGo+zt2YJiIFWZ5SD4fwpb+FjZxZWsF8s8Dz07uThZ16TgM9CWY8MCBZLOwetQ5eyn0Mkk=
+	t=1762822682; cv=none; b=J8krksOe9mZ6CEUKSAg39rVNOtKupvBXY3kP96QBGxbEk2ZI4SMqBMRCb2JdRU7wqoLi2L8Sosvy2Kj9t3lfje3HvGoHSlzC67r+dirhYJflzzclXBiqdzUOqPIhans/2HY89MCAcf09c+PlFI7jWyL8v5XMW9TeN2JvN1zo3nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822587; c=relaxed/simple;
-	bh=IAGS69NpOa2jkX+C59CLnNBlQYLEbp4hGyOySQUubkA=;
+	s=arc-20240116; t=1762822682; c=relaxed/simple;
+	bh=lkhOVnetfiBFLSGyjn8Q6K1JfJb5k0Mqo1u7+ye9NJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ae6CthwByqkbb12hKyx72OlDnjUyKKEyi4+Hxq4sCvwSQQsKbU4PR2h0kbj9xhwqetuolK5x+JXevK1HWJhrPReGsqnxS9r3SsMmXnFzMGvDP/SYgG6Tzqfq+Tm9K78yfOKGe4UboeLMDi81MuFPjm+AWFg6v7X22bkZoqBXQE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXTR/ffS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F447C4AF09;
-	Tue, 11 Nov 2025 00:56:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Un1nD2+tmhbIyVITNztRfpPu6YZJIBeLOqLpOFQHo+8jyqAzdu/hciAWiH0dULkEowOdPOIvY/ZunTxPSvxYC0g3kMB3sYz+1t4PwH7dTvZSPRdMO7ZvPmXsSpZ+Ypd+ObgT/59Co+zR47jCvGD5qEQLoS9jm8tghqkj1q79fpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IcKD+nSy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2D1C4CEF5;
+	Tue, 11 Nov 2025 00:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822587;
-	bh=IAGS69NpOa2jkX+C59CLnNBlQYLEbp4hGyOySQUubkA=;
+	s=korg; t=1762822682;
+	bh=lkhOVnetfiBFLSGyjn8Q6K1JfJb5k0Mqo1u7+ye9NJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zXTR/ffSY51wyqw4L1O+20SFXecSL2z/R0E8X3MOrT9Y4dLs9PTwSCtqjHfs8vjeJ
-	 m163n1p2HM59CyzhBUzPIiRDMrzD8DmVBmfV3U4MDF01/0sbCfe/L3GOVbDRqzIKxk
-	 GgFFO0QwpTd0QWS4kzcNz8KrlCLAKuxq2nX/9xu0=
+	b=IcKD+nSyv0RISSqPh4iiZhd1kQaHx/6e3XHEhxdwtnrbMofQWfmY2vUJuIsKUJarM
+	 ifZiyXozmFFOqLr5z34kuQsIgqvdLD4YI4VAujP+XaP3htpFiuAbm78ogQ74zAm5I3
+	 K3aiXO9GWgr844RjVtpBsymHkxGGNb5T9lw4jg80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Kyle Roeschley <kyle.roeschley@ni.com>,
+	Brad Mouring <brad.mouring@ni.com>,
+	Erick Shepherd <erick.shepherd@ni.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 124/849] bpf: Dont use %pK through printk
-Date: Tue, 11 Nov 2025 09:34:54 +0900
-Message-ID: <20251111004539.396365941@linuxfoundation.org>
+Subject: [PATCH 6.17 125/849] mmc: sdhci: Disable SD card clock before changing parameters
+Date: Tue, 11 Nov 2025 09:34:55 +0900
+Message-ID: <20251111004539.419434780@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,42 +70,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Erick Shepherd <erick.shepherd@ni.com>
 
-[ Upstream commit 2caa6b88e0ba0231fb4ff0ba8e73cedd5fb81fc8 ]
+[ Upstream commit 5f755ba95ae10fd4fa28d64345056ffc18d12c5a ]
 
-In the past %pK was preferable to %p as it would not leak raw pointer
-values into the kernel log.
-Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
-the regular %p has been improved to avoid this issue.
-Furthermore, restricted pointers ("%pK") were never meant to be used
-through printk(). They can still unintentionally leak raw pointers or
-acquire sleeping locks in atomic contexts.
+Per the SD Host Controller Simplified Specification v4.20 §3.2.3, change
+the SD card clock parameters only after first disabling the external card
+clock. Doing this fixes a spurious clock pulse on Baytrail and Apollo Lake
+SD controllers which otherwise breaks voltage switching with a specific
+Swissbit SD card. This change is limited to Intel host controllers to
+avoid an issue reported on ARM64 devices.
 
-Switch to the regular pointer formatting which is safer and
-easier to reason about.
-
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250811-restricted-pointers-bpf-v1-1-a1d7cc3cb9e7@linutronix.de
+Signed-off-by: Kyle Roeschley <kyle.roeschley@ni.com>
+Signed-off-by: Brad Mouring <brad.mouring@ni.com>
+Signed-off-by: Erick Shepherd <erick.shepherd@ni.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250724185354.815888-1-erick.shepherd@ni.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-pci-core.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index 1e7fd3ee759e0..52fecb7a1fe36 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -1296,7 +1296,7 @@ void bpf_jit_prog_release_other(struct bpf_prog *fp, struct bpf_prog *fp_other);
- static inline void bpf_jit_dump(unsigned int flen, unsigned int proglen,
- 				u32 pass, void *image)
- {
--	pr_err("flen=%u proglen=%u pass=%u image=%pK from=%s pid=%d\n", flen,
-+	pr_err("flen=%u proglen=%u pass=%u image=%p from=%s pid=%d\n", flen,
- 	       proglen, pass, image, current->comm, task_pid_nr(current));
+diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
+index 826958992dfe2..47a0a738862b5 100644
+--- a/drivers/mmc/host/sdhci-pci-core.c
++++ b/drivers/mmc/host/sdhci-pci-core.c
+@@ -679,8 +679,19 @@ static int intel_start_signal_voltage_switch(struct mmc_host *mmc,
+ 	return 0;
+ }
  
- 	if (image)
++static void sdhci_intel_set_clock(struct sdhci_host *host, unsigned int clock)
++{
++	u16 clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
++
++	/* Stop card clock separately to avoid glitches on clock line */
++	if (clk & SDHCI_CLOCK_CARD_EN)
++		sdhci_writew(host, clk & ~SDHCI_CLOCK_CARD_EN, SDHCI_CLOCK_CONTROL);
++
++	sdhci_set_clock(host, clock);
++}
++
+ static const struct sdhci_ops sdhci_intel_byt_ops = {
+-	.set_clock		= sdhci_set_clock,
++	.set_clock		= sdhci_intel_set_clock,
+ 	.set_power		= sdhci_intel_set_power,
+ 	.enable_dma		= sdhci_pci_enable_dma,
+ 	.set_bus_width		= sdhci_set_bus_width,
+@@ -690,7 +701,7 @@ static const struct sdhci_ops sdhci_intel_byt_ops = {
+ };
+ 
+ static const struct sdhci_ops sdhci_intel_glk_ops = {
+-	.set_clock		= sdhci_set_clock,
++	.set_clock		= sdhci_intel_set_clock,
+ 	.set_power		= sdhci_intel_set_power,
+ 	.enable_dma		= sdhci_pci_enable_dma,
+ 	.set_bus_width		= sdhci_set_bus_width,
 -- 
 2.51.0
 
