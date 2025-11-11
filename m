@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B3BC4A496
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:14:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF9BC4A3C4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:08:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 088104F7515
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:07:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BDC0188EFC4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D80A2E0B5A;
-	Tue, 11 Nov 2025 01:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561612F6934;
+	Tue, 11 Nov 2025 01:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQfJ3PLL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qznG9bM0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCF12DEA9D;
-	Tue, 11 Nov 2025 01:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3102F60A7;
+	Tue, 11 Nov 2025 01:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823140; cv=none; b=t8NWSoUt1OlOv+kQhccnyZqRjpH6qD7ynygSgMzP11Fey9905M8OD9mKn1n6pTXcRDeS7PIcZ4Zr1xBIZ2t/MASoRGvD4pFlR36FCYNbhwGcPKvB2QPdGZvAP/tlDX4//t80oi4H/8fJPhPUQ3KMyandGfJz0N8APZMdpvNBY4M=
+	t=1762823147; cv=none; b=bZOZvH+sEuJZqyBMCe2Z3zeGEyO2UIy3cp982kCRHjhAE0hwhDDTihh6QZFGfClZgbezONoDIb7fREtDGHUeRQy+e4hRHyfunWwSosUtxCicGf3xDaI2sjuDOLeMRZP8b4nVUeV93KejTzUWdr7p3yfeM7RFntC7GlnEqVGOGt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823140; c=relaxed/simple;
-	bh=JnF02ApenazAgjaRg5roIeHbSXOzbPCcQ1edTPbuW90=;
+	s=arc-20240116; t=1762823147; c=relaxed/simple;
+	bh=RRM7bjhq52q5NNvEucakSfQB4bU51WGs70q6kopkAOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qVym2MDckU2PSb8+sz4QLu+pBPYECsS+NTVu9RyMpIEMBQcd+b7MLcBpbwhC5X9OCpYBdtIDF4hb7mMwWAlVP3NkjfWBmSn/pIm0lpghD0pTmEhSzXvNsjqhh0/Th2FC5ep7SI90SCpndWj/PHKl5Llq1t+bKCWyJPO+XtJwRwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQfJ3PLL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5157AC4CEFB;
-	Tue, 11 Nov 2025 01:05:39 +0000 (UTC)
+	 MIME-Version; b=YLizIO0q2tkLAG1aN+j4jr8hv3QlHEWhzvd6YlRRaNgi7gIB+K+JnHi9G/47/WANQvsT7s5jccecpSYTD3ksRY9xAM9LRQw4iysuK3onl5BN/RnHKsTTqR+/cXAUm2WGW+jav00mZlSr5yjGZ7YkfZZe3g/0OzHmgJsbF3Wfwec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qznG9bM0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98420C4CEFB;
+	Tue, 11 Nov 2025 01:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823139;
-	bh=JnF02ApenazAgjaRg5roIeHbSXOzbPCcQ1edTPbuW90=;
+	s=korg; t=1762823146;
+	bh=RRM7bjhq52q5NNvEucakSfQB4bU51WGs70q6kopkAOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQfJ3PLLZADTeOjL2PqbfPdP578GYlilTX4IdZ9KHKeVk4aNw6+OJSZYmDggOI962
-	 Z6irjMHNlIuZAakiaHoVXiBTqMJTutDxDei2EuUNk8wdNgfWG0KKsnKRVBii1Lge+W
-	 6mK+Kgpd6pbz7+KKBwqwHZRZe3Je8wmf+a3wn5bA=
+	b=qznG9bM0DtG7bOMK01loytRT384Qcg+JjApzyxru0oLZ0HAg/tdFOTMxOqZofsKjx
+	 MVvIlRmpMgLFRPRpxQgwWsZx1NjCMSFNBVy+/UiWZXzK/LGIuLPJp6U1SZdvn4adeJ
+	 kyzPHiiMZJFagFASJWWjp0+HWnsl3P+/5aaf7f9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Michael Strauss <michael.strauss@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Ovidiu Bunea <ovidiu.bunea@amd.com>,
 	Ivan Lipski <ivan.lipski@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 238/849] drm/amd/display: Increase AUX Intra-Hop Done Max Wait Duration
-Date: Tue, 11 Nov 2025 09:36:48 +0900
-Message-ID: <20251111004542.194942759@linuxfoundation.org>
+Subject: [PATCH 6.17 239/849] drm/amd/display: Fix dmub_cmd header alignment
+Date: Tue, 11 Nov 2025 09:36:49 +0900
+Message-ID: <20251111004542.216735082@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -69,57 +69,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Strauss <michael.strauss@amd.com>
+From: Ovidiu Bunea <ovidiu.bunea@amd.com>
 
-[ Upstream commit e3419e1e44b87d4176fb98679a77301b1ca40f63 ]
+[ Upstream commit 327aba7f558187e451636c77a1662a2858438dc9 ]
 
-[WHY]
-In the worst case, AUX intra-hop done can take hundreds of milliseconds as
-each retimer in a link might have to wait a full AUX_RD_INTERVAL to send
-LT abort downstream.
+[why & how]
+Header misalignment in struct dmub_cmd_replay_copy_settings_data and
+struct dmub_alpm_auxless_data causes incorrect data read between driver
+and dmub.
+Fix the misalignment and ensure that everything is aligned to 4-byte
+boundaries.
 
-[HOW]
-Wait 300ms for each retimer in a link to allow time to propagate a LT abort
-without infinitely waiting on intra-hop done.
-For no-retimer case, keep the max duration at 10ms.
-
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: Michael Strauss <michael.strauss@amd.com>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
 Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/link/protocols/link_dp_training.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
-index 2dc1a660e5045..134093ce5a8e8 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
-@@ -1018,7 +1018,12 @@ static enum link_training_result dpcd_exit_training_mode(struct dc_link *link, e
- {
- 	enum dc_status status;
- 	uint8_t sink_status = 0;
--	uint8_t i;
-+	uint32_t i;
-+	uint8_t lttpr_count = dp_parse_lttpr_repeater_count(link->dpcd_caps.lttpr_caps.phy_repeater_cnt);
-+	uint32_t intra_hop_disable_time_ms = (lttpr_count > 0 ? lttpr_count * 300 : 10);
-+
-+	// Each hop could theoretically take over 256ms (max 128b/132b AUX RD INTERVAL)
-+	// To be safe, allow 300ms per LTTPR and 10ms for no LTTPR case
+diff --git a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
+index 6a69a788abe80..6fa25b0375858 100644
+--- a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
++++ b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
+@@ -4015,6 +4015,10 @@ struct dmub_alpm_auxless_data {
+ 	uint16_t lfps_t1_t2_override_us;
+ 	short lfps_t1_t2_offset_us;
+ 	uint8_t lttpr_count;
++	/*
++	 * Padding to align structure to 4 byte boundary.
++	 */
++	uint8_t pad[1];
+ };
  
- 	/* clear training pattern set */
- 	status = dpcd_set_training_pattern(link, DP_TRAINING_PATTERN_VIDEOIDLE);
-@@ -1028,7 +1033,7 @@ static enum link_training_result dpcd_exit_training_mode(struct dc_link *link, e
+ /**
+@@ -4092,6 +4096,14 @@ struct dmub_cmd_replay_copy_settings_data {
+ 	 */
+ 	struct dmub_alpm_auxless_data auxless_alpm_data;
  
- 	if (encoding == DP_128b_132b_ENCODING) {
- 		/* poll for intra-hop disable */
--		for (i = 0; i < 10; i++) {
-+		for (i = 0; i < intra_hop_disable_time_ms; i++) {
- 			if ((core_link_read_dpcd(link, DP_SINK_STATUS, &sink_status, 1) == DC_OK) &&
- 					(sink_status & DP_INTRA_HOP_AUX_REPLY_INDICATION) == 0)
- 				break;
++	/**
++	 * @hpo_stream_enc_inst: HPO stream encoder instance
++	 */
++	uint8_t hpo_stream_enc_inst;
++	/**
++	 * @hpo_link_enc_inst: HPO link encoder instance
++	 */
++	uint8_t hpo_link_enc_inst;
+ 	/**
+ 	 * @pad: Align structure to 4 byte boundary.
+ 	 */
 -- 
 2.51.0
 
