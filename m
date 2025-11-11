@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A50C4A33B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00667C4ABD5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A77E3AF4F2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BDF514FA74A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7705A27E7EB;
-	Tue, 11 Nov 2025 01:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07A5306D57;
+	Tue, 11 Nov 2025 01:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLelRdWa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Okso9HLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A9D2701DC;
-	Tue, 11 Nov 2025 01:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D134305E15;
+	Tue, 11 Nov 2025 01:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823057; cv=none; b=EfHEjOuQYneJftFFb9eAHBW10o9D2eIm8oVFlsQiePtMJdfICaigX8bmM5j/Lmoxx/QsJ1/60Rh5zy0utueqtAiJRK1ghtiVQT82ncirbTzEx4nSkfE5qWL3xj+wrH0J2lJgfXSFD3FmstVp7WCX+MkZufJQz4Bi/VKpBIkscsk=
+	t=1762824431; cv=none; b=Jyy/UwYPm00aALRcx3KOykhqc5k97/xrQYtV2riRWPTu36qav9LaNa7BspzUxd1Q+r61LvJAzdadTo+K/6CPFaY/rVjkAGSUY0Sgvh3l58h7oTgITsrlg0yvU7wzBRo1IAuHL9Kd/WnObn9Cap1j/OnokkZ6vZ35VHAPaIFzhjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823057; c=relaxed/simple;
-	bh=LYq5ZQ/cHQlAOiPQm51imo56oRyxEg4fZryKB36Tphg=;
+	s=arc-20240116; t=1762824431; c=relaxed/simple;
+	bh=rrSyG3QnM23Kp4w/9W55iriQpK5mQmkdsLq2P+1eAmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ltrSAXKeVsNA56xwLRSDraabgdm2KJsS71bo1oSX/U04VxaLIJ3lV4utJVciQKv7gcWex0LjrhYmSSY7RF9AVeF7LgqutjB7DgBGUDpoJW3Mc+IQtuMURX5fs6QVroSqmnGJJrAsfpvNUgQgz1QD0NAgzirJRyRLg7DAHaIDhWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLelRdWa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36845C19424;
-	Tue, 11 Nov 2025 01:04:16 +0000 (UTC)
+	 MIME-Version; b=Oll+RIlqZ7LDpaMLmZXkICRjoPA15DciEf5ZZ9W2CPTj35wCcQQR5sMGjE+twyumUMcHyMb7l44SfPfq/3xk9f8Wou/NKXAvfgQ1d1oDIYjB2I88KerLVbCN3Hxi193lnF/RYUlYSkfbuRjXobPf/kkXxqhGCcAdZZlIgeTosMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Okso9HLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B405C116D0;
+	Tue, 11 Nov 2025 01:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823056;
-	bh=LYq5ZQ/cHQlAOiPQm51imo56oRyxEg4fZryKB36Tphg=;
+	s=korg; t=1762824431;
+	bh=rrSyG3QnM23Kp4w/9W55iriQpK5mQmkdsLq2P+1eAmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLelRdWaM5cFyTBaxwDJecGguMNgj+FXwlgas4rEQjN9Nf1NMA56gr1hhAaBjUuvb
-	 MoxD1C89ZPsaPLrplCdvZjpDnQtUqFNp2sCm6KAI4pS99r9fEv8VxSghQtUHl/M03z
-	 937tSeWUBRctNF0at6gMPRYmT+vbtRsa6iZHJhVM=
+	b=Okso9HLX2Ti9FTFAOKZqgS0L1R3X4hf+hl4qckRbEGMEztVfVbVns3IbRtzB/VAps
+	 hM+bPuWz6o+8y4M4L9rcmtRb291hY1Vlh4F/0PQX3KmkswJb6xsnnIXAaF4vezktvw
+	 oQUPxTaVkpGVMeRdEtjjLKyblvZRBbpP/g+xS7zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-	Len Brown <len.brown@intel.com>,
+	Sairaj Kodilkar <sarunkod@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 163/565] tools/power x86_energy_perf_policy: Fix incorrect fopen mode usage
-Date: Tue, 11 Nov 2025 09:40:19 +0900
-Message-ID: <20251111004530.604071412@linuxfoundation.org>
+Subject: [PATCH 6.17 450/849] crypto: ccp: Skip SEV and SNP INIT for kdump boot
+Date: Tue, 11 Nov 2025 09:40:20 +0900
+Message-ID: <20251111004547.311251250@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-[ Upstream commit 62127655b7ab7b8c2997041aca48a81bf5c6da0c ]
+[ Upstream commit 8c571019d8a817b701888926529a5d7a826b947b ]
 
-The fopen_or_die() function was previously hardcoded
-to open files in read-only mode ("r"), ignoring the
-mode parameter passed to it. This patch corrects
-fopen_or_die() to use the provided mode argument,
-allowing for flexible file access as intended.
+Since SEV or SNP may already be initialized in the previous kernel,
+attempting to initialize them again in the kdump kernel can result
+in SNP initialization failures, which in turn lead to IOMMU
+initialization failures. Moreover, SNP/SEV guests are not run under a
+kdump kernel, so there is no need to initialize SEV or SNP during
+kdump boot.
 
-Additionally, the call to fopen_or_die() in
-err_on_hypervisor() incorrectly used the mode
-"ro", which is not a valid fopen mode. This is
-fixed to use the correct "r" mode.
+Skip SNP and SEV INIT if doing kdump boot.
 
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
+Tested-by: Sairaj Kodilkar <sarunkod@amd.com>
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Link: https://lore.kernel.org/r/d884eff5f6180d8b8c6698a6168988118cf9cba1.1756157913.git.ashish.kalra@amd.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/ccp/sev-dev.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-index ebda9c366b2ba..c883f211dbcc9 100644
---- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-+++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-@@ -630,7 +630,7 @@ void cmdline(int argc, char **argv)
-  */
- FILE *fopen_or_die(const char *path, const char *mode)
- {
--	FILE *filep = fopen(path, "r");
-+	FILE *filep = fopen(path, mode);
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index 9f5ccc1720cbc..651346db6909d 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -28,6 +28,7 @@
+ #include <linux/fs_struct.h>
+ #include <linux/psp.h>
+ #include <linux/amd-iommu.h>
++#include <linux/crash_dump.h>
  
- 	if (!filep)
- 		err(1, "%s: open failed", path);
-@@ -644,7 +644,7 @@ void err_on_hypervisor(void)
- 	char *buffer;
+ #include <asm/smp.h>
+ #include <asm/cacheflush.h>
+@@ -1345,6 +1346,15 @@ static int _sev_platform_init_locked(struct sev_platform_init_args *args)
+ 	if (!psp_master || !psp_master->sev_data)
+ 		return -ENODEV;
  
- 	/* On VMs /proc/cpuinfo contains a "flags" entry for hypervisor */
--	cpuinfo = fopen_or_die("/proc/cpuinfo", "ro");
-+	cpuinfo = fopen_or_die("/proc/cpuinfo", "r");
++	/*
++	 * Skip SNP/SEV initialization under a kdump kernel as SEV/SNP
++	 * may already be initialized in the previous kernel. Since no
++	 * SNP/SEV guests are run under a kdump kernel, there is no
++	 * need to initialize SNP or SEV during kdump boot.
++	 */
++	if (is_kdump_kernel())
++		return 0;
++
+ 	sev = psp_master->sev_data;
  
- 	buffer = malloc(4096);
- 	if (!buffer) {
+ 	if (sev->state == SEV_STATE_INIT)
 -- 
 2.51.0
 
