@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D92C4B154
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 527DAC4ADBD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC9EA3BD2F2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3FFE3BC8E7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6310A3218CC;
-	Tue, 11 Nov 2025 01:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F7E303CAE;
+	Tue, 11 Nov 2025 01:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIGV5+RY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hU4QqWjC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9F131283C;
-	Tue, 11 Nov 2025 01:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF17262FEC;
+	Tue, 11 Nov 2025 01:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825244; cv=none; b=jOqNhNdDJXXpfAv+H597kfxR+rLAQTwPJMlwoRp2jdN+wE9vXGGCgvAvNtX7eyHQs7VvirpiB906dbogtS652vLppiuySOxi1owkKBcnUaPjxssl5UA9xDI4Kr800wcYjg9kLzQgL+YQ1cKcnk5rj+iadsB+A2i82YFAv5BSeNw=
+	t=1762824406; cv=none; b=sUvyNTFPMvqMCrRgLkZn1ivcJx1FfXh7dWbhM19XLJ6SITAPdw39Iy4r1Oux6uCe9br6RrTTWSRvw6+KMpd9ON1TxjfbqQSDid+P0q9YKRAcizXvemSuZ6+Ze6L8qB4DWPkGTXmZjSYYR5cLfDWi+JApvZEor7d9B8hH3j86OjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825244; c=relaxed/simple;
-	bh=tD4gSrsOv3l5iAkbknKBTiWLLtuKbs1zC2v+zGaxiUQ=;
+	s=arc-20240116; t=1762824406; c=relaxed/simple;
+	bh=Kre7slkiz8yeqpxeamcsSVWaLgdxE1+Pl4sc2+Fax3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ktTy1uy1xfsCVbcxvVv241D3RtMHg0DNTsRLsgX8nGSV8Ij0hm6tBB2MVfl38ibg3iQ/m46hUu0b6tuAdl01cStJsvhmkaSANJNrUn9pL5dzPb/hcyz1vdsw1Ug2RVNxwBf0/GQ/wUwqnm/SYo6p9ZlbGlq6ToEcG6T+hUeIfLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIGV5+RY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B5AC116D0;
-	Tue, 11 Nov 2025 01:40:43 +0000 (UTC)
+	 MIME-Version; b=FwtpGeMWcC/ZP77DM7s5YhcDCnduXBQDWQM6l6xQoTlrKKyje9fBU4FgwlvEQ0GNqKB4Nd9anoWfDa8pDrjVPQpqxKqoh2reKLu/C9TFi87f2q6s7VMZOSsz4/qUzfrEOLugOLjh9artDSYuyEESZ8VALDyoMnOXisNl3F5MwPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hU4QqWjC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76440C4CEFB;
+	Tue, 11 Nov 2025 01:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825243;
-	bh=tD4gSrsOv3l5iAkbknKBTiWLLtuKbs1zC2v+zGaxiUQ=;
+	s=korg; t=1762824405;
+	bh=Kre7slkiz8yeqpxeamcsSVWaLgdxE1+Pl4sc2+Fax3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LIGV5+RYoGJ84p+nuP2DDb9s8eMuO0XFYJYlu7xgVBhLpIfB7OmTcq5gJZnnOS5Nf
-	 Y13sgFtNCnHSXUA3gLDVJZ1Qz39ggORtQY+od21lVU/4nU1hrCFaAsnmilDw/lhmRp
-	 8E9H+acnq6Q/wl3neRpICzWeZH1WmzKwcgfrtJo4=
+	b=hU4QqWjCS6kXaEq0yF32/wTMXSSMS3SEo+hh6NLiunh21geAhYvc3u4mBLHj+wzrz
+	 9c+yK7K1MzrrfbI/mahFdV1dDKnwhBgc69LBrBT/cbczsVxfieGXoTrJsDh6jzIQrv
+	 R8It0qsBT5H+WumsPthYoo8IyZX+RmIQM2hHFH1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	cen zhang <zzzccc427@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 722/849] tools: lib: thermal: use pkg-config to locate libnl3
-Date: Tue, 11 Nov 2025 09:44:52 +0900
-Message-ID: <20251111004553.889713862@linuxfoundation.org>
+Subject: [PATCH 6.12 437/565] Bluetooth: SCO: Fix UAF on sco_conn_free
+Date: Tue, 11 Nov 2025 09:44:53 +0900
+Message-ID: <20251111004536.711168852@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit b31f7f725cd932e2c2b41f3e4b66273653953687 ]
+[ Upstream commit ecb9a843be4d6fd710d7026e359f21015a062572 ]
 
-To make libthermal more cross compile friendly use pkg-config to locate
-libnl3. Only if that fails fall back to hardcoded /usr/include/libnl3.
+BUG: KASAN: slab-use-after-free in sco_conn_free net/bluetooth/sco.c:87 [inline]
+BUG: KASAN: slab-use-after-free in kref_put include/linux/kref.h:65 [inline]
+BUG: KASAN: slab-use-after-free in sco_conn_put+0xdd/0x410
+net/bluetooth/sco.c:107
+Write of size 8 at addr ffff88811cb96b50 by task kworker/u17:4/352
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+CPU: 1 UID: 0 PID: 352 Comm: kworker/u17:4 Not tainted
+6.17.0-rc5-g717368f83676 #4 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Workqueue: hci13 hci_cmd_sync_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x10b/0x170 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x191/0x550 mm/kasan/report.c:482
+ kasan_report+0xc4/0x100 mm/kasan/report.c:595
+ sco_conn_free net/bluetooth/sco.c:87 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ sco_conn_put+0xdd/0x410 net/bluetooth/sco.c:107
+ sco_connect_cfm+0xb4/0xae0 net/bluetooth/sco.c:1441
+ hci_connect_cfm include/net/bluetooth/hci_core.h:2082 [inline]
+ hci_conn_failed+0x20a/0x2e0 net/bluetooth/hci_conn.c:1313
+ hci_conn_unlink+0x55f/0x810 net/bluetooth/hci_conn.c:1121
+ hci_conn_del+0xb6/0x1110 net/bluetooth/hci_conn.c:1147
+ hci_abort_conn_sync+0x8c5/0xbb0 net/bluetooth/hci_sync.c:5689
+ hci_cmd_sync_work+0x281/0x380 net/bluetooth/hci_sync.c:332
+ process_one_work kernel/workqueue.c:3236 [inline]
+ process_scheduled_works+0x77e/0x1040 kernel/workqueue.c:3319
+ worker_thread+0xbee/0x1200 kernel/workqueue.c:3400
+ kthread+0x3c7/0x870 kernel/kthread.c:463
+ ret_from_fork+0x13a/0x1e0 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+Allocated by task 31370:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x30/0x70 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:388 [inline]
+ __kasan_kmalloc+0x82/0x90 mm/kasan/common.c:405
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __do_kmalloc_node mm/slub.c:4382 [inline]
+ __kmalloc_noprof+0x22f/0x390 mm/slub.c:4394
+ kmalloc_noprof include/linux/slab.h:909 [inline]
+ sk_prot_alloc+0xae/0x220 net/core/sock.c:2239
+ sk_alloc+0x34/0x5a0 net/core/sock.c:2295
+ bt_sock_alloc+0x3c/0x330 net/bluetooth/af_bluetooth.c:151
+ sco_sock_alloc net/bluetooth/sco.c:562 [inline]
+ sco_sock_create+0xc0/0x350 net/bluetooth/sco.c:593
+ bt_sock_create+0x161/0x3b0 net/bluetooth/af_bluetooth.c:135
+ __sock_create+0x3ad/0x780 net/socket.c:1589
+ sock_create net/socket.c:1647 [inline]
+ __sys_socket_create net/socket.c:1684 [inline]
+ __sys_socket+0xd5/0x330 net/socket.c:1731
+ __do_sys_socket net/socket.c:1745 [inline]
+ __se_sys_socket net/socket.c:1743 [inline]
+ __x64_sys_socket+0x7a/0x90 net/socket.c:1743
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xc7/0x240 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 31374:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x30/0x70 mm/kasan/common.c:68
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:576
+ poison_slab_object mm/kasan/common.c:243 [inline]
+ __kasan_slab_free+0x3d/0x50 mm/kasan/common.c:275
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2428 [inline]
+ slab_free mm/slub.c:4701 [inline]
+ kfree+0x199/0x3b0 mm/slub.c:4900
+ sk_prot_free net/core/sock.c:2278 [inline]
+ __sk_destruct+0x4aa/0x630 net/core/sock.c:2373
+ sco_sock_release+0x2ad/0x300 net/bluetooth/sco.c:1333
+ __sock_release net/socket.c:649 [inline]
+ sock_close+0xb8/0x230 net/socket.c:1439
+ __fput+0x3d1/0x9e0 fs/file_table.c:468
+ task_work_run+0x206/0x2a0 kernel/task_work.c:227
+ get_signal+0x1201/0x1410 kernel/signal.c:2807
+ arch_do_signal_or_restart+0x34/0x740 arch/x86/kernel/signal.c:337
+ exit_to_user_mode_loop+0x68/0xc0 kernel/entry/common.c:40
+ exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
+ do_syscall_64+0x1dd/0x240 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Reported-by: cen zhang <zzzccc427@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/thermal/Makefile | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/bluetooth/sco.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/lib/thermal/Makefile b/tools/lib/thermal/Makefile
-index ac918e98cd033..41aa7a324ff4d 100644
---- a/tools/lib/thermal/Makefile
-+++ b/tools/lib/thermal/Makefile
-@@ -46,8 +46,12 @@ else
-   CFLAGS := -g -Wall
- endif
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index b872a2ca3ff38..202d75ad0dc39 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -434,6 +434,13 @@ static void sco_sock_kill(struct sock *sk)
  
-+NL3_CFLAGS = $(shell pkg-config --cflags libnl-3.0 2>/dev/null)
-+ifeq ($(NL3_CFLAGS),)
-+NL3_CFLAGS = -I/usr/include/libnl3
-+endif
+ 	BT_DBG("sk %p state %d", sk, sk->sk_state);
+ 
++	/* Sock is dead, so set conn->sk to NULL to avoid possible UAF */
++	if (sco_pi(sk)->conn) {
++		sco_conn_lock(sco_pi(sk)->conn);
++		sco_pi(sk)->conn->sk = NULL;
++		sco_conn_unlock(sco_pi(sk)->conn);
++	}
 +
- INCLUDES = \
---I/usr/include/libnl3 \
- -I$(srctree)/tools/lib/thermal/include \
- -I$(srctree)/tools/lib/ \
- -I$(srctree)/tools/include \
-@@ -59,6 +63,7 @@ INCLUDES = \
- override CFLAGS += $(EXTRA_WARNINGS)
- override CFLAGS += -Werror -Wall
- override CFLAGS += -fPIC
-+override CFLAGS += $(NL3_CFLAGS)
- override CFLAGS += $(INCLUDES)
- override CFLAGS += -fvisibility=hidden
- override CFGLAS += -Wl,-L.
+ 	/* Kill poor orphan */
+ 	bt_sock_unlink(&sco_sk_list, sk);
+ 	sock_set_flag(sk, SOCK_DEAD);
 -- 
 2.51.0
 
