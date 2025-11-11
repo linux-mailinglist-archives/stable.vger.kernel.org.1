@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-194205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8505CC4AF2B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FD4C4AA69
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0786E4F4A0E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B27D31897E6F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B002E8B78;
-	Tue, 11 Nov 2025 01:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B217332BF46;
+	Tue, 11 Nov 2025 01:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hfYFVA0E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OpI8cQx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2347626D4DE;
-	Tue, 11 Nov 2025 01:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9F727E040;
+	Tue, 11 Nov 2025 01:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825052; cv=none; b=earkbfQNvxaG5SCxYIMoKlQ69CjhJNOFczYd+v4Q9Isx/MwnT3b0tkxokY0cui5P3D5u0RCQ1IbV1+Ye7j7WR14O+NowaK7/W7+DZDze3f9R/XaBPqr2LolHcha0aI1xlVtVwXmbsmHG66+KzKzdfHH43EzRoJyUoKOAR6d43zM=
+	t=1762823942; cv=none; b=C2LgjClDrx/SqI0jvyZeFbyAYLUyhuVfbSWSrCWHfp+/Jof0+3NXojgIpzVG7mr3Aiue7ttR0ywu4QcUx4twIvM82gtIlzQh7r1V5TaZ7zCLsfZL2Nq6mCScv0JR0L0wRp0hy8iNyEhcVLahdR7gpueOMLEI1+Uka8fYiUJR/p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825052; c=relaxed/simple;
-	bh=W6unskgyB+1ZbPyaPaSzQ3n2OufGbK9kP9g4Vbjxu1k=;
+	s=arc-20240116; t=1762823942; c=relaxed/simple;
+	bh=gpIKHO6uvRpFwD/Jsh7lhmBouexOW32Bx2z01K/VeGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eom7uM11NtrbWqmaf+4IhvnoC28fKLpO1bYNYEVAhFfE8kVbLA1zi1tGoFkzi8NXAEdXgWF88dTV2fizmTTlcKlhBBya8fdbK7lf+yFLkmpt7QzShbxbcGoD6PGrG//sO0Z3P0R7cF5l+zbFYTx64YjslksiWQWlyVllSIs/m4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hfYFVA0E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B766BC113D0;
-	Tue, 11 Nov 2025 01:37:31 +0000 (UTC)
+	 MIME-Version; b=sptpBxWnhxiw5lah7qbeH5qQHN3It0QaeBfiGbbXwHlXh40FlazEQpvffihMzfnpiBLg27+eoHJLyN0LKk1kJnZqckbNNCDYo8f42NRlctlxCrufCpqCzWwuDOs0Z/2t3CN6KYbNQpNKSfDgvGwDRcxr4UvC9Y8ucBURWNfaXO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OpI8cQx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE36C4CEFB;
+	Tue, 11 Nov 2025 01:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825052;
-	bh=W6unskgyB+1ZbPyaPaSzQ3n2OufGbK9kP9g4Vbjxu1k=;
+	s=korg; t=1762823942;
+	bh=gpIKHO6uvRpFwD/Jsh7lhmBouexOW32Bx2z01K/VeGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hfYFVA0EXRho/puepASZfM7xcxZmlM8LfTG8JmBBtNvplSl+Yme1rH8n6KY8A9Axs
-	 X+MxCGSSsql5i+1oecx/dmh8nR4fLkquRyaDsPatuxrvCHaoVb2IPdIY90QwS/aVKE
-	 /CVyJ+ct5CgFUdKGEzmEduVddhMtQm6VjFuQ12ig=
+	b=0OpI8cQxic3ErkmrIvyIDPqZzgDB6z4vVfgAzySB9FDTmYc9b6XbqzP/BtcoNYuCG
+	 iAGJqI6sygRUYZcoBu0PQ411aU1P0XtBxwq+wGAFB0/yNOPzrUGyl0wsawmPXBbJ44
+	 Le49dvI+zgo9XJLr0CDe0QRpC9ESUhddXRf9Iz5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Yusuke Goda <yusuke.goda.sx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Thomas Graf <tgraf@suug.ch>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 640/849] ASoC: renesas: msiof: add .symmetric_xxx on snd_soc_dai_driver
+Subject: [PATCH 6.12 354/565] net/cls_cgroup: Fix task_get_classid() during qdisc run
 Date: Tue, 11 Nov 2025 09:43:30 +0900
-Message-ID: <20251111004551.902602067@linuxfoundation.org>
+Message-ID: <20251111004534.835951592@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +66,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-[ Upstream commit ab77fa5533e4d1dcfdd2711b9b1e166e4ed57dab ]
+[ Upstream commit 66048f8b3cc7e462953c04285183cdee43a1cb89 ]
 
-MSIOF TX/RX are sharing same clock. Adds .symmetric_xxx flags.
+During recent testing with the netem qdisc to inject delays into TCP
+traffic, we observed that our CLS BPF program failed to function correctly
+due to incorrect classid retrieval from task_get_classid(). The issue
+manifests in the following call stack:
 
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Tested-by: Yusuke Goda <yusuke.goda.sx@renesas.com>
-Link: https://patch.msgid.link/87a52jyuu6.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+        bpf_get_cgroup_classid+5
+        cls_bpf_classify+507
+        __tcf_classify+90
+        tcf_classify+217
+        __dev_queue_xmit+798
+        bond_dev_queue_xmit+43
+        __bond_start_xmit+211
+        bond_start_xmit+70
+        dev_hard_start_xmit+142
+        sch_direct_xmit+161
+        __qdisc_run+102             <<<<< Issue location
+        __dev_xmit_skb+1015
+        __dev_queue_xmit+637
+        neigh_hh_output+159
+        ip_finish_output2+461
+        __ip_finish_output+183
+        ip_finish_output+41
+        ip_output+120
+        ip_local_out+94
+        __ip_queue_xmit+394
+        ip_queue_xmit+21
+        __tcp_transmit_skb+2169
+        tcp_write_xmit+959
+        __tcp_push_pending_frames+55
+        tcp_push+264
+        tcp_sendmsg_locked+661
+        tcp_sendmsg+45
+        inet_sendmsg+67
+        sock_sendmsg+98
+        sock_write_iter+147
+        vfs_write+786
+        ksys_write+181
+        __x64_sys_write+25
+        do_syscall_64+56
+        entry_SYSCALL_64_after_hwframe+100
+
+The problem occurs when multiple tasks share a single qdisc. In such cases,
+__qdisc_run() may transmit skbs created by different tasks. Consequently,
+task_get_classid() retrieves an incorrect classid since it references the
+current task's context rather than the skb's originating task.
+
+Given that dev_queue_xmit() always executes with bh disabled, we can use
+softirq_count() instead to obtain the correct classid.
+
+The simple steps to reproduce this issue:
+1. Add network delay to the network interface:
+  such as: tc qdisc add dev bond0 root netem delay 1.5ms
+2. Build two distinct net_cls cgroups, each with a network-intensive task
+3. Initiate parallel TCP streams from both tasks to external servers.
+
+Under this specific condition, the issue reliably occurs. The kernel
+eventually dequeues an SKB that originated from Task-A while executing in
+the context of Task-B.
+
+It is worth noting that it will change the established behavior for a
+slightly different scenario:
+
+  <sock S is created by task A>
+  <class ID for task A is changed>
+  <skb is created by sock S xmit and classified>
+
+prior to this patch the skb will be classified with the 'new' task A
+classid, now with the old/original one. The bpf_get_cgroup_classid_curr()
+function is a more appropriate choice for this case.
+
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Thomas Graf <tgraf@suug.ch>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250902062933.30087-1-laoar.shao@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/renesas/rcar/msiof.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/net/cls_cgroup.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/renesas/rcar/msiof.c b/sound/soc/renesas/rcar/msiof.c
-index 36d31ab8ac6a5..7a9ecc73231a8 100644
---- a/sound/soc/renesas/rcar/msiof.c
-+++ b/sound/soc/renesas/rcar/msiof.c
-@@ -292,6 +292,9 @@ static struct snd_soc_dai_driver msiof_dai_driver = {
- 		.channels_max	= 2,
- 	},
- 	.ops = &msiof_dai_ops,
-+	.symmetric_rate		= 1,
-+	.symmetric_channels	= 1,
-+	.symmetric_sample_bits	= 1,
- };
+diff --git a/include/net/cls_cgroup.h b/include/net/cls_cgroup.h
+index 7e78e7d6f0152..668aeee9b3f66 100644
+--- a/include/net/cls_cgroup.h
++++ b/include/net/cls_cgroup.h
+@@ -63,7 +63,7 @@ static inline u32 task_get_classid(const struct sk_buff *skb)
+ 	 * calls by looking at the number of nested bh disable calls because
+ 	 * softirqs always disables bh.
+ 	 */
+-	if (in_serving_softirq()) {
++	if (softirq_count()) {
+ 		struct sock *sk = skb_to_full_sk(skb);
  
- static struct snd_pcm_hardware msiof_pcm_hardware = {
+ 		/* If there is an sock_cgroup_classid we'll use that. */
 -- 
 2.51.0
 
