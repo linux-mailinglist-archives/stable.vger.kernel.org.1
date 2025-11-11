@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EADD2C4A100
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0F2C4A046
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 715D34F3D33
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 126C4188CF2F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6981DF258;
-	Tue, 11 Nov 2025 00:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75BB244693;
+	Tue, 11 Nov 2025 00:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlJ7Fl1+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8AFX/Bs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68ECF4C97;
-	Tue, 11 Nov 2025 00:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38014C97;
+	Tue, 11 Nov 2025 00:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822477; cv=none; b=fejNe9dsmeEiMrvosKuMaeQYf5HI55X9dmNLbx+Lp/Q2v+Rm9PnFju5s6cFTJ6pUsS8JfDE/PeoD2CExF11ZnUTNVNqlt8jga50w2BKmFY2w/qHmE9104Gdw5ZFR1UQ+x4VXcY/dZU7RTPhtbebStx80cUEXhQR8sVmaqglW8uo=
+	t=1762822481; cv=none; b=MYEquFxUt+F6YRSIvJB6uqZPF+CTXRtAbuHDvjOpoaPmuMLCHr/nigbw50BsR2IwuS2Plc8fKGb2HS9XS/WtfUzU8/4uglmHdoTsJOSPmdNTVK5Fq2ZEAcS61ahjlZbiJ0CmVzWR6BMPZrv675zbA5Pr30CO8VbaHrr9mr/Ho4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822477; c=relaxed/simple;
-	bh=R4d/Ev0S9nVt4jqlfiSgTN9nNBpVhbA5+DrAny40TZE=;
+	s=arc-20240116; t=1762822481; c=relaxed/simple;
+	bh=MKpuEWu5/CpJ258NqHWl/tfmz8jUOYPUxODUVK8fCEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fNC5lqjOdc/UwlHjlsa6v6P34OC97U7S4EkiM7vo7EcaemV4zk2C5F8JpPNk/swXx957rmSojL4u+D1ai4lA6nZ/FmLIu01ebPxMU1uxNVOtrjHYcywwDZ8NPQuQJQRmPM6p0Gm7qjwUEIA0hCbm5NXg4qPxvbFKNFNKmP7UDj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlJ7Fl1+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB14C116B1;
-	Tue, 11 Nov 2025 00:54:36 +0000 (UTC)
+	 MIME-Version; b=AoAGPzyOxIHHo04d223ednTD0X/lEWrtyXjAZm6gvybyjSgtL/mgsA7iQCCgTHKgGki+IoCbuEB6fcihpJ078QDjREjoEUcPYU+oaY+CTBknC9xV0JFkdFpkZCbbDglxUPQWXbLmkIFXT3lnyJOH4BGLIH/XxWCzsVV09HpJJrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8AFX/Bs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D67C116B1;
+	Tue, 11 Nov 2025 00:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822477;
-	bh=R4d/Ev0S9nVt4jqlfiSgTN9nNBpVhbA5+DrAny40TZE=;
+	s=korg; t=1762822481;
+	bh=MKpuEWu5/CpJ258NqHWl/tfmz8jUOYPUxODUVK8fCEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TlJ7Fl1+heUcgj1KRzLh8xS0ABNov9pEspWiVZPzg+/2kOQt9DP8aoEc6LbNSrabt
-	 BeVrOmso61qSwEIv60NFnRQux2qeQuQuggHqB0M+SIwJDQm1+1htmy+OjQS+EhjH+B
-	 FEIEWItXfrg2Krs7RfDfO8TCnzBaQzkPLviAX0wQ=
+	b=A8AFX/BszbY+80xBm37leC6Q/rTxl8eAOGkQwM13/I/hl2FiQFehp4lYcwWhG8CKQ
+	 BxRxiRFybLQNrQjWhseZfjnwusxXM4fqY5HJvKQH4baP0yPDaXU4rbjKuMJJjJLgNc
+	 tCF2WJ0Vmv/9l4+TgzMrGtaJE7i7iQXHDxRJ3fI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Askar Safin <safinaskar@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 115/849] PM: sleep: Allow pm_restrict_gfp_mask() stacking
-Date: Tue, 11 Nov 2025 09:34:45 +0900
-Message-ID: <20251111004539.178673529@linuxfoundation.org>
+	Thomas Heijligen <thomas.heijligen@secunet.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lee Jones <lee@kernel.org>,
+	Michael Brunner <Michael.Brunner@jumptec.com>
+Subject: [PATCH 6.17 116/849] mfd: kempld: Switch back to earlier ->init() behavior
+Date: Tue, 11 Nov 2025 09:34:46 +0900
+Message-ID: <20251111004539.203484328@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,108 +67,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Heijligen, Thomas <thomas.heijligen@secunet.com>
 
-[ Upstream commit 35e4a69b2003f20a69e7d19ae96ab1eef1aa8e8d ]
+commit 309e65d151ab9be1e7b01d822880cd8c4e611dff upstream.
 
-Allow pm_restrict_gfp_mask() to be called many times in a row to avoid
-issues with calling dpm_suspend_start() when the GFP mask has been
-already restricted.
+Commit 9e36775c22c7 ("mfd: kempld: Remove custom DMI matching code")
+removes the ability to load the driver if no matching system DMI data
+is found. Before this commit the driver could be loaded using
+alternative methods such as ACPI or `force_device_id` in the absence
+of a matching system DMI entry.
 
-Only the first invocation of pm_restrict_gfp_mask() will actually
-restrict the GFP mask and the subsequent calls will warn if there is
-a mismatch between the expected allowed GFP mask and the actual one.
+Restore this ability while keeping the refactored
+`platform_device_info` table.
 
-Moreover, if pm_restrict_gfp_mask() is called many times in a row,
-pm_restore_gfp_mask() needs to be called matching number of times in
-a row to actually restore the GFP mask.  Calling it when the GFP mask
-has not been restricted will cause it to warn.
-
-This is necessary for the GFP mask restriction starting in
-hibernation_snapshot() to continue throughout the entire hibernation
-flow until it completes or it is aborted (either by a wakeup event or
-by an error).
-
-Fixes: 449c9c02537a1 ("PM: hibernate: Restrict GFP mask in hibernation_snapshot()")
-Fixes: 469d80a3712c ("PM: hibernate: Fix hybrid-sleep")
-Reported-by: Askar Safin <safinaskar@gmail.com>
-Closes: https://lore.kernel.org/linux-pm/20251025050812.421905-1-safinaskar@gmail.com/
-Link: https://lore.kernel.org/linux-pm/20251028111730.2261404-1-safinaskar@gmail.com/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Tested-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Cc: 6.16+ <stable@vger.kernel.org> # 6.16+
-Link: https://patch.msgid.link/5935682.DvuYhMxLoT@rafael.j.wysocki
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Heijligen <thomas.heijligen@secunet.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/7d2c7e92253d851194a781720051536cca2722b8.camel@secunet.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Cc: Michael Brunner <Michael.Brunner@jumptec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/power/hibernate.c |    4 ----
- kernel/power/main.c      |   22 +++++++++++++++++-----
- 2 files changed, 17 insertions(+), 9 deletions(-)
+ drivers/mfd/kempld-core.c |   32 ++++++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 14 deletions(-)
 
---- a/kernel/power/hibernate.c
-+++ b/kernel/power/hibernate.c
-@@ -706,7 +706,6 @@ static void power_down(void)
+--- a/drivers/mfd/kempld-core.c
++++ b/drivers/mfd/kempld-core.c
+@@ -779,22 +779,26 @@ MODULE_DEVICE_TABLE(dmi, kempld_dmi_tabl
+ static int __init kempld_init(void)
+ {
+ 	const struct dmi_system_id *id;
+-	int ret = -ENODEV;
  
- #ifdef CONFIG_SUSPEND
- 	if (hibernation_mode == HIBERNATION_SUSPEND) {
--		pm_restore_gfp_mask();
- 		error = suspend_devices_and_enter(mem_sleep_current);
- 		if (!error)
- 			goto exit;
-@@ -746,9 +745,6 @@ static void power_down(void)
- 		cpu_relax();
- 
- exit:
--	/* Match the pm_restore_gfp_mask() call in hibernate(). */
--	pm_restrict_gfp_mask();
+-	for (id = dmi_first_match(kempld_dmi_table); id; id = dmi_first_match(id + 1)) {
+-		/* Check, if user asked for the exact device ID match */
+-		if (force_device_id[0] && !strstr(id->ident, force_device_id))
+-			continue;
 -
- 	/* Restore swap signature. */
- 	error = swsusp_unmark();
- 	if (error)
---- a/kernel/power/main.c
-+++ b/kernel/power/main.c
-@@ -31,23 +31,35 @@
-  * held, unless the suspend/hibernate code is guaranteed not to run in parallel
-  * with that modification).
-  */
-+static unsigned int saved_gfp_count;
- static gfp_t saved_gfp_mask;
- 
- void pm_restore_gfp_mask(void)
- {
- 	WARN_ON(!mutex_is_locked(&system_transition_mutex));
--	if (saved_gfp_mask) {
--		gfp_allowed_mask = saved_gfp_mask;
--		saved_gfp_mask = 0;
--	}
-+
-+	if (WARN_ON(!saved_gfp_count) || --saved_gfp_count)
-+		return;
-+
-+	gfp_allowed_mask = saved_gfp_mask;
-+	saved_gfp_mask = 0;
-+
-+	pm_pr_dbg("GFP mask restored\n");
+-		ret = kempld_create_platform_device(&kempld_platform_data_generic);
+-		if (ret)
+-			continue;
+-
+-		break;
++	/*
++	 * This custom DMI iteration allows the driver to be initialized in three ways:
++	 * - When a forced_device_id string matches any ident in the kempld_dmi_table,
++	 *   regardless of whether the DMI device is present in the system dmi table.
++	 * - When a matching entry is present in the DMI system tabe.
++	 * - Through alternative mechanisms like ACPI.
++	 */
++	if (force_device_id[0]) {
++		for (id = kempld_dmi_table; id->matches[0].slot != DMI_NONE; id++)
++			if (strstr(id->ident, force_device_id))
++				if (!kempld_create_platform_device(&kempld_platform_data_generic))
++					break;
++		if (id->matches[0].slot == DMI_NONE)
++			return -ENODEV;
++	} else {
++		for (id = dmi_first_match(kempld_dmi_table); id; id = dmi_first_match(id+1))
++			if (kempld_create_platform_device(&kempld_platform_data_generic))
++				break;
+ 	}
+-	if (ret)
+-		return ret;
+-
+ 	return platform_driver_register(&kempld_driver);
  }
  
- void pm_restrict_gfp_mask(void)
- {
- 	WARN_ON(!mutex_is_locked(&system_transition_mutex));
--	WARN_ON(saved_gfp_mask);
-+
-+	if (saved_gfp_count++) {
-+		WARN_ON((saved_gfp_mask & ~(__GFP_IO | __GFP_FS)) != gfp_allowed_mask);
-+		return;
-+	}
-+
- 	saved_gfp_mask = gfp_allowed_mask;
- 	gfp_allowed_mask &= ~(__GFP_IO | __GFP_FS);
-+
-+	pm_pr_dbg("GFP mask restricted\n");
- }
- 
- unsigned int lock_system_sleep(void)
 
 
 
