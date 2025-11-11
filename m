@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC09C4ABD1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7204BC4A560
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:20:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD252188F947
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 500453B2DCD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:14:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CA9346FDF;
-	Tue, 11 Nov 2025 01:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E80347BAF;
+	Tue, 11 Nov 2025 01:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXrmLHY3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stsF3hpc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0488E26C399;
-	Tue, 11 Nov 2025 01:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7612DC35A;
+	Tue, 11 Nov 2025 01:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824268; cv=none; b=ktXzzb3sds3zr0iAbL0sZVuGAwwlnAuVeS/fId81FGF9Z70q9JJZqG89pLQocvjg0PMM9qovbQwe+iFSmjW/yntdZ/LB7zXtfWx36/fA6RttiTeX4DE6nsPSmGWE5j7M2w+Kym9dyhL8ceVgvsuBS/Nl5cs+xwrCFNpetIYDec0=
+	t=1762823210; cv=none; b=sAhMFhtfQ16rl2hHQLcsXfJf7VlR1r1KFt4VhRzJvQ/dq0As/eoig+gIQCcfxp49haMmkALMrSbw/6czVIbJevC41APtogo6xOF4BrVN6FyHaeraz4AlHykUx1NxUbn0whuRK6QkYpY+06Tw5O1YBzOhZy1IzGh/P7sjtwK6Sjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824268; c=relaxed/simple;
-	bh=60vlrtQRvVFIr4jOFUNwB63k+2hikOwpiBVgebQ7EMk=;
+	s=arc-20240116; t=1762823210; c=relaxed/simple;
+	bh=dtq16UT8eGHiiwym3rlk0hFs8hdATeevvxShHfWZ0VE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ulVQ9lkRtGJNLng0dUFXj+XA4N0LhUcOIQR2iaeTd9q6vd8eIpz72FTwj88YXyW64OURmyi1OrgE297dRIdifYxRwAsOqCKP4q2NLvO3ZqUDtR1XwfK088skLCOVATbKcCbyDa4KXLI1xqE/7J2eYso7jr9Hat4RHIPRl1spr2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXrmLHY3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A89C113D0;
-	Tue, 11 Nov 2025 01:24:27 +0000 (UTC)
+	 MIME-Version; b=m8/IjGGc0apE5dIQ/VpWLK2fIcbUNPtx7h+1L505pnj5zQ4wLoWmLoT1nmJw/Ax7RSk3VMy/6DK8ihxuE2lyb2ooqlE0Vyqo/1wk/KgIYcRPErZg1NaD37jkbZ1IZc5jz+bgxO0OtLK0z328moEpEn8L9ueCw2jybVl0WQ5eais=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stsF3hpc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDB2C113D0;
+	Tue, 11 Nov 2025 01:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824267;
-	bh=60vlrtQRvVFIr4jOFUNwB63k+2hikOwpiBVgebQ7EMk=;
+	s=korg; t=1762823210;
+	bh=dtq16UT8eGHiiwym3rlk0hFs8hdATeevvxShHfWZ0VE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vXrmLHY35mEcfur2ctpyNdSA40WpSgzxRh0gDapRtmA0x3YGK613ZafDcGKpCy+hA
-	 7NINcfA/PbLC0g+OJAFROCplmHseb0YPDZmMq8Xt7/APJ/GBKJeI6CObCQcULZl5NE
-	 CNMLbsPEK+THYseVhiGAtp5TfeXp3fNw4OPWQltI=
+	b=stsF3hpc5OoonH9utBMKEa+Ayowe7oy5FP950soSUOwQTtRJSpGNtzYOfrZudk4Er
+	 OMFrEx1CVM7eJxCL2qCP30rFti5zgl/WHc9jEKQRMBDKS7JpiwddGQ7qrS+vibNqXD
+	 ZQXLmmCLOBzHEXz67z/7fpfJvTOCboeTFhOWdijU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Seyediman Seyedarab <ImanDevel@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 474/849] drm/msm/adreno: Add speedbin data for A623 GPU
+Subject: [PATCH 6.12 188/565] drm/nouveau: replace snprintf() with scnprintf() in nvkm_snprintbf()
 Date: Tue, 11 Nov 2025 09:40:44 +0900
-Message-ID: <20251111004547.906908984@linuxfoundation.org>
+Message-ID: <20251111004531.161736423@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Seyediman Seyedarab <imandevel@gmail.com>
 
-[ Upstream commit 0584da4515dbb4fec69107ce837eef36a7be5d7d ]
+[ Upstream commit 6510b62fe9303aaf48ff136ff69186bcfc32172d ]
 
-Add the speedbin mappings for Adreno 623 GPU.
+snprintf() returns the number of characters that *would* have been
+written, which can overestimate how much you actually wrote to the
+buffer in case of truncation. That leads to 'data += this' advancing
+the pointer past the end of the buffer and size going negative.
 
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/672462/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Switching to scnprintf() prevents potential buffer overflows and ensures
+consistent behavior when building the output string.
+
+Signed-off-by: Seyediman Seyedarab <ImanDevel@gmail.com>
+Link: https://lore.kernel.org/r/20250724195913.60742-1-ImanDevel@gmail.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_catalog.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/nouveau/nvkm/core/enum.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
-index 2b1c41f6cfeee..3c82b3f320e3a 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
-@@ -913,6 +913,11 @@ static const struct adreno_info a6xx_gpus[] = {
- 				{ /* sentinel */ },
- 			},
- 		},
-+		.speedbins = ADRENO_SPEEDBINS(
-+			{ 0,   0 },
-+			{ 185, 0 },
-+			{ 127, 1 },
-+		),
- 	}, {
- 		.chip_ids = ADRENO_CHIP_IDS(
- 			0x06030001,
+diff --git a/drivers/gpu/drm/nouveau/nvkm/core/enum.c b/drivers/gpu/drm/nouveau/nvkm/core/enum.c
+index b9581feb24ccb..a23b40b27b81b 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/core/enum.c
++++ b/drivers/gpu/drm/nouveau/nvkm/core/enum.c
+@@ -44,7 +44,7 @@ nvkm_snprintbf(char *data, int size, const struct nvkm_bitfield *bf, u32 value)
+ 	bool space = false;
+ 	while (size >= 1 && bf->name) {
+ 		if (value & bf->mask) {
+-			int this = snprintf(data, size, "%s%s",
++			int this = scnprintf(data, size, "%s%s",
+ 					    space ? " " : "", bf->name);
+ 			size -= this;
+ 			data += this;
 -- 
 2.51.0
 
