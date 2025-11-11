@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A43C4A788
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD08C4A75B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3DEF1894DB5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 081CA3B1281
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFFF340D98;
-	Tue, 11 Nov 2025 01:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B46827FD54;
+	Tue, 11 Nov 2025 01:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOJIU78u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17i7SuO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956FC27D786;
-	Tue, 11 Nov 2025 01:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA3E27D786;
+	Tue, 11 Nov 2025 01:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823470; cv=none; b=HrZtqM7kfTOVIG/v1Y5wYK2ZO6IyFPEGNXniSBQ1MKFuU8UIRIk+Irlw1PW0U4jZ8mlS1fR636eUXYWD1OV6ARcgTLuE3raCqLQK8J+xthF8Nv0hQCaYOBCcyy1Wf2ZHQYNEPFEXKhwxJRPaPaqaoYlFy6b3hOGoo+XB/w4Kj0w=
+	t=1762823475; cv=none; b=NKCSIQjxwX+OXPcjlHn5r0sdhn+VkVOYQS20fEjKhcYsp81KR607rYFtszm7GswIYaraiPnIxakf6vTfjgM675Dw05aQfAF8hquBj45Sd/FwlTSvS2u3mE9N1ODVrsg44GD7VCwnFqNK9mjO5ebs6i5AM3jvGrchJzNMbb+5Wqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823470; c=relaxed/simple;
-	bh=0A76K02b8apmHS9fLjjRC4Po7VPFGjKvDZwWgigV/kM=;
+	s=arc-20240116; t=1762823475; c=relaxed/simple;
+	bh=PF22k3YWnVQrq4Hw4mJzqhLmcW5j2FTzuMIEUMTvJAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMIZr683b+bkrdOZsrQ+guCZxTzLnZ0hmwp2uN81zEFSiejHYeIS2kSa+zoE1raupNBdxj/g1pqZeEfycVEwOW82fGk6V86M0UTBI2rElAy63In8d/Lqz9JpUJrn4rCFaiIaVrwIDffYt+3aCggXcoMnDEMLLBnbahC50tymE4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOJIU78u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011BAC116B1;
-	Tue, 11 Nov 2025 01:11:09 +0000 (UTC)
+	 MIME-Version; b=R7QN4++j8DrtDmeJRiliUcVFHUwUrXKf+f7VwrMVGSuW7lUG3DgzdG4zdALJuJbk9vvt6ynLwMJQDjZ7NuSAQVE7qpQHqGpb1yc5z/0xCQViJRdv4wu7Pw0ZjabfP/v5DdxrHm8jBF81m1RsS6EPiRaSRU638PlhzNneToMWNGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17i7SuO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB0DC4CEF5;
+	Tue, 11 Nov 2025 01:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823470;
-	bh=0A76K02b8apmHS9fLjjRC4Po7VPFGjKvDZwWgigV/kM=;
+	s=korg; t=1762823475;
+	bh=PF22k3YWnVQrq4Hw4mJzqhLmcW5j2FTzuMIEUMTvJAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DOJIU78uYwPS6rhESbaATTaz+HVgAS3zoYTVAJBfV1RVoUn0Jmn9W+CCsOYTV1Z2m
-	 lTuK7oHQkwF4xnbFPzuQMgeBARxHEQRFxGwFcheOsaeW7uFzajpxFpIN/rVDtQLa3V
-	 EmtNqVtMNEDJwggoHLDZ5dagq1TRXQtfSb6QtlTk=
+	b=17i7SuO54QTe6wBw1jznVIqt5PvYV3ybPrXXmALyzDYaNdjx0RoeEe3sVHBekgHTQ
+	 GRqjhyFV12pX5mITlpGq52W8nMfyrXYbhYuL/gGWtB61mhrQzAtWG33iLk/cmecBBT
+	 9XZyHRtyjso5O/puycBgw7UjPCSvcnWzO5LBKRRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Alice Chao <alice.chao@mediatek.com>,
 	Peter Wang <peter.wang@mediatek.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 306/849] scsi: ufs: host: mediatek: Change reset sequence for improved stability
-Date: Tue, 11 Nov 2025 09:37:56 +0900
-Message-ID: <20251111004543.809224908@linuxfoundation.org>
+Subject: [PATCH 6.17 307/849] scsi: ufs: host: mediatek: Fix invalid access in vccqx handling
+Date: Tue, 11 Nov 2025 09:37:57 +0900
+Message-ID: <20251111004543.834777790@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,41 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Alice Chao <alice.chao@mediatek.com>
 
-[ Upstream commit 878ed88c50bfb14d972dd3b86a1c8188c58de4e5 ]
+[ Upstream commit 5863638598f5e4f64d2f85b03f376383ca1f2ab7 ]
 
-Modify the reset sequence to ensure that the device reset pin is set low
-before the host is disabled. This change enhances the stability of the
-reset process by ensuring the correct order of operations.
+Add a NULL check before accessing the 'vccqx' pointer to prevent invalid
+memory access. This ensures that the function safely handles cases where
+'vccq' and 'vccq2' are not initialized, improving the robustness of the
+power management code.
 
+Signed-off-by: Alice Chao <alice.chao@mediatek.com>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
 Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20250811131423.3444014-10-peter.wang@mediatek.com
+Link: https://lore.kernel.org/r/20250811131423.3444014-11-peter.wang@mediatek.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-mediatek.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/ufs/host/ufs-mediatek.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
-index ada21360aa270..82160da8ec71b 100644
+index 82160da8ec71b..bb0be6bed1bca 100644
 --- a/drivers/ufs/host/ufs-mediatek.c
 +++ b/drivers/ufs/host/ufs-mediatek.c
-@@ -1503,11 +1503,11 @@ static int ufs_mtk_device_reset(struct ufs_hba *hba)
+@@ -1589,6 +1589,9 @@ static void ufs_mtk_vccqx_set_lpm(struct ufs_hba *hba, bool lpm)
  {
- 	struct arm_smccc_res res;
+ 	struct ufs_vreg *vccqx = NULL;
  
--	/* disable hba before device reset */
--	ufshcd_hba_stop(hba);
--
- 	ufs_mtk_device_reset_ctrl(0, res);
- 
-+	/* disable hba in middle of device reset */
-+	ufshcd_hba_stop(hba);
++	if (!hba->vreg_info.vccq && !hba->vreg_info.vccq2)
++		return;
 +
- 	/*
- 	 * The reset signal is active low. UFS devices shall detect
- 	 * more than or equal to 1us of positive or negative RST_n
+ 	if (hba->vreg_info.vccq)
+ 		vccqx = hba->vreg_info.vccq;
+ 	else
 -- 
 2.51.0
 
