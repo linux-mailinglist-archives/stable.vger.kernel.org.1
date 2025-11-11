@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-193822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A06C4AD57
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5535DC4A9A1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A71E23BB8E2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1160A4F88E3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D07343215;
-	Tue, 11 Nov 2025 01:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B7B343D66;
+	Tue, 11 Nov 2025 01:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atjWB4pv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHCMRd0I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4694D2940B;
-	Tue, 11 Nov 2025 01:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4353358C3;
+	Tue, 11 Nov 2025 01:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824090; cv=none; b=SrAz7DmLsEHHclPpG0QBjlD2UG10qAISl7dOm8gNbn0qwxeanQppG7swLtSXq+/tphMZyJNxVD6YVHdqHxekuxtWsXMpfCPjyIY7GEJ+qLrY5mkoJkF6AaGZ+v9tpCxxV/6RIew/9WKqCssZVCgf/BGkKXAKozDzrLpVaf3OoxM=
+	t=1762824094; cv=none; b=rXwLnSkCmfnQxmKULvH88rmxTsCiTNWiG8pqrQhUog6oayNlLHY8xYP5e5qNH9g8+esWHB7OdrKCazf/rwt2ZEeV24/oBXkyB7A9OMTJWUXS+iXD9tQb5T3Ye9gMx9FzqdSwF125q2FZpVmRwZdAApxLlu0iNk/AQ9NCW8RGFLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824090; c=relaxed/simple;
-	bh=SZvr4YLJH5egMhX5ICy+UhYIGCoDqfw4ZLw3l6DJcF0=;
+	s=arc-20240116; t=1762824094; c=relaxed/simple;
+	bh=0ZWQ5h+KfAL5sNyNIce/FyTqf1En0+xE9WhPSyThy5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1tJxbcSuciQZ6Ge7jJrDqEbw7NeeAFhZhfO/THfa9yWl93n8KptSQtd2bECECi/lgBHWswdHbJztydIjMWpF9ZujPH6PnILp5gR9Y+Ao+r8oL94dJj+ZXF7mbeTFl+iawuJphWxRFEOzzmb1Aqc+Rc05g7/46VX9VexSzlgot0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atjWB4pv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D746BC16AAE;
-	Tue, 11 Nov 2025 01:21:29 +0000 (UTC)
+	 MIME-Version; b=VWBlMuTrZMaCImhZl+TZUWc3ws2V4Dd6iZa8VlSQkM6OzIhW/dp0FQd3SfA5EzwNRjmgNyk4YP/ZBxZFIzj1R5118WB4r02Sgdh9b4uc3eP+zXKLYzhQMCQ8Qiaj8km/ZLiAB4Ix7WU9P4CvempliYdqqdoO6I1cP01IIvReLNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHCMRd0I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5986BC4CEF5;
+	Tue, 11 Nov 2025 01:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824090;
-	bh=SZvr4YLJH5egMhX5ICy+UhYIGCoDqfw4ZLw3l6DJcF0=;
+	s=korg; t=1762824094;
+	bh=0ZWQ5h+KfAL5sNyNIce/FyTqf1En0+xE9WhPSyThy5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=atjWB4pvwpX0R44Qy86Tj1in0CQMXQ04J5NB5nEKGJM+hT7lzFn3aO5FfEG1gJQlY
-	 I5cQKDTRnxeNjr3/E6J5wR3HmEw3OYWtt3ENbMIn81IPILjWKox0H+EZk5ogbXyR20
-	 uJWMv2xBTDYVYyTqSg/cZmdQmY34R8NUYxVhOQLw=
+	b=vHCMRd0IS/Fn4fjGvBnNq13yBKl1VJoo5GIP0n5j6bu0oq/Kreb2DCyTm2xUxQn4F
+	 qgOPOgWAkTMoFwODUtoADAMnQSDsd+VGUTysJlF/M6KhU9FW4mD/+hIWWGN0D2UoJA
+	 0BY+GyHegvbiYUJXDBiejMydYAtNBD+51IsBPlhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Nick Nielsen <nick.kainielsen@free.fr>,
+	grm1 <grm1@mailbox.org>,
+	Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 385/565] wifi: rtw89: renew a completion for each H2C command waiting C2H event
-Date: Tue, 11 Nov 2025 09:44:01 +0900
-Message-ID: <20251111004535.530919454@linuxfoundation.org>
+Subject: [PATCH 6.12 386/565] usb: xhci-pci: add support for hosts with zero USB3 ports
+Date: Tue, 11 Nov 2025 09:44:02 +0900
+Message-ID: <20251111004535.555528802@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,154 +68,95 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Niklas Neronin <niklas.neronin@linux.intel.com>
 
-[ Upstream commit bc2a5a12fa6259e190c7edb03e63b28ab480101b ]
+[ Upstream commit 719de070f764e079cdcb4ddeeb5b19b3ddddf9c1 ]
 
-Logically before a waiting side which has already timed out turns the
-atomic status back to idle, a completing side could still pass atomic
-condition and call complete. It will make the following H2C commands,
-waiting C2H events, get a completion unexpectedly early. Hence, renew
-a completion for each H2C command waiting a C2H event.
+Add xhci support for PCI hosts that have zero USB3 ports.
+Avoid creating a shared Host Controller Driver (HCD) when there is only
+one root hub. Additionally, all references to 'xhci->shared_hcd' are now
+checked before use.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250915065343.39023-1-pkshih@realtek.com
+Only xhci-pci.c requires modification to accommodate this change, as the
+xhci core already supports configurations with zero USB3 ports. This
+capability was introduced when xHCI Platform and MediaTek added support
+for zero USB3 ports.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220181
+Tested-by: Nick Nielsen <nick.kainielsen@free.fr>
+Tested-by: grm1 <grm1@mailbox.org>
+Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250917210726.97100-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 49 ++++++++++++++++++++---
- drivers/net/wireless/realtek/rtw89/core.h | 10 ++++-
- drivers/net/wireless/realtek/rtw89/fw.c   |  2 +
- 3 files changed, 53 insertions(+), 8 deletions(-)
+ drivers/usb/host/xhci-pci.c | 42 +++++++++++++++++++++----------------
+ 1 file changed, 24 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 3584445b27387..faa764d5c1a01 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -4318,37 +4318,74 @@ void rtw89_core_update_beacon_work(struct work_struct *work)
- 
- int rtw89_wait_for_cond(struct rtw89_wait_info *wait, unsigned int cond)
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 234efb9731b2c..933d9fdd9516b 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -616,7 +616,7 @@ int xhci_pci_common_probe(struct pci_dev *dev, const struct pci_device_id *id)
  {
--	struct completion *cmpl = &wait->completion;
-+	struct rtw89_wait_response *prep;
- 	unsigned long time_left;
- 	unsigned int cur;
-+	int err = 0;
+ 	int retval;
+ 	struct xhci_hcd *xhci;
+-	struct usb_hcd *hcd;
++	struct usb_hcd *hcd, *usb3_hcd;
+ 	struct reset_control *reset;
  
- 	cur = atomic_cmpxchg(&wait->cond, RTW89_WAIT_COND_IDLE, cond);
- 	if (cur != RTW89_WAIT_COND_IDLE)
- 		return -EBUSY;
+ 	reset = devm_reset_control_get_optional_exclusive(&dev->dev, NULL);
+@@ -642,26 +642,32 @@ int xhci_pci_common_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 	hcd = dev_get_drvdata(&dev->dev);
+ 	xhci = hcd_to_xhci(hcd);
+ 	xhci->reset = reset;
+-	xhci->shared_hcd = usb_create_shared_hcd(&xhci_pci_hc_driver, &dev->dev,
+-						 pci_name(dev), hcd);
+-	if (!xhci->shared_hcd) {
+-		retval = -ENOMEM;
+-		goto dealloc_usb2_hcd;
+-	}
  
--	time_left = wait_for_completion_timeout(cmpl, RTW89_WAIT_FOR_COND_TIMEOUT);
-+	prep = kzalloc(sizeof(*prep), GFP_KERNEL);
-+	if (!prep) {
-+		err = -ENOMEM;
-+		goto reset;
+-	retval = xhci_ext_cap_init(xhci);
+-	if (retval)
+-		goto put_usb3_hcd;
++	xhci->allow_single_roothub = 1;
++	if (!xhci_has_one_roothub(xhci)) {
++		xhci->shared_hcd = usb_create_shared_hcd(&xhci_pci_hc_driver, &dev->dev,
++							 pci_name(dev), hcd);
++		if (!xhci->shared_hcd) {
++			retval = -ENOMEM;
++			goto dealloc_usb2_hcd;
++		}
+ 
+-	retval = usb_add_hcd(xhci->shared_hcd, dev->irq,
+-			IRQF_SHARED);
+-	if (retval)
+-		goto put_usb3_hcd;
+-	/* Roothub already marked as USB 3.0 speed */
++		retval = xhci_ext_cap_init(xhci);
++		if (retval)
++			goto put_usb3_hcd;
++
++		retval = usb_add_hcd(xhci->shared_hcd, dev->irq, IRQF_SHARED);
++		if (retval)
++			goto put_usb3_hcd;
++	} else {
++		retval = xhci_ext_cap_init(xhci);
++		if (retval)
++			goto dealloc_usb2_hcd;
 +	}
-+
-+	init_completion(&prep->completion);
-+
-+	rcu_assign_pointer(wait->resp, prep);
-+
-+	time_left = wait_for_completion_timeout(&prep->completion,
-+						RTW89_WAIT_FOR_COND_TIMEOUT);
- 	if (time_left == 0) {
--		atomic_set(&wait->cond, RTW89_WAIT_COND_IDLE);
--		return -ETIMEDOUT;
-+		err = -ETIMEDOUT;
-+		goto cleanup;
- 	}
  
-+	wait->data = prep->data;
-+
-+cleanup:
-+	rcu_assign_pointer(wait->resp, NULL);
-+	kfree_rcu(prep, rcu_head);
-+
-+reset:
-+	atomic_set(&wait->cond, RTW89_WAIT_COND_IDLE);
-+
-+	if (err)
-+		return err;
-+
- 	if (wait->data.err)
- 		return -EFAULT;
+-	if (!(xhci->quirks & XHCI_BROKEN_STREAMS) &&
+-			HCC_MAX_PSA(xhci->hcc_params) >= 4)
+-		xhci->shared_hcd->can_do_streams = 1;
++	usb3_hcd = xhci_get_usb3_hcd(xhci);
++	if (usb3_hcd && !(xhci->quirks & XHCI_BROKEN_STREAMS) && HCC_MAX_PSA(xhci->hcc_params) >= 4)
++		usb3_hcd->can_do_streams = 1;
  
- 	return 0;
- }
- 
-+static void rtw89_complete_cond_resp(struct rtw89_wait_response *resp,
-+				     const struct rtw89_completion_data *data)
-+{
-+	resp->data = *data;
-+	complete(&resp->completion);
-+}
-+
- void rtw89_complete_cond(struct rtw89_wait_info *wait, unsigned int cond,
- 			 const struct rtw89_completion_data *data)
- {
-+	struct rtw89_wait_response *resp;
- 	unsigned int cur;
- 
-+	guard(rcu)();
-+
-+	resp = rcu_dereference(wait->resp);
-+	if (!resp)
-+		return;
-+
- 	cur = atomic_cmpxchg(&wait->cond, cond, RTW89_WAIT_COND_IDLE);
- 	if (cur != cond)
- 		return;
- 
--	wait->data = *data;
--	complete(&wait->completion);
-+	rtw89_complete_cond_resp(resp, data);
- }
- 
- void rtw89_core_ntfy_btc_event(struct rtw89_dev *rtwdev, enum rtw89_btc_hmsg event)
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 7be32b83d4d64..36ba2ca255bb0 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -4391,17 +4391,23 @@ struct rtw89_completion_data {
- 	u8 buf[RTW89_COMPLETION_BUF_SIZE];
- };
- 
-+struct rtw89_wait_response {
-+	struct rcu_head rcu_head;
-+	struct completion completion;
-+	struct rtw89_completion_data data;
-+};
-+
- struct rtw89_wait_info {
- 	atomic_t cond;
--	struct completion completion;
- 	struct rtw89_completion_data data;
-+	struct rtw89_wait_response __rcu *resp;
- };
- 
- #define RTW89_WAIT_FOR_COND_TIMEOUT msecs_to_jiffies(100)
- 
- static inline void rtw89_init_wait(struct rtw89_wait_info *wait)
- {
--	init_completion(&wait->completion);
-+	rcu_assign_pointer(wait->resp, NULL);
- 	atomic_set(&wait->cond, RTW89_WAIT_COND_IDLE);
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 7894e1a569a2c..ae2c4ff74531a 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -7446,6 +7446,8 @@ static int rtw89_h2c_tx_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- {
- 	int ret;
- 
-+	lockdep_assert_wiphy(rtwdev->hw->wiphy);
-+
- 	ret = rtw89_h2c_tx(rtwdev, skb, false);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to send h2c\n");
+ 	/* USB-2 and USB-3 roothubs initialized, allow runtime pm suspend */
+ 	pm_runtime_put_noidle(&dev->dev);
 -- 
 2.51.0
 
