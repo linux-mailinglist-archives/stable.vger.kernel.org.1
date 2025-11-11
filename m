@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08FB7C4A2DA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:05:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE289C4A3BE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:08:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEE3D188DF9D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E4C73AFC25
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D452825A64C;
-	Tue, 11 Nov 2025 01:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9B725C818;
+	Tue, 11 Nov 2025 01:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFOLVgfL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PY3a9sd2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F53C248883;
-	Tue, 11 Nov 2025 01:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE4726D4DF;
+	Tue, 11 Nov 2025 01:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823113; cv=none; b=s/6DngWp9cA+1vaSnpwp2XpGRMOrtE3hfmLAhTJp/mPUogRk/+/SWK1M5lh6jdmAMUdICO36UPoFcVi8tVvgRzHv5yekzjcPPksLNZFj1xkLLY3rv8+eE82DOG+Oq8lSFOrbyOjs3heq9H6HFA89mC2Akg4XlGXAwrVOsIewCbA=
+	t=1762823120; cv=none; b=CUyrrUsem9Ib5B0XoIgcaG2OJ7l2XsOVxJF/5MblwDy1fxSM1c86cFCjI3uEjhsR+c8emHxRpfQa6B762FhUTU+Cy8h6TGF3vksaUi2EX2BqxyVaG7Gdmz3g5uScHQ9rysz1pDz50X0txjGgENBwzJmlGV3q6glUzHHnyL0Cubo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823113; c=relaxed/simple;
-	bh=sdMGPK8yLkeYyu/GwEY7j6bbZrRdbv6Jx+rpGjd6Yjo=;
+	s=arc-20240116; t=1762823120; c=relaxed/simple;
+	bh=M7pD13RZfyI2eCYbMYg5S+rQKpvrS4ag3/CC88RLgkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Valb9SM3GZPbeQY/kFaZ12As6T7LiY0tNUMyv/UkgDXp914SAECgIlUXl/GktKDDu/Cs2SzgXzTIdSSU04px5ZhVhLXE/whwXAKlLRlMvW98Aw72VdpYKMWRlYEtsDlE5RF+lxfqD/cWwHaKN8n8pz+UFycmIqi3C+/sjU59Ubo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFOLVgfL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7E5C113D0;
-	Tue, 11 Nov 2025 01:05:12 +0000 (UTC)
+	 MIME-Version; b=DNLxtmKFPDseE4gD0YkFp13neIff5gtk9B7mFjcmf4O2QbtDyx7AbG2Plh3gZ5LLw8WKyIhUYKMvVfQsEp2MwK9dUAzFV2xQnJanIrPXzifOIu0aFSyUVmVsmuJvHkFos06a5CoPYY+7EDmmgkhYEH1fgC+xC2qwQKAhJD0bLDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PY3a9sd2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C9AC19422;
+	Tue, 11 Nov 2025 01:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823113;
-	bh=sdMGPK8yLkeYyu/GwEY7j6bbZrRdbv6Jx+rpGjd6Yjo=;
+	s=korg; t=1762823120;
+	bh=M7pD13RZfyI2eCYbMYg5S+rQKpvrS4ag3/CC88RLgkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NFOLVgfLHCrjeXuh0Nl4kHJN36VDla73/Z2Y4WhFXFFtOVu1sd6uFq+bVOCig+Gik
-	 zT7UvBsezoanvMBoQ2iqdKE/wnPkJ/4Abp//sl9VXi9muYyGQ9nDGbhwf3TCHCcnYG
-	 GkvEIwTTFtozHxZ9lekUnDj+moDc+33WDXq351mM=
+	b=PY3a9sd2HKqFyMzEq3goFvVi96+IxnmMQKJyp0D0aL3d28vcP3+PyAzjRL5BtKbbX
+	 Ixg3t5fAiLmSyiLKk06Li+uvG3w7upGvWubN6N423qDOtlaIvzQnwgijP5mFeMDWhU
+	 26iqU5/DYdZqiCrfmgwZ/OM9Z/ddzQj05XMW1bCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Sathishkumar S <sathishkumar.sundararaju@amd.com>,
+	Leo Liu <leo.liu@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 174/565] drm/amdgpu: add range check for RAS bad page address
-Date: Tue, 11 Nov 2025 09:40:30 +0900
-Message-ID: <20251111004530.849459268@linuxfoundation.org>
+Subject: [PATCH 6.12 175/565] drm/amdgpu: Check vcn sram load return value
+Date: Tue, 11 Nov 2025 09:40:31 +0900
+Message-ID: <20251111004530.871668101@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,135 +67,253 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tao Zhou <tao.zhou1@amd.com>
+From: Sathishkumar S <sathishkumar.sundararaju@amd.com>
 
-[ Upstream commit 2b17c240e8cd9ac61d3c82277fbed27edad7f002 ]
+[ Upstream commit faab5ea0836733ef1c8e83cf6b05690a5c9066be ]
 
-Exclude invalid bad pages.
+Log an error when vcn sram load fails in indirect mode
+and return the same error value.
 
-Signed-off-by: Tao Zhou <tao.zhou1@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Sathishkumar S <sathishkumar.sundararaju@amd.com>
+Reviewed-by: Leo Liu <leo.liu@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 58 ++++++++++++-------------
- 1 file changed, 28 insertions(+), 30 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c   | 10 ++++++++--
+ drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c   | 10 ++++++++--
+ drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c   | 10 ++++++++--
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c   | 10 ++++++++--
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c | 11 ++++++++---
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c | 10 ++++++++--
+ drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c |  9 +++++++--
+ drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c | 11 ++++++++---
+ 8 files changed, 63 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-index 1a1395c5fff15..f5148027107bc 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -134,9 +134,9 @@ enum amdgpu_ras_retire_page_reservation {
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
+index f0edaabdcde5d..f085fdaafae00 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
+@@ -842,6 +842,7 @@ static int vcn_v2_0_start_dpg_mode(struct amdgpu_device *adev, bool indirect)
+ 	volatile struct amdgpu_fw_shared *fw_shared = adev->vcn.inst->fw_shared.cpu_addr;
+ 	struct amdgpu_ring *ring = &adev->vcn.inst->ring_dec;
+ 	uint32_t rb_bufsz, tmp;
++	int ret;
  
- atomic_t amdgpu_ras_in_intr = ATOMIC_INIT(0);
+ 	vcn_v2_0_enable_static_power_gating(adev);
  
--static bool amdgpu_ras_check_bad_page_unlock(struct amdgpu_ras *con,
-+static int amdgpu_ras_check_bad_page_unlock(struct amdgpu_ras *con,
- 				uint64_t addr);
--static bool amdgpu_ras_check_bad_page(struct amdgpu_device *adev,
-+static int amdgpu_ras_check_bad_page(struct amdgpu_device *adev,
- 				uint64_t addr);
- #ifdef CONFIG_X86_MCE_AMD
- static void amdgpu_register_bad_pages_mca_notifier(struct amdgpu_device *adev);
-@@ -167,18 +167,16 @@ static int amdgpu_reserve_page_direct(struct amdgpu_device *adev, uint64_t addre
- 	struct eeprom_table_record err_rec;
- 	int ret;
+@@ -925,8 +926,13 @@ static int vcn_v2_0_start_dpg_mode(struct amdgpu_device *adev, bool indirect)
+ 		UVD, 0, mmUVD_MASTINT_EN),
+ 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
  
--	if ((address >= adev->gmc.mc_vram_size) ||
--	    (address >= RAS_UMC_INJECT_ADDR_LIMIT)) {
-+	ret = amdgpu_ras_check_bad_page(adev, address);
-+	if (ret == -EINVAL) {
- 		dev_warn(adev->dev,
--		         "RAS WARN: input address 0x%llx is invalid.\n",
--		         address);
-+			"RAS WARN: input address 0x%llx is invalid.\n",
-+			address);
- 		return -EINVAL;
--	}
--
--	if (amdgpu_ras_check_bad_page(adev, address)) {
-+	} else if (ret == 1) {
- 		dev_warn(adev->dev,
--			 "RAS WARN: 0x%llx has already been marked as bad page!\n",
--			 address);
-+			"RAS WARN: 0x%llx has already been marked as bad page!\n",
-+			address);
- 		return 0;
- 	}
+-	if (indirect)
+-		amdgpu_vcn_psp_update_sram(adev, 0, 0);
++	if (indirect) {
++		ret = amdgpu_vcn_psp_update_sram(adev, 0, 0);
++		if (ret) {
++			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
++			return ret;
++		}
++	}
  
-@@ -511,22 +509,16 @@ static ssize_t amdgpu_ras_debugfs_ctrl_write(struct file *f,
- 		ret = amdgpu_ras_feature_enable(adev, &data.head, 1);
- 		break;
- 	case 2:
--		if ((data.inject.address >= adev->gmc.mc_vram_size &&
--		    adev->gmc.mc_vram_size) ||
--		    (data.inject.address >= RAS_UMC_INJECT_ADDR_LIMIT)) {
--			dev_warn(adev->dev, "RAS WARN: input address "
--					"0x%llx is invalid.",
-+		/* umc ce/ue error injection for a bad page is not allowed */
-+		if (data.head.block == AMDGPU_RAS_BLOCK__UMC)
-+			ret = amdgpu_ras_check_bad_page(adev, data.inject.address);
-+		if (ret == -EINVAL) {
-+			dev_warn(adev->dev, "RAS WARN: input address 0x%llx is invalid.",
- 					data.inject.address);
--			ret = -EINVAL;
- 			break;
--		}
--
--		/* umc ce/ue error injection for a bad page is not allowed */
--		if ((data.head.block == AMDGPU_RAS_BLOCK__UMC) &&
--		    amdgpu_ras_check_bad_page(adev, data.inject.address)) {
--			dev_warn(adev->dev, "RAS WARN: inject: 0x%llx has "
--				 "already been marked as bad!\n",
--				 data.inject.address);
-+		} else if (ret == 1) {
-+			dev_warn(adev->dev, "RAS WARN: inject: 0x%llx has already been marked as bad!\n",
-+					data.inject.address);
- 			break;
- 		}
+ 	/* force RBC into idle state */
+ 	rb_bufsz = order_base_2(ring->ring_size);
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c b/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c
+index e4d0c0310e76d..274d5063e9a26 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c
+@@ -870,6 +870,7 @@ static int vcn_v2_5_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, boo
+ 	volatile struct amdgpu_fw_shared *fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
+ 	struct amdgpu_ring *ring;
+ 	uint32_t rb_bufsz, tmp;
++	int ret;
  
-@@ -2774,18 +2766,24 @@ static int amdgpu_ras_load_bad_pages(struct amdgpu_device *adev)
- 	return ret;
- }
+ 	/* disable register anti-hang mechanism */
+ 	WREG32_P(SOC15_REG_OFFSET(VCN, inst_idx, mmUVD_POWER_STATUS), 1,
+@@ -960,8 +961,13 @@ static int vcn_v2_5_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, boo
+ 		VCN, 0, mmUVD_MASTINT_EN),
+ 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
  
--static bool amdgpu_ras_check_bad_page_unlock(struct amdgpu_ras *con,
-+static int amdgpu_ras_check_bad_page_unlock(struct amdgpu_ras *con,
- 				uint64_t addr)
- {
- 	struct ras_err_handler_data *data = con->eh_data;
-+	struct amdgpu_device *adev = con->adev;
- 	int i;
+-	if (indirect)
+-		amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
++	if (indirect) {
++		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
++		if (ret) {
++			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
++			return ret;
++		}
++	}
  
-+	if ((addr >= adev->gmc.mc_vram_size &&
-+	    adev->gmc.mc_vram_size) ||
-+	    (addr >= RAS_UMC_INJECT_ADDR_LIMIT))
-+		return -EINVAL;
-+
- 	addr >>= AMDGPU_GPU_PAGE_SHIFT;
- 	for (i = 0; i < data->count; i++)
- 		if (addr == data->bps[i].retired_page)
--			return true;
-+			return 1;
+ 	ring = &adev->vcn.inst[inst_idx].ring_dec;
+ 	/* force RBC into idle state */
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
+index 9700414520963..4196bdece253b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
+@@ -990,6 +990,7 @@ static int vcn_v3_0_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, boo
+ 	volatile struct amdgpu_fw_shared *fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
+ 	struct amdgpu_ring *ring;
+ 	uint32_t rb_bufsz, tmp;
++	int ret;
  
--	return false;
-+	return 0;
- }
+ 	/* disable register anti-hang mechanism */
+ 	WREG32_P(SOC15_REG_OFFSET(VCN, inst_idx, mmUVD_POWER_STATUS), 1,
+@@ -1082,8 +1083,13 @@ static int vcn_v3_0_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, boo
+ 	WREG32_SOC15_DPG_MODE(inst_idx, SOC15_DPG_MODE_OFFSET(
+ 		VCN, inst_idx, mmUVD_VCPU_CNTL), tmp, 0, indirect);
  
- /*
-@@ -2793,11 +2791,11 @@ static bool amdgpu_ras_check_bad_page_unlock(struct amdgpu_ras *con,
-  *
-  * Note: this check is only for umc block
-  */
--static bool amdgpu_ras_check_bad_page(struct amdgpu_device *adev,
-+static int amdgpu_ras_check_bad_page(struct amdgpu_device *adev,
- 				uint64_t addr)
- {
- 	struct amdgpu_ras *con = amdgpu_ras_get_context(adev);
--	bool ret = false;
-+	int ret = 0;
+-	if (indirect)
+-		amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
++	if (indirect) {
++		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
++		if (ret) {
++			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
++			return ret;
++		}
++	}
  
- 	if (!con || !con->eh_data)
- 		return ret;
+ 	ring = &adev->vcn.inst[inst_idx].ring_dec;
+ 	/* force RBC into idle state */
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
+index 33d413444a46a..ae510fd9d2944 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
+@@ -963,6 +963,7 @@ static int vcn_v4_0_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, boo
+ 	volatile struct amdgpu_vcn4_fw_shared *fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
+ 	struct amdgpu_ring *ring;
+ 	uint32_t tmp;
++	int ret;
+ 
+ 	/* disable register anti-hang mechanism */
+ 	WREG32_P(SOC15_REG_OFFSET(VCN, inst_idx, regUVD_POWER_STATUS), 1,
+@@ -1045,8 +1046,13 @@ static int vcn_v4_0_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, boo
+ 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
+ 
+ 
+-	if (indirect)
+-		amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
++	if (indirect) {
++		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
++		if (ret) {
++			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
++			return ret;
++		}
++	}
+ 
+ 	ring = &adev->vcn.inst[inst_idx].ring_enc[0];
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
+index 77542dabec59f..2094357a931c4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
+@@ -778,7 +778,7 @@ static int vcn_v4_0_3_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, b
+ 	volatile struct amdgpu_vcn4_fw_shared *fw_shared =
+ 						adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
+ 	struct amdgpu_ring *ring;
+-	int vcn_inst;
++	int vcn_inst, ret;
+ 	uint32_t tmp;
+ 
+ 	vcn_inst = GET_INST(VCN, inst_idx);
+@@ -871,8 +871,13 @@ static int vcn_v4_0_3_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, b
+ 		VCN, 0, regUVD_MASTINT_EN),
+ 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
+ 
+-	if (indirect)
+-		amdgpu_vcn_psp_update_sram(adev, inst_idx, AMDGPU_UCODE_ID_VCN0_RAM);
++	if (indirect) {
++		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, AMDGPU_UCODE_ID_VCN0_RAM);
++		if (ret) {
++			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
++			return ret;
++		}
++	}
+ 
+ 	ring = &adev->vcn.inst[inst_idx].ring_enc[0];
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
+index 3d114ea7049f7..48cb61a9c13fe 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
+@@ -876,6 +876,7 @@ static int vcn_v4_0_5_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, b
+ 	volatile struct amdgpu_vcn4_fw_shared *fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
+ 	struct amdgpu_ring *ring;
+ 	uint32_t tmp;
++	int ret;
+ 
+ 	/* disable register anti-hang mechanism */
+ 	WREG32_P(SOC15_REG_OFFSET(VCN, inst_idx, regUVD_POWER_STATUS), 1,
+@@ -956,8 +957,13 @@ static int vcn_v4_0_5_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, b
+ 		VCN, inst_idx, regUVD_MASTINT_EN),
+ 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
+ 
+-	if (indirect)
+-		amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
++	if (indirect) {
++		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
++		if (ret) {
++			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
++			return ret;
++		}
++	}
+ 
+ 	ring = &adev->vcn.inst[inst_idx].ring_enc[0];
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
+index d19eec4d47905..cc7add217fd19 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
+@@ -665,6 +665,7 @@ static int vcn_v5_0_0_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, b
+ 	volatile struct amdgpu_vcn5_fw_shared *fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
+ 	struct amdgpu_ring *ring;
+ 	uint32_t tmp;
++	int ret;
+ 
+ 	/* disable register anti-hang mechanism */
+ 	WREG32_P(SOC15_REG_OFFSET(VCN, inst_idx, regUVD_POWER_STATUS), 1,
+@@ -718,8 +719,12 @@ static int vcn_v5_0_0_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, b
+ 		VCN, inst_idx, regUVD_MASTINT_EN),
+ 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
+ 
+-	if (indirect)
+-		amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
++	if (indirect) {
++		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
++		dev_err(adev->dev, "%s: vcn sram load failed %d\n", __func__, ret);
++		if (ret)
++			return ret;
++	}
+ 
+ 	ring = &adev->vcn.inst[inst_idx].ring_enc[0];
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
+index cdefd7fcb0da6..d8bbb93767318 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
+@@ -605,7 +605,7 @@ static int vcn_v5_0_1_start_dpg_mode(struct amdgpu_vcn_inst *vinst,
+ 		adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
+ 	struct amdgpu_ring *ring;
+ 	struct dpg_pause_state state = {.fw_based = VCN_DPG_STATE__PAUSE};
+-	int vcn_inst;
++	int vcn_inst, ret;
+ 	uint32_t tmp;
+ 
+ 	vcn_inst = GET_INST(VCN, inst_idx);
+@@ -666,8 +666,13 @@ static int vcn_v5_0_1_start_dpg_mode(struct amdgpu_vcn_inst *vinst,
+ 		VCN, 0, regUVD_MASTINT_EN),
+ 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
+ 
+-	if (indirect)
+-		amdgpu_vcn_psp_update_sram(adev, inst_idx, AMDGPU_UCODE_ID_VCN0_RAM);
++	if (indirect) {
++		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, AMDGPU_UCODE_ID_VCN0_RAM);
++		if (ret) {
++			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
++			return ret;
++		}
++	}
+ 
+ 	/* resetting ring, fw should not check RB ring */
+ 	fw_shared->sq.queue_mode |= FW_QUEUE_RING_RESET;
 -- 
 2.51.0
 
