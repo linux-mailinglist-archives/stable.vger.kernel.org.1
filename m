@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B78C4B0A3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F5AC4AB5D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C138C4F94EE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C2E794F72F1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DABA2347BDB;
-	Tue, 11 Nov 2025 01:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF862E92AF;
+	Tue, 11 Nov 2025 01:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LE5VfA5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SB8l/vwp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98021347FEA;
-	Tue, 11 Nov 2025 01:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AED026E158;
+	Tue, 11 Nov 2025 01:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825314; cv=none; b=R+5fgGmk23eT2yuqchubYWom09NXz7eWcfxf1ns4cSMSpBQdirjveitxXKJrXQQ7kyhA35h7RMMhw8lfo6bRDlQ8vOaKyzFy6vfXg3itkcrvUqzktLIu7qDuVl+e1qa73ah4qtKCoYZg/Q9s6LQAv5NgXCZhUBFv32fUUVtbq7o=
+	t=1762824351; cv=none; b=QEVFNYufEL5fGkf7hCCYK7KOYAZbPiJkb1gnka1vm9ZB55/kpMfAiXK1JE9p41KgjnPf2ongZNw1V0hyIWt5vOHBsRM/ImHM3/n5RBPt/C4t+/NXhsqVULeuW8dLD9UOES0n3TsqtP03P8I9jVbQ50LugbH2Wx+KSkbHdzxvzV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825314; c=relaxed/simple;
-	bh=Kn3gl+ZSPiVEzOnb7O2L1rkrDByVHEV0edWpgOxnq+I=;
+	s=arc-20240116; t=1762824351; c=relaxed/simple;
+	bh=xbJNB479zV5BE+fbsk3ezV1XJS5dinz1KyzaUJodJW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ew4/vq8yvdATok2yDlnl0AkG4WDK1+F22dJrgOyNC/QjrY9dt5PkdK47ZVy+/9jo5z1M9i93NgDflHcBI1VbfvZZn7eTovaTBgHTCLVWVjl7lJXU10tEfO4WtFb0BQjxikrRdypp7+6D71I8yPjabIyZkmgvVv/KNZdcx18+PZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LE5VfA5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31095C4CEF5;
-	Tue, 11 Nov 2025 01:41:54 +0000 (UTC)
+	 MIME-Version; b=Fo7OwOuMVW5wRyqorotjEJmZAHXWWKeVZRzYQtttwfOmQgqUki2yzt7okimB6sK1408GRv9HH0v8IgnoTcczLBmOQsxHi6A/924xRrElz8TQK8zgxGNQFmnsEfZlQSsf/yiaQ+4C2rsZWrhOyMwsRPu5DTETsadOrh1ouutsu5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SB8l/vwp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7504C16AAE;
+	Tue, 11 Nov 2025 01:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825314;
-	bh=Kn3gl+ZSPiVEzOnb7O2L1rkrDByVHEV0edWpgOxnq+I=;
+	s=korg; t=1762824351;
+	bh=xbJNB479zV5BE+fbsk3ezV1XJS5dinz1KyzaUJodJW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LE5VfA5pZjJD4ZB2u9QeX+9X53uQOFAKP7p0bj5ELQWC9uaQaS/fysnHl8Gp7NzWT
-	 CnsA+6gHEXwTDk524/GSxjhQQro6slaKXv71lefVYEU+FNGUPnyJDaCm+NSe1opynG
-	 gO/XDSmBg7bh500iS5nhGA173Q0VzGqryKyi98KY=
+	b=SB8l/vwpLLXGPQJy5TkGpvYhZ43FfgYSu0lMh/x98oQNtzTg4zg+uSED4/Gh+FleK
+	 YNy814afAMVFrlu/yCkcD+AQPI+dICJis5t6jTKw4iCZfDyusVR0eBICoRdzzxNpJA
+	 sMgzIMrGodiu8ph9nGl0MQ9rR0/0F5gUM2ZeWYHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Randall P. Embry" <rpembry@gmail.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	chuguangqing <chuguangqing@inspur.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 713/849] 9p: fix /sys/fs/9p/caches overwriting itself
+Subject: [PATCH 6.12 427/565] fs: ext4: change GFP_KERNEL to GFP_NOFS to avoid deadlock
 Date: Tue, 11 Nov 2025 09:44:43 +0900
-Message-ID: <20251111004553.672578120@linuxfoundation.org>
+Message-ID: <20251111004536.472716224@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randall P. Embry <rpembry@gmail.com>
+From: chuguangqing <chuguangqing@inspur.com>
 
-[ Upstream commit 86db0c32f16c5538ddb740f54669ace8f3a1f3d7 ]
+[ Upstream commit 1534f72dc2a11ded38b0e0268fbcc0ca24e9fd4a ]
 
-caches_show() overwrote its buffer on each iteration,
-so only the last cache tag was visible in sysfs output.
+The parent function ext4_xattr_inode_lookup_create already uses GFP_NOFS for memory alloction, so the function ext4_xattr_inode_cache_find should use same gfp_flag.
 
-Properly append with snprintf(buf + count, …).
-
-Signed-off-by: Randall P. Embry <rpembry@gmail.com>
-Message-ID: <20250926-v9fs_misc-v1-2-a8b3907fc04d@codewreck.org>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: chuguangqing <chuguangqing@inspur.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/v9fs.c | 2 +-
+ fs/ext4/xattr.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
-index 77e9c4387c1df..714cfe76ee651 100644
---- a/fs/9p/v9fs.c
-+++ b/fs/9p/v9fs.c
-@@ -561,7 +561,7 @@ static ssize_t caches_show(struct kobject *kobj,
- 	spin_lock(&v9fs_sessionlist_lock);
- 	list_for_each_entry(v9ses, &v9fs_sessionlist, slist) {
- 		if (v9ses->cachetag) {
--			n = snprintf(buf, limit, "%s\n", v9ses->cachetag);
-+			n = snprintf(buf + count, limit, "%s\n", v9ses->cachetag);
- 			if (n < 0) {
- 				count = n;
- 				break;
+diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+index 5ddfa4801bb30..ce986312bf685 100644
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1552,7 +1552,7 @@ ext4_xattr_inode_cache_find(struct inode *inode, const void *value,
+ 	WARN_ON_ONCE(ext4_handle_valid(journal_current_handle()) &&
+ 		     !(current->flags & PF_MEMALLOC_NOFS));
+ 
+-	ea_data = kvmalloc(value_len, GFP_KERNEL);
++	ea_data = kvmalloc(value_len, GFP_NOFS);
+ 	if (!ea_data) {
+ 		mb_cache_entry_put(ea_inode_cache, ce);
+ 		return NULL;
 -- 
 2.51.0
 
