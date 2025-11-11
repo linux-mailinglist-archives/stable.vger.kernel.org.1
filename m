@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7699C4B148
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBD5C4AD30
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 51B404E7ED4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F5173AC940
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294DA26CE37;
-	Tue, 11 Nov 2025 01:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654B822301;
+	Tue, 11 Nov 2025 01:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlQ2CbId"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1redgKq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5C023D7FC;
-	Tue, 11 Nov 2025 01:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2134426560B;
+	Tue, 11 Nov 2025 01:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825371; cv=none; b=t8w1af6WSpR3/jt+m85ACGqYdYT4cRgZ11Qb47djnh7zNS3STrzpxDdcDQMUKgKrP6GQs5ibQF6Mbe/KBj4Yfdc4J+5mF1qAwEgief5Ian2MjWIXY47jTPhD7UAdwlFHGQ+YaFMgZsQ2YIfNAyjEhRxROH3bWPW81KP+gqJqy1w=
+	t=1762824570; cv=none; b=EJOM7hXojFpvk+H7dTT3JmrGOFGuJHTaKZpVwwTjf/5TXoR43JnUftLMKPg5JSJthPKwGtHfrUb3ubzbWZUlGqG5z2b/ruojwNwGjPPc9nu0S0s/oEsLZvbd6PX9ncxMnVYYiv1OiAkKxPBOgK0IOwH6lZ/QdseiQJeFLErZELs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825371; c=relaxed/simple;
-	bh=zELCRL1b3BaBKhTQvj6vn/eYTHhQHqdlo0L5OgOW2V4=;
+	s=arc-20240116; t=1762824570; c=relaxed/simple;
+	bh=/hwFxUSCjlV5r5W78CQ/KPLfSqsoNk7mBE99+zSjQfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AohHSJC2PmFPJdIXw4ELfOfGRJ5RCY5AOTcAbEdZD7SCY8bJ8pDg36+qEEj56rWmdcytcTJpD72c+IIuhxwSYHpPv9R3FSCitYZMEdEs5cugpAkXBLJK5IEhFT1dNRtt/LP2LUzFP6ECmvYndhRdCZOPeRtI6lWypIvGuMklYyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KlQ2CbId; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7987FC19421;
-	Tue, 11 Nov 2025 01:42:51 +0000 (UTC)
+	 MIME-Version; b=bdIfwf8Af5LI7eA3kaOGhxnDL5uaETHbzMNWRa4QFOaOH4DVyeVyRJr/9qEbrx3L2L9DsL0YjMW1+IhrI5kjBSAV2b+RMXIPV2HG1ClrCuNw+kTwjGGB74upda7H2nPAt2/2dfQIwD80awMA5ssrrIiZwQR9dWIEveoEL2zajPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1redgKq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53DAC16AAE;
+	Tue, 11 Nov 2025 01:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825371;
-	bh=zELCRL1b3BaBKhTQvj6vn/eYTHhQHqdlo0L5OgOW2V4=;
+	s=korg; t=1762824570;
+	bh=/hwFxUSCjlV5r5W78CQ/KPLfSqsoNk7mBE99+zSjQfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KlQ2CbIdXWwX2IAcxr0JOYL7+pGeqTeQVvWu3sU8mrFdp95fnuAb+5v97PJFfOLwK
-	 VuCuoc7q2yw7u3HH4LrAs4TYxg53hAmlrLM+CahwVNhnj28qK4y37D0q8nONQTBTXB
-	 lYeP9yChFFVlmrxQPjWN3dRbHRpYpDNOzIdrGKCQ=
+	b=M1redgKqu1klGN8wRX1rY8usEsFzgtj6L0vlu4+2LV8xrNNFuB//bbdPQev/bBMHx
+	 24P/XF/ayu6/D4aLdx46oKIpATQ6xrCF1l+NQ1YWIY0KTUeZhu3f4uV9a0nZN38Kl+
+	 Psh41zBK50LpUpDm5TgrMHK3eG90b4S6EPNwYIxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 757/849] Bluetooth: btrtl: Fix memory leak in rtlbt_parse_firmware_v2()
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Sasha Levin <sashal@kernel.org>,
+	Ryan Wanner <ryan.wanner@microchip.com>
+Subject: [PATCH 6.12 471/565] clk: at91: clk-sam9x60-pll: force write to PLL_UPDT register
 Date: Tue, 11 Nov 2025 09:45:27 +0900
-Message-ID: <20251111004554.735778497@linuxfoundation.org>
+Message-ID: <20251111004537.505219144@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,216 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-[ Upstream commit 1c21cf89a66413eb04b2d22c955b7a50edc14dfa ]
+[ Upstream commit af98caeaa7b6ad11eb7b7c8bfaddc769df2889f3 ]
 
-The memory allocated for ptr using kvmalloc() is not freed on the last
-error path. Fix that by freeing it on that error path.
+This register is important for sequencing the commands to PLLs, so
+actually write the update bits with regmap_write_bits() instead of
+relying on a read/modify/write regmap command that could skip the actual
+hardware write if the value is identical to the one read.
 
-Fixes: 9a24ce5e29b1 ("Bluetooth: btrtl: Firmware format v2 support")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+It's changed when modification is needed to the PLL, when
+read-only operation is done, we could keep the call to
+regmap_update_bits().
+
+Add a comment to the sam9x60_div_pll_set_div() function that uses this
+PLL_UPDT register so that it's used consistently, according to the
+product's datasheet.
+
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Tested-by: Ryan Wanner <ryan.wanner@microchip.com> # on sama7d65 and sam9x75
+Link: https://lore.kernel.org/r/20250827150811.82496-1-nicolas.ferre@microchip.com
+[claudiu.beznea: fix "Alignment should match open parenthesis"
+ checkpatch.pl check]
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btrtl.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clk/at91/clk-sam9x60-pll.c | 75 ++++++++++++++++--------------
+ 1 file changed, 39 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
-index 6abd962502e36..1d4a7887abccf 100644
---- a/drivers/bluetooth/btrtl.c
-+++ b/drivers/bluetooth/btrtl.c
-@@ -625,8 +625,10 @@ static int rtlbt_parse_firmware_v2(struct hci_dev *hdev,
- 		len += entry->len;
+diff --git a/drivers/clk/at91/clk-sam9x60-pll.c b/drivers/clk/at91/clk-sam9x60-pll.c
+index fda0411022246..e05d036252e0e 100644
+--- a/drivers/clk/at91/clk-sam9x60-pll.c
++++ b/drivers/clk/at91/clk-sam9x60-pll.c
+@@ -93,8 +93,8 @@ static int sam9x60_frac_pll_set(struct sam9x60_pll_core *core)
+ 
+ 	spin_lock_irqsave(core->lock, flags);
+ 
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
+-			   AT91_PMC_PLL_UPDT_ID_MSK, core->id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
++			  AT91_PMC_PLL_UPDT_ID_MSK, core->id);
+ 	regmap_read(regmap, AT91_PMC_PLL_CTRL1, &val);
+ 	cmul = (val & core->layout->mul_mask) >> core->layout->mul_shift;
+ 	cfrac = (val & core->layout->frac_mask) >> core->layout->frac_shift;
+@@ -128,17 +128,17 @@ static int sam9x60_frac_pll_set(struct sam9x60_pll_core *core)
+ 		udelay(10);
  	}
  
--	if (!len)
-+	if (!len) {
-+		kvfree(ptr);
- 		return -EPERM;
-+	}
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
+-			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
+-			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
++			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
++			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
  
- 	*_buf = ptr;
- 	return len;
+ 	regmap_update_bits(regmap, AT91_PMC_PLL_CTRL0,
+ 			   AT91_PMC_PLL_CTRL0_ENLOCK | AT91_PMC_PLL_CTRL0_ENPLL,
+ 			   AT91_PMC_PLL_CTRL0_ENLOCK | AT91_PMC_PLL_CTRL0_ENPLL);
+ 
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
+-			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
+-			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
++			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
++			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
+ 
+ 	while (!sam9x60_pll_ready(regmap, core->id))
+ 		cpu_relax();
+@@ -164,8 +164,8 @@ static void sam9x60_frac_pll_unprepare(struct clk_hw *hw)
+ 
+ 	spin_lock_irqsave(core->lock, flags);
+ 
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
+-			   AT91_PMC_PLL_UPDT_ID_MSK, core->id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
++			  AT91_PMC_PLL_UPDT_ID_MSK, core->id);
+ 
+ 	regmap_update_bits(regmap, AT91_PMC_PLL_CTRL0, AT91_PMC_PLL_CTRL0_ENPLL, 0);
+ 
+@@ -173,9 +173,9 @@ static void sam9x60_frac_pll_unprepare(struct clk_hw *hw)
+ 		regmap_update_bits(regmap, AT91_PMC_PLL_ACR,
+ 				   AT91_PMC_PLL_ACR_UTMIBG | AT91_PMC_PLL_ACR_UTMIVR, 0);
+ 
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
+-			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
+-			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
++			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
++			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
+ 
+ 	spin_unlock_irqrestore(core->lock, flags);
+ }
+@@ -262,8 +262,8 @@ static int sam9x60_frac_pll_set_rate_chg(struct clk_hw *hw, unsigned long rate,
+ 
+ 	spin_lock_irqsave(core->lock, irqflags);
+ 
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT, AT91_PMC_PLL_UPDT_ID_MSK,
+-			   core->id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT, AT91_PMC_PLL_UPDT_ID_MSK,
++			  core->id);
+ 	regmap_read(regmap, AT91_PMC_PLL_CTRL1, &val);
+ 	cmul = (val & core->layout->mul_mask) >> core->layout->mul_shift;
+ 	cfrac = (val & core->layout->frac_mask) >> core->layout->frac_shift;
+@@ -275,18 +275,18 @@ static int sam9x60_frac_pll_set_rate_chg(struct clk_hw *hw, unsigned long rate,
+ 		     (frac->mul << core->layout->mul_shift) |
+ 		     (frac->frac << core->layout->frac_shift));
+ 
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
+-			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
+-			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
++			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
++			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
+ 
+ 	regmap_update_bits(regmap, AT91_PMC_PLL_CTRL0,
+ 			   AT91_PMC_PLL_CTRL0_ENLOCK | AT91_PMC_PLL_CTRL0_ENPLL,
+ 			   AT91_PMC_PLL_CTRL0_ENLOCK |
+ 			   AT91_PMC_PLL_CTRL0_ENPLL);
+ 
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
+-			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
+-			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
++			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
++			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
+ 
+ 	while (!sam9x60_pll_ready(regmap, core->id))
+ 		cpu_relax();
+@@ -338,7 +338,10 @@ static const struct clk_ops sam9x60_frac_pll_ops_chg = {
+ 	.restore_context = sam9x60_frac_pll_restore_context,
+ };
+ 
+-/* This function should be called with spinlock acquired. */
++/* This function should be called with spinlock acquired.
++ * Warning: this function must be called only if the same PLL ID was set in
++ *          PLL_UPDT register previously.
++ */
+ static void sam9x60_div_pll_set_div(struct sam9x60_pll_core *core, u32 div,
+ 				    bool enable)
+ {
+@@ -350,9 +353,9 @@ static void sam9x60_div_pll_set_div(struct sam9x60_pll_core *core, u32 div,
+ 			   core->layout->div_mask | ena_msk,
+ 			   (div << core->layout->div_shift) | ena_val);
+ 
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
+-			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
+-			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
++			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
++			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
+ 
+ 	while (!sam9x60_pll_ready(regmap, core->id))
+ 		cpu_relax();
+@@ -366,8 +369,8 @@ static int sam9x60_div_pll_set(struct sam9x60_pll_core *core)
+ 	unsigned int val, cdiv;
+ 
+ 	spin_lock_irqsave(core->lock, flags);
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
+-			   AT91_PMC_PLL_UPDT_ID_MSK, core->id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
++			  AT91_PMC_PLL_UPDT_ID_MSK, core->id);
+ 	regmap_read(regmap, AT91_PMC_PLL_CTRL0, &val);
+ 	cdiv = (val & core->layout->div_mask) >> core->layout->div_shift;
+ 
+@@ -398,15 +401,15 @@ static void sam9x60_div_pll_unprepare(struct clk_hw *hw)
+ 
+ 	spin_lock_irqsave(core->lock, flags);
+ 
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
+-			   AT91_PMC_PLL_UPDT_ID_MSK, core->id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
++			  AT91_PMC_PLL_UPDT_ID_MSK, core->id);
+ 
+ 	regmap_update_bits(regmap, AT91_PMC_PLL_CTRL0,
+ 			   core->layout->endiv_mask, 0);
+ 
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
+-			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
+-			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
++			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
++			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
+ 
+ 	spin_unlock_irqrestore(core->lock, flags);
+ }
+@@ -518,8 +521,8 @@ static int sam9x60_div_pll_set_rate_chg(struct clk_hw *hw, unsigned long rate,
+ 	div->div = DIV_ROUND_CLOSEST(parent_rate, rate) - 1;
+ 
+ 	spin_lock_irqsave(core->lock, irqflags);
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT, AT91_PMC_PLL_UPDT_ID_MSK,
+-			   core->id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT, AT91_PMC_PLL_UPDT_ID_MSK,
++			  core->id);
+ 	regmap_read(regmap, AT91_PMC_PLL_CTRL0, &val);
+ 	cdiv = (val & core->layout->div_mask) >> core->layout->div_shift;
+ 
+@@ -574,8 +577,8 @@ static int sam9x60_div_pll_notifier_fn(struct notifier_block *notifier,
+ 	div->div = div->safe_div;
+ 
+ 	spin_lock_irqsave(core.lock, irqflags);
+-	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT, AT91_PMC_PLL_UPDT_ID_MSK,
+-			   core.id);
++	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT, AT91_PMC_PLL_UPDT_ID_MSK,
++			  core.id);
+ 	regmap_read(regmap, AT91_PMC_PLL_CTRL0, &val);
+ 	cdiv = (val & core.layout->div_mask) >> core.layout->div_shift;
+ 
 -- 
 2.51.0
 
