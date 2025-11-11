@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-193794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF639C4AC82
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:53 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3DC3C4A388
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B70673B8151
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C04984F4B71
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B050D340274;
-	Tue, 11 Nov 2025 01:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076427262A;
+	Tue, 11 Nov 2025 01:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xh7gcBC9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryz6tz01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B19533FE26;
-	Tue, 11 Nov 2025 01:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62D3246768;
+	Tue, 11 Nov 2025 01:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824022; cv=none; b=Si3lpq+OyAGlDnZ/JLeENsK0EPFV1qMMwiSLC1kOFVd10bWfgqVbdxsibYoIw3jYZGZLknbNmFjCmWRI9MmE4Nt1F5AVUkDAzGjXcJ+BGb3DXna3eLKSIq+JvWGLmkpn17+iwKIJ0XkXLVud2rElqBD3rH9m/Hzoh77SU3jCQNc=
+	t=1762822939; cv=none; b=O767DKuRHaXBEX8xvLJtFoSqSXod7x3pAFBppNA/sdwlVtQ3Du72V5zWIWyK2nQvvbbYkvy+aFEKIYWyAUd6pkb8dM+NYEcPTC0r86oxVGv+J4ZLyyoel6mL27RfPWKPwhgcMtIUTQOZf8qtT0gvgM75p6teUvJK96R0bKY1R8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824022; c=relaxed/simple;
-	bh=ze5aSfWEj7ryxrxiSGj3VL1DqEU4hV8QT5V+z33NkAU=;
+	s=arc-20240116; t=1762822939; c=relaxed/simple;
+	bh=TXaPvtFuAX4RngGoN4cI1nHkIQ6lxlRs+BAmEbRYh34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ui7f3dW7t7dRp67Mtruu9T9GltDJkCz9SPUztSnUFUyL3Fyw8yTP6FhBs/ss9g2ZXAgOtynPSWn0Rf39JGmvW4GSPWLlIFyMFBIGUDutraBygL3E6PistI0VzaEmDbqM+0bJd3B4W+zKoNc49VSqTCqDEW1PBw3yCAkNx9aR6fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xh7gcBC9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8B6C4CEFB;
-	Tue, 11 Nov 2025 01:20:21 +0000 (UTC)
+	 MIME-Version; b=FFrtpQRRzpAXFQ/mQ05SdQhGyzN24sPbR5eJWXUGibYEHi7fuyBayWgVvD7H1PBtj5PabLW03F+64sbFS1DTaz7ISXALph/DqV/OsGPVu1tGZvSYz4DfjGMKbwifBAn2gsZQw5OG49gapp/nYCrpor0oixAY2z3lt0G3tTB8zrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryz6tz01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F185DC116B1;
+	Tue, 11 Nov 2025 01:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824022;
-	bh=ze5aSfWEj7ryxrxiSGj3VL1DqEU4hV8QT5V+z33NkAU=;
+	s=korg; t=1762822939;
+	bh=TXaPvtFuAX4RngGoN4cI1nHkIQ6lxlRs+BAmEbRYh34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xh7gcBC9YgYztTU4MDZ/s5sFen82uL+WT5k2ROrnKNL89Ti37yXzR5v4uVNC/txhw
-	 sTktoLSeL4bLVr8DNAil67rShBG+usfKTsdT02MYzQintKfDlr2GLJ578tCyecogGU
-	 72r8YmVqeBcRrKSXtkllR0pEDPMllM8lGiGLB2jI=
+	b=ryz6tz01wnFZUFuVOgs+SyBc63deN1ElNHLx3yBM7YWpQGMqWWdCbB6eR4zBUB6uL
+	 TB7xT0DyX2YOTWdsPVygfmu8sxqmJxviw0rCNeWAxmae3sMQID/8ATW4RcWEKBVhr4
+	 neseBQfpp144c3z5y8go32iAYNQSkm9fhrdw4Vpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Daniel Wagner <wagi@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 422/849] drm/amd/pm: Increase SMC timeout on SI and warn (v3)
-Date: Tue, 11 Nov 2025 09:39:52 +0900
-Message-ID: <20251111004546.644639471@linuxfoundation.org>
+Subject: [PATCH 6.12 137/565] nvmet-fc: avoid scheduling association deletion twice
+Date: Tue, 11 Nov 2025 09:39:53 +0900
+Message-ID: <20251111004530.027461868@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,106 +62,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 813d13524a3bdcc5f0253e06542440ca74c2653a ]
+[ Upstream commit f2537be4f8421f6495edfa0bc284d722f253841d ]
 
-The SMC can take an excessive amount of time to process some
-messages under some conditions.
+When forcefully shutting down a port via the configfs interface,
+nvmet_port_subsys_drop_link() first calls nvmet_port_del_ctrls() and
+then nvmet_disable_port(). Both functions will eventually schedule all
+remaining associations for deletion.
 
-Background:
-Sending a message to the SMC works by writing the message into
-the mmSMC_MESSAGE_0 register and its optional parameter into
-the mmSMC_SCRATCH0, and then polling mmSMC_RESP_0. Previously
-the timeout was AMDGPU_MAX_USEC_TIMEOUT, ie. 100 ms.
+The current implementation checks whether an association is about to be
+removed, but only after the work item has already been scheduled. As a
+result, it is possible for the first scheduled work item to free all
+resources, and then for the same work item to be scheduled again for
+deletion.
 
-Increase the timeout to 200 ms for all messages and to 1 sec for
-a few messages which I've observed to be especially slow:
-PPSMC_MSG_NoForcedLevel
-PPSMC_MSG_SetEnabledLevels
-PPSMC_MSG_SetForcedLevels
-PPSMC_MSG_DisableULV
-PPSMC_MSG_SwitchToSwState
+Because the association list is an RCU list, it is not possible to take
+a lock and remove the list entry directly, so it cannot be looked up
+again. Instead, a flag (terminating) must be used to determine whether
+the association is already in the process of being deleted.
 
-This fixes the following problems on Tahiti when switching
-from a lower clock power state to a higher clock state, such
-as when DC turns on a display which was previously turned off.
-
-* si_restrict_performance_levels_before_switch would fail
-  (if the user previously forced high clocks using sysfs)
-* si_set_sw_state would fail (always)
-
-It turns out that both of those failures were SMC timeouts and
-that the SMC actually didn't fail or hang, just needs more time
-to process those.
-
-Add a warning when there is an SMC timeout to make it easier to
-identify this type of problem in the future.
-
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Closes: https://lore.kernel.org/all/rsdinhafrtlguauhesmrrzkybpnvwantwmyfq2ih5aregghax5@mhr7v3eryci3/
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_smc.c | 26 ++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ drivers/nvme/target/fc.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_smc.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_smc.c
-index 4e65ab9e931c9..281a5e377aee4 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_smc.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_smc.c
-@@ -172,20 +172,42 @@ PPSMC_Result amdgpu_si_send_msg_to_smc(struct amdgpu_device *adev,
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index 0ade23610ae64..67767e926b1bb 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -1088,6 +1088,14 @@ nvmet_fc_delete_assoc_work(struct work_struct *work)
+ static void
+ nvmet_fc_schedule_delete_assoc(struct nvmet_fc_tgt_assoc *assoc)
  {
- 	u32 tmp;
- 	int i;
-+	int usec_timeout;
++	int terminating;
 +
-+	/* SMC seems to process some messages exceptionally slowly. */
-+	switch (msg) {
-+	case PPSMC_MSG_NoForcedLevel:
-+	case PPSMC_MSG_SetEnabledLevels:
-+	case PPSMC_MSG_SetForcedLevels:
-+	case PPSMC_MSG_DisableULV:
-+	case PPSMC_MSG_SwitchToSwState:
-+		usec_timeout = 1000000; /* 1 sec */
-+		break;
-+	default:
-+		usec_timeout = 200000; /* 200 ms */
-+		break;
-+	}
- 
- 	if (!amdgpu_si_is_smc_running(adev))
- 		return PPSMC_Result_Failed;
- 
- 	WREG32(mmSMC_MESSAGE_0, msg);
- 
--	for (i = 0; i < adev->usec_timeout; i++) {
-+	for (i = 0; i < usec_timeout; i++) {
- 		tmp = RREG32(mmSMC_RESP_0);
- 		if (tmp != 0)
- 			break;
- 		udelay(1);
- 	}
- 
--	return (PPSMC_Result)RREG32(mmSMC_RESP_0);
-+	tmp = RREG32(mmSMC_RESP_0);
-+	if (tmp == 0) {
-+		drm_warn(adev_to_drm(adev),
-+			"%s timeout on message: %x (SMC_SCRATCH0: %x)\n",
-+			__func__, msg, RREG32(mmSMC_SCRATCH0));
-+	}
++	terminating = atomic_xchg(&assoc->terminating, 1);
 +
-+	return (PPSMC_Result)tmp;
- }
++	/* if already terminating, do nothing */
++	if (terminating)
++		return;
++
+ 	nvmet_fc_tgtport_get(assoc->tgtport);
+ 	if (!queue_work(nvmet_wq, &assoc->del_work))
+ 		nvmet_fc_tgtport_put(assoc->tgtport);
+@@ -1214,13 +1222,7 @@ nvmet_fc_delete_target_assoc(struct nvmet_fc_tgt_assoc *assoc)
+ {
+ 	struct nvmet_fc_tgtport *tgtport = assoc->tgtport;
+ 	unsigned long flags;
+-	int i, terminating;
+-
+-	terminating = atomic_xchg(&assoc->terminating, 1);
+-
+-	/* if already terminating, do nothing */
+-	if (terminating)
+-		return;
++	int i;
  
- PPSMC_Result amdgpu_si_wait_for_smc_inactive(struct amdgpu_device *adev)
+ 	spin_lock_irqsave(&tgtport->lock, flags);
+ 	list_del_rcu(&assoc->a_list);
 -- 
 2.51.0
 
