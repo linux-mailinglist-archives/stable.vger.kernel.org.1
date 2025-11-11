@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920CCC4A6E3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 640C1C4AD2D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 359E34F73DF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BE9D1882993
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D463B263F52;
-	Tue, 11 Nov 2025 01:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C382701DC;
+	Tue, 11 Nov 2025 01:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgPmBfg+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTqxntX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B2E2DA757;
-	Tue, 11 Nov 2025 01:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B6623C4F2;
+	Tue, 11 Nov 2025 01:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823622; cv=none; b=Ob+oux7ly6Ovj03KyntNVVWMBmiOTz10oQtLofIrOVQT7rV5JFYEesAFEaFx/saB+N9iP0f9RARQ+v94Ulyn4szY5pJCdaQg7iRa6l+6XUDKP+YlaKVHmdHFA3I0D3cbM1HrBIS1zyaO13brKQbmdDdaHf4xrW9dLM15ixbSih0=
+	t=1762824809; cv=none; b=T27O62/M37AMjYxZARec3ZdCWCWGZN6uJj70wDSSRgBSDnRMs2fioROxJUhXy+IYdEK8EAXZFBOTGNNosKVuSxWroND/HHBH7xwLW9xGfJr+ARQaZSZvlzMTK9CZPGK8oNXtzeh90hJHAYbrQddoRyk2Eq0NUF7/QAoJ+KfavH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823622; c=relaxed/simple;
-	bh=0h4Pf7m1iCQJ7329t7/OJHrCvFYVsHLiXFNNUPajZm4=;
+	s=arc-20240116; t=1762824809; c=relaxed/simple;
+	bh=EON6xl/5Z8fA99OAN1KXtuMGH7cCo+Qbu5qPGcKaUzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BUQ8rSBsFVTALjYimc18wQwd9vwlE/J9kHuOKhvEaXm/GP+5vUkJnrbIUY0DZ0eIDIT8Q6JNXTS3IND7QEW0GvydXfjXWFE07zMkrc8GJsR8/5G/HTkGPcyLm0YoXauPBdt+YrYZP7JBPnm4iMVZKNTEIy4/A4MO5Q6K9dpwB3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgPmBfg+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3079DC116B1;
-	Tue, 11 Nov 2025 01:13:42 +0000 (UTC)
+	 MIME-Version; b=u23DrAigeRmcCmT9zOEtqdxsG1f+KVieF4riH0cuO16XlHcV5TO3XDi76iRqL5E/1cz/cDu4M0SyedYEWN7kGsL/6i1FmdAVGq5KckPf+Jl3Wj2GMXZlJaL88wvs2dKdUHxi3Cd6WqGYn2/AwroGVUWeQfL1YLHb5BYlsVCPL3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTqxntX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F78C116B1;
+	Tue, 11 Nov 2025 01:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823622;
-	bh=0h4Pf7m1iCQJ7329t7/OJHrCvFYVsHLiXFNNUPajZm4=;
+	s=korg; t=1762824809;
+	bh=EON6xl/5Z8fA99OAN1KXtuMGH7cCo+Qbu5qPGcKaUzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgPmBfg+Qb2UVvcwvsI8fiWBjYM+UCF2N2gtLbP5AoE8r60ZeMRHVx7tnu789G1Vh
-	 UFcwjjUPQTZCWgMIskbIAmIfhPzCb2igiPRetDSCHGo0pqmAf0DTHqIm4KMi96r9kj
-	 RHNSnEFzInJbamA5g0RcmPbaFc+oE+0Hq7M+8Ad0=
+	b=XTqxntX3zTmNhpuKkZ7LeN+TLZqeWjbTpLtm5lk/DPZb7KPAAUVlYxzBkSVU6xgGB
+	 pHUkqEvreNafppUZD5ruf2ZHiiXKyAY5rX72kw8KnyaivTtaSMM/h4dz2jar8yJ/wT
+	 MDtIKEEwWmuKOx4iY2hbSwKHbBsIbrZSqFN2xB8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 288/565] selftests: drv-net: rss_ctx: make the test pass with few queues
+Subject: [PATCH 6.17 574/849] scsi: lpfc: Check return status of lpfc_reset_flush_io_context during TGT_RESET
 Date: Tue, 11 Nov 2025 09:42:24 +0900
-Message-ID: <20251111004533.355157115@linuxfoundation.org>
+Message-ID: <20251111004550.298202648@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit e2cf2d5baa09248d3d50b73522594b778388e3bc ]
+[ Upstream commit f408dde2468b3957e92b25e7438f74c8e9fb9e73 ]
 
-rss_ctx.test_rss_key_indir implicitly expects at least 5 queues,
-as it checks that the traffic on first 2 queues is lower than
-the remaining queues when we use all queues. Special case fewer
-queues.
+If lpfc_reset_flush_io_context fails to execute, then the wrong return
+status code may be passed back to upper layers when issuing a target
+reset TMF command.  Fix by checking the return status from
+lpfc_reset_flush_io_context() first in order to properly return FAILED
+or FAST_IO_FAIL.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250901173139.881070-2-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Message-ID: <20250915180811.137530-7-justintee8345@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/hw/rss_ctx.py | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/scsi/lpfc/lpfc_scsi.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/hw/rss_ctx.py b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-index 4a986a5524a30..e9f3ac7f0b8c8 100755
---- a/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-+++ b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-@@ -161,8 +161,13 @@ def test_rss_key_indir(cfg):
-     cnts = _get_rx_cnts(cfg)
-     GenerateTraffic(cfg).wait_pkts_and_stop(20000)
-     cnts = _get_rx_cnts(cfg, prev=cnts)
--    # First two queues get less traffic than all the rest
--    ksft_lt(sum(cnts[:2]), sum(cnts[2:]), "traffic distributed: " + str(cnts))
-+    if qcnt > 4:
-+        # First two queues get less traffic than all the rest
-+        ksft_lt(sum(cnts[:2]), sum(cnts[2:]),
-+                "traffic distributed: " + str(cnts))
-+    else:
-+        # When queue count is low make sure third queue got significant pkts
-+        ksft_ge(cnts[2], 3500, "traffic distributed: " + str(cnts))
+diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+index 508ceeecf2d95..6d9d8c196936a 100644
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -5935,7 +5935,7 @@ lpfc_chk_tgt_mapped(struct lpfc_vport *vport, struct fc_rport *rport)
+ /**
+  * lpfc_reset_flush_io_context -
+  * @vport: The virtual port (scsi_host) for the flush context
+- * @tgt_id: If aborting by Target contect - specifies the target id
++ * @tgt_id: If aborting by Target context - specifies the target id
+  * @lun_id: If aborting by Lun context - specifies the lun id
+  * @context: specifies the context level to flush at.
+  *
+@@ -6109,8 +6109,14 @@ lpfc_target_reset_handler(struct scsi_cmnd *cmnd)
+ 			pnode->nlp_fcp_info &= ~NLP_FCP_2_DEVICE;
+ 			spin_unlock_irqrestore(&pnode->lock, flags);
+ 		}
+-		lpfc_reset_flush_io_context(vport, tgt_id, lun_id,
+-					  LPFC_CTX_TGT);
++		status = lpfc_reset_flush_io_context(vport, tgt_id, lun_id,
++						     LPFC_CTX_TGT);
++		if (status != SUCCESS) {
++			lpfc_printf_vlog(vport, KERN_ERR, LOG_FCP,
++					 "0726 Target Reset flush status x%x\n",
++					 status);
++			return status;
++		}
+ 		return FAST_IO_FAIL;
+ 	}
  
+@@ -6202,7 +6208,7 @@ lpfc_host_reset_handler(struct scsi_cmnd *cmnd)
+ 	int rc, ret = SUCCESS;
  
- def test_rss_queue_reconfigure(cfg, main_ctx=True):
+ 	lpfc_printf_vlog(vport, KERN_ERR, LOG_FCP,
+-			 "3172 SCSI layer issued Host Reset Data:\n");
++			 "3172 SCSI layer issued Host Reset\n");
+ 
+ 	lpfc_offline_prep(phba, LPFC_MBX_WAIT);
+ 	lpfc_offline(phba);
 -- 
 2.51.0
 
