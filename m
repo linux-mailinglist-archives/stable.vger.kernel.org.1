@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-194102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65045C4AE72
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEA0C4B1C9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C2104F7FD8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 29A6C4FD645
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317D623C4F2;
-	Tue, 11 Nov 2025 01:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F7E306B39;
+	Tue, 11 Nov 2025 01:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmlNWWbf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZ6ArYXP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E051526E146;
-	Tue, 11 Nov 2025 01:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCAC298CDE;
+	Tue, 11 Nov 2025 01:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824812; cv=none; b=fMB7SjB+Z9dOD+W88BKACpAAlIx1B2MVCTmscVDRI4ySNFhHXP99kuAKAju5i1XWwzhJb2Ao5KGODhbCQqAjwFG9AWaaqQcTGW310ZuIWNu8lQmhIl3yrX/S9cCvCGmVEJAK8IIpNPdryRRhlhux8WJpluaRf4xlD1BAKoXgMUc=
+	t=1762825555; cv=none; b=SL3X+RE1diR0rWP+A6qGINYmAir7i8BaZ6kLpi4UAVoO3rKjQeWtfRhJubAicX/YBispkGae2u6whUPZWs2apbYdw1nYLXzGvw41YXYHFI1VG91SF8N3ao0sx4+Jsdnx2xmnLWztnMVbY/kGhfZV23yE+eoOF9t/d7VLaQI8++k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824812; c=relaxed/simple;
-	bh=9xJZpADqZmZpSPZJpdvDG3wrzevxBpScH92ugLbuWtg=;
+	s=arc-20240116; t=1762825555; c=relaxed/simple;
+	bh=Sh4hyQBcmIyGsCnVZRsWJXcAILxxntlZyllwpR4CyLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBcZtbbxOl1dVakh6FUBVi63F5dkIQQ/azBbh5hcctu0ClfXhqlEuS5fLOJ8+Y2v9Crws9PrZKkWSU3nzxt8s0xibUfy5DRhnRqOcFeV3/v1eLpsBKafuiops+uGwAUOGGRUacEagq0R95sxmyvu3FkUOMeNeGyIVSvRr6Yq4zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmlNWWbf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73649C16AAE;
-	Tue, 11 Nov 2025 01:33:31 +0000 (UTC)
+	 MIME-Version; b=keM4xyUYM/Gb1ajJWflpU6sADdj3klyn6SAVHIqkpD8iU8UlULKnw1PsgpcGo01krOD70ZzKUhWPFJhXDhMHi3LMou2MmfJWZZt6nK4w/JdcVWkBabHzlmWoDaMoo6HSBolA3FUHczU1exmZpJXBLsnj+xZKSbJxUE0pTLSA7Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZ6ArYXP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD8EC4CEFB;
+	Tue, 11 Nov 2025 01:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824811;
-	bh=9xJZpADqZmZpSPZJpdvDG3wrzevxBpScH92ugLbuWtg=;
+	s=korg; t=1762825554;
+	bh=Sh4hyQBcmIyGsCnVZRsWJXcAILxxntlZyllwpR4CyLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmlNWWbfziOCCSV/kQ+aGXzvRkn0IIDzDTzhQImDd0PQwOOQ0qQb+A2FYuXBpXJKI
-	 StCer8gVAO1oCcGO8/VX4B8ziyFN0kghDFLYJy3ju8Xt0+3UC1yx2Q3PCEllAW6O8y
-	 G0k3uCpn55pElAaOS3rqxQUTKb/AUZcDi8DFK7o4=
+	b=ZZ6ArYXPDFcx1MV9yerfdwlBSopUFStGts13xA4xAsxBpujOagrllZEvdLE7HC6QM
+	 ReclI+0Nd9hM274JBBdKDr+4vq4krYPABsR+4NZ+ONKu4tdlWHmawI13NjMo9uUOrW
+	 jFYKHQUQzr19TaIoF2RdfBwBFzvXXfpVlkjGIzp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 522/565] net: dsa: b53: stop reading ARL entries if search is done
-Date: Tue, 11 Nov 2025 09:46:18 +0900
-Message-ID: <20251111004538.707163642@linuxfoundation.org>
+	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.17 809/849] Bluetooth: MGMT: Fix OOB access in parse_adv_monitor_pattern()
+Date: Tue, 11 Nov 2025 09:46:19 +0900
+Message-ID: <20251111004555.985044226@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
 
-[ Upstream commit 0be04b5fa62a82a9929ca261f6c9f64a3d0a28da ]
+commit 8d59fba49362c65332395789fd82771f1028d87e upstream.
 
-The switch clears the ARL_SRCH_STDN bit when the search is done, i.e. it
-finished traversing the ARL table.
+In the parse_adv_monitor_pattern() function, the value of
+the 'length' variable is currently limited to HCI_MAX_EXT_AD_LENGTH(251).
+The size of the 'value' array in the mgmt_adv_pattern structure is 31.
+If the value of 'pattern[i].length' is set in the user space
+and exceeds 31, the 'patterns[i].value' array can be accessed
+out of bound when copied.
 
-This means that there will be no valid result, so we should not attempt
-to read and process any further entries.
+Increasing the size of the 'value' array in
+the 'mgmt_adv_pattern' structure will break the userspace.
+Considering this, and to avoid OOB access revert the limits for 'offset'
+and 'length' back to the value of HCI_MAX_AD_LENGTH.
 
-We only ever check the validity of the entries for 4 ARL bin chips, and
-only after having passed the first entry to the b53_fdb_copy().
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
 
-This means that we always pass an invalid entry at the end to the
-b53_fdb_copy(). b53_fdb_copy() does check the validity though before
-passing on the entry, so it never gets passed on.
-
-On < 4 ARL bin chips, we will even continue reading invalid entries
-until we reach the result limit.
-
-Fixes: 1da6df85c6fb ("net: dsa: b53: Implement ARL add/del/dump operations")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251102100758.28352-3-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: db08722fc7d4 ("Bluetooth: hci_core: Fix missing instances using HCI_MAX_AD_LENGTH")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/bluetooth/mgmt.h |    2 +-
+ net/bluetooth/mgmt.c         |    6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index a22f28f98faee..01eb62706412e 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1942,7 +1942,7 @@ static int b53_arl_search_wait(struct b53_device *dev)
- 	do {
- 		b53_read8(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_CTL, &reg);
- 		if (!(reg & ARL_SRCH_STDN))
--			return 0;
-+			return -ENOENT;
+--- a/include/net/bluetooth/mgmt.h
++++ b/include/net/bluetooth/mgmt.h
+@@ -775,7 +775,7 @@ struct mgmt_adv_pattern {
+ 	__u8 ad_type;
+ 	__u8 offset;
+ 	__u8 length;
+-	__u8 value[31];
++	__u8 value[HCI_MAX_AD_LENGTH];
+ } __packed;
  
- 		if (reg & ARL_SRCH_VLID)
- 			return 0;
--- 
-2.51.0
-
+ #define MGMT_OP_ADD_ADV_PATTERNS_MONITOR	0x0052
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -5395,9 +5395,9 @@ static u8 parse_adv_monitor_pattern(stru
+ 	for (i = 0; i < pattern_count; i++) {
+ 		offset = patterns[i].offset;
+ 		length = patterns[i].length;
+-		if (offset >= HCI_MAX_EXT_AD_LENGTH ||
+-		    length > HCI_MAX_EXT_AD_LENGTH ||
+-		    (offset + length) > HCI_MAX_EXT_AD_LENGTH)
++		if (offset >= HCI_MAX_AD_LENGTH ||
++		    length > HCI_MAX_AD_LENGTH ||
++		    (offset + length) > HCI_MAX_AD_LENGTH)
+ 			return MGMT_STATUS_INVALID_PARAMS;
+ 
+ 		p = kmalloc(sizeof(*p), GFP_KERNEL);
 
 
 
