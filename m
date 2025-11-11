@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6B2C4A09D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1442C4A0A3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 066E734BE17
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A907F188DEC0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A917214210;
-	Tue, 11 Nov 2025 00:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242C424113D;
+	Tue, 11 Nov 2025 00:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jc6LZOoS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbNP605C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211544C97;
-	Tue, 11 Nov 2025 00:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32CE1DF258;
+	Tue, 11 Nov 2025 00:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822546; cv=none; b=Id5tP8K7vnFn/hbRbeQZJbyXZ1+4d5lx85JURSbWE3GZEF5jvSpmDvED/Oe2oAWxSPUPDE3fn5ygGQPAl7PRdlqucENlz6GNdDi/sbXCK6ghQPTi7mWvoXXeW3eoUjURyvm2intzBsbOir8bKq0GYaLdqIj1XcuNYHd+xlDyKv8=
+	t=1762822550; cv=none; b=Hmb7tGAdU8Nk44xo2shQ+EZjg3eMcCYT026PJU8lFY4cW0TKTJXlXjfxPUALRLkVQp3TYShTcydIViGS9OfEeM4t1Gfqj1QAGkfAgjC4DfWxkqS6B62WueNrlIT1vkbF2m10Z+Gdc7xGJTyZL2pS6Fnqmy8or7FxrCM7i0IhXYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822546; c=relaxed/simple;
-	bh=SldQBF/ilFkfxy1LRItgKUisXuXzSeKYWfjEYG7bYAg=;
+	s=arc-20240116; t=1762822550; c=relaxed/simple;
+	bh=RSGnRkWo8EAWrQ23jEej4mIL8dnMKeEB8h0aTheCYpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DTaOtZnDV45BC0QDm3DI+FPa2Uj6OYLCXRVfDti5u2djgMovodSk3uVdKqfV+GntoPp+/Z5OcDVEglQ7JflW5aaJRC8t/O4kbdm6aLxxGlJQeOMmdzywdrump29IZxWe135XztK47dDF7VWvyrkwn8i2Xr+vk3Cxs1BG8298cC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jc6LZOoS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82232C113D0;
-	Tue, 11 Nov 2025 00:55:45 +0000 (UTC)
+	 MIME-Version; b=WRhQdw/U6HrSxvWIa/YBf+9JoVSbQWboFrjMiVtK43duYAPCMa8RWc+Nt01MUBY4oWqBqPWg/YKq3LY8AY8UKOM4e66XiZkr8tAMQmH/QDatrHaYMRmevYSjFhFBeLnAYDE9y4EUJjBsa5G1pjoWZQX9YXJmCnVeTD4I0+GFAQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbNP605C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE77C2BC86;
+	Tue, 11 Nov 2025 00:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822545;
-	bh=SldQBF/ilFkfxy1LRItgKUisXuXzSeKYWfjEYG7bYAg=;
+	s=korg; t=1762822550;
+	bh=RSGnRkWo8EAWrQ23jEej4mIL8dnMKeEB8h0aTheCYpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jc6LZOoSH7rYoR8anJUsgS96tBlYngB7KEo3Pt17igVlV5GUPkSaJcURuNF81Wc8K
-	 vAaoLq6TlY796TMjFdh8PfJEooBNAdUAdIrQonMeIYbvij7fGUDUrx9S6gwx5UPAIK
-	 7oesH+HyVBYA2AMfmLdNDJYNXTjhGJinAsNq9EBU=
+	b=gbNP605CChX/7HokYE6ojyx8oN8ziShSzWXUrBFkq9+swACHLoUo0NGFIsgUyhZbv
+	 tZQBYHIE9UmoDEvy0Ik8UzIOcwkN8TMdkzdBxu2Ys2/smgtPkHH0pn8xRm2EyR8adI
+	 zei0zx+z5Jfkv4aTbMAt1+YB/1m7kM9tqTB6PgfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 134/849] irqchip/loongson-eiointc: Route interrupt parsed from bios table
-Date: Tue, 11 Nov 2025 09:35:04 +0900
-Message-ID: <20251111004539.637001236@linuxfoundation.org>
+Subject: [PATCH 6.17 135/849] io_uring/zctx: check chained notif contexts
+Date: Tue, 11 Nov 2025 09:35:05 +0900
+Message-ID: <20251111004539.660666002@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,98 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 7fb83eb664e9b3a0438dd28859e9f0fd49d4c165 ]
+[ Upstream commit ab3ea6eac5f45669b091309f592c4ea324003053 ]
 
-Interrupt controller eiointc routes interrupts to CPU interface IP0 - IP7.
+Send zc only links ubuf_info for requests coming from the same context.
+There are some ambiguous syz reports, so let's check the assumption on
+notification completion.
 
-It is currently hard-coded that eiointc routes interrupts to the CPU
-starting from IP1, but it should base that decision on the parent
-interrupt, which is provided by ACPI or DTS.
-
-Retrieve the parent's hardware interrupt number and store it in the
-descriptor of the eointc instance, so that the routing function can utilize
-it for the correct route settings.
-
-[ tglx: Massaged change log ]
-
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250804081946.1456573-2-maobibo@loongson.cn
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/fd527d8638203fe0f1c5ff06ff2e1d8fd68f831b.1755179962.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-loongson-eiointc.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ io_uring/notif.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/irqchip/irq-loongson-eiointc.c b/drivers/irqchip/irq-loongson-eiointc.c
-index b2860eb2d32c5..baa406904de55 100644
---- a/drivers/irqchip/irq-loongson-eiointc.c
-+++ b/drivers/irqchip/irq-loongson-eiointc.c
-@@ -68,6 +68,7 @@ struct eiointc_priv {
- 	struct fwnode_handle	*domain_handle;
- 	struct irq_domain	*eiointc_domain;
- 	int			flags;
-+	irq_hw_number_t		parent_hwirq;
- };
- 
- static struct eiointc_priv *eiointc_priv[MAX_IO_PICS];
-@@ -211,7 +212,12 @@ static int eiointc_router_init(unsigned int cpu)
- 		}
- 
- 		for (i = 0; i < eiointc_priv[0]->vec_count / 32 / 4; i++) {
--			bit = BIT(1 + index); /* Route to IP[1 + index] */
-+			/*
-+			 * Route to interrupt pin, relative offset used here
-+			 * Offset 0 means routing to IP0 and so on
-+			 * Every 32 vector routing to one interrupt pin
-+			 */
-+			bit = BIT(eiointc_priv[index]->parent_hwirq - INT_HWI0);
- 			data = bit | (bit << 8) | (bit << 16) | (bit << 24);
- 			iocsr_write32(data, EIOINTC_REG_IPMAP + i * 4);
- 		}
-@@ -495,7 +501,7 @@ int __init eiointc_acpi_init(struct irq_domain *parent,
- 
- 	priv->vec_count = VEC_COUNT;
- 	priv->node = acpi_eiointc->node;
--
-+	priv->parent_hwirq = acpi_eiointc->cascade;
- 	parent_irq = irq_create_mapping(parent, acpi_eiointc->cascade);
- 
- 	ret = eiointc_init(priv, parent_irq, acpi_eiointc->node_map);
-@@ -527,8 +533,9 @@ int __init eiointc_acpi_init(struct irq_domain *parent,
- static int __init eiointc_of_init(struct device_node *of_node,
- 				  struct device_node *parent)
+diff --git a/io_uring/notif.c b/io_uring/notif.c
+index ea9c0116cec2d..d8ba1165c9494 100644
+--- a/io_uring/notif.c
++++ b/io_uring/notif.c
+@@ -14,10 +14,15 @@ static const struct ubuf_info_ops io_ubuf_ops;
+ static void io_notif_tw_complete(struct io_kiocb *notif, io_tw_token_t tw)
  {
--	int parent_irq, ret;
- 	struct eiointc_priv *priv;
-+	struct irq_data *irq_data;
-+	int parent_irq, ret;
- 
- 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
-@@ -544,6 +551,12 @@ static int __init eiointc_of_init(struct device_node *of_node,
- 	if (ret < 0)
- 		goto out_free_priv;
- 
-+	irq_data = irq_get_irq_data(parent_irq);
-+	if (!irq_data) {
-+		ret = -ENODEV;
-+		goto out_free_priv;
-+	}
+ 	struct io_notif_data *nd = io_notif_to_data(notif);
++	struct io_ring_ctx *ctx = notif->ctx;
 +
- 	/*
- 	 * In particular, the number of devices supported by the LS2K0500
- 	 * extended I/O interrupt vector is 128.
-@@ -552,7 +565,7 @@ static int __init eiointc_of_init(struct device_node *of_node,
- 		priv->vec_count = 128;
- 	else
- 		priv->vec_count = VEC_COUNT;
--
-+	priv->parent_hwirq = irqd_to_hwirq(irq_data);
- 	priv->node = 0;
- 	priv->domain_handle = of_fwnode_handle(of_node);
++	lockdep_assert_held(&ctx->uring_lock);
  
+ 	do {
+ 		notif = cmd_to_io_kiocb(nd);
+ 
++		if (WARN_ON_ONCE(ctx != notif->ctx))
++			return;
+ 		lockdep_assert(refcount_read(&nd->uarg.refcnt) == 0);
+ 
+ 		if (unlikely(nd->zc_report) && (nd->zc_copied || !nd->zc_used))
 -- 
 2.51.0
 
