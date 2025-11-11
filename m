@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-193698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54096C4AA7B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:53 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E0FC4A7BE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDAD018913BB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7CDA34EF597
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180C234B413;
-	Tue, 11 Nov 2025 01:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45502F4A0A;
+	Tue, 11 Nov 2025 01:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yw06v+dK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kq9kkvjL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BB72F49E9;
-	Tue, 11 Nov 2025 01:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581C126E703;
+	Tue, 11 Nov 2025 01:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823797; cv=none; b=U9Oi6GF6dzac229Fgq2S1ThdDeQ6AS4vJ5zWxzHl8RdQbdD+UP03xFViD0S+PHia9nA+TTsDzWRukh/L46mhvR44xNDDcVcYyEc/wT9lPqoIaIXl/uKWvH0mbOe9/Z65tIeR6J3BRO0JvqkcipzPfy+tB30Yl8XGBG9QF2MDp2E=
+	t=1762823802; cv=none; b=lX3kpgdypUNMNN8GpOyaUUlI/Jv+w4X42V1Vb1wbEh1SpG53nEa6O/yX7Ln7RzgqqD9rlFNxVvNz6Ypzcg+/w7C7lritC6/ok7CKLa1GzxAYfINzTO7CUWo3oIEeDFO3P+BT9mpEK0x1anH4t1UCzRQHYkPPgeSsEVgOuE0mZkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823797; c=relaxed/simple;
-	bh=b2eFOjuCiwxEfdCM321223R1OMJ1fOT79S0dSjSPbjs=;
+	s=arc-20240116; t=1762823802; c=relaxed/simple;
+	bh=fEkinqh0nEyfijRYdWEmUdE6MWwfIqsY4kgb+V1QQ5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0iOzovzonkHD3xJft1oqOt67bjH1K09JZXq3URZQPBHi44zgQ1AXtTXwYf5s6tWtCPC4KNL+iCRcBf7l/yQEG3EKDIIxES6yZAwdbTj8TPjuW8/ipc1pQP9j3S1M49unLiTCi9wd/1PA3HyzGGT43gb4SUK7B6C2OqnMD27Q+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yw06v+dK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679DCC19425;
-	Tue, 11 Nov 2025 01:16:37 +0000 (UTC)
+	 MIME-Version; b=hfN3aL7tk0EQilLvB/SHyXOR6S+aBiJpL3SpupVSSK4WWt0G7BBVhg7qFAejQnGYoi3yOvGsEJtkWvHm/7+Otuvnv1WP230jLtDwi1EDgO2/A+vEkmjXHs578uXf0SlEnm4FWkkaJRF2aEbwMD6NZdXd/u/BXOoodDmxaKIZkoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kq9kkvjL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA134C16AAE;
+	Tue, 11 Nov 2025 01:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823797;
-	bh=b2eFOjuCiwxEfdCM321223R1OMJ1fOT79S0dSjSPbjs=;
+	s=korg; t=1762823802;
+	bh=fEkinqh0nEyfijRYdWEmUdE6MWwfIqsY4kgb+V1QQ5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yw06v+dKeQEML8kEBxsKssDaWezUoowIbHiOED03zoLaGTUpQowElIrbsWaAYMhVq
-	 5qzoSojm2sFrcn3FptW6TNJ9+MJNU9zStvuhAqae/p4rTht4FJ7gWVB97ifpQwJ0Pp
-	 T/JWX5wGlCB7MtzvCfhz5ZYic105m6mN8JqQvCC4=
+	b=Kq9kkvjLW7f2Kee8ddfjlIQn7VVEc19zskoYgp2afcCt9Wz4rCtUnPNNM52x66vMS
+	 0i5o2eY1/xBVLVH/YXauwN6tlQF1fl7miUKQy52a/TPaMhMfn0ozADwMUbcoTerfmU
+	 YcLn/I1DlBd0GAHcw9UWrDKa68hLwNlcY/Uw/wYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
+	Amber Lin <Amber.Lin@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 374/849] drm/amd/display: Support HW cursor 180 rot for any number of pipe splits
-Date: Tue, 11 Nov 2025 09:39:04 +0900
-Message-ID: <20251111004545.473075958@linuxfoundation.org>
+Subject: [PATCH 6.17 375/849] drm/amdkfd: Tie UNMAP_LATENCY to queue_preemption
+Date: Tue, 11 Nov 2025 09:39:05 +0900
+Message-ID: <20251111004545.498067657@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -70,159 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ivan Lipski <ivan.lipski@amd.com>
+From: Amber Lin <Amber.Lin@amd.com>
 
-[ Upstream commit 8a359f0f138d5ac7ceffd21b73279be50e516c0a ]
+[ Upstream commit f3820e9d356132e18405cd7606e22dc87ccfa6d1 ]
 
-[Why]
-For the HW cursor, its current position in the pipe_ctx->stream struct is
-not affected by the 180 rotation, i. e. the top left corner is still at
-0,0. However, the DPP & HUBP set_cursor_position functions require rotated
-position.
+When KFD asks CP to preempt queues, other than preempt CP queues, CP
+also requests SDMA to preempt SDMA queues with UNMAP_LATENCY timeout.
+Currently queue_preemption_timeout_ms is 9000 ms by default but can be
+configured via module parameter. KFD_UNMAP_LATENCY_MS is hard coded as
+4000 ms though. This patch ties KFD_UNMAP_LATENCY_MS to
+queue_preemption_timeout_ms so in a slow system such as emulator, both
+CP and SDMA slowness are taken into account.
 
-The current approach is hard-coded for ODM 2:1, thus it's failing for
-ODM 4:1, resulting in a double cursor.
-
-[How]
-Instead of calculating the new cursor position relatively to the
-viewports, we calculate it using a viewavable clip_rect of each plane.
-
-The clip_rects are first offset and scaled to the same space as the
-src_rect, i. e. Stream space -> Plane space.
-
-In case of a pipe split, which divides the plane into 2 or more viewports,
-the clip_rect is the union of all the viewports of the given plane.
-
-With the assumption that the viewports in HUBP's set_cursor_position are
-in the Plane space as well, it should produce a correct cursor position
-for any number of pipe splits.
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Signed-off-by: Leo Li <sunpeng.li@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Amber Lin <Amber.Lin@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/hwss/dcn10/dcn10_hwseq.c   | 73 +++++++------------
- 1 file changed, 27 insertions(+), 46 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_priv.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-index 39910f73ecd06..6a2fdbe974b53 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-@@ -3628,6 +3628,8 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
- 	int y_plane = pipe_ctx->plane_state->dst_rect.y;
- 	int x_pos = pos_cpy.x;
- 	int y_pos = pos_cpy.y;
-+	int clip_x = pipe_ctx->plane_state->clip_rect.x;
-+	int clip_width = pipe_ctx->plane_state->clip_rect.width;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+index 67694bcd94646..d01ef5ac07666 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+@@ -111,7 +111,14 @@
  
- 	if ((pipe_ctx->top_pipe != NULL) || (pipe_ctx->bottom_pipe != NULL)) {
- 		if ((pipe_ctx->plane_state->src_rect.width != pipe_ctx->plane_res.scl_data.viewport.width) ||
-@@ -3646,7 +3648,7 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
- 	 */
+ #define KFD_KERNEL_QUEUE_SIZE 2048
  
- 	/**
--	 * Translate cursor from stream space to plane space.
-+	 * Translate cursor and clip offset from stream space to plane space.
- 	 *
- 	 * If the cursor is scaled then we need to scale the position
- 	 * to be in the approximately correct place. We can't do anything
-@@ -3663,6 +3665,10 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
- 				pipe_ctx->plane_state->dst_rect.width;
- 		y_pos = (y_pos - y_plane) * pipe_ctx->plane_state->src_rect.height /
- 				pipe_ctx->plane_state->dst_rect.height;
-+		clip_x = (clip_x - x_plane) * pipe_ctx->plane_state->src_rect.width /
-+				pipe_ctx->plane_state->dst_rect.width;
-+		clip_width = clip_width * pipe_ctx->plane_state->src_rect.width /
-+				pipe_ctx->plane_state->dst_rect.width;
- 	}
+-#define KFD_UNMAP_LATENCY_MS	(4000)
++/*  KFD_UNMAP_LATENCY_MS is the timeout CP waiting for SDMA preemption. One XCC
++ *  can be associated to 2 SDMA engines. queue_preemption_timeout_ms is the time
++ *  driver waiting for CP returning the UNMAP_QUEUE fence. Thus the math is
++ *  queue_preemption_timeout_ms = sdma_preemption_time * 2 + cp workload
++ *  The format here makes CP workload 10% of total timeout
++ */
++#define KFD_UNMAP_LATENCY_MS	\
++	((queue_preemption_timeout_ms - queue_preemption_timeout_ms / 10) >> 1)
  
- 	/**
-@@ -3709,30 +3715,18 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
+ #define KFD_MAX_SDMA_QUEUES	128
  
- 
- 	if (param.rotation == ROTATION_ANGLE_0) {
--		int viewport_width =
--			pipe_ctx->plane_res.scl_data.viewport.width;
--		int viewport_x =
--			pipe_ctx->plane_res.scl_data.viewport.x;
- 
- 		if (param.mirror) {
--			if (pipe_split_on || odm_combine_on) {
--				if (pos_cpy.x >= viewport_width + viewport_x) {
--					pos_cpy.x = 2 * viewport_width
--							- pos_cpy.x + 2 * viewport_x;
--				} else {
--					uint32_t temp_x = pos_cpy.x;
--
--					pos_cpy.x = 2 * viewport_x - pos_cpy.x;
--					if (temp_x >= viewport_x +
--						(int)hubp->curs_attr.width || pos_cpy.x
--						<= (int)hubp->curs_attr.width +
--						pipe_ctx->plane_state->src_rect.x) {
--						pos_cpy.x = 2 * viewport_width - temp_x;
--					}
--				}
--			} else {
--				pos_cpy.x = viewport_width - pos_cpy.x + 2 * viewport_x;
--			}
-+			/*
-+			 * The plane is split into multiple viewports.
-+			 * The combination of all viewports span the
-+			 * entirety of the clip rect.
-+			 *
-+			 * For no pipe_split, viewport_width is represents
-+			 * the full width of the clip_rect, so we can just
-+			 * mirror it.
-+			 */
-+			pos_cpy.x = clip_width - pos_cpy.x + 2 * clip_x;
- 		}
- 	}
- 	// Swap axis and mirror horizontally
-@@ -3802,30 +3796,17 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
- 	}
- 	// Mirror horizontally and vertically
- 	else if (param.rotation == ROTATION_ANGLE_180) {
--		int viewport_width =
--			pipe_ctx->plane_res.scl_data.viewport.width;
--		int viewport_x =
--			pipe_ctx->plane_res.scl_data.viewport.x;
--
- 		if (!param.mirror) {
--			if (pipe_split_on || odm_combine_on) {
--				if (pos_cpy.x >= viewport_width + viewport_x) {
--					pos_cpy.x = 2 * viewport_width
--							- pos_cpy.x + 2 * viewport_x;
--				} else {
--					uint32_t temp_x = pos_cpy.x;
--
--					pos_cpy.x = 2 * viewport_x - pos_cpy.x;
--					if (temp_x >= viewport_x +
--						(int)hubp->curs_attr.width || pos_cpy.x
--						<= (int)hubp->curs_attr.width +
--						pipe_ctx->plane_state->src_rect.x) {
--						pos_cpy.x = temp_x + viewport_width;
--					}
--				}
--			} else {
--				pos_cpy.x = viewport_width - pos_cpy.x + 2 * viewport_x;
--			}
-+			/*
-+			 * The plane is split into multiple viewports.
-+			 * The combination of all viewports span the
-+			 * entirety of the clip rect.
-+			 *
-+			 * For no pipe_split, viewport_width is represents
-+			 * the full width of the clip_rect, so we can just
-+			 * mirror it.
-+			 */
-+			pos_cpy.x = clip_width - pos_cpy.x + 2 * clip_x;
- 		}
- 
- 		/**
 -- 
 2.51.0
 
