@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E95C4A66E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:25:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF78C4AD99
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E9B84F6ACB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75CB43B1F2A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466AD263F4A;
-	Tue, 11 Nov 2025 01:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3478B343D8E;
+	Tue, 11 Nov 2025 01:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elJCssSy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdWjjiQt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E8A26560B;
-	Tue, 11 Nov 2025 01:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E507E2DEA77;
+	Tue, 11 Nov 2025 01:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823520; cv=none; b=S/2fsNbw3+TwjuWKHHFT77go9atGzqTf6G854m4dECtgE7ekJIIQeBvtdN0vKK954Z9kMXSvCDtONOpdOxw0j7MDHfy6n9GYEyoFq0M8cR5HeIXUcCTpbbzzo5VnfuEWb4viBAgeWV7jMUCMqSCF9u2kPE3SE6aPKm81ui2uuAw=
+	t=1762824679; cv=none; b=RtRpg4H5sx+na8/3bkIXbv+o5T45XYEVaqMHtr4DfBRcDkMBceEQL4/f4C1O+9C1nTN7+kKxoD2d+wQQ5xbpeEGxita2WsY0X1OuAHAAJV9GkPhskI22f2elbvWsfOknV6lDbuO4iytfLhPcb4NId7InUNr57840TB/gDI9yXvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823520; c=relaxed/simple;
-	bh=wlNTQRC2Nn4lFt54C1GuIFU/CcyeIzcMDWM3p3gqBcE=;
+	s=arc-20240116; t=1762824679; c=relaxed/simple;
+	bh=Yhp+N0NhRYNoNf2p3jD/A8jMiwVbKnD5JbafBG65J/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aYewuqL5IHAhdJXajgnjKDEI/4GRQPGbcrLC92AufNbp2SaUgcHv6+JCYgcN1vr9TPyDLA3xNPtvPptcX2VjayxsPaChX9v61BTPPTIVmmkfxtjR9hQLLR7vf4zA3vjllYA2ofOkeKQSogfEoPERk7HNbs35Cks61hRPv3b2BOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elJCssSy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E743C116B1;
-	Tue, 11 Nov 2025 01:11:59 +0000 (UTC)
+	 MIME-Version; b=Z29sbMags5IWqxbzI/G68UBhcK7QuP8GYSE1fwDP3SzF7SSH2u94JmNU/2b1oH8LfUvziI/09jeautNJ0eBYQMMyhbuD5B4w0Il6vmgmS1INZRNG2o6ij5/A8O7QC7o7RIhXEAezghpHPthFX8YFlxXYGtQ0JImlFhQ5F//jFNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdWjjiQt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E2FC116D0;
+	Tue, 11 Nov 2025 01:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823519;
-	bh=wlNTQRC2Nn4lFt54C1GuIFU/CcyeIzcMDWM3p3gqBcE=;
+	s=korg; t=1762824678;
+	bh=Yhp+N0NhRYNoNf2p3jD/A8jMiwVbKnD5JbafBG65J/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=elJCssSy9vYC61bXMIqYPUZwd3ozu0ukJzM3VIm0SUQmg+81D+tgmX3Nnh10asWlr
-	 bfOK0YODeSZXeA18UgWuQjIXu+cxCZMytIO0un4Ih0UYE1QglxjGLfAWcaO6G2912p
-	 lyShxU3hJ5xCVbaxS/GM16m0LC1NNcwilNKgjItI=
+	b=jdWjjiQt0TQia912KFq2WlEfPoTGVh+C8oDeCJM9NjYzF6ktL+0VDyyUAwsQU5uUG
+	 gXz258qf09+Q94HfD+NuZJTfcScJJSqsIcUMlY86TA7JnBFoTcb95VO5Tf4aIfuWiB
+	 juEEDBVSOBodaH7sntWrDeLSUQaUgHSS/pVPpJ5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Prike Liang <Prike.Liang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 262/565] media: fix uninitialized symbol warnings
-Date: Tue, 11 Nov 2025 09:41:58 +0900
-Message-ID: <20251111004532.788806624@linuxfoundation.org>
+Subject: [PATCH 6.17 549/849] drm/amdgpu: validate userq buffer virtual address and size
+Date: Tue, 11 Nov 2025 09:41:59 +0900
+Message-ID: <20251111004549.678150606@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+From: Prike Liang <Prike.Liang@amd.com>
 
-[ Upstream commit b4c441310c3baaa7c39a5457e305ca93c7a0400d ]
+[ Upstream commit 9e46b8bb0539d7bc9a9e7b3072fa4f6082490392 ]
 
-Initialize variables to fix these smatch warnings
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'protocol'.
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'scancode'.
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'toggle'.
-drivers/media/tuners/xc4000.c:1102 xc_debug_dump() error: uninitialized
-symbol 'adc_envelope'.
-drivers/media/tuners/xc4000.c:1108 xc_debug_dump() error: uninitialized
-symbol 'lock_status'.
-drivers/media/tuners/xc4000.c:1123 xc_debug_dump() error: uninitialized
-symbol 'frame_lines'.
-drivers/media/tuners/xc4000.c:1127 xc_debug_dump() error: uninitialized
-symbol 'quality'.
-drivers/media/tuners/xc5000.c:645 xc_debug_dump() error: uninitialized
-symbol 'adc_envelope'.
-drivers/media/tuners/xc5000.c:651 xc_debug_dump() error: uninitialized
-symbol 'lock_status'.
-drivers/media/tuners/xc5000.c:665 xc_debug_dump() error: uninitialized
-symbol 'frame_lines'.
-drivers/media/tuners/xc5000.c:668 xc_debug_dump() error: uninitialized
-symbol 'quality'.
-drivers/media/tuners/xc5000.c:671 xc_debug_dump() error: uninitialized
-symbol 'snr'.
-drivers/media/tuners/xc5000.c:674 xc_debug_dump() error: uninitialized
-symbol 'totalgain'.
+It needs to validate the userq object virtual address to
+determine whether it is residented in a valid vm mapping.
 
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[hverkuil: dropped ' = 0' from rc in ir-kbd-i2c.c, not needed]
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ir-kbd-i2c.c |  6 +++---
- drivers/media/tuners/xc4000.c  |  8 ++++----
- drivers/media/tuners/xc5000.c  | 12 ++++++------
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c  | 40 ++++++++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h  |  2 ++
+ drivers/gpu/drm/amd/amdgpu/mes_userqueue.c | 16 +++++++++
+ 3 files changed, 58 insertions(+)
 
-diff --git a/drivers/media/i2c/ir-kbd-i2c.c b/drivers/media/i2c/ir-kbd-i2c.c
-index c84e1e0e6109a..5588cdd7ec20d 100644
---- a/drivers/media/i2c/ir-kbd-i2c.c
-+++ b/drivers/media/i2c/ir-kbd-i2c.c
-@@ -321,9 +321,9 @@ static int get_key_avermedia_cardbus(struct IR_i2c *ir, enum rc_proto *protocol,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
+index 65c8a38890d48..695eb2b052fc0 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
+@@ -44,6 +44,38 @@ u32 amdgpu_userq_get_supported_ip_mask(struct amdgpu_device *adev)
+ 	return userq_ip_mask;
+ }
  
- static int ir_key_poll(struct IR_i2c *ir)
- {
--	enum rc_proto protocol;
--	u32 scancode;
--	u8 toggle;
-+	enum rc_proto protocol = 0;
-+	u32 scancode = 0;
-+	u8 toggle = 0;
- 	int rc;
++int amdgpu_userq_input_va_validate(struct amdgpu_vm *vm, u64 addr,
++				   u64 expected_size)
++{
++	struct amdgpu_bo_va_mapping *va_map;
++	u64 user_addr;
++	u64 size;
++	int r = 0;
++
++	user_addr = (addr & AMDGPU_GMC_HOLE_MASK) >> AMDGPU_GPU_PAGE_SHIFT;
++	size = expected_size >> AMDGPU_GPU_PAGE_SHIFT;
++
++	r = amdgpu_bo_reserve(vm->root.bo, false);
++	if (r)
++		return r;
++
++	va_map = amdgpu_vm_bo_lookup_mapping(vm, user_addr);
++	if (!va_map) {
++		r = -EINVAL;
++		goto out_err;
++	}
++	/* Only validate the userq whether resident in the VM mapping range */
++	if (user_addr >= va_map->start  &&
++	    va_map->last - user_addr + 1 >= size) {
++		amdgpu_bo_unreserve(vm->root.bo);
++		return 0;
++	}
++
++out_err:
++	amdgpu_bo_unreserve(vm->root.bo);
++	return r;
++}
++
+ static int
+ amdgpu_userq_unmap_helper(struct amdgpu_userq_mgr *uq_mgr,
+ 			  struct amdgpu_usermode_queue *queue)
+@@ -439,6 +471,14 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
+ 		r = -ENOMEM;
+ 		goto unlock;
+ 	}
++
++	/* Validate the userq virtual address.*/
++	if (amdgpu_userq_input_va_validate(&fpriv->vm, args->in.queue_va, args->in.queue_size) ||
++	    amdgpu_userq_input_va_validate(&fpriv->vm, args->in.rptr_va, AMDGPU_GPU_PAGE_SIZE) ||
++	    amdgpu_userq_input_va_validate(&fpriv->vm, args->in.wptr_va, AMDGPU_GPU_PAGE_SIZE)) {
++		kfree(queue);
++		goto unlock;
++	}
+ 	queue->doorbell_handle = args->in.doorbell_handle;
+ 	queue->queue_type = args->in.ip_type;
+ 	queue->vm = &fpriv->vm;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h
+index b1ca91b7cda4b..8603c31320f11 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h
+@@ -133,4 +133,6 @@ int amdgpu_userq_stop_sched_for_enforce_isolation(struct amdgpu_device *adev,
+ int amdgpu_userq_start_sched_for_enforce_isolation(struct amdgpu_device *adev,
+ 						   u32 idx);
  
- 	dev_dbg(&ir->rc->dev, "%s\n", __func__);
-diff --git a/drivers/media/tuners/xc4000.c b/drivers/media/tuners/xc4000.c
-index 3cf54d776d36c..b44c97e4e5ec6 100644
---- a/drivers/media/tuners/xc4000.c
-+++ b/drivers/media/tuners/xc4000.c
-@@ -1087,12 +1087,12 @@ static int check_firmware(struct dvb_frontend *fe, unsigned int type,
++int amdgpu_userq_input_va_validate(struct amdgpu_vm *vm, u64 addr,
++				   u64 expected_size);
+ #endif
+diff --git a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
+index 1457fb49a794f..ef54d211214f4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
+@@ -206,6 +206,7 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
+ 	struct amdgpu_mqd *mqd_hw_default = &adev->mqds[queue->queue_type];
+ 	struct drm_amdgpu_userq_in *mqd_user = args_in;
+ 	struct amdgpu_mqd_prop *userq_props;
++	struct amdgpu_gfx_shadow_info shadow_info;
+ 	int r;
  
- static void xc_debug_dump(struct xc4000_priv *priv)
- {
--	u16	adc_envelope;
-+	u16	adc_envelope = 0;
- 	u32	freq_error_hz = 0;
--	u16	lock_status;
-+	u16	lock_status = 0;
- 	u32	hsync_freq_hz = 0;
--	u16	frame_lines;
--	u16	quality;
-+	u16	frame_lines = 0;
-+	u16	quality = 0;
- 	u16	signal = 0;
- 	u16	noise = 0;
- 	u8	hw_majorversion = 0, hw_minorversion = 0;
-diff --git a/drivers/media/tuners/xc5000.c b/drivers/media/tuners/xc5000.c
-index ec9a3cd4784e1..a28481edd22ed 100644
---- a/drivers/media/tuners/xc5000.c
-+++ b/drivers/media/tuners/xc5000.c
-@@ -622,14 +622,14 @@ static int xc5000_fwupload(struct dvb_frontend *fe,
+ 	/* Structure to initialize MQD for userqueue using generic MQD init function */
+@@ -231,6 +232,8 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
+ 	userq_props->doorbell_index = queue->doorbell_index;
+ 	userq_props->fence_address = queue->fence_drv->gpu_addr;
  
- static void xc_debug_dump(struct xc5000_priv *priv)
- {
--	u16 adc_envelope;
-+	u16 adc_envelope = 0;
- 	u32 freq_error_hz = 0;
--	u16 lock_status;
-+	u16 lock_status = 0;
- 	u32 hsync_freq_hz = 0;
--	u16 frame_lines;
--	u16 quality;
--	u16 snr;
--	u16 totalgain;
-+	u16 frame_lines = 0;
-+	u16 quality = 0;
-+	u16 snr = 0;
-+	u16 totalgain = 0;
- 	u8 hw_majorversion = 0, hw_minorversion = 0;
- 	u8 fw_majorversion = 0, fw_minorversion = 0;
- 	u16 fw_buildversion = 0;
++	if (adev->gfx.funcs->get_gfx_shadow_info)
++		adev->gfx.funcs->get_gfx_shadow_info(adev, &shadow_info, true);
+ 	if (queue->queue_type == AMDGPU_HW_IP_COMPUTE) {
+ 		struct drm_amdgpu_userq_mqd_compute_gfx11 *compute_mqd;
+ 
+@@ -247,6 +250,10 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
+ 			goto free_mqd;
+ 		}
+ 
++		if (amdgpu_userq_input_va_validate(queue->vm, compute_mqd->eop_va,
++		    max_t(u32, PAGE_SIZE, AMDGPU_GPU_PAGE_SIZE)))
++			goto free_mqd;
++
+ 		userq_props->eop_gpu_addr = compute_mqd->eop_va;
+ 		userq_props->hqd_pipe_priority = AMDGPU_GFX_PIPE_PRIO_NORMAL;
+ 		userq_props->hqd_queue_priority = AMDGPU_GFX_QUEUE_PRIORITY_MINIMUM;
+@@ -274,6 +281,11 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
+ 		userq_props->csa_addr = mqd_gfx_v11->csa_va;
+ 		userq_props->tmz_queue =
+ 			mqd_user->flags & AMDGPU_USERQ_CREATE_FLAGS_QUEUE_SECURE;
++
++		if (amdgpu_userq_input_va_validate(queue->vm, mqd_gfx_v11->shadow_va,
++		    shadow_info.shadow_size))
++			goto free_mqd;
++
+ 		kfree(mqd_gfx_v11);
+ 	} else if (queue->queue_type == AMDGPU_HW_IP_DMA) {
+ 		struct drm_amdgpu_userq_mqd_sdma_gfx11 *mqd_sdma_v11;
+@@ -291,6 +303,10 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
+ 			goto free_mqd;
+ 		}
+ 
++		if (amdgpu_userq_input_va_validate(queue->vm, mqd_sdma_v11->csa_va,
++		    shadow_info.csa_size))
++			goto free_mqd;
++
+ 		userq_props->csa_addr = mqd_sdma_v11->csa_va;
+ 		kfree(mqd_sdma_v11);
+ 	}
 -- 
 2.51.0
 
