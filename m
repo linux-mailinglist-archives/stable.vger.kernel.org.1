@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E7BC4ACF4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85151C4B169
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3524188B621
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C116B4F60B6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78362F5479;
-	Tue, 11 Nov 2025 01:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE42340A4C;
+	Tue, 11 Nov 2025 01:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0m6VNlt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQEezulx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BC126ED5C;
-	Tue, 11 Nov 2025 01:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F7F303CAF;
+	Tue, 11 Nov 2025 01:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824771; cv=none; b=qcR6MkHWcPsV13Pv2xO6GfB3nI8a1+ddIOja04rfbCYoQvRsvw3YA5fVWHIBRKF+SUOVKfsbexe+Uwxc/igf75qyyn3WxxsTjmo0d2lUHhx+CwC+hcYAl77MhhFj9aY1cP7bIGt76pHLv4LjRMUioIl8ICONy6q8A2p9f0WhT0M=
+	t=1762825438; cv=none; b=Vh711PwvOLP61zjTrUsEd99Osen5f9alRp1v6QecOsP2xlqXWmixRV101SfUz5TWhlWCjmHuM01tKNIgDzNhNzI0VgugjY123pm9PScXdXZ7rp1GKr6AoLYbH6JJqnh0Cjqfx/nRoouYqxmPix4usWdkg8wpyWLRXvfFWRhOpOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824771; c=relaxed/simple;
-	bh=LTacqr11LGwLOwGCztkRyejn8Gd6BXP3UMF37G373DQ=;
+	s=arc-20240116; t=1762825438; c=relaxed/simple;
+	bh=C5XNF6hFFnm2x/zKduhCnWv/OT5IaAjjNNe89a/ffMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AFFUHxzBAFUKMtP2bscOCLYP8emtRNU08CD+LMX69Jc62gvzo6d5EaBW8FhPGCxlczLGCiwFsyBW67z5cugUWMRhhGtD4GS0+bQw1fNZT+pIJUEq5xxMDeEbSC4WlBzrNAyEpsRg+lXlHciDll5W7aewGgwdxoDlWnv3kN62Oaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0m6VNlt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F28C113D0;
-	Tue, 11 Nov 2025 01:32:50 +0000 (UTC)
+	 MIME-Version; b=qbQ8VHLxOWfHC4RJltKScTWvSi+mecoNLIsmeNxq/c2fMzuAD81FxtyibMuaLAbqR2R6lq5wz2WYO50bwmu5Ys0zTLCpoaAh7RNgqChoxT8y+IT/ZiZ0uit3gP5KjVBFNz2o7Ehf2qaC4QxEdjV1eqNARuNyO9Bft2ce/wQwHqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQEezulx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9CEC16AAE;
+	Tue, 11 Nov 2025 01:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824771;
-	bh=LTacqr11LGwLOwGCztkRyejn8Gd6BXP3UMF37G373DQ=;
+	s=korg; t=1762825438;
+	bh=C5XNF6hFFnm2x/zKduhCnWv/OT5IaAjjNNe89a/ffMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q0m6VNlte8nUjAU3HGVkMexT2U9BM64aexMRFyg33eA9xMRfJCD6niaaDemWle+Dz
-	 KtMdF+yndQOdic/bPr2We7mYc6yEya40x7XAKXfxWKstLqlPHczA9e2858hY1QoMYl
-	 VmI1BLqSbAMwsY80t6rCceiRt4ZAP1f+Lh6PZlqs=
+	b=qQEezulxrEHrLQj3OU+qRQBuPcZ9aGq1Md6H9Ga5LGiFKDjQOQ168ynkyomJ8I1Ir
+	 623iBymZlavFmirxgRQ2AgPo7ukcyxOpidaQ65Os0I1DJeyh49OnGBstzdNjD7sx7i
+	 sOKWUqq4DWts3vY8SWa/nNaOCGl2Ahb02jj3o91k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Anubhav Singh <anubhavsinggh@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 514/565] selftests/net: use destination options instead of hop-by-hop
+Subject: [PATCH 6.17 800/849] tracing: Fix memory leaks in create_field_var()
 Date: Tue, 11 Nov 2025 09:46:10 +0900
-Message-ID: <20251111004538.521298757@linuxfoundation.org>
+Message-ID: <20251111004555.771425124@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anubhav Singh <anubhavsinggh@google.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit f8e8486702abb05b8c734093aab1606af0eac068 ]
+[ Upstream commit 80f0d631dcc76ee1b7755bfca1d8417d91d71414 ]
 
-The GRO self-test, gro.c, currently constructs IPv6 packets containing a
-Hop-by-Hop Options header (IPPROTO_HOPOPTS) to ensure the GRO path
-correctly handles IPv6 extension headers.
+The function create_field_var() allocates memory for 'val' through
+create_hist_field() inside parse_atom(), and for 'var' through
+create_var(), which in turn allocates var->type and var->var.name
+internally. Simply calling kfree() to release these structures will
+result in memory leaks.
 
-However, network elements may be configured to drop packets with the
-Hop-by-Hop Options header (HBH). This causes the self-test to fail
-in environments where such network elements are present.
+Use destroy_hist_field() to properly free 'val', and explicitly release
+the memory of var->type and var->var.name before freeing 'var' itself.
 
-To improve the robustness and reliability of this test in diverse
-network environments, switch from using IPPROTO_HOPOPTS to
-IPPROTO_DSTOPTS (Destination Options).
-
-The Destination Options header is less likely to be dropped by
-intermediate routers and still serves the core purpose of the test:
-validating GRO's handling of an IPv6 extension header. This change
-ensures the test can execute successfully without being incorrectly
-failed by network policies outside the kernel's control.
-
-Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Anubhav Singh <anubhavsinggh@google.com>
-Link: https://patch.msgid.link/20251030060436.1556664-1-anubhavsinggh@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20251106120132.3639920-1-zilin@seu.edu.cn
+Fixes: 02205a6752f22 ("tracing: Add support for 'field variables'")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/gro.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/trace_events_hist.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
-index d8a7906a9df98..ecd28f2dacee3 100644
---- a/tools/testing/selftests/net/gro.c
-+++ b/tools/testing/selftests/net/gro.c
-@@ -734,11 +734,11 @@ static void send_ipv6_exthdr(int fd, struct sockaddr_ll *daddr, char *ext_data1,
- 	static char exthdr_pck[sizeof(buf) + MIN_EXTHDR_SIZE];
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 1d536219b6248..6bfaf1210dd24 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -3272,14 +3272,16 @@ static struct field_var *create_field_var(struct hist_trigger_data *hist_data,
+ 	var = create_var(hist_data, file, field_name, val->size, val->type);
+ 	if (IS_ERR(var)) {
+ 		hist_err(tr, HIST_ERR_VAR_CREATE_FIND_FAIL, errpos(field_name));
+-		kfree(val);
++		destroy_hist_field(val, 0);
+ 		ret = PTR_ERR(var);
+ 		goto err;
+ 	}
  
- 	create_packet(buf, 0, 0, PAYLOAD_LEN, 0);
--	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data1);
-+	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_DSTOPTS, ext_data1);
- 	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
- 
- 	create_packet(buf, PAYLOAD_LEN * 1, 0, PAYLOAD_LEN, 0);
--	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data2);
-+	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_DSTOPTS, ext_data2);
- 	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
- }
- 
+ 	field_var = kzalloc(sizeof(struct field_var), GFP_KERNEL);
+ 	if (!field_var) {
+-		kfree(val);
++		destroy_hist_field(val, 0);
++		kfree_const(var->type);
++		kfree(var->var.name);
+ 		kfree(var);
+ 		ret =  -ENOMEM;
+ 		goto err;
 -- 
 2.51.0
 
