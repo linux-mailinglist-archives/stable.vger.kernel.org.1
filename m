@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-194025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1204EC4AA6C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1B6C4A644
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4B22434C957
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55A8E1890467
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB092F6923;
-	Tue, 11 Nov 2025 01:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943523043BA;
+	Tue, 11 Nov 2025 01:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9xlGqsd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flyto73J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6230158545;
-	Tue, 11 Nov 2025 01:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA1626E16C;
+	Tue, 11 Nov 2025 01:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824626; cv=none; b=G+gJ9YtRTU4J8R9M98EL1KNGT7+2qOoU1oJBODWyxFITrzjZwBLtTTm29kI+GpT1zYLCEz70w9hx1VkzBTiGynlj1fpuJaJmbBh7eMMgo6NSJgL5NnP/xZmMCDbsTn/Ejg/meIpWUvdNx9SCJUVACtLnEw4eCW/2DerfcjH8KLQ=
+	t=1762823292; cv=none; b=gsMGO5a9uz1KJufD3M7pmie7fHRjkZVVNGFys2bcbwRjd0Bv+Rjn3lP5I/JxAyIm+z5G2UElpoUw2kOBDXJ74Mni+8zzzxIg+/PUkJtR1ULd3y/WsgfkwJA+4bfW80UY9/8Hy93udb8w2B5xmiL4zW54wY9bQW6in+OiLvhorWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824626; c=relaxed/simple;
-	bh=lwNYMtVa9GHZAXtZj/otFTtdzeAA2w8PjmTr6Hf59nE=;
+	s=arc-20240116; t=1762823292; c=relaxed/simple;
+	bh=7NLU5aw4hvCTn5LAha8708EHB7jYHC8x3vPegIu1Kfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z37EbpHFHysCAbex9f68qLNUNzK93XmeFaB0xVsd+iPCiWGRcyVnrbrgm9Yu90xPK9Vnr14eo321EbC4Ic4jSENXPmOi+yqkbya0E2C8h/FY4atx9gsJd/xV65RVu9/oCtMV0nAeKDxLJCEUDqNTOkOB9RsDF6Vn2eavrwK4BOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9xlGqsd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307FFC19425;
-	Tue, 11 Nov 2025 01:30:26 +0000 (UTC)
+	 MIME-Version; b=an3gdDWv0EkQeoSC4hXv9z/UPJoWtJgA1xLclp/Cb9a6Xh5yVbc817o/497fLL37vLfhoV60hBQRrp2gAQ3IA7ygKn+WsSO/we1drl5ArIaws/Jg9bKpCZIGJkid8a5rxXX593J26W1jz3V8lP1icyLHQw6Jhs39tXcAAi4AY5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flyto73J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF24C4CEF5;
+	Tue, 11 Nov 2025 01:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824626;
-	bh=lwNYMtVa9GHZAXtZj/otFTtdzeAA2w8PjmTr6Hf59nE=;
+	s=korg; t=1762823292;
+	bh=7NLU5aw4hvCTn5LAha8708EHB7jYHC8x3vPegIu1Kfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G9xlGqsdye3JS4CUCDMmWRVUV2D8P5P3NK0qIhE+REqjvBIGuRHrkzUk8fKdIakbI
-	 QP3kckYpSwTI4J4ERTLKNvhodvIT6Joyx4zrlNcKkCGHEmrD44sTpXIIa5kTsMToNI
-	 nOlR6C3pVNWsBXr0aVEygxn+4qrYIIPgcGx3qKWQ=
+	b=flyto73JovLBbLD46W6IiODeCX4Ka/praWsf3CX+RYuk3PJRbO13BBoTEgsOMh5hE
+	 T8ipdkpcNXMLwFCqyczbIGqZ0RRryBUeuv0DQlpujr1MSWHBIaykmQnwzoqfbBW+jf
+	 tG/FmFy9LYugak/xuBx/AtzbYj8WIMo8dBjn1gbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Chao <alice.chao@mediatek.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 499/849] scsi: ufs: host: mediatek: Fix adapt issue after PA_Init
+Subject: [PATCH 6.12 213/565] bridge: Redirect to backup port when port is administratively down
 Date: Tue, 11 Nov 2025 09:41:09 +0900
-Message-ID: <20251111004548.498090391@linuxfoundation.org>
+Message-ID: <20251111004531.716316874@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Chao <alice.chao@mediatek.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit d73836cb8535b3078e4d2a57913f301baec58a33 ]
+[ Upstream commit 3d05b24429e1de7a17c8fdccb04a04dbc8ad297b ]
 
-Address the issue where the host does not send adapt to the device after
-PA_Init success. Ensure the adapt process is correctly initiated for
-devices with IP version MT6899 and above, resolving communication issues
-between the host and device.
+If a backup port is configured for a bridge port, the bridge will
+redirect known unicast traffic towards the backup port when the primary
+port is administratively up but without a carrier. This is useful, for
+example, in MLAG configurations where a system is connected to two
+switches and there is a peer link between both switches. The peer link
+serves as the backup port in case one of the switches loses its
+connection to the multi-homed system.
 
-Signed-off-by: Alice Chao <alice.chao@mediatek.com>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+In order to avoid flooding when the primary port loses its carrier, the
+bridge does not flush dynamic FDB entries pointing to the port upon STP
+disablement, if the port has a backup port.
+
+The above means that known unicast traffic destined to the primary port
+will be blackholed when the port is put administratively down, until the
+FDB entries pointing to it are aged-out.
+
+Given that the current behavior is quite weird and unlikely to be
+depended on by anyone, amend the bridge to redirect to the backup port
+also when the primary port is administratively down and not only when it
+does not have a carrier.
+
+The change is motivated by a report from a user who expected traffic to
+be redirected to the backup port when the primary port was put
+administratively down while debugging a network issue.
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250812080213.325298-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-mediatek.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/bridge/br_forward.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
-index 3defb5f135e33..c0acbd3f8fc36 100644
---- a/drivers/ufs/host/ufs-mediatek.c
-+++ b/drivers/ufs/host/ufs-mediatek.c
-@@ -1503,8 +1503,19 @@ static int ufs_mtk_pre_link(struct ufs_hba *hba)
+diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
+index e19b583ff2c6d..49dd8cd526f46 100644
+--- a/net/bridge/br_forward.c
++++ b/net/bridge/br_forward.c
+@@ -148,7 +148,8 @@ void br_forward(const struct net_bridge_port *to,
+ 		goto out;
  
- 	return ret;
- }
-+
- static void ufs_mtk_post_link(struct ufs_hba *hba)
- {
-+	struct ufs_mtk_host *host = ufshcd_get_variant(hba);
-+	u32 tmp;
-+
-+	/* fix device PA_INIT no adapt */
-+	if (host->ip_ver >= IP_VER_MT6899) {
-+		ufshcd_dme_get(hba, UIC_ARG_MIB(VS_DEBUGOMC), &tmp);
-+		tmp |= 0x100;
-+		ufshcd_dme_set(hba, UIC_ARG_MIB(VS_DEBUGOMC), tmp);
-+	}
-+
- 	/* enable unipro clock gating feature */
- 	ufs_mtk_cfg_unipro_cg(hba, true);
- }
+ 	/* redirect to backup link if the destination port is down */
+-	if (rcu_access_pointer(to->backup_port) && !netif_carrier_ok(to->dev)) {
++	if (rcu_access_pointer(to->backup_port) &&
++	    (!netif_carrier_ok(to->dev) || !netif_running(to->dev))) {
+ 		struct net_bridge_port *backup_port;
+ 
+ 		backup_port = rcu_dereference(to->backup_port);
 -- 
 2.51.0
 
