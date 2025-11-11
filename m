@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C08C4A641
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D77BC4A638
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2B9A1885F12
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B749918903B4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7257E302CAC;
-	Tue, 11 Nov 2025 01:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9572F30276C;
+	Tue, 11 Nov 2025 01:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+3+mXIy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QT2luHl8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F03E25F797;
-	Tue, 11 Nov 2025 01:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497C3303CAC;
+	Tue, 11 Nov 2025 01:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823283; cv=none; b=La6BYAm5FxmfpTjaSqsqBYHXWPpG9K1TBMwv+bfnN1Ds47Nxa/qMYMtZDJK4o9PrODX1OYFV54wGNjt/MDySM+OzdcBiiIBpLzAO8Aypnf7z3p5AWnxe8dov+gUFaZI8Kp0RdoqvwvCAR2JHqWi2LbA56OD+cgLQIMJzebLdCqQ=
+	t=1762823290; cv=none; b=RK+tXUML0EItG2yD7c84giCmfU5WU5YHoKVWvFThAEZFLHE3UYX/2FeSlYtnGXC9+h690CmwrmUItwYEbEyi3vvLa08Ngs2zKVJIDT7sKur+u969zR6uM1xQ1kmPMYB151Fo3qy05T1KIyW1k36lQyqWXvHJOIXuNyJEg4wTO1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823283; c=relaxed/simple;
-	bh=gr4oBPdtULGdRRzBdVwlqONjNiEyu8ANinfjOGGjyM8=;
+	s=arc-20240116; t=1762823290; c=relaxed/simple;
+	bh=ajYPGhfw60txX942CdzmsRFF4Y1q7FfqhqsZZHxX5E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bm7lAEe1s9zXio8x5to8/Tlvdj7sC+b5Z1gPJDaa9oHyMt1rA0HR+E7LMfpX/MKBTPd7j0dDAy680u4kTdRmncQMpJUj88FTOPhNm42Ov+P8+SJ2eVh3YSB9YZuPjmbE9BDfycDNsJNQLIjtz93G9kWAt8xKl7UxghRTCSNMbns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+3+mXIy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84469C16AAE;
-	Tue, 11 Nov 2025 01:08:02 +0000 (UTC)
+	 MIME-Version; b=u64SHJyse3SzfLP/wJdJhEAYhKsS9x2gE3Mdk1Cmi3+ZJlKKOTrvoVzoBMCxiZMlc/XJ5tfFUrn88xdGD418uQN49AGvDQ92RhFYcohf6vFQPF4f5sVVJE1fDsn9R1gvvdVIqh5u3cuzSh61BOZCcPOq4rtP2okZvYlKaFiE9YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QT2luHl8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF0EC4AF0B;
+	Tue, 11 Nov 2025 01:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823282;
-	bh=gr4oBPdtULGdRRzBdVwlqONjNiEyu8ANinfjOGGjyM8=;
+	s=korg; t=1762823289;
+	bh=ajYPGhfw60txX942CdzmsRFF4Y1q7FfqhqsZZHxX5E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y+3+mXIySrjb5PpzkhTFqqfwhYjj2odRdHWLrHKM9VqCzhNIGGn8h8RrxCO1HemmS
-	 DRS+WM3Vn+yuRE3j1+X/ILmhnFGC5Uz14oj/8E/KpqoqycCIHq5mbCAgcK/jHuytRV
-	 SSflMmMg1r1i7q5RT8J8bX0VfofCyIswdZEBM7so=
+	b=QT2luHl8cmdN1inc4zpyKdP4S/mKmWyPZyTgkjW4t1FPwQvUrEHTp2y5LmYuyZtQB
+	 Ifas0WVkW0CwRq4c0PUfKK1ssgUmhClx8YRed2Aaud2g0G0TgQ/vkLqcczxLo0+gbb
+	 7/ComXhBkZ2rr1VDSG/QkY7xEMb4cMmU/PYxsYl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 268/849] drm/xe: rework PDE PAT index selection
-Date: Tue, 11 Nov 2025 09:37:18 +0900
-Message-ID: <20251111004542.909981532@linuxfoundation.org>
+Subject: [PATCH 6.17 269/849] docs: kernel-doc: avoid script crash on ancient Python
+Date: Tue, 11 Nov 2025 09:37:19 +0900
+Message-ID: <20251111004542.934930071@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,179 +66,144 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 17593a69b75f098280ad88b625f2d8c5bfe4c6a1 ]
+[ Upstream commit fc973dcd73f242480c61eccb1aa7306adafd2907 ]
 
-For non-leaf paging structures we end up selecting a random index
-between [0, 3], depending on the first user if the page-table is shared,
-since non-leaf structures only have two bits in the HW for encoding the
-PAT index, and here we are just passing along the full user provided
-index, which can be an index as large as ~31 on xe2+. The user provided
-index is meant for the leaf node, which maps the actual BO pages where
-we have more PAT bits, and not the non-leaf nodes which are only mapping
-other paging structures, and so only needs a minimal PAT index range.
-Also the chosen index might need to consider how the driver mapped the
-paging structures on the host side, like wc vs wb, which is separate
-from the user provided index.
+While we do need at least 3.6 for kernel-doc to work, and at least
+3.7 for it to output functions and structs with parameters at the
+right order, let the python binary be compatible with legacy
+versions.
 
-With that move the PDE PAT index selection under driver control. For now
-just use a coherent index on platforms with page-tables that are cached
-on host side, and incoherent otherwise. Using a coherent index could
-potentially be expensive, and would be overkill if we know the page-table
-is always uncached on host side.
+The rationale is that the Kernel build nowadays calls kernel-doc
+with -none on some places. Better not to bail out when older
+versions are found.
 
-v2 (Stuart):
-  - Add some documentation and split into separate helper.
+With that, potentially this will run with python 2.7 and 3.2+,
+according with vermin:
 
-BSpec: 59510
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Stuart Summers <stuart.summers@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Link: https://lore.kernel.org/r/20250808103455.462424-2-matthew.auld@intel.com
+	$ vermin --no-tips -v ./scripts/kernel-doc
+	Detecting python files..
+	Analyzing using 24 processes..
+	2.7, 3.2     /new_devel/v4l/docs/scripts/kernel-doc
+	Minimum required versions: 2.7, 3.2
+
+3.2 minimal requirement is due to argparse.
+
+The minimal version I could check was version 3.4
+(using anaconda). Anaconda doesn't support 3.2 or 3.3
+anymore, and 3.2 doesn't even compile (I tested compiling
+Python 3.2 on Fedora 42 and on Fedora 32 - no show).
+
+With 3.4, the script didn't crash and emitted the right warning:
+
+	$ conda create -n py34 python=3.4
+	$ conda activate py34
+	python --version
+        Python 3.4.5
+        $ python ./scripts/kernel-doc --none include/media
+	Error: Python 3.6 or later is required by kernel-doc
+	$ conda deactivate
+
+	$ python --version
+	Python 3.13.5
+        $ python ./scripts/kernel-doc --none include/media
+	(no warnings and script ran properly)
+
+Supporting 2.7 is out of scope, as it is EOL for 5 years, and
+changing shebang to point to "python" instead of "python3"
+would have a wider impact.
+
+I did some extra checks about the differences from 3.2 and
+3.4, and didn't find anything that would cause troubles:
+
+	grep -rE "yield from|asyncio|pathlib|async|await|enum" scripts/kernel-doc
+
+Also, it doesn't use "@" operator. So, I'm confident that it
+should run (producing the exit warning) since Python 3.2.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/87d55e76b0b1391cb7a83e3e965dbddb83fa9786.1753806485.git.mchehab+huawei@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_migrate.c  | 10 ++++------
- drivers/gpu/drm/xe/xe_pt.c       |  4 ++--
- drivers/gpu/drm/xe/xe_pt_types.h |  3 +--
- drivers/gpu/drm/xe/xe_vm.c       | 34 +++++++++++++++++++++++++++-----
- 4 files changed, 36 insertions(+), 15 deletions(-)
+ scripts/kernel-doc.py | 34 ++++++++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
-index 13e287e037096..9b1e3dce1aea3 100644
---- a/drivers/gpu/drm/xe/xe_migrate.c
-+++ b/drivers/gpu/drm/xe/xe_migrate.c
-@@ -163,8 +163,7 @@ static void xe_migrate_program_identity(struct xe_device *xe, struct xe_vm *vm,
- 	for (pos = dpa_base; pos < vram_limit;
- 	     pos += SZ_1G, ofs += 8) {
- 		if (pos + SZ_1G >= vram_limit) {
--			entry = vm->pt_ops->pde_encode_bo(bo, pt_2m_ofs,
--							  pat_index);
-+			entry = vm->pt_ops->pde_encode_bo(bo, pt_2m_ofs);
- 			xe_map_wr(xe, &bo->vmap, ofs, u64, entry);
- 
- 			flags = vm->pt_ops->pte_encode_addr(xe, 0,
-@@ -218,7 +217,7 @@ static int xe_migrate_prepare_vm(struct xe_tile *tile, struct xe_migrate *m,
- 
- 	/* PT30 & PT31 reserved for 2M identity map */
- 	pt29_ofs = xe_bo_size(bo) - 3 * XE_PAGE_SIZE;
--	entry = vm->pt_ops->pde_encode_bo(bo, pt29_ofs, pat_index);
-+	entry = vm->pt_ops->pde_encode_bo(bo, pt29_ofs);
- 	xe_pt_write(xe, &vm->pt_root[id]->bo->vmap, 0, entry);
- 
- 	map_ofs = (num_entries - num_setup) * XE_PAGE_SIZE;
-@@ -286,15 +285,14 @@ static int xe_migrate_prepare_vm(struct xe_tile *tile, struct xe_migrate *m,
- 			flags = XE_PDE_64K;
- 
- 		entry = vm->pt_ops->pde_encode_bo(bo, map_ofs + (u64)(level - 1) *
--						  XE_PAGE_SIZE, pat_index);
-+						  XE_PAGE_SIZE);
- 		xe_map_wr(xe, &bo->vmap, map_ofs + XE_PAGE_SIZE * level, u64,
- 			  entry | flags);
- 	}
- 
- 	/* Write PDE's that point to our BO. */
- 	for (i = 0; i < map_ofs / PAGE_SIZE; i++) {
--		entry = vm->pt_ops->pde_encode_bo(bo, (u64)i * XE_PAGE_SIZE,
--						  pat_index);
-+		entry = vm->pt_ops->pde_encode_bo(bo, (u64)i * XE_PAGE_SIZE);
- 
- 		xe_map_wr(xe, &bo->vmap, map_ofs + XE_PAGE_SIZE +
- 			  (i + 1) * 8, u64, entry);
-diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
-index c8e63bd23300e..eb9774a8f683c 100644
---- a/drivers/gpu/drm/xe/xe_pt.c
-+++ b/drivers/gpu/drm/xe/xe_pt.c
-@@ -69,7 +69,7 @@ static u64 __xe_pt_empty_pte(struct xe_tile *tile, struct xe_vm *vm,
- 
- 	if (level > MAX_HUGEPTE_LEVEL)
- 		return vm->pt_ops->pde_encode_bo(vm->scratch_pt[id][level - 1]->bo,
--						 0, pat_index);
-+						 0);
- 
- 	return vm->pt_ops->pte_encode_addr(xe, 0, pat_index, level, IS_DGFX(xe), 0) |
- 		XE_PTE_NULL;
-@@ -616,7 +616,7 @@ xe_pt_stage_bind_entry(struct xe_ptw *parent, pgoff_t offset,
- 			xe_child->is_compact = true;
- 		}
- 
--		pte = vm->pt_ops->pde_encode_bo(xe_child->bo, 0, pat_index) | flags;
-+		pte = vm->pt_ops->pde_encode_bo(xe_child->bo, 0) | flags;
- 		ret = xe_pt_insert_entry(xe_walk, xe_parent, offset, xe_child,
- 					 pte);
- 	}
-diff --git a/drivers/gpu/drm/xe/xe_pt_types.h b/drivers/gpu/drm/xe/xe_pt_types.h
-index 69eab6f37cfe6..17cdd7c7e9f5e 100644
---- a/drivers/gpu/drm/xe/xe_pt_types.h
-+++ b/drivers/gpu/drm/xe/xe_pt_types.h
-@@ -45,8 +45,7 @@ struct xe_pt_ops {
- 	u64 (*pte_encode_addr)(struct xe_device *xe, u64 addr,
- 			       u16 pat_index,
- 			       u32 pt_level, bool devmem, u64 flags);
--	u64 (*pde_encode_bo)(struct xe_bo *bo, u64 bo_offset,
--			     u16 pat_index);
-+	u64 (*pde_encode_bo)(struct xe_bo *bo, u64 bo_offset);
- };
- 
- struct xe_pt_entry {
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index bf44cd5bf49c0..30c32717a980e 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -1547,14 +1547,39 @@ static u64 pte_encode_ps(u32 pt_level)
- 	return 0;
- }
- 
--static u64 xelp_pde_encode_bo(struct xe_bo *bo, u64 bo_offset,
--			      const u16 pat_index)
-+static u16 pde_pat_index(struct xe_bo *bo)
-+{
-+	struct xe_device *xe = xe_bo_device(bo);
-+	u16 pat_index;
+diff --git a/scripts/kernel-doc.py b/scripts/kernel-doc.py
+index fc3d46ef519f8..d9fe2bcbd39cc 100755
+--- a/scripts/kernel-doc.py
++++ b/scripts/kernel-doc.py
+@@ -2,8 +2,17 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # Copyright(c) 2025: Mauro Carvalho Chehab <mchehab@kernel.org>.
+ #
+-# pylint: disable=C0103,R0915
+-#
++# pylint: disable=C0103,R0912,R0914,R0915
 +
-+	/*
-+	 * We only have two bits to encode the PAT index in non-leaf nodes, but
-+	 * these only point to other paging structures so we only need a minimal
-+	 * selection of options. The user PAT index is only for encoding leaf
-+	 * nodes, where we have use of more bits to do the encoding. The
-+	 * non-leaf nodes are instead under driver control so the chosen index
-+	 * here should be distict from the user PAT index. Also the
-+	 * corresponding coherency of the PAT index should be tied to the
-+	 * allocation type of the page table (or at least we should pick
-+	 * something which is always safe).
-+	 */
-+	if (!xe_bo_is_vram(bo) && bo->ttm.ttm->caching == ttm_cached)
-+		pat_index = xe->pat.idx[XE_CACHE_WB];
-+	else
-+		pat_index = xe->pat.idx[XE_CACHE_NONE];
++# NOTE: While kernel-doc requires at least version 3.6 to run, the
++#       command line should work with Python 3.2+ (tested with 3.4).
++#       The rationale is that it shall fail gracefully during Kernel
++#       compilation with older Kernel versions. Due to that:
++#       - encoding line is needed here;
++#       - no f-strings can be used on this file.
++#       - the libraries that require newer versions can only be included
++#         after Python version is checked.
 +
-+	xe_assert(xe, pat_index <= 3);
+ # Converted from the kernel-doc script originally written in Perl
+ # under GPLv2, copyrighted since 1998 by the following authors:
+ #
+@@ -107,9 +116,6 @@ SRC_DIR = os.path.dirname(os.path.realpath(__file__))
+ 
+ sys.path.insert(0, os.path.join(SRC_DIR, LIB_DIR))
+ 
+-from kdoc_files import KernelFiles                      # pylint: disable=C0413
+-from kdoc_output import RestFormat, ManFormat           # pylint: disable=C0413
+-
+ DESC = """
+ Read C language source or header FILEs, extract embedded documentation comments,
+ and print formatted documentation to standard output.
+@@ -273,14 +279,22 @@ def main():
+ 
+     python_ver = sys.version_info[:2]
+     if python_ver < (3,6):
+-        logger.warning("Python 3.6 or later is required by kernel-doc")
++        # Depending on Kernel configuration, kernel-doc --none is called at
++        # build time. As we don't want to break compilation due to the
++        # usage of an old Python version, return 0 here.
++        if args.none:
++            logger.error("Python 3.6 or later is required by kernel-doc. skipping checks")
++            sys.exit(0)
+ 
+-        # Return 0 here to avoid breaking compilation
+-        sys.exit(0)
++        sys.exit("Python 3.6 or later is required by kernel-doc. Aborting.")
+ 
+     if python_ver < (3,7):
+         logger.warning("Python 3.7 or later is required for correct results")
+ 
++    # Import kernel-doc libraries only after checking Python version
++    from kdoc_files import KernelFiles                  # pylint: disable=C0415
++    from kdoc_output import RestFormat, ManFormat       # pylint: disable=C0415
 +
-+	return pat_index;
-+}
-+
-+static u64 xelp_pde_encode_bo(struct xe_bo *bo, u64 bo_offset)
- {
- 	u64 pde;
+     if args.man:
+         out_style = ManFormat(modulename=args.modulename)
+     elif args.none:
+@@ -308,11 +322,11 @@ def main():
+         sys.exit(0)
  
- 	pde = xe_bo_addr(bo, bo_offset, XE_PAGE_SIZE);
- 	pde |= XE_PAGE_PRESENT | XE_PAGE_RW;
--	pde |= pde_encode_pat_index(pat_index);
-+	pde |= pde_encode_pat_index(pde_pat_index(bo));
+     if args.werror:
+-        print(f"{error_count} warnings as errors")
++        print("%s warnings as errors" % error_count)    # pylint: disable=C0209
+         sys.exit(error_count)
  
- 	return pde;
- }
-@@ -2085,8 +2110,7 @@ struct xe_vm *xe_vm_lookup(struct xe_file *xef, u32 id)
+     if args.verbose:
+-        print(f"{error_count} errors")
++        print("%s errors" % error_count)                # pylint: disable=C0209
  
- u64 xe_vm_pdp4_descriptor(struct xe_vm *vm, struct xe_tile *tile)
- {
--	return vm->pt_ops->pde_encode_bo(vm->pt_root[tile->id]->bo, 0,
--					 tile_to_xe(tile)->pat.idx[XE_CACHE_WB]);
-+	return vm->pt_ops->pde_encode_bo(vm->pt_root[tile->id]->bo, 0);
- }
- 
- static struct xe_exec_queue *
+     if args.none:
+         sys.exit(0)
 -- 
 2.51.0
 
