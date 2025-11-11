@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-193517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58188C4A6AD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FECBC4AD33
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AB081892179
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20C043B44C3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6188E333740;
-	Tue, 11 Nov 2025 01:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6F01F5F6;
+	Tue, 11 Nov 2025 01:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VnrBTbDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/cwCrje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1755D330B1F;
-	Tue, 11 Nov 2025 01:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EDA27FD54;
+	Tue, 11 Nov 2025 01:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823369; cv=none; b=VXTT84xCRk0n/G1kJ6zXC2tDBQ/7fzpjB3UO+XEX8Z9RRWEvxS4wSvo+deiNCeIb04jOeHvpbgw2V0XYRjZhzHT92JZDCFkQvbKgwKMyT3XGTZXUng6NGTVtHlfA3PQop01mwKSwhJK4xSBs93l2WtPJSjNPPxO+jP6p9KuetCg=
+	t=1762824516; cv=none; b=mgpsr8qS+v716x8g59lwUIaLzivmC27YAbTZu4iZEiLAH027uc3YnhcGco/ajGLMq9C/YcCc0UhxzeAK3cCClM1/r8djpq+HUpJ+8nZGmlVEQBFpHqEYQ5XsSDKmsllqhDXScV7RBwxpCown2s8pRYqUGWv+Wywm0uKEnND5K3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823369; c=relaxed/simple;
-	bh=2onommx/dYMWH4XzVD3e45+W71VgGPGha1HLiKu0wlk=;
+	s=arc-20240116; t=1762824516; c=relaxed/simple;
+	bh=bD4uAmrSuKkkRwqFvri2Lc43Zu67RajFVHU4LtLCa2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gUsZ1URiSkyJqe+hUDeC8OkMoNr8W2rDvSXRe8W9gbmL0H8k1Qrju4NJJW+4U3+UWCG85WxOHn5oydZFJHbOZl1W+x6xFxLxewNDIMIr1wq9i/HjkDSVkm2VJmfBCa+8B9YvmMZsyTbDDIFQ7xWJmDwB+wuSdwGb3J1187vwxbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VnrBTbDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A887EC113D0;
-	Tue, 11 Nov 2025 01:09:28 +0000 (UTC)
+	 MIME-Version; b=Dnr9grY+eZaKbk4qiNMe7IhPMEPpgLsMS3g45GN7BBf+AMEfrVKtGIfxSqG0x7OJMFclTvFMueTB7L4nm2uPR13RUMz2qfycAMAdylUI/xCv9v7wszcZbZNkd8+VdxzIe1YzrdWllu+k6ElfyuJ1OoA9Ybw2xrdaz/9K3MYCzkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/cwCrje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B4AC4CEF5;
+	Tue, 11 Nov 2025 01:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823368;
-	bh=2onommx/dYMWH4XzVD3e45+W71VgGPGha1HLiKu0wlk=;
+	s=korg; t=1762824516;
+	bh=bD4uAmrSuKkkRwqFvri2Lc43Zu67RajFVHU4LtLCa2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VnrBTbDnzQWTpNcPNhjU8GdRqyZSolXRCiJBJ2+i3hDYm6pl4sFynUWd+Qn+BSYBg
-	 zdNkG75HzfzldlwX8ZMd+jcHA6fNH/GRBzM2+o87AqXUmxPfkKi1XJTKQvRcu3gDbu
-	 o8utE5OyVOEWty94mF5c4xSQ1zd0HeDa4G0nogcU=
+	b=m/cwCrjehKkm9+4U/XTH6vGitQWJdux6gMQ4CfInlIlNiS0WobclXDhBa/wegDu/Q
+	 kTZLGewLvij5VeXdbtD9rwbYaH3CHC74FaY6d7iSAvNO6fuCuEuJdGiV7mja83ciPT
+	 Pd/VcLVZy71uL78QFUoAMZ3N/x6IgTOzi09fPRCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Primoz Fiser <primoz.fiser@norik.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	chenmiao <chenmiao.ku@gmail.com>,
+	Stafford Horne <shorne@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 228/565] iio: adc: imx93_adc: load calibrated values even calibration failed
-Date: Tue, 11 Nov 2025 09:41:24 +0900
-Message-ID: <20251111004532.047490308@linuxfoundation.org>
+Subject: [PATCH 6.17 515/849] openrisc: Add R_OR1K_32_PCREL relocation type module support
+Date: Tue, 11 Nov 2025 09:41:25 +0900
+Message-ID: <20251111004548.881609814@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: chenmiao <chenmiao.ku@gmail.com>
 
-[ Upstream commit 12c9b09e981ab14ebec8e4eefa946cbd26dd306b ]
+[ Upstream commit 9d0cb6d00be891586261a35da7f8c3c956825c39 ]
 
-ADC calibration might fail because of the noise on reference voltage.
-To avoid calibration fail, need to meet the following requirement:
-    ADC reference voltage Noise < 1.8V * 1/2^ENOB
+To ensure the proper functioning of the jump_label test module, this patch
+adds support for the R_OR1K_32_PCREL relocation type for any modules. The
+implementation calculates the PC-relative offset by subtracting the
+instruction location from the target value and stores the result at the
+specified location.
 
-For the case which the ADC reference voltage on board do not meet
-the requirement, still load the calibrated values, so ADC can also
-work but maybe not that accurate.
-
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Primoz Fiser <primoz.fiser@norik.com>
-Link: https://patch.msgid.link/20250812-adc-v2-2-0260833f13b8@nxp.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: chenmiao <chenmiao.ku@gmail.com>
+Signed-off-by: Stafford Horne <shorne@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/imx93_adc.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ arch/openrisc/kernel/module.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
-index 4ccf4819f1f13..75cf2f93d5edd 100644
---- a/drivers/iio/adc/imx93_adc.c
-+++ b/drivers/iio/adc/imx93_adc.c
-@@ -38,6 +38,7 @@
- #define IMX93_ADC_PCDR6		0x118
- #define IMX93_ADC_PCDR7		0x11c
- #define IMX93_ADC_CALSTAT	0x39C
-+#define IMX93_ADC_CALCFG0	0x3A0
- 
- /* ADC bit shift */
- #define IMX93_ADC_MCR_MODE_MASK			BIT(29)
-@@ -58,6 +59,8 @@
- #define IMX93_ADC_IMR_ECH_MASK			BIT(0)
- #define IMX93_ADC_PCDR_CDATA_MASK		GENMASK(11, 0)
- 
-+#define IMX93_ADC_CALCFG0_LDFAIL_MASK		BIT(4)
-+
- /* ADC status */
- #define IMX93_ADC_MSR_ADCSTATUS_IDLE			0
- #define IMX93_ADC_MSR_ADCSTATUS_POWER_DOWN		1
-@@ -145,7 +148,7 @@ static void imx93_adc_config_ad_clk(struct imx93_adc *adc)
- 
- static int imx93_adc_calibration(struct imx93_adc *adc)
- {
--	u32 mcr, msr;
-+	u32 mcr, msr, calcfg;
- 	int ret;
- 
- 	/* make sure ADC in power down mode */
-@@ -158,6 +161,11 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
- 
- 	imx93_adc_power_up(adc);
- 
-+	/* Enable loading of calibrated values even in fail condition */
-+	calcfg = readl(adc->regs + IMX93_ADC_CALCFG0);
-+	calcfg |= IMX93_ADC_CALCFG0_LDFAIL_MASK;
-+	writel(calcfg, adc->regs + IMX93_ADC_CALCFG0);
-+
- 	/*
- 	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
- 	 * can add the setting of these bit if need in future.
-@@ -180,9 +188,13 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
- 	/* check whether calbration is success or not */
- 	msr = readl(adc->regs + IMX93_ADC_MSR);
- 	if (msr & IMX93_ADC_MSR_CALFAIL_MASK) {
-+		/*
-+		 * Only give warning here, this means the noise of the
-+		 * reference voltage do not meet the requirement:
-+		 *     ADC reference voltage Noise < 1.8V * 1/2^ENOB
-+		 * And the resault of ADC is not that accurate.
-+		 */
- 		dev_warn(adc->dev, "ADC calibration failed!\n");
--		imx93_adc_power_down(adc);
--		return -EAGAIN;
- 	}
- 
- 	return 0;
+diff --git a/arch/openrisc/kernel/module.c b/arch/openrisc/kernel/module.c
+index c9ff4c4a0b29b..4ac4fbaa827c1 100644
+--- a/arch/openrisc/kernel/module.c
++++ b/arch/openrisc/kernel/module.c
+@@ -55,6 +55,10 @@ int apply_relocate_add(Elf32_Shdr *sechdrs,
+ 			value |= *location & 0xfc000000;
+ 			*location = value;
+ 			break;
++		case R_OR1K_32_PCREL:
++			value -= (uint32_t)location;
++			*location = value;
++			break;
+ 		case R_OR1K_AHI16:
+ 			/* Adjust the operand to match with a signed LO16.  */
+ 			value += 0x8000;
 -- 
 2.51.0
 
