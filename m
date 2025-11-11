@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-193431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A813C4A442
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98685C4A4BA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:16:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 372BF18912AF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:10:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14DB93A3ABD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178D027FD5B;
-	Tue, 11 Nov 2025 01:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D25D341AD6;
+	Tue, 11 Nov 2025 01:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZ5RCpGL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rETwzNH9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47AA27E040;
-	Tue, 11 Nov 2025 01:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC295341AC1;
+	Tue, 11 Nov 2025 01:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823167; cv=none; b=A14U+mVeLsGc6/uIuUNcZOlwVQvq3ZpqG/xKvGfgZYla9hbt/qFmtcFMAiSgIU2i6nQA4jwFLf7jePsvQM0Lc0mhxTf8JOUR+VZIo6Dx9OdCVuqC+V94DEEcZ/JlHjONSbnmZgNoFeMfqwyV3wZ8ut91LKSiN1kZmI+86ohMi1Q=
+	t=1762823174; cv=none; b=ogtFOsBklWkNvVZ9BIusyTqs1gkgOpTskKSjInDMHxXlCBQC4nIfXumOUjjnsJVebn5RDhDYqJ+nMeVEI5nSW+RZnLn2fmMK5ouxq6N8Xb9HwMQd4sAGKZuzNg26m6AHBtrUTjmS7U3Y6NKizp8uAvzeqbdL26J8xifNUkHzzFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823167; c=relaxed/simple;
-	bh=eN9uokiQjfzbCbeRQFz9+eHGSXj9O/RUI9aawtVWrLc=;
+	s=arc-20240116; t=1762823174; c=relaxed/simple;
+	bh=Z/fxLIQ0JUyn+HNiQwVP3LKMxdZCTKK5MNud0eJKRtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T450uL3hQdgHv/z85t+Jv2FaWWx6ok1RoCYu5KvldvA9MmhSKD0NFBGzNIlQ0yq/KX5g06CsCrCvOcJstDsaMapEsvXW/FYVLWGsJgO833gb+Z30DOb+tBNlho8F2/UtO1WEXrrIPjqMTvYwkaRgiBmVz1UHpcWiSjJg2c+I2pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZ5RCpGL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53689C2BC87;
-	Tue, 11 Nov 2025 01:06:07 +0000 (UTC)
+	 MIME-Version; b=WoBSIg75q9J4defsGWWUSbPeqzlX35XINLo2Pm0dGAe+zkHz47MJiJC5677UEn5/2KXDFiozEdMWQsK6y0bxe7kWGaHY4D/SlK78aHC6Z9FCDFpNHG45INa5S222Ra49FNwKVqbd9HuP2XQCBpoRRjwHxAJxQ5SLAZ5KyOmDFKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rETwzNH9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6E9C16AAE;
+	Tue, 11 Nov 2025 01:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823167;
-	bh=eN9uokiQjfzbCbeRQFz9+eHGSXj9O/RUI9aawtVWrLc=;
+	s=korg; t=1762823174;
+	bh=Z/fxLIQ0JUyn+HNiQwVP3LKMxdZCTKK5MNud0eJKRtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZ5RCpGLvgS2kg+ieXBaKBe/R18CL8KL6PH1fHRTKaGRKTsW+3M5WZeGPZ1tjzAU2
-	 ll0du3beZ8rIPoNlD1olaJI4Cx+b5HdKsDpKwMGxbnTEK1WWRknygCdV5yG1UfcFyL
-	 jrmXKvqrjqVCSGGnbxMXgvRJwqUjYZYZoEH67XfU=
+	b=rETwzNH98xnSszbbHDlVJXovRh7wg7JA4aAF9+ZxCqGGye0irVxhtBDV7BrR7TOg9
+	 7oUQe0YKeVdfr0ctkRjNefq2Lb1kgnnzdn+P5HhpsgvqBH8FTCPO7Whcku0QOjZpM5
+	 rm0PCc7Rgy7oe77mbWmaIPkCYreHVGZ6ncgJw2k4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Paul Hsieh <Paul.Hsieh@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 184/565] drm/amd/display: update dpp/disp clock from smu clock table
-Date: Tue, 11 Nov 2025 09:40:40 +0900
-Message-ID: <20251111004531.073665487@linuxfoundation.org>
+Subject: [PATCH 6.12 185/565] drm/amd/pm: Use cached metrics data on aldebaran
+Date: Tue, 11 Nov 2025 09:40:41 +0900
+Message-ID: <20251111004531.096357368@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -69,121 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paul Hsieh <Paul.Hsieh@amd.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 2e72fdba8a32ce062a86571edff4592710c26215 ]
+[ Upstream commit e87577ef6daa0cfb10ca139c720f0c57bd894174 ]
 
-[Why]
-The reason some high-resolution monitors fail to display properly
-is that this platform does not support sufficiently high DPP and
-DISP clock frequencies
+Cached metrics data validity is 1ms on aldebaran. It's not reasonable
+for any client to query gpu_metrics at a faster rate and constantly
+interrupt PMFW.
 
-[How]
-Update DISP and DPP clocks from the smu clock table then DML can
-filter these mode if not support.
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Paul Hsieh <Paul.Hsieh@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/clk_mgr/dcn301/vg_clk_mgr.c    | 16 +++++++++++++++
- .../amd/display/dc/dml/dcn301/dcn301_fpu.c    | 20 ++++++++++++++++---
- 2 files changed, 33 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn301/vg_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn301/vg_clk_mgr.c
-index 9e2ef0e724fcf..7aee02d562923 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn301/vg_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn301/vg_clk_mgr.c
-@@ -563,6 +563,7 @@ static void vg_clk_mgr_helper_populate_bw_params(
- {
- 	int i, j;
- 	struct clk_bw_params *bw_params = clk_mgr->base.bw_params;
-+	uint32_t max_dispclk = 0, max_dppclk = 0;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
+index 5a1f24438e472..dcd0422b67895 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
+@@ -1716,7 +1716,7 @@ static ssize_t aldebaran_get_gpu_metrics(struct smu_context *smu,
  
- 	j = -1;
+ 	ret = smu_cmn_get_metrics_table(smu,
+ 					&metrics,
+-					true);
++					false);
+ 	if (ret)
+ 		return ret;
  
-@@ -584,6 +585,15 @@ static void vg_clk_mgr_helper_populate_bw_params(
- 		return;
- 	}
- 
-+	/* dispclk and dppclk can be max at any voltage, same number of levels for both */
-+	if (clock_table->NumDispClkLevelsEnabled <= VG_NUM_DISPCLK_DPM_LEVELS &&
-+	    clock_table->NumDispClkLevelsEnabled <= VG_NUM_DPPCLK_DPM_LEVELS) {
-+		max_dispclk = find_max_clk_value(clock_table->DispClocks, clock_table->NumDispClkLevelsEnabled);
-+		max_dppclk = find_max_clk_value(clock_table->DppClocks, clock_table->NumDispClkLevelsEnabled);
-+	} else {
-+		ASSERT(0);
-+	}
-+
- 	bw_params->clk_table.num_entries = j + 1;
- 
- 	for (i = 0; i < bw_params->clk_table.num_entries - 1; i++, j--) {
-@@ -591,11 +601,17 @@ static void vg_clk_mgr_helper_populate_bw_params(
- 		bw_params->clk_table.entries[i].memclk_mhz = clock_table->DfPstateTable[j].memclk;
- 		bw_params->clk_table.entries[i].voltage = clock_table->DfPstateTable[j].voltage;
- 		bw_params->clk_table.entries[i].dcfclk_mhz = find_dcfclk_for_voltage(clock_table, clock_table->DfPstateTable[j].voltage);
-+
-+		/* Now update clocks we do read */
-+		bw_params->clk_table.entries[i].dispclk_mhz = max_dispclk;
-+		bw_params->clk_table.entries[i].dppclk_mhz = max_dppclk;
- 	}
- 	bw_params->clk_table.entries[i].fclk_mhz = clock_table->DfPstateTable[j].fclk;
- 	bw_params->clk_table.entries[i].memclk_mhz = clock_table->DfPstateTable[j].memclk;
- 	bw_params->clk_table.entries[i].voltage = clock_table->DfPstateTable[j].voltage;
- 	bw_params->clk_table.entries[i].dcfclk_mhz = find_max_clk_value(clock_table->DcfClocks, VG_NUM_DCFCLK_DPM_LEVELS);
-+	bw_params->clk_table.entries[i].dispclk_mhz = find_max_clk_value(clock_table->DispClocks, VG_NUM_DISPCLK_DPM_LEVELS);
-+	bw_params->clk_table.entries[i].dppclk_mhz = find_max_clk_value(clock_table->DppClocks, VG_NUM_DPPCLK_DPM_LEVELS);
- 
- 	bw_params->vram_type = bios_info->memory_type;
- 	bw_params->num_channels = bios_info->ma_channel_number;
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn301/dcn301_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn301/dcn301_fpu.c
-index 0c0b2d67c9cd9..2066a65c69bbc 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn301/dcn301_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn301/dcn301_fpu.c
-@@ -326,7 +326,7 @@ void dcn301_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
- 	struct dcn301_resource_pool *pool = TO_DCN301_RES_POOL(dc->res_pool);
- 	struct clk_limit_table *clk_table = &bw_params->clk_table;
- 	unsigned int i, closest_clk_lvl;
--	int j;
-+	int j = 0, max_dispclk_mhz = 0, max_dppclk_mhz = 0;
- 
- 	dc_assert_fp_enabled();
- 
-@@ -338,6 +338,15 @@ void dcn301_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
- 	dcn3_01_soc.num_chans = bw_params->num_channels;
- 
- 	ASSERT(clk_table->num_entries);
-+
-+	/* Prepass to find max clocks independent of voltage level. */
-+	for (i = 0; i < clk_table->num_entries; ++i) {
-+		if (clk_table->entries[i].dispclk_mhz > max_dispclk_mhz)
-+			max_dispclk_mhz = clk_table->entries[i].dispclk_mhz;
-+		if (clk_table->entries[i].dppclk_mhz > max_dppclk_mhz)
-+			max_dppclk_mhz = clk_table->entries[i].dppclk_mhz;
-+	}
-+
- 	for (i = 0; i < clk_table->num_entries; i++) {
- 		/* loop backwards*/
- 		for (closest_clk_lvl = 0, j = dcn3_01_soc.num_states - 1; j >= 0; j--) {
-@@ -353,8 +362,13 @@ void dcn301_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
- 		s[i].socclk_mhz = clk_table->entries[i].socclk_mhz;
- 		s[i].dram_speed_mts = clk_table->entries[i].memclk_mhz * 2;
- 
--		s[i].dispclk_mhz = dcn3_01_soc.clock_limits[closest_clk_lvl].dispclk_mhz;
--		s[i].dppclk_mhz = dcn3_01_soc.clock_limits[closest_clk_lvl].dppclk_mhz;
-+		/* Clocks independent of voltage level. */
-+		s[i].dispclk_mhz = max_dispclk_mhz ? max_dispclk_mhz :
-+			dcn3_01_soc.clock_limits[closest_clk_lvl].dispclk_mhz;
-+
-+		s[i].dppclk_mhz = max_dppclk_mhz ? max_dppclk_mhz :
-+			dcn3_01_soc.clock_limits[closest_clk_lvl].dppclk_mhz;
-+
- 		s[i].dram_bw_per_chan_gbps =
- 			dcn3_01_soc.clock_limits[closest_clk_lvl].dram_bw_per_chan_gbps;
- 		s[i].dscclk_mhz = dcn3_01_soc.clock_limits[closest_clk_lvl].dscclk_mhz;
 -- 
 2.51.0
 
