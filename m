@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B705FC4A1B1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E64EC4A1B4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:00:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AF2E3ACC8B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26A6B3ACD54
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0A2244693;
-	Tue, 11 Nov 2025 00:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7106214210;
+	Tue, 11 Nov 2025 00:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aq22SdKG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwIl9zoF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7CB24A043;
-	Tue, 11 Nov 2025 00:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9771C6FE1;
+	Tue, 11 Nov 2025 00:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822789; cv=none; b=PCCMxwRfoCi7t9fiv+MvaYuILnfocyvpS/a9ixUOhZqZbbjY+lQK5bOx25L5HVhK0Slj6b7kp/uKZIQWkujDm+j7CteXaNEnJxfWVLfkAdCae11WX3Snkr+gjDdTE09/Ku4vPkBcec3OKcCbZoMstVPU5ynHx8VD9Dt31Ad4seg=
+	t=1762822793; cv=none; b=FpirsydMyfYOB4HjrI1XX3JqhLbMqMzNOw8TEEGssf2gfRuL2Y5xcken6f9XraJ8jNDlJnbm9qM+s+kkxCy+uQlSkzdBLvJc7DnqXMPlh1nUt0qFR/uPe+wmLqw1laNsjBGCyHf3rCxZ61/Iubd4JF/iHnoXwcwXDEZtMpxVdSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822789; c=relaxed/simple;
-	bh=uYhPfNCnLB7IkyAxYJLaX7sVe8+6Cj03aPy89zlZ9P0=;
+	s=arc-20240116; t=1762822793; c=relaxed/simple;
+	bh=XLxeyBb3ob5n6uMxpLzwrPldudSq6jTlLNuTgy5JW9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m2m+0IM1+gqBAfJHjQwR6LwnFgYPIQSZH0eXN8baRqF08HxHIcBzKaZzcHOd+bunAbaPXKBIpWezu7jhxzCdtgv9Y/4h8TmhH875qThIrCJ1up+gs7sfP3Zc0IsV7H+bFFHNTXpZ3rzZ6rZTnl4+CkR0Z01tHZycCcoZsCgYRlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aq22SdKG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B944C16AAE;
-	Tue, 11 Nov 2025 00:59:48 +0000 (UTC)
+	 MIME-Version; b=qCGlq4V+68Gt1Dfyi9VQwOjpX3uNQVMz/iREcsNecsXkfFXU3G71BxGu3Jg0CnFOu2NBVBGEGgWdNsukR+sEWP7VjtG0cj1UQFOr2+tCzetHoO5l9D7vVBuzNqqSW8bInEHDlc5fOsERRN20Z3IAM2QWrMdZzKE1/psXZY4Qctw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwIl9zoF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFCCC116B1;
+	Tue, 11 Nov 2025 00:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822788;
-	bh=uYhPfNCnLB7IkyAxYJLaX7sVe8+6Cj03aPy89zlZ9P0=;
+	s=korg; t=1762822793;
+	bh=XLxeyBb3ob5n6uMxpLzwrPldudSq6jTlLNuTgy5JW9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aq22SdKG0zoldTeEbCJrHYGYrAVoHUtd8JiYuyNzPbwCme/wYTaCpKWiQ9ffAYKVe
-	 r9E7mArx9SieQUK9QvHnm9rIVNAiuOc3K/RsQJu6WMT1qocHrVQgUjXIHSXfZTJjZG
-	 6gW6LRTVcF0AkUNmUZTv8pmyh/abnlQn3g0RitEA=
+	b=XwIl9zoFNNDU4JaLYIWGYgQEb5Y+eHKNCGC+pFNBjgiEpInfWI/NTh7I6Bz+TJDlf
+	 L2yWa8JXiZjEDTugsP4uHJoO5RWOJNhTLCeLVdQDvg0w17xFVnrVv8sY+rCGerdP2c
+	 0pzWaYWLbHFhgYr6Frw5lLBGaOjhhWedZK20Gcog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Christian Bruel <christian.bruel@foss.st.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/565] selftests/bpf: Upon failures, exit with code 1 in test_xsk.sh
-Date: Tue, 11 Nov 2025 09:39:25 +0900
-Message-ID: <20251111004529.409039450@linuxfoundation.org>
+Subject: [PATCH 6.12 110/565] irqchip/gic-v2m: Handle Multiple MSI base IRQ Alignment
+Date: Tue, 11 Nov 2025 09:39:26 +0900
+Message-ID: <20251111004529.432750860@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -61,41 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Christian Bruel <christian.bruel@foss.st.com>
 
-[ Upstream commit 2a912258c90e895363c0ffc0be8a47f112ab67b7 ]
+[ Upstream commit 2ef3886ce626dcdab0cbc452dbbebc19f57133d8 ]
 
-Currently, even if some subtests fails, the end result will still yield
-"ok 1 selftests: bpf: test_xsk.sh". Fix it by exiting with 1 if there are
-any failures.
+The PCI Local Bus Specification 3.0 (section 6.8.1.6) allows modifying the
+low-order bits of the MSI Message DATA register to encode nr_irqs interrupt
+numbers in the log2(nr_irqs) bits for the domain.
 
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Link: https://lore.kernel.org/bpf/20250828-selftests-bpf-test_xsk_ret-v1-1-e6656c01f397@suse.com
+The problem arises if the base vector (GICV2m base spi) is not aligned with
+nr_irqs; in this case, the low-order log2(nr_irqs) bits from the base
+vector conflict with the nr_irqs masking, causing the wrong MSI interrupt
+to be identified.
+
+To fix this, use bitmap_find_next_zero_area_off() instead of
+bitmap_find_free_region() to align the initial base vector with nr_irqs.
+
+Signed-off-by: Christian Bruel <christian.bruel@foss.st.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/all/20250902091045.220847-1-christian.bruel@foss.st.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_xsk.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/irqchip/irq-gic-v2m.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_xsk.sh b/tools/testing/selftests/bpf/test_xsk.sh
-index 65aafe0003db0..62db060298a4a 100755
---- a/tools/testing/selftests/bpf/test_xsk.sh
-+++ b/tools/testing/selftests/bpf/test_xsk.sh
-@@ -241,4 +241,6 @@ done
+diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
+index a1e370d0200f1..b5479c552b776 100644
+--- a/drivers/irqchip/irq-gic-v2m.c
++++ b/drivers/irqchip/irq-gic-v2m.c
+@@ -156,14 +156,19 @@ static int gicv2m_irq_domain_alloc(struct irq_domain *domain, unsigned int virq,
+ {
+ 	msi_alloc_info_t *info = args;
+ 	struct v2m_data *v2m = NULL, *tmp;
+-	int hwirq, offset, i, err = 0;
++	int hwirq, i, err = 0;
++	unsigned long offset;
++	unsigned long align_mask = nr_irqs - 1;
  
- if [ $failures -eq 0 ]; then
-         echo "All tests successful!"
-+else
-+	exit 1
- fi
+ 	spin_lock(&v2m_lock);
+ 	list_for_each_entry(tmp, &v2m_nodes, entry) {
+-		offset = bitmap_find_free_region(tmp->bm, tmp->nr_spis,
+-						 get_count_order(nr_irqs));
+-		if (offset >= 0) {
++		unsigned long align_off = tmp->spi_start - (tmp->spi_start & ~align_mask);
++
++		offset = bitmap_find_next_zero_area_off(tmp->bm, tmp->nr_spis, 0,
++							nr_irqs, align_mask, align_off);
++		if (offset < tmp->nr_spis) {
+ 			v2m = tmp;
++			bitmap_set(v2m->bm, offset, nr_irqs);
+ 			break;
+ 		}
+ 	}
 -- 
 2.51.0
 
