@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40547C4A425
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A767FC4A43C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B6E974F697D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 62D9D4F9B78
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37A0261B8D;
-	Tue, 11 Nov 2025 01:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80835265CA8;
+	Tue, 11 Nov 2025 01:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgdCg8Aq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5GD/oX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9438F24E4C6;
-	Tue, 11 Nov 2025 01:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE48262FEC;
+	Tue, 11 Nov 2025 01:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823075; cv=none; b=qdXcaPZP7IzCBlxQzccITCJiujyuVTKs7ao1NWxtN/hYGXZ/I3afaxYYb4VJu8CYWP6zr7jjXSSDAXmupIo7g8uQskn3g6ueRlEnwn5MaNxzw5jAJro51goi7hQFnsYgqlM4tlffXxNFzVQxdj0HK1KhZqvYII9G7LPlMDTk0Uo=
+	t=1762823080; cv=none; b=S0bO5Ny7uhCxQxGyk1tJQHLezHTZ3zYcJGAP0aCFGfidfucNg9Z+K7SZ0h+/A3TsCQcv9xmbuE0xMYsDLpNHsNaL4poRsKArxHI/Ykz+KZ/mrNnSQEFHVL38Bupjo8uIWnLhpt1uEKdPwqaIyTA8oXX/EOUOHf4X4Biog6FVh9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823075; c=relaxed/simple;
-	bh=TDs18ZjUnUm7TZK+/FGSRDo9TA5paX0nb02LIUzeiVk=;
+	s=arc-20240116; t=1762823080; c=relaxed/simple;
+	bh=kKONOwfPg1seRgTrCaGvjGWxhvTkwU1ckVCPA2dJ5Q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m5cdsWR1HKIXZLwG6dds/NFnK/NvumLqPMiRN9STcZMRAOGcRnzsWirWtf9tXT5gFttID9FovTCnDQxAvIP5/vslmqADW3okprn6J0RuerM3B6DuGXQdDagatzQVKVvAnQfsnWeL9r/NqrgNTTK3remml1LjAKx7fn4MEr2/JDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgdCg8Aq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA61C113D0;
-	Tue, 11 Nov 2025 01:04:35 +0000 (UTC)
+	 MIME-Version; b=IlOESKfTjXO1OlezaVVc+1h/ptCGWg46Xi0HoIja94Y5vA3tYIL10q4DQ78+EJgYlBaP8mxFwi0VJaQd+6pJhFldgkZZGd/tPoZ34ftd7qgdEX4iYpNcaElvwDv/A+kz9BLh1Yb7zpWEqbQPsj15g9UwHftgCaRaOyEJLXswy18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5GD/oX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB332C4AF0B;
+	Tue, 11 Nov 2025 01:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823075;
-	bh=TDs18ZjUnUm7TZK+/FGSRDo9TA5paX0nb02LIUzeiVk=;
+	s=korg; t=1762823080;
+	bh=kKONOwfPg1seRgTrCaGvjGWxhvTkwU1ckVCPA2dJ5Q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XgdCg8AquuuzV4efsunC+dAmt3CfazKK4SHcivr4pET6n9AsnGbhL4A0kIte7EqFE
-	 PVdLhMq4jZ+81B1K5L5x7ppJRNGLy97vJPdJAi9RfGDR2BaU+m1fL1aK7tOpPjwzx4
-	 q37sevTOEUDBaVBbwCBKvHMhORP4YU77kywTtnjc=
+	b=s5GD/oX6ERnqT8rtaZF9FKXG4vyhaYd5yUwE6kJCc9kA12tbnkKQERj5bR2GOzVyL
+	 tOVYmv1tWHcjHgCkDmpWWndLb58R2Rqn5sRPZ1jJ8RlSju2OIb6izva2HjLaamhpL0
+	 3ShrdtXJbAZDk9Ml5aodtbcHelytVl6oY8TrvZSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bastien Curutchet <bastien.curutchet@bootlin.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 226/849] mfd: core: Increment of_nodes refcount before linking it to the platform device
-Date: Tue, 11 Nov 2025 09:36:36 +0900
-Message-ID: <20251111004541.906110006@linuxfoundation.org>
+Subject: [PATCH 6.17 227/849] mfd: cs42l43: Move IRQ enable/disable to encompass force suspend
+Date: Tue, 11 Nov 2025 09:36:37 +0900
+Message-ID: <20251111004541.929795836@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,39 +66,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 5f4bbee069836e51ed0b6d7e565a292f070ababc ]
+[ Upstream commit 62aec8a0a5b61f149bbe518c636e38e484812499 ]
 
-When an MFD device is added, a platform_device is allocated. If this
-device is linked to a DT description, the corresponding OF node is linked
-to the new platform device but the OF node's refcount isn't incremented.
-As of_node_put() is called during the platform device release, it leads
-to a refcount underflow.
+As pm_runtime_force_suspend() will force the device state to suspend,
+the driver needs to ensure no IRQ handlers are currently running. If not
+those handlers may find they are now running on suspended hardware
+despite holding a PM runtime reference. disable_irq() will sync any
+currently running handlers, so move the IRQ disabling to cover the whole
+of the forced suspend state to avoid such race conditions.
 
-Call of_node_get() to increment the OF node's refcount when the node is
-linked to the newly created platform device.
-
-Signed-off-by: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Link: https://lore.kernel.org/r/20250820-mfd-refcount-v1-1-6dcb5eb41756@bootlin.com
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20250903094549.271068-6-ckeepax@opensource.cirrus.com
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/mfd-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mfd/cs42l43.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mfd/mfd-core.c b/drivers/mfd/mfd-core.c
-index 76bd316a50afc..7d14a1e7631ee 100644
---- a/drivers/mfd/mfd-core.c
-+++ b/drivers/mfd/mfd-core.c
-@@ -131,6 +131,7 @@ static int mfd_match_of_node_to_dev(struct platform_device *pdev,
- 	of_entry->np = np;
- 	list_add_tail(&of_entry->list, &mfd_of_node_list);
+diff --git a/drivers/mfd/cs42l43.c b/drivers/mfd/cs42l43.c
+index 07c8f1b8183ee..959298c8232f4 100644
+--- a/drivers/mfd/cs42l43.c
++++ b/drivers/mfd/cs42l43.c
+@@ -1151,6 +1151,8 @@ static int cs42l43_suspend(struct device *dev)
+ 		return ret;
+ 	}
  
-+	of_node_get(np);
- 	device_set_node(&pdev->dev, of_fwnode_handle(np));
- #endif
++	disable_irq(cs42l43->irq);
++
+ 	ret = pm_runtime_force_suspend(dev);
+ 	if (ret) {
+ 		dev_err(cs42l43->dev, "Failed to force suspend: %d\n", ret);
+@@ -1164,8 +1166,6 @@ static int cs42l43_suspend(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	disable_irq(cs42l43->irq);
+-
  	return 0;
+ }
+ 
+@@ -1196,14 +1196,14 @@ static int cs42l43_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	enable_irq(cs42l43->irq);
+-
+ 	ret = pm_runtime_force_resume(dev);
+ 	if (ret) {
+ 		dev_err(cs42l43->dev, "Failed to force resume: %d\n", ret);
+ 		return ret;
+ 	}
+ 
++	enable_irq(cs42l43->irq);
++
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
