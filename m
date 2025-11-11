@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-193975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6F8C4AC52
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58188C4A6AD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ECF4F4FAD52
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AB081892179
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248AF30BF66;
-	Tue, 11 Nov 2025 01:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6188E333740;
+	Tue, 11 Nov 2025 01:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cif50gRW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VnrBTbDn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47071F5F6;
-	Tue, 11 Nov 2025 01:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1755D330B1F;
+	Tue, 11 Nov 2025 01:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824508; cv=none; b=tuAb/zAek/R8Y/C95pTEPmWH4ps5iUBY0h1uZeiiovNWWWsh5MwQwdmxuoztiNtbNQRrvetz+2JcNqXFxrIimjoEW8EqWtQ8mcaFIKf7zbXSUbfYfWJIchOXCaLjhmnz/gsJIZFlyRBNfKQoZtbAhNm7hY1djG9QhoU+yGTbJJk=
+	t=1762823369; cv=none; b=VXTT84xCRk0n/G1kJ6zXC2tDBQ/7fzpjB3UO+XEX8Z9RRWEvxS4wSvo+deiNCeIb04jOeHvpbgw2V0XYRjZhzHT92JZDCFkQvbKgwKMyT3XGTZXUng6NGTVtHlfA3PQop01mwKSwhJK4xSBs93l2WtPJSjNPPxO+jP6p9KuetCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824508; c=relaxed/simple;
-	bh=wK9ug8QF0ihLhW1+KgXbKgrFWNERuMNsUL+0Qg5IGQU=;
+	s=arc-20240116; t=1762823369; c=relaxed/simple;
+	bh=2onommx/dYMWH4XzVD3e45+W71VgGPGha1HLiKu0wlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jb3G0X9xMt2cjJm9lhfHBNH19iorksM3gkAiJe1cRuvLgThmvzrEZqj7EMT3jr2o6lFROPV1B90dY147SCwp0dumIZGbV3dqu3Zna7vFhv4t79rz/Fo1DKrL4yfdoU12l4B8KtZThvAGXDY0ZEbRWXn72npfnqu+tnByh73XXU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cif50gRW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7426EC16AAE;
-	Tue, 11 Nov 2025 01:28:28 +0000 (UTC)
+	 MIME-Version; b=gUsZ1URiSkyJqe+hUDeC8OkMoNr8W2rDvSXRe8W9gbmL0H8k1Qrju4NJJW+4U3+UWCG85WxOHn5oydZFJHbOZl1W+x6xFxLxewNDIMIr1wq9i/HjkDSVkm2VJmfBCa+8B9YvmMZsyTbDDIFQ7xWJmDwB+wuSdwGb3J1187vwxbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VnrBTbDn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A887EC113D0;
+	Tue, 11 Nov 2025 01:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824508;
-	bh=wK9ug8QF0ihLhW1+KgXbKgrFWNERuMNsUL+0Qg5IGQU=;
+	s=korg; t=1762823368;
+	bh=2onommx/dYMWH4XzVD3e45+W71VgGPGha1HLiKu0wlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cif50gRWgF5kxKENJJFkkdWME0clBtkQ91Q8e/E31EvSNe00e4MrOnuTOS8os9781
-	 v5ieIh6M97Lz2a7redSz7kfDx4A75NfmDicTgOgux0GtqEF44bz+4NE0eG4aOT2VFE
-	 05jPyVEQo5UKYl5h5twY30OHPqsLu3jkh56im0mg=
+	b=VnrBTbDnzQWTpNcPNhjU8GdRqyZSolXRCiJBJ2+i3hDYm6pl4sFynUWd+Qn+BSYBg
+	 zdNkG75HzfzldlwX8ZMd+jcHA6fNH/GRBzM2+o87AqXUmxPfkKi1XJTKQvRcu3gDbu
+	 o8utE5OyVOEWty94mF5c4xSQ1zd0HeDa4G0nogcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 514/849] selftests: traceroute: Return correct value on failure
+Subject: [PATCH 6.12 228/565] iio: adc: imx93_adc: load calibrated values even calibration failed
 Date: Tue, 11 Nov 2025 09:41:24 +0900
-Message-ID: <20251111004548.859121520@linuxfoundation.org>
+Message-ID: <20251111004532.047490308@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit c068ba9d3ded56cb1ba4d5135ee84bf8039bd563 ]
+[ Upstream commit 12c9b09e981ab14ebec8e4eefa946cbd26dd306b ]
 
-The test always returns success even if some tests were modified to
-fail. Fix by converting the test to use the appropriate library
-functions instead of using its own functions.
+ADC calibration might fail because of the noise on reference voltage.
+To avoid calibration fail, need to meet the following requirement:
+    ADC reference voltage Noise < 1.8V * 1/2^ENOB
 
-Before:
+For the case which the ADC reference voltage on board do not meet
+the requirement, still load the calibrated values, so ADC can also
+work but maybe not that accurate.
 
- # ./traceroute.sh
- TEST: IPV6 traceroute                                               [FAIL]
- TEST: IPV4 traceroute                                               [ OK ]
-
- Tests passed:   1
- Tests failed:   1
- $ echo $?
- 0
-
-After:
-
- # ./traceroute.sh
- TEST: IPv6 traceroute                                               [FAIL]
-         traceroute6 did not return 2000:102::2
- TEST: IPv4 traceroute                                               [ OK ]
- $ echo $?
- 1
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250908073238.119240-5-idosch@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Primoz Fiser <primoz.fiser@norik.com>
+Link: https://patch.msgid.link/20250812-adc-v2-2-0260833f13b8@nxp.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/traceroute.sh | 38 ++++++-----------------
- 1 file changed, 9 insertions(+), 29 deletions(-)
+ drivers/iio/adc/imx93_adc.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/traceroute.sh b/tools/testing/selftests/net/traceroute.sh
-index b50e52afa4f49..1ac91eebd16f5 100755
---- a/tools/testing/selftests/net/traceroute.sh
-+++ b/tools/testing/selftests/net/traceroute.sh
-@@ -10,28 +10,6 @@ PAUSE_ON_FAIL=no
+diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
+index 4ccf4819f1f13..75cf2f93d5edd 100644
+--- a/drivers/iio/adc/imx93_adc.c
++++ b/drivers/iio/adc/imx93_adc.c
+@@ -38,6 +38,7 @@
+ #define IMX93_ADC_PCDR6		0x118
+ #define IMX93_ADC_PCDR7		0x11c
+ #define IMX93_ADC_CALSTAT	0x39C
++#define IMX93_ADC_CALCFG0	0x3A0
  
- ################################################################################
- #
--log_test()
--{
--	local rc=$1
--	local expected=$2
--	local msg="$3"
--
--	if [ ${rc} -eq ${expected} ]; then
--		printf "TEST: %-60s  [ OK ]\n" "${msg}"
--		nsuccess=$((nsuccess+1))
--	else
--		ret=1
--		nfail=$((nfail+1))
--		printf "TEST: %-60s  [FAIL]\n" "${msg}"
--		if [ "${PAUSE_ON_FAIL}" = "yes" ]; then
--			echo
--			echo "hit enter to continue, 'q' to quit"
--			read a
--			[ "$a" = "q" ] && exit 1
--		fi
--	fi
--}
--
- run_cmd()
- {
- 	local ns
-@@ -205,9 +183,12 @@ run_traceroute6()
- {
- 	setup_traceroute6
+ /* ADC bit shift */
+ #define IMX93_ADC_MCR_MODE_MASK			BIT(29)
+@@ -58,6 +59,8 @@
+ #define IMX93_ADC_IMR_ECH_MASK			BIT(0)
+ #define IMX93_ADC_PCDR_CDATA_MASK		GENMASK(11, 0)
  
-+	RET=0
++#define IMX93_ADC_CALCFG0_LDFAIL_MASK		BIT(4)
 +
- 	# traceroute6 host-2 from host-1 (expects 2000:102::2)
- 	run_cmd $h1 "traceroute6 2000:103::4 | grep -q 2000:102::2"
--	log_test $? 0 "IPV6 traceroute"
-+	check_err $? "traceroute6 did not return 2000:102::2"
-+	log_test "IPv6 traceroute"
+ /* ADC status */
+ #define IMX93_ADC_MSR_ADCSTATUS_IDLE			0
+ #define IMX93_ADC_MSR_ADCSTATUS_POWER_DOWN		1
+@@ -145,7 +148,7 @@ static void imx93_adc_config_ad_clk(struct imx93_adc *adc)
  
- 	cleanup_traceroute6
- }
-@@ -265,9 +246,12 @@ run_traceroute()
+ static int imx93_adc_calibration(struct imx93_adc *adc)
  {
- 	setup_traceroute
+-	u32 mcr, msr;
++	u32 mcr, msr, calcfg;
+ 	int ret;
  
-+	RET=0
+ 	/* make sure ADC in power down mode */
+@@ -158,6 +161,11 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
+ 
+ 	imx93_adc_power_up(adc);
+ 
++	/* Enable loading of calibrated values even in fail condition */
++	calcfg = readl(adc->regs + IMX93_ADC_CALCFG0);
++	calcfg |= IMX93_ADC_CALCFG0_LDFAIL_MASK;
++	writel(calcfg, adc->regs + IMX93_ADC_CALCFG0);
 +
- 	# traceroute host-2 from host-1 (expects 1.0.1.1). Takes a while.
- 	run_cmd $h1 "traceroute 1.0.2.4 | grep -q 1.0.1.1"
--	log_test $? 0 "IPV4 traceroute"
-+	check_err $? "traceroute did not return 1.0.1.1"
-+	log_test "IPv4 traceroute"
+ 	/*
+ 	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
+ 	 * can add the setting of these bit if need in future.
+@@ -180,9 +188,13 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
+ 	/* check whether calbration is success or not */
+ 	msr = readl(adc->regs + IMX93_ADC_MSR);
+ 	if (msr & IMX93_ADC_MSR_CALFAIL_MASK) {
++		/*
++		 * Only give warning here, this means the noise of the
++		 * reference voltage do not meet the requirement:
++		 *     ADC reference voltage Noise < 1.8V * 1/2^ENOB
++		 * And the resault of ADC is not that accurate.
++		 */
+ 		dev_warn(adc->dev, "ADC calibration failed!\n");
+-		imx93_adc_power_down(adc);
+-		return -EAGAIN;
+ 	}
  
- 	cleanup_traceroute
- }
-@@ -284,9 +268,6 @@ run_tests()
- ################################################################################
- # main
- 
--declare -i nfail=0
--declare -i nsuccess=0
--
- while getopts :pv o
- do
- 	case $o in
-@@ -301,5 +282,4 @@ require_command traceroute
- 
- run_tests
- 
--printf "\nTests passed: %3d\n" ${nsuccess}
--printf "Tests failed: %3d\n"   ${nfail}
-+exit "${EXIT_STATUS}"
+ 	return 0;
 -- 
 2.51.0
 
