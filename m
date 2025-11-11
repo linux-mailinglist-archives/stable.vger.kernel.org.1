@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E46DC4A5B7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6BAC4AB9E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD460189027D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7E4A14F7B7D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292B2347BDB;
-	Tue, 11 Nov 2025 01:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C57304BA4;
+	Tue, 11 Nov 2025 01:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Icfci42e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Rgvv8jQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D958E2EB5BD;
-	Tue, 11 Nov 2025 01:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36094262FEC;
+	Tue, 11 Nov 2025 01:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823240; cv=none; b=QJdSJqtiTcFk00/SBnPeNztu3uyWa+Fon/I49aAZFjLEG796PebGhN958KGEvjWEeeFLMb2NEZ8TJT3sCbSLEY7GUTxcNW4YRmoCazrBq/InwE/0TKGMD3Ev8kBZRZWlCKV5ha9+ucjcTlgl38NqLr4MMxx4ynZX9one8XpJzPw=
+	t=1762824408; cv=none; b=VbWO2v1Z1H9oTD72phhRlRcA5o4y4aCcd04kSlzhbSy/D0OqHhbW41csGr2jfWvFQ3z7epIHycjTHhl+qJi8ydGIk7XYod3YuBMeQeXI9xhTQjCpkamieEaOMpvIoc2yesNVBEygkZ3kFQ4apXT1FfLzOA3D1hQugVYLl+n4FwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823240; c=relaxed/simple;
-	bh=DmMf6HYXlNU8o+rcT4iVzcTF8Q4CoA+uSBBmt2GSU7g=;
+	s=arc-20240116; t=1762824408; c=relaxed/simple;
+	bh=uAyiYIfBEcEIaw7Xk7TWT+4tpUHPT28ZQtDD6LoOWS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4sfd30ICLQnfCOFbqNG3o8MGQ+qzA0K9QQRjfFB0Rh2UV8Zf8yvIe17e1+r9z3/RFEL/IUS9Q6XchcfL4IQ0l/xjuuu3HttJG69TDe65VE+WCMsiSW5FHPvOhIJIHWmYLpSuaQz35W225eNLJN4wjuMOMn4aGYoRRhqGJ5wsYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Icfci42e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7717AC19421;
-	Tue, 11 Nov 2025 01:07:20 +0000 (UTC)
+	 MIME-Version; b=IJlfeYoYm1AynCh1IdhV/A3vJBAlHPeIbh8Ft3kXqZAM4cqTTqFnKmj09gnYRDUgVHWF0O7xGhTLPX6id0ne/GqOiIVQSIp//etwLp0/HnEwUWFBKCFpaY2GdXcU+lQgbmlsImxss1Jkfl8yqFjmcBLvzpneQiKQXa2eZHSJPkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Rgvv8jQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2730C19421;
+	Tue, 11 Nov 2025 01:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823240;
-	bh=DmMf6HYXlNU8o+rcT4iVzcTF8Q4CoA+uSBBmt2GSU7g=;
+	s=korg; t=1762824408;
+	bh=uAyiYIfBEcEIaw7Xk7TWT+4tpUHPT28ZQtDD6LoOWS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Icfci42eLHt+ApBiOWrctIMtpWXC/qa3tBw0BEM0WqsX7r6pmvZKSiA3X6pj9Nob8
-	 LZnrfCb192r0EggpUiaPVHlFrcSBQq11aJhUA7QU4I4A/v1sG2eINkMKF01EZo4XpJ
-	 0d7HTMOMxRg9WDhECW+DtZBzzKZZEEluZrIYtJM8=
+	b=1Rgvv8jQhRmDNPbaNQXUctnYDOCgZrjYhLimjUFsQ8qynIdurRW7Ce75FmUF0hwWL
+	 4lHkbKLUxLqmTKRjlrYvH4Fext7LdHRCojnAlnurmR9J2Gt0Sf0wlqgToCLs/4JDfn
+	 t4bKd4cLeLctJ5wOgckse+6cG7iwZgRQdW7TAuz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Jayesh Choudhary <j-choudhary@ti.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 203/565] drm/tidss: Set crtc modesetting parameters with adjusted mode
+Subject: [PATCH 6.17 489/849] f2fs: fix wrong layout information on 16KB page
 Date: Tue, 11 Nov 2025 09:40:59 +0900
-Message-ID: <20251111004531.493464041@linuxfoundation.org>
+Message-ID: <20251111004548.263015750@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jayesh Choudhary <j-choudhary@ti.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit cfb29225db20c56432a8525366321c0c09edfb2e ]
+[ Upstream commit a33be64b98d0723748d2fab0832b926613e1fce0 ]
 
-TIDSS uses crtc_* fields to propagate its registers and set the
-clock rates. So set the CRTC modesetting timing parameters with
-the adjusted mode when needed, to set correct values.
+This patch fixes to support different block size.
 
-Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
-Link: https://lore.kernel.org/r/20250624080402.302526-1-j-choudhary@ti.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_crtc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/f2fs/sysfs.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_crtc.c b/drivers/gpu/drm/tidss/tidss_crtc.c
-index 1604eca265ef6..36c22d8608527 100644
---- a/drivers/gpu/drm/tidss/tidss_crtc.c
-+++ b/drivers/gpu/drm/tidss/tidss_crtc.c
-@@ -91,7 +91,7 @@ static int tidss_crtc_atomic_check(struct drm_crtc *crtc,
- 	struct dispc_device *dispc = tidss->dispc;
- 	struct tidss_crtc *tcrtc = to_tidss_crtc(crtc);
- 	u32 hw_videoport = tcrtc->hw_videoport;
--	const struct drm_display_mode *mode;
-+	struct drm_display_mode *mode;
- 	enum drm_mode_status ok;
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index f736052dea50a..902ffb3faa1ff 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -1723,12 +1723,15 @@ static int __maybe_unused disk_map_seq_show(struct seq_file *seq,
+ 	seq_printf(seq, " Main          : 0x%010x (%10d)\n",
+ 			SM_I(sbi)->main_blkaddr,
+ 			le32_to_cpu(F2FS_RAW_SUPER(sbi)->segment_count_main));
+-	seq_printf(seq, " # of Sections : %12d\n",
+-			le32_to_cpu(F2FS_RAW_SUPER(sbi)->section_count));
++	seq_printf(seq, " Block size    : %12lu KB\n", F2FS_BLKSIZE >> 10);
++	seq_printf(seq, " Segment size  : %12d MB\n",
++			(BLKS_PER_SEG(sbi) << (F2FS_BLKSIZE_BITS - 10)) >> 10);
+ 	seq_printf(seq, " Segs/Sections : %12d\n",
+ 			SEGS_PER_SEC(sbi));
+ 	seq_printf(seq, " Section size  : %12d MB\n",
+-			SEGS_PER_SEC(sbi) << 1);
++			(BLKS_PER_SEC(sbi) << (F2FS_BLKSIZE_BITS - 10)) >> 10);
++	seq_printf(seq, " # of Sections : %12d\n",
++			le32_to_cpu(F2FS_RAW_SUPER(sbi)->section_count));
  
- 	dev_dbg(ddev->dev, "%s\n", __func__);
-@@ -108,6 +108,9 @@ static int tidss_crtc_atomic_check(struct drm_crtc *crtc,
- 		return -EINVAL;
- 	}
- 
-+	if (drm_atomic_crtc_needs_modeset(crtc_state))
-+		drm_mode_set_crtcinfo(mode, 0);
-+
- 	return dispc_vp_bus_check(dispc, hw_videoport, crtc_state);
- }
- 
+ 	if (!f2fs_is_multi_device(sbi))
+ 		return 0;
 -- 
 2.51.0
 
