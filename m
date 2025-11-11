@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD0CC4A238
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:02:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F37E8C4A26E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:03:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F36691887818
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84C623A6DB5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC473AC3B;
-	Tue, 11 Nov 2025 01:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346BC24A043;
+	Tue, 11 Nov 2025 01:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHbe96zf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jo7wh64H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF04124E4C6;
-	Tue, 11 Nov 2025 01:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E374204E;
+	Tue, 11 Nov 2025 01:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822932; cv=none; b=YwMOX0IkPyXJXkUsXlpufroHGKDg2djCqmTAi3z/rsLZCSkqTERSg1Y5GCv25nnNIIsOihhb7CpS8JmYVU25qJbeS92ouwTg29r9haOnC+RbETYDcc1HcORhs/0caNzCHsZfLVb+7OCJSHUw7++DHp+FQsyB5SRavFzS3zBzVtE=
+	t=1762822980; cv=none; b=Npci2zIFO35LvYh+fRXmg4YgkPt2JcKFOV44g9omQChwTH9JuzhuzW9W0anHtW+1oGJcHp3/lJgUwsq59VI4ydJm9etUezFlCk+kOhthEt18Weem/FfoiDxBCXSVjyAJ2TTgZqOhGwcAmMPZeV/PUaiIFnj2lvD7kPhdqNW4aLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822932; c=relaxed/simple;
-	bh=efq1Ok5b0v0oiZZuo3rkJADVv2ZAKydYkgVH9WNAdHY=;
+	s=arc-20240116; t=1762822980; c=relaxed/simple;
+	bh=d+pl+7WNnA8nYXIHaFyBFrXutgGwL+n0GOM7wfiFDro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g43pSs26tu1dge3wVpFzhUv7Gd9Z7h9lTUJevkyG+J+5bNM3BWrDMsIfDXb8Ld8W20I/PQJiZEOpveuoowypJYgesJDROm2fxGc1wfoPE/UcFlNW3fv5iopo1+TNpSeEOCG38XCkxWui2Tme7dRBhglN6V2C3qFtvrvSHOQO54Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHbe96zf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB4EC116B1;
-	Tue, 11 Nov 2025 01:02:11 +0000 (UTC)
+	 MIME-Version; b=aH6/eL0wBviCSMQlWtv/uyS5nWl3lG0XQASCyXv1+DnW557z0GaeD8FWGg73WQDEbig7/O4EpCFPJ2xlcI2deobZ+PH4z+u5nEZhyYUhB14IvLaLLKsf0PjkUZh3WnfsMC+mpokPE5fbrkif3c2KrUFz0EYwL/Ktg8nyyIDhoag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jo7wh64H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C3DC116B1;
+	Tue, 11 Nov 2025 01:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822931;
-	bh=efq1Ok5b0v0oiZZuo3rkJADVv2ZAKydYkgVH9WNAdHY=;
+	s=korg; t=1762822979;
+	bh=d+pl+7WNnA8nYXIHaFyBFrXutgGwL+n0GOM7wfiFDro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NHbe96zfPeaewkahbWKI6s5OcUCc1/MZTe6V1FKSDvYlJzrFOxxUn93lrWJrABiNF
-	 0HgFtOvrphcz2/fhHhTJmIf+Xthw6Flk97IVSifDh53E7IsxqdxzMb71Y9/vsS+RLs
-	 XPwCBDOXgOoLFPkwhLRsU7jEnQ1If+a81vusnNmM=
+	b=Jo7wh64HBdk9ZnI1KBntLa+DTtxzjKGV9Iy135EPPCKQWa5CKHLLKrNjj1L2yfULB
+	 GzmiWrsLlFobIq955RGKKnzVU5OnAfCb8iHhXYbQLCz4ZnYW05zctDzwPGiOsxzuty
+	 P8tT+bTVlx6JGQElFRk/mOt0M/WF3HVKMVZsSTgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quanyang Wang <quanyang.wang@windriver.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
 	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 167/849] arm64: zynqmp: Disable coresight by default
-Date: Tue, 11 Nov 2025 09:35:37 +0900
-Message-ID: <20251111004540.471754484@linuxfoundation.org>
+Subject: [PATCH 6.17 168/849] arm64: zynqmp: Revert usb node drive strength and slew rate for zcu106
+Date: Tue, 11 Nov 2025 09:35:38 +0900
+Message-ID: <20251111004540.495710930@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,57 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Quanyang Wang <quanyang.wang@windriver.com>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-[ Upstream commit 0e3f9140ad04dca9a6a93dd6a6decdc53fd665ca ]
+[ Upstream commit 767ecf9da7b31e5c0c22c273001cb2784705fe8c ]
 
-When secure-boot mode of bootloader is enabled, the registers of
-coresight are not permitted to access that's why disable it by default.
+On a few zcu106 boards USB devices (Dell MS116 USB Optical Mouse, Dell USB
+Entry Keyboard) are not enumerated on linux boot due to commit
+'b8745e7eb488 ("arm64: zynqmp: Fix usb node drive strength and slew
+rate")'.
 
-Signed-off-by: Quanyang Wang <quanyang.wang@windriver.com>
+To fix it as a workaround revert to working version and then investigate
+at board level why drive strength from 12mA to 4mA and slew from fast to
+slow is not working.
+
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 Signed-off-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/r/7e308b8efe977c4912079b4d1b1ab3d24908559e.1756799774.git.michal.simek@amd.com
+Link: https://lore.kernel.org/r/85a70cb014ec1f07972fccb60b875596eeaa6b5c.1756799774.git.michal.simek@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/xilinx/zynqmp.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/xilinx/zynqmp-zcu106-revA.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-index e11d282462bd3..23d867c03263d 100644
---- a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-+++ b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-@@ -550,6 +550,7 @@
- 			reg = <0x0 0xfec10000 0x0 0x1000>;
- 			clock-names = "apb_pclk";
- 			cpu = <&cpu0>;
-+			status = "disabled";
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-zcu106-revA.dts b/arch/arm64/boot/dts/xilinx/zynqmp-zcu106-revA.dts
+index 7beedd730f940..9dd63cc384e6e 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp-zcu106-revA.dts
++++ b/arch/arm64/boot/dts/xilinx/zynqmp-zcu106-revA.dts
+@@ -808,8 +808,8 @@
+ 			pins = "MIO54", "MIO56", "MIO57", "MIO58", "MIO59",
+ 			       "MIO60", "MIO61", "MIO62", "MIO63";
+ 			bias-disable;
+-			drive-strength = <4>;
+-			slew-rate = <SLEW_RATE_SLOW>;
++			drive-strength = <12>;
++			slew-rate = <SLEW_RATE_FAST>;
  		};
+ 	};
  
- 		cpu1_debug: debug@fed10000 {
-@@ -557,6 +558,7 @@
- 			reg = <0x0 0xfed10000 0x0 0x1000>;
- 			clock-names = "apb_pclk";
- 			cpu = <&cpu1>;
-+			status = "disabled";
- 		};
- 
- 		cpu2_debug: debug@fee10000 {
-@@ -564,6 +566,7 @@
- 			reg = <0x0 0xfee10000 0x0 0x1000>;
- 			clock-names = "apb_pclk";
- 			cpu = <&cpu2>;
-+			status = "disabled";
- 		};
- 
- 		cpu3_debug: debug@fef10000 {
-@@ -571,6 +574,7 @@
- 			reg = <0x0 0xfef10000 0x0 0x1000>;
- 			clock-names = "apb_pclk";
- 			cpu = <&cpu3>;
-+			status = "disabled";
- 		};
- 
- 		/* GDMA */
 -- 
 2.51.0
 
