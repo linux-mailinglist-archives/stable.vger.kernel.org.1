@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10006C4A5EB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:34 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1589EC4A978
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 750524F493B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:55 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B340034C0F2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43409309EF2;
-	Tue, 11 Nov 2025 01:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0750B3016FC;
+	Tue, 11 Nov 2025 01:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMT/maSc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVs6Pmdm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E576726FDBD;
-	Tue, 11 Nov 2025 01:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BED26ED5E;
+	Tue, 11 Nov 2025 01:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823323; cv=none; b=G9ekljlH79A8IXqSF4ZvG70dbUzx4/akLvvdDzE6nULgsCFhayy0VOKNZDqLico5d3ms5S4isFtMQ2HlyvIx7W2FiTIKcjyiIlF3L9Rr8ix6wAy+F7R7SKQu9ykOFkkCfEI60atTFATCc9cKD+b0fbAfK8o+B+OtrdXC3156mZE=
+	t=1762824469; cv=none; b=INYGPEUBfHfaclfHXRFoZ5Qbabsm7Ls57Jm2OIcTy2f0LbacX/DyMPYRpgZCdrd+2E40GosgepvcicsCXuwKTqqnc1/IZXHouThezhRc+pX2ur2+571w49brWwU9K1zwo8pBU4+wR6GIrkwu6rR5unhS/AEiIeEy509DI8Ev49k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823323; c=relaxed/simple;
-	bh=vqS1y/LZjRKdNZJrBH7xJy2GR3Swzez1v1XIZbqSPyc=;
+	s=arc-20240116; t=1762824469; c=relaxed/simple;
+	bh=dCATCRaAn34DO2/+ThL+Vvc96E4HJiUnRmkdHFvYFCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dmBwYHhNmj3+baSO/tlUnv5ly2yV/CryHnRrLdr0hdmlIpJRXHJQl4b/hQlqd5O4aS274eU34ji8jQ1DUSSfxmve+Gryke2B17XkPmO5MPOvESHhJA/Pz23aN6YFHKEhw3zHsf17Y1fYNhruFXAHeoVf4yGnWPXT67dsS5XJPrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMT/maSc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 815F3C19422;
-	Tue, 11 Nov 2025 01:08:42 +0000 (UTC)
+	 MIME-Version; b=cSf0WtMYeB6SrhRYM1v6Jb21OQO9bVg2ZaV+lrddYWdBGnCPuup1pAs7ZDDr9YM99dWxghYel4jGkVufrWk317JdJibndHm3gfDYzcbFf8K6Oga1cdk0a5TALcSOfgBTOn1ON6Ulf3MA4uw3Ec7bE2EpXlXVVTu88y1vqyMhlCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVs6Pmdm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C393C116B1;
+	Tue, 11 Nov 2025 01:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823322;
-	bh=vqS1y/LZjRKdNZJrBH7xJy2GR3Swzez1v1XIZbqSPyc=;
+	s=korg; t=1762824469;
+	bh=dCATCRaAn34DO2/+ThL+Vvc96E4HJiUnRmkdHFvYFCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kMT/maSc9uw0p7mLJNPv+j6dUHn0ptMQaX+i41chzbD19xNLCMeraNgarrXxJqNKd
-	 KdDZj6SfFXVGy/POnqlNUYoOSibOz2TCdSoUsrsmJ1egTrzwE7p5XDEhyn1g/5wXNm
-	 nONRsG01C4GvZJ/V/ve1+K03X5n21lKmo4vK8aSE=
+	b=iVs6PmdmzhdO/T+VihQn1UK297LZtQtthp3ztkeJQ/Y29QW11WyW/0V8F+BfbAvFy
+	 tKElZKQil/Ej65dCaZt1KgvZZ/TglTzoTLXohwQ2ilC6zXcNOMkNewWcwhdTNNfnt5
+	 hkdMl4/kJANIwLgRh73piPhOnQ80Jygm0NEC+aB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Michael Dege <michael.dege@renesas.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 219/565] net: ipv6: fix field-spanning memcpy warning in AH output
-Date: Tue, 11 Nov 2025 09:41:15 +0900
-Message-ID: <20251111004531.850113083@linuxfoundation.org>
+Subject: [PATCH 6.17 506/849] phy: renesas: r8a779f0-ether-serdes: add new step added to latest datasheet
+Date: Tue, 11 Nov 2025 09:41:16 +0900
+Message-ID: <20251111004548.663862233@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Michael Dege <michael.dege@renesas.com>
 
-[ Upstream commit 2327a3d6f65ce2fe2634546dde4a25ef52296fec ]
+[ Upstream commit e4a8db93b5ec9bca1cc66b295544899e3afd5e86 ]
 
-Fix field-spanning memcpy warnings in ah6_output() and
-ah6_output_done() where extension headers are copied to/from IPv6
-address fields, triggering fortify-string warnings about writes beyond
-the 16-byte address fields.
+R-Car S4-8 datasheet Rev.1.20 describes some additional register
+settings at the end of the initialization.
 
-  memcpy: detected field-spanning write (size 40) of single field "&top_iph->saddr" at net/ipv6/ah6.c:439 (size 16)
-  WARNING: CPU: 0 PID: 8838 at net/ipv6/ah6.c:439 ah6_output+0xe7e/0x14e0 net/ipv6/ah6.c:439
-
-The warnings are false positives as the extension headers are
-intentionally placed after the IPv6 header in memory. Fix by properly
-copying addresses and extension headers separately, and introduce
-helper functions to avoid code duplication.
-
-Reported-by: syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=01b0667934cdceb4451c
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Michael Dege <michael.dege@renesas.com>
+Link: https://lore.kernel.org/r/20250703-renesas-serdes-update-v4-2-1db5629cac2b@renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ah6.c | 50 +++++++++++++++++++++++++++++++-------------------
- 1 file changed, 31 insertions(+), 19 deletions(-)
+ drivers/phy/renesas/r8a779f0-ether-serdes.c | 28 +++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/net/ipv6/ah6.c b/net/ipv6/ah6.c
-index eb474f0987ae0..95372e0f1d216 100644
---- a/net/ipv6/ah6.c
-+++ b/net/ipv6/ah6.c
-@@ -46,6 +46,34 @@ struct ah_skb_cb {
+diff --git a/drivers/phy/renesas/r8a779f0-ether-serdes.c b/drivers/phy/renesas/r8a779f0-ether-serdes.c
+index 3b2d8cef75e52..4d12d091b0ab0 100644
+--- a/drivers/phy/renesas/r8a779f0-ether-serdes.c
++++ b/drivers/phy/renesas/r8a779f0-ether-serdes.c
+@@ -49,6 +49,13 @@ static void r8a779f0_eth_serdes_write32(void __iomem *addr, u32 offs, u32 bank,
+ 	iowrite32(data, addr + offs);
+ }
  
- #define AH_SKB_CB(__skb) ((struct ah_skb_cb *)&((__skb)->cb[0]))
- 
-+/* Helper to save IPv6 addresses and extension headers to temporary storage */
-+static inline void ah6_save_hdrs(struct tmp_ext *iph_ext,
-+				 struct ipv6hdr *top_iph, int extlen)
++static u32 r8a779f0_eth_serdes_read32(void __iomem *addr, u32 offs,  u32 bank)
 +{
-+	if (!extlen)
-+		return;
++	iowrite32(bank, addr + R8A779F0_ETH_SERDES_BANK_SELECT);
 +
-+#if IS_ENABLED(CONFIG_IPV6_MIP6)
-+	iph_ext->saddr = top_iph->saddr;
-+#endif
-+	iph_ext->daddr = top_iph->daddr;
-+	memcpy(&iph_ext->hdrs, top_iph + 1, extlen - sizeof(*iph_ext));
++	return ioread32(addr + offs);
 +}
 +
-+/* Helper to restore IPv6 addresses and extension headers from temporary storage */
-+static inline void ah6_restore_hdrs(struct ipv6hdr *top_iph,
-+				    struct tmp_ext *iph_ext, int extlen)
-+{
-+	if (!extlen)
-+		return;
-+
-+#if IS_ENABLED(CONFIG_IPV6_MIP6)
-+	top_iph->saddr = iph_ext->saddr;
-+#endif
-+	top_iph->daddr = iph_ext->daddr;
-+	memcpy(top_iph + 1, &iph_ext->hdrs, extlen - sizeof(*iph_ext));
-+}
-+
- static void *ah_alloc_tmp(struct crypto_ahash *ahash, int nfrags,
- 			  unsigned int size)
+ static int
+ r8a779f0_eth_serdes_reg_wait(struct r8a779f0_eth_serdes_channel *channel,
+ 			     u32 offs, u32 bank, u32 mask, u32 expected)
+@@ -274,6 +281,7 @@ static int r8a779f0_eth_serdes_hw_init_late(struct r8a779f0_eth_serdes_channel
+ *channel)
  {
-@@ -301,13 +329,7 @@ static void ah6_output_done(void *data, int err)
- 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
- 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
+ 	int ret;
++	u32 val;
  
--	if (extlen) {
--#if IS_ENABLED(CONFIG_IPV6_MIP6)
--		memcpy(&top_iph->saddr, iph_ext, extlen);
--#else
--		memcpy(&top_iph->daddr, iph_ext, extlen);
--#endif
--	}
-+	ah6_restore_hdrs(top_iph, iph_ext, extlen);
+ 	ret = r8a779f0_eth_serdes_chan_setting(channel);
+ 	if (ret)
+@@ -287,6 +295,26 @@ static int r8a779f0_eth_serdes_hw_init_late(struct r8a779f0_eth_serdes_channel
  
- 	kfree(AH_SKB_CB(skb)->tmp);
- 	xfrm_output_resume(skb->sk, skb, err);
-@@ -378,12 +400,8 @@ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
- 	 */
- 	memcpy(iph_base, top_iph, IPV6HDR_BASELEN);
+ 	r8a779f0_eth_serdes_write32(channel->addr, 0x03d0, 0x380, 0x0000);
  
-+	ah6_save_hdrs(iph_ext, top_iph, extlen);
- 	if (extlen) {
--#if IS_ENABLED(CONFIG_IPV6_MIP6)
--		memcpy(iph_ext, &top_iph->saddr, extlen);
--#else
--		memcpy(iph_ext, &top_iph->daddr, extlen);
--#endif
- 		err = ipv6_clear_mutable_options(top_iph,
- 						 extlen - sizeof(*iph_ext) +
- 						 sizeof(*top_iph),
-@@ -434,13 +452,7 @@ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
- 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
- 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
++	val = r8a779f0_eth_serdes_read32(channel->addr, 0x00c0, 0x180);
++	r8a779f0_eth_serdes_write32(channel->addr, 0x00c0, 0x180, val | BIT(8));
++	ret = r8a779f0_eth_serdes_reg_wait(channel, 0x0100, 0x180, BIT(0), 1);
++	if (ret)
++		return ret;
++	r8a779f0_eth_serdes_write32(channel->addr, 0x00c0, 0x180, val & ~BIT(8));
++	ret = r8a779f0_eth_serdes_reg_wait(channel, 0x0100, 0x180, BIT(0), 0);
++	if (ret)
++		return ret;
++
++	val = r8a779f0_eth_serdes_read32(channel->addr, 0x0144, 0x180);
++	r8a779f0_eth_serdes_write32(channel->addr, 0x0144, 0x180, val | BIT(4));
++	ret = r8a779f0_eth_serdes_reg_wait(channel, 0x0180, 0x180, BIT(0), 1);
++	if (ret)
++		return ret;
++	r8a779f0_eth_serdes_write32(channel->addr, 0x0144, 0x180, val & ~BIT(4));
++	ret = r8a779f0_eth_serdes_reg_wait(channel, 0x0180, 0x180, BIT(0), 0);
++	if (ret)
++		return ret;
++
+ 	return r8a779f0_eth_serdes_monitor_linkup(channel);
+ }
  
--	if (extlen) {
--#if IS_ENABLED(CONFIG_IPV6_MIP6)
--		memcpy(&top_iph->saddr, iph_ext, extlen);
--#else
--		memcpy(&top_iph->daddr, iph_ext, extlen);
--#endif
--	}
-+	ah6_restore_hdrs(top_iph, iph_ext, extlen);
- 
- out_free:
- 	kfree(iph_base);
 -- 
 2.51.0
 
