@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-194340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DBDC4B17E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756C5C4AF31
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8D6534FA1C3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50CCA3BB500
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B27530F95A;
-	Tue, 11 Nov 2025 01:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CA7266EFC;
+	Tue, 11 Nov 2025 01:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkZe4pE5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gE3BQ+sp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E242E173B;
-	Tue, 11 Nov 2025 01:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B2B2D6605;
+	Tue, 11 Nov 2025 01:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825374; cv=none; b=uv5Ea0ymWshBM/Y6LVF6lVMBkDzHQkLGJprk9/OggBxm6RAaY04Z2/fxTY3XvYeY2GSLqqcR+Mf4SE6NEzb+30tzeg/vxydqEYnHtKsA35B9/tB2BgBkaQHYfz44RisWKcV2dc5JMGkrGh0+xWJOb7d2mH1Xh3CJXFHBvXFWLWk=
+	t=1762824635; cv=none; b=SlbYQ0BQLtsurD3sEMBZR53TlvgonoT7NGEQtjnPcvrdANlwsJ2e+PUe5k6DEHR07BSb7jqm3lUexT8djzmTE+L0XI/bwacF4SioqGnFBtGYQvZuUC8T7+th8WcVV1qBLVcSnBuHHQkMOQKQT+zpWWZGr8dBGdZ5rn6CaQFA8K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825374; c=relaxed/simple;
-	bh=xBLZCt3yBWTMP9rWiDtbLKH3JXjAfK577ucKBsv9EqI=;
+	s=arc-20240116; t=1762824635; c=relaxed/simple;
+	bh=YV/F39sT4hznVZ+e6TzLnkIh3Za2lHW6TcBb4V7P4EA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KPG++yZ9b+4VeTKnNzpRWj+0fsuB7sbhjFU/1Ab/6XK8EA1f+VO08qtAFPDT/m07y7mJ+GCLFkSl8G1eAvqz4Ssh0xwnAMTidWOikdTeVs3ZBcnoxl7ot2dgC4jaJsdDhf8a/dqO34e3Febif8H+JA9bNp7x/8wSlaDIle9X68g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkZe4pE5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C7AC116D0;
-	Tue, 11 Nov 2025 01:42:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ddPFux87ynge7dVDfNEx9GrZwdgaYRD98ZH0RstzPJT4UvUHfXceoGCuBOwxH4bjR0kDocG52tgzIZjMgWouBvoPS8iaz8eEJBvF/gLBM1CO37eOcIAw2nj5NwvHHbjusieCbVWFA+sxIm3vqYLKaAwQxIMwkdESxrZdNqWL1BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gE3BQ+sp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D0BC2BC87;
+	Tue, 11 Nov 2025 01:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825374;
-	bh=xBLZCt3yBWTMP9rWiDtbLKH3JXjAfK577ucKBsv9EqI=;
+	s=korg; t=1762824635;
+	bh=YV/F39sT4hznVZ+e6TzLnkIh3Za2lHW6TcBb4V7P4EA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkZe4pE5B1udYH1IjqKhAtA8QAqpIx7xBUYMdZxugfpMtprvJpxaK9jFW5hOiUpdl
-	 m6lQW//1YTXYPtaYQQAGdc7ZKt2e7QzRWdmG+5bHm6tUM/BlMRCB1IxzqhJMtfEdT6
-	 Pati0GstS/zlUVjCvXaN1F1Hw/Afb3etSifCMaF4=
+	b=gE3BQ+spcFVEoClsGVb5gd22C1HURUEhY/nfnGUepIoZDlWNazGdSL2s8auxnXvxU
+	 caE+PU+R16jEi4sxb69790Kn0igh2BgCwirj9+cKb55geS8Esg4WPD4TddnUXCGOOg
+	 X4D4GdhfeCNPpzd47d10l6TNeqLwEyeRhoW0FaFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 775/849] sctp: Prevent TOCTOU out-of-bounds write
+Subject: [PATCH 6.12 489/565] kbuild: uapi: Strip comments before size type check
 Date: Tue, 11 Nov 2025 09:45:45 +0900
-Message-ID: <20251111004555.164927641@linuxfoundation.org>
+Message-ID: <20251111004537.931437749@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit 95aef86ab231f047bb8085c70666059b58f53c09 ]
+[ Upstream commit 66128f4287b04aef4d4db9bf5035985ab51487d5 ]
 
-For the following path not holding the sock lock,
+On m68k, check_sizetypes in headers_check reports:
 
-  sctp_diag_dump() -> sctp_for_each_endpoint() -> sctp_ep_dump()
+    ./usr/include/asm/bootinfo-amiga.h:17: found __[us]{8,16,32,64} type without #include <linux/types.h>
 
-make sure not to exceed bounds in case the address list has grown
-between buffer allocation (time-of-check) and write (time-of-use).
+This header file does not use any of the Linux-specific integer types,
+but merely refers to them from comments, so this is a false positive.
+As of commit c3a9d74ee413bdb3 ("kbuild: uapi: upgrade check_sizetypes()
+warning to error"), this check was promoted to an error, breaking m68k
+all{mod,yes}config builds.
 
-Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251028161506.3294376-3-stefan.wiehler@nokia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by stripping simple comments before looking for Linux-specific
+integer types.
+
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://patch.msgid.link/949f096337e28d50510e970ae3ba3ec9c1342ec0.1759753998.git.geert@linux-m68k.org
+[nathan: Adjust comment and remove unnecessary escaping from slashes in
+         regex]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/diag.c | 3 +++
- 1 file changed, 3 insertions(+)
+ usr/include/headers_check.pl | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-index dadf8254b30fd..95e65b9d623b3 100644
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -88,6 +88,9 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
- 		memcpy(info, &laddr->a, sizeof(laddr->a));
- 		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
- 		info += addrlen;
-+
-+		if (!--addrcnt)
-+			break;
+diff --git a/usr/include/headers_check.pl b/usr/include/headers_check.pl
+index b6aec5e4365f9..682980781eb37 100755
+--- a/usr/include/headers_check.pl
++++ b/usr/include/headers_check.pl
+@@ -160,6 +160,8 @@ sub check_sizetypes
+ 	if (my $included = ($line =~ /^\s*#\s*include\s+[<"](\S+)[>"]/)[0]) {
+ 		check_include_typesh($included);
  	}
- 	rcu_read_unlock();
- 
++	# strip single-line comments, as types may be referenced within them
++	$line =~ s@/\*.*?\*/@@;
+ 	if ($line =~ m/__[us](8|16|32|64)\b/) {
+ 		printf STDERR "$filename:$lineno: " .
+ 		              "found __[us]{8,16,32,64} type " .
 -- 
 2.51.0
 
