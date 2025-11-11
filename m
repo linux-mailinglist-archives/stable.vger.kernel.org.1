@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E507C4B16F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3999C4AE80
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BFF9A4FCD16
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44B693BA116
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408D6340D9D;
-	Tue, 11 Nov 2025 01:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4512A1D86FF;
+	Tue, 11 Nov 2025 01:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbgtncLl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qr6qeEN7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7B3246333;
-	Tue, 11 Nov 2025 01:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013772FFF94;
+	Tue, 11 Nov 2025 01:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825457; cv=none; b=hYZOLr7S9R7QgZI3L8tWIQkKunVVAxAizCfZ8V0P8WGzasiPWEyJiRahiWuDMBTCQatGAjeMc0ixmiF5LexadMuN7RiJ7j9LhbfwAr19UQ8CBAdUZytXGgv622V/jlKIq5UE3mYZrmxAzl1Z5NmZJg/v4aeG3WpF4Xu4WSxgLT4=
+	t=1762824786; cv=none; b=E9ghK7TgtzpJPpKTAGwNEu64bTchiQ3aqAxSp4OI+wVzlQJWdB3uB7Qc7iPRiAREXGmFwUwYgjlTENPFYwAbSGGhIxHUmCB9Mw4pd7RlSfc5kdgmAglMyoI/4mUL22ykFGsRmR5+NlV7GXdKCPPmYwwmpmYENWbPDG4oW6PivxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825457; c=relaxed/simple;
-	bh=gNzWxQ3tcV1uNc/1VK7mPbdA/L4PeaDnGaJeEJKwXv4=;
+	s=arc-20240116; t=1762824786; c=relaxed/simple;
+	bh=S6LQh/wrTloX8Ocn9O7Muv/6NAX+GoP/CBT9MyNWEmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfWy9k2GwqkaemkNSEpV4MYmrC2xURrXOvPtRRPJwRtjjtaDtu8OAoesXsSuUw3AkuKHmlHkQcBqfg5pcs0tkIpq3MB8ZJ/pIla0lgGiF0ae/s2ygcFrqoB4Nba4YAwlHOSfpPK6wBwLwa20u94UAz6qlary3UtbmRjDUHWnOLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbgtncLl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C829C4CEF5;
-	Tue, 11 Nov 2025 01:44:16 +0000 (UTC)
+	 MIME-Version; b=ulEKSaBIY3WS5PTGIIWZxGrxceAOPLk42rVvTGwWcsWghXL4SiykkuHGCnM3JZS/wsk/l5rl4CkgpBdmhR8V6OR0HN8U7Tml7DU6vFzSM35ZYFgzjzQJJTsV6lkKE3XLMmisjE+SlUhAzLhoQ+SqTRLn2uUJRRPCJa7O77+he5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qr6qeEN7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91539C113D0;
+	Tue, 11 Nov 2025 01:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825456;
-	bh=gNzWxQ3tcV1uNc/1VK7mPbdA/L4PeaDnGaJeEJKwXv4=;
+	s=korg; t=1762824785;
+	bh=S6LQh/wrTloX8Ocn9O7Muv/6NAX+GoP/CBT9MyNWEmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EbgtncLlRxrt/kZ+TnKgeuTdMEkH4369Wenrn52MTGFfpe35LxWhaLHXv7vmTrjqn
-	 FYs3YxKwABvv2R5EquLs6iI+IoqU4gteiG8BGlUYUpCelRJD9xrDWUlzDNPZ1YsOiC
-	 35seU6KMsBfQg53KumrH8Z0P/FCNa1jj+MJGZnpw=
+	b=qr6qeEN7PYPT05uHHgqrPxuD/JKkvpkvGr9EZWfNDKi+sUlXapYOr4cjbCPwV9zVu
+	 NBPzoavRWcuE55oQhOaf/BHKJRP16fX9tm5jRvaXkRY4YyS3elI5s2L+KDeHzRGxi0
+	 yysGFHIxxPKGLiV2R1yqGvTK7OeSzdTTx8wdkN5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 6.17 803/849] wifi: mac80211: use wiphy_hrtimer_work for ml_reconf_work
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 517/565] gpio: swnode: dont use the swnodes name as the key for GPIO lookup
 Date: Tue, 11 Nov 2025 09:46:13 +0900
-Message-ID: <20251111004555.844851482@linuxfoundation.org>
+Message-ID: <20251111004538.590656595@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 3f654d53dff565095d83a84e3b6187526dadf4c8 upstream.
+[ Upstream commit e5d527be7e6984882306b49c067f1fec18920735 ]
 
-The work item may be scheduled relatively far in the future. As the
-event happens at a specific point in time, the normal timer accuracy is
-not sufficient in that case.
+Looking up a GPIO controller by label that is the name of the software
+node is wonky at best - the GPIO controller driver is free to set
+a different label than the name of its firmware node. We're already being
+passed a firmware node handle attached to the GPIO device to
+swnode_get_gpio_device() so use it instead for a more precise lookup.
 
-Switch to use wiphy_hrtimer_work so that the accuracy is sufficient.
-
-CC: stable@vger.kernel.org
-Fixes: 8eb8dd2ffbbb ("wifi: mac80211: Support link removal using Reconfiguration ML element")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20251028125710.24a7b54e9e37.I063c5c15bf7672f94cea75f83e486a3ca52d098f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: e7f9ff5dc90c ("gpiolib: add support for software nodes")
+Link: https://lore.kernel.org/r/20251103-reset-gpios-swnodes-v4-4-6461800b6775@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/ieee80211_i.h |    2 +-
- net/mac80211/mlme.c        |   10 +++++-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpio/gpiolib-swnode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -604,7 +604,7 @@ struct ieee80211_if_managed {
- 	u8 *assoc_req_ies;
- 	size_t assoc_req_ies_len;
+diff --git a/drivers/gpio/gpiolib-swnode.c b/drivers/gpio/gpiolib-swnode.c
+index 51d2475c05c57..bb652921585ea 100644
+--- a/drivers/gpio/gpiolib-swnode.c
++++ b/drivers/gpio/gpiolib-swnode.c
+@@ -41,7 +41,7 @@ static struct gpio_device *swnode_get_gpio_device(struct fwnode_handle *fwnode)
+ 	    !strcmp(gdev_node->name, GPIOLIB_SWNODE_UNDEFINED_NAME))
+ 		return ERR_PTR(-ENOENT);
  
--	struct wiphy_delayed_work ml_reconf_work;
-+	struct wiphy_hrtimer_work ml_reconf_work;
- 	u16 removed_links;
- 
- 	/* TID-to-link mapping support */
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4244,7 +4244,7 @@ static void ieee80211_set_disassoc(struc
- 				  &ifmgd->neg_ttlm_timeout_work);
- 
- 	sdata->u.mgd.removed_links = 0;
--	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
-+	wiphy_hrtimer_work_cancel(sdata->local->hw.wiphy,
- 				  &sdata->u.mgd.ml_reconf_work);
- 
- 	wiphy_work_cancel(sdata->local->hw.wiphy,
-@@ -6868,7 +6868,7 @@ static void ieee80211_ml_reconfiguration
- 		/* In case the removal was cancelled, abort it */
- 		if (sdata->u.mgd.removed_links) {
- 			sdata->u.mgd.removed_links = 0;
--			wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
-+			wiphy_hrtimer_work_cancel(sdata->local->hw.wiphy,
- 						  &sdata->u.mgd.ml_reconf_work);
- 		}
- 		return;
-@@ -6898,9 +6898,9 @@ static void ieee80211_ml_reconfiguration
- 	}
- 
- 	sdata->u.mgd.removed_links = removed_links;
--	wiphy_delayed_work_queue(sdata->local->hw.wiphy,
-+	wiphy_hrtimer_work_queue(sdata->local->hw.wiphy,
- 				 &sdata->u.mgd.ml_reconf_work,
--				 TU_TO_JIFFIES(delay));
-+				 us_to_ktime(ieee80211_tu_to_usec(delay)));
+-	gdev = gpio_device_find_by_label(gdev_node->name);
++	gdev = gpio_device_find_by_fwnode(fwnode);
+ 	return gdev ?: ERR_PTR(-EPROBE_DEFER);
  }
  
- static int ieee80211_ttlm_set_links(struct ieee80211_sub_if_data *sdata,
-@@ -8752,7 +8752,7 @@ void ieee80211_sta_setup_sdata(struct ie
- 			ieee80211_csa_connection_drop_work);
- 	wiphy_delayed_work_init(&ifmgd->tdls_peer_del_work,
- 				ieee80211_tdls_peer_del_work);
--	wiphy_delayed_work_init(&ifmgd->ml_reconf_work,
-+	wiphy_hrtimer_work_init(&ifmgd->ml_reconf_work,
- 				ieee80211_ml_reconf_work);
- 	wiphy_delayed_work_init(&ifmgd->reconf.wk,
- 				ieee80211_ml_sta_reconf_timeout);
+-- 
+2.51.0
+
 
 
 
