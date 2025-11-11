@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D91C4AF0D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE4AC4B262
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:03:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA4723B6609
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60E8B3BF750
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B97341AA9;
-	Tue, 11 Nov 2025 01:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB18626ED2A;
+	Tue, 11 Nov 2025 01:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SR3hxTkP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cuTV+42Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519D3214210;
-	Tue, 11 Nov 2025 01:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8686126E158;
+	Tue, 11 Nov 2025 01:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824650; cv=none; b=tA4zZP37+ZKm98fOCErxsqtGyuvP+Ov+tMPoPAcq4+uN8XBbXHPA5gKU1CTQFn3m1APbiwug8gwN/4yWsw37vDaI6RUTMNUr6cl+s+fLw35tPX+lNl+sw3gI/wUWFByTBFZG+u3dAVOiF9QmltS3z1hPDN/HQ+PzFn9yHH+VSXY=
+	t=1762825384; cv=none; b=m5ZpWnb28Brbml5a5CH5fHWCYA80hEKt4rp1ZBlygAhfaXXboytW7YAszN6EjD9SNjuqhQajaNSlp2yBdxvi355CCoSzuKU8ElR30POhJpEaaeSltcW74UOpDBAZyGXGhqFpY7J2DJmKeIDWIN5bwXUHt25twDtT8Itf3W4un9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824650; c=relaxed/simple;
-	bh=1oEudp+LF4LFQhdNR4QKGXHcgipflWPlok5ytgza38U=;
+	s=arc-20240116; t=1762825384; c=relaxed/simple;
+	bh=qA3nqPy6TBJIn1Sx803DJB/WvZ/DrPMiTRG3qMph09E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i2YWRMQTjitYKh/OTbAkNOE2Wr6B6B1IiWqKSesLftUI6aMSW07L7txpSznWfVobcdFowTaiO+Z27+gTz6LX8+WgWKL5cGjSEO6viha4lLkQFcRzb5M26tEpcoA+pGkfNUixXBclKMlsMlEBXGivQldozOPviVy05WYIsqGTTis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SR3hxTkP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B3CC116D0;
-	Tue, 11 Nov 2025 01:30:49 +0000 (UTC)
+	 MIME-Version; b=U+5YcC2FlCSzcnf3TBxV73hNy7R+loOCnTKAwJ3+Fmw9s5r6+lvT0Egu37mTTOQEyuQmKOvTm2jmfdqL4wdZQwIzK8np/ag3SujJFCrqh85llrlD6R/9gW3NNztIWXKTr4/9aOQ46Pc3WTQ0JCpLeCUqN4XFhc2cXQBbzivFxWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cuTV+42Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB0CC116B1;
+	Tue, 11 Nov 2025 01:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824650;
-	bh=1oEudp+LF4LFQhdNR4QKGXHcgipflWPlok5ytgza38U=;
+	s=korg; t=1762825384;
+	bh=qA3nqPy6TBJIn1Sx803DJB/WvZ/DrPMiTRG3qMph09E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SR3hxTkPOFzUbNYBPdpuEjU8ILOUq79Yp1odAqJUaXO3UF/2RfbZOEa86sqvgwYO+
-	 hOzt2ni/zYs3zWadO+JkEtWT2XejGCEfmtnO0meaDVzCM7k+hUY4JSnqp4mq2GPIib
-	 0vPbJrvbMSqewAO/XO+47bDm5h/1C9rycsvSbDMg=
+	b=cuTV+42ZBhpOUiqnGM4Ok9VhsOcm8HBdxFyGCUhMZIBmeV+C/cefYgT7YXcWGlg+Y
+	 e62SFcMX8cks29kzZ9qT5Rz9L4aSTxkeoyZpYwGOW5ay7ppEWNsUWp3D0v8CATH8R3
+	 QHN635duPfWD1IU7WOgxIw/ECL7P2J9lPoMyhUN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 492/565] ceph: add checking of wait_for_completion_killable() return value
-Date: Tue, 11 Nov 2025 09:45:48 +0900
-Message-ID: <20251111004538.001948937@linuxfoundation.org>
+Subject: [PATCH 6.17 779/849] octeontx2-pf: Fix devm_kcalloc() error checking
+Date: Tue, 11 Nov 2025 09:45:49 +0900
+Message-ID: <20251111004555.261726935@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit b7ed1e29cfe773d648ca09895b92856bd3a2092d ]
+[ Upstream commit 2e25935ed24daee37c4c2e8e29e478ce6e1f72c7 ]
 
-The Coverity Scan service has detected the calling of
-wait_for_completion_killable() without checking the return
-value in ceph_lock_wait_for_completion() [1]. The CID 1636232
-defect contains explanation: "If the function returns an error
-value, the error value may be mistaken for a normal value.
-In ceph_lock_wait_for_completion(): Value returned from
-a function is not checked for errors before being used. (CWE-252)".
+The devm_kcalloc() function never return error pointers, it returns NULL
+on failure.  Also delete the netdev_err() printk.  These allocation
+functions already have debug output built-in some the extra error message
+is not required.
 
-The patch adds the checking of wait_for_completion_killable()
-return value and return the error code from
-ceph_lock_wait_for_completion().
-
-[1] https://scan5.scan.coverity.com/#/project-view/64304/10063?selectedIssue=1636232
-
-Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Fixes: efabce290151 ("octeontx2-pf: AF_XDP zero copy receive support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/aQYKkrGA12REb2sj@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/locks.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ceph/locks.c b/fs/ceph/locks.c
-index ebf4ac0055ddc..dd764f9c64b9f 100644
---- a/fs/ceph/locks.c
-+++ b/fs/ceph/locks.c
-@@ -221,7 +221,10 @@ static int ceph_lock_wait_for_completion(struct ceph_mds_client *mdsc,
- 	if (err && err != -ERESTARTSYS)
- 		return err;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index aff17c37ddde0..902d6abaa3ec1 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -1516,10 +1516,8 @@ int otx2_pool_init(struct otx2_nic *pfvf, u16 pool_id,
+ 		pool->xdp_cnt = numptrs;
+ 		pool->xdp = devm_kcalloc(pfvf->dev,
+ 					 numptrs, sizeof(struct xdp_buff *), GFP_KERNEL);
+-		if (IS_ERR(pool->xdp)) {
+-			netdev_err(pfvf->netdev, "Creation of xsk pool failed\n");
+-			return PTR_ERR(pool->xdp);
+-		}
++		if (!pool->xdp)
++			return -ENOMEM;
+ 	}
  
--	wait_for_completion_killable(&req->r_safe_completion);
-+	err = wait_for_completion_killable(&req->r_safe_completion);
-+	if (err)
-+		return err;
-+
  	return 0;
- }
- 
 -- 
 2.51.0
 
