@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-193468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE50C4A602
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95AAEC4AD75
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 721BB1884737
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0E263AED05
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5439D2FC009;
-	Tue, 11 Nov 2025 01:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DCA30597E;
+	Tue, 11 Nov 2025 01:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FczUXpzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDbuRzZO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBE9265CC5;
-	Tue, 11 Nov 2025 01:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F101305E15;
+	Tue, 11 Nov 2025 01:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823255; cv=none; b=RndOM7/EWWmVDr0ANArPP99MgZvXp84SJq6xcR3IfFTPiT0UpShxCKUwroGSkzqqUgFOeaD3m3fsVuRUNxc7pgSBDZVClyqwq0kCG9DAzqDnyNMwWiShDAuzUmmQhY9j/Z3Q/Zzf1kkKT/TP/6uZtIt+yrxH2h7IbNpq/1fpj4c=
+	t=1762824426; cv=none; b=jBRrOfVxhnltCHDUsTyc4zF1F802unUotgfkvD9sQi23uziKjiHKsihQMQqWJ2qM1Gx5wtF8ENx9b0PeTAXlvTI5Dm0dg7yd3URdljfXWto4AR3yVjlyuWWaqyTtYfiKR6qBVD5cJQ6G4RWa41ev5DKVhprX9Z7dZqTecyowDXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823255; c=relaxed/simple;
-	bh=r+MwlFImFYGpFKDe464zxPfTNsUr6ldc1NeGpRzZ/yM=;
+	s=arc-20240116; t=1762824426; c=relaxed/simple;
+	bh=0BrTit7OcryPNQIKoX+T2C99c2tjotWvS2n1p4iGyFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5CKmLISdE/mZtcAwTmy2kBO4MPOOoct+pSxFa8DJf34pZAqFFrI6BWud5Sck3wNvE4fOwHPKV+p2Lf9qYqCAQ8lqGzDIPde/L27NdHVydsfbcQmJ9EclW/YEUQ3ekEZZEbbAWHuqkuEHcwnJcWz9IWEPFW4wfOQqCtv6K1K9mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FczUXpzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4544FC116B1;
-	Tue, 11 Nov 2025 01:07:34 +0000 (UTC)
+	 MIME-Version; b=d/5dqcHmn9SQR2BXP1HsmoLR4zGX2d1bqsxASy9dXo8NWvCF6krkAtz6UmJsXcuKqGP+Ww19TEf5ui9PkuH4e9Vxbj1YfbOM9DlZsbffT1DdnDIK7J8j0/BK1D/k4mkLcyp7DZOJhMap1q5MGD0+8sCPwnhyQYfCFetGlqAKCkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDbuRzZO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27092C16AAE;
+	Tue, 11 Nov 2025 01:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823254;
-	bh=r+MwlFImFYGpFKDe464zxPfTNsUr6ldc1NeGpRzZ/yM=;
+	s=korg; t=1762824424;
+	bh=0BrTit7OcryPNQIKoX+T2C99c2tjotWvS2n1p4iGyFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FczUXpzQHlCHjLIxk06I8XZpFt5sCdgak0NdY+BpYzWjRq4mWX3bEl3nx5CsbR3TF
-	 dqNVPapbb05SZa7k8fvXws0Abis8Gj5DGjgGaj1dI3sXkcXHfOkLr6QOAp+HjV1pYb
-	 94dQMZOk3ycTEMUkpFnu1BR/Cp/6v6y76eCRdKK0=
+	b=pDbuRzZOrCfdiAEKtMs2NzEsV150aCGHJcfjeMEIYZBUEhP44wai75y/tUCQj8/af
+	 nDVv56bvy99retApxOvJOoWf0oUThJo4eSIwa2pr0uWl25cRa+GqOHL+g8eG00Awah
+	 3nYBNAo4qE4JDoYl+h22RLE3Wf3mB4XRU/FW/mUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Dave Hansen <dave.hansen@intel.com>
-Subject: [PATCH 6.12 206/565] x86/vsyscall: Do not require X86_PF_INSTR to emulate vsyscall
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 492/849] scsi: ufs: host: mediatek: Enhance recovery on resume failure
 Date: Tue, 11 Nov 2025 09:41:02 +0900
-Message-ID: <20251111004531.559046011@linuxfoundation.org>
+Message-ID: <20251111004548.334806535@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 8ba38a7a9a699905b84fa97578a8291010dec273 ]
+[ Upstream commit 15ef3f5aa822f32524cba1463422a2c9372443f0 ]
 
-emulate_vsyscall() expects to see X86_PF_INSTR in PFEC on a vsyscall
-page fault, but the CPU does not report X86_PF_INSTR if neither
-X86_FEATURE_NX nor X86_FEATURE_SMEP are enabled.
+Improve the recovery process for failed resume operations. Log the
+device's power status and return 0 if both resume and recovery fail to
+prevent I/O hang.
 
-X86_FEATURE_NX should be enabled on nearly all 64-bit CPUs, except for
-early P4 processors that did not support this feature.
-
-Instead of explicitly checking for X86_PF_INSTR, compare the fault
-address to RIP.
-
-On machines with X86_FEATURE_NX enabled, issue a warning if RIP is equal
-to fault address but X86_PF_INSTR is absent.
-
-[ dhansen: flesh out code comments ]
-
-Originally-by: Dave Hansen <dave.hansen@intel.com>
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Link: https://lore.kernel.org/all/bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com
-Link: https://lore.kernel.org/all/20250624145918.2720487-1-kirill.shutemov%40linux.intel.com
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/entry/vsyscall/vsyscall_64.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/ufs/host/ufs-mediatek.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
-index 2fb7d53cf3338..95e053b0a4bc0 100644
---- a/arch/x86/entry/vsyscall/vsyscall_64.c
-+++ b/arch/x86/entry/vsyscall/vsyscall_64.c
-@@ -124,7 +124,12 @@ bool emulate_vsyscall(unsigned long error_code,
- 	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
- 		return false;
- 
--	if (!(error_code & X86_PF_INSTR)) {
-+	/*
-+	 * Assume that faults at regs->ip are because of an
-+	 * instruction fetch. Return early and avoid
-+	 * emulation for faults during data accesses:
-+	 */
-+	if (address != regs->ip) {
- 		/* Failed vsyscall read */
- 		if (vsyscall_mode == EMULATE)
- 			return false;
-@@ -136,13 +141,19 @@ bool emulate_vsyscall(unsigned long error_code,
- 		return false;
+diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
+index bb0be6bed1bca..188f90e468c41 100644
+--- a/drivers/ufs/host/ufs-mediatek.c
++++ b/drivers/ufs/host/ufs-mediatek.c
+@@ -1727,8 +1727,21 @@ static int ufs_mtk_resume(struct ufs_hba *hba, enum ufs_pm_op pm_op)
  	}
  
-+	/*
-+	 * X86_PF_INSTR is only set when NX is supported.  When
-+	 * available, use it to double-check that the emulation code
-+	 * is only being used for instruction fetches:
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_NX))
-+		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
+ 	return 0;
 +
- 	/*
- 	 * No point in checking CS -- the only way to get here is a user mode
- 	 * trap to a high address, which means that we're in 64-bit user code.
- 	 */
+ fail:
+-	return ufshcd_link_recovery(hba);
++	/*
++	 * Check if the platform (parent) device has resumed, and ensure that
++	 * power, clock, and MTCMOS are all turned on.
++	 */
++	err = ufshcd_link_recovery(hba);
++	if (err) {
++		dev_err(hba->dev, "Device PM: req=%d, status:%d, err:%d\n",
++			hba->dev->power.request,
++			hba->dev->power.runtime_status,
++			hba->dev->power.runtime_error);
++	}
++
++	return 0; /* Cannot return a failure, otherwise, the I/O will hang. */
+ }
  
--	WARN_ON_ONCE(address != regs->ip);
--
- 	if (vsyscall_mode == NONE) {
- 		warn_bad_vsyscall(KERN_INFO, regs,
- 				  "vsyscall attempted with vsyscall=none");
+ static void ufs_mtk_dbg_register_dump(struct ufs_hba *hba)
 -- 
 2.51.0
 
