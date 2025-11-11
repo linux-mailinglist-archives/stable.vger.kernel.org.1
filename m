@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-194173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2FA0C4AE7D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBF83C4AE41
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F0C764F8C36
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F07CD189751C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6659A2DCC04;
-	Tue, 11 Nov 2025 01:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DABFB339719;
+	Tue, 11 Nov 2025 01:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHNSeKGE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0Bu/nap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A90338918;
-	Tue, 11 Nov 2025 01:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE26338918;
+	Tue, 11 Nov 2025 01:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824978; cv=none; b=p75/fUMoih4BqVdw9g4eWb08nTM6zfyCt5IJ4jsMSsv0gnlIO+EUKtUILZX4i9odi0dTKNYFDfvYLHq177XMOq9UsyrBInPBVoKyy+cY6k5q7dMqOJXTwyv0d7w2eFPkeQL1hP5DYGT7ZyxNSXFWTBzoDmwFTWicXYqKzex6oyM=
+	t=1762824982; cv=none; b=ALRohPENgGoWiAppIZfDTBQpfkl7sw6xOqCZ0hzZGpE0IGAblcHFIRsxqzSi4kBt6LbDPpFGeuwBGZFaMxsO6H9Aq2Puk2vicMvbzbFfcv3Ag+yvX0DXXkrpOQU+O5lPXLEzneh4l5bYbA4d77aa7+lXOc4b0sJHKdWhacInuIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824978; c=relaxed/simple;
-	bh=RRz8tKsom8cWyH3XNmxPtltuPwaRACYlgS8RkC2fJ94=;
+	s=arc-20240116; t=1762824982; c=relaxed/simple;
+	bh=CjT+1JViGiUP+u1xfkG/FuqB7965MlYP1nDpT11sZRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A16QLGesl5XR0AJ0lzckoPos4C2VfPXy7tcyMoF1dgBjJXHaiGib4BaJObuM0yEat5tqNZvHC4TVolsRTkSFyHxaPXdDTFT1oE5XeOBFJfLCzfKpeDdTNrxUoVozPYAoZIoRMB/ffSFUjarsKidof4/eMk0o0kUGc3xTD32i2Nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHNSeKGE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C5BC4AF09;
-	Tue, 11 Nov 2025 01:36:17 +0000 (UTC)
+	 MIME-Version; b=eYoj3lVn1QiBrBp9Fk/r8uiHgBYykDR37keBWolGyNVaqwDjWxri2WK+6LdyA/KgkpOcG9QoPxXYrjvkYkp3NgT3AfrWcddhPS1miqs32kpPB2LoVOZc2lXxeMH1CRGi6qWJHKUF7dShpk/+GIHzyKsbgz/NLZ8IhDiUKsQAB/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0Bu/nap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBE0C113D0;
+	Tue, 11 Nov 2025 01:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824978;
-	bh=RRz8tKsom8cWyH3XNmxPtltuPwaRACYlgS8RkC2fJ94=;
+	s=korg; t=1762824982;
+	bh=CjT+1JViGiUP+u1xfkG/FuqB7965MlYP1nDpT11sZRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHNSeKGEuS18/OpCopL9HkAgMbgosIqIovZEZOeD5KhbX3LbM2mtio/qv8PiPcQ7K
-	 pEeoA7uASkaO3LlRUf7UBLL32SCU4bX7O7pdi7+77nycizf0O46r+TonUtEXkJMHYB
-	 WaTNp5UVFYXo+/JdDE4m+aJHf0GYvSwKPB7cPRZg=
+	b=h0Bu/napF3hykmU8Euj4k3D2NMetC5iJnctFYprNkr1DPCRre45gby0G8hzOlrmLt
+	 O6Nt7GYTsqLX54RLqlwyY3kdHe1XQQcRY6lXTb46wICgpjFHLU18rUFDv49POODbzT
+	 Zuw/ztKBhKN+YO/AeF/HfhAIMsyBi/fkkJuiV1NQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Punit Agrawal <punit.agrawal@oss.qualcomm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 561/565] ACPI: SPCR: Check for table version when using precise baudrate
-Date: Tue, 11 Nov 2025 09:46:57 +0900
-Message-ID: <20251111004539.637001376@linuxfoundation.org>
+	Sathishkumar S <sathishkumar.sundararaju@amd.com>,
+	Leo Liu <leo.liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 562/565] drm/amdgpu: Fix unintended error log in VCN5_0_0
+Date: Tue, 11 Nov 2025 09:46:58 +0900
+Message-ID: <20251111004539.660581356@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -65,42 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
+From: Sathishkumar S <sathishkumar.sundararaju@amd.com>
 
-commit 543d35004007a06ef247acf2fc55efa8388aa741 upstream.
+commit 46b0e6b9d749cfa891e6969d6565be1131c53aa2 upstream.
 
-Commit 4d330fe54145 ("ACPI: SPCR: Support Precise Baud Rate field")
-added support to use the precise baud rate available since SPCR 1.09
-(revision 4) but failed to check the version of the table provided by
-the firmware.
+The error log is supposed to be gaurded under if failure condition.
 
-Accessing an older version of SPCR table causes accesses beyond the
-end of the table and can lead to garbage data to be used for the baud
-rate.
-
-Check the version of the firmware provided SPCR to ensure that the
-precise baudrate is vaild before using it.
-
-Fixes: 4d330fe54145 ("ACPI: SPCR: Support Precise Baud Rate field")
-Signed-off-by: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251024123125.1081612-1-punit.agrawal@oss.qualcomm.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: faab5ea08367 ("drm/amdgpu: Check vcn sram load return value")
+Signed-off-by: Sathishkumar S <sathishkumar.sundararaju@amd.com>
+Reviewed-by: Leo Liu <leo.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/spcr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/acpi/spcr.c
-+++ b/drivers/acpi/spcr.c
-@@ -152,7 +152,7 @@ int __init acpi_parse_spcr(bool enable_e
- 	 * Baud Rate field. If this field is zero or not present, Configured
- 	 * Baud Rate is used.
- 	 */
--	if (table->precise_baudrate)
-+	if (table->header.revision >= 4 && table->precise_baudrate)
- 		baud_rate = table->precise_baudrate;
- 	else switch (table->baud_rate) {
- 	case 0:
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
+@@ -721,9 +721,10 @@ static int vcn_v5_0_0_start_dpg_mode(str
+ 
+ 	if (indirect) {
+ 		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
+-		dev_err(adev->dev, "%s: vcn sram load failed %d\n", __func__, ret);
+-		if (ret)
++		if (ret) {
++			dev_err(adev->dev, "%s: vcn sram load failed %d\n", __func__, ret);
+ 			return ret;
++		}
+ 	}
+ 
+ 	ring = &adev->vcn.inst[inst_idx].ring_enc[0];
 
 
 
