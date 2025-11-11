@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90082C4A0CA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:56:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D40BC4A0EB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D94234F1623
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D760E4F397A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C4B214210;
-	Tue, 11 Nov 2025 00:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F0924EA90;
+	Tue, 11 Nov 2025 00:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WoUVFbQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAsaDixf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9B64086A;
-	Tue, 11 Nov 2025 00:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D93C1DF258;
+	Tue, 11 Nov 2025 00:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822393; cv=none; b=cp7x/61ApLkNny/Rk0YSczb6ztD0YSO2OH7bVgmN5XbeGWXezjfCC2n9PHoAieoxXhr8/FFvVgtEv49/mFLKghDpCJyT9G6Buwkq2JJOv9AYnGrcovFAcJ3UwZtCg4tL6XfXoiA1hIGJy/1As78dPsxiNgr+v0ulo0hDAGYi5ow=
+	t=1762822444; cv=none; b=BvnEj58J97j/HBeyUkttIBDFTp8wh/riYkG1ZFRiN/Un6DjbHV+1jSb4G4HlV+dz8JIXd4LjHKdZaIFr6yhzyby4fvk+mHXKHKlVTyDnA0Ud37K6ZLU5rXfYfe3Vv5pQcxDjAudM0aBEnJDSwcPnzRDefJld2WXp+IyOOQhR3oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822393; c=relaxed/simple;
-	bh=nbgD7VqkARK16xAYvnTGZplul+nBaMRoG2IXoRc5Ipw=;
+	s=arc-20240116; t=1762822444; c=relaxed/simple;
+	bh=PE2XE7kTrN/518qo/4Y5V4L5qgMoQzpSTcg+Ytap1iM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0nqsbi4bWOTxZLawq7FB/j//RX3F+XjzC11SZemG8nQpB2zdOMEpiTyBoH0bKDVGpksWmZwSNfLY6WGkf65KuFT7seQ+/e81NJC7Vdh+goUXz169EAtIoz1Z3GTAsOCXFgHTcHWD16/U9nchgQQ/leRtgt5vpw9b2fUtiFDvyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoUVFbQB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893F3C19424;
-	Tue, 11 Nov 2025 00:53:12 +0000 (UTC)
+	 MIME-Version; b=UOoyzKN/raVrwVGUGs3GIl7XuCAp1m9z2bBeIV2nRXrKkcTwhENaIVaiYZHv/pLAZV8iF2h9zJR4kf5+VUBlKXgFLtzyYuxzhyzsM0LD/zueUv5vurzPLC493fDva5mxmsw+TAorruXwASe8W+Z7fM6MGPp0tFCS/XgBNZ3/p1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAsaDixf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C9DC4CEF5;
+	Tue, 11 Nov 2025 00:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822392;
-	bh=nbgD7VqkARK16xAYvnTGZplul+nBaMRoG2IXoRc5Ipw=;
+	s=korg; t=1762822444;
+	bh=PE2XE7kTrN/518qo/4Y5V4L5qgMoQzpSTcg+Ytap1iM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WoUVFbQBwnTpN1VkGqz1gbThb9l8i280/4df1VeFtwcyPNWY2vUpVUdUceA/am1S2
-	 Iv1SZ0r5kGuFi7wcCAvErEH9ha87UXZhRvpXk7jGT3Lov9yAGk+PZ7yHsJlzxLT7bL
-	 mxo372q0q8yNF3JvjufI94ktumH11AnXskUo7KXA=
+	b=aAsaDixf3yK+qYbedwD+86Y3257rYuFdtqW+GL9EBEefNoIlpO6Nm4pcxtLdxPpTc
+	 +Pf897NdFZpJaOIsPzaikcBVMvopbX7JHV2WRml0wIXS4Hvm7FQZ8TEmLL+nAYWS7n
+	 xHerOfvOQhx9CG1fZHP2+/xK8w1IoevOFZp/ASb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
+	John Smith <itistotalbotnet@gmail.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 081/849] drm/amd/pm: fix smu table id bound check issue in smu_cmn_update_table()
-Date: Tue, 11 Nov 2025 09:34:11 +0900
-Message-ID: <20251111004538.377466739@linuxfoundation.org>
+Subject: [PATCH 6.17 082/849] drm/amd/pm/powerplay/smumgr: Fix PCIeBootLinkLevel value on Fiji
+Date: Tue, 11 Nov 2025 09:34:12 +0900
+Message-ID: <20251111004538.403589600@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,38 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: John Smith <itistotalbotnet@gmail.com>
 
-[ Upstream commit 238d468d3ed18a324bb9d8c99f18c665dbac0511 ]
+[ Upstream commit 07a13f913c291d6ec72ee4fc848d13ecfdc0e705 ]
 
-'table_index' is a variable defined by the smu driver (kmd)
-'table_id' is a variable defined by the hw smu (pmfw)
+Previously this was initialized with zero which represented PCIe Gen
+1.0 instead of using the
+maximum value from the speed table which is the behaviour of all other
+smumgr implementations.
 
-This code should use table_index as a bounds check.
-
-Fixes: caad2613dc4bd ("drm/amd/powerplay: move table setting common code to smu_cmn.c")
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Fixes: 18edef19ea44 ("drm/amd/powerplay: implement fw image related smu interface for Fiji.")
+Signed-off-by: John Smith <itistotalbotnet@gmail.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit fca0c66b22303de0d1d6313059baf4dc960a4753)
+(cherry picked from commit c52238c9fb414555c68340cd80e487d982c1921c)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c | 2 +-
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c b/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
-index 59f9abd0f7b8c..00f6c6acc3e68 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
-@@ -965,7 +965,7 @@ int smu_cmn_update_table(struct smu_context *smu,
- 						      table_index);
- 	uint32_t table_size;
- 	int ret = 0;
--	if (!table_data || table_id >= SMU_TABLE_COUNT || table_id < 0)
-+	if (!table_data || table_index >= SMU_TABLE_COUNT || table_id < 0)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c
+index 5e43ad2b29564..e7e497b166b3e 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c
+@@ -2024,7 +2024,7 @@ static int fiji_init_smc_table(struct pp_hwmgr *hwmgr)
+ 	table->VoltageResponseTime = 0;
+ 	table->PhaseResponseTime = 0;
+ 	table->MemoryThermThrottleEnable = 1;
+-	table->PCIeBootLinkLevel = 0;      /* 0:Gen1 1:Gen2 2:Gen3*/
++	table->PCIeBootLinkLevel = (uint8_t) (data->dpm_table.pcie_speed_table.count);
+ 	table->PCIeGenInterval = 1;
+ 	table->VRConfig = 0;
  
- 	table_size = smu_table->tables[table_index].size;
 -- 
 2.51.0
 
