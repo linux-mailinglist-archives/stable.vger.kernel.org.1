@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-193369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2527EC4A28C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:04:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 563B6C4A2A1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:05:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C62F188F242
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 769D63A2CE1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A4C248F6A;
-	Tue, 11 Nov 2025 01:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D6124E4C6;
+	Tue, 11 Nov 2025 01:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebUIahlX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpdOsyj8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1DB1F5F6;
-	Tue, 11 Nov 2025 01:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37431F5F6;
+	Tue, 11 Nov 2025 01:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823019; cv=none; b=myC+i0hx3kJ+2eCyftVSZo9kxkwtppAGKVTNQGaeAa2JroSW+UaSOEm3QhJy50IiEgi38OmhsD2rJyfrdvF5WVy17VIJF3nPfy68vT4NKUbR1ziln6929vqlC64KY+QTrZtZWIiKm3NfwmFY2KnefbJz4hu2oMJ85sGL6SKHtoY=
+	t=1762823023; cv=none; b=F7vD0KYh0FrFaiMYnSkU9vVkhLWHI22k+//4TNqWHmeELZ7AD0bm8FhKotUyGqK36+hk7X+s3T/LQc8HkrFYmaIDbvg/p6Ci7iz5ZRGZRgxiMl24xcPxGnpTZXLuCepakL4ptvJnf61nKd+8Zpr+zkx4BsYRedlnOMah2iSN2EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823019; c=relaxed/simple;
-	bh=nY2nb1pi/dkBklhB/8noKOnYd2TvBFmE5W4wLrVx4hc=;
+	s=arc-20240116; t=1762823023; c=relaxed/simple;
+	bh=PtLJsz1B1xw8G3UbUi+sV6BD3qIlV3N4cvwKdjWdU/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7jZU6ZCzXDs0GvT3X5p2FUx3DPLtJtYJNPcyq+/s8Og3jbihOWTge2uvIADcDpa6J7KcQGawDZk7ubMUULlKJnID7AjRQ5raHFFd8n1cl99FpKsqU/i8mzzRndb4s/+JhZldYwEoGVElfwGfn+59yC1QuP0uogAijgQrWUWZfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebUIahlX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E9C3C4CEFB;
-	Tue, 11 Nov 2025 01:03:38 +0000 (UTC)
+	 MIME-Version; b=qUIP52satCBdzs2ggSDhMyqAqFgcjJgB1mBr3CqtFHVpLMWvpNFSgWSbSrNwpgEFV3imK/WQ1h1zIA0AhXHFYU5Sj/kEJf6MZ+hKMsYm/a8VxPiN5fXpNyAc0m9aQBQqMIMrVAofgJMf5sBEayJjTnSTZeYYhYdqy987pKvvKcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpdOsyj8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45453C4CEFB;
+	Tue, 11 Nov 2025 01:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823018;
-	bh=nY2nb1pi/dkBklhB/8noKOnYd2TvBFmE5W4wLrVx4hc=;
+	s=korg; t=1762823023;
+	bh=PtLJsz1B1xw8G3UbUi+sV6BD3qIlV3N4cvwKdjWdU/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ebUIahlXmDiZ7pGVEGGK9hondiVh6Mn9Ngfi7HlGex5e6sTOSaEh419kr/l9a/kQw
-	 9K4nqkxDQ0zkQr1azPmYPc8iig0IJcjCmhtGtJPPRZSNVrP2YdDVsu+IaIenWE4CfC
-	 4je2RgI0tDprL+/jOY53LiGYoeQORW67fT95yCQY=
+	b=fpdOsyj85AnBxaBvu4RcMXI7kZj9FxxgJQtAGWwqL1VZiaSTW1M92GZMjdzALJPrH
+	 c0H9d9HDlwfyoGbGsHrAQhs50TwiOKhkO42+dUSwpzLec37unKLfsiaw12L3Ns1MV3
+	 cw+q0RH32wKjPj5FABPsTxsSQ+lPqoBmKEuGDFK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
 	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 215/849] tools/power x86_energy_perf_policy: Fix incorrect fopen mode usage
-Date: Tue, 11 Nov 2025 09:36:25 +0900
-Message-ID: <20251111004541.638475147@linuxfoundation.org>
+Subject: [PATCH 6.17 216/849] tools/power x86_energy_perf_policy: Enhance HWP enable
+Date: Tue, 11 Nov 2025 09:36:26 +0900
+Message-ID: <20251111004541.661779263@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,50 +65,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit 62127655b7ab7b8c2997041aca48a81bf5c6da0c ]
+[ Upstream commit c97c057d357c4b39b153e9e430bbf8976e05bd4e ]
 
-The fopen_or_die() function was previously hardcoded
-to open files in read-only mode ("r"), ignoring the
-mode parameter passed to it. This patch corrects
-fopen_or_die() to use the provided mode argument,
-allowing for flexible file access as intended.
+On enabling HWP, preserve the reserved bits in MSR_PM_ENABLE.
 
-Additionally, the call to fopen_or_die() in
-err_on_hypervisor() incorrectly used the mode
-"ro", which is not a valid fopen mode. This is
-fixed to use the correct "r" mode.
+Also, skip writing the MSR_PM_ENABLE if HWP is already enabled.
 
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../x86_energy_perf_policy/x86_energy_perf_policy.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-index ebda9c366b2ba..c883f211dbcc9 100644
+index c883f211dbcc9..0bda8e3ae7f77 100644
 --- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
 +++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-@@ -630,7 +630,7 @@ void cmdline(int argc, char **argv)
-  */
- FILE *fopen_or_die(const char *path, const char *mode)
+@@ -1166,13 +1166,18 @@ int update_hwp_request_pkg(int pkg)
+ 
+ int enable_hwp_on_cpu(int cpu)
  {
--	FILE *filep = fopen(path, "r");
-+	FILE *filep = fopen(path, mode);
+-	unsigned long long msr;
++	unsigned long long old_msr, new_msr;
++
++	get_msr(cpu, MSR_PM_ENABLE, &old_msr);
++
++	if (old_msr & 1)
++		return 0;	/* already enabled */
  
- 	if (!filep)
- 		err(1, "%s: open failed", path);
-@@ -644,7 +644,7 @@ void err_on_hypervisor(void)
- 	char *buffer;
+-	get_msr(cpu, MSR_PM_ENABLE, &msr);
+-	put_msr(cpu, MSR_PM_ENABLE, 1);
++	new_msr = old_msr | 1;
++	put_msr(cpu, MSR_PM_ENABLE, new_msr);
  
- 	/* On VMs /proc/cpuinfo contains a "flags" entry for hypervisor */
--	cpuinfo = fopen_or_die("/proc/cpuinfo", "ro");
-+	cpuinfo = fopen_or_die("/proc/cpuinfo", "r");
+ 	if (verbose)
+-		printf("cpu%d: MSR_PM_ENABLE old: %d new: %d\n", cpu, (unsigned int) msr, 1);
++		printf("cpu%d: MSR_PM_ENABLE old: %llX new: %llX\n", cpu, old_msr, new_msr);
  
- 	buffer = malloc(4096);
- 	if (!buffer) {
+ 	return 0;
+ }
 -- 
 2.51.0
 
