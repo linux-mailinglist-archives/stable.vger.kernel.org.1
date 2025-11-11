@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-193498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31B9BC4A506
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:17:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C44C4A6AE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CAE4A34A60F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6616A3AB20B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9404430ACF7;
-	Tue, 11 Nov 2025 01:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4717030BF66;
+	Tue, 11 Nov 2025 01:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XIun5LY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D0xK9okP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB0E306B30;
-	Tue, 11 Nov 2025 01:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0116930BBBF;
+	Tue, 11 Nov 2025 01:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823325; cv=none; b=nRGhObDRiJHqe8YDbM5KBEjEbFJFyWKU8xuUACtZs5Q8QR15IXqCrw3JstWYkGmQKWmDp211b3atjAviJIfbAKAhzmjBlADYxkWgfTyIO2Vs27Z9WA5GNA2+mejEr/1/Uak1eX3anj6XnA2tDPJtofDP+4tiQTmJIlPOaYmzHWQ=
+	t=1762823330; cv=none; b=tAA6OrII6x3CAWnpHIr8ZVdTSSnTh8t/0oX7IBRHqoO/p3yQb+d3cfA/fcpsuNmJWhTU+xnTph6KEbrcbfVavL/lR5THZEOdn8Pr/nIdbReO5OA85uK2+WjS58GjC7FDZNVFEt3UpWeV9kjLzFsuX6L/AmZkVFQFPPYwwdeNWvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823325; c=relaxed/simple;
-	bh=dWp2J/DWQky5/ZwP0tQm4eQpUJxq0Yw/r4rlf0iQzWI=;
+	s=arc-20240116; t=1762823330; c=relaxed/simple;
+	bh=V8rCj03XCcLAxSyxvo582CJUFyJsMLIGQJ3s+AQ0flY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MKO/eicMTcDaO1sHsufnzKww9anE9st3eDaAFrLA8dHzvULKddF7NqqXPPnMQxcLrrqKdMvkpFPdun3l1f/GIbRyICzJzTsnx/Q625PEAO79txBtC0cFQoJKKvQLyqjdMDCTPZdtCcssKyaEl/UrmRgVu3J86MnkDBG/XUG50EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XIun5LY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DA6C113D0;
-	Tue, 11 Nov 2025 01:08:44 +0000 (UTC)
+	 MIME-Version; b=Fg8JWmea7bhUYq/Rki78WJJSu70amcei5zgz+aHwYiH9WQUC4jUtn2H9UMvtE326sTut/6qPa3G7YjapSDCSSWgJEWmcyWk0uHJ5WgGuLDjgA8obIMMxEQpg8m7KFatfNOX4it4zatA1PxLtjptM3QPYkY2Y7K7FOdTgI3u5MnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D0xK9okP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7C6C4CEFB;
+	Tue, 11 Nov 2025 01:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823325;
-	bh=dWp2J/DWQky5/ZwP0tQm4eQpUJxq0Yw/r4rlf0iQzWI=;
+	s=korg; t=1762823329;
+	bh=V8rCj03XCcLAxSyxvo582CJUFyJsMLIGQJ3s+AQ0flY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1XIun5LY5WT1vUGQiJBC5zTjhfrHMAF17EBzH1IFz2DQk8ZubP50R3DUFs4sYX17D
-	 rede+2oxxkPrTe03p59wx1UPiwRT39GY+C9UfOvZeJlwwzPkTXUxCyGUQpTL3NRsNa
-	 psDOgo8AykeThy5f4Ad9/xVGjns4OaiuEtMZX7Us=
+	b=D0xK9okPORJmuRHr5H34eCp86Jfqd/7bHQ+X/JtzXgc6wamNdSVOv/ImNYW9bmBd/
+	 sAYDqiq0OQPPWNty9eBmVzRSybLl5zX48GnX/woFAV+c+rzDXRPaFHctaoS+neGUAX
+	 L4ah+qh4HN64oHglASLncR9uOjAeeZyPmHfyIUbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
+	Piotr Oniszczuk <piotr.oniszczuk@gmail.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 276/849] wifi: rtw89: print just once for unknown C2H events
-Date: Tue, 11 Nov 2025 09:37:26 +0900
-Message-ID: <20251111004543.098245920@linuxfoundation.org>
+Subject: [PATCH 6.17 277/849] wifi: rtw88: sdio: use indirect IO for device registers before power-on
+Date: Tue, 11 Nov 2025 09:37:27 +0900
+Message-ID: <20251111004543.122727774@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,80 +70,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 7e1c44fe4c2e1e01fa47d9490893d95309a99687 ]
+[ Upstream commit 58de1f91e033b1fface8d8948984583125f93736 ]
 
-When driver receives new or unknown C2H events, it print out messages
-repeatedly once events are received, like
+The register REG_SYS_CFG1 is used to determine chip basic information
+as arguments of following flows, such as download firmware and load PHY
+parameters, so driver read the value early (before power-on).
 
-  rtw89_8922ae 0000:81:00.0: PHY c2h class 2 not support
+However, the direct IO is disallowed before power-on, or it causes wrong
+values, which driver recognizes a chip as a wrong type RF_1T1R, but
+actually RF_2T2R, causing driver warns:
 
-To avoid the thousands of messages, use rtw89_info_once() instead. Also,
-print out class/func for unknown (undefined) class.
+  rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
 
-Reported-by: Sean Anderson <sean.anderson@linux.dev>
-Closes: https://lore.kernel.org/linux-wireless/20250729204437.164320-1-sean.anderson@linux.dev/
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
+Fix it by using indirect IO before power-on.
+
+Reported-by: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
+Closes: https://lore.kernel.org/linux-wireless/699C22B4-A3E3-4206-97D0-22AB3348EBF6@gmail.com/T/#t
+Suggested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Tested-by: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250804012234.8913-2-pkshih@realtek.com
+Link: https://patch.msgid.link/20250724004815.7043-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/debug.h | 1 +
- drivers/net/wireless/realtek/rtw89/mac.c   | 7 +++----
- drivers/net/wireless/realtek/rtw89/phy.c   | 7 +++----
- 3 files changed, 7 insertions(+), 8 deletions(-)
+ drivers/net/wireless/realtek/rtw88/sdio.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.h b/drivers/net/wireless/realtek/rtw89/debug.h
-index fc690f7c55dc7..a364e7adb0798 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.h
-+++ b/drivers/net/wireless/realtek/rtw89/debug.h
-@@ -56,6 +56,7 @@ static inline void rtw89_debugfs_deinit(struct rtw89_dev *rtwdev) {}
- #endif
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index cc2d4fef35879..99d7c629eac6f 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -144,6 +144,10 @@ static u32 rtw_sdio_to_io_address(struct rtw_dev *rtwdev, u32 addr,
  
- #define rtw89_info(rtwdev, a...) dev_info((rtwdev)->dev, ##a)
-+#define rtw89_info_once(rtwdev, a...) dev_info_once((rtwdev)->dev, ##a)
- #define rtw89_warn(rtwdev, a...) dev_warn((rtwdev)->dev, ##a)
- #define rtw89_err(rtwdev, a...) dev_err((rtwdev)->dev, ##a)
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 5a5da9d9c0c5b..ef17a307b7702 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -5813,12 +5813,11 @@ void rtw89_mac_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 	case RTW89_MAC_C2H_CLASS_ROLE:
- 		return;
- 	default:
--		rtw89_info(rtwdev, "MAC c2h class %d not support\n", class);
--		return;
-+		break;
- 	}
- 	if (!handler) {
--		rtw89_info(rtwdev, "MAC c2h class %d func %d not support\n", class,
--			   func);
-+		rtw89_info_once(rtwdev, "MAC c2h class %d func %d not support\n",
-+				class, func);
- 		return;
- 	}
- 	handler(rtwdev, skb, len);
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index d607577b353c6..01a03d2de3ffb 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -3626,12 +3626,11 @@ void rtw89_phy_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 			handler = rtw89_phy_c2h_dm_handler[func];
- 		break;
- 	default:
--		rtw89_info(rtwdev, "PHY c2h class %d not support\n", class);
--		return;
-+		break;
- 	}
- 	if (!handler) {
--		rtw89_info(rtwdev, "PHY c2h class %d func %d not support\n", class,
--			   func);
-+		rtw89_info_once(rtwdev, "PHY c2h class %d func %d not support\n",
-+				class, func);
- 		return;
- 	}
- 	handler(rtwdev, skb, len);
+ static bool rtw_sdio_use_direct_io(struct rtw_dev *rtwdev, u32 addr)
+ {
++	if (!test_bit(RTW_FLAG_POWERON, rtwdev->flags) &&
++	    !rtw_sdio_is_bus_addr(addr))
++		return false;
++
+ 	return !rtw_sdio_is_sdio30_supported(rtwdev) ||
+ 		rtw_sdio_is_bus_addr(addr);
+ }
 -- 
 2.51.0
 
