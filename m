@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-193919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDBDC4AB8F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAFC8C4B139
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0910D4FA3E4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 749524FB7EE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A0526ED58;
-	Tue, 11 Nov 2025 01:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EEA734AB01;
+	Tue, 11 Nov 2025 01:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3SveItE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiQk5PPS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBA02561A7;
-	Tue, 11 Nov 2025 01:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7A133F37D;
+	Tue, 11 Nov 2025 01:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824375; cv=none; b=iJgGVMtPJHUnrQa8EGF0EvY/yX1MpCCvK2YN2pe9VvY2ORUexcYE1vjKnyovYNrqWDj5WF4ZLfnXXF84NXz6U3JRJhFNyYGvXdfMtaWgq3YcDm37HsS3wf8d8lEDK8OHpkIS2/ZhUcXtleBBzVvgSiPLJV7MZCuwIEfFzYAkuR8=
+	t=1762825342; cv=none; b=btzM2V12Ds3AzKLiIXGAYQRicqNzjzKhPIZv6nPQ18xdtVqnXRpswunY15ZMmkQNiYGBSchACA2/ELN4SChAcNXMrTEpGo3ta67RqPuoWgkaxLs7tLdnsoEdxnxSkN2EmJS2XoBQGTjHRQu6zA8wwVPFpmhFcokJzc6n0CrSJss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824375; c=relaxed/simple;
-	bh=AexHzTZn47pOc5a3Isov79qr6YAS89YALdoFc20YTTE=;
+	s=arc-20240116; t=1762825342; c=relaxed/simple;
+	bh=pI4WSoSuI9MwOJx2fCnuM5Ghh7KTO+A/hJqmMoWOkK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cnG+uWzDvhF+8DM6c5hJ9BX62J4hSkUn20tdmxZwWDx6Xn51f5YhQCGQr2sQWdG1U6yOSbh90irgL0vdW1CNOenH6DFhC36qev41ucNWGqHmoUm5z0RWAtG3GBsLsuWEomk4FpI07ARl/qLvnRrF+b4YbFiQt3FfCGKniDjYtHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3SveItE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4CB0C4AF09;
-	Tue, 11 Nov 2025 01:26:14 +0000 (UTC)
+	 MIME-Version; b=GqzhZ2GaNbStpRURIdnYF2vUW3yGq2VKW0TA1RU6ZSCZOVMQrDGYwtzwypDc74RPN9K2SQ41UeF1s7gmZhEqzzj8m/7Wa862OFQan3zLxK9hRCRQFkN6faLLmxrmtUynOsyeaRTHf/Cn1u9q3oo9DMl8fhnh+GgngmA47sooJis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiQk5PPS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82786C16AAE;
+	Tue, 11 Nov 2025 01:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824375;
-	bh=AexHzTZn47pOc5a3Isov79qr6YAS89YALdoFc20YTTE=;
+	s=korg; t=1762825340;
+	bh=pI4WSoSuI9MwOJx2fCnuM5Ghh7KTO+A/hJqmMoWOkK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v3SveItEouEtp+R22xBBJPnIcKgM4Pe9Mdw5OsNbWhRESrrU+KMIAXtv77iAiKNxa
-	 +N5RtDFVB+k6uyZ4jk044ZSxHoQJBVSU1iDKu8nFcDXrzxg4idblhbiLnx7bNtuUKZ
-	 sRY0V8haLLttEdn4IQCvC/HFPAhaTzCoCww+IPD0=
+	b=TiQk5PPSqxWaSDdqwrdw9HG6L90ztoKD/WM2kcjssys14LrcSwSqTpGoD/uzERZFT
+	 NsZXEHQJYKvy/pBQywYUwObUqd4xdVma9IYl7kfrXcDXy4EqhqbI8eM2N69r7RnXX4
+	 byXauCvYslwQu6vjlovOVQFY1c2if7/ucp4Fj0p8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Primoz Fiser <primoz.fiser@norik.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 431/565] ASoC: tlv320aic3x: Fix class-D initialization for tlv320aic3007
-Date: Tue, 11 Nov 2025 09:44:47 +0900
-Message-ID: <20251111004536.568574585@linuxfoundation.org>
+Subject: [PATCH 6.17 718/849] ACPI: property: Return present device nodes only on fwnode interface
+Date: Tue, 11 Nov 2025 09:44:48 +0900
+Message-ID: <20251111004553.791027632@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Primoz Fiser <primoz.fiser@norik.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 733a763dd8b3ac2858dd238a91bb3a2fdff4739e ]
+[ Upstream commit d9f866b2bb3eec38b3734f1fed325ec7c55ccdfa ]
 
-The problem of having class-D initialization sequence in probe using
-regmap_register_patch() is that it will do hardware register writes
-immediately after being called as it bypasses regcache. Afterwards, in
-aic3x_init() we also perform codec soft reset, rendering class-D init
-sequence pointless. This issue is even more apparent when using reset
-GPIO line, since in that case class-D amplifier initialization fails
-with "Failed to init class D: -5" message as codec is already held in
-reset state after requesting the reset GPIO and hence hardware I/O
-fails with -EIO errno.
+fwnode_graph_get_next_subnode() may return fwnode backed by ACPI
+device nodes and there has been no check these devices are present
+in the system, unlike there has been on fwnode OF backend.
 
-Thus move class-D amplifier initialization sequence from probe function
-to aic3x_set_power() just before the usual regcache sync. Use bypassed
-regmap_multi_reg_write_bypassed() function to make sure, class-D init
-sequence is performed in proper order as described in the datasheet.
+In order to provide consistent behaviour towards callers,
+add a check for device presence by introducing
+a new function acpi_get_next_present_subnode(), used as the
+get_next_child_node() fwnode operation that also checks device
+node presence.
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-Link: https://patch.msgid.link/20250925085929.2581749-1-primoz.fiser@norik.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20251001102636.1272722-2-sakari.ailus@linux.intel.com
+[ rjw: Kerneldoc comment and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tlv320aic3x.c | 32 ++++++++++++++------------------
- 1 file changed, 14 insertions(+), 18 deletions(-)
+ drivers/acpi/property.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/tlv320aic3x.c b/sound/soc/codecs/tlv320aic3x.c
-index 56e795a00e22f..591f6c9f9d3a6 100644
---- a/sound/soc/codecs/tlv320aic3x.c
-+++ b/sound/soc/codecs/tlv320aic3x.c
-@@ -121,6 +121,16 @@ static const struct reg_default aic3x_reg[] = {
- 	{ 108, 0x00 }, { 109, 0x00 },
- };
- 
-+static const struct reg_sequence aic3007_class_d[] = {
-+	/* Class-D speaker driver init; datasheet p. 46 */
-+	{ AIC3X_PAGE_SELECT, 0x0D },
-+	{ 0xD, 0x0D },
-+	{ 0x8, 0x5C },
-+	{ 0x8, 0x5D },
-+	{ 0x8, 0x5C },
-+	{ AIC3X_PAGE_SELECT, 0x00 },
-+};
-+
- static bool aic3x_volatile_reg(struct device *dev, unsigned int reg)
- {
- 	switch (reg) {
-@@ -1393,6 +1403,10 @@ static int aic3x_set_power(struct snd_soc_component *component, int power)
- 			gpiod_set_value(aic3x->gpio_reset, 0);
- 		}
- 
-+		if (aic3x->model == AIC3X_MODEL_3007)
-+			regmap_multi_reg_write_bypassed(aic3x->regmap, aic3007_class_d,
-+							ARRAY_SIZE(aic3007_class_d));
-+
- 		/* Sync reg_cache with the hardware */
- 		regcache_cache_only(aic3x->regmap, false);
- 		regcache_sync(aic3x->regmap);
-@@ -1723,17 +1737,6 @@ static void aic3x_configure_ocmv(struct device *dev, struct aic3x_priv *aic3x)
- 	}
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index c086786fe84cb..d74678f0ba4af 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1357,6 +1357,28 @@ struct fwnode_handle *acpi_get_next_subnode(const struct fwnode_handle *fwnode,
+ 	return NULL;
  }
  
--
--static const struct reg_sequence aic3007_class_d[] = {
--	/* Class-D speaker driver init; datasheet p. 46 */
--	{ AIC3X_PAGE_SELECT, 0x0D },
--	{ 0xD, 0x0D },
--	{ 0x8, 0x5C },
--	{ 0x8, 0x5D },
--	{ 0x8, 0x5C },
--	{ AIC3X_PAGE_SELECT, 0x00 },
--};
--
- int aic3x_probe(struct device *dev, struct regmap *regmap, kernel_ulong_t driver_data)
- {
- 	struct aic3x_priv *aic3x;
-@@ -1825,13 +1828,6 @@ int aic3x_probe(struct device *dev, struct regmap *regmap, kernel_ulong_t driver
- 
- 	aic3x_configure_ocmv(dev, aic3x);
- 
--	if (aic3x->model == AIC3X_MODEL_3007) {
--		ret = regmap_register_patch(aic3x->regmap, aic3007_class_d,
--					    ARRAY_SIZE(aic3007_class_d));
--		if (ret != 0)
--			dev_err(dev, "Failed to init class D: %d\n", ret);
--	}
--
- 	ret = devm_snd_soc_register_component(dev, &soc_component_dev_aic3x, &aic3x_dai, 1);
- 	if (ret)
- 		return ret;
++/*
++ * acpi_get_next_present_subnode - Return the next present child node handle
++ * @fwnode: Firmware node to find the next child node for.
++ * @child: Handle to one of the device's child nodes or a null handle.
++ *
++ * Like acpi_get_next_subnode(), but the device nodes returned by
++ * acpi_get_next_present_subnode() are guaranteed to be present.
++ *
++ * Returns: The fwnode handle of the next present sub-node.
++ */
++static struct fwnode_handle *
++acpi_get_next_present_subnode(const struct fwnode_handle *fwnode,
++			      struct fwnode_handle *child)
++{
++	do {
++		child = acpi_get_next_subnode(fwnode, child);
++	} while (is_acpi_device_node(child) &&
++		 !acpi_device_is_present(to_acpi_device_node(child)));
++
++	return child;
++}
++
+ /**
+  * acpi_node_get_parent - Return parent fwnode of this fwnode
+  * @fwnode: Firmware node whose parent to get
+@@ -1701,7 +1723,7 @@ static int acpi_fwnode_irq_get(const struct fwnode_handle *fwnode,
+ 		.property_read_string_array =				\
+ 			acpi_fwnode_property_read_string_array,		\
+ 		.get_parent = acpi_node_get_parent,			\
+-		.get_next_child_node = acpi_get_next_subnode,		\
++		.get_next_child_node = acpi_get_next_present_subnode,	\
+ 		.get_named_child_node = acpi_fwnode_get_named_child_node, \
+ 		.get_name = acpi_fwnode_get_name,			\
+ 		.get_name_prefix = acpi_fwnode_get_name_prefix,		\
 -- 
 2.51.0
 
