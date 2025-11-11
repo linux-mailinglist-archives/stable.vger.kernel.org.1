@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F609C4A13F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61159C4A0BB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:56:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 17DCA4F131A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:56:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EDEF3AC938
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A88524BBEB;
-	Tue, 11 Nov 2025 00:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2DBE214210;
+	Tue, 11 Nov 2025 00:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUCjUKh1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JgP9bJ7R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D174086A;
-	Tue, 11 Nov 2025 00:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6134C97;
+	Tue, 11 Nov 2025 00:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822567; cv=none; b=GzyW04f2qvFyvOHlmR2fiweg14x5WnazqFhdtnPHtpnzFMM4jRR0sTw8bt8trp2TnzObIpb2IufKoL/okxCOZfptRkvBCEnR9Ggr7yIDmFiP7rsa140EhX+4ReScRL8knOQRW4PPB/d2O32lXaSKhZoYoabWS9bWNlc/XmJSA2A=
+	t=1762822571; cv=none; b=rmD8oRHQ6SMEEFhMT91PWh/FwO7uhwmrvX9GwcYW4Httzrx0SKHlTkVaH+TU9TNQcEHqm7O2mFUqIkhNa1F2U7I14QUshdQDnnVN4UBxivvDeVtWw9SwrQo0nrnw+GYJAxp31wc9bI25rx82noe0zLoJOFShIS9x5eqsZ/IGDxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822567; c=relaxed/simple;
-	bh=tGQxLlQrl+044a4aRXCjCkwzjHja4vPGGgzHuY573hM=;
+	s=arc-20240116; t=1762822571; c=relaxed/simple;
+	bh=Q4SIXdj4QSuh+hJrtzqHwKsgdew657vHylqGw4mi8Fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BMERbPjbsMYS6nT0qvSnIOs/klvHZGtERjsaz2Eqs6qcyWrbefKfmgYpdGfEN8xFq2TzBIWdoVgqK2dQAT4J/Tw6qKWf95glfMxID9wTBYMeBR5z8rMefTV+OzkXchl/744WJnNua18F2vzDCA3aYP6uE63DuH5sjRZdOQ/KP7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUCjUKh1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6EFC4CEFB;
-	Tue, 11 Nov 2025 00:56:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BQ/XsYIHOb2bD0LNyNx2mFtFhCOJn10x9Fm4cL1A1CgtlCAqa+4K/uunW5LsO7ceK9u+JwezqQ5sYJuEOGZSMrGf0s+kusDzmNF+OoXuV19F+kKd5n+igFTEQVujFBLzj0LlSparQRGoF3wn9DkLfy9S6LsBMDs2daZRpSW6B20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JgP9bJ7R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF19C19425;
+	Tue, 11 Nov 2025 00:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822566;
-	bh=tGQxLlQrl+044a4aRXCjCkwzjHja4vPGGgzHuY573hM=;
+	s=korg; t=1762822571;
+	bh=Q4SIXdj4QSuh+hJrtzqHwKsgdew657vHylqGw4mi8Fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OUCjUKh1YDED9ih6j0Vf4qZIpFDHN+3yq1qtJN3QpIK7RDzIK0J3G/EWioU4TXo0d
-	 8JdSkJxbgtlG/1xcITxHqVefl4nnI2hib6UdV9xmBASdmT56VRgFMkFQkhfMJa2dh+
-	 zeIVUVipQn2Ctolq2Kg345P50tJLcULOaCGX2Yyc=
+	b=JgP9bJ7RSrMAf998HfYyZ8S3mtME9AWrDxjqyg7i+HlhkoWx0gzfPR8x1uCIPhUhk
+	 Kp2i1WQ1Ojf/mULXUUVzWRY1YIlAuxR6km8HQRL+t3f6cPTMcLnfFgQDXBkdvxXepT
+	 iqYMt8ByOZbrHqwJfU8ln2ghgiLDKD2nTlgpW+TA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawei Zhao <phoenix500526@163.com>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
 	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 138/849] libbpf: Fix USDT SIB argument handling causing unrecognized register error
-Date: Tue, 11 Nov 2025 09:35:08 +0900
-Message-ID: <20251111004539.732790091@linuxfoundation.org>
+Subject: [PATCH 6.17 139/849] selftests/bpf: Fix bpf_prog_detach2 usage in test_lirc_mode2
+Date: Tue, 11 Nov 2025 09:35:09 +0900
+Message-ID: <20251111004539.756199226@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -60,203 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawei Zhao <phoenix500526@163.com>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit 758acb9ccfdbf854b55abaceaf1f3f229cde3d19 ]
+[ Upstream commit 98857d111c53954aa038fcbc4cf48873e4240f7c ]
 
-On x86-64, USDT arguments can be specified using Scale-Index-Base (SIB)
-addressing, e.g. "1@-96(%rbp,%rax,8)". The current USDT implementation
-in libbpf cannot parse this format, causing `bpf_program__attach_usdt()`
-to fail with -ENOENT (unrecognized register).
+Commit e9fc3ce99b34 ("libbpf: Streamline error reporting for high-level
+APIs") redefined the way that bpf_prog_detach2() returns. Therefore, adapt
+the usage in test_lirc_mode2_user.c.
 
-This patch fixes this by implementing the necessary changes:
-- add correct handling for SIB-addressed arguments in `bpf_usdt_arg`.
-- add adaptive support to `__bpf_usdt_arg_type` and
-  `__bpf_usdt_arg_spec` to represent SIB addressing parameters.
-
-Signed-off-by: Jiawei Zhao <phoenix500526@163.com>
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250827053128.1301287-2-phoenix500526@163.com
+Link: https://lore.kernel.org/bpf/20250828-selftests-bpf-v1-1-c7811cd8b98c@suse.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/usdt.bpf.h | 44 ++++++++++++++++++++++++++--
- tools/lib/bpf/usdt.c     | 62 ++++++++++++++++++++++++++++++++++++----
- 2 files changed, 99 insertions(+), 7 deletions(-)
+ tools/testing/selftests/bpf/test_lirc_mode2_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/usdt.bpf.h b/tools/lib/bpf/usdt.bpf.h
-index 2a7865c8e3fe3..43deb05a51970 100644
---- a/tools/lib/bpf/usdt.bpf.h
-+++ b/tools/lib/bpf/usdt.bpf.h
-@@ -34,13 +34,32 @@ enum __bpf_usdt_arg_type {
- 	BPF_USDT_ARG_CONST,
- 	BPF_USDT_ARG_REG,
- 	BPF_USDT_ARG_REG_DEREF,
-+	BPF_USDT_ARG_SIB,
- };
+diff --git a/tools/testing/selftests/bpf/test_lirc_mode2_user.c b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
+index 4694422aa76c3..88e4aeab21b7b 100644
+--- a/tools/testing/selftests/bpf/test_lirc_mode2_user.c
++++ b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
+@@ -74,7 +74,7 @@ int main(int argc, char **argv)
  
-+/*
-+ * This struct layout is designed specifically to be backwards/forward
-+ * compatible between libbpf versions for ARG_CONST, ARG_REG, and
-+ * ARG_REG_DEREF modes. ARG_SIB requires libbpf v1.7+.
-+ */
- struct __bpf_usdt_arg_spec {
- 	/* u64 scalar interpreted depending on arg_type, see below */
- 	__u64 val_off;
-+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
- 	/* arg location case, see bpf_usdt_arg() for details */
--	enum __bpf_usdt_arg_type arg_type;
-+	enum __bpf_usdt_arg_type arg_type: 8;
-+	/* index register offset within struct pt_regs */
-+	__u16 idx_reg_off: 12;
-+	/* scale factor for index register (1, 2, 4, or 8) */
-+	__u16 scale_bitshift: 4;
-+	/* reserved for future use, keeps reg_off offset stable */
-+	__u8 __reserved: 8;
-+#else
-+	__u8 __reserved: 8;
-+	__u16 idx_reg_off: 12;
-+	__u16 scale_bitshift: 4;
-+	enum __bpf_usdt_arg_type arg_type: 8;
-+#endif
- 	/* offset of referenced register within struct pt_regs */
- 	short reg_off;
- 	/* whether arg should be interpreted as signed value */
-@@ -149,7 +168,7 @@ int bpf_usdt_arg(struct pt_regs *ctx, __u64 arg_num, long *res)
- {
- 	struct __bpf_usdt_spec *spec;
- 	struct __bpf_usdt_arg_spec *arg_spec;
--	unsigned long val;
-+	unsigned long val, idx;
- 	int err, spec_id;
- 
- 	*res = 0;
-@@ -202,6 +221,27 @@ int bpf_usdt_arg(struct pt_regs *ctx, __u64 arg_num, long *res)
- 			return err;
- #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
- 		val >>= arg_spec->arg_bitshift;
-+#endif
-+		break;
-+	case BPF_USDT_ARG_SIB:
-+		/* Arg is in memory addressed by SIB (Scale-Index-Base) mode
-+		 * (e.g., "-1@-96(%rbp,%rax,8)" in USDT arg spec). We first
-+		 * fetch the base register contents and the index register
-+		 * contents from pt_regs. Then we calculate the final address
-+		 * as base + (index * scale) + offset, and do a user-space
-+		 * probe read to fetch the argument value.
-+		 */
-+		err = bpf_probe_read_kernel(&val, sizeof(val), (void *)ctx + arg_spec->reg_off);
-+		if (err)
-+			return err;
-+		err = bpf_probe_read_kernel(&idx, sizeof(idx), (void *)ctx + arg_spec->idx_reg_off);
-+		if (err)
-+			return err;
-+		err = bpf_probe_read_user(&val, sizeof(val), (void *)(val + (idx << arg_spec->scale_bitshift) + arg_spec->val_off));
-+		if (err)
-+			return err;
-+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+		val >>= arg_spec->arg_bitshift;
- #endif
- 		break;
- 	default:
-diff --git a/tools/lib/bpf/usdt.c b/tools/lib/bpf/usdt.c
-index 3373b9d45ac44..867bff6b06990 100644
---- a/tools/lib/bpf/usdt.c
-+++ b/tools/lib/bpf/usdt.c
-@@ -200,12 +200,23 @@ enum usdt_arg_type {
- 	USDT_ARG_CONST,
- 	USDT_ARG_REG,
- 	USDT_ARG_REG_DEREF,
-+	USDT_ARG_SIB,
- };
- 
- /* should match exactly struct __bpf_usdt_arg_spec from usdt.bpf.h */
- struct usdt_arg_spec {
- 	__u64 val_off;
--	enum usdt_arg_type arg_type;
-+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-+	enum usdt_arg_type arg_type: 8;
-+	__u16	idx_reg_off: 12;
-+	__u16	scale_bitshift: 4;
-+	__u8 __reserved: 8;     /* keep reg_off offset stable */
-+#else
-+	__u8 __reserved: 8;     /* keep reg_off offset stable */
-+	__u16	idx_reg_off: 12;
-+	__u16	scale_bitshift: 4;
-+	enum usdt_arg_type arg_type: 8;
-+#endif
- 	short reg_off;
- 	bool arg_signed;
- 	char arg_bitshift;
-@@ -1283,11 +1294,51 @@ static int calc_pt_regs_off(const char *reg_name)
- 
- static int parse_usdt_arg(const char *arg_str, int arg_num, struct usdt_arg_spec *arg, int *arg_sz)
- {
--	char reg_name[16];
--	int len, reg_off;
--	long off;
-+	char reg_name[16] = {0}, idx_reg_name[16] = {0};
-+	int len, reg_off, idx_reg_off, scale = 1;
-+	long off = 0;
-+
-+	if (sscanf(arg_str, " %d @ %ld ( %%%15[^,] , %%%15[^,] , %d ) %n",
-+		   arg_sz, &off, reg_name, idx_reg_name, &scale, &len) == 5 ||
-+		sscanf(arg_str, " %d @ ( %%%15[^,] , %%%15[^,] , %d ) %n",
-+		       arg_sz, reg_name, idx_reg_name, &scale, &len) == 4 ||
-+		sscanf(arg_str, " %d @ %ld ( %%%15[^,] , %%%15[^)] ) %n",
-+		       arg_sz, &off, reg_name, idx_reg_name, &len) == 4 ||
-+		sscanf(arg_str, " %d @ ( %%%15[^,] , %%%15[^)] ) %n",
-+		       arg_sz, reg_name, idx_reg_name, &len) == 3
-+		) {
-+		/*
-+		 * Scale Index Base case:
-+		 * 1@-96(%rbp,%rax,8)
-+		 * 1@(%rbp,%rax,8)
-+		 * 1@-96(%rbp,%rax)
-+		 * 1@(%rbp,%rax)
-+		 */
-+		arg->arg_type = USDT_ARG_SIB;
-+		arg->val_off = off;
- 
--	if (sscanf(arg_str, " %d @ %ld ( %%%15[^)] ) %n", arg_sz, &off, reg_name, &len) == 3) {
-+		reg_off = calc_pt_regs_off(reg_name);
-+		if (reg_off < 0)
-+			return reg_off;
-+		arg->reg_off = reg_off;
-+
-+		idx_reg_off = calc_pt_regs_off(idx_reg_name);
-+		if (idx_reg_off < 0)
-+			return idx_reg_off;
-+		arg->idx_reg_off = idx_reg_off;
-+
-+		/* validate scale factor and set fields directly */
-+		switch (scale) {
-+		case 1: arg->scale_bitshift = 0; break;
-+		case 2: arg->scale_bitshift = 1; break;
-+		case 4: arg->scale_bitshift = 2; break;
-+		case 8: arg->scale_bitshift = 3; break;
-+		default:
-+			pr_warn("usdt: invalid SIB scale %d, expected 1, 2, 4, 8\n", scale);
-+			return -EINVAL;
-+		}
-+	} else if (sscanf(arg_str, " %d @ %ld ( %%%15[^)] ) %n",
-+				arg_sz, &off, reg_name, &len) == 3) {
- 		/* Memory dereference case, e.g., -4@-20(%rbp) */
- 		arg->arg_type = USDT_ARG_REG_DEREF;
- 		arg->val_off = off;
-@@ -1306,6 +1357,7 @@ static int parse_usdt_arg(const char *arg_str, int arg_num, struct usdt_arg_spec
- 	} else if (sscanf(arg_str, " %d @ %%%15s %n", arg_sz, reg_name, &len) == 2) {
- 		/* Register read case, e.g., -4@%eax */
- 		arg->arg_type = USDT_ARG_REG;
-+		/* register read has no memory offset */
- 		arg->val_off = 0;
- 
- 		reg_off = calc_pt_regs_off(reg_name);
+ 	/* Let's try detach it before it was ever attached */
+ 	ret = bpf_prog_detach2(progfd, lircfd, BPF_LIRC_MODE2);
+-	if (ret != -1 || errno != ENOENT) {
++	if (ret != -ENOENT) {
+ 		printf("bpf_prog_detach2 not attached should fail: %m\n");
+ 		return 1;
+ 	}
 -- 
 2.51.0
 
