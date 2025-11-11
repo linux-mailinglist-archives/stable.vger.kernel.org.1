@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DECC4A067
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:09 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C37C4A091
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A54D3AC64B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9E8F634BDEF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05ED244693;
-	Tue, 11 Nov 2025 00:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A861D6DB5;
+	Tue, 11 Nov 2025 00:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PK6WHAv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CsVxDx5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756FD4C97;
-	Tue, 11 Nov 2025 00:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42364C97;
+	Tue, 11 Nov 2025 00:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822507; cv=none; b=GnIfleSzkHgHB0o+OSkUGOeC/PVQ5wZ1uJmkaZzEtrBgriAjY6STP61FO62FNng+EZBFpos2p1v6kFR+LpbYFLJ8rtZYy34z4+Gz6M9Y/u01Ng/ntw8qSHOhKz6PsJFa7PbJk5BNkTJU8heti5xAQkgMMG0QMR+iQivOL8OjQK4=
+	t=1762822536; cv=none; b=P4kIvs+oXuG0bUfL/hON4c0uiWveU48Oql4itwtLdFvyodS7/SAJ9scJvJEm/ofD6Jr3gVwcvjum51VR4ou4/En3AD154XpCVeT7TrtUSKbF9yB96AGG8j8qrqPWZW312Uwqi1L1+60NATXr3ONrzX+5BTxZFzasxTtNapnQcV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822507; c=relaxed/simple;
-	bh=4IIXF6NqgK/aoGAEq6K/CO+w4RkgnGZJkyaieL3mJdA=;
+	s=arc-20240116; t=1762822536; c=relaxed/simple;
+	bh=xULsslHUPj45kgDuifVkKabVLoFmzHXkiW9mnmczbtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iguLXi/eoxgT7Z2RvHzuo6VGKHaQ9Bz+gwcHoDQ5wfNK7BS9YvJHqTx8lHrY91SAzenSIiblSh+Yl/XRnf4gTaNKLdiqsyl8+0o9FuvWZMi/WTGKaaBdotPDKcGGVWDhWICVpT9UAilvfa5RUa+bvLw0xHycnvP0lqNnYRtFUxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PK6WHAv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12667C16AAE;
-	Tue, 11 Nov 2025 00:55:06 +0000 (UTC)
+	 MIME-Version; b=hDF5ei3uW8d93S8oOCIjSJVIJLuxCMYshp98QHoywf3DmGpOsK1f4DkQYpozbMAamfZTSWsoQaBILvaHsIaGPnoi9yP5/4jf+M55D/PKK8+NO2nkM+L9Qb+U6qnsDr0vs9rz68eOtjXQ4t7+BKvrs7Grt0fRJXc0VIBa7mgbchE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CsVxDx5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6363EC19425;
+	Tue, 11 Nov 2025 00:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822507;
-	bh=4IIXF6NqgK/aoGAEq6K/CO+w4RkgnGZJkyaieL3mJdA=;
+	s=korg; t=1762822536;
+	bh=xULsslHUPj45kgDuifVkKabVLoFmzHXkiW9mnmczbtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PK6WHAv5JgZDPv59w4szLYVbuW/Cw6Vlh2lxPIO6rjRgvLuiNqOOpt9sA+B+ZdaRF
-	 TCl4eLH6GcMYV40/AMluHBoiK9cFzw/A+PM5cSJJvKNvWaeJQ8bIvjm1GROITItrBg
-	 R/XBmxJvyzBmXI7prp5787N5F7adt7w9Pp6oJitw=
+	b=CsVxDx5r41CJvVmmH+aYUlRVAwIQwBU9PZn1GLv7J9qsq2jg9/wUw9qorFJKlY/Ch
+	 E2g+93T9ROroRaxAzRqzJV/EkvkCVDR6F6S40h7yTjV+UE8FdOVQO7EBpoD/wtctw2
+	 3EOuCBBlzx1gZcHjkBYVqAtE1i91DRreVQlzBfPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 121/849] spi: loopback-test: Dont use %pK through printk
-Date: Tue, 11 Nov 2025 09:34:51 +0900
-Message-ID: <20251111004539.324238635@linuxfoundation.org>
+Subject: [PATCH 6.17 122/849] spi: spi-qpic-snand: handle use_ecc parameter of qcom_spi_config_cw_read()
+Date: Tue, 11 Nov 2025 09:34:52 +0900
+Message-ID: <20251111004539.346972829@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -60,88 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit b832b19318534bb4f1673b24d78037fee339c679 ]
+[ Upstream commit 9c45f95222beecd6a284fd1284d54dd7a772cf59 ]
 
-In the past %pK was preferable to %p as it would not leak raw pointer
-values into the kernel log.
-Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
-the regular %p has been improved to avoid this issue.
-Furthermore, restricted pointers ("%pK") were never meant to be used
-through printk(). They can still unintentionally leak raw pointers or
-acquire sleeping locks in atomic contexts.
+During raw read, neither the status of the ECC correction nor the erased
+state of the codeword gets checked by the qcom_spi_read_cw_raw() function,
+so in case of raw access reading the corresponding registers via DMA is
+superfluous.
 
-Switch to the regular pointer formatting which is safer and
-easier to reason about.
-There are still a few users of %pK left, but these use it through seq_file,
-for which its usage is safe.
+Extend the qcom_spi_config_cw_read() function to evaluate the existing
+(but actually unused) 'use_ecc' parameter, and configure reading only
+the flash status register when ECC is not used.
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://patch.msgid.link/20250811-restricted-pointers-spi-v1-1-32c47f954e4d@linutronix.de
+With the change, the code gets in line with the corresponding part of
+the config_nand_cw_read() function in the qcom_nandc driver.
+
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250808-qpic-snand-handle-use_ecc-v1-1-67289fbb5e2f@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-loopback-test.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-qpic-snand.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 7dd92deffe3fb..e0b131aa29b62 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -446,7 +446,7 @@ static void spi_test_dump_message(struct spi_device *spi,
- 	int i;
- 	u8 b;
+diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
+index 780abb967822a..5a247eebde4d9 100644
+--- a/drivers/spi/spi-qpic-snand.c
++++ b/drivers/spi/spi-qpic-snand.c
+@@ -494,9 +494,14 @@ qcom_spi_config_cw_read(struct qcom_nand_controller *snandc, bool use_ecc, int c
+ 	qcom_write_reg_dma(snandc, &snandc->regs->cmd, NAND_FLASH_CMD, 1, NAND_BAM_NEXT_SGL);
+ 	qcom_write_reg_dma(snandc, &snandc->regs->exec, NAND_EXEC_CMD, 1, NAND_BAM_NEXT_SGL);
  
--	dev_info(&spi->dev, "  spi_msg@%pK\n", msg);
-+	dev_info(&spi->dev, "  spi_msg@%p\n", msg);
- 	if (msg->status)
- 		dev_info(&spi->dev, "    status:        %i\n",
- 			 msg->status);
-@@ -456,15 +456,15 @@ static void spi_test_dump_message(struct spi_device *spi,
- 		 msg->actual_length);
+-	qcom_read_reg_dma(snandc, NAND_FLASH_STATUS, 2, 0);
+-	qcom_read_reg_dma(snandc, NAND_ERASED_CW_DETECT_STATUS, 1,
+-			  NAND_BAM_NEXT_SGL);
++	if (use_ecc) {
++		qcom_read_reg_dma(snandc, NAND_FLASH_STATUS, 2, 0);
++		qcom_read_reg_dma(snandc, NAND_ERASED_CW_DETECT_STATUS, 1,
++				  NAND_BAM_NEXT_SGL);
++	} else {
++		qcom_read_reg_dma(snandc, NAND_FLASH_STATUS, 1,
++				  NAND_BAM_NEXT_SGL);
++	}
+ }
  
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
--		dev_info(&spi->dev, "    spi_transfer@%pK\n", xfer);
-+		dev_info(&spi->dev, "    spi_transfer@%p\n", xfer);
- 		dev_info(&spi->dev, "      len:    %i\n", xfer->len);
--		dev_info(&spi->dev, "      tx_buf: %pK\n", xfer->tx_buf);
-+		dev_info(&spi->dev, "      tx_buf: %p\n", xfer->tx_buf);
- 		if (dump_data && xfer->tx_buf)
- 			spi_test_print_hex_dump("          TX: ",
- 						xfer->tx_buf,
- 						xfer->len);
- 
--		dev_info(&spi->dev, "      rx_buf: %pK\n", xfer->rx_buf);
-+		dev_info(&spi->dev, "      rx_buf: %p\n", xfer->rx_buf);
- 		if (dump_data && xfer->rx_buf)
- 			spi_test_print_hex_dump("          RX: ",
- 						xfer->rx_buf,
-@@ -558,7 +558,7 @@ static int spi_check_rx_ranges(struct spi_device *spi,
- 		/* if still not found then something has modified too much */
- 		/* we could list the "closest" transfer here... */
- 		dev_err(&spi->dev,
--			"loopback strangeness - rx changed outside of allowed range at: %pK\n",
-+			"loopback strangeness - rx changed outside of allowed range at: %p\n",
- 			addr);
- 		/* do not return, only set ret,
- 		 * so that we list all addresses
-@@ -696,7 +696,7 @@ static int spi_test_translate(struct spi_device *spi,
- 	}
- 
- 	dev_err(&spi->dev,
--		"PointerRange [%pK:%pK[ not in range [%pK:%pK[ or [%pK:%pK[\n",
-+		"PointerRange [%p:%p[ not in range [%p:%p[ or [%p:%p[\n",
- 		*ptr, *ptr + len,
- 		RX(0), RX(SPI_TEST_MAX_SIZE),
- 		TX(0), TX(SPI_TEST_MAX_SIZE));
+ static int qcom_spi_block_erase(struct qcom_nand_controller *snandc)
 -- 
 2.51.0
 
