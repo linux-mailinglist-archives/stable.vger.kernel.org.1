@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E08C4A244
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:02:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84257C4A24A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:03:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D03CA4E7758
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0E08F4F2717
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3318741C62;
-	Tue, 11 Nov 2025 01:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D185D41C62;
+	Tue, 11 Nov 2025 01:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZY1ug+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xS4Zu8oW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E359F2505AA;
-	Tue, 11 Nov 2025 01:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C77E7262A;
+	Tue, 11 Nov 2025 01:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822806; cv=none; b=j4e45UoyLtBPxIT+PRvBBOP1JKsPYOrUthCm6dPDApO/3j7+a79ITRAG8yOFQEbL/zG5UKx1qtST/aQDrvZLuZlcbkt70EJm7DLm05F7h7HjjKA9hav/UilT3cZL8rS7NxE9Jt87sCRaZ06Db/grBp975k2MNb/3DKKh/4H9Nh4=
+	t=1762822810; cv=none; b=lppEClt86QSgaXe8ytMksnDU0ehZoaQwSroIFTy0Kks8i0sU226bsTfLQu2NZAmiiVmPgOLOweisExF4YSNWptwvcsgqOHNVROHYB2gng+1tAe+AUoBYlT3HLLJkV2oV9rOM4z0hT4vuP+/30iTNd7a9hStgdbbKHMxhSNBwZXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822806; c=relaxed/simple;
-	bh=FV8J7uopejTU8V7QQ3+C+mXqvpEmoXr67SZMe2tHjig=;
+	s=arc-20240116; t=1762822810; c=relaxed/simple;
+	bh=2b5aeT5il8QcHRX0QNMCXjt24N5a1dBL/gVrtCzp+SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G3P9B5e92g50Axzj/S2o01T6AJ789L7iqgdRTZlLrrpSBVOvuDuspiuJf2pS6OTU8jmi9UP8QFAqB/YMe8A86SGWSArCTqWNnLghr/lDpx29ig94uIjGNjFunJa/PsI7N0mwljx6sylo5y/e5QU2o3LXWaSZi+JpKmjAUTHXFK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZY1ug+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CEEC19421;
-	Tue, 11 Nov 2025 01:00:05 +0000 (UTC)
+	 MIME-Version; b=VwgkauHEQ5zTzKxcg/tZoC3skzhwgTl+OVHqI+taiI3ZLrMquRs6kSdTXPwmjs6FltDIzhUiP+kE/OzCD4VGVJB34iazag/bb6/MfbvItlx8v8CQiLug1EeXFX7qFeEe0ibBRt6bflayQeEvDGAJ23F10aGMP4YaxS+HsUsAYfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xS4Zu8oW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E90C116B1;
+	Tue, 11 Nov 2025 01:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822805;
-	bh=FV8J7uopejTU8V7QQ3+C+mXqvpEmoXr67SZMe2tHjig=;
+	s=korg; t=1762822810;
+	bh=2b5aeT5il8QcHRX0QNMCXjt24N5a1dBL/gVrtCzp+SM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZY1ug+FIyfmw33W8KOSlwbgok6YWfnWsvJ/pbfJ6OQgHUpAJbTTBInKYC133DTlx
-	 YuX5O5qAz9k8nDrxm0KIKxSS7jSyfnukEaoym/n7R1Jez0XHDo68BgaNo8Y6J1JhQ+
-	 t526WqGScU/XEo3W5w4rKyEq+3kDZiiXC9zsub8E=
+	b=xS4Zu8oWdew/eipqqgN+5QIlmCn3zE1dcL64DsJAwg0p6O2o3dCyAu6F8OxeMNTxq
+	 T/3a2CV8shPCj2e4h6YNidywk6v52lc9rvpfnlOF223W/nUQrASNLCpr6aWmC3ws9N
+	 mE1uE4Kb2V9I2SoivVhIHi34Bf76qh2wwueA6i8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam van Kampen <sam@tehsvk.net>,
+	Hans de Goede <hansg@kernel.org>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 112/565] ACPI: resource: Skip IRQ override on ASUS Vivobook Pro N6506CU
-Date: Tue, 11 Nov 2025 09:39:28 +0900
-Message-ID: <20251111004529.474638236@linuxfoundation.org>
+Subject: [PATCH 6.12 113/565] ACPI: scan: Add Intel CVS ACPI HIDs to acpi_ignore_dep_ids[]
+Date: Tue, 11 Nov 2025 09:39:29 +0900
+Message-ID: <20251111004529.496125921@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,43 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sam van Kampen <sam@tehsvk.net>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 3a351de0d9c86e23b9eca25838b19468aab02f38 ]
+[ Upstream commit 4405a214df146775338a1e6232701a29024b82e1 ]
 
-Just like the other Vivobooks here, the N6506CU has its keyboard IRQ
-described as ActiveLow in the DSDT, which the kernel overrides to
-EdgeHigh, causing the internal keyboard not to work.
+Some x86/ACPI laptops with MIPI cameras have a INTC10DE or INTC10E0 ACPI
+device in the _DEP dependency list of the ACPI devices for the camera-
+sensors (which have flags.honor_deps set).
 
-Add the N6506CU to the irq1_level_low_skip_override[] quirk table to fix
-this.
+These devices are for an Intel Vision CVS chip for which an out of tree
+driver is available [1].
 
-Signed-off-by: Sam van Kampen <sam@tehsvk.net>
-Link: https://patch.msgid.link/20250829145221.2294784-2-sam@tehsvk.net
+The camera sensor works fine without a driver being loaded for this
+ACPI device on the 2 laptops this was tested on:
+
+ThinkPad X1 Carbon Gen 12 (Meteor Lake)
+ThinkPad X1 2-in-1 Gen 10 (Arrow Lake)
+
+For now add these HIDs to acpi_ignore_dep_ids[] so that
+acpi_dev_ready_for_enumeration() will return true once the other _DEP
+dependencies are met and an i2c_client for the camera sensor will get
+instantiated.
+
+Link: https://github.com/intel/vision-drivers/ [1]
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://patch.msgid.link/20250829142748.21089-1-hansg@kernel.org
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/acpi/scan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 7d59c6c9185fc..4937032490689 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -510,6 +510,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "N6506M"),
- 		},
- 	},
-+	{
-+		/* Asus Vivobook Pro N6506CU* */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "N6506CU"),
-+		},
-+	},
- 	{
- 		/* LG Electronics 17U70P */
- 		.matches = {
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 7ecc401fb97f9..4ef94d06365fc 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -847,6 +847,8 @@ static bool acpi_info_matches_ids(struct acpi_device_info *info,
+ static const char * const acpi_ignore_dep_ids[] = {
+ 	"PNP0D80", /* Windows-compatible System Power Management Controller */
+ 	"INT33BD", /* Intel Baytrail Mailbox Device */
++	"INTC10DE", /* Intel CVS LNL */
++	"INTC10E0", /* Intel CVS ARL */
+ 	"LATT2021", /* Lattice FW Update Client Driver */
+ 	NULL
+ };
 -- 
 2.51.0
 
