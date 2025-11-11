@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D9F6C4B223
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:01:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86580C4AE61
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F10894FD54F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 237EF18972D3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D79341642;
-	Tue, 11 Nov 2025 01:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46783385B8;
+	Tue, 11 Nov 2025 01:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crmBE5DH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVByikz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA87305E24;
-	Tue, 11 Nov 2025 01:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824D2189B84;
+	Tue, 11 Nov 2025 01:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825545; cv=none; b=ERLLuv8htxmtZmWUZwwLk1LQBi2VPKQyx99N1xuBHkXCmkkIPhBqaH5M/RqL/UFTYXIaKN+/VyPy3qu5MGIk2zbx0osiZLdWfMvK3Usx2FIP/rrsTuX5m06Q8/614qSds7y/Vb8kfwfpfQ8/fd6s5zwS5tkhs2x1e/2JtOPDoE8=
+	t=1762824973; cv=none; b=H6hdnYxUDyG2JE6p1aUkiPxIJWMGpu3nYI6vnUcpbKzo+ho28TtKUTtw8qy7+50kP/jy3pPHHhspy07xAQLq+OnsR2Rw+6/QjSKQX14KaMnlW03w/TYY2CQnO2MRDqbd5wAmHkkHVc+wycCy4lbvuppXf0zVK5GQwSODt3vSPwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825545; c=relaxed/simple;
-	bh=cBMrFxb5zrADD1Wj7VPaY8jTrNPZpf75WBSmI2HY8Ys=;
+	s=arc-20240116; t=1762824973; c=relaxed/simple;
+	bh=iTaxvizlyUyhgnfEg4YgeWIw9gjea9r/mUuL1gYPfF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dFF3CgsG+j3VnWm1uDvxohATRREMGKXXehDFti/ZAfQ1K9aacNioBVxnQ5aHGD2278ZrsXdOyZLr+yKyRIOo2wjn9HtmAAOhHeWCejaY++RF1wYpIeO5cvpvn4Q2TqYt3bH6MReJ1UJMO4PazNl0fZywJSsMSNsIH2hywDKOa7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crmBE5DH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39881C4AF0B;
-	Tue, 11 Nov 2025 01:45:45 +0000 (UTC)
+	 MIME-Version; b=R+SidSuz2hRAeWSOhsHE3qcBwQLHXMG92um8oVF/uKWExv5bjSaV47vPCSSOmUqjOCVya1POWo+3OcIB/Vd39hiV6V6E8cJehm/q92B3zVPkQ1ouUlF5eD8cA+m2oyLayULNs5dzvZugYIAqdo9mTkXv9khNUKgGYS+GV+r8YPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVByikz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24293C116B1;
+	Tue, 11 Nov 2025 01:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825545;
-	bh=cBMrFxb5zrADD1Wj7VPaY8jTrNPZpf75WBSmI2HY8Ys=;
+	s=korg; t=1762824973;
+	bh=iTaxvizlyUyhgnfEg4YgeWIw9gjea9r/mUuL1gYPfF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=crmBE5DHboUPumn3MUpTNaX4LinIQWrk2qlnzh+iq4La4wPdCZ2/HYkNzh1m2j1wm
-	 W6ohyHZK1aZU+XsdHaFmD1zCqvwGEm30bMiJGTiBcgrUi+Phd8JCzIivkZGYZfTSa/
-	 sa+YM0pRVV8pXTxgtCnd1LrtQMcspAVOvphSqzN0=
+	b=yVByikz8LoYylFDLSGMkMDcysJzpVVenRU8Do8qOVE5cHcvpw/Q8BsMTXEgJnEqFR
+	 5C0ss4KIhtaEgHj2bzX8sC1AnFfnd86wXaHHnXYb5Ejz/VxBYVfB59EF1O3Rhh03Sd
+	 276KXVFISvXX8Zz83LIPP+cwOwW+pYZ/QHbCX3Z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.17 846/849] drm/amd/display: Reject modes with too high pixel clock on DCE6-10
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>
+Subject: [PATCH 6.12 560/565] extcon: adc-jack: Cleanup wakeup source only if it was enabled
 Date: Tue, 11 Nov 2025 09:46:56 +0900
-Message-ID: <20251111004556.873004663@linuxfoundation.org>
+Message-ID: <20251111004539.612765492@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,162 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 118800b0797a046adaa2a8e9dee9b971b78802a7 upstream.
+commit 92bac7d4de9c07933f6b76d8f1c7f8240f911f4f upstream.
 
-Reject modes with a pixel clock higher than the maximum display
-clock. Use 400 MHz as a fallback value when the maximum display
-clock is not known. Pixel clocks that are higher than the display
-clock just won't work and are not supported.
+Driver in the probe enables wakeup source conditionally, so the cleanup
+path should do the same - do not release the wakeup source memory if it
+was not allocated.
 
-With the addition of the YUV422	fallback, DC can now accidentally
-select a mode requiring higher pixel clock than actually supported
-when the DP version supports the required bandwidth but the clock
-is otherwise too high for the display engine. DCE 6-10 don't
-support these modes but they don't have a bandwidth calculation
-to reject them properly.
-
-Fixes: db291ed1732e ("drm/amd/display: Add fallback path for YCBCR422")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/lkml/20250509071703.39442-2-krzysztof.kozlowski@linaro.org/
+Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Closes: https://lore.kernel.org/r/22aaebb7-553b-4571-8a43-58a523241082@wanadoo.fr/
+Fixes: 78b6a991eb6c ("extcon: adc-jack: Fix wakeup source leaks on device unbind")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c      |    3 +++
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c     |    5 +++++
- drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c |   10 +++++++++-
- drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c   |   10 +++++++++-
- drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c   |   10 +++++++++-
- 5 files changed, 35 insertions(+), 3 deletions(-)
+ drivers/extcon/extcon-adc-jack.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-@@ -463,6 +463,9 @@ void dce_clk_mgr_construct(
- 		clk_mgr->max_clks_state = DM_PP_CLOCKS_STATE_NOMINAL;
- 	clk_mgr->cur_min_clks_state = DM_PP_CLOCKS_STATE_INVALID;
+--- a/drivers/extcon/extcon-adc-jack.c
++++ b/drivers/extcon/extcon-adc-jack.c
+@@ -164,7 +164,8 @@ static void adc_jack_remove(struct platf
+ {
+ 	struct adc_jack_data *data = platform_get_drvdata(pdev);
  
-+	base->clks.max_supported_dispclk_khz =
-+		clk_mgr->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
-+
- 	dce_clock_read_integrated_info(clk_mgr);
- 	dce_clock_read_ss_info(clk_mgr);
+-	device_init_wakeup(&pdev->dev, false);
++	if (data->wakeup_source)
++		device_init_wakeup(&pdev->dev, false);
+ 	free_irq(data->irq, data);
+ 	cancel_work_sync(&data->handler.work);
  }
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-@@ -147,6 +147,8 @@ void dce60_clk_mgr_construct(
- 		struct dc_context *ctx,
- 		struct clk_mgr_internal *clk_mgr)
- {
-+	struct clk_mgr *base = &clk_mgr->base;
-+
- 	dce_clk_mgr_construct(ctx, clk_mgr);
- 
- 	memcpy(clk_mgr->max_clks_by_state,
-@@ -157,5 +159,8 @@ void dce60_clk_mgr_construct(
- 	clk_mgr->clk_mgr_shift = &disp_clk_shift;
- 	clk_mgr->clk_mgr_mask = &disp_clk_mask;
- 	clk_mgr->base.funcs = &dce60_funcs;
-+
-+	base->clks.max_supported_dispclk_khz =
-+		clk_mgr->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
- }
- 
---- a/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
-@@ -29,6 +29,7 @@
- #include "stream_encoder.h"
- 
- #include "resource.h"
-+#include "clk_mgr.h"
- #include "include/irq_service_interface.h"
- #include "virtual/virtual_stream_encoder.h"
- #include "dce110/dce110_resource.h"
-@@ -843,10 +844,17 @@ static enum dc_status dce100_validate_ba
- {
- 	int i;
- 	bool at_least_one_pipe = false;
-+	struct dc_stream_state *stream = NULL;
-+	const uint32_t max_pix_clk_khz = max(dc->clk_mgr->clks.max_supported_dispclk_khz, 400000);
- 
- 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
--		if (context->res_ctx.pipe_ctx[i].stream)
-+		stream = context->res_ctx.pipe_ctx[i].stream;
-+		if (stream) {
- 			at_least_one_pipe = true;
-+
-+			if (stream->timing.pix_clk_100hz >= max_pix_clk_khz * 10)
-+				return DC_FAIL_BANDWIDTH_VALIDATE;
-+		}
- 	}
- 
- 	if (at_least_one_pipe) {
---- a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
-@@ -34,6 +34,7 @@
- #include "stream_encoder.h"
- 
- #include "resource.h"
-+#include "clk_mgr.h"
- #include "include/irq_service_interface.h"
- #include "irq/dce60/irq_service_dce60.h"
- #include "dce110/dce110_timing_generator.h"
-@@ -870,10 +871,17 @@ static enum dc_status dce60_validate_ban
- {
- 	int i;
- 	bool at_least_one_pipe = false;
-+	struct dc_stream_state *stream = NULL;
-+	const uint32_t max_pix_clk_khz = max(dc->clk_mgr->clks.max_supported_dispclk_khz, 400000);
- 
- 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
--		if (context->res_ctx.pipe_ctx[i].stream)
-+		stream = context->res_ctx.pipe_ctx[i].stream;
-+		if (stream) {
- 			at_least_one_pipe = true;
-+
-+			if (stream->timing.pix_clk_100hz >= max_pix_clk_khz * 10)
-+				return DC_FAIL_BANDWIDTH_VALIDATE;
-+		}
- 	}
- 
- 	if (at_least_one_pipe) {
---- a/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
-@@ -32,6 +32,7 @@
- #include "stream_encoder.h"
- 
- #include "resource.h"
-+#include "clk_mgr.h"
- #include "include/irq_service_interface.h"
- #include "irq/dce80/irq_service_dce80.h"
- #include "dce110/dce110_timing_generator.h"
-@@ -876,10 +877,17 @@ static enum dc_status dce80_validate_ban
- {
- 	int i;
- 	bool at_least_one_pipe = false;
-+	struct dc_stream_state *stream = NULL;
-+	const uint32_t max_pix_clk_khz = max(dc->clk_mgr->clks.max_supported_dispclk_khz, 400000);
- 
- 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
--		if (context->res_ctx.pipe_ctx[i].stream)
-+		stream = context->res_ctx.pipe_ctx[i].stream;
-+		if (stream) {
- 			at_least_one_pipe = true;
-+
-+			if (stream->timing.pix_clk_100hz >= max_pix_clk_khz * 10)
-+				return DC_FAIL_BANDWIDTH_VALIDATE;
-+		}
- 	}
- 
- 	if (at_least_one_pipe) {
 
 
 
