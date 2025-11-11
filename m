@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-193197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408D3C4A08B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F74CC4A11E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEE773AC623
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2079C4F5237
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5116E24A043;
-	Tue, 11 Nov 2025 00:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4E824113D;
+	Tue, 11 Nov 2025 00:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxCe0Sj+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPRdRfbZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BDF4C97;
-	Tue, 11 Nov 2025 00:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853B44C97;
+	Tue, 11 Nov 2025 00:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822530; cv=none; b=l4aYvJt4SaaxS2xhXqsOfIH0WX1lsE5kixpGcA1Zp5MmZ1SmsUtziDBjeoTiwhc0Sw41qY2Hzz4jSawAp3rTp/+aoffx9wOpEHQhMVKb0yWHlPsL2rb73tzc4th27TFBV1vZSWugClDfIUcFpyGzbAVBh/X+TWzoM6nJxQ6C3Mo=
+	t=1762822534; cv=none; b=WA1TWP6iwP/v0jwVMRWn8OaZL0vNhoXuCpT3+L3/kA30RwRCr3uQKPDVObheiZCvxcTCSCwsbr7oz8IFl8J0MSK3HA7zLB3gvEyx8EwiI+fWFFa6QGJJ6eqUQl+nfTb+M7pxrFr73dY4tERXE/Y8yxWPpTOEsMlY8Q8UE7qfcRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822530; c=relaxed/simple;
-	bh=aWeNZT2zFIB4b6hXN+7g5nSt8xSZ/P4G1/YigYr6UXM=;
+	s=arc-20240116; t=1762822534; c=relaxed/simple;
+	bh=4ihAXwSMs6F+MmfR1F6oaTsr/rMhs4psg/OV9E/reaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gze+AqmCuEyUuwNcTGkljXNiyiohFVAk9tatnBn2cdQdoMtkXWF3mjjTQXntu5FjjCvTXaiwkPSSCqyBm73iwPKCIv3/6q3x6k49Z45Hbb8SSrMjHmW3S5V/3s0fbDMgcBPai6ojRsq+SGpzU8d6jdBD8C+rfTxri0tuYPWZpT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxCe0Sj+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF47C4AF09;
-	Tue, 11 Nov 2025 00:55:29 +0000 (UTC)
+	 MIME-Version; b=oyzkQhf4CNTvWkVfugp8UTJaKGd9zgOwwhjqS5hGUD+hru2hsojdJyOK2JAhJDtdDLE4FNQcG79C6gKhYMpytzPsWipHyfjT+TKuZL1vvAcyyzae6qNEEo+EBUpwRKLfc1qG43qMOMwLsdkeyjU9QKgv9qub6NkUCIuuP+497Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPRdRfbZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24CA2C113D0;
+	Tue, 11 Nov 2025 00:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822529;
-	bh=aWeNZT2zFIB4b6hXN+7g5nSt8xSZ/P4G1/YigYr6UXM=;
+	s=korg; t=1762822534;
+	bh=4ihAXwSMs6F+MmfR1F6oaTsr/rMhs4psg/OV9E/reaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vxCe0Sj+42Dl+HFBXYAu2Y/hF3zZFXBTJGITSwP0CjmwfR4iBRvrSwoCxtu9x4tpA
-	 29s2Bg7t5q4NkikKAEby6+ao739bSExZJAqC2HVnsAuIW0enu7mZq3HZTwt4a9NU2A
-	 YlmMLMVM1Cg9qZAq8PpwW/8SxGUvukCAz3v58mTE=
+	b=RPRdRfbZa96gDOSpDNXQfApuk0RpczQ8Usull9eo7d7gZs9r6TdilUStgNP4Hf7mP
+	 HL1uEutO0ccbf0A77b7a8xp1HBvyvqpuLBiszPXnoX3J17fvWSjreiPnkIbOdj7fsW
+	 idjJFCTDhK4ukIZggBZQJPf+4f6LmYKiLHq1yqoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kendall Willis <k-willis@ti.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Nishanth Menon <nm@ti.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 131/849] firmware: ti_sci: Enable abort handling of entry to LPM
-Date: Tue, 11 Nov 2025 09:35:01 +0900
-Message-ID: <20251111004539.561610240@linuxfoundation.org>
+Subject: [PATCH 6.17 132/849] firewire: ohci: move self_id_complete tracepoint after validating register
+Date: Tue, 11 Nov 2025 09:35:02 +0900
+Message-ID: <20251111004539.586112014@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,153 +65,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kendall Willis <k-willis@ti.com>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-[ Upstream commit 0fdd3240fe5a9bf4785e40506bf86b7e16546b83 ]
+[ Upstream commit 696968262aeee51e1c0529c3c060ddd180702e02 ]
 
-The PM co-processor (device manager or DM) adds the ability to abort
-entry to a low power mode by clearing the mode selection in the
-latest version of its firmware (11.01.09) [1].
+The value of OHCI1394_SelfIDCount register includes an error-indicating
+bit. It is safer to place the tracepoint probe after validating the
+register value.
 
-Enable the ti_sci driver to support the LPM abort call which clears the
-low power mode selection of the DM. This fixes an issue where failed
-system suspend attempts would cause subsequent suspends to fail.
-
-After system suspend completes, regardless of if system suspend succeeds
-or fails, the ->complete() hook in TI SCI will be called. In the
-->complete() hook, a message will be sent to the DM to clear the current
-low power mode selection. Clearing the low power mode selection
-unconditionally will not cause any error in the DM.
-
-[1] https://software-dl.ti.com/tisci/esd/latest/2_tisci_msgs/pm/lpm.html
-
-Signed-off-by: Kendall Willis <k-willis@ti.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/20250819195453.1094520-1-k-willis@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Link: https://lore.kernel.org/r/20250823030954.268412-2-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/ti_sci.c | 57 +++++++++++++++++++++++++++++++++++++--
- drivers/firmware/ti_sci.h |  3 +++
- 2 files changed, 58 insertions(+), 2 deletions(-)
+ drivers/firewire/ohci.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
-index ae5fd1936ad32..49fd2ae01055d 100644
---- a/drivers/firmware/ti_sci.c
-+++ b/drivers/firmware/ti_sci.c
-@@ -2015,6 +2015,47 @@ static int ti_sci_cmd_set_latency_constraint(const struct ti_sci_handle *handle,
- 	return ret;
- }
- 
-+/**
-+ * ti_sci_cmd_lpm_abort() - Abort entry to LPM by clearing selection of LPM to enter
-+ * @dev:	Device pointer corresponding to the SCI entity
-+ *
-+ * Return: 0 if all went well, else returns appropriate error value.
-+ */
-+static int ti_sci_cmd_lpm_abort(struct device *dev)
-+{
-+	struct ti_sci_info *info = dev_get_drvdata(dev);
-+	struct ti_sci_msg_hdr *req;
-+	struct ti_sci_msg_hdr *resp;
-+	struct ti_sci_xfer *xfer;
-+	int ret = 0;
-+
-+	xfer = ti_sci_get_one_xfer(info, TI_SCI_MSG_LPM_ABORT,
-+				   TI_SCI_FLAG_REQ_ACK_ON_PROCESSED,
-+				   sizeof(*req), sizeof(*resp));
-+	if (IS_ERR(xfer)) {
-+		ret = PTR_ERR(xfer);
-+		dev_err(dev, "Message alloc failed(%d)\n", ret);
-+		return ret;
-+	}
-+	req = (struct ti_sci_msg_hdr *)xfer->xfer_buf;
-+
-+	ret = ti_sci_do_xfer(info, xfer);
-+	if (ret) {
-+		dev_err(dev, "Mbox send fail %d\n", ret);
-+		goto fail;
-+	}
-+
-+	resp = (struct ti_sci_msg_hdr *)xfer->xfer_buf;
-+
-+	if (!ti_sci_is_response_ack(resp))
-+		ret = -ENODEV;
-+
-+fail:
-+	ti_sci_put_one_xfer(&info->minfo, xfer);
-+
-+	return ret;
-+}
-+
- static int ti_sci_cmd_core_reboot(const struct ti_sci_handle *handle)
- {
- 	struct ti_sci_info *info;
-@@ -3739,11 +3780,22 @@ static int __maybe_unused ti_sci_resume_noirq(struct device *dev)
- 	return 0;
- }
- 
-+static void __maybe_unused ti_sci_pm_complete(struct device *dev)
-+{
-+	struct ti_sci_info *info = dev_get_drvdata(dev);
-+
-+	if (info->fw_caps & MSG_FLAG_CAPS_LPM_ABORT) {
-+		if (ti_sci_cmd_lpm_abort(dev))
-+			dev_err(dev, "LPM clear selection failed.\n");
-+	}
-+}
-+
- static const struct dev_pm_ops ti_sci_pm_ops = {
- #ifdef CONFIG_PM_SLEEP
- 	.suspend = ti_sci_suspend,
- 	.suspend_noirq = ti_sci_suspend_noirq,
- 	.resume_noirq = ti_sci_resume_noirq,
-+	.complete = ti_sci_pm_complete,
- #endif
- };
- 
-@@ -3876,10 +3928,11 @@ static int ti_sci_probe(struct platform_device *pdev)
+diff --git a/drivers/firewire/ohci.c b/drivers/firewire/ohci.c
+index 5d8301b0f3aa8..421cf87e93c1f 100644
+--- a/drivers/firewire/ohci.c
++++ b/drivers/firewire/ohci.c
+@@ -2063,6 +2063,9 @@ static void bus_reset_work(struct work_struct *work)
+ 		ohci_notice(ohci, "self ID receive error\n");
+ 		return;
  	}
++
++	trace_self_id_complete(ohci->card.index, reg, ohci->self_id, has_be_header_quirk(ohci));
++
+ 	/*
+ 	 * The count in the SelfIDCount register is the number of
+ 	 * bytes in the self ID receive buffer.  Since we also receive
+@@ -2231,15 +2234,8 @@ static irqreturn_t irq_handler(int irq, void *data)
+ 	if (event & OHCI1394_busReset)
+ 		reg_write(ohci, OHCI1394_IntMaskClear, OHCI1394_busReset);
  
- 	ti_sci_msg_cmd_query_fw_caps(&info->handle, &info->fw_caps);
--	dev_dbg(dev, "Detected firmware capabilities: %s%s%s\n",
-+	dev_dbg(dev, "Detected firmware capabilities: %s%s%s%s\n",
- 		info->fw_caps & MSG_FLAG_CAPS_GENERIC ? "Generic" : "",
- 		info->fw_caps & MSG_FLAG_CAPS_LPM_PARTIAL_IO ? " Partial-IO" : "",
--		info->fw_caps & MSG_FLAG_CAPS_LPM_DM_MANAGED ? " DM-Managed" : ""
-+		info->fw_caps & MSG_FLAG_CAPS_LPM_DM_MANAGED ? " DM-Managed" : "",
-+		info->fw_caps & MSG_FLAG_CAPS_LPM_ABORT ? " LPM-Abort" : ""
- 	);
+-	if (event & OHCI1394_selfIDComplete) {
+-		if (trace_self_id_complete_enabled()) {
+-			u32 reg = reg_read(ohci, OHCI1394_SelfIDCount);
+-
+-			trace_self_id_complete(ohci->card.index, reg, ohci->self_id,
+-					       has_be_header_quirk(ohci));
+-		}
++	if (event & OHCI1394_selfIDComplete)
+ 		queue_work(selfid_workqueue, &ohci->bus_reset_work);
+-	}
  
- 	ti_sci_setup_ops(info);
-diff --git a/drivers/firmware/ti_sci.h b/drivers/firmware/ti_sci.h
-index 053387d7baa06..701c416b2e78f 100644
---- a/drivers/firmware/ti_sci.h
-+++ b/drivers/firmware/ti_sci.h
-@@ -42,6 +42,7 @@
- #define TI_SCI_MSG_SET_IO_ISOLATION	0x0307
- #define TI_SCI_MSG_LPM_SET_DEVICE_CONSTRAINT	0x0309
- #define TI_SCI_MSG_LPM_SET_LATENCY_CONSTRAINT	0x030A
-+#define TI_SCI_MSG_LPM_ABORT	0x0311
- 
- /* Resource Management Requests */
- #define TI_SCI_MSG_GET_RESOURCE_RANGE	0x1500
-@@ -147,6 +148,7 @@ struct ti_sci_msg_req_reboot {
-  *		MSG_FLAG_CAPS_GENERIC: Generic capability (LPM not supported)
-  *		MSG_FLAG_CAPS_LPM_PARTIAL_IO: Partial IO in LPM
-  *		MSG_FLAG_CAPS_LPM_DM_MANAGED: LPM can be managed by DM
-+ *		MSG_FLAG_CAPS_LPM_ABORT: Abort entry to LPM
-  *
-  * Response to a generic message with message type TI_SCI_MSG_QUERY_FW_CAPS
-  * providing currently available SOC/firmware capabilities. SoC that don't
-@@ -157,6 +159,7 @@ struct ti_sci_msg_resp_query_fw_caps {
- #define MSG_FLAG_CAPS_GENERIC		TI_SCI_MSG_FLAG(0)
- #define MSG_FLAG_CAPS_LPM_PARTIAL_IO	TI_SCI_MSG_FLAG(4)
- #define MSG_FLAG_CAPS_LPM_DM_MANAGED	TI_SCI_MSG_FLAG(5)
-+#define MSG_FLAG_CAPS_LPM_ABORT		TI_SCI_MSG_FLAG(9)
- #define MSG_MASK_CAPS_LPM		GENMASK_ULL(4, 1)
- 	u64 fw_caps;
- } __packed;
+ 	if (event & OHCI1394_RQPkt)
+ 		queue_work(ohci->card.async_wq, &ohci->ar_request_ctx.work);
 -- 
 2.51.0
 
