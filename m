@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60913C4AEE0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 920CCC4A6E3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 371363BB02F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 359E34F73DF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEEB3043C7;
-	Tue, 11 Nov 2025 01:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D463B263F52;
+	Tue, 11 Nov 2025 01:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDq374Ue"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgPmBfg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989FE262FEC;
-	Tue, 11 Nov 2025 01:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B2E2DA757;
+	Tue, 11 Nov 2025 01:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824804; cv=none; b=amxHj6V8zLBK9T2/M08P7uCgr56ZAW/Uxaw0DwPwdttVItSeD0A5gwR5Ge4EviA7efkI61uFMSk24xWUzZ/VitRUhBSSMSCgcNIBFOdAFB37BjZrEPxLT4Ve9eifTcavTtZq30dv7oxXRhMh3hE0kDD29q3kZdeoF9+OQ03oyfA=
+	t=1762823622; cv=none; b=Ob+oux7ly6Ovj03KyntNVVWMBmiOTz10oQtLofIrOVQT7rV5JFYEesAFEaFx/saB+N9iP0f9RARQ+v94Ulyn4szY5pJCdaQg7iRa6l+6XUDKP+YlaKVHmdHFA3I0D3cbM1HrBIS1zyaO13brKQbmdDdaHf4xrW9dLM15ixbSih0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824804; c=relaxed/simple;
-	bh=Omnva8yei8b0gQISdXgIiXHtfBIPZr0KpUw3MMMSIc4=;
+	s=arc-20240116; t=1762823622; c=relaxed/simple;
+	bh=0h4Pf7m1iCQJ7329t7/OJHrCvFYVsHLiXFNNUPajZm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1C3oNBr9hG3a+2kcJJha7efb+sO1py7y8jvv58V4XCW2QDLwMkfuZ+Fk3f+OLm+7CmeuBlSIGV4d129Ml38Stx3UL/sxc39fM/dILba+47cShI9/EllmgTkvw/wvBxvCUxLUGlHVZhRv18DYKNyki9obDdw0/AlMIgwGogdGsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDq374Ue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E08C4CEFB;
-	Tue, 11 Nov 2025 01:33:24 +0000 (UTC)
+	 MIME-Version; b=BUQ8rSBsFVTALjYimc18wQwd9vwlE/J9kHuOKhvEaXm/GP+5vUkJnrbIUY0DZ0eIDIT8Q6JNXTS3IND7QEW0GvydXfjXWFE07zMkrc8GJsR8/5G/HTkGPcyLm0YoXauPBdt+YrYZP7JBPnm4iMVZKNTEIy4/A4MO5Q6K9dpwB3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgPmBfg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3079DC116B1;
+	Tue, 11 Nov 2025 01:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824804;
-	bh=Omnva8yei8b0gQISdXgIiXHtfBIPZr0KpUw3MMMSIc4=;
+	s=korg; t=1762823622;
+	bh=0h4Pf7m1iCQJ7329t7/OJHrCvFYVsHLiXFNNUPajZm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EDq374UezJMk7XiJYjZFGE5Ubypu9ID22aKuqzCRut4rS7ILwHeSH335alWLUmTDV
-	 jAztEA5zK4G84Ypv0pcMeU05oSLBA7d7/ScDGvXoY8mxeqvHDY0JftQplDDHZ6VGJr
-	 SQYq3odkYSlde2ji++nQVnHc5iRSyTxmBmKeWRhQ=
+	b=xgPmBfg+Qb2UVvcwvsI8fiWBjYM+UCF2N2gtLbP5AoE8r60ZeMRHVx7tnu789G1Vh
+	 UFcwjjUPQTZCWgMIskbIAmIfhPzCb2igiPRetDSCHGo0pqmAf0DTHqIm4KMi96r9kj
+	 RHNSnEFzInJbamA5g0RcmPbaFc+oE+0Hq7M+8Ad0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 573/849] scsi: lpfc: Decrement ndlp kref after FDISC retries exhausted
-Date: Tue, 11 Nov 2025 09:42:23 +0900
-Message-ID: <20251111004550.273093363@linuxfoundation.org>
+Subject: [PATCH 6.12 288/565] selftests: drv-net: rss_ctx: make the test pass with few queues
+Date: Tue, 11 Nov 2025 09:42:24 +0900
+Message-ID: <20251111004533.355157115@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit b5bf6d681fce69cd1a57bfc0f1bdbbb348035117 ]
+[ Upstream commit e2cf2d5baa09248d3d50b73522594b778388e3bc ]
 
-The kref for Fabric_DID ndlps is not decremented after repeated FDISC
-failures and exhausting maximum allowed retries.  This can leave the
-ndlp lingering unnecessarily.  Add a test and set bit operation for the
-NLP_DROPPED flag. If not previously set, then a kref is decremented. The
-ndlp is freed when the remaining reference for the completing ELS is
-put.
+rss_ctx.test_rss_key_indir implicitly expects at least 5 queues,
+as it checks that the traffic on first 2 queues is lower than
+the remaining queues when we use all queues. Special case fewer
+queues.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Message-ID: <20250915180811.137530-6-justintee8345@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250901173139.881070-2-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_els.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/testing/selftests/drivers/net/hw/rss_ctx.py | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
-index fca81e0c7c2e1..4c405bade4f34 100644
---- a/drivers/scsi/lpfc/lpfc_els.c
-+++ b/drivers/scsi/lpfc/lpfc_els.c
-@@ -11259,6 +11259,11 @@ lpfc_cmpl_els_fdisc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
- 		lpfc_vlog_msg(vport, KERN_WARNING, LOG_ELS,
- 			      "0126 FDISC cmpl status: x%x/x%x)\n",
- 			      ulp_status, ulp_word4);
-+
-+		/* drop initial reference */
-+		if (!test_and_set_bit(NLP_DROPPED, &ndlp->nlp_flag))
-+			lpfc_nlp_put(ndlp);
-+
- 		goto fdisc_failed;
- 	}
+diff --git a/tools/testing/selftests/drivers/net/hw/rss_ctx.py b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
+index 4a986a5524a30..e9f3ac7f0b8c8 100755
+--- a/tools/testing/selftests/drivers/net/hw/rss_ctx.py
++++ b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
+@@ -161,8 +161,13 @@ def test_rss_key_indir(cfg):
+     cnts = _get_rx_cnts(cfg)
+     GenerateTraffic(cfg).wait_pkts_and_stop(20000)
+     cnts = _get_rx_cnts(cfg, prev=cnts)
+-    # First two queues get less traffic than all the rest
+-    ksft_lt(sum(cnts[:2]), sum(cnts[2:]), "traffic distributed: " + str(cnts))
++    if qcnt > 4:
++        # First two queues get less traffic than all the rest
++        ksft_lt(sum(cnts[:2]), sum(cnts[2:]),
++                "traffic distributed: " + str(cnts))
++    else:
++        # When queue count is low make sure third queue got significant pkts
++        ksft_ge(cnts[2], 3500, "traffic distributed: " + str(cnts))
  
+ 
+ def test_rss_queue_reconfigure(cfg, main_ctx=True):
 -- 
 2.51.0
 
