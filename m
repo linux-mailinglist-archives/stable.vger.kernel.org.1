@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DB2C4B1D5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8455FC4AEE4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 395FB4F8735
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D41494FAAE0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90263054F2;
-	Tue, 11 Nov 2025 01:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F896253944;
+	Tue, 11 Nov 2025 01:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0c+pdXX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgBxHASz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763532BCF43;
-	Tue, 11 Nov 2025 01:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDE52BB17;
+	Tue, 11 Nov 2025 01:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825538; cv=none; b=R9jNxF5carX/H1MZeVmnNEHq/HdmpgbmOmwNpUK12oJJyWcDC9qTUr90qK/wXUo/NcmT1d2KQ8r4jMgrqFY/RfCPCb5pH+cwhWi1XG3aNdwHIimLHCgn9qlscukBKi6GTGa2ufYUd+YrlbL9wiSnYSqU8AI7gZhpZEisx3oeDW4=
+	t=1762824955; cv=none; b=XtdVWBL86Sg066cRmimYBOBg5fKUoMPM573gby/LpSYOv4fimqgpe0lwaB2L6U1WuCbmxYekfU0rvvRmrZpQqCtGImoK/CQNe28SQrQ+aQN6ZI3TaUt7cm8B7dREWUUuY63IfhAToBwp1CURdi5we0yq4fhMHW1lPTFRIxxoP6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825538; c=relaxed/simple;
-	bh=w41sWJjZ4qc+fS5692Wf/WTpd4bZaBV4RJDSnqfvWoA=;
+	s=arc-20240116; t=1762824955; c=relaxed/simple;
+	bh=xlKM4KeBFZ5PaeQ2So9ZuCI1QD43rr3kGVNj4dLz3z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eWbG+wYSNv55QzL5qe1dBbFcUDLDnazXdAuktL+zm6HI4pqpnlEq1Fp0FDhrQ74IURsQZNmum/O6rcsbnP9yyuBPnzUgrbJ2j+3tW/uWvJdJMBTro9+qSgeKn8p+hk0KwXIwKWlISY35DR0XNc/EMgZeY6BIBdC4R/ZpXznrAP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0c+pdXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1289C16AAE;
-	Tue, 11 Nov 2025 01:45:37 +0000 (UTC)
+	 MIME-Version; b=Z7HaYcB9w/XV+H2riJVhayu1QtpvrM06n3WEjky6oTArhbS/VzBqwNca/lfJCSKHxgppZ0sVlIy97XVrA4ZqP3ly1rmiDsNFcCv5alLXYJ1EQl0tR/S/7qSVBcEIl2eBFEStmF94f2QTOzpGU3xSb1PAbsg1hLJkRfrN5UCopsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgBxHASz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787F1C19422;
+	Tue, 11 Nov 2025 01:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825538;
-	bh=w41sWJjZ4qc+fS5692Wf/WTpd4bZaBV4RJDSnqfvWoA=;
+	s=korg; t=1762824954;
+	bh=xlKM4KeBFZ5PaeQ2So9ZuCI1QD43rr3kGVNj4dLz3z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e0c+pdXXD01/bXJ3WnPLgIvgQmM575KIBOvuFgpTX0i9UwC0/waxdf9qIfCpXmWKa
-	 lAvInvLYMCoTd04i3LRKk1hiscYD2Pl/SE7KsOLyjZgHh8Xz8IXvAsCg2DKoK0g07w
-	 8AEaElpC+HUT+ev1iO2983ddyZoyADRmxHARjau4=
+	b=vgBxHASzEedb8xL1VSrfk4yG71lWo2M5MUfEu82+F16TvHu6KGt/7GsRAbPFfcmXu
+	 iheFbymBYGz9MAc6nV+ooylRq09bCcdoBE3r3XFGfi6ZEiVESrdezdC3R47Zzwumck
+	 3x5xhwZWxYev/w2rZPQYvrh2MdnXroFlgEAkTyzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Subject: [PATCH 6.17 843/849] drm/amdgpu: Fix function header names in amdgpu_connectors.c
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 557/565] scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE for Intel ADL
 Date: Tue, 11 Nov 2025 09:46:53 +0900
-Message-ID: <20251111004556.801875567@linuxfoundation.org>
+Message-ID: <20251111004539.539055257@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 38ab33dbea594700c8d6cc81eec0a54e95d3eb2f upstream.
+commit d968e99488c4b08259a324a89e4ed17bf36561a4 upstream.
 
-Align the function headers for `amdgpu_max_hdmi_pixel_clock` and
-`amdgpu_connector_dvi_mode_valid` with the function implementations so
-they match the expected kdoc style.
+Link startup becomes unreliable for Intel Alder Lake based host
+controllers when a 2nd DME_LINKSTARTUP is issued unnecessarily.  Employ
+UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE to suppress that from happening.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c:1199: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- * Returns the maximum supported HDMI (TMDS) pixel clock in KHz.
-drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c:1212: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- * Validates the given display mode on DVI and HDMI connectors.
-
-Fixes: 585b2f685c56 ("drm/amdgpu: Respect max pixel clock for HDMI and DVI-D (v2)")
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251024085918.31825-4-adrian.hunter@intel.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/ufs/host/ufshcd-pci.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-@@ -1196,7 +1196,10 @@ static void amdgpu_connector_dvi_force(s
- }
- 
- /**
-- * Returns the maximum supported HDMI (TMDS) pixel clock in KHz.
-+ * amdgpu_max_hdmi_pixel_clock - Return max supported HDMI (TMDS) pixel clock
-+ * @adev: pointer to amdgpu_device
-+ *
-+ * Return: maximum supported HDMI (TMDS) pixel clock in KHz.
-  */
- static int amdgpu_max_hdmi_pixel_clock(const struct amdgpu_device *adev)
+--- a/drivers/ufs/host/ufshcd-pci.c
++++ b/drivers/ufs/host/ufshcd-pci.c
+@@ -466,7 +466,8 @@ static int ufs_intel_lkf_init(struct ufs
+ static int ufs_intel_adl_init(struct ufs_hba *hba)
  {
-@@ -1209,8 +1212,14 @@ static int amdgpu_max_hdmi_pixel_clock(c
+ 	hba->nop_out_timeout = 200;
+-	hba->quirks |= UFSHCD_QUIRK_BROKEN_AUTO_HIBERN8;
++	hba->quirks |= UFSHCD_QUIRK_BROKEN_AUTO_HIBERN8 |
++		       UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE;
+ 	hba->caps |= UFSHCD_CAP_WB_EN;
+ 	return ufs_intel_common_init(hba);
  }
- 
- /**
-- * Validates the given display mode on DVI and HDMI connectors,
-- * including analog signals on DVI-I.
-+ * amdgpu_connector_dvi_mode_valid - Validate a mode on DVI/HDMI connectors
-+ * @connector: DRM connector to validate the mode on
-+ * @mode: display mode to validate
-+ *
-+ * Validate the given display mode on DVI and HDMI connectors, including
-+ * analog signals on DVI-I.
-+ *
-+ * Return: drm_mode_status indicating whether the mode is valid.
-  */
- static enum drm_mode_status amdgpu_connector_dvi_mode_valid(struct drm_connector *connector,
- 					    const struct drm_display_mode *mode)
 
 
 
