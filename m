@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-193915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91640C4ACDA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98AB1C4A361
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A14393BC796
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 525F03AF713
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2AA2F7AAC;
-	Tue, 11 Nov 2025 01:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF94263F4E;
+	Tue, 11 Nov 2025 01:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Inu/86N5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eL5KYplt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997E6265CC5;
-	Tue, 11 Nov 2025 01:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CADB261B6E;
+	Tue, 11 Nov 2025 01:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824365; cv=none; b=i0TXl0OU99DaoPdNaOwVsm3aSKfuk48qWPAKdcmqeFM3FnTof3DfM/s2bgVWciF6wjsPuOhm8Zy+H3mOVVKxAMwRLlML0LYnkydpVhRw2k95nTyhQOh0xMHeNS8RGBabaBnAROVAyMO/o8rqDRK0pgWX2HC4Ab8gbM/ZqlpHh+Y=
+	t=1762823082; cv=none; b=h0IohCga8PhwVjCF3V5vES+JiLruoeMtoj80G4kPGoMDe5bEVs8Aj7kkUxoXea2dwkPRNeq2hBMTHob8HPOiyxKXkx9pB9tzS+pAF6jl59H6FisK0Cw+3LN4rEks/qFA/OgYzhOojXOm16HKkOTj8qcRnJgu835E0IKF0yOoDQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824365; c=relaxed/simple;
-	bh=g/3p7fIMkNMgRN9RnpVvoFQqCzrOeGkbAGRRQKU3LeY=;
+	s=arc-20240116; t=1762823082; c=relaxed/simple;
+	bh=57IlWoiE+unP0kkp7hCj8aF0295Y+nXxKAjMNB2aiNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ujDjxTM7wmrjnWiU3T1zI3b6O2hCrVVOdzbxteTx9luxnJOih2nv2hNjprhIZ4l1d3mehRPLY0NdPMocC45Don4ShHqMcnQz7iIVoh7/i09EGFyGRuxeBviil1HEc6OMmS8oXBGfQn5uoj734aY+EWhAfvEgItmiy0PpgwU23y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Inu/86N5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334F0C19421;
-	Tue, 11 Nov 2025 01:26:05 +0000 (UTC)
+	 MIME-Version; b=jElv2IkHhynDydH1pLMHu+o/v8/BISjSrO+1QOBI1k2BH6On5NTz9aGYJ9oLMQRktNN8PjKOl4g/ZPbJeis7R7j9eBbnqlDfzbYZBI9ESdQIB8siT2dZxO1LZl1kaYVFxlg8EmLu8hL2Nkbq/VKfhPgb18SyRNb/Hshp76pNu1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eL5KYplt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E44C4CEF5;
+	Tue, 11 Nov 2025 01:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824365;
-	bh=g/3p7fIMkNMgRN9RnpVvoFQqCzrOeGkbAGRRQKU3LeY=;
+	s=korg; t=1762823082;
+	bh=57IlWoiE+unP0kkp7hCj8aF0295Y+nXxKAjMNB2aiNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Inu/86N5vFonY/9HqLrPYsg8UUM6VPA6S3dG9wrvkki+qMS1dOUEVZHUG5wAF7Kwu
-	 8FGKtUovwOTjmXUN/wGPjbS5zuNLivBUU6lOQZQBGU2d6kZGR9fwdPNOOCfxRLU6Oc
-	 TOKBuEOxhOogD1Z6UR0ADE3+DuLC/5hY3P+JOEUA=
+	b=eL5KYpltPKXJup8qDGVPQ9hy4+rKefXop3JywTfdVFaaEGKtdV3J1qzeoE5b1JWvQ
+	 v00ohL/aAIWo5G5E5Gpk+szEFEhSg2Uy1CWBwLgUr4/695IJYDzYG/oR68KNkyAYsJ
+	 pnGRCsJRrF0mvekd+RVCn6iZmtWP5BFwZ0Aeb6fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 454/849] drm/amd: add more cyan skillfish PCI ids
+Subject: [PATCH 6.12 168/565] mfd: madera: Work around false-positive -Wininitialized warning
 Date: Tue, 11 Nov 2025 09:40:24 +0900
-Message-ID: <20251111004547.404740033@linuxfoundation.org>
+Message-ID: <20251111004530.714261109@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 1e18746381793bef7c715fc5ec5611a422a75c4c ]
+[ Upstream commit 364752aa0c6ab0a06a2d5bfdb362c1ca407f1a30 ]
 
-Add additional PCI IDs to the cyan skillfish family.
+clang-21 warns about one uninitialized variable getting dereferenced
+in madera_dev_init:
 
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+drivers/mfd/madera-core.c:739:10: error: variable 'mfd_devs' is uninitialized when used here [-Werror,-Wuninitialized]
+  739 |                               mfd_devs, n_devs,
+      |                               ^~~~~~~~
+drivers/mfd/madera-core.c:459:33: note: initialize the variable 'mfd_devs' to silence this warning
+  459 |         const struct mfd_cell *mfd_devs;
+      |                                        ^
+      |                                         = NULL
+
+The code is actually correct here because n_devs is only nonzero
+when mfd_devs is a valid pointer, but this is impossible for the
+compiler to see reliably.
+
+Change the logic to check for the pointer as well, to make this easier
+for the compiler to follow.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20250807071932.4085458-1-arnd@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mfd/madera-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index 5e81ff3ffdc3f..e60043ac9841e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2172,6 +2172,11 @@ static const struct pci_device_id pciidlist[] = {
- 	{0x1002, 0x7410, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_ALDEBARAN},
+diff --git a/drivers/mfd/madera-core.c b/drivers/mfd/madera-core.c
+index bdbd5bfc97145..2f74a8c644a32 100644
+--- a/drivers/mfd/madera-core.c
++++ b/drivers/mfd/madera-core.c
+@@ -456,7 +456,7 @@ int madera_dev_init(struct madera *madera)
+ 	struct device *dev = madera->dev;
+ 	unsigned int hwid;
+ 	int (*patch_fn)(struct madera *) = NULL;
+-	const struct mfd_cell *mfd_devs;
++	const struct mfd_cell *mfd_devs = NULL;
+ 	int n_devs = 0;
+ 	int i, ret;
  
- 	/* CYAN_SKILLFISH */
-+	{0x1002, 0x13DB, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
-+	{0x1002, 0x13F9, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
-+	{0x1002, 0x13FA, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
-+	{0x1002, 0x13FB, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
-+	{0x1002, 0x13FC, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
- 	{0x1002, 0x13FE, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
- 	{0x1002, 0x143F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
+@@ -670,7 +670,7 @@ int madera_dev_init(struct madera *madera)
+ 		goto err_reset;
+ 	}
  
+-	if (!n_devs) {
++	if (!n_devs || !mfd_devs) {
+ 		dev_err(madera->dev, "Device ID 0x%x not a %s\n", hwid,
+ 			madera->type_name);
+ 		ret = -ENODEV;
 -- 
 2.51.0
 
