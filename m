@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738DAC4B058
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:54:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C18B0C4AC1F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B1A014F85B5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:48:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DEF684FABBE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F403358C6;
-	Tue, 11 Nov 2025 01:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A8627814A;
+	Tue, 11 Nov 2025 01:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cd9ocUs1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCg58hrc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64187311C20;
-	Tue, 11 Nov 2025 01:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BB51F5F6;
+	Tue, 11 Nov 2025 01:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825295; cv=none; b=OyhqxPfNlgdT74FDqKb8wJ++2HzUbaSNQpUgj5JRHa6Q/sXBMWSZZ+Eirt8BcfmTTs+AJABv2FDkRPVe+KiEbQFnL8WqaV68GPEP9e1240uoPyUg2ruOi1N3WEUl/Ixy1XxyRDr4KOL4q1eHVgAgAjapvyQ0pLLm3fiNRCEEVKY=
+	t=1762824484; cv=none; b=Afgm3jzgS7SohFM3kj7HztoQ+/lZMNmEDQcnOxzjMoJLP1l74HxplUtwpQ7c7XJ7XZLlzC4Y+I3O7FN/qDrJTkzJJGRAuk8sUXj79jIG6Eumh8Z394XhGxGN25C9kAZl9bhNbu9IpxAWFoDIy3jDKY6E7DWkKbJP1qAhiZYPL/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825295; c=relaxed/simple;
-	bh=8kgdMshhzm3kI1ZdimcOwfZ0q7ZqfTofvh1UP9kj4SY=;
+	s=arc-20240116; t=1762824484; c=relaxed/simple;
+	bh=t4vOOmk5Yn10fo2hqwW3B07VQ5KDScL3nb3u/HQaNeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=re6NgYikQWzYQ/t2G1Glob6Q4ZDX8Xam9jGqa4YU5BSIl+IKYDjsOMDCcoKCSf8HwvvWM0C3IrwvXnVCJKkQdyTBJ9SuZZU1C3REhMYi92w5v/otWgWl0yjSQlM9B7n6oJPFQimbGvZs6g/aXJPSNxoYprpSO1CuQtpng6LTV2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cd9ocUs1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047FEC4CEFB;
-	Tue, 11 Nov 2025 01:41:34 +0000 (UTC)
+	 MIME-Version; b=VZU6SWhJAfQMPjV9H1jwPK9k1kqLFOA11TEAS6Bl/LCMqLBxjeDVFEVM3EmdcZTstxrEyQkdH0O3G1FhTm+Jzw5fSdIrZZRB/FFG3uSERkBvnDwyFIAdqrK4mVADnLeEIGqneSFI9RuAKWT/s92Uw4AZC/caUu/NpwVBdKqj+ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCg58hrc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BE4C116D0;
+	Tue, 11 Nov 2025 01:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825295;
-	bh=8kgdMshhzm3kI1ZdimcOwfZ0q7ZqfTofvh1UP9kj4SY=;
+	s=korg; t=1762824484;
+	bh=t4vOOmk5Yn10fo2hqwW3B07VQ5KDScL3nb3u/HQaNeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cd9ocUs1pIwbx6QK58HFkDNdTkS8khDne0BVF19oLXQL4Esj9LheVOYt7AAdqMp7v
-	 FszEqvyJAv7cSfkIbeQ53GJh1Kw2vnnbiU7YxZwZKUQhM6DXV4KaGu0x5It5Mvp6FG
-	 f7p6ALIMTXJUfRUsgv7OudlhoN115hCOsuPBeHnw=
+	b=cCg58hrc0HjVPCyTZm8UOsBWoKuOOPzyv7k3KZ8kzPgq6RHdVTBMjLSjO+kAn1Kr4
+	 6sKukqmL8HMZAREB0A+kjnziIIQlzJzQw+hgqMxrANQXvb0+xeF2wm9iqObuKhXp/x
+	 fI407N+Mbi1RoK3zBQ8x6AU54CrUSAusS0tG3gEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	"Justin M. Forbes" <jforbes@fedoraproject.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.17 741/849] rust: kbuild: treat `build_error` and `rustdoc` as kernel objects
+	Jacob Moroni <jmoroni@google.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 455/565] RDMA/irdma: Fix SD index calculation
 Date: Tue, 11 Nov 2025 09:45:11 +0900
-Message-ID: <20251111004554.354283156@linuxfoundation.org>
+Message-ID: <20251111004537.129262617@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Jacob Moroni <jmoroni@google.com>
 
-commit 16c43a56b79e2c3220b043236369a129d508c65a upstream.
+[ Upstream commit 8d158f47f1f33d8747e80c3afbea5aa337e59d41 ]
 
-Even if normally `build_error` isn't a kernel object, it should still
-be treated as such so that we pass the same flags. Similarly, `rustdoc`
-targets are never kernel objects, but we need to treat them as such.
+In some cases, it is possible for pble_rsrc->next_fpm_addr to be
+larger than u32, so remove the u32 cast to avoid unintentional
+truncation.
 
-Otherwise, starting with Rust 1.91.0 (released 2025-10-30), `rustc`
-will complain about missing sanitizer flags since `-Zsanitizer` is a
-target modifier too [1]:
+This fixes the following error that can be observed when registering
+massive memory regions:
 
-    error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `build_error`
-     --> rust/build_error.rs:3:1
-      |
-    3 | //! Build-time error.
-      | ^
-      |
-      = help: the `-Zsanitizer` flag modifies the ABI so Rust crates compiled with different values of this flag cannot be used together safely
-      = note: unset `-Zsanitizer` in this crate is incompatible with `-Zsanitizer=kernel-address` in dependency `core`
-      = help: set `-Zsanitizer=kernel-address` in this crate or unset `-Zsanitizer` in `core`
-      = help: if you are sure this will not cause problems, you may use `-Cunsafe-allow-abi-mismatch=sanitizer` to silence this error
+[  447.227494] (NULL ib_device): cqp opcode = 0x1f maj_err_code = 0xffff min_err_code = 0x800c
+[  447.227505] (NULL ib_device): [Update PE SDs Cmd Error][op_code=21] status=-5 waiting=1 completion_err=1 maj=0xffff min=0x800c
 
-Thus explicitly mark them as kernel objects.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust/pull/138736 [1]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
-Link: https://patch.msgid.link/20251102212853.1505384-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e8c4dbc2fcac ("RDMA/irdma: Add PBLE resource manager")
+Signed-off-by: Jacob Moroni <jmoroni@google.com>
+Link: https://patch.msgid.link/20250923190850.1022773-1-jmoroni@google.com
+Acked-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/Makefile |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/infiniband/hw/irdma/pble.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -124,9 +124,14 @@ rustdoc-core: private rustc_target_flags
- rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs rustdoc-clean FORCE
- 	+$(call if_changed,rustdoc)
- 
-+# Even if `rustdoc` targets are not kernel objects, they should still be
-+# treated as such so that we pass the same flags. Otherwise, for instance,
-+# `rustdoc` will complain about missing sanitizer flags causing an ABI mismatch.
-+rustdoc-compiler_builtins: private is-kernel-object := y
- rustdoc-compiler_builtins: $(src)/compiler_builtins.rs rustdoc-core FORCE
- 	+$(call if_changed,rustdoc)
- 
-+rustdoc-ffi: private is-kernel-object := y
- rustdoc-ffi: $(src)/ffi.rs rustdoc-core FORCE
- 	+$(call if_changed,rustdoc)
- 
-@@ -144,6 +149,7 @@ rustdoc-pin_init: $(src)/pin-init/src/li
-     rustdoc-macros FORCE
- 	+$(call if_changed,rustdoc)
- 
-+rustdoc-kernel: private is-kernel-object := y
- rustdoc-kernel: private rustc_target_flags = --extern ffi --extern pin_init \
-     --extern build_error --extern macros \
-     --extern bindings --extern uapi
-@@ -526,6 +532,10 @@ $(obj)/pin_init.o: $(src)/pin-init/src/l
-     $(obj)/$(libpin_init_internal_name) $(obj)/$(libmacros_name) FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
-+# Even if normally `build_error` is not a kernel object, it should still be
-+# treated as such so that we pass the same flags. Otherwise, for instance,
-+# `rustc` will complain about missing sanitizer flags causing an ABI mismatch.
-+$(obj)/build_error.o: private is-kernel-object := y
- $(obj)/build_error.o: private skip_gendwarfksyms = 1
- $(obj)/build_error.o: $(src)/build_error.rs $(obj)/compiler_builtins.o FORCE
- 	+$(call if_changed_rule,rustc_library)
+diff --git a/drivers/infiniband/hw/irdma/pble.c b/drivers/infiniband/hw/irdma/pble.c
+index e7ce6840755fd..f381b8d51f532 100644
+--- a/drivers/infiniband/hw/irdma/pble.c
++++ b/drivers/infiniband/hw/irdma/pble.c
+@@ -71,7 +71,7 @@ int irdma_hmc_init_pble(struct irdma_sc_dev *dev,
+ static void get_sd_pd_idx(struct irdma_hmc_pble_rsrc *pble_rsrc,
+ 			  struct sd_pd_idx *idx)
+ {
+-	idx->sd_idx = (u32)pble_rsrc->next_fpm_addr / IRDMA_HMC_DIRECT_BP_SIZE;
++	idx->sd_idx = pble_rsrc->next_fpm_addr / IRDMA_HMC_DIRECT_BP_SIZE;
+ 	idx->pd_idx = (u32)(pble_rsrc->next_fpm_addr / IRDMA_HMC_PAGED_BP_SIZE);
+ 	idx->rel_pd_idx = (idx->pd_idx % IRDMA_HMC_PD_CNT_IN_SD);
+ }
+-- 
+2.51.0
+
 
 
 
