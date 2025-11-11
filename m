@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-194237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDECEC4AF88
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F8CC4AC2E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 143923BA4F2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 523493B3814
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D382304BD5;
-	Tue, 11 Nov 2025 01:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE6D343D71;
+	Tue, 11 Nov 2025 01:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ige7ofcr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXLpcvwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFF93043BF;
-	Tue, 11 Nov 2025 01:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B321E343D6A;
+	Tue, 11 Nov 2025 01:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825127; cv=none; b=two6ESQfSo2RuFpXGgkIslnonsT3jAs9SqqXWbA5SAQpL8VnDvtHoRnX7spTtZfkfevZY19bTk+iKtVd918sAeJnwJNdGNAMaPtCPGH6O0ai2IU1FIclNbg4YqdxjvuS83gB3BnWRxJiwqxuhplsE6dckdcv+iyiRQv4rMdgQFI=
+	t=1762824099; cv=none; b=LSZSGZFOLcbHfnQ8EavPV2U5NEgHPPnlbwuAYffqoPJceXIHv4dzUCOzM+nGFEDMHc4TvErBp5U0GQRvK9qZB3vcpVQ9C2+UeDcwIROt1eMUUWcEhPRq+p0Vr10jWYx0ETYUIfBrOlv3ch6GXStrTGxsgDcLQVB678cnOxUaNM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825127; c=relaxed/simple;
-	bh=xs2dyrCDKvg47fHuzsqVGtyT17eJHKVgeHvlDhtvEDo=;
+	s=arc-20240116; t=1762824099; c=relaxed/simple;
+	bh=KjMvWbDPJUEVes2yndLr4E8dWSR18jHtmhuHnRwOM6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T5rDPJ7WWlyJkLZPcsp+m5Pz+uVn3DdI+3OWkcmogVJxvWZD1UwPBvYupRjDa0QO0blNvV4dz/mOTSN3MzBIPJhxW5bIeoSU/2rovkp9tXnlGZeSIcs+kXjvSwVeEeRbpq6tPloaardH1hBBRtJf4PwfL3idW7fFTIItzj0hAL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ige7ofcr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DC6C4CEFB;
-	Tue, 11 Nov 2025 01:38:46 +0000 (UTC)
+	 MIME-Version; b=ASmaM+VfX6jD95Lno0yp5JsODmbnKJJ69iUx9nv8K1dEnOGtiYLThbfkyaJDDwMSUqRxmRSs2kLiFgbl9R9z5nB7v52n35iWy1FUDZ+iQjXDQN1pt32Q9L2oOpdUy0uQQhG6kblQhXt0YtrVl9h5gRe2YYYPJ0OoaKmqBUJ6LXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXLpcvwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D805C113D0;
+	Tue, 11 Nov 2025 01:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825126;
-	bh=xs2dyrCDKvg47fHuzsqVGtyT17eJHKVgeHvlDhtvEDo=;
+	s=korg; t=1762824099;
+	bh=KjMvWbDPJUEVes2yndLr4E8dWSR18jHtmhuHnRwOM6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ige7ofcrpyikvwBVao3fOnuyUi7Xyqo63kVksD2GLEWmKCkDKSmvmknSs5ZgHTiWp
-	 oEYPJ/CmAN06ygk9/Iqw7T7jucm01F605dMh8hTaPc+PyOYW+lFHigLWUKCF89wImV
-	 pxPst3+QSZE/+ZpsrKItZ7yMnjG7y91m+6YsVyf8=
+	b=SXLpcvwjYGrttU3xkEPJGm16KwsnVlqUjVLWR3IzTmLdrqjUXnk4IBTqS/L7/HzfT
+	 QTrpPdkZqHlwchYfHvI0Teq2tYAFofZgCQapkVv+Lmu2P+hLxX5WaZNE8s8oIgppsG
+	 NCd0pWmIpoQeg7Y9v37HvtEknCtkEJKENHe8Dy/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marshall <hubcap@omnibond.com>,
-	Stanislav Fort of Aisle Research <stanislav.fort@aisle.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 673/849] orangefs: fix xattr related buffer overflow...
+Subject: [PATCH 6.12 387/565] ipv6: np->rxpmtu race annotation
 Date: Tue, 11 Nov 2025 09:44:03 +0900
-Message-ID: <20251111004552.691470598@linuxfoundation.org>
+Message-ID: <20251111004535.578610128@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +66,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marshall <hubcap@omnibond.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 025e880759c279ec64d0f754fe65bf45961da864 ]
+[ Upstream commit 9fba1eb39e2f74d2002c5cbcf1d4435d37a4f752 ]
 
-Willy Tarreau <w@1wt.eu> forwarded me a message from
-Disclosure <disclosure@aisle.com> with the following
-warning:
+Add READ_ONCE() annotations because np->rxpmtu can be changed
+while udpv6_recvmsg() and rawv6_recvmsg() read it.
 
-> The helper `xattr_key()` uses the pointer variable in the loop condition
-> rather than dereferencing it. As `key` is incremented, it remains non-NULL
-> (until it runs into unmapped memory), so the loop does not terminate on
-> valid C strings and will walk memory indefinitely, consuming CPU or hanging
-> the thread.
+Since this is a very rarely used feature, and that udpv6_recvmsg()
+and rawv6_recvmsg() read np->rxopt anyway, change the test order
+so that np->rxpmtu does not need to be in a hot cache line.
 
-I easily reproduced this with setfattr and getfattr, causing a kernel
-oops, hung user processes and corrupted orangefs files. Disclosure
-sent along a diff (not a patch) with a suggested fix, which I based
-this patch on.
-
-After xattr_key started working right, xfstest generic/069 exposed an
-xattr related memory leak that lead to OOM. xattr_key returns
-a hashed key.  When adding xattrs to the orangefs xattr cache, orangefs
-used hash_add, a kernel hashing macro. hash_add also hashes the key using
-hash_log which resulted in additions to the xattr cache going to the wrong
-hash bucket. generic/069 tortures a single file and orangefs does a
-getattr for the xattr "security.capability" every time. Orangefs
-negative caches on xattrs which includes a kmalloc. Since adds to the
-xattr cache were going to the wrong bucket, every getattr for
-"security.capability" resulted in another kmalloc, none of which were
-ever freed.
-
-I changed the two uses of hash_add to hlist_add_head instead
-and the memory leak ceased and generic/069 quit throwing furniture.
-
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
-Reported-by: Stanislav Fort of Aisle Research <stanislav.fort@aisle.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250916160951.541279-4-edumazet@google.com
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/xattr.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/ipv6/raw.c | 2 +-
+ net/ipv6/udp.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/orangefs/xattr.c b/fs/orangefs/xattr.c
-index 74ef75586f384..eee3c5ed1bbbb 100644
---- a/fs/orangefs/xattr.c
-+++ b/fs/orangefs/xattr.c
-@@ -54,7 +54,9 @@ static inline int convert_to_internal_xattr_flags(int setxattr_flags)
- static unsigned int xattr_key(const char *key)
- {
- 	unsigned int i = 0;
--	while (key)
-+	if (!key)
-+		return 0;
-+	while (*key)
- 		i += *key++;
- 	return i % 16;
- }
-@@ -175,8 +177,8 @@ ssize_t orangefs_inode_getxattr(struct inode *inode, const char *name,
- 				cx->length = -1;
- 				cx->timeout = jiffies +
- 				    orangefs_getattr_timeout_msecs*HZ/1000;
--				hash_add(orangefs_inode->xattr_cache, &cx->node,
--				    xattr_key(cx->key));
-+				hlist_add_head( &cx->node,
-+                                   &orangefs_inode->xattr_cache[xattr_key(cx->key)]);
- 			}
- 		}
- 		goto out_release_op;
-@@ -229,8 +231,8 @@ ssize_t orangefs_inode_getxattr(struct inode *inode, const char *name,
- 			memcpy(cx->val, buffer, length);
- 			cx->length = length;
- 			cx->timeout = jiffies + HZ;
--			hash_add(orangefs_inode->xattr_cache, &cx->node,
--			    xattr_key(cx->key));
-+			hlist_add_head(&cx->node,
-+				&orangefs_inode->xattr_cache[xattr_key(cx->key)]);
- 		}
- 	}
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index 328419e05c815..d148f1b03c5d0 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -445,7 +445,7 @@ static int rawv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_ERRQUEUE)
+ 		return ipv6_recv_error(sk, msg, len, addr_len);
  
+-	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
++	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
+ 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
+ 
+ 	skb = skb_recv_datagram(sk, flags, &err);
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 57e38e5e4be92..9b93df668025d 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -394,7 +394,7 @@ int udpv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_ERRQUEUE)
+ 		return ipv6_recv_error(sk, msg, len, addr_len);
+ 
+-	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
++	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
+ 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
+ 
+ try_again:
 -- 
 2.51.0
 
