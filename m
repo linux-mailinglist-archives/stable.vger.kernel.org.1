@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD566C4AA24
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6717EC4AA36
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CC9F74F27BE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3B2314EC5EF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FF43446B5;
-	Tue, 11 Nov 2025 01:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886852DC79D;
+	Tue, 11 Nov 2025 01:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0gvNlye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYPIZyEK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BDF2DC328;
-	Tue, 11 Nov 2025 01:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450D62DC350;
+	Tue, 11 Nov 2025 01:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824153; cv=none; b=sGk6/Ex0lAxsnzzi4F8qpz/PNoOzTPRIAwIABC8xurAMIC/5btTs8S8C30b/3q0hUbYOD6VqM4ERvcNDhcuwDPzU3AO0Pxd7MHV4P2rRtNLrySwPJqq7kO32Rb+Mvffy9oZ9Fo6mmaJy4SaLJ84qhsqbkUlSNavcxafulYAZWrM=
+	t=1762824160; cv=none; b=nVlFBAXLEcnQbg9svgPR8sDC13diE5D3ED9OXJ9qZFb+L1mEWiOJR4DBBNeUx74zqKQu3GuZK5hwp0rLI0u1kEe50go9ALXX0HEusAe6rb8zUjePMXoyMa3jK/urQnk9nnhXfSgFrSTCT/VSF9CX2AZGVSsJSQhfmfmxxS4yTXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824153; c=relaxed/simple;
-	bh=FO334AIViNVoRow+2zjlxf0ZZgFoJ8cTL1J5B/zDNGs=;
+	s=arc-20240116; t=1762824160; c=relaxed/simple;
+	bh=ia+wFeF4Q1DwUO4Z8IUvclYlqM9RZFX3Eqao4SmcevQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I5Rzew+7d0LfejlbrtKT14shrEKMoApwql0ViMEUdWWG0vdXEUBIfe/uJFs0n5TooNuV3ELWjIzMm6VH/f7rspqVVBp01TiwB9bXw6IyHib0Afw/eFES1dh2CgKBPRGoSKmc9I+T7bC5iawaJoQDtefSloR51Z9iU+2gCBdLhc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0gvNlye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C06C2BC87;
-	Tue, 11 Nov 2025 01:22:32 +0000 (UTC)
+	 MIME-Version; b=Y6crWtMJwEZZv3pw92ZemkgEpRTBorG1umgo7E8TNq1Q3FMk+CEPm3J4c7WW6kS/v9LSnmkb6Rttb8w47UWYDC4XK9C5gWkKf2Bq4iJItHSnDVG+UHk8L3BHHHdD9lVeAPgHLgAYPjxBgYmAVUNK81E0A9wJxlYDZ0UgQyhlDqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYPIZyEK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99552C113D0;
+	Tue, 11 Nov 2025 01:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824153;
-	bh=FO334AIViNVoRow+2zjlxf0ZZgFoJ8cTL1J5B/zDNGs=;
+	s=korg; t=1762824159;
+	bh=ia+wFeF4Q1DwUO4Z8IUvclYlqM9RZFX3Eqao4SmcevQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0gvNlyeNuKOF6cF6cdB8RKATdalBBKO0bNuUTjiLT45fa6FWHdezElZ9uTT17uAt
-	 +tgCYVNO3ZwTwrUchmUuv6QEyB+i4ad5/8MtDNPC1wIyZ6Hq4+ZMO59fl1G1VdBwWs
-	 VMYeWuAsbBANi2vvLYiatCgAIjQMcTsvY9WYkVWw=
+	b=lYPIZyEKkb0s5uK3aJt1+z5yZKn2WGv8Bi5zJeO2iUWSLRpazVWm1a/8XnCD4OIlH
+	 K1l/xAsdh3mZX41pmg6AiXo0egrUjUFslHmhr/1H59O2Mvj8C/WrBFiMQoeSBzZt0B
+	 6gFeomm2LdwSrpkg1IRzml5C6Q92l2ZTZE/R9s0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ashish Kalra <ashish.kalra@amd.com>,
 	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 447/849] iommu/amd: Add support to remap/unmap IOMMU buffers for kdump
-Date: Tue, 11 Nov 2025 09:40:17 +0900
-Message-ID: <20251111004547.241909323@linuxfoundation.org>
+Subject: [PATCH 6.17 448/849] iommu/amd: Skip enabling command/event buffers for kdump
+Date: Tue, 11 Nov 2025 09:40:18 +0900
+Message-ID: <20251111004547.264578537@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -62,7 +62,6 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
@@ -71,272 +70,75 @@ Content-Transfer-Encoding: 8bit
 
 From: Ashish Kalra <ashish.kalra@amd.com>
 
-[ Upstream commit f32fe7cb019861f585b40bff4c3daf237b9af294 ]
+[ Upstream commit 9be15fbfc6c5c89c22cf6e209f66ea43ee0e58bb ]
 
 After a panic if SNP is enabled in the previous kernel then the kdump
 kernel boots with IOMMU SNP enforcement still enabled.
 
-IOMMU completion wait buffers (CWBs), command buffers and event buffer
-registers remain locked and exclusive to the previous kernel. Attempts
-to allocate and use new buffers in the kdump kernel fail, as hardware
-ignores writes to the locked MMIO registers as per AMD IOMMU spec
-Section 2.12.2.1.
+IOMMU command buffers and event buffer registers remain locked and
+exclusive to the previous kernel. Attempts to enable command and event
+buffers in the kdump kernel will fail, as hardware ignores writes to
+the locked MMIO registers as per AMD IOMMU spec Section 2.12.2.1.
 
-This results in repeated "Completion-Wait loop timed out" errors and a
-second kernel panic: "Kernel panic - not syncing: timer doesn't work
-through Interrupt-remapped IO-APIC"
-
-The list of MMIO registers locked and which ignore writes after failed
-SNP shutdown are mentioned in the AMD IOMMU specifications below:
-
-Section 2.12.2.1.
-https://docs.amd.com/v/u/en-US/48882_3.10_PUB
-
-Reuse the pages of the previous kernel for completion wait buffers,
-command buffers, event buffers and memremap them during kdump boot
-and essentially work with an already enabled IOMMU configuration and
-re-using the previous kernel’s data structures.
-
-Reusing of command buffers and event buffers is now done for kdump boot
-irrespective of SNP being enabled during kdump.
-
-Re-use of completion wait buffers is only done when SNP is enabled as
-the exclusion base register is used for the completion wait buffer
-(CWB) address only when SNP is enabled.
+Skip enabling command buffers and event buffers for kdump boot as they
+are already enabled in the previous kernel.
 
 Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
 Tested-by: Sairaj Kodilkar <sarunkod@amd.com>
 Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Link: https://lore.kernel.org/r/ff04b381a8fe774b175c23c1a336b28bc1396511.1756157913.git.ashish.kalra@amd.com
+Link: https://lore.kernel.org/r/576445eb4f168b467b0fc789079b650ca7c5b037.1756157913.git.ashish.kalra@amd.com
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/amd_iommu_types.h |   5 +
- drivers/iommu/amd/init.c            | 152 +++++++++++++++++++++++++---
- drivers/iommu/amd/iommu.c           |   2 +-
- 3 files changed, 146 insertions(+), 13 deletions(-)
+ drivers/iommu/amd/init.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
-index 95f63c5f6159f..a698a2e7ce2a6 100644
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -792,6 +792,11 @@ struct amd_iommu {
- 	u32 flags;
- 	volatile u64 *cmd_sem;
- 	atomic64_t cmd_sem_val;
-+	/*
-+	 * Track physical address to directly use it in build_completion_wait()
-+	 * and avoid adding any special checks and handling for kdump.
-+	 */
-+	u64 cmd_sem_paddr;
- 
- #ifdef CONFIG_AMD_IOMMU_DEBUGFS
- 	/* DebugFS Info */
 diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index ba9e582a8bbe5..309951e57f301 100644
+index 309951e57f301..d0cd40ee0dec6 100644
 --- a/drivers/iommu/amd/init.c
 +++ b/drivers/iommu/amd/init.c
-@@ -710,6 +710,26 @@ static void __init free_alias_table(struct amd_iommu_pci_seg *pci_seg)
- 	pci_seg->alias_table = NULL;
- }
+@@ -815,11 +815,16 @@ static void iommu_enable_command_buffer(struct amd_iommu *iommu)
  
-+static inline void *iommu_memremap(unsigned long paddr, size_t size)
-+{
-+	phys_addr_t phys;
-+
-+	if (!paddr)
-+		return NULL;
-+
-+	/*
-+	 * Obtain true physical address in kdump kernel when SME is enabled.
-+	 * Currently, previous kernel with SME enabled and kdump kernel
-+	 * with SME support disabled is not supported.
-+	 */
-+	phys = __sme_clr(paddr);
-+
-+	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
-+		return (__force void *)ioremap_encrypted(phys, size);
-+	else
-+		return memremap(phys, size, MEMREMAP_WB);
-+}
-+
- /*
-  * Allocates the command buffer. This buffer is per AMD IOMMU. We can
-  * write commands to that buffer later and the IOMMU will execute them
-@@ -942,8 +962,91 @@ static int iommu_init_ga_log(struct amd_iommu *iommu)
- static int __init alloc_cwwb_sem(struct amd_iommu *iommu)
- {
- 	iommu->cmd_sem = iommu_alloc_4k_pages(iommu, GFP_KERNEL, 1);
-+	if (!iommu->cmd_sem)
-+		return -ENOMEM;
-+	iommu->cmd_sem_paddr = iommu_virt_to_phys((void *)iommu->cmd_sem);
-+	return 0;
-+}
-+
-+static int __init remap_event_buffer(struct amd_iommu *iommu)
-+{
-+	u64 paddr;
-+
-+	pr_info_once("Re-using event buffer from the previous kernel\n");
-+	paddr = readq(iommu->mmio_base + MMIO_EVT_BUF_OFFSET) & PM_ADDR_MASK;
-+	iommu->evt_buf = iommu_memremap(paddr, EVT_BUFFER_SIZE);
-+
-+	return iommu->evt_buf ? 0 : -ENOMEM;
-+}
-+
-+static int __init remap_command_buffer(struct amd_iommu *iommu)
-+{
-+	u64 paddr;
+ 	BUG_ON(iommu->cmd_buf == NULL);
  
--	return iommu->cmd_sem ? 0 : -ENOMEM;
-+	pr_info_once("Re-using command buffer from the previous kernel\n");
-+	paddr = readq(iommu->mmio_base + MMIO_CMD_BUF_OFFSET) & PM_ADDR_MASK;
-+	iommu->cmd_buf = iommu_memremap(paddr, CMD_BUFFER_SIZE);
-+
-+	return iommu->cmd_buf ? 0 : -ENOMEM;
-+}
-+
-+static int __init remap_or_alloc_cwwb_sem(struct amd_iommu *iommu)
-+{
-+	u64 paddr;
-+
-+	if (check_feature(FEATURE_SNP)) {
+-	entry = iommu_virt_to_phys(iommu->cmd_buf);
+-	entry |= MMIO_CMD_SIZE_512;
+-
+-	memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
+-		    &entry, sizeof(entry));
++	if (!is_kdump_kernel()) {
 +		/*
-+		 * When SNP is enabled, the exclusion base register is used for the
-+		 * completion wait buffer (CWB) address. Read and re-use it.
++		 * Command buffer is re-used for kdump kernel and setting
++		 * of MMIO register is not required.
 +		 */
-+		pr_info_once("Re-using CWB buffers from the previous kernel\n");
-+		paddr = readq(iommu->mmio_base + MMIO_EXCL_BASE_OFFSET) & PM_ADDR_MASK;
-+		iommu->cmd_sem = iommu_memremap(paddr, PAGE_SIZE);
-+		if (!iommu->cmd_sem)
-+			return -ENOMEM;
-+		iommu->cmd_sem_paddr = paddr;
-+	} else {
-+		return alloc_cwwb_sem(iommu);
++		entry = iommu_virt_to_phys(iommu->cmd_buf);
++		entry |= MMIO_CMD_SIZE_512;
++		memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
++			    &entry, sizeof(entry));
 +	}
-+
-+	return 0;
-+}
-+
-+static int __init alloc_iommu_buffers(struct amd_iommu *iommu)
-+{
-+	int ret;
-+
-+	/*
-+	 * Reuse/Remap the previous kernel's allocated completion wait
-+	 * command and event buffers for kdump boot.
-+	 */
-+	if (is_kdump_kernel()) {
-+		ret = remap_or_alloc_cwwb_sem(iommu);
-+		if (ret)
-+			return ret;
-+
-+		ret = remap_command_buffer(iommu);
-+		if (ret)
-+			return ret;
-+
-+		ret = remap_event_buffer(iommu);
-+		if (ret)
-+			return ret;
-+	} else {
-+		ret = alloc_cwwb_sem(iommu);
-+		if (ret)
-+			return ret;
-+
-+		ret = alloc_command_buffer(iommu);
-+		if (ret)
-+			return ret;
-+
-+		ret = alloc_event_buffer(iommu);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
+ 
+ 	amd_iommu_reset_cmd_buffer(iommu);
  }
+@@ -870,10 +875,15 @@ static void iommu_enable_event_buffer(struct amd_iommu *iommu)
  
- static void __init free_cwwb_sem(struct amd_iommu *iommu)
-@@ -951,6 +1054,38 @@ static void __init free_cwwb_sem(struct amd_iommu *iommu)
- 	if (iommu->cmd_sem)
- 		iommu_free_pages((void *)iommu->cmd_sem);
- }
-+static void __init unmap_cwwb_sem(struct amd_iommu *iommu)
-+{
-+	if (iommu->cmd_sem) {
-+		if (check_feature(FEATURE_SNP))
-+			memunmap((void *)iommu->cmd_sem);
-+		else
-+			iommu_free_pages((void *)iommu->cmd_sem);
-+	}
-+}
-+
-+static void __init unmap_command_buffer(struct amd_iommu *iommu)
-+{
-+	memunmap((void *)iommu->cmd_buf);
-+}
-+
-+static void __init unmap_event_buffer(struct amd_iommu *iommu)
-+{
-+	memunmap(iommu->evt_buf);
-+}
-+
-+static void __init free_iommu_buffers(struct amd_iommu *iommu)
-+{
-+	if (is_kdump_kernel()) {
-+		unmap_cwwb_sem(iommu);
-+		unmap_command_buffer(iommu);
-+		unmap_event_buffer(iommu);
-+	} else {
-+		free_cwwb_sem(iommu);
-+		free_command_buffer(iommu);
-+		free_event_buffer(iommu);
-+	}
-+}
+ 	BUG_ON(iommu->evt_buf == NULL);
  
- static void iommu_enable_xt(struct amd_iommu *iommu)
- {
-@@ -1655,9 +1790,7 @@ static void __init free_sysfs(struct amd_iommu *iommu)
- static void __init free_iommu_one(struct amd_iommu *iommu)
- {
- 	free_sysfs(iommu);
--	free_cwwb_sem(iommu);
--	free_command_buffer(iommu);
--	free_event_buffer(iommu);
-+	free_iommu_buffers(iommu);
- 	amd_iommu_free_ppr_log(iommu);
- 	free_ga_log(iommu);
- 	iommu_unmap_mmio_space(iommu);
-@@ -1821,14 +1954,9 @@ static int __init init_iommu_one_late(struct amd_iommu *iommu)
- {
- 	int ret;
- 
--	if (alloc_cwwb_sem(iommu))
--		return -ENOMEM;
+-	entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
 -
--	if (alloc_command_buffer(iommu))
--		return -ENOMEM;
--
--	if (alloc_event_buffer(iommu))
--		return -ENOMEM;
-+	ret = alloc_iommu_buffers(iommu);
-+	if (ret)
-+		return ret;
+-	memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
+-		    &entry, sizeof(entry));
++	if (!is_kdump_kernel()) {
++		/*
++		 * Event buffer is re-used for kdump kernel and setting
++		 * of MMIO register is not required.
++		 */
++		entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
++		memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
++			    &entry, sizeof(entry));
++	}
  
- 	iommu->int_enabled = false;
- 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index eb348c63a8d09..05a9ab3da1a3e 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -1195,7 +1195,7 @@ static void build_completion_wait(struct iommu_cmd *cmd,
- 				  struct amd_iommu *iommu,
- 				  u64 data)
- {
--	u64 paddr = iommu_virt_to_phys((void *)iommu->cmd_sem);
-+	u64 paddr = iommu->cmd_sem_paddr;
- 
- 	memset(cmd, 0, sizeof(*cmd));
- 	cmd->data[0] = lower_32_bits(paddr) | CMD_COMPL_WAIT_STORE_MASK;
+ 	/* set head and tail to zero manually */
+ 	writel(0x00, iommu->mmio_base + MMIO_EVT_HEAD_OFFSET);
 -- 
 2.51.0
 
