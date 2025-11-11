@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-194109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C90C4AEDF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:04 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14DBDC4B17E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F8983B12A0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8D6534FA1C3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566FC26ED5E;
-	Tue, 11 Nov 2025 01:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B27530F95A;
+	Tue, 11 Nov 2025 01:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fobXoLf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkZe4pE5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E11DDAB;
-	Tue, 11 Nov 2025 01:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E242E173B;
+	Tue, 11 Nov 2025 01:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824828; cv=none; b=YmSBoebNJuAO2mYLMyPXvDIAhWgLk0s30Lc8V8xB2029P314ILwJ/gk6LVBw3yWL1eXTup96XT7OBsD0qyFYSEUimGKMv565XcL9H8JEnrSgEgxHqtuV1RFdtuxt4H0NZfC809r10O3wpihiDNwZuIxNUrE54d5XuZKQm8HTfCs=
+	t=1762825374; cv=none; b=uv5Ea0ymWshBM/Y6LVF6lVMBkDzHQkLGJprk9/OggBxm6RAaY04Z2/fxTY3XvYeY2GSLqqcR+Mf4SE6NEzb+30tzeg/vxydqEYnHtKsA35B9/tB2BgBkaQHYfz44RisWKcV2dc5JMGkrGh0+xWJOb7d2mH1Xh3CJXFHBvXFWLWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824828; c=relaxed/simple;
-	bh=ch8CckVD0t5TrJnm2bNxgtlrRBq1e2Rtd9EVgon/PoQ=;
+	s=arc-20240116; t=1762825374; c=relaxed/simple;
+	bh=xBLZCt3yBWTMP9rWiDtbLKH3JXjAfK577ucKBsv9EqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=paiFY12uNOY+vcuq0Djt1EmnHDIUBrDoSG4+Ki4ULYcN37KYg8wIPfJSs9NWS36JVluwoXcLUIcfczqbTV4rGnDahEbHPro3O2XEnMw1y8NI2f1iIZ/7EAVI7Ro2exNbzPklkwhHzgbQGVUo2Zzg60sl+scuuJhdyFZg9vRVtI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fobXoLf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A496CC116B1;
-	Tue, 11 Nov 2025 01:33:47 +0000 (UTC)
+	 MIME-Version; b=KPG++yZ9b+4VeTKnNzpRWj+0fsuB7sbhjFU/1Ab/6XK8EA1f+VO08qtAFPDT/m07y7mJ+GCLFkSl8G1eAvqz4Ssh0xwnAMTidWOikdTeVs3ZBcnoxl7ot2dgC4jaJsdDhf8a/dqO34e3Febif8H+JA9bNp7x/8wSlaDIle9X68g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkZe4pE5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C7AC116D0;
+	Tue, 11 Nov 2025 01:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824827;
-	bh=ch8CckVD0t5TrJnm2bNxgtlrRBq1e2Rtd9EVgon/PoQ=;
+	s=korg; t=1762825374;
+	bh=xBLZCt3yBWTMP9rWiDtbLKH3JXjAfK577ucKBsv9EqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2fobXoLfLmXFtYPc6SIngtx6cDtdTsHWzV9BaaG/83UhH0IAV0drslvDFdqpSLK4W
-	 r9iQtjG58PmZYcfFojG6PBuYe3cjN4gk+sM6U28hbgqVbBk5meqXtkaZoDpodLbfb+
-	 OLwCvt3UW37baHW1AF5TvwvRR1hfir6o33OuqtHk=
+	b=qkZe4pE5B1udYH1IjqKhAtA8QAqpIx7xBUYMdZxugfpMtprvJpxaK9jFW5hOiUpdl
+	 m6lQW//1YTXYPtaYQQAGdc7ZKt2e7QzRWdmG+5bHm6tUM/BlMRCB1IxzqhJMtfEdT6
+	 Pati0GstS/zlUVjCvXaN1F1Hw/Afb3etSifCMaF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sammy Hsu <sammy.hsu@wnc.com.tw>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Xin Long <lucien.xin@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 488/565] net: wwan: t7xx: add support for HP DRMR-H01
-Date: Tue, 11 Nov 2025 09:45:44 +0900
-Message-ID: <20251111004537.908668752@linuxfoundation.org>
+Subject: [PATCH 6.17 775/849] sctp: Prevent TOCTOU out-of-bounds write
+Date: Tue, 11 Nov 2025 09:45:45 +0900
+Message-ID: <20251111004555.164927641@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sammy Hsu <zelda3121@gmail.com>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-[ Upstream commit 370e98728bda92b1bdffb448d1acdcbe19dadb4c ]
+[ Upstream commit 95aef86ab231f047bb8085c70666059b58f53c09 ]
 
-add support for HP DRMR-H01 (0x03f0, 0x09c8)
+For the following path not holding the sock lock,
 
-Signed-off-by: Sammy Hsu <sammy.hsu@wnc.com.tw>
-Link: https://patch.msgid.link/20251002024841.5979-1-sammy.hsu@wnc.com.tw
+  sctp_diag_dump() -> sctp_for_each_endpoint() -> sctp_ep_dump()
+
+make sure not to exceed bounds in case the address list has grown
+between buffer allocation (time-of-check) and write (time-of-use).
+
+Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251028161506.3294376-3-stefan.wiehler@nokia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/t7xx/t7xx_pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sctp/diag.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wwan/t7xx/t7xx_pci.c b/drivers/net/wwan/t7xx/t7xx_pci.c
-index e556e5bd49abc..c7020d107903a 100644
---- a/drivers/net/wwan/t7xx/t7xx_pci.c
-+++ b/drivers/net/wwan/t7xx/t7xx_pci.c
-@@ -885,6 +885,7 @@ static void t7xx_pci_remove(struct pci_dev *pdev)
+diff --git a/net/sctp/diag.c b/net/sctp/diag.c
+index dadf8254b30fd..95e65b9d623b3 100644
+--- a/net/sctp/diag.c
++++ b/net/sctp/diag.c
+@@ -88,6 +88,9 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
+ 		memcpy(info, &laddr->a, sizeof(laddr->a));
+ 		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
+ 		info += addrlen;
++
++		if (!--addrcnt)
++			break;
+ 	}
+ 	rcu_read_unlock();
  
- static const struct pci_device_id t7xx_pci_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x4d75) },
-+	{ PCI_DEVICE(0x03f0, 0x09c8) }, // HP DRMR-H01
- 	{ PCI_DEVICE(0x14c0, 0x4d75) }, // Dell DW5933e
- 	{ }
- };
 -- 
 2.51.0
 
