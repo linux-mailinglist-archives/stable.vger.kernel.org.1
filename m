@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65266C4ACE5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 984B8C4A719
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 509063B15CA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBE963B7BAB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D37340A73;
-	Tue, 11 Nov 2025 01:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E8133F39B;
+	Tue, 11 Nov 2025 01:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kl5M8mib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1o7XYafs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F241D2D97A4;
-	Tue, 11 Nov 2025 01:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E9B248883;
+	Tue, 11 Nov 2025 01:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824608; cv=none; b=qUE5sfZ9lHq++Asl1NCn5kLMdM5LVh+FaGMHlPbvFRPc+FQ5exEF9otxCZjLeKoDPK4L5rx1pff9y0VeUiZjIejnH1AlqJU3HFRkDIFTK86OOkc9tM8xi/QO+SDbCiC8EBQw2xn8pc2DlfU5b6f5tA0gMlKE0tC73ReM7YwDPuI=
+	t=1762823442; cv=none; b=VTa4Tp//FEwFO49Oia0lmvNOozfXif4wsO/cNGhTp8qT25MEdNyCn6zUu8ilDaIYWJR7PDS5lv3hTMe9LN+s5xNFKQoXHaKszWqiEpOgPFHKHed8+LyQg31omo2Ln1pa1zTTjWRYFk9hir3+GR/U3nPiGtdjOXvZ7uaOPqZGA5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824608; c=relaxed/simple;
-	bh=opcqOgyKk7wKvB0Zj3039oSiCe5j28yUVM4STD2lTPU=;
+	s=arc-20240116; t=1762823442; c=relaxed/simple;
+	bh=Kis806pFvHWgcIf2hxDtRYBvo/L2BOfIEK1E6qiMDcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAeFzHQKhHmxYmX1H/wt1cQvI6kmD+D6qpGnirrI2+QNm55NjjguOq8nI0UVbuEfgDCIqv7ePjGQix+DMewoD7bM6dvwXgjmFpvCnU9f5j3XmckEasQ7Gr9MULtboSASHXAXMaXGhHevDmbmgkAa3KRVkJSsxf2fZiNn6agO3G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kl5M8mib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92495C4CEFB;
-	Tue, 11 Nov 2025 01:30:07 +0000 (UTC)
+	 MIME-Version; b=etpdtquGjt0BZayINFUA7FtG2nqv7a/DDmOE7rZfPtCsDXbcppY/5NwiRXEiwZuq7RHV2c1BC62TojXUG/6esZtl9ggz88g+AfzmiAXX5fZNB9WcP2sOGFbWF4F+D4GAVw5FoYMHCK7q02lFx6o38ovow3zkmFDe5kmGLY3rWGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1o7XYafs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCBCC4CEFB;
+	Tue, 11 Nov 2025 01:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824607;
-	bh=opcqOgyKk7wKvB0Zj3039oSiCe5j28yUVM4STD2lTPU=;
+	s=korg; t=1762823442;
+	bh=Kis806pFvHWgcIf2hxDtRYBvo/L2BOfIEK1E6qiMDcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kl5M8mibaQI9+1DsJZq3vYxoJIv4Lg8IBFRSEVKJFYSe8uJb+fAYMrdQ4/42Ma1vd
-	 NbS3H70QPOZj3cddTo4gSId3REJLJSFezAdv3B97p1vfeox7SAw977goUgVdPjfwM3
-	 2TO34WjrEUumjW10UzoFCxam8pHTJdBlZD1Ak6Q8=
+	b=1o7XYafsNu3e/nQb+O2bxqVZu7Nv1dDxieqn/EPyH2PpDxEk//R2QB/B9faReNXTe
+	 0nQGm1BjnTcX7hNT8El3dHISEpQmoOb/IlrQYzpeFaEzyXpN8oyWCFW+qrncCng+G4
+	 +kSUV0yFk5imj9ST3YOkgXmYBfP64fIH5NfCPUN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrew Davis <afd@ti.com>,
+	Hari Nagalla <hnagalla@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 533/849] net: mana: Reduce waiting time if HWC not responding
+Subject: [PATCH 6.12 247/565] rpmsg: char: Export alias for RPMSG ID rpmsg-raw from table
 Date: Tue, 11 Nov 2025 09:41:43 +0900
-Message-ID: <20251111004549.304594769@linuxfoundation.org>
+Message-ID: <20251111004532.466068192@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit c4deabbc1abe452ea230b86d53ed3711e5a8a062 ]
+[ Upstream commit 6e29c30d8ddea6109ea7e0b9f17e7841df0794ea ]
 
-If HW Channel (HWC) is not responding, reduce the waiting time, so further
-steps will fail quickly.
-This will prevent getting stuck for a long time (30 minutes or more), for
-example, during unloading while HWC is not responding.
+Module aliases are used by userspace to identify the correct module to
+load for a detected hardware. The currently supported RPMSG device IDs for
+this module include "rpmsg-raw", but the module alias is "rpmsg_chrdev".
 
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Link: https://patch.msgid.link/1757537841-5063-1-git-send-email-haiyangz@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Use the helper macro MODULE_DEVICE_TABLE(rpmsg) to export the correct
+supported IDs. And while here, to keep backwards compatibility we also add
+the other ID "rpmsg_chrdev" so that it is also still exported as an alias.
+
+This has the side benefit of adding support for some legacy firmware
+which still uses the original "rpmsg_chrdev" ID. This was the ID used for
+this driver before it was upstreamed (as reflected by the module alias).
+
+Signed-off-by: Andrew Davis <afd@ti.com>
+Acked-by: Hari Nagalla <hnagalla@ti.com>
+Tested-by: Hari Nagalla <hnagalla@ti.com>
+Link: https://lore.kernel.org/r/20250619205722.133827-1-afd@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/hw_channel.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/rpmsg/rpmsg_char.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index ef072e24c46d0..ada6c78a2bef4 100644
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -881,7 +881,12 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
- 	if (!wait_for_completion_timeout(&ctx->comp_event,
- 					 (msecs_to_jiffies(hwc->hwc_timeout)))) {
- 		if (hwc->hwc_timeout != 0)
--			dev_err(hwc->dev, "HWC: Request timed out!\n");
-+			dev_err(hwc->dev, "HWC: Request timed out: %u ms\n",
-+				hwc->hwc_timeout);
-+
-+		/* Reduce further waiting if HWC no response */
-+		if (hwc->hwc_timeout > 1)
-+			hwc->hwc_timeout = 1;
+diff --git a/drivers/rpmsg/rpmsg_char.c b/drivers/rpmsg/rpmsg_char.c
+index eec7642d26863..96fcdd2d7093c 100644
+--- a/drivers/rpmsg/rpmsg_char.c
++++ b/drivers/rpmsg/rpmsg_char.c
+@@ -522,8 +522,10 @@ static void rpmsg_chrdev_remove(struct rpmsg_device *rpdev)
  
- 		err = -ETIMEDOUT;
- 		goto out;
+ static struct rpmsg_device_id rpmsg_chrdev_id_table[] = {
+ 	{ .name	= "rpmsg-raw" },
++	{ .name	= "rpmsg_chrdev" },
+ 	{ },
+ };
++MODULE_DEVICE_TABLE(rpmsg, rpmsg_chrdev_id_table);
+ 
+ static struct rpmsg_driver rpmsg_chrdev_driver = {
+ 	.probe = rpmsg_chrdev_probe,
+@@ -565,6 +567,5 @@ static void rpmsg_chrdev_exit(void)
+ }
+ module_exit(rpmsg_chrdev_exit);
+ 
+-MODULE_ALIAS("rpmsg:rpmsg_chrdev");
+ MODULE_DESCRIPTION("RPMSG device interface");
+ MODULE_LICENSE("GPL v2");
 -- 
 2.51.0
 
