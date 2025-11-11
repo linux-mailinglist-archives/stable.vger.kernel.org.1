@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-193410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32187C4A466
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:12:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 854EFC4A49C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 805964FA0B9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5B403B3A3A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8023925A334;
-	Tue, 11 Nov 2025 01:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E7D33F8B1;
+	Tue, 11 Nov 2025 01:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycxDG7SH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXoRR2YX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD1A24E4C6;
-	Tue, 11 Nov 2025 01:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1985733F37D;
+	Tue, 11 Nov 2025 01:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823116; cv=none; b=DrfditQo/29lDK3kw2BkIM3LaYNUTy2xBQMqarzsGuApOf3h2Xe0hFcsNKJ3iKJHLAfU8CXi4aO4vb74loytlo0tm/X40lPCpsZUltRH+REuevGxg1QyXML+1F96MM2Q+QgkG7lO1Ac8TZfTr10sUzLYHcQ2/bFNgFbved8Xe/s=
+	t=1762823170; cv=none; b=sHbUhxIbFvXIgBj52jHGa+RJzlu2WPlE2DG+D2vdFemqtQPbHXjSUKClVQJ4qDVnGTP3wh5FxOyBmI1U+WSOIwDBiSQQ2U2+qAedeM7DtmHocyG/SqK1/614gz09PJh6A/CmQPdm5RxMoEXzbtZsMH1QQI7Gzi6T4s5MpR66vVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823116; c=relaxed/simple;
-	bh=Kl2BoAigreeED37y1R3N3sJ+TBcUZO0bywx0/y16jeU=;
+	s=arc-20240116; t=1762823170; c=relaxed/simple;
+	bh=YLytaYgxaNPmaS5MvhF8HumWST/QlYp29qUoNeeUiC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ni8fELnis+2YBX1VQnPnYNakjjOoNoJgaHaSpVU5JvbhRxSYpTGQaU9ifTDXcj8rv8jd7jeaaUAeH99wzPXTqoAQCe/F8+AVHLobuqVnu3rguyvTd6HVFz4PmXacGNnuHzuxfbV9Iv4axIDfHpULqFLmFN/t01IBoz8XuHAcFkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycxDG7SH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F08BC19425;
-	Tue, 11 Nov 2025 01:05:15 +0000 (UTC)
+	 MIME-Version; b=S1BSUEa7/bi4Eb4VlHbyCA+O3WAf0Qe6bCWmLKtKKyZmSWTuRW46JzEO0otym0PxrKHKdG/8cFIjtfKqV+DqKgwHaDB+s4slnvag5qdFPONsV2+LIZrhqj4K8edd8qeYnZbQ3kxbw1MBYCOaLZkwl6OX1Buay1NNmCMcCk+YA3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXoRR2YX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF0BC116B1;
+	Tue, 11 Nov 2025 01:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823115;
-	bh=Kl2BoAigreeED37y1R3N3sJ+TBcUZO0bywx0/y16jeU=;
+	s=korg; t=1762823169;
+	bh=YLytaYgxaNPmaS5MvhF8HumWST/QlYp29qUoNeeUiC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ycxDG7SHweTaGyU4DNtrRbIyqratQnFFyFLHuJwgqeDzMrPXlDCgl/tOUYKCFYIfd
-	 2f+R6z25N+ggHWN2LjzmQQEpXh4V5MXpgXzTHc0cV4mvVXnF+A0ERC/3MYyr7WiQv+
-	 KZtiuGMLkU2U3bpI4lkp1W+9EKjGiWjcJWSAWiS0=
+	b=cXoRR2YX86UvPJ0OwF7rPtLgA8m3RleyaD3QQ1a2t10IJKjUx4cxnY9f/33CBJIkt
+	 sU20Iq0OXhZCngHg5y24Loupi3wfMpExQ/ov3qsLqxcXKDLkqYRXQ18HcfCOfOW8J3
+	 nHM+gjgFOlZdGhbX/qDyTwHHlG18CqRkzvKcm+18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 207/849] nvme: Use non zero KATO for persistent discovery connections
-Date: Tue, 11 Nov 2025 09:36:17 +0900
-Message-ID: <20251111004541.446168391@linuxfoundation.org>
+Subject: [PATCH 6.17 208/849] uprobe: Do not emulate/sstep original instruction when ip is changed
+Date: Tue, 11 Nov 2025 09:36:18 +0900
+Message-ID: <20251111004541.472084708@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,50 +68,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alistair Francis <alistair.francis@wdc.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 2e482655019ab6fcfe8865b62432c6d03f0b5f80 ]
+[ Upstream commit 4363264111e1297fa37aa39b0598faa19298ecca ]
 
-The NVMe Base Specification 2.1 states that:
+If uprobe handler changes instruction pointer we still execute single
+step) or emulate the original instruction and increment the (new) ip
+with its length.
 
-"""
-A host requests an explicit persistent connection ... by specifying a
-non-zero Keep Alive Timer value in the Connect command.
-"""
+This makes the new instruction pointer bogus and application will
+likely crash on illegal instruction execution.
 
-As such if we are starting a persistent connection to a discovery
-controller and the KATO is currently 0 we need to update KATO to a non
-zero value to avoid continuous timeouts on the target.
+If user decided to take execution elsewhere, it makes little sense
+to execute the original instruction, so let's skip it.
 
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20250916215301.664963-3-jolsa@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ kernel/events/uprobes.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 6b7493934535a..5714d49932822 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4990,8 +4990,14 @@ void nvme_start_ctrl(struct nvme_ctrl *ctrl)
- 	 * checking that they started once before, hence are reconnecting back.
- 	 */
- 	if (test_bit(NVME_CTRL_STARTED_ONCE, &ctrl->flags) &&
--	    nvme_discovery_ctrl(ctrl))
-+	    nvme_discovery_ctrl(ctrl)) {
-+		if (!ctrl->kato) {
-+			nvme_stop_keep_alive(ctrl);
-+			ctrl->kato = NVME_DEFAULT_KATO;
-+			nvme_start_keep_alive(ctrl);
-+		}
- 		nvme_change_uevent(ctrl, "NVME_EVENT=rediscover");
-+	}
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 4b97d16f731c1..109276c68ecba 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -2741,6 +2741,13 @@ static void handle_swbp(struct pt_regs *regs)
  
- 	if (ctrl->queue_count > 1) {
- 		nvme_queue_scan(ctrl);
+ 	handler_chain(uprobe, regs);
+ 
++	/*
++	 * If user decided to take execution elsewhere, it makes little sense
++	 * to execute the original instruction, so let's skip it.
++	 */
++	if (instruction_pointer(regs) != bp_vaddr)
++		goto out;
++
+ 	if (arch_uprobe_skip_sstep(&uprobe->arch, regs))
+ 		goto out;
+ 
 -- 
 2.51.0
 
