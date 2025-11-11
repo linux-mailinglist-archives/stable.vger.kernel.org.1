@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F29C4ABDA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:21 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DBA5C4A3EB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:09:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 536611894792
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 43B904F850E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3E1344047;
-	Tue, 11 Nov 2025 01:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC4D24E4C6;
+	Tue, 11 Nov 2025 01:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHBj9pZo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PM+k7f1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55772263F52;
-	Tue, 11 Nov 2025 01:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736851F5F6;
+	Tue, 11 Nov 2025 01:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824118; cv=none; b=fxWFr7FqUf5LFQz9+YA8U/qlN0IdYQGCNVFM+9fuke8fR2M9UOV+ZJjFxPQ3SPdJCSTO8SgZAWEFkQ5sLwU8G0AcB6DAtgoC6amxj9VAyY38YiBCSO0fpvRiUlfg/QDcwVYigOhweD/HMcnrg0DsR/wF/RAffh7unQWmKextKp8=
+	t=1762823009; cv=none; b=nPmhWQTmZR6RC1Q4UPRdk4JeML3RfaxZ7cPQ1Zk7PqYZSpQSVlq0gzAtIh4Wgh28cB3doBKuMyVuZKReF4mYW6noAhrOm5znTVa41PDvu7IH1jyguGSfeERtuRJXL1cLt7YbmX9pJQzBjNc/oNSOH36gi/mTLO3D/fpale6mU5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824118; c=relaxed/simple;
-	bh=f1iQezGCEkwfUE1msxHjfwvQw0ZW9YsWSKjfIZrHL5M=;
+	s=arc-20240116; t=1762823009; c=relaxed/simple;
+	bh=UcyZXHP/GuquRrX6bHTr8bAlFt2wsdALOQsWPxcq+d0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j5UjhW+jVtNi2QQSUfEmxlARTnf+SqUg4U0EIXq11gDPFmqraUxKSLXxPvKDio5YKyUBq3XiyfDX+4TmrprWyC/UUMt934mzsh180Mv4743BvQlIjoTghAzjVKZ0kAUd+N5THcUFWMuokZikn0QUmsrJUNVIS9UWRrm1DNFMbhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHBj9pZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81EDC19422;
-	Tue, 11 Nov 2025 01:21:57 +0000 (UTC)
+	 MIME-Version; b=D38ZhKjkSBiyV1iK9YHKegnXGiVM3j2OqxQRDkqFoF0x6Cj9z5TT3vVmxex/+P0TvrpswBqiDM2x0cXcfrRo5/rDJlJfK6AA7moSqwUcCXOoeVrxs7aR8LqMuZg/vcJNNyWF102a16NGOlL/hMyFMFRCS26nfV50uNarZ/t19xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PM+k7f1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAFC3C2BCB0;
+	Tue, 11 Nov 2025 01:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824118;
-	bh=f1iQezGCEkwfUE1msxHjfwvQw0ZW9YsWSKjfIZrHL5M=;
+	s=korg; t=1762823009;
+	bh=UcyZXHP/GuquRrX6bHTr8bAlFt2wsdALOQsWPxcq+d0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHBj9pZoH9p4V3LFiIetEYSqqcjzqyqptzYRzZMqUsBfHvV5xGp0u5WgTG88WCdFL
-	 hZbNV1pGGHqCdeKFEuYh5gbjE4ELv0mVTG4cBdMHIay9gEuzYFLUa8UZ3+wwuay8FR
-	 VjWcGVrzUw5exoHI3suhegREhTvUt9JmlUoFj+ZI=
+	b=PM+k7f1FvRlPbt4rCkvfZz6BC6W6sa8H/V+gXo74g7P41tonctjvH1lu+ybxjTdGl
+	 m2SUp2NHpYQgOpHNCU1J/6bEkbOG/HHJwm2y2xPEn+sfa6AU9V8DFipxTFTm7D0Ot/
+	 WfdVfRTxP90n12JUWBQ57q/0rm7SiDurhzivGtSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guoli An <anguoli@uniontech.com>,
-	Cryolitia PukNgae <cryolitia@uniontech.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 440/849] ALSA: usb-audio: apply quirk for MOONDROP Quark2
+Subject: [PATCH 6.12 154/565] blk-cgroup: fix possible deadlock while configuring policy
 Date: Tue, 11 Nov 2025 09:40:10 +0900
-Message-ID: <20251111004547.071456245@linuxfoundation.org>
+Message-ID: <20251111004530.403528870@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia@uniontech.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit a73349c5dd27bc544b048e2e2c8ef6394f05b793 ]
+[ Upstream commit 5d726c4dbeeddef612e6bed27edd29733f4d13af ]
 
-It reports a MIN value -15360 for volume control, but will mute when
-setting it less than -14208
+Following deadlock can be triggered easily by lockdep:
 
-Tested-by: Guoli An <anguoli@uniontech.com>
-Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250903-sound-v1-4-d4ca777b8512@uniontech.com
+WARNING: possible circular locking dependency detected
+6.17.0-rc3-00124-ga12c2658ced0 #1665 Not tainted
+------------------------------------------------------
+check/1334 is trying to acquire lock:
+ff1100011d9d0678 (&q->sysfs_lock){+.+.}-{4:4}, at: blk_unregister_queue+0x53/0x180
+
+but task is already holding lock:
+ff1100011d9d00e0 (&q->q_usage_counter(queue)#3){++++}-{0:0}, at: del_gendisk+0xba/0x110
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #2 (&q->q_usage_counter(queue)#3){++++}-{0:0}:
+       blk_queue_enter+0x40b/0x470
+       blkg_conf_prep+0x7b/0x3c0
+       tg_set_limit+0x10a/0x3e0
+       cgroup_file_write+0xc6/0x420
+       kernfs_fop_write_iter+0x189/0x280
+       vfs_write+0x256/0x490
+       ksys_write+0x83/0x190
+       __x64_sys_write+0x21/0x30
+       x64_sys_call+0x4608/0x4630
+       do_syscall_64+0xdb/0x6b0
+       entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+-> #1 (&q->rq_qos_mutex){+.+.}-{4:4}:
+       __mutex_lock+0xd8/0xf50
+       mutex_lock_nested+0x2b/0x40
+       wbt_init+0x17e/0x280
+       wbt_enable_default+0xe9/0x140
+       blk_register_queue+0x1da/0x2e0
+       __add_disk+0x38c/0x5d0
+       add_disk_fwnode+0x89/0x250
+       device_add_disk+0x18/0x30
+       virtblk_probe+0x13a3/0x1800
+       virtio_dev_probe+0x389/0x610
+       really_probe+0x136/0x620
+       __driver_probe_device+0xb3/0x230
+       driver_probe_device+0x2f/0xe0
+       __driver_attach+0x158/0x250
+       bus_for_each_dev+0xa9/0x130
+       driver_attach+0x26/0x40
+       bus_add_driver+0x178/0x3d0
+       driver_register+0x7d/0x1c0
+       __register_virtio_driver+0x2c/0x60
+       virtio_blk_init+0x6f/0xe0
+       do_one_initcall+0x94/0x540
+       kernel_init_freeable+0x56a/0x7b0
+       kernel_init+0x2b/0x270
+       ret_from_fork+0x268/0x4c0
+       ret_from_fork_asm+0x1a/0x30
+
+-> #0 (&q->sysfs_lock){+.+.}-{4:4}:
+       __lock_acquire+0x1835/0x2940
+       lock_acquire+0xf9/0x450
+       __mutex_lock+0xd8/0xf50
+       mutex_lock_nested+0x2b/0x40
+       blk_unregister_queue+0x53/0x180
+       __del_gendisk+0x226/0x690
+       del_gendisk+0xba/0x110
+       sd_remove+0x49/0xb0 [sd_mod]
+       device_remove+0x87/0xb0
+       device_release_driver_internal+0x11e/0x230
+       device_release_driver+0x1a/0x30
+       bus_remove_device+0x14d/0x220
+       device_del+0x1e1/0x5a0
+       __scsi_remove_device+0x1ff/0x2f0
+       scsi_remove_device+0x37/0x60
+       sdev_store_delete+0x77/0x100
+       dev_attr_store+0x1f/0x40
+       sysfs_kf_write+0x65/0x90
+       kernfs_fop_write_iter+0x189/0x280
+       vfs_write+0x256/0x490
+       ksys_write+0x83/0x190
+       __x64_sys_write+0x21/0x30
+       x64_sys_call+0x4608/0x4630
+       do_syscall_64+0xdb/0x6b0
+       entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+other info that might help us debug this:
+
+Chain exists of:
+  &q->sysfs_lock --> &q->rq_qos_mutex --> &q->q_usage_counter(queue)#3
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&q->q_usage_counter(queue)#3);
+                               lock(&q->rq_qos_mutex);
+                               lock(&q->q_usage_counter(queue)#3);
+  lock(&q->sysfs_lock);
+
+Root cause is that queue_usage_counter is grabbed with rq_qos_mutex
+held in blkg_conf_prep(), while queue should be freezed before
+rq_qos_mutex from other context.
+
+The blk_queue_enter() from blkg_conf_prep() is used to protect against
+policy deactivation, which is already protected with blkcg_mutex, hence
+convert blk_queue_enter() to blkcg_mutex to fix this problem. Meanwhile,
+consider that blkcg_mutex is held after queue is freezed from policy
+deactivation, also convert blkg_alloc() to use GFP_NOIO.
+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ block/blk-cgroup.c | 23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index 63b300bc67ba9..cf296decefefc 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1191,6 +1191,13 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
- 			cval->res = 1;
- 		}
- 		break;
-+	case USB_ID(0x3302, 0x12db): /* MOONDROP Quark2 */
-+		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
-+			usb_audio_info(chip,
-+				"set volume quirk for MOONDROP Quark2\n");
-+			cval->min = -14208; /* Mute under it */
-+		}
-+		break;
- 	}
- }
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index 643d6bf66522e..5a5525d10a5e5 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -847,14 +847,8 @@ int blkg_conf_prep(struct blkcg *blkcg, const struct blkcg_policy *pol,
+ 	disk = ctx->bdev->bd_disk;
+ 	q = disk->queue;
  
+-	/*
+-	 * blkcg_deactivate_policy() requires queue to be frozen, we can grab
+-	 * q_usage_counter to prevent concurrent with blkcg_deactivate_policy().
+-	 */
+-	ret = blk_queue_enter(q, 0);
+-	if (ret)
+-		goto fail;
+-
++	/* Prevent concurrent with blkcg_deactivate_policy() */
++	mutex_lock(&q->blkcg_mutex);
+ 	spin_lock_irq(&q->queue_lock);
+ 
+ 	if (!blkcg_policy_enabled(q, pol)) {
+@@ -884,16 +878,16 @@ int blkg_conf_prep(struct blkcg *blkcg, const struct blkcg_policy *pol,
+ 		/* Drop locks to do new blkg allocation with GFP_KERNEL. */
+ 		spin_unlock_irq(&q->queue_lock);
+ 
+-		new_blkg = blkg_alloc(pos, disk, GFP_KERNEL);
++		new_blkg = blkg_alloc(pos, disk, GFP_NOIO);
+ 		if (unlikely(!new_blkg)) {
+ 			ret = -ENOMEM;
+-			goto fail_exit_queue;
++			goto fail_exit;
+ 		}
+ 
+ 		if (radix_tree_preload(GFP_KERNEL)) {
+ 			blkg_free(new_blkg);
+ 			ret = -ENOMEM;
+-			goto fail_exit_queue;
++			goto fail_exit;
+ 		}
+ 
+ 		spin_lock_irq(&q->queue_lock);
+@@ -921,7 +915,7 @@ int blkg_conf_prep(struct blkcg *blkcg, const struct blkcg_policy *pol,
+ 			goto success;
+ 	}
+ success:
+-	blk_queue_exit(q);
++	mutex_unlock(&q->blkcg_mutex);
+ 	ctx->blkg = blkg;
+ 	return 0;
+ 
+@@ -929,9 +923,8 @@ int blkg_conf_prep(struct blkcg *blkcg, const struct blkcg_policy *pol,
+ 	radix_tree_preload_end();
+ fail_unlock:
+ 	spin_unlock_irq(&q->queue_lock);
+-fail_exit_queue:
+-	blk_queue_exit(q);
+-fail:
++fail_exit:
++	mutex_unlock(&q->blkcg_mutex);
+ 	/*
+ 	 * If queue was bypassing, we should retry.  Do so after a
+ 	 * short msleep().  It isn't strictly necessary but queue
 -- 
 2.51.0
 
