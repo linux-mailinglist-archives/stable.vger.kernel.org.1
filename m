@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-193413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0996FC4A48A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:14:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B53E1C4A3D7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:08:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B2EE74F719F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ED5E3AF343
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5F22737E3;
-	Tue, 11 Nov 2025 01:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2E22D94AD;
+	Tue, 11 Nov 2025 01:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvd4hgWC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xavkc7sh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DF52701D1;
-	Tue, 11 Nov 2025 01:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D002D8DD6;
+	Tue, 11 Nov 2025 01:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823123; cv=none; b=vB9ZftJ1VS3pf1lfF0yYiTtGuFGFGMFxUWd3Rkq6otRmGmVDKnbnAdaVB2YSvYMc3NSvatgh5G58OHW+oB8gRAMIAn5o0x6HByWnV2HFhsf6HYHeSAQm5uKkeGkjYnjQF8jNCDp8cRuUX7j/9Eb1Bycv1FgBgzDAL8w7P8UMbVQ=
+	t=1762823129; cv=none; b=U2coFllRJ+GMkp+ARVgUvl9uJBr8y5TotAtZNuZLtxMKWGbcykSWRiOhFVdZ+D0kBNXYUpGsTWQnchnJM6AZMNqUjNix+VAxZoweLOCD8VX8bsIngozhkLSf0N1uLJx+RFlXgCKDJGSlR8ymYeiHIv6bbQzpERRkg/i1bvJooC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823123; c=relaxed/simple;
-	bh=zwkiW6AmNgW+4Eva5zs/Dy20gNk+4RZOIGlkRwGgue8=;
+	s=arc-20240116; t=1762823129; c=relaxed/simple;
+	bh=RdIphVcKRTfn9Gy+IwiTWPj+SipUG1qKEY5R1hneqh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rK4DpAR+onG//zIZ/y9DdQpeCrBFw1ziKgp8TSxS5y3eg5SSKgN3dh8h6TQ/f4y6IbNb2BUcw+dU8JssMkBYjchTZxUrtuQGPsPCgzT1OYpvhb3MKpobrwmOX0MIoWiUQm89ENTeyldKf2uEOvtL8zQbHaycGU/RBoQCR1/0gdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvd4hgWC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69ACC16AAE;
-	Tue, 11 Nov 2025 01:05:22 +0000 (UTC)
+	 MIME-Version; b=Q0rfw7Bcgz+pMrq+JcSXP0D8aC+XlbteU1K9CvJb03Af0u6Ia9w7Oy2hZ6bZ8zffkPiWjYqi8s01Rb8Q6WxepWnkKhC9hcrm84CyRS2mNTkNkNI/PWy5PGBRn1oIjRIRA2ytgSSdZOW63ObmpvrXvFL/Ic1MGmmcgvXFvXmNgmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xavkc7sh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BA1C113D0;
+	Tue, 11 Nov 2025 01:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823123;
-	bh=zwkiW6AmNgW+4Eva5zs/Dy20gNk+4RZOIGlkRwGgue8=;
+	s=korg; t=1762823129;
+	bh=RdIphVcKRTfn9Gy+IwiTWPj+SipUG1qKEY5R1hneqh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rvd4hgWC5cfMDD1To1kV+aZiaq8qg0/i6itULTc0J+8qTOCL01SyNjsPOGPkWGLDy
-	 kgBqPBS7Cj/bQJbdTjp/JKn0kW3ffbTJT9ZXd9SQu1pg1r8NeFvHoDapR1ir1NQbXA
-	 hBYSFyNalLBw1lV4Ec/6RX1KRKenQHsFndrqPQJs=
+	b=xavkc7sh1Ez+rWKlpJz98mHFKiLrW0XKnleBn2jhopoiPBv4VFhQjscEwl/1bKmWJ
+	 s3ptBQmwuIIvuzF9L3uAWYVAK/bKy+/4JpXDBGZ1yHP5vsFNSxO84zkDSFeCKdBuTS
+	 QxQTOoToKLdPhptTyW1P/TlMdy8WlDztOyI77clE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathishkumar S <sathishkumar.sundararaju@amd.com>,
-	Leo Liu <leo.liu@amd.com>,
+	Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>,
+	Cruise Hung <Cruise.Hung@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 235/849] drm/amdgpu: Check vcn sram load return value
-Date: Tue, 11 Nov 2025 09:36:45 +0900
-Message-ID: <20251111004542.125538181@linuxfoundation.org>
+Subject: [PATCH 6.17 236/849] drm/amd/display: Remove check DPIA HPD status for BW Allocation
+Date: Tue, 11 Nov 2025 09:36:46 +0900
+Message-ID: <20251111004542.148528673@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,253 +69,135 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sathishkumar S <sathishkumar.sundararaju@amd.com>
+From: Cruise Hung <Cruise.Hung@amd.com>
 
-[ Upstream commit faab5ea0836733ef1c8e83cf6b05690a5c9066be ]
+[ Upstream commit d0e164f72e6a16e64f660023dc7ad25b31b8b08d ]
 
-Log an error when vcn sram load fails in indirect mode
-and return the same error value.
+[Why & How]
+Link hpd_status is for embedded DPIA only.
+Do not check hpd_status for BW allocation logic.
 
-Signed-off-by: Sathishkumar S <sathishkumar.sundararaju@amd.com>
-Reviewed-by: Leo Liu <leo.liu@amd.com>
+Reviewed-by: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
+Signed-off-by: Cruise Hung <Cruise.Hung@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c   | 10 ++++++++--
- drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c   | 10 ++++++++--
- drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c   | 10 ++++++++--
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c   | 10 ++++++++--
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c | 11 ++++++++---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c | 10 ++++++++--
- drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c |  9 +++++++--
- drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c | 11 ++++++++---
- 8 files changed, 63 insertions(+), 18 deletions(-)
+ .../drm/amd/display/dc/link/link_validation.c |  6 +-
+ .../dc/link/protocols/link_dp_dpia_bw.c       | 60 +++++++++----------
+ 2 files changed, 32 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
-index 68b4371df0f1b..d1481e6d57ecd 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
-@@ -865,6 +865,7 @@ static int vcn_v2_0_start_dpg_mode(struct amdgpu_vcn_inst *vinst, bool indirect)
- 	volatile struct amdgpu_fw_shared *fw_shared = adev->vcn.inst->fw_shared.cpu_addr;
- 	struct amdgpu_ring *ring = &adev->vcn.inst->ring_dec;
- 	uint32_t rb_bufsz, tmp;
-+	int ret;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_validation.c b/drivers/gpu/drm/amd/display/dc/link/link_validation.c
+index aecaf37eee352..acdc162de5353 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_validation.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_validation.c
+@@ -408,8 +408,10 @@ enum dc_status link_validate_dp_tunnel_bandwidth(const struct dc *dc, const stru
+ 		link = stream->link;
  
- 	vcn_v2_0_enable_static_power_gating(vinst);
+ 		if (!(link && (stream->signal == SIGNAL_TYPE_DISPLAY_PORT
+-				|| stream->signal == SIGNAL_TYPE_DISPLAY_PORT_MST)
+-				&& link->hpd_status))
++				|| stream->signal == SIGNAL_TYPE_DISPLAY_PORT_MST)))
++			continue;
++
++		if ((link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA) && (link->hpd_status == false))
+ 			continue;
  
-@@ -948,8 +949,13 @@ static int vcn_v2_0_start_dpg_mode(struct amdgpu_vcn_inst *vinst, bool indirect)
- 		UVD, 0, mmUVD_MASTINT_EN),
- 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
+ 		dp_tunnel_settings = get_dp_tunnel_settings(new_ctx, stream);
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
+index 819bf2d8ba530..906d85ca89569 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
+@@ -48,8 +48,7 @@
+  */
+ static bool link_dp_is_bw_alloc_available(struct dc_link *link)
+ {
+-	return (link && link->hpd_status
+-		&& link->dpcd_caps.usb4_dp_tun_info.dp_tun_cap.bits.dp_tunneling
++	return (link && link->dpcd_caps.usb4_dp_tun_info.dp_tun_cap.bits.dp_tunneling
+ 		&& link->dpcd_caps.usb4_dp_tun_info.dp_tun_cap.bits.dpia_bw_alloc
+ 		&& link->dpcd_caps.usb4_dp_tun_info.driver_bw_cap.bits.driver_bw_alloc_support);
+ }
+@@ -226,35 +225,35 @@ bool link_dpia_enable_usb4_dp_bw_alloc_mode(struct dc_link *link)
+ 	bool ret = false;
+ 	uint8_t val;
  
--	if (indirect)
--		amdgpu_vcn_psp_update_sram(adev, 0, 0);
-+	if (indirect) {
-+		ret = amdgpu_vcn_psp_update_sram(adev, 0, 0);
-+		if (ret) {
-+			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
-+			return ret;
+-	if (link->hpd_status) {
+-		val = DPTX_BW_ALLOC_MODE_ENABLE | DPTX_BW_ALLOC_UNMASK_IRQ;
++	val = DPTX_BW_ALLOC_MODE_ENABLE | DPTX_BW_ALLOC_UNMASK_IRQ;
+ 
+-		if (core_link_write_dpcd(link, DPTX_BW_ALLOCATION_MODE_CONTROL, &val, sizeof(uint8_t)) == DC_OK) {
+-			DC_LOG_DEBUG("%s:  link[%d] DPTX BW allocation mode enabled", __func__, link->link_index);
++	if (core_link_write_dpcd(link, DPTX_BW_ALLOCATION_MODE_CONTROL, &val, sizeof(uint8_t)) == DC_OK) {
++		DC_LOG_DEBUG("%s:  link[%d] DPTX BW allocation mode enabled", __func__, link->link_index);
+ 
+-			retrieve_usb4_dp_bw_allocation_info(link);
++		retrieve_usb4_dp_bw_allocation_info(link);
+ 
+-			if (link->dpia_bw_alloc_config.nrd_max_link_rate && link->dpia_bw_alloc_config.nrd_max_lane_count) {
+-				link->reported_link_cap.link_rate = link->dpia_bw_alloc_config.nrd_max_link_rate;
+-				link->reported_link_cap.lane_count = link->dpia_bw_alloc_config.nrd_max_lane_count;
+-			}
++		if (
++				link->dpia_bw_alloc_config.nrd_max_link_rate
++				&& link->dpia_bw_alloc_config.nrd_max_lane_count) {
++			link->reported_link_cap.link_rate = link->dpia_bw_alloc_config.nrd_max_link_rate;
++			link->reported_link_cap.lane_count = link->dpia_bw_alloc_config.nrd_max_lane_count;
 +		}
-+	}
  
- 	/* force RBC into idle state */
- 	rb_bufsz = order_base_2(ring->ring_size);
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c b/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c
-index f13ed3c1e29c2..fdd8e33916f27 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c
-@@ -1012,6 +1012,7 @@ static int vcn_v2_5_start_dpg_mode(struct amdgpu_vcn_inst *vinst, bool indirect)
- 	volatile struct amdgpu_fw_shared *fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
- 	struct amdgpu_ring *ring;
- 	uint32_t rb_bufsz, tmp;
-+	int ret;
- 
- 	/* disable register anti-hang mechanism */
- 	WREG32_P(SOC15_REG_OFFSET(VCN, inst_idx, mmUVD_POWER_STATUS), 1,
-@@ -1102,8 +1103,13 @@ static int vcn_v2_5_start_dpg_mode(struct amdgpu_vcn_inst *vinst, bool indirect)
- 		VCN, 0, mmUVD_MASTINT_EN),
- 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
- 
--	if (indirect)
--		amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
-+	if (indirect) {
-+		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
-+		if (ret) {
-+			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
-+			return ret;
+-			link->dpia_bw_alloc_config.bw_alloc_enabled = true;
+-			ret = true;
+-
+-			if (link->dc->debug.dpia_debug.bits.enable_usb4_bw_zero_alloc_patch) {
+-				/*
+-				 * During DP tunnel creation, the CM preallocates BW
+-				 * and reduces the estimated BW of other DPIAs.
+-				 * The CM releases the preallocation only when the allocation is complete.
+-				 * Perform a zero allocation to make the CM release the preallocation
+-				 * and correctly update the estimated BW for all DPIAs per host router.
+-				 */
+-				link_dp_dpia_allocate_usb4_bandwidth_for_stream(link, 0);
+-			}
+-		} else
+-			DC_LOG_DEBUG("%s:  link[%d] failed to enable DPTX BW allocation mode", __func__, link->link_index);
+-	}
++		link->dpia_bw_alloc_config.bw_alloc_enabled = true;
++		ret = true;
++
++		if (link->dc->debug.dpia_debug.bits.enable_usb4_bw_zero_alloc_patch) {
++			/*
++			 * During DP tunnel creation, the CM preallocates BW
++			 * and reduces the estimated BW of other DPIAs.
++			 * The CM releases the preallocation only when the allocation is complete.
++			 * Perform a zero allocation to make the CM release the preallocation
++			 * and correctly update the estimated BW for all DPIAs per host router.
++			 */
++			link_dp_dpia_allocate_usb4_bandwidth_for_stream(link, 0);
 +		}
-+	}
++	} else
++		DC_LOG_DEBUG("%s:  link[%d] failed to enable DPTX BW allocation mode", __func__, link->link_index);
  
- 	ring = &adev->vcn.inst[inst_idx].ring_dec;
- 	/* force RBC into idle state */
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
-index 866222fc10a05..b7c4fcca18bb1 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
-@@ -1041,6 +1041,7 @@ static int vcn_v3_0_start_dpg_mode(struct amdgpu_vcn_inst *vinst, bool indirect)
- 	volatile struct amdgpu_fw_shared *fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
- 	struct amdgpu_ring *ring;
- 	uint32_t rb_bufsz, tmp;
-+	int ret;
+ 	return ret;
+ }
+@@ -297,15 +296,12 @@ void dpia_handle_usb4_bandwidth_allocation_for_link(struct dc_link *link, int pe
+ {
+ 	if (link && link->dpcd_caps.usb4_dp_tun_info.dp_tun_cap.bits.dp_tunneling
+ 			&& link->dpia_bw_alloc_config.bw_alloc_enabled) {
+-		//1. Hot Plug
+-		if (link->hpd_status && peak_bw > 0) {
++		if (peak_bw > 0) {
+ 			// If DP over USB4 then we need to check BW allocation
+ 			link->dpia_bw_alloc_config.link_max_bw = peak_bw;
  
- 	/* disable register anti-hang mechanism */
- 	WREG32_P(SOC15_REG_OFFSET(VCN, inst_idx, mmUVD_POWER_STATUS), 1,
-@@ -1133,8 +1134,13 @@ static int vcn_v3_0_start_dpg_mode(struct amdgpu_vcn_inst *vinst, bool indirect)
- 	WREG32_SOC15_DPG_MODE(inst_idx, SOC15_DPG_MODE_OFFSET(
- 		VCN, inst_idx, mmUVD_VCPU_CNTL), tmp, 0, indirect);
- 
--	if (indirect)
--		amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
-+	if (indirect) {
-+		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
-+		if (ret) {
-+			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
-+			return ret;
-+		}
-+	}
- 
- 	ring = &adev->vcn.inst[inst_idx].ring_dec;
- 	/* force RBC into idle state */
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-index ac55549e20be6..082def4a6bdfe 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-@@ -1012,6 +1012,7 @@ static int vcn_v4_0_start_dpg_mode(struct amdgpu_vcn_inst *vinst, bool indirect)
- 	volatile struct amdgpu_vcn4_fw_shared *fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
- 	struct amdgpu_ring *ring;
- 	uint32_t tmp;
-+	int ret;
- 
- 	/* disable register anti-hang mechanism */
- 	WREG32_P(SOC15_REG_OFFSET(VCN, inst_idx, regUVD_POWER_STATUS), 1,
-@@ -1094,8 +1095,13 @@ static int vcn_v4_0_start_dpg_mode(struct amdgpu_vcn_inst *vinst, bool indirect)
- 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
- 
- 
--	if (indirect)
--		amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
-+	if (indirect) {
-+		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
-+		if (ret) {
-+			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
-+			return ret;
-+		}
-+	}
- 
- 	ring = &adev->vcn.inst[inst_idx].ring_enc[0];
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
-index ba944a96c0707..2e985c4a288a3 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
-@@ -849,7 +849,7 @@ static int vcn_v4_0_3_start_dpg_mode(struct amdgpu_vcn_inst *vinst,
- 	volatile struct amdgpu_vcn4_fw_shared *fw_shared =
- 						adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
- 	struct amdgpu_ring *ring;
--	int vcn_inst;
-+	int vcn_inst, ret;
- 	uint32_t tmp;
- 
- 	vcn_inst = GET_INST(VCN, inst_idx);
-@@ -942,8 +942,13 @@ static int vcn_v4_0_3_start_dpg_mode(struct amdgpu_vcn_inst *vinst,
- 		VCN, 0, regUVD_MASTINT_EN),
- 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
- 
--	if (indirect)
--		amdgpu_vcn_psp_update_sram(adev, inst_idx, AMDGPU_UCODE_ID_VCN0_RAM);
-+	if (indirect) {
-+		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, AMDGPU_UCODE_ID_VCN0_RAM);
-+		if (ret) {
-+			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
-+			return ret;
-+		}
-+	}
- 
- 	ring = &adev->vcn.inst[inst_idx].ring_enc[0];
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-index 11fec716e846a..3ce49dfd3897d 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-@@ -924,6 +924,7 @@ static int vcn_v4_0_5_start_dpg_mode(struct amdgpu_vcn_inst *vinst,
- 	volatile struct amdgpu_vcn4_fw_shared *fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
- 	struct amdgpu_ring *ring;
- 	uint32_t tmp;
-+	int ret;
- 
- 	/* disable register anti-hang mechanism */
- 	WREG32_P(SOC15_REG_OFFSET(VCN, inst_idx, regUVD_POWER_STATUS), 1,
-@@ -1004,8 +1005,13 @@ static int vcn_v4_0_5_start_dpg_mode(struct amdgpu_vcn_inst *vinst,
- 		VCN, inst_idx, regUVD_MASTINT_EN),
- 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
- 
--	if (indirect)
--		amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
-+	if (indirect) {
-+		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
-+		if (ret) {
-+			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
-+			return ret;
-+		}
-+	}
- 
- 	ring = &adev->vcn.inst[inst_idx].ring_enc[0];
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
-index 07a6e95828808..f8bb90fe764bb 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
-@@ -713,6 +713,7 @@ static int vcn_v5_0_0_start_dpg_mode(struct amdgpu_vcn_inst *vinst,
- 	volatile struct amdgpu_vcn5_fw_shared *fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
- 	struct amdgpu_ring *ring;
- 	uint32_t tmp;
-+	int ret;
- 
- 	/* disable register anti-hang mechanism */
- 	WREG32_P(SOC15_REG_OFFSET(VCN, inst_idx, regUVD_POWER_STATUS), 1,
-@@ -766,8 +767,12 @@ static int vcn_v5_0_0_start_dpg_mode(struct amdgpu_vcn_inst *vinst,
- 		VCN, inst_idx, regUVD_MASTINT_EN),
- 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
- 
--	if (indirect)
--		amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
-+	if (indirect) {
-+		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
-+		dev_err(adev->dev, "%s: vcn sram load failed %d\n", __func__, ret);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	ring = &adev->vcn.inst[inst_idx].ring_enc[0];
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-index cdefd7fcb0da6..d8bbb93767318 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-@@ -605,7 +605,7 @@ static int vcn_v5_0_1_start_dpg_mode(struct amdgpu_vcn_inst *vinst,
- 		adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
- 	struct amdgpu_ring *ring;
- 	struct dpg_pause_state state = {.fw_based = VCN_DPG_STATE__PAUSE};
--	int vcn_inst;
-+	int vcn_inst, ret;
- 	uint32_t tmp;
- 
- 	vcn_inst = GET_INST(VCN, inst_idx);
-@@ -666,8 +666,13 @@ static int vcn_v5_0_1_start_dpg_mode(struct amdgpu_vcn_inst *vinst,
- 		VCN, 0, regUVD_MASTINT_EN),
- 		UVD_MASTINT_EN__VCPU_EN_MASK, 0, indirect);
- 
--	if (indirect)
--		amdgpu_vcn_psp_update_sram(adev, inst_idx, AMDGPU_UCODE_ID_VCN0_RAM);
-+	if (indirect) {
-+		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, AMDGPU_UCODE_ID_VCN0_RAM);
-+		if (ret) {
-+			dev_err(adev->dev, "vcn sram load failed %d\n", ret);
-+			return ret;
-+		}
-+	}
- 
- 	/* resetting ring, fw should not check RB ring */
- 	fw_shared->sq.queue_mode |= FW_QUEUE_RING_RESET;
+ 			link_dpia_send_bw_alloc_request(link, peak_bw);
+-		}
+-		//2. Cold Unplug
+-		else if (!link->hpd_status)
++		} else
+ 			dpia_bw_alloc_unplug(link);
+ 	}
+ }
 -- 
 2.51.0
 
