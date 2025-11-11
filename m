@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-194397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2018C4B29B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:05:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC77C4B1E5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC3C33B880B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7D5664F7193
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD853054DF;
-	Tue, 11 Nov 2025 01:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42FD340A7A;
+	Tue, 11 Nov 2025 01:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TChb4YLm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvw6yGkk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70E530B50B;
-	Tue, 11 Nov 2025 01:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07483054D7;
+	Tue, 11 Nov 2025 01:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825508; cv=none; b=Je2DP7+vee/NKoHXCwKKJvCGiORwnubb8gvbI51NfxEM0Q6aVtKrI077ORhxJ8PYMWgoRK0IBqAuU9cxk8jq9Panh5ByROT7uGvRJoNPd/cel7r3WFQiCsd/n3S3Rr3T+4utiLSL4XhI+KqLaICtI7LskcYT1fMz0OUAEQg1BfI=
+	t=1762825533; cv=none; b=gx0Fe+ImA2Boo52+xBBCM9g9Dvclme3J2siqklaU1yBPDNUDE/OLIZ+u9NlrZLRJzFv56Q5z9YxYjvnILbgFutCgkiCwHOIOVBmh8y5JLelrChl9CbQqeGQS5c1tpKuMR2iLza1bQqubBqB63mmph4HkpByMWIbSCcyPW8N75/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825508; c=relaxed/simple;
-	bh=GHXHDlkf1bcIMzWPPfogT1JhKHN3jrbF0c9aiPwirLA=;
+	s=arc-20240116; t=1762825533; c=relaxed/simple;
+	bh=N4MZ0nU0XpraEYE33w9xfOzcsffgD1Nk68wIb/VfxuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UruGBd0E8IHyF98Deg9BKrswLXFuawUuB4NcQcmBm103cIuN/vagO1aogUY5+KceBRTVnIo/7n56RV5zkxyUlyVc2NfSu5mnPZC15FpQ/t5Y85ML9M+F+o78lbFKIYeZrTtO5FH0qU4/7KyVUUZgcWrmzBe0GJYIBgGKorIH49c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TChb4YLm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15843C4CEFB;
-	Tue, 11 Nov 2025 01:45:07 +0000 (UTC)
+	 MIME-Version; b=Q1XckLaG80Je0emQbzWhgY4pDDlzb8VCTEYkB4akygjmdCtH5MB4rGlGkRFuvUo7s3E8hW3IDi2pzZX5C3akRXN668BjH0H3K2yfnJYhcTJha8S3JLAYHSDH+UxRQdKC43SjThE0W93oT6+WNDZRTfGok16MfAGtXj6ry/2AXRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvw6yGkk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414C0C4CEF5;
+	Tue, 11 Nov 2025 01:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825508;
-	bh=GHXHDlkf1bcIMzWPPfogT1JhKHN3jrbF0c9aiPwirLA=;
+	s=korg; t=1762825533;
+	bh=N4MZ0nU0XpraEYE33w9xfOzcsffgD1Nk68wIb/VfxuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TChb4YLmSlO+MdmmjhQKAJHgcKVmmer0gE0NntQUzdC5wrWWla3x+6/Nqdt9/3E2+
-	 0E/TzuZnv6TFqfXq84gfwbmIrJhxuQllOvK5caS9jxaSsZoRfsnXs1q3EnwRZIpb70
-	 Rt0xdcIuNQrwiRg1YAIexCAG+Cqtjj1PjhGnRk54=
+	b=cvw6yGkkhmGq+r7FXStEHmVHmdwalPPJjnQY4Sr/whaV+dh0hzmEKYzYkmbNvmM8R
+	 7PiOPNL4jYq/Br+E5gmgiLSFlzu/FKZVpVFIq8waWFMCKnzRcyaMl6G63uSe1Nn+NU
+	 CQjabUGjI97qg3DHyLkAkO1pO9mbyxuY4J5/6qzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Benjamin Berg <benjamin.berg@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 6.17 805/849] wifi: mac80211: use wiphy_hrtimer_work for ttlm_work
-Date: Tue, 11 Nov 2025 09:46:15 +0900
-Message-ID: <20251111004555.891586665@linuxfoundation.org>
+Subject: [PATCH 6.17 806/849] wifi: mac80211: use wiphy_hrtimer_work for csa.switch_work
+Date: Tue, 11 Nov 2025 09:46:16 +0900
+Message-ID: <20251111004555.915770586@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,116 +68,133 @@ Content-Transfer-Encoding: 8bit
 
 From: Benjamin Berg <benjamin.berg@intel.com>
 
-commit dfa865d490b1bd252045463588a91a4d3c82f3c8 upstream.
+commit fbc1cc6973099f45e4c30b86f12b4435c7cb7d24 upstream.
 
 The work item may be scheduled relatively far in the future. As the
 event happens at a specific point in time, the normal timer accuracy is
 not sufficient in that case.
 
-Switch to use wiphy_hrtimer_work so that the accuracy is sufficient.
+Switch to use wiphy_hrtimer_work so that the accuracy is sufficient. To
+make this work, use the same clock to store the timestamp.
 
 CC: stable@vger.kernel.org
-Fixes: 702e80470a33 ("wifi: mac80211: support handling of advertised TID-to-link mapping")
+Fixes: ec3252bff7b6 ("wifi: mac80211: use wiphy work for channel switch")
 Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20251028125710.83c2c611545e.I35498a6d883ea24b0dc4910cf521aa768d2a0e90@changeid
+Link: https://patch.msgid.link/20251028125710.68258c7e4ac4.I4ff2b2cdffbbf858bf5f08baccc7a88c4f9efe6f@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/ieee80211_i.h |    2 +-
- net/mac80211/mlme.c        |   24 ++++++++++++------------
- 2 files changed, 13 insertions(+), 13 deletions(-)
+ net/mac80211/chan.c        |    2 +-
+ net/mac80211/ieee80211_i.h |    4 ++--
+ net/mac80211/link.c        |    4 ++--
+ net/mac80211/mlme.c        |   18 +++++++++---------
+ 4 files changed, 14 insertions(+), 14 deletions(-)
 
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -1301,7 +1301,7 @@ ieee80211_link_chanctx_reservation_compl
+ 				 &link->csa.finalize_work);
+ 		break;
+ 	case NL80211_IFTYPE_STATION:
+-		wiphy_delayed_work_queue(sdata->local->hw.wiphy,
++		wiphy_hrtimer_work_queue(sdata->local->hw.wiphy,
+ 					 &link->u.mgd.csa.switch_work, 0);
+ 		break;
+ 	case NL80211_IFTYPE_UNSPECIFIED:
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -608,7 +608,7 @@ struct ieee80211_if_managed {
- 	u16 removed_links;
+@@ -1009,10 +1009,10 @@ struct ieee80211_link_data_managed {
+ 	bool operating_11g_mode;
  
- 	/* TID-to-link mapping support */
--	struct wiphy_delayed_work ttlm_work;
-+	struct wiphy_hrtimer_work ttlm_work;
- 	struct ieee80211_adv_ttlm_info ttlm_info;
- 	struct wiphy_work teardown_ttlm_work;
+ 	struct {
+-		struct wiphy_delayed_work switch_work;
++		struct wiphy_hrtimer_work switch_work;
+ 		struct cfg80211_chan_def ap_chandef;
+ 		struct ieee80211_parsed_tpe tpe;
+-		unsigned long time;
++		ktime_t time;
+ 		bool waiting_bcn;
+ 		bool ignored_same_chan;
+ 		bool blocked_tx;
+--- a/net/mac80211/link.c
++++ b/net/mac80211/link.c
+@@ -472,10 +472,10 @@ static int _ieee80211_set_active_links(s
+ 		 * from there.
+ 		 */
+ 		if (link->conf->csa_active)
+-			wiphy_delayed_work_queue(local->hw.wiphy,
++			wiphy_hrtimer_work_queue(local->hw.wiphy,
+ 						 &link->u.mgd.csa.switch_work,
+ 						 link->u.mgd.csa.time -
+-						 jiffies);
++						 ktime_get_boottime());
+ 	}
  
+ 	for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -45,7 +45,7 @@
- #define IEEE80211_ASSOC_TIMEOUT_SHORT	(HZ / 10)
- #define IEEE80211_ASSOC_MAX_TRIES	3
- 
--#define IEEE80211_ADV_TTLM_SAFETY_BUFFER_MS msecs_to_jiffies(100)
-+#define IEEE80211_ADV_TTLM_SAFETY_BUFFER_MS (100 * USEC_PER_MSEC)
- #define IEEE80211_ADV_TTLM_ST_UNDERFLOW 0xff00
- 
- #define IEEE80211_NEG_TTLM_REQ_TIMEOUT (HZ / 5)
-@@ -4237,7 +4237,7 @@ static void ieee80211_set_disassoc(struc
- 
- 	memset(&sdata->u.mgd.ttlm_info, 0,
- 	       sizeof(sdata->u.mgd.ttlm_info));
--	wiphy_delayed_work_cancel(sdata->local->hw.wiphy, &ifmgd->ttlm_work);
-+	wiphy_hrtimer_work_cancel(sdata->local->hw.wiphy, &ifmgd->ttlm_work);
- 
- 	memset(&sdata->vif.neg_ttlm, 0, sizeof(sdata->vif.neg_ttlm));
- 	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
-@@ -7087,7 +7087,7 @@ static void ieee80211_process_adv_ttlm(s
- 			/* if a planned TID-to-link mapping was cancelled -
- 			 * abort it
- 			 */
--			wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
-+			wiphy_hrtimer_work_cancel(sdata->local->hw.wiphy,
- 						  &sdata->u.mgd.ttlm_work);
- 		} else if (sdata->u.mgd.ttlm_info.active) {
- 			/* if no TID-to-link element, set to default mapping in
-@@ -7122,7 +7122,7 @@ static void ieee80211_process_adv_ttlm(s
- 
- 		if (ttlm_info.switch_time) {
- 			u16 beacon_ts_tu, st_tu, delay;
--			u32 delay_jiffies;
-+			u64 delay_usec;
- 			u64 mask;
- 
- 			/* The t2l map switch time is indicated with a partial
-@@ -7144,23 +7144,23 @@ static void ieee80211_process_adv_ttlm(s
- 			if (delay > IEEE80211_ADV_TTLM_ST_UNDERFLOW)
- 				return;
- 
--			delay_jiffies = TU_TO_JIFFIES(delay);
-+			delay_usec = ieee80211_tu_to_usec(delay);
- 
- 			/* Link switching can take time, so schedule it
- 			 * 100ms before to be ready on time
- 			 */
--			if (delay_jiffies > IEEE80211_ADV_TTLM_SAFETY_BUFFER_MS)
--				delay_jiffies -=
-+			if (delay_usec > IEEE80211_ADV_TTLM_SAFETY_BUFFER_MS)
-+				delay_usec -=
- 					IEEE80211_ADV_TTLM_SAFETY_BUFFER_MS;
- 			else
--				delay_jiffies = 0;
-+				delay_usec = 0;
- 
- 			sdata->u.mgd.ttlm_info = ttlm_info;
--			wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
-+			wiphy_hrtimer_work_cancel(sdata->local->hw.wiphy,
- 						  &sdata->u.mgd.ttlm_work);
--			wiphy_delayed_work_queue(sdata->local->hw.wiphy,
-+			wiphy_hrtimer_work_queue(sdata->local->hw.wiphy,
- 						 &sdata->u.mgd.ttlm_work,
--						 delay_jiffies);
-+						 us_to_ktime(delay_usec));
+@@ -2589,7 +2589,7 @@ void ieee80211_chswitch_done(struct ieee
  			return;
  		}
+ 
+-		wiphy_delayed_work_queue(sdata->local->hw.wiphy,
++		wiphy_hrtimer_work_queue(sdata->local->hw.wiphy,
+ 					 &link->u.mgd.csa.switch_work, 0);
  	}
-@@ -8761,7 +8761,7 @@ void ieee80211_sta_setup_sdata(struct ie
- 	timer_setup(&ifmgd->conn_mon_timer, ieee80211_sta_conn_mon_timer, 0);
- 	wiphy_delayed_work_init(&ifmgd->tx_tspec_wk,
- 				ieee80211_sta_handle_tspec_ac_params_wk);
--	wiphy_delayed_work_init(&ifmgd->ttlm_work,
-+	wiphy_hrtimer_work_init(&ifmgd->ttlm_work,
- 				ieee80211_tid_to_link_map_work);
- 	wiphy_delayed_work_init(&ifmgd->neg_ttlm_timeout_work,
- 				ieee80211_neg_ttlm_timeout_work);
+ 
+@@ -2748,7 +2748,8 @@ ieee80211_sta_process_chanswitch(struct
+ 		.timestamp = timestamp,
+ 		.device_timestamp = device_timestamp,
+ 	};
+-	unsigned long now;
++	u32 csa_time_tu;
++	ktime_t now;
+ 	int res;
+ 
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+@@ -2978,10 +2979,9 @@ ieee80211_sta_process_chanswitch(struct
+ 					  csa_ie.mode);
+ 
+ 	/* we may have to handle timeout for deactivated link in software */
+-	now = jiffies;
+-	link->u.mgd.csa.time = now +
+-			       TU_TO_JIFFIES((max_t(int, csa_ie.count, 1) - 1) *
+-					     link->conf->beacon_int);
++	now = ktime_get_boottime();
++	csa_time_tu = (max_t(int, csa_ie.count, 1) - 1) * link->conf->beacon_int;
++	link->u.mgd.csa.time = now + us_to_ktime(ieee80211_tu_to_usec(csa_time_tu));
+ 
+ 	if (ieee80211_vif_link_active(&sdata->vif, link->link_id) &&
+ 	    local->ops->channel_switch) {
+@@ -2996,7 +2996,7 @@ ieee80211_sta_process_chanswitch(struct
+ 	}
+ 
+ 	/* channel switch handled in software */
+-	wiphy_delayed_work_queue(local->hw.wiphy,
++	wiphy_hrtimer_work_queue(local->hw.wiphy,
+ 				 &link->u.mgd.csa.switch_work,
+ 				 link->u.mgd.csa.time - now);
+ 	return;
+@@ -8808,7 +8808,7 @@ void ieee80211_mgd_setup_link(struct iee
+ 	else
+ 		link->u.mgd.req_smps = IEEE80211_SMPS_OFF;
+ 
+-	wiphy_delayed_work_init(&link->u.mgd.csa.switch_work,
++	wiphy_hrtimer_work_init(&link->u.mgd.csa.switch_work,
+ 				ieee80211_csa_switch_work);
+ 
+ 	ieee80211_clear_tpe(&link->conf->tpe);
+@@ -10023,7 +10023,7 @@ void ieee80211_mgd_stop_link(struct ieee
+ 			  &link->u.mgd.request_smps_work);
+ 	wiphy_work_cancel(link->sdata->local->hw.wiphy,
+ 			  &link->u.mgd.recalc_smps);
+-	wiphy_delayed_work_cancel(link->sdata->local->hw.wiphy,
++	wiphy_hrtimer_work_cancel(link->sdata->local->hw.wiphy,
+ 				  &link->u.mgd.csa.switch_work);
+ }
+ 
 
 
 
