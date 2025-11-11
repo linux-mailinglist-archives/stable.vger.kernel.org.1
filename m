@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5377BC4A174
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:59:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B56C4A208
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C46BA188E617
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 988C94F013D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4F324EA90;
-	Tue, 11 Nov 2025 00:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF81252917;
+	Tue, 11 Nov 2025 00:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hbl/SD8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2JD/MClY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEE324BBEB;
-	Tue, 11 Nov 2025 00:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3004C97;
+	Tue, 11 Nov 2025 00:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822753; cv=none; b=gjw3UE9dSuGFDd6WxDsNya5iotB+xv8sNIGnk4DatFo5YRFxCUPGofPS/BVLLLlw2I+kUQXCEcxGw1dGBtBZBRvaPIH4okjEVCSBCyBKf8IAeu1fUVGPfWABM5DbLkYIV3IHpnLCCxFRv116pUC9Kph6f7n5KsYpugnp1k2pOvo=
+	t=1762822757; cv=none; b=h5oEIHY731p0/voj3EJ9U2YOFitRvB5yfS2S1v6GwRuhokhUeJUsFIbxRpaU7qiIP956ID9EGdB9/hRXUHJn93yFBDN3tJ7GJouVnjqsUECcnyoBv+iHvVkT4Tja/BFDd47Ww0STRsM3chURkpMvW1nUAGox1J/9lJpUNmtzIqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822753; c=relaxed/simple;
-	bh=i+qqejGiLxe5Bq8fiLuJGzbUP6RRQjOT+yI7EbV3TfI=;
+	s=arc-20240116; t=1762822757; c=relaxed/simple;
+	bh=u6+iwWDTut//Vy+SxhiuU2xH752qowu/GIPcH7GufSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UHBF9IaVTEQAhr3k1WsCc/SrAAUOrPC9i+EBMaDo0AEk/Z9TW9V6WuYQWf8K3G9NXWkJp+tbEoMLhJC2rQmUYBGslFBVFiLNYKJKZ7r1QGKOskFGF4BwF8OKDMEwXU2Z2NrdDidj/yI5eKXRqxSxcQYUlhWuKwtreSTw5sbElHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hbl/SD8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCADC16AAE;
-	Tue, 11 Nov 2025 00:59:12 +0000 (UTC)
+	 MIME-Version; b=Y4k9+6q6mxyVul2r4uZzmgsFbARwipp+J3BirwhfgEUuAfzbf5V344/WcUZc17iI1s+JQ+MNSY2JeSjnpRt9c32b6oQHzyBBm+qiNJSMeGzfH2/AMke/7FQnthdbVJfRmqJ9cP3/x2FZtmjx4J6pqWaScKc9mIjJV3CZX+nQWDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2JD/MClY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C07C19424;
+	Tue, 11 Nov 2025 00:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822752;
-	bh=i+qqejGiLxe5Bq8fiLuJGzbUP6RRQjOT+yI7EbV3TfI=;
+	s=korg; t=1762822757;
+	bh=u6+iwWDTut//Vy+SxhiuU2xH752qowu/GIPcH7GufSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hbl/SD8P8j8OsCI4LeVXqM/wTh9CAAmZv2IRGSruvJ64vCSoewplrXvryA6WMeiVz
-	 xvkb8y6AZ+1kRJJ4unLnDC4EgKJCgwoEem+6wvq+54EjXtorexggx5I+x+qR8QHsyX
-	 vPBvUnhLOWlf7KKz8k/TC4e4gtHq9Jl91psXR4og=
+	b=2JD/MClYS57Sn+eDJ4a/iJXwMtF0/dCwIk6sgsYyy2Y0R2lGmNnuZBL+D+Dt4Pr/L
+	 dVLWgtCPFX2/S+l8zLKqSD+kR51bbwtW96Qsl2LUubuaUelmPHhuLPggXjeUcOLtDt
+	 qhX9Gi9xOT37vT35hWOHekc+IiTbQc5DB9arKd3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 161/849] io_uring/rsrc: respect submitter_task in io_register_clone_buffers()
-Date: Tue, 11 Nov 2025 09:35:31 +0900
-Message-ID: <20251111004540.324284278@linuxfoundation.org>
+Subject: [PATCH 6.17 162/849] hwmon: sy7636a: add alias
+Date: Tue, 11 Nov 2025 09:35:32 +0900
+Message-ID: <20251111004540.346859977@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,53 +66,29 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-[ Upstream commit 2f076a453f75de691a081c89bce31b530153d53b ]
+[ Upstream commit 80038a758b7fc0cdb6987532cbbf3f75b13e0826 ]
 
-io_ring_ctx's enabled with IORING_SETUP_SINGLE_ISSUER are only allowed
-a single task submitting to the ctx. Although the documentation only
-mentions this restriction applying to io_uring_enter() syscalls,
-commit d7cce96c449e ("io_uring: limit registration w/ SINGLE_ISSUER")
-extends it to io_uring_register(). Ensuring only one task interacts
-with the io_ring_ctx will be important to allow this task to avoid
-taking the uring_lock.
-There is, however, one gap in these checks: io_register_clone_buffers()
-may take the uring_lock on a second (source) io_ring_ctx, but
-__io_uring_register() only checks the current thread against the
-*destination* io_ring_ctx's submitter_task. Fail the
-IORING_REGISTER_CLONE_BUFFERS with -EEXIST if the source io_ring_ctx has
-a registered submitter_task other than the current task.
+Add module alias to have it autoloaded.
 
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Link: https://lore.kernel.org/r/20250909080249.30656-1-andreas@kemnade.info
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rsrc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/hwmon/sy7636a-hwmon.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index f75f5e43fa4aa..e1e5f0fb0f56d 100644
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -1299,10 +1299,17 @@ int io_register_clone_buffers(struct io_ring_ctx *ctx, void __user *arg)
- 	if (src_ctx != ctx) {
- 		mutex_unlock(&ctx->uring_lock);
- 		lock_two_rings(ctx, src_ctx);
-+
-+		if (src_ctx->submitter_task &&
-+		    src_ctx->submitter_task != current) {
-+			ret = -EEXIST;
-+			goto out;
-+		}
- 	}
+diff --git a/drivers/hwmon/sy7636a-hwmon.c b/drivers/hwmon/sy7636a-hwmon.c
+index ed110884786b4..a12fc0ce70e76 100644
+--- a/drivers/hwmon/sy7636a-hwmon.c
++++ b/drivers/hwmon/sy7636a-hwmon.c
+@@ -104,3 +104,4 @@ module_platform_driver(sy7636a_sensor_driver);
  
- 	ret = io_clone_buffers(ctx, src_ctx, &buf);
- 
-+out:
- 	if (src_ctx != ctx)
- 		mutex_unlock(&src_ctx->uring_lock);
- 
+ MODULE_DESCRIPTION("SY7636A sensor driver");
+ MODULE_LICENSE("GPL");
++MODULE_ALIAS("platform:sy7636a-temperature");
 -- 
 2.51.0
 
