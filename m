@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-194124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1FE0C4AEAA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D42CC4AFBB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 933D34F61DD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1C0B3A76A6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14FED2820A0;
-	Tue, 11 Nov 2025 01:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B03F2BCF43;
+	Tue, 11 Nov 2025 01:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9MwIFWE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSCR/kRr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6E2305E15;
-	Tue, 11 Nov 2025 01:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567CF30649C;
+	Tue, 11 Nov 2025 01:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824862; cv=none; b=lbMy+EnuePbnHRzio5NqAjd2PrJADCVWGgc60v5URZeEJDgNmBnUKm4DMh4Pz93kDLqvuWciv8JVjLUmf/aTaMjYl4ttvY/tFuavSFdeezoDqOWvx9eua9olzb1wVcAU5ol5occ4HYMC3cKg1fRFqvh4MY2o0M77Z50xfTakxsA=
+	t=1762824867; cv=none; b=VkUkk1626XsxqU81SmWWLcbhXZ91CWJp6qjXkMtJqNlZ7gyKRFoVmaACgLmoYgLOWl7y7al4CMLzJz7/fs5/7T5RMvv+xVi53KO6HzYWrjFhZed3lpFyFVC43yAO4IvWu4bHHahvheOB0YXhMnjrsFvglVBC15BMXi9EqIZA7eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824862; c=relaxed/simple;
-	bh=5L8AASuC6xpp72TNjZ+wXDmqf+UYBw/quzr7gFuz208=;
+	s=arc-20240116; t=1762824867; c=relaxed/simple;
+	bh=yPxLJ7fOjLunEcT2Zioy2wbl3ONiV8kJO6DRiw808EY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YjpbQ29ZRilXq5yDuc1j5jbfdaqYiYtD2hjLtg5CDvziENxSlqg+9pAO+GFFVUNG/SWAX+3acsfv4oIih4ZLTWTRpWHIqBWl20Bs8drrrRU8IbcITLehgw8nCS9Bf9GTc/69ik9THK7u+iyxuP8RN7sCI5maFLRiXj2/4XDigQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9MwIFWE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47ADCC16AAE;
-	Tue, 11 Nov 2025 01:34:22 +0000 (UTC)
+	 MIME-Version; b=HsL05EIq+HDcX0s5pPBoUhduT9yENhjhW70ZNOw5s9UJFm3xiv63Vdu/u1MiF9zrecf1gFssSjK7RL5ADHXnX3nf8qMqugjfoHA7ZXdJTeAoen+7dOnOWY413qJRWZVsmiOaWc6NjN10RG8+7nQqNHgdQwSNGdRFqIWSsYULoeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSCR/kRr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78D9C16AAE;
+	Tue, 11 Nov 2025 01:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824862;
-	bh=5L8AASuC6xpp72TNjZ+wXDmqf+UYBw/quzr7gFuz208=;
+	s=korg; t=1762824867;
+	bh=yPxLJ7fOjLunEcT2Zioy2wbl3ONiV8kJO6DRiw808EY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g9MwIFWEA9Lbolt7Eh0hKCz5UQqkpqqgGHMnlEvSGxwqJJ71wSdSdcESODbG1y1v3
-	 ii4f2eyLdFZQ4DTCMJFydhbVMngdIV+kUL/PUcCrhWGVAoq/7gMP1e4r+O1P2GeYNU
-	 Y7b0DoE7tTmRck/Nn9e4hUfCx9e1yG6Z30YAtrrc=
+	b=NSCR/kRrusIUZvEI7/OWBNX7zRzXXr68psNfp0KyY6wH/10r4mNSnolK4NRXal5AM
+	 R+RYbsReqWss/lzseIfm9iylIWS+ViX9rhu1Lep3hxIWZSru6mZ9wDwzW2w7f9aTEm
+	 l5OAPsHXgQzhmfwC4br5RAEN2fUGrkGw3d+w00Tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Jacob Moroni <jmoroni@google.com>,
+	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 587/849] RDMA/irdma: Update Kconfig
-Date: Tue, 11 Nov 2025 09:42:37 +0900
-Message-ID: <20251111004550.616147638@linuxfoundation.org>
+Subject: [PATCH 6.17 588/849] IB/ipoib: Ignore L3 master device
+Date: Tue, 11 Nov 2025 09:42:38 +0900
+Message-ID: <20251111004550.638750813@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,41 +68,95 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+From: Vlad Dumitrescu <vdumitrescu@nvidia.com>
 
-[ Upstream commit 060842fed53f77a73824c9147f51dc6746c1267a ]
+[ Upstream commit 42f993d3439827c4959ea77e60620d7ebfb3a477 ]
 
-Update Kconfig to add dependency on idpf module and
-add IPU E2000 to the list of supported devices.
+Currently, all master upper netdevices (e.g., bond, VRF) are treated
+equally.
 
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Link: https://patch.msgid.link/20250827152545.2056-17-tatyana.e.nikolova@intel.com
-Tested-by: Jacob Moroni <jmoroni@google.com>
+When a VRF netdevice is used over an IPoIB netdevice, the expected
+netdev resolution is on the lower IPoIB device which has the IP address
+assigned to it and not the VRF device.
+
+The rdma_cm module (CMA) tries to match incoming requests to a
+particular netdevice. When successful, it also validates that the return
+path points to the same device by performing a routing table lookup.
+Currently, the former would resolve to the VRF netdevice, while the
+latter to the correct lower IPoIB netdevice, leading to failure in
+rdma_cm.
+
+Improve this by ignoring the VRF master netdevice, if it exists, and
+instead return the lower IPoIB device.
+
+Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Link: https://patch.msgid.link/20250916111103.84069-5-edwards@nvidia.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/Kconfig | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/infiniband/ulp/ipoib/ipoib_main.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/Kconfig b/drivers/infiniband/hw/irdma/Kconfig
-index 5f49a58590ed7..0bd7e3fca1fbb 100644
---- a/drivers/infiniband/hw/irdma/Kconfig
-+++ b/drivers/infiniband/hw/irdma/Kconfig
-@@ -4,10 +4,11 @@ config INFINIBAND_IRDMA
- 	depends on INET
- 	depends on IPV6 || !IPV6
- 	depends on PCI
--	depends on ICE && I40E
-+	depends on IDPF && ICE && I40E
- 	select GENERIC_ALLOCATOR
- 	select AUXILIARY_BUS
- 	select CRC32
- 	help
--	  This is an Intel(R) Ethernet Protocol Driver for RDMA driver
--	  that support E810 (iWARP/RoCE) and X722 (iWARP) network devices.
-+	  This is an Intel(R) Ethernet Protocol Driver for RDMA that
-+	  supports IPU E2000 (RoCEv2), E810 (iWARP/RoCEv2) and X722 (iWARP)
-+	  network devices.
+diff --git a/drivers/infiniband/ulp/ipoib/ipoib_main.c b/drivers/infiniband/ulp/ipoib/ipoib_main.c
+index 7acafc5c0e09a..5b4d76e97437d 100644
+--- a/drivers/infiniband/ulp/ipoib/ipoib_main.c
++++ b/drivers/infiniband/ulp/ipoib/ipoib_main.c
+@@ -351,26 +351,27 @@ static bool ipoib_is_dev_match_addr_rcu(const struct sockaddr *addr,
+ }
+ 
+ /*
+- * Find the master net_device on top of the given net_device.
++ * Find the L2 master net_device on top of the given net_device.
+  * @dev: base IPoIB net_device
+  *
+- * Returns the master net_device with a reference held, or the same net_device
+- * if no master exists.
++ * Returns the L2 master net_device with reference held if the L2 master
++ * exists (such as bond netdevice), or returns same netdev with reference
++ * held when master does not exist or when L3 master (such as VRF netdev).
+  */
+ static struct net_device *ipoib_get_master_net_dev(struct net_device *dev)
+ {
+ 	struct net_device *master;
+ 
+ 	rcu_read_lock();
++
+ 	master = netdev_master_upper_dev_get_rcu(dev);
++	if (!master || netif_is_l3_master(master))
++		master = dev;
++
+ 	dev_hold(master);
+ 	rcu_read_unlock();
+ 
+-	if (master)
+-		return master;
+-
+-	dev_hold(dev);
+-	return dev;
++	return master;
+ }
+ 
+ struct ipoib_walk_data {
+@@ -522,7 +523,7 @@ static struct net_device *ipoib_get_net_dev_by_params(
+ 	if (ret)
+ 		return NULL;
+ 
+-	/* See if we can find a unique device matching the L2 parameters */
++	/* See if we can find a unique device matching the pkey and GID */
+ 	matches = __ipoib_get_net_dev_by_params(dev_list, port, pkey_index,
+ 						gid, NULL, &net_dev);
+ 
+@@ -535,7 +536,7 @@ static struct net_device *ipoib_get_net_dev_by_params(
+ 
+ 	dev_put(net_dev);
+ 
+-	/* Couldn't find a unique device with L2 parameters only. Use L3
++	/* Couldn't find a unique device with pkey and GID only. Use L3
+ 	 * address to uniquely match the net device */
+ 	matches = __ipoib_get_net_dev_by_params(dev_list, port, pkey_index,
+ 						gid, addr, &net_dev);
 -- 
 2.51.0
 
