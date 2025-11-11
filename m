@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-193482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A074BC4A5FC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28705C4ACB5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 563103B5193
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A8B33BC6C6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30C3303A0D;
-	Tue, 11 Nov 2025 01:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB96F348458;
+	Tue, 11 Nov 2025 01:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZuxa5ZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qi+Rmirk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FEB248F6A;
-	Tue, 11 Nov 2025 01:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DA52DCF6E;
+	Tue, 11 Nov 2025 01:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823287; cv=none; b=dagxUEqWGeXlxfZdpOXxt2s48EJclmv8SiLfI2Nypud/WpncXctS0yyPIFHhLzXVn4pTLwlmVak5k2b7PGVfdff0TU5zd5dijayvnxi8CJFw/WkdFW7nHuEpDUT/8HvqZP3lKxHEBnlAlkvcw7OBoqgLGnGO6rhzs12VA8OPY5c=
+	t=1762824339; cv=none; b=RP0HS9/oZo+jxySHzm6XRKd8e3iU7+Dz4P1W2kPULM+8RtO8ecVpDgJHMNNyZhgQ9ffLDQ1ghaOtLreAJGSJIyJLXgyQI7jfUaL5ftWqGiZdkgDVKW7czEUwz+mJLoN1qQitZD/00bec9pfRPaLLNYjtSjD09Gr16CgLTLQ5kCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823287; c=relaxed/simple;
-	bh=D8la9ywqH612Bi+4vVEBMtdWXG2kCPnZmZmf/XYmxRg=;
+	s=arc-20240116; t=1762824339; c=relaxed/simple;
+	bh=CAr3q0w7WPM4jNxn7fC1ytSg0FpRNDJHHqMOfktXC/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mm1wFx35/qVOnpT60bbEH9WCWozeF9j+T83tt3lwptr6gv0KpJXtBM2Otj40cN/TlyHn2MdahC8dav/XuBGEs5V/e11ISDLlcBkwKfXp7ecCNZnCHCQ6x6PzbWKmSPlfS3HVsYPAy3105wf6TIAkP0IMLbSoBKdcNhTNSTraF3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZuxa5ZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A38C19422;
-	Tue, 11 Nov 2025 01:08:06 +0000 (UTC)
+	 MIME-Version; b=jwNTvLPhP6Ip+HZQCAiqqcyaL9qpI8uSeYlngJOQnicobD8kejpPi3wJW8eSg3nUStbHZHEGlf2LphijpAk9X+CFL8NVvdrZAccc13t5qmZI+mhuPCpBDJLJH+8MZwrgTC4XAfH+QS6C7a1TixsRjVL8xjCtFluDTdSsANOJidc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qi+Rmirk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17997C116B1;
+	Tue, 11 Nov 2025 01:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823287;
-	bh=D8la9ywqH612Bi+4vVEBMtdWXG2kCPnZmZmf/XYmxRg=;
+	s=korg; t=1762824339;
+	bh=CAr3q0w7WPM4jNxn7fC1ytSg0FpRNDJHHqMOfktXC/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZuxa5ZL+6NJtrtvb8BtBHGpF/D6wWYF8s3xXl5mpfnj2bsuhocsUbiic3HPgg8EW
-	 HvOJzFYzGt9b/wEXpJeK+BfZSihetbSy2ANniou17THSkyEkxag9PDcy7DJIp8dxmx
-	 YPhfHWXlRKKyV9WBZqsyKVhXDVkN6qagTWajsCfc=
+	b=qi+RmirkMipAC2yHD8hMzLjKIvaRyD91jESlBtmQjasUSZjMGRp9sn+64yeLgoord
+	 xAU0+fn8KtwpeZHKoFEcM/KGUwoGNmgCElMYcf/ldLiYwiLIUPhM5H0s/nxyJaOp6C
+	 foe0xztdV3/tR56FUR/6eBMiNrvuhSnBhwNzqjic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Danny Wang <Danny.Wang@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 190/565] drm/amd/display: Reset apply_eamless_boot_optimization when dpms_off
+Subject: [PATCH 6.17 476/849] drm/msm/a6xx: Switch to GMU AO counter
 Date: Tue, 11 Nov 2025 09:40:46 +0900
-Message-ID: <20251111004531.204116614@linuxfoundation.org>
+Message-ID: <20251111004547.952567677@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danny Wang <Danny.Wang@amd.com>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit ad335b5fc9ed1cdeb33fbe97d2969b3a2eedaf3e ]
+[ Upstream commit f195421318bd00151b3a111af6f315a25c3438a8 ]
 
-[WHY&HOW]
-The user closed the lid while the system was powering on and opened it
-again before the “apply_seamless_boot_optimization” was set to false,
-resulting in the eDP remaining blank.
-Reset the “apply_seamless_boot_optimization” to false when dpms off.
+CP_ALWAYS_ON counter falls under GX domain which is collapsed during
+IFPC. So switch to GMU_ALWAYS_ON counter for any CPU reads since it is
+not impacted by IFPC. Both counters are clocked by same xo clock source.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Danny Wang <Danny.Wang@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/673373/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 30 ++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index bdcbebd5722d4..426912d82179c 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -3132,7 +3132,7 @@ static void update_seamless_boot_flags(struct dc *dc,
- 		int surface_count,
- 		struct dc_stream_state *stream)
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 536da1acf615e..1e363af319488 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -16,6 +16,19 @@
+ 
+ #define GPU_PAS_ID 13
+ 
++static u64 read_gmu_ao_counter(struct a6xx_gpu *a6xx_gpu)
++{
++	u64 count_hi, count_lo, temp;
++
++	do {
++		count_hi = gmu_read(&a6xx_gpu->gmu, REG_A6XX_GMU_ALWAYS_ON_COUNTER_H);
++		count_lo = gmu_read(&a6xx_gpu->gmu, REG_A6XX_GMU_ALWAYS_ON_COUNTER_L);
++		temp = gmu_read(&a6xx_gpu->gmu, REG_A6XX_GMU_ALWAYS_ON_COUNTER_H);
++	} while (unlikely(count_hi != temp));
++
++	return (count_hi << 32) | count_lo;
++}
++
+ static bool fence_status_check(struct msm_gpu *gpu, u32 offset, u32 value, u32 status, u32 mask)
  {
--	if (get_seamless_boot_stream_count(context) > 0 && surface_count > 0) {
-+	if (get_seamless_boot_stream_count(context) > 0 && (surface_count > 0 || stream->dpms_off)) {
- 		/* Optimize seamless boot flag keeps clocks and watermarks high until
- 		 * first flip. After first flip, optimization is required to lower
- 		 * bandwidth. Important to note that it is expected UEFI will
+ 	/* Success if !writedropped0/1 */
+@@ -376,8 +389,7 @@ static void a6xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
+ 	OUT_RING(ring, upper_32_bits(rbmemptr(ring, fence)));
+ 	OUT_RING(ring, submit->seqno);
+ 
+-	trace_msm_gpu_submit_flush(submit,
+-		gpu_read64(gpu, REG_A6XX_CP_ALWAYS_ON_COUNTER));
++	trace_msm_gpu_submit_flush(submit, read_gmu_ao_counter(a6xx_gpu));
+ 
+ 	a6xx_flush(gpu, ring);
+ }
+@@ -577,8 +589,7 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
+ 	}
+ 
+ 
+-	trace_msm_gpu_submit_flush(submit,
+-		gpu_read64(gpu, REG_A6XX_CP_ALWAYS_ON_COUNTER));
++	trace_msm_gpu_submit_flush(submit, read_gmu_ao_counter(a6xx_gpu));
+ 
+ 	a6xx_flush(gpu, ring);
+ 
+@@ -2260,16 +2271,7 @@ static int a6xx_gmu_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
+ 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+ 	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
+ 
+-	mutex_lock(&a6xx_gpu->gmu.lock);
+-
+-	/* Force the GPU power on so we can read this register */
+-	a6xx_gmu_set_oob(&a6xx_gpu->gmu, GMU_OOB_PERFCOUNTER_SET);
+-
+-	*value = gpu_read64(gpu, REG_A6XX_CP_ALWAYS_ON_COUNTER);
+-
+-	a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_PERFCOUNTER_SET);
+-
+-	mutex_unlock(&a6xx_gpu->gmu.lock);
++	*value = read_gmu_ao_counter(a6xx_gpu);
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
