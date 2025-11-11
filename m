@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-194004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2EAC4ACA3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:27 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B19C4A532
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 94C2D4F943B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:14 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4F22234BD93
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B795533F8D3;
-	Tue, 11 Nov 2025 01:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FF6338905;
+	Tue, 11 Nov 2025 01:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hu8qjpNk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgNXRJ8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7390D33F8A7;
-	Tue, 11 Nov 2025 01:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6F326056C;
+	Tue, 11 Nov 2025 01:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824577; cv=none; b=bIf4fvOHF0evCqnO+Hc3djbvrBO5IeEZH+LqSLt+OWqEtcjmbSLXdvWwJvxmUsMZNFuN82iidgQKPJYNu1xa5PrHj142CvfEbRhq2shP2whzeGqdwGw8yRBpWjsR0xqe/BiTxjAV7f4ZY5VzLdIhcLxpIFrI7LcJ12fQZbmjC7E=
+	t=1762823407; cv=none; b=fqamNBctG/L0oqoSa7YW9RBqzIuNKAsHRDVErLL9ja3i2EwTV49kL6B9hgQPDKSE2hcxrImdhCQoR0jFRM0R9wRJkfrRLNI4iAXOUTNnCKURDnK6REFFQUvMCNkaXRqyr+qWLqKqs0IMLWsQKPTxQhlVKus+B69jV28Xal6X+ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824577; c=relaxed/simple;
-	bh=iFz4KGk7kNoPxtLjnc0KSJ05HnEmSTVs/kXw+7UHQt4=;
+	s=arc-20240116; t=1762823407; c=relaxed/simple;
+	bh=g4+LNxktTZO35wepfisFRZG1xGLkXv6VWpHy6zUECvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uk9Io2b3WH0/HtPAecYSA5YDPFIaSHAVirR3NQ8mXN9JvkRx8gySju+BvR1zzKBMwwaMQ7N4QYiQ3Aj4dt8sIM5djwWwtL7g69Tw0TewApR4zxXuF4SS5qUhoj8g7RQBpnciVM1+S4B08mGkE0Pi9CoaSy9yv4qriwdlCzUpHq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hu8qjpNk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105E7C116D0;
-	Tue, 11 Nov 2025 01:29:36 +0000 (UTC)
+	 MIME-Version; b=TopM4hlV1JcY2wGnPtnSVMCulXBfF+RIxXLYU0jsSlcQ25VIAypzSFHRKc0sj7X5WJLmcA72z6kPlmfisvJSNGEcUBsvsTaJWiGHbHAYqaF+I4LIeh5+bXqkC7oXIWXpZtbZBQpdQxeMMLr1CU2kuhiFUxJ/MDPwrvXzpYoaWYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgNXRJ8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F18C19422;
+	Tue, 11 Nov 2025 01:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824577;
-	bh=iFz4KGk7kNoPxtLjnc0KSJ05HnEmSTVs/kXw+7UHQt4=;
+	s=korg; t=1762823407;
+	bh=g4+LNxktTZO35wepfisFRZG1xGLkXv6VWpHy6zUECvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hu8qjpNk2h+Nd6f7JI0i/WIVGr7dTNthQmwgCimRZV9jqM96x6LwLGOL4iS6YXSsF
-	 iTWqpNjHAB6a2voTrvMslW+UrEpTtS72YsGRbfvnpBcC6I3JoWRFZfWSThQl9g3HDT
-	 hdO4CEyI7HW3IUulFtpxr8Ou0BonnT3x8oiXGsok=
+	b=wgNXRJ8u5O3xMDbqZ1wbjk3WvmiM095dUPdMZ0/7PwkXZplIDktIVxChXsWynS5tm
+	 3eDnE7oV0h08RVu9RwUNKhg8ogIVyw6dGhH2xdLq7Z4tIGnExidtOHz0tag0M5DtjP
+	 l0efi94AZU8Q4ej0JaCMOgPzZgSOa8KSV7LluXms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Sangwook Shin <sw617.shin@samsung.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Xichao Zhao <zhao.xichao@vivo.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 527/849] watchdog: s3c2410_wdt: Fix max_timeout being calculated larger
+Subject: [PATCH 6.12 241/565] tty: serial: Modify the use of dev_err_probe()
 Date: Tue, 11 Nov 2025 09:41:37 +0900
-Message-ID: <20251111004549.159373375@linuxfoundation.org>
+Message-ID: <20251111004532.334746414@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sangwook Shin <sw617.shin@samsung.com>
+From: Xichao Zhao <zhao.xichao@vivo.com>
 
-[ Upstream commit df3c6e0b6d83450563d6266e1dacc7eaf25511f4 ]
+[ Upstream commit 706c3c02eecd41dc675e9102b3719661cd3e30e2 ]
 
-Fix the issue of max_timeout being calculated larger than actual value.
-The calculation result of freq / (S3C2410_WTCON_PRESCALE_MAX + 1) /
-S3C2410_WTCON_MAXDIV is smaller than the actual value because the remainder
-is discarded during the calculation process. This leads to a larger
-calculated value for max_timeout compared to the actual settable value.
-To resolve this issue, the order of calculations in the computation process
-has been adjusted.
+The dev_err_probe() doesn't do anything when error is '-ENOMEM'.
+Make the following two changes:
+(1) Replace -ENOMEM with -ENOSPC in max3100_probe().
+(2) Just return -ENOMEM instead in max310x_probe().
 
-Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
-Signed-off-by: Sangwook Shin <sw617.shin@samsung.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20250819120927.607744-1-zhao.xichao@vivo.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/s3c2410_wdt.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/tty/serial/max3100.c | 2 +-
+ drivers/tty/serial/max310x.c | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/watchdog/s3c2410_wdt.c b/drivers/watchdog/s3c2410_wdt.c
-index 40901bdac4261..6df7d526c52fb 100644
---- a/drivers/watchdog/s3c2410_wdt.c
-+++ b/drivers/watchdog/s3c2410_wdt.c
-@@ -27,6 +27,7 @@
- #include <linux/mfd/syscon.h>
- #include <linux/regmap.h>
- #include <linux/delay.h>
-+#include <linux/math64.h>
+diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
+index cde5f1c86353e..e0fc010a9b9ff 100644
+--- a/drivers/tty/serial/max3100.c
++++ b/drivers/tty/serial/max3100.c
+@@ -704,7 +704,7 @@ static int max3100_probe(struct spi_device *spi)
+ 			break;
+ 	if (i == MAX_MAX3100) {
+ 		mutex_unlock(&max3100s_lock);
+-		return dev_err_probe(dev, -ENOMEM, "too many MAX3100 chips\n");
++		return dev_err_probe(dev, -ENOSPC, "too many MAX3100 chips\n");
+ 	}
  
- #define S3C2410_WTCON		0x00
- #define S3C2410_WTDAT		0x04
-@@ -410,9 +411,14 @@ static inline unsigned long s3c2410wdt_get_freq(struct s3c2410_wdt *wdt)
- static inline unsigned int s3c2410wdt_max_timeout(struct s3c2410_wdt *wdt)
- {
- 	const unsigned long freq = s3c2410wdt_get_freq(wdt);
-+	const u64 n_max = (u64)(S3C2410_WTCON_PRESCALE_MAX + 1) *
-+			S3C2410_WTCON_MAXDIV * S3C2410_WTCNT_MAXCNT;
-+	u64 t_max = div64_ul(n_max, freq);
+ 	max3100s[i] = kzalloc(sizeof(struct max3100_port), GFP_KERNEL);
+diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
+index 2f8e3ea4fe128..9850446ae7037 100644
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -1266,8 +1266,7 @@ static int max310x_probe(struct device *dev, const struct max310x_devtype *devty
+ 	/* Alloc port structure */
+ 	s = devm_kzalloc(dev, struct_size(s, p, devtype->nr), GFP_KERNEL);
+ 	if (!s)
+-		return dev_err_probe(dev, -ENOMEM,
+-				     "Error allocating port structure\n");
++		return -ENOMEM;
  
--	return S3C2410_WTCNT_MAXCNT / (freq / (S3C2410_WTCON_PRESCALE_MAX + 1)
--				       / S3C2410_WTCON_MAXDIV);
-+	if (t_max > UINT_MAX)
-+		t_max = UINT_MAX;
-+
-+	return t_max;
- }
- 
- static int s3c2410wdt_disable_wdt_reset(struct s3c2410_wdt *wdt, bool mask)
+ 	/* Always ask for fixed clock rate from a property. */
+ 	device_property_read_u32(dev, "clock-frequency", &uartclk);
 -- 
 2.51.0
 
