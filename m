@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-193202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86216C4A12B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6B2C4A09D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9DE7B4F42A7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 066E734BE17
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1641252917;
-	Tue, 11 Nov 2025 00:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A917214210;
+	Tue, 11 Nov 2025 00:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDHghWkH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jc6LZOoS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C23A4086A;
-	Tue, 11 Nov 2025 00:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211544C97;
+	Tue, 11 Nov 2025 00:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822541; cv=none; b=gOVJAYDPn1NmoEKyM9EcMY6Bl3n98Q3PijWare79hmVmxA9XYV1iT9clZLlhYdTqkPCIsAdA0s+UwhFVazmoxlq092UP1c2nkoZFcwCx4lD+yBntYw6h7ztpc/h+v0AAFJRcXYt7hf8l4ElamgBbvzEGtuv74ROVX+8CpkoFqFs=
+	t=1762822546; cv=none; b=Id5tP8K7vnFn/hbRbeQZJbyXZ1+4d5lx85JURSbWE3GZEF5jvSpmDvED/Oe2oAWxSPUPDE3fn5ygGQPAl7PRdlqucENlz6GNdDi/sbXCK6ghQPTi7mWvoXXeW3eoUjURyvm2intzBsbOir8bKq0GYaLdqIj1XcuNYHd+xlDyKv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822541; c=relaxed/simple;
-	bh=tk2Ch+T4Xc2VD7EeQBL0HdyErkvHYOCoubrp0dAQxho=;
+	s=arc-20240116; t=1762822546; c=relaxed/simple;
+	bh=SldQBF/ilFkfxy1LRItgKUisXuXzSeKYWfjEYG7bYAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qrFrP4v9yxdVp8xGnyebMetYTH5V5sY/Sg5YdBH39t2NYna4YdTqeOMuByVxPiid883+NUgOjBXOXe9Fb2lCGcpUqvAvOOae0S1EXwb/1uq7DonwoM0UtN6cvbA9Xqgr/fbDhHvNEaGp0f525Y/3xEFyUzChF+7ob5JHXSojNbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDHghWkH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09683C113D0;
-	Tue, 11 Nov 2025 00:55:40 +0000 (UTC)
+	 MIME-Version; b=DTaOtZnDV45BC0QDm3DI+FPa2Uj6OYLCXRVfDti5u2djgMovodSk3uVdKqfV+GntoPp+/Z5OcDVEglQ7JflW5aaJRC8t/O4kbdm6aLxxGlJQeOMmdzywdrump29IZxWe135XztK47dDF7VWvyrkwn8i2Xr+vk3Cxs1BG8298cC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jc6LZOoS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82232C113D0;
+	Tue, 11 Nov 2025 00:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822541;
-	bh=tk2Ch+T4Xc2VD7EeQBL0HdyErkvHYOCoubrp0dAQxho=;
+	s=korg; t=1762822545;
+	bh=SldQBF/ilFkfxy1LRItgKUisXuXzSeKYWfjEYG7bYAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PDHghWkHmfg8MX8Qxif+MGuJphKLyVX7s3P7s0sD3O2IqhXTjtyXVu08rMsITH1fv
-	 aA3KR5Fv6HL8Zi4U/BOHlMlmeQnjUpv41ZpVV4LnYPgB2TI4fn90Ou6oKSDjvTQ6+l
-	 TKMVJYsuBZRPIWqBYafdspW1J4Cnwn59asPhERMY=
+	b=Jc6LZOoSH7rYoR8anJUsgS96tBlYngB7KEo3Pt17igVlV5GUPkSaJcURuNF81Wc8K
+	 vAaoLq6TlY796TMjFdh8PfJEooBNAdUAdIrQonMeIYbvij7fGUDUrx9S6gwx5UPAIK
+	 7oesH+HyVBYA2AMfmLdNDJYNXTjhGJinAsNq9EBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Bibo Mao <maobibo@loongson.cn>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Nam Cao <namcao@linutronix.de>,
-	Chen Wang <unicorn_wang@outlook.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 133/849] irqchip/sifive-plic: Respect mask state when setting affinity
-Date: Tue, 11 Nov 2025 09:35:03 +0900
-Message-ID: <20251111004539.613572863@linuxfoundation.org>
+Subject: [PATCH 6.17 134/849] irqchip/loongson-eiointc: Route interrupt parsed from bios table
+Date: Tue, 11 Nov 2025 09:35:04 +0900
+Message-ID: <20251111004539.637001236@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,52 +66,98 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit adecf78df945f4c7a1d29111b0002827f487df51 ]
+[ Upstream commit 7fb83eb664e9b3a0438dd28859e9f0fd49d4c165 ]
 
-plic_set_affinity() always calls plic_irq_enable(), which clears up the
-priority setting even the interrupt is only masked. This unmasks the
-interrupt unexpectly.
+Interrupt controller eiointc routes interrupts to CPU interface IP0 - IP7.
 
-Replace the plic_irq_enable/disable() with plic_irq_toggle() to avoid
-changing the priority setting.
+It is currently hard-coded that eiointc routes interrupts to the CPU
+starting from IP1, but it should base that decision on the parent
+interrupt, which is provided by ACPI or DTS.
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Retrieve the parent's hardware interrupt number and store it in the
+descriptor of the eointc instance, so that the routing function can utilize
+it for the correct route settings.
+
+[ tglx: Massaged change log ]
+
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Nam Cao <namcao@linutronix.de> # VisionFive 2
-Tested-by: Chen Wang <unicorn_wang@outlook.com> # Pioneerbox
-Reviewed-by: Nam Cao <namcao@linutronix.de>
-Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
-Link: https://lore.kernel.org/all/20250811002633.55275-1-inochiama@gmail.com
-Link: https://lore.kernel.org/lkml/20250722224513.22125-1-inochiama@gmail.com/
+Link: https://lore.kernel.org/all/20250804081946.1456573-2-maobibo@loongson.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-sifive-plic.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-loongson-eiointc.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
-index 9c4af7d588463..c0cf4fed13e09 100644
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -179,12 +179,14 @@ static int plic_set_affinity(struct irq_data *d,
- 	if (cpu >= nr_cpu_ids)
- 		return -EINVAL;
+diff --git a/drivers/irqchip/irq-loongson-eiointc.c b/drivers/irqchip/irq-loongson-eiointc.c
+index b2860eb2d32c5..baa406904de55 100644
+--- a/drivers/irqchip/irq-loongson-eiointc.c
++++ b/drivers/irqchip/irq-loongson-eiointc.c
+@@ -68,6 +68,7 @@ struct eiointc_priv {
+ 	struct fwnode_handle	*domain_handle;
+ 	struct irq_domain	*eiointc_domain;
+ 	int			flags;
++	irq_hw_number_t		parent_hwirq;
+ };
  
--	plic_irq_disable(d);
-+	/* Invalidate the original routing entry */
-+	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 0);
+ static struct eiointc_priv *eiointc_priv[MAX_IO_PICS];
+@@ -211,7 +212,12 @@ static int eiointc_router_init(unsigned int cpu)
+ 		}
  
- 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
+ 		for (i = 0; i < eiointc_priv[0]->vec_count / 32 / 4; i++) {
+-			bit = BIT(1 + index); /* Route to IP[1 + index] */
++			/*
++			 * Route to interrupt pin, relative offset used here
++			 * Offset 0 means routing to IP0 and so on
++			 * Every 32 vector routing to one interrupt pin
++			 */
++			bit = BIT(eiointc_priv[index]->parent_hwirq - INT_HWI0);
+ 			data = bit | (bit << 8) | (bit << 16) | (bit << 24);
+ 			iocsr_write32(data, EIOINTC_REG_IPMAP + i * 4);
+ 		}
+@@ -495,7 +501,7 @@ int __init eiointc_acpi_init(struct irq_domain *parent,
  
-+	/* Setting the new routing entry if irq is enabled */
- 	if (!irqd_irq_disabled(d))
--		plic_irq_enable(d);
-+		plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
+ 	priv->vec_count = VEC_COUNT;
+ 	priv->node = acpi_eiointc->node;
+-
++	priv->parent_hwirq = acpi_eiointc->cascade;
+ 	parent_irq = irq_create_mapping(parent, acpi_eiointc->cascade);
  
- 	return IRQ_SET_MASK_OK_DONE;
- }
+ 	ret = eiointc_init(priv, parent_irq, acpi_eiointc->node_map);
+@@ -527,8 +533,9 @@ int __init eiointc_acpi_init(struct irq_domain *parent,
+ static int __init eiointc_of_init(struct device_node *of_node,
+ 				  struct device_node *parent)
+ {
+-	int parent_irq, ret;
+ 	struct eiointc_priv *priv;
++	struct irq_data *irq_data;
++	int parent_irq, ret;
+ 
+ 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+@@ -544,6 +551,12 @@ static int __init eiointc_of_init(struct device_node *of_node,
+ 	if (ret < 0)
+ 		goto out_free_priv;
+ 
++	irq_data = irq_get_irq_data(parent_irq);
++	if (!irq_data) {
++		ret = -ENODEV;
++		goto out_free_priv;
++	}
++
+ 	/*
+ 	 * In particular, the number of devices supported by the LS2K0500
+ 	 * extended I/O interrupt vector is 128.
+@@ -552,7 +565,7 @@ static int __init eiointc_of_init(struct device_node *of_node,
+ 		priv->vec_count = 128;
+ 	else
+ 		priv->vec_count = VEC_COUNT;
+-
++	priv->parent_hwirq = irqd_to_hwirq(irq_data);
+ 	priv->node = 0;
+ 	priv->domain_handle = of_fwnode_handle(of_node);
+ 
 -- 
 2.51.0
 
