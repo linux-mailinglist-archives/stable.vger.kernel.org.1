@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-193826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92F8CC4AC2E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BECE8C4AF1F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 523493B3814
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 723581890CCC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE6D343D71;
-	Tue, 11 Nov 2025 01:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1236B3043BF;
+	Tue, 11 Nov 2025 01:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXLpcvwj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hq3tG1at"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B321E343D6A;
-	Tue, 11 Nov 2025 01:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20463009F1;
+	Tue, 11 Nov 2025 01:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824099; cv=none; b=LSZSGZFOLcbHfnQ8EavPV2U5NEgHPPnlbwuAYffqoPJceXIHv4dzUCOzM+nGFEDMHc4TvErBp5U0GQRvK9qZB3vcpVQ9C2+UeDcwIROt1eMUUWcEhPRq+p0Vr10jWYx0ETYUIfBrOlv3ch6GXStrTGxsgDcLQVB678cnOxUaNM8=
+	t=1762825129; cv=none; b=IxjMl6uW7pJR8Lg2EAAbZFDKo5mYlhTzXsYzL10yljYS70Xz3nbbegXyIk1Dcy4AxDXn4otLMsVJMzPpsAoiyzKgOe1eyWDfNIV0Aif7Hd5GkpnBho0+nqUUdx6ITk71Mu7ktQnp/wn7cgbGodpwPFJ0Hay21gmttrGyZTaSvJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824099; c=relaxed/simple;
-	bh=KjMvWbDPJUEVes2yndLr4E8dWSR18jHtmhuHnRwOM6k=;
+	s=arc-20240116; t=1762825129; c=relaxed/simple;
+	bh=DnUWpZaFlb7VqkW+Cmj8JVQ6vjdWelmI2uTjpQyo9C8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASmaM+VfX6jD95Lno0yp5JsODmbnKJJ69iUx9nv8K1dEnOGtiYLThbfkyaJDDwMSUqRxmRSs2kLiFgbl9R9z5nB7v52n35iWy1FUDZ+iQjXDQN1pt32Q9L2oOpdUy0uQQhG6kblQhXt0YtrVl9h5gRe2YYYPJ0OoaKmqBUJ6LXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXLpcvwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D805C113D0;
-	Tue, 11 Nov 2025 01:21:39 +0000 (UTC)
+	 MIME-Version; b=ZxjJtJG/SR3EJdcmJfN1GwSm53xWasEgyWUrpd42/f+Q53525LabhCRxAiGlaJZ7wHd4DEeUifgfuvBlc9o3IOVGOoWUDpxJp0oh9eOIXidtinG+mf6BGqzral+065ea5KNvN3m35ggguO6a4HRFOndOrao0MVCgVawsiYfGy88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hq3tG1at; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEEC7C2BCAF;
+	Tue, 11 Nov 2025 01:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824099;
-	bh=KjMvWbDPJUEVes2yndLr4E8dWSR18jHtmhuHnRwOM6k=;
+	s=korg; t=1762825129;
+	bh=DnUWpZaFlb7VqkW+Cmj8JVQ6vjdWelmI2uTjpQyo9C8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SXLpcvwjYGrttU3xkEPJGm16KwsnVlqUjVLWR3IzTmLdrqjUXnk4IBTqS/L7/HzfT
-	 QTrpPdkZqHlwchYfHvI0Teq2tYAFofZgCQapkVv+Lmu2P+hLxX5WaZNE8s8oIgppsG
-	 NCd0pWmIpoQeg7Y9v37HvtEknCtkEJKENHe8Dy/o=
+	b=Hq3tG1atvcUF3el4tMXXr5yVT0krMeWLP1s5DcuypnBpjee38bFPcS8R3ZwYvqXyJ
+	 rbFjyFIceD6opMq4zCTKM8kkSPMsFdF+lDJoBtF6/EK/20xCaxzENPQWJ7CHcdLRgg
+	 2R5CgVYXE+yvFurm4LtmtMGzfpA1Twf4D9ou3/yQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 387/565] ipv6: np->rxpmtu race annotation
-Date: Tue, 11 Nov 2025 09:44:03 +0900
-Message-ID: <20251111004535.578610128@linuxfoundation.org>
+Subject: [PATCH 6.17 674/849] ftrace: Fix softlockup in ftrace_module_enable
+Date: Tue, 11 Nov 2025 09:44:04 +0900
+Message-ID: <20251111004552.714729918@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
 
-[ Upstream commit 9fba1eb39e2f74d2002c5cbcf1d4435d37a4f752 ]
+[ Upstream commit 4099b98203d6b33d990586542fa5beee408032a3 ]
 
-Add READ_ONCE() annotations because np->rxpmtu can be changed
-while udpv6_recvmsg() and rawv6_recvmsg() read it.
+A soft lockup was observed when loading amdgpu module.
+If a module has a lot of tracable functions, multiple calls
+to kallsyms_lookup can spend too much time in RCU critical
+section and with disabled preemption, causing kernel panic.
+This is the same issue that was fixed in
+commit d0b24b4e91fc ("ftrace: Prevent RCU stall on PREEMPT_VOLUNTARY
+kernels") and commit 42ea22e754ba ("ftrace: Add cond_resched() to
+ftrace_graph_set_hash()").
 
-Since this is a very rarely used feature, and that udpv6_recvmsg()
-and rawv6_recvmsg() read np->rxopt anyway, change the test order
-so that np->rxpmtu does not need to be in a hot cache line.
+Fix it the same way by adding cond_resched() in ftrace_module_enable.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250916160951.541279-4-edumazet@google.com
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/aMQD9_lxYmphT-up@vova-pc
+Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/raw.c | 2 +-
- net/ipv6/udp.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/ftrace.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
-index 328419e05c815..d148f1b03c5d0 100644
---- a/net/ipv6/raw.c
-+++ b/net/ipv6/raw.c
-@@ -445,7 +445,7 @@ static int rawv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 	if (flags & MSG_ERRQUEUE)
- 		return ipv6_recv_error(sk, msg, len, addr_len);
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index a69067367c296..42bd2ba68a821 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -7535,6 +7535,8 @@ void ftrace_module_enable(struct module *mod)
+ 		if (!within_module(rec->ip, mod))
+ 			break;
  
--	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
-+	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
- 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
- 
- 	skb = skb_recv_datagram(sk, flags, &err);
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 57e38e5e4be92..9b93df668025d 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -394,7 +394,7 @@ int udpv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 	if (flags & MSG_ERRQUEUE)
- 		return ipv6_recv_error(sk, msg, len, addr_len);
- 
--	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
-+	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
- 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
- 
- try_again:
++		cond_resched();
++
+ 		/* Weak functions should still be ignored */
+ 		if (!test_for_valid_rec(rec)) {
+ 			/* Clear all other flags. Should not be enabled anyway */
 -- 
 2.51.0
 
