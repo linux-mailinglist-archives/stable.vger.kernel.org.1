@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-193297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8480FC4A1ED
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6303EC4A1F3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE7C23AD79C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D8B53AED1D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32EF25D209;
-	Tue, 11 Nov 2025 01:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2C12561A7;
+	Tue, 11 Nov 2025 01:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXF2oGaC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKTWpnwv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED441C28E;
-	Tue, 11 Nov 2025 01:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BA41C28E;
+	Tue, 11 Nov 2025 01:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822836; cv=none; b=DXCcJIhIucsZhk/CIxLlqbAFFq246W+eI4X1JvaC+X95U0UCFwUq+W1mCCRHoZEm+BU01UdYnyiSwuywRTrjRLA4ozZTtAKBhmpjjtogi18XafsNOgUxbTBhk50OM/1HsRc2gQ/sn+EKxqghnHGul4pG+kF/PcG7LAT5NN8ySJQ=
+	t=1762822841; cv=none; b=kAAAm2m1r9FBH61ysV2k4xJqU4tYqxhq4jHpWIbXbSVRjCYS65zazhmvJOeYCJ3v5Z516eLIJFMlUkitTueEWiuJaQFP+c/mZ1TMNlTTj1UcuXnVasj0m4u8BWs8kuuDsXntBgxQIjqhGiMZPun6le2lviM71fg7R3ddtRv2AVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822836; c=relaxed/simple;
-	bh=eipsNmruqghPAOchKHb0g6+nFB3jbttWtUMHguqcWCY=;
+	s=arc-20240116; t=1762822841; c=relaxed/simple;
+	bh=sIBOoXVEl1GqHpIr2N7cGdkTZ1ztsmNlS15MiqLc5Ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FGA/wCxaiaGOIW4NwTDXFojKIfbSTG2W8NKWdZS+K2xVcjx2uurTkjd6rNiyYcS8OUceU9fZ9EvDca2uGsgCZuvguFfkz18XcVhi0YAbbqvf0csdWOftLc0LujnrwKvpRyC7aPUutDskkYmJBhsCRukKdWnXVWLmF0fzRF5eY9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXF2oGaC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144EEC19425;
-	Tue, 11 Nov 2025 01:00:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i593Wr1e9GiZrEocVWPs0/Bf5F7L7x7HGjqgmQQUrSM6FUzbu+epXDSWiDcOTlBvBmx065UNCEJ2FGA0syZj5PCISnuVSiwgLK/Hc5Sb2HT6XpLfAQBExkdXJJWGnRIO5vhvKE8O3TWeINE08flmWRGZ11YZDa/F68cNKNdTuT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKTWpnwv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C786CC4CEFB;
+	Tue, 11 Nov 2025 01:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822836;
-	bh=eipsNmruqghPAOchKHb0g6+nFB3jbttWtUMHguqcWCY=;
+	s=korg; t=1762822841;
+	bh=sIBOoXVEl1GqHpIr2N7cGdkTZ1ztsmNlS15MiqLc5Ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FXF2oGaC3FHD3Eln9Chsf++VZzr/U7Qku0XTuZhcZGFXByM0kth+J9KZW8no8TJvf
-	 XcbKqDxgn96fXMrneZTX00Rj16SM0yKkIaJavSa0xEh6DfMcEsnsswAYapHIkyBGo7
-	 OaCGFzRCFxPHUQl44kEHGrzUhXVYMaiof2H1H52o=
+	b=RKTWpnwvjfJ2KmtB81CCQ4Wj4v7Zp+i61MfbcpWzST553fJFkcpmuub8AACqjYhiD
+	 LRaQwpS/UBUmBFY+XSenLY+ErtFy51Lak/x7b1OfDBZXj4xgwWYIr7swJu7GR9t0DY
+	 3o4yGgoyiaHlRbXD9Yw0wcxe73XQ75T2WzYnWhXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Daniel Wagner <wagi@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 180/849] nvme-fc: use lock accessing port_state and rport state
-Date: Tue, 11 Nov 2025 09:35:50 +0900
-Message-ID: <20251111004540.783972647@linuxfoundation.org>
+Subject: [PATCH 6.17 181/849] kunit: Enable PCI on UML without triggering WARN()
+Date: Tue, 11 Nov 2025 09:35:51 +0900
+Message-ID: <20251111004540.806788014@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -62,56 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 891cdbb162ccdb079cd5228ae43bdeebce8597ad ]
+[ Upstream commit 031cdd3bc3f369553933c1b0f4cb18000162c8ff ]
 
-nvme_fc_unregister_remote removes the remote port on a lport object at
-any point in time when there is no active association. This races with
-with the reconnect logic, because nvme_fc_create_association is not
-taking a lock to check the port_state and atomically increase the
-active count on the rport.
+Various KUnit tests require PCI infrastructure to work. All normal
+platforms enable PCI by default, but UML does not. Enabling PCI from
+.kunitconfig files is problematic as it would not be portable. So in
+commit 6fc3a8636a7b ("kunit: tool: Enable virtio/PCI by default on UML")
+PCI was enabled by way of CONFIG_UML_PCI_OVER_VIRTIO=y. However
+CONFIG_UML_PCI_OVER_VIRTIO requires additional configuration of
+CONFIG_UML_PCI_OVER_VIRTIO_DEVICE_ID or will otherwise trigger a WARN() in
+virtio_pcidev_init(). However there is no one correct value for
+UML_PCI_OVER_VIRTIO_DEVICE_ID which could be used by default.
 
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Closes: https://lore.kernel.org/all/u4ttvhnn7lark5w3sgrbuy2rxupcvosp4qmvj46nwzgeo5ausc@uyrkdls2muwx
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+This warning is confusing when debugging test failures.
+
+On the other hand, the functionality of CONFIG_UML_PCI_OVER_VIRTIO is not
+used at all, given that it is completely non-functional as indicated by
+the WARN() in question. Instead it is only used as a way to enable
+CONFIG_UML_PCI which itself is not directly configurable.
+
+Instead of going through CONFIG_UML_PCI_OVER_VIRTIO, introduce a custom
+configuration option which enables CONFIG_UML_PCI without triggering
+warnings or building dead code.
+
+Link: https://lore.kernel.org/r/20250908-kunit-uml-pci-v2-1-d8eba5f73c9d@linutronix.de
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ lib/kunit/Kconfig                           | 7 +++++++
+ tools/testing/kunit/configs/arch_uml.config | 5 ++---
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index 3e12d4683ac72..03987f497a5b5 100644
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -3032,11 +3032,17 @@ nvme_fc_create_association(struct nvme_fc_ctrl *ctrl)
+diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
+index c10ede4b1d220..1823539e96da3 100644
+--- a/lib/kunit/Kconfig
++++ b/lib/kunit/Kconfig
+@@ -106,4 +106,11 @@ config KUNIT_DEFAULT_TIMEOUT
+ 	  If unsure, the default timeout of 300 seconds is suitable for most
+ 	  cases.
  
- 	++ctrl->ctrl.nr_reconnects;
++config KUNIT_UML_PCI
++	bool "KUnit UML PCI Support"
++	depends on UML
++	select UML_PCI
++	help
++	  Enables the PCI subsystem on UML for use by KUnit tests.
++
+ endif # KUNIT
+diff --git a/tools/testing/kunit/configs/arch_uml.config b/tools/testing/kunit/configs/arch_uml.config
+index 54ad8972681a2..28edf816aa70e 100644
+--- a/tools/testing/kunit/configs/arch_uml.config
++++ b/tools/testing/kunit/configs/arch_uml.config
+@@ -1,8 +1,7 @@
+ # Config options which are added to UML builds by default
  
--	if (ctrl->rport->remoteport.port_state != FC_OBJSTATE_ONLINE)
-+	spin_lock_irqsave(&ctrl->rport->lock, flags);
-+	if (ctrl->rport->remoteport.port_state != FC_OBJSTATE_ONLINE) {
-+		spin_unlock_irqrestore(&ctrl->rport->lock, flags);
- 		return -ENODEV;
-+	}
+-# Enable virtio/pci, as a lot of tests require it.
+-CONFIG_VIRTIO_UML=y
+-CONFIG_UML_PCI_OVER_VIRTIO=y
++# Enable pci, as a lot of tests require it.
++CONFIG_KUNIT_UML_PCI=y
  
--	if (nvme_fc_ctlr_active_on_rport(ctrl))
-+	if (nvme_fc_ctlr_active_on_rport(ctrl)) {
-+		spin_unlock_irqrestore(&ctrl->rport->lock, flags);
- 		return -ENOTUNIQ;
-+	}
-+	spin_unlock_irqrestore(&ctrl->rport->lock, flags);
- 
- 	dev_info(ctrl->ctrl.device,
- 		"NVME-FC{%d}: create association : host wwpn 0x%016llx "
+ # Enable FORTIFY_SOURCE for wider checking.
+ CONFIG_FORTIFY_SOURCE=y
 -- 
 2.51.0
 
