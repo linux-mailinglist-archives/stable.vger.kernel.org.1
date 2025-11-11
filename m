@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-193637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8255BC4A902
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D982C4AE2C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C7B3188F5A4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A6521897646
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BBB265CA8;
-	Tue, 11 Nov 2025 01:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062EE33A02F;
+	Tue, 11 Nov 2025 01:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJYiy038"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1xs4TC2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4AF3469F0;
-	Tue, 11 Nov 2025 01:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6293339B41;
+	Tue, 11 Nov 2025 01:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823653; cv=none; b=WCCWFOpd+OhnFYFvIbSFFhFiZduR481rIYp1umtHexsg5jzfH0KoUcE5cTvGYo8930Y7OqE0bD2pAL3D/2YMhZ34xyQn3E/q5DiCtAYe1D1HHUSfc4xjr8/1us6u2Q8td8PP22KXv2GzLiK2KKVVJId4i10ygLFkPhKy0XS+58w=
+	t=1762824989; cv=none; b=ahRrQO2X7SzqHcRxg1Q7O+/LV2Pw4dceZEkksuBj0pXy7HmsZulAoK7lHhwe/9RhM9x+CMvlLJ8eGHVZUJHbm+MXq9MQeMI1gXJbi8xvtwSmKOfoP7PZ0guz1xGdv/ktty6k+UUayDvjzwekvi6h5beL1/LItSRBvuS5/tzEp9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823653; c=relaxed/simple;
-	bh=EufpvHkRWkrDRx+QxKlukmfwJEi4urHZ8qq0M2t4ogM=;
+	s=arc-20240116; t=1762824989; c=relaxed/simple;
+	bh=7i9nFh/tbPBoNcB4fwYpzAw4coBj6sYgvma9m8eEgEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QvPyjAGHjhCt1RTDCilby24aII8xVHbLk3wfY6K5mcESrq4LujC5fEsTpGOg8L9cnPo/WeBP0UByD1F2nDvFVwgI2axepQ9Pu7WrHqnE2mtryCJE6fc/ckfvwAkPY1Fo2/Jx6x+CQF90oFRNkShIOuebGuMYhG2Nr8i1+Y2pp0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJYiy038; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33589C19424;
-	Tue, 11 Nov 2025 01:14:12 +0000 (UTC)
+	 MIME-Version; b=sdnnfg1DeB0WcfuLTL1DNBRQfZF2aZXRbNL4exi1ifxuNbPVJRpIp06XtmLlgWJ3qB0ADA1KvygOHHoVPTBM5PpSjl5zt/Yx7Msc21d1rGyP7M+kDupQedUMA+oPM78RegSUjo1HmQQtyeqSV3KQTGObsiQrRiyHQxIGhkthEFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1xs4TC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027F5C113D0;
+	Tue, 11 Nov 2025 01:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823652;
-	bh=EufpvHkRWkrDRx+QxKlukmfwJEi4urHZ8qq0M2t4ogM=;
+	s=korg; t=1762824989;
+	bh=7i9nFh/tbPBoNcB4fwYpzAw4coBj6sYgvma9m8eEgEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJYiy038g1duL4LLKEu0YXWne6cURBxBksBQQBhQV5DyJvhyXCik50gTExK/yUMyz
-	 dh3MfKgAsGmtP33TkkKS6kSM5HhNfrKAxenH6bRL6qvVd9yEbENNbfTMS6Wm2Ae+ft
-	 vVX8Ur5IyAwJhEdC31dfx+fewvX5sISBEryqB1bs=
+	b=y1xs4TC2LlgdirebpH1jdjCq0IlqXZE2+xnAiCdEDT2z6I3Bru4sjeNw3cdriWUmb
+	 7UnRmhLMhY5R8Aquk1Ptnq8NkAY2/M25Ev8q5bvIbPMTMG2h+JISx5/Fp312ML7N1X
+	 OA2Hi7DkDjHCtdMEdXMohHfYUdC8mKAF/OQUVeFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 294/565] media: adv7180: Do not write format to device in set_fmt
+Subject: [PATCH 6.17 580/849] usb: xhci: plat: Facilitate using autosuspend for xhci plat devices
 Date: Tue, 11 Nov 2025 09:42:30 +0900
-Message-ID: <20251111004533.492335045@linuxfoundation.org>
+Message-ID: <20251111004550.443061266@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +59,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
 
-[ Upstream commit 46c1e7814d1c3310ef23c01ed1a582ef0c8ab1d2 ]
+[ Upstream commit 41cf11946b9076383a2222bbf1ef57d64d033f66 ]
 
-The .set_fmt callback should not write the new format directly do the
-device, it should only store it and have it applied by .s_stream.
+Allow autosuspend to be used by xhci plat device. For Qualcomm SoCs,
+when in host mode, it is intended that the controller goes to suspend
+state to save power and wait for interrupts from connected peripheral
+to wake it up. This is particularly used in cases where a HID or Audio
+device is connected. In such scenarios, the usb controller can enter
+auto suspend and resume action after getting interrupts from the
+connected device.
 
-The .s_stream callback already calls adv7180_set_field_mode() so it's
-safe to remove programming of the device and just store the format and
-have .s_stream apply it.
-
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250916120436.3617598-1-krishna.kurapati@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/adv7180.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/usb/host/xhci-plat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
-index 684a9bba3c5d2..6eb55f0d89dc9 100644
---- a/drivers/media/i2c/adv7180.c
-+++ b/drivers/media/i2c/adv7180.c
-@@ -812,14 +812,7 @@ static int adv7180_set_pad_format(struct v4l2_subdev *sd,
- 	ret = adv7180_mbus_fmt(sd,  &format->format);
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index 5eb51797de326..dd57ffedcaa2f 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -171,6 +171,7 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
+ 		return ret;
  
- 	if (format->which == V4L2_SUBDEV_FORMAT_ACTIVE) {
--		if (state->field != format->format.field) {
--			guard(mutex)(&state->mutex);
--
--			state->field = format->format.field;
--			adv7180_set_power(state, false);
--			adv7180_set_field_mode(state);
--			adv7180_set_power(state, true);
--		}
-+		state->field = format->format.field;
- 	} else {
- 		framefmt = v4l2_subdev_state_get_format(sd_state, 0);
- 		*framefmt = format->format;
+ 	pm_runtime_set_active(&pdev->dev);
++	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
+ 	pm_runtime_get_noresume(&pdev->dev);
+ 
 -- 
 2.51.0
 
