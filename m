@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86356C4A5C0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1FE0C4AEAA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3238B34AF4D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 933D34F61DD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA368346E51;
-	Tue, 11 Nov 2025 01:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14FED2820A0;
+	Tue, 11 Nov 2025 01:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZIGzCn6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9MwIFWE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F652DC78C;
-	Tue, 11 Nov 2025 01:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6E2305E15;
+	Tue, 11 Nov 2025 01:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823690; cv=none; b=ljQZer581n6U/e3Yw8FIqWWA72ieAjbM/s/hSUUoG8E+uLG0j2vi7wbU50aMuKtnV6OkAStL1XjKq3uHx3A9UMmMQwtEtE0cADV4j8cm88D53q3jSXHGXCznmU3QkbwAsSy7vJ2ItW70bYz89Z1UVI7liX5R1Cf1IpIOLaRyg48=
+	t=1762824862; cv=none; b=lbMy+EnuePbnHRzio5NqAjd2PrJADCVWGgc60v5URZeEJDgNmBnUKm4DMh4Pz93kDLqvuWciv8JVjLUmf/aTaMjYl4ttvY/tFuavSFdeezoDqOWvx9eua9olzb1wVcAU5ol5occ4HYMC3cKg1fRFqvh4MY2o0M77Z50xfTakxsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823690; c=relaxed/simple;
-	bh=AJZ3/qPZk3jVdaks5zN3LXcgA68wf/zudXv3m4o6LNg=;
+	s=arc-20240116; t=1762824862; c=relaxed/simple;
+	bh=5L8AASuC6xpp72TNjZ+wXDmqf+UYBw/quzr7gFuz208=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LhqTmgeagT+PvrbBqsA9h+Y0wzesfPQzHo5Z/ZErk64OgzspyVvIhZcF5OlRL3OnJK45ulr6zPpiJRJQ/WEFwk8sN03QPchq7lDB4JvSAyXFELSSY0pqyGdlWzUQ0rkwRoaa1JuCE+KtSkFnt00p+zqi+8n3+aJf0IPxEH/clTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZIGzCn6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BA0C16AAE;
-	Tue, 11 Nov 2025 01:14:49 +0000 (UTC)
+	 MIME-Version; b=YjpbQ29ZRilXq5yDuc1j5jbfdaqYiYtD2hjLtg5CDvziENxSlqg+9pAO+GFFVUNG/SWAX+3acsfv4oIih4ZLTWTRpWHIqBWl20Bs8drrrRU8IbcITLehgw8nCS9Bf9GTc/69ik9THK7u+iyxuP8RN7sCI5maFLRiXj2/4XDigQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9MwIFWE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47ADCC16AAE;
+	Tue, 11 Nov 2025 01:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823690;
-	bh=AJZ3/qPZk3jVdaks5zN3LXcgA68wf/zudXv3m4o6LNg=;
+	s=korg; t=1762824862;
+	bh=5L8AASuC6xpp72TNjZ+wXDmqf+UYBw/quzr7gFuz208=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UZIGzCn6rIiUZUzdfliTHKm001C6PI0qgJJ14qHNLhzyxoEgnK+vd5wLLhCerPyeU
-	 +o8YoF3PTwoPx/y+uQHd/4lrTo+9lZx5+O5sgYDXk0295hWYnrHCu58luDtlNonGTV
-	 LZNrSbdl07ihrPZduuaBB+VC2miLAVnIDoviFeeA=
+	b=g9MwIFWEA9Lbolt7Eh0hKCz5UQqkpqqgGHMnlEvSGxwqJJ71wSdSdcESODbG1y1v3
+	 ii4f2eyLdFZQ4DTCMJFydhbVMngdIV+kUL/PUcCrhWGVAoq/7gMP1e4r+O1P2GeYNU
+	 Y7b0DoE7tTmRck/Nn9e4hUfCx9e1yG6Z30YAtrrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Jacob Moroni <jmoroni@google.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 301/565] net: call cond_resched() less often in __release_sock()
+Subject: [PATCH 6.17 587/849] RDMA/irdma: Update Kconfig
 Date: Tue, 11 Nov 2025 09:42:37 +0900
-Message-ID: <20251111004533.649912675@linuxfoundation.org>
+Message-ID: <20251111004550.616147638@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
 
-[ Upstream commit 16c610162d1f1c332209de1c91ffb09b659bb65d ]
+[ Upstream commit 060842fed53f77a73824c9147f51dc6746c1267a ]
 
-While stress testing TCP I had unexpected retransmits and sack packets
-when a single cpu receives data from multiple high-throughput flows.
+Update Kconfig to add dependency on idpf module and
+add IPU E2000 to the list of supported devices.
 
-super_netperf 4 -H srv -T,10 -l 3000 &
-
-Tcpdump extract:
-
- 00:00:00.000007 IP6 clnt > srv: Flags [.], seq 26062848:26124288, ack 1, win 66, options [nop,nop,TS val 651460834 ecr 3100749131], length 61440
- 00:00:00.000006 IP6 clnt > srv: Flags [.], seq 26124288:26185728, ack 1, win 66, options [nop,nop,TS val 651460834 ecr 3100749131], length 61440
- 00:00:00.000005 IP6 clnt > srv: Flags [P.], seq 26185728:26243072, ack 1, win 66, options [nop,nop,TS val 651460834 ecr 3100749131], length 57344
- 00:00:00.000006 IP6 clnt > srv: Flags [.], seq 26243072:26304512, ack 1, win 66, options [nop,nop,TS val 651460844 ecr 3100749141], length 61440
- 00:00:00.000005 IP6 clnt > srv: Flags [.], seq 26304512:26365952, ack 1, win 66, options [nop,nop,TS val 651460844 ecr 3100749141], length 61440
- 00:00:00.000007 IP6 clnt > srv: Flags [P.], seq 26365952:26423296, ack 1, win 66, options [nop,nop,TS val 651460844 ecr 3100749141], length 57344
- 00:00:00.000006 IP6 clnt > srv: Flags [.], seq 26423296:26484736, ack 1, win 66, options [nop,nop,TS val 651460853 ecr 3100749150], length 61440
- 00:00:00.000005 IP6 clnt > srv: Flags [.], seq 26484736:26546176, ack 1, win 66, options [nop,nop,TS val 651460853 ecr 3100749150], length 61440
- 00:00:00.000005 IP6 clnt > srv: Flags [P.], seq 26546176:26603520, ack 1, win 66, options [nop,nop,TS val 651460853 ecr 3100749150], length 57344
- 00:00:00.003932 IP6 clnt > srv: Flags [P.], seq 26603520:26619904, ack 1, win 66, options [nop,nop,TS val 651464844 ecr 3100753141], length 16384
- 00:00:00.006602 IP6 clnt > srv: Flags [.], seq 24862720:24866816, ack 1, win 66, options [nop,nop,TS val 651471419 ecr 3100759716], length 4096
- 00:00:00.013000 IP6 clnt > srv: Flags [.], seq 24862720:24866816, ack 1, win 66, options [nop,nop,TS val 651484421 ecr 3100772718], length 4096
- 00:00:00.000416 IP6 srv > clnt: Flags [.], ack 26619904, win 1393, options [nop,nop,TS val 3100773185 ecr 651484421,nop,nop,sack 1 {24862720:24866816}], length 0
-
-After analysis, it appears this is because of the cond_resched()
-call from  __release_sock().
-
-When current thread is yielding, while still holding the TCP socket lock,
-it might regain the cpu after a very long time.
-
-Other peer TLP/RTO is firing (multiple times) and packets are retransmit,
-while the initial copy is waiting in the socket backlog or receive queue.
-
-In this patch, I call cond_resched() only once every 16 packets.
-
-Modern TCP stack now spends less time per packet in the backlog,
-especially because ACK are no longer sent (commit 133c4c0d3717
-"tcp: defer regular ACK while processing socket backlog")
-
-Before:
-
-clnt:/# nstat -n;sleep 10;nstat|egrep "TcpOutSegs|TcpRetransSegs|TCPFastRetrans|TCPTimeouts|Probes|TCPSpuriousRTOs|DSACK"
-TcpOutSegs                      19046186           0.0
-TcpRetransSegs                  1471               0.0
-TcpExtTCPTimeouts               1397               0.0
-TcpExtTCPLossProbes             1356               0.0
-TcpExtTCPDSACKRecv              1352               0.0
-TcpExtTCPSpuriousRTOs           114                0.0
-TcpExtTCPDSACKRecvSegs          1352               0.0
-
-After:
-
-clnt:/# nstat -n;sleep 10;nstat|egrep "TcpOutSegs|TcpRetransSegs|TCPFastRetrans|TCPTimeouts|Probes|TCPSpuriousRTOs|DSACK"
-TcpOutSegs                      19218936           0.0
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250903174811.1930820-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Link: https://patch.msgid.link/20250827152545.2056-17-tatyana.e.nikolova@intel.com
+Tested-by: Jacob Moroni <jmoroni@google.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/irdma/Kconfig | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index bf31b19045243..1781f3a642b46 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -3093,23 +3093,27 @@ void __release_sock(struct sock *sk)
- 	__acquires(&sk->sk_lock.slock)
- {
- 	struct sk_buff *skb, *next;
-+	int nb = 0;
- 
- 	while ((skb = sk->sk_backlog.head) != NULL) {
- 		sk->sk_backlog.head = sk->sk_backlog.tail = NULL;
- 
- 		spin_unlock_bh(&sk->sk_lock.slock);
- 
--		do {
-+		while (1) {
- 			next = skb->next;
- 			prefetch(next);
- 			DEBUG_NET_WARN_ON_ONCE(skb_dst_is_noref(skb));
- 			skb_mark_not_on_list(skb);
- 			sk_backlog_rcv(sk, skb);
- 
--			cond_resched();
--
- 			skb = next;
--		} while (skb != NULL);
-+			if (!skb)
-+				break;
-+
-+			if (!(++nb & 15))
-+				cond_resched();
-+		}
- 
- 		spin_lock_bh(&sk->sk_lock.slock);
- 	}
+diff --git a/drivers/infiniband/hw/irdma/Kconfig b/drivers/infiniband/hw/irdma/Kconfig
+index 5f49a58590ed7..0bd7e3fca1fbb 100644
+--- a/drivers/infiniband/hw/irdma/Kconfig
++++ b/drivers/infiniband/hw/irdma/Kconfig
+@@ -4,10 +4,11 @@ config INFINIBAND_IRDMA
+ 	depends on INET
+ 	depends on IPV6 || !IPV6
+ 	depends on PCI
+-	depends on ICE && I40E
++	depends on IDPF && ICE && I40E
+ 	select GENERIC_ALLOCATOR
+ 	select AUXILIARY_BUS
+ 	select CRC32
+ 	help
+-	  This is an Intel(R) Ethernet Protocol Driver for RDMA driver
+-	  that support E810 (iWARP/RoCE) and X722 (iWARP) network devices.
++	  This is an Intel(R) Ethernet Protocol Driver for RDMA that
++	  supports IPU E2000 (RoCEv2), E810 (iWARP/RoCEv2) and X722 (iWARP)
++	  network devices.
 -- 
 2.51.0
 
