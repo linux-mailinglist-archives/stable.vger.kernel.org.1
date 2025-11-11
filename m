@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B56C4A208
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E70FC4A19B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:00:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 988C94F013D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A4793AD2CE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF81252917;
-	Tue, 11 Nov 2025 00:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136D824BBEB;
+	Tue, 11 Nov 2025 00:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2JD/MClY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdmjVFl0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3004C97;
-	Tue, 11 Nov 2025 00:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C323224113D;
+	Tue, 11 Nov 2025 00:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822757; cv=none; b=h5oEIHY731p0/voj3EJ9U2YOFitRvB5yfS2S1v6GwRuhokhUeJUsFIbxRpaU7qiIP956ID9EGdB9/hRXUHJn93yFBDN3tJ7GJouVnjqsUECcnyoBv+iHvVkT4Tja/BFDd47Ww0STRsM3chURkpMvW1nUAGox1J/9lJpUNmtzIqM=
+	t=1762822764; cv=none; b=TVZQ1hoGtCui2rGJOvAle7ygK+mIanqv58YeftivjngHONzxwV1o3GsVCiN/oIUdT9yanc9ZcSTWD9+NjcQEk6xPGJJRw8hs6sr7sJXp6qc2QEE2EaO2xokBPRKgWe/kRtb+YgN4ubXT13bDlu3MjAqEDyXUeWjymQjWZDuY1P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822757; c=relaxed/simple;
-	bh=u6+iwWDTut//Vy+SxhiuU2xH752qowu/GIPcH7GufSc=;
+	s=arc-20240116; t=1762822764; c=relaxed/simple;
+	bh=E91sg/zmdvunB3pWEPwItxq4qZU8HVDh5wkXChSmMI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4k9+6q6mxyVul2r4uZzmgsFbARwipp+J3BirwhfgEUuAfzbf5V344/WcUZc17iI1s+JQ+MNSY2JeSjnpRt9c32b6oQHzyBBm+qiNJSMeGzfH2/AMke/7FQnthdbVJfRmqJ9cP3/x2FZtmjx4J6pqWaScKc9mIjJV3CZX+nQWDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2JD/MClY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C07C19424;
-	Tue, 11 Nov 2025 00:59:17 +0000 (UTC)
+	 MIME-Version; b=TnUEyWPcyopgjtukds3ttNCqbBMMmX3QOiLPbjlv5WosbiEsh4DJPQlRbMgUvSpoBKSaNn7dd7KkOSLDWp4zkyx+hMjebt7JFOTmM/dVRHqtFVDM+VRx3bITO0zvUj9I8nCp42+EwHkfb7yJBPo3gxc/ZfQtgDrWWYrKzA4Eops=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdmjVFl0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E21C19421;
+	Tue, 11 Nov 2025 00:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822757;
-	bh=u6+iwWDTut//Vy+SxhiuU2xH752qowu/GIPcH7GufSc=;
+	s=korg; t=1762822764;
+	bh=E91sg/zmdvunB3pWEPwItxq4qZU8HVDh5wkXChSmMI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2JD/MClYS57Sn+eDJ4a/iJXwMtF0/dCwIk6sgsYyy2Y0R2lGmNnuZBL+D+Dt4Pr/L
-	 dVLWgtCPFX2/S+l8zLKqSD+kR51bbwtW96Qsl2LUubuaUelmPHhuLPggXjeUcOLtDt
-	 qhX9Gi9xOT37vT35hWOHekc+IiTbQc5DB9arKd3o=
+	b=EdmjVFl0Mm9LhgQ2R7dlwY5oay7PPENW68NIH7ojyqqB7IhTTFwWPBqtrNO1rP3Gy
+	 DD3aU+TwhF61bsjgyd0Ky34PrFH5ZVTg2fh5HxjDDlKGyr1vSZ13H71YI3Q0elCKrx
+	 /xyIaEH7/YKA6h1ezUAZMiWg/GX+GUFoiUhEuteQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 162/849] hwmon: sy7636a: add alias
-Date: Tue, 11 Nov 2025 09:35:32 +0900
-Message-ID: <20251111004540.346859977@linuxfoundation.org>
+Subject: [PATCH 6.17 163/849] selftests/bpf: Fix incorrect array size calculation
+Date: Tue, 11 Nov 2025 09:35:33 +0900
+Message-ID: <20251111004540.371788912@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,29 +67,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 80038a758b7fc0cdb6987532cbbf3f75b13e0826 ]
+[ Upstream commit f85981327a90c51e76f60e073cb6648b2f167226 ]
 
-Add module alias to have it autoloaded.
+The loop in bench_sockmap_prog_destroy() has two issues:
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Link: https://lore.kernel.org/r/20250909080249.30656-1-andreas@kemnade.info
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+1. Using 'sizeof(ctx.fds)' as the loop bound results in the number of
+   bytes, not the number of file descriptors, causing the loop to iterate
+   far more times than intended.
+
+2. The condition 'ctx.fds[0] > 0' incorrectly checks only the first fd for
+   all iterations, potentially leaving file descriptors unclosed. Change
+   it to 'ctx.fds[i] > 0' to check each fd properly.
+
+These fixes ensure correct cleanup of all file descriptors when the
+benchmark exits.
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250909124721.191555-1-jiayuan.chen@linux.dev
+
+Closes: https://lore.kernel.org/bpf/aLqfWuRR9R_KTe5e@stanley.mountain/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/sy7636a-hwmon.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/bpf/benchs/bench_sockmap.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/sy7636a-hwmon.c b/drivers/hwmon/sy7636a-hwmon.c
-index ed110884786b4..a12fc0ce70e76 100644
---- a/drivers/hwmon/sy7636a-hwmon.c
-+++ b/drivers/hwmon/sy7636a-hwmon.c
-@@ -104,3 +104,4 @@ module_platform_driver(sy7636a_sensor_driver);
+diff --git a/tools/testing/selftests/bpf/benchs/bench_sockmap.c b/tools/testing/selftests/bpf/benchs/bench_sockmap.c
+index 8ebf563a67a2b..cfc072aa7fff7 100644
+--- a/tools/testing/selftests/bpf/benchs/bench_sockmap.c
++++ b/tools/testing/selftests/bpf/benchs/bench_sockmap.c
+@@ -10,6 +10,7 @@
+ #include <argp.h>
+ #include "bench.h"
+ #include "bench_sockmap_prog.skel.h"
++#include "bpf_util.h"
  
- MODULE_DESCRIPTION("SY7636A sensor driver");
- MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:sy7636a-temperature");
+ #define FILE_SIZE (128 * 1024)
+ #define DATA_REPEAT_SIZE 10
+@@ -124,8 +125,8 @@ static void bench_sockmap_prog_destroy(void)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < sizeof(ctx.fds); i++) {
+-		if (ctx.fds[0] > 0)
++	for (i = 0; i < ARRAY_SIZE(ctx.fds); i++) {
++		if (ctx.fds[i] > 0)
+ 			close(ctx.fds[i]);
+ 	}
+ 
 -- 
 2.51.0
 
