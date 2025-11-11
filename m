@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E707BC4A999
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6B9C4AA2B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CFFB3BA485
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18E76189319E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6875D303A0D;
-	Tue, 11 Nov 2025 01:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B9F305967;
+	Tue, 11 Nov 2025 01:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="viZ0BBwp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhLA4tv1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E3741C69;
-	Tue, 11 Nov 2025 01:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40973054F7;
+	Tue, 11 Nov 2025 01:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823854; cv=none; b=tj0SICarrpUYaqXt41FkEzJo6UEAkri1dHuWhZ5K8ngLn6RNH4vTiUZyYPDCGOdPShJ4rAgKIWkdwriVJ9pX7EHIdt9KMczG11Y/TSB8v2OB1y+Ckh9PVIy/zJtX89O8jPoyhY4fnFaSMvHUuY1LDw5iWzlbHEg1djj05KHL9Tc=
+	t=1762823861; cv=none; b=oDQ0sT8dAV6oLcJshImdtIQbMUiCEn06qoeP71UKM34gkC1voobMuVP7LC/zKYeA3MnQXRKN0ABXvpkHZjVUg470Kbrl1Yb8Fx3h4RDDdrOtWCO/zlldXyno8qtqPRjxVZ5dFNT1DmaQFuTsof4l1P8fSfQv4wKnLzLFb8bToRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823854; c=relaxed/simple;
-	bh=f04XJFjspASzS2qrNzjo2WOziXpkwI1Yj61yMHG0+GM=;
+	s=arc-20240116; t=1762823861; c=relaxed/simple;
+	bh=tHAdwIJBUrzUoup4Nkpp5ZdRStxDS4MRDLTl53/84GU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pbnBFJ3SXXBqO/AAbBB91uXj1enjuFM92rPUmlobG/4vW1987+RvxrPYTURA9Z2GdFGlBeRpLn6VdMrFB/sM9GOaiXkhGoNh2DR0hhiyZBvj+GVtU9fa4sYm0Zj3UhtJXoBKntO1IvaF/FIAtVYsoRjTXhpVrknn4bHW+c0V8EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=viZ0BBwp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97D1C116B1;
-	Tue, 11 Nov 2025 01:17:33 +0000 (UTC)
+	 MIME-Version; b=XWht1bCz8jjt8Dypyufzb9LRrhdkvhkCoFN5x4G6QXOh5jOli9h5Y7eoqy0cdWVWget6krK3UTT4WnpPx8oYx90yU7C/nOeJh7fiW+8tcBwOgjb+02/5rtp3eA2yC3d3kXHhXSr9QGkZ8mIX22vii1US23h3ahK7YhtdSwazcgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhLA4tv1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F480C19421;
+	Tue, 11 Nov 2025 01:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823854;
-	bh=f04XJFjspASzS2qrNzjo2WOziXpkwI1Yj61yMHG0+GM=;
+	s=korg; t=1762823861;
+	bh=tHAdwIJBUrzUoup4Nkpp5ZdRStxDS4MRDLTl53/84GU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=viZ0BBwpH+KIZ0thqeeyQPwVRpSaBMmyFXTGJqvUoP08mLcz1MOf1XfGFv2ljXCDi
-	 Fh9Mt2JTiqlGylQkosJ97l1ZyxMsTPaoURl0znmkkxzbc7YkqEjIdrFEpP4lzxTrzZ
-	 mlEiB/p0AxKjcuKEyf2l07TonVBywCoipVd3A90Y=
+	b=uhLA4tv1iGf2/Ivu1H/XKSGPt7Q5d1PIJQlomjKBx936rzVtFa3Xf4vBOzRZf5NXE
+	 kNWKKHnecbotkiidjY0iNHw+o/HTCoLYHX07QFOUE28Xuc8feKcXGhi6bnIW5dylWr
+	 C/z913MvBqPAMz5xO3r43wPOeG7dEq8Hx0fJ043w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 385/849] drm/msm: Use of_reserved_mem_region_to_resource() for "memory-region"
-Date: Tue, 11 Nov 2025 09:39:15 +0900
-Message-ID: <20251111004545.738865577@linuxfoundation.org>
+Subject: [PATCH 6.17 386/849] selftests: drv-net: rss_ctx: fix the queue count check
+Date: Tue, 11 Nov 2025 09:39:16 +0900
+Message-ID: <20251111004545.763573698@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,71 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit fb53e8f09fc1e1a343fd08ea4f353f81613975d7 ]
+[ Upstream commit c158b5a570a188b990ef10ded172b8b93e737826 ]
 
-Use the newly added of_reserved_mem_region_to_resource() function to
-handle "memory-region" properties.
+Commit 0d6ccfe6b319 ("selftests: drv-net: rss_ctx: check for all-zero keys")
+added a skip exception if NIC has fewer than 3 queues enabled,
+but it's just constructing the object, it's not actually rising
+this exception.
 
-The original code did not set 'zap_available' to false if
-of_address_to_resource() failed which seems like an oversight.
+Before:
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/662275/
-Link: https://lore.kernel.org/r/20250703183442.2073717-1-robh@kernel.org
-[DB: dropped part related to VRAM, no longer applicable]
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+  # Exception| net.lib.py.utils.CmdExitFailure: Command failed: ethtool -X enp1s0 equal 3 hkey d1:cc:77:47:9d:ea:15:f2:b9:6c:ef:68:62:c0:45:d5:b0:99:7d:cf:29:53:40:06:3d:8e:b9:bc:d4:70:89:b8:8d:59:04:ea:a9:c2:21:b3:55:b8:ab:6b:d9:48:b4:bd:4c:ff:a5:f0:a8:c2
+  not ok 1 rss_ctx.test_rss_key_indir
+
+After:
+
+  ok 1 rss_ctx.test_rss_key_indir # SKIP Device has fewer than 3 queues (or doesn't support queue stats)
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250827173558.3259072-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_gpu.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ tools/testing/selftests/drivers/net/hw/rss_ctx.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-index f1230465bf0d0..8c6336b007dc0 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-@@ -10,7 +10,7 @@
- #include <linux/interconnect.h>
- #include <linux/firmware/qcom/qcom_scm.h>
- #include <linux/kernel.h>
--#include <linux/of_address.h>
-+#include <linux/of_reserved_mem.h>
- #include <linux/pm_opp.h>
- #include <linux/slab.h>
- #include <linux/soc/qcom/mdt_loader.h>
-@@ -33,7 +33,7 @@ static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname,
- 	struct device *dev = &gpu->pdev->dev;
- 	const struct firmware *fw;
- 	const char *signed_fwname = NULL;
--	struct device_node *np, *mem_np;
-+	struct device_node *np;
- 	struct resource r;
- 	phys_addr_t mem_phys;
- 	ssize_t mem_size;
-@@ -51,18 +51,11 @@ static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname,
- 		return -ENODEV;
- 	}
+diff --git a/tools/testing/selftests/drivers/net/hw/rss_ctx.py b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
+index 7bb552f8b1826..9838b8457e5a6 100755
+--- a/tools/testing/selftests/drivers/net/hw/rss_ctx.py
++++ b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
+@@ -118,7 +118,7 @@ def test_rss_key_indir(cfg):
  
--	mem_np = of_parse_phandle(np, "memory-region", 0);
--	of_node_put(np);
--	if (!mem_np) {
-+	ret = of_reserved_mem_region_to_resource(np, 0, &r);
-+	if (ret) {
- 		zap_available = false;
--		return -EINVAL;
--	}
--
--	ret = of_address_to_resource(mem_np, 0, &r);
--	of_node_put(mem_np);
--	if (ret)
- 		return ret;
--
-+	}
- 	mem_phys = r.start;
+     qcnt = len(_get_rx_cnts(cfg))
+     if qcnt < 3:
+-        KsftSkipEx("Device has fewer than 3 queues (or doesn't support queue stats)")
++        raise KsftSkipEx("Device has fewer than 3 queues (or doesn't support queue stats)")
  
- 	/*
+     data = get_rss(cfg)
+     want_keys = ['rss-hash-key', 'rss-hash-function', 'rss-indirection-table']
 -- 
 2.51.0
 
