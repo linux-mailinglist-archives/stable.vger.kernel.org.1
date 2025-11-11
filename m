@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D0CC4A0A9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E7DC4A0AC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:56:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F8033AC8AD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC694188DD62
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF8124BBEB;
-	Tue, 11 Nov 2025 00:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7231DF258;
+	Tue, 11 Nov 2025 00:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBi/7OC1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUlNWtVR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764171DF258;
-	Tue, 11 Nov 2025 00:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186F94C97;
+	Tue, 11 Nov 2025 00:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822555; cv=none; b=OfxCsba2oTIllyWNp5Q8gmubTCOxYD+0cUBy0hSto2isgAOKxRohm97HxAQWoBfEQC8Y7jjCnhEB2JTHcm2XBAZ5rF5pMEITiEHkIBllqlh1PLNv3lqgyN7NTsYqZOLeYGzA4hnKEj3kxB4m8USQ8dH+F+zSREXypmShxmAA5NI=
+	t=1762822560; cv=none; b=HAvD16LY4enfFvB9odsf4Qo7tRkKfloPVStsSdZXT/VhT7Yr8UVo13XnBaYVMET9Gf3RnAWI/FgBlfHZKQGa8iztUA1SUWLv/aaXdrb9H7Vz4PlExi8R9zJNvM0Uu5swfSG2pa1jUqFuF71uMgDwBzTXuvanY4cJWpL/BXhHaK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822555; c=relaxed/simple;
-	bh=g45syoHhH73B8adJE7NfjdoZzJbgbw+9iLQwWrf7JcU=;
+	s=arc-20240116; t=1762822560; c=relaxed/simple;
+	bh=ylx8/Ws9g1wga5zniE6QvPxKBEnLSr17vqK2Nc1ueAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IMIeacB6MOSEHlJqs8C99Y6vXcEb+QcGufz4bPkN1VmpMEFfXgHR9qaKpXbQaTzRdUbWljpn/wpMnax9JARdyvyHm+fIy1WXJV4jMUhNWjRoKU+sErlOZ3VjUeSz/UW6QFEJbGSdvmjhOI+IWxj9aevpHkrqgNOz0dTx0q6SMLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBi/7OC1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D933C4CEFB;
-	Tue, 11 Nov 2025 00:55:54 +0000 (UTC)
+	 MIME-Version; b=agFSsvTKc/jsl9Lp4J7D07GKyxtqI+g6RdmPQmVHXNjRhNBp/U/yh2TpHPzGt3lKjbFAJ5NDWTJc7mvCEiQymL0qMpvu1Shom2MUVLa+AoDi4L6K1xaugWBCouKMm9KbTnWXlsfrNaQvL0h40bR7NBk8us2T3Cy5twnpsQlk164=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUlNWtVR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E69C4CEFB;
+	Tue, 11 Nov 2025 00:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822555;
-	bh=g45syoHhH73B8adJE7NfjdoZzJbgbw+9iLQwWrf7JcU=;
+	s=korg; t=1762822560;
+	bh=ylx8/Ws9g1wga5zniE6QvPxKBEnLSr17vqK2Nc1ueAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HBi/7OC1oT2pAKHfprfCT92e7h9V9DNorf3E7kvo3AWf5X1EGNpKiKIrE308cHIXS
-	 QQ/H6KhfmN3xcNnNdvzsY003ZrY1E51//ah8m4pljZ7KtDS4nEFypfQTFBQd/WlMXB
-	 03ZqvOGqv7uj/qCb4uiNjKIkIf8wTbm3ie/ISqOs=
+	b=JUlNWtVRPHyiBoQtFHrkz0UW/HmTaDRInqe8StmrzWVfDuYDdO7lPH8Dkw4OLI2pE
+	 FAQDMRf16zrreIKSckSSSY0D5nEiUwaLFJfZc3Y1/dX168rT8fJZtg+QTvV8F00sCd
+	 1meRTUjnq5YJ9OvUQoEo1jB/YDL6F3N4FM8nFDHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Wilson Alvarez <wilson.e.alvarez@rubonnek.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 136/849] ACPI: sysfs: Use ACPI_FREE() for freeing an ACPI object
-Date: Tue, 11 Nov 2025 09:35:06 +0900
-Message-ID: <20251111004539.684649732@linuxfoundation.org>
+Subject: [PATCH 6.17 137/849] ACPI: video: force native for Lenovo 82K8
+Date: Tue, 11 Nov 2025 09:35:07 +0900
+Message-ID: <20251111004539.709231553@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,36 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 149139ddcb99583fdec8d1eaf7dada41e5896101 ]
+[ Upstream commit f144bc21befdcf8e54d2f19b23b4e84f13be01f9 ]
 
-Since str_obj is allocated by ACPICA in acpi_evaluate_object_typed(),
-it should be free with ACPI_FREE() rather than with kfree(), so use
-the former instead of the latter for freeing it.
+Lenovo 82K8 has a broken brightness control provided by nvidia_wmi_ec.
+Add a quirk to prevent using it.
 
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Link: https://patch.msgid.link/20250822061946.472594-1-kaushlendra.kumar@intel.com
-[ rjw: Subject and changelog rewrite ]
+Reported-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4512
+Tested-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://patch.msgid.link/20250820170927.895573-1-superm1@kernel.org
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/device_sysfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-index 3961fc47152c0..cd199fbe4dc90 100644
---- a/drivers/acpi/device_sysfs.c
-+++ b/drivers/acpi/device_sysfs.c
-@@ -464,7 +464,7 @@ static ssize_t description_show(struct device *dev,
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index d507d5e084354..4cf74f173c785 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -948,6 +948,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
+ 		},
+ 	},
++	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4512 */
++	{
++	 .callback = video_detect_force_native,
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "82K8"),
++		},
++	},
+ 	{ },
+ };
  
- 	buf[result++] = '\n';
- 
--	kfree(str_obj);
-+	ACPI_FREE(str_obj);
- 
- 	return result;
- }
 -- 
 2.51.0
 
