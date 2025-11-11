@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CEE0C4B1EA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F24C4AD7B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A505F1894F32
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3B74188F541
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0936325A64C;
-	Tue, 11 Nov 2025 01:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01922857F0;
+	Tue, 11 Nov 2025 01:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3UQhSq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFqkmfno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90C027E7EB;
-	Tue, 11 Nov 2025 01:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAC72472A6;
+	Tue, 11 Nov 2025 01:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825496; cv=none; b=LZuv/I3QAQI862r2sBubHiOROxwW1s6+DazBvKgNOsch1Ccvs3gM5CIq9hwjmVawdTidfuBRuQB/TJWzNp2zm3T3A/r9pl+yUppcZKF8PzUkObZ3xsBhelpTg3C0heQkngZZCwgWxyeK+V6UUFo4tOdYep6NFbg7SSrLztf+YMY=
+	t=1762824876; cv=none; b=W4MUkfmgsSxqVNcR+oNytdqwj1QVLjSRnZfOC1lFYlF0dNmziHyJ/rpjwRIeQQdZAcc/IWPdwF4N63XIqmpSBwJrBtmOrxC7psSrdyBBI9rY+4f3NKRq8AZMMD8wW/i6f8r7Lel7JzzRpJhnb4r8tI4RZOc3/8T6tvGodVxv6Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825496; c=relaxed/simple;
-	bh=Mc5ri5fNxD+/fojv3tWSRbhgVu2ILidmz3g6yB3P+Ss=;
+	s=arc-20240116; t=1762824876; c=relaxed/simple;
+	bh=kl5GYNfS9EcXdMYoZ+stpHUoCe/hsj7BnCGT3OsKHO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dJs+PiPDApp0uon8ybDLuy1Gkm39uOQG26AQvP3GlHsogqRU8CWqSBH/JsWRqU+ljZqkGDImJW/reRJ3jDIdT0Jy4UPW/jeYfN276lnhV6aodnB5miTSLytogSqn+BzO8Re8UMjd4rHasO9+kiTc8OtK1oPbX4fvIcJS54njczE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3UQhSq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BFF0C113D0;
-	Tue, 11 Nov 2025 01:44:56 +0000 (UTC)
+	 MIME-Version; b=llMkq1LAsOxhxMCSAY5M70BAGa41TCPBVJFVefdMX5iNR8hGTKHz+lqzxc4uYeFd3DbpyeqBM/DGRswd0xMdi/wrRK1qfeN/tHFpAuGvvl5ra9TgbcJEOyAjO/W/a9xf2flNnCrmLrng01r/MFqfscVJGRE11CjxNgl+Kx3j+8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFqkmfno; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3E5C4CEFB;
+	Tue, 11 Nov 2025 01:34:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825496;
-	bh=Mc5ri5fNxD+/fojv3tWSRbhgVu2ILidmz3g6yB3P+Ss=;
+	s=korg; t=1762824876;
+	bh=kl5GYNfS9EcXdMYoZ+stpHUoCe/hsj7BnCGT3OsKHO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3UQhSq+4WT8SzEXppqXgB9Ura11wUtECN5s6O7PLiA+Fs3OUOnwam4Govo3zLnFs
-	 G/E3w19YSIKnfx8fwEub6adlpkzKkjRFcpeN5xFD9JeqE2v0M/3rh8UCWpvuLZZDkM
-	 VSJveIjM9K4MaApM4+OKrrH3A7nze7SL/gz8uJCQ=
+	b=AFqkmfno7OX7bavF2+/GbWoohkt8fws7itbNNj7lt3SIRndDSeQBw9F1auRJuAsSI
+	 twOVSfHEx3W98Qrp8hJrYuB1wGTL+I9speAa5+V5pTP5Q81Tgf1OB+JC80tPLy9t3L
+	 M1BNCc7UXb+N0vWHBOOm9WhAmZCfo/VmaptqHDwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 827/849] drm/amdkfd: Dont clear PT after process killed
-Date: Tue, 11 Nov 2025 09:46:37 +0900
-Message-ID: <20251111004556.423195782@linuxfoundation.org>
+	Zilin Guan <zilin@seu.edu.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 542/565] tracing: Fix memory leaks in create_field_var()
+Date: Tue, 11 Nov 2025 09:46:38 +0900
+Message-ID: <20251111004539.178291240@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 597eb70f7ff7551ff795cd51754b81aabedab67b upstream.
+[ Upstream commit 80f0d631dcc76ee1b7755bfca1d8417d91d71414 ]
 
-If process is killed. the vm entity is stopped, submit pt update job
-will trigger the error message "*ERROR* Trying to push to a killed
-entity", job will not execute.
+The function create_field_var() allocates memory for 'val' through
+create_hist_field() inside parse_atom(), and for 'var' through
+create_var(), which in turn allocates var->type and var->var.name
+internally. Simply calling kfree() to release these structures will
+result in memory leaks.
 
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 10c382ec6c6d1e11975a11962bec21cba6360391)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use destroy_hist_field() to properly free 'val', and explicitly release
+the memory of var->type and var->var.name before freeing 'var' itself.
+
+Link: https://patch.msgid.link/20251106120132.3639920-1-zilin@seu.edu.cn
+Fixes: 02205a6752f22 ("tracing: Add support for 'field variables'")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/trace/trace_events_hist.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -1263,6 +1263,10 @@ static int unmap_bo_from_gpuvm(struct kg
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 3379e14d38e9b..84954b8918156 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -3251,14 +3251,16 @@ static struct field_var *create_field_var(struct hist_trigger_data *hist_data,
+ 	var = create_var(hist_data, file, field_name, val->size, val->type);
+ 	if (IS_ERR(var)) {
+ 		hist_err(tr, HIST_ERR_VAR_CREATE_FIND_FAIL, errpos(field_name));
+-		kfree(val);
++		destroy_hist_field(val, 0);
+ 		ret = PTR_ERR(var);
+ 		goto err;
+ 	}
  
- 	(void)amdgpu_vm_bo_unmap(adev, bo_va, entry->va);
- 
-+	/* VM entity stopped if process killed, don't clear freed pt bo */
-+	if (!amdgpu_vm_ready(vm))
-+		return 0;
-+
- 	(void)amdgpu_vm_clear_freed(adev, vm, &bo_va->last_pt_update);
- 
- 	(void)amdgpu_sync_fence(sync, bo_va->last_pt_update, GFP_KERNEL);
+ 	field_var = kzalloc(sizeof(struct field_var), GFP_KERNEL);
+ 	if (!field_var) {
+-		kfree(val);
++		destroy_hist_field(val, 0);
++		kfree_const(var->type);
++		kfree(var->var.name);
+ 		kfree(var);
+ 		ret =  -ENOMEM;
+ 		goto err;
+-- 
+2.51.0
+
 
 
 
