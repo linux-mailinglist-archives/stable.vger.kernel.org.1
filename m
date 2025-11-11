@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-194268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2116C4AFE8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:52:27 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 721CCC4AFA0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FCAF1890A73
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EDACB4FB9D9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC82D30748A;
-	Tue, 11 Nov 2025 01:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF7530749A;
+	Tue, 11 Nov 2025 01:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xq55T6Z6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jojVACfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E4C26561D;
-	Tue, 11 Nov 2025 01:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AACC26561D;
+	Tue, 11 Nov 2025 01:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825200; cv=none; b=InuJ7T3KIBTU6nfOVWEDAkKTpDBBTak0+VOcLAX6gWk3FHFZwQAKjBB6S8exin3B/mc+sJASO5FdBijv9GGOu0cqxLCglzGcQs3WjjlPob/X6C9EfSvVQMkGrU0rnMGAN9aK10NPzIV+KIGvWLNWjpvF3wjz3WDaE6tbdNXuEVo=
+	t=1762825205; cv=none; b=mSUmrTf/xKAGSa/ttTyrJ3XCywreS7Ip3+hmMuVk7ON9SGXQAoaqn7AvD7rsIrVy2CPR14PqHEKXJTSsSqSNXXM5uMr8H9mvjexqdGeUF09pEyhuHHBi40iHFXkSlAr04m1YDLJ13Bb3BxwjKK3b+zpqPbGAnhKG49UdWEMD1y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825200; c=relaxed/simple;
-	bh=piSe34lQPA0hJv5c4YyvKrmVfGvftA5CRwqiqTaoUYI=;
+	s=arc-20240116; t=1762825205; c=relaxed/simple;
+	bh=INsWlxbGHftrGwqnYtRfCB/futVZSpFXCj5l9FOy1X0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKRpmY2Wisrukv6euqZLYethitu/7ofuMJlHsUl8+hc49Gst63HV7Gp0eudjWlGh+lNjb/hveqsOHCfeGu9O1hLJHNmotUlYJKnOqY2OeWJ1iMVprWee+E5ogztGHlO3RyJCtbznaUgOQckwWOOFhMgfxKKrIpoRAt9bP89bWRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xq55T6Z6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7B6C113D0;
-	Tue, 11 Nov 2025 01:39:59 +0000 (UTC)
+	 MIME-Version; b=gfNNWZ1ap2/2Uin05088pG98UYre55okdxwPTWo4nLw91QTpg+av45CcYbtblHwIJ+tyWAjUBAd1LM5Wi8GuS93jJ3N66wh9VKbWk7NZaCav/WzQdYQA2RNg7hVvQNxycb8o6LIYyfCc5Ea+fwIq6R5PWiB0Fsl8DSheFcqDnQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jojVACfe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF87C4CEFB;
+	Tue, 11 Nov 2025 01:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825200;
-	bh=piSe34lQPA0hJv5c4YyvKrmVfGvftA5CRwqiqTaoUYI=;
+	s=korg; t=1762825204;
+	bh=INsWlxbGHftrGwqnYtRfCB/futVZSpFXCj5l9FOy1X0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xq55T6Z6IutYhCSZrx3MNPTFIwhQ4dagRKWJs0z/5IdqKmsZexzW03LDB6Py0RItT
-	 RtNXRrDJF0idq7T23s3vPht598zmq9pBphIm9A6Q7s9cRrWHs6b/nmB9NpISpicxMF
-	 ovs4BZeD+B7815rqBu3861fhMcXOAnUDGkm41XZ8=
+	b=jojVACfegnJTmOuojmd5THbLV6iwzRJ5tbtA+JdOIpP1+LniJfFDvLT8RtmhrhfbM
+	 i74naWdT21TYwJ3+oONMg1gz8NJ7SEb9d/3cRatkc3F0iebDbQE2cr1YuERSrKyAgu
+	 a7EwHBBtXf/apvI5N1AAaARgDr5tg+uP9GqFh+vA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Bruno Thomsen <bruno.thomsen@gmail.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Cristian Birsan <cristian.birsan@microchip.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 702/849] rtc: pcf2127: clear minute/second interrupt
-Date: Tue, 11 Nov 2025 09:44:32 +0900
-Message-ID: <20251111004553.406180161@linuxfoundation.org>
+Subject: [PATCH 6.17 703/849] ARM: at91: pm: save and restore ACR during PLL disable/enable
+Date: Tue, 11 Nov 2025 09:44:33 +0900
+Message-ID: <20251111004553.430965021@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,68 +68,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-[ Upstream commit a6f1a4f05970664004a9370459c6799c1b2f2dcf ]
+[ Upstream commit 0c01fe49651d387776abed6a28541e80c8a93319 ]
 
-PCF2127 can generate interrupt every full second or minute configured
-from control and status register 1, bits MI (1) and SI (0).
+Add a new word in assembly to store ACR value during the calls
+to at91_plla_disable/at91_plla_enable macros and use it.
 
-On interrupt control register 2 bit MSF (7) is set and must be cleared
-to continue normal operation.
-
-While the driver never enables this interrupt on its own, users or
-firmware may do so - e.g. as an easy way to test the interrupt.
-
-Add preprocessor definition for MSF bit and include it in the irq
-bitmask to ensure minute and second interrupts are cleared when fired.
-
-This fixes an issue where the rtc enters a test mode and becomes
-unresponsive after a second interrupt has fired and is not cleared in
-time. In this state register writes to control registers have no
-effect and the interrupt line is kept asserted [1]:
-
-[1] userspace commands to put rtc into unresponsive state:
-$ i2cget -f -y 2 0x51 0x00
-0x04
-$ i2cset -f -y 2 0x51 0x00 0x05 # set bit 0 SI
-$ i2cget -f -y 2 0x51 0x00
-0x84 # bit 8 EXT_TEST set
-$ i2cset -f -y 2 0x51 0x00 0x05 # try overwrite control register
-$ i2cget -f -y 2 0x51 0x00
-0x84 # no change
-
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
-Link: https://lore.kernel.org/r/20250825-rtc-irq-v1-1-0133319406a7@solid-run.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+[cristian.birsan@microchip.com: remove ACR_DEFAULT_PLLA loading]
+Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
+Link: https://lore.kernel.org/r/20250827145427.46819-4-nicolas.ferre@microchip.com
+Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf2127.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/mach-at91/pm_suspend.S | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-pcf2127.c b/drivers/rtc/rtc-pcf2127.c
-index 2e1ac0c42e932..3ba1de30e89c2 100644
---- a/drivers/rtc/rtc-pcf2127.c
-+++ b/drivers/rtc/rtc-pcf2127.c
-@@ -42,6 +42,7 @@
- #define PCF2127_BIT_CTRL2_AF			BIT(4)
- #define PCF2127_BIT_CTRL2_TSF2			BIT(5)
- #define PCF2127_BIT_CTRL2_WDTF			BIT(6)
-+#define PCF2127_BIT_CTRL2_MSF			BIT(7)
- /* Control register 3 */
- #define PCF2127_REG_CTRL3		0x02
- #define PCF2127_BIT_CTRL3_BLIE			BIT(0)
-@@ -96,7 +97,8 @@
- #define PCF2127_CTRL2_IRQ_MASK ( \
- 		PCF2127_BIT_CTRL2_AF | \
- 		PCF2127_BIT_CTRL2_WDTF | \
--		PCF2127_BIT_CTRL2_TSF2)
-+		PCF2127_BIT_CTRL2_TSF2 | \
-+		PCF2127_BIT_CTRL2_MSF)
+diff --git a/arch/arm/mach-at91/pm_suspend.S b/arch/arm/mach-at91/pm_suspend.S
+index 7e6c94f8edeef..aad53ec9e957b 100644
+--- a/arch/arm/mach-at91/pm_suspend.S
++++ b/arch/arm/mach-at91/pm_suspend.S
+@@ -689,6 +689,10 @@ sr_dis_exit:
+ 	bic	tmp2, tmp2, #AT91_PMC_PLL_UPDT_ID
+ 	str	tmp2, [pmc, #AT91_PMC_PLL_UPDT]
  
- #define PCF2127_MAX_TS_SUPPORTED	4
++	/* save acr */
++	ldr	tmp2, [pmc, #AT91_PMC_PLL_ACR]
++	str	tmp2, .saved_acr
++
+ 	/* save div. */
+ 	mov	tmp1, #0
+ 	ldr	tmp2, [pmc, #AT91_PMC_PLL_CTRL0]
+@@ -758,7 +762,7 @@ sr_dis_exit:
+ 	str	tmp1, [pmc, #AT91_PMC_PLL_UPDT]
  
+ 	/* step 2. */
+-	ldr	tmp1, =AT91_PMC_PLL_ACR_DEFAULT_PLLA
++	ldr	tmp1, .saved_acr
+ 	str	tmp1, [pmc, #AT91_PMC_PLL_ACR]
+ 
+ 	/* step 3. */
+@@ -1207,6 +1211,8 @@ ENDPROC(at91_pm_suspend_in_sram)
+ #endif
+ .saved_mckr:
+ 	.word 0
++.saved_acr:
++	.word 0
+ .saved_pllar:
+ 	.word 0
+ .saved_sam9_lpr:
 -- 
 2.51.0
 
