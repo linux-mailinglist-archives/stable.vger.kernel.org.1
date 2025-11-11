@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-193445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23023C4A511
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:20 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B943DC4A484
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:14:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E93BD4F4877
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:13:34 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5CBED34A9CA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87B6346A16;
-	Tue, 11 Nov 2025 01:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411C5346FA7;
+	Tue, 11 Nov 2025 01:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLlWCrZS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DE7klhsP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4693346A0F;
-	Tue, 11 Nov 2025 01:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEB8346E7B;
+	Tue, 11 Nov 2025 01:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823200; cv=none; b=IXITFjfwFJDj9oluicrvxU2P0cejaM/LyvdkdO5ELobTj0QNpnan16niR6mWG7ogB+0W3UVhziFkYdVhF/Fd2+mLvf3bo+mr701vjIUPGNlENa8AAAOjRN215w/M4aGaSf7251ytNJ7sbs71NYMKLEGOgGVXZzZKyO4L/Lvt4wI=
+	t=1762823206; cv=none; b=NsAL2ZxnaDDiNLZqyAPZxowM0FNUwdujmZiQRmTmuL1iXCutOUPsjw04kB8IqSRZpIpu5D7GTOKJq8cH4uFuPtuEeIh0Mko83EM5ozEe5iNr/icyx69uNDkvnhkuq3Mor34QsIoBAEjJPFDdPcaCRzY1JGuQ6lB8vdS4H8SVbeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823200; c=relaxed/simple;
-	bh=/stVaWOGU5Byadn4FsqyxuMm7ZHGjMNzixyG86r+ErY=;
+	s=arc-20240116; t=1762823206; c=relaxed/simple;
+	bh=CbwnMV6J9nnqGJZRUDvCHW18TDyw/qNYyslG/RD/HDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJDYGq14ew2fUgyZJVgFHyYDBCe9HbO1Ccb9JA/1bUdWZ0avtsDnYTtFw5L9ZMdC+tXuXn8Qq4sN+21Dh535TX/LoT68N4DjedPn8sGbfx1SU2csJWNfcVXAe7aEf8efLL6m6c1tLlvL2k3E2sgTcsrwolHfoLiXbbZVgk/kdzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLlWCrZS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E74C19422;
-	Tue, 11 Nov 2025 01:06:40 +0000 (UTC)
+	 MIME-Version; b=d+QuKdpKv//qel7LpJcM2HzETZuembPk7ubm2+vRi9ork1OppdF6waeXqznDpSjiI/Mc1mEaZtmxZjwqWOSy8Y7WYY+HdIeDCf0ytdNS9YjD3B+2E56HRinahVZ+CBA/JVwodqfUkM/QVf1eA9PcoYBrLG1DGhnrrTzmejsEwdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DE7klhsP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBD1C2BC9E;
+	Tue, 11 Nov 2025 01:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823200;
-	bh=/stVaWOGU5Byadn4FsqyxuMm7ZHGjMNzixyG86r+ErY=;
+	s=korg; t=1762823205;
+	bh=CbwnMV6J9nnqGJZRUDvCHW18TDyw/qNYyslG/RD/HDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wLlWCrZSmwMfrXPNFO2KkMYeyKOFhnMvQMqZOeRMejQ//dnwJAPEAABv8eIQTygCQ
-	 fDoT9xHU5xoXqhuYEWxCEBcszf6UKibcOdR7voRPABLTwtzO5zZjluUwb7DhneXBVw
-	 dw2hEQWettmjraa6Ja/FEs6pSOXsUfKRGK9dqDb4=
+	b=DE7klhsPAul6TSigKfQv6LoVF/MuHG0gNJUAyplqzBpSSn2SoIZ4DcXnCa0pN5IQR
+	 ZiUCk/uTrQKTDVXrWRXWx5gIN+bfIwVLTidWq/WwVeiwici7XImxVpMs5s6CN1q76U
+	 jgOUAlNZX3QXkG5iK1pxwZ6bkr4wjtU0s/0s4z7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
+	Mangesh Gadre <Mangesh.Gadre@amd.com>,
+	"Stanley.Yang" <Stanley.Yang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 252/849] drm/amd/display: add more cyan skillfish devices
-Date: Tue, 11 Nov 2025 09:37:02 +0900
-Message-ID: <20251111004542.521540117@linuxfoundation.org>
+Subject: [PATCH 6.17 253/849] drm/amdgpu: Initialize jpeg v5_0_1 ras function
+Date: Tue, 11 Nov 2025 09:37:03 +0900
+Message-ID: <20251111004542.545268313@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,56 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Mangesh Gadre <Mangesh.Gadre@amd.com>
 
-[ Upstream commit 3cf06bd4cf2512d564fdb451b07de0cebe7b138d ]
+[ Upstream commit 01fa9758c8498d8930df56eca36c88ba3e9493d4 ]
 
-Add PCI IDs to support display probe for cyan skillfish
-family of SOCs.
+Initialize jpeg v5_0_1 ras function
 
-Acked-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mangesh Gadre <Mangesh.Gadre@amd.com>
+Reviewed-by: Stanley.Yang <Stanley.Yang@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 8 +++++++-
- drivers/gpu/drm/amd/display/include/dal_asic_id.h | 5 +++++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index 4d6181e7c612b..d712548b1927d 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -165,7 +165,13 @@ enum dce_version resource_parse_asic_id(struct hw_asic_id asic_id)
- 
- 	case FAMILY_NV:
- 		dc_version = DCN_VERSION_2_0;
--		if (asic_id.chip_id == DEVICE_ID_NV_13FE || asic_id.chip_id == DEVICE_ID_NV_143F) {
-+		if (asic_id.chip_id == DEVICE_ID_NV_13FE ||
-+		    asic_id.chip_id == DEVICE_ID_NV_143F ||
-+		    asic_id.chip_id == DEVICE_ID_NV_13F9 ||
-+		    asic_id.chip_id == DEVICE_ID_NV_13FA ||
-+		    asic_id.chip_id == DEVICE_ID_NV_13FB ||
-+		    asic_id.chip_id == DEVICE_ID_NV_13FC ||
-+		    asic_id.chip_id == DEVICE_ID_NV_13DB) {
- 			dc_version = DCN_VERSION_2_01;
- 			break;
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
+index 03ec4b741d194..8d74455dab1e2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
+@@ -196,6 +196,14 @@ static int jpeg_v5_0_1_sw_init(struct amdgpu_ip_block *ip_block)
  		}
-diff --git a/drivers/gpu/drm/amd/display/include/dal_asic_id.h b/drivers/gpu/drm/amd/display/include/dal_asic_id.h
-index 5fc29164e4b45..8aea50aa95330 100644
---- a/drivers/gpu/drm/amd/display/include/dal_asic_id.h
-+++ b/drivers/gpu/drm/amd/display/include/dal_asic_id.h
-@@ -213,6 +213,11 @@ enum {
- #endif
- #define DEVICE_ID_NV_13FE 0x13FE  // CYAN_SKILLFISH
- #define DEVICE_ID_NV_143F 0x143F
-+#define DEVICE_ID_NV_13F9 0x13F9
-+#define DEVICE_ID_NV_13FA 0x13FA
-+#define DEVICE_ID_NV_13FB 0x13FB
-+#define DEVICE_ID_NV_13FC 0x13FC
-+#define DEVICE_ID_NV_13DB 0x13DB
- #define FAMILY_VGH 144
- #define DEVICE_ID_VGH_163F 0x163F
- #define DEVICE_ID_VGH_1435 0x1435
+ 	}
+ 
++	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__JPEG)) {
++		r = amdgpu_jpeg_ras_sw_init(adev);
++		if (r) {
++			dev_err(adev->dev, "Failed to initialize jpeg ras block!\n");
++			return r;
++		}
++	}
++
+ 	r = amdgpu_jpeg_reg_dump_init(adev, jpeg_reg_list_5_0_1, ARRAY_SIZE(jpeg_reg_list_5_0_1));
+ 	if (r)
+ 		return r;
 -- 
 2.51.0
 
