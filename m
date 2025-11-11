@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-193082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88415C49F2F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05FBAC49F5C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1237734BD47
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A8A03AA0DF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DE2244693;
-	Tue, 11 Nov 2025 00:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992F1192B75;
+	Tue, 11 Nov 2025 00:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDlCFJsi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXKIOVdl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63EF82AE8D;
-	Tue, 11 Nov 2025 00:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558CE4C97;
+	Tue, 11 Nov 2025 00:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822257; cv=none; b=H7FNsk6jCUQlL2pesND7CACUYEjxo2++GCzeq0FgrXNpzW0DGkFOUIDZyT9LmdTx9jHhYbvxdjma2QAANR/cgMZEIf9Et0tNs684v3DtiaVtkhqpKNipOxKFoXMGUr0xgdLdA+sKHb6KUCUP28WlD/HNmFt/IZPmcCl0hlquXrU=
+	t=1762822283; cv=none; b=dvoLqU6SQNgRfC/KoM8z8lTSiwNbPujIhcgFQX1mRZxcyMTxBAcZFk1lCTn22//8Xx0lVrzd++I5myDdaszxQ2jh42BUxS21iWziT9Yi7SPuhl/I1XI82Splt5YSmfonzbpleillN4qT3ZEasjTTHS+4LSM2zsluDmN4lk61EF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822257; c=relaxed/simple;
-	bh=UjGXIgY7A4TIf90yRijJQhr9V7+5mxSomI3a0/AvnHY=;
+	s=arc-20240116; t=1762822283; c=relaxed/simple;
+	bh=q07F884U9jtpbcRVutMt4EWlbovexjALbE7GhO6E5HE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lOTBtccwcYmqydHGYryUD2gCgDUS8JDq6bNnoA4vTOy5b9fo6vKZIDwoQ0s/SyrhDjbouh7iLB4+xzSjzJKeDjASAFhu0p6xfTLTdTyVoR9TFRJ5D3jdiddHoGrPEdsMSHzXfz2QeBpQgibVOTcQUofDGLRsxzTtCrx7yJLSJw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDlCFJsi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E861C19422;
-	Tue, 11 Nov 2025 00:50:56 +0000 (UTC)
+	 MIME-Version; b=e4gXo/UqtgQosEFxhi2hfqCkIQrycWXS6wREWKGoAlhvQYmUAx0fpQp9H1efMD+Qn/VkudmdAABBwEkJ2rTwDUptA30KkoZINxFDHY8cCGDztppIksfvD3r8z8CfNq9ndzOazWBI6tK6GN+eu/rpIBFTiJ+if3Cj3ovYvWb8W2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXKIOVdl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB956C4CEFB;
+	Tue, 11 Nov 2025 00:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822257;
-	bh=UjGXIgY7A4TIf90yRijJQhr9V7+5mxSomI3a0/AvnHY=;
+	s=korg; t=1762822283;
+	bh=q07F884U9jtpbcRVutMt4EWlbovexjALbE7GhO6E5HE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDlCFJsiY08EquMvfZAH5+Es/f3TSbs/Dzlb/VsQYWwrTy7UzHof0MWc7qQJYrzzH
-	 yF5FRU9hlxMTqPNiAovauRXzZn4wxX5ALvmxCdGXfMmmgFcih3Sssu1KAOQWPAkRog
-	 E5cr1lsNue+cZh/9Ud0iS9Wq5TJWSdYWfinfTKFo=
+	b=QXKIOVdlAepdM9QkzX2EuTbC9YlcncKCt17uoJ0cwF3s6RH8mVQntZyV2DDmTXl8+
+	 PY3QIbKpJ4De5CZcL18mfXlyZrnDuPYTf1/DHQ4iFAYSluak8P3SiPmru2YFlrB9Ra
+	 moaF8TIXxvqPYFDPv3v7VYcivZovWoW+WTPd4Wwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Subject: [PATCH 6.17 033/849] drm/msm: Fix GEM free for imported dma-bufs
-Date: Tue, 11 Nov 2025 09:33:23 +0900
-Message-ID: <20251111004537.246227961@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 034/849] drm/msm/a6xx: Fix GMU firmware parser
+Date: Tue, 11 Nov 2025 09:33:24 +0900
+Message-ID: <20251111004537.269819787@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,89 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit c34e08ba6c0037a72a7433741225b020c989e4ae ]
+[ Upstream commit b4789aac9d3441d9f830f0a4022d8dc122d6cab3 ]
 
-Imported dma-bufs also have obj->resv != &obj->_resv.  So we should
-check both this condition in addition to flags for handling the
-_NO_SHARE case.
+Current parser logic for GMU firmware assumes a dword aligned payload
+size for every block. This is not true for all GMU firmwares. So, fix
+this by using correct 'size' value in the calculation for the offset
+for the next block's header.
 
-Fixes this splat that was reported with IRIS video playback:
-
-    ------------[ cut here ]------------
-    WARNING: CPU: 3 PID: 2040 at drivers/gpu/drm/msm/msm_gem.c:1127 msm_gem_free_object+0x1f8/0x264 [msm]
-    CPU: 3 UID: 1000 PID: 2040 Comm: .gnome-shell-wr Not tainted 6.17.0-rc7 #1 PREEMPT
-    pstate: 81400005 (Nzcv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-    pc : msm_gem_free_object+0x1f8/0x264 [msm]
-    lr : msm_gem_free_object+0x138/0x264 [msm]
-    sp : ffff800092a1bb30
-    x29: ffff800092a1bb80 x28: ffff800092a1bce8 x27: ffffbc702dbdbe08
-    x26: 0000000000000008 x25: 0000000000000009 x24: 00000000000000a6
-    x23: ffff00083c72f850 x22: ffff00083c72f868 x21: ffff00087e69f200
-    x20: ffff00087e69f330 x19: ffff00084d157ae0 x18: 0000000000000000
-    x17: 0000000000000000 x16: ffffbc704bd46b80 x15: 0000ffffd0959540
-    x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-    x11: ffffbc702e6cdb48 x10: 0000000000000000 x9 : 000000000000003f
-    x8 : ffff800092a1ba90 x7 : 0000000000000000 x6 : 0000000000000020
-    x5 : ffffbc704bd46c40 x4 : fffffdffe102cf60 x3 : 0000000000400032
-    x2 : 0000000000020000 x1 : ffff00087e6978e8 x0 : ffff00087e6977e8
-    Call trace:
-     msm_gem_free_object+0x1f8/0x264 [msm] (P)
-     drm_gem_object_free+0x1c/0x30 [drm]
-     drm_gem_object_handle_put_unlocked+0x138/0x150 [drm]
-     drm_gem_object_release_handle+0x5c/0xcc [drm]
-     drm_gem_handle_delete+0x68/0xbc [drm]
-     drm_gem_close_ioctl+0x34/0x40 [drm]
-     drm_ioctl_kernel+0xc0/0x130 [drm]
-     drm_ioctl+0x360/0x4e0 [drm]
-     __arm64_sys_ioctl+0xac/0x104
-     invoke_syscall+0x48/0x104
-     el0_svc_common.constprop.0+0x40/0xe0
-     do_el0_svc+0x1c/0x28
-     el0_svc+0x34/0xec
-     el0t_64_sync_handler+0xa0/0xe4
-     el0t_64_sync+0x198/0x19c
-    ---[ end trace 0000000000000000 ]---
-    ------------[ cut here ]------------
-
-Reported-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Fixes: de651b6e040b ("drm/msm: Fix refcnt underflow in error path")
+Fixes: c6ed04f856a4 ("drm/msm/a6xx: A640/A650 GMU firmware path")
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/674040/
+Message-ID: <20250911-assorted-sept-1-v2-2-a8bf1ee20792@oss.qualcomm.com>
 Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Tested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Tested-by: Luca Weiss <luca.weiss@fairphone.com>
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5165-rb5
-Patchwork: https://patchwork.freedesktop.org/patch/676273/
-Message-ID: <20250923140441.746081-1-robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem.c b/drivers/gpu/drm/msm/msm_gem.c
-index e7631f4ef5309..0745d958f3987 100644
---- a/drivers/gpu/drm/msm/msm_gem.c
-+++ b/drivers/gpu/drm/msm/msm_gem.c
-@@ -1120,12 +1120,16 @@ static void msm_gem_free_object(struct drm_gem_object *obj)
- 		put_pages(obj);
- 	}
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index 3369a03978d53..ee82489025c3c 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -766,6 +766,9 @@ static bool fw_block_mem(struct a6xx_gmu_bo *bo, const struct block_header *blk)
+ 	return true;
+ }
  
--	if (obj->resv != &obj->_resv) {
-+	/*
-+	 * In error paths, we could end up here before msm_gem_new_handle()
-+	 * has changed obj->resv to point to the shared resv.  In this case,
-+	 * we don't want to drop a ref to the shared r_obj that we haven't
-+	 * taken yet.
-+	 */
-+	if ((msm_obj->flags & MSM_BO_NO_SHARE) && (obj->resv != &obj->_resv)) {
- 		struct drm_gem_object *r_obj =
- 			container_of(obj->resv, struct drm_gem_object, _resv);
++#define NEXT_BLK(blk) \
++	((const struct block_header *)((const char *)(blk) + sizeof(*(blk)) + (blk)->size))
++
+ static int a6xx_gmu_fw_load(struct a6xx_gmu *gmu)
+ {
+ 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
+@@ -797,7 +800,7 @@ static int a6xx_gmu_fw_load(struct a6xx_gmu *gmu)
  
--		WARN_ON(!(msm_obj->flags & MSM_BO_NO_SHARE));
--
- 		/* Drop reference we hold to shared resv obj: */
- 		drm_gem_object_put(r_obj);
- 	}
+ 	for (blk = (const struct block_header *) fw_image->data;
+ 	     (const u8*) blk < fw_image->data + fw_image->size;
+-	     blk = (const struct block_header *) &blk->data[blk->size >> 2]) {
++	     blk = NEXT_BLK(blk)) {
+ 		if (blk->size == 0)
+ 			continue;
+ 
 -- 
 2.51.0
 
