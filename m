@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-193905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28705C4ACB5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:46 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D26A0C4A923
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A8B33BC6C6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E2B86340F64
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB96F348458;
-	Tue, 11 Nov 2025 01:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BEC22F12C1;
+	Tue, 11 Nov 2025 01:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qi+Rmirk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZFNLjeP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DA52DCF6E;
-	Tue, 11 Nov 2025 01:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4877C26E71F;
+	Tue, 11 Nov 2025 01:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824339; cv=none; b=RP0HS9/oZo+jxySHzm6XRKd8e3iU7+Dz4P1W2kPULM+8RtO8ecVpDgJHMNNyZhgQ9ffLDQ1ghaOtLreAJGSJIyJLXgyQI7jfUaL5ftWqGiZdkgDVKW7czEUwz+mJLoN1qQitZD/00bec9pfRPaLLNYjtSjD09Gr16CgLTLQ5kCU=
+	t=1762824344; cv=none; b=JOem77q7GxvBW2f8oMSeCQU9aWLynQ5sY7O71sZLZh4KE69ZcbRLGOEOv0SILycrW5VHUE9pKQNd8Nm4uFKdLrSjJYiPo2OtsdinMyd7f2tYPDqrisSVN8HCIhZk5lFN9MQBXvRrqUUerm+Gm/dX7TWqlm/yYRAqddVvVX/2aZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824339; c=relaxed/simple;
-	bh=CAr3q0w7WPM4jNxn7fC1ytSg0FpRNDJHHqMOfktXC/Q=;
+	s=arc-20240116; t=1762824344; c=relaxed/simple;
+	bh=IwmoZNLKSs1O6K75p6G5UR4Km81rQeT/yi8PLAMN1jY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwNTvLPhP6Ip+HZQCAiqqcyaL9qpI8uSeYlngJOQnicobD8kejpPi3wJW8eSg3nUStbHZHEGlf2LphijpAk9X+CFL8NVvdrZAccc13t5qmZI+mhuPCpBDJLJH+8MZwrgTC4XAfH+QS6C7a1TixsRjVL8xjCtFluDTdSsANOJidc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qi+Rmirk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17997C116B1;
-	Tue, 11 Nov 2025 01:25:38 +0000 (UTC)
+	 MIME-Version; b=OovmOdQ+NrR/SleXIsgoh+F5J98Nmsw1pfs0RgViTe56zj5OZS29kO9JyI5ZNfwqLtiE48eQzYNDwHFt6VzdHGEdqjw5YxxHSdlIwXx3UhrzKaFDatOxk2M+vV3FbrgqB7u8x5isxvk847TZoWDqEgaiRj+uslbU5gA/CzMn0Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZFNLjeP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D507CC116D0;
+	Tue, 11 Nov 2025 01:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824339;
-	bh=CAr3q0w7WPM4jNxn7fC1ytSg0FpRNDJHHqMOfktXC/Q=;
+	s=korg; t=1762824344;
+	bh=IwmoZNLKSs1O6K75p6G5UR4Km81rQeT/yi8PLAMN1jY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qi+RmirkMipAC2yHD8hMzLjKIvaRyD91jESlBtmQjasUSZjMGRp9sn+64yeLgoord
-	 xAU0+fn8KtwpeZHKoFEcM/KGUwoGNmgCElMYcf/ldLiYwiLIUPhM5H0s/nxyJaOp6C
-	 foe0xztdV3/tR56FUR/6eBMiNrvuhSnBhwNzqjic=
+	b=zZFNLjePRXb+qchwTYnt+4GHrYbkez49uy5Nwgv1dMc9ntIIF1vNnS25b0CIflAiF
+	 VNSEGxKT0v0Kb/Ft0L522hfvOhq5/0tdgXlNuPHYlKfehW7U43jpuhxn2LUw2CINlo
+	 dMSZJRWJTWvkq+afviqkg+O55Mni0laF50bXMe18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 476/849] drm/msm/a6xx: Switch to GMU AO counter
-Date: Tue, 11 Nov 2025 09:40:46 +0900
-Message-ID: <20251111004547.952567677@linuxfoundation.org>
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Ramu R <ramu.r@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Subject: [PATCH 6.17 477/849] idpf: link NAPIs to queues
+Date: Tue, 11 Nov 2025 09:40:47 +0900
+Message-ID: <20251111004547.976302591@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,84 +68,227 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit f195421318bd00151b3a111af6f315a25c3438a8 ]
+[ Upstream commit bd74a86bc75d35adefbebcec7c3a743d02c06230 ]
 
-CP_ALWAYS_ON counter falls under GX domain which is collapsed during
-IFPC. So switch to GMU_ALWAYS_ON counter for any CPU reads since it is
-not impacted by IFPC. Both counters are clocked by same xo clock source.
+Add the missing linking of NAPIs to netdev queues when enabling
+interrupt vectors in order to support NAPI configuration and
+interfaces requiring get_rx_queue()->napi to be set (like XSk
+busy polling).
 
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/673373/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+As currently, idpf_vport_{start,stop}() is called from several flows
+with inconsistent RTNL locking, we need to synchronize them to avoid
+runtime assertions. Notably:
+
+* idpf_{open,stop}() -- regular NDOs, RTNL is always taken;
+* idpf_initiate_soft_reset() -- usually called under RTNL;
+* idpf_init_task -- called from the init work, needs RTNL;
+* idpf_vport_dealloc -- called without RTNL taken, needs it.
+
+Expand common idpf_vport_{start,stop}() to take an additional bool
+telling whether we need to manually take the RTNL lock.
+
+Suggested-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com> # helper
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Tested-by: Ramu R <ramu.r@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 30 ++++++++++++++-------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_lib.c  | 38 +++++++++++++++------
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 17 +++++++++
+ 2 files changed, 45 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index 536da1acf615e..1e363af319488 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -16,6 +16,19 @@
- 
- #define GPU_PAS_ID 13
- 
-+static u64 read_gmu_ao_counter(struct a6xx_gpu *a6xx_gpu)
-+{
-+	u64 count_hi, count_lo, temp;
-+
-+	do {
-+		count_hi = gmu_read(&a6xx_gpu->gmu, REG_A6XX_GMU_ALWAYS_ON_COUNTER_H);
-+		count_lo = gmu_read(&a6xx_gpu->gmu, REG_A6XX_GMU_ALWAYS_ON_COUNTER_L);
-+		temp = gmu_read(&a6xx_gpu->gmu, REG_A6XX_GMU_ALWAYS_ON_COUNTER_H);
-+	} while (unlikely(count_hi != temp));
-+
-+	return (count_hi << 32) | count_lo;
-+}
-+
- static bool fence_status_check(struct msm_gpu *gpu, u32 offset, u32 value, u32 status, u32 mask)
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index e327950c93d8e..f4b89d222610f 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -884,14 +884,18 @@ static void idpf_remove_features(struct idpf_vport *vport)
+ /**
+  * idpf_vport_stop - Disable a vport
+  * @vport: vport to disable
++ * @rtnl: whether to take RTNL lock
+  */
+-static void idpf_vport_stop(struct idpf_vport *vport)
++static void idpf_vport_stop(struct idpf_vport *vport, bool rtnl)
  {
- 	/* Success if !writedropped0/1 */
-@@ -376,8 +389,7 @@ static void a6xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 	OUT_RING(ring, upper_32_bits(rbmemptr(ring, fence)));
- 	OUT_RING(ring, submit->seqno);
+ 	struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
  
--	trace_msm_gpu_submit_flush(submit,
--		gpu_read64(gpu, REG_A6XX_CP_ALWAYS_ON_COUNTER));
-+	trace_msm_gpu_submit_flush(submit, read_gmu_ao_counter(a6xx_gpu));
+ 	if (np->state <= __IDPF_VPORT_DOWN)
+ 		return;
  
- 	a6xx_flush(gpu, ring);
++	if (rtnl)
++		rtnl_lock();
++
+ 	netif_carrier_off(vport->netdev);
+ 	netif_tx_disable(vport->netdev);
+ 
+@@ -913,6 +917,9 @@ static void idpf_vport_stop(struct idpf_vport *vport)
+ 	idpf_vport_queues_rel(vport);
+ 	idpf_vport_intr_rel(vport);
+ 	np->state = __IDPF_VPORT_DOWN;
++
++	if (rtnl)
++		rtnl_unlock();
  }
-@@ -577,8 +589,7 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
+ 
+ /**
+@@ -936,7 +943,7 @@ static int idpf_stop(struct net_device *netdev)
+ 	idpf_vport_ctrl_lock(netdev);
+ 	vport = idpf_netdev_to_vport(netdev);
+ 
+-	idpf_vport_stop(vport);
++	idpf_vport_stop(vport, false);
+ 
+ 	idpf_vport_ctrl_unlock(netdev);
+ 
+@@ -1029,7 +1036,7 @@ static void idpf_vport_dealloc(struct idpf_vport *vport)
+ 	idpf_idc_deinit_vport_aux_device(vport->vdev_info);
+ 
+ 	idpf_deinit_mac_addr(vport);
+-	idpf_vport_stop(vport);
++	idpf_vport_stop(vport, true);
+ 
+ 	if (!test_bit(IDPF_HR_RESET_IN_PROG, adapter->flags))
+ 		idpf_decfg_netdev(vport);
+@@ -1370,8 +1377,9 @@ static void idpf_rx_init_buf_tail(struct idpf_vport *vport)
+ /**
+  * idpf_vport_open - Bring up a vport
+  * @vport: vport to bring up
++ * @rtnl: whether to take RTNL lock
+  */
+-static int idpf_vport_open(struct idpf_vport *vport)
++static int idpf_vport_open(struct idpf_vport *vport, bool rtnl)
+ {
+ 	struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
+ 	struct idpf_adapter *adapter = vport->adapter;
+@@ -1381,6 +1389,9 @@ static int idpf_vport_open(struct idpf_vport *vport)
+ 	if (np->state != __IDPF_VPORT_DOWN)
+ 		return -EBUSY;
+ 
++	if (rtnl)
++		rtnl_lock();
++
+ 	/* we do not allow interface up just yet */
+ 	netif_carrier_off(vport->netdev);
+ 
+@@ -1388,7 +1399,7 @@ static int idpf_vport_open(struct idpf_vport *vport)
+ 	if (err) {
+ 		dev_err(&adapter->pdev->dev, "Failed to allocate interrupts for vport %u: %d\n",
+ 			vport->vport_id, err);
+-		return err;
++		goto err_rtnl_unlock;
  	}
  
+ 	err = idpf_vport_queues_alloc(vport);
+@@ -1475,6 +1486,9 @@ static int idpf_vport_open(struct idpf_vport *vport)
+ 		goto deinit_rss;
+ 	}
  
--	trace_msm_gpu_submit_flush(submit,
--		gpu_read64(gpu, REG_A6XX_CP_ALWAYS_ON_COUNTER));
-+	trace_msm_gpu_submit_flush(submit, read_gmu_ao_counter(a6xx_gpu));
++	if (rtnl)
++		rtnl_unlock();
++
+ 	return 0;
  
- 	a6xx_flush(gpu, ring);
+ deinit_rss:
+@@ -1492,6 +1506,10 @@ static int idpf_vport_open(struct idpf_vport *vport)
+ intr_rel:
+ 	idpf_vport_intr_rel(vport);
  
-@@ -2260,16 +2271,7 @@ static int a6xx_gmu_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
- 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
- 	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
++err_rtnl_unlock:
++	if (rtnl)
++		rtnl_unlock();
++
+ 	return err;
+ }
  
--	mutex_lock(&a6xx_gpu->gmu.lock);
--
--	/* Force the GPU power on so we can read this register */
--	a6xx_gmu_set_oob(&a6xx_gpu->gmu, GMU_OOB_PERFCOUNTER_SET);
--
--	*value = gpu_read64(gpu, REG_A6XX_CP_ALWAYS_ON_COUNTER);
--
--	a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_PERFCOUNTER_SET);
--
--	mutex_unlock(&a6xx_gpu->gmu.lock);
-+	*value = read_gmu_ao_counter(a6xx_gpu);
+@@ -1572,7 +1590,7 @@ void idpf_init_task(struct work_struct *work)
+ 	np = netdev_priv(vport->netdev);
+ 	np->state = __IDPF_VPORT_DOWN;
+ 	if (test_and_clear_bit(IDPF_VPORT_UP_REQUESTED, vport_config->flags))
+-		idpf_vport_open(vport);
++		idpf_vport_open(vport, true);
+ 
+ 	/* Spawn and return 'idpf_init_task' work queue until all the
+ 	 * default vports are created
+@@ -1962,7 +1980,7 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
+ 		idpf_send_delete_queues_msg(vport);
+ 	} else {
+ 		set_bit(IDPF_VPORT_DEL_QUEUES, vport->flags);
+-		idpf_vport_stop(vport);
++		idpf_vport_stop(vport, false);
+ 	}
+ 
+ 	idpf_deinit_rss(vport);
+@@ -1992,7 +2010,7 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
+ 		goto err_open;
+ 
+ 	if (current_state == __IDPF_VPORT_UP)
+-		err = idpf_vport_open(vport);
++		err = idpf_vport_open(vport, false);
+ 
+ 	goto free_vport;
+ 
+@@ -2002,7 +2020,7 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
+ 
+ err_open:
+ 	if (current_state == __IDPF_VPORT_UP)
+-		idpf_vport_open(vport);
++		idpf_vport_open(vport, false);
+ 
+ free_vport:
+ 	kfree(new_vport);
+@@ -2240,7 +2258,7 @@ static int idpf_open(struct net_device *netdev)
+ 	if (err)
+ 		goto unlock;
+ 
+-	err = idpf_vport_open(vport);
++	err = idpf_vport_open(vport, false);
+ 
+ unlock:
+ 	idpf_vport_ctrl_unlock(netdev);
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index e75a94d7ac2ac..92634c4bb369a 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -3430,6 +3430,20 @@ void idpf_vport_intr_rel(struct idpf_vport *vport)
+ 	vport->q_vectors = NULL;
+ }
+ 
++static void idpf_q_vector_set_napi(struct idpf_q_vector *q_vector, bool link)
++{
++	struct napi_struct *napi = link ? &q_vector->napi : NULL;
++	struct net_device *dev = q_vector->vport->netdev;
++
++	for (u32 i = 0; i < q_vector->num_rxq; i++)
++		netif_queue_set_napi(dev, q_vector->rx[i]->idx,
++				     NETDEV_QUEUE_TYPE_RX, napi);
++
++	for (u32 i = 0; i < q_vector->num_txq; i++)
++		netif_queue_set_napi(dev, q_vector->tx[i]->idx,
++				     NETDEV_QUEUE_TYPE_TX, napi);
++}
++
+ /**
+  * idpf_vport_intr_rel_irq - Free the IRQ association with the OS
+  * @vport: main vport structure
+@@ -3450,6 +3464,7 @@ static void idpf_vport_intr_rel_irq(struct idpf_vport *vport)
+ 		vidx = vport->q_vector_idxs[vector];
+ 		irq_num = adapter->msix_entries[vidx].vector;
+ 
++		idpf_q_vector_set_napi(q_vector, false);
+ 		kfree(free_irq(irq_num, q_vector));
+ 	}
+ }
+@@ -3637,6 +3652,8 @@ static int idpf_vport_intr_req_irq(struct idpf_vport *vport)
+ 				   "Request_irq failed, error: %d\n", err);
+ 			goto free_q_irqs;
+ 		}
++
++		idpf_q_vector_set_napi(q_vector, true);
+ 	}
  
  	return 0;
- }
 -- 
 2.51.0
 
