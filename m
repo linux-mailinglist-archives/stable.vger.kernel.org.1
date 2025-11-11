@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B83C4A78B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:18 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37612C4ADD8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EF991893DA6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 11E834F9BEC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2EB2C0F68;
-	Tue, 11 Nov 2025 01:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C6A343D77;
+	Tue, 11 Nov 2025 01:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aV56JjKj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZ7OlwBz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969B22472A6;
-	Tue, 11 Nov 2025 01:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D43B3431FA;
+	Tue, 11 Nov 2025 01:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823503; cv=none; b=WqcDjpYnEqr+9Sf7L3piRSuCn6gILxWBP3w3LQzt1ahy39FPg263Mr79aVtVkNHJc8YUCbPY7XKhKGoxxO9oGT4tJbFQdYTyM4LHL6RmUIrlRtOU3Kn6D+3peWVAbV075kMolF5odQqV2oNr5YyAvIsMI2bXRPU12jpixEnC6wE=
+	t=1762824662; cv=none; b=sLGHidw+bpGvSPemJtQ4guxZsVzDKkMh5Y6GwE6lpFWCyR2liMkSBMBznqxLBo/Ftr6oOAgC9ObKmuxXWgGIlqwkwPbKhFRSCLN7wuFqS5sA6Hhuxr9DqPQZW3L1UEoj/UKBLa9+DCYq84Y5CMMT4eMXEYnmC9gOx+n4bKtrdBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823503; c=relaxed/simple;
-	bh=cTMhbSbDAfMPNSOim0OmA/52SHKXNP6ReOc7zH1OVDs=;
+	s=arc-20240116; t=1762824662; c=relaxed/simple;
+	bh=gqgBLKI74qjNKMhxh0kiFPWK2XeXx/0W4PBIzGGqxG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uj+Yjd7c/f9xaL8Urb9xENGk8uPg4WAHPUjqdRzzVm2ccwuKPbuxrimohxutwEUUABfUvfbZzQ+IpyZY4a6u8OW31/tcMwlPoigU0sGEdd4fHogzBIaqqjBcHon5WIxdleEmomqKsLL9Pv50h7bbwPjr0KvMO3fHSkKqHJCxq5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aV56JjKj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CCEC19424;
-	Tue, 11 Nov 2025 01:11:42 +0000 (UTC)
+	 MIME-Version; b=bPtuSeQ44Idy8BxAOJdMOmrNj+ap0rO8I3kj1YXugW1Fj1Vs5wGJo8bT78h9D2aXQKigNLqR7QRWyEAMpM255sryIFP8BXwi4tXNkeEWhmZDPfytiWC66wxEKp14CCFkxFWYffipN5S0wwYdFzQFqB1mLt6Hy5xEuG0ffccCdjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZ7OlwBz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CFA1C16AAE;
+	Tue, 11 Nov 2025 01:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823503;
-	bh=cTMhbSbDAfMPNSOim0OmA/52SHKXNP6ReOc7zH1OVDs=;
+	s=korg; t=1762824659;
+	bh=gqgBLKI74qjNKMhxh0kiFPWK2XeXx/0W4PBIzGGqxG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aV56JjKjq12Wfc/jOs7LRmRvUlksQTTaAnCWFoDWlUZD+pooI3IV2Y8I1dgzfzXLO
-	 fLowHtZSAQfowviCj85C+a9LLmBMmIM+FcKacia4zRUEY0Tr9c62idtQRdk3+xZq5W
-	 Vi36p/QVF8/NVaO8rSdd/Z4mWfIsCQ1NTyIZFVI8=
+	b=jZ7OlwBzolk0Jfg0tGy7A8qizO2cdyhybrbxWKZpDhVttD4/ZmlL/n1BYnps11i+C
+	 sHG8je6qBwOpV8Lf9/gxzfK8LXIsjNw+PSD4PQqDSgd4kSTNhXvEH911c/yZi417HX
+	 ter55lXG8vyzquZPzNinCySXUwM3AHJPsVRH6U+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amber Lin <Amber.Lin@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 259/565] drm/amdkfd: Tie UNMAP_LATENCY to queue_preemption
+Subject: [PATCH 6.17 545/849] wifi: mt76: mt7996: disable promiscuous mode by default
 Date: Tue, 11 Nov 2025 09:41:55 +0900
-Message-ID: <20251111004532.722993847@linuxfoundation.org>
+Message-ID: <20251111004549.585259182@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amber Lin <Amber.Lin@amd.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit f3820e9d356132e18405cd7606e22dc87ccfa6d1 ]
+[ Upstream commit a4a66cbaa20f51cb953d09a95c67cb237a088ec9 ]
 
-When KFD asks CP to preempt queues, other than preempt CP queues, CP
-also requests SDMA to preempt SDMA queues with UNMAP_LATENCY timeout.
-Currently queue_preemption_timeout_ms is 9000 ms by default but can be
-configured via module parameter. KFD_UNMAP_LATENCY_MS is hard coded as
-4000 ms though. This patch ties KFD_UNMAP_LATENCY_MS to
-queue_preemption_timeout_ms so in a slow system such as emulator, both
-CP and SDMA slowness are taken into account.
+Set MT_WF_RFCR_DROP_OTHER_UC by default and disable this flag in
+mt7996_set_monitor only if monitor mode is enabled.
 
-Signed-off-by: Amber Lin <Amber.Lin@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Without this patch, the MT_WF_RFCR_DROP_OTHER_UC would not be set so the
+driver would receive lots of packets meant for other devices.
+
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Link: https://patch.msgid.link/20250915075910.47558-10-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_priv.h | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-index 75523f30cd38b..5041860e2737c 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-@@ -111,7 +111,14 @@
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index a75b29bada141..5e81edde1e283 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -383,6 +383,7 @@ mt7996_init_wiphy_band(struct ieee80211_hw *hw, struct mt7996_phy *phy)
  
- #define KFD_KERNEL_QUEUE_SIZE 2048
+ 	phy->slottime = 9;
+ 	phy->beacon_rate = -1;
++	phy->rxfilter = MT_WF_RFCR_DROP_OTHER_UC;
  
--#define KFD_UNMAP_LATENCY_MS	(4000)
-+/*  KFD_UNMAP_LATENCY_MS is the timeout CP waiting for SDMA preemption. One XCC
-+ *  can be associated to 2 SDMA engines. queue_preemption_timeout_ms is the time
-+ *  driver waiting for CP returning the UNMAP_QUEUE fence. Thus the math is
-+ *  queue_preemption_timeout_ms = sdma_preemption_time * 2 + cp workload
-+ *  The format here makes CP workload 10% of total timeout
-+ */
-+#define KFD_UNMAP_LATENCY_MS	\
-+	((queue_preemption_timeout_ms - queue_preemption_timeout_ms / 10) >> 1)
- 
- #define KFD_MAX_SDMA_QUEUES	128
- 
+ 	if (phy->mt76->cap.has_2ghz) {
+ 		phy->mt76->sband_2g.sband.ht_cap.cap |=
 -- 
 2.51.0
 
