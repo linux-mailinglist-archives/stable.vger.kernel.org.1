@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BF78C4AD99
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9241C4A7AA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75CB43B1F2A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 303BE1886B3E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3478B343D8E;
-	Tue, 11 Nov 2025 01:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC8F3431E3;
+	Tue, 11 Nov 2025 01:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdWjjiQt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpGX9EDh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E507E2DEA77;
-	Tue, 11 Nov 2025 01:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C535F342CBB;
+	Tue, 11 Nov 2025 01:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824679; cv=none; b=RtRpg4H5sx+na8/3bkIXbv+o5T45XYEVaqMHtr4DfBRcDkMBceEQL4/f4C1O+9C1nTN7+kKxoD2d+wQQ5xbpeEGxita2WsY0X1OuAHAAJV9GkPhskI22f2elbvWsfOknV6lDbuO4iytfLhPcb4NId7InUNr57840TB/gDI9yXvE=
+	t=1762823524; cv=none; b=Ms0NynK1IBT1OpLRCF+LRErVZV2yoAXw/sHAB6oe5oQUKdu+cyuW62Pq65Ne9VqoPbbdhmohZTnoCmun1WBAOlZCm2TmyTdjjllWHcBAkWgLUGE5Pvp6wzZMf7cYZQG2X4h9fy8CJn5UR2s8oRnWUizaJcAZG2rzbOhfGg1Q/zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824679; c=relaxed/simple;
-	bh=Yhp+N0NhRYNoNf2p3jD/A8jMiwVbKnD5JbafBG65J/w=;
+	s=arc-20240116; t=1762823524; c=relaxed/simple;
+	bh=dzW6vPopAHg/ll2QICGA7JIMgw0B4PsUo+Hk3Dkxx2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z29sbMags5IWqxbzI/G68UBhcK7QuP8GYSE1fwDP3SzF7SSH2u94JmNU/2b1oH8LfUvziI/09jeautNJ0eBYQMMyhbuD5B4w0Il6vmgmS1INZRNG2o6ij5/A8O7QC7o7RIhXEAezghpHPthFX8YFlxXYGtQ0JImlFhQ5F//jFNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdWjjiQt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E2FC116D0;
-	Tue, 11 Nov 2025 01:31:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Xuuuon+HZRXbV/QBxyTmrFRM2L4OnRxj2G9xsSuR27HpKp7Riop1afZPQmH2/45qBlDZRu871r4C9rzQG6N5MkMvmH1n0pPmrzCQWdBy7t2+1uQ79U4GYlt9gxnoWSQL3lNXrG/jk+eZ0l8BAstUaUeJca9yRM/i+UXdd4IydQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpGX9EDh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D21C4CEF5;
+	Tue, 11 Nov 2025 01:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824678;
-	bh=Yhp+N0NhRYNoNf2p3jD/A8jMiwVbKnD5JbafBG65J/w=;
+	s=korg; t=1762823524;
+	bh=dzW6vPopAHg/ll2QICGA7JIMgw0B4PsUo+Hk3Dkxx2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jdWjjiQt0TQia912KFq2WlEfPoTGVh+C8oDeCJM9NjYzF6ktL+0VDyyUAwsQU5uUG
-	 gXz258qf09+Q94HfD+NuZJTfcScJJSqsIcUMlY86TA7JnBFoTcb95VO5Tf4aIfuWiB
-	 juEEDBVSOBodaH7sntWrDeLSUQaUgHSS/pVPpJ5Y=
+	b=EpGX9EDhc5sAysxTPKIhQgBQ0Es/r5icvYzdTW927dUZb1EBf+snrT9uIm56O7aDD
+	 aJVthDmixK5jLx3sDmS3TQCZwfEva5/e3lcWpxUhD1rdNDBkDUi/GYxXcmopmVguy+
+	 F3v22BvywLu6Pjq4nw7qVxyNg/Xblq+//AvEjrKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Martin=20T=C5=AFma?= <martin.tuma@digiteqautomotive.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 549/849] drm/amdgpu: validate userq buffer virtual address and size
+Subject: [PATCH 6.12 263/565] media: pci: mgb4: Fix timings comparison in VIDIOC_S_DV_TIMINGS
 Date: Tue, 11 Nov 2025 09:41:59 +0900
-Message-ID: <20251111004549.678150606@linuxfoundation.org>
+Message-ID: <20251111004532.810001784@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,153 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prike Liang <Prike.Liang@amd.com>
+From: Martin Tůma <martin.tuma@digiteqautomotive.com>
 
-[ Upstream commit 9e46b8bb0539d7bc9a9e7b3072fa4f6082490392 ]
+[ Upstream commit 0750649b528ff18d1d68aecb45b34ec22d5ab778 ]
 
-It needs to validate the userq object virtual address to
-determine whether it is residented in a valid vm mapping.
+Compare the whole v4l2_bt_timings struct, not just the width/height when
+setting new timings. Timings with the same resolution and different
+pixelclock can now be properly set.
 
-Signed-off-by: Prike Liang <Prike.Liang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c  | 40 ++++++++++++++++++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h  |  2 ++
- drivers/gpu/drm/amd/amdgpu/mes_userqueue.c | 16 +++++++++
- 3 files changed, 58 insertions(+)
+ drivers/media/pci/mgb4/mgb4_vin.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-index 65c8a38890d48..695eb2b052fc0 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-@@ -44,6 +44,38 @@ u32 amdgpu_userq_get_supported_ip_mask(struct amdgpu_device *adev)
- 	return userq_ip_mask;
- }
- 
-+int amdgpu_userq_input_va_validate(struct amdgpu_vm *vm, u64 addr,
-+				   u64 expected_size)
-+{
-+	struct amdgpu_bo_va_mapping *va_map;
-+	u64 user_addr;
-+	u64 size;
-+	int r = 0;
-+
-+	user_addr = (addr & AMDGPU_GMC_HOLE_MASK) >> AMDGPU_GPU_PAGE_SHIFT;
-+	size = expected_size >> AMDGPU_GPU_PAGE_SHIFT;
-+
-+	r = amdgpu_bo_reserve(vm->root.bo, false);
-+	if (r)
-+		return r;
-+
-+	va_map = amdgpu_vm_bo_lookup_mapping(vm, user_addr);
-+	if (!va_map) {
-+		r = -EINVAL;
-+		goto out_err;
-+	}
-+	/* Only validate the userq whether resident in the VM mapping range */
-+	if (user_addr >= va_map->start  &&
-+	    va_map->last - user_addr + 1 >= size) {
-+		amdgpu_bo_unreserve(vm->root.bo);
-+		return 0;
-+	}
-+
-+out_err:
-+	amdgpu_bo_unreserve(vm->root.bo);
-+	return r;
-+}
-+
- static int
- amdgpu_userq_unmap_helper(struct amdgpu_userq_mgr *uq_mgr,
- 			  struct amdgpu_usermode_queue *queue)
-@@ -439,6 +471,14 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
- 		r = -ENOMEM;
- 		goto unlock;
- 	}
-+
-+	/* Validate the userq virtual address.*/
-+	if (amdgpu_userq_input_va_validate(&fpriv->vm, args->in.queue_va, args->in.queue_size) ||
-+	    amdgpu_userq_input_va_validate(&fpriv->vm, args->in.rptr_va, AMDGPU_GPU_PAGE_SIZE) ||
-+	    amdgpu_userq_input_va_validate(&fpriv->vm, args->in.wptr_va, AMDGPU_GPU_PAGE_SIZE)) {
-+		kfree(queue);
-+		goto unlock;
-+	}
- 	queue->doorbell_handle = args->in.doorbell_handle;
- 	queue->queue_type = args->in.ip_type;
- 	queue->vm = &fpriv->vm;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h
-index b1ca91b7cda4b..8603c31320f11 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h
-@@ -133,4 +133,6 @@ int amdgpu_userq_stop_sched_for_enforce_isolation(struct amdgpu_device *adev,
- int amdgpu_userq_start_sched_for_enforce_isolation(struct amdgpu_device *adev,
- 						   u32 idx);
- 
-+int amdgpu_userq_input_va_validate(struct amdgpu_vm *vm, u64 addr,
-+				   u64 expected_size);
- #endif
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-index 1457fb49a794f..ef54d211214f4 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-@@ -206,6 +206,7 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 	struct amdgpu_mqd *mqd_hw_default = &adev->mqds[queue->queue_type];
- 	struct drm_amdgpu_userq_in *mqd_user = args_in;
- 	struct amdgpu_mqd_prop *userq_props;
-+	struct amdgpu_gfx_shadow_info shadow_info;
- 	int r;
- 
- 	/* Structure to initialize MQD for userqueue using generic MQD init function */
-@@ -231,6 +232,8 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 	userq_props->doorbell_index = queue->doorbell_index;
- 	userq_props->fence_address = queue->fence_drv->gpu_addr;
- 
-+	if (adev->gfx.funcs->get_gfx_shadow_info)
-+		adev->gfx.funcs->get_gfx_shadow_info(adev, &shadow_info, true);
- 	if (queue->queue_type == AMDGPU_HW_IP_COMPUTE) {
- 		struct drm_amdgpu_userq_mqd_compute_gfx11 *compute_mqd;
- 
-@@ -247,6 +250,10 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 			goto free_mqd;
- 		}
- 
-+		if (amdgpu_userq_input_va_validate(queue->vm, compute_mqd->eop_va,
-+		    max_t(u32, PAGE_SIZE, AMDGPU_GPU_PAGE_SIZE)))
-+			goto free_mqd;
-+
- 		userq_props->eop_gpu_addr = compute_mqd->eop_va;
- 		userq_props->hqd_pipe_priority = AMDGPU_GFX_PIPE_PRIO_NORMAL;
- 		userq_props->hqd_queue_priority = AMDGPU_GFX_QUEUE_PRIORITY_MINIMUM;
-@@ -274,6 +281,11 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 		userq_props->csa_addr = mqd_gfx_v11->csa_va;
- 		userq_props->tmz_queue =
- 			mqd_user->flags & AMDGPU_USERQ_CREATE_FLAGS_QUEUE_SECURE;
-+
-+		if (amdgpu_userq_input_va_validate(queue->vm, mqd_gfx_v11->shadow_va,
-+		    shadow_info.shadow_size))
-+			goto free_mqd;
-+
- 		kfree(mqd_gfx_v11);
- 	} else if (queue->queue_type == AMDGPU_HW_IP_DMA) {
- 		struct drm_amdgpu_userq_mqd_sdma_gfx11 *mqd_sdma_v11;
-@@ -291,6 +303,10 @@ static int mes_userq_mqd_create(struct amdgpu_userq_mgr *uq_mgr,
- 			goto free_mqd;
- 		}
- 
-+		if (amdgpu_userq_input_va_validate(queue->vm, mqd_sdma_v11->csa_va,
-+		    shadow_info.csa_size))
-+			goto free_mqd;
-+
- 		userq_props->csa_addr = mqd_sdma_v11->csa_va;
- 		kfree(mqd_sdma_v11);
- 	}
+diff --git a/drivers/media/pci/mgb4/mgb4_vin.c b/drivers/media/pci/mgb4/mgb4_vin.c
+index e9332abb31729..cfb6be8a81669 100644
+--- a/drivers/media/pci/mgb4/mgb4_vin.c
++++ b/drivers/media/pci/mgb4/mgb4_vin.c
+@@ -624,8 +624,7 @@ static int vidioc_s_dv_timings(struct file *file, void *fh,
+ 	    timings->bt.height < video_timings_cap.bt.min_height ||
+ 	    timings->bt.height > video_timings_cap.bt.max_height)
+ 		return -EINVAL;
+-	if (timings->bt.width == vindev->timings.bt.width &&
+-	    timings->bt.height == vindev->timings.bt.height)
++	if (v4l2_match_dv_timings(timings, &vindev->timings, 0, false))
+ 		return 0;
+ 	if (vb2_is_busy(&vindev->queue))
+ 		return -EBUSY;
 -- 
 2.51.0
 
