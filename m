@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 795E0C4A36B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65648C4A37F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0D00D4F480B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B7ACD4F083E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702F01C28E;
-	Tue, 11 Nov 2025 01:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E921F5F6;
+	Tue, 11 Nov 2025 01:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1MfKzG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMeBw2d1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0AB2E403;
-	Tue, 11 Nov 2025 01:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD967262A;
+	Tue, 11 Nov 2025 01:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822927; cv=none; b=KT0H/Wm+KTqXLuLZAGYTyULBEwobPvfGQujU3xms3qVIIMaEpq+dC0453SViOv4Mwb/h6MJXr6F3wHs3W9tXrnZ5MoIA/bqAoWsDaeyh0HGZ5hdq1Ewz7SCWz+GDO7fGhSo2xpts8QWX4FatkQHmFEhxF2Oish9MoUey9Edwxgs=
+	t=1762822935; cv=none; b=PtS5mmNIH6G9U62z46X89tsUpBUCPxYNKJUIXqu3cauIW4IwV1q0meYKDdo10c+3qaevoe4DWFq/KsT/yZ5RqfnVlRh1QoCBev8PVE+Xv8nZuhvBRFwImAaSIORelITeW4Z4k7ahT0UXtXEZxKH6BFijRlEVANNb7Bu4AG1z2xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822927; c=relaxed/simple;
-	bh=WPCCuztcau0jQMOj0uaIc2BzbMz47nqN/1fDD9fTiOU=;
+	s=arc-20240116; t=1762822935; c=relaxed/simple;
+	bh=gH/MrHJTwMIkDRVDV+mLbywgqhpghrnkeCfu57Ofltg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EVtYDKIgyJstRiS4rK+/YfLYsMPGf0mOjNXt41WCD1FaD9XbwOzgd84W36BjF3xeRV9ozGiANfb3UZro5U9RnN6ABT4duWbGFODYixeQuZgfyABuymv1V6Xe8no+Y1nnQR11sn9jcYmannq/l45Zb8qQP054yPWo2rsXRAfr2Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1MfKzG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03EFC116B1;
-	Tue, 11 Nov 2025 01:02:06 +0000 (UTC)
+	 MIME-Version; b=uJQvRHvCpDb+f2nkzihEfCgS4ZXPVl0OPLwdukdybpt1d0kWi2Zp8rrLJz7YlhFzBg7ok+AmSCKiSpMXv8WDao/am2JFY3r5TvLukMDOKnyN26OGq90kZXFuPyH3d0iNzQyGGRTF7lgVsZeZui07Hx4OOIZ5426yHz06bBlEt6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMeBw2d1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049F3C19422;
+	Tue, 11 Nov 2025 01:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822926;
-	bh=WPCCuztcau0jQMOj0uaIc2BzbMz47nqN/1fDD9fTiOU=;
+	s=korg; t=1762822934;
+	bh=gH/MrHJTwMIkDRVDV+mLbywgqhpghrnkeCfu57Ofltg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g1MfKzG5/SggYm3/vKU6U2sOlorcR2u2i+zdYIzajKhrlb6lG5IxIR9dyipMu6ovF
-	 QJqhepOe5bSJGcx9VW56CVCBq2Kq9ghKKRByR6kyaXILVLJqellguuwgdema3rr3S5
-	 +gKJ6/zyV5saqudw1P8p9gkLaU4RS1KRR2P91GJE=
+	b=kMeBw2d1a01tuXnLKH1w/CI92xEBGmlh0p5nXsJFTvaO55H5lvv8522+02z08kF/v
+	 f8PXqsofvXlM0VWtDRFRcgncL+tnydnc2y91O9BdwHp8vfSo6pItGR7P2BoC+O5Bzn
+	 oI46Mys2CAcHdeu4vjiIrisXI/M/1MG+aK0Mn9nY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Amirreza Zarrabi <amirreza.zarrabi@oss.qualcomm.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/565] ACPICA: dispatcher: Use acpi_ds_clear_operands() in acpi_ds_call_control_method()
-Date: Tue, 11 Nov 2025 09:39:51 +0900
-Message-ID: <20251111004529.984992570@linuxfoundation.org>
+Subject: [PATCH 6.12 136/565] tee: allow a driver to allocate a tee_device without a pool
+Date: Tue, 11 Nov 2025 09:39:52 +0900
+Message-ID: <20251111004530.005540610@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,47 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Amirreza Zarrabi <amirreza.zarrabi@oss.qualcomm.com>
 
-[ Upstream commit e9dff11a7a50fcef23fe3e8314fafae6d5641826 ]
+[ Upstream commit 6dbcd5a9ab6cb6644e7d728521da1c9035ec7235 ]
 
-When deleting the previous walkstate operand stack
-acpi_ds_call_control_method() was deleting obj_desc->Method.param_count
-operands. But Method.param_count does not necessarily match
-this_walk_state->num_operands, it may be either less or more.
+A TEE driver doesn't always need to provide a pool if it doesn't
+support memory sharing ioctls and can allocate memory for TEE
+messages in another way. Although this is mentioned in the
+documentation for tee_device_alloc(), it is not handled correctly.
 
-After correcting the for loop to check `i < this_walk_state->num_operands`
-the code is identical to acpi_ds_clear_operands(), so just outright
-replace the code with acpi_ds_clear_operands() to fix this.
-
-Link: https://github.com/acpica/acpica/commit/53fc0220
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Signed-off-by: Amirreza Zarrabi <amirreza.zarrabi@oss.qualcomm.com>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/dsmethod.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/tee/tee_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
-index a232746d150a7..dc53a5d700671 100644
---- a/drivers/acpi/acpica/dsmethod.c
-+++ b/drivers/acpi/acpica/dsmethod.c
-@@ -546,14 +546,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
- 	 * Delete the operands on the previous walkstate operand stack
- 	 * (they were copied to new objects)
- 	 */
--	for (i = 0; i < obj_desc->method.param_count; i++) {
--		acpi_ut_remove_reference(this_walk_state->operands[i]);
--		this_walk_state->operands[i] = NULL;
--	}
--
--	/* Clear the operand stack */
--
--	this_walk_state->num_operands = 0;
-+	acpi_ds_clear_operands(this_walk_state);
+diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+index acc7998758ad8..133447f250657 100644
+--- a/drivers/tee/tee_core.c
++++ b/drivers/tee/tee_core.c
+@@ -889,7 +889,7 @@ struct tee_device *tee_device_alloc(const struct tee_desc *teedesc,
  
- 	ACPI_DEBUG_PRINT((ACPI_DB_DISPATCH,
- 			  "**** Begin nested execution of [%4.4s] **** WalkState=%p\n",
+ 	if (!teedesc || !teedesc->name || !teedesc->ops ||
+ 	    !teedesc->ops->get_version || !teedesc->ops->open ||
+-	    !teedesc->ops->release || !pool)
++	    !teedesc->ops->release)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	teedev = kzalloc(sizeof(*teedev), GFP_KERNEL);
 -- 
 2.51.0
 
