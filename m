@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F5FEC4ADF6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA47C4A7B2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 45C234FCE9D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E17C3B11E1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BB83446A9;
-	Tue, 11 Nov 2025 01:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8BB2820A0;
+	Tue, 11 Nov 2025 01:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qm/AMgVj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1SOfTNX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFACA2DECB0;
-	Tue, 11 Nov 2025 01:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E4733C534;
+	Tue, 11 Nov 2025 01:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824712; cv=none; b=KF9Tt2/2DWHfvdP8yBD9rjoXrBLTUHx4nef45VUnw4TEfrO3YmpIklKkjpTWRJ1iVbdO1/ixuqG1g4gQtz53kq63s8D80LNWxlN72f6QFwxOUgu++aV75uC3Jzx3p/8i55cyNM0MHuFiUxgs2bW/0+iNLhvr/XC9zbLfMgUd6Hg=
+	t=1762823461; cv=none; b=sAtXG4BmVX6pqCCVK7qCnUx4/RqCIKB0hDmWmg/OoR7meSA84arAk1LCTQ/uzBMkv/E/Y8ekCaFdGSI5yAQ6am2sS+JUuwv3iMhPnIBUEjkceP3/LsHLE4qkPNXAMVK78wn1zaD3uKXWQjbNu0nLH+4RM2kRKUw/ciTiYQIuFec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824712; c=relaxed/simple;
-	bh=8xE8asWKcU2j6EaDS4TPo9GWW+6nKdUkw/JG9G0DaN4=;
+	s=arc-20240116; t=1762823461; c=relaxed/simple;
+	bh=tKr5Qs44xTy7AB5CFwKsw7cbhapNOzA0420aeCCgMOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqgDQoI6eVykHZaxFnYUmV0oMlnDEiTpLNYxTTeSmgnEbfScoRDeeU3huz7o57aTJuZ9I2N4zUELUIPI4uzUgQdz5U1lx1N84jFBI7uNxidn/mmW8jOnQVrcyW4ivMWn5ImtNR/mBgnFwXpLfTMFr71XSLxupGHGUsAQ9iNn6ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qm/AMgVj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6ACC4CEFB;
-	Tue, 11 Nov 2025 01:31:51 +0000 (UTC)
+	 MIME-Version; b=UHjGJldzfNMT9/6CPRVhQC57Y4Dg743gySVPJTo0fTdbEBP5ef+zpWliRWCoXrY1qpd8R/4z9pLaY+jDqpt5s+I/Gr5guxaPD1E5S3zcSTl4vi/LW8Nbkn2uxRueT0+7arx+H/5ioZN3QIVUpf9A755Ugo5R4gz8AwtkblrS02U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1SOfTNX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FF6C4CEF5;
+	Tue, 11 Nov 2025 01:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824711;
-	bh=8xE8asWKcU2j6EaDS4TPo9GWW+6nKdUkw/JG9G0DaN4=;
+	s=korg; t=1762823461;
+	bh=tKr5Qs44xTy7AB5CFwKsw7cbhapNOzA0420aeCCgMOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qm/AMgVj8P8rIZxivS78p+IoPGheOLMMnAUmyV30yu7KrzD+E4Nsd4DCkGoOovYde
-	 J6z17F0AvIWGuntE1OnULTimxw43SVt8++5p8762FDaEum/AdvhlvKWS/HXrwCqgcE
-	 VSvBHLc60gueNjyCyknAjerL6mwAfCmEHsFihwF0=
+	b=S1SOfTNXoV6GZOwZ3G2v0q/4PLDEVtKC3V9ul2mEmCOaLq7bpeajzUNoMrxeCYt12
+	 xEA1yavAXtjTsmwQbJvKasjVMrlESgws0bcEdF8UEexyivYFyfNV9kYDaHDryBtD+z
+	 GSadn3YZRgrcV0riCUSqs+CvtuK7wqVX0fMMqvO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Kao <jack.kao@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Francisco Gutierrez <frankramirez@google.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 537/849] wifi: mt76: mt7925: add pci restore for hibernate
+Subject: [PATCH 6.12 251/565] scsi: pm80xx: Fix race condition caused by static variables
 Date: Tue, 11 Nov 2025 09:41:47 +0900
-Message-ID: <20251111004549.398434980@linuxfoundation.org>
+Message-ID: <20251111004532.553732427@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Kao <jack.kao@mediatek.com>
+From: Francisco Gutierrez <frankramirez@google.com>
 
-[ Upstream commit d54424fbc53b4d6be00f90a8b529cd368f20d357 ]
+[ Upstream commit d6477ee38ccfbeaed885733c13f41d9076e2f94a ]
 
-Due to hibernation causing a power off and power on,
-this modification adds mt7925_pci_restore callback function for kernel.
-When hibernation resumes, it calls mt7925_pci_restore to reset the device,
-allowing it to return to the state it was in before the power off.
+Eliminate the use of static variables within the log pull implementation
+to resolve a race condition and prevent data gaps when pulling logs from
+multiple controllers in parallel, ensuring each operation is properly
+isolated.
 
-Signed-off-by: Jack Kao <jack.kao@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250901073200.230033-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Francisco Gutierrez <frankramirez@google.com>
+Link: https://lore.kernel.org/r/20250723183543.1443301-1-frankramirez@google.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7925/pci.c   | 26 ++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ drivers/scsi/pm8001/pm8001_ctl.c  | 22 ++++++++++++----------
+ drivers/scsi/pm8001/pm8001_init.c |  1 +
+ drivers/scsi/pm8001/pm8001_sas.h  |  4 ++++
+ 3 files changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-index 89dc30f7c6b7a..8eb1fe1082d15 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-@@ -529,7 +529,7 @@ static int mt7925_pci_suspend(struct device *device)
- 	return err;
+diff --git a/drivers/scsi/pm8001/pm8001_ctl.c b/drivers/scsi/pm8001/pm8001_ctl.c
+index 85ff95c6543a5..0e7497e490f40 100644
+--- a/drivers/scsi/pm8001/pm8001_ctl.c
++++ b/drivers/scsi/pm8001/pm8001_ctl.c
+@@ -534,23 +534,25 @@ static ssize_t pm8001_ctl_iop_log_show(struct device *cdev,
+ 	char *str = buf;
+ 	u32 read_size =
+ 		pm8001_ha->main_cfg_tbl.pm80xx_tbl.event_log_size / 1024;
+-	static u32 start, end, count;
+ 	u32 max_read_times = 32;
+ 	u32 max_count = (read_size * 1024) / (max_read_times * 4);
+ 	u32 *temp = (u32 *)pm8001_ha->memoryMap.region[IOP].virt_ptr;
+ 
+-	if ((count % max_count) == 0) {
+-		start = 0;
+-		end = max_read_times;
+-		count = 0;
++	mutex_lock(&pm8001_ha->iop_log_lock);
++
++	if ((pm8001_ha->iop_log_count % max_count) == 0) {
++		pm8001_ha->iop_log_start = 0;
++		pm8001_ha->iop_log_end = max_read_times;
++		pm8001_ha->iop_log_count = 0;
+ 	} else {
+-		start = end;
+-		end = end + max_read_times;
++		pm8001_ha->iop_log_start = pm8001_ha->iop_log_end;
++		pm8001_ha->iop_log_end = pm8001_ha->iop_log_end + max_read_times;
+ 	}
+ 
+-	for (; start < end; start++)
+-		str += sprintf(str, "%08x ", *(temp+start));
+-	count++;
++	for (; pm8001_ha->iop_log_start < pm8001_ha->iop_log_end; pm8001_ha->iop_log_start++)
++		str += sprintf(str, "%08x ", *(temp+pm8001_ha->iop_log_start));
++	pm8001_ha->iop_log_count++;
++	mutex_unlock(&pm8001_ha->iop_log_lock);
+ 	return str - buf;
  }
+ static DEVICE_ATTR(iop_log, S_IRUGO, pm8001_ctl_iop_log_show, NULL);
+diff --git a/drivers/scsi/pm8001/pm8001_init.c b/drivers/scsi/pm8001/pm8001_init.c
+index b53b1ae5b74c3..5317f82c51fd4 100644
+--- a/drivers/scsi/pm8001/pm8001_init.c
++++ b/drivers/scsi/pm8001/pm8001_init.c
+@@ -550,6 +550,7 @@ static struct pm8001_hba_info *pm8001_pci_alloc(struct pci_dev *pdev,
+ 	pm8001_ha->id = pm8001_id++;
+ 	pm8001_ha->logging_level = logging_level;
+ 	pm8001_ha->non_fatal_count = 0;
++	mutex_init(&pm8001_ha->iop_log_lock);
+ 	if (link_rate >= 1 && link_rate <= 15)
+ 		pm8001_ha->link_rate = (link_rate << 8);
+ 	else {
+diff --git a/drivers/scsi/pm8001/pm8001_sas.h b/drivers/scsi/pm8001/pm8001_sas.h
+index c46470e0cf63b..efb6dc26bc35b 100644
+--- a/drivers/scsi/pm8001/pm8001_sas.h
++++ b/drivers/scsi/pm8001/pm8001_sas.h
+@@ -537,6 +537,10 @@ struct pm8001_hba_info {
+ 	u32 ci_offset;
+ 	u32 pi_offset;
+ 	u32 max_memcnt;
++	u32 iop_log_start;
++	u32 iop_log_end;
++	u32 iop_log_count;
++	struct mutex iop_log_lock;
+ };
  
--static int mt7925_pci_resume(struct device *device)
-+static int _mt7925_pci_resume(struct device *device, bool restore)
- {
- 	struct pci_dev *pdev = to_pci_dev(device);
- 	struct mt76_dev *mdev = pci_get_drvdata(pdev);
-@@ -569,6 +569,9 @@ static int mt7925_pci_resume(struct device *device)
- 	napi_schedule(&mdev->tx_napi);
- 	local_bh_enable();
- 
-+	if (restore)
-+		goto failed;
-+
- 	mt76_connac_mcu_set_hif_suspend(mdev, false, false);
- 	ret = wait_event_timeout(dev->wait,
- 				 dev->hif_resumed, 3 * HZ);
-@@ -585,7 +588,7 @@ static int mt7925_pci_resume(struct device *device)
- failed:
- 	pm->suspended = false;
- 
--	if (err < 0)
-+	if (err < 0 || restore)
- 		mt792x_reset(&dev->mt76);
- 
- 	return err;
-@@ -596,7 +599,24 @@ static void mt7925_pci_shutdown(struct pci_dev *pdev)
- 	mt7925_pci_remove(pdev);
- }
- 
--static DEFINE_SIMPLE_DEV_PM_OPS(mt7925_pm_ops, mt7925_pci_suspend, mt7925_pci_resume);
-+static int mt7925_pci_resume(struct device *device)
-+{
-+	return _mt7925_pci_resume(device, false);
-+}
-+
-+static int mt7925_pci_restore(struct device *device)
-+{
-+	return _mt7925_pci_resume(device, true);
-+}
-+
-+static const struct dev_pm_ops mt7925_pm_ops = {
-+	.suspend = pm_sleep_ptr(mt7925_pci_suspend),
-+	.resume  = pm_sleep_ptr(mt7925_pci_resume),
-+	.freeze = pm_sleep_ptr(mt7925_pci_suspend),
-+	.thaw = pm_sleep_ptr(mt7925_pci_resume),
-+	.poweroff = pm_sleep_ptr(mt7925_pci_suspend),
-+	.restore = pm_sleep_ptr(mt7925_pci_restore),
-+};
- 
- static struct pci_driver mt7925_pci_driver = {
- 	.name		= KBUILD_MODNAME,
+ struct pm8001_work {
 -- 
 2.51.0
 
