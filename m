@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6771C4A1D4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1FAC4A250
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:03:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DF4A188E62C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1F391883780
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCD8267B07;
-	Tue, 11 Nov 2025 01:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A29824E4A1;
+	Tue, 11 Nov 2025 01:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5VL9b5f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y++O7mQp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C61C263F4E;
-	Tue, 11 Nov 2025 01:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17521F5F6;
+	Tue, 11 Nov 2025 01:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822853; cv=none; b=d4Ask7VDK2GkILwdJUxeut/GgMWt2YaffV47OG1aj1gHpR0s4Sl4hRlVNCOUlhro/YiUhzSjk6ipTPTPxYrPCe29eiXl+LWUR7IqD/HHkg/bfT1f8b1JMYehKsbhQfccfZ3tmefpRMsyOgF4HGb1cW/rQZxzOaamsWIETNFNzCM=
+	t=1762822958; cv=none; b=j7j6cPpZe+NACVKi5QB5AUcLP9c3Uo1BHi/leAj1qd1mED/bm4n8vClesZ9yWjyWdw3irHLPSjmWOzsPLK7EeN97QBb+VDlAoU6JGBQ7+BblBG13qUR+dWBwGh/lPDYaeUtZpLc4/51uscoEVRv143Cmcgi8l6UzznN9pnDkjwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822853; c=relaxed/simple;
-	bh=J54k4jHYclSfBErI9/ERBLfKGP9F2uApKGvgZ+gAf5I=;
+	s=arc-20240116; t=1762822958; c=relaxed/simple;
+	bh=r/JDgMjqQdW94k3Ey/MQ4LBcrOHUAzNNANSXNx5bbrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DbaXz5np3lSROTfmfbVJ6hJpe+ewdYnUE1WKVtvuNtM5C8i3x5LwuGbwXSxhNE0aATwQUhcmU8P7BUcGcQpggeLdwogqX1I0XVksGbPN4C/Wft//KfQwW/M8/so0rmjwVyIO3d/ok5XRkZ92e7t+qLAMfdSUVeV/1vej8Qkm+wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5VL9b5f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A10C4CEFB;
-	Tue, 11 Nov 2025 01:00:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VhT2U0FS5mo2bSM4GwEK+JtxWwk+YeHu5YvUB+hQaEJkBpmdEaolZOwB+/UaiAlvsx3FdS6Puz+/qUa11BGe6AqxZm/K+mRI6BKF6+p/TCptNqExi4e2Ei4WIGLE5TKTYSQVe5W68msIkMo47nclLSUHpJQ7W0jKf33xPJUlSOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y++O7mQp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BACC2BCB0;
+	Tue, 11 Nov 2025 01:02:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822853;
-	bh=J54k4jHYclSfBErI9/ERBLfKGP9F2uApKGvgZ+gAf5I=;
+	s=korg; t=1762822957;
+	bh=r/JDgMjqQdW94k3Ey/MQ4LBcrOHUAzNNANSXNx5bbrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y5VL9b5fGwL/GpTAckEbPptP0luVGIdSnISeAEV05y8Yi746t26mmeEQskAkT7+ux
-	 JoR/3eKEk+aU4iYNDClL/T8glkuyRgB+fwGXWbnslMT6h7cdtNgnycl9phLhTIlnm2
-	 J1BsBPZ7Wriod7I6lEwbm+cdcPilFXK8NcLCPfe8=
+	b=y++O7mQpfaf0xoYaDWj6e1SEXpXW5U/mIFQh1sJVMOvQgfZYPneUGY7XQp15W4mUv
+	 mjcQCcf+0Mw8kUghL36mkUdrGEQNxe+t6Gztmr1zR/RAIQxQDiED0f/sV2BEqw0WRO
+	 UH5cWf97yy5Dk8xiG1ruFd8tpXRrfscPUJ0e6UnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wilson Alvarez <wilson.e.alvarez@rubonnek.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 103/565] ACPI: video: force native for Lenovo 82K8
-Date: Tue, 11 Nov 2025 09:39:19 +0900
-Message-ID: <20251111004529.273385535@linuxfoundation.org>
+Subject: [PATCH 6.12 105/565] selftests/bpf: Fix bpf_prog_detach2 usage in test_lirc_mode2
+Date: Tue, 11 Nov 2025 09:39:21 +0900
+Message-ID: <20251111004529.319050347@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -61,49 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit f144bc21befdcf8e54d2f19b23b4e84f13be01f9 ]
+[ Upstream commit 98857d111c53954aa038fcbc4cf48873e4240f7c ]
 
-Lenovo 82K8 has a broken brightness control provided by nvidia_wmi_ec.
-Add a quirk to prevent using it.
+Commit e9fc3ce99b34 ("libbpf: Streamline error reporting for high-level
+APIs") redefined the way that bpf_prog_detach2() returns. Therefore, adapt
+the usage in test_lirc_mode2_user.c.
 
-Reported-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4512
-Tested-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20250820170927.895573-1-superm1@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250828-selftests-bpf-v1-1-c7811cd8b98c@suse.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/testing/selftests/bpf/test_lirc_mode2_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index d507d5e084354..4cf74f173c785 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -948,6 +948,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
- 		},
- 	},
-+	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4512 */
-+	{
-+	 .callback = video_detect_force_native,
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "82K8"),
-+		},
-+	},
- 	{ },
- };
+diff --git a/tools/testing/selftests/bpf/test_lirc_mode2_user.c b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
+index 4694422aa76c3..88e4aeab21b7b 100644
+--- a/tools/testing/selftests/bpf/test_lirc_mode2_user.c
++++ b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
+@@ -74,7 +74,7 @@ int main(int argc, char **argv)
  
+ 	/* Let's try detach it before it was ever attached */
+ 	ret = bpf_prog_detach2(progfd, lircfd, BPF_LIRC_MODE2);
+-	if (ret != -1 || errno != ENOENT) {
++	if (ret != -ENOENT) {
+ 		printf("bpf_prog_detach2 not attached should fail: %m\n");
+ 		return 1;
+ 	}
 -- 
 2.51.0
 
