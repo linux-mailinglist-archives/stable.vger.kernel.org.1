@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-193158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE3EC4A013
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C81C4A0E8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72EE6188C51F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 11CB74F1FE0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99629244693;
-	Tue, 11 Nov 2025 00:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80564214210;
+	Tue, 11 Nov 2025 00:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eo/k2Hw3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TsQLPDyf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566D54086A;
-	Tue, 11 Nov 2025 00:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA5B4C97;
+	Tue, 11 Nov 2025 00:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822435; cv=none; b=GXNoGYUvT7Lz49/EJfARHLtsnR9JqYH3GlApsQze3WQZjjMMuUDMorI/DD4TJNSg0bgZ211EfIuvjtgrurAMWKCm7woblX01A0jIumgweuwwDkWSVGwg+A9xaCukJoauAuAzqn3L0szVepu+h3nwdzB4BV6vL2opeIU3irKigCQ=
+	t=1762822440; cv=none; b=iLLCW8Drk83lsFQuJGk30/fW0SCInPw5Xdtt3E9xp0OoI+Df2eYLXsdXUjNPRFkIwcC8dgvHBv2OsDsO4qj7Lk5kFZUNpXEP9qMhrCgstRfevqonxRnsiJTE1PYBMbt1FKjl2R7+gyHvdz86XkFjfrj1L4t1kKe/g9XBStEggHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822435; c=relaxed/simple;
-	bh=Tg9xpaxD7PXvwxF2A3WEZYNFdSJp2LOdxqk0OwUh+gs=;
+	s=arc-20240116; t=1762822440; c=relaxed/simple;
+	bh=n8qSX+iKrhLNMSYIzba2CZXdxdGIiB7OWS67vYvm3X4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pj3/PBeF0+xYE9i/foze8Rs5JwZbMrAMVmq6patlFh1ymY5LEfghhYdX/+RW0SXnOMBBQ33YA6Z1djvG8Faixg+v0FA982OZsYv5xZx9sd9HhBdrkuFHOO7/7P8JL25arGQwqUfNgh/U6KTzO8c4ur36y6HNeGrc4M7NMI0yB0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eo/k2Hw3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A99C116B1;
-	Tue, 11 Nov 2025 00:53:54 +0000 (UTC)
+	 MIME-Version; b=u9s1sRdpzzXHaVdyWSaLLxEn2wnB91muxBGLTV8rT2rsXs0PcEhkSYHWMj3kNhOEKh7urN+tRi6JNJFP3HKEzcnePIVl0ctEPfUo22g09GA5NM+iiWWFlKbRgfYSqNGeOiSSnlJviz+l6qPPOPfFAhq4wN8MHclpIXU3G/dYGWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TsQLPDyf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECA2C4CEF5;
+	Tue, 11 Nov 2025 00:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822435;
-	bh=Tg9xpaxD7PXvwxF2A3WEZYNFdSJp2LOdxqk0OwUh+gs=;
+	s=korg; t=1762822439;
+	bh=n8qSX+iKrhLNMSYIzba2CZXdxdGIiB7OWS67vYvm3X4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eo/k2Hw3O++vrw7RLVtPGN/KjTZC18ff0dzdddkjFBBcw1txq6URJPUCI71M0x7Ux
-	 vIABEY2fpG6RGf3nMkrxiqZKT6V6N5ut+xHPRZHT7ngPyMJE9mIhiTe2J8qiw/uU0v
-	 AB1Z/QfH5BMmbb5ucyP6ZAQHn0VZ1rwso76aVzZc=
+	b=TsQLPDyflF1lmWz5hB1VJ+53ReFUBHEksbZZQJ4jCTDsBb6Zt7xxvR9TvXR1tR9VM
+	 tb1QXiLXKXf/p4P4l2+pBZmk3KK/PZiOLOKAap8m0v+/Km1ZMKP1lseYegT/Jk8hOe
+	 vUw/+HVEmXlW0ZIlFGAdvKvunoGjDs/zV9+ttHd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 107/849] drm/amd/display: Fix incorrect return of vblank enable on unconfigured crtc
-Date: Tue, 11 Nov 2025 09:34:37 +0900
-Message-ID: <20251111004538.986158673@linuxfoundation.org>
+Subject: [PATCH 6.17 108/849] drm/amd/display: Dont program BLNDGAM_MEM_PWR_FORCE when CM low-power is disabled on DCN30
+Date: Tue, 11 Nov 2025 09:34:38 +0900
+Message-ID: <20251111004539.008021952@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,54 +67,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ivan Lipski <ivan.lipski@amd.com>
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
 
-commit b3656b355b5522cef1b52a7469010009c98156db upstream.
+commit 382bd6a792836875da555fe9a2b51222b813fed1 upstream.
 
-[Why&How]
-Return -EINVAL when userspace asks us to enable vblank on a crtc that is
-not yet enabled.
+Before commit 33056a97ae5e ("drm/amd/display: Remove double checks for
+`debug.enable_mem_low_power.bits.cm`"), dpp3_program_blnd_lut(NULL)
+checked the low-power debug flag before calling
+dpp3_power_on_blnd_lut(false).
 
-Suggested-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1856
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+After commit 33056a97ae5e ("drm/amd/display: Remove double checks for
+`debug.enable_mem_low_power.bits.cm`"), dpp3_program_blnd_lut(NULL)
+unconditionally calls dpp3_power_on_blnd_lut(false). The BLNDGAM power
+helper writes BLNDGAM_MEM_PWR_FORCE when CM low-power is disabled, causing
+immediate SRAM power toggles instead of deferring at vupdate. This can
+disrupt atomic color/LUT sequencing during transitions between
+direct scanout and composition within gamescope's DRM backend on
+Steam Deck OLED.
+
+To fix this, leave the BLNDGAM power state unchanged when low-power is
+disabled, matching dpp3_power_on_hdr3dlut and dpp3_power_on_shaper.
+
+Fixes: 33056a97ae5e ("drm/amd/display: Remove double checks for `debug.enable_mem_low_power.bits.cm`")
+Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit cb57b8cdb072dc37723b6906da1c37ff9cbc2da4)
+(cherry picked from commit 13ff4f63fcddfc84ec8632f1443936b00aa26725)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-@@ -293,8 +293,12 @@ static inline int amdgpu_dm_crtc_set_vbl
- 	int irq_type;
- 	int rc = 0;
- 
--	if (acrtc->otg_inst == -1)
--		goto skip;
-+	if (enable && !acrtc->base.enabled) {
-+		drm_dbg_vbl(crtc->dev,
-+				"Reject vblank enable on unconfigured CRTC %d (enabled=%d)\n",
-+				acrtc->crtc_id, acrtc->base.enabled);
-+		return -EINVAL;
-+	}
- 
- 	irq_type = amdgpu_display_crtc_idx_to_irq_type(adev, acrtc->crtc_id);
- 
-@@ -375,7 +379,7 @@ static inline int amdgpu_dm_crtc_set_vbl
- 			return rc;
+diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
+index 09be2a90cc79..4f569cd8a5d6 100644
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
+@@ -578,9 +578,6 @@ static void dpp3_power_on_blnd_lut(
+ 			dpp_base->ctx->dc->optimized_required = true;
+ 			dpp_base->deferred_reg_writes.bits.disable_blnd_lut = true;
+ 		}
+-	} else {
+-		REG_SET(CM_MEM_PWR_CTRL, 0,
+-				BLNDGAM_MEM_PWR_FORCE, power_on == true ? 0 : 1);
  	}
- #endif
--skip:
-+
- 	if (amdgpu_in_reset(adev))
- 		return 0;
+ }
  
+-- 
+2.51.2
+
 
 
 
