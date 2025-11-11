@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-193089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B259C49F44
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1EDFC49F4A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DB4B734BD71
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B92BA188B5F0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402D4192B75;
-	Tue, 11 Nov 2025 00:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BE41D6DB5;
+	Tue, 11 Nov 2025 00:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ASC7Dwt+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmhI1R4X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C9F4C97;
-	Tue, 11 Nov 2025 00:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E381F24113D;
+	Tue, 11 Nov 2025 00:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822274; cv=none; b=UtwLdq57qLzX3KbxGth4nqefgcbSNnMT4Rcn9M+wA/uNpc1zpKRHTBShkVHJbhvYhFCr1/bhC2Ic7ESCTzx6BgRHZdWOrFJ8MjbqH9GY99rAQYMa0tK0LTusLgIhOqV8jwrG2p0/eILuWJZPJ8TacdWc/cC/JlzXOWn0H976oPc=
+	t=1762822279; cv=none; b=dnv26puqTF87bLYVXbK/uy104OHyoB1O65XChvaDJVkStl23gXnuoQHg80xwelzj8X9ZHCKfI6f0WnTexPw2kx4dkO8X9SY+Rz5bUFSv/Z5E8FedCQOiaUxqkSuyjW20Jip/dVJypyRV8Yjinn/AbRtBA1X5Hhu8Y3/+GuL5vv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822274; c=relaxed/simple;
-	bh=bVYw2gKJOhk2FoXHKCtYxEAfZaViFnOK2aLOxnn5Wlo=;
+	s=arc-20240116; t=1762822279; c=relaxed/simple;
+	bh=+sA1XdXATBqSb/zLOPWTyXzFeohExVX3G8HS7t6VdQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SeXzNlp50MeqQCVgKJk1r9rFyvbsx/0ux06JLuf8fCO6knlsc4AKYf062Y2hllcHKZbso1XYNI34k9PosBY0x/O84m0i1Up8f0zazMxYIpRAE4nHVjVcsE0In/YEqcSG0dnCfjkMVxkuHc2HyKnn43M/QW5tIiB/OSGDTrbVjg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ASC7Dwt+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5E2C19421;
-	Tue, 11 Nov 2025 00:51:13 +0000 (UTC)
+	 MIME-Version; b=EdNiWnT9dRFkMJmKXJzntWdb726eiRdb1gfwQ0Dt9l7QJRHLrM4n3hx52ky3dkX4He/Wn1W2PXXJogT/uyK5tTgfo5TxGL1ADHPmm6IEazoRfenfzGIvWTeOPo576VguOVLk8T+oWFzo8xmrOixK2FjOqGrIhftOZARcfVvn7HQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmhI1R4X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C358C16AAE;
+	Tue, 11 Nov 2025 00:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822273;
-	bh=bVYw2gKJOhk2FoXHKCtYxEAfZaViFnOK2aLOxnn5Wlo=;
+	s=korg; t=1762822278;
+	bh=+sA1XdXATBqSb/zLOPWTyXzFeohExVX3G8HS7t6VdQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ASC7Dwt+IRC6FzTRKsj3cXpu/IlyDGKhOnqxmXOBnuO0SE28UtRgJjo2rp3an7+Ml
-	 w0nDxpo7RfRGtR9IxoxEu7Z6YyNigFQ3KQf5rM4toM/x0nXztmUTFLYJuFidzdvyCo
-	 rBtnytDbFd5zcfYWrayyh3zvzJ9h3MnnLK8rcXK4=
+	b=pmhI1R4XUsz0DLErxEytn4RnaI2/b/hSSm8Abl6nJkLLrTPUl59MxEpwp1Jcbvoqs
+	 XKe4wtbec34c+WKmHsv9Cc1jTDcC/9klflosTOWSOgvvrY2UeB6yUVJsfqG29QcXag
+	 x8irndTFvbiic/E2qq0DUf52bA8oMkUSipg+hfRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@vger.kernnel.org,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.12 016/565] s390/pci: Restore IRQ unconditionally for the zPCI device
-Date: Tue, 11 Nov 2025 09:37:52 +0900
-Message-ID: <20251111004527.233806157@linuxfoundation.org>
+	stable@kernel.org,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 017/565] smb: client: fix potential cfid UAF in smb2_query_info_compound
+Date: Tue, 11 Nov 2025 09:37:53 +0900
+Message-ID: <20251111004527.256519475@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -68,83 +69,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Farhan Ali <alifm@linux.ibm.com>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-commit b45873c3f09153d1ad9b3a7bf9e5c0b0387fd2ea upstream.
+commit 5c76f9961c170552c1d07c830b5e145475151600 upstream.
 
-Commit c1e18c17bda6 ("s390/pci: add zpci_set_irq()/zpci_clear_irq()"),
-introduced the zpci_set_irq() and zpci_clear_irq(), to be used while
-resetting a zPCI device.
+When smb2_query_info_compound() retries, a previously allocated cfid may
+have been freed in the first attempt.
+Because cfid wasn't reset on replay, later cleanup could act on a stale
+pointer, leading to a potential use-after-free.
 
-Commit da995d538d3a ("s390/pci: implement reset_slot for hotplug
-slot"), mentions zpci_clear_irq() being called in the path for
-zpci_hot_reset_device().  But that is not the case anymore and these
-functions are not called outside of this file. Instead
-zpci_hot_reset_device() relies on zpci_disable_device() also clearing
-the IRQs, but misses to reset the zdev->irqs_registered flag.
+Reinitialize cfid to NULL under the replay label.
 
-However after a CLP disable/enable reset, the device's IRQ are
-unregistered, but the flag zdev->irq_registered does not get cleared. It
-creates an inconsistent state and so arch_restore_msi_irqs() doesn't
-correctly restore the device's IRQ. This becomes a problem when a PCI
-driver tries to restore the state of the device through
-pci_restore_state(). Restore IRQ unconditionally for the device and remove
-the irq_registered flag as its redundant.
+Example trace (trimmed):
 
-Fixes: c1e18c17bda6 ("s390/pci: add zpci_set_irq()/zpci_clear_irq()")
-Cc: stable@vger.kernnel.org
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 1 PID: 11224 at ../lib/refcount.c:28 refcount_warn_saturate+0x9c/0x110
+[...]
+RIP: 0010:refcount_warn_saturate+0x9c/0x110
+[...]
+Call Trace:
+ <TASK>
+ smb2_query_info_compound+0x29c/0x5c0 [cifs f90b72658819bd21c94769b6a652029a07a7172f]
+ ? step_into+0x10d/0x690
+ ? __legitimize_path+0x28/0x60
+ smb2_queryfs+0x6a/0xf0 [cifs f90b72658819bd21c94769b6a652029a07a7172f]
+ smb311_queryfs+0x12d/0x140 [cifs f90b72658819bd21c94769b6a652029a07a7172f]
+ ? kmem_cache_alloc+0x18a/0x340
+ ? getname_flags+0x46/0x1e0
+ cifs_statfs+0x9f/0x2b0 [cifs f90b72658819bd21c94769b6a652029a07a7172f]
+ statfs_by_dentry+0x67/0x90
+ vfs_statfs+0x16/0xd0
+ user_statfs+0x54/0xa0
+ __do_sys_statfs+0x20/0x50
+ do_syscall_64+0x58/0x80
+
+Cc: stable@kernel.org
+Fixes: 4f1fffa237692 ("cifs: commands that are retried should have replay flag set")
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Acked-by: Shyam Prasad N <sprasad@microsoft.com>
+Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/pci.h |    1 -
- arch/s390/pci/pci_irq.c     |    9 +--------
- 2 files changed, 1 insertion(+), 9 deletions(-)
+ fs/smb/client/smb2ops.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/s390/include/asm/pci.h
-+++ b/arch/s390/include/asm/pci.h
-@@ -141,7 +141,6 @@ struct zpci_dev {
- 	u8		has_resources	: 1;
- 	u8		is_physfn	: 1;
- 	u8		util_str_avail	: 1;
--	u8		irqs_registered	: 1;
- 	u8		tid_avail	: 1;
- 	u8		reserved	: 1;
- 	unsigned int	devfn;		/* DEVFN part of the RID*/
---- a/arch/s390/pci/pci_irq.c
-+++ b/arch/s390/pci/pci_irq.c
-@@ -107,9 +107,6 @@ static int zpci_set_irq(struct zpci_dev
- 	else
- 		rc = zpci_set_airq(zdev);
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -2725,11 +2725,12 @@ smb2_query_info_compound(const unsigned
+ 	struct cifs_fid fid;
+ 	int rc;
+ 	__le16 *utf16_path;
+-	struct cached_fid *cfid = NULL;
++	struct cached_fid *cfid;
+ 	int retries = 0, cur_sleep = 1;
  
--	if (!rc)
--		zdev->irqs_registered = 1;
--
- 	return rc;
- }
- 
-@@ -123,9 +120,6 @@ static int zpci_clear_irq(struct zpci_de
- 	else
- 		rc = zpci_clear_airq(zdev);
- 
--	if (!rc)
--		zdev->irqs_registered = 0;
--
- 	return rc;
- }
- 
-@@ -427,8 +421,7 @@ bool arch_restore_msi_irqs(struct pci_de
- {
- 	struct zpci_dev *zdev = to_zpci(pdev);
- 
--	if (!zdev->irqs_registered)
--		zpci_set_irq(zdev);
-+	zpci_set_irq(zdev);
- 	return true;
- }
- 
+ replay_again:
+ 	/* reinitialize for possible replay */
++	cfid = NULL;
+ 	flags = CIFS_CP_CREATE_CLOSE_OP;
+ 	oplock = SMB2_OPLOCK_LEVEL_NONE;
+ 	server = cifs_pick_channel(ses);
 
 
 
