@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-193570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ABAFC4A557
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:20:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1F2C4A662
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:25:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1803034BEA1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DADA64EE125
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE28341650;
-	Tue, 11 Nov 2025 01:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F74026FA67;
+	Tue, 11 Nov 2025 01:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjxDEkhG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCLBm0H6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBC42BCF43;
-	Tue, 11 Nov 2025 01:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06FE2BE7B8;
+	Tue, 11 Nov 2025 01:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823496; cv=none; b=sZrOITRFgYuyScqhzzmwtuZuaKk5HIVLXAKa4gW7dy+s/WtVJQQhcVXLp2aJol9GXkKUdJOcg5Kb2l3R2Dbgo95/qqqST2X8BMtMd9Y1bAXQC9s/XgfGfclXGrGDn+U01xhVTqIkPEwjsrTj2HMvpUSwO3D9tGrkx1WxJVz1SDA=
+	t=1762823501; cv=none; b=TnTF3wKjssg1wDFK06h+q3GGp7pHQsX5OsOoz3roJnirmpjFjqMvBD0O1CDYS2/ou6ZUHsCo70GDDQWwAIusdp4GkVQdyb4I37I+wTa62v83UwpIMl6ViGU044Uf8UuuSabxGVGSZ9nU22JWyqMYUoY5xZDIUul66xI0BPSUx2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823496; c=relaxed/simple;
-	bh=yeCx7fWe60Kd9SgGdWsIx/xpVHuLVF6/uS8vYV46SSw=;
+	s=arc-20240116; t=1762823501; c=relaxed/simple;
+	bh=cwDqJpAWpjpehzjiO1PglxE2a5MWoHXn4zL34zs+Hhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/ILVAdMc/D/NdmnFVW2PfU3pplS6D8Qo5HhaUHVQuaB9fYPEv2kozqL0FCnoKGtoNdI0lofqwHLq1uU9GB0jgTLf394vaQ5LzvnOdYQm9UWwOQ4ZwFTr9Oo5OZcAxbORa83koni8lFKuBVpg5LlICh7p31ymJ0iwMDl2HR9Q94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjxDEkhG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C15C116B1;
-	Tue, 11 Nov 2025 01:11:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FpUtkbPKOoZ0Il/h2kYcjlCYPVPb3NlgHD/6TScFEJFKjylpoupLWREQhLAqZLiH8XrixfaxmDvm4mNCXGkxsYfWugusS2QAI/64uwEtF4kHLEQw6eNaLY6MPt0iC/1zGZGLyY3nV1AzSCfg+vtMNROm7eLSLbbiBIVfMb/6WQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCLBm0H6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CDAC113D0;
+	Tue, 11 Nov 2025 01:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823496;
-	bh=yeCx7fWe60Kd9SgGdWsIx/xpVHuLVF6/uS8vYV46SSw=;
+	s=korg; t=1762823500;
+	bh=cwDqJpAWpjpehzjiO1PglxE2a5MWoHXn4zL34zs+Hhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KjxDEkhGKIlDcmyCdC3TfadZAE91h1tgMI9H4NZ/Eo4Gmi4hEWoeLqoJ4HT1zdDWb
-	 PinoEovTwC7cLg7Y6wBQCor2Cyw86eR7ACqt8rqhC6/H7dK122D1cPojWueBJp2OHO
-	 AtQ/m+kJPldp8LMYOo11SwidezEIbJwoS2RvNHOs=
+	b=xCLBm0H6AbGc84mBcyu6iJN1h7WasCNhoWW0dbInRuMCWKwO8BJf5S9nJs3t9sKL1
+	 mm5EuihRucs1Fe2NTQ2cPitXI7a1A2ykER3mhZIzST7TpAU0Pd+grHCs9ektm9N+e0
+	 AmFYjjaBbyv6nWTIAtQupBkV3Ya+uzQNAsijvLhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Dennis Tsiang <dennis.tsiang@arm.com>,
-	Karunika Choo <karunika.choo@arm.com>,
-	Steven Price <steven.price@arm.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Oleg Makarenko <oleg@makarenk.ooo>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 311/849] drm/panthor: Serialize GPU cache flush operations
-Date: Tue, 11 Nov 2025 09:38:01 +0900
-Message-ID: <20251111004543.931565727@linuxfoundation.org>
+Subject: [PATCH 6.17 312/849] HID: pidff: Use direction fix only for conditional effects
+Date: Tue, 11 Nov 2025 09:38:02 +0900
+Message-ID: <20251111004543.956626223@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -62,65 +61,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karunika Choo <karunika.choo@arm.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit e322a4844811b54477b7072eb40dc9e402a1725d ]
+[ Upstream commit f345a4798dab800159b09d088e7bdae0f16076c3 ]
 
-In certain scenarios, it is possible for multiple cache flushes to be
-requested before the previous one completes. This patch introduces the
-cache_flush_lock mutex to serialize these operations and ensure that
-any requested cache flushes are completed instead of dropped.
+The already fixed bug in SDL only affected conditional effects. This
+should fix FFB in Forza Horizion 4/5 on Moza Devices as Forza Horizon
+flips the constant force direction instead of using negative magnitude
+values.
 
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Co-developed-by: Dennis Tsiang <dennis.tsiang@arm.com>
-Signed-off-by: Dennis Tsiang <dennis.tsiang@arm.com>
-Signed-off-by: Karunika Choo <karunika.choo@arm.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250807162633.3666310-6-karunika.choo@arm.com
+Changing the direction in the effect directly in pidff_upload_effect()
+would affect it's value in further operations like comparing to the old
+effect and/or just reading the effect values in the user application.
+
+This, in turn, would lead to constant PID_SET_EFFECT spam as the effect
+direction would constantly not match the value that's set by the
+application.
+
+This way, it's still transparent to any software/API.
+
+Only affects conditional effects now so it's better for it to explicitly
+state that in the name. If any HW ever needs fixed direction for other
+effects, we'll add more quirks.
+
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Oleg Makarenko <oleg@makarenk.ooo>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_gpu.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/hid/hid-universal-pidff.c | 20 ++++++++++----------
+ drivers/hid/usbhid/hid-pidff.c    | 28 +++++++++++++++++++++++-----
+ drivers/hid/usbhid/hid-pidff.h    |  2 +-
+ 3 files changed, 34 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_gpu.c b/drivers/gpu/drm/panthor/panthor_gpu.c
-index cb7a335e07d7c..030409371037b 100644
---- a/drivers/gpu/drm/panthor/panthor_gpu.c
-+++ b/drivers/gpu/drm/panthor/panthor_gpu.c
-@@ -35,6 +35,9 @@ struct panthor_gpu {
+diff --git a/drivers/hid/hid-universal-pidff.c b/drivers/hid/hid-universal-pidff.c
+index 554a6559aeb73..70fce0f88e825 100644
+--- a/drivers/hid/hid-universal-pidff.c
++++ b/drivers/hid/hid-universal-pidff.c
+@@ -144,25 +144,25 @@ static int universal_pidff_input_configured(struct hid_device *hdev,
  
- 	/** @reqs_acked: GPU request wait queue. */
- 	wait_queue_head_t reqs_acked;
-+
-+	/** @cache_flush_lock: Lock to serialize cache flushes */
-+	struct mutex cache_flush_lock;
+ static const struct hid_device_id universal_pidff_devices[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R3),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R3_2),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R5),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R5_2),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R9),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R9_2),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R12),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R12_2),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R16_R21),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R16_R21_2),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CAMMUS, USB_DEVICE_ID_CAMMUS_C5) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CAMMUS, USB_DEVICE_ID_CAMMUS_C12) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_VRS, USB_DEVICE_ID_VRS_DFP),
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 614a20b620231..c6b4f61e535d5 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -205,6 +205,14 @@ struct pidff_device {
+ 	u8 effect_count;
  };
  
- /**
-@@ -204,6 +207,7 @@ int panthor_gpu_init(struct panthor_device *ptdev)
- 
- 	spin_lock_init(&gpu->reqs_lock);
- 	init_waitqueue_head(&gpu->reqs_acked);
-+	mutex_init(&gpu->cache_flush_lock);
- 	ptdev->gpu = gpu;
- 	panthor_gpu_init_info(ptdev);
- 
-@@ -353,6 +357,9 @@ int panthor_gpu_flush_caches(struct panthor_device *ptdev,
- 	bool timedout = false;
- 	unsigned long flags;
- 
-+	/* Serialize cache flush operations. */
-+	guard(mutex)(&ptdev->gpu->cache_flush_lock);
++static int pidff_is_effect_conditional(struct ff_effect *effect)
++{
++	return effect->type == FF_SPRING  ||
++	       effect->type == FF_DAMPER  ||
++	       effect->type == FF_INERTIA ||
++	       effect->type == FF_FRICTION;
++}
 +
- 	spin_lock_irqsave(&ptdev->gpu->reqs_lock, flags);
- 	if (!drm_WARN_ON(&ptdev->base,
- 			 ptdev->gpu->pending_reqs & GPU_IRQ_CLEAN_CACHES_COMPLETED)) {
+ /*
+  * Clamp value for a given field
+  */
+@@ -294,6 +302,20 @@ static void pidff_set_duration(struct pidff_usage *usage, u16 duration)
+ 	pidff_set_time(usage, duration);
+ }
+ 
++static void pidff_set_effect_direction(struct pidff_device *pidff,
++				       struct ff_effect *effect)
++{
++	u16 direction = effect->direction;
++
++	/* Use fixed direction if needed */
++	if (pidff->quirks & HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION &&
++	    pidff_is_effect_conditional(effect))
++		direction = PIDFF_FIXED_WHEEL_DIRECTION;
++
++	pidff->effect_direction->value[0] =
++		pidff_rescale(direction, U16_MAX, pidff->effect_direction);
++}
++
+ /*
+  * Send envelope report to the device
+  */
+@@ -395,11 +417,7 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
+ 		pidff->set_effect[PID_GAIN].field->logical_maximum;
+ 	pidff->set_effect[PID_DIRECTION_ENABLE].value[0] = 1;
+ 
+-	/* Use fixed direction if needed */
+-	pidff->effect_direction->value[0] = pidff_rescale(
+-		pidff->quirks & HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION ?
+-		PIDFF_FIXED_WHEEL_DIRECTION : effect->direction,
+-		U16_MAX, pidff->effect_direction);
++	pidff_set_effect_direction(pidff, effect);
+ 
+ 	/* Omit setting delay field if it's missing */
+ 	if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_DELAY))
+diff --git a/drivers/hid/usbhid/hid-pidff.h b/drivers/hid/usbhid/hid-pidff.h
+index a53a8b436baa6..f321f675e1318 100644
+--- a/drivers/hid/usbhid/hid-pidff.h
++++ b/drivers/hid/usbhid/hid-pidff.h
+@@ -16,7 +16,7 @@
+ #define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
+ 
+ /* Use fixed 0x4000 direction during SET_EFFECT report upload */
+-#define HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION	BIT(3)
++#define HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION	BIT(3)
+ 
+ /* Force all periodic effects to be uploaded as SINE */
+ #define HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY	BIT(4)
 -- 
 2.51.0
 
