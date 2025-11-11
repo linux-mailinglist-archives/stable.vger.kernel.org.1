@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA6CC4A90E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A64C4AE5C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC670188FD20
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE58718978B6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4C42F7AA4;
-	Tue, 11 Nov 2025 01:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9998733C534;
+	Tue, 11 Nov 2025 01:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPmCXCoT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZ7gVhxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4CB2F5479;
-	Tue, 11 Nov 2025 01:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6E333EAFD;
+	Tue, 11 Nov 2025 01:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823807; cv=none; b=B0Arv0puN133Rzksg8Nx/Sbq7pgBOIXou131F3+GAEloe4ml9JPpukwSPr/Y3sIZeIOLm0XOYnYf2nlTLArFl57u0zHoVPyrG+zvSPrKJvh0m6roRPjfLnXQQGsAf6W2NX8Hh+ctsVphuhan4zR8ayGvSjdWqddRuy0LIw8hxY0=
+	t=1762825005; cv=none; b=PvRPSZrscZ1F5cWr1cDbszqZ21ObwifrAONFChh/aBN3ShBt5gVocAl7FWO6A0NXZC3jvsJHBjihVpX/hM93eEn83A4qEHJKnRj58XrS69HoLJ15ssQHFeulSpfE/xkXgrZFpgnKv3isan0AsSP41akqo5YfdRm75mBOE+Mnf3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823807; c=relaxed/simple;
-	bh=oPk2Y+5vO8uWsDEWCTFAP/OjyRwVBjD2GbPnEg7arFM=;
+	s=arc-20240116; t=1762825005; c=relaxed/simple;
+	bh=mMPH3Vjf9I7SczbaOOz2fE6Nxe8sFdKGdHqIf66hWws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D0nmQnj8dRMzmcfs/Qy0wB0+ICiz2N78f8Q+nRiul6gNGw9XlSlyYJ2RYcu2pfAPE3AJepRsfTjInjKaN10Sd5wyyZj8/aPxHgmjnEL73YT52jdXqudQSVeer8sDHSmDu5yOkiX/wgiYg+BEPq97oo58dKDCTOeP4bDMSMVuim8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPmCXCoT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88ADAC4CEF5;
-	Tue, 11 Nov 2025 01:16:46 +0000 (UTC)
+	 MIME-Version; b=BFE1cHaw+z+HE5MBGcbxoQizgqwoSxD1zPSwGcueOleTOJwshVEbrhpqjeIFNAXhXbfgJLtcQSM+KpZRcXtwEn6EUyI18d34heEoxo1ihKkLbTGACxijrmHIxY1IbaAZR9+FYvqmOk12SR8xHWnChntag/0pzfSTPkQM9Mgur5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZ7gVhxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCE4C116D0;
+	Tue, 11 Nov 2025 01:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823806;
-	bh=oPk2Y+5vO8uWsDEWCTFAP/OjyRwVBjD2GbPnEg7arFM=;
+	s=korg; t=1762825005;
+	bh=mMPH3Vjf9I7SczbaOOz2fE6Nxe8sFdKGdHqIf66hWws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gPmCXCoT4oiHyCo3Znq6OH//CZmtGmgT4a2F5jgF1B4DV7c/WG6VYCP0A4IgQxR8y
-	 eb4+RYiWIYN0A6eTvc7qh84ap4ElbvJKI1L8b5PqrSpj0kz/w1GzqvM4tB66UB3K4L
-	 up1l65GDn9cXjlJMFgwanszBgbwGpSAsqGa8RFhg=
+	b=FZ7gVhxB+AX9sYl7F6ty0HWET0dYnBpB7b/gK9wTsYMr8uq1tZ8C8yxs1J93mpSXa
+	 0zIhu+AhR3Euy9GRhN9eFT3Z5pf4hNg3A5u32yByAhtb51HRHGDiyYKCYTdawM2umv
+	 wjXMT3hX7ChytMFPMeGMMwBbkmTzLUICtNsXWbN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 328/565] ntfs3: pretend $Extend records as regular files
-Date: Tue, 11 Nov 2025 09:43:04 +0900
-Message-ID: <20251111004534.266123460@linuxfoundation.org>
+Subject: [PATCH 6.17 615/849] remoteproc: qcom: q6v5: Avoid handling handover twice
+Date: Tue, 11 Nov 2025 09:43:05 +0900
+Message-ID: <20251111004551.296886452@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 4e8011ffec79717e5fdac43a7e79faf811a384b7 ]
+[ Upstream commit 54898664e1eb6b5b3e6cdd9343c6eb15da776153 ]
 
-Since commit af153bb63a33 ("vfs: catch invalid modes in may_open()")
-requires any inode be one of S_IFDIR/S_IFLNK/S_IFREG/S_IFCHR/S_IFBLK/
-S_IFIFO/S_IFSOCK type, use S_IFREG for $Extend records.
+A remoteproc could theoretically signal handover twice. This is unexpected
+and would break the reference counting for the handover resources (power
+domains, clocks, regulators, etc), so add a check to prevent that from
+happening.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20250820-rproc-qcom-q6v5-fixes-v2-2-910b1a3aff71@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/remoteproc/qcom_q6v5.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 9077c7b627336..4e2629d020b75 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -471,6 +471,7 @@ static struct inode *ntfs_read_mft(struct inode *inode,
- 		   fname->home.seq == cpu_to_le16(MFT_REC_EXTEND)) {
- 		/* Records in $Extend are not a files or general directories. */
- 		inode->i_op = &ntfs_file_inode_operations;
-+		mode = S_IFREG;
- 	} else {
- 		err = -EINVAL;
- 		goto out;
+diff --git a/drivers/remoteproc/qcom_q6v5.c b/drivers/remoteproc/qcom_q6v5.c
+index 769c6d6d6a731..58d5b85e58cda 100644
+--- a/drivers/remoteproc/qcom_q6v5.c
++++ b/drivers/remoteproc/qcom_q6v5.c
+@@ -164,6 +164,11 @@ static irqreturn_t q6v5_handover_interrupt(int irq, void *data)
+ {
+ 	struct qcom_q6v5 *q6v5 = data;
+ 
++	if (q6v5->handover_issued) {
++		dev_err(q6v5->dev, "Handover signaled, but it already happened\n");
++		return IRQ_HANDLED;
++	}
++
+ 	if (q6v5->handover)
+ 		q6v5->handover(q6v5);
+ 
 -- 
 2.51.0
 
