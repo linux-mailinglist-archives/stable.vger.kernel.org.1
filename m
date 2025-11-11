@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-193563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB991C4A752
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3161C4A7A9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9ECB1893A9F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B69033B7DD7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B0033EB0B;
-	Tue, 11 Nov 2025 01:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7AE28688E;
+	Tue, 11 Nov 2025 01:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1S1cHm6s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UM7Y3/qe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAA927D786;
-	Tue, 11 Nov 2025 01:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D7927D786;
+	Tue, 11 Nov 2025 01:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823479; cv=none; b=ZDcdjRQzL9ZeoovqnanyBirOlvcMw7tDM0aaaJEjB59BPAgzyQzwqnubPLigqgLL+uuugE5a1P2JTLaTxsnZEC6muB39tehEalHuxsttYaYnfFQl+e747zeDbssxAis2CI8j5nKWQuTBShlXtOCljdR5fEowkUlp+GxeBDO2UVk=
+	t=1762823484; cv=none; b=Tea6BdTbBbdzbj5mbytrl+vC+Oq4ZPfMavS6nHeFh6ORJmw92bYd6gFgocvo1h/S5oO0fGR2MW7qey+AN849ZwGqCikxLUlcH4BPZ0z8NcKITrccLNo+5EsgK8V/gdScXyl0WLDEjw7zg7JdZovivTL6jSlXCf+v5OVUrdxFNWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823479; c=relaxed/simple;
-	bh=cWTzerl7qRnW9+nA9aXxZ6CuFSejZe5ejCCwPrIUqf0=;
+	s=arc-20240116; t=1762823484; c=relaxed/simple;
+	bh=3s/I97XRatwNPy01CRqDo3y0lYjiviwLwRdbSDJRQVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iu2YbiJeCwS7bEiAIzizOcWMEelmpSNS6i2dfaPlrJer/yykUTWEijHMySlYAXx+SHybV0skdeokyHhqzjO0TFTZ67sn3BC3uXIPxZslny5cSy989OCm0CqhTYeCKnd0zxEn4jW1u8mnHr8ZazwsQo0WEOPiANxrejYErCP3h70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1S1cHm6s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD4BC16AAE;
-	Tue, 11 Nov 2025 01:11:19 +0000 (UTC)
+	 MIME-Version; b=lsfZ7uM4XFyG5mKYi9WP986JW3Nebe4rRinGm0EuQHxoSKnfZKukBXEX7VkyUZ/UKoNwf/22amm8+/BYvR7RbzsM6iqok0GwlRUt+FWUBZVfR0uTJLuYwKV7zO5pdvOTo1USQrAir8euKMDTKXmOcV8TxIzU0xXlOhirwc85TkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UM7Y3/qe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A15C4CEF5;
+	Tue, 11 Nov 2025 01:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823479;
-	bh=cWTzerl7qRnW9+nA9aXxZ6CuFSejZe5ejCCwPrIUqf0=;
+	s=korg; t=1762823484;
+	bh=3s/I97XRatwNPy01CRqDo3y0lYjiviwLwRdbSDJRQVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1S1cHm6sSHoG4b0/5Vh4cTbaZROn2ldh99ZVhvxodF07lo+Wzyrun+yDgVAPLHxoV
-	 /7JAwpk/OIVAN5QMFw/vTnHbGYC/k3Xjt07CwqSrh9Khc/EU0FuIBNTcZunKRpvoxP
-	 G42EYk3PxZml/1+NMMSAspubLzl29ttsiRsna1jo=
+	b=UM7Y3/qeqe/UGqg1ruA2OSIsWNaX8K1Jfb+vQMGyY0aL0TSnOQw05Fks3t9Wxims1
+	 /PbHazEfaXB3zjQN3xdbFhX9DIZkGcpyQnRkvJYSKuYbJ1vuQdvr8yvmqJ9kehrV6F
+	 j9lpWWPoU728T4ot7u6VXZ/RAq53n3KZeBWOng9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Timur Tabi <ttabi@nvidia.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
+	syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 308/849] gpu: nova-core: register: allow fields named `offset`
-Date: Tue, 11 Nov 2025 09:37:58 +0900
-Message-ID: <20251111004543.859589995@linuxfoundation.org>
+Subject: [PATCH 6.17 309/849] net: ipv6: fix field-spanning memcpy warning in AH output
+Date: Tue, 11 Nov 2025 09:37:59 +0900
+Message-ID: <20251111004543.883455504@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,68 +67,115 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexandre Courbot <acourbot@nvidia.com>
+From: Charalampos Mitrodimas <charmitro@posteo.net>
 
-[ Upstream commit c5aeb264b6b27c52fc6c9ef3b50eaaebff5d9b60 ]
+[ Upstream commit 2327a3d6f65ce2fe2634546dde4a25ef52296fec ]
 
-`offset` is a common field name, yet using it triggers a build error due
-to the conflict between the uppercased field constant (which becomes
-`OFFSET` in this case) containing the bitrange of the field, and the
-`OFFSET` constant constaining the offset of the register.
+Fix field-spanning memcpy warnings in ah6_output() and
+ah6_output_done() where extension headers are copied to/from IPv6
+address fields, triggering fortify-string warnings about writes beyond
+the 16-byte address fields.
 
-Fix this by adding `_RANGE` the field's range constant to avoid the
-name collision.
+  memcpy: detected field-spanning write (size 40) of single field "&top_iph->saddr" at net/ipv6/ah6.c:439 (size 16)
+  WARNING: CPU: 0 PID: 8838 at net/ipv6/ah6.c:439 ah6_output+0xe7e/0x14e0 net/ipv6/ah6.c:439
 
-[acourbot@nvidia.com: fix merge conflict due to switch from `as u32` to
-`u32::from`.]
+The warnings are false positives as the extension headers are
+intentionally placed after the IPv6 header in memory. Fix by properly
+copying addresses and extension headers separately, and introduce
+helper functions to avoid code duplication.
 
-Reported-by: Timur Tabi <ttabi@nvidia.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Link: https://lore.kernel.org/r/20250718-nova-regs-v2-3-7b6a762aa1cd@nvidia.com
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Reported-by: syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=01b0667934cdceb4451c
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/nova-core/regs.rs        | 5 +++--
- drivers/gpu/nova-core/regs/macros.rs | 2 +-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ net/ipv6/ah6.c | 50 +++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 31 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.rs
-index d49fddf6a3c6e..c8f8adb24f6e4 100644
---- a/drivers/gpu/nova-core/regs.rs
-+++ b/drivers/gpu/nova-core/regs.rs
-@@ -28,7 +28,7 @@ impl NV_PMC_BOOT_0 {
-     /// Combines `architecture_0` and `architecture_1` to obtain the architecture of the chip.
-     pub(crate) fn architecture(self) -> Result<Architecture> {
-         Architecture::try_from(
--            self.architecture_0() | (self.architecture_1() << Self::ARCHITECTURE_0.len()),
-+            self.architecture_0() | (self.architecture_1() << Self::ARCHITECTURE_0_RANGE.len()),
-         )
-     }
+diff --git a/net/ipv6/ah6.c b/net/ipv6/ah6.c
+index eb474f0987ae0..95372e0f1d216 100644
+--- a/net/ipv6/ah6.c
++++ b/net/ipv6/ah6.c
+@@ -46,6 +46,34 @@ struct ah_skb_cb {
  
-@@ -36,7 +36,8 @@ impl NV_PMC_BOOT_0 {
-     pub(crate) fn chipset(self) -> Result<Chipset> {
-         self.architecture()
-             .map(|arch| {
--                ((arch as u32) << Self::IMPLEMENTATION.len()) | u32::from(self.implementation())
-+                ((arch as u32) << Self::IMPLEMENTATION_RANGE.len())
-+                    | u32::from(self.implementation())
-             })
-             .and_then(Chipset::try_from)
-     }
-diff --git a/drivers/gpu/nova-core/regs/macros.rs b/drivers/gpu/nova-core/regs/macros.rs
-index a3e6de1779d41..00b398522ea18 100644
---- a/drivers/gpu/nova-core/regs/macros.rs
-+++ b/drivers/gpu/nova-core/regs/macros.rs
-@@ -278,7 +278,7 @@ macro_rules! register {
-             { $process:expr } $to_type:ty => $res_type:ty $(, $comment:literal)?;
-     ) => {
-         ::kernel::macros::paste!(
--        const [<$field:upper>]: ::core::ops::RangeInclusive<u8> = $lo..=$hi;
-+        const [<$field:upper _RANGE>]: ::core::ops::RangeInclusive<u8> = $lo..=$hi;
-         const [<$field:upper _MASK>]: u32 = ((((1 << $hi) - 1) << 1) + 1) - ((1 << $lo) - 1);
-         const [<$field:upper _SHIFT>]: u32 = Self::[<$field:upper _MASK>].trailing_zeros();
-         );
+ #define AH_SKB_CB(__skb) ((struct ah_skb_cb *)&((__skb)->cb[0]))
+ 
++/* Helper to save IPv6 addresses and extension headers to temporary storage */
++static inline void ah6_save_hdrs(struct tmp_ext *iph_ext,
++				 struct ipv6hdr *top_iph, int extlen)
++{
++	if (!extlen)
++		return;
++
++#if IS_ENABLED(CONFIG_IPV6_MIP6)
++	iph_ext->saddr = top_iph->saddr;
++#endif
++	iph_ext->daddr = top_iph->daddr;
++	memcpy(&iph_ext->hdrs, top_iph + 1, extlen - sizeof(*iph_ext));
++}
++
++/* Helper to restore IPv6 addresses and extension headers from temporary storage */
++static inline void ah6_restore_hdrs(struct ipv6hdr *top_iph,
++				    struct tmp_ext *iph_ext, int extlen)
++{
++	if (!extlen)
++		return;
++
++#if IS_ENABLED(CONFIG_IPV6_MIP6)
++	top_iph->saddr = iph_ext->saddr;
++#endif
++	top_iph->daddr = iph_ext->daddr;
++	memcpy(top_iph + 1, &iph_ext->hdrs, extlen - sizeof(*iph_ext));
++}
++
+ static void *ah_alloc_tmp(struct crypto_ahash *ahash, int nfrags,
+ 			  unsigned int size)
+ {
+@@ -301,13 +329,7 @@ static void ah6_output_done(void *data, int err)
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
+ 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
+ 
+-	if (extlen) {
+-#if IS_ENABLED(CONFIG_IPV6_MIP6)
+-		memcpy(&top_iph->saddr, iph_ext, extlen);
+-#else
+-		memcpy(&top_iph->daddr, iph_ext, extlen);
+-#endif
+-	}
++	ah6_restore_hdrs(top_iph, iph_ext, extlen);
+ 
+ 	kfree(AH_SKB_CB(skb)->tmp);
+ 	xfrm_output_resume(skb->sk, skb, err);
+@@ -378,12 +400,8 @@ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
+ 	 */
+ 	memcpy(iph_base, top_iph, IPV6HDR_BASELEN);
+ 
++	ah6_save_hdrs(iph_ext, top_iph, extlen);
+ 	if (extlen) {
+-#if IS_ENABLED(CONFIG_IPV6_MIP6)
+-		memcpy(iph_ext, &top_iph->saddr, extlen);
+-#else
+-		memcpy(iph_ext, &top_iph->daddr, extlen);
+-#endif
+ 		err = ipv6_clear_mutable_options(top_iph,
+ 						 extlen - sizeof(*iph_ext) +
+ 						 sizeof(*top_iph),
+@@ -434,13 +452,7 @@ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
+ 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
+ 
+-	if (extlen) {
+-#if IS_ENABLED(CONFIG_IPV6_MIP6)
+-		memcpy(&top_iph->saddr, iph_ext, extlen);
+-#else
+-		memcpy(&top_iph->daddr, iph_ext, extlen);
+-#endif
+-	}
++	ah6_restore_hdrs(top_iph, iph_ext, extlen);
+ 
+ out_free:
+ 	kfree(iph_base);
 -- 
 2.51.0
 
