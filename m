@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-193981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874FCC4A9B0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DF33C4B12D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 06FFD34C735
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 544353BE8D4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B284230E0F6;
-	Tue, 11 Nov 2025 01:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30306348866;
+	Tue, 11 Nov 2025 01:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qf3pzddb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rILu2P3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6F9274FF1;
-	Tue, 11 Nov 2025 01:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA1B348477;
+	Tue, 11 Nov 2025 01:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824523; cv=none; b=e/2ShAjeL45+3QkiU6w9KDMlxoutF+FtBwvHtyGsozyvNCI+33PIVxNeSB207ZdvDXTllq8pY3/eVXSCxzkYxC3I9jtcobp01zE1p5J+cRUcRk2jK6StxeETJGhORPkCRtcoTtql01zXagKGtpEuR17odNE64tcHrYtXF7QPpQg=
+	t=1762825317; cv=none; b=c1Kf2M7PVfDE6qo/eckUMZj3nwqh1w2NRj53O5MxdcmEbp2Ei/4x6uARTXhu0tkhqoRNrbpedvxIZchAvtLWhteBwehPiUrxFquNFZhcMeouKs/Ocmf/JCbmj1RtcmOPWHGwNPFGo4wn3P+GvzzGc6kBxGo68GVc+Bzv+FG34ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824523; c=relaxed/simple;
-	bh=hCv1UgBf3efpySSNpVQGKzErm61WBY7I7KA8QhkMk98=;
+	s=arc-20240116; t=1762825317; c=relaxed/simple;
+	bh=x8AOmJ8es490zngRql88dQoCiqKd+vk/SS1UO3e+L3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SeEWl70cmgvGKN+U7ESRWMqyJy9XkEi1Jcbw1dct4y/4zL+Hxme3ZheQmnN3kXO/wzVBaNDQng9fyfbFCReGSk/G31dBPn5YDZit8acRE1OtibfaJ15SY41WZWzijEREBIrHO6hTBn5x8bUbzgV15i4i//BVP21XOeQqnmv5ZZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qf3pzddb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF22DC4CEFB;
-	Tue, 11 Nov 2025 01:28:42 +0000 (UTC)
+	 MIME-Version; b=ViXL1YvFDr7K2j18CQCrPo4BfsFp8IIp7MpvEBvPq9Iz4qVwTANruM/fTAUS1zCe1waz62Xui4Ldv9H3D4TjT8RjAnFqh5G/1xOCOzrBM4UB+v+XbSodc4Mudu2qUJJBYt5SrbkNoGqfIN4R1iYfo7iYgkjPvcdl+mgDcZeg2nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rILu2P3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E189C19422;
+	Tue, 11 Nov 2025 01:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824523;
-	bh=hCv1UgBf3efpySSNpVQGKzErm61WBY7I7KA8QhkMk98=;
+	s=korg; t=1762825316;
+	bh=x8AOmJ8es490zngRql88dQoCiqKd+vk/SS1UO3e+L3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qf3pzddbsuWeyNrVcBZf7VPAgiDbZX+X5zokDT6KhZ2bcxtqFoMhXSXaak4YR3bKe
-	 /ZVWj02UhAB0P0Ec+E5GQFtb0ybbymcZyfxkC0OYuOEDyTB9pHATgv3iIGQafv2/l/
-	 BUsAMHdITUevQ4CYyanGy5nUgF8Cro0hYnvbOz74=
+	b=rILu2P3eXigBay/kxwh8EUnU96SKAOBse3JcnJJ4KcVWtf1Ksy+L8WfJpKmFX1Gfk
+	 LqaKesdKbgl7j0Lnta4Nk3DbqKnCJP/4ClaGXEvIwse5mw77KbJmHyl7L9USqjKXtp
+	 YKz/lBDmHXwYpp7avccCTwDg9iaYuVtlLxhAdnXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	austinchang <austinchang@synology.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 462/565] btrfs: mark dirty extent range for out of bound prealloc extents
-Date: Tue, 11 Nov 2025 09:45:18 +0900
-Message-ID: <20251111004537.292059372@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	syzbot+92a3745cea5ec6360309@syzkaller.appspotmail.com,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.17 749/849] ring-buffer: Do not warn in ring_buffer_map_get_reader() when reader catches up
+Date: Tue, 11 Nov 2025 09:45:19 +0900
+Message-ID: <20251111004554.544105142@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: austinchang <austinchang@synology.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 3b1a4a59a2086badab391687a6a0b86e03048393 ]
+commit aa997d2d2a0b2e76f4df0f1f12829f02acb4fb6b upstream.
 
-In btrfs_fallocate(), when the allocated range overlaps with a prealloc
-extent and the extent starts after i_size, the range doesn't get marked
-dirty in file_extent_tree. This results in persisting an incorrect
-disk_i_size for the inode when not using the no-holes feature.
+The function ring_buffer_map_get_reader() is a bit more strict than the
+other get reader functions, and except for certain situations the
+rb_get_reader_page() should not return NULL. If it does, it triggers a
+warning.
 
-This is reproducible since commit 41a2ee75aab0 ("btrfs: introduce
-per-inode file extent tree"), then became hidden since commit 3d7db6e8bd22
-("btrfs: don't allocate file extent tree for non regular files") and then
-visible again after commit 8679d2687c35 ("btrfs: initialize
-inode::file_extent_tree after i_mode has been set"), which fixes the
-previous commit.
+This warning was triggering but after looking at why, it was because
+another acceptable situation was happening and it wasn't checked for.
 
-The following reproducer triggers the problem:
+If the reader catches up to the writer and there's still data to be read
+on the reader page, then the rb_get_reader_page() will return NULL as
+there's no new page to get.
 
-$ cat test.sh
+In this situation, the reader page should not be updated and no warning
+should trigger.
 
-MNT=/mnt/test
-DEV=/dev/vdb
-
-mkdir -p $MNT
-
-mkfs.btrfs -f -O ^no-holes $DEV
-mount $DEV $MNT
-
-touch $MNT/file1
-fallocate -n -o 1M -l 2M $MNT/file1
-
-umount $MNT
-mount $DEV $MNT
-
-len=$((1 * 1024 * 1024))
-
-fallocate -o 1M -l $len $MNT/file1
-
-du --bytes $MNT/file1
-
-umount $MNT
-mount $DEV $MNT
-
-du --bytes $MNT/file1
-
-umount $MNT
-
-Running the reproducer gives the following result:
-
-$ ./test.sh
-(...)
-2097152 /mnt/test/file1
-1048576 /mnt/test/file1
-
-The difference is exactly 1048576 as we assigned.
-
-Fix by adding a call to btrfs_inode_set_file_extent_range() in
-btrfs_fallocate_update_isize().
-
-Fixes: 41a2ee75aab0 ("btrfs: introduce per-inode file extent tree")
-Signed-off-by: austinchang <austinchang@synology.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Reported-by: syzbot+92a3745cea5ec6360309@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/690babec.050a0220.baf87.0064.GAE@google.com/
+Link: https://lore.kernel.org/20251016132848.1b11bb37@gandalf.local.home
+Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/file.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ kernel/trace/ring_buffer.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
-index 0e63603ac5c78..9ed2771f303c9 100644
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -2839,12 +2839,22 @@ static int btrfs_fallocate_update_isize(struct inode *inode,
- {
- 	struct btrfs_trans_handle *trans;
- 	struct btrfs_root *root = BTRFS_I(inode)->root;
-+	u64 range_start;
-+	u64 range_end;
- 	int ret;
- 	int ret2;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -7344,6 +7344,10 @@ consume:
+ 		goto out;
+ 	}
  
- 	if (mode & FALLOC_FL_KEEP_SIZE || end <= i_size_read(inode))
- 		return 0;
- 
-+	range_start = round_down(i_size_read(inode), root->fs_info->sectorsize);
-+	range_end = round_up(end, root->fs_info->sectorsize);
++	/* Did the reader catch up with the writer? */
++	if (cpu_buffer->reader_page == cpu_buffer->commit_page)
++		goto out;
 +
-+	ret = btrfs_inode_set_file_extent_range(BTRFS_I(inode), range_start,
-+						range_end - range_start);
-+	if (ret)
-+		return ret;
-+
- 	trans = btrfs_start_transaction(root, 1);
- 	if (IS_ERR(trans))
- 		return PTR_ERR(trans);
--- 
-2.51.0
-
+ 	reader = rb_get_reader_page(cpu_buffer);
+ 	if (WARN_ON(!reader))
+ 		goto out;
 
 
 
