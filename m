@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58CD7C4A963
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E38CC4B0BB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1170B34C6E3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B426D3A7338
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F680273D73;
-	Tue, 11 Nov 2025 01:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60690346FA2;
+	Tue, 11 Nov 2025 01:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8VahAwA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMDT+2rL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B00A26E146;
-	Tue, 11 Nov 2025 01:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B8A25EF9C;
+	Tue, 11 Nov 2025 01:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824453; cv=none; b=St8pKFXf58y9Qz1Z1QFVw1cR1X6Lc2L64txH9ArT4jV9czIrjzMUZU+aX4HzPkfAhCHem8BN9Ag0QG5nGv6fzs2pmk4P2u73CKQZtLm7R62gOfZkbXVtjSe46IVpcwIy3/wz7yRCuhE1mbh70XvrIJ/tmyka+dfowcdj5gCDJfc=
+	t=1762825278; cv=none; b=RfSRYHvPNrCsRmdX7cWYL5leYGMKBAROaeJT0LotyHpkeEEMQ9ZLYnIk3HTdu8QsI5QeoBZ+1BB10+QeiLYpzrXtthui9M2ZvRsSD98udf2ErRNfQELjikhd+Uq1UNIWGqrBbPUHsnxdhb9l4dqCDYy46diZhV2g8XP5zdrY5DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824453; c=relaxed/simple;
-	bh=wEOjBIcvqfN4ZPHrbB6TgG1mX6834pWeW2JKgPi3glo=;
+	s=arc-20240116; t=1762825278; c=relaxed/simple;
+	bh=FVbny0FRXhGt0nX/v/dx6gIcYbp9YCn3BlwKqKAntJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LzgALIWiju+AbrEXMlQKEZQejxmIoP9a0tPrwxrcvp66XnYHS/aiAPprtS3uEX8bFWL9sPFdlpXZEVhf5CDYkF6kqqlYvi1mc5Sw4Sx2G1Nc9JR/UwbU8hYENlbfnujnods6DzfpuRiXqBgRqW7o2hJ2QhOMNlSRE3aOgaT3ktY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8VahAwA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BFCC4CEF5;
-	Tue, 11 Nov 2025 01:27:32 +0000 (UTC)
+	 MIME-Version; b=m/C2xCtinaBMuyuYQ5DG1fZ9hfxKYq3FX2z9Cv/uwnjJtl6I+sFnLm3dSWllvMcKHAADEj4QO5bRvro9Fg3nSRYeQFS7vQYtnGGryQoRoyb0XW21wOKb6ZN4edb97wxdl2a2JKhjGSELgh/3Xw9s56GiyXpTLm5AI1Gv5S5EsJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMDT+2rL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72795C113D0;
+	Tue, 11 Nov 2025 01:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824453;
-	bh=wEOjBIcvqfN4ZPHrbB6TgG1mX6834pWeW2JKgPi3glo=;
+	s=korg; t=1762825277;
+	bh=FVbny0FRXhGt0nX/v/dx6gIcYbp9YCn3BlwKqKAntJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x8VahAwAQk2fa+odAy0QDDohvVHFrvWiuTdtYrbdNIHPEDxig6EOW4iMb2i7sklgD
-	 NCJoQWerg/v9RBV9/9Vx36PsjXrn2WfNaUl70CBvAJhbJ2ra2pzLcpT+f8KrheoG9p
-	 xanF4HLOG/574POIQpBeyjOMSm+wT1cXRrQmgEo4=
+	b=TMDT+2rLAZGFBznyz/tOSIxYKbaSYjo/eukhrNN8m985ha3sERtEllwOzez58JPj2
+	 jOeIARpIbFbj6pn4itn7+vact7jzawKpgfxYCR/amiACRqdu4OtUbfFNDTQMCbWGRY
+	 CMYa/T6xkVPuLgzoFuTJBUV99qcpFyuX4nZIQyBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fiona Ebner <f.ebner@proxmox.com>,
-	Steve French <stfrench@microsoft.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 449/565] smb: client: transport: avoid reconnects triggered by pending task work
+Subject: [PATCH 6.17 735/849] ceph: refactor wake_up_bit() pattern of calling
 Date: Tue, 11 Nov 2025 09:45:05 +0900
-Message-ID: <20251111004536.991310383@linuxfoundation.org>
+Message-ID: <20251111004554.209138683@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 
-[ Upstream commit 00be6f26a2a7c671f1402d74c4d3c30a5844660a ]
+[ Upstream commit 53db6f25ee47cb1265141d31562604e56146919a ]
 
-When io_uring is used in the same task as CIFS, there might be
-unnecessary reconnects, causing issues in user-space applications
-like QEMU with a log like:
+The wake_up_bit() is called in ceph_async_unlink_cb(),
+wake_async_create_waiters(), and ceph_finish_async_create().
+It makes sense to switch on clear_bit() function, because
+it makes the code much cleaner and easier to understand.
+More important rework is the adding of smp_mb__after_atomic()
+memory barrier after the bit modification and before
+wake_up_bit() call. It can prevent potential race condition
+of accessing the modified bit in other threads. Luckily,
+clear_and_wake_up_bit() already implements the required
+functionality pattern:
 
-> CIFS: VFS: \\10.10.100.81 Error -512 sending data on socket to server
+static inline void clear_and_wake_up_bit(int bit, unsigned long *word)
+{
+	clear_bit_unlock(bit, word);
+	/* See wake_up_bit() for which memory barrier you need to use. */
+	smp_mb__after_atomic();
+	wake_up_bit(word, bit);
+}
 
-Certain io_uring completions might be added to task_work with
-notify_method being TWA_SIGNAL and thus TIF_NOTIFY_SIGNAL is set for
-the task.
-
-In __smb_send_rqst(), signals are masked before calling
-smb_send_kvec(), but the masking does not apply to TIF_NOTIFY_SIGNAL.
-
-If sk_stream_wait_memory() is reached via sock_sendmsg() while
-TIF_NOTIFY_SIGNAL is set, signal_pending(current) will evaluate to
-true there, and -EINTR will be propagated all the way from
-sk_stream_wait_memory() to sock_sendmsg() in smb_send_kvec().
-Afterwards, __smb_send_rqst() will see that not everything was written
-and reconnect.
-
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/transport.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/ceph/dir.c  | 3 +--
+ fs/ceph/file.c | 6 ++----
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
-index 35d1871187931..691c9265994fb 100644
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -22,6 +22,7 @@
- #include <linux/mempool.h>
- #include <linux/sched/signal.h>
- #include <linux/task_io_accounting_ops.h>
-+#include <linux/task_work.h>
- #include "cifspdu.h"
- #include "cifsglob.h"
- #include "cifsproto.h"
-@@ -212,9 +213,16 @@ smb_send_kvec(struct TCP_Server_Info *server, struct msghdr *smb_msg,
- 		 * send a packet.  In most cases if we fail to send
- 		 * after the retries we will kill the socket and
- 		 * reconnect which may clear the network problem.
-+		 *
-+		 * Even if regular signals are masked, EINTR might be
-+		 * propagated from sk_stream_wait_memory() to here when
-+		 * TIF_NOTIFY_SIGNAL is used for task work. For example,
-+		 * certain io_uring completions will use that. Treat
-+		 * having EINTR with pending task work the same as EAGAIN
-+		 * to avoid unnecessary reconnects.
- 		 */
- 		rc = sock_sendmsg(ssocket, smb_msg);
--		if (rc == -EAGAIN) {
-+		if (rc == -EAGAIN || unlikely(rc == -EINTR && task_work_pending(current))) {
- 			retries++;
- 			if (retries >= 14 ||
- 			    (!server->noblocksnd && (retries > 2))) {
+diff --git a/fs/ceph/dir.c b/fs/ceph/dir.c
+index 32973c62c1a23..d18c0eaef9b7e 100644
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -1260,8 +1260,7 @@ static void ceph_async_unlink_cb(struct ceph_mds_client *mdsc,
+ 	spin_unlock(&fsc->async_unlink_conflict_lock);
+ 
+ 	spin_lock(&dentry->d_lock);
+-	di->flags &= ~CEPH_DENTRY_ASYNC_UNLINK;
+-	wake_up_bit(&di->flags, CEPH_DENTRY_ASYNC_UNLINK_BIT);
++	clear_and_wake_up_bit(CEPH_DENTRY_ASYNC_UNLINK_BIT, &di->flags);
+ 	spin_unlock(&dentry->d_lock);
+ 
+ 	synchronize_rcu();
+diff --git a/fs/ceph/file.c b/fs/ceph/file.c
+index 978acd3d4b329..d7b943feb9320 100644
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -579,8 +579,7 @@ static void wake_async_create_waiters(struct inode *inode,
+ 
+ 	spin_lock(&ci->i_ceph_lock);
+ 	if (ci->i_ceph_flags & CEPH_I_ASYNC_CREATE) {
+-		ci->i_ceph_flags &= ~CEPH_I_ASYNC_CREATE;
+-		wake_up_bit(&ci->i_ceph_flags, CEPH_ASYNC_CREATE_BIT);
++		clear_and_wake_up_bit(CEPH_ASYNC_CREATE_BIT, &ci->i_ceph_flags);
+ 
+ 		if (ci->i_ceph_flags & CEPH_I_ASYNC_CHECK_CAPS) {
+ 			ci->i_ceph_flags &= ~CEPH_I_ASYNC_CHECK_CAPS;
+@@ -762,8 +761,7 @@ static int ceph_finish_async_create(struct inode *dir, struct inode *inode,
+ 	}
+ 
+ 	spin_lock(&dentry->d_lock);
+-	di->flags &= ~CEPH_DENTRY_ASYNC_CREATE;
+-	wake_up_bit(&di->flags, CEPH_DENTRY_ASYNC_CREATE_BIT);
++	clear_and_wake_up_bit(CEPH_DENTRY_ASYNC_CREATE_BIT, &di->flags);
+ 	spin_unlock(&dentry->d_lock);
+ 
+ 	return ret;
 -- 
 2.51.0
 
