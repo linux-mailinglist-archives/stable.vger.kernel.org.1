@@ -1,213 +1,159 @@
-Return-Path: <stable+bounces-194535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A19AC4FBCA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 21:45:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3A5C4FBCD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 21:46:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2108234D323
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 20:45:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E58473B529D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 20:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A8F22DFB8;
-	Tue, 11 Nov 2025 20:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5374824113D;
+	Tue, 11 Nov 2025 20:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="BvKDE/yg"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MdZZoZF0"
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F09233D6FE
-	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 20:45:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E420933D6F9;
+	Tue, 11 Nov 2025 20:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762893934; cv=none; b=CO+AmB/aiU43IBEzBxKW4nEXUXxaS98fYyijGldFMzAib7oEQftWH0+TXIfvqcqsX+VCTjfsAMBtJmU2koOwoD/5bxVgaSwbC12s46jPA2kYBjuBdzRIuh8vJFaTik3H6EqAayBCci2baXaiR5BAPgivL3HcQqVcnk6h6B+aQDc=
+	t=1762893964; cv=none; b=uUVbBtzePYX/EntNhROxTQPwRyvPPOSaLT3SRulrtzVr5gZ4SGgiX0CvABXUM+1K59GmzTP6J8BZZyBiMz+j5VXMNzPiHtlGwhiJclZpmRKB2uUgw4ugguDAYlawp2wEPH2l5067D5trU7IvoPl37DrqxFesvf0vWhUEHmem10Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762893934; c=relaxed/simple;
-	bh=KOxvBf3xtKRfyDsHFKclQyBpBw5vaD5V/kUzc5jV4pw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PTEdxc52k0qaiy+wBwCaW4/paN0FFi56OwYZJKUyAn1psIopiH5YwMSodPDBXB6U6YJFbdjWJS4zyP5inz/OkTx4rQLFEcb/XDpiAlvx93F504advzrmaBcJTi+moTlhjKIpl14uIvkQuM4t6gVWXP761beb3kVrM1sHpIqvKGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BvKDE/yg; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762893920;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=3GcDNxbMQFbHzyEo8vijDERUnbmPZ0QtGgqSGoFrXLA=;
-	b=BvKDE/ygr+P7Xc5P5wUjAOFuPVKS6Zg2Dv70U77SYUefGEwosf9hoqN/HqQo3FpruemLjo
-	pTiq/c6gDpR/8TbeQHfAIH6dcZmP6vnJiYiF73ME+g2xISwEHyG6P8j10pOJKymTJ4ZaeK
-	vUfMq0WcAORWtxekTVCOF+budWCH+44=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: David Laight <david.laight.linux@gmail.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Huisong Li <lihuisong@huawei.com>,
-	Akira Shimahara <akira215corp@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4] w1: therm: Fix off-by-one buffer overflow in alarms_store
-Date: Tue, 11 Nov 2025 21:44:18 +0100
-Message-ID: <20251111204422.41993-2-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1762893964; c=relaxed/simple;
+	bh=NIWTxMQS9jFvAervRzPIb4HAcewHjt9dt19VCk6IElU=;
+	h=Date:To:From:Subject:Message-Id; b=GY09/d6bkcjqyV4vrXgzo7Grz499ITI0yLVSmkZpvixPNftb5Ecjn1au4MAuIqmiJmHJzlkjvb5QeCHBel+QUna/FdzOoi7zrXbQsozqp/KOSto3Oa6fwQMy1LBRNp9MEpkUj95DzXdAAmM0Qnhm2xfLG6Dlut/4E04LNtX6GaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MdZZoZF0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B14C4CEF5;
+	Tue, 11 Nov 2025 20:46:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1762893963;
+	bh=NIWTxMQS9jFvAervRzPIb4HAcewHjt9dt19VCk6IElU=;
+	h=Date:To:From:Subject:From;
+	b=MdZZoZF0141ew0S6GCvQn7Nk4EcHgi98pLGdsuE5NVmO0Efqjgx3fwNJ7J8HhZOwH
+	 qREpoLlVkqSr+eO2IK+7SnhrlsNLqtxdO6UO8wjiw3geLVEdHcfFGPDWWmguOqhh4T
+	 Z7fIxizOl9f2KPjlDa8VPgr6dsqtvH5K7LR+cwZY=
+Date: Tue, 11 Nov 2025 12:46:02 -0800
+To: mm-commits@vger.kernel.org,ying.huang@linux.alibaba.com,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,chrisl@kernel.org,bhe@redhat.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-swap-fix-potential-uaf-issue-for-vma-readahead.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251111204603.56B14C4CEF5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
-bytes and a NUL terminator is appended. However, the 'size' argument
-does not account for this extra byte. The original code then allocated
-'size' bytes and used strcpy() to copy 'buf', which always writes one
-byte past the allocated buffer since strcpy() copies until the NUL
-terminator at index 'size'.
 
-Fix this by parsing the 'buf' parameter directly using simple_strtoll()
-without allocating any intermediate memory or string copying. This
-removes the overflow while simplifying the code.
+The patch titled
+     Subject: mm, swap: fix potential UAF issue for VMA readahead
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-swap-fix-potential-uaf-issue-for-vma-readahead.patch
 
-Cc: stable@vger.kernel.org
-Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap-fix-potential-uaf-issue-for-vma-readahead.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Kairui Song <kasong@tencent.com>
+Subject: mm, swap: fix potential UAF issue for VMA readahead
+Date: Tue, 11 Nov 2025 21:36:08 +0800
+
+Since commit 78524b05f1a3 ("mm, swap: avoid redundant swap device
+pinning"), the common helper for allocating and preparing a folio in the
+swap cache layer no longer tries to get a swap device reference
+internally, because all callers of __read_swap_cache_async are already
+holding a swap entry reference.  The repeated swap device pinning isn't
+needed on the same swap device.
+
+Caller of VMA readahead is also holding a reference to the target entry's
+swap device, but VMA readahead walks the page table, so it might encounter
+swap entries from other devices, and call __read_swap_cache_async on
+another device without holding a reference to it.
+
+So it is possible to cause a UAF when swapoff of device A raced with
+swapin on device B, and VMA readahead tries to read swap entries from
+device A.  It's not easy to trigger, but in theory, it could cause real
+issues.
+
+Make VMA readahead try to get the device reference first if the swap
+device is a different one from the target entry.
+
+Link: https://lkml.kernel.org/r/20251111-swap-fix-vma-uaf-v1-1-41c660e58562@tencent.com
+Fixes: 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning")
+Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-Compile-tested only.
 
-Changes in v4:
-- Use simple_strtoll because kstrtoint also parses long long internally
-- Return -ERANGE in addition to -EINVAL to match kstrtoint's behavior
-- Remove any changes unrelated to fixing the buffer overflow (Krzysztof)
-  while maintaining the same behavior and return values as before
-- Link to v3: https://lore.kernel.org/lkml/20251030155614.447905-1-thorsten.blum@linux.dev/
+ mm/swap_state.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-Changes in v3:
-- Add integer range check for 'temp' to match kstrtoint() behavior
-- Explicitly cast 'temp' to int when calling int_to_short()
-- Link to v2: https://lore.kernel.org/lkml/20251029130045.70127-2-thorsten.blum@linux.dev/
-
-Changes in v2:
-- Fix buffer overflow instead of truncating the copy using strscpy()
-- Parse buffer directly using simple_strtol() as suggested by David
-- Update patch subject and description
-- Link to v1: https://lore.kernel.org/lkml/20251017170047.114224-2-thorsten.blum@linux.dev/
----
- drivers/w1/slaves/w1_therm.c | 64 ++++++++++++------------------------
- 1 file changed, 21 insertions(+), 43 deletions(-)
-
-diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
-index 9ccedb3264fb..5707fa34e804 100644
---- a/drivers/w1/slaves/w1_therm.c
-+++ b/drivers/w1/slaves/w1_therm.c
-@@ -1836,55 +1836,36 @@ static ssize_t alarms_store(struct device *device,
- 	struct w1_slave *sl = dev_to_w1_slave(device);
- 	struct therm_info info;
- 	u8 new_config_register[3];	/* array of data to be written */
--	int temp, ret;
--	char *token = NULL;
-+	long long temp;
-+	int ret = 0;
- 	s8 tl, th;	/* 1 byte per value + temp ring order */
--	char *p_args, *orig;
--
--	p_args = orig = kmalloc(size, GFP_KERNEL);
--	/* Safe string copys as buf is const */
--	if (!p_args) {
--		dev_warn(device,
--			"%s: error unable to allocate memory %d\n",
--			__func__, -ENOMEM);
--		return size;
--	}
--	strcpy(p_args, buf);
--
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--
--	/* Convert 1st entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	const char *p = buf;
-+	char *endp;
+--- a/mm/swap_state.c~mm-swap-fix-potential-uaf-issue-for-vma-readahead
++++ a/mm/swap_state.c
+@@ -748,6 +748,8 @@ static struct folio *swap_vma_readahead(
+ 
+ 	blk_start_plug(&plug);
+ 	for (addr = start; addr < end; ilx++, addr += PAGE_SIZE) {
++		struct swap_info_struct *si = NULL;
 +
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp || *endp != ' ')
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		goto err;
- 	}
- 
- 	tl = int_to_short(temp);
- 
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--	/* Convert 2nd entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	p = endp + 1;
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp)
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		goto err;
- 	}
--
- 	/* Prepare to cast to short by eliminating out of range values */
- 	th = int_to_short(temp);
- 
-@@ -1905,7 +1886,7 @@ static ssize_t alarms_store(struct device *device,
- 		dev_info(device,
- 			"%s: error reading from the slave device %d\n",
- 			__func__, ret);
--		goto free_m;
-+		goto err;
- 	}
- 
- 	/* Write data in the device RAM */
-@@ -1913,7 +1894,7 @@ static ssize_t alarms_store(struct device *device,
- 		dev_info(device,
- 			"%s: Device not supported by the driver %d\n",
- 			__func__, -ENODEV);
--		goto free_m;
-+		goto err;
- 	}
- 
- 	ret = SLAVE_SPECIFIC_FUNC(sl)->write_data(sl, new_config_register);
-@@ -1922,10 +1903,7 @@ static ssize_t alarms_store(struct device *device,
- 			"%s: error writing to the slave device %d\n",
- 			__func__, ret);
- 
--free_m:
--	/* free allocated memory */
--	kfree(orig);
--
-+err:
- 	return size;
- }
- 
--- 
-2.51.1
+ 		if (!pte++) {
+ 			pte = pte_offset_map(vmf->pmd, addr);
+ 			if (!pte)
+@@ -761,8 +763,19 @@ static struct folio *swap_vma_readahead(
+ 			continue;
+ 		pte_unmap(pte);
+ 		pte = NULL;
++		/*
++		 * Readahead entry may come from a device that we are not
++		 * holding a reference to, try to grab a reference, or skip.
++		 */
++		if (swp_type(entry) != swp_type(targ_entry)) {
++			si = get_swap_device(entry);
++			if (!si)
++				continue;
++		}
+ 		folio = __read_swap_cache_async(entry, gfp_mask, mpol, ilx,
+ 						&page_allocated, false);
++		if (si)
++			put_swap_device(si);
+ 		if (!folio)
+ 			continue;
+ 		if (page_allocated) {
+_
+
+Patches currently in -mm which might be from kasong@tencent.com are
+
+mm-swap-fix-potential-uaf-issue-for-vma-readahead.patch
+mm-swap-do-not-perform-synchronous-discard-during-allocation.patch
+mm-swap-rename-helper-for-setup-bad-slots.patch
+mm-swap-cleanup-swap-entry-allocation-parameter.patch
+mm-migrate-swap-drop-usage-of-folio_index.patch
+mm-swap-remove-redundant-argument-for-isolating-a-cluster.patch
+revert-mm-swap-avoid-redundant-swap-device-pinning.patch
 
 
