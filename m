@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-194396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0283CC4B1C6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF102C4AF13
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 772F84F43C4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27D823B65B0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDAE340A6F;
-	Tue, 11 Nov 2025 01:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDFE308F2E;
+	Tue, 11 Nov 2025 01:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03GlwOWL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2k9YM2qp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6923054D7;
-	Tue, 11 Nov 2025 01:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD48E255F28;
+	Tue, 11 Nov 2025 01:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825506; cv=none; b=jAK3vvU4NS9u55xsawnme7P9aSe2kaqXe8kY/3XcPyRCiqY9ebjfZqLMvrybVA8/DkWdHi7bZ7KM8paKi2QLGNoHzoEdNInfNxV2vpJv5/wskygG2dJKRVQ/t1B226J3mkX2hd2WlZikaaJUSeI5IymN0iPYCW9yYRrzevaBRSY=
+	t=1762824897; cv=none; b=loH5AJ6lzaE1pyW+qUlJqxsBh5atHrKeKQmAwV0HVLcUUSkK+OhB7P/CPw81jl0YUkrpEhe8gKVTXKe9irpud5iQ8TBcRo8bFZq2bzAFgER6QQpX+tVwPBiiJcjRO38Nqv/PgTwBh8Gnq7XAD9ZhW+4Eakz7lyyrWnxY36hSvTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825506; c=relaxed/simple;
-	bh=T7AESE98bVYIIJwBxUd0vokOMz2B1nky1h6a9EYjdck=;
+	s=arc-20240116; t=1762824897; c=relaxed/simple;
+	bh=ENbfdeINzxN9W8wckLs9F1Igw/x0vPRqnkPJ8347i8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1JeLcLJe8rv7YJOyrxBb8+8eglm+Xaf5DJNucfJiYZe2MOhsYLaYntw9gXtai/kQ2uHs2uy4cIgK87cwJX+33FxzuWAG/4HwCsLVKePQin2TWbOSnzhRgn9QpGTCmlL3fnH9W32fLeA2/tfJFprSQQycvO3KkZ/WOqThdQlE98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03GlwOWL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF31C4CEF5;
-	Tue, 11 Nov 2025 01:45:05 +0000 (UTC)
+	 MIME-Version; b=PBeqYWQueFJwXP34QyVTmp4h0e9YK+aKQmiUt2rSEQNmDDUTpjaZR7zSHEQDQxjIQcaPqovEMP8xC/9Gw7RBNqmhZOpHBGftkAlEdLGmyE+m6K7TkAl3pvi9GzA6cDyZ+VCJaed5UDEjm3uQR3mziY7H7qzSztt0cb4C8xjgx1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2k9YM2qp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E501C4CEF5;
+	Tue, 11 Nov 2025 01:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825506;
-	bh=T7AESE98bVYIIJwBxUd0vokOMz2B1nky1h6a9EYjdck=;
+	s=korg; t=1762824897;
+	bh=ENbfdeINzxN9W8wckLs9F1Igw/x0vPRqnkPJ8347i8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=03GlwOWLTumHEsrpoygaEqv54VrDkJhYG/ERSSfkKHCFQBelGlvhJ4IDJxkHnccls
-	 EgA/T/ITJ1VfQBqI7Ca+FMG19diA8OPFt4CQhBWWjUDulnBwH6S5vb+fqkUHY8ygUt
-	 HZQKNhDMPVNgc+fMKnEwD/xZOrXjrQfdkD1J+zps=
+	b=2k9YM2qp51m5x7sBnQ9FaCRgzi5roilZyGiMvq0RajUmm8bOmwuophsSnCxgQvIvf
+	 5FpEPoScki+/autGvkEYfHEcpoWVL6teevpAiqy9ylCWmrOSDq9x/7vBWnfSCpYTPN
+	 pLGCMHMUaCtBbBHPZjfzYZYk7dUfWUo+ViIR3rvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.17 831/849] scsi: ufs: ufs-pci: Fix S0ix/S3 for Intel controllers
-Date: Tue, 11 Nov 2025 09:46:41 +0900
-Message-ID: <20251111004556.517454071@linuxfoundation.org>
+	Joao Martins <joao.m.martins@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	syzbot+093a8a8b859472e6c257@syzkaller.appspotmail.com,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.12 546/565] iommufd: Dont overflow during division for dirty tracking
+Date: Tue, 11 Nov 2025 09:46:42 +0900
+Message-ID: <20251111004539.275320944@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,143 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit bb44826c3bdbf1fa3957008a04908f45e5666463 upstream.
+commit cb30dfa75d55eced379a42fd67bd5fb7ec38555e upstream.
 
-Intel platforms with UFS, can support Suspend-to-Idle (S0ix) and
-Suspend-to-RAM (S3).  For S0ix the link state should be HIBERNATE.  For
-S3, state is lost, so the link state must be OFF.  Driver policy,
-expressed by spm_lvl, can be 3 (link HIBERNATE, device SLEEP) for S0ix
-but must be changed to 5 (link OFF, device POWEROFF) for S3.
+If pgshift is 63 then BITS_PER_TYPE(*bitmap->bitmap) * pgsize will overflow
+to 0 and this triggers divide by 0.
 
-Fix support for S0ix/S3 by switching spm_lvl as needed.  During suspend
-->prepare(), if the suspend target state is not Suspend-to-Idle, ensure
-the spm_lvl is at least 5 to ensure that resume will be possible from
-deep sleep states.  During suspend ->complete(), restore the spm_lvl to
-its original value that is suitable for S0ix.
+In this case the index should just be 0, so reorganize things to divide
+by shift and avoid hitting any overflows.
 
-This fix is first needed in Intel Alder Lake based controllers.
-
-Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
+Link: https://patch.msgid.link/r/0-v1-663679b57226+172-iommufd_dirty_div0_jgg@nvidia.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251024085918.31825-2-adrian.hunter@intel.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 58ccf0190d19 ("vfio: Add an IOVA bitmap support")
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reported-by: syzbot+093a8a8b859472e6c257@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=093a8a8b859472e6c257
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufshcd-pci.c |   67 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 65 insertions(+), 2 deletions(-)
+ drivers/iommu/iommufd/iova_bitmap.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/ufs/host/ufshcd-pci.c
-+++ b/drivers/ufs/host/ufshcd-pci.c
-@@ -15,6 +15,7 @@
- #include <linux/pci.h>
- #include <linux/pm_runtime.h>
- #include <linux/pm_qos.h>
-+#include <linux/suspend.h>
- #include <linux/debugfs.h>
- #include <linux/uuid.h>
- #include <linux/acpi.h>
-@@ -31,6 +32,7 @@ struct intel_host {
- 	u32		dsm_fns;
- 	u32		active_ltr;
- 	u32		idle_ltr;
-+	int		saved_spm_lvl;
- 	struct dentry	*debugfs_root;
- 	struct gpio_desc *reset_gpio;
- };
-@@ -347,6 +349,7 @@ static int ufs_intel_common_init(struct
- 	host = devm_kzalloc(hba->dev, sizeof(*host), GFP_KERNEL);
- 	if (!host)
- 		return -ENOMEM;
-+	host->saved_spm_lvl = -1;
- 	ufshcd_set_variant(hba, host);
- 	intel_dsm_init(host, hba->dev);
- 	if (INTEL_DSM_SUPPORTED(host, RESET)) {
-@@ -538,6 +541,66 @@ static int ufshcd_pci_restore(struct dev
- 
- 	return ufshcd_system_resume(dev);
+--- a/drivers/iommu/iommufd/iova_bitmap.c
++++ b/drivers/iommu/iommufd/iova_bitmap.c
+@@ -130,9 +130,8 @@ struct iova_bitmap {
+ static unsigned long iova_bitmap_offset_to_index(struct iova_bitmap *bitmap,
+ 						 unsigned long iova)
+ {
+-	unsigned long pgsize = 1UL << bitmap->mapped.pgshift;
+-
+-	return iova / (BITS_PER_TYPE(*bitmap->bitmap) * pgsize);
++	return (iova >> bitmap->mapped.pgshift) /
++	       BITS_PER_TYPE(*bitmap->bitmap);
  }
-+
-+static int ufs_intel_suspend_prepare(struct device *dev)
-+{
-+	struct ufs_hba *hba = dev_get_drvdata(dev);
-+	struct intel_host *host = ufshcd_get_variant(hba);
-+	int err;
-+
-+	/*
-+	 * Only s2idle (S0ix) retains link state.  Force power-off
-+	 * (UFS_PM_LVL_5) for any other case.
-+	 */
-+	if (pm_suspend_target_state != PM_SUSPEND_TO_IDLE && hba->spm_lvl < UFS_PM_LVL_5) {
-+		host->saved_spm_lvl = hba->spm_lvl;
-+		hba->spm_lvl = UFS_PM_LVL_5;
-+	}
-+
-+	err = ufshcd_suspend_prepare(dev);
-+
-+	if (err < 0 && host->saved_spm_lvl != -1) {
-+		hba->spm_lvl = host->saved_spm_lvl;
-+		host->saved_spm_lvl = -1;
-+	}
-+
-+	return err;
-+}
-+
-+static void ufs_intel_resume_complete(struct device *dev)
-+{
-+	struct ufs_hba *hba = dev_get_drvdata(dev);
-+	struct intel_host *host = ufshcd_get_variant(hba);
-+
-+	ufshcd_resume_complete(dev);
-+
-+	if (host->saved_spm_lvl != -1) {
-+		hba->spm_lvl = host->saved_spm_lvl;
-+		host->saved_spm_lvl = -1;
-+	}
-+}
-+
-+static int ufshcd_pci_suspend_prepare(struct device *dev)
-+{
-+	struct ufs_hba *hba = dev_get_drvdata(dev);
-+
-+	if (!strcmp(hba->vops->name, "intel-pci"))
-+		return ufs_intel_suspend_prepare(dev);
-+
-+	return ufshcd_suspend_prepare(dev);
-+}
-+
-+static void ufshcd_pci_resume_complete(struct device *dev)
-+{
-+	struct ufs_hba *hba = dev_get_drvdata(dev);
-+
-+	if (!strcmp(hba->vops->name, "intel-pci")) {
-+		ufs_intel_resume_complete(dev);
-+		return;
-+	}
-+
-+	ufshcd_resume_complete(dev);
-+}
- #endif
  
- /**
-@@ -611,8 +674,8 @@ static const struct dev_pm_ops ufshcd_pc
- 	.thaw		= ufshcd_system_resume,
- 	.poweroff	= ufshcd_system_suspend,
- 	.restore	= ufshcd_pci_restore,
--	.prepare	= ufshcd_suspend_prepare,
--	.complete	= ufshcd_resume_complete,
-+	.prepare	= ufshcd_pci_suspend_prepare,
-+	.complete	= ufshcd_pci_resume_complete,
- #endif
- };
- 
+ /*
 
 
 
