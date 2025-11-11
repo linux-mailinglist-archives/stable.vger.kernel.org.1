@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0360CC4ACA6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7699C4B148
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CB3BE4FB663
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 51B404E7ED4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB3833C534;
-	Tue, 11 Nov 2025 01:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294DA26CE37;
+	Tue, 11 Nov 2025 01:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtN+pcvb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlQ2CbId"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3817B33C513;
-	Tue, 11 Nov 2025 01:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5C023D7FC;
+	Tue, 11 Nov 2025 01:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824563; cv=none; b=VYdj8Jj/ccfPECYb3TTnFdqwyRh/xUlKe/hSJmZEMNIWnpa1tqYDzWUOEjNfKVKEHsdA1yFevjgAg1ij9kRyVqcKbTvsdHbup7mOiILhIv0DKvlWjViqupuIh0CxWgq/Tc0KMclm7QkUeYyFjxKGzjk1Pytt/zIxKjXtr9eoQ/w=
+	t=1762825371; cv=none; b=t8w1af6WSpR3/jt+m85ACGqYdYT4cRgZ11Qb47djnh7zNS3STrzpxDdcDQMUKgKrP6GQs5ibQF6Mbe/KBj4Yfdc4J+5mF1qAwEgief5Ian2MjWIXY47jTPhD7UAdwlFHGQ+YaFMgZsQ2YIfNAyjEhRxROH3bWPW81KP+gqJqy1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824563; c=relaxed/simple;
-	bh=2EiQv7RJimr0oRqvcr8N5YAZEK/LFJxDMf+a4CPdgQM=;
+	s=arc-20240116; t=1762825371; c=relaxed/simple;
+	bh=zELCRL1b3BaBKhTQvj6vn/eYTHhQHqdlo0L5OgOW2V4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tW9OsfJn5E7uCMfoetQfbwpoX5E2eakJB/790JmAovS3/lcnwg56cVdsCemx89M5xUt0uNPzRqh6c05H+I4/DiigVoUTJpJqb0MQkD5mObwb9SUknrl+/UzkYxQHJxXEfVD/S975v0CSBpybmEYMweQZX83WC8MpPPfhFrB7U2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtN+pcvb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB890C4CEFB;
-	Tue, 11 Nov 2025 01:29:22 +0000 (UTC)
+	 MIME-Version; b=AohHSJC2PmFPJdIXw4ELfOfGRJ5RCY5AOTcAbEdZD7SCY8bJ8pDg36+qEEj56rWmdcytcTJpD72c+IIuhxwSYHpPv9R3FSCitYZMEdEs5cugpAkXBLJK5IEhFT1dNRtt/LP2LUzFP6ECmvYndhRdCZOPeRtI6lWypIvGuMklYyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KlQ2CbId; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7987FC19421;
+	Tue, 11 Nov 2025 01:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824563;
-	bh=2EiQv7RJimr0oRqvcr8N5YAZEK/LFJxDMf+a4CPdgQM=;
+	s=korg; t=1762825371;
+	bh=zELCRL1b3BaBKhTQvj6vn/eYTHhQHqdlo0L5OgOW2V4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtN+pcvbNg5IM2IhqlDnCc0tvzjqKLn8wfI2ZZ+ogWDh3Zo4hiYWI9UkfbeQ3JT4s
-	 v9WWN2F5IfALH66pCDCGgawIlzImz74qDk7uN/WIRuxdf1dla0PkNCFgKaKa7pGQXP
-	 TbHs8k8ExWZGhTh/WlATcMpuvunJ49TCES5SUs3Q=
+	b=KlQ2CbIdXWwX2IAcxr0JOYL7+pGeqTeQVvWu3sU8mrFdp95fnuAb+5v97PJFfOLwK
+	 VuCuoc7q2yw7u3HH4LrAs4TYxg53hAmlrLM+CahwVNhnj28qK4y37D0q8nONQTBTXB
+	 lYeP9yChFFVlmrxQPjWN3dRbHRpYpDNOzIdrGKCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Wanner <Ryan.Wanner@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 470/565] clk: at91: clk-master: Add check for divide by 3
-Date: Tue, 11 Nov 2025 09:45:26 +0900
-Message-ID: <20251111004537.482131580@linuxfoundation.org>
+Subject: [PATCH 6.17 757/849] Bluetooth: btrtl: Fix memory leak in rtlbt_parse_firmware_v2()
+Date: Tue, 11 Nov 2025 09:45:27 +0900
+Message-ID: <20251111004554.735778497@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Wanner <Ryan.Wanner@microchip.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit e0237f5635727d64635ec6665e1de9f4cacce35c ]
+[ Upstream commit 1c21cf89a66413eb04b2d22c955b7a50edc14dfa ]
 
-A potential divider for the master clock is div/3. The register
-configuration for div/3 is MASTER_PRES_MAX. The current bit shifting
-method does not work for this case. Checking for MASTER_PRES_MAX will
-ensure the correct decimal value is stored in the system.
+The memory allocated for ptr using kvmalloc() is not freed on the last
+error path. Fix that by freeing it on that error path.
 
-Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Fixes: 9a24ce5e29b1 ("Bluetooth: btrtl: Firmware format v2 support")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/at91/clk-master.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/bluetooth/btrtl.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/at91/clk-master.c b/drivers/clk/at91/clk-master.c
-index 15c46489ba850..4c87a0f789de1 100644
---- a/drivers/clk/at91/clk-master.c
-+++ b/drivers/clk/at91/clk-master.c
-@@ -580,6 +580,9 @@ clk_sama7g5_master_recalc_rate(struct clk_hw *hw,
- {
- 	struct clk_master *master = to_clk_master(hw);
+diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
+index 6abd962502e36..1d4a7887abccf 100644
+--- a/drivers/bluetooth/btrtl.c
++++ b/drivers/bluetooth/btrtl.c
+@@ -625,8 +625,10 @@ static int rtlbt_parse_firmware_v2(struct hci_dev *hdev,
+ 		len += entry->len;
+ 	}
  
-+	if (master->div == MASTER_PRES_MAX)
-+		return DIV_ROUND_CLOSEST_ULL(parent_rate, 3);
-+
- 	return DIV_ROUND_CLOSEST_ULL(parent_rate, (1 << master->div));
- }
+-	if (!len)
++	if (!len) {
++		kvfree(ptr);
+ 		return -EPERM;
++	}
  
+ 	*_buf = ptr;
+ 	return len;
 -- 
 2.51.0
 
