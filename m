@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E4BC4A815
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:46 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1125AC4A6C5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 661894F62D0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 82A7034C187
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA2C3019BA;
-	Tue, 11 Nov 2025 01:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95723043BF;
+	Tue, 11 Nov 2025 01:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06XkUsUk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uT9YVS1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8903A2E9EB1;
-	Tue, 11 Nov 2025 01:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E0A303A08;
+	Tue, 11 Nov 2025 01:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823844; cv=none; b=dbqwA949/JGZyRxQkXQElc6oEAjfy+KXTUUPNXqlryeCT4pbQLTqgU5+8XkhJVL46V0CT/0AUWO1wLlaOykmkFWfNfKDDYhn/gaJvQ3bjYQ+4XukBStc4sHNi33zpwBC2MDZQEAJjjc45mwFBEzLeS0LUADiGwxiSgwYu/+1xHo=
+	t=1762823849; cv=none; b=erQ2r3fUKIS+7tbSY4ITRTQsqo9fRlh3/I1uuzXUidlGqqYLcPUNsUIYKd4qRqsZPEezJNlfWPi7ykOnBDm8qfri+c1dMi8zsjvySMuKsaHTuyPf46QGHNctYkQpiU1ZkfHyrzmSYtNiussfEQJfltGzGTLpqymyoTXunu1FeY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823844; c=relaxed/simple;
-	bh=2lNlhDhOb7O6S1Ft7rvg8qMajNZApey2i30tqe6AEfE=;
+	s=arc-20240116; t=1762823849; c=relaxed/simple;
+	bh=iWNqWotAPZMBDXNqkKVojR8BUp56hgi9JJaBAiUamwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H2ksZJAlJJbECUZ+Dn5S9gSFnPYflGC+BAvKM3/5LutLjEf3ZpAb+co8Y94BXxI1M3tHLXjgezFsOqKITPFasr0tsbE9P342Exxi/gGg7F7YYDkMJgQAWqFpBu1wCthgfLr71n6DkLY1AL8F6hzKMuCNpRhyNBhHvujKtUWAiGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06XkUsUk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A977C4CEF5;
-	Tue, 11 Nov 2025 01:17:24 +0000 (UTC)
+	 MIME-Version; b=Ar7JitXDvxScoM/YU4jlGFra39kk5WCewrmQWs+pDcUYPBkH/T4K/8NigKtDKVB2BaA2KMfjpRQSnk/z/+YvUHZ/R9DTLpXUALhkFhY+9d6+WHlKEuMJZkLHpNyZqLMuxWM4X6pJX/lTW6Cp2zV/4OyQTCHihXiic2xnLordpU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uT9YVS1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1204CC113D0;
+	Tue, 11 Nov 2025 01:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823844;
-	bh=2lNlhDhOb7O6S1Ft7rvg8qMajNZApey2i30tqe6AEfE=;
+	s=korg; t=1762823849;
+	bh=iWNqWotAPZMBDXNqkKVojR8BUp56hgi9JJaBAiUamwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=06XkUsUklU2sTtjYnfZiz6tBMKHaWal9UjV3E57Cq3mUryDJya2KmngI+CxPnqekW
-	 23cjk1TIN9fMNxKL6yqb2lasLDv+wTSP8gAucrr656yj5wRRsauDXg5DwvYEHBgH1x
-	 DfkBq+tVufo0F4TPo6inOEaj/lj5161yUrWXzIx4=
+	b=uT9YVS1nuStJmDipRwF806iYwRhIMVe2VEs11HezOr+hURDULrKMFDA4Uc/v7HR9n
+	 Zz8Mf31HzL+wOgY8OVnJeKB931bFSwErTZwHPZYZSE0qXhMgw3XYsIhheJoIz0xjdu
+	 Kt/oShL8m5cZ1HtemD1RBXEyrGIjJCa2dmSvjm5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 383/849] platform/x86/intel-uncore-freq: Fix warning in partitioned system
-Date: Tue, 11 Nov 2025 09:39:13 +0900
-Message-ID: <20251111004545.691949695@linuxfoundation.org>
+Subject: [PATCH 6.17 384/849] drm/msm/dpu: Filter modes based on adjusted mode clock
+Date: Tue, 11 Nov 2025 09:39:14 +0900
+Message-ID: <20251111004545.714810648@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -60,56 +61,148 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Jessica Zhang <jessica.zhang@oss.qualcomm.com>
 
-[ Upstream commit 6d47b4f08436cb682fb2644e6265a3897fd42a77 ]
+[ Upstream commit 62b7d68352881609e237b303fa391410ebc583a5 ]
 
-A partitioned system configured with only one package and one compute
-die, warning will be generated for duplicate sysfs entry. This typically
-occurs during the platform bring-up phase.
+Filter out modes that have a clock rate greater than the max core clock
+rate when adjusted for the perf clock factor
 
-Partitioned systems expose dies, equivalent to TPMI compute domains,
-through the CPUID. Each partitioned system must contains at least one
-compute die per partition, resulting in a minimum of two dies per
-package. Hence the function topology_max_dies_per_package() returns at
-least two, and the condition "topology_max_dies_per_package() > 1"
-prevents the creation of a root domain.
+This is especially important for chipsets such as QCS615 that have lower
+limits for the MDP max core clock.
 
-In this case topology_max_dies_per_package() will return 1 and root
-domain will be created for partition 0 and a duplicate sysfs warning
-for partition 1 as both partitions have same package ID.
+Since the core CRTC clock is at least the mode clock (adjusted for the
+perf clock factor) [1], the modes supported by the driver should be less
+than the max core clock rate.
 
-To address this also check for non zero partition in addition to
-topology_max_dies_per_package() > 1.
+[1] https://elixir.bootlin.com/linux/v6.12.4/source/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c#L83
 
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://lore.kernel.org/r/20250819211034.3776284-1-srinivas.pandruvada@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Jessica Zhang <jessica.zhang@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/652041/
+Link: https://lore.kernel.org/r/20250506-filter-modes-v2-1-c20a0b7aa241@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c | 35 +++++++++++++------
+ drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h |  3 ++
+ drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c      | 12 +++++++
+ 3 files changed, 39 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-index bfcf92aa4d69d..3e531fd1c6297 100644
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-@@ -638,7 +638,7 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
+index 0fb5789c60d0d..13cc658065c56 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
+@@ -31,6 +31,26 @@ enum dpu_perf_mode {
+ 	DPU_PERF_MODE_MAX
+ };
  
- 	auxiliary_set_drvdata(auxdev, tpmi_uncore);
++/**
++ * dpu_core_perf_adjusted_mode_clk - Adjust given mode clock rate according to
++ *   the perf clock factor.
++ * @crtc_clk_rate - Unadjusted mode clock rate
++ * @perf_cfg: performance configuration
++ */
++u64 dpu_core_perf_adjusted_mode_clk(u64 mode_clk_rate,
++				    const struct dpu_perf_cfg *perf_cfg)
++{
++	u32 clk_factor;
++
++	clk_factor = perf_cfg->clk_inefficiency_factor;
++	if (clk_factor) {
++		mode_clk_rate *= clk_factor;
++		do_div(mode_clk_rate, 100);
++	}
++
++	return mode_clk_rate;
++}
++
+ /**
+  * _dpu_core_perf_calc_bw() - to calculate BW per crtc
+  * @perf_cfg: performance configuration
+@@ -75,28 +95,21 @@ static u64 _dpu_core_perf_calc_clk(const struct dpu_perf_cfg *perf_cfg,
+ 	struct drm_plane *plane;
+ 	struct dpu_plane_state *pstate;
+ 	struct drm_display_mode *mode;
+-	u64 crtc_clk;
+-	u32 clk_factor;
++	u64 mode_clk;
  
--	if (topology_max_dies_per_package() > 1)
-+	if (topology_max_dies_per_package() > 1 || plat_info->partition)
- 		return 0;
+ 	mode = &state->adjusted_mode;
  
- 	tpmi_uncore->root_cluster.root_domain = true;
+-	crtc_clk = (u64)mode->vtotal * mode->hdisplay * drm_mode_vrefresh(mode);
++	mode_clk = (u64)mode->vtotal * mode->hdisplay * drm_mode_vrefresh(mode);
+ 
+ 	drm_atomic_crtc_for_each_plane(plane, crtc) {
+ 		pstate = to_dpu_plane_state(plane->state);
+ 		if (!pstate)
+ 			continue;
+ 
+-		crtc_clk = max(pstate->plane_clk, crtc_clk);
+-	}
+-
+-	clk_factor = perf_cfg->clk_inefficiency_factor;
+-	if (clk_factor) {
+-		crtc_clk *= clk_factor;
+-		do_div(crtc_clk, 100);
++		mode_clk = max(pstate->plane_clk, mode_clk);
+ 	}
+ 
+-	return crtc_clk;
++	return dpu_core_perf_adjusted_mode_clk(mode_clk, perf_cfg);
+ }
+ 
+ static struct dpu_kms *_dpu_crtc_get_kms(struct drm_crtc *crtc)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h
+index d2f21d34e501e..3740bc97422ca 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h
+@@ -54,6 +54,9 @@ struct dpu_core_perf {
+ 	u32 fix_core_ab_vote;
+ };
+ 
++u64 dpu_core_perf_adjusted_mode_clk(u64 clk_rate,
++				    const struct dpu_perf_cfg *perf_cfg);
++
+ int dpu_core_perf_crtc_check(struct drm_crtc *crtc,
+ 		struct drm_crtc_state *state);
+ 
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
+index 94912b4708fb5..d59512e45af05 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
+@@ -1534,6 +1534,7 @@ static enum drm_mode_status dpu_crtc_mode_valid(struct drm_crtc *crtc,
+ 						const struct drm_display_mode *mode)
+ {
+ 	struct dpu_kms *dpu_kms = _dpu_crtc_get_kms(crtc);
++	u64 adjusted_mode_clk;
+ 
+ 	/* if there is no 3d_mux block we cannot merge LMs so we cannot
+ 	 * split the large layer into 2 LMs, filter out such modes
+@@ -1541,6 +1542,17 @@ static enum drm_mode_status dpu_crtc_mode_valid(struct drm_crtc *crtc,
+ 	if (!dpu_kms->catalog->caps->has_3d_merge &&
+ 	    mode->hdisplay > dpu_kms->catalog->caps->max_mixer_width)
+ 		return MODE_BAD_HVALUE;
++
++	adjusted_mode_clk = dpu_core_perf_adjusted_mode_clk(mode->clock,
++							    dpu_kms->perf.perf_cfg);
++
++	/*
++	 * The given mode, adjusted for the perf clock factor, should not exceed
++	 * the max core clock rate
++	 */
++	if (dpu_kms->perf.max_core_clk_rate < adjusted_mode_clk * 1000)
++		return MODE_CLOCK_HIGH;
++
+ 	/*
+ 	 * max crtc width is equal to the max mixer width * 2 and max height is 4K
+ 	 */
 -- 
 2.51.0
 
