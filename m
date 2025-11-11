@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-193852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98880C4A884
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 764F2C4A307
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F290034C565
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9BFC44F731B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015293446DC;
-	Tue, 11 Nov 2025 01:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CCE253944;
+	Tue, 11 Nov 2025 01:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYtLUbea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="At4VEnVC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A962C2DC76F;
-	Tue, 11 Nov 2025 01:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE1E244693;
+	Tue, 11 Nov 2025 01:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824157; cv=none; b=rOOS0Cb/+uzIzgilKZz5l5H1Z6F6VEAiZ+Eb6/Ry99/RkuQkkqAPrQI7zoQbuwV3yGK7Ul2ZjrSX1VRrbiQVB4U8MyhhSY1xnGk3QpIPQHJqK692j0OqgejpV9xNLC5IIFGBn2gKMEMKhRxkInjfzRohT8zAWXBIwI2PM7KwdM4=
+	t=1762822882; cv=none; b=JklCx2efr3W28Jl6DzQlDcOkaEKyhMLrEdcm7lnYLi0a5pd5XiRrpE3k5UlKvFZOXKaMMB+bMyc6UEmA3QBUgeJELkmd3OT6Se508v7n6KX13yhX+xFeKc19cYWSdIunbbbwI6Ez+JQIDwVe7Zr3NPtuLTviowixXDDu+jgJbsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824157; c=relaxed/simple;
-	bh=Iy7W29jEpA/dIDCR4l2K9WjXDS+qVXhRFkYHoAXBwY8=;
+	s=arc-20240116; t=1762822882; c=relaxed/simple;
+	bh=dXhv9ZURsnVCP/yj5fPTP1F1x2dZ73q8gvlrrTQp0+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/jtB45sbmU1ARaMFj9QMC2WcvNLNG24ryGl37m3NQQ0sFJbwKZnBxDn3Lb4H2HvWQGiv/sqJTWwkA6TKJUqcOkqMKhPFdZTqB/duT+ph+DJnYeStrJp437nnQ6K1nGbzyZ/Nfgpz0/k9jKRoIyU8p1Nn/tll7G8VOe31LZt9cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYtLUbea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4778FC4CEF5;
-	Tue, 11 Nov 2025 01:22:37 +0000 (UTC)
+	 MIME-Version; b=Lfz64HgMCzndjhUg1PmNz+Y5oWCwmkFCO2NsMtVdV8tePVrqJuEa+sawoW2ZW7Ki5WE4H1Zk5wIP2VP2ZU6WhDnom67zndQctXQdlH0vqsPIEjAQpJhtwfVzEHGOKg/jes0deW/1DgOhwkwNU4ZgmfXU1QVfgVkJPZ1fK9NBPuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=At4VEnVC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04AA3C116B1;
+	Tue, 11 Nov 2025 01:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824157;
-	bh=Iy7W29jEpA/dIDCR4l2K9WjXDS+qVXhRFkYHoAXBwY8=;
+	s=korg; t=1762822882;
+	bh=dXhv9ZURsnVCP/yj5fPTP1F1x2dZ73q8gvlrrTQp0+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tYtLUbeaQzvCjTRCdY/z63t2zqsQjeZRIjBAvPQIKYYm+tg3inojWkxyuW9SWElSl
-	 FqIGf+DqPm9zFGQ/X2dTI2r2spCeYCnEbCZ9L22ws/345nOboGnAYsj35aNl81/zgg
-	 wqImudDu5Ah87DPffh5vcIgvMiyMYLmsaNs7kZcg=
+	b=At4VEnVCQcwZKc4Yaony1bYOlHPwPeNwdU3K0TkSgNzA0w7YTySvkUGO+8NjfmKjN
+	 bCCJeXGOnc9WgAOwjIvJbb72cLpsn8goYypmutM4KkyWC0T6T18EoFE1Vvv6yjnYMe
+	 wvKIozWT1hgq4MKSGxOaWc8loBCUh6ihL3YOZNBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miroslav Lichvar <mlichvar@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	John Stultz <jstultz@google.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Quanyang Wang <quanyang.wang@windriver.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 412/849] ptp: Limit time setting of PTP clocks
+Subject: [PATCH 6.12 126/565] arm64: zynqmp: Disable coresight by default
 Date: Tue, 11 Nov 2025 09:39:42 +0900
-Message-ID: <20251111004546.401768687@linuxfoundation.org>
+Message-ID: <20251111004529.787960545@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miroslav Lichvar <mlichvar@redhat.com>
+From: Quanyang Wang <quanyang.wang@windriver.com>
 
-[ Upstream commit 5a8c02a6bf52b1cf9cfb7868a8330f7c3c6aebe9 ]
+[ Upstream commit 0e3f9140ad04dca9a6a93dd6a6decdc53fd665ca ]
 
-Networking drivers implementing PTP clocks and kernel socket code
-handling hardware timestamps use the 64-bit signed ktime_t type counting
-nanoseconds. When a PTP clock reaches the maximum value in year 2262,
-the timestamps returned to applications will overflow into year 1667.
-The same thing happens when injecting a large offset with
-clock_adjtime(ADJ_SETOFFSET).
+When secure-boot mode of bootloader is enabled, the registers of
+coresight are not permitted to access that's why disable it by default.
 
-The commit 7a8e61f84786 ("timekeeping: Force upper bound for setting
-CLOCK_REALTIME") limited the maximum accepted value setting the system
-clock to 30 years before the maximum representable value (i.e. year
-2232) to avoid the overflow, assuming the system will not run for more
-than 30 years.
-
-Enforce the same limit for PTP clocks. Don't allow negative values and
-values closer than 30 years to the maximum value. Drivers may implement
-an even lower limit if the hardware registers cannot represent the whole
-interval between years 1970 and 2262 in the required resolution.
-
-Signed-off-by: Miroslav Lichvar <mlichvar@redhat.com>
-Cc: Richard Cochran <richardcochran@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: John Stultz <jstultz@google.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20250828103300.1387025-1-mlichvar@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Quanyang Wang <quanyang.wang@windriver.com>
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/7e308b8efe977c4912079b4d1b1ab3d24908559e.1756799774.git.michal.simek@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_clock.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/xilinx/zynqmp.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-index 1cc06b7cb17ef..3e0726c6f55b3 100644
---- a/drivers/ptp/ptp_clock.c
-+++ b/drivers/ptp/ptp_clock.c
-@@ -100,6 +100,9 @@ static int ptp_clock_settime(struct posix_clock *pc, const struct timespec64 *tp
- 		return -EBUSY;
- 	}
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
+index b1b31dcf6291b..e2ad5fb2cb0a4 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
++++ b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
+@@ -450,6 +450,7 @@
+ 			reg = <0x0 0xfec10000 0x0 0x1000>;
+ 			clock-names = "apb_pclk";
+ 			cpu = <&cpu0>;
++			status = "disabled";
+ 		};
  
-+	if (!timespec64_valid_settod(tp))
-+		return -EINVAL;
-+
- 	return  ptp->info->settime64(ptp->info, tp);
- }
+ 		cpu1_debug: debug@fed10000 {
+@@ -457,6 +458,7 @@
+ 			reg = <0x0 0xfed10000 0x0 0x1000>;
+ 			clock-names = "apb_pclk";
+ 			cpu = <&cpu1>;
++			status = "disabled";
+ 		};
  
-@@ -130,7 +133,7 @@ static int ptp_clock_adjtime(struct posix_clock *pc, struct __kernel_timex *tx)
- 	ops = ptp->info;
+ 		cpu2_debug: debug@fee10000 {
+@@ -464,6 +466,7 @@
+ 			reg = <0x0 0xfee10000 0x0 0x1000>;
+ 			clock-names = "apb_pclk";
+ 			cpu = <&cpu2>;
++			status = "disabled";
+ 		};
  
- 	if (tx->modes & ADJ_SETOFFSET) {
--		struct timespec64 ts;
-+		struct timespec64 ts, ts2;
- 		ktime_t kt;
- 		s64 delta;
+ 		cpu3_debug: debug@fef10000 {
+@@ -471,6 +474,7 @@
+ 			reg = <0x0 0xfef10000 0x0 0x1000>;
+ 			clock-names = "apb_pclk";
+ 			cpu = <&cpu3>;
++			status = "disabled";
+ 		};
  
-@@ -143,6 +146,14 @@ static int ptp_clock_adjtime(struct posix_clock *pc, struct __kernel_timex *tx)
- 		if ((unsigned long) ts.tv_nsec >= NSEC_PER_SEC)
- 			return -EINVAL;
- 
-+		/* Make sure the offset is valid */
-+		err = ptp_clock_gettime(pc, &ts2);
-+		if (err)
-+			return err;
-+		ts2 = timespec64_add(ts2, ts);
-+		if (!timespec64_valid_settod(&ts2))
-+			return -EINVAL;
-+
- 		kt = timespec64_to_ktime(ts);
- 		delta = ktime_to_ns(kt);
- 		err = ops->adjtime(ops, delta);
+ 		/* GDMA */
 -- 
 2.51.0
 
