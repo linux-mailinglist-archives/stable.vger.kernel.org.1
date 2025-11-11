@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-194152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B312BC4AE03
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D12C4AEB7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B0DB189619F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6891C3B8714
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554F9334683;
-	Tue, 11 Nov 2025 01:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425C32D29D6;
+	Tue, 11 Nov 2025 01:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlGwS14I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tc+Zywyb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0864E330B12;
-	Tue, 11 Nov 2025 01:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FA025EF81;
+	Tue, 11 Nov 2025 01:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824926; cv=none; b=YsWzMN9WC9ZUlDR7J5cAwKrMuLIBXWP+UtB7b4Jb+qwGfC6X+aCbAWEtQ3Wruxo4m8XunxrBGdDYKT0TQyKP8+80+RgaqYVAU3DcR3rvPL7T23TirexbHH4KfyoKeoqeKHy0Pv1XX6Q97NlXnMXi03++Vs+WICcYUOWjpWzXLyA=
+	t=1762824931; cv=none; b=M8eIMA9su9RPxMD14/iQAetrmd5BNUBTX/FOB2UKUq1SMTCBvbx5yBHXmxg0RbL2zn1c7i6wxOg++T6gMaJAkprFM40CoQnNK48+owf7Jj0HZpw8U39FmtWYLbCSyrMN/WpTcrcNR8b8nsGmPMsasJ2ChKQ9sUuhKOOhFS1j1rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824926; c=relaxed/simple;
-	bh=EPcHGQPvVsIaktgHSKvt09p4BeNjNoBIqVx70cn+sPw=;
+	s=arc-20240116; t=1762824931; c=relaxed/simple;
+	bh=wp4KjkC+enCRoTPUmnMYl1JwndAcLAMewf0QVw8t5LM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHLHk5XtwXiyKJK/oIMpCsAl3wsuzg/VsgxxciDhdQZmlwzMmgZ1BhCyVRyhbGWFQPrWaLK8d0YHZLTtnbPzFAf9FFHdL2FFXOoJNKOnEW8axeftt3KDYFJ/vwo1ylHAkCV6ackdIHOvUaUVTzsSiT83Q0qG7XhpgSklki9G9TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KlGwS14I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA67C116B1;
-	Tue, 11 Nov 2025 01:35:25 +0000 (UTC)
+	 MIME-Version; b=TI+xRf7CLc8ffiCcJ6bmkcgb8lP/IQzLUDQXuNtWbc/I10sAZy2GsDfNYGef9qDi4ufBR2UvSrywRPGN+o65LkkSDSq8+4pnubqkdd7CKYVxI2wQWap8JO9daEj0OskDq0vSPkFOODcxx/AC/G7CnorZ0QaADtPvIrP3dhpKQJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tc+Zywyb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394BEC4CEFB;
+	Tue, 11 Nov 2025 01:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824925;
-	bh=EPcHGQPvVsIaktgHSKvt09p4BeNjNoBIqVx70cn+sPw=;
+	s=korg; t=1762824930;
+	bh=wp4KjkC+enCRoTPUmnMYl1JwndAcLAMewf0QVw8t5LM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KlGwS14IfaF80/HzNHB7mym9xV3MF/zP5hBvD1l1zdKKNtUoPjc/+3xmHn0I2E+l5
-	 f4sutACq26VhWXR3Rdmt8vJPC3+GUAMNB+si/j1ORs2wPkIbcbcY93sifYU9icMqCD
-	 QMRe7EmVl69ozJ/Ahp0xWwGhfG39/06EI1oQvEvA=
+	b=tc+ZywybdxNS0zgfWzLKcGzr8LmqM3RClXXPMMLuW0j+Mi3i7IjxNiyfSrFlM4gFO
+	 HRz4MF7KZitwRnKmPN5sReTO0ppDTmpUIpxejM+HM57uDBJWyev0ap6ColerCVBPBy
+	 RzatXwaCpdGxb/9rc+PMahJxKiw6gTc7wqt9pK7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 599/849] wifi: ath10k: Fix connection after GTK rekeying
-Date: Tue, 11 Nov 2025 09:42:49 +0900
-Message-ID: <20251111004550.903682634@linuxfoundation.org>
+Subject: [PATCH 6.17 600/849] iommu/vt-d: Remove LPIG from page group response descriptor
+Date: Tue, 11 Nov 2025 09:42:50 +0900
+Message-ID: <20251111004550.929461708@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -69,64 +66,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit 487e8a8c3421df0af3707e54c7e069f1d89cbda7 ]
+[ Upstream commit 4402e8f39d0bfff5c0a5edb5e1afe27a56545e11 ]
 
-It appears that not all hardware/firmware implementations support
-group key deletion correctly, which can lead to connection hangs
-and deauthentication following GTK rekeying (delete and install).
+Bit 66 in the page group response descriptor used to be the LPIG (Last
+Page in Group), but it was marked as Reserved since Specification 4.0.
+Remove programming on this bit to make it consistent with the latest
+specification.
 
-To avoid this issue, instead of attempting to delete the key using
-the special WMI_CIPHER_NONE value, we now replace the key with an
-invalid (random) value.
+Existing hardware all treats bit 66 of the page group response descriptor
+as "ignored", therefore this change doesn't break any existing hardware.
 
-This behavior has been observed with WCN39xx chipsets.
-
-Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
-Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
-Closes: https://lore.kernel.org/all/DAWJQ2NIKY28.1XOG35E4A682G@linaro.org
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # QRB2210 RB1
-Link: https://patch.msgid.link/20250902143225.837487-1-loic.poulain@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20250901053943.1708490-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/iommu/intel/iommu.h | 1 -
+ drivers/iommu/intel/prq.c   | 7 ++-----
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 24dd794e31ea2..154ac7a709824 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -16,6 +16,7 @@
- #include <linux/acpi.h>
- #include <linux/of.h>
- #include <linux/bitfield.h>
-+#include <linux/random.h>
+diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+index 2c261c069001c..21b2c3f85ddc5 100644
+--- a/drivers/iommu/intel/iommu.h
++++ b/drivers/iommu/intel/iommu.h
+@@ -462,7 +462,6 @@ enum {
+ #define QI_PGRP_PASID(pasid)	(((u64)(pasid)) << 32)
  
- #include "hif.h"
- #include "core.h"
-@@ -290,8 +291,15 @@ static int ath10k_send_key(struct ath10k_vif *arvif,
- 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
+ /* Page group response descriptor QW1 */
+-#define QI_PGRP_LPIG(x)		(((u64)(x)) << 2)
+ #define QI_PGRP_IDX(idx)	(((u64)(idx)) << 3)
  
- 	if (cmd == DISABLE_KEY) {
--		arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
--		arg.key_data = NULL;
-+		if (flags & WMI_KEY_GROUP) {
-+			/* Not all hardware handles group-key deletion operation
-+			 * correctly. Replace the key with a junk value to invalidate it.
-+			 */
-+			get_random_bytes(key->key, key->keylen);
-+		} else {
-+			arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
-+			arg.key_data = NULL;
-+		}
- 	}
  
- 	return ath10k_wmi_vdev_install_key(arvif->ar, &arg);
+diff --git a/drivers/iommu/intel/prq.c b/drivers/iommu/intel/prq.c
+index 52570e42a14c0..ff63c228e6e19 100644
+--- a/drivers/iommu/intel/prq.c
++++ b/drivers/iommu/intel/prq.c
+@@ -151,8 +151,7 @@ static void handle_bad_prq_event(struct intel_iommu *iommu,
+ 			QI_PGRP_PASID_P(req->pasid_present) |
+ 			QI_PGRP_RESP_CODE(result) |
+ 			QI_PGRP_RESP_TYPE;
+-	desc.qw1 = QI_PGRP_IDX(req->prg_index) |
+-			QI_PGRP_LPIG(req->lpig);
++	desc.qw1 = QI_PGRP_IDX(req->prg_index);
+ 
+ 	qi_submit_sync(iommu, &desc, 1, 0);
+ }
+@@ -379,19 +378,17 @@ void intel_iommu_page_response(struct device *dev, struct iopf_fault *evt,
+ 	struct iommu_fault_page_request *prm;
+ 	struct qi_desc desc;
+ 	bool pasid_present;
+-	bool last_page;
+ 	u16 sid;
+ 
+ 	prm = &evt->fault.prm;
+ 	sid = PCI_DEVID(bus, devfn);
+ 	pasid_present = prm->flags & IOMMU_FAULT_PAGE_REQUEST_PASID_VALID;
+-	last_page = prm->flags & IOMMU_FAULT_PAGE_REQUEST_LAST_PAGE;
+ 
+ 	desc.qw0 = QI_PGRP_PASID(prm->pasid) | QI_PGRP_DID(sid) |
+ 			QI_PGRP_PASID_P(pasid_present) |
+ 			QI_PGRP_RESP_CODE(msg->code) |
+ 			QI_PGRP_RESP_TYPE;
+-	desc.qw1 = QI_PGRP_IDX(prm->grpid) | QI_PGRP_LPIG(last_page);
++	desc.qw1 = QI_PGRP_IDX(prm->grpid);
+ 	desc.qw2 = 0;
+ 	desc.qw3 = 0;
+ 
 -- 
 2.51.0
 
