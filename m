@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-193802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 696D7C4A947
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7700C4AF4F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 03D3C4F7CFF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 87B2D4FB286
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A14C340D9D;
-	Tue, 11 Nov 2025 01:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6110342C8F;
+	Tue, 11 Nov 2025 01:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIqSgBtL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnRp8GU7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2816D341ACA;
-	Tue, 11 Nov 2025 01:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738D934217C;
+	Tue, 11 Nov 2025 01:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824041; cv=none; b=EQNPSPHBM36cyPFQhYc9sqm0CkG+4FEkzefNtujFs7sJ3k4IZ87LyZYBT4PtoJucClbWZFgpyvO2lxgxlaAPTE5N6PUreFUM95q39Rbq2RF2QmXY6Is6kTFKEi5pP3uE30m8s5Epnp+v827y1XtImjkNSfv+j8M9Oylboayp9g4=
+	t=1762825108; cv=none; b=cy+c7McMc6MYMNR/ajoCqDLJGvh5a+jfYEQEQW2IRsimOLFt+3KkiqGr435+boyKdImcfs7lRDo2fyaPb9jIwH6IDABZAuqWorEPtTPxe+aMHKn280R2FKF0h05yZRMkEZ2sw+vpVlWKPIQI4c9LJZN8UwZc4zqHc2LucGDNwJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824041; c=relaxed/simple;
-	bh=oMzGh+SDpGEUPIjC2qzQLGiq5D9VOH2Q4HQJjC6ngkQ=;
+	s=arc-20240116; t=1762825108; c=relaxed/simple;
+	bh=BqOcQIDTnusxnmadM7e5wfnMnWxwptD8fyXhkJ16XME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bWY4m2Zrb5oUAnOYbRif3i/b0LwRWjrCtUBMCzlbZ32UrnkUUO2gMDA50IyeyG/ZG1wmOT0wiXnZbiSB3NsiZzcr0EAjHEOzyMsc3+t8Y5NZD62n9do+4tIoTv1gDCgSAV2wQ9WNrq4Z2HU5R91CPxlSvUWRVQqi8DMhAiENdU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIqSgBtL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A95C4CEF5;
-	Tue, 11 Nov 2025 01:20:40 +0000 (UTC)
+	 MIME-Version; b=l13t+8G7mXL94js9s7PRlmwYhVv244cgNEJVw4RL/Fafm73gjCGinKWtwtyNJuMUxPJMlAlbJJVhs+2U0VaiGHgC2KtlwAjzoW4Q3c+UXZrXfkXUl6ETWTbkOIhYd+wYd1I1H0uNfg+hw9K/GUPdW/MOz8nE0UtQCfG0wbSH6WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnRp8GU7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1322EC4CEFB;
+	Tue, 11 Nov 2025 01:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824041;
-	bh=oMzGh+SDpGEUPIjC2qzQLGiq5D9VOH2Q4HQJjC6ngkQ=;
+	s=korg; t=1762825108;
+	bh=BqOcQIDTnusxnmadM7e5wfnMnWxwptD8fyXhkJ16XME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vIqSgBtLrVITMaQD/3ppD1UFOoif/o9+6ZFcWCBUF0pCSIDfZHOmdp7TLyJ47Appz
-	 VeBRdy3UgOF6WSGesnPnMd/FVuEgKGN5BAYftjrF3g2UZC/TPy4a8y8yN/EEL2W9tM
-	 Gb2zErisek6cUuZCXZBKFwmwUAxf5okUi1Bl0Ebc=
+	b=EnRp8GU7I2P9n7rxRMRwfXO8qUqytqfjYSr2odjs3/dqd4TsgYKOwrFTlkr8ZUz+D
+	 QRD/i9o1fvxFCaOWWvn6FRjznECDm2b+OmlOf1mAA4Z+UwqAqMDoL0vow7U7UGR98b
+	 9AZrOFMRBaHxGNwqeviFRnr55HJJECjZTv3FSEJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 376/565] scsi: lpfc: Check return status of lpfc_reset_flush_io_context during TGT_RESET
+Subject: [PATCH 6.17 662/849] Bluetooth: ISO: Dont initiate CIS connections if there are no buffers
 Date: Tue, 11 Nov 2025 09:43:52 +0900
-Message-ID: <20251111004535.327746539@linuxfoundation.org>
+Message-ID: <20251111004552.429200574@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit f408dde2468b3957e92b25e7438f74c8e9fb9e73 ]
+[ Upstream commit d79c7d01f1c8bcf9a48337c8960d618fbe31fc0c ]
 
-If lpfc_reset_flush_io_context fails to execute, then the wrong return
-status code may be passed back to upper layers when issuing a target
-reset TMF command.  Fix by checking the return status from
-lpfc_reset_flush_io_context() first in order to properly return FAILED
-or FAST_IO_FAIL.
+If the controller has no buffers left return -ENOBUFF to indicate that
+iso_cnt might be out of sync.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Message-ID: <20250915180811.137530-7-justintee8345@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_scsi.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ net/bluetooth/iso.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index 67e0898811817..778f8e2310569 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -5929,7 +5929,7 @@ lpfc_chk_tgt_mapped(struct lpfc_vport *vport, struct fc_rport *rport)
- /**
-  * lpfc_reset_flush_io_context -
-  * @vport: The virtual port (scsi_host) for the flush context
-- * @tgt_id: If aborting by Target contect - specifies the target id
-+ * @tgt_id: If aborting by Target context - specifies the target id
-  * @lun_id: If aborting by Lun context - specifies the lun id
-  * @context: specifies the context level to flush at.
-  *
-@@ -6103,8 +6103,14 @@ lpfc_target_reset_handler(struct scsi_cmnd *cmnd)
- 			pnode->nlp_fcp_info &= ~NLP_FCP_2_DEVICE;
- 			spin_unlock_irqrestore(&pnode->lock, flags);
- 		}
--		lpfc_reset_flush_io_context(vport, tgt_id, lun_id,
--					  LPFC_CTX_TGT);
-+		status = lpfc_reset_flush_io_context(vport, tgt_id, lun_id,
-+						     LPFC_CTX_TGT);
-+		if (status != SUCCESS) {
-+			lpfc_printf_vlog(vport, KERN_ERR, LOG_FCP,
-+					 "0726 Target Reset flush status x%x\n",
-+					 status);
-+			return status;
-+		}
- 		return FAST_IO_FAIL;
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 6e2923b301505..3b2a4a9d79d61 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -460,6 +460,13 @@ static int iso_connect_cis(struct sock *sk)
+ 		goto unlock;
  	}
  
-@@ -6200,7 +6206,7 @@ lpfc_host_reset_handler(struct scsi_cmnd *cmnd)
- 	int rc, ret = SUCCESS;
- 
- 	lpfc_printf_vlog(vport, KERN_ERR, LOG_FCP,
--			 "3172 SCSI layer issued Host Reset Data:\n");
-+			 "3172 SCSI layer issued Host Reset\n");
- 
- 	lpfc_offline_prep(phba, LPFC_MBX_WAIT);
- 	lpfc_offline(phba);
++	/* Check if there are available buffers for output/TX. */
++	if (iso_pi(sk)->qos.ucast.out.sdu && !hci_iso_count(hdev) &&
++	    (hdev->iso_pkts && !hdev->iso_cnt)) {
++		err = -ENOBUFS;
++		goto unlock;
++	}
++
+ 	/* Just bind if DEFER_SETUP has been set */
+ 	if (test_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags)) {
+ 		hcon = hci_bind_cis(hdev, &iso_pi(sk)->dst,
 -- 
 2.51.0
 
