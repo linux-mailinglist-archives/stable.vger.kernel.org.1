@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C22C4ABAE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C949DC4A5E1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 884B04F01EF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F18F94F4525
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9553A306B30;
-	Tue, 11 Nov 2025 01:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89A53043C0;
+	Tue, 11 Nov 2025 01:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4BMoyu0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCc05hef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519EB25F797;
-	Tue, 11 Nov 2025 01:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7214C26ED5E;
+	Tue, 11 Nov 2025 01:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824455; cv=none; b=kCEtt24ODTDu1dW5Hl+JvfqDyVeB9BjqIhbr+YbUZpHjfaptBOT9H1DOzAEaI+fp72zg/fJQp7qg79IATELlQeZPrHxbZs7tiSLaJ3M32xyn2FkJV6RucZP9kDIyz5GzxwNjntMrNPBNc0Zd36pqKxXzpN03p1AyQz+rRA5TF6E=
+	t=1762823311; cv=none; b=D9EmTY/rTumrOx2L6tm48pJ+l7zQThzAmJhvzU/HTnzhTaG1pbHae8n6lZv48GfDKGJxjvNO8ftFMk6wMUe1Al2yDwj2tGYR8LtE3/JeD76wYjjRcEOAms36gW51anDwPz9zkCvqa1XL2/Q0qtzFP1IUSg/WUuGSlqUtTQY/VOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824455; c=relaxed/simple;
-	bh=E/Qs3gRZTD8mnP1GR8JeRfbBd4ZMUyHpG72uAQl1o/0=;
+	s=arc-20240116; t=1762823311; c=relaxed/simple;
+	bh=QJIU0YVI4OBdZxwPH2n7SoxIvZWGzVvKpflxEawhEVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SXmVuZGRadPmZjy6bFgVWgGvaDdjwQi3EaWWxaAZA2Pqm8CljqYWysq+9C2mOj48NWGwb/Kb0IA8+0eScPpVzxAsLp3QWhTgK/iJYXuFy69LLAF8s9tUbpEqJe7byAMl7zYDKlqsmv5azvMqWI6c6pGS33yUKA0vrKTctYsEotw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4BMoyu0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53CBC113D0;
-	Tue, 11 Nov 2025 01:27:34 +0000 (UTC)
+	 MIME-Version; b=YMTAEfB+RsJZhp20z9TTLEh0GoCYamaQ64CySImXu/+ME7c5mqAigiPhbhlCMVuoS/yze+/EGa7uxcEyNrIT1+9TUO99OmRxTyxW3MIJ3FLLAIjZpSmmMj23yiGHgGPYGD88EicHKigIVv6hqHdynukw9qRkLU4flM4lqpVgX4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCc05hef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11117C4CEFB;
+	Tue, 11 Nov 2025 01:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824455;
-	bh=E/Qs3gRZTD8mnP1GR8JeRfbBd4ZMUyHpG72uAQl1o/0=;
+	s=korg; t=1762823311;
+	bh=QJIU0YVI4OBdZxwPH2n7SoxIvZWGzVvKpflxEawhEVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y4BMoyu0Gv454l6zUu4vNWDHeKAHT91zX+3tT3P2xgN56KUs/laH9/ueo0OZBoel+
-	 QjQewOOyPj444c9l0LurHQWhMKIHvhUGP+TKPoNQaEpgoxpimuYN8U9x1Sw4l+0V6o
-	 d7rlupqKHuFVWLKBjmeLQbPqTaPLLyldMPR4XBl0=
+	b=vCc05hefabI+mTCBs6tWn5UCR9eHvGvalGiY706OSXXCVtnWwntHWZhpMSg6iGqP5
+	 HNTEdf/jUDSx89sKT+3BzEP2rjLW4SXnK+YLg3RRC6uBqC2l4sYy/N6vIwLefF+AHu
+	 vW0W+55p1Z2baQmTc0wr/SA0Q0UiUJQPQ3oKGudE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 503/849] fbcon: Use screen info to find primary device
+Subject: [PATCH 6.12 217/565] scsi: ufs: host: mediatek: Change reset sequence for improved stability
 Date: Tue, 11 Nov 2025 09:41:13 +0900
-Message-ID: <20251111004548.594036299@linuxfoundation.org>
+Message-ID: <20251111004531.804745204@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit ad90860bd10ee3ed387077aed88828b139339976 ]
+[ Upstream commit 878ed88c50bfb14d972dd3b86a1c8188c58de4e5 ]
 
-On systems with non VGA GPUs fbcon can't find the primary GPU because
-video_is_primary_device() only checks the VGA arbiter.
+Modify the reset sequence to ensure that the device reset pin is set low
+before the host is disabled. This change enhances the stability of the
+reset process by ensuring the correct order of operations.
 
-Add a screen info check to video_is_primary_device() so that callers
-can get accurate data on such systems.
-
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
-Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/r/20250811162606.587759-4-superm1@kernel.org
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20250811131423.3444014-10-peter.wang@mediatek.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/video/video-common.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ drivers/ufs/host/ufs-mediatek.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/video/video-common.c b/arch/x86/video/video-common.c
-index 81fc97a2a837a..e0aeee99bc99e 100644
---- a/arch/x86/video/video-common.c
-+++ b/arch/x86/video/video-common.c
-@@ -9,6 +9,7 @@
- 
- #include <linux/module.h>
- #include <linux/pci.h>
-+#include <linux/screen_info.h>
- #include <linux/vgaarb.h>
- 
- #include <asm/video.h>
-@@ -27,6 +28,11 @@ EXPORT_SYMBOL(pgprot_framebuffer);
- 
- bool video_is_primary_device(struct device *dev)
+diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
+index 191db60b393d9..c0106fb3792d4 100644
+--- a/drivers/ufs/host/ufs-mediatek.c
++++ b/drivers/ufs/host/ufs-mediatek.c
+@@ -1340,11 +1340,11 @@ static int ufs_mtk_device_reset(struct ufs_hba *hba)
  {
-+#ifdef CONFIG_SCREEN_INFO
-+	struct screen_info *si = &screen_info;
-+	struct resource res[SCREEN_INFO_MAX_RESOURCES];
-+	ssize_t i, numres;
-+#endif
- 	struct pci_dev *pdev;
+ 	struct arm_smccc_res res;
  
- 	if (!dev_is_pci(dev))
-@@ -34,7 +40,24 @@ bool video_is_primary_device(struct device *dev)
+-	/* disable hba before device reset */
+-	ufshcd_hba_stop(hba);
+-
+ 	ufs_mtk_device_reset_ctrl(0, res);
  
- 	pdev = to_pci_dev(dev);
- 
--	return (pdev == vga_default_device());
-+	if (!pci_is_display(pdev))
-+		return false;
++	/* disable hba in middle of device reset */
++	ufshcd_hba_stop(hba);
 +
-+	if (pdev == vga_default_device())
-+		return true;
-+
-+#ifdef CONFIG_SCREEN_INFO
-+	numres = screen_info_resources(si, res, ARRAY_SIZE(res));
-+	for (i = 0; i < numres; ++i) {
-+		if (!(res[i].flags & IORESOURCE_MEM))
-+			continue;
-+
-+		if (pci_find_resource(pdev, &res[i]))
-+			return true;
-+	}
-+#endif
-+
-+	return false;
- }
- EXPORT_SYMBOL(video_is_primary_device);
- 
+ 	/*
+ 	 * The reset signal is active low. UFS devices shall detect
+ 	 * more than or equal to 1us of positive or negative RST_n
 -- 
 2.51.0
 
