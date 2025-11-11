@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-193416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E60C4A48D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:14:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68AF5C4A4A5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:15:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 92D234FB7DD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:06:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 90B844FB8CE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3121E26561E;
-	Tue, 11 Nov 2025 01:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A3F2DBF5E;
+	Tue, 11 Nov 2025 01:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jha4smoH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrQsQW87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10EE2DA768;
-	Tue, 11 Nov 2025 01:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FAC265CA8;
+	Tue, 11 Nov 2025 01:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823132; cv=none; b=d9nkHDPrnrNHT6cVv7cnMVQVMLhECPJtwL8e3Cc5Lo03AsfPVakFrD4nphAkcFKLK51wi0AzuQuldMVm25noQR7od4kdFf8NyL+eLf0jqonl2Sf1+mmlqONnIu36abkx6nQVJ8tU0B3ztgrdqs4pNs4bfg/I5uDfmcvnbzASNI0=
+	t=1762823137; cv=none; b=gu/bo++835QJONYXScKqXrdMwGfA4QnSmgzgsh4IkEjKn7s7DkzydZywAWWXu9E1EPZS3P6JYNqRqf9l6nczRrSBDE+lTbtQzHxPFMCZezw2+QQ8nKbPX5QwDiYslHHXyNuUMWwZ+eX7EZKV6v5VPEwn1LCsCZw9EL08EEx6qDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823132; c=relaxed/simple;
-	bh=AMwDVL1tejcgZVnvaPA5I/JAQxGevlcUZgZzS4v5UXQ=;
+	s=arc-20240116; t=1762823137; c=relaxed/simple;
+	bh=R4PYAyzt/uZpCS/EM9hwwEnvzhkIYQquisVOXvRLtww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dvLyhpXaSpRj5F6vLEBEjwdmRpO3MOa/yaam1LDgdW+b403QuouRTgxWwieY5e1ukd+WkP/LIUb6hnJdInpKN81joNFVJWPpE0SE8KI7r6vlwBvOj7kUO3wQSWRPASq6s9AoLV44asaKLO4Z+k4g7eExbUAKqgXQYKgTTQ48Crs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jha4smoH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2EFC4CEF5;
-	Tue, 11 Nov 2025 01:05:32 +0000 (UTC)
+	 MIME-Version; b=EiuojT0BUTCGzjFXYPE4vQyHH8XSG5sf+iX77xQjF3SG81wGaEtSGAbvRNnBVfhdrEFaW/ekkg1xwXZcHTq3vszxTE2jR2N7qfYVFIye2B3Q0L71VSB8bT+Hjo944int/DRx6iRtduWW5C3UkSmzKQ1PlCilhq6v5Ut4aMZp1tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrQsQW87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B8BC113D0;
+	Tue, 11 Nov 2025 01:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823132;
-	bh=AMwDVL1tejcgZVnvaPA5I/JAQxGevlcUZgZzS4v5UXQ=;
+	s=korg; t=1762823137;
+	bh=R4PYAyzt/uZpCS/EM9hwwEnvzhkIYQquisVOXvRLtww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jha4smoHxC+zIYQ24c5fqwGyMbDo/Btwb4W8N4YzG64hX+AMsoIak/DYKJbxIKg3B
-	 HOJuifL7TxihK7GFm/xqxcfuR4XHHCZQvAs6N3BLAeZmlvfccEkN5jbYi017Sz37aR
-	 pHpnJMcncrn1ckZOuOyTfluza4q5vF+z7o75axU0=
+	b=nrQsQW87yP561oJEWklDIpTA6pFEAeGfPr/0dRWgietuwXr359PG2YMvxkINnoQT1
+	 DYLlyOV5sucdwoVZFzLagg6uYGpAvBFBLUSljjrN890SjP+4yXbLlqQzL4mFaAHCxT
+	 86U998bNstzcbvqi0hH+56jkQMyHvXFwidsciSQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Michael Strauss <michael.strauss@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 177/565] drm/amd/display: Increase AUX Intra-Hop Done Max Wait Duration
-Date: Tue, 11 Nov 2025 09:40:33 +0900
-Message-ID: <20251111004530.915687661@linuxfoundation.org>
+Subject: [PATCH 6.12 178/565] drm/xe/guc: Add more GuC load error status codes
+Date: Tue, 11 Nov 2025 09:40:34 +0900
+Message-ID: <20251111004530.937229479@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -69,57 +66,101 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Strauss <michael.strauss@amd.com>
+From: John Harrison <John.C.Harrison@Intel.com>
 
-[ Upstream commit e3419e1e44b87d4176fb98679a77301b1ca40f63 ]
+[ Upstream commit 45fbb51050e72723c2bdcedc1ce32305256c70ed ]
 
-[WHY]
-In the worst case, AUX intra-hop done can take hundreds of milliseconds as
-each retimer in a link might have to wait a full AUX_RD_INTERVAL to send
-LT abort downstream.
+The GuC load process will abort if certain status codes (which are
+indicative of a fatal error) are reported. Otherwise, it keeps waiting
+until the 'success' code is returned. New error codes have been added
+in recent GuC releases, so add support for aborting on those as well.
 
-[HOW]
-Wait 300ms for each retimer in a link to allow time to propagate a LT abort
-without infinitely waiting on intra-hop done.
-For no-retimer case, keep the max duration at 10ms.
+v2: Shuffle HWCONFIG_START to the front of the switch to keep the
+ordering as per the enum define for clarity (review feedback by
+Jonathan). Also add a description for the basic 'invalid init data'
+code which was missing.
 
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: Michael Strauss <michael.strauss@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Link: https://lore.kernel.org/r/20250726024337.4056272-1-John.C.Harrison@Intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/link/protocols/link_dp_training.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/abi/guc_errors_abi.h |  3 +++
+ drivers/gpu/drm/xe/xe_guc.c             | 19 +++++++++++++++++--
+ 2 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
-index 9385a32a471b8..16b5e6b64162a 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
-@@ -1012,7 +1012,12 @@ static enum link_training_result dpcd_exit_training_mode(struct dc_link *link, e
- {
- 	enum dc_status status;
- 	uint8_t sink_status = 0;
--	uint8_t i;
-+	uint32_t i;
-+	uint8_t lttpr_count = dp_parse_lttpr_repeater_count(link->dpcd_caps.lttpr_caps.phy_repeater_cnt);
-+	uint32_t intra_hop_disable_time_ms = (lttpr_count > 0 ? lttpr_count * 300 : 10);
+diff --git a/drivers/gpu/drm/xe/abi/guc_errors_abi.h b/drivers/gpu/drm/xe/abi/guc_errors_abi.h
+index 2c627a21648f7..9260f4a1997d9 100644
+--- a/drivers/gpu/drm/xe/abi/guc_errors_abi.h
++++ b/drivers/gpu/drm/xe/abi/guc_errors_abi.h
+@@ -55,6 +55,7 @@ enum xe_guc_load_status {
+ 	XE_GUC_LOAD_STATUS_HWCONFIG_START                   = 0x05,
+ 	XE_GUC_LOAD_STATUS_HWCONFIG_DONE                    = 0x06,
+ 	XE_GUC_LOAD_STATUS_HWCONFIG_ERROR                   = 0x07,
++	XE_GUC_LOAD_STATUS_BOOTROM_VERSION_MISMATCH         = 0x08,
+ 	XE_GUC_LOAD_STATUS_GDT_DONE                         = 0x10,
+ 	XE_GUC_LOAD_STATUS_IDT_DONE                         = 0x20,
+ 	XE_GUC_LOAD_STATUS_LAPIC_DONE                       = 0x30,
+@@ -67,6 +68,8 @@ enum xe_guc_load_status {
+ 	XE_GUC_LOAD_STATUS_INVALID_INIT_DATA_RANGE_START,
+ 	XE_GUC_LOAD_STATUS_MPU_DATA_INVALID                 = 0x73,
+ 	XE_GUC_LOAD_STATUS_INIT_MMIO_SAVE_RESTORE_INVALID   = 0x74,
++	XE_GUC_LOAD_STATUS_KLV_WORKAROUND_INIT_ERROR        = 0x75,
++	XE_GUC_LOAD_STATUS_INVALID_FTR_FLAG                 = 0x76,
+ 	XE_GUC_LOAD_STATUS_INVALID_INIT_DATA_RANGE_END,
+ 
+ 	XE_GUC_LOAD_STATUS_READY                            = 0xF0,
+diff --git a/drivers/gpu/drm/xe/xe_guc.c b/drivers/gpu/drm/xe/xe_guc.c
+index 96373cdb366be..907a458c9eff5 100644
+--- a/drivers/gpu/drm/xe/xe_guc.c
++++ b/drivers/gpu/drm/xe/xe_guc.c
+@@ -527,11 +527,14 @@ static int guc_load_done(u32 status)
+ 	case XE_GUC_LOAD_STATUS_GUC_PREPROD_BUILD_MISMATCH:
+ 	case XE_GUC_LOAD_STATUS_ERROR_DEVID_INVALID_GUCTYPE:
+ 	case XE_GUC_LOAD_STATUS_HWCONFIG_ERROR:
++	case XE_GUC_LOAD_STATUS_BOOTROM_VERSION_MISMATCH:
+ 	case XE_GUC_LOAD_STATUS_DPC_ERROR:
+ 	case XE_GUC_LOAD_STATUS_EXCEPTION:
+ 	case XE_GUC_LOAD_STATUS_INIT_DATA_INVALID:
+ 	case XE_GUC_LOAD_STATUS_MPU_DATA_INVALID:
+ 	case XE_GUC_LOAD_STATUS_INIT_MMIO_SAVE_RESTORE_INVALID:
++	case XE_GUC_LOAD_STATUS_KLV_WORKAROUND_INIT_ERROR:
++	case XE_GUC_LOAD_STATUS_INVALID_FTR_FLAG:
+ 		return -1;
+ 	}
+ 
+@@ -670,17 +673,29 @@ static void guc_wait_ucode(struct xe_guc *guc)
+ 		}
+ 
+ 		switch (ukernel) {
++		case XE_GUC_LOAD_STATUS_HWCONFIG_START:
++			xe_gt_err(gt, "still extracting hwconfig table.\n");
++			break;
 +
-+	// Each hop could theoretically take over 256ms (max 128b/132b AUX RD INTERVAL)
-+	// To be safe, allow 300ms per LTTPR and 10ms for no LTTPR case
+ 		case XE_GUC_LOAD_STATUS_EXCEPTION:
+ 			xe_gt_err(gt, "firmware exception. EIP: %#x\n",
+ 				  xe_mmio_read32(gt, SOFT_SCRATCH(13)));
+ 			break;
  
- 	/* clear training pattern set */
- 	status = dpcd_set_training_pattern(link, DP_TRAINING_PATTERN_VIDEOIDLE);
-@@ -1022,7 +1027,7 @@ static enum link_training_result dpcd_exit_training_mode(struct dc_link *link, e
++		case XE_GUC_LOAD_STATUS_INIT_DATA_INVALID:
++			xe_gt_err(gt, "illegal init/ADS data\n");
++			break;
++
+ 		case XE_GUC_LOAD_STATUS_INIT_MMIO_SAVE_RESTORE_INVALID:
+ 			xe_gt_err(gt, "illegal register in save/restore workaround list\n");
+ 			break;
  
- 	if (encoding == DP_128b_132b_ENCODING) {
- 		/* poll for intra-hop disable */
--		for (i = 0; i < 10; i++) {
-+		for (i = 0; i < intra_hop_disable_time_ms; i++) {
- 			if ((core_link_read_dpcd(link, DP_SINK_STATUS, &sink_status, 1) == DC_OK) &&
- 					(sink_status & DP_INTRA_HOP_AUX_REPLY_INDICATION) == 0)
- 				break;
+-		case XE_GUC_LOAD_STATUS_HWCONFIG_START:
+-			xe_gt_err(gt, "still extracting hwconfig table.\n");
++		case XE_GUC_LOAD_STATUS_KLV_WORKAROUND_INIT_ERROR:
++			xe_gt_err(gt, "illegal workaround KLV data\n");
++			break;
++
++		case XE_GUC_LOAD_STATUS_INVALID_FTR_FLAG:
++			xe_gt_err(gt, "illegal feature flag specified\n");
+ 			break;
+ 		}
+ 
 -- 
 2.51.0
 
