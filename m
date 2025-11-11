@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-194395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70DA1C4B1CC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5105C4AEAE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 588B04F7A5D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0571F4F80A7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6182DC32A;
-	Tue, 11 Nov 2025 01:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424B13081C7;
+	Tue, 11 Nov 2025 01:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gi2O30IY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wu+MFZEm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085A03054DF;
-	Tue, 11 Nov 2025 01:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F7A255F28;
+	Tue, 11 Nov 2025 01:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825504; cv=none; b=S4AOqCxMjmxPXadNv5J4ddkUMts+RuvZ9pSv1VE25J4EDkbIVEba95t7kV20gAZ+dZ5a/5QbVypwlWMKWV6YWiXfY8DkybtdPVtgWVZHFLRFK/bgcTuWikmkITsF+HR2OGWZMppxcVOe6sodAYwjc3VsiFA+T0Y8tApNQEBs9bQ=
+	t=1762824893; cv=none; b=eYDjJ9nn3EpRpAA2JhBkN80CnsbP8MXJAjnUPDxmdCtpyAMixip1hhYBOHdBWN4bwizF+1FBJ7hCDWpGSoDN145aiLuu5FNMLMkb7cBJ8xOQIkKBtJiGsJzDOvjiUTAHo3lh7jWGAIkAdVk+4hjybTORT34alD1RZfdWvv4rsKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825504; c=relaxed/simple;
-	bh=g1Nxlx/F2XWa576eVsrF+O87w0ALUIGR0zxZ8cDImik=;
+	s=arc-20240116; t=1762824893; c=relaxed/simple;
+	bh=4iQdHi3gP9XaFfPkRL6O0s/Eo2RCiC0ngK3k0cc3+2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YiAVQW51SxyYQrUKAIVqbQjacjh/DCLLG+++8x76R/Dk5Q4UcWV8raJp1ScmbILBzgP7dZaapZyAKUbQvzjJvjPLh+KhoX2zOfbhWNho+4ZVY8w9vv3ZOtE7TbJExBUaLEoZoTfiHuW2qk+/vwCmx3BJp9uIhe3YInO2D4kOyfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gi2O30IY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A8AC19424;
-	Tue, 11 Nov 2025 01:45:03 +0000 (UTC)
+	 MIME-Version; b=HNaazU+5dFisHY2WRA7dVIW8p6GC0hFR9eq8Qyz5uJ2UkPcJwdwxSntZ5rPxJxTxWxX2gELSKjIPPKGtD+QO/TwAU7DClnIJTcnMH0p76AL8muoPDVFJQhAF64FU8h5oTtYZ+ChQ1JBNIiNClew0BnrWyqkD5U5F6jwvrqm8UyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wu+MFZEm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C919C2BC86;
+	Tue, 11 Nov 2025 01:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825503;
-	bh=g1Nxlx/F2XWa576eVsrF+O87w0ALUIGR0zxZ8cDImik=;
+	s=korg; t=1762824892;
+	bh=4iQdHi3gP9XaFfPkRL6O0s/Eo2RCiC0ngK3k0cc3+2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gi2O30IYPK7iDjES87zjTeL5HU/IE9m//0f64+fRr8jwxHVckvDVLpXXq7oIw6VMU
-	 D1EF0UADpvkxeLXfnYUJdvBgVE32YAncEP3oNu4J+BOzGcDFJdONdqRKM1LJlW1/Ih
-	 4w2477BUDjh3Z8C+z6yebEYQRH6y5zbYf9iBUpmA=
+	b=wu+MFZEmCYt3OA/6h7Y8NC6A1578dytJ01l9pV7SWQnUNF6NR2vJ3yfaaEs/y66Yn
+	 AvCWuQvgKAKaMyu4XgCImJYRwxUZuHCxhma+uNS4/gQcvsf6ID5EMulTBfJlUqam4a
+	 k8m0X7ojDrXUDZam6gzBcrWWwcoRHJGiMeJt1FAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.17 830/849] lib/crypto: curve25519-hacl64: Fix older clang KASAN workaround for GCC
-Date: Tue, 11 Nov 2025 09:46:40 +0900
-Message-ID: <20251111004556.493788997@linuxfoundation.org>
+	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 545/565] Bluetooth: MGMT: Fix OOB access in parse_adv_monitor_pattern()
+Date: Tue, 11 Nov 2025 09:46:41 +0900
+Message-ID: <20251111004539.250446109@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
 
-commit 2b81082ad37cc3f28355fb73a6a69b91ff7dbf20 upstream.
+commit 8d59fba49362c65332395789fd82771f1028d87e upstream.
 
-Commit 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with
-clang-17 and older") inadvertently disabled KASAN in curve25519-hacl64.o
-for GCC unconditionally because clang-min-version will always evaluate
-to nothing for GCC. Add a check for CONFIG_CC_IS_CLANG to avoid applying
-the workaround for GCC, which is only needed for clang-17 and older.
+In the parse_adv_monitor_pattern() function, the value of
+the 'length' variable is currently limited to HCI_MAX_EXT_AD_LENGTH(251).
+The size of the 'value' array in the mgmt_adv_pattern structure is 31.
+If the value of 'pattern[i].length' is set in the user space
+and exceeds 31, the 'patterns[i].value' array can be accessed
+out of bound when copied.
 
+Increasing the size of the 'value' array in
+the 'mgmt_adv_pattern' structure will break the userspace.
+Considering this, and to avoid OOB access revert the limits for 'offset'
+and 'length' back to the value of HCI_MAX_AD_LENGTH.
+
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
+
+Fixes: db08722fc7d4 ("Bluetooth: hci_core: Fix missing instances using HCI_MAX_AD_LENGTH")
 Cc: stable@vger.kernel.org
-Fixes: 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with clang-17 and older")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20251103-curve25519-hacl64-fix-kasan-workaround-v2-1-ab581cbd8035@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/crypto/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/bluetooth/mgmt.h |    2 +-
+ net/bluetooth/mgmt.c         |    6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/lib/crypto/Makefile
-+++ b/lib/crypto/Makefile
-@@ -48,7 +48,7 @@ libcurve25519-generic-y				:= curve25519
- libcurve25519-generic-$(CONFIG_ARCH_SUPPORTS_INT128)	:= curve25519-hacl64.o
- libcurve25519-generic-y				+= curve25519-generic.o
- # clang versions prior to 18 may blow out the stack with KASAN
--ifeq ($(call clang-min-version, 180000),)
-+ifeq ($(CONFIG_CC_IS_CLANG)_$(call clang-min-version, 180000),y_)
- KASAN_SANITIZE_curve25519-hacl64.o := n
- endif
+--- a/include/net/bluetooth/mgmt.h
++++ b/include/net/bluetooth/mgmt.h
+@@ -774,7 +774,7 @@ struct mgmt_adv_pattern {
+ 	__u8 ad_type;
+ 	__u8 offset;
+ 	__u8 length;
+-	__u8 value[31];
++	__u8 value[HCI_MAX_AD_LENGTH];
+ } __packed;
  
+ #define MGMT_OP_ADD_ADV_PATTERNS_MONITOR	0x0052
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -5365,9 +5365,9 @@ static u8 parse_adv_monitor_pattern(stru
+ 	for (i = 0; i < pattern_count; i++) {
+ 		offset = patterns[i].offset;
+ 		length = patterns[i].length;
+-		if (offset >= HCI_MAX_EXT_AD_LENGTH ||
+-		    length > HCI_MAX_EXT_AD_LENGTH ||
+-		    (offset + length) > HCI_MAX_EXT_AD_LENGTH)
++		if (offset >= HCI_MAX_AD_LENGTH ||
++		    length > HCI_MAX_AD_LENGTH ||
++		    (offset + length) > HCI_MAX_AD_LENGTH)
+ 			return MGMT_STATUS_INVALID_PARAMS;
+ 
+ 		p = kmalloc(sizeof(*p), GFP_KERNEL);
 
 
 
