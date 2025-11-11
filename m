@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-193841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5021C4AA06
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46058C4B097
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:54:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 517704F8FA1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F8E73B839F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A513446AC;
-	Tue, 11 Nov 2025 01:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5456C26B76A;
+	Tue, 11 Nov 2025 01:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pAlEkQZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDXmllyk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A10C263F52;
-	Tue, 11 Nov 2025 01:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4C025C818;
+	Tue, 11 Nov 2025 01:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824132; cv=none; b=rfxvz70NyV97KobqDi6nF5MxeMy7mpd6GzSw3NFmTj2L61D0wHoLig1TcwP4YCw+e/BvVFpyb/+jZQP2/yiA6r0D4mRwAxkkg9outSTSBwpqN9xK2oiQKuh5ahlyYE4L6QP5COtkRdq2FV9hjGirEN3pRY7t9hMH9AMtrv10iPM=
+	t=1762825073; cv=none; b=tEW5jf8HJUWjjM9MrG9JSiZnIsoKETJGhd0E7t6GzKi+1R0qH60RR+4MWdUHxeiLt5lobH5t/7n1rhV4btuBwc1zQVbrz/arcUI8Q8r4QTQ5M5/K/RfBHklZMVbGl+M1xzmMffwIG0N/JpY3Bf9NYOq73j9uUJwJnGucH2oJTsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824132; c=relaxed/simple;
-	bh=TMKE7IlWqyYzI+qRZlQT+i/u4A1oDEI0GPv+iF4EG0o=;
+	s=arc-20240116; t=1762825073; c=relaxed/simple;
+	bh=VYqycBdqapcDzeKa1OjB0GVw2RU4o1CywwGGGTKfrP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=edHEnIy0VOqlps+uNZyz3KE1vf/9pYa2ikuxlxOen6mgtb877x9goPBq/RzKTtMymLMS02IIKNhiujIkUmcp22PhC1rMakgtb6wTrv9IPIp/JtyRs2K4dCU4HHp+pd7kNJeJjP52K6SBCC++v0xRnC3AXsnaBUTOkl2U7BKb/7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAlEkQZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF93C116D0;
-	Tue, 11 Nov 2025 01:22:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FiJC+ntVZh1QoOmuUlUsbYb6dxUZIm4tynlfcg0lR/MfzPgGfKdKhcfiGcm83GI+PfM3qkj61DsLcZ3dTWOMv6lIy14oXy/3oqdXnM+RQwQE8zcbRpB82knaLAOXaXQEqk3CD3+ol40hMfB7HVPiYqPvsDNcJYHyQCrgP1dcHFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDXmllyk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E70BC4CEFB;
+	Tue, 11 Nov 2025 01:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824132;
-	bh=TMKE7IlWqyYzI+qRZlQT+i/u4A1oDEI0GPv+iF4EG0o=;
+	s=korg; t=1762825072;
+	bh=VYqycBdqapcDzeKa1OjB0GVw2RU4o1CywwGGGTKfrP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pAlEkQZD95xaPj81WJo13LEmKLvBL7KFt+CwCGWZ0raOF7GfUQfoOuDwZ/Vxnm05/
-	 i2BA2JSf/ZNiHG7ZxDIJB2FwGyEN+Yka5hSuUCTKeLPcGtGjvF7l9dKHetyfsbAtuf
-	 3cI+vw7s+P8RlEqes7Ci6jMx0jAqaAtBWqACPPD8=
+	b=jDXmllykxcN4ECZ9WzMjesN+LtFDy4ctuk9up1hmfXwnQX1O0VQUs9FTbbiFUqw9m
+	 tzhiiOg6olypRT0bVURjHtW23Nd16YTQO9wOD+qMJCtJO5pPY+mhcenfAn7h/HzUOs
+	 kYm/CYMTS0rwd0oHP+FCfCPpDIkj2ysG/A6B0Jxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Chen <leo.chen@amd.com>,
-	Ausef Yousof <Ausef.Yousof@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 362/565] drm/amd/display: fix dml ms order of operations
+Subject: [PATCH 6.17 648/849] drm/amdgpu: Fix fence signaling race condition in userqueue
 Date: Tue, 11 Nov 2025 09:43:38 +0900
-Message-ID: <20251111004535.010145146@linuxfoundation.org>
+Message-ID: <20251111004552.092495816@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ausef Yousof <Ausef.Yousof@amd.com>
+From: Jesse.Zhang <Jesse.Zhang@amd.com>
 
-[ Upstream commit 02a6c2e4b28ff31f7a904c196a99fb2efe81e2cf ]
+[ Upstream commit b8ae2640f9acd4f411c9227d2493755d03fe440a ]
 
-[why&how]
-small error in order of operations in immediateflipbytes
-calculation on dml ms side that can result in dml ms
-and mp mismatch immediateflip support for a given pipe
-and thus an invalid hw state, correct the order to align
-with mp.
+This commit fixes a potential race condition in the userqueue fence
+signaling mechanism by replacing dma_fence_is_signaled_locked() with
+dma_fence_is_signaled().
 
-Reviewed-by: Leo Chen <leo.chen@amd.com>
-Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+The issue occurred because:
+1. dma_fence_is_signaled_locked() should only be used when holding
+   the fence's individual lock, not just the fence list lock
+2. Using the locked variant without the proper fence lock could lead
+   to double-signaling scenarios:
+   - Hardware completion signals the fence
+   - Software path also tries to signal the same fence
+
+By using dma_fence_is_signaled() instead, we properly handle the
+locking hierarchy and avoid the race condition while still maintaining
+the necessary synchronization through the fence_list_lock.
+
+v2: drop the comment (Christian)
+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-index 6822b07951204..d0b7fae7d73c8 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-@@ -6527,7 +6527,7 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
- 				mode_lib->ms.TotImmediateFlipBytes = 0;
- 				for (k = 0; k <= mode_lib->ms.num_active_planes - 1; k++) {
- 					if (!(mode_lib->ms.policy.ImmediateFlipRequirement[k] == dml_immediate_flip_not_required)) {
--						mode_lib->ms.TotImmediateFlipBytes = mode_lib->ms.TotImmediateFlipBytes + mode_lib->ms.NoOfDPP[j][k] * mode_lib->ms.PDEAndMetaPTEBytesPerFrame[j][k] + mode_lib->ms.MetaRowBytes[j][k];
-+						mode_lib->ms.TotImmediateFlipBytes = mode_lib->ms.TotImmediateFlipBytes + mode_lib->ms.NoOfDPP[j][k] * (mode_lib->ms.PDEAndMetaPTEBytesPerFrame[j][k] + mode_lib->ms.MetaRowBytes[j][k]);
- 						if (mode_lib->ms.use_one_row_for_frame_flip[j][k]) {
- 							mode_lib->ms.TotImmediateFlipBytes = mode_lib->ms.TotImmediateFlipBytes + mode_lib->ms.NoOfDPP[j][k] * (2 * mode_lib->ms.DPTEBytesPerRow[j][k]);
- 						} else {
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+index c2a983ff23c95..b372baae39797 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+@@ -276,7 +276,7 @@ static int amdgpu_userq_fence_create(struct amdgpu_usermode_queue *userq,
+ 
+ 	/* Check if hardware has already processed the job */
+ 	spin_lock_irqsave(&fence_drv->fence_list_lock, flags);
+-	if (!dma_fence_is_signaled_locked(fence))
++	if (!dma_fence_is_signaled(fence))
+ 		list_add_tail(&userq_fence->link, &fence_drv->fences);
+ 	else
+ 		dma_fence_put(fence);
 -- 
 2.51.0
 
