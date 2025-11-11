@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-194137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A39C4AE77
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A84C4A71A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 507714F2506
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 882A44F7621
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482383081AC;
-	Tue, 11 Nov 2025 01:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE6E346FCA;
+	Tue, 11 Nov 2025 01:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puvBHop/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9vxF2BY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D21255F28;
-	Tue, 11 Nov 2025 01:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FAF1D86FF;
+	Tue, 11 Nov 2025 01:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824891; cv=none; b=uifFtBBz1wXdAeaQirYCvWgOHbgvMQltKSAIYvuCLNMeIdoKY8LvbAKkRoUBBdNoeU0fDCaS08MNm1QIamZNzfmZbkqXvPAIZ9pZb+v6CY9/NKhhidx7sLr5koWVgv2Swo2xOZ1U71xMPXFV16FY1Uj+RbOotD168mauuh4dw+I=
+	t=1762823717; cv=none; b=tHrmnajbkWFUhzHtILaV4trW5xJ2VU8TxivryY64AGdSoKZKjZmNAYhSibPK0q51Dlb1qK7t8OlVVUij8HkeJkwvWY+crLbvdh6qhcIimFv2avvCZr+Ner06VEfPXpcIZLsAzhdF+ASJMhuebLMWtZLaMs/X14+wWhLr77Bt04g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824891; c=relaxed/simple;
-	bh=UzYyebwdVQKYug4wnmv+0OA+B8bS+42N7UuCyp6BR0U=;
+	s=arc-20240116; t=1762823717; c=relaxed/simple;
+	bh=43tVYFp8KxrD3tLFRypStTB+Hwnoanhy0Y8wM9EIhOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XSGlE/dREaN/Ei0bqcG2wCzLFvifhtOTATB716romck43re6shLEpoqpjVXABPBMCpe+Lt81aiYme1WvKL9GG3OAcw4ZVCjXLPHB3/vxhN8gfRcP/hTSHwQy0WRKhzqGsS7v2iqJlSJn1COEclhi87GtDyYy12VlCZHaSYG8SFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puvBHop/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464A1C4CEFB;
-	Tue, 11 Nov 2025 01:34:50 +0000 (UTC)
+	 MIME-Version; b=b0WWtPDKlB2lha52YuUeV5jl1XtQ1y4xz5D13IEdgPAEsFjru0kVIh10G08BxXnOEAilBHZTZjuII4DUvgE+9Ce3YxUV+QWrMMRbEnqOcBr+I6nqpEVnI/CvfIco8ttrKwr3xNvvYMaUNXiTJFSrOGK7dCHVQ+mCD8t8CNVH5Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9vxF2BY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED83C2BC86;
+	Tue, 11 Nov 2025 01:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824890;
-	bh=UzYyebwdVQKYug4wnmv+0OA+B8bS+42N7UuCyp6BR0U=;
+	s=korg; t=1762823717;
+	bh=43tVYFp8KxrD3tLFRypStTB+Hwnoanhy0Y8wM9EIhOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=puvBHop/gXqe2rkGOR0g/m5lmyrJasgsErumYzkJddE2XgEf9z7E8y1Sg9PE1rBl9
-	 7PAbjAOXJyHxnSdhEnOdV3/t7wprVP1MQgvJ8metmyGQQtsQ+ytpwar7K0vckvsPnG
-	 8A78MkL+7JRdnvWiQCEyiZBgyXZwmeHxCZNJB6Cg=
+	b=u9vxF2BYTeq/QwCoFcV6Rf2ZmWA0iMJZAXyBBGZVWlDaCTZviotgtPb3/fJrHI7/k
+	 fkU5fxVEet6PMA4+es4/iUE0yd/6NvqhQUjBCdcjGIKikQfJ1QLkV8qZViHVyFxJJB
+	 7DN896i+kGbU7QMtjJo1DThpO3HYZhMeuCdxFnvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 592/849] mei: make a local copy of client uuid in connect
+Subject: [PATCH 6.12 306/565] drm/amd: add more cyan skillfish PCI ids
 Date: Tue, 11 Nov 2025 09:42:42 +0900
-Message-ID: <20251111004550.737438948@linuxfoundation.org>
+Message-ID: <20251111004533.766624913@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit bb29fc32ae56393269d8fe775159fd59e45682d1 ]
+[ Upstream commit 1e18746381793bef7c715fc5ec5611a422a75c4c ]
 
-Connect ioctl has the same memory for in and out parameters.
-Copy in parameter (client uuid) to the local stack to avoid it be
-overwritten by out parameters fill.
+Add additional PCI IDs to the cyan skillfish family.
 
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250918130435.3327400-3-alexander.usyskin@intel.com
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/main.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
-index 8a149a15b8610..77e7b641b8e97 100644
---- a/drivers/misc/mei/main.c
-+++ b/drivers/misc/mei/main.c
-@@ -641,7 +641,7 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
- 	struct mei_cl *cl = file->private_data;
- 	struct mei_connect_client_data conn;
- 	struct mei_connect_client_data_vtag conn_vtag;
--	const uuid_le *cl_uuid;
-+	uuid_le cl_uuid;
- 	struct mei_client *props;
- 	u8 vtag;
- 	u32 notify_get, notify_req;
-@@ -669,18 +669,18 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
- 			rets = -EFAULT;
- 			goto out;
- 		}
--		cl_uuid = &conn.in_client_uuid;
-+		cl_uuid = conn.in_client_uuid;
- 		props = &conn.out_client_properties;
- 		vtag = 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 93c3de2d27d3a..41397f1cdeb8a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2135,6 +2135,11 @@ static const struct pci_device_id pciidlist[] = {
+ 	{0x1002, 0x7410, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_ALDEBARAN},
  
--		rets = mei_vt_support_check(dev, cl_uuid);
-+		rets = mei_vt_support_check(dev, &cl_uuid);
- 		if (rets == -ENOTTY)
- 			goto out;
- 		if (!rets)
--			rets = mei_ioctl_connect_vtag(file, cl_uuid, props,
-+			rets = mei_ioctl_connect_vtag(file, &cl_uuid, props,
- 						      vtag);
- 		else
--			rets = mei_ioctl_connect_client(file, cl_uuid, props);
-+			rets = mei_ioctl_connect_client(file, &cl_uuid, props);
- 		if (rets)
- 			goto out;
- 
-@@ -702,14 +702,14 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
- 			goto out;
- 		}
- 
--		cl_uuid = &conn_vtag.connect.in_client_uuid;
-+		cl_uuid = conn_vtag.connect.in_client_uuid;
- 		props = &conn_vtag.out_client_properties;
- 		vtag = conn_vtag.connect.vtag;
- 
--		rets = mei_vt_support_check(dev, cl_uuid);
-+		rets = mei_vt_support_check(dev, &cl_uuid);
- 		if (rets == -EOPNOTSUPP)
- 			cl_dbg(dev, cl, "FW Client %pUl does not support vtags\n",
--				cl_uuid);
-+				&cl_uuid);
- 		if (rets)
- 			goto out;
- 
-@@ -719,7 +719,7 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
- 			goto out;
- 		}
- 
--		rets = mei_ioctl_connect_vtag(file, cl_uuid, props, vtag);
-+		rets = mei_ioctl_connect_vtag(file, &cl_uuid, props, vtag);
- 		if (rets)
- 			goto out;
+ 	/* CYAN_SKILLFISH */
++	{0x1002, 0x13DB, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
++	{0x1002, 0x13F9, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
++	{0x1002, 0x13FA, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
++	{0x1002, 0x13FB, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
++	{0x1002, 0x13FC, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
+ 	{0x1002, 0x13FE, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
+ 	{0x1002, 0x143F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
  
 -- 
 2.51.0
