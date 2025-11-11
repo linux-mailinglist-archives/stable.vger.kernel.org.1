@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-194246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A479BC4AF9A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE40C4B00F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:53:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7100318834FA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 247F43B280C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA0326ED5E;
-	Tue, 11 Nov 2025 01:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B5323C4F2;
+	Tue, 11 Nov 2025 01:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DC3WPaNo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fk02Mlbc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE73824A043;
-	Tue, 11 Nov 2025 01:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7242324466D;
+	Tue, 11 Nov 2025 01:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825148; cv=none; b=j977ypYPMvuHqkusnrKFUwCESfpCOPVVPX8tZ4uSazDccMbfR3okLiWtGokZi/N7sckGeUCvl10ErH4QOqSIVvVg85f6d/uY1oeQOxiSBCWnlJRce/sGrBZ8fgcdR2WzRhEwr1GuyZJhNB9rUS+wZtakuHdgPu07wonJTFttU/k=
+	t=1762825153; cv=none; b=plDm/TxLkUtR9iFxhGHLx9PJ4CLmAJ+4IheGJ4r79iCR3LE1NHkNQSqsdafc2SIdegWKGxuN7JwWQtITyU21N4LO/o1SKlgO75cinTNhctWXOH/IemH73iV0ymHxKz8dLW8H7GHmGxO73Ktp6gr8Rr2TY8BQ969sZlX9Esc3S7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825148; c=relaxed/simple;
-	bh=2eeAqCl8N0gE5H3oBRaQBywLgC7H/NjPsGJdMfB0ESQ=;
+	s=arc-20240116; t=1762825153; c=relaxed/simple;
+	bh=0Lx2R2ttZHK343mDHxCzAqj5Kzg97JVf+DyM6kJCKbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PSzmr8wA412V+SGMsvSznIL5msoEvLYZd1913O3uVmLa6YmhgZgpK+qzYJwORFk1Xkooe9h3Af9YgpHiQpTaPuTW3xo5/jS1u+Vi/cs5dfZpdrRtpW4JG0D+P5QJjNIMFAHfMtIPO8I353kpLgqg0u5FOr01aZGjNKjCwo8WKoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DC3WPaNo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094F4C4CEF5;
-	Tue, 11 Nov 2025 01:39:07 +0000 (UTC)
+	 MIME-Version; b=bM09sRn/JphuJVWaQBdVtTa6Zox0BHtPI6C60KYFBh0vgz42yvkSphO1SEHjBB4jKQ8c5sd5/4v/IJj1rt0UtNlErLDuMXTqbUw/dKFzFPEAJUwO4iuE8ix8Yt8UoaZvJIrBZ9sV+b1i0JyU7/UxmlIXH7akZ2hXOTAqfHrahrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fk02Mlbc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D932AC16AAE;
+	Tue, 11 Nov 2025 01:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825148;
-	bh=2eeAqCl8N0gE5H3oBRaQBywLgC7H/NjPsGJdMfB0ESQ=;
+	s=korg; t=1762825153;
+	bh=0Lx2R2ttZHK343mDHxCzAqj5Kzg97JVf+DyM6kJCKbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DC3WPaNo0hv7+JjdqK0gs98cJ0MjTYXks6veSjAol/DlxNp2VdpfsLUuCfxYxutNO
-	 yusGaoHPfVyBPh0Wdax6SeSrV1izQlLYB5DPM0VPApyKS5lVo8ML4HxUmdL1VEyXWE
-	 Mo3tMa8zRTVPwVw+04TJtRCq9l7Kfi4f3f5nT3jo=
+	b=fk02Mlbc2Rl+ua06AktrteXyzLOHfcK8GSzUsuUjSgdN2pUvQBNI2XhDjJzuWKbw+
+	 y7SdNhYJKDfgzz7F8/y76gX4EeAVHgVNiPXj3z3hNl95ocriL3OcdioS3m7jIzT7qE
+	 wdeycTevbEXzLokpo4fRIE9hAYLtN0j3kpwOBQKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saket Dumbre <saket.dumbre@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	YanLong Dai <daiyanlong@kylinos.cn>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 682/849] ACPICA: Update dsmethod.c to get rid of unused variable warning
-Date: Tue, 11 Nov 2025 09:44:12 +0900
-Message-ID: <20251111004552.908990889@linuxfoundation.org>
+Subject: [PATCH 6.17 683/849] RDMA/bnxt_re: Fix a potential memory leak in destroy_gsi_sqp
+Date: Tue, 11 Nov 2025 09:44:13 +0900
+Message-ID: <20251111004552.935345741@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,34 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Saket Dumbre <saket.dumbre@intel.com>
+From: YanLong Dai <daiyanlong@kylinos.cn>
 
-[ Upstream commit 761dc71c6020d6aa68666e96373342d49a7e9d0a ]
+[ Upstream commit 88de89f184661ebb946804a5abdf2bdec7f0a7ab ]
 
-All the 3 major C compilers (MSVC, GCC, LLVM/Clang) warn about
-the unused variable i after the removal of its usage by PR #1031
-addressing Issue #1027
+The current error handling path in bnxt_re_destroy_gsi_sqp() could lead
+to a resource leak. When bnxt_qplib_destroy_qp() fails, the function
+jumps to the 'fail' label and returns immediately, skipping the call
+to bnxt_qplib_free_qp_res().
 
-Link: https://github.com/acpica/acpica/commit/6d235320
-Signed-off-by: Saket Dumbre <saket.dumbre@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Continue the resource teardown even if bnxt_qplib_destroy_qp() fails,
+which aligns with the driver's general error handling strategy and
+prevents the potential leak.
+
+Fixes: 8dae419f9ec73 ("RDMA/bnxt_re: Refactor queue pair creation code")
+Signed-off-by: YanLong Dai <daiyanlong@kylinos.cn>
+Link: https://patch.msgid.link/20250924061444.11288-1-daiyanlong@kylinos.cn
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/dsmethod.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
-index e707a70368026..b2f756b7078d3 100644
---- a/drivers/acpi/acpica/dsmethod.c
-+++ b/drivers/acpi/acpica/dsmethod.c
-@@ -462,7 +462,6 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
- 	struct acpi_walk_state *next_walk_state = NULL;
- 	union acpi_operand_object *obj_desc;
- 	struct acpi_evaluate_info *info;
--	u32 i;
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 260dc67b8b87c..12fee23de81e7 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -911,7 +911,7 @@ void bnxt_re_unlock_cqs(struct bnxt_re_qp *qp,
+ 	spin_unlock_irqrestore(&qp->scq->cq_lock, flags);
+ }
  
- 	ACPI_FUNCTION_TRACE_PTR(ds_call_control_method, this_walk_state);
+-static int bnxt_re_destroy_gsi_sqp(struct bnxt_re_qp *qp)
++static void bnxt_re_destroy_gsi_sqp(struct bnxt_re_qp *qp)
+ {
+ 	struct bnxt_re_qp *gsi_sqp;
+ 	struct bnxt_re_ah *gsi_sah;
+@@ -931,10 +931,9 @@ static int bnxt_re_destroy_gsi_sqp(struct bnxt_re_qp *qp)
  
+ 	ibdev_dbg(&rdev->ibdev, "Destroy the shadow QP\n");
+ 	rc = bnxt_qplib_destroy_qp(&rdev->qplib_res, &gsi_sqp->qplib_qp);
+-	if (rc) {
++	if (rc)
+ 		ibdev_err(&rdev->ibdev, "Destroy Shadow QP failed");
+-		goto fail;
+-	}
++
+ 	bnxt_qplib_free_qp_res(&rdev->qplib_res, &gsi_sqp->qplib_qp);
+ 
+ 	/* remove from active qp list */
+@@ -949,10 +948,6 @@ static int bnxt_re_destroy_gsi_sqp(struct bnxt_re_qp *qp)
+ 	rdev->gsi_ctx.gsi_sqp = NULL;
+ 	rdev->gsi_ctx.gsi_sah = NULL;
+ 	rdev->gsi_ctx.sqp_tbl = NULL;
+-
+-	return 0;
+-fail:
+-	return rc;
+ }
+ 
+ /* Queue Pairs */
 -- 
 2.51.0
 
