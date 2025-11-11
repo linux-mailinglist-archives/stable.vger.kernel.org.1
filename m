@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-194326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFC8C4B139
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CC0C4AB6E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 749524FB7EE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E75D4F7767
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EEA734AB01;
-	Tue, 11 Nov 2025 01:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8832A2FD7CA;
+	Tue, 11 Nov 2025 01:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiQk5PPS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yfzhtj6n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7A133F37D;
-	Tue, 11 Nov 2025 01:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BCD34D38E;
+	Tue, 11 Nov 2025 01:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825342; cv=none; b=btzM2V12Ds3AzKLiIXGAYQRicqNzjzKhPIZv6nPQ18xdtVqnXRpswunY15ZMmkQNiYGBSchACA2/ELN4SChAcNXMrTEpGo3ta67RqPuoWgkaxLs7tLdnsoEdxnxSkN2EmJS2XoBQGTjHRQu6zA8wwVPFpmhFcokJzc6n0CrSJss=
+	t=1762824380; cv=none; b=iMCeJmzjy5ijVoBuiXKyNIbvybdqjkcTz3jm20ZbgAlWHiWDIfFqnitw12uoLpeBeZePzMZq0nmxNsDhAU/8FeTEJpma7AYfq3htEFljf99aazxDjc9TUwa3AgCJ/i6uVmmfrzr13hrUIFrH64ql7OqFNVIRXuedzE52X7zmWQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825342; c=relaxed/simple;
-	bh=pI4WSoSuI9MwOJx2fCnuM5Ghh7KTO+A/hJqmMoWOkK4=;
+	s=arc-20240116; t=1762824380; c=relaxed/simple;
+	bh=wMuM6b4bCUOOVRJpI85pk7+NcnkzRN7kmbG7hW8l7S4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqzhZ2GaNbStpRURIdnYF2vUW3yGq2VKW0TA1RU6ZSCZOVMQrDGYwtzwypDc74RPN9K2SQ41UeF1s7gmZhEqzzj8m/7Wa862OFQan3zLxK9hRCRQFkN6faLLmxrmtUynOsyeaRTHf/Cn1u9q3oo9DMl8fhnh+GgngmA47sooJis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiQk5PPS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82786C16AAE;
-	Tue, 11 Nov 2025 01:42:20 +0000 (UTC)
+	 MIME-Version; b=QP/fkYwOo3sXnht7AcZLyh5BQ7AXWiC0z8i/3R46GbcZQt58sLB3c959KinYtnizozGPRekeDQpX2WWJq8toDvapIBA6IvxV8dZvEHh4qDpZBA4qe6Eg9rfeLB9Nu7BP47ReehNpbV3x2WKN7cM2DT7UN0IghlA6e2GHI7f+YqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yfzhtj6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B76C113D0;
+	Tue, 11 Nov 2025 01:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825340;
-	bh=pI4WSoSuI9MwOJx2fCnuM5Ghh7KTO+A/hJqmMoWOkK4=;
+	s=korg; t=1762824379;
+	bh=wMuM6b4bCUOOVRJpI85pk7+NcnkzRN7kmbG7hW8l7S4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TiQk5PPSqxWaSDdqwrdw9HG6L90ztoKD/WM2kcjssys14LrcSwSqTpGoD/uzERZFT
-	 NsZXEHQJYKvy/pBQywYUwObUqd4xdVma9IYl7kfrXcDXy4EqhqbI8eM2N69r7RnXX4
-	 byXauCvYslwQu6vjlovOVQFY1c2if7/ucp4Fj0p8=
+	b=Yfzhtj6n3Rrb5YsFvX3zfzCtNPxqMiYQTjrUzUfcHIOn+hj9MepJQDKGKpt2T9aJK
+	 CIUZWQFHV+TekwGJdt+C4JSNEDUs0DqsdgpZ67G+U//mTmcoAO3Su5OtGaQtiUaJyp
+	 GdtGqrqQOxSYs136/eHPCgB5pb+87IdRHsDn2GV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 718/849] ACPI: property: Return present device nodes only on fwnode interface
+Subject: [PATCH 6.12 432/565] ACPI: scan: Update honor list for RPMI System MSI
 Date: Tue, 11 Nov 2025 09:44:48 +0900
-Message-ID: <20251111004553.791027632@linuxfoundation.org>
+Message-ID: <20251111004536.592577455@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +67,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-[ Upstream commit d9f866b2bb3eec38b3734f1fed325ec7c55ccdfa ]
+[ Upstream commit 4215d1cf59e4b272755f4277a05cd5967935a704 ]
 
-fwnode_graph_get_next_subnode() may return fwnode backed by ACPI
-device nodes and there has been no check these devices are present
-in the system, unlike there has been on fwnode OF backend.
+The RPMI System MSI interrupt controller (just like PLIC and APLIC)
+needs to probed prior to devices like GED which use interrupts provided
+by it. Also, it has dependency on the SBI MPXY mailbox device.
 
-In order to provide consistent behaviour towards callers,
-add a check for device presence by introducing
-a new function acpi_get_next_present_subnode(), used as the
-get_next_child_node() fwnode operation that also checks device
-node presence.
+Add HIDs of RPMI System MSI and SBI MPXY mailbox devices to the honor
+list so that those dependencies are handled.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Link: https://patch.msgid.link/20251001102636.1272722-2-sakari.ailus@linux.intel.com
-[ rjw: Kerneldoc comment and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Acked-by: Jassi Brar <jassisinghbrar@gmail.com>
+Link: https://lore.kernel.org/r/20250818040920.272664-17-apatel@ventanamicro.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/property.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ drivers/acpi/scan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index c086786fe84cb..d74678f0ba4af 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1357,6 +1357,28 @@ struct fwnode_handle *acpi_get_next_subnode(const struct fwnode_handle *fwnode,
- 	return NULL;
- }
- 
-+/*
-+ * acpi_get_next_present_subnode - Return the next present child node handle
-+ * @fwnode: Firmware node to find the next child node for.
-+ * @child: Handle to one of the device's child nodes or a null handle.
-+ *
-+ * Like acpi_get_next_subnode(), but the device nodes returned by
-+ * acpi_get_next_present_subnode() are guaranteed to be present.
-+ *
-+ * Returns: The fwnode handle of the next present sub-node.
-+ */
-+static struct fwnode_handle *
-+acpi_get_next_present_subnode(const struct fwnode_handle *fwnode,
-+			      struct fwnode_handle *child)
-+{
-+	do {
-+		child = acpi_get_next_subnode(fwnode, child);
-+	} while (is_acpi_device_node(child) &&
-+		 !acpi_device_is_present(to_acpi_device_node(child)));
-+
-+	return child;
-+}
-+
- /**
-  * acpi_node_get_parent - Return parent fwnode of this fwnode
-  * @fwnode: Firmware node whose parent to get
-@@ -1701,7 +1723,7 @@ static int acpi_fwnode_irq_get(const struct fwnode_handle *fwnode,
- 		.property_read_string_array =				\
- 			acpi_fwnode_property_read_string_array,		\
- 		.get_parent = acpi_node_get_parent,			\
--		.get_next_child_node = acpi_get_next_subnode,		\
-+		.get_next_child_node = acpi_get_next_present_subnode,	\
- 		.get_named_child_node = acpi_fwnode_get_named_child_node, \
- 		.get_name = acpi_fwnode_get_name,			\
- 		.get_name_prefix = acpi_fwnode_get_name_prefix,		\
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 4ef94d06365fc..ba98763ced7d4 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -862,6 +862,8 @@ static const char * const acpi_honor_dep_ids[] = {
+ 	"INTC10CF", /* IVSC (MTL) driver must be loaded to allow i2c access to camera sensors */
+ 	"RSCV0001", /* RISC-V PLIC */
+ 	"RSCV0002", /* RISC-V APLIC */
++	"RSCV0005", /* RISC-V SBI MPXY MBOX */
++	"RSCV0006", /* RISC-V RPMI SYSMSI */
+ 	"PNP0C0F",  /* PCI Link Device */
+ 	NULL
+ };
 -- 
 2.51.0
 
