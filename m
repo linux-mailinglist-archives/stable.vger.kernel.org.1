@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F090AC4AAD5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A38BC4AFAF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 99ABB4F68DD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B79EA188FF54
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D56346FAB;
-	Tue, 11 Nov 2025 01:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD0F3081D2;
+	Tue, 11 Nov 2025 01:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7l9ggOa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ms0zYPJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA713346FA2;
-	Tue, 11 Nov 2025 01:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F12F2472A6;
+	Tue, 11 Nov 2025 01:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824249; cv=none; b=Se46FwaPdtMo7/pYLDyMqKG0bHi2jfTT/9VZJIhIrJF9Le0TBFh9nnT6ZgiVXMzBbCXhQXtpjx52qpbbXfMa60jYrfHgzS45UGg5WOEDlww23XHT2lAHWuO1dkLCjvn2i2XkPHxV62trc87U/gub31WcCru2cC2ZGYrjIm/iemg=
+	t=1762825212; cv=none; b=b214eE9J6bPnTM/mV57riJP13Idwosh1jjAClw0+WTKlFGew8ae3X88HBTtWvxMIq1Cd/8J4BYl94X4JjN89XfeEh901M+KxqqCTIVkLziZ1t1svSiIKSiS6gQxb40IxdnqySkJhgHfKneC+vwyHkjzMcLPZtXapz5iyrIwtoNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824249; c=relaxed/simple;
-	bh=YO3TAJBgCHNZShoMNwLIaV/76v7Kqg/6zMusK248k4I=;
+	s=arc-20240116; t=1762825212; c=relaxed/simple;
+	bh=s1OtRQEnmoPbGBMT1KbarnsgBxcE2dyPdtk8ksFG8BA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uzrCXEER+D6fMCY4DvRhlTXk7pfrfoYtcGo29NXyJGMzIzvK6b2IXzmn7OU3TPPaXV4/jw/ePD+w9jmNBNzj5831m7pnkiszBlPFd9PGJO4XuWV3Acbx7qaUgAE1XTk3METxg+nf7xGWfM7XQbkgY81MxTbQQ3eB7LTEQKGIqiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7l9ggOa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFBDC4CEFB;
-	Tue, 11 Nov 2025 01:24:09 +0000 (UTC)
+	 MIME-Version; b=HFwldDn9wW4KHCdsKzAH127D+WiZq3uIG61vpqY3c/uU0uEtaOLj5VVienv7jiouL5xmse4mLRGHzTGu3mO/1mt5Hp8xh63MTfvYre8xOssUghDBoz76LcNQiGX5mgp/OS8WCSjymfpr2LjbKe0AJk3r0nvk28oS44vC8RVD5EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ms0zYPJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B6DC116B1;
+	Tue, 11 Nov 2025 01:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824249;
-	bh=YO3TAJBgCHNZShoMNwLIaV/76v7Kqg/6zMusK248k4I=;
+	s=korg; t=1762825212;
+	bh=s1OtRQEnmoPbGBMT1KbarnsgBxcE2dyPdtk8ksFG8BA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g7l9ggOafKoHb1inMv+BqHdmOfYdhHwl1R/wJ33Q0NyrScRdF8qJ2XWl1eBG8pJ2L
-	 oJSrwNdRLDUudKZJYGwnY5GTcahUgQUhmg7rdO+sHyAL3HpbmmOyf3TqkWIKrOmfsO
-	 jCvsuMPGpCUaK3g9WtqvYwh3yJoGbST6IyW1hxmc=
+	b=ms0zYPJBUQFam6n4kVrTt2hEOKrteZJ0sxiAeTV3eEiCVfyih0XX/AMWZ0spiarFp
+	 776vxFJ2rOqGaoaaN/slK+JvqnLumS60wvZniOyew5tW4Yhseli9vbd+Oqx6R2qGwE
+	 KcxLWrUXRYMh+HnlisUWhB+/u5LxB3VVHKdIdF6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Ryan Wanner <Ryan.Wanner@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 419/565] nfs4_setup_readdir(): insufficient locking for ->d_parent->d_inode dereferencing
-Date: Tue, 11 Nov 2025 09:44:35 +0900
-Message-ID: <20251111004536.288138112@linuxfoundation.org>
+Subject: [PATCH 6.17 706/849] clk: at91: clk-master: Add check for divide by 3
+Date: Tue, 11 Nov 2025 09:44:36 +0900
+Message-ID: <20251111004553.503888364@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Ryan Wanner <Ryan.Wanner@microchip.com>
 
-[ Upstream commit a890a2e339b929dbd843328f9a92a1625404fe63 ]
+[ Upstream commit e0237f5635727d64635ec6665e1de9f4cacce35c ]
 
-Theoretically it's an oopsable race, but I don't believe one can manage
-to hit it on real hardware; might become doable on a KVM, but it still
-won't be easy to attack.
+A potential divider for the master clock is div/3. The register
+configuration for div/3 is MASTER_PRES_MAX. The current bit shifting
+method does not work for this case. Checking for MASTER_PRES_MAX will
+ensure the correct decimal value is stored in the system.
 
-Anyway, it's easy to deal with - since xdr_encode_hyper() is just a call of
-put_unaligned_be64(), we can put that under ->d_lock and be done with that.
-
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clk/at91/clk-master.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 2b71d39fe8c01..b0ba9f2bef56b 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -374,7 +374,9 @@ static void nfs4_setup_readdir(u64 cookie, __be32 *verifier, struct dentry *dent
- 	*p++ = htonl(attrs);                           /* bitmap */
- 	*p++ = htonl(12);             /* attribute buffer length */
- 	*p++ = htonl(NF4DIR);
-+	spin_lock(&dentry->d_lock);
- 	p = xdr_encode_hyper(p, NFS_FILEID(d_inode(dentry->d_parent)));
-+	spin_unlock(&dentry->d_lock);
+diff --git a/drivers/clk/at91/clk-master.c b/drivers/clk/at91/clk-master.c
+index 7a544e429d34e..d5ea2069ec83a 100644
+--- a/drivers/clk/at91/clk-master.c
++++ b/drivers/clk/at91/clk-master.c
+@@ -580,6 +580,9 @@ clk_sama7g5_master_recalc_rate(struct clk_hw *hw,
+ {
+ 	struct clk_master *master = to_clk_master(hw);
  
- 	readdir->pgbase = (char *)p - (char *)start;
- 	readdir->count -= readdir->pgbase;
++	if (master->div == MASTER_PRES_MAX)
++		return DIV_ROUND_CLOSEST_ULL(parent_rate, 3);
++
+ 	return DIV_ROUND_CLOSEST_ULL(parent_rate, (1 << master->div));
+ }
+ 
 -- 
 2.51.0
 
