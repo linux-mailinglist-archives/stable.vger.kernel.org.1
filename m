@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-193319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F5FC4A2FB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C53C4A30D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 87CA34EC900
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C697F4E86F2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254D27262A;
-	Tue, 11 Nov 2025 01:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98862256C8D;
+	Tue, 11 Nov 2025 01:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ehm5kqhR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/geCPOx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D507B3AC3B;
-	Tue, 11 Nov 2025 01:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5215D1F5F6;
+	Tue, 11 Nov 2025 01:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822889; cv=none; b=W11n0p4LhUoJCoN8maBvUjzn+cHxHGEUB2RaYFEOARsEsndw8CmUqjpL5DYOrHRav33WppIXXTIfPSVzoO4kEHv/FxCfOv6RFVSmxnf4n/Ua7kX5NUiP4UTgnjfw6WlL8Z8Faw3mGlqsVmZI/8s6FYUHxnnDOps+piYAKMZnd5U=
+	t=1762822894; cv=none; b=cVTuhJQVqZNPRMbnsLEgOHul+J3p2onpT0apaYbyOXlvFXknSk1hThH99T6UdsBcWXKL4MvZicWHf2zb73Kl4a3bFFb9yvybQDooM5KpyJjRUEl0cbHc6EVqOzirW0mLVkcngYKsQLOU5Z53JzyWkf4ZsRiKJBBAp08KJvPAlNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822889; c=relaxed/simple;
-	bh=967soiR7boCgfbNupzIGR/qS1eX9pcr6TNDdsD+sVHE=;
+	s=arc-20240116; t=1762822894; c=relaxed/simple;
+	bh=IwGfsHayuZeZeWLynPUXTAxZcBbgRLK8zDv6cFT9Hlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bXOrTiC03b22ELJcjYCwSKjaPL6h8josq2FXJGer3RuxEHQmb48bkd0WK1hjIyExdfFz4TRty9d4ZGk4FkNWEcJV+00xWi+WCxyC5wcL6MvezVM3+BnkkWHn5ezQKyv7f/TGe1CtPpchBZaU1UWm8kwagqq0AaoKsXDcr2SzOJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ehm5kqhR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717A7C19421;
-	Tue, 11 Nov 2025 01:01:29 +0000 (UTC)
+	 MIME-Version; b=DarMdPXHjeeDnF6MoV+ozT8qxXDKWpQRqxuGWajmGwot+i7V7NnJO4pkWs+YnDW5URGJ8t5qjiFCM5yRu3MkM4NpdUto/Fx60YkI7xlmiDptssvhkprEZb06dtfvXLMl9aNRAiPQM9IGe61UYycuSyqjtkIu7shC3+Oakl6h/+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/geCPOx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59C9C4CEF5;
+	Tue, 11 Nov 2025 01:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822889;
-	bh=967soiR7boCgfbNupzIGR/qS1eX9pcr6TNDdsD+sVHE=;
+	s=korg; t=1762822894;
+	bh=IwGfsHayuZeZeWLynPUXTAxZcBbgRLK8zDv6cFT9Hlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ehm5kqhRzbTT5vTSLJOBZVBZloDIbTvo2aDV/DPZWmFkLeAKdM3APD/8+FNjX7IRZ
-	 d/tL+wX6jWvQBOnUZ76hU3vZc2Pxe9jKKQgPzpqjGEtsyc7Aykzn2fGIgd9d/jOYkG
-	 1Ig5qHVTviLX9RSFVcoZ4O24t1rJHJy19joAuRpo=
+	b=B/geCPOxUNap/z2nkTgGkjosexhxfoUmNcBM0x9TjDn1UgZORppGOxi0Yd/rytQaD
+	 6rkjhK4Y2KZphUaSlTgQtpkS3go+Ak2U+DY9hGVReP51nLMUFG9wrULZNSdohwc9Aa
+	 pKBLcZrlvu7dvZ60eKPIDMexwpJDVLy+dombc7Vs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Janne Grunau <j@jannau.net>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Neal Gompa <neal@gompa.dev>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Sven Peter <sven@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 190/849] io_uring/zcrx: account niov arrays to cgroup
-Date: Tue, 11 Nov 2025 09:36:00 +0900
-Message-ID: <20251111004541.019878819@linuxfoundation.org>
+Subject: [PATCH 6.17 191/849] pmdomain: apple: Add "apple,t8103-pmgr-pwrstate"
+Date: Tue, 11 Nov 2025 09:36:01 +0900
+Message-ID: <20251111004541.053061546@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,45 +69,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Janne Grunau <j@jannau.net>
 
-[ Upstream commit 31bf77dcc3810e08bcc7d15470e92cdfffb7f7f1 ]
+[ Upstream commit 442816f97a4f84cb321d3359177a3b9b0ce48a60 ]
 
-net_iov / freelist / etc. arrays can be quite long, make sure they're
-accounted.
+After discussion with the devicetree maintainers we agreed to not extend
+lists with the generic compatible "apple,pmgr-pwrstate" anymore [1]. Use
+"apple,t8103-pmgr-pwrstate" as base compatible as it is the SoC the
+driver and bindings were written for.
 
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@kernel.org/
+
+Signed-off-by: Janne Grunau <j@jannau.net>
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Sven Peter <sven@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/zcrx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pmdomain/apple/pmgr-pwrstate.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 23ffc95caa427..e3953ea740c03 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -426,17 +426,17 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
+diff --git a/drivers/pmdomain/apple/pmgr-pwrstate.c b/drivers/pmdomain/apple/pmgr-pwrstate.c
+index 9467235110f46..82c33cf727a82 100644
+--- a/drivers/pmdomain/apple/pmgr-pwrstate.c
++++ b/drivers/pmdomain/apple/pmgr-pwrstate.c
+@@ -306,6 +306,7 @@ static int apple_pmgr_ps_probe(struct platform_device *pdev)
+ }
  
- 	ret = -ENOMEM;
- 	area->nia.niovs = kvmalloc_array(nr_iovs, sizeof(area->nia.niovs[0]),
--					 GFP_KERNEL | __GFP_ZERO);
-+					 GFP_KERNEL_ACCOUNT | __GFP_ZERO);
- 	if (!area->nia.niovs)
- 		goto err;
- 
- 	area->freelist = kvmalloc_array(nr_iovs, sizeof(area->freelist[0]),
--					GFP_KERNEL | __GFP_ZERO);
-+					GFP_KERNEL_ACCOUNT | __GFP_ZERO);
- 	if (!area->freelist)
- 		goto err;
- 
- 	area->user_refs = kvmalloc_array(nr_iovs, sizeof(area->user_refs[0]),
--					GFP_KERNEL | __GFP_ZERO);
-+					GFP_KERNEL_ACCOUNT | __GFP_ZERO);
- 	if (!area->user_refs)
- 		goto err;
- 
+ static const struct of_device_id apple_pmgr_ps_of_match[] = {
++	{ .compatible = "apple,t8103-pmgr-pwrstate" },
+ 	{ .compatible = "apple,pmgr-pwrstate" },
+ 	{}
+ };
 -- 
 2.51.0
 
