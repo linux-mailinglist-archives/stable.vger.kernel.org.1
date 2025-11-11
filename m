@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-193149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1660EC4A0DF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:56:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89274C4A001
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E0BB54F1AE2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45DAB3A81EA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC1E24A043;
-	Tue, 11 Nov 2025 00:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E501B246333;
+	Tue, 11 Nov 2025 00:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MPgjl0h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PqnCpx0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6C44086A;
-	Tue, 11 Nov 2025 00:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A098F4086A;
+	Tue, 11 Nov 2025 00:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822414; cv=none; b=hYG/baCt4CN/7BQFItbRXGgRZ4ED0S2NXO+QzEM1WCe9j4ewv/oU4i5TRdTz+6WFeENADYNWfMWq+0Ia2nH9wYPNRnMyWI8oT8haA6pBazomNNpnORMZQMhuwD7Dfol5Ubh4DajvDP60udXYpqmQEagm/ChNBEIwqml8OsLhui4=
+	t=1762822421; cv=none; b=svG5tKtMwR3tzcXQwwj2UMb+9JNj+ZgJC/A3AFyGLFzXpsWT3VKHOIigDIxmGES3goNZrV34HFOLRmIe+o+tNaoqDemLRTpiMZk41hg0W1IJ3D2vRaGmoIuXcjXisAePrG1VzMtLN9A9Y7vcb81nXtfZbcSej28G1RocmwgUz9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822414; c=relaxed/simple;
-	bh=ij8VMSVky3d80Oqb/Adv1Q/cz3MyKbwXsOij7wQI73I=;
+	s=arc-20240116; t=1762822421; c=relaxed/simple;
+	bh=I8Q1X5df1t3CSLz9nXGQlHOlYKDJ844Ql4ClmvfCmPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6p4qLCX27TzXxJ2RlSP4BPhQkCxpkl/Br57RvL1ExRmATDcgJFHAYXNBkq/Q0qWMJD4592/ADPmA/ywB2PosYIzsgOeeqXB/Yt6Cn+yyPaJZsvGzM/UOk9s11GsU/1X0lcUbw3g66snJcNZ/TWKRkAIbrpvCU05rloErkRi82c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MPgjl0h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB05C113D0;
-	Tue, 11 Nov 2025 00:53:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YI1TF5wJjgCuCtNHdCcSZeE5NWOc+0jnBHDKgcbcN8h+5fl8v2HVveYOWO8fdRjG4am0p47mPPV44otmvZtuVWGS5mjryq0J7ODOoHHe8a3b51PBMAFpUngnMuGEtk635R28VNr0edYm+l8oGxwigmHdj/9YtiN0kriPNsiZ6zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PqnCpx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B31C116B1;
+	Tue, 11 Nov 2025 00:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822413;
-	bh=ij8VMSVky3d80Oqb/Adv1Q/cz3MyKbwXsOij7wQI73I=;
+	s=korg; t=1762822421;
+	bh=I8Q1X5df1t3CSLz9nXGQlHOlYKDJ844Ql4ClmvfCmPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MPgjl0hXo2h4wDXXd17rB4Y6LlPvOhSDbKQ1n5bw5PLs7/C+//lM+abjx0D9VAzm
-	 yq5YNjpEE7X/Y1S1Mxisog+/LhSgSDw9w7MBCGiMbB9q6cCLGXhG+2EYs8abOFsg6G
-	 BmgLsDqr3xBMQHR0yWcJgJT4o0zbKIefLHvz5hpI=
+	b=2PqnCpx04YTGKeYoVLH57k6zhSsJgQIIq+ZGLJDW/3hCoXvnKi9iqrkuo1JXiNzr+
+	 9TKZJiH4Kwmz4Q/ZtwfWgRUyEPk/fiVCTngmyxDj6NG32GUpOBk6Lyq6JnHKQGpOP7
+	 hGAsQDw85MTRdnsShFPUk0DbaJ1t47QtM0QAQ18E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sjoerd Simons <sjoerd@collabora.com>,
-	Ma Ke <make24@iscas.ac.cn>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Johan Hovold <johan@kernel.org>,
-	Ritesh Raj Sarraf <ritesh.sarraf@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Subject: [PATCH 6.17 103/849] drm/mediatek: Fix device use-after-free on unbind
-Date: Tue, 11 Nov 2025 09:34:33 +0900
-Message-ID: <20251111004538.892936897@linuxfoundation.org>
+	Petr Vorel <pvorel@suse.cz>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.17 104/849] drm/i915/dmc: Clear HRR EVT_CTL/HTP to zero on ADL-S
+Date: Tue, 11 Nov 2025 09:34:34 +0900
+Message-ID: <20251111004538.916093587@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -64,81 +61,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 926d002e6d7e2f1fd5c1b53cf6208153ee7d380d upstream.
+commit dc8aa0cb87a7836b59422cc02d969c8df849ee39 upstream.
 
-A recent change fixed device reference leaks when looking up drm
-platform device driver data during bind() but failed to remove a partial
-fix which had been added by commit 80805b62ea5b ("drm/mediatek: Fix
-kobject put for component sub-drivers").
+On ADL-S the main DMC HRR event DMC_EVT_CTL/HTP are never
+restored to their previous values during DC6 exit. This
+angers assert_dmc_loaded(), and basically makes the HRR
+handler unusable because we don't rewrite EVT_HTP when
+enabling DMC events.
 
-This results in a reference imbalance on component bind() failures and
-on unbind() which could lead to a user-after-free.
+Let's just clear the HRR EVT_CTL/HTP to zero from the
+beginnning so that the expected value matches the post-DC6
+reality.
 
-Make sure to only drop the references after retrieving the driver data
-by effectively reverting the previous partial fix.
+I suppose if we ever had actual use for HRR we'd have to both,
+reject HRR+PSR, and reprogram EVT_HTP when enabling the event.
+But for now we don't care about HRR so keeping both registers
+zeroed is fine.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
-
-Fixes: 1f403699c40f ("drm/mediatek: Fix device/node reference count leaks in mtk_drm_get_all_drm_priv")
-Reported-by: Sjoerd Simons <sjoerd@collabora.com>
-Closes: https://lore.kernel.org/r/20251003-mtk-drm-refcount-v1-1-3b3f2813b0db@collabora.com
 Cc: stable@vger.kernel.org
-Cc: Ma Ke <make24@iscas.ac.cn>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Sjoerd Simons <sjoerd@collabora.com>
-Tested-by: Sjoerd Simons <sjoerd@collabora.com>
-Tested-by: Ritesh Raj Sarraf <ritesh.sarraf@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20251006093937.27869-1-johan@kernel.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Tested-by: Petr Vorel <pvorel@suse.cz>
+Fixes: 43175c92d403 ("drm/i915/dmc: Assert DMC is loaded harder")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15153
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20251022100718.24803-2-ville.syrjala@linux.intel.com
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+Tested-by: Imre Deak <imre.deak@intel.com>
+(cherry picked from commit 4df3b340ff6e9f499735d8b52b96a9257fde3918)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_drv.c |   10 ----------
- 1 file changed, 10 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dmc.c | 55 +++++++++++++++++++++++-
+ 1 file changed, 54 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -686,10 +686,6 @@ err_free:
- 	for (i = 0; i < private->data->mmsys_dev_num; i++)
- 		private->all_drm_private[i]->drm = NULL;
- err_put_dev:
--	for (i = 0; i < private->data->mmsys_dev_num; i++) {
--		/* For device_find_child in mtk_drm_get_all_priv() */
--		put_device(private->all_drm_private[i]->dev);
--	}
- 	put_device(private->mutex_dev);
- 	return ret;
+diff --git a/drivers/gpu/drm/i915/display/intel_dmc.c b/drivers/gpu/drm/i915/display/intel_dmc.c
+index 77a0199f9ea5..4a4cace1f879 100644
+--- a/drivers/gpu/drm/i915/display/intel_dmc.c
++++ b/drivers/gpu/drm/i915/display/intel_dmc.c
+@@ -546,6 +546,36 @@ static bool is_event_handler(struct intel_display *display,
+ 		REG_FIELD_GET(DMC_EVT_CTL_EVENT_ID_MASK, data) == event_id;
  }
-@@ -697,18 +693,12 @@ err_put_dev:
- static void mtk_drm_unbind(struct device *dev)
- {
- 	struct mtk_drm_private *private = dev_get_drvdata(dev);
--	int i;
  
- 	/* for multi mmsys dev, unregister drm dev in mmsys master */
- 	if (private->drm_master) {
- 		drm_dev_unregister(private->drm);
- 		mtk_drm_kms_deinit(private->drm);
- 		drm_dev_put(private->drm);
--
--		for (i = 0; i < private->data->mmsys_dev_num; i++) {
--			/* For device_find_child in mtk_drm_get_all_priv() */
--			put_device(private->all_drm_private[i]->dev);
--		}
- 		put_device(private->mutex_dev);
- 	}
- 	private->mtk_drm_bound = false;
++static bool fixup_dmc_evt(struct intel_display *display,
++			  enum intel_dmc_id dmc_id,
++			  i915_reg_t reg_ctl, u32 *data_ctl,
++			  i915_reg_t reg_htp, u32 *data_htp)
++{
++	if (!is_dmc_evt_ctl_reg(display, dmc_id, reg_ctl))
++		return false;
++
++	if (!is_dmc_evt_htp_reg(display, dmc_id, reg_htp))
++		return false;
++
++	/* make sure reg_ctl and reg_htp are for the same event */
++	if (i915_mmio_reg_offset(reg_ctl) - i915_mmio_reg_offset(DMC_EVT_CTL(display, dmc_id, 0)) !=
++	    i915_mmio_reg_offset(reg_htp) - i915_mmio_reg_offset(DMC_EVT_HTP(display, dmc_id, 0)))
++		return false;
++
++	/*
++	 * On ADL-S the HRR event handler is not restored after DC6.
++	 * Clear it to zero from the beginning to avoid mismatches later.
++	 */
++	if (display->platform.alderlake_s && dmc_id == DMC_FW_MAIN &&
++	    is_event_handler(display, dmc_id, MAINDMC_EVENT_VBLANK_A, reg_ctl, *data_ctl)) {
++		*data_ctl = 0;
++		*data_htp = 0;
++		return true;
++	}
++
++	return false;
++}
++
+ static bool disable_dmc_evt(struct intel_display *display,
+ 			    enum intel_dmc_id dmc_id,
+ 			    i915_reg_t reg, u32 data)
+@@ -1064,9 +1094,32 @@ static u32 parse_dmc_fw_header(struct intel_dmc *dmc,
+ 	for (i = 0; i < mmio_count; i++) {
+ 		dmc_info->mmioaddr[i] = _MMIO(mmioaddr[i]);
+ 		dmc_info->mmiodata[i] = mmiodata[i];
++	}
+ 
++	for (i = 0; i < mmio_count - 1; i++) {
++		u32 orig_mmiodata[2] = {
++			dmc_info->mmiodata[i],
++			dmc_info->mmiodata[i+1],
++		};
++
++		if (!fixup_dmc_evt(display, dmc_id,
++				   dmc_info->mmioaddr[i], &dmc_info->mmiodata[i],
++				   dmc_info->mmioaddr[i+1], &dmc_info->mmiodata[i+1]))
++			continue;
++
++		drm_dbg_kms(display->drm,
++			    " mmio[%d]: 0x%x = 0x%x->0x%x (EVT_CTL)\n",
++			    i, i915_mmio_reg_offset(dmc_info->mmioaddr[i]),
++			    orig_mmiodata[0], dmc_info->mmiodata[i]);
++		drm_dbg_kms(display->drm,
++			    " mmio[%d]: 0x%x = 0x%x->0x%x (EVT_HTP)\n",
++			    i+1, i915_mmio_reg_offset(dmc_info->mmioaddr[i+1]),
++			    orig_mmiodata[1], dmc_info->mmiodata[i+1]);
++	}
++
++	for (i = 0; i < mmio_count; i++) {
+ 		drm_dbg_kms(display->drm, " mmio[%d]: 0x%x = 0x%x%s%s\n",
+-			    i, mmioaddr[i], mmiodata[i],
++			    i, i915_mmio_reg_offset(dmc_info->mmioaddr[i]), dmc_info->mmiodata[i],
+ 			    is_dmc_evt_ctl_reg(display, dmc_id, dmc_info->mmioaddr[i]) ? " (EVT_CTL)" :
+ 			    is_dmc_evt_htp_reg(display, dmc_id, dmc_info->mmioaddr[i]) ? " (EVT_HTP)" : "",
+ 			    disable_dmc_evt(display, dmc_id, dmc_info->mmioaddr[i],
+-- 
+2.51.2
+
 
 
 
