@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFDEC4AB75
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:20 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 696D7C4A947
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B766718877B6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 03D3C4F7CFF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0F4246768;
-	Tue, 11 Nov 2025 01:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A14C340D9D;
+	Tue, 11 Nov 2025 01:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOWpFrDG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIqSgBtL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771E4340290;
-	Tue, 11 Nov 2025 01:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2816D341ACA;
+	Tue, 11 Nov 2025 01:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824036; cv=none; b=o1nTs2qqv+Ppp2IF8NjRfrrH6h4fA6v6VjEmRPh5kdCSYMe03wvkU38//eYHu0SJVe1XUVPgfs/Z8921wz48LcyFl9aHkGyBT7jsGNqS+ibb9aDDS8IQC1Urgfsy1wMP86TcSpBClLl39EkXUj8zrY/JolLV8LMPT3HitH9k1nI=
+	t=1762824041; cv=none; b=EQNPSPHBM36cyPFQhYc9sqm0CkG+4FEkzefNtujFs7sJ3k4IZ87LyZYBT4PtoJucClbWZFgpyvO2lxgxlaAPTE5N6PUreFUM95q39Rbq2RF2QmXY6Is6kTFKEi5pP3uE30m8s5Epnp+v827y1XtImjkNSfv+j8M9Oylboayp9g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824036; c=relaxed/simple;
-	bh=eyiq5I8p45ojDycI743jtZ8nMq4oqIyn6DWZOZG/VS0=;
+	s=arc-20240116; t=1762824041; c=relaxed/simple;
+	bh=oMzGh+SDpGEUPIjC2qzQLGiq5D9VOH2Q4HQJjC6ngkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iyVrIbY6pEEtNkw5RWObApZaWvuktSv7giiw7E5w/kxG5uhMs/rirM1Ogb37NaxjT8kdZouGolG/Bl5QE3QX4X+ay+1pFs5vnABhyAbbPg80zaPfuHbS4YX154QPL9ONF81+WSFEtPR5PyNFqHW4VWM8WPSEnv+hI5rJtidNuNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOWpFrDG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AC7C16AAE;
-	Tue, 11 Nov 2025 01:20:35 +0000 (UTC)
+	 MIME-Version; b=bWY4m2Zrb5oUAnOYbRif3i/b0LwRWjrCtUBMCzlbZ32UrnkUUO2gMDA50IyeyG/ZG1wmOT0wiXnZbiSB3NsiZzcr0EAjHEOzyMsc3+t8Y5NZD62n9do+4tIoTv1gDCgSAV2wQ9WNrq4Z2HU5R91CPxlSvUWRVQqi8DMhAiENdU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIqSgBtL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A95C4CEF5;
+	Tue, 11 Nov 2025 01:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824036;
-	bh=eyiq5I8p45ojDycI743jtZ8nMq4oqIyn6DWZOZG/VS0=;
+	s=korg; t=1762824041;
+	bh=oMzGh+SDpGEUPIjC2qzQLGiq5D9VOH2Q4HQJjC6ngkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FOWpFrDGdLi1LMdCJ8vMkAulEH+SodMoLJPgc25KerPvCdAc2Fd/+v4cAh2xcqPDb
-	 iDKICk3zguKW8m8xOy/+3T7aA3886S6rf4lQuRiS++9GVKr0N4R8TV2/V0GwUqnG5d
-	 2L+rkKDh5FJzNRJEqZhbrAAi+7E2LGzwTMoSvO3Y=
+	b=vIqSgBtLrVITMaQD/3ppD1UFOoif/o9+6ZFcWCBUF0pCSIDfZHOmdp7TLyJ47Appz
+	 VeBRdy3UgOF6WSGesnPnMd/FVuEgKGN5BAYftjrF3g2UZC/TPy4a8y8yN/EEL2W9tM
+	 Gb2zErisek6cUuZCXZBKFwmwUAxf5okUi1Bl0Ebc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Justin Tee <justin.tee@broadcom.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 375/565] scsi: lpfc: Decrement ndlp kref after FDISC retries exhausted
-Date: Tue, 11 Nov 2025 09:43:51 +0900
-Message-ID: <20251111004535.306731288@linuxfoundation.org>
+Subject: [PATCH 6.12 376/565] scsi: lpfc: Check return status of lpfc_reset_flush_io_context during TGT_RESET
+Date: Tue, 11 Nov 2025 09:43:52 +0900
+Message-ID: <20251111004535.327746539@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -68,39 +68,61 @@ Content-Transfer-Encoding: 8bit
 
 From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit b5bf6d681fce69cd1a57bfc0f1bdbbb348035117 ]
+[ Upstream commit f408dde2468b3957e92b25e7438f74c8e9fb9e73 ]
 
-The kref for Fabric_DID ndlps is not decremented after repeated FDISC
-failures and exhausting maximum allowed retries.  This can leave the
-ndlp lingering unnecessarily.  Add a test and set bit operation for the
-NLP_DROPPED flag. If not previously set, then a kref is decremented. The
-ndlp is freed when the remaining reference for the completing ELS is
-put.
+If lpfc_reset_flush_io_context fails to execute, then the wrong return
+status code may be passed back to upper layers when issuing a target
+reset TMF command.  Fix by checking the return status from
+lpfc_reset_flush_io_context() first in order to properly return FAILED
+or FAST_IO_FAIL.
 
 Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Message-ID: <20250915180811.137530-6-justintee8345@gmail.com>
+Message-ID: <20250915180811.137530-7-justintee8345@gmail.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_els.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/scsi/lpfc/lpfc_scsi.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
-index b5fa5054e952e..ac2fa05cc89c1 100644
---- a/drivers/scsi/lpfc/lpfc_els.c
-+++ b/drivers/scsi/lpfc/lpfc_els.c
-@@ -11237,6 +11237,11 @@ lpfc_cmpl_els_fdisc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
- 		lpfc_vlog_msg(vport, KERN_WARNING, LOG_ELS,
- 			      "0126 FDISC cmpl status: x%x/x%x)\n",
- 			      ulp_status, ulp_word4);
-+
-+		/* drop initial reference */
-+		if (!test_and_set_bit(NLP_DROPPED, &ndlp->nlp_flag))
-+			lpfc_nlp_put(ndlp);
-+
- 		goto fdisc_failed;
+diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+index 67e0898811817..778f8e2310569 100644
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -5929,7 +5929,7 @@ lpfc_chk_tgt_mapped(struct lpfc_vport *vport, struct fc_rport *rport)
+ /**
+  * lpfc_reset_flush_io_context -
+  * @vport: The virtual port (scsi_host) for the flush context
+- * @tgt_id: If aborting by Target contect - specifies the target id
++ * @tgt_id: If aborting by Target context - specifies the target id
+  * @lun_id: If aborting by Lun context - specifies the lun id
+  * @context: specifies the context level to flush at.
+  *
+@@ -6103,8 +6103,14 @@ lpfc_target_reset_handler(struct scsi_cmnd *cmnd)
+ 			pnode->nlp_fcp_info &= ~NLP_FCP_2_DEVICE;
+ 			spin_unlock_irqrestore(&pnode->lock, flags);
+ 		}
+-		lpfc_reset_flush_io_context(vport, tgt_id, lun_id,
+-					  LPFC_CTX_TGT);
++		status = lpfc_reset_flush_io_context(vport, tgt_id, lun_id,
++						     LPFC_CTX_TGT);
++		if (status != SUCCESS) {
++			lpfc_printf_vlog(vport, KERN_ERR, LOG_FCP,
++					 "0726 Target Reset flush status x%x\n",
++					 status);
++			return status;
++		}
+ 		return FAST_IO_FAIL;
  	}
  
+@@ -6200,7 +6206,7 @@ lpfc_host_reset_handler(struct scsi_cmnd *cmnd)
+ 	int rc, ret = SUCCESS;
+ 
+ 	lpfc_printf_vlog(vport, KERN_ERR, LOG_FCP,
+-			 "3172 SCSI layer issued Host Reset Data:\n");
++			 "3172 SCSI layer issued Host Reset\n");
+ 
+ 	lpfc_offline_prep(phba, LPFC_MBX_WAIT);
+ 	lpfc_offline(phba);
 -- 
 2.51.0
 
