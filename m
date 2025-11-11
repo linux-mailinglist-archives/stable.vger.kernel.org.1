@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-194400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C38C4B18A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 564A7C4AD72
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 205B84F818D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02A4A188F4E0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED4D7261D;
-	Tue, 11 Nov 2025 01:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E16A2D94AD;
+	Tue, 11 Nov 2025 01:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJ71Zt8+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEPEB57i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8181972617;
-	Tue, 11 Nov 2025 01:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CF422301;
+	Tue, 11 Nov 2025 01:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825516; cv=none; b=mH7sNhR8m8XE6ukVU+c0+XfEl2frXWMpfwFk41fUANdXKWsqOzarENd4oxwMGNE/WbC0bV9pszYDqVWbkns471JG99klIs8Z2zalNGlJ2q6COWimtZQo6Y4zv6NZKVBWHx+hLRYrRr1v8aw6tipUAUxvAH+VYYipSW4wKv0Gdeg=
+	t=1762824909; cv=none; b=q4gDqGh2cPEsq/rl46Q5IWfdIUpnC93H9m5UoNwsY0HcYYkY2oTySi5VOjLMUE/TTbdRY+rvNzRfhekhseG0UTIM53knRf2AsIaecgXgmhQqOSMU4cX+UUuYvnbxyIj5zBE7jcXCBZXA0EqpVDGLYTEEzNHFqwZINhV2Ux7mPM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825516; c=relaxed/simple;
-	bh=JL6d6Ku0EA8swH+DRmD1r4PEf0y4ssy4fAVFBi/bmn4=;
+	s=arc-20240116; t=1762824909; c=relaxed/simple;
+	bh=0mrptI+EUp66Sl4BFC90xb7PufYf8srUllo8NzCKkwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqBvWlYncn7LPf868LAqNktkeNIz6DZm2gyYccwXfA8xE7Gy+O42WQrxSXjYM8tzgaxejavUVLuCeD24PK31vB7xCM7B89LJHnh4fEQVPS4etre70h3ZJ5vyK2CUsOb2l8pdtJkQc/abVbLEwy1QnoX9qlHwF1m0g6jIz4O13W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJ71Zt8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBB0C19421;
-	Tue, 11 Nov 2025 01:45:14 +0000 (UTC)
+	 MIME-Version; b=sYPbOD3CQvd1HCrAzkLz3q5ZeXSf4ToXPleoNaK8cNa90q8lp2YsEsFWIuHcubwU4AiXm9f2Ta10MhHK3Vo0kXPuMCFSph4gS6xS9+R+G4VQGz19CBTc/ibNQVsgDOe2pc7ukwVJCtRiXWOwa16HAueyW8pHhFajZj1fBFLFdCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEPEB57i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B64DC4CEF5;
+	Tue, 11 Nov 2025 01:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825515;
-	bh=JL6d6Ku0EA8swH+DRmD1r4PEf0y4ssy4fAVFBi/bmn4=;
+	s=korg; t=1762824906;
+	bh=0mrptI+EUp66Sl4BFC90xb7PufYf8srUllo8NzCKkwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YJ71Zt8+P3WcYkdotATbYTi0LuA7JUCJsGEhLd6CCfFg6D6Xg2xgPfGnm5ijEd9Q1
-	 kbt5S6gsJAQ1wx2/7eNH6AKUWPjtMoPt6kg9NEp32mGVHGgs0WtYQazbUVpQmzgXOh
-	 r2naYIOSecMsek6YOgxCJHA8ApNv3SJE1enhE6w0=
+	b=JEPEB57iL0TqvYeNxSnuA/jq36CS/nPMX7TwD3aRIe4EdFAEM5cbu8WAOFn1k2mQD
+	 jx/bbHzt0RfFNTKf83CBSytnC+P8+crzN13KUM0/iLtdf5vsuzjcIEUNK4J71DHY78
+	 tdU5+PbB2VhvLEQU7mBKmCu08JVPjzU/zrU8oS+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.17 834/849] scsi: ufs: core: Fix invalid probe error return value
+	Yuta Hayama <hayama@lineo.co.jp>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.12 548/565] rtc: rx8025: fix incorrect register reference
 Date: Tue, 11 Nov 2025 09:46:44 +0900
-Message-ID: <20251111004556.586182423@linuxfoundation.org>
+Message-ID: <20251111004539.323703237@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Yuta Hayama <hayama@lineo.co.jp>
 
-commit a2b32bc1d9e359a9f90d0de6af16699facb10935 upstream.
+commit 162f24cbb0f6ec596e7e9f3e91610d79dc805229 upstream.
 
-After DME Link Startup, the error return value is set to the MIPI UniPro
-GenericErrorCode which can be 0 (SUCCESS) or 1 (FAILURE).  Upon failure
-during driver probe, the error code 1 is propagated back to the driver
-probe function which must return a negative value to indicate an error,
-but 1 is not negative, so the probe is considered to be successful even
-though it failed.  Subsequently, removing the driver results in an oops
-because it is not in a valid state.
+This code is intended to operate on the CTRL1 register, but ctrl[1] is
+actually CTRL2. Correctly, ctrl[0] is CTRL1.
 
-This happens because none of the callers of ufshcd_init() expect a
-non-negative error code.
-
-Fix the return value and documentation to match actual usage.
-
-Fixes: 69f5eb78d4b0 ("scsi: ufs: core: Move the ufshcd_device_init(hba, true) call")
+Signed-off-by: Yuta Hayama <hayama@lineo.co.jp>
+Fixes: 71af91565052 ("rtc: rx8025: fix 12/24 hour mode detection on RX-8035")
 Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251024085918.31825-5-adrian.hunter@intel.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://patch.msgid.link/eae5f479-5d28-4a37-859d-d54794e7628c@lineo.co.jp
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/rtc/rtc-rx8025.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10638,7 +10638,7 @@ remove_scsi_host:
-  * @mmio_base: base register address
-  * @irq: Interrupt line of device
-  *
-- * Return: 0 on success, non-zero value on failure.
-+ * Return: 0 on success; < 0 on failure.
-  */
- int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
- {
-@@ -10879,7 +10879,7 @@ out_disable:
- 	hba->is_irq_enabled = false;
- 	ufshcd_hba_exit(hba);
- out_error:
--	return err;
-+	return err > 0 ? -EIO : err;
- }
- EXPORT_SYMBOL_GPL(ufshcd_init);
- 
+--- a/drivers/rtc/rtc-rx8025.c
++++ b/drivers/rtc/rtc-rx8025.c
+@@ -316,7 +316,7 @@ static int rx8025_init_client(struct i2c
+ 			return hour_reg;
+ 		rx8025->is_24 = (hour_reg & RX8035_BIT_HOUR_1224);
+ 	} else {
+-		rx8025->is_24 = (ctrl[1] & RX8025_BIT_CTRL1_1224);
++		rx8025->is_24 = (ctrl[0] & RX8025_BIT_CTRL1_1224);
+ 	}
+ out:
+ 	return err;
 
 
 
