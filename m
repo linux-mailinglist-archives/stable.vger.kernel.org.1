@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DB5AC4A4EE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:17:04 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23023C4A511
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17FDE1890C1D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:13:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E93BD4F4877
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5F52D97BD;
-	Tue, 11 Nov 2025 01:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87B6346A16;
+	Tue, 11 Nov 2025 01:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7DIowpI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLlWCrZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E703446DE;
-	Tue, 11 Nov 2025 01:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4693346A0F;
+	Tue, 11 Nov 2025 01:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823196; cv=none; b=nA0sLnudxXrmcRI3zgVhwvvfua+lRWTCJhx8LH+PZTDPe7GRV4KXbdJEEfM6IxNwfYMERdAB4YzTNRUOCqAPbQorj+z/SIZNhefolnsHIpvLP+a2jnrB3UkltV8pSGIk97tzq88KyitbEYX15yAja4JrIliSm6LxCyJfyrTVPVI=
+	t=1762823200; cv=none; b=IXITFjfwFJDj9oluicrvxU2P0cejaM/LyvdkdO5ELobTj0QNpnan16niR6mWG7ogB+0W3UVhziFkYdVhF/Fd2+mLvf3bo+mr701vjIUPGNlENa8AAAOjRN215w/M4aGaSf7251ytNJ7sbs71NYMKLEGOgGVXZzZKyO4L/Lvt4wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823196; c=relaxed/simple;
-	bh=3jtstzl4YuJRD9LC0JrCZRnDV3nvOZIrcmZShURMhow=;
+	s=arc-20240116; t=1762823200; c=relaxed/simple;
+	bh=/stVaWOGU5Byadn4FsqyxuMm7ZHGjMNzixyG86r+ErY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oAN1lL2BHBauFtyU/BI6lCiVxJJZxLcLZwFbsvWft/GxcmwD6L7erS1+aOe1dHow9GpedG6NV2dqEADnFfaHezOKhxvh2AwRkfPKMryn02QI/MohKrGwLuypkep8BlajbVaIFahXXcEWeYfhya51TQIwMFngISTUoH4DW89akss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7DIowpI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D03C4CEF5;
-	Tue, 11 Nov 2025 01:06:35 +0000 (UTC)
+	 MIME-Version; b=rJDYGq14ew2fUgyZJVgFHyYDBCe9HbO1Ccb9JA/1bUdWZ0avtsDnYTtFw5L9ZMdC+tXuXn8Qq4sN+21Dh535TX/LoT68N4DjedPn8sGbfx1SU2csJWNfcVXAe7aEf8efLL6m6c1tLlvL2k3E2sgTcsrwolHfoLiXbbZVgk/kdzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLlWCrZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E74C19422;
+	Tue, 11 Nov 2025 01:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823196;
-	bh=3jtstzl4YuJRD9LC0JrCZRnDV3nvOZIrcmZShURMhow=;
+	s=korg; t=1762823200;
+	bh=/stVaWOGU5Byadn4FsqyxuMm7ZHGjMNzixyG86r+ErY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W7DIowpIFKdC9TF4+ERKg8dj/oT8Ub7Va5QbjP+tMkcNeG9sXMDjHtI+KdLVtVfUz
-	 kHckM+K/+Y6S2AcsuJSYOJ6UbH46BmpkkYa0BonDZQsW+2snHcsTMsXOCs92vKOZ3a
-	 hXfZuTkhVqXq9QRyuBjp2B50gmCcGDC7JcWXONqI=
+	b=wLlWCrZSmwMfrXPNFO2KkMYeyKOFhnMvQMqZOeRMejQ//dnwJAPEAABv8eIQTygCQ
+	 fDoT9xHU5xoXqhuYEWxCEBcszf6UKibcOdR7voRPABLTwtzO5zZjluUwb7DhneXBVw
+	 dw2hEQWettmjraa6Ja/FEs6pSOXsUfKRGK9dqDb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Liu <xiang.liu@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 251/849] drm/amdgpu: Skip poison aca bank from UE channel
-Date: Tue, 11 Nov 2025 09:37:01 +0900
-Message-ID: <20251111004542.499560891@linuxfoundation.org>
+Subject: [PATCH 6.17 252/849] drm/amd/display: add more cyan skillfish devices
+Date: Tue, 11 Nov 2025 09:37:02 +0900
+Message-ID: <20251111004542.521540117@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,96 +66,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xiang Liu <xiang.liu@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 8e8e08c831f088ed581444c58a635c49ea1222ab ]
+[ Upstream commit 3cf06bd4cf2512d564fdb451b07de0cebe7b138d ]
 
-Avoid GFX poison consumption errors logged when fatal error occurs.
+Add PCI IDs to support display probe for cyan skillfish
+family of SOCs.
 
-Signed-off-by: Xiang Liu <xiang.liu@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Acked-by: Harry Wentland <harry.wentland@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c | 51 +++++++++++++++----------
- 1 file changed, 30 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 8 +++++++-
+ drivers/gpu/drm/amd/display/include/dal_asic_id.h | 5 +++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
-index cbc40cad581b4..d1e431818212d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
-@@ -130,6 +130,27 @@ static void aca_smu_bank_dump(struct amdgpu_device *adev, int idx, int total, st
- 		RAS_EVENT_LOG(adev, event_id, HW_ERR "hardware error logged by the scrubber\n");
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index 4d6181e7c612b..d712548b1927d 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -165,7 +165,13 @@ enum dce_version resource_parse_asic_id(struct hw_asic_id asic_id)
  
-+static bool aca_bank_hwip_is_matched(struct aca_bank *bank, enum aca_hwip_type type)
-+{
-+
-+	struct aca_hwip *hwip;
-+	int hwid, mcatype;
-+	u64 ipid;
-+
-+	if (!bank || type == ACA_HWIP_TYPE_UNKNOW)
-+		return false;
-+
-+	hwip = &aca_hwid_mcatypes[type];
-+	if (!hwip->hwid)
-+		return false;
-+
-+	ipid = bank->regs[ACA_REG_IDX_IPID];
-+	hwid = ACA_REG__IPID__HARDWAREID(ipid);
-+	mcatype = ACA_REG__IPID__MCATYPE(ipid);
-+
-+	return hwip->hwid == hwid && hwip->mcatype == mcatype;
-+}
-+
- static int aca_smu_get_valid_aca_banks(struct amdgpu_device *adev, enum aca_smu_type type,
- 				       int start, int count,
- 				       struct aca_banks *banks, struct ras_query_context *qctx)
-@@ -168,6 +189,15 @@ static int aca_smu_get_valid_aca_banks(struct amdgpu_device *adev, enum aca_smu_
- 
- 		bank.smu_err_type = type;
- 
-+		/*
-+		 * Poison being consumed when injecting a UE while running background workloads,
-+		 * which are unexpected.
-+		 */
-+		if (type == ACA_SMU_TYPE_UE &&
-+		    ACA_REG__STATUS__POISON(bank.regs[ACA_REG_IDX_STATUS]) &&
-+		    !aca_bank_hwip_is_matched(&bank, ACA_HWIP_TYPE_UMC))
-+			continue;
-+
- 		aca_smu_bank_dump(adev, i, count, &bank, qctx);
- 
- 		ret = aca_banks_add_bank(banks, &bank);
-@@ -178,27 +208,6 @@ static int aca_smu_get_valid_aca_banks(struct amdgpu_device *adev, enum aca_smu_
- 	return 0;
- }
- 
--static bool aca_bank_hwip_is_matched(struct aca_bank *bank, enum aca_hwip_type type)
--{
--
--	struct aca_hwip *hwip;
--	int hwid, mcatype;
--	u64 ipid;
--
--	if (!bank || type == ACA_HWIP_TYPE_UNKNOW)
--		return false;
--
--	hwip = &aca_hwid_mcatypes[type];
--	if (!hwip->hwid)
--		return false;
--
--	ipid = bank->regs[ACA_REG_IDX_IPID];
--	hwid = ACA_REG__IPID__HARDWAREID(ipid);
--	mcatype = ACA_REG__IPID__MCATYPE(ipid);
--
--	return hwip->hwid == hwid && hwip->mcatype == mcatype;
--}
--
- static bool aca_bank_is_valid(struct aca_handle *handle, struct aca_bank *bank, enum aca_smu_type type)
- {
- 	const struct aca_bank_ops *bank_ops = handle->bank_ops;
+ 	case FAMILY_NV:
+ 		dc_version = DCN_VERSION_2_0;
+-		if (asic_id.chip_id == DEVICE_ID_NV_13FE || asic_id.chip_id == DEVICE_ID_NV_143F) {
++		if (asic_id.chip_id == DEVICE_ID_NV_13FE ||
++		    asic_id.chip_id == DEVICE_ID_NV_143F ||
++		    asic_id.chip_id == DEVICE_ID_NV_13F9 ||
++		    asic_id.chip_id == DEVICE_ID_NV_13FA ||
++		    asic_id.chip_id == DEVICE_ID_NV_13FB ||
++		    asic_id.chip_id == DEVICE_ID_NV_13FC ||
++		    asic_id.chip_id == DEVICE_ID_NV_13DB) {
+ 			dc_version = DCN_VERSION_2_01;
+ 			break;
+ 		}
+diff --git a/drivers/gpu/drm/amd/display/include/dal_asic_id.h b/drivers/gpu/drm/amd/display/include/dal_asic_id.h
+index 5fc29164e4b45..8aea50aa95330 100644
+--- a/drivers/gpu/drm/amd/display/include/dal_asic_id.h
++++ b/drivers/gpu/drm/amd/display/include/dal_asic_id.h
+@@ -213,6 +213,11 @@ enum {
+ #endif
+ #define DEVICE_ID_NV_13FE 0x13FE  // CYAN_SKILLFISH
+ #define DEVICE_ID_NV_143F 0x143F
++#define DEVICE_ID_NV_13F9 0x13F9
++#define DEVICE_ID_NV_13FA 0x13FA
++#define DEVICE_ID_NV_13FB 0x13FB
++#define DEVICE_ID_NV_13FC 0x13FC
++#define DEVICE_ID_NV_13DB 0x13DB
+ #define FAMILY_VGH 144
+ #define DEVICE_ID_VGH_163F 0x163F
+ #define DEVICE_ID_VGH_1435 0x1435
 -- 
 2.51.0
 
