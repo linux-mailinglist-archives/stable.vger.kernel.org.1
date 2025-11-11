@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75625C4A713
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:10 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4109AC4A54E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DFF718938E4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E1DB834BECD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CEA248883;
-	Tue, 11 Nov 2025 01:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B5B340A6D;
+	Tue, 11 Nov 2025 01:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/L723Aw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gY8pqVue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4068833C534;
-	Tue, 11 Nov 2025 01:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70AA2820A0;
+	Tue, 11 Nov 2025 01:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823454; cv=none; b=RbsL4wP2//AjZnvbOWPrWO7RwKFUzq0gZCjtgZww+IANW2oQcT43J7NLRx00SWZCOkCG/jylVM+mS326ExoeL2WPRk4MkVkbsURKua0WDGnawvlxqhzcPEBjiz5Bn1yWslie18twQ/0Bqo7+BJ9DH1U6IlGNTEgVoYdh4d2AAo0=
+	t=1762823458; cv=none; b=H6mJW8VZrVIhD4+i1LI7amZm3ofV8H4oz1xS0ytNUIpnBAtmq2vVaUCFFQxhTP6WagYQoF+trQGMTIg0SLzdpxHePCf0kxxiA/InGlm+lzs1cfbwEP3NYW7B3a6Q2C9+9XBI8NQXcf15FXGu1PNWrw37aJUmyi5byqwEzXQlC0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823454; c=relaxed/simple;
-	bh=s5AJVPPtrbWRoX/ivarMd/B90FT1sJnpmD/6ZA21fOI=;
+	s=arc-20240116; t=1762823458; c=relaxed/simple;
+	bh=hIUfKc31UJD71wAG3WfE3dN25Pm0f8DjATKbtjnQA+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XT1zf7L4fnFbSYVYJw+JwV/B1kIHdH8Ko4clO7+/bfy6pEYIj/Sq1O1zTZEyt33JiUBMKYmvxTRnhUvYOHJQAX/or2e96lUOA5ZlvdJZRguQH4ioQWRwVB/YtkiwUv2zGa7zGxKg5OJ9p7pvj6kHwNtIFE2+cPiHAJzifGNbf8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/L723Aw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD404C16AAE;
-	Tue, 11 Nov 2025 01:10:53 +0000 (UTC)
+	 MIME-Version; b=WvY9QFLngWl8IZXYwjaR4ZNETlKBPX2XiqgNF9KoTKG/8MoOfL80efx8lC2FZ3mxmU4VCoKf39QJEw7VgKMXcFzFFFhmsaZaVZg6gbVqaSpPdOY522Snt7t5MM0WjokDoZzIx77/tMfCWK5xzcVFqbu0ziecbR2OtDo0XAtU/MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gY8pqVue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41411C4CEF5;
+	Tue, 11 Nov 2025 01:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823454;
-	bh=s5AJVPPtrbWRoX/ivarMd/B90FT1sJnpmD/6ZA21fOI=;
+	s=korg; t=1762823458;
+	bh=hIUfKc31UJD71wAG3WfE3dN25Pm0f8DjATKbtjnQA+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/L723Aw9v+tAsC7ql/AI5Ni19ouFNBhXnt37+jVaVjQrh3XEmhg2B4CHdtQO/p3g
-	 RuIKLDb+FwCtsrMCAqdzT680PuTEPEyuqZQVIyvu+z07nuhlNrb4q9id61qd1FmRRl
-	 G89nJ41JfUoro1873/0ggM8qo7TI+PQYRVYYAuY0=
+	b=gY8pqVueFxFHSXO0sykUSG9r67GnaF5Sl2NoEJww10qcnu3MfiB5d5JCz9/PHJLdO
+	 pa4+CUq27JnBKU7ucYuo7ekQ2SyJ+8JcZn9VfaPyY0DMVfk5EM564PWSPJ4uFaMrlZ
+	 UL8KgzuZcdLsV4IddxtPbCoMuxkMkiLtx16cDT8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Peter Wang <peter.wang@mediatek.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 303/849] scsi: ufs: host: mediatek: Fix auto-hibern8 timer configuration
-Date: Tue, 11 Nov 2025 09:37:53 +0900
-Message-ID: <20251111004543.733742194@linuxfoundation.org>
+Subject: [PATCH 6.17 304/849] scsi: ufs: host: mediatek: Fix PWM mode switch issue
+Date: Tue, 11 Nov 2025 09:37:54 +0900
+Message-ID: <20251111004543.757763245@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,143 +68,73 @@ Content-Transfer-Encoding: 8bit
 
 From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit aa86602a483ba48f51044fbaefa1ebbf6da194a4 ]
+[ Upstream commit 7212d624f8638f8ea8ad1ecbb80622c7987bc7a1 ]
 
-Move the configuration of the Auto-Hibern8 (AHIT) timer from the
-post-link stage to the 'fixup_dev_quirks' function. This change allows
-setting the AHIT based on the vendor requirements:
-
-   (a) Samsung: 3.5 ms
-   (b) Micron: 2 ms
-   (c) Others: 1 ms
-
-Additionally, the clock gating timer is adjusted based on the AHIT
-scale, with a maximum setting of 10 ms. This ensures that the clock
-gating delay is appropriately configured to match the AHIT settings.
+Address a failure in switching to PWM mode by ensuring proper
+configuration of power modes and adaptation settings. The changes
+include checks for SLOW_MODE and adjustments to the desired working mode
+and adaptation configuration based on the device's power mode and
+hardware version.
 
 Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20250811131423.3444014-3-peter.wang@mediatek.com
+Link: https://lore.kernel.org/r/20250811131423.3444014-6-peter.wang@mediatek.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-mediatek.c | 86 ++++++++++++++++++++++++---------
- 1 file changed, 64 insertions(+), 22 deletions(-)
+ drivers/ufs/host/ufs-mediatek.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
-index f902ce08c95a6..8dd124835151a 100644
+index 8dd124835151a..4171fa672450d 100644
 --- a/drivers/ufs/host/ufs-mediatek.c
 +++ b/drivers/ufs/host/ufs-mediatek.c
-@@ -1075,6 +1075,69 @@ static void ufs_mtk_vreg_fix_vccqx(struct ufs_hba *hba)
- 	}
+@@ -1303,6 +1303,10 @@ static bool ufs_mtk_pmc_via_fastauto(struct ufs_hba *hba,
+ 	    dev_req_params->gear_rx < UFS_HS_G4)
+ 		return false;
+ 
++	if (dev_req_params->pwr_tx == SLOW_MODE ||
++	    dev_req_params->pwr_rx == SLOW_MODE)
++		return false;
++
+ 	return true;
  }
  
-+static void ufs_mtk_setup_clk_gating(struct ufs_hba *hba)
-+{
-+	unsigned long flags;
-+	u32 ah_ms = 10;
-+	u32 ah_scale, ah_timer;
-+	u32 scale_us[] = {1, 10, 100, 1000, 10000, 100000};
+@@ -1318,6 +1322,10 @@ static int ufs_mtk_pre_pwr_change(struct ufs_hba *hba,
+ 	host_params.hs_rx_gear = UFS_HS_G5;
+ 	host_params.hs_tx_gear = UFS_HS_G5;
+ 
++	if (dev_max_params->pwr_rx == SLOW_MODE ||
++	    dev_max_params->pwr_tx == SLOW_MODE)
++		host_params.desired_working_mode = UFS_PWM_MODE;
 +
-+	if (ufshcd_is_clkgating_allowed(hba)) {
-+		if (ufshcd_is_auto_hibern8_supported(hba) && hba->ahit) {
-+			ah_scale = FIELD_GET(UFSHCI_AHIBERN8_SCALE_MASK,
-+					  hba->ahit);
-+			ah_timer = FIELD_GET(UFSHCI_AHIBERN8_TIMER_MASK,
-+					  hba->ahit);
-+			if (ah_scale <= 5)
-+				ah_ms = ah_timer * scale_us[ah_scale] / 1000;
+ 	ret = ufshcd_negotiate_pwr_params(&host_params, dev_max_params, dev_req_params);
+ 	if (ret) {
+ 		pr_info("%s: failed to determine capabilities\n",
+@@ -1350,10 +1358,21 @@ static int ufs_mtk_pre_pwr_change(struct ufs_hba *hba,
+ 		}
+ 	}
+ 
+-	if (host->hw_ver.major >= 3) {
++	if (dev_req_params->pwr_rx == FAST_MODE ||
++	    dev_req_params->pwr_rx == FASTAUTO_MODE) {
++		if (host->hw_ver.major >= 3) {
++			ret = ufshcd_dme_configure_adapt(hba,
++						   dev_req_params->gear_tx,
++						   PA_INITIAL_ADAPT);
++		} else {
++			ret = ufshcd_dme_configure_adapt(hba,
++				   dev_req_params->gear_tx,
++				   PA_NO_ADAPT);
 +		}
-+
-+		spin_lock_irqsave(hba->host->host_lock, flags);
-+		hba->clk_gating.delay_ms = max(ah_ms, 10U);
-+		spin_unlock_irqrestore(hba->host->host_lock, flags);
-+	}
-+}
-+
-+/* Convert microseconds to Auto-Hibernate Idle Timer register value */
-+static u32 ufs_mtk_us_to_ahit(unsigned int timer)
-+{
-+	unsigned int scale;
-+
-+	for (scale = 0; timer > UFSHCI_AHIBERN8_TIMER_MASK; ++scale)
-+		timer /= UFSHCI_AHIBERN8_SCALE_FACTOR;
-+
-+	return FIELD_PREP(UFSHCI_AHIBERN8_TIMER_MASK, timer) |
-+	       FIELD_PREP(UFSHCI_AHIBERN8_SCALE_MASK, scale);
-+}
-+
-+static void ufs_mtk_fix_ahit(struct ufs_hba *hba)
-+{
-+	unsigned int us;
-+
-+	if (ufshcd_is_auto_hibern8_supported(hba)) {
-+		switch (hba->dev_info.wmanufacturerid) {
-+		case UFS_VENDOR_SAMSUNG:
-+			/* configure auto-hibern8 timer to 3.5 ms */
-+			us = 3500;
-+			break;
-+
-+		case UFS_VENDOR_MICRON:
-+			/* configure auto-hibern8 timer to 2 ms */
-+			us = 2000;
-+			break;
-+
-+		default:
-+			/* configure auto-hibern8 timer to 1 ms */
-+			us = 1000;
-+			break;
-+		}
-+
-+		hba->ahit = ufs_mtk_us_to_ahit(us);
-+	}
-+
-+	ufs_mtk_setup_clk_gating(hba);
-+}
-+
- static void ufs_mtk_init_mcq_irq(struct ufs_hba *hba)
- {
- 	struct ufs_mtk_host *host = ufshcd_get_variant(hba);
-@@ -1369,32 +1432,10 @@ static int ufs_mtk_pre_link(struct ufs_hba *hba)
++	} else {
+ 		ret = ufshcd_dme_configure_adapt(hba,
+-					   dev_req_params->gear_tx,
+-					   PA_INITIAL_ADAPT);
++			   dev_req_params->gear_tx,
++			   PA_NO_ADAPT);
+ 	}
  
  	return ret;
- }
--
--static void ufs_mtk_setup_clk_gating(struct ufs_hba *hba)
--{
--	u32 ah_ms;
--
--	if (ufshcd_is_clkgating_allowed(hba)) {
--		if (ufshcd_is_auto_hibern8_supported(hba) && hba->ahit)
--			ah_ms = FIELD_GET(UFSHCI_AHIBERN8_TIMER_MASK,
--					  hba->ahit);
--		else
--			ah_ms = 10;
--		ufshcd_clkgate_delay_set(hba->dev, ah_ms + 5);
--	}
--}
--
- static void ufs_mtk_post_link(struct ufs_hba *hba)
- {
- 	/* enable unipro clock gating feature */
- 	ufs_mtk_cfg_unipro_cg(hba, true);
--
--	/* will be configured during probe hba */
--	if (ufshcd_is_auto_hibern8_supported(hba))
--		hba->ahit = FIELD_PREP(UFSHCI_AHIBERN8_TIMER_MASK, 10) |
--			FIELD_PREP(UFSHCI_AHIBERN8_SCALE_MASK, 3);
--
--	ufs_mtk_setup_clk_gating(hba);
- }
- 
- static int ufs_mtk_link_startup_notify(struct ufs_hba *hba,
-@@ -1726,6 +1767,7 @@ static void ufs_mtk_fixup_dev_quirks(struct ufs_hba *hba)
- 
- 	ufs_mtk_vreg_fix_vcc(hba);
- 	ufs_mtk_vreg_fix_vccqx(hba);
-+	ufs_mtk_fix_ahit(hba);
- }
- 
- static void ufs_mtk_event_notify(struct ufs_hba *hba,
 -- 
 2.51.0
 
