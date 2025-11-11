@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F49C4AF67
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABACCC4ABAC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B5421899333
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BDAC84F796A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B02A342CB1;
-	Tue, 11 Nov 2025 01:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8702FF672;
+	Tue, 11 Nov 2025 01:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VL8HEt3+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2weIrQz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0D233985;
-	Tue, 11 Nov 2025 01:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCF42FE071;
+	Tue, 11 Nov 2025 01:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825168; cv=none; b=mSeV2XVVAHtbIAEfCGKoD+NLx76HOYQKHS/GsNm4VLfXLl4PrMK9C+Q55RUy7kNbGw1DQ/gK19apvDzcm6dTGpEZxunBHPl8Yf3TmrwlSaODZaUVpdpCXUhF4Z0ORb5l9DYKw6CAdgjyzjNp/FLPJ4uKHQswvx3LXzHdWm0W3Pg=
+	t=1762824391; cv=none; b=r/EoWqNHJgQTs5fS/WuW9azCLz0MDoRvsrgrBGNmMdwXpf+yZmZdr0q8b/tokTRri7tPKsgTTf4Sro+afaVipaJKgcYLq2xotOTRcflQmufAMizxkf75rvpw2h/E2GS7ePiTHS2Awom2Lv0girD6/6ydFYEcnFlWcfiIfXcUYe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825168; c=relaxed/simple;
-	bh=D8KB6ciNirck97086CaGYrYscS74+OtWT5AKCmlwZQk=;
+	s=arc-20240116; t=1762824391; c=relaxed/simple;
+	bh=d02tQCAdV+Ynn1RGP7s/woHbaMSDB+WSmcP0Ra43u68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+UqwUfpsr4vDAq7U5VaaExx48cNpWyt+wPgqfJmBs1t0pMwvZ4sdJ4SdsGyf9Igto8gHUoLWTd+EeKb5R/tjHEDJTe6HJSjdeZ5Ic7jKt24/4VyM+YbsbUaXLzMuwPLLM0HghWdXnh2/4FeUOMGQxIO0+yIUe9DMJCciY6rjbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VL8HEt3+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBC9C116B1;
-	Tue, 11 Nov 2025 01:39:27 +0000 (UTC)
+	 MIME-Version; b=eTqohNkLw/kukf+EYiJDFN7knF19Bz6gpuJ6OhD9z2wDlbj2pzCaydK10B0R/I1dXTAeIXDjAIQ4gk/5qXxXPqbBRpOxuzkMbxQYnZPfQnnT6pvsAWIimk5CpJVwN1W3Rmxv8VhHbDiz44o4vHnTh02Gn85Scbb9g2FBGKR8aBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2weIrQz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D84BC116B1;
+	Tue, 11 Nov 2025 01:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825167;
-	bh=D8KB6ciNirck97086CaGYrYscS74+OtWT5AKCmlwZQk=;
+	s=korg; t=1762824391;
+	bh=d02tQCAdV+Ynn1RGP7s/woHbaMSDB+WSmcP0Ra43u68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VL8HEt3+4/EheGpWljPxXbIYGeffdi0VJIL7hqAs9yT7TUrGKgb1GNmhmoRhkonNB
-	 DiYc+8pLOevkLwO9VMDg+wBjcn+fXjWFYPMhI5QxW7BClYlN4bdLc92t4oZUjz0R3r
-	 LFW/dAl0h4shGXH3SCQAmc9+gRRvHqyU586usZqg=
+	b=V2weIrQzvdRGzPgwRUmqgybxaiD7n1pVIIE6RcKmSCz0NwcdMB45d4o0ZwOLhUOLL
+	 TPtW00sJjjbqoNQ0Q4ZlY7LcUpAYTL9MfOiIr8XCHnGWtr6L8X/gJ08dlufwX3Dm3O
+	 Y0aUfym20V7KQRhefPHqYb3CeEkAWpIL6kziB1LM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wenglianfa <wenglianfa@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Koakuma <koachan@protonmail.com>,
+	Andreas Larsson <andreas@gaisler.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 689/849] RDMA/hns: Fix the modification of max_send_sge
+Subject: [PATCH 6.12 403/565] sparc/module: Add R_SPARC_UA64 relocation handling
 Date: Tue, 11 Nov 2025 09:44:19 +0900
-Message-ID: <20251111004553.083227533@linuxfoundation.org>
+Message-ID: <20251111004535.939011817@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wenglianfa <wenglianfa@huawei.com>
+From: Koakuma <koachan@protonmail.com>
 
-[ Upstream commit f5a7cbea5411668d429eb4ffe96c4063fe8dac9e ]
+[ Upstream commit 05457d96175d25c976ab6241c332ae2eb5e07833 ]
 
-The actual sge number may exceed the value specified in init_attr->cap
-when HW needs extra sge to enable inline feature. Since these extra
-sges are not expected by ULP, return the user-specified value to ULP
-instead of the expanded sge number.
+This is needed so that the kernel can handle R_SPARC_UA64 relocations,
+which is emitted by LLVM's IAS.
 
-Fixes: 0c5e259b06a8 ("RDMA/hns: Fix incorrect sge nums calculation")
-Signed-off-by: wenglianfa <wenglianfa@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20251016114051.1963197-3-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Koakuma <koachan@protonmail.com>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_qp.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/sparc/include/asm/elf_64.h | 1 +
+ arch/sparc/kernel/module.c      | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index 6ff1b8ce580c5..bdd879ac12dda 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -662,7 +662,6 @@ static int set_user_sq_size(struct hns_roce_dev *hr_dev,
+diff --git a/arch/sparc/include/asm/elf_64.h b/arch/sparc/include/asm/elf_64.h
+index 8fb09eec8c3e7..694ed081cf8d9 100644
+--- a/arch/sparc/include/asm/elf_64.h
++++ b/arch/sparc/include/asm/elf_64.h
+@@ -58,6 +58,7 @@
+ #define R_SPARC_7		43
+ #define R_SPARC_5		44
+ #define R_SPARC_6		45
++#define R_SPARC_UA64		54
  
- 	hr_qp->sq.wqe_shift = ucmd->log_sq_stride;
- 	hr_qp->sq.wqe_cnt = cnt;
--	cap->max_send_sge = hr_qp->sq.max_gs;
- 
- 	return 0;
- }
-@@ -744,7 +743,6 @@ static int set_kernel_sq_size(struct hns_roce_dev *hr_dev,
- 
- 	/* sync the parameters of kernel QP to user's configuration */
- 	cap->max_send_wr = cnt;
--	cap->max_send_sge = hr_qp->sq.max_gs;
- 
- 	return 0;
- }
+ /* Bits present in AT_HWCAP, primarily for Sparc32.  */
+ #define HWCAP_SPARC_FLUSH       0x00000001
+diff --git a/arch/sparc/kernel/module.c b/arch/sparc/kernel/module.c
+index b8c51cc23d969..6e3d4dde4f9ab 100644
+--- a/arch/sparc/kernel/module.c
++++ b/arch/sparc/kernel/module.c
+@@ -87,6 +87,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs,
+ 			break;
+ #ifdef CONFIG_SPARC64
+ 		case R_SPARC_64:
++		case R_SPARC_UA64:
+ 			location[0] = v >> 56;
+ 			location[1] = v >> 48;
+ 			location[2] = v >> 40;
 -- 
 2.51.0
 
