@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-193815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0C9C4A983
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9633BC4AFC7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9D0DA4F1822
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8E3264F6916
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259293431EF;
-	Tue, 11 Nov 2025 01:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB8B30C36F;
+	Tue, 11 Nov 2025 01:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2LxGW0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zP08d/CT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7577342CB0;
-	Tue, 11 Nov 2025 01:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4243081AB;
+	Tue, 11 Nov 2025 01:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824073; cv=none; b=UI+Wv9EwYTArGK6yeIfJOUqMwv/uBxMHppY4GoC/VKU+G7VVwVVNgW6DJAWu9cn2eDpSx8T3ql6bn/nX/WF4LivDlioFnp0yvESOjwHJqiGgk062HEicjJT+DOQUvTEZI+jI+TCsL5JC6H6+7YjGB1OWzaaHtxOFjZGIQKDO/Bg=
+	t=1762825220; cv=none; b=MsHjdCuzpsu8J1EdPUH3ybQlqKp2xKSdMOG+Hzglhidi+aUQJTxIB0EWu0MLcMa8/A1iWVF4pyD09YXKB2QdO9NLS/FOwP3wLMkG/QovyV5Tt+WZXlZF6ktGajatVwhVUqjGDBo9P4il+wDOPp9BAUPeRk6eqvd4aIKI2DCdTJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824073; c=relaxed/simple;
-	bh=MacGqh0bDSfWe4gq+vBtZeeWQznnvsnbGez43zThGWs=;
+	s=arc-20240116; t=1762825220; c=relaxed/simple;
+	bh=lJVwisLkse36J34oWDCVRl1HlDjKkotQeB7SoeAW22E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HhiC45s1paSIVXIDN6kpdOZzMxw3nteVsLTcTTmdlTmNQc4JCIPAEn/5eLmmZf7KiUE2pWaM+z5eQ6FKwugLLAoTaeKVico9OwNYHt5/+nO370w1d061FtP20weItm5mJ1dZ9SsCMfCOXxul47+DZDij5+TwFg04U4NHRhSoU2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2LxGW0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A466C4AF09;
-	Tue, 11 Nov 2025 01:21:13 +0000 (UTC)
+	 MIME-Version; b=hDdc3V6egKOSwdw5fW04mAVWsdb/XHVFWOqjpOE6ddzHJBWu2UExl13B3cuS+RZflkef4+MisEtVL+EHJJzE0QzpsiOGljsCqLhWF+Y/P+Xt8sSFWwxY91DLHQgSO9fH5KRd/dqlRAfLofJ/FPnsMHos65EAVhOd61QXp49yXzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zP08d/CT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4087DC116B1;
+	Tue, 11 Nov 2025 01:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824073;
-	bh=MacGqh0bDSfWe4gq+vBtZeeWQznnvsnbGez43zThGWs=;
+	s=korg; t=1762825219;
+	bh=lJVwisLkse36J34oWDCVRl1HlDjKkotQeB7SoeAW22E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n2LxGW0fxOXYkcoJZsdVS6qN083+l8p3QOmHWqY3WM8UXZVQt9aEUy7akTiuTUYAD
-	 yRMcxzxANl6KfaWjerNXl+Vbx9wKZpYFwOPHZGkxOE9bZpAyaQ7/Bs8v3UR9r7gRuc
-	 dADT46t7ZxnTfiNubG8kWGJ+9d98LmJHN3KTG7zk=
+	b=zP08d/CTLCTcZQxu93LAQu1XQSHCurEI8ezWTKqnzrxi3pz6gzy5mN26TdAkpvXLg
+	 8ZulkypYJ+dmbJgW7nDgoxe9JlcGNcKcBqknbBP+nmgom/mRb8jDR6p297L9VjZ/FB
+	 nHXBDyNdUOlAxulN0Zz1KczalV/CUhnZBhZ6VxMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
+	Rohan G Thomas <rohan.g.thomas@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Furong Xu <0x1207@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 382/565] usb: xhci: plat: Facilitate using autosuspend for xhci plat devices
+Subject: [PATCH 6.17 668/849] net: stmmac: est: Drop frames causing HLBS error
 Date: Tue, 11 Nov 2025 09:43:58 +0900
-Message-ID: <20251111004535.464290705@linuxfoundation.org>
+Message-ID: <20251111004552.573581758@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+From: Rohan G Thomas <rohan.g.thomas@altera.com>
 
-[ Upstream commit 41cf11946b9076383a2222bbf1ef57d64d033f66 ]
+[ Upstream commit 7ce48d497475d7222bd8258c5c055eb7d928793c ]
 
-Allow autosuspend to be used by xhci plat device. For Qualcomm SoCs,
-when in host mode, it is intended that the controller goes to suspend
-state to save power and wait for interrupts from connected peripheral
-to wake it up. This is particularly used in cases where a HID or Audio
-device is connected. In such scenarios, the usb controller can enter
-auto suspend and resume action after getting interrupts from the
-connected device.
+Drop those frames causing Head-of-Line Blocking due to Scheduling
+(HLBS) error to avoid HLBS interrupt flooding and netdev watchdog
+timeouts due to blocked packets. Tx queues can be configured to drop
+those blocked packets by setting Drop Frames causing Scheduling Error
+(DFBS) bit of EST_CONTROL register.
 
-Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250916120436.3617598-1-krishna.kurapati@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also, add per queue HLBS drop count.
+
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Reviewed-by: Furong Xu <0x1207@gmail.com>
+Link: https://patch.msgid.link/20250925-hlbs_2-v3-1-3b39472776c2@altera.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-plat.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/stmicro/stmmac/common.h     | 1 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac_est.c | 9 ++++++---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_est.h | 1 +
+ 3 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index 8cf278a40bd91..448656d68e494 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -171,6 +171,7 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
- 		return ret;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index cbffccb3b9af0..450a51a994b92 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -228,6 +228,7 @@ struct stmmac_extra_stats {
+ 	unsigned long mtl_est_btrlm;
+ 	unsigned long max_sdu_txq_drop[MTL_MAX_TX_QUEUES];
+ 	unsigned long mtl_est_txq_hlbf[MTL_MAX_TX_QUEUES];
++	unsigned long mtl_est_txq_hlbs[MTL_MAX_TX_QUEUES];
+ 	/* per queue statistics */
+ 	struct stmmac_txq_stats txq_stats[MTL_MAX_TX_QUEUES];
+ 	struct stmmac_rxq_stats rxq_stats[MTL_MAX_RX_QUEUES];
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
+index ac6f2e3a3fcd2..4b513d27a9889 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
+@@ -63,7 +63,7 @@ static int est_configure(struct stmmac_priv *priv, struct stmmac_est *cfg,
+ 			 EST_GMAC5_PTOV_SHIFT;
+ 	}
+ 	if (cfg->enable)
+-		ctrl |= EST_EEST | EST_SSWL;
++		ctrl |= EST_EEST | EST_SSWL | EST_DFBS;
+ 	else
+ 		ctrl &= ~EST_EEST;
  
- 	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_get_noresume(&pdev->dev);
+@@ -109,6 +109,10 @@ static void est_irq_status(struct stmmac_priv *priv, struct net_device *dev,
  
+ 		x->mtl_est_hlbs++;
+ 
++		for (i = 0; i < txqcnt; i++)
++			if (value & BIT(i))
++				x->mtl_est_txq_hlbs[i]++;
++
+ 		/* Clear Interrupt */
+ 		writel(value, est_addr + EST_SCH_ERR);
+ 
+@@ -131,10 +135,9 @@ static void est_irq_status(struct stmmac_priv *priv, struct net_device *dev,
+ 
+ 		x->mtl_est_hlbf++;
+ 
+-		for (i = 0; i < txqcnt; i++) {
++		for (i = 0; i < txqcnt; i++)
+ 			if (feqn & BIT(i))
+ 				x->mtl_est_txq_hlbf[i]++;
+-		}
+ 
+ 		/* Clear Interrupt */
+ 		writel(feqn, est_addr + EST_FRM_SZ_ERR);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
+index d247fa383a6e4..f70221c9c84af 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
+@@ -16,6 +16,7 @@
+ #define EST_XGMAC_PTOV_MUL		9
+ #define EST_SSWL			BIT(1)
+ #define EST_EEST			BIT(0)
++#define EST_DFBS			BIT(5)
+ 
+ #define EST_STATUS			0x00000008
+ #define EST_GMAC5_BTRL			GENMASK(11, 8)
 -- 
 2.51.0
 
