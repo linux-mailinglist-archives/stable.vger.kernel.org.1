@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB31C4A346
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A03F8C4AA57
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 73F3E4F17B6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F06B53BB28B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3BF25A341;
-	Tue, 11 Nov 2025 01:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6057A33F8D2;
+	Tue, 11 Nov 2025 01:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xuov7w21"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQEF67Ff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B7425A334;
-	Tue, 11 Nov 2025 01:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA8C33F39D;
+	Tue, 11 Nov 2025 01:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822913; cv=none; b=nwqPl3dwy4D3q0o3ZGu4Z/cQPdVlO+pN/y3DV1f58ubi89nA0Hghjv0wnxcB9r+HjBq7KQ/kNz4I75jnPUX0gorQq2uWumm4FJeT6ZBrqJgfYTtGpZ7F15T7PybaMsfLAERN6MdpNNdsH85XvY3XQ/ov/tqnSuDbmqYJr7DfJXk=
+	t=1762824008; cv=none; b=I2wiLl7gV7fWy7vaxm9YIEJ9SJZxl0Rd51jN7LfGpUmzNDRCFGI5+MnQ11NPhJB7bW5bwBO48AnZhAvOdQkWfzexXS6xbM6P42eMs7JWFkwBwlSjQiiyaVG1pkgcNXsbxP/G9urRKHu+eKoPEWpLJ07kyUsy0VtUVzGJWzacNP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822913; c=relaxed/simple;
-	bh=IsOCcuVctrSHBbIEA3OSFjBOrFSg2SYI4IH51XLZVcA=;
+	s=arc-20240116; t=1762824008; c=relaxed/simple;
+	bh=YyIymvxzxpccLWmULbu16ovYvF+yxEiT0oVJtKYpPTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HDGO9CwfRy2SmQfkJtiGAt5uBaR/LocJPMP4TTBycVtGOO7YWxQXVSeTS5U3QCL+fAvHEOSm6ktaCrhsZjHdaWqXkMM+BXPU2WQCqqtxjAthb2P5f1/54C4T+R2/HLoQbUDwuReRw7JOIB9OR/2OlUGmYsPc5yFZvnWjkdBcqgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xuov7w21; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44E4C4CEFB;
-	Tue, 11 Nov 2025 01:01:52 +0000 (UTC)
+	 MIME-Version; b=Z7M7nqM2uk71DfqBorWz7vqBUPPUp5kD5K62OHJP3dG6XlG3PPj7iNzmLhguN3I1PJEkX4iO4qWSuj6j5yKvNGGgP9Ve0niJm/jRIJ44V7n9DIoh6ifpALi51F2eQICnY7zDeN/1Kx+OAkCzZx9AyFDXLUi6mWisWh85es7mW4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQEF67Ff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0CCC116B1;
+	Tue, 11 Nov 2025 01:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822913;
-	bh=IsOCcuVctrSHBbIEA3OSFjBOrFSg2SYI4IH51XLZVcA=;
+	s=korg; t=1762824008;
+	bh=YyIymvxzxpccLWmULbu16ovYvF+yxEiT0oVJtKYpPTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xuov7w21tlJ5UrMW6fStvsaLzTV5CyG+u3qjD0rYVI+ahSUDUM99KGKWtKgqiWHFe
-	 aj9LEf+0+nBAQoNXNeGCECYVieAT9pWVhDFlI4vK5Y7uZgMp+z41jOHRslKMyKRgkQ
-	 hvBscVJ1pv7vBpKPKFbJWio5/RLlfz6CUM5HTjmY=
+	b=lQEF67FfU9S2isZ8/pMwc+iSTToN+UVuwaWQqdHegXBFAGOFf/bc9np6GW9AyuP7U
+	 aa4y1RqECxeF+l9V8M2eHOoD6Aim5IV/g1HwOtiNvy7zxjxKFyF2AX9tTpCaXCO7ch
+	 TgM4BBfS/4cOnRZOUrCTp37emh9NlRQax28L0DUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Travkin <nikita@trvn.ru>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 132/565] firmware: qcom: tzmem: disable sc7180 platform
-Date: Tue, 11 Nov 2025 09:39:48 +0900
-Message-ID: <20251111004529.918825662@linuxfoundation.org>
+Subject: [PATCH 6.17 419/849] drm/msm/dsi/phy_7nm: Fix missing initial VCO rate
+Date: Tue, 11 Nov 2025 09:39:49 +0900
+Message-ID: <20251111004546.571174060@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Travkin <nikita@trvn.ru>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 3cc9a8cadaf66e1a53e5fee48f8bcdb0a3fd5075 ]
+[ Upstream commit 5ddcb0cb9d10e6e70a68e0cb8f0b8e3a7eb8ccaf ]
 
-When SHM bridge is enabled, assigning RMTFS memory causes the calling
-core to hang if the system is running in EL1.
+Driver unconditionally saves current state on first init in
+dsi_pll_7nm_init(), but does not save the VCO rate, only some of the
+divider registers.  The state is then restored during probe/enable via
+msm_dsi_phy_enable() -> msm_dsi_phy_pll_restore_state() ->
+dsi_7nm_pll_restore_state().
 
-Disable SHM bridge on sc7180 devices to avoid that hang.
+Restoring calls dsi_pll_7nm_vco_set_rate() with
+pll_7nm->vco_current_rate=0, which basically overwrites existing rate of
+VCO and messes with clock hierarchy, by setting frequency to 0 to clock
+tree.  This makes anyway little sense - VCO rate was not saved, so
+should not be restored.
 
-Signed-off-by: Nikita Travkin <nikita@trvn.ru>
+If PLL was not configured configure it to minimum rate to avoid glitches
+and configuring entire in clock hierarchy to 0 Hz.
+
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250721-sc7180-shm-hang-v1-1-99ad9ffeb5b4@trvn.ru
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/657827/
+Link: https://lore.kernel.org/r/20250610-b4-sm8750-display-v6-9-ee633e3ddbff@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom/qcom_tzmem.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/firmware/qcom/qcom_tzmem.c b/drivers/firmware/qcom/qcom_tzmem.c
-index 92b3651782355..f8fef622e48fe 100644
---- a/drivers/firmware/qcom/qcom_tzmem.c
-+++ b/drivers/firmware/qcom/qcom_tzmem.c
-@@ -76,6 +76,7 @@ static bool qcom_tzmem_using_shm_bridge;
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+index 6b765f3fd529a..5c8a3394c3da0 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+@@ -843,6 +843,12 @@ static int dsi_pll_7nm_init(struct msm_dsi_phy *phy)
  
- /* List of machines that are known to not support SHM bridge correctly. */
- static const char *const qcom_tzmem_blacklist[] = {
-+	"qcom,sc7180", /* hang in rmtfs memory assignment */
- 	"qcom,sc8180x",
- 	"qcom,sdm670", /* failure in GPU firmware loading */
- 	"qcom,sdm845", /* reset in rmtfs memory assignment */
+ 	/* TODO: Remove this when we have proper display handover support */
+ 	msm_dsi_phy_pll_save_state(phy);
++	/*
++	 * Store also proper vco_current_rate, because its value will be used in
++	 * dsi_7nm_pll_restore_state().
++	 */
++	if (!dsi_pll_7nm_vco_recalc_rate(&pll_7nm->clk_hw, VCO_REF_CLK_RATE))
++		pll_7nm->vco_current_rate = pll_7nm->phy->cfg->min_pll_rate;
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
