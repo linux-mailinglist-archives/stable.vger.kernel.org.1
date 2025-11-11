@@ -1,230 +1,135 @@
-Return-Path: <stable+bounces-194542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDEE0C4FF6C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 23:18:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6746C4FF90
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 23:31:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F248718925A2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 22:19:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A08D84E36BA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 22:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534F92EBDD0;
-	Tue, 11 Nov 2025 22:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315DB27A107;
+	Tue, 11 Nov 2025 22:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="NFCnAd0C";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="CxyDphfL";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="NFCnAd0C";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="CxyDphfL"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b5lGd+Nd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38721283FC5
-	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 22:18:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8293A26CE05
+	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 22:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762899520; cv=none; b=OiMfeoTB+FGufJ1bN4t1GC8+F1K6vvaJBidiakNb2vllHPG0Fq4ZAT4Z+So6CCUVQ7XNaYr91lEsBFE5Lges03oR2ga4H6cKQVGiPMiNzOGYMC9+a81PKFf7pzaydgpoWEsTTTpNo9eim6/8byBXvwwD26LLWmrvtU8ZZoqRx3o=
+	t=1762900262; cv=none; b=c95bTEhHapKDOHQbmEopT662uEFEvDW6rARQ9ipedLoAzv+plXR7reMd0w9BLX1W2j4onga2Y8ZKJViZISu/aMGPp+2Q1yg/5RDX54KtGFAvoPeCHE3Lp0eIB5dP07IPbeA4YVzZHuXpyHccxkmHlFz4wztmpQzJ/FytTnIfW2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762899520; c=relaxed/simple;
-	bh=4S5gUi9z3nO2J0CRN5iQdz/hVpLebuMgfP5fRW8bbbg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o0pEXYpXu6BLE1GIt/0mqe6lYvawPp6mPQylMNP6eoVZb4MNB94T4yojgQB6qsiNuUsSTvE9cbMilDL2KHRZdyxOuqFKTQPXDDgZ2GAiwQ7Cf9rtDCh9thoacx4JskDp8jW++FIi2iD1PcPRgvzgf6ZXNGku4wRMGQqcGeHBhpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=NFCnAd0C; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=CxyDphfL; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=NFCnAd0C; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=CxyDphfL; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 11BDE1F458;
-	Tue, 11 Nov 2025 22:18:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762899516; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GicdksCSyjI82vUkF0Oi03JhVOMlvz+IX5VHtm4eASA=;
-	b=NFCnAd0CdU+wg3CFf3WCxS3+vuWYLoBI2PXiNTQ3Q/ofKTjPtRvznMzcsWTd5gFZVYKixH
-	I8OqOwM/K8jiD8gC0xphwKIZTqlXmG6TXeZYnL2RRdmQV++Qj7G9979n2lNByBk/jxS6Wo
-	riFP0fp/zVVMr3T+vZ9ldUcGsMx4Bxs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762899516;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GicdksCSyjI82vUkF0Oi03JhVOMlvz+IX5VHtm4eASA=;
-	b=CxyDphfLW3AsRB2q4RGIcsWDAK20PWCDYLJtNdZth2+v6u1xkPsdzbAo/QlqsS2QQj+A32
-	Fh7g8HeIZDG/rACg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762899516; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GicdksCSyjI82vUkF0Oi03JhVOMlvz+IX5VHtm4eASA=;
-	b=NFCnAd0CdU+wg3CFf3WCxS3+vuWYLoBI2PXiNTQ3Q/ofKTjPtRvznMzcsWTd5gFZVYKixH
-	I8OqOwM/K8jiD8gC0xphwKIZTqlXmG6TXeZYnL2RRdmQV++Qj7G9979n2lNByBk/jxS6Wo
-	riFP0fp/zVVMr3T+vZ9ldUcGsMx4Bxs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762899516;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GicdksCSyjI82vUkF0Oi03JhVOMlvz+IX5VHtm4eASA=;
-	b=CxyDphfLW3AsRB2q4RGIcsWDAK20PWCDYLJtNdZth2+v6u1xkPsdzbAo/QlqsS2QQj+A32
-	Fh7g8HeIZDG/rACg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EC89414BB0;
-	Tue, 11 Nov 2025 22:18:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WbznNzu2E2nNBwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 11 Nov 2025 22:18:35 +0000
-Message-ID: <8219599b-941e-4ffd-875f-6548e217c16c@suse.cz>
-Date: Tue, 11 Nov 2025 23:18:35 +0100
+	s=arc-20240116; t=1762900262; c=relaxed/simple;
+	bh=nBOmB4ONg8kALGVCz8jrfhPIlcVdJM+IcFGCif8wqF0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qcTF+0dP/t2eAYEJ5hHrMFsHmfLU9vWUrBw93se9UkboIawfFLqooGSjVQxceVlWtuYEo5L5HSJDGStB/dfndOsMhB3Y0Dc4obSqxPGvYmo38wFaexfvtid/e3/a7rJn6wNAGUONKcJRPLmJl+0HGrW0MSfNYAP1ODMV0ZpQz3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b5lGd+Nd; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7b0e73b0f52so171154b3a.1
+        for <stable@vger.kernel.org>; Tue, 11 Nov 2025 14:31:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762900260; x=1763505060; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+O8RYt755g+phSGczRrtxqFHw21U9A5DwYjvKLhqMbA=;
+        b=b5lGd+NdRKiKKKuMQzLLTIJ5dpTIPVw8mAULHAFjGv4YmTQbBuHAy1XUaZoUbPAAIq
+         o2iOvA4kyFciRA+WEsMnVwCoo2ZMm2aLzFXBCeF/J015lNuDt2YaVexyKMcJ+9wpcr6K
+         U8lBuCPqb68Jm5Rk5D7v+V651LjhUyDM6YLw7xPo+KcpBabWDvojuI7FylGCx584v3fJ
+         8SIbVC9vOxkS9zQNzip5dBTe+TGvwtWhT70WcXbFmpvT+o+TplsdyIL8eUPSuKeaO6nj
+         IZWOxkQO8sxBSFYQxa2hTe4oCdWfMd1SLV9JwrjPUKcMWIfbP3VwgHfuYxd7/521UMnx
+         +4JQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762900260; x=1763505060;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+O8RYt755g+phSGczRrtxqFHw21U9A5DwYjvKLhqMbA=;
+        b=XM2eT0UVrsVGVeHxZ3idGLb9soSzizkHrJoINSB+sTDQ2DyPjaYbUt1rySwwUNXu6f
+         OFJSZS0XJ52LedC9irinOYomRJRE7PZ0aIW6NILaSaD6zpDr2jYxvExyXMDK1eHg+uvN
+         AOeSx18f0WUVGDUE5U+jlMWZQChIUwQl1cj918mDd6Q3jvST/PMhqQj2ReJ1cclzthKQ
+         yYzdMSCVMF2+Nz3CfmMu474Qo8RnAoeTZh+KNxxxeC0b3WRNsY+Gjb00z4hk6mF4ATPw
+         aaiG/+3zhhDX7tzM7KyuB+qKes3P8rhejDWtHHj7EwLmk7GeKYCA+ow8mtxDsoWxdBOy
+         xFjA==
+X-Forwarded-Encrypted: i=1; AJvYcCVNOwQuhYzQkv4qtuwoLzzLt0UD6E2CXtCjHMd2ZoUgVNPbyXwQ/qZodz16Brk/AB5b9GQGlEk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0Elkha7V513OEu1l1STi2tdO+MeS48PFNJMFu59lYp4vdiOlv
+	30bCajDrbZkeNjGOq8fUOBXZPc6hDGhoUXN3BZRp0EYFTAT72fAEwsXxWE+XcI2LAFgcVAlGvwj
+	SUeRICg==
+X-Google-Smtp-Source: AGHT+IHtFVXr/uGxNz1xOC+oARtDBh6AgJQTtR8J1TlbgEsvQHGkSIKZOzneMX7GY0qygAOFGBUFmCHpdCc=
+X-Received: from pfbea28.prod.google.com ([2002:a05:6a00:4c1c:b0:77f:2e96:5d3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3a0f:b0:7ab:a41:2874
+ with SMTP id d2e1a72fcca58-7b7a2d91dcdmr700837b3a.10.1762900259787; Tue, 11
+ Nov 2025 14:30:59 -0800 (PST)
+Date: Tue, 11 Nov 2025 14:30:58 -0800
+In-Reply-To: <6ving6sg3ywr23epd3fmorzhovdom5uaty4ae4itit2amxafql@iui7as55sb55>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
- retry
-Content-Language: en-US
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Suren Baghdasaryan <surenb@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
- stable@vger.kernel.org, syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
-References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[131f9eb2b5807573275c];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	URIBL_BLOCKED(0.00)[suse.cz:email,suse.cz:mid,imap1.dmz-prg2.suse.org:helo,syzkaller.appspot.com:url,appspotmail.com:email,oracle.com:email];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.cz:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
+Mime-Version: 1.0
+References: <20251108004524.1600006-1-yosry.ahmed@linux.dev>
+ <20251108004524.1600006-3-yosry.ahmed@linux.dev> <aktjuidgjmdqdlc42mmy4hby5zc2e5at7lgrmkfxavlzusveus@ai7h3sk6j37b>
+ <6ving6sg3ywr23epd3fmorzhovdom5uaty4ae4itit2amxafql@iui7as55sb55>
+Message-ID: <aRO5ItX_--ZDfnfM@google.com>
+Subject: Re: [PATCH 2/6] KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 11/11/25 22:56, Liam R. Howlett wrote:
-> The retry in lock_vma_under_rcu() drops the rcu read lock before
-> reacquiring the lock and trying again.  This may cause a use-after-free
-> if the maple node the maple state was using was freed.
-> 
-> The maple state is protected by the rcu read lock.  When the lock is
-> dropped, the state cannot be reused as it tracks pointers to objects
-> that may be freed during the time where the lock was not held.
-> 
-> Any time the rcu read lock is dropped, the maple state must be
-> invalidated.  Resetting the address and state to MA_START is the safest
-> course of action, which will result in the next operation starting from
-> the top of the tree.
-> 
-> Prior to commit 0b16f8bed19c ("mm: change vma_start_read() to drop RCU
-> lock on failure"), the rcu read lock was dropped and NULL was returned,
-> so the retry would not have happened.  However, now that the read lock
-> is dropped regardless of the return, we may use a freed maple tree node
-> cached in the maple state on retry.
-> 
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 0b16f8bed19c ("mm: change vma_start_read() to drop RCU lock on failure")
+On Tue, Nov 11, 2025, Yosry Ahmed wrote:
+> On Tue, Nov 11, 2025 at 03:11:37AM +0000, Yosry Ahmed wrote:
+> > On Sat, Nov 08, 2025 at 12:45:20AM +0000, Yosry Ahmed wrote:
+> > > svm_update_lbrv() is called when MSR_IA32_DEBUGCTLMSR is updated, and on
+> > > nested transitions where LBRV is used. It checks whether LBRV enablement
+> > > needs to be changed in the current VMCB, and if it does, it also
+> > > recalculate intercepts to LBR MSRs.
+> > > 
+> > > However, there are cases where intercepts need to be updated even when
+> > > LBRV enablement doesn't. Example scenario:
+> > > - L1 has MSR_IA32_DEBUGCTLMSR cleared.
+> > > - L1 runs L2 without LBR_CTL_ENABLE (no LBRV).
+> > > - L2 sets DEBUGCTLMSR_LBR in MSR_IA32_DEBUGCTLMSR, svm_update_lbrv()
+> > >   sets LBR_CTL_ENABLE in VMCB02 and disables intercepts to LBR MSRs.
+> > > - L2 exits to L1, svm_update_lbrv() is not called on this transition.
+> > > - L1 clears MSR_IA32_DEBUGCTLMSR, svm_update_lbrv() finds that
+> > >   LBR_CTL_ENABLE is already cleared in VMCB01 and does nothing.
+> > > - Intercepts remain disabled, L1 reads to LBR MSRs read the host MSRs.
+> > > 
+> > > Fix it by always recalculating intercepts in svm_update_lbrv().
+> > 
+> > This actually breaks hyperv_svm_test, because svm_update_lbrv() is
+> > called on every nested transition, calling
+> > svm_recalc_lbr_msr_intercepts() -> svm_set_intercept_for_msr() and
+> > setting svm->nested.force_msr_bitmap_recalc to true.
+> > 
+> > This breaks the hyperv optimization in nested_svm_vmrun_msrpm() AFAICT.
+> > 
+> > I think there are two ways to fix this:
+> > - Add another bool to svm->nested to track LBR intercepts, and only call
+> >   svm_set_intercept_for_msr() if the intercepts need to be updated.
+> > 
+> > - Update svm_set_intercept_for_msr() itself to do nothing if the
+> >   intercepts do not need to be changed, which is more clutter but
+> >   applies to other callers as well so could shave cycles elsewhere (see
+> >   below).
+> > 
+> > Sean, Paolo, any preferences?
+> > 
+> > Here's what updating svm_set_intercept_for_msr() looks like:
 
-The commit is 6.18-rc1 so we don't need Cc: stable, but it's a mm-hotfixes
-material that must go to Linus before 6.18.
+I am *very* strongly opposed to modifying svm_set_intercept_for_msr() to deal
+with whatever mess LBRs has created.  Whatever the problem is (I haven't read
+through all of this yet), it needs to be fixed in the LBR code, not in
+svm_set_intercept_for_msr().
 
-> Reported-by: syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=131f9eb2b5807573275c
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-
-> ---
->  mm/mmap_lock.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-> index 39f341caf32c0..f2532af6208c0 100644
-> --- a/mm/mmap_lock.c
-> +++ b/mm/mmap_lock.c
-> @@ -257,6 +257,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
->  		if (PTR_ERR(vma) == -EAGAIN) {
->  			count_vm_vma_lock_event(VMA_LOCK_MISS);
->  			/* The area was replaced with another one */
-> +			mas_set(&mas, address);
->  			goto retry;
->  		}
->  
-
+Recalculating MSR intercepts is supposed to done only as needed, I don't want to
+encourage lazy code that works by optimizing paths that should be rare.
 
