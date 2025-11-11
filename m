@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-193072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2347BC49F18
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83CBCC49FB9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F07A6188A872
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A28BC4E6D0D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3975A1FDA92;
-	Tue, 11 Nov 2025 00:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA18724EA90;
+	Tue, 11 Nov 2025 00:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lA4I11z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSysGliw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A481D6DB5;
-	Tue, 11 Nov 2025 00:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861AE4C97;
+	Tue, 11 Nov 2025 00:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822234; cv=none; b=PxrcRZChLjTL+re+CAM5EbA42yqoeWkhQC3UtsYcceCMgL616+8012+5tjTE/xyxVP7jKd8Iy1AeSxkhW/xQ99WruyBQE5bUBH/51ssGnu5/SOG/qvgcsoA3aqaUhx7CzDCLnCam7bMMyNu40SCscJWqrs3CECI0a8V7w9ik7og=
+	t=1762822238; cv=none; b=Dfs2g+9IkY1AEeHF33LPRGRGnN/GtjoDo/WtxM/+vnKSFUVq1awTv7hgBy4JDRM0hIsoNXgGjHQKgRCPbguSRt0D03AZZJqBHYwX2I9MwHdZr0l05vSgPobJ8yh9UTJbcK4GYO9bxnosZiPXlBU9QPWDuppeiNQ85+uB8bU7hG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822234; c=relaxed/simple;
-	bh=dsdMIFgK6y5lnMVPWgYqBo2JcxxhGMnjkDR9BypRjeI=;
+	s=arc-20240116; t=1762822238; c=relaxed/simple;
+	bh=r+Du16tQgaCsoiful6mS8Rczy/24c40pPPjjSQOaRAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QEjKvVfkOqD7nKmcp3iClYpGvYMSHT8iCBYPwx4vENLbYx+RVVrcxHC+VMqXt1mEIgdbk6xZfMSbHyEPEP05QHSey3CJ59xGdZ6jEMsC2iFL7AtKgc7t+e4HHkdaVtVb6hLpJctvaMlp1qFqUEyvdMxM/vWrKbVBVMPSEGpcstw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lA4I11z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F924C4CEF5;
-	Tue, 11 Nov 2025 00:50:33 +0000 (UTC)
+	 MIME-Version; b=um3sBYVbfhua/sWlKPaXaFYbqzG884Qw3a8/vrAmHXDrkud8Qy71T9ptCmLCCkqLmwXHmy+VETbmxeFBqMAMXBYRNiloTrA+IPO2Sl8Ag5bmQk1kdFehjZZwu+zCS4cR7Hx5XuA2ozf+9wu05NfSglOv67ydhIeTnmSesQSWv/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSysGliw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C25CC19421;
+	Tue, 11 Nov 2025 00:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822233;
-	bh=dsdMIFgK6y5lnMVPWgYqBo2JcxxhGMnjkDR9BypRjeI=;
+	s=korg; t=1762822238;
+	bh=r+Du16tQgaCsoiful6mS8Rczy/24c40pPPjjSQOaRAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0lA4I11zZLW2A16w4RJCxHjIM1R7MvXAehZ/VA9Bsta+i9w+HnuT8TMXq2iv+REqz
-	 s674ms7MrU25rTbKkU+ufeAD49MyNglBbeY/ra5KkWhcXnf8Vs0E1eSWWpYtlgVKVE
-	 DdKRVVuEZqk6m/cuUkNr5d0Hc7Qg0eLkAv9YIfRk=
+	b=DSysGliwpydFFMCxFA0vuihmvpUSme7yjpdBm1hCNJ0TRlfIeOhOxhpEJFq7hZetL
+	 HS5qqSi2214ZIHhylr4hSpNIVO6qRMD9bY0LC+Q0O+Pb5RpWt6YxNqdtwG12DMwAzA
+	 ZUYYWa3Ov/WWaSuYtV309djCqpbaoocyoLRF3TR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com,
-	Junjie Cao <junjie.cao@intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.12 008/565] fbdev: bitblit: bound-check glyph index in bit_putcs*
-Date: Tue, 11 Nov 2025 09:37:44 +0900
-Message-ID: <20251111004527.040457812@linuxfoundation.org>
+	Johan Hovold <johan@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 009/565] Bluetooth: rfcomm: fix modem control handling
+Date: Tue, 11 Nov 2025 09:37:45 +0900
+Message-ID: <20251111004527.063172964@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,71 +65,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junjie Cao <junjie.cao@intel.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 18c4ef4e765a798b47980555ed665d78b71aeadf upstream.
+commit 91d35ec9b3956d6b3cf789c1593467e58855b03a upstream.
 
-bit_putcs_aligned()/unaligned() derived the glyph pointer from the
-character value masked by 0xff/0x1ff, which may exceed the actual font's
-glyph count and read past the end of the built-in font array.
-Clamp the index to the actual glyph count before computing the address.
+The RFCOMM driver confuses the local and remote modem control signals,
+which specifically means that the reported DTR and RTS state will
+instead reflect the remote end (i.e. DSR and CTS).
 
-This fixes a global out-of-bounds read reported by syzbot.
+This issue dates back to the original driver (and a follow-on update)
+merged in 2002, which resulted in a non-standard implementation of
+TIOCMSET that allowed controlling also the TS07.10 IC and DV signals by
+mapping them to the RI and DCD input flags, while TIOCMGET failed to
+return the actual state of DTR and RTS.
 
-Reported-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=793cf822d213be1a74f2
-Tested-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Note that the bogus control of input signals in tiocmset() is just
+dead code as those flags will have been masked out by the tty layer
+since 2003.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/bitblit.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ net/bluetooth/rfcomm/tty.c |   26 +++++++++++---------------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
---- a/drivers/video/fbdev/core/bitblit.c
-+++ b/drivers/video/fbdev/core/bitblit.c
-@@ -79,12 +79,16 @@ static inline void bit_putcs_aligned(str
- 				     struct fb_image *image, u8 *buf, u8 *dst)
+--- a/net/bluetooth/rfcomm/tty.c
++++ b/net/bluetooth/rfcomm/tty.c
+@@ -648,8 +648,8 @@ static void rfcomm_dev_modem_status(stru
+ 		tty_port_tty_hangup(&dev->port, true);
+ 
+ 	dev->modem_status =
+-		((v24_sig & RFCOMM_V24_RTC) ? (TIOCM_DSR | TIOCM_DTR) : 0) |
+-		((v24_sig & RFCOMM_V24_RTR) ? (TIOCM_RTS | TIOCM_CTS) : 0) |
++		((v24_sig & RFCOMM_V24_RTC) ? TIOCM_DSR : 0) |
++		((v24_sig & RFCOMM_V24_RTR) ? TIOCM_CTS : 0) |
+ 		((v24_sig & RFCOMM_V24_IC)  ? TIOCM_RI : 0) |
+ 		((v24_sig & RFCOMM_V24_DV)  ? TIOCM_CD : 0);
+ }
+@@ -1060,10 +1060,14 @@ static void rfcomm_tty_hangup(struct tty
+ static int rfcomm_tty_tiocmget(struct tty_struct *tty)
  {
- 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
-+	unsigned int charcnt = vc->vc_font.charcount;
- 	u32 idx = vc->vc_font.width >> 3;
- 	u8 *src;
+ 	struct rfcomm_dev *dev = tty->driver_data;
++	struct rfcomm_dlc *dlc = dev->dlc;
++	u8 v24_sig;
  
- 	while (cnt--) {
--		src = vc->vc_font.data + (scr_readw(s++)&
--					  charmask)*cellsize;
-+		u16 ch = scr_readw(s++) & charmask;
+ 	BT_DBG("tty %p dev %p", tty, dev);
+ 
+-	return dev->modem_status;
++	rfcomm_dlc_get_modem_status(dlc, &v24_sig);
 +
-+		if (ch >= charcnt)
-+			ch = 0;
-+		src = vc->vc_font.data + (unsigned int)ch * cellsize;
++	return (v24_sig & (TIOCM_DTR | TIOCM_RTS)) | dev->modem_status;
+ }
  
- 		if (attr) {
- 			update_attr(buf, src, attr, vc);
-@@ -112,14 +116,18 @@ static inline void bit_putcs_unaligned(s
- 				       u8 *dst)
- {
- 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
-+	unsigned int charcnt = vc->vc_font.charcount;
- 	u32 shift_low = 0, mod = vc->vc_font.width % 8;
- 	u32 shift_high = 8;
- 	u32 idx = vc->vc_font.width >> 3;
- 	u8 *src;
+ static int rfcomm_tty_tiocmset(struct tty_struct *tty, unsigned int set, unsigned int clear)
+@@ -1076,23 +1080,15 @@ static int rfcomm_tty_tiocmset(struct tt
  
- 	while (cnt--) {
--		src = vc->vc_font.data + (scr_readw(s++)&
--					  charmask)*cellsize;
-+		u16 ch = scr_readw(s++) & charmask;
-+
-+		if (ch >= charcnt)
-+			ch = 0;
-+		src = vc->vc_font.data + (unsigned int)ch * cellsize;
+ 	rfcomm_dlc_get_modem_status(dlc, &v24_sig);
  
- 		if (attr) {
- 			update_attr(buf, src, attr, vc);
+-	if (set & TIOCM_DSR || set & TIOCM_DTR)
++	if (set & TIOCM_DTR)
+ 		v24_sig |= RFCOMM_V24_RTC;
+-	if (set & TIOCM_RTS || set & TIOCM_CTS)
++	if (set & TIOCM_RTS)
+ 		v24_sig |= RFCOMM_V24_RTR;
+-	if (set & TIOCM_RI)
+-		v24_sig |= RFCOMM_V24_IC;
+-	if (set & TIOCM_CD)
+-		v24_sig |= RFCOMM_V24_DV;
+ 
+-	if (clear & TIOCM_DSR || clear & TIOCM_DTR)
++	if (clear & TIOCM_DTR)
+ 		v24_sig &= ~RFCOMM_V24_RTC;
+-	if (clear & TIOCM_RTS || clear & TIOCM_CTS)
++	if (clear & TIOCM_RTS)
+ 		v24_sig &= ~RFCOMM_V24_RTR;
+-	if (clear & TIOCM_RI)
+-		v24_sig &= ~RFCOMM_V24_IC;
+-	if (clear & TIOCM_CD)
+-		v24_sig &= ~RFCOMM_V24_DV;
+ 
+ 	rfcomm_dlc_set_modem_status(dlc, v24_sig);
+ 
 
 
 
