@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2518C4A6F8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1994EC4A83F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1BA174F1ED9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 535533B8807
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BE43469FF;
-	Tue, 11 Nov 2025 01:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2B4346A1E;
+	Tue, 11 Nov 2025 01:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5D0tuEe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+mAeTBh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A108346A0F;
-	Tue, 11 Nov 2025 01:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3E7346A01;
+	Tue, 11 Nov 2025 01:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823655; cv=none; b=bpKakqFXTV5s0N1pb/Leve7wW2K4dEncAko6ElkQG0CaLbgS4cZNRZ+oYylRZ0hA+2aH1a11VkEWIEYsYoVF/X1QHRnzk1ayyXQc+K6aRUhCdA2q1Ga1drMNB14ad6Pa7+7jHjWb9s3TgHDzIpgJ687M7DmQFMm/JOsHLAjfqow=
+	t=1762823661; cv=none; b=P4fcO20ivZHAqbK52zW/fZDv4aCz/ikmQHvJ+DW36QBgNax26H5I6xHSxojeMZmkHZZU+HmDWd95gUqCIpltEIgAP3F/8yaLevUQ3w5HK1A13TYFv/FdpoUzR9Pm8kiSfLD04oyMLi0ORnSKxwPuenlTVx8lv6HHo60/4DOx8RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823655; c=relaxed/simple;
-	bh=sdY4fhzfD6lloFaDqHjO8x1YvU5N36KmPimE4KrHPYI=;
+	s=arc-20240116; t=1762823661; c=relaxed/simple;
+	bh=f0vtjkmlmmg93Ga65c11F0I+PTpToCWAsDqJUftIvLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MyLGiQWCSdHuy/+0MU+1nEF+HBoGAcW6ehM3fxkH4imAHuZqKlsjqOQXGVTCVZfMvZYD4lYJPnXtYSraWJGVtOt3NG//HJc58GPX/ainPMMmyzfeJzrI0n4Ii1lGKYUO3N7MI24PYj36nDVdxVvKgRGumtUL6iIxXbFYrSvFh04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5D0tuEe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717F6C16AAE;
-	Tue, 11 Nov 2025 01:14:14 +0000 (UTC)
+	 MIME-Version; b=Q2ZGtDLCLiSfp3I2kOCkofCuxTBK33/BjZ87rRqwGtgIrV5c88B0MLiApAYgSVFUNu/AqxazzHuokbXFm5D7bNSmfoxwZEdA4NWt1HOfqzpgiJZh6uudSkBv7BDznAMdg+RLJT2k2FG4HbDT+PGntpuRtt+k+0749xP2G7IOozM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+mAeTBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74EABC4AF09;
+	Tue, 11 Nov 2025 01:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823654;
-	bh=sdY4fhzfD6lloFaDqHjO8x1YvU5N36KmPimE4KrHPYI=;
+	s=korg; t=1762823661;
+	bh=f0vtjkmlmmg93Ga65c11F0I+PTpToCWAsDqJUftIvLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D5D0tuEe/fWnVsiWBNZOv7vdsr2dgnL6QvQoq8tmE5zJClh26MXe8NMcqgthx65Ou
-	 HQa88Txr3S6YY8gXex9PF5GQTDbhYZ3rgs/2A4b66C0t1hRSMAZvWQLo2mYHyUNNGs
-	 75FjHyb4DZNbvdRDjfC87TrV7NpvPDNTadYZKJIs=
+	b=r+mAeTBhiVEFIWFYCtAoeWQ8u+z7iuR+8u8xpm4kAXerNEuZCYhNZMJj+GMax5QZS
+	 +TdL0MLin2LROr9kb0qfqAXegffTZ3DQP+EI+CyGjrijbXccPVqkOSvWnI0fFEzoDK
+	 wUmiKoJkT9z+DXXKruDl1mUx8O6N1viiG8zoQTu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Summers <stuart.summers@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 344/849] drm/xe/pcode: Initialize data0 for pcode read routine
-Date: Tue, 11 Nov 2025 09:38:34 +0900
-Message-ID: <20251111004544.737166448@linuxfoundation.org>
+Subject: [PATCH 6.17 345/849] drm/panel: ilitek-ili9881c: turn off power-supply when init fails
+Date: Tue, 11 Nov 2025 09:38:35 +0900
+Message-ID: <20251111004544.761025411@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,135 +66,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stuart Summers <stuart.summers@intel.com>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 2515d2b9ab4108c11a0b23935e68de27abb8b2a7 ]
+[ Upstream commit 6c66eba502709a78281333187c1add7b71f7201f ]
 
-There are two registers filled in when reading data from
-pcode besides the mailbox itself. Currently, we allow a NULL
-value for the second of these two (data1) and assume the first
-is defined. However, many of the routines that are calling
-this function assume that pcode will ignore the value being
-passed in and so leave that first value (data0) defined but
-uninitialized. To be safe, make sure this value is always
-initialized to something (0 generally) in the event pcode
-behavior changes and starts using this value.
+The prepare function turns on the power-supply regulator first, when
+preparing the display. But in an error case, just returns the error
+code, but does not power off the regulator again, fix that.
 
-v2: Fix sob/author
-
-Signed-off-by: Stuart Summers <stuart.summers@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://lore.kernel.org/r/20250819201054.393220-1-stuart.summers@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20250707164906.1445288-2-heiko@sntech.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_device_sysfs.c | 8 ++++----
- drivers/gpu/drm/xe/xe_hwmon.c        | 8 ++++----
- drivers/gpu/drm/xe/xe_vram_freq.c    | 4 ++--
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/panel/panel-ilitek-ili9881c.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device_sysfs.c b/drivers/gpu/drm/xe/xe_device_sysfs.c
-index 927ee7991696b..896484c8fbcc7 100644
---- a/drivers/gpu/drm/xe/xe_device_sysfs.c
-+++ b/drivers/gpu/drm/xe/xe_device_sysfs.c
-@@ -76,7 +76,7 @@ lb_fan_control_version_show(struct device *dev, struct device_attribute *attr, c
- {
- 	struct xe_device *xe = pdev_to_xe_device(to_pci_dev(dev));
- 	struct xe_tile *root = xe_device_get_root_tile(xe);
--	u32 cap, ver_low = FAN_TABLE, ver_high = FAN_TABLE;
-+	u32 cap = 0, ver_low = FAN_TABLE, ver_high = FAN_TABLE;
- 	u16 major = 0, minor = 0, hotfix = 0, build = 0;
- 	int ret;
+diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
+index ac433345a1794..3af22a5f5700c 100644
+--- a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
++++ b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
+@@ -1486,7 +1486,7 @@ static int ili9881c_prepare(struct drm_panel *panel)
+ 						      instr->arg.cmd.data);
  
-@@ -115,7 +115,7 @@ lb_voltage_regulator_version_show(struct device *dev, struct device_attribute *a
- {
- 	struct xe_device *xe = pdev_to_xe_device(to_pci_dev(dev));
- 	struct xe_tile *root = xe_device_get_root_tile(xe);
--	u32 cap, ver_low = VR_CONFIG, ver_high = VR_CONFIG;
-+	u32 cap = 0, ver_low = VR_CONFIG, ver_high = VR_CONFIG;
- 	u16 major = 0, minor = 0, hotfix = 0, build = 0;
- 	int ret;
+ 		if (ret)
+-			return ret;
++			goto disable_power;
+ 	}
  
-@@ -153,7 +153,7 @@ static int late_bind_create_files(struct device *dev)
- {
- 	struct xe_device *xe = pdev_to_xe_device(to_pci_dev(dev));
- 	struct xe_tile *root = xe_device_get_root_tile(xe);
--	u32 cap;
-+	u32 cap = 0;
- 	int ret;
+ 	ret = ili9881c_switch_page(ctx, 0);
+@@ -1498,18 +1498,22 @@ static int ili9881c_prepare(struct drm_panel *panel)
+ 					 &ctx->address_mode,
+ 					 sizeof(ctx->address_mode));
+ 		if (ret < 0)
+-			return ret;
++			goto disable_power;
+ 	}
  
- 	xe_pm_runtime_get(xe);
-@@ -186,7 +186,7 @@ static void late_bind_remove_files(struct device *dev)
- {
- 	struct xe_device *xe = pdev_to_xe_device(to_pci_dev(dev));
- 	struct xe_tile *root = xe_device_get_root_tile(xe);
--	u32 cap;
-+	u32 cap = 0;
- 	int ret;
+ 	ret = mipi_dsi_dcs_set_tear_on(ctx->dsi, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
+ 	if (ret)
+-		return ret;
++		goto disable_power;
  
- 	xe_pm_runtime_get(xe);
-diff --git a/drivers/gpu/drm/xe/xe_hwmon.c b/drivers/gpu/drm/xe/xe_hwmon.c
-index c5b63e10bb911..5ade08f90b89a 100644
---- a/drivers/gpu/drm/xe/xe_hwmon.c
-+++ b/drivers/gpu/drm/xe/xe_hwmon.c
-@@ -179,7 +179,7 @@ static int xe_hwmon_pcode_rmw_power_limit(const struct xe_hwmon *hwmon, u32 attr
- 					  u32 clr, u32 set)
- {
- 	struct xe_tile *root_tile = xe_device_get_root_tile(hwmon->xe);
--	u32 val0, val1;
-+	u32 val0 = 0, val1 = 0;
- 	int ret = 0;
+ 	ret = mipi_dsi_dcs_exit_sleep_mode(ctx->dsi);
+ 	if (ret)
+-		return ret;
++		goto disable_power;
  
- 	ret = xe_pcode_read(root_tile, PCODE_MBOX(PCODE_POWER_SETUP,
-@@ -737,7 +737,7 @@ static int xe_hwmon_power_curr_crit_read(struct xe_hwmon *hwmon, int channel,
- 					 long *value, u32 scale_factor)
- {
- 	int ret;
--	u32 uval;
-+	u32 uval = 0;
+ 	return 0;
++
++disable_power:
++	regulator_disable(ctx->power);
++	return ret;
+ }
  
- 	mutex_lock(&hwmon->hwmon_lock);
- 
-@@ -921,7 +921,7 @@ xe_hwmon_power_write(struct xe_hwmon *hwmon, u32 attr, int channel, long val)
- static umode_t
- xe_hwmon_curr_is_visible(const struct xe_hwmon *hwmon, u32 attr, int channel)
- {
--	u32 uval;
-+	u32 uval = 0;
- 
- 	/* hwmon sysfs attribute of current available only for package */
- 	if (channel != CHANNEL_PKG)
-@@ -1023,7 +1023,7 @@ xe_hwmon_energy_read(struct xe_hwmon *hwmon, u32 attr, int channel, long *val)
- static umode_t
- xe_hwmon_fan_is_visible(struct xe_hwmon *hwmon, u32 attr, int channel)
- {
--	u32 uval;
-+	u32 uval = 0;
- 
- 	if (!hwmon->xe->info.has_fan_control)
- 		return 0;
-diff --git a/drivers/gpu/drm/xe/xe_vram_freq.c b/drivers/gpu/drm/xe/xe_vram_freq.c
-index b26e26d73dae6..17bc84da4cdcc 100644
---- a/drivers/gpu/drm/xe/xe_vram_freq.c
-+++ b/drivers/gpu/drm/xe/xe_vram_freq.c
-@@ -34,7 +34,7 @@ static ssize_t max_freq_show(struct device *dev, struct device_attribute *attr,
- 			     char *buf)
- {
- 	struct xe_tile *tile = dev_to_tile(dev);
--	u32 val, mbox;
-+	u32 val = 0, mbox;
- 	int err;
- 
- 	mbox = REG_FIELD_PREP(PCODE_MB_COMMAND, PCODE_FREQUENCY_CONFIG)
-@@ -56,7 +56,7 @@ static ssize_t min_freq_show(struct device *dev, struct device_attribute *attr,
- 			     char *buf)
- {
- 	struct xe_tile *tile = dev_to_tile(dev);
--	u32 val, mbox;
-+	u32 val = 0, mbox;
- 	int err;
- 
- 	mbox = REG_FIELD_PREP(PCODE_MB_COMMAND, PCODE_FREQUENCY_CONFIG)
+ static int ili9881c_enable(struct drm_panel *panel)
 -- 
 2.51.0
 
