@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-193922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E86C4AB6B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD37C4A566
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:20:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9A36F4F7781
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DD663B3419
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F9A28D829;
-	Tue, 11 Nov 2025 01:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D7A347FC3;
+	Tue, 11 Nov 2025 01:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXcfM+Q9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TT/YLThT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFAF2561A7;
-	Tue, 11 Nov 2025 01:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE5D2DD5E2;
+	Tue, 11 Nov 2025 01:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824382; cv=none; b=D4msO09Y3JjvNKQ0M/aSS0JN1rG0FtyN0j/XaJ0TK0dNplIxzSkzNHnUWIPlPP7K8DHavmUHkkqslX69XVLGnUdqlrztrzrEo5jJ4b4E6U94DsuW+sp+qpYhFJ9hgojVxTEXdARGsU3v51+Gut18xVRUKT2An+TMKxXQkNnmrV8=
+	t=1762823215; cv=none; b=ggeex5WtEnU7+Af9SStvGO4r7vv96q49zXyyEsiQ6vhr0Qoous3se4anYM3QTyS8b2zWTx0bM9XJwCx89lnJoUieSS7u3OC+249s5+ji/L9p5t0POpA7lXlCvSDfaeyBwqZUpdFXSo2jfoR60tJI/g1rEGib5cKX60bRYGoZ99Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824382; c=relaxed/simple;
-	bh=LNA7VhGLp9fF1Zx+k1Bw5lwboeTJoSxzfVCg3Dpvg38=;
+	s=arc-20240116; t=1762823215; c=relaxed/simple;
+	bh=EgnSWLyckA4C2JaJGqbJ0WYxn5xc/TlBZ8IqsPcHOPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DprxXcKYr4PKGsUpbaL+xUIxiSJJhWrU3baf2ccl4+W61ycf8q3QGvChjl6N8B0pWjATnuDBwC8+o1XwG+ILsGjGTY6m7WTZxbdZe/JDmSHE2sBbU6WA4JyKWnCygcGeIcRsGZQmkBQpQdosrOu9M3lCU4ScnKJl5PNGbi9aRp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXcfM+Q9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1283C4AF0B;
-	Tue, 11 Nov 2025 01:26:21 +0000 (UTC)
+	 MIME-Version; b=O0pDs8VXfe2Q5c6Ggeq1S/w2OFo5Px5TQAQ65JP3PcRp/BRp1/xFBhLeuUe3G4A7UaCbDaL1LbZd2QNWizK+8em69xcw0bb4N2P07/PRAjYBFGjQ5w4icyaJtKG/MXiivJ+DzarVjQGGkEKKn64di/WWEvgDV24F3t3QA2OHv2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TT/YLThT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C08C4AF09;
+	Tue, 11 Nov 2025 01:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824382;
-	bh=LNA7VhGLp9fF1Zx+k1Bw5lwboeTJoSxzfVCg3Dpvg38=;
+	s=korg; t=1762823215;
+	bh=EgnSWLyckA4C2JaJGqbJ0WYxn5xc/TlBZ8IqsPcHOPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZXcfM+Q94uUe8eEexEhtPJi5b4tENNscJCudWKwJqzumSUanbDoSGhyvc//vuNZVb
-	 CD6EQsGDTIvaixk97xABX/NAtub4okWnaNOkQZ399kercWes/ORrj7Dlt8MxeEFYKa
-	 282sCtZ2iGUHMTkzRztSn2gjLyzFoogr4UVpqKFE=
+	b=TT/YLThTDwbeK7eohimEb+Xb1jpWoN/AWTbfpTIMV/8/IgJ3mJZWd6Bv3bOoZ7WAF
+	 j87mjfAUhjuNYB5pmkwGUwvf+tbrazUmIMUjMa7pWclqQ2JxBMMne7+76mNs+AaVKj
+	 SY1KuQ9eFrH6rCZcq0RBzbofL7PIVdL7Gb06Rblg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Yao <hao.yao@intel.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 484/849] media: ov08x40: Fix the horizontal flip control
+Subject: [PATCH 6.12 198/565] media: pci: ivtv: Dont create fake v4l2_fh
 Date: Tue, 11 Nov 2025 09:40:54 +0900
-Message-ID: <20251111004548.141717101@linuxfoundation.org>
+Message-ID: <20251111004531.382852918@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,41 +62,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Yao <hao.yao@intel.com>
+From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 
-[ Upstream commit c7df6f339af94689fdc433887f9fbb480bf8a4ed ]
+[ Upstream commit cc6e8d1ccea792d8550428e0831e3a35b0ccfddc ]
 
-The datasheet of ov08x40 doesn't match the hardware behavior.
-0x3821[2] == 1 is the original state and 0 the horizontal flip enabled.
+The ivtv driver has a structure named ivtv_open_id that models an open
+file handle for the device. It embeds a v4l2_fh instance for file
+handles that correspond to a V4L2 video device, and stores a pointer to
+that v4l2_fh in struct ivtv_stream to identify which open file handle
+owns a particular stream.
 
-Signed-off-by: Hao Yao <hao.yao@intel.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Tested-by: Hans de Goede <hansg@kernel.org> # ThinkPad X1 Carbon Gen 12 & Gen 13
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+In addition to video devices, streams can be owned by ALSA PCM devices.
+Those devices do not make use of the v4l2_fh instance for obvious
+reasons, but the snd_ivtv_pcm_capture_open() function still initializes
+a "fake" v4l2_fh for the sole purpose of using it as an open file handle
+identifier. The v4l2_fh is not properly destroyed when the ALSA PCM
+device is closed, leading to possible resource leaks.
+
+Fortunately, the v4l2_fh instance pointed to by ivtv_stream is not
+accessed, only the pointer value is used for comparison. Replace it with
+a pointer to the ivtv_open_id structure that embeds the v4l2_fh, and
+don't initialize the v4l2_fh for ALSA PCM devices.
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov08x40.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/pci/ivtv/ivtv-alsa-pcm.c |  2 --
+ drivers/media/pci/ivtv/ivtv-driver.h   |  3 ++-
+ drivers/media/pci/ivtv/ivtv-fileops.c  | 18 +++++++++---------
+ drivers/media/pci/ivtv/ivtv-irq.c      |  4 ++--
+ 4 files changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/media/i2c/ov08x40.c b/drivers/media/i2c/ov08x40.c
-index e0094305ca2ab..90887fc54fb0e 100644
---- a/drivers/media/i2c/ov08x40.c
-+++ b/drivers/media/i2c/ov08x40.c
-@@ -1648,7 +1648,7 @@ static int ov08x40_set_ctrl_hflip(struct ov08x40 *ov08x, u32 ctrl_val)
+diff --git a/drivers/media/pci/ivtv/ivtv-alsa-pcm.c b/drivers/media/pci/ivtv/ivtv-alsa-pcm.c
+index 8f346d7da9c8d..269a799ec046c 100644
+--- a/drivers/media/pci/ivtv/ivtv-alsa-pcm.c
++++ b/drivers/media/pci/ivtv/ivtv-alsa-pcm.c
+@@ -148,14 +148,12 @@ static int snd_ivtv_pcm_capture_open(struct snd_pcm_substream *substream)
  
- 	return ov08x40_write_reg(ov08x, OV08X40_REG_MIRROR,
- 				 OV08X40_REG_VALUE_08BIT,
--				 ctrl_val ? val | BIT(2) : val & ~BIT(2));
-+				 ctrl_val ? val & ~BIT(2) : val | BIT(2));
+ 	s = &itv->streams[IVTV_ENC_STREAM_TYPE_PCM];
+ 
+-	v4l2_fh_init(&item.fh, &s->vdev);
+ 	item.itv = itv;
+ 	item.type = s->type;
+ 
+ 	/* See if the stream is available */
+ 	if (ivtv_claim_stream(&item, item.type)) {
+ 		/* No, it's already in use */
+-		v4l2_fh_exit(&item.fh);
+ 		snd_ivtv_unlock(itvsc);
+ 		return -EBUSY;
+ 	}
+diff --git a/drivers/media/pci/ivtv/ivtv-driver.h b/drivers/media/pci/ivtv/ivtv-driver.h
+index a6ffa99e16bc6..83818048f7fe4 100644
+--- a/drivers/media/pci/ivtv/ivtv-driver.h
++++ b/drivers/media/pci/ivtv/ivtv-driver.h
+@@ -322,6 +322,7 @@ struct ivtv_queue {
+ };
+ 
+ struct ivtv;				/* forward reference */
++struct ivtv_open_id;
+ 
+ struct ivtv_stream {
+ 	/* These first four fields are always set, even if the stream
+@@ -331,7 +332,7 @@ struct ivtv_stream {
+ 	const char *name;		/* name of the stream */
+ 	int type;			/* stream type */
+ 
+-	struct v4l2_fh *fh;		/* pointer to the streaming filehandle */
++	struct ivtv_open_id *id;	/* pointer to the streaming ivtv_open_id */
+ 	spinlock_t qlock;		/* locks access to the queues */
+ 	unsigned long s_flags;		/* status flags, see above */
+ 	int dma;			/* can be PCI_DMA_TODEVICE, PCI_DMA_FROMDEVICE or PCI_DMA_NONE */
+diff --git a/drivers/media/pci/ivtv/ivtv-fileops.c b/drivers/media/pci/ivtv/ivtv-fileops.c
+index cfa28d0355863..1ac8d691df5cd 100644
+--- a/drivers/media/pci/ivtv/ivtv-fileops.c
++++ b/drivers/media/pci/ivtv/ivtv-fileops.c
+@@ -39,16 +39,16 @@ int ivtv_claim_stream(struct ivtv_open_id *id, int type)
+ 
+ 	if (test_and_set_bit(IVTV_F_S_CLAIMED, &s->s_flags)) {
+ 		/* someone already claimed this stream */
+-		if (s->fh == &id->fh) {
++		if (s->id == id) {
+ 			/* yes, this file descriptor did. So that's OK. */
+ 			return 0;
+ 		}
+-		if (s->fh == NULL && (type == IVTV_DEC_STREAM_TYPE_VBI ||
++		if (s->id == NULL && (type == IVTV_DEC_STREAM_TYPE_VBI ||
+ 					 type == IVTV_ENC_STREAM_TYPE_VBI)) {
+ 			/* VBI is handled already internally, now also assign
+ 			   the file descriptor to this stream for external
+ 			   reading of the stream. */
+-			s->fh = &id->fh;
++			s->id = id;
+ 			IVTV_DEBUG_INFO("Start Read VBI\n");
+ 			return 0;
+ 		}
+@@ -56,7 +56,7 @@ int ivtv_claim_stream(struct ivtv_open_id *id, int type)
+ 		IVTV_DEBUG_INFO("Stream %d is busy\n", type);
+ 		return -EBUSY;
+ 	}
+-	s->fh = &id->fh;
++	s->id = id;
+ 	if (type == IVTV_DEC_STREAM_TYPE_VBI) {
+ 		/* Enable reinsertion interrupt */
+ 		ivtv_clear_irq_mask(itv, IVTV_IRQ_DEC_VBI_RE_INSERT);
+@@ -94,7 +94,7 @@ void ivtv_release_stream(struct ivtv_stream *s)
+ 	struct ivtv *itv = s->itv;
+ 	struct ivtv_stream *s_vbi;
+ 
+-	s->fh = NULL;
++	s->id = NULL;
+ 	if ((s->type == IVTV_DEC_STREAM_TYPE_VBI || s->type == IVTV_ENC_STREAM_TYPE_VBI) &&
+ 		test_bit(IVTV_F_S_INTERNAL_USE, &s->s_flags)) {
+ 		/* this stream is still in use internally */
+@@ -126,7 +126,7 @@ void ivtv_release_stream(struct ivtv_stream *s)
+ 		/* was already cleared */
+ 		return;
+ 	}
+-	if (s_vbi->fh) {
++	if (s_vbi->id) {
+ 		/* VBI stream still claimed by a file descriptor */
+ 		return;
+ 	}
+@@ -359,7 +359,7 @@ static ssize_t ivtv_read(struct ivtv_stream *s, char __user *ubuf, size_t tot_co
+ 	size_t tot_written = 0;
+ 	int single_frame = 0;
+ 
+-	if (atomic_read(&itv->capturing) == 0 && s->fh == NULL) {
++	if (atomic_read(&itv->capturing) == 0 && s->id == NULL) {
+ 		/* shouldn't happen */
+ 		IVTV_DEBUG_WARN("Stream %s not initialized before read\n", s->name);
+ 		return -EIO;
+@@ -831,7 +831,7 @@ void ivtv_stop_capture(struct ivtv_open_id *id, int gop_end)
+ 		     id->type == IVTV_ENC_STREAM_TYPE_VBI) &&
+ 		    test_bit(IVTV_F_S_INTERNAL_USE, &s->s_flags)) {
+ 			/* Also used internally, don't stop capturing */
+-			s->fh = NULL;
++			s->id = NULL;
+ 		}
+ 		else {
+ 			ivtv_stop_v4l2_encode_stream(s, gop_end);
+@@ -915,7 +915,7 @@ int ivtv_v4l2_close(struct file *filp)
+ 	v4l2_fh_exit(fh);
+ 
+ 	/* Easy case first: this stream was never claimed by us */
+-	if (s->fh != &id->fh)
++	if (s->id != id)
+ 		goto close_done;
+ 
+ 	/* 'Unclaim' this stream */
+diff --git a/drivers/media/pci/ivtv/ivtv-irq.c b/drivers/media/pci/ivtv/ivtv-irq.c
+index e39bf64c5c715..404335e5aff4e 100644
+--- a/drivers/media/pci/ivtv/ivtv-irq.c
++++ b/drivers/media/pci/ivtv/ivtv-irq.c
+@@ -305,7 +305,7 @@ static void dma_post(struct ivtv_stream *s)
+ 			ivtv_process_vbi_data(itv, buf, 0, s->type);
+ 			s->q_dma.bytesused += buf->bytesused;
+ 		}
+-		if (s->fh == NULL) {
++		if (s->id == NULL) {
+ 			ivtv_queue_move(s, &s->q_dma, NULL, &s->q_free, 0);
+ 			return;
+ 		}
+@@ -330,7 +330,7 @@ static void dma_post(struct ivtv_stream *s)
+ 		set_bit(IVTV_F_I_HAVE_WORK, &itv->i_flags);
+ 	}
+ 
+-	if (s->fh)
++	if (s->id)
+ 		wake_up(&s->waitq);
  }
  
- static int ov08x40_set_ctrl_vflip(struct ov08x40 *ov08x, u32 ctrl_val)
 -- 
 2.51.0
 
