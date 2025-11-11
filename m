@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BBA8C4A1AE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:00:31 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8600C4A23B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09B023ACF42
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 19FB04F5143
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951501C6FE1;
-	Tue, 11 Nov 2025 00:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DBE252917;
+	Tue, 11 Nov 2025 00:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+h/vlMT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nn0GPdr8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AB6244693;
-	Tue, 11 Nov 2025 00:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B75023FC41;
+	Tue, 11 Nov 2025 00:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822786; cv=none; b=VUvJSM9fiBBymQSza89udv9y2Ryme9jgN1ECT+yAY6Em7ySOcnU88wbxtZUH0RO/8BE317EdhJPW/RyE6mGdqv/UGLGMcsIpP5gPjhU2jqBnm8LQ6/xCzKirHqdyfTzHQXWecctarKu0ec44rAahRppIefiAbU6Mpm60KG18ays=
+	t=1762822791; cv=none; b=crq6nhBCcLaOX7nCDqMqf73QgV+lJYswauFfJNE0xzLNjuH+5s/dqNEqGQHsSJ0/u9y/eW1C9T7jl/5ZLA8zHWwin89wjhYXlnQEkDP6RW4/HqhOWYnRNl4UIrA++8vxN5Eo/PwbayWNOxnZmRTXCQdMKcUnWyTUM+u+H1to//g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822786; c=relaxed/simple;
-	bh=+3g18BZRfAIFgvBi/PqZYA0t7O+pkJskftaXOXfVXlw=;
+	s=arc-20240116; t=1762822791; c=relaxed/simple;
+	bh=PALLMKo/56UDUE4qVlVelMGCVEoFdHzUEZThhonwWGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EZ+1Zdu5TzA0ryUsX5OpiuItyI9IocfxgHgrJjeunz1aX9XPo3M4rQOj6nFk06jY+f7apOZIfab8TsjQNS5SHeaRuidRNr1B8SPdf9969TrHJ3yBICkQBbQCC2LFhQyOYlzsNooFgV92IDcqm5Q1t9OZepdhqgrvezOonVk+YMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+h/vlMT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E492BC19422;
-	Tue, 11 Nov 2025 00:59:45 +0000 (UTC)
+	 MIME-Version; b=t1jIzz5mJt3zSjLpBb7ui50QxXs327kckIMIMrQ6wOYqLVozS+MgxNgSiA4gpzBqoR5k9zMwQNzLvxiP1RhK8Lnp3UVNvpyhpZbCjhes9ntmnaiutDZYbJljEaeEKylUlAdE94ObsL+zpNNynx9rWhyNiQbc8qgleXEgdDRyyOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nn0GPdr8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D28C19422;
+	Tue, 11 Nov 2025 00:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822786;
-	bh=+3g18BZRfAIFgvBi/PqZYA0t7O+pkJskftaXOXfVXlw=;
+	s=korg; t=1762822790;
+	bh=PALLMKo/56UDUE4qVlVelMGCVEoFdHzUEZThhonwWGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p+h/vlMTIrCmscEp0u6iOKBaSPbxw5jk5kqq8HSaHCnG1JMDmyIH6EiHSOj2nszW+
-	 0eCggh5XEEWQ5YNMPURY62gpt+nk2Ju1zpdgMgiNKPjQNm9YDLZ5BqjeTGnF0la9Cy
-	 r1cJx/quAwvnhRba9V5Lh+5tB/wNBetQ8zokvnw8=
+	b=Nn0GPdr81AnzK9Y0TkVwPiPNvMhmHR9Ui6PHniV0tWmqZQ/cpcNA8VClcMsX5m91D
+	 ccJU6FS/0ppFDcKhVB54tj6XAUKyNqkMkVVGMKVRM+KkzEF21chTw9x+Dv/wp33Deq
+	 ZO8EBih1oDYGTiskX2D/hcMZOWBiwqGgEcODOXVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
 	Winona Schroeer-Smith <wolfizen@wolfizen.net>,
 	Antoni Aloy Torrens <aaloytorrens@gmail.com>
-Subject: [PATCH 6.17 171/849] ARM: tegra: transformer-20: add missing magnetometer interrupt
-Date: Tue, 11 Nov 2025 09:35:41 +0900
-Message-ID: <20251111004540.571274074@linuxfoundation.org>
+Subject: [PATCH 6.17 172/849] ARM: tegra: transformer-20: fix audio-codec interrupt
+Date: Tue, 11 Nov 2025 09:35:42 +0900
+Message-ID: <20251111004540.594734782@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -70,9 +70,10 @@ Content-Transfer-Encoding: 8bit
 
 From: Svyatoslav Ryhel <clamor95@gmail.com>
 
-[ Upstream commit cca41614d15ce2bbc2c661362d3eafe53c9990af ]
+[ Upstream commit 3f973d78d176768fa7456def97f0b9824235024f ]
 
-Add missing interrupt to magnetometer node.
+Correct audio-codec interrupt should be PX3 while PX1 is used for external
+microphone detection.
 
 Tested-by: Winona Schroeer-Smith <wolfizen@wolfizen.net> # ASUS SL101
 Tested-by: Antoni Aloy Torrens <aaloytorrens@gmail.com> # ASUS TF101
@@ -80,23 +81,22 @@ Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts b/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts
-index 67764afeb0136..39008816fe5ee 100644
+index 39008816fe5ee..efd8838f9644f 100644
 --- a/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts
 +++ b/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts
-@@ -502,6 +502,9 @@
- 			compatible = "asahi-kasei,ak8974";
- 			reg = <0xe>;
+@@ -518,7 +518,7 @@
+ 			reg = <0x1a>;
  
-+			interrupt-parent = <&gpio>;
-+			interrupts = <TEGRA_GPIO(N, 5) IRQ_TYPE_EDGE_RISING>;
-+
- 			avdd-supply = <&vdd_3v3_sys>;
- 			dvdd-supply = <&vdd_1v8_sys>;
+ 			interrupt-parent = <&gpio>;
+-			interrupts = <TEGRA_GPIO(X, 1) IRQ_TYPE_EDGE_BOTH>;
++			interrupts = <TEGRA_GPIO(X, 3) IRQ_TYPE_EDGE_BOTH>;
  
+ 			gpio-controller;
+ 			#gpio-cells = <2>;
 -- 
 2.51.0
 
