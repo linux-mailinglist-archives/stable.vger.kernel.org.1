@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EBCDC4AC25
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:36 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B79C4A50A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 766B61890441
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:09 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 86CD134A746
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CF626ED5E;
-	Tue, 11 Nov 2025 01:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D648230BF77;
+	Tue, 11 Nov 2025 01:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGAXGWDF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHfFl5oP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF69DDAB;
-	Tue, 11 Nov 2025 01:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E6627054C;
+	Tue, 11 Nov 2025 01:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824479; cv=none; b=D/OKtLEbdWtOEmcr74V2Ndn+C/8akdJUoJJlMxgfu0Ov79yQwe0w1owguJYFTlpDxDNZ/OoLDit+X/Xl8Pg6l568WdzaIZp2AT7J9FS6YrAQ6f78wo/fMvU9a0gmi5O7BOD8YE2X9I5dUZHO6drvDR/q7q/W1COECRG2Ji18mEk=
+	t=1762823336; cv=none; b=a3SkxjxOpfEU6Nrgc6vet0kiU9gp9Go1S5Gh0uJRCqVBzJciQg8tTfxIZ6MWVZTYfBIupuAN8lAQ1uYERyJyXXgXsZ9okxRocg/5EQvgelVl84o54RUyT6oulZtgp/XWxr9ggP9zFn45HFSL3ncRPUHx66xCDOmy0R+Xa8yLVaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824479; c=relaxed/simple;
-	bh=yl/xIZ1cSLuolNgL6pSE3LWnaH/9AB/bn2pOz2msM6U=;
+	s=arc-20240116; t=1762823336; c=relaxed/simple;
+	bh=MOuqlRa4NpXvToIdF+npYmDSZsXmUoalQnTjuxzKIJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMeC7MsxiRYYMD7LpGKODFRohR16zqYDaxNheGy4I/wWP0g1q2qbiXsGSNNQAlg19buKihOUmhVq3NlyxAOvU4dWZVGOEJ2G+EOeT+NoHNmh0Sdvkj10dJ/FAMM8/nw2An8m05pS3F2TmMt397PXo/5xs6FqabWwhifyR6oqmdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGAXGWDF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADDAC4CEFB;
-	Tue, 11 Nov 2025 01:27:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rqM1ipG9g5JN0Jse2MFD5+YHfYCFJJFWq3ntBNZJG113HDCZ2nj3iJBCW3qS9lDyRTlSiVnicmceVdS3GgidzL6Rk8DzgD5WfPyCFFGWRLhTauRG/jwKYHTI11PINWYUoTGo6wqI05qmV6guoLK+u8vX0bYmyDQwxq+MkYetR0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHfFl5oP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EAFC116B1;
+	Tue, 11 Nov 2025 01:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824479;
-	bh=yl/xIZ1cSLuolNgL6pSE3LWnaH/9AB/bn2pOz2msM6U=;
+	s=korg; t=1762823336;
+	bh=MOuqlRa4NpXvToIdF+npYmDSZsXmUoalQnTjuxzKIJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGAXGWDFXV7TE2VedGqiQQowxP7z+QkVG9GPBf11uTlkPdUYau19GaiXwCvNm9X90
-	 gi2FKoM+IxnRzR0I2tKXyhNvTCa3Lg9buzT/NUm2oUVIK4t3sb0DMA4oczJESU9L53
-	 cVwOcMzYnSmX8s/zNXJGUSuG3yaiX0sZIHeChUyQ=
+	b=ZHfFl5oPPHdc8qCuSxMrWyRsEaoDmyAMs8dL/8QtrQUK6R3+NC+PYxspt7onIpT2D
+	 edAZBBdO7k2wTbY7RFexfkCZhGPhBTx30mxBRLaAdX3hPcNzrDWgtDPrVWbYBSOiLy
+	 oxyigiOfpPG31ObP6VZtHfXyyoKL/YBg6GyAOsdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Oleg Makarenko <oleg@makarenk.ooo>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 508/849] drm/msm/registers: Generate _HI/LO builders for reg64
+Subject: [PATCH 6.12 222/565] HID: pidff: Use direction fix only for conditional effects
 Date: Tue, 11 Nov 2025 09:41:18 +0900
-Message-ID: <20251111004548.710207047@linuxfoundation.org>
+Message-ID: <20251111004531.917410871@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +61,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 60e9f776b7932d67c88e8475df7830cb9cdf3154 ]
+[ Upstream commit f345a4798dab800159b09d088e7bdae0f16076c3 ]
 
-The upstream mesa copy of the GPU regs has shifted more things to reg64
-instead of seperate 32b HI/LO reg32's.  This works better with the "new-
-style" c++ builders that mesa has been migrating to for a6xx+ (to better
-handle register shuffling between gens), but it leaves the C builders
-with missing _HI/LO builders.
+The already fixed bug in SDL only affected conditional effects. This
+should fix FFB in Forza Horizion 4/5 on Moza Devices as Forza Horizon
+flips the constant force direction instead of using negative magnitude
+values.
 
-So handle the special case of reg64, automatically generating the
-missing _HI/LO builders.
+Changing the direction in the effect directly in pidff_upload_effect()
+would affect it's value in further operations like comparing to the old
+effect and/or just reading the effect values in the user application.
 
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/673559/
+This, in turn, would lead to constant PID_SET_EFFECT spam as the effect
+direction would constantly not match the value that's set by the
+application.
+
+This way, it's still transparent to any software/API.
+
+Only affects conditional effects now so it's better for it to explicitly
+state that in the name. If any HW ever needs fixed direction for other
+effects, we'll add more quirks.
+
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Oleg Makarenko <oleg@makarenk.ooo>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/registers/gen_header.py | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/hid/hid-universal-pidff.c | 20 ++++++++++----------
+ drivers/hid/usbhid/hid-pidff.c    | 28 +++++++++++++++++++++++-----
+ drivers/hid/usbhid/hid-pidff.h    |  2 +-
+ 3 files changed, 34 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/registers/gen_header.py b/drivers/gpu/drm/msm/registers/gen_header.py
-index a409404627c71..6a6f9e52b11f7 100644
---- a/drivers/gpu/drm/msm/registers/gen_header.py
-+++ b/drivers/gpu/drm/msm/registers/gen_header.py
-@@ -150,6 +150,7 @@ class Bitset(object):
- 	def __init__(self, name, template):
- 		self.name = name
- 		self.inline = False
-+		self.reg = None
- 		if template:
- 			self.fields = template.fields[:]
- 		else:
-@@ -256,6 +257,11 @@ class Bitset(object):
- 	def dump(self, prefix=None):
- 		if prefix == None:
- 			prefix = self.name
-+		if self.reg and self.reg.bit_size == 64:
-+			print("static inline uint32_t %s_LO(uint32_t val)\n{" % prefix)
-+			print("\treturn val;\n}")
-+			print("static inline uint32_t %s_HI(uint32_t val)\n{" % prefix)
-+			print("\treturn val;\n}")
- 		for f in self.fields:
- 			if f.name:
- 				name = prefix + "_" + f.name
-@@ -620,6 +626,7 @@ class Parser(object):
+diff --git a/drivers/hid/hid-universal-pidff.c b/drivers/hid/hid-universal-pidff.c
+index 5b89ec7b5c26c..dc1b262f28331 100644
+--- a/drivers/hid/hid-universal-pidff.c
++++ b/drivers/hid/hid-universal-pidff.c
+@@ -143,25 +143,25 @@ static int universal_pidff_input_configured(struct hid_device *hdev,
  
- 		self.current_reg = Reg(attrs, self.prefix(variant), self.current_array, bit_size)
- 		self.current_reg.bitset = self.current_bitset
-+		self.current_bitset.reg = self.current_reg
+ static const struct hid_device_id universal_pidff_devices[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R3),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R3_2),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R5),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R5_2),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R9),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R9_2),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R12),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R12_2),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R16_R21),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_MOZA, USB_DEVICE_ID_MOZA_R16_R21_2),
+-		.driver_data = HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION },
++		.driver_data = HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CAMMUS, USB_DEVICE_ID_CAMMUS_C5) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CAMMUS, USB_DEVICE_ID_CAMMUS_C12) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_VRS, USB_DEVICE_ID_VRS_DFP),
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 8dfd2c554a276..0e60e4dc9e247 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -205,6 +205,14 @@ struct pidff_device {
+ 	u8 effect_count;
+ };
  
- 		if len(self.stack) == 1:
- 			self.file.append(self.current_reg)
++static int pidff_is_effect_conditional(struct ff_effect *effect)
++{
++	return effect->type == FF_SPRING  ||
++	       effect->type == FF_DAMPER  ||
++	       effect->type == FF_INERTIA ||
++	       effect->type == FF_FRICTION;
++}
++
+ /*
+  * Clamp value for a given field
+  */
+@@ -294,6 +302,20 @@ static void pidff_set_duration(struct pidff_usage *usage, u16 duration)
+ 	pidff_set_time(usage, duration);
+ }
+ 
++static void pidff_set_effect_direction(struct pidff_device *pidff,
++				       struct ff_effect *effect)
++{
++	u16 direction = effect->direction;
++
++	/* Use fixed direction if needed */
++	if (pidff->quirks & HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION &&
++	    pidff_is_effect_conditional(effect))
++		direction = PIDFF_FIXED_WHEEL_DIRECTION;
++
++	pidff->effect_direction->value[0] =
++		pidff_rescale(direction, U16_MAX, pidff->effect_direction);
++}
++
+ /*
+  * Send envelope report to the device
+  */
+@@ -394,11 +416,7 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
+ 		pidff->set_effect[PID_GAIN].field->logical_maximum;
+ 	pidff->set_effect[PID_DIRECTION_ENABLE].value[0] = 1;
+ 
+-	/* Use fixed direction if needed */
+-	pidff->effect_direction->value[0] = pidff_rescale(
+-		pidff->quirks & HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION ?
+-		PIDFF_FIXED_WHEEL_DIRECTION : effect->direction,
+-		U16_MAX, pidff->effect_direction);
++	pidff_set_effect_direction(pidff, effect);
+ 
+ 	/* Omit setting delay field if it's missing */
+ 	if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_DELAY))
+diff --git a/drivers/hid/usbhid/hid-pidff.h b/drivers/hid/usbhid/hid-pidff.h
+index dda571e0a5bd3..e4ab05213ecac 100644
+--- a/drivers/hid/usbhid/hid-pidff.h
++++ b/drivers/hid/usbhid/hid-pidff.h
+@@ -17,7 +17,7 @@
+ #define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
+ 
+ /* Use fixed 0x4000 direction during SET_EFFECT report upload */
+-#define HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION	BIT(3)
++#define HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION	BIT(3)
+ 
+ /* Force all periodic effects to be uploaded as SINE */
+ #define HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY	BIT(4)
 -- 
 2.51.0
 
