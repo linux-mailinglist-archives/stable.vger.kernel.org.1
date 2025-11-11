@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AFC9C4AC49
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F6F8C4AC52
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 373654F886E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ECF4F4FAD52
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E2230BB9E;
-	Tue, 11 Nov 2025 01:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248AF30BF66;
+	Tue, 11 Nov 2025 01:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0KJvnUj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cif50gRW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4AC27FD72;
-	Tue, 11 Nov 2025 01:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47071F5F6;
+	Tue, 11 Nov 2025 01:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824504; cv=none; b=Fl3mEpxxc+Mzlog4HeAITolm72/6L6ze3h1cf0AgVIrYw/j6nFSaGinR53T2vZCtp4XeHJfe667XzrjTZEb9c1JafX+8vNxzkKV+f96sORZjsVE000u/RoIqIlBZ9cLy4DNCfkZFTazm9tpAqWsrp0vds6/iSgzHpxmLTM21hC4=
+	t=1762824508; cv=none; b=tuAb/zAek/R8Y/C95pTEPmWH4ps5iUBY0h1uZeiiovNWWWsh5MwQwdmxuoztiNtbNQRrvetz+2JcNqXFxrIimjoEW8EqWtQ8mcaFIKf7zbXSUbfYfWJIchOXCaLjhmnz/gsJIZFlyRBNfKQoZtbAhNm7hY1djG9QhoU+yGTbJJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824504; c=relaxed/simple;
-	bh=0p0q1bZK2NdKQvcSxE0KsrX5XU7MCufUTJkuZa7i3XI=;
+	s=arc-20240116; t=1762824508; c=relaxed/simple;
+	bh=wK9ug8QF0ihLhW1+KgXbKgrFWNERuMNsUL+0Qg5IGQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fwrH0zGINlE9pF/F5jAbd3UYnW5CQe7Peybm18wvFa/H1hGbHf73/TrgqeaT1V59Xk/ZBN6QY1tIIYCTmtGvarStfjOUlT08x6hBdNZ4DFnt5zuwqbTiqSiWmMcz9oC9+UqyGsMZ7Klw+Hi0DPqk5h3rByIiXmwd2w54+Ngzis8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0KJvnUj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D25C116D0;
-	Tue, 11 Nov 2025 01:28:23 +0000 (UTC)
+	 MIME-Version; b=Jb3G0X9xMt2cjJm9lhfHBNH19iorksM3gkAiJe1cRuvLgThmvzrEZqj7EMT3jr2o6lFROPV1B90dY147SCwp0dumIZGbV3dqu3Zna7vFhv4t79rz/Fo1DKrL4yfdoU12l4B8KtZThvAGXDY0ZEbRWXn72npfnqu+tnByh73XXU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cif50gRW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7426EC16AAE;
+	Tue, 11 Nov 2025 01:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824504;
-	bh=0p0q1bZK2NdKQvcSxE0KsrX5XU7MCufUTJkuZa7i3XI=;
+	s=korg; t=1762824508;
+	bh=wK9ug8QF0ihLhW1+KgXbKgrFWNERuMNsUL+0Qg5IGQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U0KJvnUjFm35GuIbdg9GtLqhordzrMVTeyQPgXT5dA3xz6hJIU8Vfdcx1tEohUVdL
-	 OCVeGrntU9n916+WXpgIXvI9izIJtNi+Q0+BIqZpl23YwN6WBIOSYl3gDAOPM1DqJ5
-	 1k8bT8AQbuIhKVhoTSt4Nr0e3Of3+5m6FJ3B1AlU=
+	b=cif50gRWgF5kxKENJJFkkdWME0clBtkQ91Q8e/E31EvSNe00e4MrOnuTOS8os9781
+	 v5ieIh6M97Lz2a7redSz7kfDx4A75NfmDicTgOgux0GtqEF44bz+4NE0eG4aOT2VFE
+	 05jPyVEQo5UKYl5h5twY30OHPqsLu3jkh56im0mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ido Schimmel <idosch@nvidia.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 513/849] selftests: traceroute: Use require_command()
-Date: Tue, 11 Nov 2025 09:41:23 +0900
-Message-ID: <20251111004548.833645102@linuxfoundation.org>
+Subject: [PATCH 6.17 514/849] selftests: traceroute: Return correct value on failure
+Date: Tue, 11 Nov 2025 09:41:24 +0900
+Message-ID: <20251111004548.859121520@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -70,74 +70,120 @@ Content-Transfer-Encoding: 8bit
 
 From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 47efbac9b768553331b9459743a29861e0acd797 ]
+[ Upstream commit c068ba9d3ded56cb1ba4d5135ee84bf8039bd563 ]
 
-Use require_command() so that the test will return SKIP (4) when a
-required command is not present.
+The test always returns success even if some tests were modified to
+fail. Fix by converting the test to use the appropriate library
+functions instead of using its own functions.
 
 Before:
 
  # ./traceroute.sh
- SKIP: Could not run IPV6 test without traceroute6
- SKIP: Could not run IPV4 test without traceroute
+ TEST: IPV6 traceroute                                               [FAIL]
+ TEST: IPV4 traceroute                                               [ OK ]
+
+ Tests passed:   1
+ Tests failed:   1
  $ echo $?
  0
 
 After:
 
  # ./traceroute.sh
- TEST: traceroute6 not installed                                    [SKIP]
+ TEST: IPv6 traceroute                                               [FAIL]
+         traceroute6 did not return 2000:102::2
+ TEST: IPv4 traceroute                                               [ OK ]
  $ echo $?
- 4
+ 1
 
 Reviewed-by: Petr Machata <petrm@nvidia.com>
 Reviewed-by: David Ahern <dsahern@kernel.org>
 Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250908073238.119240-6-idosch@nvidia.com
+Link: https://patch.msgid.link/20250908073238.119240-5-idosch@nvidia.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/traceroute.sh | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ tools/testing/selftests/net/traceroute.sh | 38 ++++++-----------------
+ 1 file changed, 9 insertions(+), 29 deletions(-)
 
 diff --git a/tools/testing/selftests/net/traceroute.sh b/tools/testing/selftests/net/traceroute.sh
-index 282f14760940d..b50e52afa4f49 100755
+index b50e52afa4f49..1ac91eebd16f5 100755
 --- a/tools/testing/selftests/net/traceroute.sh
 +++ b/tools/testing/selftests/net/traceroute.sh
-@@ -203,11 +203,6 @@ setup_traceroute6()
+@@ -10,28 +10,6 @@ PAUSE_ON_FAIL=no
  
- run_traceroute6()
- {
--	if [ ! -x "$(command -v traceroute6)" ]; then
--		echo "SKIP: Could not run IPV6 test without traceroute6"
--		return
--	fi
+ ################################################################################
+ #
+-log_test()
+-{
+-	local rc=$1
+-	local expected=$2
+-	local msg="$3"
 -
+-	if [ ${rc} -eq ${expected} ]; then
+-		printf "TEST: %-60s  [ OK ]\n" "${msg}"
+-		nsuccess=$((nsuccess+1))
+-	else
+-		ret=1
+-		nfail=$((nfail+1))
+-		printf "TEST: %-60s  [FAIL]\n" "${msg}"
+-		if [ "${PAUSE_ON_FAIL}" = "yes" ]; then
+-			echo
+-			echo "hit enter to continue, 'q' to quit"
+-			read a
+-			[ "$a" = "q" ] && exit 1
+-		fi
+-	fi
+-}
+-
+ run_cmd()
+ {
+ 	local ns
+@@ -205,9 +183,12 @@ run_traceroute6()
+ {
  	setup_traceroute6
  
++	RET=0
++
  	# traceroute6 host-2 from host-1 (expects 2000:102::2)
-@@ -268,11 +263,6 @@ setup_traceroute()
+ 	run_cmd $h1 "traceroute6 2000:103::4 | grep -q 2000:102::2"
+-	log_test $? 0 "IPV6 traceroute"
++	check_err $? "traceroute6 did not return 2000:102::2"
++	log_test "IPv6 traceroute"
  
- run_traceroute()
+ 	cleanup_traceroute6
+ }
+@@ -265,9 +246,12 @@ run_traceroute()
  {
--	if [ ! -x "$(command -v traceroute)" ]; then
--		echo "SKIP: Could not run IPV4 test without traceroute"
--		return
--	fi
--
  	setup_traceroute
  
- 	# traceroute host-2 from host-1 (expects 1.0.1.1). Takes a while.
-@@ -306,6 +296,9 @@ do
- 	esac
- done
- 
-+require_command traceroute6
-+require_command traceroute
++	RET=0
 +
+ 	# traceroute host-2 from host-1 (expects 1.0.1.1). Takes a while.
+ 	run_cmd $h1 "traceroute 1.0.2.4 | grep -q 1.0.1.1"
+-	log_test $? 0 "IPV4 traceroute"
++	check_err $? "traceroute did not return 1.0.1.1"
++	log_test "IPv4 traceroute"
+ 
+ 	cleanup_traceroute
+ }
+@@ -284,9 +268,6 @@ run_tests()
+ ################################################################################
+ # main
+ 
+-declare -i nfail=0
+-declare -i nsuccess=0
+-
+ while getopts :pv o
+ do
+ 	case $o in
+@@ -301,5 +282,4 @@ require_command traceroute
+ 
  run_tests
  
- printf "\nTests passed: %3d\n" ${nsuccess}
+-printf "\nTests passed: %3d\n" ${nsuccess}
+-printf "Tests failed: %3d\n"   ${nfail}
++exit "${EXIT_STATUS}"
 -- 
 2.51.0
 
