@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-193199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F74CC4A11E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86216C4A12B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2079C4F5237
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9DE7B4F42A7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4E824113D;
-	Tue, 11 Nov 2025 00:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1641252917;
+	Tue, 11 Nov 2025 00:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPRdRfbZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDHghWkH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853B44C97;
-	Tue, 11 Nov 2025 00:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C23A4086A;
+	Tue, 11 Nov 2025 00:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822534; cv=none; b=WA1TWP6iwP/v0jwVMRWn8OaZL0vNhoXuCpT3+L3/kA30RwRCr3uQKPDVObheiZCvxcTCSCwsbr7oz8IFl8J0MSK3HA7zLB3gvEyx8EwiI+fWFFa6QGJJ6eqUQl+nfTb+M7pxrFr73dY4tERXE/Y8yxWPpTOEsMlY8Q8UE7qfcRw=
+	t=1762822541; cv=none; b=gOVJAYDPn1NmoEKyM9EcMY6Bl3n98Q3PijWare79hmVmxA9XYV1iT9clZLlhYdTqkPCIsAdA0s+UwhFVazmoxlq092UP1c2nkoZFcwCx4lD+yBntYw6h7ztpc/h+v0AAFJRcXYt7hf8l4ElamgBbvzEGtuv74ROVX+8CpkoFqFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822534; c=relaxed/simple;
-	bh=4ihAXwSMs6F+MmfR1F6oaTsr/rMhs4psg/OV9E/reaI=;
+	s=arc-20240116; t=1762822541; c=relaxed/simple;
+	bh=tk2Ch+T4Xc2VD7EeQBL0HdyErkvHYOCoubrp0dAQxho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oyzkQhf4CNTvWkVfugp8UTJaKGd9zgOwwhjqS5hGUD+hru2hsojdJyOK2JAhJDtdDLE4FNQcG79C6gKhYMpytzPsWipHyfjT+TKuZL1vvAcyyzae6qNEEo+EBUpwRKLfc1qG43qMOMwLsdkeyjU9QKgv9qub6NkUCIuuP+497Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPRdRfbZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24CA2C113D0;
-	Tue, 11 Nov 2025 00:55:34 +0000 (UTC)
+	 MIME-Version; b=qrFrP4v9yxdVp8xGnyebMetYTH5V5sY/Sg5YdBH39t2NYna4YdTqeOMuByVxPiid883+NUgOjBXOXe9Fb2lCGcpUqvAvOOae0S1EXwb/1uq7DonwoM0UtN6cvbA9Xqgr/fbDhHvNEaGp0f525Y/3xEFyUzChF+7ob5JHXSojNbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDHghWkH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09683C113D0;
+	Tue, 11 Nov 2025 00:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822534;
-	bh=4ihAXwSMs6F+MmfR1F6oaTsr/rMhs4psg/OV9E/reaI=;
+	s=korg; t=1762822541;
+	bh=tk2Ch+T4Xc2VD7EeQBL0HdyErkvHYOCoubrp0dAQxho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RPRdRfbZa96gDOSpDNXQfApuk0RpczQ8Usull9eo7d7gZs9r6TdilUStgNP4Hf7mP
-	 HL1uEutO0ccbf0A77b7a8xp1HBvyvqpuLBiszPXnoX3J17fvWSjreiPnkIbOdj7fsW
-	 idjJFCTDhK4ukIZggBZQJPf+4f6LmYKiLHq1yqoI=
+	b=PDHghWkHmfg8MX8Qxif+MGuJphKLyVX7s3P7s0sD3O2IqhXTjtyXVu08rMsITH1fv
+	 aA3KR5Fv6HL8Zi4U/BOHlMlmeQnjUpv41ZpVV4LnYPgB2TI4fn90Ou6oKSDjvTQ6+l
+	 TKMVJYsuBZRPIWqBYafdspW1J4Cnwn59asPhERMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Nam Cao <namcao@linutronix.de>,
+	Chen Wang <unicorn_wang@outlook.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 132/849] firewire: ohci: move self_id_complete tracepoint after validating register
-Date: Tue, 11 Nov 2025 09:35:02 +0900
-Message-ID: <20251111004539.586112014@linuxfoundation.org>
+Subject: [PATCH 6.17 133/849] irqchip/sifive-plic: Respect mask state when setting affinity
+Date: Tue, 11 Nov 2025 09:35:03 +0900
+Message-ID: <20251111004539.613572863@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -65,52 +68,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Inochi Amaoto <inochiama@gmail.com>
 
-[ Upstream commit 696968262aeee51e1c0529c3c060ddd180702e02 ]
+[ Upstream commit adecf78df945f4c7a1d29111b0002827f487df51 ]
 
-The value of OHCI1394_SelfIDCount register includes an error-indicating
-bit. It is safer to place the tracepoint probe after validating the
-register value.
+plic_set_affinity() always calls plic_irq_enable(), which clears up the
+priority setting even the interrupt is only masked. This unmasks the
+interrupt unexpectly.
 
-Link: https://lore.kernel.org/r/20250823030954.268412-2-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Replace the plic_irq_enable/disable() with plic_irq_toggle() to avoid
+changing the priority setting.
+
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Nam Cao <namcao@linutronix.de> # VisionFive 2
+Tested-by: Chen Wang <unicorn_wang@outlook.com> # Pioneerbox
+Reviewed-by: Nam Cao <namcao@linutronix.de>
+Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
+Link: https://lore.kernel.org/all/20250811002633.55275-1-inochiama@gmail.com
+Link: https://lore.kernel.org/lkml/20250722224513.22125-1-inochiama@gmail.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/ohci.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/irqchip/irq-sifive-plic.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firewire/ohci.c b/drivers/firewire/ohci.c
-index 5d8301b0f3aa8..421cf87e93c1f 100644
---- a/drivers/firewire/ohci.c
-+++ b/drivers/firewire/ohci.c
-@@ -2063,6 +2063,9 @@ static void bus_reset_work(struct work_struct *work)
- 		ohci_notice(ohci, "self ID receive error\n");
- 		return;
- 	}
-+
-+	trace_self_id_complete(ohci->card.index, reg, ohci->self_id, has_be_header_quirk(ohci));
-+
- 	/*
- 	 * The count in the SelfIDCount register is the number of
- 	 * bytes in the self ID receive buffer.  Since we also receive
-@@ -2231,15 +2234,8 @@ static irqreturn_t irq_handler(int irq, void *data)
- 	if (event & OHCI1394_busReset)
- 		reg_write(ohci, OHCI1394_IntMaskClear, OHCI1394_busReset);
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+index 9c4af7d588463..c0cf4fed13e09 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -179,12 +179,14 @@ static int plic_set_affinity(struct irq_data *d,
+ 	if (cpu >= nr_cpu_ids)
+ 		return -EINVAL;
  
--	if (event & OHCI1394_selfIDComplete) {
--		if (trace_self_id_complete_enabled()) {
--			u32 reg = reg_read(ohci, OHCI1394_SelfIDCount);
--
--			trace_self_id_complete(ohci->card.index, reg, ohci->self_id,
--					       has_be_header_quirk(ohci));
--		}
-+	if (event & OHCI1394_selfIDComplete)
- 		queue_work(selfid_workqueue, &ohci->bus_reset_work);
--	}
+-	plic_irq_disable(d);
++	/* Invalidate the original routing entry */
++	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 0);
  
- 	if (event & OHCI1394_RQPkt)
- 		queue_work(ohci->card.async_wq, &ohci->ar_request_ctx.work);
+ 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
+ 
++	/* Setting the new routing entry if irq is enabled */
+ 	if (!irqd_irq_disabled(d))
+-		plic_irq_enable(d);
++		plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
+ 
+ 	return IRQ_SET_MASK_OK_DONE;
+ }
 -- 
 2.51.0
 
