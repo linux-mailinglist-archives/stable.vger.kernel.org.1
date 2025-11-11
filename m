@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-194452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF48C4C732
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 09:47:07 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7270AC4C735
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 09:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7B45E34EABE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 08:47:07 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1F7693481BF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 08:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BBF238166;
-	Tue, 11 Nov 2025 08:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8992737E8;
+	Tue, 11 Nov 2025 08:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="YD7qWuJS"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="R/u5Vua9"
 X-Original-To: stable@vger.kernel.org
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC58B3E47B;
-	Tue, 11 Nov 2025 08:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7223E47B;
+	Tue, 11 Nov 2025 08:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762850822; cv=none; b=gkGDW+k8N8FcvuHglmBE1ecRZKdymyBzHYIQPCqEYSGKL7FmZUgQ/atUVpbGzT8mMfR7Fpv7EePebGutHEDjqCyGG4NzKIiZl7cnQvrSSzo5dvCYEyH4fCCAiymPbq2N0YwiOvIpojwwoMZS3pd3b6Cp9I4PdMHxT8V0JBIbTU0=
+	t=1762850842; cv=none; b=FY3YNRSDoKbB1XHNgGku2VRitTDEDHmyNhHhipOaeY+SfU/ZrszbQ5ozXQw8VjOh9LEbwLcaL7TD/V7rGWEwS+WDXal8/j/TGzrt6x+n27YXq8E+X2A2NYDNq57mGUUoLIog++/BZ0A1zrNPETU1omkE7X1qdpzZBxjqpMm1f9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762850822; c=relaxed/simple;
-	bh=Gz5X3fmHdQqpzyFV0Aln3wmgksKN8e/3I+kRRkYmfiA=;
+	s=arc-20240116; t=1762850842; c=relaxed/simple;
+	bh=iyY5A7dTBmfuZ64oKQXSAcXtQZreFHvu67kAK8Uc1tg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RGR8eW3kFiO99mHdaLd6erAaABoJctLhb3bTzV66QuSt9o+scvUKdx/u3sJ2ZeRXO35VkrRUKSRQfYlYLl9JoVtHr/5ubJpq3rppzj03nI/GyfqA+Jo6K381nLwNaCWNzPc+Clt9w2vm2eSkIsiQfvKVwxOWyoxmcm5H5Ubf0b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=YD7qWuJS; arc=none smtp.client-ip=89.58.32.78
+	 Content-Type:Content-Disposition:In-Reply-To; b=N8UoKw/yI5IC+XnVJnesMOjw9jqYrYSGye7vBV/sv3b9MmbKEFoWkt0+Tc/DRs+2nYN2F1Ieu8lyIpDJtCj2kUmMmrRRghJRQtOIn5l9FFsf/xW7KHBW+JEN7pw87hK4m2Y7WgTuIjqOYj1gtAh9ZOfT0AfeMoAA/pAdLuEVGlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=R/u5Vua9; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 440B710036B4D;
-	Tue, 11 Nov 2025 09:46:52 +0100 (CET)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6766110036B4D;
+	Tue, 11 Nov 2025 09:47:16 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1762850816; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=1JgHppPRtM6VJD9PYop9Dotc/XyI1oRdh8DQTwAwgus=;
-	b=YD7qWuJSlDCmBGdov9uxJAyZVF9DkEEs+oRJiZsC0uN80fHCJiFgG7O4g2NuBQau7vnQxe
-	DAlPrazewFqZ2iGMZbg6CpXTy4qv7FAnU71Y5AH7a8L+YgRW68Vq/A/YT65fIsVlDXZUrQ
-	AB3W7gUnB0yoT2/1Uh8QfeYMB77EBJbr/XLWtfMCmhYJUI7xmZQSthZPBiGyP89zlyCprk
-	FEcLDA0Ec6cUyUuPGq4VyI+F+f9gF64ua5fJG4Tb6GAforl/moNy/t+6vod9abdpkvUZni
-	nl3iuwRYIP890OLHAuUakZMDgTP01tOW1uDV10QTQ68UfAic5HzbCVVePJfrtQ==
-Date: Tue, 11 Nov 2025 09:46:50 +0100
+	t=1762850838; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=6gighiBAHtXMYlkhOu8YsF6h2cr4baq1BOxdNvnS0KY=;
+	b=R/u5Vua9N+Zh+dhFb23JmODXyro6+kX5uZ5VLnp/FvbRiA+MUNiusNZ+8cMjJZKGZHR14m
+	O2Hs5Uwx8F1I7szcn0946Hwlg0Q41iipqsklUgXey4WqQUIdUIL1Tjsnlr3L05FPQPqH5h
+	R/b99zl25QetAMtWH7ng1JYB5z1UZHwWZGyYCM61CzI+TolY/XaF89fgvS7A7K7ruMcOil
+	jEUonFhiS09xpOXIGvUVX/9HSyXdMLec4/JUn909pVXnyqrSZMsiL9h7IkiKIc9EsdN2CF
+	7vsEjOaeGoTeg37i+HrI4UnSzK+SM1VSiWD6k9tgr8jEETw2uteOaDdazwe4Aw==
+Date: Tue, 11 Nov 2025 09:47:14 +0100
 From: Pavel Machek <pavel@denx.de>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -52,9 +52,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
 	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
 	sr@sladewatkins.com
-Subject: Re: [PATCH 6.12 000/562] 6.12.58-rc2 review
-Message-ID: <aRL3+o1W09KxbCwP@duo.ucw.cz>
-References: <20251111012348.571643096@linuxfoundation.org>
+Subject: Re: [PATCH 6.17 000/849] 6.17.8-rc1 review
+Message-ID: <aRL4Ehd0NNjCMImH@duo.ucw.cz>
+References: <20251111004536.460310036@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,28 +62,28 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="buRHmNsBF7vAjqWu"
+	protocol="application/pgp-signature"; boundary="fgXRYoZTGsS6uwBV"
 Content-Disposition: inline
-In-Reply-To: <20251111012348.571643096@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 X-Last-TLS-Session-Version: TLSv1.3
 
 
---buRHmNsBF7vAjqWu
+--fgXRYoZTGsS6uwBV
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> This is the start of the stable review cycle for the 6.12.58 release.
-> There are 562 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.17.8 release.
+> There are 849 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 CIP testing did not find any problems here:
 
 https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.12.y
+6.17.y
 
 Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
@@ -93,15 +93,15 @@ Best regards,
 In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
 Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---buRHmNsBF7vAjqWu
+--fgXRYoZTGsS6uwBV
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iFwEABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaRL3+gAKCRAw5/Bqldv6
-8rOtAKCPmCtCiWgpjTwSUv4jwNI11yImkgCVH0pnqlayRzRQTMltTyKhWG2v0w==
-=fm9i
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaRL4EgAKCRAw5/Bqldv6
+8vepAKDBETLBWx/r4++hK7tq4BtW+KMIQgCggvoTChXWkdZVEvJZBi+77bPSkAI=
+=JUJi
 -----END PGP SIGNATURE-----
 
---buRHmNsBF7vAjqWu--
+--fgXRYoZTGsS6uwBV--
 
