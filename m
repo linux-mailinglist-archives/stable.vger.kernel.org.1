@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-193153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4E1C4A004
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A918C4A00E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C55FE188CCCB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC94B3A9094
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96F11DF258;
-	Tue, 11 Nov 2025 00:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9FC24113D;
+	Tue, 11 Nov 2025 00:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4ZhDUZv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfOucBAN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66564C97;
-	Tue, 11 Nov 2025 00:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C321D6DB5;
+	Tue, 11 Nov 2025 00:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822423; cv=none; b=tyPYiC69jBfhj9kT5PAPCb7pAgV4V/HugPeDr0ZznRA0c7yVrWOHmWIdFqc3St6HXq5ok2wNbx5sm0QO6YrDL829qc/kNi+BUqfakr9k80hz/iBP2Vy8VXUwfRBYSHE9FKWw5dBaR1VmOkSKucPQK0SKV9DWy59eomgle/Ks0X0=
+	t=1762822428; cv=none; b=Kn07HwcDVnuUxuBpxVb6Qdoy3PBCvOcfsRhYopfPuRPso8leGFqb+hL4lCQu3NO299nDHqLxAVidyqGsbnDLceQ3W23tGKQjtg3vYVX7Pqf/eDHSl27FBVjqxGJIAQ5VjPzWDUp4R9tqJ5qaxKAT9KVHzqd8IrffLAt1py3MOBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822423; c=relaxed/simple;
-	bh=xw3gy5sa+WsY81Hp7Sgo9JXKpJ/rxLzUNKHBlk7Nr3o=;
+	s=arc-20240116; t=1762822428; c=relaxed/simple;
+	bh=SsuAMdHFIM3SJAFlzk8+pMYvUZSlk3rizibuKQvOSLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tj9ciZKpi+F+e+v1dVGTLyENh7tzblz9zNiH5Bhkox7Mh7Ww8xh+nuiCrLVPLU4i0dAIuKQp9hVnyxW8G8K8EhlChmCwYo7P/nwRUCQ1eT9lRIF2l+CEMrMQEuBmGeltW0DHt4mWTADo8MNgcuQVM4M4MB4XK7jH47ipevXOouQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4ZhDUZv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4308BC16AAE;
-	Tue, 11 Nov 2025 00:53:43 +0000 (UTC)
+	 MIME-Version; b=OC/hCg0Ahnrhi9uCs1CjYbkDql0BLI8FnPQ+fHRmnT82eaPiLL8vRjQiryEe0GUy5zIoS/z/39FYyA9OLVKuclFL7FazQCuDXFvhf73bnjT2e9I9x5Z1EKByQIbuZbGJfD7aJYPS9ISYxxXW41gMTjy4d4ybSnXSSayU7YYYeq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfOucBAN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70AEC4CEFB;
+	Tue, 11 Nov 2025 00:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822423;
-	bh=xw3gy5sa+WsY81Hp7Sgo9JXKpJ/rxLzUNKHBlk7Nr3o=;
+	s=korg; t=1762822428;
+	bh=SsuAMdHFIM3SJAFlzk8+pMYvUZSlk3rizibuKQvOSLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k4ZhDUZvAtxwU1hQpCB6N9U4OXrNj31fS4ro4MSs6f/K/RNMdd2/dqBqyx1WV02l1
-	 ybfuEoXI/aAHasVD0sGu+oXwRQSDbHG+xW/Nx5Y7viCyXiybD8RaAOTB+poa2Xf+Yb
-	 NqxCOCsTtOcQzQzshqZmV/nH6g2MOJ+NcyYfgnJY=
+	b=PfOucBANcLq26HnChMoGKWhXbSV36TRMXzkUZbKLs9HYtqBZbhxwW4RszBeUTv4zV
+	 ecGeHOZiULNH/zPKohMq7/w/8xt1uRACx7xVcA3IsRC57R3Otom5Dpg3USt2o1FHr1
+	 Q5wJBpZ1CGnSUC/3mglR1d84WVRmy/3d+l6i2Ex8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 047/565] Bluetooth: hci_core: Fix tracking of periodic advertisement
-Date: Tue, 11 Nov 2025 09:38:23 +0900
-Message-ID: <20251111004527.964473033@linuxfoundation.org>
+Subject: [PATCH 6.12 048/565] drm/etnaviv: fix flush sequence logic
+Date: Tue, 11 Nov 2025 09:38:24 +0900
+Message-ID: <20251111004527.987488220@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -65,86 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Tomeu Vizoso <tomeu@tomeuvizoso.net>
 
-[ Upstream commit 751463ceefc3397566d03c8b64ef4a77f5fd88ac ]
+[ Upstream commit a042beac6e6f8ac1e923784cfff98b47cbabb185 ]
 
-Periodic advertising enabled flag cannot be tracked by the enabled
-flag since advertising and periodic advertising each can be
-enabled/disabled separately from one another causing the states to be
-inconsistent when for example an advertising set is disabled its
-enabled flag is set to false which is then used for periodic which has
-not being disabled.
+The current logic uses the flush sequence from the current address
+space. This is harmless when deducing the flush requirements for the
+current submit, as either the incoming address space is the same one
+as the currently active one or we switch context, in which case the
+flush is unconditional.
 
-Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS connections")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+However, this sequence is also stored as the current flush sequence
+of the GPU. If we switch context the stored flush sequence will no
+longer belong to the currently active address space. This incoherency
+can then cause missed flushes, resulting in translation errors.
+
+Fixes: 27b67278e007 ("drm/etnaviv: rework MMU handling")
+Signed-off-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Link: https://lore.kernel.org/r/20251021093723.3887980-1-l.stach@pengutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h | 1 +
- net/bluetooth/hci_event.c        | 7 +++++--
- net/bluetooth/hci_sync.c         | 4 ++--
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/etnaviv/etnaviv_buffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index ca75c71b58588..35b5f58b562cb 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -240,6 +240,7 @@ struct adv_info {
- 	bool	enabled;
- 	bool	pending;
- 	bool	periodic;
-+	bool	periodic_enabled;
- 	__u8	mesh;
- 	__u8	instance;
- 	__u8	handle;
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 176565ef47c63..ccc73742de356 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -1598,7 +1598,7 @@ static u8 hci_cc_le_set_ext_adv_enable(struct hci_dev *hdev, void *data,
- 
- 		hci_dev_set_flag(hdev, HCI_LE_ADV);
- 
--		if (adv && !adv->periodic)
-+		if (adv)
- 			adv->enabled = true;
- 		else if (!set->handle)
- 			hci_dev_set_flag(hdev, HCI_LE_ADV_0);
-@@ -3955,8 +3955,11 @@ static u8 hci_cc_le_set_per_adv_enable(struct hci_dev *hdev, void *data,
- 		hci_dev_set_flag(hdev, HCI_LE_PER_ADV);
- 
- 		if (adv)
--			adv->enabled = true;
-+			adv->periodic_enabled = true;
- 	} else {
-+		if (adv)
-+			adv->periodic_enabled = false;
-+
- 		/* If just one instance was disabled check if there are
- 		 * any other instance enabled before clearing HCI_LE_PER_ADV.
- 		 * The current periodic adv instance will be marked as
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 06d8ab997bd85..f79b38603205c 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -1605,7 +1605,7 @@ int hci_disable_per_advertising_sync(struct hci_dev *hdev, u8 instance)
- 
- 	/* If periodic advertising already disabled there is nothing to do. */
- 	adv = hci_find_adv_instance(hdev, instance);
--	if (!adv || !adv->periodic || !adv->enabled)
-+	if (!adv || !adv->periodic_enabled)
- 		return 0;
- 
- 	memset(&cp, 0, sizeof(cp));
-@@ -1670,7 +1670,7 @@ static int hci_enable_per_advertising_sync(struct hci_dev *hdev, u8 instance)
- 
- 	/* If periodic advertising already enabled there is nothing to do. */
- 	adv = hci_find_adv_instance(hdev, instance);
--	if (adv && adv->periodic && adv->enabled)
-+	if (adv && adv->periodic_enabled)
- 		return 0;
- 
- 	memset(&cp, 0, sizeof(cp));
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
+index b13a17276d07c..88385dc3b30d8 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
+@@ -347,7 +347,7 @@ void etnaviv_buffer_queue(struct etnaviv_gpu *gpu, u32 exec_state,
+ 	u32 link_target, link_dwords;
+ 	bool switch_context = gpu->exec_state != exec_state;
+ 	bool switch_mmu_context = gpu->mmu_context != mmu_context;
+-	unsigned int new_flush_seq = READ_ONCE(gpu->mmu_context->flush_seq);
++	unsigned int new_flush_seq = READ_ONCE(mmu_context->flush_seq);
+ 	bool need_flush = switch_mmu_context || gpu->flush_seq != new_flush_seq;
+ 	bool has_blt = !!(gpu->identity.minor_features5 &
+ 			  chipMinorFeatures5_BLT_ENGINE);
 -- 
 2.51.0
 
