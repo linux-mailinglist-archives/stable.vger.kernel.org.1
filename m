@@ -1,166 +1,212 @@
-Return-Path: <stable+bounces-194438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E960BC4B96A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 07:03:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6419FC4BAC4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 07:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D1DD94E8173
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 06:03:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ADC894ED7B1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 06:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D689A299A8F;
-	Tue, 11 Nov 2025 06:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCB72D3EC7;
+	Tue, 11 Nov 2025 06:25:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EYoChJJa"
 X-Original-To: stable@vger.kernel.org
-Received: from localhost.localdomain (unknown [147.136.157.0])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152D3285C96;
-	Tue, 11 Nov 2025 06:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=147.136.157.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C4B2D372A;
+	Tue, 11 Nov 2025 06:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762841000; cv=none; b=Jr/rIU7iaMIrb5i/qpkYO9xXUDMu/9VEpfRYnoc+dF7QbUnqln4lKSb82b7ZXMZajYsnP3y/JTJ1vNHfYf801CO7gjKe+Iqt0qp86iTVN1S6JGxyLtO7l193cRACdDg45eBnsqh4zOK9fVq6MT3uIxI7imKV5r5F5YzU1Un0tb0=
+	t=1762842351; cv=none; b=f14yMPpCHT2QQvJjs8qLOhMblrtEUibpH9RJV6z6gBbc7a+z4qJWSynKJl/PyJ6oO8/KlLdDS5TrIf7lyLUPHGyRJsRKAsV9WeaX2tJ9Kxh7bmmCe6tzpL38iwhbG19Cl65A43TwVAWkPg2gj+dd5xardrGsH6VR/tze3DYIGZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762841000; c=relaxed/simple;
-	bh=kGRmQam432BJbD6BROFIQPV8PElNINTvJRdMDm3Xoj0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuMO/uwX9U3sanDXojOm2h/ucSZn+3MY6EqY/D8hcDu4hYt3oa6HcPlp/thlKNrRBwn47CCvr4C0pKDHzQjFMsRPuJVfz7FAlWt7GwScDTrBA9g9HI8QSfvJl/NfQPfss/KpYDM6fReV1l0ZFkuJy9eBulgtjPAmMuKtSsGNKoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=none smtp.mailfrom=localhost.localdomain; arc=none smtp.client-ip=147.136.157.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=localhost.localdomain
-Received: by localhost.localdomain (Postfix, from userid 1007)
-	id 64F408B2A0D; Tue, 11 Nov 2025 14:03:17 +0800 (+08)
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: mptcp@lists.linux.dev
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	stable@vger.kernel.org,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Peter Krystad <peter.krystad@linux.intel.com>,
-	Florian Westphal <fw@strlen.de>,
-	Christoph Paasch <cpaasch@apple.com>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net v5 2/3] net,mptcp: fix proto fallback detection with BPF
-Date: Tue, 11 Nov 2025 14:02:51 +0800
-Message-ID: <20251111060307.194196-3-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251111060307.194196-1-jiayuan.chen@linux.dev>
-References: <20251111060307.194196-1-jiayuan.chen@linux.dev>
+	s=arc-20240116; t=1762842351; c=relaxed/simple;
+	bh=PrOvrxOMLRkz9/KqS01eoVVnlaDdIKZJknjtUl83zuY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aZDFccbf1S6hev1ST3aLvV2PFE2fTN1EeccvKd0FD3vvRw8i3wV+SWBApEjmO21s6oQB97PydJxY8/LCS9Reext3IJjA0I0yOhxcPQ4vMP4FngIxYlSKNDEh/Nnio0EUdyDz+Bwzg9Bhs37DLSNmnPKNEfZnxmSTdxuVIWrkEO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EYoChJJa; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AAJpWf2025937;
+	Tue, 11 Nov 2025 06:25:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=MR57gj
+	T5Jx56+fB0v+eZgrev/zXuFKNk9D2ThUk4jO0=; b=EYoChJJaofqSGlI8p4SSLK
+	8pq+xebdQMco/opaYrqBjHBPgOnzSWh88zGK+UHMuy1zxB+meeWAWCLcj5DOsHyO
+	O9SLQ6jVyYGu6IQ37ZCYWNmpDqpXofFBXVR/DMO22Px3tm1VkvOAOCG7lNNeYTMx
+	euf4xQfLrjepEwt+XWaehPJ7nUG8PnXKpX0exOcSSO0dpp8atB0wIMrixh6L6O6u
+	8f45PRhU7hOsoDYWAS2fBSkmwhXLPHJro9ifZkU4/L+Ck0NJLMAuyC4HsbXzJ1No
+	ta+K1r9YZ19BMHjUeB1lEZKk1DQ1SNzRG2yUoq/8E8Fdc1naQhloH/TAIAeM7n8g
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wk83nwu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Nov 2025 06:25:31 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB5K8GX007375;
+	Tue, 11 Nov 2025 06:25:30 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aajdj971e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Nov 2025 06:25:30 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AB6PU4f12124758
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Nov 2025 06:25:30 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EAC085803F;
+	Tue, 11 Nov 2025 06:25:29 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5756D5804E;
+	Tue, 11 Nov 2025 06:25:26 +0000 (GMT)
+Received: from [9.109.198.139] (unknown [9.109.198.139])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 11 Nov 2025 06:25:26 +0000 (GMT)
+Message-ID: <b1820392-f21b-4b68-81fa-0cf123c981ba@linux.ibm.com>
+Date: Tue, 11 Nov 2025 11:55:24 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] block: Remove queue freezing from several sysfs store
+ callbacks
+To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+        Ming Lei <ming.lei@redhat.com>, Martin Wilck <mwilck@suse.com>,
+        Benjamin Marzinski <bmarzins@redhat.com>, stable@vger.kernel.org,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Chaitanya Kulkarni <kch@nvidia.com>, Hannes Reinecke <hare@suse.de>
+References: <20251110162418.2915157-1-bvanassche@acm.org>
+Content-Language: en-US
+From: Nilay Shroff <nilay@linux.ibm.com>
+In-Reply-To: <20251110162418.2915157-1-bvanassche@acm.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDAyMiBTYWx0ZWRfXzC2ap9gs9c0s
+ WUV65gHeLrDIEwwPSCE2HeCsBhnSYpcRaJ8gDOiwqq4DL/5Sz/VZOaHwZz0NO8ehPkinzjqXP5R
+ 7hFd4zfMABcaU32wUaf/Hw3CVZHucygIpxCjqEGRPW7+BfqvCIR4lXUIc+xWc0CNJQDfMWienW/
+ NRXntX3EdT7VtbwD80eCcB7XRnNf5RuwwVedqZY4AzzRS7iO2dXjvaSsobjrgPDSEbjh27VvZ4P
+ CzgvTg3M8pDlikWBiHh4DDFYZjtUI2MlDXepjAJKI+7bDJBiUURBKTbg346t/V5gIuAl4FZPa5+
+ ZxRV5Ub72Sg8r9BNMM58CqMWFZ9bDJ58zu37fu57JcZTrPsG0bjFXzBQATNdczVmXzjdbcjdE61
+ DLl9Ul0uQ4WYDSZhFYVKRRhw5CdoaA==
+X-Authority-Analysis: v=2.4 cv=ZK3aWH7b c=1 sm=1 tr=0 ts=6912d6db cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Ws-3EAvBfRN_exBOfioA:9 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-ORIG-GUID: 2f8mHZXSYfwc_vyYQCVYwvYpx6aZ18n8
+X-Proofpoint-GUID: 2f8mHZXSYfwc_vyYQCVYwvYpx6aZ18n8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-11_01,2025-11-10_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ phishscore=0 impostorscore=0 spamscore=0 bulkscore=0 adultscore=0
+ clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2511080022
 
-The sockmap feature allows bpf syscall from userspace, or based
-on bpf sockops, replacing the sk_prot of sockets during protocol stack
-processing with sockmap's custom read/write interfaces.
-'''
-tcp_rcv_state_process()
-  syn_recv_sock()/subflow_syn_recv_sock()
-    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-      bpf_skops_established       <== sockops
-        bpf_sock_map_update(sk)   <== call bpf helper
-          tcp_bpf_update_proto()  <== update sk_prot
-'''
 
-When the server has MPTCP enabled but the client sends a TCP SYN
-without MPTCP, subflow_syn_recv_sock() performs a fallback on the
-subflow, replacing the subflow sk's sk_prot with the native sk_prot.
-'''
-subflow_syn_recv_sock()
-  subflow_ulp_fallback()
-    subflow_drop_ctx()
-      mptcp_subflow_ops_undo_override()
-'''
 
-Then, this subflow can be normally used by sockmap, which replaces the
-native sk_prot with sockmap's custom sk_prot. The issue occurs when the
-user executes accept::mptcp_stream_accept::mptcp_fallback_tcp_ops().
-Here, it uses sk->sk_prot to compare with the native sk_prot, but this
-is incorrect when sockmap is used, as we may incorrectly set
-sk->sk_socket->ops.
+On 11/10/25 9:54 PM, Bart Van Assche wrote:
+> Freezing the request queue from inside sysfs store callbacks may cause a
+> deadlock in combination with the dm-multipath driver and the
+> queue_if_no_path option. Additionally, freezing the request queue slows
+> down system boot on systems where sysfs attributes are set synchronously.
+> 
+> Fix this by removing the blk_mq_freeze_queue() / blk_mq_unfreeze_queue()
+> calls from the store callbacks that do not strictly need these callbacks.
+> This patch may cause a small delay in applying the new settings.
+> 
+> This patch affects the following sysfs attributes:
+> * io_poll_delay
+> * io_timeout
+> * nomerges
+> * read_ahead_kb
+> * rq_affinity
 
-This fix uses the more generic sk_family for the comparison instead.
+I applied your patch on my linux tree and ran some tests. And as I earlier 
+suspected, I found the following race from KCSAN:
 
-Additionally, this also prevents a WARNING from occurring:
+1. Running q->io_timeout update concurrently while running I/O:
 
-result from ./scripts/decode_stacktrace.sh:
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 337 at net/mptcp/protocol.c:68 mptcp_stream_accept \
-(net/mptcp/protocol.c:4005)
-Modules linked in:
-...
-
-PKRU: 55555554
-Call Trace:
-<TASK>
-do_accept (net/socket.c:1989)
-__sys_accept4 (net/socket.c:2028 net/socket.c:2057)
-__x64_sys_accept (net/socket.c:2067)
-x64_sys_call (arch/x86/entry/syscall_64.c:41)
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-RIP: 0033:0x7f87ac92b83d
-
----[ end trace 0000000000000000 ]---
-
-Fixes: cec37a6e41aa ("mptcp: Handle MP_CAPABLE options for outgoing connections")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/protocol.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 2d6b8de35c44..90b4aeca2596 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -61,11 +61,13 @@ static u64 mptcp_wnd_end(const struct mptcp_sock *msk)
+ BUG: KCSAN: data-race in blk_add_timer+0x64/0x1cc
  
- static const struct proto_ops *mptcp_fallback_tcp_ops(const struct sock *sk)
- {
-+	unsigned short family = READ_ONCE(sk->sk_family);
-+
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
--	if (sk->sk_prot == &tcpv6_prot)
-+	if (family == AF_INET6)
- 		return &inet6_stream_ops;
- #endif
--	WARN_ON_ONCE(sk->sk_prot != &tcp_prot);
-+	WARN_ON_ONCE(family != AF_INET);
- 	return &inet_stream_ops;
- }
+ race at unknown origin, with read to 0xc000000142575fa8 of 4 bytes by task 5528 on cpu 49:
+ blk_add_timer+0x64/0x1cc
+ blk_mq_start_request+0xd0/0x534
+ nvme_prep_rq.part.0+0x55c/0x1940 [nvme]
+ nvme_queue_rqs+0x1e0/0x4c4 [nvme]
+ blk_mq_dispatch_queue_requests+0x4f0/0x8c0
+ blk_mq_flush_plug_list+0xb4/0x3cc
+ __blk_flush_plug+0x294/0x358
+ __submit_bio+0x308/0x3a4
+ submit_bio_noacct_nocheck+0x5e4/0x92c
+ submit_bio_noacct+0x3a4/0xec8
+ submit_bio+0x70/0x2f0
+ submit_bio_wait+0xc8/0x180
+ __blkdev_direct_IO_simple+0x254/0x4a8
+ blkdev_direct_IO+0x6d4/0x1000
+ blkdev_write_iter+0x50c/0x658
+ vfs_write+0x678/0x874
+ sys_pwrite64+0x130/0x16c
+ system_call_exception+0x1a0/0x500
+ system_call_vectored_common+0x15c/0x2ec
+
+value changed: 0x000005dc -> 0x00000bb8
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 49 UID: 0 PID: 5528 Comm: fio Kdump: loaded Not tainted 6.18.0-rc4+ #65 VOLUNTARY 
+Hardware name: IBM,9105-22A Power11 (architected) 0x820200 0xf000007 of:IBM,FW1120.00 (RB1120_115) hv:phyp pSeries
+
+2. Updating ->ra_pages while it's also being simultaneously accessed:
+
+ BUG: KCSAN: data-race in queue_ra_show / read_ahead_kb_store
  
--- 
-2.43.0
+ write to 0xc00000000c107030 of 8 bytes by task 97376 on cpu 19:
+  read_ahead_kb_store+0x84/0xcc
+  dev_attr_store+0x70/0x9c
+  sysfs_kf_write+0xbc/0x110
+  kernfs_fop_write_iter+0x284/0x3b4
+  vfs_write+0x678/0x874
+  ksys_write+0xb0/0x1ac
+  sys_write+0x68/0x84
+  system_call_exception+0x1a0/0x500
+  system_call_vectored_common+0x15c/0x2ec
+ 
+ read to 0xc00000000c107030 of 8 bytes by task 167534 on cpu 33:
+  queue_ra_show+0x70/0xd4
+  queue_attr_show+0x90/0x170
+  sysfs_kf_seq_show+0x144/0x28c
+  kernfs_seq_show+0xbc/0xe0
+  seq_read_iter+0x384/0xb4c
+  kernfs_fop_read_iter+0x308/0x418
+  vfs_read+0x420/0x5ac
+  ksys_read+0xb0/0x1b0
+  sys_read+0x68/0x84
+  system_call_exception+0x1a0/0x500
+  system_call_vectored_common+0x15c/0x2ec
+ 
+ value changed: 0x0000000000000004 -> 0x0000000000000010
+ 
+ Reported by Kernel Concurrency Sanitizer on:
+ CPU: 33 UID: 0 PID: 167534 Comm: cat Kdump: loaded Not tainted 6.18.0-rc4+ #65 VOLUNTARY 
+ Hardware name: IBM,9105-22A Power11 (architected) 0x820200 0xf000007 of:IBM,FW1120.00 (RB1120_115) hv:phyp pSeries
+
+
+So from the above trace it seems obvious that we need to mark both
+writers and readers to avoid potential race.
+
+Thanks,
+--Nilay
 
 
