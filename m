@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-194368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C84EC4B192
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:21 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D565C4B1F3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 050B64FCB2E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6660A4FD71A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC18234029E;
-	Tue, 11 Nov 2025 01:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68350341678;
+	Tue, 11 Nov 2025 01:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ey91ppTM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhntXoMh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E622FF672;
-	Tue, 11 Nov 2025 01:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC961307AE6;
+	Tue, 11 Nov 2025 01:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825440; cv=none; b=KEFf/xhvHr0I7r9mrJIRifl7bkb8pWLHHdvtst5WmKulB0FrzVSi/K/W5btgtkl78GkoNDE+IVxxVIbHTazwz2ZIxIX1DEsAwhLI3JPd79CgtZfw/W/Ow40zito2zLIN2NE5sXoooEoE9j2bIqTQD63awYG5b721Au2o4WiM+Gg=
+	t=1762825562; cv=none; b=i5SulGuOLJ4PVKhPNeG11PHLqMVoB4NyW8C8W3C3Wv7hHkOGumf3R0+DY4p+O3OVLi1aE5RhvRzIyiUFOnoAvq7mBkHxrPzt3W/NIRrqOTe6H7+ffgIraGM7dJRtP6zYqwRhMY6ciwU7o3xWAH4oHFzPGwkBbkMPdBUotaLROTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825440; c=relaxed/simple;
-	bh=g4AhtdM1CryErsE127K7tZS9nWwKlxWxSBAPN4JcKdc=;
+	s=arc-20240116; t=1762825562; c=relaxed/simple;
+	bh=Q23Bj1VE6nZE8qCRYMaWRBJ8wcuX7o8bJ9ABh2f78EE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=czpml9L7nr58NHKnMMt/zr5qDf2dcZsGhGqazrOMwtt1zLGxprZ+cH408oBhyZo3m/b7YC/4QIUtm6fiO1nMaUofBj2F/Uefcv8hcbSfUom11mFYJzG2g19u0RHEQP69q5pvuXsvdL48yKhpjCLyKZ8tPgLA7q32NqG39DsL3Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ey91ppTM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BC2C19422;
-	Tue, 11 Nov 2025 01:44:00 +0000 (UTC)
+	 MIME-Version; b=WR9ZUrc/QE/VHi0Ydn/IO1LIz8e/XXMB2hNmsb/dDjHxP2YKuCOgj5e6ohMmPlKR1R9YR1Y+WvIy5OwuWEyDnOOcDGdqzaUigb4wdAjLsaE1DcNEnsML4hwciWXt+5VKHflWJghQFfHlfuL6g6QbbJn1yX4cuf0SIkLY/LvBKS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhntXoMh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B69C19424;
+	Tue, 11 Nov 2025 01:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825440;
-	bh=g4AhtdM1CryErsE127K7tZS9nWwKlxWxSBAPN4JcKdc=;
+	s=korg; t=1762825561;
+	bh=Q23Bj1VE6nZE8qCRYMaWRBJ8wcuX7o8bJ9ABh2f78EE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ey91ppTMZGrtzu6HO1Z/wE7HeMGQhcdX39veFqs404nNlguC2rHZUm6sIUb80RPDr
-	 xIOxh+2JRwWU5PvNVDL8WbnFuJWhj93zrnvJqJJXHk5AZyKEjAH6TfwRglahkLDdM1
-	 A+5aTBlRDweFVwlh4ny117EtQ8GPO6fKOsbjj85Y=
+	b=jhntXoMhWw0h11d7JPGhfVpvzur61u6tTusZEZE2iZwb2foREIM5GLaARb8O0e2Nm
+	 XFhT8XR9SdxN+92u9XrlQIDvxq0twlxYJD+T76vESMCG6WSwmCEg0+MDuauNoZ/0+A
+	 YeYtmuEs6TuqNEZE9vKVvpyWB81sqrVGTKKFVVJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Wayne Lin <Wayne.Lin@amd.com>
-Subject: [PATCH 6.17 801/849] drm/amd/display: Enable mst when its detected but yet to be initialized
-Date: Tue, 11 Nov 2025 09:46:11 +0900
-Message-ID: <20251111004555.796937869@linuxfoundation.org>
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 6.17 802/849] wifi: cfg80211: add an hrtimer based delayed work item
+Date: Tue, 11 Nov 2025 09:46:12 +0900
+Message-ID: <20251111004555.820987426@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,64 +66,224 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-commit 3c6a743c6961cc2cab453b343bb157d6bbbf8120 upstream.
+commit 7ceba45a6658ce637da334cd0ebf27f4ede6c0fe upstream.
 
-[Why]
-drm_dp_mst_topology_queue_probe() is used under the assumption that
-mst is already initialized. If we connect system with SST first
-then switch to the mst branch during suspend, we will fail probing
-topology by calling the wrong API since the mst manager is yet to
-be initialized.
+The normal timer mechanism assume that timeout further in the future
+need a lower accuracy. As an example, the granularity for a timer
+scheduled 4096 ms in the future on a 1000 Hz system is already 512 ms.
+This granularity is perfectly sufficient for e.g. timeouts, but there
+are other types of events that will happen at a future point in time and
+require a higher accuracy.
 
-[How]
-At dm_resume(), once it's detected as mst branc connected, check if
-the mst is initialized already. If not, call
-dm_helpers_dp_mst_start_top_mgr() instead to initialize mst
+Add a new wiphy_hrtimer_work type that uses an hrtimer internally. The
+API is almost identical to the existing wiphy_delayed_work and it can be
+used as a drop-in replacement after minor adjustments. The work will be
+scheduled relative to the current time with a slack of 1 millisecond.
 
-V2: Adjust the commit msg a bit
-
-Fixes: bc068194f548 ("drm/amd/display: Don't write DP_MSTM_CTRL after LT")
-Cc: Fangzhi Zuo <jerry.zuo@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 62320fb8d91a0bddc44a228203cfa9bfbb5395bd)
-Cc: stable@vger.kernel.org
+CC: stable@vger.kernel.org # 6.4+
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20251028125710.7f13a2adc5eb.I01b5af0363869864b0580d9c2a1770bafab69566@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ include/net/cfg80211.h |   78 +++++++++++++++++++++++++++++++++++++++++++++++++
+ net/wireless/core.c    |   56 +++++++++++++++++++++++++++++++++++
+ net/wireless/trace.h   |   21 +++++++++++++
+ 3 files changed, 155 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -3574,6 +3574,7 @@ static int dm_resume(struct amdgpu_ip_bl
- 	/* Do mst topology probing after resuming cached state*/
- 	drm_connector_list_iter_begin(ddev, &iter);
- 	drm_for_each_connector_iter(connector, &iter) {
-+		bool init = false;
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -6289,6 +6289,11 @@ static inline void wiphy_delayed_work_in
+  * after wiphy_lock() was called. Therefore, wiphy_cancel_work() can
+  * use just cancel_work() instead of cancel_work_sync(), it requires
+  * being in a section protected by wiphy_lock().
++ *
++ * Note that these are scheduled with a timer where the accuracy
++ * becomes less the longer in the future the scheduled timer is. Use
++ * wiphy_hrtimer_work_queue() if the timer must be not be late by more
++ * than approximately 10 percent.
+  */
+ void wiphy_delayed_work_queue(struct wiphy *wiphy,
+ 			      struct wiphy_delayed_work *dwork,
+@@ -6360,6 +6365,79 @@ void wiphy_delayed_work_flush(struct wip
+ bool wiphy_delayed_work_pending(struct wiphy *wiphy,
+ 				struct wiphy_delayed_work *dwork);
  
- 		if (connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
- 			continue;
-@@ -3583,7 +3584,14 @@ static int dm_resume(struct amdgpu_ip_bl
- 		    aconnector->mst_root)
- 			continue;
++struct wiphy_hrtimer_work {
++	struct wiphy_work work;
++	struct wiphy *wiphy;
++	struct hrtimer timer;
++};
++
++enum hrtimer_restart wiphy_hrtimer_work_timer(struct hrtimer *t);
++
++static inline void wiphy_hrtimer_work_init(struct wiphy_hrtimer_work *hrwork,
++					   wiphy_work_func_t func)
++{
++	hrtimer_setup(&hrwork->timer, wiphy_hrtimer_work_timer,
++		      CLOCK_BOOTTIME, HRTIMER_MODE_REL);
++	wiphy_work_init(&hrwork->work, func);
++}
++
++/**
++ * wiphy_hrtimer_work_queue - queue hrtimer work for the wiphy
++ * @wiphy: the wiphy to queue for
++ * @hrwork: the high resolution timer worker
++ * @delay: the delay given as a ktime_t
++ *
++ * Please refer to wiphy_delayed_work_queue(). The difference is that
++ * the hrtimer work uses a high resolution timer for scheduling. This
++ * may be needed if timeouts might be scheduled further in the future
++ * and the accuracy of the normal timer is not sufficient.
++ *
++ * Expect a delay of a few milliseconds as the timer is scheduled
++ * with some slack and some more time may pass between queueing the
++ * work and its start.
++ */
++void wiphy_hrtimer_work_queue(struct wiphy *wiphy,
++			      struct wiphy_hrtimer_work *hrwork,
++			      ktime_t delay);
++
++/**
++ * wiphy_hrtimer_work_cancel - cancel previously queued hrtimer work
++ * @wiphy: the wiphy, for debug purposes
++ * @hrtimer: the hrtimer work to cancel
++ *
++ * Cancel the work *without* waiting for it, this assumes being
++ * called under the wiphy mutex acquired by wiphy_lock().
++ */
++void wiphy_hrtimer_work_cancel(struct wiphy *wiphy,
++			       struct wiphy_hrtimer_work *hrtimer);
++
++/**
++ * wiphy_hrtimer_work_flush - flush previously queued hrtimer work
++ * @wiphy: the wiphy, for debug purposes
++ * @hrwork: the hrtimer work to flush
++ *
++ * Flush the work (i.e. run it if pending). This must be called
++ * under the wiphy mutex acquired by wiphy_lock().
++ */
++void wiphy_hrtimer_work_flush(struct wiphy *wiphy,
++			      struct wiphy_hrtimer_work *hrwork);
++
++/**
++ * wiphy_hrtimer_work_pending - Find out whether a wiphy hrtimer
++ * work item is currently pending.
++ *
++ * @wiphy: the wiphy, for debug purposes
++ * @hrwork: the hrtimer work in question
++ *
++ * Return: true if timer is pending, false otherwise
++ *
++ * Please refer to the wiphy_delayed_work_pending() documentation as
++ * this is the equivalent function for hrtimer based delayed work
++ * items.
++ */
++bool wiphy_hrtimer_work_pending(struct wiphy *wiphy,
++				struct wiphy_hrtimer_work *hrwork);
++
+ /**
+  * enum ieee80211_ap_reg_power - regulatory power for an Access Point
+  *
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1778,6 +1778,62 @@ bool wiphy_delayed_work_pending(struct w
+ }
+ EXPORT_SYMBOL_GPL(wiphy_delayed_work_pending);
  
--		drm_dp_mst_topology_queue_probe(&aconnector->mst_mgr);
-+		scoped_guard(mutex, &aconnector->mst_mgr.lock) {
-+			init = !aconnector->mst_mgr.mst_primary;
-+		}
-+		if (init)
-+			dm_helpers_dp_mst_start_top_mgr(aconnector->dc_link->ctx,
-+				aconnector->dc_link, false);
-+		else
-+			drm_dp_mst_topology_queue_probe(&aconnector->mst_mgr);
- 	}
- 	drm_connector_list_iter_end(&iter);
++enum hrtimer_restart wiphy_hrtimer_work_timer(struct hrtimer *t)
++{
++	struct wiphy_hrtimer_work *hrwork =
++		container_of(t, struct wiphy_hrtimer_work, timer);
++
++	wiphy_work_queue(hrwork->wiphy, &hrwork->work);
++
++	return HRTIMER_NORESTART;
++}
++EXPORT_SYMBOL_GPL(wiphy_hrtimer_work_timer);
++
++void wiphy_hrtimer_work_queue(struct wiphy *wiphy,
++			      struct wiphy_hrtimer_work *hrwork,
++			      ktime_t delay)
++{
++	trace_wiphy_hrtimer_work_queue(wiphy, &hrwork->work, delay);
++
++	if (!delay) {
++		hrtimer_cancel(&hrwork->timer);
++		wiphy_work_queue(wiphy, &hrwork->work);
++		return;
++	}
++
++	hrwork->wiphy = wiphy;
++	hrtimer_start_range_ns(&hrwork->timer, delay,
++			       1000 * NSEC_PER_USEC, HRTIMER_MODE_REL);
++}
++EXPORT_SYMBOL_GPL(wiphy_hrtimer_work_queue);
++
++void wiphy_hrtimer_work_cancel(struct wiphy *wiphy,
++			       struct wiphy_hrtimer_work *hrwork)
++{
++	lockdep_assert_held(&wiphy->mtx);
++
++	hrtimer_cancel(&hrwork->timer);
++	wiphy_work_cancel(wiphy, &hrwork->work);
++}
++EXPORT_SYMBOL_GPL(wiphy_hrtimer_work_cancel);
++
++void wiphy_hrtimer_work_flush(struct wiphy *wiphy,
++			      struct wiphy_hrtimer_work *hrwork)
++{
++	lockdep_assert_held(&wiphy->mtx);
++
++	hrtimer_cancel(&hrwork->timer);
++	wiphy_work_flush(wiphy, &hrwork->work);
++}
++EXPORT_SYMBOL_GPL(wiphy_hrtimer_work_flush);
++
++bool wiphy_hrtimer_work_pending(struct wiphy *wiphy,
++				struct wiphy_hrtimer_work *hrwork)
++{
++	return hrtimer_is_queued(&hrwork->timer);
++}
++EXPORT_SYMBOL_GPL(wiphy_hrtimer_work_pending);
++
+ static int __init cfg80211_init(void)
+ {
+ 	int err;
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -304,6 +304,27 @@ TRACE_EVENT(wiphy_delayed_work_queue,
+ 		  __entry->delay)
+ );
  
++TRACE_EVENT(wiphy_hrtimer_work_queue,
++	TP_PROTO(struct wiphy *wiphy, struct wiphy_work *work,
++		 ktime_t delay),
++	TP_ARGS(wiphy, work, delay),
++	TP_STRUCT__entry(
++		WIPHY_ENTRY
++		__field(void *, instance)
++		__field(void *, func)
++		__field(ktime_t, delay)
++	),
++	TP_fast_assign(
++		WIPHY_ASSIGN;
++		__entry->instance = work;
++		__entry->func = work->func;
++		__entry->delay = delay;
++	),
++	TP_printk(WIPHY_PR_FMT " instance=%p func=%pS delay=%llu",
++		  WIPHY_PR_ARG, __entry->instance, __entry->func,
++		  __entry->delay)
++);
++
+ TRACE_EVENT(wiphy_work_worker_start,
+ 	TP_PROTO(struct wiphy *wiphy),
+ 	TP_ARGS(wiphy),
 
 
 
