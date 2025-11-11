@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-193780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 229D1C4A7A3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 007D1C4AFB8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C27C834C295
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 355983BC5D0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA4233B6DC;
-	Tue, 11 Nov 2025 01:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C522F12DA;
+	Tue, 11 Nov 2025 01:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWMlk8Fw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLdPYc7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488EF339709;
-	Tue, 11 Nov 2025 01:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C453A944;
+	Tue, 11 Nov 2025 01:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823989; cv=none; b=Zpo11cUyjfeVLkYA0kNAAkNOE8YMkIVD8r7H5qpynh4YaNimakuQnRpD/Pqogn9pnbYac5X8sZmsIH35Up0oXRPWq2s9Gw6+bFQYxZ6X6GZvw3jEMDNI6FsbgBvY36U8Ia4DuvOjhI9Zot2hQrHh8aL6ik7f5+Ij5E5Erh4YhOI=
+	t=1762825082; cv=none; b=tIZBnLFWmjEyiQSSpPMPz80gDdwseCVG42YAK1kiimfHOjayc9YakYdr2kHF7hHT/r1JVkgNDktS1VUSQvONXWoYsdEHejMw4qlSi0Ekvxzu03qtXJSOJgZ1zWhCot7lhP50t85QZUKuSASeKkcvmBLpnsSq//8fnqIQDSnE8aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823989; c=relaxed/simple;
-	bh=Y+wuqkgA8WKN7acxPNUEMopGbaHzyVr47FhWa7+QN1U=;
+	s=arc-20240116; t=1762825082; c=relaxed/simple;
+	bh=zxyHmcDBRZgH0Fw5AjXxp9qO/a2WfUjjyI1LDmAwDQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=co79jkOH9AzfvaeLLULydyR0PjvfVpuDmtLRESS5ud6MOfeXB3qKow+6hFLCv8f9wAakd73Ra5z/HlJg/H9CFHtJZ0xPGFgXhb+LCRUZHOvsAUxlkyMBSUjkacL+jSW+8JXlbMAI0UrpjAiNA494M9a4BThpuF1ceQHIPsKVmZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWMlk8Fw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E47C113D0;
-	Tue, 11 Nov 2025 01:19:48 +0000 (UTC)
+	 MIME-Version; b=bn7j9V1tsSJEpbAOQVXTFHEbMHZ+hHm8jQphJrP58s1YiwQYwLQ5CYBgH56Aef1DSPP9As3Dw9NZKsDRklFMaUNYjlXJ0ZOg4XiRqsBQjtkjE1H8zmowsDCOckgzz8izA1nnLQtLJHOo5MZNbfrBqfJribnD0/VDBb57AJUvxis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLdPYc7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387A3C16AAE;
+	Tue, 11 Nov 2025 01:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823989;
-	bh=Y+wuqkgA8WKN7acxPNUEMopGbaHzyVr47FhWa7+QN1U=;
+	s=korg; t=1762825082;
+	bh=zxyHmcDBRZgH0Fw5AjXxp9qO/a2WfUjjyI1LDmAwDQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AWMlk8FwlH6fdxa8w8Mfgms+IAwQfUZ5MWgu/w2M/M3kZt2iN3LPLkVeUjNsBxvPU
-	 kIFtsvQQF/EAsdh7Xc/yNFKy/2vmYy+pgzX80p3jmtSioNbUowt2ZuaMq6z8dCFqDo
-	 8n13PdZfC6/lilxiRrFhePX3nAVtvvbAqZjj4x0c=
+	b=bLdPYc7+m1oO3VHsu68G0GY0vzrLR1BADwlf0Eeexdr21EUB9JF6JwjPU2pQpBgqJ
+	 fLnA001DLNTlbDmZecTzUgzJVe5KsMJcupaeBUGEVMhzjkisz8+auQsf5bS2V59mix
+	 TIsiYyrcSPJZ+fYUcbonD1rzgDz+s+Bl5SwYngGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asiacn <710187964@qq.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 366/565] drm/amd/display/dml2: Guard dml21_map_dc_state_into_dml_display_cfg with DC_FP_START
+Subject: [PATCH 6.17 652/849] ACPI: scan: Update honor list for RPMI System MSI
 Date: Tue, 11 Nov 2025 09:43:42 +0900
-Message-ID: <20251111004535.102888068@linuxfoundation.org>
+Message-ID: <20251111004552.191296596@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +67,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-[ Upstream commit c97a7dccb3ed680031011cfc1457506e6de49c9a ]
+[ Upstream commit 4215d1cf59e4b272755f4277a05cd5967935a704 ]
 
-dml21_map_dc_state_into_dml_display_cfg calls (the call is usually
-inlined by the compiler) populate_dml21_surface_config_from_plane_state
-and populate_dml21_plane_config_from_plane_state which may use FPU.  In
-a x86-64 build:
+The RPMI System MSI interrupt controller (just like PLIC and APLIC)
+needs to probed prior to devices like GED which use interrupts provided
+by it. Also, it has dependency on the SBI MPXY mailbox device.
 
-    $ objdump --disassemble=dml21_map_dc_state_into_dml_display_cfg \
-    > drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.o |
-    > grep %xmm -c
-    63
+Add HIDs of RPMI System MSI and SBI MPXY mailbox devices to the honor
+list so that those dependencies are handled.
 
-Thus it needs to be guarded with DC_FP_START.  But we must note that the
-current code quality of the in-kernel FPU use in AMD dml2 is very much
-problematic: we are actually calling DC_FP_START in dml21_wrapper.c
-here, and this translation unit is built with CC_FLAGS_FPU.  Strictly
-speaking this does not make any sense: with CC_FLAGS_FPU the compiler is
-allowed to generate FPU uses anywhere in the translated code, perhaps
-out of the DC_FP_START guard.  This problematic pattern also occurs in
-at least dml2_wrapper.c, dcn35_fpu.c, and dcn351_fpu.c.  Thus we really
-need a careful audit and refactor for the in-kernel FPU uses, and this
-patch is simply whacking a mole.  However per the reporter, whacking
-this mole is enough to make a 9060XT "just work."
-
-Reported-by: Asiacn <710187964@qq.com>
-Closes: https://github.com/loongson-community/discussions/issues/102
-Tested-by: Asiacn <710187964@qq.com>
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Acked-by: Jassi Brar <jassisinghbrar@gmail.com>
+Link: https://lore.kernel.org/r/20250818040920.272664-17-apatel@ventanamicro.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/scan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-index dcbe327209d5d..20c643ab756eb 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-@@ -217,7 +217,9 @@ static bool dml21_mode_check_and_programming(const struct dc *in_dc, struct dc_s
- 	dml_ctx->config.svp_pstate.callbacks.release_phantom_streams_and_planes(in_dc, context);
- 
- 	/* Populate stream, plane mappings and other fields in display config. */
-+	DC_FP_START();
- 	result = dml21_map_dc_state_into_dml_display_cfg(in_dc, context, dml_ctx);
-+	DC_FP_END();
- 	if (!result)
- 		return false;
- 
-@@ -271,7 +273,9 @@ static bool dml21_check_mode_support(const struct dc *in_dc, struct dc_state *co
- 	dml_ctx->config.svp_pstate.callbacks.release_phantom_streams_and_planes(in_dc, context);
- 
- 	mode_support->dml2_instance = dml_init->dml2_instance;
-+	DC_FP_START();
- 	dml21_map_dc_state_into_dml_display_cfg(in_dc, context, dml_ctx);
-+	DC_FP_END();
- 	dml_ctx->v21.mode_programming.dml2_instance->scratch.build_mode_programming_locals.mode_programming_params.programming = dml_ctx->v21.mode_programming.programming;
- 	DC_FP_START();
- 	is_supported = dml2_check_mode_supported(mode_support);
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 9865faa996b0d..f2e032f381625 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -860,6 +860,8 @@ static const char * const acpi_honor_dep_ids[] = {
+ 	"INTC10CF", /* IVSC (MTL) driver must be loaded to allow i2c access to camera sensors */
+ 	"RSCV0001", /* RISC-V PLIC */
+ 	"RSCV0002", /* RISC-V APLIC */
++	"RSCV0005", /* RISC-V SBI MPXY MBOX */
++	"RSCV0006", /* RISC-V RPMI SYSMSI */
+ 	"PNP0C0F",  /* PCI Link Device */
+ 	NULL
+ };
 -- 
 2.51.0
 
