@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-194305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 931ABC4B060
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:54:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89ED3C4ABF8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 600064F87A6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:48:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 50D1E4F2D93
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E1F2D9ECD;
-	Tue, 11 Nov 2025 01:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457A8274FDC;
+	Tue, 11 Nov 2025 01:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rM1VJnRK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNMVli8O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F68E267386;
-	Tue, 11 Nov 2025 01:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F291626ED5E;
+	Tue, 11 Nov 2025 01:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825290; cv=none; b=aY7aV5cZupUHJmzZO6qN+5sdcWcMtWZiKUfldhlOqQr0jvrKxkqqP6blfLp6O90abGIfKriVLdN5YVUyMHUsycxfyvXXcIndUKboI2Uaw2rfgwiZOx5Zs1NFa1p3/W4Vq6/opXQvH7YYfPNrWQ9IqatC5wwjalfWB6VtiatEI2g=
+	t=1762824477; cv=none; b=cXRWtgRf4u7qV3X51Ju6HaHCu4LBY/ggoWy7NrKTOEhUdmTo0qQUyccGVfytva5hU1LPEmrqISK52lIWs2MEjml6vdUjuP5mhsPQGC5dr+Jrf10hCZlyF3CGJD0g+53B6GK0ELtxbNtPlobXSvREOQjCUybwz4g7PH6GnZNwiUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825290; c=relaxed/simple;
-	bh=3BvZwLpxrjxxEq/siAzzLauCKtLrDx7TL4VryCqcq68=;
+	s=arc-20240116; t=1762824477; c=relaxed/simple;
+	bh=5fAihB8KCof0/+6AnzabaryiU7j6/UkNmbwYej8D4gA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jmJGjNgZQFnAfWC09JiwZ+UEQkoaFWklfDccpzO2BQMcPfvSQDYA2/tdNZKLv7xqAEEhCOWVw61CW3SlThGpGAPtmSy8edkZMx6yEMroKt1Dyq7UjBw5neJ7pOE/H7qFzexhJSNUpeyG8CqTtKRPVPfrEbCGlDiWOQAXP8I3GG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rM1VJnRK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28925C4CEFB;
-	Tue, 11 Nov 2025 01:41:30 +0000 (UTC)
+	 MIME-Version; b=n7LSeps+iBXeZDJRQkLhHfvy6Ndp81uSASQZfdAL5C2PaFfA1bfsT0Q0+GDvcm7S4So9a46En5J4lWLGa5vla+YprI8JT+zYG73Czg1cXc3B6EVgovgDLA8U/gzJb+30QmVmdOYMb1oB2gf0C/XPf1/wmE8hPHCPNMfGei2DqZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNMVli8O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56710C19424;
+	Tue, 11 Nov 2025 01:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825290;
-	bh=3BvZwLpxrjxxEq/siAzzLauCKtLrDx7TL4VryCqcq68=;
+	s=korg; t=1762824476;
+	bh=5fAihB8KCof0/+6AnzabaryiU7j6/UkNmbwYej8D4gA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rM1VJnRKHLOU5ctf/tL6T/ZjCeifdSvAK5y4iebpFbLBjVfft9x80FpZF4i5X/kEQ
-	 sXacRigdXJslx05LTLNe9ko3cpcHHbwfIoQwqIsdpwgiyCaLkpMyGram681PUedQwX
-	 xkU/OIwX/qg8K/rsCQMxUYBW/1IGs3JK7m79UmaY=
+	b=sNMVli8OhrKo+SaAKeCH5jA6sypl3MyskgfF2Af5GdnuvgVUBTtEPFdW0GmcsCmOf
+	 6ekhWXL1lb8PgCgmVp7DLxrk0Sce0AOR9biqu4CF62n1S5VLS1dNBiwEKygUkkINI9
+	 ZvcYxHmgkjB0Cl8c0ta8BPp6eg+KsdeZwrhEFzOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.17 739/849] rust: devres: fix private intra-doc link
-Date: Tue, 11 Nov 2025 09:45:09 +0900
-Message-ID: <20251111004554.307009693@linuxfoundation.org>
+	Saket Dumbre <saket.dumbre@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 454/565] ACPICA: Update dsmethod.c to get rid of unused variable warning
+Date: Tue, 11 Nov 2025 09:45:10 +0900
+Message-ID: <20251111004537.107392148@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Saket Dumbre <saket.dumbre@intel.com>
 
-commit ff4d2ef3874773c9c6173b0f099372bf62252aaf upstream.
+[ Upstream commit 761dc71c6020d6aa68666e96373342d49a7e9d0a ]
 
-The future move of pin-init to `syn` uncovers the following private
-intra-doc link:
+All the 3 major C compilers (MSVC, GCC, LLVM/Clang) warn about
+the unused variable i after the removal of its usage by PR #1031
+addressing Issue #1027
 
-    error: public documentation for `Devres` links to private item `Self::inner`
-       --> rust/kernel/devres.rs:106:7
-        |
-    106 | /// [`Self::inner`] is guaranteed to be initialized and is always accessed read-only.
-        |       ^^^^^^^^^^^ this item is private
-        |
-        = note: this link will resolve properly if you pass `--document-private-items`
-        = note: `-D rustdoc::private-intra-doc-links` implied by `-D warnings`
-        = help: to override `-D warnings` add `#[allow(rustdoc::private_intra_doc_links)]`
-
-Currently, when rendered, the link points to "nowhere" (an inexistent
-anchor for a "method").
-
-Thus fix it.
-
-Cc: stable@vger.kernel.org
-Fixes: f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc")
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patch.msgid.link/20251029071406.324511-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/acpica/acpica/commit/6d235320
+Signed-off-by: Saket Dumbre <saket.dumbre@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/devres.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/dsmethod.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index 10a6a1789854..2392c281459e 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -103,7 +103,7 @@ struct Inner<T: Send> {
- ///
- /// # Invariants
- ///
--/// [`Self::inner`] is guaranteed to be initialized and is always accessed read-only.
-+/// `Self::inner` is guaranteed to be initialized and is always accessed read-only.
- #[pin_data(PinnedDrop)]
- pub struct Devres<T: Send> {
-     dev: ARef<Device>,
+diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
+index dc53a5d700671..6168597a96e6f 100644
+--- a/drivers/acpi/acpica/dsmethod.c
++++ b/drivers/acpi/acpica/dsmethod.c
+@@ -462,7 +462,6 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
+ 	struct acpi_walk_state *next_walk_state = NULL;
+ 	union acpi_operand_object *obj_desc;
+ 	struct acpi_evaluate_info *info;
+-	u32 i;
+ 
+ 	ACPI_FUNCTION_TRACE_PTR(ds_call_control_method, this_walk_state);
+ 
 -- 
-2.51.2
+2.51.0
 
 
 
