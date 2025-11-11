@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D91C4AF61
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:41 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC738C4AA81
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EEAB18995EC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DB5BE4F51F5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57893343D76;
-	Tue, 11 Nov 2025 01:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C18530EF87;
+	Tue, 11 Nov 2025 01:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z2Kh7h5c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikNln/Z/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136D3343D6C;
-	Tue, 11 Nov 2025 01:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277A626980F;
+	Tue, 11 Nov 2025 01:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825175; cv=none; b=KDovIvxlQeDrbnjEhA4YZHYkpTnB+VJ/ondWoPbUtxmCLCwrSIqozpZt7jdZ5woXWQYJISDKWEC0ACs0JBVE3PhWwXN3cmdVaMtYbGS2NYKQ4rpS/zmZkehzdyWR2EDX4KXq6S8+K5xZdqDdISGiai4LPglG3qt2vXLuJ8sm/3Y=
+	t=1762824189; cv=none; b=MyHCfSXb0VHpkgrD4w4d8JqktFK5BYeMkHOLnKp78OkXhXRZXAPR3Do3eQaIgUXB3LheffBFBbp8Fyd2Uz3FuhESjSrehoRjElV9jMpFwOHbKvHu40mBRFLp75EJyMm78Dp5Hx/Ft++CLUrXItNGv+40R/9SVhOJS+oFbyOYBgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825175; c=relaxed/simple;
-	bh=XQenK4I9/WSxGM8STqaFQWamcExZaduL5e0Pqlg85Oc=;
+	s=arc-20240116; t=1762824189; c=relaxed/simple;
+	bh=8G8+iHKmBvNR65fLQAjhAuhSno9iOmxirDlFp1SWxsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ty5Hf+ODHoLegea9DxZyVVtNUWBtDDmyB0eXHXJkobZTn6lF/E0nTCCNT0I30mpR3R/2vxXbbRfxqFHi2Mb1ty6L0UFUQqwMLnF6BfAMYoIXgibdjVQaj0R9GfYu6CfzTYLJ1ofFyjDBdIG2gZoKSOK6QqSGhZZyabfpVoGNvaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z2Kh7h5c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8B0C116B1;
-	Tue, 11 Nov 2025 01:39:34 +0000 (UTC)
+	 MIME-Version; b=H5C7vimo/NRTle6wJ8X/UEbShq7KzT4JVpmVIOHoYDtnpZGiTzr1aPQIJ0Re1squKg5NFVzM1ZIOlWEeD2drYwFX7l4tZUHjJN3aYx9mJKUZR1Z7clZ4UT7VVm/bX7wUeDdrJGoVs3zfz1pyuL2ol2cnh7HoAExu0tM4aNoxxQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikNln/Z/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95870C113D0;
+	Tue, 11 Nov 2025 01:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825174;
-	bh=XQenK4I9/WSxGM8STqaFQWamcExZaduL5e0Pqlg85Oc=;
+	s=korg; t=1762824189;
+	bh=8G8+iHKmBvNR65fLQAjhAuhSno9iOmxirDlFp1SWxsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z2Kh7h5cXQ4ihS5otXLQCGpRhsIe5bOjIIJWlVmH3RUjwXYRzJu9FfyPkbg7DjFOX
-	 dPSnMvPs175gTXDKDhdbjl7hjfbUdu6Y781/4Atj+CHhyRj5lfLlPQnLX7QVu8kmQn
-	 nH8jZXdWIBzBQZTaecHZg2op2dBfe1tkJF36qw9I=
+	b=ikNln/Z/eRr2PAJ1fhMfkYj+Jc+7y3NUUbPqLfk1OG3bvyOw9fAn3ChtbST64c+8i
+	 sQxZKWWjhRMA8BM5BYpCQ3Ry/LWrRx2hnZySdmt19ZZbk+fKWzKVEyjlEx8Mv+jPm8
+	 bT7shFNOq2nUOJe9RNYOQsLqx4DzsSL7Y2pQkk+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	austinchang <austinchang@synology.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Weili Qian <qianweili@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 692/849] btrfs: mark dirty extent range for out of bound prealloc extents
-Date: Tue, 11 Nov 2025 09:44:22 +0900
-Message-ID: <20251111004553.161851374@linuxfoundation.org>
+Subject: [PATCH 6.12 407/565] crypto: hisilicon/qm - clear all VF configurations in the hardware
+Date: Tue, 11 Nov 2025 09:44:23 +0900
+Message-ID: <20251111004536.028755133@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: austinchang <austinchang@synology.com>
+From: Weili Qian <qianweili@huawei.com>
 
-[ Upstream commit 3b1a4a59a2086badab391687a6a0b86e03048393 ]
+[ Upstream commit 64b9642fc29a14e1fe67842be9c69c7b90a3bcd6 ]
 
-In btrfs_fallocate(), when the allocated range overlaps with a prealloc
-extent and the extent starts after i_size, the range doesn't get marked
-dirty in file_extent_tree. This results in persisting an incorrect
-disk_i_size for the inode when not using the no-holes feature.
+When disabling SR-IOV, clear the configuration of each VF
+in the hardware. Do not exit the configuration clearing process
+due to the failure of a single VF. Additionally, Clear the VF
+configurations before decrementing the PM counter.
 
-This is reproducible since commit 41a2ee75aab0 ("btrfs: introduce
-per-inode file extent tree"), then became hidden since commit 3d7db6e8bd22
-("btrfs: don't allocate file extent tree for non regular files") and then
-visible again after commit 8679d2687c35 ("btrfs: initialize
-inode::file_extent_tree after i_mode has been set"), which fixes the
-previous commit.
-
-The following reproducer triggers the problem:
-
-$ cat test.sh
-
-MNT=/mnt/test
-DEV=/dev/vdb
-
-mkdir -p $MNT
-
-mkfs.btrfs -f -O ^no-holes $DEV
-mount $DEV $MNT
-
-touch $MNT/file1
-fallocate -n -o 1M -l 2M $MNT/file1
-
-umount $MNT
-mount $DEV $MNT
-
-len=$((1 * 1024 * 1024))
-
-fallocate -o 1M -l $len $MNT/file1
-
-du --bytes $MNT/file1
-
-umount $MNT
-mount $DEV $MNT
-
-du --bytes $MNT/file1
-
-umount $MNT
-
-Running the reproducer gives the following result:
-
-$ ./test.sh
-(...)
-2097152 /mnt/test/file1
-1048576 /mnt/test/file1
-
-The difference is exactly 1048576 as we assigned.
-
-Fix by adding a call to btrfs_inode_set_file_extent_range() in
-btrfs_fallocate_update_isize().
-
-Fixes: 41a2ee75aab0 ("btrfs: introduce per-inode file extent tree")
-Signed-off-by: austinchang <austinchang@synology.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Weili Qian <qianweili@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/file.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/crypto/hisilicon/qm.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
-index 204674934795c..9f6dcae252189 100644
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -2855,12 +2855,22 @@ static int btrfs_fallocate_update_isize(struct inode *inode,
+diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+index 73eea2ee1b9b9..35b95996ef82c 100644
+--- a/drivers/crypto/hisilicon/qm.c
++++ b/drivers/crypto/hisilicon/qm.c
+@@ -3475,19 +3475,19 @@ static int qm_vf_q_assign(struct hisi_qm *qm, u32 num_vfs)
+ 	return 0;
+ }
+ 
+-static int qm_clear_vft_config(struct hisi_qm *qm)
++static void qm_clear_vft_config(struct hisi_qm *qm)
  {
- 	struct btrfs_trans_handle *trans;
- 	struct btrfs_root *root = BTRFS_I(inode)->root;
-+	u64 range_start;
-+	u64 range_end;
- 	int ret;
- 	int ret2;
+-	int ret;
+ 	u32 i;
  
- 	if (mode & FALLOC_FL_KEEP_SIZE || end <= i_size_read(inode))
- 		return 0;
+-	for (i = 1; i <= qm->vfs_num; i++) {
+-		ret = hisi_qm_set_vft(qm, i, 0, 0);
+-		if (ret)
+-			return ret;
+-	}
+-	qm->vfs_num = 0;
++	/*
++	 * When disabling SR-IOV, clear the configuration of each VF in the hardware
++	 * sequentially. Failure to clear a single VF should not affect the clearing
++	 * operation of other VFs.
++	 */
++	for (i = 1; i <= qm->vfs_num; i++)
++		(void)hisi_qm_set_vft(qm, i, 0, 0);
  
-+	range_start = round_down(i_size_read(inode), root->fs_info->sectorsize);
-+	range_end = round_up(end, root->fs_info->sectorsize);
-+
-+	ret = btrfs_inode_set_file_extent_range(BTRFS_I(inode), range_start,
-+						range_end - range_start);
-+	if (ret)
-+		return ret;
-+
- 	trans = btrfs_start_transaction(root, 1);
- 	if (IS_ERR(trans))
- 		return PTR_ERR(trans);
+-	return 0;
++	qm->vfs_num = 0;
+ }
+ 
+ static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
+@@ -3824,13 +3824,13 @@ int hisi_qm_sriov_enable(struct pci_dev *pdev, int max_vfs)
+ 		goto err_put_sync;
+ 	}
+ 
++	qm->vfs_num = num_vfs;
+ 	ret = pci_enable_sriov(pdev, num_vfs);
+ 	if (ret) {
+ 		pci_err(pdev, "Can't enable VF!\n");
+ 		qm_clear_vft_config(qm);
+ 		goto err_put_sync;
+ 	}
+-	qm->vfs_num = num_vfs;
+ 
+ 	pci_info(pdev, "VF enabled, vfs_num(=%d)!\n", num_vfs);
+ 
+@@ -3865,11 +3865,10 @@ int hisi_qm_sriov_disable(struct pci_dev *pdev, bool is_frozen)
+ 	}
+ 
+ 	pci_disable_sriov(pdev);
+-
+-	qm->vfs_num = 0;
++	qm_clear_vft_config(qm);
+ 	qm_pm_put_sync(qm);
+ 
+-	return qm_clear_vft_config(qm);
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(hisi_qm_sriov_disable);
+ 
 -- 
 2.51.0
 
