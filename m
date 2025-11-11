@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-193911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDAD7C4AD1E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB11AC4A4B7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:15:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE2A83B45F9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AECE0188AD32
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1A02F693C;
-	Tue, 11 Nov 2025 01:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C6B344038;
+	Tue, 11 Nov 2025 01:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvhB57LY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtdZHdDi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C0726E703;
-	Tue, 11 Nov 2025 01:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA92534402F;
+	Tue, 11 Nov 2025 01:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824354; cv=none; b=CoakScH5s4D4q1mZXR5DtrZb7KWD5/QOc/zs6TkNOdugOhdr88/A46ghm7D+FciH0UY5tnKjCfUnEvNeeLPds1E0LRiieUAVi5nO0tIPGTBwEdl/IuidLCIk2X93C3YJtjcMUqiinkgCfVdgYTMIen/Gxt2d1MIX3WaLUpnxTE4=
+	t=1762823188; cv=none; b=B9DSLGZoVsln37s4tzCgMVxDR7u8LFBhh/SHv5o+MUB2m+KGO6/j7QecK2lp1BhaxAqwcxdxlwN5KaUTDQF++cbBgN5dTdqJEFXJns7FVTw1hI+J3CM+ZXn4CgFG/6/cMfG3VYkdhzNkG2AkbxUhJhRbXliN989cEmYQXroG+as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824354; c=relaxed/simple;
-	bh=GHpBvTO86YQbO5Z5kvjhV8vONaBQPWRlvQ7hw+Jn1JI=;
+	s=arc-20240116; t=1762823188; c=relaxed/simple;
+	bh=5cieyM9Hew6QhqVgS/RHBhb1b3JhZJzZy+K008KiDu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QreVzHufPY/62hn33KOUu5dq/V8Mz+OME4lRmtNCUg76LtW5I9cSoa2zeVFKh3KMayc6d2fAram5ksnSKt9dNJM/26BWtamPjHCOumtLx7eCbzrjpPF6PT/48M5fO04K0QgTwzqXcX23UXwbLu0IFxnhxM/ObNHx3usV6oSodY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvhB57LY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E9FC19421;
-	Tue, 11 Nov 2025 01:25:53 +0000 (UTC)
+	 MIME-Version; b=uDmpdGlw7sBumm1ZF6R5ocWPVLxqqKr0PI5yep6ZKrTSPpV1016pQDweQb+FpRgiC3AVj6P0azBFoSwwbfi5qT/wSW0lebFDwNzxk7ChU4f0XHjHhskXEbvnkx+dTHf7TLjHY5oNTP2sCDBKkp/CLrmahE/Jix5nGxrYr0v9K8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtdZHdDi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48001C16AAE;
+	Tue, 11 Nov 2025 01:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824353;
-	bh=GHpBvTO86YQbO5Z5kvjhV8vONaBQPWRlvQ7hw+Jn1JI=;
+	s=korg; t=1762823188;
+	bh=5cieyM9Hew6QhqVgS/RHBhb1b3JhZJzZy+K008KiDu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zvhB57LYdm9vZlhXVDksCoAq+Quo3yZapYHyGyPZM4xlfvY6uETXsvbRZ26l3JA54
-	 5kMaVHU8rBHm+xMwAGduVT0J4LZHrIgwY70PzlXFjlu6iy4bh1wyOoT6kvntqAUCo1
-	 gbpHw9YolWRvzwmr4wIoBOzeB9+l/QvyIsvdokt0=
+	b=CtdZHdDiAHJdkOoIMkqhb3H+L911VnsZhFGVfmNDuh1GIGMOcgdxH1nb7YEkovwtZ
+	 x+evLAxdccRBWRuyqYddi9Be8Iba4PZSSTG5fpb7dJjfdprO2ehrVPmczrv9MvftIy
+	 4+c0f5pWpR/fGxp7KlF/9kHMucHnlUa9fuTmtrTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Wake Liu <wakel@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 479/849] PCI: endpoint: pci-epf-test: Limit PCIe BAR size for fixed BARs
+Subject: [PATCH 6.12 193/565] selftests/net: Replace non-standard __WORDSIZE with sizeof(long) * 8
 Date: Tue, 11 Nov 2025 09:40:49 +0900
-Message-ID: <20251111004548.024391297@linuxfoundation.org>
+Message-ID: <20251111004531.270232441@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Wake Liu <wakel@google.com>
 
-[ Upstream commit d5f6bd3ee3f5048f272182dc91675c082773999e ]
+[ Upstream commit c36748e8733ef9c5f4cd1d7c4327994e5b88b8df ]
 
-Currently, the test allocates BAR sizes according to fixed table bar_size.
-This does not work with controllers which have fixed size BARs that are
-smaller than the requested BAR size. One such controller is Renesas R-Car
-V4H PCIe controller, which has BAR4 size limited to 256 bytes, which is
-much less than one of the BAR size, 131072 currently requested by this
-test. A lot of controllers drivers in-tree have fixed size BARs, and they
-do work perfectly fine, but it is only because their fixed size is larger
-than the size requested by pci-epf-test.c
+The `__WORDSIZE` macro, defined in the non-standard `<bits/wordsize.h>`
+header, is a GNU extension and not universally available with all
+toolchains, such as Clang when used with musl libc.
 
-Adjust the test such that in case a fixed size BAR is detected, the fixed
-BAR size is used, as that is the only possible option.
+This can lead to build failures in environments where this header is
+missing.
 
-This helps with test failures reported as follows:
+The intention of the code is to determine the bit width of a C `long`.
+Replace the non-portable `__WORDSIZE` with the standard and portable
+`sizeof(long) * 8` expression to achieve the same result.
 
-  pci_epf_test pci_epf_test.0: requested BAR size is larger than fixed size
-  pci_epf_test pci_epf_test.0: Failed to allocate space for BAR4
+This change also removes the inclusion of the now-unused
+`<bits/wordsize.h>` header.
 
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-[mani: reworded description]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Link: https://patch.msgid.link/20250905184240.144431-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Wake Liu <wakel@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-test.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/psock_tpacket.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-index 044f5ea0716d1..31617772ad516 100644
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -1067,7 +1067,12 @@ static int pci_epf_test_alloc_space(struct pci_epf *epf)
- 		if (bar == test_reg_bar)
- 			continue;
+diff --git a/tools/testing/selftests/net/psock_tpacket.c b/tools/testing/selftests/net/psock_tpacket.c
+index 404a2ce759ab6..93092d13b3c59 100644
+--- a/tools/testing/selftests/net/psock_tpacket.c
++++ b/tools/testing/selftests/net/psock_tpacket.c
+@@ -33,7 +33,6 @@
+ #include <ctype.h>
+ #include <fcntl.h>
+ #include <unistd.h>
+-#include <bits/wordsize.h>
+ #include <net/ethernet.h>
+ #include <netinet/ip.h>
+ #include <arpa/inet.h>
+@@ -785,7 +784,7 @@ static int test_kernel_bit_width(void)
  
--		base = pci_epf_alloc_space(epf, bar_size[bar], bar,
-+		if (epc_features->bar[bar].type == BAR_FIXED)
-+			test_reg_size = epc_features->bar[bar].fixed_size;
-+		else
-+			test_reg_size = bar_size[bar];
-+
-+		base = pci_epf_alloc_space(epf, test_reg_size, bar,
- 					   epc_features, PRIMARY_INTERFACE);
- 		if (!base)
- 			dev_err(dev, "Failed to allocate space for BAR%d\n",
+ static int test_user_bit_width(void)
+ {
+-	return __WORDSIZE;
++	return sizeof(long) * 8;
+ }
+ 
+ static const char *tpacket_str[] = {
 -- 
 2.51.0
 
