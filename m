@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B06AC4A1E7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:24 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACFDAC4A1EA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 220B6188E5F3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1F73134BD50
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C6D25C818;
-	Tue, 11 Nov 2025 01:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886702561A7;
+	Tue, 11 Nov 2025 01:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BMOzSF2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7+Y/S5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1CF248883;
-	Tue, 11 Nov 2025 01:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D927253944;
+	Tue, 11 Nov 2025 01:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822870; cv=none; b=IY/FTy6YLqJcMNYgOjXPtWGGNQEqDp8xo0//eep5sV3hf/+P4AxJBcsd0hpqK/VO2N2OO8/dTG+PvuSWJXy/5s2UOak3JROnuchfkqGQH7gCgl3tNyp9E434Swr3JFscg9eLUXoP3P2hIMWnVGBFKJf4oaIoJYCMtEZVMlKhA1E=
+	t=1762822875; cv=none; b=GsLvQCQC4P8LiACqTJMC46n4lvVMkfeexQ2hCSJvwpov6bzqZnXFxxhQ45Fd6lyCSYQ11feL9LILsHvgPvc5gWUQvD8RSvIxyUi5dFKvLhm3m2XH0QARmwCP0mfhEXSa2JZVJ31SYt04DHIrzMsOp9Qo5jGdI4+iyWAyG/je3aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822870; c=relaxed/simple;
-	bh=2/RrqvXcqXcD+op3x0rtsOFYTly2qI70rgLMhHZUIj8=;
+	s=arc-20240116; t=1762822875; c=relaxed/simple;
+	bh=jxyglao/2SBai+lpHkCtTi21ZbgOBnyVTvaDtuVISI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uaI0qq6Ii7AMm+uP38UHOB/idgpaXiDi0nyYhhWECs+ioPKUfDTPCOtZyvNcM5XBSiWnQdkMdyDcl2mtbDTzdd77ZJHh3LHdyJg0flNwHlqrV5PbLP9Y+9MybieCIcZMR4vEC2i52uYhJlX83bhHzMEamAyCsfDuoeczk9WFjbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BMOzSF2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892FCC116B1;
-	Tue, 11 Nov 2025 01:01:09 +0000 (UTC)
+	 MIME-Version; b=BBHGqXj88ZoBf/MNvWdRbq2dQRRvHgObmGtq8nBRwkCdPxOguIEoApyFnaZU9hck5fjoQt0BP38TKquhr8v0/z1XWRUqxmWbXzhZVgipcMx0xpLQBhYuCbB1A2M0Po8GGQB+geQpWDE1L1YSEgvcsoJx1jpAf5dC5YHV2ojekWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7+Y/S5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B85C19421;
+	Tue, 11 Nov 2025 01:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822870;
-	bh=2/RrqvXcqXcD+op3x0rtsOFYTly2qI70rgLMhHZUIj8=;
+	s=korg; t=1762822875;
+	bh=jxyglao/2SBai+lpHkCtTi21ZbgOBnyVTvaDtuVISI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2BMOzSF2SSZhs+2hNAmsAZBmMQEc7ismyuaCOXw62pkjyl+YL+MpGaWm4Jy/SvDvR
-	 pFzR9DsNcp6lpRx1zKFmmsN2K/JoSN4/Ppz30RBD88Rf4uHknVF/ZO46NJz85SG25n
-	 nnaD8Zmy/joOSxIdd/FeSep5TiePBV4eXWfkMohg=
+	b=q7+Y/S5F0qt2XVUOCvnTe9Gkz5cr18KzJzAaZSHzJeqyMWkBf1qj9L2PK4C/e1/pJ
+	 1Zrd2kxhh8XCmWa0Z4lIzZGazjMDZ4E7xH69ofdQZ4RuhMN5cwY51b1L1ev/jfBlDH
+	 zOTmFmNf1bfujw0cKcyae0ipPA/Tjuh74U7TSGgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Wang <wangming01@loongson.cn>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 124/565] irqchip/loongson-pch-lpc: Use legacy domain for PCH-LPC IRQ controller
-Date: Tue, 11 Nov 2025 09:39:40 +0900
-Message-ID: <20251111004529.743562186@linuxfoundation.org>
+Subject: [PATCH 6.12 125/565] cpufreq: ondemand: Update the efficient idle check for Intel extended Families
+Date: Tue, 11 Nov 2025 09:39:41 +0900
+Message-ID: <20251111004529.765523954@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,66 +66,108 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ming Wang <wangming01@loongson.cn>
+From: Sohil Mehta <sohil.mehta@intel.com>
 
-[ Upstream commit c33c43f71bda362b292a6e57ac41b64342dc87b3 ]
+[ Upstream commit 7f3cfb7943d27a7b61bdac8db739cf0bdc28e87d ]
 
-On certain Loongson platforms, drivers attempting to request a legacy
-ISA IRQ directly via request_irq() (e.g., IRQ 4) may fail. The
-virtual IRQ descriptor is not fully initialized and lacks a valid irqchip.
+IO time is considered busy by default for modern Intel processors. The
+current check covers recent Family 6 models but excludes the brand new
+Families 18 and 19.
 
-This issue does not affect ACPI-enumerated devices described in DSDT,
-as their interrupts are properly mapped via the GSI translation path.
-This indicates the LPC irqdomain itself is functional but is not correctly
-handling direct VIRQ-to-HWIRQ mappings.
+According to Arjan van de Ven, the model check was mainly due to a lack
+of testing on systems before INTEL_CORE2_MEROM. He suggests considering
+all Intel processors as having an efficient idle.
 
-The root cause is the use of irq_domain_create_linear(). This API sets
-up a domain for dynamic, on-demand mapping, typically triggered by a GSI
-request. It does not pre-populate the mappings for the legacy VIRQ range
-(0-15). Consequently, if no ACPI device claims a specific GSI
-(e.g., GSI 4), the corresponding VIRQ (e.g., VIRQ 4) is never mapped to
-the LPC domain. A direct call to request_irq(4, ...) then fails because
-the kernel cannot resolve this VIRQ to a hardware interrupt managed by
-the LPC controller.
+Extend the IO busy classification to all Intel processors starting with
+Family 6, including Family 15 (Pentium 4s) and upcoming Families 18/19.
 
-The PCH-LPC interrupt controller is an i8259-compatible legacy device
-that requires a deterministic, static 1-to-1 mapping for IRQs 0-15 to
-support legacy drivers.
+Use an x86 VFM check and move the function to the header file to avoid
+using arch-specific #ifdefs in the C file.
 
-Fix this by replacing irq_domain_create_linear() with
-irq_domain_create_legacy(). This API is specifically designed for such
-controllers. It establishes the required static 1-to-1 VIRQ-to-HWIRQ
-mapping for the entire legacy range (0-15) immediately upon domain
-creation. This ensures that any VIRQ in this range is always resolvable,
-making direct calls to request_irq() for legacy IRQs function correctly.
-
-Signed-off-by: Ming Wang <wangming01@loongson.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+Link: https://patch.msgid.link/20250908230655.2562440-1-sohil.mehta@intel.com
+[ rjw: Added empty line after #include ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-loongson-pch-lpc.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/cpufreq/cpufreq_ondemand.c | 25 +------------------------
+ drivers/cpufreq/cpufreq_ondemand.h | 23 +++++++++++++++++++++++
+ 2 files changed, 24 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/irqchip/irq-loongson-pch-lpc.c b/drivers/irqchip/irq-loongson-pch-lpc.c
-index 2d4c3ec128b8f..912bf50a5c7ca 100644
---- a/drivers/irqchip/irq-loongson-pch-lpc.c
-+++ b/drivers/irqchip/irq-loongson-pch-lpc.c
-@@ -200,8 +200,13 @@ int __init pch_lpc_acpi_init(struct irq_domain *parent,
- 		goto iounmap_base;
- 	}
+diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpufreq_ondemand.c
+index 0e65d37c92311..a6ecc203f7b7f 100644
+--- a/drivers/cpufreq/cpufreq_ondemand.c
++++ b/drivers/cpufreq/cpufreq_ondemand.c
+@@ -29,29 +29,6 @@ static struct od_ops od_ops;
  
--	priv->lpc_domain = irq_domain_create_linear(irq_handle, LPC_COUNT,
--					&pch_lpc_domain_ops, priv);
-+	/*
-+	 * The LPC interrupt controller is a legacy i8259-compatible device,
-+	 * which requires a static 1:1 mapping for IRQs 0-15.
-+	 * Use irq_domain_create_legacy to establish this static mapping early.
-+	 */
-+	priv->lpc_domain = irq_domain_create_legacy(irq_handle, LPC_COUNT, 0, 0,
-+						    &pch_lpc_domain_ops, priv);
- 	if (!priv->lpc_domain) {
- 		pr_err("Failed to create IRQ domain\n");
- 		goto free_irq_handle;
+ static unsigned int default_powersave_bias;
+ 
+-/*
+- * Not all CPUs want IO time to be accounted as busy; this depends on how
+- * efficient idling at a higher frequency/voltage is.
+- * Pavel Machek says this is not so for various generations of AMD and old
+- * Intel systems.
+- * Mike Chan (android.com) claims this is also not true for ARM.
+- * Because of this, whitelist specific known (series) of CPUs by default, and
+- * leave all others up to the user.
+- */
+-static int should_io_be_busy(void)
+-{
+-#if defined(CONFIG_X86)
+-	/*
+-	 * For Intel, Core 2 (model 15) and later have an efficient idle.
+-	 */
+-	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL &&
+-			boot_cpu_data.x86 == 6 &&
+-			boot_cpu_data.x86_model >= 15)
+-		return 1;
+-#endif
+-	return 0;
+-}
+-
+ /*
+  * Find right freq to be set now with powersave_bias on.
+  * Returns the freq_hi to be used right now and will set freq_hi_delay_us,
+@@ -377,7 +354,7 @@ static int od_init(struct dbs_data *dbs_data)
+ 	dbs_data->sampling_down_factor = DEF_SAMPLING_DOWN_FACTOR;
+ 	dbs_data->ignore_nice_load = 0;
+ 	tuners->powersave_bias = default_powersave_bias;
+-	dbs_data->io_is_busy = should_io_be_busy();
++	dbs_data->io_is_busy = od_should_io_be_busy();
+ 
+ 	dbs_data->tuners = tuners;
+ 	return 0;
+diff --git a/drivers/cpufreq/cpufreq_ondemand.h b/drivers/cpufreq/cpufreq_ondemand.h
+index 1af8e5c4b86fd..2ca8f1aaf2e34 100644
+--- a/drivers/cpufreq/cpufreq_ondemand.h
++++ b/drivers/cpufreq/cpufreq_ondemand.h
+@@ -24,3 +24,26 @@ static inline struct od_policy_dbs_info *to_dbs_info(struct policy_dbs_info *pol
+ struct od_dbs_tuners {
+ 	unsigned int powersave_bias;
+ };
++
++#ifdef CONFIG_X86
++#include <asm/cpu_device_id.h>
++
++/*
++ * Not all CPUs want IO time to be accounted as busy; this depends on
++ * how efficient idling at a higher frequency/voltage is.
++ *
++ * Pavel Machek says this is not so for various generations of AMD and
++ * old Intel systems. Mike Chan (android.com) claims this is also not
++ * true for ARM.
++ *
++ * Because of this, select a known series of Intel CPUs (Family 6 and
++ * later) by default, and leave all others up to the user.
++ */
++static inline bool od_should_io_be_busy(void)
++{
++	return (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL &&
++		boot_cpu_data.x86_vfm >= INTEL_PENTIUM_PRO);
++}
++#else
++static inline bool od_should_io_be_busy(void) { return false; }
++#endif
 -- 
 2.51.0
 
