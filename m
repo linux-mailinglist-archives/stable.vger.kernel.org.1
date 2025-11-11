@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE69C4B27D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:04:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729F7C4AE5F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 272163B8DC5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ECE6188FC99
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BED3305976;
-	Tue, 11 Nov 2025 01:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A012D9EC4;
+	Tue, 11 Nov 2025 01:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6ly9StY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qcf+uLnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD41918DF80;
-	Tue, 11 Nov 2025 01:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56BC62F6923;
+	Tue, 11 Nov 2025 01:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825532; cv=none; b=fvunGaQPJxDI8frEYwkpQQjpiyecoxQOaT6mUDqjzilPIXJPJCtAk4WjsLpE9lHVOmZpxGscjp11wS+wzK/8R8c+vJ2vxkw0PbKrh9kQ+jbIaXIH6HA9K3F/Upg4dBL9yHqY512ftlRisIZ77pP1Yj9OLrJoGYWtrbKDgSgiY8M=
+	t=1762824945; cv=none; b=jtegrDD6vB7ayEk2QUMeJidpguv5n0amR57Nk4j7Cd3YkRKGb5xgHb23IGAbG3VbFqh7G+3PYiOgDpbklUkl6Nlf8LR2YVzSIVR6AMT/RLWK6EZ7NJK8Qav5SOyQBjyB1RyF+vYBODyYLrNXWcQiaNi1ftSsWeIMh0fiqLfp50Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825532; c=relaxed/simple;
-	bh=xNo6MFK1GAftxy9g7PKbmWsuZCH+52iM00blEXI8FPI=;
+	s=arc-20240116; t=1762824945; c=relaxed/simple;
+	bh=jEToRx1Jesj/nzN+JfpgSmO9w/SdRzqd1AC2iOSxWOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ky3rQ7dS9MXPT4vG8cPdeSBzMgcpL8pkQ6esXe8P1VUoU6aev6uc98GsAn0Klaoni04EFIK/NYAujdWPROnrWuyTJAyIqm9OsmRwx3qFJXEfCK9PxSr5ADIQeMZtFwtusO0AGDU94dQhoMYG3D1jUO1zHxF59OK0FnIk6x70zC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6ly9StY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0548CC4CEFB;
-	Tue, 11 Nov 2025 01:45:30 +0000 (UTC)
+	 MIME-Version; b=IjegQgfv7Q8B29JRgqySqnsVvsFKX9Q0yq9b5jl565/Nc8wM53oqqKPxvLOccLVZP8LgWKKnNtiHOcdo+DdhQ3fdNSnBmBLtI/FL5yCzMTqFPk1zfdemPxqvi3Xk1VJp1jfMNfOnnwhE4/fbE8JkrPdEDdn9qT8VIm7zuCFKz1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qcf+uLnl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD20C16AAE;
+	Tue, 11 Nov 2025 01:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825531;
-	bh=xNo6MFK1GAftxy9g7PKbmWsuZCH+52iM00blEXI8FPI=;
+	s=korg; t=1762824945;
+	bh=jEToRx1Jesj/nzN+JfpgSmO9w/SdRzqd1AC2iOSxWOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6ly9StYfF+V9DO5LNiSboAmK9c/uGZRpBLYgccOOowOMhQV7sZd1GModt9vy+j7x
-	 /aH85sh5wl3GUVmHgoX0O0YR/ClSvVbBVA09cqwCBrhlWEFfRTTVcgLWG5FqJbCVsp
-	 9hNpSpbI2kaPJQ7uEKWs22RjSdKTMJPsrEylHvqA=
+	b=Qcf+uLnlcTr4eCHbVkL1FSNfRW0xJMi2+VOehHN1jW27EZOe4Htem/5cJfzFdGyHs
+	 DzxmeFd5IN6VUJ1m2TxE1O8aQNsbewFG9ffD0AlGalSXSVxFLBWjQ8P8qtDcHt9H+w
+	 xrSEat/64MMQLM5E4L0oOP/XbudlXz2/9WPyC0b8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathishkumar S <sathishkumar.sundararaju@amd.com>,
-	Leo Liu <leo.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 841/849] drm/amdgpu: Fix unintended error log in VCN5_0_0
+	Nathan Chancellor <nathan@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.12 555/565] lib/crypto: curve25519-hacl64: Fix older clang KASAN workaround for GCC
 Date: Tue, 11 Nov 2025 09:46:51 +0900
-Message-ID: <20251111004556.754078226@linuxfoundation.org>
+Message-ID: <20251111004539.488957385@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sathishkumar S <sathishkumar.sundararaju@amd.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 46b0e6b9d749cfa891e6969d6565be1131c53aa2 upstream.
+commit 2b81082ad37cc3f28355fb73a6a69b91ff7dbf20 upstream.
 
-The error log is supposed to be gaurded under if failure condition.
+Commit 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with
+clang-17 and older") inadvertently disabled KASAN in curve25519-hacl64.o
+for GCC unconditionally because clang-min-version will always evaluate
+to nothing for GCC. Add a check for CONFIG_CC_IS_CLANG to avoid applying
+the workaround for GCC, which is only needed for clang-17 and older.
 
-Fixes: faab5ea08367 ("drm/amdgpu: Check vcn sram load return value")
-Signed-off-by: Sathishkumar S <sathishkumar.sundararaju@amd.com>
-Reviewed-by: Leo Liu <leo.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Fixes: 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with clang-17 and older")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20251103-curve25519-hacl64-fix-kasan-workaround-v2-1-ab581cbd8035@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ lib/crypto/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
-@@ -769,9 +769,10 @@ static int vcn_v5_0_0_start_dpg_mode(str
+--- a/lib/crypto/Makefile
++++ b/lib/crypto/Makefile
+@@ -34,7 +34,7 @@ libcurve25519-generic-y				:= curve25519
+ libcurve25519-generic-$(CONFIG_ARCH_SUPPORTS_INT128)	:= curve25519-hacl64.o
+ libcurve25519-generic-y				+= curve25519-generic.o
+ # clang versions prior to 18 may blow out the stack with KASAN
+-ifeq ($(call clang-min-version, 180000),)
++ifeq ($(CONFIG_CC_IS_CLANG)_$(call clang-min-version, 180000),y_)
+ KASAN_SANITIZE_curve25519-hacl64.o := n
+ endif
  
- 	if (indirect) {
- 		ret = amdgpu_vcn_psp_update_sram(adev, inst_idx, 0);
--		dev_err(adev->dev, "%s: vcn sram load failed %d\n", __func__, ret);
--		if (ret)
-+		if (ret) {
-+			dev_err(adev->dev, "%s: vcn sram load failed %d\n", __func__, ret);
- 			return ret;
-+		}
- 	}
- 
- 	ring = &adev->vcn.inst[inst_idx].ring_enc[0];
 
 
 
