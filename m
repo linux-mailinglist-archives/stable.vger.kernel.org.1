@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29FAC4AF89
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BCFDC4B1DB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F11F3B5ECE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 25E594F37D8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6A52DD5E2;
-	Tue, 11 Nov 2025 01:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1670F3009F1;
+	Tue, 11 Nov 2025 01:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbcwScUe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuL7rnBj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED682DC349;
-	Tue, 11 Nov 2025 01:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C692C246333;
+	Tue, 11 Nov 2025 01:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824961; cv=none; b=ifeBLIPRFsDX18gmoaZzOKN6XoIJAj96RLsic4HhUCHwl3UVZXzwqkBiFucn+XIQq59L6mMcnNE9rGQXYyFuJvD9tt8I+JkTrHJMG5iKUtQmmZnSazRgTNhrQ5A/JXseInidC3N7ePOWiM8xsl9C8j8fEzHWNvhyl2QYf/ARtx4=
+	t=1762825471; cv=none; b=j9OP/4fmLA4wyqx3tut+E0AtB7nbnYoOCDAkGwWbdnKwf369V+Q4b7ase1MSUQxoSzLWgZ/PZWSyX975EjTfh6n4xB9a7uZlKhXTndT5a54O6BDojNPXj5i7Ai8peZofiql92FXkxlIpZWT+hdM8a79YAhcSpe3SW+7qRNUqkQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824961; c=relaxed/simple;
-	bh=fTOSpdwoxWHWmD/p5cYSAN+fvK27im03bDV7fbec73I=;
+	s=arc-20240116; t=1762825471; c=relaxed/simple;
+	bh=g6GNEF/hjFhCforWp8FA451fEUPDKMhfh6BxqdV2MUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bTCXS7JntqcGWo0/Qbf8lkmDVFX6X4r72wrG0dKmGzwA2C5ynqTY7vAWhrquyfCUACCTaXvxwaEH+sXqvDmdyv/NvwosUnXHM+n3y/BKPHyB5eEpy5JffOuP2D9qDRepE95w3NbryYOL2UGfvvSTA+9/v+nXd+to2+zMsZW9Xn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbcwScUe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC63C116D0;
-	Tue, 11 Nov 2025 01:36:01 +0000 (UTC)
+	 MIME-Version; b=P+hKsTrBBJOx62BaE5bDMqCsfAIcjBTGPvE/iQEgLy9b0lW0x/Ec9ufA6Q5PfmKBDhtVrtcFJPL3OMnInAW0iT+GUomJF7zVL2k0CteeC4nBd7Kb4In9i/M4HUG51xAJsiAscRMOrcIGjEr5antIDsnL1FFHh79wLwPqlP63Tzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuL7rnBj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE6FC19422;
+	Tue, 11 Nov 2025 01:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824961;
-	bh=fTOSpdwoxWHWmD/p5cYSAN+fvK27im03bDV7fbec73I=;
+	s=korg; t=1762825471;
+	bh=g6GNEF/hjFhCforWp8FA451fEUPDKMhfh6BxqdV2MUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qbcwScUe1SOylrucSWTzm7637DEwtOvGsmNM55IsUSdo5fLxeY6NL2SeWn2lOt6Hj
-	 4Z/HS+JpBR/HVclgBc93SZ1P2R6znEpOvnvMcuOcVyCHjwIfvLVzAfsMdDO37Sxmdl
-	 9Am660V3gXFLk2BQZ52vzy7KRAHiMpGcmMfxq7iA=
+	b=nuL7rnBj7+VA70lBVygWRy15R/+GDVTACGcbzct+M6v6j9/mzXkL62RSUk/g7C+E7
+	 q9/w8bN0CmDbRp6sBVn2Nx7UJsrXbjXv17bzTRk7c6C6aSoIdIK8Jb8H5s95K3/SRH
+	 dR8OtYx8RKj0GZVWRk7ugWBo1Os8rUft8WyQmjdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongguang Gao <hongguang.gao@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 531/565] bnxt_en: Refactor bnxt_free_ctx_mem()
+	Jay Shin <jaeshin@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.17 817/849] smb: client: fix potential UAF in smb2_close_cached_fid()
 Date: Tue, 11 Nov 2025 09:46:27 +0900
-Message-ID: <20251111004538.915492367@linuxfoundation.org>
+Message-ID: <20251111004556.178148239@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongguang Gao <hongguang.gao@broadcom.com>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-[ Upstream commit 968d2cc07c2fc9a508a53bd2de61200f50206fbc ]
+commit 734e99623c5b65bf2c03e35978a0b980ebc3c2f8 upstream.
 
-Add a new function bnxt_free_one_ctx_mem() to free one context
-memory type.  bnxt_free_ctx_mem() now calls the new function in
-the loop to free each context memory type.  There is no change in
-behavior.  Later patches will further make use of the new function.
+find_or_create_cached_dir() could grab a new reference after kref_put()
+had seen the refcount drop to zero but before cfid_list_lock is acquired
+in smb2_close_cached_fid(), leading to use-after-free.
 
-Signed-off-by: Hongguang Gao <hongguang.gao@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20241115151438.550106-4-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 5204943a4c6e ("bnxt_en: Fix warning in bnxt_dl_reload_down()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Switch to kref_put_lock() so cfid_release() is called with
+cfid_list_lock held, closing that gap.
+
+Fixes: ebe98f1447bb ("cifs: enable caching of directories for which a lease is held")
+Cc: stable@vger.kernel.org
+Reported-by: Jay Shin <jaeshin@redhat.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 31 +++++++++++++----------
- 1 file changed, 18 insertions(+), 13 deletions(-)
+ fs/smb/client/cached_dir.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index abf8984ac5e20..5409ad3cee192 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -8872,21 +8872,14 @@ static int bnxt_backing_store_cfg_v2(struct bnxt *bp, u32 ena)
- 	return 0;
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -389,11 +389,11 @@ out:
+ 			 * lease. Release one here, and the second below.
+ 			 */
+ 			cfid->has_lease = false;
+-			kref_put(&cfid->refcount, smb2_close_cached_fid);
++			close_cached_dir(cfid);
+ 		}
+ 		spin_unlock(&cfids->cfid_list_lock);
+ 
+-		kref_put(&cfid->refcount, smb2_close_cached_fid);
++		close_cached_dir(cfid);
+ 	} else {
+ 		*ret_cfid = cfid;
+ 		atomic_inc(&tcon->num_remote_opens);
+@@ -434,12 +434,14 @@ int open_cached_dir_by_dentry(struct cif
+ 
+ static void
+ smb2_close_cached_fid(struct kref *ref)
++__releases(&cfid->cfids->cfid_list_lock)
+ {
+ 	struct cached_fid *cfid = container_of(ref, struct cached_fid,
+ 					       refcount);
+ 	int rc;
+ 
+-	spin_lock(&cfid->cfids->cfid_list_lock);
++	lockdep_assert_held(&cfid->cfids->cfid_list_lock);
++
+ 	if (cfid->on_list) {
+ 		list_del(&cfid->entry);
+ 		cfid->on_list = false;
+@@ -474,7 +476,7 @@ void drop_cached_dir_by_name(const unsig
+ 	spin_lock(&cfid->cfids->cfid_list_lock);
+ 	if (cfid->has_lease) {
+ 		cfid->has_lease = false;
+-		kref_put(&cfid->refcount, smb2_close_cached_fid);
++		close_cached_dir(cfid);
+ 	}
+ 	spin_unlock(&cfid->cfids->cfid_list_lock);
+ 	close_cached_dir(cfid);
+@@ -483,7 +485,7 @@ void drop_cached_dir_by_name(const unsig
+ 
+ void close_cached_dir(struct cached_fid *cfid)
+ {
+-	kref_put(&cfid->refcount, smb2_close_cached_fid);
++	kref_put_lock(&cfid->refcount, smb2_close_cached_fid, &cfid->cfids->cfid_list_lock);
  }
  
--void bnxt_free_ctx_mem(struct bnxt *bp)
-+static void bnxt_free_one_ctx_mem(struct bnxt *bp,
-+				  struct bnxt_ctx_mem_type *ctxm)
- {
--	struct bnxt_ctx_mem_info *ctx = bp->ctx;
--	u16 type;
--
--	if (!ctx)
--		return;
--
--	for (type = 0; type < BNXT_CTX_V2_MAX; type++) {
--		struct bnxt_ctx_mem_type *ctxm = &ctx->ctx_arr[type];
--		struct bnxt_ctx_pg_info *ctx_pg = ctxm->pg_info;
--		int i, n = 1;
-+	struct bnxt_ctx_pg_info *ctx_pg;
-+	int i, n = 1;
- 
--		if (!ctx_pg)
--			continue;
-+	ctx_pg = ctxm->pg_info;
-+	if (ctx_pg) {
- 		if (ctxm->instance_bmap)
- 			n = hweight32(ctxm->instance_bmap);
- 		for (i = 0; i < n; i++)
-@@ -8896,6 +8889,18 @@ void bnxt_free_ctx_mem(struct bnxt *bp)
- 		ctxm->pg_info = NULL;
- 		ctxm->mem_valid = 0;
- 	}
-+}
-+
-+void bnxt_free_ctx_mem(struct bnxt *bp)
-+{
-+	struct bnxt_ctx_mem_info *ctx = bp->ctx;
-+	u16 type;
-+
-+	if (!ctx)
-+		return;
-+
-+	for (type = 0; type < BNXT_CTX_V2_MAX; type++)
-+		bnxt_free_one_ctx_mem(bp, &ctx->ctx_arr[type]);
- 
- 	ctx->flags &= ~BNXT_CTX_FLAG_INITED;
- 	kfree(ctx);
--- 
-2.51.0
-
-
-
-n.c
-index c93b43f5bc461..e713fc5964b18 100644
---- a/drivers/usb/mon/mon_bin.c
-+++ b/drivers/usb/mon/mon_bin.c
-@@ -68,18 +68,20 @@
-  * The magic limit was calculated so that it allows the monitoring
-  * application to pick data once in two ticks. This way, another application,
-  * which presumably drives the bus, gets to hog CPU, yet we collect our data.
-- * If HZ is 100, a 480 mbit/s bus drives 614 KB every jiffy. USB has an
-- * enormous overhead built into the bus protocol, so we need about 1000 KB.
-+ *
-+ * Originally, for a 480 Mbit/s bus this required a buffer of about 1 MB. For
-+ * modern 20 Gbps buses, this value increases to over 50 MB. The maximum
-+ * buffer size is set to 64 MiB to accommodate this.
-  *
-  * This is still too much for most cases, where we just snoop a few
-  * descriptor fetches for enumeration. So, the default is a "reasonable"
-- * amount for systems with HZ=250 and incomplete bus saturation.
-+ * amount for typical, low-throughput use cases.
-  *
-  * XXX What about multi-megabyte URBs which take minutes to transfer?
-  */
--#define BUFF_MAX  CHUNK_ALIGN(1200*1024)
--#define BUFF_DFL   CHUNK_ALIGN(300*1024)
--#define BUFF_MIN     CHUNK_ALIGN(8*1024)
-+#define BUFF_MAX  CHUNK_ALIGN(64*1024*1024)
-+#define BUFF_DFL      CHUNK_ALIGN(300*1024)
-+#define BUFF_MIN        CHUNK_ALIGN(8*1024)
- 
  /*
-  * The per-event API header (2 per URB).
--- 
-2.51.0
-
+@@ -594,7 +596,7 @@ cached_dir_offload_close(struct work_str
+ 
+ 	WARN_ON(cfid->on_list);
+ 
+-	kref_put(&cfid->refcount, smb2_close_cached_fid);
++	close_cached_dir(cfid);
+ 	cifs_put_tcon(tcon, netfs_trace_tcon_ref_put_cached_close);
+ }
+ 
+@@ -771,7 +773,7 @@ static void cfids_laundromat_worker(stru
+ 			 * Drop the ref-count from above, either the lease-ref (if there
+ 			 * was one) or the extra one acquired.
+ 			 */
+-			kref_put(&cfid->refcount, smb2_close_cached_fid);
++			close_cached_dir(cfid);
+ 	}
+ 	queue_delayed_work(cfid_put_wq, &cfids->laundromat_work,
+ 			   dir_cache_timeout * HZ);
 
 
 
