@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-193829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F077AC4AC0D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:09 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98880C4A884
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E23043BBA32
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F290034C565
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D6B343D79;
-	Tue, 11 Nov 2025 01:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015293446DC;
+	Tue, 11 Nov 2025 01:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5BGUO0Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYtLUbea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125002DA743;
-	Tue, 11 Nov 2025 01:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A962C2DC76F;
+	Tue, 11 Nov 2025 01:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824107; cv=none; b=IYo3GqXjKHGyvDvcxZ+PtQv/D95f1HLXw7+N4mnmuHgw/Bvwr9syVKn2mYe3fApqWZchu846uLCjFVKqTByG9yYf6ubk1Q79MbW4ENcDZktQsYr32XwaLd68Vq6dr7WaSPfQ+X/nGqcw+RP7kk42gxag+CVtEyCL0qhWsLEtmhY=
+	t=1762824157; cv=none; b=rOOS0Cb/+uzIzgilKZz5l5H1Z6F6VEAiZ+Eb6/Ry99/RkuQkkqAPrQI7zoQbuwV3yGK7Ul2ZjrSX1VRrbiQVB4U8MyhhSY1xnGk3QpIPQHJqK692j0OqgejpV9xNLC5IIFGBn2gKMEMKhRxkInjfzRohT8zAWXBIwI2PM7KwdM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824107; c=relaxed/simple;
-	bh=G/Zr4yifU8HQDRDZsEYzc8YZICeISSo/HYPbvaJFEU4=;
+	s=arc-20240116; t=1762824157; c=relaxed/simple;
+	bh=Iy7W29jEpA/dIDCR4l2K9WjXDS+qVXhRFkYHoAXBwY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVg1WTcqJmobcKVcOX6fzr4Y2dgMrlSxCLtwBpTavrEX+aB/DadABcTUjY7Rsn8zuutpmoImkM3txmSGTZmDsvpoWAdML2KfpRzwFICycr9i2l8UDV9SCe3CcPAY7pWnjt1UZH0F6ob2ZgTMcZ1cGq/N1XQQ99yjOAbyjxzX/5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5BGUO0Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD8AC16AAE;
-	Tue, 11 Nov 2025 01:21:46 +0000 (UTC)
+	 MIME-Version; b=M/jtB45sbmU1ARaMFj9QMC2WcvNLNG24ryGl37m3NQQ0sFJbwKZnBxDn3Lb4H2HvWQGiv/sqJTWwkA6TKJUqcOkqMKhPFdZTqB/duT+ph+DJnYeStrJp437nnQ6K1nGbzyZ/Nfgpz0/k9jKRoIyU8p1Nn/tll7G8VOe31LZt9cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYtLUbea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4778FC4CEF5;
+	Tue, 11 Nov 2025 01:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824106;
-	bh=G/Zr4yifU8HQDRDZsEYzc8YZICeISSo/HYPbvaJFEU4=;
+	s=korg; t=1762824157;
+	bh=Iy7W29jEpA/dIDCR4l2K9WjXDS+qVXhRFkYHoAXBwY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E5BGUO0Yu/FNaMi55VGsJuHh0QCfrOj2+TuGUAoCKd7PC2j5bZ3G/w0aaE6V+0wgp
-	 7sS6sJoW+h8cktLGeUINpK1qNgwHXcvtcoNUMDxEWxS4M90HRIjcKIszWDp42adYlK
-	 jDUOBGXJKCRogk0DJrPLn9oVaL7rGf6yU6mz0ZbQ=
+	b=tYtLUbeaQzvCjTRCdY/z63t2zqsQjeZRIjBAvPQIKYYm+tg3inojWkxyuW9SWElSl
+	 FqIGf+DqPm9zFGQ/X2dTI2r2spCeYCnEbCZ9L22ws/345nOboGnAYsj35aNl81/zgg
+	 wqImudDu5Ah87DPffh5vcIgvMiyMYLmsaNs7kZcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Miroslav Lichvar <mlichvar@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	John Stultz <jstultz@google.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 411/849] drm/st7571-i2c: add support for inverted pixel format
-Date: Tue, 11 Nov 2025 09:39:41 +0900
-Message-ID: <20251111004546.378760947@linuxfoundation.org>
+Subject: [PATCH 6.17 412/849] ptp: Limit time setting of PTP clocks
+Date: Tue, 11 Nov 2025 09:39:42 +0900
+Message-ID: <20251111004546.401768687@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,78 +71,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marcus Folkesson <marcus.folkesson@gmail.com>
+From: Miroslav Lichvar <mlichvar@redhat.com>
 
-[ Upstream commit e61c35157d32b4b422f0a4cbc3c40d04d883a9c9 ]
+[ Upstream commit 5a8c02a6bf52b1cf9cfb7868a8330f7c3c6aebe9 ]
 
-Depending on which display that is connected to the controller, an
-"1" means either a black or a white pixel.
+Networking drivers implementing PTP clocks and kernel socket code
+handling hardware timestamps use the 64-bit signed ktime_t type counting
+nanoseconds. When a PTP clock reaches the maximum value in year 2262,
+the timestamps returned to applications will overflow into year 1667.
+The same thing happens when injecting a large offset with
+clock_adjtime(ADJ_SETOFFSET).
 
-The supported formats (R1/R2/XRGB8888) expects the pixels
-to map against (4bit):
-    00 => Black
-    01 => Dark Gray
-    10 => Light Gray
-    11 => White
+The commit 7a8e61f84786 ("timekeeping: Force upper bound for setting
+CLOCK_REALTIME") limited the maximum accepted value setting the system
+clock to 30 years before the maximum representable value (i.e. year
+2232) to avoid the overflow, assuming the system will not run for more
+than 30 years.
 
-If this is not what the display map against, make it possible to invert
-the pixels.
+Enforce the same limit for PTP clocks. Don't allow negative values and
+values closer than 30 years to the maximum value. Drivers may implement
+an even lower limit if the hardware registers cannot represent the whole
+interval between years 1970 and 2262 in the required resolution.
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-Link: https://lore.kernel.org/r/20250721-st7571-format-v2-4-159f4134098c@gmail.com
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Miroslav Lichvar <mlichvar@redhat.com>
+Cc: Richard Cochran <richardcochran@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: John Stultz <jstultz@google.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20250828103300.1387025-1-mlichvar@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sitronix/st7571-i2c.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/ptp/ptp_clock.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/sitronix/st7571-i2c.c b/drivers/gpu/drm/sitronix/st7571-i2c.c
-index 453eb7e045e5f..125e810df1391 100644
---- a/drivers/gpu/drm/sitronix/st7571-i2c.c
-+++ b/drivers/gpu/drm/sitronix/st7571-i2c.c
-@@ -151,6 +151,7 @@ struct st7571_device {
- 	bool ignore_nak;
+diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
+index 1cc06b7cb17ef..3e0726c6f55b3 100644
+--- a/drivers/ptp/ptp_clock.c
++++ b/drivers/ptp/ptp_clock.c
+@@ -100,6 +100,9 @@ static int ptp_clock_settime(struct posix_clock *pc, const struct timespec64 *tp
+ 		return -EBUSY;
+ 	}
  
- 	bool grayscale;
-+	bool inverted;
- 	u32 height_mm;
- 	u32 width_mm;
- 	u32 startline;
-@@ -792,6 +793,7 @@ static int st7567_parse_dt(struct st7571_device *st7567)
++	if (!timespec64_valid_settod(tp))
++		return -EINVAL;
++
+ 	return  ptp->info->settime64(ptp->info, tp);
+ }
  
- 	of_property_read_u32(np, "width-mm", &st7567->width_mm);
- 	of_property_read_u32(np, "height-mm", &st7567->height_mm);
-+	st7567->inverted = of_property_read_bool(np, "sitronix,inverted");
+@@ -130,7 +133,7 @@ static int ptp_clock_adjtime(struct posix_clock *pc, struct __kernel_timex *tx)
+ 	ops = ptp->info;
  
- 	st7567->pformat = &st7571_monochrome;
- 	st7567->bpp = 1;
-@@ -819,6 +821,7 @@ static int st7571_parse_dt(struct st7571_device *st7571)
- 	of_property_read_u32(np, "width-mm", &st7571->width_mm);
- 	of_property_read_u32(np, "height-mm", &st7571->height_mm);
- 	st7571->grayscale = of_property_read_bool(np, "sitronix,grayscale");
-+	st7571->inverted = of_property_read_bool(np, "sitronix,inverted");
+ 	if (tx->modes & ADJ_SETOFFSET) {
+-		struct timespec64 ts;
++		struct timespec64 ts, ts2;
+ 		ktime_t kt;
+ 		s64 delta;
  
- 	if (st7571->grayscale) {
- 		st7571->pformat = &st7571_grayscale;
-@@ -873,7 +876,7 @@ static int st7567_lcd_init(struct st7571_device *st7567)
- 		ST7571_SET_POWER(0x6),	/* Power Control, VC: ON, VR: ON, VF: OFF */
- 		ST7571_SET_POWER(0x7),	/* Power Control, VC: ON, VR: ON, VF: ON */
+@@ -143,6 +146,14 @@ static int ptp_clock_adjtime(struct posix_clock *pc, struct __kernel_timex *tx)
+ 		if ((unsigned long) ts.tv_nsec >= NSEC_PER_SEC)
+ 			return -EINVAL;
  
--		ST7571_SET_REVERSE(0),
-+		ST7571_SET_REVERSE(st7567->inverted ? 1 : 0),
- 		ST7571_SET_ENTIRE_DISPLAY_ON(0),
- 	};
- 
-@@ -917,7 +920,7 @@ static int st7571_lcd_init(struct st7571_device *st7571)
- 		ST7571_SET_COLOR_MODE(st7571->pformat->mode),
- 		ST7571_COMMAND_SET_NORMAL,
- 
--		ST7571_SET_REVERSE(0),
-+		ST7571_SET_REVERSE(st7571->inverted ? 1 : 0),
- 		ST7571_SET_ENTIRE_DISPLAY_ON(0),
- 	};
- 
++		/* Make sure the offset is valid */
++		err = ptp_clock_gettime(pc, &ts2);
++		if (err)
++			return err;
++		ts2 = timespec64_add(ts2, ts);
++		if (!timespec64_valid_settod(&ts2))
++			return -EINVAL;
++
+ 		kt = timespec64_to_ktime(ts);
+ 		delta = ktime_to_ns(kt);
+ 		err = ops->adjtime(ops, delta);
 -- 
 2.51.0
 
