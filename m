@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D88CC4A819
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB57DC4AD54
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D75DD1895ABD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCBED1894799
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B755C3469E2;
-	Tue, 11 Nov 2025 01:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E86727E7EB;
+	Tue, 11 Nov 2025 01:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrS2ua38"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvARaakU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2412DC350;
-	Tue, 11 Nov 2025 01:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A772DDAB;
+	Tue, 11 Nov 2025 01:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823669; cv=none; b=S7DyX5sRGbkAHqBN4Dd9SgEiNEo4UrENKbTPCM9gR1kvQoimi7oJvgMD+cnzghGNuRfFpKQngAU8gdmSYyxZwOlHss5gC7lrSAX24mVlDfMU0wZa6VXcY48KOwY1CfnX0+nx7ZSInh11JIgrgB8skIbWggNw1ABNHWgkmi5IIGM=
+	t=1762824844; cv=none; b=OGlU2Yg+EZecj1pLQza9FUnBp7RZFhqjUjm93LW+lOmymXuVEagxJWkBnvk01qQnKG+P0dUT/lgZSUPgcHNW85hTA/zL5eQXHCgyNrjJTPkCPh7qimSx1QFtr+B/JNzc0OBm3ogzQQjbzaUN0lDMScQkqlBbGbFUI9bXgpXq2Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823669; c=relaxed/simple;
-	bh=14NOmhg5uCC1iLjCphVrmr3BK4x5yc4+oQqkbJbwa8M=;
+	s=arc-20240116; t=1762824844; c=relaxed/simple;
+	bh=yZdWvsypXNECnwA9FCBTWMmlPO1dhZPmCvhN4m3khl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZRtGIeogUeJOHuiiZRgLMLWZ8jQDErQ0i0wtx/BpT3x4z23WxDMl7kgin54GLDqTnfYfxt8JBIwGtC3KP4+PVoVS1AVmWyAL5dy27oLk+rfZRtAZXrj6wrY5tGCIydcBSBMxeX3n/9nTsxNEUZefg32bs3f8Ia2HVIHbfQHSWlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrS2ua38; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7590C116B1;
-	Tue, 11 Nov 2025 01:14:28 +0000 (UTC)
+	 MIME-Version; b=mENmZD1WojuUAYvH7qtGHzbEIagRVPrGEP4nO+ccjGqawXG1FLUEsvmWMT5+NfIDRd+UFMC+Wu46LDG/5D/oveypevkmOtL05Z/PgPny6jYaiWuih1E/+gxy3D/RO0L5piJ3cOVaLFhtAQyW1dR6sZo17E/ZKanmen9O88k49kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvARaakU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED06BC19421;
+	Tue, 11 Nov 2025 01:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823669;
-	bh=14NOmhg5uCC1iLjCphVrmr3BK4x5yc4+oQqkbJbwa8M=;
+	s=korg; t=1762824844;
+	bh=yZdWvsypXNECnwA9FCBTWMmlPO1dhZPmCvhN4m3khl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrS2ua38wHQawTpdXSc4kbBUezZ43qkfPWwbrQGd6FvIq3V/4ZWf06bmlqD3A1ysC
-	 yFMjWO1pK42u4J1M3HOsqKGOTx5SUkBTeyjTrOZSeZTs78wZHTXbVIYtQ/4o/D8z4c
-	 UfJ3PoAU+X9Lx6urViWEXPgr7t1nxJS5+fSiuxAk=
+	b=dvARaakU8UCKEqbGhDz5Bzxs6cE41Rw+vniWcs17mDIsoJm6RkV4j/P7zJax+YqBQ
+	 J1cYwy59jHFGo7IhSw3D57LR4vXjYLkehKGgOgFo6UantjhFhycDUPFB8auHrBsQyx
+	 dU/7qmXkaE3C3Us5xTUv8iYSQXPjnDEVSmHiM9Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Chih-Kang Chang <gary.chang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 297/565] wifi: mac80211: Fix 6 GHz Band capabilities element advertisement in lower bands
+Subject: [PATCH 6.17 583/849] wifi: rtw89: obtain RX path from ppdu status IE00
 Date: Tue, 11 Nov 2025 09:42:33 +0900
-Message-ID: <20251111004533.559002471@linuxfoundation.org>
+Message-ID: <20251111004550.513133505@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-[ Upstream commit e53f8b12a21c2974b66fa8c706090182da06fff3 ]
+[ Upstream commit e156d2ab36d7e47aec36845705e4ecb1e4e89976 ]
 
-Currently, when adding the 6 GHz Band Capabilities element, the channel
-list of the wiphy is checked to determine if 6 GHz is supported for a given
-virtual interface. However, in a multi-radio wiphy (e.g., one that has
-both lower bands and 6 GHz combined), the wiphy advertises support for
-all bands. As a result, the 6 GHz Band Capabilities element is incorrectly
-included in mesh beacon and station's association request frames of
-interfaces operating in lower bands, without verifying whether the
-interface is actually operating in a 6 GHz channel.
+The header v2 of ppdu status is optional, If it is not enabled, the RX
+path must be obtained from IE00 or IE01. Append the IE00 part.
 
-Fix this by verifying if the interface operates on 6 GHz channel
-before adding the element. Note that this check cannot be placed
-directly in ieee80211_put_he_6ghz_cap() as the same function is used to
-add probe request elements while initiating scan in which case the
-interface may not be operating in any band's channel.
-
-Signed-off-by: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
-Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250606104436.326654-1-rameshkumar.sundaram@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250915065213.38659-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh.c | 3 +++
- net/mac80211/mlme.c | 3 ++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 4 ++++
+ drivers/net/wireless/realtek/rtw89/txrx.h | 1 +
+ 2 files changed, 5 insertions(+)
 
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index 50eb1d8cd43de..37e11320553e3 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -623,6 +623,9 @@ int mesh_add_he_6ghz_cap_ie(struct ieee80211_sub_if_data *sdata,
- 	if (!sband)
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 0f7a467671ca8..2cebea10cb99b 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -1844,6 +1844,10 @@ static void rtw89_core_parse_phy_status_ie00(struct rtw89_dev *rtwdev,
  
-+	if (sband->band != NL80211_BAND_6GHZ)
-+		return 0;
+ 	tmp_rpl = le32_get_bits(ie->w0, RTW89_PHY_STS_IE00_W0_RPL);
+ 	phy_ppdu->rpl_avg = tmp_rpl >> 1;
 +
- 	iftd = ieee80211_get_sband_iftype_data(sband,
- 					       NL80211_IFTYPE_MESH_POINT);
- 	/* The device doesn't support HE in mesh mode or at all */
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 5a9a84a0cc35d..fd2bc70afa0cd 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1569,7 +1569,8 @@ static size_t ieee80211_assoc_link_elems(struct ieee80211_sub_if_data *sdata,
- 		ieee80211_put_he_cap(skb, sdata, sband,
- 				     &assoc_data->link[link_id].conn);
- 		ADD_PRESENT_EXT_ELEM(WLAN_EID_EXT_HE_CAPABILITY);
--		ieee80211_put_he_6ghz_cap(skb, sdata, smps_mode);
-+		if (sband->band == NL80211_BAND_6GHZ)
-+			ieee80211_put_he_6ghz_cap(skb, sdata, smps_mode);
- 	}
++	if (!phy_ppdu->hdr_2_en)
++		phy_ppdu->rx_path_en =
++			le32_get_bits(ie->w3, RTW89_PHY_STS_IE00_W3_RX_PATH_EN);
+ }
  
- 	/*
+ static void rtw89_core_parse_phy_status_ie00_v2(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/txrx.h b/drivers/net/wireless/realtek/rtw89/txrx.h
+index ec01bfc363da3..307b22ae13b2a 100644
+--- a/drivers/net/wireless/realtek/rtw89/txrx.h
++++ b/drivers/net/wireless/realtek/rtw89/txrx.h
+@@ -572,6 +572,7 @@ struct rtw89_phy_sts_ie00 {
+ } __packed;
+ 
+ #define RTW89_PHY_STS_IE00_W0_RPL GENMASK(15, 7)
++#define RTW89_PHY_STS_IE00_W3_RX_PATH_EN GENMASK(31, 28)
+ 
+ struct rtw89_phy_sts_ie00_v2 {
+ 	__le32 w0;
 -- 
 2.51.0
 
