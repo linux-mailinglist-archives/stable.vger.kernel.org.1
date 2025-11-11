@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-193615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AA52C4A6C2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB30C4AE3E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9C3144F7227
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 598593B08E5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314A13446C4;
-	Tue, 11 Nov 2025 01:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4FC301707;
+	Tue, 11 Nov 2025 01:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nt8WoEwR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5dTn4NB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FF93446B3;
-	Tue, 11 Nov 2025 01:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA9C301477;
+	Tue, 11 Nov 2025 01:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823602; cv=none; b=GT/j4jofJAfxlkvQOk8nQ4Q/aRjPlZqPqLK9CDH1DmpeROLuIdUt1P9H/c3h2oASYe/csSTR8CzCgTkP9lI+3X+8FYAFe4W/BhS9HVbLjfscpSG4X5qBOI8GSY3vGXkG+WRonYOHSx2pDNBnzLOrK0P90UCD6vRSLCSLm02HtjQ=
+	t=1762824788; cv=none; b=DUZ2GB2i6LUwh3u2hSIbGhSrwFphcVDkdDMucGNkxrxY9YfOtgw7sJogPZUvkcq5p79hdrZQ4EVJaQScWwGkBW+kO+kA+XdqcjXDN6gDF93GFqPPT3abpOCenU4BQZKVgNh+whkW5VHYP+Va6na2RJjluO6bbeFe1YmrhN8wUT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823602; c=relaxed/simple;
-	bh=B79jNhXSjvQc2nPx9HkEtnmNwPwsXkfRXWnGK8hxOH8=;
+	s=arc-20240116; t=1762824788; c=relaxed/simple;
+	bh=igWHXWBpwkGEvtjFojt/761aEwfTCfqHb7Ajl3FXWPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pLsLqwL8GUBOOYzs4IMrJQ5bKzprlzINrJLLZgOPE0DjMGMkxWJDwz6/oi3a4uIOaTRKZR1kS2qD3YlACgrnu7MqLgQ0Drpc+DsYQSlzV+LW7YzoAa7qFCwJWcZSHoOk2uC+s4ZE07LBXDZE8UqCLN5onxOgaQ6fclZp9PiN40c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nt8WoEwR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FEBBC4CEFB;
-	Tue, 11 Nov 2025 01:13:21 +0000 (UTC)
+	 MIME-Version; b=G336z5iX6yOiV5A+hWlqKnCUz97uQloM/OVRAuaSy/C04a/Cu8x7wkImAJSyFDgcg12Q21PnGKIlr4HNqdp8UXQ7aemrZ/9NvRgJJe6IKCXiUUVi0rtWpAf8DoKEe+mcp1RxzZ2eZJORkhcgF1F0SGgdxf25rI04c6te1CALbuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5dTn4NB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2B6C19421;
+	Tue, 11 Nov 2025 01:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823601;
-	bh=B79jNhXSjvQc2nPx9HkEtnmNwPwsXkfRXWnGK8hxOH8=;
+	s=korg; t=1762824788;
+	bh=igWHXWBpwkGEvtjFojt/761aEwfTCfqHb7Ajl3FXWPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nt8WoEwR8a8Ke6hPK+2u9oL4MuUZCRlQcIKnm8BaG8GqVhQk/Cj/x3+rrMKTwB0Nq
-	 u54QYmuIUu6aXH14EXPMs+wZYWiMKmP1KolbFAw3jWC6N8dTfpjl+n0N5+5lBQj2tP
-	 kqUHYCrOT/QPi/yRpJx41kDdr2iGHHYAbKtzYgWs=
+	b=P5dTn4NBkDLUUKkoyDITWNph6nTCLHHkNth2BQQ6EZqh7h1QzTscOr1P8njNKzZvy
+	 W0XFis5vuB2H6yvGHZe7XUWfS+SpDP8EC/naivqu01qsPK1/THqLXkTtWRRGTCqFSk
+	 8nGRjZeeCfO+9ETH0C5JPagNSOVgkMMwEh9PwylA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Nai-Chen Cheng <bleach1827@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 284/565] drm/msm/dsi/phy: Toggle back buffer resync after preparing PLL
+Subject: [PATCH 6.17 570/849] selftests/Makefile: include $(INSTALL_DEP_TARGETS) in clean target to clean net/lib dependency
 Date: Tue, 11 Nov 2025 09:42:20 +0900
-Message-ID: <20251111004533.267748481@linuxfoundation.org>
+Message-ID: <20251111004550.192849215@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Nai-Chen Cheng <bleach1827@gmail.com>
 
-[ Upstream commit b63f008f395ca5f6bc89123db97440bdc19981c4 ]
+[ Upstream commit d3f7457da7b9527a06dbcbfaf666aa51ac2eeb53 ]
 
-According to Hardware Programming Guide for DSI PHY, the retime buffer
-resync should be done after PLL clock users (byte_clk and intf_byte_clk)
-are enabled.  Downstream also does it as part of configuring the PLL.
+The selftests 'make clean' does not clean the net/lib because it only
+processes $(TARGETS) and ignores $(INSTALL_DEP_TARGETS). This leaves
+compiled objects in net/lib after cleaning, requiring manual cleanup.
 
-Driver was only turning off the resync FIFO buffer, but never bringing it
-on again.
+Include $(INSTALL_DEP_TARGETS) in clean target to ensure net/lib
+dependency is properly cleaned.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/657823/
-Link: https://lore.kernel.org/r/20250610-b4-sm8750-display-v6-6-ee633e3ddbff@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Nai-Chen Cheng <bleach1827@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://patch.msgid.link/20250910-selftests-makefile-clean-v1-1-29e7f496cd87@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-index a2c87c84aa05b..ec5aa8cb37d9a 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-@@ -465,6 +465,10 @@ static int dsi_pll_7nm_vco_prepare(struct clk_hw *hw)
- 	if (pll_7nm->slave)
- 		dsi_pll_enable_global_clk(pll_7nm->slave);
+diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
+index 030da61dbff3a..a2d8e1093b005 100644
+--- a/tools/testing/selftests/Makefile
++++ b/tools/testing/selftests/Makefile
+@@ -314,7 +314,7 @@ gen_tar: install
+ 	@echo "Created ${TAR_PATH}"
  
-+	writel(0x1, pll_7nm->phy->base + REG_DSI_7nm_PHY_CMN_RBUF_CTRL);
-+	if (pll_7nm->slave)
-+		writel(0x1, pll_7nm->slave->phy->base + REG_DSI_7nm_PHY_CMN_RBUF_CTRL);
-+
- error:
- 	return rc;
- }
+ clean:
+-	@for TARGET in $(TARGETS); do \
++	@for TARGET in $(TARGETS) $(INSTALL_DEP_TARGETS); do \
+ 		BUILD_TARGET=$$BUILD/$$TARGET;	\
+ 		$(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET clean;\
+ 	done;
 -- 
 2.51.0
 
