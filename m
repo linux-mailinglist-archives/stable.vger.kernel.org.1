@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-193912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E35EBC4AB6F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:18 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FDDC4B0FD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:56:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 122484FA27E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7CB5A4FBECA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5F026E158;
-	Tue, 11 Nov 2025 01:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B30234A774;
+	Tue, 11 Nov 2025 01:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPcyMK60"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHy4NzGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACEC2F39B1;
-	Tue, 11 Nov 2025 01:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37EF26A1B6;
+	Tue, 11 Nov 2025 01:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824357; cv=none; b=eGw4MMmR64UNSyYH0wRfBsAdkDO2/I7L0qozaBR05rgUP4YxBJjOmHoe1ijkCA1NNh50m1XMpkrsxlvBc+WEWS0cDyE2DusyRWKv1a89lYl79a7LHzJKtsSiYkVIAYoqaP6pjU4S7YvomaVXnAN3VrpGdHkFJKBzsiIypC7qABU=
+	t=1762825331; cv=none; b=P1VmjzxwdArug+fDA65KrjBm74SWztt+QlaZD0Vhzdl4fnkXVrWOza3vcqo0SUk0HsEaBHjVbCnYti2PqUBW366/aXQ1OzL0pZun6ZP7kkypQ7qN1MVJmwLwq2S7GA9DGzY8l2aX/hXy4kwinGrxxiYaStJwa/59dBnhGnT8ZZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824357; c=relaxed/simple;
-	bh=IxT6OWKHIkG+4uXLawMHR9s/IF5nYQPOiZKe4oYFhRs=;
+	s=arc-20240116; t=1762825331; c=relaxed/simple;
+	bh=tAPVCmpqUqIOLqKLd6pCxzEXjgQh++LdWFdMMPta3gI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eN3Cr+D5jnyaRmekqb8u87Xps7e985Y2aF6HSkcbOHe9+0gtMdLXEPdLxEJTrhNDfiFzd7YB9zm1M5BvAu8OdjuZXEP/thb54miaxJa5he6Z/PUCIb+GeZcu7pPSXhIBQVERuQd8SqulBQLEFUpkUwhjJ6h3VOIE6xy7wRigkZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPcyMK60; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17818C116D0;
-	Tue, 11 Nov 2025 01:25:56 +0000 (UTC)
+	 MIME-Version; b=RokA4RbjMW4m8XOScm6qJ12ER0QBpR8FtBRAZLdWjPba6gO+cnSIkuUnNHkXptnghY+bLve9mJVs8P7niBG4tc8xEbKZtlFpM9RNpCcCLFQrgJZlMOkr40nHgW5wNeG6lVksB9rrGdO0i6/fWEvp6HMw/gZBk4mLvj6Z6ImyZsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHy4NzGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E766EC4CEFB;
+	Tue, 11 Nov 2025 01:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824357;
-	bh=IxT6OWKHIkG+4uXLawMHR9s/IF5nYQPOiZKe4oYFhRs=;
+	s=korg; t=1762825331;
+	bh=tAPVCmpqUqIOLqKLd6pCxzEXjgQh++LdWFdMMPta3gI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cPcyMK60e9obQb/hrcxrLh8afyrhiN4uyuxNMztkwv/i2NDpsxmmnGkCimPhCDvYM
-	 Mw8s0i2zscJof/JpzKPRvbNAGzO4+6OfHOqX+bUf9EnUXeD6rycvsru0QxhxSsrGW/
-	 5DvLVWRcgei6AnoP2Q3FP/Rv6s1delFZube538Yc=
+	b=LHy4NzGsSxvGFn8uLZ9cs+eMmqkZojr4S8j8FlrDMexeAMJWsA7Yab0n5A1ErUOAv
+	 hOgQUDVWJErzSXuFah4szlMrv4eho6tfX+7PxI+i5cWTBDUqDGQCOAOpLthpOeuma2
+	 AzuaAJrwkX3HvaAVSF7r2FTPGGf9rbExoD3Oas80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Julian Sun <sunjunchao@bytedance.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 428/565] ext4: increase IO priority of fastcommit
+Subject: [PATCH 6.17 714/849] cpufreq: tegra186: Initialize all cores to max frequencies
 Date: Tue, 11 Nov 2025 09:44:44 +0900
-Message-ID: <20251111004536.496501346@linuxfoundation.org>
+Message-ID: <20251111004553.694746981@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Sun <sunjunchao@bytedance.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit 46e75c56dfeafb6756773b71cabe187a6886859a ]
+[ Upstream commit ba6018929165fc914c665f071f8e8cdbac844a49 ]
 
-The following code paths may result in high latency or even task hangs:
-   1. fastcommit io is throttled by wbt.
-   2. jbd2_fc_wait_bufs() might wait for a long time while
-JBD2_FAST_COMMIT_ONGOING is set in journal->flags, and then
-jbd2_journal_commit_transaction() waits for the
-JBD2_FAST_COMMIT_ONGOING bit for a long time while holding the write
-lock of j_state_lock.
-   3. start_this_handle() waits for read lock of j_state_lock which
-results in high latency or task hang.
+During initialization, the EDVD_COREx_VOLT_FREQ registers for some cores
+are still at reset values and not reflecting the actual frequency. This
+causes get calls to fail. Set all cores to their respective max
+frequency during probe to initialize the registers to working values.
 
-Given the fact that ext4_fc_commit() already modifies the current
-process' IO priority to match that of the jbd2 thread, it should be
-reasonable to match jbd2's IO submission flags as well.
-
-Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20250827121812.1477634-1-sunjunchao@bytedance.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Suggested-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/fast_commit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/tegra186-cpufreq.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
-index b33664f6ce2ab..76a3c2e21b9db 100644
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -675,7 +675,7 @@ void ext4_fc_track_range(handle_t *handle, struct inode *inode, ext4_lblk_t star
+diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
+index 6c394b429b618..bd94beebc4cc2 100644
+--- a/drivers/cpufreq/tegra186-cpufreq.c
++++ b/drivers/cpufreq/tegra186-cpufreq.c
+@@ -138,13 +138,14 @@ static struct cpufreq_driver tegra186_cpufreq_driver = {
  
- static void ext4_fc_submit_bh(struct super_block *sb, bool is_tail)
+ static struct cpufreq_frequency_table *init_vhint_table(
+ 	struct platform_device *pdev, struct tegra_bpmp *bpmp,
+-	struct tegra186_cpufreq_cluster *cluster, unsigned int cluster_id)
++	struct tegra186_cpufreq_cluster *cluster, unsigned int cluster_id,
++	int *num_rates)
  {
--	blk_opf_t write_flags = REQ_SYNC;
-+	blk_opf_t write_flags = JBD2_JOURNAL_REQ_FLAGS;
- 	struct buffer_head *bh = EXT4_SB(sb)->s_fc_bh;
+ 	struct cpufreq_frequency_table *table;
+ 	struct mrq_cpu_vhint_request req;
+ 	struct tegra_bpmp_message msg;
+ 	struct cpu_vhint_data *data;
+-	int err, i, j, num_rates = 0;
++	int err, i, j;
+ 	dma_addr_t phys;
+ 	void *virt;
  
- 	/* Add REQ_FUA | REQ_PREFLUSH only its tail */
+@@ -174,6 +175,7 @@ static struct cpufreq_frequency_table *init_vhint_table(
+ 		goto free;
+ 	}
+ 
++	*num_rates = 0;
+ 	for (i = data->vfloor; i <= data->vceil; i++) {
+ 		u16 ndiv = data->ndiv[i];
+ 
+@@ -184,10 +186,10 @@ static struct cpufreq_frequency_table *init_vhint_table(
+ 		if (i > 0 && ndiv == data->ndiv[i - 1])
+ 			continue;
+ 
+-		num_rates++;
++		(*num_rates)++;
+ 	}
+ 
+-	table = devm_kcalloc(&pdev->dev, num_rates + 1, sizeof(*table),
++	table = devm_kcalloc(&pdev->dev, *num_rates + 1, sizeof(*table),
+ 			     GFP_KERNEL);
+ 	if (!table) {
+ 		table = ERR_PTR(-ENOMEM);
+@@ -229,7 +231,9 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
+ {
+ 	struct tegra186_cpufreq_data *data;
+ 	struct tegra_bpmp *bpmp;
+-	unsigned int i = 0, err;
++	unsigned int i = 0, err, edvd_offset;
++	int num_rates = 0;
++	u32 edvd_val, cpu;
+ 
+ 	data = devm_kzalloc(&pdev->dev,
+ 			    struct_size(data, clusters, TEGRA186_NUM_CLUSTERS),
+@@ -252,10 +256,21 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
+ 	for (i = 0; i < TEGRA186_NUM_CLUSTERS; i++) {
+ 		struct tegra186_cpufreq_cluster *cluster = &data->clusters[i];
+ 
+-		cluster->table = init_vhint_table(pdev, bpmp, cluster, i);
++		cluster->table = init_vhint_table(pdev, bpmp, cluster, i, &num_rates);
+ 		if (IS_ERR(cluster->table)) {
+ 			err = PTR_ERR(cluster->table);
+ 			goto put_bpmp;
++		} else if (!num_rates) {
++			err = -EINVAL;
++			goto put_bpmp;
++		}
++
++		for (cpu = 0; cpu < ARRAY_SIZE(tegra186_cpus); cpu++) {
++			if (data->cpus[cpu].bpmp_cluster_id == i) {
++				edvd_val = cluster->table[num_rates - 1].driver_data;
++				edvd_offset = data->cpus[cpu].edvd_offset;
++				writel(edvd_val, data->regs + edvd_offset);
++			}
+ 		}
+ 	}
+ 
 -- 
 2.51.0
 
