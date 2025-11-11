@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-193728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AA5C4ABA1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:51 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58669C4A845
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70C0F3B0311
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:27:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E45664F3679
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F299C34C121;
-	Tue, 11 Nov 2025 01:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACDF26E146;
+	Tue, 11 Nov 2025 01:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLw/VINR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jz0FLj+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF2830748A;
-	Tue, 11 Nov 2025 01:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8819A306B39;
+	Tue, 11 Nov 2025 01:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823868; cv=none; b=p/UlBAzWoKk6P7urBPPsQXahLr/g8VUHLa2Iw58F4kfgj9WGSP/GJtIlc+P9/cl0pUHNEQe56KJKtejn8xUwu2WfLDPa7KthT6rZ/Qd5PV0hqwiOtsysUN8spP+XCCg0wmtdTuBY9Yu8WRCazbZc/buI/Y/cLFPDd7PA9qxEdOY=
+	t=1762823873; cv=none; b=PMHFMzCwrqUyMlYEwEL+1AQ0sbQOGRffbFyM1nSHVE9QmyUj+FmaZQ3DJuc44DK0VpIbF3cK3x0DHKMv0obO3ziCIaJsqr0GR4esMzC+XUEAs+gWOn0Cv5/na0Uqit9ppqF9UOyJHclGq9wLab0qNinewOiafrxxw9F7vfpmqKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823868; c=relaxed/simple;
-	bh=Wlg3utuCbsLKxTQHPm8ZgQbylCpfmD7kRcrbFNF9OUk=;
+	s=arc-20240116; t=1762823873; c=relaxed/simple;
+	bh=0puMK1jm214Pr9X9H9ZaB/thqip84pezsEQLdIVI0xE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EGr8AL6GPLNikerZZLyTRiZ13xfGQDA0vMZfl/6ec1ZrGRBZOhJCOypah4Np1P1hgNc6pHCIHhB4wKW7srpuQoa5slZWwuerYkntyJ0VaCTzNJRYpRqII43Pe43bmYvWgykRYqHqMISYWmNe4Z2Q/cD4gv5rzMCv+JrYuIFyMt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLw/VINR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3929FC4CEF5;
-	Tue, 11 Nov 2025 01:17:48 +0000 (UTC)
+	 MIME-Version; b=PrmygwUdW6kASz2GDXEvgB0DKf977c+2vWCE99J9kqBgyJx5P7dODaPxYN97iBLb4eLdG24IZNOXK+r8c9h0bkoB1xy47zdaLCq9Qi3RBq+d1vS5zTx9ErOaTQqdPkQOi91/7TxL2kQ8oMTDgxrIASN6DBOGlAV4esRAK8EymZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jz0FLj+x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06917C113D0;
+	Tue, 11 Nov 2025 01:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823868;
-	bh=Wlg3utuCbsLKxTQHPm8ZgQbylCpfmD7kRcrbFNF9OUk=;
+	s=korg; t=1762823873;
+	bh=0puMK1jm214Pr9X9H9ZaB/thqip84pezsEQLdIVI0xE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tLw/VINRQv7x03h3gWmDS2mbeecXc3dkU1p3LaaZ78HTE7TPYXuBzeThAOOe6pC1e
-	 uEK4QQZ2tCBebOPCYTRlCoMTBAukEbArQinBdIurlu6DTZNmKkGfB7iMmyQHyE3EIg
-	 EBDZohpFXds7Nu6KjpPoJidxmV9JsVspRlxd7Rpk=
+	b=Jz0FLj+xbNCDseYy1pFrGTDweGmmOfcHrpwORE8QG1IhyNA5KzOa21vpBgjzRYX2d
+	 vhvFap89mMtQv9l8EFvVVXpE/3pyb2VwJc3XInQW9I29mhYxnMTqflogCab8iut46g
+	 O8/+YrmwY0yaKIuK7k9NlpwNP2imGGyEPWeszik8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chenmiao <chenmiao.ku@gmail.com>,
-	Stafford Horne <shorne@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 340/565] openrisc: Add R_OR1K_32_PCREL relocation type module support
-Date: Tue, 11 Nov 2025 09:43:16 +0900
-Message-ID: <20251111004534.528068607@linuxfoundation.org>
+Subject: [PATCH 6.12 341/565] netfilter: nf_reject: dont reply to icmp error messages
+Date: Tue, 11 Nov 2025 09:43:17 +0900
+Message-ID: <20251111004534.549817347@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,38 +65,127 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: chenmiao <chenmiao.ku@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 9d0cb6d00be891586261a35da7f8c3c956825c39 ]
+[ Upstream commit db99b2f2b3e2cd8227ac9990ca4a8a31a1e95e56 ]
 
-To ensure the proper functioning of the jump_label test module, this patch
-adds support for the R_OR1K_32_PCREL relocation type for any modules. The
-implementation calculates the PC-relative offset by subtracting the
-instruction location from the target value and stores the result at the
-specified location.
+tcp reject code won't reply to a tcp reset.
 
-Signed-off-by: chenmiao <chenmiao.ku@gmail.com>
-Signed-off-by: Stafford Horne <shorne@gmail.com>
+But the icmp reject 'netdev' family versions will reply to icmp
+dst-unreach errors, unlike icmp_send() and icmp6_send() which are used
+by the inet family implementation (and internally by the REJECT target).
+
+Check for the icmp(6) type and do not respond if its an unreachable error.
+
+Without this, something like 'ip protocol icmp reject', when used
+in a netdev chain attached to 'lo', cause a packet loop.
+
+Same for two hosts that both use such a rule: each error packet
+will be replied to.
+
+Such situation persist until the (bogus) rule is amended to ratelimit or
+checks the icmp type before the reject statement.
+
+As the inet versions don't do this make the netdev ones follow along.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/openrisc/kernel/module.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/ipv4/netfilter/nf_reject_ipv4.c | 25 ++++++++++++++++++++++++
+ net/ipv6/netfilter/nf_reject_ipv6.c | 30 +++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+)
 
-diff --git a/arch/openrisc/kernel/module.c b/arch/openrisc/kernel/module.c
-index c9ff4c4a0b29b..4ac4fbaa827c1 100644
---- a/arch/openrisc/kernel/module.c
-+++ b/arch/openrisc/kernel/module.c
-@@ -55,6 +55,10 @@ int apply_relocate_add(Elf32_Shdr *sechdrs,
- 			value |= *location & 0xfc000000;
- 			*location = value;
- 			break;
-+		case R_OR1K_32_PCREL:
-+			value -= (uint32_t)location;
-+			*location = value;
-+			break;
- 		case R_OR1K_AHI16:
- 			/* Adjust the operand to match with a signed LO16.  */
- 			value += 0x8000;
+diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+index 0d3cb2ba6fc84..a7a3439fe7800 100644
+--- a/net/ipv4/netfilter/nf_reject_ipv4.c
++++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+@@ -71,6 +71,27 @@ struct sk_buff *nf_reject_skb_v4_tcp_reset(struct net *net,
+ }
+ EXPORT_SYMBOL_GPL(nf_reject_skb_v4_tcp_reset);
+ 
++static bool nf_skb_is_icmp_unreach(const struct sk_buff *skb)
++{
++	const struct iphdr *iph = ip_hdr(skb);
++	u8 *tp, _type;
++	int thoff;
++
++	if (iph->protocol != IPPROTO_ICMP)
++		return false;
++
++	thoff = skb_network_offset(skb) + sizeof(*iph);
++
++	tp = skb_header_pointer(skb,
++				thoff + offsetof(struct icmphdr, type),
++				sizeof(_type), &_type);
++
++	if (!tp)
++		return false;
++
++	return *tp == ICMP_DEST_UNREACH;
++}
++
+ struct sk_buff *nf_reject_skb_v4_unreach(struct net *net,
+ 					 struct sk_buff *oldskb,
+ 					 const struct net_device *dev,
+@@ -91,6 +112,10 @@ struct sk_buff *nf_reject_skb_v4_unreach(struct net *net,
+ 	if (ip_hdr(oldskb)->frag_off & htons(IP_OFFSET))
+ 		return NULL;
+ 
++	/* don't reply to ICMP_DEST_UNREACH with ICMP_DEST_UNREACH. */
++	if (nf_skb_is_icmp_unreach(oldskb))
++		return NULL;
++
+ 	/* RFC says return as much as we can without exceeding 576 bytes. */
+ 	len = min_t(unsigned int, 536, oldskb->len);
+ 
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index c3d64c4b69d7d..84afa0cbc9021 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -91,6 +91,32 @@ struct sk_buff *nf_reject_skb_v6_tcp_reset(struct net *net,
+ }
+ EXPORT_SYMBOL_GPL(nf_reject_skb_v6_tcp_reset);
+ 
++static bool nf_skb_is_icmp6_unreach(const struct sk_buff *skb)
++{
++	const struct ipv6hdr *ip6h = ipv6_hdr(skb);
++	u8 proto = ip6h->nexthdr;
++	u8 _type, *tp;
++	int thoff;
++	__be16 fo;
++
++	thoff = ipv6_skip_exthdr(skb, ((u8 *)(ip6h + 1) - skb->data), &proto, &fo);
++
++	if (thoff < 0 || thoff >= skb->len || fo != 0)
++		return false;
++
++	if (proto != IPPROTO_ICMPV6)
++		return false;
++
++	tp = skb_header_pointer(skb,
++				thoff + offsetof(struct icmp6hdr, icmp6_type),
++				sizeof(_type), &_type);
++
++	if (!tp)
++		return false;
++
++	return *tp == ICMPV6_DEST_UNREACH;
++}
++
+ struct sk_buff *nf_reject_skb_v6_unreach(struct net *net,
+ 					 struct sk_buff *oldskb,
+ 					 const struct net_device *dev,
+@@ -104,6 +130,10 @@ struct sk_buff *nf_reject_skb_v6_unreach(struct net *net,
+ 	if (!nf_reject_ip6hdr_validate(oldskb))
+ 		return NULL;
+ 
++	/* Don't reply to ICMPV6_DEST_UNREACH with ICMPV6_DEST_UNREACH */
++	if (nf_skb_is_icmp6_unreach(oldskb))
++		return NULL;
++
+ 	/* Include "As much of invoking packet as possible without the ICMPv6
+ 	 * packet exceeding the minimum IPv6 MTU" in the ICMP payload.
+ 	 */
 -- 
 2.51.0
 
