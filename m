@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FC8C4A070
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD2FC4A082
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14D613AC704
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B49F188DC75
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76CC244693;
-	Tue, 11 Nov 2025 00:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6FB246333;
+	Tue, 11 Nov 2025 00:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwRyfMrG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWfWbwqe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C20F4C97;
-	Tue, 11 Nov 2025 00:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BF11D6DB5;
+	Tue, 11 Nov 2025 00:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822512; cv=none; b=q+54lS0gm8vmuP6I1vqHqcmo4a9jNaPwCTRHbZumDI2ypvJwpdLxCI9O3bQe8Fpb95DmdNGtNfAGuj4CaiQz3uwshj1UV6eBJO8X8nUQ5SbUavuaRSS24+stGc0dnSSZXCQjs/ILGYpHk/Zrp0fI6EFiB2GztRc/LP9wCJzX2tE=
+	t=1762822520; cv=none; b=KTK/72kFIZ/VXI7CfZTAnqqGsv91s7O2knEdsmb72V536ZVXjLHFt6TWZJOycLeq/+gT04JW3atJWC/ld9EklKx9wBBzerQlDXI+e/ib4XdfhD8AqYIxwlFYMaaDVSd17uVM/cAON1u77ynIB2ZSkizbLUsUYhT2UXhqZ341GqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822512; c=relaxed/simple;
-	bh=GuFXKks4lRBShWjs6jVOjzn3vVDBWEATjCdyrrQyXJE=;
+	s=arc-20240116; t=1762822520; c=relaxed/simple;
+	bh=fDwfr4LCXz/Uq2TZ01ZihnsNCp/1/qzjcxcRwxsPRvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0bSwKt7MtSTDN2DCYF3f8KlQ77Bz6uT7I1uQW4wqROu70vBOEbqPHkH0uC7b3yJlPcn2kskMjXXjjPz3qd3hzWfePO+ZMUQGh8LvmPle2Y9lJaAyBsD8qHmlu30z4cRWpZnfOG4x0YLxhzeP9+rL9xek+0kwuAHNyQ4kVtXFKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwRyfMrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C23C113D0;
-	Tue, 11 Nov 2025 00:55:11 +0000 (UTC)
+	 MIME-Version; b=W6gyjHVQsmvk6MSXNXWyhfXfkMLcsaLssQLVAynxfr3y16gSe2j29kW5HhlWwaAznzS7bavMf+BHiWRCLVfEZCNZv0TuWKwaluY3BQJPJFEWMLXv/pz0aUsEJuA09ToNM6pWy3RfZE3FkBYVOp+0rCibyvVaRkNmBT9qf5Tyllw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWfWbwqe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D609C4CEF5;
+	Tue, 11 Nov 2025 00:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822512;
-	bh=GuFXKks4lRBShWjs6jVOjzn3vVDBWEATjCdyrrQyXJE=;
+	s=korg; t=1762822520;
+	bh=fDwfr4LCXz/Uq2TZ01ZihnsNCp/1/qzjcxcRwxsPRvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XwRyfMrGplmBqtRr+J8m8a4ng7MnDL86ytdBe/jnaNUi6VSRtWxjIa60eQH2cWjZ9
-	 R1zA83ugvrc7MTfx2PXRLp/qIn/AouAeDlCuBs28ePst1uQuHfst1d+JrPDWcEVNAW
-	 t/e2jQZ4lbpGoga4mVuuzWegQACNLP8QHxOdYgF4=
+	b=rWfWbwqehNikNwplxLOSGJPSL1oBszLKjck+R4N1XuW1EYcPbQXGp+1YjyZj4qbmG
+	 YxaL/HuzUo5tmVGkhPi7gLKG9ImVLnpASZ+jmUXIlrn9lDr9HsJdWqwKd1ujMtSOu0
+	 649lH1k7HpQZCUY++zbgkFqqQPdRuHxi0OSzJmcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Paresh Bhagat <p-bhagat@ti.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 128/849] memstick: Add timeout to prevent indefinite waiting
-Date: Tue, 11 Nov 2025 09:34:58 +0900
-Message-ID: <20251111004539.489390894@linuxfoundation.org>
+Subject: [PATCH 6.17 129/849] cpufreq: ti: Add support for AM62D2
+Date: Tue, 11 Nov 2025 09:34:59 +0900
+Message-ID: <20251111004539.513153421@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,48 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Paresh Bhagat <p-bhagat@ti.com>
 
-[ Upstream commit b65e630a55a490a0269ab1e4a282af975848064c ]
+[ Upstream commit b5af45302ebc141662b2b60c713c9202e88c943c ]
 
-Add timeout handling to wait_for_completion calls in memstick_set_rw_addr()
-and memstick_alloc_card() to prevent indefinite blocking in case of
-hardware or communication failures.
+Add support for TI K3 AM62D2 SoC to read speed and revision values
+from hardware and pass to OPP layer. AM62D shares the same configuations
+as AM62A so use existing am62a7_soc_data.
 
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Link: https://lore.kernel.org/r/20250804024825.1565078-1-lijiayi@kylinos.cn
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Paresh Bhagat <p-bhagat@ti.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memstick/core/memstick.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/cpufreq/ti-cpufreq.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/memstick/core/memstick.c b/drivers/memstick/core/memstick.c
-index e4275f8ee5db8..acafc910bbacc 100644
---- a/drivers/memstick/core/memstick.c
-+++ b/drivers/memstick/core/memstick.c
-@@ -370,7 +370,9 @@ int memstick_set_rw_addr(struct memstick_dev *card)
- {
- 	card->next_request = h_memstick_set_rw_addr;
- 	memstick_new_req(card->host);
--	wait_for_completion(&card->mrq_complete);
-+	if (!wait_for_completion_timeout(&card->mrq_complete,
-+			msecs_to_jiffies(500)))
-+		card->current_mrq.error = -ETIMEDOUT;
+diff --git a/drivers/cpufreq/ti-cpufreq.c b/drivers/cpufreq/ti-cpufreq.c
+index 5a5147277cd0a..9a912d3093153 100644
+--- a/drivers/cpufreq/ti-cpufreq.c
++++ b/drivers/cpufreq/ti-cpufreq.c
+@@ -310,6 +310,7 @@ static const struct soc_device_attribute k3_cpufreq_soc[] = {
+ 	{ .family = "AM62X", .revision = "SR1.0" },
+ 	{ .family = "AM62AX", .revision = "SR1.0" },
+ 	{ .family = "AM62PX", .revision = "SR1.0" },
++	{ .family = "AM62DX", .revision = "SR1.0" },
+ 	{ /* sentinel */ }
+ };
  
- 	return card->current_mrq.error;
- }
-@@ -404,7 +406,9 @@ static struct memstick_dev *memstick_alloc_card(struct memstick_host *host)
- 
- 		card->next_request = h_memstick_read_dev_id;
- 		memstick_new_req(host);
--		wait_for_completion(&card->mrq_complete);
-+		if (!wait_for_completion_timeout(&card->mrq_complete,
-+				msecs_to_jiffies(500)))
-+			card->current_mrq.error = -ETIMEDOUT;
- 
- 		if (card->current_mrq.error)
- 			goto err_out;
+@@ -457,6 +458,7 @@ static const struct of_device_id ti_cpufreq_of_match[]  __maybe_unused = {
+ 	{ .compatible = "ti,omap36xx", .data = &omap36xx_soc_data, },
+ 	{ .compatible = "ti,am625", .data = &am625_soc_data, },
+ 	{ .compatible = "ti,am62a7", .data = &am62a7_soc_data, },
++	{ .compatible = "ti,am62d2", .data = &am62a7_soc_data, },
+ 	{ .compatible = "ti,am62p5", .data = &am62p5_soc_data, },
+ 	/* legacy */
+ 	{ .compatible = "ti,omap3430", .data = &omap34xx_soc_data, },
 -- 
 2.51.0
 
