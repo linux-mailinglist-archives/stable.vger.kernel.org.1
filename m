@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2CAC4A229
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:02:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6B3C4A1FF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C41A53AD7FD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B405C188E5AE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C7C2505AA;
-	Tue, 11 Nov 2025 01:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD467262A;
+	Tue, 11 Nov 2025 01:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cq848ukv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjUzkENn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8E3246768;
-	Tue, 11 Nov 2025 01:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D471C28E;
+	Tue, 11 Nov 2025 01:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822887; cv=none; b=LEp8xZ4iTJk6WaRa5WDCrN1g2exIfJmLTHpD8aY4uQFWV9JJpvVLIsd/A512pHv6jQkYGoOf63dyKw7rrig3ygOkRKOnDDjZN7N9Qk9rADMFBlPyT/rS+6y/a/s+szuYW6ZM7cddTcMcdGE1G2QtyPtwW1pXL4RCgmRy9q7gYLo=
+	t=1762822896; cv=none; b=LRgU3ierrbAH9IJRSG0VQhh29KXeYHjWQL2Cx5tdtKKrLh+V0yosccLdvs1c2OwA7x756gTC1swgkKa3xelsb2p+r3gtCvOpPUsWtCoXY5meffbcOCtMojyzXo9xNewWDlH83PE1q7h0cm5kbbspxClHX3s+PFx3LMH+bgVq3dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822887; c=relaxed/simple;
-	bh=oCtul7SH05HdejLwk8GoKzWSWE4nl73V8hS//Gh9kFM=;
+	s=arc-20240116; t=1762822896; c=relaxed/simple;
+	bh=V413ZodMG1xKKZqpiIup39OLaKSfA/pNH5xrD3ieHx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5yQfcl6/A+D8YHxstruVf7iM6IVw9f1hR4xhua2NnG0c+JuQg5az+oG1MJrNNnvEpG75iFO53vqWuuvyzuZZFsgbohxKOAjAoTmi8qWUIO4tJm3/oVFpkVJm3I8OJ2LAebPqmbKhaftfY1AnMvzeu66E5wF9DBYNDF7vad2moU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cq848ukv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AABC16AAE;
-	Tue, 11 Nov 2025 01:01:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MrIc6ehpehZNCg6VSqgnsuEvstB0NnrfQr/HAUxtIS75AISVwJDltjcSWq0nmNbtvNmi866gh3AIgX3OJjkd1Mx0MQFF8zoK08IZx7HRNF2nb1HUYCQ4CRQAf4KeWF0w8+ubei+KGCgCTDfRnKkGUqJsJ/JTpg8qc59Uju1MEbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjUzkENn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24790C4CEF5;
+	Tue, 11 Nov 2025 01:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822887;
-	bh=oCtul7SH05HdejLwk8GoKzWSWE4nl73V8hS//Gh9kFM=;
+	s=korg; t=1762822896;
+	bh=V413ZodMG1xKKZqpiIup39OLaKSfA/pNH5xrD3ieHx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cq848ukvbzvSZv+FoZt6OKR8EKcdUaOl1Rros8q9g/Ivz/kXsBFpxBz2xivUIyp+E
-	 JZmISgeksdpH+czIZequpe/LP27PsUACkhqWaKNJ2/RHN3lFVRbPJNSXml7Avcv/hk
-	 iyeNT1LlOv9ShtvUztrJi/rEkXImhDF8x0JH26ew=
+	b=NjUzkENnX+UqtQowwHm3f/9kA5npl2nMLPwYDLRwJZomGNwMrich9xe6YFVb7SXPc
+	 mCbWFiAFMXnaLDrQmnh8PxarA6hWbXlzt08VwyPqKkHsTdbWxxeeLA/tdTbQW1Pjzv
+	 k+IruLKDlu91VSxsR+4pvXD7KLfa3ywQjYhVpb9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
+	=?UTF-8?q?Jonas=20Schw=C3=B6bel?= <jonasschwoebel@yahoo.de>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 127/565] arm64: zynqmp: Revert usb node drive strength and slew rate for zcu106
-Date: Tue, 11 Nov 2025 09:39:43 +0900
-Message-ID: <20251111004529.809462168@linuxfoundation.org>
+Subject: [PATCH 6.12 129/565] ARM: tegra: p880: set correct touchscreen clipping
+Date: Tue, 11 Nov 2025 09:39:45 +0900
+Message-ID: <20251111004529.852597951@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -60,48 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+From: Jonas Schwöbel <jonasschwoebel@yahoo.de>
 
-[ Upstream commit 767ecf9da7b31e5c0c22c273001cb2784705fe8c ]
+[ Upstream commit b49a73a08100ab139e07cfa7ca36e9b15787d0ab ]
 
-On a few zcu106 boards USB devices (Dell MS116 USB Optical Mouse, Dell USB
-Entry Keyboard) are not enumerated on linux boot due to commit
-'b8745e7eb488 ("arm64: zynqmp: Fix usb node drive strength and slew
-rate")'.
+Existing touchscreen clipping is too small and causes problems with
+touchscreen accuracy.
 
-To fix it as a workaround revert to working version and then investigate
-at board level why drive strength from 12mA to 4mA and slew from fast to
-slow is not working.
-
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/r/85a70cb014ec1f07972fccb60b875596eeaa6b5c.1756799774.git.michal.simek@amd.com
+Signed-off-by: Jonas Schwöbel <jonasschwoebel@yahoo.de>
+Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/xilinx/zynqmp-zcu106-revA.dts | 4 ++--
+ arch/arm/boot/dts/nvidia/tegra30-lg-p880.dts | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-zcu106-revA.dts b/arch/arm64/boot/dts/xilinx/zynqmp-zcu106-revA.dts
-index 7beedd730f940..9dd63cc384e6e 100644
---- a/arch/arm64/boot/dts/xilinx/zynqmp-zcu106-revA.dts
-+++ b/arch/arm64/boot/dts/xilinx/zynqmp-zcu106-revA.dts
-@@ -808,8 +808,8 @@
- 			pins = "MIO54", "MIO56", "MIO57", "MIO58", "MIO59",
- 			       "MIO60", "MIO61", "MIO62", "MIO63";
- 			bias-disable;
--			drive-strength = <4>;
--			slew-rate = <SLEW_RATE_SLOW>;
-+			drive-strength = <12>;
-+			slew-rate = <SLEW_RATE_FAST>;
- 		};
- 	};
+diff --git a/arch/arm/boot/dts/nvidia/tegra30-lg-p880.dts b/arch/arm/boot/dts/nvidia/tegra30-lg-p880.dts
+index 2f7754fd42a16..c6ef0a20c19f3 100644
+--- a/arch/arm/boot/dts/nvidia/tegra30-lg-p880.dts
++++ b/arch/arm/boot/dts/nvidia/tegra30-lg-p880.dts
+@@ -108,8 +108,8 @@
+ 	i2c@7000c400 {
+ 		touchscreen@20 {
+ 			rmi4-f11@11 {
+-				syna,clip-x-high = <1110>;
+-				syna,clip-y-high = <1973>;
++				syna,clip-x-high = <1440>;
++				syna,clip-y-high = <2560>;
  
+ 				touchscreen-inverted-y;
+ 			};
 -- 
 2.51.0
 
