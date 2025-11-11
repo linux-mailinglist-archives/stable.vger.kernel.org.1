@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E220BC4A89A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF89C4A821
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC63F3B4C86
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B76A93B49A0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6266A346A12;
-	Tue, 11 Nov 2025 01:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCCD2DD5E2;
+	Tue, 11 Nov 2025 01:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rUgcMn0j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hT+upXi2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBD72DC32A;
-	Tue, 11 Nov 2025 01:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDB12DC32A;
+	Tue, 11 Nov 2025 01:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823688; cv=none; b=EpEPz2V1GOHvrlQZZLPP29i8JSo3m0n/esIbHkOVWn3yq8oMLtda5UIeEgMsYSyFUN5LKY/mAbpDzOilBO64AOLwd7VAzsDv9wYmx4XuEmePfNfhNr+5no8lyZ8jpVRPXcecVkB4DFpzHzmY7utpf2iYpHeHWaZGNk0/ZkEkSWs=
+	t=1762823692; cv=none; b=sgGv4UKx9mqHeaUH8bWe2Tx7bqO4Zu6evYXI80Pfaj1qngvs275VyjEMW+RoSLGnUREn6vrRfrzHNX6CnOouWvBrS9PzhJl9VpgztpeMOrF/qRq0lTIbVAKzUQjpIqSxd6khGP9DnuLWzfAmyN6Z8xQ7JUFfuUsBdf22YBiSsN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823688; c=relaxed/simple;
-	bh=HJeFXieQsIzpwqtkCJD+etqEF/jslBZksAV5D2R6eoQ=;
+	s=arc-20240116; t=1762823692; c=relaxed/simple;
+	bh=SQhxxNuL6Gho6dBEM47zCY0jxXOaX0N5xbrR/xqrPgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UE2OdAKHGYiLh4+ppmzUH/+Gs5OZqolPd9T3OqRYMpKRot8LSMHKLI/S0n+ZZyq2j0uf2m0+QgiljT6k/gLpx6HKrOnNZ3h9jVwQv0vF5GVfuRaGA2pkOfrA+BjfM7Fq+CrPZ1vZFW62CagFzXeVn8gonUxnB2b1OI37y4VGvRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rUgcMn0j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A856CC116B1;
-	Tue, 11 Nov 2025 01:14:47 +0000 (UTC)
+	 MIME-Version; b=ZDUh6L+HzSaSbybkCeNdna4Hsuqk/nNsdlu77Oa9p7B1xpemHS23Kf0E9E9O+nI4btUe75f4wZRdov16+D1TC+UdH+k7Dn6tKhXjGqciijT/iZGoTmMJYMFWTazGXE3aBlQUE6DEe4A8+FYLke4POrcLCdaCZqARu2hk54QtK8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hT+upXi2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6772BC4CEFB;
+	Tue, 11 Nov 2025 01:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823688;
-	bh=HJeFXieQsIzpwqtkCJD+etqEF/jslBZksAV5D2R6eoQ=;
+	s=korg; t=1762823692;
+	bh=SQhxxNuL6Gho6dBEM47zCY0jxXOaX0N5xbrR/xqrPgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rUgcMn0jpb7TzVmI3r6GvnST/r7f+OIT6gjW/oMOL/UBBH2wpMSsAVtzyy42Z8QBc
-	 rH+BTR9VnKN9/DUf1jliFDU/KxPp2wF08KXf0pH58hr1IEqwgkUqmrPcV6/SEKhMy/
-	 YgJE6ihf4gKzVzepVg7f/vjGtYH983FR/FGBGFu8=
+	b=hT+upXi2I+PUMqxBBzdFfvjlSvp05Tt9p+p+/glmaRuQt8lYJS0taUOVs7gFQBzmj
+	 Sknxu5HtsjTmNNDVYxzXW6jLcBLDvk2B4Nfy1fx8OHwgHkwU1dtRE6yoTJxRnkYi9X
+	 g7K8pp1De6tSL56a46m/aIQP9pPKSVsx2bs6R+tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Andrew Davis <afd@ti.com>,
+	Hari Nagalla <hnagalla@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 350/849] media: ipu6: isys: Set embedded data type correctly for metadata formats
-Date: Tue, 11 Nov 2025 09:38:40 +0900
-Message-ID: <20251111004544.881799115@linuxfoundation.org>
+Subject: [PATCH 6.17 351/849] rpmsg: char: Export alias for RPMSG ID rpmsg-raw from table
+Date: Tue, 11 Nov 2025 09:38:41 +0900
+Message-ID: <20251111004544.905683877@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,37 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit f5a2826cd50c6fd1af803812d1d910a64ae8e0a1 ]
+[ Upstream commit 6e29c30d8ddea6109ea7e0b9f17e7841df0794ea ]
 
-The IPU6 ISYS driver supported metadata formats but was missing correct
-embedded data type in the receiver configuration. Add it now.
+Module aliases are used by userspace to identify the correct module to
+load for a detected hardware. The currently supported RPMSG device IDs for
+this module include "rpmsg-raw", but the module alias is "rpmsg_chrdev".
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Use the helper macro MODULE_DEVICE_TABLE(rpmsg) to export the correct
+supported IDs. And while here, to keep backwards compatibility we also add
+the other ID "rpmsg_chrdev" so that it is also still exported as an alias.
+
+This has the side benefit of adding support for some legacy firmware
+which still uses the original "rpmsg_chrdev" ID. This was the ID used for
+this driver before it was upstreamed (as reflected by the module alias).
+
+Signed-off-by: Andrew Davis <afd@ti.com>
+Acked-by: Hari Nagalla <hnagalla@ti.com>
+Tested-by: Hari Nagalla <hnagalla@ti.com>
+Link: https://lore.kernel.org/r/20250619205722.133827-1-afd@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu6/ipu6-isys-subdev.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/rpmsg/rpmsg_char.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-subdev.c b/drivers/media/pci/intel/ipu6/ipu6-isys-subdev.c
-index 0a06de5c739c7..463a0adf9e131 100644
---- a/drivers/media/pci/intel/ipu6/ipu6-isys-subdev.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6-isys-subdev.c
-@@ -81,6 +81,12 @@ unsigned int ipu6_isys_mbus_code_to_mipi(u32 code)
- 	case MEDIA_BUS_FMT_SGRBG8_1X8:
- 	case MEDIA_BUS_FMT_SRGGB8_1X8:
- 		return MIPI_CSI2_DT_RAW8;
-+	case MEDIA_BUS_FMT_META_8:
-+	case MEDIA_BUS_FMT_META_10:
-+	case MEDIA_BUS_FMT_META_12:
-+	case MEDIA_BUS_FMT_META_16:
-+	case MEDIA_BUS_FMT_META_24:
-+		return MIPI_CSI2_DT_EMBEDDED_8B;
- 	default:
- 		/* return unavailable MIPI data type - 0x3f */
- 		WARN_ON(1);
+diff --git a/drivers/rpmsg/rpmsg_char.c b/drivers/rpmsg/rpmsg_char.c
+index eec7642d26863..96fcdd2d7093c 100644
+--- a/drivers/rpmsg/rpmsg_char.c
++++ b/drivers/rpmsg/rpmsg_char.c
+@@ -522,8 +522,10 @@ static void rpmsg_chrdev_remove(struct rpmsg_device *rpdev)
+ 
+ static struct rpmsg_device_id rpmsg_chrdev_id_table[] = {
+ 	{ .name	= "rpmsg-raw" },
++	{ .name	= "rpmsg_chrdev" },
+ 	{ },
+ };
++MODULE_DEVICE_TABLE(rpmsg, rpmsg_chrdev_id_table);
+ 
+ static struct rpmsg_driver rpmsg_chrdev_driver = {
+ 	.probe = rpmsg_chrdev_probe,
+@@ -565,6 +567,5 @@ static void rpmsg_chrdev_exit(void)
+ }
+ module_exit(rpmsg_chrdev_exit);
+ 
+-MODULE_ALIAS("rpmsg:rpmsg_chrdev");
+ MODULE_DESCRIPTION("RPMSG device interface");
+ MODULE_LICENSE("GPL v2");
 -- 
 2.51.0
 
