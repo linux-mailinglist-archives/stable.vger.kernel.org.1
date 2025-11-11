@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-193685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B3FC4A776
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CDAC4AEE6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B07A94F4E29
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:24:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DB5E64F168D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA3434889A;
-	Tue, 11 Nov 2025 01:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A96427B4E8;
+	Tue, 11 Nov 2025 01:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSqMgUxC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XaRx1wO7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C9E348879;
-	Tue, 11 Nov 2025 01:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453ABDF76;
+	Tue, 11 Nov 2025 01:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823769; cv=none; b=rwNTxQbAyVluvISmFNStDpWYRzEdILe8uFKKjM6iSzMuaYEOR35EtyJABf3Y2DES2nhMlKr7v2ykMvWZadfJaAWqkq+tUupv0OyHLcYRFDRb6FTHUReLeNwCWR550WyGHZ0QiVlCRy8XcCaebHSE4/4S0tQXjU5PpjvVaIci4P0=
+	t=1762824938; cv=none; b=X9T/HPB1+bitce60j4tHr6eaWStnKAJI6J7hGQUOj/6kzbktWPqE6oMxkTCrgPQ6v3gmfVuojP86bDWR2kelPAUU7MAYdyO5xhhpqduN60TkmspfUH3pBXIkyxUr1Tyh4X0Qn1t/w7rBGsDTEx4xrhiDuBZbNG8ULtDUOHWFhNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823769; c=relaxed/simple;
-	bh=Oa+uYcc/NjAZxHn6DROJ6HHfKgtzDcpBsZWgd1m3kx0=;
+	s=arc-20240116; t=1762824938; c=relaxed/simple;
+	bh=jhV3iXm4ClNrX3FYViHB3stdgwTdTo+WunpHEWvfPH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ed1HG2WeZMUn1OCIUXqPKWB3CLX0QKxQyNg5/jJhtczT3nb5GV3fvPDpaR8PP0v3UYL+os7IJWkGygLUvNgVUeQMfv7gCJi8qq07OuVcGGZQWErqD2bvUnv0be6CFIRmec5CsPyazkGwHu+TT+03sKsxMNwX0yvZ6p7XDJl7AxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSqMgUxC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B1CC16AAE;
-	Tue, 11 Nov 2025 01:16:05 +0000 (UTC)
+	 MIME-Version; b=qDETnH2ngVt4x0gXPYfhKBcDlDpL5PTKODTiTHFb9xaLgJPVo6WUBPSBMu5oYx5tT677QTt0sJTOerYIHi7NzORVckZngDdVuCi/cgyT/U/W5J18nnp2ijZRM5U8C7nqoNS83NCrZydxbh1j+Cl3DGxU0Nrde9U8ikzvtITva0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XaRx1wO7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3DBC16AAE;
+	Tue, 11 Nov 2025 01:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823766;
-	bh=Oa+uYcc/NjAZxHn6DROJ6HHfKgtzDcpBsZWgd1m3kx0=;
+	s=korg; t=1762824938;
+	bh=jhV3iXm4ClNrX3FYViHB3stdgwTdTo+WunpHEWvfPH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oSqMgUxCuDqGyeyBGXSNpimpIMG7OY5peVcZtXjT32POnRWSE4BT8fg2RousutMmM
-	 bmPeFoDWxVY2GvmrGw651Zjy+Xwk6U95oxilsvs9FYBI0uRVVUi+G6clGM2c633zgP
-	 D9nMZoBCagBUV3YeXVU8SLRtsUQxJVd0GtzumE8s=
+	b=XaRx1wO7Nd5VemWXY3s9C3UtzsqndRMr5qrWfrm1b4KMr4h6m3E3pkX+hgaOb5yRe
+	 UP3VG6pMrxmGjpX7i9UzmNJnUybaM26jbEfHkUZ63MCdhkd5S9vx3H0lfuSztcKkNl
+	 fieJbxcwrLhGZjeSbAQSI3rRtNSbTsCbOAI6MOgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xion Wang <xion.wang@mediatek.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 315/565] char: Use list_del_init() in misc_deregister() to reinitialize list pointer
+Subject: [PATCH 6.17 601/849] wifi: mac80211: Get the correct interface for non-netdev skb status
 Date: Tue, 11 Nov 2025 09:42:51 +0900
-Message-ID: <20251111004533.973509850@linuxfoundation.org>
+Message-ID: <20251111004550.953803617@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +64,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xion Wang <xion.wang@mediatek.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit e28022873c0d051e980c4145f1965cab5504b498 ]
+[ Upstream commit c7b5355b37a59c927b2374e9f783acd004d00960 ]
 
-Currently, misc_deregister() uses list_del() to remove the device
-from the list. After list_del(), the list pointers are set to
-LIST_POISON1 and LIST_POISON2, which may help catch use-after-free bugs,
-but does not reset the list head.
-If misc_deregister() is called more than once on the same device,
-list_empty() will not return true, and list_del() may be called again,
-leading to undefined behavior.
+The function ieee80211_sdata_from_skb() always returned the P2P Device
+interface in case the skb was not associated with a netdev and didn't
+consider the possibility that an NAN Device interface is also enabled.
 
-Replace list_del() with list_del_init() to reinitialize the list head
-after deletion. This makes the code more robust against double
-deregistration and allows safe usage of list_empty() on the miscdevice
-after deregistration.
+To support configurations where both P2P Device and a NAN Device
+interface are active, extend the function to match the correct
+interface based on address 2 in the 802.11 MAC header.
 
-[ Note, this seems to keep broken out-of-tree drivers from doing foolish
-  things.  While this does not matter for any in-kernel drivers,
-  external drivers could use a bit of help to show them they shouldn't
-  be doing stuff like re-registering misc devices - gregkh ]
+Since the 'p2p_sdata' field in struct ieee80211_local is no longer
+needed, remove it.
 
-Signed-off-by: Xion Wang <xion.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20250904063714.28925-2-xion.wang@mediatek.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250908140015.5252d2579a49.Id4576531c6b2ad83c9498b708dc0ade6b0214fa8@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/misc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/ieee80211_i.h |  2 --
+ net/mac80211/iface.c       | 16 +---------------
+ net/mac80211/status.c      | 21 +++++++++++++++++++--
+ 3 files changed, 20 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/char/misc.c b/drivers/char/misc.c
-index 6f9ce6b3cc5a6..792a1412faffe 100644
---- a/drivers/char/misc.c
-+++ b/drivers/char/misc.c
-@@ -299,7 +299,7 @@ void misc_deregister(struct miscdevice *misc)
- 		return;
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 8afa2404eaa8e..140dc7e32d4aa 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1665,8 +1665,6 @@ struct ieee80211_local {
+ 	struct idr ack_status_frames;
+ 	spinlock_t ack_status_lock;
  
- 	mutex_lock(&misc_mtx);
--	list_del(&misc->list);
-+	list_del_init(&misc->list);
- 	device_destroy(&misc_class, MKDEV(MISC_MAJOR, misc->minor));
- 	misc_minor_free(misc->minor);
- 	if (misc->minor > MISC_DYNAMIC_MINOR)
+-	struct ieee80211_sub_if_data __rcu *p2p_sdata;
+-
+ 	/* virtual monitor interface */
+ 	struct ieee80211_sub_if_data __rcu *monitor_sdata;
+ 	struct ieee80211_chan_req monitor_chanreq;
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 07ba68f7cd817..abc8cca54f4e1 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -611,10 +611,6 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
+ 
+ 		spin_unlock_bh(&sdata->u.nan.func_lock);
+ 		break;
+-	case NL80211_IFTYPE_P2P_DEVICE:
+-		/* relies on synchronize_rcu() below */
+-		RCU_INIT_POINTER(local->p2p_sdata, NULL);
+-		fallthrough;
+ 	default:
+ 		wiphy_work_cancel(sdata->local->hw.wiphy, &sdata->work);
+ 		/*
+@@ -1405,6 +1401,7 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
+ 		ieee80211_recalc_idle(local);
+ 
+ 		netif_carrier_on(dev);
++		list_add_tail_rcu(&sdata->u.mntr.list, &local->mon_list);
+ 		break;
+ 	default:
+ 		if (coming_up) {
+@@ -1468,17 +1465,6 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
+ 			sdata->vif.type != NL80211_IFTYPE_STATION);
+ 	}
+ 
+-	switch (sdata->vif.type) {
+-	case NL80211_IFTYPE_P2P_DEVICE:
+-		rcu_assign_pointer(local->p2p_sdata, sdata);
+-		break;
+-	case NL80211_IFTYPE_MONITOR:
+-		list_add_tail_rcu(&sdata->u.mntr.list, &local->mon_list);
+-		break;
+-	default:
+-		break;
+-	}
+-
+ 	/*
+ 	 * set_multicast_list will be invoked by the networking core
+ 	 * which will check whether any increments here were done in
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index a362254b310cd..4b38aa0e902a8 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -5,7 +5,7 @@
+  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2008-2010	Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+- * Copyright 2021-2024  Intel Corporation
++ * Copyright 2021-2025  Intel Corporation
+  */
+ 
+ #include <linux/export.h>
+@@ -572,6 +572,7 @@ static struct ieee80211_sub_if_data *
+ ieee80211_sdata_from_skb(struct ieee80211_local *local, struct sk_buff *skb)
+ {
+ 	struct ieee80211_sub_if_data *sdata;
++	struct ieee80211_hdr *hdr = (void *)skb->data;
+ 
+ 	if (skb->dev) {
+ 		list_for_each_entry_rcu(sdata, &local->interfaces, list) {
+@@ -585,7 +586,23 @@ ieee80211_sdata_from_skb(struct ieee80211_local *local, struct sk_buff *skb)
+ 		return NULL;
+ 	}
+ 
+-	return rcu_dereference(local->p2p_sdata);
++	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
++		switch (sdata->vif.type) {
++		case NL80211_IFTYPE_P2P_DEVICE:
++			break;
++		case NL80211_IFTYPE_NAN:
++			if (sdata->u.nan.started)
++				break;
++			fallthrough;
++		default:
++			continue;
++		}
++
++		if (ether_addr_equal(sdata->vif.addr, hdr->addr2))
++			return sdata;
++	}
++
++	return NULL;
+ }
+ 
+ static void ieee80211_report_ack_skb(struct ieee80211_local *local,
 -- 
 2.51.0
 
