@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-194163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1956BC4AEDD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C78B9C4A970
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5DECA4F90A4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D93603AF8F0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA11F26A0C7;
-	Tue, 11 Nov 2025 01:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE15634AB01;
+	Tue, 11 Nov 2025 01:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+gRYImZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1G4i5tHC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C15253944;
-	Tue, 11 Nov 2025 01:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A055234AAF3;
+	Tue, 11 Nov 2025 01:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824952; cv=none; b=d2S8deWyRAm03I+MWmXlZrSEb8M6BD7reHlpdYencRiB0NEtG55tISUCwfwavsP1RMc5b2ktni2UU2aOSaPajX6cMpjOvQhtnYC+iXixcs/f4V99hwmS27/TNGUOA1llDnaJLRDe6BOl+DeVXjZ7yF5j6aem8RoxHUhYsEJuwoQ=
+	t=1762823779; cv=none; b=J249C4cNJxi40ZiqQ38az0P1FrYTzcME74/fdpdmdjVn/LMlkYUQBYb5FLLnYu/PvmH8psD94e5DliWqHuOhPpD8LF8sPpTGk9jTaJwZC7lSdGEMC/w8bgpBit7W5ksen5E8DRJc3AzEc71/DOaQZYNp1Qxk/tuEOT4ATq9tYLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824952; c=relaxed/simple;
-	bh=nKK7Vspx6XNYVoDT8QPJrf58DwtUIWvW4l4bmKqqPkk=;
+	s=arc-20240116; t=1762823779; c=relaxed/simple;
+	bh=UvRTTJrLvNnz5lIxIcEKMqo54eWT58cSyAIvoxJdG/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtAO8/X2lYFuP6uvwSkEATuXCxtiwAfZMo878B61eVSPcta/m7WdrP1KYVgqj/1ZCzr5SPyFCLQwVdhN3qcr27nnI8i8FZHPzbZTnMxrKQ0p9jlEWIkiexAjerWRvp97biRotf8HOjtQuAllaQ1Pup8qCElvP1hFNH1on2AMJeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+gRYImZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0486BC116B1;
-	Tue, 11 Nov 2025 01:35:51 +0000 (UTC)
+	 MIME-Version; b=sHTcWmscjiryaopo3KntrDS/PD2JrqZJ1CvTT4M0VvZNiqhufcBG0TOu1YTzKRVqTMtYr7IZEbjjO8ckypU6UBwKcklGuF6Lpdqi7FNSh3V/QxywqfmSBrbZ4kDpj/QqtuGfrPACD7jMEyEJ6qZ7EAkE09lgNK9hayH6GDnFlTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1G4i5tHC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D825C19422;
+	Tue, 11 Nov 2025 01:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824952;
-	bh=nKK7Vspx6XNYVoDT8QPJrf58DwtUIWvW4l4bmKqqPkk=;
+	s=korg; t=1762823779;
+	bh=UvRTTJrLvNnz5lIxIcEKMqo54eWT58cSyAIvoxJdG/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+gRYImZDdSQI7bNFkyFfAUs34+BqgfmJnvZ7kcXv6/L5AcYaj3fNrO93O4ZY0Y68
-	 tnbbT0pUQUNP0d/UhuqQZJXHW/vEdHbDIJLTYhSfVXRDOgoCCMXJziPNw87Gn7K8d5
-	 DlYpXO8xDZ1iVwZcw0yoV0S1yKUfnL7Ilt4Pjqbw=
+	b=1G4i5tHC4bla+7qxHOmsnXkUDs56TDwiY7Yu+/p//Tgtn+NyKGjbCXf4aWz/N78oq
+	 n+DofIntuOPjqtfZEIGL/OqiIAf/fki4AnalRycfk6gy50cjob7Hb9Ixan2E5mCtho
+	 otWp8rZlGNSC3qWptW3NqVuSZ3pCHjfGtLjBjV4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChunHao Lin <hau@realtek.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hao Yao <hao.yao@intel.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 604/849] r8169: set EEE speed down ratio to 1
+Subject: [PATCH 6.12 318/565] media: ov08x40: Fix the horizontal flip control
 Date: Tue, 11 Nov 2025 09:42:54 +0900
-Message-ID: <20251111004551.024646572@linuxfoundation.org>
+Message-ID: <20251111004534.042248846@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChunHao Lin <hau@realtek.com>
+From: Hao Yao <hao.yao@intel.com>
 
-[ Upstream commit bf7154ffb1c65a201906296a9d3eb22e9daa5ffc ]
+[ Upstream commit c7df6f339af94689fdc433887f9fbb480bf8a4ed ]
 
-EEE speed down means speed down MAC MCU clock. It is not from spec.
-It is kind of Realtek specific power saving feature. But enable it
-may cause some issues, like packet drop or interrupt loss. Different
-hardware may have different issues.
+The datasheet of ov08x40 doesn't match the hardware behavior.
+0x3821[2] == 1 is the original state and 0 the horizontal flip enabled.
 
-EEE speed down ratio (mac ocp 0xe056[7:4]) is used to set EEE speed
-down rate. The larger this value is, the more power can save. But it
-actually save less power then we expected. And, as mentioned above,
-will impact compatibility. So set it to 1 (mac ocp 0xe056[7:4] = 0)
-, which means not to speed down, to improve compatibility.
-
-Signed-off-by: ChunHao Lin <hau@realtek.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://patch.msgid.link/20250918023425.3463-1-hau@realtek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hao Yao <hao.yao@intel.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Tested-by: Hans de Goede <hansg@kernel.org> # ThinkPad X1 Carbon Gen 12 & Gen 13
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/i2c/ov08x40.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 4b0ac73565ea9..bf79e2e9b7ecb 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -3409,7 +3409,7 @@ static void rtl_hw_start_8168h_1(struct rtl8169_private *tp)
- 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
- 	}
+diff --git a/drivers/media/i2c/ov08x40.c b/drivers/media/i2c/ov08x40.c
+index 1fe8e9b584f80..83a957182cb5f 100644
+--- a/drivers/media/i2c/ov08x40.c
++++ b/drivers/media/i2c/ov08x40.c
+@@ -1564,7 +1564,7 @@ static int ov08x40_set_ctrl_hflip(struct ov08x40 *ov08x, u32 ctrl_val)
  
--	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
-+	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
- 	r8168_mac_ocp_modify(tp, 0xe052, 0x6000, 0x8008);
- 	r8168_mac_ocp_modify(tp, 0xe0d6, 0x01ff, 0x017f);
- 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
-@@ -3514,7 +3514,7 @@ static void rtl_hw_start_8117(struct rtl8169_private *tp)
- 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
- 	}
+ 	return ov08x40_write_reg(ov08x, OV08X40_REG_MIRROR,
+ 				 OV08X40_REG_VALUE_08BIT,
+-				 ctrl_val ? val | BIT(2) : val & ~BIT(2));
++				 ctrl_val ? val & ~BIT(2) : val | BIT(2));
+ }
  
--	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
-+	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
- 	r8168_mac_ocp_write(tp, 0xea80, 0x0003);
- 	r8168_mac_ocp_modify(tp, 0xe052, 0x0000, 0x0009);
- 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
-@@ -3715,7 +3715,7 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
- 	r8168_mac_ocp_modify(tp, 0xc0b4, 0x0000, 0x000c);
- 	r8168_mac_ocp_modify(tp, 0xeb6a, 0x00ff, 0x0033);
- 	r8168_mac_ocp_modify(tp, 0xeb50, 0x03e0, 0x0040);
--	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0030);
-+	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
- 	r8168_mac_ocp_modify(tp, 0xe040, 0x1000, 0x0000);
- 	r8168_mac_ocp_modify(tp, 0xea1c, 0x0003, 0x0001);
- 	if (tp->mac_version == RTL_GIGA_MAC_VER_70 ||
+ static int ov08x40_set_ctrl_vflip(struct ov08x40 *ov08x, u32 ctrl_val)
 -- 
 2.51.0
 
