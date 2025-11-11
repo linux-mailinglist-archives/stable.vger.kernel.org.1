@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21987C4A824
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6714BC4AFA6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1A0E734C01F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2C8934F9F49
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21622D94B8;
-	Tue, 11 Nov 2025 01:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F060246768;
+	Tue, 11 Nov 2025 01:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcUqjSK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sklip1S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9071F4169;
-	Tue, 11 Nov 2025 01:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9132857F0;
+	Tue, 11 Nov 2025 01:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824069; cv=none; b=BMqNmYcIcUCmkEsbrVgB2JTd9uJmnm+nWSxWVsXAfmdfVhKTRuEyJF4X38SJHbJuucMXYPXQIAQ8TVnIpj70NzzYSr+6W93WnptFmKlczKsKCWtni6VAmCfwjclVZAMCdmfyE3JvThNLqgcI9ZwAAWEzBhFCEuRldF0wMuu+Dkk=
+	t=1762825202; cv=none; b=DpvOdPpXF8VL8wtJ1qpDzlljzz5QspUmA1FW0gqUkIXup7UeTmymu5oPdhH1Ijps039oPBFMR3QyliQGC/rlBAo22GCrcMlvKIuRpw+Qk1R9wVV/R6qDSAjkFrOCtrRygtmSgKmfPNZFask4WQ7P01fOetx0h9FirRGf1G+Bzs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824069; c=relaxed/simple;
-	bh=ihEnE40IbP+d48j6uvKI5MYF94f5GWChobsU1TrmYuc=;
+	s=arc-20240116; t=1762825202; c=relaxed/simple;
+	bh=IwsxhoKB9wLdbqjQBPEWVRNJVpn5nxqMaJWEbjqcppk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l+RTmeW0FHCzzT96cXj/j+Z/Fw8PnKZcujnU++2imTBqGAqwfraBHVCdEf1v3evfTkIrgLSQ65vhqhnc6pPhuPlyHRoherAgNi04XvGOia1WMpWyqAQb+3Bx1sG1JO/eyLsdtnzVdlm5WDClPq3bqbr8Qsm1bkJNOKHmcXSck70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcUqjSK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBF4C4CEFB;
-	Tue, 11 Nov 2025 01:21:08 +0000 (UTC)
+	 MIME-Version; b=gFeGlbq97JRGArOwE8B3sdBKalB5gns63mqUhufVKvonEllkk6iNShEQa/dLU+MItBnVtFw/FIQODsDep49QHkjLfGhNGLbhZWYyzgBih6RCbPBVIkDZNl9/FMk8RLpVNRmZDmoG5wqZcDejz92JsYfr/Fo3m40ZuL83hoeSU30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sklip1S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FD1C4CEF5;
+	Tue, 11 Nov 2025 01:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824069;
-	bh=ihEnE40IbP+d48j6uvKI5MYF94f5GWChobsU1TrmYuc=;
+	s=korg; t=1762825202;
+	bh=IwsxhoKB9wLdbqjQBPEWVRNJVpn5nxqMaJWEbjqcppk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcUqjSK7P3JA6Fw+/+7S2BZ8CGKCGHdzkukzDTlJOSIqWLIgX+9nkOMa00VAOyeW9
-	 iB6dfZ+TILivWz2gnXHezoruGNv3RZ35oasxdR7xaY8MejXmeyHclr/raPsnshXfBp
-	 Zg+J1lBz0CQmKHGsiJNMVp3R7xAEFtGVmqoU3GHU=
+	b=1sklip1SbAkuTLFp1gli7Pw04NkeEEyg4MUOZAWCxVdTmyJuWbBz4mxtI0Wk25Geg
+	 Vqg64ijyhLxZW2aTOc52L5aqCT6McMYT7JnXOjsmSOYeUr3zi0VlJX0CgT1Ku2apF4
+	 hqJstRAeWib3gUPUVBjQc25FgUHD1Z/J7NbhCil8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Forest Crossman <cyrozap@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com,
+	Ivan Pravdin <ipravdin.official@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 381/565] usb: mon: Increase BUFF_MAX to 64 MiB to support multi-MB URBs
+Subject: [PATCH 6.17 667/849] Bluetooth: bcsp: receive data only if registered
 Date: Tue, 11 Nov 2025 09:43:57 +0900
-Message-ID: <20251111004535.442441605@linuxfoundation.org>
+Message-ID: <20251111004552.550417398@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Forest Crossman <cyrozap@gmail.com>
+From: Ivan Pravdin <ipravdin.official@gmail.com>
 
-[ Upstream commit 368ed48a5ef52e384f54d5809f0a0b79ac567479 ]
+[ Upstream commit ca94b2b036c22556c3a66f1b80f490882deef7a6 ]
 
-The usbmon binary interface currently truncates captures of large
-transfers from higher-speed USB devices. Because a single event capture
-is limited to one-fifth of the total buffer size, the current maximum
-size of a captured URB is around 240 KiB. This is insufficient when
-capturing traffic from modern devices that use transfers of several
-hundred kilobytes or more, as truncated URBs can make it impossible for
-user-space USB analysis tools like Wireshark to properly defragment and
-reassemble higher-level protocol packets in the captured data.
+Currently, bcsp_recv() can be called even when the BCSP protocol has not
+been registered. This leads to a NULL pointer dereference, as shown in
+the following stack trace:
 
-The root cause of this issue is the 1200 KiB BUFF_MAX limit, which has
-not been changed since the binary interface was introduced in 2006.
+    KASAN: null-ptr-deref in range [0x0000000000000108-0x000000000000010f]
+    RIP: 0010:bcsp_recv+0x13d/0x1740 drivers/bluetooth/hci_bcsp.c:590
+    Call Trace:
+     <TASK>
+     hci_uart_tty_receive+0x194/0x220 drivers/bluetooth/hci_ldisc.c:627
+     tiocsti+0x23c/0x2c0 drivers/tty/tty_io.c:2290
+     tty_ioctl+0x626/0xde0 drivers/tty/tty_io.c:2706
+     vfs_ioctl fs/ioctl.c:51 [inline]
+     __do_sys_ioctl fs/ioctl.c:907 [inline]
+     __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
+     do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+     do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-To resolve this issue, this patch increases BUFF_MAX to 64 MiB. The
-original comment for BUFF_MAX based the limit's calculation on a
-saturated 480 Mbit/s bus. Applying the same logic to a modern USB 3.2
-Gen 2×2 20 Gbit/s bus (~2500 MB/s over a 20ms window) indicates the
-buffer should be at least 50 MB. The new limit of 64 MiB covers that,
-plus a little extra for any overhead.
+To prevent this, ensure that the HCI_UART_REGISTERED flag is set before
+processing received data. If the protocol is not registered, return
+-EUNATCH.
 
-With this change, both users and developers should now be able to debug
-and reverse engineer modern USB devices even when running unmodified
-distro kernels.
-
-Please note that this change does not affect the default buffer size. A
-larger buffer is only allocated when a user explicitly requests it via
-the MON_IOCT_RING_SIZE ioctl, so the change to the maximum buffer size
-should not unduly increase memory usage for users that don't
-deliberately request a larger buffer.
-
-Link: https://lore.kernel.org/CAO3ALPzdUkmMr0YMrODLeDSLZqNCkWcAP8NumuPHLjNJ8wC1kQ@mail.gmail.com
-Signed-off-by: Forest Crossman <cyrozap@gmail.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/CAO3ALPxU5RzcoueC454L=WZ1qGMfAcnxm+T+p+9D8O9mcrUbCQ@mail.gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4ed6852d4da4606c93da
+Tested-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
+Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/mon/mon_bin.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/bluetooth/hci_bcsp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/mon/mon_bin.c b/drivers/usb/mon/mon_bin.c
-index afb71c18415dd..01aa6a795d275 100644
---- a/drivers/usb/mon/mon_bin.c
-+++ b/drivers/usb/mon/mon_bin.c
-@@ -68,18 +68,20 @@
-  * The magic limit was calculated so that it allows the monitoring
-  * application to pick data once in two ticks. This way, another application,
-  * which presumably drives the bus, gets to hog CPU, yet we collect our data.
-- * If HZ is 100, a 480 mbit/s bus drives 614 KB every jiffy. USB has an
-- * enormous overhead built into the bus protocol, so we need about 1000 KB.
-+ *
-+ * Originally, for a 480 Mbit/s bus this required a buffer of about 1 MB. For
-+ * modern 20 Gbps buses, this value increases to over 50 MB. The maximum
-+ * buffer size is set to 64 MiB to accommodate this.
-  *
-  * This is still too much for most cases, where we just snoop a few
-  * descriptor fetches for enumeration. So, the default is a "reasonable"
-- * amount for systems with HZ=250 and incomplete bus saturation.
-+ * amount for typical, low-throughput use cases.
-  *
-  * XXX What about multi-megabyte URBs which take minutes to transfer?
-  */
--#define BUFF_MAX  CHUNK_ALIGN(1200*1024)
--#define BUFF_DFL   CHUNK_ALIGN(300*1024)
--#define BUFF_MIN     CHUNK_ALIGN(8*1024)
-+#define BUFF_MAX  CHUNK_ALIGN(64*1024*1024)
-+#define BUFF_DFL      CHUNK_ALIGN(300*1024)
-+#define BUFF_MIN        CHUNK_ALIGN(8*1024)
+diff --git a/drivers/bluetooth/hci_bcsp.c b/drivers/bluetooth/hci_bcsp.c
+index 664d82d1e6139..591abe6d63ddb 100644
+--- a/drivers/bluetooth/hci_bcsp.c
++++ b/drivers/bluetooth/hci_bcsp.c
+@@ -582,6 +582,9 @@ static int bcsp_recv(struct hci_uart *hu, const void *data, int count)
+ 	struct bcsp_struct *bcsp = hu->priv;
+ 	const unsigned char *ptr;
  
- /*
-  * The per-event API header (2 per URB).
++	if (!test_bit(HCI_UART_REGISTERED, &hu->flags))
++		return -EUNATCH;
++
+ 	BT_DBG("hu %p count %d rx_state %d rx_count %ld",
+ 	       hu, count, bcsp->rx_state, bcsp->rx_count);
+ 
 -- 
 2.51.0
 
