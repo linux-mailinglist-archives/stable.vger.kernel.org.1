@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C0DC4B0A6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B45C6C4AC6D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAE5718868B2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ED9B3A93EA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7252D9780;
-	Tue, 11 Nov 2025 01:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0B12ED17A;
+	Tue, 11 Nov 2025 01:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pcCpRjpV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b252c2GZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBC2DF76;
-	Tue, 11 Nov 2025 01:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7FF26E158;
+	Tue, 11 Nov 2025 01:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825288; cv=none; b=T+PmpTUCTX6ecJKLMoRyoFXvQoF15NkwuqG91sxJ49qsvG9f2lGI8b9yaaCHGRzzlXDX/8s/+qOY7fNRWrNmITCTu+FASZESmlJryaGu5AzjwL+/igwpQXnIVkJ8wtMnDnDwikhrmBAV9jI58s+L2V1RLeNWopok0cxJyJN2Iqg=
+	t=1762824347; cv=none; b=V4lZbSpiUfncRxSe3zEM97ZGmBRMfsowvD27Z1Ejtso8LDnwpXd7tOUYz1/JPBxGiTXCZVqBcM4phgx7Yj8H/v5/yTgmpk3U/E8BR9MxgCALRLiLJfy8QLqM8YRZhoNTUjOaf5fQywnifvW1E9aof2q8WRU2joNCtD6HKsbaJHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825288; c=relaxed/simple;
-	bh=QDSA+/WwPmJeMdj1IfLaZhphdFcM27jL0oxaD4D28FI=;
+	s=arc-20240116; t=1762824347; c=relaxed/simple;
+	bh=21lDTjUr7yDI/czM3QM34TZU2yvHimMWlS5K3t5cQU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RX3D02dWF6EFfRgghK1WaNNKXGksjJY4Yog4cLNZj5HvhQl4a2dy+pmOQ8GLX9GHnKAB2xWtiEbjiSx1QLrBbgVs6tIzjG8aRN6OPf77STZntJCBZKmcrYOlXc0Y1L/qQpW4xpC14P8CH+uH65mnmXnH5Oy6LAz47xCTkAN+6kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pcCpRjpV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28AAC19421;
-	Tue, 11 Nov 2025 01:41:27 +0000 (UTC)
+	 MIME-Version; b=nZeLdzNe5icvrUxD6opI3KXZg2qNHhQ8K6auPsBTYqFwo9hEyl9Z9mmL70I0HvYsfed5Uwb11xymjwscIOG0zgDYqdmE9lttCuZFG/XeP81QDy8ds7v+Je0ej4ppG6o0R8kWXB6rg1YDtNBuL4tFK2plEeiqpaRWKPLA8jK4+qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b252c2GZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F13C4CEFB;
+	Tue, 11 Nov 2025 01:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825288;
-	bh=QDSA+/WwPmJeMdj1IfLaZhphdFcM27jL0oxaD4D28FI=;
+	s=korg; t=1762824346;
+	bh=21lDTjUr7yDI/czM3QM34TZU2yvHimMWlS5K3t5cQU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pcCpRjpVgYtZ11ZZ1sxcdlTNpNLgPtN7348V0FAI+I85VHwkmZRISxAXRWF0cdDMy
-	 in8NJ+i/2xwq4WFg/Vg3KUY8YdUFJHy6DjcZQk3J4Z98qod0FyQEaSEkwMZShqPz0F
-	 puGWdxUacYKu88LWQjTJBzPWmOj+uchZBqTDiikY=
+	b=b252c2GZPdbJaohi/kfOef5GBJdiA9B4wTfEOouWIdet6VSa+a+G4Kogu67TWnHui
+	 IuH40gkuGB2UM34QxImntuXdGehxYvhmZ458Ui/ZTcT6prkh+7DG2AXvwq2MfU4ViE
+	 Q3R8HKJJWtM/7IjbKnDd274Ieb7/rwLjSElQ3hVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Jon Mason <jdmason@kudzu.us>,
+	Moti Haimovski <moti.haimovski@intel.com>,
+	Koby Elbaz <koby.elbaz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 712/849] NTB: epf: Allow arbitrary BAR mapping
+Subject: [PATCH 6.12 426/565] accel/habanalabs: support mapping cb with vmalloc-backed coherent memory
 Date: Tue, 11 Nov 2025 09:44:42 +0900
-Message-ID: <20251111004553.651340728@linuxfoundation.org>
+Message-ID: <20251111004536.447384573@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,248 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Moti Haimovski <moti.haimovski@intel.com>
 
-[ Upstream commit 5ad865862a0fd349163243e1834ed98ba9b81905 ]
+[ Upstream commit 513024d5a0e34fd34247043f1876b6138ca52847 ]
 
-The NTB epf host driver assumes the BAR number associated with a memory
-window is just incremented from the BAR number associated with MW1. This
-seems to have been enough so far but this is not really how the endpoint
-side work and the two could easily become mis-aligned.
+When IOMMU is enabled, dma_alloc_coherent() with GFP_USER may return
+addresses from the vmalloc range. If such an address is mapped without
+VM_MIXEDMAP, vm_insert_page() will trigger a BUG_ON due to the
+VM_PFNMAP restriction.
 
-ntb_epf_mw_to_bar() even assumes that the BAR number is the memory window
-index + 2, which means the function only returns a proper result if BAR_2
-is associated with MW1.
+Fix this by checking for vmalloc addresses and setting VM_MIXEDMAP
+in the VMA before mapping. This ensures safe mapping and avoids kernel
+crashes. The memory is still driver-allocated and cannot be accessed
+directly by userspace.
 
-Instead, fully describe and allow arbitrary NTB BAR mapping.
-
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Moti Haimovski  <moti.haimovski@intel.com>
+Reviewed-by: Koby Elbaz <koby.elbaz@intel.com>
+Signed-off-by: Koby Elbaz <koby.elbaz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/hw/epf/ntb_hw_epf.c | 103 ++++++++++++++++----------------
- 1 file changed, 53 insertions(+), 50 deletions(-)
+ drivers/accel/habanalabs/gaudi/gaudi.c   | 19 +++++++++++++++++++
+ drivers/accel/habanalabs/gaudi2/gaudi2.c |  7 +++++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/drivers/ntb/hw/epf/ntb_hw_epf.c b/drivers/ntb/hw/epf/ntb_hw_epf.c
-index 00f0e78f685bf..2b51156e01b0f 100644
---- a/drivers/ntb/hw/epf/ntb_hw_epf.c
-+++ b/drivers/ntb/hw/epf/ntb_hw_epf.c
-@@ -49,6 +49,7 @@
- #define NTB_EPF_COMMAND_TIMEOUT	1000 /* 1 Sec */
+diff --git a/drivers/accel/habanalabs/gaudi/gaudi.c b/drivers/accel/habanalabs/gaudi/gaudi.c
+index fa893a9b826ec..34771d75da9d7 100644
+--- a/drivers/accel/habanalabs/gaudi/gaudi.c
++++ b/drivers/accel/habanalabs/gaudi/gaudi.c
+@@ -4168,10 +4168,29 @@ static int gaudi_mmap(struct hl_device *hdev, struct vm_area_struct *vma,
+ 	vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP |
+ 			VM_DONTCOPY | VM_NORESERVE);
  
- enum pci_barno {
-+	NO_BAR = -1,
- 	BAR_0,
- 	BAR_1,
- 	BAR_2,
-@@ -57,16 +58,26 @@ enum pci_barno {
- 	BAR_5,
- };
- 
-+enum epf_ntb_bar {
-+	BAR_CONFIG,
-+	BAR_PEER_SPAD,
-+	BAR_DB,
-+	BAR_MW1,
-+	BAR_MW2,
-+	BAR_MW3,
-+	BAR_MW4,
-+	NTB_BAR_NUM,
-+};
++#ifdef _HAS_DMA_MMAP_COHERENT
++	/*
++	 * If dma_alloc_coherent() returns a vmalloc address, set VM_MIXEDMAP
++	 * so vm_insert_page() can handle it safely. Without this, the kernel
++	 * may BUG_ON due to VM_PFNMAP.
++	 */
++	if (is_vmalloc_addr(cpu_addr))
++		vm_flags_set(vma, VM_MIXEDMAP);
 +
-+#define NTB_EPF_MAX_MW_COUNT	(NTB_BAR_NUM - BAR_MW1)
+ 	rc = dma_mmap_coherent(hdev->dev, vma, cpu_addr,
+ 				(dma_addr - HOST_PHYS_BASE), size);
+ 	if (rc)
+ 		dev_err(hdev->dev, "dma_mmap_coherent error %d", rc);
++#else
 +
- struct ntb_epf_dev {
- 	struct ntb_dev ntb;
- 	struct device *dev;
- 	/* Mutex to protect providing commands to NTB EPF */
- 	struct mutex cmd_lock;
- 
--	enum pci_barno ctrl_reg_bar;
--	enum pci_barno peer_spad_reg_bar;
--	enum pci_barno db_reg_bar;
--	enum pci_barno mw_bar;
-+	const enum pci_barno *barno_map;
- 
- 	unsigned int mw_count;
- 	unsigned int spad_count;
-@@ -85,17 +96,6 @@ struct ntb_epf_dev {
- 
- #define ntb_ndev(__ntb) container_of(__ntb, struct ntb_epf_dev, ntb)
- 
--struct ntb_epf_data {
--	/* BAR that contains both control region and self spad region */
--	enum pci_barno ctrl_reg_bar;
--	/* BAR that contains peer spad region */
--	enum pci_barno peer_spad_reg_bar;
--	/* BAR that contains Doorbell region and Memory window '1' */
--	enum pci_barno db_reg_bar;
--	/* BAR that contains memory windows*/
--	enum pci_barno mw_bar;
--};
--
- static int ntb_epf_send_command(struct ntb_epf_dev *ndev, u32 command,
- 				u32 argument)
- {
-@@ -144,7 +144,7 @@ static int ntb_epf_mw_to_bar(struct ntb_epf_dev *ndev, int idx)
- 		return -EINVAL;
- 	}
- 
--	return idx + 2;
-+	return ndev->barno_map[BAR_MW1 + idx];
- }
- 
- static int ntb_epf_mw_count(struct ntb_dev *ntb, int pidx)
-@@ -413,7 +413,9 @@ static int ntb_epf_mw_set_trans(struct ntb_dev *ntb, int pidx, int idx,
- 		return -EINVAL;
- 	}
- 
--	bar = idx + ndev->mw_bar;
-+	bar = ntb_epf_mw_to_bar(ndev, idx);
-+	if (bar < 0)
-+		return bar;
- 
- 	mw_size = pci_resource_len(ntb->pdev, bar);
- 
-@@ -455,7 +457,9 @@ static int ntb_epf_peer_mw_get_addr(struct ntb_dev *ntb, int idx,
- 	if (idx == 0)
- 		offset = readl(ndev->ctrl_reg + NTB_EPF_MW1_OFFSET);
- 
--	bar = idx + ndev->mw_bar;
-+	bar = ntb_epf_mw_to_bar(ndev, idx);
-+	if (bar < 0)
-+		return bar;
- 
- 	if (base)
- 		*base = pci_resource_start(ndev->ntb.pdev, bar) + offset;
-@@ -560,6 +564,11 @@ static int ntb_epf_init_dev(struct ntb_epf_dev *ndev)
- 	ndev->mw_count = readl(ndev->ctrl_reg + NTB_EPF_MW_COUNT);
- 	ndev->spad_count = readl(ndev->ctrl_reg + NTB_EPF_SPAD_COUNT);
- 
-+	if (ndev->mw_count > NTB_EPF_MAX_MW_COUNT) {
-+		dev_err(dev, "Unsupported MW count: %u\n", ndev->mw_count);
-+		return -EINVAL;
-+	}
++	rc = remap_pfn_range(vma, vma->vm_start,
++				virt_to_phys(cpu_addr) >> PAGE_SHIFT,
++				size, vma->vm_page_prot);
++	if (rc)
++		dev_err(hdev->dev, "remap_pfn_range error %d", rc);
 +
- 	return 0;
++ #endif
++
+ 
+ 	return rc;
  }
+diff --git a/drivers/accel/habanalabs/gaudi2/gaudi2.c b/drivers/accel/habanalabs/gaudi2/gaudi2.c
+index 3df72a5d024a6..b957957df3d3a 100644
+--- a/drivers/accel/habanalabs/gaudi2/gaudi2.c
++++ b/drivers/accel/habanalabs/gaudi2/gaudi2.c
+@@ -6490,6 +6490,13 @@ static int gaudi2_mmap(struct hl_device *hdev, struct vm_area_struct *vma,
+ 			VM_DONTCOPY | VM_NORESERVE);
  
-@@ -596,14 +605,15 @@ static int ntb_epf_init_pci(struct ntb_epf_dev *ndev,
- 		dev_warn(&pdev->dev, "Cannot DMA highmem\n");
- 	}
+ #ifdef _HAS_DMA_MMAP_COHERENT
++	/*
++	 * If dma_alloc_coherent() returns a vmalloc address, set VM_MIXEDMAP
++	 * so vm_insert_page() can handle it safely. Without this, the kernel
++	 * may BUG_ON due to VM_PFNMAP.
++	 */
++	if (is_vmalloc_addr(cpu_addr))
++		vm_flags_set(vma, VM_MIXEDMAP);
  
--	ndev->ctrl_reg = pci_iomap(pdev, ndev->ctrl_reg_bar, 0);
-+	ndev->ctrl_reg = pci_iomap(pdev, ndev->barno_map[BAR_CONFIG], 0);
- 	if (!ndev->ctrl_reg) {
- 		ret = -EIO;
- 		goto err_pci_regions;
- 	}
- 
--	if (ndev->peer_spad_reg_bar) {
--		ndev->peer_spad_reg = pci_iomap(pdev, ndev->peer_spad_reg_bar, 0);
-+	if (ndev->barno_map[BAR_PEER_SPAD] != ndev->barno_map[BAR_CONFIG]) {
-+		ndev->peer_spad_reg = pci_iomap(pdev,
-+						ndev->barno_map[BAR_PEER_SPAD], 0);
- 		if (!ndev->peer_spad_reg) {
- 			ret = -EIO;
- 			goto err_pci_regions;
-@@ -614,7 +624,7 @@ static int ntb_epf_init_pci(struct ntb_epf_dev *ndev,
- 		ndev->peer_spad_reg = ndev->ctrl_reg + spad_off  + spad_sz;
- 	}
- 
--	ndev->db_reg = pci_iomap(pdev, ndev->db_reg_bar, 0);
-+	ndev->db_reg = pci_iomap(pdev, ndev->barno_map[BAR_DB], 0);
- 	if (!ndev->db_reg) {
- 		ret = -EIO;
- 		goto err_pci_regions;
-@@ -659,12 +669,7 @@ static void ntb_epf_cleanup_isr(struct ntb_epf_dev *ndev)
- static int ntb_epf_pci_probe(struct pci_dev *pdev,
- 			     const struct pci_device_id *id)
- {
--	enum pci_barno peer_spad_reg_bar = BAR_1;
--	enum pci_barno ctrl_reg_bar = BAR_0;
--	enum pci_barno db_reg_bar = BAR_2;
--	enum pci_barno mw_bar = BAR_2;
- 	struct device *dev = &pdev->dev;
--	struct ntb_epf_data *data;
- 	struct ntb_epf_dev *ndev;
- 	int ret;
- 
-@@ -675,18 +680,10 @@ static int ntb_epf_pci_probe(struct pci_dev *pdev,
- 	if (!ndev)
- 		return -ENOMEM;
- 
--	data = (struct ntb_epf_data *)id->driver_data;
--	if (data) {
--		peer_spad_reg_bar = data->peer_spad_reg_bar;
--		ctrl_reg_bar = data->ctrl_reg_bar;
--		db_reg_bar = data->db_reg_bar;
--		mw_bar = data->mw_bar;
--	}
-+	ndev->barno_map = (const enum pci_barno *)id->driver_data;
-+	if (!ndev->barno_map)
-+		return -EINVAL;
- 
--	ndev->peer_spad_reg_bar = peer_spad_reg_bar;
--	ndev->ctrl_reg_bar = ctrl_reg_bar;
--	ndev->db_reg_bar = db_reg_bar;
--	ndev->mw_bar = mw_bar;
- 	ndev->dev = dev;
- 
- 	ntb_epf_init_struct(ndev, pdev);
-@@ -730,30 +727,36 @@ static void ntb_epf_pci_remove(struct pci_dev *pdev)
- 	ntb_epf_deinit_pci(ndev);
- }
- 
--static const struct ntb_epf_data j721e_data = {
--	.ctrl_reg_bar = BAR_0,
--	.peer_spad_reg_bar = BAR_1,
--	.db_reg_bar = BAR_2,
--	.mw_bar = BAR_2,
-+static const enum pci_barno j721e_map[NTB_BAR_NUM] = {
-+	[BAR_CONFIG]	= BAR_0,
-+	[BAR_PEER_SPAD]	= BAR_1,
-+	[BAR_DB]	= BAR_2,
-+	[BAR_MW1]	= BAR_2,
-+	[BAR_MW2]	= BAR_3,
-+	[BAR_MW3]	= BAR_4,
-+	[BAR_MW4]	= BAR_5
- };
- 
--static const struct ntb_epf_data mx8_data = {
--	.ctrl_reg_bar = BAR_0,
--	.peer_spad_reg_bar = BAR_0,
--	.db_reg_bar = BAR_2,
--	.mw_bar = BAR_4,
-+static const enum pci_barno mx8_map[NTB_BAR_NUM] = {
-+	[BAR_CONFIG]	= BAR_0,
-+	[BAR_PEER_SPAD]	= BAR_0,
-+	[BAR_DB]	= BAR_2,
-+	[BAR_MW1]	= BAR_4,
-+	[BAR_MW2]	= BAR_5,
-+	[BAR_MW3]	= NO_BAR,
-+	[BAR_MW4]	= NO_BAR
- };
- 
- static const struct pci_device_id ntb_epf_pci_tbl[] = {
- 	{
- 		PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721E),
- 		.class = PCI_CLASS_MEMORY_RAM << 8, .class_mask = 0xffff00,
--		.driver_data = (kernel_ulong_t)&j721e_data,
-+		.driver_data = (kernel_ulong_t)j721e_map,
- 	},
- 	{
- 		PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, 0x0809),
- 		.class = PCI_CLASS_MEMORY_RAM << 8, .class_mask = 0xffff00,
--		.driver_data = (kernel_ulong_t)&mx8_data,
-+		.driver_data = (kernel_ulong_t)mx8_map,
- 	},
- 	{ },
- };
+ 	rc = dma_mmap_coherent(hdev->dev, vma, cpu_addr, dma_addr, size);
+ 	if (rc)
 -- 
 2.51.0
 
