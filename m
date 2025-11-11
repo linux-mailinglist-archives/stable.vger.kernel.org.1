@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-194005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A15C4AC6A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E56C4B1B1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5875C4FB90B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55DAA1894EC7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5151E33FE34;
-	Tue, 11 Nov 2025 01:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4DC33FE12;
+	Tue, 11 Nov 2025 01:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yROIDvlL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNavkdU7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDFC26560B;
-	Tue, 11 Nov 2025 01:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2979A26CE04;
+	Tue, 11 Nov 2025 01:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824580; cv=none; b=jvg/DI1X9OLz6cuOw/KZhUgsb74mijT/wDmKNcrh2GPcKyApqXTTw16zJGkJR493iDxb3eg9EHIIMrd3JVZ6EhetHHchLm7juK2SlRkXDD4DpZHoKfMZMzhDtBHjb6t4ofYiCGI8lB8dxPRCtCqeyBVY/C3nIyRHDPDt+Tk3iDc=
+	t=1762825424; cv=none; b=flFFXay0GhdQH6sw3ff6mcvcXbTbiuKwni36jS7K1fuUjprnQ5RCTHeV39Y5rLLFQk6rN57f8Ae/AsaAb2DvaLKKSZTN4fTmtHkPzZSf9vn+ARNazPDczILnnsTGekjt/Whkjqa4ZG4S//dcZPcO63LUarCdtakxonFD1yPBF78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824580; c=relaxed/simple;
-	bh=xyK1/PLGk1KWis+3hee2oofhdVWkGo2/XAhXnvNnWzo=;
+	s=arc-20240116; t=1762825424; c=relaxed/simple;
+	bh=b2cfvkWSz90q/8oiwsJJT6rcH++g3msIBfPpQrpWmdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yng2/XjROUbYGD1EqP/Pr8AcC4cOocWo1mCY9SmSMxreWSyXU9/74HNN/vRArQkoe7pLB5mcE0z4Y3i4JzGZBYvd8XQ+dsS+Nu6FfTostwJBNqgtOoN4JXxltXkc4Hz6IV0fel9BJj1COZ5rdMO9PYEBVyGnIqahk2sxA6KPZwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yROIDvlL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAA6C4AF09;
-	Tue, 11 Nov 2025 01:29:39 +0000 (UTC)
+	 MIME-Version; b=lZSOK5t+ewxTfUjW8AFALkhbxWYxqL3ZLUsL5IN/OuLeu/eJZJoNwlCwbUWJ5WOIkwLlbUYaJjm+16TTt+rYTqqkHix71NY6h7+m+OM+PRq2irRUXCYd5M9p311RH6DRJYFd2Ve2qOftQ8GvGBvIUM4pg3hUkrLezy1/nLQRH3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oNavkdU7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92829C113D0;
+	Tue, 11 Nov 2025 01:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824579;
-	bh=xyK1/PLGk1KWis+3hee2oofhdVWkGo2/XAhXnvNnWzo=;
+	s=korg; t=1762825423;
+	bh=b2cfvkWSz90q/8oiwsJJT6rcH++g3msIBfPpQrpWmdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yROIDvlLD4pfZbyx8c/bJu4ePRVjv8kMm8GiZMUcW4GJ5f2eL4hiiR50cmjv4av9Q
-	 Md20NBVv1/dn1OM9HIVc+/qbQz0euAh2ISheNm2KaIovEi98H71rQWdGT4PAnUyK+A
-	 SgM0bW3IztHNpCtH4Oe5Zrc/JIilbYoqinDUIoPw=
+	b=oNavkdU7N6+vs9Evf33Rdc77ocbieLrhP57o3egMUAx9nMZCZxocsl0+CAg5VWd9u
+	 QcVz1cf1clUf/1eRbYn0HBWtF/YhBdff96aM3q1CBRFMtHZSz2XWOkm4huYFzWWcmC
+	 U9rByOBO1kk7l3tzvDVhKm/IKl/b5bF0czrVwicA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	syzbot+a546141ca6d53b90aba3@syzkaller.appspotmail.com,
+	Tim Hostetler <thostet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Joshua Washington <joshwash@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 473/565] clk: ti: am33xx: keep WKUP_DEBUGSS_CLKCTRL enabled
+Subject: [PATCH 6.17 759/849] gve: Implement settime64 with -EOPNOTSUPP
 Date: Tue, 11 Nov 2025 09:45:29 +0900
-Message-ID: <20251111004537.552812302@linuxfoundation.org>
+Message-ID: <20251111004554.784138922@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@tq-group.com>
+From: Tim Hostetler <thostet@google.com>
 
-[ Upstream commit 1e0d75258bd09323cb452655549e03975992b29e ]
+[ Upstream commit 329d050bbe63c2999f657cf2d3855be11a473745 ]
 
-As described in AM335x Errata Advisory 1.0.42, WKUP_DEBUGSS_CLKCTRL
-can't be disabled - the clock module will just be stuck in transitioning
-state forever, resulting in the following warning message after the wait
-loop times out:
+ptp_clock_settime() assumes every ptp_clock has implemented settime64().
+Stub it with -EOPNOTSUPP to prevent a NULL dereference.
 
-    l3-aon-clkctrl:0000:0: failed to disable
-
-Just add the clock to enable_init_clks, so no attempt is made to disable
-it.
-
-Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Acked-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: acd16380523b ("gve: Add initial PTP device support")
+Reported-by: syzbot+a546141ca6d53b90aba3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a546141ca6d53b90aba3
+Signed-off-by: Tim Hostetler <thostet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Link: https://patch.msgid.link/20251029184555.3852952-3-joshwash@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/ti/clk-33xx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/google/gve/gve_ptp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/clk/ti/clk-33xx.c b/drivers/clk/ti/clk-33xx.c
-index 85c50ea39e6da..9269e6a0db6a4 100644
---- a/drivers/clk/ti/clk-33xx.c
-+++ b/drivers/clk/ti/clk-33xx.c
-@@ -258,6 +258,8 @@ static const char *enable_init_clks[] = {
- 	"dpll_ddr_m2_ck",
- 	"dpll_mpu_m2_ck",
- 	"l3_gclk",
-+	/* WKUP_DEBUGSS_CLKCTRL - disable fails, AM335x Errata Advisory 1.0.42 */
-+	"l3-aon-clkctrl:0000:0",
- 	/* AM3_L3_L3_MAIN_CLKCTRL, needed during suspend */
- 	"l3-clkctrl:00bc:0",
- 	"l4hs_gclk",
+diff --git a/drivers/net/ethernet/google/gve/gve_ptp.c b/drivers/net/ethernet/google/gve/gve_ptp.c
+index 19ae699d4b18d..a384a9ed4914e 100644
+--- a/drivers/net/ethernet/google/gve/gve_ptp.c
++++ b/drivers/net/ethernet/google/gve/gve_ptp.c
+@@ -33,6 +33,12 @@ static int gve_ptp_gettimex64(struct ptp_clock_info *info,
+ 	return -EOPNOTSUPP;
+ }
+ 
++static int gve_ptp_settime64(struct ptp_clock_info *info,
++			     const struct timespec64 *ts)
++{
++	return -EOPNOTSUPP;
++}
++
+ static long gve_ptp_do_aux_work(struct ptp_clock_info *info)
+ {
+ 	const struct gve_ptp *ptp = container_of(info, struct gve_ptp, info);
+@@ -55,6 +61,7 @@ static const struct ptp_clock_info gve_ptp_caps = {
+ 	.owner          = THIS_MODULE,
+ 	.name		= "gve clock",
+ 	.gettimex64	= gve_ptp_gettimex64,
++	.settime64	= gve_ptp_settime64,
+ 	.do_aux_work	= gve_ptp_do_aux_work,
+ };
+ 
 -- 
 2.51.0
 
