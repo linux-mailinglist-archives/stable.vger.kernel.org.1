@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-193995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBC03C4AA15
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1382C4A6FB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 97F4D34C7B6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0DBD1892D97
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFF533BBB5;
-	Tue, 11 Nov 2025 01:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9EC274FE3;
+	Tue, 11 Nov 2025 01:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00KXPD8m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzuGPhVu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA312BE7B8;
-	Tue, 11 Nov 2025 01:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4115248883;
+	Tue, 11 Nov 2025 01:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824556; cv=none; b=ICC7XyZYv2KE9L4ddRyNrxT78/EaxROnUVIgCd2gu7NiYrWKIzXB7I25QLYbmg8wga9zB6tcCteOzWwS3nvA3aGZOFIg/Ok9Axr7l2lcDK187fltgTT4+NGWdAykyO+k++YSOwUE15aMNmIyKZ7Qb/jhi1N14GBDzLCJSRZ+I/Q=
+	t=1762823392; cv=none; b=sA/hOIviqypSl2a/qIr67PmSrneJvZlPtWcGhyzJdf3hNqOjq9aXyKqWMpvUJaUfKh152lUdNkqP4j1LxKD14rm4X76GHKqKXF5zDYlZoBfRANDss3Rqyc5fPdp+2MRUwomgaiguunb7y+XCg22jPSL+Cc5RKXZ8eOYVjo/o3Fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824556; c=relaxed/simple;
-	bh=ATNOZwyJ5D25yPtGLg4KcnLuWADrxhQl08ukv0kzR8o=;
+	s=arc-20240116; t=1762823392; c=relaxed/simple;
+	bh=MnbVzu8TaPU1OP+dH1fTUmJjynS4OIAaF6f34ptyn50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cIO6h4CAc8SCtoKK4IN6pU9sD+VtNightUJmNT6GbDbzbkBRMiHPs68Zbiv2CVC2lvrUsyWa7O+cmdXDPNBxd4FcqHvU2yymjO8ZckSW7BXY0Bv4zfCsgDNsLNjknKcdJq6IBMdQkuxB3TzzXk8ZgzpzzjlUL//yfMvDjYxfjeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00KXPD8m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184E9C19421;
-	Tue, 11 Nov 2025 01:29:15 +0000 (UTC)
+	 MIME-Version; b=fqn0uvGD9a8feKwmKu1NqMQ3db/JeQDJx2ntKyMFcaypSi2TW2qMH/WX6vr/rVzB/lvDJzhAlkj6IE9KuuINWNTWPRc2U+EKIIPSwJmCKlHCoHzTciRGJQwDiY+zb6ZHNdIgF4BZLp+ZsxA90lkgeX7Kw9K8HOckWiSFjseJ94o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzuGPhVu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7515CC4CEF5;
+	Tue, 11 Nov 2025 01:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824556;
-	bh=ATNOZwyJ5D25yPtGLg4KcnLuWADrxhQl08ukv0kzR8o=;
+	s=korg; t=1762823392;
+	bh=MnbVzu8TaPU1OP+dH1fTUmJjynS4OIAaF6f34ptyn50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00KXPD8mH19/3DNTe0yKzrKU0VTaYe8X29Wfysv5QFnEtlTB42JwEaOHKafUVFvqP
-	 HloWDCyklTZ5Nuii5jyWrrsCU1N8P4xBhzTLbgG6/bKMQAWzslY8mD9FoZ4lxHxTXU
-	 dhgnNvmlTpLLcMfaiEebjmvieF3VtGQRAP9RCUQw=
+	b=GzuGPhVuGuWwDRYFPEfXWKLm8AZ0IdSarlSYrNQjNGawWXgLy5huwYBuJ0v05PJtY
+	 3zvkJ6hEjwYQBz+napnXDccHZui1lMo9UbQT3iLaFuyD6mc53mrALTe1RBlSZldrkn
+	 uSHKdOvv1yfkJDT7Bzh9Y320avbzPqZh5McOi6JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 523/849] net: devmem: expose tcp_recvmsg_locked errors
-Date: Tue, 11 Nov 2025 09:41:33 +0900
-Message-ID: <20251111004549.067210126@linuxfoundation.org>
+Subject: [PATCH 6.12 238/565] f2fs: fix to detect potential corrupted nid in free_nid_list
+Date: Tue, 11 Nov 2025 09:41:34 +0900
+Message-ID: <20251111004532.270540298@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@fomichev.me>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 18282100d7040614b553f1cad737cb689c04e2b9 ]
+[ Upstream commit 8fc6056dcf79937c46c97fa4996cda65956437a9 ]
 
-tcp_recvmsg_dmabuf can export the following errors:
-- EFAULT when linear copy fails
-- ETOOSMALL when cmsg put fails
-- ENODEV if one of the frags is readable
-- ENOMEM on xarray failures
+As reported, on-disk footer.ino and footer.nid is the same and
+out-of-range, let's add sanity check on f2fs_alloc_nid() to detect
+any potential corruption in free_nid_list.
 
-But they are all ignored and replaced by EFAULT in the caller
-(tcp_recvmsg_locked). Expose real error to the userspace to
-add more transparency on what specifically fails.
-
-In non-devmem case (skb_copy_datagram_msg) doing `if (!copied)
-copied=-EFAULT` is ok because skb_copy_datagram_msg can return only EFAULT.
-
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20250910162429.4127997-1-sdf@fomichev.me
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/node.c          | 17 ++++++++++++++++-
+ include/linux/f2fs_fs.h |  1 +
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index ba36f558f144c..f421cad69d8c9 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2821,9 +2821,9 @@ static int tcp_recvmsg_locked(struct sock *sk, struct msghdr *msg, size_t len,
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 7c27878293697..720768d574ae6 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -27,12 +27,17 @@ static struct kmem_cache *free_nid_slab;
+ static struct kmem_cache *nat_entry_set_slab;
+ static struct kmem_cache *fsync_node_entry_slab;
  
- 				err = tcp_recvmsg_dmabuf(sk, skb, offset, msg,
- 							 used);
--				if (err <= 0) {
-+				if (err < 0) {
- 					if (!copied)
--						copied = -EFAULT;
-+						copied = err;
++static inline bool is_invalid_nid(struct f2fs_sb_info *sbi, nid_t nid)
++{
++	return nid < F2FS_ROOT_INO(sbi) || nid >= NM_I(sbi)->max_nid;
++}
++
+ /*
+  * Check whether the given nid is within node id range.
+  */
+ int f2fs_check_nid_range(struct f2fs_sb_info *sbi, nid_t nid)
+ {
+-	if (unlikely(nid < F2FS_ROOT_INO(sbi) || nid >= NM_I(sbi)->max_nid)) {
++	if (unlikely(is_invalid_nid(sbi, nid))) {
+ 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+ 		f2fs_warn(sbi, "%s: out-of-range nid=%x, run fsck to fix.",
+ 			  __func__, nid);
+@@ -2609,6 +2614,16 @@ bool f2fs_alloc_nid(struct f2fs_sb_info *sbi, nid_t *nid)
+ 		f2fs_bug_on(sbi, list_empty(&nm_i->free_nid_list));
+ 		i = list_first_entry(&nm_i->free_nid_list,
+ 					struct free_nid, list);
++
++		if (unlikely(is_invalid_nid(sbi, i->nid))) {
++			spin_unlock(&nm_i->nid_list_lock);
++			f2fs_err(sbi, "Corrupted nid %u in free_nid_list",
++								i->nid);
++			f2fs_stop_checkpoint(sbi, false,
++					STOP_CP_REASON_CORRUPTED_NID);
++			return false;
++		}
++
+ 		*nid = i->nid;
  
- 					break;
- 				}
+ 		__move_free_nid(sbi, i, FREE_NID, PREALLOC_NID);
+diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
+index 5206d63b33860..cc13b4e0e9147 100644
+--- a/include/linux/f2fs_fs.h
++++ b/include/linux/f2fs_fs.h
+@@ -79,6 +79,7 @@ enum stop_cp_reason {
+ 	STOP_CP_REASON_FLUSH_FAIL,
+ 	STOP_CP_REASON_NO_SEGMENT,
+ 	STOP_CP_REASON_CORRUPTED_FREE_BITMAP,
++	STOP_CP_REASON_CORRUPTED_NID,
+ 	STOP_CP_REASON_MAX,
+ };
+ 
 -- 
 2.51.0
 
