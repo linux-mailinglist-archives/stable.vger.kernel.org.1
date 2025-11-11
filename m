@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A65C4A8C4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1956BC4AEDD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 04E7E4F578B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5DECA4F90A4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3DD338918;
-	Tue, 11 Nov 2025 01:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA11F26A0C7;
+	Tue, 11 Nov 2025 01:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jnqd+S8o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+gRYImZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0183335060;
-	Tue, 11 Nov 2025 01:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C15253944;
+	Tue, 11 Nov 2025 01:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823972; cv=none; b=ok6RHgRvpREyEZs435PLvpGH7BNHiMQ58SiZ5WKnQsKIa0NKtPHqt8Tlj9AU9od73mjh/8c+44ykz78N4q6vG6LESrjFsL3a5Mm4kLvF4/ekTZZwiidPDFAN0ES332YOyOiAn4wzT09G19WrCay56QVuEC6WZcQBeWooRBNWsc0=
+	t=1762824952; cv=none; b=d2S8deWyRAm03I+MWmXlZrSEb8M6BD7reHlpdYencRiB0NEtG55tISUCwfwavsP1RMc5b2ktni2UU2aOSaPajX6cMpjOvQhtnYC+iXixcs/f4V99hwmS27/TNGUOA1llDnaJLRDe6BOl+DeVXjZ7yF5j6aem8RoxHUhYsEJuwoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823972; c=relaxed/simple;
-	bh=9nonu4U0rxm3Q6jjBPDcrpXfLZl4OqzhJazJQLy1iyE=;
+	s=arc-20240116; t=1762824952; c=relaxed/simple;
+	bh=nKK7Vspx6XNYVoDT8QPJrf58DwtUIWvW4l4bmKqqPkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DW87cxg12LEYJ3GRqQtiJ0u0BZdlGWoYUql6z9VTqoI2PRgIVjJaPFpSBZ0HEZ8VZAh0x/rxRxsbwkrIB4Yyg5fRF+s1KIJ/7wFI7dHVJoiWvlMqQ5UMP8L6Ge1C3i/wH3u2n0yIJ9MfS+jt6waTaGlDa+8FzJvwVmb/7tayMuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jnqd+S8o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612ABC116B1;
-	Tue, 11 Nov 2025 01:19:32 +0000 (UTC)
+	 MIME-Version; b=jtAO8/X2lYFuP6uvwSkEATuXCxtiwAfZMo878B61eVSPcta/m7WdrP1KYVgqj/1ZCzr5SPyFCLQwVdhN3qcr27nnI8i8FZHPzbZTnMxrKQ0p9jlEWIkiexAjerWRvp97biRotf8HOjtQuAllaQ1Pup8qCElvP1hFNH1on2AMJeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+gRYImZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0486BC116B1;
+	Tue, 11 Nov 2025 01:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823972;
-	bh=9nonu4U0rxm3Q6jjBPDcrpXfLZl4OqzhJazJQLy1iyE=;
+	s=korg; t=1762824952;
+	bh=nKK7Vspx6XNYVoDT8QPJrf58DwtUIWvW4l4bmKqqPkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jnqd+S8oCkD0hfbNWHOK3l4lI4O1rdbEQQzXt34j3OnOFaZdlQ3atYhx7xbgqg2AQ
-	 kFqTaUxmK5i4vMC7YM8F/FY1FSy9a8+dhz2y+W12EuPEVxrqyD5vl1hjr95FYQdijM
-	 fuyidrgIl8EdcMhrgLGmwkWXsL+FP6Yqv2JhQQKk=
+	b=W+gRYImZDdSQI7bNFkyFfAUs34+BqgfmJnvZ7kcXv6/L5AcYaj3fNrO93O4ZY0Y68
+	 tnbbT0pUQUNP0d/UhuqQZJXHW/vEdHbDIJLTYhSfVXRDOgoCCMXJziPNw87Gn7K8d5
+	 DlYpXO8xDZ1iVwZcw0yoV0S1yKUfnL7Ilt4Pjqbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nidhish A N <nidhish.a.n@intel.com>,
-	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	ChunHao Lin <hau@realtek.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 317/565] wifi: iwlwifi: fw: Add ASUS to PPAG and TAS list
-Date: Tue, 11 Nov 2025 09:42:53 +0900
-Message-ID: <20251111004534.019168456@linuxfoundation.org>
+Subject: [PATCH 6.17 604/849] r8169: set EEE speed down ratio to 1
+Date: Tue, 11 Nov 2025 09:42:54 +0900
+Message-ID: <20251111004551.024646572@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nidhish A N <nidhish.a.n@intel.com>
+From: ChunHao Lin <hau@realtek.com>
 
-[ Upstream commit c5318e6e1c6436ce35ba521d96975e13cc5119f7 ]
+[ Upstream commit bf7154ffb1c65a201906296a9d3eb22e9daa5ffc ]
 
-Add ASUS to the list of OEMs that are allowed to use
-the PPAG and TAS feature.
+EEE speed down means speed down MAC MCU clock. It is not from spec.
+It is kind of Realtek specific power saving feature. But enable it
+may cause some issues, like packet drop or interrupt loss. Different
+hardware may have different issues.
 
-Signed-off-by: Nidhish A N <nidhish.a.n@intel.com>
-Reviewed-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250909061931.499af6568e89.Iafb2cb1c83ff82712c0e9d5529f76bc226ed12dd@changeid
+EEE speed down ratio (mac ocp 0xe056[7:4]) is used to set EEE speed
+down rate. The larger this value is, the more power can save. But it
+actually save less power then we expected. And, as mentioned above,
+will impact compatibility. So set it to 1 (mac ocp 0xe056[7:4] = 0)
+, which means not to speed down, to improve compatibility.
+
+Signed-off-by: ChunHao Lin <hau@realtek.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/20250918023425.3463-1-hau@realtek.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/regulatory.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-index 4d9a1f83ef8c2..03af858440604 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-@@ -57,11 +57,16 @@ static const struct dmi_system_id dmi_ppag_approved_list[] = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
- 		},
- 	},
--	{ .ident = "ASUS",
-+	{ .ident = "ASUSTEK",
- 	  .matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 		},
- 	},
-+	{ .ident = "ASUS",
-+	  .matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUS"),
-+		},
-+	},
- 	{ .ident = "GOOGLE-HP",
- 	  .matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Google"),
-@@ -134,11 +139,16 @@ static const struct dmi_system_id dmi_tas_approved_list[] = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
- 		},
- 	},
--	{ .ident = "ASUS",
-+	{ .ident = "ASUSTEK",
- 	  .matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 		},
- 	},
-+	{ .ident = "ASUS",
-+	  .matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUS"),
-+		},
-+	},
- 	{ .ident = "GOOGLE-HP",
- 	  .matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Google"),
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 4b0ac73565ea9..bf79e2e9b7ecb 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -3409,7 +3409,7 @@ static void rtl_hw_start_8168h_1(struct rtl8169_private *tp)
+ 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
+ 	}
+ 
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xe052, 0x6000, 0x8008);
+ 	r8168_mac_ocp_modify(tp, 0xe0d6, 0x01ff, 0x017f);
+ 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
+@@ -3514,7 +3514,7 @@ static void rtl_hw_start_8117(struct rtl8169_private *tp)
+ 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
+ 	}
+ 
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_write(tp, 0xea80, 0x0003);
+ 	r8168_mac_ocp_modify(tp, 0xe052, 0x0000, 0x0009);
+ 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
+@@ -3715,7 +3715,7 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
+ 	r8168_mac_ocp_modify(tp, 0xc0b4, 0x0000, 0x000c);
+ 	r8168_mac_ocp_modify(tp, 0xeb6a, 0x00ff, 0x0033);
+ 	r8168_mac_ocp_modify(tp, 0xeb50, 0x03e0, 0x0040);
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0030);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xe040, 0x1000, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xea1c, 0x0003, 0x0001);
+ 	if (tp->mac_version == RTL_GIGA_MAC_VER_70 ||
 -- 
 2.51.0
 
