@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-194057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76F3C4ACBF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:52 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5FCFC4A578
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:20:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 498ED188A0AF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:44 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 92E9E34BF20
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A573446AA;
-	Tue, 11 Nov 2025 01:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35878343D60;
+	Tue, 11 Nov 2025 01:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O01TN+7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgEZN0M8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0512E6CA4;
-	Tue, 11 Nov 2025 01:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42902D9497;
+	Tue, 11 Nov 2025 01:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824704; cv=none; b=jyaHh+LAIYB5OPbRj6FQvJeq+hai+Te+UoFhb2vgTwTKJXhta7+kETia9t6GXZ8RWMzwtnt982zgZcgWWu9RvLQBvtRo0M1TXmkPOaL2Dz5pXwoRAxxvIVvaTtQ70iF4jehyc+QkATxdwk25h0y+uGaSRe7VEo7GLGJMDya1VSM=
+	t=1762823551; cv=none; b=boXoSyrYIkAUWNn66La4fSXvjkvlTgm8iTGD55Wk+T+5ai2rXSUkvCFHV0ydw0IUc/0s/tbP7Wk0FDoDTnlY0RvoTsRdGpL1okgSFqZz7f/OlhMCOL0/K66rlIeHtFQS0OBLwKScJReujC0366sZCgkv2zgFFe20LohfROBgf6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824704; c=relaxed/simple;
-	bh=mPNRHLMw1NUjAflDT9gul4zv5Cz9MnOQIL6InIp3SR4=;
+	s=arc-20240116; t=1762823551; c=relaxed/simple;
+	bh=eoDRwpVkre8Mun/kcOVethtcIob7gJe0FMWCK3VU2h4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s8A1pXpDaJhrFiPOi2dAVfLxy0Exq39eAy4c3rNFFmmS7pk02IbPt4dWWsVrlPbNiRCWP67MnOeAAFXW9xO6YshzPRzBhNcXq/bLteKhTwXKvNaqqLlGAwYlqb7KsLa6hwCThaTrSjSk7JaE7HR0wBXTfHqPEWyU/HzmbgdaMqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O01TN+7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE90C4AF0B;
-	Tue, 11 Nov 2025 01:31:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GxKSwsWstZJccEsIJtNNsBXrsVZglMEfrsPagnjcSk8BRCcYg8jcwCd2lvyjHhOAqjjlLi9nYL8KneGjzOztSw8JxUO4+fTm9bKa0+ePDjD3Q/Lqy7hfcLX59DI8FjaDvNuM7AfDIhwv05QB2+vslkaDhjrnfSG5bmT4XEuH3zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DgEZN0M8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF7EC19424;
+	Tue, 11 Nov 2025 01:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824704;
-	bh=mPNRHLMw1NUjAflDT9gul4zv5Cz9MnOQIL6InIp3SR4=;
+	s=korg; t=1762823550;
+	bh=eoDRwpVkre8Mun/kcOVethtcIob7gJe0FMWCK3VU2h4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O01TN+7GAovCFnoinlMoFgoQjs66PCAuoO/wmcA3LPkccpm1N/45Jlfafd9fzNuaV
-	 kVcFrTvf4geR8AJi4CO5u3UxnNk+RU/l6CK5fK/5wbWeDp4KC3aOHwu7w8OnPkoI18
-	 603P9qwRl0LsZXkaopQb64g3D/qLqMGe1h67Dji8=
+	b=DgEZN0M84Ogggyus3yWDRzkowTO+hSE8JjfXGA0SRzsh9evrSjTMLjsVRsgPcgLIX
+	 Pe1pPnRjAacnpHRT0rViuskUlAwEb8gaoPe7ozcDb1E497S9Yhpa/oYXQIVT91JFzC
+	 R4klps/PMvkELFI6zD5XjbwLqFMk2rJUc/LjC0DM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AceLan Kao <acelan.kao@canonical.com>,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Denis Benato <benato.denis96@gmail.com>,
-	=?UTF-8?q?Merthan=20Karaka=C5=9F?= <m3rthn.k@gmail.com>,
-	Eric Naim <dnaim@cachyos.org>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 554/849] drm/amd: Avoid evicting resources at S5
+Subject: [PATCH 6.12 268/565] drm/amdgpu: Respect max pixel clock for HDMI and DVI-D (v2)
 Date: Tue, 11 Nov 2025 09:42:04 +0900
-Message-ID: <20251111004549.802337279@linuxfoundation.org>
+Message-ID: <20251111004532.918446000@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,47 +63,113 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 531df041f2a5296174abd8292d298eb62fe1ea97 ]
+[ Upstream commit 585b2f685c56c5095cc22c7202bf74d8e9a73cdd ]
 
-Normally resources are evicted on dGPUs at suspend or hibernate and
-on APUs at hibernate.  These steps are unnecessary when using the S4
-callbacks to put the system into S5.
+Update the legacy (non-DC) display code to respect the maximum
+pixel clock for HDMI and DVI-D. Reject modes that would require
+a higher pixel clock than can be supported.
 
-Cc: AceLan Kao <acelan.kao@canonical.com>
-Cc: Kai-Heng Feng <kaihengf@nvidia.com>
-Cc: Mark Pearson <mpearson-lenovo@squebb.ca>
-Cc: Denis Benato <benato.denis96@gmail.com>
-Cc: Merthan Karakaş <m3rthn.k@gmail.com>
-Tested-by: Eric Naim <dnaim@cachyos.org>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Also update the maximum supported HDMI clock value depending on
+the ASIC type.
+
+For reference, see the DC code:
+check max_hdmi_pixel_clock in dce*_resource.c
+
+v2:
+Fix maximum clocks for DVI-D and DVI/HDMI adapters.
+
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../gpu/drm/amd/amdgpu/amdgpu_connectors.c    | 57 ++++++++++++++-----
+ 1 file changed, 44 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 56a737df87cc7..1115af343e013 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5016,6 +5016,10 @@ static int amdgpu_device_evict_resources(struct amdgpu_device *adev)
- 	if (!adev->in_s4 && (adev->flags & AMD_IS_APU))
- 		return 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
+index 344e0a9ee08a9..f9e679de79a7c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
+@@ -1195,29 +1195,60 @@ static void amdgpu_connector_dvi_force(struct drm_connector *connector)
+ 		amdgpu_connector->use_digital = true;
+ }
  
-+	/* No need to evict when going to S5 through S4 callbacks */
-+	if (system_state == SYSTEM_POWER_OFF)
-+		return 0;
++/**
++ * Returns the maximum supported HDMI (TMDS) pixel clock in KHz.
++ */
++static int amdgpu_max_hdmi_pixel_clock(const struct amdgpu_device *adev)
++{
++	if (adev->asic_type >= CHIP_POLARIS10)
++		return 600000;
++	else if (adev->asic_type >= CHIP_TONGA)
++		return 300000;
++	else
++		return 297000;
++}
 +
- 	ret = amdgpu_ttm_evict_resources(adev, TTM_PL_VRAM);
- 	if (ret) {
- 		dev_warn(adev->dev, "evicting device resources failed\n");
++/**
++ * Validates the given display mode on DVI and HDMI connectors,
++ * including analog signals on DVI-I.
++ */
+ static enum drm_mode_status amdgpu_connector_dvi_mode_valid(struct drm_connector *connector,
+ 					    struct drm_display_mode *mode)
+ {
+ 	struct drm_device *dev = connector->dev;
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+ 	struct amdgpu_connector *amdgpu_connector = to_amdgpu_connector(connector);
++	const int max_hdmi_pixel_clock = amdgpu_max_hdmi_pixel_clock(adev);
++	const int max_dvi_single_link_pixel_clock = 165000;
++	int max_digital_pixel_clock_khz;
+ 
+ 	/* XXX check mode bandwidth */
+ 
+-	if (amdgpu_connector->use_digital && (mode->clock > 165000)) {
+-		if ((amdgpu_connector->connector_object_id == CONNECTOR_OBJECT_ID_DUAL_LINK_DVI_I) ||
+-		    (amdgpu_connector->connector_object_id == CONNECTOR_OBJECT_ID_DUAL_LINK_DVI_D) ||
+-		    (amdgpu_connector->connector_object_id == CONNECTOR_OBJECT_ID_HDMI_TYPE_B)) {
+-			return MODE_OK;
+-		} else if (connector->display_info.is_hdmi) {
+-			/* HDMI 1.3+ supports max clock of 340 Mhz */
+-			if (mode->clock > 340000)
+-				return MODE_CLOCK_HIGH;
+-			else
+-				return MODE_OK;
+-		} else {
+-			return MODE_CLOCK_HIGH;
++	if (amdgpu_connector->use_digital) {
++		switch (amdgpu_connector->connector_object_id) {
++		case CONNECTOR_OBJECT_ID_HDMI_TYPE_A:
++			max_digital_pixel_clock_khz = max_hdmi_pixel_clock;
++			break;
++		case CONNECTOR_OBJECT_ID_SINGLE_LINK_DVI_I:
++		case CONNECTOR_OBJECT_ID_SINGLE_LINK_DVI_D:
++			max_digital_pixel_clock_khz = max_dvi_single_link_pixel_clock;
++			break;
++		case CONNECTOR_OBJECT_ID_DUAL_LINK_DVI_I:
++		case CONNECTOR_OBJECT_ID_DUAL_LINK_DVI_D:
++		case CONNECTOR_OBJECT_ID_HDMI_TYPE_B:
++			max_digital_pixel_clock_khz = max_dvi_single_link_pixel_clock * 2;
++			break;
+ 		}
++
++		/* When the display EDID claims that it's an HDMI display,
++		 * we use the HDMI encoder mode of the display HW,
++		 * so we should verify against the max HDMI clock here.
++		 */
++		if (connector->display_info.is_hdmi)
++			max_digital_pixel_clock_khz = max_hdmi_pixel_clock;
++
++		if (mode->clock > max_digital_pixel_clock_khz)
++			return MODE_CLOCK_HIGH;
+ 	}
+ 
+ 	/* check against the max pixel clock */
 -- 
 2.51.0
 
