@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32B7C4AD93
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0744CC4B27A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:04:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0F0164F69F4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC4243B6AD0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414C026B755;
-	Tue, 11 Nov 2025 01:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B37C2FB964;
+	Tue, 11 Nov 2025 01:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWJLrIjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEFQLsiE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F073726D4C7;
-	Tue, 11 Nov 2025 01:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DCD2F5474;
+	Tue, 11 Nov 2025 01:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824698; cv=none; b=rcVM8aJUoanOYnFvxVbvP1g984i8bl3mfmux6HKQrVcSmtkClXM6QmOssCPk0504OULr5yVy6RqYGRA30UNCKgOGdTrCMvOlxQXrzPxXboURfamRqZuIkLnRQVW4Pj031mj+m1qFp8SNVR9r3AOWuYRNsQdt0z5Pm2eIxZ4fqXs=
+	t=1762825403; cv=none; b=sihvKAH0Qc+V7I1FI6QBeOLvkYKJHvHmZYYUqNV6g+F97D0lVvzI2Yz2hg42XHLEqnuaiTJ19OLew1aNBkxs4/coUSdHuxocHp8p+7YPdmhjhYW3VbW/7tbou+alUzYNbd3o2SbCj3sKrITXyULEjIcLzYqlMQ8aTeBw9c/IKyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824698; c=relaxed/simple;
-	bh=bhFDN3PWoj8/3OXaqyoO1CCY7Aj/ZdVs77DZl7y9SeQ=;
+	s=arc-20240116; t=1762825403; c=relaxed/simple;
+	bh=PaD6wkp3CaeF02jEslQpXRFDnQJQavtGamFX37ix8PQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f3GVDv+zWfB/OFfhd/zfLJHRcsGpEzztQx7r01fEBxesTxcCBOveBTh4FCXkRBSrTCFGZlO4y76uMBaIuni3Z1I31UGPZM54ej+2Bj5iSe0Tl8jRVE76T+l3Qx1/mtf2Y+rWFgsWeRVSnBJLpOju3Fonh2SL7QH4xizbo9gPOew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWJLrIjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926CFC4CEFB;
-	Tue, 11 Nov 2025 01:31:37 +0000 (UTC)
+	 MIME-Version; b=StLpkcRRrQNbdabmwWHiqC1zMoQiwbNKCWkOP+7hYMnwEx16T4zc3y/iOkwfPhD9Ny69zLmi5Iv0GVxQH2NROYjmK3j4X1/zZMCKAbmCogcIA11Tcc9eWrxK6O8ydm/amP9oJO2H80Gs9VOsxxRqa8yYrd7dunKE0YPsfAi+ewU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEFQLsiE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F56C4CEFB;
+	Tue, 11 Nov 2025 01:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824697;
-	bh=bhFDN3PWoj8/3OXaqyoO1CCY7Aj/ZdVs77DZl7y9SeQ=;
+	s=korg; t=1762825402;
+	bh=PaD6wkp3CaeF02jEslQpXRFDnQJQavtGamFX37ix8PQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nWJLrIjM/bGiHWey+Wf9yZlLb7SlInyVUs51J7Gl9Y0zv5X8XDEWC0W9X/WekuOOf
-	 3wfaNAPag5FMhkQGawxnc47zKtU9RmA4SXCgznG2hPjF3PiRE9DOsR6buhZhJc38YC
-	 aYVtMNKGDGlT1W8vBZVg/e3VRy3A50kIqJM+H8Xs=
+	b=oEFQLsiEya7tFCkLIFQWJs5QoVbaR3RWuEUo3qlMo16D7tnvPJJ0r9NGz+KAERnIK
+	 /aa+IaRFNG2J1cqvZTpQ5CedHpyqt7bx7R8AcgrBe4Y/EFkEDFDJJJrfR7GYPwX2wH
+	 KxwRvM3mJaedqEB93QIGQapKjayQ2vUVDLOmb/BM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 500/565] btrfs: ensure no dirty metadata is written back for an fs with errors
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 786/849] netpoll: Fix deadlock in memory allocation under spinlock
 Date: Tue, 11 Nov 2025 09:45:56 +0900
-Message-ID: <20251111004538.188042778@linuxfoundation.org>
+Message-ID: <20251111004555.439027887@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit 2618849f31e7cf51fadd4a5242458501a6d5b315 upstream.
+[ Upstream commit 327c20c21d80e0d87834b392d83ae73c955ad8ff ]
 
-[BUG]
-During development of a minor feature (make sure all btrfs_bio::end_io()
-is called in task context), I noticed a crash in generic/388, where
-metadata writes triggered new works after btrfs_stop_all_workers().
+Fix a AA deadlock in refill_skbs() where memory allocation while holding
+skb_pool->lock can trigger a recursive lock acquisition attempt.
 
-It turns out that it can even happen without any code modification, just
-using RAID5 for metadata and the same workload from generic/388 is going
-to trigger the use-after-free.
+The deadlock scenario occurs when the system is under severe memory
+pressure:
 
-[CAUSE]
-If btrfs hits an error, the fs is marked as error, no new
-transaction is allowed thus metadata is in a frozen state.
+1. refill_skbs() acquires skb_pool->lock (spinlock)
+2. alloc_skb() is called while holding the lock
+3. Memory allocator fails and calls slab_out_of_memory()
+4. This triggers printk() for the OOM warning
+5. The console output path calls netpoll_send_udp()
+6. netpoll_send_udp() attempts to acquire the same skb_pool->lock
+7. Deadlock: the lock is already held by the same CPU
 
-But there are some metadata modifications before that error, and they are
-still in the btree inode page cache.
+Call stack:
+  refill_skbs()
+    spin_lock_irqsave(&skb_pool->lock)    <- lock acquired
+    __alloc_skb()
+      kmem_cache_alloc_node_noprof()
+        slab_out_of_memory()
+          printk()
+            console_flush_all()
+              netpoll_send_udp()
+                skb_dequeue()
+                  spin_lock_irqsave(&skb_pool->lock)     <- deadlock attempt
 
-Since there will be no real transaction commit, all those dirty folios
-are just kept as is in the page cache, and they can not be invalidated
-by invalidate_inode_pages2() call inside close_ctree(), because they are
-dirty.
+This bug was exposed by commit 248f6571fd4c51 ("netpoll: Optimize skb
+refilling on critical path") which removed refill_skbs() from the
+critical path (where nested printk was being deferred), letting nested
+printk being called from inside refill_skbs()
 
-And finally after btrfs_stop_all_workers(), we call iput() on btree
-inode, which triggers writeback of those dirty metadata.
+Refactor refill_skbs() to never allocate memory while holding
+the spinlock.
 
-And if the fs is using RAID56 metadata, this will trigger RMW and queue
-new works into rmw_workers, which is already stopped, causing warning
-from queue_work() and use-after-free.
+Another possible solution to fix this problem is protecting the
+refill_skbs() from nested printks, basically calling
+printk_deferred_{enter,exit}() in refill_skbs(), then, any nested
+pr_warn() would be deferred.
 
-[FIX]
-Add a special handling for write_one_eb(), that if the fs is already in
-an error state, immediately mark the bbio as failure, instead of really
-submitting them.
+I prefer this approach, given I _think_ it might be a good idea to move
+the alloc_skb() from GFP_ATOMIC to GFP_KERNEL in the future, so, having
+the alloc_skb() outside of the lock will be necessary step.
 
-Then during close_ctree(), iput() will just discard all those dirty
-tree blocks without really writing them back, thus no more new jobs for
-already stopped-and-freed workqueues.
+There is a possible TOCTOU issue when checking for the pool length, and
+queueing the new allocated skb, but, this is not an issue, given that
+an extra SKB in the pool is harmless and it will be eventually used.
 
-The extra discard in write_one_eb() also acts as an extra safenet.
-E.g. the transaction abort is triggered by some extent/free space
-tree corruptions, and since extent/free space tree is already corrupted
-some tree blocks may be allocated where they shouldn't be (overwriting
-existing tree blocks). In that case writing them back will further
-corrupting the fs.
-
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Fixes: 248f6571fd4c51 ("netpoll: Optimize skb refilling on critical path")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251103-fix_netpoll_aa-v4-1-4cfecdf6da7c@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/core/netpoll.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -1882,6 +1882,14 @@ static noinline_for_stack void write_one
- 			folio_unlock(folio);
- 		}
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 5f65b62346d4e..4ab154c614e33 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -228,19 +228,16 @@ static void refill_skbs(struct netpoll *np)
+ {
+ 	struct sk_buff_head *skb_pool;
+ 	struct sk_buff *skb;
+-	unsigned long flags;
+ 
+ 	skb_pool = &np->skb_pool;
+ 
+-	spin_lock_irqsave(&skb_pool->lock, flags);
+-	while (skb_pool->qlen < MAX_SKBS) {
++	while (READ_ONCE(skb_pool->qlen) < MAX_SKBS) {
+ 		skb = alloc_skb(MAX_SKB_SIZE, GFP_ATOMIC);
+ 		if (!skb)
+ 			break;
+ 
+-		__skb_queue_tail(skb_pool, skb);
++		skb_queue_tail(skb_pool, skb);
  	}
-+	/*
-+	 * If the fs is already in error status, do not submit any writeback
-+	 * but immediately finish it.
-+	 */
-+	if (unlikely(BTRFS_FS_ERROR(fs_info))) {
-+		btrfs_bio_end_io(bbio, errno_to_blk_status(BTRFS_FS_ERROR(fs_info)));
-+		return;
-+	}
- 	btrfs_submit_bbio(bbio, 0);
+-	spin_unlock_irqrestore(&skb_pool->lock, flags);
  }
  
+ static void zap_completion_queue(void)
+-- 
+2.51.0
+
 
 
 
