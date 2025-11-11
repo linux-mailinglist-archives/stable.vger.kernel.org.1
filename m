@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39C31C49FA1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EAE7C4A06D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C34823A28C1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BED094EF903
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B2324BBEB;
-	Tue, 11 Nov 2025 00:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F11252917;
+	Tue, 11 Nov 2025 00:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ofi3gnxq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEBvBIFP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB88246333;
-	Tue, 11 Nov 2025 00:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58F812DDA1;
+	Tue, 11 Nov 2025 00:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822330; cv=none; b=Ps9SQHVAFawII5atlFZyPA2BRmX83mlxKYYAm4PAt7xtWVYaWcgXGE8NSWj0CZXqOb3XRQQnakUVD84xrvR5U6QwmUB/bCQLIkTWTyK3HBU7ux23GImt7ZzRq4AngHu9ncsxkv+0tc7W3ARKNULn5/CfE5YiD1yA1iEpM0nUKLk=
+	t=1762822334; cv=none; b=kCGnMwyqsqX3FaztQwYl1garDQfHrAn2qYqGSXFwRsyNx57M6Gs1oQ9foJkiFgQ5CXlqQ42/8uRk0qoDADGsOURFlTVhzgiHG0Q+eU9dKx2k3QcjO9ZVyf9Ptqp99EKJQfcZF8RfCT3QzlQKO9jp/5H1KyU45WN1Cf48eTiiuEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822330; c=relaxed/simple;
-	bh=nlaUf78gJ4IIKy/scYtFEMXqd9ty01SoPDjIsSV7Z+Y=;
+	s=arc-20240116; t=1762822334; c=relaxed/simple;
+	bh=MqywhlTTt7qzgK1H+oMqAVJYJ9YbpwfLv4y2E+URqdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zc9dliviwsMg/5Tq4V4/cLkz9dm69qqOlW/+3oHamf1xF+H6rvHirDC34ocFHGBFJ4/eek5SCHx/ZlyD6TXo3nTQZhBr2osdEokmwwN5LpJZIUIWPmNHGMpHBTEjD3RagCuVkUHSrBjczBtvS3zpizlEyw+qLAOqD+TY+gb2agQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ofi3gnxq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E379C2BC86;
-	Tue, 11 Nov 2025 00:52:09 +0000 (UTC)
+	 MIME-Version; b=Ni9G38JU1+H2P4xWJZydd4ZJ2d3Jzl9iIwL5ZanrJt0/XsGPXGs8OOPlgp58X+R5RsoumERzPE5v9tWKQ6d4y08h/Jal/vxtHTs+bGEI3jMV9x+yq5n8GpkbMv7Du6ZzNykPIwx0v5s5eJVC0faKJIiJHbinOuZupICPKrHcuuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEBvBIFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BAEC16AAE;
+	Tue, 11 Nov 2025 00:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822329;
-	bh=nlaUf78gJ4IIKy/scYtFEMXqd9ty01SoPDjIsSV7Z+Y=;
+	s=korg; t=1762822334;
+	bh=MqywhlTTt7qzgK1H+oMqAVJYJ9YbpwfLv4y2E+URqdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ofi3gnxqwgM5Qr15avKG7Cen3QUWU0+NGyLvl3YN++WvkpRrYKCLIk0HBgp6ym2+Y
-	 5aOoyePSHnAcNwgavE2afCevrCR9JypZOuwgHuuPErKWICGQ1rraASOZ5JRIKJt2AN
-	 NXPyjSfFi6Oy11mLtFFmuztBFxY5OYGOD+aWU2Hs=
+	b=mEBvBIFPjxuNOAMVp9ebCIiXVNf88rzHIPmeVbSQTOX68cqmBlufemkbua1eN1uw4
+	 f8/APfp9O9zEOFldGsUuA6yziVDrB2gWyZJLtiGtgZTojK/gR68V4SK5cy24O77zz7
+	 MCTaa2ERc+F5cqLtp21ZQeBq6kKW0sbEN9cgT7Os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	David Gow <davidgow@google.com>,
+	Florian Schmaus <florian.schmaus@codasip.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/565] wifi: mac80211: fix key tailroom accounting leak
-Date: Tue, 11 Nov 2025 09:38:04 +0900
-Message-ID: <20251111004527.512340069@linuxfoundation.org>
+Subject: [PATCH 6.12 029/565] kunit: test_dev_action: Correctly cast priv pointer to long*
+Date: Tue, 11 Nov 2025 09:38:05 +0900
+Message-ID: <20251111004527.535542454@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,50 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Florian Schmaus <florian.schmaus@codasip.com>
 
-[ Upstream commit ed6a47346ec69e7f1659e0a1a3558293f60d5dd7 ]
+[ Upstream commit 2551a1eedc09f5a86f94b038dc1bb16855c256f1 ]
 
-For keys added by ieee80211_gtk_rekey_add(), we assume that
-they're already present in the hardware and set the flag
-KEY_FLAG_UPLOADED_TO_HARDWARE. However, setting this flag
-needs to be paired with decrementing the tailroom needed,
-which was missed.
+The previous implementation incorrectly assumed the original type of
+'priv' was void**, leading to an unnecessary and misleading
+cast. Correct the cast of the 'priv' pointer in test_dev_action() to
+its actual type, long*, removing an unnecessary cast.
 
-Fixes: f52a0b408ed1 ("wifi: mac80211: mark keys as uploaded when added by the driver")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20251019115358.c88eafb4083e.I69e9d4d78a756a133668c55b5570cf15a4b0e6a4@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+As an additional benefit, this fixes an out-of-bounds CHERI fault on
+hardware with architectural capabilities. The original implementation
+tried to store a capability-sized pointer using the priv
+pointer. However, the priv pointer's capability only granted access to
+the memory region of its original long type, leading to a bounds
+violation since the size of a long is smaller than the size of a
+capability. This change ensures that the pointer usage respects the
+capabilities' bounds.
+
+Link: https://lore.kernel.org/r/20251017092814.80022-1-florian.schmaus@codasip.com
+Fixes: d03c720e03bd ("kunit: Add APIs for managing devices")
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Florian Schmaus <florian.schmaus@codasip.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/key.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ lib/kunit/kunit-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index 7809fac6bae5d..b679ef23d28fd 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -508,11 +508,16 @@ static int ieee80211_key_replace(struct ieee80211_sub_if_data *sdata,
- 				ret = ieee80211_key_enable_hw_accel(new);
- 		}
- 	} else {
--		if (!new->local->wowlan)
-+		if (!new->local->wowlan) {
- 			ret = ieee80211_key_enable_hw_accel(new);
--		else if (link_id < 0 || !sdata->vif.active_links ||
--			 BIT(link_id) & sdata->vif.active_links)
-+		} else if (link_id < 0 || !sdata->vif.active_links ||
-+			 BIT(link_id) & sdata->vif.active_links) {
- 			new->flags |= KEY_FLAG_UPLOADED_TO_HARDWARE;
-+			if (!(new->conf.flags & (IEEE80211_KEY_FLAG_GENERATE_MMIC |
-+						 IEEE80211_KEY_FLAG_PUT_MIC_SPACE |
-+						 IEEE80211_KEY_FLAG_RESERVE_TAILROOM)))
-+				decrease_tailroom_need_count(sdata, 1);
-+		}
- 	}
+diff --git a/lib/kunit/kunit-test.c b/lib/kunit/kunit-test.c
+index d9c781c859fde..580374e081071 100644
+--- a/lib/kunit/kunit-test.c
++++ b/lib/kunit/kunit-test.c
+@@ -735,7 +735,7 @@ static struct kunit_case kunit_current_test_cases[] = {
  
- 	if (ret)
+ static void test_dev_action(void *priv)
+ {
+-	*(void **)priv = (void *)1;
++	*(long *)priv = 1;
+ }
+ 
+ static void kunit_device_test(struct kunit *test)
 -- 
 2.51.0
 
