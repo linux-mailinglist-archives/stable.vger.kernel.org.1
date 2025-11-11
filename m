@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-193630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468E8C4A6F3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D244FC4A7CA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8BF694F752C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F109188F3DD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5067267386;
-	Tue, 11 Nov 2025 01:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718B72652AF;
+	Tue, 11 Nov 2025 01:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyUNN9gu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpzlZdv9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B0F345CD8;
-	Tue, 11 Nov 2025 01:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D554266B6F;
+	Tue, 11 Nov 2025 01:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823636; cv=none; b=QVEkVP9luc8vkPVmy2nT13jiX+pGNa3Z9c5SsREVP6RP2AUcwvs6Su+g8+BaX96mOs+NHp+pVkZcJ1QcY4sAWF8eYFpGUyVdCumxZW0XhZz79jse3DYdr983Oew5k3nZYzNxlTO8OC7xJpyFRt2urplca4Iy5hxxvQoNpaeO7BE=
+	t=1762823641; cv=none; b=e0L3r0YFPG4Lm0de1gQWIq7nmb24dpKdn7yAvKkZfKd8VabCvkEDvPd57qXEgWXK8BHETz5wkQCBTabb164SOyFZGg6uTvpEy/9yEVVgNERWEFM534LUqv/Yb6vey2PFA+dQUG/Nuh107rxt1mOfDiI//K0KF5f/dQb1bxbCc90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823636; c=relaxed/simple;
-	bh=VxH1kU4/3MP6NU2h5HHDNZ608ZHfM0PYaJ3b5RPyU4E=;
+	s=arc-20240116; t=1762823641; c=relaxed/simple;
+	bh=6ryN/w0fyT3yJzMqa3UehYmKi38GVhhL6dTnjdYvY1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTz4S3tSo5ZEyIV9F3biS5zDhjsZrlKyJhyonorvfsDyFpBeie7nltUE2mifWxfuECp75l05qxuxM+NuyNBIOY5iI2HdcfJTNc0N+21jOD7OIQPZ0JtzMg5a57dFNASO+9lzcpVeHstLmdv/FDXM7l0S+sFRvp89TjfswJQT+ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyUNN9gu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED807C113D0;
-	Tue, 11 Nov 2025 01:13:55 +0000 (UTC)
+	 MIME-Version; b=uC5swRUhnpyVarX5UMfXgZjhfFFDVjTFFoRp3vdvOqKkK+rMBnq8ahB09e6FkDy0+grGEhiSTCt+r3AK4Uq+gy/PQB2qQTI1DMnnigojIIxcSp6d7wd2smEMY0s5VeWdtsSvNTS1tC+VixgsetUoTtsm70yjI/2mbbNzox2IX4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpzlZdv9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC796C4CEF5;
+	Tue, 11 Nov 2025 01:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823636;
-	bh=VxH1kU4/3MP6NU2h5HHDNZ608ZHfM0PYaJ3b5RPyU4E=;
+	s=korg; t=1762823641;
+	bh=6ryN/w0fyT3yJzMqa3UehYmKi38GVhhL6dTnjdYvY1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YyUNN9gu8SFQ7nwQ/3VgwJEn18zhYhJ9dhrQ6jZgpJKWKZZ8yNED/I9TCu90yWn5S
-	 JKDukp9Yx9tncoyllvd/dbWoBhKKx7zUkDw5XbJCm5f3g5RozCNg8rG5HBCBXQ5fo4
-	 Bz9Ytl8D5B4ke/hVxf93r0pypVafvOO77uiJOmqg=
+	b=wpzlZdv98ThjpiSP0e6ttm2USW8Cer6fc1RxfYCUjorxsDtOLghs13G2hFdcBtRZs
+	 5BUr25gKKABmNHTu6WSfGlmCZjFyF7lkg0w0l6sncKHku1wcAExNMDYmxjMexxUv2b
+	 5aOqShHV1trWVew342GV+Ymf8cGIIND5V8FMxKr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xichao Zhao <zhao.xichao@vivo.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 340/849] tty: serial: Modify the use of dev_err_probe()
-Date: Tue, 11 Nov 2025 09:38:30 +0900
-Message-ID: <20251111004544.639599594@linuxfoundation.org>
+Subject: [PATCH 6.17 341/849] ALSA: usb-audio: Add validation of UAC2/UAC3 effect units
+Date: Tue, 11 Nov 2025 09:38:31 +0900
+Message-ID: <20251111004544.663949206@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,52 +65,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xichao Zhao <zhao.xichao@vivo.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 706c3c02eecd41dc675e9102b3719661cd3e30e2 ]
+[ Upstream commit 2aec0b6a6b5395bca7d6fde9c7e9dc391d329698 ]
 
-The dev_err_probe() doesn't do anything when error is '-ENOMEM'.
-Make the following two changes:
-(1) Replace -ENOMEM with -ENOSPC in max3100_probe().
-(2) Just return -ENOMEM instead in max310x_probe().
+Just add fixed struct size validations for UAC2 and UAC3 effect
+units.  The descriptor has a variable-length array, so it should be
+validated with a proper function later once when the unit is really
+parsed and used by the driver (currently only referred partially for
+the input terminal parsing).
 
-Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20250819120927.607744-1-zhao.xichao@vivo.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20250821151751.12100-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max3100.c | 2 +-
- drivers/tty/serial/max310x.c | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ sound/usb/validate.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
-index 67d80f8f801e9..3faa1b6aa3eed 100644
---- a/drivers/tty/serial/max3100.c
-+++ b/drivers/tty/serial/max3100.c
-@@ -705,7 +705,7 @@ static int max3100_probe(struct spi_device *spi)
- 			break;
- 	if (i == MAX_MAX3100) {
- 		mutex_unlock(&max3100s_lock);
--		return dev_err_probe(dev, -ENOMEM, "too many MAX3100 chips\n");
-+		return dev_err_probe(dev, -ENOSPC, "too many MAX3100 chips\n");
- 	}
- 
- 	max3100s[i] = kzalloc(sizeof(struct max3100_port), GFP_KERNEL);
-diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
-index d9a0100b92d2b..e8749b8629703 100644
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -1269,8 +1269,7 @@ static int max310x_probe(struct device *dev, const struct max310x_devtype *devty
- 	/* Alloc port structure */
- 	s = devm_kzalloc(dev, struct_size(s, p, devtype->nr), GFP_KERNEL);
- 	if (!s)
--		return dev_err_probe(dev, -ENOMEM,
--				     "Error allocating port structure\n");
-+		return -ENOMEM;
- 
- 	/* Always ask for fixed clock rate from a property. */
- 	device_property_read_u32(dev, "clock-frequency", &uartclk);
+diff --git a/sound/usb/validate.c b/sound/usb/validate.c
+index a0d55b77c9941..4bb4893f6e74f 100644
+--- a/sound/usb/validate.c
++++ b/sound/usb/validate.c
+@@ -266,7 +266,11 @@ static const struct usb_desc_validator audio_validators[] = {
+ 	FUNC(UAC_VERSION_2, UAC_MIXER_UNIT, validate_mixer_unit),
+ 	FUNC(UAC_VERSION_2, UAC_SELECTOR_UNIT, validate_selector_unit),
+ 	FUNC(UAC_VERSION_2, UAC_FEATURE_UNIT, validate_uac2_feature_unit),
+-	/* UAC_VERSION_2, UAC2_EFFECT_UNIT: not implemented yet */
++	/* just a stop-gap, it should be a proper function for the array
++	 * once if the unit is really parsed/used
++	 */
++	FIXED(UAC_VERSION_2, UAC2_EFFECT_UNIT,
++	      struct uac2_effect_unit_descriptor),
+ 	FUNC(UAC_VERSION_2, UAC2_PROCESSING_UNIT_V2, validate_processing_unit),
+ 	FUNC(UAC_VERSION_2, UAC2_EXTENSION_UNIT_V2, validate_processing_unit),
+ 	FIXED(UAC_VERSION_2, UAC2_CLOCK_SOURCE,
+@@ -286,7 +290,8 @@ static const struct usb_desc_validator audio_validators[] = {
+ 	FUNC(UAC_VERSION_3, UAC3_MIXER_UNIT, validate_mixer_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_SELECTOR_UNIT, validate_selector_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_FEATURE_UNIT, validate_uac3_feature_unit),
+-	/*  UAC_VERSION_3, UAC3_EFFECT_UNIT: not implemented yet */
++	FIXED(UAC_VERSION_3, UAC3_EFFECT_UNIT,
++	      struct uac2_effect_unit_descriptor), /* sharing the same struct */
+ 	FUNC(UAC_VERSION_3, UAC3_PROCESSING_UNIT, validate_processing_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_EXTENSION_UNIT, validate_processing_unit),
+ 	FIXED(UAC_VERSION_3, UAC3_CLOCK_SOURCE,
 -- 
 2.51.0
 
