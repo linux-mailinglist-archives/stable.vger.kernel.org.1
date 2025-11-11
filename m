@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00DEC4A016
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF715C4A01C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86E95188CC3E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98220188CCEA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F259D244693;
-	Tue, 11 Nov 2025 00:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9EB24A043;
+	Tue, 11 Nov 2025 00:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I221ouSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VdHSc1JM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC28D4C97;
-	Tue, 11 Nov 2025 00:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFF51DF258;
+	Tue, 11 Nov 2025 00:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822437; cv=none; b=XpC1oOmRBaJ8ax3aS+pEk4DDWDxmaSLq+nclodT2ZIoTtYTIDITntgMOKghKFOv1hFCLCw9TWo6AdK3b4/1my0uRbfDy3b9f7c1QCNZRxaSaBiYrIkPcjbVJcSwDtG+Y4gqvnyHywztPt+23SmsdQWyiB+xMlDJ6j0Du2wOTSFk=
+	t=1762822442; cv=none; b=sQ3S2Sa6CSjVibVOuYNvTJeIsfsJv99mSI1tEEIJetnieiQJBEWAvgWcS9SZ5o2iZPqc4hR7sL9q6LMDl+Ez7xsMfWxVXVno/jHSaoo4Mg9j7Hi6kklfftf7aG5jJIkA9WFoNtd1gW6sBBcsg+uJj2+gumQ7GOhVDl5Xe9K4/vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822437; c=relaxed/simple;
-	bh=k11MW00LU03t4lnrZQAQljHDKWaaN0bhNzugANuLiQI=;
+	s=arc-20240116; t=1762822442; c=relaxed/simple;
+	bh=xXpDNPWrOlnyiBz+JMhdey4hVDnLFhN2G8Hdi0oKTYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lk8Hte5F9/vL+NwoynWGVBtlpjhwqQRXxWaP0vbHgZt3nXNSO5FN/LOhAmIDGfxgeNQc57MRSZt0eOmYD4Zt/BUTyicmKMqnRn3VbNqP8ZGXsu0R38PbUgNdK3mgYOAkkDwB9miI6G9u410s9OT6llSj2cTaf67qtyz3pmBhbzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I221ouSI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4356CC4CEF5;
-	Tue, 11 Nov 2025 00:53:57 +0000 (UTC)
+	 MIME-Version; b=okYe8NAiahBEkoEscS3m1YY8HY8orPr1nkpfg4e6zPWc2+WE/or8Kqp2a68AvTFh6ajBfRFojjFLyAk3mbJ/zOU8cPSP0BajJdkmmAnl3jzgyrp/zcwxzraWEqdYvd8thQ+j9piA4ZieQC/DT4Lx6fhxkMH8do/xnBFPtL3GfAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VdHSc1JM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75B2C19424;
+	Tue, 11 Nov 2025 00:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822437;
-	bh=k11MW00LU03t4lnrZQAQljHDKWaaN0bhNzugANuLiQI=;
+	s=korg; t=1762822442;
+	bh=xXpDNPWrOlnyiBz+JMhdey4hVDnLFhN2G8Hdi0oKTYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I221ouSISDJUdoCHHBJdgcYfevNofjtJ5lTcqBrYuBOvKHdxvYF5NumGEkNSBsN0R
-	 jF4z1fdEtwC0qMQqv5rXOC4F8r6TyQHkO0mbQU6TnJdQ0ZBLEdoCe+nrk7MHnjexrJ
-	 khgs8tizl9hK6G9FH1EoNuHqyiddHtDYAjhXDORk=
+	b=VdHSc1JM5vNMaSpfxrbOQKHO6Jt4GdlOYhlvofsmbLjQMgZ91ybeA7JGHt1U5rDyJ
+	 1bLWEtm4KTZXSP9bG8gUe2nTjKv1woYwuvfoRGPH6KAHc+OcnS3MdCYIfbeO86KeA0
+	 tSwSFqUg3mMUxQ/xqWbXTl6bXyj4lEW6zfDMkuik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Edward Cree <ecree.xilinx@gmail.com>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 050/565] net: hns3: return error code when function fails
-Date: Tue, 11 Nov 2025 09:38:26 +0900
-Message-ID: <20251111004528.035127300@linuxfoundation.org>
+Subject: [PATCH 6.12 051/565] sfc: fix potential memory leak in efx_mae_process_mport()
+Date: Tue, 11 Nov 2025 09:38:27 +0900
+Message-ID: <20251111004528.057191906@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,85 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 03ca7c8c42be913529eb9f188278114430c6abbd ]
+[ Upstream commit 46a499aaf8c27476fd05e800f3e947bfd71aa724 ]
 
-Currently, in hclge_mii_ioctl(), the operation to
-read the PHY register (SIOCGMIIREG) always returns 0.
+In efx_mae_enumerate_mports(), memory allocated for mae_mport_desc is
+passed as a argument to efx_mae_process_mport(), but when the error path
+in efx_mae_process_mport() gets executed, the memory allocated for desc
+gets leaked.
 
-This patch changes the return type of hclge_read_phy_reg(),
-returning an error code when the function fails.
+Fix that by freeing the memory allocation before returning error.
 
-Fixes: 024712f51e57 ("net: hns3: add ioctl support for imp-controlled PHYs")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Link: https://patch.msgid.link/20251023131338.2642520-2-shaojijie@huawei.com
+Fixes: a6a15aca4207 ("sfc: enumerate mports in ef100")
+Acked-by: Edward Cree <ecree.xilinx@gmail.com>
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Link: https://patch.msgid.link/20251023141844.25847-1-nihaal@cse.iitm.ac.in
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 3 +--
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c | 9 ++++++---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.h | 2 +-
- 3 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/sfc/mae.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 407ad0b985b4f..f5eafd1ded413 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -9439,8 +9439,7 @@ static int hclge_mii_ioctl(struct hclge_dev *hdev, struct ifreq *ifr, int cmd)
- 		/* this command reads phy id and register at the same time */
- 		fallthrough;
- 	case SIOCGMIIREG:
--		data->val_out = hclge_read_phy_reg(hdev, data->reg_num);
--		return 0;
-+		return hclge_read_phy_reg(hdev, data->reg_num, &data->val_out);
- 
- 	case SIOCSMIIREG:
- 		return hclge_write_phy_reg(hdev, data->reg_num, data->val_in);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-index 80079657afebe..b8dbf932caf94 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-@@ -274,7 +274,7 @@ void hclge_mac_stop_phy(struct hclge_dev *hdev)
- 	phy_stop(phydev);
+diff --git a/drivers/net/ethernet/sfc/mae.c b/drivers/net/ethernet/sfc/mae.c
+index 10709d828a636..21d5596460732 100644
+--- a/drivers/net/ethernet/sfc/mae.c
++++ b/drivers/net/ethernet/sfc/mae.c
+@@ -1101,6 +1101,9 @@ void efx_mae_remove_mport(void *desc, void *arg)
+ 	kfree(mport);
  }
  
--u16 hclge_read_phy_reg(struct hclge_dev *hdev, u16 reg_addr)
-+int hclge_read_phy_reg(struct hclge_dev *hdev, u16 reg_addr, u16 *val)
++/*
++ * Takes ownership of @desc, even if it returns an error
++ */
+ static int efx_mae_process_mport(struct efx_nic *efx,
+ 				 struct mae_mport_desc *desc)
  {
- 	struct hclge_phy_reg_cmd *req;
- 	struct hclge_desc desc;
-@@ -286,11 +286,14 @@ u16 hclge_read_phy_reg(struct hclge_dev *hdev, u16 reg_addr)
- 	req->reg_addr = cpu_to_le16(reg_addr);
+@@ -1111,6 +1114,7 @@ static int efx_mae_process_mport(struct efx_nic *efx,
+ 	if (!IS_ERR_OR_NULL(mport)) {
+ 		netif_err(efx, drv, efx->net_dev,
+ 			  "mport with id %u does exist!!!\n", desc->mport_id);
++		kfree(desc);
+ 		return -EEXIST;
+ 	}
  
- 	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
--	if (ret)
-+	if (ret) {
- 		dev_err(&hdev->pdev->dev,
- 			"failed to read phy reg, ret = %d.\n", ret);
-+		return ret;
-+	}
- 
--	return le16_to_cpu(req->reg_val);
-+	*val = le16_to_cpu(req->reg_val);
-+	return 0;
- }
- 
- int hclge_write_phy_reg(struct hclge_dev *hdev, u16 reg_addr, u16 val)
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.h
-index 4200d0b6d9317..21d434c82475b 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.h
-@@ -13,7 +13,7 @@ int hclge_mac_connect_phy(struct hnae3_handle *handle);
- void hclge_mac_disconnect_phy(struct hnae3_handle *handle);
- void hclge_mac_start_phy(struct hclge_dev *hdev);
- void hclge_mac_stop_phy(struct hclge_dev *hdev);
--u16 hclge_read_phy_reg(struct hclge_dev *hdev, u16 reg_addr);
-+int hclge_read_phy_reg(struct hclge_dev *hdev, u16 reg_addr, u16 *val);
- int hclge_write_phy_reg(struct hclge_dev *hdev, u16 reg_addr, u16 val);
- 
- #endif
 -- 
 2.51.0
 
