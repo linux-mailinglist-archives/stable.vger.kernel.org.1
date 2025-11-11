@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEA55C4ABB0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0B35C4B030
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:53:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 297DB4FA6C7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF797189A305
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8BB30595A;
-	Tue, 11 Nov 2025 01:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77634344038;
+	Tue, 11 Nov 2025 01:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARi1MXhc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLpcK0sB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A962248F6A;
-	Tue, 11 Nov 2025 01:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FF4344031;
+	Tue, 11 Nov 2025 01:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824422; cv=none; b=InK6a+m52cNe1pL+20gaPW6lPoLuJXQOzkB9Ta0o3mRvFy6H5Q8LWfU7YXb5AQXRXZe9NdLXIavhN5otVdT6iWtmChWwaZ9oT/uH8ggwru5dL3HjjnF57idUpEUqFQCc6P2j69wO9Zeiv9C5iAv+DR5K6nfn9HYQuSoqkYrFYVU=
+	t=1762825255; cv=none; b=uADju4WAPSC0rnd7hYOhecgO+BcbhKZGTa+aTg/fDSt4y7EQesrBSNPTCUSfQPWf5prlbY1ewsZOvUdrh61SP2Rb2E5G+eHxu0DKMjghdHGUtWJL6+c/78kXDJXFRYd+bPctJYZciXq+en+d7WwsYDZBGmBCnnsK9SaPKZAEivo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824422; c=relaxed/simple;
-	bh=lKtqPsZsdui0cAMRgQyt82xU/yaLmiU1gX9WXFGzvDI=;
+	s=arc-20240116; t=1762825255; c=relaxed/simple;
+	bh=6zNkdzcaf3cHNNUaNbRjB51nNx/I9vRHJ6aipbUrzzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWZ0zjH82Clv6y+Cn7A+l1+H9UVtZiGb4NmZ0gJkNmORT6e3suBRor2oyHcC7Ge0x/Cqazf/H5pQugN76ButXboLKWsVqGiBpYNE/yIzfOCKbUAO9hACAJGYH0pSmv3TXZPz117tO+m9r/c2qE/EGchtcXFa+3ftnpvYureArYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARi1MXhc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CB2C113D0;
-	Tue, 11 Nov 2025 01:27:01 +0000 (UTC)
+	 MIME-Version; b=CqSPTthU/SmFy5cFBKug1Rr+7b3Prez5aqAXlorDBaBnMLGRLfOhLXf99lahk5kOd+/uzWgOo4sMgLnsLegf+X7aTTtQoPs5m3CE/xxPqhRWK/npwhP6QssvOLB7l3kw19Nr3B3Hb1AWJjp2iVUyL4RtGf0pttkz195rZ0gPWRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLpcK0sB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B3AC2BCAF;
+	Tue, 11 Nov 2025 01:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824422;
-	bh=lKtqPsZsdui0cAMRgQyt82xU/yaLmiU1gX9WXFGzvDI=;
+	s=korg; t=1762825255;
+	bh=6zNkdzcaf3cHNNUaNbRjB51nNx/I9vRHJ6aipbUrzzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ARi1MXhcy62A6My4HX60xrirZNLgjh1nCV1TuD/CmyUYpq3X2CpGLaESAQd9HGBv4
-	 lbWhQ50WbqSup/7ubLlfBVkWtQCcQs/ml5g77asFm+WYnH/LinORqYc5cLmthzRHbV
-	 Ps4ExGp5hCi55dyRZNBtY/Eg8xqmclsQYwF9ZROE=
+	b=NLpcK0sB6zpOqfEuZwlmsMl+VwZKb68m3lO6oGddCyr4NO2yEsHGUOITxvdj+0Irh
+	 Liw7ze4JkLgx4+6Y7/8+JnjvqfTGUv/61u54aBH6vFM7V2+TzGKXeA6bvoIYhZHd83
+	 a9OlQDqQGi64oBmqQ9zGV2YCBXqngKmzj0CBQFkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Sammy Hsu <sammy.hsu@wnc.com.tw>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 440/565] ALSA: usb-audio: add mono main switch to Presonus S1824c
-Date: Tue, 11 Nov 2025 09:44:56 +0900
-Message-ID: <20251111004536.782602170@linuxfoundation.org>
+Subject: [PATCH 6.17 727/849] net: wwan: t7xx: add support for HP DRMR-H01
+Date: Tue, 11 Nov 2025 09:44:57 +0900
+Message-ID: <20251111004554.011512582@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
+From: Sammy Hsu <zelda3121@gmail.com>
 
-[ Upstream commit 659169c4eb21f8d9646044a4f4e1bc314f6f9d0c ]
+[ Upstream commit 370e98728bda92b1bdffb448d1acdcbe19dadb4c ]
 
-The 1824c does not have the A/B switch that the 1810c has,
-but instead it has a mono main switch that sums the two
-main output channels to mono.
+add support for HP DRMR-H01 (0x03f0, 0x09c8)
 
-Signed-off-by: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sammy Hsu <sammy.hsu@wnc.com.tw>
+Link: https://patch.msgid.link/20251002024841.5979-1-sammy.hsu@wnc.com.tw
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_s1810c.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ drivers/net/wwan/t7xx/t7xx_pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/usb/mixer_s1810c.c b/sound/usb/mixer_s1810c.c
-index 65bdda0841048..2413a6d96971c 100644
---- a/sound/usb/mixer_s1810c.c
-+++ b/sound/usb/mixer_s1810c.c
-@@ -93,6 +93,7 @@ struct s1810c_ctl_packet {
+diff --git a/drivers/net/wwan/t7xx/t7xx_pci.c b/drivers/net/wwan/t7xx/t7xx_pci.c
+index 8bf63f2dcbbfd..eb137e0784232 100644
+--- a/drivers/net/wwan/t7xx/t7xx_pci.c
++++ b/drivers/net/wwan/t7xx/t7xx_pci.c
+@@ -939,6 +939,7 @@ static void t7xx_pci_remove(struct pci_dev *pdev)
  
- #define SC1810C_CTL_LINE_SW	0
- #define SC1810C_CTL_MUTE_SW	1
-+#define SC1824C_CTL_MONO_SW	2
- #define SC1810C_CTL_AB_SW	3
- #define SC1810C_CTL_48V_SW	4
- 
-@@ -123,6 +124,7 @@ struct s1810c_state_packet {
- #define SC1810C_STATE_48V_SW	58
- #define SC1810C_STATE_LINE_SW	59
- #define SC1810C_STATE_MUTE_SW	60
-+#define SC1824C_STATE_MONO_SW	61
- #define SC1810C_STATE_AB_SW	62
- 
- struct s1810_mixer_state {
-@@ -502,6 +504,15 @@ static const struct snd_kcontrol_new snd_s1810c_mute_sw = {
- 	.private_value = (SC1810C_STATE_MUTE_SW | SC1810C_CTL_MUTE_SW << 8)
+ static const struct pci_device_id t7xx_pci_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x4d75) },
++	{ PCI_DEVICE(0x03f0, 0x09c8) }, // HP DRMR-H01
+ 	{ PCI_DEVICE(0x14c0, 0x4d75) }, // Dell DW5933e
+ 	{ }
  };
- 
-+static const struct snd_kcontrol_new snd_s1824c_mono_sw = {
-+	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
-+	.name = "Mono Main Out Switch",
-+	.info = snd_ctl_boolean_mono_info,
-+	.get = snd_s1810c_switch_get,
-+	.put = snd_s1810c_switch_set,
-+	.private_value = (SC1824C_STATE_MONO_SW | SC1824C_CTL_MONO_SW << 8)
-+};
-+
- static const struct snd_kcontrol_new snd_s1810c_48v_sw = {
- 	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
- 	.name = "48V Phantom Power On Mic Inputs Switch",
-@@ -588,8 +599,17 @@ int snd_sc1810_init_mixer(struct usb_mixer_interface *mixer)
- 	if (ret < 0)
- 		return ret;
- 
--	ret = snd_s1810c_switch_init(mixer, &snd_s1810c_ab_sw);
--	if (ret < 0)
--		return ret;
-+	// The 1824c has a Mono Main switch instead of a
-+	// A/B select switch.
-+	if (mixer->chip->usb_id == USB_ID(0x194f, 0x010d)) {
-+		ret = snd_s1810c_switch_init(mixer, &snd_s1824c_mono_sw);
-+		if (ret < 0)
-+			return ret;
-+	} else if (mixer->chip->usb_id == USB_ID(0x194f, 0x010c)) {
-+		ret = snd_s1810c_switch_init(mixer, &snd_s1810c_ab_sw);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
- 	return ret;
- }
 -- 
 2.51.0
 
