@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04402C4AEE1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC314C4AA42
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2A7B1897C68
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C9C0189396C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6CD30E82E;
-	Tue, 11 Nov 2025 01:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F047A306B30;
+	Tue, 11 Nov 2025 01:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nimlJi0z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMwOt+iK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179DC26AC3;
-	Tue, 11 Nov 2025 01:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCFD306B39;
+	Tue, 11 Nov 2025 01:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825024; cv=none; b=qA6Yo23EToiU0JbN4Cp2KUl2SXm8GUTsFc4amXHzmMo6ya2Xxur1Yi3k38y3MagtKmDZuAy9mnIIvJEHViZz7o/TpJ6tm0gt43nPKz8Q//koG0ja1QzAaeNvN2nyL+4EcipIBrZ5SU+pMoOktM824hROsRZwut41K0Lb4rcqLZE=
+	t=1762823892; cv=none; b=ecjwFtbxGpeDFPpTKZtWYVeNDii9hUSlyqaW7bIXMTXQA2eTL4HzV61wrQDE1X/xou6zHlr+ziNmqt/pCn0O9HmBB1fXB5Jyhm8mjkzjZC6fgRspcRzgA27nQ4oSnRo1W4ZIbuq7AMO7wngaPvPWALN7P9fl2zylUm36B0WVLFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825024; c=relaxed/simple;
-	bh=ySA+VaZ4ndNF7c6YK2GHXE694PIWjwzTyivZy9B+P3o=;
+	s=arc-20240116; t=1762823892; c=relaxed/simple;
+	bh=1TNWhKOPDoIeREK8uu7dOR8RUsZ07OKAmsopFzv6jQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WI2eCV9SkoeNY+UZ8e9FWzOlhNMJL85rZdvohfE+FiY5z3mPFKw5Y2DgmUYnVK9qCxLnnBkTNMXWTtZ1tVer1cmpc+ewTsjUHXIVMjs/345qLjF02U9k5BMlihd6Vca1lJITYgsMxm9RRDX+OR3b6H4Nu9j34Pp7NqmTfW2bB3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nimlJi0z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A793AC4CEF5;
-	Tue, 11 Nov 2025 01:37:03 +0000 (UTC)
+	 MIME-Version; b=Nqwet3HOa/E5rnQP37TxLPXBjfSrtvZY5M3teCqGC/EatpuuPcJ4iCf/4jn0LEfgQBB4OYLmLGakeNpckS6vEQwlUzmiwYtN6JEG69FHHnTYyja0JrIeWb+zVpQpPuFlSclF0/5ARbGZDKqzuCai9ikHybw/7lQPKfFsobP7jNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMwOt+iK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD54FC4AF0B;
+	Tue, 11 Nov 2025 01:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825024;
-	bh=ySA+VaZ4ndNF7c6YK2GHXE694PIWjwzTyivZy9B+P3o=;
+	s=korg; t=1762823890;
+	bh=1TNWhKOPDoIeREK8uu7dOR8RUsZ07OKAmsopFzv6jQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nimlJi0zz3Rg2KXE+7a7p7eLFulKh0j107mLmvVn36h/zDJL+bk352GRHGNLMFS0M
-	 8CqZFCQt9NJCdJmJo37RbGI8C5tQ8P86eCoObQoEx6zx9kpKBsiuGJvqiSNTFESnuU
-	 3EiEdg+x+Yl0+uxdRjy61R5NkNRT9d7cjjnuBIPE=
+	b=KMwOt+iKDZMVHeRycOj+DYO/teBJYn+y/UtMMC6jxSjhJNUv33FR31I92QNKupTNo
+	 nvXTGqqIePvgVxKWyDbeOQCV9gWkSoWHly1peydx21yS8DzATiccvfZ0w2364OZkn1
+	 lPWGtfsBZy8vaF0NxQmPrAPLhMD1RItlNS5Dysag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Iliopoulos <ailiop@suse.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Daniel Palmer <daniel@thingy.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 629/849] NFSv4.1: fix mount hang after CREATE_SESSION failure
-Date: Tue, 11 Nov 2025 09:43:19 +0900
-Message-ID: <20251111004551.639871793@linuxfoundation.org>
+Subject: [PATCH 6.12 344/565] eth: 8139too: Make 8139TOO_PIO depend on !NO_IOPORT_MAP
+Date: Tue, 11 Nov 2025 09:43:20 +0900
+Message-ID: <20251111004534.614089718@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthony Iliopoulos <ailiop@suse.com>
+From: Daniel Palmer <daniel@thingy.jp>
 
-[ Upstream commit bf75ad096820fee5da40e671ebb32de725a1c417 ]
+[ Upstream commit 43adad382e1fdecabd2c4cd2bea777ef4ce4109e ]
 
-When client initialization goes through server trunking discovery, it
-schedules the state manager and then sleeps waiting for nfs_client
-initialization completion.
+When 8139too is probing and 8139TOO_PIO=y it will call pci_iomap_range()
+and from there __pci_ioport_map() for the PCI IO space.
+If HAS_IOPORT_MAP=n and NO_GENERIC_PCI_IOPORT_MAP=n, like it is on my
+m68k config, __pci_ioport_map() becomes NULL, pci_iomap_range() will
+always fail and the driver will complain it couldn't map the PIO space
+and return an error.
 
-The state manager can fail during state recovery, and specifically in
-lease establishment as nfs41_init_clientid() will bail out in case of
-errors returned from nfs4_proc_create_session(), without ever marking
-the client ready. The session creation can fail for a variety of reasons
-e.g. during backchannel parameter negotiation, with status -EINVAL.
+NO_IOPORT_MAP seems to cover the case where what 8139too is trying
+to do cannot ever work so make 8139TOO_PIO depend on being it false
+and avoid creating an unusable driver.
 
-The error status will propagate all the way to the nfs4_state_manager
-but the client status will not be marked, and thus the mount process
-will remain blocked waiting.
-
-Fix it by adding -EINVAL error handling to nfs4_state_manager().
-
-Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Daniel Palmer <daniel@thingy.jp>
+Link: https://patch.msgid.link/20250907064349.3427600-1-daniel@thingy.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4state.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/realtek/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-index 7612e977e80b5..01179f7de3225 100644
---- a/fs/nfs/nfs4state.c
-+++ b/fs/nfs/nfs4state.c
-@@ -2744,6 +2744,9 @@ static void nfs4_state_manager(struct nfs_client *clp)
- 	case -ENETUNREACH:
- 		nfs_mark_client_ready(clp, -EIO);
- 		break;
-+	case -EINVAL:
-+		nfs_mark_client_ready(clp, status);
-+		break;
- 	default:
- 		ssleep(1);
- 		break;
+diff --git a/drivers/net/ethernet/realtek/Kconfig b/drivers/net/ethernet/realtek/Kconfig
+index 8a8ea51c639e9..9c1247ddc238f 100644
+--- a/drivers/net/ethernet/realtek/Kconfig
++++ b/drivers/net/ethernet/realtek/Kconfig
+@@ -58,7 +58,7 @@ config 8139TOO
+ config 8139TOO_PIO
+ 	bool "Use PIO instead of MMIO"
+ 	default y
+-	depends on 8139TOO
++	depends on 8139TOO && !NO_IOPORT_MAP
+ 	help
+ 	  This instructs the driver to use programmed I/O ports (PIO) instead
+ 	  of PCI shared memory (MMIO).  This can possibly solve some problems
 -- 
 2.51.0
 
