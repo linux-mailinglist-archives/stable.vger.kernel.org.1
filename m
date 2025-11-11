@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A64C4AE5C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD542C4AB29
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE58718978B6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E75E3AF060
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9998733C534;
-	Tue, 11 Nov 2025 01:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2B134B41E;
+	Tue, 11 Nov 2025 01:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZ7gVhxB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8uYuwcZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6E333EAFD;
-	Tue, 11 Nov 2025 01:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880F72FC009;
+	Tue, 11 Nov 2025 01:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825005; cv=none; b=PvRPSZrscZ1F5cWr1cDbszqZ21ObwifrAONFChh/aBN3ShBt5gVocAl7FWO6A0NXZC3jvsJHBjihVpX/hM93eEn83A4qEHJKnRj58XrS69HoLJ15ssQHFeulSpfE/xkXgrZFpgnKv3isan0AsSP41akqo5YfdRm75mBOE+Mnf3M=
+	t=1762823811; cv=none; b=B7OfbmMZkn6ewY0RrzhUzlNtPJ/k8eyhXjDdbc9dWU6+ioKK6WerwUHEPImGT9QgudkJvVPZ9UgYJLbT3U+zSKddTPe9lOuWijLpnORBiNfKLZSA3CekvE2dqOIbxrETnjgL7zJrWQEkM61Y8H9y4wI3jQ10AzfvmVh0sDWz1RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825005; c=relaxed/simple;
-	bh=mMPH3Vjf9I7SczbaOOz2fE6Nxe8sFdKGdHqIf66hWws=;
+	s=arc-20240116; t=1762823811; c=relaxed/simple;
+	bh=jeWmOEvjGpUV0TXvtwnAL4MFtzvtrd2mIAcAO+EG9q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFE1cHaw+z+HE5MBGcbxoQizgqwoSxD1zPSwGcueOleTOJwshVEbrhpqjeIFNAXhXbfgJLtcQSM+KpZRcXtwEn6EUyI18d34heEoxo1ihKkLbTGACxijrmHIxY1IbaAZR9+FYvqmOk12SR8xHWnChntag/0pzfSTPkQM9Mgur5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZ7gVhxB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCE4C116D0;
-	Tue, 11 Nov 2025 01:36:44 +0000 (UTC)
+	 MIME-Version; b=d4SmrvaAdIPVzyo0R60vrIFm1TG08kIMITlbeD9m67/f531DuoEFPzQIP8ZeywmoTJDFa3dLUH0NGwnpfGZVzMTweOWZ9x2Rgr8C1c4kFEqQBqfj6ZIQYvqmPPEkEM0fJShkgwA8sxtUnqSg6cnJGK5tdddZBftqBzyW/xM6h7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8uYuwcZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23977C2BCB5;
+	Tue, 11 Nov 2025 01:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825005;
-	bh=mMPH3Vjf9I7SczbaOOz2fE6Nxe8sFdKGdHqIf66hWws=;
+	s=korg; t=1762823811;
+	bh=jeWmOEvjGpUV0TXvtwnAL4MFtzvtrd2mIAcAO+EG9q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZ7gVhxB+AX9sYl7F6ty0HWET0dYnBpB7b/gK9wTsYMr8uq1tZ8C8yxs1J93mpSXa
-	 0zIhu+AhR3Euy9GRhN9eFT3Z5pf4hNg3A5u32yByAhtb51HRHGDiyYKCYTdawM2umv
-	 wjXMT3hX7ChytMFPMeGMMwBbkmTzLUICtNsXWbN8=
+	b=Z8uYuwcZkRid1TAbNgYEEFp+Az2w5Zwz7H17MPA69SKE60iC2VXuRWIMaW7r+UPWe
+	 OIX4ruQJNCdutVvudJ+IsGfetFpTBkD5BCybHUH6A4wRYpFnkmwFQAugQAnNoKZgoH
+	 UfKCYDbJLRPWs3+AjS6uL9vz8+E4Ut955n2MaQZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 615/849] remoteproc: qcom: q6v5: Avoid handling handover twice
+Subject: [PATCH 6.12 329/565] wifi: mac80211: Fix HE capabilities element check
 Date: Tue, 11 Nov 2025 09:43:05 +0900
-Message-ID: <20251111004551.296886452@linuxfoundation.org>
+Message-ID: <20251111004534.288025374@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 54898664e1eb6b5b3e6cdd9343c6eb15da776153 ]
+[ Upstream commit ea928544f3215fdeac24d66bef85e10bb638b8c1 ]
 
-A remoteproc could theoretically signal handover twice. This is unexpected
-and would break the reference counting for the handover resources (power
-domains, clocks, regulators, etc), so add a check to prevent that from
-happening.
+The element data length check did not account for the extra
+octet used for the extension ID. Fix it.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250820-rproc-qcom-q6v5-fixes-v2-2-910b1a3aff71@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250907115109.8da0012e2286.I8c0c69a0011f7153c13b365b14dfef48cfe7c3e3@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/mac80211/mlme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5.c b/drivers/remoteproc/qcom_q6v5.c
-index 769c6d6d6a731..58d5b85e58cda 100644
---- a/drivers/remoteproc/qcom_q6v5.c
-+++ b/drivers/remoteproc/qcom_q6v5.c
-@@ -164,6 +164,11 @@ static irqreturn_t q6v5_handover_interrupt(int irq, void *data)
- {
- 	struct qcom_q6v5 *q6v5 = data;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index fd2bc70afa0cd..0cba454d6e685 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5148,7 +5148,7 @@ static u8 ieee80211_max_rx_chains(struct ieee80211_link_data *link,
+ 	he_cap_elem = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_CAPABILITY,
+ 					     ies->data, ies->len);
  
-+	if (q6v5->handover_issued) {
-+		dev_err(q6v5->dev, "Handover signaled, but it already happened\n");
-+		return IRQ_HANDLED;
-+	}
-+
- 	if (q6v5->handover)
- 		q6v5->handover(q6v5);
+-	if (!he_cap_elem || he_cap_elem->datalen < sizeof(*he_cap))
++	if (!he_cap_elem || he_cap_elem->datalen < sizeof(*he_cap) + 1)
+ 		return chains;
  
+ 	/* skip one byte ext_tag_id */
 -- 
 2.51.0
 
