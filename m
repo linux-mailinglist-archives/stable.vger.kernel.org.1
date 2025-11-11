@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44EEC4A283
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:04:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCDCC4A29B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:05:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AC60188F087
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4C033AD849
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DCE26056C;
-	Tue, 11 Nov 2025 01:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8661F5F6;
+	Tue, 11 Nov 2025 01:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUuYKBN+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPHwvXb8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E724A1F5F6;
-	Tue, 11 Nov 2025 01:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84017262A;
+	Tue, 11 Nov 2025 01:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823007; cv=none; b=ltKVs9+aXDA/R6GMgulreF+s8RrVcQN4g5bYrmj9/rWlYZBDz/fUfIvfPkJRq6rM4oo878QWWJ8lIESrtQJ3doI3Zi/5bpU2mjaoVinO45AIR3b3YWDUXOjENBIpFmEEqTks6Vf7wKXYBPpz1pauDgmkVl5zrNZa4XwECSjQiRs=
+	t=1762823014; cv=none; b=S7mfOGPTZYecLmo7P/wexgeKl5lP0WSIggMMs8w4HTmbqcU7wEeMLAaPpQXJS7zfZ2iilGvPvpdESdbvyiXCF3lQw9fPVOHuVfvV89oQM1HLm4bsL868rydlvHKksP31y12rBrmVbTOTsQzu9Y5J1Jq4YPikUk2VdvUjZcurSsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823007; c=relaxed/simple;
-	bh=5fBuZvFVGtDVn7kaAhCboEcr+jlNMPAnA0wQq3jcOEw=;
+	s=arc-20240116; t=1762823014; c=relaxed/simple;
+	bh=f3RaFVc/+bVJY8ywjHF7bCzFSPFyQeqb8r1WkIKzNIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ia8CPDlHt7D/S13SxFIQdPAoXiQl1m5CnoN1W6JFz6kt9bc1FS98JZsC1114DfAamLQtIGtnI6u0J3yzLoVKJEwnRe4L0mSXHWcySVs4QiybRS7CJv3nagZJVyZnVHOFDIy6NVv268m6PXmOc49UDEWILYAg30ZmZZMPx8pVMmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUuYKBN+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86AD3C4CEF5;
-	Tue, 11 Nov 2025 01:03:26 +0000 (UTC)
+	 MIME-Version; b=GJV74fwjCaU0EDng4TQEMSMZQe+7b428KtseMtnNXsXU+0kL2x3dayzj45Y24XMCuUPtYm7W8xP3/rPTM+oy4vpSqwx+So/2zdNZiAAYyEeK9R21AZUjZlRlFsaYqeSdz99UjJgYWxINCLigP0TFkydgvQmS28fF+aqf8bYP1KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPHwvXb8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 048D3C4CEF5;
+	Tue, 11 Nov 2025 01:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823006;
-	bh=5fBuZvFVGtDVn7kaAhCboEcr+jlNMPAnA0wQq3jcOEw=;
+	s=korg; t=1762823014;
+	bh=f3RaFVc/+bVJY8ywjHF7bCzFSPFyQeqb8r1WkIKzNIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IUuYKBN+06lmm2XSDN7xzLA28d9922bMHC4EtrOwZpRPye+kiPCUGUsOux1+SlVmj
-	 kQyXZWFPXzJ7+PZ4I4lFPKBbuqGf3weRHV5JXfCPjKC9kkc4fUWZTMapyxBKV9T7DN
-	 IkwxioX6EFUYmPIRhst8+dIedsOowCpxGcpZD+Kk=
+	b=iPHwvXb8btINr3O5gRIZ4V4lO0s/hPe55P7wdfF7TGF1YCgd1HJXUSfK9bEUm81tc
+	 b+wqjNHWzWMTVqFqnyD0OCtO1srVnnhPPFMg8gC5AXKmCREDuYy6pl7WwnZXPCLkvq
+	 R6Ej7SccytqKCwS0I+30WbNEuBKHVrP4frbk6zng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mykyta Yatsenko <yatsenko@meta.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 213/849] selftests/bpf: Fix flaky bpf_cookie selftest
-Date: Tue, 11 Nov 2025 09:36:23 +0900
-Message-ID: <20251111004541.592042287@linuxfoundation.org>
+Subject: [PATCH 6.17 214/849] tools/power turbostat: Fix incorrect sorting of PMT telemetry
+Date: Tue, 11 Nov 2025 09:36:24 +0900
+Message-ID: <20251111004541.615777383@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,51 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mykyta Yatsenko <yatsenko@meta.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 105eb5dc74109a9f53c2f26c9a918d9347a73595 ]
+[ Upstream commit cafb47be3f38ad81306bf894e743bebc2ccf66ab ]
 
-bpf_cookie can fail on perf_event_open(), when it runs after the task_work
-selftest. The task_work test causes perf to lower
-sysctl_perf_event_sample_rate, and bpf_cookie uses sample_freq,
-which is validated against that sysctl. As a result,
-perf_event_open() rejects the attr if the (now tighter) limit is
-exceeded.
+The pmt_telemdir_sort() comparison function was returning a boolean
+value (0 or 1) instead of the required negative, zero, or positive
+value for proper sorting. This caused unpredictable and incorrect
+ordering of telemetry directories named telem0, telem1, ..., telemN.
+Update the comparison logic to return -1, 0, or 1 based on the
+numerical value extracted from the directory name, ensuring correct
+numerical ordering when using scandir.
 
->From perf_event_open():
-if (attr.freq) {
-	if (attr.sample_freq > sysctl_perf_event_sample_rate)
-		return -EINVAL;
-} else {
-	if (attr.sample_period & (1ULL << 63))
-		return -EINVAL;
-}
+This change improves stability and correctness when iterating PMT
+telemetry directories.
 
-Switch bpf_cookie to use sample_period, which is not checked against
-sysctl_perf_event_sample_rate.
-
-Signed-off-by: Mykyta Yatsenko <yatsenko@meta.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250925215230.265501-1-mykyta.yatsenko5@gmail.com
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/bpf_cookie.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c b/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c
-index 4a0670c056bad..75f4dff7d0422 100644
---- a/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_cookie.c
-@@ -450,8 +450,7 @@ static void pe_subtest(struct test_bpf_cookie *skel)
- 	attr.size = sizeof(attr);
- 	attr.type = PERF_TYPE_SOFTWARE;
- 	attr.config = PERF_COUNT_SW_CPU_CLOCK;
--	attr.freq = 1;
--	attr.sample_freq = 10000;
-+	attr.sample_period = 100000;
- 	pfd = syscall(__NR_perf_event_open, &attr, -1, 0, -1, PERF_FLAG_FD_CLOEXEC);
- 	if (!ASSERT_GE(pfd, 0, "perf_fd"))
- 		goto cleanup;
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 72a280e7a9d59..931bad99277fe 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -1890,7 +1890,7 @@ int pmt_telemdir_sort(const struct dirent **a, const struct dirent **b)
+ 	sscanf((*a)->d_name, "telem%u", &aidx);
+ 	sscanf((*b)->d_name, "telem%u", &bidx);
+ 
+-	return aidx >= bidx;
++	return (aidx > bidx) ? 1 : (aidx < bidx) ? -1 : 0;
+ }
+ 
+ const struct dirent *pmt_diriter_next(struct pmt_diriter_t *iter)
 -- 
 2.51.0
 
