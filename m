@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-193141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F21C49FDD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6400EC49FEA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE5583A3F60
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A17713A3CEA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863EC244693;
-	Tue, 11 Nov 2025 00:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCA0214210;
+	Tue, 11 Nov 2025 00:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSvBR5OU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPOc9HaJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AF84C97;
-	Tue, 11 Nov 2025 00:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB904C97;
+	Tue, 11 Nov 2025 00:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822395; cv=none; b=ggnuekshHu27oy0jGFxnO2QmfzwkmuvQ2lsjgYJvkXz9O1lBBgovpKFCPaiOo/BQ9Ru/BueyXLzOKLEv7PCvJtm5UAlEvS6BwScWWuSy8DnV1+1FvOvEVytyvH1d7ElX4nzQj79KCTV5h4jOfknknE46Y6YpC7/MJsHbXANzqhI=
+	t=1762822400; cv=none; b=QYmK83YmQFWc8gVclEGlCWq4rs5nNBKlb9DGTRW154Lxpmk5+gFmpAakHBoLGyZ/ZhzwcL/y5GvGVK0cdqU43i3zsmYrx9VXLzv5mCKlP/xFsqc/QCrEJfDMmO13Aj1m62cOwKJ/7SfPOghLzP1BuLYGtxTFPM6vWsVcfUnJul8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822395; c=relaxed/simple;
-	bh=HxZyF6KXnZ9qpFgy5H86/OpG/fcCX/pxdDvZKpNnQrw=;
+	s=arc-20240116; t=1762822400; c=relaxed/simple;
+	bh=v6bFqT8Mh6BCpvEnXvdHkDnLm+g6Q74ysh7utcIK6nY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nrdArqs+KZdnQ1hjFPsDluZx0FNsld+pZRXmknkI/qoAZIL54HMBWd+uAp1MK+q89OmcVMgQz58faGZndDztAUK/a/Lb9TVaahzUShWEieywLoxK24CVl/+AhVlEJ9nKpI04831A5Ma0JuRY7FGcSMM/kE9cMolCowPhM0x//L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSvBR5OU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A25C113D0;
-	Tue, 11 Nov 2025 00:53:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FXPob3RgDNC/5Rjo2aIONwpt8XqoaEN6tO/Tr6lSoYri2//nQa+BvWpQ7KtSEGrEkPIieqBepsElnqJT15koPIVZuD5eU+DRFknHrSmwii/NZ3W3ltxTSHz0t7HuoL3WRAYEf7I1Nj9AetSYAwF4OLx4XBEC2lDErXS9PRdf2nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPOc9HaJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCCCC4CEFB;
+	Tue, 11 Nov 2025 00:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822395;
-	bh=HxZyF6KXnZ9qpFgy5H86/OpG/fcCX/pxdDvZKpNnQrw=;
+	s=korg; t=1762822399;
+	bh=v6bFqT8Mh6BCpvEnXvdHkDnLm+g6Q74ysh7utcIK6nY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YSvBR5OUGtnhttMRIDmHBHRDylMCKpiaQH8p5ZLgnpZwKm4X78fnql74tDzVjE1mK
-	 bd70BWYsyB4BEYF4z/OzI4464QILSiESgxTSuQ16dCojMfeEtFjLeWz3nkqZYB6dZr
-	 FC95IZSwqYFEz1CLaif3yXVu6PpX9WUg3FqbMpro=
+	b=yPOc9HaJKewzEczLjk/72Ek9OkkzBpDTIKsa9ZZP+05n1DRguo2NyRd80SR3AatB1
+	 +ZzuaZE+lgugW91kxczCo/acBQAjLi7D7rW5rNeNLUNzGzQLipwsFUsrWKXQ4Yvtx6
+	 jP4H+rExfF25C45JiRmqfhZDTmIn/OMfz5oCltJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Melissa Wen <melissa.srw@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH 6.17 099/849] drm/sysfb: Do not dereference NULL pointer in plane reset
-Date: Tue, 11 Nov 2025 09:34:29 +0900
-Message-ID: <20251111004538.797255034@linuxfoundation.org>
+	David Rosca <david.rosca@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Philipp Stanner <phasta@kernel.org>
+Subject: [PATCH 6.17 100/849] drm/sched: avoid killing parent entity on child SIGKILL
+Date: Tue, 11 Nov 2025 09:34:30 +0900
+Message-ID: <20251111004538.822358794@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,58 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: David Rosca <david.rosca@amd.com>
 
-commit 14e02ed3876f4ab0ed6d3f41972175f8b8df3d70 upstream.
+commit 9e8b3201c7302d5b522ba3535630bed21cc03c27 upstream.
 
-The plane state in __drm_gem_reset_shadow_plane() can be NULL. Do not
-deref that pointer, but forward NULL to the other plane-reset helpers.
-Clears plane->state to NULL.
+The DRM scheduler tracks who last uses an entity and when that process
+is killed blocks all further submissions to that entity.
 
-v2:
-- fix typo in commit description (Javier)
+The problem is that we didn't track who initially created an entity, so
+when a process accidently leaked its file descriptor to a child and
+that child got killed, we killed the parent's entities.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: b71565022031 ("drm/gem: Export implementation of shadow-plane helpers")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/dri-devel/aPIDAsHIUHp_qSW4@stanley.mountain/
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Melissa Wen <melissa.srw@gmail.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.15+
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patch.msgid.link/20251017091407.58488-1-tzimmermann@suse.de
+Avoid that and instead initialize the entities last user on entity
+creation. This also allows to drop the extra NULL check.
+
+Signed-off-by: David Rosca <david.rosca@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4568
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+CC: stable@vger.kernel.org
+Acked-by: Philipp Stanner <phasta@kernel.org>
+Link: https://lore.kernel.org/r/20251015140128.1470-1-christian.koenig@amd.com
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://patch.msgid.link/20251015140128.1470-1-christian.koenig@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gem_atomic_helper.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/scheduler/sched_entity.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_gem_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_gem_atomic_helper.c
-@@ -310,8 +310,12 @@ EXPORT_SYMBOL(drm_gem_destroy_shadow_pla
- void __drm_gem_reset_shadow_plane(struct drm_plane *plane,
- 				  struct drm_shadow_plane_state *shadow_plane_state)
- {
--	__drm_atomic_helper_plane_reset(plane, &shadow_plane_state->base);
--	drm_format_conv_state_init(&shadow_plane_state->fmtcnv_state);
-+	if (shadow_plane_state) {
-+		__drm_atomic_helper_plane_reset(plane, &shadow_plane_state->base);
-+		drm_format_conv_state_init(&shadow_plane_state->fmtcnv_state);
-+	} else {
-+		__drm_atomic_helper_plane_reset(plane, NULL);
-+	}
- }
- EXPORT_SYMBOL(__drm_gem_reset_shadow_plane);
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -70,6 +70,7 @@ int drm_sched_entity_init(struct drm_sch
+ 	entity->guilty = guilty;
+ 	entity->num_sched_list = num_sched_list;
+ 	entity->priority = priority;
++	entity->last_user = current->group_leader;
+ 	/*
+ 	 * It's perfectly valid to initialize an entity without having a valid
+ 	 * scheduler attached. It's just not valid to use the scheduler before it
+@@ -302,7 +303,7 @@ long drm_sched_entity_flush(struct drm_s
+ 
+ 	/* For killed process disable any more IBs enqueue right now */
+ 	last_user = cmpxchg(&entity->last_user, current->group_leader, NULL);
+-	if ((!last_user || last_user == current->group_leader) &&
++	if (last_user == current->group_leader &&
+ 	    (current->flags & PF_EXITING) && (current->exit_code == SIGKILL))
+ 		drm_sched_entity_kill(entity);
  
 
 
