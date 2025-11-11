@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-193357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE11C4A28F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:04:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93186C4A280
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:04:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12EB73AF1D5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91AF7188EF82
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA444204E;
-	Tue, 11 Nov 2025 01:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B4E25F975;
+	Tue, 11 Nov 2025 01:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXHAlhv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6nfUX7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4681C265CC5;
-	Tue, 11 Nov 2025 01:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1BB9246768;
+	Tue, 11 Nov 2025 01:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822990; cv=none; b=iIqVObEeiVZrfUbqgBPifs8nmjzfzDL620EoiNBOz6eayT73rxtHUXkL8QgXAnLa6eKEC7lUOYUaapezkjyK5bAxhyE0CZc108lwX5mMZZusowf/s9YKj0tds8NSZw9dPsb7LTh5PdH5EFcdZEOqGDe6qJkycOuGkDf/7Tgivww=
+	t=1762822999; cv=none; b=PBnZf5C8UEjrInApzESCIlbbVRMI6O+8fPgmwg9VvR/T8MShQb7Lh4S/46CdloOstV29lbV/udY/EMdBjOiVZLT1oWlZIvx7QPt6EoZhnOwOm3G07INQ9rxZoBxxVNOsebamk4UaYaMl5tzyWGs0m+ogR9xccObP6g/GVlZr8VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822990; c=relaxed/simple;
-	bh=0YUzorIgoAttoetr8+iSUBZ6tNuw1e6gSMlzjAdCwX4=;
+	s=arc-20240116; t=1762822999; c=relaxed/simple;
+	bh=/5B7/OatzbjARqffTFFOFy8Eg6YaYqGV4QH5R+qwS7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M02rbPwj8AeE/czX9sM2GP++4DQkWVA7RMGBRf9FCSJAXQYMhlZWbRLzx+c6T7dqijzuWjRck8blFFqZs2s1iFrqFEM4i+WkdG6SWy5/8Q5F8OVAwufzF/1Xca+Sie1SkNiiK0BcnqIKSIVPnKRucMv9AGIj+GSlO5By+P8N7yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXHAlhv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44A1C4CEFB;
-	Tue, 11 Nov 2025 01:03:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oRVjGCFhKQeN3gYW4P8D1wyIQGQrPfqDZbtmYVjcT9hu177WJmBp20RX9K5q1AIN3YnNZ+6YENjSL8LqN59Mz+E800p0kVcmXZSgp5MnnYBu8kotg5i3S+OkReyK9TeWvFnH+qkkoao+DvqswrgptUT9buO/C/EYPc7iwW6tmQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6nfUX7F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584ACC116B1;
+	Tue, 11 Nov 2025 01:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822990;
-	bh=0YUzorIgoAttoetr8+iSUBZ6tNuw1e6gSMlzjAdCwX4=;
+	s=korg; t=1762822999;
+	bh=/5B7/OatzbjARqffTFFOFy8Eg6YaYqGV4QH5R+qwS7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bXHAlhv5JDZSBCKHbFozyFNoF/baEVTB51Vxp9JZVhH7YIC13vtNSCLJB+1CtHB7D
-	 9ISRdg/RhaEtyIZwGx6hVaRtesKiHtrkH+s5/qAxnFMgdztm+UJPjDRp2QgfYeA/Ho
-	 0VjAd/4+Wg6V13z9X11i7EhPi+fqEUsZDhcMyQgo=
+	b=P6nfUX7Fsnmh4UJGdRzEoSLiLfm179I1pM9qM2sysfBIP5QZ4N5Vl+OmJ0Fz3AqF5
+	 ri2Hz311hihQ7B5HeoKA8rxHdM8NSNBmELMqoaVh4PI7ou4CoD1NYm4vU7qEXLrFmA
+	 8kaPHo6N5tvBMvKGAmdk+Y/or9c7LrIUudmhi1Sk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Pei <cp0613@linux.alibaba.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Markus Stockhausen <markus.stockhausen@gmx.de>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Stephen Howell <howels@allthatwemight.be>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 150/565] ACPI: SPCR: Support Precise Baud Rate field
-Date: Tue, 11 Nov 2025 09:40:06 +0900
-Message-ID: <20251111004530.314647273@linuxfoundation.org>
+Subject: [PATCH 6.12 152/565] clocksource/drivers/timer-rtl-otto: Work around dying timers
+Date: Tue, 11 Nov 2025 09:40:08 +0900
+Message-ID: <20251111004530.360237128@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -60,57 +62,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Pei <cp0613@linux.alibaba.com>
+From: Markus Stockhausen <markus.stockhausen@gmx.de>
 
-[ Upstream commit 4d330fe54145ecfbb657ac01a554fdedf3c1927e ]
+[ Upstream commit e7a25106335041aeca4fdf50a84804c90142c886 ]
 
-The Microsoft Serial Port Console Redirection (SPCR) specification
-revision 1.09 comprises additional field: Precise Baud Rate [1].
+The OpenWrt distribution has switched from kernel longterm 6.6 to
+6.12. Reports show that devices with the Realtek Otto switch platform
+die during operation and are rebooted by the watchdog. Sorting out
+other possible reasons the Otto timer is to blame. The platform
+currently consists of 4 targets with different hardware revisions.
+It is not 100% clear which devices and revisions are affected.
 
-It is used to describe non-traditional baud rates (such as those
-used by high-speed UARTs).
+Analysis shows:
 
-It contains a specific non-zero baud rate which overrides the value
-of the Configured Baud Rate field. If this field is zero or not
-present, Configured Baud Rate is used.
+A more aggressive sched/deadline handling leads to more timer starts
+with small intervals. This increases the bug chances. See
+https://marc.info/?l=linux-kernel&m=175276556023276&w=2
 
-Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/serports/serial-port-console-redirection-table [1]
-Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
-Link: https://patch.msgid.link/20250913070815.16758-1-cp0613@linux.alibaba.com
-[ rjw: Corrected typo in the subject ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Focusing on the real issue a hardware limitation on some devices was
+found. There is a minimal chance that a timer ends without firing an
+interrupt if it is reprogrammed within the 5us before its expiration
+time. Work around this issue by introducing a bounce() function. It
+restarts the timer directly before the normal restart functions as
+follows:
+
+- Stop timer
+- Restart timer with a slow frequency.
+- Target time will be >5us
+- The subsequent normal restart is outside the critical window
+
+Downstream has already tested and confirmed a patch. See
+https://github.com/openwrt/openwrt/pull/19468
+https://forum.openwrt.org/t/support-for-rtl838x-based-managed-switches/57875/3788
+
+Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Tested-by: Stephen Howell <howels@allthatwemight.be>
+Tested-by: Bjørn Mork <bjorn@mork.no>
+Link: https://lore.kernel.org/r/20250804080328.2609287-2-markus.stockhausen@gmx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/spcr.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-rtl-otto.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/acpi/spcr.c b/drivers/acpi/spcr.c
-index cd36a97b0ea2c..fa12e740386de 100644
---- a/drivers/acpi/spcr.c
-+++ b/drivers/acpi/spcr.c
-@@ -146,7 +146,15 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
- 		goto done;
- 	}
+diff --git a/drivers/clocksource/timer-rtl-otto.c b/drivers/clocksource/timer-rtl-otto.c
+index 8a3068b36e752..8be45a11fb8b6 100644
+--- a/drivers/clocksource/timer-rtl-otto.c
++++ b/drivers/clocksource/timer-rtl-otto.c
+@@ -38,6 +38,7 @@
+ #define RTTM_BIT_COUNT		28
+ #define RTTM_MIN_DELTA		8
+ #define RTTM_MAX_DELTA		CLOCKSOURCE_MASK(28)
++#define RTTM_MAX_DIVISOR	GENMASK(15, 0)
  
--	switch (table->baud_rate) {
+ /*
+  * Timers are derived from the LXB clock frequency. Usually this is a fixed
+@@ -112,6 +113,22 @@ static irqreturn_t rttm_timer_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
++static void rttm_bounce_timer(void __iomem *base, u32 mode)
++{
 +	/*
-+	 * SPCR 1.09 defines Precise Baud Rate Filed contains a specific
-+	 * non-zero baud rate which overrides the value of the Configured
-+	 * Baud Rate field. If this field is zero or not present, Configured
-+	 * Baud Rate is used.
++	 * When a running timer has less than ~5us left, a stop/start sequence
++	 * might fail. While the details are unknown the most evident effect is
++	 * that the subsequent interrupt will not be fired.
++	 *
++	 * As a workaround issue an intermediate restart with a very slow
++	 * frequency of ~3kHz keeping the target counter (>=8). So the follow
++	 * up restart will always be issued outside the critical window.
 +	 */
-+	if (table->precise_baudrate)
-+		baud_rate = table->precise_baudrate;
-+	else switch (table->baud_rate) {
- 	case 0:
- 		/*
- 		 * SPCR 1.04 defines 0 as a preconfigured state of UART.
++
++	rttm_disable_timer(base);
++	rttm_enable_timer(base, mode, RTTM_MAX_DIVISOR);
++}
++
+ static void rttm_stop_timer(void __iomem *base)
+ {
+ 	rttm_disable_timer(base);
+@@ -129,6 +146,7 @@ static int rttm_next_event(unsigned long delta, struct clock_event_device *clkev
+ 	struct timer_of *to = to_timer_of(clkevt);
+ 
+ 	RTTM_DEBUG(to->of_base.base);
++	rttm_bounce_timer(to->of_base.base, RTTM_CTRL_COUNTER);
+ 	rttm_stop_timer(to->of_base.base);
+ 	rttm_set_period(to->of_base.base, delta);
+ 	rttm_start_timer(to, RTTM_CTRL_COUNTER);
+@@ -141,6 +159,7 @@ static int rttm_state_oneshot(struct clock_event_device *clkevt)
+ 	struct timer_of *to = to_timer_of(clkevt);
+ 
+ 	RTTM_DEBUG(to->of_base.base);
++	rttm_bounce_timer(to->of_base.base, RTTM_CTRL_COUNTER);
+ 	rttm_stop_timer(to->of_base.base);
+ 	rttm_set_period(to->of_base.base, RTTM_TICKS_PER_SEC / HZ);
+ 	rttm_start_timer(to, RTTM_CTRL_COUNTER);
+@@ -153,6 +172,7 @@ static int rttm_state_periodic(struct clock_event_device *clkevt)
+ 	struct timer_of *to = to_timer_of(clkevt);
+ 
+ 	RTTM_DEBUG(to->of_base.base);
++	rttm_bounce_timer(to->of_base.base, RTTM_CTRL_TIMER);
+ 	rttm_stop_timer(to->of_base.base);
+ 	rttm_set_period(to->of_base.base, RTTM_TICKS_PER_SEC / HZ);
+ 	rttm_start_timer(to, RTTM_CTRL_TIMER);
 -- 
 2.51.0
 
