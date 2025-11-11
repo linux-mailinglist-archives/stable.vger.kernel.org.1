@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A49BC4A683
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:25:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D90DFC4A698
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88156189113B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5594B18916A9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE8C30E0F7;
-	Tue, 11 Nov 2025 01:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0991E30EF86;
+	Tue, 11 Nov 2025 01:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULLGiIDT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7hXS6Pc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A07926FDBD;
-	Tue, 11 Nov 2025 01:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD7B305E24;
+	Tue, 11 Nov 2025 01:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823341; cv=none; b=ArxQlyVT9m8SDaVEpMqfZFXvr6iQLvmzLwCMfh5BVjzLl30vSx2X5a+ZzyguX1VkvSfhPygmJjyM0J3Lv/JcIa967fGD2bxzVtlknGL7Tov2ryt+E1cGDlW+EAb2KjkownNOQgKAfO1hQlmO9C5+MY4KzancfVtnIkOl3zFuAIw=
+	t=1762823345; cv=none; b=BfqvKgNeN81231xyUnzBUvkZTVO1AB47pGEsBLwjokA2s4wpDkddA/5HKFAzoyUUU5fYZI3zu94871tLWpCGPy0F+swZzXLJNAbxHTd8Cb039KUWeWDIi2zhKo232sMZyteQLfC9LahUlgVs2/uYup5z2dGreEs3kPU7B0lPwao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823341; c=relaxed/simple;
-	bh=tG3Eyo1KGnaDhRirrHi4zuwuqVhI7F2XacxMMleK7zg=;
+	s=arc-20240116; t=1762823345; c=relaxed/simple;
+	bh=GlxAvpcG/DKO8CeJsMKG+nYLKQrVGXeyzM10E9a4eeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BOj8bdY/vUfek6Y/SkXbFGF3wF8t7CddcQEONN++cKHkktjc8NCC9SjFpe1YFYuGUbJOHdNh4StLKDv7apqeK8bs1UlAIkXpCnJNvdirypGIbYyQkRN4ib7L+aPGiIehurCV28bCswevyiJkRHOT92RqtV2g9a9XQzGymK8weJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULLGiIDT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1407C19422;
-	Tue, 11 Nov 2025 01:09:00 +0000 (UTC)
+	 MIME-Version; b=E7meKqs13H8qXJ3itCpUp+2nAbyDT3xNqoE9RM19I/KVftpNq7iOAlpAa5e05Ze1+oOcSk7u0+RGfFCoEoTJo5fAPZbxhn5OSDn9kdHZMXC87kncTaTXjCFJYeogFtqYN/ZumKVSgRUenwvqJ+YZOdY7tKiv/Usy/+rsfpsB09c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7hXS6Pc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55EE5C4CEFB;
+	Tue, 11 Nov 2025 01:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823341;
-	bh=tG3Eyo1KGnaDhRirrHi4zuwuqVhI7F2XacxMMleK7zg=;
+	s=korg; t=1762823345;
+	bh=GlxAvpcG/DKO8CeJsMKG+nYLKQrVGXeyzM10E9a4eeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ULLGiIDTaVMgyMTHKVjg/R6InoRN+3t4NFFMrp9axV1iFfUeVo9aK9Wgps2TYvo4E
-	 jry7H7qNpap4610qeqso4J12A+wT1AUGtScBh9SgGTOq0kiKCYW8iUmxkeBQxTZbGN
-	 sWhIrJoJHMrk0N3DZBLu0TFw3xRW4v4c9psPVoho=
+	b=x7hXS6Pc0jHfFjU+5/0bbofC+y923BV8gjiwOcFWfsERAEMVfSWgDGI45JaLcTxSP
+	 Hgz2op+ok1AW2uiWYM4sDCDg46ntrqX5cSU0TFVVfXzeKTrE1M/wf8JFDGTRjD+HQq
+	 e+dpMtUuz5JCsi1H7Zsz4jtkeY7LdqbbbL2iZ0Gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geoffrey McRae <geoffrey.mcrae@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
+	Joe Damato <joe@dama.to>,
+	Mina Almasry <almasrymina@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 279/849] drm/amdkfd: return -ENOTTY for unsupported IOCTLs
-Date: Tue, 11 Nov 2025 09:37:29 +0900
-Message-ID: <20251111004543.170751749@linuxfoundation.org>
+Subject: [PATCH 6.17 280/849] selftests: drv-net: devmem: add / correct the IPv6 support
+Date: Tue, 11 Nov 2025 09:37:30 +0900
+Message-ID: <20251111004543.193897731@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,51 +68,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geoffrey McRae <geoffrey.mcrae@amd.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 57af162bfc8c05332a28c4d458d246cc46d2746d ]
+[ Upstream commit 424e96de30230aac2061f941961be645cf0070d5 ]
 
-Some kfd ioctls may not be available depending on the kernel version the
-user is running, as such we need to report -ENOTTY so userland can
-determine the cause of the ioctl failure.
+We need to use bracketed IPv6 addresses for socat.
 
-Signed-off-by: Geoffrey McRae <geoffrey.mcrae@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Joe Damato <joe@dama.to>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20250811231334.561137-4-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tools/testing/selftests/drivers/net/hw/devmem.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index 828a9ceef1e76..79ed3be63d0dd 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -3252,8 +3252,10 @@ static long kfd_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
- 	int retcode = -EINVAL;
- 	bool ptrace_attached = false;
+diff --git a/tools/testing/selftests/drivers/net/hw/devmem.py b/tools/testing/selftests/drivers/net/hw/devmem.py
+index baa2f24240ba5..0a2533a3d6d60 100755
+--- a/tools/testing/selftests/drivers/net/hw/devmem.py
++++ b/tools/testing/selftests/drivers/net/hw/devmem.py
+@@ -24,7 +24,7 @@ def check_rx(cfg) -> None:
+     require_devmem(cfg)
  
--	if (nr >= AMDKFD_CORE_IOCTL_COUNT)
-+	if (nr >= AMDKFD_CORE_IOCTL_COUNT) {
-+		retcode = -ENOTTY;
- 		goto err_i1;
-+	}
+     port = rand_port()
+-    socat = f"socat -u - TCP{cfg.addr_ipver}:{cfg.addr}:{port},bind={cfg.remote_addr}:{port}"
++    socat = f"socat -u - TCP{cfg.addr_ipver}:{cfg.baddr}:{port},bind={cfg.remote_baddr}:{port}"
+     listen_cmd = f"{cfg.bin_local} -l -f {cfg.ifname} -s {cfg.addr} -p {port} -c {cfg.remote_addr} -v 7"
  
- 	if ((nr >= AMDKFD_COMMAND_START) && (nr < AMDKFD_COMMAND_END)) {
- 		u32 amdkfd_size;
-@@ -3266,8 +3268,10 @@ static long kfd_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
- 			asize = amdkfd_size;
- 
- 		cmd = ioctl->cmd;
--	} else
-+	} else {
-+		retcode = -ENOTTY;
- 		goto err_i1;
-+	}
- 
- 	dev_dbg(kfd_device, "ioctl cmd 0x%x (#0x%x), arg 0x%lx\n", cmd, nr, arg);
- 
+     with bkg(listen_cmd, exit_wait=True) as ncdevmem:
 -- 
 2.51.0
 
