@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-193133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2ED9C49FCE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:08 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E33EC49FC8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 935B23AC383
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:02 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AEEB434BD84
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC694C97;
-	Tue, 11 Nov 2025 00:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FE624A043;
+	Tue, 11 Nov 2025 00:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OzWOMj7t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8BbjFmz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98C41DF258;
-	Tue, 11 Nov 2025 00:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B62214210;
+	Tue, 11 Nov 2025 00:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822376; cv=none; b=GTbVV0ZL4pZtwT2kElcoCIEOmyy7vMgqtWRSY9Do2Xt9AkAm7kFHyv2HobfQ5BEcrbAAnbfi+2AuOU2/fI25HeBw/Z84/B8QtFCTA9OP6rfPvBU3RqRW+Ev74AlGpugNV166g+qXml8ZsI3EEONeR//mIggQ5VzYcbHWPYSFJ68=
+	t=1762822381; cv=none; b=tgm+jPZGlryqLGlw/xzlELnPa4FCHQ9IA2bh4A8MnsmGkr0z7QE/D2MsoC5wgWGyiW4TTYT0H55ySBuzmQUbceh6syNO2JQeJq3wuoxg/2yNsH2dSJmhudfRbcTdUlnj2Q4E2A77euJ4zPcpDizPYr9QkRRfZvzSlFpzVDzRlW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822376; c=relaxed/simple;
-	bh=dZv1bGUx2buxkQPq5nP/9NdS07y0LIBHa2IA7qdN8vc=;
+	s=arc-20240116; t=1762822381; c=relaxed/simple;
+	bh=MULBda9FXiu8hpGZPpEbREbRYW6BtbIUwrgj2FfaN30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYxLqooedNtwkwH6LJ6PxNUe/7F6hlMGNdoBl++s8wQbBec5Y/BI/5PbiHnckJorJ4RS56F8LP9KCGwsnef4E6y0zZjV0VneTA0HaVmlZmXkFCpXEBNne5BxPGnImasmbCLIvQep0PzvnworsTXu0Uf2IYKUYsaNdSJqqyl/dL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OzWOMj7t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B56C16AAE;
-	Tue, 11 Nov 2025 00:52:56 +0000 (UTC)
+	 MIME-Version; b=h7c/ViWZytEy38SYjJAKZMyc+UbTpzdXaL2Sa4HoKpE0dSIxhN70INSNwpE3XphIgORWCd7lr02C+TtKZymQT5a9uXjI32Rr1gbMXwlP+ztZEP0+GAB/mmGclUkS4nbWbU+P00CiockOL1lJS+EIEvigBbz1BiH90VO57seL5Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8BbjFmz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC67AC16AAE;
+	Tue, 11 Nov 2025 00:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822376;
-	bh=dZv1bGUx2buxkQPq5nP/9NdS07y0LIBHa2IA7qdN8vc=;
+	s=korg; t=1762822381;
+	bh=MULBda9FXiu8hpGZPpEbREbRYW6BtbIUwrgj2FfaN30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OzWOMj7tKR+jxU4aTS0duYGV8hwqKv8mj5G4S+eZX2W4RNH3Q2pWdYmuwbT7JIXm1
-	 49d0eQiRFsnCHb8zm4Ot5YTJ+iP7Wsp3iQTzqlhx/4UCJ27sQDDJNFyvp52gxe+NsR
-	 iSrmJWHAl5KQj3gnQ2jvYx4J+nWwWytXQL0a018k=
+	b=e8BbjFmzUcEh3Bs9NRUwXAF2pKZa4zR5sHr34lkZNH4pcb1H+bo3AFGxPwVqE9Nro
+	 D1t2wDv3BcsIGM/TqpluNLFdM98aipbxYwtOeWIsYSf10NG38BrEBhVBKiSw5MsVdR
+	 y5Dcop2XS5lAOdmIQ39CEf07NXQJciUXRHA7Hwyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Gerd Bayer <gbayer@linux.ibm.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
 	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.17 095/849] s390/pci: Avoid deadlock between PCI error recovery and mlx5 crdump
-Date: Tue, 11 Nov 2025 09:34:25 +0900
-Message-ID: <20251111004538.707971758@linuxfoundation.org>
+Subject: [PATCH 6.17 097/849] s390/mm: Fix memory leak in add_marker() when kvrealloc() fails
+Date: Tue, 11 Nov 2025 09:34:27 +0900
+Message-ID: <20251111004538.753043770@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,116 +65,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gerd Bayer <gbayer@linux.ibm.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 0fd20f65df6aa430454a0deed8f43efa91c54835 upstream.
+commit 07ad45e06b4039adf96882aefcb1d3299fb7c305 upstream.
 
-Do not block PCI config accesses through pci_cfg_access_lock() when
-executing the s390 variant of PCI error recovery: Acquire just
-device_lock() instead of pci_dev_lock() as powerpc's EEH and
-generig PCI AER processing do.
+The function has a memory leak when kvrealloc() fails.
+The function directly assigns NULL to the markers pointer, losing the
+reference to the previously allocated memory. This causes kvfree() in
+pt_dump_init() to free NULL instead of the leaked memory.
 
-During error recovery testing a pair of tasks was reported to be hung:
+Fix by:
+1. Using kvrealloc() uniformly for all allocations
+2. Using a temporary variable to preserve the original pointer until
+   allocation succeeds
+3. Removing the error path that sets markers_cnt=0 to keep
+   consistency between markers and markers_cnt
 
-mlx5_core 0000:00:00.1: mlx5_health_try_recover:338:(pid 5553): health recovery flow aborted, PCI reads still not working
-INFO: task kmcheck:72 blocked for more than 122 seconds.
-      Not tainted 5.14.0-570.12.1.bringup7.el9.s390x #1
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kmcheck         state:D stack:0     pid:72    tgid:72    ppid:2      flags:0x00000000
-Call Trace:
- [<000000065256f030>] __schedule+0x2a0/0x590
- [<000000065256f356>] schedule+0x36/0xe0
- [<000000065256f572>] schedule_preempt_disabled+0x22/0x30
- [<0000000652570a94>] __mutex_lock.constprop.0+0x484/0x8a8
- [<000003ff800673a4>] mlx5_unload_one+0x34/0x58 [mlx5_core]
- [<000003ff8006745c>] mlx5_pci_err_detected+0x94/0x140 [mlx5_core]
- [<0000000652556c5a>] zpci_event_attempt_error_recovery+0xf2/0x398
- [<0000000651b9184a>] __zpci_event_error+0x23a/0x2c0
-INFO: task kworker/u1664:6:1514 blocked for more than 122 seconds.
-      Not tainted 5.14.0-570.12.1.bringup7.el9.s390x #1
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/u1664:6 state:D stack:0     pid:1514  tgid:1514  ppid:2      flags:0x00000000
-Workqueue: mlx5_health0000:00:00.0 mlx5_fw_fatal_reporter_err_work [mlx5_core]
-Call Trace:
- [<000000065256f030>] __schedule+0x2a0/0x590
- [<000000065256f356>] schedule+0x36/0xe0
- [<0000000652172e28>] pci_wait_cfg+0x80/0xe8
- [<0000000652172f94>] pci_cfg_access_lock+0x74/0x88
- [<000003ff800916b6>] mlx5_vsc_gw_lock+0x36/0x178 [mlx5_core]
- [<000003ff80098824>] mlx5_crdump_collect+0x34/0x1c8 [mlx5_core]
- [<000003ff80074b62>] mlx5_fw_fatal_reporter_dump+0x6a/0xe8 [mlx5_core]
- [<0000000652512242>] devlink_health_do_dump.part.0+0x82/0x168
- [<0000000652513212>] devlink_health_report+0x19a/0x230
- [<000003ff80075a12>] mlx5_fw_fatal_reporter_err_work+0xba/0x1b0 [mlx5_core]
+Found via static analysis and this is similar to commit 42378a9ca553
+("bpf, verifier: Fix memory leak in array reallocation for stack state")
 
-No kernel log of the exact same error with an upstream kernel is
-available - but the very same deadlock situation can be constructed there,
-too:
-
-- task: kmcheck
-  mlx5_unload_one() tries to acquire devlink lock while the PCI error
-  recovery code has set pdev->block_cfg_access by way of
-  pci_cfg_access_lock()
-- task: kworker
-  mlx5_crdump_collect() tries to set block_cfg_access through
-  pci_cfg_access_lock() while devlink_health_report() had acquired
-  the devlink lock.
-
-A similar deadlock situation can be reproduced by requesting a
-crdump with
-  > devlink health dump show pci/<BDF> reporter fw_fatal
-
-while PCI error recovery is executed on the same <BDF> physical function
-by mlx5_core's pci_error_handlers. On s390 this can be injected with
-  > zpcictl --reset-fw <BDF>
-
-Tests with this patch failed to reproduce that second deadlock situation,
-the devlink command is rejected with "kernel answers: Permission denied" -
-and we get a kernel log message of:
-
-mlx5_core 1ed0:00:00.1: mlx5_crdump_collect:50:(pid 254382): crdump: failed to lock vsc gw err -5
-
-because the config read of VSC_SEMAPHORE is rejected by the underlying
-hardware.
-
-Two prior attempts to address this issue have been discussed and
-ultimately rejected [see link], with the primary argument that s390's
-implementation of PCI error recovery is imposing restrictions that
-neither powerpc's EEH nor PCI AER handling need. Tests show that PCI
-error recovery on s390 is running to completion even without blocking
-access to PCI config space.
-
-Link: https://lore.kernel.org/all/20251007144826.2825134-1-gbayer@linux.ibm.com/
+Fixes: d0e7915d2ad3 ("s390/mm/ptdump: Generate address marker array dynamically")
 Cc: stable@vger.kernel.org
-Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/pci/pci_event.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/mm/dump_pagetables.c |   19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
---- a/arch/s390/pci/pci_event.c
-+++ b/arch/s390/pci/pci_event.c
-@@ -187,7 +187,7 @@ static pci_ers_result_t zpci_event_attem
- 	 * is unbound or probed and that userspace can't access its
- 	 * configuration space while we perform recovery.
- 	 */
--	pci_dev_lock(pdev);
-+	device_lock(&pdev->dev);
- 	if (pdev->error_state == pci_channel_io_perm_failure) {
- 		ers_res = PCI_ERS_RESULT_DISCONNECT;
- 		goto out_unlock;
-@@ -254,7 +254,7 @@ static pci_ers_result_t zpci_event_attem
- 	if (driver->err_handler->resume)
- 		driver->err_handler->resume(pdev);
- out_unlock:
--	pci_dev_unlock(pdev);
-+	device_unlock(&pdev->dev);
- 	zpci_report_status(zdev, "recovery", status_str);
+--- a/arch/s390/mm/dump_pagetables.c
++++ b/arch/s390/mm/dump_pagetables.c
+@@ -291,16 +291,14 @@ static int ptdump_cmp(const void *a, con
  
- 	return ers_res;
+ static int add_marker(unsigned long start, unsigned long end, const char *name)
+ {
+-	size_t oldsize, newsize;
++	struct addr_marker *new;
++	size_t newsize;
+ 
+-	oldsize = markers_cnt * sizeof(*markers);
+-	newsize = oldsize + 2 * sizeof(*markers);
+-	if (!oldsize)
+-		markers = kvmalloc(newsize, GFP_KERNEL);
+-	else
+-		markers = kvrealloc(markers, newsize, GFP_KERNEL);
+-	if (!markers)
+-		goto error;
++	newsize = (markers_cnt + 2) * sizeof(*markers);
++	new = kvrealloc(markers, newsize, GFP_KERNEL);
++	if (!new)
++		return -ENOMEM;
++	markers = new;
+ 	markers[markers_cnt].is_start = 1;
+ 	markers[markers_cnt].start_address = start;
+ 	markers[markers_cnt].size = end - start;
+@@ -312,9 +310,6 @@ static int add_marker(unsigned long star
+ 	markers[markers_cnt].name = name;
+ 	markers_cnt++;
+ 	return 0;
+-error:
+-	markers_cnt = 0;
+-	return -ENOMEM;
+ }
+ 
+ static int pt_dump_init(void)
 
 
 
