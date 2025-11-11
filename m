@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-194083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C005AC4ACE7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2365BC4B163
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A4601883EE2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F53C1896E7E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5693B2F49E9;
-	Tue, 11 Nov 2025 01:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2C534028B;
+	Tue, 11 Nov 2025 01:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQeGy7/4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkBbVA5T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1238726E158;
-	Tue, 11 Nov 2025 01:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B4A33FE34;
+	Tue, 11 Nov 2025 01:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824767; cv=none; b=WHSoiREHPOvd9F8CnX0Br4Ci/mEnJSSJHTPmANOinGSqTDr0cQ2vkcI87vRC8Mwn1/FL+ZRU7nNZIIgwDPnv0MMljtF/kzp3oMMnW3AEFxE3dphjj3PoXulL9f5MSsF2K/2/JA7QqQZgxnl/YFvq2KbGLi/QFvp3lB+763TI0lY=
+	t=1762825436; cv=none; b=B6MACqAtOIvgcXGjY7jP2sUthtDt4BwKFGz/DH2sapQ2W9yiJgUlxJubyx+a1Aw+8CwZDsaBzU4a/nLqC+vXKxChL5JPUQvomKw1Xz9fhJfcKHf7HxwQo2eZB+CTg11miJf8md1MghM/C9HdLCroCaiEjoeeSLscNtboJUjmMLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824767; c=relaxed/simple;
-	bh=LwWxk4xDVVOFmXgMLwrth+LnM0oOG4s5HnICl9YKefE=;
+	s=arc-20240116; t=1762825436; c=relaxed/simple;
+	bh=8czR8V+EDRf9enLqVuQoneoHt0yLyOJbUFo7CNL/8Ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vovg4jpOWJaEG2zMLHEHTuV66Z+uu6vffsa8vfhV6b0ZRd1jPKaCP3C0PsC8b6qya9LS2oROU25/9Og16HSN8XlLyoTd3IUThFas8SoG25FMW3oB44xjyRlSH9bYIPmNvUFEdler1u268DZZ8MR5uEq1o/agiW3n4b3dmILUGik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQeGy7/4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2F1C4CEFB;
-	Tue, 11 Nov 2025 01:32:46 +0000 (UTC)
+	 MIME-Version; b=D28smlObZ3B2T1j+s9WT6S2SiV0r/SHTfOGwB+e1arecH218wHN+DkIfj9E2FMS+s38v9OJD5GoZub1VnbTIdJZgntT+J36uHB9LBiT6N+ilnekfAI+IsmOS4/eKOX1hjoYQqF0aEojKIYgyp0BufM41S8FHSc+XuzIouHmQ90c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkBbVA5T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E24C116D0;
+	Tue, 11 Nov 2025 01:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824766;
-	bh=LwWxk4xDVVOFmXgMLwrth+LnM0oOG4s5HnICl9YKefE=;
+	s=korg; t=1762825436;
+	bh=8czR8V+EDRf9enLqVuQoneoHt0yLyOJbUFo7CNL/8Ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQeGy7/459OJyhbcd5yq1Tgdqs1NoorBpD4Wyt4zOlprpXl+oYUwcD1LEZyRXjmTn
-	 1xg2cRgATKf1QNLSJlIiXpZNPrWzL1QUnpw/RKsw5DKkV/1MT48bpdzhfmH4hEnK6f
-	 XB6ZkdOLxIsXcyLb3lXQRVYFyWsJmAkjVmLOkDGU=
+	b=NkBbVA5ToFNpkJLIXlHIbbmrZrjTYhmfEvjqlyHphxwmsJSEj3+ykj8MEfvIiJNXJ
+	 mJNXDyiHibNo4iOTf9m0HlnGBcTJ5vdKAcJmrG6VL7WLQTrjHheqM1xwtUQJx6VAtX
+	 KzqBUzGxbeVpoPc2H97Ii3hOccMMnSb6IdJY+xwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Anubhav Singh <anubhavsinggh@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 513/565] selftests/net: fix out-of-order delivery of FIN in gro:tcp test
+Subject: [PATCH 6.17 799/849] selftests/vsock: avoid false-positives when checking dmesg
 Date: Tue, 11 Nov 2025 09:46:09 +0900
-Message-ID: <20251111004538.495495002@linuxfoundation.org>
+Message-ID: <20251111004555.749924660@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anubhav Singh <anubhavsinggh@google.com>
+From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-[ Upstream commit 02d064de05b1fcca769391fa82d205bed8bb9bf0 ]
+[ Upstream commit 3534e03e0ec2e00908765549828a69df5ebefb91 ]
 
-Due to the gro_sender sending data packets and FIN packets
-in very quick succession, these are received almost simultaneously
-by the gro_receiver. FIN packets are sometimes processed before the
-data packets leading to intermittent (~1/100) test failures.
+Sometimes VMs will have some intermittent dmesg warnings that are
+unrelated to vsock. Change the dmesg parsing to filter on strings
+containing 'vsock' to avoid false positive failures that are unrelated
+to vsock. The downside is that it is possible for some vsock related
+warnings to not contain the substring 'vsock', so those will be missed.
 
-This change adds a delay of 100ms before sending FIN packets
-in gro:tcp test to avoid the out-of-order delivery. The same
-mitigation already exists for the gro:ip test.
-
-Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Anubhav Singh <anubhavsinggh@google.com>
-Link: https://patch.msgid.link/20251030062818.1562228-1-anubhavsinggh@google.com
+Fixes: a4a65c6fe08b ("selftests/vsock: add initial vmtest.sh for vsock")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20251105-vsock-vmtest-dmesg-fix-v2-1-1a042a14892c@meta.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/gro.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/testing/selftests/vsock/vmtest.sh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
-index b2184847e3881..d8a7906a9df98 100644
---- a/tools/testing/selftests/net/gro.c
-+++ b/tools/testing/selftests/net/gro.c
-@@ -969,6 +969,7 @@ static void check_recv_pkts(int fd, int *correct_payload,
+diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
+index edacebfc16325..8ceeb8a7894f5 100755
+--- a/tools/testing/selftests/vsock/vmtest.sh
++++ b/tools/testing/selftests/vsock/vmtest.sh
+@@ -389,9 +389,9 @@ run_test() {
+ 	local rc
  
- static void gro_sender(void)
- {
-+	const int fin_delay_us = 100 * 1000;
- 	static char fin_pkt[MAX_HDR_LEN];
- 	struct sockaddr_ll daddr = {};
- 	int txfd = -1;
-@@ -1012,15 +1013,22 @@ static void gro_sender(void)
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 	} else if (strcmp(testname, "tcp") == 0) {
- 		send_changed_checksum(txfd, &daddr);
-+		/* Adding sleep before sending FIN so that it is not
-+		 * received prior to other packets.
-+		 */
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 	host_oops_cnt_before=$(dmesg | grep -c -i 'Oops')
+-	host_warn_cnt_before=$(dmesg --level=warn | wc -l)
++	host_warn_cnt_before=$(dmesg --level=warn | grep -c -i 'vsock')
+ 	vm_oops_cnt_before=$(vm_ssh -- dmesg | grep -c -i 'Oops')
+-	vm_warn_cnt_before=$(vm_ssh -- dmesg --level=warn | wc -l)
++	vm_warn_cnt_before=$(vm_ssh -- dmesg --level=warn | grep -c -i 'vsock')
  
- 		send_changed_seq(txfd, &daddr);
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 	name=$(echo "${1}" | awk '{ print $1 }')
+ 	eval test_"${name}"
+@@ -403,7 +403,7 @@ run_test() {
+ 		rc=$KSFT_FAIL
+ 	fi
  
- 		send_changed_ts(txfd, &daddr);
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+-	host_warn_cnt_after=$(dmesg --level=warn | wc -l)
++	host_warn_cnt_after=$(dmesg --level=warn | grep -c -i 'vsock')
+ 	if [[ ${host_warn_cnt_after} -gt ${host_warn_cnt_before} ]]; then
+ 		echo "FAIL: kernel warning detected on host" | log_host "${name}"
+ 		rc=$KSFT_FAIL
+@@ -415,7 +415,7 @@ run_test() {
+ 		rc=$KSFT_FAIL
+ 	fi
  
- 		send_diff_opt(txfd, &daddr);
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 	} else if (strcmp(testname, "ip") == 0) {
- 		send_changed_ECN(txfd, &daddr);
+-	vm_warn_cnt_after=$(vm_ssh -- dmesg --level=warn | wc -l)
++	vm_warn_cnt_after=$(vm_ssh -- dmesg --level=warn | grep -c -i 'vsock')
+ 	if [[ ${vm_warn_cnt_after} -gt ${vm_warn_cnt_before} ]]; then
+ 		echo "FAIL: kernel warning detected on vm" | log_host "${name}"
+ 		rc=$KSFT_FAIL
 -- 
 2.51.0
 
