@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-194196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC715C4B033
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:53:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 274B1C4A9E2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DB473B5043
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 015133B1CE6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636642DCBEB;
-	Tue, 11 Nov 2025 01:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05A0309F07;
+	Tue, 11 Nov 2025 01:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FCUZHBO9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JY63qf46"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F32226AC3;
-	Tue, 11 Nov 2025 01:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED7330C34A;
+	Tue, 11 Nov 2025 01:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825031; cv=none; b=UjJ/xWEyKnnlhrMsQGdXgu4HD+kHGWIvOzne3uIeP6qbks4UyI2wanlG9InOR0YexFBS6QbAzxsOZjfl8NqwViTCo8pmBSQxItwzuhjk8l2dQGsgE/gKwroKEKxiUY1coIKwvt3oeCjmCohzBzqAL24VoULrvFuPcjYuCLedQrE=
+	t=1762823899; cv=none; b=XUZ2T4cFcLH1hG2a4GZjuA0vvEWE268/q8ywZBVo0DH5eiJ+SThzMFkPJAtfB/RDWG5HHGKnZWP2cYipNB4IYBjg4ZrEprx9I+EvF4sqhvFXJm24f/ze4+pmnpEI/uAP5ob1ku9yStRcNCZC1Uk4U/YmA1ZmcU/Mdlj1UwqJr+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825031; c=relaxed/simple;
-	bh=jT4mmOZpE3eXMaK3N2lynFyg1xOIDSD0A9Ll20m6/EU=;
+	s=arc-20240116; t=1762823899; c=relaxed/simple;
+	bh=3ouu/204WfrLlJBp1t5rwtcnZv9Hhp4u8pDepuswf1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a3/Pl4K+mHIBy9i8mrtkoISWJ+dWfqRGNAZttqu7UbdjagxsPe5zj1rUucM1ew5s+THeVbZKXVJhutu72LNvmceMonFQWHnOuQMZVw36Sh5pSV8DamjrUAPxsrFnIH18Mxr5EPypS17czejO4T/l+rxQUTPbHA2Mcp5qgczPse4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FCUZHBO9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E1AC113D0;
-	Tue, 11 Nov 2025 01:37:10 +0000 (UTC)
+	 MIME-Version; b=D6uWLrJoKClUIR2P6xxXsqnxXO6RsIW91Io78vPjqSc7s5/ErpK8NJILbQiOVo+w+cGvb7EKJiNX5B//OVe/5yJFkRsy5cGX0sZTFMo/rAuybpyIQ0dsvyENn29pZEBqYITi04N/Qcffylvw9OXeUWu6wtoL4EX5Agf7en5weS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JY63qf46; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C0CC16AAE;
+	Tue, 11 Nov 2025 01:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825031;
-	bh=jT4mmOZpE3eXMaK3N2lynFyg1xOIDSD0A9Ll20m6/EU=;
+	s=korg; t=1762823899;
+	bh=3ouu/204WfrLlJBp1t5rwtcnZv9Hhp4u8pDepuswf1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FCUZHBO9qWcACmiQTJHbIeuX1oEmpsvSd0E0Bht5iWK/RKhd5P0a9bUnAVzhZNHeV
-	 3LA+FxqUTbnrofJifUQlXpm3h4EdUtESzUFB//1D4AiVpNRc1ZnIG9XSZnyHT8ImHM
-	 wm30+D1hGCKvqku2N7x6jsE8XU3Jf838CCOwgEmA=
+	b=JY63qf46oatdRyOJxy2ZQwtZImiTmbtMt4DegFEO26fLuEBqA+N6BMWa/+KClIaUY
+	 H/YCLAB+WwXfskyEHxUPpYaWz9nqsQkTnUv8nHmJBmi70IzOWrzbNX8kvjNIWHs0v8
+	 l3N0cOc6c1k0utrJsWK1JgMW1LY8hT77f530GXHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	David Ahern <dsahern@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 632/849] net: phy: dp83640: improve phydev and driver removal handling
+Subject: [PATCH 6.12 346/565] net: devmem: expose tcp_recvmsg_locked errors
 Date: Tue, 11 Nov 2025 09:43:22 +0900
-Message-ID: <20251111004551.712351633@linuxfoundation.org>
+Message-ID: <20251111004534.658894871@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,131 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Stanislav Fomichev <sdf@fomichev.me>
 
-[ Upstream commit 42e2a9e11a1dcb81c83d50d18c547dc9a1c6d6ed ]
+[ Upstream commit 18282100d7040614b553f1cad737cb689c04e2b9 ]
 
-Once the last user of a clock has been removed, the clock should be
-removed. So far orphaned clocks are cleaned up in dp83640_free_clocks()
-only. Add the logic to remove orphaned clocks in dp83640_remove().
-This allows to simplify the code, and use standard macro
-module_phy_driver(). dp83640 was the last external user of
-phy_driver_register(), so we can stop exporting this function afterwards.
+tcp_recvmsg_dmabuf can export the following errors:
+- EFAULT when linear copy fails
+- ETOOSMALL when cmsg put fails
+- ENODEV if one of the frags is readable
+- ENOMEM on xarray failures
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/6d4e80e7-c684-4d95-abbd-ea62b79a9a8a@gmail.com
+But they are all ignored and replaced by EFAULT in the caller
+(tcp_recvmsg_locked). Expose real error to the userspace to
+add more transparency on what specifically fails.
+
+In non-devmem case (skb_copy_datagram_msg) doing `if (!copied)
+copied=-EFAULT` is ok because skb_copy_datagram_msg can return only EFAULT.
+
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20250910162429.4127997-1-sdf@fomichev.me
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/dp83640.c | 58 ++++++++++++++-------------------------
- 1 file changed, 20 insertions(+), 38 deletions(-)
+ net/ipv4/tcp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/dp83640.c b/drivers/net/phy/dp83640.c
-index daab555721df8..74396453f5bb2 100644
---- a/drivers/net/phy/dp83640.c
-+++ b/drivers/net/phy/dp83640.c
-@@ -953,30 +953,6 @@ static void decode_status_frame(struct dp83640_private *dp83640,
- 	}
- }
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 795ffa62cc0e6..ad5f30cefdf96 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2780,9 +2780,9 @@ static int tcp_recvmsg_locked(struct sock *sk, struct msghdr *msg, size_t len,
  
--static void dp83640_free_clocks(void)
--{
--	struct dp83640_clock *clock;
--	struct list_head *this, *next;
--
--	mutex_lock(&phyter_clocks_lock);
--
--	list_for_each_safe(this, next, &phyter_clocks) {
--		clock = list_entry(this, struct dp83640_clock, list);
--		if (!list_empty(&clock->phylist)) {
--			pr_warn("phy list non-empty while unloading\n");
--			BUG();
--		}
--		list_del(&clock->list);
--		mutex_destroy(&clock->extreg_lock);
--		mutex_destroy(&clock->clock_lock);
--		put_device(&clock->bus->dev);
--		kfree(clock->caps.pin_config);
--		kfree(clock);
--	}
--
--	mutex_unlock(&phyter_clocks_lock);
--}
--
- static void dp83640_clock_init(struct dp83640_clock *clock, struct mii_bus *bus)
- {
- 	INIT_LIST_HEAD(&clock->list);
-@@ -1479,6 +1455,7 @@ static void dp83640_remove(struct phy_device *phydev)
- 	struct dp83640_clock *clock;
- 	struct list_head *this, *next;
- 	struct dp83640_private *tmp, *dp83640 = phydev->priv;
-+	bool remove_clock = false;
+ 				err = tcp_recvmsg_dmabuf(sk, skb, offset, msg,
+ 							 used);
+-				if (err <= 0) {
++				if (err < 0) {
+ 					if (!copied)
+-						copied = -EFAULT;
++						copied = err;
  
- 	if (phydev->mdio.addr == BROADCAST_ADDR)
- 		return;
-@@ -1506,11 +1483,27 @@ static void dp83640_remove(struct phy_device *phydev)
- 		}
- 	}
- 
-+	if (!clock->chosen && list_empty(&clock->phylist))
-+		remove_clock = true;
-+
- 	dp83640_clock_put(clock);
- 	kfree(dp83640);
-+
-+	if (remove_clock) {
-+		mutex_lock(&phyter_clocks_lock);
-+		list_del(&clock->list);
-+		mutex_unlock(&phyter_clocks_lock);
-+
-+		mutex_destroy(&clock->extreg_lock);
-+		mutex_destroy(&clock->clock_lock);
-+		put_device(&clock->bus->dev);
-+		kfree(clock->caps.pin_config);
-+		kfree(clock);
-+	}
- }
- 
--static struct phy_driver dp83640_driver = {
-+static struct phy_driver dp83640_driver[] = {
-+{
- 	.phy_id		= DP83640_PHY_ID,
- 	.phy_id_mask	= 0xfffffff0,
- 	.name		= "NatSemi DP83640",
-@@ -1521,26 +1514,15 @@ static struct phy_driver dp83640_driver = {
- 	.config_init	= dp83640_config_init,
- 	.config_intr    = dp83640_config_intr,
- 	.handle_interrupt = dp83640_handle_interrupt,
-+},
- };
- 
--static int __init dp83640_init(void)
--{
--	return phy_driver_register(&dp83640_driver, THIS_MODULE);
--}
--
--static void __exit dp83640_exit(void)
--{
--	dp83640_free_clocks();
--	phy_driver_unregister(&dp83640_driver);
--}
-+module_phy_driver(dp83640_driver);
- 
- MODULE_DESCRIPTION("National Semiconductor DP83640 PHY driver");
- MODULE_AUTHOR("Richard Cochran <richardcochran@gmail.com>");
- MODULE_LICENSE("GPL");
- 
--module_init(dp83640_init);
--module_exit(dp83640_exit);
--
- static const struct mdio_device_id __maybe_unused dp83640_tbl[] = {
- 	{ DP83640_PHY_ID, 0xfffffff0 },
- 	{ }
+ 					break;
+ 				}
 -- 
 2.51.0
 
