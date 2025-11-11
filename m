@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52745C4A13A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0264C4A0CD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:56:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 70ACF4EFDF7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:56:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 605953AC9E9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EAB24113D;
-	Tue, 11 Nov 2025 00:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE015252917;
+	Tue, 11 Nov 2025 00:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilr6UHfB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXTR/ffS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A29E246333;
-	Tue, 11 Nov 2025 00:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEA824113D;
+	Tue, 11 Nov 2025 00:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822562; cv=none; b=TFZ2Y7mPqCmg0TWIFYN6ucm4bao2YeF7PMaDla1K7lIKIGM3EmMjXNr2v/HOT5KcC6BVsVZW/7mR8Z2FMbMs8S1QmuFNcZhsrXAJSObiw6mq81PHDKBwNTYD8ZOHRNG9ASlkdNFt2otHCqoCbupl3WcMIPiGIaOlQM2QGi2zSdo=
+	t=1762822587; cv=none; b=nw58luq8CTZMkW57l+q58hI62RrJOWx6vvQ+vzpJT0Q09hIez8C61WM6ZOGamOAI9fU2IsLWFcHSLLNLSr52/xdHlIJcly6GAnH86SGo+zt2YJiIFWZ5SD4fwpb+FjZxZWsF8s8Dz07uThZ16TgM9CWY8MCBZLOwetQ5eyn0Mkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822562; c=relaxed/simple;
-	bh=f/+At7dNsiIsE4evDk/PILSqjW0NYc5lYqnyuIYnD2w=;
+	s=arc-20240116; t=1762822587; c=relaxed/simple;
+	bh=IAGS69NpOa2jkX+C59CLnNBlQYLEbp4hGyOySQUubkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZImPnz92Iv3fJ+g6vQ+uiXLnbO5I4dGHtt4DkXe+BHiRFDCLcaezpfJCunsx1SemGyeRs8+O+n/0gq42ievYiYn26nicyXlPWh8paQyZJtG5TFpl2ozoBJ9qZ97OAXIOLlyleiBqJ2Q3D0STxqZDtyCgtNUDHoVUh5WaquwaX30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilr6UHfB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4EDC113D0;
-	Tue, 11 Nov 2025 00:56:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ae6CthwByqkbb12hKyx72OlDnjUyKKEyi4+Hxq4sCvwSQQsKbU4PR2h0kbj9xhwqetuolK5x+JXevK1HWJhrPReGsqnxS9r3SsMmXnFzMGvDP/SYgG6Tzqfq+Tm9K78yfOKGe4UboeLMDi81MuFPjm+AWFg6v7X22bkZoqBXQE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXTR/ffS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F447C4AF09;
+	Tue, 11 Nov 2025 00:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822562;
-	bh=f/+At7dNsiIsE4evDk/PILSqjW0NYc5lYqnyuIYnD2w=;
+	s=korg; t=1762822587;
+	bh=IAGS69NpOa2jkX+C59CLnNBlQYLEbp4hGyOySQUubkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ilr6UHfBCM09rHxGXzyr/DvZrcc6WMIYgpOKn4mpdRgK9u8zGBvUddBWgL7rBEUbQ
-	 t+oMgDVyxFWgALnRsPIL829gdhYxDXA0xEyWo0U2KufylnW8qV0x6RfoRjOm0HA9qH
-	 mx8yQFVHJusl1cjQ/Ep44TNl6VobtnrSmRHwBDM8=
+	b=zXTR/ffSY51wyqw4L1O+20SFXecSL2z/R0E8X3MOrT9Y4dLs9PTwSCtqjHfs8vjeJ
+	 m163n1p2HM59CyzhBUzPIiRDMrzD8DmVBmfV3U4MDF01/0sbCfe/L3GOVbDRqzIKxk
+	 GgFFO0QwpTd0QWS4kzcNz8KrlCLAKuxq2nX/9xu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Nishanth Menon <nm@ti.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 123/849] soc: ti: pruss: dont use %pK through printk
-Date: Tue, 11 Nov 2025 09:34:53 +0900
-Message-ID: <20251111004539.369465931@linuxfoundation.org>
+Subject: [PATCH 6.17 124/849] bpf: Dont use %pK through printk
+Date: Tue, 11 Nov 2025 09:34:54 +0900
+Message-ID: <20251111004539.396365941@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -69,7 +69,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit a5039648f86424885aae37f03dc39bc9cb972ecb ]
+[ Upstream commit 2caa6b88e0ba0231fb4ff0ba8e73cedd5fb81fc8 ]
 
 In the past %pK was preferable to %p as it would not leak raw pointer
 values into the kernel log.
@@ -83,26 +83,26 @@ Switch to the regular pointer formatting which is safer and
 easier to reason about.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://lore.kernel.org/r/20250811-restricted-pointers-soc-v2-1-7af7ed993546@linutronix.de
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250811-restricted-pointers-bpf-v1-1-a1d7cc3cb9e7@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/ti/pruss.c | 2 +-
+ include/linux/filter.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
-index d7634bf5413a3..038576805bfa0 100644
---- a/drivers/soc/ti/pruss.c
-+++ b/drivers/soc/ti/pruss.c
-@@ -449,7 +449,7 @@ static int pruss_of_setup_memories(struct device *dev, struct pruss *pruss)
- 		pruss->mem_regions[i].pa = res.start;
- 		pruss->mem_regions[i].size = resource_size(&res);
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index 1e7fd3ee759e0..52fecb7a1fe36 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -1296,7 +1296,7 @@ void bpf_jit_prog_release_other(struct bpf_prog *fp, struct bpf_prog *fp_other);
+ static inline void bpf_jit_dump(unsigned int flen, unsigned int proglen,
+ 				u32 pass, void *image)
+ {
+-	pr_err("flen=%u proglen=%u pass=%u image=%pK from=%s pid=%d\n", flen,
++	pr_err("flen=%u proglen=%u pass=%u image=%p from=%s pid=%d\n", flen,
+ 	       proglen, pass, image, current->comm, task_pid_nr(current));
  
--		dev_dbg(dev, "memory %8s: pa %pa size 0x%zx va %pK\n",
-+		dev_dbg(dev, "memory %8s: pa %pa size 0x%zx va %p\n",
- 			mem_names[i], &pruss->mem_regions[i].pa,
- 			pruss->mem_regions[i].size, pruss->mem_regions[i].va);
- 	}
+ 	if (image)
 -- 
 2.51.0
 
