@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-194346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09482C4B289
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:04:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78031C4AD7E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0A693B629D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D41EE3B4000
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164B226E158;
-	Tue, 11 Nov 2025 01:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477AF1F4617;
+	Tue, 11 Nov 2025 01:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deOG7KhX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZ5oWcGq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C676FA944;
-	Tue, 11 Nov 2025 01:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F60285CA2;
+	Tue, 11 Nov 2025 01:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825388; cv=none; b=guXQmLByUa6Cxj4ZaKql9mTW/f0MUJWreF+akN0XfF9YKRxkU4Y0qT4tLPALlJLLxKKxRs+3GFChYajK13dzykgEzLpLVYKvW7S3vxrx4b49eE5cUm5G3op9KOl+vWlUpQ46//EweB1fud0Zeki39UiVCTNRUHgyR7XpqX5SsBY=
+	t=1762824672; cv=none; b=VPTs1JXeUdVhkKE/PsWuU7gdvbORpy3LaxNZBSlf6tOv5IlmH2uhNT76XP/1LQkvJGDNoClLEpVhn7LvKLgQt7ck3Nn6C23Me/21YccZemMYebQ3d9NOB/QQu1BxgVEXlt/q9tfGPH2Fpz99HKlrNldnJPwdhJ9+Osc43kSr+cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825388; c=relaxed/simple;
-	bh=9G7ML6Zw2ylN/HCmlmgouoM2B5lFWDgXjZE9cHbC19c=;
+	s=arc-20240116; t=1762824672; c=relaxed/simple;
+	bh=vJEQ3qUY9kKWiOYjf0CEY6PFG81xW89G6Wa+3OEpQZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJuw4mMYw+dy4VBqITcCgNEymNIAPpXImddLYMMpxVTB82R8Ju2L0sST0CTY8WyMcJN5QobO6GZIV3KhX9xKVTDdzKvL6IV3gZG4tT1Kq1YjsVr/OFBaXu/NLk6xahifmEtlIxNWKiLSCjASar6z6fOXkBY5FdDZGUbUfg9rIKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deOG7KhX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656B6C116D0;
-	Tue, 11 Nov 2025 01:43:08 +0000 (UTC)
+	 MIME-Version; b=hPexgWk/Mwk4BVGU6804+i2tDOaZakAfBabiYCvdh2KzGvFANQD+NZjQ6YqGmHGGr5VkgAMUmekk9VBxbZCG1oEsNLxWrwfCbQ1S7cmeNHFclvi+s0XmQiGExQ4oiN6D4LXL6AzNqxuEDQtmk9Tc2Hlnxay7WdWqsEyct6gnjMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZ5oWcGq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DBDC113D0;
+	Tue, 11 Nov 2025 01:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825388;
-	bh=9G7ML6Zw2ylN/HCmlmgouoM2B5lFWDgXjZE9cHbC19c=;
+	s=korg; t=1762824671;
+	bh=vJEQ3qUY9kKWiOYjf0CEY6PFG81xW89G6Wa+3OEpQZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deOG7KhXLtnZDaqQoGYxzqnwt6Wrew+TNwx1UpazSRhHkv0O/FoQIvQxZ4Q2kJ0ma
-	 wcOVVo6eaGdpg2pH9xBIkm+87AmRUCUpIyWMWmDNvW38WzYXojEdOfAz5Bb7D1WYcC
-	 SATC8mhXG0OIMkjIL/0D3WO59ErK4yRRJZITcAYY=
+	b=JZ5oWcGqTrxh2+lP+wsoiKvDQ90/5anc/YjtVoNsYgSbRU3KvIseb7ZsP/34ltnlI
+	 ZPrTkxnYRDDOolQsaqxo2Phw+eqptiEy1s/iPRntbfry/uNoHPDzBaKhpOQOFwIGYG
+	 nRgZnA0FWqHuA3tCFIgBc3I4xThBe0+d35iqR+vM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kicinski@meta.com>,
-	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kotresh HR <khiremat@redhat.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 781/849] bnxt_en: Shutdown FW DMA in bnxt_shutdown()
+Subject: [PATCH 6.12 495/565] ceph: fix multifs mds auth caps issue
 Date: Tue, 11 Nov 2025 09:45:51 +0900
-Message-ID: <20251111004555.309589843@linuxfoundation.org>
+Message-ID: <20251111004538.070508755@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,50 +63,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Kotresh HR <khiremat@redhat.com>
 
-[ Upstream commit bc7208ca805ae6062f353a4753467d913d963bc6 ]
+[ Upstream commit 22c73d52a6d05c5a2053385c0d6cd9984732799d ]
 
-The netif_close() call in bnxt_shutdown() only stops packet DMA.  There
-may be FW DMA for trace logging (recently added) that will continue.  If
-we kexec to a new kernel, the DMA will corrupt memory in the new kernel.
+The mds auth caps check should also validate the
+fsname along with the associated caps. Not doing
+so would result in applying the mds auth caps of
+one fs on to the other fs in a multifs ceph cluster.
+The bug causes multiple issues w.r.t user
+authentication, following is one such example.
 
-Add bnxt_hwrm_func_drv_unrgtr() to unregister the driver from the FW.
-This will stop the FW DMA.  In case the call fails, call pcie_flr() to
-reset the function and stop the DMA.
+Steps to Reproduce (on vstart cluster):
+1. Create two file systems in a cluster, say 'fsname1' and 'fsname2'
+2. Authorize read only permission to the user 'client.usr' on fs 'fsname1'
+    $ceph fs authorize fsname1 client.usr / r
+3. Authorize read and write permission to the same user 'client.usr' on fs 'fsname2'
+    $ceph fs authorize fsname2 client.usr / rw
+4. Update the keyring
+    $ceph auth get client.usr >> ./keyring
 
-Fixes: 24d694aec139 ("bnxt_en: Allocate backing store memory for FW trace logs")
-Reported-by: Jakub Kicinski <kicinski@meta.com>
-Reviewed-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20251104005700.542174-2-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+With above permssions for the user 'client.usr', following is the
+expectation.
+  a. The 'client.usr' should be able to only read the contents
+     and not allowed to create or delete files on file system 'fsname1'.
+  b. The 'client.usr' should be able to read/write on file system 'fsname2'.
+
+But, with this bug, the 'client.usr' is allowed to read/write on file
+system 'fsname1'. See below.
+
+5. Mount the file system 'fsname1' with the user 'client.usr'
+     $sudo bin/mount.ceph usr@.fsname1=/ /kmnt_fsname1_usr/
+6. Try creating a file on file system 'fsname1' with user 'client.usr'. This
+   should fail but passes with this bug.
+     $touch /kmnt_fsname1_usr/file1
+7. Mount the file system 'fsname1' with the user 'client.admin' and create a
+   file.
+     $sudo bin/mount.ceph admin@.fsname1=/ /kmnt_fsname1_admin
+     $echo "data" > /kmnt_fsname1_admin/admin_file1
+8. Try removing an existing file on file system 'fsname1' with the user
+   'client.usr'. This shoudn't succeed but succeeds with the bug.
+     $rm -f /kmnt_fsname1_usr/admin_file1
+
+For more information, please take a look at the corresponding mds/fuse patch
+and tests added by looking into the tracker mentioned below.
+
+v2: Fix a possible null dereference in doutc
+v3: Don't store fsname from mdsmap, validate against
+    ceph_mount_options's fsname and use it
+v4: Code refactor, better warning message and
+    fix possible compiler warning
+
+[ Slava.Dubeyko: "fsname check failed" -> "fsname mismatch" ]
+
+Link: https://tracker.ceph.com/issues/72167
+Signed-off-by: Kotresh HR <khiremat@redhat.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ceph/mds_client.c |  8 ++++++++
+ fs/ceph/mdsmap.c     | 14 +++++++++++++-
+ fs/ceph/super.c      | 14 --------------
+ fs/ceph/super.h      | 14 ++++++++++++++
+ 4 files changed, 35 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 60e20b7642174..6a97753c618de 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -16869,6 +16869,10 @@ static void bnxt_shutdown(struct pci_dev *pdev)
- 	if (netif_running(dev))
- 		netif_close(dev);
+diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
+index df89d45f33a1f..50587c64f6144 100644
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -5652,11 +5652,19 @@ static int ceph_mds_auth_match(struct ceph_mds_client *mdsc,
+ 	u32 caller_uid = from_kuid(&init_user_ns, cred->fsuid);
+ 	u32 caller_gid = from_kgid(&init_user_ns, cred->fsgid);
+ 	struct ceph_client *cl = mdsc->fsc->client;
++	const char *fs_name = mdsc->fsc->mount_options->mds_namespace;
+ 	const char *spath = mdsc->fsc->mount_options->server_path;
+ 	bool gid_matched = false;
+ 	u32 gid, tlen, len;
+ 	int i, j;
  
-+	if (bnxt_hwrm_func_drv_unrgtr(bp)) {
-+		pcie_flr(pdev);
-+		goto shutdown_exit;
++	doutc(cl, "fsname check fs_name=%s  match.fs_name=%s\n",
++	      fs_name, auth->match.fs_name ? auth->match.fs_name : "");
++	if (auth->match.fs_name && strcmp(auth->match.fs_name, fs_name)) {
++		/* fsname mismatch, try next one */
++		return 0;
 +	}
- 	bnxt_ptp_clear(bp);
- 	bnxt_clear_int_mode(bp);
- 	pci_disable_device(pdev);
++
+ 	doutc(cl, "match.uid %lld\n", auth->match.uid);
+ 	if (auth->match.uid != MDS_AUTH_UID_ANY) {
+ 		if (auth->match.uid != caller_uid)
+diff --git a/fs/ceph/mdsmap.c b/fs/ceph/mdsmap.c
+index 8109aba66e023..2c7b151a7c95c 100644
+--- a/fs/ceph/mdsmap.c
++++ b/fs/ceph/mdsmap.c
+@@ -353,10 +353,22 @@ struct ceph_mdsmap *ceph_mdsmap_decode(struct ceph_mds_client *mdsc, void **p,
+ 		__decode_and_drop_type(p, end, u8, bad_ext);
+ 	}
+ 	if (mdsmap_ev >= 8) {
++		u32 fsname_len;
+ 		/* enabled */
+ 		ceph_decode_8_safe(p, end, m->m_enabled, bad_ext);
+ 		/* fs_name */
+-		ceph_decode_skip_string(p, end, bad_ext);
++		ceph_decode_32_safe(p, end, fsname_len, bad_ext);
++
++		/* validate fsname against mds_namespace */
++		if (!namespace_equals(mdsc->fsc->mount_options, *p,
++				      fsname_len)) {
++			pr_warn_client(cl, "fsname %*pE doesn't match mds_namespace %s\n",
++				       (int)fsname_len, (char *)*p,
++				       mdsc->fsc->mount_options->mds_namespace);
++			goto bad;
++		}
++		/* skip fsname after validation */
++		ceph_decode_skip_n(p, end, fsname_len, bad);
+ 	}
+ 	/* damaged */
+ 	if (mdsmap_ev >= 9) {
+diff --git a/fs/ceph/super.c b/fs/ceph/super.c
+index b61074b377ac5..96d582f71beaa 100644
+--- a/fs/ceph/super.c
++++ b/fs/ceph/super.c
+@@ -246,20 +246,6 @@ static void canonicalize_path(char *path)
+ 	path[j] = '\0';
+ }
+ 
+-/*
+- * Check if the mds namespace in ceph_mount_options matches
+- * the passed in namespace string. First time match (when
+- * ->mds_namespace is NULL) is treated specially, since
+- * ->mds_namespace needs to be initialized by the caller.
+- */
+-static int namespace_equals(struct ceph_mount_options *fsopt,
+-			    const char *namespace, size_t len)
+-{
+-	return !(fsopt->mds_namespace &&
+-		 (strlen(fsopt->mds_namespace) != len ||
+-		  strncmp(fsopt->mds_namespace, namespace, len)));
+-}
+-
+ static int ceph_parse_old_source(const char *dev_name, const char *dev_name_end,
+ 				 struct fs_context *fc)
+ {
+diff --git a/fs/ceph/super.h b/fs/ceph/super.h
+index 037eac35a9e02..caa01a564925c 100644
+--- a/fs/ceph/super.h
++++ b/fs/ceph/super.h
+@@ -104,6 +104,20 @@ struct ceph_mount_options {
+ 	struct fscrypt_dummy_policy dummy_enc_policy;
+ };
+ 
++/*
++ * Check if the mds namespace in ceph_mount_options matches
++ * the passed in namespace string. First time match (when
++ * ->mds_namespace is NULL) is treated specially, since
++ * ->mds_namespace needs to be initialized by the caller.
++ */
++static inline int namespace_equals(struct ceph_mount_options *fsopt,
++				   const char *namespace, size_t len)
++{
++	return !(fsopt->mds_namespace &&
++		 (strlen(fsopt->mds_namespace) != len ||
++		  strncmp(fsopt->mds_namespace, namespace, len)));
++}
++
+ /* mount state */
+ enum {
+ 	CEPH_MOUNT_MOUNTING,
 -- 
 2.51.0
 
