@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-194330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28818C4B14E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:23 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5545C4AA66
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B17324FC417
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 248B034C9C3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AA81C4A24;
-	Tue, 11 Nov 2025 01:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C642D9780;
+	Tue, 11 Nov 2025 01:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BhLaSGLh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qT1yCLE9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AF534AB1B;
-	Tue, 11 Nov 2025 01:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6BF158545;
+	Tue, 11 Nov 2025 01:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825350; cv=none; b=OTZN4vDMlATwDkhAJWKGYwPhTg3CVd6llHxgz5+5qJVXWtC0aBeh03xeUvrho1DS9svjJcqgz8cRdVoAHKqgbK7VuP+8KyQZm/trQCbjz5zysvLUhHzY6i65xY+IgC+QN1b5ks8KzoKGSKDuOwoNNs6hIFDvq9scdzZ77hb1gFE=
+	t=1762824622; cv=none; b=U5i7K1DESg0pEhXwin8HzjfHrdzPOWH/u8sQN7cMZ++1C6RT5N18GpIhYSglqJTyGGH420I7SJnyK4k2gibAXfhEkThEUtC/QVROTRDwc1HUNIHpZxQk+TUsaZ78g0fgJ996/jGnynmJbqG+laEQrgHH06W+5x/DOdZF/nX0+bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825350; c=relaxed/simple;
-	bh=DF/cWCzDOmTRVyTNkf/D/PcDyU2SNjSTWax3z56k1qE=;
+	s=arc-20240116; t=1762824622; c=relaxed/simple;
+	bh=I0GNZYR5fh89TKfXALsf7WvjibJslnjnC5H8HJWruZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDyFXSIz8DDGd6GH70us94+c/Krs7MFdhQj0Ue+UhfJrwvDDcDddR3rYfXi1GTlgw5F/Az9U2U/Px04RE1vTbJ84Pou4HgU3OLO29a8t2XlkkvC29qhhzTW8TJAZDvisojID+tkDgflPgEch3VVSJP0qo7Z3qzBe6Dhs+rRvE5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BhLaSGLh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C79C116B1;
-	Tue, 11 Nov 2025 01:42:29 +0000 (UTC)
+	 MIME-Version; b=MmGcoLZeksyQOSN9ZT6+T/bKi8ymJ0e1kGhkDsf748SyhU6Q5JZMCuebeD8esfKNw1TmKr1a1Fr+F5os5hMSVoqq9HJrFvnTlk6LjuRbkJ9kDEmBmsj7S5ZvYuDFZCiMKc8rfYfOXXAKxGmj79L/3vh2uTKzvrjs5SSCxhcPv24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qT1yCLE9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9963BC4CEF5;
+	Tue, 11 Nov 2025 01:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825350;
-	bh=DF/cWCzDOmTRVyTNkf/D/PcDyU2SNjSTWax3z56k1qE=;
+	s=korg; t=1762824621;
+	bh=I0GNZYR5fh89TKfXALsf7WvjibJslnjnC5H8HJWruZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BhLaSGLhMhUC3Z85wi8hOyuZ79MbCed+CBcny2q7AtEvYONuHpKZgusDttIFEgsB7
-	 vPoSjBF49MOgjGWqiebbPWve6+t2dtPGwx4CXvMpMWm1b1gRNLqKlyrHy/FI6X1LZ5
-	 YCuHZurGO7LTBWI9OUi5kJ6c0o+YRFpW5MTcNr6A=
+	b=qT1yCLE9RGfqb6zwQzw3tLV7ErfcXoR5ZXLhYDpW3ewaBReml6r5ppnNvj/dceteI
+	 y5XtZ2XDTkihdsXyZqc1bk8MctslBpTRO1u8LWMngDubw8qO0KsDDzCC7tuZxs2uOa
+	 JKDs1f+ymuK+LmI3qTTCl7OeknaanSTR5/qfDrjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 766/849] gpio: swnode: dont use the swnodes name as the key for GPIO lookup
-Date: Tue, 11 Nov 2025 09:45:36 +0900
-Message-ID: <20251111004554.949162403@linuxfoundation.org>
+Subject: [PATCH 6.12 481/565] ACPI: property: Return present device nodes only on fwnode interface
+Date: Tue, 11 Nov 2025 09:45:37 +0900
+Message-ID: <20251111004537.742653956@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit e5d527be7e6984882306b49c067f1fec18920735 ]
+[ Upstream commit d9f866b2bb3eec38b3734f1fed325ec7c55ccdfa ]
 
-Looking up a GPIO controller by label that is the name of the software
-node is wonky at best - the GPIO controller driver is free to set
-a different label than the name of its firmware node. We're already being
-passed a firmware node handle attached to the GPIO device to
-swnode_get_gpio_device() so use it instead for a more precise lookup.
+fwnode_graph_get_next_subnode() may return fwnode backed by ACPI
+device nodes and there has been no check these devices are present
+in the system, unlike there has been on fwnode OF backend.
 
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Fixes: e7f9ff5dc90c ("gpiolib: add support for software nodes")
-Link: https://lore.kernel.org/r/20251103-reset-gpios-swnodes-v4-4-6461800b6775@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+In order to provide consistent behaviour towards callers,
+add a check for device presence by introducing
+a new function acpi_get_next_present_subnode(), used as the
+get_next_child_node() fwnode operation that also checks device
+node presence.
+
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20251001102636.1272722-2-sakari.ailus@linux.intel.com
+[ rjw: Kerneldoc comment and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-swnode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/property.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-swnode.c b/drivers/gpio/gpiolib-swnode.c
-index f21dbc28cf2c8..e3806db1c0e07 100644
---- a/drivers/gpio/gpiolib-swnode.c
-+++ b/drivers/gpio/gpiolib-swnode.c
-@@ -41,7 +41,7 @@ static struct gpio_device *swnode_get_gpio_device(struct fwnode_handle *fwnode)
- 	    !strcmp(gdev_node->name, GPIOLIB_SWNODE_UNDEFINED_NAME))
- 		return ERR_PTR(-ENOENT);
- 
--	gdev = gpio_device_find_by_label(gdev_node->name);
-+	gdev = gpio_device_find_by_fwnode(fwnode);
- 	return gdev ?: ERR_PTR(-EPROBE_DEFER);
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 342e7cef723cc..b51b947b0ca5b 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1357,6 +1357,28 @@ struct fwnode_handle *acpi_get_next_subnode(const struct fwnode_handle *fwnode,
+ 	return NULL;
  }
  
++/*
++ * acpi_get_next_present_subnode - Return the next present child node handle
++ * @fwnode: Firmware node to find the next child node for.
++ * @child: Handle to one of the device's child nodes or a null handle.
++ *
++ * Like acpi_get_next_subnode(), but the device nodes returned by
++ * acpi_get_next_present_subnode() are guaranteed to be present.
++ *
++ * Returns: The fwnode handle of the next present sub-node.
++ */
++static struct fwnode_handle *
++acpi_get_next_present_subnode(const struct fwnode_handle *fwnode,
++			      struct fwnode_handle *child)
++{
++	do {
++		child = acpi_get_next_subnode(fwnode, child);
++	} while (is_acpi_device_node(child) &&
++		 !acpi_device_is_present(to_acpi_device_node(child)));
++
++	return child;
++}
++
+ /**
+  * acpi_node_get_parent - Return parent fwnode of this fwnode
+  * @fwnode: Firmware node whose parent to get
+@@ -1700,7 +1722,7 @@ static int acpi_fwnode_irq_get(const struct fwnode_handle *fwnode,
+ 		.property_read_string_array =				\
+ 			acpi_fwnode_property_read_string_array,		\
+ 		.get_parent = acpi_node_get_parent,			\
+-		.get_next_child_node = acpi_get_next_subnode,		\
++		.get_next_child_node = acpi_get_next_present_subnode,	\
+ 		.get_named_child_node = acpi_fwnode_get_named_child_node, \
+ 		.get_name = acpi_fwnode_get_name,			\
+ 		.get_name_prefix = acpi_fwnode_get_name_prefix,		\
 -- 
 2.51.0
 
