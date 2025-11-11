@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-193506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B61D9C4A67A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:25:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3448C4A695
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6AE83B0B82
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 942681888EB7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7BA30E85D;
-	Tue, 11 Nov 2025 01:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D5E30E0F8;
+	Tue, 11 Nov 2025 01:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYx9KMte"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8XtaSDv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B642737E3;
-	Tue, 11 Nov 2025 01:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0CD30E0F6;
+	Tue, 11 Nov 2025 01:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823343; cv=none; b=c1VkARrGyvqA847ioJNjjT7K8cpILvRPFrWx0R0/5GgA55R5sc7R/jL7tqXScR1NTiaXfGKi3ygNYUpOz2Zt+3m8O2oqFWCftnbOqjSWn7uSBUfII00W2MkQnxrJmHrBRTGDx7w7QdekaQTPxwOXoL8pB2Z5wZdhBqsJ1VOfqdo=
+	t=1762823348; cv=none; b=aMgldcxUHy9eL5kFQ7d5Huv88mR+YiE+zmXdUmATqnjz4QVYfwMOcCuFmNqmnGaRRVAIn7gaJdrH45U7xNmwRgXycHalNPAo0jvueJ842CCh/xgC5kCSb0PxJJyhEo+0/40colPNJjBXiTNdv9K8icZHLYNf2c7ZrCBaHTH533k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823343; c=relaxed/simple;
-	bh=gaUf4ycDLWo3gn9PgEhPgr5mP8UxMHZevZyT2WEd0xg=;
+	s=arc-20240116; t=1762823348; c=relaxed/simple;
+	bh=LVe6LpvkVZtKrqGVrl6MEKS3gdTugDJhXFrQhKXJMoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UROTdcHuSxBHo22kfLcYYtVOFRhz3YzyNcvFBdybyBlpc7OhAgMTjpGTag6WVfB1ANmC5aAomSmNGdfkibHpkuAal9XMzK1MUQpsYmzx0vErhrJUsro+1lNeWviz4UCklPLpm3+BFeNXu4j8mzk8/9UnQGxzzC+HbmqkovF8D9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYx9KMte; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A3EC16AAE;
-	Tue, 11 Nov 2025 01:09:02 +0000 (UTC)
+	 MIME-Version; b=nsUhYe/vw9UZF6VHHw0FD8oA0Kh+dzpTH5qHrAluVP+RLO9dzr/FDg/94Hrt2kWJ4aYimKyVc7D0AZZBNKm2GluWY3WibARA/dCgXREW/KxzjqFOJ8XDAhixbjqzNge8MFCO/oiyPPgOC0gHUHHOLqkLfNokEJkFsnpvQUhTIF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8XtaSDv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E069C19422;
+	Tue, 11 Nov 2025 01:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823343;
-	bh=gaUf4ycDLWo3gn9PgEhPgr5mP8UxMHZevZyT2WEd0xg=;
+	s=korg; t=1762823347;
+	bh=LVe6LpvkVZtKrqGVrl6MEKS3gdTugDJhXFrQhKXJMoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hYx9KMte69kxPohgIFdfDkexHic4jOeZD23hv4m6FCx1g+kfyIOo5LPzemO3qswHE
-	 aNKVwJ7ww1CbdWXmbuhIaVopSFdvrdcmVQKi54b8RJWSOwvsmuWwU6cJ+BufxuvTdM
-	 tKV7TfJwCo+jDbByDc2cpdsVLnMH3uu2e6eCGjfw=
+	b=d8XtaSDvgPE9web5ldnqUQazPIIGODUGece8fu+2wzRTPGWLVhY2SZw2+8TQzoKsw
+	 VYjNP6IH7fKarChsKy5EOfXbipnTBjVoBr8plkQYWOpxAWOrTesxHRxZgXa3kuQ+d3
+	 9iUpDnIXzP4S+1qIihVlJ/EnMiprnVOiIr4JZYkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 223/565] HID: pidff: PERMISSIVE_CONTROL quirk autodetection
-Date: Tue, 11 Nov 2025 09:41:19 +0900
-Message-ID: <20251111004531.938096925@linuxfoundation.org>
+Subject: [PATCH 6.12 224/565] drm/bridge: display-connector: dont set OP_DETECT for DisplayPorts
+Date: Tue, 11 Nov 2025 09:41:20 +0900
+Message-ID: <20251111004531.959082908@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -60,61 +63,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit c2dc9f0b368c08c34674311cf78407718d5715a7 ]
+[ Upstream commit cb640b2ca54617f4a9d4d6efd5ff2afd6be11f19 ]
 
-Fixes force feedback for devices built with MMOS firmware and many more
-not yet detected devices.
+Detecting the monitor for DisplayPort targets is more complicated than
+just reading the HPD pin level: it requires reading the DPCD in order to
+check what kind of device is attached to the port and whether there is
+an actual display attached.
 
-Update quirks mask debug message to always contain all 32 bits of data.
+In order to let DRM framework handle such configurations, disable
+DRM_BRIDGE_OP_DETECT for dp-connector devices, letting the actual DP
+driver perform detection. This still keeps DRM_BRIDGE_OP_HPD enabled, so
+it is valid for the bridge to report HPD events.
 
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Currently inside the kernel there are only two targets which list
+hpd-gpios for dp-connector devices: arm64/qcom/qcs6490-rb3gen2 and
+arm64/qcom/sa8295p-adp. Both should be fine with this change.
+
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org
+Acked-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Link: https://lore.kernel.org/r/20250802-dp-conn-no-detect-v1-1-2748c2b946da@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/display-connector.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 0e60e4dc9e247..566eba0e045fa 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -1152,8 +1152,16 @@ static int pidff_find_special_fields(struct pidff_device *pidff)
- 					 PID_DIRECTION, 0);
- 	pidff->device_control =
- 		pidff_find_special_field(pidff->reports[PID_DEVICE_CONTROL],
--			PID_DEVICE_CONTROL_ARRAY,
--			!(pidff->quirks & HID_PIDFF_QUIRK_PERMISSIVE_CONTROL));
-+			PID_DEVICE_CONTROL_ARRAY, 1);
-+
-+	/* Detect and set permissive control quirk */
-+	if (!pidff->device_control) {
-+		pr_debug("Setting PERMISSIVE_CONTROL quirk\n");
-+		pidff->quirks |= HID_PIDFF_QUIRK_PERMISSIVE_CONTROL;
-+		pidff->device_control = pidff_find_special_field(
-+			pidff->reports[PID_DEVICE_CONTROL],
-+			PID_DEVICE_CONTROL_ARRAY, 0);
-+	}
- 
- 	pidff->block_load_status =
- 		pidff_find_special_field(pidff->reports[PID_BLOCK_LOAD],
-@@ -1492,7 +1500,7 @@ int hid_pidff_init_with_quirks(struct hid_device *hid, u32 initial_quirks)
- 	ff->playback = pidff_playback;
- 
- 	hid_info(dev, "Force feedback for USB HID PID devices by Anssi Hannula <anssi.hannula@gmail.com>\n");
--	hid_dbg(dev, "Active quirks mask: 0x%x\n", pidff->quirks);
-+	hid_dbg(dev, "Active quirks mask: 0x%08x\n", pidff->quirks);
- 
- 	hid_device_io_stop(hid);
- 
+diff --git a/drivers/gpu/drm/bridge/display-connector.c b/drivers/gpu/drm/bridge/display-connector.c
+index ab8e00baf3f16..e5817f5439144 100644
+--- a/drivers/gpu/drm/bridge/display-connector.c
++++ b/drivers/gpu/drm/bridge/display-connector.c
+@@ -363,7 +363,8 @@ static int display_connector_probe(struct platform_device *pdev)
+ 	if (conn->bridge.ddc)
+ 		conn->bridge.ops |= DRM_BRIDGE_OP_EDID
+ 				 |  DRM_BRIDGE_OP_DETECT;
+-	if (conn->hpd_gpio)
++	/* Detecting the monitor requires reading DPCD */
++	if (conn->hpd_gpio && type != DRM_MODE_CONNECTOR_DisplayPort)
+ 		conn->bridge.ops |= DRM_BRIDGE_OP_DETECT;
+ 	if (conn->hpd_irq >= 0)
+ 		conn->bridge.ops |= DRM_BRIDGE_OP_HPD;
 -- 
 2.51.0
 
