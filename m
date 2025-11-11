@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269E6C4A831
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:06 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62229C4A686
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:25:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 980353B32F2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0A5CB4F6E3C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2D4342CA2;
-	Tue, 11 Nov 2025 01:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2AAF2D94B0;
+	Tue, 11 Nov 2025 01:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgiAx535"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REe40nfM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055E226560B;
-	Tue, 11 Nov 2025 01:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED08342CA9;
+	Tue, 11 Nov 2025 01:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823515; cv=none; b=t5/RAM5ReicTEqBK7ob5Apd4OsFxRoIpt0qH8oEr1egRMNyxIPwFg5Fpm6Z6iUxWUjzJGQCleM0BOmZXR52lcqCOAbesq1A9JoYDaM9B97ZPfDoz4DNwokJVN16yP9iZ3MLxIo+EppSXEmDKjv2RHpSHXDoPc2olsiS1s2+JLCw=
+	t=1762823567; cv=none; b=CXMG2zcNzkSd60LdaV0NfP/BcKX4xw8NwA/NV7gvMzyLEeBwSLE1QAVky88CkuSBzOmxzRy8VqTROyfapVZJRXUtlQHEjbyvYvCClTsLd+0Ar4azki/7qZL3Okhu3fa3j2ojOhJg01CnG2V2wqERW9LaSZ4qmSVx/2P3Qc1kkH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823515; c=relaxed/simple;
-	bh=0W68SUFM0hBj/JgO714gAoM3lpsCuggEtC69pqdIrh8=;
+	s=arc-20240116; t=1762823567; c=relaxed/simple;
+	bh=K8otp3WpNGLynWgVmT9BdbaXfvMvNGmAyWXu85+7bAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQjJRD/IxF2rgtKxugT2pzduKBNAWNjwn6DHEHxgevdZ54U5VY0a3oQMiSX4TkH8uP1oAdn3rN0MmyIzWB10lOKrMV/DXizcAExwEo/wZ9c2T2oSkKFwcO5tgtTfhRTNFFqtqbdGputKd0j6kbMPWGAZkRWQwM7alcSEJ9Awtr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgiAx535; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB84C4AF09;
-	Tue, 11 Nov 2025 01:11:54 +0000 (UTC)
+	 MIME-Version; b=cpWLIg7MP000bM4EuOYzpIFTRX9ypnhkbhIawHBHnwRliwS8fZbqRT+xVECxf7zvidCAtCUBo9J29TvGDZ2yymu1gtdSW6cc+8n6LrMgXN4Bvkb+3tYt8O5VZp43yEh23av+HArnii0kYochj67n2yFsiHD7fU9KzI7TKMIO6Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REe40nfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7D0C2BC86;
+	Tue, 11 Nov 2025 01:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823514;
-	bh=0W68SUFM0hBj/JgO714gAoM3lpsCuggEtC69pqdIrh8=;
+	s=korg; t=1762823567;
+	bh=K8otp3WpNGLynWgVmT9BdbaXfvMvNGmAyWXu85+7bAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bgiAx535pr+Hc7lyJTnceQIT0I1rBB1Jx1OEBnQnYKlSrrbOSl4T+oS3Za2+jBOx7
-	 SFUdjvmdZI4lxkEQzSGBTMfBmmtAIrE4wf0AXGl1jnpchqlZYG+q6dq8jH3Gq4IxP0
-	 ZNEfaHzKP0Jw3FNRjx+BfXc9KX4atWsqD4WrCBfg=
+	b=REe40nfMgDpyD/ib8GWEiCbOcy1w1d2DG3aT07b7ogevvOte2E30CVhd4HVBdd5fX
+	 Mhx93/LmHbMnJOW+RFMTeA47TqGKDYlsfEB1LYX0wCiNnvEPpfloinfzZVy7wSuqTn
+	 cH9GqUnLE4FQTMoYZabYKcwJq86rWPG+BoWFo1Eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 288/849] drm/tidss: Remove early fb
-Date: Tue, 11 Nov 2025 09:37:38 +0900
-Message-ID: <20251111004543.372677008@linuxfoundation.org>
+Subject: [PATCH 6.17 289/849] RDMA/mana_ib: Drain send wrs of GSI QP
+Date: Tue, 11 Nov 2025 09:37:39 +0900
+Message-ID: <20251111004543.396588386@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,53 +66,101 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Konstantin Taranov <kotaranov@microsoft.com>
 
-[ Upstream commit 942e54a372b44da3ffb0191b4d289d476256c861 ]
+[ Upstream commit 44d69d3cf2e8047c279cbb9708f05e2c43e33234 ]
 
-Add a call to drm_aperture_remove_framebuffers() to drop the possible
-early fb (simplefb).
+Drain send WRs of the GSI QP on device removal.
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://lore.kernel.org/r/20250416-tidss-splash-v1-2-4ff396eb5008@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+In rare servicing scenarios, the hardware may delete the
+state of the GSI QP, preventing it from generating CQEs
+for pending send WRs. Since WRs submitted to the GSI QP
+hold CM resources, the device cannot be removed until
+those WRs are completed. This patch marks all pending
+send WRs as failed, allowing the GSI QP to release the CM
+resources and enabling safe device removal.
+
+Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
+Link: https://patch.msgid.link/1753779618-23629-1-git-send-email-kotaranov@linux.microsoft.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_drv.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/infiniband/hw/mana/cq.c      | 26 ++++++++++++++++++++++++++
+ drivers/infiniband/hw/mana/device.c  |  3 +++
+ drivers/infiniband/hw/mana/mana_ib.h |  3 +++
+ 3 files changed, 32 insertions(+)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_drv.c b/drivers/gpu/drm/tidss/tidss_drv.c
-index a1b12e52aca47..27d9a8fd541fc 100644
---- a/drivers/gpu/drm/tidss/tidss_drv.c
-+++ b/drivers/gpu/drm/tidss/tidss_drv.c
-@@ -8,6 +8,7 @@
- #include <linux/of.h>
- #include <linux/module.h>
- #include <linux/pm_runtime.h>
-+#include <linux/aperture.h>
+diff --git a/drivers/infiniband/hw/mana/cq.c b/drivers/infiniband/hw/mana/cq.c
+index 28e154bbb50f8..1becc87791235 100644
+--- a/drivers/infiniband/hw/mana/cq.c
++++ b/drivers/infiniband/hw/mana/cq.c
+@@ -291,6 +291,32 @@ static int mana_process_completions(struct mana_ib_cq *cq, int nwc, struct ib_wc
+ 	return wc_index;
+ }
  
- #include <drm/clients/drm_client_setup.h>
- #include <drm/drm_atomic.h>
-@@ -192,12 +193,20 @@ static int tidss_probe(struct platform_device *pdev)
- 		goto err_irq_uninstall;
- 	}
- 
-+	/* Remove possible early fb before setting up the fbdev */
-+	ret = aperture_remove_all_conflicting_devices(tidss_driver.name);
-+	if (ret)
-+		goto err_drm_dev_unreg;
++void mana_drain_gsi_sqs(struct mana_ib_dev *mdev)
++{
++	struct mana_ib_qp *qp = mana_get_qp_ref(mdev, MANA_GSI_QPN, false);
++	struct ud_sq_shadow_wqe *shadow_wqe;
++	struct mana_ib_cq *cq;
++	unsigned long flags;
 +
- 	drm_client_setup(ddev, NULL);
- 
- 	dev_dbg(dev, "%s done\n", __func__);
- 
- 	return 0;
- 
-+err_drm_dev_unreg:
-+	drm_dev_unregister(ddev);
++	if (!qp)
++		return;
 +
- err_irq_uninstall:
- 	tidss_irq_uninstall(ddev);
++	cq = container_of(qp->ibqp.send_cq, struct mana_ib_cq, ibcq);
++
++	spin_lock_irqsave(&cq->cq_lock, flags);
++	while ((shadow_wqe = shadow_queue_get_next_to_complete(&qp->shadow_sq))
++			!= NULL) {
++		shadow_wqe->header.error_code = IB_WC_GENERAL_ERR;
++		shadow_queue_advance_next_to_complete(&qp->shadow_sq);
++	}
++	spin_unlock_irqrestore(&cq->cq_lock, flags);
++
++	if (cq->ibcq.comp_handler)
++		cq->ibcq.comp_handler(&cq->ibcq, cq->ibcq.cq_context);
++
++	mana_put_qp_ref(qp);
++}
++
+ int mana_ib_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc)
+ {
+ 	struct mana_ib_cq *cq = container_of(ibcq, struct mana_ib_cq, ibcq);
+diff --git a/drivers/infiniband/hw/mana/device.c b/drivers/infiniband/hw/mana/device.c
+index fa60872f169f4..bdeddb642b877 100644
+--- a/drivers/infiniband/hw/mana/device.c
++++ b/drivers/infiniband/hw/mana/device.c
+@@ -230,6 +230,9 @@ static void mana_ib_remove(struct auxiliary_device *adev)
+ {
+ 	struct mana_ib_dev *dev = dev_get_drvdata(&adev->dev);
+ 
++	if (mana_ib_is_rnic(dev))
++		mana_drain_gsi_sqs(dev);
++
+ 	ib_unregister_device(&dev->ib_dev);
+ 	dma_pool_destroy(dev->av_pool);
+ 	if (mana_ib_is_rnic(dev)) {
+diff --git a/drivers/infiniband/hw/mana/mana_ib.h b/drivers/infiniband/hw/mana/mana_ib.h
+index 5d31034ac7fb3..af09a3e6ccb78 100644
+--- a/drivers/infiniband/hw/mana/mana_ib.h
++++ b/drivers/infiniband/hw/mana/mana_ib.h
+@@ -43,6 +43,8 @@
+  */
+ #define MANA_AV_BUFFER_SIZE	64
+ 
++#define MANA_GSI_QPN		(1)
++
+ struct mana_ib_adapter_caps {
+ 	u32 max_sq_id;
+ 	u32 max_rq_id;
+@@ -718,6 +720,7 @@ int mana_ib_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
+ int mana_ib_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
+ 		      const struct ib_send_wr **bad_wr);
+ 
++void mana_drain_gsi_sqs(struct mana_ib_dev *mdev);
+ int mana_ib_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc);
+ int mana_ib_arm_cq(struct ib_cq *ibcq, enum ib_cq_notify_flags flags);
  
 -- 
 2.51.0
