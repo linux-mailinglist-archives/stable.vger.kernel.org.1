@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2AF1C4A509
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC85C4AC61
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4DC8C4F0679
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:13:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE1503B4CE6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21E03469F0;
-	Tue, 11 Nov 2025 01:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAE82FB964;
+	Tue, 11 Nov 2025 01:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7oAE4/v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kh+fAM3D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5C525EF9C;
-	Tue, 11 Nov 2025 01:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED79426D4DF;
+	Tue, 11 Nov 2025 01:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823198; cv=none; b=f9HjcSXO9StVRQsoKaGR642WAc8zOKy0txnLDLx8lOvLGKMigXZVqEJ20Ee4sX4w17aHM+y7LGLsxaQ5SOIBPU5WEzP+oYA+OS0bDXVXbQb0gxgaAEwjtjWD7TtLL+N6T7lWpsNRy7EFTNAifkz5JxfnTUk/R7URaddX67BQSMg=
+	t=1762824368; cv=none; b=M+25OD3RerstCYv2W0NISBRAdy5tGsajxBVLy6CWf0BSh7xGISfH7+bj+8VSr0NFnMsOTYWjRP1Dp9bGh1K0cJOW6NfmqiVRWdnNlkorZYsOhPdwbnWBF8jRsT5He6qiDtNW1P0oqg1wlWr8w7boa2sYCIcfoDk5ybIhsEN5JKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823198; c=relaxed/simple;
-	bh=KUJMzbzgdVODCNF8i7xUyh8HLDcqi3ao0CmviePpYK0=;
+	s=arc-20240116; t=1762824368; c=relaxed/simple;
+	bh=WuZN/xXx/gQ7rSkaI/P3uHOo6qAM0d7RZ31vhrcfazo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dkza4+byL1lf0MHdf2pR2PR2wsv2N4bhGuo8RvDuDFmB1g3wlvXPtVgppZ0rI8e7GGEzbFem4dVA9IBEJC/+wB7S98VOmyyGzr1yy7+LwqI1clRp9D9d3EoZVXL/UfQ2rk6vaGqgwmKxZvDbjIEy6+MmsvNXghle81pAKlpSXfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7oAE4/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0283C4CEF5;
-	Tue, 11 Nov 2025 01:06:37 +0000 (UTC)
+	 MIME-Version; b=NKvvwno4QG5x3g6EuSCRSgkccxJMCMk+QFKz2rwlbncwL2GRL3coWLdVuiueWd8XOcQW2eREr9GU3BcOV8kgw3rhbm6KDAZdQFAjAnxytje7w6qmhhZOEM/QyYclmEO2kAaWGuAB7g9JZQyKnP0ay16tb20CskdAb6mpHg1RnU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kh+fAM3D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB0DC116D0;
+	Tue, 11 Nov 2025 01:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823198;
-	bh=KUJMzbzgdVODCNF8i7xUyh8HLDcqi3ao0CmviePpYK0=;
+	s=korg; t=1762824367;
+	bh=WuZN/xXx/gQ7rSkaI/P3uHOo6qAM0d7RZ31vhrcfazo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7oAE4/vGXQYwZlXd9PuWTyokFfDJ2/15c2MCaKWcX3XT/NsyfMsshP8UkGvquwlY
-	 1QGNpjnYnhLq/O4H1kB37pG6YYv0ItUTLK9WJK0drOeUwdioHJDHsnatwxxZZcCzcS
-	 a09ZhiGhvWLZU5qqJzJq2B4NFuhR664TU482fpvk=
+	b=Kh+fAM3D6S+lSClTcloQDTYrGN+eFQJRZ17F4kxrTrG4Cdft16k5moQ9YYJ8A0E0j
+	 2MhPR51xPh0fUkE+DP39gbhCDme7W9/Cp0xiuJ0tRa9ohfJo+3l7oLgYD1OzWFxU8/
+	 X04pPITrKVmE/+HbzJU56Iy2Xn8ld2a8vY2hx1Nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
+	Zenm Chen <zenmchen@gmail.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 195/565] wifi: rtw89: print just once for unknown C2H events
+Subject: [PATCH 6.17 481/849] wifi: rtw89: Add USB ID 2001:3327 for D-Link AX18U rev. A1
 Date: Tue, 11 Nov 2025 09:40:51 +0900
-Message-ID: <20251111004531.316894074@linuxfoundation.org>
+Message-ID: <20251111004548.071378844@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Zenm Chen <zenmchen@gmail.com>
 
-[ Upstream commit 7e1c44fe4c2e1e01fa47d9490893d95309a99687 ]
+[ Upstream commit 17002412a82feb21be040bd5577789049dfeebe2 ]
 
-When driver receives new or unknown C2H events, it print out messages
-repeatedly once events are received, like
+Add USB ID 2001:3327 for D-Link AX18U rev. A1 which is a RTL8832BU-based
+Wi-Fi adapter.
 
-  rtw89_8922ae 0000:81:00.0: PHY c2h class 2 not support
-
-To avoid the thousands of messages, use rtw89_info_once() instead. Also,
-print out class/func for unknown (undefined) class.
-
-Reported-by: Sean Anderson <sean.anderson@linux.dev>
-Closes: https://lore.kernel.org/linux-wireless/20250729204437.164320-1-sean.anderson@linux.dev/
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://github.com/morrownr/rtw89/pull/17
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250804012234.8913-2-pkshih@realtek.com
+Link: https://patch.msgid.link/20250903223100.3031-1-zenmchen@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/debug.h | 1 +
- drivers/net/wireless/realtek/rtw89/mac.c   | 7 +++----
- drivers/net/wireless/realtek/rtw89/phy.c   | 7 +++----
- 3 files changed, 7 insertions(+), 8 deletions(-)
+ drivers/net/wireless/realtek/rtw89/rtw8852bu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.h b/drivers/net/wireless/realtek/rtw89/debug.h
-index fc690f7c55dc7..a364e7adb0798 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.h
-+++ b/drivers/net/wireless/realtek/rtw89/debug.h
-@@ -56,6 +56,7 @@ static inline void rtw89_debugfs_deinit(struct rtw89_dev *rtwdev) {}
- #endif
- 
- #define rtw89_info(rtwdev, a...) dev_info((rtwdev)->dev, ##a)
-+#define rtw89_info_once(rtwdev, a...) dev_info_once((rtwdev)->dev, ##a)
- #define rtw89_warn(rtwdev, a...) dev_warn((rtwdev)->dev, ##a)
- #define rtw89_err(rtwdev, a...) dev_err((rtwdev)->dev, ##a)
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 8b7ca63af7ed0..b956ea2add919 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -5532,12 +5532,11 @@ void rtw89_mac_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 	case RTW89_MAC_C2H_CLASS_FWDBG:
- 		return;
- 	default:
--		rtw89_info(rtwdev, "MAC c2h class %d not support\n", class);
--		return;
-+		break;
- 	}
- 	if (!handler) {
--		rtw89_info(rtwdev, "MAC c2h class %d func %d not support\n", class,
--			   func);
-+		rtw89_info_once(rtwdev, "MAC c2h class %d func %d not support\n",
-+				class, func);
- 		return;
- 	}
- 	handler(rtwdev, skb, len);
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 355c3f58ab185..b473e02ecd9e7 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -3125,12 +3125,11 @@ void rtw89_phy_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 			return;
- 		fallthrough;
- 	default:
--		rtw89_info(rtwdev, "PHY c2h class %d not support\n", class);
--		return;
-+		break;
- 	}
- 	if (!handler) {
--		rtw89_info(rtwdev, "PHY c2h class %d func %d not support\n", class,
--			   func);
-+		rtw89_info_once(rtwdev, "PHY c2h class %d func %d not support\n",
-+				class, func);
- 		return;
- 	}
- 	handler(rtwdev, skb, len);
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bu.c b/drivers/net/wireless/realtek/rtw89/rtw8852bu.c
+index b315cb997758a..0694272f7ffae 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852bu.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852bu.c
+@@ -30,6 +30,8 @@ static const struct usb_device_id rtw_8852bu_id_table[] = {
+ 	  .driver_info = (kernel_ulong_t)&rtw89_8852bu_info },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0db0, 0x6931, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&rtw89_8852bu_info },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3327, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&rtw89_8852bu_info },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3574, 0x6121, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&rtw89_8852bu_info },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0100, 0xff, 0xff, 0xff),
 -- 
 2.51.0
 
