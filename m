@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-193201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C5BC4A127
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1A8EC4A09A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 095424F1045
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8153C3AC835
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7629D246333;
-	Tue, 11 Nov 2025 00:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4ACB244693;
+	Tue, 11 Nov 2025 00:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fq4rwBXX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/787uDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CEF4086A;
-	Tue, 11 Nov 2025 00:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7804C97;
+	Tue, 11 Nov 2025 00:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822539; cv=none; b=F96YbrYtLoLDxblmra2Pjqg5X1ghxMd1AYSyjOHqgyksO+f8HxEyh/bxxmMPVza7BTuevQImy23o+ltIznK/V4/LFA0bTxvYD1nvxwcAH+NLuwkM4FVJOfS5y2H+s98syu4fgE8v6i0A2zU3mgklMw31UYXBSvqsD2l9IVbpefA=
+	t=1762822543; cv=none; b=nfX581jX9E7dQ8fXmjLv4DHI4CEsdBzy2b+UHJ4n/YIjqNGtFJMGjPphPaiLfYWdn4prNxTS+Zi441pKTksOainYQ6eJoVBMtm5YulUeGXahCueWc1NRZ69elohgCJtTinNqtlk+vqSic/b51kyABuQZDH9dZrj0umBfhdwDY4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822539; c=relaxed/simple;
-	bh=mLAbZWt94PTOtXEifTefyp2iBHzy6ZaQlw4nH2UfIu0=;
+	s=arc-20240116; t=1762822543; c=relaxed/simple;
+	bh=LsE2qmxSKAfA8bqdIpPJFa9TCPEF82XYH/Sk+c1duvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dheFPslYUw0uXfh4pkwbd52xXlApv/A31oQ8OsegsGtQocNjtEEjzHPJcs/EqjhoeWs9vGC1isymik6fFq0vjlPgpI55/GDC74yrZU7j9h1hBI6h3YSfXjQwPbhy2gVQ5hjCXPlNtVDZM8Sw7O8bqcQEt7tIlfPpmkGtjBcr8cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fq4rwBXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA258C16AAE;
-	Tue, 11 Nov 2025 00:55:38 +0000 (UTC)
+	 MIME-Version; b=cEyWEauG0EoZfZOGvsF1XQ10dI+NoOfUSJ6WPjeQtqNoUjH7LsV3B31TLSHQP3ZU7XWPy51+wVh8vY1aOBDIcDRBj6Gls5mMjSj227SBFCfHENYUfCCCRZ1/DdVwqnBWKv7iswSFhNCepflaxNQJMyBv0Zl88aCeQngC9BVgAMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/787uDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1B5C4CEFB;
+	Tue, 11 Nov 2025 00:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822539;
-	bh=mLAbZWt94PTOtXEifTefyp2iBHzy6ZaQlw4nH2UfIu0=;
+	s=korg; t=1762822543;
+	bh=LsE2qmxSKAfA8bqdIpPJFa9TCPEF82XYH/Sk+c1duvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fq4rwBXXOzy5dYN6xbkRAHehiILWv6pjO9aFk8u5tl1OXU/Br84rj4/kOzoIBJJGV
-	 WMkj2gni2Rbl7p6Rcmw1DLiAbcKhUcKBaVS5nXW4NrKZ8m8rw67VTIK+GX2zCFe7bL
-	 QXnzvbkdzjhBtzI31gXGFXC9B/n5Y+qdnZjGmjhg=
+	b=K/787uDeZWU1HI9IarBh1Oky4KodYS77xgrdvfCrTYqyECi3rU58mBE/8bu+IeCps
+	 94T4NRqexEjoUjaNNdkvkiwiy8DsIPxIjwDjbHLD74yUHLXOuvWys+28RblMfP81sO
+	 Y6T+epQZbiwwyKScmOldS621gDAJEwOYvP8KgDsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Peter Schneider <pschneider1968@googlemail.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Nick Bowler <nbowler@draconx.ca>,
-	Douglas Anderson <dianders@chromium.org>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.12 070/565] drm/ast: Clear preserved bits from register output value
-Date: Tue, 11 Nov 2025 09:38:46 +0900
-Message-ID: <20251111004528.526435608@linuxfoundation.org>
+	Peyton.Lee@amd.com,
+	Sultan Alsawaf <sultan@kerneltoast.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 071/565] drm/amd: Check that VPE has reached DPM0 in idle handler
+Date: Tue, 11 Nov 2025 09:38:47 +0900
+Message-ID: <20251111004528.550064213@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -70,60 +68,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit a9fb41b5def8e1e0103d5fd1453787993587281e upstream.
+commit ba10f8d92a2c026b1052b4c0fa2cd7538838c965 upstream.
 
-Preserve the I/O register bits in __ast_write8_i_masked() as specified
-by preserve_mask. Accidentally OR-ing the output value into these will
-overwrite the register's previous settings.
+[Why]
+Newer VPE microcode has functionality that will decrease DPM level
+only when a workload has run for 2 or more seconds.  If VPE is turned
+off before this DPM decrease and the PMFW doesn't reset it when
+power gating VPE, the SOC can get stuck with a higher DPM level.
 
-Fixes display output on the AST2300, where the screen can go blank at
-boot. The driver's original commit 312fec1405dd ("drm: Initial KMS
-driver for AST (ASpeed Technologies) 2000 series (v2)") already added
-the broken code. Commit 6f719373b943 ("drm/ast: Blank with VGACR17 sync
-enable, always clear VGACRB6 sync off") triggered the bug.
+This can happen from amdgpu's ring buffer test because it's a short
+quick workload for VPE and VPE is turned off after 1s.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: Peter Schneider <pschneider1968@googlemail.com>
-Closes: https://lore.kernel.org/dri-devel/a40caf8e-58ad-4f9c-af7f-54f6f69c29bb@googlemail.com/
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Fixes: 6f719373b943 ("drm/ast: Blank with VGACR17 sync enable, always clear VGACRB6 sync off")
-Fixes: 312fec1405dd ("drm: Initial KMS driver for AST (ASpeed Technologies) 2000 series (v2)")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Nick Bowler <nbowler@draconx.ca>
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.5+
-Link: https://patch.msgid.link/20251024073626.129032-1-tzimmermann@suse.de
+[How]
+In idle handler besides checking fences are drained check PMFW version
+to determine if it will reset DPM when power gating VPE.  If PMFW will
+not do this, then check VPE DPM level. If it is not DPM0 reschedule
+delayed work again until it is.
+
+v2: squash in return fix (Alex)
+
+Cc: Peyton.Lee@amd.com
+Reported-by: Sultan Alsawaf <sultan@kerneltoast.com>
+Reviewed-by: Sultan Alsawaf <sultan@kerneltoast.com>
+Tested-by: Sultan Alsawaf <sultan@kerneltoast.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4615
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 3ac635367eb589bee8edcc722f812a89970e14b7)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ast/ast_drv.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c |   34 ++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/ast/ast_drv.h
-+++ b/drivers/gpu/drm/ast/ast_drv.h
-@@ -286,13 +286,13 @@ static inline void __ast_write8_i(void _
- 	__ast_write8(addr, reg + 1, val);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
+@@ -321,6 +321,26 @@ static int vpe_early_init(void *handle)
+ 	return 0;
  }
  
--static inline void __ast_write8_i_masked(void __iomem *addr, u32 reg, u8 index, u8 read_mask,
-+static inline void __ast_write8_i_masked(void __iomem *addr, u32 reg, u8 index, u8 preserve_mask,
- 					 u8 val)
++static bool vpe_need_dpm0_at_power_down(struct amdgpu_device *adev)
++{
++	switch (amdgpu_ip_version(adev, VPE_HWIP, 0)) {
++	case IP_VERSION(6, 1, 1):
++		return adev->pm.fw_version < 0x0a640500;
++	default:
++		return false;
++	}
++}
++
++static int vpe_get_dpm_level(struct amdgpu_device *adev)
++{
++	struct amdgpu_vpe *vpe = &adev->vpe;
++
++	if (!adev->pm.dpm_enabled)
++		return 0;
++
++	return RREG32(vpe_get_reg_offset(vpe, 0, vpe->regs.dpm_request_lv));
++}
++
+ static void vpe_idle_work_handler(struct work_struct *work)
  {
--	u8 tmp = __ast_read8_i_masked(addr, reg, index, read_mask);
-+	u8 tmp = __ast_read8_i_masked(addr, reg, index, preserve_mask);
+ 	struct amdgpu_device *adev =
+@@ -328,11 +348,17 @@ static void vpe_idle_work_handler(struct
+ 	unsigned int fences = 0;
  
--	tmp |= val;
--	__ast_write8_i(addr, reg, index, tmp);
-+	val &= ~preserve_mask;
-+	__ast_write8_i(addr, reg, index, tmp | val);
+ 	fences += amdgpu_fence_count_emitted(&adev->vpe.ring);
++	if (fences)
++		goto reschedule;
++
++	if (vpe_need_dpm0_at_power_down(adev) && vpe_get_dpm_level(adev) != 0)
++		goto reschedule;
++
++	amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VPE, AMD_PG_STATE_GATE);
++	return;
+ 
+-	if (fences == 0)
+-		amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VPE, AMD_PG_STATE_GATE);
+-	else
+-		schedule_delayed_work(&adev->vpe.idle_work, VPE_IDLE_TIMEOUT);
++reschedule:
++	schedule_delayed_work(&adev->vpe.idle_work, VPE_IDLE_TIMEOUT);
  }
  
- static inline u32 ast_read32(struct ast_device *ast, u32 reg)
+ static int vpe_common_init(struct amdgpu_vpe *vpe)
 
 
 
