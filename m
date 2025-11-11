@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-193372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82FEC4A3F5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:09:19 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E87DFC4A866
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3D6584E69E1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:47 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7454034C4EA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD002505AA;
-	Tue, 11 Nov 2025 01:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4353446AA;
+	Tue, 11 Nov 2025 01:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yb7q3pCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evEiCpnK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C627253944;
-	Tue, 11 Nov 2025 01:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4C22652AF;
+	Tue, 11 Nov 2025 01:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823026; cv=none; b=MTxLtFKgR0e/izm8/YFRCXPXFkhYvk4RgZqqB2hsCdmTkmB+1Ncn/QKhGf6oICmuyUDuNcRZWv5HWSOiMx9fvSbum0fptMPke6q1hzAe0DXLChmb9CQYcIhc5vPQMkzj2Tpv627abQBG+SJJIECkTUb5pTipoXi5pFv+BSkOuwQ=
+	t=1762824139; cv=none; b=Y+Rl0V6ezJvF/xI3WNK3eiAP6k5NfoiM00+vLkrWL4Yw8IH2znV4hTAAG573OiqwQA43bveTg1rDARHp6zC8sQ9ddfCnzdccdkHZ62h0ye581LIJBKsw6QIsE3uWiVM4BnYgaOg4MV5Ojtaj7saVPSjy0f+opqB+GdhiPWzfZvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823026; c=relaxed/simple;
-	bh=LqwF9DlP2ZhRrf1nMYJQLyDl05H3CdeuzG0OYTn171s=;
+	s=arc-20240116; t=1762824139; c=relaxed/simple;
+	bh=vE5yw0OV+aaEGrlUbuu8j5ZiCKSS+9y5hNwtv2yJ/Wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/Oo42A6oSg04WCwKCDZd3myeBfWfsC4tMbvToqKycBOZ6Xsm2STFREPZEdZn34Arq8Z28G9qajJtBBdrZFkfgk9Rk5+M/pReLQm/hvM8t4un4JN+5zpR5avZ02kCQsoNa5TdrvGJfkmdboiLW/4GB8Kykv6cVn6r718/RVanQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yb7q3pCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D30C4AF0B;
-	Tue, 11 Nov 2025 01:03:45 +0000 (UTC)
+	 MIME-Version; b=Bp9nRvRUANrC1pag/0uRdaq7QFPAvQj5Lga+9y4DpeilT5JqmUpOSk6lGS+ZvZ6gA795kffXoqcax/4X/TDUO3oUc/2AL8v1eaGLfLBeTUtuKkAC7jpeAWIwg444emccnnqG3bJefNuSyvoF/8BHJPTkjR3Z5Xsjj+JknJH5zy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evEiCpnK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F75C16AAE;
+	Tue, 11 Nov 2025 01:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823025;
-	bh=LqwF9DlP2ZhRrf1nMYJQLyDl05H3CdeuzG0OYTn171s=;
+	s=korg; t=1762824139;
+	bh=vE5yw0OV+aaEGrlUbuu8j5ZiCKSS+9y5hNwtv2yJ/Wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yb7q3pCQRDn9deKDVByzhqiEvgLecGhgqWuW0lmFSEN1e8QTOOwbstAYBpI8z9/lM
-	 8VKANRuyhNaziC+hs94+9Sz2WObI46gCjDkT/INb5hrpuQLpsroZhygOlaR/MnnN64
-	 bsWEm/7mrjEJ96LCq2iVIXA46u4ltHq+bSvPg4AU=
+	b=evEiCpnKdGYa55qlvVaVFHFm53yZU9Iekb3jF967t4XdubX4QUMbbbjv9Xw0fh96X
+	 1zwQdvT2mDzcUvGSFZyVF3uhanprggpQAknKOBlZ6m0N++CDuw4CuEIeMQEDVxBrq6
+	 AXzkEWWo1mG1CTOKvCm+ToyGoyhIA43XyYcX4mQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Colin Foster <colin.foster@in-advantage.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 157/565] nvme: Use non zero KATO for persistent discovery connections
-Date: Tue, 11 Nov 2025 09:40:13 +0900
-Message-ID: <20251111004530.470222206@linuxfoundation.org>
+Subject: [PATCH 6.17 444/849] smsc911x: add second read of EEPROM mac when possible corruption seen
+Date: Tue, 11 Nov 2025 09:40:14 +0900
+Message-ID: <20251111004547.168217801@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alistair Francis <alistair.francis@wdc.com>
+From: Colin Foster <colin.foster@in-advantage.com>
 
-[ Upstream commit 2e482655019ab6fcfe8865b62432c6d03f0b5f80 ]
+[ Upstream commit 69777753a8919b0b8313c856e707e1d1fe5ced85 ]
 
-The NVMe Base Specification 2.1 states that:
+When the EEPROM MAC is read by way of ADDRH, it can return all 0s the
+first time. Subsequent reads succeed.
 
-"""
-A host requests an explicit persistent connection ... by specifying a
-non-zero Keep Alive Timer value in the Connect command.
-"""
+This is fully reproduceable on the Phytec PCM049 SOM.
 
-As such if we are starting a persistent connection to a discovery
-controller and the KATO is currently 0 we need to update KATO to a non
-zero value to avoid continuous timeouts on the target.
+Re-read the ADDRH when this behaviour is observed, in an attempt to
+correctly apply the EEPROM MAC address.
 
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
+Link: https://patch.msgid.link/20250903132610.966787-1-colin.foster@in-advantage.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/smsc/smsc911x.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 24d82d35041b5..a3b9f8ea235f7 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4740,8 +4740,14 @@ void nvme_start_ctrl(struct nvme_ctrl *ctrl)
- 	 * checking that they started once before, hence are reconnecting back.
- 	 */
- 	if (test_bit(NVME_CTRL_STARTED_ONCE, &ctrl->flags) &&
--	    nvme_discovery_ctrl(ctrl))
-+	    nvme_discovery_ctrl(ctrl)) {
-+		if (!ctrl->kato) {
-+			nvme_stop_keep_alive(ctrl);
-+			ctrl->kato = NVME_DEFAULT_KATO;
-+			nvme_start_keep_alive(ctrl);
-+		}
- 		nvme_change_uevent(ctrl, "NVME_EVENT=rediscover");
-+	}
+diff --git a/drivers/net/ethernet/smsc/smsc911x.c b/drivers/net/ethernet/smsc/smsc911x.c
+index 6ca290f7c0dfb..3ebd0664c697f 100644
+--- a/drivers/net/ethernet/smsc/smsc911x.c
++++ b/drivers/net/ethernet/smsc/smsc911x.c
+@@ -2162,10 +2162,20 @@ static const struct net_device_ops smsc911x_netdev_ops = {
+ static void smsc911x_read_mac_address(struct net_device *dev)
+ {
+ 	struct smsc911x_data *pdata = netdev_priv(dev);
+-	u32 mac_high16 = smsc911x_mac_read(pdata, ADDRH);
+-	u32 mac_low32 = smsc911x_mac_read(pdata, ADDRL);
++	u32 mac_high16, mac_low32;
+ 	u8 addr[ETH_ALEN];
  
- 	if (ctrl->queue_count > 1) {
- 		nvme_queue_scan(ctrl);
++	mac_high16 = smsc911x_mac_read(pdata, ADDRH);
++	mac_low32 = smsc911x_mac_read(pdata, ADDRL);
++
++	/* The first mac_read in some setups can incorrectly read 0. Re-read it
++	 * to get the full MAC if this is observed.
++	 */
++	if (mac_high16 == 0) {
++		SMSC_TRACE(pdata, probe, "Re-read MAC ADDRH\n");
++		mac_high16 = smsc911x_mac_read(pdata, ADDRH);
++	}
++
+ 	addr[0] = (u8)(mac_low32);
+ 	addr[1] = (u8)(mac_low32 >> 8);
+ 	addr[2] = (u8)(mac_low32 >> 16);
 -- 
 2.51.0
 
