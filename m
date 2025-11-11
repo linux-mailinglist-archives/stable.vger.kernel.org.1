@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21253C4A235
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:02:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BBA8C4A1AE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:00:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5591C4F501D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09B023ACF42
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332FB255E53;
-	Tue, 11 Nov 2025 00:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951501C6FE1;
+	Tue, 11 Nov 2025 00:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+NmLzh6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+h/vlMT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E274025392D;
-	Tue, 11 Nov 2025 00:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AB6244693;
+	Tue, 11 Nov 2025 00:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822782; cv=none; b=ORDqhoCtxyfuFeUxulsUS8j0/da/e6lS0YBRtRkEg8zJ098ORsb0unUWyCIAcrleF3bZqqfxH6KkSSJaqDRwr6BLrWDLwvItPeSKHD4xNYwtJsitTQK76Lde4dr/tmt9Xk0rnwsJhCQ5Mn+4h/DQsghbsbNpGrle8kdGL0frwQQ=
+	t=1762822786; cv=none; b=VUvJSM9fiBBymQSza89udv9y2Ryme9jgN1ECT+yAY6Em7ySOcnU88wbxtZUH0RO/8BE317EdhJPW/RyE6mGdqv/UGLGMcsIpP5gPjhU2jqBnm8LQ6/xCzKirHqdyfTzHQXWecctarKu0ec44rAahRppIefiAbU6Mpm60KG18ays=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822782; c=relaxed/simple;
-	bh=Rd9XkEpsPnlgssch5jxr5M43ULA0AFseuqTQ+Fj6a0Q=;
+	s=arc-20240116; t=1762822786; c=relaxed/simple;
+	bh=+3g18BZRfAIFgvBi/PqZYA0t7O+pkJskftaXOXfVXlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G7LjD9Ff3vt7FDYn5vf9Um2kbJR+EIvzpDK6+czXRriGugw/KE4EYqho6uezFYZ5UrNESJoD2L6WmSZU3rNh+Lj0cJ466LlpMs6z62arAFVDHS7cQotimovvo99E+asXvuIYCshzMjz397j15jxm+lG7FfNdNrncE4CWyecNCLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+NmLzh6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39454C116B1;
-	Tue, 11 Nov 2025 00:59:41 +0000 (UTC)
+	 MIME-Version; b=EZ+1Zdu5TzA0ryUsX5OpiuItyI9IocfxgHgrJjeunz1aX9XPo3M4rQOj6nFk06jY+f7apOZIfab8TsjQNS5SHeaRuidRNr1B8SPdf9969TrHJ3yBICkQBbQCC2LFhQyOYlzsNooFgV92IDcqm5Q1t9OZepdhqgrvezOonVk+YMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+h/vlMT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E492BC19422;
+	Tue, 11 Nov 2025 00:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822781;
-	bh=Rd9XkEpsPnlgssch5jxr5M43ULA0AFseuqTQ+Fj6a0Q=;
+	s=korg; t=1762822786;
+	bh=+3g18BZRfAIFgvBi/PqZYA0t7O+pkJskftaXOXfVXlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S+NmLzh6K2m5nhaGnM9EBBpL1SXN6ztYeYeB/NZexeYPzuUU2Y+FiyX5cqGb1BQFb
-	 wsfu6fld31VxtlYqOz92kg2RVGAXSYbLBeakrCbWzndDcMoIevhKFReaTN8kGwmcDe
-	 0Cku4KVkeDGONBC5ef2/DVyjDgcN8NKmabY8tAR4=
+	b=p+h/vlMTIrCmscEp0u6iOKBaSPbxw5jk5kqq8HSaHCnG1JMDmyIH6EiHSOj2nszW+
+	 0eCggh5XEEWQ5YNMPURY62gpt+nk2Ju1zpdgMgiNKPjQNm9YDLZ5BqjeTGnF0la9Cy
+	 r1cJx/quAwvnhRba9V5Lh+5tB/wNBetQ8zokvnw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jonas=20Schw=C3=B6bel?= <jonasschwoebel@yahoo.de>,
 	Svyatoslav Ryhel <clamor95@gmail.com>,
 	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 170/849] ARM: tegra: p880: set correct touchscreen clipping
-Date: Tue, 11 Nov 2025 09:35:40 +0900
-Message-ID: <20251111004540.544739622@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Winona Schroeer-Smith <wolfizen@wolfizen.net>,
+	Antoni Aloy Torrens <aaloytorrens@gmail.com>
+Subject: [PATCH 6.17 171/849] ARM: tegra: transformer-20: add missing magnetometer interrupt
+Date: Tue, 11 Nov 2025 09:35:41 +0900
+Message-ID: <20251111004540.571274074@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -61,43 +62,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Schwöbel <jonasschwoebel@yahoo.de>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
 
-[ Upstream commit b49a73a08100ab139e07cfa7ca36e9b15787d0ab ]
+[ Upstream commit cca41614d15ce2bbc2c661362d3eafe53c9990af ]
 
-Existing touchscreen clipping is too small and causes problems with
-touchscreen accuracy.
+Add missing interrupt to magnetometer node.
 
-Signed-off-by: Jonas Schwöbel <jonasschwoebel@yahoo.de>
+Tested-by: Winona Schroeer-Smith <wolfizen@wolfizen.net> # ASUS SL101
+Tested-by: Antoni Aloy Torrens <aaloytorrens@gmail.com> # ASUS TF101
 Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nvidia/tegra30-lg-p880.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nvidia/tegra30-lg-p880.dts b/arch/arm/boot/dts/nvidia/tegra30-lg-p880.dts
-index 2f7754fd42a16..c6ef0a20c19f3 100644
---- a/arch/arm/boot/dts/nvidia/tegra30-lg-p880.dts
-+++ b/arch/arm/boot/dts/nvidia/tegra30-lg-p880.dts
-@@ -108,8 +108,8 @@
- 	i2c@7000c400 {
- 		touchscreen@20 {
- 			rmi4-f11@11 {
--				syna,clip-x-high = <1110>;
--				syna,clip-y-high = <1973>;
-+				syna,clip-x-high = <1440>;
-+				syna,clip-y-high = <2560>;
+diff --git a/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts b/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts
+index 67764afeb0136..39008816fe5ee 100644
+--- a/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts
++++ b/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts
+@@ -502,6 +502,9 @@
+ 			compatible = "asahi-kasei,ak8974";
+ 			reg = <0xe>;
  
- 				touchscreen-inverted-y;
- 			};
++			interrupt-parent = <&gpio>;
++			interrupts = <TEGRA_GPIO(N, 5) IRQ_TYPE_EDGE_RISING>;
++
+ 			avdd-supply = <&vdd_3v3_sys>;
+ 			dvdd-supply = <&vdd_1v8_sys>;
+ 
 -- 
 2.51.0
 
