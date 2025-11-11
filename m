@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0EEFC4AF16
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4991C4A8BA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 692764FAE42
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C0B334F6582
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CB833F8BD;
-	Tue, 11 Nov 2025 01:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D6B336EEB;
+	Tue, 11 Nov 2025 01:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyQVqydu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Sk14AWu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B7526CE37;
-	Tue, 11 Nov 2025 01:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D049272E7C;
+	Tue, 11 Nov 2025 01:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825059; cv=none; b=c5HzczF2xGwkS2Qqw/H42dgp83EQSPGdxYDuDKnnLzGO1si0SdDpXP0kjKQ2iPJHLfwOSQDTBfpucQXoK6O3Klv6P8vDBaGWrXa3asMa7al9NEr+wEgrusWYqtJL0L1wxYWeI7m/T8/2x9t+AVuTdyGeJ0Wiyu4lz+SPureamxc=
+	t=1762823963; cv=none; b=GBK+xkjwkgNCf8Xh8smiXAuBx4oo4jorrWj+Ah5KAonPLwVXA1IC/6IBVbXqWmX6pHb/fiN/JE06Jeg5GA0YMtSOkBmQ1D1Hhreurt2vBm6EG4nUdlYRJMjo108SK84yqmv0VntAq6rHfwEfzkS9LiP2IWgrW3g8z+XtBhbixw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825059; c=relaxed/simple;
-	bh=ofqtRckkAWlzv8J8fZhZv04Mx44eArmvqFf3cJJNmZY=;
+	s=arc-20240116; t=1762823963; c=relaxed/simple;
+	bh=ih+h+3nkgF0vkEhRpOXPZ7+fdXDJvPvJuwKhr1Eg2uA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlaNzaxwPzkLnMfblmqANyGHD0PgUeFfq/EPha9x99fSklUspwmlPrw7j7cvPanOY5e2GBFXmm+3FWhdpTOxRO+CsfgG4MGibYRU8MM1zjiNS6CuKy5ZVCGeH48/6PIJkVHMQyL3fq108AAODTqYWhCWfSb4Jb+hqRSztLbDli4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyQVqydu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0DBC116D0;
-	Tue, 11 Nov 2025 01:37:38 +0000 (UTC)
+	 MIME-Version; b=RxDeLVo4MPqpaG6pl+zn1c11aALEhImrAwX5/UfIHNzjDnasPhRwRI/lBj7fHBhv3LPrWvB9G0m4nKPedj+v9rMB4ojiX8h1TFZPbaZJI1jtOilghXYUrZoMAiqgYYNmKyPx8xBBhEbhpPChoR1dsbwjj02AMOQN2ueaoRjzvH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Sk14AWu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D732C113D0;
+	Tue, 11 Nov 2025 01:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825059;
-	bh=ofqtRckkAWlzv8J8fZhZv04Mx44eArmvqFf3cJJNmZY=;
+	s=korg; t=1762823963;
+	bh=ih+h+3nkgF0vkEhRpOXPZ7+fdXDJvPvJuwKhr1Eg2uA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IyQVqyduSx9X9ZlmxGi65VRRy+LTdXYyDr7DIeJTLyQy2/lq2Q2Vj1/+rOgxtLgRb
-	 B3ZnV9lCes/KIMn0TcQBYSkJXN54hAG08qaqo8FIg5WCZmkVDPC+cvYoK8mNQEP7l6
-	 hLKsdVaGFLm9esqdjgZNTT9E4s0hbitC4WLi9oEM=
+	b=2Sk14AWuO0c1DkjaShItSVFuipg1wykAgjAYkDAJEtCnX5CEQ1S2QGuhXKlw6lR7C
+	 jYMRlCR8ND8I/mJh5ivan8XYKmCTT6nYohYOPr8SNMSp2klebnr4m+eHuXjinFsmIV
+	 Pd0jNC1QCTCagMNSOTIYLtBkQj7858EaiDarx5ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Yusuke Goda <yusuke.goda.sx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	John Keeping <jkeeping@inmusicbrands.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 643/849] ASoC: renesas: msiof: set SIFCTR register
-Date: Tue, 11 Nov 2025 09:43:33 +0900
-Message-ID: <20251111004551.976735621@linuxfoundation.org>
+Subject: [PATCH 6.12 358/565] ALSA: serial-generic: remove shared static buffer
+Date: Tue, 11 Nov 2025 09:43:34 +0900
+Message-ID: <20251111004534.923531634@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-[ Upstream commit 130947b4681c515a5e5a7961244b502de2de85ca ]
+[ Upstream commit 84973249011fda3ff292f83439a062fec81ef982 ]
 
-Because it uses DMAC, we would like to transfer data if there is any data.
-Set SIFCTR for it.
+If multiple instances of this driver are instantiated and try to send
+concurrently then the single static buffer snd_serial_generic_tx_work()
+will cause corruption in the data output.
 
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Tested-by: Yusuke Goda <yusuke.goda.sx@renesas.com>
-Link: https://patch.msgid.link/87bjmzyuub.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Move the buffer into the per-instance driver data to avoid this.
+
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/renesas/rcar/msiof.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/drivers/serial-generic.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/renesas/rcar/msiof.c b/sound/soc/renesas/rcar/msiof.c
-index 555fdd4fb2513..ede0211daacba 100644
---- a/sound/soc/renesas/rcar/msiof.c
-+++ b/sound/soc/renesas/rcar/msiof.c
-@@ -185,6 +185,12 @@ static int msiof_hw_start(struct snd_soc_component *component,
- 		msiof_write(priv, SIRMDR3, val);
- 	}
+diff --git a/sound/drivers/serial-generic.c b/sound/drivers/serial-generic.c
+index 36409a56c675e..d0e2e656c31c1 100644
+--- a/sound/drivers/serial-generic.c
++++ b/sound/drivers/serial-generic.c
+@@ -37,6 +37,8 @@ MODULE_LICENSE("GPL");
+ #define SERIAL_TX_STATE_ACTIVE	1
+ #define SERIAL_TX_STATE_WAKEUP	2
  
-+	/* SIFCTR */
-+	if (is_play)
-+		msiof_update(priv, SIFCTR, SIFCTR_TFWM, FIELD_PREP(SIFCTR_TFWM, SIFCTR_TFWM_1));
-+	else
-+		msiof_update(priv, SIFCTR, SIFCTR_RFWM, FIELD_PREP(SIFCTR_RFWM, SIFCTR_RFWM_1));
++#define INTERNAL_BUF_SIZE 256
 +
- 	/* SIIER */
- 	if (is_play)
- 		val = SIIER_TDREQE | SIIER_TDMAE | SISTR_ERR_TX;
+ struct snd_serial_generic {
+ 	struct serdev_device *serdev;
+ 
+@@ -51,6 +53,7 @@ struct snd_serial_generic {
+ 	struct work_struct tx_work;
+ 	unsigned long tx_state;
+ 
++	char tx_buf[INTERNAL_BUF_SIZE];
+ };
+ 
+ static void snd_serial_generic_tx_wakeup(struct snd_serial_generic *drvdata)
+@@ -61,11 +64,8 @@ static void snd_serial_generic_tx_wakeup(struct snd_serial_generic *drvdata)
+ 	schedule_work(&drvdata->tx_work);
+ }
+ 
+-#define INTERNAL_BUF_SIZE 256
+-
+ static void snd_serial_generic_tx_work(struct work_struct *work)
+ {
+-	static char buf[INTERNAL_BUF_SIZE];
+ 	int num_bytes;
+ 	struct snd_serial_generic *drvdata = container_of(work, struct snd_serial_generic,
+ 						   tx_work);
+@@ -78,8 +78,10 @@ static void snd_serial_generic_tx_work(struct work_struct *work)
+ 		if (!test_bit(SERIAL_MODE_OUTPUT_OPEN, &drvdata->filemode))
+ 			break;
+ 
+-		num_bytes = snd_rawmidi_transmit_peek(substream, buf, INTERNAL_BUF_SIZE);
+-		num_bytes = serdev_device_write_buf(drvdata->serdev, buf, num_bytes);
++		num_bytes = snd_rawmidi_transmit_peek(substream, drvdata->tx_buf,
++						      INTERNAL_BUF_SIZE);
++		num_bytes = serdev_device_write_buf(drvdata->serdev, drvdata->tx_buf,
++						    num_bytes);
+ 
+ 		if (!num_bytes)
+ 			break;
 -- 
 2.51.0
 
