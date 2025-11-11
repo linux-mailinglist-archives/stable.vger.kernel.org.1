@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB57DC4AD54
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E1CC4A812
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCBED1894799
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9DB63B5C6B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E86727E7EB;
-	Tue, 11 Nov 2025 01:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48EE13469FD;
+	Tue, 11 Nov 2025 01:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvARaakU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Rh/caqA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A772DDAB;
-	Tue, 11 Nov 2025 01:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0445126A1B6;
+	Tue, 11 Nov 2025 01:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824844; cv=none; b=OGlU2Yg+EZecj1pLQza9FUnBp7RZFhqjUjm93LW+lOmymXuVEagxJWkBnvk01qQnKG+P0dUT/lgZSUPgcHNW85hTA/zL5eQXHCgyNrjJTPkCPh7qimSx1QFtr+B/JNzc0OBm3ogzQQjbzaUN0lDMScQkqlBbGbFUI9bXgpXq2Og=
+	t=1762823674; cv=none; b=m0YmQGnU8yzv6rp2j30RSfHrjZZ4YVJJNyYGHK8E6HRrCaM5wY3heg1LLdkKTeFv8ue0Zml8MeFjPMZZPesv/ZBlxG2il0nOIrdTQRGkjnqCqyrIq/y0yDpeSEs/ulmb2F/WHRBfardBDvi2DiJHQj/rLOm3W75jD0jh7dOPVc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824844; c=relaxed/simple;
-	bh=yZdWvsypXNECnwA9FCBTWMmlPO1dhZPmCvhN4m3khl8=;
+	s=arc-20240116; t=1762823674; c=relaxed/simple;
+	bh=/ZVTS3OvOaZ+Em14EWFpRo+tUPtmqIQDKbz6+3zvFWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mENmZD1WojuUAYvH7qtGHzbEIagRVPrGEP4nO+ccjGqawXG1FLUEsvmWMT5+NfIDRd+UFMC+Wu46LDG/5D/oveypevkmOtL05Z/PgPny6jYaiWuih1E/+gxy3D/RO0L5piJ3cOVaLFhtAQyW1dR6sZo17E/ZKanmen9O88k49kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvARaakU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED06BC19421;
-	Tue, 11 Nov 2025 01:34:03 +0000 (UTC)
+	 MIME-Version; b=unM59g7//XRcTwvfHMUzc+fYIaDmxmW9e/4vhhmsq5nFmDxpyOKyeqQAm9MVbqoLxFjRuEwmS8gvSeI9MTf+ZH4Ig+qUuH4OD0tNpYDLmYJfKo7YvYvr2CfUaFly88EsMTDa30WDUuYFoNT3nkO/d7IBkH27dEWE8rniU2wgzFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Rh/caqA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3647FC4CEF5;
+	Tue, 11 Nov 2025 01:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824844;
-	bh=yZdWvsypXNECnwA9FCBTWMmlPO1dhZPmCvhN4m3khl8=;
+	s=korg; t=1762823673;
+	bh=/ZVTS3OvOaZ+Em14EWFpRo+tUPtmqIQDKbz6+3zvFWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dvARaakU8UCKEqbGhDz5Bzxs6cE41Rw+vniWcs17mDIsoJm6RkV4j/P7zJax+YqBQ
-	 J1cYwy59jHFGo7IhSw3D57LR4vXjYLkehKGgOgFo6UantjhFhycDUPFB8auHrBsQyx
-	 dU/7qmXkaE3C3Us5xTUv8iYSQXPjnDEVSmHiM9Ig=
+	b=2Rh/caqAwPU/c/s0Byxwh/9TMjuHxxnj79hB8T+ZCMnwx76Kfaq757GcZ8IR36zGX
+	 H77pAKwn3gzmmmM5aR+3JIq+LByOa6KthmB8AXyNNq+WGZdOoGVmq0yztDcbGtMesj
+	 MmT1LNeLUcykyVAauqajCZYx5MiRUDCyHOUs0zx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chih-Kang Chang <gary.chang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Guoli An <anguoli@uniontech.com>,
+	Cryolitia PukNgae <cryolitia@uniontech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 583/849] wifi: rtw89: obtain RX path from ppdu status IE00
-Date: Tue, 11 Nov 2025 09:42:33 +0900
-Message-ID: <20251111004550.513133505@linuxfoundation.org>
+Subject: [PATCH 6.12 298/565] ALSA: usb-audio: apply quirk for MOONDROP Quark2
+Date: Tue, 11 Nov 2025 09:42:34 +0900
+Message-ID: <20251111004533.581830026@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Cryolitia PukNgae <cryolitia@uniontech.com>
 
-[ Upstream commit e156d2ab36d7e47aec36845705e4ecb1e4e89976 ]
+[ Upstream commit a73349c5dd27bc544b048e2e2c8ef6394f05b793 ]
 
-The header v2 of ppdu status is optional, If it is not enabled, the RX
-path must be obtained from IE00 or IE01. Append the IE00 part.
+It reports a MIN value -15360 for volume control, but will mute when
+setting it less than -14208
 
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250915065213.38659-5-pkshih@realtek.com
+Tested-by: Guoli An <anguoli@uniontech.com>
+Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250903-sound-v1-4-d4ca777b8512@uniontech.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 4 ++++
- drivers/net/wireless/realtek/rtw89/txrx.h | 1 +
- 2 files changed, 5 insertions(+)
+ sound/usb/mixer.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 0f7a467671ca8..2cebea10cb99b 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1844,6 +1844,10 @@ static void rtw89_core_parse_phy_status_ie00(struct rtw89_dev *rtwdev,
- 
- 	tmp_rpl = le32_get_bits(ie->w0, RTW89_PHY_STS_IE00_W0_RPL);
- 	phy_ppdu->rpl_avg = tmp_rpl >> 1;
-+
-+	if (!phy_ppdu->hdr_2_en)
-+		phy_ppdu->rx_path_en =
-+			le32_get_bits(ie->w3, RTW89_PHY_STS_IE00_W3_RX_PATH_EN);
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index 0591da2839269..ba9c6874915a2 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1191,6 +1191,13 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
+ 			cval->res = 1;
+ 		}
+ 		break;
++	case USB_ID(0x3302, 0x12db): /* MOONDROP Quark2 */
++		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
++			usb_audio_info(chip,
++				"set volume quirk for MOONDROP Quark2\n");
++			cval->min = -14208; /* Mute under it */
++		}
++		break;
+ 	}
  }
  
- static void rtw89_core_parse_phy_status_ie00_v2(struct rtw89_dev *rtwdev,
-diff --git a/drivers/net/wireless/realtek/rtw89/txrx.h b/drivers/net/wireless/realtek/rtw89/txrx.h
-index ec01bfc363da3..307b22ae13b2a 100644
---- a/drivers/net/wireless/realtek/rtw89/txrx.h
-+++ b/drivers/net/wireless/realtek/rtw89/txrx.h
-@@ -572,6 +572,7 @@ struct rtw89_phy_sts_ie00 {
- } __packed;
- 
- #define RTW89_PHY_STS_IE00_W0_RPL GENMASK(15, 7)
-+#define RTW89_PHY_STS_IE00_W3_RX_PATH_EN GENMASK(31, 28)
- 
- struct rtw89_phy_sts_ie00_v2 {
- 	__le32 w0;
 -- 
 2.51.0
 
