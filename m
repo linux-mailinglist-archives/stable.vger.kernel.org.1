@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-194213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9531DC4AF2C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C92C4AB23
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 44F554FAEDD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8BAB3BB849
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7802E2840;
-	Tue, 11 Nov 2025 01:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F181F4169;
+	Tue, 11 Nov 2025 01:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FAzXEoYG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNavRHQP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC85526B76A;
-	Tue, 11 Nov 2025 01:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139063431F8;
+	Tue, 11 Nov 2025 01:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825070; cv=none; b=eSzyDeMAFvr1Xjh9eEGSLYnwfR0CcIktlW/ZLaaPMIUujhS96tuTODCwSsLs6k1GE3MtREdKSlSnGZ2BlUpzOqba9HHkUl/qp+Y+lToXP18rDyT1bNFDb/reLsbAlZsE9K6fjzFgiB4mS9aQVkp3Hhz1XRv4RQifYMd6mkFRUZk=
+	t=1762824081; cv=none; b=HLAD1jVneiUue9RACbY2JJZQ/4zC+1SkKEg4RW/yE2PBdFvoMz8ILyz/nhN1dNbMo32uvIYZjx1FHf4jFpF4JcqIcs6yXt+4EorAy8WLFg5nt5DrXfzzb8T1FUK7KYjMtRdsld9ZYoPxKDj7I2+XKgQZxs7/cATb1m3lHz9QvxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825070; c=relaxed/simple;
-	bh=Qe5ARLfEWIRSKaPSCkRkTzv6G61vK1TRnnlXsnsXBQg=;
+	s=arc-20240116; t=1762824081; c=relaxed/simple;
+	bh=hVqerY9oTrkOx2lUez2sovOBpKwwI/+dzTiD93GUDoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SNP0IoiihlU83gSqoUru8k+qIizbDghhE3jtYtW4r6Z3MH0nRJxIWYKsTgvSRduAicUChAtSkXr3Hx0kz+lqeemHuweWKKJlOZv+d5LKYnstv67eBKiHgGj8EfptfYIx+8zmo2SaXmHRoBBD4KohzYO36TSDZpXUMHrQaebV1p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FAzXEoYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B23C4CEF5;
-	Tue, 11 Nov 2025 01:37:50 +0000 (UTC)
+	 MIME-Version; b=G7J3RrF9ERq5ZroHto1iGNN3gSUDcERc4zGZE4qjHw4sR9QH/prfomtjoFRsjihBGhQP6xoUWg0WXtEKZLFdmK5pAW6QxWZ6qhKtBWsL0VEJBeeu51Stk1PH0QZmh0oNWYUGeZfN+rVgczcbzZgJlYthhUeN9ZZmjro9cxVwtQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNavRHQP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A880AC116B1;
+	Tue, 11 Nov 2025 01:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825070;
-	bh=Qe5ARLfEWIRSKaPSCkRkTzv6G61vK1TRnnlXsnsXBQg=;
+	s=korg; t=1762824081;
+	bh=hVqerY9oTrkOx2lUez2sovOBpKwwI/+dzTiD93GUDoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FAzXEoYGaqZnmvR6/y4cJOViZbtbbmu77/w3zYWeP6XMEseiGu9VzIUbUOaOhu5+0
-	 kZP5bb/Q+q4Pzu3xyFVaM6q8wYoaS8OS1M/MSypDV3A3zyZzhLU2rt+dyhZwp8SMKI
-	 zHZbpMCOJl63da4CN8UaLZH1Vo/UU7XeVa9RI/TQ=
+	b=vNavRHQP14yMz5rNm3/ujGq23wolj3f0hvwSsfqGsiP0z+3NeVQce1LX76aWTQYq+
+	 lucf+77ANSpLqV6HusLyfzf9fKeJ/3WGDqg9vqiACdN9t/oix5/gyF3yXXoHoZ6ORK
+	 4a+2cArXGW6pcvTQKxcycLYWP9G30Gsyzgc5ih9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Mauri Carvalho <mcarvalho3@lenovo.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Mario Limonciello <Mario.Limonciello@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 647/849] drm/amdgpu: Add fallback to pipe reset if KCQ ring reset fails
+Subject: [PATCH 6.12 361/565] drm/amd/display: Set up pixel encoding for YCBCR422
 Date: Tue, 11 Nov 2025 09:43:37 +0900
-Message-ID: <20251111004552.067973884@linuxfoundation.org>
+Message-ID: <20251111004534.987216870@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +66,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse.Zhang <Jesse.Zhang@amd.com>
+From: Mario Limonciello <Mario.Limonciello@amd.com>
 
-[ Upstream commit 7469567d882374dcac3fdb8b300e0f28cf875a75 ]
+[ Upstream commit 5e76bc677cb7c92b37d8bc66bb67a18922895be2 ]
 
-Add a fallback mechanism to attempt pipe reset when KCQ reset
-fails to recover the ring. After performing the KCQ reset and
-queue remapping, test the ring functionality. If the ring test
-fails, initiate a pipe reset as an additional recovery step.
+[Why]
+fill_stream_properties_from_drm_display_mode() will not configure pixel
+encoding to YCBCR422 when the DRM color format supports YCBCR422 but not
+YCBCR420 or YCBCR4444.  Instead it will fallback to RGB.
 
-v2: fix the typo (Lijo)
-v3: try pipeline reset when kiq mapping fails (Lijo)
+[How]
+Add support for YCBCR422 in pixel encoding mapping.
 
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Suggested-by: Mauri Carvalho <mcarvalho3@lenovo.com>
+Reviewed-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Mario Limonciello <Mario.Limonciello@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-index 51babf5c78c86..f06bc94cf6e14 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-@@ -3562,6 +3562,7 @@ static int gfx_v9_4_3_reset_kcq(struct amdgpu_ring *ring,
- 	struct amdgpu_device *adev = ring->adev;
- 	struct amdgpu_kiq *kiq = &adev->gfx.kiq[ring->xcc_id];
- 	struct amdgpu_ring *kiq_ring = &kiq->ring;
-+	int reset_mode = AMDGPU_RESET_TYPE_PER_QUEUE;
- 	unsigned long flags;
- 	int r;
- 
-@@ -3599,6 +3600,7 @@ static int gfx_v9_4_3_reset_kcq(struct amdgpu_ring *ring,
- 		if (!(adev->gfx.compute_supported_reset & AMDGPU_RESET_TYPE_PER_PIPE))
- 			return -EOPNOTSUPP;
- 		r = gfx_v9_4_3_reset_hw_pipe(ring);
-+		reset_mode = AMDGPU_RESET_TYPE_PER_PIPE;
- 		dev_info(adev->dev, "ring: %s pipe reset :%s\n", ring->name,
- 				r ? "failed" : "successfully");
- 		if (r)
-@@ -3621,10 +3623,20 @@ static int gfx_v9_4_3_reset_kcq(struct amdgpu_ring *ring,
- 	r = amdgpu_ring_test_ring(kiq_ring);
- 	spin_unlock_irqrestore(&kiq->ring_lock, flags);
- 	if (r) {
-+		if (reset_mode == AMDGPU_RESET_TYPE_PER_QUEUE)
-+			goto pipe_reset;
-+
- 		dev_err(adev->dev, "fail to remap queue\n");
- 		return r;
- 	}
- 
-+	if (reset_mode == AMDGPU_RESET_TYPE_PER_QUEUE) {
-+		r = amdgpu_ring_test_ring(ring);
-+		if (r)
-+			goto pipe_reset;
-+	}
-+
-+
- 	return amdgpu_ring_reset_helper_end(ring, timedout_fence);
- }
- 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index fd44d011ffd2d..37307caf92999 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6161,6 +6161,9 @@ static void fill_stream_properties_from_drm_display_mode(
+ 			&& aconnector
+ 			&& aconnector->force_yuv420_output)
+ 		timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR420;
++	else if ((connector->display_info.color_formats & DRM_COLOR_FORMAT_YCBCR422)
++			&& stream->signal == SIGNAL_TYPE_HDMI_TYPE_A)
++		timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR422;
+ 	else if ((connector->display_info.color_formats & DRM_COLOR_FORMAT_YCBCR444)
+ 			&& stream->signal == SIGNAL_TYPE_HDMI_TYPE_A)
+ 		timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR444;
 -- 
 2.51.0
 
