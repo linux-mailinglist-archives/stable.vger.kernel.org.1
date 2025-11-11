@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56BEC4A1CD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F63C4A1D3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACB9B188E552
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C007188E481
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B3326560B;
-	Tue, 11 Nov 2025 01:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D422425C818;
+	Tue, 11 Nov 2025 01:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/ZGNL32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpJWQgZb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF722266B6C;
-	Tue, 11 Nov 2025 01:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90792248883;
+	Tue, 11 Nov 2025 01:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822848; cv=none; b=ip1bqd0rZIXPw+qQMvBMSDXUtnctrOzrK6T/RSMExjIjsOF1X3BaDNlabcno3M+sdgT+FTCWGNDoQ6TLtj0nAJYouqDGkK3zdF8NMg0wVoeSN47JdYR1aV6gf4J/pRo6CueSYAq10q1/F3CbGpTDFfGNmSWjUBr/zk3Vp3ddhZQ=
+	t=1762822855; cv=none; b=qGlCuA3XHgZUGSnQVQGrEz1tvJZI7ST7OMxqYmhD/pPQJIFGABrt3OrHy2TwKCQZqjOECrSt6yUz0w2N76BIX3b+2AJpOQvMtf7ayZVp9UmlOSt+1MJJcEMxX6xfAV88tqpblKEcK8dZgpmX+2rZA1rb/zcsVcNs1GSasvvl+7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822848; c=relaxed/simple;
-	bh=8xDb3yUrnMKR3gjug6h0sqJ52NP8IExO5dT6lEvkPeA=;
+	s=arc-20240116; t=1762822855; c=relaxed/simple;
+	bh=AwozPR3pZh4eGZgKBgD+j4VjkIOrvmWvYT8Ii/3RRpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k3CeBB/4JxyJ3NRVDuWPwpGsxRvMmFsRiKpShc6wTescUVloqS12bxol/J1IGcw4e2GsBStSDRgs4WEQGp3NUgeiqQy6kyKXS8o3/jHdcHNNfGP5lc7qHAVPlyHDh5jjs0+2a3x+pQDqcRJF1ZdTpRBeR4HOjn9VC+yqcHixQJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/ZGNL32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEAEC2BC86;
-	Tue, 11 Nov 2025 01:00:48 +0000 (UTC)
+	 MIME-Version; b=XLIlrp2JbKwB3kiBEyF3679x30gaMndRiCMFAlR91LbLrJ4EfYnHepYVdexK6ppl7cMDdsP2MHi/ZSahWZNoDbG6RJDip5HoyEJ0/RCUVK7TWjbRFZjsyQgmbTCx6RAvd1Dziwj1CqNqQ5+zU1QW+9hB0a2kbOQQfCXto8OxvxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpJWQgZb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BEA7C4CEF5;
+	Tue, 11 Nov 2025 01:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822848;
-	bh=8xDb3yUrnMKR3gjug6h0sqJ52NP8IExO5dT6lEvkPeA=;
+	s=korg; t=1762822855;
+	bh=AwozPR3pZh4eGZgKBgD+j4VjkIOrvmWvYT8Ii/3RRpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U/ZGNL32p6L8Zo3PZXya2Shh9rjmvJu9B0wGqEnAQlvNLCPIlLxdJC2Ebh0iSAMLw
-	 ArvwRTMo+pJnn9QeQKFb/y+KzVAQrJJm8wPIgZiSHIX/Y/w/gGtAYuL1prlNCduQvm
-	 OkaWxFgnd9rNB8ol3a4dwxyjZLyAjFOm93zrzmLM=
+	b=bpJWQgZbqZYYiGy11j+3niH8UW2Zo+Eh0cVvY1m4KHZuJGLncMZorTl1n98GONUZh
+	 JzM9P5aQN47zZNEsLRsTq6DDCkph92ZCx7nOhGA0j+7jLW4ueiMskzWxktqq9zsQlL
+	 Ri2WXI5d+Yp4P/vJvMP7jflOIyzktRqBRMU9riw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuande Chen <chuachen@cisco.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 120/565] hwmon: (sbtsi_temp) AMD CPU extended temperature range support
-Date: Tue, 11 Nov 2025 09:39:36 +0900
-Message-ID: <20251111004529.655986562@linuxfoundation.org>
+Subject: [PATCH 6.12 121/565] pinctrl: keembay: release allocated memory in detach path
+Date: Tue, 11 Nov 2025 09:39:37 +0900
+Message-ID: <20251111004529.677178824@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,138 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuande Chen <chuachen@cisco.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit d9d61f1da35038793156c04bb13f0a1350709121 ]
+[ Upstream commit aae7a2876c3b39d07aa7655ea082af8e7862f3a5 ]
 
-Many AMD CPUs can support this feature now. We would get a wrong CPU DIE
-temperature if don't consider this. In low-temperature environments,
-the CPU die temperature can drop below zero. So many platforms would like
-to make extended temperature range as their default configuration.
-Default temperature range (0C to 255.875C).
-Extended temperature range (-49C to +206.875C).
-Ref Doc: AMD V3000 PPR (Doc ID #56558).
+Unlike all the other allocations in this driver, the memory for storing
+the pin function descriptions allocated with kcalloc() and later resized
+with krealloc() is never freed. Use devres like elsewhere to handle
+that. While at it - replace krealloc() with more suitable
+devm_krealloc_array().
 
-Signed-off-by: Chuande Chen <chuachen@cisco.com>
-Link: https://lore.kernel.org/r/20250814053940.96764-1-chenchuande@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Note: the logic in this module is pretty convoluted and could probably
+use some revisiting, we should probably be able to calculate the exact
+amount of memory needed in advance or even skip the allocation
+altogether and just add each function to the radix tree separately.
+
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/sbtsi_temp.c | 46 +++++++++++++++++++++++++-------------
- 1 file changed, 31 insertions(+), 15 deletions(-)
+ drivers/pinctrl/pinctrl-keembay.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/sbtsi_temp.c b/drivers/hwmon/sbtsi_temp.c
-index 3c839f56c4603..a6c439e376ff7 100644
---- a/drivers/hwmon/sbtsi_temp.c
-+++ b/drivers/hwmon/sbtsi_temp.c
-@@ -14,6 +14,7 @@
- #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/of.h>
-+#include <linux/bitfield.h>
+diff --git a/drivers/pinctrl/pinctrl-keembay.c b/drivers/pinctrl/pinctrl-keembay.c
+index b693f4787044c..b1124d3e50bff 100644
+--- a/drivers/pinctrl/pinctrl-keembay.c
++++ b/drivers/pinctrl/pinctrl-keembay.c
+@@ -1606,7 +1606,8 @@ static int keembay_build_functions(struct keembay_pinctrl *kpc)
+ 	 * being part of 8 (hw maximum) globally unique muxes.
+ 	 */
+ 	kpc->nfuncs = 0;
+-	keembay_funcs = kcalloc(kpc->npins * 8, sizeof(*keembay_funcs), GFP_KERNEL);
++	keembay_funcs = devm_kcalloc(kpc->dev, kpc->npins * 8,
++				     sizeof(*keembay_funcs), GFP_KERNEL);
+ 	if (!keembay_funcs)
+ 		return -ENOMEM;
  
- /*
-  * SB-TSI registers only support SMBus byte data access. "_INT" registers are
-@@ -29,8 +30,22 @@
- #define SBTSI_REG_TEMP_HIGH_DEC		0x13 /* RW */
- #define SBTSI_REG_TEMP_LOW_DEC		0x14 /* RW */
- 
-+/*
-+ * Bit for reporting value with temperature measurement range.
-+ * bit == 0: Use default temperature range (0C to 255.875C).
-+ * bit == 1: Use extended temperature range (-49C to +206.875C).
-+ */
-+#define SBTSI_CONFIG_EXT_RANGE_SHIFT	2
-+/*
-+ * ReadOrder bit specifies the reading order of integer and decimal part of
-+ * CPU temperature for atomic reads. If bit == 0, reading integer part triggers
-+ * latching of the decimal part, so integer part should be read first.
-+ * If bit == 1, read order should be reversed.
-+ */
- #define SBTSI_CONFIG_READ_ORDER_SHIFT	5
- 
-+#define SBTSI_TEMP_EXT_RANGE_ADJ	49000
-+
- #define SBTSI_TEMP_MIN	0
- #define SBTSI_TEMP_MAX	255875
- 
-@@ -38,6 +53,8 @@
- struct sbtsi_data {
- 	struct i2c_client *client;
- 	struct mutex lock;
-+	bool ext_range_mode;
-+	bool read_order;
- };
- 
- /*
-@@ -74,23 +91,11 @@ static int sbtsi_read(struct device *dev, enum hwmon_sensor_types type,
- {
- 	struct sbtsi_data *data = dev_get_drvdata(dev);
- 	s32 temp_int, temp_dec;
--	int err;
- 
- 	switch (attr) {
- 	case hwmon_temp_input:
--		/*
--		 * ReadOrder bit specifies the reading order of integer and
--		 * decimal part of CPU temp for atomic reads. If bit == 0,
--		 * reading integer part triggers latching of the decimal part,
--		 * so integer part should be read first. If bit == 1, read
--		 * order should be reversed.
--		 */
--		err = i2c_smbus_read_byte_data(data->client, SBTSI_REG_CONFIG);
--		if (err < 0)
--			return err;
--
- 		mutex_lock(&data->lock);
--		if (err & BIT(SBTSI_CONFIG_READ_ORDER_SHIFT)) {
-+		if (data->read_order) {
- 			temp_dec = i2c_smbus_read_byte_data(data->client, SBTSI_REG_TEMP_DEC);
- 			temp_int = i2c_smbus_read_byte_data(data->client, SBTSI_REG_TEMP_INT);
- 		} else {
-@@ -122,6 +127,8 @@ static int sbtsi_read(struct device *dev, enum hwmon_sensor_types type,
- 		return temp_dec;
- 
- 	*val = sbtsi_reg_to_mc(temp_int, temp_dec);
-+	if (data->ext_range_mode)
-+		*val -= SBTSI_TEMP_EXT_RANGE_ADJ;
- 
- 	return 0;
- }
-@@ -146,6 +153,8 @@ static int sbtsi_write(struct device *dev, enum hwmon_sensor_types type,
- 		return -EINVAL;
+@@ -1637,7 +1638,9 @@ static int keembay_build_functions(struct keembay_pinctrl *kpc)
  	}
  
-+	if (data->ext_range_mode)
-+		val += SBTSI_TEMP_EXT_RANGE_ADJ;
- 	val = clamp_val(val, SBTSI_TEMP_MIN, SBTSI_TEMP_MAX);
- 	sbtsi_mc_to_reg(val, &temp_int, &temp_dec);
- 
-@@ -203,6 +212,7 @@ static int sbtsi_probe(struct i2c_client *client)
- 	struct device *dev = &client->dev;
- 	struct device *hwmon_dev;
- 	struct sbtsi_data *data;
-+	int err;
- 
- 	data = devm_kzalloc(dev, sizeof(struct sbtsi_data), GFP_KERNEL);
- 	if (!data)
-@@ -211,8 +221,14 @@ static int sbtsi_probe(struct i2c_client *client)
- 	data->client = client;
- 	mutex_init(&data->lock);
- 
--	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name, data, &sbtsi_chip_info,
--							 NULL);
-+	err = i2c_smbus_read_byte_data(data->client, SBTSI_REG_CONFIG);
-+	if (err < 0)
-+		return err;
-+	data->ext_range_mode = FIELD_GET(BIT(SBTSI_CONFIG_EXT_RANGE_SHIFT), err);
-+	data->read_order = FIELD_GET(BIT(SBTSI_CONFIG_READ_ORDER_SHIFT), err);
-+
-+	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name, data,
-+							 &sbtsi_chip_info, NULL);
- 
- 	return PTR_ERR_OR_ZERO(hwmon_dev);
- }
+ 	/* Reallocate memory based on actual number of functions */
+-	new_funcs = krealloc(keembay_funcs, kpc->nfuncs * sizeof(*new_funcs), GFP_KERNEL);
++	new_funcs = devm_krealloc_array(kpc->dev, keembay_funcs,
++					kpc->nfuncs, sizeof(*new_funcs),
++					GFP_KERNEL);
+ 	if (!new_funcs) {
+ 		kfree(keembay_funcs);
+ 		return -ENOMEM;
 -- 
 2.51.0
 
