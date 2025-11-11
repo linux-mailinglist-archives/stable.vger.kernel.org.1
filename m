@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-194019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071A3C4AA60
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01915C4A6E8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9FF1034C957
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B70AD3B1F68
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B6C340DAC;
-	Tue, 11 Nov 2025 01:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF52334029C;
+	Tue, 11 Nov 2025 01:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgU4pBHp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhcC6J4G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C829F340D8C;
-	Tue, 11 Nov 2025 01:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694D634028B;
+	Tue, 11 Nov 2025 01:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824612; cv=none; b=Pog49A6xI0XfwOkuPBozO2dPJfDjxOc6fTrKJh547S1eYuYDC0hUrXGF7PI2Y3JJfuC4dB0u1IYTWzIq4GqqhQwFPD4BmEzPpULOB0nEJO+U8s15+mV2WfhK76jKL1ydEgoC0kwF5bAnsB1EAYixGnSTtG4vsdcxPpHmDQqEmcA=
+	t=1762823447; cv=none; b=ULhDCi8xwBhWE/K6Mjk123r6U1OFBAA1iWGRQ5Sow8dzOGkOH+L5mJqMMVmfdHbGOG1Nyt8UdPdYvooLSGEtFaj1sW5TtWqsgjZ/QZCjvVZJjR5lyZVtKppZSNQ+Vci+wkJ6WNHl1S5/+GcYeq3SALqVQUteTSBnyqBTfoHnbF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824612; c=relaxed/simple;
-	bh=uS3Webz7eflAnPlyAStcO+pT7c7loLztxLMfqo9zzUU=;
+	s=arc-20240116; t=1762823447; c=relaxed/simple;
+	bh=Kl616C37ioixlh5x3q+ofkfXt+AAZUiSEUH9Kp4NiLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvwXCe4+Hq34c5OQudFzfSZCFF+DSpaOU+j7THiNKwXYJ5kk3vpZFNQEM4JCx+jLas0iJIxrWnc5YZb61YP41aX03v7Y2NXa9ZGZZvVZue4bEFTqcfCSTaqPoHipymL3wOmTyJ/e3/PS7rf/fg19TD2UGxax/wLZ2XfO7no0Un0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgU4pBHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6692CC16AAE;
-	Tue, 11 Nov 2025 01:30:12 +0000 (UTC)
+	 MIME-Version; b=TQEhRwcjTN/Ip8nKXH/uikjUJVXG5ro+K1mwoh105LJ5DJvaBSNc4FzETvEqBY4AKmtOyMNRg6LFhe0B+Tf7aqiLuKXCaji94mOSTppqRx3oNyi5e8EzULHrJdpx22dqkUjpikmytUTaB7x3w47TccrMp0H56ulsH9l2dneeWD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhcC6J4G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8DD3C2BC9E;
+	Tue, 11 Nov 2025 01:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824612;
-	bh=uS3Webz7eflAnPlyAStcO+pT7c7loLztxLMfqo9zzUU=;
+	s=korg; t=1762823447;
+	bh=Kl616C37ioixlh5x3q+ofkfXt+AAZUiSEUH9Kp4NiLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgU4pBHpFwlh0NiyarAD9u4U1RctvcE3k/CUokbqBFLSiBYZUL+mZxouXufbEaFwV
-	 wpmvzUMBx8M0yEWgz/NjuyakPJNl4slp4uX3zZxLxZ4t7Cm35iCe8qejWSDR6YDH3C
-	 D6NRlxtdsU3795y1vGGMxngum6pbBqHgTZqcPpic=
+	b=QhcC6J4GMp8zsxYkduj5472NHAwnmZ8JLols2EnAYi5sr1eaax3f2GpNYceD3SKKt
+	 6sns/ilSWHsDQpmsIcd4minHeIfh5hof1Ki5XZO0N/FDLf6ASkKm9uiCp2U9CmLk04
+	 eNdORi/pOQjTI2Q1ft0Snv7WIGbr1GMg8c3OvsVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Shannon Nelson <sln@onemain.com>,
-	Brett Creeley <brett.creeley@amd.com>,
+	Oscar Maes <oscmaes92@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 534/849] ionic: use int type for err in ionic_get_module_eeprom_by_page
+Subject: [PATCH 6.12 248/565] net: ipv4: allow directed broadcast routes to use dst hint
 Date: Tue, 11 Nov 2025 09:41:44 +0900
-Message-ID: <20251111004549.327504070@linuxfoundation.org>
+Message-ID: <20251111004532.488383835@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-[ Upstream commit d586676a2714176bed06cf70467c4e08ac2d4681 ]
+[ Upstream commit 1b8c5fa0cb35efd08f07f700e6d78a541ebabe26 ]
 
-The variable 'err' is declared as u32, but it is used to store
-negative error codes such as -EINVAL.
+Currently, ip_extract_route_hint uses RTN_BROADCAST to decide
+whether to use the route dst hint mechanism.
 
-Changing the type of 'err' to int ensures proper representation of
-negative error codes and aligns with standard kernel error handling
-conventions.
+This check is too strict, as it prevents directed broadcast
+routes from using the hint, resulting in poor performance
+during bursts of directed broadcast traffic.
 
-Also, there is no need to initialize 'err' since it is always set
-before being used.
+Fix this in ip_extract_route_hint and modify ip_route_use_hint
+to preserve the intended behaviour.
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Shannon Nelson <sln@onemain.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Link: https://patch.msgid.link/20250912141426.3922545-1-alok.a.tiwari@oracle.com
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250819174642.5148-2-oscmaes92@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/ip_input.c | 11 +++++++----
+ net/ipv4/route.c    |  2 +-
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-index 92f30ff2d6316..2d9efadb5d2ae 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-@@ -978,7 +978,7 @@ static int ionic_get_module_eeprom_by_page(struct net_device *netdev,
- {
- 	struct ionic_lif *lif = netdev_priv(netdev);
- 	struct ionic_dev *idev = &lif->ionic->idev;
--	u32 err = -EINVAL;
-+	int err;
- 	u8 *src;
+diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
+index b6e7d49213097..7b092ba6f5779 100644
+--- a/net/ipv4/ip_input.c
++++ b/net/ipv4/ip_input.c
+@@ -582,9 +582,13 @@ static void ip_sublist_rcv_finish(struct list_head *head)
+ }
  
- 	if (!page_data->length)
+ static struct sk_buff *ip_extract_route_hint(const struct net *net,
+-					     struct sk_buff *skb, int rt_type)
++					     struct sk_buff *skb)
+ {
+-	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST ||
++	const struct iphdr *iph = ip_hdr(skb);
++
++	if (fib4_has_custom_rules(net) ||
++	    ipv4_is_lbcast(iph->daddr) ||
++	    ipv4_is_zeronet(iph->daddr) ||
+ 	    IPCB(skb)->flags & IPSKB_MULTIPATH)
+ 		return NULL;
+ 
+@@ -614,8 +618,7 @@ static void ip_list_rcv_finish(struct net *net, struct sock *sk,
+ 
+ 		dst = skb_dst(skb);
+ 		if (curr_dst != dst) {
+-			hint = ip_extract_route_hint(net, skb,
+-						     dst_rtable(dst)->rt_type);
++			hint = ip_extract_route_hint(net, skb);
+ 
+ 			/* dispatch old sublist */
+ 			if (!list_empty(&sublist))
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 7d04df4fc6608..96a01eb33653f 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2187,7 +2187,7 @@ int ip_route_use_hint(struct sk_buff *skb, __be32 daddr, __be32 saddr,
+ 	if (ipv4_is_loopback(saddr) && !IN_DEV_NET_ROUTE_LOCALNET(in_dev, net))
+ 		goto martian_source;
+ 
+-	if (rt->rt_type != RTN_LOCAL)
++	if (!(rt->rt_flags & RTCF_LOCAL))
+ 		goto skip_validate_source;
+ 
+ 	tos &= INET_DSCP_MASK;
 -- 
 2.51.0
 
