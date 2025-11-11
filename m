@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-193525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44362C4A6BF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:23 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC03C4AA15
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 682E01892BBA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 97F4D34C7B6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9A12609FD;
-	Tue, 11 Nov 2025 01:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFF533BBB5;
+	Tue, 11 Nov 2025 01:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGwRHi47"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00KXPD8m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC94A21D5BC;
-	Tue, 11 Nov 2025 01:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA312BE7B8;
+	Tue, 11 Nov 2025 01:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823387; cv=none; b=mwFvdVQbWS0pmSpsyqRs4UCCCvlO4fo+GZrlU0VuavlvdwaFAqwXYstUUelg/javxHxULVWzVJiKue1uYqz/Eyr/eTkDQOzjPo/nQsfv1nC7DR5gr1yZjWkgGAg7fEVoiHrkV7Pt07R1mTT5Wia7xJ9RKLgILsrJPXGVqMEj0iU=
+	t=1762824556; cv=none; b=ICC7XyZYv2KE9L4ddRyNrxT78/EaxROnUVIgCd2gu7NiYrWKIzXB7I25QLYbmg8wga9zB6tcCteOzWwS3nvA3aGZOFIg/Ok9Axr7l2lcDK187fltgTT4+NGWdAykyO+k++YSOwUE15aMNmIyKZ7Qb/jhi1N14GBDzLCJSRZ+I/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823387; c=relaxed/simple;
-	bh=VBBiVTj+Fkvu2GGdRW4gRt9IBKvr7mJTQyCDKrPVLuc=;
+	s=arc-20240116; t=1762824556; c=relaxed/simple;
+	bh=ATNOZwyJ5D25yPtGLg4KcnLuWADrxhQl08ukv0kzR8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fwql7KiRovCKG9RlPxAvIlfFyQXogLfrsUQeyJkA+27b3iADjnDnQ5Rj7ObDPCnaKj013e4xb/8xpgfvViRLUjKSK15wNKOCsvfB95xJm21EHTMYdaJOcDn5E4fP8qnfOuVw61F6qO2ohFCdbvWXBIMhDXh+Ke4Ia1J2I7iT3+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGwRHi47; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF8AC19424;
-	Tue, 11 Nov 2025 01:09:47 +0000 (UTC)
+	 MIME-Version; b=cIO6h4CAc8SCtoKK4IN6pU9sD+VtNightUJmNT6GbDbzbkBRMiHPs68Zbiv2CVC2lvrUsyWa7O+cmdXDPNBxd4FcqHvU2yymjO8ZckSW7BXY0Bv4zfCsgDNsLNjknKcdJq6IBMdQkuxB3TzzXk8ZgzpzzjlUL//yfMvDjYxfjeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00KXPD8m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184E9C19421;
+	Tue, 11 Nov 2025 01:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823387;
-	bh=VBBiVTj+Fkvu2GGdRW4gRt9IBKvr7mJTQyCDKrPVLuc=;
+	s=korg; t=1762824556;
+	bh=ATNOZwyJ5D25yPtGLg4KcnLuWADrxhQl08ukv0kzR8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGwRHi47upAlgY1OkmSo1mI4WCulC+b7IcMj39pvFsb/hDNOYwDqe/rPbKhkN+tes
-	 2nca10gUc/VOnaPjftTP4mfG6RCTd8tF235cgwcK/o9Oq8Qk/ByOMIXcqr9t9WSiqY
-	 M4lewqqnSw7QRwRSUNgVL8WN/rSDdO5Wxk0wnL2g=
+	b=00KXPD8mH19/3DNTe0yKzrKU0VTaYe8X29Wfysv5QFnEtlTB42JwEaOHKafUVFvqP
+	 HloWDCyklTZ5Nuii5jyWrrsCU1N8P4xBhzTLbgG6/bKMQAWzslY8mD9FoZ4lxHxTXU
+	 dhgnNvmlTpLLcMfaiEebjmvieF3VtGQRAP9RCUQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
+	Stanislav Fomichev <sdf@fomichev.me>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 237/565] net: Call trace_sock_exceed_buf_limit() for memcg failure with SK_MEM_RECV.
+Subject: [PATCH 6.17 523/849] net: devmem: expose tcp_recvmsg_locked errors
 Date: Tue, 11 Nov 2025 09:41:33 +0900
-Message-ID: <20251111004532.246919686@linuxfoundation.org>
+Message-ID: <20251111004549.067210126@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Stanislav Fomichev <sdf@fomichev.me>
 
-[ Upstream commit 9d85c565a7b7c78b732393c02bcaa4d5c275fe58 ]
+[ Upstream commit 18282100d7040614b553f1cad737cb689c04e2b9 ]
 
-Initially, trace_sock_exceed_buf_limit() was invoked when
-__sk_mem_raise_allocated() failed due to the memcg limit or the
-global limit.
+tcp_recvmsg_dmabuf can export the following errors:
+- EFAULT when linear copy fails
+- ETOOSMALL when cmsg put fails
+- ENODEV if one of the frags is readable
+- ENOMEM on xarray failures
 
-However, commit d6f19938eb031 ("net: expose sk wmem in
-sock_exceed_buf_limit tracepoint") somehow suppressed the event
-only when memcg failed to charge for SK_MEM_RECV, although the
-memcg failure for SK_MEM_SEND still triggers the event.
+But they are all ignored and replaced by EFAULT in the caller
+(tcp_recvmsg_locked). Expose real error to the userspace to
+add more transparency on what specifically fails.
 
-Let's restore the event for SK_MEM_RECV.
+In non-devmem case (skb_copy_datagram_msg) doing `if (!copied)
+copied=-EFAULT` is ok because skb_copy_datagram_msg can return only EFAULT.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Link: https://patch.msgid.link/20250815201712.1745332-5-kuniyu@google.com
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20250910162429.4127997-1-sdf@fomichev.me
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ipv4/tcp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index a5f248a914042..bf31b19045243 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -3267,8 +3267,7 @@ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
- 		}
- 	}
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index ba36f558f144c..f421cad69d8c9 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2821,9 +2821,9 @@ static int tcp_recvmsg_locked(struct sock *sk, struct msghdr *msg, size_t len,
  
--	if (kind == SK_MEM_SEND || (kind == SK_MEM_RECV && charged))
--		trace_sock_exceed_buf_limit(sk, prot, allocated, kind);
-+	trace_sock_exceed_buf_limit(sk, prot, allocated, kind);
+ 				err = tcp_recvmsg_dmabuf(sk, skb, offset, msg,
+ 							 used);
+-				if (err <= 0) {
++				if (err < 0) {
+ 					if (!copied)
+-						copied = -EFAULT;
++						copied = err;
  
- 	sk_memory_allocated_sub(sk, amt);
- 
+ 					break;
+ 				}
 -- 
 2.51.0
 
