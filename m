@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-193867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19A7C4ABD4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13862C4B09D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0137318948EA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3A503B5A39
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594D63469E4;
-	Tue, 11 Nov 2025 01:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62384306482;
+	Tue, 11 Nov 2025 01:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysD3wOfC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rS1y8o6V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DD41F09B3;
-	Tue, 11 Nov 2025 01:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E68B253951;
+	Tue, 11 Nov 2025 01:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824194; cv=none; b=De45rfyPC/eTxvl5RK8W9kPbhnSb4FOYWWslMoLOxEUufHuixDLQQ9CUurqYQAKZ5HlEhu34p1e2WDRxIWcJtWruV5FOGjpkbzHkuqAj4Fl8uFCmfwek8sEum9Q/hoYnY/lAfJgMaC8iA09i1zgdQDyOiR5kptdiSKLTVSNv2JA=
+	t=1762825184; cv=none; b=CFTjV8SMs8WHWf0OU254ntIaDTSfP1zenWLrAmPRdtZnBg42IeHjiB5c7FIRPMiBrSTJljGAnliGL60CoinNXBBTd68/TkLoMavCdUi64zqHjCjQKvmRf4B6CCLjPTlwEveWjH7/H1CtWfl1PQ4cuUWrlDj8blKnCdveq0BckDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824194; c=relaxed/simple;
-	bh=ptzH4nJEOxfwRJP5w2WQrNuHCEQjT+M6ehFesNxdDrQ=;
+	s=arc-20240116; t=1762825184; c=relaxed/simple;
+	bh=fsFc7w2WnvclryUMnPeqlqLjREDN02NZIB5k1XzTAfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iXJWiGlq2ch3mWVAfQX9nYQq29yU/viWeosxAOa5CahEG/a4T/xv3hpSxZ8M6Qc6MhhVspvb2bnHcs/W/RRVZFyfyEwIqoICKlpTYX3fMEafh7T3/mHUoqvWVQVA0wKADzit1xFcf9NcR8G06uhcY7F9Rv7SCwEbPqSoEHailpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysD3wOfC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35366C4CEF5;
-	Tue, 11 Nov 2025 01:23:13 +0000 (UTC)
+	 MIME-Version; b=OetKatJ0UsLXq9LPl7gVdgkkPWfvt1Z/F6H+Ce9SBdeqZdYibYjhsPI8SzEGNC/sEtfLUyiTH5Y2jnQ7Or00IzdrdjEBgFkOJKWK1yJXybkg8cE7RaMMpac3Qql827PXx1TQdlZf0bPI4679gaH5QytJhSusH+DqaKk5LGgulGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rS1y8o6V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08D4C116D0;
+	Tue, 11 Nov 2025 01:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824193;
-	bh=ptzH4nJEOxfwRJP5w2WQrNuHCEQjT+M6ehFesNxdDrQ=;
+	s=korg; t=1762825184;
+	bh=fsFc7w2WnvclryUMnPeqlqLjREDN02NZIB5k1XzTAfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ysD3wOfCmKeSQl1aFwp4beijx34hv5USKLO6f/KerkmVwX2JFHipZKGAfPLAYlVOA
-	 kwt5GK3jdoI7dWsB7Dk3uzbyo8n2gN9gYZhFbZwGhTirJ3E7WOCK2EAiTIenw1Hotm
-	 ueIVAKJ/MbIlUKFxXc6uSu/+aFTLtYKmeAHFoPRM=
+	b=rS1y8o6VLn/74qXjP5gdbbDuMLhIEBQBqSFS5DMhesA2jgeyX9u5aXWXroWdXWO/0
+	 OX8sEMi0UO5BgatpHDR37ad5+cTIMOiSkGLEnSNC73CO5+pftVKnwxeXWfuEh3F+fq
+	 CwW/TXf+4VKjS0ycT5EAJHyLfgetMVSiQ9Sfuqss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 408/565] PCI/PM: Skip resuming to D0 if device is disconnected
-Date: Tue, 11 Nov 2025 09:44:24 +0900
-Message-ID: <20251111004536.049547943@linuxfoundation.org>
+Subject: [PATCH 6.17 695/849] clk: renesas: rzv2h: Re-assert reset on deassert timeout
+Date: Tue, 11 Nov 2025 09:44:25 +0900
+Message-ID: <20251111004553.234369586@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
 
-[ Upstream commit 299fad4133677b845ce962f78c9cf75bded63f61 ]
+[ Upstream commit f8c002165ca27d95d3d15e865dd0a47c0a1b14dd ]
 
-When a device is surprise-removed (e.g., due to a dock unplug), the PCI
-core unconfigures all downstream devices and sets their error state to
-pci_channel_io_perm_failure. This marks them as disconnected via
-pci_dev_is_disconnected().
+Prevent issues during reset deassertion by re-asserting the reset if a
+timeout occurs when trying to deassert. This ensures the reset line is in a
+known state and improves reliability for hardware that may not immediately
+clear the reset monitor bit.
 
-During device removal, the runtime PM framework may attempt to resume the
-device to D0 via pm_runtime_get_sync(), which calls into pci_power_up().
-Since the device is already disconnected, this resume attempt is
-unnecessary and results in a predictable errors like this, typically when
-undocking from a TBT3 or USB4 dock with PCIe tunneling:
-
-  pci 0000:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
-
-Avoid powering up disconnected devices by checking their status early in
-pci_power_up() and returning -EIO.
-
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-[bhelgaas: add typical message]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Link: https://patch.msgid.link/20250909031916.4143121-1-superm1@kernel.org
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Link: https://lore.kernel.org/20250903082757.115778-4-tommaso.merciai.xr@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/clk/renesas/rzv2h-cpg.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 0dd548e2b3676..5e5326031eb72 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1403,6 +1403,11 @@ int pci_power_up(struct pci_dev *dev)
- 		return -EIO;
- 	}
+diff --git a/drivers/clk/renesas/rzv2h-cpg.c b/drivers/clk/renesas/rzv2h-cpg.c
+index f468afbb54e2d..5dfe660d13422 100644
+--- a/drivers/clk/renesas/rzv2h-cpg.c
++++ b/drivers/clk/renesas/rzv2h-cpg.c
+@@ -864,6 +864,7 @@ static int __rzv2h_cpg_assert(struct reset_controller_dev *rcdev,
+ 	u32 mask = BIT(priv->resets[id].reset_bit);
+ 	u8 monbit = priv->resets[id].mon_bit;
+ 	u32 value = mask << 16;
++	int ret;
  
-+	if (pci_dev_is_disconnected(dev)) {
-+		dev->current_state = PCI_D3cold;
-+		return -EIO;
+ 	dev_dbg(rcdev->dev, "%s id:%ld offset:0x%x\n",
+ 		assert ? "assert" : "deassert", id, reg);
+@@ -875,9 +876,15 @@ static int __rzv2h_cpg_assert(struct reset_controller_dev *rcdev,
+ 	reg = GET_RST_MON_OFFSET(priv->resets[id].mon_index);
+ 	mask = BIT(monbit);
+ 
+-	return readl_poll_timeout_atomic(priv->base + reg, value,
+-					 assert ? (value & mask) : !(value & mask),
+-					 10, 200);
++	ret = readl_poll_timeout_atomic(priv->base + reg, value,
++					assert ? (value & mask) : !(value & mask),
++					10, 200);
++	if (ret && !assert) {
++		value = mask << 16;
++		writel(value, priv->base + GET_RST_OFFSET(priv->resets[id].reset_index));
 +	}
 +
- 	pci_read_config_word(dev, dev->pm_cap + PCI_PM_CTRL, &pmcsr);
- 	if (PCI_POSSIBLE_ERROR(pmcsr)) {
- 		pci_err(dev, "Unable to change power state from %s to D0, device inaccessible\n",
++	return ret;
+ }
+ 
+ static int rzv2h_cpg_assert(struct reset_controller_dev *rcdev,
 -- 
 2.51.0
 
