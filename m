@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF51C49F5F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B72DC49F65
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F08F03A9ED2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B33B218883D4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D86A24BBEB;
-	Tue, 11 Nov 2025 00:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333411FDA92;
+	Tue, 11 Nov 2025 00:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6g+q4uj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ko0T+DaO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F3212DDA1;
-	Tue, 11 Nov 2025 00:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46234C97;
+	Tue, 11 Nov 2025 00:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822292; cv=none; b=ZuCRlBziTz2wChXBOgz30p08FST9rep7Kbfn0XAlm1jx2cG48NZz+monZAWsaMEAFpvBVHWbkcO2sJKL3ZPcbTKGMMHTxI4B61R8SPL1nZOLGzDj6y+P2cphx+3gaDFVDhQblrJ8kAyHtpEnSl5Vx8NvDg7eHIlrJxs6MLNAWuQ=
+	t=1762822297; cv=none; b=Cq9rkXX3YoiA77jW9g2Q1ROc2YR8hqK28EJKB0jMiTEbsLQPanDpB/IaCm0iDXhazcqVjjPy3W0zk0od7TMZYL0x413EEHQj666KwwRxaNbUmkiIvcqGQWymG8UtaZe4wHTo8ueX7wuBBM29Wkis2ExuYaGyupkq21DYiVooasE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822292; c=relaxed/simple;
-	bh=3NwIJ4x0qJ4xMyM4SO79rVTTthq4p3FcAr2CabHbwRg=;
+	s=arc-20240116; t=1762822297; c=relaxed/simple;
+	bh=jiPK9FqO1ObMpe/0Jl++MIDM4ndePBhE6BjeAd+zKHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VLKOLpZvt5MVJ5aTIu5ENSHuHi6j2kFoRaH29G6cPN7obIs1P7nKo9Yq4Bkg1Dm+Ms2zDVP+I0/FQt6osZ2JRc/S6g8eHT5z9PxsVvbVxQapvhlhlC30dbPvo+qX0T46yPlUop1eXJHiiXR8tqzQY8cs0syOUApOtY44TA7FmXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6g+q4uj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6DDC4CEF5;
-	Tue, 11 Nov 2025 00:51:31 +0000 (UTC)
+	 MIME-Version; b=Ah2cULRKa3N+nDdfZLVINX+Dg+hkseUWoA+rTFA9QigGfJP4o2cJEMOQ6hD8naqKoFGV1/LF0J3yUsx4nHOHNZ6zPq4oMkF5Sb4ttjbYc/eNK6vypHDnj37UTAfBYCUiRKEYqkGkxYkj+4zDIqzvJJ72YlcjB9PAUIUz1yIedY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ko0T+DaO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FAEC4CEFB;
+	Tue, 11 Nov 2025 00:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822292;
-	bh=3NwIJ4x0qJ4xMyM4SO79rVTTthq4p3FcAr2CabHbwRg=;
+	s=korg; t=1762822296;
+	bh=jiPK9FqO1ObMpe/0Jl++MIDM4ndePBhE6BjeAd+zKHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i6g+q4ujdaZqxdN/apYTcO8oiK8cjL/SR75LCsJiYvVx7ts/CuOi+ojRSAZ+WSbBZ
-	 pzq1m9ohThYK1kYdjCMV000K0A1C148wVWcIRzsqJ25pmUOegfLbwXr/5ExsRTcU1K
-	 Wv8EGxhQD7wHisn1WkFhPsorwQRTJ1v6QRILlIQ0=
+	b=Ko0T+DaOpQQYHqfM1PnnhEtXQiDT0VvXCmHH1VPzrr903srn4VUjO+dYEmTwql1OQ
+	 hHl+LAvjYNd/VgdlH4WpBNCd3qLcwWHtMiEAeJJ3ZnOqUg0Oi5/FRNrsJZ3j2I0mTt
+	 IhabfQY8IJspTFLGMmngYd5BztwpbNeSmeofuRHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Hangbin Liu <liuhangbin@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 074/849] sfc: fix potential memory leak in efx_mae_process_mport()
-Date: Tue, 11 Nov 2025 09:34:04 +0900
-Message-ID: <20251111004538.212445283@linuxfoundation.org>
+Subject: [PATCH 6.17 075/849] tools: ynl: avoid print_field when there is no reply
+Date: Tue, 11 Nov 2025 09:34:05 +0900
+Message-ID: <20251111004538.236032988@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,48 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 46a499aaf8c27476fd05e800f3e947bfd71aa724 ]
+[ Upstream commit e3966940559d52aa1800a008dcfeec218dd31f88 ]
 
-In efx_mae_enumerate_mports(), memory allocated for mae_mport_desc is
-passed as a argument to efx_mae_process_mport(), but when the error path
-in efx_mae_process_mport() gets executed, the memory allocated for desc
-gets leaked.
+When request a none support device operation, there will be no reply.
+In this case, the len(desc) check will always be true, causing print_field
+to enter an infinite loop and crash the program. Example reproducer:
 
-Fix that by freeing the memory allocation before returning error.
+  # ethtool.py -c veth0
 
-Fixes: a6a15aca4207 ("sfc: enumerate mports in ef100")
-Acked-by: Edward Cree <ecree.xilinx@gmail.com>
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Link: https://patch.msgid.link/20251023141844.25847-1-nihaal@cse.iitm.ac.in
+To fix this, return immediately if there is no reply.
+
+Fixes: f3d07b02b2b8 ("tools: ynl: ethtool testing tool")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20251024125853.102916-1-liuhangbin@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/sfc/mae.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/net/ynl/pyynl/ethtool.py | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/sfc/mae.c b/drivers/net/ethernet/sfc/mae.c
-index 6fd0c1e9a7d54..7cfd9000f79de 100644
---- a/drivers/net/ethernet/sfc/mae.c
-+++ b/drivers/net/ethernet/sfc/mae.c
-@@ -1090,6 +1090,9 @@ void efx_mae_remove_mport(void *desc, void *arg)
- 	kfree(mport);
- }
- 
-+/*
-+ * Takes ownership of @desc, even if it returns an error
-+ */
- static int efx_mae_process_mport(struct efx_nic *efx,
- 				 struct mae_mport_desc *desc)
- {
-@@ -1100,6 +1103,7 @@ static int efx_mae_process_mport(struct efx_nic *efx,
- 	if (!IS_ERR_OR_NULL(mport)) {
- 		netif_err(efx, drv, efx->net_dev,
- 			  "mport with id %u does exist!!!\n", desc->mport_id);
-+		kfree(desc);
- 		return -EEXIST;
- 	}
+diff --git a/tools/net/ynl/pyynl/ethtool.py b/tools/net/ynl/pyynl/ethtool.py
+index cab6b576c8762..87bb561080056 100755
+--- a/tools/net/ynl/pyynl/ethtool.py
++++ b/tools/net/ynl/pyynl/ethtool.py
+@@ -45,6 +45,9 @@ def print_field(reply, *desc):
+     Pretty-print a set of fields from the reply. desc specifies the
+     fields and the optional type (bool/yn).
+     """
++    if not reply:
++        return
++
+     if len(desc) == 0:
+         return print_field(reply, *zip(reply.keys(), reply.keys()))
  
 -- 
 2.51.0
