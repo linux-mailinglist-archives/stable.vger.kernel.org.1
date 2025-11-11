@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 736DBC4A320
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B6EC4A367
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7BFFE4F028F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 63A7E4F74FE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BAD24E4A1;
-	Tue, 11 Nov 2025 01:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867A5248883;
+	Tue, 11 Nov 2025 01:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdI8rn8f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EozZAXqu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33502E403;
-	Tue, 11 Nov 2025 01:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25938246768;
+	Tue, 11 Nov 2025 01:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822903; cv=none; b=f4I9hBwJyYr+7EB6x8J06b/UNvHAwQnnT57EtghqFSlRAWw0L1oDa8gpWzfYEiZPOHb8IxMSQ/wQzjr7+h0+M4KYHFcKLffg1iIsDSg/Hot+ydanmlrbViH2Bb+1YsI3rWIYQ3rhU+4imLTrZnBZxufzyU8YVKO+Aw2AMMldeIw=
+	t=1762822925; cv=none; b=R+oV7+1z6zym42zj8ptdS6V39ZJ77qc1QdEu20qOkFF9YPSFWJ02v4s1iUj94KdJuNcfKX2outA1YjW7uT41Ki17X7PtsNfYBEt1akbyu9Hfv7O79iiYOI7tnhUi5B1zh/sNqdQKETC4RjJ99zvCH325KKI0VGpNXgYw9O3m7gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822903; c=relaxed/simple;
-	bh=Znj7EszgYmZTE58lJHhQXoQCkfxRw3LYIjGZGnkCPdg=;
+	s=arc-20240116; t=1762822925; c=relaxed/simple;
+	bh=a1yQ/8wB9wEK2yLMCcYVh54qOI9nrRndxsUs8DpCSiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccpLWgFdLhWkzb126ZMj0w+FhN4cuzSvpqba4HXuKYe+cP0olO6YqTD2RD/+2n0PuteIRy+ZCVvw+GPEUb4E01xVCC5ourUlyyWOcm2VjSRrkkZC2XxQ+aiqbW1WEAA0ZQdxo9wTGj38Idhixy2ukzqQw7IVvJ5XlVR9zQKapr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdI8rn8f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425B0C116B1;
-	Tue, 11 Nov 2025 01:01:43 +0000 (UTC)
+	 MIME-Version; b=fhU34ovxEcCsMS7SLwp5V+ohj7PGGPdLueXltiQVxZF0t9CwKAWb1luBegY+hNPDJwXN2REXuaKTPp9JYc6jZ0AvH55SaLvJdDD7jdGLaYzUZ9dOYaZwj0XzfRBE4rEe6MC0xrXbvyOFG1kFUSXPc1jkhbGmcGD5/fJIbD3DWk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EozZAXqu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65782C16AAE;
+	Tue, 11 Nov 2025 01:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822903;
-	bh=Znj7EszgYmZTE58lJHhQXoQCkfxRw3LYIjGZGnkCPdg=;
+	s=korg; t=1762822924;
+	bh=a1yQ/8wB9wEK2yLMCcYVh54qOI9nrRndxsUs8DpCSiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YdI8rn8fEe1Dt7WE5lnkxqvtRqM/aF1IjxALbGJq3wx6SHIO1eLQ8zE0VAX9YHDfl
-	 LG2IvUBJ2uue//9Pir3DFZDYJV2je8WCZWQ8XDXwhvcHyLMx00zRmF0XUs2me2yLs3
-	 TghMmztlTaZek4aUj7ggUMynn+/nxDJPyNLkzC/A=
+	b=EozZAXquMqOoyKZot5HjRmUOu1TKFyxIAxT9DGZDSyjxFDUImG0iRoOmsFPCzHl3d
+	 92ulqgI+NyTJmf8xdvId8cQIp00bdtIl+H09p4u7CD25VYOLMQdzkFwrnQgvR2ayyT
+	 kBBszPjGz4BrR+M35FCQZfdlMJELp8B5OhYLHc38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Stellard <tstellar@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
+	Uday Shankar <ushankar@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 193/849] bpftool: Fix -Wuninitialized-const-pointer warnings with clang >= 21
-Date: Tue, 11 Nov 2025 09:36:03 +0900
-Message-ID: <20251111004541.109201805@linuxfoundation.org>
+Subject: [PATCH 6.17 197/849] selftests: ublk: fix behavior when fio is not installed
+Date: Tue, 11 Nov 2025 09:36:07 +0900
+Message-ID: <20251111004541.202241635@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,59 +67,129 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tom Stellard <tstellar@redhat.com>
+From: Uday Shankar <ushankar@purestorage.com>
 
-[ Upstream commit 5612ea8b554375d45c14cbb0f8ea93ec5d172891 ]
+[ Upstream commit a3835a44107fcbf05f183b5e8b60a8e4605b15ea ]
 
-This fixes the build with -Werror -Wall.
+Some ublk selftests have strange behavior when fio is not installed.
+While most tests behave correctly (run if they don't need fio, or skip
+if they need fio), the following tests have different behavior:
 
-btf_dumper.c:71:31: error: variable 'finfo' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-   71 |         info.func_info = ptr_to_u64(&finfo);
-      |                                      ^~~~~
+- test_null_01, test_null_02, test_generic_01, test_generic_02, and
+  test_generic_12 try to run fio without checking if it exists first,
+  and fail on any failure of the fio command (including "fio command
+  not found"). So these tests fail when they should skip.
+- test_stress_05 runs fio without checking if it exists first, but
+  doesn't fail on fio command failure. This test passes, but that pass
+  is misleading as the test doesn't do anything useful without fio
+  installed. So this test passes when it should skip.
 
-prog.c:2294:31: error: variable 'func_info' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
- 2294 |         info.func_info = ptr_to_u64(&func_info);
-      |
+Fix these issues by adding _have_program fio checks to the top of all of
+these tests.
 
-v2:
-  - Initialize instead of using memset.
-
-Signed-off-by: Tom Stellard <tstellar@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20250917183847.318163-1-tstellar@redhat.com
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/btf_dumper.c | 2 +-
- tools/bpf/bpftool/prog.c       | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/ublk/test_generic_01.sh | 4 ++++
+ tools/testing/selftests/ublk/test_generic_02.sh | 4 ++++
+ tools/testing/selftests/ublk/test_generic_12.sh | 4 ++++
+ tools/testing/selftests/ublk/test_null_01.sh    | 4 ++++
+ tools/testing/selftests/ublk/test_null_02.sh    | 4 ++++
+ tools/testing/selftests/ublk/test_stress_05.sh  | 4 ++++
+ 6 files changed, 24 insertions(+)
 
-diff --git a/tools/bpf/bpftool/btf_dumper.c b/tools/bpf/bpftool/btf_dumper.c
-index 4e896d8a2416e..ff12628593aec 100644
---- a/tools/bpf/bpftool/btf_dumper.c
-+++ b/tools/bpf/bpftool/btf_dumper.c
-@@ -38,7 +38,7 @@ static int dump_prog_id_as_func_ptr(const struct btf_dumper *d,
- 	__u32 info_len = sizeof(info);
- 	const char *prog_name = NULL;
- 	struct btf *prog_btf = NULL;
--	struct bpf_func_info finfo;
-+	struct bpf_func_info finfo = {};
- 	__u32 finfo_rec_size;
- 	char prog_str[1024];
- 	int err;
-diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
-index 9722d841abc05..a89629a9932b5 100644
---- a/tools/bpf/bpftool/prog.c
-+++ b/tools/bpf/bpftool/prog.c
-@@ -2262,7 +2262,7 @@ static void profile_print_readings(void)
+diff --git a/tools/testing/selftests/ublk/test_generic_01.sh b/tools/testing/selftests/ublk/test_generic_01.sh
+index 9227a208ba531..21a31cd5491aa 100755
+--- a/tools/testing/selftests/ublk/test_generic_01.sh
++++ b/tools/testing/selftests/ublk/test_generic_01.sh
+@@ -10,6 +10,10 @@ if ! _have_program bpftrace; then
+ 	exit "$UBLK_SKIP_CODE"
+ fi
  
- static char *profile_target_name(int tgt_fd)
++if ! _have_program fio; then
++	exit "$UBLK_SKIP_CODE"
++fi
++
+ _prep_test "null" "sequential io order"
+ 
+ dev_id=$(_add_ublk_dev -t null)
+diff --git a/tools/testing/selftests/ublk/test_generic_02.sh b/tools/testing/selftests/ublk/test_generic_02.sh
+index 3e80121e3bf5e..12920768b1a08 100755
+--- a/tools/testing/selftests/ublk/test_generic_02.sh
++++ b/tools/testing/selftests/ublk/test_generic_02.sh
+@@ -10,6 +10,10 @@ if ! _have_program bpftrace; then
+ 	exit "$UBLK_SKIP_CODE"
+ fi
+ 
++if ! _have_program fio; then
++	exit "$UBLK_SKIP_CODE"
++fi
++
+ _prep_test "null" "sequential io order for MQ"
+ 
+ dev_id=$(_add_ublk_dev -t null -q 2)
+diff --git a/tools/testing/selftests/ublk/test_generic_12.sh b/tools/testing/selftests/ublk/test_generic_12.sh
+index 7abbb00d251df..b4046201b4d99 100755
+--- a/tools/testing/selftests/ublk/test_generic_12.sh
++++ b/tools/testing/selftests/ublk/test_generic_12.sh
+@@ -10,6 +10,10 @@ if ! _have_program bpftrace; then
+ 	exit "$UBLK_SKIP_CODE"
+ fi
+ 
++if ! _have_program fio; then
++	exit "$UBLK_SKIP_CODE"
++fi
++
+ _prep_test "null" "do imbalanced load, it should be balanced over I/O threads"
+ 
+ NTHREADS=6
+diff --git a/tools/testing/selftests/ublk/test_null_01.sh b/tools/testing/selftests/ublk/test_null_01.sh
+index a34203f726685..c2cb8f7a09fe3 100755
+--- a/tools/testing/selftests/ublk/test_null_01.sh
++++ b/tools/testing/selftests/ublk/test_null_01.sh
+@@ -6,6 +6,10 @@
+ TID="null_01"
+ ERR_CODE=0
+ 
++if ! _have_program fio; then
++	exit "$UBLK_SKIP_CODE"
++fi
++
+ _prep_test "null" "basic IO test"
+ 
+ dev_id=$(_add_ublk_dev -t null)
+diff --git a/tools/testing/selftests/ublk/test_null_02.sh b/tools/testing/selftests/ublk/test_null_02.sh
+index 5633ca8766554..8accd35beb55c 100755
+--- a/tools/testing/selftests/ublk/test_null_02.sh
++++ b/tools/testing/selftests/ublk/test_null_02.sh
+@@ -6,6 +6,10 @@
+ TID="null_02"
+ ERR_CODE=0
+ 
++if ! _have_program fio; then
++	exit "$UBLK_SKIP_CODE"
++fi
++
+ _prep_test "null" "basic IO test with zero copy"
+ 
+ dev_id=$(_add_ublk_dev -t null -z)
+diff --git a/tools/testing/selftests/ublk/test_stress_05.sh b/tools/testing/selftests/ublk/test_stress_05.sh
+index 566cfd90d192c..274295061042e 100755
+--- a/tools/testing/selftests/ublk/test_stress_05.sh
++++ b/tools/testing/selftests/ublk/test_stress_05.sh
+@@ -5,6 +5,10 @@
+ TID="stress_05"
+ ERR_CODE=0
+ 
++if ! _have_program fio; then
++	exit "$UBLK_SKIP_CODE"
++fi
++
+ run_io_and_remove()
  {
--	struct bpf_func_info func_info;
-+	struct bpf_func_info func_info = {};
- 	struct bpf_prog_info info = {};
- 	__u32 info_len = sizeof(info);
- 	const struct btf_type *t;
+ 	local size=$1
 -- 
 2.51.0
 
