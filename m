@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-193832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4664BC4A9EE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F9AC4A3E8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 00C134F8DAF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 796984F2E97
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A207344041;
-	Tue, 11 Nov 2025 01:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA8624E4A1;
+	Tue, 11 Nov 2025 01:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c14OQ/rt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtGAfn7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A12343D86;
-	Tue, 11 Nov 2025 01:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2562E1F5F6;
+	Tue, 11 Nov 2025 01:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824113; cv=none; b=HJIMDpPHgVsBP32cORc115nehbD4kGxY7/Yrd9O3yy0LO19WjZHRlXwIjHpKF0NCEE4nxOG0gbTbQY0cMbWW38O39mZaujtxLpU2ekFM7L6BDx67V9OhkTYfG45/PjEsHc1JTH9/+MC5WVJWI0mNPvA6UOQ7cuPk4RbR389eKm8=
+	t=1762823005; cv=none; b=eRKf30irIzX0GUdP4CsnrpAG5HeF+ytWbkDXIeIFyJBQrxx3ePDgm9ufZGYMTOgL9NQPTXB9781dkL6UBv3fy87vQj9VIjQoIQg23eO9xR1z6hbCf0ZKJf9gV4iamlrEYgQqjs/42j5vzG5PczEuCkJiH7HLphJ6KX7cOVSCnGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824113; c=relaxed/simple;
-	bh=trVAscobxmPU6ggE3jlUszyWHBCHyWSRdJHezX+CGyE=;
+	s=arc-20240116; t=1762823005; c=relaxed/simple;
+	bh=YvXiwM6FGBqPPbW/RQ3Bouz2gzRL9AU5xqbMu7SeSOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jNbuy0uLfrrxi+2aoe+4EBuFGqHdTkgg4KmUiSWg42UnqsGsNq9hIrIu/afxyZ3EY9GqNFNh6uOcMjbbOYRsDuKHWQ4nF/pSeATGL3I8RumICcdIlMWng/Iy2uoEP2K6s+FfrgFxUXovPg/NAvAf7/b3zCJWgPAbvRWabvKWlMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c14OQ/rt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7608CC116D0;
-	Tue, 11 Nov 2025 01:21:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VXtkH1lhz/o2c5/1mYG2FB4a9I2ukGH9y6NBPuVsZvJ80z+ZAz2nbpxRs862F2ZFDrdnPyjUP5vq66kMTO86rMnFbyVJElKzxyJ55z+ooeewJPVq9A7g6Is8oBOvrznHoE+vOMvWVigQfsPoDm4/7U/+82P9Z6iIDoGTqN2oNUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtGAfn7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2613FC2BC87;
+	Tue, 11 Nov 2025 01:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824113;
-	bh=trVAscobxmPU6ggE3jlUszyWHBCHyWSRdJHezX+CGyE=;
+	s=korg; t=1762823004;
+	bh=YvXiwM6FGBqPPbW/RQ3Bouz2gzRL9AU5xqbMu7SeSOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c14OQ/rtrS0zZQ2+ijoGceO03SulPRFwNtDmL6t0NwSQIu/xMKqZObpFiTs6GmV08
-	 pWVzyoL19MUkhsbovnFIh2tauun+x3WPkBu9jPug7W0/hwALMxywSCVDR7r4A5MZxL
-	 J56K1RHXbCprDX7TZoMnwbc9YHuohK/E8kIAqv5k=
+	b=jtGAfn7HWzG5yxrm90q2VzbFKMZKuZ0huefjvwwf82/XZ1ESNyVYWBdhrMUQDUV1d
+	 kL2xeoiyj1nlHiGeYKe3bT5jt0+SDGJ9A2mkzy1XwATGPeKWHmIgB1VWZMT1YT/7EB
+	 a3+Gc7pKUGH6YHPh8dTKiSsFo5z5T9P+VmeaScqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Markus Stockhausen <markus.stockhausen@gmx.de>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Stephen Howell <howels@allthatwemight.be>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 439/849] platform/x86/intel-uncore-freq: Present unique domain ID per package
+Subject: [PATCH 6.12 153/565] clocksource/drivers/timer-rtl-otto: Do not interfere with interrupts
 Date: Tue, 11 Nov 2025 09:40:09 +0900
-Message-ID: <20251111004547.045818492@linuxfoundation.org>
+Message-ID: <20251111004530.381195347@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,144 +65,69 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Markus Stockhausen <markus.stockhausen@gmx.de>
 
-[ Upstream commit a191224186ec16a4cb1775b2a647ea91f5c139e1 ]
+[ Upstream commit c445bffbf28f721e05d0ce06895045fc62aaff7c ]
 
-In partitioned systems, the domain ID is unique in the partition and a
-package can have multiple partitions.
+During normal operation the timers are reprogrammed including an
+interrupt acknowledgement. This has no effect as the whole timer
+is setup from scratch afterwards. Especially in an interrupt this
+has already been done by rttm_timer_interrupt().
 
-Some user-space tools, such as turbostat, assume the domain ID is unique
-per package. These tools map CPU power domains, which are unique to a
-package. However, this approach does not work in partitioned systems.
+Change the behaviour as follows:
 
-There is no architectural definition of "partition" to present to user
-space.
+- Use rttm_disable_timer() during reprogramming
+- Keep rttm_stop_timer() for all other use cases.
 
-To support these tools, set the domain_id to be unique per package. For
-compute die IDs, uniqueness can be achieved using the platform info
-cdie_mask, mirroring the behavior observed in non-partitioned systems.
+Downstream has already tested and confirmed a patch. See
+https://github.com/openwrt/openwrt/pull/19468
+https://forum.openwrt.org/t/support-for-rtl838x-based-managed-switches/57875/3788
 
-For IO dies, which lack a direct CPU relationship, any unique logical
-ID can be assigned. Here domain IDs for IO dies are configured after all
-compute domain IDs. During the probe, keep the index of the next IO
-domain ID after the last IO domain ID of the current partition. Since
-CPU packages are symmetric, partition information is same for all
-packages.
-
-The Intel Speed Select driver has already implemented a similar change
-to make the domain ID unique, with compute dies listed first, followed
-by I/O dies.
-
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://lore.kernel.org/r/20250903191154.1081159-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Tested-by: Stephen Howell <howels@allthatwemight.be>
+Tested-by: Bjørn Mork <bjorn@mork.no>
+Link: https://lore.kernel.org/r/20250804080328.2609287-4-markus.stockhausen@gmx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../uncore-frequency/uncore-frequency-tpmi.c  | 74 ++++++++++++++++++-
- 1 file changed, 73 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-rtl-otto.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-index 3e531fd1c6297..1237d95708865 100644
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-@@ -374,6 +374,77 @@ static void uncore_set_agent_type(struct tpmi_uncore_cluster_info *cluster_info)
- 	cluster_info->uncore_data.agent_type_mask = FIELD_GET(UNCORE_AGENT_TYPES, status);
- }
+diff --git a/drivers/clocksource/timer-rtl-otto.c b/drivers/clocksource/timer-rtl-otto.c
+index 8be45a11fb8b6..24c4aa6a30131 100644
+--- a/drivers/clocksource/timer-rtl-otto.c
++++ b/drivers/clocksource/timer-rtl-otto.c
+@@ -147,7 +147,7 @@ static int rttm_next_event(unsigned long delta, struct clock_event_device *clkev
  
-+#define MAX_PARTITIONS	2
-+
-+/* IO domain ID start index for a partition */
-+static u8 io_die_start[MAX_PARTITIONS];
-+
-+/* Next IO domain ID index after the current partition IO die IDs */
-+static u8 io_die_index_next;
-+
-+/* Lock to protect io_die_start, io_die_index_next */
-+static DEFINE_MUTEX(domain_lock);
-+
-+static void set_domain_id(int id,  int num_resources,
-+			  struct oobmsm_plat_info *plat_info,
-+			  struct tpmi_uncore_cluster_info *cluster_info)
-+{
-+	u8 part_io_index, cdie_range, pkg_io_index, max_dies;
-+
-+	if (plat_info->partition >= MAX_PARTITIONS) {
-+		cluster_info->uncore_data.domain_id = id;
-+		return;
-+	}
-+
-+	if (cluster_info->uncore_data.agent_type_mask & AGENT_TYPE_CORE) {
-+		cluster_info->uncore_data.domain_id = cluster_info->cdie_id;
-+		return;
-+	}
-+
-+	/* Unlikely but cdie_mask may have holes, so take range */
-+	cdie_range = fls(plat_info->cdie_mask) - ffs(plat_info->cdie_mask) + 1;
-+	max_dies = topology_max_dies_per_package();
-+
-+	/*
-+	 * If the CPU doesn't enumerate dies, then use current cdie range
-+	 * as the max.
-+	 */
-+	if (cdie_range > max_dies)
-+		max_dies = cdie_range;
-+
-+	guard(mutex)(&domain_lock);
-+
-+	if (!io_die_index_next)
-+		io_die_index_next = max_dies;
-+
-+	if (!io_die_start[plat_info->partition]) {
-+		io_die_start[plat_info->partition] = io_die_index_next;
-+		/*
-+		 * number of IO dies = num_resources - cdie_range. Hence
-+		 * next partition io_die_index_next is set after IO dies
-+		 * in the current partition.
-+		 */
-+		io_die_index_next += (num_resources - cdie_range);
-+	}
-+
-+	/*
-+	 * Index from IO die start within the partition:
-+	 * This is the first valid domain after the cdies.
-+	 * For example the current resource index 5 and cdies end at
-+	 * index 3 (cdie_cnt = 4). Then the IO only index 5 - 4 = 1.
-+	 */
-+	part_io_index = id - cdie_range;
-+
-+	/*
-+	 * Add to the IO die start index for this partition in this package
-+	 * to make unique in the package.
-+	 */
-+	pkg_io_index = io_die_start[plat_info->partition] + part_io_index;
-+
-+	/* Assign this to domain ID */
-+	cluster_info->uncore_data.domain_id = pkg_io_index;
-+}
-+
- /* Callback for sysfs read for TPMI uncore values. Called under mutex locks. */
- static int uncore_read(struct uncore_data *data, unsigned int *value, enum uncore_index index)
- {
-@@ -610,11 +681,12 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
- 			cluster_info->uncore_data.package_id = pkg;
- 			/* There are no dies like Cascade Lake */
- 			cluster_info->uncore_data.die_id = 0;
--			cluster_info->uncore_data.domain_id = i;
- 			cluster_info->uncore_data.cluster_id = j;
+ 	RTTM_DEBUG(to->of_base.base);
+ 	rttm_bounce_timer(to->of_base.base, RTTM_CTRL_COUNTER);
+-	rttm_stop_timer(to->of_base.base);
++	rttm_disable_timer(to->of_base.base);
+ 	rttm_set_period(to->of_base.base, delta);
+ 	rttm_start_timer(to, RTTM_CTRL_COUNTER);
  
- 			set_cdie_id(i, cluster_info, plat_info);
+@@ -160,7 +160,7 @@ static int rttm_state_oneshot(struct clock_event_device *clkevt)
  
-+			set_domain_id(i, num_resources, plat_info, cluster_info);
-+
- 			cluster_info->uncore_root = tpmi_uncore;
+ 	RTTM_DEBUG(to->of_base.base);
+ 	rttm_bounce_timer(to->of_base.base, RTTM_CTRL_COUNTER);
+-	rttm_stop_timer(to->of_base.base);
++	rttm_disable_timer(to->of_base.base);
+ 	rttm_set_period(to->of_base.base, RTTM_TICKS_PER_SEC / HZ);
+ 	rttm_start_timer(to, RTTM_CTRL_COUNTER);
  
- 			if (TPMI_MINOR_VERSION(pd_info->ufs_header_ver) >= UNCORE_ELC_SUPPORTED_VERSION)
+@@ -173,7 +173,7 @@ static int rttm_state_periodic(struct clock_event_device *clkevt)
+ 
+ 	RTTM_DEBUG(to->of_base.base);
+ 	rttm_bounce_timer(to->of_base.base, RTTM_CTRL_TIMER);
+-	rttm_stop_timer(to->of_base.base);
++	rttm_disable_timer(to->of_base.base);
+ 	rttm_set_period(to->of_base.base, RTTM_TICKS_PER_SEC / HZ);
+ 	rttm_start_timer(to, RTTM_CTRL_TIMER);
+ 
 -- 
 2.51.0
 
