@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-194394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283F9C4B23E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:02:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B01CFC4AE36
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEBB63BB8F6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 406AB3B52ED
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93E627FD4A;
-	Tue, 11 Nov 2025 01:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC06D30748A;
+	Tue, 11 Nov 2025 01:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpLtyPUb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHXk6kC+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A64274FCB;
-	Tue, 11 Nov 2025 01:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88337306B39;
+	Tue, 11 Nov 2025 01:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825501; cv=none; b=radoWJugmtDmRGwH8Zmi2rT+9G0VOnVNzsxDUm5vMSAZg0o7fLMKdLGpU4Zu8Jjk2lr7Rontg+Gx4Rz+Ts9MnuIl7aHiQimJvRvAmMT+BSjmC7Y2TISouLxP9td7PhqrKjSYWDWa9EwVf74poJzT6QrKvOKTB0B9GF6AmvMMT2w=
+	t=1762824881; cv=none; b=hdXaMAqfLgf5UjdbBhIyIyD2UezV7oBe10VHRIrXfpFC7maPScBmrodiidHrEaspfbD6QcmnegbdrBIjY6F9CxZdnBXq8TZmHGUpgQHym4OO771gcX1fFcb3Ru7Bci6drLEJDZfeSM0nv+gPQKZb6dSwgtvtxxo/N0oxbmISGFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825501; c=relaxed/simple;
-	bh=Ri6tvG/VZMAeofa+l4ZSjujsuY4so77EqLkzEiKJ4N8=;
+	s=arc-20240116; t=1762824881; c=relaxed/simple;
+	bh=WTIBi5wHNJs8AxMSur0hmlnYpcJdJDU3Gaw4WwfTsq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOxYZCn1GsRBP8Qy3itwWUaBUie8M6fbFatgzQHFsRCU6jetBtcZlaQ/HeX09f+nZbIgJgSF82LQBNq/iDwkDoTbQBgO43pmc8Pu6D9FhBDQQbnb7qYo6FhWnxmzooqahy+JAUTC9k+V5nPt2ruU0wyf5LG26x57tz7x8/u053M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpLtyPUb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0681CC116D0;
-	Tue, 11 Nov 2025 01:45:00 +0000 (UTC)
+	 MIME-Version; b=F+OoYDln+9x5qLbR+tdF2iv782imLhS4KTyXI5H9kxWu0TICwfpSs+nMgiJ+M4bQUllPEi6+Ttn6b1mIwm887fNJ9cDMzU/qejlwSrgMsyzi4rSq1Ppe8AYvcOv9+qYBue1szlburh706Tz4IRxHve89y3oxy2NAH3BkOvzXSf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHXk6kC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3A2C2BC87;
+	Tue, 11 Nov 2025 01:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825501;
-	bh=Ri6tvG/VZMAeofa+l4ZSjujsuY4so77EqLkzEiKJ4N8=;
+	s=korg; t=1762824881;
+	bh=WTIBi5wHNJs8AxMSur0hmlnYpcJdJDU3Gaw4WwfTsq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SpLtyPUbuXH+IjsCt+BZHQPpBwVRY7eoCfRI14Dpwj8mFdaCKLye+CFGCdK+PzxFv
-	 N7pu9dCkzQbK80nSVsBjdzGfbZpXhp7ihRuapOSTZfQwOPNTu+n6PS2Bgsk5h8N5vA
-	 LPP8tkp+uh0GWlRZZVRvjoVDKaJaGrfGHggZmQlo=
+	b=sHXk6kC+aYq+opdbSdT7kAXr33NhuB+Z2epFokZeD95+4C8rjkVBdxsbpX+dlolHe
+	 +No2ZQpM+KdSDMf9UJ1hGPnieZYJW3Ri99CSZPOf9zWPUo3FDXdpC1/Snof0jp7Uat
+	 33rfT6E6UW/VnROXrroiYG4j5Ef0+PZ8s2ih5eyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Lei Yang <leiyang@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 829/849] virtio_net: fix alignment for virtio_net_hdr_v1_hash
+	Fangzhi Zuo <jerry.zuo@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>
+Subject: [PATCH 6.12 543/565] drm/amd/display: Enable mst when its detected but yet to be initialized
 Date: Tue, 11 Nov 2025 09:46:39 +0900
-Message-ID: <20251111004556.471388200@linuxfoundation.org>
+Message-ID: <20251111004539.203270951@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-commit c3838262b824c71c145cd3668722e99a69bc9cd9 upstream.
+commit 3c6a743c6961cc2cab453b343bb157d6bbbf8120 upstream.
 
-Changing alignment of header would mean it's no longer safe to cast a
-2 byte aligned pointer between formats. Use two 16 bit fields to make
-it 2 byte aligned as previously.
+[Why]
+drm_dp_mst_topology_queue_probe() is used under the assumption that
+mst is already initialized. If we connect system with SST first
+then switch to the mst branch during suspend, we will fail probing
+topology by calling the wrong API since the mst manager is yet to
+be initialized.
 
-This fixes the performance regression since
-commit ("virtio_net: enable gso over UDP tunnel support.") as it uses
-virtio_net_hdr_v1_hash_tunnel which embeds
-virtio_net_hdr_v1_hash. Pktgen in guest + XDP_DROP on TAP + vhost_net
-shows the TX PPS is recovered from 2.4Mpps to 4.45Mpps.
+[How]
+At dm_resume(), once it's detected as mst branc connected, check if
+the mst is initialized already. If not, call
+dm_helpers_dp_mst_start_top_mgr() instead to initialize mst
 
-Fixes: 56a06bd40fab ("virtio_net: enable gso over UDP tunnel support.")
+V2: Adjust the commit msg a bit
+
+Fixes: bc068194f548 ("drm/amd/display: Don't write DP_MSTM_CTRL after LT")
+Cc: Fangzhi Zuo <jerry.zuo@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 62320fb8d91a0bddc44a228203cfa9bfbb5395bd)
 Cc: stable@vger.kernel.org
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
-Link: https://patch.msgid.link/20251031060551.126-1-jasowang@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c        |   15 +++++++++++++--
- include/linux/virtio_net.h      |    3 ++-
- include/uapi/linux/virtio_net.h |    3 ++-
- 3 files changed, 17 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -2539,6 +2539,13 @@ err_buf:
- 	return NULL;
- }
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3424,6 +3424,7 @@ static int dm_resume(void *handle)
+ 	/* Do mst topology probing after resuming cached state*/
+ 	drm_connector_list_iter_begin(ddev, &iter);
+ 	drm_for_each_connector_iter(connector, &iter) {
++		bool init = false;
  
-+static inline u32
-+virtio_net_hash_value(const struct virtio_net_hdr_v1_hash *hdr_hash)
-+{
-+	return __le16_to_cpu(hdr_hash->hash_value_lo) |
-+		(__le16_to_cpu(hdr_hash->hash_value_hi) << 16);
-+}
-+
- static void virtio_skb_set_hash(const struct virtio_net_hdr_v1_hash *hdr_hash,
- 				struct sk_buff *skb)
- {
-@@ -2565,7 +2572,7 @@ static void virtio_skb_set_hash(const st
- 	default:
- 		rss_hash_type = PKT_HASH_TYPE_NONE;
+ 		if (connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
+ 			continue;
+@@ -3433,7 +3434,14 @@ static int dm_resume(void *handle)
+ 		    aconnector->mst_root)
+ 			continue;
+ 
+-		drm_dp_mst_topology_queue_probe(&aconnector->mst_mgr);
++		scoped_guard(mutex, &aconnector->mst_mgr.lock) {
++			init = !aconnector->mst_mgr.mst_primary;
++		}
++		if (init)
++			dm_helpers_dp_mst_start_top_mgr(aconnector->dc_link->ctx,
++				aconnector->dc_link, false);
++		else
++			drm_dp_mst_topology_queue_probe(&aconnector->mst_mgr);
  	}
--	skb_set_hash(skb, __le32_to_cpu(hdr_hash->hash_value), rss_hash_type);
-+	skb_set_hash(skb, virtio_net_hash_value(hdr_hash), rss_hash_type);
- }
+ 	drm_connector_list_iter_end(&iter);
  
- static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *rq,
-@@ -3311,6 +3318,10 @@ static int xmit_skb(struct send_queue *s
- 
- 	pr_debug("%s: xmit %p %pM\n", vi->dev->name, skb, dest);
- 
-+	/* Make sure it's safe to cast between formats */
-+	BUILD_BUG_ON(__alignof__(*hdr) != __alignof__(hdr->hash_hdr));
-+	BUILD_BUG_ON(__alignof__(*hdr) != __alignof__(hdr->hash_hdr.hdr));
-+
- 	can_push = vi->any_header_sg &&
- 		!((unsigned long)skb->data & (__alignof__(*hdr) - 1)) &&
- 		!skb_header_cloned(skb) && skb_headroom(skb) >= hdr_len;
-@@ -6759,7 +6770,7 @@ static int virtnet_xdp_rx_hash(const str
- 		hash_report = VIRTIO_NET_HASH_REPORT_NONE;
- 
- 	*rss_type = virtnet_xdp_rss_type[hash_report];
--	*hash = __le32_to_cpu(hdr_hash->hash_value);
-+	*hash = virtio_net_hash_value(hdr_hash);
- 	return 0;
- }
- 
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -401,7 +401,8 @@ virtio_net_hdr_tnl_from_skb(const struct
- 	if (!tnl_hdr_negotiated)
- 		return -EINVAL;
- 
--        vhdr->hash_hdr.hash_value = 0;
-+	vhdr->hash_hdr.hash_value_lo = 0;
-+	vhdr->hash_hdr.hash_value_hi = 0;
-         vhdr->hash_hdr.hash_report = 0;
-         vhdr->hash_hdr.padding = 0;
- 
---- a/include/uapi/linux/virtio_net.h
-+++ b/include/uapi/linux/virtio_net.h
-@@ -193,7 +193,8 @@ struct virtio_net_hdr_v1 {
- 
- struct virtio_net_hdr_v1_hash {
- 	struct virtio_net_hdr_v1 hdr;
--	__le32 hash_value;
-+	__le16 hash_value_lo;
-+	__le16 hash_value_hi;
- #define VIRTIO_NET_HASH_REPORT_NONE            0
- #define VIRTIO_NET_HASH_REPORT_IPv4            1
- #define VIRTIO_NET_HASH_REPORT_TCPv4           2
 
 
 
