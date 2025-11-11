@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-194218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007D1C4AFB8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:38 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF413C4A8DB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 355983BC5D0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:43:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 331FF4F5B30
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C522F12DA;
-	Tue, 11 Nov 2025 01:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385DD33C502;
+	Tue, 11 Nov 2025 01:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLdPYc7+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sgx64h1X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C453A944;
-	Tue, 11 Nov 2025 01:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83FD33BBB5;
+	Tue, 11 Nov 2025 01:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825082; cv=none; b=tIZBnLFWmjEyiQSSpPMPz80gDdwseCVG42YAK1kiimfHOjayc9YakYdr2kHF7hHT/r1JVkgNDktS1VUSQvONXWoYsdEHejMw4qlSi0Ekvxzu03qtXJSOJgZ1zWhCot7lhP50t85QZUKuSASeKkcvmBLpnsSq//8fnqIQDSnE8aQ=
+	t=1762823994; cv=none; b=CObQjhmtoxq/H47vxyyOMmRnLXFXrzP9/nDb47G4Nb2WxX7u7sE/HFrpN5/0z38M2MyxTqhHwaRyqH7F9rhHng9J6xC0iakMrXTiS26LPmGt1QQJmOnOmk1XeXqh6aocjD+xeEPNMrTA2qRrAvhFw9js/kJaX2e4ntHKBnNlTLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825082; c=relaxed/simple;
-	bh=zxyHmcDBRZgH0Fw5AjXxp9qO/a2WfUjjyI1LDmAwDQI=;
+	s=arc-20240116; t=1762823994; c=relaxed/simple;
+	bh=impuB4VsbVZc5F4fTxb98yfOuPv2YaB0svr08r8AKss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bn7j9V1tsSJEpbAOQVXTFHEbMHZ+hHm8jQphJrP58s1YiwQYwLQ5CYBgH56Aef1DSPP9As3Dw9NZKsDRklFMaUNYjlXJ0ZOg4XiRqsBQjtkjE1H8zmowsDCOckgzz8izA1nnLQtLJHOo5MZNbfrBqfJribnD0/VDBb57AJUvxis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLdPYc7+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387A3C16AAE;
-	Tue, 11 Nov 2025 01:38:02 +0000 (UTC)
+	 MIME-Version; b=ezjSWwlpCjF67y9y9vCLL4Ki3wIiXqITYHOYl6WEgzQFIjb4FSuKHY8kuZ2mNwWLmJWMSJ/k6KmgeaEgLbEjW2hYuLufw64yUpXyFmCoDniNqaehjnZIMt73Hkt675LvreSuyE5rf+A2Y769V6KecLInlXZLKTpVDlxpuPrgBc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sgx64h1X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D41C16AAE;
+	Tue, 11 Nov 2025 01:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825082;
-	bh=zxyHmcDBRZgH0Fw5AjXxp9qO/a2WfUjjyI1LDmAwDQI=;
+	s=korg; t=1762823993;
+	bh=impuB4VsbVZc5F4fTxb98yfOuPv2YaB0svr08r8AKss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bLdPYc7+m1oO3VHsu68G0GY0vzrLR1BADwlf0Eeexdr21EUB9JF6JwjPU2pQpBgqJ
-	 fLnA001DLNTlbDmZecTzUgzJVe5KsMJcupaeBUGEVMhzjkisz8+auQsf5bS2V59mix
-	 TIsiYyrcSPJZ+fYUcbonD1rzgDz+s+Bl5SwYngGk=
+	b=Sgx64h1XgXbcPAEnamb4DX0UUpNayAs90J26rNsOg1bDFVH2hKRMb8oNXV1c7JbOf
+	 hJsLgsyvDMXQZUHNd3tEXPaLAxP2MF8ubzkEm4GL3vezFMTbMAZ159PpInhmt3adUL
+	 wIE6Dd64r7duGMqsGjH8oWsH4ZT+4byiQr+6upV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atish Patra <atishp@rivosinc.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sunil V L <sunilvl@ventanamicro.com>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 652/849] ACPI: scan: Update honor list for RPMI System MSI
-Date: Tue, 11 Nov 2025 09:43:42 +0900
-Message-ID: <20251111004552.191296596@linuxfoundation.org>
+Subject: [PATCH 6.12 367/565] page_pool: always add GFP_NOWARN for ATOMIC allocations
+Date: Tue, 11 Nov 2025 09:43:43 +0900
+Message-ID: <20251111004535.124058205@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,47 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sunil V L <sunilvl@ventanamicro.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 4215d1cf59e4b272755f4277a05cd5967935a704 ]
+[ Upstream commit f3b52167a0cb23b27414452fbc1278da2ee884fc ]
 
-The RPMI System MSI interrupt controller (just like PLIC and APLIC)
-needs to probed prior to devices like GED which use interrupts provided
-by it. Also, it has dependency on the SBI MPXY mailbox device.
+Driver authors often forget to add GFP_NOWARN for page allocation
+from the datapath. This is annoying to users as OOMs are a fact
+of life, and we pretty much expect network Rx to hit page allocation
+failures during OOM. Make page pool add GFP_NOWARN for ATOMIC allocations
+by default.
 
-Add HIDs of RPMI System MSI and SBI MPXY mailbox devices to the honor
-list so that those dependencies are handled.
-
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Acked-by: Jassi Brar <jassisinghbrar@gmail.com>
-Link: https://lore.kernel.org/r/20250818040920.272664-17-apatel@ventanamicro.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250912161703.361272-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/scan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/core/page_pool.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 9865faa996b0d..f2e032f381625 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -860,6 +860,8 @@ static const char * const acpi_honor_dep_ids[] = {
- 	"INTC10CF", /* IVSC (MTL) driver must be loaded to allow i2c access to camera sensors */
- 	"RSCV0001", /* RISC-V PLIC */
- 	"RSCV0002", /* RISC-V APLIC */
-+	"RSCV0005", /* RISC-V SBI MPXY MBOX */
-+	"RSCV0006", /* RISC-V RPMI SYSMSI */
- 	"PNP0C0F",  /* PCI Link Device */
- 	NULL
- };
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 6a7d740b396f6..cc0dce5246a2b 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -586,6 +586,12 @@ static noinline netmem_ref __page_pool_alloc_pages_slow(struct page_pool *pool,
+ 	netmem_ref netmem;
+ 	int i, nr_pages;
+ 
++	/* Unconditionally set NOWARN if allocating from NAPI.
++	 * Drivers forget to set it, and OOM reports on packet Rx are useless.
++	 */
++	if ((gfp & GFP_ATOMIC) == GFP_ATOMIC)
++		gfp |= __GFP_NOWARN;
++
+ 	/* Don't support bulk alloc for high-order pages */
+ 	if (unlikely(pp_order))
+ 		return page_to_netmem(__page_pool_alloc_page_order(pool, gfp));
 -- 
 2.51.0
 
