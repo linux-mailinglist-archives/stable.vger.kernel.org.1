@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 878F4C4ACBE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C5CC4B0A9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 018523A9068
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A4381890E26
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F561306B11;
-	Tue, 11 Nov 2025 01:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F492D29D6;
+	Tue, 11 Nov 2025 01:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDT/AQ/u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFOsQxcz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B822248F6A;
-	Tue, 11 Nov 2025 01:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA2B2BCF5;
+	Tue, 11 Nov 2025 01:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824436; cv=none; b=Yen8xTSgGEyRz4UyHG6wmQwh0MWfkOibUbOPftOOGyRjTcL7qJmZ21F7wfxuHdMegkF788roxEfFxHLmE+/QccHe2jy7jFIBeGgBpY7D++OPUmwRKUcM96v8mn/oMa3My4/aiS9fM+LWwLU6uPGbsP2CZ8qTYJpeUO+oXdgY4wI=
+	t=1762825269; cv=none; b=SOwAnxtQHOPlzfmJ+C/q3Z9v6MH2xe60RKcvn+bwC6IY1ZkL6mC1+oESxoc6fhw72uLN7LOSDkDf9lpl5kjB7FAj1UR/jC+MGjKaGI6SOdNG/4amsZFUOSMfvhKh0EIuMwnBEt+bItZZ9sCPX2LmqKuI/dHQFeecVBwW5Haz5sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824436; c=relaxed/simple;
-	bh=EDgPxygAcfd7vIwr20QZtfIi+alRfJTASYhikEKOe+w=;
+	s=arc-20240116; t=1762825269; c=relaxed/simple;
+	bh=5BLRkKcUBQGIhxHKKYbteev+Y87x0KArfXzG6SQpUkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fieFd0862Yo7z1Xc672PuB71a4OodsLKpsStE1tYfFE3k1sGQ/8BP6daW3xvl0766uROB3Q3NYJv9ztH2JXGwBF1GGYjCsW5p1goTnXeJmzJTeeCbnnC3Fk1fnEhau6wjS+6My/NzGzWbW8zRpnuQyvCEEP21VjT1WcmQEaCqfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDT/AQ/u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF951C116D0;
-	Tue, 11 Nov 2025 01:27:15 +0000 (UTC)
+	 MIME-Version; b=h2yXZaaznD0/Ap2YfZONpf6MDrK3fKg9BKLfMnC17YZHbl9VM7Mjvllisu7ZHSCUsbpJzEQrenP1XGprvBxcPJRV5CwTe1g7ALKdZeVUfoemmW0M5lE/LZ5cyLFNcmsh6/l045PJb1wrkV58yX1weuIOaJWmtHm9ZryuMeUdVVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFOsQxcz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF309C113D0;
+	Tue, 11 Nov 2025 01:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824436;
-	bh=EDgPxygAcfd7vIwr20QZtfIi+alRfJTASYhikEKOe+w=;
+	s=korg; t=1762825269;
+	bh=5BLRkKcUBQGIhxHKKYbteev+Y87x0KArfXzG6SQpUkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EDT/AQ/ufmEY9skMrg5I1+4F9o99Cyt31u038dVixVGGdxE/hJimFVSVQ1DizbmsP
-	 q+NiMOOzILmXuk3XuShQsZrOC++SnAMIbDRZJ5q+qFeUQj1V43wzgGQeUrOC6NomGF
-	 mkKT+yObgdlX3thKufPEBgkNJ1NQ3bMLnQwXObBE=
+	b=FFOsQxczeZnNp2uSZB/FcYhvlb8ttlQYWh5juybmkX9gRKgjNvjE8+bNZam6MlTwB
+	 w3at10B5xWXciuG9IZNEiJsbrUYqKUrhwZjbED5nz1H0IwDFxwTlWdncx9aeCFW/0z
+	 j8aVA9sWLQjgaeQN5cT7ZDnWp8BPkxKoBu2ubBZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 445/565] page_pool: Clamp pool size to max 16K pages
-Date: Tue, 11 Nov 2025 09:45:01 +0900
-Message-ID: <20251111004536.897788761@linuxfoundation.org>
+Subject: [PATCH 6.17 732/849] drm/amdgpu: Report individual reset error
+Date: Tue, 11 Nov 2025 09:45:02 +0900
+Message-ID: <20251111004554.131974541@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit a1b501a8c6a87c9265fd03bd004035199e2e8128 ]
+[ Upstream commit 2e97663760e5fb7ee14f399c68e57b894f01e505 ]
 
-page_pool_init() returns E2BIG when the page_pool size goes above 32K
-pages. As some drivers are configuring the page_pool size according to
-the MTU and ring size, there are cases where this limit is exceeded and
-the queue creation fails.
+If reinitialization of one of the GPUs fails after reset, it logs
+failure on all subsequent GPUs eventhough they have resumed
+successfully.
 
-The page_pool size doesn't have to cover a full queue, especially for
-larger ring size. So clamp the size instead of returning an error. Do
-this in the core to avoid having each driver do the clamping.
+A sample log where only device at 0000:95:00.0 had a failure -
 
-The current limit was deemed to high [1] so it was reduced to 16K to avoid
-page waste.
+	amdgpu 0000:15:00.0: amdgpu: GPU reset(19) succeeded!
+	amdgpu 0000:65:00.0: amdgpu: GPU reset(19) succeeded!
+	amdgpu 0000:75:00.0: amdgpu: GPU reset(19) succeeded!
+	amdgpu 0000:85:00.0: amdgpu: GPU reset(19) succeeded!
+	amdgpu 0000:95:00.0: amdgpu: GPU reset(19) failed
+	amdgpu 0000:e5:00.0: amdgpu: GPU reset(19) failed
+	amdgpu 0000:f5:00.0: amdgpu: GPU reset(19) failed
+	amdgpu 0000:05:00.0: amdgpu: GPU reset(19) failed
+	amdgpu 0000:15:00.0: amdgpu: GPU reset end with ret = -5
 
-[1] https://lore.kernel.org/all/1758532715-820422-3-git-send-email-tariqt@nvidia.com/
+To avoid confusion, report the error for each device
+separately and return the first error as the overall result.
 
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250926131605.2276734-2-dtatulea@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/page_pool.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 25 +++++++++++++---------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index cc0dce5246a2b..458b040a8655d 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -208,11 +208,7 @@ static int page_pool_init(struct page_pool *pool,
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 1115af343e013..ddd0e7ab82be7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -6337,23 +6337,28 @@ static int amdgpu_device_sched_resume(struct list_head *device_list,
+ 		if (!drm_drv_uses_atomic_modeset(adev_to_drm(tmp_adev)) && !job_signaled)
+ 			drm_helper_resume_force_mode(adev_to_drm(tmp_adev));
  
- 	if (pool->p.pool_size)
--		ring_qsize = pool->p.pool_size;
+-		if (tmp_adev->asic_reset_res)
+-			r = tmp_adev->asic_reset_res;
 -
--	/* Sanity limit mem that can be pinned down */
--	if (ring_qsize > 32768)
--		return -E2BIG;
-+		ring_qsize = min(pool->p.pool_size, 16384);
- 
- 	/* DMA direction is either DMA_FROM_DEVICE or DMA_BIDIRECTIONAL.
- 	 * DMA_BIDIRECTIONAL is for allowing page used for DMA sending,
+-		tmp_adev->asic_reset_res = 0;
+-
+-		if (r) {
++		if (tmp_adev->asic_reset_res) {
+ 			/* bad news, how to tell it to userspace ?
+ 			 * for ras error, we should report GPU bad status instead of
+ 			 * reset failure
+ 			 */
+ 			if (reset_context->src != AMDGPU_RESET_SRC_RAS ||
+ 			    !amdgpu_ras_eeprom_check_err_threshold(tmp_adev))
+-				dev_info(tmp_adev->dev, "GPU reset(%d) failed\n",
+-					atomic_read(&tmp_adev->gpu_reset_counter));
+-			amdgpu_vf_error_put(tmp_adev, AMDGIM_ERROR_VF_GPU_RESET_FAIL, 0, r);
++				dev_info(
++					tmp_adev->dev,
++					"GPU reset(%d) failed with error %d \n",
++					atomic_read(
++						&tmp_adev->gpu_reset_counter),
++					tmp_adev->asic_reset_res);
++			amdgpu_vf_error_put(tmp_adev,
++					    AMDGIM_ERROR_VF_GPU_RESET_FAIL, 0,
++					    tmp_adev->asic_reset_res);
++			if (!r)
++				r = tmp_adev->asic_reset_res;
++			tmp_adev->asic_reset_res = 0;
+ 		} else {
+-			dev_info(tmp_adev->dev, "GPU reset(%d) succeeded!\n", atomic_read(&tmp_adev->gpu_reset_counter));
++			dev_info(tmp_adev->dev, "GPU reset(%d) succeeded!\n",
++				 atomic_read(&tmp_adev->gpu_reset_counter));
+ 			if (amdgpu_acpi_smart_shift_update(tmp_adev,
+ 							   AMDGPU_SS_DEV_D0))
+ 				dev_warn(tmp_adev->dev,
 -- 
 2.51.0
 
