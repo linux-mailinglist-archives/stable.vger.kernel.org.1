@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-194086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F5C3C4AE71
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8D0C4ADD5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 99F334F73D1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F3FF94F78F0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717892F6186;
-	Tue, 11 Nov 2025 01:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1C52FFFA4;
+	Tue, 11 Nov 2025 01:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcAEgd+m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZgW5WsH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E13926ED5C;
-	Tue, 11 Nov 2025 01:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86CF26E706;
+	Tue, 11 Nov 2025 01:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824774; cv=none; b=Y07yeGn8J5AXig17QWyHNghKDUfH5mQlMLRjz2DNuxua7Mxd2i8dvq5l25UcUnl2nBceAggDQg7VCzqelfFaMGx6Q71PXMXEUNf4D3jiQtIxmMC+2SFltgXbaa6EtLjo98zzkRIdAxldQfO+/dSbLDgeEAggVcN3DevBF410UDA=
+	t=1762824778; cv=none; b=uRvHFfbdOlV4yGKAMw+hEU1G4GsdaMDYP5aRIJAGGqXDlGJByLFXgnECkBcxv/dQ6ruL2qw2ugzNdwV8JRGCU9BiEble1DIwEmRLYxnaKLk9V2bPaZAFdfzvPTPYJ7uOp2iqmmIawTaIked8+RVKrcvwv12qSaeyLdNkavLWTak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824774; c=relaxed/simple;
-	bh=3rBEGN+CMzdHKgu8wuOc1GrCM5JU2xZgWVYZscfWOOM=;
+	s=arc-20240116; t=1762824778; c=relaxed/simple;
+	bh=l734/eE6AmndzW+kiHjwol0fx+E82zsRAPMEsgbNDio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RUhnBle9td+RT1LbvlVTOtS6HwjhwQPynlTKCm1DBuMsW4t1qCAJWt5tNIfAAf5gF1QzFobZdZltZdes62MAoJlz5VRlbX8HrQ3ks1kZRYMreduaMtdV9rz5+31ob5L0pt70OK9opVyZNHRNICdOAWVoSl4AlcDzXd/GCwDYU3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcAEgd+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A563AC16AAE;
-	Tue, 11 Nov 2025 01:32:53 +0000 (UTC)
+	 MIME-Version; b=ZFLjYjz6NbqLLi9GBxqxLgrkbZRZVxfz8NGeljcyd+gvBn9qEJGmw+orPEkpeQZK4PrpGcIh2D5TK1n09gpJSsyU3yanAzIMPlbqa19YpwT8ourLS+KPWz1a1uIQVQIqPdIcWiD4GZ/Kjx8XJvIBnA1yhN3Ns0OJYwp5/N0w8w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZgW5WsH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68975C116D0;
+	Tue, 11 Nov 2025 01:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824774;
-	bh=3rBEGN+CMzdHKgu8wuOc1GrCM5JU2xZgWVYZscfWOOM=;
+	s=korg; t=1762824778;
+	bh=l734/eE6AmndzW+kiHjwol0fx+E82zsRAPMEsgbNDio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RcAEgd+meQdLulcsjkc3yeHHoGIx2sDm/V2MG7xdgtwB0KWu9R8HUcayYRTuOtNWF
-	 BrjLRaxF6/Fuugt8yppSUiJh/SiEYuuJvbKSNR+WOZowJ/939o50yvGJ+Pd03NJDM3
-	 mNPMKl+xySVilGiq6GscFHyWwDe5t7tGp8siOYcU=
+	b=0ZgW5WsHLfIVVa9yM8Y1b95h8QUEIZDlNTX+bWmCidVgdu7OfID3GdLgL8OXH2W3a
+	 spYfnib17YABe0VDtigESoVkJWMomur7Dma1Qwds0tcdqoqVTlwcDGQDd97DeLSJHZ
+	 DSONcfgYDgrjdZBgiqfB2Fxq8yb51sbOwmOtm7h0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Matt Atwood <matthew.s.atwood@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 567/849] tools: ynl-gen: validate nested arrays
-Date: Tue, 11 Nov 2025 09:42:17 +0900
-Message-ID: <20251111004550.121440481@linuxfoundation.org>
+Subject: [PATCH 6.17 568/849] drm/xe/guc: Return an error code if the GuC load fails
+Date: Tue, 11 Nov 2025 09:42:18 +0900
+Message-ID: <20251111004550.144721191@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -60,141 +61,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+From: John Harrison <John.C.Harrison@Intel.com>
 
-[ Upstream commit 1d99aa4ed707c5630a7a7f067c8818e19167e3a1 ]
+[ Upstream commit 3b09b11805bfee32d5a0000f5ede42c07237a6c4 ]
 
-In nested arrays don't require that the intermediate attribute
-type should be a valid attribute type, it might just be zero
-or an incrementing index, it is often not even used.
+Due to multiple explosion issues in the early days of the Xe driver,
+the GuC load was hacked to never return a failure. That prevented
+kernel panics and such initially, but now all it achieves is creating
+more confusing errors when the driver tries to submit commands to a
+GuC it already knows is not there. So fix that up.
 
-See include/net/netlink.h about NLA_NESTED_ARRAY:
-> The difference to NLA_NESTED is the structure:
-> NLA_NESTED has the nested attributes directly inside
-> while an array has the nested attributes at another
-> level down and the attribute types directly in the
-> nesting don't matter.
+As a stop-gap and to help with debug of load failures due to invalid
+GuC init params, a wedge call had been added to the inner GuC load
+function. The reason being that it leaves the GuC log accessible via
+debugfs. However, for an end user, simply aborting the module load is
+much cleaner than wedging and trying to continue. The wedge blocks
+user submissions but it seems that various bits of the driver itself
+still try to submit to a dead GuC and lots of subsequent errors occur.
+And with regards to developers debugging why their particular code
+change is being rejected by the GuC, it is trivial to either add the
+wedge back in and hack the return code to zero again or to just do a
+GuC log dump to dmesg.
 
-Example based on include/uapi/linux/wireguard.h:
- > WGDEVICE_A_PEERS: NLA_NESTED
- >   0: NLA_NESTED
- >     WGPEER_A_PUBLIC_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
- >     [..]
- >   0: NLA_NESTED
- >     ...
- >   ...
+v2: Add support for error injection testing and drop the now redundant
+wedge call.
 
-Previous the check required that the nested type was valid
-in the parent attribute set, which in this case resolves to
-WGDEVICE_A_UNSPEC, which is YNL_PT_REJECT, and it took the
-early exit and returned YNL_PARSE_CB_ERROR.
-
-This patch renames the old nl_attr_validate() to
-__nl_attr_validate(), and creates a new inline function
-nl_attr_validate() to mimic the old one.
-
-The new __nl_attr_validate() takes the attribute type as an
-argument, so we can use it to validate attributes of a
-nested attribute, in the context of the parents attribute
-type, which in the above case is generated as:
-[WGDEVICE_A_PEERS] = {
-  .name = "peers",
-  .type = YNL_PT_NEST,
-  .nest = &wireguard_wgpeer_nest,
-},
-
-__nl_attr_validate() only checks if the attribute length
-is plausible for a given attribute type, so the .nest in
-the above example is not used.
-
-As the new inline function needs to be defined after
-ynl_attr_type(), then the definitions are moved down,
-so we avoid a forward declaration of ynl_attr_type().
-
-Some other examples are NL80211_BAND_ATTR_FREQS (nest) and
-NL80211_ATTR_SUPPORTED_COMMANDS (u32) both in nl80211-user.c
-$ make -C tools/net/ynl/generated nl80211-user.c
-
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://patch.msgid.link/20250915144301.725949-7-ast@fiberby.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+CC: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Reviewed-by: Matt Atwood <matthew.s.atwood@intel.com>
+Link: https://lore.kernel.org/r/20250909224132.536320-1-John.C.Harrison@Intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/net/ynl/lib/ynl-priv.h     | 10 +++++++++-
- tools/net/ynl/lib/ynl.c          |  6 +++---
- tools/net/ynl/pyynl/ynl_gen_c.py |  2 +-
- 3 files changed, 13 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/xe/xe_guc.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/tools/net/ynl/lib/ynl-priv.h b/tools/net/ynl/lib/ynl-priv.h
-index fca519d7ec9a7..ced7dce44efb4 100644
---- a/tools/net/ynl/lib/ynl-priv.h
-+++ b/tools/net/ynl/lib/ynl-priv.h
-@@ -106,7 +106,6 @@ ynl_gemsg_start_req(struct ynl_sock *ys, __u32 id, __u8 cmd, __u8 version);
- struct nlmsghdr *
- ynl_gemsg_start_dump(struct ynl_sock *ys, __u32 id, __u8 cmd, __u8 version);
- 
--int ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr);
- int ynl_submsg_failed(struct ynl_parse_arg *yarg, const char *field_name,
- 		      const char *sel_name);
- 
-@@ -467,4 +466,13 @@ ynl_attr_put_sint(struct nlmsghdr *nlh, __u16 type, __s64 data)
- 	else
- 		ynl_attr_put_s64(nlh, type, data);
- }
-+
-+int __ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr,
-+			unsigned int type);
-+
-+static inline int ynl_attr_validate(struct ynl_parse_arg *yarg,
-+				    const struct nlattr *attr)
-+{
-+	return __ynl_attr_validate(yarg, attr, ynl_attr_type(attr));
-+}
+diff --git a/drivers/gpu/drm/xe/xe_guc.c b/drivers/gpu/drm/xe/xe_guc.c
+index 62c76760fd26f..ab5b69cee3bff 100644
+--- a/drivers/gpu/drm/xe/xe_guc.c
++++ b/drivers/gpu/drm/xe/xe_guc.c
+@@ -1056,7 +1056,7 @@ static s32 guc_pc_get_cur_freq(struct xe_guc_pc *guc_pc)
  #endif
-diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
-index 2a169c3c07979..2bcd781111d74 100644
---- a/tools/net/ynl/lib/ynl.c
-+++ b/tools/net/ynl/lib/ynl.c
-@@ -360,15 +360,15 @@ static int ynl_cb_done(const struct nlmsghdr *nlh, struct ynl_parse_arg *yarg)
+ #define GUC_LOAD_TIME_WARN_MS      200
  
- /* Attribute validation */
- 
--int ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr)
-+int __ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr,
-+			unsigned int type)
+-static void guc_wait_ucode(struct xe_guc *guc)
++static int guc_wait_ucode(struct xe_guc *guc)
  {
- 	const struct ynl_policy_attr *policy;
--	unsigned int type, len;
- 	unsigned char *data;
-+	unsigned int len;
+ 	struct xe_gt *gt = guc_to_gt(guc);
+ 	struct xe_mmio *mmio = &gt->mmio;
+@@ -1163,7 +1163,7 @@ static void guc_wait_ucode(struct xe_guc *guc)
+ 			break;
+ 		}
  
- 	data = ynl_attr_data(attr);
- 	len = ynl_attr_data_len(attr);
--	type = ynl_attr_type(attr);
- 	if (type > yarg->rsp_policy->max_attr) {
- 		yerr(yarg->ys, YNL_ERROR_INTERNAL,
- 		     "Internal error, validating unknown attribute");
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index eb295756c3bf7..6e3e52a5caaff 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -828,7 +828,7 @@ class TypeArrayNest(Type):
-         local_vars = ['const struct nlattr *attr2;']
-         get_lines = [f'attr_{self.c_name} = attr;',
-                      'ynl_attr_for_each_nested(attr2, attr) {',
--                     '\tif (ynl_attr_validate(yarg, attr2))',
-+                     '\tif (__ynl_attr_validate(yarg, attr2, type))',
-                      '\t\treturn YNL_PARSE_CB_ERROR;',
-                      f'\tn_{self.c_name}++;',
-                      '}']
+-		xe_device_declare_wedged(gt_to_xe(gt));
++		return -EPROTO;
+ 	} else if (delta_ms > GUC_LOAD_TIME_WARN_MS) {
+ 		xe_gt_warn(gt, "excessive init time: %lldms! [status = 0x%08X, timeouts = %d]\n",
+ 			   delta_ms, status, count);
+@@ -1175,7 +1175,10 @@ static void guc_wait_ucode(struct xe_guc *guc)
+ 			  delta_ms, xe_guc_pc_get_act_freq(guc_pc), guc_pc_get_cur_freq(guc_pc),
+ 			  before_freq, status, count);
+ 	}
++
++	return 0;
+ }
++ALLOW_ERROR_INJECTION(guc_wait_ucode, ERRNO);
+ 
+ static int __xe_guc_upload(struct xe_guc *guc)
+ {
+@@ -1207,14 +1210,16 @@ static int __xe_guc_upload(struct xe_guc *guc)
+ 		goto out;
+ 
+ 	/* Wait for authentication */
+-	guc_wait_ucode(guc);
++	ret = guc_wait_ucode(guc);
++	if (ret)
++		goto out;
+ 
+ 	xe_uc_fw_change_status(&guc->fw, XE_UC_FIRMWARE_RUNNING);
+ 	return 0;
+ 
+ out:
+ 	xe_uc_fw_change_status(&guc->fw, XE_UC_FIRMWARE_LOAD_FAIL);
+-	return 0	/* FIXME: ret, don't want to stop load currently */;
++	return ret;
+ }
+ 
+ static int vf_guc_min_load_for_hwconfig(struct xe_guc *guc)
 -- 
 2.51.0
 
