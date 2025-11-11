@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-193726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F39C4A82D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 169EEC4B07C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 808084F64E7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF8CA3B89DD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5AE307AD2;
-	Tue, 11 Nov 2025 01:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F405342C9E;
+	Tue, 11 Nov 2025 01:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gnuPeHbQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RC1296fH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0144305E1B;
-	Tue, 11 Nov 2025 01:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07041D86FF;
+	Tue, 11 Nov 2025 01:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823864; cv=none; b=QdP0fWGUrY4kpcLCJvA8fDPncqRotGGsIo6U4l14JR02x7T2ig8dS4Kll9U8bJqtO5ix99lbJBWhzlFg7/1j10DgYqRCLiEi3Mwc5yber3oL0mOMvrL3PChUBSYJ4wor38NpbCGIp3cXWnHAPFJ6DnXP8cwwrbpiZXxvzG90x1c=
+	t=1762825118; cv=none; b=ce1GJu81VUkVAoFg7mkdJS6QfrUnJB6M5z6OWJ9ysncEPkyQHpV4Vy530fVGrjesZASBO/FmmnQLN4iska3AzFowrOdFJGVRbWJG5UneGLKuwcJgAu4FjWs7iPK2AwWbEnjZSELCJdBwpFPqtrPV4DYHEMlLvcMv6WGUKgJ0bRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823864; c=relaxed/simple;
-	bh=OVufMZiUR9yJPmHb2iS57k3MZ9fi6B6dQK0Dr5XhigQ=;
+	s=arc-20240116; t=1762825118; c=relaxed/simple;
+	bh=GQVJLif67kBpgA6Tk61ma+Czygq0ajqnMde+8bLubtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJmEBR1OTjUcx2rOBOvvcDvpcjCBg4Cf8qGOIzIdY4m07phPjq5MRjAH87ZGYRDAHcF+/kA5DS5LJFaAgtCJjaEDA4ohmQhHEwMBbmR7hkQNpIWBLseVEKEsENkuS5HD6OSrExXFO4+xjkMzD+UNmsrHaIYCyXU9q6gNtCGmi4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gnuPeHbQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727D4C19422;
-	Tue, 11 Nov 2025 01:17:43 +0000 (UTC)
+	 MIME-Version; b=nHExuVSXBwA1A99zlJfAMSCK/2B6/8iR6k09VDoFE0+6HOwkGI/j6qw0XYdY5GfwgvbG9DTtNJ9bPsIxa04VODuAP+E/x/f9IIkPNbS3io13sO8ueUO/6kjISAdHLLrY62PPpIfPoeUocRgVSTtgBbrJ1haRayh1JgzFQwe6uBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RC1296fH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74ACDC19421;
+	Tue, 11 Nov 2025 01:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823863;
-	bh=OVufMZiUR9yJPmHb2iS57k3MZ9fi6B6dQK0Dr5XhigQ=;
+	s=korg; t=1762825117;
+	bh=GQVJLif67kBpgA6Tk61ma+Czygq0ajqnMde+8bLubtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gnuPeHbQnQuzKxL7KtULKff0Eq+3pXAyz5O3anNrf+aBsrxrTZKjatDuq92CMuGRy
-	 PP0xoQjxvq7F/jrZnjfpQXPwLIPH7osyVBIR4h5wA/oVytL/5875gQSelxij+wxUVO
-	 KYjdJSKdif6y+Rga/5bIJjf9LpAe//5l9pMfRO/Y=
+	b=RC1296fHdbXcTNkd/rqC6boyDexTP32lWr+UvrFMNIhdz6g6Es+J8ZUEjH+s8zHFr
+	 GcpKxtfhvvkxteyvPLr5ZtnSzS/ptGFjqxgsZ4kTsrLP3skJgqL5Hd9fqqYTn+rdZc
+	 yX1lT+w5O4V6I2adUyHJuCYmAxZbv6X3OaO9nf3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Lo-an Chen <lo-an.chen@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 339/565] selftests: traceroute: Return correct value on failure
+Subject: [PATCH 6.17 625/849] drm/amd/display: Init dispclk from bootup clock for DCN314
 Date: Tue, 11 Nov 2025 09:43:15 +0900
-Message-ID: <20251111004534.505980074@linuxfoundation.org>
+Message-ID: <20251111004551.541801790@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +65,273 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Lo-an Chen <lo-an.chen@amd.com>
 
-[ Upstream commit c068ba9d3ded56cb1ba4d5135ee84bf8039bd563 ]
+[ Upstream commit f082daf08f2ff313bdf9cf929a28f6d888117986 ]
 
-The test always returns success even if some tests were modified to
-fail. Fix by converting the test to use the appropriate library
-functions instead of using its own functions.
+[Why]
+Driver does not pick up and save vbios's clocks during init clocks,
+the dispclk in clk_mgr will keep 0 until the first update clocks.
+In some cases, OS changes the timing in the second set mode
+(lower the pixel clock), causing the driver to lower the dispclk
+in prepare bandwidth, which is illegal and causes grey screen.
 
-Before:
+[How]
+1. Dump and save the vbios's clocks, and init the dispclk in
+dcn314_init_clocks.
+2. Fix the condition in dcn314_update_clocks, regarding a 0kHz value.
 
- # ./traceroute.sh
- TEST: IPV6 traceroute                                               [FAIL]
- TEST: IPV4 traceroute                                               [ OK ]
-
- Tests passed:   1
- Tests failed:   1
- $ echo $?
- 0
-
-After:
-
- # ./traceroute.sh
- TEST: IPv6 traceroute                                               [FAIL]
-         traceroute6 did not return 2000:102::2
- TEST: IPv4 traceroute                                               [ OK ]
- $ echo $?
- 1
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250908073238.119240-5-idosch@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Signed-off-by: Lo-an Chen <lo-an.chen@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/traceroute.sh | 38 ++++++-----------------
- 1 file changed, 9 insertions(+), 29 deletions(-)
+ .../dc/clk_mgr/dcn314/dcn314_clk_mgr.c        | 142 +++++++++++++++++-
+ .../dc/clk_mgr/dcn314/dcn314_clk_mgr.h        |   5 +
+ .../dc/resource/dcn314/dcn314_resource.c      |   1 +
+ 3 files changed, 143 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/traceroute.sh b/tools/testing/selftests/net/traceroute.sh
-index b50e52afa4f49..1ac91eebd16f5 100755
---- a/tools/testing/selftests/net/traceroute.sh
-+++ b/tools/testing/selftests/net/traceroute.sh
-@@ -10,28 +10,6 @@ PAUSE_ON_FAIL=no
- 
- ################################################################################
- #
--log_test()
--{
--	local rc=$1
--	local expected=$2
--	local msg="$3"
--
--	if [ ${rc} -eq ${expected} ]; then
--		printf "TEST: %-60s  [ OK ]\n" "${msg}"
--		nsuccess=$((nsuccess+1))
--	else
--		ret=1
--		nfail=$((nfail+1))
--		printf "TEST: %-60s  [FAIL]\n" "${msg}"
--		if [ "${PAUSE_ON_FAIL}" = "yes" ]; then
--			echo
--			echo "hit enter to continue, 'q' to quit"
--			read a
--			[ "$a" = "q" ] && exit 1
--		fi
--	fi
--}
--
- run_cmd()
- {
- 	local ns
-@@ -205,9 +183,12 @@ run_traceroute6()
- {
- 	setup_traceroute6
- 
-+	RET=0
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
+index 91d872d6d392b..bc2ad0051b35b 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
+@@ -77,6 +77,7 @@ static const struct IP_BASE CLK_BASE = { { { { 0x00016C00, 0x02401800, 0, 0, 0,
+ #undef DC_LOGGER
+ #define DC_LOGGER \
+ 	clk_mgr->base.base.ctx->logger
 +
- 	# traceroute6 host-2 from host-1 (expects 2000:102::2)
- 	run_cmd $h1 "traceroute6 2000:103::4 | grep -q 2000:102::2"
--	log_test $? 0 "IPV6 traceroute"
-+	check_err $? "traceroute6 did not return 2000:102::2"
-+	log_test "IPv6 traceroute"
+ #define regCLK1_CLK_PLL_REQ			0x0237
+ #define regCLK1_CLK_PLL_REQ_BASE_IDX		0
  
- 	cleanup_traceroute6
- }
-@@ -265,9 +246,12 @@ run_traceroute()
- {
- 	setup_traceroute
+@@ -87,8 +88,70 @@ static const struct IP_BASE CLK_BASE = { { { { 0x00016C00, 0x02401800, 0, 0, 0,
+ #define CLK1_CLK_PLL_REQ__PllSpineDiv_MASK	0x0000F000L
+ #define CLK1_CLK_PLL_REQ__FbMult_frac_MASK	0xFFFF0000L
  
-+	RET=0
++#define regCLK1_CLK0_DFS_CNTL				0x0269
++#define regCLK1_CLK0_DFS_CNTL_BASE_IDX		0
++#define regCLK1_CLK1_DFS_CNTL				0x026c
++#define regCLK1_CLK1_DFS_CNTL_BASE_IDX		0
++#define regCLK1_CLK2_DFS_CNTL				0x026f
++#define regCLK1_CLK2_DFS_CNTL_BASE_IDX		0
++#define regCLK1_CLK3_DFS_CNTL				0x0272
++#define regCLK1_CLK3_DFS_CNTL_BASE_IDX		0
++#define regCLK1_CLK4_DFS_CNTL				0x0275
++#define regCLK1_CLK4_DFS_CNTL_BASE_IDX		0
++#define regCLK1_CLK5_DFS_CNTL				0x0278
++#define regCLK1_CLK5_DFS_CNTL_BASE_IDX		0
 +
- 	# traceroute host-2 from host-1 (expects 1.0.1.1). Takes a while.
- 	run_cmd $h1 "traceroute 1.0.2.4 | grep -q 1.0.1.1"
--	log_test $? 0 "IPV4 traceroute"
-+	check_err $? "traceroute did not return 1.0.1.1"
-+	log_test "IPv4 traceroute"
++#define regCLK1_CLK0_CURRENT_CNT			0x02fb
++#define regCLK1_CLK0_CURRENT_CNT_BASE_IDX	0
++#define regCLK1_CLK1_CURRENT_CNT			0x02fc
++#define regCLK1_CLK1_CURRENT_CNT_BASE_IDX	0
++#define regCLK1_CLK2_CURRENT_CNT			0x02fd
++#define regCLK1_CLK2_CURRENT_CNT_BASE_IDX	0
++#define regCLK1_CLK3_CURRENT_CNT			0x02fe
++#define regCLK1_CLK3_CURRENT_CNT_BASE_IDX	0
++#define regCLK1_CLK4_CURRENT_CNT			0x02ff
++#define regCLK1_CLK4_CURRENT_CNT_BASE_IDX	0
++#define regCLK1_CLK5_CURRENT_CNT			0x0300
++#define regCLK1_CLK5_CURRENT_CNT_BASE_IDX	0
++
++#define regCLK1_CLK0_BYPASS_CNTL			0x028a
++#define regCLK1_CLK0_BYPASS_CNTL_BASE_IDX	0
++#define regCLK1_CLK1_BYPASS_CNTL			0x0293
++#define regCLK1_CLK1_BYPASS_CNTL_BASE_IDX	0
+ #define regCLK1_CLK2_BYPASS_CNTL			0x029c
+ #define regCLK1_CLK2_BYPASS_CNTL_BASE_IDX	0
++#define regCLK1_CLK3_BYPASS_CNTL			0x02a5
++#define regCLK1_CLK3_BYPASS_CNTL_BASE_IDX	0
++#define regCLK1_CLK4_BYPASS_CNTL			0x02ae
++#define regCLK1_CLK4_BYPASS_CNTL_BASE_IDX	0
++#define regCLK1_CLK5_BYPASS_CNTL			0x02b7
++#define regCLK1_CLK5_BYPASS_CNTL_BASE_IDX	0
++
++#define regCLK1_CLK0_DS_CNTL				0x0283
++#define regCLK1_CLK0_DS_CNTL_BASE_IDX		0
++#define regCLK1_CLK1_DS_CNTL				0x028c
++#define regCLK1_CLK1_DS_CNTL_BASE_IDX		0
++#define regCLK1_CLK2_DS_CNTL				0x0295
++#define regCLK1_CLK2_DS_CNTL_BASE_IDX		0
++#define regCLK1_CLK3_DS_CNTL				0x029e
++#define regCLK1_CLK3_DS_CNTL_BASE_IDX		0
++#define regCLK1_CLK4_DS_CNTL				0x02a7
++#define regCLK1_CLK4_DS_CNTL_BASE_IDX		0
++#define regCLK1_CLK5_DS_CNTL				0x02b0
++#define regCLK1_CLK5_DS_CNTL_BASE_IDX		0
++
++#define regCLK1_CLK0_ALLOW_DS				0x0284
++#define regCLK1_CLK0_ALLOW_DS_BASE_IDX		0
++#define regCLK1_CLK1_ALLOW_DS				0x028d
++#define regCLK1_CLK1_ALLOW_DS_BASE_IDX		0
++#define regCLK1_CLK2_ALLOW_DS				0x0296
++#define regCLK1_CLK2_ALLOW_DS_BASE_IDX		0
++#define regCLK1_CLK3_ALLOW_DS				0x029f
++#define regCLK1_CLK3_ALLOW_DS_BASE_IDX		0
++#define regCLK1_CLK4_ALLOW_DS				0x02a8
++#define regCLK1_CLK4_ALLOW_DS_BASE_IDX		0
++#define regCLK1_CLK5_ALLOW_DS				0x02b1
++#define regCLK1_CLK5_ALLOW_DS_BASE_IDX		0
  
- 	cleanup_traceroute
+ #define CLK1_CLK2_BYPASS_CNTL__CLK2_BYPASS_SEL__SHIFT	0x0
+ #define CLK1_CLK2_BYPASS_CNTL__CLK2_BYPASS_DIV__SHIFT	0x10
+@@ -185,6 +248,8 @@ void dcn314_init_clocks(struct clk_mgr *clk_mgr)
+ {
+ 	struct clk_mgr_internal *clk_mgr_int = TO_CLK_MGR_INTERNAL(clk_mgr);
+ 	uint32_t ref_dtbclk = clk_mgr->clks.ref_dtbclk_khz;
++	struct clk_mgr_dcn314 *clk_mgr_dcn314 = TO_CLK_MGR_DCN314(clk_mgr_int);
++	struct clk_log_info log_info = {0};
+ 
+ 	memset(&(clk_mgr->clks), 0, sizeof(struct dc_clocks));
+ 	// Assumption is that boot state always supports pstate
+@@ -200,6 +265,9 @@ void dcn314_init_clocks(struct clk_mgr *clk_mgr)
+ 			dce_adjust_dp_ref_freq_for_ss(clk_mgr_int, clk_mgr->dprefclk_khz);
+ 	else
+ 		clk_mgr->dp_dto_source_clock_in_khz = clk_mgr->dprefclk_khz;
++
++	dcn314_dump_clk_registers(&clk_mgr->boot_snapshot, &clk_mgr_dcn314->base.base, &log_info);
++	clk_mgr->clks.dispclk_khz =  clk_mgr->boot_snapshot.dispclk * 1000;
  }
-@@ -284,9 +268,6 @@ run_tests()
- ################################################################################
- # main
  
--declare -i nfail=0
--declare -i nsuccess=0
--
- while getopts :pv o
- do
- 	case $o in
-@@ -301,5 +282,4 @@ require_command traceroute
+ void dcn314_update_clocks(struct clk_mgr *clk_mgr_base,
+@@ -218,6 +286,8 @@ void dcn314_update_clocks(struct clk_mgr *clk_mgr_base,
+ 	if (dc->work_arounds.skip_clock_update)
+ 		return;
  
- run_tests
++	display_count = dcn314_get_active_display_cnt_wa(dc, context);
++
+ 	/*
+ 	 * if it is safe to lower, but we are already in the lower state, we don't have to do anything
+ 	 * also if safe to lower is false, we just go in the higher state
+@@ -236,7 +306,6 @@ void dcn314_update_clocks(struct clk_mgr *clk_mgr_base,
+ 		}
+ 		/* check that we're not already in lower */
+ 		if (clk_mgr_base->clks.pwr_state != DCN_PWR_STATE_LOW_POWER) {
+-			display_count = dcn314_get_active_display_cnt_wa(dc, context);
+ 			/* if we can go lower, go lower */
+ 			if (display_count == 0) {
+ 				union display_idle_optimization_u idle_info = { 0 };
+@@ -293,11 +362,19 @@ void dcn314_update_clocks(struct clk_mgr *clk_mgr_base,
+ 		update_dppclk = true;
+ 	}
  
--printf "\nTests passed: %3d\n" ${nsuccess}
--printf "Tests failed: %3d\n"   ${nfail}
-+exit "${EXIT_STATUS}"
+-	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
++	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz) &&
++	    (new_clocks->dispclk_khz > 0 || (safe_to_lower && display_count == 0))) {
++		int requested_dispclk_khz = new_clocks->dispclk_khz;
++
+ 		dcn314_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
+ 
++		/* Clamp the requested clock to PMFW based on their limit. */
++		if (dc->debug.min_disp_clk_khz > 0 && requested_dispclk_khz < dc->debug.min_disp_clk_khz)
++			requested_dispclk_khz = dc->debug.min_disp_clk_khz;
++
++		dcn314_smu_set_dispclk(clk_mgr, requested_dispclk_khz);
+ 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
+-		dcn314_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
++
+ 		dcn314_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
+ 
+ 		update_dispclk = true;
+@@ -385,10 +462,65 @@ bool dcn314_are_clock_states_equal(struct dc_clocks *a,
+ 	return true;
+ }
+ 
+-static void dcn314_dump_clk_registers(struct clk_state_registers_and_bypass *regs_and_bypass,
++
++static void dcn314_dump_clk_registers_internal(struct dcn35_clk_internal *internal, struct clk_mgr *clk_mgr_base)
++{
++	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
++
++	// read dtbclk
++	internal->CLK1_CLK4_CURRENT_CNT = REG_READ(CLK1_CLK4_CURRENT_CNT);
++	internal->CLK1_CLK4_BYPASS_CNTL = REG_READ(CLK1_CLK4_BYPASS_CNTL);
++
++	// read dcfclk
++	internal->CLK1_CLK3_CURRENT_CNT = REG_READ(CLK1_CLK3_CURRENT_CNT);
++	internal->CLK1_CLK3_BYPASS_CNTL = REG_READ(CLK1_CLK3_BYPASS_CNTL);
++
++	// read dcf deep sleep divider
++	internal->CLK1_CLK3_DS_CNTL = REG_READ(CLK1_CLK3_DS_CNTL);
++	internal->CLK1_CLK3_ALLOW_DS = REG_READ(CLK1_CLK3_ALLOW_DS);
++
++	// read dppclk
++	internal->CLK1_CLK1_CURRENT_CNT = REG_READ(CLK1_CLK1_CURRENT_CNT);
++	internal->CLK1_CLK1_BYPASS_CNTL = REG_READ(CLK1_CLK1_BYPASS_CNTL);
++
++	// read dprefclk
++	internal->CLK1_CLK2_CURRENT_CNT = REG_READ(CLK1_CLK2_CURRENT_CNT);
++	internal->CLK1_CLK2_BYPASS_CNTL = REG_READ(CLK1_CLK2_BYPASS_CNTL);
++
++	// read dispclk
++	internal->CLK1_CLK0_CURRENT_CNT = REG_READ(CLK1_CLK0_CURRENT_CNT);
++	internal->CLK1_CLK0_BYPASS_CNTL = REG_READ(CLK1_CLK0_BYPASS_CNTL);
++}
++
++void dcn314_dump_clk_registers(struct clk_state_registers_and_bypass *regs_and_bypass,
+ 		struct clk_mgr *clk_mgr_base, struct clk_log_info *log_info)
+ {
+-	return;
++
++	struct dcn35_clk_internal internal = {0};
++
++	dcn314_dump_clk_registers_internal(&internal, clk_mgr_base);
++
++	regs_and_bypass->dcfclk = internal.CLK1_CLK3_CURRENT_CNT / 10;
++	regs_and_bypass->dcf_deep_sleep_divider = internal.CLK1_CLK3_DS_CNTL / 10;
++	regs_and_bypass->dcf_deep_sleep_allow = internal.CLK1_CLK3_ALLOW_DS;
++	regs_and_bypass->dprefclk = internal.CLK1_CLK2_CURRENT_CNT / 10;
++	regs_and_bypass->dispclk = internal.CLK1_CLK0_CURRENT_CNT / 10;
++	regs_and_bypass->dppclk = internal.CLK1_CLK1_CURRENT_CNT / 10;
++	regs_and_bypass->dtbclk = internal.CLK1_CLK4_CURRENT_CNT / 10;
++
++	regs_and_bypass->dppclk_bypass = internal.CLK1_CLK1_BYPASS_CNTL & 0x0007;
++	if (regs_and_bypass->dppclk_bypass < 0 || regs_and_bypass->dppclk_bypass > 4)
++		regs_and_bypass->dppclk_bypass = 0;
++	regs_and_bypass->dcfclk_bypass = internal.CLK1_CLK3_BYPASS_CNTL & 0x0007;
++	if (regs_and_bypass->dcfclk_bypass < 0 || regs_and_bypass->dcfclk_bypass > 4)
++		regs_and_bypass->dcfclk_bypass = 0;
++	regs_and_bypass->dispclk_bypass = internal.CLK1_CLK0_BYPASS_CNTL & 0x0007;
++	if (regs_and_bypass->dispclk_bypass < 0 || regs_and_bypass->dispclk_bypass > 4)
++		regs_and_bypass->dispclk_bypass = 0;
++	regs_and_bypass->dprefclk_bypass = internal.CLK1_CLK2_BYPASS_CNTL & 0x0007;
++	if (regs_and_bypass->dprefclk_bypass < 0 || regs_and_bypass->dprefclk_bypass > 4)
++		regs_and_bypass->dprefclk_bypass = 0;
++
+ }
+ 
+ static struct clk_bw_params dcn314_bw_params = {
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.h b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.h
+index 002c28e807208..0577eb527bc36 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.h
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.h
+@@ -65,4 +65,9 @@ void dcn314_clk_mgr_construct(struct dc_context *ctx,
+ 
+ void dcn314_clk_mgr_destroy(struct clk_mgr_internal *clk_mgr_int);
+ 
++
++void dcn314_dump_clk_registers(struct clk_state_registers_and_bypass *regs_and_bypass,
++		struct clk_mgr *clk_mgr_base, struct clk_log_info *log_info);
++
++
+ #endif //__DCN314_CLK_MGR_H__
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
+index 663c49cce4aa3..d4917a35b991a 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
+@@ -927,6 +927,7 @@ static const struct dc_debug_options debug_defaults_drv = {
+ 	.enable_legacy_fast_update = true,
+ 	.using_dml2 = false,
+ 	.disable_dsc_power_gate = true,
++	.min_disp_clk_khz = 100000,
+ };
+ 
+ static const struct dc_panel_config panel_config_defaults = {
 -- 
 2.51.0
 
