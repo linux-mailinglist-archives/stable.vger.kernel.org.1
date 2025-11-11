@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA44C4A9E5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAEFEC4B15A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 77DF434C813
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2F323B3979
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD2432D7CC;
-	Tue, 11 Nov 2025 01:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1CF347FD3;
+	Tue, 11 Nov 2025 01:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxIRyrjk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOcm2bv6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF0632BF46;
-	Tue, 11 Nov 2025 01:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655E4348883;
+	Tue, 11 Nov 2025 01:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824528; cv=none; b=ZDTqtpkb0Fe626r8lCeQzjcYjdjvd4MckF2Ja/sEEZ8uhzbjPSgHWEi4cDk4UQjwkpfGBPmIV1UKxpPqbZpMB+OO4Py99ETxY5IKpLkK+eWdZpYaVv5YjKm7vY5gNCWnzTi04/7ta9SOQ6s/kXoY9t/CdhtauaDugUxD/TW8p5Q=
+	t=1762825319; cv=none; b=riYn4brVY2jiKPxnktcpuQY7oKtz3ypWcuaJq266QvmSrQsAP2g6NxkwylaZP2RyWGqw6W62lXMkWmiAH0EqwwbLewyuLy8EnP9uQm44NNKD+RtDX8XeGW9SKXd05O0cMYCjRoTyqjdWbAjMUWGpfOfnZ4ix75cmPfroAtu0ShQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824528; c=relaxed/simple;
-	bh=TqlPQlwoV5qt/5sq0b7YRA3hi+m6rzFiiWB7pmczQs0=;
+	s=arc-20240116; t=1762825319; c=relaxed/simple;
+	bh=qh+pf1O8FiAbLA9D6jYtmkA1/a328n9Wi5HlX+yiHqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SXySAziMPnemfKhdvZJDAatyNTETvJBXIY1tPT9r1I7gLh/BqCpc5Fu6DJQF8LRoy8Ip+Xvu491RXWBunYaxla4krnFXEqPT7QyQaDi46o54MhPbFiVhwiptvhTRV2lsSV4ADmFTkH62joKapX0oE2bpHfK8SYlzgnnYYg/zD5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxIRyrjk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886D3C16AAE;
-	Tue, 11 Nov 2025 01:28:47 +0000 (UTC)
+	 MIME-Version; b=CnC1dpbeQlp7ijMm9/qcs/zdYgQItEBVV7tggXcrEtzyLXQ93WghCWJiKza+lNaag1UKnJN5X3U9KLL6hfKLppXA6ZdzOQSnxpyZRNjjivsjAk64LPxPyyIv93jKLacfV3I6i8M4fmef9JS7GWzHqga4Itt6rHL10vhuoWaMRhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOcm2bv6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BECC19424;
+	Tue, 11 Nov 2025 01:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824527;
-	bh=TqlPQlwoV5qt/5sq0b7YRA3hi+m6rzFiiWB7pmczQs0=;
+	s=korg; t=1762825319;
+	bh=qh+pf1O8FiAbLA9D6jYtmkA1/a328n9Wi5HlX+yiHqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BxIRyrjkw9Ltrq2sDBV25YCYNnlGLwGKyfpu7ZD4E8bWy2vPg4Mzw+8fXtI1xN0hI
-	 fYVWeaedSVzaYGse4hocpM6G0iWffo6jtUjNrocRUbN2tc6y37w+qweYBE8DVyhIF8
-	 SxFgwFioi+1nCKYsbnbRs4fT3MmBVyYnO+BAbRE4=
+	b=cOcm2bv6EUfbS2axhL1WtFFoS1Lo34B7TFSSiOl0bQqXlRraIDGFEk+vNIs9hBHad
+	 guQ2GL+ItJUbHsN1WEbWhBcuioooz0e5Bvi6nbWG/DeGrzoZ0hyEQc7kE+FXEdNUF1
+	 BBv/vW4g9+/wmkNqYHiSPnhG9qE8uD+uZWFKDV88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marko=20M=C3=A4kel=C3=A4?= <marko.makela@iki.fi>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 463/565] clk: qcom: gcc-ipq6018: rework nss_port5 clock to multiple conf
-Date: Tue, 11 Nov 2025 09:45:19 +0900
-Message-ID: <20251111004537.316726975@linuxfoundation.org>
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 750/849] net: libwx: fix device bus LAN ID
+Date: Tue, 11 Nov 2025 09:45:20 +0900
+Message-ID: <20251111004554.567488674@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,145 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marko Mäkelä <marko.makela@iki.fi>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 2f7b168323c22faafb1fbf94ef93b7ce5efc15c6 ]
+commit a04ea57aae375bdda1cb57034d8bcbb351e1f973 upstream.
 
-Rework nss_port5 to use the new multiple configuration implementation
-and correctly fix the clocks for this port under some corner case.
+The device bus LAN ID was obtained from PCI_FUNC(), but when a PF
+port is passthrough to a virtual machine, the function number may not
+match the actual port index on the device. This could cause the driver
+to perform operations such as LAN reset on the wrong port.
 
-In OpenWrt, this patch avoids intermittent dmesg errors of the form
-nss_port5_rx_clk_src: rcg didn't update its configuration.
+Fix this by reading the LAN ID from port status register.
 
-This is a mechanical, straightforward port of
-commit e88f03230dc07aa3293b6aeb078bd27370bb2594
-("clk: qcom: gcc-ipq8074: rework nss_port5/6 clock to multiple conf")
-to gcc-ipq6018, with two conflicts resolved: different frequency of the
-P_XO clock source, and only 5 Ethernet ports.
-
-This was originally developed by JiaY-shi <shi05275@163.com>.
-
-Link: https://lore.kernel.org/all/20231220221724.3822-4-ansuelsmth@gmail.com/
-Signed-off-by: Marko Mäkelä <marko.makela@iki.fi>
-Tested-by: Marko Mäkelä <marko.makela@iki.fi>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250802095546.295448-1-marko.makela@iki.fi
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a34b3e6ed8fb ("net: txgbe: Store PCI info")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/B60A670C1F52CB8E+20251104062321.40059-1-jiawenwu@trustnetic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-ipq6018.c | 60 +++++++++++++++++++++-------------
- 1 file changed, 38 insertions(+), 22 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c   |    3 ++-
+ drivers/net/ethernet/wangxun/libwx/wx_type.h |    4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-ipq6018.c b/drivers/clk/qcom/gcc-ipq6018.c
-index ab0f7fc665a97..c04a7a961a24a 100644
---- a/drivers/clk/qcom/gcc-ipq6018.c
-+++ b/drivers/clk/qcom/gcc-ipq6018.c
-@@ -511,15 +511,23 @@ static struct clk_rcg2 apss_ahb_clk_src = {
- 	},
- };
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -2368,7 +2368,8 @@ int wx_sw_init(struct wx *wx)
+ 	wx->oem_svid = pdev->subsystem_vendor;
+ 	wx->oem_ssid = pdev->subsystem_device;
+ 	wx->bus.device = PCI_SLOT(pdev->devfn);
+-	wx->bus.func = PCI_FUNC(pdev->devfn);
++	wx->bus.func = FIELD_GET(WX_CFG_PORT_ST_LANID,
++				 rd32(wx, WX_CFG_PORT_ST));
  
--static const struct freq_tbl ftbl_nss_port5_rx_clk_src[] = {
--	F(24000000, P_XO, 1, 0, 0),
--	F(25000000, P_UNIPHY1_RX, 12.5, 0, 0),
--	F(25000000, P_UNIPHY0_RX, 5, 0, 0),
--	F(78125000, P_UNIPHY1_RX, 4, 0, 0),
--	F(125000000, P_UNIPHY1_RX, 2.5, 0, 0),
--	F(125000000, P_UNIPHY0_RX, 1, 0, 0),
--	F(156250000, P_UNIPHY1_RX, 2, 0, 0),
--	F(312500000, P_UNIPHY1_RX, 1, 0, 0),
-+static const struct freq_conf ftbl_nss_port5_rx_clk_src_25[] = {
-+	C(P_UNIPHY1_RX, 12.5, 0, 0),
-+	C(P_UNIPHY0_RX, 5, 0, 0),
-+};
-+
-+static const struct freq_conf ftbl_nss_port5_rx_clk_src_125[] = {
-+	C(P_UNIPHY1_RX, 2.5, 0, 0),
-+	C(P_UNIPHY0_RX, 1, 0, 0),
-+};
-+
-+static const struct freq_multi_tbl ftbl_nss_port5_rx_clk_src[] = {
-+	FMS(24000000, P_XO, 1, 0, 0),
-+	FM(25000000, ftbl_nss_port5_rx_clk_src_25),
-+	FMS(78125000, P_UNIPHY1_RX, 4, 0, 0),
-+	FM(125000000, ftbl_nss_port5_rx_clk_src_125),
-+	FMS(156250000, P_UNIPHY1_RX, 2, 0, 0),
-+	FMS(312500000, P_UNIPHY1_RX, 1, 0, 0),
- 	{ }
- };
+ 	if (wx->oem_svid == PCI_VENDOR_ID_WANGXUN ||
+ 	    pdev->is_virtfn) {
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -96,6 +96,8 @@
+ #define WX_CFG_PORT_CTL_DRV_LOAD     BIT(3)
+ #define WX_CFG_PORT_CTL_QINQ         BIT(2)
+ #define WX_CFG_PORT_CTL_D_VLAN       BIT(0) /* double vlan*/
++#define WX_CFG_PORT_ST               0x14404
++#define WX_CFG_PORT_ST_LANID         GENMASK(9, 8)
+ #define WX_CFG_TAG_TPID(_i)          (0x14430 + ((_i) * 4))
+ #define WX_CFG_PORT_CTL_NUM_VT_MASK  GENMASK(13, 12) /* number of TVs */
  
-@@ -547,26 +555,34 @@ gcc_xo_uniphy0_rx_tx_uniphy1_rx_tx_ubi32_bias_map[] = {
+@@ -549,8 +551,6 @@ enum WX_MSCA_CMD_value {
+ #define TXD_USE_COUNT(S)     DIV_ROUND_UP((S), WX_MAX_DATA_PER_TXD)
+ #define DESC_NEEDED          (MAX_SKB_FRAGS + 4)
  
- static struct clk_rcg2 nss_port5_rx_clk_src = {
- 	.cmd_rcgr = 0x68060,
--	.freq_tbl = ftbl_nss_port5_rx_clk_src,
-+	.freq_multi_tbl = ftbl_nss_port5_rx_clk_src,
- 	.hid_width = 5,
- 	.parent_map = gcc_xo_uniphy0_rx_tx_uniphy1_rx_tx_ubi32_bias_map,
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "nss_port5_rx_clk_src",
- 		.parent_data = gcc_xo_uniphy0_rx_tx_uniphy1_rx_tx_ubi32_bias,
- 		.num_parents = 7,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_fm_ops,
- 	},
- };
- 
--static const struct freq_tbl ftbl_nss_port5_tx_clk_src[] = {
--	F(24000000, P_XO, 1, 0, 0),
--	F(25000000, P_UNIPHY1_TX, 12.5, 0, 0),
--	F(25000000, P_UNIPHY0_TX, 5, 0, 0),
--	F(78125000, P_UNIPHY1_TX, 4, 0, 0),
--	F(125000000, P_UNIPHY1_TX, 2.5, 0, 0),
--	F(125000000, P_UNIPHY0_TX, 1, 0, 0),
--	F(156250000, P_UNIPHY1_TX, 2, 0, 0),
--	F(312500000, P_UNIPHY1_TX, 1, 0, 0),
-+static const struct freq_conf ftbl_nss_port5_tx_clk_src_25[] = {
-+	C(P_UNIPHY1_TX, 12.5, 0, 0),
-+	C(P_UNIPHY0_TX, 5, 0, 0),
-+};
-+
-+static const struct freq_conf ftbl_nss_port5_tx_clk_src_125[] = {
-+	C(P_UNIPHY1_TX, 2.5, 0, 0),
-+	C(P_UNIPHY0_TX, 1, 0, 0),
-+};
-+
-+static const struct freq_multi_tbl ftbl_nss_port5_tx_clk_src[] = {
-+	FMS(24000000, P_XO, 1, 0, 0),
-+	FM(25000000, ftbl_nss_port5_tx_clk_src_25),
-+	FMS(78125000, P_UNIPHY1_TX, 4, 0, 0),
-+	FM(125000000, ftbl_nss_port5_tx_clk_src_125),
-+	FMS(156250000, P_UNIPHY1_TX, 2, 0, 0),
-+	FMS(312500000, P_UNIPHY1_TX, 1, 0, 0),
- 	{ }
- };
- 
-@@ -594,14 +610,14 @@ gcc_xo_uniphy0_tx_rx_uniphy1_tx_rx_ubi32_bias_map[] = {
- 
- static struct clk_rcg2 nss_port5_tx_clk_src = {
- 	.cmd_rcgr = 0x68068,
--	.freq_tbl = ftbl_nss_port5_tx_clk_src,
-+	.freq_multi_tbl = ftbl_nss_port5_tx_clk_src,
- 	.hid_width = 5,
- 	.parent_map = gcc_xo_uniphy0_tx_rx_uniphy1_tx_rx_ubi32_bias_map,
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "nss_port5_tx_clk_src",
- 		.parent_data = gcc_xo_uniphy0_tx_rx_uniphy1_tx_rx_ubi32_bias,
- 		.num_parents = 7,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_fm_ops,
- 	},
- };
- 
--- 
-2.51.0
-
+-#define WX_CFG_PORT_ST               0x14404
+-
+ /******************* Receive Descriptor bit definitions **********************/
+ #define WX_RXD_STAT_DD               BIT(0) /* Done */
+ #define WX_RXD_STAT_EOP              BIT(1) /* End of Packet */
 
 
 
