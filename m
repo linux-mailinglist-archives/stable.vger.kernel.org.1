@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01915C4A6E8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00968C4A650
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B70AD3B1F68
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F0BBE4F1C7F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF52334029C;
-	Tue, 11 Nov 2025 01:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8C433FE26;
+	Tue, 11 Nov 2025 01:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhcC6J4G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F00v38Ry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694D634028B;
-	Tue, 11 Nov 2025 01:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA29248883;
+	Tue, 11 Nov 2025 01:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823447; cv=none; b=ULhDCi8xwBhWE/K6Mjk123r6U1OFBAA1iWGRQ5Sow8dzOGkOH+L5mJqMMVmfdHbGOG1Nyt8UdPdYvooLSGEtFaj1sW5TtWqsgjZ/QZCjvVZJjR5lyZVtKppZSNQ+Vci+wkJ6WNHl1S5/+GcYeq3SALqVQUteTSBnyqBTfoHnbF8=
+	t=1762823452; cv=none; b=YSrCa+7CChy0TtbBGcc5uHTfh9Z+r0JhwuU0GpRbnkxgdRfSHhHt1Dn/2q6UxZxR+X/uR4gzzAPu6pW5YsyZavn6YC+tTz0PobAtMpxFhVY1U1QbXSCw6JM/0+JGOr4CO9f0NyNk9FunvWwOMIpwZO9tgYJYuYmuG+Fg/faqrkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823447; c=relaxed/simple;
-	bh=Kl616C37ioixlh5x3q+ofkfXt+AAZUiSEUH9Kp4NiLk=;
+	s=arc-20240116; t=1762823452; c=relaxed/simple;
+	bh=v5x84/pI+pOpqXV9le+fdA6yNOhu2sdNls6sBXTz3IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQEhRwcjTN/Ip8nKXH/uikjUJVXG5ro+K1mwoh105LJ5DJvaBSNc4FzETvEqBY4AKmtOyMNRg6LFhe0B+Tf7aqiLuKXCaji94mOSTppqRx3oNyi5e8EzULHrJdpx22dqkUjpikmytUTaB7x3w47TccrMp0H56ulsH9l2dneeWD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhcC6J4G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8DD3C2BC9E;
-	Tue, 11 Nov 2025 01:10:46 +0000 (UTC)
+	 MIME-Version; b=mIlW/+z+U8+G9tXuTF4TRW4QnYIobpC7JyDQZNZkqM4e1s8KZqzmmaHjU3OXSlxyLVl7DoDqLZFqLw0wACa+D0PAafFIZOppgIbN9RdtwB4LkgHQwfXyoTfkYtjC2D1pSDrOMoTaQiDgFbBX9Lwi79BLgWoA7gcYSTV9HZS36uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F00v38Ry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A37BC113D0;
+	Tue, 11 Nov 2025 01:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823447;
-	bh=Kl616C37ioixlh5x3q+ofkfXt+AAZUiSEUH9Kp4NiLk=;
+	s=korg; t=1762823451;
+	bh=v5x84/pI+pOpqXV9le+fdA6yNOhu2sdNls6sBXTz3IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QhcC6J4GMp8zsxYkduj5472NHAwnmZ8JLols2EnAYi5sr1eaax3f2GpNYceD3SKKt
-	 6sns/ilSWHsDQpmsIcd4minHeIfh5hof1Ki5XZO0N/FDLf6ASkKm9uiCp2U9CmLk04
-	 eNdORi/pOQjTI2Q1ft0Snv7WIGbr1GMg8c3OvsVM=
+	b=F00v38RyOAutbpOHA2uiklEF9n4ny7ByvucojLwpoGnW8sERLDl924ZrXFDuy7UnG
+	 Q7ZnBrlBZO/4HqBKs73Lr/twfB2MuRznOWOQlTBghWaM/ZY8kEiNtRH0E4k8jGueLG
+	 8WmPI6vHSVZY5oK20SVLk9rOSBDQsMC6bb8DJoXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oscar Maes <oscmaes92@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 248/565] net: ipv4: allow directed broadcast routes to use dst hint
-Date: Tue, 11 Nov 2025 09:41:44 +0900
-Message-ID: <20251111004532.488383835@linuxfoundation.org>
+Subject: [PATCH 6.12 249/565] scsi: mpi3mr: Fix I/O failures during controller reset
+Date: Tue, 11 Nov 2025 09:41:45 +0900
+Message-ID: <20251111004532.510765438@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,73 +66,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oscar Maes <oscmaes92@gmail.com>
+From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
 
-[ Upstream commit 1b8c5fa0cb35efd08f07f700e6d78a541ebabe26 ]
+[ Upstream commit b7b2176e30fc8e57664e5a8a23387af66eb7f72b ]
 
-Currently, ip_extract_route_hint uses RTN_BROADCAST to decide
-whether to use the route dst hint mechanism.
+I/Os can race with controller reset and fail.
 
-This check is too strict, as it prevents directed broadcast
-routes from using the hint, resulting in poor performance
-during bursts of directed broadcast traffic.
+Block requests at the mid layer when reset starts using
+scsi_host_block(), and resume with scsi_host_unblock() after reset
+completes.
 
-Fix this in ip_extract_route_hint and modify ip_route_use_hint
-to preserve the intended behaviour.
-
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250819174642.5148-2-oscmaes92@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Link: https://lore.kernel.org/r/20250820084138.228471-4-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_input.c | 11 +++++++----
- net/ipv4/route.c    |  2 +-
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c | 3 +++
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 2 ++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
-index b6e7d49213097..7b092ba6f5779 100644
---- a/net/ipv4/ip_input.c
-+++ b/net/ipv4/ip_input.c
-@@ -582,9 +582,13 @@ static void ip_sublist_rcv_finish(struct list_head *head)
- }
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index 08c751884b327..82cbe98e8a044 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -5372,6 +5372,7 @@ int mpi3mr_soft_reset_handler(struct mpi3mr_ioc *mrioc,
+ 	    mpi3mr_reset_rc_name(reset_reason));
  
- static struct sk_buff *ip_extract_route_hint(const struct net *net,
--					     struct sk_buff *skb, int rt_type)
-+					     struct sk_buff *skb)
- {
--	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST ||
-+	const struct iphdr *iph = ip_hdr(skb);
-+
-+	if (fib4_has_custom_rules(net) ||
-+	    ipv4_is_lbcast(iph->daddr) ||
-+	    ipv4_is_zeronet(iph->daddr) ||
- 	    IPCB(skb)->flags & IPSKB_MULTIPATH)
- 		return NULL;
- 
-@@ -614,8 +618,7 @@ static void ip_list_rcv_finish(struct net *net, struct sock *sk,
- 
- 		dst = skb_dst(skb);
- 		if (curr_dst != dst) {
--			hint = ip_extract_route_hint(net, skb,
--						     dst_rtable(dst)->rt_type);
-+			hint = ip_extract_route_hint(net, skb);
- 
- 			/* dispatch old sublist */
- 			if (!list_empty(&sublist))
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 7d04df4fc6608..96a01eb33653f 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2187,7 +2187,7 @@ int ip_route_use_hint(struct sk_buff *skb, __be32 daddr, __be32 saddr,
- 	if (ipv4_is_loopback(saddr) && !IN_DEV_NET_ROUTE_LOCALNET(in_dev, net))
- 		goto martian_source;
- 
--	if (rt->rt_type != RTN_LOCAL)
-+	if (!(rt->rt_flags & RTCF_LOCAL))
- 		goto skip_validate_source;
- 
- 	tos &= INET_DSCP_MASK;
+ 	mrioc->device_refresh_on = 0;
++	scsi_block_requests(mrioc->shost);
+ 	mrioc->reset_in_progress = 1;
+ 	mrioc->stop_bsgs = 1;
+ 	mrioc->prev_reset_result = -1;
+@@ -5480,6 +5481,7 @@ int mpi3mr_soft_reset_handler(struct mpi3mr_ioc *mrioc,
+ 	if (!retval) {
+ 		mrioc->diagsave_timeout = 0;
+ 		mrioc->reset_in_progress = 0;
++		scsi_unblock_requests(mrioc->shost);
+ 		mrioc->pel_abort_requested = 0;
+ 		if (mrioc->pel_enabled) {
+ 			mrioc->pel_cmds.retry_count = 0;
+@@ -5504,6 +5506,7 @@ int mpi3mr_soft_reset_handler(struct mpi3mr_ioc *mrioc,
+ 		mrioc->device_refresh_on = 0;
+ 		mrioc->unrecoverable = 1;
+ 		mrioc->reset_in_progress = 0;
++		scsi_unblock_requests(mrioc->shost);
+ 		mrioc->stop_bsgs = 0;
+ 		retval = -1;
+ 		mpi3mr_flush_cmds_for_unrecovered_controller(mrioc);
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index 1930e47cbf7bd..894d358ade75b 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -2839,12 +2839,14 @@ static void mpi3mr_preparereset_evt_th(struct mpi3mr_ioc *mrioc,
+ 		    "prepare for reset event top half with rc=start\n");
+ 		if (mrioc->prepare_for_reset)
+ 			return;
++		scsi_block_requests(mrioc->shost);
+ 		mrioc->prepare_for_reset = 1;
+ 		mrioc->prepare_for_reset_timeout_counter = 0;
+ 	} else if (evtdata->reason_code == MPI3_EVENT_PREPARE_RESET_RC_ABORT) {
+ 		dprint_event_th(mrioc,
+ 		    "prepare for reset top half with rc=abort\n");
+ 		mrioc->prepare_for_reset = 0;
++		scsi_unblock_requests(mrioc->shost);
+ 		mrioc->prepare_for_reset_timeout_counter = 0;
+ 	}
+ 	if ((event_reply->msg_flags & MPI3_EVENT_NOTIFY_MSGFLAGS_ACK_MASK)
 -- 
 2.51.0
 
