@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B476C4AE0B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:04 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9F6C4B223
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:01:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1066189725F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F10894FD54F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B3F335095;
-	Tue, 11 Nov 2025 01:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D79341642;
+	Tue, 11 Nov 2025 01:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G10eBUGh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crmBE5DH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED492BB17;
-	Tue, 11 Nov 2025 01:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA87305E24;
+	Tue, 11 Nov 2025 01:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824966; cv=none; b=VtnYRRN+yea87EAq51fX8BeFPTKoGYpe817qe1dppL4IcqHP/lRiHVmodQvq/2jkcPD4kaPfHNkFRoCstrrhlWhn4qWvXny/RTHRvZ0gTiOcHK2Th9VVtsr6CAFRW+nMIpL+qcUIyMOBHbYQSp5TQGE2zA1v3f0lXqCYNkhRt64=
+	t=1762825545; cv=none; b=ERLLuv8htxmtZmWUZwwLk1LQBi2VPKQyx99N1xuBHkXCmkkIPhBqaH5M/RqL/UFTYXIaKN+/VyPy3qu5MGIk2zbx0osiZLdWfMvK3Usx2FIP/rrsTuX5m06Q8/614qSds7y/Vb8kfwfpfQ8/fd6s5zwS5tkhs2x1e/2JtOPDoE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824966; c=relaxed/simple;
-	bh=NtGn3ftw8d8bViADqzHou2TV6NpC4TUs1fObCMqdK4s=;
+	s=arc-20240116; t=1762825545; c=relaxed/simple;
+	bh=cBMrFxb5zrADD1Wj7VPaY8jTrNPZpf75WBSmI2HY8Ys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nCvcMvfPY3zqUQCCpZwJP4MjXFPEH9DS4UYNazc57Iaco0gqmgt6dIgSeTSqzYdCcD5wiGcHnuWr2d6la7Ld75m5f1QY+hcryDBs6k3g0zM9eUc9YtU6itAtnU/NCbXN8haDmavGN2wKVYAywGAVm/erWWJ/19XB7m9l9Q+u7Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G10eBUGh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A39DC113D0;
-	Tue, 11 Nov 2025 01:36:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dFF3CgsG+j3VnWm1uDvxohATRREMGKXXehDFti/ZAfQ1K9aacNioBVxnQ5aHGD2278ZrsXdOyZLr+yKyRIOo2wjn9HtmAAOhHeWCejaY++RF1wYpIeO5cvpvn4Q2TqYt3bH6MReJ1UJMO4PazNl0fZywJSsMSNsIH2hywDKOa7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crmBE5DH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39881C4AF0B;
+	Tue, 11 Nov 2025 01:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824966;
-	bh=NtGn3ftw8d8bViADqzHou2TV6NpC4TUs1fObCMqdK4s=;
+	s=korg; t=1762825545;
+	bh=cBMrFxb5zrADD1Wj7VPaY8jTrNPZpf75WBSmI2HY8Ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G10eBUGhOFa3tM1O4rgI/bp2BjsDXIutD4gFPZaxVHboAzNvql3z5mD5QeUrnRMoP
-	 YEiqr5vmHhfK2BSgWp5ZYSMp5klqqNGhq0PKLTIJ4MsEvJzZd7kjeSYDV5A8Olz9h/
-	 hdq5tL3IcTL9pRdZkjZnjXSJsNb5OVNuD2L3gU+Q=
+	b=crmBE5DHboUPumn3MUpTNaX4LinIQWrk2qlnzh+iq4La4wPdCZ2/HYkNzh1m2j1wm
+	 W6ohyHZK1aZU+XsdHaFmD1zCqvwGEm30bMiJGTiBcgrUi+Phd8JCzIivkZGYZfTSa/
+	 sa+YM0pRVV8pXTxgtCnd1LrtQMcspAVOvphSqzN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Melissa Wen <mwen@igalia.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 559/565] drm/amd/display: update color on atomic commit time
-Date: Tue, 11 Nov 2025 09:46:55 +0900
-Message-ID: <20251111004539.586214064@linuxfoundation.org>
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.17 846/849] drm/amd/display: Reject modes with too high pixel clock on DCE6-10
+Date: Tue, 11 Nov 2025 09:46:56 +0900
+Message-ID: <20251111004556.873004663@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +60,162 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melissa Wen <mwen@igalia.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 2f9c63883730a0bfecb086e6e59246933f936ca1 upstream.
+commit 118800b0797a046adaa2a8e9dee9b971b78802a7 upstream.
 
-Use `atomic_commit_setup` to change the DC stream state. It's a
-preparation to remove from `atomic_check` changes in CRTC color
-components of DC stream state and prevent DC to commit TEST_ONLY
-changes.
+Reject modes with a pixel clock higher than the maximum display
+clock. Use 400 MHz as a fallback value when the maximum display
+clock is not known. Pixel clocks that are higher than the display
+clock just won't work and are not supported.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/4444
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Melissa Wen <mwen@igalia.com>
+With the addition of the YUV422	fallback, DC can now accidentally
+select a mode requiring higher pixel clock than actually supported
+when the DP version supports the required bandwidth but the clock
+is otherwise too high for the display engine. DCE 6-10 don't
+support these modes but they don't have a bandwidth calculation
+to reject them properly.
+
+Fixes: db291ed1732e ("drm/amd/display: Add fallback path for YCBCR422")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   36 +++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c      |    3 +++
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c     |    5 +++++
+ drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c |   10 +++++++++-
+ drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c   |   10 +++++++++-
+ drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c   |   10 +++++++++-
+ 5 files changed, 35 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -235,6 +235,7 @@ static int amdgpu_dm_encoder_init(struct
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
+@@ -463,6 +463,9 @@ void dce_clk_mgr_construct(
+ 		clk_mgr->max_clks_state = DM_PP_CLOCKS_STATE_NOMINAL;
+ 	clk_mgr->cur_min_clks_state = DM_PP_CLOCKS_STATE_INVALID;
  
- static int amdgpu_dm_connector_get_modes(struct drm_connector *connector);
++	base->clks.max_supported_dispclk_khz =
++		clk_mgr->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
++
+ 	dce_clock_read_integrated_info(clk_mgr);
+ 	dce_clock_read_ss_info(clk_mgr);
+ }
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+@@ -147,6 +147,8 @@ void dce60_clk_mgr_construct(
+ 		struct dc_context *ctx,
+ 		struct clk_mgr_internal *clk_mgr)
+ {
++	struct clk_mgr *base = &clk_mgr->base;
++
+ 	dce_clk_mgr_construct(ctx, clk_mgr);
  
-+static int amdgpu_dm_atomic_setup_commit(struct drm_atomic_state *state);
- static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state);
- 
- static int amdgpu_dm_atomic_check(struct drm_device *dev,
-@@ -3509,7 +3510,7 @@ static const struct drm_mode_config_func
- 
- static struct drm_mode_config_helper_funcs amdgpu_dm_mode_config_helperfuncs = {
- 	.atomic_commit_tail = amdgpu_dm_atomic_commit_tail,
--	.atomic_commit_setup = drm_dp_mst_atomic_setup_commit,
-+	.atomic_commit_setup = amdgpu_dm_atomic_setup_commit,
- };
- 
- static void update_connector_ext_caps(struct amdgpu_dm_connector *aconnector)
-@@ -9902,6 +9903,39 @@ static void dm_set_writeback(struct amdg
- 	drm_writeback_queue_job(wb_conn, new_con_state);
+ 	memcpy(clk_mgr->max_clks_by_state,
+@@ -157,5 +159,8 @@ void dce60_clk_mgr_construct(
+ 	clk_mgr->clk_mgr_shift = &disp_clk_shift;
+ 	clk_mgr->clk_mgr_mask = &disp_clk_mask;
+ 	clk_mgr->base.funcs = &dce60_funcs;
++
++	base->clks.max_supported_dispclk_khz =
++		clk_mgr->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
  }
  
-+static int amdgpu_dm_atomic_setup_commit(struct drm_atomic_state *state)
-+{
-+	struct drm_crtc *crtc;
-+	struct drm_crtc_state *old_crtc_state, *new_crtc_state;
-+	struct dm_crtc_state *dm_old_crtc_state, *dm_new_crtc_state;
-+	int i, ret;
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
+@@ -29,6 +29,7 @@
+ #include "stream_encoder.h"
+ 
+ #include "resource.h"
++#include "clk_mgr.h"
+ #include "include/irq_service_interface.h"
+ #include "virtual/virtual_stream_encoder.h"
+ #include "dce110/dce110_resource.h"
+@@ -843,10 +844,17 @@ static enum dc_status dce100_validate_ba
+ {
+ 	int i;
+ 	bool at_least_one_pipe = false;
++	struct dc_stream_state *stream = NULL;
++	const uint32_t max_pix_clk_khz = max(dc->clk_mgr->clks.max_supported_dispclk_khz, 400000);
+ 
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-		if (context->res_ctx.pipe_ctx[i].stream)
++		stream = context->res_ctx.pipe_ctx[i].stream;
++		if (stream) {
+ 			at_least_one_pipe = true;
 +
-+	ret = drm_dp_mst_atomic_setup_commit(state);
-+	if (ret)
-+		return ret;
-+
-+	for_each_oldnew_crtc_in_state(state, crtc, old_crtc_state, new_crtc_state, i) {
-+		dm_old_crtc_state = to_dm_crtc_state(old_crtc_state);
-+		dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
-+		/*
-+		 * Color management settings. We also update color properties
-+		 * when a modeset is needed, to ensure it gets reprogrammed.
-+		 */
-+		if (dm_new_crtc_state->base.active && dm_new_crtc_state->stream &&
-+		    (dm_new_crtc_state->base.color_mgmt_changed ||
-+		     dm_old_crtc_state->regamma_tf != dm_new_crtc_state->regamma_tf ||
-+		     drm_atomic_crtc_needs_modeset(new_crtc_state))) {
-+			ret = amdgpu_dm_update_crtc_color_mgmt(dm_new_crtc_state);
-+			if (ret) {
-+				drm_dbg_atomic(state->dev, "Failed to update color state\n");
-+				return ret;
-+			}
++			if (stream->timing.pix_clk_100hz >= max_pix_clk_khz * 10)
++				return DC_FAIL_BANDWIDTH_VALIDATE;
 +		}
-+	}
+ 	}
+ 
+ 	if (at_least_one_pipe) {
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
+@@ -34,6 +34,7 @@
+ #include "stream_encoder.h"
+ 
+ #include "resource.h"
++#include "clk_mgr.h"
+ #include "include/irq_service_interface.h"
+ #include "irq/dce60/irq_service_dce60.h"
+ #include "dce110/dce110_timing_generator.h"
+@@ -870,10 +871,17 @@ static enum dc_status dce60_validate_ban
+ {
+ 	int i;
+ 	bool at_least_one_pipe = false;
++	struct dc_stream_state *stream = NULL;
++	const uint32_t max_pix_clk_khz = max(dc->clk_mgr->clks.max_supported_dispclk_khz, 400000);
+ 
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-		if (context->res_ctx.pipe_ctx[i].stream)
++		stream = context->res_ctx.pipe_ctx[i].stream;
++		if (stream) {
+ 			at_least_one_pipe = true;
 +
-+	return 0;
-+}
++			if (stream->timing.pix_clk_100hz >= max_pix_clk_khz * 10)
++				return DC_FAIL_BANDWIDTH_VALIDATE;
++		}
+ 	}
+ 
+ 	if (at_least_one_pipe) {
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
+@@ -32,6 +32,7 @@
+ #include "stream_encoder.h"
+ 
+ #include "resource.h"
++#include "clk_mgr.h"
+ #include "include/irq_service_interface.h"
+ #include "irq/dce80/irq_service_dce80.h"
+ #include "dce110/dce110_timing_generator.h"
+@@ -876,10 +877,17 @@ static enum dc_status dce80_validate_ban
+ {
+ 	int i;
+ 	bool at_least_one_pipe = false;
++	struct dc_stream_state *stream = NULL;
++	const uint32_t max_pix_clk_khz = max(dc->clk_mgr->clks.max_supported_dispclk_khz, 400000);
+ 
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-		if (context->res_ctx.pipe_ctx[i].stream)
++		stream = context->res_ctx.pipe_ctx[i].stream;
++		if (stream) {
+ 			at_least_one_pipe = true;
 +
- /**
-  * amdgpu_dm_atomic_commit_tail() - AMDgpu DM's commit tail implementation.
-  * @state: The atomic state to commit
++			if (stream->timing.pix_clk_100hz >= max_pix_clk_khz * 10)
++				return DC_FAIL_BANDWIDTH_VALIDATE;
++		}
+ 	}
+ 
+ 	if (at_least_one_pipe) {
 
 
 
