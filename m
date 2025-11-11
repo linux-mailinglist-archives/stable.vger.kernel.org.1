@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCB3C4A5C6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:22:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13EDFC4A8FC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 16FC9340286
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A567D3B487E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460D1346FBA;
-	Tue, 11 Nov 2025 01:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E4430CDA1;
+	Tue, 11 Nov 2025 01:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBeOf1hj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFQDQG0S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007D6346FB0;
-	Tue, 11 Nov 2025 01:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF111F09B3;
+	Tue, 11 Nov 2025 01:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823715; cv=none; b=XO5HxSbU+R2SfCZvxqxfd0/qv20d3dCUNTquH/Kka46isEG8AyVdpQmTfYdxfC9pzEXN92i6BqCa8Iehd/uRD/w84rHt0p1eQu6XsrqDx1+ebNIzTCdm3gewgVTLLKVbdxBkp0EHBMHkykygLxP3s3QOPlE1bt4h1KYrRI3FUAA=
+	t=1762823719; cv=none; b=Q5+OEHO65jdWozX4F6jt6lMTVtMxyBpO9jPumsif7i6cmwmSPtjxtKxsNhrjVz/xIIB0JInqW9iWkDWqX//aFb1d4rP2NAeHNC1pxH3WnrRetEVWh2LY3mg3RZAX2f2r01I/zoQ0ltp8lH/1PV46JL4VgCVb36IWC34PL9tHFV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823715; c=relaxed/simple;
-	bh=VP5HehuQcPev/QNRPSoxKIxJ1Ptf/iRWw3CXvo5TzlM=;
+	s=arc-20240116; t=1762823719; c=relaxed/simple;
+	bh=0Y5vM24drnNVcjNRiPxnKm6ii86LIkoQxFVaV4zo6k8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LiUpNMByBwauChdiTpiCVTcAvfmyaZh2ESIosWaCkl/veOXD3DTDEf2f0yAHlotbDWCSIQGQ46Ra+Wx7yCtPbqbMhsQUfTjIhHFiLoFIMpp+zyQKFk1oZu6suCQtstepyZO73YjsCRH9T0nC9vlZYZMdoJTISHKXE7fccRn0x44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBeOf1hj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F056C116B1;
-	Tue, 11 Nov 2025 01:15:14 +0000 (UTC)
+	 MIME-Version; b=D1BBc1WLGn+tqbAk8OPppwsPcp6IhqdbvwHgY7owlTqRn2BsYFc9Z9KOjQnYsYWK2Hnk4oeCCbg9FFzDrV10NZX2aCT9nMBNL3zNmRVb/5Toqzr2ipWheEGwa4dESzAQswpeuk05kOjLUD0FSwYvX98k+DjiG9dggIQ2ALnIWiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFQDQG0S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1589DC116B1;
+	Tue, 11 Nov 2025 01:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823714;
-	bh=VP5HehuQcPev/QNRPSoxKIxJ1Ptf/iRWw3CXvo5TzlM=;
+	s=korg; t=1762823719;
+	bh=0Y5vM24drnNVcjNRiPxnKm6ii86LIkoQxFVaV4zo6k8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hBeOf1hjJUkBuEqDWOBMdgb0SEjCxDE9dvZnEp4VndYFIZh2CPD4MSkM/eUpLnK/O
-	 FU1STsb5UBPdldrKTjv4IlKJ2EtCvusAFQnL706TSnqIsASLs7jlma0T7eK0sCIm9r
-	 HRu3SgzoRak2Rb+YVNSLVGKhgdPRAuDhjnf+nl8Y=
+	b=xFQDQG0S+NR1XRsaWFwKlTppizF9sIT5TUEY76qIpLGLs0bxSVNk10sHS2O20DZcn
+	 w2+Nfmqd6qeqBbZus4lToWZO9c3kuV1PGlujk/x+zM8iC5ii70mVJuWLlkHs4mO0K9
+	 jfpdbSj2/mj1CoCvb8WActlklnM4XMw2SM7hLnYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 355/849] scsi: mpi3mr: Fix I/O failures during controller reset
-Date: Tue, 11 Nov 2025 09:38:45 +0900
-Message-ID: <20251111004545.003034553@linuxfoundation.org>
+Subject: [PATCH 6.17 356/849] scsi: mpi3mr: Fix controller init failure on fault during queue creation
+Date: Tue, 11 Nov 2025 09:38:46 +0900
+Message-ID: <20251111004545.025605025@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,70 +68,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
 
-[ Upstream commit b7b2176e30fc8e57664e5a8a23387af66eb7f72b ]
+[ Upstream commit 829fa1582b6ff607b0e2fe41ba1c45c77f686618 ]
 
-I/Os can race with controller reset and fail.
+Firmware can enter a transient fault while creating operational queues.
+The driver fails the load immediately.
 
-Block requests at the mid layer when reset starts using
-scsi_host_block(), and resume with scsi_host_unblock() after reset
-completes.
+Add a retry loop that checks controller status and history bit after
+queue creation. If either indicates a fault, retry init up to a set
+limit before failing.
 
 Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
-Link: https://lore.kernel.org/r/20250820084138.228471-4-chandrakanth.patil@broadcom.com
+Link: https://lore.kernel.org/r/20250820084138.228471-3-chandrakanth.patil@broadcom.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 3 +++
- drivers/scsi/mpi3mr/mpi3mr_os.c | 2 ++
- 2 files changed, 5 insertions(+)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index 0152d31d430ab..9e18cc2747104 100644
+index 9e18cc2747104..8fe6e0bf342e2 100644
 --- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
 +++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -5420,6 +5420,7 @@ int mpi3mr_soft_reset_handler(struct mpi3mr_ioc *mrioc,
- 	    mpi3mr_reset_rc_name(reset_reason));
+@@ -2353,6 +2353,8 @@ static int mpi3mr_create_op_queues(struct mpi3mr_ioc *mrioc)
+ {
+ 	int retval = 0;
+ 	u16 num_queues = 0, i = 0, msix_count_op_q = 1;
++	u32 ioc_status;
++	enum mpi3mr_iocstate ioc_state;
  
- 	mrioc->device_refresh_on = 0;
-+	scsi_block_requests(mrioc->shost);
- 	mrioc->reset_in_progress = 1;
- 	mrioc->stop_bsgs = 1;
- 	mrioc->prev_reset_result = -1;
-@@ -5528,6 +5529,7 @@ int mpi3mr_soft_reset_handler(struct mpi3mr_ioc *mrioc,
- 	if (!retval) {
- 		mrioc->diagsave_timeout = 0;
- 		mrioc->reset_in_progress = 0;
-+		scsi_unblock_requests(mrioc->shost);
- 		mrioc->pel_abort_requested = 0;
- 		if (mrioc->pel_enabled) {
- 			mrioc->pel_cmds.retry_count = 0;
-@@ -5552,6 +5554,7 @@ int mpi3mr_soft_reset_handler(struct mpi3mr_ioc *mrioc,
- 		mrioc->device_refresh_on = 0;
- 		mrioc->unrecoverable = 1;
- 		mrioc->reset_in_progress = 0;
-+		scsi_unblock_requests(mrioc->shost);
- 		mrioc->stop_bsgs = 0;
+ 	num_queues = min_t(int, mrioc->facts.max_op_reply_q,
+ 	    mrioc->facts.max_op_req_q);
+@@ -2408,6 +2410,14 @@ static int mpi3mr_create_op_queues(struct mpi3mr_ioc *mrioc)
  		retval = -1;
- 		mpi3mr_flush_cmds_for_unrecovered_controller(mrioc);
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
-index 1582cdbc66302..5516ac62a5065 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_os.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -2866,12 +2866,14 @@ static void mpi3mr_preparereset_evt_th(struct mpi3mr_ioc *mrioc,
- 		    "prepare for reset event top half with rc=start\n");
- 		if (mrioc->prepare_for_reset)
- 			return;
-+		scsi_block_requests(mrioc->shost);
- 		mrioc->prepare_for_reset = 1;
- 		mrioc->prepare_for_reset_timeout_counter = 0;
- 	} else if (evtdata->reason_code == MPI3_EVENT_PREPARE_RESET_RC_ABORT) {
- 		dprint_event_th(mrioc,
- 		    "prepare for reset top half with rc=abort\n");
- 		mrioc->prepare_for_reset = 0;
-+		scsi_unblock_requests(mrioc->shost);
- 		mrioc->prepare_for_reset_timeout_counter = 0;
+ 		goto out_failed;
  	}
- 	if ((event_reply->msg_flags & MPI3_EVENT_NOTIFY_MSGFLAGS_ACK_MASK)
++	ioc_status = readl(&mrioc->sysif_regs->ioc_status);
++	ioc_state = mpi3mr_get_iocstate(mrioc);
++	if ((ioc_status & MPI3_SYSIF_IOC_STATUS_RESET_HISTORY) ||
++	    ioc_state != MRIOC_STATE_READY) {
++		mpi3mr_print_fault_info(mrioc);
++		retval = -1;
++		goto out_failed;
++	}
+ 	mrioc->num_op_reply_q = mrioc->num_op_req_q = i;
+ 	ioc_info(mrioc,
+ 	    "successfully created %d operational queue pairs(default/polled) queue = (%d/%d)\n",
 -- 
 2.51.0
 
