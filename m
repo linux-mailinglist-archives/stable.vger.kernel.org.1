@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-193686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD12C4A9AB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F92C4AA54
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A6891888030
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:24:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 948531888E71
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F5B3491E1;
-	Tue, 11 Nov 2025 01:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA8F30103C;
+	Tue, 11 Nov 2025 01:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcxA1RbK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfDL5uE2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11C63491D0;
-	Tue, 11 Nov 2025 01:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26263009F1;
+	Tue, 11 Nov 2025 01:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823772; cv=none; b=jCRa6axn0qb9gXr2gKub1iMRbsSQI0vppu9Nd4A5YN5iESoyiZNq0TFhb1jitnH3WAJe5i+JAXFS/wjsNgSPpJMK3Pdi+Ba8nqeLBZL1uxZiipzSnTDayYLvlrTcVJH+pGyKefUVDS2boVGrKoDxZAz3LkafrKIuwJsqNKqSDZQ=
+	t=1762823830; cv=none; b=VXmQ+zTSuW2ZGcm5qpgz/z1371ptI5XIMCkWq1eJIQqExZieo/vGqOnKZMNsqr6z6/PEiTQbchtaurqirOkgqsKedXZ585nRXXxB9fo0QybpP9lFjnG4Z68V4nXDlgfBuoHw35XfLrsD7bY4Qe1JfoMBe1Ui8Yq2OHHFZnzx2kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823772; c=relaxed/simple;
-	bh=rbiWdiEQvavoRTWSS5Iwt6RFrPpO5seXLFZLs/QPFzM=;
+	s=arc-20240116; t=1762823830; c=relaxed/simple;
+	bh=CS4rX3wcZGOFx1ufKSEKCwo81pjup1mMFCau+aKlgqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reZnYqf12wkfeYOvgRxsgma5IcLvfAx+39njWrcbOEYxC6Ig0B5LUTatfFA+YD1qLD2ltRsVA2/iVs0hLEG715inQ0iqiJSPMi7d4868k9GzB+zVGBmVv5X0KK7tzbsFxKQ7yM74LSFom4nQdLdEY3kPyGkC3iahY5o1UVO+I9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcxA1RbK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D708C2BC86;
-	Tue, 11 Nov 2025 01:16:12 +0000 (UTC)
+	 MIME-Version; b=Mrv9IJwKYSMfOvysTJQiEf2uzln/S/4VWwgvKO3OtEBRAIxBokVDpSaOByjggiCWFIQSFFMvTR+a8i9pHLlF1L05QNGMhRIGLfzjUIU9D/FvDVRESVcUZahQg1UjVgM18TQUu58ueSPWYCMdjySQNW6ZNVegggA9+hli0B3LzWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfDL5uE2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35806C4CEFB;
+	Tue, 11 Nov 2025 01:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823772;
-	bh=rbiWdiEQvavoRTWSS5Iwt6RFrPpO5seXLFZLs/QPFzM=;
+	s=korg; t=1762823830;
+	bh=CS4rX3wcZGOFx1ufKSEKCwo81pjup1mMFCau+aKlgqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rcxA1RbKO61mkdhG+SCM/qKTHcWNEwpLThw5xeq8a6KenE/TGgkEqAdMv5YtNpu4/
-	 QcstLLbYcabwtt4XBvIr2mVU7g20wz3+QPIQRr5Q4FaA+yTl4uX+fcKuygHyh70Q62
-	 qKI0GAzmAblvno4eVJP/4e+ck+APb3VM4+lsB5Pw=
+	b=dfDL5uE2FqtKQpCGXdDE7oSL5Wlrigjv0BmQvCCQuOEn3f2I2mmcKTypAeL/W1raN
+	 9VwvwTgBlvwGqivaqBUEyRBX07f8PTL+Efgs1mdkEHI1/iXpkc93d+eFaE70qRCzpN
+	 k501JgwD4JQxkjnrmrh1UmQ9k1YXNRwsxPH3/8yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunsheng Luo <luochunsheng@ustc.edu>,
+	Fushuai Wang <wangfushuai@baidu.com>,
+	Li RongQing <lirongqing@baidu.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
 	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 366/849] fuse: zero initialize inode private data
-Date: Tue, 11 Nov 2025 09:38:56 +0900
-Message-ID: <20251111004545.269806099@linuxfoundation.org>
+Subject: [PATCH 6.17 367/849] virtio_fs: fix the hash table using in virtio_fs_enqueue_req()
+Date: Tue, 11 Nov 2025 09:38:57 +0900
+Message-ID: <20251111004545.295468523@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,44 +68,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Li RongQing <lirongqing@baidu.com>
 
-[ Upstream commit 3ca1b311181072415b6432a169de765ac2034e5a ]
+[ Upstream commit 7dbe6442487743ad492d9143f1f404c1f4a05e0e ]
 
-This is slightly tricky, since the VFS uses non-zeroing allocation to
-preserve some fields that are left in a consistent state.
+The original commit be2ff42c5d6e ("fuse: Use hash table to link
+processing request") converted fuse_pqueue->processing to a hash table,
+but virtio_fs_enqueue_req() was not updated to use it correctly.
+So use fuse_pqueue->processing as a hash table, this make the code
+more coherent
 
-Reported-by: Chunsheng Luo <luochunsheng@ustc.edu>
-Closes: https://lore.kernel.org/all/20250818083224.229-1-luochunsheng@ustc.edu/
+Co-developed-by: Fushuai Wang <wangfushuai@baidu.com>
+Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/inode.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ fs/fuse/dev.c       | 1 +
+ fs/fuse/virtio_fs.c | 6 ++++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index 7ddfd2b3cc9c4..7c0403a002e75 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -101,14 +101,11 @@ static struct inode *fuse_alloc_inode(struct super_block *sb)
- 	if (!fi)
- 		return NULL;
+diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+index dbf53c7bc8535..612d4da6d7d91 100644
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -322,6 +322,7 @@ unsigned int fuse_req_hash(u64 unique)
+ {
+ 	return hash_long(unique & ~FUSE_INT_REQ_BIT, FUSE_PQ_HASH_BITS);
+ }
++EXPORT_SYMBOL_GPL(fuse_req_hash);
  
--	fi->i_time = 0;
-+	/* Initialize private data (i.e. everything except fi->inode) */
-+	BUILD_BUG_ON(offsetof(struct fuse_inode, inode) != 0);
-+	memset((void *) fi + sizeof(fi->inode), 0, sizeof(*fi) - sizeof(fi->inode));
-+
- 	fi->inval_mask = ~0;
--	fi->nodeid = 0;
--	fi->nlookup = 0;
--	fi->attr_version = 0;
--	fi->orig_ino = 0;
--	fi->state = 0;
--	fi->submount_lookup = NULL;
- 	mutex_init(&fi->mutex);
- 	spin_lock_init(&fi->lock);
- 	fi->forget = fuse_alloc_forget();
+ /*
+  * A new request is available, wake fiq->waitq
+diff --git a/fs/fuse/virtio_fs.c b/fs/fuse/virtio_fs.c
+index 76c8fd0bfc75d..1751cd6e3d42b 100644
+--- a/fs/fuse/virtio_fs.c
++++ b/fs/fuse/virtio_fs.c
+@@ -20,6 +20,7 @@
+ #include <linux/cleanup.h>
+ #include <linux/uio.h>
+ #include "fuse_i.h"
++#include "fuse_dev_i.h"
+ 
+ /* Used to help calculate the FUSE connection's max_pages limit for a request's
+  * size. Parts of the struct fuse_req are sliced into scattergather lists in
+@@ -1384,7 +1385,7 @@ static int virtio_fs_enqueue_req(struct virtio_fs_vq *fsvq,
+ 	unsigned int out_sgs = 0;
+ 	unsigned int in_sgs = 0;
+ 	unsigned int total_sgs;
+-	unsigned int i;
++	unsigned int i, hash;
+ 	int ret;
+ 	bool notify;
+ 	struct fuse_pqueue *fpq;
+@@ -1444,8 +1445,9 @@ static int virtio_fs_enqueue_req(struct virtio_fs_vq *fsvq,
+ 
+ 	/* Request successfully sent. */
+ 	fpq = &fsvq->fud->pq;
++	hash = fuse_req_hash(req->in.h.unique);
+ 	spin_lock(&fpq->lock);
+-	list_add_tail(&req->list, fpq->processing);
++	list_add_tail(&req->list, &fpq->processing[hash]);
+ 	spin_unlock(&fpq->lock);
+ 	set_bit(FR_SENT, &req->flags);
+ 	/* matches barrier in request_wait_answer() */
 -- 
 2.51.0
 
