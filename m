@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D4AC4A274
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:04:00 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39746C4A27A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:04:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 94F6E4F33CC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 024E74F3679
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0A926B0B7;
-	Tue, 11 Nov 2025 01:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A11C25EF9C;
+	Tue, 11 Nov 2025 01:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDpUDy1C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JetkWtO+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B27267B07;
-	Tue, 11 Nov 2025 01:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99157262A;
+	Tue, 11 Nov 2025 01:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822834; cv=none; b=XaevnhDjKAi6Z8qOyDyxX9ovDn+bwn0OC0nROT3P2iyrC96yLEWfRU3kr39rUmdO/03O2J3FPuTgbsj3z/3iOMgbr9Q1zhG5fPc7JVxLhW41w8reZsP6Sc9ZHynkJdNLsbY1Nj8UvRpXoctxGz0okiECsR2oGT8oqin51/EY/Rw=
+	t=1762822838; cv=none; b=nL9xSqYxNS3oawn+KE0PlSz3A7cfqLAUNh5LQhSsTUam2DhAv/bqLptc+q/GM2l66lDXVzVvt2tji9hSWDl7yoUYRnWHiM2FJT499GuJMMWIOh52DWa9n0YyGl43MtewWmQfIUShnmU1mIbE77mE1IvhEEwkyr6/0CKg1aeOe0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822834; c=relaxed/simple;
-	bh=3n8WJyd06KpaKCzcTxj2iZFWuMth0nujntvJzbLOT+I=;
+	s=arc-20240116; t=1762822838; c=relaxed/simple;
+	bh=/UfDtX14bQkNVlqwNF+K2GDz5lWLcxvVcFnuNwk6cX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fvUXDXGCAzersI5r6b92WucPW/YTbaQuN4jWiEREC35E4pjVtIhnexQL7k2ZWYiYMgk+5utXnGJ9iPeLW5v6PTRHwWki+Y6C6tsA2wULlx1am7JiasUrzbPUlKyhP/3156FWDTNQ7xFv7pHIL4hqNHlHK8G+FDTGelSky5Fxs9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDpUDy1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAFBC19424;
-	Tue, 11 Nov 2025 01:00:33 +0000 (UTC)
+	 MIME-Version; b=tnjh+2Bj4dXyilO4uKtPd/rYKWXioj4Vbh0Gqu0oEr+ixIZsu6t/QmkCdjx4RlUf+DqjeXS/4SxCbIekwW56Tf4wBianwSjfr1z/zAJji6v+oIKCSXcXOfhrA8AOpH8U07fZgnqH8rKxY0AsCF5iiJJDH2BXbo8ZCiRY+Coxt/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JetkWtO+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F9BC4CEF5;
+	Tue, 11 Nov 2025 01:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822834;
-	bh=3n8WJyd06KpaKCzcTxj2iZFWuMth0nujntvJzbLOT+I=;
+	s=korg; t=1762822838;
+	bh=/UfDtX14bQkNVlqwNF+K2GDz5lWLcxvVcFnuNwk6cX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZDpUDy1CWGVm/Th5JgomTDHRYhvYqbgQfNyKiw911HjSwKmb993zhViLZgOJdHmm4
-	 ap9F014w+mrVE7ZcizvFY2aboZIp77MjW+tzSnnvEalpC4Ggg/lKB3mP/9G7kn42C6
-	 VQK0kpSKIp+/f9FRrhbqdHP+1OUgwIKRok6RZ7Js=
+	b=JetkWtO+7D3s+o48FhiBllY0HmXi6+HnDrSVSgJI65o2F3a6sq5emxnG0N6Y7S/0P
+	 xtl5p0iv9hscvHNPr5sKc8tduYjyceumbqmnq396I3FvjxXlJ2RX9WgXUiW+9+sZGq
+	 lqUiPOyeFQIWJEbKwe/Y4PyYOEDaEEjcPqrGy3eA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avadhut Naik <avadhut.naik@amd.com>,
+	Rong Zhang <i@rong.moe>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 117/565] hwmon: (k10temp) Add thermal support for AMD Family 1Ah-based models
-Date: Tue, 11 Nov 2025 09:39:33 +0900
-Message-ID: <20251111004529.588284170@linuxfoundation.org>
+Subject: [PATCH 6.12 118/565] hwmon: (k10temp) Add device ID for Strix Halo
+Date: Tue, 11 Nov 2025 09:39:34 +0900
+Message-ID: <20251111004529.610099303@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,48 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Avadhut Naik <avadhut.naik@amd.com>
+From: Rong Zhang <i@rong.moe>
 
-[ Upstream commit f116af2eb51ed9df24911537fda32a033f1c58da ]
+[ Upstream commit e5d1e313d7b6272d6dfda983906d99f97ad9062b ]
 
-Add thermal info support for newer AMD Family 1Ah-based models.
+The device ID of Strix Halo Data Fabric Function 3 has been in the tree
+since commit 0e640f0a47d8 ("x86/amd_nb: Add new PCI IDs for AMD family
+0x1a"), but is somehow missing from k10temp_id_table.
 
-Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-Link: https://lore.kernel.org/r/20250729001644.257645-1-avadhut.naik@amd.com
+Add it so that it works out of the box.
+
+Tested on Beelink GTR9 Pro Mini PC.
+
+Signed-off-by: Rong Zhang <i@rong.moe>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20250823180443.85512-1-i@rong.moe
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/k10temp.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/hwmon/k10temp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
-index 7dc19c5d62ac3..c457ba4706197 100644
+index c457ba4706197..ccf0e9e853acd 100644
 --- a/drivers/hwmon/k10temp.c
 +++ b/drivers/hwmon/k10temp.c
-@@ -84,6 +84,13 @@ static DEFINE_MUTEX(nb_smu_ind_mutex);
-  */
- #define AMD_I3255_STR				"3255"
- 
-+/*
-+ * PCI Device IDs for AMD's Family 1Ah-based SOCs.
-+ * Defining locally as IDs are not shared.
-+ */
-+#define PCI_DEVICE_ID_AMD_1AH_M50H_DF_F3	0x12cb
-+#define PCI_DEVICE_ID_AMD_1AH_M90H_DF_F3	0x127b
-+
- struct k10temp_data {
- 	struct pci_dev *pdev;
- 	void (*read_htcreg)(struct pci_dev *pdev, u32 *regval);
-@@ -542,7 +549,9 @@ static const struct pci_device_id k10temp_id_table[] = {
- 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_19H_M78H_DF_F3) },
- 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_1AH_M00H_DF_F3) },
+@@ -551,6 +551,7 @@ static const struct pci_device_id k10temp_id_table[] = {
  	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_1AH_M20H_DF_F3) },
-+	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_1AH_M50H_DF_F3) },
+ 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_1AH_M50H_DF_F3) },
  	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_1AH_M60H_DF_F3) },
-+	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_1AH_M90H_DF_F3) },
++	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_1AH_M70H_DF_F3) },
+ 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_1AH_M90H_DF_F3) },
  	{ PCI_VDEVICE(HYGON, PCI_DEVICE_ID_AMD_17H_DF_F3) },
  	{}
- };
 -- 
 2.51.0
 
