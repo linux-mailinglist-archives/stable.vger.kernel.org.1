@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-193450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A65C4A546
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:19:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58475C4A554
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:19:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 370141893403
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:15:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 017801893A32
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243B7347BC3;
-	Tue, 11 Nov 2025 01:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6C3348479;
+	Tue, 11 Nov 2025 01:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auaqCw6y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hK6kATXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44CB346E58;
-	Tue, 11 Nov 2025 01:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1448F348458;
+	Tue, 11 Nov 2025 01:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823212; cv=none; b=OwFffBDpzrjz8nYQYsvV6Sjg7ePuD6DKAIiVktXLTMsdJT5BzJ0jV2tCtz6mjTzfcuRr9QY7+79Oo+uKqoYyovTioV94+6SnzZ9J41E488aa3m6eaw4If+wOizW28zKXdV1TYVHphui1a+RAOO+G5xRVAR9c4+72CRRShDKCyNM=
+	t=1762823218; cv=none; b=MbWHQEOFTgrJuX+deai+S4N1qp1OPT6Z9kcPXy7+/oXgs7CuF+p+txB5X/bpsBEzh65QjspyQRDFvM9B/Kqwb41bafFGydd77rDLF/eJFTp27j2amaJluv8Ay9hVAAtKqbwLChZdqX6EODE1d8V5wjgj1ZCy020K2CqmqecHKmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823212; c=relaxed/simple;
-	bh=FMNQxagkNx4aAsnD5Y9YqHBwncNUcji6/lX6wjdRmYk=;
+	s=arc-20240116; t=1762823218; c=relaxed/simple;
+	bh=7QWHfAlwuPhsFFqfqwO0NO24Hoh3+CDyLkJO93wbG4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NPYQ9sz4zyU2tbXsIM7M5fmxOiutktPdjIthoueP2vgtIoOa7hqZ9kfnhqYyP68+r3RyuX5O0cob6M4lMMHOiyGmYFOxqID8gkJoP/Gjtub2hqv9OFBXZHD8xIX/Szw8iyQWt4TmvrZ8Jt1SEIzVbzVyJ4XP+f6ngRt0CYvEEP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auaqCw6y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0A1C116B1;
-	Tue, 11 Nov 2025 01:06:52 +0000 (UTC)
+	 MIME-Version; b=AUYM/573j+mc8sOZairp/AHAAVzr6jJimaf0acQdDJ7e8JpZBYzzf2hJz4EO510j7yJCzxlJHZeiKJnq2BZ3TT6WtALZeIzKGOV0IHoM9PeOy8/ecCGyUlTsJK4Yr4vofm1LnmhUo+D5JRSOwwswXVEsEiXCvoUxgSVohA7Hy9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hK6kATXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2C8C116B1;
+	Tue, 11 Nov 2025 01:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823212;
-	bh=FMNQxagkNx4aAsnD5Y9YqHBwncNUcji6/lX6wjdRmYk=;
+	s=korg; t=1762823217;
+	bh=7QWHfAlwuPhsFFqfqwO0NO24Hoh3+CDyLkJO93wbG4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=auaqCw6y3EOOQv1EMzWdTsdghaG5Atq+PK13zYfVj9ag2Ao9WBtWYxERfcVvk2HWW
-	 ZYkaWZML2ieEi01co9Bng3MIGwakDc/e7HzVMuAg7ZN/z0025OzOz3xcaVr+sTcmB5
-	 X2u3z5k5hA5zu/7QcbvFcXNH4NyOI+bFQLBTGTcE=
+	b=hK6kATXpcxtmplY81Saen9dNFgzObDCowyvVh/E0DrTYH0pJ9mZiyXMHVJXQMSYcs
+	 4pTEEzTcajSEBUQWdhvl1C63rk9s4JrfpE5UbAibN+iXFxkmfE/WkErADkAjaZfk7F
+	 iSiBOT0N9Cs3mek5t6sFQWTXYMx4L2mcnwGAWd0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunxiang Li <Yunxiang.Li@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 254/849] drm/amdgpu: skip mgpu fan boost for multi-vf
-Date: Tue, 11 Nov 2025 09:37:04 +0900
-Message-ID: <20251111004542.569086454@linuxfoundation.org>
+Subject: [PATCH 6.17 255/849] drm/amd/display: fix dmub access race condition
+Date: Tue, 11 Nov 2025 09:37:05 +0900
+Message-ID: <20251111004542.593270397@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,34 +69,137 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yunxiang Li <Yunxiang.Li@amd.com>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-[ Upstream commit ba5e322b2617157edb757055252a33587b6729e0 ]
+[ Upstream commit c210b757b400959577a5a17b783b5959b82baed8 ]
 
-On multi-vf setup if the VM have two vf assigned, perhaps from two
-different gpus, mgpu fan boost will fail.
+Accessing DC from amdgpu_dm is usually preceded by acquisition of
+dc_lock mutex. Most of the DC API that DM calls are under a DC lock.
+However, there are a few that are not. Some DC API called from interrupt
+context end up sending DMUB commands via a DC API, while other threads were
+using DMUB. This was apparent from a race between calls for setting idle
+optimization enable/disable and the DC API to set vmin/vmax.
 
-Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Offload the call to dc_stream_adjust_vmin_vmax() to a thread instead
+of directly calling them from the interrupt handler such that it waits
+for dc_lock.
+
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 55 +++++++++++++++++--
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h | 14 +++++
+ 2 files changed, 63 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index dfa68cb411966..097ceee79ece6 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3389,7 +3389,7 @@ static int amdgpu_device_enable_mgpu_fan_boost(void)
- 	for (i = 0; i < mgpu_info.num_dgpu; i++) {
- 		gpu_ins = &(mgpu_info.gpu_ins[i]);
- 		adev = gpu_ins->adev;
--		if (!(adev->flags & AMD_IS_APU) &&
-+		if (!(adev->flags & AMD_IS_APU || amdgpu_sriov_multi_vf_mode(adev)) &&
- 		    !gpu_ins->mgpu_fan_enabled) {
- 			ret = amdgpu_dpm_enable_mgpu_fan_boost(adev);
- 			if (ret)
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 163780030eb16..aca57cc815514 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -541,6 +541,50 @@ static void dm_pflip_high_irq(void *interrupt_params)
+ 		      amdgpu_crtc->crtc_id, amdgpu_crtc, vrr_active, (int)!e);
+ }
+ 
++static void dm_handle_vmin_vmax_update(struct work_struct *offload_work)
++{
++	struct vupdate_offload_work *work = container_of(offload_work, struct vupdate_offload_work, work);
++	struct amdgpu_device *adev = work->adev;
++	struct dc_stream_state *stream = work->stream;
++	struct dc_crtc_timing_adjust *adjust = work->adjust;
++
++	mutex_lock(&adev->dm.dc_lock);
++	dc_stream_adjust_vmin_vmax(adev->dm.dc, stream, adjust);
++	mutex_unlock(&adev->dm.dc_lock);
++
++	dc_stream_release(stream);
++	kfree(work->adjust);
++	kfree(work);
++}
++
++static void schedule_dc_vmin_vmax(struct amdgpu_device *adev,
++	struct dc_stream_state *stream,
++	struct dc_crtc_timing_adjust *adjust)
++{
++	struct vupdate_offload_work *offload_work = kzalloc(sizeof(*offload_work), GFP_KERNEL);
++	if (!offload_work) {
++		drm_dbg_driver(adev_to_drm(adev), "Failed to allocate vupdate_offload_work\n");
++		return;
++	}
++
++	struct dc_crtc_timing_adjust *adjust_copy = kzalloc(sizeof(*adjust_copy), GFP_KERNEL);
++	if (!adjust_copy) {
++		drm_dbg_driver(adev_to_drm(adev), "Failed to allocate adjust_copy\n");
++		kfree(offload_work);
++		return;
++	}
++
++	dc_stream_retain(stream);
++	memcpy(adjust_copy, adjust, sizeof(*adjust_copy));
++
++	INIT_WORK(&offload_work->work, dm_handle_vmin_vmax_update);
++	offload_work->adev = adev;
++	offload_work->stream = stream;
++	offload_work->adjust = adjust_copy;
++
++	queue_work(system_wq, &offload_work->work);
++}
++
+ static void dm_vupdate_high_irq(void *interrupt_params)
+ {
+ 	struct common_irq_params *irq_params = interrupt_params;
+@@ -590,10 +634,9 @@ static void dm_vupdate_high_irq(void *interrupt_params)
+ 				    acrtc->dm_irq_params.stream,
+ 				    &acrtc->dm_irq_params.vrr_params);
+ 
+-				dc_stream_adjust_vmin_vmax(
+-				    adev->dm.dc,
+-				    acrtc->dm_irq_params.stream,
+-				    &acrtc->dm_irq_params.vrr_params.adjust);
++				schedule_dc_vmin_vmax(adev,
++					acrtc->dm_irq_params.stream,
++					&acrtc->dm_irq_params.vrr_params.adjust);
+ 				spin_unlock_irqrestore(&adev_to_drm(adev)->event_lock, flags);
+ 			}
+ 		}
+@@ -683,8 +726,8 @@ static void dm_crtc_high_irq(void *interrupt_params)
+ 					     acrtc->dm_irq_params.stream,
+ 					     &acrtc->dm_irq_params.vrr_params);
+ 
+-		dc_stream_adjust_vmin_vmax(adev->dm.dc, acrtc->dm_irq_params.stream,
+-					   &acrtc->dm_irq_params.vrr_params.adjust);
++		schedule_dc_vmin_vmax(adev, acrtc->dm_irq_params.stream,
++				&acrtc->dm_irq_params.vrr_params.adjust);
+ 	}
+ 
+ 	/*
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index b937da0a4e4a0..c18a6b43c76f6 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -152,6 +152,20 @@ struct idle_workqueue {
+ 	bool running;
+ };
+ 
++/**
++ * struct dm_vupdate_work - Work data for periodic action in idle
++ * @work: Kernel work data for the work event
++ * @adev: amdgpu_device back pointer
++ * @stream: DC stream associated with the crtc
++ * @adjust: DC CRTC timing adjust to be applied to the crtc
++ */
++struct vupdate_offload_work {
++	struct work_struct work;
++	struct amdgpu_device *adev;
++	struct dc_stream_state *stream;
++	struct dc_crtc_timing_adjust *adjust;
++};
++
+ #define MAX_LUMINANCE_DATA_POINTS 99
+ 
+ /**
 -- 
 2.51.0
 
