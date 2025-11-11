@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD0CC4ABF2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE479C4A737
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 687613B7A4A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:27:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5B5BC3433F9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A52F305976;
-	Tue, 11 Nov 2025 01:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87FD305940;
+	Tue, 11 Nov 2025 01:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyDgHldb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTiYAe44"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384BD306B39;
-	Tue, 11 Nov 2025 01:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AEA306B39;
+	Tue, 11 Nov 2025 01:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823878; cv=none; b=MYjSRJc/FPntjxo7FApO8Xg2ZMqhe/06U4KAjsrlmTzi98FwAmGCyRDzST/h0OzAeDMRyvXvSMF6sULkRsMeH8nEA5pXahK9PhegwIadCMQUv3K+XKm4SMq4HZHXrjBsUekFDsbOprCCbN3uWYspOcxKLgxuYrllx4Vx6S0Z4E8=
+	t=1762823885; cv=none; b=k4aHWs4V3hmq/F6ogYsE5u6xSZJ5wh2jUnrV4aM0MCmi6HPzlleNnBB/9t/qBTv44mmVjOU9dVTsi2OzdQ/6H3r1krM/mcPBCWH5PTgKvctW1vvfJDrw0HtYMr5XX3KZ4a2O8eUb5YTozhXCLo9f/8PWRpL66KN0+dcOpfDTCj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823878; c=relaxed/simple;
-	bh=1rQtIYz3pjOD19fMnaTxsV0FGOfy/AyIVuy98WeD60U=;
+	s=arc-20240116; t=1762823885; c=relaxed/simple;
+	bh=RouH9wHRR+vd0fYLPmi2Kb3MmVQrPT5JY++AH+DEA1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dtz/l90VXbCFhalrTBxU+ZcMAYbi2FhTF5buttX8OmLW8OZQhq/7DOTjXFxHI+FYV2/hadZseYGMag1zThVm6qCR9etHRHrWrYcQ5ASjsAPQJuDu60sXHIPcNNiXah+NlFtcKz6lqwMdU2bne7aHqHhnJ/FXBLtEfjwBGmnZMQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyDgHldb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4685C19421;
-	Tue, 11 Nov 2025 01:17:57 +0000 (UTC)
+	 MIME-Version; b=FycEq3SEMGEP6rfdekJTyxLdnj6a5XSwhpIYgDNZO5Bk6wfpf+Q1JKpNIMHPXP6R4BneHYHeoLFulQLE3wAiOS1EVp/vLw1K70Tos4SFbE6FxJAB6QWcduGx37j+JUWtFcqceMHJms8H5ZvyfGeHJbsKagiuMKjfQchHCieEWBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTiYAe44; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD58C19424;
+	Tue, 11 Nov 2025 01:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823878;
-	bh=1rQtIYz3pjOD19fMnaTxsV0FGOfy/AyIVuy98WeD60U=;
+	s=korg; t=1762823885;
+	bh=RouH9wHRR+vd0fYLPmi2Kb3MmVQrPT5JY++AH+DEA1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KyDgHldb5bsvjFXDEI10TP4A1nqMRUPcnF1oMDDkxS9YJLiNfC3hS9pSFOQkZHgzD
-	 fOvVGJEbDCkVNySI81z35/M+4uMDEFMXzcwk9zzdDcXxeS+MeB6GlfQnGT49br0f/i
-	 3XCxEFHQu8m5ldKjsyEUM7Gy9H0uVK/j6UKkvTqo=
+	b=WTiYAe44/CvlA34IHucWrapPG1mV8ibhAoJUzQbxJW6HyziFIXdk+LU0I5xC5br0M
+	 8X4+kBkwZH69lm3SE6lZiOUheXDE1X16Gwki3gxIBQf/eM48/0VsS23iWjzZGENbf0
+	 l2wKITAGG+CjiI2vkJWaO6cI1tqvSB3z2OCAgoc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Wangyang Guo <wangyang.guo@intel.com>,
+	David Ahern <dsahern@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 342/565] x86/kvm: Prefer native qspinlock for dedicated vCPUs irrespective of PV_UNHALT
-Date: Tue, 11 Nov 2025 09:43:18 +0900
-Message-ID: <20251111004534.572633093@linuxfoundation.org>
+Subject: [PATCH 6.12 343/565] selftests: Disable dad for ipv6 in fcnal-test.sh
+Date: Tue, 11 Nov 2025 09:43:19 +0900
+Message-ID: <20251111004534.593050614@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,78 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: David Ahern <dsahern@kernel.org>
 
-[ Upstream commit 960550503965094b0babd7e8c83ec66c8a763b0b ]
+[ Upstream commit 53d591730ea34f97a82f7ec6e7c987ca6e34dc21 ]
 
-The commit b2798ba0b876 ("KVM: X86: Choose qspinlock when dedicated
-physical CPUs are available") states that when PV_DEDICATED=1
-(vCPU has dedicated pCPU), qspinlock should be preferred regardless of
-PV_UNHALT.  However, the current implementation doesn't reflect this: when
-PV_UNHALT=0, we still use virt_spin_lock() even with dedicated pCPUs.
+Constrained test environment; duplicate address detection is not needed
+and causes races so disable it.
 
-This is suboptimal because:
-1. Native qspinlocks should outperform virt_spin_lock() for dedicated
-   vCPUs irrespective of HALT exiting
-2. virt_spin_lock() should only be preferred when vCPUs may be preempted
-   (non-dedicated case)
-
-So reorder the PV spinlock checks to:
-1. First handle dedicated pCPU case (disable virt_spin_lock_key)
-2. Second check single CPU, and nopvspin configuration
-3. Only then check PV_UNHALT support
-
-This ensures we always use native qspinlock for dedicated vCPUs, delivering
-pretty performance gains at high contention levels.
-
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Wangyang Guo <wangyang.guo@intel.com>
-Link: https://lore.kernel.org/r/20250722110005.4988-1-lirongqing@baidu.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250910025828.38900-1-dsahern@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/kvm.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ tools/testing/selftests/net/fcnal-test.sh | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index bd21c568bc2ad..46887d60348ef 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -1089,16 +1089,6 @@ static void kvm_wait(u8 *ptr, u8 val)
-  */
- void __init kvm_spinlock_init(void)
- {
--	/*
--	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
--	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
--	 * preferred over native qspinlock when vCPU is preempted.
--	 */
--	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
--		pr_info("PV spinlocks disabled, no host support\n");
--		return;
--	}
--
- 	/*
- 	 * Disable PV spinlocks and use native qspinlock when dedicated pCPUs
- 	 * are available.
-@@ -1118,6 +1108,16 @@ void __init kvm_spinlock_init(void)
- 		goto out;
- 	}
+diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
+index 46324e73f5035..a7edf43245c2a 100755
+--- a/tools/testing/selftests/net/fcnal-test.sh
++++ b/tools/testing/selftests/net/fcnal-test.sh
+@@ -424,6 +424,8 @@ create_ns()
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.keep_addr_on_down=1
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.forwarding=1
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.forwarding=1
++	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.accept_dad=0
++	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.accept_dad=0
+ }
  
-+	/*
-+	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
-+	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
-+	 * preferred over native qspinlock when vCPU is preempted.
-+	 */
-+	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
-+		pr_info("PV spinlocks disabled, no host support\n");
-+		return;
-+	}
-+
- 	pr_info("PV spinlocks enabled\n");
- 
- 	__pv_init_lock_hash();
+ # create veth pair to connect namespaces and apply addresses.
 -- 
 2.51.0
 
