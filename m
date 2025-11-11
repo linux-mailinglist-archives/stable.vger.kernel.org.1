@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-194092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB30C4AE3E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2776C4A80F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 598593B08E5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93430188E083
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4FC301707;
-	Tue, 11 Nov 2025 01:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C882D97A4;
+	Tue, 11 Nov 2025 01:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5dTn4NB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+w5OPXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA9C301477;
-	Tue, 11 Nov 2025 01:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0C5263F52;
+	Tue, 11 Nov 2025 01:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824788; cv=none; b=DUZ2GB2i6LUwh3u2hSIbGhSrwFphcVDkdDMucGNkxrxY9YfOtgw7sJogPZUvkcq5p79hdrZQ4EVJaQScWwGkBW+kO+kA+XdqcjXDN6gDF93GFqPPT3abpOCenU4BQZKVgNh+whkW5VHYP+Va6na2RJjluO6bbeFe1YmrhN8wUT4=
+	t=1762823608; cv=none; b=rLbZqDYHWv4uLH7iguuY0J+wehLm/g2NUu/EFHCc0jwa5srP5Z4HMsoA8YEdWnSbND4c2ZN5SbCcxspRxnwp+F/bbEEJrnE1HPYk0+ng3ryKcRpla8LiKAzUiIwU1G6uB0vIYGPMcHO3j32a0uQuIrB4UbXLl7xyU9/K5Z//1TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824788; c=relaxed/simple;
-	bh=igWHXWBpwkGEvtjFojt/761aEwfTCfqHb7Ajl3FXWPM=;
+	s=arc-20240116; t=1762823608; c=relaxed/simple;
+	bh=wauE9aZTGxd/FkJuO4pvuzvmBp0eGXz5ZMkzjHnGi4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G336z5iX6yOiV5A+hWlqKnCUz97uQloM/OVRAuaSy/C04a/Cu8x7wkImAJSyFDgcg12Q21PnGKIlr4HNqdp8UXQ7aemrZ/9NvRgJJe6IKCXiUUVi0rtWpAf8DoKEe+mcp1RxzZ2eZJORkhcgF1F0SGgdxf25rI04c6te1CALbuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5dTn4NB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2B6C19421;
-	Tue, 11 Nov 2025 01:33:07 +0000 (UTC)
+	 MIME-Version; b=FNguCjUX0QfyVtgKUbrjiAKJ+VRI+pwnXebs6qm97HAaN2TgfIhklsVWD2BiLRlmWhYCgfWF8vL2DUFiFYzFBroj7ic8rTzIr4lBe9Oe+jCGNmXmZHf8FS6katZUnDB/qYMWvdFzJe//91xz13OTIB9HuiDaOcXCP9fpS+CcY5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+w5OPXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35832C4CEF5;
+	Tue, 11 Nov 2025 01:13:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824788;
-	bh=igWHXWBpwkGEvtjFojt/761aEwfTCfqHb7Ajl3FXWPM=;
+	s=korg; t=1762823608;
+	bh=wauE9aZTGxd/FkJuO4pvuzvmBp0eGXz5ZMkzjHnGi4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P5dTn4NBkDLUUKkoyDITWNph6nTCLHHkNth2BQQ6EZqh7h1QzTscOr1P8njNKzZvy
-	 W0XFis5vuB2H6yvGHZe7XUWfS+SpDP8EC/naivqu01qsPK1/THqLXkTtWRRGTCqFSk
-	 8nGRjZeeCfO+9ETH0C5JPagNSOVgkMMwEh9PwylA=
+	b=1+w5OPXmybj1T+ZIP5tWvZq68HtXoy7eoQ6DoNlO84dIfdjOOjEX1OjZcFV4R/IN5
+	 CQJrIrV6A1naCPe9MWTyuWrs/YsCANMR13uQZo3THcm4UPhobD6yXiPZu4tnPl43sB
+	 PZgs1yVttbyheJU7Aa+QScqEN5DtEBBbdtvpYMuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nai-Chen Cheng <bleach1827@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 570/849] selftests/Makefile: include $(INSTALL_DEP_TARGETS) in clean target to clean net/lib dependency
-Date: Tue, 11 Nov 2025 09:42:20 +0900
-Message-ID: <20251111004550.192849215@linuxfoundation.org>
+Subject: [PATCH 6.12 285/565] drm/msm/dsi/phy_7nm: Fix missing initial VCO rate
+Date: Tue, 11 Nov 2025 09:42:21 +0900
+Message-ID: <20251111004533.289985963@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nai-Chen Cheng <bleach1827@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit d3f7457da7b9527a06dbcbfaf666aa51ac2eeb53 ]
+[ Upstream commit 5ddcb0cb9d10e6e70a68e0cb8f0b8e3a7eb8ccaf ]
 
-The selftests 'make clean' does not clean the net/lib because it only
-processes $(TARGETS) and ignores $(INSTALL_DEP_TARGETS). This leaves
-compiled objects in net/lib after cleaning, requiring manual cleanup.
+Driver unconditionally saves current state on first init in
+dsi_pll_7nm_init(), but does not save the VCO rate, only some of the
+divider registers.  The state is then restored during probe/enable via
+msm_dsi_phy_enable() -> msm_dsi_phy_pll_restore_state() ->
+dsi_7nm_pll_restore_state().
 
-Include $(INSTALL_DEP_TARGETS) in clean target to ensure net/lib
-dependency is properly cleaned.
+Restoring calls dsi_pll_7nm_vco_set_rate() with
+pll_7nm->vco_current_rate=0, which basically overwrites existing rate of
+VCO and messes with clock hierarchy, by setting frequency to 0 to clock
+tree.  This makes anyway little sense - VCO rate was not saved, so
+should not be restored.
 
-Signed-off-by: Nai-Chen Cheng <bleach1827@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://patch.msgid.link/20250910-selftests-makefile-clean-v1-1-29e7f496cd87@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+If PLL was not configured configure it to minimum rate to avoid glitches
+and configuring entire in clock hierarchy to 0 Hz.
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/657827/
+Link: https://lore.kernel.org/r/20250610-b4-sm8750-display-v6-9-ee633e3ddbff@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 030da61dbff3a..a2d8e1093b005 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -314,7 +314,7 @@ gen_tar: install
- 	@echo "Created ${TAR_PATH}"
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+index ec5aa8cb37d9a..0f8440fa73b4a 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+@@ -814,6 +814,12 @@ static int dsi_pll_7nm_init(struct msm_dsi_phy *phy)
  
- clean:
--	@for TARGET in $(TARGETS); do \
-+	@for TARGET in $(TARGETS) $(INSTALL_DEP_TARGETS); do \
- 		BUILD_TARGET=$$BUILD/$$TARGET;	\
- 		$(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET clean;\
- 	done;
+ 	/* TODO: Remove this when we have proper display handover support */
+ 	msm_dsi_phy_pll_save_state(phy);
++	/*
++	 * Store also proper vco_current_rate, because its value will be used in
++	 * dsi_7nm_pll_restore_state().
++	 */
++	if (!dsi_pll_7nm_vco_recalc_rate(&pll_7nm->clk_hw, VCO_REF_CLK_RATE))
++		pll_7nm->vco_current_rate = pll_7nm->phy->cfg->min_pll_rate;
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
