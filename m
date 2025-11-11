@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-194283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B85BC4B11F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:17 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E83C4A933
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C16D03AEEA0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 42D13344991
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F3D30BF77;
-	Tue, 11 Nov 2025 01:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B883009F1;
+	Tue, 11 Nov 2025 01:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="en5ZwcjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPEnBo/H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F58B30FC15;
-	Tue, 11 Nov 2025 01:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BD42FF672;
+	Tue, 11 Nov 2025 01:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825236; cv=none; b=pv1Tt1s4tgCGG4UtLsPzZuVCJkv0fwVwNa3+mk1iFtbpm44TXz6IlhaT6aIG4ByEANRzfVh9U7MMfxY69uKjnyVPAyYian8TbN9/0BPrpGwetULgmnDAEOYMAc7tF0ptt5L/Q0kwuqWL9CRb+fNmm0w8R/Dzn0aVvvGLGupPFHg=
+	t=1762824389; cv=none; b=YsdRzBX2hlLsgz6fkoTr1qaBJC7O87TmEOWcjIU1twybgWYvoLfHQJ+qaaXq+1HsEmimoFS7NJ5XO+nulGfwyenlCAwaL6btboN9bropSN1Noa0X3inq4rTlu14qh941E1DGmTN2lKnW/Mzh0znEdj9ed6ZEcoP5P8ypnjddpG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825236; c=relaxed/simple;
-	bh=bWsidbBnZcYnGPiScsdAyEL23XNOVxRlQ6YHOzGH6DE=;
+	s=arc-20240116; t=1762824389; c=relaxed/simple;
+	bh=GhXE/lPKjaA9WH4xtwBs0iV+/dsKGsczVQWHtovlGxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uo6i+IXSYymq9WidH/W8ic//NWCN9KkAawprSpuVbUrgiuXL7hKRHNEXFM7Y8GJc+ubKondbSQmf9Uij0IyUu7+v5xw1dC7uRtUDjUktzqrEGchR0ivyXxnp8WBuy8xQLD20bKvlkR3CVQ8/0/cAbf4wERkIZZSWkG+mCYZKQjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=en5ZwcjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EB8C116D0;
-	Tue, 11 Nov 2025 01:40:35 +0000 (UTC)
+	 MIME-Version; b=QPU+mO1RxyU/rzqh4iwODfHj5KzfgdjCYLIPCykNZGL76QZD3l9u06A8w7APwtdY6XkNDBUcsiio1dskLzNyWeOClz3K9vbNo3DMQ5FriFvGmes3OUYuoKqeAb2BMawQ14zvpylnMiy0+BQtE0qhmdGork3S2k+RZa12jvecTPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPEnBo/H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B89C113D0;
+	Tue, 11 Nov 2025 01:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825236;
-	bh=bWsidbBnZcYnGPiScsdAyEL23XNOVxRlQ6YHOzGH6DE=;
+	s=korg; t=1762824389;
+	bh=GhXE/lPKjaA9WH4xtwBs0iV+/dsKGsczVQWHtovlGxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=en5ZwcjM1XxKpr5p6Iwvbz1i8gcI4q97CSdYFr4dRZmSgr2nbp+63NM/tF41+mHVv
-	 jfAqWy5EIU6mbON3fH8IJYlJe+HzA+tsUdzfd1MXYxBVgjyC/DLzm9tnpUMZSNqkeA
-	 kEzXJiCSTRwTf8nnQd+2Upq28qB50D1HaojzjQcw=
+	b=ZPEnBo/HDpsDK1pOwZ0VvU0tBA/oScSirlLW+M3W3OWMvYiqrbw2AZ2yo/IhodMxL
+	 VfU3jqv8QyrHJzNi0PE8PS5SC8pYghfBaHuGFLpGv1jVuiw2BV4KzCybgIzv7xfjaR
+	 /hsitcd+LIGQ7nYIPnqlXzxtBGZk8SYNu886x+hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Yael Chemla <ychemla@nvidia.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 719/849] LoongArch: Handle new atomic instructions for probes
-Date: Tue, 11 Nov 2025 09:44:49 +0900
-Message-ID: <20251111004553.817119615@linuxfoundation.org>
+Subject: [PATCH 6.12 434/565] net/mlx5e: Dont query FEC statistics when FEC is disabled
+Date: Tue, 11 Nov 2025 09:44:50 +0900
+Message-ID: <20251111004536.642009470@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +66,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit db740f5689e61f2e75b73e5c8e7c985a3b4bc045 ]
+[ Upstream commit 6b81b8a0b1978284e007566d7a1607b47f92209f ]
 
-The atomic instructions sc.q, llacq.{w/d}, screl.{w/d} were newly added
-in the LoongArch Reference Manual v1.10, it is necessary to handle them
-in insns_not_supported() to avoid putting a breakpoint in the middle of
-a ll/sc atomic sequence, otherwise it will loop forever for kprobes and
-uprobes.
+Update mlx5e_stats_fec_get() to check the active FEC mode and skip
+statistics collection when FEC is disabled.
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Link: https://patch.msgid.link/20250924124037.1508846-3-vadim.fedorenko@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/inst.h |  5 +++++
- arch/loongarch/kernel/inst.c      | 12 ++++++++++++
- 2 files changed, 17 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_stats.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/inst.h b/arch/loongarch/include/asm/inst.h
-index 277d2140676b6..55e64a12a124a 100644
---- a/arch/loongarch/include/asm/inst.h
-+++ b/arch/loongarch/include/asm/inst.h
-@@ -77,6 +77,10 @@ enum reg2_op {
- 	iocsrwrh_op     = 0x19205,
- 	iocsrwrw_op     = 0x19206,
- 	iocsrwrd_op     = 0x19207,
-+	llacqw_op	= 0xe15e0,
-+	screlw_op	= 0xe15e1,
-+	llacqd_op	= 0xe15e2,
-+	screld_op	= 0xe15e3,
- };
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
+index 611ec4b6f3709..2f077ad1e810b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
+@@ -1413,16 +1413,13 @@ static void fec_set_rs_stats(struct ethtool_fec_stats *fec_stats, u32 *ppcnt)
+ }
  
- enum reg2i5_op {
-@@ -189,6 +193,7 @@ enum reg3_op {
- 	fldxd_op	= 0x7068,
- 	fstxs_op	= 0x7070,
- 	fstxd_op	= 0x7078,
-+	scq_op		= 0x70ae,
- 	amswapw_op	= 0x70c0,
- 	amswapd_op	= 0x70c1,
- 	amaddw_op	= 0x70c2,
-diff --git a/arch/loongarch/kernel/inst.c b/arch/loongarch/kernel/inst.c
-index 72ecfed29d55a..bf037f0c6b26c 100644
---- a/arch/loongarch/kernel/inst.c
-+++ b/arch/loongarch/kernel/inst.c
-@@ -141,6 +141,9 @@ bool insns_not_supported(union loongarch_instruction insn)
- 	case amswapw_op ... ammindbdu_op:
- 		pr_notice("atomic memory access instructions are not supported\n");
- 		return true;
-+	case scq_op:
-+		pr_notice("sc.q instruction is not supported\n");
-+		return true;
- 	}
+ static void fec_set_block_stats(struct mlx5e_priv *priv,
++				int mode,
+ 				struct ethtool_fec_stats *fec_stats)
+ {
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	u32 out[MLX5_ST_SZ_DW(ppcnt_reg)] = {};
+ 	u32 in[MLX5_ST_SZ_DW(ppcnt_reg)] = {};
+ 	int sz = MLX5_ST_SZ_BYTES(ppcnt_reg);
+-	int mode = fec_active_mode(mdev);
+-
+-	if (mode == MLX5E_FEC_NOFEC)
+-		return;
  
- 	switch (insn.reg2i14_format.opcode) {
-@@ -152,6 +155,15 @@ bool insns_not_supported(union loongarch_instruction insn)
- 		return true;
- 	}
- 
-+	switch (insn.reg2_format.opcode) {
-+	case llacqw_op:
-+	case llacqd_op:
-+	case screlw_op:
-+	case screld_op:
-+		pr_notice("llacq and screl instructions are not supported\n");
-+		return true;
-+	}
+ 	MLX5_SET(ppcnt_reg, in, local_port, 1);
+ 	MLX5_SET(ppcnt_reg, in, grp, MLX5_PHYSICAL_LAYER_COUNTERS_GROUP);
+@@ -1463,11 +1460,14 @@ static void fec_set_corrected_bits_total(struct mlx5e_priv *priv,
+ void mlx5e_stats_fec_get(struct mlx5e_priv *priv,
+ 			 struct ethtool_fec_stats *fec_stats)
+ {
+-	if (!MLX5_CAP_PCAM_FEATURE(priv->mdev, ppcnt_statistical_group))
++	int mode = fec_active_mode(priv->mdev);
 +
- 	switch (insn.reg1i21_format.opcode) {
- 	case bceqz_op:
- 		pr_notice("bceqz and bcnez instructions are not supported\n");
++	if (mode == MLX5E_FEC_NOFEC ||
++	    !MLX5_CAP_PCAM_FEATURE(priv->mdev, ppcnt_statistical_group))
+ 		return;
+ 
+ 	fec_set_corrected_bits_total(priv, fec_stats);
+-	fec_set_block_stats(priv, fec_stats);
++	fec_set_block_stats(priv, mode, fec_stats);
+ }
+ 
+ #define PPORT_ETH_EXT_OFF(c) \
 -- 
 2.51.0
 
