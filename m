@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B59C4ADAB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F32C4B00C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:53:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E988D3B51BC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7114C1897E24
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8681248883;
-	Tue, 11 Nov 2025 01:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BB9344053;
+	Tue, 11 Nov 2025 01:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDvQlTTB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8/fkYwt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E191F5F6;
-	Tue, 11 Nov 2025 01:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E903469EF;
+	Tue, 11 Nov 2025 01:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824513; cv=none; b=AZlsgQeM25SdABROjIkm9wHzkWgswnyXIrFG3D6Ei4VpLM/cpzeljKp0gLR6Vcs0mRI8KBQysUmAtUqxYnzCsouu0BDgpt1oXwl/vlNm11iUj8dlp+Q/tCsAq1vv6/RiSh0uJa9IS5xNqaWn1UbXcpUAeHTyUrS+tQj0xTcHNhU=
+	t=1762825262; cv=none; b=L6c2/jnoYMtx0PVZIJ1XKBjuwYOe1rDmuOV/S6YHv7i10HQLrI2lQMQd3xlrdGA3LlTOVVWuNn6qNbAkCM0a1PpFFkQ1aRQt8JAJnbhaUx3RgxOYAMlHkMtY9q752sOzEvPO7P4H072ONzCV+R03Ans4yaTw450d/ZimroeWGWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824513; c=relaxed/simple;
-	bh=+h+AZDZ/tlxdfvGQLc+4H4wjdwVL/FcHwOOyawiNRVc=;
+	s=arc-20240116; t=1762825262; c=relaxed/simple;
+	bh=IcecD+fJyhTxeEhcvVvUGjxabnciChEoqXFUMSREJDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H7+4sklvE1kc/rg4MOYPpwDvNFFIkSZKEvWGB7idLm+DE/1AozVm0tR4/5ngziQpypXw1/bIU/+stKelyx4z6EyEN0HsXO4mUayo+vLiNj6g4hm+vOLC0qx7EfXRO2SubIM40q/KC6+PJSRXF8mvXhOYvzDH4otUjpRSRmlWQy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDvQlTTB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCF4C4CEF5;
-	Tue, 11 Nov 2025 01:28:33 +0000 (UTC)
+	 MIME-Version; b=dvNgS6bnz/RLirRmG0cWIRrx45bzt09Gu+ayPsV1eQS0slERqGQgOr1G90QEvvnWQz9tBgYs+QlN4/RVpsF6iTnHYLQP7ruLzREAxdycxu42sRV7p7JmJff5S3CU7aKHlNDBtTrTTGDee7aVk1rXK/xk1rQQ+q8HJU+J1pIH2Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8/fkYwt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F29C2BC86;
+	Tue, 11 Nov 2025 01:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824513;
-	bh=+h+AZDZ/tlxdfvGQLc+4H4wjdwVL/FcHwOOyawiNRVc=;
+	s=korg; t=1762825261;
+	bh=IcecD+fJyhTxeEhcvVvUGjxabnciChEoqXFUMSREJDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RDvQlTTBJpknY0lSJ0HttK2HzeOk6KaSLRWXE1+0AAZDqMOAKUDGd0lyTAEky8Oqx
-	 0vVW2cSjX1uuahTec3kwdcZMpNh6s0dxxh4sx4nPWdpt6X53/+04oscAYg7o2gh5Dd
-	 dxj4xTQq5KC8lU6SPzPQTxponkHDJPYL+U5UndDE=
+	b=Y8/fkYwtSWkRlkS5HC25n/YZ/Doe2zRkVfFJCcXZWC+/9JXQ4Tobn2MOk3DM8PpMQ
+	 dAfyRQLsLX+eopvB2T2fhOxB+OHF3GCmTh5TEwi8Gjb5FfoICG9m3oAMioDTFtY2kY
+	 iUa/z29W9bR0aYGmP2ud27xgx6gEbyKv+q2Hp7SQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chi Zhiling <chizhiling@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
+	Valerio Setti <vsetti@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 442/565] exfat: limit log print for IO error
-Date: Tue, 11 Nov 2025 09:44:58 +0900
-Message-ID: <20251111004536.828636172@linuxfoundation.org>
+Subject: [PATCH 6.17 729/849] ASoC: meson: aiu-encoder-i2s: fix bit clock polarity
+Date: Tue, 11 Nov 2025 09:44:59 +0900
+Message-ID: <20251111004554.059710498@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chi Zhiling <chizhiling@kylinos.cn>
+From: Valerio Setti <vsetti@baylibre.com>
 
-[ Upstream commit 6dfba108387bf4e71411b3da90b2d5cce48ba054 ]
+[ Upstream commit 4c4ed5e073a923fb3323022e1131cb51ad8df7a0 ]
 
-For exFAT filesystems with 4MB read_ahead_size, removing the storage device
-when the read operation is in progress, which cause the last read syscall
-spent 150s [1]. The main reason is that exFAT generates excessive log
-messages [2].
+According to I2S specs audio data is sampled on the rising edge of the
+clock and it can change on the falling one. When operating in normal mode
+this SoC behaves the opposite so a clock polarity inversion is required
+in this case.
 
-After applying this patch, approximately 300,000 lines of log messages
-were suppressed, and the delay of the last read() syscall was reduced
-to about 4 seconds.
+This was tested on an OdroidC2 (Amlogic S905 SoC) board.
 
-[1]:
-write(5, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 131072) = 131072 <0.000120>
-read(4, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 131072) = 131072 <0.000032>
-write(5, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 131072) = 131072 <0.000119>
-read(4, 0x7fccf28ae000, 131072)         = -1 EIO (Input/output error) <150.186215>
-
-[2]:
-[  333.696603] exFAT-fs (vdb): error, failed to access to FAT (entry 0x0000d780, err:-5)
-[  333.697378] exFAT-fs (vdb): error, failed to access to FAT (entry 0x0000d780, err:-5)
-[  333.698156] exFAT-fs (vdb): error, failed to access to FAT (entry 0x0000d780, err:-5)
-
-Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Valerio Setti <vsetti@baylibre.com>
+Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
+Tested-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://patch.msgid.link/20251007-fix-i2s-polarity-v1-1-86704d9cda10@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/fatent.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ sound/soc/meson/aiu-encoder-i2s.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
-index 0c60ddc24c54a..2c3ab6313cc98 100644
---- a/fs/exfat/fatent.c
-+++ b/fs/exfat/fatent.c
-@@ -89,35 +89,36 @@ int exfat_ent_get(struct super_block *sb, unsigned int loc,
- 	int err;
+diff --git a/sound/soc/meson/aiu-encoder-i2s.c b/sound/soc/meson/aiu-encoder-i2s.c
+index a0dd914c8ed13..3b4061508c180 100644
+--- a/sound/soc/meson/aiu-encoder-i2s.c
++++ b/sound/soc/meson/aiu-encoder-i2s.c
+@@ -236,8 +236,12 @@ static int aiu_encoder_i2s_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+ 	    inv == SND_SOC_DAIFMT_IB_IF)
+ 		val |= AIU_CLK_CTRL_LRCLK_INVERT;
  
- 	if (!is_valid_cluster(sbi, loc)) {
--		exfat_fs_error(sb, "invalid access to FAT (entry 0x%08x)",
-+		exfat_fs_error_ratelimit(sb,
-+			"invalid access to FAT (entry 0x%08x)",
- 			loc);
- 		return -EIO;
- 	}
+-	if (inv == SND_SOC_DAIFMT_IB_NF ||
+-	    inv == SND_SOC_DAIFMT_IB_IF)
++	/*
++	 * The SoC changes data on the rising edge of the bitclock
++	 * so an inversion of the bitclock is required in normal mode
++	 */
++	if (inv == SND_SOC_DAIFMT_NB_NF ||
++	    inv == SND_SOC_DAIFMT_NB_IF)
+ 		val |= AIU_CLK_CTRL_AOCLK_INVERT;
  
- 	err = __exfat_ent_get(sb, loc, content);
- 	if (err) {
--		exfat_fs_error(sb,
-+		exfat_fs_error_ratelimit(sb,
- 			"failed to access to FAT (entry 0x%08x, err:%d)",
- 			loc, err);
- 		return err;
- 	}
- 
- 	if (*content == EXFAT_FREE_CLUSTER) {
--		exfat_fs_error(sb,
-+		exfat_fs_error_ratelimit(sb,
- 			"invalid access to FAT free cluster (entry 0x%08x)",
- 			loc);
- 		return -EIO;
- 	}
- 
- 	if (*content == EXFAT_BAD_CLUSTER) {
--		exfat_fs_error(sb,
-+		exfat_fs_error_ratelimit(sb,
- 			"invalid access to FAT bad cluster (entry 0x%08x)",
- 			loc);
- 		return -EIO;
- 	}
- 
- 	if (*content != EXFAT_EOF_CLUSTER && !is_valid_cluster(sbi, *content)) {
--		exfat_fs_error(sb,
-+		exfat_fs_error_ratelimit(sb,
- 			"invalid access to FAT (entry 0x%08x) bogus content (0x%08x)",
- 			loc, *content);
- 		return -EIO;
+ 	/* Signal skew */
+@@ -328,4 +332,3 @@ const struct snd_soc_dai_ops aiu_encoder_i2s_dai_ops = {
+ 	.startup	= aiu_encoder_i2s_startup,
+ 	.shutdown	= aiu_encoder_i2s_shutdown,
+ };
+-
 -- 
 2.51.0
 
