@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E44DC4AB89
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCAF3C4ABEC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00DA83B344B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3448C3B217C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD39133F8B1;
-	Tue, 11 Nov 2025 01:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC09829A30A;
+	Tue, 11 Nov 2025 01:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LxMb4koc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bTI6KqO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFB329B78F;
-	Tue, 11 Nov 2025 01:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8030263F4E;
+	Tue, 11 Nov 2025 01:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824010; cv=none; b=ErWjvuOcoa3fM+FFTLdi/zwbSrb1g7J/nyId1Ua6tLGv7ttBBcWSHa+VoeKaFemB0XnsZz33vJFKZQ1phrvlkxrsXOzJIHmyftjl6jsMrux2EX7yj6ThcgpEEB4KvRKWKtlNtwId6NRVZRHjOQQ2Hhsj+iBuoPofDK2KhQNqnYg=
+	t=1762824015; cv=none; b=Gj8FpHwPtFhGrJ6QMKzC/sQaiB/SlKvSoZghytk6F8U0+raCQ6vbhHX9xopF6XMwDYYktND3z6m6Rfsil0bM+e4JJxH78UqN0SfVfgz96UaCApkgb2UJatdYwT9yX0K+vsWcwMb57oqZshhSjBf1aMD7iGZwGk+dVY9oeZ1lmsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824010; c=relaxed/simple;
-	bh=0KeWRVUDqFvp0AOcDqKLVjcrXKxzjCNujjwoguAc+7g=;
+	s=arc-20240116; t=1762824015; c=relaxed/simple;
+	bh=dA/YASby1sQVdctUN4rMNttzeJxtJ5AyH10Xl5/EBhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=py80a6GGt0jX7NZU9IANO4G1U9uRlz7gU0iEl5mEPMOlby4NfpBPHSCty2VVzW/xUvB4kZLl0bYY2gvhODw8Ss9D1KTERxpNTsse+6fUHeORm8enY89KCcyOxl942gG+ZTSuEzo3s2Ov+vGIW6xU4GQLcS5JECuJ/bkRUksuDb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LxMb4koc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A20C116B1;
-	Tue, 11 Nov 2025 01:20:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Sqb9491kIvfHPbZF68g807hjc60UUM1Wi89HGDvjyQZz/K7BGXSsR/DOitQCyB59VD2WJKU4YWwOYqjNvUvUBnAMiRpe7mzu0SrQOI4k32m7a4jXSeknymjEFZZUz4/jNIh/i+zy8U6itHrf6RnnoceSP+U/W7UkLVGK1LGZFwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bTI6KqO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F375DC19424;
+	Tue, 11 Nov 2025 01:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824010;
-	bh=0KeWRVUDqFvp0AOcDqKLVjcrXKxzjCNujjwoguAc+7g=;
+	s=korg; t=1762824015;
+	bh=dA/YASby1sQVdctUN4rMNttzeJxtJ5AyH10Xl5/EBhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LxMb4kocJnGi/i6C7poaOP3WqSjGDtvJywrnrS+QKIOovHx7zuyfBt4/DHogWicDr
-	 xYOdLsHK3/f57I6X49SDIcdyk6ZQRdml2w6gB5wHx4ayyIurEA04oYH9POyPtpwbrq
-	 /tJn4Btop0rJ7bKiqMFKRC7m+sPnopa3BtWSKlno=
+	b=1bTI6KqOQonss+VUq2VI2ho3UCUxh6FRBr+Sgo9tncNATm3lTIGbWWRPwTWYPbMqI
+	 zgQi4mToZyHR7AOecOXPsaWvlSzZXIW8wQbCJKl5oCXtJRQbur38S8iDR24hRw4rTv
+	 5tFPx+a0kI/kNXKkVV/VeDIx4S6aim3qaZUbioCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Matt Atwood <matthew.s.atwood@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 370/565] drm/xe/guc: Return an error code if the GuC load fails
-Date: Tue, 11 Nov 2025 09:43:46 +0900
-Message-ID: <20251111004535.191496084@linuxfoundation.org>
+Subject: [PATCH 6.12 371/565] drm/amdgpu: reject gang submissions under SRIOV
+Date: Tue, 11 Nov 2025 09:43:47 +0900
+Message-ID: <20251111004535.213643464@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -61,98 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Harrison <John.C.Harrison@Intel.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 3b09b11805bfee32d5a0000f5ede42c07237a6c4 ]
+[ Upstream commit d7ddcf921e7d0d8ebe82e89635bc9dc26ba9540d ]
 
-Due to multiple explosion issues in the early days of the Xe driver,
-the GuC load was hacked to never return a failure. That prevented
-kernel panics and such initially, but now all it achieves is creating
-more confusing errors when the driver tries to submit commands to a
-GuC it already knows is not there. So fix that up.
+Gang submission means that the kernel driver guarantees that multiple
+submissions are executed on the HW at the same time on different engines.
 
-As a stop-gap and to help with debug of load failures due to invalid
-GuC init params, a wedge call had been added to the inner GuC load
-function. The reason being that it leaves the GuC log accessible via
-debugfs. However, for an end user, simply aborting the module load is
-much cleaner than wedging and trying to continue. The wedge blocks
-user submissions but it seems that various bits of the driver itself
-still try to submit to a dead GuC and lots of subsequent errors occur.
-And with regards to developers debugging why their particular code
-change is being rejected by the GuC, it is trivial to either add the
-wedge back in and hack the return code to zero again or to just do a
-GuC log dump to dmesg.
+Background is that those submissions then depend on each other and each
+can't finish stand alone.
 
-v2: Add support for error injection testing and drop the now redundant
-wedge call.
+SRIOV now uses world switch to preempt submissions on the engines to allow
+sharing the HW resources between multiple VFs.
 
-CC: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Reviewed-by: Matt Atwood <matthew.s.atwood@intel.com>
-Link: https://lore.kernel.org/r/20250909224132.536320-1-John.C.Harrison@Intel.com
+The problem is now that the SRIOV world switch can't know about such inter
+dependencies and will cause a timeout if it waits for a partially running
+gang submission.
+
+To conclude SRIOV and gang submissions are fundamentally incompatible at
+the moment. For now just disable them.
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc.c b/drivers/gpu/drm/xe/xe_guc.c
-index 907a458c9eff5..bedd9894e182e 100644
---- a/drivers/gpu/drm/xe/xe_guc.c
-+++ b/drivers/gpu/drm/xe/xe_guc.c
-@@ -593,7 +593,7 @@ static s32 guc_pc_get_cur_freq(struct xe_guc_pc *guc_pc)
- #endif
- #define GUC_LOAD_TIME_WARN_MS      200
- 
--static void guc_wait_ucode(struct xe_guc *guc)
-+static int guc_wait_ucode(struct xe_guc *guc)
- {
- 	struct xe_gt *gt = guc_to_gt(guc);
- 	struct xe_guc_pc *guc_pc = &gt->uc.guc.pc;
-@@ -699,7 +699,7 @@ static void guc_wait_ucode(struct xe_guc *guc)
- 			break;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 187263c0406ef..082fc12fe28dc 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -286,7 +286,7 @@ static int amdgpu_cs_pass1(struct amdgpu_cs_parser *p,
  		}
- 
--		xe_device_declare_wedged(gt_to_xe(gt));
-+		return -EPROTO;
- 	} else if (delta_ms > GUC_LOAD_TIME_WARN_MS) {
- 		xe_gt_warn(gt, "excessive init time: %lldms! [status = 0x%08X, timeouts = %d]\n",
- 			   delta_ms, status, count);
-@@ -711,7 +711,10 @@ static void guc_wait_ucode(struct xe_guc *guc)
- 			  delta_ms, xe_guc_pc_get_act_freq(guc_pc), guc_pc_get_cur_freq(guc_pc),
- 			  before_freq, status, count);
  	}
-+
-+	return 0;
- }
-+ALLOW_ERROR_INJECTION(guc_wait_ucode, ERRNO);
  
- static int __xe_guc_upload(struct xe_guc *guc)
- {
-@@ -743,14 +746,16 @@ static int __xe_guc_upload(struct xe_guc *guc)
- 		goto out;
- 
- 	/* Wait for authentication */
--	guc_wait_ucode(guc);
-+	ret = guc_wait_ucode(guc);
-+	if (ret)
-+		goto out;
- 
- 	xe_uc_fw_change_status(&guc->fw, XE_UC_FIRMWARE_RUNNING);
- 	return 0;
- 
- out:
- 	xe_uc_fw_change_status(&guc->fw, XE_UC_FIRMWARE_LOAD_FAIL);
--	return 0	/* FIXME: ret, don't want to stop load currently */;
-+	return ret;
- }
- 
- static int vf_guc_min_load_for_hwconfig(struct xe_guc *guc)
+-	if (!p->gang_size) {
++	if (!p->gang_size || (amdgpu_sriov_vf(p->adev) && p->gang_size > 1)) {
+ 		ret = -EINVAL;
+ 		goto free_all_kdata;
+ 	}
 -- 
 2.51.0
 
