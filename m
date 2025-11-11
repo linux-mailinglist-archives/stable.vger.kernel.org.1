@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-194113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42063C4AE9B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2730DC4B184
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9BDB84F839C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C80CF4F77A0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF8F27814A;
-	Tue, 11 Nov 2025 01:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6EF246333;
+	Tue, 11 Nov 2025 01:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxbu6kJy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="quTPmy3J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575DBDDAB;
-	Tue, 11 Nov 2025 01:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE101D86FF;
+	Tue, 11 Nov 2025 01:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824837; cv=none; b=DVFmdJFNlvgpTAPlMluWJY3pyH3EllVYsT6Dg0DF+VQUSK3XKeUT5TGQ8cLimgJJhZ3/q97b63/ClXIEaXEG6voM25iiNfRa7pRpavYSvkvTHQeEc8g1dylAN1OE4nq3A8qcILv+4P4mvemqF1AF2VHUCQJx3n0MOM4POkt4iso=
+	t=1762825481; cv=none; b=sfTprOaCTcIPUmzl+bI2V2u4qw+LtE9N/8W9h9ExKobygQ7PeDgTddVUozI3hEqHt3AeEW4EMN89vclUsXXxrm1S6aotzuZld2IHDH34tFprfKGfayiHaKSdTE29xe4OslgMfWsEy+hAiC2jrQc9aH6N9klD32GYk8sDXp+4tAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824837; c=relaxed/simple;
-	bh=3sF2fFV7HS3Q/tNOeZFFRlGyfl3Q+Wxuuy01tbPYy7M=;
+	s=arc-20240116; t=1762825481; c=relaxed/simple;
+	bh=MmnL5mh0YEt6IGBfEhx3Ey5zEwxi0nggaYa8X0KdNAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h8lIIX26RkIzPk5mQKcU/DXvM+PGfRI/JzIBhHDbL65XE0lkeGoavIBD8v5+oocX2L+SgtElQL/0mGDO2kCSQJAomf6Xs9R3GGvUKF0YuRU1w805x61wTQtazAoNcsSWxi47pk0sS8GCQLPjc4seordy/2QQgcaH0isup33vPMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxbu6kJy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA05FC16AAE;
-	Tue, 11 Nov 2025 01:33:56 +0000 (UTC)
+	 MIME-Version; b=K0mLx3Fw+d6LBGjulg72iQX7bIBybzT5Ndr0SwoilQViXUqQQmeD6PJx+OrLFgECgZre44Mv8jv30ddut5mHrwknC6hbbxpGX5CZQfFcnlfYyjE519ZjNi7th4pcYqRc22KWKT0C2SCCI6QtoW7XdPIkF795YpQ23bUWVNxawLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quTPmy3J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F8B0C19421;
+	Tue, 11 Nov 2025 01:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824837;
-	bh=3sF2fFV7HS3Q/tNOeZFFRlGyfl3Q+Wxuuy01tbPYy7M=;
+	s=korg; t=1762825480;
+	bh=MmnL5mh0YEt6IGBfEhx3Ey5zEwxi0nggaYa8X0KdNAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zxbu6kJyOEfdgDRuPJbPmbC65LUZVlTJU/0/oBovbeh8zokhcl88jJeUWddv8wYq4
-	 X/bgPaNZMZLNneocRlp/CulmLoPorWmZba4+c9dOmkmpZoTbOJLR2WkLEFqadFj87y
-	 EIZFlxgPypytE29vkNrRSgP4g97N8aLWghrOdcDU=
+	b=quTPmy3JIiVVdsodiNY5F5tQ+gYqe9QZVWBnZUR4/3N1wNkPMeSPG+QxQ7mMBkhi5
+	 by2qhxuOT+7LJ1C/CVww2c/QyrIanqTqBISAgx1ChXIhX098C4ktmiR5xJgaHHiRZX
+	 RYf3hegl4DwhFHbI8Ifc9tc7BUESBdmjILyWB6x4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Alex Lazar <alazar@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 534/565] net/mlx5e: Fix return value in case of module EEPROM read error
-Date: Tue, 11 Nov 2025 09:46:30 +0900
-Message-ID: <20251111004538.986049279@linuxfoundation.org>
+	"Darrick J. Wong" <djwong@kernel.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.17 821/849] xfs: fix various problems in xfs_atomic_write_cow_iomap_begin
+Date: Tue, 11 Nov 2025 09:46:31 +0900
+Message-ID: <20251111004556.274824745@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +62,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit d1c94bc5b90c21b65469d30d4a6bc8ed715c1bfe ]
+commit 8d7bba1e8314013ecc817a91624104ceb9352ddc upstream.
 
-mlx5e_get_module_eeprom_by_page() has weird error handling.
+I think there are several things wrong with this function:
 
-First, it is treating -EINVAL as a special case, but it is unclear why.
+A) xfs_bmapi_write can return a much larger unwritten mapping than what
+   the caller asked for.  We convert part of that range to written, but
+   return the entire written mapping to iomap even though that's
+   inaccurate.
 
-Second, it tries to fail "gracefully" by returning the number of bytes
-read even in case of an error. This results in wrongly returning
-success (0 return value) if the error occurs before any bytes were
-read.
+B) The arguments to xfs_reflink_convert_cow_locked are wrong -- an
+   unwritten mapping could be *smaller* than the write range (or even
+   the hole range).  In this case, we convert too much file range to
+   written state because we then return a smaller mapping to iomap.
 
-Simplify the error handling by returning an error when such occurs. This
-also aligns with the error handling we have in mlx5e_get_module_eeprom()
-for the old API.
+C) It doesn't handle delalloc mappings.  This I covered in the patch
+   that I already sent to the list.
 
-This fixes the following case where the query fails, but userspace
-ethtool wrongly treats it as success and dumps an output:
+D) Reassigning count_fsb to handle the hole means that if the second
+   cmap lookup attempt succeeds (due to racing with someone else) we
+   trim the mapping more than is strictly necessary.  The changing
+   meaning of count_fsb makes this harder to notice.
 
-  # ethtool -m eth2
-  netlink warning: mlx5_core: Query module eeprom by page failed, read 0 bytes, err -5
-  netlink warning: mlx5_core: Query module eeprom by page failed, read 0 bytes, err -5
-  Offset		Values
-  ------		------
-  0x0000:		00 00 00 00 05 00 04 00 00 00 00 00 05 00 05 00
-  0x0010:		00 00 00 00 05 00 06 00 50 00 00 00 67 65 20 66
-  0x0020:		61 69 6c 65 64 2c 20 72 65 61 64 20 30 20 62 79
-  0x0030:		74 65 73 2c 20 65 72 72 20 2d 35 00 14 00 03 00
-  0x0040:		08 00 01 00 03 00 00 00 08 00 02 00 1a 00 00 00
-  0x0050:		14 00 04 00 08 00 01 00 04 00 00 00 08 00 02 00
-  0x0060:		0e 00 00 00 14 00 05 00 08 00 01 00 05 00 00 00
-  0x0070:		08 00 02 00 1a 00 00 00 14 00 06 00 08 00 01 00
+E) The tracepoint is kinda wrong because @length is mutated.  That makes
+   it harder to chase the data flows through this function because you
+   can't just grep on the pos/bytecount strings.
 
-Fixes: e109d2b204da ("net/mlx5: Implement get_module_eeprom_by_page()")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Alex Lazar <alazar@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1762265736-1028868-1-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+F) We don't actually check that the br_state = XFS_EXT_NORM assignment
+   is accurate, i.e that the cow fork actually contains a written
+   mapping for the range we're interested in
+
+G) Somewhat inadequate documentation of why we need to xfs_trim_extent
+   so aggressively in this function.
+
+H) Not sure why xfs_iomap_end_fsb is used here, the vfs already clamped
+   the write range to s_maxbytes.
+
+Fix these issues, and then the atomic writes regressions in generic/760,
+generic/617, generic/091, generic/263, and generic/521 all go away for
+me.
+
+Cc: stable@vger.kernel.org # v6.16
+Fixes: bd1d2c21d5d249 ("xfs: add xfs_atomic_write_cow_iomap_begin()")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/xfs/xfs_iomap.c |   61 +++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 50 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index 1966736f98b4a..1f55c5a7edf31 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -2010,14 +2010,12 @@ static int mlx5e_get_module_eeprom_by_page(struct net_device *netdev,
- 		if (!size_read)
- 			return i;
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -1082,6 +1082,29 @@ const struct iomap_ops xfs_zoned_direct_
+ };
+ #endif /* CONFIG_XFS_RT */
  
--		if (size_read == -EINVAL)
--			return -EINVAL;
- 		if (size_read < 0) {
- 			NL_SET_ERR_MSG_FMT_MOD(
- 				extack,
- 				"Query module eeprom by page failed, read %u bytes, err %d\n",
- 				i, size_read);
--			return i;
-+			return size_read;
- 		}
++#ifdef DEBUG
++static void
++xfs_check_atomic_cow_conversion(
++	struct xfs_inode		*ip,
++	xfs_fileoff_t			offset_fsb,
++	xfs_filblks_t			count_fsb,
++	const struct xfs_bmbt_irec	*cmap)
++{
++	struct xfs_iext_cursor		icur;
++	struct xfs_bmbt_irec		cmap2 = { };
++
++	if (xfs_iext_lookup_extent(ip, ip->i_cowfp, offset_fsb, &icur, &cmap2))
++		xfs_trim_extent(&cmap2, offset_fsb, count_fsb);
++
++	ASSERT(cmap2.br_startoff == cmap->br_startoff);
++	ASSERT(cmap2.br_blockcount == cmap->br_blockcount);
++	ASSERT(cmap2.br_startblock == cmap->br_startblock);
++	ASSERT(cmap2.br_state == cmap->br_state);
++}
++#else
++# define xfs_check_atomic_cow_conversion(...)	((void)0)
++#endif
++
+ static int
+ xfs_atomic_write_cow_iomap_begin(
+ 	struct inode		*inode,
+@@ -1093,9 +1116,10 @@ xfs_atomic_write_cow_iomap_begin(
+ {
+ 	struct xfs_inode	*ip = XFS_I(inode);
+ 	struct xfs_mount	*mp = ip->i_mount;
+-	const xfs_fileoff_t		offset_fsb = XFS_B_TO_FSBT(mp, offset);
+-	xfs_fileoff_t		end_fsb = xfs_iomap_end_fsb(mp, offset, length);
+-	xfs_filblks_t		count_fsb = end_fsb - offset_fsb;
++	const xfs_fileoff_t	offset_fsb = XFS_B_TO_FSBT(mp, offset);
++	const xfs_fileoff_t	end_fsb = XFS_B_TO_FSB(mp, offset + length);
++	const xfs_filblks_t	count_fsb = end_fsb - offset_fsb;
++	xfs_filblks_t		hole_count_fsb;
+ 	int			nmaps = 1;
+ 	xfs_filblks_t		resaligned;
+ 	struct xfs_bmbt_irec	cmap;
+@@ -1134,14 +1158,20 @@ retry:
+ 	if (cmap.br_startoff <= offset_fsb) {
+ 		if (isnullstartblock(cmap.br_startblock))
+ 			goto convert_delay;
++
++		/*
++		 * cmap could extend outside the write range due to previous
++		 * speculative preallocations.  We must trim cmap to the write
++		 * range because the cow fork treats written mappings to mean
++		 * "write in progress".
++		 */
+ 		xfs_trim_extent(&cmap, offset_fsb, count_fsb);
+ 		goto found;
+ 	}
  
- 		i += size_read;
--- 
-2.51.0
-
+-	end_fsb = cmap.br_startoff;
+-	count_fsb = end_fsb - offset_fsb;
++	hole_count_fsb = cmap.br_startoff - offset_fsb;
+ 
+-	resaligned = xfs_aligned_fsb_count(offset_fsb, count_fsb,
++	resaligned = xfs_aligned_fsb_count(offset_fsb, hole_count_fsb,
+ 			xfs_get_cowextsz_hint(ip));
+ 	xfs_iunlock(ip, XFS_ILOCK_EXCL);
+ 
+@@ -1177,7 +1207,7 @@ retry:
+ 	 * atomic writes to that same range will be aligned (and don't require
+ 	 * this COW-based method).
+ 	 */
+-	error = xfs_bmapi_write(tp, ip, offset_fsb, count_fsb,
++	error = xfs_bmapi_write(tp, ip, offset_fsb, hole_count_fsb,
+ 			XFS_BMAPI_COWFORK | XFS_BMAPI_PREALLOC |
+ 			XFS_BMAPI_EXTSZALIGN, 0, &cmap, &nmaps);
+ 	if (error) {
+@@ -1190,17 +1220,26 @@ retry:
+ 	if (error)
+ 		goto out_unlock;
+ 
++	/*
++	 * cmap could map more blocks than the range we passed into bmapi_write
++	 * because of EXTSZALIGN or adjacent pre-existing unwritten mappings
++	 * that were merged.  Trim cmap to the original write range so that we
++	 * don't convert more than we were asked to do for this write.
++	 */
++	xfs_trim_extent(&cmap, offset_fsb, count_fsb);
++
+ found:
+ 	if (cmap.br_state != XFS_EXT_NORM) {
+-		error = xfs_reflink_convert_cow_locked(ip, offset_fsb,
+-				count_fsb);
++		error = xfs_reflink_convert_cow_locked(ip, cmap.br_startoff,
++				cmap.br_blockcount);
+ 		if (error)
+ 			goto out_unlock;
+ 		cmap.br_state = XFS_EXT_NORM;
++		xfs_check_atomic_cow_conversion(ip, offset_fsb, count_fsb,
++				&cmap);
+ 	}
+ 
+-	length = XFS_FSB_TO_B(mp, cmap.br_startoff + cmap.br_blockcount);
+-	trace_xfs_iomap_found(ip, offset, length - offset, XFS_COW_FORK, &cmap);
++	trace_xfs_iomap_found(ip, offset, length, XFS_COW_FORK, &cmap);
+ 	seq = xfs_iomap_inode_sequence(ip, IOMAP_F_SHARED);
+ 	xfs_iunlock(ip, XFS_ILOCK_EXCL);
+ 	return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags, IOMAP_F_SHARED, seq);
 
 
 
