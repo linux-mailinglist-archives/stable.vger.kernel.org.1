@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-194140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF102C4AF13
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA518C4B29E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:05:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27D823B65B0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C51F3BB454
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDFE308F2E;
-	Tue, 11 Nov 2025 01:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2962E8B8B;
+	Tue, 11 Nov 2025 01:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2k9YM2qp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKyIFttN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD48E255F28;
-	Tue, 11 Nov 2025 01:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32F3224B12;
+	Tue, 11 Nov 2025 01:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824897; cv=none; b=loH5AJ6lzaE1pyW+qUlJqxsBh5atHrKeKQmAwV0HVLcUUSkK+OhB7P/CPw81jl0YUkrpEhe8gKVTXKe9irpud5iQ8TBcRo8bFZq2bzAFgER6QQpX+tVwPBiiJcjRO38Nqv/PgTwBh8Gnq7XAD9ZhW+4Eakz7lyyrWnxY36hSvTo=
+	t=1762825510; cv=none; b=IG4NxOFEJ0da9piMCZTn/7CwhF7X7tjKGhXKx5pQFPhx7RVFtHSbX6ZY+8gClMAAb2GnfhW1rfGTlfBsBNLme7X+fkbO1PvQhs0DDSJAWMONK7ILykRZTZTZ776DtAQcGLUvmadG3bLhgaiArld3Oc37LPfLIqO4Egs/RdsMmS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824897; c=relaxed/simple;
-	bh=ENbfdeINzxN9W8wckLs9F1Igw/x0vPRqnkPJ8347i8E=;
+	s=arc-20240116; t=1762825510; c=relaxed/simple;
+	bh=9awgsDrhxAFblDFBCuIRB4dShVBgscUqcHaZKcmd4cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PBeqYWQueFJwXP34QyVTmp4h0e9YK+aKQmiUt2rSEQNmDDUTpjaZR7zSHEQDQxjIQcaPqovEMP8xC/9Gw7RBNqmhZOpHBGftkAlEdLGmyE+m6K7TkAl3pvi9GzA6cDyZ+VCJaed5UDEjm3uQR3mziY7H7qzSztt0cb4C8xjgx1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2k9YM2qp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E501C4CEF5;
-	Tue, 11 Nov 2025 01:34:57 +0000 (UTC)
+	 MIME-Version; b=NqxCB6XRbZCJ18ophPRQdd7/CnFAfLbI0Fd+7xGmT8rVD60hwxTTxt0vCF5GbgA0JBiR+Ry8IPFqc3ulabZTm/7FckRCohFRIw1ojY/4dQuSpNze7Z5yKjDFwlOIXtmgcvysw9fRAElg0mZltgaQNJto4ID8ZezQJgJbnrvYvVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKyIFttN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB77C19422;
+	Tue, 11 Nov 2025 01:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824897;
-	bh=ENbfdeINzxN9W8wckLs9F1Igw/x0vPRqnkPJ8347i8E=;
+	s=korg; t=1762825510;
+	bh=9awgsDrhxAFblDFBCuIRB4dShVBgscUqcHaZKcmd4cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2k9YM2qp51m5x7sBnQ9FaCRgzi5roilZyGiMvq0RajUmm8bOmwuophsSnCxgQvIvf
-	 5FpEPoScki+/autGvkEYfHEcpoWVL6teevpAiqy9ylCWmrOSDq9x/7vBWnfSCpYTPN
-	 pLGCMHMUaCtBbBHPZjfzYZYk7dUfWUo+ViIR3rvU=
+	b=OKyIFttNodoaIrQ6ykQOLkpxvoCYB1IYkUMV0YTlnR4lpf3c8RlXfWiKfKMdXyKB8
+	 +SmERu2k44xzZ3KjWfm6WdUqhMxwMiMy1zGEgpOvC/qkk+v34D57ZgPg9xO4E4Iya1
+	 0u9lpq5ARCZ6wHI/UpMh8SaHVgrtyrY0mXNTIM3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	syzbot+093a8a8b859472e6c257@syzkaller.appspotmail.com,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.12 546/565] iommufd: Dont overflow during division for dirty tracking
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.17 832/849] scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE for Intel ADL
 Date: Tue, 11 Nov 2025 09:46:42 +0900
-Message-ID: <20251111004539.275320944@linuxfoundation.org>
+Message-ID: <20251111004556.540523681@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit cb30dfa75d55eced379a42fd67bd5fb7ec38555e upstream.
+commit d968e99488c4b08259a324a89e4ed17bf36561a4 upstream.
 
-If pgshift is 63 then BITS_PER_TYPE(*bitmap->bitmap) * pgsize will overflow
-to 0 and this triggers divide by 0.
+Link startup becomes unreliable for Intel Alder Lake based host
+controllers when a 2nd DME_LINKSTARTUP is issued unnecessarily.  Employ
+UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE to suppress that from happening.
 
-In this case the index should just be 0, so reorganize things to divide
-by shift and avoid hitting any overflows.
-
-Link: https://patch.msgid.link/r/0-v1-663679b57226+172-iommufd_dirty_div0_jgg@nvidia.com
+Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
 Cc: stable@vger.kernel.org
-Fixes: 58ccf0190d19 ("vfio: Add an IOVA bitmap support")
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reported-by: syzbot+093a8a8b859472e6c257@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=093a8a8b859472e6c257
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251024085918.31825-4-adrian.hunter@intel.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/iova_bitmap.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/ufs/host/ufshcd-pci.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/iommufd/iova_bitmap.c
-+++ b/drivers/iommu/iommufd/iova_bitmap.c
-@@ -130,9 +130,8 @@ struct iova_bitmap {
- static unsigned long iova_bitmap_offset_to_index(struct iova_bitmap *bitmap,
- 						 unsigned long iova)
+--- a/drivers/ufs/host/ufshcd-pci.c
++++ b/drivers/ufs/host/ufshcd-pci.c
+@@ -428,7 +428,8 @@ static int ufs_intel_lkf_init(struct ufs
+ static int ufs_intel_adl_init(struct ufs_hba *hba)
  {
--	unsigned long pgsize = 1UL << bitmap->mapped.pgshift;
--
--	return iova / (BITS_PER_TYPE(*bitmap->bitmap) * pgsize);
-+	return (iova >> bitmap->mapped.pgshift) /
-+	       BITS_PER_TYPE(*bitmap->bitmap);
+ 	hba->nop_out_timeout = 200;
+-	hba->quirks |= UFSHCD_QUIRK_BROKEN_AUTO_HIBERN8;
++	hba->quirks |= UFSHCD_QUIRK_BROKEN_AUTO_HIBERN8 |
++		       UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE;
+ 	hba->caps |= UFSHCD_CAP_WB_EN;
+ 	return ufs_intel_common_init(hba);
  }
- 
- /*
 
 
 
