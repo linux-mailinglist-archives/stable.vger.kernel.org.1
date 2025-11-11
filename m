@@ -1,74 +1,63 @@
-Return-Path: <stable+bounces-194500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E96C4EABB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 16:05:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58793C4EAF8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 16:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F5DE3B2520
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 14:44:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 770F0421B1B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 15:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D554E324707;
-	Tue, 11 Nov 2025 14:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAABD34887E;
+	Tue, 11 Nov 2025 14:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XOV4ic+H";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0+KZeCa2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSMr5eqZ"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BD32F90D3;
-	Tue, 11 Nov 2025 14:43:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6195D328250;
+	Tue, 11 Nov 2025 14:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762872215; cv=none; b=FTNsbRlR1t7YkjFAs9bs5rOUGEAObVkmkgYqFig9RoVya+GOweAl0aU29lORDFwFwG08EkzapmXOgUvm1qywPAgNTJHbfF912y1NYLEjNH/Uwn/1eHwSeSUAswBFt3Uk0iVIGpo48lEGfy1b7OsN/9jnelF26gvul+rAIELt4pc=
+	t=1762873176; cv=none; b=a3p+N4tQg/nNHvfENtgdmmdT5xuRakswWwjM2glTt99Aary9l4sC+/sNWn+ipvqoAhEjmNXqd52689I/yiVYDv1zCPW3V9yVluk89uAfvXZ2VjgmGh0FqslTPlZrbN7xV2/rEV9iMGM70Sy6hSg+RSh6rMLxEa836lkOyBcmqlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762872215; c=relaxed/simple;
-	bh=MPu/tsOZkT6J35VS9D16ketf3w7CW09xPX2aNv8BGiY=;
+	s=arc-20240116; t=1762873176; c=relaxed/simple;
+	bh=LxNetJZGDoMZFkpRGbsUFYiHX1dIJkPSJNhZIh7fWk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nWMNga5HzQ0KxCpi5GT5Kq2mE8HPeregMfntGGYI565RKnwK/MFvT98MtjhLJOC6iyst8foEXV/yRuS80pBgvFLx6iQ7gucKCfSkmK15cXAYpKRhJnSRSEvtYYC3qMa/bGi+CF3F2gxH0Qpoocr/zadAznYSqsNZuD42+XJaFxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XOV4ic+H; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0+KZeCa2; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762872211;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b91XU7hHkSIra6MHumO32Fr5vsRcsLrtiPH/XTCjqNI=;
-	b=XOV4ic+HXGvqHQaprQ+1Wiqu+OhiPXmHsNT4NZD5vuxD+6+2qpDs0gVoTGmMkrz0nFCxsm
-	BE7hRRmz62S4ha7qQ+bNOM6MgQybVTUs7IPqL0LRZU+LoIEKBWvoIVVmmkm6sWvdJVD5UF
-	taaynjfUH2OV53hlSeHrgXABcQoYOeQ+2LNvvNK+LkPgW0hkZsvtMfHG1fQ2Ug3WSlqPhw
-	LpjRRfViaSMh7OqOJ+G0ZIk7wZ6nc6wo4vbI7YmIKWnWt4cL2zD/y/z1wB1yEoX+lvkVHF
-	JaXZS9PnWi8FK3kEBAw1Knx+SI5qXzvyaM2itb8zOLkob+ZA5aX64XSuxI5TCw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762872211;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b91XU7hHkSIra6MHumO32Fr5vsRcsLrtiPH/XTCjqNI=;
-	b=0+KZeCa2N9RV08W4UvShLECsB/34rtVclgZKmAJoNTZzLDul+ENaUGLa3rbKWPcW2irJeS
-	C+2O1yZemBx/VFCg==
-To: Petr Mladek <pmladek@suse.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Derek Barbosa <debarbos@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH printk v1 1/1] printk: Avoid scheduling irq_work on suspend
-Date: Tue, 11 Nov 2025 15:49:22 +0106
-Message-ID: <20251111144328.887159-2-john.ogness@linutronix.de>
-In-Reply-To: <20251111144328.887159-1-john.ogness@linutronix.de>
-References: <20251111144328.887159-1-john.ogness@linutronix.de>
+	 MIME-Version; b=O+mNLTBL6ngHiS7I8X3ad7Tbpw8sN6b5c9BG5fJ7Xa4atwmOM9T6stUWoIYrlJfNvw0Qu6zuiDyW44g6hdFi/F7EtOonRnU+dcK+YFs3wfOiAEz5xWyUEg6Zb4jEa4mfbrjTL9vxWByRtKkjyZcLc39lf0MhwIOQ3A9h3RvcE+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSMr5eqZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9ADC4CEFB;
+	Tue, 11 Nov 2025 14:59:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762873176;
+	bh=LxNetJZGDoMZFkpRGbsUFYiHX1dIJkPSJNhZIh7fWk4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YSMr5eqZ8LK0w9kVtLdjPifCdbzJ+mutFed+j9n8kK44l7IXm0AKHuAJFG5lAFGqU
+	 zjY5JtBE8ll/ifVz3G233aMhBUXiBNBXJxNhCucx10A1mdf5XvWslooD6Xj0AJow1v
+	 YlgK5e/dVuXraSXhdgnR2VCIHCY50OnKfa+wOfTfw57tYf2Z0aFg5fgJCs5M+uGoH7
+	 86jPh6wWw5b0xHDFqw+KZ9GPwIdE8D4OypkeZ03MOV/W0Lcxq/ICam8lKXKzcLB25u
+	 CMqfZFdLwPGNNE+rlemV2ZFHrdG08hk92hwVxdUSAcbaKToXChe/f+HBks6zdmdTFF
+	 oiN5/dEN+fVCQ==
+From: Chuck Lever <cel@kernel.org>
+To: NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>
+Cc: <linux-nfs@vger.kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	stable@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH v12 1/3] NFSD: Make FILE_SYNC WRITEs comply with spec
+Date: Tue, 11 Nov 2025 09:59:30 -0500
+Message-ID: <20251111145932.23784-2-cel@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251111145932.23784-1-cel@kernel.org>
+References: <20251111145932.23784-1-cel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,173 +66,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Allowing irq_work to be scheduled while trying to suspend has shown
-to cause problems as some architectures interpret the pending
-interrupts as a reason to not suspend. This became a problem for
-printk() with the introduction of NBCON consoles. With every
-printk() call, NBCON console printing kthreads are woken by queueing
-irq_work. This means that irq_work continues to be queued due to
-printk() calls late in the suspend procedure.
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Avoid this problem by preventing printk() from queueing irq_work
-once console suspending has begun. This applies to triggering NBCON
-and legacy deferred printing as well as klogd waiters.
+Mike noted that when NFSD responds to an NFS_FILE_SYNC WRITE, it
+does not also persist file time stamps. To wit, Section 18.32.3
+of RFC 8881 mandates:
 
-Since triggering of NBCON threaded printing relies on irq_work, the
-pr_flush() within console_suspend_all() is used to perform the final
-flushing before suspending consoles and blocking irq_work queueing.
-NBCON consoles that are not suspended (due to the usage of the
-"no_console_suspend" boot argument) transition to atomic flushing.
+> The client specifies with the stable parameter the method of how
+> the data is to be processed by the server. If stable is
+> FILE_SYNC4, the server MUST commit the data written plus all file
+> system metadata to stable storage before returning results. This
+> corresponds to the NFSv2 protocol semantics. Any other behavior
+> constitutes a protocol violation. If stable is DATA_SYNC4, then
+> the server MUST commit all of the data to stable storage and
+> enough of the metadata to retrieve the data before returning.
 
-Introduce a new global variable @console_offload_blocked to flag
-when irq_work queueing is to be avoided. The flag is used by
-printk_get_console_flush_type() to avoid allowing deferred printing
-and switch NBCON consoles to atomic flushing. It is also used by
-vprintk_emit() to avoid klogd waking.
+Commit 3f3503adb332 ("NFSD: Use vfs_iocb_iter_write()") replaced:
 
-Cc: <stable@vger.kernel.org> # 6.13.x because no drivers in 6.12.x
-Fixes: 6b93bb41f6ea ("printk: Add non-BKL (nbcon) console basic infrastructure")
-Closes: https://lore.kernel.org/lkml/DB9PR04MB8429E7DDF2D93C2695DE401D92C4A@DB9PR04MB8429.eurprd04.prod.outlook.com
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
+-		flags |= RWF_SYNC;
+
+with:
+
++		kiocb.ki_flags |= IOCB_DSYNC;
+
+which appears to be correct given:
+
+	if (flags & RWF_SYNC)
+		kiocb_flags |= IOCB_DSYNC;
+
+in kiocb_set_rw_flags(). However the author of that commit did not
+appreciate that the previous line in kiocb_set_rw_flags() results
+in IOCB_SYNC also being set:
+
+	kiocb_flags |= (__force int) (flags & RWF_SUPPORTED);
+
+RWF_SUPPORTED contains RWF_SYNC, and RWF_SYNC is the same bit as
+IOCB_SYNC. Reviewers at the time did not catch the omission.
+
+Reported-by: Mike Snitzer <snitzer@kernel.org>
+Closes: https://lore.kernel.org/linux-nfs/20251018005431.3403-1-cel@kernel.org/T/#t
+Fixes: 3f3503adb332 ("NFSD: Use vfs_iocb_iter_write()")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neil@brown.name>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- kernel/printk/internal.h |  8 ++++---
- kernel/printk/printk.c   | 51 ++++++++++++++++++++++++++++------------
- 2 files changed, 41 insertions(+), 18 deletions(-)
+ fs/nfsd/vfs.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/printk/internal.h b/kernel/printk/internal.h
-index f72bbfa266d6c..b20929b7d71f5 100644
---- a/kernel/printk/internal.h
-+++ b/kernel/printk/internal.h
-@@ -230,6 +230,8 @@ struct console_flush_type {
- 	bool	legacy_offload;
- };
- 
-+extern bool console_irqwork_blocked;
-+
- /*
-  * Identify which console flushing methods should be used in the context of
-  * the caller.
-@@ -241,7 +243,7 @@ static inline void printk_get_console_flush_type(struct console_flush_type *ft)
- 	switch (nbcon_get_default_prio()) {
- 	case NBCON_PRIO_NORMAL:
- 		if (have_nbcon_console && !have_boot_console) {
--			if (printk_kthreads_running)
-+			if (printk_kthreads_running && !console_irqwork_blocked)
- 				ft->nbcon_offload = true;
- 			else
- 				ft->nbcon_atomic = true;
-@@ -251,7 +253,7 @@ static inline void printk_get_console_flush_type(struct console_flush_type *ft)
- 		if (have_legacy_console || have_boot_console) {
- 			if (!is_printk_legacy_deferred())
- 				ft->legacy_direct = true;
--			else
-+			else if (!console_irqwork_blocked)
- 				ft->legacy_offload = true;
- 		}
- 		break;
-@@ -264,7 +266,7 @@ static inline void printk_get_console_flush_type(struct console_flush_type *ft)
- 		if (have_legacy_console || have_boot_console) {
- 			if (!is_printk_legacy_deferred())
- 				ft->legacy_direct = true;
--			else
-+			else if (!console_irqwork_blocked)
- 				ft->legacy_offload = true;
- 		}
- 		break;
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 5aee9ffb16b9a..94fc4a8662d4b 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -462,6 +462,9 @@ bool have_boot_console;
- /* See printk_legacy_allow_panic_sync() for details. */
- bool legacy_allow_panic_sync;
- 
-+/* Avoid using irq_work when suspending. */
-+bool console_irqwork_blocked;
-+
- #ifdef CONFIG_PRINTK
- DECLARE_WAIT_QUEUE_HEAD(log_wait);
- static DECLARE_WAIT_QUEUE_HEAD(legacy_wait);
-@@ -2426,7 +2429,7 @@ asmlinkage int vprintk_emit(int facility, int level,
- 
- 	if (ft.legacy_offload)
- 		defer_console_output();
--	else
-+	else if (!console_irqwork_blocked)
- 		wake_up_klogd();
- 
- 	return printed_len;
-@@ -2730,10 +2733,20 @@ void console_suspend_all(void)
- {
- 	struct console *con;
- 
-+	if (console_suspend_enabled)
-+		pr_info("Suspending console(s) (use no_console_suspend to debug)\n");
-+
-+	/*
-+	 * Flush any console backlog and then avoid queueing irq_work until
-+	 * console_resume_all(). Until then deferred printing is no longer
-+	 * triggered, NBCON consoles transition to atomic flushing, and
-+	 * any klogd waiters are not triggered.
-+	 */
-+	pr_flush(1000, true);
-+	console_irqwork_blocked = true;
-+
- 	if (!console_suspend_enabled)
- 		return;
--	pr_info("Suspending console(s) (use no_console_suspend to debug)\n");
--	pr_flush(1000, true);
- 
- 	console_list_lock();
- 	for_each_console(con)
-@@ -2754,26 +2767,34 @@ void console_resume_all(void)
- 	struct console_flush_type ft;
- 	struct console *con;
- 
--	if (!console_suspend_enabled)
--		return;
--
--	console_list_lock();
--	for_each_console(con)
--		console_srcu_write_flags(con, con->flags & ~CON_SUSPENDED);
--	console_list_unlock();
--
- 	/*
--	 * Ensure that all SRCU list walks have completed. All printing
--	 * contexts must be able to see they are no longer suspended so
--	 * that they are guaranteed to wake up and resume printing.
-+	 * Allow queueing irq_work. After restoring console state, deferred
-+	 * printing and any klogd waiters need to be triggered in case there
-+	 * is now a console backlog.
- 	 */
--	synchronize_srcu(&console_srcu);
-+	console_irqwork_blocked = false;
-+
-+	if (console_suspend_enabled) {
-+		console_list_lock();
-+		for_each_console(con)
-+			console_srcu_write_flags(con, con->flags & ~CON_SUSPENDED);
-+		console_list_unlock();
-+
-+		/*
-+		 * Ensure that all SRCU list walks have completed. All printing
-+		 * contexts must be able to see they are no longer suspended so
-+		 * that they are guaranteed to wake up and resume printing.
-+		 */
-+		synchronize_srcu(&console_srcu);
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index f537a7b4ee01..5333d49910d9 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1314,8 +1314,18 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 		stable = NFS_UNSTABLE;
+ 	init_sync_kiocb(&kiocb, file);
+ 	kiocb.ki_pos = offset;
+-	if (stable && !fhp->fh_use_wgather)
+-		kiocb.ki_flags |= IOCB_DSYNC;
++	if (likely(!fhp->fh_use_wgather)) {
++		switch (stable) {
++		case NFS_FILE_SYNC:
++			/* persist data and timestamps */
++			kiocb.ki_flags |= IOCB_DSYNC | IOCB_SYNC;
++			break;
++		case NFS_DATA_SYNC:
++			/* persist data only */
++			kiocb.ki_flags |= IOCB_DSYNC;
++			break;
++		}
 +	}
  
- 	printk_get_console_flush_type(&ft);
- 	if (ft.nbcon_offload)
- 		nbcon_kthreads_wake();
- 	if (ft.legacy_offload)
- 		defer_console_output();
-+	else
-+		wake_up_klogd();
- 
- 	pr_flush(1000, true);
- }
+ 	nvecs = xdr_buf_to_bvec(rqstp->rq_bvec, rqstp->rq_maxpages, payload);
+ 	iov_iter_bvec(&iter, ITER_SOURCE, rqstp->rq_bvec, nvecs, *cnt);
 -- 
-2.47.3
+2.51.0
 
 
