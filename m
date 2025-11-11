@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D0CC4A818
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A03CEC4A877
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9CD03B5CF0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ADA83B5D57
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03C3346789;
-	Tue, 11 Nov 2025 01:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451E93469E7;
+	Tue, 11 Nov 2025 01:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxx155dC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13YxsCUU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5C3266B6F;
-	Tue, 11 Nov 2025 01:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022AA3469E2;
+	Tue, 11 Nov 2025 01:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823643; cv=none; b=sZAjeNl0MktIb7o0qVTMyuZwyCaRFqOAI6fzFPhTOdzOSWkHSzkVJNUqW6fSLYYXCdORMCd4106P2nMpNoOojCSa00Tgixkxo8co6TwIFEs/SUi8tqPvJ/BbHt6I2pthgI64lLyypI5wsMYM6dvnd5qjvwzMZABnaBB3UxXsVL8=
+	t=1762823648; cv=none; b=C7jbd9uGtfMgWOz1TMZggVNzL4VnR4UOjlpdtmpdP0ba3Q7Ma5aotPKWolQVovFezeQRxRouTDi28uw40CWFVRxu0ijkIeedPlDYhPjRPt23M+n13joP8jZpyuwE1TWMj1cvyh7MPubkl9kZQplQ/wqD9plU5E65nYZm6+zBRVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823643; c=relaxed/simple;
-	bh=Mb4aoEBytoa73PsTnL7jgBWJMBoUz6KlhNivDCg6sps=;
+	s=arc-20240116; t=1762823648; c=relaxed/simple;
+	bh=+UJLF2xNZv2mr9/ozkphesT9cr1Luxv1HMq3s+kgVOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HQl6w0DIUl6AGJH3IfG2U+ygvFxpGoYB0VF/iLeqZwlg+uxXK7FvyIJJZUt5Eywdb5hLrhv6of+UzISZgapdiuyP+lN+itaKKanB/tTFVdcpUb5htT1Qow/G4LylNWxq27dRd+D3QdbYGWb2h2sFXrG2G4J6n3tmTOpM60fz4OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxx155dC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB5BC116B1;
-	Tue, 11 Nov 2025 01:14:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VZZQErjlLqkJ1GYWOmlhiasyrzADEzXaaUtpJU1XjoHhpiUw85dHBBcNBFhFv/i2TjPELwaDB5iMpw5wtd5IK5fERwSMOSJPxXwdIkSG2w/XPUXfhPo0Z7qa2/pvFlcRs94mAvirBYI7F4boAozbXRNFmkN0dEQXp6JuVdcL+Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13YxsCUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D2DC113D0;
+	Tue, 11 Nov 2025 01:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823643;
-	bh=Mb4aoEBytoa73PsTnL7jgBWJMBoUz6KlhNivDCg6sps=;
+	s=korg; t=1762823647;
+	bh=+UJLF2xNZv2mr9/ozkphesT9cr1Luxv1HMq3s+kgVOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kxx155dCHRQil7t2GVIC8CKLZ9zz/rSKQHb2p3198mdPi8vtPc3Afzxg0vKklOKgC
-	 6KCAxC8Tx6jp5eeiOX6cNWxuPud9zrmUdznU0rdn+pSQqRNk/w+9x71kfjjP1U1DGW
-	 Ul5jN+eHV14mNzvL0R5Fl0H6B+zGPIkWcrONRBnk=
+	b=13YxsCUUTmI+7ZVuSBRmSz1ZLUMt/8s1btxsVoEs7zCql/lHFJUpIuN5bRBB7icqu
+	 cOVYvSXxIKkq/EffNGtoBsgRb7lY+bRcqaTrkgBhq2bGXAHbXkooZB9Jt6MPSdQWZ9
+	 wSba9JiV1qKviWQziNqcFmXNmd2NNIziYS1cn23k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Juraj=20=C5=A0arinay?= <juraj@sarinay.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 292/565] net: nfc: nci: Increase NCI_DATA_TIMEOUT to 3000 ms
-Date: Tue, 11 Nov 2025 09:42:28 +0900
-Message-ID: <20251111004533.446991355@linuxfoundation.org>
+Subject: [PATCH 6.12 293/565] media: adv7180: Add missing lock in suspend callback
+Date: Tue, 11 Nov 2025 09:42:29 +0900
+Message-ID: <20251111004533.469906293@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -68,42 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Juraj Šarinay <juraj@sarinay.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 21f82062d0f241e55dd59eb630e8710862cc90b4 ]
+[ Upstream commit 878c496ac5080f94a93a9216a8f70cfd67ace8c9 ]
 
-An exchange with a NFC target must complete within NCI_DATA_TIMEOUT.
-A delay of 700 ms is not sufficient for cryptographic operations on smart
-cards. CardOS 6.0 may need up to 1.3 seconds to perform 256-bit ECDH
-or 3072-bit RSA. To prevent brute-force attacks, passports and similar
-documents introduce even longer delays into access control protocols
-(BAC/PACE).
+The adv7180_set_power() utilizes adv7180_write() which in turn requires
+the state mutex to be held, take it before calling adv7180_set_power()
+to avoid tripping a lockdep_assert_held().
 
-The timeout should be higher, but not too much. The expiration allows
-us to detect that a NFC target has disappeared.
-
-Signed-off-by: Juraj Šarinay <juraj@sarinay.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20250902113630.62393-1-juraj@sarinay.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/nfc/nci_core.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/adv7180.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/net/nfc/nci_core.h b/include/net/nfc/nci_core.h
-index ea8595651c384..e066bdbc807be 100644
---- a/include/net/nfc/nci_core.h
-+++ b/include/net/nfc/nci_core.h
-@@ -52,7 +52,7 @@ enum nci_state {
- #define NCI_RF_DISC_SELECT_TIMEOUT		5000
- #define NCI_RF_DEACTIVATE_TIMEOUT		30000
- #define NCI_CMD_TIMEOUT				5000
--#define NCI_DATA_TIMEOUT			700
-+#define NCI_DATA_TIMEOUT			3000
+diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
+index 2a20a4fad796c..684a9bba3c5d2 100644
+--- a/drivers/media/i2c/adv7180.c
++++ b/drivers/media/i2c/adv7180.c
+@@ -813,6 +813,8 @@ static int adv7180_set_pad_format(struct v4l2_subdev *sd,
  
- struct nci_dev;
+ 	if (format->which == V4L2_SUBDEV_FORMAT_ACTIVE) {
+ 		if (state->field != format->format.field) {
++			guard(mutex)(&state->mutex);
++
+ 			state->field = format->format.field;
+ 			adv7180_set_power(state, false);
+ 			adv7180_set_field_mode(state);
+@@ -1564,6 +1566,8 @@ static int adv7180_suspend(struct device *dev)
+ 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+ 	struct adv7180_state *state = to_state(sd);
  
++	guard(mutex)(&state->mutex);
++
+ 	return adv7180_set_power(state, false);
+ }
+ 
+@@ -1577,6 +1581,8 @@ static int adv7180_resume(struct device *dev)
+ 	if (ret < 0)
+ 		return ret;
+ 
++	guard(mutex)(&state->mutex);
++
+ 	ret = adv7180_set_power(state, state->powered);
+ 	if (ret)
+ 		return ret;
 -- 
 2.51.0
 
