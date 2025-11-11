@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAF7EC4AE33
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8D6FC4B130
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3630D4F7B8B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA8341899CDD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E817302CAC;
-	Tue, 11 Nov 2025 01:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A1F285CA2;
+	Tue, 11 Nov 2025 01:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtB6I3sy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Df+0RyIb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFD02FFF94;
-	Tue, 11 Nov 2025 01:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E18260566;
+	Tue, 11 Nov 2025 01:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824790; cv=none; b=fYWYlqv/M2Mi312CVHkZl8waQraucBEHfZNct00zwMCOxBpu3G/xyJg2UHUxU93ni/mORluMPM+J0xoYlRx3L9qwedG6IgZEA3H9vZ77nYxixLhL52OIs1UEvb8FHR/0e0PbIZXIMC+rxjO1T+GHO0rBz1vjPKBzO23VKjVf490=
+	t=1762825367; cv=none; b=MrMeod9JJFPpu9MEvEP5OXtsJnuE7ci4E7+Nf+MWkhiHXwfzzlzNRpSYJKc9aGOrxvt7YD7M4ASHTjTEvL6Fa02C4rPgX6bry78ddGMZMbiZ3frVgQBG6fCY4NAF/hLTsjwjuWlZarEjon0CUWXK2F326frzdiVI50TeiK3WO/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824790; c=relaxed/simple;
-	bh=MvytS1IcXzQ0YjfC0EsJVPjsF6GNwkYGgUDXiL3AboQ=;
+	s=arc-20240116; t=1762825367; c=relaxed/simple;
+	bh=2DQ8DDqFz8qDReWnHjovJAXI3fF3/mNKZTIdMSyxg1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N20U4c8gxd5V2WKTKtrT8c6+m/dG9YqDI3tLWHFPdZb2qhhQBkZjts+YKbyJr3ZKhNogHgLoF8oLTQyRMlGxuwS66YOv0iSPWFtnsQ0geHV9/QrFYW/OB+3kU+/dq0qMVD97NAf5648Hvdy75wKcooxNQVEYGXvJsMPHRtolBMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtB6I3sy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 493EBC4CEFB;
-	Tue, 11 Nov 2025 01:33:10 +0000 (UTC)
+	 MIME-Version; b=GVMriGDwQX4n3WziEk/cz8WTdJ5GX4J62irocFmGERQErzoCgRFBI3PeFaEB51mE95reSCR0U0Z+J0++vGz7NZ5oNGOKmeex1up/2dgfdRCnDv5koI3DCXEMSfrogQurEJJHRDhkh2TOdYVOOS+LmcGW8kwexDVnffUWETkevc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Df+0RyIb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B7AC19421;
+	Tue, 11 Nov 2025 01:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824790;
-	bh=MvytS1IcXzQ0YjfC0EsJVPjsF6GNwkYGgUDXiL3AboQ=;
+	s=korg; t=1762825366;
+	bh=2DQ8DDqFz8qDReWnHjovJAXI3fF3/mNKZTIdMSyxg1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JtB6I3sye99R+5TEja3GGXRIHVKPkML4YtdrjTWzMK8jaCrq33Hv0GG8q8Ff9wff6
-	 E6n1LV9XphI6mJM+hd8RK4A/C8awE5vjOUtkvifFTUZG2A1UG/eb2QVYvGAOMr8g1N
-	 p7J+acatfkqLCmHH8TTwGfDRFsy0UxRxZnzW3+VI=
+	b=Df+0RyIb8B+/0VRjZhxfFo0xQ/Wj/wpKwNY1ypdCbA5JkDTB78teLzpnGgH9pC1AH
+	 3ILlKSLvawWS6xLraERYhyXJ+GpQymhdWe3nt3Sz6OLUEA3URPzpHok+GbevTgNIOx
+	 Vmc54MdwrkI4E+6y6RxG7lM9oZKgGbmUeTbmG1mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bruno Thomsen <bruno.thomsen@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 487/565] rtc: pcf2127: fix watchdog interrupt mask on pcf2131
+Subject: [PATCH 6.17 773/849] net: dsa: b53: properly bound ARL searches for < 4 ARL bin chips
 Date: Tue, 11 Nov 2025 09:45:43 +0900
-Message-ID: <20251111004537.884743771@linuxfoundation.org>
+Message-ID: <20251111004555.118549182@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bruno Thomsen <bruno.thomsen@gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 87064da2db7be537a7da20a25c18ba912c4db9e1 ]
+[ Upstream commit e57723fe536f040cc2635ec1545dd0a7919a321e ]
 
-When using interrupt pin (INT A) as watchdog output all other
-interrupt sources need to be disabled to avoid additional
-resets. Resulting INT_A_MASK1 value is 55 (0x37).
+When iterating over the ARL table we stop at max ARL entries / 2, but
+this is only valid if the chip actually returns 2 results at once. For
+chips with only one result register we will stop before reaching the end
+of the table if it is more than half full.
 
-Signed-off-by: Bruno Thomsen <bruno.thomsen@gmail.com>
-Link: https://lore.kernel.org/r/20250902182235.6825-1-bruno.thomsen@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fix this by only dividing the maximum results by two if we have a chip
+with more than one result register (i.e. those with 4 ARL bins).
+
+Fixes: cd169d799bee ("net: dsa: b53: Bound check ARL searches")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251102100758.28352-4-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf2127.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/dsa/b53/b53_common.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/rtc/rtc-pcf2127.c b/drivers/rtc/rtc-pcf2127.c
-index e793c019fb9d7..05a54f4d4d9a6 100644
---- a/drivers/rtc/rtc-pcf2127.c
-+++ b/drivers/rtc/rtc-pcf2127.c
-@@ -528,6 +528,21 @@ static int pcf2127_watchdog_init(struct device *dev, struct pcf2127 *pcf2127)
- 			set_bit(WDOG_HW_RUNNING, &pcf2127->wdd.status);
- 	}
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index b467500699c70..eb767edc4c135 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2087,13 +2087,16 @@ static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
+ int b53_fdb_dump(struct dsa_switch *ds, int port,
+ 		 dsa_fdb_dump_cb_t *cb, void *data)
+ {
++	unsigned int count = 0, results_per_hit = 1;
+ 	struct b53_device *priv = ds->priv;
+ 	struct b53_arl_entry results[2];
+-	unsigned int count = 0;
+ 	u8 offset;
+ 	int ret;
+ 	u8 reg;
  
-+	/*
-+	 * When using interrupt pin (INT A) as watchdog output, only allow
-+	 * watchdog interrupt (PCF2131_BIT_INT_WD_CD) and disable (mask) all
-+	 * other interrupts.
-+	 */
-+	if (pcf2127->cfg->type == PCF2131) {
-+		ret = regmap_write(pcf2127->regmap,
-+				   PCF2131_REG_INT_A_MASK1,
-+				   PCF2131_BIT_INT_BLIE |
-+				   PCF2131_BIT_INT_BIE |
-+				   PCF2131_BIT_INT_AIE |
-+				   PCF2131_BIT_INT_SI |
-+				   PCF2131_BIT_INT_MI);
-+	}
++	if (priv->num_arl_bins > 2)
++		results_per_hit = 2;
 +
- 	return devm_watchdog_register_device(dev, &pcf2127->wdd);
- }
+ 	mutex_lock(&priv->arl_mutex);
+ 
+ 	if (is5325(priv) || is5365(priv))
+@@ -2115,7 +2118,7 @@ int b53_fdb_dump(struct dsa_switch *ds, int port,
+ 		if (ret)
+ 			break;
+ 
+-		if (priv->num_arl_bins > 2) {
++		if (results_per_hit == 2) {
+ 			b53_arl_search_rd(priv, 1, &results[1]);
+ 			ret = b53_fdb_copy(port, &results[1], cb, data);
+ 			if (ret)
+@@ -2125,7 +2128,7 @@ int b53_fdb_dump(struct dsa_switch *ds, int port,
+ 				break;
+ 		}
+ 
+-	} while (count++ < b53_max_arl_entries(priv) / 2);
++	} while (count++ < b53_max_arl_entries(priv) / results_per_hit);
+ 
+ 	mutex_unlock(&priv->arl_mutex);
  
 -- 
 2.51.0
