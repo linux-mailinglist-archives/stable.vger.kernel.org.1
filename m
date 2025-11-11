@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA094C4A253
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:03:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BD3C4A1CC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6B2F64F2B64
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEBEE3AD0DC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743C9253944;
-	Tue, 11 Nov 2025 01:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA91261B6E;
+	Tue, 11 Nov 2025 01:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhfhTYm9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuaC2itd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3217E41C62;
-	Tue, 11 Nov 2025 01:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0BB26059B;
+	Tue, 11 Nov 2025 01:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822824; cv=none; b=tVsohLWkCU/hkOGXM3DSsD2ahf6KgFZlJeRhZ42nnE2NW8ZmenJsyA/8P3/Go8Mrx1kmiD+gcMSJni6OMgZ1++uB6y39Bf45wkQTilBz8lEUZh6EfHvfI/BIgGfJH8KoB17PO/bAqvAugY1RHEJMaJzTTagEgFaomVHWu4XrUg8=
+	t=1762822831; cv=none; b=kUPH6ePDC5mqYdDvF+bIRX/iBmitx6fcAeGcv+ORR32Q/n9wGGphfp5JcRxkx/G2ak6UoGjUd305wWyO2pNYzg0UZj/qcaogtBMydrFxuj4oubr58rPtvaz1L9XW2WrQY3ck/UQXwPcWMkmD/cf5IU1plkTWDIoNdE/snBx6G/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822824; c=relaxed/simple;
-	bh=u264rkupV2Aa+COWdJK+IZRXdWJfWVzZ7nRgpDbMC3A=;
+	s=arc-20240116; t=1762822831; c=relaxed/simple;
+	bh=Xo4QsmUql+xmmGFTyc51UIk6u58IQBNAAsmP6YTsfXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L2QOl6eSow9HNPZVMKmH70n9ZVYSyxS6d5GjGi92QYpLRhiufIqkmK5DkeSgJj/sNSkVktBPzm9jVk3kFF0DsRKiIYWvjYR6Czll52ZCsHlIzILpbL/CtFK41OV50TIIZQGtynAwyjeoqeainlBX4PyPlIl4vIdYk30YJ2rOMsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhfhTYm9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44046C4CEF5;
-	Tue, 11 Nov 2025 01:00:23 +0000 (UTC)
+	 MIME-Version; b=nPYY2XXRzEtybxYOGujFWnREK6/gSSqajpY7et/TGtWepUYX3YiHoK7t+aiMys+aM987QbHBORVr9m5YVz0iDr40pq++S9XyT8kGwLzVz7haVsMtg8I+n8xtklO81UqORv1qxpn6iz03LGknL6T8QiOLI0mgAjSZV0Ah41exBEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuaC2itd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69546C16AAE;
+	Tue, 11 Nov 2025 01:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822823;
-	bh=u264rkupV2Aa+COWdJK+IZRXdWJfWVzZ7nRgpDbMC3A=;
+	s=korg; t=1762822831;
+	bh=Xo4QsmUql+xmmGFTyc51UIk6u58IQBNAAsmP6YTsfXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vhfhTYm9SUcGJnwrPQa9l2C7bS/L3eG9xiXnu9W1VzjNjRo5i5WsioVRWASgOdErF
-	 JQrf+AxxJ5W3E5Bw3fIMjJFtuoD7qoMeGJUQufWIWseRftyu/erW3+mAdWZARRKghQ
-	 BHoZRKYn1j5G/YlJy75s800YW5ric87IIBLwmIr4=
+	b=uuaC2itdAaHtA6APipbmuEC2qEnG1oUybYihEELEpHcULqUibWhz0xs9AOl9dkiMP
+	 gzG/VEg5VzOzJYogIx5pwSQrpO2CUm8CSNgfsn7W/NPLcbiDCrlWpTUExdioU/CYtr
+	 MZSCeEyHVNhFNrda7LlfZ0/mr8+Y54TZYim8ylI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>,
-	Amirreza Zarrabi <amirreza.zarrabi@oss.qualcomm.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Daniel Wagner <wagi@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 178/849] tee: allow a driver to allocate a tee_device without a pool
-Date: Tue, 11 Nov 2025 09:35:48 +0900
-Message-ID: <20251111004540.736551315@linuxfoundation.org>
+Subject: [PATCH 6.17 179/849] nvmet-fc: avoid scheduling association deletion twice
+Date: Tue, 11 Nov 2025 09:35:49 +0900
+Message-ID: <20251111004540.760919876@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,36 +68,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Amirreza Zarrabi <amirreza.zarrabi@oss.qualcomm.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 6dbcd5a9ab6cb6644e7d728521da1c9035ec7235 ]
+[ Upstream commit f2537be4f8421f6495edfa0bc284d722f253841d ]
 
-A TEE driver doesn't always need to provide a pool if it doesn't
-support memory sharing ioctls and can allocate memory for TEE
-messages in another way. Although this is mentioned in the
-documentation for tee_device_alloc(), it is not handled correctly.
+When forcefully shutting down a port via the configfs interface,
+nvmet_port_subsys_drop_link() first calls nvmet_port_del_ctrls() and
+then nvmet_disable_port(). Both functions will eventually schedule all
+remaining associations for deletion.
 
-Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-Signed-off-by: Amirreza Zarrabi <amirreza.zarrabi@oss.qualcomm.com>
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+The current implementation checks whether an association is about to be
+removed, but only after the work item has already been scheduled. As a
+result, it is possible for the first scheduled work item to free all
+resources, and then for the same work item to be scheduled again for
+deletion.
+
+Because the association list is an RCU list, it is not possible to take
+a lock and remove the list entry directly, so it cannot be looked up
+again. Instead, a flag (terminating) must be used to determine whether
+the association is already in the process of being deleted.
+
+Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Closes: https://lore.kernel.org/all/rsdinhafrtlguauhesmrrzkybpnvwantwmyfq2ih5aregghax5@mhr7v3eryci3/
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tee/tee_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/target/fc.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
-index acc7998758ad8..133447f250657 100644
---- a/drivers/tee/tee_core.c
-+++ b/drivers/tee/tee_core.c
-@@ -889,7 +889,7 @@ struct tee_device *tee_device_alloc(const struct tee_desc *teedesc,
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index 6725c34dd7c90..7d84527d5a43e 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -1075,6 +1075,14 @@ nvmet_fc_delete_assoc_work(struct work_struct *work)
+ static void
+ nvmet_fc_schedule_delete_assoc(struct nvmet_fc_tgt_assoc *assoc)
+ {
++	int terminating;
++
++	terminating = atomic_xchg(&assoc->terminating, 1);
++
++	/* if already terminating, do nothing */
++	if (terminating)
++		return;
++
+ 	nvmet_fc_tgtport_get(assoc->tgtport);
+ 	if (!queue_work(nvmet_wq, &assoc->del_work))
+ 		nvmet_fc_tgtport_put(assoc->tgtport);
+@@ -1202,13 +1210,7 @@ nvmet_fc_delete_target_assoc(struct nvmet_fc_tgt_assoc *assoc)
+ {
+ 	struct nvmet_fc_tgtport *tgtport = assoc->tgtport;
+ 	unsigned long flags;
+-	int i, terminating;
+-
+-	terminating = atomic_xchg(&assoc->terminating, 1);
+-
+-	/* if already terminating, do nothing */
+-	if (terminating)
+-		return;
++	int i;
  
- 	if (!teedesc || !teedesc->name || !teedesc->ops ||
- 	    !teedesc->ops->get_version || !teedesc->ops->open ||
--	    !teedesc->ops->release || !pool)
-+	    !teedesc->ops->release)
- 		return ERR_PTR(-EINVAL);
- 
- 	teedev = kzalloc(sizeof(*teedev), GFP_KERNEL);
+ 	spin_lock_irqsave(&tgtport->lock, flags);
+ 	list_del_rcu(&assoc->a_list);
 -- 
 2.51.0
 
