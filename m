@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-194188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B57F3C4B05D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:54:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E0EC4B191
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C47EB3BBEC7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 460B04F0652
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B0133EB01;
-	Tue, 11 Nov 2025 01:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD3F2FE059;
+	Tue, 11 Nov 2025 01:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYIefKAC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYul3NFf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3063E33F36B;
-	Tue, 11 Nov 2025 01:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F84246333;
+	Tue, 11 Nov 2025 01:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825012; cv=none; b=oSg6bSMGDQu7RrfESgJpoBgi+uihFqboDmDzkZ/gMPm37lXRdzop7RrhQxXFPAi8e5F7jkjHiC9eSvLKjeNsRjOoWNHy/Iqax88YWFCdznjoonskljuwMnT4H2GVi3jsbZ8nwfh1NOlzCRWEsy8j01gQuVl4xO6YU06jQUeFmYA=
+	t=1762825476; cv=none; b=XbekT3ovHNKzdBUu+hja2lVj9lkUhzgQ43vwBMfxmNhmwxKyioqdmJi3oiHfrBS9bAzCgfoBb5hxMxhweiGs4rmdcdQh9mysBflzRzQLx3F2kY2j0KMTnHxJd7lqkeh0oudG9Hjmi+ph3VSe04zgKvgncVNJwhsqlfJCSWRMGbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825012; c=relaxed/simple;
-	bh=SxikVSKjoNf3wXNZVuGSc4cCOqNtSevYdqFrP9jNVWU=;
+	s=arc-20240116; t=1762825476; c=relaxed/simple;
+	bh=RBZvN719IMLdr9lT37VUKjPokM+ThoJBuQ7DmrMWULY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pkq1b4GWBimGxR8df1D/cda1Fq01OmG6hOIPWNwHKrZ6J1CqNrVTRnUiUb5zIBkHZ+I8eVrdC6OedaUFI1rsm5kEU+XYTT0mbauHXGdpwPhiW/wlqr2EcBxkPMY5kJvm/4nhhOwngSvB9jJDEBwehDKf3Kp1qjuDvxzVRx96dmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYIefKAC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AF6C16AAE;
-	Tue, 11 Nov 2025 01:36:51 +0000 (UTC)
+	 MIME-Version; b=gJJ3LpQujPMeEbdV60Vmet0AN7zfPknaZVXhljKR6Vu3gpy73vOHrDsWXY60ZyIspF/frboAurwgPEupyvowVlz+GoEWuihAPrzw65IvS5Nt+s/QXZuPxUCmP20liP1jv0+s2kFPr+NrvFVSirmfVHAuUhWPMrH6Koz1ALtR6ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYul3NFf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB1DC19425;
+	Tue, 11 Nov 2025 01:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825012;
-	bh=SxikVSKjoNf3wXNZVuGSc4cCOqNtSevYdqFrP9jNVWU=;
+	s=korg; t=1762825475;
+	bh=RBZvN719IMLdr9lT37VUKjPokM+ThoJBuQ7DmrMWULY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yYIefKACe48LqUkf8u0RRN+kewDT0OX93raP7wolGFxMFpsRT5mW1U0gV4TPJ5yFt
-	 UmTqGsHEpyZro/ICAuN4QIpxt7mc7/sW/SpNI+SPsGP5GxHy3S2VaQG7eNcvxTGOXN
-	 up35zJs3StDpj+u+icSgHL4/lDDmd+0MEpERpnIk=
+	b=LYul3NFfoAyYedbUJHewwHYyD+sL6SAJKuwrLtuLQobH4nV/GO10lY4rMGXSTd5XI
+	 /Z8usNGMYGZh8hE0epFlXgVVFHTntlVuPZB3xFO9BwgRNV3RZAn9hsmJwt/6wWv/Sk
+	 SYEbrqe/+viKs323Ip8kn+U9d/A+rVNkve6HHwRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Willi <martin@strongswan.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 533/565] wifi: mac80211_hwsim: Limit destroy_on_close radio removal to netgroup
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.17 819/849] x86/amd_node: Fix AMD root device caching
 Date: Tue, 11 Nov 2025 09:46:29 +0900
-Message-ID: <20251111004538.961974166@linuxfoundation.org>
+Message-ID: <20251111004556.225687864@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +61,272 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Willi <martin@strongswan.org>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit c74619e7602e88a0239cd4999571dd31081e9adf ]
+commit 0a4b61d9c2e496b5f0a10e29e355a1465c8738bb upstream.
 
-hwsim radios marked destroy_on_close are removed when the Netlink socket
-that created them is closed. As the portid is not unique across network
-namespaces, closing a socket in one namespace may remove radios in another
-if it has the destroy_on_close flag set.
+Recent AMD node rework removed the "search and count" method of caching AMD
+root devices. This depended on the value from a Data Fabric register that was
+expected to hold the PCI bus of one of the root devices attached to that
+fabric.
 
-Instead of matching the network namespace, match the netgroup of the radio
-to limit radio removal to those that have been created by the closing
-Netlink socket. The netgroup of a radio identifies the network namespace
-it was created in, and matching on it removes a destroy_on_close radio
-even if it has been moved to another namespace.
+However, this expectation is incorrect. The register, when read from PCI
+config space, returns the bitwise-OR of the buses of all attached root
+devices.
 
-Fixes: 100cb9ff40e0 ("mac80211_hwsim: Allow managing radios from non-initial namespaces")
-Signed-off-by: Martin Willi <martin@strongswan.org>
-Link: https://patch.msgid.link/20251103082436.30483-1-martin@strongswan.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This behavior is benign on AMD reference design boards, since the bus numbers
+are aligned. This results in a bitwise-OR value matching one of the buses. For
+example, 0x00 | 0x40 | 0xA0 | 0xE0 = 0xE0.
+
+This behavior breaks on boards where the bus numbers are not exactly aligned.
+For example, 0x00 | 0x07 | 0xE0 | 0x15 = 0x1F.
+
+The examples above are for AMD node 0. The first root device on other nodes
+will not be 0x00. The first root device for other nodes will depend on the
+total number of root devices, the system topology, and the specific PCI bus
+number assignment.
+
+For example, a system with 2 AMD nodes could have this:
+
+  Node 0 : 0x00 0x07 0x0e 0x15
+  Node 1 : 0x1c 0x23 0x2a 0x31
+
+The bus numbering style in the reference boards is not a requirement.  The
+numbering found in other boards is not incorrect. Therefore, the root device
+caching method needs to be adjusted.
+
+Go back to the "search and count" method used before the recent rework.
+Search for root devices using PCI class code rather than fixed PCI IDs.
+
+This keeps the goal of the rework (remove dependency on PCI IDs) while being
+able to support various board designs.
+
+Merge helper functions to reduce code duplication.
+
+  [ bp: Reflow comment. ]
+
+Fixes: 40a5f6ffdfc8 ("x86/amd_nb: Simplify root device search")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/all/20251028-fix-amd-root-v2-1-843e38f8be2c@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/amd/node.h |    1 
+ arch/x86/kernel/amd_node.c      |  150 +++++++++++++---------------------------
+ 2 files changed, 51 insertions(+), 100 deletions(-)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 6fcc21f596ea7..8b4fd5fd11b0e 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -6411,14 +6411,15 @@ static struct genl_family hwsim_genl_family __ro_after_init = {
- 	.n_mcgrps = ARRAY_SIZE(hwsim_mcgrps),
- };
+--- a/arch/x86/include/asm/amd/node.h
++++ b/arch/x86/include/asm/amd/node.h
+@@ -23,7 +23,6 @@
+ #define AMD_NODE0_PCI_SLOT	0x18
  
--static void remove_user_radios(u32 portid)
-+static void remove_user_radios(u32 portid, int netgroup)
+ struct pci_dev *amd_node_get_func(u16 node, u8 func);
+-struct pci_dev *amd_node_get_root(u16 node);
+ 
+ static inline u16 amd_num_nodes(void)
  {
- 	struct mac80211_hwsim_data *entry, *tmp;
- 	LIST_HEAD(list);
+--- a/arch/x86/kernel/amd_node.c
++++ b/arch/x86/kernel/amd_node.c
+@@ -34,62 +34,6 @@ struct pci_dev *amd_node_get_func(u16 no
+ 	return pci_get_domain_bus_and_slot(0, 0, PCI_DEVFN(AMD_NODE0_PCI_SLOT + node, func));
+ }
  
- 	spin_lock_bh(&hwsim_radio_lock);
- 	list_for_each_entry_safe(entry, tmp, &hwsim_radios, list) {
--		if (entry->destroy_on_close && entry->portid == portid) {
-+		if (entry->destroy_on_close && entry->portid == portid &&
-+		    entry->netgroup == netgroup) {
- 			list_move(&entry->list, &list);
- 			rhashtable_remove_fast(&hwsim_radios_rht, &entry->rht,
- 					       hwsim_rht_params);
-@@ -6443,7 +6444,7 @@ static int mac80211_hwsim_netlink_notify(struct notifier_block *nb,
- 	if (state != NETLINK_URELEASE)
- 		return NOTIFY_DONE;
+-#define DF_BLK_INST_CNT		0x040
+-#define	DF_CFG_ADDR_CNTL_LEGACY	0x084
+-#define	DF_CFG_ADDR_CNTL_DF4	0xC04
+-
+-#define DF_MAJOR_REVISION	GENMASK(27, 24)
+-
+-static u16 get_cfg_addr_cntl_offset(struct pci_dev *df_f0)
+-{
+-	u32 reg;
+-
+-	/*
+-	 * Revision fields added for DF4 and later.
+-	 *
+-	 * Major revision of '0' is found pre-DF4. Field is Read-as-Zero.
+-	 */
+-	if (pci_read_config_dword(df_f0, DF_BLK_INST_CNT, &reg))
+-		return 0;
+-
+-	if (reg & DF_MAJOR_REVISION)
+-		return DF_CFG_ADDR_CNTL_DF4;
+-
+-	return DF_CFG_ADDR_CNTL_LEGACY;
+-}
+-
+-struct pci_dev *amd_node_get_root(u16 node)
+-{
+-	struct pci_dev *root;
+-	u16 cntl_off;
+-	u8 bus;
+-
+-	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
+-		return NULL;
+-
+-	/*
+-	 * D18F0xXXX [Config Address Control] (DF::CfgAddressCntl)
+-	 * Bits [7:0] (SecBusNum) holds the bus number of the root device for
+-	 * this Data Fabric instance. The segment, device, and function will be 0.
+-	 */
+-	struct pci_dev *df_f0 __free(pci_dev_put) = amd_node_get_func(node, 0);
+-	if (!df_f0)
+-		return NULL;
+-
+-	cntl_off = get_cfg_addr_cntl_offset(df_f0);
+-	if (!cntl_off)
+-		return NULL;
+-
+-	if (pci_read_config_byte(df_f0, cntl_off, &bus))
+-		return NULL;
+-
+-	/* Grab the pointer for the actual root device instance. */
+-	root = pci_get_domain_bus_and_slot(0, bus, 0);
+-
+-	pci_dbg(root, "is root for AMD node %u\n", node);
+-	return root;
+-}
+-
+ static struct pci_dev **amd_roots;
  
--	remove_user_radios(notify->portid);
-+	remove_user_radios(notify->portid, hwsim_net_get_netgroup(notify->net));
+ /* Protect the PCI config register pairs used for SMN. */
+@@ -274,51 +218,21 @@ DEFINE_SHOW_STORE_ATTRIBUTE(smn_node);
+ DEFINE_SHOW_STORE_ATTRIBUTE(smn_address);
+ DEFINE_SHOW_STORE_ATTRIBUTE(smn_value);
  
- 	if (notify->portid == hwsim_net_get_wmediumd(notify->net)) {
- 		printk(KERN_INFO "mac80211_hwsim: wmediumd released netlink"
--- 
-2.51.0
-
+-static int amd_cache_roots(void)
++static struct pci_dev *get_next_root(struct pci_dev *root)
+ {
+-	u16 node, num_nodes = amd_num_nodes();
+-
+-	amd_roots = kcalloc(num_nodes, sizeof(*amd_roots), GFP_KERNEL);
+-	if (!amd_roots)
+-		return -ENOMEM;
+-
+-	for (node = 0; node < num_nodes; node++)
+-		amd_roots[node] = amd_node_get_root(node);
+-
+-	return 0;
+-}
+-
+-static int reserve_root_config_spaces(void)
+-{
+-	struct pci_dev *root = NULL;
+-	struct pci_bus *bus = NULL;
+-
+-	while ((bus = pci_find_next_bus(bus))) {
+-		/* Root device is Device 0 Function 0 on each Primary Bus. */
+-		root = pci_get_slot(bus, 0);
+-		if (!root)
++	while ((root = pci_get_class(PCI_CLASS_BRIDGE_HOST << 8, root))) {
++		/* Root device is Device 0 Function 0. */
++		if (root->devfn)
+ 			continue;
+ 
+ 		if (root->vendor != PCI_VENDOR_ID_AMD &&
+ 		    root->vendor != PCI_VENDOR_ID_HYGON)
+ 			continue;
+ 
+-		pci_dbg(root, "Reserving PCI config space\n");
+-
+-		/*
+-		 * There are a few SMN index/data pairs and other registers
+-		 * that shouldn't be accessed by user space.
+-		 * So reserve the entire PCI config space for simplicity rather
+-		 * than covering specific registers piecemeal.
+-		 */
+-		if (!pci_request_config_region_exclusive(root, 0, PCI_CFG_SPACE_SIZE, NULL)) {
+-			pci_err(root, "Failed to reserve config space\n");
+-			return -EEXIST;
+-		}
++		break;
+ 	}
+ 
+-	smn_exclusive = true;
+-	return 0;
++	return root;
+ }
+ 
+ static bool enable_dfs;
+@@ -332,7 +246,8 @@ __setup("amd_smn_debugfs_enable", amd_sm
+ 
+ static int __init amd_smn_init(void)
+ {
+-	int err;
++	u16 count, num_roots, roots_per_node, node, num_nodes;
++	struct pci_dev *root;
+ 
+ 	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
+ 		return 0;
+@@ -342,13 +257,48 @@ static int __init amd_smn_init(void)
+ 	if (amd_roots)
+ 		return 0;
+ 
+-	err = amd_cache_roots();
+-	if (err)
+-		return err;
++	num_roots = 0;
++	root = NULL;
++	while ((root = get_next_root(root))) {
++		pci_dbg(root, "Reserving PCI config space\n");
+ 
+-	err = reserve_root_config_spaces();
+-	if (err)
+-		return err;
++		/*
++		 * There are a few SMN index/data pairs and other registers
++		 * that shouldn't be accessed by user space. So reserve the
++		 * entire PCI config space for simplicity rather than covering
++		 * specific registers piecemeal.
++		 */
++		if (!pci_request_config_region_exclusive(root, 0, PCI_CFG_SPACE_SIZE, NULL)) {
++			pci_err(root, "Failed to reserve config space\n");
++			return -EEXIST;
++		}
++
++		num_roots++;
++	}
++
++	pr_debug("Found %d AMD root devices\n", num_roots);
++
++	if (!num_roots)
++		return -ENODEV;
++
++	num_nodes = amd_num_nodes();
++	amd_roots = kcalloc(num_nodes, sizeof(*amd_roots), GFP_KERNEL);
++	if (!amd_roots)
++		return -ENOMEM;
++
++	roots_per_node = num_roots / num_nodes;
++
++	count = 0;
++	node = 0;
++	root = NULL;
++	while (node < num_nodes && (root = get_next_root(root))) {
++		/* Use one root for each node and skip the rest. */
++		if (count++ % roots_per_node)
++			continue;
++
++		pci_dbg(root, "is root for AMD node %u\n", node);
++		amd_roots[node++] = root;
++	}
+ 
+ 	if (enable_dfs) {
+ 		debugfs_dir = debugfs_create_dir("amd_smn", arch_debugfs_dir);
+@@ -358,6 +308,8 @@ static int __init amd_smn_init(void)
+ 		debugfs_create_file("value",	0600, debugfs_dir, NULL, &smn_value_fops);
+ 	}
+ 
++	smn_exclusive = true;
++
+ 	return 0;
+ }
+ 
 
 
 
