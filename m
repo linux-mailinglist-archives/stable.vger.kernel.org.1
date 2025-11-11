@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D84FC4B1F6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 975C4C4AD9F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98C463BF624
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8E073B3120
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0970E26D4C7;
-	Tue, 11 Nov 2025 01:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7048B2DEA77;
+	Tue, 11 Nov 2025 01:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1v5zXGiV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLjWSfL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99EF285CA2;
-	Tue, 11 Nov 2025 01:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246C41F09B3;
+	Tue, 11 Nov 2025 01:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825359; cv=none; b=mjJRKaNQFRqAflLHjpFOiJWz6r4+5xMLeJCsaTlpF6aW3vbdOhQY/B1q7ZIdYy+5bgQS+ZVn3suvG97ith1IyEiA9xhM/CqSCZyC48cBPGgglly5ka79oht8+uSD/3vRBIalW3d07HiDEVirJ6q1d6RlTM0KuxtBB1BuHWqAC3s=
+	t=1762824686; cv=none; b=jQiPW3+Wx4yqVHPraY9RparR0SJDv81SY6n/CfF3UIdanT3Znx0XuK1F/qdmLSEP+CSOKfm42CpL4YhHUZL9b5630sGMWw3llUzzSweJMezT0FbqQ+ene/sMsUG+wIYdnANPbOGpTrOE1jBYQ+uudM7vLLYTiA4TltoXq4Rkjbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825359; c=relaxed/simple;
-	bh=uaw0mgOKE75sE1xnlavJ4nMoAbrxmEGGlW9QjxQaliU=;
+	s=arc-20240116; t=1762824686; c=relaxed/simple;
+	bh=CG/9mu/FrnTPE3c0WBsyAQ1jagHM6MMDMERdq2zD46Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ppLJhONac8WtfHd5mGbj/0dQoZJjR/NhnS1cePsdzJvvwU+LfF9iEGVU9uUctwAgnGG5KJKEHMOFVE/3mE8q1q48x0i6gzcKAJPbxIy6dRoXuJbHmqAKJ6wvplVfmhxMoCM1ILGux3BQDJjsxML0iQhTzWir5bGjgetHsi0It6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1v5zXGiV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C8F3C116B1;
-	Tue, 11 Nov 2025 01:42:39 +0000 (UTC)
+	 MIME-Version; b=EuHwyk9L3fuHuFtXjMIg5esEDxzODnZXEoMz+YWjrLbpo461f2uSsUza19E2EgjXrXgD0CwJRBdeJs9IHK2gIdR2RhP3U8lL4QMkkHaeTiAEi8CBp6koIv3AUCEIG6VXN9C7vCbAThEOukt5AaMggfzxjv2ek6Ll3oR+htPhq/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLjWSfL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA89C113D0;
+	Tue, 11 Nov 2025 01:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825359;
-	bh=uaw0mgOKE75sE1xnlavJ4nMoAbrxmEGGlW9QjxQaliU=;
+	s=korg; t=1762824686;
+	bh=CG/9mu/FrnTPE3c0WBsyAQ1jagHM6MMDMERdq2zD46Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1v5zXGiV6yQyH83O7xChw+gGgc1Is2a+DmRMlx1MmocxXOc8j2JJiLQOVvVG5Ayt3
-	 o7y2UHX2WdEBRTJtAkBW8D7wrlTSXn8ULC0/pn0nAe7NHR57DG8Hy/Ofqge2l6KzL9
-	 4/HOwT6qucnRw4T92N3Yfx8/t8U+DNUIsLEjXnmU=
+	b=yLjWSfL2xv0Sg3A8yt0QbfaVofrC0FtilhoDOLpPlXmsQFIUZpj8R5r5TFprU4sWl
+	 65svqhYeWZ59fU0UomlHVKJp+Ybl5oQS4+Ooy8ACDy/kVGcYEvhQURxgvBsFxp2ShX
+	 iUFU5cd7QAQozj/cVGjf7ztq5uA90ydbCIw2F9BU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 770/849] net: dsa: b53: fix bcm63xx RGMII port link adjustment
-Date: Tue, 11 Nov 2025 09:45:40 +0900
-Message-ID: <20251111004555.045514856@linuxfoundation.org>
+Subject: [PATCH 6.12 485/565] tools: lib: thermal: use pkg-config to locate libnl3
+Date: Tue, 11 Nov 2025 09:45:41 +0900
+Message-ID: <20251111004537.839164326@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit 3e4ebdc1606adf77744cf8ed7a433d279fdc57ba ]
+[ Upstream commit b31f7f725cd932e2c2b41f3e4b66273653953687 ]
 
-BCM63XX's switch does not support MDIO scanning of external phys, so its
-MACs needs to be manually configured for autonegotiated link speeds.
+To make libthermal more cross compile friendly use pkg-config to locate
+libnl3. Only if that fails fall back to hardcoded /usr/include/libnl3.
 
-So b53_force_port_config() and b53_force_link() accordingly also when
-mode is MLO_AN_PHY for those ports.
-
-Fixes lower speeds than 1000/full on rgmii ports 4 - 7.
-
-This aligns the behaviour with the old bcm63xx_enetsw driver for those
-ports.
-
-Fixes: 967dd82ffc52 ("net: dsa: b53: Add support for Broadcom RoboSwitch")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251101132807.50419-3-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ tools/lib/thermal/Makefile | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index cb28256ef3cc3..bb2c6dfa7835d 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1602,8 +1602,11 @@ static void b53_phylink_mac_link_down(struct phylink_config *config,
- 	struct b53_device *dev = dp->ds->priv;
- 	int port = dp->index;
+diff --git a/tools/lib/thermal/Makefile b/tools/lib/thermal/Makefile
+index 1694889847caf..8d21ea1950a31 100644
+--- a/tools/lib/thermal/Makefile
++++ b/tools/lib/thermal/Makefile
+@@ -59,8 +59,12 @@ else
+   CFLAGS := -g -Wall
+ endif
  
--	if (mode == MLO_AN_PHY)
-+	if (mode == MLO_AN_PHY) {
-+		if (is63xx(dev) && in_range(port, B53_63XX_RGMII0, 4))
-+			b53_force_link(dev, port, false);
- 		return;
-+	}
- 
- 	if (mode == MLO_AN_FIXED) {
- 		b53_force_link(dev, port, false);
-@@ -1631,6 +1634,13 @@ static void b53_phylink_mac_link_up(struct phylink_config *config,
- 	if (mode == MLO_AN_PHY) {
- 		/* Re-negotiate EEE if it was enabled already */
- 		p->eee_enabled = b53_eee_init(ds, port, phydev);
++NL3_CFLAGS = $(shell pkg-config --cflags libnl-3.0 2>/dev/null)
++ifeq ($(NL3_CFLAGS),)
++NL3_CFLAGS = -I/usr/include/libnl3
++endif
 +
-+		if (is63xx(dev) && in_range(port, B53_63XX_RGMII0, 4)) {
-+			b53_force_port_config(dev, port, speed, duplex,
-+					      tx_pause, rx_pause);
-+			b53_force_link(dev, port, true);
-+		}
-+
- 		return;
- 	}
- 
+ INCLUDES = \
+--I/usr/include/libnl3 \
+ -I$(srctree)/tools/lib/thermal/include \
+ -I$(srctree)/tools/lib/ \
+ -I$(srctree)/tools/include \
+@@ -72,6 +76,7 @@ INCLUDES = \
+ override CFLAGS += $(EXTRA_WARNINGS)
+ override CFLAGS += -Werror -Wall
+ override CFLAGS += -fPIC
++override CFLAGS += $(NL3_CFLAGS)
+ override CFLAGS += $(INCLUDES)
+ override CFLAGS += -fvisibility=hidden
+ override CFGLAS += -Wl,-L.
 -- 
 2.51.0
 
