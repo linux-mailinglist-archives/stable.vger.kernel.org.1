@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD138C4A12E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CE0C4A1A8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:00:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 721FC188CD14
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 862FF4F1138
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1484A214210;
-	Tue, 11 Nov 2025 00:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DB223FC41;
+	Tue, 11 Nov 2025 00:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nY6OvaxL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2dJe8vl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D504C97;
-	Tue, 11 Nov 2025 00:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21DF1DF258;
+	Tue, 11 Nov 2025 00:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822698; cv=none; b=NHImtFuK8WodDtRT0KdEcUjvlcmanWYyizzNpC0An5XRtulpHqaEWCcJTH2khRwJOV+e+qngv3nzU/K33tardfQ01MphfpZnjNk1ye06As9EJZuEi59kJTPirbSv0AjeTEm7Si4Ji5mMA+LIZhYXfeCMwuvVpAdS79gYh2xFJgM=
+	t=1762822703; cv=none; b=YW+PVCnO8wcGSQvWlOYLnTsHrMMrAkUq2GOSyk15Z/tqNHv2Fkw4R/DJu4HdcgkRcvCwUE+wtNDluxjTcfnQnYQ5i+eI6zwQKzbO2VKIvbqSCTBbEOedqErAGjdSkINBISe3F2T+4SouXaqYSQIb3Tw495TwBxo2FYjZaB8J+Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822698; c=relaxed/simple;
-	bh=IFnm84dQs5BWuwb0TO4mdJTcothIXyi6JAxjDxhc5Ro=;
+	s=arc-20240116; t=1762822703; c=relaxed/simple;
+	bh=hQ2cYZThJ/ZRRipIttx8NPfq0XZzONHnYJ+iDwvHK40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SGB/NL7nOYv6xSGMFKzbTKmA1Y5Ij9fHVV9iwBUPec663JrSN+uwYizAzz+8eBYOYZ0b9vEZ3sNS6FM6hkaUy7fd6wNOjcg44q/NHx+ZGEv8xuqJcGLtt+0ZjLo0dIgCCSuigk8yGyBAd2ZcVfssjqJSi0N3a/7lMWvWx1hYTZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nY6OvaxL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62025C19422;
-	Tue, 11 Nov 2025 00:58:18 +0000 (UTC)
+	 MIME-Version; b=mLxUgGUbB8gwa4M2ZBk/q7OkG+53nEtKR8P/M+qhvmRm2Cxpete117D7PHmo/0Ec5Rx9JREGHji1+rKLUTki+syUkWpMJVc/13v8jZL126r4BVEJENvipAAi81L1MTwzq9duCzo4O+0/2Utm9a+8jpxf4bcaox84XJNGf1W+/9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2dJe8vl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4F6C19425;
+	Tue, 11 Nov 2025 00:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822698;
-	bh=IFnm84dQs5BWuwb0TO4mdJTcothIXyi6JAxjDxhc5Ro=;
+	s=korg; t=1762822703;
+	bh=hQ2cYZThJ/ZRRipIttx8NPfq0XZzONHnYJ+iDwvHK40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nY6OvaxLWtBJsfYrM7kR5ZqKg+lV4b8f/+/WPj1IldXDX5cCsD7ix0PdvMzYDaT6V
-	 alVoBTS0AUC7RKqIrKpMgK8g700KEKt4ig6S93lCESbJcCgFGb2/djRtbJpOVxZ0ob
-	 7C/AyuAnsNG3WCTHfbdxlVvdpm3rEOkvcdJ7WIFo=
+	b=W2dJe8vl5OwSAm6sLQqlz6Wl+BXeAeb/mNBL1LSShETmXJl9geJounR1ddj/Sls3t
+	 HWoK6Mt+JxDBtIfRFEvHX5JNPzY9LX2+XoA8lO8K6mEZZV8KIfhald8MNip68qGbge
+	 XcOhSzjSQwYNheH/GOiZ6ejOtKHyBsLZf2zerjCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Chen <ryan_chen@aspeedtech.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/565] soc: aspeed: socinfo: Add AST27xx silicon IDs
-Date: Tue, 11 Nov 2025 09:39:04 +0900
-Message-ID: <20251111004528.949944768@linuxfoundation.org>
+Subject: [PATCH 6.12 089/565] firmware: qcom: scm: preserve assign_mem() error return value
+Date: Tue, 11 Nov 2025 09:39:05 +0900
+Message-ID: <20251111004528.971363913@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,35 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ryan Chen <ryan_chen@aspeedtech.com>
+From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 
-[ Upstream commit c30dcfd4b5a0f0e3fe7138bf287f6de6b1b00278 ]
+[ Upstream commit 121fcf3c871181edce0708a49d2397cedd6ad21f ]
 
-Extend the ASPEED SoC info driver to support AST27XX silicon IDs.
+When qcom_scm_assign_mem() fails, the error value is currently being
+overwritten after it is logged, resulting in the loss of the original
+error code. Fix this by retaining and returning the original error value
+as intended.
 
-Signed-off-by: Ryan Chen <ryan_chen@aspeedtech.com>
-Link: https://patch.msgid.link/20250807005208.3517283-1-ryan_chen@aspeedtech.com
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250807124451.2623019-1-mukesh.ojha@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/aspeed/aspeed-socinfo.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/firmware/qcom/qcom_scm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/aspeed/aspeed-socinfo.c b/drivers/soc/aspeed/aspeed-socinfo.c
-index 3f759121dc00a..67e9ac3d08ecc 100644
---- a/drivers/soc/aspeed/aspeed-socinfo.c
-+++ b/drivers/soc/aspeed/aspeed-socinfo.c
-@@ -27,6 +27,10 @@ static struct {
- 	{ "AST2620", 0x05010203 },
- 	{ "AST2605", 0x05030103 },
- 	{ "AST2625", 0x05030403 },
-+	/* AST2700 */
-+	{ "AST2750", 0x06000003 },
-+	{ "AST2700", 0x06000103 },
-+	{ "AST2720", 0x06000203 },
- };
+diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
+index 23aefbf6fca58..1da16bc79391c 100644
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -1093,7 +1093,7 @@ int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
+ 	if (ret) {
+ 		dev_err(__scm->dev,
+ 			"Assign memory protection call failed %d\n", ret);
+-		return -EINVAL;
++		return ret;
+ 	}
  
- static const char *siliconid_to_name(u32 siliconid)
+ 	*srcvm = next_vm;
 -- 
 2.51.0
 
