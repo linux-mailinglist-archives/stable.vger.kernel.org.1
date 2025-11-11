@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-193373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C561C4A2A7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:05:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F0BC4A292
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:04:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 385EC3A5B2B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1350C188EB81
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2497248F6A;
-	Tue, 11 Nov 2025 01:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323E7253944;
+	Tue, 11 Nov 2025 01:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tyy1CaO4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nUf8eLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3791F5F6;
-	Tue, 11 Nov 2025 01:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8329246768;
+	Tue, 11 Nov 2025 01:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823028; cv=none; b=Z01RYMjSKJnd6Gc7vaV10cx+JIDdstmRNOSi1RIuc/yYa7qSgPO2X2wbpvEbX/VuMd/AoN4Gu428Rr+Dkli+h/FBGeMDh1CEpKbIa1Uh4okoyF42Vb8fnrcjiyBZ+eInfMlafD9eNDVovpWHNAD0TFp3NmdYIvKi9T/1HRQzypA=
+	t=1762823040; cv=none; b=mS/IX+ScXzflLMGiAMVdBrNk1Nh/jmJpbMUlc/HpUGoFyVXShogly1oDxKte67yQSmZN8+xw+OZFuJ5nm2gtNUPDjtWHSB4hJ4Hf3urffXN4b0IOwF/r66iflTN7eZHlSsYEzyidcYL6dBkesxsM6yAVSqCp7HaQkpbXmjouGLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823028; c=relaxed/simple;
-	bh=69Rl8ns5SfZ66ENHtDrtQ0sTxF8oY2ANjDamrSbMRgU=;
+	s=arc-20240116; t=1762823040; c=relaxed/simple;
+	bh=2xCsSzRmAVhl5X6SUDpAUoUUSyF5tCXwzQ6CLRQ7UzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZBomDwfkCNGx1s9O5obyvQLJt+FAn01lWsZixSl5h2OTCwBI247cPJ6kvc15wxVSmE2iZTK0EQTcDd3ga8ffyak9tfvQI23z4pO6bipW8kJ+RbD3y7FeWkVYQTAoVQUsJEdHp09uv6UvvLbbJKZsyZjaE0BT01gpqhywcXyd1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tyy1CaO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26CDC16AAE;
-	Tue, 11 Nov 2025 01:03:47 +0000 (UTC)
+	 MIME-Version; b=kh4coNLYX06a9QpV5P+X7nxXV4nLED0q7R8w0cHldMDzcQgqslhHfCW5V2M08wOoKqk+MGJoxRgdDAkBTdk+GZYmMNT2U4ign+JWxoFVtxyMwfoOUXLVyfTg1yg5I+s/BNfoyi9bF1t87gmiBu8k+4A5hw0ghxBTBAgxiM4RLqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nUf8eLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F88C2BC86;
+	Tue, 11 Nov 2025 01:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823028;
-	bh=69Rl8ns5SfZ66ENHtDrtQ0sTxF8oY2ANjDamrSbMRgU=;
+	s=korg; t=1762823039;
+	bh=2xCsSzRmAVhl5X6SUDpAUoUUSyF5tCXwzQ6CLRQ7UzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tyy1CaO48Ip99kWn5UqUoY8AFsj+W6rnZEscP0zsbOlcyVc9LKHMmlhMLbJfetZaD
-	 D3U5vzAqXofSBATWvki0vkYiH6Y3t3chLMMRPSiqgHOooI8itirbV2jX9g4zwL4DBI
-	 PVdfx5J3zPC9XMQSiK3wvh2RQToVEw7chT9PcAP8=
+	b=2nUf8eLZdhEJtID94287eT5U5AaiexZVu40y6aD8kInS2u1rmAGLymxWEcznHPnuu
+	 fg5Vht3g4rRHFpC28sOMHBLpDofbM/gSutDHs2m0QYmcEr7bc7HB1DT/3ZCWW+hZDR
+	 EaNz3yho/N3zoCQtJBJZCG+1Tf3XgMmI/+J/HLdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <len.brown@intel.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 217/849] tools/power x86_energy_perf_policy: Prefer driver HWP limits
-Date: Tue, 11 Nov 2025 09:36:27 +0900
-Message-ID: <20251111004541.687742421@linuxfoundation.org>
+Subject: [PATCH 6.17 219/849] mfd: stmpe: Remove IRQ domain upon removal
+Date: Tue, 11 Nov 2025 09:36:29 +0900
+Message-ID: <20251111004541.734011954@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -65,73 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 2734fdbc9bb8a3aeb309ba0d62212d7f53f30bc7 ]
+[ Upstream commit 57bf2a312ab2d0bc8ee0f4e8a447fa94a2fc877d ]
 
-When we are successful in using cpufreq min/max limits,
-skip setting the raw MSR limits entirely.
+The IRQ domain is (optionally) added during stmpe_probe, but never removed.
+Add the call to stmpe_remove.
 
-This is necessary to avoid undoing any modification that
-the cpufreq driver makes to our sysfs request.
-
-eg. intel_pstate may take our request for a limit
-that is valid according to HWP.CAP.MIN/MAX and clip
-it to be within the range available in PLATFORM_INFO.
-
-Signed-off-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20250725070752.338376-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../x86_energy_perf_policy/x86_energy_perf_policy.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/mfd/stmpe.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-index 0bda8e3ae7f77..891738116c8b2 100644
---- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-+++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-@@ -62,6 +62,7 @@ unsigned char turbo_update_value;
- unsigned char update_hwp_epp;
- unsigned char update_hwp_min;
- unsigned char update_hwp_max;
-+unsigned char hwp_limits_done_via_sysfs;
- unsigned char update_hwp_desired;
- unsigned char update_hwp_window;
- unsigned char update_hwp_use_pkg;
-@@ -951,8 +952,10 @@ int ratio_2_sysfs_khz(int ratio)
- }
- /*
-  * If HWP is enabled and cpufreq sysfs attribtes are present,
-- * then update sysfs, so that it will not become
-- * stale when we write to MSRs.
-+ * then update via sysfs. The intel_pstate driver may modify (clip)
-+ * this request, say, when HWP_CAP is outside of PLATFORM_INFO limits,
-+ * and the driver-chosen value takes precidence.
-+ *
-  * (intel_pstate's max_perf_pct and min_perf_pct will follow cpufreq,
-  *  so we don't have to touch that.)
-  */
-@@ -1007,6 +1010,8 @@ int update_sysfs(int cpu)
- 	if (update_hwp_max)
- 		update_cpufreq_scaling_freq(1, cpu, req_update.hwp_max);
+diff --git a/drivers/mfd/stmpe.c b/drivers/mfd/stmpe.c
+index 819d19dc9b4a9..e1165f63aedae 100644
+--- a/drivers/mfd/stmpe.c
++++ b/drivers/mfd/stmpe.c
+@@ -1485,6 +1485,9 @@ int stmpe_probe(struct stmpe_client_info *ci, enum stmpe_partnum partnum)
  
-+	hwp_limits_done_via_sysfs = 1;
+ void stmpe_remove(struct stmpe *stmpe)
+ {
++	if (stmpe->domain)
++		irq_domain_remove(stmpe->domain);
 +
- 	return 0;
- }
- 
-@@ -1085,10 +1090,10 @@ int update_hwp_request(int cpu)
- 	if (debug)
- 		print_hwp_request(cpu, &req, "old: ");
- 
--	if (update_hwp_min)
-+	if (update_hwp_min && !hwp_limits_done_via_sysfs)
- 		req.hwp_min = req_update.hwp_min;
- 
--	if (update_hwp_max)
-+	if (update_hwp_max && !hwp_limits_done_via_sysfs)
- 		req.hwp_max = req_update.hwp_max;
- 
- 	if (update_hwp_desired)
+ 	if (!IS_ERR(stmpe->vio) && regulator_is_enabled(stmpe->vio))
+ 		regulator_disable(stmpe->vio);
+ 	if (!IS_ERR(stmpe->vcc) && regulator_is_enabled(stmpe->vcc))
 -- 
 2.51.0
 
