@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4781AC4A84F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:28 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A83DC4A701
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 407943B88AC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9128E4F3515
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A592D346A0A;
-	Tue, 11 Nov 2025 01:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2677346A0C;
+	Tue, 11 Nov 2025 01:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIx1xGnB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="La5i5wu/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F692DC350;
-	Tue, 11 Nov 2025 01:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D26D2DC32A;
+	Tue, 11 Nov 2025 01:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823671; cv=none; b=UYE2BVzWQvleeFPKkCNPDOxJOpaDkn+ca9EQGKJO36b8fdek7rAcklvWL5/9wQuMVLmrJQ4E5+dhaqbfy44GP2zyu8MAXbG9r5rgEiCjnzrM9dekPYjvY2aYS+cC706846hZMZNRjraQzp6QFosmIOHti43h46RoZOLfszPu9Do=
+	t=1762823676; cv=none; b=uXP5CeVxTCZSUtF+CtsELrmtl67U6m+DeiTtIEyJFv3gPL+e48dTsse8GsEFwBsWJgD128bVRLhj3NJDlWnUXjsD1ujs94L6GYAYcGiCNm8CgP6reFpZ2/lUli8f0HQCJ0Z63I67QbiAGG7HdITSobaF/VOYRsIc3sqs8OwV/H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823671; c=relaxed/simple;
-	bh=ujdZTUm5jo0pOUDD9+R5MoysribfuDUfFOyWAfg89KE=;
+	s=arc-20240116; t=1762823676; c=relaxed/simple;
+	bh=R4+uQSXJM68l9QrCo77Y7Qz3FaT5XiyXpXD8ucWpmiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nn4G1hQQ2+2TmufYfS66G+30ONm5jKOFc/ITPO2X8AoR3ujxyLTHISwpiemusMWfWCZGJsGIfa8+HlEHaaHfAZUxxs3pVXgAfImwG3K5uJWkEaGO7dXTlSWD1yC7h6fyFVcWVOagJiEboW75CNwPf1CYwkSs8llnb3rB5V5I6x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIx1xGnB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF7B8C2BC87;
-	Tue, 11 Nov 2025 01:14:30 +0000 (UTC)
+	 MIME-Version; b=tH9DwW3GV37bs+M0g8C2MgrczMTzGY7TKZ5841r+0/FbdAC7gRnaYAW0/gbYm/CxFpp6KsDdYOkaDF+rWuYZa/bvCx305+A2vWru8LkqMNX7fW7LjCJ3IX4TiAOGIi5XBzGEqcrV/xgDBe5lb8FLLyxezV4H8mYmiUopTS/RgZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=La5i5wu/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917D8C4CEF5;
+	Tue, 11 Nov 2025 01:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823671;
-	bh=ujdZTUm5jo0pOUDD9+R5MoysribfuDUfFOyWAfg89KE=;
+	s=korg; t=1762823676;
+	bh=R4+uQSXJM68l9QrCo77Y7Qz3FaT5XiyXpXD8ucWpmiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tIx1xGnBQgK3N/x8CNoqeUHfavh4xZV2qN44LVPDBUJp3xsK93DNwpOXVhUfyyyMQ
-	 kT8K6ipexcStm+7PnTmF/wG4ffEptopklXBd01hroUYTp2b7lT6m4N+x+JnwozD7GR
-	 FEuCV3pUmeOSd8sa2DR7BQ0FOxXC6Z5EXLMhEk9I=
+	b=La5i5wu/2QBwba8NxBaeEnx06L0+e3EKJw78l9pSI+mr3F7HnTOhu7DEnoyCFcjaL
+	 wfOlIU0eFEH60qlMUmE1jb12KXoeVdv/2Lx4M3KhbGKMYToCKhfBwRc/xWSdRknKXw
+	 1Ss0uYQZAkPjwaRU/Yu0Lkn7M7iND4VZG/mOcfbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	Allison Henderson <allison.henderson@oracle.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 347/849] rds: Fix endianness annotation for RDS_MPATH_HASH
-Date: Tue, 11 Nov 2025 09:38:37 +0900
-Message-ID: <20251111004544.808625708@linuxfoundation.org>
+Subject: [PATCH 6.17 348/849] net: wangxun: limit tx_max_coalesced_frames_irq
+Date: Tue, 11 Nov 2025 09:38:38 +0900
+Message-ID: <20251111004544.833930679@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,37 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ujwal Kundur <ujwal.kundur@gmail.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 77907a068717fbefb25faf01fecca553aca6ccaa ]
+[ Upstream commit fd4aa243f154a80bbeb3dd311d2114eeb538f479 ]
 
-jhash_1word accepts host endian inputs while rs_bound_port is a be16
-value (sockaddr_in6.sin6_port). Use ntohs() for consistency.
+Add limitation on tx_max_coalesced_frames_irq as 0 ~ 65535, because
+'wx->tx_work_limit' is declared as a member of type u16.
 
-Flagged by Sparse.
-
-Signed-off-by: Ujwal Kundur <ujwal.kundur@gmail.com>
-Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
-Link: https://patch.msgid.link/20250820175550.498-4-ujwal.kundur@gmail.com
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250821023408.53472-3-jiawenwu@trustnetic.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/rds.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/wangxun/libwx/wx_ethtool.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/rds/rds.h b/net/rds/rds.h
-index dc360252c5157..5b1c072e2e7ff 100644
---- a/net/rds/rds.h
-+++ b/net/rds/rds.h
-@@ -93,7 +93,7 @@ enum {
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index c12a4cb951f68..254a48ede2660 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -334,8 +334,11 @@ int wx_set_coalesce(struct net_device *netdev,
+ 			return -EOPNOTSUPP;
+ 	}
  
- /* Max number of multipaths per RDS connection. Must be a power of 2 */
- #define	RDS_MPATH_WORKERS	8
--#define	RDS_MPATH_HASH(rs, n) (jhash_1word((rs)->rs_bound_port, \
-+#define	RDS_MPATH_HASH(rs, n) (jhash_1word(ntohs((rs)->rs_bound_port), \
- 			       (rs)->rs_hash_initval) & ((n) - 1))
+-	if (ec->tx_max_coalesced_frames_irq)
+-		wx->tx_work_limit = ec->tx_max_coalesced_frames_irq;
++	if (ec->tx_max_coalesced_frames_irq > U16_MAX  ||
++	    !ec->tx_max_coalesced_frames_irq)
++		return -EINVAL;
++
++	wx->tx_work_limit = ec->tx_max_coalesced_frames_irq;
  
- #define IS_CANONICAL(laddr, faddr) (htonl(laddr) < htonl(faddr))
+ 	switch (wx->mac.type) {
+ 	case wx_mac_sp:
 -- 
 2.51.0
 
