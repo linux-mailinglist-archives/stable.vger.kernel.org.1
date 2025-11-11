@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-193808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D74C4A954
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C0FC4A3AC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 09B594F2A4E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8A3654F241C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95AC342C8C;
-	Tue, 11 Nov 2025 01:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD5B2505AA;
+	Tue, 11 Nov 2025 01:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfJ+4cCI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXrRQPPa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CF92D8DC3;
-	Tue, 11 Nov 2025 01:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A28A1F5F6;
+	Tue, 11 Nov 2025 01:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824057; cv=none; b=ALg8Qmn104W0Q6kyrZDPQx8Vid+E1OhJeKnkpg3Aui3+Der2ZKXOCITCCrWTmY+p55AkLEyQSNQNaV+PMVovQQy8e84AA/YAfAIrTUU4sfbvkelOsptNYwTjzERalOW4NcpzWAowz3al/PQHmphpSFUI+XBnz7lg35IlTL3XNIw=
+	t=1762822975; cv=none; b=DgIYy7p4edoAhjTBQpxKJaSJImISaEBsZN18QKEE5+9gYDi+WeddmO91IZq08JOSx8Dsbrv7OnwTZTBaN5yQigmWyPuj5q6k0Hh/luazHKUA227bpcqQq+8oBTpwpAZKi5oBHwt47dqgq4NNEmLspaE6rZ2PRJ+kQpurxeG1HKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824057; c=relaxed/simple;
-	bh=nzCX9YuEq+hmEju//FW3dmbkbt5mG6lbpMTSZPns5ho=;
+	s=arc-20240116; t=1762822975; c=relaxed/simple;
+	bh=sExuHsy5DhuI4m3CyZ8YMwQNslD98gu+It+QATDD9F8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=prwzl4efDNoF0s1LoK+tTNeWJTB+Ek07TERvuWnYh460XeVz+Lx0Gtit0YdrEWsucT416kxEx2uNf4bxxqOKurJX/eXQPvJ0nCtsr+6LgC6VoaF5GquOgz2krpocamSmDpfdgtKxhOJuBPAg0Ubl3FCAZT/k7NqqjSOIfdlV8Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfJ+4cCI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219C9C16AAE;
-	Tue, 11 Nov 2025 01:20:57 +0000 (UTC)
+	 MIME-Version; b=AE3EZNAd/4j6PGOFpBxApczqFBc9lcnEMKN9erom8JwEmtu7vU+aDbVBNp5Hel83Fh3rnVL+WNLqKVPI4xli8r4QrBKgDYYpgZGdDEGxXjEVeJZWvpJCBgejwjIvRgyiTYQpKKRrwvAyVV3zwhtI1tAsNUTkeo6JF/DqJ6ebsxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXrRQPPa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80EFAC4CEFB;
+	Tue, 11 Nov 2025 01:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824057;
-	bh=nzCX9YuEq+hmEju//FW3dmbkbt5mG6lbpMTSZPns5ho=;
+	s=korg; t=1762822974;
+	bh=sExuHsy5DhuI4m3CyZ8YMwQNslD98gu+It+QATDD9F8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfJ+4cCIunxKB7UdLNyX4T10zvZysx6iaZm5igI1lKHSHCQ/E7+ygDmINXnpy7w4Q
-	 Q9/rxYo0Jbo1To5PM6ReGU9caHUTpvJfCtPupvt+8SInl527uMGlVWu0TveQUygaG+
-	 u47h3wT814EQl6G2/J19Fp2FzuzPYkuJooqIaDmM=
+	b=pXrRQPPaCXLOi/GyRCnov4NLQ84eYUe+YVOVWreWTyDqbQ+xEu6jfQ8Rjc5lgtggG
+	 CaLLJF4qnPeLVPQGrnQTLM0QbS3u4RwHxTBG7v4OUry0wByj8t7rR827vNLzncYfwV
+	 K/t9Ktc43/oTjGmyDNZacRf7+ee1igxziR6CYTH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Steven Price <steven.price@arm.com>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 428/849] drm/panthor: check bo offset alignment in vm bind
+Subject: [PATCH 6.12 142/565] tools/cpupower: fix error return value in cpupower_write_sysfs()
 Date: Tue, 11 Nov 2025 09:39:58 +0900
-Message-ID: <20251111004546.782401171@linuxfoundation.org>
+Message-ID: <20251111004530.136171040@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-I Wu <olvaffe@gmail.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 5afa9d2a9bb1410f816e0123846047288b16e4b9 ]
+[ Upstream commit 57b100d4cf14276e0340eecb561005c07c129eb8 ]
 
-Fail early from panthor_vm_bind_prepare_op_ctx instead of late from
-ops->map_pages.
+The cpupower_write_sysfs() function currently returns -1 on
+write failure, but the function signature indicates it should
+return an unsigned int. Returning -1 from an unsigned function
+results in a large positive value rather than indicating
+an error condition.
 
-Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250828200116.3532255-1-olvaffe@gmail.com
+Fix this by returning 0 on failure, which is more appropriate
+for an unsigned return type and maintains consistency with typical
+success/failure semantics where 0 indicates failure and non-zero
+indicates success (bytes written).
+
+Link: https://lore.kernel.org/r/20250828063000.803229-1-kaushlendra.kumar@intel.com
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_mmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/power/cpupower/lib/cpupower.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-index 0402f5f734a1b..de6ec324c8efc 100644
---- a/drivers/gpu/drm/panthor/panthor_mmu.c
-+++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-@@ -1198,7 +1198,7 @@ static int panthor_vm_prepare_map_op_ctx(struct panthor_vm_op_ctx *op_ctx,
- 	    (flags & DRM_PANTHOR_VM_BIND_OP_TYPE_MASK) != DRM_PANTHOR_VM_BIND_OP_TYPE_MAP)
- 		return -EINVAL;
+diff --git a/tools/power/cpupower/lib/cpupower.c b/tools/power/cpupower/lib/cpupower.c
+index 7a2ef691b20e1..c2a7af89a67bb 100644
+--- a/tools/power/cpupower/lib/cpupower.c
++++ b/tools/power/cpupower/lib/cpupower.c
+@@ -55,7 +55,7 @@ unsigned int cpupower_write_sysfs(const char *path, char *buf, size_t buflen)
+ 	if (numwritten < 1) {
+ 		perror(path);
+ 		close(fd);
+-		return -1;
++		return 0;
+ 	}
  
--	/* Make sure the VA and size are aligned and in-bounds. */
-+	/* Make sure the VA and size are in-bounds. */
- 	if (size > bo->base.base.size || offset > bo->base.base.size - size)
- 		return -EINVAL;
- 
-@@ -2415,7 +2415,7 @@ panthor_vm_bind_prepare_op_ctx(struct drm_file *file,
- 	int ret;
- 
- 	/* Aligned on page size. */
--	if (!IS_ALIGNED(op->va | op->size, vm_pgsz))
-+	if (!IS_ALIGNED(op->va | op->size | op->bo_offset, vm_pgsz))
- 		return -EINVAL;
- 
- 	switch (op->flags & DRM_PANTHOR_VM_BIND_OP_TYPE_MASK) {
+ 	close(fd);
 -- 
 2.51.0
 
