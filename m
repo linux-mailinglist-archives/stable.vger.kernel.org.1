@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB49C4A106
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:53 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D637C49F80
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D15374F4206
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:03 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ABE2534BDAE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3207E24BBEB;
-	Tue, 11 Nov 2025 00:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27FC252917;
+	Tue, 11 Nov 2025 00:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6EMp8FZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9ybqPle"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5EB4086A;
-	Tue, 11 Nov 2025 00:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E47612DDA1;
+	Tue, 11 Nov 2025 00:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822503; cv=none; b=FJuwsQVXQajgLxfjR4BdGu0OPiIvjxc3qjbhC5LFMYhy6m1SoRviF4jPFyuLPiburfEFIR0ghRne4l40zFMjHpX5Vhfs6CPws72DuYKkcPI5BdUwkkVpsHsKfH0kOtHwhLiYZwwg4G4m74FXBexKTN691ayJptXZHsmPstZLYTU=
+	t=1762822320; cv=none; b=mel84Mnm80Ixkm5U8MrxUynks4FibXsE2NwQ1+PcNvV8fQjC9yKHci1b0rpLrbx2n9H+z0d1OxAOM57T4fsZBmZY4U7XKQKJbm9EjwJjHaSL4u9fLBNYZKixE+70vnCffreM4r+MsFy3f7CdE+UyNUtj12wweeIRm1wF14Hg0iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822503; c=relaxed/simple;
-	bh=azq9VAxkyupea6r8E10LgCR7RvnjvpOiG9XKq5GMT10=;
+	s=arc-20240116; t=1762822320; c=relaxed/simple;
+	bh=QtEcIDfQhUeWXIKL5PPG8jYQ7kD7uikckKM+Gdux9M0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UlHjob7M/q3/O6qXHwOeLKfpa+SQjScglKh9KiVNwhduwRTzEsU/kalKgzQCYLm0IY9lfvj8dMg7KBWQQaDKSdnatOj9oi3tXIEBa+v73E5ja8VGzEd9vVIOf7CpLyE5aUZ5Iu18K83O4n1BwQIisT8vYaowQ7VVZGTwb7PUMy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6EMp8FZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A15C4CEFB;
-	Tue, 11 Nov 2025 00:55:02 +0000 (UTC)
+	 MIME-Version; b=Nxd4xCydk5vN5aDuoUjnztnyjiJagI9FqDehqNQxcKAVCdDIybXvjyctt+EvmBmNnC6K11xJyKIULVhrrmjLLiIwguC85hbHm6MapPkzaKxUdJmhP8JOp6uNFAvB5YjW3k0NQhwU6xIHFK1P0a8lSL5i8ic0PDDus4vyNBdFYmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9ybqPle; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C6DC4CEFB;
+	Tue, 11 Nov 2025 00:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822502;
-	bh=azq9VAxkyupea6r8E10LgCR7RvnjvpOiG9XKq5GMT10=;
+	s=korg; t=1762822320;
+	bh=QtEcIDfQhUeWXIKL5PPG8jYQ7kD7uikckKM+Gdux9M0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z6EMp8FZJFVJtGtSVm+t7KwDb4o8fjIztoEl2J/gWJhwnywYAD2BDovDJVCh5ky3R
-	 tlsHfzBd3EB+UDgG6boddaJ+e/Twz6s9QiOr+y1wvqv8/HQd3ci/9AvzIboleFSXjp
-	 YNBaEfNlB8lMUoUpxZr+iwDvsp1VfMhWPZV4gAZA=
+	b=a9ybqPleCbsctyGyO1r4JhZRXfBQxb6/gerx8NeRJzDdum9AFUbOFIhDQe/aViGfT
+	 vk5kiJ6zVYjkl7sshkUu6zGp3FMAXjsArAV+k6bLU6wjmU/RENYm9vOgsbe31wkKnZ
+	 DxA9SKyv6J1eDVFg1st6h33greLvk8pS4/4KcVGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/565] ALSA: usb-audio: fix control pipe direction
-Date: Tue, 11 Nov 2025 09:38:01 +0900
-Message-ID: <20251111004527.442832552@linuxfoundation.org>
+Subject: [PATCH 6.12 026/565] ASoC: cs-amp-lib-test: Fix missing include of kunit/test-bug.h
+Date: Tue, 11 Nov 2025 09:38:02 +0900
+Message-ID: <20251111004527.467366868@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,35 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 7963891f7c9c6f759cc9ab7da71406b4234f3dd6 ]
+[ Upstream commit ec20584f25233bfe292c8e18f9a429dfaff58a49 ]
 
-Since the requesttype has USB_DIR_OUT the pipe should be
-constructed with usb_sndctrlpipe().
+cs-amp-lib-test uses functions from kunit/test-bug.h but wasn't
+including it.
 
-Fixes: 8dc5efe3d17c ("ALSA: usb-audio: Add support for Presonus Studio 1810c")
-Signed-off-by: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
-Link: https://patch.msgid.link/aPPL3tBFE_oU-JHv@ark
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This error was found by smatch.
+
+Fixes: 177862317a98 ("ASoC: cs-amp-lib: Add KUnit test for calibration helpers")
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20251016094844.92796-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_s1810c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/cs-amp-lib-test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/usb/mixer_s1810c.c b/sound/usb/mixer_s1810c.c
-index fac4bbc6b2757..65bdda0841048 100644
---- a/sound/usb/mixer_s1810c.c
-+++ b/sound/usb/mixer_s1810c.c
-@@ -181,7 +181,7 @@ snd_sc1810c_get_status_field(struct usb_device *dev,
+diff --git a/sound/soc/codecs/cs-amp-lib-test.c b/sound/soc/codecs/cs-amp-lib-test.c
+index a6e8348a1bd53..1bc43a4cfe09c 100644
+--- a/sound/soc/codecs/cs-amp-lib-test.c
++++ b/sound/soc/codecs/cs-amp-lib-test.c
+@@ -6,6 +6,7 @@
+ //                    Cirrus Logic International Semiconductor Ltd.
  
- 	pkt_out.fields[SC1810C_STATE_F1_IDX] = SC1810C_SET_STATE_F1;
- 	pkt_out.fields[SC1810C_STATE_F2_IDX] = SC1810C_SET_STATE_F2;
--	ret = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0),
-+	ret = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
- 			      SC1810C_SET_STATE_REQ,
- 			      SC1810C_SET_STATE_REQTYPE,
- 			      (*seqnum), 0, &pkt_out, sizeof(pkt_out));
+ #include <kunit/test.h>
++#include <kunit/test-bug.h>
+ #include <kunit/static_stub.h>
+ #include <linux/firmware/cirrus/cs_dsp.h>
+ #include <linux/firmware/cirrus/wmfw.h>
 -- 
 2.51.0
 
