@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-193150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB14C49FFB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC4E1C4A004
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A8723A1DEC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C55FE188CCCB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD5A24113D;
-	Tue, 11 Nov 2025 00:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96F11DF258;
+	Tue, 11 Nov 2025 00:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlWgiyNG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4ZhDUZv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562DF4086A;
-	Tue, 11 Nov 2025 00:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66564C97;
+	Tue, 11 Nov 2025 00:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822416; cv=none; b=NPs2FC4pCH1t6milIFo22M37LPv+PzpeAdvI4heZL9Lu+JoNWwesPymrKh1bC4snyK0mYTJ2/f/kFJJJEK0y2ttsZCnZMbP33bJMGIU+eyyXRufS8D92E+ezondCLjhjX+lkQt3M8QclLhKTsqRneg15+OyMV8mRlPdZMjMT3n8=
+	t=1762822423; cv=none; b=tyPYiC69jBfhj9kT5PAPCb7pAgV4V/HugPeDr0ZznRA0c7yVrWOHmWIdFqc3St6HXq5ok2wNbx5sm0QO6YrDL829qc/kNi+BUqfakr9k80hz/iBP2Vy8VXUwfRBYSHE9FKWw5dBaR1VmOkSKucPQK0SKV9DWy59eomgle/Ks0X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822416; c=relaxed/simple;
-	bh=Z54eTXKhxkVJYharBgxLrt/rYDzJkptu2vHojN6uIo4=;
+	s=arc-20240116; t=1762822423; c=relaxed/simple;
+	bh=xw3gy5sa+WsY81Hp7Sgo9JXKpJ/rxLzUNKHBlk7Nr3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZRKDIFti+1zSan2aFNNd/nM9BwU6xF2EG29ks+GEiOwz9gskpGkDH6epJ1S/L7WLcuxeGOe8axSPBXDYU0BNPzbTMGFT+3l/9gYNHm8aAGJXyULPQt1yRuYHVR7qi8F1vhXyVeYVBKEm9pcaKRHW9GRlL1vem0sg77IPL2RNnSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlWgiyNG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAD2C113D0;
-	Tue, 11 Nov 2025 00:53:35 +0000 (UTC)
+	 MIME-Version; b=Tj9ciZKpi+F+e+v1dVGTLyENh7tzblz9zNiH5Bhkox7Mh7Ww8xh+nuiCrLVPLU4i0dAIuKQp9hVnyxW8G8K8EhlChmCwYo7P/nwRUCQ1eT9lRIF2l+CEMrMQEuBmGeltW0DHt4mWTADo8MNgcuQVM4M4MB4XK7jH47ipevXOouQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4ZhDUZv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4308BC16AAE;
+	Tue, 11 Nov 2025 00:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822416;
-	bh=Z54eTXKhxkVJYharBgxLrt/rYDzJkptu2vHojN6uIo4=;
+	s=korg; t=1762822423;
+	bh=xw3gy5sa+WsY81Hp7Sgo9JXKpJ/rxLzUNKHBlk7Nr3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XlWgiyNGMlYPa2pjJGSe6q2V/cQOCgSQwdtcUegBl7MDbpDeN50+94/z0oJB10cLS
-	 CZgLNHwrfpEYmZmCGUlipaZ4Q0xlgfYcaaesMP6yDvOLt+ITAU9WVBmICKJPqFWcar
-	 FykgBC9m7BOby+cLOpEhxFHsk8mhbHPyvOlUVNJo=
+	b=k4ZhDUZvAtxwU1hQpCB6N9U4OXrNj31fS4ro4MSs6f/K/RNMdd2/dqBqyx1WV02l1
+	 ybfuEoXI/aAHasVD0sGu+oXwRQSDbHG+xW/Nx5Y7viCyXiybD8RaAOTB+poa2Xf+Yb
+	 NqxCOCsTtOcQzQzshqZmV/nH6g2MOJ+NcyYfgnJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/565] Bluetooth: ISO: Fix another instance of dst_type handling
-Date: Tue, 11 Nov 2025 09:38:22 +0900
-Message-ID: <20251111004527.941327411@linuxfoundation.org>
+Subject: [PATCH 6.12 047/565] Bluetooth: hci_core: Fix tracking of periodic advertisement
+Date: Tue, 11 Nov 2025 09:38:23 +0900
+Message-ID: <20251111004527.964473033@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,38 +67,84 @@ Content-Transfer-Encoding: 8bit
 
 From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit c403da5e98b04a2aec9cfb25cbeeb28d7ce29975 ]
+[ Upstream commit 751463ceefc3397566d03c8b64ef4a77f5fd88ac ]
 
-Socket dst_type cannot be directly assigned to hci_conn->type since
-there domain is different which may lead to the wrong address type being
-used.
+Periodic advertising enabled flag cannot be tracked by the enabled
+flag since advertising and periodic advertising each can be
+enabled/disabled separately from one another causing the states to be
+inconsistent when for example an advertising set is disabled its
+enabled flag is set to false which is then used for periodic which has
+not being disabled.
 
-Fixes: 6a5ad251b7cd ("Bluetooth: ISO: Fix possible circular locking dependency")
+Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS connections")
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/net/bluetooth/hci_core.h | 1 +
+ net/bluetooth/hci_event.c        | 7 +++++--
+ net/bluetooth/hci_sync.c         | 4 ++--
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index c9a262f97678b..a48a2868a728b 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1939,7 +1939,13 @@ static void iso_conn_ready(struct iso_conn *conn)
- 		}
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index ca75c71b58588..35b5f58b562cb 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -240,6 +240,7 @@ struct adv_info {
+ 	bool	enabled;
+ 	bool	pending;
+ 	bool	periodic;
++	bool	periodic_enabled;
+ 	__u8	mesh;
+ 	__u8	instance;
+ 	__u8	handle;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 176565ef47c63..ccc73742de356 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -1598,7 +1598,7 @@ static u8 hci_cc_le_set_ext_adv_enable(struct hci_dev *hdev, void *data,
  
- 		bacpy(&iso_pi(sk)->dst, &hcon->dst);
--		iso_pi(sk)->dst_type = hcon->dst_type;
+ 		hci_dev_set_flag(hdev, HCI_LE_ADV);
+ 
+-		if (adv && !adv->periodic)
++		if (adv)
+ 			adv->enabled = true;
+ 		else if (!set->handle)
+ 			hci_dev_set_flag(hdev, HCI_LE_ADV_0);
+@@ -3955,8 +3955,11 @@ static u8 hci_cc_le_set_per_adv_enable(struct hci_dev *hdev, void *data,
+ 		hci_dev_set_flag(hdev, HCI_LE_PER_ADV);
+ 
+ 		if (adv)
+-			adv->enabled = true;
++			adv->periodic_enabled = true;
+ 	} else {
++		if (adv)
++			adv->periodic_enabled = false;
 +
-+		/* Convert from HCI to three-value type */
-+		if (hcon->dst_type == ADDR_LE_DEV_PUBLIC)
-+			iso_pi(sk)->dst_type = BDADDR_LE_PUBLIC;
-+		else
-+			iso_pi(sk)->dst_type = BDADDR_LE_RANDOM;
-+
- 		iso_pi(sk)->sync_handle = iso_pi(parent)->sync_handle;
- 		memcpy(iso_pi(sk)->base, iso_pi(parent)->base, iso_pi(parent)->base_len);
- 		iso_pi(sk)->base_len = iso_pi(parent)->base_len;
+ 		/* If just one instance was disabled check if there are
+ 		 * any other instance enabled before clearing HCI_LE_PER_ADV.
+ 		 * The current periodic adv instance will be marked as
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 06d8ab997bd85..f79b38603205c 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -1605,7 +1605,7 @@ int hci_disable_per_advertising_sync(struct hci_dev *hdev, u8 instance)
+ 
+ 	/* If periodic advertising already disabled there is nothing to do. */
+ 	adv = hci_find_adv_instance(hdev, instance);
+-	if (!adv || !adv->periodic || !adv->enabled)
++	if (!adv || !adv->periodic_enabled)
+ 		return 0;
+ 
+ 	memset(&cp, 0, sizeof(cp));
+@@ -1670,7 +1670,7 @@ static int hci_enable_per_advertising_sync(struct hci_dev *hdev, u8 instance)
+ 
+ 	/* If periodic advertising already enabled there is nothing to do. */
+ 	adv = hci_find_adv_instance(hdev, instance);
+-	if (adv && adv->periodic && adv->enabled)
++	if (adv && adv->periodic_enabled)
+ 		return 0;
+ 
+ 	memset(&cp, 0, sizeof(cp));
 -- 
 2.51.0
 
