@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09A5C4AC2B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A869C4A608
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16E9F1881499
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 045D04F21DF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FF830AAC9;
-	Tue, 11 Nov 2025 01:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1702632AAC6;
+	Tue, 11 Nov 2025 01:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxizTPRO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/LnFE1E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2367B27FD72;
-	Tue, 11 Nov 2025 01:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F27328602;
+	Tue, 11 Nov 2025 01:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824494; cv=none; b=mIjCZcyrkZ/CvbngcL6IWPhwpaFzR1k0OlUpW9X69yiBFYOe+ZpnbTXiPhXOcDNNbZtb6ahjxJrOF7ACuhIuovizbH3PwiXPeOpCIIchHt97qcG3FJt57V750LmRHbJ1jNTvy89WlnGa4GnRQRFFjlJ7Z2x9OuDEHI2aytPPdPM=
+	t=1762823352; cv=none; b=FgVzd8JTK/PtwLVgUko7cm2e6Vu5kO2NwlbJUANpuuVJwaM7BN8zlQKsNiaLHfRR1hCSsv5JhiJFBA6mQqY6XOp34qTjZ8BEB4YePe2QSNGO3uyofa2drl51IjOy/5Fw7L4DCjxB3VGdL8K2Gpkput1rzQZNOMz7jPSKC4lT/Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824494; c=relaxed/simple;
-	bh=h16vDmFO4eHp4x83KJ83auzZ47rPNf71RkNCtSIEkwk=;
+	s=arc-20240116; t=1762823352; c=relaxed/simple;
+	bh=kiZ3a6xPgXBhPRsl90CbqyANvpMT9HkqtNw+05FC2I8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UR87/vzNhJu/bYv+j6tff+6xyiYl2DSkJk2g76loc7sEdx1KZwQwzJ8NqPU1ADojowLVr/14gxBi2Ya7/F8+jm8RPT+3noMGojbsrVv9y2UxQrzttnlLdlaHI+yXn1giIiDe3EhT7jl8T9nxzuQO7dUzCVEMvhQPBeoS+6YZx+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxizTPRO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B212FC113D0;
-	Tue, 11 Nov 2025 01:28:13 +0000 (UTC)
+	 MIME-Version; b=H+VdSG1Ln8JzbiooHHM+/gPgpTRD5WPGAZRdnfWmke8QXiSSPjpOmHYTfiZdfg9zgEFlY6JV2XIkYM9oT38LirJPlebmaBCJVRdOKnl9BqMSUCLTUSyNqWEYJnanaT4EwPtVNdTnQPOpq3qWwApNMIXhXRUozGJmSIiMWHDAKbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/LnFE1E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EE9C4CEFB;
+	Tue, 11 Nov 2025 01:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824494;
-	bh=h16vDmFO4eHp4x83KJ83auzZ47rPNf71RkNCtSIEkwk=;
+	s=korg; t=1762823352;
+	bh=kiZ3a6xPgXBhPRsl90CbqyANvpMT9HkqtNw+05FC2I8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CxizTPROt7sUkj9LgeEORWv8+G+eBiBFW8v6qKY2jA+hCT/jM440YbjehmKtEjt0N
-	 WYH42oPV/vanhISac2zv1HiE0C9sjUf1blBxg2tafcP5ISSr1orBRB24e6Lso8iCAP
-	 EReGiEUaeqVxg9AxS9FmWe4lW6jzRKeuYOpXsnkc=
+	b=F/LnFE1EsQDXt3/Bpg/dZVhMkatgFj/zc33zY8OtCsMbqYHzvAk/cyq3l4c/OyUa4
+	 vf0/Q7w24+k9oSltWuGwRDgPPt2+6FM3/LzuTWV9kWTXzqzHfN1aRYAhlD0Ff7uyba
+	 cV9zdAHBUZHJhwRELgb01tyNnLHOyitCpJRNrMYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Heng Zhou <Heng.Zhou@amd.com>,
+	"Kasiviswanathan, Harish" <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 511/849] media: redrat3: use int type to store negative error codes
+Subject: [PATCH 6.12 225/565] drm/amdgpu: fix nullptr err of vm_handle_moved
 Date: Tue, 11 Nov 2025 09:41:21 +0900
-Message-ID: <20251111004548.783353303@linuxfoundation.org>
+Message-ID: <20251111004531.980649410@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Heng Zhou <Heng.Zhou@amd.com>
 
-[ Upstream commit ecba852dc9f4993f4f894ea1f352564560e19a3e ]
+[ Upstream commit 859958a7faefe5b7742b7b8cdbc170713d4bf158 ]
 
-Change "ret" from u8 to int type in redrat3_enable_detector() to store
-negative error codes or zero returned by redrat3_send_cmd() and
-usb_submit_urb() - this better aligns with the coding standards and
-maintains code consistency.
+If a amdgpu_bo_va is fpriv->prt_va, the bo of this one is always NULL.
+So, such kind of amdgpu_bo_va should be updated separately before
+amdgpu_vm_handle_moved.
 
-No effect on runtime.
-
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Heng Zhou <Heng.Zhou@amd.com>
+Reviewed-by: Kasiviswanathan, Harish <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/redrat3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/rc/redrat3.c b/drivers/media/rc/redrat3.c
-index d89a4cfe3c895..a49173f54a4d0 100644
---- a/drivers/media/rc/redrat3.c
-+++ b/drivers/media/rc/redrat3.c
-@@ -422,7 +422,7 @@ static int redrat3_send_cmd(int cmd, struct redrat3_dev *rr3)
- static int redrat3_enable_detector(struct redrat3_dev *rr3)
- {
- 	struct device *dev = rr3->dev;
--	u8 ret;
-+	int ret;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+index d349a4816e537..fff89288e2f4b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -3001,9 +3001,22 @@ int amdgpu_amdkfd_gpuvm_restore_process_bos(void *info, struct dma_fence __rcu *
+ 		struct amdgpu_device *adev = amdgpu_ttm_adev(
+ 			peer_vm->root.bo->tbo.bdev);
  
- 	ret = redrat3_send_cmd(RR3_RC_DET_ENABLE, rr3);
- 	if (ret != 0)
++		struct amdgpu_fpriv *fpriv =
++			container_of(peer_vm, struct amdgpu_fpriv, vm);
++
++		ret = amdgpu_vm_bo_update(adev, fpriv->prt_va, false);
++		if (ret) {
++			dev_dbg(adev->dev,
++				"Memory eviction: handle PRT moved failed, pid %8d. Try again.\n",
++				pid_nr(process_info->pid));
++			goto validate_map_fail;
++		}
++
+ 		ret = amdgpu_vm_handle_moved(adev, peer_vm, &exec.ticket);
+ 		if (ret) {
+-			pr_debug("Memory eviction: handle moved failed. Try again\n");
++			dev_dbg(adev->dev,
++				"Memory eviction: handle moved failed, pid %8d. Try again.\n",
++				pid_nr(process_info->pid));
+ 			goto validate_map_fail;
+ 		}
+ 	}
 -- 
 2.51.0
 
