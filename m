@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E0AC4B08B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:54:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC0EC4AC7D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1F7C64FA7E9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 600E64F63B8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4059266EE9;
-	Tue, 11 Nov 2025 01:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6BF26056C;
+	Tue, 11 Nov 2025 01:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iip/H/ZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJ1Dq6MT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803DE346FD0;
-	Tue, 11 Nov 2025 01:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69820261B6E;
+	Tue, 11 Nov 2025 01:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825300; cv=none; b=e6GzJhMfM5OdmeEfeUEVneLCpmRqrQ/3CqHNCcdKDw22kjasAU3PHV2oRQCHKvXCld/NcyIvyQpd1HwqGPY6WGz/L/egfiC4Qqzgjd7YhPcs3OdORwgCXs89KwTD7wVqUrEweS5V39rzkkSYZPkYXZJHuzr6xaRkX83BgDlwOo4=
+	t=1762824496; cv=none; b=Gkj7cf6YZs4FA7CE/UPUKuFmfGeQINrqe0sncN/iWrghYU0zv9IpXQQYaFjpYZFyq3qvqwdqEn6UBNrw/1XE/hDwn3FH5iQXTBje4ezlx5Jc0CTzYEFTUcPWpO8MyVmdh3QobewxJU+NxzJG7LfX4/DgSHpI3vxF0ebUC9a7EO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825300; c=relaxed/simple;
-	bh=l16mR2Ek3uzEy0SwdbwIaqoIQeVihXRdQO+mybDDWJs=;
+	s=arc-20240116; t=1762824496; c=relaxed/simple;
+	bh=AhktqVdWIiQjGV5/olQYNmDCHB7IakILrJKlmI0T+Lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=heeZh0nbF+ectc8cwn9MrvvX+ryV94552rT9zJXk4GbaOj2gC4uqtJBwSs+K7iGslK2A9xJQXqMJgXeuqeuiN0XaTpFSWBy85G/hTkwHK1uhLjN4cP1WLIhlvRkmWcGfCQyEf6zhJcOU0cNLZPx4WR5O3JkHWLdkSV0rZlJ1wrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iip/H/ZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F1BC4AF10;
-	Tue, 11 Nov 2025 01:41:39 +0000 (UTC)
+	 MIME-Version; b=kSdxZlbrSYA2kIcGPXM8YyGpLSz3GKtpxcADavFhy5LMWpeTewVgoQUlI6FJtYKRvvKVCR2zU3fr1OQ+awlPKC4RXiZ2gRolwRC3zBhCDDv06jaYyWkFbdqR7r8EwXdFOGwB/zqaqQ04bfa2DKmMkyda7+XF+mPoQCXg3Jkz59Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJ1Dq6MT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054ABC4CEFB;
+	Tue, 11 Nov 2025 01:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825300;
-	bh=l16mR2Ek3uzEy0SwdbwIaqoIQeVihXRdQO+mybDDWJs=;
+	s=korg; t=1762824496;
+	bh=AhktqVdWIiQjGV5/olQYNmDCHB7IakILrJKlmI0T+Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iip/H/ZA+fPJZKcq4kXl3csmGb5W9SyKnzjQfvYchXBq1sRTQZwk4OkGNMjvMXnV+
-	 cyidtxS+S1q+UdyOtBhxQnwg6aDr4vG15EiuYE1NxZdNKlWxnIlLqoJs3a7sutfY/r
-	 ygMDux5WWCCQj4nCzBoN5H5yEi0aeIvshp6j3PzA=
+	b=SJ1Dq6MTfNJuQhRi8QhJul8Ba4vqlQ+nntL9/acVKeLPt6bM0N4AJnK50GVI1t8fQ
+	 RfbmKGs7FhHui/okKa8omu+PYtaInnkdV5qDUoHwYGFsBZAK2TVrmQn55251UZrj6g
+	 JxM9wM/wMf0AP5eA8LxemGTgBr3y/AwvG1dBYjNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Angel4005 <ooara1337@gmail.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.17 743/849] media: uvcvideo: Use heuristic to find stream entity
+	Jacob Moroni <jmoroni@google.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 457/565] RDMA/irdma: Set irdma_cq cq_num field during CQ create
 Date: Tue, 11 Nov 2025 09:45:13 +0900
-Message-ID: <20251111004554.401289383@linuxfoundation.org>
+Message-ID: <20251111004537.177020388@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Jacob Moroni <jmoroni@google.com>
 
-commit 758dbc756aad429da11c569c0d067f7fd032bcf7 upstream.
+[ Upstream commit 5575b7646b94c0afb0f4c0d86e00e13cf3397a62 ]
 
-Some devices, like the Grandstream GUV3100 webcam, have an invalid UVC
-descriptor where multiple entities share the same ID, this is invalid
-and makes it impossible to make a proper entity tree without heuristics.
+The driver maintains a CQ table that is used to ensure that a CQ is
+still valid when processing CQ related AEs. When a CQ is destroyed,
+the table entry is cleared, using irdma_cq.cq_num as the index. This
+field was never being set, so it was just always clearing out entry
+0.
 
-We have recently introduced a change in the way that we handle invalid
-entities that has caused a regression on broken devices.
+Additionally, the cq_num field size was increased to accommodate HW
+supporting more than 64K CQs.
 
-Implement a new heuristic to handle these devices properly.
-
-Reported-by: Angel4005 <ooara1337@gmail.com>
-Closes: https://lore.kernel.org/linux-media/CAOzBiVuS7ygUjjhCbyWg-KiNx+HFTYnqH5+GJhd6cYsNLT=DaA@mail.gmail.com/
-Fixes: 0e2ee70291e6 ("media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Jacob Moroni <jmoroni@google.com>
+Link: https://patch.msgid.link/20250923142439.943930-1-jmoroni@google.com
+Acked-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/irdma/verbs.c | 1 +
+ drivers/infiniband/hw/irdma/verbs.h | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -167,13 +167,26 @@ static struct uvc_entity *uvc_entity_by_
- 
- static struct uvc_streaming *uvc_stream_by_id(struct uvc_device *dev, int id)
- {
--	struct uvc_streaming *stream;
-+	struct uvc_streaming *stream, *last_stream;
-+	unsigned int count = 0;
- 
- 	list_for_each_entry(stream, &dev->streams, list) {
-+		count += 1;
-+		last_stream = stream;
- 		if (stream->header.bTerminalLink == id)
- 			return stream;
- 	}
- 
-+	/*
-+	 * If the streaming entity is referenced by an invalid ID, notify the
-+	 * user and use heuristics to guess the correct entity.
-+	 */
-+	if (count == 1 && id == UVC_INVALID_ENTITY_ID) {
-+		dev_warn(&dev->intf->dev,
-+			 "UVC non compliance: Invalid USB header. The streaming entity has an invalid ID, guessing the correct one.");
-+		return last_stream;
-+	}
-+
- 	return NULL;
- }
- 
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index ba844f4b1c21a..63d07fcab6569 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -2078,6 +2078,7 @@ static int irdma_create_cq(struct ib_cq *ibcq,
+ 	spin_lock_init(&iwcq->lock);
+ 	INIT_LIST_HEAD(&iwcq->resize_list);
+ 	INIT_LIST_HEAD(&iwcq->cmpl_generated);
++	iwcq->cq_num = cq_num;
+ 	info.dev = dev;
+ 	ukinfo->cq_size = max(entries, 4);
+ 	ukinfo->cq_id = cq_num;
+diff --git a/drivers/infiniband/hw/irdma/verbs.h b/drivers/infiniband/hw/irdma/verbs.h
+index 4381e5dbe782a..36ff8dd712f00 100644
+--- a/drivers/infiniband/hw/irdma/verbs.h
++++ b/drivers/infiniband/hw/irdma/verbs.h
+@@ -115,7 +115,7 @@ struct irdma_mr {
+ struct irdma_cq {
+ 	struct ib_cq ibcq;
+ 	struct irdma_sc_cq sc_cq;
+-	u16 cq_num;
++	u32 cq_num;
+ 	bool user_mode;
+ 	atomic_t armed;
+ 	enum irdma_cmpl_notify last_notify;
+-- 
+2.51.0
+
 
 
 
