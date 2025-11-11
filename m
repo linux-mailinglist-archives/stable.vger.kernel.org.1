@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015D5C4B1ED
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67609C4AED4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D578F189BE41
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 445264F2A1A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2AC248869;
-	Tue, 11 Nov 2025 01:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C77132C954;
+	Tue, 11 Nov 2025 01:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JzZ/tYzE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0e9T30s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A83D72617;
-	Tue, 11 Nov 2025 01:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCB132B9BE;
+	Tue, 11 Nov 2025 01:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825520; cv=none; b=Q8UG5GX6gKy8+OimJAPhibh9px2pvTBPdhodmYFd+0DDdkOqFpgVUVpWe5cBb54N6rMeDOa0wZOQiRqaujVnTaXVBYIyDA7b6zkXHuqCvuFCcEmk8is/58RCS9EnIDIpB9eXTTskIGIiln3wZ4QZafHCzwPJ8LH1CBw0FJNeRjk=
+	t=1762824919; cv=none; b=gVpen3hzqLsYmA+thR563Np9WCEYMGIe5P2AtrZhMU+tXFJb04CbnXNPGcPx2KhnKKrMrskKdXMVWbvPez8O1aeX+FyRQTvfQsjjEdv7nEwAj2SqfVrUyWEIk438Orf+69rhByDWIlkR36OoR4IHjaeYTY9M/5DuZLcZxycE/wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825520; c=relaxed/simple;
-	bh=k6C3VEFvDDsKD8R5K4ln+c65qIJX/aqF0hIeoaZYElw=;
+	s=arc-20240116; t=1762824919; c=relaxed/simple;
+	bh=xKaCIQ5e9vMnmtBer83FkHqDDfPITv+mBgEEpuKzI8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LuNneLLkoqvvFcjlISM0hL48Me6TjQE7mBc0FYyUmQnsHP81/wm2SCS/6I0fIuoYtQxORShwd1wR4Ng/nWmCpSQ+k7xB8pQ5mIOHxYFsfWPuoZ5adLFbKGBccg1gZfHP9l6c2iUif57zWrK0kuJeZQ1eKSdVyLUlmzHupE4oKUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JzZ/tYzE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA8EC116D0;
-	Tue, 11 Nov 2025 01:45:19 +0000 (UTC)
+	 MIME-Version; b=CPMcZgNsM4m4rpEkNbsEV9FYSQ4T9TTeu0vo4n9Zsjpp7E+T1szfwNZiFGhvYzX2goLt5jFd5VC/Ws2H4WvLuk+yhjMzOqF+vKjpl6nZlFLUDFNOXVCAy5xwPEdup5xk01GdJl+hdME9dddVzhQJNLsQeVN1cIQeerQ/tE4VHiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0e9T30s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9F8C19422;
+	Tue, 11 Nov 2025 01:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825519;
-	bh=k6C3VEFvDDsKD8R5K4ln+c65qIJX/aqF0hIeoaZYElw=;
+	s=korg; t=1762824918;
+	bh=xKaCIQ5e9vMnmtBer83FkHqDDfPITv+mBgEEpuKzI8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JzZ/tYzECGdfLxT/7nRi+40BXuDqy84znpQORxBOdgM3770TtzCkXdG3LBUq4NRuP
-	 aMm+7QaQl/PnS2RAc/nl6HMhAf70T7hVOxZv7xfXcyUuqJG5uajhDyZClqol/EOSjs
-	 Xwja+Z1NLCaHz3G4L9J0i5/f/LDPRMxbwTWTYj/c=
+	b=T0e9T30sma5qY27FwYKnZFp3Bqg2UdJSgNWqcwC1BSYqGUzyj1ShuHRfKuQA4QFHB
+	 JigLf2nnGGppIhCNQGcOR58A/5A9/xWov3Eqjkm7a8oVs17uHuhp5H0YfTzoJK6XAK
+	 IO3RCxk8YVp43hsd85IK6wXHMlcoqlielGpiVbEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>
-Subject: [PATCH 6.17 836/849] extcon: adc-jack: Cleanup wakeup source only if it was enabled
+	Joshua Rogers <linux@joshua.hu>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 550/565] smb: client: validate change notify buffer before copy
 Date: Tue, 11 Nov 2025 09:46:46 +0900
-Message-ID: <20251111004556.638420321@linuxfoundation.org>
+Message-ID: <20251111004539.368888921@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Joshua Rogers <linux@joshua.hu>
 
-commit 92bac7d4de9c07933f6b76d8f1c7f8240f911f4f upstream.
+commit 4012abe8a78fbb8869634130024266eaef7081fe upstream.
 
-Driver in the probe enables wakeup source conditionally, so the cleanup
-path should do the same - do not release the wakeup source memory if it
-was not allocated.
+SMB2_change_notify called smb2_validate_iov() but ignored the return
+code, then kmemdup()ed using server provided OutputBufferOffset/Length.
 
-Link: https://lore.kernel.org/lkml/20250509071703.39442-2-krzysztof.kozlowski@linaro.org/
-Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Closes: https://lore.kernel.org/r/22aaebb7-553b-4571-8a43-58a523241082@wanadoo.fr/
-Fixes: 78b6a991eb6c ("extcon: adc-jack: Fix wakeup source leaks on device unbind")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Check the return of smb2_validate_iov() and bail out on error.
+
+Discovered with help from the ZeroPath security tooling.
+
+Signed-off-by: Joshua Rogers <linux@joshua.hu>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Cc: stable@vger.kernel.org
+Fixes: e3e9463414f61 ("smb3: improve SMB3 change notification support")
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/extcon/extcon-adc-jack.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/client/smb2pdu.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/extcon/extcon-adc-jack.c
-+++ b/drivers/extcon/extcon-adc-jack.c
-@@ -164,7 +164,8 @@ static void adc_jack_remove(struct platf
- {
- 	struct adc_jack_data *data = platform_get_drvdata(pdev);
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4074,9 +4074,12 @@ replay_again:
  
--	device_init_wakeup(&pdev->dev, false);
-+	if (data->wakeup_source)
-+		device_init_wakeup(&pdev->dev, false);
- 	free_irq(data->irq, data);
- 	cancel_work_sync(&data->handler.work);
- }
+ 		smb_rsp = (struct smb2_change_notify_rsp *)rsp_iov.iov_base;
+ 
+-		smb2_validate_iov(le16_to_cpu(smb_rsp->OutputBufferOffset),
+-				le32_to_cpu(smb_rsp->OutputBufferLength), &rsp_iov,
++		rc = smb2_validate_iov(le16_to_cpu(smb_rsp->OutputBufferOffset),
++				le32_to_cpu(smb_rsp->OutputBufferLength),
++				&rsp_iov,
+ 				sizeof(struct file_notify_information));
++		if (rc)
++			goto cnotify_exit;
+ 
+ 		*out_data = kmemdup((char *)smb_rsp + le16_to_cpu(smb_rsp->OutputBufferOffset),
+ 				le32_to_cpu(smb_rsp->OutputBufferLength), GFP_KERNEL);
 
 
 
