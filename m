@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14AB5C49F08
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2347BC49F18
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE80B188A7F7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F07A6188A872
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4423F1FDA92;
-	Tue, 11 Nov 2025 00:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3975A1FDA92;
+	Tue, 11 Nov 2025 00:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRv1/EFX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lA4I11z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EB42AE8D;
-	Tue, 11 Nov 2025 00:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A481D6DB5;
+	Tue, 11 Nov 2025 00:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822227; cv=none; b=iEMNxoEYAfbt202u94UR2lWojFj2FFSfyYD/I578eRS8zdH5Icza11PHpqn/g5Rbhy1WSpV2F8KW1ouA5jhTzyuQaK9OAwVN8A+q/PW38OMRJqFO2Wpzm3pdKDwIbkDRI+PqWjrLISWFqjtHTQiCiJDxAAx3tt+wjzugVSNXUyY=
+	t=1762822234; cv=none; b=PxrcRZChLjTL+re+CAM5EbA42yqoeWkhQC3UtsYcceCMgL616+8012+5tjTE/xyxVP7jKd8Iy1AeSxkhW/xQ99WruyBQE5bUBH/51ssGnu5/SOG/qvgcsoA3aqaUhx7CzDCLnCam7bMMyNu40SCscJWqrs3CECI0a8V7w9ik7og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822227; c=relaxed/simple;
-	bh=IBOAfQGOXhpkA4V7u+I8yDNDk/qQ/sqBTAMw3XxTI4U=;
+	s=arc-20240116; t=1762822234; c=relaxed/simple;
+	bh=dsdMIFgK6y5lnMVPWgYqBo2JcxxhGMnjkDR9BypRjeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8OGr/ciiZackDasB/ZuM/zijB19WAd++kfGWcJlkYP3t+6lvC8Y6l/jkf4SOiXdqIlpzREREAhrUxQgrlabgSd0kMOVlHCo7CKUsBPIRCopeyEwZnzLSYhF33mH0f/fHGnOEOulNaPGGoOcYPMvmIUODmneZcWsoHAe7qk3Yyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRv1/EFX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90FA7C16AAE;
-	Tue, 11 Nov 2025 00:50:26 +0000 (UTC)
+	 MIME-Version; b=QEjKvVfkOqD7nKmcp3iClYpGvYMSHT8iCBYPwx4vENLbYx+RVVrcxHC+VMqXt1mEIgdbk6xZfMSbHyEPEP05QHSey3CJ59xGdZ6jEMsC2iFL7AtKgc7t+e4HHkdaVtVb6hLpJctvaMlp1qFqUEyvdMxM/vWrKbVBVMPSEGpcstw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lA4I11z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F924C4CEF5;
+	Tue, 11 Nov 2025 00:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822226;
-	bh=IBOAfQGOXhpkA4V7u+I8yDNDk/qQ/sqBTAMw3XxTI4U=;
+	s=korg; t=1762822233;
+	bh=dsdMIFgK6y5lnMVPWgYqBo2JcxxhGMnjkDR9BypRjeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mRv1/EFXS8feUBlnLEjj8KuyvVrDzABXByy+50IEiB+LOOI8b2SKRcgGRcWiMjzHw
-	 f2ZhSQ/ibgYrPdtFRtGnS1iGFs/RVp8IOW4lUXwDoxcEGbCpcdfmDWbpgZJYD5BSTu
-	 othQUOC7hnI9rSlwjbPF1ufxQsLgOkq+n35ccw9k=
+	b=0lA4I11zZLW2A16w4RJCxHjIM1R7MvXAehZ/VA9Bsta+i9w+HnuT8TMXq2iv+REqz
+	 s674ms7MrU25rTbKkU+ufeAD49MyNglBbeY/ra5KkWhcXnf8Vs0E1eSWWpYtlgVKVE
+	 DdKRVVuEZqk6m/cuUkNr5d0Hc7Qg0eLkAv9YIfRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 007/565] virtio-net: drop the multi-buffer XDP packet in zerocopy
-Date: Tue, 11 Nov 2025 09:37:43 +0900
-Message-ID: <20251111004527.016529811@linuxfoundation.org>
+	syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com,
+	Junjie Cao <junjie.cao@intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.12 008/565] fbdev: bitblit: bound-check glyph index in bit_putcs*
+Date: Tue, 11 Nov 2025 09:37:44 +0900
+Message-ID: <20251111004527.040457812@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,52 +67,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Junjie Cao <junjie.cao@intel.com>
 
-commit 1ab665817448c31f4758dce43c455bd4c5e460aa upstream.
+commit 18c4ef4e765a798b47980555ed665d78b71aeadf upstream.
 
-In virtio-net, we have not yet supported multi-buffer XDP packet in
-zerocopy mode when there is a binding XDP program. However, in that
-case, when receiving multi-buffer XDP packet, we skip the XDP program
-and return XDP_PASS. As a result, the packet is passed to normal network
-stack which is an incorrect behavior (e.g. a XDP program for packet
-count is installed, multi-buffer XDP packet arrives and does go through
-XDP program. As a result, the packet count does not increase but the
-packet is still received from network stack).This commit instead returns
-XDP_ABORTED in that case.
+bit_putcs_aligned()/unaligned() derived the glyph pointer from the
+character value masked by 0xff/0x1ff, which may exceed the actual font's
+glyph count and read past the end of the built-in font array.
+Clamp the index to the actual glyph count before computing the address.
 
-Fixes: 99c861b44eb1 ("virtio_net: xsk: rx: support recv merge mode")
+This fixes a global out-of-bounds read reported by syzbot.
+
+Reported-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=793cf822d213be1a74f2
+Tested-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Cc: stable@vger.kernel.org
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://patch.msgid.link/20251022155630.49272-1-minhquangbui99@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/core/bitblit.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -1314,9 +1314,14 @@ static struct sk_buff *virtnet_receive_x
- 	ret = XDP_PASS;
- 	rcu_read_lock();
- 	prog = rcu_dereference(rq->xdp_prog);
--	/* TODO: support multi buffer. */
--	if (prog && num_buf == 1)
--		ret = virtnet_xdp_handler(prog, xdp, dev, xdp_xmit, stats);
-+	if (prog) {
-+		/* TODO: support multi buffer. */
-+		if (num_buf == 1)
-+			ret = virtnet_xdp_handler(prog, xdp, dev, xdp_xmit,
-+						  stats);
-+		else
-+			ret = XDP_ABORTED;
-+	}
- 	rcu_read_unlock();
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
+@@ -79,12 +79,16 @@ static inline void bit_putcs_aligned(str
+ 				     struct fb_image *image, u8 *buf, u8 *dst)
+ {
+ 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
++	unsigned int charcnt = vc->vc_font.charcount;
+ 	u32 idx = vc->vc_font.width >> 3;
+ 	u8 *src;
  
- 	switch (ret) {
+ 	while (cnt--) {
+-		src = vc->vc_font.data + (scr_readw(s++)&
+-					  charmask)*cellsize;
++		u16 ch = scr_readw(s++) & charmask;
++
++		if (ch >= charcnt)
++			ch = 0;
++		src = vc->vc_font.data + (unsigned int)ch * cellsize;
+ 
+ 		if (attr) {
+ 			update_attr(buf, src, attr, vc);
+@@ -112,14 +116,18 @@ static inline void bit_putcs_unaligned(s
+ 				       u8 *dst)
+ {
+ 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
++	unsigned int charcnt = vc->vc_font.charcount;
+ 	u32 shift_low = 0, mod = vc->vc_font.width % 8;
+ 	u32 shift_high = 8;
+ 	u32 idx = vc->vc_font.width >> 3;
+ 	u8 *src;
+ 
+ 	while (cnt--) {
+-		src = vc->vc_font.data + (scr_readw(s++)&
+-					  charmask)*cellsize;
++		u16 ch = scr_readw(s++) & charmask;
++
++		if (ch >= charcnt)
++			ch = 0;
++		src = vc->vc_font.data + (unsigned int)ch * cellsize;
+ 
+ 		if (attr) {
+ 			update_attr(buf, src, attr, vc);
 
 
 
