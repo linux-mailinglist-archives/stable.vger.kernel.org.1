@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45C6C4AC6D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B78C4B0A3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ED9B3A93EA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C138C4F94EE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0B12ED17A;
-	Tue, 11 Nov 2025 01:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DABA2347BDB;
+	Tue, 11 Nov 2025 01:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b252c2GZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LE5VfA5p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7FF26E158;
-	Tue, 11 Nov 2025 01:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98021347FEA;
+	Tue, 11 Nov 2025 01:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824347; cv=none; b=V4lZbSpiUfncRxSe3zEM97ZGmBRMfsowvD27Z1Ejtso8LDnwpXd7tOUYz1/JPBxGiTXCZVqBcM4phgx7Yj8H/v5/yTgmpk3U/E8BR9MxgCALRLiLJfy8QLqM8YRZhoNTUjOaf5fQywnifvW1E9aof2q8WRU2joNCtD6HKsbaJHU=
+	t=1762825314; cv=none; b=R+5fgGmk23eT2yuqchubYWom09NXz7eWcfxf1ns4cSMSpBQdirjveitxXKJrXQQ7kyhA35h7RMMhw8lfo6bRDlQ8vOaKyzFy6vfXg3itkcrvUqzktLIu7qDuVl+e1qa73ah4qtKCoYZg/Q9s6LQAv5NgXCZhUBFv32fUUVtbq7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824347; c=relaxed/simple;
-	bh=21lDTjUr7yDI/czM3QM34TZU2yvHimMWlS5K3t5cQU8=;
+	s=arc-20240116; t=1762825314; c=relaxed/simple;
+	bh=Kn3gl+ZSPiVEzOnb7O2L1rkrDByVHEV0edWpgOxnq+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZeLdzNe5icvrUxD6opI3KXZg2qNHhQ8K6auPsBTYqFwo9hEyl9Z9mmL70I0HvYsfed5Uwb11xymjwscIOG0zgDYqdmE9lttCuZFG/XeP81QDy8ds7v+Je0ej4ppG6o0R8kWXB6rg1YDtNBuL4tFK2plEeiqpaRWKPLA8jK4+qU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b252c2GZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F13C4CEFB;
-	Tue, 11 Nov 2025 01:25:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ew4/vq8yvdATok2yDlnl0AkG4WDK1+F22dJrgOyNC/QjrY9dt5PkdK47ZVy+/9jo5z1M9i93NgDflHcBI1VbfvZZn7eTovaTBgHTCLVWVjl7lJXU10tEfO4WtFb0BQjxikrRdypp7+6D71I8yPjabIyZkmgvVv/KNZdcx18+PZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LE5VfA5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31095C4CEF5;
+	Tue, 11 Nov 2025 01:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824346;
-	bh=21lDTjUr7yDI/czM3QM34TZU2yvHimMWlS5K3t5cQU8=;
+	s=korg; t=1762825314;
+	bh=Kn3gl+ZSPiVEzOnb7O2L1rkrDByVHEV0edWpgOxnq+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b252c2GZPdbJaohi/kfOef5GBJdiA9B4wTfEOouWIdet6VSa+a+G4Kogu67TWnHui
-	 IuH40gkuGB2UM34QxImntuXdGehxYvhmZ458Ui/ZTcT6prkh+7DG2AXvwq2MfU4ViE
-	 Q3R8HKJJWtM/7IjbKnDd274Ieb7/rwLjSElQ3hVs=
+	b=LE5VfA5pZjJD4ZB2u9QeX+9X53uQOFAKP7p0bj5ELQWC9uaQaS/fysnHl8Gp7NzWT
+	 CnsA+6gHEXwTDk524/GSxjhQQro6slaKXv71lefVYEU+FNGUPnyJDaCm+NSe1opynG
+	 gO/XDSmBg7bh500iS5nhGA173Q0VzGqryKyi98KY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moti Haimovski <moti.haimovski@intel.com>,
-	Koby Elbaz <koby.elbaz@intel.com>,
+	"Randall P. Embry" <rpembry@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 426/565] accel/habanalabs: support mapping cb with vmalloc-backed coherent memory
-Date: Tue, 11 Nov 2025 09:44:42 +0900
-Message-ID: <20251111004536.447384573@linuxfoundation.org>
+Subject: [PATCH 6.17 713/849] 9p: fix /sys/fs/9p/caches overwriting itself
+Date: Tue, 11 Nov 2025 09:44:43 +0900
+Message-ID: <20251111004553.672578120@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moti Haimovski <moti.haimovski@intel.com>
+From: Randall P. Embry <rpembry@gmail.com>
 
-[ Upstream commit 513024d5a0e34fd34247043f1876b6138ca52847 ]
+[ Upstream commit 86db0c32f16c5538ddb740f54669ace8f3a1f3d7 ]
 
-When IOMMU is enabled, dma_alloc_coherent() with GFP_USER may return
-addresses from the vmalloc range. If such an address is mapped without
-VM_MIXEDMAP, vm_insert_page() will trigger a BUG_ON due to the
-VM_PFNMAP restriction.
+caches_show() overwrote its buffer on each iteration,
+so only the last cache tag was visible in sysfs output.
 
-Fix this by checking for vmalloc addresses and setting VM_MIXEDMAP
-in the VMA before mapping. This ensures safe mapping and avoids kernel
-crashes. The memory is still driver-allocated and cannot be accessed
-directly by userspace.
+Properly append with snprintf(buf + count, …).
 
-Signed-off-by: Moti Haimovski  <moti.haimovski@intel.com>
-Reviewed-by: Koby Elbaz <koby.elbaz@intel.com>
-Signed-off-by: Koby Elbaz <koby.elbaz@intel.com>
+Signed-off-by: Randall P. Embry <rpembry@gmail.com>
+Message-ID: <20250926-v9fs_misc-v1-2-a8b3907fc04d@codewreck.org>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/habanalabs/gaudi/gaudi.c   | 19 +++++++++++++++++++
- drivers/accel/habanalabs/gaudi2/gaudi2.c |  7 +++++++
- 2 files changed, 26 insertions(+)
+ fs/9p/v9fs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/accel/habanalabs/gaudi/gaudi.c b/drivers/accel/habanalabs/gaudi/gaudi.c
-index fa893a9b826ec..34771d75da9d7 100644
---- a/drivers/accel/habanalabs/gaudi/gaudi.c
-+++ b/drivers/accel/habanalabs/gaudi/gaudi.c
-@@ -4168,10 +4168,29 @@ static int gaudi_mmap(struct hl_device *hdev, struct vm_area_struct *vma,
- 	vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP |
- 			VM_DONTCOPY | VM_NORESERVE);
- 
-+#ifdef _HAS_DMA_MMAP_COHERENT
-+	/*
-+	 * If dma_alloc_coherent() returns a vmalloc address, set VM_MIXEDMAP
-+	 * so vm_insert_page() can handle it safely. Without this, the kernel
-+	 * may BUG_ON due to VM_PFNMAP.
-+	 */
-+	if (is_vmalloc_addr(cpu_addr))
-+		vm_flags_set(vma, VM_MIXEDMAP);
-+
- 	rc = dma_mmap_coherent(hdev->dev, vma, cpu_addr,
- 				(dma_addr - HOST_PHYS_BASE), size);
- 	if (rc)
- 		dev_err(hdev->dev, "dma_mmap_coherent error %d", rc);
-+#else
-+
-+	rc = remap_pfn_range(vma, vma->vm_start,
-+				virt_to_phys(cpu_addr) >> PAGE_SHIFT,
-+				size, vma->vm_page_prot);
-+	if (rc)
-+		dev_err(hdev->dev, "remap_pfn_range error %d", rc);
-+
-+ #endif
-+
- 
- 	return rc;
- }
-diff --git a/drivers/accel/habanalabs/gaudi2/gaudi2.c b/drivers/accel/habanalabs/gaudi2/gaudi2.c
-index 3df72a5d024a6..b957957df3d3a 100644
---- a/drivers/accel/habanalabs/gaudi2/gaudi2.c
-+++ b/drivers/accel/habanalabs/gaudi2/gaudi2.c
-@@ -6490,6 +6490,13 @@ static int gaudi2_mmap(struct hl_device *hdev, struct vm_area_struct *vma,
- 			VM_DONTCOPY | VM_NORESERVE);
- 
- #ifdef _HAS_DMA_MMAP_COHERENT
-+	/*
-+	 * If dma_alloc_coherent() returns a vmalloc address, set VM_MIXEDMAP
-+	 * so vm_insert_page() can handle it safely. Without this, the kernel
-+	 * may BUG_ON due to VM_PFNMAP.
-+	 */
-+	if (is_vmalloc_addr(cpu_addr))
-+		vm_flags_set(vma, VM_MIXEDMAP);
- 
- 	rc = dma_mmap_coherent(hdev->dev, vma, cpu_addr, dma_addr, size);
- 	if (rc)
+diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+index 77e9c4387c1df..714cfe76ee651 100644
+--- a/fs/9p/v9fs.c
++++ b/fs/9p/v9fs.c
+@@ -561,7 +561,7 @@ static ssize_t caches_show(struct kobject *kobj,
+ 	spin_lock(&v9fs_sessionlist_lock);
+ 	list_for_each_entry(v9ses, &v9fs_sessionlist, slist) {
+ 		if (v9ses->cachetag) {
+-			n = snprintf(buf, limit, "%s\n", v9ses->cachetag);
++			n = snprintf(buf + count, limit, "%s\n", v9ses->cachetag);
+ 			if (n < 0) {
+ 				count = n;
+ 				break;
 -- 
 2.51.0
 
