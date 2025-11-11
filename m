@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5F5C4AAEA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD85AC4A8C0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98E29189504E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 086BE4F49C2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E9D24E4A1;
-	Tue, 11 Nov 2025 01:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFD8338930;
+	Tue, 11 Nov 2025 01:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNZkEEgT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vu0tO2Sh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE0D1F5F6;
-	Tue, 11 Nov 2025 01:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5D5272E7C;
+	Tue, 11 Nov 2025 01:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823935; cv=none; b=XLEnE4Eh6n999vjVF196hh7rU1Ax5X0BIX8e/Af8Bmq1tHAp151QT0ZMaQYkOZyn+RhimBWSovPJSH8JEUbMamLJMzQYk8PlQgBSLYcswrA/Z2q829Z3szRFmvLZydJo/3uNKfz51yJgmzBLV2mWa7gMiMCO9ZOHoAvZxOwpMhk=
+	t=1762823970; cv=none; b=jo6gKmgRikC5kh6JvY7GmWO+As6A6+lY6Cux9GNmmbF4wbtanRAhMJgwNJ7yrDQ6gZpngWpDNDIdjlU1wf4tQqyPLl+9Iro5hOXDPFJa7m6bk4+gIpkpo2lI4vw3ryixtcPOpCRUIlGKKll3lt92lUuE0CNPZNuiCPQckZ0oV+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823935; c=relaxed/simple;
-	bh=EiHoQZucYxvyy3fkFme/AtlH5O5PjudkAJ0lB6zJR/Q=;
+	s=arc-20240116; t=1762823970; c=relaxed/simple;
+	bh=qVwhDvv5ywmnujOE9z5S6ZrvgUHw6Jf/bnV65Wg8zV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GSzhuQ4FifRpq4iFkVQVps0UzIOW8RPmlBwocBKNSLRnSwlgT0AZNEbXKwEn3RCfzGNSyLksozuXaxEbpB8VwafvICI8ypgxB+Xqigtc4NvyBSdEcdrMxY88ZGwGpCRUE2WKtavT3ce5NmBR7U9OCe2OnjbJ1Feh3y7WYMsIxEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNZkEEgT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4897C116D0;
-	Tue, 11 Nov 2025 01:18:54 +0000 (UTC)
+	 MIME-Version; b=JoFsA5B85Tvs58PJOGHPvrZTaLPraCeBQ0eM0f/Icl/v4uMP6sWqB5ufmN1LIa5nEPfm/Ox6JsMbcks3peT+mB8ebYUZJna8mYQME+J7WplMurErf4grzlAyR8DVVSHOs0+Oac3cBNIqwQUKqwJuQ24LH3t107ZbdO4mGpOOEBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vu0tO2Sh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A947C113D0;
+	Tue, 11 Nov 2025 01:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823935;
-	bh=EiHoQZucYxvyy3fkFme/AtlH5O5PjudkAJ0lB6zJR/Q=;
+	s=korg; t=1762823970;
+	bh=qVwhDvv5ywmnujOE9z5S6ZrvgUHw6Jf/bnV65Wg8zV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kNZkEEgTIy+UWy7SMrsBxzpbLIf2hSGT4uwD2hqE37w5Ym5Mkkg5QaZr0QagsFYRR
-	 uAeDIdvBF2joJyKCSZa63PsNBSohVDYdqtNJ0hm8P7+ktuBVyP7ZNUagLoYNZ/3ka9
-	 KFAAy6627/ADgkVsDlINzOiMu9rBnuBNl2IvuNZw=
+	b=vu0tO2ShfRFTHcygFPBXrdWj+CD6VLIGRgUW2Lj4cQckzW0tzfTF18drZGHLFCMpQ
+	 uW0Rq6r6YwfKPJa6ugb8Ik37WW8BgrD6aFom3fHg+GzydMQfFBBWs+X0nLKBV7L2dx
+	 DBxJPNy5FQEXoQAOTySdyVT9NrAoEwvYTmTUkvO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Xin Wang <x.wang@intel.com>,
+	Christian Bruel <christian.bruel@foss.st.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 369/849] drm/xe: Ensure GT is in C0 during resumes
-Date: Tue, 11 Nov 2025 09:38:59 +0900
-Message-ID: <20251111004545.344432931@linuxfoundation.org>
+Subject: [PATCH 6.17 370/849] misc: pci_endpoint_test: Skip IRQ tests if irq is out of range
+Date: Tue, 11 Nov 2025 09:39:00 +0900
+Message-ID: <20251111004545.370890761@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,64 +66,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xin Wang <x.wang@intel.com>
+From: Christian Bruel <christian.bruel@foss.st.com>
 
-[ Upstream commit 95d0883ac8105717f59c2dcdc0d8b9150f13aa12 ]
+[ Upstream commit cc8e391067164f45f89b6132a5aaa18c33a0e32b ]
 
-This patch ensures the gt will be awake for the entire duration
-of the resume sequences until GuCRC takes over and GT-C6 gets
-re-enabled.
+The pci_endpoint_test tests the 32-bit MSI range. However, the device might
+not have all vectors configured. For example, if msi_interrupts is 8 in the
+ep function space or if the MSI Multiple Message Capable value is
+configured as 4 (maximum 16 vectors).
 
-Before suspending GT-C6 is kept enabled, but upon resume, GuCRC
-is not yet alive to properly control the exits and some cases of
-instability and corruption related to GT-C6 can be observed.
+In this case, do not attempt to run the test to avoid timeouts and directly
+return the error value.
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4037
-
-Suggested-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Xin Wang <x.wang@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4037
-Link: https://lore.kernel.org/r/20250827000633.1369890-3-x.wang@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Christian Bruel <christian.bruel@foss.st.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20250804170916.3212221-2-christian.bruel@foss.st.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pm.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/misc/pci_endpoint_test.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
-index 3e301e42b2f19..9fccc7a855f30 100644
---- a/drivers/gpu/drm/xe/xe_pm.c
-+++ b/drivers/gpu/drm/xe/xe_pm.c
-@@ -18,7 +18,7 @@
- #include "xe_device.h"
- #include "xe_ggtt.h"
- #include "xe_gt.h"
--#include "xe_guc.h"
-+#include "xe_gt_idle.h"
- #include "xe_i2c.h"
- #include "xe_irq.h"
- #include "xe_pcode.h"
-@@ -177,6 +177,9 @@ int xe_pm_resume(struct xe_device *xe)
- 	drm_dbg(&xe->drm, "Resuming device\n");
- 	trace_xe_pm_resume(xe, __builtin_return_address(0));
- 
-+	for_each_gt(gt, xe, id)
-+		xe_gt_idle_disable_c6(gt);
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index f935175d8bf55..506a2847e5d22 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -436,7 +436,11 @@ static int pci_endpoint_test_msi_irq(struct pci_endpoint_test *test,
+ {
+ 	struct pci_dev *pdev = test->pdev;
+ 	u32 val;
+-	int ret;
++	int irq;
 +
- 	for_each_tile(tile, xe, id)
- 		xe_wa_apply_tile_workarounds(tile);
++	irq = pci_irq_vector(pdev, msi_num - 1);
++	if (irq < 0)
++		return irq;
  
-@@ -547,6 +550,9 @@ int xe_pm_runtime_resume(struct xe_device *xe)
+ 	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_IRQ_TYPE,
+ 				 msix ? PCITEST_IRQ_TYPE_MSIX :
+@@ -450,11 +454,7 @@ static int pci_endpoint_test_msi_irq(struct pci_endpoint_test *test,
+ 	if (!val)
+ 		return -ETIMEDOUT;
  
- 	xe_rpm_lockmap_acquire(xe);
+-	ret = pci_irq_vector(pdev, msi_num - 1);
+-	if (ret < 0)
+-		return ret;
+-
+-	if (ret != test->last_irq)
++	if (irq != test->last_irq)
+ 		return -EIO;
  
-+	for_each_gt(gt, xe, id)
-+		xe_gt_idle_disable_c6(gt);
-+
- 	if (xe->d3cold.allowed) {
- 		err = xe_pcode_ready(xe, true);
- 		if (err)
+ 	return 0;
 -- 
 2.51.0
 
