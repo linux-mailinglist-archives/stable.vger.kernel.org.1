@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7025CC4A596
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:21:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2834FC4AD15
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1BBAB34BFE4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09DD0189392A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001303446B0;
-	Tue, 11 Nov 2025 01:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E770330276C;
+	Tue, 11 Nov 2025 01:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOpXXOrB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kloif5cb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BE42D97A4;
-	Tue, 11 Nov 2025 01:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920DD2FFF94;
+	Tue, 11 Nov 2025 01:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823592; cv=none; b=sZwmB10J53oribTNUg+RiLjE/HqJ1t190fHnyo3IyAmub69hS56lBh1TdEkO02sB1mPKUzBYz5OEufQxM2QD7aPsFXW0elHteLcY1dJUmS3osrt/RFxb4twtcfqcZHXCaTGzuqkF+UERay9XpI6wKmCx3W8OFlUJ6t6Df8tzV0U=
+	t=1762824783; cv=none; b=EDcQ628ia2sIXUxTIZlKgzMXS7ZfFgkC1OxzbS38U+Q9FdTndzdE2VmhZY69zABOQXJ7xGAvgq4a2benH5Yx4Ivi+Vl9tGPnJ5C7WlaVcewCHF3Yug0l5KaJiRyzbmP1qd5/JA/By3dDIaodjrcQaS5Ce+lDm+EQUUtikpdkpfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823592; c=relaxed/simple;
-	bh=XOubr4celDijVYJI5wh0BcWyxe40dhTHW50kzXHsNXo=;
+	s=arc-20240116; t=1762824783; c=relaxed/simple;
+	bh=3lhFlEh/IovjRX+pHcIl7McbVqNFOzHAiQ1jeAwQqIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ExFEZ+4V4vCezw4Cm+byw3OlbCkSD8qfh8+YOOH06GYJJGDvBhn20i/df//YzyHi/kDE2sZdRQs3aqUJzymxAaMA7faf/b75F/93lUOSXFDG1/srSliH1/xpS2npgR8R0t5S1hKvGIPZxacicjKbhBWukMk5JJcd6agcm8XYoPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOpXXOrB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6C9C116B1;
-	Tue, 11 Nov 2025 01:13:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GyeE+LrR5iDU8pifB5UNP7+Ebtzkjzd7BothYyx22ZBwgDwWeE85W7b6UnDjKt4n0Zy/pAu162WxKaqZz0V4/BZj3pu1i89oG6nWvAevI2hWlP/oj5cgGvn1FiylqsI9bzYDcDGaG1fkYTXkf1E845BcIxmzFbEoXTNvxzgLjlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kloif5cb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105ECC16AAE;
+	Tue, 11 Nov 2025 01:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823592;
-	bh=XOubr4celDijVYJI5wh0BcWyxe40dhTHW50kzXHsNXo=;
+	s=korg; t=1762824783;
+	bh=3lhFlEh/IovjRX+pHcIl7McbVqNFOzHAiQ1jeAwQqIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOpXXOrBQcbauadhP6N/UpRROxvQysBTl/iN/KYO9AFUYHqyGSAlpvmqc3xBA6aIb
-	 qE05zUmrgoZbT+2bE4kA6Z5PQ/hu5muX3eXcHihZHLBbhM0kNCjf8e7X40NwTOfg3P
-	 ryF9Qg6Y/9z+hMvuF85GeYSHg5/6RyFkFrIldCeg=
+	b=Kloif5cbg02nrnunCTgF1K1puLxNLIqYO6TtklETf3xpAu/5mTZF9X5L96oG8rZfs
+	 HPWThMeKBVjMQW8EIo+rtj5hBFwNW2TYNYZmi4rLifRkc1CS1YBUl7kIuUc2strW4D
+	 E6sl2LCmnGhqiRYWoa7wIebkCcx9Kr2s2k7PdERc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 282/565] dmaengine: mv_xor: match alloc_wc and free_wc
-Date: Tue, 11 Nov 2025 09:42:18 +0900
-Message-ID: <20251111004533.222904364@linuxfoundation.org>
+Subject: [PATCH 6.17 569/849] drm/amdgpu: reject gang submissions under SRIOV
+Date: Tue, 11 Nov 2025 09:42:19 +0900
+Message-ID: <20251111004550.168373662@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit a33e3b667d2f004fdfae6b442bd4676f6c510abb ]
+[ Upstream commit d7ddcf921e7d0d8ebe82e89635bc9dc26ba9540d ]
 
-dma_alloc_wc is used but not dma_free_wc.
+Gang submission means that the kernel driver guarantees that multiple
+submissions are executed on the HW at the same time on different engines.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://lore.kernel.org/r/20250821220942.10578-1-rosenp@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Background is that those submissions then depend on each other and each
+can't finish stand alone.
+
+SRIOV now uses world switch to preempt submissions on the engines to allow
+sharing the HW resources between multiple VFs.
+
+The problem is now that the SRIOV world switch can't know about such inter
+dependencies and will cause a timeout if it waits for a partially running
+gang submission.
+
+To conclude SRIOV and gang submissions are fundamentally incompatible at
+the moment. For now just disable them.
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/mv_xor.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
-index 184813766cd15..33716794d50e2 100644
---- a/drivers/dma/mv_xor.c
-+++ b/drivers/dma/mv_xor.c
-@@ -1013,7 +1013,7 @@ static int mv_xor_channel_remove(struct mv_xor_chan *mv_chan)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index d541e214a18c8..1ce1fd0c87a57 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -286,7 +286,7 @@ static int amdgpu_cs_pass1(struct amdgpu_cs_parser *p,
+ 		}
+ 	}
  
- 	dma_async_device_unregister(&mv_chan->dmadev);
- 
--	dma_free_coherent(dev, MV_XOR_POOL_SIZE,
-+	dma_free_wc(dev, MV_XOR_POOL_SIZE,
- 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
- 	dma_unmap_single(dev, mv_chan->dummy_src_addr,
- 			 MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
-@@ -1163,7 +1163,7 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
- err_free_irq:
- 	free_irq(mv_chan->irq, mv_chan);
- err_free_dma:
--	dma_free_coherent(&pdev->dev, MV_XOR_POOL_SIZE,
-+	dma_free_wc(&pdev->dev, MV_XOR_POOL_SIZE,
- 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
- err_unmap_dst:
- 	dma_unmap_single(dma_dev->dev, mv_chan->dummy_dst_addr,
+-	if (!p->gang_size) {
++	if (!p->gang_size || (amdgpu_sriov_vf(p->adev) && p->gang_size > 1)) {
+ 		ret = -EINVAL;
+ 		goto free_all_kdata;
+ 	}
 -- 
 2.51.0
 
