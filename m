@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD40C4A05B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF46FC49F84
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 699E334BDEC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5344188BF11
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1426A1DF258;
-	Tue, 11 Nov 2025 00:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EA524BBEB;
+	Tue, 11 Nov 2025 00:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2oap6xpE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VH2ayWiX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35494C97;
-	Tue, 11 Nov 2025 00:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658272AE8D;
+	Tue, 11 Nov 2025 00:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822495; cv=none; b=b6h06wqai3W0Nzxg4Rdjto8awBchx4v0JlRluEjXKj26YPjiPGJcWXSlwOjDvVzpp5kMdY4tqtLjpY1o6iBkbEsLdmqBFSUE23tPdkUj+JmSNM0NM7PuRdOgv7YWJNxKkDhbio6pMoOKNk0T0Faix5DyZSocE0p674ZD8A13qIM=
+	t=1762822318; cv=none; b=vCEzvKtkuJsY7DqAaNSTv1FXcm6D5JLimY4pcrdBaj5VyjD4C2gLm9e02ORgsj3RgIUP+d4ZJeANPkcWzS4bWklHvxXstA5mtWTseyJRISzVOTsGIRQgYI6PWFKsqLJThzIi16hNrwl+loJvzP330pUX7M5RPoAHM1dxcVkebX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822495; c=relaxed/simple;
-	bh=1npvLL02tXhungK3R1o+PU+nu0ptWVVf1IqyI1X8KYg=;
+	s=arc-20240116; t=1762822318; c=relaxed/simple;
+	bh=vwyehnNZUn1OZj+58BBZBSsVJtCJGA5NDZmqH9Wdg6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHEbFtbKtEL+f66cTkbymhg4K104G66d0lJjHpT979hXs5uLhRyNUEF39uqfyvZiswxpp68Ijvncr/+4mLMiZmtx/b4crbTuRzXyerCA9A9/FFqM1hmUwUtXA76ov98Woc6bCDwSqGLMj/qRnewWx6RapufdkkdypYJAMwoxTBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2oap6xpE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561C4C116B1;
-	Tue, 11 Nov 2025 00:54:55 +0000 (UTC)
+	 MIME-Version; b=IlawIvZRiUdqYntndGDb2LPIdnKfxMiINV+UyPP4k61DwuTCfv67hdUokOdhm0EdN1Vy4WWNedqEL1HdOAxxuBhEXoeUYZdkMdyFLsdG/mBjMhWeITdHS1J4xhVgTGA5Nv1mUATUET8O+45bVehK9yEYn2q+CB8XCpWm+Hq35UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VH2ayWiX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2732C113D0;
+	Tue, 11 Nov 2025 00:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822495;
-	bh=1npvLL02tXhungK3R1o+PU+nu0ptWVVf1IqyI1X8KYg=;
+	s=korg; t=1762822317;
+	bh=vwyehnNZUn1OZj+58BBZBSsVJtCJGA5NDZmqH9Wdg6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2oap6xpEg7RL3IyoUoJPInzzSreJe4xARAP+VS5fY3jsue0lsM6YhdJ82uTCx0ocO
-	 H4/T+1wdfMbypJVoBgx2ZheqY1hzChoirITcP5fRjrxkGvHAh1yvWnxZg2SS2GDQRe
-	 8fhoSS3xns/LGiYW29ot+EqptwgVzcY+zSLwr1K0=
+	b=VH2ayWiXXxAIy2LsKrDVoHYUATZfcxfvQ5MLjAqb9RxgNi2ShjYQe90Esag2FwZho
+	 +ESlBIdbmyTi4XNWA9pGdRmmEc2ZvAq+yZA1zGDaNGOmf1yNN6QQUouuce3m8hZBlX
+	 FZFPAeI0lQpbPf+aJ2SxvbDyKG82L+qxIC0KUBY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Smith <itistotalbotnet@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 083/849] drm/amd/pm/powerplay/smumgr: Fix PCIeBootLinkLevel value on Iceland
-Date: Tue, 11 Nov 2025 09:34:13 +0900
-Message-ID: <20251111004538.426882377@linuxfoundation.org>
+Subject: [PATCH 6.17 084/849] drm/amdgpu: fix SPDX headers on amdgpu_cper.c/h
+Date: Tue, 11 Nov 2025 09:34:14 +0900
+Message-ID: <20251111004538.451341242@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,37 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Smith <itistotalbotnet@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 501672e3c1576aa9a8364144213c77b98a31a42c ]
+[ Upstream commit f3b37ebf2c94e3a3d7bbf5e3788ad86cf30fc7be ]
 
-Previously this was initialized with zero which represented PCIe Gen
-1.0 instead of using the
-maximum value from the speed table which is the behaviour of all other
-smumgr implementations.
+These should be MIT.  The driver in general is MIT and
+the license text at the top of the files is MIT so fix
+it.
 
-Fixes: 18aafc59b106 ("drm/amd/powerplay: implement fw related smu interface for iceland.")
-Signed-off-by: John Smith <itistotalbotnet@gmail.com>
+Fixes: 92d5d2a09de1 ("drm/amdgpu: Introduce funcs for populating CPER")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4654
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 92b0a6ae6672857ddeabf892223943d2f0e06c97)
+(cherry picked from commit abd3f876404cafb107cb34bacb74706bfee11cbe)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cper.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c
-index 17d2f5bff4a7e..49c32183878de 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c
-@@ -2028,7 +2028,7 @@ static int iceland_init_smc_table(struct pp_hwmgr *hwmgr)
- 	table->VoltageResponseTime  = 0;
- 	table->PhaseResponseTime  = 0;
- 	table->MemoryThermThrottleEnable  = 1;
--	table->PCIeBootLinkLevel = 0;
-+	table->PCIeBootLinkLevel = (uint8_t) (data->dpm_table.pcie_speed_table.count);
- 	table->PCIeGenInterval = 1;
- 
- 	result = iceland_populate_smc_svi2_config(hwmgr, table);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
+index 25252231a68a9..48a8aa1044b15 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: GPL-2.0
++// SPDX-License-Identifier: MIT
+ /*
+  * Copyright 2025 Advanced Micro Devices, Inc.
+  *
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.h
+index bcb97d245673b..353421807387e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
++/* SPDX-License-Identifier: MIT */
+ /*
+  * Copyright 2025 Advanced Micro Devices, Inc.
+  *
 -- 
 2.51.0
 
