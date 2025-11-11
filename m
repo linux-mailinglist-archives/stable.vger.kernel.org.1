@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F921C4A8AE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 811DBC4ACD9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 830853B5ADC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 760A21883EB6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19DF34403E;
-	Tue, 11 Nov 2025 01:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737A83081B8;
+	Tue, 11 Nov 2025 01:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BK9VCTN+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4SYIjDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1C92D879A;
-	Tue, 11 Nov 2025 01:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3042725C818;
+	Tue, 11 Nov 2025 01:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823581; cv=none; b=FbcpYzACBc7rwC7YL+fw6V7pIJD8vCREVuLapL1ljZhaQ8X+kHFwqWiuYgqHxbk/pitacvvR8Va6WmyCLYLljidHMrvleT5QLBhMpk7JYo2bXcfvIACu/O/zMnbbU/i+h9yX95pqH672kwD2ErTL4ZUAfTmlKGgyuZK/UkDiO8s=
+	t=1762824743; cv=none; b=F4cpmfa7u/UfcS9vorcp6OGWkGcpfgXTa+TMx6Gq6vj+rdo01napSuAnq6JYKhzRzgyTYZAM6PxJEhcZKOu9qJ9y9TW3YHaSzKF0haQmv91CaUj/2RpS4EvOXMSyKZoMl5sUr3sNerEVl94BbXYgRvhlXgsSb3Ddnm+IrjWUHkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823581; c=relaxed/simple;
-	bh=0h1pEephsztK766OuMmNuHRMr5veDpn7kS38SJICkI0=;
+	s=arc-20240116; t=1762824743; c=relaxed/simple;
+	bh=p/DNvw9RD32dbU2ZEvon3hAyV1HJdfbLfY6O0E6Nyww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5hdtcaeQeK8dgnNrLDIQbLP5Me6+Eo5ccKDwVwqVwxFrP+P/8wQ0ncVSyDntyLao5EbL1AlceGq17e3jq/XeACak1t7OQLPsEHblRtjFk9MTurhslB6X4C/P5jxei3bhyFacF78vvPIchFKURTLrlYIl2gdqj6dq8W9xxaDPGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BK9VCTN+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB1CC113D0;
-	Tue, 11 Nov 2025 01:13:00 +0000 (UTC)
+	 MIME-Version; b=jNv7UmDW3HgDlubRnhBzH+vpvjSjMUmrBPob5QnZEhzvdl1BxOoeLvgschafCrIActesn8zDyStFd9h4oMk2UpfHh61TNZxcaQmfqX5WjOUUXQ1F73n3yLBDgYwYs14syE2qEmlEsFCJSdwKpmcAR8snDGaWfRAiPG9GXAl0NK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4SYIjDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929A8C116B1;
+	Tue, 11 Nov 2025 01:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823581;
-	bh=0h1pEephsztK766OuMmNuHRMr5veDpn7kS38SJICkI0=;
+	s=korg; t=1762824743;
+	bh=p/DNvw9RD32dbU2ZEvon3hAyV1HJdfbLfY6O0E6Nyww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BK9VCTN+73xgJIuokJfD4QQRh99U3KKSr5gb0vMlRPAQ1uH9UMQxAUrDwti4LBu/q
-	 nZnZjrlNiFJ99f1IWaKU6XCa8T5UpqllHAGBoE1VAzs8P50coBtUDYDPalrb3G1LSI
-	 9TKsG5RpixO5TzCGuACJHrsD3o6K6vVNZykG8YX8=
+	b=y4SYIjDeYDJvrH1qnoLcsxpzxyPhZldYuwaIaIal+5xikBKF2gx6XkS/qjdtS0VRz
+	 vYS7s7xT+XCXPdJF2XB5TfcaSSgbbRo0g9NrKcZR1m0V5N6RqCmwp7aQyvIxgemldG
+	 tOBigqSpfQqHgej1KqfDFkchb9dPWoyxtkm8vtWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
+	Mina Almasry <almasrymina@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 274/565] inet_diag: annotate data-races in inet_diag_bc_sk()
-Date: Tue, 11 Nov 2025 09:42:10 +0900
-Message-ID: <20251111004533.048153516@linuxfoundation.org>
+Subject: [PATCH 6.17 561/849] page_pool: always add GFP_NOWARN for ATOMIC allocations
+Date: Tue, 11 Nov 2025 09:42:11 +0900
+Message-ID: <20251111004549.976870465@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 4fd84a0aaf2ba125b441aa09d415022385e66bf2 ]
+[ Upstream commit f3b52167a0cb23b27414452fbc1278da2ee884fc ]
 
-inet_diag_bc_sk() runs with an unlocked socket,
-annotate potential races with READ_ONCE().
+Driver authors often forget to add GFP_NOWARN for page allocation
+from the datapath. This is annoying to users as OOMs are a fact
+of life, and we pretty much expect network Rx to hit page allocation
+failures during OOM. Make page pool add GFP_NOWARN for ATOMIC allocations
+by default.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250828102738.2065992-4-edumazet@google.com
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250912161703.361272-1-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_diag.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/core/page_pool.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
-index 67639309163d0..f2de2f2962595 100644
---- a/net/ipv4/inet_diag.c
-+++ b/net/ipv4/inet_diag.c
-@@ -783,7 +783,7 @@ static void entry_fill_addrs(struct inet_diag_entry *entry,
- 			     const struct sock *sk)
- {
- #if IS_ENABLED(CONFIG_IPV6)
--	if (sk->sk_family == AF_INET6) {
-+	if (entry->family == AF_INET6) {
- 		entry->saddr = sk->sk_v6_rcv_saddr.s6_addr32;
- 		entry->daddr = sk->sk_v6_daddr.s6_addr32;
- 	} else
-@@ -796,18 +796,18 @@ static void entry_fill_addrs(struct inet_diag_entry *entry,
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 19c92aa04e549..e224d2145eed9 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -596,6 +596,12 @@ static noinline netmem_ref __page_pool_alloc_netmems_slow(struct page_pool *pool
+ 	netmem_ref netmem;
+ 	int i, nr_pages;
  
- int inet_diag_bc_sk(const struct nlattr *bc, struct sock *sk)
- {
--	struct inet_sock *inet = inet_sk(sk);
-+	const struct inet_sock *inet = inet_sk(sk);
- 	struct inet_diag_entry entry;
- 
- 	if (!bc)
- 		return 1;
- 
--	entry.family = sk->sk_family;
-+	entry.family = READ_ONCE(sk->sk_family);
- 	entry_fill_addrs(&entry, sk);
--	entry.sport = inet->inet_num;
--	entry.dport = ntohs(inet->inet_dport);
--	entry.ifindex = sk->sk_bound_dev_if;
--	entry.userlocks = sk_fullsock(sk) ? sk->sk_userlocks : 0;
-+	entry.sport = READ_ONCE(inet->inet_num);
-+	entry.dport = ntohs(READ_ONCE(inet->inet_dport));
-+	entry.ifindex = READ_ONCE(sk->sk_bound_dev_if);
-+	entry.userlocks = sk_fullsock(sk) ? READ_ONCE(sk->sk_userlocks) : 0;
- 	if (sk_fullsock(sk))
- 		entry.mark = READ_ONCE(sk->sk_mark);
- 	else if (sk->sk_state == TCP_NEW_SYN_RECV)
++	/* Unconditionally set NOWARN if allocating from NAPI.
++	 * Drivers forget to set it, and OOM reports on packet Rx are useless.
++	 */
++	if ((gfp & GFP_ATOMIC) == GFP_ATOMIC)
++		gfp |= __GFP_NOWARN;
++
+ 	/* Don't support bulk alloc for high-order pages */
+ 	if (unlikely(pp_order))
+ 		return page_to_netmem(__page_pool_alloc_page_order(pool, gfp));
 -- 
 2.51.0
 
