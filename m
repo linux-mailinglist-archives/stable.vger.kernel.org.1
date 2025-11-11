@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-193441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A320C4A4CD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:16:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB5AC4A4EE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:17:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DFAA188FFBD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:13:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17FDE1890C1D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC19A3446B2;
-	Tue, 11 Nov 2025 01:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5F52D97BD;
+	Tue, 11 Nov 2025 01:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOe4tWJO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7DIowpI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866303446AA;
-	Tue, 11 Nov 2025 01:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E703446DE;
+	Tue, 11 Nov 2025 01:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823191; cv=none; b=qQ8G+Hu2ckVVAhg6GoFnITgfWwiRYLjG3lgpvt7pe9KouzN71S8fV0yXMlx/DsvMTsM13vWoPbVXbVEtDXcyWpyCfJHbl2zPyb3ITCgF4rbAMKDN4WyS7uvC2hBuAffS3XnYRN+Qe74iQEQZ3h5WVIu3gyeNDuZc1q6rK+iRSc0=
+	t=1762823196; cv=none; b=nA0sLnudxXrmcRI3zgVhwvvfua+lRWTCJhx8LH+PZTDPe7GRV4KXbdJEEfM6IxNwfYMERdAB4YzTNRUOCqAPbQorj+z/SIZNhefolnsHIpvLP+a2jnrB3UkltV8pSGIk97tzq88KyitbEYX15yAja4JrIliSm6LxCyJfyrTVPVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823191; c=relaxed/simple;
-	bh=2ZKA2ao+jFzctaqshd2We2yntOTF6vQwxZ7I9sjBA3c=;
+	s=arc-20240116; t=1762823196; c=relaxed/simple;
+	bh=3jtstzl4YuJRD9LC0JrCZRnDV3nvOZIrcmZShURMhow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4QhMytCuFu05TvbsM7V2Xtv4dyEUyAGWkvMm1cBXS05ZA3Jh1n6WYBf7Zv17SGeKiFRQGsBNP5CVZRuQ72FarDigqCQAt/axcSH0FePhPxVqgVGFedY1AYlRghwA02AY5qGp/h+wTtsdcl73Wd/DgW5nuZd3byOpXrmN01zjdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOe4tWJO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8E7C16AAE;
-	Tue, 11 Nov 2025 01:06:30 +0000 (UTC)
+	 MIME-Version; b=oAN1lL2BHBauFtyU/BI6lCiVxJJZxLcLZwFbsvWft/GxcmwD6L7erS1+aOe1dHow9GpedG6NV2dqEADnFfaHezOKhxvh2AwRkfPKMryn02QI/MohKrGwLuypkep8BlajbVaIFahXXcEWeYfhya51TQIwMFngISTUoH4DW89akss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7DIowpI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D03C4CEF5;
+	Tue, 11 Nov 2025 01:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823191;
-	bh=2ZKA2ao+jFzctaqshd2We2yntOTF6vQwxZ7I9sjBA3c=;
+	s=korg; t=1762823196;
+	bh=3jtstzl4YuJRD9LC0JrCZRnDV3nvOZIrcmZShURMhow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOe4tWJOAU9Q6tJmsa+Q+b+aw/D2vJoNq9mx6+ysX8anN+sfefT4TM4QUykaoVh+F
-	 DR+OIXSJTqXhYP4NrefzuEaiSFHShN9WyYi99GDVFRoJ1vTN7MYma2UIRUsbF7CIsK
-	 vfe4u2PstUgblEC6skk37Sup4pQHqLaxyPUbBDJA=
+	b=W7DIowpIFKdC9TF4+ERKg8dj/oT8Ub7Va5QbjP+tMkcNeG9sXMDjHtI+KdLVtVfUz
+	 kHckM+K/+Y6S2AcsuJSYOJ6UbH46BmpkkYa0BonDZQsW+2snHcsTMsXOCs92vKOZ3a
+	 hXfZuTkhVqXq9QRyuBjp2B50gmCcGDC7JcWXONqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Xiang Liu <xiang.liu@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 250/849] drm/xe: Extend wa_13012615864 to additional Xe2 and Xe3 platforms
-Date: Tue, 11 Nov 2025 09:37:00 +0900
-Message-ID: <20251111004542.477081012@linuxfoundation.org>
+Subject: [PATCH 6.17 251/849] drm/amdgpu: Skip poison aca bank from UE channel
+Date: Tue, 11 Nov 2025 09:37:01 +0900
+Message-ID: <20251111004542.499560891@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -70,64 +67,96 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
+From: Xiang Liu <xiang.liu@amd.com>
 
-[ Upstream commit bcddb12c027434fdf0491c1a05a3fe4fd2263d71 ]
+[ Upstream commit 8e8e08c831f088ed581444c58a635c49ea1222ab ]
 
-Extend WA 13012615864 to Graphics Versions 20.01,20.02,20.04
-and 30.03.
+Avoid GFX poison consumption errors logged when fatal error occurs.
 
-Signed-off-by: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Link: https://lore.kernel.org/r/20250731220143.72942-2-jonathan.cavitt@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Xiang Liu <xiang.liu@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_wa.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c | 51 +++++++++++++++----------
+ 1 file changed, 30 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
-index 22a98600fd8f2..535067e7fb0c9 100644
---- a/drivers/gpu/drm/xe/xe_wa.c
-+++ b/drivers/gpu/drm/xe/xe_wa.c
-@@ -538,6 +538,11 @@ static const struct xe_rtp_entry_sr engine_was[] = {
- 	  XE_RTP_RULES(GRAPHICS_VERSION(2004), ENGINE_CLASS(RENDER)),
- 	  XE_RTP_ACTIONS(SET(HALF_SLICE_CHICKEN7, CLEAR_OPTIMIZATION_DISABLE))
- 	},
-+	{ XE_RTP_NAME("13012615864"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION(2004),
-+		       FUNC(xe_rtp_match_first_render_or_compute)),
-+	  XE_RTP_ACTIONS(SET(TDL_TSL_CHICKEN, RES_CHK_SPR_DIS))
-+	},
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
+index cbc40cad581b4..d1e431818212d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
+@@ -130,6 +130,27 @@ static void aca_smu_bank_dump(struct amdgpu_device *adev, int idx, int total, st
+ 		RAS_EVENT_LOG(adev, event_id, HW_ERR "hardware error logged by the scrubber\n");
+ }
  
- 	/* Xe2_HPG */
++static bool aca_bank_hwip_is_matched(struct aca_bank *bank, enum aca_hwip_type type)
++{
++
++	struct aca_hwip *hwip;
++	int hwid, mcatype;
++	u64 ipid;
++
++	if (!bank || type == ACA_HWIP_TYPE_UNKNOW)
++		return false;
++
++	hwip = &aca_hwid_mcatypes[type];
++	if (!hwip->hwid)
++		return false;
++
++	ipid = bank->regs[ACA_REG_IDX_IPID];
++	hwid = ACA_REG__IPID__HARDWAREID(ipid);
++	mcatype = ACA_REG__IPID__MCATYPE(ipid);
++
++	return hwip->hwid == hwid && hwip->mcatype == mcatype;
++}
++
+ static int aca_smu_get_valid_aca_banks(struct amdgpu_device *adev, enum aca_smu_type type,
+ 				       int start, int count,
+ 				       struct aca_banks *banks, struct ras_query_context *qctx)
+@@ -168,6 +189,15 @@ static int aca_smu_get_valid_aca_banks(struct amdgpu_device *adev, enum aca_smu_
  
-@@ -602,6 +607,11 @@ static const struct xe_rtp_entry_sr engine_was[] = {
- 		       FUNC(xe_rtp_match_first_render_or_compute)),
- 	  XE_RTP_ACTIONS(SET(TDL_TSL_CHICKEN, STK_ID_RESTRICT))
- 	},
-+	{ XE_RTP_NAME("13012615864"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2002),
-+		       FUNC(xe_rtp_match_first_render_or_compute)),
-+	  XE_RTP_ACTIONS(SET(TDL_TSL_CHICKEN, RES_CHK_SPR_DIS))
-+	},
+ 		bank.smu_err_type = type;
  
- 	/* Xe2_LPM */
++		/*
++		 * Poison being consumed when injecting a UE while running background workloads,
++		 * which are unexpected.
++		 */
++		if (type == ACA_SMU_TYPE_UE &&
++		    ACA_REG__STATUS__POISON(bank.regs[ACA_REG_IDX_STATUS]) &&
++		    !aca_bank_hwip_is_matched(&bank, ACA_HWIP_TYPE_UMC))
++			continue;
++
+ 		aca_smu_bank_dump(adev, i, count, &bank, qctx);
  
-@@ -647,7 +657,8 @@ static const struct xe_rtp_entry_sr engine_was[] = {
- 	  XE_RTP_ACTIONS(SET(TDL_CHICKEN, QID_WAIT_FOR_THREAD_NOT_RUN_DISABLE))
- 	},
- 	{ XE_RTP_NAME("13012615864"),
--	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(3000, 3001),
-+	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(3000, 3001), OR,
-+		       GRAPHICS_VERSION(3003),
- 		       FUNC(xe_rtp_match_first_render_or_compute)),
- 	  XE_RTP_ACTIONS(SET(TDL_TSL_CHICKEN, RES_CHK_SPR_DIS))
- 	},
+ 		ret = aca_banks_add_bank(banks, &bank);
+@@ -178,27 +208,6 @@ static int aca_smu_get_valid_aca_banks(struct amdgpu_device *adev, enum aca_smu_
+ 	return 0;
+ }
+ 
+-static bool aca_bank_hwip_is_matched(struct aca_bank *bank, enum aca_hwip_type type)
+-{
+-
+-	struct aca_hwip *hwip;
+-	int hwid, mcatype;
+-	u64 ipid;
+-
+-	if (!bank || type == ACA_HWIP_TYPE_UNKNOW)
+-		return false;
+-
+-	hwip = &aca_hwid_mcatypes[type];
+-	if (!hwip->hwid)
+-		return false;
+-
+-	ipid = bank->regs[ACA_REG_IDX_IPID];
+-	hwid = ACA_REG__IPID__HARDWAREID(ipid);
+-	mcatype = ACA_REG__IPID__MCATYPE(ipid);
+-
+-	return hwip->hwid == hwid && hwip->mcatype == mcatype;
+-}
+-
+ static bool aca_bank_is_valid(struct aca_handle *handle, struct aca_bank *bank, enum aca_smu_type type)
+ {
+ 	const struct aca_bank_ops *bank_ops = handle->bank_ops;
 -- 
 2.51.0
 
