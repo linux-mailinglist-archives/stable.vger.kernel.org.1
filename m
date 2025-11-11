@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-193677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E07C4A94D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4710BC4A95C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF6371896F72
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:24:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F12A3B917C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0438A347BCC;
-	Tue, 11 Nov 2025 01:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF53347FDF;
+	Tue, 11 Nov 2025 01:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0GEu69r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MmbSCo/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BE5347FD7;
-	Tue, 11 Nov 2025 01:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4984D347FD3;
+	Tue, 11 Nov 2025 01:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823749; cv=none; b=df89tlerslHDjPrPBt2SmlN9g2XqLBWTJ+KnAxIJ9RON6m/nrqKJkD+NbpnOqH2/ypxC1sXGEB228zU/z4SCru6eYshOFuKV7rO5CCxmGgvz20om/PRjwOWQyfxfC9c1lE6lRwZm961bPpvjdFpuSjPTh6UXfXwKr19ssCuNs20=
+	t=1762823754; cv=none; b=fxRS4DniYgJNar3ls/ssRyWmouDWLEwffYWp4ACp1QlnHgpOHM4cJepCaJiCJfuNxVk9CLGaA9Fvggc0nGmMVmK6uDmW6gp8tTi8bEozzmF5oSjNjlirmC7yYlgo2Tfh3mSdbVACb9vMSulcnGV4yJjBiau9n/+DBUsgBZAW/DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823749; c=relaxed/simple;
-	bh=68nUeEU2oCdEHSvIdnieU9vHM6nQ1L7WYBo0m9y/Y8Q=;
+	s=arc-20240116; t=1762823754; c=relaxed/simple;
+	bh=o3+J/fXNqqOHOiAVlsFRJg1l5g4EvwRPSGKdFNbliwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bY5fI0tJJ8dujo9GwujxaXi5UkMm7EhV7xfqdsUkX07RYDQSROaNajIQQ3dhw423vG0TpGFW3dQCVD2gQa8fRTYYDfajRd/lMKeSd0aqFlpZJdFq2O0Ma8OlvlHOJzRNrvmeF9MDJUVm/7hHSrB09sSfnSFNLrCD8poXqqTmSDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0GEu69r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A558C4CEF5;
-	Tue, 11 Nov 2025 01:15:49 +0000 (UTC)
+	 MIME-Version; b=dwj99xqDlfaJr5YEw8mhNwdT/ZD1KHKbkklhWFI4UrqhI0pc7YqG4IUYd07wax+8ThpAgIuhHoe+556X5es0t4mOQA2JAKqr8zvMN4zNbv40Ce5tcjXsQfo/rZhqI0PU/qWPZKfHeea/gzige1ciZQvdpHjlKsz+EGK1OYYghdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MmbSCo/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D958DC113D0;
+	Tue, 11 Nov 2025 01:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823749;
-	bh=68nUeEU2oCdEHSvIdnieU9vHM6nQ1L7WYBo0m9y/Y8Q=;
+	s=korg; t=1762823754;
+	bh=o3+J/fXNqqOHOiAVlsFRJg1l5g4EvwRPSGKdFNbliwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E0GEu69rswQtQGSMdWtQNVxVB0t9i59/8YklkdCttLimd4U55NFe2Xed8Xdt/w4jg
-	 MuNjVI+EI1PnULfjaVkkeRKG1SP+A/zb4/31cvYq9p9b7JyYJg4LS1Ry39e9uSOabC
-	 lD8UhP9zHHSSDzCWVwjHtNNDatgMSxylwzJqUc0w=
+	b=0MmbSCo/smPO0Qz7uxLHwdadlWqBth1PB7eDqNnBaQNWdJCdeoRarybG+j1nAYnHv
+	 o9r7ffw4FxPl1SgRRSoXCGBopxOK9xHiRNV9MhGKuOG64GjFq5VxSwC/xVqukCpLHb
+	 3b8PwAddEx1jMlKobAq7O0R2QWqZsV4QVjtvYuRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yufeng <chenyufeng@iie.ac.cn>,
+	Zizhi Wo <wozizhi@huaweicloud.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 312/565] usb: cdns3: gadget: Use-after-free during failed initialization and exit of cdnsp gadget
-Date: Tue, 11 Nov 2025 09:42:48 +0900
-Message-ID: <20251111004533.903981238@linuxfoundation.org>
+Subject: [PATCH 6.12 313/565] tty/vt: Add missing return value for VT_RESIZE in vt_ioctl()
+Date: Tue, 11 Nov 2025 09:42:49 +0900
+Message-ID: <20251111004533.927620816@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -65,59 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
+From: Zizhi Wo <wozizhi@huaweicloud.com>
 
-[ Upstream commit 87c5ff5615dc0a37167e8faf3adeeddc6f1344a3 ]
+[ Upstream commit da7e8b3823962b13e713d4891e136a261ed8e6a2 ]
 
-In the __cdnsp_gadget_init() and cdnsp_gadget_exit() functions, the gadget
-structure (pdev->gadget) was freed before its endpoints.
-The endpoints are linked via the ep_list in the gadget structure.
-Freeing the gadget first leaves dangling pointers in the endpoint list.
-When the endpoints are subsequently freed, this results in a use-after-free.
+In vt_ioctl(), the handler for VT_RESIZE always returns 0, which prevents
+users from detecting errors. Add the missing return value so that errors
+can be properly reported to users like vt_resizex().
 
-Fix:
-By separating the usb_del_gadget_udc() operation into distinct "del" and
-"put" steps, cdnsp_gadget_free_endpoints() can be executed prior to the
-final release of the gadget structure with usb_put_gadget().
-
-A patch similar to bb9c74a5bd14("usb: dwc3: gadget: Free gadget structure
- only after freeing endpoints").
-
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
-Link: https://lore.kernel.org/r/20250905094842.1232-1-chenyufeng@iie.ac.cn
+Signed-off-by: Zizhi Wo <wozizhi@huaweicloud.com>
+Link: https://lore.kernel.org/r/20250904023955.3892120-1-wozizhi@huaweicloud.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdnsp-gadget.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/tty/vt/vt_ioctl.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/cdns3/cdnsp-gadget.c b/drivers/usb/cdns3/cdnsp-gadget.c
-index 38e693cd3efc0..fb192b120d77f 100644
---- a/drivers/usb/cdns3/cdnsp-gadget.c
-+++ b/drivers/usb/cdns3/cdnsp-gadget.c
-@@ -1975,7 +1975,10 @@ static int __cdnsp_gadget_init(struct cdns *cdns)
- 	return 0;
+diff --git a/drivers/tty/vt/vt_ioctl.c b/drivers/tty/vt/vt_ioctl.c
+index 1f2bdd2e1cc59..387b691826623 100644
+--- a/drivers/tty/vt/vt_ioctl.c
++++ b/drivers/tty/vt/vt_ioctl.c
+@@ -923,7 +923,9 @@ int vt_ioctl(struct tty_struct *tty,
  
- del_gadget:
--	usb_del_gadget_udc(&pdev->gadget);
-+	usb_del_gadget(&pdev->gadget);
-+	cdnsp_gadget_free_endpoints(pdev);
-+	usb_put_gadget(&pdev->gadget);
-+	goto halt_pdev;
- free_endpoints:
- 	cdnsp_gadget_free_endpoints(pdev);
- halt_pdev:
-@@ -1997,8 +2000,9 @@ static void cdnsp_gadget_exit(struct cdns *cdns)
- 	devm_free_irq(pdev->dev, cdns->dev_irq, pdev);
- 	pm_runtime_mark_last_busy(cdns->dev);
- 	pm_runtime_put_autosuspend(cdns->dev);
--	usb_del_gadget_udc(&pdev->gadget);
-+	usb_del_gadget(&pdev->gadget);
- 	cdnsp_gadget_free_endpoints(pdev);
-+	usb_put_gadget(&pdev->gadget);
- 	cdnsp_mem_cleanup(pdev);
- 	kfree(pdev);
- 	cdns->gadget_dev = NULL;
+ 			if (vc) {
+ 				/* FIXME: review v tty lock */
+-				__vc_resize(vc_cons[i].d, cc, ll, true);
++				ret = __vc_resize(vc_cons[i].d, cc, ll, true);
++				if (ret)
++					return ret;
+ 			}
+ 		}
+ 		console_unlock();
 -- 
 2.51.0
 
