@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-194384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB39C4B160
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42063C4AE9B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DE8D189BC3E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9BDB84F839C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFCF2609FD;
-	Tue, 11 Nov 2025 01:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF8F27814A;
+	Tue, 11 Nov 2025 01:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQKVnUvg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxbu6kJy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B03F1D86FF;
-	Tue, 11 Nov 2025 01:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575DBDDAB;
+	Tue, 11 Nov 2025 01:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825478; cv=none; b=EHvYcHz7JURm0wtRU62gBTlaF+a1w9DcZnlFCwDR6WMLXl012zYOw1Skwv15AA5MeiBZMzmGGOg8WrEHr0peXc8PrQbpSdyJ1w/tZDfkqFZStm+LldD6H4d6zkaCwGjZQEIK1Ueb/gS5n++NwR3g58WRfRwNkeEKmK4BhzBwBEY=
+	t=1762824837; cv=none; b=DVFmdJFNlvgpTAPlMluWJY3pyH3EllVYsT6Dg0DF+VQUSK3XKeUT5TGQ8cLimgJJhZ3/q97b63/ClXIEaXEG6voM25iiNfRa7pRpavYSvkvTHQeEc8g1dylAN1OE4nq3A8qcILv+4P4mvemqF1AF2VHUCQJx3n0MOM4POkt4iso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825478; c=relaxed/simple;
-	bh=atZlN0nBYw60VEBdK/U7BeDPTajCJSvMoRluLKegocQ=;
+	s=arc-20240116; t=1762824837; c=relaxed/simple;
+	bh=3sF2fFV7HS3Q/tNOeZFFRlGyfl3Q+Wxuuy01tbPYy7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oS1a6aC0ZHQrFrLLf89hocSitMqweDyLdrQrljnfZ6aJpSIWD1fRTRoKt+TP2EWkM67YVQNV4wez50Np4VDUNLE3CIaM1WIaRkC+V0uNUsWZpWRP/cMyfT6H3ZhLTU8rwGg2okvQi+Q/0BEqnq27FjCzjy2ff/azR9YMK9qPTIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQKVnUvg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE66C4CEF5;
-	Tue, 11 Nov 2025 01:44:37 +0000 (UTC)
+	 MIME-Version; b=h8lIIX26RkIzPk5mQKcU/DXvM+PGfRI/JzIBhHDbL65XE0lkeGoavIBD8v5+oocX2L+SgtElQL/0mGDO2kCSQJAomf6Xs9R3GGvUKF0YuRU1w805x61wTQtazAoNcsSWxi47pk0sS8GCQLPjc4seordy/2QQgcaH0isup33vPMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxbu6kJy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA05FC16AAE;
+	Tue, 11 Nov 2025 01:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825478;
-	bh=atZlN0nBYw60VEBdK/U7BeDPTajCJSvMoRluLKegocQ=;
+	s=korg; t=1762824837;
+	bh=3sF2fFV7HS3Q/tNOeZFFRlGyfl3Q+Wxuuy01tbPYy7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQKVnUvgCXL3eo77VUWbAJLDP0a2bjifsiQFcNjY6ou92zi1WjVUFJdsBa4bc8pKa
-	 VsojUQzT45Lr7824YOBCsthFqGork28kibO9utMD8tGw3Y5rmza70I7r/DGUibX+0B
-	 +HkV7e1D/e1d8+yDeSfJRVYgutAS1t8eQ0vYFPaM=
+	b=zxbu6kJyOEfdgDRuPJbPmbC65LUZVlTJU/0/oBovbeh8zokhcl88jJeUWddv8wYq4
+	 X/bgPaNZMZLNneocRlp/CulmLoPorWmZba4+c9dOmkmpZoTbOJLR2WkLEFqadFj87y
+	 EIZFlxgPypytE29vkNrRSgP4g97N8aLWghrOdcDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.17 820/849] xfs: fix delalloc write failures in software-provided atomic writes
+	Gal Pressman <gal@nvidia.com>,
+	Alex Lazar <alazar@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 534/565] net/mlx5e: Fix return value in case of module EEPROM read error
 Date: Tue, 11 Nov 2025 09:46:30 +0900
-Message-ID: <20251111004556.249808619@linuxfoundation.org>
+Message-ID: <20251111004538.986049279@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Gal Pressman <gal@nvidia.com>
 
-commit 8d54eacd82a0623a963e0c150ad3b02970638b0d upstream.
+[ Upstream commit d1c94bc5b90c21b65469d30d4a6bc8ed715c1bfe ]
 
-With the 20 Oct 2025 release of fstests, generic/521 fails for me on
-regular (aka non-block-atomic-writes) storage:
+mlx5e_get_module_eeprom_by_page() has weird error handling.
 
-QA output created by 521
-dowrite: write: Input/output error
-LOG DUMP (8553 total operations):
-1(  1 mod 256): SKIPPED (no operation)
-2(  2 mod 256): WRITE    0x7e000 thru 0x8dfff	(0x10000 bytes) HOLE
-3(  3 mod 256): READ     0x69000 thru 0x79fff	(0x11000 bytes)
-4(  4 mod 256): FALLOC   0x53c38 thru 0x5e853	(0xac1b bytes) INTERIOR
-5(  5 mod 256): COPY 0x55000 thru 0x59fff	(0x5000 bytes) to 0x25000 thru 0x29fff
-6(  6 mod 256): WRITE    0x74000 thru 0x88fff	(0x15000 bytes)
-7(  7 mod 256): ZERO     0xedb1 thru 0x11693	(0x28e3 bytes)
+First, it is treating -EINVAL as a special case, but it is unclear why.
 
-with a warning in dmesg from iomap about XFS trying to give it a
-delalloc mapping for a directio write.  Fix the software atomic write
-iomap_begin code to convert the reservation into a written mapping.
-This doesn't fix the data corruption problems reported by generic/760,
-but it's a start.
+Second, it tries to fail "gracefully" by returning the number of bytes
+read even in case of an error. This results in wrongly returning
+success (0 return value) if the error occurs before any bytes were
+read.
 
-Cc: stable@vger.kernel.org # v6.16
-Fixes: bd1d2c21d5d249 ("xfs: add xfs_atomic_write_cow_iomap_begin()")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Simplify the error handling by returning an error when such occurs. This
+also aligns with the error handling we have in mlx5e_get_module_eeprom()
+for the old API.
+
+This fixes the following case where the query fails, but userspace
+ethtool wrongly treats it as success and dumps an output:
+
+  # ethtool -m eth2
+  netlink warning: mlx5_core: Query module eeprom by page failed, read 0 bytes, err -5
+  netlink warning: mlx5_core: Query module eeprom by page failed, read 0 bytes, err -5
+  Offset		Values
+  ------		------
+  0x0000:		00 00 00 00 05 00 04 00 00 00 00 00 05 00 05 00
+  0x0010:		00 00 00 00 05 00 06 00 50 00 00 00 67 65 20 66
+  0x0020:		61 69 6c 65 64 2c 20 72 65 61 64 20 30 20 62 79
+  0x0030:		74 65 73 2c 20 65 72 72 20 2d 35 00 14 00 03 00
+  0x0040:		08 00 01 00 03 00 00 00 08 00 02 00 1a 00 00 00
+  0x0050:		14 00 04 00 08 00 01 00 04 00 00 00 08 00 02 00
+  0x0060:		0e 00 00 00 14 00 05 00 08 00 01 00 05 00 00 00
+  0x0070:		08 00 02 00 1a 00 00 00 14 00 06 00 08 00 01 00
+
+Fixes: e109d2b204da ("net/mlx5: Implement get_module_eeprom_by_page()")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Alex Lazar <alazar@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/1762265736-1028868-1-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_iomap.c |   21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/fs/xfs/xfs_iomap.c
-+++ b/fs/xfs/xfs_iomap.c
-@@ -1121,7 +1121,7 @@ xfs_atomic_write_cow_iomap_begin(
- 		return -EAGAIN;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+index 1966736f98b4a..1f55c5a7edf31 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+@@ -2010,14 +2010,12 @@ static int mlx5e_get_module_eeprom_by_page(struct net_device *netdev,
+ 		if (!size_read)
+ 			return i;
  
- 	trace_xfs_iomap_atomic_write_cow(ip, offset, length);
--
-+retry:
- 	xfs_ilock(ip, XFS_ILOCK_EXCL);
+-		if (size_read == -EINVAL)
+-			return -EINVAL;
+ 		if (size_read < 0) {
+ 			NL_SET_ERR_MSG_FMT_MOD(
+ 				extack,
+ 				"Query module eeprom by page failed, read %u bytes, err %d\n",
+ 				i, size_read);
+-			return i;
++			return size_read;
+ 		}
  
- 	if (!ip->i_cowfp) {
-@@ -1132,6 +1132,8 @@ xfs_atomic_write_cow_iomap_begin(
- 	if (!xfs_iext_lookup_extent(ip, ip->i_cowfp, offset_fsb, &icur, &cmap))
- 		cmap.br_startoff = end_fsb;
- 	if (cmap.br_startoff <= offset_fsb) {
-+		if (isnullstartblock(cmap.br_startblock))
-+			goto convert_delay;
- 		xfs_trim_extent(&cmap, offset_fsb, count_fsb);
- 		goto found;
- 	}
-@@ -1160,8 +1162,10 @@ xfs_atomic_write_cow_iomap_begin(
- 	if (!xfs_iext_lookup_extent(ip, ip->i_cowfp, offset_fsb, &icur, &cmap))
- 		cmap.br_startoff = end_fsb;
- 	if (cmap.br_startoff <= offset_fsb) {
--		xfs_trim_extent(&cmap, offset_fsb, count_fsb);
- 		xfs_trans_cancel(tp);
-+		if (isnullstartblock(cmap.br_startblock))
-+			goto convert_delay;
-+		xfs_trim_extent(&cmap, offset_fsb, count_fsb);
- 		goto found;
- 	}
- 
-@@ -1201,6 +1205,19 @@ found:
- 	xfs_iunlock(ip, XFS_ILOCK_EXCL);
- 	return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags, IOMAP_F_SHARED, seq);
- 
-+convert_delay:
-+	xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+	error = xfs_bmapi_convert_delalloc(ip, XFS_COW_FORK, offset, iomap,
-+			NULL);
-+	if (error)
-+		return error;
-+
-+	/*
-+	 * Try the lookup again, because the delalloc conversion might have
-+	 * turned the COW mapping into unwritten, but we need it to be in
-+	 * written state.
-+	 */
-+	goto retry;
- out_unlock:
- 	xfs_iunlock(ip, XFS_ILOCK_EXCL);
- 	return error;
+ 		i += size_read;
+-- 
+2.51.0
+
 
 
 
