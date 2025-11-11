@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D0EC4AB4D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0984C4B271
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:04:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 940B4344CEC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79AF83B0D27
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55773451D4;
-	Tue, 11 Nov 2025 01:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4576733FE26;
+	Tue, 11 Nov 2025 01:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvoMqbiN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGfGsWi6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712072EB5CE;
-	Tue, 11 Nov 2025 01:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6B82F6186;
+	Tue, 11 Nov 2025 01:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824745; cv=none; b=Cna2ttYPvrWr6egtMDXLXvJySSWpMG/O6OVcs+PmXB05sEbDfjv75vdhQtc2iraebf5FGGqPyEZjnVgdoraSj3mPveh+GyS9FKc3GAu+DTmv6FynbquuO3YON5JN0FL+eJT3FyDob8FATtB40R/xJpj9tYrVqlKx6OCDokdXSXw=
+	t=1762825429; cv=none; b=OJdg1l7Fy/ZZf3qmO7waSoHwT9NhvV/MP48zIGzdHQZA3fjlHjuHzfVkC/DuQTypn8CVLhEdMhBN0xgdt/qn6UUFsJ9j9Ie4wxWBFLFmhW626ra0Zs6LgWlnkOisJcauY/3UEOdHUi1o3W4QppuOVgodpvi7zTQND0o7ptHAZ2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824745; c=relaxed/simple;
-	bh=vYcE9JyLlGN4jwwEjgzPEkhNHDRpXTCnrQxO7WdFfkk=;
+	s=arc-20240116; t=1762825429; c=relaxed/simple;
+	bh=rcr/HU0/B2kJrEHiPZyGcV7hm+i0W7MChP9Fz+3o9rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TdRplS1F2DR8M9SqrdoFSnx2QToG+3FRS6P21mC3X0Irw5oy2/30yWWtSrWu///ANUUZ7Gi5dAEgYqTsGgMnJKjQTjws2fea/tezxmX9Ry0ZN8afexNnppdDylMNuDkLwgggnjJ/RGuwHjKbecR9oO8EHPbUOQhIDI5diY3zIMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvoMqbiN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C9FC4CEFB;
-	Tue, 11 Nov 2025 01:32:24 +0000 (UTC)
+	 MIME-Version; b=VgTC7GLC+kCMxC5aH1QPmwwAFDlUDsn+zXfHUHEWjcEHvbcdXp/WTRjHeND/6MK1GXtWwmhHAWUi3tulF9ljskpeNHU2lYA3MvK3mSCcpTl9zZUqHrTBSJJi7iIv1BcMW75sdsNABWlNudVI5uLYu8wJjcfIUiaJ8XGbYWoDxQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGfGsWi6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CBBC113D0;
+	Tue, 11 Nov 2025 01:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824745;
-	bh=vYcE9JyLlGN4jwwEjgzPEkhNHDRpXTCnrQxO7WdFfkk=;
+	s=korg; t=1762825428;
+	bh=rcr/HU0/B2kJrEHiPZyGcV7hm+i0W7MChP9Fz+3o9rw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rvoMqbiNUwE10HDMWaxJ26jYQmkU5WuxWY/ZPOBG34SYLKcQSBHU+Twu0zkq49X1F
-	 GDgsR03fXCf2cOTaEYlr7IjnJP4/v/utPhK/ObQOgRJfTHm3+dqSmcHVXO1ZfGhf1m
-	 BGp8D5hcYGjaJeGOhjj5i2eC8HAtOPHTFb5zKGzE=
+	b=ZGfGsWi62EDJaX3ylJd1OcS/Dd7rE7NR9tNFyTEsPSK5ObXgYZXJ53mDokXSz2pzH
+	 tKt55ZtCMXN32szoifQZ23MwSzL2nXKiwMwysaGuDSlONccQ0nb0lWXcsOYYHPD9Bi
+	 Q0YQfkag37BU9N6kq1wL5j9+HHn9sT4A27FG5x+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a9a4bedfca6aa9d7fa24@syzkaller.appspotmail.com,
-	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 509/565] Bluetooth: hci_event: validate skb length for unknown CC opcode
-Date: Tue, 11 Nov 2025 09:46:05 +0900
-Message-ID: <20251111004538.403786977@linuxfoundation.org>
+Subject: [PATCH 6.17 796/849] lan966x: Fix sleeping in atomic context
+Date: Tue, 11 Nov 2025 09:46:06 +0900
+Message-ID: <20251111004555.678586273@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,215 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 5c5f1f64681cc889d9b13e4a61285e9e029d6ab5 ]
+[ Upstream commit 0216721ce71252f60d89af49c8dff613358058d3 ]
 
-In hci_cmd_complete_evt(), if the command complete event has an unknown
-opcode, we assume the first byte of the remaining skb->data contains the
-return status. However, parameter data has previously been pulled in
-hci_event_func(), which may leave the skb empty. If so, using skb->data[0]
-for the return status uses un-init memory.
+The following warning was seen when we try to connect using ssh to the device.
 
-The fix is to check skb->len before using skb->data.
+BUG: sleeping function called from invalid context at kernel/locking/mutex.c:575
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 104, name: dropbear
+preempt_count: 1, expected: 0
+INFO: lockdep is turned off.
+CPU: 0 UID: 0 PID: 104 Comm: dropbear Tainted: G        W           6.18.0-rc2-00399-g6f1ab1b109b9-dirty #530 NONE
+Tainted: [W]=WARN
+Hardware name: Generic DT based system
+Call trace:
+ unwind_backtrace from show_stack+0x10/0x14
+ show_stack from dump_stack_lvl+0x7c/0xac
+ dump_stack_lvl from __might_resched+0x16c/0x2b0
+ __might_resched from __mutex_lock+0x64/0xd34
+ __mutex_lock from mutex_lock_nested+0x1c/0x24
+ mutex_lock_nested from lan966x_stats_get+0x5c/0x558
+ lan966x_stats_get from dev_get_stats+0x40/0x43c
+ dev_get_stats from dev_seq_printf_stats+0x3c/0x184
+ dev_seq_printf_stats from dev_seq_show+0x10/0x30
+ dev_seq_show from seq_read_iter+0x350/0x4ec
+ seq_read_iter from seq_read+0xfc/0x194
+ seq_read from proc_reg_read+0xac/0x100
+ proc_reg_read from vfs_read+0xb0/0x2b0
+ vfs_read from ksys_read+0x6c/0xec
+ ksys_read from ret_fast_syscall+0x0/0x1c
+Exception stack(0xf0b11fa8 to 0xf0b11ff0)
+1fa0:                   00000001 00001000 00000008 be9048d8 00001000 00000001
+1fc0: 00000001 00001000 00000008 00000003 be905920 0000001e 00000000 00000001
+1fe0: 0005404c be9048c0 00018684 b6ec2cd8
 
-Reported-by: syzbot+a9a4bedfca6aa9d7fa24@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a9a4bedfca6aa9d7fa24
-Tested-by: syzbot+a9a4bedfca6aa9d7fa24@syzkaller.appspotmail.com
-Fixes: afcb3369f46ed ("Bluetooth: hci_event: Fix vendor (unknown) opcode status handling")
-Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+It seems that we are using a mutex in a atomic context which is wrong.
+Change the mutex with a spinlock.
+
+Fixes: 12c2d0a5b8e2 ("net: lan966x: add ethtool configuration and statistics")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20251105074955.1766792-1-horatiu.vultur@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../microchip/lan966x/lan966x_ethtool.c        | 18 +++++++++---------
+ .../ethernet/microchip/lan966x/lan966x_main.c  |  2 --
+ .../ethernet/microchip/lan966x/lan966x_main.h  |  4 ++--
+ .../microchip/lan966x/lan966x_vcap_impl.c      |  8 ++++----
+ 4 files changed, 15 insertions(+), 17 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index ccc73742de356..498b7e4c76d59 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -4210,6 +4210,13 @@ static void hci_cmd_complete_evt(struct hci_dev *hdev, void *data,
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_ethtool.c b/drivers/net/ethernet/microchip/lan966x/lan966x_ethtool.c
+index 2474dfd330f46..fe4e614052840 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_ethtool.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_ethtool.c
+@@ -294,7 +294,7 @@ static void lan966x_stats_update(struct lan966x *lan966x)
+ {
+ 	int i, j;
+ 
+-	mutex_lock(&lan966x->stats_lock);
++	spin_lock(&lan966x->stats_lock);
+ 
+ 	for (i = 0; i < lan966x->num_phys_ports; i++) {
+ 		uint idx = i * lan966x->num_stats;
+@@ -310,7 +310,7 @@ static void lan966x_stats_update(struct lan966x *lan966x)
+ 		}
  	}
  
- 	if (i == ARRAY_SIZE(hci_cc_table)) {
-+		if (!skb->len) {
-+			bt_dev_err(hdev, "Unexpected cc 0x%4.4x with no status",
-+				   *opcode);
-+			*status = HCI_ERROR_UNSPECIFIED;
-+			return;
-+		}
-+
- 		/* Unknown opcode, assume byte 0 contains the status, so
- 		 * that e.g. __hci_cmd_sync() properly returns errors
- 		 * for vendor specific commands send by HCI drivers.
+-	mutex_unlock(&lan966x->stats_lock);
++	spin_unlock(&lan966x->stats_lock);
+ }
+ 
+ static int lan966x_get_sset_count(struct net_device *dev, int sset)
+@@ -365,7 +365,7 @@ static void lan966x_get_eth_mac_stats(struct net_device *dev,
+ 
+ 	idx = port->chip_port * lan966x->num_stats;
+ 
+-	mutex_lock(&lan966x->stats_lock);
++	spin_lock(&lan966x->stats_lock);
+ 
+ 	mac_stats->FramesTransmittedOK =
+ 		lan966x->stats[idx + SYS_COUNT_TX_UC] +
+@@ -416,7 +416,7 @@ static void lan966x_get_eth_mac_stats(struct net_device *dev,
+ 		lan966x->stats[idx + SYS_COUNT_RX_LONG] +
+ 		lan966x->stats[idx + SYS_COUNT_RX_PMAC_LONG];
+ 
+-	mutex_unlock(&lan966x->stats_lock);
++	spin_unlock(&lan966x->stats_lock);
+ }
+ 
+ static const struct ethtool_rmon_hist_range lan966x_rmon_ranges[] = {
+@@ -442,7 +442,7 @@ static void lan966x_get_eth_rmon_stats(struct net_device *dev,
+ 
+ 	idx = port->chip_port * lan966x->num_stats;
+ 
+-	mutex_lock(&lan966x->stats_lock);
++	spin_lock(&lan966x->stats_lock);
+ 
+ 	rmon_stats->undersize_pkts =
+ 		lan966x->stats[idx + SYS_COUNT_RX_SHORT] +
+@@ -500,7 +500,7 @@ static void lan966x_get_eth_rmon_stats(struct net_device *dev,
+ 		lan966x->stats[idx + SYS_COUNT_TX_SZ_1024_1526] +
+ 		lan966x->stats[idx + SYS_COUNT_TX_PMAC_SZ_1024_1526];
+ 
+-	mutex_unlock(&lan966x->stats_lock);
++	spin_unlock(&lan966x->stats_lock);
+ 
+ 	*ranges = lan966x_rmon_ranges;
+ }
+@@ -603,7 +603,7 @@ void lan966x_stats_get(struct net_device *dev,
+ 
+ 	idx = port->chip_port * lan966x->num_stats;
+ 
+-	mutex_lock(&lan966x->stats_lock);
++	spin_lock(&lan966x->stats_lock);
+ 
+ 	stats->rx_bytes = lan966x->stats[idx + SYS_COUNT_RX_OCT] +
+ 		lan966x->stats[idx + SYS_COUNT_RX_PMAC_OCT];
+@@ -685,7 +685,7 @@ void lan966x_stats_get(struct net_device *dev,
+ 
+ 	stats->collisions = lan966x->stats[idx + SYS_COUNT_TX_COL];
+ 
+-	mutex_unlock(&lan966x->stats_lock);
++	spin_unlock(&lan966x->stats_lock);
+ }
+ 
+ int lan966x_stats_init(struct lan966x *lan966x)
+@@ -701,7 +701,7 @@ int lan966x_stats_init(struct lan966x *lan966x)
+ 		return -ENOMEM;
+ 
+ 	/* Init stats worker */
+-	mutex_init(&lan966x->stats_lock);
++	spin_lock_init(&lan966x->stats_lock);
+ 	snprintf(queue_name, sizeof(queue_name), "%s-stats",
+ 		 dev_name(lan966x->dev));
+ 	lan966x->stats_queue = create_singlethread_workqueue(queue_name);
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+index 7001584f1b7a6..47752d3fde0b1 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+@@ -1261,7 +1261,6 @@ static int lan966x_probe(struct platform_device *pdev)
+ 
+ 	cancel_delayed_work_sync(&lan966x->stats_work);
+ 	destroy_workqueue(lan966x->stats_queue);
+-	mutex_destroy(&lan966x->stats_lock);
+ 
+ 	debugfs_remove_recursive(lan966x->debugfs_root);
+ 
+@@ -1279,7 +1278,6 @@ static void lan966x_remove(struct platform_device *pdev)
+ 
+ 	cancel_delayed_work_sync(&lan966x->stats_work);
+ 	destroy_workqueue(lan966x->stats_queue);
+-	mutex_destroy(&lan966x->stats_lock);
+ 
+ 	lan966x_mac_purge_entries(lan966x);
+ 	lan966x_mdb_deinit(lan966x);
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
+index 4f75f06883693..eea286c29474f 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
+@@ -295,8 +295,8 @@ struct lan966x {
+ 	const struct lan966x_stat_layout *stats_layout;
+ 	u32 num_stats;
+ 
+-	/* workqueue for reading stats */
+-	struct mutex stats_lock;
++	/* lock for reading stats */
++	spinlock_t stats_lock;
+ 	u64 *stats;
+ 	struct delayed_work stats_work;
+ 	struct workqueue_struct *stats_queue;
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_vcap_impl.c b/drivers/net/ethernet/microchip/lan966x/lan966x_vcap_impl.c
+index a1471e38d1189..2a37fc1ba4bcd 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_vcap_impl.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_vcap_impl.c
+@@ -403,11 +403,11 @@ static void lan966x_es0_read_esdx_counter(struct lan966x *lan966x,
+ 	u32 counter;
+ 
+ 	id = id & 0xff; /* counter limit */
+-	mutex_lock(&lan966x->stats_lock);
++	spin_lock(&lan966x->stats_lock);
+ 	lan_wr(SYS_STAT_CFG_STAT_VIEW_SET(id), lan966x, SYS_STAT_CFG);
+ 	counter = lan_rd(lan966x, SYS_CNT(LAN966X_STAT_ESDX_GRN_PKTS)) +
+ 		  lan_rd(lan966x, SYS_CNT(LAN966X_STAT_ESDX_YEL_PKTS));
+-	mutex_unlock(&lan966x->stats_lock);
++	spin_unlock(&lan966x->stats_lock);
+ 	if (counter)
+ 		admin->cache.counter = counter;
+ }
+@@ -417,14 +417,14 @@ static void lan966x_es0_write_esdx_counter(struct lan966x *lan966x,
+ {
+ 	id = id & 0xff; /* counter limit */
+ 
+-	mutex_lock(&lan966x->stats_lock);
++	spin_lock(&lan966x->stats_lock);
+ 	lan_wr(SYS_STAT_CFG_STAT_VIEW_SET(id), lan966x, SYS_STAT_CFG);
+ 	lan_wr(0, lan966x, SYS_CNT(LAN966X_STAT_ESDX_GRN_BYTES));
+ 	lan_wr(admin->cache.counter, lan966x,
+ 	       SYS_CNT(LAN966X_STAT_ESDX_GRN_PKTS));
+ 	lan_wr(0, lan966x, SYS_CNT(LAN966X_STAT_ESDX_YEL_BYTES));
+ 	lan_wr(0, lan966x, SYS_CNT(LAN966X_STAT_ESDX_YEL_PKTS));
+-	mutex_unlock(&lan966x->stats_lock);
++	spin_unlock(&lan966x->stats_lock);
+ }
+ 
+ static void lan966x_vcap_cache_write(struct net_device *dev,
 -- 
 2.51.0
 
