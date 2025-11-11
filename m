@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-193668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3201AC4A8E7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A665EC4AE02
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D49373B8CF6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E536D4F89E6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2172E0B5A;
-	Tue, 11 Nov 2025 01:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 888413090CB;
+	Tue, 11 Nov 2025 01:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBQZvtMR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qewgp2rY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289511F09B3;
-	Tue, 11 Nov 2025 01:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44603255F28;
+	Tue, 11 Nov 2025 01:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823726; cv=none; b=pXFgKNL+MehHmwCmKwj2+xFmSB3v3aezFy2vZnCzG1s9+qDc2PyZ0G85gQlXoQ5/JzmKO0G+Ze2FUG/mIattU8xmj8jwGl/MdhfWTAkq1sOEmS/WUKHPEHbmu3jzJ6R9LO79A549Z18UL4lYMK70KMLej5ER3HsGD7JyPhW3+KE=
+	t=1762824900; cv=none; b=KU4OuQkbKJxeXtRvt2IW1SQnBdlhQ5QYdfPn5Lz+bb4rx4fndwdpjCQvf3ZnMidLyk/Vst/KB7mIKp7GlrzXAbkUwsvh51BCBnCHPyUirTxNNNqBlQbM3HeWPYKHL+n2lGVqox3ZMAKMuFPjkmYHwMZftVQZw0K+H+PYMP8oJ68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823726; c=relaxed/simple;
-	bh=tobJo+FmRj8l2xkBpmiCeGRm44p2612Qfxd7eS8eSBI=;
+	s=arc-20240116; t=1762824900; c=relaxed/simple;
+	bh=/l9k3s4R5xTvRJKTyyz9DKkxImFguyCcSKeAk8giSFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o7tv4PGqFap8OvY5SmoHvrRBnx3gow7pwENY9X5sfk91qhSuU036ZDPJHOv24gZVsX3/gmMFm7FKOp7AnrCOqPSGtyOgSCNwsQIJdaH99K5uE4mP+cnv3vSFNydvrdTD342whwB3Oo8vMpJc3EeE13IjNQBauK7Vi1LxJIEaCv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBQZvtMR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B900FC4CEF5;
-	Tue, 11 Nov 2025 01:15:25 +0000 (UTC)
+	 MIME-Version; b=iUAUmLAfnsfthD6u7IUbbBAvl4uxfk56X3if+xUpydU7a+OdcbFjX+WM9P0G3gieRfy6qyPY7UC1tIVoto8MPaIhMhg5ZNmvY2kFFPEH5WeoRTmQjxIkZ0MMpJ+2p12VkyJl6xo8eE8wao2Jjnnx8Wis+Ubceb+D4Q6wYNJtMx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qewgp2rY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A4CC19421;
+	Tue, 11 Nov 2025 01:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823726;
-	bh=tobJo+FmRj8l2xkBpmiCeGRm44p2612Qfxd7eS8eSBI=;
+	s=korg; t=1762824899;
+	bh=/l9k3s4R5xTvRJKTyyz9DKkxImFguyCcSKeAk8giSFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bBQZvtMRw7GgOSr//zxlwQwqR8PU23mxNCqEMs27xoT3FU4UucLjxZVV+JlJV4edP
-	 hM6D9TYFNJx+e2ICyp82Duyyxc+HGfT9x00My4M3STRJBElvqy1/BBwFyKsvnr5LbK
-	 KKZGHKWAx86sw/sFRZO+6fVBWVtYJpegektALSZs=
+	b=qewgp2rYJNkVp8uDKTVb0DxZMrNrn8hNpghcZfj9BKlEfoOx0t3f/7WrOncqB43Uz
+	 FQqTO1OxJNlPuCfb1UdrlCAhe135/E/YWDGP2sk2Ks3lDIOuxol/3c095AcxXyaqjf
+	 xkbJTrQbtJePNVSeJKrZY44fhqM8fpNnjfi4GnHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 308/565] drm/amdgpu: add support for cyan skillfish gpu_info
+Subject: [PATCH 6.17 594/849] ASoC: qcom: sc8280xp: explicitly set S16LE format in sc8280xp_be_hw_params_fixup()
 Date: Tue, 11 Nov 2025 09:42:44 +0900
-Message-ID: <20251111004533.814631806@linuxfoundation.org>
+Message-ID: <20251111004550.783198977@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-[ Upstream commit fa819e3a7c1ee994ce014cc5a991c7fd91bc00f1 ]
+[ Upstream commit 9565c9d53c5b440f0dde6fa731a99c1b14d879d2 ]
 
-Some SOCs which are part of the cyan skillfish family
-rely on an explicit firmware for IP discovery.  Add support
-for the gpu_info firmware.
+Setting format to s16le is required for compressed playback on compatible
+soundcards.
 
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Link: https://patch.msgid.link/20250911154340.2798304-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/qcom/sc8280xp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 373c626247a1a..7ff81bd1ec200 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -93,6 +93,7 @@ MODULE_FIRMWARE("amdgpu/picasso_gpu_info.bin");
- MODULE_FIRMWARE("amdgpu/raven2_gpu_info.bin");
- MODULE_FIRMWARE("amdgpu/arcturus_gpu_info.bin");
- MODULE_FIRMWARE("amdgpu/navi12_gpu_info.bin");
-+MODULE_FIRMWARE("amdgpu/cyan_skillfish_gpu_info.bin");
+diff --git a/sound/soc/qcom/sc8280xp.c b/sound/soc/qcom/sc8280xp.c
+index 6847ae4acbd18..78e327bc2f077 100644
+--- a/sound/soc/qcom/sc8280xp.c
++++ b/sound/soc/qcom/sc8280xp.c
+@@ -7,6 +7,7 @@
+ #include <sound/soc.h>
+ #include <sound/soc-dapm.h>
+ #include <sound/pcm.h>
++#include <sound/pcm_params.h>
+ #include <linux/soundwire/sdw.h>
+ #include <sound/jack.h>
+ #include <linux/input-event-codes.h>
+@@ -86,8 +87,10 @@ static int sc8280xp_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
+ 					SNDRV_PCM_HW_PARAM_RATE);
+ 	struct snd_interval *channels = hw_param_interval(params,
+ 					SNDRV_PCM_HW_PARAM_CHANNELS);
++	struct snd_mask *fmt = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
  
- #define AMDGPU_RESUME_MS		2000
- #define AMDGPU_MAX_RETRY_LIMIT		2
-@@ -2412,6 +2413,9 @@ static int amdgpu_device_parse_gpu_info_fw(struct amdgpu_device *adev)
- 			return 0;
- 		chip_name = "navi12";
- 		break;
-+	case CHIP_CYAN_SKILLFISH:
-+		chip_name = "cyan_skillfish";
-+		break;
- 	}
- 
- 	err = amdgpu_ucode_request(adev, &adev->firmware.gpu_info_fw,
+ 	rate->min = rate->max = 48000;
++	snd_mask_set_format(fmt, SNDRV_PCM_FORMAT_S16_LE);
+ 	channels->min = 2;
+ 	channels->max = 2;
+ 	switch (cpu_dai->id) {
 -- 
 2.51.0
 
