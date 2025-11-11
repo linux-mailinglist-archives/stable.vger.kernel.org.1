@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F3F3C4AC10
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F23C9C4A5CF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C0A674FB192
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0BD844F3C5E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270681096F;
-	Tue, 11 Nov 2025 01:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68512303C81;
+	Tue, 11 Nov 2025 01:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bH6s8ePR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKP807gY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0795263F28;
-	Tue, 11 Nov 2025 01:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2478230276C;
+	Tue, 11 Nov 2025 01:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824539; cv=none; b=D9oHMSCxhuM4YAtKgmKUmlLn2IvlLxV0wWFjq6EzUkUOYvycB9dEYSI7KbsVcV/qTzrZPVJsig7TciNl54yPOvoNuHJdkGDFVVUyArn/H/EdWXNBoo2whNFVwkIVGO0A5C5VgIKos730WoNqHvMkSM7qimg2yqn7Pr5yA/35sPA=
+	t=1762823285; cv=none; b=jGyymkBIGBd54f0s0UCluDc6i6KdpboCNGs3yD67ej6SLSuCTHht5sBgvdYiPHokIUue/9wmXOuCdS7555Cig9Y9hbt+koMgA9/25icEp9fTrzy4U1pJlEjnZXNcdsrBYtw8/IrrmQ8J3FaSfBzrzZkBXoGonlnro+0mZFQRxuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824539; c=relaxed/simple;
-	bh=IS3ERUAREjz3GmSCYXYRGPrNGeYhcgkyJ7SI/TE8Cqg=;
+	s=arc-20240116; t=1762823285; c=relaxed/simple;
+	bh=PSN5SGYda/KlbfOFsOzXJPq+s3WAJ8vIN26V1BBboRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8S4B+Jb1ODnNWbGrUgI8MGfeJv6nicqLgJS8YTSNXhP+nY7NYJxBLe0DwMz94pGYdlmLD+Z0qgbBU5OIDiAba0l4nm2gBk9zw3ja5FqgiNu4fO3vfQGHCVHVQncoCLtygdEYD97UOnUUZQPLK3i7QtzIlKvTqMieSpdYW+N9Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bH6s8ePR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C822C4CEF5;
-	Tue, 11 Nov 2025 01:28:59 +0000 (UTC)
+	 MIME-Version; b=i5fU66MwFLa06Y9YAOM9s5iWdyNpFe5PlhvRWds8FFhJUBSt2zXIlBXwnUUZ00/zxlbIDi2OX1DpIRu2KB8+GnbbgcU7ByruikUNSVv0R1TcCG43zVtAjcPnvfNGOQ/lMU7RQpgL4cZqmTb4oycOmvkdu0YMVtWx/UMSXWNgwu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKP807gY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47A3C4CEFB;
+	Tue, 11 Nov 2025 01:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824539;
-	bh=IS3ERUAREjz3GmSCYXYRGPrNGeYhcgkyJ7SI/TE8Cqg=;
+	s=korg; t=1762823285;
+	bh=PSN5SGYda/KlbfOFsOzXJPq+s3WAJ8vIN26V1BBboRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bH6s8ePRRcgRG6mgki+5N5VnwKypvovuGqSBXAXPdwGWXY3kYNfTGxHYZ3Qu1g5KP
-	 Yuu3qZeqYILUsLK+tjdUNn3N8x2b5ZVL2D3hZCkmgBtfi45K4zhL1aLkGYF1Hjy8O6
-	 uCbfjKGdCycAs1BqqFWSt9KQs1fsqhxp0PmSV0qk=
+	b=dKP807gYRuYbE059+I4t2HasRIXQJlJNJvdNXixUwG4sEDIt3VuVPVbmMkvqsLKSx
+	 Jf5UVwwmxI1WMdlx/KW1hYrwIPJM69Sws0nc/gkyDQUIjSMld32lvjuLhefsngGjf8
+	 Q1zL9S9HREAihdPYLfifBIfTakPJ+2F4mxmrzLVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lukas Wunner <lukas@wunner.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 497/849] scsi: ufs: host: mediatek: Correct system PM flow
-Date: Tue, 11 Nov 2025 09:41:07 +0900
-Message-ID: <20251111004548.452404812@linuxfoundation.org>
+Subject: [PATCH 6.12 212/565] s390/pci: Use pci_uevent_ers() in PCI recovery
+Date: Tue, 11 Nov 2025 09:41:08 +0900
+Message-ID: <20251111004531.694330864@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 77b96ef70b6ba46e3473e5e3a66095c4bc0e93a4 ]
+[ Upstream commit dab32f2576a39d5f54f3dbbbc718d92fa5109ce9 ]
 
-Refine the system power management (PM) flow by skipping low power mode
-(LPM) and MTCMOS settings if runtime PM is already applied. Prevent
-redundant operations to ensure a more efficient PM process.
+Issue uevents on s390 during PCI recovery using pci_uevent_ers() as done by
+EEH and AER PCIe recovery routines.
 
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Link: https://patch.msgid.link/20250807-add_err_uevents-v5-2-adf85b0620b0@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-mediatek.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ arch/s390/pci/pci_event.c |    3 +++
+ drivers/pci/pci-driver.c  |    2 +-
+ include/linux/pci.h       |    2 +-
+ 3 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
-index 6bdbbee1f0708..91081d2aabe44 100644
---- a/drivers/ufs/host/ufs-mediatek.c
-+++ b/drivers/ufs/host/ufs-mediatek.c
-@@ -2264,27 +2264,38 @@ static int ufs_mtk_system_suspend(struct device *dev)
+--- a/arch/s390/pci/pci_event.c
++++ b/arch/s390/pci/pci_event.c
+@@ -90,6 +90,7 @@ static pci_ers_result_t zpci_event_notif
+ 	pci_ers_result_t ers_res = PCI_ERS_RESULT_DISCONNECT;
  
- 	ret = ufshcd_system_suspend(dev);
- 	if (ret)
--		return ret;
-+		goto out;
-+
-+	if (pm_runtime_suspended(hba->dev))
-+		goto out;
+ 	ers_res = driver->err_handler->error_detected(pdev,  pdev->error_state);
++	pci_uevent_ers(pdev, ers_res);
+ 	if (ers_result_indicates_abort(ers_res))
+ 		pr_info("%s: Automatic recovery failed after initial reporting\n", pci_name(pdev));
+ 	else if (ers_res == PCI_ERS_RESULT_NEED_RESET)
+@@ -219,6 +220,7 @@ static pci_ers_result_t zpci_event_attem
+ 		ers_res = zpci_event_do_reset(pdev, driver);
  
- 	ufs_mtk_dev_vreg_set_lpm(hba, true);
+ 	if (ers_res != PCI_ERS_RESULT_RECOVERED) {
++		pci_uevent_ers(pdev, PCI_ERS_RESULT_DISCONNECT);
+ 		pr_err("%s: Automatic recovery failed; operator intervention is required\n",
+ 		       pci_name(pdev));
+ 		goto out_unlock;
+@@ -227,6 +229,7 @@ static pci_ers_result_t zpci_event_attem
+ 	pr_info("%s: The device is ready to resume operations\n", pci_name(pdev));
+ 	if (driver->err_handler->resume)
+ 		driver->err_handler->resume(pdev);
++	pci_uevent_ers(pdev, PCI_ERS_RESULT_RECOVERED);
+ out_unlock:
+ 	device_unlock(&pdev->dev);
  
- 	if (ufs_mtk_is_rtff_mtcmos(hba))
- 		ufs_mtk_mtcmos_ctrl(false, res);
- 
--	return 0;
-+out:
-+	return ret;
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -1586,7 +1586,7 @@ static int pci_uevent(const struct devic
+ 	return 0;
  }
  
- static int ufs_mtk_system_resume(struct device *dev)
- {
-+	int ret = 0;
- 	struct ufs_hba *hba = dev_get_drvdata(dev);
- 	struct arm_smccc_res res;
- 
-+	if (pm_runtime_suspended(hba->dev))
-+		goto out;
-+
- 	ufs_mtk_dev_vreg_set_lpm(hba, false);
- 
- 	if (ufs_mtk_is_rtff_mtcmos(hba))
- 		ufs_mtk_mtcmos_ctrl(true, res);
- 
--	return ufshcd_system_resume(dev);
-+out:
-+	ret = ufshcd_system_resume(dev);
-+
-+	return ret;
+-#if defined(CONFIG_PCIEAER) || defined(CONFIG_EEH)
++#if defined(CONFIG_PCIEAER) || defined(CONFIG_EEH) || defined(CONFIG_S390)
+ /**
+  * pci_uevent_ers - emit a uevent during recovery path of PCI device
+  * @pdev: PCI device undergoing error recovery
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -2707,7 +2707,7 @@ static inline bool pci_is_thunderbolt_at
+ 	return false;
  }
+ 
+-#if defined(CONFIG_PCIEPORTBUS) || defined(CONFIG_EEH)
++#if defined(CONFIG_PCIEPORTBUS) || defined(CONFIG_EEH) || defined(CONFIG_S390)
+ void pci_uevent_ers(struct pci_dev *pdev, enum  pci_ers_result err_type);
  #endif
  
--- 
-2.51.0
-
 
 
 
