@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACB8C4AD5D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D479C4B1CF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CCFB18901DA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DA583B8118
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA067274FCB;
-	Tue, 11 Nov 2025 01:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659C52E0924;
+	Tue, 11 Nov 2025 01:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzGG63Eo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHhNfX2h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AD3DDAB;
-	Tue, 11 Nov 2025 01:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DEF1F874C;
+	Tue, 11 Nov 2025 01:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824830; cv=none; b=BDw8IeQeHc5aeAlvniYL22cgUxHqOy8vOh1HSEa9DeG9OEilEz8Meskvgz8+lBkePcZsVe3fR9FWTeJXAQ3frJPFJCfiHJpodxrYyOZkolzdKMno/Rbg1JglbKmeRVelq/pKRkLGi+v3+E2+XgAALs8FKAHaeWa1bgEPNRpSMbk=
+	t=1762825357; cv=none; b=d4jceFUdQy0OVk7TnNjerEv8YGZLmEbFlQ2XF5gx5D/aMMohzSE8tPtR81HeOdeBfPyS+PNCTU3oly6EMMr7D9PHvALd+Ncdp3GJUD1ZjksYwhpCE3lp3NpfYjZb+8ct9JTcoZbYeERLP5dxBmm46AZ0VgqA2Y9RpiQYrg/L4DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824830; c=relaxed/simple;
-	bh=hTaeJkrXWbLIa8dnpeSz18k9t7iiub3LcgpuB0Yffg4=;
+	s=arc-20240116; t=1762825357; c=relaxed/simple;
+	bh=Q5WsC4IUE1iUCfYFTYW9ZsyLdJLAMAIG2ZS/hWcfXy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cMksdCrkYhY43givT6Ok/m8ZQjobR34KVjvD9Im+kBcurryYxHVkrOz/uug7Y1mys+BpHqYq6ug2yaoDQXfMXdQdQcXskyFvX0RP0uODu4drihzVbBrRlOY6JvVcnAwks0Xtkc2GvsxLw5S36VHyhGkE2NlZRlEBsr490nFs1Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzGG63Eo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C404C116D0;
-	Tue, 11 Nov 2025 01:33:49 +0000 (UTC)
+	 MIME-Version; b=C4UACQyQlIwOxRSGO6w0hvMH2SLGLreHQFIh7GfGwCu2sdg92ND+Re7QVril4n7r2bT10QbhSAOq/3WPTooY29m1UojP3CeOgUsjoC5Ipt/MMNtFLEV+gOybvILLz1atsAiws6nU/fSMJXfYIPVC/Q3aT1UNldjEKd8a9d+KQ7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHhNfX2h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4973C2BC87;
+	Tue, 11 Nov 2025 01:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824830;
-	bh=hTaeJkrXWbLIa8dnpeSz18k9t7iiub3LcgpuB0Yffg4=;
+	s=korg; t=1762825357;
+	bh=Q5WsC4IUE1iUCfYFTYW9ZsyLdJLAMAIG2ZS/hWcfXy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kzGG63EobJDDAXwYF2SgbW5jTKGj7rPqLhPEib41EfpyZ77s/6mAkmzb3uFysVQcM
-	 u9G5TDSMrZzXwMY64erthwBkXXRC7gsPO5XCLzA3lhRcX2cZ+ccrzTYdRf66OxUJX4
-	 NjFMzyq6qYp4M/FdQIfYYF+Fzj1MNxe6BY+2K0xQ=
+	b=fHhNfX2hdplfuZJg9P5uUFwRij+LVxEspyQH7J3+CQ2Ut77Oloa7liy4NZifyJV1I
+	 N3fRCK4LSxktlQOnyi1diiQWluXMP+aBb1CngQ7JzIyg/LbhrDt7cQ7yJ1O0gZwPhy
+	 xLazTEag8R/rSViyo8sAOoszSMl/KTKYqzzMrlZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 482/565] LoongArch: Handle new atomic instructions for probes
-Date: Tue, 11 Nov 2025 09:45:38 +0900
-Message-ID: <20251111004537.767447256@linuxfoundation.org>
+Subject: [PATCH 6.17 769/849] net: dsa: b53: fix resetting speed and pause on forced link
+Date: Tue, 11 Nov 2025 09:45:39 +0900
+Message-ID: <20251111004555.022570250@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit db740f5689e61f2e75b73e5c8e7c985a3b4bc045 ]
+[ Upstream commit b6a8a5477fe9bd6be2b594a88f82f8bba41e6d54 ]
 
-The atomic instructions sc.q, llacq.{w/d}, screl.{w/d} were newly added
-in the LoongArch Reference Manual v1.10, it is necessary to handle them
-in insns_not_supported() to avoid putting a breakpoint in the middle of
-a ll/sc atomic sequence, otherwise it will loop forever for kprobes and
-uprobes.
+There is no guarantee that the port state override registers have their
+default values, as not all switches support being reset via register or
+have a reset GPIO.
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+So when forcing port config, we need to make sure to clear all fields,
+which we currently do not do for the speed and flow control
+configuration. This can cause flow control stay enabled, or in the case
+of speed becoming an illegal value, e.g. configured for 1G (0x2), then
+setting 100M (0x1), results in 0x3 which is invalid.
+
+For PORT_OVERRIDE_SPEED_2000M we need to make sure to only clear it on
+supported chips, as the bit can have different meanings on other chips,
+e.g. for BCM5389 this controls scanning PHYs for link/speed
+configuration.
+
+Fixes: 5e004460f874 ("net: dsa: b53: Add helper to set link parameters")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251101132807.50419-2-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/inst.h |  5 +++++
- arch/loongarch/kernel/inst.c      | 12 ++++++++++++
- 2 files changed, 17 insertions(+)
+ drivers/net/dsa/b53/b53_common.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/loongarch/include/asm/inst.h b/arch/loongarch/include/asm/inst.h
-index 3089785ca97e7..bec5b63e46888 100644
---- a/arch/loongarch/include/asm/inst.h
-+++ b/arch/loongarch/include/asm/inst.h
-@@ -77,6 +77,10 @@ enum reg2_op {
- 	iocsrwrh_op     = 0x19205,
- 	iocsrwrw_op     = 0x19206,
- 	iocsrwrd_op     = 0x19207,
-+	llacqw_op	= 0xe15e0,
-+	screlw_op	= 0xe15e1,
-+	llacqd_op	= 0xe15e2,
-+	screld_op	= 0xe15e3,
- };
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 2f846381d5a76..cb28256ef3cc3 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1372,6 +1372,10 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 	else
+ 		reg &= ~PORT_OVERRIDE_FULL_DUPLEX;
  
- enum reg2i5_op {
-@@ -189,6 +193,7 @@ enum reg3_op {
- 	fldxd_op	= 0x7068,
- 	fstxs_op	= 0x7070,
- 	fstxd_op	= 0x7078,
-+	scq_op		= 0x70ae,
- 	amswapw_op	= 0x70c0,
- 	amswapd_op	= 0x70c1,
- 	amaddw_op	= 0x70c2,
-diff --git a/arch/loongarch/kernel/inst.c b/arch/loongarch/kernel/inst.c
-index 14d7d700bcb98..e6896a40017ea 100644
---- a/arch/loongarch/kernel/inst.c
-+++ b/arch/loongarch/kernel/inst.c
-@@ -139,6 +139,9 @@ bool insns_not_supported(union loongarch_instruction insn)
- 	case amswapw_op ... ammindbdu_op:
- 		pr_notice("atomic memory access instructions are not supported\n");
- 		return true;
-+	case scq_op:
-+		pr_notice("sc.q instruction is not supported\n");
-+		return true;
- 	}
- 
- 	switch (insn.reg2i14_format.opcode) {
-@@ -150,6 +153,15 @@ bool insns_not_supported(union loongarch_instruction insn)
- 		return true;
- 	}
- 
-+	switch (insn.reg2_format.opcode) {
-+	case llacqw_op:
-+	case llacqd_op:
-+	case screlw_op:
-+	case screld_op:
-+		pr_notice("llacq and screl instructions are not supported\n");
-+		return true;
-+	}
++	reg &= ~(0x3 << GMII_PO_SPEED_S);
++	if (is5301x(dev) || is58xx(dev))
++		reg &= ~PORT_OVERRIDE_SPEED_2000M;
 +
- 	switch (insn.reg1i21_format.opcode) {
- 	case bceqz_op:
- 		pr_notice("bceqz and bcnez instructions are not supported\n");
+ 	switch (speed) {
+ 	case 2000:
+ 		reg |= PORT_OVERRIDE_SPEED_2000M;
+@@ -1390,6 +1394,11 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 		return;
+ 	}
+ 
++	if (is5325(dev))
++		reg &= ~PORT_OVERRIDE_LP_FLOW_25;
++	else
++		reg &= ~(PORT_OVERRIDE_RX_FLOW | PORT_OVERRIDE_TX_FLOW);
++
+ 	if (rx_pause) {
+ 		if (is5325(dev))
+ 			reg |= PORT_OVERRIDE_LP_FLOW_25;
 -- 
 2.51.0
 
