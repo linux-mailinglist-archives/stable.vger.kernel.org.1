@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-193616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2E3C4A84C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CAAEC4A80C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8E92188D6D8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 257DF189464E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585113446BB;
-	Tue, 11 Nov 2025 01:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4453F27B4E8;
+	Tue, 11 Nov 2025 01:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xawcXPWU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pT4ulrLh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1249D2D97A4;
-	Tue, 11 Nov 2025 01:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F13263F52;
+	Tue, 11 Nov 2025 01:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823604; cv=none; b=ng9gf1nKzeOMDlEO+76kRx2YKZIdtktn33yv0yWnUgPB5oto9s8QIN0KwcnozGMEm9/04d3gPRWrsEfeHt5Fn5vXmjJ0oAudQThieoXdkfsfmEExvrYTenslH4h5zkVY4qX217rC728uFrTEWNagrJgtHEC+l2PENbO6H9vRO2o=
+	t=1762823611; cv=none; b=Lg19aY3XtSE4S67AqIDeLuQPJqTsrZCkJ5bR/xjhn6jRPulv89TCK88u5iXZF4jw57Jmz5Npm1BwZq6xMkaKqBvq6Nmf1bhooHX2KKOxBXz+oeefjf2lCqlK+HhJbK5/Vo6ourl0tUjj5vWxs3OjQoZzUcXMWCJmlwFIuaa8Dkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823604; c=relaxed/simple;
-	bh=/102WdBlA5sSpX/1QhcYBKHN6ONksyGKA7N4FetiH+I=;
+	s=arc-20240116; t=1762823611; c=relaxed/simple;
+	bh=RttPQttfLFIMuax/ghoPLxGFKSAIhMalaxcgEjiVZlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DhxS7WPLO3QUHLkMHZdsmQjzeBzeHH9wbk1R9LLeCwiI59xszRwXvCJ1qWQszbOddOdI6KUh89PVZwMfTuIwH59VcTTlGGE9hKBZm/aD6KY0KTx8UHllJgcM3VSWgbPYcDdt276eLW/3aA05W0QFwSTL59m0MZB0h5/lLpC8fB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xawcXPWU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E4AC4CEFB;
-	Tue, 11 Nov 2025 01:13:23 +0000 (UTC)
+	 MIME-Version; b=We1B/NhC4/ji6AL5VaBUSqqd0WFacuFHuC6gmrj7qUdA4WBrw1kqyZ+AagHJtF3HKc+0WWLwqbQ4yNU/9hPYPMgvHS61K6TnfgZ6J5KPU3jxzQonO8+Ko//Rqa2GMSCIvdIL4Q4rPMaZD0UzmiFBHaOxYHXRxdJZa2+LBUHhb2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pT4ulrLh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA1EC113D0;
+	Tue, 11 Nov 2025 01:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823603;
-	bh=/102WdBlA5sSpX/1QhcYBKHN6ONksyGKA7N4FetiH+I=;
+	s=korg; t=1762823610;
+	bh=RttPQttfLFIMuax/ghoPLxGFKSAIhMalaxcgEjiVZlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xawcXPWUBALVQGsvkuasLvTC6pIjshfMa34g3pYoseNMP8YhA60WMdHf/2ML2a3w3
-	 xGg2T2weztMktYZ08dPVf4ojE27SYqqrYOJ7P1JZfYiUarueBVVw+G+RoCdezgjx0m
-	 OxZ56Qem3qPnFDJN0+AHRtUVo27HyNsLYMEKY1CY=
+	b=pT4ulrLhy4o+M+/1ATyvjIPxUrV5lGvbCj8IxPaED668nXRPrnNKG33meY//NXkYW
+	 N+FHpH2LiXLiSzVmLf45YVn3MsoODe3R5gzVqNK4OaJ/qdj0fkNVD62bJqebQI7ld5
+	 yxu39+NutngRh1CoK55bnzAUx+A5Ro4GRRIgCRTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 334/849] net: stmmac: Correctly handle Rx checksum offload errors
-Date: Tue, 11 Nov 2025 09:38:24 +0900
-Message-ID: <20251111004544.491264962@linuxfoundation.org>
+Subject: [PATCH 6.17 335/849] net: Call trace_sock_exceed_buf_limit() for memcg failure with SK_MEM_RECV.
+Date: Tue, 11 Nov 2025 09:38:25 +0900
+Message-ID: <20251111004544.518155442@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,47 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit ee0aace5f844ef59335148875d05bec8764e71e8 ]
+[ Upstream commit 9d85c565a7b7c78b732393c02bcaa4d5c275fe58 ]
 
-The stmmac_rx function would previously set skb->ip_summed to
-CHECKSUM_UNNECESSARY if hardware checksum offload (CoE) was enabled
-and the packet was of a known IP ethertype.
+Initially, trace_sock_exceed_buf_limit() was invoked when
+__sk_mem_raise_allocated() failed due to the memcg limit or the
+global limit.
 
-However, this logic failed to check if the hardware had actually
-reported a checksum error. The hardware status, indicating a header or
-payload checksum failure, was being ignored at this stage. This could
-cause corrupt packets to be passed up the network stack as valid.
+However, commit d6f19938eb031 ("net: expose sk wmem in
+sock_exceed_buf_limit tracepoint") somehow suppressed the event
+only when memcg failed to charge for SK_MEM_RECV, although the
+memcg failure for SK_MEM_SEND still triggers the event.
 
-This patch corrects the logic by checking the `csum_none` status flag,
-which is set when the hardware reports a checksum error. If this flag
-is set, skb->ip_summed is now correctly set to CHECKSUM_NONE,
-ensuring the kernel's network stack will perform its own validation and
-properly handle the corrupt packet.
+Let's restore the event for SK_MEM_RECV.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20250818090217.2789521-2-o.rempel@pengutronix.de
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Link: https://patch.msgid.link/20250815201712.1745332-5-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/core/sock.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index b9f55e4e360fb..7a375de2258c4 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5735,7 +5735,8 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+diff --git a/net/core/sock.c b/net/core/sock.c
+index e21348ead7e76..1382bddcbaff4 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3336,8 +3336,7 @@ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
+ 		}
+ 	}
  
- 		skb->protocol = eth_type_trans(skb, priv->dev);
+-	if (kind == SK_MEM_SEND || (kind == SK_MEM_RECV && charged))
+-		trace_sock_exceed_buf_limit(sk, prot, allocated, kind);
++	trace_sock_exceed_buf_limit(sk, prot, allocated, kind);
  
--		if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
-+		if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb) ||
-+		    (status & csum_none))
- 			skb_checksum_none_assert(skb);
- 		else
- 			skb->ip_summed = CHECKSUM_UNNECESSARY;
+ 	sk_memory_allocated_sub(sk, amt);
+ 
 -- 
 2.51.0
 
