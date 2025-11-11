@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2566BC4AF7F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 035C3C4AD0C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 755161899601
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40C7D3B4940
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5B43431EF;
-	Tue, 11 Nov 2025 01:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472FC342C8F;
+	Tue, 11 Nov 2025 01:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kY1fAdJY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsQjW2CY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEBA2820A0;
-	Tue, 11 Nov 2025 01:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D8C2C2357;
+	Tue, 11 Nov 2025 01:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825177; cv=none; b=CJCkpsPSjQfzsWfrKcS6+V/2gtS8UV9QjRdCFL0+16tiD3tOxNs+z/SF4KF7Q1QiItFMJRSnXHploLma4Jy7/I3X0F6HUzwFnXhVDnU2c9FrOuIkv6RF2EhOOO6GiFcjnIzUoqPrzPBFzC/ZUu2LSnLnxv9quYi7RvFQH0Oy0Og=
+	t=1762824065; cv=none; b=oXuCvPSrefHOVMkaOcbFz3dQwJtOr1PVfmFEPNwbYQkPPIDVL43OIhLiEij+bIAy7mdnCcz/ll9K/Z5suGDUePTQ5tNtQxsj0GbmGyHEkkvmnkTm4uKkAAA6vlmjYeZMc46+Wdkc2jsNNy6dSX7gpGnOqUQJ4V8TWgLFvwbLLiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825177; c=relaxed/simple;
-	bh=f4yxDUyg1jRZLlpJgMcjPP4hkKr9l933Cb2L1WdMWsc=;
+	s=arc-20240116; t=1762824065; c=relaxed/simple;
+	bh=mE1088DEnP18tpWsHccwzIhEmbZw77N/Zr8OwHSS3qU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hmuLv4nncaW8RyD6GfXIIT3Ltg0TTyfJsbMO9NLSKH+E7ctklsqjdcwGDsg/hQPdjP3vUQ0ky9zVibfbSdICHaT9XEz0t1X5xeOfWSHitFusoug8Q6m0K2jWkiL24hLaIjjc/Z5KU2tCq4wEmkrbkOB6f+dAZ/XOmDv2JZiMQZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kY1fAdJY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD1BDC19425;
-	Tue, 11 Nov 2025 01:39:36 +0000 (UTC)
+	 MIME-Version; b=XKklc/3Ncqhn4a2gt8z90Rl7Xwd8vZ7j7/BkX+226hObLWyDVhaWGA8Gwgp2BoCkPCJtLUZrPOX0ZwQtvwGLYfXel0cik+CnDogGCzofG5trEQIx4mcFFEbhV45LbvICq293Kh0m/e/13AFDiZwhTkt+NL+gNAQHZ0dq+9TGFSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsQjW2CY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C1EC4CEFB;
+	Tue, 11 Nov 2025 01:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825177;
-	bh=f4yxDUyg1jRZLlpJgMcjPP4hkKr9l933Cb2L1WdMWsc=;
+	s=korg; t=1762824064;
+	bh=mE1088DEnP18tpWsHccwzIhEmbZw77N/Zr8OwHSS3qU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kY1fAdJYd4+sEMT3rrLtboTL7qGuuhCkWvQs9BlTmPG8YjU2DN7YcKPMSzX2ytojm
-	 GyJriBo0ljTTr8NVDqI/pYn3Z2mnyQ5csKxobdZDKU5n3YN34OSNpJXyUZD8Anhrd6
-	 1Om9mvoqzqnOc9XIPgnMW7vG4xXbBqWiALbsOoH8=
+	b=XsQjW2CYMRu5SbdmgKUu2Huk/YD2R3Hqu1T3VcJ+iQShgtMoUpyj/VHyazt0qGL3t
+	 yRM6KTPIJIJA1+NcUJmP+s2MAdahlkCrV0xbSZYbsgCGECF0FfWleUF5ki980QzmF2
+	 2jIuVl8KetiQBb5zutk2U6V37wMT0pLVBTQlarlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lu <chris.lu@mediatek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	NeilBrown <neil@brown.name>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 666/849] Bluetooth: btusb: Add new VID/PID 13d3/3633 for MT7922
+Subject: [PATCH 6.12 380/565] allow finish_no_open(file, ERR_PTR(-E...))
 Date: Tue, 11 Nov 2025 09:43:56 +0900
-Message-ID: <20251111004552.525905685@linuxfoundation.org>
+Message-ID: <20251111004535.420630880@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Lu <chris.lu@mediatek.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 70cd38d22d4659ca8133c7124528c90678215dda ]
+[ Upstream commit fe91e078b60d1beabf5cef4a37c848457a6d2dfb ]
 
-Add VID 13d3 & PID 3633 for MediaTek MT7922 USB Bluetooth chip.
+... allowing any ->lookup() return value to be passed to it.
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below.
-
-T:  Bus=06 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=13d3 ProdID=3633 Rev= 1.00
-S:  Manufacturer=MediaTek Inc.
-S:  Product=Wireless_Device
-S:  SerialNumber=000000000
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
-A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
-I:  If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
-E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
-
-Signed-off-by: Chris Lu <chris.lu@mediatek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: NeilBrown <neil@brown.name>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/open.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index b231caa84757c..5e9ebf0c53125 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -701,6 +701,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3615), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x13d3, 0x3633), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x35f5, 0x7922), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
- 
+diff --git a/fs/open.c b/fs/open.c
+index 5da4df2f9b18a..de1ea1b2f6ef5 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -1052,18 +1052,20 @@ EXPORT_SYMBOL(finish_open);
+  * finish_no_open - finish ->atomic_open() without opening the file
+  *
+  * @file: file pointer
+- * @dentry: dentry or NULL (as returned from ->lookup())
++ * @dentry: dentry, ERR_PTR(-E...) or NULL (as returned from ->lookup())
+  *
+- * This can be used to set the result of a successful lookup in ->atomic_open().
++ * This can be used to set the result of a lookup in ->atomic_open().
+  *
+  * NB: unlike finish_open() this function does consume the dentry reference and
+  * the caller need not dput() it.
+  *
+- * Returns "0" which must be the return value of ->atomic_open() after having
+- * called this function.
++ * Returns 0 or -E..., which must be the return value of ->atomic_open() after
++ * having called this function.
+  */
+ int finish_no_open(struct file *file, struct dentry *dentry)
+ {
++	if (IS_ERR(dentry))
++		return PTR_ERR(dentry);
+ 	file->f_path.dentry = dentry;
+ 	return 0;
+ }
 -- 
 2.51.0
 
