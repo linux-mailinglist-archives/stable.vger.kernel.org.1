@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-193121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E33C49FAA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B211C4A08E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C6241883999
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 117884F344C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DEA246333;
-	Tue, 11 Nov 2025 00:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72785244693;
+	Tue, 11 Nov 2025 00:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYNpcXH8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBm1yTYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CBC4C97;
-	Tue, 11 Nov 2025 00:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDA54C97;
+	Tue, 11 Nov 2025 00:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822348; cv=none; b=gv1RusJ+kGd1dOGevXQWVV6e1ui5NFK+OdQiCPjgLHLHPxEqpohIoEttSNZlmI0cbaGJ98pAL0eF8e57bnQt+HvdMA53IqzohLwVg2E+RbO6//QLR7pVo2SYOMku/UzoULpMjTbbv+SNW4liXAE+NSqDx174vbBbFUbQduB1yHI=
+	t=1762822353; cv=none; b=GvjcVsVMPr3QFm3RVuzLSFzglVN4xegKy2kWp726h7IlR7Z+bSConVY9qzq1r3nQlLIr9l61lcUpxXeoUvUySIN4Wxoo2gO5FJSjsoR4eqdPtPZyTLfEPuIs3NooCKsV5LH4BvTxEBMP+SfBMbEnDkhgfhxAzI8xWe2qlfB5mOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822348; c=relaxed/simple;
-	bh=LeGgMlEm07JV+uKnEAqmN7Gfz8OPYabgiVM8feizpC4=;
+	s=arc-20240116; t=1762822353; c=relaxed/simple;
+	bh=bZMcs7QjRIxaGFrvGRHnPFk2AcreOr0JXVEnF/Bc7ug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RM2vQWCn0oVs0EiGV927cVCG6nsRjmkEgoL+cRPJGwvkGY9Q9GyZw80PyGZ8rR+Hawc6t+nzPitAy18vIsjQkclUUDQUJl7Oo64vbv4Z5GjqcvSzIrR1DhwI/WbBR+/tKfEpcT7MPOj7DU69uO3NEhJST4qP855K8KXueSCDvM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYNpcXH8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E550FC4CEF5;
-	Tue, 11 Nov 2025 00:52:27 +0000 (UTC)
+	 MIME-Version; b=pyQCOguQFhd6BfOD4lhGtk3B7RaP9pv4JRYNitIZksgyBuMQdihkpw/4XUHvABHZs/YwtsVFVPYSHwrHx6C9AxVn+++vH4gi3U9lGL9hagdZRiDk5EaRaPnJEZRjbxLgRsdNJ/mnZmJ+sjOdu6eUeTW87vGD0IRmDP1dCWl2X1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBm1yTYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD8BC2BCB2;
+	Tue, 11 Nov 2025 00:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822348;
-	bh=LeGgMlEm07JV+uKnEAqmN7Gfz8OPYabgiVM8feizpC4=;
+	s=korg; t=1762822352;
+	bh=bZMcs7QjRIxaGFrvGRHnPFk2AcreOr0JXVEnF/Bc7ug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYNpcXH8Wn5HkMxsZEadOkoTNqVQOyhhfYNyDxjM+hqhkL21T/fdIoEeBDbTZf61C
-	 oN4juzHwofD/4RvogaSyFsL8rA96RRdGOlj0GCiD5I7rSQ72OmW7GhhqX/Zsjbsxdc
-	 q9p51UEaXaelP/Yq6bl894+kbSpK0lBhf908UL+k=
+	b=gBm1yTYipKcaUagZVnE2uFXyYbCGCaql+PnjxxadlaUXfdk+nUvspEnUXIo1T+pCh
+	 gs0+h2kk5MqK4De2vWbSwA7C1fJln7KhNQtCIdIvk9QopVRpw//j1O33RinzClIcUb
+	 9lXZuMELthmYHJf+7vm1/IHQiXWRD9yT2npp+778=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akash Goel <akash.goel@arm.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.17 090/849] dma-fence: Fix safe access wrapper to call timeline name method
-Date: Tue, 11 Nov 2025 09:34:20 +0900
-Message-ID: <20251111004538.589812859@linuxfoundation.org>
+	Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.17 091/849] kbuild: align modinfo section for Secureboot Authenticode EDK2 compat
+Date: Tue, 11 Nov 2025 09:34:21 +0900
+Message-ID: <20251111004538.614315721@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,38 +65,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Akash Goel <akash.goel@arm.com>
+From: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
 
-commit 033559473dd3b55558b535aa37b8848c207b5cbb upstream.
+commit d50f21091358b2b29dc06c2061106cdb0f030d03 upstream.
 
-This commit fixes the wrapper function dma_fence_timeline_name(), that
-was added for safe access, to actually call the timeline name method of
-dma_fence_ops.
+Previously linker scripts would always generate vmlinuz that has sections
+aligned. And thus padded (correct Authenticode calculation) and unpadded
+calculation would be same. As in https://github.com/rhboot/pesign userspace
+tool would produce the same authenticode digest for both of the following
+commands:
 
-Cc: <stable@vger.kernel.org> # v6.17+
-Signed-off-by: Akash Goel <akash.goel@arm.com>
-Fixes: 506aa8b02a8d ("dma-fence: Add safe access helpers and document the rules")
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Link: https://lore.kernel.org/r/20251021160951.1415603-1-akash.goel@arm.com
+    pesign --padding --hash --in ./arch/x86_64/boot/bzImage
+    pesign --nopadding --hash --in ./arch/x86_64/boot/bzImage
+
+The commit 3e86e4d74c04 ("kbuild: keep .modinfo section in
+vmlinux.unstripped") added .modinfo section of variable length. Depending
+on kernel configuration it may or may not be aligned.
+
+All userspace signing tooling correctly pads such section to calculation
+spec compliant authenticode digest.
+
+However, if bzImage is not further processed and is attempted to be loaded
+directly by EDK2 firmware, it calculates unpadded Authenticode digest and
+fails to correct accept/reject such kernel builds even when propoer
+Authenticode values are enrolled in db/dbx. One can say EDK2 requires
+aligned/padded kernels in Secureboot.
+
+Thus add ALIGN(8) to the .modinfo section, to esure kernels irrespective of
+modinfo contents can be loaded by all existing EDK2 firmware builds.
+
+Fixes: 3e86e4d74c04 ("kbuild: keep .modinfo section in vmlinux.unstripped")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
+Link: https://patch.msgid.link/20251026202100.679989-1-dimitri.ledkov@surgut.co.uk
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/dma-fence.c | 2 +-
+ include/asm-generic/vmlinux.lds.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma-buf/dma-fence.c b/drivers/dma-buf/dma-fence.c
-index 3f78c56b58dc..39e6f93dc310 100644
---- a/drivers/dma-buf/dma-fence.c
-+++ b/drivers/dma-buf/dma-fence.c
-@@ -1141,7 +1141,7 @@ const char __rcu *dma_fence_timeline_name(struct dma_fence *fence)
- 			 "RCU protection is required for safe access to returned string");
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index 8a9a2e732a65..e04d56a5332e 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -832,7 +832,7 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
  
- 	if (!test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags))
--		return fence->ops->get_driver_name(fence);
-+		return fence->ops->get_timeline_name(fence);
- 	else
- 		return "signaled-timeline";
- }
+ /* Required sections not related to debugging. */
+ #define ELF_DETAILS							\
+-		.modinfo : { *(.modinfo) }				\
++		.modinfo : { *(.modinfo) . = ALIGN(8); }		\
+ 		.comment 0 : { *(.comment) }				\
+ 		.symtab 0 : { *(.symtab) }				\
+ 		.strtab 0 : { *(.strtab) }				\
 -- 
 2.51.2
 
