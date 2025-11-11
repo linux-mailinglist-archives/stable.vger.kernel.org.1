@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D41C4B1F0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F25C4AE98
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 640DE18969D0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F7CB4F8094
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D55340DAC;
-	Tue, 11 Nov 2025 01:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E6A306B15;
+	Tue, 11 Nov 2025 01:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+4YLLLY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4RGs/FY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F390141C69;
-	Tue, 11 Nov 2025 01:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C218F306D57;
+	Tue, 11 Nov 2025 01:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825464; cv=none; b=FtjPD7PS5bJhWD8h/wMt+HiMzgROBQU504GWJkoCejJQvv4koYvLQXKDA403W5U6X76irckOfQIuwiBkBes72tDTY2dd3AgUu/v6o+2b8Icq2wUEVb9zaRQoFAnIAOKgJdPghU5eQE3O/TSBaEH3ZSv9OIr23Bk2XLk7UIr+4tY=
+	t=1762824883; cv=none; b=tWfpP1FGOwszSxfGvG5DJ2XXarCAjJYqXEJ76yU8spkEfvdtcb0iHjLUepjoqjvEFtvCProgyu2QLthpZR0SZlUuNyw3gNduFarwbvNnnL85l62xZouDG8b7+8AhKrBI0FCTnoD/30qvGTDebLhDsdnAZ6cB2Q8wElrnXSbvfRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825464; c=relaxed/simple;
-	bh=1uKRyLvwLMluhrdoNbRTTYwgHfSb4BNrik4laonrJAw=;
+	s=arc-20240116; t=1762824883; c=relaxed/simple;
+	bh=lBDzGFabeSc5fGjBOzjvA18kpV9HiZ+e2jM59GejBvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYUIJiX10vH7otiLvGyFAohUUNO1zuLMl1dyHBFHPJCy2BoClWYpJjdc7NFE5rrwW9ie9ymrmcMgO6L2nQdGhVOpudkdaVNbnZi/jSLHrkOez15ukfFyzq7VpZlFT09q0iBPSyLsIt/eUK6NAIzpUO9vkkMbb8B44eIU0OHwKQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+4YLLLY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB2CC116D0;
-	Tue, 11 Nov 2025 01:44:23 +0000 (UTC)
+	 MIME-Version; b=oFQLO8X2E2BOUnzZMyjrtwNKB7zEN+MNNgRw9+yn+wYmF7R51mIsMhdJLZUVOGOxUW4reBHuzi1lYMQOKjKzqxGe8Y4BH4qk6R198qMim+oE6v0arlz/SlTbEnxUDoilq1pCzDACvAZ/wVw1pHf/3T+YVT19ZfSKWfW/TvJw1Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4RGs/FY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7DCC116D0;
+	Tue, 11 Nov 2025 01:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825463;
-	bh=1uKRyLvwLMluhrdoNbRTTYwgHfSb4BNrik4laonrJAw=;
+	s=korg; t=1762824883;
+	bh=lBDzGFabeSc5fGjBOzjvA18kpV9HiZ+e2jM59GejBvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q+4YLLLY/tTku8//6OBJAN9XUiFimuEnuXDZR5OUVZc5mJ2DQqwm4KFk4bIwNVK2G
-	 nSN6eSYsUuGZSPQ8UsUg3IyDAPSF4S/wnE7AXUqwGAEBJHnEf4OYxYOICYpepmMDhG
-	 Lpi9S0LgSGS+GjTtjIbL+nZ0mdvrNJ525zjEEhPg=
+	b=A4RGs/FYOWdNW3qTFJjRRLDJp0g/1Ha8YHDqgYhlsqQadFcYwumOSs/sWAkMzoTeH
+	 tlQFI3hQl6c7xrituPYfDaIFoU4Joa/ttOfyY7Q6oN5aHsob7+nIl3yLPabf2+i/v9
+	 CKqCadq3P6s+4n5MIJ3S0ONQD4NQlvbK063PJvG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.17 814/849] x86/microcode/AMD: Add more known models to entry sign checking
+	Qendrim Maxhuni <qendrim.maxhuni@garderos.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 528/565] net: usb: qmi_wwan: initialize MAC header offset in qmimux_rx_fixup
 Date: Tue, 11 Nov 2025 09:46:24 +0900
-Message-ID: <20251111004556.104420996@linuxfoundation.org>
+Message-ID: <20251111004538.846399760@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
 
-commit d23550efc6800841b4d1639784afaebdea946ae0 upstream.
+[ Upstream commit e120f46768d98151ece8756ebd688b0e43dc8b29 ]
 
-Two Zen5 systems are missing from need_sha_check(). Add them.
+Raw IP packets have no MAC header, leaving skb->mac_header uninitialized.
+This can trigger kernel panics on ARM64 when xfrm or other subsystems
+access the offset due to strict alignment checks.
 
-Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://patch.msgid.link/20251106182904.4143757-1-superm1@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Initialize the MAC header to prevent such crashes.
+
+This can trigger kernel panics on ARM when running IPsec over the
+qmimux0 interface.
+
+Example trace:
+
+    Internal error: Oops: 000000009600004f [#1] SMP
+    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.34-gbe78e49cb433 #1
+    Hardware name: LS1028A RDB Board (DT)
+    pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+    pc : xfrm_input+0xde8/0x1318
+    lr : xfrm_input+0x61c/0x1318
+    sp : ffff800080003b20
+    Call trace:
+     xfrm_input+0xde8/0x1318
+     xfrm6_rcv+0x38/0x44
+     xfrm6_esp_rcv+0x48/0xa8
+     ip6_protocol_deliver_rcu+0x94/0x4b0
+     ip6_input_finish+0x44/0x70
+     ip6_input+0x44/0xc0
+     ipv6_rcv+0x6c/0x114
+     __netif_receive_skb_one_core+0x5c/0x8c
+     __netif_receive_skb+0x18/0x60
+     process_backlog+0x78/0x17c
+     __napi_poll+0x38/0x180
+     net_rx_action+0x168/0x2f0
+
+Fixes: c6adf77953bc ("net: usb: qmi_wwan: add qmap mux protocol support")
+Signed-off-by: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
+Link: https://patch.msgid.link/20251029075744.105113-1-qendrim.maxhuni@garderos.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/usb/qmi_wwan.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -220,10 +220,12 @@ static bool need_sha_check(u32 cur_rev)
- 	case 0xaa001: return cur_rev <= 0xaa00116; break;
- 	case 0xaa002: return cur_rev <= 0xaa00218; break;
- 	case 0xb0021: return cur_rev <= 0xb002146; break;
-+	case 0xb0081: return cur_rev <= 0xb008111; break;
- 	case 0xb1010: return cur_rev <= 0xb101046; break;
- 	case 0xb2040: return cur_rev <= 0xb204031; break;
- 	case 0xb4040: return cur_rev <= 0xb404031; break;
- 	case 0xb6000: return cur_rev <= 0xb600031; break;
-+	case 0xb6080: return cur_rev <= 0xb608031; break;
- 	case 0xb7000: return cur_rev <= 0xb700031; break;
- 	default: break;
- 	}
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index f04da733240c0..bd51435ed4184 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -192,6 +192,12 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 		if (!skbn)
+ 			return 0;
+ 
++	       /* Raw IP packets don't have a MAC header, but other subsystems
++		* (like xfrm) may still access MAC header offsets, so they must
++		* be initialized.
++		*/
++		skb_reset_mac_header(skbn);
++
+ 		switch (skb->data[offset + qmimux_hdr_sz] & 0xf0) {
+ 		case 0x40:
+ 			skbn->protocol = htons(ETH_P_IP);
+-- 
+2.51.0
+
 
 
 
