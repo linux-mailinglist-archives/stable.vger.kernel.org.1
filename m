@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C245C4AE6C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:38 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E507C4B16F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69EC33B7DF8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BFF9A4FCD16
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AA02FE071;
-	Tue, 11 Nov 2025 01:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408D6340D9D;
+	Tue, 11 Nov 2025 01:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAvTODHR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbgtncLl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA262561A7;
-	Tue, 11 Nov 2025 01:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7B3246333;
+	Tue, 11 Nov 2025 01:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824781; cv=none; b=dOebbquYaddqJl0baeaPCr8hfuHT1WnJUt2jvuTAhUNHM4I+2E/vhbTaS4PF0F3IKvfZPS+/pQfTY+TorKyH7l0lsjyDVG4CaC2QCG6EIQ+qTkEg7aY6L5+jGMuhFN0cEcS/qpJfvaWDBBd5sxXTAdz5tanq8TmBUvufHKC6rPk=
+	t=1762825457; cv=none; b=hYZOLr7S9R7QgZI3L8tWIQkKunVVAxAizCfZ8V0P8WGzasiPWEyJiRahiWuDMBTCQatGAjeMc0ixmiF5LexadMuN7RiJ7j9LhbfwAr19UQ8CBAdUZytXGgv622V/jlKIq5UE3mYZrmxAzl1Z5NmZJg/v4aeG3WpF4Xu4WSxgLT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824781; c=relaxed/simple;
-	bh=IeCDjyzIU59MNxj4/XI17rhV/BPcbHSwyiw35ol+mBQ=;
+	s=arc-20240116; t=1762825457; c=relaxed/simple;
+	bh=gNzWxQ3tcV1uNc/1VK7mPbdA/L4PeaDnGaJeEJKwXv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A1ZO6YmsLCsrMNbv7vkML+ACmiTT8aqiWAD/EpI52aR44VyROrCk9/g8eBJQo9AF+BblrPlT1+38seSQ1b6LDMwVfJHfr1TtarIOw/RXmJNMloev+HKpNo+wU6+NAp9sIUBy7UjXaWV3wv5DMMZ2qz6KoU1qpsm+s3ejDTS9G/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAvTODHR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2721C113D0;
-	Tue, 11 Nov 2025 01:33:00 +0000 (UTC)
+	 MIME-Version; b=OfWy9k2GwqkaemkNSEpV4MYmrC2xURrXOvPtRRPJwRtjjtaDtu8OAoesXsSuUw3AkuKHmlHkQcBqfg5pcs0tkIpq3MB8ZJ/pIla0lgGiF0ae/s2ygcFrqoB4Nba4YAwlHOSfpPK6wBwLwa20u94UAz6qlary3UtbmRjDUHWnOLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbgtncLl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C829C4CEF5;
+	Tue, 11 Nov 2025 01:44:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824781;
-	bh=IeCDjyzIU59MNxj4/XI17rhV/BPcbHSwyiw35ol+mBQ=;
+	s=korg; t=1762825456;
+	bh=gNzWxQ3tcV1uNc/1VK7mPbdA/L4PeaDnGaJeEJKwXv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sAvTODHRIOcfXB0mkSbX/f3xlCzv3b7UeVGyjQV1r+N/Aah2tyM9tYyEEFc9uNKPC
-	 chfJgNuZJ++bC455gwaNkf7MTjd5ONv6oGysywaH9KGLl8Aggdb4KljVnkGUrsqopj
-	 YX6cOk4Rm009wG/M2RzPnTkrsUbybRPKbeRewtTI=
+	b=EbgtncLlRxrt/kZ+TnKgeuTdMEkH4369Wenrn52MTGFfpe35LxWhaLHXv7vmTrjqn
+	 FYs3YxKwABvv2R5EquLs6iI+IoqU4gteiG8BGlUYUpCelRJD9xrDWUlzDNPZ1YsOiC
+	 35seU6KMsBfQg53KumrH8Z0P/FCNa1jj+MJGZnpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 516/565] net: vlan: sync VLAN features with lower device
-Date: Tue, 11 Nov 2025 09:46:12 +0900
-Message-ID: <20251111004538.568087388@linuxfoundation.org>
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 6.17 803/849] wifi: mac80211: use wiphy_hrtimer_work for ml_reconf_work
+Date: Tue, 11 Nov 2025 09:46:13 +0900
+Message-ID: <20251111004555.844851482@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit c211f5d7cbd5cb34489d526648bb9c8ecc907dee ]
+commit 3f654d53dff565095d83a84e3b6187526dadf4c8 upstream.
 
-After registering a VLAN device and setting its feature flags, we need to
-synchronize the VLAN features with the lower device. For example, the VLAN
-device does not have the NETIF_F_LRO flag, it should be synchronized with
-the lower device based on the NETIF_F_UPPER_DISABLES definition.
+The work item may be scheduled relatively far in the future. As the
+event happens at a specific point in time, the normal timer accuracy is
+not sufficient in that case.
 
-As the dev->vlan_features has changed, we need to call
-netdev_update_features(). The caller must run after netdev_upper_dev_link()
-links the lower devices, so this patch adds the netdev_update_features()
-call in register_vlan_dev().
+Switch to use wiphy_hrtimer_work so that the accuracy is sufficient.
 
-Fixes: fd867d51f889 ("net/core: generic support for disabling netdev features down stack")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20251030073539.133779-1-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: 8eb8dd2ffbbb ("wifi: mac80211: Support link removal using Reconfiguration ML element")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20251028125710.24a7b54e9e37.I063c5c15bf7672f94cea75f83e486a3ca52d098f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/8021q/vlan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/mac80211/ieee80211_i.h |    2 +-
+ net/mac80211/mlme.c        |   10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-index 49a6d49c23dc5..ecc1c8624006f 100644
---- a/net/8021q/vlan.c
-+++ b/net/8021q/vlan.c
-@@ -194,6 +194,8 @@ int register_vlan_dev(struct net_device *dev, struct netlink_ext_ack *extack)
- 	vlan_group_set_device(grp, vlan->vlan_proto, vlan_id, dev);
- 	grp->nr_vlan_devs++;
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -604,7 +604,7 @@ struct ieee80211_if_managed {
+ 	u8 *assoc_req_ies;
+ 	size_t assoc_req_ies_len;
  
-+	netdev_update_features(dev);
-+
- 	return 0;
+-	struct wiphy_delayed_work ml_reconf_work;
++	struct wiphy_hrtimer_work ml_reconf_work;
+ 	u16 removed_links;
  
- out_unregister_netdev:
--- 
-2.51.0
-
+ 	/* TID-to-link mapping support */
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -4244,7 +4244,7 @@ static void ieee80211_set_disassoc(struc
+ 				  &ifmgd->neg_ttlm_timeout_work);
+ 
+ 	sdata->u.mgd.removed_links = 0;
+-	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
++	wiphy_hrtimer_work_cancel(sdata->local->hw.wiphy,
+ 				  &sdata->u.mgd.ml_reconf_work);
+ 
+ 	wiphy_work_cancel(sdata->local->hw.wiphy,
+@@ -6868,7 +6868,7 @@ static void ieee80211_ml_reconfiguration
+ 		/* In case the removal was cancelled, abort it */
+ 		if (sdata->u.mgd.removed_links) {
+ 			sdata->u.mgd.removed_links = 0;
+-			wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
++			wiphy_hrtimer_work_cancel(sdata->local->hw.wiphy,
+ 						  &sdata->u.mgd.ml_reconf_work);
+ 		}
+ 		return;
+@@ -6898,9 +6898,9 @@ static void ieee80211_ml_reconfiguration
+ 	}
+ 
+ 	sdata->u.mgd.removed_links = removed_links;
+-	wiphy_delayed_work_queue(sdata->local->hw.wiphy,
++	wiphy_hrtimer_work_queue(sdata->local->hw.wiphy,
+ 				 &sdata->u.mgd.ml_reconf_work,
+-				 TU_TO_JIFFIES(delay));
++				 us_to_ktime(ieee80211_tu_to_usec(delay)));
+ }
+ 
+ static int ieee80211_ttlm_set_links(struct ieee80211_sub_if_data *sdata,
+@@ -8752,7 +8752,7 @@ void ieee80211_sta_setup_sdata(struct ie
+ 			ieee80211_csa_connection_drop_work);
+ 	wiphy_delayed_work_init(&ifmgd->tdls_peer_del_work,
+ 				ieee80211_tdls_peer_del_work);
+-	wiphy_delayed_work_init(&ifmgd->ml_reconf_work,
++	wiphy_hrtimer_work_init(&ifmgd->ml_reconf_work,
+ 				ieee80211_ml_reconf_work);
+ 	wiphy_delayed_work_init(&ifmgd->reconf.wk,
+ 				ieee80211_ml_sta_reconf_timeout);
 
 
 
