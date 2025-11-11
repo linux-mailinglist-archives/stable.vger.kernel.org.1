@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F063BC4ADA8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D32D4C4A527
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:18:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46E6A3B5EC9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78E373B0064
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD5A2F656B;
-	Tue, 11 Nov 2025 01:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DF63451AE;
+	Tue, 11 Nov 2025 01:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KEsMX7Oe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlqxx9YO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270A72F39B1;
-	Tue, 11 Nov 2025 01:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D293D2D879A;
+	Tue, 11 Nov 2025 01:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824361; cv=none; b=fOV50wAkTcTe0of+6xkr1jwJssTPfjF4dNT/kThowOpwogQOcf/Zuguprss2y9PTnkuJn+tbDghbckObcQaeG2oq1IT5K+mBcQlYbl9wKRQdOcXLd7PG8/o5aB6cEu1awu9KEgBoFlOCBbWrzuaAgNmithZDcZnTJRZ3XfHo7PA=
+	t=1762823193; cv=none; b=b3zq8MID3CIwtTkG5oXU2EBXw77fnyYj2F9dOSFFjSu2NrCgQbKV8sT3k+g7zCF6EWSNCylQhEmPP1zSKCHDlZ02eXM85+qTT86zUkVc6u/t5jCVDFrMmCuUKoCw0Ja9pSiV5xm5ty82uOQJgIRqcXF7n+xGum1HviITjw5v5zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824361; c=relaxed/simple;
-	bh=ekkgtDmTbeuJbIZ6JTXolfh2bRt5vQStnzF9l8H1a+M=;
+	s=arc-20240116; t=1762823193; c=relaxed/simple;
+	bh=voQhRfFPXt3SsmLXIqXB5IqEs34bHpvuf/8HNvAR7eM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/fijHkEDYVGd5sFojEP4Zyagq3O00OSlS0XFa1hcuTDoH3FeHWaSjIWCyeDSLf303Lk0Zzuny97j/B1TZJCGUTVulmVMZ+JCSC+Cl2oTX5InC5Y+Lm+S9e/Qqarml7DcIDK4684/tX2RjiNif6+BT+36bGVDTnj34fF3j6lDA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KEsMX7Oe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7737C19422;
-	Tue, 11 Nov 2025 01:26:00 +0000 (UTC)
+	 MIME-Version; b=ODWGozUXjYMHzbZVKd1M+prJ7+Wjq0cFMlxMmHd07lEYmM1yVSFEYnH+OemspoW22kck8gmnv5RvyuzeKmKLnz0g4rdciRvN5YT9CCA2oN5ehczQj4S5M8xQoM/jIEHTpmMtBG5gbaKsBn/twZcFlwpN6ji1MpDkeYyW1+AuNUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlqxx9YO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688CDC2BC87;
+	Tue, 11 Nov 2025 01:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824361;
-	bh=ekkgtDmTbeuJbIZ6JTXolfh2bRt5vQStnzF9l8H1a+M=;
+	s=korg; t=1762823193;
+	bh=voQhRfFPXt3SsmLXIqXB5IqEs34bHpvuf/8HNvAR7eM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KEsMX7OeP/EoXjIDTsV8X27cXEPkue+z3AvFlt0NG/lDHEpK/tprcP2ZXvIujCyRA
-	 C17zt1gh+gm/zXh8+9wUxMmAOzqX3B0NkGlcnKimPYDlecECHZGWdOLyyHKf3NFCB5
-	 3e0XIe0+GCRi2D4xLgSKFVrCTjqtRnMS0LAKXF1M=
+	b=nlqxx9YOwBdhKj2simEqAvi3iftkrBFIZHc/MYn3ypCH0UcN3qK27jAnP5u5I5lDQ
+	 eERSyQGZgx4+eGx37HCh8oObYsWT8gLIgwtSbhdQu3paONktDDC5ECyhJbHgWHfcFl
+	 B9YLcfvhyuYAQzmKVYWDvuPEVroCRf9Xn/AXc/Rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenm Chen <zenmchen@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Wake Liu <wakel@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 480/849] wifi: rtw89: Add USB ID 2001:332a for D-Link AX9U rev. A1
+Subject: [PATCH 6.12 194/565] selftests/net: Ensure assert() triggers in psock_tpacket.c
 Date: Tue, 11 Nov 2025 09:40:50 +0900
-Message-ID: <20251111004548.047172543@linuxfoundation.org>
+Message-ID: <20251111004531.292873529@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Wake Liu <wakel@google.com>
 
-[ Upstream commit 2ffc73cdb8247dc09b6534c4018681a126c1d5f5 ]
+[ Upstream commit bc4c0a48bdad7f225740b8e750fdc1da6d85e1eb ]
 
-Add USB ID 2001:332a for D-Link AX9U rev. A1 which is a RTL8851BU-based
-Wi-Fi adapter.
+The get_next_frame() function in psock_tpacket.c was missing a return
+statement in its default switch case, leading to a compiler warning.
 
-Only managed mode and AP mode are tested and it works in both.
+This was caused by a `bug_on(1)` call, which is defined as an
+`assert()`, being compiled out because NDEBUG is defined during the
+build.
 
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250902035755.1969530-1-zenmchen@gmail.com
+Instead of adding a `return NULL;` which would silently hide the error
+and could lead to crashes later, this change restores the original
+author's intent. By adding `#undef NDEBUG` before including <assert.h>,
+we ensure the assertion is active and will cause the test to abort if
+this unreachable code is ever executed.
+
+Signed-off-by: Wake Liu <wakel@google.com>
+Link: https://patch.msgid.link/20250809062013.2407822-1-wakel@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/rtw8851bu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/net/psock_tpacket.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851bu.c b/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-index c3722547c6b09..04e1ab13b7535 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-@@ -16,6 +16,9 @@ static const struct rtw89_driver_info rtw89_8851bu_info = {
- static const struct usb_device_id rtw_8851bu_id_table[] = {
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xb851, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&rtw89_8851bu_info },
-+	/* D-Link AX9U rev. A1 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x332a, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&rtw89_8851bu_info },
- 	/* TP-Link Archer TX10UB Nano */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3625, 0x010b, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&rtw89_8851bu_info },
+diff --git a/tools/testing/selftests/net/psock_tpacket.c b/tools/testing/selftests/net/psock_tpacket.c
+index 93092d13b3c59..ca0d9a5a9e08c 100644
+--- a/tools/testing/selftests/net/psock_tpacket.c
++++ b/tools/testing/selftests/net/psock_tpacket.c
+@@ -22,6 +22,7 @@
+  *   - TPACKET_V3: RX_RING
+  */
+ 
++#undef NDEBUG
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <sys/types.h>
 -- 
 2.51.0
 
