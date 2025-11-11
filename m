@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-193123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B211C4A08E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85537C49FB0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 117884F344C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BBDB188A3A2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72785244693;
-	Tue, 11 Nov 2025 00:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D13A24BBEB;
+	Tue, 11 Nov 2025 00:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBm1yTYi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imoAgGnU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDA54C97;
-	Tue, 11 Nov 2025 00:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FD04086A;
+	Tue, 11 Nov 2025 00:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822353; cv=none; b=GvjcVsVMPr3QFm3RVuzLSFzglVN4xegKy2kWp726h7IlR7Z+bSConVY9qzq1r3nQlLIr9l61lcUpxXeoUvUySIN4Wxoo2gO5FJSjsoR4eqdPtPZyTLfEPuIs3NooCKsV5LH4BvTxEBMP+SfBMbEnDkhgfhxAzI8xWe2qlfB5mOg=
+	t=1762822358; cv=none; b=W+xzecEhteIKMRZStx15HljvrqETEY31BD8TiRZfouNsD+6tEYCHILxlL0Q/0IHLjEm4WRbrr1REWtZnDLgjIC3vJZcZa2H/Ik0jDqeVWQY3rCyGGlIMMVYtgP2Y2zRA0HNkmkNE0I1bdI/nay82B+O03xurK2HLEpIiWmVQjHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822353; c=relaxed/simple;
-	bh=bZMcs7QjRIxaGFrvGRHnPFk2AcreOr0JXVEnF/Bc7ug=;
+	s=arc-20240116; t=1762822358; c=relaxed/simple;
+	bh=lg+OX0CrwGvVNZ3fYIqiSMfU5LTNCd7lEQlHl7tVlMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyQCOguQFhd6BfOD4lhGtk3B7RaP9pv4JRYNitIZksgyBuMQdihkpw/4XUHvABHZs/YwtsVFVPYSHwrHx6C9AxVn+++vH4gi3U9lGL9hagdZRiDk5EaRaPnJEZRjbxLgRsdNJ/mnZmJ+sjOdu6eUeTW87vGD0IRmDP1dCWl2X1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBm1yTYi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD8BC2BCB2;
-	Tue, 11 Nov 2025 00:52:32 +0000 (UTC)
+	 MIME-Version; b=VvUFGBOKwwFhjG6vcWSH5LsLbWlZVZWuJKr7LgPMGOxC2Hhd5i+5kGE+E94X6sBRc89C1p6gKvhbKE1hbn0FuteYQ5BasCxYBQzZUepK8X4l1sdPN7bvZReiLBFarGZPsi79kDm0EuRZpnPyPR9cii/OT/y6w1tSoDnyiBK9Yrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imoAgGnU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C959BC4CEF5;
+	Tue, 11 Nov 2025 00:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822352;
-	bh=bZMcs7QjRIxaGFrvGRHnPFk2AcreOr0JXVEnF/Bc7ug=;
+	s=korg; t=1762822358;
+	bh=lg+OX0CrwGvVNZ3fYIqiSMfU5LTNCd7lEQlHl7tVlMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gBm1yTYipKcaUagZVnE2uFXyYbCGCaql+PnjxxadlaUXfdk+nUvspEnUXIo1T+pCh
-	 gs0+h2kk5MqK4De2vWbSwA7C1fJln7KhNQtCIdIvk9QopVRpw//j1O33RinzClIcUb
-	 9lXZuMELthmYHJf+7vm1/IHQiXWRD9yT2npp+778=
+	b=imoAgGnU8IYgClBUcM96tfeMrbdbKmQF49pMaIprTYyAW8q5yAynDii+NUsgZudQf
+	 ou7qS+X/0Aipgw9mymkaNxEpkdJIpwVrfN5x47OGsdZcscEiVQ1tzP2C0fax4QTsKJ
+	 hiZ+6hZRYnXxb6X2xhLGq6P91DyGLCLkVhPkjTx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 6.17 091/849] kbuild: align modinfo section for Secureboot Authenticode EDK2 compat
-Date: Tue, 11 Nov 2025 09:34:21 +0900
-Message-ID: <20251111004538.614315721@linuxfoundation.org>
+	Xudong Hao <xudong.hao@intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Zide Chen <zide.chen@intel.com>
+Subject: [PATCH 6.17 092/849] perf/x86/intel: Fix KASAN global-out-of-bounds warning
+Date: Tue, 11 Nov 2025 09:34:22 +0900
+Message-ID: <20251111004538.637484914@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -65,61 +67,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-commit d50f21091358b2b29dc06c2061106cdb0f030d03 upstream.
+commit 0ba6502ce167fc3d598c08c2cc3b4ed7ca5aa251 upstream.
 
-Previously linker scripts would always generate vmlinuz that has sections
-aligned. And thus padded (correct Authenticode calculation) and unpadded
-calculation would be same. As in https://github.com/rhboot/pesign userspace
-tool would produce the same authenticode digest for both of the following
-commands:
+When running "perf mem record" command on CWF, the below KASAN
+global-out-of-bounds warning is seen.
 
-    pesign --padding --hash --in ./arch/x86_64/boot/bzImage
-    pesign --nopadding --hash --in ./arch/x86_64/boot/bzImage
+  ==================================================================
+  BUG: KASAN: global-out-of-bounds in cmt_latency_data+0x176/0x1b0
+  Read of size 4 at addr ffffffffb721d000 by task dtlb/9850
 
-The commit 3e86e4d74c04 ("kbuild: keep .modinfo section in
-vmlinux.unstripped") added .modinfo section of variable length. Depending
-on kernel configuration it may or may not be aligned.
+  Call Trace:
 
-All userspace signing tooling correctly pads such section to calculation
-spec compliant authenticode digest.
+   kasan_report+0xb8/0xf0
+   cmt_latency_data+0x176/0x1b0
+   setup_arch_pebs_sample_data+0xf49/0x2560
+   intel_pmu_drain_arch_pebs+0x577/0xb00
+   handle_pmi_common+0x6c4/0xc80
 
-However, if bzImage is not further processed and is attempted to be loaded
-directly by EDK2 firmware, it calculates unpadded Authenticode digest and
-fails to correct accept/reject such kernel builds even when propoer
-Authenticode values are enrolled in db/dbx. One can say EDK2 requires
-aligned/padded kernels in Secureboot.
+The issue is caused by below code in __grt_latency_data(). The code
+tries to access x86_hybrid_pmu structure which doesn't exist on
+non-hybrid platform like CWF.
 
-Thus add ALIGN(8) to the .modinfo section, to esure kernels irrespective of
-modinfo contents can be loaded by all existing EDK2 firmware builds.
+        WARN_ON_ONCE(hybrid_pmu(event->pmu)->pmu_type == hybrid_big)
 
-Fixes: 3e86e4d74c04 ("kbuild: keep .modinfo section in vmlinux.unstripped")
+So add is_hybrid() check before calling this WARN_ON_ONCE to fix the
+global-out-of-bounds access issue.
+
+Fixes: 090262439f66 ("perf/x86/intel: Rename model-specific pebs_latency_data functions")
+Reported-by: Xudong Hao <xudong.hao@intel.com>
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Zide Chen <zide.chen@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
-Link: https://patch.msgid.link/20251026202100.679989-1-dimitri.ledkov@surgut.co.uk
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://patch.msgid.link/20251028064214.1451968-1-dapeng1.mi@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/asm-generic/vmlinux.lds.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/ds.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 8a9a2e732a65..e04d56a5332e 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -832,7 +832,7 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -317,7 +317,8 @@ static u64 __grt_latency_data(struct per
+ {
+ 	u64 val;
  
- /* Required sections not related to debugging. */
- #define ELF_DETAILS							\
--		.modinfo : { *(.modinfo) }				\
-+		.modinfo : { *(.modinfo) . = ALIGN(8); }		\
- 		.comment 0 : { *(.comment) }				\
- 		.symtab 0 : { *(.symtab) }				\
- 		.strtab 0 : { *(.strtab) }				\
--- 
-2.51.2
-
+-	WARN_ON_ONCE(hybrid_pmu(event->pmu)->pmu_type == hybrid_big);
++	WARN_ON_ONCE(is_hybrid() &&
++		     hybrid_pmu(event->pmu)->pmu_type == hybrid_big);
+ 
+ 	dse &= PERF_PEBS_DATA_SOURCE_GRT_MASK;
+ 	val = hybrid_var(event->pmu, pebs_data_source)[dse];
 
 
 
