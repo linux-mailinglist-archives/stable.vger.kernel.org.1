@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-193675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28909C4A740
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8C9C4ADF9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 144E94F178D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEE031895CA8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9AFC347BC4;
-	Tue, 11 Nov 2025 01:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D22333443;
+	Tue, 11 Nov 2025 01:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MYltP32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BphLEpye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7572D347BBD;
-	Tue, 11 Nov 2025 01:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCB5332911;
+	Tue, 11 Nov 2025 01:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823744; cv=none; b=i1fcWYPtyUme/ZibywPeYACmuxJhTuR5GB24IYkoUyPbsTp9tJZEFSlT9J9SRS1XW0PmxeFu0K4xY9yQpbz2fp6RXVFZLLce0uWZl15WSyCAYLVQPzDKSaxySwnQSmc2PGW5DdpTWB4FQ+wASnFTisdxPuJIoWrV6VaAgaTchVI=
+	t=1762824921; cv=none; b=DTU87Oy/lOe2C0tyYWQRrpBr2WfnZPWxQNj657nQ35ztTwB9u9HFj9pxG3Yz3nguiTkl27s3pFhRE1NaTIrf+cTQOlBJqpM7AncwatGfPMvJKtjzK66nHMGe50U5zTYbin3WV8EMEsLaTn5ZqbHmBI//vl7HWL38YX1+8M1a7Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823744; c=relaxed/simple;
-	bh=p3cMxlbCiTKv4R+/NE5zPhuanmpuO+PNfLz/49FsF58=;
+	s=arc-20240116; t=1762824921; c=relaxed/simple;
+	bh=a8wvLb1hmQwB4n7+M3eve3S4IqB67juaxQLsP7xieEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=usgl8OUyptu9ggnoccoRKLlzKfXaa3NOXU/b11CxQprQfng0+jKptWiKKDvH6HJOoVReQ5IKcxsPfqHDH+TOH/j6KPgYgtbPe7QwaZFgLOOz16VrVugwcU1Ze9YOeWzN9BOgT9kkzZWYdVCr5A6O+jr5whPO1/H4+W3Ghj6QbRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MYltP32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8606EC4CEF5;
-	Tue, 11 Nov 2025 01:15:43 +0000 (UTC)
+	 MIME-Version; b=NIdkT2KX+Q289oXudYxzpkXmBA3ffYAIfUvpHl1iF+dFx2pziroZsZd5SQYon2QBc4xXQVEinboTENSH1IH6lcPIZQJ1vooU7KMAwHop2aC9klIM/uEFqGzSR9/kLWiaZwpdmFMU3veAXz9mSJVrqy56X/Lg6fFU59oQtzatIw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BphLEpye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A07C116B1;
+	Tue, 11 Nov 2025 01:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823744;
-	bh=p3cMxlbCiTKv4R+/NE5zPhuanmpuO+PNfLz/49FsF58=;
+	s=korg; t=1762824920;
+	bh=a8wvLb1hmQwB4n7+M3eve3S4IqB67juaxQLsP7xieEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MYltP32bxwkz+Q/NwK/4pngx11Wv+z6v6HCrVZfG1FEc/PBWSf0zPL1Q6IPqNAEN
-	 m4IDJHG2EiPqpvEq8ePD+IuU5BuJZWMOpDiCjCC/ICvNNfnAQJtCE0yN348oC+onm4
-	 rIk0+brGa9dMqDDFBW7833D+Ufjo8O6LVnUX2HiU=
+	b=BphLEpye3oBCLO/au2H6C1bXkbR4xhPZB1eDGz6otKVluqxA66ru4I91nlCUx62H1
+	 fcpHrqE4keuEHM7OeWCA4DGuqG8FRoHQLHAgmgGPfLGrExfLxkCMG4xTUJjPiVLiox
+	 OAobtU2zIPNvUkCkkKeMdUiVkdltzMc4PP6+kLd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Wu <william.wu@rock-chips.com>,
+	Seyediman Seyedarab <ImanDevel@gmail.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 311/565] usb: gadget: f_hid: Fix zero length packet transfer
-Date: Tue, 11 Nov 2025 09:42:47 +0900
-Message-ID: <20251111004533.880387911@linuxfoundation.org>
+Subject: [PATCH 6.17 598/849] iommu/vt-d: Replace snprintf with scnprintf in dmar_latency_snapshot()
+Date: Tue, 11 Nov 2025 09:42:48 +0900
+Message-ID: <20251111004550.878359471@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Wu <william.wu@rock-chips.com>
+From: Seyediman Seyedarab <ImanDevel@gmail.com>
 
-[ Upstream commit ed6f727c575b1eb8136e744acfd5e7306c9548f6 ]
+[ Upstream commit 75c02a037609f34db17e91be195cedb33b61bae0 ]
 
-Set the hid req->zero flag of ep0/in_ep to true by default,
-then the UDC drivers can transfer a zero length packet at
-the end if the hid transfer with size divisible to EPs max
-packet size according to the USB 2.0 spec.
+snprintf() returns the number of bytes that would have been written, not
+the number actually written. Using this for offset tracking can cause
+buffer overruns if truncation occurs.
 
-Signed-off-by: William Wu <william.wu@rock-chips.com>
-Link: https://lore.kernel.org/r/1756204087-26111-1-git-send-email-william.wu@rock-chips.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace snprintf() with scnprintf() to ensure the offset stays within
+bounds.
+
+Since scnprintf() never returns a negative value, and zero is not possible
+in this context because 'bytes' starts at 0 and 'size - bytes' is
+DEBUG_BUFFER_SIZE in the first call, which is large enough to hold the
+string literals used, the return value is always positive. An integer
+overflow is also completely out of reach here due to the small and fixed
+buffer size. The error check in latency_show_one() is therefore
+unnecessary. Remove it and make dmar_latency_snapshot() return void.
+
+Signed-off-by: Seyediman Seyedarab <ImanDevel@gmail.com>
+Link: https://lore.kernel.org/r/20250731225048.131364-1-ImanDevel@gmail.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_hid.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/intel/debugfs.c | 10 ++--------
+ drivers/iommu/intel/perf.c    | 10 ++++------
+ drivers/iommu/intel/perf.h    |  5 ++---
+ 3 files changed, 8 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
-index ab4d170469f57..34d49d96def61 100644
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -526,7 +526,7 @@ static ssize_t f_hidg_write(struct file *file, const char __user *buffer,
+diff --git a/drivers/iommu/intel/debugfs.c b/drivers/iommu/intel/debugfs.c
+index 5aa7f46a420b5..38790ff50977c 100644
+--- a/drivers/iommu/intel/debugfs.c
++++ b/drivers/iommu/intel/debugfs.c
+@@ -661,17 +661,11 @@ DEFINE_SHOW_ATTRIBUTE(ir_translation_struct);
+ static void latency_show_one(struct seq_file *m, struct intel_iommu *iommu,
+ 			     struct dmar_drhd_unit *drhd)
+ {
+-	int ret;
+-
+ 	seq_printf(m, "IOMMU: %s Register Base Address: %llx\n",
+ 		   iommu->name, drhd->reg_base_addr);
+ 
+-	ret = dmar_latency_snapshot(iommu, debug_buf, DEBUG_BUFFER_SIZE);
+-	if (ret < 0)
+-		seq_puts(m, "Failed to get latency snapshot");
+-	else
+-		seq_puts(m, debug_buf);
+-	seq_puts(m, "\n");
++	dmar_latency_snapshot(iommu, debug_buf, DEBUG_BUFFER_SIZE);
++	seq_printf(m, "%s\n", debug_buf);
+ }
+ 
+ static int latency_show(struct seq_file *m, void *v)
+diff --git a/drivers/iommu/intel/perf.c b/drivers/iommu/intel/perf.c
+index adc4de6bbd88e..dceeadc3ee7cd 100644
+--- a/drivers/iommu/intel/perf.c
++++ b/drivers/iommu/intel/perf.c
+@@ -113,7 +113,7 @@ static char *latency_type_names[] = {
+ 	"     svm_prq"
+ };
+ 
+-int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
++void dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ {
+ 	struct latency_statistic *lstat = iommu->perf_statistic;
+ 	unsigned long flags;
+@@ -122,7 +122,7 @@ int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ 	memset(str, 0, size);
+ 
+ 	for (i = 0; i < COUNTS_NUM; i++)
+-		bytes += snprintf(str + bytes, size - bytes,
++		bytes += scnprintf(str + bytes, size - bytes,
+ 				  "%s", latency_counter_names[i]);
+ 
+ 	spin_lock_irqsave(&latency_lock, flags);
+@@ -130,7 +130,7 @@ int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ 		if (!dmar_latency_enabled(iommu, i))
+ 			continue;
+ 
+-		bytes += snprintf(str + bytes, size - bytes,
++		bytes += scnprintf(str + bytes, size - bytes,
+ 				  "\n%s", latency_type_names[i]);
+ 
+ 		for (j = 0; j < COUNTS_NUM; j++) {
+@@ -156,11 +156,9 @@ int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ 				break;
+ 			}
+ 
+-			bytes += snprintf(str + bytes, size - bytes,
++			bytes += scnprintf(str + bytes, size - bytes,
+ 					  "%12lld", val);
+ 		}
  	}
+ 	spin_unlock_irqrestore(&latency_lock, flags);
+-
+-	return bytes;
+ }
+diff --git a/drivers/iommu/intel/perf.h b/drivers/iommu/intel/perf.h
+index df9a36942d643..1d4baad7e852e 100644
+--- a/drivers/iommu/intel/perf.h
++++ b/drivers/iommu/intel/perf.h
+@@ -40,7 +40,7 @@ void dmar_latency_disable(struct intel_iommu *iommu, enum latency_type type);
+ bool dmar_latency_enabled(struct intel_iommu *iommu, enum latency_type type);
+ void dmar_latency_update(struct intel_iommu *iommu, enum latency_type type,
+ 			 u64 latency);
+-int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size);
++void dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size);
+ #else
+ static inline int
+ dmar_latency_enable(struct intel_iommu *iommu, enum latency_type type)
+@@ -64,9 +64,8 @@ dmar_latency_update(struct intel_iommu *iommu, enum latency_type type, u64 laten
+ {
+ }
  
- 	req->status   = 0;
--	req->zero     = 0;
-+	req->zero     = 1;
- 	req->length   = count;
- 	req->complete = f_hidg_req_complete;
- 	req->context  = hidg;
-@@ -982,7 +982,7 @@ static int hidg_setup(struct usb_function *f,
- 	return -EOPNOTSUPP;
- 
- respond:
--	req->zero = 0;
-+	req->zero = 1;
- 	req->length = length;
- 	status = usb_ep_queue(cdev->gadget->ep0, req, GFP_ATOMIC);
- 	if (status < 0)
+-static inline int
++static inline void
+ dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ {
+-	return 0;
+ }
+ #endif /* CONFIG_DMAR_PERF */
 -- 
 2.51.0
 
