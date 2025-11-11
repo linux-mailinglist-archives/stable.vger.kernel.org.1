@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-193183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 218DBC4A055
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C792C4A05E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53109188B6DF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E51F188D356
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8073E214210;
-	Tue, 11 Nov 2025 00:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD75C214210;
+	Tue, 11 Nov 2025 00:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idFBLfEb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+GTLK5D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B20A4C97;
-	Tue, 11 Nov 2025 00:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890094C97;
+	Tue, 11 Nov 2025 00:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822493; cv=none; b=X+54sZpNrbPkCDdXVzCnq+oqe3Of9srEb6kxP5wvk+yNGKl/5v3ziYUSqw/GOLuebmHnPTBjIAb995NjkeUMiZArWCjqtVWNntMBe++ZfkAMlPlwY73d+Q8OYZ+TYV+EVIMznnCG5q7F2IphibpgIkESsK1zBBPkpLDwaEtGdqs=
+	t=1762822500; cv=none; b=UIJM/ow9KWsX/WV1C9pOVN7TVkvhyW1K8Fwfg79rXmcEHb2iUdA41h5z83f50tGLCWcWKPFiz/OwF2F7ap7UL8IYcEi0R1YT28J5K+3IHm3pEtezHLK53P54wYO5kQn3CtjfNyT8M4t74Uli+ugXkspLUjvrYn7sN2uzYJfeoOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822493; c=relaxed/simple;
-	bh=HKT5ZWFRPjjdQkP/Fq39quOnqOQSLi6eq0g4YTzblls=;
+	s=arc-20240116; t=1762822500; c=relaxed/simple;
+	bh=0G9ASr8sa0o/o0erfp3+IsWW5IAcyYmtLiO54/swpYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DfaZOXNPPIO7wd6UKZiLu33HuW8zDIIIdl2oGEZojZDRd1+272B0nG8xkKyZsAtZfqJXWA7j6soUynKC/klocz5dWRqlgH/6VHeQZH29OGT6YaM4HKSM4V94T3l1Eajq0Sobup8o66hA/itw5f8XeaUcIeWk2fHNTLfc+WlWHvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idFBLfEb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB07DC16AAE;
-	Tue, 11 Nov 2025 00:54:52 +0000 (UTC)
+	 MIME-Version; b=qGhhUiKnpnh7fRvOgZmm7u9753mzXmDlSY9W3f2JyecO7cntVEHhJlUSCrxMbg/aLqEqDrBv29xVzsorzlrYYJuxdVU5RkXWRElW7MfeA1SOOBYXEr8Xd+y3SDVPFPWJrIEJpirdDZolduog3wdk26SsT6ssC+RYObjVAGI6Llo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+GTLK5D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25611C116B1;
+	Tue, 11 Nov 2025 00:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822493;
-	bh=HKT5ZWFRPjjdQkP/Fq39quOnqOQSLi6eq0g4YTzblls=;
+	s=korg; t=1762822500;
+	bh=0G9ASr8sa0o/o0erfp3+IsWW5IAcyYmtLiO54/swpYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idFBLfEba87wSbYPvUl8LGBtkoKvdKjAGBQJ4xeuTPJJ+BWYt+JmYBg5vt5l4GOHg
-	 cCTlpAxNN4wag5ZLP6Hweq81lAqEJiZbUGmAGMvdqBpD7+2FieBdBb9S6Aus9OuAW6
-	 +nNChtFvQbTIaF0GhMytjkA8OajmOLRQg12uADek=
+	b=N+GTLK5DOHtW4AlzShskzQwKoglTLxm44NLaoPPUW2j2FSuvREAAzpUPlq5BkDSBn
+	 VRRJK/ZPIhzIeH5UP9JKx2Uvzn1IoE6vvO/DxAdSjqk260fV/XxxThIOgVBfGBbCjN
+	 ALCAnXyjEmSfJ8bwJr9eFKnVyscTRl6f4nXO+u9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 061/565] block: make REQ_OP_ZONE_OPEN a write operation
-Date: Tue, 11 Nov 2025 09:38:37 +0900
-Message-ID: <20251111004528.299648360@linuxfoundation.org>
+	Xudong Hao <xudong.hao@intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Zide Chen <zide.chen@intel.com>
+Subject: [PATCH 6.12 062/565] perf/x86/intel: Fix KASAN global-out-of-bounds warning
+Date: Tue, 11 Nov 2025 09:38:38 +0900
+Message-ID: <20251111004528.325919807@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -68,59 +67,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-commit 19de03b312d69a7e9bacb51c806c6e3f4207376c upstream.
+commit 0ba6502ce167fc3d598c08c2cc3b4ed7ca5aa251 upstream.
 
-A REQ_OP_OPEN_ZONE request changes the condition of a sequential zone of
-a zoned block device to the explicitly open condition
-(BLK_ZONE_COND_EXP_OPEN). As such, it should be considered a write
-operation.
+When running "perf mem record" command on CWF, the below KASAN
+global-out-of-bounds warning is seen.
 
-Change this operation code to be an odd number to reflect this. The
-following operation numbers are changed to keep the numbering compact.
+  ==================================================================
+  BUG: KASAN: global-out-of-bounds in cmt_latency_data+0x176/0x1b0
+  Read of size 4 at addr ffffffffb721d000 by task dtlb/9850
 
-No problems were reported without this change as this operation has no
-data. However, this unifies the zone operation to reflect that they
-modify the device state and also allows strengthening checks in the
-block layer, e.g. checking if this operation is not issued against a
-read-only device.
+  Call Trace:
 
-Fixes: 6c1b1da58f8c ("block: add zone open, close and finish operations")
+   kasan_report+0xb8/0xf0
+   cmt_latency_data+0x176/0x1b0
+   setup_arch_pebs_sample_data+0xf49/0x2560
+   intel_pmu_drain_arch_pebs+0x577/0xb00
+   handle_pmi_common+0x6c4/0xc80
+
+The issue is caused by below code in __grt_latency_data(). The code
+tries to access x86_hybrid_pmu structure which doesn't exist on
+non-hybrid platform like CWF.
+
+        WARN_ON_ONCE(hybrid_pmu(event->pmu)->pmu_type == hybrid_big)
+
+So add is_hybrid() check before calling this WARN_ON_ONCE to fix the
+global-out-of-bounds access issue.
+
+Fixes: 090262439f66 ("perf/x86/intel: Rename model-specific pebs_latency_data functions")
+Reported-by: Xudong Hao <xudong.hao@intel.com>
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Zide Chen <zide.chen@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://patch.msgid.link/20251028064214.1451968-1-dapeng1.mi@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/blk_types.h |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/events/intel/ds.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/linux/blk_types.h
-+++ b/include/linux/blk_types.h
-@@ -338,15 +338,15 @@ enum req_op {
- 	/* write the zero filled sector many times */
- 	REQ_OP_WRITE_ZEROES	= (__force blk_opf_t)9,
- 	/* Open a zone */
--	REQ_OP_ZONE_OPEN	= (__force blk_opf_t)10,
-+	REQ_OP_ZONE_OPEN	= (__force blk_opf_t)11,
- 	/* Close a zone */
--	REQ_OP_ZONE_CLOSE	= (__force blk_opf_t)11,
-+	REQ_OP_ZONE_CLOSE	= (__force blk_opf_t)13,
- 	/* Transition a zone to full */
--	REQ_OP_ZONE_FINISH	= (__force blk_opf_t)13,
-+	REQ_OP_ZONE_FINISH	= (__force blk_opf_t)15,
- 	/* reset a zone write pointer */
--	REQ_OP_ZONE_RESET	= (__force blk_opf_t)15,
-+	REQ_OP_ZONE_RESET	= (__force blk_opf_t)17,
- 	/* reset all the zone present on the device */
--	REQ_OP_ZONE_RESET_ALL	= (__force blk_opf_t)17,
-+	REQ_OP_ZONE_RESET_ALL	= (__force blk_opf_t)19,
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -305,7 +305,8 @@ static u64 __grt_latency_data(struct per
+ {
+ 	u64 val;
  
- 	/* Driver private requests */
- 	REQ_OP_DRV_IN		= (__force blk_opf_t)34,
+-	WARN_ON_ONCE(hybrid_pmu(event->pmu)->pmu_type == hybrid_big);
++	WARN_ON_ONCE(is_hybrid() &&
++		     hybrid_pmu(event->pmu)->pmu_type == hybrid_big);
+ 
+ 	dse &= PERF_PEBS_DATA_SOURCE_GRT_MASK;
+ 	val = hybrid_var(event->pmu, pebs_data_source)[dse];
 
 
 
