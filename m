@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E20C4A1D2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8555AC4A1DB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:01:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 97E864F3C55
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2A7744F3F8C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4A02586CE;
-	Tue, 11 Nov 2025 00:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBF623FC41;
+	Tue, 11 Nov 2025 00:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMDdEimQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cncpiU2/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBDF256C88;
-	Tue, 11 Nov 2025 00:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9788E1DF258;
+	Tue, 11 Nov 2025 00:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822725; cv=none; b=GdV1osFYqSSCQl3sAiwUU9W0AAVC7YbM6bCcgnSP7PC38N+SZLX31B7a7kAEER2oN+CgDQ6gJnLvEaRa6ha3D6UmTWXqCxG4dJfP0Zr12k1TXcS+FMUE1sA25uF7hPEB/DuOZz8YAEMEKzXGFYSQlG9OZpPzy8FGeGQseEy2rn0=
+	t=1762822729; cv=none; b=Oms+OYSRAATqByGO2eTElcKlr8rOEI5SjFSmKL6qI292ymZ55nblHu4h3Ou6+rNseFJYWpANCSlnmhMX76wkTqTSEjbD2YiXHmSoh+Iu1++4KZhz1fJR8PMU7LTh8s2S+u9XxEYRGih1zly8AHXRwPmRr1cAvqXogwtaeZso8G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822725; c=relaxed/simple;
-	bh=HWoEmaM29Esw0d5OE5wgfsQO1YXc7U6Z80GRmwlKgto=;
+	s=arc-20240116; t=1762822729; c=relaxed/simple;
+	bh=veSxS2/p+4W52PS5nnNDJd6mepwFj2Qk19P0Y/6Bc4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QrxquIvGr2SOicOMQ921Ois1fUDkU/6NqOHcKOl8Gm9ykTj2q2/Qof+YUE8YxqOip0Imijli+lWXG9HTBY3SvaaLRzgacjjBDogA0JUPSzoAEZUXsM2K8hm8+J3qfcuRhPdQfAg2Hp+lVHWMS5O2BF6rcIdbA9OLg5hRnj2snCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMDdEimQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D856C113D0;
-	Tue, 11 Nov 2025 00:58:44 +0000 (UTC)
+	 MIME-Version; b=Gb3m8puWguFqGXhh4iiMkaR1KkIlE3bpGiiK/YZGCwaP+lUr4k3Q70FsLZtoDMCRzHZHZ5xlNQCkaN2d7E7Wp9wm5uzj/VHlGgncwYU6fC9zds689qYYbSxiAibbNAwGt9/yFyrOzdgKIMcDFnhAYCMn/2Q8X+hWHyPJ0/p0VaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cncpiU2/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D14C113D0;
+	Tue, 11 Nov 2025 00:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822724;
-	bh=HWoEmaM29Esw0d5OE5wgfsQO1YXc7U6Z80GRmwlKgto=;
+	s=korg; t=1762822729;
+	bh=veSxS2/p+4W52PS5nnNDJd6mepwFj2Qk19P0Y/6Bc4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JMDdEimQ+WcDuSuj7AIX/tg89hF6sr1dMcBthvMRPgxTFfAoj3LgiyDmurNMjvtyN
-	 TKkdhvq8If7RdpEe4ZQXu32pK4U8/Ju9sRLi0qVi0poyfLCqhVYVkLskxUIgd4rFxQ
-	 yqBdZrxBojRXHkTwYJMrKnIUcMiPl+Dr6JeJ9org=
+	b=cncpiU2/XwhG9WuafdXqvRYX9Y9HbONDbXaLc108+AcqdZp960dEVJkVIo0Ubc9Q9
+	 0knR2WddpofA9jVJT2lCPNpWsIjc5eBcfCl2n2jLG/0A4raUpsptvLm4H7h28TthMM
+	 u2p4rLJd3I8Q+oI93RrxmgCxULHTP6AcGlP/+mLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Chi Zhang <chizhang@asrmicro.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/565] bpf: Dont use %pK through printk
-Date: Tue, 11 Nov 2025 09:39:09 +0900
-Message-ID: <20251111004529.054588068@linuxfoundation.org>
+Subject: [PATCH 6.12 094/565] pinctrl: single: fix bias pull up/down handling in pin_config_set
+Date: Tue, 11 Nov 2025 09:39:10 +0900
+Message-ID: <20251111004529.076394804@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -60,49 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Chi Zhang <chizhang@asrmicro.com>
 
-[ Upstream commit 2caa6b88e0ba0231fb4ff0ba8e73cedd5fb81fc8 ]
+[ Upstream commit 236152dd9b1675a35eee912e79e6c57ca6b6732f ]
 
-In the past %pK was preferable to %p as it would not leak raw pointer
-values into the kernel log.
-Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
-the regular %p has been improved to avoid this issue.
-Furthermore, restricted pointers ("%pK") were never meant to be used
-through printk(). They can still unintentionally leak raw pointers or
-acquire sleeping locks in atomic contexts.
+In the pin_config_set function, when handling PIN_CONFIG_BIAS_PULL_DOWN or
+PIN_CONFIG_BIAS_PULL_UP, the function calls pcs_pinconf_clear_bias()
+which writes the register. However, the subsequent operations continue
+using the stale 'data' value from before the register write, effectively
+causing the bias clear operation to be overwritten and not take effect.
 
-Switch to the regular pointer formatting which is safer and
-easier to reason about.
+Fix this by reading the 'data' value from the register after calling
+pcs_pinconf_clear_bias().
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250811-restricted-pointers-bpf-v1-1-a1d7cc3cb9e7@linutronix.de
+This bug seems to have existed when this code was first merged in commit
+9dddb4df90d1 ("pinctrl: single: support generic pinconf").
+
+Signed-off-by: Chi Zhang <chizhang@asrmicro.com>
+Link: https://lore.kernel.org/20250807062038.13610-1-chizhang@asrmicro.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-single.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index 0477254bc2d30..aef18f0e9450e 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -1263,7 +1263,7 @@ void bpf_jit_prog_release_other(struct bpf_prog *fp, struct bpf_prog *fp_other);
- static inline void bpf_jit_dump(unsigned int flen, unsigned int proglen,
- 				u32 pass, void *image)
- {
--	pr_err("flen=%u proglen=%u pass=%u image=%pK from=%s pid=%d\n", flen,
-+	pr_err("flen=%u proglen=%u pass=%u image=%p from=%s pid=%d\n", flen,
- 	       proglen, pass, image, current->comm, task_pid_nr(current));
- 
- 	if (image)
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 2ec599e383e4b..1df0a00ae1ee8 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -589,8 +589,10 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
+ 			/* 4 parameters */
+ 			case PIN_CONFIG_BIAS_PULL_DOWN:
+ 			case PIN_CONFIG_BIAS_PULL_UP:
+-				if (arg)
++				if (arg) {
+ 					pcs_pinconf_clear_bias(pctldev, pin);
++					data = pcs->read(pcs->base + offset);
++				}
+ 				fallthrough;
+ 			case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
+ 				data &= ~func->conf[i].mask;
 -- 
 2.51.0
 
