@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-193078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566B5C49F38
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F130C49FD4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 786183AA40A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 14E8E4F15F7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254821FDA92;
-	Tue, 11 Nov 2025 00:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B7B24113D;
+	Tue, 11 Nov 2025 00:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIyjLGaH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rX9vpvBF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47E12AE8D;
-	Tue, 11 Nov 2025 00:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B20192B75;
+	Tue, 11 Nov 2025 00:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822248; cv=none; b=NQfL+0JkoHFz43V9cWnOGTyz3IkSoNNTPhQF0NurPmfAXrfVKX08kEelfHaSstybYmK9SLdUHdIFClfecg0E3mvFSUH17qz5oy5da4FX7Yvx+0ZdmUjIxBFnvT2vF9F+8mlr0JzBDi8CaNh5CebOMcVpVKkWhKm7ERKDCwAcNMY=
+	t=1762822252; cv=none; b=SsGCjxcY/ui3rSyDYlxwqxc20FQNvptmHoMI33GfWOs2X11pak7EApbMmIxeEO13QnsrnaikRjswgR09U2eONK7C7qsqeFfg7Q4tkvKn9DxuDRZjkh8RhRoiyu6REJK1LIsyZFliR/MY0wbR4ACirYTcSpgUVP1dSQr5XFZeKJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822248; c=relaxed/simple;
-	bh=3oNoPa5ALxe4GhlIBxOnoEzFYxOSys9XrKdRQqY7xC0=;
+	s=arc-20240116; t=1762822252; c=relaxed/simple;
+	bh=6YPsHpK+iHWaP9wXyy2Sc5O0eYATolZBahYKLlFE6mU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WZMUl72YmTUUfy4gynySZlBPueE4QcBi2+Jo4Cw08p/Y9IBhl1fjISm3Hc4VHY/7EVi5veQFNlzjm/bsNh2OCEz7ikNBHKQJFVd48NYUIgcaIKrSNY5IBOUdb/yzyC1KXGbdz/vTWLuUSSLeC9AbHtQ2PkTG7LuVErOI70UwZZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIyjLGaH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F26AC16AAE;
-	Tue, 11 Nov 2025 00:50:47 +0000 (UTC)
+	 MIME-Version; b=vAScd82E0Zu23EkI8i42HF0fbsJ+B76u3L42oP+k4sUHOdZwp/wqn4NhCJKvJN+LBGDP+xZ/TyP6k6stCGFs84L81Q08lXeS/drb40GOVptLxi+0JSumun0xeT0N8GAKG98wAprOmo2FoUvi8j1PV49B1Apy8hBMnBQ7SnE/k2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rX9vpvBF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BB7C4CEF5;
+	Tue, 11 Nov 2025 00:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822247;
-	bh=3oNoPa5ALxe4GhlIBxOnoEzFYxOSys9XrKdRQqY7xC0=;
+	s=korg; t=1762822252;
+	bh=6YPsHpK+iHWaP9wXyy2Sc5O0eYATolZBahYKLlFE6mU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NIyjLGaHRVu68ONF63AYIGs4Ex32ahhFZik71s5OpM4XEYqPcss0d2OhztZp8474i
-	 3sJpt93pVLikaKBqRnS2YpbXL0EbVEa4KZwyIT4lRmCiOYIPBqcy9aYMTvIaSrdygV
-	 siTyRhki7cpMdLcLdfE/BxE7xfhYxCpwEO2dDpeU=
+	b=rX9vpvBFoOj9oDPwt0IzQo3pdBvhTlrQkDvOLmE5KkWT0bxIxsEBGkUqIb86FVzYP
+	 qstbbf4diqDYnZCIWviI6dyq39noARRe7S9A+HUY+1hfjXc3cbuO6TGMNYZ9MoqxMQ
+	 PVggFZEu4tghHbgqfoc+co3ylCyvpqtggOgQBQwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fuchs <fuchsfl@gmail.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Miaoqian Lin <linmq006@gmail.com>,
 	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.12 011/565] fbdev: pvr2fb: Fix leftover reference to ONCHIP_NR_DMA_CHANNELS
-Date: Tue, 11 Nov 2025 09:37:47 +0900
-Message-ID: <20251111004527.111219370@linuxfoundation.org>
+Subject: [PATCH 6.12 012/565] fbdev: valkyriefb: Fix reference count leak in valkyriefb_init
+Date: Tue, 11 Nov 2025 09:37:48 +0900
+Message-ID: <20251111004527.135711341@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,35 +65,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Florian Fuchs <fuchsfl@gmail.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 5f566c0ac51cd2474e47da68dbe719d3acf7d999 upstream.
+commit eb53368f8d6e2dfba84c8a94d245719bcf9ae270 upstream.
 
-Commit e24cca19babe ("sh: Kill off MAX_DMA_ADDRESS leftovers.") removed
-the define ONCHIP_NR_DMA_CHANNELS. So that the leftover reference needs
-to be replaced by CONFIG_NR_ONCHIP_DMA_CHANNELS to compile successfully
-with CONFIG_PVR2_DMA enabled.
+The of_find_node_by_name() function returns a device tree node with its
+reference count incremented. The caller is responsible for calling
+of_node_put() to release this reference when done.
 
-Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Found via static analysis.
+
+Fixes: cc5d0189b9ba ("[PATCH] powerpc: Remove device_node addrs/n_addr")
 Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/pvr2fb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/valkyriefb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/video/fbdev/pvr2fb.c
-+++ b/drivers/video/fbdev/pvr2fb.c
-@@ -192,7 +192,7 @@ static unsigned long pvr2fb_map;
+--- a/drivers/video/fbdev/valkyriefb.c
++++ b/drivers/video/fbdev/valkyriefb.c
+@@ -329,11 +329,13 @@ static int __init valkyriefb_init(void)
  
- #ifdef CONFIG_PVR2_DMA
- static unsigned int shdma = PVR2_CASCADE_CHAN;
--static unsigned int pvr2dma = ONCHIP_NR_DMA_CHANNELS;
-+static unsigned int pvr2dma = CONFIG_NR_ONCHIP_DMA_CHANNELS;
- #endif
+ 		if (of_address_to_resource(dp, 0, &r)) {
+ 			printk(KERN_ERR "can't find address for valkyrie\n");
++			of_node_put(dp);
+ 			return 0;
+ 		}
  
- static struct fb_videomode pvr2_modedb[] = {
+ 		frame_buffer_phys = r.start;
+ 		cmap_regs_phys = r.start + 0x304000;
++		of_node_put(dp);
+ 	}
+ #endif /* ppc (!CONFIG_MAC) */
+ 
 
 
 
