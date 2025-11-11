@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-193927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED8C1C4AD90
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF82AC4ABA4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A71523BC890
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9661B4F7AB7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838C541C69;
-	Tue, 11 Nov 2025 01:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2E230276C;
+	Tue, 11 Nov 2025 01:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mH5tdw7O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwGByNTU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC45262FEC;
-	Tue, 11 Nov 2025 01:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9AA30103C;
+	Tue, 11 Nov 2025 01:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824394; cv=none; b=oevt0bAHhNJ5AW1FgS6q4BAdPtTWokIl3hQydTcWq3TSL/i4yWoFr5vMMZx7kTDjBm6RleIHIOo57xhCBr/rZkOHKgWgz33Pv3YZ/03FytxaqkQCnh69/UWw7b+eRwf7uZJ1Gj3dfFeTV/ATZWpf9EvGOuywdP7uvDpBVbID2M0=
+	t=1762824398; cv=none; b=Dpn1tRJ0m1pQw6spIARdSAomz8XLG/RLywfn9BuxlUqkXzi3OYGo4La3+Cm7nKILwf6fLeRiV12kO/ruIlzwy9OOU/7BiBiMrzWTqKoW6mphKr5iJ0hKWrvb1NAUAyLNmfHOZX+DNtBcFHe7O6cYuYxs0KJ18Sdv6zY4b+TnB2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824394; c=relaxed/simple;
-	bh=A8Z3Xp489f3tC4YfvLJFapLerSRY/ahOc2ad1Z+Cc34=;
+	s=arc-20240116; t=1762824398; c=relaxed/simple;
+	bh=J0rmfD8uOa8neT7MjE04ryRGymDMsWrFeyQASAnklVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XySjDAzcQybRIg+UWK4lXCF6GhYmPc4+fnxtzADPbxF6kdLD22dkgdYbGqLBbJomjGUd9xMubna2PQnN1W6gNWlz48UfaGdbevbsrVeT5SXMYfFk9QmFdRuSklf95cwpOyyD3nGmoujiNl9FwXzkiwxN3o3G6TdAV8ljz4z/g+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mH5tdw7O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7BFC19421;
-	Tue, 11 Nov 2025 01:26:33 +0000 (UTC)
+	 MIME-Version; b=O2Ry7pVKidCozweHsahdPVd3M6OWsorjdqw1lx2FeJdyNIY8OfQ1tFzuZsDlatzkVwaJOx84qNh5cRL8Jgls19oIZkZxZVCoTgJXho54Z2Ae68vrFk1UuaXJm6bjSt3tYR5hmWUTOFoY8fOo2pKismCaCIZVGoz0V6iVQEVvi2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwGByNTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5977CC113D0;
+	Tue, 11 Nov 2025 01:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824394;
-	bh=A8Z3Xp489f3tC4YfvLJFapLerSRY/ahOc2ad1Z+Cc34=;
+	s=korg; t=1762824398;
+	bh=J0rmfD8uOa8neT7MjE04ryRGymDMsWrFeyQASAnklVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mH5tdw7OAT8YglfhqnpMz7Z4+A8Lgtdzcz28MznGhbdhykJXq7sYvrUi+NhJE5arY
-	 X3bPJAp+j5w2tkM9bWbRy3B4ac0qMMRE1D82TD+Oz1qbPg6z09mQfLwbF9N7kN1WQy
-	 y7mxEQnvh+5/c/tSzvCP49ZYHbI0IXNoOzWAyZ3U=
+	b=BwGByNTUcG0v5RxxpPwDC+7zt7hituY8OvJGgTKGe7GXE6QxosChhBPccaKfkK2pO
+	 aBy4xox+fOa+/1Pkm+sL45guQQKCfbAczHipVNuW0FMscKi6N0vTiGbGEECq9rhxwL
+	 /m4+CKNag95WLhRaHbOqZwnJVWCGO1nWjsBQY5qA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 486/849] media: qcom: camss: csiphy-3ph: Add CSIPHY 2ph DPHY v2.0.1 init sequence
-Date: Tue, 11 Nov 2025 09:40:56 +0900
-Message-ID: <20251111004548.191262297@linuxfoundation.org>
+Subject: [PATCH 6.17 487/849] drm/bridge: write full Audio InfoFrame
+Date: Tue, 11 Nov 2025 09:40:57 +0900
+Message-ID: <20251111004548.215037742@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,149 +66,117 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit ce63fbdf849f52584d9b5d9a4cc23cbc88746c30 ]
+[ Upstream commit f0e7f358e72b10b01361787134ebcbd9e9aa72d9 ]
 
-This is the CSI PHY version found in QCS2290/QCM2290 SoCs.
-The table is extracted from downstream camera driver.
+Instead of writing the first byte of the infoframe (and hoping that the
+rest is default / zeroes), hook Audio InfoFrame support into the
+write_infoframe / clear_infoframes callbacks and use
+drm_atomic_helper_connector_hdmi_update_audio_infoframe() to write the
+frame.
 
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Link: https://lore.kernel.org/r/20250903-adv7511-audio-infoframe-v1-2-05b24459b9a4@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../qcom/camss/camss-csiphy-3ph-1-0.c         | 89 +++++++++++++++++++
- drivers/media/platform/qcom/camss/camss.h     |  1 +
- 2 files changed, 90 insertions(+)
+ .../gpu/drm/bridge/adv7511/adv7511_audio.c    | 23 +++++--------------
+ drivers/gpu/drm/bridge/adv7511/adv7511_drv.c  | 18 +++++++++++++++
+ 2 files changed, 24 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-index 88c0ba495c327..a128a42f1303d 100644
---- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-+++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-@@ -319,6 +319,90 @@ csiphy_lane_regs lane_regs_sm8250[] = {
- 	{0x0884, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
- };
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+index 766b1c96bc887..87e7e820810a8 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+@@ -12,6 +12,8 @@
+ #include <sound/soc.h>
+ #include <linux/of_graph.h>
  
-+/* 14nm 2PH v 2.0.1 2p5Gbps 4 lane DPHY mode */
-+static const struct
-+csiphy_lane_regs lane_regs_qcm2290[] = {
-+	{0x0030, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x002c, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0034, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0028, 0x04, 0x00, CSIPHY_DNP_PARAMS},
-+	{0x003c, 0xb8, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x001c, 0x0a, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0000, 0xd7, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0004, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0020, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0008, 0x04, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
-+	{0x000c, 0xff, 0x00, CSIPHY_DNP_PARAMS},
-+	{0x0010, 0x50, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0038, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0060, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0064, 0x3f, 0x00, CSIPHY_DEFAULT_PARAMS},
++#include <drm/display/drm_hdmi_state_helper.h>
 +
-+	{0x0730, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x072c, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0734, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0728, 0x04, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x073c, 0xb8, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x071c, 0x0a, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0700, 0xc0, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0704, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0720, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0708, 0x04, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
-+	{0x070c, 0xff, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0710, 0x50, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0738, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0760, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0764, 0x3f, 0x00, CSIPHY_DEFAULT_PARAMS},
-+
-+	{0x0230, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x022c, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0234, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0228, 0x04, 0x00, CSIPHY_DNP_PARAMS},
-+	{0x023c, 0xb8, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x021c, 0x0a, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0200, 0xd7, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0204, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0220, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0208, 0x04, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
-+	{0x020c, 0xff, 0x00, CSIPHY_DNP_PARAMS},
-+	{0x0210, 0x50, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0238, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0260, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0264, 0x3f, 0x00, CSIPHY_DEFAULT_PARAMS},
-+
-+	{0x0430, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x042c, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0434, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0428, 0x04, 0x00, CSIPHY_DNP_PARAMS},
-+	{0x043c, 0xb8, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x041c, 0x0a, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0400, 0xd7, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0404, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0420, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0408, 0x04, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
-+	{0x040C, 0xff, 0x00, CSIPHY_DNP_PARAMS},
-+	{0x0410, 0x50, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0438, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0460, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0464, 0x3f, 0x00, CSIPHY_DEFAULT_PARAMS},
-+
-+	{0x0630, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x062c, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0634, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0628, 0x04, 0x00, CSIPHY_DNP_PARAMS},
-+	{0x063c, 0xb8, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x061c, 0x0a, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0600, 0xd7, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0604, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0620, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0608, 0x04, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
-+	{0x060C, 0xff, 0x00, CSIPHY_DNP_PARAMS},
-+	{0x0610, 0x50, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0638, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0660, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-+	{0x0664, 0x3f, 0x00, CSIPHY_DEFAULT_PARAMS},
-+};
-+
- /* GEN2 2.1.2 2PH DPHY mode */
- static const struct
- csiphy_lane_regs lane_regs_sm8550[] = {
-@@ -744,6 +828,7 @@ static bool csiphy_is_gen2(u32 version)
- 	bool ret = false;
+ #include "adv7511.h"
  
- 	switch (version) {
-+	case CAMSS_2290:
- 	case CAMSS_7280:
- 	case CAMSS_8250:
- 	case CAMSS_8280XP:
-@@ -829,6 +914,10 @@ static int csiphy_init(struct csiphy_device *csiphy)
- 		regs->lane_regs = &lane_regs_sdm845[0];
- 		regs->lane_array_size = ARRAY_SIZE(lane_regs_sdm845);
- 		break;
-+	case CAMSS_2290:
-+		regs->lane_regs = &lane_regs_qcm2290[0];
-+		regs->lane_array_size = ARRAY_SIZE(lane_regs_qcm2290);
+ static void adv7511_calc_cts_n(unsigned int f_tmds, unsigned int fs,
+@@ -155,17 +157,8 @@ int adv7511_hdmi_audio_prepare(struct drm_bridge *bridge,
+ 	regmap_update_bits(adv7511->regmap, ADV7511_REG_I2C_FREQ_ID_CFG,
+ 			   ADV7511_I2C_FREQ_ID_CFG_RATE_MASK, rate << 4);
+ 
+-	/* send current Audio infoframe values while updating */
+-	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
+-			   BIT(5), BIT(5));
+-
+-	regmap_write(adv7511->regmap, ADV7511_REG_AUDIO_INFOFRAME(0), 0x1);
+-
+-	/* use Audio infoframe updated info */
+-	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
+-			   BIT(5), 0);
+-
+-	return 0;
++	return drm_atomic_helper_connector_hdmi_update_audio_infoframe(connector,
++								       &hparms->cea);
+ }
+ 
+ int adv7511_hdmi_audio_startup(struct drm_bridge *bridge,
+@@ -188,15 +181,9 @@ int adv7511_hdmi_audio_startup(struct drm_bridge *bridge,
+ 	/* not copyrighted */
+ 	regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CFG1,
+ 				BIT(5), BIT(5));
+-	/* enable audio infoframes */
+-	regmap_update_bits(adv7511->regmap, ADV7511_REG_PACKET_ENABLE1,
+-				BIT(3), BIT(3));
+ 	/* AV mute disable */
+ 	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(0),
+ 				BIT(7) | BIT(6), BIT(7));
+-	/* use Audio infoframe updated info */
+-	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
+-				BIT(5), 0);
+ 
+ 	/* enable SPDIF receiver */
+ 	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
+@@ -214,4 +201,6 @@ void adv7511_hdmi_audio_shutdown(struct drm_bridge *bridge,
+ 	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
+ 		regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CONFIG,
+ 				   BIT(7), 0);
++
++	drm_atomic_helper_connector_hdmi_clear_audio_infoframe(connector);
+ }
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+index 00d6417c177b4..9081c09fc136b 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+@@ -886,6 +886,9 @@ static int adv7511_bridge_hdmi_clear_infoframe(struct drm_bridge *bridge,
+ 	struct adv7511 *adv7511 = bridge_to_adv7511(bridge);
+ 
+ 	switch (type) {
++	case HDMI_INFOFRAME_TYPE_AUDIO:
++		adv7511_packet_disable(adv7511, ADV7511_PACKET_ENABLE_AUDIO_INFOFRAME);
 +		break;
- 	case CAMSS_7280:
- 	case CAMSS_8250:
- 		regs->lane_regs = &lane_regs_sm8250[0];
-diff --git a/drivers/media/platform/qcom/camss/camss.h b/drivers/media/platform/qcom/camss/camss.h
-index 63c0afee154a0..377707d91ff2f 100644
---- a/drivers/media/platform/qcom/camss/camss.h
-+++ b/drivers/media/platform/qcom/camss/camss.h
-@@ -78,6 +78,7 @@ enum pm_domain {
+ 	case HDMI_INFOFRAME_TYPE_AVI:
+ 		adv7511_packet_disable(adv7511, ADV7511_PACKET_ENABLE_AVI_INFOFRAME);
+ 		break;
+@@ -906,6 +909,21 @@ static int adv7511_bridge_hdmi_write_infoframe(struct drm_bridge *bridge,
+ 	adv7511_bridge_hdmi_clear_infoframe(bridge, type);
  
- enum camss_version {
- 	CAMSS_660,
-+	CAMSS_2290,
- 	CAMSS_7280,
- 	CAMSS_8x16,
- 	CAMSS_8x53,
+ 	switch (type) {
++	case HDMI_INFOFRAME_TYPE_AUDIO:
++		/* send current Audio infoframe values while updating */
++		regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
++				   BIT(5), BIT(5));
++
++		/* The Audio infoframe id is not configurable */
++		regmap_bulk_write(adv7511->regmap, ADV7511_REG_AUDIO_INFOFRAME_VERSION,
++				  buffer + 1, len - 1);
++
++		/* use Audio infoframe updated info */
++		regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
++				   BIT(5), 0);
++
++		adv7511_packet_enable(adv7511, ADV7511_PACKET_ENABLE_AUDIO_INFOFRAME);
++		break;
+ 	case HDMI_INFOFRAME_TYPE_AVI:
+ 		/* The AVI infoframe id is not configurable */
+ 		regmap_bulk_write(adv7511->regmap, ADV7511_REG_AVI_INFOFRAME_VERSION,
 -- 
 2.51.0
 
