@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-194178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D982C4AE2C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 552F7C4AD48
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A6521897646
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 350CC189456D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062EE33A02F;
-	Tue, 11 Nov 2025 01:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FC9266B6C;
+	Tue, 11 Nov 2025 01:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1xs4TC2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrkRr+cp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6293339B41;
-	Tue, 11 Nov 2025 01:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBDBDDAB;
+	Tue, 11 Nov 2025 01:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824989; cv=none; b=ahRrQO2X7SzqHcRxg1Q7O+/LV2Pw4dceZEkksuBj0pXy7HmsZulAoK7lHhwe/9RhM9x+CMvlLJ8eGHVZUJHbm+MXq9MQeMI1gXJbi8xvtwSmKOfoP7PZ0guz1xGdv/ktty6k+UUayDvjzwekvi6h5beL1/LItSRBvuS5/tzEp9A=
+	t=1762824835; cv=none; b=nYW42kbgqMbX8OXP1CcOoHNXYEIuAVp2+oXJ3L7dICoNE6r1Iy8UqKmQmwzl6tZOSKPxIgdJXqmiFTjPIvng2unoU1AqAQR0etB6bd9CxaWt6x73TdkmewNUr+Y3LJpSLIJNf5epfr9cGRyNAWDd1sxCErfLGCUBffMA1yj6YR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824989; c=relaxed/simple;
-	bh=7i9nFh/tbPBoNcB4fwYpzAw4coBj6sYgvma9m8eEgEY=;
+	s=arc-20240116; t=1762824835; c=relaxed/simple;
+	bh=0+M0/b+CMFDJNxlNegA1QpVepb9D7MxQ0/NX4ihTh8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sdnnfg1DeB0WcfuLTL1DNBRQfZF2aZXRbNL4exi1ifxuNbPVJRpIp06XtmLlgWJ3qB0ADA1KvygOHHoVPTBM5PpSjl5zt/Yx7Msc21d1rGyP7M+kDupQedUMA+oPM78RegSUjo1HmQQtyeqSV3KQTGObsiQrRiyHQxIGhkthEFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1xs4TC2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027F5C113D0;
-	Tue, 11 Nov 2025 01:36:28 +0000 (UTC)
+	 MIME-Version; b=L/5LtJqwOad/XOA7U/R+tfQpJWabN9nRSdF2K+PydyWG8LpQ1dN0oG6Rys0+//3yGwviMod3lqjjgavuQXi06m4VJIj0XhkYXYQ808jXNxGspjBDJWsxZM/k5+wd5N3jF1OzSQTzTdrAtnteYWgAbg/EdKp+0dTFBVaU+2uYXBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZrkRr+cp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2EEC4CEFB;
+	Tue, 11 Nov 2025 01:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824989;
-	bh=7i9nFh/tbPBoNcB4fwYpzAw4coBj6sYgvma9m8eEgEY=;
+	s=korg; t=1762824834;
+	bh=0+M0/b+CMFDJNxlNegA1QpVepb9D7MxQ0/NX4ihTh8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y1xs4TC2LlgdirebpH1jdjCq0IlqXZE2+xnAiCdEDT2z6I3Bru4sjeNw3cdriWUmb
-	 7UnRmhLMhY5R8Aquk1Ptnq8NkAY2/M25Ev8q5bvIbPMTMG2h+JISx5/Fp312ML7N1X
-	 OA2Hi7DkDjHCtdMEdXMohHfYUdC8mKAF/OQUVeFo=
+	b=ZrkRr+cp0BT4B0VeD9XvyecAFqCHyaI98oCbmb52HwGrVX/ZqgTCyvoftmx3KrePy
+	 rljkW806y638TgY7nikNKNuHfWMFt/xPBpGdhRlYHb+g0Gq3YVk8ZNlnLw8UdH4fU/
+	 jcHPukJReFqs0+0OSzkygojn1wvZS629L4wFf6VQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
+	wangzijie <wangzijie1@honor.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 580/849] usb: xhci: plat: Facilitate using autosuspend for xhci plat devices
-Date: Tue, 11 Nov 2025 09:42:30 +0900
-Message-ID: <20251111004550.443061266@linuxfoundation.org>
+Subject: [PATCH 6.17 581/849] f2fs: fix infinite loop in __insert_extent_tree()
+Date: Tue, 11 Nov 2025 09:42:31 +0900
+Message-ID: <20251111004550.465190876@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -65,37 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+From: wangzijie <wangzijie1@honor.com>
 
-[ Upstream commit 41cf11946b9076383a2222bbf1ef57d64d033f66 ]
+[ Upstream commit 23361bd54966b437e1ed3eb1a704572f4b279e58 ]
 
-Allow autosuspend to be used by xhci plat device. For Qualcomm SoCs,
-when in host mode, it is intended that the controller goes to suspend
-state to save power and wait for interrupts from connected peripheral
-to wake it up. This is particularly used in cases where a HID or Audio
-device is connected. In such scenarios, the usb controller can enter
-auto suspend and resume action after getting interrupts from the
-connected device.
+When we get wrong extent info data, and look up extent_node in rb tree,
+it will cause infinite loop (CONFIG_F2FS_CHECK_FS=n). Avoiding this by
+return NULL and print some kernel messages in that case.
 
-Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250916120436.3617598-1-krishna.kurapati@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: wangzijie <wangzijie1@honor.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-plat.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/extent_cache.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index 5eb51797de326..dd57ffedcaa2f 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -171,6 +171,7 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
- 		return ret;
- 
- 	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_get_noresume(&pdev->dev);
+diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
+index 199c1e7a83ef3..ba0a07bfd3463 100644
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -604,7 +604,13 @@ static struct extent_node *__insert_extent_tree(struct f2fs_sb_info *sbi,
+ 			p = &(*p)->rb_right;
+ 			leftmost = false;
+ 		} else {
++			f2fs_err_ratelimited(sbi, "%s: corrupted extent, type: %d, "
++				"extent node in rb tree [%u, %u, %u], age [%llu, %llu], "
++				"extent node to insert [%u, %u, %u], age [%llu, %llu]",
++				__func__, et->type, en->ei.fofs, en->ei.blk, en->ei.len, en->ei.age,
++				en->ei.last_blocks, ei->fofs, ei->blk, ei->len, ei->age, ei->last_blocks);
+ 			f2fs_bug_on(sbi, 1);
++			return NULL;
+ 		}
+ 	}
  
 -- 
 2.51.0
