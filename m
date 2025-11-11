@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2232EC4A10C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5145C4A112
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E8DE188CE20
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 432FF3ACB94
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2144124A043;
-	Tue, 11 Nov 2025 00:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D114E1DF258;
+	Tue, 11 Nov 2025 00:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvOdmjGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhXBgzGR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98721DF258;
-	Tue, 11 Nov 2025 00:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9E723FC41;
+	Tue, 11 Nov 2025 00:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822672; cv=none; b=q1NVbeXefr8rfWAxPFG5nHW910q+syThwsiyh+5NtjWQciB8xyBSdvaEUUhMzy23K4R0DE/aSSdxpqbfSrHheO9dF6Fxfuyc1VTdtvIjk4Y7RcqzwBvMBdbD6apRIbvhVdOxz96ZI/fIwdfcZ8K99Fm/YHz9yFx5NAODWI8U0lA=
+	t=1762822677; cv=none; b=lSwEFPXvSP84GS57WyfL1DGHnGkF8g4FcAhxu/0IeuYP1ANkoPH8g2PvFwntsaInPaKdM2+Ze1ICxjS0VtWyePDsjhGKW8lXFTRheqtpna9wLWwvUGNNoO7uw6sPguTkXoNJWYGStO3S9ynDFBx41pJezqm0GGAG4XdcAhqbgNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822672; c=relaxed/simple;
-	bh=LJRWELax0r8vZxNJTrqabuzlN5OQfBgIJwsQIHh3PGE=;
+	s=arc-20240116; t=1762822677; c=relaxed/simple;
+	bh=S6LPenAJA445iFiwHvuS7U/rGBDVr/jYmV/KwBMTk4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pGiI+Z/cjj2MrJyAmZkicX9k3gaALM6ifDp9IvJXRA/s0hM92bUM4Wio9L+FIfM/QnHKpngaFYN7C8vwxoKFX+p8gAAqlYmN97xgZcDqiJJUmKcHu/NlMmhxRHBW/GvpHeRM00VWHcvXZMwIIOPmP2I04R3nPtMwyPCTYhB4Wv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvOdmjGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66698C4CEFB;
-	Tue, 11 Nov 2025 00:57:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ijuLoTwXajyLBpAHApfjbH8tP+j87KXvW+y9i012SQXn4hK4AQwCutu5jsrYu2LnQkXEmOe7GohuOP1V6Lh1MD9nxUyyxuqvQsWAiooibdLfnoAcmRIAkn4VAsDiQeqGUkTGC4VbTy3J71C39WGZAzOLVpmwthcnm0fTB6y9JIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhXBgzGR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC0EC116B1;
+	Tue, 11 Nov 2025 00:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822672;
-	bh=LJRWELax0r8vZxNJTrqabuzlN5OQfBgIJwsQIHh3PGE=;
+	s=korg; t=1762822677;
+	bh=S6LPenAJA445iFiwHvuS7U/rGBDVr/jYmV/KwBMTk4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvOdmjGAYkstEEZ8TLqDTMUUpf8rdz45+k3KxONKyB5cVZJHEhc+ULjrEIRtU2W6G
-	 q7sgOGYR37EPKcm6I0iZkR2JoEJawLP2ecw8UKOIPBFCk6uqHhdwshMG9Qlhp+9rWJ
-	 uaghFh1/fNt8Fb1W2hHOwZHd239KVX9f+JVM1dLw=
+	b=AhXBgzGRKuojdA1GSGAsis6LdO1LA/IW35vDWJ/HZ/7wIavpuxEizMEKaQwz4iF5y
+	 30A1DRYuQH8oqux9vWGHI2jQzpL5Dbxw7DS5HdZWp9oLeHEjIScS3m16fS7bVUzb+x
+	 dMt/zyT0thWnzpQxx40vuLlfs3sVmPtA1jbNpqxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Matthew Brost <matthew.brost@intel.com>,
 	Philipp Stanner <pstanner@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/565] drm/sched: Optimise drm_sched_entity_push_job
-Date: Tue, 11 Nov 2025 09:38:59 +0900
-Message-ID: <20251111004528.834203751@linuxfoundation.org>
+Subject: [PATCH 6.12 084/565] drm/sched: Re-group and rename the entity run-queue lock
+Date: Tue, 11 Nov 2025 09:39:00 +0900
+Message-ID: <20251111004528.857251276@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -73,111 +73,199 @@ Content-Transfer-Encoding: 8bit
 
 From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit d42a254633c773921884a19e8a1a0f53a31150c3 ]
+[ Upstream commit f93126f5d55920d1447ef00a3fbe6706f40f53de ]
 
-In FIFO mode (which is the default), both drm_sched_entity_push_job() and
-drm_sched_rq_update_fifo(), where the latter calls the former, are
-currently taking and releasing the same entity->rq_lock.
+When writing to a drm_sched_entity's run-queue, writers are protected
+through the lock drm_sched_entity.rq_lock. This naming, however,
+frequently collides with the separate internal lock of struct
+drm_sched_rq, resulting in uses like this:
 
-We can avoid that design inelegance, and also have a miniscule
-efficiency improvement on the submit from idle path, by introducing a new
-drm_sched_rq_update_fifo_locked() helper and pulling up the lock taking to
-its callers.
+	spin_lock(&entity->rq_lock);
+	spin_lock(&entity->rq->lock);
+
+Rename drm_sched_entity.rq_lock to improve readability. While at it,
+re-order that struct's members to make it more obvious what the lock
+protects.
 
 v2:
- * Remove drm_sched_rq_update_fifo() altogether. (Christian)
-
-v3:
- * Improved commit message. (Philipp)
+ * Rename some rq_lock straddlers in kerneldoc, improve commit text. (Philipp)
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Christian König <christian.koenig@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: Luben Tuikov <ltuikov89@gmail.com>
 Cc: Matthew Brost <matthew.brost@intel.com>
 Cc: Philipp Stanner <pstanner@redhat.com>
 Reviewed-by: Christian König <christian.koenig@amd.com>
+[pstanner: Fix typo in docstring]
 Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241016122013.7857-2-tursulin@igalia.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20241016122013.7857-5-tursulin@igalia.com
 Stable-dep-of: d25e3a610bae ("drm/sched: Fix race in drm_sched_entity_select_rq()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |   13 +++++++++----
- drivers/gpu/drm/scheduler/sched_main.c   |    6 +++---
- include/drm/gpu_scheduler.h              |    2 +-
- 3 files changed, 13 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/scheduler/sched_entity.c |   28 ++++++++++++++--------------
+ drivers/gpu/drm/scheduler/sched_main.c   |    2 +-
+ include/drm/gpu_scheduler.h              |   21 +++++++++++----------
+ 3 files changed, 26 insertions(+), 25 deletions(-)
 
 --- a/drivers/gpu/drm/scheduler/sched_entity.c
 +++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -506,8 +506,12 @@ struct drm_sched_job *drm_sched_entity_p
- 		struct drm_sched_job *next;
+@@ -106,7 +106,7 @@ int drm_sched_entity_init(struct drm_sch
+ 	/* We start in an idle state. */
+ 	complete_all(&entity->entity_idle);
+ 
+-	spin_lock_init(&entity->rq_lock);
++	spin_lock_init(&entity->lock);
+ 	spsc_queue_init(&entity->job_queue);
+ 
+ 	atomic_set(&entity->fence_seq, 0);
+@@ -134,10 +134,10 @@ void drm_sched_entity_modify_sched(struc
+ {
+ 	WARN_ON(!num_sched_list || !sched_list);
+ 
+-	spin_lock(&entity->rq_lock);
++	spin_lock(&entity->lock);
+ 	entity->sched_list = sched_list;
+ 	entity->num_sched_list = num_sched_list;
+-	spin_unlock(&entity->rq_lock);
++	spin_unlock(&entity->lock);
+ }
+ EXPORT_SYMBOL(drm_sched_entity_modify_sched);
+ 
+@@ -246,10 +246,10 @@ static void drm_sched_entity_kill(struct
+ 	if (!entity->rq)
+ 		return;
+ 
+-	spin_lock(&entity->rq_lock);
++	spin_lock(&entity->lock);
+ 	entity->stopped = true;
+ 	drm_sched_rq_remove_entity(entity->rq, entity);
+-	spin_unlock(&entity->rq_lock);
++	spin_unlock(&entity->lock);
+ 
+ 	/* Make sure this entity is not used by the scheduler at the moment */
+ 	wait_for_completion(&entity->entity_idle);
+@@ -395,9 +395,9 @@ static void drm_sched_entity_wakeup(stru
+ void drm_sched_entity_set_priority(struct drm_sched_entity *entity,
+ 				   enum drm_sched_priority priority)
+ {
+-	spin_lock(&entity->rq_lock);
++	spin_lock(&entity->lock);
+ 	entity->priority = priority;
+-	spin_unlock(&entity->rq_lock);
++	spin_unlock(&entity->lock);
+ }
+ EXPORT_SYMBOL(drm_sched_entity_set_priority);
+ 
+@@ -507,10 +507,10 @@ struct drm_sched_job *drm_sched_entity_p
  
  		next = to_drm_sched_job(spsc_queue_peek(&entity->job_queue));
--		if (next)
--			drm_sched_rq_update_fifo(entity, next->submit_ts);
-+		if (next) {
-+			spin_lock(&entity->rq_lock);
-+			drm_sched_rq_update_fifo_locked(entity,
-+							next->submit_ts);
-+			spin_unlock(&entity->rq_lock);
-+		}
+ 		if (next) {
+-			spin_lock(&entity->rq_lock);
++			spin_lock(&entity->lock);
+ 			drm_sched_rq_update_fifo_locked(entity,
+ 							next->submit_ts);
+-			spin_unlock(&entity->rq_lock);
++			spin_unlock(&entity->lock);
+ 		}
  	}
  
- 	/* Jobs and entities might have different lifecycles. Since we're
-@@ -607,10 +611,11 @@ void drm_sched_entity_push_job(struct dr
- 		sched = rq->sched;
+@@ -551,14 +551,14 @@ void drm_sched_entity_select_rq(struct d
+ 	if (fence && !dma_fence_is_signaled(fence))
+ 		return;
  
- 		drm_sched_rq_add_entity(rq, entity);
--		spin_unlock(&entity->rq_lock);
+-	spin_lock(&entity->rq_lock);
++	spin_lock(&entity->lock);
+ 	sched = drm_sched_pick_best(entity->sched_list, entity->num_sched_list);
+ 	rq = sched ? sched->sched_rq[entity->priority] : NULL;
+ 	if (rq != entity->rq) {
+ 		drm_sched_rq_remove_entity(entity->rq, entity);
+ 		entity->rq = rq;
+ 	}
+-	spin_unlock(&entity->rq_lock);
++	spin_unlock(&entity->lock);
  
+ 	if (entity->num_sched_list == 1)
+ 		entity->sched_list = NULL;
+@@ -599,9 +599,9 @@ void drm_sched_entity_push_job(struct dr
+ 		struct drm_sched_rq *rq;
+ 
+ 		/* Add the entity to the run queue */
+-		spin_lock(&entity->rq_lock);
++		spin_lock(&entity->lock);
+ 		if (entity->stopped) {
+-			spin_unlock(&entity->rq_lock);
++			spin_unlock(&entity->lock);
+ 
+ 			DRM_ERROR("Trying to push to a killed entity\n");
+ 			return;
+@@ -615,7 +615,7 @@ void drm_sched_entity_push_job(struct dr
  		if (drm_sched_policy == DRM_SCHED_POLICY_FIFO)
--			drm_sched_rq_update_fifo(entity, submit_ts);
-+			drm_sched_rq_update_fifo_locked(entity, submit_ts);
-+
-+		spin_unlock(&entity->rq_lock);
+ 			drm_sched_rq_update_fifo_locked(entity, submit_ts);
+ 
+-		spin_unlock(&entity->rq_lock);
++		spin_unlock(&entity->lock);
  
  		drm_sched_wakeup(sched);
  	}
 --- a/drivers/gpu/drm/scheduler/sched_main.c
 +++ b/drivers/gpu/drm/scheduler/sched_main.c
-@@ -169,14 +169,15 @@ static inline void drm_sched_rq_remove_f
- 	}
- }
- 
--void drm_sched_rq_update_fifo(struct drm_sched_entity *entity, ktime_t ts)
-+void drm_sched_rq_update_fifo_locked(struct drm_sched_entity *entity, ktime_t ts)
- {
- 	/*
- 	 * Both locks need to be grabbed, one to protect from entity->rq change
+@@ -176,7 +176,7 @@ void drm_sched_rq_update_fifo_locked(str
  	 * for entity from within concurrent drm_sched_entity_select_rq and the
  	 * other to update the rb tree structure.
  	 */
--	spin_lock(&entity->rq_lock);
-+	lockdep_assert_held(&entity->rq_lock);
-+
+-	lockdep_assert_held(&entity->rq_lock);
++	lockdep_assert_held(&entity->lock);
+ 
  	spin_lock(&entity->rq->lock);
  
- 	drm_sched_rq_remove_fifo_locked(entity);
-@@ -187,7 +188,6 @@ void drm_sched_rq_update_fifo(struct drm
- 		      drm_sched_entity_compare_before);
- 
- 	spin_unlock(&entity->rq->lock);
--	spin_unlock(&entity->rq_lock);
- }
- 
- /**
 --- a/include/drm/gpu_scheduler.h
 +++ b/include/drm/gpu_scheduler.h
-@@ -593,7 +593,7 @@ void drm_sched_rq_add_entity(struct drm_
- void drm_sched_rq_remove_entity(struct drm_sched_rq *rq,
- 				struct drm_sched_entity *entity);
+@@ -97,13 +97,21 @@ struct drm_sched_entity {
+ 	struct list_head		list;
  
--void drm_sched_rq_update_fifo(struct drm_sched_entity *entity, ktime_t ts);
-+void drm_sched_rq_update_fifo_locked(struct drm_sched_entity *entity, ktime_t ts);
+ 	/**
++	 * @lock:
++	 *
++	 * Lock protecting the run-queue (@rq) to which this entity belongs,
++	 * @priority and the list of schedulers (@sched_list, @num_sched_list).
++	 */
++	spinlock_t			lock;
++
++	/**
+ 	 * @rq:
+ 	 *
+ 	 * Runqueue on which this entity is currently scheduled.
+ 	 *
+ 	 * FIXME: Locking is very unclear for this. Writers are protected by
+-	 * @rq_lock, but readers are generally lockless and seem to just race
+-	 * with not even a READ_ONCE.
++	 * @lock, but readers are generally lockless and seem to just race with
++	 * not even a READ_ONCE.
+ 	 */
+ 	struct drm_sched_rq		*rq;
  
- int drm_sched_entity_init(struct drm_sched_entity *entity,
- 			  enum drm_sched_priority priority,
+@@ -136,18 +144,11 @@ struct drm_sched_entity {
+ 	 * @priority:
+ 	 *
+ 	 * Priority of the entity. This can be modified by calling
+-	 * drm_sched_entity_set_priority(). Protected by &rq_lock.
++	 * drm_sched_entity_set_priority(). Protected by @lock.
+ 	 */
+ 	enum drm_sched_priority         priority;
+ 
+ 	/**
+-	 * @rq_lock:
+-	 *
+-	 * Lock to modify the runqueue to which this entity belongs.
+-	 */
+-	spinlock_t			rq_lock;
+-
+-	/**
+ 	 * @job_queue: the list of jobs of this entity.
+ 	 */
+ 	struct spsc_queue		job_queue;
 
 
 
