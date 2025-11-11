@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-194229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7700C4AF4F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6AFC4B13F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 87B2D4FB286
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:43:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BBC83BD02E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6110342C8F;
-	Tue, 11 Nov 2025 01:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A44E30BF59;
+	Tue, 11 Nov 2025 01:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnRp8GU7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1hullPp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738D934217C;
-	Tue, 11 Nov 2025 01:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFC430BF77;
+	Tue, 11 Nov 2025 01:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825108; cv=none; b=cy+c7McMc6MYMNR/ajoCqDLJGvh5a+jfYEQEQW2IRsimOLFt+3KkiqGr435+boyKdImcfs7lRDo2fyaPb9jIwH6IDABZAuqWorEPtTPxe+aMHKn280R2FKF0h05yZRMkEZ2sw+vpVlWKPIQI4c9LJZN8UwZc4zqHc2LucGDNwJc=
+	t=1762825232; cv=none; b=JSyLpmSbeKttg9xXEHYtvr8gGchqkC1uN9MMRQeuARaPwA9lrJJIsidvpV6bgADMdqppWVnhApS2fWit3Rc4QoEV5VUzaAfxERawTurDqzZ2pAeKRrYvBeZEnOeE3u2jZ3ykDWZLgRmlWoqNH2p77eqoRz6NWx0DnIgLffyPAM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825108; c=relaxed/simple;
-	bh=BqOcQIDTnusxnmadM7e5wfnMnWxwptD8fyXhkJ16XME=;
+	s=arc-20240116; t=1762825232; c=relaxed/simple;
+	bh=GReH5iTzapeMbpqo21Hcf6mOdem5EOHEAE2wIPldRZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l13t+8G7mXL94js9s7PRlmwYhVv244cgNEJVw4RL/Fafm73gjCGinKWtwtyNJuMUxPJMlAlbJJVhs+2U0VaiGHgC2KtlwAjzoW4Q3c+UXZrXfkXUl6ETWTbkOIhYd+wYd1I1H0uNfg+hw9K/GUPdW/MOz8nE0UtQCfG0wbSH6WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnRp8GU7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1322EC4CEFB;
-	Tue, 11 Nov 2025 01:38:27 +0000 (UTC)
+	 MIME-Version; b=lS0jgAl2tuF2Qevuz+3IsMnKdrw3RcaiqfcXwUaWmVz230kAAK7mElTh/0XYHCz8ec0lGX6gmFLceqwJKuLFOqt4/F1jNykMfpxhMfY4wnppzy27T1ChahrG3TuwViUdtpsdACsCkoYP4uiRXLLuG/JTLOkamIo9y9NGB9sFjqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1hullPp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5D5C19424;
+	Tue, 11 Nov 2025 01:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825108;
-	bh=BqOcQIDTnusxnmadM7e5wfnMnWxwptD8fyXhkJ16XME=;
+	s=korg; t=1762825231;
+	bh=GReH5iTzapeMbpqo21Hcf6mOdem5EOHEAE2wIPldRZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnRp8GU7I2P9n7rxRMRwfXO8qUqytqfjYSr2odjs3/dqd4TsgYKOwrFTlkr8ZUz+D
-	 QRD/i9o1fvxFCaOWWvn6FRjznECDm2b+OmlOf1mAA4Z+UwqAqMDoL0vow7U7UGR98b
-	 9AZrOFMRBaHxGNwqeviFRnr55HJJECjZTv3FSEJI=
+	b=L1hullPpYOTqc49oK1MFtL9pcZ51gIK61+hcZfoB79Sl6vtr1YWaoQG4/qVTjipiI
+	 H6qLF14Ke2FZu61q6EYuB4PnKuwwdxvL1zukc1hVMmhaqE1IWKQLYinWiB04zVOyD1
+	 3g7/77snvX9DEzLVnqdS48rsrlBmIw/mwOa6l9eQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 662/849] Bluetooth: ISO: Dont initiate CIS connections if there are no buffers
-Date: Tue, 11 Nov 2025 09:43:52 +0900
-Message-ID: <20251111004552.429200574@linuxfoundation.org>
+Subject: [PATCH 6.17 663/849] Bluetooth: btusb: Check for unexpected bytes when defragmenting HCI frames
+Date: Tue, 11 Nov 2025 09:43:53 +0900
+Message-ID: <20251111004552.452894000@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -65,37 +66,119 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
 
-[ Upstream commit d79c7d01f1c8bcf9a48337c8960d618fbe31fc0c ]
+[ Upstream commit 7722d6fb54e428a8f657fccf422095a8d7e2d72c ]
 
-If the controller has no buffers left return -ENOBUFF to indicate that
-iso_cnt might be out of sync.
+Some Barrot based USB Bluetooth dongles erroneously send one extra
+random byte for the HCI_OP_READ_LOCAL_EXT_FEATURES command. The
+consequence of that is that the next HCI transfer is misaligned by one
+byte causing undefined behavior. In most cases the response event for
+the next command fails with random error code.
 
+Since the HCI_OP_READ_LOCAL_EXT_FEATURES command is used during HCI
+controller initialization, the initialization fails rendering the USB
+dongle not usable.
+
+> [59.464099] usb 1-1.3: new full-speed USB device number 11 using xhci_hcd
+> [59.561617] usb 1-1.3: New USB device found, idVendor=33fa, idProduct=0012, bcdDevice=88.91
+> [59.561642] usb 1-1.3: New USB device strings: Mfr=0, Product=2, SerialNumber=0
+> [59.561656] usb 1-1.3: Product: UGREEN BT6.0 Adapter
+> [61.720116] Bluetooth: hci1: command 0x1005 tx timeout
+> [61.720167] Bluetooth: hci1: Opcode 0x1005 failed: -110
+
+This patch was tested with the 33fa:0012 device. The info from the
+/sys/kernel/debug/usb/devices is shown below:
+
+T:  Bus=01 Lev=02 Prnt=02 Port=02 Cnt=01 Dev#= 12 Spd=12   MxCh= 0
+D:  Ver= 2.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=33fa ProdID=0012 Rev=88.91
+S:  Product=UGREEN BT6.0 Adapter
+C:* #Ifs= 2 Cfg#= 1 Atr=c0 MxPwr=100mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+
+Now the device is initialized properly:
+
+> [43.329852] usb 1-1.4: new full-speed USB device number 4 using dwc_otg
+> [43.446790] usb 1-1.4: New USB device found, idVendor=33fa, idProduct=0012, bcdDevice=88.91
+> [43.446813] usb 1-1.4: New USB device strings: Mfr=0, Product=2, SerialNumber=0
+> [43.446821] usb 1-1.4: Product: UGREEN BT6.0 Adapter
+> [43.582024] Bluetooth: hci1: Unexpected continuation: 1 bytes
+> [43.703025] Bluetooth: hci1: Unexpected continuation: 1 bytes
+> [43.750141] Bluetooth: MGMT ver 1.23
+
+Link: https://github.com/bluez/bluez/issues/1326
+Signed-off-by: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
+Tested-by: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/bluetooth/btusb.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 6e2923b301505..3b2a4a9d79d61 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -460,6 +460,13 @@ static int iso_connect_cis(struct sock *sk)
- 		goto unlock;
- 	}
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 30679a572095c..b231caa84757c 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -66,6 +66,7 @@ static struct usb_driver btusb_driver;
+ #define BTUSB_INTEL_BROKEN_INITIAL_NCMD BIT(25)
+ #define BTUSB_INTEL_NO_WBS_SUPPORT	BIT(26)
+ #define BTUSB_ACTIONS_SEMI		BIT(27)
++#define BTUSB_BARROT			BIT(28)
  
-+	/* Check if there are available buffers for output/TX. */
-+	if (iso_pi(sk)->qos.ucast.out.sdu && !hci_iso_count(hdev) &&
-+	    (hdev->iso_pkts && !hdev->iso_cnt)) {
-+		err = -ENOBUFS;
-+		goto unlock;
-+	}
+ static const struct usb_device_id btusb_table[] = {
+ 	/* Generic Bluetooth USB device */
+@@ -814,6 +815,10 @@ static const struct usb_device_id quirks_table[] = {
+ 	{ USB_DEVICE(0x0cb5, 0xc547), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 
++	/* Barrot Technology Bluetooth devices */
++	{ USB_DEVICE(0x33fa, 0x0010), .driver_info = BTUSB_BARROT },
++	{ USB_DEVICE(0x33fa, 0x0012), .driver_info = BTUSB_BARROT },
 +
- 	/* Just bind if DEFER_SETUP has been set */
- 	if (test_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags)) {
- 		hcon = hci_bind_cis(hdev, &iso_pi(sk)->dst,
+ 	/* Actions Semiconductor ATS2851 based devices */
+ 	{ USB_DEVICE(0x10d7, 0xb012), .driver_info = BTUSB_ACTIONS_SEMI },
+ 
+@@ -1196,6 +1201,18 @@ static int btusb_recv_intr(struct btusb_data *data, void *buffer, int count)
+ 		}
+ 
+ 		if (!hci_skb_expect(skb)) {
++			/* Each chunk should correspond to at least 1 or more
++			 * events so if there are still bytes left that doesn't
++			 * constitute a new event this is likely a bug in the
++			 * controller.
++			 */
++			if (count && count < HCI_EVENT_HDR_SIZE) {
++				bt_dev_warn(data->hdev,
++					"Unexpected continuation: %d bytes",
++					count);
++				count = 0;
++			}
++
+ 			/* Complete frame */
+ 			btusb_recv_event(data, skb);
+ 			skb = NULL;
 -- 
 2.51.0
 
