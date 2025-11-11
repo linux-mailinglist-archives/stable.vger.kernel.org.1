@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-194166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C85AC4ADF0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:47 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA751C4B205
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28E2518970EF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5505E4FD4D3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB14E2D879A;
-	Tue, 11 Nov 2025 01:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5C3305E3A;
+	Tue, 11 Nov 2025 01:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D32WAkxv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lv6z3SRm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812FF2BB17;
-	Tue, 11 Nov 2025 01:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9BD29A30A;
+	Tue, 11 Nov 2025 01:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824959; cv=none; b=PbBJX1iAABsNv3kxwI2s2+ftAtoV+7EcqHtk1b68suRw/B5saOdURU4spPVB/XOtOSAEA375FsJIf9PrnkkRSJ0rprY5rMUhKN3bvGSl9G9O0I7J8mBKi3ErszBi6aA++/OvMTWIT7c4E68Im60iTk9LNzMMlzRoi/yfKJfa1X4=
+	t=1762825540; cv=none; b=NxpVAWYS8jWgCLRMPFKGyHmtblqY0myrfWhDdkRIFRa/LvqRztbQrBUwZPrz4N93IQ1LSJPEd8UammV/7YBTbneSK0CsdieztQgaGkN0ylG8ePV5quIkKS1YmsyJz3FiE7491mlYbgsrxTq+jPVAYCi1sEfgbpj4uAemnxVQZpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824959; c=relaxed/simple;
-	bh=Ww/TP+OjEqWRUIcv7LlzsaBwtYYAkNNfr6Fo1rebgag=;
+	s=arc-20240116; t=1762825540; c=relaxed/simple;
+	bh=2m6nStoP5wYtlJ//pevfJEPMiwDZB9NDt0qPoNMvLxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4vtSHNpHTmpbb07+VFfqdRTpjTBkyumPAjSUmjEherooYBrJA2zFp7tyo7/JS9KNg5/v6IZOOWgPBT0OO0magZe0OMmcL7Ju8PkVdTecBpYzG3mwnR1hALi3HxXKpSA/FFs7Id/MYdFq+SE2Ycah8tVzYQY2nu7MzwP5Wfvo9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D32WAkxv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F40DC16AAE;
-	Tue, 11 Nov 2025 01:35:58 +0000 (UTC)
+	 MIME-Version; b=mzRwtqkzzwLkyhGsitCkgxw3Mr+1F1Sx+dKW2mjpG6Pk2mGQtS7YB3ao2kdl6pO/RgafQ4CvwBUWGBtyoM9/dLLkd4lC/cBOgggWxHrsLLbhiyc+6KTZbg0aoK/BitiGLbm5JNaA5UhXH5eDy89mBcq8YIHSdyJtTyTE8OagP+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lv6z3SRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67510C19422;
+	Tue, 11 Nov 2025 01:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824959;
-	bh=Ww/TP+OjEqWRUIcv7LlzsaBwtYYAkNNfr6Fo1rebgag=;
+	s=korg; t=1762825540;
+	bh=2m6nStoP5wYtlJ//pevfJEPMiwDZB9NDt0qPoNMvLxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D32WAkxvbFm0vMe6eesiIbpFVYP35/Bvo4BsC+tUS/XqPu5rIUu4SkTFYmxWslAmx
-	 ErWn/jFBUrU3VLaZb6LiNIgU9UkcSsUwqbenUEBJ6iu4h6reD+a2i5yyzgemCzGwVc
-	 K3bbCR2tin08FQAjMxNED/5FSN+nGiAYkGSVl+7c=
+	b=lv6z3SRmwsAX4WwOdNU6bAo7T2ZA5y06UQ2WJyyUBBRIHnob8wszwJjzBRYqnwv/S
+	 LHI1k0IzLDOkgTQX92U6ndqGS2XY9YOsjm1QUKutQRxCsmGyPalZBcx8YI4rBUaNsH
+	 q6CG6OSjsj1kEVRYNYrCm2DH86NRunnfmvZapuFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 558/565] scsi: ufs: core: Add a quirk to suppress link_startup_again
+	Prike Liang <Prike.Liang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.17 844/849] drm/amdgpu/userq: assign an error code for invalid userq va
 Date: Tue, 11 Nov 2025 09:46:54 +0900
-Message-ID: <20251111004539.561607945@linuxfoundation.org>
+Message-ID: <20251111004556.824718318@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Prike Liang <Prike.Liang@amd.com>
 
-commit d34caa89a132cd69efc48361d4772251546fdb88 upstream.
+commit 883bd89d00085c2c5f1efcd25861745cb039f9e3 upstream.
 
-ufshcd_link_startup() has a facility (link_startup_again) to issue
-DME_LINKSTARTUP a 2nd time even though the 1st time was successful.
+It should return an error code if userq VA validation fails.
 
-Some older hardware benefits from that, however the behaviour is
-non-standard, and has been found to cause link startup to be unreliable
-for some Intel Alder Lake based host controllers.
-
-Add UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE to suppress
-link_startup_again, in preparation for setting the quirk for affected
-controllers.
-
-Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251024085918.31825-3-adrian.hunter@intel.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 9e46b8bb0539 ("drm/amdgpu: validate userq buffer virtual address and size")
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c |    3 ++-
- include/ufs/ufshcd.h      |    7 +++++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -5028,7 +5028,8 @@ static int ufshcd_link_startup(struct uf
- 	 * If UFS device isn't active then we will have to issue link startup
- 	 * 2 times to make sure the device state move to active.
- 	 */
--	if (!ufshcd_is_ufs_dev_active(hba))
-+	if (!(hba->quirks & UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE) &&
-+	    !ufshcd_is_ufs_dev_active(hba))
- 		link_startup_again = true;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
+@@ -71,6 +71,7 @@ int amdgpu_userq_input_va_validate(struc
+ 		return 0;
+ 	}
  
- link_startup:
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -687,6 +687,13 @@ enum ufshcd_quirks {
- 	 * single doorbell mode.
- 	 */
- 	UFSHCD_QUIRK_BROKEN_LSDBS_CAP			= 1 << 25,
-+
-+	/*
-+	 * This quirk indicates that DME_LINKSTARTUP should not be issued a 2nd
-+	 * time (refer link_startup_again) after the 1st time was successful,
-+	 * because it causes link startup to become unreliable.
-+	 */
-+	UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE		= 1 << 26,
- };
- 
- enum ufshcd_caps {
++	r = -EINVAL;
+ out_err:
+ 	amdgpu_bo_unreserve(vm->root.bo);
+ 	return r;
+@@ -476,6 +477,7 @@ amdgpu_userq_create(struct drm_file *fil
+ 	if (amdgpu_userq_input_va_validate(&fpriv->vm, args->in.queue_va, args->in.queue_size) ||
+ 	    amdgpu_userq_input_va_validate(&fpriv->vm, args->in.rptr_va, AMDGPU_GPU_PAGE_SIZE) ||
+ 	    amdgpu_userq_input_va_validate(&fpriv->vm, args->in.wptr_va, AMDGPU_GPU_PAGE_SIZE)) {
++		r = -EINVAL;
+ 		kfree(queue);
+ 		goto unlock;
+ 	}
 
 
 
