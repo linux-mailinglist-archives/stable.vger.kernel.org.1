@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6FEC4AAC3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF2BC4AE17
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E61A04F672C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 235B73A997B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB09346E5D;
-	Tue, 11 Nov 2025 01:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A49034844B;
+	Tue, 11 Nov 2025 01:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeLdOOVq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQ5653/J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BDB2DE707;
-	Tue, 11 Nov 2025 01:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502952DCF6E;
+	Tue, 11 Nov 2025 01:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824226; cv=none; b=PVNH5dxs2qzltdh7uQNJfspcjPYBnWkmqC6we3r/kwqzy/n6M2297L1qIXdVGSF1uNyE3RzcqVMV80YfmhNVRTE7n6bpzxHL9DehmbRCcwBI+udOTnAli4zxJrbJGQc9IpALShxpCwFB+og2mD1uqDK8+f4+injMRewo9lQJE4c=
+	t=1762824337; cv=none; b=WLGdCZI+Cju7NKwDrTKyCz7Pa4Ba7WTfWkcootogfmWKg6f28V/HSivEKcoOzDlBdEQiF9EvyPU5lfoZJFU6B0d6brtJSCAyfQVZxYsCk2FmsPSZdz8BVMPhE1YbJKazfzOb98+VimNTdkh73g1ku4MT+w0dRZ8fqOzdj8DWwt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824226; c=relaxed/simple;
-	bh=O6ADUg+x+IvWaNgc+7nV+tHeeayo3pZHwLbLtaXu0QE=;
+	s=arc-20240116; t=1762824337; c=relaxed/simple;
+	bh=miHueLiGyU0aHGJTFhH89sCdrMdni1fXzeNL1Oph+2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K6lVTzgnXWsw7lRAoX7kI8ij/Nv+BFs9GBERWLFsDl7ScnCPeW8kGSXEPpx7gQxoQxOgx1UQxuTFu+Pn2MI0tOFtvLwcmQud3UttX8FRzXGTXAFE9hV5iY5syatY+jts5ZZ/LxlG4PxXlyQp4YwOQTwFeZVlKuCVrFFuHwYiE5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeLdOOVq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B7AC4CEFB;
-	Tue, 11 Nov 2025 01:23:45 +0000 (UTC)
+	 MIME-Version; b=sBPBtzZSXYrc7UbKHpDsN7GGt3bKy1JKC4YtQti6L0fLrBCHOR0X6UREW4bWycZ1sogblh+3CCclUYwpocjCZgHJmVejn/wDyYQ61fhQwMAlOcFDXEANIbUxSv1jbyC0zsfKfDTp4oK3RMdaYtEfk8zTxzKmRN48FS17qVuogV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQ5653/J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E079BC19421;
+	Tue, 11 Nov 2025 01:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824226;
-	bh=O6ADUg+x+IvWaNgc+7nV+tHeeayo3pZHwLbLtaXu0QE=;
+	s=korg; t=1762824337;
+	bh=miHueLiGyU0aHGJTFhH89sCdrMdni1fXzeNL1Oph+2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xeLdOOVqxyFLsRBimt1LyrNwr2iZfNjenT4Swi4IThh0FdqHBHKZmFetvEKAGUaQW
-	 NC5wjALZkIAwXo7QhjbUDzQAW108x3Vh2nGZzESXmSxt9zv5D3yjmXPxKgjd2+2G7/
-	 704eIQdUJYjpufMMQHAdgRvQjLFhDApzkfRIfROs=
+	b=nQ5653/JqsLgCsUst18d00MdFWC+fNIhS7U9kzRzMMNtmxtlgVyDia7s1njdLLMMt
+	 EZ48ihOiOkUc55OC+1rbHLM0qGG55mTM+i5yzFfxRdaLJq12li1sbJEvYTqDprpH6S
+	 PrvQaK36DGiWRGOBg8gouFLj4m9t+wu8iiBa5JBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChunHao Lin <hau@realtek.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 401/565] r8169: set EEE speed down ratio to 1
-Date: Tue, 11 Nov 2025 09:44:17 +0900
-Message-ID: <20251111004535.893368189@linuxfoundation.org>
+Subject: [PATCH 6.12 402/565] PCI: cadence: Check for the existence of cdns_pcie::ops before using it
+Date: Tue, 11 Nov 2025 09:44:18 +0900
+Message-ID: <20251111004535.916505587@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,61 +66,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: ChunHao Lin <hau@realtek.com>
+From: Chen Wang <unicorn_wang@outlook.com>
 
-[ Upstream commit bf7154ffb1c65a201906296a9d3eb22e9daa5ffc ]
+[ Upstream commit 49a6c160ad4812476f8ae1a8f4ed6d15adfa6c09 ]
 
-EEE speed down means speed down MAC MCU clock. It is not from spec.
-It is kind of Realtek specific power saving feature. But enable it
-may cause some issues, like packet drop or interrupt loss. Different
-hardware may have different issues.
+cdns_pcie::ops might not be populated by all the Cadence glue drivers. This
+is going to be true for the upcoming Sophgo platform which doesn't set the
+ops.
 
-EEE speed down ratio (mac ocp 0xe056[7:4]) is used to set EEE speed
-down rate. The larger this value is, the more power can save. But it
-actually save less power then we expected. And, as mentioned above,
-will impact compatibility. So set it to 1 (mac ocp 0xe056[7:4] = 0)
-, which means not to speed down, to improve compatibility.
+Hence, add a check to prevent NULL pointer dereference.
 
-Signed-off-by: ChunHao Lin <hau@realtek.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://patch.msgid.link/20250918023425.3463-1-hau@realtek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chen Wang <unicorn_wang@outlook.com>
+[mani: reworded subject and description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/35182ee1d972dfcd093a964e11205efcebbdc044.1757643388.git.unicorn_wang@outlook.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/controller/cadence/pcie-cadence-host.c | 2 +-
+ drivers/pci/controller/cadence/pcie-cadence.c      | 4 ++--
+ drivers/pci/controller/cadence/pcie-cadence.h      | 6 +++---
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 80b5262d0d572..bec5f68237753 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -3467,7 +3467,7 @@ static void rtl_hw_start_8168h_1(struct rtl8169_private *tp)
- 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
+diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+index 741e10a575ec7..675b7ea6ff784 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence-host.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+@@ -452,7 +452,7 @@ static int cdns_pcie_host_init_address_translation(struct cdns_pcie_rc *rc)
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_PCI_ADDR1(0), addr1);
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(0), desc1);
+ 
+-	if (pcie->ops->cpu_addr_fixup)
++	if (pcie->ops && pcie->ops->cpu_addr_fixup)
+ 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
+ 
+ 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(12) |
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.c b/drivers/pci/controller/cadence/pcie-cadence.c
+index 4251fac5e3106..a1b66dbfc10f8 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.c
++++ b/drivers/pci/controller/cadence/pcie-cadence.c
+@@ -90,7 +90,7 @@ void cdns_pcie_set_outbound_region(struct cdns_pcie *pcie, u8 busnr, u8 fn,
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(r), desc1);
+ 
+ 	/* Set the CPU address */
+-	if (pcie->ops->cpu_addr_fixup)
++	if (pcie->ops && pcie->ops->cpu_addr_fixup)
+ 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
+ 
+ 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(nbits) |
+@@ -120,7 +120,7 @@ void cdns_pcie_set_outbound_region_for_normal_msg(struct cdns_pcie *pcie,
  	}
  
--	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
-+	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
- 	r8168_mac_ocp_modify(tp, 0xe052, 0x6000, 0x8008);
- 	r8168_mac_ocp_modify(tp, 0xe0d6, 0x01ff, 0x017f);
- 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
-@@ -3572,7 +3572,7 @@ static void rtl_hw_start_8117(struct rtl8169_private *tp)
- 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
- 	}
+ 	/* Set the CPU address */
+-	if (pcie->ops->cpu_addr_fixup)
++	if (pcie->ops && pcie->ops->cpu_addr_fixup)
+ 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
  
--	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
-+	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
- 	r8168_mac_ocp_write(tp, 0xea80, 0x0003);
- 	r8168_mac_ocp_modify(tp, 0xe052, 0x0000, 0x0009);
- 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
-@@ -3772,7 +3772,7 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
- 	r8168_mac_ocp_modify(tp, 0xc0b4, 0x0000, 0x000c);
- 	r8168_mac_ocp_modify(tp, 0xeb6a, 0x00ff, 0x0033);
- 	r8168_mac_ocp_modify(tp, 0xeb50, 0x03e0, 0x0040);
--	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0030);
-+	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
- 	r8168_mac_ocp_modify(tp, 0xe040, 0x1000, 0x0000);
- 	r8168_mac_ocp_modify(tp, 0xea1c, 0x0003, 0x0001);
- 	if (tp->mac_version == RTL_GIGA_MAC_VER_65 ||
+ 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(17) |
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+index 39ee9945c903e..c267566fa76ec 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.h
++++ b/drivers/pci/controller/cadence/pcie-cadence.h
+@@ -499,7 +499,7 @@ static inline u32 cdns_pcie_ep_fn_readl(struct cdns_pcie *pcie, u8 fn, u32 reg)
+ 
+ static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
+ {
+-	if (pcie->ops->start_link)
++	if (pcie->ops && pcie->ops->start_link)
+ 		return pcie->ops->start_link(pcie);
+ 
+ 	return 0;
+@@ -507,13 +507,13 @@ static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
+ 
+ static inline void cdns_pcie_stop_link(struct cdns_pcie *pcie)
+ {
+-	if (pcie->ops->stop_link)
++	if (pcie->ops && pcie->ops->stop_link)
+ 		pcie->ops->stop_link(pcie);
+ }
+ 
+ static inline bool cdns_pcie_link_up(struct cdns_pcie *pcie)
+ {
+-	if (pcie->ops->link_up)
++	if (pcie->ops && pcie->ops->link_up)
+ 		return pcie->ops->link_up(pcie);
+ 
+ 	return true;
 -- 
 2.51.0
 
