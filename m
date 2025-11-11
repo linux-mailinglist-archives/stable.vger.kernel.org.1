@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 976F9C4A77C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:07 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8504C4A56F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:20:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28C4D189410B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 635DF34BF7A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB22343201;
-	Tue, 11 Nov 2025 01:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD79343203;
+	Tue, 11 Nov 2025 01:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GiGDq2rb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5i0HAHu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061432D8DC3;
-	Tue, 11 Nov 2025 01:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29217261573;
+	Tue, 11 Nov 2025 01:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823537; cv=none; b=kLGjUJjmxovB69fv9yZhSZi4mAFDe7Fh9X0Roz06nPMz9LRXSsJVpnK1c37JiBN9+k1uotd0uCx2XA9/geWrog7XXANGd0JGiyIT2hpl+InDiyzGQkYgM0Q/EtjmDkfp3IzHoQJe9Seva368odJBtcAXUSZrLaCq523PY6XJ4W8=
+	t=1762823544; cv=none; b=N0JOAQ4dZyVue9VYrXrpRdOLH9MbMN2oyEv1uZ5eQbSRK/Zc+TGdYK/wpf734rCLt10vN29XwRP9aaHnlYK7gGdkRV/qC44Y4zya2Pb20EvbAoWuAR3pw2LP/ypoHnjz/dcm4g56icHVitl3+GY7tohHlEfv1gcH/S9vwWhYHzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823537; c=relaxed/simple;
-	bh=rCFDDwrHQLDPraSpHyaOU7kywXHIFGTWN/h63SN7gHg=;
+	s=arc-20240116; t=1762823544; c=relaxed/simple;
+	bh=mb5tuZ9vupYB16M4CKqWLNMgeNb4UHczSx6Rx+8QW6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4QrlR4KuhbzM20UgaFYCJVlf0ufhsJgeNZsZDgCKn45Oz5rlRls3ZqwbV7RUt7NQXdX/c4JZ/R8F04KVePm1gWo5avJDUvgKdUBY2I0hifx3bD/jNiXsZboDqlz6suWdogMtHPsh6l9sqodfrAGAIBqC1ldU/syBh52FdAagu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GiGDq2rb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988A0C113D0;
-	Tue, 11 Nov 2025 01:12:16 +0000 (UTC)
+	 MIME-Version; b=K/vXmx6FHP9WehDD/dSEs/Wr1TWtb/g/6307VPmPXIYCvcHQ3+ejldTxDgVGv9xX9zi69juvTSINX0M+zgVEhonjRw9ehcBhnahCsxHEd8oNbg2NqzjbMfbwM+RDyi+jruLgCb8pwkaBZwynHQv7Y5xMVnfw6GBQaXQIpxoYuyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5i0HAHu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D15C113D0;
+	Tue, 11 Nov 2025 01:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823536;
-	bh=rCFDDwrHQLDPraSpHyaOU7kywXHIFGTWN/h63SN7gHg=;
+	s=korg; t=1762823543;
+	bh=mb5tuZ9vupYB16M4CKqWLNMgeNb4UHczSx6Rx+8QW6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GiGDq2rbvy2zq4su6jt6pTD+r1pvUalqujrbAMoXCadQuoY99ZdA039Z3fFPLf5nx
-	 3z07Us4yD/ybuSCWjUgX7CIUQazcrMYyQrAAUDvJOt1GA+Ccdum/UwGuwYF8VSc96I
-	 WUlUrH0JuaRjAd0USrfdK/ml9FCgpcswB244eci8=
+	b=i5i0HAHu5BywMz/lxJFQy67naiN/cL8z1lPY29FtUFLxVpLjvtxcS1PjA5v6Blo0u
+	 eprzbvwTn7NWGOTltupDPpaJGU53prd5semRrDsg+zt4z2oxWoHn5NEBPuR4l4R2Tt
+	 y+8rY/A1bcewi92wyR4cxT7wakqIvC9Lx8eNX3FU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
-	David Lechner <dlechner@baylibre.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Primoz Fiser <primoz.fiser@norik.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 319/849] iio: adc: spear_adc: mask SPEAR_ADC_STATUS channel and avg sample before setting register
-Date: Tue, 11 Nov 2025 09:38:09 +0900
-Message-ID: <20251111004544.125911931@linuxfoundation.org>
+Subject: [PATCH 6.17 320/849] iio: adc: imx93_adc: load calibrated values even calibration failed
+Date: Tue, 11 Nov 2025 09:38:10 +0900
+Message-ID: <20251111004544.150051957@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,62 +68,86 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit d75c7021c08e8ae3f311ef2464dca0eaf75fab9f ]
+[ Upstream commit 12c9b09e981ab14ebec8e4eefa946cbd26dd306b ]
 
-avg sample info is a bit field coded inside the following
-bits: 5,6,7 and 8 of a device status register.
+ADC calibration might fail because of the noise on reference voltage.
+To avoid calibration fail, need to meet the following requirement:
+    ADC reference voltage Noise < 1.8V * 1/2^ENOB
 
-Channel num info the same, but over bits: 1, 2 and 3.
+For the case which the ADC reference voltage on board do not meet
+the requirement, still load the calibrated values, so ADC can also
+work but maybe not that accurate.
 
-Mask both values in order to avoid touching other register bits,
-since the first info (avg sample), came from DT.
-
-Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250717221559.158872-1-rodrigo.gobbi.7@gmail.com
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Primoz Fiser <primoz.fiser@norik.com>
+Link: https://patch.msgid.link/20250812-adc-v2-2-0260833f13b8@nxp.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/spear_adc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/iio/adc/imx93_adc.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/spear_adc.c b/drivers/iio/adc/spear_adc.c
-index e3a865c79686e..df100dce77da4 100644
---- a/drivers/iio/adc/spear_adc.c
-+++ b/drivers/iio/adc/spear_adc.c
-@@ -14,6 +14,7 @@
- #include <linux/kernel.h>
- #include <linux/slab.h>
- #include <linux/io.h>
-+#include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/err.h>
- #include <linux/completion.h>
-@@ -29,9 +30,9 @@
+diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
+index 7feaafd2316f2..9f1546c3d39d5 100644
+--- a/drivers/iio/adc/imx93_adc.c
++++ b/drivers/iio/adc/imx93_adc.c
+@@ -38,6 +38,7 @@
+ #define IMX93_ADC_PCDR6		0x118
+ #define IMX93_ADC_PCDR7		0x11c
+ #define IMX93_ADC_CALSTAT	0x39C
++#define IMX93_ADC_CALCFG0	0x3A0
  
- /* Bit definitions for SPEAR_ADC_STATUS */
- #define SPEAR_ADC_STATUS_START_CONVERSION	BIT(0)
--#define SPEAR_ADC_STATUS_CHANNEL_NUM(x)		((x) << 1)
-+#define SPEAR_ADC_STATUS_CHANNEL_NUM_MASK	GENMASK(3, 1)
- #define SPEAR_ADC_STATUS_ADC_ENABLE		BIT(4)
--#define SPEAR_ADC_STATUS_AVG_SAMPLE(x)		((x) << 5)
-+#define SPEAR_ADC_STATUS_AVG_SAMPLE_MASK	GENMASK(8, 5)
- #define SPEAR_ADC_STATUS_VREF_INTERNAL		BIT(9)
+ /* ADC bit shift */
+ #define IMX93_ADC_MCR_MODE_MASK			BIT(29)
+@@ -58,6 +59,8 @@
+ #define IMX93_ADC_IMR_ECH_MASK			BIT(0)
+ #define IMX93_ADC_PCDR_CDATA_MASK		GENMASK(11, 0)
  
- #define SPEAR_ADC_DATA_MASK		0x03ff
-@@ -157,8 +158,8 @@ static int spear_adc_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_RAW:
- 		mutex_lock(&st->lock);
++#define IMX93_ADC_CALCFG0_LDFAIL_MASK		BIT(4)
++
+ /* ADC status */
+ #define IMX93_ADC_MSR_ADCSTATUS_IDLE			0
+ #define IMX93_ADC_MSR_ADCSTATUS_POWER_DOWN		1
+@@ -145,7 +148,7 @@ static void imx93_adc_config_ad_clk(struct imx93_adc *adc)
  
--		status = SPEAR_ADC_STATUS_CHANNEL_NUM(chan->channel) |
--			SPEAR_ADC_STATUS_AVG_SAMPLE(st->avg_samples) |
-+		status = FIELD_PREP(SPEAR_ADC_STATUS_CHANNEL_NUM_MASK, chan->channel) |
-+			FIELD_PREP(SPEAR_ADC_STATUS_AVG_SAMPLE_MASK, st->avg_samples) |
- 			SPEAR_ADC_STATUS_START_CONVERSION |
- 			SPEAR_ADC_STATUS_ADC_ENABLE;
- 		if (st->vref_external == 0)
+ static int imx93_adc_calibration(struct imx93_adc *adc)
+ {
+-	u32 mcr, msr;
++	u32 mcr, msr, calcfg;
+ 	int ret;
+ 
+ 	/* make sure ADC in power down mode */
+@@ -158,6 +161,11 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
+ 
+ 	imx93_adc_power_up(adc);
+ 
++	/* Enable loading of calibrated values even in fail condition */
++	calcfg = readl(adc->regs + IMX93_ADC_CALCFG0);
++	calcfg |= IMX93_ADC_CALCFG0_LDFAIL_MASK;
++	writel(calcfg, adc->regs + IMX93_ADC_CALCFG0);
++
+ 	/*
+ 	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
+ 	 * can add the setting of these bit if need in future.
+@@ -180,9 +188,13 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
+ 	/* check whether calbration is success or not */
+ 	msr = readl(adc->regs + IMX93_ADC_MSR);
+ 	if (msr & IMX93_ADC_MSR_CALFAIL_MASK) {
++		/*
++		 * Only give warning here, this means the noise of the
++		 * reference voltage do not meet the requirement:
++		 *     ADC reference voltage Noise < 1.8V * 1/2^ENOB
++		 * And the resault of ADC is not that accurate.
++		 */
+ 		dev_warn(adc->dev, "ADC calibration failed!\n");
+-		imx93_adc_power_down(adc);
+-		return -EAGAIN;
+ 	}
+ 
+ 	return 0;
 -- 
 2.51.0
 
