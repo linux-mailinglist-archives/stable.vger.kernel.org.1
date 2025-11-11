@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-194273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A38BC4AFAF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 046B3C4AC01
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B79EA188FF54
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96D1C188E96C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD0F3081D2;
-	Tue, 11 Nov 2025 01:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA51346E7E;
+	Tue, 11 Nov 2025 01:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ms0zYPJB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKjnoJAb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F12F2472A6;
-	Tue, 11 Nov 2025 01:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8922DEA9D;
+	Tue, 11 Nov 2025 01:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825212; cv=none; b=b214eE9J6bPnTM/mV57riJP13Idwosh1jjAClw0+WTKlFGew8ae3X88HBTtWvxMIq1Cd/8J4BYl94X4JjN89XfeEh901M+KxqqCTIVkLziZ1t1svSiIKSiS6gQxb40IxdnqySkJhgHfKneC+vwyHkjzMcLPZtXapz5iyrIwtoNU=
+	t=1762824257; cv=none; b=DhYu2sD1G4lQHwcctrkb1T0KtAPh/7PQ4LVddpVzoa5EFqPKxfOlJsFyYKqxgpY1Z/JlZs9y3Atyho9AvejtEz1wBEbUxi+0eoNXCZyvSyWPM2e077CGJJKb6FlK/Exo3xCKXuhVdXuxQ9HFSCARf/bM+JtES/lzCL4CLexwQsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825212; c=relaxed/simple;
-	bh=s1OtRQEnmoPbGBMT1KbarnsgBxcE2dyPdtk8ksFG8BA=;
+	s=arc-20240116; t=1762824257; c=relaxed/simple;
+	bh=Q7vh8dUBOsYWcXrPCXCvJriQ/SICKVR4iTDJ3PyIDCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HFwldDn9wW4KHCdsKzAH127D+WiZq3uIG61vpqY3c/uU0uEtaOLj5VVienv7jiouL5xmse4mLRGHzTGu3mO/1mt5Hp8xh63MTfvYre8xOssUghDBoz76LcNQiGX5mgp/OS8WCSjymfpr2LjbKe0AJk3r0nvk28oS44vC8RVD5EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ms0zYPJB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B6DC116B1;
-	Tue, 11 Nov 2025 01:40:11 +0000 (UTC)
+	 MIME-Version; b=P/YqGl8BGAEIBVm6TylLzf1wTXoDVJaA2V8fKiqSVGrkBA67K9lWhTD/jlHoNVau3UzNMV+becFZWkLVFrRHh8GLrhoZnlwWwtkwHOsn8W7kPq5QzJ5CDTVGsjskYc1I4y9nFjbOdY29rNj8VEZlJXW842edITMmNds6zBvoOh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKjnoJAb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BACC2BCB1;
+	Tue, 11 Nov 2025 01:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825212;
-	bh=s1OtRQEnmoPbGBMT1KbarnsgBxcE2dyPdtk8ksFG8BA=;
+	s=korg; t=1762824256;
+	bh=Q7vh8dUBOsYWcXrPCXCvJriQ/SICKVR4iTDJ3PyIDCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ms0zYPJBUQFam6n4kVrTt2hEOKrteZJ0sxiAeTV3eEiCVfyih0XX/AMWZ0spiarFp
-	 776vxFJ2rOqGaoaaN/slK+JvqnLumS60wvZniOyew5tW4Yhseli9vbd+Oqx6R2qGwE
-	 KcxLWrUXRYMh+HnlisUWhB+/u5LxB3VVHKdIdF6w=
+	b=qKjnoJAb7AzuAz4NsJCIO2aiw0EaQ8kAJfi95zUpTHyym5rlp/74mBBUCHVDBiWvi
+	 ozX9lnLQKmuvC+SJJxkepu7+Hqh85R8reMgJrD83egnlCMJlOdsSVoUJP8F0nhdN2g
+	 bnlxs4Grh2nCxdM5of9q5UGAhmn52afi4faAcZ1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Wanner <Ryan.Wanner@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 706/849] clk: at91: clk-master: Add check for divide by 3
+Subject: [PATCH 6.12 420/565] net: bridge: Install FDB for bridge MAC on VLAN 0
 Date: Tue, 11 Nov 2025 09:44:36 +0900
-Message-ID: <20251111004553.503888364@linuxfoundation.org>
+Message-ID: <20251111004536.309866467@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Wanner <Ryan.Wanner@microchip.com>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit e0237f5635727d64635ec6665e1de9f4cacce35c ]
+[ Upstream commit cd9a9562b2559973aa1b68c3af63021a2c5fd022 ]
 
-A potential divider for the master clock is div/3. The register
-configuration for div/3 is MASTER_PRES_MAX. The current bit shifting
-method does not work for this case. Checking for MASTER_PRES_MAX will
-ensure the correct decimal value is stored in the system.
+Currently, after the bridge is created, the FDB does not hold an FDB entry
+for the bridge MAC on VLAN 0:
 
-Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+ # ip link add name br up type bridge
+ # ip -br link show dev br
+ br               UNKNOWN        92:19:8c:4e:01:ed <BROADCAST,MULTICAST,UP,LOWER_UP>
+ # bridge fdb show | grep 92:19:8c:4e:01:ed
+ 92:19:8c:4e:01:ed dev br vlan 1 master br permanent
+
+Later when the bridge MAC is changed, or in fact when the address is given
+during netdevice creation, the entry appears:
+
+ # ip link add name br up address 00:11:22:33:44:55 type bridge
+ # bridge fdb show | grep 00:11:22:33:44:55
+ 00:11:22:33:44:55 dev br vlan 1 master br permanent
+ 00:11:22:33:44:55 dev br master br permanent
+
+However when the bridge address is set by the user to the current bridge
+address before the first port is enslaved, none of the address handlers
+gets invoked, because the address is not actually changed. The address is
+however marked as NET_ADDR_SET. Then when a port is enslaved, the address
+is not changed, because it is NET_ADDR_SET. Thus the VLAN 0 entry is not
+added, and it has not been added previously either:
+
+ # ip link add name br up type bridge
+ # ip -br link show dev br
+ br               UNKNOWN        7e:f0:a8:1a:be:c2 <BROADCAST,MULTICAST,UP,LOWER_UP>
+ # ip link set dev br addr 7e:f0:a8:1a:be:c2
+ # ip link add name v up type veth
+ # ip link set dev v master br
+ # ip -br link show dev br
+ br               UNKNOWN        7e:f0:a8:1a:be:c2 <BROADCAST,MULTICAST,UP,LOWER_UP>
+ # bridge fdb | grep 7e:f0:a8:1a:be:c2
+ 7e:f0:a8:1a:be:c2 dev br vlan 1 master br permanent
+
+Then when the bridge MAC is used as DMAC, and br_handle_frame_finish()
+looks up an FDB entry with VLAN=0, it doesn't find any, and floods the
+traffic instead of passing it up.
+
+Fix this by simply adding the VLAN 0 FDB entry for the bridge itself always
+on netdevice creation. This also makes the behavior consistent with how
+ports are treated: ports always have an FDB entry for each member VLAN as
+well as VLAN 0.
+
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/415202b2d1b9b0899479a502bbe2ba188678f192.1758550408.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/at91/clk-master.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/bridge/br.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/clk/at91/clk-master.c b/drivers/clk/at91/clk-master.c
-index 7a544e429d34e..d5ea2069ec83a 100644
---- a/drivers/clk/at91/clk-master.c
-+++ b/drivers/clk/at91/clk-master.c
-@@ -580,6 +580,9 @@ clk_sama7g5_master_recalc_rate(struct clk_hw *hw,
- {
- 	struct clk_master *master = to_clk_master(hw);
+diff --git a/net/bridge/br.c b/net/bridge/br.c
+index ed08717541fe7..35e9842f4203c 100644
+--- a/net/bridge/br.c
++++ b/net/bridge/br.c
+@@ -37,6 +37,11 @@ static int br_device_event(struct notifier_block *unused, unsigned long event, v
+ 	int err;
  
-+	if (master->div == MASTER_PRES_MAX)
-+		return DIV_ROUND_CLOSEST_ULL(parent_rate, 3);
+ 	if (netif_is_bridge_master(dev)) {
++		struct net_bridge *br = netdev_priv(dev);
 +
- 	return DIV_ROUND_CLOSEST_ULL(parent_rate, (1 << master->div));
- }
- 
++		if (event == NETDEV_REGISTER)
++			br_fdb_change_mac_address(br, dev->dev_addr);
++
+ 		err = br_vlan_bridge_event(dev, event, ptr);
+ 		if (err)
+ 			return notifier_from_errno(err);
 -- 
 2.51.0
 
