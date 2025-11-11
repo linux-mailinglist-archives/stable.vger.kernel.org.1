@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-193842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ADAEC4AB41
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A82FEC4A3F5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:09:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 320C83B5EE3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3D6584E69E1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D472126A0C7;
-	Tue, 11 Nov 2025 01:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD002505AA;
+	Tue, 11 Nov 2025 01:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SogaFzp4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yb7q3pCQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A582652AF;
-	Tue, 11 Nov 2025 01:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C627253944;
+	Tue, 11 Nov 2025 01:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824134; cv=none; b=uLICshMEROu2/bD8i/WmHkKcnbKdNQ5tTIVifeOus9u/vrotwObOlK+N8P8r50DtXtLKCWZaykyZFDgC8/DVSoWkDWHFb8rGqBjjiyyHnI/GHOi6Gv8qyrUvqhcO62ngihk5ztBEckO1X2KMMfLDh58TTqDV0FI/AJ4z5mIV9xU=
+	t=1762823026; cv=none; b=MTxLtFKgR0e/izm8/YFRCXPXFkhYvk4RgZqqB2hsCdmTkmB+1Ncn/QKhGf6oICmuyUDuNcRZWv5HWSOiMx9fvSbum0fptMPke6q1hzAe0DXLChmb9CQYcIhc5vPQMkzj2Tpv627abQBG+SJJIECkTUb5pTipoXi5pFv+BSkOuwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824134; c=relaxed/simple;
-	bh=YoXkQDBTt0Qh8uwMNt7/WmUMK9RCYZFtuSOzenfbv3U=;
+	s=arc-20240116; t=1762823026; c=relaxed/simple;
+	bh=LqwF9DlP2ZhRrf1nMYJQLyDl05H3CdeuzG0OYTn171s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=haRC/T8zNLgQsyrE4fJhKy//xLTHsttlfnV9ccOs9V7QvF0ntcsIBexRrnWPrgSOnvPjE4dir/0agzvO8gB5ojBGIAbitcC77E9OfuZRbiJfoLoqcVZWGra0JfJa/UkPpY+lNs4Yv7g9xvTBJ9IQMH5C0Wo5zBZhLd6EFH7izW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SogaFzp4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311BAC4CEF5;
-	Tue, 11 Nov 2025 01:22:14 +0000 (UTC)
+	 MIME-Version; b=M/Oo42A6oSg04WCwKCDZd3myeBfWfsC4tMbvToqKycBOZ6Xsm2STFREPZEdZn34Arq8Z28G9qajJtBBdrZFkfgk9Rk5+M/pReLQm/hvM8t4un4JN+5zpR5avZ02kCQsoNa5TdrvGJfkmdboiLW/4GB8Kykv6cVn6r718/RVanQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yb7q3pCQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D30C4AF0B;
+	Tue, 11 Nov 2025 01:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824134;
-	bh=YoXkQDBTt0Qh8uwMNt7/WmUMK9RCYZFtuSOzenfbv3U=;
+	s=korg; t=1762823025;
+	bh=LqwF9DlP2ZhRrf1nMYJQLyDl05H3CdeuzG0OYTn171s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SogaFzp4yQ7yWoaMIK5HGcz6ZNiaU2PSzX7KPAIQ1nATBGQU85eLNwR8x+ZE2D7u0
-	 U09r2ovBTzk7lENxa2VwS9GumrI1KOxGMlRlWgaafD+IKlwMNTrwLjlXItUyfZVifh
-	 cobsY1gZL/0bgyrHG0804GfgADGgIfeYnlh2tYws=
+	b=yb7q3pCQRDn9deKDVByzhqiEvgLecGhgqWuW0lmFSEN1e8QTOOwbstAYBpI8z9/lM
+	 8VKANRuyhNaziC+hs94+9Sz2WObI46gCjDkT/INb5hrpuQLpsroZhygOlaR/MnnN64
+	 bsWEm/7mrjEJ96LCq2iVIXA46u4ltHq+bSvPg4AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 443/849] net: call cond_resched() less often in __release_sock()
+Subject: [PATCH 6.12 157/565] nvme: Use non zero KATO for persistent discovery connections
 Date: Tue, 11 Nov 2025 09:40:13 +0900
-Message-ID: <20251111004547.144551640@linuxfoundation.org>
+Message-ID: <20251111004530.470222206@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alistair Francis <alistair.francis@wdc.com>
 
-[ Upstream commit 16c610162d1f1c332209de1c91ffb09b659bb65d ]
+[ Upstream commit 2e482655019ab6fcfe8865b62432c6d03f0b5f80 ]
 
-While stress testing TCP I had unexpected retransmits and sack packets
-when a single cpu receives data from multiple high-throughput flows.
+The NVMe Base Specification 2.1 states that:
 
-super_netperf 4 -H srv -T,10 -l 3000 &
+"""
+A host requests an explicit persistent connection ... by specifying a
+non-zero Keep Alive Timer value in the Connect command.
+"""
 
-Tcpdump extract:
+As such if we are starting a persistent connection to a discovery
+controller and the KATO is currently 0 we need to update KATO to a non
+zero value to avoid continuous timeouts on the target.
 
- 00:00:00.000007 IP6 clnt > srv: Flags [.], seq 26062848:26124288, ack 1, win 66, options [nop,nop,TS val 651460834 ecr 3100749131], length 61440
- 00:00:00.000006 IP6 clnt > srv: Flags [.], seq 26124288:26185728, ack 1, win 66, options [nop,nop,TS val 651460834 ecr 3100749131], length 61440
- 00:00:00.000005 IP6 clnt > srv: Flags [P.], seq 26185728:26243072, ack 1, win 66, options [nop,nop,TS val 651460834 ecr 3100749131], length 57344
- 00:00:00.000006 IP6 clnt > srv: Flags [.], seq 26243072:26304512, ack 1, win 66, options [nop,nop,TS val 651460844 ecr 3100749141], length 61440
- 00:00:00.000005 IP6 clnt > srv: Flags [.], seq 26304512:26365952, ack 1, win 66, options [nop,nop,TS val 651460844 ecr 3100749141], length 61440
- 00:00:00.000007 IP6 clnt > srv: Flags [P.], seq 26365952:26423296, ack 1, win 66, options [nop,nop,TS val 651460844 ecr 3100749141], length 57344
- 00:00:00.000006 IP6 clnt > srv: Flags [.], seq 26423296:26484736, ack 1, win 66, options [nop,nop,TS val 651460853 ecr 3100749150], length 61440
- 00:00:00.000005 IP6 clnt > srv: Flags [.], seq 26484736:26546176, ack 1, win 66, options [nop,nop,TS val 651460853 ecr 3100749150], length 61440
- 00:00:00.000005 IP6 clnt > srv: Flags [P.], seq 26546176:26603520, ack 1, win 66, options [nop,nop,TS val 651460853 ecr 3100749150], length 57344
- 00:00:00.003932 IP6 clnt > srv: Flags [P.], seq 26603520:26619904, ack 1, win 66, options [nop,nop,TS val 651464844 ecr 3100753141], length 16384
- 00:00:00.006602 IP6 clnt > srv: Flags [.], seq 24862720:24866816, ack 1, win 66, options [nop,nop,TS val 651471419 ecr 3100759716], length 4096
- 00:00:00.013000 IP6 clnt > srv: Flags [.], seq 24862720:24866816, ack 1, win 66, options [nop,nop,TS val 651484421 ecr 3100772718], length 4096
- 00:00:00.000416 IP6 srv > clnt: Flags [.], ack 26619904, win 1393, options [nop,nop,TS val 3100773185 ecr 651484421,nop,nop,sack 1 {24862720:24866816}], length 0
-
-After analysis, it appears this is because of the cond_resched()
-call from  __release_sock().
-
-When current thread is yielding, while still holding the TCP socket lock,
-it might regain the cpu after a very long time.
-
-Other peer TLP/RTO is firing (multiple times) and packets are retransmit,
-while the initial copy is waiting in the socket backlog or receive queue.
-
-In this patch, I call cond_resched() only once every 16 packets.
-
-Modern TCP stack now spends less time per packet in the backlog,
-especially because ACK are no longer sent (commit 133c4c0d3717
-"tcp: defer regular ACK while processing socket backlog")
-
-Before:
-
-clnt:/# nstat -n;sleep 10;nstat|egrep "TcpOutSegs|TcpRetransSegs|TCPFastRetrans|TCPTimeouts|Probes|TCPSpuriousRTOs|DSACK"
-TcpOutSegs                      19046186           0.0
-TcpRetransSegs                  1471               0.0
-TcpExtTCPTimeouts               1397               0.0
-TcpExtTCPLossProbes             1356               0.0
-TcpExtTCPDSACKRecv              1352               0.0
-TcpExtTCPSpuriousRTOs           114                0.0
-TcpExtTCPDSACKRecvSegs          1352               0.0
-
-After:
-
-clnt:/# nstat -n;sleep 10;nstat|egrep "TcpOutSegs|TcpRetransSegs|TCPFastRetrans|TCPTimeouts|Probes|TCPSpuriousRTOs|DSACK"
-TcpOutSegs                      19218936           0.0
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250903174811.1930820-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/nvme/host/core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 1382bddcbaff4..bdeea7cc134df 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -3162,23 +3162,27 @@ void __release_sock(struct sock *sk)
- 	__acquires(&sk->sk_lock.slock)
- {
- 	struct sk_buff *skb, *next;
-+	int nb = 0;
- 
- 	while ((skb = sk->sk_backlog.head) != NULL) {
- 		sk->sk_backlog.head = sk->sk_backlog.tail = NULL;
- 
- 		spin_unlock_bh(&sk->sk_lock.slock);
- 
--		do {
-+		while (1) {
- 			next = skb->next;
- 			prefetch(next);
- 			DEBUG_NET_WARN_ON_ONCE(skb_dst_is_noref(skb));
- 			skb_mark_not_on_list(skb);
- 			sk_backlog_rcv(sk, skb);
- 
--			cond_resched();
--
- 			skb = next;
--		} while (skb != NULL);
-+			if (!skb)
-+				break;
-+
-+			if (!(++nb & 15))
-+				cond_resched();
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 24d82d35041b5..a3b9f8ea235f7 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4740,8 +4740,14 @@ void nvme_start_ctrl(struct nvme_ctrl *ctrl)
+ 	 * checking that they started once before, hence are reconnecting back.
+ 	 */
+ 	if (test_bit(NVME_CTRL_STARTED_ONCE, &ctrl->flags) &&
+-	    nvme_discovery_ctrl(ctrl))
++	    nvme_discovery_ctrl(ctrl)) {
++		if (!ctrl->kato) {
++			nvme_stop_keep_alive(ctrl);
++			ctrl->kato = NVME_DEFAULT_KATO;
++			nvme_start_keep_alive(ctrl);
 +		}
+ 		nvme_change_uevent(ctrl, "NVME_EVENT=rediscover");
++	}
  
- 		spin_lock_bh(&sk->sk_lock.slock);
- 	}
+ 	if (ctrl->queue_count > 1) {
+ 		nvme_queue_scan(ctrl);
 -- 
 2.51.0
 
