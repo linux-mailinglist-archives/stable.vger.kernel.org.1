@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-194070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872D1C4AB48
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F921C4A8AE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E70F13417E4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 830853B5ADC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135413451A6;
-	Tue, 11 Nov 2025 01:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19DF34403E;
+	Tue, 11 Nov 2025 01:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mz3/WfcE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BK9VCTN+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C360E1DF258;
-	Tue, 11 Nov 2025 01:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1C92D879A;
+	Tue, 11 Nov 2025 01:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824735; cv=none; b=cAx5dwgzvfu3/2ztvJT/0aI/c8t4wGYv3vTn3aTVHyYExLY9fkQ+/61fjZ/GhQUVZPKdQZ4kLs7hpq04EvuUf7psv5VBbUNhNwRWqN2QdMOM8A+XRhvb2ZWcQtsj12AEgFuURBu6t0UcUzVEWIBRrhE1/3o338/SAqTCo0L0j4Q=
+	t=1762823581; cv=none; b=FbcpYzACBc7rwC7YL+fw6V7pIJD8vCREVuLapL1ljZhaQ8X+kHFwqWiuYgqHxbk/pitacvvR8Va6WmyCLYLljidHMrvleT5QLBhMpk7JYo2bXcfvIACu/O/zMnbbU/i+h9yX95pqH672kwD2ErTL4ZUAfTmlKGgyuZK/UkDiO8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824735; c=relaxed/simple;
-	bh=uS5ywFPnDpYgkxwWRBBN+l/8natZwRQzYtnPXWw5X+I=;
+	s=arc-20240116; t=1762823581; c=relaxed/simple;
+	bh=0h1pEephsztK766OuMmNuHRMr5veDpn7kS38SJICkI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pi9V6cO3W662Qt/yn6GORCcqNd3CjQ+aDtXVTPqaDtwnhdmRR2RRA8XtpnzVbfuXA75I03eN5lbVS07/hAwRUjQn3xsDwb4zdr6nsNE7j7/aWY2Lwui+V0ESlZFMbNN/yCy4hJSP3nDB9jZQnTLYmf4Dw/wD5QQvfmu65i/Vbmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mz3/WfcE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AD8C4CEF5;
-	Tue, 11 Nov 2025 01:32:15 +0000 (UTC)
+	 MIME-Version; b=H5hdtcaeQeK8dgnNrLDIQbLP5Me6+Eo5ccKDwVwqVwxFrP+P/8wQ0ncVSyDntyLao5EbL1AlceGq17e3jq/XeACak1t7OQLPsEHblRtjFk9MTurhslB6X4C/P5jxei3bhyFacF78vvPIchFKURTLrlYIl2gdqj6dq8W9xxaDPGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BK9VCTN+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB1CC113D0;
+	Tue, 11 Nov 2025 01:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824735;
-	bh=uS5ywFPnDpYgkxwWRBBN+l/8natZwRQzYtnPXWw5X+I=;
+	s=korg; t=1762823581;
+	bh=0h1pEephsztK766OuMmNuHRMr5veDpn7kS38SJICkI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mz3/WfcEXYEteWfJBg8Ty7ZKd8fVRfxEzFTyXktXmcmhRiy/cUvs1SwZMgx5HN0bX
-	 1gWaTmwNS7Il9AGW7WCXoC0WIhWeT/v2I2GnkD7UQHPjSxs349cbBcReTb3+Zf68KL
-	 XYIQD+/tvyKNTSNcG0FEVzQMLTN+oxxtV4Cmxr+E=
+	b=BK9VCTN+73xgJIuokJfD4QQRh99U3KKSr5gb0vMlRPAQ1uH9UMQxAUrDwti4LBu/q
+	 nZnZjrlNiFJ99f1IWaKU6XCa8T5UpqllHAGBoE1VAzs8P50coBtUDYDPalrb3G1LSI
+	 9TKsG5RpixO5TzCGuACJHrsD3o6K6vVNZykG8YX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 560/849] net: phy: clear EEE runtime state in PHY_HALTED/PHY_ERROR
+Subject: [PATCH 6.12 274/565] inet_diag: annotate data-races in inet_diag_bc_sk()
 Date: Tue, 11 Nov 2025 09:42:10 +0900
-Message-ID: <20251111004549.951598349@linuxfoundation.org>
+Message-ID: <20251111004533.048153516@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0915cb22452723407ca9606b7e5cc3fe6ce767d5 ]
+[ Upstream commit 4fd84a0aaf2ba125b441aa09d415022385e66bf2 ]
 
-Clear EEE runtime flags when the PHY transitions to HALTED or ERROR
-and the state machine drops the link. This avoids stale EEE state being
-reported via ethtool after the PHY is stopped or hits an error.
+inet_diag_bc_sk() runs with an unlocked socket,
+annotate potential races with READ_ONCE().
 
-This change intentionally only clears software runtime flags and avoids
-MDIO accesses in HALTED/ERROR. A follow-up patch will address other
-link state variables.
-
-Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20250912132000.1598234-1-o.rempel@pengutronix.de
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250828102738.2065992-4-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/inet_diag.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index c02da57a4da5e..e046dd858f151 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -1551,6 +1551,8 @@ static enum phy_state_work _phy_state_machine(struct phy_device *phydev)
- 	case PHY_ERROR:
- 		if (phydev->link) {
- 			phydev->link = 0;
-+			phydev->eee_active = false;
-+			phydev->enable_tx_lpi = false;
- 			phy_link_down(phydev);
- 		}
- 		state_work = PHY_STATE_WORK_SUSPEND;
+diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
+index 67639309163d0..f2de2f2962595 100644
+--- a/net/ipv4/inet_diag.c
++++ b/net/ipv4/inet_diag.c
+@@ -783,7 +783,7 @@ static void entry_fill_addrs(struct inet_diag_entry *entry,
+ 			     const struct sock *sk)
+ {
+ #if IS_ENABLED(CONFIG_IPV6)
+-	if (sk->sk_family == AF_INET6) {
++	if (entry->family == AF_INET6) {
+ 		entry->saddr = sk->sk_v6_rcv_saddr.s6_addr32;
+ 		entry->daddr = sk->sk_v6_daddr.s6_addr32;
+ 	} else
+@@ -796,18 +796,18 @@ static void entry_fill_addrs(struct inet_diag_entry *entry,
+ 
+ int inet_diag_bc_sk(const struct nlattr *bc, struct sock *sk)
+ {
+-	struct inet_sock *inet = inet_sk(sk);
++	const struct inet_sock *inet = inet_sk(sk);
+ 	struct inet_diag_entry entry;
+ 
+ 	if (!bc)
+ 		return 1;
+ 
+-	entry.family = sk->sk_family;
++	entry.family = READ_ONCE(sk->sk_family);
+ 	entry_fill_addrs(&entry, sk);
+-	entry.sport = inet->inet_num;
+-	entry.dport = ntohs(inet->inet_dport);
+-	entry.ifindex = sk->sk_bound_dev_if;
+-	entry.userlocks = sk_fullsock(sk) ? sk->sk_userlocks : 0;
++	entry.sport = READ_ONCE(inet->inet_num);
++	entry.dport = ntohs(READ_ONCE(inet->inet_dport));
++	entry.ifindex = READ_ONCE(sk->sk_bound_dev_if);
++	entry.userlocks = sk_fullsock(sk) ? READ_ONCE(sk->sk_userlocks) : 0;
+ 	if (sk_fullsock(sk))
+ 		entry.mark = READ_ONCE(sk->sk_mark);
+ 	else if (sk->sk_state == TCP_NEW_SYN_RECV)
 -- 
 2.51.0
 
