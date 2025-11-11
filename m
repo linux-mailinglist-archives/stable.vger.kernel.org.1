@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-194264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CEEC4B127
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17384C4ABAD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09F313B3217
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BDA31895232
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CBA253951;
-	Tue, 11 Nov 2025 01:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E85346E48;
+	Tue, 11 Nov 2025 01:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="weAkyNnR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDTyTa1v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76432857F0;
-	Tue, 11 Nov 2025 01:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B191D86FF;
+	Tue, 11 Nov 2025 01:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825190; cv=none; b=syUIrwoY8d9JphjtPtuT9gB0zLjJhqCLm39jJFzUiSd0w8JOs9N8x3Gi+f0NpOPbYrmBmwhirSsmRUUhPT3QxfmbyY52Jk6j4/BbUFaquv0F5UQKMC5ajawLPUY+BP1Qrt8xvmVASKRFCE5ciLYFJBRTgPiXVcpR+fH41VI7QOo=
+	t=1762824219; cv=none; b=GoaftnJaL6dj+KYamqmyvPMEsZ3LKc/ia1jh38rwHsWpHhRmTvZqCMdNj0qrok1PJuy+1PhFKvsh8I6mZpBPYnSzNKQgXsOMP3RjZ8P3FBtF37mvd4/L7965lAnvZeBlw2ag+a2XVoMQBKZXmbp85yovxF0ZrvWpVZBT+7I2KBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825190; c=relaxed/simple;
-	bh=AbZBVSo3tr4WDeDZSn/U7eNcfemDE24+Skdh10lmwBA=;
+	s=arc-20240116; t=1762824219; c=relaxed/simple;
+	bh=pyFUXsJq/eqJLg0q8Ne9N/wBi0U2QRzEyTlNxtVMXFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bwUUFI6+JPllO2AiPNS8LE9m7Zlpk2J0Rn6cqYBt0yfXaa0OWgh5px4VaDRvQVJb/FTIFCRtU4WCb1dnrbZyEIf0rjz0JvFlJuEu2xE7g6YIQOksC385wTpIXvjP0iNpiaQo8HC0AfXKJSvplmMMoJwbi72eUshzPlTi5dB6N+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=weAkyNnR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66555C116B1;
-	Tue, 11 Nov 2025 01:39:50 +0000 (UTC)
+	 MIME-Version; b=jqgcx9k0Ttb2o90K8eNd7RbHVMKv9KtG49wa+biuszsYThDBNpJxb9u9JdZaGgfv3cZ8KRA2BgxbI+/Fx5sgPJNAoAbqdVCxCVDCGYd/uVrqsVclaTFW+BCp2SxsDkdPAjZb2SETz8abgkGCxfPNOkFY0HVWevyHgvsZuq5rKIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDTyTa1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255AAC4CEFB;
+	Tue, 11 Nov 2025 01:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825190;
-	bh=AbZBVSo3tr4WDeDZSn/U7eNcfemDE24+Skdh10lmwBA=;
+	s=korg; t=1762824219;
+	bh=pyFUXsJq/eqJLg0q8Ne9N/wBi0U2QRzEyTlNxtVMXFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=weAkyNnRiK21/A28CpfAR42MEhlraxQE0vMrDSSpvfyyO3SheudWOXGg/IUqfYJtg
-	 x1IQolW3Vuy575KF5BOTj/fMW2Rsb6RmZ/yS1gciY+6tCqr8E0y+sPAWNVC/vSbcw8
-	 69YCmgRBBZ0uj+SdMFmuFObgg+2SSODDIjsCInUI=
+	b=JDTyTa1vHg4wXnH9XZGZes76zhcUQiDUXb0CfRP9K95jWofQg/vmbpCP24pUwl6u6
+	 /wpNFAxYzO3WWH6T5xlhE5q60h2mnKkDtS9f8lymUBx5fX9X37b+NBTpgcBDswcyAn
+	 BVrwFc0lJa6elh6z/ka/C9w3x7mFuaqtOBrFl+ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Das Neves <nunodasneves@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Aric Cyr <aric.cyr@amd.com>,
+	Karthi Kandasamy <karthi.kandasamy@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 698/849] clocksource: hyper-v: Skip unnecessary checks for the root partition
-Date: Tue, 11 Nov 2025 09:44:28 +0900
-Message-ID: <20251111004553.308923426@linuxfoundation.org>
+Subject: [PATCH 6.12 413/565] drm/amd/display: Add AVI infoframe copy in copy_stream_update_to_stream
+Date: Tue, 11 Nov 2025 09:44:29 +0900
+Message-ID: <20251111004536.158044109@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +65,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Liu <wei.liu@kernel.org>
+From: Karthi Kandasamy <karthi.kandasamy@amd.com>
 
-[ Upstream commit 47691ced158ab3a7ce2189b857b19c0c99a9aa80 ]
+[ Upstream commit c8bedab2d9a1a0daa49ac20f9928a943f7205582 ]
 
-The HV_ACCESS_TSC_INVARIANT bit is always zero when Linux runs as the
-root partition. The root partition will see directly what the hardware
-provides.
+[WHY]
+Ensure AVI infoframe updates from stream updates are applied to the active
+stream so OS overrides are not lost.
 
-The old logic in ms_hyperv_init_platform caused the native TSC clock
-source to be incorrectly marked as unstable on x86. Fix it.
+[HOW]
+Copy avi_infopacket to stream when valid flag is set.
+Follow existing infopacket copy pattern and perform a basic validity check before assignment.
 
-Skip the unnecessary checks in code for the root partition. Add one
-extra comment in code to clarify the behavior.
-
-Reviewed-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Reviewed-by: Aric Cyr <aric.cyr@amd.com>
+Signed-off-by: Karthi Kandasamy <karthi.kandasamy@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mshyperv.c     | 11 ++++++++++-
- drivers/clocksource/hyperv_timer.c | 10 +++++++++-
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c          | 7 ++++++-
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 6 ++++++
+ drivers/gpu/drm/amd/display/dc/dc_stream.h        | 3 +++
+ 3 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index c78f860419d69..25773af116bc4 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -565,6 +565,11 @@ static void __init ms_hyperv_init_platform(void)
- 	machine_ops.crash_shutdown = hv_machine_crash_shutdown;
- #endif
- #endif
-+	/*
-+	 * HV_ACCESS_TSC_INVARIANT is always zero for the root partition. Root
-+	 * partition doesn't need to write to synthetic MSR to enable invariant
-+	 * TSC feature. It sees what the hardware provides.
-+	 */
- 	if (ms_hyperv.features & HV_ACCESS_TSC_INVARIANT) {
- 		/*
- 		 * Writing to synthetic MSR 0x40000118 updates/changes the
-@@ -636,8 +641,12 @@ static void __init ms_hyperv_init_platform(void)
- 	 * TSC should be marked as unstable only after Hyper-V
- 	 * clocksource has been initialized. This ensures that the
- 	 * stability of the sched_clock is not altered.
-+	 *
-+	 * HV_ACCESS_TSC_INVARIANT is always zero for the root partition. No
-+	 * need to check for it.
- 	 */
--	if (!(ms_hyperv.features & HV_ACCESS_TSC_INVARIANT))
-+	if (!hv_root_partition() &&
-+	    !(ms_hyperv.features & HV_ACCESS_TSC_INVARIANT))
- 		mark_tsc_unstable("running on Hyper-V");
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 426912d82179c..257d77aa7c979 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -3035,6 +3035,9 @@ static void copy_stream_update_to_stream(struct dc *dc,
+ 	if (update->adaptive_sync_infopacket)
+ 		stream->adaptive_sync_infopacket = *update->adaptive_sync_infopacket;
  
- 	hardlockup_detector_disable();
-diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
-index 2edc13ca184e0..10356d4ec55c3 100644
---- a/drivers/clocksource/hyperv_timer.c
-+++ b/drivers/clocksource/hyperv_timer.c
-@@ -549,14 +549,22 @@ static void __init hv_init_tsc_clocksource(void)
- 	union hv_reference_tsc_msr tsc_msr;
++	if (update->avi_infopacket)
++		stream->avi_infopacket = *update->avi_infopacket;
++
+ 	if (update->dither_option)
+ 		stream->dither_option = *update->dither_option;
  
- 	/*
-+	 * When running as a guest partition:
-+	 *
- 	 * If Hyper-V offers TSC_INVARIANT, then the virtualized TSC correctly
- 	 * handles frequency and offset changes due to live migration,
- 	 * pause/resume, and other VM management operations.  So lower the
- 	 * Hyper-V Reference TSC rating, causing the generic TSC to be used.
- 	 * TSC_INVARIANT is not offered on ARM64, so the Hyper-V Reference
- 	 * TSC will be preferred over the virtualized ARM64 arch counter.
-+	 *
-+	 * When running as the root partition:
-+	 *
-+	 * There is no HV_ACCESS_TSC_INVARIANT feature. Always lower the rating
-+	 * of the Hyper-V Reference TSC.
- 	 */
--	if (ms_hyperv.features & HV_ACCESS_TSC_INVARIANT) {
-+	if ((ms_hyperv.features & HV_ACCESS_TSC_INVARIANT) ||
-+	    hv_root_partition()) {
- 		hyperv_cs_tsc.rating = 250;
- 		hyperv_cs_msr.rating = 245;
- 	}
+@@ -3325,7 +3328,8 @@ static void commit_planes_do_stream_update(struct dc *dc,
+ 					stream_update->vsp_infopacket ||
+ 					stream_update->hfvsif_infopacket ||
+ 					stream_update->adaptive_sync_infopacket ||
+-					stream_update->vtem_infopacket) {
++					stream_update->vtem_infopacket ||
++					stream_update->avi_infopacket) {
+ 				resource_build_info_frame(pipe_ctx);
+ 				dc->hwss.update_info_frame(pipe_ctx);
+ 
+@@ -4759,6 +4763,7 @@ static bool full_update_required(struct dc *dc,
+ 			stream_update->hfvsif_infopacket ||
+ 			stream_update->vtem_infopacket ||
+ 			stream_update->adaptive_sync_infopacket ||
++			stream_update->avi_infopacket ||
+ 			stream_update->dpms_off ||
+ 			stream_update->allow_freesync ||
+ 			stream_update->vrr_active_variable ||
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index 36f8eb37e6710..07473e9604277 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -4156,8 +4156,14 @@ static void set_avi_info_frame(
+ 	unsigned int fr_ind = pipe_ctx->stream->timing.fr_index;
+ 	enum dc_timing_3d_format format;
+ 
++	if (stream->avi_infopacket.valid) {
++		*info_packet = stream->avi_infopacket;
++		return;
++	}
++
+ 	memset(&hdmi_info, 0, sizeof(union hdmi_info_packet));
+ 
++
+ 	color_space = pipe_ctx->stream->output_color_space;
+ 	if (color_space == COLOR_SPACE_UNKNOWN)
+ 		color_space = (stream->timing.pixel_encoding == PIXEL_ENCODING_RGB) ?
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_stream.h b/drivers/gpu/drm/amd/display/dc/dc_stream.h
+index 8b9af1a6a0316..1ecf956a71020 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_stream.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_stream.h
+@@ -200,6 +200,7 @@ struct dc_stream_state {
+ 	struct dc_info_packet hfvsif_infopacket;
+ 	struct dc_info_packet vtem_infopacket;
+ 	struct dc_info_packet adaptive_sync_infopacket;
++	struct dc_info_packet avi_infopacket;
+ 	uint8_t dsc_packed_pps[128];
+ 	struct rect src; /* composition area */
+ 	struct rect dst; /* stream addressable area */
+@@ -331,6 +332,8 @@ struct dc_stream_update {
+ 	struct dc_info_packet *hfvsif_infopacket;
+ 	struct dc_info_packet *vtem_infopacket;
+ 	struct dc_info_packet *adaptive_sync_infopacket;
++	struct dc_info_packet *avi_infopacket;
++
+ 	bool *dpms_off;
+ 	bool integer_scaling_update;
+ 	bool *allow_freesync;
 -- 
 2.51.0
 
