@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9977BC4A241
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:02:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D97CC4A26B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:03:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E07253A4FDA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B5873A649D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CD53AC3B;
-	Tue, 11 Nov 2025 01:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB30248F6A;
+	Tue, 11 Nov 2025 01:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miCDmc7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbH38FFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992E325A341;
-	Tue, 11 Nov 2025 01:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7953B4204E;
+	Tue, 11 Nov 2025 01:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822923; cv=none; b=TgMw3seGGvwehdileNGzaJX9INbAOkE9rF0c/yTLU2HzRF9P45bU9LuAl4BiyF2A5kwvayVvMPqbJzJW0jaWNhMoxYp3rqhXveC2hb/ve2LKOiGjlMqjbafJ6ieuXjcuyH5mXKwGscFG75XpfzHQjHoxSLoyDtKyQH2JoBB41uA=
+	t=1762822977; cv=none; b=m3cSUx4BScj4dw4SaDCoIsJ7IKUBdKN74Q+QSF1XJMVHLu+z/yFVF59Q3OMyHHKSLGVJB1nZBzYZZKubxemuRStVABrK6EKO/SY4e/331qT0jVRdivWMCZ9932Y6O4tb+1pmmTzGW03sHvLC+dqAEvqcNJ1aRKANBEcRFWb/yhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822923; c=relaxed/simple;
-	bh=y2TYIee4cIKgFCP4HIesO6yE+eqzUzXQ2x3nIR5cW5s=;
+	s=arc-20240116; t=1762822977; c=relaxed/simple;
+	bh=Bt58H6p/AsknRIH7Misv9BtHy/mvdhQoQUeBDo38+PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cK6WLQTB30ZQBZcExd6ruqPIADMiKr9VBZfSl2D5BkenHz/w9j2+oAnZvwTykaqO3v2ACLN1ILxfeGsk0fqa4pxqTFQJpV6Goq3Ut+MrrLl0iauwE4WG5kxPx1CzM+dZfdSafmnmI8Tm7hOad03h5r1dE7RWVPCNtiAFDqXPkLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miCDmc7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE8CC16AAE;
-	Tue, 11 Nov 2025 01:01:59 +0000 (UTC)
+	 MIME-Version; b=DO+MoGwB3PXt9aox5Huwayn5MMepebvO/ZD8BNyP7FJOmJvJP/CJ6S8T3hbiJdNpw5taC1neupDu9dxK3C20Hor8ECYpaJeNcAXp3xSOf1Rji4oHYkcleghU3PEM9hCV5LHzNB/QXi0ANRJEinRBLknoo4AbEsO6J3QZuiiLvb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbH38FFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D04C116B1;
+	Tue, 11 Nov 2025 01:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822919;
-	bh=y2TYIee4cIKgFCP4HIesO6yE+eqzUzXQ2x3nIR5cW5s=;
+	s=korg; t=1762822977;
+	bh=Bt58H6p/AsknRIH7Misv9BtHy/mvdhQoQUeBDo38+PE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=miCDmc7xQmxIWtBQoAGvjtsCBQX81sxDk5RcNXqa3jsvlQKZDxu/CAnKb857JRNwY
-	 k8YjObMpIa/oS4Fpd6tG1HQOfRuo2W7wCFwbBnRQ5zzVLSdLo6zAb6mcIq1suqLJnX
-	 SrEFHstleb3b1H4WoEblS5PkJrLn7VdsG60Eam+Y=
+	b=gbH38FFnWiqlNYAvBAjknRrDyW3LYjPhQdyFl/uVKE12nsdA+duTvszawn6mCD73f
+	 tsKr6uyMtuyGgvoqOhWwC+DCdVV6QLa+6y+nX9t3PMDai4COaVv5j7Qmc8Spzsf3P0
+	 QMnlUMlklkRyVFwhTw7N3yU7usE40ywSCH0NObgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Amery Hung <ameryhung@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 196/849] selftests/bpf: Fix selftest verifier_arena_large failure
-Date: Tue, 11 Nov 2025 09:36:06 +0900
-Message-ID: <20251111004541.179986684@linuxfoundation.org>
+Subject: [PATCH 6.17 205/849] bpf: Clear pfmemalloc flag when freeing all fragments
+Date: Tue, 11 Nov 2025 09:36:15 +0900
+Message-ID: <20251111004541.396906988@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,81 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Amery Hung <ameryhung@gmail.com>
 
-[ Upstream commit 5a427fddec5e76360725a0f03df3a2a003efbe2e ]
+[ Upstream commit 8f12d1137c2382c80aada8e05d7cc650cd4e403c ]
 
-With latest llvm22, I got the following verification failure:
+It is possible for bpf_xdp_adjust_tail() to free all fragments. The
+kfunc currently clears the XDP_FLAGS_HAS_FRAGS bit, but not
+XDP_FLAGS_FRAGS_PF_MEMALLOC. So far, this has not caused a issue when
+building sk_buff from xdp_buff since all readers of xdp_buff->flags
+use the flag only when there are fragments. Clear the
+XDP_FLAGS_FRAGS_PF_MEMALLOC bit as well to make the flags correct.
 
-  ...
-  ; int big_alloc2(void *ctx) @ verifier_arena_large.c:207
-  0: (b4) w6 = 1                        ; R6_w=1
-  ...
-  ; if (err) @ verifier_arena_large.c:233
-  53: (56) if w6 != 0x0 goto pc+62      ; R6=0
-  54: (b7) r7 = -4                      ; R7_w=-4
-  55: (18) r8 = 0x7f4000000000          ; R8_w=scalar()
-  57: (bf) r9 = addr_space_cast(r8, 0, 1)       ; R8_w=scalar() R9_w=arena
-  58: (b4) w6 = 5                       ; R6_w=5
-  ; pg = page[i]; @ verifier_arena_large.c:238
-  59: (bf) r1 = r7                      ; R1_w=-4 R7_w=-4
-  60: (07) r1 += 4                      ; R1_w=0
-  61: (79) r2 = *(u64 *)(r9 +0)         ; R2_w=scalar() R9_w=arena
-  ; if (*pg != i) @ verifier_arena_large.c:239
-  62: (bf) r3 = addr_space_cast(r2, 0, 1)       ; R2_w=scalar() R3_w=arena
-  63: (71) r3 = *(u8 *)(r3 +0)          ; R3_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=255,var_off=(0x0; 0xff))
-  64: (5d) if r1 != r3 goto pc+51       ; R1_w=0 R3_w=0
-  ; bpf_arena_free_pages(&arena, (void __arena *)pg, 2); @ verifier_arena_large.c:241
-  65: (18) r1 = 0xff11000114548000      ; R1_w=map_ptr(map=arena,ks=0,vs=0)
-  67: (b4) w3 = 2                       ; R3_w=2
-  68: (85) call bpf_arena_free_pages#72675      ;
-  69: (b7) r1 = 0                       ; R1_w=0
-  ; page[i + 1] = NULL; @ verifier_arena_large.c:243
-  70: (7b) *(u64 *)(r8 +8) = r1
-  R8 invalid mem access 'scalar'
-  processed 61 insns (limit 1000000) max_states_per_insn 0 total_states 6 peak_states 6 mark_read 2
-  =============
-  #489/5   verifier_arena_large/big_alloc2:FAIL
-
-The main reason is that 'r8' in insn '70' is not an arena pointer.
-Further debugging at llvm side shows that llvm commit ([1]) caused
-the failure. For the original code:
-  page[i] = NULL;
-  page[i + 1] = NULL;
-the llvm transformed it to something like below at source level:
-  __builtin_memset(&page[i], 0, 16)
-Such transformation prevents llvm BPFCheckAndAdjustIR pass from
-generating proper addr_space_cast insns ([2]).
-
-Adding support in llvm BPFCheckAndAdjustIR pass should work, but
-not sure that such a pattern exists or not in real applications.
-At the same time, simply adding a memory barrier between two 'page'
-assignment can fix the issue.
-
-  [1] https://github.com/llvm/llvm-project/pull/155415
-  [2] https://github.com/llvm/llvm-project/pull/84410
-
-Cc: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20250920045805.3288551-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://patch.msgid.link/20250922233356.3356453-2-ameryhung@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/verifier_arena_large.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/net/xdp.h | 5 +++++
+ net/core/filter.c | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/progs/verifier_arena_large.c b/tools/testing/selftests/bpf/progs/verifier_arena_large.c
-index 9dbdf123542d3..f19e15400b3e1 100644
---- a/tools/testing/selftests/bpf/progs/verifier_arena_large.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_arena_large.c
-@@ -240,6 +240,7 @@ int big_alloc2(void *ctx)
- 			return 5;
- 		bpf_arena_free_pages(&arena, (void __arena *)pg, 2);
- 		page[i] = NULL;
-+		barrier();
- 		page[i + 1] = NULL;
- 		cond_break;
+diff --git a/include/net/xdp.h b/include/net/xdp.h
+index b40f1f96cb117..f288c348a6c13 100644
+--- a/include/net/xdp.h
++++ b/include/net/xdp.h
+@@ -115,6 +115,11 @@ static __always_inline void xdp_buff_set_frag_pfmemalloc(struct xdp_buff *xdp)
+ 	xdp->flags |= XDP_FLAGS_FRAGS_PF_MEMALLOC;
+ }
+ 
++static __always_inline void xdp_buff_clear_frag_pfmemalloc(struct xdp_buff *xdp)
++{
++	xdp->flags &= ~XDP_FLAGS_FRAGS_PF_MEMALLOC;
++}
++
+ static __always_inline void
+ xdp_init_buff(struct xdp_buff *xdp, u32 frame_sz, struct xdp_rxq_info *rxq)
+ {
+diff --git a/net/core/filter.c b/net/core/filter.c
+index c5cdf3b08341a..b20d5fecdbc95 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -4212,6 +4212,7 @@ static int bpf_xdp_frags_shrink_tail(struct xdp_buff *xdp, int offset)
+ 
+ 	if (unlikely(!sinfo->nr_frags)) {
+ 		xdp_buff_clear_frags_flag(xdp);
++		xdp_buff_clear_frag_pfmemalloc(xdp);
+ 		xdp->data_end -= offset;
  	}
+ 
 -- 
 2.51.0
 
