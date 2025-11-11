@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-193592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE444C4A88D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD047C4A79E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EAFC3B38F3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A14C3B592D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E464C343215;
-	Tue, 11 Nov 2025 01:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB40343D6D;
+	Tue, 11 Nov 2025 01:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7BoueKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqzXpqiS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE53343214;
-	Tue, 11 Nov 2025 01:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CAF342CA9;
+	Tue, 11 Nov 2025 01:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823548; cv=none; b=arC3wwaL2X91Yy9+zvb3Sr9yjMbZa7zpY38EMCBhxSJf9q+2bTeRpPLvEyIKyXcPD1uZ8S79YPJiplRX76uAMwjUxzHJE16sv04R7RtbYpKpM5TfrEkF5jG/lJiYQQvaIukHLmnyOO9mkaAWjPR8qvjdYGVk/+C7e2hkXjQZjJM=
+	t=1762823553; cv=none; b=I5ZwZmG19hNndWBbbEZFlczZlRtDpG1udTUH+Me65TTY+ly6dAcPyN4KohPFIyw5hV7yk99+C8lysuZPhjlaV7+LWFvV2YvS3n1/fT+kXHlz7fpOc1wLjW55+N4ktEVj3KJRhmXUsEEjpzjfcyOdIq0DU10QhFjhJ3NgUSLRQAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823548; c=relaxed/simple;
-	bh=P7eUPrTIQ7GWFnUOzid5p8BOEgKMZJ+O891XT8/Iv7Y=;
+	s=arc-20240116; t=1762823553; c=relaxed/simple;
+	bh=MyZtydjstefYDgqRaQmj6SvhWx5OJZ6w0lWCYKnrCEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UakluGQOW2ALI18t8WkkLqVK1Xw/CGBXqlSPMETxMZMS04ckAtdpSgWnxO2KEXymBb2rUiO4rs3hppC++g2yU0cdd6hec/sipGnxGbXY3t7ZJPqYFH00YW4EtcgPZ37IAq/lGd4o5ceWGoj7dkgRMhnqoXmQluU+6lv2hnf+u90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7BoueKc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3580CC4CEFB;
-	Tue, 11 Nov 2025 01:12:28 +0000 (UTC)
+	 MIME-Version; b=RJMruMjM06xrNYOHP8S8gAfMYSelRNTS1KBJbFt+6VY0AoAHR5Ir6neycPDZo8jnuWDzVXIFbM6hUBVaIOY+jz0Eby4k7EsZq5gzcettney9GeNU/Y5xbMAM8IqH6Skf0OGNwugLxJHz2t7xoq6b+m6QxW91zZhMjlG0WOT2wqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqzXpqiS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81FDC116B1;
+	Tue, 11 Nov 2025 01:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823548;
-	bh=P7eUPrTIQ7GWFnUOzid5p8BOEgKMZJ+O891XT8/Iv7Y=;
+	s=korg; t=1762823553;
+	bh=MyZtydjstefYDgqRaQmj6SvhWx5OJZ6w0lWCYKnrCEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7BoueKc7wg6wdSnyr/rXGFa2tCXzkPoGI9LKB2BaBCXleRjSFR7U66h2grxXdJzU
-	 zRtRFlFuSJAb4mFN2P2VeKwyzHn3PvLRMvFFTGToiVXJtr6IhLuJCF4sQN5zsWsj97
-	 A1x9jcEdToJBhHn4YOCzOa9sHzVbVkuz/rI7Wrm8=
+	b=FqzXpqiSDhzncuaItgi/GtXefGJxRjOWIYr4JLokd5lj7tHlfzIU3sYKY3B7t1rcq
+	 nCR3CePwHcjBYNCuCn2sfw56CN9UsvXYR5PDLIlZoTuWvmhMOAIr08bpQ9jhVz9g6c
+	 0+n5weDqxMCEurScLPUqPAsf9SSdWx7P9LZdk2KY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	raub camaioni <raubcameo@gmail.com>,
+	Shimrra Shai <shimrrashai@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 321/849] usb: gadget: f_ncm: Fix MAC assignment NCM ethernet
-Date: Tue, 11 Nov 2025 09:38:11 +0900
-Message-ID: <20251111004544.175658292@linuxfoundation.org>
+Subject: [PATCH 6.17 322/849] ASoC: es8323: remove DAC enablement write from es8323_probe
+Date: Tue, 11 Nov 2025 09:38:12 +0900
+Message-ID: <20251111004544.200323304@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -65,54 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: raub camaioni <raubcameo@gmail.com>
+From: Shimrra Shai <shimrrashai@gmail.com>
 
-[ Upstream commit 956606bafb5fc6e5968aadcda86fc0037e1d7548 ]
+[ Upstream commit 33bc29123d26f7caa7d11f139e153e39104afc6c ]
 
-This fix is already present in f_ecm.c and was never
-propagated to f_ncm.c
+Remove initialization of the DAC and mixer enablement bits from the
+es8323_probe routine. This really should be handled by the DAPM
+subsystem.
 
-When creating multiple NCM ethernet devices
-on a composite usb gadget device
-each MAC address on the HOST side will be identical.
-Having the same MAC on different network interfaces is bad.
-
-This fix updates the MAC address inside the
-ncm_strings_defs global during the ncm_bind call.
-This ensures each device has a unique MAC.
-In f_ecm.c ecm_string_defs is updated in the same way.
-
-The defunct MAC assignment in ncm_alloc has been removed.
-
-Signed-off-by: raub camaioni <raubcameo@gmail.com>
-Link: https://lore.kernel.org/r/20250815131358.1047525-1-raubcameo@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shimrra Shai <shimrrashai@gmail.com>
+Link: https://patch.msgid.link/20250815042023.115485-2-shimrrashai@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_ncm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/codecs/es8323.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
-index 0148d60926dcf..0e38330271d5a 100644
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1465,6 +1465,8 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+diff --git a/sound/soc/codecs/es8323.c b/sound/soc/codecs/es8323.c
+index 70d348ff3b437..4c15fffda733c 100644
+--- a/sound/soc/codecs/es8323.c
++++ b/sound/soc/codecs/es8323.c
+@@ -632,7 +632,6 @@ static int es8323_probe(struct snd_soc_component *component)
  
- 	ncm_opts->bound = true;
+ 	snd_soc_component_write(component, ES8323_CONTROL2, 0x60);
+ 	snd_soc_component_write(component, ES8323_CHIPPOWER, 0x00);
+-	snd_soc_component_write(component, ES8323_DACCONTROL17, 0xB8);
  
-+	ncm_string_defs[1].s = ncm->ethaddr;
-+
- 	us = usb_gstrings_attach(cdev, ncm_strings,
- 				 ARRAY_SIZE(ncm_string_defs));
- 	if (IS_ERR(us))
-@@ -1759,7 +1761,6 @@ static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
- 		mutex_unlock(&opts->lock);
- 		return ERR_PTR(-EINVAL);
- 	}
--	ncm_string_defs[STRING_MAC_IDX].s = ncm->ethaddr;
- 
- 	spin_lock_init(&ncm->lock);
- 	ncm_reset_values(ncm);
+ 	return 0;
+ }
 -- 
 2.51.0
 
