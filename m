@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-193877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 386A4C4AAB7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C67AFC4A415
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D641C4F9A55
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DF673A7141
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D481346A1A;
-	Tue, 11 Nov 2025 01:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BA026C399;
+	Tue, 11 Nov 2025 01:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBZzeWeT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8ZQ4uN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397E91D86FF;
-	Tue, 11 Nov 2025 01:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B4226CE37;
+	Tue, 11 Nov 2025 01:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824217; cv=none; b=PeC+Sdl1Cjy6Z08RaAv5293S1MWBpGEaJCP3K5kpya4RNTbcCKQpkcrBpxpbr5QWH3a98Et4XgGFR+GKf4xmcrFOen68fZEiReIskb3spfz6i46waJDFdgwEIrmfQHvozD1TXKogbK1Gi4+KdJ+kGtWFtfk/c1ad3EXjhe6RfiA=
+	t=1762823142; cv=none; b=VLjh2zTH5/JN0K6IoWH6umT9EacNrX5NAT5/HG8f8a4bXg96tpRmDYbIzTrb0k8U7BpLWch4L0gZEUQf16dFabH2OrUDr+Fq4V6YvKCirtAbDerEgCGoLNPaRaofVvjILdVEwSWDXRK15LZgIBYsP0YIc5BXSUjjk1F4oqbaJuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824217; c=relaxed/simple;
-	bh=xnZoQb3S24EmBYvRB1nnTtWTJd58//duj/zQ0tZnEEY=;
+	s=arc-20240116; t=1762823142; c=relaxed/simple;
+	bh=1KqUIx3DzQwDGXHoSPGcRaNUSB2kH0XaO3IECzcvtPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qh5AVamUB06V8+HsRA1n2eLPeSjoADmdztrnYiPqgQhGbPiEmaM3VZogSQ6CHOC+W7/yeGxABvY+tBuuHn0dCCoBRhrHopWFN2ytCsrnxhsjS8ZwJJuoS1BCRx7TyWknJklRwWtgcdWD06G4+c7gSUThrC8FgZzY8Y5RmjgLQ98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBZzeWeT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9899C116D0;
-	Tue, 11 Nov 2025 01:23:36 +0000 (UTC)
+	 MIME-Version; b=Q+7qR/fn9kNj9srZDztt3lydETDvoA/CJXqOVB11ip7n8IXDoWAyHa4pjN0V061/LGfDagrH5pDIoCOCHhZjokPDS3xiXdcLmsMXRsH5v77PO2ZdaKe8f13bmfO76AeaC8jx+F9vMYVRvTqNpgkTYhA4KQxEL2+VJdx0zq8JZPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8ZQ4uN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E589CC16AAE;
+	Tue, 11 Nov 2025 01:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824217;
-	bh=xnZoQb3S24EmBYvRB1nnTtWTJd58//duj/zQ0tZnEEY=;
+	s=korg; t=1762823142;
+	bh=1KqUIx3DzQwDGXHoSPGcRaNUSB2kH0XaO3IECzcvtPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zBZzeWeTOTwndKEGoyQDn6ssaMRkksBuFT/mMcSNh+at+RCaRzWQ5++w1TqKovoNZ
-	 h9j0CA2ZoBHD13oyQPvm/S5rVdcPytSO6Rq8NxuDUHyOEf3U3KtJWqTeX863dVe/UV
-	 17zD7PNUSLyFI2GlQpTFDGP3Vd88vZsT50QmTNl0=
+	b=h8ZQ4uN32uX10aynHf3mVg02okZq/N6MJU5L2gVsC5anYAoMu0e4/6f/Vsmn68MOg
+	 FHv2c99DVJFAw/ouUqIL26dQi+Rax+2KuqHx9sdDK89P8kceCDaOSjaLMvGfhLAl6p
+	 mZflNXmDM5nkAGKOHDrRW+ay7rh+B+eQRthNV6pk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yufeng <chenyufeng@iie.ac.cn>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Maarten Lankhorst <dev@lankhorst.se>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 464/849] usb: cdns3: gadget: Use-after-free during failed initialization and exit of cdnsp gadget
-Date: Tue, 11 Nov 2025 09:40:34 +0900
-Message-ID: <20251111004547.645695089@linuxfoundation.org>
+Subject: [PATCH 6.12 179/565] drm/xe: Fix oops in xe_gem_fault when running core_hotunplug test.
+Date: Tue, 11 Nov 2025 09:40:35 +0900
+Message-ID: <20251111004530.959519556@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
+From: Maarten Lankhorst <dev@lankhorst.se>
 
-[ Upstream commit 87c5ff5615dc0a37167e8faf3adeeddc6f1344a3 ]
+[ Upstream commit 1cda3c755bb7770be07d75949bb0f45fb88651f6 ]
 
-In the __cdnsp_gadget_init() and cdnsp_gadget_exit() functions, the gadget
-structure (pdev->gadget) was freed before its endpoints.
-The endpoints are linked via the ep_list in the gadget structure.
-Freeing the gadget first leaves dangling pointers in the endpoint list.
-When the endpoints are subsequently freed, this results in a use-after-free.
+I saw an oops in xe_gem_fault when running the xe-fast-feedback
+testlist against the realtime kernel without debug options enabled.
 
-Fix:
-By separating the usb_del_gadget_udc() operation into distinct "del" and
-"put" steps, cdnsp_gadget_free_endpoints() can be executed prior to the
-final release of the gadget structure with usb_put_gadget().
+The panic happens after core_hotunplug unbind-rebind finishes.
+Presumably what happens is that a process mmaps, unlocks because
+of the FAULT_FLAG_RETRY_NOWAIT logic, has no process memory left,
+causing ttm_bo_vm_dummy_page() to return VM_FAULT_NOPAGE, since
+there was nothing left to populate, and then oopses in
+"mem_type_is_vram(tbo->resource->mem_type)" because tbo->resource
+is NULL.
 
-A patch similar to bb9c74a5bd14("usb: dwc3: gadget: Free gadget structure
- only after freeing endpoints").
+It's convoluted, but fits the data and explains the oops after
+the test exits.
 
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
-Link: https://lore.kernel.org/r/20250905094842.1232-1-chenyufeng@iie.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://lore.kernel.org/r/20250715152057.23254-2-dev@lankhorst.se
+Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdnsp-gadget.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_bo.c | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/usb/cdns3/cdnsp-gadget.c b/drivers/usb/cdns3/cdnsp-gadget.c
-index 55f95f41b3b4d..0252560cbc80b 100644
---- a/drivers/usb/cdns3/cdnsp-gadget.c
-+++ b/drivers/usb/cdns3/cdnsp-gadget.c
-@@ -1976,7 +1976,10 @@ static int __cdnsp_gadget_init(struct cdns *cdns)
- 	return 0;
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index b5058a35c4513..b71156e9976aa 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -1218,22 +1218,26 @@ static vm_fault_t xe_gem_fault(struct vm_fault *vmf)
+ 		ret = ttm_bo_vm_fault_reserved(vmf, vmf->vma->vm_page_prot,
+ 					       TTM_BO_VM_NUM_PREFAULT);
+ 		drm_dev_exit(idx);
++
++		if (ret == VM_FAULT_RETRY &&
++		    !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT))
++			goto out;
++
++		/*
++		 * ttm_bo_vm_reserve() already has dma_resv_lock.
++		 */
++		if (ret == VM_FAULT_NOPAGE &&
++		    mem_type_is_vram(tbo->resource->mem_type)) {
++			mutex_lock(&xe->mem_access.vram_userfault.lock);
++			if (list_empty(&bo->vram_userfault_link))
++				list_add(&bo->vram_userfault_link,
++					 &xe->mem_access.vram_userfault.list);
++			mutex_unlock(&xe->mem_access.vram_userfault.lock);
++		}
+ 	} else {
+ 		ret = ttm_bo_vm_dummy_page(vmf, vmf->vma->vm_page_prot);
+ 	}
  
- del_gadget:
--	usb_del_gadget_udc(&pdev->gadget);
-+	usb_del_gadget(&pdev->gadget);
-+	cdnsp_gadget_free_endpoints(pdev);
-+	usb_put_gadget(&pdev->gadget);
-+	goto halt_pdev;
- free_endpoints:
- 	cdnsp_gadget_free_endpoints(pdev);
- halt_pdev:
-@@ -1998,8 +2001,9 @@ static void cdnsp_gadget_exit(struct cdns *cdns)
- 	devm_free_irq(pdev->dev, cdns->dev_irq, pdev);
- 	pm_runtime_mark_last_busy(cdns->dev);
- 	pm_runtime_put_autosuspend(cdns->dev);
--	usb_del_gadget_udc(&pdev->gadget);
-+	usb_del_gadget(&pdev->gadget);
- 	cdnsp_gadget_free_endpoints(pdev);
-+	usb_put_gadget(&pdev->gadget);
- 	cdnsp_mem_cleanup(pdev);
- 	kfree(pdev);
- 	cdns->gadget_dev = NULL;
+-	if (ret == VM_FAULT_RETRY && !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT))
+-		goto out;
+-	/*
+-	 * ttm_bo_vm_reserve() already has dma_resv_lock.
+-	 */
+-	if (ret == VM_FAULT_NOPAGE && mem_type_is_vram(tbo->resource->mem_type)) {
+-		mutex_lock(&xe->mem_access.vram_userfault.lock);
+-		if (list_empty(&bo->vram_userfault_link))
+-			list_add(&bo->vram_userfault_link, &xe->mem_access.vram_userfault.list);
+-		mutex_unlock(&xe->mem_access.vram_userfault.lock);
+-	}
+-
+ 	dma_resv_unlock(tbo->base.resv);
+ out:
+ 	if (needs_rpm)
 -- 
 2.51.0
 
