@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51687C4A7B8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:28:44 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECD8DC4A9D9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DE513B3C82
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:23 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 99C0834C7DC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9041F344041;
-	Tue, 11 Nov 2025 01:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001B0329399;
+	Tue, 11 Nov 2025 01:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NcfBD2D5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QU+D4KR4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6F934403D;
-	Tue, 11 Nov 2025 01:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6318320A23;
+	Tue, 11 Nov 2025 01:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823579; cv=none; b=E5pC3l1p3Vnk4Nszu89LQ5hza5G4c7F4DiJxinJmUU0Lv6jDUz/st1Wh0DphrOSYJ9kRIdyuZAwO8xwM+dsI8Sh4TfB6tADZb6g/qVq1T4hiHg4XLnBW+ICioPDMyU/TGvjZiJiMjN7YI+593sgkiPRSuiEwm8arpJLGfbiwY3g=
+	t=1762824525; cv=none; b=AEKQLxkLJ4b+ZZQxwrT5RduLEE3Puklz3lSRKH7g0Ah1LCsVq8WkTcSMaaQZTuFCMGybr2vUL+1tMSR6YvnS1+2Nw/jRyqBdMBY1VayqVkxzGtb32myvS0za774LLSZ6k/6kIsz2Bvp0irI/5O7zWdalZRwRXxH7hH0gMnYNXkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823579; c=relaxed/simple;
-	bh=m3IJ1Od+IZb+CkV9b/hKLINLgwlUw5Ue9twy0CqRD/U=;
+	s=arc-20240116; t=1762824525; c=relaxed/simple;
+	bh=GcvRp11BfItme/ZeDyHuG7Bbt9NhNadEyrOHyrEZ3N8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KahfbE/c7E8JXBHmzClZmuviel48yCIaWFiGxqwLInL7V8WdsGOzb/w95zbHdDJ5jX9aLd2kPtT2xj5W72mc2RPqqmdggDVhbdk/6y/dIabgse0nl3QFFb3VO7RJfPqxWKSgcl62IVWYUNhvv6AwPSIVvuTq7YUhyjzTU+DH3V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NcfBD2D5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03EAC19424;
-	Tue, 11 Nov 2025 01:12:58 +0000 (UTC)
+	 MIME-Version; b=QHzRJnQ11ErbykuSrb9o/g9yBGRm6vX8FrVtN/EkQqMdqMdEG0Bonzcub/uRaT2y58NLHDSaQBBJ4aZd4Jo7RlIR2iBA4jBdDKq97mto/0jzEAVq/pQ3pxRlfPJzbKafvHBfI/EDuYhOcLren2dRES8P5D7DqiZ4VYa9GDAmmfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QU+D4KR4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B7CC4AF09;
+	Tue, 11 Nov 2025 01:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823579;
-	bh=m3IJ1Od+IZb+CkV9b/hKLINLgwlUw5Ue9twy0CqRD/U=;
+	s=korg; t=1762824525;
+	bh=GcvRp11BfItme/ZeDyHuG7Bbt9NhNadEyrOHyrEZ3N8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NcfBD2D5ALIZlbJzOiHSg7F7JXzaHsZWD51w8UXt6SdpJp5OYp7zjsQEUVZeoyX3U
-	 2ClHtEs3uEH3alNi8Q5gb0fZU6vgIOwR86+IPgKSLFRuC/kX16/WZ79gAq8ZJ98zdE
-	 3lR+EzUCw+FjfeKNdRQZdKUDyZgJZsZT8zT7FcuE=
+	b=QU+D4KR4vdSmD3VX4TEbShqVZPtLr29rJu7OcObLTNEvajzz2W0zzgFVUIF43TzFT
+	 1AYb3PcLpgiWABiJM96MrOS5vtpLDu2Kf2JIRg411O3GC8v8n94uWP+ctHZnnyJQ0v
+	 /ylMyIaCV1D1hTLURVAN30ZKY28sP+6jSD/zkqWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Chung Chen <damon.chen@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Li RongQing <lirongqing@baidu.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Wangyang Guo <wangyang.guo@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 230/565] wifi: rtw89: wow: remove notify during WoWLAN net-detect
-Date: Tue, 11 Nov 2025 09:41:26 +0900
-Message-ID: <20251111004532.090434341@linuxfoundation.org>
+Subject: [PATCH 6.17 517/849] x86/kvm: Prefer native qspinlock for dedicated vCPUs irrespective of PV_UNHALT
+Date: Tue, 11 Nov 2025 09:41:27 +0900
+Message-ID: <20251111004548.926699049@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Chung Chen <damon.chen@realtek.com>
+From: Li RongQing <lirongqing@baidu.com>
 
-[ Upstream commit 38846585f9df9af1f7261d85134a5510fc079458 ]
+[ Upstream commit 960550503965094b0babd7e8c83ec66c8a763b0b ]
 
-In WoWLAN net-detect mode, the firmware periodically performs scans
-and sends scan reports via C2H, which driver does not need. These
-unnecessary C2H events cause firmware watchdog timeout, leading
-to unexpected wakeups and SER 0x2599 on 8922AE.
+The commit b2798ba0b876 ("KVM: X86: Choose qspinlock when dedicated
+physical CPUs are available") states that when PV_DEDICATED=1
+(vCPU has dedicated pCPU), qspinlock should be preferred regardless of
+PV_UNHALT.  However, the current implementation doesn't reflect this: when
+PV_UNHALT=0, we still use virt_spin_lock() even with dedicated pCPUs.
 
-Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250811123744.15361-4-pkshih@realtek.com
+This is suboptimal because:
+1. Native qspinlocks should outperform virt_spin_lock() for dedicated
+   vCPUs irrespective of HALT exiting
+2. virt_spin_lock() should only be preferred when vCPUs may be preempted
+   (non-dedicated case)
+
+So reorder the PV spinlock checks to:
+1. First handle dedicated pCPU case (disable virt_spin_lock_key)
+2. Second check single CPU, and nopvspin configuration
+3. Only then check PV_UNHALT support
+
+This ensures we always use native qspinlock for dedicated vCPUs, delivering
+pretty performance gains at high contention levels.
+
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Tested-by: Wangyang Guo <wangyang.guo@intel.com>
+Link: https://lore.kernel.org/r/20250722110005.4988-1-lirongqing@baidu.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/x86/kernel/kvm.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 10a3a66a9981d..7894e1a569a2c 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -6212,7 +6212,6 @@ static void rtw89_pno_scan_add_chan_ax(struct rtw89_dev *rtwdev,
- 	struct rtw89_pktofld_info *info;
- 	u8 probe_count = 0;
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index 57379698015ed..2ecb2ec06aebc 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -1089,16 +1089,6 @@ static void kvm_wait(u8 *ptr, u8 val)
+  */
+ void __init kvm_spinlock_init(void)
+ {
+-	/*
+-	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
+-	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
+-	 * preferred over native qspinlock when vCPU is preempted.
+-	 */
+-	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
+-		pr_info("PV spinlocks disabled, no host support\n");
+-		return;
+-	}
+-
+ 	/*
+ 	 * Disable PV spinlocks and use native qspinlock when dedicated pCPUs
+ 	 * are available.
+@@ -1118,6 +1108,16 @@ void __init kvm_spinlock_init(void)
+ 		goto out;
+ 	}
  
--	ch_info->notify_action = RTW89_SCANOFLD_DEBUG_MASK;
- 	ch_info->dfs_ch = chan_type == RTW89_CHAN_DFS;
- 	ch_info->bw = RTW89_SCAN_WIDTH;
- 	ch_info->tx_pkt = true;
-@@ -6341,7 +6340,6 @@ static void rtw89_pno_scan_add_chan_be(struct rtw89_dev *rtwdev, int chan_type,
- 	struct rtw89_pktofld_info *info;
- 	u8 probe_count = 0, i;
++	/*
++	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
++	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
++	 * preferred over native qspinlock when vCPU is preempted.
++	 */
++	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
++		pr_info("PV spinlocks disabled, no host support\n");
++		return;
++	}
++
+ 	pr_info("PV spinlocks enabled\n");
  
--	ch_info->notify_action = RTW89_SCANOFLD_DEBUG_MASK;
- 	ch_info->dfs_ch = chan_type == RTW89_CHAN_DFS;
- 	ch_info->bw = RTW89_SCAN_WIDTH;
- 	ch_info->tx_null = false;
+ 	__pv_init_lock_hash();
 -- 
 2.51.0
 
