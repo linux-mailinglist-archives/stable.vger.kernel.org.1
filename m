@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0C6C4ACEE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0BB4C4A731
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C9A314F402F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6B991894E48
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC11D25D209;
-	Tue, 11 Nov 2025 01:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DC927EFFA;
+	Tue, 11 Nov 2025 01:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUbsW5sy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iENA8Utk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656E82BB17;
-	Tue, 11 Nov 2025 01:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F90826FA67;
+	Tue, 11 Nov 2025 01:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824633; cv=none; b=A4FZIMV3LvncNEam6MDdFh5fP9z8JGQwGshPYPqybgKJ/s5+aJOrhEAEFez3c/J60BvdaXXJHAaGyw7IFDipxT7o8AatYA2Evz+DNnShGL5kC4GJCoM4fxzlLxVhpcwoEQb0NA0W1I+4/UyDs7SDxG/dUrJN0zDVlaxvKZzDInk=
+	t=1762823477; cv=none; b=JKUNGe5XAyFZbV9lzSaYAhAWmjDZ8pBI3wfRPSge0TXHUDgAyjU38Bo49PU1JCF1rfSKikDkEUusENAdQf7OHX5PqGvBXtiJJSPtGAEt1zGJXekgdGysRc/aHWhnMlGEOq3/RXnh1aBE2zAFEzxZkSYxDfaWtag3Qa45reaN67Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824633; c=relaxed/simple;
-	bh=v3py1gVPVsnZ9+Gu1nXxNBUDU+jq+9FzQisQvKBQ1Zw=;
+	s=arc-20240116; t=1762823477; c=relaxed/simple;
+	bh=5qulNKsku3UAqvQ6ArelGhv53MXJwtRPDgT5E3cdJ2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kC7TFIvy6L7QVkUxgA0CBNJ2lc8+AoLJm/Uq7g3/YwpSmopcglESPGx8qGx8XIeUX6cCvyw+qRNwtdfqdltJFEsdgfJKHI2JCKQHSsI15bjQPmQPHqhUI3mZu7TYWkDDjaUp3nOQpS2YsuksROigWMnmDUpmROHLkAbTovL+v78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUbsW5sy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0635DC19422;
-	Tue, 11 Nov 2025 01:30:32 +0000 (UTC)
+	 MIME-Version; b=NjISwMWLeitZtXJgld24lLsT63w4ytKqqsRnwuS/xo8TXhXqF27HqAyPCEpNkBqYnuWtVIP7Yu8RZma722cuApkzCnWrmpXut26ArJuQ+oshud969mmUNF87CCuPSCwcB1S3K5YV/rAwdq9TAF0V/1CIpICPBoYW/ecMWDuyh7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iENA8Utk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205DDC113D0;
+	Tue, 11 Nov 2025 01:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824633;
-	bh=v3py1gVPVsnZ9+Gu1nXxNBUDU+jq+9FzQisQvKBQ1Zw=;
+	s=korg; t=1762823477;
+	bh=5qulNKsku3UAqvQ6ArelGhv53MXJwtRPDgT5E3cdJ2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUbsW5syr0OSp8uBYHqBCQ5N0lTEhWLfFwjbhB2uA8O0Sqab6kUCbuHVCbFWFrtrR
-	 sMCZqr9md3FS/maWVyj/jeOkm5zJ4+Yqs0QLvcArbP7sXWcR5wyCUuuyvBw1ho53+N
-	 kXnO6BVkfJz+3r9YlUdFowb9yN8a7jpjjcmbdc9U=
+	b=iENA8UtkkJK95hHYWnuUx8F1Gw959YBiRMtilPfoXCRVImZnI8uco9NBzdcAEO2u/
+	 4kteZGw2ibQqTiAV31bXq6+9/dO35J6Av6ATGQ/0oKowXRYI6UXq0jcwZVhw8gP2Jh
+	 08og7+ybGgy0vyqAFwQanDav1GvzdcSEDAPSgjno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 540/849] wifi: mt76: mt7996: Temporarily disable EPCS
+Subject: [PATCH 6.12 254/565] net: phy: fixed_phy: let fixed_phy_unregister free the phy_device
 Date: Tue, 11 Nov 2025 09:41:50 +0900
-Message-ID: <20251111004549.469391961@linuxfoundation.org>
+Message-ID: <20251111004532.617378947@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit e6291bb7a5935b2f1d337fd7a58eab7ada6678ad ]
+[ Upstream commit a0f849c1cc6df0db9083b4c81c05a5456b1ed0fb ]
 
-EPCS is not yet ready, so do not claim to support it.
+fixed_phy_register() creates and registers the phy_device. To be
+symmetric, we should not only unregister, but also free the phy_device
+in fixed_phy_unregister(). This allows to simplify code in users.
 
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250904-mt7996-mlo-more-fixes-v1-4-89d8fed67f20@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Note wrt of_phy_deregister_fixed_link():
+put_device(&phydev->mdio.dev) and phy_device_free(phydev) are identical.
+
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/ad8dda9a-10ed-4060-916b-3f13bdbb899d@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/dsa/dsa_loop.c  | 9 +++------
+ drivers/net/mdio/of_mdio.c  | 1 -
+ drivers/net/phy/fixed_phy.c | 1 +
+ 3 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 84015ab24af62..5a77771e3e6d6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -1330,7 +1330,6 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
- 	eht_cap->has_eht = true;
+diff --git a/drivers/net/dsa/dsa_loop.c b/drivers/net/dsa/dsa_loop.c
+index c70ed67cc1888..5c7f40acfa391 100644
+--- a/drivers/net/dsa/dsa_loop.c
++++ b/drivers/net/dsa/dsa_loop.c
+@@ -387,13 +387,10 @@ static struct mdio_driver dsa_loop_drv = {
  
- 	eht_cap_elem->mac_cap_info[0] =
--		IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
- 		IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
- 		u8_encode_bits(IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454,
- 			       IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_MASK);
+ static void dsa_loop_phydevs_unregister(void)
+ {
+-	unsigned int i;
+-
+-	for (i = 0; i < NUM_FIXED_PHYS; i++)
+-		if (!IS_ERR(phydevs[i])) {
++	for (int i = 0; i < NUM_FIXED_PHYS; i++) {
++		if (!IS_ERR(phydevs[i]))
+ 			fixed_phy_unregister(phydevs[i]);
+-			phy_device_free(phydevs[i]);
+-		}
++	}
+ }
+ 
+ static int __init dsa_loop_init(void)
+diff --git a/drivers/net/mdio/of_mdio.c b/drivers/net/mdio/of_mdio.c
+index 2f4fc664d2e12..cc6ae8f35b1c2 100644
+--- a/drivers/net/mdio/of_mdio.c
++++ b/drivers/net/mdio/of_mdio.c
+@@ -473,6 +473,5 @@ void of_phy_deregister_fixed_link(struct device_node *np)
+ 	fixed_phy_unregister(phydev);
+ 
+ 	put_device(&phydev->mdio.dev);	/* of_phy_find_device() */
+-	phy_device_free(phydev);	/* fixed_phy_register() */
+ }
+ EXPORT_SYMBOL(of_phy_deregister_fixed_link);
+diff --git a/drivers/net/phy/fixed_phy.c b/drivers/net/phy/fixed_phy.c
+index aef739c20ac4d..4694fb3eaa2ff 100644
+--- a/drivers/net/phy/fixed_phy.c
++++ b/drivers/net/phy/fixed_phy.c
+@@ -329,6 +329,7 @@ void fixed_phy_unregister(struct phy_device *phy)
+ 	phy_device_remove(phy);
+ 	of_node_put(phy->mdio.dev.of_node);
+ 	fixed_phy_del(phy->mdio.addr);
++	phy_device_free(phy);
+ }
+ EXPORT_SYMBOL_GPL(fixed_phy_unregister);
+ 
 -- 
 2.51.0
 
