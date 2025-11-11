@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2511C4A7E8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C19BC4A806
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D9BB3B3E62
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A377D3B3E85
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3429F3446A9;
-	Tue, 11 Nov 2025 01:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBC33446A8;
+	Tue, 11 Nov 2025 01:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gvmvj2M9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGsLyyxg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4120343D67;
-	Tue, 11 Nov 2025 01:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CA6253944;
+	Tue, 11 Nov 2025 01:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823586; cv=none; b=K2cRcwPoRJdWr9tMbbShQidx2ChDvRchA3mY20VXmdF/dnMqcC+Z/IaSxaL7AqAiekW+Z/bXidhZj3DxSRvT0qUcH2xzUnnihP8mMqAfOKuUxaUg+Zrmb9e2k/UqiPlal3M8nNXNQCeKRXut+TjmEo7fvV8S3ci4vY2oOa8c/ms=
+	t=1762823590; cv=none; b=K3tiv/lx1l6X4kWt3Th0Ez4tptvJSbpnvM2F3PhBl1qluM0xRhvpTkq3NM4cNnTUwAyzyw3p+OFPFiuVl4djZIhQUKUtnrK09YTjQ4LELE+FkyEOwme0lCUML3od1IXofV6Wf9HBcGgBWsMkyCpZr4VuI77QGZffkeSGp9s6EZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823586; c=relaxed/simple;
-	bh=RGSDBrhNJTsvggl0TW86jP5DkpVnndit6lxhf9pfsQg=;
+	s=arc-20240116; t=1762823590; c=relaxed/simple;
+	bh=6db7f5cxq6S7+cMy2c0CIGwA0X6T8Pnq4gqymByFmZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=moqbsaZ/2fvOhYQxZyEq/jcDIUVfuCfs/3t7hldPK8WlF4XMAKcV+bpM1F7VH/gTJWgkumTcq3V29DLkmx6s2YVA5qnFlljfnyuR9ek4HisUbk4AZ/puyoctmtwo15RoyTlT3QopfTEkprUzdl224Hn7Xmbs1HokSPxglrAMgCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gvmvj2M9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850A3C4CEFB;
-	Tue, 11 Nov 2025 01:13:05 +0000 (UTC)
+	 MIME-Version; b=fEX7ZPuL3E9feqpJXVET1ZQfWaHUmeMPUOTL47YXonC/ldX32NX+ffZGXTuB3nIbRWd/vARCLC40J2s0ddZxAEW+Il/VFbbM6KzM/0i0A41KlRO9QpKSLq5I5ObtEYoLTTFXBr9U0p/EIRPGa98XxC7+XFl8eayDWO+rGodnCg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGsLyyxg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F41FC19421;
+	Tue, 11 Nov 2025 01:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823585;
-	bh=RGSDBrhNJTsvggl0TW86jP5DkpVnndit6lxhf9pfsQg=;
+	s=korg; t=1762823590;
+	bh=6db7f5cxq6S7+cMy2c0CIGwA0X6T8Pnq4gqymByFmZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gvmvj2M9+vwVUU141M52UcwAsNHD+ms4eQdBWikOxHj8sGuPrwbRc9Qvv78E4NkYg
-	 vbdEWAkiOe/aUC5eYIToNbI+/IBH+3rTkfOje6oJsfYwSJ8cHdmbRkCJLh49L+k7rO
-	 RHL6s9BiSY5qaDnwWoyxBWBlw6o/ZOpD3zYRqYWs=
+	b=DGsLyyxgB9OVrylj04bJZ+Lx3cu2S8XBGDEDVdQDLm+P6giuC43gH8esSIH4tv3Ks
+	 +YbfOaQ7KNxft3fIMz2cD6lA47t0si9KiEadgWP0z9jQXc/YYkUjVOiqUVszOxSaY3
+	 QBkyPWtXG/a6yMeuScZkkvARMt6Nw8bq1T/mhKps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Zijun Hu <zijun.hu@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 330/849] dm error: mark as DM_TARGET_PASSES_INTEGRITY
-Date: Tue, 11 Nov 2025 09:38:20 +0900
-Message-ID: <20251111004544.396606497@linuxfoundation.org>
+Subject: [PATCH 6.17 331/849] char: misc: Make misc_register() reentry for miscdevice who wants dynamic minor
+Date: Tue, 11 Nov 2025 09:38:21 +0900
+Message-ID: <20251111004544.420249011@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,39 +66,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Zijun Hu <zijun.hu@oss.qualcomm.com>
 
-[ Upstream commit 499cbe0f2fb0641cf07a1a8ac9f7317674295fea ]
+[ Upstream commit 52e2bb5ff089d65e2c7d982fe2826dc88e473d50 ]
 
-Mark dm error as DM_TARGET_PASSES_INTEGRITY so that it can be stacked on
-top of PI capable devices.  The claim is strictly speaking as lie as dm
-error fails all I/O and doesn't pass anything on, but doing the same for
-integrity I/O work just fine :)
+For miscdevice who wants dynamic minor, it may fail to be registered again
+without reinitialization after being de-registered, which is illustrated
+by kunit test case miscdev_test_dynamic_reentry() newly added.
 
-This helps to make about two dozen xfstests test cases pass on PI capable
-devices.
+There is a real case found by cascardo when a part of minor range were
+contained by range [0, 255):
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+1) wmi/dell-smbios registered minor 122, and acpi_thermal_rel registered
+   minor 123
+2) unbind "int3400 thermal" driver from its device, this will de-register
+   acpi_thermal_rel
+3) rmmod then insmod dell_smbios again, now wmi/dell-smbios is using minor
+   123
+4) bind the device to "int3400 thermal" driver again, acpi_thermal_rel
+   fails to register.
+
+Some drivers may reuse the miscdevice structure after they are deregistered
+If the intention is to allocate a dynamic minor, if the minor number is not
+reset to MISC_DYNAMIC_MINOR before calling misc_register(), it will try to
+register a previously dynamically allocated minor number, which may have
+been registered by a different driver.
+
+One such case is the acpi_thermal_rel misc device, registered by the
+int3400 thermal driver. If the device is unbound from the driver and later
+bound, if there was another dynamic misc device registered in between, it
+would fail to register the acpi_thermal_rel misc device. Other drivers
+behave similarly.
+
+Actually, this kind of issue is prone to happen if APIs
+misc_register()/misc_deregister() are invoked by driver's
+probe()/remove() separately.
+
+Instead of fixing all the drivers, just reset the minor member to
+MISC_DYNAMIC_MINOR in misc_deregister() in case it was a dynamically
+allocated minor number, as error handling of misc_register() does.
+
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250714-rfc_miscdev-v6-5-2ed949665bde@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-target.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/char/misc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/md/dm-target.c b/drivers/md/dm-target.c
-index 2af5a9514c05e..8fede41adec00 100644
---- a/drivers/md/dm-target.c
-+++ b/drivers/md/dm-target.c
-@@ -263,7 +263,8 @@ static long io_err_dax_direct_access(struct dm_target *ti, pgoff_t pgoff,
- static struct target_type error_target = {
- 	.name = "error",
- 	.version = {1, 7, 0},
--	.features = DM_TARGET_WILDCARD | DM_TARGET_ZONED_HM,
-+	.features = DM_TARGET_WILDCARD | DM_TARGET_ZONED_HM |
-+		DM_TARGET_PASSES_INTEGRITY,
- 	.ctr  = io_err_ctr,
- 	.dtr  = io_err_dtr,
- 	.map  = io_err_map,
+diff --git a/drivers/char/misc.c b/drivers/char/misc.c
+index 558302a64dd90..255a164eec86d 100644
+--- a/drivers/char/misc.c
++++ b/drivers/char/misc.c
+@@ -282,6 +282,8 @@ void misc_deregister(struct miscdevice *misc)
+ 	list_del(&misc->list);
+ 	device_destroy(&misc_class, MKDEV(MISC_MAJOR, misc->minor));
+ 	misc_minor_free(misc->minor);
++	if (misc->minor > MISC_DYNAMIC_MINOR)
++		misc->minor = MISC_DYNAMIC_MINOR;
+ 	mutex_unlock(&misc_mtx);
+ }
+ EXPORT_SYMBOL(misc_deregister);
 -- 
 2.51.0
 
