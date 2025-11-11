@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C33C4B25B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:03:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65045C4AE72
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE6543B91E6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C2104F7FD8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9928306D47;
-	Tue, 11 Nov 2025 01:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317D623C4F2;
+	Tue, 11 Nov 2025 01:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIR7wjXO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmlNWWbf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8535D3064AB;
-	Tue, 11 Nov 2025 01:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E051526E146;
+	Tue, 11 Nov 2025 01:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825552; cv=none; b=bGdO/dvHFH/LsWV8ayQhW8vPM3YWbRfcK7Zyl+EKiiQMpl2Hh1wTv0/OAP3rY617idcH6grrhRLGjqESFXvnh5eEQZJXnimsIaDiYBxEPQPijBR0vbff5kNhntqLgz4niVUrVwURr4KkqNkfUQ/R2VWLQhQexVwwaFK6Onj11gc=
+	t=1762824812; cv=none; b=fMB7SjB+Z9dOD+W88BKACpAAlIx1B2MVCTmscVDRI4ySNFhHXP99kuAKAju5i1XWwzhJb2Ao5KGODhbCQqAjwFG9AWaaqQcTGW310ZuIWNu8lQmhIl3yrX/S9cCvCGmVEJAK8IIpNPdryRRhlhux8WJpluaRf4xlD1BAKoXgMUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825552; c=relaxed/simple;
-	bh=fmGK9sTPKpu9lsf9Pv2eNZOahb9GNLPHhtVJkwq7LVE=;
+	s=arc-20240116; t=1762824812; c=relaxed/simple;
+	bh=9xJZpADqZmZpSPZJpdvDG3wrzevxBpScH92ugLbuWtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VrTeBoLD4MCDV//4UYDiyyuvClg76negsfYWR1SIS1svOlwzLKNOxYU+Bs9iuSBI1hBzuY6VBeDlt9tVPgWg1vOz4gzCSuGhqzkzLsHk6tGKRKZYM6SV4/rZHobdN4z4/Qi4FRsQk4/rn2X40GPl5/K4a+SIt0zkAbbu+F5oL/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIR7wjXO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E59C19424;
-	Tue, 11 Nov 2025 01:45:51 +0000 (UTC)
+	 MIME-Version; b=mBcZtbbxOl1dVakh6FUBVi63F5dkIQQ/azBbh5hcctu0ClfXhqlEuS5fLOJ8+Y2v9Crws9PrZKkWSU3nzxt8s0xibUfy5DRhnRqOcFeV3/v1eLpsBKafuiops+uGwAUOGGRUacEagq0R95sxmyvu3FkUOMeNeGyIVSvRr6Yq4zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmlNWWbf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73649C16AAE;
+	Tue, 11 Nov 2025 01:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825552;
-	bh=fmGK9sTPKpu9lsf9Pv2eNZOahb9GNLPHhtVJkwq7LVE=;
+	s=korg; t=1762824811;
+	bh=9xJZpADqZmZpSPZJpdvDG3wrzevxBpScH92ugLbuWtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oIR7wjXO1uppZFpvpIrDm7CualYv+cXVcym7xFmifhf8CSyW0Imdfunx8SMeUeM64
-	 0sbCBQl0jBGpyoOIiN4F2KVSRkISkUMo9vgX1rwMobfXmouagILcfoCGBw3zBBQdmx
-	 trG/5I+kFDSIw8/V1H/GYWZkDG6IrwIoKefIs2kI=
+	b=nmlNWWbfziOCCSV/kQ+aGXzvRkn0IIDzDTzhQImDd0PQwOOQ0qQb+A2FYuXBpXJKI
+	 StCer8gVAO1oCcGO8/VX4B8ziyFN0kghDFLYJy3ju8Xt0+3UC1yx2Q3PCEllAW6O8y
+	 G0k3uCpn55pElAaOS3rqxQUTKb/AUZcDi8DFK7o4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH 6.17 808/849] drm/sched: Fix deadlock in drm_sched_entity_kill_jobs_cb
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 522/565] net: dsa: b53: stop reading ARL entries if search is done
 Date: Tue, 11 Nov 2025 09:46:18 +0900
-Message-ID: <20251111004555.960781175@linuxfoundation.org>
+Message-ID: <20251111004538.707163642@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,124 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit 487df8b698345dd5a91346335f05170ed5f29d4e upstream.
+[ Upstream commit 0be04b5fa62a82a9929ca261f6c9f64a3d0a28da ]
 
-The Mesa issue referenced below pointed out a possible deadlock:
+The switch clears the ARL_SRCH_STDN bit when the search is done, i.e. it
+finished traversing the ARL table.
 
-[ 1231.611031]  Possible interrupt unsafe locking scenario:
+This means that there will be no valid result, so we should not attempt
+to read and process any further entries.
 
-[ 1231.611033]        CPU0                    CPU1
-[ 1231.611034]        ----                    ----
-[ 1231.611035]   lock(&xa->xa_lock#17);
-[ 1231.611038]                                local_irq_disable();
-[ 1231.611039]                                lock(&fence->lock);
-[ 1231.611041]                                lock(&xa->xa_lock#17);
-[ 1231.611044]   <Interrupt>
-[ 1231.611045]     lock(&fence->lock);
-[ 1231.611047]
-                *** DEADLOCK ***
+We only ever check the validity of the entries for 4 ARL bin chips, and
+only after having passed the first entry to the b53_fdb_copy().
 
-In this example, CPU0 would be any function accessing job->dependencies
-through the xa_* functions that don't disable interrupts (eg:
-drm_sched_job_add_dependency(), drm_sched_entity_kill_jobs_cb()).
+This means that we always pass an invalid entry at the end to the
+b53_fdb_copy(). b53_fdb_copy() does check the validity though before
+passing on the entry, so it never gets passed on.
 
-CPU1 is executing drm_sched_entity_kill_jobs_cb() as a fence signalling
-callback so in an interrupt context. It will deadlock when trying to
-grab the xa_lock which is already held by CPU0.
+On < 4 ARL bin chips, we will even continue reading invalid entries
+until we reach the result limit.
 
-Replacing all xa_* usage by their xa_*_irq counterparts would fix
-this issue, but Christian pointed out another issue: dma_fence_signal
-takes fence.lock and so does dma_fence_add_callback.
-
-  dma_fence_signal() // locks f1.lock
-  -> drm_sched_entity_kill_jobs_cb()
-  -> foreach dependencies
-     -> dma_fence_add_callback() // locks f2.lock
-
-This will deadlock if f1 and f2 share the same spinlock.
-
-To fix both issues, the code iterating on dependencies and re-arming them
-is moved out to drm_sched_entity_kill_jobs_work().
-
-Cc: stable@vger.kernel.org # v6.2+
-Fixes: 2fdb8a8f07c2 ("drm/scheduler: rework entity flush, kill and fini")
-Link: https://gitlab.freedesktop.org/mesa/mesa/-/issues/13908
-Reported-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-[phasta: commit message nits]
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://patch.msgid.link/20251104095358.15092-1-pierre-eric.pelloux-prayer@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da6df85c6fb ("net: dsa: b53: Implement ARL add/del/dump operations")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251102100758.28352-3-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |   34 +++++++++++++++++--------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -173,26 +173,15 @@ int drm_sched_entity_error(struct drm_sc
- }
- EXPORT_SYMBOL(drm_sched_entity_error);
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index a22f28f98faee..01eb62706412e 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1942,7 +1942,7 @@ static int b53_arl_search_wait(struct b53_device *dev)
+ 	do {
+ 		b53_read8(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_CTL, &reg);
+ 		if (!(reg & ARL_SRCH_STDN))
+-			return 0;
++			return -ENOENT;
  
-+static void drm_sched_entity_kill_jobs_cb(struct dma_fence *f,
-+					  struct dma_fence_cb *cb);
-+
- static void drm_sched_entity_kill_jobs_work(struct work_struct *wrk)
- {
- 	struct drm_sched_job *job = container_of(wrk, typeof(*job), work);
--
--	drm_sched_fence_scheduled(job->s_fence, NULL);
--	drm_sched_fence_finished(job->s_fence, -ESRCH);
--	WARN_ON(job->s_fence->parent);
--	job->sched->ops->free_job(job);
--}
--
--/* Signal the scheduler finished fence when the entity in question is killed. */
--static void drm_sched_entity_kill_jobs_cb(struct dma_fence *f,
--					  struct dma_fence_cb *cb)
--{
--	struct drm_sched_job *job = container_of(cb, struct drm_sched_job,
--						 finish_cb);
-+	struct dma_fence *f;
- 	unsigned long index;
- 
--	dma_fence_put(f);
--
- 	/* Wait for all dependencies to avoid data corruptions */
- 	xa_for_each(&job->dependencies, index, f) {
- 		struct drm_sched_fence *s_fence = to_drm_sched_fence(f);
-@@ -220,6 +209,21 @@ static void drm_sched_entity_kill_jobs_c
- 		dma_fence_put(f);
- 	}
- 
-+	drm_sched_fence_scheduled(job->s_fence, NULL);
-+	drm_sched_fence_finished(job->s_fence, -ESRCH);
-+	WARN_ON(job->s_fence->parent);
-+	job->sched->ops->free_job(job);
-+}
-+
-+/* Signal the scheduler finished fence when the entity in question is killed. */
-+static void drm_sched_entity_kill_jobs_cb(struct dma_fence *f,
-+					  struct dma_fence_cb *cb)
-+{
-+	struct drm_sched_job *job = container_of(cb, struct drm_sched_job,
-+						 finish_cb);
-+
-+	dma_fence_put(f);
-+
- 	INIT_WORK(&job->work, drm_sched_entity_kill_jobs_work);
- 	schedule_work(&job->work);
- }
+ 		if (reg & ARL_SRCH_VLID)
+ 			return 0;
+-- 
+2.51.0
+
 
 
 
