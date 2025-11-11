@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-193116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BEB5C49F8C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8625C4A07F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:55:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D77071888674
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B03454F27D3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4041DF258;
-	Tue, 11 Nov 2025 00:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F9F24113D;
+	Tue, 11 Nov 2025 00:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lDthhZVl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OiNrGIW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AB0246333;
-	Tue, 11 Nov 2025 00:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4884086A;
+	Tue, 11 Nov 2025 00:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822336; cv=none; b=ar+Dlvc4R8qbLWUaKLKLTzLQ18z0eBG/Ti70OCSWIlho0wPXWIzdB2wkSLR9fFnSAp65C7DjUrYWu+NyNLVZJpRbFop2M4pPzS/NXOSqp+CarbzT3kFVm7u3ZDV6miQjYr6wcYKFkubKvalyT5oBPkgZ/c7yPL01I0LacvsR578=
+	t=1762822343; cv=none; b=oP99woe3Mj87pE78hLPGKeCBOhdmHI0PTSTbJmYWimh9obqVHkE2I6CQgPo75pI//hcYbJDTOSZMrUNfPlM4+dQQjjyMKIP68wnMHZ2YTBjOh+M7/orC1uB8FzKGg2/TOgEp4SFjB6Vgpy24WHIi5UhoHd/0ETf/9ryYB8dXU9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822336; c=relaxed/simple;
-	bh=s+5jTAvKU5MMKmi9ur0O0+vIEa8JRmd4GTKnRmQqbdA=;
+	s=arc-20240116; t=1762822343; c=relaxed/simple;
+	bh=lPut8GiC2dJC0N0ZrDi+EJgpNEvkjWBiLOO9RyHOUxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKjPCDZA6dqu1f3q0cHXy4bcCo6Go4WXg4ADwqAoC8u+sXqt9hGhAn585o/Jda0a8PlnQsKGO9t1l30UJtqjRmr37utTSgqohHIHS0ucJXzzawVw0SMmfWCAaO9fV2MMIdqp0o+8DMIiLYyBlmPnseffwM7zDN/oOWjop4Uwbko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lDthhZVl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC67C16AAE;
-	Tue, 11 Nov 2025 00:52:16 +0000 (UTC)
+	 MIME-Version; b=FN89Kfj/eTWhuruRX2e1y8WpFapCUaLB4yaFUhkfV/n7N/PvkISOYK38r0tITnuLC6rvWcQOYuI/QGxI3t/HIfgOOsmqY2IinBbO8sPec0hBoUe9B7wTY5WVSzGl2ZZMuntSiRV/0oiQyKPBXcxGf28VgKywfcrt9ZGhacPduCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OiNrGIW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36924C19425;
+	Tue, 11 Nov 2025 00:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822336;
-	bh=s+5jTAvKU5MMKmi9ur0O0+vIEa8JRmd4GTKnRmQqbdA=;
+	s=korg; t=1762822343;
+	bh=lPut8GiC2dJC0N0ZrDi+EJgpNEvkjWBiLOO9RyHOUxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lDthhZVlkJdphRafd/ipZENIQVTnDJpozwtBdwTG1JSEluQtIOOqAG+avQX3yurWB
-	 oHWYejTWX4amfJrf+Jjc6bAE7xtfUQj2rTSVOkZ97UJpx2PKxIPkvmgb5sHQPx/UOR
-	 LTwLEUqjvuYVcOjqr/Z+rzWDqCrDYoa2OyVBRDKo=
+	b=2OiNrGIW359ixT/QR5/BvRe1ofrEyVt0tQI6Tq66C496bg0zkqrddGdnf1VbJ0xLY
+	 OrPFAJp7OM02Y2cEUXheWJgwRzOfeTtdOyDDEtcxM95hXylH+eewAVKhEI4tmNZCsp
+	 tp1DL18biqPuZsenWK+B85YvArKpHx50rOeiZZ8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Christoph Hellwig <hch@lst.de>,
 	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.17 088/849] block: fix op_is_zone_mgmt() to handle REQ_OP_ZONE_RESET_ALL
-Date: Tue, 11 Nov 2025 09:34:18 +0900
-Message-ID: <20251111004538.544210756@linuxfoundation.org>
+Subject: [PATCH 6.17 089/849] block: make REQ_OP_ZONE_OPEN a write operation
+Date: Tue, 11 Nov 2025 09:34:19 +0900
+Message-ID: <20251111004538.567768853@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -70,16 +70,21 @@ Content-Transfer-Encoding: 8bit
 
 From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 12a1c9353c47c0fb3464eba2d78cdf649dee1cf7 upstream.
+commit 19de03b312d69a7e9bacb51c806c6e3f4207376c upstream.
 
-REQ_OP_ZONE_RESET_ALL is a zone management request. Fix
-op_is_zone_mgmt() to return true for that operation, like it already
-does for REQ_OP_ZONE_RESET.
+A REQ_OP_OPEN_ZONE request changes the condition of a sequential zone of
+a zoned block device to the explicitly open condition
+(BLK_ZONE_COND_EXP_OPEN). As such, it should be considered a write
+operation.
 
-While no problems were reported without this fix, this change allows
-strengthening checks in various block device drivers (scsi sd,
-virtioblk, DM) where op_is_zone_mgmt() is used to verify that a zone
-management command is not being issued to a regular block device.
+Change this operation code to be an odd number to reflect this. The
+following operation numbers are changed to keep the numbering compact.
+
+No problems were reported without this change as this operation has no
+data. However, this unifies the zone operation to reflect that they
+modify the device state and also allows strengthening checks in the
+block layer, e.g. checking if this operation is not issued against a
+read-only device.
 
 Fixes: 6c1b1da58f8c ("block: add zone open, close and finish operations")
 Cc: stable@vger.kernel.org
@@ -90,19 +95,32 @@ Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/blk_types.h |    1 +
- 1 file changed, 1 insertion(+)
+ include/linux/blk_types.h |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 --- a/include/linux/blk_types.h
 +++ b/include/linux/blk_types.h
-@@ -480,6 +480,7 @@ static inline bool op_is_zone_mgmt(enum
- {
- 	switch (op & REQ_OP_MASK) {
- 	case REQ_OP_ZONE_RESET:
-+	case REQ_OP_ZONE_RESET_ALL:
- 	case REQ_OP_ZONE_OPEN:
- 	case REQ_OP_ZONE_CLOSE:
- 	case REQ_OP_ZONE_FINISH:
+@@ -343,15 +343,15 @@ enum req_op {
+ 	/* write the zero filled sector many times */
+ 	REQ_OP_WRITE_ZEROES	= (__force blk_opf_t)9,
+ 	/* Open a zone */
+-	REQ_OP_ZONE_OPEN	= (__force blk_opf_t)10,
++	REQ_OP_ZONE_OPEN	= (__force blk_opf_t)11,
+ 	/* Close a zone */
+-	REQ_OP_ZONE_CLOSE	= (__force blk_opf_t)11,
++	REQ_OP_ZONE_CLOSE	= (__force blk_opf_t)13,
+ 	/* Transition a zone to full */
+-	REQ_OP_ZONE_FINISH	= (__force blk_opf_t)13,
++	REQ_OP_ZONE_FINISH	= (__force blk_opf_t)15,
+ 	/* reset a zone write pointer */
+-	REQ_OP_ZONE_RESET	= (__force blk_opf_t)15,
++	REQ_OP_ZONE_RESET	= (__force blk_opf_t)17,
+ 	/* reset all the zone present on the device */
+-	REQ_OP_ZONE_RESET_ALL	= (__force blk_opf_t)17,
++	REQ_OP_ZONE_RESET_ALL	= (__force blk_opf_t)19,
+ 
+ 	/* Driver private requests */
+ 	REQ_OP_DRV_IN		= (__force blk_opf_t)34,
 
 
 
