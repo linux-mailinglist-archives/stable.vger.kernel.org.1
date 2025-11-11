@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-194003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F28C4AC37
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A15C4AC6A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 418234FB76C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5875C4FB90B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7CA30103C;
-	Tue, 11 Nov 2025 01:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5151E33FE34;
+	Tue, 11 Nov 2025 01:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krn8ydM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yROIDvlL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0860E2D94AB;
-	Tue, 11 Nov 2025 01:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDFC26560B;
+	Tue, 11 Nov 2025 01:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824575; cv=none; b=S8wpTzCo1OjS8zNtk6uRn2W6RaTjea5F8fdAwlxhXd48wh8wBpgLrVRyrG8LtEnmCWJ/lVWXuvaW47VcW89wHNU+DwzMBfttymz91SFPxsOX9dyatkVoI6WoOH9qZjFlJSf7AUe+H3OqYjnhPvPnxlpFZCn2tKQLzCEBw8KBPTM=
+	t=1762824580; cv=none; b=jvg/DI1X9OLz6cuOw/KZhUgsb74mijT/wDmKNcrh2GPcKyApqXTTw16zJGkJR493iDxb3eg9EHIIMrd3JVZ6EhetHHchLm7juK2SlRkXDD4DpZHoKfMZMzhDtBHjb6t4ofYiCGI8lB8dxPRCtCqeyBVY/C3nIyRHDPDt+Tk3iDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824575; c=relaxed/simple;
-	bh=SYMPS5mP7g0Sv41PczP4vQV9TkEnasUULphEnp/HhvQ=;
+	s=arc-20240116; t=1762824580; c=relaxed/simple;
+	bh=xyK1/PLGk1KWis+3hee2oofhdVWkGo2/XAhXnvNnWzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YduuAUwNEuQYV5O4g3YJXZ/rdJ3E0MddiK/RSSBEJVDjbXQqDHVgRrrCNUao+gbpzCLf/coGCDfCKBYS242JBQfxEHiTjcf/wF2zmuIUlBFWxqq/bCoHQ0ju7THbj83vzQh6oWE1+OHvRdeDj6UMaeWr/3vtvTPcON0WruqSlIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krn8ydM/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FA5C4CEFB;
-	Tue, 11 Nov 2025 01:29:34 +0000 (UTC)
+	 MIME-Version; b=Yng2/XjROUbYGD1EqP/Pr8AcC4cOocWo1mCY9SmSMxreWSyXU9/74HNN/vRArQkoe7pLB5mcE0z4Y3i4JzGZBYvd8XQ+dsS+Nu6FfTostwJBNqgtOoN4JXxltXkc4Hz6IV0fel9BJj1COZ5rdMO9PYEBVyGnIqahk2sxA6KPZwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yROIDvlL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAA6C4AF09;
+	Tue, 11 Nov 2025 01:29:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824574;
-	bh=SYMPS5mP7g0Sv41PczP4vQV9TkEnasUULphEnp/HhvQ=;
+	s=korg; t=1762824579;
+	bh=xyK1/PLGk1KWis+3hee2oofhdVWkGo2/XAhXnvNnWzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=krn8ydM/kW34rf0XZ1nE+HPjHyBU/WZImmtdqN3npnajwOQ9Hs+jmDnAJbd38/Ew6
-	 7w/DQH/qbcEF3SfSKDH/opXlemARnHXQQebiVgsuekk8eickLUZQNOPtULzLhkRhBN
-	 wDWHxM1iqFe9reyY0SAHzNcVbcykuSftJTb+7vCM=
+	b=yROIDvlLD4pfZbyx8c/bJu4ePRVjv8kMm8GiZMUcW4GJ5f2eL4hiiR50cmjv4av9Q
+	 Md20NBVv1/dn1OM9HIVc+/qbQz0euAh2ISheNm2KaIovEi98H71rQWdGT4PAnUyK+A
+	 SgM0bW3IztHNpCtH4Oe5Zrc/JIilbYoqinDUIoPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	Matthias Schiffer <matthias.schiffer@tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 472/565] 9p/trans_fd: p9_fd_request: kick rx thread if EPOLLIN
-Date: Tue, 11 Nov 2025 09:45:28 +0900
-Message-ID: <20251111004537.530112851@linuxfoundation.org>
+Subject: [PATCH 6.12 473/565] clk: ti: am33xx: keep WKUP_DEBUGSS_CLKCTRL enabled
+Date: Tue, 11 Nov 2025 09:45:29 +0900
+Message-ID: <20251111004537.552812302@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -68,67 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Matthias Schiffer <matthias.schiffer@tq-group.com>
 
-[ Upstream commit e8fe3f07a357c39d429e02ca34f740692d88967a ]
+[ Upstream commit 1e0d75258bd09323cb452655549e03975992b29e ]
 
-p9_read_work() doesn't set Rworksched and doesn't do schedule_work(m->rq)
-if list_empty(&m->req_list).
+As described in AM335x Errata Advisory 1.0.42, WKUP_DEBUGSS_CLKCTRL
+can't be disabled - the clock module will just be stuck in transitioning
+state forever, resulting in the following warning message after the wait
+loop times out:
 
-However, if the pipe is full, we need to read more data and this used to
-work prior to commit aaec5a95d59615 ("pipe_read: don't wake up the writer
-if the pipe is still full").
+    l3-aon-clkctrl:0000:0: failed to disable
 
-p9_read_work() does p9_fd_read() -> ... -> anon_pipe_read() which (before
-the commit above) triggered the unnecessary wakeup. This wakeup calls
-p9_pollwake() which kicks p9_poll_workfn() -> p9_poll_mux(), p9_poll_mux()
-will notice EPOLLIN and schedule_work(&m->rq).
+Just add the clock to enable_init_clks, so no attempt is made to disable
+it.
 
-This no longer happens after the optimization above, change p9_fd_request()
-to use p9_poll_mux() instead of only checking for EPOLLOUT.
-
-Reported-by: syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com
-Tested-by: syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68a2de8f.050a0220.e29e5.0097.GAE@google.com/
-Link: https://lore.kernel.org/all/67dedd2f.050a0220.31a16b.003f.GAE@google.com/
-Co-developed-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Message-ID: <20250819161013.GB11345@redhat.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Acked-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/trans_fd.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/clk/ti/clk-33xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index 7e9d731c45976..5bdfc25689169 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -665,7 +665,6 @@ static void p9_poll_mux(struct p9_conn *m)
- 
- static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
- {
--	__poll_t n;
- 	int err;
- 	struct p9_trans_fd *ts = client->trans;
- 	struct p9_conn *m = &ts->conn;
-@@ -685,13 +684,7 @@ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
- 	list_add_tail(&req->req_list, &m->unsent_req_list);
- 	spin_unlock(&m->req_lock);
- 
--	if (test_and_clear_bit(Wpending, &m->wsched))
--		n = EPOLLOUT;
--	else
--		n = p9_fd_poll(m->client, NULL, NULL);
--
--	if (n & EPOLLOUT && !test_and_set_bit(Wworksched, &m->wsched))
--		schedule_work(&m->wq);
-+	p9_poll_mux(m);
- 
- 	return 0;
- }
+diff --git a/drivers/clk/ti/clk-33xx.c b/drivers/clk/ti/clk-33xx.c
+index 85c50ea39e6da..9269e6a0db6a4 100644
+--- a/drivers/clk/ti/clk-33xx.c
++++ b/drivers/clk/ti/clk-33xx.c
+@@ -258,6 +258,8 @@ static const char *enable_init_clks[] = {
+ 	"dpll_ddr_m2_ck",
+ 	"dpll_mpu_m2_ck",
+ 	"l3_gclk",
++	/* WKUP_DEBUGSS_CLKCTRL - disable fails, AM335x Errata Advisory 1.0.42 */
++	"l3-aon-clkctrl:0000:0",
+ 	/* AM3_L3_L3_MAIN_CLKCTRL, needed during suspend */
+ 	"l3-clkctrl:00bc:0",
+ 	"l4hs_gclk",
 -- 
 2.51.0
 
