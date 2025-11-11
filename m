@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB970C4B085
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:54:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 878F4C4ACBE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C25F1189A99D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:48:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 018523A9068
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0EC346A0D;
-	Tue, 11 Nov 2025 01:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F561306B11;
+	Tue, 11 Nov 2025 01:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Jte2lIN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDT/AQ/u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8A424EA90;
-	Tue, 11 Nov 2025 01:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B822248F6A;
+	Tue, 11 Nov 2025 01:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825267; cv=none; b=dB+j4GM+iYY6A3H3mVYrCHsvsmMSFYcDwWyLyYMx8ehtZfMsEIto4PspJfqbKzgk0CRJMueBuW4TIN4oJnLayoQAFkylK1blXWV0ubyzK0yL2pG4rCuEUCVmeoWXu/+HPW+Yt/9n9FlnDd94ClP598JZAUHj/ZMPIDl6qXNY2bw=
+	t=1762824436; cv=none; b=Yen8xTSgGEyRz4UyHG6wmQwh0MWfkOibUbOPftOOGyRjTcL7qJmZ21F7wfxuHdMegkF788roxEfFxHLmE+/QccHe2jy7jFIBeGgBpY7D++OPUmwRKUcM96v8mn/oMa3My4/aiS9fM+LWwLU6uPGbsP2CZ8qTYJpeUO+oXdgY4wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825267; c=relaxed/simple;
-	bh=T3rupkfSzcSs90BaQ0fPJ3Zugr0GARhyyvE8iGzowMo=;
+	s=arc-20240116; t=1762824436; c=relaxed/simple;
+	bh=EDgPxygAcfd7vIwr20QZtfIi+alRfJTASYhikEKOe+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WI1wl3JCnXHP+6aLNMqmyDYFErkzeym1V9FM0fUIH7b4MFVrY/wap44W2G3czYJmRIPiIuGzMn7DHuEwWNTjS3BhBv72i7L0WYvdTMzx8/UpFTOmPyLoaCbuC0xoWGrj65TuBeia3fvna7qshUcdKY3k517Vsrrx/Lo9OcQPJUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Jte2lIN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B95C4CEFB;
-	Tue, 11 Nov 2025 01:41:06 +0000 (UTC)
+	 MIME-Version; b=fieFd0862Yo7z1Xc672PuB71a4OodsLKpsStE1tYfFE3k1sGQ/8BP6daW3xvl0766uROB3Q3NYJv9ztH2JXGwBF1GGYjCsW5p1goTnXeJmzJTeeCbnnC3Fk1fnEhau6wjS+6My/NzGzWbW8zRpnuQyvCEEP21VjT1WcmQEaCqfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDT/AQ/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF951C116D0;
+	Tue, 11 Nov 2025 01:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825266;
-	bh=T3rupkfSzcSs90BaQ0fPJ3Zugr0GARhyyvE8iGzowMo=;
+	s=korg; t=1762824436;
+	bh=EDgPxygAcfd7vIwr20QZtfIi+alRfJTASYhikEKOe+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Jte2lINv984e1QKAEUP+PcRZUclHL4J+NiI9udyoxSwXlqvhhb126WWGZkltxprM
-	 vTYAXjm6NG1q+X5wtHLM6sQpagQccX+e8eybMY/uWoNDHYA7U0zQ7OKZ/KIH+oe9dK
-	 iER1ip7Dd6NpyKDSEfMfrHbOnhJ9qeog8QGH87/Y=
+	b=EDT/AQ/ufmEY9skMrg5I1+4F9o99Cyt31u038dVixVGGdxE/hJimFVSVQ1DizbmsP
+	 q+NiMOOzILmXuk3XuShQsZrOC++SnAMIbDRZJ5q+qFeUQj1V43wzgGQeUrOC6NomGF
+	 mkKT+yObgdlX3thKufPEBgkNJ1NQ3bMLnQwXObBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 731/849] drm/amdkfd: Fix mmap write lock not release
+Subject: [PATCH 6.12 445/565] page_pool: Clamp pool size to max 16K pages
 Date: Tue, 11 Nov 2025 09:45:01 +0900
-Message-ID: <20251111004554.108626446@linuxfoundation.org>
+Message-ID: <20251111004536.897788761@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-[ Upstream commit 7574f30337e19045f03126b4c51f525b84e5049e ]
+[ Upstream commit a1b501a8c6a87c9265fd03bd004035199e2e8128 ]
 
-If mmap write lock is taken while draining retry fault, mmap write lock
-is not released because svm_range_restore_pages calls mmap_read_unlock
-then returns. This causes deadlock and system hangs later because mmap
-read or write lock cannot be taken.
+page_pool_init() returns E2BIG when the page_pool size goes above 32K
+pages. As some drivers are configuring the page_pool size according to
+the MTU and ring size, there are cases where this limit is exceeded and
+the queue creation fails.
 
-Downgrade mmap write lock to read lock if draining retry fault fix this
-bug.
+The page_pool size doesn't have to cover a full queue, especially for
+larger ring size. So clamp the size instead of returning an error. Do
+this in the core to avoid having each driver do the clamping.
 
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The current limit was deemed to high [1] so it was reduced to 16K to avoid
+page waste.
+
+[1] https://lore.kernel.org/all/1758532715-820422-3-git-send-email-tariqt@nvidia.com/
+
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250926131605.2276734-2-dtatulea@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/core/page_pool.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index cecdbcea0bb90..827507cfed7aa 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -3046,6 +3046,8 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
- 	if (svms->checkpoint_ts[gpuidx] != 0) {
- 		if (amdgpu_ih_ts_after_or_equal(ts,  svms->checkpoint_ts[gpuidx])) {
- 			pr_debug("draining retry fault, drop fault 0x%llx\n", addr);
-+			if (write_locked)
-+				mmap_write_downgrade(mm);
- 			r = -EAGAIN;
- 			goto out_unlock_svms;
- 		} else {
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index cc0dce5246a2b..458b040a8655d 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -208,11 +208,7 @@ static int page_pool_init(struct page_pool *pool,
+ 		return -EINVAL;
+ 
+ 	if (pool->p.pool_size)
+-		ring_qsize = pool->p.pool_size;
+-
+-	/* Sanity limit mem that can be pinned down */
+-	if (ring_qsize > 32768)
+-		return -E2BIG;
++		ring_qsize = min(pool->p.pool_size, 16384);
+ 
+ 	/* DMA direction is either DMA_FROM_DEVICE or DMA_BIDIRECTIONAL.
+ 	 * DMA_BIDIRECTIONAL is for allowing page used for DMA sending,
 -- 
 2.51.0
 
