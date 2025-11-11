@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-194111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC8CC4AE11
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:06 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D59ADC4B15D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 72CDA4F7CAF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F06D74F4BD8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F0F274FE3;
-	Tue, 11 Nov 2025 01:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4553302CAC;
+	Tue, 11 Nov 2025 01:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTfIy0+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwqL4sHB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D091C28E;
-	Tue, 11 Nov 2025 01:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80980246333;
+	Tue, 11 Nov 2025 01:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824832; cv=none; b=PufsAu47JGgTM+5mo8hcsBUlA40/M/n89Dv6Ns+RJGF4Tw0w1HMhWkp4EzcxgJxh/VRxe3A/HnczFnXapB3JCgjucv2Dz6knvZge4rUaBgdZyC9ls9gu2wuzN4tKdBj8MFz0mK2ny3xGuMpfgJvIIIgu60YPk+T6d9DtqLwhwvQ=
+	t=1762825459; cv=none; b=DqSM2wU5TTaVrNYKVOyOT+fPNNBbCh3D8/mZabDupF88FDXmwmbk96Nv3nnrCdIdWw58HPMC/8Cn4NqcqZ6oOAZ625Uj5no08+Ke0mz8R1WsPaMq8/qHl6aTY6BEpCIsn5vKYOzF+qG16vgwOHLnDstvT4WavvUrzKtHI2TNpTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824832; c=relaxed/simple;
-	bh=ATjGa/j/QR5bPYzljkVS0CIj8BB951KRIpYadsoNY2k=;
+	s=arc-20240116; t=1762825459; c=relaxed/simple;
+	bh=ESaPQlBzqpq9EqMx3AwvSvGVfcj22h5MONTrMSI2pVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=snVSlvKyqIbUP5flNj4NRqbh7AoMgZwloRuRlF0qKgcmyEJL9sAW7jKdY0DkMvdlJOMxDqs8k4I2XPNAqzV68HCd+1TICIFjTwvN3/ISEuyph8YMQtwYEiyckJyFPMsvYwR9ARRw6vy/ySkKfxOx24rki79djo5SbV7HsWixWnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTfIy0+y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558B2C4CEFB;
-	Tue, 11 Nov 2025 01:33:52 +0000 (UTC)
+	 MIME-Version; b=UdF1A0Z3Kl4UaMaIGeinoLUD+GnvG1+yE+yl5JvDQuWdlxR3+kg9Ps0RFp41el9s9r64l2eXlBaFQfbaFJH9RCuJ7SuxwEU3MP+o7r+zjO8m/kh6UerQI4aDnqB8b1EfTBbr5r5FpomI/y4f9TEWFlpj42MXgPCw1OrhdzX5TNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwqL4sHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E812EC19425;
+	Tue, 11 Nov 2025 01:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824832;
-	bh=ATjGa/j/QR5bPYzljkVS0CIj8BB951KRIpYadsoNY2k=;
+	s=korg; t=1762825459;
+	bh=ESaPQlBzqpq9EqMx3AwvSvGVfcj22h5MONTrMSI2pVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTfIy0+ypi1/ILTvJ9a0rP1/lrtAXXeNgcDDkydZRJEBEpqX4I96sSyyQrwNgnLbH
-	 rE8yJXz9LJBQZEo7AeyERltZMqXXHgHGs+7JLePPCZEcIM7Omjeht7+M2HevdkC1jo
-	 fNvds1OblbsX8fIoCkg/sM+tbXH37+FRhMVQ+qdI=
+	b=IwqL4sHBrT2uiWMtT9rPJXFcBvgEU4yqcT7DehRKr76KWlNnLkL7CUo0paov7+QCq
+	 +DsCE+bYdBqImIDZ+Q421J+GyuTFbXWu7yWzJkfvxiiUvPS0jAUGnBQsTbFXNLeTWe
+	 mslu56+mFz/gxKvQl3Z5+CJk8N3PmhvEOLFmFkIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammad Heib <mheib@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 526/565] net: ionic: add dma_wmb() before ringing TX doorbell
+	Guenter Roeck <linux@roeck-us.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.17 812/849] parisc: Avoid crash due to unaligned access in unwinder
 Date: Tue, 11 Nov 2025 09:46:22 +0900
-Message-ID: <20251111004538.799392068@linuxfoundation.org>
+Message-ID: <20251111004556.056671265@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Heib <mheib@redhat.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit d261f5b09c28850dc63ca1d3018596f829f402d5 ]
+commit fd9f30d1038ee1624baa17a6ff11effe5f7617cb upstream.
 
-The TX path currently writes descriptors and then immediately writes to
-the MMIO doorbell register to notify the NIC.  On weakly ordered
-architectures, descriptor writes may still be pending in CPU or DMA
-write buffers when the doorbell is issued, leading to the device
-fetching stale or incomplete descriptors.
+Guenter Roeck reported this kernel crash on his emulated B160L machine:
 
-Add a dma_wmb() in ionic_txq_post() to ensure all descriptor writes are
-visible to the device before the doorbell MMIO write.
+Starting network: udhcpc: started, v1.36.1
+ Backtrace:
+  [<104320d4>] unwind_once+0x1c/0x5c
+  [<10434a00>] walk_stackframe.isra.0+0x74/0xb8
+  [<10434a6c>] arch_stack_walk+0x28/0x38
+  [<104e5efc>] stack_trace_save+0x48/0x5c
+  [<105d1bdc>] set_track_prepare+0x44/0x6c
+  [<105d9c80>] ___slab_alloc+0xfc4/0x1024
+  [<105d9d38>] __slab_alloc.isra.0+0x58/0x90
+  [<105dc80c>] kmem_cache_alloc_noprof+0x2ac/0x4a0
+  [<105b8e54>] __anon_vma_prepare+0x60/0x280
+  [<105a823c>] __vmf_anon_prepare+0x68/0x94
+  [<105a8b34>] do_wp_page+0x8cc/0xf10
+  [<105aad88>] handle_mm_fault+0x6c0/0xf08
+  [<10425568>] do_page_fault+0x110/0x440
+  [<10427938>] handle_interruption+0x184/0x748
+  [<11178398>] schedule+0x4c/0x190
+  BUG: spinlock recursion on CPU#0, ifconfig/2420
+  lock: terminate_lock.2+0x0/0x1c, .magic: dead4ead, .owner: ifconfig/2420, .owner_cpu: 0
 
-Fixes: 0f3154e6bcb3 ("ionic: Add Tx and Rx handling")
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
-Link: https://patch.msgid.link/20251031155203.203031-1-mheib@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While creating the stack trace, the unwinder uses the stack pointer to guess
+the previous frame to read the previous stack pointer from memory.  The crash
+happens, because the unwinder tries to read from unaligned memory and as such
+triggers the unalignment trap handler which then leads to the spinlock
+recursion and finally to a deadlock.
+
+Fix it by checking the alignment before accessing the memory.
+
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_txrx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/parisc/kernel/unwind.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-index 0f5758c273c22..3a094d3ea6f4f 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-@@ -29,6 +29,10 @@ static void ionic_tx_clean(struct ionic_queue *q,
+--- a/arch/parisc/kernel/unwind.c
++++ b/arch/parisc/kernel/unwind.c
+@@ -35,6 +35,8 @@
  
- static inline void ionic_txq_post(struct ionic_queue *q, bool ring_dbell)
- {
-+	/* Ensure TX descriptor writes reach memory before NIC reads them.
-+	 * Prevents device from fetching stale descriptors.
-+	 */
-+	dma_wmb();
- 	ionic_q_post(q, ring_dbell);
- }
+ #define KERNEL_START (KERNEL_BINARY_TEXT_START)
  
--- 
-2.51.0
-
++#define ALIGNMENT_OK(ptr, type) (((ptr) & (sizeof(type) - 1)) == 0)
++
+ extern struct unwind_table_entry __start___unwind[];
+ extern struct unwind_table_entry __stop___unwind[];
+ 
+@@ -257,12 +259,15 @@ static int unwind_special(struct unwind_
+ 	if (pc_is_kernel_fn(pc, _switch_to) ||
+ 	    pc == (unsigned long)&_switch_to_ret) {
+ 		info->prev_sp = info->sp - CALLEE_SAVE_FRAME_SIZE;
+-		info->prev_ip = *(unsigned long *)(info->prev_sp - RP_OFFSET);
++		if (ALIGNMENT_OK(info->prev_sp, long))
++			info->prev_ip = *(unsigned long *)(info->prev_sp - RP_OFFSET);
++		else
++			info->prev_ip = info->prev_sp = 0;
+ 		return 1;
+ 	}
+ 
+ #ifdef CONFIG_IRQSTACKS
+-	if (pc == (unsigned long)&_call_on_stack) {
++	if (pc == (unsigned long)&_call_on_stack && ALIGNMENT_OK(info->sp, long)) {
+ 		info->prev_sp = *(unsigned long *)(info->sp - FRAME_SIZE - REG_SZ);
+ 		info->prev_ip = *(unsigned long *)(info->sp - FRAME_SIZE - RP_OFFSET);
+ 		return 1;
+@@ -370,8 +375,10 @@ static void unwind_frame_regs(struct unw
+ 			info->prev_sp = info->sp - frame_size;
+ 			if (e->Millicode)
+ 				info->rp = info->r31;
+-			else if (rpoffset)
++			else if (rpoffset && ALIGNMENT_OK(info->prev_sp, long))
+ 				info->rp = *(unsigned long *)(info->prev_sp - rpoffset);
++			else
++				info->rp = 0;
+ 			info->prev_ip = info->rp;
+ 			info->rp = 0;
+ 		}
 
 
 
