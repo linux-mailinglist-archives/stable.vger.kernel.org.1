@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F914C4B1B4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7C3C4AF79
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 012BC18961A2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4781F3BBC11
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC81F25F797;
-	Tue, 11 Nov 2025 01:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AC933F368;
+	Tue, 11 Nov 2025 01:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLB4G2fv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQSU68vi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEBE26E146;
-	Tue, 11 Nov 2025 01:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E807D33557B;
+	Tue, 11 Nov 2025 01:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825473; cv=none; b=jIHVKewirq5Or6mnUJfR3SvWqH6s9/QJwI7yChKFAOzDftCZYssM7WsFCQ4u1JRWB9z9vWJEDKWbcUm44Chj1ktS/wuezzxqv29fXjUT9wPqrSZupMDpKCO6M0q8qpVTEIxyGN8PEsUVARcf3VDBY8fN4pK5xn8fZb6VuzStlSc=
+	t=1762825010; cv=none; b=DX4bPHk/o46jGVBlYQP955XTGGcNdT7Lcdjo9IstCipsRIOxYfXEY0+y75KASlx2ydg7CqI3EvzQ1GXKeqRSqmpytBsOdaAF5Ogp3KjdwT5SFmvoqyL1m9VKAK95EBJ2U0h1ei/ePY8BNWO3acwgxk5UlfaswziWVBc0CNWsQYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825473; c=relaxed/simple;
-	bh=T/QCPGjtNYIWgAHXb7KqTv951RjYi8WmSRBRQCtJZz0=;
+	s=arc-20240116; t=1762825010; c=relaxed/simple;
+	bh=55FUBVrHswWhP5RrH77QH+BVS0aYtuDAZIq7cVX6GkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDhzQmONx4IvWilsBhgB8kWGHfVk3fclYrXGTx3l+lHatISS9BcfavtCPICB1AXMhdALfMKmw3VxlkkuOl66O9gZvcLXbS+lzmLrO9MBsomgXwvYFhn4H/UlLCRuJmxt08XNLe/9oBj0sAdxFi6ycoRpUVPafJAvzK4q2pmC8tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLB4G2fv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDDFC116B1;
-	Tue, 11 Nov 2025 01:44:33 +0000 (UTC)
+	 MIME-Version; b=hYCEVrI8kqx29Wf71XtyC5CWYgTf2qb8xrbTU4k35cINGpzBTqvpwURBEEmaqU4yygGSJbI3yt/jiTT4h5oddPcVZ5FxQ+cfiM9GCs5u0EID9oSB+J+nyGEXZcbEFw1IZcbZodMT7lU07n6IG9JSftNfJwjB2PfMpbtYuCJ+GXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQSU68vi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FFDC4CEF5;
+	Tue, 11 Nov 2025 01:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825473;
-	bh=T/QCPGjtNYIWgAHXb7KqTv951RjYi8WmSRBRQCtJZz0=;
+	s=korg; t=1762825009;
+	bh=55FUBVrHswWhP5RrH77QH+BVS0aYtuDAZIq7cVX6GkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLB4G2fvH1p9QHkdPMHfGBWN/7AjBdgnhN4UDOt3gjoMHG5t0xC/IoZKNOQg+tpsD
-	 ypkTy05MK4ZLvLvxVATygC3HYNmNOvVE9puFG/RSg4Y7WqOpZPLwjPSf24SxW0z4Zt
-	 Z/GWwBFb+dXCR/PT3deOGpnWSfCKowFYiJcAMptc=
+	b=LQSU68vi9+edNQwAfIpFW9Lcb6FVpuz9pEMT9veuDj/uDYZQ+utfE8Gvad4WaB2kX
+	 5a5im1hvUEmsYSgwaU4gBxkt/YcrE4fsGQdtYRWlrWGdVC4uHya5iMCJs5crEPrAj+
+	 lrLWgBTBJ/HNB7O05/mDcokJZI48oSXIyvJGUREU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Octavia Togami <octavia.togami@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.17 818/849] perf/core: Fix system hang caused by cpu-clock usage
+	Hongguang Gao <hongguang.gao@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 532/565] bnxt_en: Add a force parameter to bnxt_free_ctx_mem()
 Date: Tue, 11 Nov 2025 09:46:28 +0900
-Message-ID: <20251111004556.202259336@linuxfoundation.org>
+Message-ID: <20251111004538.939486690@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +63,201 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Hongguang Gao <hongguang.gao@broadcom.com>
 
-commit eb3182ef0405ff2f6668fd3e5ff9883f60ce8801 upstream.
+[ Upstream commit 46010d43ab7b18fbc8a3a0bf4d65c775f8d2adbd ]
 
-cpu-clock usage by the async-profiler tool can trigger a system hang,
-which got bisected back to the following commit by Octavia Togami:
+If 'force' is false, it will keep the memory pages and all data
+structures for the context memory type if the memory is valid.
 
-  18dbcbfabfff ("perf: Fix the POLL_HUP delivery breakage") causes this issue
+This patch always passes true for the 'force' parameter so there is
+no change in behavior.  Later patches will adjust the 'force' parameter
+for the FW log context memory types so that the logs will not be reset
+after FW reset.
 
-The root cause of the hang is that cpu-clock is a special type of SW
-event which relies on hrtimers. The __perf_event_overflow() callback
-is invoked from the hrtimer handler for cpu-clock events, and
-__perf_event_overflow() tries to call cpu_clock_event_stop()
-to stop the event, which calls htimer_cancel() to cancel the hrtimer.
-
-But that's a recursion into the hrtimer code from a hrtimer handler,
-which (unsurprisingly) deadlocks.
-
-To fix this bug, use hrtimer_try_to_cancel() instead, and set
-the PERF_HES_STOPPED flag, which causes perf_swevent_hrtimer()
-to stop the event once it sees the PERF_HES_STOPPED flag.
-
-[ mingo: Fixed the comments and improved the changelog. ]
-
-Closes: https://lore.kernel.org/all/CAHPNGSQpXEopYreir+uDDEbtXTBvBvi8c6fYXJvceqtgTPao3Q@mail.gmail.com/
-Fixes: 18dbcbfabfff ("perf: Fix the POLL_HUP delivery breakage")
-Reported-by: Octavia Togami <octavia.togami@gmail.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Octavia Togami <octavia.togami@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://github.com/lucko/spark/issues/530
-Link: https://patch.msgid.link/20251015051828.12809-1-dapeng1.mi@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hongguang Gao <hongguang.gao@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20241115151438.550106-5-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 5204943a4c6e ("bnxt_en: Fix warning in bnxt_dl_reload_down()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 44 ++++++++++++-------
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  2 +-
+ .../net/ethernet/broadcom/bnxt/bnxt_devlink.c |  2 +-
+ 3 files changed, 29 insertions(+), 19 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -11757,7 +11757,8 @@ static enum hrtimer_restart perf_swevent
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 5409ad3cee192..a3491b8383f5a 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -8340,7 +8340,7 @@ static int bnxt_hwrm_func_backing_store_qcaps_v2(struct bnxt *bp)
+ {
+ 	struct hwrm_func_backing_store_qcaps_v2_output *resp;
+ 	struct hwrm_func_backing_store_qcaps_v2_input *req;
+-	struct bnxt_ctx_mem_info *ctx;
++	struct bnxt_ctx_mem_info *ctx = bp->ctx;
+ 	u16 type;
+ 	int rc;
  
- 	event = container_of(hrtimer, struct perf_event, hw.hrtimer);
+@@ -8348,10 +8348,12 @@ static int bnxt_hwrm_func_backing_store_qcaps_v2(struct bnxt *bp)
+ 	if (rc)
+ 		return rc;
  
--	if (event->state != PERF_EVENT_STATE_ACTIVE)
-+	if (event->state != PERF_EVENT_STATE_ACTIVE ||
-+	    event->hw.state & PERF_HES_STOPPED)
- 		return HRTIMER_NORESTART;
+-	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+-	if (!ctx)
+-		return -ENOMEM;
+-	bp->ctx = ctx;
++	if (!ctx) {
++		ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
++		if (!ctx)
++			return -ENOMEM;
++		bp->ctx = ctx;
++	}
  
- 	event->pmu->read(event);
-@@ -11803,15 +11804,20 @@ static void perf_swevent_cancel_hrtimer(
- 	struct hw_perf_event *hwc = &event->hw;
+ 	resp = hwrm_req_hold(bp, req);
  
- 	/*
--	 * The throttle can be triggered in the hrtimer handler.
--	 * The HRTIMER_NORESTART should be used to stop the timer,
--	 * rather than hrtimer_cancel(). See perf_swevent_hrtimer()
-+	 * Careful: this function can be triggered in the hrtimer handler,
-+	 * for cpu-clock events, so hrtimer_cancel() would cause a
-+	 * deadlock.
-+	 *
-+	 * So use hrtimer_try_to_cancel() to try to stop the hrtimer,
-+	 * and the cpu-clock handler also sets the PERF_HES_STOPPED flag,
-+	 * which guarantees that perf_swevent_hrtimer() will stop the
-+	 * hrtimer once it sees the PERF_HES_STOPPED flag.
- 	 */
- 	if (is_sampling_event(event) && (hwc->interrupts != MAX_INTERRUPTS)) {
- 		ktime_t remaining = hrtimer_get_remaining(&hwc->hrtimer);
- 		local64_set(&hwc->period_left, ktime_to_ns(remaining));
+@@ -8400,7 +8402,8 @@ static int bnxt_hwrm_func_backing_store_qcaps(struct bnxt *bp)
+ 	struct hwrm_func_backing_store_qcaps_input *req;
+ 	int rc;
  
--		hrtimer_cancel(&hwc->hrtimer);
-+		hrtimer_try_to_cancel(&hwc->hrtimer);
+-	if (bp->hwrm_spec_code < 0x10902 || BNXT_VF(bp) || bp->ctx)
++	if (bp->hwrm_spec_code < 0x10902 || BNXT_VF(bp) ||
++	    (bp->ctx && bp->ctx->flags & BNXT_CTX_FLAG_INITED))
+ 		return 0;
+ 
+ 	if (bp->fw_cap & BNXT_FW_CAP_BACKING_STORE_V2)
+@@ -8873,11 +8876,16 @@ static int bnxt_backing_store_cfg_v2(struct bnxt *bp, u32 ena)
+ }
+ 
+ static void bnxt_free_one_ctx_mem(struct bnxt *bp,
+-				  struct bnxt_ctx_mem_type *ctxm)
++				  struct bnxt_ctx_mem_type *ctxm, bool force)
+ {
+ 	struct bnxt_ctx_pg_info *ctx_pg;
+ 	int i, n = 1;
+ 
++	ctxm->last = 0;
++
++	if (ctxm->mem_valid && !force)
++		return;
++
+ 	ctx_pg = ctxm->pg_info;
+ 	if (ctx_pg) {
+ 		if (ctxm->instance_bmap)
+@@ -8891,7 +8899,7 @@ static void bnxt_free_one_ctx_mem(struct bnxt *bp,
  	}
  }
  
-@@ -11855,12 +11861,14 @@ static void cpu_clock_event_update(struc
- 
- static void cpu_clock_event_start(struct perf_event *event, int flags)
+-void bnxt_free_ctx_mem(struct bnxt *bp)
++void bnxt_free_ctx_mem(struct bnxt *bp, bool force)
  {
-+	event->hw.state = 0;
- 	local64_set(&event->hw.prev_count, local_clock());
- 	perf_swevent_start_hrtimer(event);
+ 	struct bnxt_ctx_mem_info *ctx = bp->ctx;
+ 	u16 type;
+@@ -8900,11 +8908,13 @@ void bnxt_free_ctx_mem(struct bnxt *bp)
+ 		return;
+ 
+ 	for (type = 0; type < BNXT_CTX_V2_MAX; type++)
+-		bnxt_free_one_ctx_mem(bp, &ctx->ctx_arr[type]);
++		bnxt_free_one_ctx_mem(bp, &ctx->ctx_arr[type], force);
+ 
+ 	ctx->flags &= ~BNXT_CTX_FLAG_INITED;
+-	kfree(ctx);
+-	bp->ctx = NULL;
++	if (force) {
++		kfree(ctx);
++		bp->ctx = NULL;
++	}
  }
  
- static void cpu_clock_event_stop(struct perf_event *event, int flags)
- {
-+	event->hw.state = PERF_HES_STOPPED;
- 	perf_swevent_cancel_hrtimer(event);
- 	if (flags & PERF_EF_UPDATE)
- 		cpu_clock_event_update(event);
-@@ -11934,12 +11942,14 @@ static void task_clock_event_update(stru
- 
- static void task_clock_event_start(struct perf_event *event, int flags)
- {
-+	event->hw.state = 0;
- 	local64_set(&event->hw.prev_count, event->ctx->time);
- 	perf_swevent_start_hrtimer(event);
+ static int bnxt_alloc_ctx_mem(struct bnxt *bp)
+@@ -11933,7 +11943,7 @@ static int bnxt_hwrm_if_change(struct bnxt *bp, bool up)
+ 			set_bit(BNXT_STATE_FW_RESET_DET, &bp->state);
+ 			if (!test_bit(BNXT_STATE_IN_FW_RESET, &bp->state))
+ 				bnxt_ulp_irq_stop(bp);
+-			bnxt_free_ctx_mem(bp);
++			bnxt_free_ctx_mem(bp, true);
+ 			bnxt_dcb_free(bp);
+ 			rc = bnxt_fw_init_one(bp);
+ 			if (rc) {
+@@ -13657,7 +13667,7 @@ static void bnxt_fw_reset_close(struct bnxt *bp)
+ 	bnxt_hwrm_func_drv_unrgtr(bp);
+ 	if (pci_is_enabled(bp->pdev))
+ 		pci_disable_device(bp->pdev);
+-	bnxt_free_ctx_mem(bp);
++	bnxt_free_ctx_mem(bp, true);
  }
  
- static void task_clock_event_stop(struct perf_event *event, int flags)
- {
-+	event->hw.state = PERF_HES_STOPPED;
- 	perf_swevent_cancel_hrtimer(event);
- 	if (flags & PERF_EF_UPDATE)
- 		task_clock_event_update(event, event->ctx->time);
+ static bool is_bnxt_fw_ok(struct bnxt *bp)
+@@ -15553,7 +15563,7 @@ static void bnxt_remove_one(struct pci_dev *pdev)
+ 	kfree(bp->fw_health);
+ 	bp->fw_health = NULL;
+ 	bnxt_cleanup_pci(bp);
+-	bnxt_free_ctx_mem(bp);
++	bnxt_free_ctx_mem(bp, true);
+ 	bnxt_free_crash_dump_mem(bp);
+ 	kfree(bp->rss_indir_tbl);
+ 	bp->rss_indir_tbl = NULL;
+@@ -16195,7 +16205,7 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	kfree(bp->fw_health);
+ 	bp->fw_health = NULL;
+ 	bnxt_cleanup_pci(bp);
+-	bnxt_free_ctx_mem(bp);
++	bnxt_free_ctx_mem(bp, true);
+ 	bnxt_free_crash_dump_mem(bp);
+ 	kfree(bp->rss_indir_tbl);
+ 	bp->rss_indir_tbl = NULL;
+@@ -16251,7 +16261,7 @@ static int bnxt_suspend(struct device *device)
+ 	bnxt_hwrm_func_drv_unrgtr(bp);
+ 	bnxt_ptp_clear(bp);
+ 	pci_disable_device(bp->pdev);
+-	bnxt_free_ctx_mem(bp);
++	bnxt_free_ctx_mem(bp, true);
+ 	rtnl_unlock();
+ 	return rc;
+ }
+@@ -16367,7 +16377,7 @@ static pci_ers_result_t bnxt_io_error_detected(struct pci_dev *pdev,
+ 
+ 	if (pci_is_enabled(pdev))
+ 		pci_disable_device(pdev);
+-	bnxt_free_ctx_mem(bp);
++	bnxt_free_ctx_mem(bp, true);
+ 	rtnl_unlock();
+ 
+ 	/* Request a slot slot reset. */
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index d4e63bf599666..37bb9091bf771 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -2828,7 +2828,7 @@ int bnxt_hwrm_vnic_alloc(struct bnxt *bp, struct bnxt_vnic_info *vnic,
+ int __bnxt_hwrm_get_tx_rings(struct bnxt *bp, u16 fid, int *tx_rings);
+ int bnxt_nq_rings_in_use(struct bnxt *bp);
+ int bnxt_hwrm_set_coal(struct bnxt *);
+-void bnxt_free_ctx_mem(struct bnxt *bp);
++void bnxt_free_ctx_mem(struct bnxt *bp, bool force);
+ int bnxt_num_tx_to_cp(struct bnxt *bp, int tx);
+ unsigned int bnxt_get_max_func_stat_ctxs(struct bnxt *bp);
+ unsigned int bnxt_get_avail_stat_ctxs_for_en(struct bnxt *bp);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
+index 4cb0fabf977e3..901fd36757ed6 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
+@@ -463,7 +463,7 @@ static int bnxt_dl_reload_down(struct devlink *dl, bool netns_change,
+ 			break;
+ 		}
+ 		bnxt_cancel_reservations(bp, false);
+-		bnxt_free_ctx_mem(bp);
++		bnxt_free_ctx_mem(bp, true);
+ 		break;
+ 	}
+ 	case DEVLINK_RELOAD_ACTION_FW_ACTIVATE: {
+-- 
+2.51.0
+
 
 
 
