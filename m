@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-193546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB12C4A64D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4894AC4A6EC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0D82E4F5EC1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34A8F3B1EC4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FDC33F8B1;
-	Tue, 11 Nov 2025 01:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CF8340273;
+	Tue, 11 Nov 2025 01:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pa61vcrD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfhPJQ36"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B4833F8D3;
-	Tue, 11 Nov 2025 01:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081B533C534;
+	Tue, 11 Nov 2025 01:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823440; cv=none; b=Up97gw+KaRhFllVNjCKBx85iILBw9WNJ5pVLDPvG7QRxHGFFbJU3ZO8hePUsFKO2rQ4agPJPl8hU09qekmydovTflWTwONm+/mdH2owNCXhqRdukL+OQKTYhCvlL3aIwmpmvHashhNglDoXhvpkuX70gyjDWN4juTxY1aMeKDvo=
+	t=1762823445; cv=none; b=j0TgA7rqI9BMJpOvhgZTkFk44z7tMqQC9PgvDHfKn75Ti2iUH7agQAtVPYIjiwTB+YCkCilamI25SXjaJtx8kF3cP8g3b15BO4vJ50Jh0PuCTrFjv0sHzv6veTiYZe/ggj3OWU4fCGAQNzFPIqHC48OAYujvcINuytXfKdupzk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823440; c=relaxed/simple;
-	bh=R0LgxYH9R/E6JkAAaBtISmtGKLLE22zDu3p5HM+mOPA=;
+	s=arc-20240116; t=1762823445; c=relaxed/simple;
+	bh=a91f+aArc4U9DM2pp+Pu/HkBf5yF56upsSx5u0nT7GQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgdC9QyJ/OEYcTAoqJ1ucmV4U4tISJvayw+lwX8rprojeDbixvnc3C26dwd0OcN/X5zn7qU9cUiqSpYvQIUvJNud+k8+yOW8m/eeNxf3RSPrM6yZj6yftPZ1/HxgskriQ/eum/oOtQJiQNRWoPofiynUptuPAQ2kx5dSLg8mGbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pa61vcrD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134E8C16AAE;
-	Tue, 11 Nov 2025 01:10:39 +0000 (UTC)
+	 MIME-Version; b=Xf4SRMT0uujTzvYJssmI+ANMTJ1uJDITn3s77Sfu4O7qR6ZkD/zakzalMqeTIZg3n5AYulldcJumTUvtpHWKcabGenPE6MX6RXIKK9c61vx2/1ehzEGafJO/GvCN0vy768ta/GQvfCp8I7UE3w3ogumlVpyjzf3wil8Jrby2avo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfhPJQ36; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB83C116B1;
+	Tue, 11 Nov 2025 01:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823440;
-	bh=R0LgxYH9R/E6JkAAaBtISmtGKLLE22zDu3p5HM+mOPA=;
+	s=korg; t=1762823444;
+	bh=a91f+aArc4U9DM2pp+Pu/HkBf5yF56upsSx5u0nT7GQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pa61vcrD1eAszmV3xnDGyEegOkYWQwn/v2IPtbNEi4rIDMvdFRIcb36QChXWt0/HH
-	 9Qd20U+jawNIiL2NMOI3UaAGpsBbm8P9O4d9IF+6tQTXSkppmlMUYcyKef7kPGlzfG
-	 ziF/VZS9NMhStdjvT8WKQ4FY+ImgnQthBCl/TUXc=
+	b=gfhPJQ366otiGijETxhu+6PmCbqu0By8P0jzV2uiS4nTmWNhr9zYCREvqOjmcoFRX
+	 zJ8i1wBPLcLKFE+tXxKmzXPdp557KGjCHtTQecSAfGYlto9LuwPyibApcToOAyRl8R
+	 UWoUQTl3bQ7xib+DCNOHhR/1ADqRCtruG5RY/JUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+	Joe Damato <joe@dama.to>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 300/849] bridge: Redirect to backup port when port is administratively down
-Date: Tue, 11 Nov 2025 09:37:50 +0900
-Message-ID: <20251111004543.663053280@linuxfoundation.org>
+Subject: [PATCH 6.17 301/849] selftests: drv-net: wait for carrier
+Date: Tue, 11 Nov 2025 09:37:51 +0900
+Message-ID: <20251111004543.686694523@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,59 +66,149 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 3d05b24429e1de7a17c8fdccb04a04dbc8ad297b ]
+[ Upstream commit f09fc24dd9a5ec989dfdde7090624924ede6ddc7 ]
 
-If a backup port is configured for a bridge port, the bridge will
-redirect known unicast traffic towards the backup port when the primary
-port is administratively up but without a carrier. This is useful, for
-example, in MLAG configurations where a system is connected to two
-switches and there is a peer link between both switches. The peer link
-serves as the backup port in case one of the switches loses its
-connection to the multi-homed system.
+On fast machines the tests run in quick succession so even
+when tests clean up after themselves the carrier may need
+some time to come back.
 
-In order to avoid flooding when the primary port loses its carrier, the
-bridge does not flush dynamic FDB entries pointing to the port upon STP
-disablement, if the port has a backup port.
+Specifically in NIPA when ping.py runs right after netpoll_basic.py
+the first ping command fails.
 
-The above means that known unicast traffic destined to the primary port
-will be blackholed when the port is put administratively down, until the
-FDB entries pointing to it are aged-out.
+Since the context manager callbacks are now common NetDrvEpEnv
+gets an ip link up call as well.
 
-Given that the current behavior is quite weird and unlikely to be
-depended on by anyone, amend the bridge to redirect to the backup port
-also when the primary port is administratively down and not only when it
-does not have a carrier.
-
-The change is motivated by a report from a user who expected traffic to
-be redirected to the backup port when the primary port was put
-administratively down while debugging a network issue.
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250812080213.325298-2-idosch@nvidia.com
+Reviewed-by: Joe Damato <joe@dama.to>
+Link: https://patch.msgid.link/20250812142054.750282-1-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_forward.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../selftests/drivers/net/lib/py/__init__.py  |  2 +-
+ .../selftests/drivers/net/lib/py/env.py       | 41 +++++++++----------
+ tools/testing/selftests/net/lib/py/utils.py   | 18 ++++++++
+ 3 files changed, 39 insertions(+), 22 deletions(-)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index 29097e984b4f7..870bdf2e082c4 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -148,7 +148,8 @@ void br_forward(const struct net_bridge_port *to,
- 		goto out;
+diff --git a/tools/testing/selftests/drivers/net/lib/py/__init__.py b/tools/testing/selftests/drivers/net/lib/py/__init__.py
+index 8711c67ad658a..a07b56a75c8a6 100644
+--- a/tools/testing/selftests/drivers/net/lib/py/__init__.py
++++ b/tools/testing/selftests/drivers/net/lib/py/__init__.py
+@@ -15,7 +15,7 @@ try:
+         NlError, RtnlFamily, DevlinkFamily
+     from net.lib.py import CmdExitFailure
+     from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, \
+-        fd_read_timeout, ip, rand_port, tool, wait_port_listen
++        fd_read_timeout, ip, rand_port, tool, wait_port_listen, wait_file
+     from net.lib.py import fd_read_timeout
+     from net.lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
+     from net.lib.py import ksft_disruptive, ksft_exit, ksft_pr, ksft_run, \
+diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
+index 1b8bd648048f7..c1f3b608c6d8f 100644
+--- a/tools/testing/selftests/drivers/net/lib/py/env.py
++++ b/tools/testing/selftests/drivers/net/lib/py/env.py
+@@ -4,7 +4,7 @@ import os
+ import time
+ from pathlib import Path
+ from lib.py import KsftSkipEx, KsftXfailEx
+-from lib.py import ksft_setup
++from lib.py import ksft_setup, wait_file
+ from lib.py import cmd, ethtool, ip, CmdExitFailure
+ from lib.py import NetNS, NetdevSimDev
+ from .remote import Remote
+@@ -25,6 +25,9 @@ class NetDrvEnvBase:
  
- 	/* redirect to backup link if the destination port is down */
--	if (rcu_access_pointer(to->backup_port) && !netif_carrier_ok(to->dev)) {
-+	if (rcu_access_pointer(to->backup_port) &&
-+	    (!netif_carrier_ok(to->dev) || !netif_running(to->dev))) {
- 		struct net_bridge_port *backup_port;
+         self.env = self._load_env_file()
  
- 		backup_port = rcu_dereference(to->backup_port);
++        # Following attrs must be set be inheriting classes
++        self.dev = None
++
+     def _load_env_file(self):
+         env = os.environ.copy()
+ 
+@@ -48,6 +51,22 @@ class NetDrvEnvBase:
+                 env[pair[0]] = pair[1]
+         return ksft_setup(env)
+ 
++    def __del__(self):
++        pass
++
++    def __enter__(self):
++        ip(f"link set dev {self.dev['ifname']} up")
++        wait_file(f"/sys/class/net/{self.dev['ifname']}/carrier",
++                  lambda x: x.strip() == "1")
++
++        return self
++
++    def __exit__(self, ex_type, ex_value, ex_tb):
++        """
++        __exit__ gets called at the end of a "with" block.
++        """
++        self.__del__()
++
+ 
+ class NetDrvEnv(NetDrvEnvBase):
+     """
+@@ -72,17 +91,6 @@ class NetDrvEnv(NetDrvEnvBase):
+         self.ifname = self.dev['ifname']
+         self.ifindex = self.dev['ifindex']
+ 
+-    def __enter__(self):
+-        ip(f"link set dev {self.dev['ifname']} up")
+-
+-        return self
+-
+-    def __exit__(self, ex_type, ex_value, ex_tb):
+-        """
+-        __exit__ gets called at the end of a "with" block.
+-        """
+-        self.__del__()
+-
+     def __del__(self):
+         if self._ns:
+             self._ns.remove()
+@@ -219,15 +227,6 @@ class NetDrvEpEnv(NetDrvEnvBase):
+             raise Exception("Can't resolve remote interface name, multiple interfaces match")
+         return v6[0]["ifname"] if v6 else v4[0]["ifname"]
+ 
+-    def __enter__(self):
+-        return self
+-
+-    def __exit__(self, ex_type, ex_value, ex_tb):
+-        """
+-        __exit__ gets called at the end of a "with" block.
+-        """
+-        self.__del__()
+-
+     def __del__(self):
+         if self._ns:
+             self._ns.remove()
+diff --git a/tools/testing/selftests/net/lib/py/utils.py b/tools/testing/selftests/net/lib/py/utils.py
+index f395c90fb0f19..c42bffea0d879 100644
+--- a/tools/testing/selftests/net/lib/py/utils.py
++++ b/tools/testing/selftests/net/lib/py/utils.py
+@@ -249,3 +249,21 @@ def wait_port_listen(port, proto="tcp", ns=None, host=None, sleep=0.005, deadlin
+         if time.monotonic() > end:
+             raise Exception("Waiting for port listen timed out")
+         time.sleep(sleep)
++
++
++def wait_file(fname, test_fn, sleep=0.005, deadline=5, encoding='utf-8'):
++    """
++    Wait for file contents on the local system to satisfy a condition.
++    test_fn() should take one argument (file contents) and return whether
++    condition is met.
++    """
++    end = time.monotonic() + deadline
++
++    with open(fname, "r", encoding=encoding) as fp:
++        while True:
++            if test_fn(fp.read()):
++                break
++            fp.seek(0)
++            if time.monotonic() > end:
++                raise TimeoutError("Wait for file contents failed", fname)
++            time.sleep(sleep)
 -- 
 2.51.0
 
