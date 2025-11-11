@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6505DC4AC34
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DA3C4B250
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:02:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 732FD18839B2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B96613BB65B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF35930C639;
-	Tue, 11 Nov 2025 01:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BA4C347BBF;
+	Tue, 11 Nov 2025 01:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywLaJghn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uchykxIR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC9C30BF66;
-	Tue, 11 Nov 2025 01:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF2C2DC776;
+	Tue, 11 Nov 2025 01:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824506; cv=none; b=bvsIXbez+yDY2joxnFgOQ6PhHPmbPg5LSihPuFeat3dP5KEAXIOG+DW1AWWeOxVgNVRhN/OYS/zFaWD0E34Yk2cuNSqj1548H7dSlBYbYmIHBzCZn0XkiA569NJBeKpiYdbLh7BmrI+JBckjbhD27JCySPE3TAAaW5huTBHKZpA=
+	t=1762825307; cv=none; b=F6TLUt+3niLYq9PhGv4/nbEno2EG+FD9Z8V9GOT+3cSTnG5c5P9kfXDYF+1hi6jwPyaclpruwxaaAyU2oQ2aPLyIK095ADQBskWnQlVBNQoAE5qJplvEO00B8WOmwJQY68C5xs/kJlmS15I0KdJWottm7XZrPfqnNGAcjknVzPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824506; c=relaxed/simple;
-	bh=GJDjOwl/RLse9PcpjRrx5BmgzJADvk3ZAPwDO8ioO9c=;
+	s=arc-20240116; t=1762825307; c=relaxed/simple;
+	bh=ZIH09JvRoRtFqxD+LTT/JXPwpD7zZfm2AgCaF4NdxsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=An19mhz+ptzobS44oAFpsNtmd+tb1nqRBMgkQYDGomeBFy+4TlmgtIt9a0Ll9wft8OSCrwqqZIzV42WMhfS5X9jljSKaiqhsUw6hUcDgFtue3W+TolChVb4mql3CFFBBXTuF9TnP//MSjdxBSN/F4aIbQ3RHjK4ZT8WR2L/NArQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywLaJghn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27146C4CEFB;
-	Tue, 11 Nov 2025 01:28:26 +0000 (UTC)
+	 MIME-Version; b=M/npcXrSzxK+EmIXRTVFlUkryaOxIj5+21ycId2fwKz8MWlGfwFiYvhTEutwAg3qKEgXTgW9SQs5jFDZCOBmXCzqKWKuGKuZWlL1zvMdCP4sJGhuNyskKQ8r2VRWyFNEY+RBxMk6qTM7M8yNWGI/DFaIc3+P0J/GNGpHchdDOuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uchykxIR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E24FC116B1;
+	Tue, 11 Nov 2025 01:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824506;
-	bh=GJDjOwl/RLse9PcpjRrx5BmgzJADvk3ZAPwDO8ioO9c=;
+	s=korg; t=1762825306;
+	bh=ZIH09JvRoRtFqxD+LTT/JXPwpD7zZfm2AgCaF4NdxsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ywLaJghn9Smak+Qhiz/lGfVKDtFBlkEqvcrdNM9Puf+DkJNa2H1wlLGeFJjvv5F/G
-	 Vev9lcBrlYMnvWeFsOl+dHtVWBPHvmwFXo6Fioo7GIvin9nuMm7JE6ts5yFaomt9vi
-	 8ClnmXc7nZXOfGSkp8vEMY7qN1rWFPwkqGgVw+kY=
+	b=uchykxIRyhL+7AxuSUTa2j8iLVARky0ymPGaksEbzJTvyuU+gFAei+aUy67cgYqTe
+	 fZKwrRm9+Ciky1y8LcabESn1N3aWU6HxqELBLf9SoLanS0WsVQt8Gz7bg//9AJxotx
+	 oGOwqkqpUgtt1oZNCcj+pU8RrrCew/zvdVY6HXvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wenglianfa <wenglianfa@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 459/565] RDMA/hns: Fix the modification of max_send_sge
-Date: Tue, 11 Nov 2025 09:45:15 +0900
-Message-ID: <20251111004537.223227930@linuxfoundation.org>
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.17 746/849] Revert "wifi: ath10k: avoid unnecessary wait for service ready message"
+Date: Tue, 11 Nov 2025 09:45:16 +0900
+Message-ID: <20251111004554.473220104@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wenglianfa <wenglianfa@huawei.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit f5a7cbea5411668d429eb4ffe96c4063fe8dac9e ]
+commit 2469bb6a6af944755a7d7daf66be90f3b8decbf9 upstream.
 
-The actual sge number may exceed the value specified in init_attr->cap
-when HW needs extra sge to enable inline feature. Since these extra
-sges are not expected by ULP, return the user-specified value to ULP
-instead of the expanded sge number.
+This reverts commit 51a73f1b2e56b0324b4a3bb8cebc4221b5be4c7a.
 
-Fixes: 0c5e259b06a8 ("RDMA/hns: Fix incorrect sge nums calculation")
-Signed-off-by: wenglianfa <wenglianfa@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20251016114051.1963197-3-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Although this commit benefits QCA6174, it breaks QCA988x and
+QCA9984 [1][2]. Since it is not likely to root cause/fix this
+issue in a short time, revert it to get those chips back.
+
+Compile tested only.
+
+Fixes: 51a73f1b2e56 ("wifi: ath10k: avoid unnecessary wait for service ready message")
+Link: https://lore.kernel.org/ath10k/6d41bc00602c33ffbf68781f563ff2e6c6915a3e.camel@gmail.com # [1]
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220671 # [2]
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251027-ath10k-revert-polling-first-change-v1-1-89aaf3bcbfa1@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_qp.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi.c |   39 +++++++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index 8901c142c1b65..66d4c693694e9 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -662,7 +662,6 @@ static int set_user_sq_size(struct hns_roce_dev *hr_dev,
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -1764,32 +1764,33 @@ void ath10k_wmi_put_wmi_channel(struct a
  
- 	hr_qp->sq.wqe_shift = ucmd->log_sq_stride;
- 	hr_qp->sq.wqe_cnt = cnt;
--	cap->max_send_sge = hr_qp->sq.max_gs;
+ int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
+ {
+-	unsigned long timeout = jiffies + WMI_SERVICE_READY_TIMEOUT_HZ;
+ 	unsigned long time_left, i;
  
- 	return 0;
+-	/* Sometimes the PCI HIF doesn't receive interrupt
+-	 * for the service ready message even if the buffer
+-	 * was completed. PCIe sniffer shows that it's
+-	 * because the corresponding CE ring doesn't fires
+-	 * it. Workaround here by polling CE rings. Since
+-	 * the message could arrive at any time, continue
+-	 * polling until timeout.
+-	 */
+-	do {
++	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
++						WMI_SERVICE_READY_TIMEOUT_HZ);
++	if (!time_left) {
++		/* Sometimes the PCI HIF doesn't receive interrupt
++		 * for the service ready message even if the buffer
++		 * was completed. PCIe sniffer shows that it's
++		 * because the corresponding CE ring doesn't fires
++		 * it. Workaround here by polling CE rings once.
++		 */
++		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
++
+ 		for (i = 0; i < CE_COUNT; i++)
+ 			ath10k_hif_send_complete_check(ar, i, 1);
+ 
+-		/* The 100 ms granularity is a tradeoff considering scheduler
+-		 * overhead and response latency
+-		 */
+ 		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+-							msecs_to_jiffies(100));
+-		if (time_left)
+-			return 0;
+-	} while (time_before(jiffies, timeout));
++							WMI_SERVICE_READY_TIMEOUT_HZ);
++		if (!time_left) {
++			ath10k_warn(ar, "polling timed out\n");
++			return -ETIMEDOUT;
++		}
++
++		ath10k_warn(ar, "service ready completion received, continuing normally\n");
++	}
+ 
+-	ath10k_warn(ar, "failed to receive service ready completion\n");
+-	return -ETIMEDOUT;
++	return 0;
  }
-@@ -744,7 +743,6 @@ static int set_kernel_sq_size(struct hns_roce_dev *hr_dev,
  
- 	/* sync the parameters of kernel QP to user's configuration */
- 	cap->max_send_wr = cnt;
--	cap->max_send_sge = hr_qp->sq.max_gs;
- 
- 	return 0;
- }
--- 
-2.51.0
-
+ int ath10k_wmi_wait_for_unified_ready(struct ath10k *ar)
 
 
 
