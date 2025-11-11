@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F590C4AFD0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C83CFC4AD6C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EEF4D4F5C38
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71F063AD653
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A183E32AAB8;
-	Tue, 11 Nov 2025 01:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D4530498E;
+	Tue, 11 Nov 2025 01:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrJot2yf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYASD6VX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FAA31283E;
-	Tue, 11 Nov 2025 01:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A98E262FEC;
+	Tue, 11 Nov 2025 01:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825248; cv=none; b=rufTkVDYkUxJEr/3KXebFHh1IGUZVMcpkmE9ES9dGo5C/gn8ttVSUJFROL2LJ1nr8lvu7IH5cIpfE3COJxhByNYaeLnDrb3610UCwgNBiTdsKKUfWJ+sF2gPAxz+chr6odkLOeuNK4GThvud7VhfGDLHT50uZ9OdT3uVIFbQHNk=
+	t=1762824410; cv=none; b=t764SRnQKvZW6QwnmUzOiXo4Z+c3ZcrDr8lQk+W0Xwo5kQYlU2rtN6sW3eNEgs2PJhwAkRA0ksjEx5WF1kxHiYvmIb0585u+FVfv2G12dFWJvaKG3nD0i6pi0CMHIgXaB24hu6Jx3l7gDS22SyflcKpC4vKvFlf2WayGMNrtBRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825248; c=relaxed/simple;
-	bh=aGtSnRgMX+XG6hQduXUQAeAVxulCxhEDhT2GHu25hTQ=;
+	s=arc-20240116; t=1762824410; c=relaxed/simple;
+	bh=RazG4idSuBpORJ1fscWHubFCF96ISR1Lj9tLRxLpdGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MC9Eiq0veHqKRk9bp31M6zvuNxj06Bbj8xV/MgIUcSUwV8VkCQGd/DtejQXzivOn+fDm+Wz8YXZdPL8es9DDLkINra0p8dSVKfiIhdurZREk8eqakjDWb19xErXLD55mFzA4TR70bJQze6QnKpVgySnLDEeGvhiVnwJennRhZxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrJot2yf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5562C116B1;
-	Tue, 11 Nov 2025 01:40:47 +0000 (UTC)
+	 MIME-Version; b=fBdLuq8KBkSbKIBmcOA+kSO+S1WXZgS3Q28wbI4MDhM6Blk6+E32MInfH7jUc3TeyLq8lxshyeByumf9odG55EqhFa5MeoUkzfCmBI8ac+KSR+bjFRhLqyxjDd3uS72WTR41Px6isqi47XzofHKN5YOwl1g/BQeQn4TrkVOYbi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYASD6VX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAB6C4CEFB;
+	Tue, 11 Nov 2025 01:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825248;
-	bh=aGtSnRgMX+XG6hQduXUQAeAVxulCxhEDhT2GHu25hTQ=;
+	s=korg; t=1762824410;
+	bh=RazG4idSuBpORJ1fscWHubFCF96ISR1Lj9tLRxLpdGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KrJot2yfyVE9gQziLpaet2RIQvzQbKYolyqHxP34r+E034th2nsOcXRUAxGD3+2tV
-	 RnT8nNfAwpCRLOd2kjFSsrCPLF8AbiP0y+gIFbxWHSMprghoTGT0xuybm3ikDDnQ3g
-	 8jSD70pBjNd4sk30GmlDNDffrqyveqpkbtrAkDxM=
+	b=UYASD6VXNnI1WFngLmH3lr93+/lDHFE516WzzyAAPxAFlsJtIorfAbtA4uPidAStH
+	 TDnvNAP7+UcMkEAOv+Wh9P7qCZvw19iSpZvDgQB9lmWZoqTTpqBNrCOeK7IsWHjPLn
+	 32kWbvIzCHYN1wnLneCZW53d5VQA3v83vsaNf2fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Holliday <dochollidayxx@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Chris Lu <chris.lu@mediatek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 724/849] ALSA: hda/realtek: Add quirk for ASUS ROG Zephyrus Duo
+Subject: [PATCH 6.12 438/565] Bluetooth: btusb: Add new VID/PID 13d3/3633 for MT7922
 Date: Tue, 11 Nov 2025 09:44:54 +0900
-Message-ID: <20251111004553.937558346@linuxfoundation.org>
+Message-ID: <20251111004536.735457747@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Holliday <dochollidayxx@gmail.com>
+From: Chris Lu <chris.lu@mediatek.com>
 
-[ Upstream commit 328b80b29a6a165c47fcc04d2bef3e09ed1d28f9 ]
+[ Upstream commit 70cd38d22d4659ca8133c7124528c90678215dda ]
 
-The ASUS ROG Zephyrus Duo 15 SE (GX551QS) with ALC 289 codec requires specific
-pin configuration for proper volume control. Without this quirk, volume
-adjustments produce a muffled sound effect as only certain channels attenuate,
-leaving bass frequency at full volume.
+Add VID 13d3 & PID 3633 for MediaTek MT7922 USB Bluetooth chip.
 
-Testing with hdajackretask confirms these pin tweaks fix the issue:
-- Pin 0x17: Internal Speaker (LFE)
-- Pin 0x1e: Internal Speaker
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below.
 
-Signed-off-by: Adam Holliday <dochollidayxx@gmail.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+T:  Bus=06 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=13d3 ProdID=3633 Rev= 1.00
+S:  Manufacturer=MediaTek Inc.
+S:  Product=Wireless_Device
+S:  SerialNumber=000000000
+C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
+A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
+E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
+I:  If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
+E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
+E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
+
+Signed-off-by: Chris Lu <chris.lu@mediatek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 8fb1a5c6ff6df..28297e936a96f 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -3737,6 +3737,7 @@ enum {
- 	ALC285_FIXUP_ASUS_GA605K_HEADSET_MIC,
- 	ALC285_FIXUP_ASUS_GA605K_I2C_SPEAKER2_TO_DAC1,
- 	ALC269_FIXUP_POSITIVO_P15X_HEADSET_MIC,
-+	ALC289_FIXUP_ASUS_ZEPHYRUS_DUAL_SPK,
- };
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index cf5b2a617c771..a734c5135a8be 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -689,6 +689,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3615), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x13d3, 0x3633), .driver_info = BTUSB_MEDIATEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x35f5, 0x7922), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
  
- /* A special fixup for Lenovo C940 and Yoga Duet 7;
-@@ -6166,6 +6167,14 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC269VC_FIXUP_ACER_MIC_NO_PRESENCE,
- 	},
-+	[ALC289_FIXUP_ASUS_ZEPHYRUS_DUAL_SPK] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x17, 0x90170151 }, /* Internal Speaker LFE */
-+			{ 0x1e, 0x90170150 }, /* Internal Speaker */
-+			{ }
-+		},
-+	}
- };
- 
- static const struct hda_quirk alc269_fixup_tbl[] = {
-@@ -6721,6 +6730,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1517, "Asus Zenbook UX31A", ALC269VB_FIXUP_ASUS_ZENBOOK_UX31A),
- 	SND_PCI_QUIRK(0x1043, 0x1533, "ASUS GV302XA/XJ/XQ/XU/XV/XI", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1573, "ASUS GZ301VV/VQ/VU/VJ/VA/VC/VE/VVC/VQC/VUC/VJC/VEC/VCC", ALC285_FIXUP_ASUS_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x1043, 0x1652, "ASUS ROG Zephyrus Do 15 SE", ALC289_FIXUP_ASUS_ZEPHYRUS_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x1663, "ASUS GU603ZI/ZJ/ZQ/ZU/ZV", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1683, "ASUS UM3402YAR", ALC287_FIXUP_CS35L41_I2C_2),
 -- 
 2.51.0
 
