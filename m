@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF3EC4B253
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:03:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64446C4AE26
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8789E3BFB80
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA43E3B9071
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C99301006;
-	Tue, 11 Nov 2025 01:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2C0340A4C;
+	Tue, 11 Nov 2025 01:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Op/8m8pl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJrVLBcB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4962FF143;
-	Tue, 11 Nov 2025 01:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB926261573;
+	Tue, 11 Nov 2025 01:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825450; cv=none; b=Rr4Jx4oyEBnvg4OQUmYwOsahN31MC9qcWybdxJilyfBym41IQfJToouu//kU+HCgGkyg+PTJoQqhKjzah/V51e/fPtvGKId2IDG57iiVYGLX1SN7YzGQX05G1uwNlvUWg2Us33At4BlCgx+PSFZgNMOFkztrIBF6czqvmZWNFM8=
+	t=1762824601; cv=none; b=opZ8G/Si+FkMos4X5FHTcbF4Lp25cTtlkS9Jk7qPS6npuKmVjoeWLmaKAi8Sv9Yuuykatz/VuSCr2AqkwfQ3My3Grxl/RHlkMlTDt2AtAzyqiQjT57pRRormKuIBiHMPOpNB1niDyuOQhB92fRCj3fVyo5PSD1C2EmxIeywNaHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825450; c=relaxed/simple;
-	bh=Z/X8bxL4av4VfNFe7wEfmsXRY4cp9eHqH5V8vnEeDgE=;
+	s=arc-20240116; t=1762824601; c=relaxed/simple;
+	bh=Y8PZYAiFe7EBOwjgLGjhJSjx53AnCZF2fhaIWi0H5ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F2SF9ugvYF9pBddVCT0fNfj4vaKhuXvQFpbbnfQoZwlfU93D4Vt5/ooKQSxz7FvuiuHR6x+JThFAq68K1J1OzX82NnMamvuLZ32Pp1oGt7XR1b1XDcmB9VrdAB4t4tA3hPtWcNOJ1wfAtluP6w7QqEl6syI+MBIvzNUmFKJxEH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Op/8m8pl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9372C16AAE;
-	Tue, 11 Nov 2025 01:44:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O+oBiR47+psWv7Y4viFTDockC0WSMSIAKIBv4KFPkvQ81ccWWUs0gOY9mUW9vNYremYoKLxeoUFaFNOuZTR7S23JV43PostOlixGgZz+Cl0kGcxVZCBO2zV7ki9QibH0yqNcwWOKuT/DRsNX3vYpTCAFzfHXaTd6WVHNzJByM4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJrVLBcB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309C1C113D0;
+	Tue, 11 Nov 2025 01:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825450;
-	bh=Z/X8bxL4av4VfNFe7wEfmsXRY4cp9eHqH5V8vnEeDgE=;
+	s=korg; t=1762824600;
+	bh=Y8PZYAiFe7EBOwjgLGjhJSjx53AnCZF2fhaIWi0H5ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Op/8m8pl5ISPlKMMXFbOj2/R/6T1HNBYESyN4/fVMkwv/s6cNsqKCpIvTSUKTy3T4
-	 dtq8Aa08YnEN5drBOKCMBFhSIngfz1ewUbJZkJAReVgFJ1mkQCKyHMZGZp7BIglp+G
-	 AxC7h7sxGIsdlgSzhcEhPN+MAst1vNPvjxWy6bfQ=
+	b=sJrVLBcBfZfZpf8Yu/303YkqRNH3l2bXjjhniI4HrJL3kusKp28kxI+gmQZyvC+Dn
+	 /K/Z0IFfB0hAmT2gf0uf4tSCtwbklko0HBHMQcbCTffo6gdjNM1jUcdZh79juLyYwk
+	 C+WyyjCDb95W4boDFlgh2vaPVaJiOPWAD3E6n094=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Randall P. Embry" <rpembry@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 763/849] selftests: netdevsim: Fix ethtool-coalesce.sh fail by installing ethtool-common.sh
+Subject: [PATCH 6.12 477/565] 9p: fix /sys/fs/9p/caches overwriting itself
 Date: Tue, 11 Nov 2025 09:45:33 +0900
-Message-ID: <20251111004554.878696890@linuxfoundation.org>
+Message-ID: <20251111004537.647242318@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Randall P. Embry <rpembry@gmail.com>
 
-[ Upstream commit d01f8136d46b925798abcf86b35a4021e4cfb8bb ]
+[ Upstream commit 86db0c32f16c5538ddb740f54669ace8f3a1f3d7 ]
 
-The script "ethtool-common.sh" is not installed in INSTALL_PATH, and
-triggers some errors when I try to run the test
-'drivers/net/netdevsim/ethtool-coalesce.sh':
+caches_show() overwrote its buffer on each iteration,
+so only the last cache tag was visible in sysfs output.
 
-  TAP version 13
-  1..1
-  # timeout set to 600
-  # selftests: drivers/net/netdevsim: ethtool-coalesce.sh
-  # ./ethtool-coalesce.sh: line 4: ethtool-common.sh: No such file or directory
-  # ./ethtool-coalesce.sh: line 25: make_netdev: command not found
-  # ethtool: bad command line argument(s)
-  # ./ethtool-coalesce.sh: line 124: check: command not found
-  # ./ethtool-coalesce.sh: line 126: [: -eq: unary operator expected
-  # FAILED /0 checks
-  not ok 1 selftests: drivers/net/netdevsim: ethtool-coalesce.sh # exit=1
+Properly append with snprintf(buf + count, …).
 
-Install this file to avoid this error. After this patch:
-
-  TAP version 13
-  1..1
-  # timeout set to 600
-  # selftests: drivers/net/netdevsim: ethtool-coalesce.sh
-  # PASSED all 22 checks
-  ok 1 selftests: drivers/net/netdevsim: ethtool-coalesce.sh
-
-Fixes: fbb8531e58bd ("selftests: extract common functions in ethtool-common.sh")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Link: https://patch.msgid.link/20251030040340.3258110-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Randall P. Embry <rpembry@gmail.com>
+Message-ID: <20250926-v9fs_misc-v1-2-a8b3907fc04d@codewreck.org>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/netdevsim/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/9p/v9fs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/Makefile b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-index 07b7c46d33118..abe5bea5afb3b 100644
---- a/tools/testing/selftests/drivers/net/netdevsim/Makefile
-+++ b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-@@ -18,4 +18,8 @@ TEST_PROGS = devlink.sh \
- 	tc-mq-visibility.sh \
- 	udp_tunnel_nic.sh \
- 
-+TEST_FILES := \
-+	ethtool-common.sh
-+# end of TEST_FILES
-+
- include ../../../lib.mk
+diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+index 281a1ed03a041..e35b30534787d 100644
+--- a/fs/9p/v9fs.c
++++ b/fs/9p/v9fs.c
+@@ -561,7 +561,7 @@ static ssize_t caches_show(struct kobject *kobj,
+ 	spin_lock(&v9fs_sessionlist_lock);
+ 	list_for_each_entry(v9ses, &v9fs_sessionlist, slist) {
+ 		if (v9ses->cachetag) {
+-			n = snprintf(buf, limit, "%s\n", v9ses->cachetag);
++			n = snprintf(buf + count, limit, "%s\n", v9ses->cachetag);
+ 			if (n < 0) {
+ 				count = n;
+ 				break;
 -- 
 2.51.0
 
