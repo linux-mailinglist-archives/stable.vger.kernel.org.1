@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A4BC4ACBB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0631C4B247
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:02:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0759B1890202
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C39D93B5019
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BF634405F;
-	Tue, 11 Nov 2025 01:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166FB2FD67A;
+	Tue, 11 Nov 2025 01:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9ESmQvL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6hSGMUq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829831D86FF;
-	Tue, 11 Nov 2025 01:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F8E2F6186;
+	Tue, 11 Nov 2025 01:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824702; cv=none; b=j2PYJNopk6eMS30f93hwXuaqmTP2maaHCU2spsn3N8SW/s7sYxXc90cE5Ly2UB4UC545U3caObSOhJNDAZeFE3liBHznXtHAUACj4T6xOMhX1veaqpxLr38e+PwsNfOR725nP5v3Qh3m63gy9AV5l4R3xzi8woxO0BJn+NQMF5A=
+	t=1762825407; cv=none; b=fUVbR4b/w+JOUacgxakEvWr6/sih7Ci+9E3132J3iNYQqn+1sEi19PmnywLEcnYOxGLC4rDPP7mKVxteHuWtZEsRJt7IrmkqoMBU0vQoVFk4iloXFzrsdSTcKeDxjV3QChxU0C4CnKjRuOMN0INfVssAf0MRym998uGdZF5zlRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824702; c=relaxed/simple;
-	bh=Cm3j8CyV6uvEeXa3I049W+3SD3RRfVGs+kMbI5NCUEI=;
+	s=arc-20240116; t=1762825407; c=relaxed/simple;
+	bh=O2dAIEDJLOjWl+LLwlxLWZXm6n8nBztS2nlgVYu4QQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwnM8tpwIaXuOuqOd+rDoIStw6UuKRMBxYPWjK4jhVwEF3ksaADqIG1UmO1L2LuuNuOrqQKWchmZEIf4YJeSZo2xqpdTd2PngUyuoCMV5/XBdFjyBToV9TeWQb6qrGetSTeszepFMLF3ZvlJlr0Ip78GxVG3Hr3cXawxOHbj2uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9ESmQvL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EEEC19421;
-	Tue, 11 Nov 2025 01:31:42 +0000 (UTC)
+	 MIME-Version; b=S+37zAWzTjRBwag2+n6sI7FuIzIOxd4P64JgNBbFjQpGAMqyaFhA3y5vG7nUKZXLhBn0J+vn3V+c7RetZovwVGFptsQPPj7q/ca5MSV8yd+i+Umw8QDK06q73OsWzWqLJhzAHD04Rfbt9783k6l5hn9++hOhe4e2zV4aKZRS5zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6hSGMUq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CA7C116B1;
+	Tue, 11 Nov 2025 01:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824702;
-	bh=Cm3j8CyV6uvEeXa3I049W+3SD3RRfVGs+kMbI5NCUEI=;
+	s=korg; t=1762825407;
+	bh=O2dAIEDJLOjWl+LLwlxLWZXm6n8nBztS2nlgVYu4QQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r9ESmQvLgYd8VrHBruZHhpSpyNZPrD/TMULoUZc4t3RIVDwdUw48A9iFp4B3/36Vo
-	 p6lL5y7xqmBWIC8B1z4QsjZz/hPvadOxKoe57rFdb3TOeX9OTjzQ2TwQulMbSNhopC
-	 gFcgoPTeQXRO393hmYpWLSCsPJfa2UtB86lFquD0=
+	b=r6hSGMUqIuwG4XNcykxo2FFPkLTlEqtIhJ/tswVmT6xec3IIuD7yrqEpXT7RD+euu
+	 PQTryqyXSuhgtHuENGFqBvbGkVzCH5mmbZT//y3nrdMiGvY9Q1NO9H7Eo4eS0mOkux
+	 R8EfuhNrnkr/j2LOpamIbwZPg/lhtldGjdF3IY64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Angel4005 <ooara1337@gmail.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.12 501/565] media: uvcvideo: Use heuristic to find stream entity
-Date: Tue, 11 Nov 2025 09:45:57 +0900
-Message-ID: <20251111004538.213498740@linuxfoundation.org>
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 788/849] io_uring: fix types for region size calulation
+Date: Tue, 11 Nov 2025 09:45:58 +0900
+Message-ID: <20251111004555.487358589@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 758dbc756aad429da11c569c0d067f7fd032bcf7 upstream.
+[ Upstream commit 1fd5367391bf0eeb09e624c4ab45121b54eaab96 ]
 
-Some devices, like the Grandstream GUV3100 webcam, have an invalid UVC
-descriptor where multiple entities share the same ID, this is invalid
-and makes it impossible to make a proper entity tree without heuristics.
+->nr_pages is int, it needs type extension before calculating the region
+size.
 
-We have recently introduced a change in the way that we handle invalid
-entities that has caused a regression on broken devices.
-
-Implement a new heuristic to handle these devices properly.
-
-Reported-by: Angel4005 <ooara1337@gmail.com>
-Closes: https://lore.kernel.org/linux-media/CAOzBiVuS7ygUjjhCbyWg-KiNx+HFTYnqH5+GJhd6cYsNLT=DaA@mail.gmail.com/
-Fixes: 0e2ee70291e6 ("media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a90558b36ccee ("io_uring/memmap: helper for pinning region pages")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+[axboe: style fixup]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ io_uring/memmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -165,13 +165,26 @@ static struct uvc_entity *uvc_entity_by_
- 
- static struct uvc_streaming *uvc_stream_by_id(struct uvc_device *dev, int id)
+diff --git a/io_uring/memmap.c b/io_uring/memmap.c
+index 2e99dffddfc5c..add03ca75cb90 100644
+--- a/io_uring/memmap.c
++++ b/io_uring/memmap.c
+@@ -135,7 +135,7 @@ static int io_region_pin_pages(struct io_ring_ctx *ctx,
+ 				struct io_mapped_region *mr,
+ 				struct io_uring_region_desc *reg)
  {
--	struct uvc_streaming *stream;
-+	struct uvc_streaming *stream, *last_stream;
-+	unsigned int count = 0;
+-	unsigned long size = mr->nr_pages << PAGE_SHIFT;
++	unsigned long size = (size_t) mr->nr_pages << PAGE_SHIFT;
+ 	struct page **pages;
+ 	int nr_pages;
  
- 	list_for_each_entry(stream, &dev->streams, list) {
-+		count += 1;
-+		last_stream = stream;
- 		if (stream->header.bTerminalLink == id)
- 			return stream;
- 	}
- 
-+	/*
-+	 * If the streaming entity is referenced by an invalid ID, notify the
-+	 * user and use heuristics to guess the correct entity.
-+	 */
-+	if (count == 1 && id == UVC_INVALID_ENTITY_ID) {
-+		dev_warn(&dev->intf->dev,
-+			 "UVC non compliance: Invalid USB header. The streaming entity has an invalid ID, guessing the correct one.");
-+		return last_stream;
-+	}
-+
- 	return NULL;
- }
- 
+-- 
+2.51.0
+
 
 
 
