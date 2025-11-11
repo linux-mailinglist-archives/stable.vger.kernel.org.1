@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6EC6C4A85F
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7D4DC4AEE7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C42C74F0EA7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:27:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7FF3C4F8CCB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E96E30DD04;
-	Tue, 11 Nov 2025 01:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A76A2DECDE;
+	Tue, 11 Nov 2025 01:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+rdOaQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X82XS/jU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9DB30C34A;
-	Tue, 11 Nov 2025 01:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9B9285CA2;
+	Tue, 11 Nov 2025 01:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823904; cv=none; b=hmFgL5SmVpUMBx3z6RIt12fqWH6pdbrZhCH47CgM4/IkTGfR57wVQWzItb/yt+St74FK5yaaWrIffir3XdNe5VaUuCHwmsM2ZitSWFdp2D3bWEbcXIIrK7CbbRzwUTkjYX6TJGwJAAlWzCfe0T5Ml/CA83RoRpV87L6vbJgwLRU=
+	t=1762825035; cv=none; b=cbybwFOpxxCePVUNConkCswHPSTHxPO3jjM7d7fjEOXvBf1JuNliXo2wXqkN6F0DTiOOFbUCuPQEQLcUa0s6AU0HL1kvWdqprXDB56Jq98v1WSsFsRJPE/+GNAb+ED2TRKpefyz9XyJ9kGTSKz6VSI5HE6Ct5vLJa4N5N4kByZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823904; c=relaxed/simple;
-	bh=ZWbBAZkQokJs8EXx/+8nUW8WFUM2sjDFZ5RExSNMS8A=;
+	s=arc-20240116; t=1762825035; c=relaxed/simple;
+	bh=Uw426gE+l3+qW6gzJLfB0oJfHa4lBGIMA5W73MnMCrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tS1aA3ZHPLXInY5gdhC1zd2d1i3TO1KP5wHz3dEUJUPdayPfwqNzss87e8mpkQYEvaeGKVm8P+kRlKPDoDQmfAWqQ96Sd8sksGyD6c+a85QNdHcl9KdqidtbtBCo28tf4eoakFVTxd4uCJ5qSCpONbMlNYk0ZG17RH22iGmEC0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+rdOaQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9069EC116D0;
-	Tue, 11 Nov 2025 01:18:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qFmt+GFDXY5OH/JI+d21/V6j532oeTgR4ymNx2RNDxWEZH7SdthToWiHSvGBia0nFqMqjnrfprolyW5Q3ORXc9HX0jmi6OlVIjWLpFF5RNTwjQGLdfk7yzvZLos3T9T8HQzVX9IwGfadrNncahNOCOgmM6f3gM1yWNxRqk7V7Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X82XS/jU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CEA7C2BC86;
+	Tue, 11 Nov 2025 01:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823903;
-	bh=ZWbBAZkQokJs8EXx/+8nUW8WFUM2sjDFZ5RExSNMS8A=;
+	s=korg; t=1762825035;
+	bh=Uw426gE+l3+qW6gzJLfB0oJfHa4lBGIMA5W73MnMCrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q+rdOaQRpN99PVUcJS6XJMPzS1VNUpd5JHOptwtOUrgTUIkjJpoo27ywcLvDVDvfR
-	 U1jCIejlx1iwnT3q8b0SSY8pr4CvFByNMFTta4PSiK8Rv6KxmwaloYAKmtoSCxsG94
-	 pp+XE5uHSCPOg6lYMZMdxNU12egg7DJGGgcfBWfE=
+	b=X82XS/jUDRfFKuYOZDoNxs1WXh0VeM6lL+wA4lSNR2KBdCrDJfafpmLYvP9pxgBHO
+	 wVgShEiUb3t0KgIdrq2WEbaxThIzDfwDbcGZpPRKpoHAycWd9fx5IIwRKBLFBPlKHe
+	 SOO9wQtpTLQvh+vhgsFhYSfDATnC92PrAK9Rfvao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 347/565] udp_tunnel: use netdev_warn() instead of netdev_WARN()
-Date: Tue, 11 Nov 2025 09:43:23 +0900
-Message-ID: <20251111004534.681095517@linuxfoundation.org>
+Subject: [PATCH 6.17 634/849] scsi: libfc: Fix potential buffer overflow in fc_ct_ms_fill()
+Date: Tue, 11 Nov 2025 09:43:24 +0900
+Message-ID: <20251111004551.761369026@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit dc2f650f7e6857bf384069c1a56b2937a1ee370d ]
+[ Upstream commit 072fdd4b0be9b9051bdf75f36d0227aa705074ba ]
 
-netdev_WARN() uses WARN/WARN_ON to print a backtrace along with
-file and line information. In this case, udp_tunnel_nic_register()
-returning an error is just a failed operation, not a kernel bug.
+The fc_ct_ms_fill() helper currently formats the OS name and version
+into entry->value using "%s v%s". Since init_utsname()->sysname and
+->release are unbounded strings, snprintf() may attempt to write more
+than FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN bytes, triggering a
+-Wformat-truncation warning with W=1.
 
-udp_tunnel_nic_register() can fail due to a memory allocation
-failure (kzalloc() or udp_tunnel_nic_alloc()).
-This is a normal runtime error and not a kernel bug.
+In file included from drivers/scsi/libfc/fc_elsct.c:18:
+drivers/scsi/libfc/fc_encode.h: In function ‘fc_ct_ms_fill.constprop’:
+drivers/scsi/libfc/fc_encode.h:359:30: error: ‘%s’ directive output may
+be truncated writing up to 64 bytes into a region of size between 62
+and 126 [-Werror=format-truncation=]
+  359 |                         "%s v%s",
+      |                              ^~
+  360 |                         init_utsname()->sysname,
+  361 |                         init_utsname()->release);
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~
+drivers/scsi/libfc/fc_encode.h:357:17: note: ‘snprintf’ output between
+3 and 131 bytes into a destination of size 128
+  357 |                 snprintf((char *)&entry->value,
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  358 |                         FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN,
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  359 |                         "%s v%s",
+      |                         ~~~~~~~~~
+  360 |                         init_utsname()->sysname,
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~
+  361 |                         init_utsname()->release);
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Replace netdev_WARN() with netdev_warn() accordingly.
+Fix this by using "%.62s v%.62s", which ensures sysname and release are
+truncated to fit within the 128-byte field defined by
+FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN.
+
+[mkp: clarified commit description]
 
 Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250910195031.3784748-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_tunnel_nic.c | 2 +-
+ drivers/scsi/libfc/fc_encode.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/udp_tunnel_nic.c b/net/ipv4/udp_tunnel_nic.c
-index b6d2d16189c0c..6d13d2f829243 100644
---- a/net/ipv4/udp_tunnel_nic.c
-+++ b/net/ipv4/udp_tunnel_nic.c
-@@ -892,7 +892,7 @@ udp_tunnel_nic_netdevice_event(struct notifier_block *unused,
+diff --git a/drivers/scsi/libfc/fc_encode.h b/drivers/scsi/libfc/fc_encode.h
+index 02e31db31d68e..e046091a549ae 100644
+--- a/drivers/scsi/libfc/fc_encode.h
++++ b/drivers/scsi/libfc/fc_encode.h
+@@ -356,7 +356,7 @@ static inline int fc_ct_ms_fill(struct fc_lport *lport,
+ 		put_unaligned_be16(len, &entry->len);
+ 		snprintf((char *)&entry->value,
+ 			FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN,
+-			"%s v%s",
++			"%.62s v%.62s",
+ 			init_utsname()->sysname,
+ 			init_utsname()->release);
  
- 		err = udp_tunnel_nic_register(dev);
- 		if (err)
--			netdev_WARN(dev, "failed to register for UDP tunnel offloads: %d", err);
-+			netdev_warn(dev, "failed to register for UDP tunnel offloads: %d", err);
- 		return notifier_from_errno(err);
- 	}
- 	/* All other events will need the udp_tunnel_nic state */
 -- 
 2.51.0
 
