@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36320C4A9E8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81637C4AC58
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D6B5434C817
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B30863B8B3C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D073126B9;
-	Tue, 11 Nov 2025 01:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DB432BF46;
+	Tue, 11 Nov 2025 01:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoCs+8rx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrpODjTF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C38256C6D;
-	Tue, 11 Nov 2025 01:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810812C026E;
+	Tue, 11 Nov 2025 01:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824532; cv=none; b=bcciG9aJjikE/yRfdMuO8oSZYOUk8MSj7fsXdcCGyL8Znr99zEm3u/bqx3xj0v7rPbSuKhCai1fvacrJZIsBiOB1Zhtl/pNRBzWtDo+XGwaZ3Q/cBX6xYRLu0JVz0++vl+HiGa2WIR3loksfWkgBzt6U8sV8EyOwFB7H4WFu2us=
+	t=1762824537; cv=none; b=mnimAR1lymhHfp94xwlsLD9X/sgLvUuVzqZ55wy/o6r7Xz6mV6/yoWIbvO6zM38hh9yy8edpHm0f0raWM+HCc/fhAi0Ds4dVEXSMipR5+2MzHgErg+ccOREeofF9GnttawWZ0SJylhhd8r+xay5ml6dQ9uM6EFbKsGXfKFKoKLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824532; c=relaxed/simple;
-	bh=Hktywv82Lo59BUfsC+yRHyjTzNbKhKwUwPRcafdKfjQ=;
+	s=arc-20240116; t=1762824537; c=relaxed/simple;
+	bh=bNHQf0yUCBR+UWsTokEj2QuEg+HZVW9iArn/H97gb+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z1kgs5eSC93oY8lfW6SpS7wRvZylHwANNMRaNNUzMWm9IdcI+3/7WEU9KEiGW2t6dFFyCLf2Niq8AaXeE9Ov/3RzfvzKkHKuZON7X6dzlr7wGhOaoIvp/tEp7WaZLKFkXi6OFdHePEdhfMu2J7Ki5/vLiB9DXimJo1qoImK8Yoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoCs+8rx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A413C4CEF5;
-	Tue, 11 Nov 2025 01:28:51 +0000 (UTC)
+	 MIME-Version; b=YjoYhdgrihub/j5KFCqoJxfjwCU0eq3DkRs3xFOAKnTmGmP2/DI//NbMYceEH8cIIm+rx/63FTIiDFFV3/dgbDSJspr/109ITyJlrzqg4GtBiZZ6S+VUY8RNxFzxlKqj33AZTi+4O8MFJDNLCigIPeuQLkX32+fo48Gv+SE6Kys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrpODjTF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1501AC113D0;
+	Tue, 11 Nov 2025 01:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824532;
-	bh=Hktywv82Lo59BUfsC+yRHyjTzNbKhKwUwPRcafdKfjQ=;
+	s=korg; t=1762824537;
+	bh=bNHQf0yUCBR+UWsTokEj2QuEg+HZVW9iArn/H97gb+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AoCs+8rxsDvMPD+3oZuPPRKodLHIPPQDB+GKh914+PS71OmojB3RcWuk1xytUu/ra
-	 QeKRrqnUx7VeDEGIgW3wJzhjC5cY2zybLtUqf7djsJKpn16xbkHiz7Yc7lzmCd/eON
-	 XbribTAMuKeLvBSn14nqkfURyVZWkPbyJ+E0ikDM=
+	b=CrpODjTFAJtnWjJni8CaUnDSqa+jQRZRaByFyUL49CXke9SnUEtJ1xLMn0uvjWPj1
+	 pJMV5qk9AUSvcXO+oxjzX2wLXsPl3JnCarA2BSQA4Huj5Adq37G7FHCksLnKQQprEM
+	 cYjNPY0nPtet+EgG08Ul+KifNL3f8xKm7JVvu6Xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yikang Yue <yikangy2@illinois.edu>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 464/565] fs/hpfs: Fix error code for new_inode() failure in mkdir/create/mknod/symlink
-Date: Tue, 11 Nov 2025 09:45:20 +0900
-Message-ID: <20251111004537.339214858@linuxfoundation.org>
+Subject: [PATCH 6.12 465/565] um: Fix help message for ssl-non-raw
+Date: Tue, 11 Nov 2025 09:45:21 +0900
+Message-ID: <20251111004537.361482178@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -66,94 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yikang Yue <yikangy2@illinois.edu>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 32058c38d3b79a28963a59ac0353644dc24775cd ]
+[ Upstream commit 725e9d81868fcedaeef775948e699955b01631ae ]
 
-The function call new_inode() is a primitive for allocating an inode in memory,
-rather than planning disk space for it. Therefore, -ENOMEM should be returned
-as the error code rather than -ENOSPC.
+Add the missing option name in the help message. Additionally,
+switch to __uml_help(), because this is a global option rather
+than a per-channel option.
 
-To be specific, new_inode()'s call path looks like this:
-new_inode
-  new_inode_pseudo
-    alloc_inode
-      ops->alloc_inode (hpfs_alloc_inode)
-        alloc_inode_sb
-          kmem_cache_alloc_lru
-
-Therefore, the failure of new_inode() indicates a memory presure issue (-ENOMEM),
-not a lack of disk space. However, the current implementation of
-hpfs_mkdir/create/mknod/symlink incorrectly returns -ENOSPC when new_inode() fails.
-This patch fix this by set err to -ENOMEM before the goto statement.
-
-BTW, we also noticed that other nested calls within these four functions,
-like hpfs_alloc_f/dnode and hpfs_add_dirent, might also fail due to memory presure.
-But similarly, only -ENOSPC is returned. Addressing these will involve code
-modifications in other functions, and we plan to submit dedicated patches for these
-issues in the future. For this patch, we focus on new_inode().
-
-Signed-off-by: Yikang Yue <yikangy2@illinois.edu>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hpfs/namei.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ arch/um/drivers/ssl.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/hpfs/namei.c b/fs/hpfs/namei.c
-index d0edf9ed33b60..9a40068b59b77 100644
---- a/fs/hpfs/namei.c
-+++ b/fs/hpfs/namei.c
-@@ -52,8 +52,10 @@ static int hpfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
- 	dee.fnode = cpu_to_le32(fno);
- 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
- 	result = new_inode(dir->i_sb);
--	if (!result)
-+	if (!result) {
-+		err = -ENOMEM;
- 		goto bail2;
-+	}
- 	hpfs_init_inode(result);
- 	result->i_ino = fno;
- 	hpfs_i(result)->i_parent_dir = dir->i_ino;
-@@ -153,9 +155,10 @@ static int hpfs_create(struct mnt_idmap *idmap, struct inode *dir,
- 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
- 
- 	result = new_inode(dir->i_sb);
--	if (!result)
-+	if (!result) {
-+		err = -ENOMEM;
- 		goto bail1;
--	
-+	}
- 	hpfs_init_inode(result);
- 	result->i_ino = fno;
- 	result->i_mode |= S_IFREG;
-@@ -239,9 +242,10 @@ static int hpfs_mknod(struct mnt_idmap *idmap, struct inode *dir,
- 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
- 
- 	result = new_inode(dir->i_sb);
--	if (!result)
-+	if (!result) {
-+		err = -ENOMEM;
- 		goto bail1;
--
-+	}
- 	hpfs_init_inode(result);
- 	result->i_ino = fno;
- 	hpfs_i(result)->i_parent_dir = dir->i_ino;
-@@ -314,8 +318,10 @@ static int hpfs_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
- 
- 	result = new_inode(dir->i_sb);
--	if (!result)
-+	if (!result) {
-+		err = -ENOMEM;
- 		goto bail1;
-+	}
- 	result->i_ino = fno;
- 	hpfs_init_inode(result);
- 	hpfs_i(result)->i_parent_dir = dir->i_ino;
+diff --git a/arch/um/drivers/ssl.c b/arch/um/drivers/ssl.c
+index 277cea3d30eb5..8006a5bd578c2 100644
+--- a/arch/um/drivers/ssl.c
++++ b/arch/um/drivers/ssl.c
+@@ -199,4 +199,7 @@ static int ssl_non_raw_setup(char *str)
+ 	return 1;
+ }
+ __setup("ssl-non-raw", ssl_non_raw_setup);
+-__channel_help(ssl_non_raw_setup, "set serial lines to non-raw mode");
++__uml_help(ssl_non_raw_setup,
++"ssl-non-raw\n"
++"    Set serial lines to non-raw mode.\n\n"
++);
 -- 
 2.51.0
 
