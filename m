@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4351C4A3BB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0E8C4A3D9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:08:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0305C4F0E09
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD7344F82A6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4843724E4A1;
-	Tue, 11 Nov 2025 01:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2094025C818;
+	Tue, 11 Nov 2025 01:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9vqZTuI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rti8wI5C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048481F5F6;
-	Tue, 11 Nov 2025 01:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26D5246768;
+	Tue, 11 Nov 2025 01:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822987; cv=none; b=GiVk0OoNde6xGHleC2VL+rbClbtwzlAW4NgwFfG/z01pZJ0shy2+lEEkNIpxwATfSV5vY8z5XQ23EDCnfUCp/9+KdW1VFDP6zKB/rxupl998ffgmRDubYPfreu5+sqB7+yLYy43OhsC45Puf1HNwsu3lH29mLXmeFeVE+dVdEU0=
+	t=1762822998; cv=none; b=dBwKhGv3APXBJEBczzYJ/RLfPua5Rby18piUlz/44Acbyagk4DXtYAFLpIxHlBefOZMYRv3S1MkRVVIe88tXsWjdmbrV1heQXR1QdIeIrhrJdKcelyInN4D505Ql6HcOBYZR85mADBhDE6ZnczztJ1aAgGdlF2XvnOQ8YVZBGhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822987; c=relaxed/simple;
-	bh=44u5x/2slogwcGhgfvKcsDSQYMlkJ5BsScGT8CoOj8c=;
+	s=arc-20240116; t=1762822998; c=relaxed/simple;
+	bh=yLyuMcLE3LdKZONcOWexHAypwNvI2IoeswzNZVTtV0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t506Qmafjrd/iaudPWmIYjprENOSf4qRYr614spRRPgbyGn1hC5Z0DpKkd5hDR8NdngkKIj4M9XLyJ4gYpC2L0kkHsV6TeccmCZhUu+MGqluM+q520vjLS28Uyjvuu3OuilND4dT+K4e1czwLcp+MmoJ+4kjOMN0kldj4H/qd6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9vqZTuI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847D3C2BC86;
-	Tue, 11 Nov 2025 01:03:06 +0000 (UTC)
+	 MIME-Version; b=PX0KeclJylecMdeWhb831+Tii8Xi8QTIrDe/VeOtExQ5ZlmoOoad7JmZPTwMO6mOZZfn1cuQ43fGTWpyixE4k7EUR0nd6UjnQiPFu6lFYwBzss6cxhvZPvKdQtm3vUA6Fm+ZPqkVEUQzTHbnk7KbEgf9E6cMDUmJN2NVKQGEODg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rti8wI5C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022C2C4CEF5;
+	Tue, 11 Nov 2025 01:03:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822986;
-	bh=44u5x/2slogwcGhgfvKcsDSQYMlkJ5BsScGT8CoOj8c=;
+	s=korg; t=1762822997;
+	bh=yLyuMcLE3LdKZONcOWexHAypwNvI2IoeswzNZVTtV0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K9vqZTuI1yBwaB17MM5TgiQ2FFbVNPG7mBMj58UwUDbRPZtkc7LTJk4CUchH4iq+R
-	 krAj7rQ4TXet8EvtBUEG/QB/NZ9gpD3rmsUw6tP78XTLkVqwlz4Ndx8re1VhZF4rip
-	 KFhQkLHlgCVu7r7QqLv4lzSHmTAKK6WcK2uH3RGo=
+	b=rti8wI5CRKPkvMiL8rRuZqt7o77sgaSLMxHPb3VfuVFH+2lnpoII2hpA8SVEmSEyM
+	 rw+Q7MPrvfa06/peXDXpVZtB1S7hlbDanf3EVKAcx2yrdzEHRkiuDVuimb44zqvs8/
+	 kpd9mf1d00LNMJvTT4mJAReByvoxd9PwzvmowD0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Copeland <ben.copeland@linaro.org>,
-	Eugene Shalygin <eugene.shalygin@gmail.com>,
+	Armin Wolf <W_Armin@gmx.de>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 209/849] hwmon: (asus-ec-sensors) increase timeout for locking ACPI mutex
-Date: Tue, 11 Nov 2025 09:36:19 +0900
-Message-ID: <20251111004541.495739086@linuxfoundation.org>
+Subject: [PATCH 6.17 211/849] hwmon: (dell-smm) Add support for Dell OptiPlex 7040
+Date: Tue, 11 Nov 2025 09:36:21 +0900
+Message-ID: <20251111004541.547481565@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,36 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ben Copeland <ben.copeland@linaro.org>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 584d55be66ef151e6ef9ccb3dcbc0a2155559be1 ]
+[ Upstream commit 53d3bd48ef6ff1567a75ca77728968f5ab493cb4 ]
 
-Some motherboards require more time to acquire the ACPI mutex,
-causing "Failed to acquire mutex" messages to appear in the kernel log.
-Increase the timeout from 500ms to 800ms to accommodate these cases.
+The Dell OptiPlex 7040 supports the legacy SMM interface for reading
+sensors and performing fan control. Whitelist this machine so that
+this driver loads automatically.
 
-Signed-off-by: Ben Copeland <ben.copeland@linaro.org>
-Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
-Link: https://lore.kernel.org/r/20250923192935.11339-3-eugene.shalygin@gmail.com
+Closes: https://github.com/Wer-Wolf/i8kutils/issues/15
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20250917181036.10972-5-W_Armin@gmx.de
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/asus-ec-sensors.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/dell-smm-hwmon.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
-index f43efb80aabf3..94eb02e6be326 100644
---- a/drivers/hwmon/asus-ec-sensors.c
-+++ b/drivers/hwmon/asus-ec-sensors.c
-@@ -49,7 +49,7 @@ static char *mutex_path_override;
-  */
- #define ASUS_EC_MAX_BANK	3
- 
--#define ACPI_LOCK_DELAY_MS	500
-+#define ACPI_LOCK_DELAY_MS	800
- 
- /* ACPI mutex for locking access to the EC for the firmware */
- #define ASUS_HW_ACCESS_MUTEX_ASMX	"\\AMW0.ASMX"
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index 3f61b2d7935e4..5801128e16c3c 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -1280,6 +1280,13 @@ static const struct dmi_system_id i8k_dmi_table[] __initconst = {
+ 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "OptiPlex 7050"),
+ 		},
+ 	},
++	{
++		.ident = "Dell OptiPlex 7040",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "OptiPlex 7040"),
++		},
++	},
+ 	{
+ 		.ident = "Dell Precision",
+ 		.matches = {
 -- 
 2.51.0
 
