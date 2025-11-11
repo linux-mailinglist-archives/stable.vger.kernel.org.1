@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-193420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67AFC4A415
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:10:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A8DFC4AABA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DF673A7141
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:07:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 371F74F9ACE
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BA026C399;
-	Tue, 11 Nov 2025 01:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6904D346E45;
+	Tue, 11 Nov 2025 01:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8ZQ4uN3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVhDSOO6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B4226CE37;
-	Tue, 11 Nov 2025 01:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246461D86FF;
+	Tue, 11 Nov 2025 01:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823142; cv=none; b=VLjh2zTH5/JN0K6IoWH6umT9EacNrX5NAT5/HG8f8a4bXg96tpRmDYbIzTrb0k8U7BpLWch4L0gZEUQf16dFabH2OrUDr+Fq4V6YvKCirtAbDerEgCGoLNPaRaofVvjILdVEwSWDXRK15LZgIBYsP0YIc5BXSUjjk1F4oqbaJuI=
+	t=1762824222; cv=none; b=RhQmgoPqvmU+c1vhhDtFeW45guR1JSuUesP90xlqotL0qc5aUazR2TG3ArpvXV0XK0aZ+WlqNIYgKuPEIrWr8xBtZnCPlvNgPsNb6wEAgqicvCdEAQR55XqmdmR+wMOIctkkMdVzmlIj+xM1GpjRRgnEU4jL2M5COr5JF1+GF3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823142; c=relaxed/simple;
-	bh=1KqUIx3DzQwDGXHoSPGcRaNUSB2kH0XaO3IECzcvtPY=;
+	s=arc-20240116; t=1762824222; c=relaxed/simple;
+	bh=G7Dh3BDSluzGhl86fQpNF7ujjhHO3uL9Eg5MqlTz2vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q+7qR/fn9kNj9srZDztt3lydETDvoA/CJXqOVB11ip7n8IXDoWAyHa4pjN0V061/LGfDagrH5pDIoCOCHhZjokPDS3xiXdcLmsMXRsH5v77PO2ZdaKe8f13bmfO76AeaC8jx+F9vMYVRvTqNpgkTYhA4KQxEL2+VJdx0zq8JZPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8ZQ4uN3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E589CC16AAE;
-	Tue, 11 Nov 2025 01:05:41 +0000 (UTC)
+	 MIME-Version; b=ZdIjXDxQ2vNRIRV6455KVI0aI/vPvsD38MvcVMBhujOKVnltWNDLkw1CAXELD3+WphkqxB80V3BNYOyihzvJJaSKY5KhwlKtFt14ukLr+JDcRqNf77azICEH2l5sm2SoQUrafZaIw+PCLY+/iteOM5HogIJIcMPY8zSpHqLAewU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVhDSOO6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6247BC4CEFB;
+	Tue, 11 Nov 2025 01:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823142;
-	bh=1KqUIx3DzQwDGXHoSPGcRaNUSB2kH0XaO3IECzcvtPY=;
+	s=korg; t=1762824221;
+	bh=G7Dh3BDSluzGhl86fQpNF7ujjhHO3uL9Eg5MqlTz2vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h8ZQ4uN32uX10aynHf3mVg02okZq/N6MJU5L2gVsC5anYAoMu0e4/6f/Vsmn68MOg
-	 FHv2c99DVJFAw/ouUqIL26dQi+Rax+2KuqHx9sdDK89P8kceCDaOSjaLMvGfhLAl6p
-	 mZflNXmDM5nkAGKOHDrRW+ay7rh+B+eQRthNV6pk=
+	b=UVhDSOO6gZRUc4EBh6hUv/qSbeOfZ94kJ9sQ3iUpd60VthfsNDixz7HC3+dP7ue/R
+	 wdUHysG92ld5Wr6tDhz/medzHucCpThljIhDZzuKUO5VSMi38HR2DhqLq3fgPJ/gLy
+	 mWkF4Of0tkN4wMuT4v9u5Ff1XzBeKm3P1EScxyyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Maarten Lankhorst <dev@lankhorst.se>,
+	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 179/565] drm/xe: Fix oops in xe_gem_fault when running core_hotunplug test.
+Subject: [PATCH 6.17 465/849] serial: qcom-geni: Add DFS clock mode support to GENI UART driver
 Date: Tue, 11 Nov 2025 09:40:35 +0900
-Message-ID: <20251111004530.959519556@linuxfoundation.org>
+Message-ID: <20251111004547.670375110@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +61,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maarten Lankhorst <dev@lankhorst.se>
+From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 
-[ Upstream commit 1cda3c755bb7770be07d75949bb0f45fb88651f6 ]
+[ Upstream commit fc6a5b540c02d1ec624e4599f45a17f2941a5c00 ]
 
-I saw an oops in xe_gem_fault when running the xe-fast-feedback
-testlist against the realtime kernel without debug options enabled.
+GENI UART driver currently supports only non-DFS (Dynamic Frequency
+Scaling) mode for source frequency selection. However, to operate correctly
+in DFS mode, the GENI SCLK register must be programmed with the appropriate
+DFS index. Failing to do so can result in incorrect frequency selection
 
-The panic happens after core_hotunplug unbind-rebind finishes.
-Presumably what happens is that a process mmaps, unlocks because
-of the FAULT_FLAG_RETRY_NOWAIT logic, has no process memory left,
-causing ttm_bo_vm_dummy_page() to return VM_FAULT_NOPAGE, since
-there was nothing left to populate, and then oopses in
-"mem_type_is_vram(tbo->resource->mem_type)" because tbo->resource
-is NULL.
+Add support for Dynamic Frequency Scaling (DFS) mode in the GENI UART
+driver by configuring the GENI_CLK_SEL register with the appropriate DFS
+index. This ensures correct frequency selection when operating in DFS mode.
 
-It's convoluted, but fits the data and explains the oops after
-the test exits.
+Replace the UART driver-specific logic for clock selection with the GENI
+common driver function to obtain the desired frequency and corresponding
+clock index. This improves maintainability and consistency across
+GENI-based drivers.
 
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://lore.kernel.org/r/20250715152057.23254-2-dev@lankhorst.se
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
+Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250903063136.3015237-1-viken.dadhaniya@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ drivers/tty/serial/qcom_geni_serial.c | 92 ++++++---------------------
+ 1 file changed, 21 insertions(+), 71 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index b5058a35c4513..b71156e9976aa 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -1218,22 +1218,26 @@ static vm_fault_t xe_gem_fault(struct vm_fault *vmf)
- 		ret = ttm_bo_vm_fault_reserved(vmf, vmf->vma->vm_page_prot,
- 					       TTM_BO_VM_NUM_PREFAULT);
- 		drm_dev_exit(idx);
-+
-+		if (ret == VM_FAULT_RETRY &&
-+		    !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT))
-+			goto out;
-+
-+		/*
-+		 * ttm_bo_vm_reserve() already has dma_resv_lock.
-+		 */
-+		if (ret == VM_FAULT_NOPAGE &&
-+		    mem_type_is_vram(tbo->resource->mem_type)) {
-+			mutex_lock(&xe->mem_access.vram_userfault.lock);
-+			if (list_empty(&bo->vram_userfault_link))
-+				list_add(&bo->vram_userfault_link,
-+					 &xe->mem_access.vram_userfault.list);
-+			mutex_unlock(&xe->mem_access.vram_userfault.lock);
-+		}
- 	} else {
- 		ret = ttm_bo_vm_dummy_page(vmf, vmf->vma->vm_page_prot);
- 	}
+diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+index 81f385d900d06..ff401e331f1bb 100644
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1,5 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0
+-// Copyright (c) 2017-2018, The Linux foundation. All rights reserved.
++/*
++ * Copyright (c) 2017-2018, The Linux foundation. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
++ */
  
--	if (ret == VM_FAULT_RETRY && !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT))
--		goto out;
--	/*
--	 * ttm_bo_vm_reserve() already has dma_resv_lock.
--	 */
--	if (ret == VM_FAULT_NOPAGE && mem_type_is_vram(tbo->resource->mem_type)) {
--		mutex_lock(&xe->mem_access.vram_userfault.lock);
--		if (list_empty(&bo->vram_userfault_link))
--			list_add(&bo->vram_userfault_link, &xe->mem_access.vram_userfault.list);
--		mutex_unlock(&xe->mem_access.vram_userfault.lock);
+ /* Disable MMIO tracing to prevent excessive logging of unwanted MMIO traces */
+ #define __DISABLE_TRACE_MMIO__
+@@ -1253,75 +1256,15 @@ static int qcom_geni_serial_startup(struct uart_port *uport)
+ 	return 0;
+ }
+ 
+-static unsigned long find_clk_rate_in_tol(struct clk *clk, unsigned int desired_clk,
+-			unsigned int *clk_div, unsigned int percent_tol)
+-{
+-	unsigned long freq;
+-	unsigned long div, maxdiv;
+-	u64 mult;
+-	unsigned long offset, abs_tol, achieved;
+-
+-	abs_tol = div_u64((u64)desired_clk * percent_tol, 100);
+-	maxdiv = CLK_DIV_MSK >> CLK_DIV_SHFT;
+-	div = 1;
+-	while (div <= maxdiv) {
+-		mult = (u64)div * desired_clk;
+-		if (mult != (unsigned long)mult)
+-			break;
+-
+-		offset = div * abs_tol;
+-		freq = clk_round_rate(clk, mult - offset);
+-
+-		/* Can only get lower if we're done */
+-		if (freq < mult - offset)
+-			break;
+-
+-		/*
+-		 * Re-calculate div in case rounding skipped rates but we
+-		 * ended up at a good one, then check for a match.
+-		 */
+-		div = DIV_ROUND_CLOSEST(freq, desired_clk);
+-		achieved = DIV_ROUND_CLOSEST(freq, div);
+-		if (achieved <= desired_clk + abs_tol &&
+-		    achieved >= desired_clk - abs_tol) {
+-			*clk_div = div;
+-			return freq;
+-		}
+-
+-		div = DIV_ROUND_UP(freq, desired_clk);
 -	}
 -
- 	dma_resv_unlock(tbo->base.resv);
- out:
- 	if (needs_rpm)
+-	return 0;
+-}
+-
+-static unsigned long get_clk_div_rate(struct clk *clk, unsigned int baud,
+-			unsigned int sampling_rate, unsigned int *clk_div)
+-{
+-	unsigned long ser_clk;
+-	unsigned long desired_clk;
+-
+-	desired_clk = baud * sampling_rate;
+-	if (!desired_clk)
+-		return 0;
+-
+-	/*
+-	 * try to find a clock rate within 2% tolerance, then within 5%
+-	 */
+-	ser_clk = find_clk_rate_in_tol(clk, desired_clk, clk_div, 2);
+-	if (!ser_clk)
+-		ser_clk = find_clk_rate_in_tol(clk, desired_clk, clk_div, 5);
+-
+-	return ser_clk;
+-}
+-
+ static int geni_serial_set_rate(struct uart_port *uport, unsigned int baud)
+ {
+ 	struct qcom_geni_serial_port *port = to_dev_port(uport);
+ 	unsigned long clk_rate;
+-	unsigned int avg_bw_core;
++	unsigned int avg_bw_core, clk_idx;
+ 	unsigned int clk_div;
+ 	u32 ver, sampling_rate;
+ 	u32 ser_clk_cfg;
++	int ret;
+ 
+ 	sampling_rate = UART_OVERSAMPLING;
+ 	/* Sampling rate is halved for IP versions >= 2.5 */
+@@ -1329,17 +1272,22 @@ static int geni_serial_set_rate(struct uart_port *uport, unsigned int baud)
+ 	if (ver >= QUP_SE_VERSION_2_5)
+ 		sampling_rate /= 2;
+ 
+-	clk_rate = get_clk_div_rate(port->se.clk, baud,
+-		sampling_rate, &clk_div);
+-	if (!clk_rate) {
+-		dev_err(port->se.dev,
+-			"Couldn't find suitable clock rate for %u\n",
+-			baud * sampling_rate);
++	ret = geni_se_clk_freq_match(&port->se, baud * sampling_rate, &clk_idx, &clk_rate, false);
++	if (ret) {
++		dev_err(port->se.dev, "Failed to find src clk for baud rate: %d ret: %d\n",
++			baud, ret);
++		return ret;
++	}
++
++	clk_div = DIV_ROUND_UP(clk_rate, baud * sampling_rate);
++	/* Check if calculated divider exceeds maximum allowed value */
++	if (clk_div > (CLK_DIV_MSK >> CLK_DIV_SHFT)) {
++		dev_err(port->se.dev, "Calculated clock divider %u exceeds maximum\n", clk_div);
+ 		return -EINVAL;
+ 	}
+ 
+-	dev_dbg(port->se.dev, "desired_rate = %u, clk_rate = %lu, clk_div = %u\n",
+-			baud * sampling_rate, clk_rate, clk_div);
++	dev_dbg(port->se.dev, "desired_rate = %u, clk_rate = %lu, clk_div = %u\n, clk_idx = %u\n",
++		baud * sampling_rate, clk_rate, clk_div, clk_idx);
+ 
+ 	uport->uartclk = clk_rate;
+ 	port->clk_rate = clk_rate;
+@@ -1359,6 +1307,8 @@ static int geni_serial_set_rate(struct uart_port *uport, unsigned int baud)
+ 
+ 	writel(ser_clk_cfg, uport->membase + GENI_SER_M_CLK_CFG);
+ 	writel(ser_clk_cfg, uport->membase + GENI_SER_S_CLK_CFG);
++	/* Configure clock selection register with the selected clock index */
++	writel(clk_idx & CLK_SEL_MSK, uport->membase + SE_GENI_CLK_SEL);
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
