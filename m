@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D24C4AC7C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:41:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28818C4B14E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4179188F8B7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:36:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B17324FC417
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64795341648;
-	Tue, 11 Nov 2025 01:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AA81C4A24;
+	Tue, 11 Nov 2025 01:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIeZNHBY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BhLaSGLh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE362D9ECD;
-	Tue, 11 Nov 2025 01:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AF534AB1B;
+	Tue, 11 Nov 2025 01:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824615; cv=none; b=NgMi4W7LIodGyow9jbIqB72XbVzW3WiRdo5hSWIBYZoUE6+sCAmd+BqsDeXuihGvtkc1Udqz2CZTDYeg/KA2lFJ+gTdFxHewjStnyqy+awM8t/trSCSKVlrFSBnqqGsY6czZK9VzEw74E+dRmWkq/fsejcUQ1bvF3sG+eDg5U8o=
+	t=1762825350; cv=none; b=OTZN4vDMlATwDkhAJWKGYwPhTg3CVd6llHxgz5+5qJVXWtC0aBeh03xeUvrho1DS9svjJcqgz8cRdVoAHKqgbK7VuP+8KyQZm/trQCbjz5zysvLUhHzY6i65xY+IgC+QN1b5ks8KzoKGSKDuOwoNNs6hIFDvq9scdzZ77hb1gFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824615; c=relaxed/simple;
-	bh=k4hFxmeTiZ7fRdS6//kibMXL4B5cEfjAubDkH4IuBlI=;
+	s=arc-20240116; t=1762825350; c=relaxed/simple;
+	bh=DF/cWCzDOmTRVyTNkf/D/PcDyU2SNjSTWax3z56k1qE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NLkNBDvifqXp1Fly8ktTc7Tq4uJPwpGTA+hkcpKcqPNaOShalpJsFznjMIVv3li9DcHpxQSqzvJiTAY+NRQGTXBjF9b/DWa4oyPOYrx9ZdhoFnQZopRh4VfStOMDAtL181GgWlE1oxoVaOgyVmEBncoChf0hcbYHhCUUHKxOk14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIeZNHBY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B83C116D0;
-	Tue, 11 Nov 2025 01:30:14 +0000 (UTC)
+	 MIME-Version; b=LDyFXSIz8DDGd6GH70us94+c/Krs7MFdhQj0Ue+UhfJrwvDDcDddR3rYfXi1GTlgw5F/Az9U2U/Px04RE1vTbJ84Pou4HgU3OLO29a8t2XlkkvC29qhhzTW8TJAZDvisojID+tkDgflPgEch3VVSJP0qo7Z3qzBe6Dhs+rRvE5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BhLaSGLh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C79C116B1;
+	Tue, 11 Nov 2025 01:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824615;
-	bh=k4hFxmeTiZ7fRdS6//kibMXL4B5cEfjAubDkH4IuBlI=;
+	s=korg; t=1762825350;
+	bh=DF/cWCzDOmTRVyTNkf/D/PcDyU2SNjSTWax3z56k1qE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lIeZNHBY9kp8zLlsYSRXxX+5+m/K8KJ+uuKQMEA3RDAgm+MKfTmvJV0DghPIBo0hA
-	 rvoxQbxTG6YDMULgTukRgIwX4+bWJeJhsrCqLGSKBQ95ZqsFmJw4jawvTXyNuxFA8o
-	 J4ARJK8tMJhSyWEOAWe/wAR6YjJq39+W3MiXffD8=
+	b=BhLaSGLhMhUC3Z85wi8hOyuZ79MbCed+CBcny2q7AtEvYONuHpKZgusDttIFEgsB7
+	 vPoSjBF49MOgjGWqiebbPWve6+t2dtPGwx4CXvMpMWm1b1gRNLqKlyrHy/FI6X1LZ5
+	 YCuHZurGO7LTBWI9OUi5kJ6c0o+YRFpW5MTcNr6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hoyoung Seo <hy50.seo@samsung.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 480/565] scsi: ufs: core: Include UTP error in INT_FATAL_ERRORS
+Subject: [PATCH 6.17 766/849] gpio: swnode: dont use the swnodes name as the key for GPIO lookup
 Date: Tue, 11 Nov 2025 09:45:36 +0900
-Message-ID: <20251111004537.720452205@linuxfoundation.org>
+Message-ID: <20251111004554.949162403@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hoyoung Seo <hy50.seo@samsung.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 558ae4579810fa0fef011944230c65a6f3087f85 ]
+[ Upstream commit e5d527be7e6984882306b49c067f1fec18920735 ]
 
-When a UTP error occurs in isolation, UFS is not currently recoverable.
-This is because the UTP error is not considered fatal in the error
-handling code, leading to either an I/O timeout or an OCS error.
+Looking up a GPIO controller by label that is the name of the software
+node is wonky at best - the GPIO controller driver is free to set
+a different label than the name of its firmware node. We're already being
+passed a firmware node handle attached to the GPIO device to
+swnode_get_gpio_device() so use it instead for a more precise lookup.
 
-Add the UTP error flag to INT_FATAL_ERRORS so the controller will be
-reset in this situation.
-
-  sd 0:0:0:0: [sda] tag#38 UNKNOWN(0x2003) Result: hostbyte=0x07
-  driverbyte=DRIVER_OK cmd_age=0s
-  sd 0:0:0:0: [sda] tag#38 CDB: opcode=0x28 28 00 00 51 24 e2 00 00 08 00
-  I/O error, dev sda, sector 42542864 op 0x0:(READ) flags 0x80700 phys_seg
-  8 prio class 2
-  OCS error from controller = 9 for tag 39
-  pa_err[1] = 0x80000010 at 2667224756 us
-  pa_err: total cnt=2
-  dl_err[0] = 0x80000002 at 2667148060 us
-  dl_err[1] = 0x80002000 at 2667282844 us
-  No record of nl_err
-  No record of tl_err
-  No record of dme_err
-  No record of auto_hibern8_err
-  fatal_err[0] = 0x804 at 2667282836 us
-
-  ---------------------------------------------------
-  		REGISTER
-  ---------------------------------------------------
-                             NAME	      OFFSET	         VALUE
-                      STD HCI SFR	  0xfffffff0	           0x0
-                             AHIT	        0x18	         0x814
-                 INTERRUPT STATUS	        0x20	        0x1000
-                 INTERRUPT ENABLE	        0x24	       0x70ef5
-
-[mkp: commit desc]
-
-Signed-off-by: Hoyoung Seo <hy50.seo@samsung.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Message-Id: <20250930061428.617955-1-hy50.seo@samsung.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: e7f9ff5dc90c ("gpiolib: add support for software nodes")
+Link: https://lore.kernel.org/r/20251103-reset-gpios-swnodes-v4-4-6461800b6775@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/ufs/ufshci.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpio/gpiolib-swnode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/ufs/ufshci.h b/include/ufs/ufshci.h
-index 27364c4a6ef9f..63ae3150f6be3 100644
---- a/include/ufs/ufshci.h
-+++ b/include/ufs/ufshci.h
-@@ -185,6 +185,7 @@ static inline u32 ufshci_version(u32 major, u32 minor)
- #define UTP_TASK_REQ_COMPL			0x200
- #define UIC_COMMAND_COMPL			0x400
- #define DEVICE_FATAL_ERROR			0x800
-+#define UTP_ERROR				0x1000
- #define CONTROLLER_FATAL_ERROR			0x10000
- #define SYSTEM_BUS_FATAL_ERROR			0x20000
- #define CRYPTO_ENGINE_FATAL_ERROR		0x40000
-@@ -204,7 +205,8 @@ static inline u32 ufshci_version(u32 major, u32 minor)
- 				CONTROLLER_FATAL_ERROR |\
- 				SYSTEM_BUS_FATAL_ERROR |\
- 				CRYPTO_ENGINE_FATAL_ERROR |\
--				UIC_LINK_LOST)
-+				UIC_LINK_LOST |\
-+				UTP_ERROR)
+diff --git a/drivers/gpio/gpiolib-swnode.c b/drivers/gpio/gpiolib-swnode.c
+index f21dbc28cf2c8..e3806db1c0e07 100644
+--- a/drivers/gpio/gpiolib-swnode.c
++++ b/drivers/gpio/gpiolib-swnode.c
+@@ -41,7 +41,7 @@ static struct gpio_device *swnode_get_gpio_device(struct fwnode_handle *fwnode)
+ 	    !strcmp(gdev_node->name, GPIOLIB_SWNODE_UNDEFINED_NAME))
+ 		return ERR_PTR(-ENOENT);
  
- /* HCS - Host Controller Status 30h */
- #define DEVICE_PRESENT				0x1
+-	gdev = gpio_device_find_by_label(gdev_node->name);
++	gdev = gpio_device_find_by_fwnode(fwnode);
+ 	return gdev ?: ERR_PTR(-EPROBE_DEFER);
+ }
+ 
 -- 
 2.51.0
 
