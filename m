@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD3C9C4A13D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E92DC4A138
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:58:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 171EF3ACEB9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9393188CE6E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514DA244693;
-	Tue, 11 Nov 2025 00:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CDC81C6FE1;
+	Tue, 11 Nov 2025 00:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+rnQWnE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bk4JO8Q4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C90B4C97;
-	Tue, 11 Nov 2025 00:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D30214210;
+	Tue, 11 Nov 2025 00:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822706; cv=none; b=cg8iUW4uj59LcJOVIPGsM2HGNAHMG8SZnwkxDrqr0tA0JVQ3rutqupa6dYqPHMTaRsUp9/ZtueL9p1YAsUBXJ/qr5Lz1UqKZJ/+1EXQBIUbQA4/LppLK/5GxRsXEPul01K+PcERH4LgUraDldUOuPB6jjXf/nPgoka9YsCon9AY=
+	t=1762822713; cv=none; b=VThKzZu/SArvoUJtkiAmAPW1ZRhaiwac0IkfaOj1Frvbv5djFbkShEZXLQwmZhNvID7WT56EC2cHHVG7X08RlpY/qPZNoh4MriWlaiIHY25LTvsbSCUgC21FS0UgWVkKU6mhwd5CeddIl0BAO7GkiatcNWMrWmUXLK3gg6zybSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822706; c=relaxed/simple;
-	bh=wmzvZEFcGS7irPOLEt0189XyxHbWMPuzrJ9uJQ9Tk0E=;
+	s=arc-20240116; t=1762822713; c=relaxed/simple;
+	bh=Dl00yJqRW3/J9XBgvL4hVBMd7DxwWky5iR+lcrg3/qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gvu2dVn+SrL/LbuKFYyMlFPFD4zA09cbMXbt0kHzEEcNRnliZwoe/LtsQH47G2Ts7POv/FNO+g1zKsg6++xk9ySI2Rd9bLWtL9RVIvCwomqCoaI1+T6iRlbNgprJ5OdectSO0tdYR0ug2f3GjXiZaxbpI5MiKEVRoNtGcSQeMkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+rnQWnE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1247C4CEFB;
-	Tue, 11 Nov 2025 00:58:25 +0000 (UTC)
+	 MIME-Version; b=PtxN8EThaMVAtDuEwtxbFxe6GoVxp+qVtBRdAdTa54colf31ziMMlAjivFqNci//m2tlveB2Wn6dNHEEzuWpq/XZQvlTTsi2qZ3OgVQ2K1Pov2tY9YLhJhtu2hbsSTZgn/QtIw7jJgpciDP449HNIxvvu9Gc2dAgFl/gdy8u1qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bk4JO8Q4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5BCC116B1;
+	Tue, 11 Nov 2025 00:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822705;
-	bh=wmzvZEFcGS7irPOLEt0189XyxHbWMPuzrJ9uJQ9Tk0E=;
+	s=korg; t=1762822713;
+	bh=Dl00yJqRW3/J9XBgvL4hVBMd7DxwWky5iR+lcrg3/qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D+rnQWnEK4rp7Xeh3/mwiK66ZeUTX6e3vvkmqJPmumkl0cT6mOAiGgtzndXapukeH
-	 jEVx6Kh8/PkmCOLqEzG3olQ+qcGgGgB+LgUebEwSyU/nl1GfOwbVkZtbiVHODkwwd/
-	 n0MufYk+TF47IM6DxmIVOY+XobykjoLyYZL/8Qxk=
+	b=Bk4JO8Q4fy0AGIBKdZSXpHM0FdiRcu+qnjH0d93Hrqaws0+WMutAp54DTRQBjpMEE
+	 H5mfnc60FSKXMOZis1UO7v0ZTCTmga7Z6q79uf8cn2b0raIH/Npl+5rLaZcdM0QOYF
+	 1sQNygAMUJ/lHe3GKSog5I8XbMebGyHhGoR+Pcjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christopher Ruehl <chris.ruehl@gtsys.com.hk>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 152/849] thermal: intel: selftests: workload_hint: Mask unsupported types
-Date: Tue, 11 Nov 2025 09:35:22 +0900
-Message-ID: <20251111004540.096973251@linuxfoundation.org>
+Subject: [PATCH 6.17 153/849] power: supply: qcom_battmgr: add OOI chemistry
+Date: Tue, 11 Nov 2025 09:35:23 +0900
+Message-ID: <20251111004540.122582475@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,36 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Christopher Ruehl <chris.ruehl@gtsys.com.hk>
 
-[ Upstream commit 0115d063559fa6d25e41751cf455dda40aa2c856 ]
+[ Upstream commit fee0904441325d83e7578ca457ec65a9d3f21264 ]
 
-The workload hint may contain some other hints which are not defined.
-So mask out unsupported types. Currently only lower 4 bits of workload
-type hints are defined.
+The ASUS S15 xElite model report the Li-ion battery with an OOI, hence this
+update the detection and return the appropriate type.
 
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20250828201541.931425-1-srinivas.pandruvada@linux.intel.com
-[ rjw: Subject cleanup ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Christopher Ruehl <chris.ruehl@gtsys.com.hk>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/thermal/intel/workload_hint/workload_hint_test.c  | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/power/supply/qcom_battmgr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/thermal/intel/workload_hint/workload_hint_test.c b/tools/testing/selftests/thermal/intel/workload_hint/workload_hint_test.c
-index ba58589a11454..ca2bd03154e4d 100644
---- a/tools/testing/selftests/thermal/intel/workload_hint/workload_hint_test.c
-+++ b/tools/testing/selftests/thermal/intel/workload_hint/workload_hint_test.c
-@@ -144,6 +144,8 @@ int main(int argc, char **argv)
- 			ret = sscanf(index_str, "%d", &index);
- 			if (ret < 0)
- 				break;
-+
-+			index &= 0x0f;
- 			if (index > WORKLOAD_TYPE_MAX_INDEX)
- 				printf("Invalid workload type index\n");
- 			else
+diff --git a/drivers/power/supply/qcom_battmgr.c b/drivers/power/supply/qcom_battmgr.c
+index 99808ea9851f6..fdb2d1b883fc5 100644
+--- a/drivers/power/supply/qcom_battmgr.c
++++ b/drivers/power/supply/qcom_battmgr.c
+@@ -982,7 +982,8 @@ static void qcom_battmgr_sc8280xp_strcpy(char *dest, const char *src)
+ 
+ static unsigned int qcom_battmgr_sc8280xp_parse_technology(const char *chemistry)
+ {
+-	if (!strncmp(chemistry, "LIO", BATTMGR_CHEMISTRY_LEN))
++	if ((!strncmp(chemistry, "LIO", BATTMGR_CHEMISTRY_LEN)) ||
++	    (!strncmp(chemistry, "OOI", BATTMGR_CHEMISTRY_LEN)))
+ 		return POWER_SUPPLY_TECHNOLOGY_LION;
+ 	if (!strncmp(chemistry, "LIP", BATTMGR_CHEMISTRY_LEN))
+ 		return POWER_SUPPLY_TECHNOLOGY_LIPO;
 -- 
 2.51.0
 
