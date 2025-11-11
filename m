@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-193620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0120FC4A7CC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4E9C4A857
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 255283B84EF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F07818957FF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907AA3446CC;
-	Tue, 11 Nov 2025 01:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640433446DC;
+	Tue, 11 Nov 2025 01:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhKkc+ec"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfPDr4xw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4162D94B7;
-	Tue, 11 Nov 2025 01:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0133446DE;
+	Tue, 11 Nov 2025 01:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823613; cv=none; b=IB/T7HC/nwjD/ODKrmjE2jdjurBUOTm7QJWRcgLF3xIQ3UCFgZ9weFoJGcuZ7rAanjuig3CdRUYzd5WRpEZJduJbv20zm+cNGAjoJsDThyUBVdpRZhcFKx0YnmdQ3EKcPkYNU/OHJUtDW4YMEpkpHzyvIi35PokSVC9wfh2pINk=
+	t=1762823618; cv=none; b=ZV5on8NGl2KMmOYHVKgqmKCvyHS3SBTQtrK5oaVbOfUASEoolI2aFcGb7i+qGoHDe3pskVH5aQp+GCW6x575e+caGy4xzheZvwiR2UZaWSThj0ubLE6EG8i/bJ2UaSoLpJRK+9YErnvrqj+KssK+5wdPgYBPb2/nslJ2a5BIdKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823613; c=relaxed/simple;
-	bh=v+w0jCj7nOO57CbLDZg9gBz8IDEhDaCWECn18/gpho0=;
+	s=arc-20240116; t=1762823618; c=relaxed/simple;
+	bh=na8uSJiSgUd2+awJe4dibEW3+zzhjO7a3jAmAVjK4as=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OlXXLLkTmPjzYJw78Ru0BICD2HNodt+oldSrthpar/k0fe5AENyetszlT9XwUCZSg1lQvX4KDtKOBNVy3/rIuPxLtLNwGSjqeQoFIVSqAt+C/KSjeBODqkzAUArHeulkpBtjXpC4iDGoEfrz1wzy2ZPtcdaUnDd6clkKFGxh7S4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhKkc+ec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78F4C4AF09;
-	Tue, 11 Nov 2025 01:13:32 +0000 (UTC)
+	 MIME-Version; b=lxx7u5+q59iYK6DKMVc+HA35GBuhi7OzH5h3xn8GfHYkh9pBlgnxpfZ8rV8oxTiqJWCMhIocVPn1C2LeN1iv/k95XEXvwbgFBb28cPbRaEO1HhB1VYFjE5FKCVIdyEAl315uXy+iIJ8JgaUNInUhZaWo41mr0zUZfKLroUIHZzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfPDr4xw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B126FC16AAE;
+	Tue, 11 Nov 2025 01:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823613;
-	bh=v+w0jCj7nOO57CbLDZg9gBz8IDEhDaCWECn18/gpho0=;
+	s=korg; t=1762823618;
+	bh=na8uSJiSgUd2+awJe4dibEW3+zzhjO7a3jAmAVjK4as=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nhKkc+ec7LB0uVCQ71AX008tlnrkSRoOVYEaTtfpukvOMpapTKYBiYaR//HtJTLMs
-	 3P/Z8dxU7ctfBmI2mK5nihVIrcT9DCIi9CJqIVTzALTyHnAsTDWyGmXcCe1FnWBtwi
-	 KRnUuchi259vHv3yabagnCU4BPuajyFCG7cJbCPQ=
+	b=qfPDr4xwEUswYVl7JmqBOyz+aMZtlc3rNFCl8lIlEbjZ10ZsVPrIWgiu6aG/YIGQH
+	 uc2MVbd0psRE81JIeOaCSEPffFrk2wXJuItz7OYq17aU3CUNo1SFX+d1DWWei+3cwC
+	 ynr+6lUqri+cFF4Wql74dExcBSVvj6S6rSeSSuFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	David Francis <David.Francis@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Zhanjun Dong <zhanjun.dong@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 286/565] drm/amdgpu: Allow kfd CRIU with no buffer objects
-Date: Tue, 11 Nov 2025 09:42:22 +0900
-Message-ID: <20251111004533.312065661@linuxfoundation.org>
+Subject: [PATCH 6.12 287/565] drm/xe/guc: Increase GuC crash dump buffer size
+Date: Tue, 11 Nov 2025 09:42:23 +0900
+Message-ID: <20251111004533.334178155@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,38 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Francis <David.Francis@amd.com>
+From: Zhanjun Dong <zhanjun.dong@intel.com>
 
-[ Upstream commit 85705b18ae7674347f8675f64b2b3115fb1d5629 ]
+[ Upstream commit ad83b1da5b786ee2d245e41ce55cb1c71fed7c22 ]
 
-The kfd CRIU checkpoint ioctl would return an error if trying
-to checkpoint a process with no kfd buffer objects.
+There are platforms already have a maximum dump size of 12KB, to avoid
+data truncating, increase GuC crash dump buffer size to 16KB.
 
-This is a normal case and should not be an error.
-
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: David Francis <David.Francis@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Link: https://lore.kernel.org/r/20250829160427.1245732-1-zhanjun.dong@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_log.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index 7fbbc67adfd9e..0e73ec69192c3 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -2572,8 +2572,8 @@ static int criu_restore(struct file *filep,
- 	pr_debug("CRIU restore (num_devices:%u num_bos:%u num_objects:%u priv_data_size:%llu)\n",
- 		 args->num_devices, args->num_bos, args->num_objects, args->priv_data_size);
- 
--	if (!args->bos || !args->devices || !args->priv_data || !args->priv_data_size ||
--	    !args->num_devices || !args->num_bos)
-+	if ((args->num_bos > 0 && !args->bos) || !args->devices || !args->priv_data ||
-+	    !args->priv_data_size || !args->num_devices)
- 		return -EINVAL;
- 
- 	mutex_lock(&p->mutex);
+diff --git a/drivers/gpu/drm/xe/xe_guc_log.h b/drivers/gpu/drm/xe/xe_guc_log.h
+index 2d25ab28b4b3a..1c673c2fbd567 100644
+--- a/drivers/gpu/drm/xe/xe_guc_log.h
++++ b/drivers/gpu/drm/xe/xe_guc_log.h
+@@ -15,7 +15,7 @@ struct drm_printer;
+ #define DEBUG_BUFFER_SIZE       SZ_8M
+ #define CAPTURE_BUFFER_SIZE     SZ_2M
+ #else
+-#define CRASH_BUFFER_SIZE	SZ_8K
++#define CRASH_BUFFER_SIZE	SZ_16K
+ #define DEBUG_BUFFER_SIZE	SZ_64K
+ #define CAPTURE_BUFFER_SIZE	SZ_16K
+ #endif
 -- 
 2.51.0
 
