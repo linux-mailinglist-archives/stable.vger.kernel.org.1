@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE479C4A737
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04402C4AEE1
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:49:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5B5BC3433F9
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:27:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2A7B1897C68
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87FD305940;
-	Tue, 11 Nov 2025 01:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6CD30E82E;
+	Tue, 11 Nov 2025 01:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTiYAe44"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nimlJi0z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AEA306B39;
-	Tue, 11 Nov 2025 01:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179DC26AC3;
+	Tue, 11 Nov 2025 01:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823885; cv=none; b=k4aHWs4V3hmq/F6ogYsE5u6xSZJ5wh2jUnrV4aM0MCmi6HPzlleNnBB/9t/qBTv44mmVjOU9dVTsi2OzdQ/6H3r1krM/mcPBCWH5PTgKvctW1vvfJDrw0HtYMr5XX3KZ4a2O8eUb5YTozhXCLo9f/8PWRpL66KN0+dcOpfDTCj0=
+	t=1762825024; cv=none; b=qA6Yo23EToiU0JbN4Cp2KUl2SXm8GUTsFc4amXHzmMo6ya2Xxur1Yi3k38y3MagtKmDZuAy9mnIIvJEHViZz7o/TpJ6tm0gt43nPKz8Q//koG0ja1QzAaeNvN2nyL+4EcipIBrZ5SU+pMoOktM824hROsRZwut41K0Lb4rcqLZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823885; c=relaxed/simple;
-	bh=RouH9wHRR+vd0fYLPmi2Kb3MmVQrPT5JY++AH+DEA1k=;
+	s=arc-20240116; t=1762825024; c=relaxed/simple;
+	bh=ySA+VaZ4ndNF7c6YK2GHXE694PIWjwzTyivZy9B+P3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FycEq3SEMGEP6rfdekJTyxLdnj6a5XSwhpIYgDNZO5Bk6wfpf+Q1JKpNIMHPXP6R4BneHYHeoLFulQLE3wAiOS1EVp/vLw1K70Tos4SFbE6FxJAB6QWcduGx37j+JUWtFcqceMHJms8H5ZvyfGeHJbsKagiuMKjfQchHCieEWBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTiYAe44; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD58C19424;
-	Tue, 11 Nov 2025 01:18:05 +0000 (UTC)
+	 MIME-Version; b=WI2eCV9SkoeNY+UZ8e9FWzOlhNMJL85rZdvohfE+FiY5z3mPFKw5Y2DgmUYnVK9qCxLnnBkTNMXWTtZ1tVer1cmpc+ewTsjUHXIVMjs/345qLjF02U9k5BMlihd6Vca1lJITYgsMxm9RRDX+OR3b6H4Nu9j34Pp7NqmTfW2bB3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nimlJi0z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A793AC4CEF5;
+	Tue, 11 Nov 2025 01:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823885;
-	bh=RouH9wHRR+vd0fYLPmi2Kb3MmVQrPT5JY++AH+DEA1k=;
+	s=korg; t=1762825024;
+	bh=ySA+VaZ4ndNF7c6YK2GHXE694PIWjwzTyivZy9B+P3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WTiYAe44/CvlA34IHucWrapPG1mV8ibhAoJUzQbxJW6HyziFIXdk+LU0I5xC5br0M
-	 8X4+kBkwZH69lm3SE6lZiOUheXDE1X16Gwki3gxIBQf/eM48/0VsS23iWjzZGENbf0
-	 l2wKITAGG+CjiI2vkJWaO6cI1tqvSB3z2OCAgoc4=
+	b=nimlJi0zz3Rg2KXE+7a7p7eLFulKh0j107mLmvVn36h/zDJL+bk352GRHGNLMFS0M
+	 8CqZFCQt9NJCdJmJo37RbGI8C5tQ8P86eCoObQoEx6zx9kpKBsiuGJvqiSNTFESnuU
+	 3EiEdg+x+Yl0+uxdRjy61R5NkNRT9d7cjjnuBIPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Anthony Iliopoulos <ailiop@suse.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 343/565] selftests: Disable dad for ipv6 in fcnal-test.sh
+Subject: [PATCH 6.17 629/849] NFSv4.1: fix mount hang after CREATE_SESSION failure
 Date: Tue, 11 Nov 2025 09:43:19 +0900
-Message-ID: <20251111004534.593050614@linuxfoundation.org>
+Message-ID: <20251111004551.639871793@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Ahern <dsahern@kernel.org>
+From: Anthony Iliopoulos <ailiop@suse.com>
 
-[ Upstream commit 53d591730ea34f97a82f7ec6e7c987ca6e34dc21 ]
+[ Upstream commit bf75ad096820fee5da40e671ebb32de725a1c417 ]
 
-Constrained test environment; duplicate address detection is not needed
-and causes races so disable it.
+When client initialization goes through server trunking discovery, it
+schedules the state manager and then sleeps waiting for nfs_client
+initialization completion.
 
-Signed-off-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250910025828.38900-1-dsahern@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The state manager can fail during state recovery, and specifically in
+lease establishment as nfs41_init_clientid() will bail out in case of
+errors returned from nfs4_proc_create_session(), without ever marking
+the client ready. The session creation can fail for a variety of reasons
+e.g. during backchannel parameter negotiation, with status -EINVAL.
+
+The error status will propagate all the way to the nfs4_state_manager
+but the client status will not be marked, and thus the mount process
+will remain blocked waiting.
+
+Fix it by adding -EINVAL error handling to nfs4_state_manager().
+
+Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/fcnal-test.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfs/nfs4state.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
-index 46324e73f5035..a7edf43245c2a 100755
---- a/tools/testing/selftests/net/fcnal-test.sh
-+++ b/tools/testing/selftests/net/fcnal-test.sh
-@@ -424,6 +424,8 @@ create_ns()
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.keep_addr_on_down=1
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.forwarding=1
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.forwarding=1
-+	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.accept_dad=0
-+	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.accept_dad=0
- }
- 
- # create veth pair to connect namespaces and apply addresses.
+diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+index 7612e977e80b5..01179f7de3225 100644
+--- a/fs/nfs/nfs4state.c
++++ b/fs/nfs/nfs4state.c
+@@ -2744,6 +2744,9 @@ static void nfs4_state_manager(struct nfs_client *clp)
+ 	case -ENETUNREACH:
+ 		nfs_mark_client_ready(clp, -EIO);
+ 		break;
++	case -EINVAL:
++		nfs_mark_client_ready(clp, status);
++		break;
+ 	default:
+ 		ssleep(1);
+ 		break;
 -- 
 2.51.0
 
