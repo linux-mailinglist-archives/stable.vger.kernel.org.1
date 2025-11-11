@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-193173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF99C4A03A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:54:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB49C4A106
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:57:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C34393AC0AB
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:54:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D15374F4206
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74282244693;
-	Tue, 11 Nov 2025 00:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3207E24BBEB;
+	Tue, 11 Nov 2025 00:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/MaL702"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6EMp8FZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312761D6DB5;
-	Tue, 11 Nov 2025 00:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5EB4086A;
+	Tue, 11 Nov 2025 00:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822470; cv=none; b=bjFR9USfmgaZXcS0IXnvQDHXrwdlsUzOdkYw4mZEPDyDwcM9mu0H2l5E8J8gH3F48DCS4l1tCv3ubFoFnrGdzmNCCvSvuIiMw7O6oPwmAnnYBplGMD2lGC7pQ8VWV20EWQe61HPEnfiVSuXjtlhVNdyZ15Zt37lZhnAaRrWFusk=
+	t=1762822503; cv=none; b=FJuwsQVXQajgLxfjR4BdGu0OPiIvjxc3qjbhC5LFMYhy6m1SoRviF4jPFyuLPiburfEFIR0ghRne4l40zFMjHpX5Vhfs6CPws72DuYKkcPI5BdUwkkVpsHsKfH0kOtHwhLiYZwwg4G4m74FXBexKTN691ayJptXZHsmPstZLYTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822470; c=relaxed/simple;
-	bh=RYFlOeIzRr0Ywt/Gxat/4373vS6KnLmULMRSqFBUfwo=;
+	s=arc-20240116; t=1762822503; c=relaxed/simple;
+	bh=azq9VAxkyupea6r8E10LgCR7RvnjvpOiG9XKq5GMT10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUAT6YsVZT1HhWx13xo4BNdfGIkx/vdfY4EzJgWk674N6+7eKokxVS2uSPLplGS5FHCCNAtXfbS8u4ZuKwSu8iuFivfFVhf4QcBkUnBF3j/FOyjjvGWyv8EJbA3qUw/UeMZWf+Ucy/4koCWhvw6RsokIJdqUVN2s720fxNcy3Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/MaL702; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0714C4AF09;
-	Tue, 11 Nov 2025 00:54:29 +0000 (UTC)
+	 MIME-Version; b=UlHjob7M/q3/O6qXHwOeLKfpa+SQjScglKh9KiVNwhduwRTzEsU/kalKgzQCYLm0IY9lfvj8dMg7KBWQQaDKSdnatOj9oi3tXIEBa+v73E5ja8VGzEd9vVIOf7CpLyE5aUZ5Iu18K83O4n1BwQIisT8vYaowQ7VVZGTwb7PUMy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6EMp8FZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A15C4CEFB;
+	Tue, 11 Nov 2025 00:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822470;
-	bh=RYFlOeIzRr0Ywt/Gxat/4373vS6KnLmULMRSqFBUfwo=;
+	s=korg; t=1762822502;
+	bh=azq9VAxkyupea6r8E10LgCR7RvnjvpOiG9XKq5GMT10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/MaL702S0C0hFnWjrXp2jamoPkXd1IBkExr+KtGtb3UapFsVMdQaoG/Lzl9SFTVl
-	 8YpyvNZ6dOIkDwjMs9dr80APoSqO8a9LwR0TIIxdQ11VLsyvp6F4PKV42nPX9jNMwe
-	 lHguF+56R239HOWixIcUk9sPSGMMW5oArUNMTrbM=
+	b=z6EMp8FZJFVJtGtSVm+t7KwDb4o8fjIztoEl2J/gWJhwnywYAD2BDovDJVCh5ky3R
+	 tlsHfzBd3EB+UDgG6boddaJ+e/Twz6s9QiOr+y1wvqv8/HQd3ci/9AvzIboleFSXjp
+	 YNBaEfNlB8lMUoUpxZr+iwDvsp1VfMhWPZV4gAZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/565] drm/msm/a6xx: Fix GMU firmware parser
-Date: Tue, 11 Nov 2025 09:38:00 +0900
-Message-ID: <20251111004527.419225349@linuxfoundation.org>
+Subject: [PATCH 6.12 025/565] ALSA: usb-audio: fix control pipe direction
+Date: Tue, 11 Nov 2025 09:38:01 +0900
+Message-ID: <20251111004527.442832552@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,49 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
 
-[ Upstream commit b4789aac9d3441d9f830f0a4022d8dc122d6cab3 ]
+[ Upstream commit 7963891f7c9c6f759cc9ab7da71406b4234f3dd6 ]
 
-Current parser logic for GMU firmware assumes a dword aligned payload
-size for every block. This is not true for all GMU firmwares. So, fix
-this by using correct 'size' value in the calculation for the offset
-for the next block's header.
+Since the requesttype has USB_DIR_OUT the pipe should be
+constructed with usb_sndctrlpipe().
 
-Fixes: c6ed04f856a4 ("drm/msm/a6xx: A640/A650 GMU firmware path")
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Acked-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/674040/
-Message-ID: <20250911-assorted-sept-1-v2-2-a8bf1ee20792@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: 8dc5efe3d17c ("ALSA: usb-audio: Add support for Presonus Studio 1810c")
+Signed-off-by: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
+Link: https://patch.msgid.link/aPPL3tBFE_oU-JHv@ark
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/usb/mixer_s1810c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index 8609fa38058ea..bfb1225a47c50 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -730,6 +730,9 @@ static bool fw_block_mem(struct a6xx_gmu_bo *bo, const struct block_header *blk)
- 	return true;
- }
+diff --git a/sound/usb/mixer_s1810c.c b/sound/usb/mixer_s1810c.c
+index fac4bbc6b2757..65bdda0841048 100644
+--- a/sound/usb/mixer_s1810c.c
++++ b/sound/usb/mixer_s1810c.c
+@@ -181,7 +181,7 @@ snd_sc1810c_get_status_field(struct usb_device *dev,
  
-+#define NEXT_BLK(blk) \
-+	((const struct block_header *)((const char *)(blk) + sizeof(*(blk)) + (blk)->size))
-+
- static int a6xx_gmu_fw_load(struct a6xx_gmu *gmu)
- {
- 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
-@@ -760,7 +763,7 @@ static int a6xx_gmu_fw_load(struct a6xx_gmu *gmu)
- 
- 	for (blk = (const struct block_header *) fw_image->data;
- 	     (const u8*) blk < fw_image->data + fw_image->size;
--	     blk = (const struct block_header *) &blk->data[blk->size >> 2]) {
-+	     blk = NEXT_BLK(blk)) {
- 		if (blk->size == 0)
- 			continue;
- 
+ 	pkt_out.fields[SC1810C_STATE_F1_IDX] = SC1810C_SET_STATE_F1;
+ 	pkt_out.fields[SC1810C_STATE_F2_IDX] = SC1810C_SET_STATE_F2;
+-	ret = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0),
++	ret = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
+ 			      SC1810C_SET_STATE_REQ,
+ 			      SC1810C_SET_STATE_REQTYPE,
+ 			      (*seqnum), 0, &pkt_out, sizeof(pkt_out));
 -- 
 2.51.0
 
