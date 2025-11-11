@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-193801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D019C4A929
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:44 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A718C4A7FA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 15D7E4F75B0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3FA4A34C317
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAD9340D93;
-	Tue, 11 Nov 2025 01:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4011341AC6;
+	Tue, 11 Nov 2025 01:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbffjkuX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tog16TCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4A6340A73;
-	Tue, 11 Nov 2025 01:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0A1341650;
+	Tue, 11 Nov 2025 01:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824039; cv=none; b=WixWrfdtP2DSl0obJMv5DhjtR391yfYwRo1/5sPwrov/rB7CY5FZS+Dinn5duPKhy7p3P/DL232mmBJswsl6ypeZpljnzY+C+GNgObv8efTgWCEhOq10KAEXGIChj1LdeOXotmjftPc1iHDG9DOfga4sH6dmsFowovE1rzbKvGw=
+	t=1762824043; cv=none; b=FwhxlLjsL/TQ71zqr6A27vEfKMZ02qwWjbqoUgy7gVoL+V5kBpN1PUj/kQsgPgLEsCxznrxPkkevWZ/aoaTRLKehLC1pCfw2Hkcahsl6vFI3e4uA/sozgdmDXY3OG+7lpC1w3uHqjAC7RSRY68wnzByJuok1T2qqhWHETAYRYK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824039; c=relaxed/simple;
-	bh=1FWX9gCbTK9ZC0kipTUF0pWrHarCpdFUyRYqth9gVvI=;
+	s=arc-20240116; t=1762824043; c=relaxed/simple;
+	bh=xYsb7htl5kWtAzYEukzqL/1GEckej4TRpn/MN4Oa7pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D5RF+9M+sXJx0I5SL2O5ROXzoo3SClEAqk6cVx3/tAstwgMxFxdmX81TneMfsxjJV/SPZnnakQxBh0K5pI7bDtSzpB0vviKBpe8V5CJajsqsF7F7AzqfiFl7oIwxEZxcQTolmrCTimti9DhNxqI/qzOVSWhlg0w3pLkxdO+D+/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbffjkuX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DE8C113D0;
-	Tue, 11 Nov 2025 01:20:38 +0000 (UTC)
+	 MIME-Version; b=C9roldlexXs5D3hBGqmO9j3Xin7CU0sT3FSma8SI46PLluzp1ezeFKXTStsH2f++4q6pK+C9cr01vXFBuktTKsqiRgE8g2T4M4GJiB73MpnMmof1DQYNvTqc3Ygq0dd5x5blyQezBByQlYhZq3P32ZLsFDAo22x6OjtrPPZ6/Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tog16TCa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E4AC113D0;
+	Tue, 11 Nov 2025 01:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824038;
-	bh=1FWX9gCbTK9ZC0kipTUF0pWrHarCpdFUyRYqth9gVvI=;
+	s=korg; t=1762824043;
+	bh=xYsb7htl5kWtAzYEukzqL/1GEckej4TRpn/MN4Oa7pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cbffjkuXnlqv4UPIkgdo0bi5w2aWQGd7vD+L61leeK3ZYvHG8uC9hjl46RfGI1hd3
-	 6V0QWG3cxkP8mjGCxgIlALvnWp4TNtzOTwAI78Fy/73Fy24+PfHNJhPTwA2sJdjsin
-	 rzva8IYMXcpnYqxZe0IUTo4rnCp50FtkDz9rfHBM=
+	b=tog16TCazeP05ozWF8XP0wbr+q0sraUBulMXehC8DOOUN4LsskqVgbd0ifWChvuzk
+	 c/VYTuN+Ao8IjgiY9nXHUw+Q/uUYtiAGdSjv70Rm40n/C/Hjkyg/9Iv6ZCuxzuTLC0
+	 5lA4qzGJH7gh+OVAZA4++nvKI2bgZ3ukKNqPNFFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Matt Atwood <matthew.s.atwood@intel.com>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 425/849] ipv6: Add sanity checks on ipv6_devconf.rpl_seg_enabled
-Date: Tue, 11 Nov 2025 09:39:55 +0900
-Message-ID: <20251111004546.713410515@linuxfoundation.org>
+Subject: [PATCH 6.17 426/849] drm/xe: Extend Wa_22021007897 to Xe3 platforms
+Date: Tue, 11 Nov 2025 09:39:56 +0900
+Message-ID: <20251111004546.735663149@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,37 +68,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
 
-[ Upstream commit 3d95261eeb74958cd496e1875684827dc5d028cc ]
+[ Upstream commit 8d6f16f1f082881aa50ea7ae537b604dec647ed6 ]
 
-In ipv6_rpl_srh_rcv() we use min(net->ipv6.devconf_all->rpl_seg_enabled,
-idev->cnf.rpl_seg_enabled) is intended to return 0 when either value is
-zero, but if one of the values is negative it will in fact return non-zero.
+WA 22021007897 should also be applied to Graphics Versions 30.00, 30.01
+and 30.03. To make it simple, simply use the range [3000, 3003] that
+should be ok as there isn't a 3002 and if it's added, the WA list would
+need to be revisited anyway.
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://patch.msgid.link/20250901123726.1972881-3-yuehaibing@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Matt Atwood <matthew.s.atwood@intel.com>
+Cc: Gustavo Sousa <gustavo.sousa@intel.com>
+Signed-off-by: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
+Reviewed-by: Matt Atwood <matthew.s.atwood@intel.com>
+Link: https://lore.kernel.org/r/20250827-wa-22021007897-v1-1-96922eb52af4@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_wa.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index f17a5dd4789fb..40e9c336f6c55 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -7238,7 +7238,9 @@ static const struct ctl_table addrconf_sysctl[] = {
- 		.data		= &ipv6_devconf.rpl_seg_enabled,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler   = proc_dointvec_minmax,
-+		.extra1         = SYSCTL_ZERO,
-+		.extra2         = SYSCTL_ONE,
+diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
+index 535067e7fb0c9..f14bdaac674bb 100644
+--- a/drivers/gpu/drm/xe/xe_wa.c
++++ b/drivers/gpu/drm/xe/xe_wa.c
+@@ -879,6 +879,10 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
+ 			     DIS_PARTIAL_AUTOSTRIP |
+ 			     DIS_AUTOSTRIP))
  	},
- 	{
- 		.procname	= "ioam6_enabled",
++	{ XE_RTP_NAME("22021007897"),
++	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(3000, 3003), ENGINE_CLASS(RENDER)),
++	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN4, SBE_PUSH_CONSTANT_BEHIND_FIX_ENABLE))
++	},
+ };
+ 
+ static __maybe_unused const struct xe_rtp_entry oob_was[] = {
 -- 
 2.51.0
 
