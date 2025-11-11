@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-193223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD76C4A0D0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:56:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 331BEC4A0D9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:56:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FEE5188DFA4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:56:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06B19188DEBC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6501DF258;
-	Tue, 11 Nov 2025 00:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE0F24113D;
+	Tue, 11 Nov 2025 00:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jkdkh1WC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bz7KHwTK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494AF4C97;
-	Tue, 11 Nov 2025 00:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1014C97;
+	Tue, 11 Nov 2025 00:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822590; cv=none; b=LjgaE9kFgBo3sdFsxafWyDqAI6wWpMIqEeU2INznkiWVQ1B2VUnEFacRIGiYrEnDl0D9SY8whmV4H8mGG/gjcOOQmLUwoB2rtYW4I2CadKcNENI7kSl+Lk8uG3QHUbDGEv0Y7lhIW8wYniA2iQ5a34fgpOZX6F/tN2J6ONYH/U8=
+	t=1762822595; cv=none; b=jFyaIfA/NHyqUharPTN7Yscd2AS5cKiNNFY4D8qus00EVGtjka6sk1hDDD8VlYhopmhE+EZd4JEfg/54HblckfL04cBXNLgC55OqfYhLwX+Zs0Y0sY/9Wl1WS1gRAkN6S1GJwrRz5IODrg2VZtwiyAt9TQ1/PyaLPU2IuEwLz8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822590; c=relaxed/simple;
-	bh=mKM9gWClOJiDGqhk1eRvAmbpyhzNGQQv5WUtHu/XiWk=;
+	s=arc-20240116; t=1762822595; c=relaxed/simple;
+	bh=X4bHshdUPSahY1+xvfvgsQP8sE/bWi76sCWOjyQ0Rxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EkvU+WVSscDNcm2ja9sVdVYloMbV+rEMzMEfMRsjudDj476IhSem7HyUYsgYbLn5+b4XoYE0v4f+INR2uZ37S15RxCbzoif0DexSPs0wt0GGlSNv7k0D36jJCporbxWShaPt+Qjy7XVbcGoVG7xHvh36qS5+6LFw/kgrk2MGMjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jkdkh1WC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD986C2BC86;
-	Tue, 11 Nov 2025 00:56:29 +0000 (UTC)
+	 MIME-Version; b=n2vw6qNrCI3ygt2cMWQyh/uBIblES00HC1feTEcOIlIQnQciYk8VpLQ2HMc2oq8xB/PzM3LWKTze6u2gdEqDx9LF9/4FIFkYe8h8NWDmyeMTEZUKxBhaX32TIOuirOX+uoYEvxTaC5P6qSqxzI3hX9EEqvCdjPDemuOyu+2PWtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bz7KHwTK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8526DC19421;
+	Tue, 11 Nov 2025 00:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822590;
-	bh=mKM9gWClOJiDGqhk1eRvAmbpyhzNGQQv5WUtHu/XiWk=;
+	s=korg; t=1762822594;
+	bh=X4bHshdUPSahY1+xvfvgsQP8sE/bWi76sCWOjyQ0Rxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jkdkh1WCbUErTFwKF8muOPzgiFvAV71Ry1OniozVQchnou0UUoOB7i5xWDAxCkboI
-	 kr9TWV9MDgTqiQL3sEIqbqtehrQCfNdUjqCinsIEKTBr4i/9qm9feyTsUpa7IhvcOC
-	 6apQ8Y0Y1a9YgnjdM/H4UGZS4LnvBzvfkVh5iBUQ=
+	b=Bz7KHwTK9ok+Rft4GGfmVMt8witjUz4+4Po+3GJ9OFSeVWobW9/TUFUArzQOE5JQQ
+	 ayir05I8k10sWq9W2+ncC+SCucF7CvDUmnZhv4IdeOu19FkW0pIsVS+G7UCYdV11hD
+	 WuoltDUFod/mnpntdgECc4MQHAJPgj3MUVx3aw5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Heijligen <thomas.heijligen@secunet.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
-	Michael Brunner <Michael.Brunner@jumptec.com>
-Subject: [PATCH 6.12 080/565] mfd: kempld: Switch back to earlier ->init() behavior
-Date: Tue, 11 Nov 2025 09:38:56 +0900
-Message-ID: <20251111004528.771154649@linuxfoundation.org>
+	Gregory Price <gourry@gourry.net>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.12 081/565] x86/CPU/AMD: Add RDSEED fix for Zen5
+Date: Tue, 11 Nov 2025 09:38:57 +0900
+Message-ID: <20251111004528.790455929@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,72 +65,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heijligen, Thomas <thomas.heijligen@secunet.com>
+From: Gregory Price <gourry@gourry.net>
 
-commit 309e65d151ab9be1e7b01d822880cd8c4e611dff upstream.
+commit 607b9fb2ce248cc5b633c5949e0153838992c152 upstream.
 
-Commit 9e36775c22c7 ("mfd: kempld: Remove custom DMI matching code")
-removes the ability to load the driver if no matching system DMI data
-is found. Before this commit the driver could be loaded using
-alternative methods such as ACPI or `force_device_id` in the absence
-of a matching system DMI entry.
+There's an issue with RDSEED's 16-bit and 32-bit register output
+variants on Zen5 which return a random value of 0 "at a rate inconsistent
+with randomness while incorrectly signaling success (CF=1)". Search the
+web for AMD-SB-7055 for more detail.
 
-Restore this ability while keeping the refactored
-`platform_device_info` table.
+Add a fix glue which checks microcode revisions.
 
-Signed-off-by: Thomas Heijligen <thomas.heijligen@secunet.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/7d2c7e92253d851194a781720051536cca2722b8.camel@secunet.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Cc: Michael Brunner <Michael.Brunner@jumptec.com>
+  [ bp: Add microcode revisions checking, rewrite. ]
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20251018024010.4112396-1-gourry@gourry.net
+[ bp: 6.12 backport: use the alternative microcode version checking. ]
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/kempld-core.c |   32 ++++++++++++++++++--------------
- 1 file changed, 18 insertions(+), 14 deletions(-)
+ arch/x86/kernel/cpu/amd.c |   35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
---- a/drivers/mfd/kempld-core.c
-+++ b/drivers/mfd/kempld-core.c
-@@ -779,22 +779,26 @@ MODULE_DEVICE_TABLE(dmi, kempld_dmi_tabl
- static int __init kempld_init(void)
- {
- 	const struct dmi_system_id *id;
--	int ret = -ENODEV;
- 
--	for (id = dmi_first_match(kempld_dmi_table); id; id = dmi_first_match(id + 1)) {
--		/* Check, if user asked for the exact device ID match */
--		if (force_device_id[0] && !strstr(id->ident, force_device_id))
--			continue;
--
--		ret = kempld_create_platform_device(&kempld_platform_data_generic);
--		if (ret)
--			continue;
--
--		break;
-+	/*
-+	 * This custom DMI iteration allows the driver to be initialized in three ways:
-+	 * - When a forced_device_id string matches any ident in the kempld_dmi_table,
-+	 *   regardless of whether the DMI device is present in the system dmi table.
-+	 * - When a matching entry is present in the DMI system tabe.
-+	 * - Through alternative mechanisms like ACPI.
-+	 */
-+	if (force_device_id[0]) {
-+		for (id = kempld_dmi_table; id->matches[0].slot != DMI_NONE; id++)
-+			if (strstr(id->ident, force_device_id))
-+				if (!kempld_create_platform_device(&kempld_platform_data_generic))
-+					break;
-+		if (id->matches[0].slot == DMI_NONE)
-+			return -ENODEV;
-+	} else {
-+		for (id = dmi_first_match(kempld_dmi_table); id; id = dmi_first_match(id+1))
-+			if (kempld_create_platform_device(&kempld_platform_data_generic))
-+				break;
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1018,8 +1018,43 @@ static void init_amd_zen4(struct cpuinfo
  	}
--	if (ret)
--		return ret;
--
- 	return platform_driver_register(&kempld_driver);
  }
  
++static bool check_rdseed_microcode(void)
++{
++	struct cpuinfo_x86 *c = &boot_cpu_data;
++	union zen_patch_rev p;
++	u32 min_rev = 0;
++
++	p.ext_fam	= c->x86 - 0xf;
++	p.model		= c->x86_model;
++	p.ext_model	= c->x86_model >> 4;
++	p.stepping	= c->x86_stepping;
++	/* reserved bits are expected to be 0 in test below */
++	p.__reserved	= 0;
++
++	if (cpu_has(c, X86_FEATURE_ZEN5)) {
++		switch (p.ucode_rev >> 8) {
++		case 0xb0021:	min_rev = 0xb00215a; break;
++		case 0xb1010:	min_rev = 0xb101054; break;
++		default:
++			pr_debug("%s: ucode_rev: 0x%x, current revision: 0x%x\n",
++				 __func__, p.ucode_rev, c->microcode);
++			return false;
++		}
++	}
++
++	if (!min_rev)
++		return false;
++
++	return c->microcode >= min_rev;
++}
++
+ static void init_amd_zen5(struct cpuinfo_x86 *c)
+ {
++	if (!check_rdseed_microcode()) {
++		clear_cpu_cap(c, X86_FEATURE_RDSEED);
++		msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
++		pr_emerg_once("RDSEED32 is broken. Disabling the corresponding CPUID bit.\n");
++	}
+ }
+ 
+ static void init_amd(struct cpuinfo_x86 *c)
 
 
 
