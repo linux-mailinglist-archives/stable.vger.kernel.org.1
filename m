@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD8A2C4AAAE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CEEC4B127
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:57:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A94084F665B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09F313B3217
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311C9346A1E;
-	Tue, 11 Nov 2025 01:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CBA253951;
+	Tue, 11 Nov 2025 01:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNJvGH2v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="weAkyNnR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E97346A16;
-	Tue, 11 Nov 2025 01:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76432857F0;
+	Tue, 11 Nov 2025 01:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824214; cv=none; b=goRTF7GDEaVDloPEOAQfSAZWIwBYPDc4O/q6xyVdJslwFt2Q5NDSek7az0if1TEcz/EHNUUQRkO6f28PL3QgqRQ1HnMKXcF/Gwagk8EnyDQR1eaW+ikPCBEKhwCODLu1JqztnXF43kKaee+Wx1Cm8VCkxfPWmNpFpw4j0xBRtTQ=
+	t=1762825190; cv=none; b=syUIrwoY8d9JphjtPtuT9gB0zLjJhqCLm39jJFzUiSd0w8JOs9N8x3Gi+f0NpOPbYrmBmwhirSsmRUUhPT3QxfmbyY52Jk6j4/BbUFaquv0F5UQKMC5ajawLPUY+BP1Qrt8xvmVASKRFCE5ciLYFJBRTgPiXVcpR+fH41VI7QOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824214; c=relaxed/simple;
-	bh=18vP2UBUI1oZqlSVcyaP71FNlsh1scRvejeIbAama+8=;
+	s=arc-20240116; t=1762825190; c=relaxed/simple;
+	bh=AbZBVSo3tr4WDeDZSn/U7eNcfemDE24+Skdh10lmwBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQOkV1tuHDHTKdrp4C62YSuGfqBnLqmrWf1l8QS0eNS3RUHi1NXpAUp/VAHrRJWhKTp3Nu4NKPt8Wz7y2aoMqWMXJE/EVjetbKT9YYkKLj/W6+66svWunbNb5VmbAdMA6xijq9FikfK/B2p5WOxKqm1j0s9cUM6GpEOnBzx2CZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNJvGH2v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72348C116D0;
-	Tue, 11 Nov 2025 01:23:34 +0000 (UTC)
+	 MIME-Version; b=bwUUFI6+JPllO2AiPNS8LE9m7Zlpk2J0Rn6cqYBt0yfXaa0OWgh5px4VaDRvQVJb/FTIFCRtU4WCb1dnrbZyEIf0rjz0JvFlJuEu2xE7g6YIQOksC385wTpIXvjP0iNpiaQo8HC0AfXKJSvplmMMoJwbi72eUshzPlTi5dB6N+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=weAkyNnR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66555C116B1;
+	Tue, 11 Nov 2025 01:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824214;
-	bh=18vP2UBUI1oZqlSVcyaP71FNlsh1scRvejeIbAama+8=;
+	s=korg; t=1762825190;
+	bh=AbZBVSo3tr4WDeDZSn/U7eNcfemDE24+Skdh10lmwBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hNJvGH2vbdGdxGtKutQZuHbabqNLJ+fi85Iug3xasY1MsoIz0SDx5gX0DHT8yb01G
-	 TBgsHd8pKAAuqjOR7i+5rRcykUy/VqqAwuiY1jadQwv4xCrItRQeYo3xpSfZzl7Czo
-	 7EIozTDHFrHyoxU8mchwHafC9FWO8pkrbu0OOhxY=
+	b=weAkyNnRiK21/A28CpfAR42MEhlraxQE0vMrDSSpvfyyO3SheudWOXGg/IUqfYJtg
+	 x1IQolW3Vuy575KF5BOTj/fMW2Rsb6RmZ/yS1gciY+6tCqr8E0y+sPAWNVC/vSbcw8
+	 69YCmgRBBZ0uj+SdMFmuFObgg+2SSODDIjsCInUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	"Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nuno Das Neves <nunodasneves@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 412/565] net: dsa: microchip: Set SPI as bus interface during reset for KSZ8463
+Subject: [PATCH 6.17 698/849] clocksource: hyper-v: Skip unnecessary checks for the root partition
 Date: Tue, 11 Nov 2025 09:44:28 +0900
-Message-ID: <20251111004536.137622191@linuxfoundation.org>
+Message-ID: <20251111004553.308923426@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+From: Wei Liu <wei.liu@kernel.org>
 
-[ Upstream commit a0b977a3d19368b235f2a6c06e800fb25452029b ]
+[ Upstream commit 47691ced158ab3a7ce2189b857b19c0c99a9aa80 ]
 
-At reset, the KSZ8463 uses a strap-based configuration to set SPI as
-bus interface. SPI is the only bus supported by the driver. If the
-required pull-ups/pull-downs are missing (by mistake or by design to
-save power) the pins may float and the configuration can go wrong
-preventing any communication with the switch.
+The HV_ACCESS_TSC_INVARIANT bit is always zero when Linux runs as the
+root partition. The root partition will see directly what the hardware
+provides.
 
-Introduce a ksz8463_configure_straps_spi() function called during the
-device reset. It relies on the 'straps-rxd-gpios' OF property and the
-'reset' pinmux configuration to enforce SPI as bus interface.
+The old logic in ms_hyperv_init_platform caused the native TSC clock
+source to be incorrectly marked as unstable on x86. Fix it.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
-Link: https://patch.msgid.link/20250918-ksz-strap-pins-v3-3-16662e881728@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Skip the unnecessary checks in code for the root partition. Add one
+extra comment in code to clarify the behavior.
+
+Reviewed-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 45 ++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+ arch/x86/kernel/cpu/mshyperv.c     | 11 ++++++++++-
+ drivers/clocksource/hyperv_timer.c | 10 +++++++++-
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 0a34fd6887fc0..1da2310442fc5 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -23,6 +23,7 @@
- #include <linux/of_mdio.h>
- #include <linux/of_net.h>
- #include <linux/micrel_phy.h>
-+#include <linux/pinctrl/consumer.h>
- #include <net/dsa.h>
- #include <net/ieee8021q.h>
- #include <net/pkt_cls.h>
-@@ -4715,6 +4716,38 @@ static int ksz_parse_drive_strength(struct ksz_device *dev)
- 	return 0;
- }
+diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+index c78f860419d69..25773af116bc4 100644
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -565,6 +565,11 @@ static void __init ms_hyperv_init_platform(void)
+ 	machine_ops.crash_shutdown = hv_machine_crash_shutdown;
+ #endif
+ #endif
++	/*
++	 * HV_ACCESS_TSC_INVARIANT is always zero for the root partition. Root
++	 * partition doesn't need to write to synthetic MSR to enable invariant
++	 * TSC feature. It sees what the hardware provides.
++	 */
+ 	if (ms_hyperv.features & HV_ACCESS_TSC_INVARIANT) {
+ 		/*
+ 		 * Writing to synthetic MSR 0x40000118 updates/changes the
+@@ -636,8 +641,12 @@ static void __init ms_hyperv_init_platform(void)
+ 	 * TSC should be marked as unstable only after Hyper-V
+ 	 * clocksource has been initialized. This ensures that the
+ 	 * stability of the sched_clock is not altered.
++	 *
++	 * HV_ACCESS_TSC_INVARIANT is always zero for the root partition. No
++	 * need to check for it.
+ 	 */
+-	if (!(ms_hyperv.features & HV_ACCESS_TSC_INVARIANT))
++	if (!hv_root_partition() &&
++	    !(ms_hyperv.features & HV_ACCESS_TSC_INVARIANT))
+ 		mark_tsc_unstable("running on Hyper-V");
  
-+static int ksz8463_configure_straps_spi(struct ksz_device *dev)
-+{
-+	struct pinctrl *pinctrl;
-+	struct gpio_desc *rxd0;
-+	struct gpio_desc *rxd1;
-+
-+	rxd0 = devm_gpiod_get_index_optional(dev->dev, "straps-rxd", 0, GPIOD_OUT_LOW);
-+	if (IS_ERR(rxd0))
-+		return PTR_ERR(rxd0);
-+
-+	rxd1 = devm_gpiod_get_index_optional(dev->dev, "straps-rxd", 1, GPIOD_OUT_HIGH);
-+	if (IS_ERR(rxd1))
-+		return PTR_ERR(rxd1);
-+
-+	if (!rxd0 && !rxd1)
-+		return 0;
-+
-+	if ((rxd0 && !rxd1) || (rxd1 && !rxd0))
-+		return -EINVAL;
-+
-+	pinctrl = devm_pinctrl_get_select(dev->dev, "reset");
-+	if (IS_ERR(pinctrl))
-+		return PTR_ERR(pinctrl);
-+
-+	return 0;
-+}
-+
-+static int ksz8463_release_straps_spi(struct ksz_device *dev)
-+{
-+	return pinctrl_select_default_state(dev->dev);
-+}
-+
- int ksz_switch_register(struct ksz_device *dev)
- {
- 	const struct ksz_chip_data *info;
-@@ -4730,10 +4763,22 @@ int ksz_switch_register(struct ksz_device *dev)
- 		return PTR_ERR(dev->reset_gpio);
+ 	hardlockup_detector_disable();
+diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
+index 2edc13ca184e0..10356d4ec55c3 100644
+--- a/drivers/clocksource/hyperv_timer.c
++++ b/drivers/clocksource/hyperv_timer.c
+@@ -549,14 +549,22 @@ static void __init hv_init_tsc_clocksource(void)
+ 	union hv_reference_tsc_msr tsc_msr;
  
- 	if (dev->reset_gpio) {
-+		if (of_device_is_compatible(dev->dev->of_node, "microchip,ksz8463")) {
-+			ret = ksz8463_configure_straps_spi(dev);
-+			if (ret)
-+				return ret;
-+		}
-+
- 		gpiod_set_value_cansleep(dev->reset_gpio, 1);
- 		usleep_range(10000, 12000);
- 		gpiod_set_value_cansleep(dev->reset_gpio, 0);
- 		msleep(100);
-+
-+		if (of_device_is_compatible(dev->dev->of_node, "microchip,ksz8463")) {
-+			ret = ksz8463_release_straps_spi(dev);
-+			if (ret)
-+				return ret;
-+		}
+ 	/*
++	 * When running as a guest partition:
++	 *
+ 	 * If Hyper-V offers TSC_INVARIANT, then the virtualized TSC correctly
+ 	 * handles frequency and offset changes due to live migration,
+ 	 * pause/resume, and other VM management operations.  So lower the
+ 	 * Hyper-V Reference TSC rating, causing the generic TSC to be used.
+ 	 * TSC_INVARIANT is not offered on ARM64, so the Hyper-V Reference
+ 	 * TSC will be preferred over the virtualized ARM64 arch counter.
++	 *
++	 * When running as the root partition:
++	 *
++	 * There is no HV_ACCESS_TSC_INVARIANT feature. Always lower the rating
++	 * of the Hyper-V Reference TSC.
+ 	 */
+-	if (ms_hyperv.features & HV_ACCESS_TSC_INVARIANT) {
++	if ((ms_hyperv.features & HV_ACCESS_TSC_INVARIANT) ||
++	    hv_root_partition()) {
+ 		hyperv_cs_tsc.rating = 250;
+ 		hyperv_cs_msr.rating = 245;
  	}
- 
- 	mutex_init(&dev->dev_mutex);
 -- 
 2.51.0
 
