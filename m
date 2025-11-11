@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C76C4AA87
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65541C4A2FD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:06:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8983B1893F56
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CDE654F72B6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9937B33B6C4;
-	Tue, 11 Nov 2025 01:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E5E24E4A1;
+	Tue, 11 Nov 2025 01:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqxRDRkS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqV6fQI1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AE125CC40;
-	Tue, 11 Nov 2025 01:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3AE1F5F6;
+	Tue, 11 Nov 2025 01:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823982; cv=none; b=urfetqYHeqbZalZjkxz4ISVTqcD/3OcS/cy+aP6gCBsA/ZNUOA0c4wop0GDiBLQy2U3DOcxGgY1r5b5tylIPfqqV1OT/zpfqkeI3gRj2A7fe7Px0iaPb+B09QyTyqzaifN5vSj5S26uTwf/SPMD1uO4pXlpasxRco4l7aBG56XI=
+	t=1762822892; cv=none; b=TB2l0A6OFMsm7EUrUn3gbpiR5yzPZS1xvS+E8PGiJs9OyWduNZIRofP6S84ZKTK+UbgjFR9ideVHYKdYE5BCQWwJXQMfXG/54/LspzRsaPWCl6pC6+gdRCYZxFtRtaSIZVQog43aGKv2EC6GCf+6LBOSk2SHVruof34WG+fApEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823982; c=relaxed/simple;
-	bh=O8Q3dq5SDOxo7T73ITyLjaJ5/jKIMMIkxOzGDQ36rh0=;
+	s=arc-20240116; t=1762822892; c=relaxed/simple;
+	bh=VcF/N0QpWKMxBb3hGEWSDOSZqYUJ1dYBcwZd3IlatM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9O0g+FlLRHcW+QhuLTJmvvxouaDf3w/HgqUCYAWbaSZBY/de9Ul44dYgK3K4+15FvLlc9J41fsm8CSQeso/+O4myZMccxSnkUmik8uX11r91FLgl692fnJKHc1H9KWjQ6m1A7yWxN8LTSvZD8XyjICez34v7Qv8lJMBinF9COo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqxRDRkS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73A8C113D0;
-	Tue, 11 Nov 2025 01:19:41 +0000 (UTC)
+	 MIME-Version; b=cfEzzLTzxSHTbXasYAk3lNBbnadQcHU6HTKgh5iWzrTUeSmY2CgfS1o8lcrMB6mt3hExrUFvJJA+cGrq8jd9F3vOcY54srip+IMs2ee9efRSG7efZF5ciGf6fKYAq3O+HkU/sK4iJesB1i7H9EdoPfslVOhkE2GfmW+Eg0S9MOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqV6fQI1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD450C19425;
+	Tue, 11 Nov 2025 01:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823982;
-	bh=O8Q3dq5SDOxo7T73ITyLjaJ5/jKIMMIkxOzGDQ36rh0=;
+	s=korg; t=1762822892;
+	bh=VcF/N0QpWKMxBb3hGEWSDOSZqYUJ1dYBcwZd3IlatM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VqxRDRkSlAXCa6wJzefyFXCVmStqifWltlBAmF2k9mESCa6pMMKquGTUG8HTl9T00
-	 YK7T2c85jTFa7u31g90QqSSj22uOXllmb3EDbXAvtsCqPn74Vzw/LzvLfZVEGRtIJ3
-	 DGsorPteQainSop4d9nyhQ9MYN2c2zirEQ5cGzw8=
+	b=pqV6fQI1BSzQdvcq1uuNoDX/YCBy+82w0JQT/wHQyA54GuIil40GdzMtkrpIIjR9B
+	 M1C0y4M+pakiQ32eplqdDL71Mrf3sQOwAhzBah88uhgCD3itH7dlFpNOJqm73AXkBS
+	 Z3VKfQBrMj0ULCM8t0nfRt77VxsrMdLh58qBEguw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Andreatta <thomas.andreatta2000@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 414/849] dmaengine: sh: setup_xref error handling
+Subject: [PATCH 6.12 128/565] soc/tegra: fuse: Add Tegra114 nvmem cells and fuse lookups
 Date: Tue, 11 Nov 2025 09:39:44 +0900
-Message-ID: <20251111004546.448409592@linuxfoundation.org>
+Message-ID: <20251111004529.832044903@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +63,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Andreatta <thomasandreatta2000@gmail.com>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
 
-[ Upstream commit d9a3e9929452780df16f3414f0d59b5f69d058cf ]
+[ Upstream commit b9c01adedf38c69abb725a60a05305ef70dbce03 ]
 
-This patch modifies the type of setup_xref from void to int and handles
-errors since the function can fail.
+Add missing Tegra114 nvmem cells and fuse lookups which were added for
+Tegra124+ but omitted for Tegra114.
 
-`setup_xref` now returns the (eventual) error from
-`dmae_set_dmars`|`dmae_set_chcr`, while `shdma_tx_submit` handles the
-result, removing the chunks from the queue and marking PM as idle in
-case of an error.
-
-Signed-off-by: Thomas Andreatta <thomas.andreatta2000@gmail.com>
-Link: https://lore.kernel.org/r/20250827152442.90962-1-thomas.andreatta2000@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/sh/shdma-base.c | 25 +++++++++++++++++++------
- drivers/dma/sh/shdmac.c     | 17 +++++++++++++----
- include/linux/shdma-base.h  |  2 +-
- 3 files changed, 33 insertions(+), 11 deletions(-)
+ drivers/soc/tegra/fuse/fuse-tegra30.c | 122 ++++++++++++++++++++++++++
+ 1 file changed, 122 insertions(+)
 
-diff --git a/drivers/dma/sh/shdma-base.c b/drivers/dma/sh/shdma-base.c
-index 6b4fce453c85c..834741adadaad 100644
---- a/drivers/dma/sh/shdma-base.c
-+++ b/drivers/dma/sh/shdma-base.c
-@@ -129,12 +129,25 @@ static dma_cookie_t shdma_tx_submit(struct dma_async_tx_descriptor *tx)
- 			const struct shdma_ops *ops = sdev->ops;
- 			dev_dbg(schan->dev, "Bring up channel %d\n",
- 				schan->id);
--			/*
--			 * TODO: .xfer_setup() might fail on some platforms.
--			 * Make it int then, on error remove chunks from the
--			 * queue again
--			 */
--			ops->setup_xfer(schan, schan->slave_id);
-+
-+			ret = ops->setup_xfer(schan, schan->slave_id);
-+			if (ret < 0) {
-+				dev_err(schan->dev, "setup_xfer failed: %d\n", ret);
-+
-+				/* Remove chunks from the queue and mark them as idle */
-+				list_for_each_entry_safe(chunk, c, &schan->ld_queue, node) {
-+					if (chunk->cookie == cookie) {
-+						chunk->mark = DESC_IDLE;
-+						list_move(&chunk->node, &schan->ld_free);
-+					}
-+				}
-+
-+				schan->pm_state = SHDMA_PM_ESTABLISHED;
-+				ret = pm_runtime_put(schan->dev);
-+
-+				spin_unlock_irq(&schan->chan_lock);
-+				return ret;
-+			}
+diff --git a/drivers/soc/tegra/fuse/fuse-tegra30.c b/drivers/soc/tegra/fuse/fuse-tegra30.c
+index e24ab5f7d2bf1..524fa1b0cd3d6 100644
+--- a/drivers/soc/tegra/fuse/fuse-tegra30.c
++++ b/drivers/soc/tegra/fuse/fuse-tegra30.c
+@@ -117,6 +117,124 @@ const struct tegra_fuse_soc tegra30_fuse_soc = {
+ #endif
  
- 			if (schan->pm_state == SHDMA_PM_PENDING)
- 				shdma_chan_xfer_ld_queue(schan);
-diff --git a/drivers/dma/sh/shdmac.c b/drivers/dma/sh/shdmac.c
-index 093e449e19eee..603e15102e45e 100644
---- a/drivers/dma/sh/shdmac.c
-+++ b/drivers/dma/sh/shdmac.c
-@@ -300,21 +300,30 @@ static bool sh_dmae_channel_busy(struct shdma_chan *schan)
- 	return dmae_is_busy(sh_chan);
- }
- 
--static void sh_dmae_setup_xfer(struct shdma_chan *schan,
--			       int slave_id)
-+static int sh_dmae_setup_xfer(struct shdma_chan *schan, int slave_id)
- {
- 	struct sh_dmae_chan *sh_chan = container_of(schan, struct sh_dmae_chan,
- 						    shdma_chan);
- 
-+	int ret = 0;
- 	if (slave_id >= 0) {
- 		const struct sh_dmae_slave_config *cfg =
- 			sh_chan->config;
- 
--		dmae_set_dmars(sh_chan, cfg->mid_rid);
--		dmae_set_chcr(sh_chan, cfg->chcr);
-+		ret = dmae_set_dmars(sh_chan, cfg->mid_rid);
-+		if (ret < 0)
-+			goto END;
+ #ifdef CONFIG_ARCH_TEGRA_114_SOC
++static const struct nvmem_cell_info tegra114_fuse_cells[] = {
++	{
++		.name = "tsensor-cpu1",
++		.offset = 0x084,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-cpu2",
++		.offset = 0x088,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-common",
++		.offset = 0x08c,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-cpu0",
++		.offset = 0x098,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "xusb-pad-calibration",
++		.offset = 0x0f0,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-cpu3",
++		.offset = 0x12c,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-gpu",
++		.offset = 0x154,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-mem0",
++		.offset = 0x158,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-mem1",
++		.offset = 0x15c,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-pllx",
++		.offset = 0x160,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	},
++};
 +
-+		ret = dmae_set_chcr(sh_chan, cfg->chcr);
-+		if (ret < 0)
-+			goto END;
++static const struct nvmem_cell_lookup tegra114_fuse_lookups[] = {
++	{
++		.nvmem_name = "fuse",
++		.cell_name = "xusb-pad-calibration",
++		.dev_id = "7009f000.padctl",
++		.con_id = "calibration",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-common",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "common",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-cpu0",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "cpu0",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-cpu1",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "cpu1",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-cpu2",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "cpu2",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-cpu3",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "cpu3",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-mem0",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "mem0",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-mem1",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "mem1",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-gpu",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "gpu",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-pllx",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "pllx",
++	},
++};
 +
- 	} else {
- 		dmae_init(sh_chan);
- 	}
-+
-+END:
-+	return ret;
- }
- 
- /*
-diff --git a/include/linux/shdma-base.h b/include/linux/shdma-base.h
-index 6dfd05ef5c2d9..03ba4dab2ef73 100644
---- a/include/linux/shdma-base.h
-+++ b/include/linux/shdma-base.h
-@@ -96,7 +96,7 @@ struct shdma_ops {
- 	int (*desc_setup)(struct shdma_chan *, struct shdma_desc *,
- 			  dma_addr_t, dma_addr_t, size_t *);
- 	int (*set_slave)(struct shdma_chan *, int, dma_addr_t, bool);
--	void (*setup_xfer)(struct shdma_chan *, int);
-+	int (*setup_xfer)(struct shdma_chan *, int);
- 	void (*start_xfer)(struct shdma_chan *, struct shdma_desc *);
- 	struct shdma_desc *(*embedded_desc)(void *, int);
- 	bool (*chan_irq)(struct shdma_chan *, int);
+ static const struct tegra_fuse_info tegra114_fuse_info = {
+ 	.read = tegra30_fuse_read,
+ 	.size = 0x2a0,
+@@ -127,6 +245,10 @@ const struct tegra_fuse_soc tegra114_fuse_soc = {
+ 	.init = tegra30_fuse_init,
+ 	.speedo_init = tegra114_init_speedo_data,
+ 	.info = &tegra114_fuse_info,
++	.lookups = tegra114_fuse_lookups,
++	.num_lookups = ARRAY_SIZE(tegra114_fuse_lookups),
++	.cells = tegra114_fuse_cells,
++	.num_cells = ARRAY_SIZE(tegra114_fuse_cells),
+ 	.soc_attr_group = &tegra_soc_attr_group,
+ 	.clk_suspend_on = false,
+ };
 -- 
 2.51.0
 
