@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-194250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69434C4B0E5
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:56:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB6CC4AB3E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84BD13B538B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D0A718902B9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDD4274FE3;
-	Tue, 11 Nov 2025 01:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238F53451A6;
+	Tue, 11 Nov 2025 01:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvcscChu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaZTuEz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF681C28E;
-	Tue, 11 Nov 2025 01:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0592DD60E;
+	Tue, 11 Nov 2025 01:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825158; cv=none; b=htcc+6v0mkQBRhhnkGjppM9NimCuU1Qf5G2SIzlEOXM8sv5f9QbXfcxHhiTBjEl1Zn134EJ6unrRtZ3GQCiTN4BfNx0S/WC/lWUg6eyOYcNovd61ySKwME5XaZCPpdcz6k1tC7Qx+tdRkxBvLwsKOnVGoLf1w42Osis4W1f00V8=
+	t=1762824162; cv=none; b=H0u0r78ZpHmpSv9blvDVuxGtuXuU0zomVxl0QZweD9avCUyGWiDpmvxLes9VhPkSKIZNqea552F4/56q8GK7GXN53R2DA0PBLtTonjH8K9VdvSmAsFG+RR3K2zyh3gi1rrrV5g49vX5K52nghBQ0hB22iG1aJ8Qfu7C6Jl3MmGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825158; c=relaxed/simple;
-	bh=Y6GEKy8nhdsCfcN13R5xfWoBFacfinpS4k78r9kRnZE=;
+	s=arc-20240116; t=1762824162; c=relaxed/simple;
+	bh=davBmLpiSr4JyGa4YvYwDvkT6lnLhkAxZsOJu6uAXDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIotIjDI3WXQcxMPTOFzY40LrEZTvcQdTrt44pbHaEn3HbnaKLMImu7YgeflrAFfOKDzkawJpQdZ1tbS5Oq5+dP7IlQSJevoa87TMoLjOLyLneJS2FucboxG5pWYwWjcXXfh3Xb6+sINtDXn86WeHy8YzF6mrpJ5WTE8lnhIyKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvcscChu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4ED6C4CEF5;
-	Tue, 11 Nov 2025 01:39:17 +0000 (UTC)
+	 MIME-Version; b=dZG8Xd1Iws5irtAthCuqM/dffBGpW2rcDRjVIRjrP4ESjzJbqMwE91zOSvYuY+jk03IypUWID7biI8r+sRiPKcuJ7uHvC/pQi6ZG+RZ+syolk0k/6SbgHmcR7z9CDJhdIKcCoj6WKPc/H9J8hk6Zm/hFo5+69SKzhWmQ3FU1fOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaZTuEz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B104C19421;
+	Tue, 11 Nov 2025 01:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825158;
-	bh=Y6GEKy8nhdsCfcN13R5xfWoBFacfinpS4k78r9kRnZE=;
+	s=korg; t=1762824162;
+	bh=davBmLpiSr4JyGa4YvYwDvkT6lnLhkAxZsOJu6uAXDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JvcscChu7oQ3+j13bbwDT2NRty4xbU8A4NUDv7RwCgJodPhxVGxqZ2CATG8h/eRXp
-	 nCdBcefVZMAzZpYHkww9ih6ka6fRt5GlN4s1GxpdWFt+Dx8GoAyg4wYiDnz8lLZr8n
-	 SEDuyZ9hjK/dY02dSw4HmZ2O+9O6uT7otPsYps1o=
+	b=IaZTuEz3DZoiPXJzEqrQTyI6PKmn9UEBCXMxLCKhNcqctyErtdab45Iw61Y9GtHSA
+	 dpuHbh8agE75ZRUEwtko94wjFA5y6BxAyITDoUsG/2TwEmOLTHMldPLqnVdTRp4FnH
+	 Vqfx+K4ZidifVajsML22OTWdZPOrpuaoYQlwIRek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 685/849] RDMA/irdma: Remove unused struct irdma_cq fields
+Subject: [PATCH 6.12 399/565] wifi: mac80211: Track NAN interface start/stop
 Date: Tue, 11 Nov 2025 09:44:15 +0900
-Message-ID: <20251111004552.984386120@linuxfoundation.org>
+Message-ID: <20251111004535.848112330@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +64,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 880245fd029a8f8ee8fd557c2681d077c1b1a959 ]
+[ Upstream commit 8f79d2f13dd3b0af00a5303d4ff913767dd7684e ]
 
-These fields were set but not used anywhere, so remove them.
+In case that NAN is started, mark the device as non idle,
+and set LED triggering similar to scan and ROC. Set the
+device to idle once NAN is stopped.
 
-Link: https://patch.msgid.link/r/20250923142128.943240-1-jmoroni@google.com
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: 5575b7646b94 ("RDMA/irdma: Set irdma_cq cq_num field during CQ create")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250908140015.2711d62fce22.I9b9f826490e50967a66788d713b0eba985879873@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 3 ---
- drivers/infiniband/hw/irdma/verbs.h | 6 ------
- 2 files changed, 9 deletions(-)
+ net/mac80211/cfg.c         | 20 +++++++++++++++++---
+ net/mac80211/ieee80211_i.h |  2 ++
+ net/mac80211/iface.c       |  9 +++++++++
+ 3 files changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index da5a41b275d83..105ffb1764b80 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2116,8 +2116,6 @@ static int irdma_create_cq(struct ib_cq *ibcq,
- 			goto cq_free_rsrc;
- 		}
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 2890dde9b3bf4..2df4df75f1957 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -285,6 +285,9 @@ static int ieee80211_start_nan(struct wiphy *wiphy,
  
--		iwcq->iwpbl = iwpbl;
--		iwcq->cq_mem_size = 0;
- 		cqmr = &iwpbl->cq_mr;
+ 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
  
- 		if (rf->sc_dev.hw_attrs.uk_attrs.feature_flags &
-@@ -2132,7 +2130,6 @@ static int irdma_create_cq(struct ib_cq *ibcq,
- 				err_code = -EPROTO;
- 				goto cq_free_rsrc;
- 			}
--			iwcq->iwpbl_shadow = iwpbl_shadow;
- 			cqmr_shadow = &iwpbl_shadow->cq_mr;
- 			info.shadow_area_pa = cqmr_shadow->cq_pbl.addr;
- 			cqmr->split = true;
-diff --git a/drivers/infiniband/hw/irdma/verbs.h b/drivers/infiniband/hw/irdma/verbs.h
-index cfa140b36395a..4381e5dbe782a 100644
---- a/drivers/infiniband/hw/irdma/verbs.h
-+++ b/drivers/infiniband/hw/irdma/verbs.h
-@@ -115,21 +115,15 @@ struct irdma_mr {
- struct irdma_cq {
- 	struct ib_cq ibcq;
- 	struct irdma_sc_cq sc_cq;
--	u16 cq_head;
--	u16 cq_size;
- 	u16 cq_num;
- 	bool user_mode;
- 	atomic_t armed;
- 	enum irdma_cmpl_notify last_notify;
--	u32 polled_cmpls;
--	u32 cq_mem_size;
- 	struct irdma_dma_mem kmem;
- 	struct irdma_dma_mem kmem_shadow;
- 	struct completion free_cq;
- 	refcount_t refcnt;
- 	spinlock_t lock; /* for poll cq */
--	struct irdma_pbl *iwpbl;
--	struct irdma_pbl *iwpbl_shadow;
- 	struct list_head resize_list;
- 	struct irdma_cq_poll_info cur_cqe;
- 	struct list_head cmpl_generated;
++	if (sdata->u.nan.started)
++		return -EALREADY;
++
+ 	ret = ieee80211_check_combinations(sdata, NULL, 0, 0, -1);
+ 	if (ret < 0)
+ 		return ret;
+@@ -294,12 +297,18 @@ static int ieee80211_start_nan(struct wiphy *wiphy,
+ 		return ret;
+ 
+ 	ret = drv_start_nan(sdata->local, sdata, conf);
+-	if (ret)
++	if (ret) {
+ 		ieee80211_sdata_stop(sdata);
++		return ret;
++	}
+ 
+-	sdata->u.nan.conf = *conf;
++	sdata->u.nan.started = true;
++	ieee80211_recalc_idle(sdata->local);
+ 
+-	return ret;
++	sdata->u.nan.conf.master_pref = conf->master_pref;
++	sdata->u.nan.conf.bands = conf->bands;
++
++	return 0;
+ }
+ 
+ static void ieee80211_stop_nan(struct wiphy *wiphy,
+@@ -307,8 +316,13 @@ static void ieee80211_stop_nan(struct wiphy *wiphy,
+ {
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
+ 
++	if (!sdata->u.nan.started)
++		return;
++
+ 	drv_stop_nan(sdata->local, sdata);
++	sdata->u.nan.started = false;
+ 	ieee80211_sdata_stop(sdata);
++	ieee80211_recalc_idle(sdata->local);
+ }
+ 
+ static int ieee80211_nan_change_conf(struct wiphy *wiphy,
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 2f017dbbcb975..f0ac51cf66e61 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -949,11 +949,13 @@ struct ieee80211_if_mntr {
+  * struct ieee80211_if_nan - NAN state
+  *
+  * @conf: current NAN configuration
++ * @started: true iff NAN is started
+  * @func_lock: lock for @func_inst_ids
+  * @function_inst_ids: a bitmap of available instance_id's
+  */
+ struct ieee80211_if_nan {
+ 	struct cfg80211_nan_conf conf;
++	bool started;
+ 
+ 	/* protects function_inst_ids */
+ 	spinlock_t func_lock;
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 209d6ffa8e426..69a8a2c21d8df 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -108,6 +108,7 @@ static u32 __ieee80211_recalc_idle(struct ieee80211_local *local,
+ {
+ 	bool working, scanning, active;
+ 	unsigned int led_trig_start = 0, led_trig_stop = 0;
++	struct ieee80211_sub_if_data *iter;
+ 
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+ 
+@@ -118,6 +119,14 @@ static u32 __ieee80211_recalc_idle(struct ieee80211_local *local,
+ 	working = !local->ops->remain_on_channel &&
+ 		  !list_empty(&local->roc_list);
+ 
++	list_for_each_entry(iter, &local->interfaces, list) {
++		if (iter->vif.type == NL80211_IFTYPE_NAN &&
++		    iter->u.nan.started) {
++			working = true;
++			break;
++		}
++	}
++
+ 	scanning = test_bit(SCAN_SW_SCANNING, &local->scanning) ||
+ 		   test_bit(SCAN_ONCHANNEL_SCANNING, &local->scanning);
+ 
 -- 
 2.51.0
 
