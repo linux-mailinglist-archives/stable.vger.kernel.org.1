@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-193143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6400EC49FEA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A744C4A0D6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A17713A3CEA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 909404F0450
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCA0214210;
-	Tue, 11 Nov 2025 00:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0FC244693;
+	Tue, 11 Nov 2025 00:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPOc9HaJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvRFj63D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB904C97;
-	Tue, 11 Nov 2025 00:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4B34C97;
+	Tue, 11 Nov 2025 00:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822400; cv=none; b=QYmK83YmQFWc8gVclEGlCWq4rs5nNBKlb9DGTRW154Lxpmk5+gFmpAakHBoLGyZ/ZhzwcL/y5GvGVK0cdqU43i3zsmYrx9VXLzv5mCKlP/xFsqc/QCrEJfDMmO13Aj1m62cOwKJ/7SfPOghLzP1BuLYGtxTFPM6vWsVcfUnJul8=
+	t=1762822404; cv=none; b=UasS5LyKf2Wu9IGhNeV1U/MfAQfGk916wPIuW7tJpLp+ltS0U1ELiHXOKDu2/61EfowG/XAqY4la8dDznPdohUbNVNqiWFEm8Lh7NaI+0CvssE9HHB0A2h71v7W+nHehcvy9GF3GOkL+ccj6Kd7HGyswDltBfLRXCaKqLiRoSSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822400; c=relaxed/simple;
-	bh=v6bFqT8Mh6BCpvEnXvdHkDnLm+g6Q74ysh7utcIK6nY=;
+	s=arc-20240116; t=1762822404; c=relaxed/simple;
+	bh=JsVEzLrH0rkkkzI8oss3/dNpmy95IXtwFGPQYEH3PEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FXPob3RgDNC/5Rjo2aIONwpt8XqoaEN6tO/Tr6lSoYri2//nQa+BvWpQ7KtSEGrEkPIieqBepsElnqJT15koPIVZuD5eU+DRFknHrSmwii/NZ3W3ltxTSHz0t7HuoL3WRAYEf7I1Nj9AetSYAwF4OLx4XBEC2lDErXS9PRdf2nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPOc9HaJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCCCC4CEFB;
-	Tue, 11 Nov 2025 00:53:19 +0000 (UTC)
+	 MIME-Version; b=FDBdDtsflrJic76YEAS3Fxk7G/2rm/xSzJVR8P0OFFr5C8ocmy+m2ffVF0xkQdlBcJ1dT5EO4KZVZz8BwM+x9JkJqKu7+SREiFszlSU1mWE/pNGm2AAYBz6WSbbXPGi7+/JxXx4fq7jdvtEgmVboZbFERFuNmcbu53wFvCPDUWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvRFj63D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A1B4C19421;
+	Tue, 11 Nov 2025 00:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822399;
-	bh=v6bFqT8Mh6BCpvEnXvdHkDnLm+g6Q74ysh7utcIK6nY=;
+	s=korg; t=1762822404;
+	bh=JsVEzLrH0rkkkzI8oss3/dNpmy95IXtwFGPQYEH3PEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yPOc9HaJKewzEczLjk/72Ek9OkkzBpDTIKsa9ZZP+05n1DRguo2NyRd80SR3AatB1
-	 +ZzuaZE+lgugW91kxczCo/acBQAjLi7D7rW5rNeNLUNzGzQLipwsFUsrWKXQ4Yvtx6
-	 jP4H+rExfF25C45JiRmqfhZDTmIn/OMfz5oCltJg=
+	b=AvRFj63DdZLOZ4gIRDGLNZBpDd9S4MGtZeCldH3oklHak1AEdT0p3sLN84JQloQm2
+	 aCkpv1d6oHa9LgBzYF4FzKs2IEfXU/jOMNn0ySFETgauPhbzjEPbR5ga7mWHFpyEAr
+	 x+yAIk2q6TC38L7lVGIdwUIBvxOfVdOZUrCqSQ/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Rosca <david.rosca@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
 	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH 6.17 100/849] drm/sched: avoid killing parent entity on child SIGKILL
-Date: Tue, 11 Nov 2025 09:34:30 +0900
-Message-ID: <20251111004538.822358794@linuxfoundation.org>
+Subject: [PATCH 6.17 101/849] drm/sched: Fix race in drm_sched_entity_select_rq()
+Date: Tue, 11 Nov 2025 09:34:31 +0900
+Message-ID: <20251111004538.847593803@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -61,36 +59,26 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Rosca <david.rosca@amd.com>
+From: Philipp Stanner <phasta@kernel.org>
 
-commit 9e8b3201c7302d5b522ba3535630bed21cc03c27 upstream.
+commit d25e3a610bae03bffc5c14b5d944a5d0cd844678 upstream.
 
-The DRM scheduler tracks who last uses an entity and when that process
-is killed blocks all further submissions to that entity.
+In a past bug fix it was forgotten that entity access must be protected
+by the entity lock. That's a data race and potentially UB.
 
-The problem is that we didn't track who initially created an entity, so
-when a process accidently leaked its file descriptor to a child and
-that child got killed, we killed the parent's entities.
+Move the spin_unlock() to the appropriate position.
 
-Avoid that and instead initialize the entities last user on entity
-creation. This also allows to drop the extra NULL check.
-
-Signed-off-by: David Rosca <david.rosca@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4568
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-CC: stable@vger.kernel.org
-Acked-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20251015140128.1470-1-christian.koenig@amd.com
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: ac4eb83ab255 ("drm/sched: select new rq even if there is only one v3")
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://patch.msgid.link/20251015140128.1470-1-christian.koenig@amd.com
+Link: https://patch.msgid.link/20251022063402.87318-2-phasta@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
  drivers/gpu/drm/scheduler/sched_entity.c |    3 ++-
@@ -98,23 +86,19 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/gpu/drm/scheduler/sched_entity.c
 +++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -70,6 +70,7 @@ int drm_sched_entity_init(struct drm_sch
- 	entity->guilty = guilty;
- 	entity->num_sched_list = num_sched_list;
- 	entity->priority = priority;
-+	entity->last_user = current->group_leader;
- 	/*
- 	 * It's perfectly valid to initialize an entity without having a valid
- 	 * scheduler attached. It's just not valid to use the scheduler before it
-@@ -302,7 +303,7 @@ long drm_sched_entity_flush(struct drm_s
+@@ -553,10 +553,11 @@ void drm_sched_entity_select_rq(struct d
+ 		drm_sched_rq_remove_entity(entity->rq, entity);
+ 		entity->rq = rq;
+ 	}
+-	spin_unlock(&entity->lock);
  
- 	/* For killed process disable any more IBs enqueue right now */
- 	last_user = cmpxchg(&entity->last_user, current->group_leader, NULL);
--	if ((!last_user || last_user == current->group_leader) &&
-+	if (last_user == current->group_leader &&
- 	    (current->flags & PF_EXITING) && (current->exit_code == SIGKILL))
- 		drm_sched_entity_kill(entity);
+ 	if (entity->num_sched_list == 1)
+ 		entity->sched_list = NULL;
++
++	spin_unlock(&entity->lock);
+ }
  
+ /**
 
 
 
