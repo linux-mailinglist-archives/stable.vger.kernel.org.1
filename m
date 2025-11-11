@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC6A7C4A6A4
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D17E4C4A90B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D1E6D4F6F64
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D26913B89B6
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA59344032;
-	Tue, 11 Nov 2025 01:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166C3346A16;
+	Tue, 11 Nov 2025 01:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cs5yWDlO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2I3CGSiU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D44344022;
-	Tue, 11 Nov 2025 01:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EAD2DC79D;
+	Tue, 11 Nov 2025 01:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823574; cv=none; b=IbVWnUr9cmuIAA58lNcnoA+EpdQ0vFVAwS6X/toLQx7pGyc80yBt1q+SXz0KuELWQ9F1voJzE38kjAZ8PdwUxLbnjzKSkgxklyAsw8AUHvm6kdOZCc2JU4FYlOqui0/HALGdpzkSRO2sE9rdZxpoRlnULlQfMrcXhHTQOlDODbo=
+	t=1762823682; cv=none; b=RvLe07v8ZKEe5bO7DinoMzeyQxWlg02K0J77CixjrMc3d11CHgDM/EVknKutfmXeHwV/SBMZ+AM5RhOJg2PwKjrp8/8fJc3yMf8Dh3l59ScmU0MU/W9i2S0M//3DsumsxKON79IERGGJ3C5ubIUjL7ObkkMANhi08iDNs6NfgvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823574; c=relaxed/simple;
-	bh=yyCAhvgK0kJMA1ire3/cY22q4w/yHkN6Cdy5N4mi/QI=;
+	s=arc-20240116; t=1762823682; c=relaxed/simple;
+	bh=sRgnQnqO5NT70cLdDKIV/wFJdy4G/XwEuAcw7B5R7ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k+IDnMQFlrcwenquZKtxkv/31WSkiikJRkG5JFDhUCByNBcZeEHgA27ihNxb/mpZ74FdB75zPeZCl76blEFnk2E8YmvLLPsAO+mGgGb+5Va8w/QpPtSVzHDZW3b/iaG9PegKkEN82deB6xatli6OKT56zAsr+UMYUiNzKQgEdWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cs5yWDlO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37AB9C4CEFB;
-	Tue, 11 Nov 2025 01:12:54 +0000 (UTC)
+	 MIME-Version; b=lAbJw4WwAcHSRjNZ4xCf4jS6gLdrowRwpCwTHOErPcOBzYvsiiDmBNWEQ8BcUEc7upRR3XXpBRLJw3eg9C59Prc5t6XTl03KTSlT1LYhVfpi/7ed6v3qs+wjh+GyfcUfMekjAqw7P+++kOdX44zu0qdhXRGV61s/9AuCKPoi2Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2I3CGSiU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A77C19424;
+	Tue, 11 Nov 2025 01:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823574;
-	bh=yyCAhvgK0kJMA1ire3/cY22q4w/yHkN6Cdy5N4mi/QI=;
+	s=korg; t=1762823682;
+	bh=sRgnQnqO5NT70cLdDKIV/wFJdy4G/XwEuAcw7B5R7ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cs5yWDlOwQuY1xlCtf+0esXgyjVLJJDxwBItdz8SQTi30jFhO1iWxylfWt99eExQJ
-	 tuy+iPBUNSrwnwVVpjL4ba3ToPsGaCISSYOKFrhMu5G+v8c0M5H9ZMV+fyHHiVOy2s
-	 hzFAeLmAjD28qTMX8rJpxtyParRJ/bPqt4NideGY=
+	b=2I3CGSiUT8kNEA1q4n5Eee9lBoEn+qcwKvuHMDNm9tLeFjYQg8wH+A79Y2xFMYkJN
+	 OS734Z9ZS7HEaLUNaSPij7DGGREUS1fpy1LNxHjXn5tHZMuHmqm5P/UWfLYmZKRQax
+	 MQfC+EY2nyuQMzmNnHk61Ucr82eOe73qT3s9ZtOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Richter <Simon.Richter@hogyros.de>,
-	Matthew Brost <matthew.brost@intel.com>,
+	Kuan-Chung Chen <damon.chen@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 326/849] drm/xe: Make page size consistent in loop
-Date: Tue, 11 Nov 2025 09:38:16 +0900
-Message-ID: <20251111004544.298095576@linuxfoundation.org>
+Subject: [PATCH 6.17 327/849] wifi: rtw89: wow: remove notify during WoWLAN net-detect
+Date: Tue, 11 Nov 2025 09:38:17 +0900
+Message-ID: <20251111004544.324098027@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,38 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Simon Richter <Simon.Richter@hogyros.de>
+From: Kuan-Chung Chen <damon.chen@realtek.com>
 
-[ Upstream commit b85bb2d677153d990924d31be9416166d22382eb ]
+[ Upstream commit 38846585f9df9af1f7261d85134a5510fc079458 ]
 
-If PAGE_SIZE != XE_PAGE_SIZE (which is currently locked behind
-CONFIG_BROKEN), this would generate the wrong number of PDEs.
+In WoWLAN net-detect mode, the firmware periodically performs scans
+and sends scan reports via C2H, which driver does not need. These
+unnecessary C2H events cause firmware watchdog timeout, leading
+to unexpected wakeups and SER 0x2599 on 8922AE.
 
-Since these PDEs are consumed by the GPU, the GPU page size needs to be
-used.
-
-Signed-off-by: Simon Richter <Simon.Richter@hogyros.de>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250818064806.2835-1-Simon.Richter@hogyros.de
+Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250811123744.15361-4-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_migrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
-index 9b1e3dce1aea3..2a627ed64b8f8 100644
---- a/drivers/gpu/drm/xe/xe_migrate.c
-+++ b/drivers/gpu/drm/xe/xe_migrate.c
-@@ -291,7 +291,7 @@ static int xe_migrate_prepare_vm(struct xe_tile *tile, struct xe_migrate *m,
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 16e59a4a486e6..e6f8fab799fc1 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -7123,7 +7123,6 @@ static void rtw89_pno_scan_add_chan_ax(struct rtw89_dev *rtwdev,
+ 	struct rtw89_pktofld_info *info;
+ 	u8 probe_count = 0;
  
- 	/* Write PDE's that point to our BO. */
--	for (i = 0; i < map_ofs / PAGE_SIZE; i++) {
-+	for (i = 0; i < map_ofs / XE_PAGE_SIZE; i++) {
- 		entry = vm->pt_ops->pde_encode_bo(bo, (u64)i * XE_PAGE_SIZE);
+-	ch_info->notify_action = RTW89_SCANOFLD_DEBUG_MASK;
+ 	ch_info->dfs_ch = chan_type == RTW89_CHAN_DFS;
+ 	ch_info->bw = RTW89_SCAN_WIDTH;
+ 	ch_info->tx_pkt = true;
+@@ -7264,7 +7263,6 @@ static void rtw89_pno_scan_add_chan_be(struct rtw89_dev *rtwdev, int chan_type,
+ 	struct rtw89_pktofld_info *info;
+ 	u8 probe_count = 0, i;
  
- 		xe_map_wr(xe, &bo->vmap, map_ofs + XE_PAGE_SIZE +
+-	ch_info->notify_action = RTW89_SCANOFLD_DEBUG_MASK;
+ 	ch_info->dfs_ch = chan_type == RTW89_CHAN_DFS;
+ 	ch_info->bw = RTW89_SCAN_WIDTH;
+ 	ch_info->tx_null = false;
 -- 
 2.51.0
 
