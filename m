@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-193544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E8EEC4A6E6
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:26:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 900CFC4ACA0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6234A3B7A38
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 46EFA4F96E9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5C333B955;
-	Tue, 11 Nov 2025 01:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE7DDF76;
+	Tue, 11 Nov 2025 01:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMMCHfQ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7zmO64+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5765B261B77;
-	Tue, 11 Nov 2025 01:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F493358C3;
+	Tue, 11 Nov 2025 01:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823433; cv=none; b=kuTokr7wuiAgPOkq6uiEwx1kvgSUKqKLKlzmhtdU+vlXTqZbF9Fs43a3rwYL9AiqLOPV+3q1rr8KH5mv3i471O9crdTdJ7oXuB+mPKwRILopDvO5AvgeHlSHX7y0xxXMvLx5g2ZqhHJLBLIlc0GIpzmViau0ur4Dg2UpSXJ5Qv0=
+	t=1762824603; cv=none; b=SXMiLSs8A97AUTYqDaF7beUxiPHVoJWtpT4G3LNmOM/hfXqkloPF4fkE27/gzqp0KSfzw1gRp0mdXxxyo3B8pUXOQDjRY13NmhU4HxZxe2IBMCP88+lpbARaIq8GyH7BWpTNild+0QC0dFZfmBHe/utdY95SFCh7xAl8u8DieB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823433; c=relaxed/simple;
-	bh=JrY7+4my1yG5deiadWtkLjOY2yf4vgzKjc1Yidqtt3Q=;
+	s=arc-20240116; t=1762824603; c=relaxed/simple;
+	bh=RBOqeJcOIKhJkBU4K5/pGyyIpbpcsJ0WvQ+Tsj9ROds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=slhoBmeAxO9JrzUMHJXQnXRH7OaRsnBiFArbMgixbJZlQOQYTMF7hy/ZGmh/u4QD5H8m+h8uGPYma5T9fMHnCtK4rUbrzREH5yyZE/tqZLNkowDoA+BBzD7aM5byv9Z4ZawRO6njcCACUcXGS/Y6tF3bkwRYpqzQ1Q6hO6lm8xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMMCHfQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B796CC4CEF5;
-	Tue, 11 Nov 2025 01:10:32 +0000 (UTC)
+	 MIME-Version; b=rRTepfNUKQ7RJNnNVXkZpFJcT+/OXBdphxZx60FtfWGKjzETnAuIkt4Aj+OuT296KwEC9sozT+zyALua3h1gArGwIuA5MuI6K4/6Nc3Mz40ilR5tkBUR8rM1qQyrxAQt6Q6mFDIZs4CirSQ27dB9wm6lo1ZB4IN6tyhfXB54tu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7zmO64+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47F3C4CEFB;
+	Tue, 11 Nov 2025 01:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823433;
-	bh=JrY7+4my1yG5deiadWtkLjOY2yf4vgzKjc1Yidqtt3Q=;
+	s=korg; t=1762824603;
+	bh=RBOqeJcOIKhJkBU4K5/pGyyIpbpcsJ0WvQ+Tsj9ROds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMMCHfQ0s1wuPbweNMgN2ifake7ATMQXLM3+XPBlkaxZlqNHSBlpsrgF42ebXt8kv
-	 0Q8X49g0+zONmzapzAsMHsfkqok9Bkg0Nap3f68lizdJM7U1cleUbJ6S/NtXOUbST3
-	 lWJX/eZ13MDF+tv+EqsrQ5Kbx7e9OIHSmW2uQzug=
+	b=O7zmO64+ZVhlLIkxF1gdZgUVfqrWrDui5VgNY3A92GR7q3CD4VbDmkAWF7G6pDo21
+	 lWfKhOZ0+P/r8TmXS1S3ryMZokiT6H5zjk6aASmZqNxVBJWb0NAwkITYH/1qtdU5Xf
+	 6wv2lsZNaB7Pgvfxqsb3iGUMyiJ+OJeitnbUCPMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 246/565] media: ipu6: isys: Set embedded data type correctly for metadata formats
+Subject: [PATCH 6.17 532/849] can: rcar_canfd: Update bit rate constants for RZ/G3E and R-Car Gen4
 Date: Tue, 11 Nov 2025 09:41:42 +0900
-Message-ID: <20251111004532.444502154@linuxfoundation.org>
+Message-ID: <20251111004549.279460618@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit f5a2826cd50c6fd1af803812d1d910a64ae8e0a1 ]
+[ Upstream commit 100fafc3e46138cb5a6526ddc03dcede8b020c8c ]
 
-The IPU6 ISYS driver supported metadata formats but was missing correct
-embedded data type in the receiver configuration. Add it now.
+The calculation formula for nominal bit rate of classical CAN is the same as
+that of nominal bit rate of CANFD on the RZ/G3E and R-Car Gen4 SoCs
+compared to other SoCs. Update nominal bit rate constants.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250908120940.147196-2-biju.das.jz@bp.renesas.com
+[mkl: slightly improve wording of commit message]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu6/ipu6-isys-subdev.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/can/rcar/rcar_canfd.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-subdev.c b/drivers/media/pci/intel/ipu6/ipu6-isys-subdev.c
-index 0a06de5c739c7..463a0adf9e131 100644
---- a/drivers/media/pci/intel/ipu6/ipu6-isys-subdev.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6-isys-subdev.c
-@@ -81,6 +81,12 @@ unsigned int ipu6_isys_mbus_code_to_mipi(u32 code)
- 	case MEDIA_BUS_FMT_SGRBG8_1X8:
- 	case MEDIA_BUS_FMT_SRGGB8_1X8:
- 		return MIPI_CSI2_DT_RAW8;
-+	case MEDIA_BUS_FMT_META_8:
-+	case MEDIA_BUS_FMT_META_10:
-+	case MEDIA_BUS_FMT_META_12:
-+	case MEDIA_BUS_FMT_META_16:
-+	case MEDIA_BUS_FMT_META_24:
-+		return MIPI_CSI2_DT_EMBEDDED_8B;
- 	default:
- 		/* return unavailable MIPI data type - 0x3f */
- 		WARN_ON(1);
+diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
+index 7e8b1d2f1af65..4f3ce948d74da 100644
+--- a/drivers/net/can/rcar/rcar_canfd.c
++++ b/drivers/net/can/rcar/rcar_canfd.c
+@@ -1913,7 +1913,10 @@ static int rcar_canfd_channel_probe(struct rcar_canfd_global *gpriv, u32 ch,
+ 		priv->can.fd.do_get_auto_tdcv = rcar_canfd_get_auto_tdcv;
+ 	} else {
+ 		/* Controller starts in Classical CAN only mode */
+-		priv->can.bittiming_const = &rcar_canfd_bittiming_const;
++		if (gpriv->info->shared_can_regs)
++			priv->can.bittiming_const = gpriv->info->nom_bittiming;
++		else
++			priv->can.bittiming_const = &rcar_canfd_bittiming_const;
+ 		priv->can.ctrlmode_supported = CAN_CTRLMODE_BERR_REPORTING;
+ 	}
+ 
 -- 
 2.51.0
 
