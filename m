@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-194415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F93C4B25A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:03:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8127DC4AD36
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 610B13BB755
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BF1E189000D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B464F306482;
-	Tue, 11 Nov 2025 01:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6034F305044;
+	Tue, 11 Nov 2025 01:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+JwUozv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEfndDiZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BFF306491;
-	Tue, 11 Nov 2025 01:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B75E2701DC;
+	Tue, 11 Nov 2025 01:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825550; cv=none; b=hVeUtmB+STS+PSFYfUhDmuoDS8SPBAYn/OLot6ZTiyCGD2uxMqT2mSPpTajUmMvGxLSrJwQLQDyOeRc6VLG8HUOxJ+xvvCZRE06Yxnp6mktVheQ3qTDw5egLoqTxYMbc/qML2d7lJvSTdEd1LO3D2jooeuldC0szpEYghpl/Nk4=
+	t=1762824807; cv=none; b=LtTYfhHo+gk1YsfSFxYGfSwogjSKt0hh4Igk95xufDohZAlkjrc9M0NaAWj3BYUVTIloFLtJ0qm480p97l1b/oM/4YJCYslHkDRhnpAmorCJ9t6K1tulSPzFjFd8Df6XTdLqvXxVal1WWhjxjxw6fdpoHJwRA36P9+kwZFLzjgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825550; c=relaxed/simple;
-	bh=zDQ5quEh/+ZJW2t5RP8rkyZ/2ARYXiD5PIgxBn9cZ6M=;
+	s=arc-20240116; t=1762824807; c=relaxed/simple;
+	bh=z1E0VnZkEx9QTfexSpg/UpUDdBspEOk2Jvso60jBajg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+++/NEXzE3aif3JHehBdBfYvyBd/xB8XgpbkEGgVHOVjk7fAEgm/34DI0E0AbZ7JgPZVdCyH3FUxToF50/DUa3nMC60QLbT8baaA8Ay9lyFhh/yBISxA6JJ+sK8qTxm/qL28oGF9etXsGPy75CXSyqZ27R3lf8X6W3gh/xzQKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+JwUozv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CC7C116D0;
-	Tue, 11 Nov 2025 01:45:49 +0000 (UTC)
+	 MIME-Version; b=F9MBMV2b46qC7cMEoNzVgSV4/VHE1EHdZUCJNXNMw0qCrmYlcDQTZeVtJGQWXq/o7ZRAnWn8Hf5WjvosVgU6omxvL0VDr/L9QRdzWywEkqDuWTMJbdKdLxpJpt+aTcJxecFcGxvgDFELocUYGF7O9wrZ4MW59id6A3JPJ9v/5RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEfndDiZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5323C116B1;
+	Tue, 11 Nov 2025 01:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825550;
-	bh=zDQ5quEh/+ZJW2t5RP8rkyZ/2ARYXiD5PIgxBn9cZ6M=;
+	s=korg; t=1762824807;
+	bh=z1E0VnZkEx9QTfexSpg/UpUDdBspEOk2Jvso60jBajg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+JwUozvzzSAFMctCt8O3Y5R5FKq7NqfV4MWduU2SspTMruTaScnruSutbFsD6NMv
-	 7b+N660dBIII3jUtl3bpmmbJqenvlTjD4x4a8jI6cbnbWgIr0HtlaBJ62QJBJzePxF
-	 HiKoJoro5+POG1aB6t550yPbMJogmnk5jWTglKwI=
+	b=NEfndDiZfyP5R3GFzXHakPjf9bMjOXItHRJTH9J/IS98NDJwwJrtwppK47zXulRo7
+	 EzkCOE50rU9xWxyICR//MC+g/xgA4mEWiNmtp/7jRQfzIr0kBbkAw1AxbtvGtc/yQO
+	 KkeRg9/YKRToSRgGjs6EunTpAGAIfDzK8nU8rdtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.17 807/849] fscrypt: fix left shift underflow when inode->i_blkbits > PAGE_SHIFT
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 521/565] net: dsa: b53: fix enabling ip multicast
 Date: Tue, 11 Nov 2025 09:46:17 +0900
-Message-ID: <20251111004555.938394586@linuxfoundation.org>
+Message-ID: <20251111004538.684812954@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit 1e39da974ce621ed874c6d3aaf65ad14848c9f0d upstream.
+[ Upstream commit c264294624e956a967a9e2e5fa41e3273340b089 ]
 
-When simulating an nvme device on qemu with both logical_block_size and
-physical_block_size set to 8 KiB, an error trace appears during
-partition table reading at boot time. The issue is caused by
-inode->i_blkbits being larger than PAGE_SHIFT, which leads to a left
-shift of -1 and triggering a UBSAN warning.
+In the New Control register bit 1 is either reserved, or has a different
+function:
 
-[    2.697306] ------------[ cut here ]------------
-[    2.697309] UBSAN: shift-out-of-bounds in fs/crypto/inline_crypt.c:336:37
-[    2.697311] shift exponent -1 is negative
-[    2.697315] CPU: 3 UID: 0 PID: 274 Comm: (udev-worker) Not tainted 6.18.0-rc2+ #34 PREEMPT(voluntary)
-[    2.697317] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[    2.697320] Call Trace:
-[    2.697324]  <TASK>
-[    2.697325]  dump_stack_lvl+0x76/0xa0
-[    2.697340]  dump_stack+0x10/0x20
-[    2.697342]  __ubsan_handle_shift_out_of_bounds+0x1e3/0x390
-[    2.697351]  bh_get_inode_and_lblk_num.cold+0x12/0x94
-[    2.697359]  fscrypt_set_bio_crypt_ctx_bh+0x44/0x90
-[    2.697365]  submit_bh_wbc+0xb6/0x190
-[    2.697370]  block_read_full_folio+0x194/0x270
-[    2.697371]  ? __pfx_blkdev_get_block+0x10/0x10
-[    2.697375]  ? __pfx_blkdev_read_folio+0x10/0x10
-[    2.697377]  blkdev_read_folio+0x18/0x30
-[    2.697379]  filemap_read_folio+0x40/0xe0
-[    2.697382]  filemap_get_pages+0x5ef/0x7a0
-[    2.697385]  ? mmap_region+0x63/0xd0
-[    2.697389]  filemap_read+0x11d/0x520
-[    2.697392]  blkdev_read_iter+0x7c/0x180
-[    2.697393]  vfs_read+0x261/0x390
-[    2.697397]  ksys_read+0x71/0xf0
-[    2.697398]  __x64_sys_read+0x19/0x30
-[    2.697399]  x64_sys_call+0x1e88/0x26a0
-[    2.697405]  do_syscall_64+0x80/0x670
-[    2.697410]  ? __x64_sys_newfstat+0x15/0x20
-[    2.697414]  ? x64_sys_call+0x204a/0x26a0
-[    2.697415]  ? do_syscall_64+0xb8/0x670
-[    2.697417]  ? irqentry_exit_to_user_mode+0x2e/0x2a0
-[    2.697420]  ? irqentry_exit+0x43/0x50
-[    2.697421]  ? exc_page_fault+0x90/0x1b0
-[    2.697422]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[    2.697425] RIP: 0033:0x75054cba4a06
-[    2.697426] Code: 5d e8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 75 19 83 e2 39 83 fa 08 75 11 e8 26 ff ff ff 66 0f 1f 44 00 00 48 8b 45 10 0f 05 <48> 8b 5d f8 c9 c3 0f 1f 40 00 f3 0f 1e fa 55 48 89 e5 48 83 ec 08
-[    2.697427] RSP: 002b:00007fff973723a0 EFLAGS: 00000202 ORIG_RAX: 0000000000000000
-[    2.697430] RAX: ffffffffffffffda RBX: 00005ea9a2c02760 RCX: 000075054cba4a06
-[    2.697432] RDX: 0000000000002000 RSI: 000075054c190000 RDI: 000000000000001b
-[    2.697433] RBP: 00007fff973723c0 R08: 0000000000000000 R09: 0000000000000000
-[    2.697434] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-[    2.697434] R13: 00005ea9a2c027c0 R14: 00005ea9a2be5608 R15: 00005ea9a2be55f0
-[    2.697436]  </TASK>
-[    2.697436] ---[ end trace ]---
+    Out of Range Error Discard
 
-This situation can happen for block devices because when
-CONFIG_TRANSPARENT_HUGEPAGE is enabled, the maximum logical_block_size
-is 64 KiB. set_init_blocksize() then sets the block device
-inode->i_blkbits to 13, which is within this limit.
+    When enabled, the ingress port discards any frames
+    if the Length field is between 1500 and 1536
+    (excluding 1500 and 1536) and with good CRC.
 
-File I/O does not trigger this problem because for filesystems that do
-not support the FS_LBS feature, sb_set_blocksize() prevents
-sb->s_blocksize_bits from being larger than PAGE_SHIFT. During inode
-allocation, alloc_inode()->inode_init_always() assigns inode->i_blkbits
-from sb->s_blocksize_bits. Currently, only xfs_fs_type has the FS_LBS
-flag, and since xfs I/O paths do not reach submit_bh_wbc(), it does not
-hit the left-shift underflow issue.
+The actual bit for enabling IP multicast is bit 0, which was only
+explicitly enabled for BCM5325 so far.
 
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Fixes: 47dd67532303 ("block/bdev: lift block size restrictions to 64k")
-Cc: stable@vger.kernel.org
-[EB: use folio_pos() and consolidate the two shifts by i_blkbits]
-Link: https://lore.kernel.org/r/20251105003642.42796-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For older switch chips, this bit defaults to 0, so we want to enable it
+as well, while newer switch chips default to 1, and their documentation
+says "It is illegal to set this bit to zero."
+
+So drop the wrong B53_IPMC_FWD_EN define, enable the IP multicast bit
+also for other switch chips. While at it, rename it to (B53_)IP_MC as
+that is how it is called in Broadcom code.
+
+Fixes: 63cc54a6f073 ("net: dsa: b53: Fix egress flooding settings")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251102100758.28352-2-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/crypto/inline_crypt.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 4 ++--
+ drivers/net/dsa/b53/b53_regs.h   | 3 +--
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/fs/crypto/inline_crypt.c b/fs/crypto/inline_crypt.c
-index 5dee7c498bc8..ed6e926226b5 100644
---- a/fs/crypto/inline_crypt.c
-+++ b/fs/crypto/inline_crypt.c
-@@ -333,8 +333,7 @@ static bool bh_get_inode_and_lblk_num(const struct buffer_head *bh,
- 	inode = mapping->host;
- 
- 	*inode_ret = inode;
--	*lblk_num_ret = ((u64)folio->index << (PAGE_SHIFT - inode->i_blkbits)) +
--			(bh_offset(bh) >> inode->i_blkbits);
-+	*lblk_num_ret = (folio_pos(folio) + bh_offset(bh)) >> inode->i_blkbits;
- 	return true;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 914dbb86e1b07..a22f28f98faee 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -369,11 +369,11 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
+ 		 * frames should be flooded or not.
+ 		 */
+ 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
+-		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
++		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IP_MC;
+ 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
+ 	} else {
+ 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
+-		mgmt |= B53_IP_MCAST_25;
++		mgmt |= B53_IP_MC;
+ 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
+ 	}
  }
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index 5741231e0841d..2dca7dd76eb6b 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -110,8 +110,7 @@
+ 
+ /* IP Multicast control (8 bit) */
+ #define B53_IP_MULTICAST_CTRL		0x21
+-#define  B53_IP_MCAST_25		BIT(0)
+-#define  B53_IPMC_FWD_EN		BIT(1)
++#define  B53_IP_MC			BIT(0)
+ #define  B53_UC_FWD_EN			BIT(6)
+ #define  B53_MC_FWD_EN			BIT(7)
  
 -- 
-2.51.2
+2.51.0
 
 
 
