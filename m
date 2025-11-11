@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-194376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D59ADC4B15D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:58:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D87B9C4ADFC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F06D74F4BD8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D0B83BAA5B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4553302CAC;
-	Tue, 11 Nov 2025 01:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BA8305978;
+	Tue, 11 Nov 2025 01:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwqL4sHB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6/2gVZg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80980246333;
-	Tue, 11 Nov 2025 01:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF8C298CDE;
+	Tue, 11 Nov 2025 01:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825459; cv=none; b=DqSM2wU5TTaVrNYKVOyOT+fPNNBbCh3D8/mZabDupF88FDXmwmbk96Nv3nnrCdIdWw58HPMC/8Cn4NqcqZ6oOAZ625Uj5no08+Ke0mz8R1WsPaMq8/qHl6aTY6BEpCIsn5vKYOzF+qG16vgwOHLnDstvT4WavvUrzKtHI2TNpTA=
+	t=1762824858; cv=none; b=HhTWIwjZokyZFh8jZ9tDd1Rht0WL4IygoxS4MtUuAaw1HPLabOEHjr/1YJJOdvDeiMiPYjItM81pUzKlR1rEg67JH9CQM1bv2ws8jmqjIkuDsztf9T8f/iuFQ6ZHr/McITW/PenMgqxan5wLkdYlm73gjkGX0LK5HK103sojV6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825459; c=relaxed/simple;
-	bh=ESaPQlBzqpq9EqMx3AwvSvGVfcj22h5MONTrMSI2pVg=;
+	s=arc-20240116; t=1762824858; c=relaxed/simple;
+	bh=+hUS+VFxieuUYajkThx0PQ4Z7V8ggm+WqlpWZFyHKh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdF1A0Z3Kl4UaMaIGeinoLUD+GnvG1+yE+yl5JvDQuWdlxR3+kg9Ps0RFp41el9s9r64l2eXlBaFQfbaFJH9RCuJ7SuxwEU3MP+o7r+zjO8m/kh6UerQI4aDnqB8b1EfTBbr5r5FpomI/y4f9TEWFlpj42MXgPCw1OrhdzX5TNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwqL4sHB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E812EC19425;
-	Tue, 11 Nov 2025 01:44:18 +0000 (UTC)
+	 MIME-Version; b=Ne5vgPjvqlxllH+0u1OTgEv/gvGYcKUcBPfFXPv4643R4YK2UTpaewHVGDd92fJ7vcP5Ln9Z2PM1kIGsT55bZePXWN+U3YaTnOX6uX+kqhlm8mbtoy2VxL9jlkGEeNP/wiB06UHFnvnAtYIgr7VvvpRec0/CihsJ8O0RVuJD02o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6/2gVZg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0A8C4CEFB;
+	Tue, 11 Nov 2025 01:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825459;
-	bh=ESaPQlBzqpq9EqMx3AwvSvGVfcj22h5MONTrMSI2pVg=;
+	s=korg; t=1762824857;
+	bh=+hUS+VFxieuUYajkThx0PQ4Z7V8ggm+WqlpWZFyHKh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IwqL4sHBrT2uiWMtT9rPJXFcBvgEU4yqcT7DehRKr76KWlNnLkL7CUo0paov7+QCq
-	 +DsCE+bYdBqImIDZ+Q421J+GyuTFbXWu7yWzJkfvxiiUvPS0jAUGnBQsTbFXNLeTWe
-	 mslu56+mFz/gxKvQl3Z5+CJk8N3PmhvEOLFmFkIE=
+	b=D6/2gVZguzoMQl20Cbccf2pj8OHvs0D8JEV0wAverB7B2YjzrNDPnE8nL2P/jUFD4
+	 A6LzfN+ecWtXBWFNCFqZl47/rt1f8cWx9jtxJD4Nh9kpTeEgf54WFbeyAKd+YSJ822
+	 HIlEWMrToopqXsEg53KTkH2egMlZ4Dfhr91SHYgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.17 812/849] parisc: Avoid crash due to unaligned access in unwinder
-Date: Tue, 11 Nov 2025 09:46:22 +0900
-Message-ID: <20251111004556.056671265@linuxfoundation.org>
+	Mohammad Heib <mheib@redhat.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 527/565] net: ionic: map SKB after pseudo-header checksum prep
+Date: Tue, 11 Nov 2025 09:46:23 +0900
+Message-ID: <20251111004538.820601876@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Mohammad Heib <mheib@redhat.com>
 
-commit fd9f30d1038ee1624baa17a6ff11effe5f7617cb upstream.
+[ Upstream commit de0337d641bfa5b6d6b489e479792f1039274e84 ]
 
-Guenter Roeck reported this kernel crash on his emulated B160L machine:
+The TSO path called ionic_tx_map_skb() before preparing the TCP pseudo
+checksum (ionic_tx_tcp_[inner_]pseudo_csum()), which may perform
+skb_cow_head() and might modifies bytes in the linear header area.
 
-Starting network: udhcpc: started, v1.36.1
- Backtrace:
-  [<104320d4>] unwind_once+0x1c/0x5c
-  [<10434a00>] walk_stackframe.isra.0+0x74/0xb8
-  [<10434a6c>] arch_stack_walk+0x28/0x38
-  [<104e5efc>] stack_trace_save+0x48/0x5c
-  [<105d1bdc>] set_track_prepare+0x44/0x6c
-  [<105d9c80>] ___slab_alloc+0xfc4/0x1024
-  [<105d9d38>] __slab_alloc.isra.0+0x58/0x90
-  [<105dc80c>] kmem_cache_alloc_noprof+0x2ac/0x4a0
-  [<105b8e54>] __anon_vma_prepare+0x60/0x280
-  [<105a823c>] __vmf_anon_prepare+0x68/0x94
-  [<105a8b34>] do_wp_page+0x8cc/0xf10
-  [<105aad88>] handle_mm_fault+0x6c0/0xf08
-  [<10425568>] do_page_fault+0x110/0x440
-  [<10427938>] handle_interruption+0x184/0x748
-  [<11178398>] schedule+0x4c/0x190
-  BUG: spinlock recursion on CPU#0, ifconfig/2420
-  lock: terminate_lock.2+0x0/0x1c, .magic: dead4ead, .owner: ifconfig/2420, .owner_cpu: 0
+Mapping first and then mutating the header risks:
+  - Using a stale DMA address if skb_cow_head() relocates the head, and/or
+  - Device reading stale header bytes on weakly-ordered systems
+    (CPU writes after mapping are not guaranteed visible without an
+    explicit dma_sync_single_for_device()).
 
-While creating the stack trace, the unwinder uses the stack pointer to guess
-the previous frame to read the previous stack pointer from memory.  The crash
-happens, because the unwinder tries to read from unaligned memory and as such
-triggers the unalignment trap handler which then leads to the spinlock
-recursion and finally to a deadlock.
+Reorder the TX path to perform all header mutations (including
+skb_cow_head()) *before* DMA mapping. Mapping is now done only after the
+skb layout and header contents are final. This removes the need for any
+post-mapping dma_sync and prevents on-wire corruption observed under
+VLAN+TSO load after repeated runs.
 
-Fix it by checking the alignment before accessing the memory.
+This change is purely an ordering fix; no functional behavior change
+otherwise.
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0f3154e6bcb3 ("ionic: Add Tx and Rx handling")
+Signed-off-by: Mohammad Heib <mheib@redhat.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Link: https://patch.msgid.link/20251031155203.203031-2-mheib@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/unwind.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ .../net/ethernet/pensando/ionic/ionic_txrx.c  | 30 ++++++++-----------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
---- a/arch/parisc/kernel/unwind.c
-+++ b/arch/parisc/kernel/unwind.c
-@@ -35,6 +35,8 @@
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
+index 3a094d3ea6f4f..2cdcd46e922cd 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
+@@ -1448,19 +1448,6 @@ static int ionic_tx_tso(struct net_device *netdev, struct ionic_queue *q,
+ 	bool encap;
+ 	int err;
  
- #define KERNEL_START (KERNEL_BINARY_TEXT_START)
+-	desc_info = &q->tx_info[q->head_idx];
+-
+-	if (unlikely(ionic_tx_map_skb(q, skb, desc_info)))
+-		return -EIO;
+-
+-	len = skb->len;
+-	mss = skb_shinfo(skb)->gso_size;
+-	outer_csum = (skb_shinfo(skb)->gso_type & (SKB_GSO_GRE |
+-						   SKB_GSO_GRE_CSUM |
+-						   SKB_GSO_IPXIP4 |
+-						   SKB_GSO_IPXIP6 |
+-						   SKB_GSO_UDP_TUNNEL |
+-						   SKB_GSO_UDP_TUNNEL_CSUM));
+ 	has_vlan = !!skb_vlan_tag_present(skb);
+ 	vlan_tci = skb_vlan_tag_get(skb);
+ 	encap = skb->encapsulation;
+@@ -1474,12 +1461,21 @@ static int ionic_tx_tso(struct net_device *netdev, struct ionic_queue *q,
+ 		err = ionic_tx_tcp_inner_pseudo_csum(skb);
+ 	else
+ 		err = ionic_tx_tcp_pseudo_csum(skb);
+-	if (unlikely(err)) {
+-		/* clean up mapping from ionic_tx_map_skb */
+-		ionic_tx_desc_unmap_bufs(q, desc_info);
++	if (unlikely(err))
+ 		return err;
+-	}
  
-+#define ALIGNMENT_OK(ptr, type) (((ptr) & (sizeof(type) - 1)) == 0)
++	desc_info = &q->tx_info[q->head_idx];
++	if (unlikely(ionic_tx_map_skb(q, skb, desc_info)))
++		return -EIO;
 +
- extern struct unwind_table_entry __start___unwind[];
- extern struct unwind_table_entry __stop___unwind[];
- 
-@@ -257,12 +259,15 @@ static int unwind_special(struct unwind_
- 	if (pc_is_kernel_fn(pc, _switch_to) ||
- 	    pc == (unsigned long)&_switch_to_ret) {
- 		info->prev_sp = info->sp - CALLEE_SAVE_FRAME_SIZE;
--		info->prev_ip = *(unsigned long *)(info->prev_sp - RP_OFFSET);
-+		if (ALIGNMENT_OK(info->prev_sp, long))
-+			info->prev_ip = *(unsigned long *)(info->prev_sp - RP_OFFSET);
-+		else
-+			info->prev_ip = info->prev_sp = 0;
- 		return 1;
- 	}
- 
- #ifdef CONFIG_IRQSTACKS
--	if (pc == (unsigned long)&_call_on_stack) {
-+	if (pc == (unsigned long)&_call_on_stack && ALIGNMENT_OK(info->sp, long)) {
- 		info->prev_sp = *(unsigned long *)(info->sp - FRAME_SIZE - REG_SZ);
- 		info->prev_ip = *(unsigned long *)(info->sp - FRAME_SIZE - RP_OFFSET);
- 		return 1;
-@@ -370,8 +375,10 @@ static void unwind_frame_regs(struct unw
- 			info->prev_sp = info->sp - frame_size;
- 			if (e->Millicode)
- 				info->rp = info->r31;
--			else if (rpoffset)
-+			else if (rpoffset && ALIGNMENT_OK(info->prev_sp, long))
- 				info->rp = *(unsigned long *)(info->prev_sp - rpoffset);
-+			else
-+				info->rp = 0;
- 			info->prev_ip = info->rp;
- 			info->rp = 0;
- 		}
++	len = skb->len;
++	mss = skb_shinfo(skb)->gso_size;
++	outer_csum = (skb_shinfo(skb)->gso_type & (SKB_GSO_GRE |
++						   SKB_GSO_GRE_CSUM |
++						   SKB_GSO_IPXIP4 |
++						   SKB_GSO_IPXIP6 |
++						   SKB_GSO_UDP_TUNNEL |
++						   SKB_GSO_UDP_TUNNEL_CSUM));
+ 	if (encap)
+ 		hdrlen = skb_inner_tcp_all_headers(skb);
+ 	else
+-- 
+2.51.0
+
 
 
 
