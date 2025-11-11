@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-193864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1417C4AA99
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 606E0C4A44B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:12:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8565E4F47B7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4A88C4F9FB9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21781F419F;
-	Tue, 11 Nov 2025 01:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F54225F797;
+	Tue, 11 Nov 2025 01:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qsv+p/ZQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNO1dBle"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5211C4A24;
-	Tue, 11 Nov 2025 01:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C017D248F6A;
+	Tue, 11 Nov 2025 01:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824186; cv=none; b=TIi6WQwKCZqOgDtedrmLGJIpCukVAHJUJCiYELnkftwpvfMR5AjwojzPbFQp1kN/6sTHeQyPYx2thHbmgg8Oc+HuB+VnU4g88xvLNySrMsCZtxsZcVmqLIKrwuDDqVHMhYX2m1QmRQZfm6VnfX7cgno5cCAUL7I6JDShQ+pbM8I=
+	t=1762823108; cv=none; b=SIYKnrJtp4ManDA8fwq+qb/wduk15wpRRq2BEWnsojNihYCou+2SmhDpiBOmnr5gTXN1d/Su9BDggoyuw5DgPnAvppt6HXTyvrKXR8HSpavC/DCwyjQvPdJGCpajWCidpxq9YKYeXpZkhEsp8utIH+PZBVl3mYTt/piydTb63Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824186; c=relaxed/simple;
-	bh=K3VArEx6DI15jb+KCa6NPUd2dcq6/Lr4H/0zzgKlGI4=;
+	s=arc-20240116; t=1762823108; c=relaxed/simple;
+	bh=asCV9lEZjK5pDHWDwa69hnRQwPLpN6TuToUo3/sVF0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AtNiGEDw1QLQWVh43nLJA1H1h9mGPmh4CayiJPYvG9mC4hyxH3vBL4W9IZ2bbpIjw5Wbihz6riB1WWoV5Q8b3/LpCAzkYrb8l3CwNpAf1lr/+Y7scyzW8Jqz7FSrDzKXJFC4FN0cLtseDHLeX3gCzf74P2XSLbE/b3dybc4vMUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qsv+p/ZQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AEFEC113D0;
-	Tue, 11 Nov 2025 01:23:06 +0000 (UTC)
+	 MIME-Version; b=Qgi1SKXuTwKjbXrkNBH3JTtdiY0yHsG3lcg120S0OYSd6+MzmD9wb8IJgY0pFjWaF63mVKc+cv4twDiFR07ED8kWMs4TLommjqQ/ZJy10jNpzeA9PaRQ/ppzATkSQV50h/7Smc7ClfFmIXD+LsN2tBx0ARQBYd5IGpwtOSt88/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNO1dBle; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49563C19421;
+	Tue, 11 Nov 2025 01:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824186;
-	bh=K3VArEx6DI15jb+KCa6NPUd2dcq6/Lr4H/0zzgKlGI4=;
+	s=korg; t=1762823108;
+	bh=asCV9lEZjK5pDHWDwa69hnRQwPLpN6TuToUo3/sVF0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qsv+p/ZQimtgEGQVaack8pAtcI7lkCx6T70bFBnqVuRTKr8La2xhswH8mcHO2bfb2
-	 ViCMnMV1nHHRllejTdC5M8iDnYZ4neBuukEwDfVSJi5VLbLUMPdJ+f0CSvTlMGFAsI
-	 XpI1qNT3qTj56VZi9G1CckVqEFSzkKcHULMU42PM=
+	b=VNO1dBle3ml0uMIovIRX4B83RZqu1XNzYOAc0tKdBAR2egP5CwCiJVnLD5oIoda3y
+	 7HjHSIkQpKuTgZrDoDGZPynnmtZPi7gPdhWfRbiGliW/xDgfIfpkN/Ue1EMgqAMQ9B
+	 vmdHZ19JenX6pr14hRMAKJekgYM6qM1XQ5OPMjOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Alvin Lee <alvin.lee2@amd.com>,
-	Ausef Yousof <Ausef.Yousof@amd.com>,
+	Clay King <clayking@amd.com>,
 	Wayne Lin <wayne.lin@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 458/849] drm/amd/display: dont wait for pipe update during medupdate/highirq
-Date: Tue, 11 Nov 2025 09:40:28 +0900
-Message-ID: <20251111004547.502368857@linuxfoundation.org>
+Subject: [PATCH 6.12 173/565] drm/amd/display: ensure committing streams is seamless
+Date: Tue, 11 Nov 2025 09:40:29 +0900
+Message-ID: <20251111004530.827229913@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ausef Yousof <Ausef.Yousof@amd.com>
+From: Clay King <clayking@amd.com>
 
-[ Upstream commit 895b61395eefd28376250778a741f11e12715a39 ]
+[ Upstream commit ca74cc428f2b9d0170c56b473dbcfd7fa01daf2d ]
 
-[why&how]
-control flag for the wait during pipe update wait for vupdate should
-be set if update type is not fast or med to prevent an invalid sleep
-operation
+[Why]
+When transitioning between topologies such as multi-display to single
+display ODM 2:1, pipes might not be freed before use.
+
+[How]
+In dc_commit_streams, commit an additional, minimal transition if
+original transition is not seamless to ensure pipes are freed.
 
 Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
+Signed-off-by: Clay King <clayking@amd.com>
 Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 2d2f4c4bdc97e..74efd50b7c23a 100644
+index 13d5f0451fecf..bdcbebd5722d4 100644
 --- a/drivers/gpu/drm/amd/display/dc/core/dc.c
 +++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -4163,7 +4163,7 @@ static void commit_planes_for_stream(struct dc *dc,
+@@ -2182,6 +2182,18 @@ enum dc_status dc_commit_streams(struct dc *dc, struct dc_commit_streams_params
+ 		goto fail;
  	}
  
- 	if (dc->hwseq->funcs.wait_for_pipe_update_if_needed)
--		dc->hwseq->funcs.wait_for_pipe_update_if_needed(dc, top_pipe_to_program, update_type == UPDATE_TYPE_FAST);
-+		dc->hwseq->funcs.wait_for_pipe_update_if_needed(dc, top_pipe_to_program, update_type < UPDATE_TYPE_FULL);
++	/*
++	 * If not already seamless, make transition seamless by inserting intermediate minimal transition
++	 */
++	if (dc->hwss.is_pipe_topology_transition_seamless &&
++			!dc->hwss.is_pipe_topology_transition_seamless(dc, dc->current_state, context)) {
++		res = commit_minimal_transition_state(dc, context);
++		if (res != DC_OK) {
++			BREAK_TO_DEBUGGER();
++			goto fail;
++		}
++	}
++
+ 	res = dc_commit_state_no_check(dc, context);
  
- 	if (should_lock_all_pipes && dc->hwss.interdependent_update_lock) {
- 		if (dc->hwss.subvp_pipe_control_lock)
+ 	for (i = 0; i < params->stream_count; i++) {
 -- 
 2.51.0
 
