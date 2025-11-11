@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-194209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D9EC4B01C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:53:20 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E6CC4A8BD
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C1293B05ED
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ED3584F65F8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953AC23D7FC;
-	Tue, 11 Nov 2025 01:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EDB338586;
+	Tue, 11 Nov 2025 01:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RJCvdVN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dl4Cv9Y/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513A92E173B;
-	Tue, 11 Nov 2025 01:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51266337BAE;
+	Tue, 11 Nov 2025 01:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825061; cv=none; b=YCJ6MD7J0VqaQg9Szg/VB01Td0tWnloKMjMzet9drI7+vAZG1t8GJw5e6KLpQevX2Dh+KTRXPDtb3lDZS7LaIE4hrJWG1t/Edc6ZJP+xrS0sahMa7EWjjr0YC2643UcmiXkUp9tY2Gnuyli7JWgGvJeGoD3kxdn4IZZUPoMsEdo=
+	t=1762823968; cv=none; b=VNW0scgYRaW11QNePbRALAByc/J9WAxuaiXjYHogyxdtGXTVUFhgibL4msYySNieQRG32pLx8SOcAbNkxf+zlCzSiqs4VnO82SZW4pdWw8X4ekw9LC4XhSg87HtJ9dBS7JyoQmYHcuRl4Kk77lWzLvsnAAEcTJ6I7G6757yu+JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825061; c=relaxed/simple;
-	bh=Fb4ORf60/3rsZMlAuzxGNlBbLnWKa+FPwc3g6kTlB0w=;
+	s=arc-20240116; t=1762823968; c=relaxed/simple;
+	bh=0fb2+hXRUm+CfSCZXhTLlFsLc4iAHS/Ps0UShTU+KUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TRahvy7S1NvoOvF67ETTzSZj3tlESs1i68FMrKPIVvH1ho5iRRPiugWeE+ud2d9b3Wj0+TMrJ8Kp+u6igGL6pznBbbZKirjPB+ZGWv1onaQWlC4UwRJ64VaBc5Eyfqt2jkgl66yYvoiy0yzHHu4t1csILK1o0cM/6lkn/ntSDc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RJCvdVN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60DDC4CEF5;
-	Tue, 11 Nov 2025 01:37:40 +0000 (UTC)
+	 MIME-Version; b=mtprq7zB+gKv3G0hP2WgJ7NatoPP/Xsx7h87bRnt4g0FaBzBHgvf724LRKa0UzJrHQ4qu4iOfxZ4sjjMTUeHwNVxDBUmmC41HiwQzlc1gD4Fb+//KILRw9BBjDjvRAqSjJ97wYSiegj8eNtQvkedyTSFsm7UTxxG/rXAGuGxXSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dl4Cv9Y/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D735AC16AAE;
+	Tue, 11 Nov 2025 01:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825061;
-	bh=Fb4ORf60/3rsZMlAuzxGNlBbLnWKa+FPwc3g6kTlB0w=;
+	s=korg; t=1762823968;
+	bh=0fb2+hXRUm+CfSCZXhTLlFsLc4iAHS/Ps0UShTU+KUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2RJCvdVN2CAMdQs5SG8PZKyMSMCnnlw6Ygb7f2F5HwUXRgEIsgPG5SkIZaxEJNpXF
-	 4LYe1UhG79020PEtFRCBQStDoZUtdoiQp5DLvKM3AD3617XuLBPQGnz/zrm/ck4URt
-	 1ubRGJnJeXsNNS06dKY1+e2R9tPs20VYxZb1ryTc=
+	b=Dl4Cv9Y/jv8QsPiKR54dXep9K2QbAZ1SzSMAwEKSDlOdfiGARHFrERlqbca29XJFj
+	 Z+PymkkLA+ydM7RD7Giq01G1IQoWxd7Ne8YQLl7Jz9tlY5p8UUMzu6Y0CxgKOul5Cv
+	 VmYo0/d8c2ATAyfFSAyukA4GTM5bA5QjwzAutMAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chuguangqing <chuguangqing@inspur.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 644/849] fs: ext4: change GFP_KERNEL to GFP_NOFS to avoid deadlock
-Date: Tue, 11 Nov 2025 09:43:34 +0900
-Message-ID: <20251111004551.998940589@linuxfoundation.org>
+Subject: [PATCH 6.12 359/565] wifi: mt76: mt7996: fix memory leak on mt7996_mcu_sta_key_tlv error
+Date: Tue, 11 Nov 2025 09:43:35 +0900
+Message-ID: <20251111004534.944333527@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: chuguangqing <chuguangqing@inspur.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 1534f72dc2a11ded38b0e0268fbcc0ca24e9fd4a ]
+[ Upstream commit 7c0f63fe37a5da2c13fc35c89053b31be8ead895 ]
 
-The parent function ext4_xattr_inode_lookup_create already uses GFP_NOFS for memory alloction, so the function ext4_xattr_inode_cache_find should use same gfp_flag.
+Free the allocated skb on error
 
-Signed-off-by: chuguangqing <chuguangqing@inspur.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://patch.msgid.link/20250915075910.47558-5-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index b0e60a44dae9d..ce7253b3f5499 100644
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1535,7 +1535,7 @@ ext4_xattr_inode_cache_find(struct inode *inode, const void *value,
- 	WARN_ON_ONCE(ext4_handle_valid(journal_current_handle()) &&
- 		     !(current->flags & PF_MEMALLOC_NOFS));
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 5f5544b6214cd..8738e4b645420 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -2283,8 +2283,10 @@ int mt7996_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
+ 		return PTR_ERR(skb);
  
--	ea_data = kvmalloc(value_len, GFP_KERNEL);
-+	ea_data = kvmalloc(value_len, GFP_NOFS);
- 	if (!ea_data) {
- 		mb_cache_entry_put(ea_inode_cache, ce);
- 		return NULL;
+ 	ret = mt7996_mcu_sta_key_tlv(wcid, skb, key, cmd);
+-	if (ret)
++	if (ret) {
++		dev_kfree_skb(skb);
+ 		return ret;
++	}
+ 
+ 	return mt76_mcu_skb_send_msg(dev, skb, mcu_cmd, true);
+ }
 -- 
 2.51.0
 
