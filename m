@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5686C4AA5D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E4BC4A815
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D258E1891AF1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 661894F62D0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A4E302CA7;
-	Tue, 11 Nov 2025 01:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA2C3019BA;
+	Tue, 11 Nov 2025 01:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvTEts84"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06XkUsUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3127430276C;
-	Tue, 11 Nov 2025 01:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8903A2E9EB1;
+	Tue, 11 Nov 2025 01:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823840; cv=none; b=ZSAsHyEEIfcsDS0fwIMzAikjnOLj3t+voWCTLaTIsTJvJtlN0gayXhrf1JZMdca337O7wJRtCBxFZPZ/Dfoik7yGeA2lVU545UvdRpRN1maLppBI6wYPaq+PFiHEBurQfiTzQR13SoboQODfosbuLVGrldjraIItDIRV+QR/jVA=
+	t=1762823844; cv=none; b=dbqwA949/JGZyRxQkXQElc6oEAjfy+KXTUUPNXqlryeCT4pbQLTqgU5+8XkhJVL46V0CT/0AUWO1wLlaOykmkFWfNfKDDYhn/gaJvQ3bjYQ+4XukBStc4sHNi33zpwBC2MDZQEAJjjc45mwFBEzLeS0LUADiGwxiSgwYu/+1xHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823840; c=relaxed/simple;
-	bh=0xs34VXVIoxAdLt5ZJsBz1OFgeWNBtBuaUNYU9iFDPI=;
+	s=arc-20240116; t=1762823844; c=relaxed/simple;
+	bh=2lNlhDhOb7O6S1Ft7rvg8qMajNZApey2i30tqe6AEfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JqrwtRakYtzRy8NN1hLkX/yFPjFexedg2oaHq5zX1qLouVL3FGiKOtiTQEGzA39ommMvgrmrPkjtiQIJbjZhcNGzq2c6SCY8da5UmlKsubiYeROEfI7h329k0B8FyJDu3PFHqU/QykoQuxZlQeDGuH4YriCsuw4EsNrZnCY9QqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvTEts84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5278C19421;
-	Tue, 11 Nov 2025 01:17:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H2ksZJAlJJbECUZ+Dn5S9gSFnPYflGC+BAvKM3/5LutLjEf3ZpAb+co8Y94BXxI1M3tHLXjgezFsOqKITPFasr0tsbE9P342Exxi/gGg7F7YYDkMJgQAWqFpBu1wCthgfLr71n6DkLY1AL8F6hzKMuCNpRhyNBhHvujKtUWAiGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06XkUsUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A977C4CEF5;
+	Tue, 11 Nov 2025 01:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823840;
-	bh=0xs34VXVIoxAdLt5ZJsBz1OFgeWNBtBuaUNYU9iFDPI=;
+	s=korg; t=1762823844;
+	bh=2lNlhDhOb7O6S1Ft7rvg8qMajNZApey2i30tqe6AEfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvTEts84OgD7B/HnfE4eTG8WXGdeuwkYxDpD8Wseldpb7H26Ni6BmL1sxQldE3EzH
-	 14EI2oSV517YjGRej6Bjl2zkDv46FOS9qXzMghOqqOPs+YVXLibHzH5fyipe5zyf6R
-	 aXrCNV7cKmaZl5H4Mw9weezIhAJlkbWBzr6MnmnI=
+	b=06XkUsUklU2sTtjYnfZiz6tBMKHaWal9UjV3E57Cq3mUryDJya2KmngI+CxPnqekW
+	 23cjk1TIN9fMNxKL6yqb2lasLDv+wTSP8gAucrr656yj5wRRsauDXg5DwvYEHBgH1x
+	 DfkBq+tVufo0F4TPo6inOEaj/lj5161yUrWXzIx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 382/849] wifi: iwlwifi: mld: trigger mlo scan only when not in EMLSR
-Date: Tue, 11 Nov 2025 09:39:12 +0900
-Message-ID: <20251111004545.669343214@linuxfoundation.org>
+Subject: [PATCH 6.17 383/849] platform/x86/intel-uncore-freq: Fix warning in partitioned system
+Date: Tue, 11 Nov 2025 09:39:13 +0900
+Message-ID: <20251111004545.691949695@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -60,71 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 14a4aca568f6e78af7564c6fc5f1ecc1a5a32c33 ]
+[ Upstream commit 6d47b4f08436cb682fb2644e6265a3897fd42a77 ]
 
-When beacon loss happens or the RSSI drops, trigger MLO scan only
-if not in EMLSR. The link switch was meant to be done when we are
-not in EMLSR and we can try to switch to a better link.
-If in EMLSR, we exit first and then trigger MLO scan.
+A partitioned system configured with only one package and one compute
+die, warning will be generated for duplicate sysfs entry. This typically
+occurs during the platform bring-up phase.
 
-Signed-off-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250826184046.f6ae8e3882cf.I60901c16487371b8e62019bd0bf25c45ab23752f@changeid
+Partitioned systems expose dies, equivalent to TPMI compute domains,
+through the CPUID. Each partitioned system must contains at least one
+compute die per partition, resulting in a minimum of two dies per
+package. Hence the function topology_max_dies_per_package() returns at
+least two, and the condition "topology_max_dies_per_package() > 1"
+prevents the creation of a root domain.
+
+In this case topology_max_dies_per_package() will return 1 and root
+domain will be created for partition 0 and a duplicate sysfs warning
+for partition 1 as both partitions have same package ID.
+
+To address this also check for non zero partition in addition to
+topology_max_dies_per_package() > 1.
+
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://lore.kernel.org/r/20250819211034.3776284-1-srinivas.pandruvada@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/link.c  |  7 +++++--
- drivers/net/wireless/intel/iwlwifi/mld/stats.c | 11 +++++++----
- 2 files changed, 12 insertions(+), 6 deletions(-)
+ .../platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-index 960dcd208f005..131190977d4b0 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-@@ -573,8 +573,11 @@ void iwl_mld_handle_missed_beacon_notif(struct iwl_mld *mld,
- 	if (missed_bcon_since_rx > IWL_MLD_MISSED_BEACONS_THRESHOLD) {
- 		ieee80211_cqm_beacon_loss_notify(vif, GFP_ATOMIC);
+diff --git a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
+index bfcf92aa4d69d..3e531fd1c6297 100644
+--- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
++++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
+@@ -638,7 +638,7 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
  
--		/* try to switch links, no-op if we don't have MLO */
--		iwl_mld_int_mlo_scan(mld, vif);
-+		/* Not in EMLSR and we can't hear the link.
-+		 * Try to switch to a better link. EMLSR case is handled below.
-+		 */
-+		if (!iwl_mld_emlsr_active(vif))
-+			iwl_mld_int_mlo_scan(mld, vif);
- 	}
+ 	auxiliary_set_drvdata(auxdev, tpmi_uncore);
  
- 	/* no more logic if we're not in EMLSR */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/stats.c b/drivers/net/wireless/intel/iwlwifi/mld/stats.c
-index cbc64db5eab6f..7b8709716324a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/stats.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/stats.c
-@@ -379,11 +379,14 @@ static void iwl_mld_update_link_sig(struct ieee80211_vif *vif, int sig,
+-	if (topology_max_dies_per_package() > 1)
++	if (topology_max_dies_per_package() > 1 || plat_info->partition)
+ 		return 0;
  
- 	/* TODO: task=statistics handle CQM notifications */
- 
--	if (sig < IWL_MLD_LOW_RSSI_MLO_SCAN_THRESH)
--		iwl_mld_int_mlo_scan(mld, vif);
--
--	if (!iwl_mld_emlsr_active(vif))
-+	if (!iwl_mld_emlsr_active(vif)) {
-+		/* We're not in EMLSR and our signal is bad,
-+		 * try to switch link maybe. EMLSR will be handled below.
-+		 */
-+		if (sig < IWL_MLD_LOW_RSSI_MLO_SCAN_THRESH)
-+			iwl_mld_int_mlo_scan(mld, vif);
- 		return;
-+	}
- 
- 	/* We are in EMLSR, check if we need to exit */
- 	exit_emlsr_thresh =
+ 	tpmi_uncore->root_cluster.root_domain = true;
 -- 
 2.51.0
 
