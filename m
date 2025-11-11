@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA51CC4AEDA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BB0C4ABE0
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 675704F97B3
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:42:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DB013B058E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2B830EF86;
-	Tue, 11 Nov 2025 01:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F31E92609FD;
+	Tue, 11 Nov 2025 01:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhSzg5eC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6T1b8EG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D212DECB0;
-	Tue, 11 Nov 2025 01:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CDE24466D;
+	Tue, 11 Nov 2025 01:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825045; cv=none; b=VKRs3qHkH5++X4kfSDHpPc1oom5AxaB4ttkh/C4GtLxKJTlXswnIHZM8h+5a2rUX1+DZdVgF3TF9VuuWByOj0TwGdtYioNpY8txoZ5FUe7OWpnMmKua9Bi5qBscw3sYEmbeofKwojv3AzPBvPkZl+VFuSvMX8D/NqIMTIOOseo0=
+	t=1762823930; cv=none; b=FXiehLjiWVoX+jwTSJ1DyFqwRqP6OhtCpzYJRpd73dC1WPaOleXiuDgoY/c6hURiipC9EvCU13NtYKoDJT9/v5Cd4HKA4K9JkU9Dsiik8xKHpigeG6hPvP+5XxubjmjS9fv8up5qTFtc7Nyl8HR0jNXZ4TlaspXQaF90Q7JrWPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825045; c=relaxed/simple;
-	bh=0oFRrTubLnsXkI9wzTMHItsluVvanyHIHKwp2EKq3HY=;
+	s=arc-20240116; t=1762823930; c=relaxed/simple;
+	bh=8iH5CFWg5gONxRHkiGvtGkD3TNOm+tCAtf2Zu/wMv6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GDPxKzR0xAPxLTu6cCtialhoi3QvmIF5uea4FB0RRWqx1tJqcJ2qvkiplzDaJOuc/p2HFP+t7P3Z0aSfd2W4tio9g0AO3xoY9lFNlmcSl8bvDOgFI2Akld+Ri4dEnpM25q2uH3Tg19fzoHytcxa1Zskl3lMqXlhk1XuUxJ0S7aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhSzg5eC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66FCC4CEFB;
-	Tue, 11 Nov 2025 01:37:24 +0000 (UTC)
+	 MIME-Version; b=hSJuABB0bhRXanrTfeEwTceQb5rIKcrhROnTi7aerh7FLO9bmcsbwWydHFnazWSOQ0sIZ88wXdPoyZX3h+jomw/4lCzfupOM1Y0yqJ6S0RFK+nx06q9meDe22vgw/NmxjyQfTX2LFQ+uFgj0NgZv6xuNB/Xgr/eirw/dOFSYGAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6T1b8EG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F412CC2BCB0;
+	Tue, 11 Nov 2025 01:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825045;
-	bh=0oFRrTubLnsXkI9wzTMHItsluVvanyHIHKwp2EKq3HY=;
+	s=korg; t=1762823930;
+	bh=8iH5CFWg5gONxRHkiGvtGkD3TNOm+tCAtf2Zu/wMv6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yhSzg5eCcVDeMqFO1waYlCJFi7uXBbsWZIHzUlGwILjWsKnhbjf1tELvcVcliIVZF
-	 GQRx5M0ImzliBR6XGfyeuTr5kLT1T/R0MYhbDOYqP3358FbAsVrXx4UK6T1FCjydHy
-	 v+bawFPAlCkaU7rOiwW3XQOWjYfGXoLDcmTuH82Q=
+	b=k6T1b8EGKm1+1ytgvSMkmZIm3fYtSynkimI7C+jWROhor5oUOavjO3WLi6tjbckEP
+	 ZMW67t9RJJ8IROgUYH2RL5dCBakZfKIsLqwFlOMUHK2rKwOpi2/uX8wI2lwkvPNaJo
+	 feNe5sktqjg+a/FWiEJ7oZqM1VrTcE62tPazw1cE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomer Tayar <tomer.tayar@intel.com>,
-	Koby Elbaz <koby.elbaz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 637/849] accel/habanalabs: return ENOMEM if less than requested pages were pinned
-Date: Tue, 11 Nov 2025 09:43:27 +0900
-Message-ID: <20251111004551.828716437@linuxfoundation.org>
+	Yunseong Kim <ysk@kzalloc.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>
+Subject: [PATCH 6.12 352/565] crypto: ccp - Fix incorrect payload size calculation in psp_poulate_hsti()
+Date: Tue, 11 Nov 2025 09:43:28 +0900
+Message-ID: <20251111004534.792492679@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomer Tayar <tomer.tayar@intel.com>
+From: Yunseong Kim <ysk@kzalloc.com>
 
-[ Upstream commit 9f5067531c9b79318c4e48a933cb2694f53f3de2 ]
+[ Upstream commit 2b0dc40ac6ca16ee0c489927f4856cf9cd3874c7 ]
 
-EFAULT is currently returned if less than requested user pages are
-pinned. This value means a "bad address" which might be confusing to
-the user, as the address of the given user memory is not necessarily
-"bad".
+payload_size field of the request header is incorrectly calculated using
+sizeof(req). Since 'req' is a pointer (struct hsti_request *), sizeof(req)
+returns the size of the pointer itself (e.g., 8 bytes on a 64-bit system),
+rather than the size of the structure it points to. This leads to an
+incorrect payload size being sent to the Platform Security Processor (PSP),
+potentially causing the HSTI query command to fail.
 
-Modify the return value to ENOMEM, as "out of memory" is more suitable
-in this case.
+Fix this by using sizeof(*req) to correctly calculate the size of the
+struct hsti_request.
 
-Signed-off-by: Tomer Tayar <tomer.tayar@intel.com>
-Reviewed-by: Koby Elbaz <koby.elbaz@intel.com>
-Signed-off-by: Koby Elbaz <koby.elbaz@intel.com>
+Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>> ---
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/habanalabs/common/memory.c | 2 +-
+ drivers/crypto/ccp/hsti.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/accel/habanalabs/common/memory.c b/drivers/accel/habanalabs/common/memory.c
-index 61472a381904e..48d2d598a3876 100644
---- a/drivers/accel/habanalabs/common/memory.c
-+++ b/drivers/accel/habanalabs/common/memory.c
-@@ -2332,7 +2332,7 @@ static int get_user_memory(struct hl_device *hdev, u64 addr, u64 size,
- 		if (rc < 0)
- 			goto destroy_pages;
- 		npages = rc;
--		rc = -EFAULT;
-+		rc = -ENOMEM;
- 		goto put_pages;
- 	}
- 	userptr->npages = npages;
+diff --git a/drivers/crypto/ccp/hsti.c b/drivers/crypto/ccp/hsti.c
+index 1b39a4fb55c06..0e6b73b55dbf7 100644
+--- a/drivers/crypto/ccp/hsti.c
++++ b/drivers/crypto/ccp/hsti.c
+@@ -88,7 +88,7 @@ static int psp_poulate_hsti(struct psp_device *psp)
+ 	if (!req)
+ 		return -ENOMEM;
+ 
+-	req->header.payload_size = sizeof(req);
++	req->header.payload_size = sizeof(*req);
+ 
+ 	ret = psp_send_platform_access_msg(PSP_CMD_HSTI_QUERY, (struct psp_request *)req);
+ 	if (ret)
 -- 
 2.51.0
 
