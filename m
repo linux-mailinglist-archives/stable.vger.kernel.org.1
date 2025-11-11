@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-194312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91DA3C4B250
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:02:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E007EC4AC3A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B96613BB65B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:49:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF0941889645
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BA4C347BBF;
-	Tue, 11 Nov 2025 01:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21C4261B77;
+	Tue, 11 Nov 2025 01:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uchykxIR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWpPVtZN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF2C2DC776;
-	Tue, 11 Nov 2025 01:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C95327E7EB;
+	Tue, 11 Nov 2025 01:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825307; cv=none; b=F6TLUt+3niLYq9PhGv4/nbEno2EG+FD9Z8V9GOT+3cSTnG5c5P9kfXDYF+1hi6jwPyaclpruwxaaAyU2oQ2aPLyIK095ADQBskWnQlVBNQoAE5qJplvEO00B8WOmwJQY68C5xs/kJlmS15I0KdJWottm7XZrPfqnNGAcjknVzPo=
+	t=1762824511; cv=none; b=R1/1zh+9veb1MKn2DskGZ2Pad5pytXymE346fH7En7Nz5h4qY7HMM+hTuWE6v3qKHifZNqtwZfqloJqZOavozTnBAQsb8XYjbZNoe17UOM0YrTiPLi4sEo/2oHl3Bn0za504wttbmh3MGf3J40hDMp2EB7Vg3F52Ny97N4e3fGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825307; c=relaxed/simple;
-	bh=ZIH09JvRoRtFqxD+LTT/JXPwpD7zZfm2AgCaF4NdxsE=;
+	s=arc-20240116; t=1762824511; c=relaxed/simple;
+	bh=NR19GgoEt5R5wjbBwpxCsYNmWZnPmFYBpkD6cqdUnpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/npcXrSzxK+EmIXRTVFlUkryaOxIj5+21ycId2fwKz8MWlGfwFiYvhTEutwAg3qKEgXTgW9SQs5jFDZCOBmXCzqKWKuGKuZWlL1zvMdCP4sJGhuNyskKQ8r2VRWyFNEY+RBxMk6qTM7M8yNWGI/DFaIc3+P0J/GNGpHchdDOuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uchykxIR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E24FC116B1;
-	Tue, 11 Nov 2025 01:41:46 +0000 (UTC)
+	 MIME-Version; b=la32DaMQ04GfFvOamAnPyGN33fhp9XVvrqvZw2TS3MbleKKs7nvIbQp4JW9Go+6d68g8Hea8Z1HockMcXX+vt6oV4UJYeiczcxf4Wio0Ak0QSiSN0MMUr+0BcFpd0D/F83TEokbYhFXQTEVubQFvxTG61jQzxhs1f7TB2QQRshA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWpPVtZN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3DBC116B1;
+	Tue, 11 Nov 2025 01:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825306;
-	bh=ZIH09JvRoRtFqxD+LTT/JXPwpD7zZfm2AgCaF4NdxsE=;
+	s=korg; t=1762824511;
+	bh=NR19GgoEt5R5wjbBwpxCsYNmWZnPmFYBpkD6cqdUnpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uchykxIRyhL+7AxuSUTa2j8iLVARky0ymPGaksEbzJTvyuU+gFAei+aUy67cgYqTe
-	 fZKwrRm9+Ciky1y8LcabESn1N3aWU6HxqELBLf9SoLanS0WsVQt8Gz7bg//9AJxotx
-	 oGOwqkqpUgtt1oZNCcj+pU8RrrCew/zvdVY6HXvY=
+	b=QWpPVtZNfT+dRpFkt4nHWzCm5G0MAyYldMEs4FcBGcGY/ne8AIvXHLcnRrZwQjZmt
+	 OPJbrm+TFd5gT+jYLRBNGf+mVq0fQGO3AgEcwAvYqfvL1CwbxsTv7y8xXB+VaQs3mM
+	 wLD1zVv7Y7m81kiM26kicuL+sI0Ckjyd6o4y5syU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.17 746/849] Revert "wifi: ath10k: avoid unnecessary wait for service ready message"
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 460/565] RDMA/hns: Fix wrong WQE data when QP wraps around
 Date: Tue, 11 Nov 2025 09:45:16 +0900
-Message-ID: <20251111004554.473220104@linuxfoundation.org>
+Message-ID: <20251111004537.245806211@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-commit 2469bb6a6af944755a7d7daf66be90f3b8decbf9 upstream.
+[ Upstream commit fe9622011f955e35ba84d3af7b2f2fed31cf8ca1 ]
 
-This reverts commit 51a73f1b2e56b0324b4a3bb8cebc4221b5be4c7a.
+When QP wraps around, WQE data from the previous use at the same
+position still remains as driver does not clear it. The WQE field
+layout differs across different opcodes, causing that the fields
+that are not explicitly assigned for the current opcode retain
+stale values, and are issued to HW by mistake. Such fields are as
+follows:
 
-Although this commit benefits QCA6174, it breaks QCA988x and
-QCA9984 [1][2]. Since it is not likely to root cause/fix this
-issue in a short time, revert it to get those chips back.
+* MSG_START_SGE_IDX field in ATOMIC WQE
+* BLOCK_SIZE and ZBVA fields in FRMR WQE
+* DirectWQE fields when DirectWQE not used
 
-Compile tested only.
+For ATOMIC WQE, always set the latest sge index in MSG_START_SGE_IDX
+as required by HW.
 
-Fixes: 51a73f1b2e56 ("wifi: ath10k: avoid unnecessary wait for service ready message")
-Link: https://lore.kernel.org/ath10k/6d41bc00602c33ffbf68781f563ff2e6c6915a3e.camel@gmail.com # [1]
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220671 # [2]
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251027-ath10k-revert-polling-first-change-v1-1-89aaf3bcbfa1@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For FRMR WQE and DirectWQE, clear only those unassigned fields
+instead of the entire WQE to avoid performance penalty.
+
+Fixes: 68a997c5d28c ("RDMA/hns: Add FRMR support for hip08")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20251016114051.1963197-4-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi.c |   39 +++++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 19 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -1764,32 +1764,33 @@ void ath10k_wmi_put_wmi_channel(struct a
- 
- int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
- {
--	unsigned long timeout = jiffies + WMI_SERVICE_READY_TIMEOUT_HZ;
- 	unsigned long time_left, i;
- 
--	/* Sometimes the PCI HIF doesn't receive interrupt
--	 * for the service ready message even if the buffer
--	 * was completed. PCIe sniffer shows that it's
--	 * because the corresponding CE ring doesn't fires
--	 * it. Workaround here by polling CE rings. Since
--	 * the message could arrive at any time, continue
--	 * polling until timeout.
--	 */
--	do {
-+	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
-+						WMI_SERVICE_READY_TIMEOUT_HZ);
-+	if (!time_left) {
-+		/* Sometimes the PCI HIF doesn't receive interrupt
-+		 * for the service ready message even if the buffer
-+		 * was completed. PCIe sniffer shows that it's
-+		 * because the corresponding CE ring doesn't fires
-+		 * it. Workaround here by polling CE rings once.
-+		 */
-+		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
-+
- 		for (i = 0; i < CE_COUNT; i++)
- 			ath10k_hif_send_complete_check(ar, i, 1);
- 
--		/* The 100 ms granularity is a tradeoff considering scheduler
--		 * overhead and response latency
--		 */
- 		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
--							msecs_to_jiffies(100));
--		if (time_left)
--			return 0;
--	} while (time_before(jiffies, timeout));
-+							WMI_SERVICE_READY_TIMEOUT_HZ);
-+		if (!time_left) {
-+			ath10k_warn(ar, "polling timed out\n");
-+			return -ETIMEDOUT;
-+		}
-+
-+		ath10k_warn(ar, "service ready completion received, continuing normally\n");
-+	}
- 
--	ath10k_warn(ar, "failed to receive service ready completion\n");
--	return -ETIMEDOUT;
-+	return 0;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 6a6daca9f606c..f9356cb89497b 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -162,6 +162,8 @@ static void set_frmr_seg(struct hns_roce_v2_rc_send_wqe *rc_sq_wqe,
+ 	hr_reg_write(fseg, FRMR_PBL_BUF_PG_SZ,
+ 		     to_hr_hw_page_shift(mr->pbl_mtr.hem_cfg.buf_pg_shift));
+ 	hr_reg_clear(fseg, FRMR_BLK_MODE);
++	hr_reg_clear(fseg, FRMR_BLOCK_SIZE);
++	hr_reg_clear(fseg, FRMR_ZBVA);
  }
  
- int ath10k_wmi_wait_for_unified_ready(struct ath10k *ar)
+ static void set_atomic_seg(const struct ib_send_wr *wr,
+@@ -336,9 +338,6 @@ static int set_rwqe_data_seg(struct ib_qp *ibqp, const struct ib_send_wr *wr,
+ 	int j = 0;
+ 	int i;
+ 
+-	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_MSG_START_SGE_IDX,
+-		     (*sge_ind) & (qp->sge.sge_cnt - 1));
+-
+ 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_INLINE,
+ 		     !!(wr->send_flags & IB_SEND_INLINE));
+ 	if (wr->send_flags & IB_SEND_INLINE)
+@@ -583,6 +582,9 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
+ 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_CQE,
+ 		     (wr->send_flags & IB_SEND_SIGNALED) ? 1 : 0);
+ 
++	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_MSG_START_SGE_IDX,
++		     curr_idx & (qp->sge.sge_cnt - 1));
++
+ 	if (wr->opcode == IB_WR_ATOMIC_CMP_AND_SWP ||
+ 	    wr->opcode == IB_WR_ATOMIC_FETCH_AND_ADD) {
+ 		if (msg_len != ATOMIC_WR_LEN)
+@@ -731,6 +733,9 @@ static int hns_roce_v2_post_send(struct ib_qp *ibqp,
+ 		owner_bit =
+ 		       ~(((qp->sq.head + nreq) >> ilog2(qp->sq.wqe_cnt)) & 0x1);
+ 
++		/* RC and UD share the same DirectWQE field layout */
++		((struct hns_roce_v2_rc_send_wqe *)wqe)->byte_4 = 0;
++
+ 		/* Corresponding to the QP type, wqe process separately */
+ 		if (ibqp->qp_type == IB_QPT_RC)
+ 			ret = set_rc_wqe(qp, wr, wqe, &sge_idx, owner_bit);
+-- 
+2.51.0
+
 
 
 
