@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-194022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297D9C4AEA7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C000CC4A749
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 025E93B14AF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3EA218837E8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056B32D94B7;
-	Tue, 11 Nov 2025 01:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2ADB340A51;
+	Tue, 11 Nov 2025 01:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mlv7whHc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GEg0yjG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B8FA944;
-	Tue, 11 Nov 2025 01:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D18D33C534;
+	Tue, 11 Nov 2025 01:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824619; cv=none; b=tNslKvERpQiA+iDaKUJBxRGCFIf3kOCywP0R9KF/OxXrozqveGf4nNl3gxq86BEwExAHG5xKsBj5vepwZ8RuxynTn5sIBdD8JXWGbh1ZmUAaw/Szbt+gKIqjfHBMmTUTf6LAAjzQUJWCtTG9jPX2EtwZL6vga8NQsEA5plSZcn8=
+	t=1762823456; cv=none; b=QbAOKNo7/DzJ+K9SFXFcuBBkICX9UU/GSQZarwGhmrZJZA+ONOig3NLP9J2OZKcIzVIQNQXZ3QzLuNfO7kwT1mBDSZ1UD96rg5CIMRrJeP5O62jyXIOD5KzojehjM9JX3lRFVtq1uVZ98+PTq2XO5+I0c4zlc3ax2nfI2HgdPiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824619; c=relaxed/simple;
-	bh=PIMtKJmhSBoKcnrpudUKp5XQ+6G6m7QAfF6Y3uX/Qhk=;
+	s=arc-20240116; t=1762823456; c=relaxed/simple;
+	bh=wsm62C6ED7zR6GQa05AiTQVT3c9LFW/x2I9400k8GmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YyqnBIqFgmdl0U9N4sIUrnf6nr4zoExik1gnHjQn/I7oxPSi1unIQaUR8Fi1q/1twxGSrCQfX1yo5OkauQSqsci9QbGjhAqxEhWZa1funHgDYoyf9jxx46dEyMkfdDtF7ao3QPeZc6+j/GG4Rhc4u0myQaCdOe0fiVGoxf6wAps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mlv7whHc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57ED1C4CEF5;
-	Tue, 11 Nov 2025 01:30:19 +0000 (UTC)
+	 MIME-Version; b=LeYVu5BJ6JCoHJUJbIuSXslwrXrwx3ujSp/+cVxNtcB9nkrhFJ14Tddu0GebL3oRmoOoegWFnlK+bEk1i7mO6bifYVzqGTdwykZN+V5XWEd/qBafqcuq45fnVgCDN5UmMGQacARICNFssKnU+C2gLxMn127ahQSG3QSW9q8eMYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GEg0yjG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F81EC19424;
+	Tue, 11 Nov 2025 01:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824619;
-	bh=PIMtKJmhSBoKcnrpudUKp5XQ+6G6m7QAfF6Y3uX/Qhk=;
+	s=korg; t=1762823456;
+	bh=wsm62C6ED7zR6GQa05AiTQVT3c9LFW/x2I9400k8GmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mlv7whHcw00K4ypGaVcIjAlL0wSi1JDXFYVPakkxIw8KXpP6qa9ggjvQhZ26bfSmt
-	 JHw3HHcuJxwkDu40O9JLc4n4o1PmmpIJ8eeJQ1VMQ8svagUXRHNEtFIT+quT+FiLs7
-	 aZSKGJxmz7w/9TXLmD8y2CC1ZRfKFtpKKv4/wg3k=
+	b=0GEg0yjGkhTS/NXQqQw4kVaompehdoe2wRPbSwygwtAkurw2pujhU2X9p4UK4/JTa
+	 Pu7NPmibSKEWC32V+OIq38B3DpWrAAw4B8jLO+VwDM7VGfRGtjlcVRgdBBUFWv4qnU
+	 DAPt2vhu9WCwqkFDCkdzRDvQg2Z6td/pcVWmvQm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Thomas Graf <tgraf@suug.ch>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 535/849] net/cls_cgroup: Fix task_get_classid() during qdisc run
-Date: Tue, 11 Nov 2025 09:41:45 +0900
-Message-ID: <20251111004549.350552938@linuxfoundation.org>
+Subject: [PATCH 6.12 250/565] scsi: mpi3mr: Fix controller init failure on fault during queue creation
+Date: Tue, 11 Nov 2025 09:41:46 +0900
+Message-ID: <20251111004532.531604839@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,109 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
 
-[ Upstream commit 66048f8b3cc7e462953c04285183cdee43a1cb89 ]
+[ Upstream commit 829fa1582b6ff607b0e2fe41ba1c45c77f686618 ]
 
-During recent testing with the netem qdisc to inject delays into TCP
-traffic, we observed that our CLS BPF program failed to function correctly
-due to incorrect classid retrieval from task_get_classid(). The issue
-manifests in the following call stack:
+Firmware can enter a transient fault while creating operational queues.
+The driver fails the load immediately.
 
-        bpf_get_cgroup_classid+5
-        cls_bpf_classify+507
-        __tcf_classify+90
-        tcf_classify+217
-        __dev_queue_xmit+798
-        bond_dev_queue_xmit+43
-        __bond_start_xmit+211
-        bond_start_xmit+70
-        dev_hard_start_xmit+142
-        sch_direct_xmit+161
-        __qdisc_run+102             <<<<< Issue location
-        __dev_xmit_skb+1015
-        __dev_queue_xmit+637
-        neigh_hh_output+159
-        ip_finish_output2+461
-        __ip_finish_output+183
-        ip_finish_output+41
-        ip_output+120
-        ip_local_out+94
-        __ip_queue_xmit+394
-        ip_queue_xmit+21
-        __tcp_transmit_skb+2169
-        tcp_write_xmit+959
-        __tcp_push_pending_frames+55
-        tcp_push+264
-        tcp_sendmsg_locked+661
-        tcp_sendmsg+45
-        inet_sendmsg+67
-        sock_sendmsg+98
-        sock_write_iter+147
-        vfs_write+786
-        ksys_write+181
-        __x64_sys_write+25
-        do_syscall_64+56
-        entry_SYSCALL_64_after_hwframe+100
+Add a retry loop that checks controller status and history bit after
+queue creation. If either indicates a fault, retry init up to a set
+limit before failing.
 
-The problem occurs when multiple tasks share a single qdisc. In such cases,
-__qdisc_run() may transmit skbs created by different tasks. Consequently,
-task_get_classid() retrieves an incorrect classid since it references the
-current task's context rather than the skb's originating task.
-
-Given that dev_queue_xmit() always executes with bh disabled, we can use
-softirq_count() instead to obtain the correct classid.
-
-The simple steps to reproduce this issue:
-1. Add network delay to the network interface:
-  such as: tc qdisc add dev bond0 root netem delay 1.5ms
-2. Build two distinct net_cls cgroups, each with a network-intensive task
-3. Initiate parallel TCP streams from both tasks to external servers.
-
-Under this specific condition, the issue reliably occurs. The kernel
-eventually dequeues an SKB that originated from Task-A while executing in
-the context of Task-B.
-
-It is worth noting that it will change the established behavior for a
-slightly different scenario:
-
-  <sock S is created by task A>
-  <class ID for task A is changed>
-  <skb is created by sock S xmit and classified>
-
-prior to this patch the skb will be classified with the 'new' task A
-classid, now with the old/original one. The bpf_get_cgroup_classid_curr()
-function is a more appropriate choice for this case.
-
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Thomas Graf <tgraf@suug.ch>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250902062933.30087-1-laoar.shao@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Link: https://lore.kernel.org/r/20250820084138.228471-3-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/cls_cgroup.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/include/net/cls_cgroup.h b/include/net/cls_cgroup.h
-index 7e78e7d6f0152..668aeee9b3f66 100644
---- a/include/net/cls_cgroup.h
-+++ b/include/net/cls_cgroup.h
-@@ -63,7 +63,7 @@ static inline u32 task_get_classid(const struct sk_buff *skb)
- 	 * calls by looking at the number of nested bh disable calls because
- 	 * softirqs always disables bh.
- 	 */
--	if (in_serving_softirq()) {
-+	if (softirq_count()) {
- 		struct sock *sk = skb_to_full_sk(skb);
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index 82cbe98e8a044..acb2f7b04fb8f 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -2337,6 +2337,8 @@ static int mpi3mr_create_op_queues(struct mpi3mr_ioc *mrioc)
+ {
+ 	int retval = 0;
+ 	u16 num_queues = 0, i = 0, msix_count_op_q = 1;
++	u32 ioc_status;
++	enum mpi3mr_iocstate ioc_state;
  
- 		/* If there is an sock_cgroup_classid we'll use that. */
+ 	num_queues = min_t(int, mrioc->facts.max_op_reply_q,
+ 	    mrioc->facts.max_op_req_q);
+@@ -2392,6 +2394,14 @@ static int mpi3mr_create_op_queues(struct mpi3mr_ioc *mrioc)
+ 		retval = -1;
+ 		goto out_failed;
+ 	}
++	ioc_status = readl(&mrioc->sysif_regs->ioc_status);
++	ioc_state = mpi3mr_get_iocstate(mrioc);
++	if ((ioc_status & MPI3_SYSIF_IOC_STATUS_RESET_HISTORY) ||
++	    ioc_state != MRIOC_STATE_READY) {
++		mpi3mr_print_fault_info(mrioc);
++		retval = -1;
++		goto out_failed;
++	}
+ 	mrioc->num_op_reply_q = mrioc->num_op_req_q = i;
+ 	ioc_info(mrioc,
+ 	    "successfully created %d operational queue pairs(default/polled) queue = (%d/%d)\n",
 -- 
 2.51.0
 
