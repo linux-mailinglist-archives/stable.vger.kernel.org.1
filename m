@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-193068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35C8C49EFF
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18D4C49F0E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A79D188A383
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA1081889B67
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEF124EA90;
-	Tue, 11 Nov 2025 00:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D962E244693;
+	Tue, 11 Nov 2025 00:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYlG+GGS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaZvre7x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B89E2AE8D;
-	Tue, 11 Nov 2025 00:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972C34C97;
+	Tue, 11 Nov 2025 00:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822224; cv=none; b=sZqZl6q4t7naA4qMJx5S29LRv6KvLPpUOMfsXpzgo0Vhl5SAiGFBGjKIYbMNG/uz1AoRl7hc8A9T19R582t9vrw3J+CLu5NFVMsnCKfFDl1oZpAtMZAZorU1I6vz6UhEl/nSUTHQ359enqX3BFK/tVZBox2SyvQqvdOfKLdZ+s4=
+	t=1762822229; cv=none; b=DHclDOXmbhH2W1lPXZqdTA+JwS6bX7WSeZrisxXSi8qzJKhDfopZ/SqouRkNvivy5bkfOARNBlj7ZnJPIQHAhImjLoUN1Em56lx7IuU/yliYIMXRqqFEAPU1Exi7wUN/+RdIjitsKd7vDjXj/v3OyY+iqLqrd5bjTebQAYwP25k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822224; c=relaxed/simple;
-	bh=SG6532gCO7hawQ2BgbHHYJB193iv2g3sOsl7WY1WB0E=;
+	s=arc-20240116; t=1762822229; c=relaxed/simple;
+	bh=aQH/kLC0dg2EojRf8H0IM1GDWh81HFtBT+uSCTjL8/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8N5UkAWdOMvj8ylvJgbujWGwq3beWUEBZEs93qRPt99zfKFQkdAUNxx/KDADZJwf4CQ0fxwceutrHSMqavedniA2+FYqop9BUMrGsiX5HTTg0SVCDcSTH7DXj0SiEX+cz1jQz0gF0NyRVpfD+H4xcRSbty3DaJ88lIKBL54aHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYlG+GGS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2956AC16AAE;
-	Tue, 11 Nov 2025 00:50:24 +0000 (UTC)
+	 MIME-Version; b=ptJ5/xJ4JkKrFrG1zn/qKvE46HAA+mduYN1nUke/G83rsPC/DjG64a4h3oSVrngicXvSuXDGO91WRL/H00dNw5lnVZR4y1Nms0JLb56Jof08kemWAOe5vHEQEDAa8ifHsZ7kv3LIrTJZOD7XDdH8NcOKgKhN7HD7GWTEqSBuSP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaZvre7x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0D3C116B1;
+	Tue, 11 Nov 2025 00:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822224;
-	bh=SG6532gCO7hawQ2BgbHHYJB193iv2g3sOsl7WY1WB0E=;
+	s=korg; t=1762822229;
+	bh=aQH/kLC0dg2EojRf8H0IM1GDWh81HFtBT+uSCTjL8/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YYlG+GGSZu1JSUviFqB9+tR26GnK8wpcWY85qd5eQjaaFLMIh8Ar+2D5QveL73l5v
-	 fG5CxBISzA65CtaZ6Mw7XDoS3XFnu4idLAnygRsjGDXzMqoEhk4Jl7OKREI8ER91vh
-	 itFzhcEI0P1ca1MHrPxca07GIRMM2LnZp6kvzho4=
+	b=EaZvre7xbRfgmMQ8NNjk/wU0fzXLnjhAwW6otfD3WHyfbglY55q5nV4+nxQqZnuLc
+	 C6kRp6gzYE7GgJalMkzOKPsh/41gOXe+KuGZMLH3fKEyktrLXPkEN0cw+oeF+vTk8k
+	 GNQ4o3LihrUGKXzjZvs/JTwpmUmMohWwWvlfmgtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 061/849] Bluetooth: MGMT: fix crash in set_mesh_sync and set_mesh_complete
-Date: Tue, 11 Nov 2025 09:33:51 +0900
-Message-ID: <20251111004537.908463619@linuxfoundation.org>
+Subject: [PATCH 6.17 062/849] Bluetooth: ISO: Fix another instance of dst_type handling
+Date: Tue, 11 Nov 2025 09:33:52 +0900
+Message-ID: <20251111004537.931894668@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,112 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit e8785404de06a69d89dcdd1e9a0b6ea42dc6d327 ]
+[ Upstream commit c403da5e98b04a2aec9cfb25cbeeb28d7ce29975 ]
 
-There is a BUG: KASAN: stack-out-of-bounds in set_mesh_sync due to
-memcpy from badly declared on-stack flexible array.
+Socket dst_type cannot be directly assigned to hci_conn->type since
+there domain is different which may lead to the wrong address type being
+used.
 
-Another crash is in set_mesh_complete() due to double list_del via
-mgmt_pending_valid + mgmt_pending_remove.
-
-Use DEFINE_FLEX to declare the flexible array right, and don't memcpy
-outside bounds.
-
-As mgmt_pending_valid removes the cmd from list, use mgmt_pending_free,
-and also report status on error.
-
-Fixes: 302a1f674c00d ("Bluetooth: MGMT: Fix possible UAFs")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Fixes: 6a5ad251b7cd ("Bluetooth: ISO: Fix possible circular locking dependency")
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/mgmt.h |  2 +-
- net/bluetooth/mgmt.c         | 26 +++++++++++++++-----------
- 2 files changed, 16 insertions(+), 12 deletions(-)
+ net/bluetooth/iso.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/bluetooth/mgmt.h b/include/net/bluetooth/mgmt.h
-index 3575cd16049a8..6095cbb03811d 100644
---- a/include/net/bluetooth/mgmt.h
-+++ b/include/net/bluetooth/mgmt.h
-@@ -848,7 +848,7 @@ struct mgmt_cp_set_mesh {
- 	__le16 window;
- 	__le16 period;
- 	__u8   num_ad_types;
--	__u8   ad_types[];
-+	__u8   ad_types[] __counted_by(num_ad_types);
- } __packed;
- #define MGMT_SET_MESH_RECEIVER_SIZE	6
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 4351b0b794e57..6e2923b301505 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -2035,7 +2035,13 @@ static void iso_conn_ready(struct iso_conn *conn)
+ 		}
  
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index a3d16eece0d23..24e335e3a7271 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -2175,19 +2175,24 @@ static void set_mesh_complete(struct hci_dev *hdev, void *data, int err)
- 	sk = cmd->sk;
- 
- 	if (status) {
-+		mgmt_cmd_status(cmd->sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
-+				status);
- 		mgmt_pending_foreach(MGMT_OP_SET_MESH_RECEIVER, hdev, true,
- 				     cmd_status_rsp, &status);
--		return;
-+		goto done;
- 	}
- 
--	mgmt_pending_remove(cmd);
- 	mgmt_cmd_complete(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER, 0, NULL, 0);
+ 		bacpy(&iso_pi(sk)->dst, &hcon->dst);
+-		iso_pi(sk)->dst_type = hcon->dst_type;
 +
-+done:
-+	mgmt_pending_free(cmd);
- }
- 
- static int set_mesh_sync(struct hci_dev *hdev, void *data)
- {
- 	struct mgmt_pending_cmd *cmd = data;
--	struct mgmt_cp_set_mesh cp;
-+	DEFINE_FLEX(struct mgmt_cp_set_mesh, cp, ad_types, num_ad_types,
-+		    sizeof(hdev->mesh_ad_types));
- 	size_t len;
- 
- 	mutex_lock(&hdev->mgmt_pending_lock);
-@@ -2197,27 +2202,26 @@ static int set_mesh_sync(struct hci_dev *hdev, void *data)
- 		return -ECANCELED;
- 	}
- 
--	memcpy(&cp, cmd->param, sizeof(cp));
-+	len = cmd->param_len;
-+	memcpy(cp, cmd->param, min(__struct_size(cp), len));
- 
- 	mutex_unlock(&hdev->mgmt_pending_lock);
- 
--	len = cmd->param_len;
--
- 	memset(hdev->mesh_ad_types, 0, sizeof(hdev->mesh_ad_types));
- 
--	if (cp.enable)
-+	if (cp->enable)
- 		hci_dev_set_flag(hdev, HCI_MESH);
- 	else
- 		hci_dev_clear_flag(hdev, HCI_MESH);
- 
--	hdev->le_scan_interval = __le16_to_cpu(cp.period);
--	hdev->le_scan_window = __le16_to_cpu(cp.window);
-+	hdev->le_scan_interval = __le16_to_cpu(cp->period);
-+	hdev->le_scan_window = __le16_to_cpu(cp->window);
- 
--	len -= sizeof(cp);
-+	len -= sizeof(struct mgmt_cp_set_mesh);
- 
- 	/* If filters don't fit, forward all adv pkts */
- 	if (len <= sizeof(hdev->mesh_ad_types))
--		memcpy(hdev->mesh_ad_types, cp.ad_types, len);
-+		memcpy(hdev->mesh_ad_types, cp->ad_types, len);
- 
- 	hci_update_passive_scan_sync(hdev);
- 	return 0;
++		/* Convert from HCI to three-value type */
++		if (hcon->dst_type == ADDR_LE_DEV_PUBLIC)
++			iso_pi(sk)->dst_type = BDADDR_LE_PUBLIC;
++		else
++			iso_pi(sk)->dst_type = BDADDR_LE_RANDOM;
++
+ 		iso_pi(sk)->sync_handle = iso_pi(parent)->sync_handle;
+ 		memcpy(iso_pi(sk)->base, iso_pi(parent)->base, iso_pi(parent)->base_len);
+ 		iso_pi(sk)->base_len = iso_pi(parent)->base_len;
 -- 
 2.51.0
 
