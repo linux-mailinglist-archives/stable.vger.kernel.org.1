@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-193885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59578C4A8D2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:31:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2116C4AFE8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:52:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CC7FC34C59B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FCAF1890A73
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D502E6CA4;
-	Tue, 11 Nov 2025 01:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC82D30748A;
+	Tue, 11 Nov 2025 01:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7WMTddK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xq55T6Z6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F1A1D86FF;
-	Tue, 11 Nov 2025 01:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E4C26561D;
+	Tue, 11 Nov 2025 01:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824236; cv=none; b=lgmMwatERuRP5+A66bFsAK8Y5nq5dlbZedXU7PBfBuOzjuP9HOBkD4D4q0BBkpZ6kKUNaWvZQhuBRaGqX79mQ6eFta23S9UfGrcxI9yFQ1qn0F9xUXX1P5RuDezdpARw3FYO+x9x5uJeedeDXNHtbr6og4keCU7XZnFIL40cQss=
+	t=1762825200; cv=none; b=InuJ7T3KIBTU6nfOVWEDAkKTpDBBTak0+VOcLAX6gWk3FHFZwQAKjBB6S8exin3B/mc+sJASO5FdBijv9GGOu0cqxLCglzGcQs3WjjlPob/X6C9EfSvVQMkGrU0rnMGAN9aK10NPzIV+KIGvWLNWjpvF3wjz3WDaE6tbdNXuEVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824236; c=relaxed/simple;
-	bh=BPh7mlN8IOz/sA3PAIH4dtZdIzsOBPvCAAUj6DacZjQ=;
+	s=arc-20240116; t=1762825200; c=relaxed/simple;
+	bh=piSe34lQPA0hJv5c4YyvKrmVfGvftA5CRwqiqTaoUYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHrwm5WeceVguTgKB4Kg6RqFywOjCYGxUh4wW6+y5J/Gm3l/m1/CdABsn7R+FJVBV+4ateL21K+zdaQHoRwGR2t8jEOPqyM2BEoHIqzoclIXE0YF5Pc3lNa4/U0i/JKFDckt++LIxYAAO4DsZ7zpEtrH3oN6ioh6LqKissmz5DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7WMTddK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74095C19424;
-	Tue, 11 Nov 2025 01:23:55 +0000 (UTC)
+	 MIME-Version; b=bKRpmY2Wisrukv6euqZLYethitu/7ofuMJlHsUl8+hc49Gst63HV7Gp0eudjWlGh+lNjb/hveqsOHCfeGu9O1hLJHNmotUlYJKnOqY2OeWJ1iMVprWee+E5ogztGHlO3RyJCtbznaUgOQckwWOOFhMgfxKKrIpoRAt9bP89bWRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xq55T6Z6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7B6C113D0;
+	Tue, 11 Nov 2025 01:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824235;
-	bh=BPh7mlN8IOz/sA3PAIH4dtZdIzsOBPvCAAUj6DacZjQ=;
+	s=korg; t=1762825200;
+	bh=piSe34lQPA0hJv5c4YyvKrmVfGvftA5CRwqiqTaoUYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7WMTddKppJAX4nM97xDGaR9GkiAFQUSrbxvP2OXgFxlqhhc3+C58pmw7no5s1wBW
-	 eduy5VSWFcAnIftshKhKppxfIfy8ekqDYMLcifOxR900LtKBuKrMyXFtcPPT14gvnf
-	 E0Locj3LdehsZDVi4jHAsq7aeuqtjc8XiUoB2S3Y=
+	b=xq55T6Z6IutYhCSZrx3MNPTFIwhQ4dagRKWJs0z/5IdqKmsZexzW03LDB6Py0RItT
+	 RtNXRrDJF0idq7T23s3vPht598zmq9pBphIm9A6Q7s9cRrWHs6b/nmB9NpISpicxMF
+	 ovs4BZeD+B7815rqBu3861fhMcXOAnUDGkm41XZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xaver Hugl <xaver.hugl@gmail.com>,
-	Melissa Wen <mwen@igalia.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Bruno Thomsen <bruno.thomsen@gmail.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 416/565] drm/amd/display: change dc stream color settings only in atomic commit
+Subject: [PATCH 6.17 702/849] rtc: pcf2127: clear minute/second interrupt
 Date: Tue, 11 Nov 2025 09:44:32 +0900
-Message-ID: <20251111004536.223515979@linuxfoundation.org>
+Message-ID: <20251111004553.406180161@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,219 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melissa Wen <mwen@igalia.com>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit 51cb93aa0c4a9bb126b76f6e9fd640d88de25cee ]
+[ Upstream commit a6f1a4f05970664004a9370459c6799c1b2f2dcf ]
 
-Don't update DC stream color components during atomic check. The driver
-will continue validating the new CRTC color state but will not change DC
-stream color components. The DC stream color state will only be
-programmed at commit time in the `atomic_setup_commit` stage.
+PCF2127 can generate interrupt every full second or minute configured
+from control and status register 1, bits MI (1) and SI (0).
 
-It fixes gamma LUT loss reported by KDE users when changing brightness
-quickly or changing Display settings (such as overscan) with nightlight
-on and HDR. As KWin can do a test commit with color settings different
-from those that should be applied in a non-test-only commit, if the
-driver changes DC stream color state in atomic check, this state can be
-eventually HW programmed in commit tail, instead of the respective state
-set by the non-blocking commit.
+On interrupt control register 2 bit MSF (7) is set and must be cleared
+to continue normal operation.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4444
-Reported-by: Xaver Hugl <xaver.hugl@gmail.com>
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+While the driver never enables this interrupt on its own, users or
+firmware may do so - e.g. as an easy way to test the interrupt.
+
+Add preprocessor definition for MSF bit and include it in the irq
+bitmask to ensure minute and second interrupts are cleared when fired.
+
+This fixes an issue where the rtc enters a test mode and becomes
+unresponsive after a second interrupt has fired and is not cleared in
+time. In this state register writes to control registers have no
+effect and the interrupt line is kept asserted [1]:
+
+[1] userspace commands to put rtc into unresponsive state:
+$ i2cget -f -y 2 0x51 0x00
+0x04
+$ i2cset -f -y 2 0x51 0x00 0x05 # set bit 0 SI
+$ i2cget -f -y 2 0x51 0x00
+0x84 # bit 8 EXT_TEST set
+$ i2cset -f -y 2 0x51 0x00 0x05 # try overwrite control register
+$ i2cget -f -y 2 0x51 0x00
+0x84 # no change
+
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+Link: https://lore.kernel.org/r/20250825-rtc-irq-v1-1-0133319406a7@solid-run.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  2 +-
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h |  2 +
- .../amd/display/amdgpu_dm/amdgpu_dm_color.c   | 86 ++++++++++++++-----
- 3 files changed, 66 insertions(+), 24 deletions(-)
+ drivers/rtc/rtc-pcf2127.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index ea6bc9517ed86..c314c213c21c3 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10773,7 +10773,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
- 	if (dm_new_crtc_state->base.color_mgmt_changed ||
- 	    dm_old_crtc_state->regamma_tf != dm_new_crtc_state->regamma_tf ||
- 	    drm_atomic_crtc_needs_modeset(new_crtc_state)) {
--		ret = amdgpu_dm_update_crtc_color_mgmt(dm_new_crtc_state);
-+		ret = amdgpu_dm_check_crtc_color_mgmt(dm_new_crtc_state, true);
- 		if (ret)
- 			goto fail;
- 	}
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-index 9603352ee0949..47f6569be54cb 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-@@ -971,6 +971,8 @@ void amdgpu_dm_init_color_mod(void);
- int amdgpu_dm_create_color_properties(struct amdgpu_device *adev);
- int amdgpu_dm_verify_lut_sizes(const struct drm_crtc_state *crtc_state);
- int amdgpu_dm_update_crtc_color_mgmt(struct dm_crtc_state *crtc);
-+int amdgpu_dm_check_crtc_color_mgmt(struct dm_crtc_state *crtc,
-+				    bool check_only);
- int amdgpu_dm_update_plane_color_mgmt(struct dm_crtc_state *crtc,
- 				      struct drm_plane_state *plane_state,
- 				      struct dc_plane_state *dc_plane_state);
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c
-index ebabfe3a512f4..e9c765e1c17ce 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c
-@@ -566,12 +566,11 @@ static int __set_output_tf(struct dc_transfer_func *func,
- 	return res ? 0 : -ENOMEM;
- }
+diff --git a/drivers/rtc/rtc-pcf2127.c b/drivers/rtc/rtc-pcf2127.c
+index 2e1ac0c42e932..3ba1de30e89c2 100644
+--- a/drivers/rtc/rtc-pcf2127.c
++++ b/drivers/rtc/rtc-pcf2127.c
+@@ -42,6 +42,7 @@
+ #define PCF2127_BIT_CTRL2_AF			BIT(4)
+ #define PCF2127_BIT_CTRL2_TSF2			BIT(5)
+ #define PCF2127_BIT_CTRL2_WDTF			BIT(6)
++#define PCF2127_BIT_CTRL2_MSF			BIT(7)
+ /* Control register 3 */
+ #define PCF2127_REG_CTRL3		0x02
+ #define PCF2127_BIT_CTRL3_BLIE			BIT(0)
+@@ -96,7 +97,8 @@
+ #define PCF2127_CTRL2_IRQ_MASK ( \
+ 		PCF2127_BIT_CTRL2_AF | \
+ 		PCF2127_BIT_CTRL2_WDTF | \
+-		PCF2127_BIT_CTRL2_TSF2)
++		PCF2127_BIT_CTRL2_TSF2 | \
++		PCF2127_BIT_CTRL2_MSF)
  
--static int amdgpu_dm_set_atomic_regamma(struct dc_stream_state *stream,
-+static int amdgpu_dm_set_atomic_regamma(struct dc_transfer_func *out_tf,
- 					const struct drm_color_lut *regamma_lut,
- 					uint32_t regamma_size, bool has_rom,
- 					enum dc_transfer_func_predefined tf)
- {
--	struct dc_transfer_func *out_tf = &stream->out_transfer_func;
- 	int ret = 0;
+ #define PCF2127_MAX_TS_SUPPORTED	4
  
- 	if (regamma_size || tf != TRANSFER_FUNCTION_LINEAR) {
-@@ -885,33 +884,33 @@ int amdgpu_dm_verify_lut_sizes(const struct drm_crtc_state *crtc_state)
- }
- 
- /**
-- * amdgpu_dm_update_crtc_color_mgmt: Maps DRM color management to DC stream.
-+ * amdgpu_dm_check_crtc_color_mgmt: Check if DRM color props are programmable by DC.
-  * @crtc: amdgpu_dm crtc state
-+ * @check_only: only check color state without update dc stream
-  *
-- * With no plane level color management properties we're free to use any
-- * of the HW blocks as long as the CRTC CTM always comes before the
-- * CRTC RGM and after the CRTC DGM.
-- *
-- * - The CRTC RGM block will be placed in the RGM LUT block if it is non-linear.
-- * - The CRTC DGM block will be placed in the DGM LUT block if it is non-linear.
-- * - The CRTC CTM will be placed in the gamut remap block if it is non-linear.
-+ * This function just verifies CRTC LUT sizes, if there is enough space for
-+ * output transfer function and if its parameters can be calculated by AMD
-+ * color module. It also adjusts some settings for programming CRTC degamma at
-+ * plane stage, using plane DGM block.
-  *
-  * The RGM block is typically more fully featured and accurate across
-  * all ASICs - DCE can't support a custom non-linear CRTC DGM.
-  *
-  * For supporting both plane level color management and CRTC level color
-- * management at once we have to either restrict the usage of CRTC properties
-- * or blend adjustments together.
-+ * management at once we have to either restrict the usage of some CRTC
-+ * properties or blend adjustments together.
-  *
-  * Returns:
-- * 0 on success. Error code if setup fails.
-+ * 0 on success. Error code if validation fails.
-  */
--int amdgpu_dm_update_crtc_color_mgmt(struct dm_crtc_state *crtc)
-+
-+int amdgpu_dm_check_crtc_color_mgmt(struct dm_crtc_state *crtc,
-+				    bool check_only)
- {
- 	struct dc_stream_state *stream = crtc->stream;
- 	struct amdgpu_device *adev = drm_to_adev(crtc->base.state->dev);
- 	bool has_rom = adev->asic_type <= CHIP_RAVEN;
--	struct drm_color_ctm *ctm = NULL;
-+	struct dc_transfer_func *out_tf;
- 	const struct drm_color_lut *degamma_lut, *regamma_lut;
- 	uint32_t degamma_size, regamma_size;
- 	bool has_regamma, has_degamma;
-@@ -940,6 +939,14 @@ int amdgpu_dm_update_crtc_color_mgmt(struct dm_crtc_state *crtc)
- 	crtc->cm_has_degamma = false;
- 	crtc->cm_is_degamma_srgb = false;
- 
-+	if (check_only) {
-+		out_tf = kvzalloc(sizeof(*out_tf), GFP_KERNEL);
-+		if (!out_tf)
-+			return -ENOMEM;
-+	} else {
-+		out_tf = &stream->out_transfer_func;
-+	}
-+
- 	/* Setup regamma and degamma. */
- 	if (is_legacy) {
- 		/*
-@@ -954,8 +961,8 @@ int amdgpu_dm_update_crtc_color_mgmt(struct dm_crtc_state *crtc)
- 		 * inverse color ramp in legacy userspace.
- 		 */
- 		crtc->cm_is_degamma_srgb = true;
--		stream->out_transfer_func.type = TF_TYPE_DISTRIBUTED_POINTS;
--		stream->out_transfer_func.tf = TRANSFER_FUNCTION_SRGB;
-+		out_tf->type = TF_TYPE_DISTRIBUTED_POINTS;
-+		out_tf->tf = TRANSFER_FUNCTION_SRGB;
- 		/*
- 		 * Note: although we pass has_rom as parameter here, we never
- 		 * actually use ROM because the color module only takes the ROM
-@@ -963,16 +970,12 @@ int amdgpu_dm_update_crtc_color_mgmt(struct dm_crtc_state *crtc)
- 		 *
- 		 * See more in mod_color_calculate_regamma_params()
- 		 */
--		r = __set_legacy_tf(&stream->out_transfer_func, regamma_lut,
-+		r = __set_legacy_tf(out_tf, regamma_lut,
- 				    regamma_size, has_rom);
--		if (r)
--			return r;
- 	} else {
- 		regamma_size = has_regamma ? regamma_size : 0;
--		r = amdgpu_dm_set_atomic_regamma(stream, regamma_lut,
-+		r = amdgpu_dm_set_atomic_regamma(out_tf, regamma_lut,
- 						 regamma_size, has_rom, tf);
--		if (r)
--			return r;
- 	}
- 
- 	/*
-@@ -981,6 +984,43 @@ int amdgpu_dm_update_crtc_color_mgmt(struct dm_crtc_state *crtc)
- 	 * have to place the CTM in the OCSC in that case.
- 	 */
- 	crtc->cm_has_degamma = has_degamma;
-+	if (check_only)
-+		kvfree(out_tf);
-+
-+	return r;
-+}
-+
-+/**
-+ * amdgpu_dm_update_crtc_color_mgmt: Maps DRM color management to DC stream.
-+ * @crtc: amdgpu_dm crtc state
-+ *
-+ * With no plane level color management properties we're free to use any
-+ * of the HW blocks as long as the CRTC CTM always comes before the
-+ * CRTC RGM and after the CRTC DGM.
-+ *
-+ * - The CRTC RGM block will be placed in the RGM LUT block if it is non-linear.
-+ * - The CRTC DGM block will be placed in the DGM LUT block if it is non-linear.
-+ * - The CRTC CTM will be placed in the gamut remap block if it is non-linear.
-+ *
-+ * The RGM block is typically more fully featured and accurate across
-+ * all ASICs - DCE can't support a custom non-linear CRTC DGM.
-+ *
-+ * For supporting both plane level color management and CRTC level color
-+ * management at once we have to either restrict the usage of CRTC properties
-+ * or blend adjustments together.
-+ *
-+ * Returns:
-+ * 0 on success. Error code if setup fails.
-+ */
-+int amdgpu_dm_update_crtc_color_mgmt(struct dm_crtc_state *crtc)
-+{
-+	struct dc_stream_state *stream = crtc->stream;
-+	struct drm_color_ctm *ctm = NULL;
-+	int ret;
-+
-+	ret = amdgpu_dm_check_crtc_color_mgmt(crtc, false);
-+	if (ret)
-+		return ret;
- 
- 	/* Setup CRTC CTM. */
- 	if (crtc->base.ctm) {
 -- 
 2.51.0
 
