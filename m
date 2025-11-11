@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-193432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854EFC4A49C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:15:01 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4351C4A3BB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5B403B3A3A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:10:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0305C4F0E09
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E7D33F8B1;
-	Tue, 11 Nov 2025 01:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4843724E4A1;
+	Tue, 11 Nov 2025 01:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXoRR2YX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9vqZTuI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1985733F37D;
-	Tue, 11 Nov 2025 01:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048481F5F6;
+	Tue, 11 Nov 2025 01:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823170; cv=none; b=sHbUhxIbFvXIgBj52jHGa+RJzlu2WPlE2DG+D2vdFemqtQPbHXjSUKClVQJ4qDVnGTP3wh5FxOyBmI1U+WSOIwDBiSQQ2U2+qAedeM7DtmHocyG/SqK1/614gz09PJh6A/CmQPdm5RxMoEXzbtZsMH1QQI7Gzi6T4s5MpR66vVY=
+	t=1762822987; cv=none; b=GiVk0OoNde6xGHleC2VL+rbClbtwzlAW4NgwFfG/z01pZJ0shy2+lEEkNIpxwATfSV5vY8z5XQ23EDCnfUCp/9+KdW1VFDP6zKB/rxupl998ffgmRDubYPfreu5+sqB7+yLYy43OhsC45Puf1HNwsu3lH29mLXmeFeVE+dVdEU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823170; c=relaxed/simple;
-	bh=YLytaYgxaNPmaS5MvhF8HumWST/QlYp29qUoNeeUiC0=;
+	s=arc-20240116; t=1762822987; c=relaxed/simple;
+	bh=44u5x/2slogwcGhgfvKcsDSQYMlkJ5BsScGT8CoOj8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S1BSUEa7/bi4Eb4VlHbyCA+O3WAf0Qe6bCWmLKtKKyZmSWTuRW46JzEO0otym0PxrKHKdG/8cFIjtfKqV+DqKgwHaDB+s4slnvag5qdFPONsV2+LIZrhqj4K8edd8qeYnZbQ3kxbw1MBYCOaLZkwl6OX1Buay1NNmCMcCk+YA3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXoRR2YX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF0BC116B1;
-	Tue, 11 Nov 2025 01:06:09 +0000 (UTC)
+	 MIME-Version; b=t506Qmafjrd/iaudPWmIYjprENOSf4qRYr614spRRPgbyGn1hC5Z0DpKkd5hDR8NdngkKIj4M9XLyJ4gYpC2L0kkHsV6TeccmCZhUu+MGqluM+q520vjLS28Uyjvuu3OuilND4dT+K4e1czwLcp+MmoJ+4kjOMN0kldj4H/qd6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9vqZTuI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847D3C2BC86;
+	Tue, 11 Nov 2025 01:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823169;
-	bh=YLytaYgxaNPmaS5MvhF8HumWST/QlYp29qUoNeeUiC0=;
+	s=korg; t=1762822986;
+	bh=44u5x/2slogwcGhgfvKcsDSQYMlkJ5BsScGT8CoOj8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cXoRR2YX86UvPJ0OwF7rPtLgA8m3RleyaD3QQ1a2t10IJKjUx4cxnY9f/33CBJIkt
-	 sU20Iq0OXhZCngHg5y24Loupi3wfMpExQ/ov3qsLqxcXKDLkqYRXQ18HcfCOfOW8J3
-	 nHM+gjgFOlZdGhbX/qDyTwHHlG18CqRkzvKcm+18=
+	b=K9vqZTuI1yBwaB17MM5TgiQ2FFbVNPG7mBMj58UwUDbRPZtkc7LTJk4CUchH4iq+R
+	 krAj7rQ4TXet8EvtBUEG/QB/NZ9gpD3rmsUw6tP78XTLkVqwlz4Ndx8re1VhZF4rip
+	 KFhQkLHlgCVu7r7QqLv4lzSHmTAKK6WcK2uH3RGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Ben Copeland <ben.copeland@linaro.org>,
+	Eugene Shalygin <eugene.shalygin@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 208/849] uprobe: Do not emulate/sstep original instruction when ip is changed
-Date: Tue, 11 Nov 2025 09:36:18 +0900
-Message-ID: <20251111004541.472084708@linuxfoundation.org>
+Subject: [PATCH 6.17 209/849] hwmon: (asus-ec-sensors) increase timeout for locking ACPI mutex
+Date: Tue, 11 Nov 2025 09:36:19 +0900
+Message-ID: <20251111004541.495739086@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -68,48 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Ben Copeland <ben.copeland@linaro.org>
 
-[ Upstream commit 4363264111e1297fa37aa39b0598faa19298ecca ]
+[ Upstream commit 584d55be66ef151e6ef9ccb3dcbc0a2155559be1 ]
 
-If uprobe handler changes instruction pointer we still execute single
-step) or emulate the original instruction and increment the (new) ip
-with its length.
+Some motherboards require more time to acquire the ACPI mutex,
+causing "Failed to acquire mutex" messages to appear in the kernel log.
+Increase the timeout from 500ms to 800ms to accommodate these cases.
 
-This makes the new instruction pointer bogus and application will
-likely crash on illegal instruction execution.
-
-If user decided to take execution elsewhere, it makes little sense
-to execute the original instruction, so let's skip it.
-
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20250916215301.664963-3-jolsa@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Ben Copeland <ben.copeland@linaro.org>
+Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
+Link: https://lore.kernel.org/r/20250923192935.11339-3-eugene.shalygin@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/uprobes.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/hwmon/asus-ec-sensors.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 4b97d16f731c1..109276c68ecba 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -2741,6 +2741,13 @@ static void handle_swbp(struct pt_regs *regs)
+diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
+index f43efb80aabf3..94eb02e6be326 100644
+--- a/drivers/hwmon/asus-ec-sensors.c
++++ b/drivers/hwmon/asus-ec-sensors.c
+@@ -49,7 +49,7 @@ static char *mutex_path_override;
+  */
+ #define ASUS_EC_MAX_BANK	3
  
- 	handler_chain(uprobe, regs);
+-#define ACPI_LOCK_DELAY_MS	500
++#define ACPI_LOCK_DELAY_MS	800
  
-+	/*
-+	 * If user decided to take execution elsewhere, it makes little sense
-+	 * to execute the original instruction, so let's skip it.
-+	 */
-+	if (instruction_pointer(regs) != bp_vaddr)
-+		goto out;
-+
- 	if (arch_uprobe_skip_sstep(&uprobe->arch, regs))
- 		goto out;
- 
+ /* ACPI mutex for locking access to the EC for the firmware */
+ #define ASUS_HW_ACCESS_MUTEX_ASMX	"\\AMW0.ASMX"
 -- 
 2.51.0
 
