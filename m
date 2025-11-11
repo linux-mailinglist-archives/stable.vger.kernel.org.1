@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33E5C4A41E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:10:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1BEFC4A439
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED0CE188F788
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:09:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5882D188A472
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB9A2727FD;
-	Tue, 11 Nov 2025 01:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C7033A02F;
+	Tue, 11 Nov 2025 01:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1hyYvaT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSJfxXai"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A0B3314C8;
-	Tue, 11 Nov 2025 01:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FE933B6C4;
+	Tue, 11 Nov 2025 01:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823156; cv=none; b=bWsGt6zL1eBNHN4jd1wfa9sHB5ig2/lD8Ivt1CsL+4754xBoMcwNVn1gOmDO4AuW2sMCNlUH/zaDSJpPUvLbJh+Lgp8Cc4gJ0h91XbwOovgU+BmyHKW/DmZQkE+PgOOlB3LiRrLsHLu1JhebX9kaLe/XUGLbsoAnGjHAVPCiPzI=
+	t=1762823160; cv=none; b=reyYAXqU0I/+SY2WI7B3/iofisKUvh0aPOInfBOo/Jb2X1q6L24LuwzApGkWT3bgCZ2WjdXH4n/3J76K0JMFtzysrDr7J/yNzkOxwX/LguIxjFJ3PrrqmjFDdXwXl+M6U4UAT70Hc/brXP/gExr66FvR7kD5QC0FuoCp/qEJEkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823156; c=relaxed/simple;
-	bh=cvh7C0jxFWHm4SAN1bx9ikKSwlUhNqNM5KzlHtRwSc0=;
+	s=arc-20240116; t=1762823160; c=relaxed/simple;
+	bh=7u1xTAEwskNK19el2A6az/HWu+kNwujk7F322NoPgcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YKpUX6U09PdDYVtU47ofYJekehR8icFkjujgAfaS+pJW2J62BJ+NmgB0kPE8G0Qho6EVXd1FKZ1YXV95pylN2yK4p0uDZDWyMqimok3OMeeQakNh2Q8UGeM6P42qDb9LBKAJ0wOWt/yzQGgfmvpWeW/AA/MhAs6yaUkcK9VS1YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1hyYvaT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B451CC4CEFB;
-	Tue, 11 Nov 2025 01:05:55 +0000 (UTC)
+	 MIME-Version; b=XHV1XmvDGxzt+F0jZk+XVipHKV1SnFUVa/Xb5C20vADdhzfZdRvWO25N0SAsOtFaKLBK7e9MJGK7z0jIhbSbQ17fSYbjOhtkMl4jD3cRz86OwGu2HAIDxgu2ElMBtOYD1DTGIlx7V8/adQ7mUeytXE00z+Py3VHYx14/p6EwdfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSJfxXai; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E21C4CEF5;
+	Tue, 11 Nov 2025 01:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823156;
-	bh=cvh7C0jxFWHm4SAN1bx9ikKSwlUhNqNM5KzlHtRwSc0=;
+	s=korg; t=1762823160;
+	bh=7u1xTAEwskNK19el2A6az/HWu+kNwujk7F322NoPgcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S1hyYvaT75UhhbMgiunq/hE38ONPAaq+rR1QIcpTZi56IyUn/VuoFHyUL4qK7iP2x
-	 XznGzONkv8aZpovNSmpWELH5SS4XWPqHXRa+eG7Z+MjCT8JEzgCAljdOLo4MLk3pCb
-	 VqBU08XmcpDIt+tMTW8NFFQqLp5cViIqsHMyQAiY=
+	b=bSJfxXaiBQsgsIfIupS+nqUkWiVNxfaJiDglC3eNfJBLrz+lbtGG5/bo9WNSdPC+F
+	 Zro6opdZ/kwUKKtbscmytCAvKJGBLa83bdYgZJWjUVuR34glIH5qo1TOAYJyYzXWzM
+	 MME2H9IPOF2z+hjPuu4qwOYKtmnHJetNbI4FeMG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Maarten Lankhorst <dev@lankhorst.se>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 241/849] drm/xe/guc: Add more GuC load error status codes
-Date: Tue, 11 Nov 2025 09:36:51 +0900
-Message-ID: <20251111004542.262994327@linuxfoundation.org>
+Subject: [PATCH 6.17 242/849] drm/xe: Fix oops in xe_gem_fault when running core_hotunplug test.
+Date: Tue, 11 Nov 2025 09:36:52 +0900
+Message-ID: <20251111004542.287342008@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,101 +66,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Harrison <John.C.Harrison@Intel.com>
+From: Maarten Lankhorst <dev@lankhorst.se>
 
-[ Upstream commit 45fbb51050e72723c2bdcedc1ce32305256c70ed ]
+[ Upstream commit 1cda3c755bb7770be07d75949bb0f45fb88651f6 ]
 
-The GuC load process will abort if certain status codes (which are
-indicative of a fatal error) are reported. Otherwise, it keeps waiting
-until the 'success' code is returned. New error codes have been added
-in recent GuC releases, so add support for aborting on those as well.
+I saw an oops in xe_gem_fault when running the xe-fast-feedback
+testlist against the realtime kernel without debug options enabled.
 
-v2: Shuffle HWCONFIG_START to the front of the switch to keep the
-ordering as per the enum define for clarity (review feedback by
-Jonathan). Also add a description for the basic 'invalid init data'
-code which was missing.
+The panic happens after core_hotunplug unbind-rebind finishes.
+Presumably what happens is that a process mmaps, unlocks because
+of the FAULT_FLAG_RETRY_NOWAIT logic, has no process memory left,
+causing ttm_bo_vm_dummy_page() to return VM_FAULT_NOPAGE, since
+there was nothing left to populate, and then oopses in
+"mem_type_is_vram(tbo->resource->mem_type)" because tbo->resource
+is NULL.
 
-Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Link: https://lore.kernel.org/r/20250726024337.4056272-1-John.C.Harrison@Intel.com
+It's convoluted, but fits the data and explains the oops after
+the test exits.
+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://lore.kernel.org/r/20250715152057.23254-2-dev@lankhorst.se
+Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/abi/guc_errors_abi.h |  3 +++
- drivers/gpu/drm/xe/xe_guc.c             | 19 +++++++++++++++++--
- 2 files changed, 20 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_bo.c | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/abi/guc_errors_abi.h b/drivers/gpu/drm/xe/abi/guc_errors_abi.h
-index ecf748fd87df3..ad76b4baf42e9 100644
---- a/drivers/gpu/drm/xe/abi/guc_errors_abi.h
-+++ b/drivers/gpu/drm/xe/abi/guc_errors_abi.h
-@@ -63,6 +63,7 @@ enum xe_guc_load_status {
- 	XE_GUC_LOAD_STATUS_HWCONFIG_START                   = 0x05,
- 	XE_GUC_LOAD_STATUS_HWCONFIG_DONE                    = 0x06,
- 	XE_GUC_LOAD_STATUS_HWCONFIG_ERROR                   = 0x07,
-+	XE_GUC_LOAD_STATUS_BOOTROM_VERSION_MISMATCH         = 0x08,
- 	XE_GUC_LOAD_STATUS_GDT_DONE                         = 0x10,
- 	XE_GUC_LOAD_STATUS_IDT_DONE                         = 0x20,
- 	XE_GUC_LOAD_STATUS_LAPIC_DONE                       = 0x30,
-@@ -75,6 +76,8 @@ enum xe_guc_load_status {
- 	XE_GUC_LOAD_STATUS_INVALID_INIT_DATA_RANGE_START,
- 	XE_GUC_LOAD_STATUS_MPU_DATA_INVALID                 = 0x73,
- 	XE_GUC_LOAD_STATUS_INIT_MMIO_SAVE_RESTORE_INVALID   = 0x74,
-+	XE_GUC_LOAD_STATUS_KLV_WORKAROUND_INIT_ERROR        = 0x75,
-+	XE_GUC_LOAD_STATUS_INVALID_FTR_FLAG                 = 0x76,
- 	XE_GUC_LOAD_STATUS_INVALID_INIT_DATA_RANGE_END,
- 
- 	XE_GUC_LOAD_STATUS_READY                            = 0xF0,
-diff --git a/drivers/gpu/drm/xe/xe_guc.c b/drivers/gpu/drm/xe/xe_guc.c
-index 270fc37924936..9e0ed8fabcd54 100644
---- a/drivers/gpu/drm/xe/xe_guc.c
-+++ b/drivers/gpu/drm/xe/xe_guc.c
-@@ -990,11 +990,14 @@ static int guc_load_done(u32 status)
- 	case XE_GUC_LOAD_STATUS_GUC_PREPROD_BUILD_MISMATCH:
- 	case XE_GUC_LOAD_STATUS_ERROR_DEVID_INVALID_GUCTYPE:
- 	case XE_GUC_LOAD_STATUS_HWCONFIG_ERROR:
-+	case XE_GUC_LOAD_STATUS_BOOTROM_VERSION_MISMATCH:
- 	case XE_GUC_LOAD_STATUS_DPC_ERROR:
- 	case XE_GUC_LOAD_STATUS_EXCEPTION:
- 	case XE_GUC_LOAD_STATUS_INIT_DATA_INVALID:
- 	case XE_GUC_LOAD_STATUS_MPU_DATA_INVALID:
- 	case XE_GUC_LOAD_STATUS_INIT_MMIO_SAVE_RESTORE_INVALID:
-+	case XE_GUC_LOAD_STATUS_KLV_WORKAROUND_INIT_ERROR:
-+	case XE_GUC_LOAD_STATUS_INVALID_FTR_FLAG:
- 		return -1;
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index 50c79049ccea0..d07e23eb1a54d 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -1711,22 +1711,26 @@ static vm_fault_t xe_gem_fault(struct vm_fault *vmf)
+ 		ret = ttm_bo_vm_fault_reserved(vmf, vmf->vma->vm_page_prot,
+ 					       TTM_BO_VM_NUM_PREFAULT);
+ 		drm_dev_exit(idx);
++
++		if (ret == VM_FAULT_RETRY &&
++		    !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT))
++			goto out;
++
++		/*
++		 * ttm_bo_vm_reserve() already has dma_resv_lock.
++		 */
++		if (ret == VM_FAULT_NOPAGE &&
++		    mem_type_is_vram(tbo->resource->mem_type)) {
++			mutex_lock(&xe->mem_access.vram_userfault.lock);
++			if (list_empty(&bo->vram_userfault_link))
++				list_add(&bo->vram_userfault_link,
++					 &xe->mem_access.vram_userfault.list);
++			mutex_unlock(&xe->mem_access.vram_userfault.lock);
++		}
+ 	} else {
+ 		ret = ttm_bo_vm_dummy_page(vmf, vmf->vma->vm_page_prot);
  	}
  
-@@ -1134,17 +1137,29 @@ static void guc_wait_ucode(struct xe_guc *guc)
- 		}
- 
- 		switch (ukernel) {
-+		case XE_GUC_LOAD_STATUS_HWCONFIG_START:
-+			xe_gt_err(gt, "still extracting hwconfig table.\n");
-+			break;
-+
- 		case XE_GUC_LOAD_STATUS_EXCEPTION:
- 			xe_gt_err(gt, "firmware exception. EIP: %#x\n",
- 				  xe_mmio_read32(mmio, SOFT_SCRATCH(13)));
- 			break;
- 
-+		case XE_GUC_LOAD_STATUS_INIT_DATA_INVALID:
-+			xe_gt_err(gt, "illegal init/ADS data\n");
-+			break;
-+
- 		case XE_GUC_LOAD_STATUS_INIT_MMIO_SAVE_RESTORE_INVALID:
- 			xe_gt_err(gt, "illegal register in save/restore workaround list\n");
- 			break;
- 
--		case XE_GUC_LOAD_STATUS_HWCONFIG_START:
--			xe_gt_err(gt, "still extracting hwconfig table.\n");
-+		case XE_GUC_LOAD_STATUS_KLV_WORKAROUND_INIT_ERROR:
-+			xe_gt_err(gt, "illegal workaround KLV data\n");
-+			break;
-+
-+		case XE_GUC_LOAD_STATUS_INVALID_FTR_FLAG:
-+			xe_gt_err(gt, "illegal feature flag specified\n");
- 			break;
- 		}
- 
+-	if (ret == VM_FAULT_RETRY && !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT))
+-		goto out;
+-	/*
+-	 * ttm_bo_vm_reserve() already has dma_resv_lock.
+-	 */
+-	if (ret == VM_FAULT_NOPAGE && mem_type_is_vram(tbo->resource->mem_type)) {
+-		mutex_lock(&xe->mem_access.vram_userfault.lock);
+-		if (list_empty(&bo->vram_userfault_link))
+-			list_add(&bo->vram_userfault_link, &xe->mem_access.vram_userfault.list);
+-		mutex_unlock(&xe->mem_access.vram_userfault.lock);
+-	}
+-
+ 	dma_resv_unlock(tbo->base.resv);
+ out:
+ 	if (needs_rpm)
 -- 
 2.51.0
 
