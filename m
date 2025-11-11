@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-193839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE40DC4AC13
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:40:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ADAEC4AB41
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D752E3AF81A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 320C83B5EE3
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144B325D209;
-	Tue, 11 Nov 2025 01:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D472126A0C7;
+	Tue, 11 Nov 2025 01:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EA76v6m8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SogaFzp4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FEB2D6605;
-	Tue, 11 Nov 2025 01:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A582652AF;
+	Tue, 11 Nov 2025 01:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824127; cv=none; b=sMs4qVTPT3m6Ddz2dQlm6imQKMsyktP0eCzSR/ekUWTUBo1XpajHlNT9uB3SjoYLL7uw/LnqrLPyOemgcnItyohEAq1hLohZn6vobPCghcd+dDNyfs9KDt5LaGZgeKH1L0es3VV6fBYHQA/dYUS3AHEbC/UpsXzKx2eiBJGtiAI=
+	t=1762824134; cv=none; b=uLICshMEROu2/bD8i/WmHkKcnbKdNQ5tTIVifeOus9u/vrotwObOlK+N8P8r50DtXtLKCWZaykyZFDgC8/DVSoWkDWHFb8rGqBjjiyyHnI/GHOi6Gv8qyrUvqhcO62ngihk5ztBEckO1X2KMMfLDh58TTqDV0FI/AJ4z5mIV9xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824127; c=relaxed/simple;
-	bh=gtX1Xevitw+p65UOfD3cTzDq7y+IpcckZQoXdo4kdLQ=;
+	s=arc-20240116; t=1762824134; c=relaxed/simple;
+	bh=YoXkQDBTt0Qh8uwMNt7/WmUMK9RCYZFtuSOzenfbv3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p2dgTJvPPVQ5lNUNb6df/Bk5qtNbB38NGCDo7kMfuu++YrwVoZCOeMW3jORIfCMw+t8DFJtwClWYoSTCdhjlf+EPPKukKlK/CO+ZVHV4BJbqPxkfLbseg4w5si1BfQly+ApqfWI7HmbLEDrjZ8MCAd/vdh7nCOmexyL7gU1S7xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EA76v6m8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0C2C4AF09;
-	Tue, 11 Nov 2025 01:22:07 +0000 (UTC)
+	 MIME-Version; b=haRC/T8zNLgQsyrE4fJhKy//xLTHsttlfnV9ccOs9V7QvF0ntcsIBexRrnWPrgSOnvPjE4dir/0agzvO8gB5ojBGIAbitcC77E9OfuZRbiJfoLoqcVZWGra0JfJa/UkPpY+lNs4Yv7g9xvTBJ9IQMH5C0Wo5zBZhLd6EFH7izW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SogaFzp4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311BAC4CEF5;
+	Tue, 11 Nov 2025 01:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824127;
-	bh=gtX1Xevitw+p65UOfD3cTzDq7y+IpcckZQoXdo4kdLQ=;
+	s=korg; t=1762824134;
+	bh=YoXkQDBTt0Qh8uwMNt7/WmUMK9RCYZFtuSOzenfbv3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EA76v6m8c91Isb1/SAhGY3k1Um22nIeXkxMolcBuZ2yfuKpQ/UBrpOGxvXxkxs5V3
-	 xzNLUNGSf0NyjwmRIPQ9OZjbjN02itlE4zeFFRD7ap1j0Xm3T4ixxpx2zRDgActKei
-	 x27qka8q4UNE8ha9WhEBlL2H9UKEdvItch5rVN3w=
+	b=SogaFzp4yQ7yWoaMIK5HGcz6ZNiaU2PSzX7KPAIQ1nATBGQU85eLNwR8x+ZE2D7u0
+	 U09r2ovBTzk7lENxa2VwS9GumrI1KOxGMlRlWgaafD+IKlwMNTrwLjlXItUyfZVifh
+	 cobsY1gZL/0bgyrHG0804GfgADGgIfeYnlh2tYws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	Julia Filipchuk <julia.filipchuk@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 442/849] drm/xe/guc: Set upper limit of H2G retries over CTB
-Date: Tue, 11 Nov 2025 09:40:12 +0900
-Message-ID: <20251111004547.119381958@linuxfoundation.org>
+Subject: [PATCH 6.17 443/849] net: call cond_resched() less often in __release_sock()
+Date: Tue, 11 Nov 2025 09:40:13 +0900
+Message-ID: <20251111004547.144551640@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -69,74 +67,107 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2506af5f8109a387a5e8e9e3d7c498480b8033db ]
+[ Upstream commit 16c610162d1f1c332209de1c91ffb09b659bb65d ]
 
-The GuC communication protocol allows GuC to send NO_RESPONSE_RETRY
-reply message to indicate that due to some interim condition it can
-not handle incoming H2G request and the host shall resend it.
+While stress testing TCP I had unexpected retransmits and sack packets
+when a single cpu receives data from multiple high-throughput flows.
 
-But in some cases, due to errors, this unsatisfied condition might
-be final and this could lead to endless retries as it was recently
-seen on the CI:
+super_netperf 4 -H srv -T,10 -l 3000 &
 
- [drm] GT0: PF: VF1 FLR didn't finish in 5000 ms (-ETIMEDOUT)
- [drm] GT0: PF: VF1 resource sanitizing failed (-ETIMEDOUT)
- [drm] GT0: PF: VF1 FLR failed!
- [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
- [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
- [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
- [drm:guc_ct_send_recv [xe]] GT0: H2G action 0x5503 retrying: reason 0x0
+Tcpdump extract:
 
-To avoid such dangerous loops allow only limited number of retries
-(for now 50) and add some delays (n * 5ms) to slow down the rate of
-resending this repeated request.
+ 00:00:00.000007 IP6 clnt > srv: Flags [.], seq 26062848:26124288, ack 1, win 66, options [nop,nop,TS val 651460834 ecr 3100749131], length 61440
+ 00:00:00.000006 IP6 clnt > srv: Flags [.], seq 26124288:26185728, ack 1, win 66, options [nop,nop,TS val 651460834 ecr 3100749131], length 61440
+ 00:00:00.000005 IP6 clnt > srv: Flags [P.], seq 26185728:26243072, ack 1, win 66, options [nop,nop,TS val 651460834 ecr 3100749131], length 57344
+ 00:00:00.000006 IP6 clnt > srv: Flags [.], seq 26243072:26304512, ack 1, win 66, options [nop,nop,TS val 651460844 ecr 3100749141], length 61440
+ 00:00:00.000005 IP6 clnt > srv: Flags [.], seq 26304512:26365952, ack 1, win 66, options [nop,nop,TS val 651460844 ecr 3100749141], length 61440
+ 00:00:00.000007 IP6 clnt > srv: Flags [P.], seq 26365952:26423296, ack 1, win 66, options [nop,nop,TS val 651460844 ecr 3100749141], length 57344
+ 00:00:00.000006 IP6 clnt > srv: Flags [.], seq 26423296:26484736, ack 1, win 66, options [nop,nop,TS val 651460853 ecr 3100749150], length 61440
+ 00:00:00.000005 IP6 clnt > srv: Flags [.], seq 26484736:26546176, ack 1, win 66, options [nop,nop,TS val 651460853 ecr 3100749150], length 61440
+ 00:00:00.000005 IP6 clnt > srv: Flags [P.], seq 26546176:26603520, ack 1, win 66, options [nop,nop,TS val 651460853 ecr 3100749150], length 57344
+ 00:00:00.003932 IP6 clnt > srv: Flags [P.], seq 26603520:26619904, ack 1, win 66, options [nop,nop,TS val 651464844 ecr 3100753141], length 16384
+ 00:00:00.006602 IP6 clnt > srv: Flags [.], seq 24862720:24866816, ack 1, win 66, options [nop,nop,TS val 651471419 ecr 3100759716], length 4096
+ 00:00:00.013000 IP6 clnt > srv: Flags [.], seq 24862720:24866816, ack 1, win 66, options [nop,nop,TS val 651484421 ecr 3100772718], length 4096
+ 00:00:00.000416 IP6 srv > clnt: Flags [.], ack 26619904, win 1393, options [nop,nop,TS val 3100773185 ecr 651484421,nop,nop,sack 1 {24862720:24866816}], length 0
 
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Reviewed-by: Julia Filipchuk <julia.filipchuk@intel.com>
-Link: https://lore.kernel.org/r/20250903223330.6408-1-michal.wajdeczko@intel.com
+After analysis, it appears this is because of the cond_resched()
+call from  __release_sock().
+
+When current thread is yielding, while still holding the TCP socket lock,
+it might regain the cpu after a very long time.
+
+Other peer TLP/RTO is firing (multiple times) and packets are retransmit,
+while the initial copy is waiting in the socket backlog or receive queue.
+
+In this patch, I call cond_resched() only once every 16 packets.
+
+Modern TCP stack now spends less time per packet in the backlog,
+especially because ACK are no longer sent (commit 133c4c0d3717
+"tcp: defer regular ACK while processing socket backlog")
+
+Before:
+
+clnt:/# nstat -n;sleep 10;nstat|egrep "TcpOutSegs|TcpRetransSegs|TCPFastRetrans|TCPTimeouts|Probes|TCPSpuriousRTOs|DSACK"
+TcpOutSegs                      19046186           0.0
+TcpRetransSegs                  1471               0.0
+TcpExtTCPTimeouts               1397               0.0
+TcpExtTCPLossProbes             1356               0.0
+TcpExtTCPDSACKRecv              1352               0.0
+TcpExtTCPSpuriousRTOs           114                0.0
+TcpExtTCPDSACKRecvSegs          1352               0.0
+
+After:
+
+clnt:/# nstat -n;sleep 10;nstat|egrep "TcpOutSegs|TcpRetransSegs|TCPFastRetrans|TCPTimeouts|Probes|TCPSpuriousRTOs|DSACK"
+TcpOutSegs                      19218936           0.0
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250903174811.1930820-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_ct.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/core/sock.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index 6d70dd1c106d4..ff622628d823f 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -1079,11 +1079,15 @@ static bool retry_failure(struct xe_guc_ct *ct, int ret)
- 	return true;
- }
- 
-+#define GUC_SEND_RETRY_LIMIT	50
-+#define GUC_SEND_RETRY_MSLEEP	5
-+
- static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
- 			    u32 *response_buffer, bool no_fail)
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 1382bddcbaff4..bdeea7cc134df 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3162,23 +3162,27 @@ void __release_sock(struct sock *sk)
+ 	__acquires(&sk->sk_lock.slock)
  {
- 	struct xe_gt *gt = ct_to_gt(ct);
- 	struct g2h_fence g2h_fence;
-+	unsigned int retries = 0;
- 	int ret = 0;
+ 	struct sk_buff *skb, *next;
++	int nb = 0;
  
- 	/*
-@@ -1148,6 +1152,12 @@ static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
- 		xe_gt_dbg(gt, "H2G action %#x retrying: reason %#x\n",
- 			  action[0], g2h_fence.reason);
- 		mutex_unlock(&ct->lock);
-+		if (++retries > GUC_SEND_RETRY_LIMIT) {
-+			xe_gt_err(gt, "H2G action %#x reached retry limit=%u, aborting\n",
-+				  action[0], GUC_SEND_RETRY_LIMIT);
-+			return -ELOOP;
+ 	while ((skb = sk->sk_backlog.head) != NULL) {
+ 		sk->sk_backlog.head = sk->sk_backlog.tail = NULL;
+ 
+ 		spin_unlock_bh(&sk->sk_lock.slock);
+ 
+-		do {
++		while (1) {
+ 			next = skb->next;
+ 			prefetch(next);
+ 			DEBUG_NET_WARN_ON_ONCE(skb_dst_is_noref(skb));
+ 			skb_mark_not_on_list(skb);
+ 			sk_backlog_rcv(sk, skb);
+ 
+-			cond_resched();
+-
+ 			skb = next;
+-		} while (skb != NULL);
++			if (!skb)
++				break;
++
++			if (!(++nb & 15))
++				cond_resched();
 +		}
-+		msleep(GUC_SEND_RETRY_MSLEEP * retries);
- 		goto retry;
+ 
+ 		spin_lock_bh(&sk->sk_lock.slock);
  	}
- 	if (g2h_fence.fail) {
 -- 
 2.51.0
 
