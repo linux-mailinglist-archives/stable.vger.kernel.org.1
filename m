@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A97C4A2CE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:05:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA94BC4A448
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:11:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E20271884D55
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A57294FA023
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2F1253944;
-	Tue, 11 Nov 2025 01:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5311924E4C6;
+	Tue, 11 Nov 2025 01:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SyTuilIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWMsJIsk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9BF248F6A;
-	Tue, 11 Nov 2025 01:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F499248F6A;
+	Tue, 11 Nov 2025 01:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823106; cv=none; b=FvnRtqoOq2SkNCcAN+kFifNMwbb/gBYv2RncZOCT1NgPnCihYvoQOvVpfZMJFs6ZYlyl81MqYzmI2CrR1vaGHjWgCRlSUSYV+Lks3TtMavNBDRP4wTriUblbFU9sMgj+kMP3bgS7DBzH9K3P2D0zhZtHhkR54HBpl/EGGYtsHY0=
+	t=1762823111; cv=none; b=un1UrF2BOsYi2V/zknbTwKJd5qX86bb2D6Eq1ThH4KoPzrpT7gfppHpaNV+eE102liAuwOlV0T/aNzKw6fx7eC3PjwRwUPXdmkj9hdo+pgvw45roZ6D3FHxwOUFeazpC9CztzuewJTZZ7cRZV46o/MvQkpq7wZ/d0TqxNAblLwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823106; c=relaxed/simple;
-	bh=PBSYkpkFvPYgKoXrizRIk/5BtJoCm5ebFn6H2nCTIEM=;
+	s=arc-20240116; t=1762823111; c=relaxed/simple;
+	bh=mEAgeghi26RdhN9c60M1XklWBKEZ8jkBYHIfiLDra5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iiE1smf80g0Nw0m7/6oULg4dzqKcPQehDzlw2D4izHF+Q7oLoXAcBHf/m7Dls+b7SI7PRV2jLHCwJJQKTE7QFKqvmE2xmgSCFYp1+CxMYDlgyHB0/lybZH2m4K/m39OuJv00Ws0JreDOX44cESlzeUoiJy5Yk/mWMhG5Hm1y3ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SyTuilIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCAAC4CEFB;
-	Tue, 11 Nov 2025 01:05:05 +0000 (UTC)
+	 MIME-Version; b=pk/fZG7SsO9nDWfeKaiMc79oYdtqAZ4J0EVPA2qr+GzcUXIPqO8lzL3pzYKqDy+iqAiZk8NdWbcQSvugTv3JTFzpyuHMymWeikryqWwRv72UEKxtvm8fqi5zVSDn3+ZA8OJYkNO9VlFel1lh50iaOLiyipPwoLHQSjeJB1/u8Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWMsJIsk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A568CC113D0;
+	Tue, 11 Nov 2025 01:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823105;
-	bh=PBSYkpkFvPYgKoXrizRIk/5BtJoCm5ebFn6H2nCTIEM=;
+	s=korg; t=1762823110;
+	bh=mEAgeghi26RdhN9c60M1XklWBKEZ8jkBYHIfiLDra5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SyTuilITZ26XSA+GQO51IYlfvMLk3uQjE05pi13SCftsldJvlmKOmWVVJoYCXtnlz
-	 KLTJHJd7/+4v26/wuvIssdQdVWFfabqKEf8c5DKRpUWaYE849X2NwpVMSyfG0+Obju
-	 9aYKT0CAQMLy63c9kpmKMHImw8f1jbkMPiCUQZeE=
+	b=VWMsJIskxFa5yUTs/9aq6jxzLZq0L6tZFGf8W9CmxogMw3DhDA0XLebF/tcK4Q47w
+	 zGzZUquXqRt4aq2KeEdvkCCoU8lypTBSiq1JQd7pfXmOK+tzPXqYdX7msToqg8Brou
+	 oMBhsiYvdY2j2SZ5JcwmF8USB2Xl37l2KEd78PGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Robin Chen <robin.chen@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Clay King <clayking@amd.com>,
 	Wayne Lin <wayne.lin@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 232/849] drm/amd/display: fix condition for setting timing_adjust_pending
-Date: Tue, 11 Nov 2025 09:36:42 +0900
-Message-ID: <20251111004542.052018241@linuxfoundation.org>
+Subject: [PATCH 6.17 233/849] drm/amd/display: ensure committing streams is seamless
+Date: Tue, 11 Nov 2025 09:36:43 +0900
+Message-ID: <20251111004542.076441549@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -70,41 +69,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Clay King <clayking@amd.com>
 
-[ Upstream commit 1a6a3374ecb9899ccf0d209b5783a796bdba8cec ]
+[ Upstream commit ca74cc428f2b9d0170c56b473dbcfd7fa01daf2d ]
 
-timing_adjust_pending is used to defer certain programming sequences
-when OTG timing is about to be changed, like with VRR. Insufficient
-checking for timing change in this case caused a regression which
-reduces PSR Replay residency.
+[Why]
+When transitioning between topologies such as multi-display to single
+display ODM 2:1, pipes might not be freed before use.
 
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Robin Chen <robin.chen@amd.com>
+[How]
+In dc_commit_streams, commit an additional, minimal transition if
+original transition is not seamless to ensure pipes are freed.
+
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Clay King <clayking@amd.com>
 Signed-off-by: Wayne Lin <wayne.lin@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index dcc48b5238e53..bb189f6773397 100644
+index bb189f6773397..bc364792d9d31 100644
 --- a/drivers/gpu/drm/amd/display/dc/core/dc.c
 +++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -459,7 +459,9 @@ bool dc_stream_adjust_vmin_vmax(struct dc *dc,
- 	 * avoid conflicting with firmware updates.
- 	 */
- 	if (dc->ctx->dce_version > DCE_VERSION_MAX) {
--		if (dc->optimized_required || dc->wm_optimized_required) {
-+		if ((dc->optimized_required || dc->wm_optimized_required) &&
-+			(stream->adjust.v_total_max != adjust->v_total_max ||
-+			stream->adjust.v_total_min != adjust->v_total_min)) {
- 			stream->adjust.timing_adjust_pending = true;
- 			return false;
- 		}
+@@ -2413,6 +2413,18 @@ enum dc_status dc_commit_streams(struct dc *dc, struct dc_commit_streams_params
+ 		goto fail;
+ 	}
+ 
++	/*
++	 * If not already seamless, make transition seamless by inserting intermediate minimal transition
++	 */
++	if (dc->hwss.is_pipe_topology_transition_seamless &&
++			!dc->hwss.is_pipe_topology_transition_seamless(dc, dc->current_state, context)) {
++		res = commit_minimal_transition_state(dc, context);
++		if (res != DC_OK) {
++			BREAK_TO_DEBUGGER();
++			goto fail;
++		}
++	}
++
+ 	res = dc_commit_state_no_check(dc, context);
+ 
+ 	for (i = 0; i < params->stream_count; i++) {
 -- 
 2.51.0
 
