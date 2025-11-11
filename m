@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-193060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFDDC49F23
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 022AFC49F11
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:50:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA8453AC9B8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE4BF1889E56
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 00:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FCE192B75;
-	Tue, 11 Nov 2025 00:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A9F1FDA92;
+	Tue, 11 Nov 2025 00:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFp6OuKX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBdFVXTv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB531D6DB5;
-	Tue, 11 Nov 2025 00:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1E84C97;
+	Tue, 11 Nov 2025 00:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822203; cv=none; b=fn50r5+C05MpmGAw3cOSZ8u5Hsq4TOCcM6fJNCD9YwnH0t4+Wfa4rCAlsWHpV9SL/Fk2wandxmSLFBaWdFx65UXsRrNeb3OEsjjGLYwal5M+ibhxv52abNRLPPq6N9p+VDOltIz9jsHamNORXoI2X6C28jBasNZ8JEKXlkD+21A=
+	t=1762822231; cv=none; b=CwlMZ4uCzCzzmKb0ibpnUXcoXyz3SpteI/NMMkRETgyGAN9J4ZKOSOiCJXAzKnD2MXySaF2yp3jqBLCRBrrrcUtCHwKhqHc/sACZlr64DA0soxJEV76ng8neYtkMol+iJkdMyo/zymkG6mp9CjpOtiDCq/AKD1LPZ9T/2Gb43I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822203; c=relaxed/simple;
-	bh=DBwN3BIiPETQQzXbPX9AeamphGHbIq8lKwZCpIWCRs8=;
+	s=arc-20240116; t=1762822231; c=relaxed/simple;
+	bh=8JEsMtoVjmhDR/KAbKR9Pw0EHUmCuBpgroXTns2K59M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rofrfHq8rB1G//ki8fcZaszaN/FZXX5L3xChOuiFsdZyc/2hjY5NYgjjnMkb9H/yKzNHtnI/JC0Kl3HvqmDcWgyHCaPYX+MuEvOxS6H62R6uwdGrHqyluJnhIQ9izkRHUA7lp6JsorgLvzlBT5Rd82m933sCyoTwTs4TVtiEqXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFp6OuKX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BDAC4CEFB;
-	Tue, 11 Nov 2025 00:50:02 +0000 (UTC)
+	 MIME-Version; b=C1ycXKdiIYJjPyzsaAn9B55bvpd4v5jY/yU67xGAFGa8Gylyd9Pe8P5ZGplQKkqmFjtu6oIksuw4rXas652m4hgY9tTKMlVu6Ydyzlqn36dWBe6UZ8ep+Q/+4pjOvmmhjTc4FHfQRc3MUjZvjWasWYanpLkGhJ5lm1GUXvE2CLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBdFVXTv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E29FC4CEFB;
+	Tue, 11 Nov 2025 00:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822202;
-	bh=DBwN3BIiPETQQzXbPX9AeamphGHbIq8lKwZCpIWCRs8=;
+	s=korg; t=1762822231;
+	bh=8JEsMtoVjmhDR/KAbKR9Pw0EHUmCuBpgroXTns2K59M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WFp6OuKX6rxPkrvHntU55ON11IcJJW4GpwBexgviFbwkBX5ePWESSdThTLPnBPUYl
-	 DP+YTZy9EgEPiDYChqvnxoUTS9AH1LHcpnCHTCH8AAkavOIxbu9cb4lkPW72Po/QcY
-	 deZJ4cXL5AIuMZfdFGZu2IxfMEglM/eoXPF6wEYM=
+	b=fBdFVXTvB957/L7Q4R9/cKpkCPDAaRN4JrotmwhaAxIIaBPhSRQtx+c5e0YmdzJwt
+	 le9sCm5MMZ1QFSClOS9PVHJTa0YSbUspO0GahjfKjzBG0kk6fVGIFIDCLYvF+jSr95
+	 43H8NVKSC7t+taTm9WNuml5nzjMfWKUzFQKOQuTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karthik M <quic_karm@quicinc.com>,
-	Muna Sinada <muna.sinada@oss.qualcomm.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
 	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 031/849] wifi: ath12k: free skb during idr cleanup callback
-Date: Tue, 11 Nov 2025 09:33:21 +0900
-Message-ID: <20251111004537.200213550@linuxfoundation.org>
+Subject: [PATCH 6.17 032/849] wifi: ath11k: avoid bit operation on key flags
+Date: Tue, 11 Nov 2025 09:33:22 +0900
+Message-ID: <20251111004537.223018468@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -69,105 +68,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Karthik M <quic_karm@quicinc.com>
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
 
-[ Upstream commit 92282074e1d2e7b6da5c05fe38a7cc974187fe14 ]
+[ Upstream commit 9c78e747dd4fee6c36fcc926212e20032055cf9d ]
 
-ath12k just like ath11k [1] did not handle skb cleanup during idr
-cleanup callback. Both ath12k_mac_vif_txmgmt_idr_remove() and
-ath12k_mac_tx_mgmt_pending_free() performed idr cleanup and DMA
-unmapping for skb but only ath12k_mac_tx_mgmt_pending_free() freed
-skb. As a result, during vdev deletion a memory leak occurs.
+Bitwise operations with WMI_KEY_PAIRWISE (defined as 0) are ineffective
+and misleading. This results in pairwise key validations added in
+commit 97acb0259cc9 ("wifi: ath11k: fix group data packet drops
+during rekey") to always evaluate false and clear key commands for
+pairwise keys are not honored.
 
-Refactor all clean up steps into a new function. New function
-ath12k_mac_tx_mgmt_free() creates a centralized area where idr
-cleanup, DMA unmapping for skb and freeing skb is performed. Utilize
-skb pointer given by idr_remove(), instead of passed as a function
-argument because IDR will be protected by locking. This will prevent
-concurrent modification of the same IDR.
+Since firmware supports overwriting the new key without explicitly
+clearing the previous one, there is no visible impact currently.
+However, to restore consistency with the previous behavior and improve
+clarity, replace bitwise operations with direct assignments and
+comparisons for key flags.
 
-Now ath12k_mac_tx_mgmt_pending_free() and
-ath12k_mac_vif_txmgmt_idr_remove() call ath12k_mac_tx_mgmt_free().
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.9.0.1-02146-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Link: https://lore.kernel.org/r/1637832614-13831-1-git-send-email-quic_srirrama@quicinc.com > # [1]
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Karthik M <quic_karm@quicinc.com>
-Signed-off-by: Muna Sinada <muna.sinada@oss.qualcomm.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-wireless/aLlaetkalDvWcB7b@stanley.mountain
+Fixes: 97acb0259cc9 ("wifi: ath11k: fix group data packet drops during rekey")
+Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
 Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250923220316.1595758-1-muna.sinada@oss.qualcomm.com
+Link: https://patch.msgid.link/20251003092158.1080637-1-rameshkumar.sundaram@oss.qualcomm.com
+[update copyright per current guidance]
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 34 ++++++++++++++-------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 2644b5d4b0bc8..d717e74b01c89 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -8304,23 +8304,32 @@ static void ath12k_mgmt_over_wmi_tx_drop(struct ath12k *ar, struct sk_buff *skb)
- 		wake_up(&ar->txmgmt_empty_waitq);
- }
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 106e2530b64e9..0e41b5a91d66d 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
  
--int ath12k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx)
-+static void ath12k_mac_tx_mgmt_free(struct ath12k *ar, int buf_id)
- {
--	struct sk_buff *msdu = skb;
-+	struct sk_buff *msdu;
- 	struct ieee80211_tx_info *info;
--	struct ath12k *ar = ctx;
--	struct ath12k_base *ab = ar->ab;
+ #include <net/mac80211.h>
+@@ -4417,9 +4417,9 @@ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	}
  
- 	spin_lock_bh(&ar->txmgmt_idr_lock);
--	idr_remove(&ar->txmgmt_idr, buf_id);
-+	msdu = idr_remove(&ar->txmgmt_idr, buf_id);
- 	spin_unlock_bh(&ar->txmgmt_idr_lock);
--	dma_unmap_single(ab->dev, ATH12K_SKB_CB(msdu)->paddr, msdu->len,
-+
-+	if (!msdu)
-+		return;
-+
-+	dma_unmap_single(ar->ab->dev, ATH12K_SKB_CB(msdu)->paddr, msdu->len,
- 			 DMA_TO_DEVICE);
+ 	if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE)
+-		flags |= WMI_KEY_PAIRWISE;
++		flags = WMI_KEY_PAIRWISE;
+ 	else
+-		flags |= WMI_KEY_GROUP;
++		flags = WMI_KEY_GROUP;
  
- 	info = IEEE80211_SKB_CB(msdu);
- 	memset(&info->status, 0, sizeof(info->status));
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
+ 		   "%s for peer %pM on vdev %d flags 0x%X, type = %d, num_sta %d\n",
+@@ -4456,7 +4456,7 @@ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
  
--	ath12k_mgmt_over_wmi_tx_drop(ar, skb);
-+	ath12k_mgmt_over_wmi_tx_drop(ar, msdu);
-+}
-+
-+int ath12k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx)
-+{
-+	struct ath12k *ar = ctx;
-+
-+	ath12k_mac_tx_mgmt_free(ar, buf_id);
+ 	is_ap_with_no_sta = (vif->type == NL80211_IFTYPE_AP &&
+ 			     !arvif->num_stations);
+-	if ((flags & WMI_KEY_PAIRWISE) || cmd == SET_KEY || is_ap_with_no_sta) {
++	if (flags == WMI_KEY_PAIRWISE || cmd == SET_KEY || is_ap_with_no_sta) {
+ 		ret = ath11k_install_key(arvif, key, cmd, peer_addr, flags);
+ 		if (ret) {
+ 			ath11k_warn(ab, "ath11k_install_key failed (%d)\n", ret);
+@@ -4470,7 +4470,7 @@ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 			goto exit;
+ 		}
  
- 	return 0;
- }
-@@ -8329,17 +8338,10 @@ static int ath12k_mac_vif_txmgmt_idr_remove(int buf_id, void *skb, void *ctx)
- {
- 	struct ieee80211_vif *vif = ctx;
- 	struct ath12k_skb_cb *skb_cb = ATH12K_SKB_CB(skb);
--	struct sk_buff *msdu = skb;
- 	struct ath12k *ar = skb_cb->ar;
--	struct ath12k_base *ab = ar->ab;
+-		if ((flags & WMI_KEY_GROUP) && cmd == SET_KEY && is_ap_with_no_sta)
++		if (flags == WMI_KEY_GROUP && cmd == SET_KEY && is_ap_with_no_sta)
+ 			arvif->reinstall_group_keys = true;
+ 	}
  
--	if (skb_cb->vif == vif) {
--		spin_lock_bh(&ar->txmgmt_idr_lock);
--		idr_remove(&ar->txmgmt_idr, buf_id);
--		spin_unlock_bh(&ar->txmgmt_idr_lock);
--		dma_unmap_single(ab->dev, skb_cb->paddr, msdu->len,
--				 DMA_TO_DEVICE);
--	}
-+	if (skb_cb->vif == vif)
-+		ath12k_mac_tx_mgmt_free(ar, buf_id);
- 
- 	return 0;
- }
 -- 
 2.51.0
 
