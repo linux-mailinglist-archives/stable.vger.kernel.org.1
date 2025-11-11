@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-193682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE47C4A605
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:23:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AAB6C4A8FF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:32:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BDEBA34C0CC
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:23:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAA433B6FB2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D0834844B;
-	Tue, 11 Nov 2025 01:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B9134889C;
+	Tue, 11 Nov 2025 01:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqjYJS07"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfEdyzk1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5430526D4C7;
-	Tue, 11 Nov 2025 01:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5563434888F;
+	Tue, 11 Nov 2025 01:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823761; cv=none; b=CMumNt7RGPBwO6LQG2pPyNKdC3PXcP1fkk1cLImtvr3Z+jLedf09gGXOFziGyWX4GpeuTVez6T3t9BsuTCiSzWeYl3kvajXI0VbL8Uww57m4D0vsFYLDw+qcifupII0B0hUUqxDYSr2uXAaVdi1klYGGPxUaFdYC8t3lO1kP0wQ=
+	t=1762823768; cv=none; b=ENN0ON+k5DJvo67brBKjZ2tg5Yh9Y8+ENOVNVJrdG+zbZXROMd9rInOGarzkKDfMzhRUJHWljW62s7NUzEZxNd7RZtkSmV/myV8LP/WTGQrGblg3nVUY/7gmYJccwxpQt+AzAVkieOnKJgxxxIpYvs6xqDxC6rEyWBr3T9meRLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823761; c=relaxed/simple;
-	bh=r/n5asBX7EAJkbs3h7bj1JLLnYrBsKu9LuAq1oOhoos=;
+	s=arc-20240116; t=1762823768; c=relaxed/simple;
+	bh=Ep8nM/nrGV87z+s1QHFLC8XSfkc0bXKt5mFYCgiY7RQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOVosrjeZWCQYH37QrW9Cf/2Fi3FF+aG6gqbJ+hOhEyvLstQ98XP/nAvn05AH0XOIBAoZCSXi3/P9HjEbQJfCEqpUzkFZ71DE0ojjY7h9fY9qv308TkSQ+hzqbfLVmUlVlRqZ69QygZhzSUaYdNdfYjluB+EYN+Ox//eXzgOE7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqjYJS07; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E87C16AAE;
-	Tue, 11 Nov 2025 01:16:00 +0000 (UTC)
+	 MIME-Version; b=f4z71+Wj0MP6K+SySikOM0jK48wHKx7uYH+8io69Ken/2QNS4BzlV1M23CS7JZAXJ375idHaRfwJNO/+1RhrIS8xypH5igN1CuFf4cTI7AsjvOZwDclReaMZOTcX4YdmFJRSxMFE8QMPO5fpOsEeUTVuUUsg8qUkQXQ+9xRfMlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfEdyzk1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AAAC113D0;
+	Tue, 11 Nov 2025 01:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823761;
-	bh=r/n5asBX7EAJkbs3h7bj1JLLnYrBsKu9LuAq1oOhoos=;
+	s=korg; t=1762823768;
+	bh=Ep8nM/nrGV87z+s1QHFLC8XSfkc0bXKt5mFYCgiY7RQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jqjYJS07yP+5gtErKJ/JWxqP06md7daeZ9ebdtD3rcCNjMecLGq3PLJCvj1YPGgn2
-	 9Ks44JggQZ/dMO2fc8MRV2k37g+BfsWLi2Sonb1RycZcsd7r9NZiMQLq6VfLoklfOb
-	 KjU9Uby7WNBq/W6h/4iWJc7YFlwxwZslxnAYOG0M=
+	b=qfEdyzk1i8T58uV1TOe7BNqAOuMhTdWXMFFlSVpYAnPCVNS7sqrkM6CDIfjA42mzO
+	 jRWy39LGk/gHpp2KsUSaZADslZ9f1Q2csgIso6ovTWpwVXrMstfpYC3hJxsE2mlN3c
+	 1wwZDaHxxCHjI82AlFq8dlGDpSKbkUGCwUX2K0XQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 364/849] net: phy: fixed_phy: let fixed_phy_unregister free the phy_device
-Date: Tue, 11 Nov 2025 09:38:54 +0900
-Message-ID: <20251111004545.220471135@linuxfoundation.org>
+Subject: [PATCH 6.17 365/849] selftests: drv-net: hds: restore hds settings
+Date: Tue, 11 Nov 2025 09:38:55 +0900
+Message-ID: <20251111004545.244667917@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,71 +65,120 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit a0f849c1cc6df0db9083b4c81c05a5456b1ed0fb ]
+[ Upstream commit ee3ae27721fb994ac0b4705b5806ce68a5a74c73 ]
 
-fixed_phy_register() creates and registers the phy_device. To be
-symmetric, we should not only unregister, but also free the phy_device
-in fixed_phy_unregister(). This allows to simplify code in users.
+The test currently modifies the HDS settings and doesn't restore them.
+This may cause subsequent tests to fail (or pass when they should not).
+Add defer()ed reset handling.
 
-Note wrt of_phy_deregister_fixed_link():
-put_device(&phydev->mdio.dev) and phy_device_free(phydev) are identical.
-
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/ad8dda9a-10ed-4060-916b-3f13bdbb899d@gmail.com
+Link: https://patch.msgid.link/20250825175939.2249165-1-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/dsa_loop.c  | 9 +++------
- drivers/net/mdio/of_mdio.c  | 1 -
- drivers/net/phy/fixed_phy.c | 1 +
- 3 files changed, 4 insertions(+), 7 deletions(-)
+ tools/testing/selftests/drivers/net/hds.py | 39 ++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/drivers/net/dsa/dsa_loop.c b/drivers/net/dsa/dsa_loop.c
-index d8a35f25a4c82..ad907287a853a 100644
---- a/drivers/net/dsa/dsa_loop.c
-+++ b/drivers/net/dsa/dsa_loop.c
-@@ -386,13 +386,10 @@ static struct mdio_driver dsa_loop_drv = {
+diff --git a/tools/testing/selftests/drivers/net/hds.py b/tools/testing/selftests/drivers/net/hds.py
+index 7c90a040ce45a..a2011474e6255 100755
+--- a/tools/testing/selftests/drivers/net/hds.py
++++ b/tools/testing/selftests/drivers/net/hds.py
+@@ -3,6 +3,7 @@
  
- static void dsa_loop_phydevs_unregister(void)
- {
--	unsigned int i;
--
--	for (i = 0; i < NUM_FIXED_PHYS; i++)
--		if (!IS_ERR(phydevs[i])) {
-+	for (int i = 0; i < NUM_FIXED_PHYS; i++) {
-+		if (!IS_ERR(phydevs[i]))
- 			fixed_phy_unregister(phydevs[i]);
--			phy_device_free(phydevs[i]);
--		}
-+	}
- }
+ import errno
+ import os
++from typing import Union
+ from lib.py import ksft_run, ksft_exit, ksft_eq, ksft_raises, KsftSkipEx
+ from lib.py import CmdExitFailure, EthtoolFamily, NlError
+ from lib.py import NetDrvEnv
+@@ -58,7 +59,39 @@ def get_hds_thresh(cfg, netnl) -> None:
+     if 'hds-thresh' not in rings:
+         raise KsftSkipEx('hds-thresh not supported by device')
  
- static int __init dsa_loop_init(void)
-diff --git a/drivers/net/mdio/of_mdio.c b/drivers/net/mdio/of_mdio.c
-index 98f667b121f7d..d8ca63ed87194 100644
---- a/drivers/net/mdio/of_mdio.c
-+++ b/drivers/net/mdio/of_mdio.c
-@@ -473,6 +473,5 @@ void of_phy_deregister_fixed_link(struct device_node *np)
- 	fixed_phy_unregister(phydev);
++
++def _hds_reset(cfg, netnl, rings) -> None:
++    cur = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
++
++    arg = {'header': {'dev-index': cfg.ifindex}}
++    if cur.get('tcp-data-split') != rings.get('tcp-data-split'):
++        # Try to reset to "unknown" first, we don't know if the setting
++        # was the default or user chose it. Default seems more likely.
++        arg['tcp-data-split'] = "unknown"
++        netnl.rings_set(arg)
++        cur = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
++        if cur['tcp-data-split'] == rings['tcp-data-split']:
++            del arg['tcp-data-split']
++        else:
++            # Try the explicit setting
++            arg['tcp-data-split'] = rings['tcp-data-split']
++    if cur.get('hds-thresh') != rings.get('hds-thresh'):
++        arg['hds-thresh'] = rings['hds-thresh']
++    if len(arg) > 1:
++        netnl.rings_set(arg)
++
++
++def _defer_reset_hds(cfg, netnl) -> Union[dict, None]:
++    try:
++        rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
++        if 'hds-thresh' in rings or 'tcp-data-split' in rings:
++            defer(_hds_reset, cfg, netnl, rings)
++    except NlError as e:
++        pass
++
++
+ def set_hds_enable(cfg, netnl) -> None:
++    _defer_reset_hds(cfg, netnl)
+     try:
+         netnl.rings_set({'header': {'dev-index': cfg.ifindex}, 'tcp-data-split': 'enabled'})
+     except NlError as e:
+@@ -76,6 +109,7 @@ def set_hds_enable(cfg, netnl) -> None:
+     ksft_eq('enabled', rings['tcp-data-split'])
  
- 	put_device(&phydev->mdio.dev);	/* of_phy_find_device() */
--	phy_device_free(phydev);	/* fixed_phy_register() */
- }
- EXPORT_SYMBOL(of_phy_deregister_fixed_link);
-diff --git a/drivers/net/phy/fixed_phy.c b/drivers/net/phy/fixed_phy.c
-index 033656d574b89..b8bec7600ef8e 100644
---- a/drivers/net/phy/fixed_phy.c
-+++ b/drivers/net/phy/fixed_phy.c
-@@ -309,6 +309,7 @@ void fixed_phy_unregister(struct phy_device *phy)
- 	phy_device_remove(phy);
- 	of_node_put(phy->mdio.dev.of_node);
- 	fixed_phy_del(phy->mdio.addr);
-+	phy_device_free(phy);
- }
- EXPORT_SYMBOL_GPL(fixed_phy_unregister);
+ def set_hds_disable(cfg, netnl) -> None:
++    _defer_reset_hds(cfg, netnl)
+     try:
+         netnl.rings_set({'header': {'dev-index': cfg.ifindex}, 'tcp-data-split': 'disabled'})
+     except NlError as e:
+@@ -93,6 +127,7 @@ def set_hds_disable(cfg, netnl) -> None:
+     ksft_eq('disabled', rings['tcp-data-split'])
+ 
+ def set_hds_thresh_zero(cfg, netnl) -> None:
++    _defer_reset_hds(cfg, netnl)
+     try:
+         netnl.rings_set({'header': {'dev-index': cfg.ifindex}, 'hds-thresh': 0})
+     except NlError as e:
+@@ -110,6 +145,7 @@ def set_hds_thresh_zero(cfg, netnl) -> None:
+     ksft_eq(0, rings['hds-thresh'])
+ 
+ def set_hds_thresh_random(cfg, netnl) -> None:
++    _defer_reset_hds(cfg, netnl)
+     try:
+         rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
+     except NlError as e:
+@@ -140,6 +176,7 @@ def set_hds_thresh_random(cfg, netnl) -> None:
+     ksft_eq(hds_thresh, rings['hds-thresh'])
+ 
+ def set_hds_thresh_max(cfg, netnl) -> None:
++    _defer_reset_hds(cfg, netnl)
+     try:
+         rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
+     except NlError as e:
+@@ -157,6 +194,7 @@ def set_hds_thresh_max(cfg, netnl) -> None:
+     ksft_eq(rings['hds-thresh'], rings['hds-thresh-max'])
+ 
+ def set_hds_thresh_gt(cfg, netnl) -> None:
++    _defer_reset_hds(cfg, netnl)
+     try:
+         rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
+     except NlError as e:
+@@ -178,6 +216,7 @@ def set_xdp(cfg, netnl) -> None:
+     """
+     mode = _get_hds_mode(cfg, netnl)
+     if mode == 'enabled':
++        _defer_reset_hds(cfg, netnl)
+         netnl.rings_set({'header': {'dev-index': cfg.ifindex},
+                          'tcp-data-split': 'unknown'})
  
 -- 
 2.51.0
