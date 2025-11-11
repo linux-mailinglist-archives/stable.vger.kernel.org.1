@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-193421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2066AC4A3B8
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:07:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C59E6C4AB1D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0D7518842DD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:07:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 671DF3BB88B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187962EB5CE;
-	Tue, 11 Nov 2025 01:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7A6343D63;
+	Tue, 11 Nov 2025 01:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cuD7jIlG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZZNRwaF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A4A2E8B8B;
-	Tue, 11 Nov 2025 01:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0529334321E;
+	Tue, 11 Nov 2025 01:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823144; cv=none; b=sz5UNqZhfT0ryMxoqxF4hqEkSkKmqv27RrDIlvul1yoypqrmu7TCjygJk4XTUf4olcl4iLUhIzqd/117F32Pk4dXYDONqrdVTpnehPuiAafJZ5CppdYl4X/8t4hACvuzkOfDkcnayE16B0GqjHh+7VcpJbnirWh60m6dq/aHa5I=
+	t=1762824088; cv=none; b=tjvjvZf/swEhLOfv7ytJQCV+uU8Y7V62Gd3rnSHMA9WU3BbiqObVc5Q8KNCeA6pE+c5ucwUJvuH6SloQnMMyS3H6bnHDOQuwb/5GXbDxLQz/xZtfht2cQV6wOF3TjCPu2En3Yp+Lxa6OV2aBimxeN0WmjTYa7ll11soczKclSZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823144; c=relaxed/simple;
-	bh=f7cxVCokvjSEctLUMDWlucadT9hMjCi6rmTo30hwqN0=;
+	s=arc-20240116; t=1762824088; c=relaxed/simple;
+	bh=Bm5eWxr7eMGsGa90O39fmS0KPQztKrVL18u9V0an9J4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NfkpS91MgaUqSYhGwiRTPZCQnfPUL/u8BSIMa3lZtd52ajkQbXxZG1Hr5J96U4ivGPFFMPnnx93FhM6R7o/50yvQDvIkY9OkdJO0WRVtiHraphlgCbrEB9Frlq1C5FIje17admFj3XZa1XqbYO279QnT38XBNPCrRLdasY3QoKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cuD7jIlG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E426C116B1;
-	Tue, 11 Nov 2025 01:05:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uyGSoNsi2Ez9wWD0xobdHwgmH0oaCUfN56eQUXUQ8Lw1jwNELW4aViTu/pYHk5BRldXXwh8pj+Qoiws/VZnMNXovWhvI7hmLidAwfuSbnCQh8Z84dEOhcdr27Kw8XR+5dIEIoX0Wz5/yJr/fPqZ9XQYjhoXwhdzNGGy+ca5wg1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZZNRwaF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C3BC113D0;
+	Tue, 11 Nov 2025 01:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823144;
-	bh=f7cxVCokvjSEctLUMDWlucadT9hMjCi6rmTo30hwqN0=;
+	s=korg; t=1762824087;
+	bh=Bm5eWxr7eMGsGa90O39fmS0KPQztKrVL18u9V0an9J4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cuD7jIlGEg6DBOZcgQ/15g77uacozm5KeR9NHSvXYHKOHbt4BiKwd9PQjOsUXsrEv
-	 IumG2z3NbZn215xe78RjtqFwWx26FlzksLC7OOsYnpZchv+7hcdhNNDd4wa0/uP2ED
-	 m1aQfD/lKeARipXqCEVLE5qWhXzZbVWHwDgt7dcs=
+	b=vZZNRwaFWLuDQtaKeHbFq9xX3S1vGNoP2Wajw3VaHp0xBsgKLLse0lQEnCuwJjpAQ
+	 13IJRi5LK5Jekpm6iBGMvQSy4upEjLpTcqwpmA7ENmKouAuw30rlkD8z1iem3qukfY
+	 OrcSIG4NF0vRp/IxnegUN8fd5dhGRp8R5+T3hCwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 148/565] selftests/bpf: Fix selftest verifier_arena_large failure
+Subject: [PATCH 6.17 434/849] media: adv7180: Do not write format to device in set_fmt
 Date: Tue, 11 Nov 2025 09:40:04 +0900
-Message-ID: <20251111004530.270361920@linuxfoundation.org>
+Message-ID: <20251111004546.924956591@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 5a427fddec5e76360725a0f03df3a2a003efbe2e ]
+[ Upstream commit 46c1e7814d1c3310ef23c01ed1a582ef0c8ab1d2 ]
 
-With latest llvm22, I got the following verification failure:
+The .set_fmt callback should not write the new format directly do the
+device, it should only store it and have it applied by .s_stream.
 
-  ...
-  ; int big_alloc2(void *ctx) @ verifier_arena_large.c:207
-  0: (b4) w6 = 1                        ; R6_w=1
-  ...
-  ; if (err) @ verifier_arena_large.c:233
-  53: (56) if w6 != 0x0 goto pc+62      ; R6=0
-  54: (b7) r7 = -4                      ; R7_w=-4
-  55: (18) r8 = 0x7f4000000000          ; R8_w=scalar()
-  57: (bf) r9 = addr_space_cast(r8, 0, 1)       ; R8_w=scalar() R9_w=arena
-  58: (b4) w6 = 5                       ; R6_w=5
-  ; pg = page[i]; @ verifier_arena_large.c:238
-  59: (bf) r1 = r7                      ; R1_w=-4 R7_w=-4
-  60: (07) r1 += 4                      ; R1_w=0
-  61: (79) r2 = *(u64 *)(r9 +0)         ; R2_w=scalar() R9_w=arena
-  ; if (*pg != i) @ verifier_arena_large.c:239
-  62: (bf) r3 = addr_space_cast(r2, 0, 1)       ; R2_w=scalar() R3_w=arena
-  63: (71) r3 = *(u8 *)(r3 +0)          ; R3_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=255,var_off=(0x0; 0xff))
-  64: (5d) if r1 != r3 goto pc+51       ; R1_w=0 R3_w=0
-  ; bpf_arena_free_pages(&arena, (void __arena *)pg, 2); @ verifier_arena_large.c:241
-  65: (18) r1 = 0xff11000114548000      ; R1_w=map_ptr(map=arena,ks=0,vs=0)
-  67: (b4) w3 = 2                       ; R3_w=2
-  68: (85) call bpf_arena_free_pages#72675      ;
-  69: (b7) r1 = 0                       ; R1_w=0
-  ; page[i + 1] = NULL; @ verifier_arena_large.c:243
-  70: (7b) *(u64 *)(r8 +8) = r1
-  R8 invalid mem access 'scalar'
-  processed 61 insns (limit 1000000) max_states_per_insn 0 total_states 6 peak_states 6 mark_read 2
-  =============
-  #489/5   verifier_arena_large/big_alloc2:FAIL
+The .s_stream callback already calls adv7180_set_field_mode() so it's
+safe to remove programming of the device and just store the format and
+have .s_stream apply it.
 
-The main reason is that 'r8' in insn '70' is not an arena pointer.
-Further debugging at llvm side shows that llvm commit ([1]) caused
-the failure. For the original code:
-  page[i] = NULL;
-  page[i + 1] = NULL;
-the llvm transformed it to something like below at source level:
-  __builtin_memset(&page[i], 0, 16)
-Such transformation prevents llvm BPFCheckAndAdjustIR pass from
-generating proper addr_space_cast insns ([2]).
-
-Adding support in llvm BPFCheckAndAdjustIR pass should work, but
-not sure that such a pattern exists or not in real applications.
-At the same time, simply adding a memory barrier between two 'page'
-assignment can fix the issue.
-
-  [1] https://github.com/llvm/llvm-project/pull/155415
-  [2] https://github.com/llvm/llvm-project/pull/84410
-
-Cc: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20250920045805.3288551-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/verifier_arena_large.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/i2c/adv7180.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/verifier_arena_large.c b/tools/testing/selftests/bpf/progs/verifier_arena_large.c
-index 758b09a5eb88b..394c98227e777 100644
---- a/tools/testing/selftests/bpf/progs/verifier_arena_large.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_arena_large.c
-@@ -142,6 +142,7 @@ int big_alloc2(void *ctx)
- 			return 5;
- 		bpf_arena_free_pages(&arena, (void __arena *)pg, 2);
- 		page[i] = NULL;
-+		barrier();
- 		page[i + 1] = NULL;
- 		cond_break;
- 	}
+diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
+index 84600fa75ae8a..8100fe6b0f1d4 100644
+--- a/drivers/media/i2c/adv7180.c
++++ b/drivers/media/i2c/adv7180.c
+@@ -812,14 +812,7 @@ static int adv7180_set_pad_format(struct v4l2_subdev *sd,
+ 	ret = adv7180_mbus_fmt(sd,  &format->format);
+ 
+ 	if (format->which == V4L2_SUBDEV_FORMAT_ACTIVE) {
+-		if (state->field != format->format.field) {
+-			guard(mutex)(&state->mutex);
+-
+-			state->field = format->format.field;
+-			adv7180_set_power(state, false);
+-			adv7180_set_field_mode(state);
+-			adv7180_set_power(state, true);
+-		}
++		state->field = format->format.field;
+ 	} else {
+ 		framefmt = v4l2_subdev_state_get_format(sd_state, 0);
+ 		*framefmt = format->format;
 -- 
 2.51.0
 
