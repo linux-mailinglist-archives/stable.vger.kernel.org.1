@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-194251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D6AC4AF7A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:50:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE991C4ABAB
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:39:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8903B4FB622
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:44:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 363613BBEC8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203AA280A51;
-	Tue, 11 Nov 2025 01:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55ED5345CBD;
+	Tue, 11 Nov 2025 01:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMZPsh7Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSDs5FNj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDFB2EBB8C;
-	Tue, 11 Nov 2025 01:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE4E345CBE;
+	Tue, 11 Nov 2025 01:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825160; cv=none; b=aMqXL67uj++h0xt8gCOKYxVtQt0FxLC8/WV+J8Nv3Ox7I/9tQEqTcL95upPJztex6x0rq1b4OffDgl3NxQJRQvNS14Q4AFLdG8hDbIsclHW1mHnkZymF8ohkInMUMLqCals2kNHfevRQDFSDyQ8qaq/EVUWcKyuRQ7PzOsMjesY=
+	t=1762824167; cv=none; b=Vft9FFEj6p+1PB4d9z+3diNdWZKPbjDfvviFs65HiY9sObxGV8QH6P0GUUUfyb+Z5D9lkZCAeRAWjOsFP+vSOxdXZcbpATRMNzyrzTbEsjC/3d4EY0NW2HQeM7t8m/1ig6mkZTsqhT4/oo1wEIuLFAEmOQl8qRzq9/G6XubZphI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825160; c=relaxed/simple;
-	bh=dZK7MV9Ilnion5UgmYk3geqiyCrQEV2zEEn/ImLTIDE=;
+	s=arc-20240116; t=1762824167; c=relaxed/simple;
+	bh=BNnXRM1DV1Hpd3DirFFP0fTk3C7xm6ty3mTafVSHHsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ULL1xnHJq0dh1GPopFHKh0ILEQkYYEJu23niWBRrflW5OPYHvMJd6ZoNQ9t66zPM3P3MdvfIZT0QbUeBZddoUNG6Kd0oyQWpsxw81s0pcsQpz6dxlCLi2ANZC8m15o44033Q0ETZBx/bTkLkWOmosLb4YcSOijvB7sQaPxk4cRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMZPsh7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5221DC113D0;
-	Tue, 11 Nov 2025 01:39:20 +0000 (UTC)
+	 MIME-Version; b=Oj1kQNUWPiW4aoHLqveyfoQspcGI9ilY6k2KNJn1Zc9MYIGlUyqan7hMeGZ/doBqqkcxrX2uKP+fXgj+8+B6LdGIcJodaPUYwgwWMUJBq1FaxkjZaODI2bmuzZfXliqYiyLuVsJQiNh/c4zy1/obyJPnzeIUly35M2cMu6NvSZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSDs5FNj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991ACC19424;
+	Tue, 11 Nov 2025 01:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825160;
-	bh=dZK7MV9Ilnion5UgmYk3geqiyCrQEV2zEEn/ImLTIDE=;
+	s=korg; t=1762824166;
+	bh=BNnXRM1DV1Hpd3DirFFP0fTk3C7xm6ty3mTafVSHHsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CMZPsh7YVvrDkVukiuPBovHlOMuOJMUR/UIg+SiuRTVweIaJgGSjk3Lqqjmm16cyT
-	 6LCvlg1K0uYMjAmVpCXpqDxGJXAZ9xh+O7+cTyQxelR1Ukw6BdfkamQOGWJgxur+UY
-	 ndQP5jTxucMwVZo/W7v8LGzDAy2kzyfM9yQSb1Uc=
+	b=CSDs5FNjVfurmcz1KTE0jzqr7N37+2HKx76ndMjydeG6VOeKDf68XqQQ23tQrKfaO
+	 iX7lP565fxRvby/k1I/SHS9JraoZKrbUJe4csy2qL2eCu7AzIcVpuVAybj6h4r0JSg
+	 BSycOBZV0TGgYNctoZk+0qOsR07Kei6MLxSXr4mM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Brahmajit Das <listout@listout.xyz>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 686/849] RDMA/irdma: Set irdma_cq cq_num field during CQ create
+Subject: [PATCH 6.12 400/565] net: intel: fm10k: Fix parameter idx set but not used
 Date: Tue, 11 Nov 2025 09:44:16 +0900
-Message-ID: <20251111004553.010703739@linuxfoundation.org>
+Message-ID: <20251111004535.869904497@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Brahmajit Das <listout@listout.xyz>
 
-[ Upstream commit 5575b7646b94c0afb0f4c0d86e00e13cf3397a62 ]
+[ Upstream commit 99e9c5ffbbee0f258a1da4eadf602b943f8c8300 ]
 
-The driver maintains a CQ table that is used to ensure that a CQ is
-still valid when processing CQ related AEs. When a CQ is destroyed,
-the table entry is cleared, using irdma_cq.cq_num as the index. This
-field was never being set, so it was just always clearing out entry
-0.
+Variable idx is set in the loop, but is never used resulting in dead
+code. Building with GCC 16, which enables
+-Werror=unused-but-set-parameter= by default results in build error.
+This patch removes the idx parameter, since all the callers of the
+fm10k_unbind_hw_stats_q as 0 as idx anyways.
 
-Additionally, the cq_num field size was increased to accommodate HW
-supporting more than 64K CQs.
-
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Link: https://patch.msgid.link/20250923142439.943930-1-jmoroni@google.com
-Acked-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Suggested-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Brahmajit Das <listout@listout.xyz>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 1 +
- drivers/infiniband/hw/irdma/verbs.h | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/fm10k/fm10k_common.c | 5 ++---
+ drivers/net/ethernet/intel/fm10k/fm10k_common.h | 2 +-
+ drivers/net/ethernet/intel/fm10k/fm10k_pf.c     | 2 +-
+ drivers/net/ethernet/intel/fm10k/fm10k_vf.c     | 2 +-
+ 4 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index 105ffb1764b80..eb4683b248af9 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2078,6 +2078,7 @@ static int irdma_create_cq(struct ib_cq *ibcq,
- 	spin_lock_init(&iwcq->lock);
- 	INIT_LIST_HEAD(&iwcq->resize_list);
- 	INIT_LIST_HEAD(&iwcq->cmpl_generated);
-+	iwcq->cq_num = cq_num;
- 	info.dev = dev;
- 	ukinfo->cq_size = max(entries, 4);
- 	ukinfo->cq_id = cq_num;
-diff --git a/drivers/infiniband/hw/irdma/verbs.h b/drivers/infiniband/hw/irdma/verbs.h
-index 4381e5dbe782a..36ff8dd712f00 100644
---- a/drivers/infiniband/hw/irdma/verbs.h
-+++ b/drivers/infiniband/hw/irdma/verbs.h
-@@ -115,7 +115,7 @@ struct irdma_mr {
- struct irdma_cq {
- 	struct ib_cq ibcq;
- 	struct irdma_sc_cq sc_cq;
--	u16 cq_num;
-+	u32 cq_num;
- 	bool user_mode;
- 	atomic_t armed;
- 	enum irdma_cmpl_notify last_notify;
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.c b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
+index f51a63fca513e..1f919a50c7653 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_common.c
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
+@@ -447,17 +447,16 @@ void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
+ /**
+  *  fm10k_unbind_hw_stats_q - Unbind the queue counters from their queues
+  *  @q: pointer to the ring of hardware statistics queue
+- *  @idx: index pointing to the start of the ring iteration
+  *  @count: number of queues to iterate over
+  *
+  *  Function invalidates the index values for the queues so any updates that
+  *  may have happened are ignored and the base for the queue stats is reset.
+  **/
+-void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count)
++void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count)
+ {
+ 	u32 i;
+ 
+-	for (i = 0; i < count; i++, idx++, q++) {
++	for (i = 0; i < count; i++, q++) {
+ 		q->rx_stats_idx = 0;
+ 		q->tx_stats_idx = 0;
+ 	}
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.h b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
+index 4c48fb73b3e78..13fca6a91a01b 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_common.h
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
+@@ -43,6 +43,6 @@ u32 fm10k_read_hw_stats_32b(struct fm10k_hw *hw, u32 addr,
+ void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
+ 			     u32 idx, u32 count);
+ #define fm10k_unbind_hw_stats_32b(s) ((s)->base_h = 0)
+-void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count);
++void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count);
+ s32 fm10k_get_host_state_generic(struct fm10k_hw *hw, bool *host_ready);
+ #endif /* _FM10K_COMMON_H_ */
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
+index 98861cc6df7cc..797b99af0c453 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
+@@ -1509,7 +1509,7 @@ static void fm10k_rebind_hw_stats_pf(struct fm10k_hw *hw,
+ 	fm10k_unbind_hw_stats_32b(&stats->nodesc_drop);
+ 
+ 	/* Unbind Queue Statistics */
+-	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
++	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
+ 
+ 	/* Reinitialize bases for all stats */
+ 	fm10k_update_hw_stats_pf(hw, stats);
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
+index 7fb1961f29210..6861a0bdc14e1 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
+@@ -465,7 +465,7 @@ static void fm10k_rebind_hw_stats_vf(struct fm10k_hw *hw,
+ 				     struct fm10k_hw_stats *stats)
+ {
+ 	/* Unbind Queue Statistics */
+-	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
++	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
+ 
+ 	/* Reinitialize bases for all stats */
+ 	fm10k_update_hw_stats_vf(hw, stats);
 -- 
 2.51.0
 
