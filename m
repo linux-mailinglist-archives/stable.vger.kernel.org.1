@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-193847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5A1C4AB50
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A479BC4AF9A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:51:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B3EA1887A09
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:31:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7100318834FA
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A19E266B6F;
-	Tue, 11 Nov 2025 01:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA0326ED5E;
+	Tue, 11 Nov 2025 01:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yasJtiQ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DC3WPaNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C613446BC;
-	Tue, 11 Nov 2025 01:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE73824A043;
+	Tue, 11 Nov 2025 01:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824146; cv=none; b=Aq4WWiiiQ/7Lye5iPGjPn3b7nKuthkmASrkMiQS3pfWZWBmWmS/+M2DmWP6u0ep7HTfsTbJgHyhC6S1hUZBB0OOO07lrlEOi2uLkInal1CDRyI2vMD6Sgz3WWrBT1azOadAwDaoit87kwjB0KtfdBTY1HIH5sK7lFI5eCMQbCEg=
+	t=1762825148; cv=none; b=j977ypYPMvuHqkusnrKFUwCESfpCOPVVPX8tZ4uSazDccMbfR3okLiWtGokZi/N7sckGeUCvl10ErH4QOqSIVvVg85f6d/uY1oeQOxiSBCWnlJRce/sGrBZ8fgcdR2WzRhEwr1GuyZJhNB9rUS+wZtakuHdgPu07wonJTFttU/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824146; c=relaxed/simple;
-	bh=NNSfuOr2mkopx3Xy3apxT/x54phpEwVPPzSbccaU5eI=;
+	s=arc-20240116; t=1762825148; c=relaxed/simple;
+	bh=2eeAqCl8N0gE5H3oBRaQBywLgC7H/NjPsGJdMfB0ESQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZoIAmUTvbbF1y5h8Sj6c7UKA7siJ5MejqeCN+tImAg3rYU/5tf7hw3WjNoITF+qyo2RLYo7OAPN4yPigxy1lDV8A4PIf1ELMB8xASvY/sstpHUBjYVhIvtKfFYXCVVTeZBC2mjaPeMByC0ewTsKHQYK1BF8uGpLMFfk4VXX1aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yasJtiQ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838DCC116B1;
-	Tue, 11 Nov 2025 01:22:25 +0000 (UTC)
+	 MIME-Version; b=PSzmr8wA412V+SGMsvSznIL5msoEvLYZd1913O3uVmLa6YmhgZgpK+qzYJwORFk1Xkooe9h3Af9YgpHiQpTaPuTW3xo5/jS1u+Vi/cs5dfZpdrRtpW4JG0D+P5QJjNIMFAHfMtIPO8I353kpLgqg0u5FOr01aZGjNKjCwo8WKoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DC3WPaNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094F4C4CEF5;
+	Tue, 11 Nov 2025 01:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824145;
-	bh=NNSfuOr2mkopx3Xy3apxT/x54phpEwVPPzSbccaU5eI=;
+	s=korg; t=1762825148;
+	bh=2eeAqCl8N0gE5H3oBRaQBywLgC7H/NjPsGJdMfB0ESQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yasJtiQ58NBmsqvRrgOYGbxxjtTIobu4kOB7lTM1BDPlBk15i8mVtkyEhZvXIKFsp
-	 DfohUKdHfcCMGLguKpoPvRSwvOfi93fvOpqtlg6xxo9+0EgPkry3JCnPTuMn06U3xt
-	 rmK6BQSjcqQYXQRKVOAN/ZoeX0z7uroseThIk41w=
+	b=DC3WPaNo0hv7+JjdqK0gs98cJ0MjTYXks6veSjAol/DlxNp2VdpfsLUuCfxYxutNO
+	 yusGaoHPfVyBPh0Wdax6SeSrV1izQlLYB5DPM0VPApyKS5lVo8ML4HxUmdL1VEyXWE
+	 Mo3tMa8zRTVPwVw+04TJtRCq9l7Kfi4f3f5nT3jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vivek Pernamitta <quic_vpernami@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Saket Dumbre <saket.dumbre@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 396/565] bus: mhi: core: Improve mhi_sync_power_up handling for SYS_ERR state
+Subject: [PATCH 6.17 682/849] ACPICA: Update dsmethod.c to get rid of unused variable warning
 Date: Tue, 11 Nov 2025 09:44:12 +0900
-Message-ID: <20251111004535.782410353@linuxfoundation.org>
+Message-ID: <20251111004552.908990889@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vivek Pernamitta <quic_vpernami@quicinc.com>
+From: Saket Dumbre <saket.dumbre@intel.com>
 
-[ Upstream commit aa1a0e93ed21a06acb7ca9d4a4a9fce75ea53d0c ]
+[ Upstream commit 761dc71c6020d6aa68666e96373342d49a7e9d0a ]
 
-Allow mhi_sync_power_up to handle SYS_ERR during power-up, reboot,
-or recovery. This is to avoid premature exit when MHI_PM_IN_ERROR_STATE is
-observed during above mentioned system states.
+All the 3 major C compilers (MSVC, GCC, LLVM/Clang) warn about
+the unused variable i after the removal of its usage by PR #1031
+addressing Issue #1027
 
-To achieve this, treat SYS_ERR as a valid state and let its handler process
-the error and queue the next transition to Mission Mode instead of aborting
-early.
-
-Signed-off-by: Vivek Pernamitta <quic_vpernami@quicinc.com>
-[mani: reworded description]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250912-uevent_vdev_next-20250911-v4-5-fa2f6ccd301b@quicinc.com
+Link: https://github.com/acpica/acpica/commit/6d235320
+Signed-off-by: Saket Dumbre <saket.dumbre@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/internal.h | 2 ++
- drivers/bus/mhi/host/pm.c       | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/acpica/dsmethod.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/bus/mhi/host/internal.h b/drivers/bus/mhi/host/internal.h
-index 762df4bb7f646..e8b68c0fec7b0 100644
---- a/drivers/bus/mhi/host/internal.h
-+++ b/drivers/bus/mhi/host/internal.h
-@@ -163,6 +163,8 @@ enum mhi_pm_state {
- 							MHI_PM_IN_ERROR_STATE(pm_state))
- #define MHI_PM_IN_SUSPEND_STATE(pm_state)		(pm_state & \
- 							(MHI_PM_M3_ENTER | MHI_PM_M3))
-+#define MHI_PM_FATAL_ERROR(pm_state)			((pm_state == MHI_PM_FW_DL_ERR) || \
-+							(pm_state >= MHI_PM_SYS_ERR_FAIL))
+diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
+index e707a70368026..b2f756b7078d3 100644
+--- a/drivers/acpi/acpica/dsmethod.c
++++ b/drivers/acpi/acpica/dsmethod.c
+@@ -462,7 +462,6 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
+ 	struct acpi_walk_state *next_walk_state = NULL;
+ 	union acpi_operand_object *obj_desc;
+ 	struct acpi_evaluate_info *info;
+-	u32 i;
  
- #define NR_OF_CMD_RINGS					1
- #define CMD_EL_PER_RING					128
-diff --git a/drivers/bus/mhi/host/pm.c b/drivers/bus/mhi/host/pm.c
-index 0ccbcb717955a..8f32dd0a2f218 100644
---- a/drivers/bus/mhi/host/pm.c
-+++ b/drivers/bus/mhi/host/pm.c
-@@ -1279,7 +1279,7 @@ int mhi_sync_power_up(struct mhi_controller *mhi_cntrl)
- 		mhi_cntrl->ready_timeout_ms : mhi_cntrl->timeout_ms;
- 	wait_event_timeout(mhi_cntrl->state_event,
- 			   MHI_IN_MISSION_MODE(mhi_cntrl->ee) ||
--			   MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state),
-+			   MHI_PM_FATAL_ERROR(mhi_cntrl->pm_state),
- 			   msecs_to_jiffies(timeout_ms));
+ 	ACPI_FUNCTION_TRACE_PTR(ds_call_control_method, this_walk_state);
  
- 	ret = (MHI_IN_MISSION_MODE(mhi_cntrl->ee)) ? 0 : -ETIMEDOUT;
 -- 
 2.51.0
 
