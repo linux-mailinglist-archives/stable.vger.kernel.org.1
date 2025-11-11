@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-194064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 293ECC4AE56
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC86C4A85D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D3ED3B2DCA
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DC073B3A03
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72D43446C8;
-	Tue, 11 Nov 2025 01:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD8F343D6F;
+	Tue, 11 Nov 2025 01:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFtNpRH9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6m2ErDP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C652DEA9D;
-	Tue, 11 Nov 2025 01:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B90125A334;
+	Tue, 11 Nov 2025 01:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824721; cv=none; b=TYuwrSFmeR+40SLT8kknNaTnScjOyVz//mNt3bJtZD5RCkLvWPHzVATOhFLTwYs5/7gp6xF2GhCQxR5Vyze3bGtyBHuabAp3EtS4V+cpFyl35BueV7h0W6SHbdmXbh8zv9sMwQleWw+gZQf3n0vXWMLEQPzKoVsLDjeTZ1P4/rM=
+	t=1762823565; cv=none; b=CfzaSLhZZi6H3npG2jrkZTuiVy10zQM+m63Y+Oa1XJgNQRVg407vWOZRPmQm4fMzZuuYIZ3nwc/mC2qXO1xcPjQkDWTzkp2Q8K/8RluS1WeanKl55+W/QvMQnFLquoH8Of+XnleyUXsMdQeDeTtxSkIjS08gYWSk4HS6eBWhpK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824721; c=relaxed/simple;
-	bh=SqV1mzG+8kHAUDm+SIcBF3aJJZnINQiMuypegPXdg+8=;
+	s=arc-20240116; t=1762823565; c=relaxed/simple;
+	bh=fr9mKxSLBjhwUtZeRq/2ibhFgCeNMc7ryoMaLMDLHN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WlflysRY6fu+VtJ+YRXuXe+cjGHv7d8jNz0VfQlKOQ/pTA7ZhJHhleTJiEeVKlWjezB8v5/dUNxb5ZrjF7zgfSQfZ0k8jXy2VzqPwdLmEiDLd8qTDkSBYZFpWZpZWoq47atjUUvS+yZ1N/l0+IyJIKmW8HfzzN7UJTCxaQDzx34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFtNpRH9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BED0C113D0;
-	Tue, 11 Nov 2025 01:32:00 +0000 (UTC)
+	 MIME-Version; b=KdnGBm7+IRc8y2sHoYnrSYeJYCZF+TBkSIVKE+fgUNVTTpD/lXrtZyzuvWLWKXwLRF/en1kTqtt0NGK3Gr2fAdaDVwg6JIDtLqkY93uiomz4aLVxOJokGnjseJKTxtFxjBmm9rFUq2JlQmE57eqgb0j8pUvJREJuO61LJJTupz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6m2ErDP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8116C4CEF5;
+	Tue, 11 Nov 2025 01:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824721;
-	bh=SqV1mzG+8kHAUDm+SIcBF3aJJZnINQiMuypegPXdg+8=;
+	s=korg; t=1762823565;
+	bh=fr9mKxSLBjhwUtZeRq/2ibhFgCeNMc7ryoMaLMDLHN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aFtNpRH9SY5xaeejok0WZNJzl4abTS9gpTE3wF6oVbEG/8ysRoVknwYhzSDCuRkqd
-	 QCVx1S4JEF0prsooOCg5dEHNshXXEPSRJcNqHMjduKTbK3UlDloy0M2/nJrNbee05m
-	 NvIFKcOvDqKyPriIC5UNPB6f5OMl6zT9QZYhls18=
+	b=t6m2ErDPnaE61I7Zhoo2etFFMjUt+NqIuYVL9uZBOwScPm6Yi8iILc2o+lv+SG6wy
+	 6Zrt771dxi7tZ2hPPT/TR/0Drokswilor/ewlxDj50Cu6Ra8hRnH6uXnPFH4hzAstW
+	 OPxV5hmFyZESVerjc5R+SXUHWQAHjcxB/YuPl4Vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 557/849] drm/amd/display: Fix DVI-D/HDMI adapters
+Subject: [PATCH 6.12 271/565] mips: lantiq: danube: add missing device_type in pci node
 Date: Tue, 11 Nov 2025 09:42:07 +0900
-Message-ID: <20251111004549.873830236@linuxfoundation.org>
+Message-ID: <20251111004532.983178555@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 489f0f600ce2c0dae640df9035e1d82677d2580f ]
+[ Upstream commit d66949a1875352d2ddd52b144333288952a9e36f ]
 
-When the EDID has the HDMI bit, we should simply select
-the HDMI signal type even on DVI ports.
+This fixes the following warning:
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: pci@e105400 (lantiq,pci-xway): 'device_type' is a required property
+	from schema $id: http://devicetree.org/schemas/pci/pci-bus-common.yaml#
 
-For reference see, the legacy amdgpu display code:
-amdgpu_atombios_encoder_get_encoder_mode
-which selects ATOM_ENCODER_MODE_HDMI for the same case.
-
-This commit fixes DVI connectors to work with DVI-D/HDMI
-adapters so that they can now produce output over these
-connectors for HDMI monitors with higher bandwidth modes.
-With this change, even HDMI audio works through DVI.
-
-For testing, I used a CAA-DMDHFD3 DVI-D/HDMI adapter
-with the following GPUs:
-
-Tahiti (DCE 6) - DC can now output 4K 30 Hz over DVI
-Polaris 10 (DCE 11.2) - DC can now output 4K 60 Hz over DVI
-
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_detection.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/boot/dts/lantiq/danube.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-index 827b630daf49a..18d0ef40f23fb 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-@@ -1140,6 +1140,10 @@ static bool detect_link_and_local_sink(struct dc_link *link,
- 		if (sink->sink_signal == SIGNAL_TYPE_HDMI_TYPE_A &&
- 		    !sink->edid_caps.edid_hdmi)
- 			sink->sink_signal = SIGNAL_TYPE_DVI_SINGLE_LINK;
-+		else if (dc_is_dvi_signal(sink->sink_signal) &&
-+			 aud_support->hdmi_audio_native &&
-+			 sink->edid_caps.edid_hdmi)
-+			sink->sink_signal = SIGNAL_TYPE_HDMI_TYPE_A;
- 
- 		if (link->local_sink && dc_is_dp_signal(sink_caps.signal))
- 			dp_trace_init(link);
+diff --git a/arch/mips/boot/dts/lantiq/danube.dtsi b/arch/mips/boot/dts/lantiq/danube.dtsi
+index 0a942bc091436..650400bd5725f 100644
+--- a/arch/mips/boot/dts/lantiq/danube.dtsi
++++ b/arch/mips/boot/dts/lantiq/danube.dtsi
+@@ -104,6 +104,8 @@
+ 				  0x1000000 0 0x00000000 0xae00000 0 0x200000>; /* io space */
+ 			reg = <0x7000000 0x8000		/* config space */
+ 				0xe105400 0x400>;	/* pci bridge */
++
++			device_type = "pci";
+ 		};
+ 	};
+ };
 -- 
 2.51.0
 
