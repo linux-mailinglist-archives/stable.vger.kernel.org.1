@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-193328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C73EC4A223
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:02:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87716C4A226
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:02:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E37D31886353
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23016188D405
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:02:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C6B25EF9C;
-	Tue, 11 Nov 2025 01:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8741F24E4C6;
+	Tue, 11 Nov 2025 01:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Chf6U6BR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2LhSn/Z/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0243248883;
-	Tue, 11 Nov 2025 01:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C373426056C;
+	Tue, 11 Nov 2025 01:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762822911; cv=none; b=KimKnNcsJyHrSj/mbvtNy5eO95jgdJlGPkwCj5/j4+lUWwhSuHeMOedFH5vECaYmnfGrWz90MKo7+jQEkh0xnecCv6pQCE8GQqeoCkRSzYWRnt7U824z442AuAXsl3N2HA3PiZdfvvzxYhHHwgOTVV+0wVi8ljDqHUL5BQDOAPo=
+	t=1762822915; cv=none; b=YQyCFPXu8Rcgq32yVZX5ia0TUespIZcsVzwZR0bfLQotug8Dyt4iswROfdvpWeMHV05/ggduSf5tEdtJvm8BNDky0IM/lSUPLPmD9g1e5KYUOyat5hiJE6SLpy7gnYuv9bxJeHAqy4Mi7DQHbnXWTQueQ1ROxed7875HChQAW0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762822911; c=relaxed/simple;
-	bh=BL66hqJbd6jceZrX4jOzrgW9sonc1eunku/WQBpSvdw=;
+	s=arc-20240116; t=1762822915; c=relaxed/simple;
+	bh=yBoyAByBJz7fsdusSgDkJziIDXaBbYooutDoicsQTaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mVIrJgg+TGCtE6/JLfwJQu+rGmXI6hVIPJmjI6WOkvCq98BQgmJsH4ArMCd9zRcCWZMcQQgDs7+6rvgVEPqgCdUB8IcKHKOMVq+KvlGoiw9hHdHfpeaKD6MiumwnaJGu0IrVrXp8iqsr/APsklSLuGuxj4ZQK8H2RauLBPXzSSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Chf6U6BR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764C3C16AAE;
-	Tue, 11 Nov 2025 01:01:50 +0000 (UTC)
+	 MIME-Version; b=EiEiNYqiza26qZ920R0scwETRpjQ2SbSn3sI8X4XTzirzEit9A0viN5t92GgdSKFiicQzJpQ/NSeHjG/i1pTAhs8lEFWbIj6D3uEmgU4pmvgnNGlriOBFVgvrNjYZRV95l6S8VwiW25tEVZCOQeGlVzoOSNODfO6MFwQVqw6Txc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2LhSn/Z/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0340C4CEFB;
+	Tue, 11 Nov 2025 01:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762822910;
-	bh=BL66hqJbd6jceZrX4jOzrgW9sonc1eunku/WQBpSvdw=;
+	s=korg; t=1762822915;
+	bh=yBoyAByBJz7fsdusSgDkJziIDXaBbYooutDoicsQTaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Chf6U6BRMr2/RkLK5LSOB+ebqPN8sVk5AW4QRI3GMEJfkGSFFt9eS4WKxPPkYoDTF
-	 YD42PBbAdJQ04/4qBpzW+9e1p/QjX8ScaSbJoctEwYtDeb62ntgpJQUjYh1+aaymCs
-	 Ksy9q9CjlZHFy2hi6/XiOx8QtFRZOwuSTdhrZNHc=
+	b=2LhSn/Z/YwNEp9Qjag99S3ogIxAp3syS57bO/QYkdOQpmdEzO/X/opQKVETEAAMxd
+	 LdXg6OjeYxZfsriNtZ5DphvOXdsp0Q3ELZks1I8Wk0Dj0gl9fm4RSF64iroTh9XJeh
+	 Nx1vmRIJYv4YKl2gAgSjsmThA3hRGiLnXIYiXohw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jann Horn <jann@thejh.net>,
+	Pranav Tyagi <pranav.tyagi03@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 194/849] cpuidle: Fail cpuidle device registration if there is one already
-Date: Tue, 11 Nov 2025 09:36:04 +0900
-Message-ID: <20251111004541.132988662@linuxfoundation.org>
+Subject: [PATCH 6.17 195/849] futex: Dont leak robust_list pointer on exec race
+Date: Tue, 11 Nov 2025 09:36:05 +0900
+Message-ID: <20251111004541.156268000@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -65,51 +67,197 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Pranav Tyagi <pranav.tyagi03@gmail.com>
 
-[ Upstream commit 7b1b7961170e4fcad488755e5ffaaaf9bd527e8f ]
+[ Upstream commit 6b54082c3ed4dc9821cdf0edb17302355cc5bb45 ]
 
-Refuse to register a cpuidle device if the given CPU has a cpuidle
-device already and print a message regarding it.
+sys_get_robust_list() and compat_get_robust_list() use ptrace_may_access()
+to check if the calling task is allowed to access another task's
+robust_list pointer. This check is racy against a concurrent exec() in the
+target process.
 
-Without this, an attempt to register a new cpuidle device without
-unregistering the existing one leads to the removal of the existing
-cpuidle device without removing its sysfs interface.
+During exec(), a task may transition from a non-privileged binary to a
+privileged one (e.g., setuid binary) and its credentials/memory mappings
+may change. If get_robust_list() performs ptrace_may_access() before
+this transition, it may erroneously allow access to sensitive information
+after the target becomes privileged.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+A racy access allows an attacker to exploit a window during which
+ptrace_may_access() passes before a target process transitions to a
+privileged state via exec().
+
+For example, consider a non-privileged task T that is about to execute a
+setuid-root binary. An attacker task A calls get_robust_list(T) while T
+is still unprivileged. Since ptrace_may_access() checks permissions
+based on current credentials, it succeeds. However, if T begins exec
+immediately afterwards, it becomes privileged and may change its memory
+mappings. Because get_robust_list() proceeds to access T->robust_list
+without synchronizing with exec() it may read user-space pointers from a
+now-privileged process.
+
+This violates the intended post-exec access restrictions and could
+expose sensitive memory addresses or be used as a primitive in a larger
+exploit chain. Consequently, the race can lead to unauthorized
+disclosure of information across privilege boundaries and poses a
+potential security risk.
+
+Take a read lock on signal->exec_update_lock prior to invoking
+ptrace_may_access() and accessing the robust_list/compat_robust_list.
+This ensures that the target task's exec state remains stable during the
+check, allowing for consistent and synchronized validation of
+credentials.
+
+Suggested-by: Jann Horn <jann@thejh.net>
+Signed-off-by: Pranav Tyagi <pranav.tyagi03@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/linux-fsdevel/1477863998-3298-5-git-send-email-jann@thejh.net/
+Link: https://github.com/KSPP/linux/issues/119
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/cpuidle.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ kernel/futex/syscalls.c | 106 +++++++++++++++++++++-------------------
+ 1 file changed, 56 insertions(+), 50 deletions(-)
 
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 0835da449db8b..56132e843c991 100644
---- a/drivers/cpuidle/cpuidle.c
-+++ b/drivers/cpuidle/cpuidle.c
-@@ -635,8 +635,14 @@ static void __cpuidle_device_init(struct cpuidle_device *dev)
- static int __cpuidle_register_device(struct cpuidle_device *dev)
- {
- 	struct cpuidle_driver *drv = cpuidle_get_cpu_driver(dev);
-+	unsigned int cpu = dev->cpu;
- 	int i, ret;
+diff --git a/kernel/futex/syscalls.c b/kernel/futex/syscalls.c
+index 4b6da9116aa6c..880c9bf2f3150 100644
+--- a/kernel/futex/syscalls.c
++++ b/kernel/futex/syscalls.c
+@@ -39,6 +39,56 @@ SYSCALL_DEFINE2(set_robust_list, struct robust_list_head __user *, head,
+ 	return 0;
+ }
  
-+	if (per_cpu(cpuidle_devices, cpu)) {
-+		pr_info("CPU%d: cpuidle device already registered\n", cpu);
-+		return -EEXIST;
++static inline void __user *futex_task_robust_list(struct task_struct *p, bool compat)
++{
++#ifdef CONFIG_COMPAT
++	if (compat)
++		return p->compat_robust_list;
++#endif
++	return p->robust_list;
++}
++
++static void __user *futex_get_robust_list_common(int pid, bool compat)
++{
++	struct task_struct *p = current;
++	void __user *head;
++	int ret;
++
++	scoped_guard(rcu) {
++		if (pid) {
++			p = find_task_by_vpid(pid);
++			if (!p)
++				return (void __user *)ERR_PTR(-ESRCH);
++		}
++		get_task_struct(p);
 +	}
 +
- 	if (!try_module_get(drv->owner))
- 		return -EINVAL;
++	/*
++	 * Hold exec_update_lock to serialize with concurrent exec()
++	 * so ptrace_may_access() is checked against stable credentials
++	 */
++	ret = down_read_killable(&p->signal->exec_update_lock);
++	if (ret)
++		goto err_put;
++
++	ret = -EPERM;
++	if (!ptrace_may_access(p, PTRACE_MODE_READ_REALCREDS))
++		goto err_unlock;
++
++	head = futex_task_robust_list(p, compat);
++
++	up_read(&p->signal->exec_update_lock);
++	put_task_struct(p);
++
++	return head;
++
++err_unlock:
++	up_read(&p->signal->exec_update_lock);
++err_put:
++	put_task_struct(p);
++	return (void __user *)ERR_PTR(ret);
++}
++
+ /**
+  * sys_get_robust_list() - Get the robust-futex list head of a task
+  * @pid:	pid of the process [zero for current task]
+@@ -49,36 +99,14 @@ SYSCALL_DEFINE3(get_robust_list, int, pid,
+ 		struct robust_list_head __user * __user *, head_ptr,
+ 		size_t __user *, len_ptr)
+ {
+-	struct robust_list_head __user *head;
+-	unsigned long ret;
+-	struct task_struct *p;
+-
+-	rcu_read_lock();
+-
+-	ret = -ESRCH;
+-	if (!pid)
+-		p = current;
+-	else {
+-		p = find_task_by_vpid(pid);
+-		if (!p)
+-			goto err_unlock;
+-	}
+-
+-	ret = -EPERM;
+-	if (!ptrace_may_access(p, PTRACE_MODE_READ_REALCREDS))
+-		goto err_unlock;
++	struct robust_list_head __user *head = futex_get_robust_list_common(pid, false);
  
-@@ -648,7 +654,7 @@ static int __cpuidle_register_device(struct cpuidle_device *dev)
- 			dev->states_usage[i].disable |= CPUIDLE_STATE_DISABLED_BY_USER;
- 	}
+-	head = p->robust_list;
+-	rcu_read_unlock();
++	if (IS_ERR(head))
++		return PTR_ERR(head);
  
--	per_cpu(cpuidle_devices, dev->cpu) = dev;
-+	per_cpu(cpuidle_devices, cpu) = dev;
- 	list_add(&dev->device_list, &cpuidle_detected_devices);
+ 	if (put_user(sizeof(*head), len_ptr))
+ 		return -EFAULT;
+ 	return put_user(head, head_ptr);
+-
+-err_unlock:
+-	rcu_read_unlock();
+-
+-	return ret;
+ }
  
- 	ret = cpuidle_coupled_register_device(dev);
+ long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
+@@ -455,36 +483,14 @@ COMPAT_SYSCALL_DEFINE3(get_robust_list, int, pid,
+ 			compat_uptr_t __user *, head_ptr,
+ 			compat_size_t __user *, len_ptr)
+ {
+-	struct compat_robust_list_head __user *head;
+-	unsigned long ret;
+-	struct task_struct *p;
+-
+-	rcu_read_lock();
+-
+-	ret = -ESRCH;
+-	if (!pid)
+-		p = current;
+-	else {
+-		p = find_task_by_vpid(pid);
+-		if (!p)
+-			goto err_unlock;
+-	}
+-
+-	ret = -EPERM;
+-	if (!ptrace_may_access(p, PTRACE_MODE_READ_REALCREDS))
+-		goto err_unlock;
++	struct compat_robust_list_head __user *head = futex_get_robust_list_common(pid, true);
+ 
+-	head = p->compat_robust_list;
+-	rcu_read_unlock();
++	if (IS_ERR(head))
++		return PTR_ERR(head);
+ 
+ 	if (put_user(sizeof(*head), len_ptr))
+ 		return -EFAULT;
+ 	return put_user(ptr_to_compat(head), head_ptr);
+-
+-err_unlock:
+-	rcu_read_unlock();
+-
+-	return ret;
+ }
+ #endif /* CONFIG_COMPAT */
+ 
 -- 
 2.51.0
 
