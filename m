@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-193888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38FCEC4AB95
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:38:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56794C4A4D9
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:16:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E100918952A7
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:32:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 097324F5B4B
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EF5346E7D;
-	Tue, 11 Nov 2025 01:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F56933B6DC;
+	Tue, 11 Nov 2025 01:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyFMOLdh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBmqdvbj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250F4346FA2;
-	Tue, 11 Nov 2025 01:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B16726FA67;
+	Tue, 11 Nov 2025 01:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824243; cv=none; b=jQlVq/9sXZTKcBAAKtjPufMmyaEmv4PoR4H0tx3h13fJvmUeO32MZeLMJqt0P6oKSWtdMK1mc3Vq8qKi2tA3kVAMDxnVd6mQoWnPWTW/OZAUJ9ImyUK5dlpA7U5H7/qaGCZ64EyGw7mA+c6Mvgxj6iLsscAXDGng0Tcvb7+8BnU=
+	t=1762823163; cv=none; b=Quwur7wR+Fj5TGddNXFGOB875HHa8ugdtKNJC9G1+ZaKWbTy4tMee54a1nj9j7xeJ/w1vBg9wT6KpPqf4y9T8di27Y686Oo4h4E2r2hwAuUyyQN1ngKoCgNvtZla6kt3D+ozkyyVfVdnExoJ2aZEKwvZnTP+GBuJxFgWx50xiSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824243; c=relaxed/simple;
-	bh=NiInLx34toYi3ZZVlIugM8NyaYJoU988m+67NURAA8w=;
+	s=arc-20240116; t=1762823163; c=relaxed/simple;
+	bh=QUPqdXYWZ4sEllJMJ9S3ZAx8a4c/2gD2lwnQT1qFVMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpK17+zHoXYCR6I2ccVEvk54hUPohLUEjGk5leKDH/5PA3iZXNT6gf3FwUaZeg18FPKTwDP9KsFO9Dukv06IDPvyUim/tIOIo4oGWDBQFZN7dSgd+HgJeXHZEzgGbo0znVreiEav9VZj8Uv82PcuMek+TC5nqVOA+i1yVdw5tnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyFMOLdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A54C116B1;
-	Tue, 11 Nov 2025 01:24:02 +0000 (UTC)
+	 MIME-Version; b=HApEH+4RJNNUD3aAKdDEP6mG+rZk2V5PHg1LIhJCm1dshzp+4QL/8nZASuYxNgSQwPWZxgWiCxzJ4CMbYH7HFRe7bPP0ZuxXDoWXYVuDiyWPCCpQXo6pku4QU5LZtSZXGwW+gJeqmX9qT6grEmEFPZSC7W1kSqc3aPu4UptgHqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBmqdvbj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99ECC113D0;
+	Tue, 11 Nov 2025 01:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824242;
-	bh=NiInLx34toYi3ZZVlIugM8NyaYJoU988m+67NURAA8w=;
+	s=korg; t=1762823163;
+	bh=QUPqdXYWZ4sEllJMJ9S3ZAx8a4c/2gD2lwnQT1qFVMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NyFMOLdhGIqwYeLCmeqWOcgVwHv+C+STVmULP5BE+vgLuGUZNtGqEI32+qca7jtMT
-	 oCUDKb+P6yjm/51qRm/kMFdntRV1hJD5TGPyemHshj4kinslN9syZQqJb6xa0IEyF9
-	 tEv6oGD5ORjTPB2itksrRSU70GtlUCrVMUuTuuUM=
+	b=uBmqdvbjaiQnfkWYh3kZ74yL2CpFrAdS8jYckQIV2ep4rtvuBokuK8p5liTsVhdr4
+	 BSgH3REd62h/EHiCitFwiBlDAXnYHTPnqH9hjokYR+0j1cONnIO8k54razUP9I6+B2
+	 VZAFuxDW23dtarbU4HPkurFm+UarBcR0vNQ81sY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 469/849] drm/msm/adreno: Add speedbins for A663 GPU
+Subject: [PATCH 6.12 183/565] drm/amd/display: add more cyan skillfish devices
 Date: Tue, 11 Nov 2025 09:40:39 +0900
-Message-ID: <20251111004547.779655591@linuxfoundation.org>
+Message-ID: <20251111004531.050830561@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 0c5300343d0c622f7852145a763c570fbaf68a48 ]
+[ Upstream commit 3cf06bd4cf2512d564fdb451b07de0cebe7b138d ]
 
-Add speedbin mappings for A663 GPU.
+Add PCI IDs to support display probe for cyan skillfish
+family of SOCs.
 
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/670096/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Acked-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_catalog.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 8 +++++++-
+ drivers/gpu/drm/amd/display/include/dal_asic_id.h | 5 +++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
-index 00e1afd46b815..2b1c41f6cfeee 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
-@@ -1024,6 +1024,11 @@ static const struct adreno_info a6xx_gpus[] = {
- 			.gmu_cgc_mode = 0x00020200,
- 			.prim_fifo_threshold = 0x00300200,
- 		},
-+		.speedbins = ADRENO_SPEEDBINS(
-+			{ 0,   0 },
-+			{ 169, 0 },
-+			{ 113, 1 },
-+		),
- 	}, {
- 		.chip_ids = ADRENO_CHIP_IDS(0x06030500),
- 		.family = ADRENO_6XX_GEN4,
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index 6dbf139c51f72..36f8eb37e6710 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -164,7 +164,13 @@ enum dce_version resource_parse_asic_id(struct hw_asic_id asic_id)
+ 
+ 	case FAMILY_NV:
+ 		dc_version = DCN_VERSION_2_0;
+-		if (asic_id.chip_id == DEVICE_ID_NV_13FE || asic_id.chip_id == DEVICE_ID_NV_143F) {
++		if (asic_id.chip_id == DEVICE_ID_NV_13FE ||
++		    asic_id.chip_id == DEVICE_ID_NV_143F ||
++		    asic_id.chip_id == DEVICE_ID_NV_13F9 ||
++		    asic_id.chip_id == DEVICE_ID_NV_13FA ||
++		    asic_id.chip_id == DEVICE_ID_NV_13FB ||
++		    asic_id.chip_id == DEVICE_ID_NV_13FC ||
++		    asic_id.chip_id == DEVICE_ID_NV_13DB) {
+ 			dc_version = DCN_VERSION_2_01;
+ 			break;
+ 		}
+diff --git a/drivers/gpu/drm/amd/display/include/dal_asic_id.h b/drivers/gpu/drm/amd/display/include/dal_asic_id.h
+index 090230d29df82..f030e167c58e1 100644
+--- a/drivers/gpu/drm/amd/display/include/dal_asic_id.h
++++ b/drivers/gpu/drm/amd/display/include/dal_asic_id.h
+@@ -213,6 +213,11 @@ enum {
+ #endif
+ #define DEVICE_ID_NV_13FE 0x13FE  // CYAN_SKILLFISH
+ #define DEVICE_ID_NV_143F 0x143F
++#define DEVICE_ID_NV_13F9 0x13F9
++#define DEVICE_ID_NV_13FA 0x13FA
++#define DEVICE_ID_NV_13FB 0x13FB
++#define DEVICE_ID_NV_13FC 0x13FC
++#define DEVICE_ID_NV_13DB 0x13DB
+ #define FAMILY_VGH 144
+ #define DEVICE_ID_VGH_163F 0x163F
+ #define DEVICE_ID_VGH_1435 0x1435
 -- 
 2.51.0
 
