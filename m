@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5146C4AEB1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02D1C4A941
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 538921897F59
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:43:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0358C1891A7C
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C82630F7F1;
-	Tue, 11 Nov 2025 01:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ADEA301006;
+	Tue, 11 Nov 2025 01:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jN+UVrW3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBjEqakn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99A326B0B7;
-	Tue, 11 Nov 2025 01:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FE12F2612;
+	Tue, 11 Nov 2025 01:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825042; cv=none; b=RxU0TLTIOcU/P5rH58zueAhHKo4NA5utPzGIQj5O4+c7JXtsPGuNz9Y4HjaadrbIpU/k8sQDLdDBLQGR6lntXA4v2mjHDcEVNoPTQ3M639yBzpSwimKMspKLohubnUyHYgKdYK4OO8GAjnx0qQNW9GxDo58cIV8U1If/alMhEOk=
+	t=1762823833; cv=none; b=rUAhZR1yghwzvWPwShPz+RixaH6u/7Bm4DSG/uogHkfAtY+LVVyNKuj6y2kT/6zCS31yBarWztk6BXUkhxHgTzg63qHReN0ujsLgYweuF15uovJeJ7+eXaPU58xOCmjH/8bOR93F2VZUYSTxjI6q1tbOQpAdpBpCZRr2kkIcW/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825042; c=relaxed/simple;
-	bh=eFmSObKhbqpxNowZgHgOUc1ZcibYvwGSjXLT7T9BbBo=;
+	s=arc-20240116; t=1762823833; c=relaxed/simple;
+	bh=YlkoS1V+qR5rQKP7P1s2iEKHpEgPbBPQW1se8+JOduU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ss0Yd8PcUp1fzZhimqTtdruRlOJLqEYPYB8zM1daGAQyUcHeRnmwaJh9Bciu7h6LynFM3L2qBTYoNAp2sUMba4INEVePB+j8kgxJye9NTNTjM0eyS6JNnog0EjFO6GygU8mS8VrrthpdaFtRuGMhYNffVq98jg0RHo8WbQy994Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jN+UVrW3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774A9C16AAE;
-	Tue, 11 Nov 2025 01:37:22 +0000 (UTC)
+	 MIME-Version; b=JNlcN5ZCMqKZbiJw1y95ZPgBK7fE98c/rmfIxiuRl808nDkaW8oMy/HAF3+HRB/iVxF2nqrmJtjV47ZNnFYHewGkp9h9WVGEhbD/3p5KhEAaL/n9Waz2dVZbTq0EWcGZzPD9qHHfT0+7drOLisr8mOYFE0nC6u0NVXn0KFCRvvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBjEqakn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F50AC4CEFB;
+	Tue, 11 Nov 2025 01:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825042;
-	bh=eFmSObKhbqpxNowZgHgOUc1ZcibYvwGSjXLT7T9BbBo=;
+	s=korg; t=1762823832;
+	bh=YlkoS1V+qR5rQKP7P1s2iEKHpEgPbBPQW1se8+JOduU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jN+UVrW3uw5n4H9Nv4JQn9pT/PwkKtXE0V1HdmgHv1T3OzGGxM0SgfrURIflCgc4N
-	 j6qtfzdyDWwrGVlt6vquRGXgxM77YMWLrdTDdtRTdA2uP9RT3YBAdbe+CSRHyZDAhL
-	 3LgtsaMscXfCh81NdoXkEHHSDyCZZPIDV7wIgGco=
+	b=IBjEqakn/uno+O7pkXwcy4HMMvBrjqispZyeRBfzN8O5BzEiO5qnYC899AatkYGtA
+	 MOZfLbdrj25OQXfQGzIZQFyZaPFdj1UiKvWcoyN10Dkr1WdUDTR0Um/5BbUnDd0/r9
+	 j0VZmUjpB6aH85eeqPtalR2F5B2jrWxtinbRWX0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 619/849] ALSA: usb-audio: dont apply interface quirk to Presonus S1824c
+Subject: [PATCH 6.12 333/565] phy: rockchip: phy-rockchip-inno-csidphy: allow writes to grf register 0
 Date: Tue, 11 Nov 2025 09:43:09 +0900
-Message-ID: <20251111004551.397470490@linuxfoundation.org>
+Message-ID: <20251111004534.374157775@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
+From: Michael Riesch <michael.riesch@collabora.com>
 
-[ Upstream commit d1d6ad7f6686e208aba06b7af3feef7a7cba61cf ]
+[ Upstream commit 8c7c19466c854fa86b82d2148eaa9bf0e6531423 ]
 
-Testing with a Presonus STUDIO 1824c together with
-a Behringer ultragain digital ADAT device shows that
-using all 3 altno settings works fine.
+The driver for the Rockchip MIPI CSI-2 DPHY uses GRF register offset
+value 0 to sort out undefined registers. However, the RK3588 CSIDPHY GRF
+this offset is perfectly fine (in fact, register 0 is the only one in
+this register file).
+Introduce a boolean variable to indicate valid registers and allow writes
+to register 0.
 
-When selecting sample rate, the driver sets the interface
-to the correct altno setting and the correct number of
-channels is set.
-
-Selecting the correct altno setting via Ardour, Reaper or
-whatever other way to set the sample rate is more convenient
-than re-loading the driver module with device_setup to
-set altno.
-
-Signed-off-by: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
+Link: https://lore.kernel.org/r/20250616-rk3588-csi-dphy-v4-4-a4f340a7f0cf@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-inno-csidphy.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index 766db7d00cbc9..4a35f962527e9 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1599,9 +1599,6 @@ int snd_usb_apply_interface_quirk(struct snd_usb_audio *chip,
- 	/* presonus studio 1810c: skip altsets incompatible with device_setup */
- 	if (chip->usb_id == USB_ID(0x194f, 0x010c))
- 		return s1810c_skip_setting_quirk(chip, iface, altno);
--	/* presonus studio 1824c: skip altsets incompatible with device_setup */
--	if (chip->usb_id == USB_ID(0x194f, 0x010d))
--		return s1810c_skip_setting_quirk(chip, iface, altno);
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
+index 98c92d6c482fe..279e19e7546b6 100644
+--- a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
+@@ -87,10 +87,11 @@ struct dphy_reg {
+ 	u32 offset;
+ 	u32 mask;
+ 	u32 shift;
++	u8 valid;
+ };
  
- 	return 0;
+ #define PHY_REG(_offset, _width, _shift) \
+-	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, }
++	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, .valid = 1, }
+ 
+ static const struct dphy_reg rk1808_grf_dphy_regs[] = {
+ 	[GRF_DPHY_CSIPHY_FORCERXMODE] = PHY_REG(RK1808_GRF_PD_VI_CON_OFFSET, 4, 0),
+@@ -145,7 +146,7 @@ static inline void write_grf_reg(struct rockchip_inno_csidphy *priv,
+ 	const struct dphy_drv_data *drv_data = priv->drv_data;
+ 	const struct dphy_reg *reg = &drv_data->grf_regs[index];
+ 
+-	if (reg->offset)
++	if (reg->valid)
+ 		regmap_write(priv->grf, reg->offset,
+ 			     HIWORD_UPDATE(value, reg->mask, reg->shift));
  }
 -- 
 2.51.0
