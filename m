@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2594BC4A9F1
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:34:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 820BFC4AC9D
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:42:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C694334C850
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E6824EFEF7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A255C332EAE;
-	Tue, 11 Nov 2025 01:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767EC33437F;
+	Tue, 11 Nov 2025 01:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0QAx49HV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVYnSy0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3C6255F28;
-	Tue, 11 Nov 2025 01:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C309333443;
+	Tue, 11 Nov 2025 01:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824542; cv=none; b=Mh3XxT0cVZ9wD8hihkaQh00NjhvEpk7VwiC5eIq72WksRpxl/ykul9M9xr+Kn4jmDji1fcylIfLlqXo+0Xw0zAEd3ciYcZWY36BY5zX1ZH8IUrBjKNbGChX3yU35+JPvhOSRirZrHPycZUQl3G0outr3/Zlj+gqf22rHdmZdue8=
+	t=1762824547; cv=none; b=PihO8xiG+ftbyP8JwO/39rY5BfpatMEyzA/RUP7zY/L/avS3B0eUP3TsvX44gqCYH1+87UCSuZpByuzQboZShopJ8udVCeBTCE8Kfkj82jmj8UOXATHkLv4zHvnIh8uOPNniKcKNtixkhAf1JNk3MU+zLzVzzOHVpth1ZtIKMIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824542; c=relaxed/simple;
-	bh=03J0F2otaNnr9rPSGR+P3nWHFcW8CECm4DfimWhQYcY=;
+	s=arc-20240116; t=1762824547; c=relaxed/simple;
+	bh=AaSuHM5R4dv9yVkktqDVzXn9ievVjelhU2oV8Op6x3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TyVLwqj2R2Rh8Khkw3Kgd7XH0IzZVjRJLPD/42zCC8ueKTHL9jx79jNybCMON40o9ioZqSK0hEseLXdJniYor0mKm7OwX/jyphgF3DjXar2ze7aQymxTB8m80pihr9FlhTvTJM/9UPWCM9y1aZlTVbW9x5qT3+X842gZv4n/IGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0QAx49HV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E631BC4CEF5;
-	Tue, 11 Nov 2025 01:29:01 +0000 (UTC)
+	 MIME-Version; b=TmFxDsNyn68OtEEhbrFVSWGoDja3e/ys4/4rDFOlodVHw2+Zne+2+gmS98I0pFJOcViLoUUX/MMBIRtZv+yv/MAuqXuHcbdna+FfJN7WG1/yrbi/lgcYLZq83Sc6TT/a0+KN0yVbIMV6aMzfYToaYztCqCULd56pEgSDA1XK/+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVYnSy0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F9EC2BC86;
+	Tue, 11 Nov 2025 01:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824542;
-	bh=03J0F2otaNnr9rPSGR+P3nWHFcW8CECm4DfimWhQYcY=;
+	s=korg; t=1762824547;
+	bh=AaSuHM5R4dv9yVkktqDVzXn9ievVjelhU2oV8Op6x3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0QAx49HVtqzAa7PeTpeCA2+279vRhz662BcUi89RJqAfYPUaOZDkad7ekvcLX3skX
-	 ec28wOYOerkAwWoOnFwFPJ213rjPq71NyAQ1NV1PUh86g4fYZH8LNx0YMTfBI3V3r6
-	 cyt/PUdD7keaVeX57HwnN45BufmhYkCSOTn1lT8A=
+	b=OVYnSy0TRbZ0m08h6sKp8ijFiLNMuSrIT8VUCJgeyxizlqXZAkghNqQ4HI/e7rM0T
+	 y+HjIXrAGwabZr6tLW+SrIksV+59+GHegtHPw/mOE4cqYSal4u8FF2xuFY/TA4dUVq
+	 4Y0uQZbMIE3WT2uepFgAozOsYxCpeaB7UkQ+r3jY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@thingy.jp>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vernon Yang <yanglincheng@kylinos.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 520/849] eth: 8139too: Make 8139TOO_PIO depend on !NO_IOPORT_MAP
-Date: Tue, 11 Nov 2025 09:41:30 +0900
-Message-ID: <20251111004548.995242142@linuxfoundation.org>
+Subject: [PATCH 6.17 521/849] PCI/AER: Fix NULL pointer access by aer_info
+Date: Tue, 11 Nov 2025 09:41:31 +0900
+Message-ID: <20251111004549.019934434@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,42 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Palmer <daniel@thingy.jp>
+From: Vernon Yang <yanglincheng@kylinos.cn>
 
-[ Upstream commit 43adad382e1fdecabd2c4cd2bea777ef4ce4109e ]
+[ Upstream commit 0a27bdb14b028fed30a10cec2f945c38cb5ca4fa ]
 
-When 8139too is probing and 8139TOO_PIO=y it will call pci_iomap_range()
-and from there __pci_ioport_map() for the PCI IO space.
-If HAS_IOPORT_MAP=n and NO_GENERIC_PCI_IOPORT_MAP=n, like it is on my
-m68k config, __pci_ioport_map() becomes NULL, pci_iomap_range() will
-always fail and the driver will complain it couldn't map the PIO space
-and return an error.
+The kzalloc(GFP_KERNEL) may return NULL, so all accesses to aer_info->xxx
+will result in kernel panic. Fix it.
 
-NO_IOPORT_MAP seems to cover the case where what 8139too is trying
-to do cannot ever work so make 8139TOO_PIO depend on being it false
-and avoid creating an unusable driver.
-
-Signed-off-by: Daniel Palmer <daniel@thingy.jp>
-Link: https://patch.msgid.link/20250907064349.3427600-1-daniel@thingy.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20250904182527.67371-1-vernon2gm@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pcie/aer.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/realtek/Kconfig b/drivers/net/ethernet/realtek/Kconfig
-index fe136f61586fe..272c83bfdc6ce 100644
---- a/drivers/net/ethernet/realtek/Kconfig
-+++ b/drivers/net/ethernet/realtek/Kconfig
-@@ -58,7 +58,7 @@ config 8139TOO
- config 8139TOO_PIO
- 	bool "Use PIO instead of MMIO"
- 	default y
--	depends on 8139TOO
-+	depends on 8139TOO && !NO_IOPORT_MAP
- 	help
- 	  This instructs the driver to use programmed I/O ports (PIO) instead
- 	  of PCI shared memory (MMIO).  This can possibly solve some problems
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 9d23294ceb2f6..3dba9c0c6ae11 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -383,6 +383,10 @@ void pci_aer_init(struct pci_dev *dev)
+ 		return;
+ 
+ 	dev->aer_info = kzalloc(sizeof(*dev->aer_info), GFP_KERNEL);
++	if (!dev->aer_info) {
++		dev->aer_cap = 0;
++		return;
++	}
+ 
+ 	ratelimit_state_init(&dev->aer_info->correctable_ratelimit,
+ 			     DEFAULT_RATELIMIT_INTERVAL, DEFAULT_RATELIMIT_BURST);
 -- 
 2.51.0
 
