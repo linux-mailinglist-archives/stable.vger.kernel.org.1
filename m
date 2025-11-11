@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-193704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD542C4AB29
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:37:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78145C4A98F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:33:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E75E3AF060
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:25:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F5F4188EF45
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2B134B41E;
-	Tue, 11 Nov 2025 01:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831BF2FE071;
+	Tue, 11 Nov 2025 01:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8uYuwcZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAc2oJsh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880F72FC009;
-	Tue, 11 Nov 2025 01:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5AD2E9EB1;
+	Tue, 11 Nov 2025 01:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823811; cv=none; b=B7OfbmMZkn6ewY0RrzhUzlNtPJ/k8eyhXjDdbc9dWU6+ioKK6WerwUHEPImGT9QgudkJvVPZ9UgYJLbT3U+zSKddTPe9lOuWijLpnORBiNfKLZSA3CekvE2dqOIbxrETnjgL7zJrWQEkM61Y8H9y4wI3jQ10AzfvmVh0sDWz1RY=
+	t=1762823816; cv=none; b=HiqPMlACOTGcPe99wYn0fEqyDqv4USkLIavM1AITPJC3h45930Nfb5E5u5j7wzEZFF+qFeE58pV488+kupbvyQuDsSoW/fGt9q5FfGAnI8j4Wjrta65mS/8gYye/r6bVO0I2lWoAWcM+ZZ9SbuzRVeD6185ic3GJ6qK3Scs6n2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823811; c=relaxed/simple;
-	bh=jeWmOEvjGpUV0TXvtwnAL4MFtzvtrd2mIAcAO+EG9q0=;
+	s=arc-20240116; t=1762823816; c=relaxed/simple;
+	bh=fF5KPeyNwXftviB+jvhP15DXFHlrPf47RVW8uicLnVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d4SmrvaAdIPVzyo0R60vrIFm1TG08kIMITlbeD9m67/f531DuoEFPzQIP8ZeywmoTJDFa3dLUH0NGwnpfGZVzMTweOWZ9x2Rgr8C1c4kFEqQBqfj6ZIQYvqmPPEkEM0fJShkgwA8sxtUnqSg6cnJGK5tdddZBftqBzyW/xM6h7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8uYuwcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23977C2BCB5;
-	Tue, 11 Nov 2025 01:16:51 +0000 (UTC)
+	 MIME-Version; b=BM2YMC/tm0VKePBxwXAZMoXvDrkRkM4VxjCeli7H3IpJ80BF1euafrrf7FfYtO9JRZBcJZ/JQFZHI/amhvIei++ZQ457drVVNEzl8TXy9e/HAFO8apUKMQQxNCnH4K+3O0gma9PqieR2s7MyMjF/YjjsBarE81ieP+rTi3nsyFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAc2oJsh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02E9C2BC86;
+	Tue, 11 Nov 2025 01:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823811;
-	bh=jeWmOEvjGpUV0TXvtwnAL4MFtzvtrd2mIAcAO+EG9q0=;
+	s=korg; t=1762823816;
+	bh=fF5KPeyNwXftviB+jvhP15DXFHlrPf47RVW8uicLnVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z8uYuwcZkRid1TAbNgYEEFp+Az2w5Zwz7H17MPA69SKE60iC2VXuRWIMaW7r+UPWe
-	 OIX4ruQJNCdutVvudJ+IsGfetFpTBkD5BCybHUH6A4wRYpFnkmwFQAugQAnNoKZgoH
-	 UfKCYDbJLRPWs3+AjS6uL9vz8+E4Ut955n2MaQZg=
+	b=dAc2oJshDp/uEsssABfbFXLORYy9qN5hVPwa49yLf5svHeTanY7Vs5AXbVr4CPVQL
+	 6A4leZ24aPdNEim+FPnUhzTchH/9zeJjhwC92bjIwbb1kVj9Dt1/QC2AhV5uhnIhYk
+	 /V8C2Vs/c77gU9BlFrxiBSANWcB+JHgFnHNJzH2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Harikrishna Shenoy <h-shenoy@ti.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 329/565] wifi: mac80211: Fix HE capabilities element check
-Date: Tue, 11 Nov 2025 09:43:05 +0900
-Message-ID: <20251111004534.288025374@linuxfoundation.org>
+Subject: [PATCH 6.12 330/565] phy: cadence: cdns-dphy: Enable lower resolutions in dphy
+Date: Tue, 11 Nov 2025 09:43:06 +0900
+Message-ID: <20251111004534.309833853@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
 References: <20251111004526.816196597@linuxfoundation.org>
@@ -67,35 +68,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Harikrishna Shenoy <h-shenoy@ti.com>
 
-[ Upstream commit ea928544f3215fdeac24d66bef85e10bb638b8c1 ]
+[ Upstream commit 43bd2c44515f8ee5c019ce6e6583f5640387a41b ]
 
-The element data length check did not account for the extra
-octet used for the extension ID. Fix it.
+Enable support for data lane rates between 80-160 Mbps cdns dphy
+as mentioned in TRM [0] by setting the pll_opdiv field to 16.
+This change enables lower resolutions like 640x480 at 60Hz.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250907115109.8da0012e2286.I8c0c69a0011f7153c13b365b14dfef48cfe7c3e3@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[0]: https://www.ti.com/lit/zip/spruil1
+(Table 12-552. DPHY_TX_PLL_CTRL Register Field Descriptions)
+
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Signed-off-by: Harikrishna Shenoy <h-shenoy@ti.com>
+Link: https://lore.kernel.org/r/20250807052002.717807-1-h-shenoy@ti.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/cadence/cdns-dphy.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index fd2bc70afa0cd..0cba454d6e685 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -5148,7 +5148,7 @@ static u8 ieee80211_max_rx_chains(struct ieee80211_link_data *link,
- 	he_cap_elem = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_CAPABILITY,
- 					     ies->data, ies->len);
+diff --git a/drivers/phy/cadence/cdns-dphy.c b/drivers/phy/cadence/cdns-dphy.c
+index 8d93a830ab8bf..a24df36e5c376 100644
+--- a/drivers/phy/cadence/cdns-dphy.c
++++ b/drivers/phy/cadence/cdns-dphy.c
+@@ -145,7 +145,7 @@ static int cdns_dsi_get_dphy_pll_cfg(struct cdns_dphy *dphy,
  
--	if (!he_cap_elem || he_cap_elem->datalen < sizeof(*he_cap))
-+	if (!he_cap_elem || he_cap_elem->datalen < sizeof(*he_cap) + 1)
- 		return chains;
+ 	dlane_bps = opts->hs_clk_rate;
  
- 	/* skip one byte ext_tag_id */
+-	if (dlane_bps > 2500000000UL || dlane_bps < 160000000UL)
++	if (dlane_bps > 2500000000UL || dlane_bps < 80000000UL)
+ 		return -EINVAL;
+ 	else if (dlane_bps >= 1250000000)
+ 		cfg->pll_opdiv = 1;
+@@ -155,6 +155,8 @@ static int cdns_dsi_get_dphy_pll_cfg(struct cdns_dphy *dphy,
+ 		cfg->pll_opdiv = 4;
+ 	else if (dlane_bps >= 160000000)
+ 		cfg->pll_opdiv = 8;
++	else if (dlane_bps >= 80000000)
++		cfg->pll_opdiv = 16;
+ 
+ 	cfg->pll_fbdiv = DIV_ROUND_UP_ULL(dlane_bps * 2 * cfg->pll_opdiv *
+ 					  cfg->pll_ipdiv,
 -- 
 2.51.0
 
