@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-193737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D974C4A85A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:30:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0643C4AACF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B03514EFFD2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:27:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C925B1882CB8
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D669F30BF66;
-	Tue, 11 Nov 2025 01:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A369D30C36F;
+	Tue, 11 Nov 2025 01:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pt5ol8TE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRX20t5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80465305978;
-	Tue, 11 Nov 2025 01:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51984306B39;
+	Tue, 11 Nov 2025 01:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823892; cv=none; b=NofSAvFx4diBesmK7kRwIpuikkS2iCGxTERx2wgGlseMo4hpwUafPacxWmHtlb8tQM4PRC94APzx2Q0D5G/P/IjkvAliU8fjuIWZD0FwNCatWYkvQ+YMgSPGNssC5MB4Zop5Bqen+OV0sqykaVVBh1R2xdEwW7WFv/VxyM40sEQ=
+	t=1762823897; cv=none; b=frgixaBzxl1TgsfrHy5fIvH0Xe7t5TflBO7yRwqCjbO/S50i12Nb9lZptHKLl6GA6q0jd0tee2A1kGqLqqAeSXWTrxj0ZZPzhRtrDfUZDduJqq8a9MDzIGWXA+x5SjWsDn3V26ZmlkN9bWMavIL5g9ZCiErgTFpdEPr+iF4UB/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823892; c=relaxed/simple;
-	bh=gI1lp6AnT+X9Sqxe0MXYR4GEufgEc3aKL4Fn/ceSwdY=;
+	s=arc-20240116; t=1762823897; c=relaxed/simple;
+	bh=8uUu4oCba0J3A6r0hmJ6+RDLJb0CAWz/JtbeLEVNsyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJY2MjlmAXQ3JGaJGMafG7rC3PFnWR0XcPKcKbOz5GjNDvynSzhOWTbo7gqKzZ/mP+6E2l3bkNOQlIek3MskVf95J/P6BlgoNxt8KdTr/XEjE9pGIJ/ZMu7EHe0hvEYFLBMZZjp6Fr4U7OnVL6PbRCeP7pj3qCAQ8I5sf4BcGAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pt5ol8TE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20832C4CEF5;
-	Tue, 11 Nov 2025 01:18:11 +0000 (UTC)
+	 MIME-Version; b=BSdt/ua/gV/tcTOhMAk+fiOhL2MWP2SG6eHqHAcrX6SmRVyG6rydFx+R0qUi4XOwaH+IrtVgtYkrAVy1pQ+NCqetHxlmyi+UZSOkfdjcJQxrgaBLCrJM9YAYiIobv6vwhdAB68rtU9gtdyS27e0xhgErD1XgrDxGC6esqHZttmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRX20t5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8114DC16AAE;
+	Tue, 11 Nov 2025 01:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823892;
-	bh=gI1lp6AnT+X9Sqxe0MXYR4GEufgEc3aKL4Fn/ceSwdY=;
+	s=korg; t=1762823896;
+	bh=8uUu4oCba0J3A6r0hmJ6+RDLJb0CAWz/JtbeLEVNsyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pt5ol8TEQTMVWN1tMPRG9l5ku/bYEsSCpXAllHs2woIW0OpTvRt9TAOz6/piY1jxc
-	 Z/yVvkRU+EKyEDb3xvLZCPJAj4WSeDiR+qZPfzXLYqyYRNOWxHdmfmMWCymSkKxURi
-	 5nuEM+yq62lC1KvihcMgmrwtyQPZIt6GS/42pupg=
+	b=VRX20t5rD+/K3AXcyeiS+ViHeIMsRDCJOfsZzabAAWBBmT494GihOAIf9InQl2RAA
+	 xnXtDLffWYRVME0ryeQzOr+GQRqLKJ2h59im0wEu2UuHpQsctI0BrasevuegEwG1oy
+	 6SHUwwRlmE3neawU8l39EawtkfM1bNo4KrkZ/S/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mangesh Gadre <Mangesh.Gadre@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Clay King <clayking@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 392/849] drm/amdgpu: Avoid jpeg v5.0.1 poison irq call trace on sriov guest
-Date: Tue, 11 Nov 2025 09:39:22 +0900
-Message-ID: <20251111004545.911137309@linuxfoundation.org>
+Subject: [PATCH 6.17 393/849] drm/amd/display: incorrect conditions for failing dto calculations
+Date: Tue, 11 Nov 2025 09:39:23 +0900
+Message-ID: <20251111004545.937874758@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -67,34 +69,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mangesh Gadre <Mangesh.Gadre@amd.com>
+From: Clay King <clayking@amd.com>
 
-[ Upstream commit 01152c30eef972c5ca3b3eeb14f2984fa48d18c2 ]
+[ Upstream commit 306cbcc6f687d791ab3cc8fbbe30f5286fd0d1e5 ]
 
-Sriov guest side doesn't init ras feature hence the poison irq shouldn't
-be put during hw fini
+[Why & How]
+Previously, when calculating dto phase, we would incorrectly fail when phase
+<=0 without additionally checking for the integer value. This meant that
+calculations would incorrectly fail when the desired pixel clock was an exact
+multiple of the reference clock.
 
-Signed-off-by: Mangesh Gadre <Mangesh.Gadre@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Clay King <clayking@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c | 2 +-
+ drivers/gpu/drm/amd/display/dc/dccg/dcn401/dcn401_dccg.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
-index 8d74455dab1e2..7731ef262d39f 100644
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
-@@ -315,7 +315,7 @@ static int jpeg_v5_0_1_hw_fini(struct amdgpu_ip_block *ip_block)
- 			ret = jpeg_v5_0_1_set_powergating_state(ip_block, AMD_PG_STATE_GATE);
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dccg/dcn401/dcn401_dccg.c b/drivers/gpu/drm/amd/display/dc/dccg/dcn401/dcn401_dccg.c
+index 668ee2d405fdf..0b8ed9b94d3c5 100644
+--- a/drivers/gpu/drm/amd/display/dc/dccg/dcn401/dcn401_dccg.c
++++ b/drivers/gpu/drm/amd/display/dc/dccg/dcn401/dcn401_dccg.c
+@@ -619,7 +619,7 @@ void dccg401_set_dp_dto(
+ 		dto_integer = div_u64(params->pixclk_hz, dto_modulo_hz);
+ 		dto_phase_hz = params->pixclk_hz - dto_integer * dto_modulo_hz;
  
--	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__JPEG))
-+	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__JPEG) && !amdgpu_sriov_vf(adev))
- 		amdgpu_irq_put(adev, &adev->jpeg.inst->ras_poison_irq, 0);
- 
- 	return ret;
+-		if (dto_phase_hz <= 0) {
++		if (dto_phase_hz <= 0 && dto_integer <= 0) {
+ 			/* negative pixel rate should never happen */
+ 			BREAK_TO_DEBUGGER();
+ 			return;
 -- 
 2.51.0
 
