@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-194390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382B9C4B208
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:00:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3605FC4AE9E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:48:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07ABC3BFF01
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:52:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4B97E4F058F
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71433266B6C;
-	Tue, 11 Nov 2025 01:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F19C305E3A;
+	Tue, 11 Nov 2025 01:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0JWvYzJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/8kgZaY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F47227FD4A;
-	Tue, 11 Nov 2025 01:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED276253951;
+	Tue, 11 Nov 2025 01:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825492; cv=none; b=sCoEEb/jp83j6aKBfOeyIYWdNCDmwuZtPcpRI1N5RSubKBdNO8yd3L0Ttu6EEPhaurDztV4pr0PBwj0mjonnRWovc+AgddyqeOCsR5ho4s2S2nNLMgkXFrPLELM/Tdnie6v8Si7hjwj42ErqsNfqyD5h9zQZq98K+ijh/7h0EqA=
+	t=1762824865; cv=none; b=FayGRTi6BxGD5ykB6wc3qu7XktmpmDtN197O9JsXkLgghyJpGFDfe4SQttFy5U8r9/qHFh5rDXPxMK5WWbBgUrUxry7Fbq7uanmQSxqt9u8IJWCvi6v7RwbCu8zhmdm4vFDpdkbK/tzDLMTcoCn4zQq/qYAEMWp2TWF9snOZMY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825492; c=relaxed/simple;
-	bh=FsxUR9/Oe7dkmN8nRWBeqvfjsEzCTZfDxQEjUNKowRw=;
+	s=arc-20240116; t=1762824865; c=relaxed/simple;
+	bh=SyWXsBcRMgBnQ7nfLoHc4kL0LAxrOnAXJ+wF+VR16n4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BpTf2sMLu95X6OfMNm3cHPXd/y1l5wJaL85WlZJQZFU56yng8+O5+tVBtJ1rQk4B//LUvzsWsGXVucEX6Z2sWhejSTXbBY9lWRqb6sM+bQBkMS/dFQ7SwKBgDnNqtR4XOni4fKWmDgdFlw2LmxOXrQzo5l/MiBfJmG5J8vAjJJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0JWvYzJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF431C4CEF5;
-	Tue, 11 Nov 2025 01:44:51 +0000 (UTC)
+	 MIME-Version; b=VH37QQX3SWt38Caz4J6m8z4uNCX09Nbj1VUODSjs4j0odTL1F8h8ZcZTv9eLip5RFJNUEh8eHaQKDtGdvwtc1AidSvb77kheIiaC8fd4WCk8PWc1CTpnAe/moZmGaLqJ01dGfzsW8m7I0y4pOJdEFDV1y2Orp+4ZUkbuzJsPxYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/8kgZaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92ABBC4CEF5;
+	Tue, 11 Nov 2025 01:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825492;
-	bh=FsxUR9/Oe7dkmN8nRWBeqvfjsEzCTZfDxQEjUNKowRw=;
+	s=korg; t=1762824864;
+	bh=SyWXsBcRMgBnQ7nfLoHc4kL0LAxrOnAXJ+wF+VR16n4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I0JWvYzJB+Ue5mwIvetDaiEvu5BnPVut+p3v1d9R007CrCM9zBx787cyldlAwYE+5
-	 BlqkG/29B4nMlf1GtARTw0NRM3U0M5wuhoMX9ySf5nsG8bbdpZqkFWVbaUebOdvMBD
-	 VWrpPSa/hN6cnYKDRyg8E5BXybjNsYM8j18d1qsY=
+	b=Z/8kgZaYpe2Ktt6EPKZRt6rfhnulGJEtf1juv9cooOGQ1pZ78H71Ip/C4auxBy6VH
+	 xgx9TIJqJI0cq8n+F5SBEzXL3Q8V5mtpwT0Awyyt+eWpEvdnD8iYIy8kWWReR2a03f
+	 xggObYxWUz0sH2Y23TTdI+hZ2F3juXtRO5SO0o+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 825/849] drm/amdgpu/smu: Handle S0ix for vangogh
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 539/565] lan966x: Fix sleeping in atomic context
 Date: Tue, 11 Nov 2025 09:46:35 +0900
-Message-ID: <20251111004556.374294296@linuxfoundation.org>
+Message-ID: <20251111004539.103932806@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,218 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-commit 7c5609b72bfe57d8c601d9561e0d2551b605c017 upstream.
+[ Upstream commit 0216721ce71252f60d89af49c8dff613358058d3 ]
 
-Fix the flows for S0ix.  There is no need to stop
-rlc or reintialize PMFW in S0ix.
+The following warning was seen when we try to connect using ssh to the device.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4659
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
-Tested-by: Antheas Kapenekakis <lkml@antheas.dev>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit fd39b5a5830d8f2553e0c09d4d50bdff28b10080)
-Cc: <stable@vger.kernel.org> # c81f5cebe849: drm/amdgpu: Drop PMFW RLC notifier from amdgpu_device_suspend()
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: sleeping function called from invalid context at kernel/locking/mutex.c:575
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 104, name: dropbear
+preempt_count: 1, expected: 0
+INFO: lockdep is turned off.
+CPU: 0 UID: 0 PID: 104 Comm: dropbear Tainted: G        W           6.18.0-rc2-00399-g6f1ab1b109b9-dirty #530 NONE
+Tainted: [W]=WARN
+Hardware name: Generic DT based system
+Call trace:
+ unwind_backtrace from show_stack+0x10/0x14
+ show_stack from dump_stack_lvl+0x7c/0xac
+ dump_stack_lvl from __might_resched+0x16c/0x2b0
+ __might_resched from __mutex_lock+0x64/0xd34
+ __mutex_lock from mutex_lock_nested+0x1c/0x24
+ mutex_lock_nested from lan966x_stats_get+0x5c/0x558
+ lan966x_stats_get from dev_get_stats+0x40/0x43c
+ dev_get_stats from dev_seq_printf_stats+0x3c/0x184
+ dev_seq_printf_stats from dev_seq_show+0x10/0x30
+ dev_seq_show from seq_read_iter+0x350/0x4ec
+ seq_read_iter from seq_read+0xfc/0x194
+ seq_read from proc_reg_read+0xac/0x100
+ proc_reg_read from vfs_read+0xb0/0x2b0
+ vfs_read from ksys_read+0x6c/0xec
+ ksys_read from ret_fast_syscall+0x0/0x1c
+Exception stack(0xf0b11fa8 to 0xf0b11ff0)
+1fa0:                   00000001 00001000 00000008 be9048d8 00001000 00000001
+1fc0: 00000001 00001000 00000008 00000003 be905920 0000001e 00000000 00000001
+1fe0: 0005404c be9048c0 00018684 b6ec2cd8
+
+It seems that we are using a mutex in a atomic context which is wrong.
+Change the mutex with a spinlock.
+
+Fixes: 12c2d0a5b8e2 ("net: lan966x: add ethtool configuration and statistics")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20251105074955.1766792-1-horatiu.vultur@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c        |    6 ++++++
- drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c |    3 +++
- 2 files changed, 9 insertions(+)
+ .../microchip/lan966x/lan966x_ethtool.c        | 18 +++++++++---------
+ .../ethernet/microchip/lan966x/lan966x_main.c  |  2 --
+ .../ethernet/microchip/lan966x/lan966x_main.h  |  4 ++--
+ .../microchip/lan966x/lan966x_vcap_impl.c      |  8 ++++----
+ 4 files changed, 15 insertions(+), 17 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -2012,6 +2012,12 @@ static int smu_disable_dpms(struct smu_c
- 	    smu->is_apu && (amdgpu_in_reset(adev) || adev->in_s0ix))
- 		return 0;
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_ethtool.c b/drivers/net/ethernet/microchip/lan966x/lan966x_ethtool.c
+index 2474dfd330f46..fe4e614052840 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_ethtool.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_ethtool.c
+@@ -294,7 +294,7 @@ static void lan966x_stats_update(struct lan966x *lan966x)
+ {
+ 	int i, j;
  
-+	/* vangogh s0ix */
-+	if ((amdgpu_ip_version(adev, MP1_HWIP, 0) == IP_VERSION(11, 5, 0) ||
-+	     amdgpu_ip_version(adev, MP1_HWIP, 0) == IP_VERSION(11, 5, 2)) &&
-+	    adev->in_s0ix)
-+		return 0;
-+
- 	/*
- 	 * For gpu reset, runpm and hibernation through BACO,
- 	 * BACO feature has to be kept enabled.
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-@@ -2217,6 +2217,9 @@ static int vangogh_post_smu_init(struct
- 	uint32_t total_cu = adev->gfx.config.max_cu_per_sh *
- 		adev->gfx.config.max_sh_per_se * adev->gfx.config.max_shader_engines;
+-	mutex_lock(&lan966x->stats_lock);
++	spin_lock(&lan966x->stats_lock);
  
-+	if (adev->in_s0ix)
-+		return 0;
-+
- 	/* allow message will be sent after enable message on Vangogh*/
- 	if (smu_cmn_feature_is_enabled(smu, SMU_FEATURE_DPM_GFXCLK_BIT) &&
- 			(adev->pg_flags & AMD_PG_SUPPORT_GFX_PG)) {
+ 	for (i = 0; i < lan966x->num_phys_ports; i++) {
+ 		uint idx = i * lan966x->num_stats;
+@@ -310,7 +310,7 @@ static void lan966x_stats_update(struct lan966x *lan966x)
+ 		}
+ 	}
+ 
+-	mutex_unlock(&lan966x->stats_lock);
++	spin_unlock(&lan966x->stats_lock);
+ }
+ 
+ static int lan966x_get_sset_count(struct net_device *dev, int sset)
+@@ -365,7 +365,7 @@ static void lan966x_get_eth_mac_stats(struct net_device *dev,
+ 
+ 	idx = port->chip_port * lan966x->num_stats;
+ 
+-	mutex_lock(&lan966x->stats_lock);
++	spin_lock(&lan966x->stats_lock);
+ 
+ 	mac_stats->FramesTransmittedOK =
+ 		lan966x->stats[idx + SYS_COUNT_TX_UC] +
+@@ -416,7 +416,7 @@ static void lan966x_get_eth_mac_stats(struct net_device *dev,
+ 		lan966x->stats[idx + SYS_COUNT_RX_LONG] +
+ 		lan966x->stats[idx + SYS_COUNT_RX_PMAC_LONG];
+ 
+-	mutex_unlock(&lan966x->stats_lock);
++	spin_unlock(&lan966x->stats_lock);
+ }
+ 
+ static const struct ethtool_rmon_hist_range lan966x_rmon_ranges[] = {
+@@ -442,7 +442,7 @@ static void lan966x_get_eth_rmon_stats(struct net_device *dev,
+ 
+ 	idx = port->chip_port * lan966x->num_stats;
+ 
+-	mutex_lock(&lan966x->stats_lock);
++	spin_lock(&lan966x->stats_lock);
+ 
+ 	rmon_stats->undersize_pkts =
+ 		lan966x->stats[idx + SYS_COUNT_RX_SHORT] +
+@@ -500,7 +500,7 @@ static void lan966x_get_eth_rmon_stats(struct net_device *dev,
+ 		lan966x->stats[idx + SYS_COUNT_TX_SZ_1024_1526] +
+ 		lan966x->stats[idx + SYS_COUNT_TX_PMAC_SZ_1024_1526];
+ 
+-	mutex_unlock(&lan966x->stats_lock);
++	spin_unlock(&lan966x->stats_lock);
+ 
+ 	*ranges = lan966x_rmon_ranges;
+ }
+@@ -603,7 +603,7 @@ void lan966x_stats_get(struct net_device *dev,
+ 
+ 	idx = port->chip_port * lan966x->num_stats;
+ 
+-	mutex_lock(&lan966x->stats_lock);
++	spin_lock(&lan966x->stats_lock);
+ 
+ 	stats->rx_bytes = lan966x->stats[idx + SYS_COUNT_RX_OCT] +
+ 		lan966x->stats[idx + SYS_COUNT_RX_PMAC_OCT];
+@@ -685,7 +685,7 @@ void lan966x_stats_get(struct net_device *dev,
+ 
+ 	stats->collisions = lan966x->stats[idx + SYS_COUNT_TX_COL];
+ 
+-	mutex_unlock(&lan966x->stats_lock);
++	spin_unlock(&lan966x->stats_lock);
+ }
+ 
+ int lan966x_stats_init(struct lan966x *lan966x)
+@@ -701,7 +701,7 @@ int lan966x_stats_init(struct lan966x *lan966x)
+ 		return -ENOMEM;
+ 
+ 	/* Init stats worker */
+-	mutex_init(&lan966x->stats_lock);
++	spin_lock_init(&lan966x->stats_lock);
+ 	snprintf(queue_name, sizeof(queue_name), "%s-stats",
+ 		 dev_name(lan966x->dev));
+ 	lan966x->stats_queue = create_singlethread_workqueue(queue_name);
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+index b34e015eedf9b..b5dc65a4d6403 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+@@ -1262,7 +1262,6 @@ static int lan966x_probe(struct platform_device *pdev)
+ 
+ 	cancel_delayed_work_sync(&lan966x->stats_work);
+ 	destroy_workqueue(lan966x->stats_queue);
+-	mutex_destroy(&lan966x->stats_lock);
+ 
+ 	debugfs_remove_recursive(lan966x->debugfs_root);
+ 
+@@ -1280,7 +1279,6 @@ static void lan966x_remove(struct platform_device *pdev)
+ 
+ 	cancel_delayed_work_sync(&lan966x->stats_work);
+ 	destroy_workqueue(lan966x->stats_queue);
+-	mutex_destroy(&lan966x->stats_lock);
+ 
+ 	lan966x_mac_purge_entries(lan966x);
+ 	lan966x_mdb_deinit(lan966x);
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
+index 8aa39497818fe..14484ea77cbed 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
+@@ -295,8 +295,8 @@ struct lan966x {
+ 	const struct lan966x_stat_layout *stats_layout;
+ 	u32 num_stats;
+ 
+-	/* workqueue for reading stats */
+-	struct mutex stats_lock;
++	/* lock for reading stats */
++	spinlock_t stats_lock;
+ 	u64 *stats;
+ 	struct delayed_work stats_work;
+ 	struct workqueue_struct *stats_queue;
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_vcap_impl.c b/drivers/net/ethernet/microchip/lan966x/lan966x_vcap_impl.c
+index a1471e38d1189..2a37fc1ba4bcd 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_vcap_impl.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_vcap_impl.c
+@@ -403,11 +403,11 @@ static void lan966x_es0_read_esdx_counter(struct lan966x *lan966x,
+ 	u32 counter;
+ 
+ 	id = id & 0xff; /* counter limit */
+-	mutex_lock(&lan966x->stats_lock);
++	spin_lock(&lan966x->stats_lock);
+ 	lan_wr(SYS_STAT_CFG_STAT_VIEW_SET(id), lan966x, SYS_STAT_CFG);
+ 	counter = lan_rd(lan966x, SYS_CNT(LAN966X_STAT_ESDX_GRN_PKTS)) +
+ 		  lan_rd(lan966x, SYS_CNT(LAN966X_STAT_ESDX_YEL_PKTS));
+-	mutex_unlock(&lan966x->stats_lock);
++	spin_unlock(&lan966x->stats_lock);
+ 	if (counter)
+ 		admin->cache.counter = counter;
+ }
+@@ -417,14 +417,14 @@ static void lan966x_es0_write_esdx_counter(struct lan966x *lan966x,
+ {
+ 	id = id & 0xff; /* counter limit */
+ 
+-	mutex_lock(&lan966x->stats_lock);
++	spin_lock(&lan966x->stats_lock);
+ 	lan_wr(SYS_STAT_CFG_STAT_VIEW_SET(id), lan966x, SYS_STAT_CFG);
+ 	lan_wr(0, lan966x, SYS_CNT(LAN966X_STAT_ESDX_GRN_BYTES));
+ 	lan_wr(admin->cache.counter, lan966x,
+ 	       SYS_CNT(LAN966X_STAT_ESDX_GRN_PKTS));
+ 	lan_wr(0, lan966x, SYS_CNT(LAN966X_STAT_ESDX_YEL_BYTES));
+ 	lan_wr(0, lan966x, SYS_CNT(LAN966X_STAT_ESDX_YEL_PKTS));
+-	mutex_unlock(&lan966x->stats_lock);
++	spin_unlock(&lan966x->stats_lock);
+ }
+ 
+ static void lan966x_vcap_cache_write(struct net_device *dev,
+-- 
+2.51.0
+
 
 
 
