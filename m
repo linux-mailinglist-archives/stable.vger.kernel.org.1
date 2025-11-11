@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-193554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4109AC4A54E
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:19:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C03C4A656
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E1DB834BECD
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0E7934F62EF
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B5B340A6D;
-	Tue, 11 Nov 2025 01:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF3C340D86;
+	Tue, 11 Nov 2025 01:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gY8pqVue"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3yYOcGP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70AA2820A0;
-	Tue, 11 Nov 2025 01:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6E027FD54;
+	Tue, 11 Nov 2025 01:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823458; cv=none; b=H6mJW8VZrVIhD4+i1LI7amZm3ofV8H4oz1xS0ytNUIpnBAtmq2vVaUCFFQxhTP6WagYQoF+trQGMTIg0SLzdpxHePCf0kxxiA/InGlm+lzs1cfbwEP3NYW7B3a6Q2C9+9XBI8NQXcf15FXGu1PNWrw37aJUmyi5byqwEzXQlC0Y=
+	t=1762823465; cv=none; b=FGxmn535land2XHaB9NJKjgjlxHJ4x2vAcWkWBNYQqbU771Y6xLeLvY7NaXmZGQF1RJ40k9qP7tX/O6RlZBFbgDt6rIoCYvGUAUpjQ4v1WO+iE8wEz+ysm5ALJb18ZP7Abd4cEvIeu7vx5bpfm20iiSmtRJur9hczU0subvnXsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823458; c=relaxed/simple;
-	bh=hIUfKc31UJD71wAG3WfE3dN25Pm0f8DjATKbtjnQA+w=;
+	s=arc-20240116; t=1762823465; c=relaxed/simple;
+	bh=app/Nd6Ri+Pud+lMdNvQHjrXzn2V4SrZPd0dkSxaEWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WvY9QFLngWl8IZXYwjaR4ZNETlKBPX2XiqgNF9KoTKG/8MoOfL80efx8lC2FZ3mxmU4VCoKf39QJEw7VgKMXcFzFFFhmsaZaVZg6gbVqaSpPdOY522Snt7t5MM0WjokDoZzIx77/tMfCWK5xzcVFqbu0ziecbR2OtDo0XAtU/MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gY8pqVue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41411C4CEF5;
-	Tue, 11 Nov 2025 01:10:58 +0000 (UTC)
+	 MIME-Version; b=r44zZkEXBVeiewRs+/SDHYHUX2BGhciby/a1d/oJANhFaXBG2p1xDSLXBEXoJV/URCSAfBBlbeumA424PnHbJDObPOEGnXYSNqUuyAHeKGuVbYzmALWI1h9hHFEpDP+JCl2jXEkkvfR/P5MhrOHyyHuT47WJn2ybljhN0aRwV+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3yYOcGP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C5CAC4CEFB;
+	Tue, 11 Nov 2025 01:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823458;
-	bh=hIUfKc31UJD71wAG3WfE3dN25Pm0f8DjATKbtjnQA+w=;
+	s=korg; t=1762823465;
+	bh=app/Nd6Ri+Pud+lMdNvQHjrXzn2V4SrZPd0dkSxaEWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gY8pqVueFxFHSXO0sykUSG9r67GnaF5Sl2NoEJww10qcnu3MfiB5d5JCz9/PHJLdO
-	 pa4+CUq27JnBKU7ucYuo7ekQ2SyJ+8JcZn9VfaPyY0DMVfk5EM564PWSPJ4uFaMrlZ
-	 UL8KgzuZcdLsV4IddxtPbCoMuxkMkiLtx16cDT8c=
+	b=S3yYOcGPedqYin9UMCmbZ999hsiEjeYbrUVVTrn8y3njNL0gNwjUwV/4NTKdVqljy
+	 nOHYDhLyxvJUTGDJaWedXC7zQkJWYCqjYYkmpQi/zEoVJGzef7mEh9p3AFGYKP3L2D
+	 OnzzzjzBpwNrq//cKQwILDmCCH0Jxgk4AylzydFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Alice Chao <alice.chao@mediatek.com>,
 	Peter Wang <peter.wang@mediatek.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 304/849] scsi: ufs: host: mediatek: Fix PWM mode switch issue
-Date: Tue, 11 Nov 2025 09:37:54 +0900
-Message-ID: <20251111004543.757763245@linuxfoundation.org>
+Subject: [PATCH 6.17 305/849] scsi: ufs: host: mediatek: Assign power mode userdata before FASTAUTO mode change
+Date: Tue, 11 Nov 2025 09:37:55 +0900
+Message-ID: <20251111004543.780167999@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,75 +67,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Alice Chao <alice.chao@mediatek.com>
 
-[ Upstream commit 7212d624f8638f8ea8ad1ecbb80622c7987bc7a1 ]
+[ Upstream commit 979feee0cf43b32d288931649d7c6d9a5524ea55 ]
 
-Address a failure in switching to PWM mode by ensuring proper
-configuration of power modes and adaptation settings. The changes
-include checks for SLOW_MODE and adjustments to the desired working mode
-and adaptation configuration based on the device's power mode and
-hardware version.
+Assign power mode userdata settings before transitioning to FASTAUTO
+power mode. This ensures that default timeout values are set for various
+parameters, enhancing the reliability and performance of the power mode
+change process.
 
+Signed-off-by: Alice Chao <alice.chao@mediatek.com>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
 Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20250811131423.3444014-6-peter.wang@mediatek.com
+Link: https://lore.kernel.org/r/20250811131423.3444014-7-peter.wang@mediatek.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-mediatek.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ drivers/ufs/host/ufs-mediatek.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
-index 8dd124835151a..4171fa672450d 100644
+index 4171fa672450d..ada21360aa270 100644
 --- a/drivers/ufs/host/ufs-mediatek.c
 +++ b/drivers/ufs/host/ufs-mediatek.c
-@@ -1303,6 +1303,10 @@ static bool ufs_mtk_pmc_via_fastauto(struct ufs_hba *hba,
- 	    dev_req_params->gear_rx < UFS_HS_G4)
- 		return false;
+@@ -1349,6 +1349,28 @@ static int ufs_mtk_pre_pwr_change(struct ufs_hba *hba,
+ 		ufshcd_dme_set(hba, UIC_ARG_MIB(PA_TXHSADAPTTYPE),
+ 			       PA_NO_ADAPT);
  
-+	if (dev_req_params->pwr_tx == SLOW_MODE ||
-+	    dev_req_params->pwr_rx == SLOW_MODE)
-+		return false;
++		if (!(hba->quirks & UFSHCD_QUIRK_SKIP_DEF_UNIPRO_TIMEOUT_SETTING)) {
++			ufshcd_dme_set(hba, UIC_ARG_MIB(PA_PWRMODEUSERDATA0),
++					DL_FC0ProtectionTimeOutVal_Default);
++			ufshcd_dme_set(hba, UIC_ARG_MIB(PA_PWRMODEUSERDATA1),
++					DL_TC0ReplayTimeOutVal_Default);
++			ufshcd_dme_set(hba, UIC_ARG_MIB(PA_PWRMODEUSERDATA2),
++					DL_AFC0ReqTimeOutVal_Default);
++			ufshcd_dme_set(hba, UIC_ARG_MIB(PA_PWRMODEUSERDATA3),
++					DL_FC1ProtectionTimeOutVal_Default);
++			ufshcd_dme_set(hba, UIC_ARG_MIB(PA_PWRMODEUSERDATA4),
++					DL_TC1ReplayTimeOutVal_Default);
++			ufshcd_dme_set(hba, UIC_ARG_MIB(PA_PWRMODEUSERDATA5),
++					DL_AFC1ReqTimeOutVal_Default);
 +
- 	return true;
- }
- 
-@@ -1318,6 +1322,10 @@ static int ufs_mtk_pre_pwr_change(struct ufs_hba *hba,
- 	host_params.hs_rx_gear = UFS_HS_G5;
- 	host_params.hs_tx_gear = UFS_HS_G5;
- 
-+	if (dev_max_params->pwr_rx == SLOW_MODE ||
-+	    dev_max_params->pwr_tx == SLOW_MODE)
-+		host_params.desired_working_mode = UFS_PWM_MODE;
-+
- 	ret = ufshcd_negotiate_pwr_params(&host_params, dev_max_params, dev_req_params);
- 	if (ret) {
- 		pr_info("%s: failed to determine capabilities\n",
-@@ -1350,10 +1358,21 @@ static int ufs_mtk_pre_pwr_change(struct ufs_hba *hba,
- 		}
- 	}
- 
--	if (host->hw_ver.major >= 3) {
-+	if (dev_req_params->pwr_rx == FAST_MODE ||
-+	    dev_req_params->pwr_rx == FASTAUTO_MODE) {
-+		if (host->hw_ver.major >= 3) {
-+			ret = ufshcd_dme_configure_adapt(hba,
-+						   dev_req_params->gear_tx,
-+						   PA_INITIAL_ADAPT);
-+		} else {
-+			ret = ufshcd_dme_configure_adapt(hba,
-+				   dev_req_params->gear_tx,
-+				   PA_NO_ADAPT);
++			ufshcd_dme_set(hba, UIC_ARG_MIB(DME_LocalFC0ProtectionTimeOutVal),
++					DL_FC0ProtectionTimeOutVal_Default);
++			ufshcd_dme_set(hba, UIC_ARG_MIB(DME_LocalTC0ReplayTimeOutVal),
++					DL_TC0ReplayTimeOutVal_Default);
++			ufshcd_dme_set(hba, UIC_ARG_MIB(DME_LocalAFC0ReqTimeOutVal),
++					DL_AFC0ReqTimeOutVal_Default);
 +		}
-+	} else {
- 		ret = ufshcd_dme_configure_adapt(hba,
--					   dev_req_params->gear_tx,
--					   PA_INITIAL_ADAPT);
-+			   dev_req_params->gear_tx,
-+			   PA_NO_ADAPT);
- 	}
++
+ 		ret = ufshcd_uic_change_pwr_mode(hba,
+ 					FASTAUTO_MODE << 4 | FASTAUTO_MODE);
  
- 	return ret;
 -- 
 2.51.0
 
