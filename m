@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-194406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C244BC4B1AE
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:59:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66227C4ADCC
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:46:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 03B224F5D2C
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:53:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EA6C1896939
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7775D305967;
-	Tue, 11 Nov 2025 01:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16866334C20;
+	Tue, 11 Nov 2025 01:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0b7N55Xk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="of/n+cMC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325D7305976;
-	Tue, 11 Nov 2025 01:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBF32FFFA2;
+	Tue, 11 Nov 2025 01:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825529; cv=none; b=OOFnqr9Hj5ge7H3JVmgK//nr68hQKp1YL5vXqSvANabxSP5hbqwE12TLxun6f1X41G1iO/9g6LyG8vkaot5gZGMwQ6hTli2Bm8j+KyDvWcju/WB4SSJyZk2Gjrt+NYpWdOlffAlpXqC95hNZSA+O8VYxDscFUDoix28r51Y/T7Q=
+	t=1762824940; cv=none; b=GxKeO5KhsPjLYOkL4/+0tbWvdpUnYE102SRFBJTSNPvNBnVvhbYEMPN9x439gKqbPKVOOKmKtGqhdJ3KaeO3j2tBKFI/0O6z2nTy73l9bA/o7epTx/6bg/mYawFPct9s0zo3VkSzFLe56IykGAsovzn67JOLHykmFfMW3ei5x70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825529; c=relaxed/simple;
-	bh=tYdb6CRbT61gIzaRcyrbMHB3RR77MHgKEon8g4ZKgGI=;
+	s=arc-20240116; t=1762824940; c=relaxed/simple;
+	bh=rOGvzcoJg2PhWzLU3DV7eru5eJhgZmBOmrcmVHUwR+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eageh46qipTd2M2jmtP/b+PfAdNp7fRklrDEO+BJtqtYKT/aWAmGpDIFfo5qCu576fY2npUbRTC8qkZ5+irGS5GJE8yMoKojKHQD/opSTX83JEcNZSWeDTQj0O0OoNqFwmSKmr5Q9PYjO/grrrx6Y60BT3KfoOqPOZPaF4n82Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0b7N55Xk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6173C16AAE;
-	Tue, 11 Nov 2025 01:45:28 +0000 (UTC)
+	 MIME-Version; b=NsTuGNUJS1nALjoClUxKE8JcisfAmlP7upijtbA09BZgRizsdVr1zn7djToP5Y77JdeulIidgSYlr+hQiazXFZtc5u1GJnQauBLG/n+26x0QKr7agQEFS5irKg71HIQbOIeUpwHpF/N0K9TBJj/c/vIVDbacbuyFKxckZIRk3PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=of/n+cMC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35761C4CEFB;
+	Tue, 11 Nov 2025 01:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825529;
-	bh=tYdb6CRbT61gIzaRcyrbMHB3RR77MHgKEon8g4ZKgGI=;
+	s=korg; t=1762824940;
+	bh=rOGvzcoJg2PhWzLU3DV7eru5eJhgZmBOmrcmVHUwR+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0b7N55XkKgMJ7DmVBMw6WKzSgm0WgvFV2jRw+UqZ6NsKmQfUDhwZwGKs3RapEXp2q
-	 dyvsB/rMCZ3/GyD9qTVnfEkSQ4Hfi41FRKjGLZx8aqSVqO7ih5OEzm66/YHW3V7Q3K
-	 1WFsFW7R5n1AXsuW0TNYSdT2E9viBLW0FsVf3u4Y=
+	b=of/n+cMC9wFpTG6e7JneKvIzz9R61x9Hs0hOeM43x/Vb/mJtFGlyiMO2SBVPhI/c6
+	 yRnnvKBkTogt3apDk4UspBPHUeqvvY7j8mYMVy78wba2Y9kXUSMXCD5CJrK9fi8B6j
+	 qy+D9fCX8TmPgy/KCUE8NJPEZ9AaaWUFv3+2UtwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Omar Sandoval <osandov@fb.com>,
-	Samir M <samir@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Nicolas Schier <nsc@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 6.17 840/849] kbuild: Strip trailing padding bytes from modules.builtin.modinfo
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Lei Yang <leiyang@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 554/565] virtio-net: fix received length check in big packets
 Date: Tue, 11 Nov 2025 09:46:50 +0900
-Message-ID: <20251111004556.729582472@linuxfoundation.org>
+Message-ID: <20251111004539.467092243@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-commit a26a6c93edfeee82cb73f55e87d995eea59ddfe8 upstream.
+commit 0c716703965ffc5ef4311b65cb5d84a703784717 upstream.
 
-After commit d50f21091358 ("kbuild: align modinfo section for Secureboot
-Authenticode EDK2 compat"), running modules_install with certain
-versions of kmod (such as 29.1 in Ubuntu Jammy) in certain
-configurations may fail with:
+Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
+for big packets"), when guest gso is off, the allocated size for big
+packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
+negotiated MTU. The number of allocated frags for big packets is stored
+in vi->big_packets_num_skbfrags.
 
-  depmod: ERROR: kmod_builtin_iter_next: unexpected string without modname prefix
+Because the host announced buffer length can be malicious (e.g. the host
+vhost_net driver's get_rx_bufs is modified to announce incorrect
+length), we need a check in virtio_net receive path. Currently, the
+check is not adapted to the new change which can lead to NULL page
+pointer dereference in the below while loop when receiving length that
+is larger than the allocated one.
 
-The additional padding bytes to ensure .modinfo is aligned within
-vmlinux.unstripped are unexpected by kmod, as this section has always
-just been null-terminated strings.
+This commit fixes the received length check corresponding to the new
+change.
 
-Strip the trailing padding bytes from modules.builtin.modinfo after it
-has been extracted from vmlinux.unstripped to restore the format that
-kmod expects while keeping .modinfo aligned within vmlinux.unstripped to
-avoid regressing the Authenticode calculation fix for EDK2.
-
+Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
 Cc: stable@vger.kernel.org
-Fixes: d50f21091358 ("kbuild: align modinfo section for Secureboot Authenticode EDK2 compat")
-Reported-by: Omar Sandoval <osandov@fb.com>
-Reported-by: Samir M <samir@linux.ibm.com>
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Closes: https://lore.kernel.org/7fef7507-ad64-4e51-9bb8-c9fb6532e51e@linux.ibm.com/
-Tested-by: Omar Sandoval <osandov@fb.com>
-Tested-by: Samir M <samir@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by: Nicolas Schier <nsc@kernel.org>
-Link: https://patch.msgid.link/20251105-kbuild-fix-builtin-modinfo-for-kmod-v1-1-b419d8ad4606@kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-[nathan: Apply to scripts/Makefile.vmlinux_o, location of
-         modules.builtin.modinfo rule prior to 39cfd5b12160]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Link: https://patch.msgid.link/20251030144438.7582-1-minhquangbui99@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Makefile.vmlinux_o |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/virtio_net.c |   25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
---- a/scripts/Makefile.vmlinux_o
-+++ b/scripts/Makefile.vmlinux_o
-@@ -76,11 +76,24 @@ targets += vmlinux.o
- # modules.builtin.modinfo
- # ---------------------------------------------------------------------------
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -868,17 +868,6 @@ static struct sk_buff *page_to_skb(struc
+ 		goto ok;
+ 	}
  
-+# .modinfo in vmlinux.unstripped is aligned to 8 bytes for compatibility with
-+# tools that expect vmlinux to have sufficiently aligned sections but the
-+# additional bytes used for padding .modinfo to satisfy this requirement break
-+# certain versions of kmod with
-+#
-+#   depmod: ERROR: kmod_builtin_iter_next: unexpected string without modname prefix
-+#
-+# Strip the trailing padding bytes after extracting .modinfo to comply with
-+# what kmod expects to parse.
-+quiet_cmd_modules_builtin_modinfo = GEN     $@
-+      cmd_modules_builtin_modinfo = $(cmd_objcopy); \
-+                                    sed -i 's/\x00\+$$/\x00/g' $@
+-	/*
+-	 * Verify that we can indeed put this data into a skb.
+-	 * This is here to handle cases when the device erroneously
+-	 * tries to receive more than is possible. This is usually
+-	 * the case of a broken device.
+-	 */
+-	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
+-		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
+-		dev_kfree_skb(skb);
+-		return NULL;
+-	}
+ 	BUG_ON(offset >= PAGE_SIZE);
+ 	while (len) {
+ 		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
+@@ -1928,9 +1917,19 @@ static struct sk_buff *receive_big(struc
+ 				   struct virtnet_rq_stats *stats)
+ {
+ 	struct page *page = buf;
+-	struct sk_buff *skb =
+-		page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
++	struct sk_buff *skb;
 +
- OBJCOPYFLAGS_modules.builtin.modinfo := -j .modinfo -O binary
++	/* Make sure that len does not exceed the size allocated in
++	 * add_recvbuf_big.
++	 */
++	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
++		pr_debug("%s: rx error: len %u exceeds allocated size %lu\n",
++			 dev->name, len,
++			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
++		goto err;
++	}
  
- targets += modules.builtin.modinfo
- modules.builtin.modinfo: vmlinux.o FORCE
--	$(call if_changed,objcopy)
-+	$(call if_changed,modules_builtin_modinfo)
- 
- # modules.builtin
- # ---------------------------------------------------------------------------
++	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
+ 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
+ 	if (unlikely(!skb))
+ 		goto err;
 
 
 
