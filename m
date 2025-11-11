@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-194084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F130C4AD8D
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:45:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757D1C4A81E
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:29:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 661AC3AB573
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 012D53B83E4
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57ED026E703;
-	Tue, 11 Nov 2025 01:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6C42D97BD;
+	Tue, 11 Nov 2025 01:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lexDUNJD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFk4O5PY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F1626E706;
-	Tue, 11 Nov 2025 01:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431A6258EF6;
+	Tue, 11 Nov 2025 01:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824769; cv=none; b=hFJUBabtRAnyNRLDVndO/klUlaC9QLDkJSbJbSfFOx7k+SRfc0oK9rt/bYgHzjvvPwU02RhVEPWGgFbrp2DCzZKiA3oJFnlgbIdW9XdwnVp/c+UDOwXtTNZcySVYX0WNPq/vmi5b4G5+SJcdL2uyUoTn5uI8JREP6WQ781eJ55w=
+	t=1762823588; cv=none; b=FobTOF7p6g1FOvjdmlz6YXNCMO5V0FjikIzpjT8HJLtaRW3VkE8IdoZuRt9xNel/5H0DB1rcFPOryCL4R2N6r6+zg92AKMC+3zr2gYVfnG5x8Em1+yOIx0oc+URAwcL0S5ImvhgAXM0Ht40we/xfZLlpgpnydW2Oxz/wfbQ6wbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824769; c=relaxed/simple;
-	bh=nRZg1SshgMxz1Wd1l7Mf12w9kisyO3lY5bEOhdELoZc=;
+	s=arc-20240116; t=1762823588; c=relaxed/simple;
+	bh=BHcp5O4dRSr7Z5haY5Lcxe6orV5gzNISAbrCYj9ubi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBHODAzvMN5w7OPBuSFAeCh8Fj1J4+U66y5JfD3jM2Sc+bL6zP7r6RGr347KPy9vNvJRu1GlXyY9ogmuQbR7PpRUASSQnen453AUm0tvhnF6wx+0kKCC93OyIPTS4h8GUFT3HJnEIrXXN5EqHJMD8IlTLMns1cfms809DEUKd/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lexDUNJD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B6FC4CEFB;
-	Tue, 11 Nov 2025 01:32:48 +0000 (UTC)
+	 MIME-Version; b=aYcXfHxDQ7Wq+eObvSogzOI82U83GAmity3VTZ8e/lcGO32fjloDKG0u1hNqOG5sgq+HyxKv6ZHPkEzFTJhGqrFuvC2tROyH5HUzhARTKmG5dd+WSjRswB73lJL1AOFrG1hPnODN3gc6qw2gYhH3tUA4aL8syTlE7J2MMBVxZ6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFk4O5PY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E0AC4CEF5;
+	Tue, 11 Nov 2025 01:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824769;
-	bh=nRZg1SshgMxz1Wd1l7Mf12w9kisyO3lY5bEOhdELoZc=;
+	s=korg; t=1762823588;
+	bh=BHcp5O4dRSr7Z5haY5Lcxe6orV5gzNISAbrCYj9ubi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lexDUNJDPVr/DPYRzM9dOY0nweI7eU0mLa5YzjlVp/ByCsMfPfxGSz5doifE0dOBm
-	 FCbdSsLuU6Ffnot0uNWljGikDU4Xui540XJ2JVS29rSrWvrHXXUBNd6FDnGQkRY8LS
-	 xQwp2BJUPYsLjPTjWAqG2FmK6Pg0xxSCwsIdqkbI=
+	b=oFk4O5PYeIBX0E+TIpNxQg/4qaLEB7myhH2kYJ+7gwm2yv2o2TD73LXQ7AnTGKHG8
+	 zlOGoR2f/Qz4OTtwz2XJboaXgkoKacWXbjC6zp+EFRYd7V413HHBpGcIJakyIH8cqs
+	 dpEfeXItjOnpdQAUfzvxTSYVQHJwkIRBxvAFemXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yikai <zhuyikai1@h-partners.com>,
-	Fan Gong <gongfan1@huawei.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Thomas Andreatta <thomas.andreatta2000@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 566/849] hinic3: Fix missing napi->dev in netif_queue_set_napi
-Date: Tue, 11 Nov 2025 09:42:16 +0900
-Message-ID: <20251111004550.097708349@linuxfoundation.org>
+Subject: [PATCH 6.12 281/565] dmaengine: sh: setup_xref error handling
+Date: Tue, 11 Nov 2025 09:42:17 +0900
+Message-ID: <20251111004533.201302254@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fan Gong <gongfan1@huawei.com>
+From: Thomas Andreatta <thomasandreatta2000@gmail.com>
 
-[ Upstream commit 4404f6af810829588a51968959c6b85574109c13 ]
+[ Upstream commit d9a3e9929452780df16f3414f0d59b5f69d058cf ]
 
-As netif_queue_set_napi checks napi->dev, if it doesn't have it and
-it will warn_on and return. So we should use netif_napi_add before
-netif_queue_set_napi because netif_napi_add has "napi->dev = dev".
+This patch modifies the type of setup_xref from void to int and handles
+errors since the function can fail.
 
-Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
-Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
-Signed-off-by: Fan Gong <gongfan1@huawei.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/a17a5a087350eaf2e081dcd879779ca2c69b0908.1757653621.git.zhuyikai1@h-partners.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+`setup_xref` now returns the (eventual) error from
+`dmae_set_dmars`|`dmae_set_chcr`, while `shdma_tx_submit` handles the
+result, removing the chunks from the queue and marking PM as idle in
+case of an error.
+
+Signed-off-by: Thomas Andreatta <thomas.andreatta2000@gmail.com>
+Link: https://lore.kernel.org/r/20250827152442.90962-1-thomas.andreatta2000@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/huawei/hinic3/hinic3_irq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/sh/shdma-base.c | 25 +++++++++++++++++++------
+ drivers/dma/sh/shdmac.c     | 17 +++++++++++++----
+ include/linux/shdma-base.h  |  2 +-
+ 3 files changed, 33 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-index 8b92eed25edfe..aba1a1d579c50 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-@@ -42,11 +42,11 @@ void qp_add_napi(struct hinic3_irq_cfg *irq_cfg)
- {
- 	struct hinic3_nic_dev *nic_dev = netdev_priv(irq_cfg->netdev);
+diff --git a/drivers/dma/sh/shdma-base.c b/drivers/dma/sh/shdma-base.c
+index 588c5f409a808..8d796504cb7f1 100644
+--- a/drivers/dma/sh/shdma-base.c
++++ b/drivers/dma/sh/shdma-base.c
+@@ -129,12 +129,25 @@ static dma_cookie_t shdma_tx_submit(struct dma_async_tx_descriptor *tx)
+ 			const struct shdma_ops *ops = sdev->ops;
+ 			dev_dbg(schan->dev, "Bring up channel %d\n",
+ 				schan->id);
+-			/*
+-			 * TODO: .xfer_setup() might fail on some platforms.
+-			 * Make it int then, on error remove chunks from the
+-			 * queue again
+-			 */
+-			ops->setup_xfer(schan, schan->slave_id);
++
++			ret = ops->setup_xfer(schan, schan->slave_id);
++			if (ret < 0) {
++				dev_err(schan->dev, "setup_xfer failed: %d\n", ret);
++
++				/* Remove chunks from the queue and mark them as idle */
++				list_for_each_entry_safe(chunk, c, &schan->ld_queue, node) {
++					if (chunk->cookie == cookie) {
++						chunk->mark = DESC_IDLE;
++						list_move(&chunk->node, &schan->ld_free);
++					}
++				}
++
++				schan->pm_state = SHDMA_PM_ESTABLISHED;
++				ret = pm_runtime_put(schan->dev);
++
++				spin_unlock_irq(&schan->chan_lock);
++				return ret;
++			}
  
-+	netif_napi_add(nic_dev->netdev, &irq_cfg->napi, hinic3_poll);
- 	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
- 			     NETDEV_QUEUE_TYPE_RX, &irq_cfg->napi);
- 	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
- 			     NETDEV_QUEUE_TYPE_TX, &irq_cfg->napi);
--	netif_napi_add(nic_dev->netdev, &irq_cfg->napi, hinic3_poll);
- 	napi_enable(&irq_cfg->napi);
+ 			if (schan->pm_state == SHDMA_PM_PENDING)
+ 				shdma_chan_xfer_ld_queue(schan);
+diff --git a/drivers/dma/sh/shdmac.c b/drivers/dma/sh/shdmac.c
+index 8ead0a1fd2371..2ed0e72a7ffa3 100644
+--- a/drivers/dma/sh/shdmac.c
++++ b/drivers/dma/sh/shdmac.c
+@@ -300,21 +300,30 @@ static bool sh_dmae_channel_busy(struct shdma_chan *schan)
+ 	return dmae_is_busy(sh_chan);
  }
  
+-static void sh_dmae_setup_xfer(struct shdma_chan *schan,
+-			       int slave_id)
++static int sh_dmae_setup_xfer(struct shdma_chan *schan, int slave_id)
+ {
+ 	struct sh_dmae_chan *sh_chan = container_of(schan, struct sh_dmae_chan,
+ 						    shdma_chan);
+ 
++	int ret = 0;
+ 	if (slave_id >= 0) {
+ 		const struct sh_dmae_slave_config *cfg =
+ 			sh_chan->config;
+ 
+-		dmae_set_dmars(sh_chan, cfg->mid_rid);
+-		dmae_set_chcr(sh_chan, cfg->chcr);
++		ret = dmae_set_dmars(sh_chan, cfg->mid_rid);
++		if (ret < 0)
++			goto END;
++
++		ret = dmae_set_chcr(sh_chan, cfg->chcr);
++		if (ret < 0)
++			goto END;
++
+ 	} else {
+ 		dmae_init(sh_chan);
+ 	}
++
++END:
++	return ret;
+ }
+ 
+ /*
+diff --git a/include/linux/shdma-base.h b/include/linux/shdma-base.h
+index 6dfd05ef5c2d9..03ba4dab2ef73 100644
+--- a/include/linux/shdma-base.h
++++ b/include/linux/shdma-base.h
+@@ -96,7 +96,7 @@ struct shdma_ops {
+ 	int (*desc_setup)(struct shdma_chan *, struct shdma_desc *,
+ 			  dma_addr_t, dma_addr_t, size_t *);
+ 	int (*set_slave)(struct shdma_chan *, int, dma_addr_t, bool);
+-	void (*setup_xfer)(struct shdma_chan *, int);
++	int (*setup_xfer)(struct shdma_chan *, int);
+ 	void (*start_xfer)(struct shdma_chan *, struct shdma_desc *);
+ 	struct shdma_desc *(*embedded_desc)(void *, int);
+ 	bool (*chan_irq)(struct shdma_chan *, int);
 -- 
 2.51.0
 
