@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-194031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95484C4AD2A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:44:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1604CC4B268
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:03:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E2DB34FBF89
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F3DA3B8509
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3262D879A;
-	Tue, 11 Nov 2025 01:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AED033F8A7;
+	Tue, 11 Nov 2025 01:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAVBXqNP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guaAi4ww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F934214210;
-	Tue, 11 Nov 2025 01:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8352E0412;
+	Tue, 11 Nov 2025 01:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824640; cv=none; b=rBNcxr++7AxKniMb/itD+tJwxgpU8TuKguVIk1FFcq5aOFJj4twc3NHaKRGOUGahZ1BAQ2TsyknxhimIfvJjp8aQH5RBU/xarcrNK1Yo/4V4hEeBY7lzSrFmiBgTMHLl2SA242WLoZjYD7g7dnzwQLkMX1n1knERpVzwl5mEdJM=
+	t=1762825377; cv=none; b=dcbtQo2gsbW9dmMNpTTj5YRQfvhVRjWrH8+e+lpTNL6O3UDmW2TiTrfrIsQMEeSbFrLAzx+n+/J99QCzpq6it2ocqoOZC8V1efwodjhl+wFmXtcaOjQrtlnGd1GZRVmLfIRh5GcE6enZtsLi8oTKH4i+bjsEBfbUb7bBCYyrU90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824640; c=relaxed/simple;
-	bh=APeFQIrCfPys4N1eC43CW+1wgSGDmIi58KqHQZKLkjc=;
+	s=arc-20240116; t=1762825377; c=relaxed/simple;
+	bh=OsIdxEayijNObFY3oM2KI/sfAtnPoB5ktOUpbAGX6qI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcTLUspZ1mlyWm6iQL87WBnbpmSwwoBRpiXGm7yp11kMo4ZWdZr6FhCjr8uojdtxdHcLWd6HdbYwh1KTC3iKVzN8zHe+ounKrQIFD9IYid7o/YG5FT442O0y8Z0xsJ5e1uf1l+ZoUSs4YDKqZmbPSetP75YmfaD9twSieoQPnHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAVBXqNP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2235DC4CEFB;
-	Tue, 11 Nov 2025 01:30:40 +0000 (UTC)
+	 MIME-Version; b=itZwSMKSLlaDUpmjQhV3Db/wuJNQ5mywAlnfVG6Us2mq17k1vyxrMojpl3NDhaUI7R4RLASWfAxbrY0q0AEeBWHJF7G6Ke5pKDs/YM9nZ5MLFBmyxwVAxP65eVFUQK15TNZZyQWG53YDcjhjnVCKOIvhpVmq2ha3ATsndf47+qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guaAi4ww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452BBC116D0;
+	Tue, 11 Nov 2025 01:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824640;
-	bh=APeFQIrCfPys4N1eC43CW+1wgSGDmIi58KqHQZKLkjc=;
+	s=korg; t=1762825376;
+	bh=OsIdxEayijNObFY3oM2KI/sfAtnPoB5ktOUpbAGX6qI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jAVBXqNPpCvQdxOhR2mpI5Tp4kUXI/l/qtMzgqjGAEwnia5OXGRr+Jek1vx+rjbnZ
-	 aME8I9hNJ1o2ws8Q/EBIfTLkGWCmgzEwjcCn4NAC1TwEewgqk6NvUgQIKoLh7A1i4K
-	 BmbY/Wlv/m2yn1rkTk+5Jk3MWYVZrMq+wIIfnKmo=
+	b=guaAi4wwPnQkoWJeq0R5DhQwBgflsxGLtdegrXJ7FgPwI+LFtt18TLG2ZE33L9+HP
+	 xeirSyfhvU4mkT/scFgh2WiioIGYZ9slIoAswIHtdjkU4IYEG9gnxQJ0MzrwGuKhfA
+	 874gW1DVcK+M97R/UUf62JxFkmOlhihXWKusmgro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valerio Setti <vsetti@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Xin Long <lucien.xin@gmail.com>,
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 490/565] ASoC: meson: aiu-encoder-i2s: fix bit clock polarity
+Subject: [PATCH 6.17 776/849] sctp: Hold sock lock while iterating over address list
 Date: Tue, 11 Nov 2025 09:45:46 +0900
-Message-ID: <20251111004537.956655855@linuxfoundation.org>
+Message-ID: <20251111004555.187997083@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
-References: <20251111004526.816196597@linuxfoundation.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valerio Setti <vsetti@baylibre.com>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-[ Upstream commit 4c4ed5e073a923fb3323022e1131cb51ad8df7a0 ]
+[ Upstream commit f1fc201148c7e684c10a72b6a3375597f28d1ef6 ]
 
-According to I2S specs audio data is sampled on the rising edge of the
-clock and it can change on the falling one. When operating in normal mode
-this SoC behaves the opposite so a clock polarity inversion is required
-in this case.
+Move address list traversal in inet_assoc_attr_size() under the sock
+lock to avoid holding the RCU read lock.
 
-This was tested on an OdroidC2 (Amlogic S905 SoC) board.
-
-Signed-off-by: Valerio Setti <vsetti@baylibre.com>
-Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
-Tested-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://patch.msgid.link/20251007-fix-i2s-polarity-v1-1-86704d9cda10@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Suggested-by: Xin Long <lucien.xin@gmail.com>
+Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251028161506.3294376-4-stefan.wiehler@nokia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/aiu-encoder-i2s.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/sctp/diag.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/meson/aiu-encoder-i2s.c b/sound/soc/meson/aiu-encoder-i2s.c
-index a0dd914c8ed13..3b4061508c180 100644
---- a/sound/soc/meson/aiu-encoder-i2s.c
-+++ b/sound/soc/meson/aiu-encoder-i2s.c
-@@ -236,8 +236,12 @@ static int aiu_encoder_i2s_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
- 	    inv == SND_SOC_DAIFMT_IB_IF)
- 		val |= AIU_CLK_CTRL_LRCLK_INVERT;
- 
--	if (inv == SND_SOC_DAIFMT_IB_NF ||
--	    inv == SND_SOC_DAIFMT_IB_IF)
-+	/*
-+	 * The SoC changes data on the rising edge of the bitclock
-+	 * so an inversion of the bitclock is required in normal mode
-+	 */
-+	if (inv == SND_SOC_DAIFMT_NB_NF ||
-+	    inv == SND_SOC_DAIFMT_NB_IF)
- 		val |= AIU_CLK_CTRL_AOCLK_INVERT;
- 
- 	/* Signal skew */
-@@ -328,4 +332,3 @@ const struct snd_soc_dai_ops aiu_encoder_i2s_dai_ops = {
- 	.startup	= aiu_encoder_i2s_startup,
- 	.shutdown	= aiu_encoder_i2s_shutdown,
+diff --git a/net/sctp/diag.c b/net/sctp/diag.c
+index 95e65b9d623b3..5a43f25478d03 100644
+--- a/net/sctp/diag.c
++++ b/net/sctp/diag.c
+@@ -230,14 +230,15 @@ struct sctp_comm_param {
+ 	bool net_admin;
  };
--
+ 
+-static size_t inet_assoc_attr_size(struct sctp_association *asoc)
++static size_t inet_assoc_attr_size(struct sock *sk,
++				   struct sctp_association *asoc)
+ {
+ 	int addrlen = sizeof(struct sockaddr_storage);
+ 	int addrcnt = 0;
+ 	struct sctp_sockaddr_entry *laddr;
+ 
+ 	list_for_each_entry_rcu(laddr, &asoc->base.bind_addr.address_list,
+-				list)
++				list, lockdep_sock_is_held(sk))
+ 		addrcnt++;
+ 
+ 	return	  nla_total_size(sizeof(struct sctp_info))
+@@ -263,11 +264,14 @@ static int sctp_sock_dump_one(struct sctp_endpoint *ep, struct sctp_transport *t
+ 	if (err)
+ 		return err;
+ 
+-	rep = nlmsg_new(inet_assoc_attr_size(assoc), GFP_KERNEL);
+-	if (!rep)
++	lock_sock(sk);
++
++	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
++	if (!rep) {
++		release_sock(sk);
+ 		return -ENOMEM;
++	}
+ 
+-	lock_sock(sk);
+ 	if (ep != assoc->ep) {
+ 		err = -EAGAIN;
+ 		goto out;
 -- 
 2.51.0
 
