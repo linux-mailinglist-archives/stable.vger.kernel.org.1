@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-194006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C1BC4AA45
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:35:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BEC6C4A76A
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:27:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6295C34C8F2
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:35:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FA9F3B1708
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E41340273;
-	Tue, 11 Nov 2025 01:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A84B13396F7;
+	Tue, 11 Nov 2025 01:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMtN9uQ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtjCbBhT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B2526560B;
-	Tue, 11 Nov 2025 01:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64693280A51;
+	Tue, 11 Nov 2025 01:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824582; cv=none; b=A5zbsxpOloxZBPRv7jQPhO4tkI5G6zqVH1HGzAHShuq5goFspKc0xh0SjOWQYh3nYlsRBt5ZiSy5jvua+gQXdVDdptOFe23E3+PsFA7wJAauQas2AQB5v8Ruz8migh9usCsR5R0XUBXaNJvkD0nFaLD9lZSewQZHrwdC2ZMbHlA=
+	t=1762823414; cv=none; b=TIuu5lL1KYxTJ9XJqpJ8g1qAiZb9jNou9S+aWpgLQ8AC0p/8mwbmxEZVEskCEqvUNX78kFJFVKHK2lWe0O+AXLihyj8rdRT0GuNViUhNjNCXAHy/Xm4uKBgZDa0EC9ZT1kNGtBb1BOEj5rzs9gqZ5PEU9nJh7Fme0IhknxAwTjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824582; c=relaxed/simple;
-	bh=XiqMMHqlpRoECH9SrFBoYPTAxzDjmnMa85ZLD3/AY/A=;
+	s=arc-20240116; t=1762823414; c=relaxed/simple;
+	bh=Ct9BpdaxYkaes+x707S42VSoh+K1Q5kLKdRuQ+H812M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vx17d5S/jE4wZzaEU8ay8NaAESKMuLy0iTH6eJbymmNcQJiBBR1YtlX2WLrLYqMaLWLL3RMjuwFtlJt1nTi6IYCDggG3jv2Uxor356RkUfX4lya4Ttp8SsoNZXxjGADRVXTQZiZlWbH/rNkimFPLGYzsDj1XbrQxtLV6LcrsC98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMtN9uQ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AE2C116D0;
-	Tue, 11 Nov 2025 01:29:41 +0000 (UTC)
+	 MIME-Version; b=VAKwgVTH7mWFsyfEykWV586HkyQOON62pIh8zkpPgJrmqnoXfkqHAJZkfAnoV/HBom2gxVVoTnlj6+jOfap3bAaegku9zN4DRGr2WaBfKQXAHFIug8YW1M2F/yj/hilpFyEcRKRJM2Lvy7zJey0RV7fm+6hPAnoYS/ZhJZW3iPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtjCbBhT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05ACC4CEFB;
+	Tue, 11 Nov 2025 01:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762824582;
-	bh=XiqMMHqlpRoECH9SrFBoYPTAxzDjmnMa85ZLD3/AY/A=;
+	s=korg; t=1762823414;
+	bh=Ct9BpdaxYkaes+x707S42VSoh+K1Q5kLKdRuQ+H812M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DMtN9uQ/8l96u9ojaWZuyl5MDcvEJDtPX1uL2Bg5QY9RXxve4ny0/ksnjkEo6nczd
-	 r2QndG4Q3DmBHzVRaoa1MnCb9Qg9CEe8zWZvUM+j4oA2h2zAfhTR7tostez35WSeIk
-	 KOEiXA9PAYMSt0iFpkQVFD3O1T6t4GJEXnqWuRb4=
+	b=PtjCbBhTCaPOkGtXOveKQEp2bA/rObG6Ui9ivCvkqGgh4YntAQy8l3C3/7u0BIkCT
+	 d2Biqj82pjy9P3jdzaPcFYA1TOe1sYT18jcV3LHWNH5NKADqwg9ztBNJAQIVaTr1RH
+	 WUiBzVkHnRb/YPa1d6j5vMNSPJhmwjgcASonYDzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
-	Corentin LABBE <clabbe.montjoie@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 528/849] crypto: sun8i-ce - remove channel timeout field
+Subject: [PATCH 6.12 242/565] ALSA: usb-audio: Add validation of UAC2/UAC3 effect units
 Date: Tue, 11 Nov 2025 09:41:38 +0900
-Message-ID: <20251111004549.183469619@linuxfoundation.org>
+Message-ID: <20251111004532.356415929@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 9a23ea1f7558bdd3f8d2b35b1c2e16a2f9bf671e ]
+[ Upstream commit 2aec0b6a6b5395bca7d6fde9c7e9dc391d329698 ]
 
-Using the number of bytes in the request as DMA timeout is really
-inconsistent, as large requests could possibly set a timeout of
-hundreds of seconds.
+Just add fixed struct size validations for UAC2 and UAC3 effect
+units.  The descriptor has a variable-length array, so it should be
+validated with a proper function later once when the unit is really
+parsed and used by the driver (currently only referred partially for
+the input terminal parsing).
 
-Remove the per-channel timeout field and use a single, static DMA
-timeout of 3 seconds for all requests.
-
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Reviewed-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://patch.msgid.link/20250821151751.12100-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c | 1 -
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c   | 5 ++---
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce-hash.c   | 2 --
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce-prng.c   | 1 -
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce-trng.c   | 1 -
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h        | 2 +-
- 6 files changed, 3 insertions(+), 9 deletions(-)
+ sound/usb/validate.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-index 5663df49dd817..113a1100f2aeb 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-@@ -276,7 +276,6 @@ static int sun8i_ce_cipher_prepare(struct crypto_engine *engine, void *async_req
- 		goto theend_sgs;
- 	}
- 
--	chan->timeout = areq->cryptlen;
- 	rctx->nr_sgs = ns;
- 	rctx->nr_sgd = nd;
- 	return 0;
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
-index 658f520cee0ca..79ec172e5c995 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
-@@ -210,11 +210,10 @@ int sun8i_ce_run_task(struct sun8i_ce_dev *ce, int flow, const char *name)
- 	mutex_unlock(&ce->mlock);
- 
- 	wait_for_completion_interruptible_timeout(&ce->chanlist[flow].complete,
--			msecs_to_jiffies(ce->chanlist[flow].timeout));
-+			msecs_to_jiffies(CE_DMA_TIMEOUT_MS));
- 
- 	if (ce->chanlist[flow].status == 0) {
--		dev_err(ce->dev, "DMA timeout for %s (tm=%d) on flow %d\n", name,
--			ce->chanlist[flow].timeout, flow);
-+		dev_err(ce->dev, "DMA timeout for %s on flow %d\n", name, flow);
- 		err = -EFAULT;
- 	}
- 	/* No need to lock for this read, the channel is locked so
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-hash.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-hash.c
-index 13bdfb8a2c627..b26f5427c1e06 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-hash.c
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-hash.c
-@@ -446,8 +446,6 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
- 	else
- 		cet->t_dlen = cpu_to_le32(areq->nbytes / 4 + j);
- 
--	chan->timeout = areq->nbytes;
--
- 	err = sun8i_ce_run_task(ce, flow, crypto_ahash_alg_name(tfm));
- 
- 	dma_unmap_single(ce->dev, addr_pad, j * 4, DMA_TO_DEVICE);
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-prng.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-prng.c
-index 762459867b6c5..d0a1ac66738bf 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-prng.c
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-prng.c
-@@ -137,7 +137,6 @@ int sun8i_ce_prng_generate(struct crypto_rng *tfm, const u8 *src,
- 
- 	cet->t_dst[0].addr = desc_addr_val_le32(ce, dma_dst);
- 	cet->t_dst[0].len = cpu_to_le32(todo / 4);
--	ce->chanlist[flow].timeout = 2000;
- 
- 	err = sun8i_ce_run_task(ce, 3, "PRNG");
- 	mutex_unlock(&ce->rnglock);
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-trng.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-trng.c
-index e1e8bc15202e0..244529bf06162 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-trng.c
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-trng.c
-@@ -79,7 +79,6 @@ static int sun8i_ce_trng_read(struct hwrng *rng, void *data, size_t max, bool wa
- 
- 	cet->t_dst[0].addr = desc_addr_val_le32(ce, dma_dst);
- 	cet->t_dst[0].len = cpu_to_le32(todo / 4);
--	ce->chanlist[flow].timeout = todo;
- 
- 	err = sun8i_ce_run_task(ce, 3, "TRNG");
- 	mutex_unlock(&ce->rnglock);
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
-index 0f9a890670167..f12c32d1843f2 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
-@@ -106,6 +106,7 @@
- #define MAX_SG 8
- 
- #define CE_MAX_CLOCKS 4
-+#define CE_DMA_TIMEOUT_MS	3000
- 
- #define MAXFLOW 4
- 
-@@ -196,7 +197,6 @@ struct sun8i_ce_flow {
- 	struct completion complete;
- 	int status;
- 	dma_addr_t t_phy;
--	int timeout;
- 	struct ce_task *tl;
- 	void *backup_iv;
- 	void *bounce_iv;
+diff --git a/sound/usb/validate.c b/sound/usb/validate.c
+index a0d55b77c9941..4bb4893f6e74f 100644
+--- a/sound/usb/validate.c
++++ b/sound/usb/validate.c
+@@ -266,7 +266,11 @@ static const struct usb_desc_validator audio_validators[] = {
+ 	FUNC(UAC_VERSION_2, UAC_MIXER_UNIT, validate_mixer_unit),
+ 	FUNC(UAC_VERSION_2, UAC_SELECTOR_UNIT, validate_selector_unit),
+ 	FUNC(UAC_VERSION_2, UAC_FEATURE_UNIT, validate_uac2_feature_unit),
+-	/* UAC_VERSION_2, UAC2_EFFECT_UNIT: not implemented yet */
++	/* just a stop-gap, it should be a proper function for the array
++	 * once if the unit is really parsed/used
++	 */
++	FIXED(UAC_VERSION_2, UAC2_EFFECT_UNIT,
++	      struct uac2_effect_unit_descriptor),
+ 	FUNC(UAC_VERSION_2, UAC2_PROCESSING_UNIT_V2, validate_processing_unit),
+ 	FUNC(UAC_VERSION_2, UAC2_EXTENSION_UNIT_V2, validate_processing_unit),
+ 	FIXED(UAC_VERSION_2, UAC2_CLOCK_SOURCE,
+@@ -286,7 +290,8 @@ static const struct usb_desc_validator audio_validators[] = {
+ 	FUNC(UAC_VERSION_3, UAC3_MIXER_UNIT, validate_mixer_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_SELECTOR_UNIT, validate_selector_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_FEATURE_UNIT, validate_uac3_feature_unit),
+-	/*  UAC_VERSION_3, UAC3_EFFECT_UNIT: not implemented yet */
++	FIXED(UAC_VERSION_3, UAC3_EFFECT_UNIT,
++	      struct uac2_effect_unit_descriptor), /* sharing the same struct */
+ 	FUNC(UAC_VERSION_3, UAC3_PROCESSING_UNIT, validate_processing_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_EXTENSION_UNIT, validate_processing_unit),
+ 	FIXED(UAC_VERSION_3, UAC3_CLOCK_SOURCE,
 -- 
 2.51.0
 
