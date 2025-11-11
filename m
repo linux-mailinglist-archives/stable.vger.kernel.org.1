@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-194347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF18C4B26B
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 03:04:00 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16F3C4AD00
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF8613BF7C0
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:51:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 218744F0DB2
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C4B2F60A7;
-	Tue, 11 Nov 2025 01:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1755D26AC3;
+	Tue, 11 Nov 2025 01:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frpkgjWQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLY3LoTd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E3226B76A;
-	Tue, 11 Nov 2025 01:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE372DC328;
+	Tue, 11 Nov 2025 01:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762825391; cv=none; b=Bi7YBhFKEU7Uj5gY3sWxbMJxnwJzP58m18oRi6/ola+dxDtLJsf9Sx7lOMPcVWiXS/HwIWUTmqAJk2Jhx44qLSBiJZs/wDfMDRGln6nc2yPVTO/GzqHjnsg48ozDpeMaGScQcdVHxqXGeZ1gdI6WVyf/UOnQV7yErW1sBZa1QKs=
+	t=1762824678; cv=none; b=LSdmgzzkJSsnE9KWFiLAQSYVNl5CBSfr76eq2QQqT3NIdyVOl6NA4BHO1C6hhz5MucRTcdpZgykBamZR9NNKLoPBbXak/EWHZJbn6cz01jNe1docvE+D++sH4Zslm8H9Nk5ttmtF5M99IropcBPDWft0zgVpKxOct9Lo4huFMfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762825391; c=relaxed/simple;
-	bh=QQmVr82XLPwT7ZnPN43oBKBVwE4ox55ZkhuXXZmJ6/8=;
+	s=arc-20240116; t=1762824678; c=relaxed/simple;
+	bh=Fl0X1T9ynt1ZNeyiKqZfqNOjb+rNGdeJrxUC2GbLMLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D27Pz9B6yA0slTitaX26n2VZ1+MIhv9FQtcSForsikai0fzjFDwKP7HMtq1ZUIqYKY7EY7/xi64LoWFmQR+Zqlr6KGJgbrP8OFa9ApIxl0JSVUqw1SA5Xg2rAbPBvoMofEqTd5E9B82JbAx5FWbBDFBu4ETufh7XzO0Hm2w6PLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frpkgjWQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD04BC4CEFB;
-	Tue, 11 Nov 2025 01:43:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ejrKF/xnxLwRiE+Jf/IGJtPkOJDdCqvGDuf1791PJC9H3x93Z54+ZWUetT5RZgw/6YUWynQds/3Lhfk8r+1AsmsrZVKv13gzs0NdeEFgJDWlLASlEOVy7YdLiclU0/OQonFKcG1qBpckHqjNdWTLEohV3vvLC5q6UTj0gFvzk1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLY3LoTd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C28C4CEFB;
+	Tue, 11 Nov 2025 01:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762825391;
-	bh=QQmVr82XLPwT7ZnPN43oBKBVwE4ox55ZkhuXXZmJ6/8=;
+	s=korg; t=1762824676;
+	bh=Fl0X1T9ynt1ZNeyiKqZfqNOjb+rNGdeJrxUC2GbLMLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frpkgjWQNEx2p7veF/TxjJqaonjNt3TmC/jHcJMqPsvxDLAMA9onsiXt++i1lLU5+
-	 0z5oMW4w4ktImj7jMb8t+EJPjpQfHUOURrVfGkwID4IfH9DBUaZoG8yFdupk17+DL7
-	 sgnIvNhAz4a81higIm3FmuJTn7OMW28fw1OoF1+U=
+	b=yLY3LoTd740L8YJlcFmxdpX2h/jfPCUd5XErROUlvTGfSwJOdj1oUcsWnIO9f5jTc
+	 iBwMONMztEJsnpyEUUCpT6G0cy9byGVDzBPW1ZImYi4t+Pty9jvC8ryS/nqT5qddnh
+	 YfvhvSJHcmPQDuvmJ6KaKATYrKUaRLEYhprhI4Ws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Laight <David.Laight@aculab.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 782/849] bnxt_en: Fix a possible memory leak in bnxt_ptp_init
+Subject: [PATCH 6.12 496/565] x86: use cmov for user address masking
 Date: Tue, 11 Nov 2025 09:45:52 +0900
-Message-ID: <20251111004555.333954796@linuxfoundation.org>
+Message-ID: <20251111004538.094514120@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+In-Reply-To: <20251111004526.816196597@linuxfoundation.org>
+References: <20251111004526.816196597@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +60,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit deb8eb39164382f1f67ef8e8af9176baf5e10f2d ]
+[ Upstream commit 91309a70829d94c735c8bb1cc383e78c96127a16 ]
 
-In bnxt_ptp_init(), when ptp_clock_register() fails, the driver is
-not freeing the memory allocated for ptp_info->pin_config.  Fix it
-to unconditionally free ptp_info->pin_config in bnxt_ptp_free().
+This was a suggestion by David Laight, and while I was slightly worried
+that some micro-architecture would predict cmov like a conditional
+branch, there is little reason to actually believe any core would be
+that broken.
 
-Fixes: caf3eedbcd8d ("bnxt_en: 1PPS support for 5750X family chips")
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20251104005700.542174-3-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Intel documents that their existing cores treat CMOVcc as a data
+dependency that will constrain speculation in their "Speculative
+Execution Side Channel Mitigations" whitepaper:
+
+  "Other instructions such as CMOVcc, AND, ADC, SBB and SETcc can also
+   be used to prevent bounds check bypass by constraining speculative
+   execution on current family 6 processors (Intel® Core™, Intel® Atom™,
+   Intel® Xeon® and Intel® Xeon Phi™ processors)"
+
+and while that leaves the future uarch issues open, that's certainly
+true of our traditional SBB usage too.
+
+Any core that predicts CMOV will be unusable for various crypto
+algorithms that need data-independent timing stability, so let's just
+treat CMOV as the safe choice that simplifies the address masking by
+avoiding an extra instruction and doesn't need a temporary register.
+
+Suggested-by: David Laight <David.Laight@aculab.com>
+Link: https://www.intel.com/content/dam/develop/external/us/en/documents/336996-speculative-execution-side-channel-mitigations.pdf
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: 284922f4c563 ("x86: uaccess: don't use runtime-const rewriting in modules")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/uaccess_64.h | 12 ++++++------
+ arch/x86/lib/getuser.S            |  5 ++---
+ 2 files changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-index ca660e6d28a4c..8f2faff044591 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-@@ -1054,9 +1054,9 @@ static void bnxt_ptp_free(struct bnxt *bp)
- 	if (ptp->ptp_clock) {
- 		ptp_clock_unregister(ptp->ptp_clock);
- 		ptp->ptp_clock = NULL;
--		kfree(ptp->ptp_info.pin_config);
--		ptp->ptp_info.pin_config = NULL;
- 	}
-+	kfree(ptp->ptp_info.pin_config);
-+	ptp->ptp_info.pin_config = NULL;
+diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
+index b0a887209400d..c52f0133425b9 100644
+--- a/arch/x86/include/asm/uaccess_64.h
++++ b/arch/x86/include/asm/uaccess_64.h
+@@ -63,13 +63,13 @@ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm,
+  */
+ static inline void __user *mask_user_address(const void __user *ptr)
+ {
+-	unsigned long mask;
++	void __user *ret;
+ 	asm("cmp %1,%0\n\t"
+-	    "sbb %0,%0"
+-		:"=r" (mask)
+-		:"r" (ptr),
+-		 "0" (runtime_const_ptr(USER_PTR_MAX)));
+-	return (__force void __user *)(mask | (__force unsigned long)ptr);
++	    "cmova %1,%0"
++		:"=r" (ret)
++		:"r" (runtime_const_ptr(USER_PTR_MAX)),
++		 "0" (ptr));
++	return ret;
  }
- 
- int bnxt_ptp_init(struct bnxt *bp)
+ #define masked_user_access_begin(x) ({				\
+ 	__auto_type __masked_ptr = (x);				\
+diff --git a/arch/x86/lib/getuser.S b/arch/x86/lib/getuser.S
+index 4357ec2a0bfc2..89ecd57c9d423 100644
+--- a/arch/x86/lib/getuser.S
++++ b/arch/x86/lib/getuser.S
+@@ -44,9 +44,8 @@
+   .pushsection runtime_ptr_USER_PTR_MAX,"a"
+ 	.long 1b - 8 - .
+   .popsection
+-	cmp %rax, %rdx
+-	sbb %rdx, %rdx
+-	or %rdx, %rax
++	cmp %rdx, %rax
++	cmova %rdx, %rax
+ .else
+ 	cmp $TASK_SIZE_MAX-\size+1, %eax
+ 	jae .Lbad_get_user
 -- 
 2.51.0
 
