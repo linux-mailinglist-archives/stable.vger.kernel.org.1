@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-193487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-193489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71306C4A635
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:24:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3729CC4A659
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 02:25:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6AE43A9C28
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23ABE3A8BE7
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 01:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE30306491;
-	Tue, 11 Nov 2025 01:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71354307ADE;
+	Tue, 11 Nov 2025 01:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuUP1WkS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWyUkXbM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4536B3074A2;
-	Tue, 11 Nov 2025 01:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF9F25F797;
+	Tue, 11 Nov 2025 01:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762823299; cv=none; b=ciQm8ixV82Vkv5wAPjZAzJf2LW2oHGKNhSKVkF+MS40DXrrDIvuI+TcAZMRCpIipcqgC1ZBxRJj9+mwnjzSA6mfwWN6y6qeyi1NjXAmARZ2Ojj5+1CEfnQ5AC90L7QJ21H/Ugyui1dnhVi3VrpLUErMtQ0fp2B4HQV0fgOVNq3Q=
+	t=1762823304; cv=none; b=V600RP68FTal5km/KIU4+ZS5GCc2SfzGHAUGhbtgmW3ezhYG3g3cbvKIyrD/dMpNp9dfytjyZh2DhzvnLZ7N97/zsAXO6F5rpRmbRnpj/J9usPdpNmNfYv2fHjdz2mnjH4yOPCdsXUhyn2w1H24eE6cj1sZuX/AM36tJ++ePixQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762823299; c=relaxed/simple;
-	bh=Nma1QI/5U6GF9sKhC5ELUFQDn5HgwO5ZoXnedbIGZBY=;
+	s=arc-20240116; t=1762823304; c=relaxed/simple;
+	bh=Fu4oz8YMpa1E6Hb8h70+BcDOvwXTv7mjjVMZrMYXBAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pHOBoHu8bzEg3jeDI1IyDsxaCCf3SMujaHjz50dcinjlGdzHDu0otKVAPAUDOIXOTmLpagl9o+or+jpjRJZz6yzdhbbtsT5ySXn0YJmLVWm4og6abVZC/UE74qWWtBYo+1b63K/oNOslE79eiME3yYztkIC7Y/OYDCLsAJ6pcEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuUP1WkS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86C5C16AAE;
-	Tue, 11 Nov 2025 01:08:18 +0000 (UTC)
+	 MIME-Version; b=BIGoCS5CVJFpWATGblo5RTUyvJplme+xP/4MEYeWuRAEAP5k8Is0xSJuEw91YUlsqtTk13BShWpG6wF4eefAf+CrtJ2gZHfa7QqbGGHnIjfEFTg6BqGuPbyZytB62c7/EGm3HPPVVnFdvXO4ZZpXXRxXx8WMoKZ56Ioq0IHao2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWyUkXbM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C7EC4CEF5;
+	Tue, 11 Nov 2025 01:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762823299;
-	bh=Nma1QI/5U6GF9sKhC5ELUFQDn5HgwO5ZoXnedbIGZBY=;
+	s=korg; t=1762823304;
+	bh=Fu4oz8YMpa1E6Hb8h70+BcDOvwXTv7mjjVMZrMYXBAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uuUP1WkSkVYLvt4491V3JCcwmaalETKrAvJysoMZpx8MSRqah7NPqB2ZlAUYHNogg
-	 U4wCCnF1Gb4w2VUUOw1+NxFiEqR26vkURgfRJqELiXYdWBmKKoB5wHhXyIXbj8GG1h
-	 Tl3jLfyjq3c4nLKH70qzB+tqq+1aDudd+P4J4JAM=
+	b=FWyUkXbMIMUGpd7JtrE1aEjOd1NZ7T4TJNAeARByqYuo+nsHRAxCNpt3bO1s3vs5k
+	 DCz0LsKAfXEryh4KyKnew8wx9MdJrTqfsFcTvfp0U1dKn50Sup0G+Ho2Af1sv0up4X
+	 FBRxvW4gw32s19x52hgAlPHVerdTY15C5V3dlMCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcos Del Sol Vives <marcos@orca.pet>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 271/849] PCI: Disable MSI on RDC PCI to PCIe bridges
-Date: Tue, 11 Nov 2025 09:37:21 +0900
-Message-ID: <20251111004542.979816858@linuxfoundation.org>
+Subject: [PATCH 6.17 272/849] drm/nouveau: always set RMDevidCheckIgnore for GSP-RM
+Date: Tue, 11 Nov 2025 09:37:22 +0900
+Message-ID: <20251111004543.004238843@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
 References: <20251111004536.460310036@linuxfoundation.org>
@@ -66,37 +66,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marcos Del Sol Vives <marcos@orca.pet>
+From: Timur Tabi <ttabi@nvidia.com>
 
-[ Upstream commit ebc7086b39e5e4f3d3ca82caaea20538c9b62d42 ]
+[ Upstream commit 27738c3003bf3b124527c9ed75e1e0d0c013c101 ]
 
-RDC PCI to PCIe bridges, present on Vortex86DX3 and Vortex86EX2 SoCs, do
-not support MSIs. If enabled, interrupts generated by PCIe devices never
-reach the processor.
+Always set the RMDevidCheckIgnore registry key for GSP-RM so that it
+will continue support newer variants of already supported GPUs.
 
-I have contacted the manufacturer (DM&P) and they confirmed that PCI MSIs
-need to be disabled for them.
+GSP-RM maintains an internal list of PCI IDs of GPUs that it supports,
+and checks if the current GPU is on this list.  While the actual GPU
+architecture (as specified in the BOOT_0/BOOT_42 registers) determines
+how to enable the GPU, the PCI ID is used for the product name, e.g.
+"NVIDIA GeForce RTX 5090".
 
-Signed-off-by: Marcos Del Sol Vives <marcos@orca.pet>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20250705233209.721507-1-marcos@orca.pet
+Unfortunately, if there is no match, GSP-RM will refuse to initialize,
+even if the device is fully supported.  Nouveau will get an error
+return code, but by then it's too late.  This behavior may be corrected
+in a future version of GSP-RM, but that does not help Nouveau today.
+
+Fortunately, GSP-RM supports an undocumented registry key that tells it
+to ignore the mismatch.  In such cases, the product name returned will
+be a blank string, but otherwise GSP-RM will continue.
+
+Unlike Nvidia's proprietary driver, Nouveau cannot update to newer
+firmware versions to keep up with every new hardware release.  Instead,
+we can permanently set this registry key, and GSP-RM will continue
+to function the same with known hardware.
+
+Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+Link: https://lore.kernel.org/r/20250808191340.1701983-1-ttabi@nvidia.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index d97335a401930..6eb3d20386e95 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -2717,6 +2717,7 @@ static void quirk_disable_msi(struct pci_dev *dev)
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_8131_BRIDGE, quirk_disable_msi);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_VIA, 0xa238, quirk_disable_msi);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x5a3f, quirk_disable_msi);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_RDC, 0x1031, quirk_disable_msi);
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
+index 588cb4ab85cb4..32e6a065d6d7a 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
+@@ -582,10 +582,13 @@ struct nv_gsp_registry_entries {
+  * RMSecBusResetEnable - enables PCI secondary bus reset
+  * RMForcePcieConfigSave - forces GSP-RM to preserve PCI configuration
+  *   registers on any PCI reset.
++ * RMDevidCheckIgnore - allows GSP-RM to boot even if the PCI dev ID
++ *   is not found in the internal product name database.
+  */
+ static const struct nv_gsp_registry_entries r535_registry_entries[] = {
+ 	{ "RMSecBusResetEnable", 1 },
+ 	{ "RMForcePcieConfigSave", 1 },
++	{ "RMDevidCheckIgnore", 1 },
+ };
+ #define NV_GSP_REG_NUM_ENTRIES ARRAY_SIZE(r535_registry_entries)
  
- /*
-  * The APC bridge device in AMD 780 family northbridges has some random
 -- 
 2.51.0
 
