@@ -1,189 +1,104 @@
-Return-Path: <stable+bounces-194525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB0C0C4FA55
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 20:48:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6EAC4FA67
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 20:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E38314E7A3A
-	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 19:48:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 798C018876E5
+	for <lists+stable@lfdr.de>; Tue, 11 Nov 2025 19:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86BB7345745;
-	Tue, 11 Nov 2025 19:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C25534D91A;
+	Tue, 11 Nov 2025 19:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VqzhCNhs"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="InbOY9zd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D09333459
-	for <stable@vger.kernel.org>; Tue, 11 Nov 2025 19:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11983258EC3;
+	Tue, 11 Nov 2025 19:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762890503; cv=none; b=URb//2FXnAFVmYGU0XgS4x1iJSLjICYuPQwAm1m+KMkUHMh8srzzy5LJQBOJnCmgAObmGenqJLGdRHz57A3wpRIhtPat34LHKa3OkQUbiQFQrbXJbPFow4yaCZ5rzS/6IaVJpLPA7x4Lj1VbOn9kGcO3Nt0srwzhokIldCFMDhI=
+	t=1762890746; cv=none; b=EZovYZn0GawTmZmhQF6Cq3DeZi+WiQE87GIQt0JQ4+BpLyKSFqF0kJIWfwZVM1Kpemio8IjpY1IoIJWuxToo2lTFkR4Q5aE3XbwvCm7WfvPmrWoRjGds2fB3LtazIRL0rwhFJ7nYwVI44me72vDfZBZZ2p/EQkWjUoeAaGypdYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762890503; c=relaxed/simple;
-	bh=Xh24Itbbl1KCQJ7CVFff70n5D94ZpTRVFhp/97mFiyU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZIzVuckY3udu/0Pt10JRxx8VrChTYWRC94G0s2FPATHdapDJg45X53ZecWj3fxLCxRrntxYS09uhlFpKGjRuPf9EjQa1iucc/EC8G8Az5TgqjZqgO1hPaROOTYOpX+IA01KAiFty4s+osENlZgaGtV4MXAFyxp8R+ULZm274zcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VqzhCNhs; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-47774d3536dso140085e9.0
-        for <stable@vger.kernel.org>; Tue, 11 Nov 2025 11:48:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762890500; x=1763495300; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UbE0DBTQIFEdPxSSdzhQNw1lCZYmDmkNb+ii//A3mIs=;
-        b=VqzhCNhsIzF2LZwbbb2IFGXUnnhPhLXSY2BpAFY9y8eUAWdizLEDFGrU/9RNRYBgo4
-         jg6FsLLVGOU0C4C0LErqMeZ8/9ZGfpu5Y1eubAEdMJDciaLXN9cyJ7xA7GLMyYJvoLyo
-         bojZT4pxLYpkeh75OJiiK5KvEUkkmIyKD7/9aVHa9jtTiJD4OhIT2bjrbbPx+AjWKVbk
-         BS3qdcqyNYlWiCXoa3UD4wQnyEJtXmx2o4SIhnIUEYHCQzNdBgtAga8PmrcG/qe9WGvq
-         HZogRPZDz/e3wLaIzEq4gxkKKehwUeJfrIO11PpxHHH/jwCGt/Hy3y+eLFkj5SGWScsR
-         TF2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762890500; x=1763495300;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UbE0DBTQIFEdPxSSdzhQNw1lCZYmDmkNb+ii//A3mIs=;
-        b=q02fkTdzLMT+D6f23nznPoFrZ8uIbB7NiL/HaRihNBIQkpVfX4iY5yIBG9Vrmy0lyB
-         YdCgLgj+qTzz1PvSyBeen3TX065dui054v4k/z2mLCQdw85onIf9puyN/bsa53YS1q5D
-         296+ymX4bo2Of191OyfY1SowwvOM4jkj/nm2ARhrLBp6S/03ETOkvPpBJDObMMygtLG5
-         ee3M8CUv4ozI9pGtt+PLs8mgx9coqLT4Okoi+lkTS/p7cGKRJVTDm7ylw4UTfiDQ3EmP
-         YlEzRH54pFJ0espp5IYCP2T6VULxokHnWrL6fQAKVUO7b8tAycff5Ld3Haw+COqjt2m4
-         95Ug==
-X-Forwarded-Encrypted: i=1; AJvYcCWBS95gmPUhdSyh9KvDatbdcbGF+4z2fxZl4R3xV7uaLWmNzFhFIHC222If/R4LUcshGvfM0hw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGqbg5oYsgnPElMnpadxx43n8Bq2P1sgTtte/9zRP1yUdRnJDI
-	PM+nLz5PC0pV//BJqTvNGv7nu4djnlGC18NuZpDCxsnduBxqzbgM5HiM01qPQP/qz/TOmMyDbM7
-	b6ZgzBrnJ4cs5D+xGqapYbdLX9bVVoX4=
-X-Gm-Gg: ASbGncu9YxTFU+0PEeFbSw0CJ5KkdAj7trglDLkhrfb5Bcl2d3BVmrCmAPFdo4n/yGy
-	bWfnLjcgYgClg7o7RdJ36qIUxnSWeG98koF0/F6S4/WVc+RNV5+kEZyFnPJ1MJGYiM/QatZOQ/2
-	VtZ7nq9amU4qO8eGclg2laN9It2NQgvOA9XsQKLiKYV72UZmMaZWp2Rc+j8GSiylhT0G9r3/h8z
-	yWbMMD89UmexzersNlqUb7LCe/fTBzs/7vDw6V+XwTRF+900vx949lNdfvl
-X-Google-Smtp-Source: AGHT+IFXK4RlJhG5N0ePOzGo2aczS5G6iw+lxf53O9oDZtZdPYxRASWBOWz3i7tmyMb7gaU0omWaNjuw8uXf/sXa9jw=
-X-Received: by 2002:a05:600c:2942:b0:475:de06:dbaf with SMTP id
- 5b1f17b1804b1-4778144eaf9mr29391645e9.17.1762890499699; Tue, 11 Nov 2025
- 11:48:19 -0800 (PST)
+	s=arc-20240116; t=1762890746; c=relaxed/simple;
+	bh=zZspFEIONzo2s7jrCnVvGHGcavlaKjA/gURAB4TOlhA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XK8h5ldcpZyFP5qOt7sB6EpRH0o10nt7GL0fYLMzc7OIMOGMpXrXlfBkNgrQF6ghpDtPymOSWnztckbqtAGgzuucrxrX2BpS7hXiZ+F1fv/ed6UhdsbSRqnLciA2kS9vBv5BvUjNheXlvNRlWAuBu21vJ2rVoUJ7aOkAqJiBVmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=InbOY9zd; arc=none smtp.client-ip=199.89.3.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 003.mia.mailroute.net (Postfix) with ESMTP id 4d5cd36vf1zltMJm;
+	Tue, 11 Nov 2025 19:52:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1762890741; x=1765482742; bh=A0qul/NRindRW7dqkrtxqmTC
+	OAdijRjlc/bCFBsSYjA=; b=InbOY9zdbcUjwPCNTjxbmNmt8kBVHKHK60jNkyMz
+	37AcVNHBsTHWNENkjnifXTsodwQtpXfWBdZ/lbgSSzHTGC+nDPRTqtwp0IdkqaMe
+	w+p7hc5uj0+ygRnKBzSp7LDUaNGOsN/Icwqu8fvWjGJccPmCrFYZjuAG3/deazfG
+	RmfGLB4QjikCDJAcva9Qm/EHyrzWuopTerw2XNgzxNK09Jhj5kSvqrNDqK2aqxlU
+	Qh36vrkFNZu9lSoXf4xCU539TvClWX5G9gbU3rJhtJqdmjdfsqWAPN+a0SGaxrT/
+	XrImG1wCE8jmAVmCXReMHJYx2uegWAj4/ou/O9kY+mEa1w==
+X-Virus-Scanned: by MailRoute
+Received: from 003.mia.mailroute.net ([127.0.0.1])
+ by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id 70KoVjDkexMS; Tue, 11 Nov 2025 19:52:21 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4d5cct60W3zltMJh;
+	Tue, 11 Nov 2025 19:52:13 +0000 (UTC)
+Message-ID: <0b146bb8-3f7f-4d78-842f-a08b43e5f4b5@acm.org>
+Date: Tue, 11 Nov 2025 11:52:12 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251111-swap-fix-vma-uaf-v1-1-41c660e58562@tencent.com>
-In-Reply-To: <20251111-swap-fix-vma-uaf-v1-1-41c660e58562@tencent.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 11 Nov 2025 11:48:08 -0800
-X-Gm-Features: AWmQ_bkqvQTvzr2wIJqIY0mYNqX5zE1OAJvC7EppmNrvuhY6ZoKspaTSdmcDjb4
-Message-ID: <CAKEwX=OuhWBZWAKs0JYG6mLqe=NvyiD9L0dOEb=5ZJB-jfFi1Q@mail.gmail.com>
-Subject: Re: [PATCH] mm, swap: fix potential UAF issue for VMA readahead
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Huang Ying <ying.huang@linux.alibaba.com>, linux-kernel@vger.kernel.org, 
-	Kairui Song <kasong@tencent.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] block: Remove queue freezing from several sysfs store
+ callbacks
+To: Nilay Shroff <nilay@linux.ibm.com>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ Ming Lei <ming.lei@redhat.com>, Martin Wilck <mwilck@suse.com>,
+ Benjamin Marzinski <bmarzins@redhat.com>, stable@vger.kernel.org,
+ Damien Le Moal <dlemoal@kernel.org>, Chaitanya Kulkarni <kch@nvidia.com>,
+ Hannes Reinecke <hare@suse.de>
+References: <20251110162418.2915157-1-bvanassche@acm.org>
+ <b1820392-f21b-4b68-81fa-0cf123c981ba@linux.ibm.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <b1820392-f21b-4b68-81fa-0cf123c981ba@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 11, 2025 at 5:36=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Since commit 78524b05f1a3 ("mm, swap: avoid redundant swap device
-> pinning"), the common helper for allocating and preparing a folio in the
-> swap cache layer no longer tries to get a swap device reference
-> internally, because all callers of __read_swap_cache_async are already
-> holding a swap entry reference. The repeated swap device pinning isn't
-> needed on the same swap device.
->
-> Caller of VMA readahead is also holding a reference to the target
-> entry's swap device, but VMA readahead walks the page table, so it might
-> encounter swap entries from other devices, and call
-> __read_swap_cache_async on another device without holding a reference to
-> it.
->
-> So it is possible to cause a UAF when swapoff of device A raced with
-> swapin on device B, and VMA readahead tries to read swap entries from
-> device A. It's not easy to trigger, but in theory, it could cause real
-> issues.
->
-> Make VMA readahead try to get the device reference first if the swap
-> device is a different one from the target entry.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning")
-> Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
-> Sending as a new patch instead of V2 because the approach is very
-> different.
->
-> Previous patch:
-> https://lore.kernel.org/linux-mm/20251110-revert-78524b05f1a3-v1-1-88313f=
-2b9b20@tencent.com/
-> ---
->  mm/swap_state.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 0cf9853a9232..da0481e163a4 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -745,6 +745,7 @@ static struct folio *swap_vma_readahead(swp_entry_t t=
-arg_entry, gfp_t gfp_mask,
->
->         blk_start_plug(&plug);
->         for (addr =3D start; addr < end; ilx++, addr +=3D PAGE_SIZE) {
-> +               struct swap_info_struct *si =3D NULL;
->                 softleaf_t entry;
->
->                 if (!pte++) {
-> @@ -759,8 +760,19 @@ static struct folio *swap_vma_readahead(swp_entry_t =
-targ_entry, gfp_t gfp_mask,
->                         continue;
->                 pte_unmap(pte);
->                 pte =3D NULL;
-> +               /*
-> +                * Readahead entry may come from a device that we are not
-> +                * holding a reference to, try to grab a reference, or sk=
-ip.
-> +                */
-> +               if (swp_type(entry) !=3D swp_type(targ_entry)) {
-> +                       si =3D get_swap_device(entry);
-> +                       if (!si)
-> +                               continue;
-> +               }
->                 folio =3D __read_swap_cache_async(entry, gfp_mask, mpol, =
-ilx,
->                                                 &page_allocated, false);
-> +               if (si)
-> +                       put_swap_device(si);
+On 11/10/25 10:25 PM, Nilay Shroff wrote:
+> I applied your patch on my linux tree and ran some tests. And as I earlier
+> suspected, I found the following race from KCSAN:
+> 
+> [ ... ] 
 
-Shouldn't we reset si to NULL here?
+Thank you for having run these tests. It's unfortunate that I couldn't
+trigger these KCSAN complaints in my tests with KCSAN enabled in the
+kernel configuration.
+> So from the above trace it seems obvious that we need to mark both
+> writers and readers to avoid potential race.
 
-Otherwise, suppose we're swapping in a readahead window. One of the
-swap entries in the window is on a different swapfile from the target
-entry. We look up and get a reference to that different swapfile,
-setting it to si.
+That would be an intrusive change. I don't think that the kernel
+maintainers would agree with marking all rq_timeout and all ra_pages
+reads with READ_ONCE(). I propose to annotate both the rq_timeout and
+ra_pages data members with __data_racy to suppress these KCSAN reports.
 
-We do the swapping in work, then we release the recently acquired reference=
-.
+Thanks,
 
-In the next iteration in the for loop, we will still see si !=3D NULL,
-and we put_swap_device() it again, i.e double releasing reference to
-that swap device.
-
-Or am I missing something?
-
->                 if (!folio)
->                         continue;
->                 if (page_allocated) {
->
+Bart.
 
