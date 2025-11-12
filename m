@@ -1,142 +1,98 @@
-Return-Path: <stable+bounces-194615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D53C52428
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 13:32:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9FDEC5243A
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 13:34:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1D4DF4E8C8A
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 12:26:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 27B954EB688
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 12:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64D732C93C;
-	Wed, 12 Nov 2025 12:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A07731986E;
+	Wed, 12 Nov 2025 12:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="emjmLNL9";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IdX11/Ai"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sqdi3Xnd"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D492F5463
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 12:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE096E56A;
+	Wed, 12 Nov 2025 12:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762950377; cv=none; b=AFfuPGjpOF5CSiGQZJ1AOSqkWfjE/4jI0Y3YrBiYXST/H051YcWu3noG64doCj9Alm4dKHrqGbFijVl2+3/R/hpilUB0/8QxBNajf8b2XLOiPGAOUDqG6nJiU0BhL4bBlsB2loJb9sIAlRfnCiL9Q95pA3XpEaWs+vGbqegu47Y=
+	t=1762950525; cv=none; b=u1BqrhUKIliWPZvTa+QFKu7MILFd4t4VjWK5XI4jj8u97F9rILZKZqja3b2Bx1j+/ppdsBmBlohqnb0Rx8dGbP4YRKVmj79HCow0WhZ32FkTtO5enQtKdFhBQmuaJzR9Yw6OOq+hn6N8eEOhXuw0BTeWeGfo9GExjo3Zx0rl0W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762950377; c=relaxed/simple;
-	bh=CqNDDDxa3uN4xlxw7lBpImiMSDLKKefKhEv5FAtJBl0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Q5YKqDjJcbL/vY/HHe9T3WZ/oP3ATpgvp8qWMuAhMjgb6onR8bWoKpBRh9D3FQucx5VYDEe+FDYavo/x8K6XI+q62V0qzIPWzmPFXztoeLE1nL23kibeHrms18PqXjVlNfM7VIy9+n7Og0dX4ovk8cyc9j+4ptkaQvC1KVqFiEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=emjmLNL9; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IdX11/Ai; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762950374;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CqNDDDxa3uN4xlxw7lBpImiMSDLKKefKhEv5FAtJBl0=;
-	b=emjmLNL9Fw0iqFfJXMEGxvOg2TK4+8fiFHrwbuEmj4pvqOwooudn3pXg2F+9844xciVFWw
-	tOTQqaxcsPjMameLv/Wcc0XkVwSR0CnGfSPMmCzYjF1zZOSUgsh+CWh+ZLrucxEIlQ3MVn
-	KsVyQSrTlq9HdiqVCc+1UYdJOw4DORM=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-223-ZodK2ul5O-ikGyJ9ZZPl_A-1; Wed, 12 Nov 2025 07:26:13 -0500
-X-MC-Unique: ZodK2ul5O-ikGyJ9ZZPl_A-1
-X-Mimecast-MFC-AGG-ID: ZodK2ul5O-ikGyJ9ZZPl_A_1762950372
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-297f3710070so22470215ad.2
-        for <stable@vger.kernel.org>; Wed, 12 Nov 2025 04:26:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1762950372; x=1763555172; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=CqNDDDxa3uN4xlxw7lBpImiMSDLKKefKhEv5FAtJBl0=;
-        b=IdX11/Ai+O+fNTRApPgb7/KmvnwdsmrGQAdi8Uevsv7yyy8d7I+gCPvq1HBH58wpEH
-         I+OH874+DA0Tf865f3KDMsPQkaIEpedYPwVxKULFqhoqtTVjXx+baZ63E2jFutfhbZOW
-         34wWaA2t5M0tVLzqLnrc7kpvnwFQl0CDgZM5Yc4O6GwRtF0EkOoTAiby6EcSOaE+41fa
-         5e3si7EbYsmuo7skf+x01IS1hOmWgXw32tpvTIUTxWPQMky4Gqram6JLk9zT/GbuatOn
-         LnwuHiATdwTVOA/P3Oc4hizHfzFTcbdm9oQIB4hInve45/ZH+M2yO4tBJ2kmEMp/hr/0
-         PHVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762950372; x=1763555172;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CqNDDDxa3uN4xlxw7lBpImiMSDLKKefKhEv5FAtJBl0=;
-        b=sSs5iqU14Wan8P0NKZvDcIpOTMwdhoDNKL4gUFZ70BtLxX/DfibR7VLki+Mq5fwEdY
-         G9gevpuDKf6MLxxmWN1710O0A6fd1aJjoYXZvXl/T2xPds6Tx4HixC0986HVFYPD+l+U
-         X9q2VyxYcbR3/drQXmGfQ1McWHmdRCM7Z5kK7VUyj9JZiX7lFqSbY6WwuBDa7KY1FDU2
-         k9IGnfP/ZYR9xt7wONc/65laDEEPnY15gGBwpWZorxAeR+eYjs8AyDnboPNd+xYB/hKf
-         XWIDhN6NRdWdVaDBYClPZLoKVGSHiGp2vFA81/Bt6KtUdJAMSWKNfqdGx5mLCHXRJU3a
-         1cRw==
-X-Gm-Message-State: AOJu0YzaO3BPI9M/TLFAWXXO9+XQH9he52u8iHXjeooM+XZbJBJI60Xb
-	fyh/G7G1cAc2JF5na/EZoHtG5bic8thbJfdkDInqYpzB/Rg3s3WwPBFlCsUnd1Y0NhCDsfV7jOH
-	UosF0l0NuXCKXXeTR0t/vm6+4a9SL3P1ChUHQbxHqkazWfJxb2vMBWADBDQ==
-X-Gm-Gg: ASbGncu2lQx2+C72aeNAxdHVDuJnHqzFa59HrHmyfzbcaKIKzJ5QgqyPm8PGAHtnmR1
-	t9YQa4aVJIXV5U3RvPZvkH3yJTO7NAV+5/FXpvAH3c7AcET7Cw16I8h5hkCl+L7uVCoxdb1CS9Z
-	i76U7wC0YGmfMLB5rL3HA332MjR2Au4HV8yp81pwlnzyWJibDxxACcyMZTHwtmPWZU6wt66MIpr
-	Le+1CEKLuabj+oexAKn7fXotipxavn+UaR3q28IF5rJXTSFbHu3hMtKnU68RjcE4pJN06e7zRnr
-	oeLgNwue9dHQ05PlErXVMN009h6/AQsIOmDQPM1c1gJkmxbaWaLjrAoBjy7kRoA+v7x1d3+4eV4
-	k+EQCvwKuI4wjoQIMNjvFGW8/jw==
-X-Received: by 2002:a17:902:ea09:b0:24e:3cf2:2453 with SMTP id d9443c01a7336-2984ee04f44mr35020315ad.61.1762950372264;
-        Wed, 12 Nov 2025 04:26:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGotUeN2bXs86xhnkFf71Twk4l7K85JeCXAv2Ic+UsZ9JWvOMbc7w1rl78D10uve93JRS66cw==
-X-Received: by 2002:a17:902:ea09:b0:24e:3cf2:2453 with SMTP id d9443c01a7336-2984ee04f44mr35019995ad.61.1762950371815;
-        Wed, 12 Nov 2025 04:26:11 -0800 (PST)
-Received: from [10.200.68.138] (nat-pool-muc-u.redhat.com. [149.14.88.27])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2984dce80f3sm29309275ad.106.2025.11.12.04.26.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Nov 2025 04:26:11 -0800 (PST)
-Message-ID: <3b1b371eed29291182e2e90451d262ed24d1e3ed.camel@redhat.com>
-Subject: Re: [PATCH 6.12 084/565] drm/sched: Re-group and rename the entity
- run-queue lock
-From: Philipp Stanner <pstanner@redhat.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, Tvrtko Ursulin
- <tvrtko.ursulin@igalia.com>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>, Alex Deucher <alexander.deucher@amd.com>, Luben
- Tuikov <ltuikov89@gmail.com>, Matthew Brost <matthew.brost@intel.com>,
- Sasha Levin <sashal@kernel.org>
-Date: Wed, 12 Nov 2025 13:26:01 +0100
-In-Reply-To: <2025111200-handoff-boxing-aa92@gregkh>
-References: <20251111004526.816196597@linuxfoundation.org>
-	 <20251111004528.857251276@linuxfoundation.org>
-	 <b239f2abb28d4e5dfc36c67bb6b88975a63c11e6.camel@redhat.com>
-	 <2025111200-handoff-boxing-aa92@gregkh>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1762950525; c=relaxed/simple;
+	bh=DAPkTMGO973BQ1eOHlE5GaAoPfIc8P5AnHy1dBRVOWQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GgUQPpJZP+H5iaQCet2Zd3eSeWS1juck7XEqrdfGD8+k11TEAt5IHne837jxpdC9KLZCEJW4/kIEUK9+APv/Yr3vQNs5VF0AfuBcgPq18NobZ/TJj6Wpxpkwx8h9ih3iDTT08ulA8AccOClTlryUVUclRjLpCp/F3vAVDiq2enU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sqdi3Xnd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8971C4CEF7;
+	Wed, 12 Nov 2025 12:28:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762950525;
+	bh=DAPkTMGO973BQ1eOHlE5GaAoPfIc8P5AnHy1dBRVOWQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Sqdi3XndPU9tcj+chk98WB2JOeJz8QbqUu8w5ftEwqTEjfliBFXzC/56XeJa5uKV1
+	 NDXnDGnz+IbgnQioGOhjdjftraSZeY+q7sol3+0DK2b+Le5mP5K8rtwQ1yqJUSmc66
+	 WLP+8L+m5xLWXsefivMKaVb/DF9brKZIrS512ByRMGwYcXHlrRvU4tM3ZOb/ef1btb
+	 LlaH+WNQthMEyU+cJUYu6t+rF0wgrUw37nESzClzBx7EfzrHcMfk52UfsN/qv0gG2Z
+	 kQzmyFWjLq4SEXbt79X5oNIvN+p/0cN56/DeMXmAVV4GvHYONea6lRd4bI8tbc6Ti4
+	 BJzz1anQnnkuw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.12 000/562] 6.12.58-rc2 review
+Date: Wed, 12 Nov 2025 13:28:27 +0100
+Message-ID: <20251112122827.133319-1-ojeda@kernel.org>
+In-Reply-To: <20251111012348.571643096@linuxfoundation.org>
+References: <20251111012348.571643096@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2025-11-12 at 09:59 +0900, Greg Kroah-Hartman wrote:
-> On Tue, Nov 11, 2025 at 03:30:45PM +0100, Philipp Stanner wrote:
-> > On Tue, 2025-11-11 at 09:39 +0900, Greg Kroah-Hartman wrote:
-> > > 6.12-stable review patch.=C2=A0 If anyone has any objections, please
-> > > let me know.
-> >=20
-> > This and patch 83 are mere code improvements, not bug fixes.
->=20
-> But as the patch says:
->=20
-> > > Stable-dep-of: d25e3a610bae ("drm/sched: Fix race in
-> > > drm_sched_entity_select_rq()")
->=20
-> That is a bugfix, right?=C2=A0 So this is needed here too.
+On Tue, 11 Nov 2025 10:24:49 +0900 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.58 release.
+> There are 562 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 13 Nov 2025 01:22:51 +0000.
+> Anything received after that time might be too late.
 
-I had a tag-overflow in my mind.
+Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+for loongarch64:
 
-That one is a bug fix. OK then.
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
-P.
+Thanks!
 
+Cheers,
+Miguel
 
