@@ -1,71 +1,101 @@
-Return-Path: <stable+bounces-194632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92509C53E39
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 19:21:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58C5BC53E93
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 19:25:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 03EDB4E1DD5
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 18:12:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8237A4E9F3E
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 18:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7347734575A;
-	Wed, 12 Nov 2025 18:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F2634B414;
+	Wed, 12 Nov 2025 18:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aEfziyyl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ar64TOml"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79616340D9A
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 18:12:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C80A34B42C
+	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 18:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762971159; cv=none; b=rpFvpjgDS3HQihOqzPaPzXzQg1BBlNHuQZT1/IJ6mS6HpGgvxsWCpbcY1nkNFukP2gWPeTGuDNeoGsKiB1JvnvWyUJUVKcphHcKYHZ7+M5ZGez4R3knk8mP0YRm1dBMoNp0g7W9TefaaHA4pQe0RXhJXUyC9nBIpE2gEDfFrhlQ=
+	t=1762971556; cv=none; b=HXnk0iGS5ZxKIGkftUVtxMMtDINzDE+sCXWE7jZYDoJsxFZ0Q0xwwZLq7/VKcXzF6IT2tGdRNloMNncDXWZ6j+42PkpC2SC5T5dGbQ0CNb9x4qqynoCkQzSke1v2Qi8YL5Y6HNNidaZx6srJvYTKXHacWazQcqJzuJV0NMj5+Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762971159; c=relaxed/simple;
-	bh=pXBpMbO7JwnkmEOYiY2bivPb05DBSARSwoGTpZiRGyU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cKNkYJ5MPvVz6SxOassZ/DOaYqav6cAtaIVD13G5GEBsmORXiQkc4GiiKds78RlXD/bFVAkYy6H7uHzupF5vl6p2bUEuVGFBMPl0GXETA2ZY6//HK/lRczIz36aiXR+I21ajCjMuXcz8d1hiWyLcN1W5eIHnr4q3KUPoY9rupPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aEfziyyl; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762971158; x=1794507158;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=pXBpMbO7JwnkmEOYiY2bivPb05DBSARSwoGTpZiRGyU=;
-  b=aEfziyylsGM4tC9skhWKm6pQcpug9mkn3AxIEeIybnKbOkpbK5YuOdJV
-   l2mDPPn2ni8DXgI/G/7zJG0Mw3aZCGfQmV9ok2HrAWY7o+vGWH0mxLPTL
-   MrVos3mu8n4YHXewDSraiLBTUYRBSG3bRrFcysLSzqbI1H2GjEkc09NSN
-   kyCXsp0G7VQhDf3SVFNtoJ/0vhNRX77sxG4wole93fEDwwdWp6YsNe086
-   irME+OZOL64GBzn2vB2m9aHSyRBpzly/F9G5y8GxQA4SWpyHq40zI7d7B
-   zeFywAj0DhRMpWNbnAM27s6x0g/AYXx3VrUIqf31r3qyaCgHQ9Y9ky8rG
-   w==;
-X-CSE-ConnectionGUID: 8SBY6PkCRCS+hntphhGSmQ==
-X-CSE-MsgGUID: AMSroLwZRS+dLLMq1QIAdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64967136"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="64967136"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 10:12:37 -0800
-X-CSE-ConnectionGUID: c36GhNUJShWzqo0BEaTqdg==
-X-CSE-MsgGUID: yaxx+PhBQhqhlwusnkxorw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,300,1754982000"; 
-   d="scan'208";a="189061491"
-Received: from osgc-linux-buildserver.sh.intel.com ([10.112.232.103])
-  by orviesa009.jf.intel.com with ESMTP; 12 Nov 2025 10:12:36 -0800
-From: Shuicheng Lin <shuicheng.lin@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
+	s=arc-20240116; t=1762971556; c=relaxed/simple;
+	bh=JSk2wiQKBahdJ8dYGksFv11VvJ1NPd2DXSatLhgaWEI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TJop/8Hpm/vm8E6d7ibiI2ROddp0N+NoQkCKkA0wQ8LPebS/vNZODe8lZL3SN2JaPy6iZoblLNw5DOMotQEOijhemOl+HjRhUYNc+b7Hg1jkoNXvSFqZSJpOdeNMha3bjiRX1E+rJwIK/qsn5pxTOi52C02oC/DbO1w5CYcrrB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ar64TOml; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-782e93932ffso1058146b3a.3
+        for <stable@vger.kernel.org>; Wed, 12 Nov 2025 10:19:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762971554; x=1763576354; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ajL3qyJYFc6tD7lnGfH4M98Ye8+T06Aj5rRcRA12Okk=;
+        b=Ar64TOmlxe3N161cZTBVfb/dIqX1VLovG5y6PwyGIPc2VMxhhcM+Gj7EAubKCkIpGN
+         Fktk6wYT9DWPnzsYTrOoDCDAXoOgle6N583gZmaELsF/ifk8dI2YrwoccXb5f2yOmmIa
+         Jz6QYNA8wx+hEvHER/Yey2e7TbLKBsAHuRr2G2o7jCzYSCjuQ7b/jq8owxs2nfEMuy9U
+         IeX2v0wQrbU7gcBdDUMF9IzRitozq1Fy2Quu34FNEarVMSFyTuMRYA2RcLApmey0jDmP
+         +OEQ8d2FwLumogpVUO/8IBqS6kLyNrE1eudUPMrSrTLPUP2nNLjN/v1gShWSp7zztx7j
+         jMdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762971554; x=1763576354;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ajL3qyJYFc6tD7lnGfH4M98Ye8+T06Aj5rRcRA12Okk=;
+        b=jYnl2s1grLFJGkLawhqc09Bb0S/yX+9BMfSWUUOzHyYRrLd+revIlTLjLiByzWrr9f
+         uUajFplg6bxpCSqkqJ+DvKkeKBd5kwjAEBqZF1lvvrWLTIYwG1ull4XTVfiIuUuFE/U5
+         vs+Ish9N6Bo9CHCF2OV4CmiwhHc4K4fQqx77HZyBxATTWjPH+IIAuJLBZJTz+bRWK4cG
+         HVJ0Ia5qKDxuJKf1xvNfS1sw6A9buNzFnul9XlWzC6ANGRl7prx8zkCppDnUBCzMlx9Q
+         Jqh8uHS6LXTVh7qpPlRouytyXalvdGf96ZvbnIrLreSleQTHLW3KaTtG5cP89aFhrR6g
+         iw+g==
+X-Forwarded-Encrypted: i=1; AJvYcCWnOD/gRQxaLWPSnNAs1q9DuxB9/Eu7XDwkREIBEcrRmhe9chEiFISJ4dNhDc6FmqRCBQcjsPs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUnmrc6lB+6qeeWYgTDNIRtI2dt0qFCR4pzfb4PDgPqWVtAcOU
+	rzlkGhyXw4Fl5OoRV3OzFVEnd6fdSsT9ygPpdJt7Ni/uJEXzTIbcK6cYuBAyucs2ul0=
+X-Gm-Gg: ASbGncvaRi4YuliJbqqcYdVQx+GROzHxzkkZJG/zv10vMWiwZt0POVrDZTz1klgnoor
+	yKtucovIjVc+UN36N5+KVMrXaG3JIzN4qYHu62HxwulM2JLVbxaAEJVNtQnBoU2XbCKdfTpnooI
+	misH8GRrOG5Q6EiQpJ0h3Ds9G0Qqk1BcRQdXd9isaM1SIq6VIWUqvBd1m7NDdh76ipzmLuYKqPw
+	tZygyGU/IbmMRrDqQMY8mxwhHUnNsRl4AfgtgMETq0lLPV6Z16IDPMx3EFXDu4pcakZAlkUd7YV
+	N2RJ8KwIn/4+3u/eNe5f7FxP+jSZWtUoy+YMI4HuxAA1zjXM0rDgZ7nrX73uZOdJLUyGtYIIYRs
+	q4mEolUDOx3bnHzH7v4Fwtp8UdE62Y1okQWFXuShE1Od0smNmIgZwXer6Eij376uFFQO76zNUYS
+	nRSK8Ihb5KTEps1wMw
+X-Google-Smtp-Source: AGHT+IHlsgCrOCxbH1xUwfriUBHh5Wzt3eZZ8m1hSbR+IpGy4PwSajaGLSMmb7HAExzbcjFaVH+8vA==
+X-Received: by 2002:a17:903:28c:b0:27e:f018:d2fb with SMTP id d9443c01a7336-2984ed2b896mr48147475ad.6.1762971554462;
+        Wed, 12 Nov 2025 10:19:14 -0800 (PST)
+Received: from gmail.com ([157.50.185.205])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2984dc9f8f1sm37051095ad.54.2025.11.12.10.19.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 10:19:13 -0800 (PST)
+From: hariconscious@gmail.com
+To: cezary.rojewski@intel.com,
+	liam.r.girdwood@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
+	pierre-louis.bossart@linux.dev,
+	broonie@kernel.org
+Cc: perex@perex.cz,
+	tiwai@suse.com,
+	amadeuszx.slawinski@linux.intel.com,
+	sakari.ailus@linux.intel.com,
+	khalid@kernel.org,
+	shuah@kernel.org,
+	david.hunter.linux@gmail.com,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
-	Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH v2] drm/xe: Prevent BIT() overflow when handling invalid prefetch region
-Date: Wed, 12 Nov 2025 18:10:06 +0000
-Message-ID: <20251112181005.2120521-2-shuicheng.lin@intel.com>
-X-Mailer: git-send-email 2.49.0
+	HariKrishna Sagala <hariconscious@gmail.com>
+Subject: [PATCH v2] ASoC: Intel: avs: Fix potential buffer overflow by snprintf()
+Date: Wed, 12 Nov 2025 23:48:51 +0530
+Message-ID: <20251112181851.13450-1-hariconscious@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,57 +104,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If user provides a large value (such as 0x80) for parameter
-prefetch_mem_region_instance in vm_bind ioctl, it will cause
-BIT(prefetch_region) overflow as below:
-"
- ------------[ cut here ]------------
- UBSAN: shift-out-of-bounds in drivers/gpu/drm/xe/xe_vm.c:3414:7
- shift exponent 128 is too large for 64-bit type 'long unsigned int'
- CPU: 8 UID: 0 PID: 53120 Comm: xe_exec_system_ Tainted: G        W           6.18.0-rc1-lgci-xe-kernel+ #200 PREEMPT(voluntary)
- Tainted: [W]=WARN
- Hardware name: ASUS System Product Name/PRIME Z790-P WIFI, BIOS 0812 02/24/2023
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0xa0/0xc0
-  dump_stack+0x10/0x20
-  ubsan_epilogue+0x9/0x40
-  __ubsan_handle_shift_out_of_bounds+0x10e/0x170
-  ? mutex_unlock+0x12/0x20
-  xe_vm_bind_ioctl.cold+0x20/0x3c [xe]
- ...
-"
-Fix it by validating prefetch_region before the BIT() usage.
+From: HariKrishna Sagala <hariconscious@gmail.com>
 
-v2: Add Closes and Cc stable kernels. (Matt)
+snprintf() returns the would-be-filled size when the string overflows
+the given buffer size, hence using this value may result in a buffer
+overflow (although it's unrealistic).
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6478
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+This patch replaces it with a safer version, scnprintf() for papering
+over such a potential issue.
+Link: https://github.com/KSPP/linux/issues/105
+'Fixes: 5a565ba23abe ("ASoC: Intel: avs: Probing and firmware tracing
+over debugfs")'
+
+Signed-off-by: HariKrishna Sagala <hariconscious@gmail.com>
 ---
- drivers/gpu/drm/xe/xe_vm.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Thank you for the feedback and the suggestions.
+Corrected the indentation & commit message.
+V1:
+https://lore.kernel.org/all/20251112120235.54328-2-hariconscious@gmail.com/
+ sound/soc/intel/avs/debugfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 8fb5cc6a69ec..7cac646bdf1c 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -3411,8 +3411,10 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
- 				 op == DRM_XE_VM_BIND_OP_PREFETCH) ||
- 		    XE_IOCTL_DBG(xe, prefetch_region &&
- 				 op != DRM_XE_VM_BIND_OP_PREFETCH) ||
--		    XE_IOCTL_DBG(xe,  (prefetch_region != DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC &&
--				       !(BIT(prefetch_region) & xe->info.mem_region_mask))) ||
-+		    XE_IOCTL_DBG(xe, (prefetch_region != DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC &&
-+				      /* Guard against undefined shift in BIT(prefetch_region) */
-+				      (prefetch_region >= (sizeof(xe->info.mem_region_mask) * 8) ||
-+				      !(BIT(prefetch_region) & xe->info.mem_region_mask)))) ||
- 		    XE_IOCTL_DBG(xe, obj &&
- 				 op == DRM_XE_VM_BIND_OP_UNMAP) ||
- 		    XE_IOCTL_DBG(xe, (flags & DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET) &&
+diff --git a/sound/soc/intel/avs/debugfs.c b/sound/soc/intel/avs/debugfs.c
+index 3534de46f9e4..cdb82392b9ee 100644
+--- a/sound/soc/intel/avs/debugfs.c
++++ b/sound/soc/intel/avs/debugfs.c
+@@ -119,9 +119,9 @@ static ssize_t probe_points_read(struct file *file, char __user *to, size_t coun
+ 	}
+ 
+ 	for (i = 0; i < num_desc; i++) {
+-		ret = snprintf(buf + len, PAGE_SIZE - len,
+-			       "Id: %#010x  Purpose: %d  Node id: %#x\n",
+-			       desc[i].id.value, desc[i].purpose, desc[i].node_id.val);
++		ret = scnprintf(buf + len, PAGE_SIZE - len,
++					"Id: %#010x  Purpose: %d  Node id: %#x\n",
++					desc[i].id.value, desc[i].purpose, desc[i].node_id.val);
+ 		if (ret < 0)
+ 			goto free_desc;
+ 		len += ret;
+
+base-commit: 24172e0d79900908cf5ebf366600616d29c9b417
 -- 
-2.49.0
+2.43.0
 
 
