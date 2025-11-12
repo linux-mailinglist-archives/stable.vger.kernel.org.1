@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-194553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C1AC5025F
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 01:49:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8629C50262
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 01:49:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1177F3AB7CD
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 00:49:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 747A91896678
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 00:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4D21DE3A4;
-	Wed, 12 Nov 2025 00:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C103C1F2B88;
+	Wed, 12 Nov 2025 00:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2DF541Km"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OB8uSvVy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9AB14B96E;
-	Wed, 12 Nov 2025 00:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3E214B96E;
+	Wed, 12 Nov 2025 00:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762908568; cv=none; b=mh8dH5+6tfI+MExAMlBNNkFu4uBnVO47+Jaw7Fa7nsi0jn8yzOSjbHIUZCX/KwpIFnBfmuNvoyOLd3tY8+uD8JadVHH2hjaLgiyxHHZ2DReGuLhWZN8al76LkPO4XI0Zc2i9ETx6vXpZO1UXeU846xGkp8uPi5McOLAJ+ub4Gqs=
+	t=1762908588; cv=none; b=cT7fxqq4lnD34ahRkg7P8iVEg5NqRNTbLFtqeJC0PoCy4ZzIzaufDrWiGgoe1Y1ltWA8K96DrLasLHPtr9QQoZm2kEKojMftmI8YSPddgU69ihRp/00bUcZrrT+cIMVXprZyaVgbHiaT3WYUNi36xkRYuRSrH16Oyvr+VQXgYGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762908568; c=relaxed/simple;
-	bh=ud67ClL1cJB/RoFjxkVzTDbs1WLtyc2vQme39uuKjPE=;
-	h=Date:To:From:Subject:Message-Id; b=UezBvGE+/6CUUqvARz9glJINkLx7POZqoXmY4StSVW4OIAR8KI4deDucL07zuTSem3GuKcgKhc4adH4ugYM0yzjLmIj/RFiyziFjhD4pxeHkGpbHqnZDq63HdERzR9567rfOnpaWt2TEn0LtybFWV09XRlMwJ8g6C9R2eXpluqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2DF541Km; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7A9C113D0;
-	Wed, 12 Nov 2025 00:49:28 +0000 (UTC)
+	s=arc-20240116; t=1762908588; c=relaxed/simple;
+	bh=dYo8veKJiGfrJe9r2LbHee3EP7B0JPGVR7AgAgHhdaY=;
+	h=Date:To:From:Subject:Message-Id; b=V7abTmQG9QQYV6sxcueCXkSvcxt7Z5V3IHyFdev1uXR6wVnzSdTFk41/PNErHaEu3HsUP1VR3akVuDg/qFX6grTZc1s+LIkmsO2pJSHPo82W+ycf27Zwp1dbNLpaFRomO4j2SX76N+pQDdMmD5/PXSD6ig9zWtQJmnLp5m01Qqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OB8uSvVy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDDC7C16AAE;
+	Wed, 12 Nov 2025 00:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762908568;
-	bh=ud67ClL1cJB/RoFjxkVzTDbs1WLtyc2vQme39uuKjPE=;
+	s=korg; t=1762908588;
+	bh=dYo8veKJiGfrJe9r2LbHee3EP7B0JPGVR7AgAgHhdaY=;
 	h=Date:To:From:Subject:From;
-	b=2DF541Km4mFMx2DlW+2wLNY8E1uzN4HpPh6fvn1u48a6q3Bo6ecgf6CFS5IgBaCAo
-	 QLbyrKqfioidPcCYvQNYgNlb7vb37WFFvhDNyiONaTtY+p80d7jUKEUtKQeGyq5tR5
-	 nuhRAgHPLJA0bqqEjqwmSLHwPSCye4BMOgwI2t7I=
-Date: Tue, 11 Nov 2025 16:49:27 -0800
-To: mm-commits@vger.kernel.org,yee.lee@mediatek.com,xiejiyuan@vivo.com,will@kernel.org,stable@vger.kernel.org,samitolvanen@google.com,keescook@chromium.org,elver@google.com,andreyknvl@gmail.com,zhichi.lin@vivo.com,akpm@linux-foundation.org
+	b=OB8uSvVygbvqguXPFXw2RzoWrWpYNrX+xH+MDDz6u+yiu+cxqiAVz1al/tHSWQ1q9
+	 y3vtrZmCjyGVePV6mR4XnGCdUtgEUYmm6OZUmxEDZ55bLzzhuaGqc1IEHSdrhIUJC+
+	 bdKU2XHUVTS7RamGP0duH1miW31/PMMloMTLTFoQ=
+Date: Tue, 11 Nov 2025 16:49:47 -0800
+To: mm-commits@vger.kernel.org,vgoyal@redhat.com,venkat88@linux.ibm.com,stable@vger.kernel.org,rppt@kernel.org,ritesh.list@gmail.com,mpe@ellerman.id.au,mahesh@linux.ibm.com,maddy@linux.ibm.com,hbathini@linux.ibm.com,dyoung@redhat.com,bhe@redhat.com,sourabhjain@linux.ibm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-nonmm-stable] scs-fix-a-wrong-parameter-in-__scs_magic.patch removed from -mm tree
-Message-Id: <20251112004928.4C7A9C113D0@smtp.kernel.org>
+Subject: [merged mm-nonmm-stable] crash-let-architecture-decide-crash-memory-export-to-iomem_resource.patch removed from -mm tree
+Message-Id: <20251112004947.EDDC7C16AAE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,77 +50,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: scs: fix a wrong parameter in __scs_magic
+     Subject: crash: let architecture decide crash memory export to iomem_resource
 has been removed from the -mm tree.  Its filename was
-     scs-fix-a-wrong-parameter-in-__scs_magic.patch
+     crash-let-architecture-decide-crash-memory-export-to-iomem_resource.patch
 
 This patch was dropped because it was merged into the mm-nonmm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Zhichi Lin <zhichi.lin@vivo.com>
-Subject: scs: fix a wrong parameter in __scs_magic
-Date: Sat, 11 Oct 2025 16:22:22 +0800
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+Subject: crash: let architecture decide crash memory export to iomem_resource
+Date: Thu, 16 Oct 2025 19:58:31 +0530
 
-__scs_magic() needs a 'void *' variable, but a 'struct task_struct *' is
-given.  'task_scs(tsk)' is the starting address of the task's shadow call
-stack, and '__scs_magic(task_scs(tsk))' is the end address of the task's
-shadow call stack.  Here should be '__scs_magic(task_scs(tsk))'.
+With the generic crashkernel reservation, the kernel emits the following
+warning on powerpc:
 
-The user-visible effect of this bug is that when CONFIG_DEBUG_STACK_USAGE
-is enabled, the shadow call stack usage checking function
-(scs_check_usage) would scan an incorrect memory range.  This could lead
-to:
+WARNING: CPU: 0 PID: 1 at arch/powerpc/mm/mem.c:341 add_system_ram_resources+0xfc/0x180
+Modules linked in:
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-auto-12607-g5472d60c129f #1 VOLUNTARY
+Hardware name: IBM,9080-HEX Power11 (architected) 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
+NIP:  c00000000201de3c LR: c00000000201de34 CTR: 0000000000000000
+REGS: c000000127cef8a0 TRAP: 0700   Not tainted (6.17.0-auto-12607-g5472d60c129f)
+MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 84000840  XER: 20040010
+CFAR: c00000000017eed0 IRQMASK: 0
+GPR00: c00000000201de34 c000000127cefb40 c0000000016a8100 0000000000000001
+GPR04: c00000012005aa00 0000000020000000 c000000002b705c8 0000000000000000
+GPR08: 000000007fffffff fffffffffffffff0 c000000002db8100 000000011fffffff
+GPR12: c00000000201dd40 c000000002ff0000 c0000000000112bc 0000000000000000
+GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+GPR20: 0000000000000000 0000000000000000 0000000000000000 c0000000015a3808
+GPR24: c00000000200468c c000000001699888 0000000000000106 c0000000020d1950
+GPR28: c0000000014683f8 0000000081000200 c0000000015c1868 c000000002b9f710
+NIP [c00000000201de3c] add_system_ram_resources+0xfc/0x180
+LR [c00000000201de34] add_system_ram_resources+0xf4/0x180
+Call Trace:
+add_system_ram_resources+0xf4/0x180 (unreliable)
+do_one_initcall+0x60/0x36c
+do_initcalls+0x120/0x220
+kernel_init_freeable+0x23c/0x390
+kernel_init+0x34/0x26c
+ret_from_kernel_user_thread+0x14/0x1c
 
-1. **Inaccurate stack usage reporting**: The function would calculate
-   wrong usage statistics for the shadow call stack, potentially showing
-   incorrect value in kmsg.
+This warning occurs due to a conflict between crashkernel and System RAM
+iomem resources.
 
-2. **Potential kernel crash**: If the value of __scs_magic(tsk)is
-   greater than that of __scs_magic(task_scs(tsk)), the for loop may
-   access unmapped memory, potentially causing a kernel panic.  However,
-   this scenario is unlikely because task_struct is allocated via the slab
-   allocator (which typically returns lower addresses), while the shadow
-   call stack returned by task_scs(tsk) is allocated via vmalloc(which
-   typically returns higher addresses).
+The generic crashkernel reservation adds the crashkernel memory range to
+/proc/iomem during early initialization. Later, all memblock ranges are
+added to /proc/iomem as System RAM. If the crashkernel region overlaps
+with any memblock range, it causes a conflict while adding those memblock
+regions as iomem resources, triggering the above warning. The conflicting
+memblock regions are then omitted from /proc/iomem.
 
-However, since this is purely a debugging feature
-(CONFIG_DEBUG_STACK_USAGE), normal production systems should be not
-unaffected.  The bug only impacts developers and testers who are actively
-debugging stack usage with this configuration enabled.
+For example, if the following crashkernel region is added to /proc/iomem:
+20000000-11fffffff : Crash kernel
 
-Link: https://lkml.kernel.org/r/20251011082222.12965-1-zhichi.lin@vivo.com
-Fixes: 5bbaf9d1fcb9 ("scs: Add support for stack usage debugging")
-Signed-off-by: Jiyuan Xie <xiejiyuan@vivo.com>
-Signed-off-by: Zhichi Lin <zhichi.lin@vivo.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Acked-by: Will Deacon <will@kernel.org>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Marco Elver <elver@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Yee Lee <yee.lee@mediatek.com>
+then the following memblock regions System RAM regions fail to be inserted:
+00000000-7fffffff : System RAM
+80000000-257fffffff : System RAM
+
+Fix this by not adding the crashkernel memory to /proc/iomem on powerpc.
+Introduce an architecture hook to let each architecture decide whether to
+export the crashkernel region to /proc/iomem.
+
+For more info checkout commit c40dd2f766440 ("powerpc: Add System RAM
+to /proc/iomem") and commit bce074bdbc36 ("powerpc: insert System RAM
+resource to prevent crashkernel conflict")
+
+Note: Before switching to the generic crashkernel reservation, powerpc
+never exported the crashkernel region to /proc/iomem.
+
+Link: https://lkml.kernel.org/r/20251016142831.144515-1-sourabhjain@linux.ibm.com
+Fixes: e3185ee438c2 ("powerpc/crash: use generic crashkernel reservation").
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Closes: https://lore.kernel.org/all/90937fe0-2e76-4c82-b27e-7b8a7fe3ac69@linux.ibm.com/
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Cc: Baoquan he <bhe@redhat.com>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Mike Rapoport <rppt@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- kernel/scs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/crash_reserve.h |    8 ++++++++
+ include/linux/crash_reserve.h            |    6 ++++++
+ kernel/crash_reserve.c                   |    3 +++
+ 3 files changed, 17 insertions(+)
 
---- a/kernel/scs.c~scs-fix-a-wrong-parameter-in-__scs_magic
-+++ a/kernel/scs.c
-@@ -135,7 +135,7 @@ static void scs_check_usage(struct task_
- 	if (!IS_ENABLED(CONFIG_DEBUG_STACK_USAGE))
- 		return;
+--- a/arch/powerpc/include/asm/crash_reserve.h~crash-let-architecture-decide-crash-memory-export-to-iomem_resource
++++ a/arch/powerpc/include/asm/crash_reserve.h
+@@ -5,4 +5,12 @@
+ /* crash kernel regions are Page size agliged */
+ #define CRASH_ALIGN             PAGE_SIZE
  
--	for (p = task_scs(tsk); p < __scs_magic(tsk); ++p) {
-+	for (p = task_scs(tsk); p < __scs_magic(task_scs(tsk)); ++p) {
- 		if (!READ_ONCE_NOCHECK(*p))
- 			break;
- 		used += sizeof(*p);
++#ifdef CONFIG_ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
++static inline bool arch_add_crash_res_to_iomem(void)
++{
++	return false;
++}
++#define arch_add_crash_res_to_iomem arch_add_crash_res_to_iomem
++#endif
++
+ #endif /* _ASM_POWERPC_CRASH_RESERVE_H */
+--- a/include/linux/crash_reserve.h~crash-let-architecture-decide-crash-memory-export-to-iomem_resource
++++ a/include/linux/crash_reserve.h
+@@ -32,6 +32,12 @@ int __init parse_crashkernel(char *cmdli
+ void __init reserve_crashkernel_cma(unsigned long long cma_size);
+ 
+ #ifdef CONFIG_ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
++#ifndef arch_add_crash_res_to_iomem
++static inline bool arch_add_crash_res_to_iomem(void)
++{
++	return true;
++}
++#endif
+ #ifndef DEFAULT_CRASH_KERNEL_LOW_SIZE
+ #define DEFAULT_CRASH_KERNEL_LOW_SIZE	(128UL << 20)
+ #endif
+--- a/kernel/crash_reserve.c~crash-let-architecture-decide-crash-memory-export-to-iomem_resource
++++ a/kernel/crash_reserve.c
+@@ -524,6 +524,9 @@ void __init reserve_crashkernel_cma(unsi
+ #ifndef HAVE_ARCH_ADD_CRASH_RES_TO_IOMEM_EARLY
+ static __init int insert_crashkernel_resources(void)
+ {
++	if (!arch_add_crash_res_to_iomem())
++		return 0;
++
+ 	if (crashk_res.start < crashk_res.end)
+ 		insert_resource(&iomem_resource, &crashk_res);
+ 
 _
 
-Patches currently in -mm which might be from zhichi.lin@vivo.com are
+Patches currently in -mm which might be from sourabhjain@linux.ibm.com are
 
+crash-fix-crashkernel-resource-shrink.patch
 
 
