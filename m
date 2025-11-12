@@ -1,168 +1,118 @@
-Return-Path: <stable+bounces-194592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E67C51941
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 11:10:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 295E6C51974
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 11:14:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D73AE1889B1D
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:10:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55DC3188A9F4
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2521A2FD7B4;
-	Wed, 12 Nov 2025 10:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="N6r0iNuN";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="IZUhEo22"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D6A2798EA;
+	Wed, 12 Nov 2025 10:11:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0ED2FF15A
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 10:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E1B29A326
+	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 10:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762942184; cv=none; b=LQFAejZtvVqfBln+OddDwBJ3RmFD32aj0pC0/+rNBl+RMSz6MlEnQYAH7/bAPpGuJetNG39ZXVLvExr6B9Pih+vdx+CQUfBWPOdPtThTI6bbhGgWEIZReqdZT8gaffN2YPIISoALUF2SLUR2LyPYZ0dVh9HanNGV62JSLFDr9t0=
+	t=1762942298; cv=none; b=mZouULu33GguvSaT6UPIKf22naaW7mYgtz/RLTpOoQOIt5TR26x99RJH7tqxXaE3QoVbfJXGniQC5HoX/Zh40k51ePQsZfpT8Lks0I8dHb3n89eIdAnIlBykE4QYh/nPmKHWpPdgvZLcyRWLkmtqz2R/TFkQUqnq9mhfB+J3qPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762942184; c=relaxed/simple;
-	bh=olYrXkIqmlydcv65JH0VYt15vLnFtcVP3HgL7kAh2vk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sRDWSqXv5KR5iWMRz/f9RtQvVuXXx75bjMNrpyd2NVi0acSmBReFuN19RaNrKiOIN0+Kh/jwxnj5HfFRxI2dehr6aH0GgZmQlZ137KNm89VpXFpvpBXpnvEcmNLStvzmW5dNRXGnyfOhlBHdi6yaSK5I1laGK6YHTMwoAjs6ekU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=N6r0iNuN; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=IZUhEo22; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AC9ChG0510697
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 10:09:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	z7+KAp8/WxI0gJBqO/9PgX3s79ROrh9F/K5k8HRSUJM=; b=N6r0iNuNQqVu1TUg
-	vnhRFf0gAH9VbEhWaFoddkodhBR2JaXz+vmoQoBeP6Ee2pq/6FcZp8GVkZP74OPz
-	S/LKT1kstaSLu/mNrmFYAXCbZhx2ufFLt/D1gjRblZePi2A6SKfx9GMNeq33Zb3k
-	vTzeCCfLAjws2hBGqleHa4LJe3oBbiWMORllxcVJO4a0N85SHhxs1DZJSHpMz9ud
-	WMW6K/rT3CMXn9y5oBuxZshtAwousRA5mxrcFHbjmG/jcaL2A8KHT+PF5lfHJOeV
-	Uf56+2GhNjP7iOGea4cqnZuwrDueiyK3++QaUJMYtsx9tsoX5uw9aA2iu6e8mXKu
-	nJQ+NA==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4acqdgg9c2-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 10:09:42 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4ed6855557aso13574241cf.1
-        for <stable@vger.kernel.org>; Wed, 12 Nov 2025 02:09:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1762942181; x=1763546981; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=z7+KAp8/WxI0gJBqO/9PgX3s79ROrh9F/K5k8HRSUJM=;
-        b=IZUhEo22w6WfHErDruhmMh74E5XbvT8YM0MbCEKp5EYKpERLGq6ccdnclfsrfHqg8e
-         3FQ0M96kGk/2E8NpdKZ7+DMoxA4FvRBb74QDML96svB5u/T2ccm/vvSoMejc4nqpu+QN
-         fN2B9gPn2Tl0AjUhvBr1PrXNuo+uvtKp/4w22LabpDHis61FBSTCZg/XlsTeS+HTjq9R
-         DcIV7zPneYlFAexvdt8salihhcwrLNPwPVFi+8UrMFqofunT82v/W2ErffPQ2dVBnanc
-         97nZ5fClAdIWr5ro/Xkd+M4aj9sW9wR5ZmeFv05KAJbi6Td8I6aTVtk5NcIDS474tQuT
-         kJmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762942181; x=1763546981;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=z7+KAp8/WxI0gJBqO/9PgX3s79ROrh9F/K5k8HRSUJM=;
-        b=iv7QdO265U9EgNvDS4VFZODU5xd2UcGjv7gNLvGeozvrw+sBM8gE5pkPfGicqi2yPz
-         SMsijWftziIiGzbtX0E5vf6z+MfziiIPQw6dDdwfbJxie4uiZIYESLWly+ehMnYjPUI+
-         iVIdhUmWC6LWUDJ0Ih8jw1mI81S5dMRSLiFvj1dP2VyGju9/F2WTr2dl5j/TiZnpkOsS
-         bLugTEJm4HkMMtbcLRK5eK2ppeU2bpzzSDowb5reiQFWiXYfeATqpfGpO2AhPhevdBJ6
-         RyMWPNZ7bmV9jUCKc04MHB49tZPbodppWHSr5w/VgCEsoD6wjzPlT+/PY6EteBS1tGkL
-         NIAg==
-X-Gm-Message-State: AOJu0YxclxHtK+DnMIVwki1eDhx+AUPxc0GJOLhXjLnHdugkGIR921Jt
-	gxMlmNG/exRqwhVGVcSCOX6Kv6OECU01MAmDatascNSr2Tucvl3aRwV6umJ+tJQlMlzmtIxrrOA
-	IpoMXmOqzdRKP2Eo+0wOIvFPF1wVAISu2rrlAhcOeyGIIvZNAHycirCa8gIA=
-X-Gm-Gg: ASbGnctnInXqbqMnDscPRXL+doIjqoZUcIlXa57yd8jKIBU4VnJ8onBDdZ5BF5K15Xo
-	wVKXTqIDzrnipLGNsf0GSfm6Fe+hpYOTMKR6pwKORxebZeEwVYjvb/kTvwA4efUXhHwxdHtb6FP
-	LbRWrJlSP1dnS/ZCQGOHwPkUqC0SaScq+j/kI36vUGJk9SphrJ9jrL4/C5bZH81aLN0rD2TTpPk
-	4UcRcD225R4LmWyHgYL8EOiTkOniPLvE63PDvJqKfDNgOoLK3LgU25zhbH3Hrh3ombCM9C6RaMo
-	e6rbKDqH2iyrRB7Fx5pM+vM+bbSRZHQwur7m3HsBFJELo7uTWuJoa8QCQ5y4neksKDeDKwT6Yzs
-	K7EwgAiB1kGmT03WoAAoaLUNlEg==
-X-Received: by 2002:ac8:58d5:0:b0:4ed:ae94:5f5b with SMTP id d75a77b69052e-4edcaaa4f49mr77296621cf.8.1762942181602;
-        Wed, 12 Nov 2025 02:09:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFRjcsBdXzo+DsSel+yAaYa6lRVf3CufXhegqSBiMMMAqPt5BSkhfBsKJYMr28ZM1ZOvJKSag==
-X-Received: by 2002:ac8:58d5:0:b0:4ed:ae94:5f5b with SMTP id d75a77b69052e-4edcaaa4f49mr77296111cf.8.1762942180799;
-        Wed, 12 Nov 2025 02:09:40 -0800 (PST)
-Received: from [192.168.68.121] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-47787e8e6acsm26947215e9.9.2025.11.12.02.09.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Nov 2025 02:09:40 -0800 (PST)
-Message-ID: <7eed86f6-97a9-487a-8161-3617597f7391@oss.qualcomm.com>
-Date: Wed, 12 Nov 2025 10:09:38 +0000
+	s=arc-20240116; t=1762942298; c=relaxed/simple;
+	bh=NCNXZ7EMg7YV6XHRPLwpZKUABPyf2sZYb/CbdpQER1I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dDMTSKb46jVGmaUbt888nKDGPDRI898UARcDZ6wA3cfB9JOIH3uzy7mmLs/5DfTeuTYKArKNCuQszLVgBXmGPCrF6KBb4OLKTBUnE0cEJUOG76L4f96ZilYtkfd9PZ+BqECEbTDoiazHB0+LkuZ5DyyodB5C3DYc6ljYvSUu+4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vJ7ov-0007eK-6d; Wed, 12 Nov 2025 11:11:21 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vJ7ou-0003ub-0c;
+	Wed, 12 Nov 2025 11:11:20 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vJ7ou-0000000F580-0TN0;
+	Wed, 12 Nov 2025 11:11:20 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: "David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Arun Ramadoss <arun.ramadoss@microchip.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	UNGLinuxDriver@microchip.com,
+	stable@vger.kernel.org
+Subject: [PATCH net v1 1/1] net: dsa: microchip: lan937x: Fix RGMII delay tuning
+Date: Wed, 12 Nov 2025 11:11:19 +0100
+Message-ID: <20251112101119.3594611-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] slimbus: ngd: Fix reference count leak in
- qcom_slim_ngd_notify_slaves
-To: Vinod Koul <vkoul@kernel.org>, Srinivas Kandagatla <srini@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Miaoqian Lin <linmq006@gmail.com>
-Cc: stable@vger.kernel.org
-References: <20251027060601.33228-1-linmq006@gmail.com>
- <176292442599.64339.7709313480733902465.b4-ty@kernel.org>
-Content-Language: en-US
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-In-Reply-To: <176292442599.64339.7709313480733902465.b4-ty@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=dtrWylg4 c=1 sm=1 tr=0 ts=69145ce6 cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Yrr5m3MqBTjBsgb0id4A:9 a=QEXdDO2ut3YA:10
- a=kacYvNCVWA4VmyqE58fU:22
-X-Proofpoint-GUID: L1LiehVI-45FaTLiWWrfxyB1jOWstxmY
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEyMDA4MSBTYWx0ZWRfXxXjLduOZ4IZC
- cWjka1c3kW2hUimH6jRrd9tS17L2dKk4hSAzcYCAgS+iMrX5xFOGlWdyv08tU8Eqkb75iovk/Mm
- xZ/B1G/+oHNaohUGuFQfJN0L96DAhNZFBIO/et8EZOlRVnVE3fQ9hZzk+15UQ+ddQim9dEz2m28
- a/aFikId6WPeV4UCN3FJ+wXgkyVnR8iVbsnsmXElNtNZlz/poDIp8/QMBVhkSagPhVV4wm6I52Z
- fuS8Ix96W+ZIps7eD3n9bzgWY/nT4MbjK4lqSEiS8P9g8u3djZu8dEil/aEWD8T1sTk3z3Tsb9r
- KxVobJFNcRbhs9HfNXHXolxnC318BIdW6E1XTLlKGacMUVio+8bypT8xVUlXGNh/wiKj0uoEwVA
- 169jpOQ8mgo0BVcl+PhA3CAC2Yo42A==
-X-Proofpoint-ORIG-GUID: L1LiehVI-45FaTLiWWrfxyB1jOWstxmY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-12_03,2025-11-11_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 phishscore=0 clxscore=1015 adultscore=0
- impostorscore=0 spamscore=0 suspectscore=0 malwarescore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511120081
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
+Correct RGMII delay application logic in lan937x_set_tune_adj().
 
+The function was missing `data16 &= ~PORT_TUNE_ADJ` before setting the
+new delay value. This caused the new value to be bitwise-OR'd with the
+existing PORT_TUNE_ADJ field instead of replacing it.
 
-On 11/12/25 5:13 AM, Vinod Koul wrote:
-> 
-> On Mon, 27 Oct 2025 14:06:01 +0800, Miaoqian Lin wrote:
->> The function qcom_slim_ngd_notify_slaves() calls of_slim_get_device() which
->> internally uses device_find_child() to obtain a device reference.
->> According to the device_find_child() documentation,
->> the caller must drop the reference with put_device() after use.
->>
->> Found via static analysis and this is similar to commit 4e65bda8273c
->> ("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
->>
->> [...]
-> 
-> Applied, thanks!
+For example, when setting the RGMII 2 TX delay on port 4, the
+intended TUNE_ADJUST value of 0 (RGMII_2_TX_DELAY_2NS) was
+incorrectly OR'd with the default 0x1B (from register value 0xDA3),
+leaving the delay at the wrong setting.
 
-These are slimbus patches? any reason why they are going via soundwire tree?
+This patch adds the missing mask to clear the field, ensuring the
+correct delay value is written. Physical measurements on the RGMII TX
+lines confirm the fix, showing the delay changing from ~1ns (before
+change) to ~2ns.
 
---srini>
-> [1/1] slimbus: ngd: Fix reference count leak in qcom_slim_ngd_notify_slaves
->       commit: bcd8db9640bcad313f7fbf8433fcb5459cdd760a
-> 
-> Best regards,
+While testing on i.MX 8MP showed this was within the platform's timing
+tolerance, it did not match the intended hardware-characterized value.
+
+Fixes: b19ac41faa3f ("net: dsa: microchip: apply rgmii tx and rx delay in phylink mac config")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/net/dsa/microchip/lan937x_main.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/dsa/microchip/lan937x_main.c b/drivers/net/dsa/microchip/lan937x_main.c
+index b1ae3b9de3d1..5a1496fff445 100644
+--- a/drivers/net/dsa/microchip/lan937x_main.c
++++ b/drivers/net/dsa/microchip/lan937x_main.c
+@@ -540,6 +540,7 @@ static void lan937x_set_tune_adj(struct ksz_device *dev, int port,
+ 	ksz_pread16(dev, port, reg, &data16);
+ 
+ 	/* Update tune Adjust */
++	data16 &= ~PORT_TUNE_ADJ;
+ 	data16 |= FIELD_PREP(PORT_TUNE_ADJ, val);
+ 	ksz_pwrite16(dev, port, reg, data16);
+ 
+-- 
+2.47.3
 
 
