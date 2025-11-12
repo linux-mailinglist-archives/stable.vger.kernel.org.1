@@ -1,137 +1,101 @@
-Return-Path: <stable+bounces-194578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21808C51531
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:23:55 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53FEDC51767
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:51:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A02663ADBEB
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 09:17:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C1C7D4FE216
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 09:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A9A2741C6;
-	Wed, 12 Nov 2025 09:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59CCD2FDC5C;
+	Wed, 12 Nov 2025 09:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="A78suv9J"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FC79476;
-	Wed, 12 Nov 2025 09:17:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A580127FD78
+	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 09:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762939064; cv=none; b=QyQub8Hdw2v2akO1lA5pbSekfrg6t1DUrTz9ffacvzV5SyFbg7HdlVM6SrADwVN+H7f7hVDMRrvVsgcD1kJrQZN0FdwYpuMjldelGrxn3JNCKHOeXabBcljmMzeSa7EuJ9l2hLzLE+Juh4HDKgMLNW4eRnPS30uC4jx38HsBhYg=
+	t=1762940013; cv=none; b=JUKiuBM61wHn/NDZo3tP+gmEcLjIuYQC7WiBd8WB24xkTlIxyDbqROJOO1RXfOwVsQD/mAzXKrKMZ5CQyrs6QDS6PXF6DLIJxJzOcN0fr3Tpq+BEz1HVnrj3GB5/3FzE+HTa93IiGNFPgjuJn88XqmE0/jEV3tfDdzZ7atFsXzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762939064; c=relaxed/simple;
-	bh=CIVTOGTXKLMcPeOaQW0Hfq3hpD/bebGN7BNWF8TMSuo=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=NBS2u9D1D1CZ9Tp89RGmmcVOB3uSVh2VGpWkuHk839o2ICwiajEwgu7wwCS8xqKGdjDrfIXdYbc0/7gB5tOJsBGsA/4ePRDXtyAWdwKy8uy4lLIbXwFDwNsUZlRx1In3csLSfVm45tbWbmylbZMb/ndyIQhf4kEF6gXpTs4bVSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-03 (Coremail) with SMTP id rQCowAC3R9qlUBRpJUx3AA--.4432S2;
-	Wed, 12 Nov 2025 17:17:34 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: alexander.shishkin@linux.intel.com,
-	gregkh@linuxfoundation.org
-Cc: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] intel_th: Fix error handling in intel_th_output_open
-Date: Wed, 12 Nov 2025 17:17:23 +0800
-Message-Id: <20251112091723.35963-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:rQCowAC3R9qlUBRpJUx3AA--.4432S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kr4fWw47tFy3ZrWkCw4xCrg_yoW8ZFWrpF
-	Wjqa90kFyUGwsFgws8XF4jvFyrKw1Iy3yFgFy8G3sYgFn5X3yYqrWrtFy5ZF15XrWrta4a
-	qF1akrW8GFWUZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9l14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCY02Avz4vE14v_GFWl42xK82IYc2Ij64vIr41l4I
-	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-	xVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8I
-	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
-	4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU1v38DUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1762940013; c=relaxed/simple;
+	bh=V7VJas4OcRnxXubUexQa+LfGKvk8QPDPWv3vK3C+96g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=tJ3iNXe3EHUbhtZIzCd5Q5xHCDAH3JHXz1hKQFBcqcUoRWXiX3rpk0/Y5rNSqigdRzq52U79kteajuKvzKwXVKgfnIRQBrhhCxvZGwqDyraMg+f8bpjp+2gBIpZ1673PoK7w9m26iu6Et2xoqgYUVYBl78oHTzi6vZSzpBafe4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=A78suv9J; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 13A1B1A1A0F;
+	Wed, 12 Nov 2025 09:33:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D86756070B;
+	Wed, 12 Nov 2025 09:33:28 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1E0121037191E;
+	Wed, 12 Nov 2025 10:33:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1762940008; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=V7VJas4OcRnxXubUexQa+LfGKvk8QPDPWv3vK3C+96g=;
+	b=A78suv9J6JZ2r7gjwmylN4gjA0BmFOfU+51v5jfOn3/pHKb6bGvgozBKvXYxJwyBMvhesw
+	iqqUSC0xYLcaSeq8QmCG9u7wSdEPPU35SsjWFABMa8oNC6XAoqv243/UfHySk4B5jMQY0g
+	RlIQd77VF4riaFsjY3a25QOJnReog+RJLqwJQcKJqRkN31IJOqWDswDcbgaPfPn54M3KpA
+	8skPYy+FU1FWRbUGM9gHY7uaiUWqQPBVpvszzEvSOk2FUKfSy2yJh6hELtksRRbNzIWAva
+	97HqEj3bJhuo74Iq7KSUhEQo6T8KD8Jy49+ehUARosCu7N+cAfeW9xRNhHXq4w==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
+ <vigneshr@ti.com>,  =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
+  linux-mtd@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  stable@vger.kernel.org
+Subject: Re: [PATCH] mtd: mtdpart: ignore error -ENOENT from parsers on
+ subpartitions
+In-Reply-To: <20251109115247.15448-1-ansuelsmth@gmail.com> (Christian
+	Marangi's message of "Sun, 9 Nov 2025 12:52:44 +0100")
+References: <20251109115247.15448-1-ansuelsmth@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Wed, 12 Nov 2025 10:33:25 +0100
+Message-ID: <87y0ob7fyy.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-intel_th_output_open() calls bus_find_device_by_devt() which
-internally increments the device reference count via get_device(), but
-this reference is not properly released in several error paths. When
-device driver is unavailable, file operations cannot be obtained, or
-the driver's open method fails, the function returns without calling
-put_device(), leading to a permanent device reference count leak. This
-prevents the device from being properly released and could cause
-resource exhaustion over time.
+Hi Christian,
 
-Found by code review.
+On 09/11/2025 at 12:52:44 +01, Christian Marangi <ansuelsmth@gmail.com> wro=
+te:
 
-Cc: stable@vger.kernel.org
-Fixes: 39f4034693b7 ("intel_th: Add driver infrastructure for Intel(R) Trace Hub devices")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v2:
-- modified the patch to fix uninitialized variable 'err' warnings.
----
- drivers/hwtracing/intel_th/core.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+> Commit 5c2f7727d437 ("mtd: mtdpart: check for subpartitions parsing
+> result") introduced some kind of regression with parser on subpartitions
+> where if a parser emits an error then the entire parsing process from the
+> upper parser fails and partitions are deleted.
+>
+> Not checking for error in subpartitions was originally intended as
+> special parser can emit error also in the case of the partition not
+> correctly init (for example a wiped partition) or special case where the
+> partition should be skipped due to some ENV variables externally
+> provided (from bootloader for example)
+>
+> One example case is the TRX partition where, in the context of a wiped
+> partition, returns a -ENOENT as the trx_magic is not found in the
+> expected TRX header (as the partition is wiped)
 
-diff --git a/drivers/hwtracing/intel_th/core.c b/drivers/hwtracing/intel_th/core.c
-index 47d9e6c3bac0..fdb9d022d875 100644
---- a/drivers/hwtracing/intel_th/core.c
-+++ b/drivers/hwtracing/intel_th/core.c
-@@ -810,13 +810,17 @@ static int intel_th_output_open(struct inode *inode, struct file *file)
- 	int err;
- 
- 	dev = bus_find_device_by_devt(&intel_th_bus, inode->i_rdev);
--	if (!dev || !dev->driver)
--		return -ENODEV;
-+	if (!dev || !dev->driver) {
-+		err = -ENODEV;
-+		goto out_no_device;
-+	}
- 
- 	thdrv = to_intel_th_driver(dev->driver);
- 	fops = fops_get(thdrv->fops);
--	if (!fops)
--		return -ENODEV;
-+	if (!fops) {
-+		err = -ENODEV;
-+		goto out_put_device;
-+	}
- 
- 	replace_fops(file, fops);
- 
-@@ -824,10 +828,16 @@ static int intel_th_output_open(struct inode *inode, struct file *file)
- 
- 	if (file->f_op->open) {
- 		err = file->f_op->open(inode, file);
--		return err;
-+		if (err)
-+			goto out_put_device;
- 	}
- 
- 	return 0;
-+
-+out_put_device:
-+	put_device(dev);
-+out_no_device:
-+	return err;
- }
- 
- static const struct file_operations intel_th_output_fops = {
--- 
-2.17.1
+I didn't had in mind this was a valid case. I am a bit puzzled because
+it opens the breach to other special cases, but at the same time I have
+no strong arguments to refuse this situation so let's go for it.
 
+Thanks,
+Miqu=C3=A8l
 
