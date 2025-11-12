@@ -1,113 +1,137 @@
-Return-Path: <stable+bounces-194557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EBC9C5033C
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 02:24:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A1EC50374
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 02:31:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3169B1898C47
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 01:25:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEFA63B2B23
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 01:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F6422541C;
-	Wed, 12 Nov 2025 01:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7152F2253A1;
+	Wed, 12 Nov 2025 01:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kFf+EOmV"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80185146A66;
-	Wed, 12 Nov 2025 01:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFB62E403
+	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 01:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762910671; cv=none; b=pFZ9Bt6t7O0BTCt1H75GxSp3sCKHqb/Et+40VhPU/8+21NuCw+7mZDIV2h7X6VPCKNzsZ5q08/rU0SNs8QONgApwG/lWk1iGLCQRocEgV2Mdgxe7xgwlne5GD7PR+cYbA/nLham2SGojEO4aBUiFwWN7B/8mpHfPWWoHOYFxRRo=
+	t=1762911056; cv=none; b=bdP8nIRQKhwAw29RjwjojOe33mdogQ6Ai9z+aGHC6gGBGmgYKPrOjadSft7G08I5PRXKO+xK5aFH5sBpHsMcgJvJSmajUc6kIKVTG1DnLV3W3yY1hn+OEs9KVA9ZE+dpQ0hw9Qi17Pz8znPrAItTJAwNRvbhkQEsJcfrgJsdsdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762910671; c=relaxed/simple;
-	bh=L03mf8CZgQYOMyHQkBBodjsPRmXcEeszO3OzKMDpxWM=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=mmDo7H4+Hj2RHYh4PV+OVXO55IPwTXZGczVN0zLm8L7uOfSqjdQygdQew9VL8va9M7CuLJenQJ3ava34IR0iX4AN83rKpyNvxGyeUXTae5rg+LFQPw3pemOmCwaVuKe55pTrjREmyxpi6pIBDOdbqTCvMdxfEenx31w2j5wWtPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-05 (Coremail) with SMTP id zQCowACXm2y34RNpHUlsAA--.22327S2;
-	Wed, 12 Nov 2025 09:24:14 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: suzuki.poulose@arm.com,
-	mike.leach@linaro.org,
-	james.clark@linaro.org,
-	alexander.shishkin@linux.intel.com,
-	mathieu.poirier@linaro.org
-Cc: coresight@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org,
+	s=arc-20240116; t=1762911056; c=relaxed/simple;
+	bh=xhfGb6ZycktLx6DtRtGPeWPXRKJb3uLgZoLIbraIZjw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=baUWKf9zeYq4hLNQsycpaINxCH3KUS3t1S+P4t3fQWMz8e/e1o3Vyr3db/qxyytM3jXXyeCz7X0OxaOI2YThNHmqtbq/LpV46pmK0YrOLeuJbsg+x0u3NWTB7qDjk/YJ4ArL3Rg2gybzy6qs3Cmrkqjeg3a+W+mcsRbqxAb3vdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kFf+EOmV; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762911042;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tESTeWnloD3F0ybR0jqLCnFnlk32UlwI6uI9VspQVOg=;
+	b=kFf+EOmVstthelOt+ZjpHloeenyojPkMLFg09AVDN6fh1quxJCWu3i84tByqPuEJ9s6xwD
+	etQgT2PN54g1T2Cow383hG+Cz58ERuZPSJ2u97smFIXafbqX4o0Xx4gBsCg9SCTC7e1LaG
+	FPVehE99blTxlEtltWFSfu3wiKcCPAU=
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] coresight: etm-perf: Fix reference count leak in etm_setup_aux
-Date: Wed, 12 Nov 2025 09:24:05 +0800
-Message-Id: <20251112012405.11731-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:zQCowACXm2y34RNpHUlsAA--.22327S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7XryfuFW3XryfKFy5JF1DJrb_yoW8JF18pr
-	4DK3yYya4DGrWvv39rJw1DZFW5Wa1Sya1agFy3Kws5uF4YqF9FvF15KFyFvrs7CrW8JF93
-	Kws7tF4UZFyUXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
-	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
-	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
-	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
-	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4
-	vE14v_KwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
-	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIx
-	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
-	wI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
-	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUmQ6LU
-	UUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Subject: [PATCH] KVM: SVM: Fix redundant updates of LBR MSR intercepts
+Date: Wed, 12 Nov 2025 01:30:17 +0000
+Message-ID: <20251112013017.1836863-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-In etm_setup_aux(), when a user sink is obtained via
-coresight_get_sink_by_id(), it increments the reference count of the
-sink device. However, if the sink is used in path building, the path
-holds a reference, but the initial reference from
-coresight_get_sink_by_id() is not released, causing a reference count
-leak. We should release the initial reference after the path is built.
+svm_update_lbrv() always updates LBR MSRs intercepts, even when they are
+already set correctly. This results in force_msr_bitmap_recalc always
+being set to true on every nested transition, essentially undoing the
+hyperv optimization in nested_svm_merge_msrpm().
 
-Found by code review.
+Fix it by keeping track of whether LBR MSRs are intercepted or not and
+only doing the update if needed, similar to x2avic_msrs_intercepted.
 
+Avoid using svm_test_msr_bitmap_*() to check the status of the
+intercepts, as an arbitrary MSR will need to be chosen as a
+representative of all LBR MSRs, and this could theoretically break if
+some of the MSRs intercepts are handled differently from the rest.
+
+Also, using svm_test_msr_bitmap_*() makes backports difficult as it was
+only recently introduced with no direct alternatives in older kernels.
+
+Fixes: fbe5e5f030c2 ("KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()")
 Cc: stable@vger.kernel.org
-Fixes: 0e6c20517596 ("coresight: etm-perf: Allow an event to use different sinks")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
-Changes in v2:
-- modified the patch as suggestions.
----
- drivers/hwtracing/coresight/coresight-etm-perf.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/kvm/svm/svm.c | 9 ++++++++-
+ arch/x86/kvm/svm/svm.h | 1 +
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm-perf.c b/drivers/hwtracing/coresight/coresight-etm-perf.c
-index f677c08233ba..8a5a59434cc9 100644
---- a/drivers/hwtracing/coresight/coresight-etm-perf.c
-+++ b/drivers/hwtracing/coresight/coresight-etm-perf.c
-@@ -454,6 +454,11 @@ static void *etm_setup_aux(struct perf_event *event, void **pages,
- 		goto err;
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 10c21e4c5406f..9d29b2e7e855d 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -705,7 +705,11 @@ void *svm_alloc_permissions_map(unsigned long size, gfp_t gfp_mask)
  
- out:
-+	if (user_sink) {
-+		put_device(&user_sink->dev);
-+		user_sink = NULL;
-+	}
+ static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
+ {
+-	bool intercept = !(to_svm(vcpu)->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK);
++	struct vcpu_svm *svm = to_svm(vcpu);
++	bool intercept = !(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK);
 +
- 	return event_data;
++	if (intercept == svm->lbr_msrs_intercepted)
++		return;
  
- err:
+ 	svm_set_intercept_for_msr(vcpu, MSR_IA32_LASTBRANCHFROMIP, MSR_TYPE_RW, intercept);
+ 	svm_set_intercept_for_msr(vcpu, MSR_IA32_LASTBRANCHTOIP, MSR_TYPE_RW, intercept);
+@@ -714,6 +718,8 @@ static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
+ 
+ 	if (sev_es_guest(vcpu->kvm))
+ 		svm_set_intercept_for_msr(vcpu, MSR_IA32_DEBUGCTLMSR, MSR_TYPE_RW, intercept);
++
++	svm->lbr_msrs_intercepted = intercept;
+ }
+ 
+ void svm_vcpu_free_msrpm(void *msrpm)
+@@ -1221,6 +1227,7 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	svm->x2avic_msrs_intercepted = true;
++	svm->lbr_msrs_intercepted = true;
+ 
+ 	svm->vmcb01.ptr = page_address(vmcb01_page);
+ 	svm->vmcb01.pa = __sme_set(page_to_pfn(vmcb01_page) << PAGE_SHIFT);
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index c856d8e0f95e7..dd78e64023450 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -336,6 +336,7 @@ struct vcpu_svm {
+ 	bool guest_state_loaded;
+ 
+ 	bool x2avic_msrs_intercepted;
++	bool lbr_msrs_intercepted;
+ 
+ 	/* Guest GIF value, used when vGIF is not enabled */
+ 	bool guest_gif;
+
+base-commit: 8a4821412cf2c1429fffa07c012dd150f2edf78c
 -- 
-2.17.1
+2.51.2.1041.gc1ab5b90ca-goog
 
 
