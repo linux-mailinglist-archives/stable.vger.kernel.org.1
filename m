@@ -1,141 +1,259 @@
-Return-Path: <stable+bounces-194571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C23AC50AD3
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 07:09:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28175C50A87
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 07:00:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B09034EA206
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 06:09:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6290E189AD52
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 06:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22482DC33B;
-	Wed, 12 Nov 2025 06:09:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZStueS/4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DBCF2DA75C;
+	Wed, 12 Nov 2025 05:59:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DA5262FF6
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 06:09:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FA52D94B0;
+	Wed, 12 Nov 2025 05:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762927751; cv=none; b=ozPfvRXD7ys9jydaoK0Huj/MldDPGI+xe3W24NiaZhDh1hTorG6jdfLcnPax1pOzrRPzjtn6r27hLNWXEyj81imPRZvNqefkx5Ms63lmqRG24QDq9G2u7+VATN+mFp1FMCloIQN2JI9f7auBwetZkpar+Inei8nS07LclkvfLrg=
+	t=1762927198; cv=none; b=r3j//BbW8sxbnB478iMK3MYHNcwBxritOCAR/zx/hYJThmJvO/+SPbJOJmBr/TEcLAq63WOBcy2NGM5ylXfWBwaNtkgSvr0wP9TYukgof43NA66ZWxRpYAQyFGjgv75KI42WW4bOEEu9cHj2PvdzTMJtbE52qhyugvcdmBcIGhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762927751; c=relaxed/simple;
-	bh=/x4XZIRoMLNhyu0rYcHubu3u5VIXlH9V8B33W9iRICc=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=qcHkGr1wyfTc7RyoLZTNpNOtcr44yug7tqAdj+2ue/62CRTQdZeIFYIbxzCieXzVNeVv1wFUwMgUiaqzMGojSfHr/WalkyDFioRxExy5LB9o41aNYB1elUQvbSFd6HbhJmaWwuvUvbrGTdInx4zyUl10ErMQmbB8OcHfJIODa1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZStueS/4; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-29808a9a96aso4514875ad.1
-        for <stable@vger.kernel.org>; Tue, 11 Nov 2025 22:09:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762927747; x=1763532547; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Vf+V3xa9EgGUbHOlQxF1xdJJTU0DRTndVUemiyXUeyI=;
-        b=ZStueS/4trU8f6sSvf0LHZO/9mt+nOLXLu/UldJSpb0skHlV2NCwhyMNjEhT9Mx6bg
-         JZphKb90/LWOdsCdLL6a1oscPuVO3PfuBiNxJJuRSDCknrvaqcqai47qBKBtt1SyoSSa
-         9Yzv52CUEFx8g3CYcYF/4LS/DHQunNAuGYKyF8qgunax8RBNUVFUwxYf2vhsVIGOWSKm
-         rgIq5bG8u63J3/x3Rz23s5ACQ4OOABHU4/sZs7bIYZ6tdJOTRrAeNC8KfhHeCcNPZqgz
-         3/75OIN0SPOk4olRElfFQHrCJhTPjyQ6uy/eSWOig6pDdsWvkwbOEZ7fmPfQbHX1F++8
-         /SYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762927747; x=1763532547;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vf+V3xa9EgGUbHOlQxF1xdJJTU0DRTndVUemiyXUeyI=;
-        b=hzzGt5vRkDNuKNN7XlBSTKiSX+5utneXyGCtoEhxxoC2ViOc8rev46LlHUzaqQZ5pG
-         VH8x864dPabuLkTSSIExWX4ZBeqSPeEZEGGxMLwA7P9Mj2GQh8SGXL5SJllUQlG7YF7A
-         rm7Lb8zS8KZatco1j75Xx8hz2A0EzkeWMO37lfWHVy1j1CFMmi/3E+6OqQh9MEO5oA9e
-         OH9maRcIIaU92G7WOkXEq27Zlde/W3LCagagfu9uCptjGDGB7elL4pR95dQk60WYpNoD
-         c2I1X0aNmj5FSlNIBUGzjM9z3lCjiC893tbXjt5W2VMw3I+2IRE7zNXkWIJgJylFvyWN
-         T2xg==
-X-Forwarded-Encrypted: i=1; AJvYcCVIUhTEjyayXVA4LNtFO0bQwQ9J1zgt3ie9VZW5yFBCGdLxbISK9Pfhs6lFGwD1+6kPCNadMIc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlfsmKJCUIIYCWFTancfnSNEGWuUgvoEY3WJtTCS3lLF2FGGsN
-	TLVRoCH57QJgq0m2ItM+gPuw0jZrjguYKPUv1WwgU0z7Qgh1adlXOX51
-X-Gm-Gg: ASbGncuLP7NonAFh8d5QGlxUvBWuU1ERTvsKQorKNXKesYeEVaZdDmdUERZdKc0w+rb
-	shTUBf6eMPvJr6IHMF40w2RXfKsacSgPQWch2uzeav4UNOhQJjzN2Wxc9D3KC6EuC9C+m5elL39
-	VYH5Po0JOT7R1xeii+bfuuzlLXR2bt+pjyqk0C2fSwc5FhdoHYmfKCcMX0AlQ8U+5YF7x8ENZZF
-	v8zHJXdLui6X2fa9k2sp5rleBkDPNDGVThrgRvLW0/4VfZ+DjDEts3GD4+QOFpT4J2D2w8C4vYA
-	F0yVuKPPMfSlEsdTI9BCT8DYpHcElXbyjLOPJTljB3qIr6xeAFzvRtXxGWP+FVW6T7NcaCdJlMU
-	Owu5OC3V2tLpdHst1sOifbRYrLcOZ3LN3n2MAfW8ZlLkzZY3D81kW1hShuvda0JwEXER4xro=
-X-Google-Smtp-Source: AGHT+IEohiT6l/U6Q6cSeQX1Sd4BBaq0PAFAEVh2j8GuYXQZDYJogJ/Y0Dgu8WSYVH4jJhCDgr7O2w==
-X-Received: by 2002:a17:902:e804:b0:296:1beb:6776 with SMTP id d9443c01a7336-2984edf314amr25324145ad.58.1762927747094;
-        Tue, 11 Nov 2025 22:09:07 -0800 (PST)
-Received: from dw-tp ([49.207.219.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2984dbd8cd0sm18094405ad.4.2025.11.11.22.09.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 22:09:06 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Dave Vasilevsky <dave@vasilevsky.ca>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Nadav Amit <nadav.amit@gmail.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, linux-mm@kvack.org, Dave Vasilevsky <dave@vasilevsky.ca>
-Subject: Re: [PATCH v2] powerpc, mm: Fix mprotect on book3s 32-bit
-In-Reply-To: <20251111-vasi-mprotect-g3-v2-1-881c94afbc42@vasilevsky.ca>
-Date: Wed, 12 Nov 2025 11:03:52 +0530
-Message-ID: <87ikff95mn.ritesh.list@gmail.com>
-References: <20251111-vasi-mprotect-g3-v2-1-881c94afbc42@vasilevsky.ca>
+	s=arc-20240116; t=1762927198; c=relaxed/simple;
+	bh=C1/oJK2wYGuK/+FJA6qFTyGGPX/WVbKbEQyRYZjJds8=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=gDN2FFn9W8sgMsWLEjK7Lc1ZWjBYtsiz4e6YNdWzljSlRqlRhdgF1FONxoSX4S23gYU4DWCoCshXK8L4/tR2erdx+VDsluiaKJz/E+TPzZHPr19obSaIysHXoDMiYwlzX9fapASc1r7kXarFJU64TlQM3VuYsQF7867hTlEM33o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 43AEB1515;
+	Tue, 11 Nov 2025 21:59:47 -0800 (PST)
+Received: from [10.164.18.56] (unknown [10.164.18.56])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1FE343F5A1;
+	Tue, 11 Nov 2025 21:59:51 -0800 (PST)
+Message-ID: <0d660898-241b-450f-a3f0-3d09a1c97ae0@arm.com>
+Date: Wed, 12 Nov 2025 11:29:48 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64/pageattr: Propagate return value from
+ __change_memory_common
+From: Dev Jain <dev.jain@arm.com>
+To: Yang Shi <yang@os.amperecomputing.com>, Will Deacon <will@kernel.org>
+Cc: catalin.marinas@arm.com, ryan.roberts@arm.com, rppt@kernel.org,
+ shijie@os.amperecomputing.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251103061306.82034-1-dev.jain@arm.com>
+ <aQjHQt2rYL6av4qw@willie-the-truck>
+ <f594696b-ba33-4c04-9cf5-e88767221ae0@os.amperecomputing.com>
+ <f8b899cf-d377-4dc7-a57c-82826ea5e1ea@arm.com>
+ <aQn4EwKar66UZ7rz@willie-the-truck>
+ <586b8d19-a5d2-4248-869b-98f39b792acb@arm.com>
+ <17eed751-e1c5-4ea5-af1d-e96da16d5e26@arm.com>
+ <c1701ce9-c8b7-4ac8-8dd4-930af3dad7d2@os.amperecomputing.com>
+ <938fc839-b27a-484f-a49c-6dc05b3e9983@arm.com>
+Content-Language: en-US
+In-Reply-To: <938fc839-b27a-484f-a49c-6dc05b3e9983@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Dave Vasilevsky <dave@vasilevsky.ca> writes:
 
-> On 32-bit book3s with hash-MMUs, tlb_flush() was a no-op. This was
-> unnoticed because all uses until recently were for unmaps, and thus
-> handled by __tlb_remove_tlb_entry().
+On 11/11/25 10:07 am, Dev Jain wrote:
 >
-> After commit 4a18419f71cd ("mm/mprotect: use mmu_gather") in kernel 5.19,
-> tlb_gather_mmu() started being used for mprotect as well. This caused
-> mprotect to simply not work on these machines:
+> On 11/11/25 9:47 am, Yang Shi wrote:
+>>
+>>
+>> On 11/10/25 7:39 PM, Dev Jain wrote:
+>>>
+>>> On 05/11/25 9:27 am, Dev Jain wrote:
+>>>>
+>>>> On 04/11/25 6:26 pm, Will Deacon wrote:
+>>>>> On Tue, Nov 04, 2025 at 09:06:12AM +0530, Dev Jain wrote:
+>>>>>> On 04/11/25 12:15 am, Yang Shi wrote:
+>>>>>>> On 11/3/25 7:16 AM, Will Deacon wrote:
+>>>>>>>> On Mon, Nov 03, 2025 at 11:43:06AM +0530, Dev Jain wrote:
+>>>>>>>>> Post a166563e7ec3 ("arm64: mm: support large block mapping when
+>>>>>>>>> rodata=full"),
+>>>>>>>>> __change_memory_common has a real chance of failing due to split
+>>>>>>>>> failure.
+>>>>>>>>> Before that commit, this line was introduced in c55191e96caa,
+>>>>>>>>> still having
+>>>>>>>>> a chance of failing if it needs to allocate pagetable memory in
+>>>>>>>>> apply_to_page_range, although that has never been observed to 
+>>>>>>>>> be true.
+>>>>>>>>> In general, we should always propagate the return value to the 
+>>>>>>>>> caller.
+>>>>>>>>>
+>>>>>>>>> Cc: stable@vger.kernel.org
+>>>>>>>>> Fixes: c55191e96caa ("arm64: mm: apply r/o permissions of VM
+>>>>>>>>> areas to its linear alias as well")
+>>>>>>>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>>>>>>>> ---
+>>>>>>>>> Based on Linux 6.18-rc4.
+>>>>>>>>>
+>>>>>>>>>    arch/arm64/mm/pageattr.c | 5 ++++-
+>>>>>>>>>    1 file changed, 4 insertions(+), 1 deletion(-)
+>>>>>>>>>
+>>>>>>>>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+>>>>>>>>> index 5135f2d66958..b4ea86cd3a71 100644
+>>>>>>>>> --- a/arch/arm64/mm/pageattr.c
+>>>>>>>>> +++ b/arch/arm64/mm/pageattr.c
+>>>>>>>>> @@ -148,6 +148,7 @@ static int change_memory_common(unsigned
+>>>>>>>>> long addr, int numpages,
+>>>>>>>>>        unsigned long size = PAGE_SIZE * numpages;
+>>>>>>>>>        unsigned long end = start + size;
+>>>>>>>>>        struct vm_struct *area;
+>>>>>>>>> +    int ret;
+>>>>>>>>>        int i;
+>>>>>>>>>          if (!PAGE_ALIGNED(addr)) {
+>>>>>>>>> @@ -185,8 +186,10 @@ static int change_memory_common(unsigned
+>>>>>>>>> long addr, int numpages,
+>>>>>>>>>        if (rodata_full && (pgprot_val(set_mask) == PTE_RDONLY ||
+>>>>>>>>>                    pgprot_val(clear_mask) == PTE_RDONLY)) {
+>>>>>>>>>            for (i = 0; i < area->nr_pages; i++) {
+>>>>>>>>> - __change_memory_common((u64)page_address(area->pages[i]),
+>>>>>>>>> +            ret =
+>>>>>>>>> __change_memory_common((u64)page_address(area->pages[i]),
+>>>>>>>>>                               PAGE_SIZE, set_mask, clear_mask);
+>>>>>>>>> +            if (ret)
+>>>>>>>>> +                return ret;
+>>>>>>>> Hmm, this means we can return failure half-way through the 
+>>>>>>>> operation. Is
+>>>>>>>> that something callers are expecting to handle? If so, how can 
+>>>>>>>> they tell
+>>>>>>>> how far we got?
+>>>>>>> IIUC the callers don't have to know whether it is half-way or not
+>>>>>>> because the callers will change the permission back (e.g. to RW) 
+>>>>>>> for the
+>>>>>>> whole range when freeing memory.
+>>>>>> Yes, it is the caller's responsibility to set 
+>>>>>> VM_FLUSH_RESET_PERMS flag.
+>>>>>> Upon vfree(), it will change the direct map permissions back to RW.
+>>>>> Ok, but vfree() ends up using update_range_prot() to do that and 
+>>>>> if we
+>>>>> need to worry about that failing (as per your commit message), then
+>>>>> we're in trouble because the calls to set_area_direct_map() are 
+>>>>> unchecked.
+>>>>>
+>>>>> In other words, this patch is either not necessary or it is 
+>>>>> incomplete.
+>>>>
+>>>> Here is the relevant email, in the discussion between Ryan and Yang:
+>>>>
+>>>> https://lore.kernel.org/all/fe52a1d8-5211-4962-afc8-c3f9caf64119@os.amperecomputing.com/ 
+>>>>
+>>>>
+>>>> We had concluded that all callers of set_memory_ro() or 
+>>>> set_memory_rox() (which require the
+>>>> linear map perm change back to default, upon vfree() ) will call it 
+>>>> for the entire region (vm_struct).
+>>>> So, when we do the set_direct_map_invalid_noflush, it is guaranteed 
+>>>> that the region has already
+>>>> been split. So this call cannot fail.
+>>>>
+>>>> https://lore.kernel.org/all/f8898c87-8f49-4ef2-86ae-b60bcf67658c@os.amperecomputing.com/ 
+>>>>
+>>>>
+>>>> This email notes that there is some code doing set_memory_rw() and 
+>>>> unnecessarily setting the VM_FLUSH_RESET_PERMS
+>>>> flag, but in that case we don't care about the 
+>>>> set_direct_map_invalid_noflush call failing because the protections
+>>>> are already RW.
+>>>>
+>>>> Although we had also observed that all of this is fragile and 
+>>>> depends on the caller doing the
+>>>> correct thing. The real solution should be somehow getting rid of 
+>>>> the BBM style invalidation.
+>>>> Ryan had proposed some methods in that email thread.
+>>>>
+>>>> One solution which I had thought of, is that, observe that we are 
+>>>> doing an overkill by
+>>>> setting the linear map to invalid and then default, for the 
+>>>> *entire* region. What we
+>>>> can do is iterate over the linear map alias of the vm_struct *area 
+>>>> and only change permission
+>>>> back to RW for the pages which are *not* RW. And, those relevant 
+>>>> mappings are guaranteed to
+>>>> be split because they were changed from RW to not RW.
+>>>
+>>> @Yang and Ryan,
+>>>
+>>> I saw Yang's patch here:
+>>> https://lore.kernel.org/all/20251023204428.477531-1-yang@os.amperecomputing.com/ 
+>>>
+>>> and realized that currently we are splitting away the linear map 
+>>> alias of the *entire* region.
+>>>
+>>> Shouldn't this then imply that set_direct_map_invalid_noflush will 
+>>> never fail, since even
+>>>
+>>> a set_memory_rox() call on a single page will split the linear map 
+>>> for the entire region,
+>>>
+>>> and thus there is no fragility here which we were discussing about? 
+>>> I may be forgetting
+>>>
+>>> something, this linear map stuff is confusing enough already.
+>>
+>> It still may fail due to page table allocation failure when doing 
+>> split. But it is still fine. We may run into 3 cases:
+>>
+>> 1. set_memory_rox succeed to split the whole range, then 
+>> set_direct_map_invalid_noflush() will succeed too
+>> 2. set_memory_rox fails to split, for example, just change partial 
+>> range permission due to page table allocation failure, then 
+>> set_direct_map_invalid_noflush() may
+>>    a. successfully change the permission back to default till where 
+>> set_memory_rox fails at since that range has been successfully split. 
+>> It is ok since the remaining range is actually not changed to ro by 
+>> set_memory_rox at all
+>>    b. successfully change the permission back to default for the 
+>> whole range (for example, memory pressure is mitigated when 
+>> set_direct_map_invalid_noflush() is called). It is definitely fine as 
+>> well
 >
->   int *ptr = mmap(NULL, 4096, PROT_READ|PROT_WRITE,
->                   MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
->   *ptr = 1; // force HPTE to be created
->   mprotect(ptr, 4096, PROT_READ);
->   *ptr = 2; // should segfault, but succeeds
+> Correct, what I mean to imply here is that, your patch will break 
+> this? If set_memory_* is applied on x till y, your patch changes the 
+> linear map alias
 >
-> Fixed by making tlb_flush() actually flush TLB pages. This finally
-> agrees with the behaviour of boot3s64's tlb_flush().
+> only from x till y - set_direct_map_invalid_noflush instead operates 
+> on 0 till size - 1, where 0 <=x <=y <= size - 1. So, it may encounter 
+> a -ENOMEM
 >
-> Fixes: 4a18419f71cd ("mm/mprotect: use mmu_gather")
-> Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
-> Cc: stable@vger.kernel.org
-> ---
-> Changes in v2:
-> - Flush entire TLB if full mm is requested.
-> - Link to v1: https://lore.kernel.org/r/20251027-vasi-mprotect-g3-v1-1-3c5187085f9a@vasilevsky.ca
-> ---
->  arch/powerpc/include/asm/book3s/32/tlbflush.h | 8 ++++++--
->  arch/powerpc/mm/book3s32/tlb.c                | 9 +++++++++
->  2 files changed, 15 insertions(+), 2 deletions(-)
+> on [0, x) range while invalidating, and that is *not* okay because we 
+> must reset back [0, x) to default?
+
+Okay I realize this is wrong, please read the last bit as "and this is 
+okay because [0, x) is default already", and therefore
+
+your patch is correct.
+
+
+Let me send a patch documenting this so we don't get confused in the 
+future, it is easy to forget all of this.
+
+
 >
-> diff --git a/arch/powerpc/include/asm/book3s/32/tlbflush.h b/arch/powerpc/include/asm/book3s/32/tlbflush.h
-> index e43534da5207aa3b0cb3c07b78e29b833c141f3f..b8c587ad2ea954f179246a57d6e86e45e91dcfdc 100644
-> --- a/arch/powerpc/include/asm/book3s/32/tlbflush.h
-> +++ b/arch/powerpc/include/asm/book3s/32/tlbflush.h
-> @@ -11,6 +11,7 @@
->  void hash__flush_tlb_mm(struct mm_struct *mm);
->  void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
->  void hash__flush_range(struct mm_struct *mm, unsigned long start, unsigned long end);
-> +void hash__flush_gather(struct mmu_gather *tlb);
-
-Maybe I would have preferred the following naming convention for hash
-specific tlb_flush w.r.t mmu_gather, which is also similar to what
-book3s64 uses ;)
-
-- hash__tlb_flush() 
-
-But no strong objection on this either. BTW - I did run your test
-program in Qemu and I was able to reproduce the problem, and this patch
-fixes it.
-
-The change overall looks good to me. So, please feel free to add:
-
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>
+>>
+>> Hopefully I don't miss anything.
+>>
+>> Thanks,
+>> Yang
+>>
+>>
+>>>
+>>>
+>>>>
+>>>>>
+>>>>> Will
+>>>>
+>>
+>
 
