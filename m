@@ -1,243 +1,382 @@
-Return-Path: <stable+bounces-194566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76C1C50854
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 05:30:04 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A282C50930
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 06:00:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4AC3C34BD0D
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 04:30:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EDC824E029F
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 05:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82912D46C8;
-	Wed, 12 Nov 2025 04:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73BE2C11FE;
+	Wed, 12 Nov 2025 05:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fRvIdtWU"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DsdKOSh0"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011022.outbound.protection.outlook.com [52.101.65.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71342BE035
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 04:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F5C38FB9;
+	Wed, 12 Nov 2025 05:00:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.22
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762921775; cv=fail; b=kWLi+E7MSKRJfxFLXaxCLMYNZqF4iXlMssQ1WONIlivVdqVLqjv0/vykU9NxUW4eS7D8va3ku2DUiR0HDnXdiHS0Hng6GfXFFQFEfTNEbgpbz3L6hx2RI4fbDV6thMlTRlUkeCuFh6mv2l180aKQ5l3Cpuod3fjNhCkaWdD9GTg=
+	t=1762923612; cv=fail; b=F+OEwKU0WiN7jhtQq98Q1tfAixrwopzKT5CmeYwdnTctlISOOJdJ/XuBCQRqvRXiQYCAnZSxY7jLgKZ2+DRIvH7pHsyXEflxEPUY0OiYen5A1tMOY8sLVj9mToCbP8+vsJYi+k2lGulaTkXS+cJvBtkS6IgUnOi/sxDMobKuQOY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762921775; c=relaxed/simple;
-	bh=1GYjq4PE+ei0osweG8zNGg1rzrVz9EyDAb6qAPw8zQY=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=DPKR4mQfuwvvjhO9D7SQSv5Q4oEteJk5DTaWTX3aGZbXYLBHi2TuVIbDUveJufH/Vn9w1+N6T6sE+D86tOfxxg1yRF2IgKI32T4UdtOlWolo/ok5sdjWIEl4rKKH8oo3eIiQd9XCBw104QaxeHPCS3nkPOtLqsFhwVSpPW1JL0c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fRvIdtWU; arc=fail smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762921773; x=1794457773;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=1GYjq4PE+ei0osweG8zNGg1rzrVz9EyDAb6qAPw8zQY=;
-  b=fRvIdtWUu0XH4yb0OhHE+ZPLjTkWEK/nVWnYC/hINhDbxcaAN2t6eFGI
-   h4d6CTcZqEKasKGxgBn6uD6rPiXJeOPlOm4/a06IPMyixJpX8bemPMu+i
-   GSso2YvrybBDGOxL0VearIv8Wn8vOZ5kJhYRRyaCglYVfRYcvTItdr2Cb
-   KmwX945GRS8gpMssnqLIj1WKKuff4X9nruuXua7yyh8QUHIrZ4/K8b+eV
-   TVquPEfj9/Kg0Yd4Zgpf/N2nD3C2tEqJWeNfHPWuLvlwoaq5z4SZn+7mL
-   x264Pjm6pwibGKS9ZA7Cn/YOE2D9oYGRimPDVPVOsSrNSJ1yNfmgOuZEj
-   w==;
-X-CSE-ConnectionGUID: eR741lk7SzWAfUywmNfSwg==
-X-CSE-MsgGUID: FcWXqC6tRWOYN9V1e4lxIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11610"; a="75285075"
-X-IronPort-AV: E=Sophos;i="6.19,298,1754982000"; 
-   d="scan'208";a="75285075"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 20:29:31 -0800
-X-CSE-ConnectionGUID: 7L0MJsEvQ7CPT9vtYhtsUQ==
-X-CSE-MsgGUID: bY1Py5vnQcyJ4koG075kLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,298,1754982000"; 
-   d="scan'208";a="226368214"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 20:29:33 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Tue, 11 Nov 2025 20:29:31 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Tue, 11 Nov 2025 20:29:31 -0800
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.36)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Tue, 11 Nov 2025 20:29:31 -0800
+	s=arc-20240116; t=1762923612; c=relaxed/simple;
+	bh=BcbEIwjTIsmxWtLNyl+K+j3wp+zT2JMTtEyyorrzCIs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=pPJBrkSmPG8YGNbL5Y3M2ki/RIJuckwoRMMooSk0t6rt/A11aVSaRnrMegDIir+WzMYslQ9yGRJ2sVuD2U93aggjJ+qyaxTXp6lOmfOGMkQ8bFoSMuqglR2c/CS1A54pRkHylT62dswXov476HN6Vna1vstKLdDkaT/vuhgA3Qs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DsdKOSh0; arc=fail smtp.client-ip=52.101.65.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GZLBb1bnNCAK2pgOmwiIwwMMzng32NlKpYC6wmpGwuEcnZfm0MddkzhtPoHiFzerfASuACt5f0rnPXDGACL7cXpNcrUy8lB0SStpcJjKBv3umIxqLlO68/bzL8kUtRosaSTMP7AgpJD1lR36WgC1eg/ql5Vv+hZaS1QAxLwRJ652alM5TjglKAuAb5JLogT97WrHwx1i53OH3Z+d11MZ6vrmEiKdamI2VQ7q4DEPismvZ3gycjv3Hpua+Y7oJAksLll7h1G2Mt/B8mi6Ar+CxDogcEjDqs7Vf92ko8gHb7Frn05ODy0i0b+8z4zn1zqYbaPqscZ/neknvt/3VSX1Zw==
+ b=ZME0lFdEhpNYeJpZJE4bJC8Zll0Gz4U6489urpejhDS91qr7/y1afOs+pMcjngW0FqhE2Cep2fpWdU0eKQJDr/YgoOPTH3gZFy6XQsPbkdzsOfAuRj5HtoNsMnhwMxtrjKp/WuV5FNvcGB3YITBWFNKko3URy1uRYIW4o1GsMItNo8i3pIDSb2upnutDCb0lRYmP+bDcO8bZhSqbZ2WGDBOJ+rbzt3hUBwCkoBhoCs9qmYjsNtaPxnMMzpHG3tz+DmRgsz9fFuFIScxedyM3FkcsO/CziJgHd1KJJPaq6wDfoRjhTtrKlbughMbFwVIh8OHgbHsRj2Ir3tZSmBYkqw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F9m+em460cZ851HSnxVHWNNSbcjNJnXS37maoSIcxOM=;
- b=Swqtu+/2KI1sv+tqypo535E+JTTQ3ptKntL1g3SW4PxcX6V49LpDTMa0P/RxBgzCPvSTAAdEAtComGfPblSl/f4fhxW96HLO9uRG1BDwbaY0rUP/Z5c3wLLtSpKKyBxfxPYwV2a/3N7LUiIhdXLFfD/tH2tCBJV/YMDww/66UBH1ICHLYrDh7EFO4GRAagvUpV/7JnwUVfLtlI3xG9y2Q4VAJRzn8Qp9BSuUUVRgPUTG1+G9HUT2K61TgR5VmKeZir8BUK9XjEYSxTVwvx6YK0BtlkJNFEk6GjYa5SgJwg1RMVdgGlDhx87+RaJQ/vrQR60IUHwTpQEccWfcVagVmA==
+ bh=5PL94vsRXezWDLVlMvi+A90AdCd+cSiqVeoneh8mcvI=;
+ b=St5rTvKngDbUHN6socBtP0QcHLRpOEMNzBMLpBioEWbM9lWDciGrcguHNwXIxgfpITe8sKE70i5j1SZpCwALq1CrdWU1QV8hcq1z2qEqVQf2zoLGGMEUVT/oBYN3MdkLIfxU79p2xItgMuKoYH0GyPaTO5cWx5l9LkdRddMAVdIDCs8hTDi4oDlqC1dBCsFumQ/59uwP8kqb6AGVx+rHE/t0T+hCi9Jeyfy9KUhhZ43Fodd3TCitUhq58O472UscfwBwImMmHfNGwU1Rnl9q3aiehJY2APfBCQSGK/7HXxpqa22u4XsVFkA5YBs0fi22o/PCSUhlfLvTNpndR3hzwg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS4PPF691668CDD.namprd11.prod.outlook.com
- (2603:10b6:f:fc02::2a) by LV4PR11MB9466.namprd11.prod.outlook.com
- (2603:10b6:408:2e3::11) with Microsoft SMTP Server (version=TLS1_2,
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5PL94vsRXezWDLVlMvi+A90AdCd+cSiqVeoneh8mcvI=;
+ b=DsdKOSh0LmpvOr387Eb2mEz9ZBf2aM40NVfi/79iv8u+ANqoxhkaAgxniaD5vePZiIT6bUNHJjuYd3+m8a/A/EtLDBiTl8ihVkT6svSMXEFEjZuSid7mmy7n88LjuyUpor6gYkpFAoVDUl7x9qUkZfi5Jt5ByliMxO66oYcx5bZJPTDhSqsERnTsdM/D3PHq+HIYSS5uWxudJNK8S+JJt9mZf8KdrQ1AsSe5vMP7KUNPXsKB6Q11P65WEVxPkZwCr8IXKKG12Qo5QWk1L3jIGrE+qioK9oCXuf970b9/krX+Qv+31Q/zwVItu4fDYl7xaKz47e2rEhQt0+MP1JIwFQ==
+Received: from DB9PR04MB8429.eurprd04.prod.outlook.com (2603:10a6:10:242::19)
+ by PAXPR04MB8992.eurprd04.prod.outlook.com (2603:10a6:102:20f::11) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Wed, 12 Nov
- 2025 04:29:25 +0000
-Received: from DS4PPF691668CDD.namprd11.prod.outlook.com
- ([fe80::803d:39cb:d276:4ee5]) by DS4PPF691668CDD.namprd11.prod.outlook.com
- ([fe80::803d:39cb:d276:4ee5%8]) with mapi id 15.20.9320.013; Wed, 12 Nov 2025
- 04:29:25 +0000
-Message-ID: <8245627f-657d-41a4-a931-7dabd1406548@intel.com>
-Date: Wed, 12 Nov 2025 09:59:14 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/17] drm/xe/svm: Fix a debug printout
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	<intel-xe@lists.freedesktop.org>
-CC: Matthew Brost <matthew.brost@intel.com>, <stable@vger.kernel.org>,
-	<dri-devel@lists.freedesktop.org>, <apopple@nvidia.com>, <airlied@gmail.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>, <felix.kuehling@amd.com>,
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-	<dakr@kernel.org>, "Mrozek, Michal" <michal.mrozek@intel.com>, "Joonas
- Lahtinen" <joonas.lahtinen@linux.intel.com>
-References: <20251111164408.113070-1-thomas.hellstrom@linux.intel.com>
- <20251111164408.113070-2-thomas.hellstrom@linux.intel.com>
+ 2025 05:00:06 +0000
+Received: from DB9PR04MB8429.eurprd04.prod.outlook.com
+ ([fe80::2edf:edc4:794f:4e37]) by DB9PR04MB8429.eurprd04.prod.outlook.com
+ ([fe80::2edf:edc4:794f:4e37%6]) with mapi id 15.20.9298.012; Wed, 12 Nov 2025
+ 05:00:05 +0000
+From: Sherry Sun <sherry.sun@nxp.com>
+To: John Ogness <john.ogness@linutronix.de>, Petr Mladek <pmladek@suse.com>
+CC: Sergey Senozhatsky <senozhatsky@chromium.org>, Steven Rostedt
+	<rostedt@goodmis.org>, Jacky Bai <ping.bai@nxp.com>, Jon Hunter
+	<jonathanh@nvidia.com>, Thierry Reding <thierry.reding@gmail.com>, Derek
+ Barbosa <debarbos@redhat.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH printk v1 1/1] printk: Avoid scheduling irq_work on
+ suspend
+Thread-Topic: [PATCH printk v1 1/1] printk: Avoid scheduling irq_work on
+ suspend
+Thread-Index: AQHcUxmQ9vYzvwDVK0K3yH/te3wEpbTufBjg
+Date: Wed, 12 Nov 2025 05:00:05 +0000
+Message-ID:
+ <DB9PR04MB84297ECBB5E4E1DA0BD8B1B592CCA@DB9PR04MB8429.eurprd04.prod.outlook.com>
+References: <20251111144328.887159-1-john.ogness@linutronix.de>
+ <20251111144328.887159-2-john.ogness@linutronix.de>
+In-Reply-To: <20251111144328.887159-2-john.ogness@linutronix.de>
+Accept-Language: zh-CN, en-US
 Content-Language: en-US
-From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
-In-Reply-To: <20251111164408.113070-2-thomas.hellstrom@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5PR01CA0137.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1d5::17) To DS4PPF691668CDD.namprd11.prod.outlook.com
- (2603:10b6:f:fc02::2a)
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DB9PR04MB8429:EE_|PAXPR04MB8992:EE_
+x-ms-office365-filtering-correlation-id: a944a5a6-8af7-4aaf-b322-08de21a85864
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|366016|19092799006|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?0yCVY5gzABwdldQDXDoHTARnyScEXrQVvAXYDQrayfY/s67jEtyZoK0IJtHL?=
+ =?us-ascii?Q?kEC4hWc8BtUePDy9g2VBfB4pAIu//JWcAFaXh0m2zfFfL7F724u1FzC6i/an?=
+ =?us-ascii?Q?Q+2kcx9TGpuFggn5xg3NsrmFYY2/HrlDAfrUjMx5qx4rSjcYTAqqLTAE8YJH?=
+ =?us-ascii?Q?TDTfpyS0rM5WLiEMt2LjH67A4QnxdgNMGEn+0MH3YkuUTtT7oqk2QUeABQaC?=
+ =?us-ascii?Q?mOwCINgMealaqGpbfiXmedr+lIJc4i3yw9v9+Q9n1DZguB00ty56gLsHs9dF?=
+ =?us-ascii?Q?vhDxnuFe+JuBin2kwwo3g/s5FlDr+d2L9T9zQaeO+H+8aQ/TeVhyaOP9J0lh?=
+ =?us-ascii?Q?N4AQKl2g6lPc2I65Q9EN0aIacQu4jE0raT3ZWBGukXuVfVNowvAllXj/lvXE?=
+ =?us-ascii?Q?g6sDE3mCdYmW5AbAdmHFt/NiR4KvI/E4RIMVt+PXitMZ5ca7yfn+a371Ovvx?=
+ =?us-ascii?Q?vhL5GU2EFssMZfvvJfhVo4Kr5LVEI4Trh1Z5X10DFwcHs7UDd9Mx84aqHA/G?=
+ =?us-ascii?Q?ySt9Wj8OBhLCdHSAfYVWzEPSOMcj3fiBj6YR4122MKpRntPXYn3NJVbf0VPD?=
+ =?us-ascii?Q?l8B2qNZlKiVYNR4fGAPfr6Uq65UY1SjqjQ6l+/3YpuyiVut4o5nD+Q1TWUOI?=
+ =?us-ascii?Q?AjvPKJzFN/NpzDBQMq926J8+htXUM/vi5bUArRL12nLXTNVLY5C71eCkxUiM?=
+ =?us-ascii?Q?m/8mCPh4ch9YjPq7uDxF+HBhQNPoDpSRCdMw82FQhEw1fM+9xs6jwO5cZqCk?=
+ =?us-ascii?Q?+jXWak+A8KBMkGmBM9hU6fk0BkwNXCkd3sTOy7j1sANYWZA1uiVZjK7g/rLp?=
+ =?us-ascii?Q?zMbetADAXx6DRqW9JZ2fsfDUrubXV1dj8uq2VMBAwAArOaxXZvbIcCgSmumG?=
+ =?us-ascii?Q?vT0QBHZTcbtGp+WNUByonTjozIhe5JyLlYZXfDSBuh2xB3SSuAoWV8SAvs3G?=
+ =?us-ascii?Q?C3xQYKifDzMTlN68WsMOuKWbeexDvooDkr1wx5232ej05Xq78urDVrf2YQDb?=
+ =?us-ascii?Q?vJE1vtdH7DDBNMQlNVOZYQuM+12xFHpyoqXF/aMyALvMMKvxXsRB8PhdVNL1?=
+ =?us-ascii?Q?xUSERL98/f/jwjT5MLP6/rP09E+PuKRqjL7bbrAwtV86/NoM0FIpaGDrTd1m?=
+ =?us-ascii?Q?U6Iaj9KSyCKrJBgUQHaAoliBMdBlz6dyOBG9HADwoHd0sjGyTdN2mtZmno9D?=
+ =?us-ascii?Q?oKk8Jhmlobt7oikIZB3eRPRodeLPSdt1ylkBnjx9uKJUGpBe0xcSG3MYUrxu?=
+ =?us-ascii?Q?xmuck6A9a6egTruobo4tBWwSUXdXkxTewpkePWvZ9ctrD9Zjv+KxCRRRGDd6?=
+ =?us-ascii?Q?4JPdKCSmu0OI9erRT1XqptSJBBLXPuKFG2IS2b6gw8Dw7pT/I7ViUyk4MsW6?=
+ =?us-ascii?Q?1YpCmud4Y26epafimfbuW3CYTy9ARzEhk3TByGJQVUdpjUWk/1wqU3twzFQ2?=
+ =?us-ascii?Q?6OkxszJ6E40sfxOO4er/Eko2dRnyylHwv7IB0J9ioXzN8kSNnc4mJw=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8429.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(19092799006)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?C/dXbYvIEMnO1lLJnezUWKxsDqqvQEH/TQH+5PJtIjX00EalhXZx/g+Fhnoy?=
+ =?us-ascii?Q?fzFVLknXz7/xdLOECABjbc42aKGBc240ePXDeZFv8vijXaLtTfi5mKJap0RV?=
+ =?us-ascii?Q?Qk+Myay+zGWzi/cnYcQFiC4s++wbQXowt1HcM49tAYfYaVkyZnw8rLZEMXMZ?=
+ =?us-ascii?Q?k5IyEwB/kQx7FfVdQSHFVbZmZk1qDtcNY2+QBqYx61a0t9lFpQ0gqtudsoJz?=
+ =?us-ascii?Q?hNi+CnCgl0Sun9pATPaP1tEXv6KYCgF64hoigAR9LKqYVsoZfc8JaQgGhZl7?=
+ =?us-ascii?Q?1R3LIS4DXvkmMUDcVVQ0QDLGVnZNSBYU9DGPisbJ1N0zEG9q2xFXv+ZRAv3V?=
+ =?us-ascii?Q?UBqH5SOTjXZGvWC60sxlNaVIY4q54dsbph8q5m5ScZkO+02N0yVPAuGuZDvh?=
+ =?us-ascii?Q?9DeWX3JNSwsgcX68RGxEIAYhKVezpOO1btNsQjF/zGEXgrZGgrLUO2OrB8C9?=
+ =?us-ascii?Q?Qp9d6dRygDomJjCxjJyBqb/l8mS4XYILjeoY8yFjgOU5Tlvg+KEZIFg7etpv?=
+ =?us-ascii?Q?pk5mPM+K+tN+PTO78VhaNQTvcxI9z5/7O26DZ+iIPrdtvW8nDLMA6ZhAEaB7?=
+ =?us-ascii?Q?lIua+suWOo19+CC3Kng2GDIia723zXNkp7BfesQFvEJZI8KmvSxQdgeGVAzw?=
+ =?us-ascii?Q?IvHvoHj6JRxGe4bBUlog2YOQNNILGUHy2U2lSHJUbXcBT1GcjQPPfzaObKb1?=
+ =?us-ascii?Q?rN5IMGN/GXCnCZvzzrcRmYluEKLp98I8Z93QgFU96nhvJHdZ6O86b7jFKWSb?=
+ =?us-ascii?Q?IrsI/MUxvAlgHLY0O9TOsyWBMaD1Zn7bkFjf4SfgBfM5s99VX4X8w19kCKSE?=
+ =?us-ascii?Q?rWeHcGtvStq5eBNa9YbuOaTUKYG9g71IJTroSBYC/zBEd3PooCg1ln7i8qtf?=
+ =?us-ascii?Q?kHnHljy/L9pQNXrbt1JpbWmXCWKhVLp7IUY8NhsjMsmrupU0oTpnHpBX/Bx7?=
+ =?us-ascii?Q?BInC0ghKnz9w5wq4Egf9PSdlcXh8+Z3pa1ymh6Zj8c/KGDApE4pTueFByVlz?=
+ =?us-ascii?Q?7AS2haAvp114Xn4/ZUSkxfj633AP44p2TSfdaZXLOEqkpMNvKgZ2E09s46hi?=
+ =?us-ascii?Q?dZ8rS6ehJmt9OLS30by0IWIv8UqkSviCe7C60EI0UzeKrkGZS0OWg4sm77kf?=
+ =?us-ascii?Q?31yvg/WPor3H2c+xJ7sgV0T354Dcxpdo27ePE2uFMBkZCTMzXzph/SjvuB2H?=
+ =?us-ascii?Q?YgqMguSJw85ly4IHarogDsk9SuIijbG5SMYasrij0iDAkdpO0xWZoQp1gXRr?=
+ =?us-ascii?Q?L8jCJ75TGMEDU5Kvccxt/bkHck4gCH1EJ6fJSj2VMgl6u5PcM8KOv5ZgyfiB?=
+ =?us-ascii?Q?JKbHOe6ROChVbBRr9Jn0XeBSpShTU5k/M7MzgPR92fVCXOGFmNjZSrYrAzIn?=
+ =?us-ascii?Q?gDfdTYOfxocjlCfvsDsXoYxkFkvbwFiR3CsDK58jz1KI938CTm/3caWlFAh2?=
+ =?us-ascii?Q?PEcOmTBQrzP4rsjOSc/KpHwbw/d1E6JQt62Sf8iRWFhk0XBJPQ/gpGHgrcI0?=
+ =?us-ascii?Q?kWa2rNLG+zcIXSY1gL1aIlhKWiPVdi9Pmkty0d74x4c7RPK7nVQkOzGSvHCu?=
+ =?us-ascii?Q?itLeDP+2YR6PHOgeep8=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS4PPF691668CDD:EE_|LV4PR11MB9466:EE_
-X-MS-Office365-Filtering-Correlation-Id: 482d2403-4bc1-4f85-051b-08de21a40f27
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TEtiN3BEYTFYS29WMjYxVkM3bWdTVVlHWTF1cjBpTTVMWFVxU0tGQjdqQ1hJ?=
- =?utf-8?B?S3VEcFpzUHZlWlhpU1NhSlR1QkFjR1JHR0o0MVU3QTExMmx6dHRSYTlDZUYy?=
- =?utf-8?B?RkExU1ZYTHExbDdLeXYvdWF3TVl4UUhkdnhxOThXa2VQUCtycXpvOWM3M0Nz?=
- =?utf-8?B?RThwUTF6cHFPQlJvblVvU0pTVzRwaFNzVGwxU1N2QWF6VjJZcHMzZGJ1YXFJ?=
- =?utf-8?B?VXJnTXc4Z0E5cEJjQkwrYWlqZytPZmxDUCtyaXk2dXk2b1NpS1Q5SUpRVDhG?=
- =?utf-8?B?OFJnYkZib21nTklZeWRFUWJVbFJUV2tFUzhScEJ4dHZwSWd2aDFjcDRQbU5R?=
- =?utf-8?B?RDdqdzR1WXF0bENLN3JKY3ZtSzJMbHNJZGEyWlNjLzBaazc4anFjUXd1aDZw?=
- =?utf-8?B?MHlBeWQ4V0xVcVZWaWFKZEMrTGhvUTJNalg5czhYekJzNmg5WjFxU2dTSkRP?=
- =?utf-8?B?T3BuRzNmeGlSRTZWZUw4aFBNYTlETzIzSnBEeGJ0bHQxUDZMY2dCblhFdWh5?=
- =?utf-8?B?c3M1TXlpRHlqSERKbUdJQU1vNnJ2eGNtT2ZEcnZmQWxlTFpkZGNUb2JsVjRU?=
- =?utf-8?B?aUdJTW90VjdCd0dZOWxUTUZTdHZkelBOd3NLRGhVTUNDVWQvOHJyS1VCTzA5?=
- =?utf-8?B?S1pONXlYeGsxLzNmSjZ6ckNxMWZvc2grTXNESTdyRGUvSjFNUTlOeHdCY0py?=
- =?utf-8?B?RW5DaU94MFk1WHhvWFdHdytocUQyQ3J0WXdHbjRONFNlbC9YTStVVEs2MXla?=
- =?utf-8?B?amJKTzNmWDZBaS9melFJOURKVlB4NitQRjRzSVRvTEhGaTRXT25XeFplVmVW?=
- =?utf-8?B?UGVRM2wwcXk2MnB0RjNzaEhUY3g4V2Y1YWp0VmFHcDg1aTVmb3lPdjFPcmdH?=
- =?utf-8?B?OElhbm1XZU5SejNuZWJHV0dOY2pYdzJqMHBpeEIzZmhDS1gzd1NnVzhWTlVt?=
- =?utf-8?B?MURmaVFKcnIvcEJBdjkvNzhGN1MwbTdQS0JnTEJlYVVtY2lYTmFHc3RyOVNZ?=
- =?utf-8?B?ZmkwNngwVzlWUWo0djRsVUlSWDlJcjhTNnh4N296ZWpEdVNVWHNFTEJhdlI2?=
- =?utf-8?B?SVJ6bHcreFBoWnQ2SHlpQVNOVnRMT0FkL2dFVFN1Y1BsT3lwVWR4aFFpZEhV?=
- =?utf-8?B?emwweXdwbUo1UEQ0bEZnb1E2YmNwRUhJOXdwQ2ZhR3RNc3RJSExIeTlPNTVr?=
- =?utf-8?B?NG5PZ081ckpIUXVmTHo3UnhYNmxXZFFWbmkraERYVnFidVowOTZDb2E2My9k?=
- =?utf-8?B?MXVDZnRrc2RzMDdidzZrWmlOcFpUYXZ5bU53d3hEL1BOaWVES1VXNkV3L3VS?=
- =?utf-8?B?ellUNDJrZCtFaURtdWlidHgzdzB4NVVhY0ZlSlZ5QTk3WWFSc0htcWsxV3hD?=
- =?utf-8?B?NGVXSUR1Y2xJSzlLbCt6djgyUDhlOHBlTVViY1E3TTNjTy9xeDUvUVFvajBy?=
- =?utf-8?B?QTZRYnFieHdRbTRuSHVncnlPNmQydXd4RmJkWmE2ZDFwSlBCamRwbHpSVmhQ?=
- =?utf-8?B?Y2w0QURzZEZEZ29qc0p0eHRrV09tdXZtS1dka2IwTW0vM1h0R1Npam5SV3J1?=
- =?utf-8?B?QWkyV3dFQVMwc2RuK0RYdFA3WFNLc3prVU95MnR4QUtpTGFjNjNBc0Z1VDFm?=
- =?utf-8?B?aWpGL0Q3S0pROVVaK1Fsd3hqOXVIMGplMzUzaklncGZ0UWdMVVlXd05ETEhN?=
- =?utf-8?B?NDh4ZlBlbi9TZHBYUkFFUEZjV1YyaGxlWDdraGVqbWUybWY5c21zZ0twNXZ3?=
- =?utf-8?B?NVEvTHRMVWhNYjA4d0RLdWFKZXNhRDg4NXdtZkpTeXJIa2lFc0pGSUNyYlQy?=
- =?utf-8?B?R0ZYanhmbi82cGhmL0NCWkRzeS96ZmlOK0ozOUdwUXBsNnRTKzBjN0Vsckg1?=
- =?utf-8?B?MlRGaEdVYzJXM0RDR2JwUjdMREhjalZqdUc2czVpenFhL3dNTEM3Q1VGVjh4?=
- =?utf-8?Q?DaE0+vRVsAO/mAAZ4IlnhcwnBPJqD0pA?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PPF691668CDD.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YjVGeUZoUG00TkxaMlhLNER2OEJ1eXpXYXVWMU9PNUROaDFSVkpDOHh5L3N6?=
- =?utf-8?B?cXdzU2owZXdJSmhGeENOV2E1c3pJbFFkcTR1aUNjdUxtdVYyRHZqbnhFeHk1?=
- =?utf-8?B?bHkvdG1IYm1rN2NZV1FlU2h0cm11ZWorOEpZLzRPM0NLQjFwNGpmTVRvM3lG?=
- =?utf-8?B?VklYQ3hvTElMM0ZEN2dVdFIrejNac2hQbmJiWEx6Zi91ejFoUkh5MGREdXdh?=
- =?utf-8?B?VDFDeFdySE11QWNMZWpZRFBwZUtSSENHV0FlUTJiTTU5NithOVM4SWNvWXdO?=
- =?utf-8?B?aWlLb3ErZUNiazYzcGNIZ01Ka3Z5T2tNRjMwNTY2YmFrWFZXOW8xaFJiTnFK?=
- =?utf-8?B?NjZXUUU3VG5qZlE3WFBtdlJvMGN2Y1R1ZGZvVEdtWjROVGhxbmorMVB4Zmhy?=
- =?utf-8?B?dHlQeTYzK01mb3Jpd0V5TTNwZHM4RHI2S09peXhjeTdBaGQ3WmZFNm9naDQ3?=
- =?utf-8?B?a0hmTUNyY21FSkxZS1ZRWmtHdlFucW9hTkNKSXZldWsvbGRiYW9nbjJTZE1Z?=
- =?utf-8?B?ZDZBZUxvMnJLWHRwNHNMdjQ3QTl1NmxXcFRpWUx2Mm5ZbllDWlFpbVZtSGxI?=
- =?utf-8?B?Wk0vSjR3NHdxZmlybkdKL3NPNVFTcTJGTE1ZYnBJR3JvM01waTBoVS9sV04z?=
- =?utf-8?B?Slc0VjZSR3p4dTlibW9SNXEvY0E0WlBYeWhwK3E0S2ltWGJjOGltcDcyMWxS?=
- =?utf-8?B?RmNNRlpzSlJiazBjTmhkUFF3czlqUVNwZEUzQWtiMlJyZmpTSGErWlJkajhZ?=
- =?utf-8?B?ODBYUUlFRTNtUHJqK01MUHdaUmdyUHFtSlJoaGZ4SVJmUm5YWVNKZTdiQ1Rs?=
- =?utf-8?B?WG9vcjlONWZUUUliM0xhR3FoOGswQUxpVGhxalhlMHBRNytmTHZPSWhYSUw5?=
- =?utf-8?B?N0FMK2MrdXhOV0xHbTJDWlFmbDVpV1dHMVZIOWthd1N5aHBGM0FqaUpMR1FP?=
- =?utf-8?B?MlNSY3RMU0w0Y0c1STZSazlETVJOWmxKaHRXU3k3VDB2ZlV5clBic3Q0c3d6?=
- =?utf-8?B?aDgvbHQyOWZ1SnZ0MVJMWVNYV0VDcVAvdG5mQ3BkMHd2Q2RNb1E2ZnhuNitO?=
- =?utf-8?B?aG9LTFpXWnNsKzU3YkVKdE9JRnMwSkJmVHUxQUE0SjF6VlRocTZFUkFqVmti?=
- =?utf-8?B?aHJ2Und1TmdVeVI3RUt4ZE9jeG45anY3TE1Cd05RbHMzUEFZZ1VpbEEyQ3NZ?=
- =?utf-8?B?UEpBelREZkhTZkkxdHllR1I3dGwvbksrVEFqbE1Hb0xNWXZoQXBULzZ5RkI2?=
- =?utf-8?B?OXVPSDVEUlVJczRaWWpySWlTdTAwU1NPY0NudDAxTkMyTnJXNmE4Tm92V3NY?=
- =?utf-8?B?TFlDdlB5blVpTUg0ZVpYL1ZBOVVxRjlTeVpaemNSRUx4ZlZXZXpwL2FIZDMr?=
- =?utf-8?B?S1NTekd0a3FIeWJQRUIvN1hlQXV3dnY3OEo1cnl6ZFJNUUcrMzBZZkpDM0NZ?=
- =?utf-8?B?V2U5b2gwRTIyekV2MDF5M0JsUEtwd3BWOTlSU1JhTkN0TmVZNytVYzh3SGN5?=
- =?utf-8?B?eUtuZThJd2pNaHJ3b2xKTkd2M2FHcHlpSmFJQVFiZStQUEVZUHA0Q2dnTFB0?=
- =?utf-8?B?cmt4bzF2b2J4c2w5T0hpbmlHeERKanR1UHRXMVNXWG03WmxSU2VpOU9QNFFX?=
- =?utf-8?B?UERQZ0J1bDVuM2dZdWhWZWtiQ3UvaUF2cVdudFZyN1dDek9sMEhrbzRYRGho?=
- =?utf-8?B?NU5DV2pZc2tVUXduYlAwWDRuaXNKNEh3Z1pzWFIvYitMREJRNzRMN2JLc1JZ?=
- =?utf-8?B?Q3daTzFYNURRa1dzZG13UXZzUTBEcGNlZGVmbmhQVCtCNkEvcXNjc1FzL3ZN?=
- =?utf-8?B?SENlQ1hPUm82TW4vdzNmSGpzQ2kvUnI5cFZua2VpM3YwaUl0czMyZ0p5dmFq?=
- =?utf-8?B?L2dBWFdqaE0rSjlZTE9EYTU5cVdXRWRnQWRzUUZQVk82cEZKSWNaY2hMRDJR?=
- =?utf-8?B?VWkvQVRuMjdIVlgrTnpuVVJnM1ZzWlJRVlgzS2RsMUZHQUdDNnlqVXI5WE4z?=
- =?utf-8?B?WWc5QjlEbGVhWjFZdnZ2QWRPR005S3BteDFqdG5BQUd5dy9SSFVGN2svcDdC?=
- =?utf-8?B?eEF0RXpvbFNGdS8yYlBsWXl4VEVZaVQ3Vmx0RXhaZE44MUtISVIydjFtYUJS?=
- =?utf-8?B?S1kzT25nWUdPU1FwNGx0MWt5UDBhRHlUQkR0WHpmNFdXb1lqcXJ4M0ZKd1Zi?=
- =?utf-8?Q?jJ0z42UdAcpfgKyuPLQj8Gg=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 482d2403-4bc1-4f85-051b-08de21a40f27
-X-MS-Exchange-CrossTenant-AuthSource: DS4PPF691668CDD.namprd11.prod.outlook.com
+X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 04:29:25.0351
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8429.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a944a5a6-8af7-4aaf-b322-08de21a85864
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Nov 2025 05:00:05.3890
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: e97c/YbQnnuDyHMtdZFKWL5lgMtkMzuiqxARYHfbuLrrWt5GGwNFF1KwgZpWuv68OgV/rKciwGxYz9rOQIM93MFQ5qljQBFwfUnnjbS3xKo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV4PR11MB9466
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: dEtQWIdZEmo9SDu6mKsg1dqBHYFL3WqiGvTRp98ZAW7PuSDpcbbd2SANbTpOQ96lECYNlSzpxequQHKSIJuSbw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8992
 
 
 
-On 11-11-2025 22:13, Thomas Hellström wrote:
-> Avoid spamming the log with drm_info(). Use drm_dbg() instead.
-> 
-> Fixes: cc795e041034 ("drm/xe/svm: Make xe_svm_range_needs_migrate_to_vram() public")
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.17+
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> -----Original Message-----
+> From: John Ogness <john.ogness@linutronix.de>
+> Sent: Tuesday, November 11, 2025 10:43 PM
+> To: Petr Mladek <pmladek@suse.com>
+> Cc: Sergey Senozhatsky <senozhatsky@chromium.org>; Steven Rostedt
+> <rostedt@goodmis.org>; Sherry Sun <sherry.sun@nxp.com>; Jacky Bai
+> <ping.bai@nxp.com>; Jon Hunter <jonathanh@nvidia.com>; Thierry Reding
+> <thierry.reding@gmail.com>; Derek Barbosa <debarbos@redhat.com>; linux-
+> kernel@vger.kernel.org; stable@vger.kernel.org
+> Subject: [PATCH printk v1 1/1] printk: Avoid scheduling irq_work on suspe=
+nd
+>
+> Allowing irq_work to be scheduled while trying to suspend has shown to
+> cause problems as some architectures interpret the pending interrupts as =
+a
+> reason to not suspend. This became a problem for
+> printk() with the introduction of NBCON consoles. With every
+> printk() call, NBCON console printing kthreads are woken by queueing
+> irq_work. This means that irq_work continues to be queued due to
+> printk() calls late in the suspend procedure.
+>
+> Avoid this problem by preventing printk() from queueing irq_work once
+> console suspending has begun. This applies to triggering NBCON and legacy
+> deferred printing as well as klogd waiters.
+>
+> Since triggering of NBCON threaded printing relies on irq_work, the
+> pr_flush() within console_suspend_all() is used to perform the final flus=
+hing
+> before suspending consoles and blocking irq_work queueing.
+> NBCON consoles that are not suspended (due to the usage of the
+> "no_console_suspend" boot argument) transition to atomic flushing.
+>
+> Introduce a new global variable @console_offload_blocked to flag when
+> irq_work queueing is to be avoided. The flag is used by
+> printk_get_console_flush_type() to avoid allowing deferred printing and
+> switch NBCON consoles to atomic flushing. It is also used by
+> vprintk_emit() to avoid klogd waking.
+>
+> Cc: <stable@vger.kernel.org> # 6.13.x because no drivers in 6.12.x
+> Fixes: 6b93bb41f6ea ("printk: Add non-BKL (nbcon) console basic
+> infrastructure")
+> Closes:
+> https://lore.ke/
+> rnel.org%2Flkml%2FDB9PR04MB8429E7DDF2D93C2695DE401D92C4A%40DB
+> 9PR04MB8429.eurprd04.prod.outlook.com&data=3D05%7C02%7Csherry.sun%4
+> 0nxp.com%7C70da522fd21f416f3d1708de2130affc%7C686ea1d3bc2b4c6fa92
+> cd99c5c301635%7C0%7C0%7C638984690180001517%7CUnknown%7CTWFp
+> bGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4z
+> MiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DjzpzHfyW
+> 0kCsvsUz4DgQqSdoNxedZF2rnT9gS%2FuBa7A%3D&reserved=3D0
+> Signed-off-by: John Ogness <john.ogness@linutronix.de>
+
+For this patch, Tested-by: Sherry Sun <sherry.sun@nxp.com>
+
+Best Regards
+Sherry
+
 > ---
->   drivers/gpu/drm/xe/xe_svm.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
-> index 55c5a0eb82e1..894e8f092e3f 100644
-> --- a/drivers/gpu/drm/xe/xe_svm.c
-> +++ b/drivers/gpu/drm/xe/xe_svm.c
-> @@ -941,7 +941,7 @@ bool xe_svm_range_needs_migrate_to_vram(struct xe_svm_range *range, struct xe_vm
->   	xe_assert(vm->xe, IS_DGFX(vm->xe));
->   
->   	if (xe_svm_range_in_vram(range)) {
-> -		drm_info(&vm->xe->drm, "Range is already in VRAM\n");
-> +		drm_dbg(&vm->xe->drm, "Range is already in VRAM\n");
-
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-
->   		return false;
->   	}
->   
+>  kernel/printk/internal.h |  8 ++++---
+>  kernel/printk/printk.c   | 51 ++++++++++++++++++++++++++++------------
+>  2 files changed, 41 insertions(+), 18 deletions(-)
+>
+> diff --git a/kernel/printk/internal.h b/kernel/printk/internal.h index
+> f72bbfa266d6c..b20929b7d71f5 100644
+> --- a/kernel/printk/internal.h
+> +++ b/kernel/printk/internal.h
+> @@ -230,6 +230,8 @@ struct console_flush_type {
+>       bool    legacy_offload;
+>  };
+>
+> +extern bool console_irqwork_blocked;
+> +
+>  /*
+>   * Identify which console flushing methods should be used in the context=
+ of
+>   * the caller.
+> @@ -241,7 +243,7 @@ static inline void printk_get_console_flush_type(stru=
+ct
+> console_flush_type *ft)
+>       switch (nbcon_get_default_prio()) {
+>       case NBCON_PRIO_NORMAL:
+>               if (have_nbcon_console && !have_boot_console) {
+> -                     if (printk_kthreads_running)
+> +                     if (printk_kthreads_running
+> && !console_irqwork_blocked)
+>                               ft->nbcon_offload =3D true;
+>                       else
+>                               ft->nbcon_atomic =3D true;
+> @@ -251,7 +253,7 @@ static inline void printk_get_console_flush_type(stru=
+ct
+> console_flush_type *ft)
+>               if (have_legacy_console || have_boot_console) {
+>                       if (!is_printk_legacy_deferred())
+>                               ft->legacy_direct =3D true;
+> -                     else
+> +                     else if (!console_irqwork_blocked)
+>                               ft->legacy_offload =3D true;
+>               }
+>               break;
+> @@ -264,7 +266,7 @@ static inline void printk_get_console_flush_type(stru=
+ct
+> console_flush_type *ft)
+>               if (have_legacy_console || have_boot_console) {
+>                       if (!is_printk_legacy_deferred())
+>                               ft->legacy_direct =3D true;
+> -                     else
+> +                     else if (!console_irqwork_blocked)
+>                               ft->legacy_offload =3D true;
+>               }
+>               break;
+> diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c index
+> 5aee9ffb16b9a..94fc4a8662d4b 100644
+> --- a/kernel/printk/printk.c
+> +++ b/kernel/printk/printk.c
+> @@ -462,6 +462,9 @@ bool have_boot_console;
+>  /* See printk_legacy_allow_panic_sync() for details. */  bool
+> legacy_allow_panic_sync;
+>
+> +/* Avoid using irq_work when suspending. */ bool
+> +console_irqwork_blocked;
+> +
+>  #ifdef CONFIG_PRINTK
+>  DECLARE_WAIT_QUEUE_HEAD(log_wait);
+>  static DECLARE_WAIT_QUEUE_HEAD(legacy_wait);
+> @@ -2426,7 +2429,7 @@ asmlinkage int vprintk_emit(int facility, int level=
+,
+>
+>       if (ft.legacy_offload)
+>               defer_console_output();
+> -     else
+> +     else if (!console_irqwork_blocked)
+>               wake_up_klogd();
+>
+>       return printed_len;
+> @@ -2730,10 +2733,20 @@ void console_suspend_all(void)  {
+>       struct console *con;
+>
+> +     if (console_suspend_enabled)
+> +             pr_info("Suspending console(s) (use no_console_suspend to
+> debug)\n");
+> +
+> +     /*
+> +      * Flush any console backlog and then avoid queueing irq_work until
+> +      * console_resume_all(). Until then deferred printing is no longer
+> +      * triggered, NBCON consoles transition to atomic flushing, and
+> +      * any klogd waiters are not triggered.
+> +      */
+> +     pr_flush(1000, true);
+> +     console_irqwork_blocked =3D true;
+> +
+>       if (!console_suspend_enabled)
+>               return;
+> -     pr_info("Suspending console(s) (use no_console_suspend to
+> debug)\n");
+> -     pr_flush(1000, true);
+>
+>       console_list_lock();
+>       for_each_console(con)
+> @@ -2754,26 +2767,34 @@ void console_resume_all(void)
+>       struct console_flush_type ft;
+>       struct console *con;
+>
+> -     if (!console_suspend_enabled)
+> -             return;
+> -
+> -     console_list_lock();
+> -     for_each_console(con)
+> -             console_srcu_write_flags(con, con->flags &
+> ~CON_SUSPENDED);
+> -     console_list_unlock();
+> -
+>       /*
+> -      * Ensure that all SRCU list walks have completed. All printing
+> -      * contexts must be able to see they are no longer suspended so
+> -      * that they are guaranteed to wake up and resume printing.
+> +      * Allow queueing irq_work. After restoring console state, deferred
+> +      * printing and any klogd waiters need to be triggered in case ther=
+e
+> +      * is now a console backlog.
+>        */
+> -     synchronize_srcu(&console_srcu);
+> +     console_irqwork_blocked =3D false;
+> +
+> +     if (console_suspend_enabled) {
+> +             console_list_lock();
+> +             for_each_console(con)
+> +                     console_srcu_write_flags(con, con->flags &
+> ~CON_SUSPENDED);
+> +             console_list_unlock();
+> +
+> +             /*
+> +              * Ensure that all SRCU list walks have completed. All prin=
+ting
+> +              * contexts must be able to see they are no longer suspende=
+d
+> so
+> +              * that they are guaranteed to wake up and resume printing.
+> +              */
+> +             synchronize_srcu(&console_srcu);
+> +     }
+>
+>       printk_get_console_flush_type(&ft);
+>       if (ft.nbcon_offload)
+>               nbcon_kthreads_wake();
+>       if (ft.legacy_offload)
+>               defer_console_output();
+> +     else
+> +             wake_up_klogd();
+>
+>       pr_flush(1000, true);
+>  }
+> --
+> 2.47.3
 
 
