@@ -1,169 +1,246 @@
-Return-Path: <stable+bounces-194636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A1BC5407C
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 19:58:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC158C540D7
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 20:03:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F0AA3AF176
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 18:58:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 736953AABC9
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 19:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D618534405F;
-	Wed, 12 Nov 2025 18:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E0A34B18B;
+	Wed, 12 Nov 2025 19:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FkI6ySGl"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="dH+/pRpn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012061.outbound.protection.outlook.com [52.101.43.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886A735CBC9;
-	Wed, 12 Nov 2025 18:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762973887; cv=none; b=UfcAEau394cwKVmvEdkDTnbIHxtB2EM+SIuyYRPco0BQm/3XU4ez8CHfwfJnPviWXG0AFDth22I0XI8/YDH2qijAG4cxiJWl+WadITxr1df/V/2xSqCek/n4xyaJ8kP6rpVmSvrBDN2WebLdXVdwzTTe8J4bS8mx33/qm1U+ZTQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762973887; c=relaxed/simple;
-	bh=1FJjIirT7Sw6zks9hSZuy2eEhwmaKWExUY5BlnQBc0M=;
-	h=Date:To:From:Subject:Message-Id; b=IvtQUxDphm+Mt45Gvt/JTMIS6MjjOMpbVXN11P9+l9T64dRYJp/31WwR0ywMtvAwAPEYgKWtycGmyghJIaxFz1dwys4oXE7apDIrNS4/WL1SZwUS0yaTFO3txL9wtFq6tEHt4hPSecYN+qFRogM0oz9t+wQauEm+T5d2kCpspL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FkI6ySGl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD20C19421;
-	Wed, 12 Nov 2025 18:58:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762973887;
-	bh=1FJjIirT7Sw6zks9hSZuy2eEhwmaKWExUY5BlnQBc0M=;
-	h=Date:To:From:Subject:From;
-	b=FkI6ySGlTZ0JtLqihHw+17UCsodJ3LuZhG31h7dCDqTk1ANLeK5y/1MbICBFUAO9h
-	 RepAUjE/Ygi3jO7OnWCi/gSuod2hL6doiFMpzYweAszYmV+scilmA56Q/GdKjlN6d8
-	 5cBS/BUH9BkdvP6sJlFLfv/wwcfH+4pfO1RsJ/Rs=
-Date: Wed, 12 Nov 2025 10:58:06 -0800
-To: mm-commits@vger.kernel.org,vivek.kasireddy@intel.com,stable@vger.kernel.org,osalvador@suse.de,kraxel@redhat.com,jgg@nvidia.com,hch@lst.de,david@redhat.com,airlied@redhat.com,kartikey406@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-memfd-fix-information-leak-in-hugetlb-folios.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251112185807.0CD20C19421@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDA633A026;
+	Wed, 12 Nov 2025 19:03:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762974217; cv=fail; b=rVXiXe02KzDix0fMzFYsqblg2ZeBXlkFP6uMnub5HQ7dRf50RizFrcc9o0EaFPah4+E2cNoPlzG7ztepsguSNASvr6+o6CzyPKah9fu09C09yVKUTvjV0U08uwfmTbmiuBW+yoOpWmas6v6t6axwqN9IinPqHmHE7/nmXi0PTeI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762974217; c=relaxed/simple;
+	bh=rUMrp+6xrUAHoVF0m8ksdv4yKv9L93McAeveADuxkNM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Ed65n9vw9jd2IaRl388D2Y/d4MtRz56ZZ5Fl2gBOM4QvcYOtyES/zXgaBbytnmq+bdB9h1jyxoH4bIdK+D7cZPnCsyEFn2bC98DqMYym4mZHSWFXq/vizIQh+2FeZSXkrSocflULodeOIlWPbAFm0k9rR+QoY9MC4cFzR82EbOo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=dH+/pRpn; arc=fail smtp.client-ip=52.101.43.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b5cpJQZsc5aXmbzeMzC5haM9Xd5Idt/SnrNAU7NyR/kUcOvWzrYZfgV6QdkqwkvvAq9OJC2kpThTayrmwAe/m4e/nJz8n1Fvj5940MKDDmKwwUUjj0QQdFVt5MJpi9sDCg/smZPlZ62Gy584BqYLoF97pJoXmdrXpYdHMuCh7ciXL+mZQkehIPjYqhfSLhjKHQ0+caZhA+M7xLPfIP2u0ksbft8DPkOSCIhbQmCFRvamPmeO6IKLelLyafhWxcL6z5Nl7+5iE7sGbwvanV41AC+U1MUav7WI+HZLJmeCcpDBjQcDV/9JVnlPkDnMxnegyDOlOgjk+N0p76h3igXmqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fay81hVUrORiCZdZGEHKh5DIRT0r63EEk9jmeJs/NnI=;
+ b=Jz3HbAT2XX13jm8ybMe5ehejCFrI21ZFxSlmzYqKprWYfzEZwBGB9iKy/w+cpsQ/2t0pasLDHRoLPWy1uc256rKQkz3NaSyitj6Nj7DMPpY2eGd9JZ6t7ejFqNRkoYkM3e5Io9SbYUFNusr+46rlIj1jaSHRFSdHBahmBgU8DTlkU+YzTplPZkl9mZN0dmsfxtbY1vVGxV+gwHbwfb1DIOqe+ahNlc1qr6iTxgclQT/soCL+OYOrSN/v+Np6mvCltg43L1A76rgCfd+V74xaxdKbHzhuLFhCCdSm4NIec3WP4tPNvhvHu3tjWdsAt63Tof7d+kTjPyLhMLgYmiDiFg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.194) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fay81hVUrORiCZdZGEHKh5DIRT0r63EEk9jmeJs/NnI=;
+ b=dH+/pRpnzYLEHU10TRortb/TAzLS7U3B1OoCBjTqRlni+ALyRqWG1wN6QJ790bHnnssCrhqmqA6J/AK3qJhyoneIlGyB9aiN3d7CuAvaz+Kaoz4h5mdyE0PQXTuGL4DX8BsQ3vhTq5DK4oAKL2tLpOfzPtunWbZCrjl3WRUgwTg=
+Received: from MN2PR15CA0064.namprd15.prod.outlook.com (2603:10b6:208:237::33)
+ by CYXPR10MB7921.namprd10.prod.outlook.com (2603:10b6:930:e2::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Wed, 12 Nov
+ 2025 19:03:32 +0000
+Received: from BL02EPF0001A0FD.namprd03.prod.outlook.com
+ (2603:10b6:208:237:cafe::bb) by MN2PR15CA0064.outlook.office365.com
+ (2603:10b6:208:237::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.17 via Frontend Transport; Wed,
+ 12 Nov 2025 19:03:31 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
+Received: from flwvzet200.ext.ti.com (198.47.21.194) by
+ BL02EPF0001A0FD.mail.protection.outlook.com (10.167.242.104) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9320.13 via Frontend Transport; Wed, 12 Nov 2025 19:03:29 +0000
+Received: from DFLE207.ent.ti.com (10.64.6.65) by flwvzet200.ext.ti.com
+ (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 12 Nov
+ 2025 13:03:23 -0600
+Received: from DFLE208.ent.ti.com (10.64.6.66) by DFLE207.ent.ti.com
+ (10.64.6.65) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 12 Nov
+ 2025 13:03:23 -0600
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE208.ent.ti.com
+ (10.64.6.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Wed, 12 Nov 2025 13:03:23 -0600
+Received: from [10.249.42.149] ([10.249.42.149])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 5ACJ3MvJ3202957;
+	Wed, 12 Nov 2025 13:03:22 -0600
+Message-ID: <454220b7-81cc-4450-812c-06bfbe527ee2@ti.com>
+Date: Wed, 12 Nov 2025 13:03:22 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] mfd: tps65219: Implement LOCK register handling
+ for TPS65214
+To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, Aaro Koskinen
+	<aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman
+	<khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, Tony Lindgren
+	<tony@atomide.com>, Lee Jones <lee@kernel.org>, Shree Ramamoorthy
+	<s-ramamoorthy@ti.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+CC: Bajjuri Praneeth <praneeth@ti.com>, Thomas Petazzoni
+	<thomas.petazzoni@bootlin.com>, <linux-omap@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<stable@vger.kernel.org>
+References: <20251112-fix_tps65219-v4-0-696a0f55d5d8@bootlin.com>
+ <20251112-fix_tps65219-v4-1-696a0f55d5d8@bootlin.com>
+Content-Language: en-US
+From: Andrew Davis <afd@ti.com>
+In-Reply-To: <20251112-fix_tps65219-v4-1-696a0f55d5d8@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FD:EE_|CYXPR10MB7921:EE_
+X-MS-Office365-Filtering-Correlation-Id: 48331d56-8103-4fb6-7337-08de221e2af7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|376014|7416014|82310400026|921020|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eDA0Sm1mL2YrUktkQlVVdThBanRBK2IzeXpGeHVnckIwT0NlejgybUpOYU5E?=
+ =?utf-8?B?eXdaVUw0a0NKaXJOUldYNkRpdUhHWER0cWZCbm1KQ1Q5VFVOSzVCTW42c0FM?=
+ =?utf-8?B?WG9pMEZhUEFMcDA0THZpZmovN2J5WE1YSFBFdUwzRDVsdVdrL1cyU0xiZG1V?=
+ =?utf-8?B?cHFRRFlUVGtuYkcvMWdJUXd6Mnc0ZHE1RHNDU1VXRUZlUjVaVlZnWGVTRFdh?=
+ =?utf-8?B?bzZiU0NoMHM3S3lCcFEyTmtDL2oyTVUwNEFjN2crMzRpL3lkaUNsUC9UV2Z3?=
+ =?utf-8?B?Ym9qSkFFczZxN2RWK2R6ZU1XSTg1YmppclExbXgremdLWklKZVl2RWtkT243?=
+ =?utf-8?B?S2ZISk1ncWxEeS9LdmhIUVVRS0hxaG5VZDRoMkN1TUt2TDJZdHgzQUd1eDI0?=
+ =?utf-8?B?TmFSNTBBKzhva2RCczNPK1FhS2NCRFBoNHF0K0JlQzUwcTVySnhMa1h2cFBy?=
+ =?utf-8?B?ZmJUdG92WnBzaHhDNVRxb2NnYkpHamVLcnZaT3JZaTNnazlyZjZkZ3RnR1Za?=
+ =?utf-8?B?NExudkptQ1NKNlRncVFQYWxGRmpHQndva3A3ckV5ZlJpUzBPd2Q3M1BWSTg4?=
+ =?utf-8?B?ekpzMDZsV1Erb3VhN3p3OWo4eXplQnNYK25kaHQ4TCtzYTRlak5Ub2lZekF5?=
+ =?utf-8?B?dFNyL3hBc1p3elpIcVFoYTVYL0dWOG4xVDFhak1hRTlicERMcG1sUmFoeEJK?=
+ =?utf-8?B?VGlZTmJsSFg1cXd6OTNUWVBra0crQm5WOFg3bzFXbDIzVXp4UGpDOVNHVzdN?=
+ =?utf-8?B?Ym52U2R4WS9aSUE2cjRseXRPR1dVaXNBbkFpZTF6LzlqS2d5WTd3UHZMWW55?=
+ =?utf-8?B?SlhBMXV3NG5kTmdhTkN0aUFFVUhJcnRMbFhRRUdvcEhuR1Rtczg0T3NBZDZL?=
+ =?utf-8?B?c01SWGsxMTBoU20rOFloekZPb0Z3SzM1VWR1UXdBS3M5UzVrWm5udU9oUmdw?=
+ =?utf-8?B?SnR5b2FJcGptTE9ETktzK0x0NnZGbkVqVDRJSk5KbE1PdFA3cnFhUjhrWGZ1?=
+ =?utf-8?B?bUt0czIvUTF3MTFvdTRNT01xbitVUmQ3d0pyWTh6aHdwbXlONzJYVWtaWm02?=
+ =?utf-8?B?MFg0ZHRYY21sR1ltaTBYZEZZZEYzWmhuM083YnhkRU9YL0tRVzBqd3RFZi9p?=
+ =?utf-8?B?R0x3WmNCSDRGS0RFYzAvaXlyblg0NVhzaG5PaDcxMTJ1RkM2WVU4aXo0ZExG?=
+ =?utf-8?B?MkdDeHk4TUpCa0crUVg4K1NWYVFhYThUVXdIY05EMVRJNjY0NnpXVmFlS3py?=
+ =?utf-8?B?bVJNaUxnRUN5S1g0K1JVZlRKQ2pRUGNHa2VVTHlBM3Vuejk2TEEya0pKUmdM?=
+ =?utf-8?B?TE12R1lraFdRZVE5cVhMeTljQkExbVVCTm9WbmNORkN2ZDBSS092VHBkc2JE?=
+ =?utf-8?B?bXF1YjZ1c2poZzlpaXg4OEgyeWJxVWplcGZCZ0Zzc3hTYm40UlBsc2JIWHN3?=
+ =?utf-8?B?NU9RT24vdExhVmFNK1dtcG1VSVA0SFVjT21sU1NPMkVXaGdhbDh0R0c4WjRz?=
+ =?utf-8?B?SzR1blo0ZG9Cd2JFTFdlR2VSOFd4RG4vRm56Z1N3Rkhmdk9UQ05EVGFEV2lY?=
+ =?utf-8?B?ZHVGdHlyR2orZFlVakg5ampibjZtcFREZmlEQy95bUJJQXJKUDN5MGM0WUtF?=
+ =?utf-8?B?UnhaWnc4NXVNejJYZEM0Y1pNS3Q1ZkQ3Nm0rZSsrcmFaUnluSHRzdE9BUWpU?=
+ =?utf-8?B?NmZ5RHZwbzcreHB3RTBlK1gyTC9seGZHZ1lyYzZuQWRmcFpodDlSZ1NHamJj?=
+ =?utf-8?B?MDVkT29jV0lrSzVDMzd6eG52SXJFbnppekZuQTBZNzBqL2VJVklmQ3pwSVVJ?=
+ =?utf-8?B?LzFnUmFvR0NlOG5aRFFPZm5yMFZBZWFENThKZHpoRUI3d2FyTUtVWVhQVit0?=
+ =?utf-8?B?WGs5SS95VzNiU3BzK2ltNk4ycjBneEQ3NXNHMFcxQ0NJOVE4WnB2VXEvYzg1?=
+ =?utf-8?B?OTRYd095T29pd2ZWZjFFK2ZUNjdTT3ZtWkZ6TEJiL3VhdWdPR0dTK2Y5RUdF?=
+ =?utf-8?B?bElkQ3dPVEFZSEk2UHZ6MVNRWjd1cjBubzgvMVd5UDdlOHdVTFhacGhuTGJK?=
+ =?utf-8?B?MktDM1kwQTU4MUhHSDhGbEE4cDE1RERVS2Z2Z3RaQTBSUSt0dGlmS0ZOYTNt?=
+ =?utf-8?Q?2B+EDkIEMphqEvg2YRY36vF/W?=
+X-Forefront-Antispam-Report:
+	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(7416014)(82310400026)(921020)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 19:03:29.7237
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48331d56-8103-4fb6-7337-08de221e2af7
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A0FD.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR10MB7921
 
+On 11/12/25 9:14 AM, Kory Maincent (TI.com) wrote:
+> The TPS65214 PMIC variant has a LOCK_REG register that prevents writes to
+> nearly all registers when locked. Unlock the registers at probe time and
+> leave them unlocked permanently.
+> 
+> This approach is justified because:
+> - Register locking is very uncommon in typical system operation
+> - No code path is expected to lock the registers during runtime
 
-The patch titled
-     Subject: mm/memfd: fix information leak in hugetlb folios
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-memfd-fix-information-leak-in-hugetlb-folios.patch
+Any other entity in the system that could re-lock these registers?
+How about low power modes or other PM handling?
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memfd-fix-information-leak-in-hugetlb-folios.patch
+> - Adding a custom regmap write function would add overhead to every
+>    register write, including voltage changes triggered by CPU OPP
+>    transitions from the cpufreq governor which could happen quite
+>    frequently
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 7947219ab1a2d ("mfd: tps65219: Add support for TI TPS65214 PMIC")
+> Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
+> ---
+> Changes in v4:
+> - Move the registers unlock in the probe instead of a custom regmap write
+>    operation.
+> 
+> Changes in v3:
+> - Removed unused variable.
+> 
+> Changes in v2:
+> - Setup a custom regmap_bus only for the TPS65214 instead of checking
+>    the chip_id every time reg_write is called.
+> ---
+>   drivers/mfd/tps65219.c       | 7 +++++++
+>   include/linux/mfd/tps65219.h | 2 ++
+>   2 files changed, 9 insertions(+)
+> 
+> diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
+> index 65a952555218d..f1115c5585545 100644
+> --- a/drivers/mfd/tps65219.c
+> +++ b/drivers/mfd/tps65219.c
+> @@ -498,6 +498,13 @@ static int tps65219_probe(struct i2c_client *client)
+>   		return ret;
+>   	}
+>   
+> +	if (chip_id == TPS65214) {
+> +		ret = i2c_smbus_write_byte_data(client, TPS65214_REG_LOCK,
+> +						TPS65214_LOCK_ACCESS_CMD);
+> +		if (ret)
+> +			return ret;
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Might be good to print out some error message here, otherwise LGTM,
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Reviewed-by: Andrew Davis <afd@ti.com>
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: mm/memfd: fix information leak in hugetlb folios
-Date: Wed, 12 Nov 2025 20:20:34 +0530
-
-When allocating hugetlb folios for memfd, three initialization steps are
-missing:
-
-1. Folios are not zeroed, leading to kernel memory disclosure to userspace
-2. Folios are not marked uptodate before adding to page cache
-3. hugetlb_fault_mutex is not taken before hugetlb_add_to_page_cache()
-
-The memfd allocation path bypasses the normal page fault handler
-(hugetlb_no_page) which would handle all of these initialization steps. 
-This is problematic especially for udmabuf use cases where folios are
-pinned and directly accessed by userspace via DMA.
-
-Fix by matching the initialization pattern used in hugetlb_no_page():
-- Zero the folio using folio_zero_user() which is optimized for huge pages
-- Mark it uptodate with folio_mark_uptodate()
-- Take hugetlb_fault_mutex before adding to page cache to prevent races
-
-The folio_zero_user() change also fixes a potential security issue where
-uninitialized kernel memory could be disclosed to userspace through read()
-or mmap() operations on the memfd.
-
-Link: https://lkml.kernel.org/r/20251112145034.2320452-1-kartikey406@gmail.com
-Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/20251112031631.2315651-1-kartikey406@gmail.com/ [v1]
-Closes: https://syzkaller.appspot.com/bug?extid=f64019ba229e3a5c411b
-Suggested-by: Oscar Salvador <osalvador@suse.de>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Tested-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com> (v2)
-Cc: Christoph Hellwig <hch@lst.de> (v6)
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memfd.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
-
---- a/mm/memfd.c~mm-memfd-fix-information-leak-in-hugetlb-folios
-+++ a/mm/memfd.c
-@@ -96,9 +96,36 @@ struct folio *memfd_alloc_folio(struct f
- 						    NULL,
- 						    gfp_mask);
- 		if (folio) {
-+			u32 hash;
-+
-+			/*
-+			 * Zero the folio to prevent information leaks to userspace.
-+			 * Use folio_zero_user() which is optimized for huge/gigantic
-+			 * pages. Pass 0 as addr_hint since this is not a faulting path
-+			 *  and we don't have a user virtual address yet.
-+			 */
-+			folio_zero_user(folio, 0);
-+
-+			/*
-+			 * Mark the folio uptodate before adding to page cache,
-+			 * as required by filemap.c and other hugetlb paths.
-+			 */
-+			__folio_mark_uptodate(folio);
-+
-+			/*
-+			 * Serialize hugepage allocation and instantiation to prevent
-+			 * races with concurrent allocations, as required by all other
-+			 * callers of hugetlb_add_to_page_cache().
-+			 */
-+			hash = hugetlb_fault_mutex_hash(memfd->f_mapping, idx);
-+			mutex_lock(&hugetlb_fault_mutex_table[hash]);
-+
- 			err = hugetlb_add_to_page_cache(folio,
- 							memfd->f_mapping,
- 							idx);
-+
-+			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+
- 			if (err) {
- 				folio_put(folio);
- 				goto err_unresv;
-_
-
-Patches currently in -mm which might be from kartikey406@gmail.com are
-
-mm-memfd-fix-information-leak-in-hugetlb-folios.patch
-ocfs2-validate-cl_bpc-in-allocator-inodes-to-prevent-divide-by-zero.patch
+> +	}
+> +
+>   	ret = devm_regmap_add_irq_chip(tps->dev, tps->regmap, client->irq,
+>   				       IRQF_ONESHOT, 0, pmic->irq_chip,
+>   				       &tps->irq_data);
+> diff --git a/include/linux/mfd/tps65219.h b/include/linux/mfd/tps65219.h
+> index 55234e771ba73..3abf937191d0c 100644
+> --- a/include/linux/mfd/tps65219.h
+> +++ b/include/linux/mfd/tps65219.h
+> @@ -149,6 +149,8 @@ enum pmic_id {
+>   #define TPS65215_ENABLE_LDO2_EN_MASK                    BIT(5)
+>   #define TPS65214_ENABLE_LDO1_EN_MASK			BIT(5)
+>   #define TPS65219_ENABLE_LDO4_EN_MASK			BIT(6)
+> +/* Register Unlock */
+> +#define TPS65214_LOCK_ACCESS_CMD			0x5a
+>   /* power ON-OFF sequence slot */
+>   #define TPS65219_BUCKS_LDOS_SEQUENCE_OFF_SLOT_MASK	GENMASK(3, 0)
+>   #define TPS65219_BUCKS_LDOS_SEQUENCE_ON_SLOT_MASK	GENMASK(7, 4)
+> 
 
 
