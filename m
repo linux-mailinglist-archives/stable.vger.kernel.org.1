@@ -1,67 +1,56 @@
-Return-Path: <stable+bounces-194579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53FEDC51767
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:51:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 841ADC51609
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:35:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C1C7D4FE216
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 09:34:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E7AF189CEF6
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 09:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59CCD2FDC5C;
-	Wed, 12 Nov 2025 09:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905A6301489;
+	Wed, 12 Nov 2025 09:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="A78suv9J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UyDFIVHu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A580127FD78
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 09:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476A73009D8;
+	Wed, 12 Nov 2025 09:33:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762940013; cv=none; b=JUKiuBM61wHn/NDZo3tP+gmEcLjIuYQC7WiBd8WB24xkTlIxyDbqROJOO1RXfOwVsQD/mAzXKrKMZ5CQyrs6QDS6PXF6DLIJxJzOcN0fr3Tpq+BEz1HVnrj3GB5/3FzE+HTa93IiGNFPgjuJn88XqmE0/jEV3tfDdzZ7atFsXzY=
+	t=1762940031; cv=none; b=JDTSOtPJUfGZ8XEFGl4HMhj/Nqk/Q8PMYeiMUW8/w2ZcuRpIyzSmp+mlzlCKoz11xZKMnU/UzQ/8ir2zKDJaDznMLo3+RMtns216r27+uqHA2GcKyiLgm3meaz+jbihsClXtYpTkiElGPinebevo9hs995IzVsTlOJaqAnXRbfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762940013; c=relaxed/simple;
-	bh=V7VJas4OcRnxXubUexQa+LfGKvk8QPDPWv3vK3C+96g=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tJ3iNXe3EHUbhtZIzCd5Q5xHCDAH3JHXz1hKQFBcqcUoRWXiX3rpk0/Y5rNSqigdRzq52U79kteajuKvzKwXVKgfnIRQBrhhCxvZGwqDyraMg+f8bpjp+2gBIpZ1673PoK7w9m26iu6Et2xoqgYUVYBl78oHTzi6vZSzpBafe4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=A78suv9J; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 13A1B1A1A0F;
-	Wed, 12 Nov 2025 09:33:29 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D86756070B;
-	Wed, 12 Nov 2025 09:33:28 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1E0121037191E;
-	Wed, 12 Nov 2025 10:33:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1762940008; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=V7VJas4OcRnxXubUexQa+LfGKvk8QPDPWv3vK3C+96g=;
-	b=A78suv9J6JZ2r7gjwmylN4gjA0BmFOfU+51v5jfOn3/pHKb6bGvgozBKvXYxJwyBMvhesw
-	iqqUSC0xYLcaSeq8QmCG9u7wSdEPPU35SsjWFABMa8oNC6XAoqv243/UfHySk4B5jMQY0g
-	RlIQd77VF4riaFsjY3a25QOJnReog+RJLqwJQcKJqRkN31IJOqWDswDcbgaPfPn54M3KpA
-	8skPYy+FU1FWRbUGM9gHY7uaiUWqQPBVpvszzEvSOk2FUKfSy2yJh6hELtksRRbNzIWAva
-	97HqEj3bJhuo74Iq7KSUhEQo6T8KD8Jy49+ehUARosCu7N+cAfeW9xRNhHXq4w==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
-  linux-mtd@lists.infradead.org,  linux-kernel@vger.kernel.org,
-  stable@vger.kernel.org
-Subject: Re: [PATCH] mtd: mtdpart: ignore error -ENOENT from parsers on
- subpartitions
-In-Reply-To: <20251109115247.15448-1-ansuelsmth@gmail.com> (Christian
-	Marangi's message of "Sun, 9 Nov 2025 12:52:44 +0100")
-References: <20251109115247.15448-1-ansuelsmth@gmail.com>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Wed, 12 Nov 2025 10:33:25 +0100
-Message-ID: <87y0ob7fyy.fsf@bootlin.com>
+	s=arc-20240116; t=1762940031; c=relaxed/simple;
+	bh=VaWvuF/ukzI6PWpHBDHmQqomQZveyXgP4iaU8vUBouQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XlKpktXZ87A5KNVk6uDj7REcXTyH8phFrMQdt7bwtTPrsKKn08vOTkID6nS0tuo87gIWMHL7w/ztnWXmoDg3n4WHqyT1f7U3qX27aNeceKlS9hrMg9npx5Foe68fhcbe2DzQ8PAdA0hB3Y62JMGAKgpobl7TGbvMiKptJgGJHCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UyDFIVHu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190E7C4AF09;
+	Wed, 12 Nov 2025 09:33:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762940030;
+	bh=VaWvuF/ukzI6PWpHBDHmQqomQZveyXgP4iaU8vUBouQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UyDFIVHupVESBO5dKdFJrpimm/QKcIKr0pIBA+/nRs7CPrOokVE1j8R2pbbZo4+D6
+	 LaLcQ4msb6O040l0Xlul+J1I0CxWKJtpzwQpFHibIydSaDzMYJLRAPITnAZrKB/7Xj
+	 Cw4xqTjQFeN2a6S3mtZteOzH165g3rvMwinBE0FwcIc/6VSoKC5bUVF5vz1T4grRN3
+	 02cWymyRwrBcC9ero4np0nIOiLCCkVhnPUQXIaF+rfVOWu4buqIhpWHkQya3TZ95al
+	 puiWSHBqlsb7mXu0ckqvIpdIYrfcKU/4mAXxe7WT8wnXsdFy2CeSgWtdvibGgEaM8/
+	 4p8JFjxn7NAEQ==
+Date: Wed, 12 Nov 2025 10:33:46 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Mike Yuan <me@yhndnzj.com>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, 
+	Hugh Dickins <hughd@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] shmem: fix tmpfs reconfiguration (remount) when noswap
+ is set
+Message-ID: <20251112-vorbehalt-heizsysteme-3b11ba2b7ea3@brauner>
+References: <20251108190930.440685-1-me@yhndnzj.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,33 +58,39 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Disposition: inline
+In-Reply-To: <20251108190930.440685-1-me@yhndnzj.com>
 
-Hi Christian,
+On Sat, Nov 08, 2025 at 07:09:47PM +0000, Mike Yuan wrote:
+> In systemd we're trying to switch the internal credentials setup logic
+> to new mount API [1], and I noticed fsconfig(FSCONFIG_CMD_RECONFIGURE)
+> consistently fails on tmpfs with noswap option. This can be trivially
+> reproduced with the following:
+> 
+> ```
+> int fs_fd = fsopen("tmpfs", 0);
+> fsconfig(fs_fd, FSCONFIG_SET_FLAG, "noswap", NULL, 0);
+> fsconfig(fs_fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
+> fsmount(fs_fd, 0, 0);
+> fsconfig(fs_fd, FSCONFIG_CMD_RECONFIGURE, NULL, NULL, 0);  <------ EINVAL
+> ```
+> 
+> After some digging the culprit is shmem_reconfigure() rejecting
+> !(ctx->seen & SHMEM_SEEN_NOSWAP) && sbinfo->noswap, which is bogus
+> as ctx->seen serves as a mask for whether certain options are touched
+> at all. On top of that, noswap option doesn't use fsparam_flag_no,
+> hence it's not really possible to "reenable" swap to begin with.
+> Drop the check and redundant SHMEM_SEEN_NOSWAP flag.
+> 
+> [1] https://github.com/systemd/systemd/pull/39637
+> 
+> Fixes: 2c6efe9cf2d7 ("shmem: add support to ignore swap")
+> Signed-off-by: Mike Yuan <me@yhndnzj.com>
+> Cc: Luis Chamberlain <mcgrof@kernel.org>
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: Hugh Dickins <hughd@google.com>
+> Cc: <stable@vger.kernel.org>
+> ---
 
-On 09/11/2025 at 12:52:44 +01, Christian Marangi <ansuelsmth@gmail.com> wro=
-te:
-
-> Commit 5c2f7727d437 ("mtd: mtdpart: check for subpartitions parsing
-> result") introduced some kind of regression with parser on subpartitions
-> where if a parser emits an error then the entire parsing process from the
-> upper parser fails and partitions are deleted.
->
-> Not checking for error in subpartitions was originally intended as
-> special parser can emit error also in the case of the partition not
-> correctly init (for example a wiped partition) or special case where the
-> partition should be skipped due to some ENV variables externally
-> provided (from bootloader for example)
->
-> One example case is the TRX partition where, in the context of a wiped
-> partition, returns a -ENOENT as the trx_magic is not found in the
-> expected TRX header (as the partition is wiped)
-
-I didn't had in mind this was a valid case. I am a bit puzzled because
-it opens the breach to other special cases, but at the same time I have
-no strong arguments to refuse this situation so let's go for it.
-
-Thanks,
-Miqu=C3=A8l
+Reviewed-by: Christian Brauner <brauner@kernel.org>
 
