@@ -1,190 +1,143 @@
-Return-Path: <stable+bounces-194585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F29C518C6
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 11:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 044E4C518FF
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 11:08:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80EAE3A2ACB
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 09:45:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DAA14215DC
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 09:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0062FFFA2;
-	Wed, 12 Nov 2025 09:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64E23002C3;
+	Wed, 12 Nov 2025 09:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wbzMQ6JZ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4XPkNhvG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5A92FE568;
-	Wed, 12 Nov 2025 09:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C9A2FFF8B
+	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 09:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762940738; cv=none; b=uxPRTwRYEt9TlVVQbnggsFyzT+heUOzeb64gQ8wRi86y2YBGdUA9qCk9Gb7xuj12qqlIo3IpHb6RAouTaLA6UgHXgLl7hzs+QBqowOwK9jzQig8+XgaBYHlMYTNvOfIr+E9QHeGmUF0hsyj8320HvvBPYiFxHvUMGmcgIjczd80=
+	t=1762940944; cv=none; b=e3NZW8dGXRsZrAkJ7OOoRhiVBEINF8jhLBdqk/MbkDSh/tg+Adq3DYGTDVw8doweTjnGh93Oit6qZls04iiIA0xaHOwJc98TOjX6CofC+J/RrBkj6N5HHDsF2rNflQKciRNYGdwb5DmVyiH+BdhR2QJGXEdIStMWkCAZEq/zheM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762940738; c=relaxed/simple;
-	bh=mLuzNV/tT6gKT4g9bK/Ute2cqhVefOMDFTraOTFzmw8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rVFBaeiTAOA8YkErNLuYBtRkH9ZkPkvMKtOLh2ToFVEQScq7ORx/u4vmxKmlgjHX6ilwoGhD1taZmD2tVpQfEtvmUSSEP75N1v72sz/QvE8ZKdHMlxRpr27W+BPa5okpxdQcKAp2UO/+iiLPNR9gK6Ao2oL186EQYopebtWpfTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wbzMQ6JZ; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 63793C0F55F;
-	Wed, 12 Nov 2025 09:45:12 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 042216070B;
-	Wed, 12 Nov 2025 09:45:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E452210371996;
-	Wed, 12 Nov 2025 10:45:30 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1762940732; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=SrgPhVYzot3NWRz/WiAinbX7Yf1I2w+dgr+AbFgHKVg=;
-	b=wbzMQ6JZ7XI74M+GM70CbsbX3EpysLrVhfq1oHKbuy3qplQNT+ulzIHG8hriS+HKZgKDwu
-	oE9u61uqJEdDVPTr3V4K7t5KmFTJKxQrDxWWmNStCDfiLBi26Axq5VruZuwcQ5M7hyAd7n
-	FVbilEFYI9dDszjqjbwwPiPyrRwTUz3F/8KwcfryNwzIbbrwQXMBs0I/izhMimRTMnawaW
-	DwaS3bsANnhwwbcEL77DvvzKlyMYonb5PpkLxisnSCM6/wmHECRQ7m+okb9AJ3DFEcu04L
-	OiVVLgehOMetVoSW3faJzLcR25GDVPEC3+nt4E3XhL8S0lYaswCswS3TYtvvZg==
-From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
-Date: Wed, 12 Nov 2025 10:45:24 +0100
-Subject: [PATCH v3 1/2] mfd: tps65219: Implement LOCK register handling for
- TPS65214
+	s=arc-20240116; t=1762940944; c=relaxed/simple;
+	bh=QmvyXDXDVrsdfDM+yKnByFuQLV8gY2auM7CbdPaIBok=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=aRbRfNzsbuAiC+gHww/Mwmq5KR9O2dZp1YkifcpTjUwxDta2PVg4dLwU8r3qsSP4OB3VfgWZ6jIATTdFQNnqFoZYbZsnVKYrBEdkYw66gSNUSFFWOYy19tSHgSGRLQQAgvWwsLqbWIP4J0gVETtRAGjwyr/8NvOWoJjRoiTDg8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4XPkNhvG; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-475c422fd70so5080645e9.2
+        for <stable@vger.kernel.org>; Wed, 12 Nov 2025 01:49:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762940941; x=1763545741; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/Gv6xr0GGt0t3EpcKK4KiIfCoZCaOutnve9evDPKR/k=;
+        b=4XPkNhvGOpG96My7uORsPKd6lDMEKmbAVliBbNzOXhdByoICFUvoIml8/a9ajP18fV
+         UBwo7aluHz/8/VQaWXARcLFfvXXW/w1laGni3akMfc66j8ZzlLExyDbYut9nl09pozOq
+         XM5GyZVuNPh3yMj9h6yP+ZWou/MaeZI11k2jYND4N/puNfsHhJx78yRDci8/HKnMO2NA
+         hmsgH5afIDJPPrzwfbUCtBP0Hi5GWLRsyPNLy+KRKfnSmyj7CwtryBxqEbsw+sYg4nCv
+         iK+n70BrPILFqxEgTvFbnaKBwPIq3g6BGTrnr098/CZTarFNCHrOJ+SGZhteTZh9qwGm
+         SLkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762940941; x=1763545741;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/Gv6xr0GGt0t3EpcKK4KiIfCoZCaOutnve9evDPKR/k=;
+        b=rZb716NUc/YOyjV/sDayGmqasOyuvGO65z5HZrqdgZuXDtMXt0iIciqojpFLrM+okJ
+         hP8tLlVT3G0MD0/jGmUDBq4dnzhrohGBF/eyrml9EF6LvXgrzxfxkO8ZEV1SRek/QigH
+         KTDMuCRToztWj/bm+6McyD4XtbxGyLZiUqJWJ2UN+ZuYGDuiPkKpAx2ag2t4eGrw/Xvj
+         l4L/ayO+KwBrGCpQKk/DbVFUFxYwK3Y5tfgAymlom64JCmNVIx5kxuTCZeiasqigHBlz
+         c3DWSZbaNENycdR8rcAMfVZ8E3S8BDqzwqkZxy6b9vyUQKujdu5oNOxh1QYRUjLcfcnU
+         qVfg==
+X-Forwarded-Encrypted: i=1; AJvYcCWIkMK9c4EU/t7WS6RablgENIc4zE1xsHsjNyAt5UJBgSV/DJUQpNegpWRgEvEZdqFmx3e739E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCf63zqm7tGz2MHxSg6og4uJLMQeoniyuEjD/pPr/OwDq4w4Qf
+	NI79RK5bEIlb7KSHrmTs5UbzQpAsmBabLKocEVE6AWMSQ07qJIGZda0Rg1+rA0kmfbuTauvOP5T
+	3/6gOevbBWTyNPdY4nQ==
+X-Google-Smtp-Source: AGHT+IH2dS2PfgK5jUWA9Ng2M4W2Yq6xdnOBF1mJ4GATChiOA37Dbco0oRuZd8Strxz0EtvePc8l6EG3deFkh48=
+X-Received: from wmsm13.prod.google.com ([2002:a05:600c:3b0d:b0:475:de6a:c2eb])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3511:b0:477:54cd:2021 with SMTP id 5b1f17b1804b1-47787041346mr22179505e9.8.1762940941091;
+ Wed, 12 Nov 2025 01:49:01 -0800 (PST)
+Date: Wed, 12 Nov 2025 09:48:31 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAO9XFGkC/4WNQQ6CMBBFr0Jm7ZhOCRBceQ/DQtsBmihtOkhsS
+ O9u5QIu30v++zsIR8cCl2qHyJsT55cC+lSBme/LxOhsYdBKN0Sqxcji39EwhjkJrimw5VGwtY+
+ 663VnqemhjEPk0X2O8G0oPDtZfUzHz0Y/+ze5ESpURrE1Xa3I8HXyfnry2fgXDDnnLxY5KjK9A AAA
+X-Change-Id: 20251106-resource-phys-typedefs-6db37927d159
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1447; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=QmvyXDXDVrsdfDM+yKnByFuQLV8gY2auM7CbdPaIBok=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpFFgHx3cwOybF0VqfBGf60UP+BMu97heCo8Oad
+ L+QNsSjXvGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaRRYBwAKCRAEWL7uWMY5
+ RlFcD/9zmqypMTbBEK4TFlukuZM28Zj2oKT+e+aZvfgWd0Inzg+K7c9n+IHif0zR+qlN2t4X2o0
+ aHfY7UxibEFHdEvKFsgMtbhtwQ/z+JK0kttJ72s2n+PDcO9lzihrGeBAD85TE82P/kaeDopUtkh
+ omNICZrSODCry5Mv/7iLPl4VjVoqLkelYvSy0OlisW/fDXqN0rS/8R951e/g8uzWb+AYbMmJjgc
+ 1/ygIl/IA4c3AJW41oOTWM27yHz5y2x2ztGwB+RqmLBpT99ga8mU/njL1uGCm4FQr0OQAkcZ3rI
+ XRhy+yY8ylTMusX9ocpcFqBewH0KwchGINQiCHlBW1TpKZjWMOM/3G+c6JV3S5Nf+JhIOh3KXZO
+ 8YPrjhZb4j3nnjW2RSaLgQDozX2xgpXV+AQruHkd6DZrLMRbAomPLlBSus8qxigtzZfGXcuQjOd
+ a9Rut9qAv2L+a89KrCuQdvv3sn1F8HSVWkqShw+EstS7r7c1nByQq4xzWNfHpG80PekfLNfauzd
+ IWJTMK7h3aelFpZ0k/Ela+2vgsmDe8snkwwThtVXAskqkCBRIEeFkRQ2hzxlBOXkqr5MNioaEET
+ xvZpwYS8XLVlW0UULAxbX1kwwMdTP0wpenV3UdsZfFX0EAJ8Vty7Mvd+UM+lZY7peXdZtl5q5+j NdJXJz77uqOh3IA==
+X-Mailer: b4 0.14.2
+Message-ID: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com>
+Subject: [PATCH v2 0/4] Rust: Fix typedefs for resource_size_t and phys_addr_t
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251112-fix_tps65219-v3-1-e49bab4c01ce@bootlin.com>
-References: <20251112-fix_tps65219-v3-0-e49bab4c01ce@bootlin.com>
-In-Reply-To: <20251112-fix_tps65219-v3-0-e49bab4c01ce@bootlin.com>
-To: Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
- Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
- Lee Jones <lee@kernel.org>, Shree Ramamoorthy <s-ramamoorthy@ti.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Andrew Davis <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org, 
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
 
-The TPS65214 PMIC variant has a LOCK_REG register that prevents writes to
-nearly all registers.
+This changes ResourceSize to use the resource_size_t typedef (currently
+ResourceSize is defined as phys_addr_t), and moves ResourceSize to
+kernel::io and defines PhysAddr next to it. Any usage of ResourceSize or
+bindings::phys_addr_t that references a physical address is updated to
+use the new PhysAddr typedef.
 
-Implement custom regmap operations that automatically unlock before writes
-and re-lock afterwards for TPS65214, while leaving other chip variants
-unaffected.
+I included some cc stable annotations because I think it is useful to
+backport this to v6.18. This is to make backporting drivers to the 6.18
+LTS easier as we will not have to worry about changing imports when
+backporting.
 
-The implementation follows the regmap-i2c design pattern.
-
-Cc: stable@vger.kernel.org
-Fixes: 7947219ab1a2d ("mfd: tps65219: Add support for TI TPS65214 PMIC")
-Reviewed-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-
-Changes in v3:
-- Removed unused variable.
-
 Changes in v2:
-- Setup a custom regmap_bus only for the TPS65214 instead of checking
-  the chip_id every time reg_write is called.
+- Fix build error in last patch.
+- Add cc stable.
+- Link to v1: https://lore.kernel.org/r/20251106-resource-phys-typedefs-v1-0-0c0edc7301ce@google.com
+
 ---
- drivers/mfd/tps65219.c       | 49 +++++++++++++++++++++++++++++++++++++++++++-
- include/linux/mfd/tps65219.h |  2 ++
- 2 files changed, 50 insertions(+), 1 deletion(-)
+Alice Ryhl (4):
+      rust: io: define ResourceSize as resource_size_t
+      rust: io: move ResourceSize to top-level io module
+      rust: scatterlist: import ResourceSize from kernel::io
+      rust: io: add typedef for phys_addr_t
 
-diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
-index 65a952555218d..d31e808faab1f 100644
---- a/drivers/mfd/tps65219.c
-+++ b/drivers/mfd/tps65219.c
-@@ -473,6 +473,48 @@ static const struct tps65219_chip_data chip_info_table[] = {
- 	},
- };
- 
-+static int tps65214_reg_write(void *context, unsigned int reg, unsigned int val)
-+{
-+	struct i2c_client *i2c = context;
-+	int ret;
-+
-+	if (val > 0xff || reg > 0xff)
-+		return -EINVAL;
-+
-+	ret = i2c_smbus_write_byte_data(i2c, TPS65214_REG_LOCK,
-+					TPS65214_LOCK_ACCESS_CMD);
-+	if (ret)
-+		return ret;
-+
-+	ret = i2c_smbus_write_byte_data(i2c, reg, val);
-+	if (ret)
-+		return ret;
-+
-+	return i2c_smbus_write_byte_data(i2c, TPS65214_REG_LOCK, 0);
-+}
-+
-+static int tps65214_reg_read(void *context, unsigned int reg, unsigned int *val)
-+{
-+	struct i2c_client *i2c = context;
-+	int ret;
-+
-+	if (reg > 0xff)
-+		return -EINVAL;
-+
-+	ret = i2c_smbus_read_byte_data(i2c, reg);
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = ret;
-+
-+	return 0;
-+}
-+
-+static const struct regmap_bus tps65214_regmap_bus = {
-+	.reg_write = tps65214_reg_write,
-+	.reg_read = tps65214_reg_read,
-+};
-+
- static int tps65219_probe(struct i2c_client *client)
- {
- 	struct tps65219 *tps;
-@@ -491,7 +533,12 @@ static int tps65219_probe(struct i2c_client *client)
- 	chip_id = (uintptr_t)i2c_get_match_data(client);
- 	pmic = &chip_info_table[chip_id];
- 
--	tps->regmap = devm_regmap_init_i2c(client, &tps65219_regmap_config);
-+	if (chip_id == TPS65214)
-+		tps->regmap = devm_regmap_init(&client->dev,
-+					       &tps65214_regmap_bus, client,
-+					       &tps65219_regmap_config);
-+	else
-+		tps->regmap = devm_regmap_init_i2c(client, &tps65219_regmap_config);
- 	if (IS_ERR(tps->regmap)) {
- 		ret = PTR_ERR(tps->regmap);
- 		dev_err(tps->dev, "Failed to allocate register map: %d\n", ret);
-diff --git a/include/linux/mfd/tps65219.h b/include/linux/mfd/tps65219.h
-index 55234e771ba73..198ee319dd1db 100644
---- a/include/linux/mfd/tps65219.h
-+++ b/include/linux/mfd/tps65219.h
-@@ -149,6 +149,8 @@ enum pmic_id {
- #define TPS65215_ENABLE_LDO2_EN_MASK                    BIT(5)
- #define TPS65214_ENABLE_LDO1_EN_MASK			BIT(5)
- #define TPS65219_ENABLE_LDO4_EN_MASK			BIT(6)
-+/* Register Lock */
-+#define TPS65214_LOCK_ACCESS_CMD			0x5a
- /* power ON-OFF sequence slot */
- #define TPS65219_BUCKS_LDOS_SEQUENCE_OFF_SLOT_MASK	GENMASK(3, 0)
- #define TPS65219_BUCKS_LDOS_SEQUENCE_ON_SLOT_MASK	GENMASK(7, 4)
+ rust/kernel/devres.rs      | 18 +++++++++++++++---
+ rust/kernel/io.rs          | 26 +++++++++++++++++++++++---
+ rust/kernel/io/resource.rs | 13 ++++++-------
+ rust/kernel/scatterlist.rs |  2 +-
+ 4 files changed, 45 insertions(+), 14 deletions(-)
+---
+base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+change-id: 20251106-resource-phys-typedefs-6db37927d159
 
+Best regards,
 -- 
-2.43.0
+Alice Ryhl <aliceryhl@google.com>
 
 
