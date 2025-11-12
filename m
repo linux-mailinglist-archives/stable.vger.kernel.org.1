@@ -1,136 +1,143 @@
-Return-Path: <stable+bounces-194582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F5B2C5164A
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:40:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D159CC516DD
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:45:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CF62188B469
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 09:38:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED5FC189F2C1
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 09:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402AC301000;
-	Wed, 12 Nov 2025 09:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9206B2FDC3C;
+	Wed, 12 Nov 2025 09:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J9oOxxT7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f1WFMFF0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2324A3002BD
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 09:37:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9329329AB1D
+	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 09:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762940264; cv=none; b=VQLkK5QwssZny+9U/oFw/oVxE7p1sRSLWWffoMXHxdxeQOKtpst83EZxi2b/wlH9D0hR7s/O01o09eHg6/ZKoBwMzClNoMvC2goZNknz1z7Ov9ayIcS2h9p+WYpqe7OiOerpYJlQxstq0lkcxJfAFec5kQwVgyqsoiC0BgTihas=
+	t=1762940604; cv=none; b=Z+/TpzS/dFwiVln02vxiB0zWzWJost4WBu0cdGsdNUh2VWIaNw8VIHfaJojMITGP9mLglUrErpJLATSaxDmnRFAxurLnHfeb9Z1p5yXguTHskPXBHa8H8J5cXnrsermrOdI6bKDCg6571c37bhuGwwuFfeyhJ7pC8/K6b9JMseE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762940264; c=relaxed/simple;
-	bh=kqDDnduyUUh9PtMAAC8Iw27n6POgWt5b/f0jd8ADwGs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IPRcfFYrujUYlZIXMIVsc1h6yy8vpm6fuTz5MflwxF9D/zAdX1it3pwyQS60bK1AAqXtJRhbQS/cC/cHAfNAvD0CNWhNLjz4hd29NkhzqwBnLEkLx/j1yGOqUvBDxU0cAcXFDRQEAC1k7AuOXCS2Nfmi6Mu6i1pxyPVMxfvpA3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J9oOxxT7; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-42b3d7c1321so400390f8f.3
-        for <stable@vger.kernel.org>; Wed, 12 Nov 2025 01:37:41 -0800 (PST)
+	s=arc-20240116; t=1762940604; c=relaxed/simple;
+	bh=B/oTr+r8DBtE1IvVTOVfT13oXFG62JkZ8sdE3AKxlpM=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B3iOPAXTVvMkSyJfTWZdG/t7RMOgPpgf1CYwwqJYQc0KXRYNQwJAb2SKwHoNbE755gnJQAeNW98YPv0I5jYe7riejSmaPNO3Mmjh+dXZngad/9v9XVsQp58FCBF/XiWnvDE3iL4HIItM3sxPXi4b4c+V18eYpa66xWq6NMNgBLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f1WFMFF0; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47112edf9f7so3192235e9.0
+        for <stable@vger.kernel.org>; Wed, 12 Nov 2025 01:43:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762940260; x=1763545060; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9kkR3PECBtgg2Ta+T3zNVyfwyQ39/v40ObIhIUJF1Ho=;
-        b=J9oOxxT7Ju//2ES9jzGeCSntrAyadTvcBePrvjzmAaNYwI1jadsazyU9EwAvziBTdS
-         lb3PeIrTXqmvym96RAlhkJCSZ+ZLcuTkD9p84Zu4pObAAZ7DfeWHfrlv2IoopdmTG9Dp
-         z2PHpjDx4AU6E+AAEVb2W8WabuA2gKcECUq+kXCtLFleghfDlUZIA+OfCoHQDBt9k5yx
-         lRmLeHAoS4PCM6MCOFYiKADhF+YC4n33Q980W0EsCMupAxm48cY9bsb11EvgiCGhM9vV
-         /Z9Ha6x8EJm5+aKwlK9hHFg9Jy7oxmHBYkrXjnq4kvJ5rS4U3c18pDEbfzgDDNrnaUdj
-         3ndQ==
+        d=gmail.com; s=20230601; t=1762940601; x=1763545401; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y2sZZR13em2kFK9vuHhMagBqaNxcu6HaXgiKpBFvnH0=;
+        b=f1WFMFF0VNyHyNdldo2kq4PK+T54RBd96fAoVdzi7mD8NSupnRgeDXOKBqeerMG87f
+         /FUFuW8D8YMQ5cRAwEButLN/XUmavSbNB6/iNBcC7EKMKvra+D7u2Sq5Yw8YbWNVUjXw
+         +cmFrR8aNJRd/mKBIkPBCVdl6MHfoQtJIk5vK+WToWHmYNNkF69my4dBnF7w7qenMOmJ
+         RRdvrJv6lIWNXwN5UfUVMVcWNuy9sa7NVwza1kjJPpJNLv4SwJ0XV+oApQqsyyv2aLME
+         3owaXiP5glu9Lysh6NFvOugEWwpv5pRDqsjq17EmvgfJIS9j0cpE7G+DHNnl0qTMugZl
+         W78g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762940260; x=1763545060;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9kkR3PECBtgg2Ta+T3zNVyfwyQ39/v40ObIhIUJF1Ho=;
-        b=D3pRYm/bpt3aVQnyrpRs/Z2oJptrLrLzeC70O/Wm2cMBXvWcJuL2ovgr+BMvGqdUQ3
-         Lb4L9qR4Zr3wBuZhQpm+Vbj437kmRhhNXte8GAw3cy2KAHOwV7V1oyq2ympna326/3TJ
-         UKFyn6CYAWSrpUKcgJoKqZ9FOXb4BYqOhw74ZNwXEKoBOFOvxcQi32ZM74nugHIV2Rx1
-         8gigdYyArXNIoSUHRKdLDxgkgBykdQP0CKCibYVsuITvv/xAhvcDrk37l7zK3sgrmB9O
-         RNX3rYS2wwNG5FK704y9tGMwcsJ98+ECbLwDchM+i9S2eaWaMmWrsCDgMe+q8nY7G4nQ
-         nd9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWUVDbAbNfSQoCxixdrmngcQL5NVGm3Sk45sx1vN2B0boxgJZjJ8pb4rNpO6AXVr6C+Jp0D2ZE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8VBhC4I/tSzHXCay5xR1wTWVx1/njiKfkCwH/bEg8HhBsrKAO
-	Uw+dXpjD9Hp9Nf8JlzdFanU9lMKS3HgFdhgSxEVp/fJ8gogyN68u9qywtNHq6kE0/uo=
-X-Gm-Gg: ASbGncvzO9wi9c9issbU/g5FslNBb6Z+opv2E7nB0pry8b6bB2hUdD7Gji8lksNJZYN
-	RGz5V5gQE9/crAQI/pNFbFOQkkeXZMrFxhv3Zrgo0TEl82dP6leTRIQ9L/HZWpmxUWZ5yRiO6Xk
-	xH0ORxgfzwqnSkXPUQvj8zj1wqFTVK9B61ZB728/4NnEURfpkkoC2nvTJIAajubSTi361LDyNE2
-	dwA4qs5I6E+sO/+yjRM5coH1mISzKlpopdPaCVoYYwZFELa6qHko3564u94Qk8o9GwK8zaJ0oU6
-	QenCNOB9yCoYCBSS2/rFIy8F47pYQwMJN5bbasTBxlvExxJB0aN9eki6kfpW3rpVsIoC/1OYUoc
-	ex9J+gPo6t9GaUgg4vUoM0v23mtM/DD1ND0UfszFbAPZ1MLV6675ljQuO2EBRol+3WhE5Zol9MA
-	2Soa1zQA==
-X-Google-Smtp-Source: AGHT+IGZSi7yScfYmi/h+1qIucc+YYMtcUxa9jmazfcfm23PzWB2Va5yBYWI09vRuMxpAqpjCguVyw==
-X-Received: by 2002:a05:6000:1847:b0:42b:3dfb:645f with SMTP id ffacd0b85a97d-42b4bdb7d81mr1738754f8f.47.1762940260515;
-        Wed, 12 Nov 2025 01:37:40 -0800 (PST)
-Received: from [10.11.12.107] ([5.12.85.52])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42abe63ba87sm33821589f8f.14.2025.11.12.01.37.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Nov 2025 01:37:40 -0800 (PST)
-Message-ID: <8a370764-e093-4987-9a5f-3a8c1d6d900c@linaro.org>
-Date: Wed, 12 Nov 2025 11:37:38 +0200
+        d=1e100.net; s=20230601; t=1762940601; x=1763545401;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y2sZZR13em2kFK9vuHhMagBqaNxcu6HaXgiKpBFvnH0=;
+        b=b+VI9++OOqdKKY04PZrVLDrnd0UT+EnPaxavYsugn1O7Z5UteKn3aWLB5xt9TGPfie
+         Yy0x85IYIpJLDB693KVqPgv4amoBR8wUeSunl5SchTyBUyvNk+8p26WetrtB1o2ekONF
+         BC7O+YjXGccJBrMylxtmedLH4Daj+WoQ2itwtxcLVws/3N4+fGNYwF7K5KfExPHHeOkc
+         dqJ2Q/1SOqDAmgyTc7cv1WDUGFilNDsHLuXVCONcS9IEsD+HuHK9d0TRzhr2pqztRNY9
+         aU0c6OWTaFSFoxtaDwQpp7AK+LU+A9XDOHNcSs8TtlIjUrIAZYcvxlgXpHV37SOFfN2t
+         x5AA==
+X-Forwarded-Encrypted: i=1; AJvYcCXz3jjaI+JAtYfmu2p69Nlu8sVcJsyLOihvh/ObtFA2I256YOaeJn2l6gioY2IiHJ2R2hBgrv4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5eY/Es3snAEKJ4d0KtE3gNnxoCf6ML6T4Fg0+FcPo2nZqR5nQ
+	K8ZFR0jlq7jLVLoBMYd6bmY0rtRCoZMCSa+dfMsd8q9cijsVT1lXD5I8
+X-Gm-Gg: ASbGncvt8uPnkhkcKokZwaOob9VL/vmFd5rzFNbM5NV4AxU6PPqPFd6dZrMise2CnRt
+	9uD5nWgg5eI2mpwq+B8eEieW7pTGfijAJXyjRHL6Vh6U7uJ3DCkphhF0W8NUVB49aP92FFvwbZA
+	ogWfik3ARmMUM2DYZl+UqECNwl6xTR29DgQNtVCrJcSiVO+YngCTpQ3QRpmyuhl/1jRJa+ixikk
+	UvEnuuIyjjPwqT0CQVVhCgCD2HgyApCusHdxNosP0o4D0jfJlzw+jV6wDMG0ztrJQYlbZa0ERoO
+	6FvVv4eUuE+VASD8nNgcTPpud1BOAEF10dQAtkYa1ln+Y7czz0wQhbouVjCfKGR1PC63F3jznbr
+	ymnHGWtIco7eQB+XlcPold/L1R31VCXkCl1aYTFk/Gsm2KVBjDcAFhvQbfHkXzB1p+lHwQo72xi
+	ss+gm8GHdCbq+D18lnAlxHfwaDVvtU
+X-Google-Smtp-Source: AGHT+IFWRLil5c9QrjCfrciKn0pCpnUeeuzlRecgpwrZi29ini7Fw+ZEevTQknhxTgQmz8r53cyk/w==
+X-Received: by 2002:a05:600c:3550:b0:471:9da:524c with SMTP id 5b1f17b1804b1-477870468eemr22102045e9.12.1762940600679;
+        Wed, 12 Nov 2025 01:43:20 -0800 (PST)
+Received: from Ansuel-XPS. (93-34-90-37.ip49.fastwebnet.it. [93.34.90.37])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47787e8e743sm24556415e9.15.2025.11.12.01.43.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 01:43:20 -0800 (PST)
+Message-ID: <691456b8.050a0220.3c21b3.5c4c@mx.google.com>
+X-Google-Original-Message-ID: <aRRWtShR36d_16eS@Ansuel-XPS.>
+Date: Wed, 12 Nov 2025 10:43:17 +0100
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mtd: mtdpart: ignore error -ENOENT from parsers on
+ subpartitions
+References: <20251109115247.15448-1-ansuelsmth@gmail.com>
+ <87y0ob7fyy.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] Hello,
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Steam Lin <STLin2@winbond.com>, linux-mtd@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Sean Anderson <sean.anderson@linux.dev>
-References: <20251105-winbond-v6-18-rc1-spi-nor-v1-0-42cc9fb46e1b@bootlin.com>
- <c67466c0-c133-4fac-82d5-b412693f9d30@linaro.org>
- <87seej7fv6.fsf@bootlin.com>
-Content-Language: en-US
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-In-Reply-To: <87seej7fv6.fsf@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87y0ob7fyy.fsf@bootlin.com>
 
-
-
-On 11/12/25 11:35 AM, Miquel Raynal wrote:
-> On 10/11/2025 at 08:54:24 +02, Tudor Ambarus <tudor.ambarus@linaro.org> wrote:
+On Wed, Nov 12, 2025 at 10:33:25AM +0100, Miquel Raynal wrote:
+> Hi Christian,
 > 
->> Hi, Miquel,
->>
->> On 11/5/25 7:26 PM, Miquel Raynal wrote:
->>> Here is a series adding support for 6 Winbond SPI NOR chips. Describing
->>> these chips is needed otherwise the block protection feature is not
->>> available. Everything else looks fine otherwise.
->>
->> I'm glad to see this, you're an locking expert now :). Do you care to
->> extend the SPI NOR testing requirements [1] with steps on how to test the
->> locking? There's some testing proposed at [2], would you please check and
->> review it?
+> On 09/11/2025 at 12:52:44 +01, Christian Marangi <ansuelsmth@gmail.com> wrote:
 > 
-> Good idea. Let me have a loot at what Sean proposed.
-
-I proposed to him as well to update the testing requirements if he cares,
-he said he'll take a look. Sync with him please.
-
-Cheers,
-ta
-
+> > Commit 5c2f7727d437 ("mtd: mtdpart: check for subpartitions parsing
+> > result") introduced some kind of regression with parser on subpartitions
+> > where if a parser emits an error then the entire parsing process from the
+> > upper parser fails and partitions are deleted.
+> >
+> > Not checking for error in subpartitions was originally intended as
+> > special parser can emit error also in the case of the partition not
+> > correctly init (for example a wiped partition) or special case where the
+> > partition should be skipped due to some ENV variables externally
+> > provided (from bootloader for example)
+> >
+> > One example case is the TRX partition where, in the context of a wiped
+> > partition, returns a -ENOENT as the trx_magic is not found in the
+> > expected TRX header (as the partition is wiped)
 > 
->> [1] https://docs.kernel.org/driver-api/mtd/spi-nor.html#minimum-testing-requirements
->> [2] https://lore.kernel.org/linux-mtd/92e99a96-5582-48a5-a4f9-e9b33fcff171@linux.dev/
+> I didn't had in mind this was a valid case. I am a bit puzzled because
+> it opens the breach to other special cases, but at the same time I have
+> no strong arguments to refuse this situation so let's go for it.
 > 
-> Thanks,
-> Miquèl
 
+Thanks a lot for accepting this. I checked all the parser both upstream
+and downstream and I found this ""undocumented"" pattern of returning
+-ENOENT. [1] [2] [3]
+
+For sure it's a regression, we had various device on OpenWrt that broke
+from migrating from 6.6 to 6.12. I agree there is the risk you are
+pointing out but I feel this is a good compromise to restore original
+functionality of the upstream parsers.
+
+(the other error condition are -ENOMEM or sometimes -EINVAL for parser
+header present but very wrong)
+
+[1] https://elixir.bootlin.com/linux/v6.17.7/source/drivers/mtd/parsers/tplink_safeloader.c#L93
+[2] https://elixir.bootlin.com/linux/v6.17.7/source/drivers/mtd/parsers/scpart.c#L170
+[3] https://elixir.bootlin.com/linux/v6.17.7/source/drivers/mtd/parsers/ofpart_bcm4908.c#L47
+
+-- 
+	Ansuel
 
