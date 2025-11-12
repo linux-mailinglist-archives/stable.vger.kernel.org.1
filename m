@@ -1,141 +1,169 @@
-Return-Path: <stable+bounces-194635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72AFCC53F9E
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 19:47:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A1BC5407C
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 19:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 83C964FAE2F
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 18:41:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F0AA3AF176
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 18:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9225D3546F2;
-	Wed, 12 Nov 2025 18:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D618534405F;
+	Wed, 12 Nov 2025 18:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ot7iuL0r"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FkI6ySGl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E92134BA5B
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 18:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886A735CBC9;
+	Wed, 12 Nov 2025 18:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762972504; cv=none; b=Dxr007IDr1714mK5BYuk27ZrDCc6BQA7CtSzuM9eflOQFPKMPzp1ZwcWkvsWVU4uLEwmGh4JnEtStVED6K8SnZxnWuIglFnOKWBHtIoAmP698hrmtAPQpMLl5PEichhP6rtThn/aA0JGKAwa2/UyIy99AGlfmLLeFQ+viVpETig=
+	t=1762973887; cv=none; b=UfcAEau394cwKVmvEdkDTnbIHxtB2EM+SIuyYRPco0BQm/3XU4ez8CHfwfJnPviWXG0AFDth22I0XI8/YDH2qijAG4cxiJWl+WadITxr1df/V/2xSqCek/n4xyaJ8kP6rpVmSvrBDN2WebLdXVdwzTTe8J4bS8mx33/qm1U+ZTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762972504; c=relaxed/simple;
-	bh=CiCb/WxR5IiY4zTCVf9V+wc+I2yi8BeC/aaOHbPg3pA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rDf2K0NRP361DkTehhpHLgWZkpHPhKgqGul6tQ27CG3BE0gDELWmtF0wTsbpcBOSWeg4ejt7nvlMNcQZs8pMcRxpWQ+zafUq25NH5XBBaeDXO9w37p336xviYn4rjHkEAQslPvZtWKlmk2gSzzKrYPe2a5enxMQ0RGjeBzzv9v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ot7iuL0r; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-37a5ab1e81fso9463041fa.1
-        for <stable@vger.kernel.org>; Wed, 12 Nov 2025 10:35:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762972499; x=1763577299; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jjohzFTrNt1dds0Ak9mhbsBPxnWVffo9MAGuUzPAPSI=;
-        b=Ot7iuL0rV+cT6a5+BClr1i1wVP1eWjkgNfoJJe7z12v/HaqO2yXAB2+W2tHYoHqfKw
-         z0LhZV1Ja//0VTJcOS6ibwT1Kbz6piy/uDIXW7GaLg2uNvKJFSL4ABT4lQlhkJX352pO
-         P3jK49WaCLIlRTGEkqFxgyp4Ty0gGgAafofXtRA52nwiBJfjjfeRLn1ly2YPsIodg12d
-         M5cG+dbWEl/YCGdaiOuif+5tAii/PndS1G20TBIyao+gJHjUJgbeWUSatZAqjZsLYAWs
-         WklmqbYR4nP5TW7fw6IRNABPHrkULSw/rOWoVagqn2n/6f8Q4t3qhMjPbx1CSr4GLMzW
-         hHQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762972499; x=1763577299;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jjohzFTrNt1dds0Ak9mhbsBPxnWVffo9MAGuUzPAPSI=;
-        b=qHGQ5ofUMBXy+d/9TItNXqHUzSOirLkK5RPrYVZ7HkzbknKJMafZ/jkV9oVeKuiIqy
-         KHBMeIbzjb31GQX2P+6xdolSFO5KedPIWD7F4ILILMG3mBbyO2vrizC8s/thbNUo5XI+
-         TK8kCn2pcZx7UYpPkHSUjBf/BAbnl4js9RYPImb4uDR6QT84chKHEa4N9Nj4cUzv5qr3
-         pTMRE1DmExMuMZthw9KsHtHMH3TuTyTBNRdp1zUpG/yrPhSu7dttBMY2xCN+A8YxwgAI
-         O7w9WdGIeSF1dvclm+QmusqDCgJPO+bCAMFtKliEzzPQnx8Ivi/OTb8ZOJznEWPKVree
-         TWhw==
-X-Gm-Message-State: AOJu0Yw/N6VL6XDdRBHhz+gOR9LScYVSMy4M8IU1ifIruV9mJ2Cl+7ps
-	ni9SBgOG7l603GPCIIw7BSA6vg9DJOAHm9O/vcCpIWcRNjh7YdyJlaKjH9EDQOGIfzUcOcbNyIj
-	teCSerGQ/WySrMLqiztM5pl3Lig2rEHI=
-X-Gm-Gg: ASbGncte7X2LWWyG9dPTiQzLzWWZ7q/8AQ4LFTAKndo10IcsfhHCYkufwdXVY3ggif/
-	H1UREtZfb/XNyYbsv4A4mWN+VlflPta1G5FDLE5f25HBjJgCvG3j4mHqz5ftFEn9NcrxGeYx2Zl
-	rY+fAOm+A09h+0vGKttuy4rreb50Itwj1317Q2YJ3wqPwZ6WEkHt976CPrWbqFhgHnN5C57R9a1
-	xQi9RMri5mR1OE3NunQCBSa6mIXsFY3O9Ijh3nkQ+QoesUauL70BLFd+6G6
-X-Google-Smtp-Source: AGHT+IEa3xVTKMLat1Wb0V6k6SNt6JXXRV4if7NrYfYOs9e0hkHkyyXtZb+lc0TmiRtVlY0vx8iH0c8Q2gESBvg9vVA=
-X-Received: by 2002:a2e:98d2:0:b0:37a:9558:5bf8 with SMTP id
- 38308e7fff4ca-37b8c3dca00mr9373041fa.32.1762972499219; Wed, 12 Nov 2025
- 10:34:59 -0800 (PST)
+	s=arc-20240116; t=1762973887; c=relaxed/simple;
+	bh=1FJjIirT7Sw6zks9hSZuy2eEhwmaKWExUY5BlnQBc0M=;
+	h=Date:To:From:Subject:Message-Id; b=IvtQUxDphm+Mt45Gvt/JTMIS6MjjOMpbVXN11P9+l9T64dRYJp/31WwR0ywMtvAwAPEYgKWtycGmyghJIaxFz1dwys4oXE7apDIrNS4/WL1SZwUS0yaTFO3txL9wtFq6tEHt4hPSecYN+qFRogM0oz9t+wQauEm+T5d2kCpspL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FkI6ySGl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD20C19421;
+	Wed, 12 Nov 2025 18:58:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1762973887;
+	bh=1FJjIirT7Sw6zks9hSZuy2eEhwmaKWExUY5BlnQBc0M=;
+	h=Date:To:From:Subject:From;
+	b=FkI6ySGlTZ0JtLqihHw+17UCsodJ3LuZhG31h7dCDqTk1ANLeK5y/1MbICBFUAO9h
+	 RepAUjE/Ygi3jO7OnWCi/gSuod2hL6doiFMpzYweAszYmV+scilmA56Q/GdKjlN6d8
+	 5cBS/BUH9BkdvP6sJlFLfv/wwcfH+4pfO1RsJ/Rs=
+Date: Wed, 12 Nov 2025 10:58:06 -0800
+To: mm-commits@vger.kernel.org,vivek.kasireddy@intel.com,stable@vger.kernel.org,osalvador@suse.de,kraxel@redhat.com,jgg@nvidia.com,hch@lst.de,david@redhat.com,airlied@redhat.com,kartikey406@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-memfd-fix-information-leak-in-hugetlb-folios.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251112185807.0CD20C19421@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251111012348.571643096@linuxfoundation.org>
-In-Reply-To: <20251111012348.571643096@linuxfoundation.org>
-From: Dileep malepu <dileep.debian@gmail.com>
-Date: Thu, 13 Nov 2025 00:04:47 +0530
-X-Gm-Features: AWmQ_bkg2w5p36Lweybo9KaHemnwRDH-EtITn2wPi38Rv8gnjjgkxCZ4pHNcSPE
-Message-ID: <CAC-m1rqHCCMwVu4WVVV4w0SXuZNuv+e+Q1qZUzVrxH+=EeGJNw@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/562] 6.12.58-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-HIII greg,
-
-On Tue, Nov 11, 2025 at 7:07=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.58 release.
-> There are 562 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 13 Nov 2025 01:22:51 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.58-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
 
-Build and Boot Report for 6.12.58-rc2
+The patch titled
+     Subject: mm/memfd: fix information leak in hugetlb folios
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-memfd-fix-information-leak-in-hugetlb-folios.patch
 
-The kernel version 6.12.58-rc2 was built and boot-tested using qemu-x86_64
-and qemu-arm64 with the default configuration (defconfig). The build and bo=
-ot
-processes completed successfully, and the kernel operated as expected
-in the virtualized environments without any issues.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memfd-fix-information-leak-in-hugetlb-folios.patch
 
-Build Details :
-Builds : arm64, x86_64
-Kernel Version: 6.12.58-rc2
-Configuration : defconfig
-Source: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git
-Commit :
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Tested-by: Dileep Malepu <dileep.debian@gmail.com>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Best regards,
-Dileep Malepu
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: mm/memfd: fix information leak in hugetlb folios
+Date: Wed, 12 Nov 2025 20:20:34 +0530
+
+When allocating hugetlb folios for memfd, three initialization steps are
+missing:
+
+1. Folios are not zeroed, leading to kernel memory disclosure to userspace
+2. Folios are not marked uptodate before adding to page cache
+3. hugetlb_fault_mutex is not taken before hugetlb_add_to_page_cache()
+
+The memfd allocation path bypasses the normal page fault handler
+(hugetlb_no_page) which would handle all of these initialization steps. 
+This is problematic especially for udmabuf use cases where folios are
+pinned and directly accessed by userspace via DMA.
+
+Fix by matching the initialization pattern used in hugetlb_no_page():
+- Zero the folio using folio_zero_user() which is optimized for huge pages
+- Mark it uptodate with folio_mark_uptodate()
+- Take hugetlb_fault_mutex before adding to page cache to prevent races
+
+The folio_zero_user() change also fixes a potential security issue where
+uninitialized kernel memory could be disclosed to userspace through read()
+or mmap() operations on the memfd.
+
+Link: https://lkml.kernel.org/r/20251112145034.2320452-1-kartikey406@gmail.com
+Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20251112031631.2315651-1-kartikey406@gmail.com/ [v1]
+Closes: https://syzkaller.appspot.com/bug?extid=f64019ba229e3a5c411b
+Suggested-by: Oscar Salvador <osalvador@suse.de>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Tested-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com> (v2)
+Cc: Christoph Hellwig <hch@lst.de> (v6)
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memfd.c |   27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+--- a/mm/memfd.c~mm-memfd-fix-information-leak-in-hugetlb-folios
++++ a/mm/memfd.c
+@@ -96,9 +96,36 @@ struct folio *memfd_alloc_folio(struct f
+ 						    NULL,
+ 						    gfp_mask);
+ 		if (folio) {
++			u32 hash;
++
++			/*
++			 * Zero the folio to prevent information leaks to userspace.
++			 * Use folio_zero_user() which is optimized for huge/gigantic
++			 * pages. Pass 0 as addr_hint since this is not a faulting path
++			 *  and we don't have a user virtual address yet.
++			 */
++			folio_zero_user(folio, 0);
++
++			/*
++			 * Mark the folio uptodate before adding to page cache,
++			 * as required by filemap.c and other hugetlb paths.
++			 */
++			__folio_mark_uptodate(folio);
++
++			/*
++			 * Serialize hugepage allocation and instantiation to prevent
++			 * races with concurrent allocations, as required by all other
++			 * callers of hugetlb_add_to_page_cache().
++			 */
++			hash = hugetlb_fault_mutex_hash(memfd->f_mapping, idx);
++			mutex_lock(&hugetlb_fault_mutex_table[hash]);
++
+ 			err = hugetlb_add_to_page_cache(folio,
+ 							memfd->f_mapping,
+ 							idx);
++
++			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
++
+ 			if (err) {
+ 				folio_put(folio);
+ 				goto err_unresv;
+_
+
+Patches currently in -mm which might be from kartikey406@gmail.com are
+
+mm-memfd-fix-information-leak-in-hugetlb-folios.patch
+ocfs2-validate-cl_bpc-in-allocator-inodes-to-prevent-divide-by-zero.patch
+
 
