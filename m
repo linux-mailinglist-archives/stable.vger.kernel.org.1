@@ -1,131 +1,167 @@
-Return-Path: <stable+bounces-194597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E884AC51ACF
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 11:33:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED17FC51BC5
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 11:43:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 255A1424216
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:26:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 601894FBFBA
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829083064BC;
-	Wed, 12 Nov 2025 10:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765AA30216D;
+	Wed, 12 Nov 2025 10:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V923ZWF1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tsNJu+cD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21A4302165
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 10:24:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348292C0296
+	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 10:33:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762943089; cv=none; b=QvZi+37xxSgrq/91l00+0fIJnCxeJsBgvocO5zYQZe3yCXIUpbSXDowyj7kWWS4blLHVSmzg2OmW9hcwgjfVxCfokHGkiohThuFJob82fx2v/CtCoTDLlBV0N0DDVqT9pjt6EzRQYxjJ5CDV24vGLc3a1qlU3vKzkBPpf386taA=
+	t=1762943625; cv=none; b=RrrH2+mddMRN/WsIDPjco5CS0b6W2b/QIzmOEydfWjhiq434ecQOgJTzWqw1rc7kDkVB9aaSwj07F3yMjA6kofFdb/3fUZNIajYmfWYWB0AxKY5dNO7zi5bv5DHeLvllnL+gEfQ21AWZfle7r+eDAw5dxOVYEGb9oQ8mhounTro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762943089; c=relaxed/simple;
-	bh=QV16gLuhA6QXk0TLawQZc0iHWhNFDaMJpFOCm3aRQps=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=k2zNNtPT+MUxw7Tl+Ak+THXS8XVPUYZTBu8xDEtx4aLT0q6Opm3rLWBJJc0ilEkIT+qhL9SLQDfoVi4lb1t9lLXaplGdbmn4wKoUr0tK3ppiqnqy6cV8NkxUuD4Glzh6YlNEekmEebPSu8WOVcx+gL9E5TA/+n8pEuGrkYAm+0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V923ZWF1; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-641613171cfso626650a12.0
-        for <stable@vger.kernel.org>; Wed, 12 Nov 2025 02:24:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762943086; x=1763547886; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QV16gLuhA6QXk0TLawQZc0iHWhNFDaMJpFOCm3aRQps=;
-        b=V923ZWF14LJOtIKqBD14V6GFHbL/fEsOkBkVmUGlLOSjtppIkaH1u9MgF7Fvo8lbjs
-         aX5k+1NYgzmxRJF1hiesJAg3OXqsFcIVLYqTQb827pUy4SYP1pPJEfPWQDO5FNBkONJh
-         S7fjg7pnOwfJoMznbVDUD2rQJHC00NDMjL4i1MHSAFGF5Zheq7FdV59nzj98sJzJWCKI
-         +MgZiIN+r5Vhx5MJE5qz9Xrcy6UPxVjRMceJ8PB05vyivSaDL4J3rdslQpWR62TPRxGC
-         5FDD0mShIAsEIx0uRVuTZqpj4EVSs9a/yyrjj092BhYmZOCBfi5CCl+DFQE2MDKbInFE
-         3AOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762943086; x=1763547886;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QV16gLuhA6QXk0TLawQZc0iHWhNFDaMJpFOCm3aRQps=;
-        b=EQHg1AILSkakU0tL4Hm5x8HhnQpREyyQmVxPVddVYkj0+dSwY8U0Dnl7kOFEs+Pk6n
-         N5IK9bx9B9GC5SaZDh0TpsJRiqn2WSBgltKqV8Vm1Kj22oQhDvcM0SmAzXr4uhoGcgSr
-         CgKpmW1DmvC3ivjjb/bjocUvCfPS/Uf6b38cCr9ZQ6tBGL22kG1JXCug2tQmmHhaw/kQ
-         8TkxR6YqmRFAXteZkmW87Adn1j2OcaX4vmlooSQMYyrzTeOSQY0Kom7AgMY92LKDK9Qf
-         thkOPsgrmwp8dS6fW/ysW1xKlvO8pUGT5oKkIsssOcKf7uViHpoNo/MbuJtX9D3H1nTH
-         KQhg==
-X-Forwarded-Encrypted: i=1; AJvYcCUlPWLB9eqpo7XUjawEYeBFsvl3rVVSt/MFhLFlo2mgx9zcgzXOVemKg+UF5v8+1kQnVEoiWmM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5nPU/iB/WIN87+4q/q5TM3CCB/CaJWpg4tuq4vjdk6+LSXD1W
-	9WF20lx055vn/I8epOMBub3qQnkGL+uEx2tHh1LyPfKN/KfcgpryLgevSSCVh2eECqG013VLhug
-	ef/gV6huWZfV5ZKjDEA==
-X-Google-Smtp-Source: AGHT+IF1pxUgNK4s9SnZynMy7vzcNMtbfcJwnUyBona8xZEdQaGlDIF17TEFkA8h6w502BmTVUazVQKjBBbbcF4=
-X-Received: from edh10.prod.google.com ([2002:a05:6402:504a:b0:641:2f00:1985])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:440a:b0:634:11d7:f70c with SMTP id 4fb4d7f45d1cf-64319f08cc8mr2418980a12.2.1762943086210;
- Wed, 12 Nov 2025 02:24:46 -0800 (PST)
-Date: Wed, 12 Nov 2025 10:24:45 +0000
-In-Reply-To: <CANiq72maV_j1uV=2nPGbTgRabnk8cpc7TNN_FQ+ou52OpZ=k6Q@mail.gmail.com>
+	s=arc-20240116; t=1762943625; c=relaxed/simple;
+	bh=6os1QpRBV8+5AwChEFKqOE4/pzICEt5Fpg+noRChogc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qL/04dpujx3V53ytvUucKTrliB/feksI4qcBGwhpEyeJ+iIU6xcudk69EpYZK/aic/ntrR2YRCJ8dF9JfUaeSwxGkg9B8SboNnOo0DmyPmwrAlA6mbBy9N0KbYsGcmdfvRLCEb6fT6hSshTk+hwNkvvnWEr7WY0C3LFtWXzUb3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tsNJu+cD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E40C19421
+	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 10:33:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762943624;
+	bh=6os1QpRBV8+5AwChEFKqOE4/pzICEt5Fpg+noRChogc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=tsNJu+cDjDDdXEh0EDyKh8TkaQax/UchDUORnmyqw9mB8HktY2ClNm1dsIdwuEylf
+	 Pjn5Jq/v/J2vcEaH5jhtcNmxAwRPf+2uVUmkNVrLYQCTBqccHnA9cSztP3zOWIyiMf
+	 6ECj18Tu7my+VxZfkdEYrI1pjL73Cr9jbUYKWqIY3+hThxqh9ZBPC0MWXuVUV7r6Sx
+	 wQEwH7hAa6qMm5A3apYjwIFY6HnIb6SfEWCOKfuZqLSwoBKIl5VCYWyMkATLSbyZrR
+	 f1tw1FD1O+M3+YABAO1VRWwwrJvUvT8vM1PqUCSlFQrSrSR+H6aL+pcMxYVLR6L9a3
+	 U8QTHJMfsTRdQ==
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7866aca9ff4so7258307b3.3
+        for <stable@vger.kernel.org>; Wed, 12 Nov 2025 02:33:44 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW9caD26tPO8D4LKn+0+TBdxYSCX40vs/DReZ6u5Yt/11flHrltx4Jzv22IGqJf9k1TwK1pbs0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgNKQbBD8lAX7TmO7NR8HP6U//dm56RlJmJ9518JlaLcyaYSad
+	84WQzDQNeZhx/VBnwNmfNy2Um5tANSFnVLevtCSTdb0WK5WnlMMWbgnMp3UVx/DrNhg6FDEWadN
+	lSws+uKZoiNBKYXGsXLt7RvtEfru7nyflSYGJECDSvw==
+X-Google-Smtp-Source: AGHT+IFJEmuYIDi01UFhuE/DkbKBDGrDMbCjJHTiVTHDatPgNcmeGNmC1jG+SeG3tSCjLst7swV3IZ0wX4R/TkQOu3U=
+X-Received: by 2002:a05:690c:4183:b0:787:f5c5:c631 with SMTP id
+ 00721157ae682-788136f5527mr16083137b3.65.1762943624138; Wed, 12 Nov 2025
+ 02:33:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com> <CANiq72maV_j1uV=2nPGbTgRabnk8cpc7TNN_FQ+ou52OpZ=k6Q@mail.gmail.com>
-Message-ID: <aRRgbZ67cuW4ZoBN@google.com>
-Subject: Re: [PATCH v2 0/4] Rust: Fix typedefs for resource_size_t and phys_addr_t
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20251111-swap-fix-vma-uaf-v1-1-41c660e58562@tencent.com>
+In-Reply-To: <20251111-swap-fix-vma-uaf-v1-1-41c660e58562@tencent.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 12 Nov 2025 02:33:33 -0800
+X-Gmail-Original-Message-ID: <CACePvbVu52yrPd+4EPqfSpC5fCmS6mYOqKDNGyzcpSvAQgh0pg@mail.gmail.com>
+X-Gm-Features: AWmQ_bn7QCBcJADZbM2huFUVMcx-IOnydFhAnFGmEpZSzaNGRhEh8MWWHlrht-E
+Message-ID: <CACePvbVu52yrPd+4EPqfSpC5fCmS6mYOqKDNGyzcpSvAQgh0pg@mail.gmail.com>
+Subject: Re: [PATCH] mm, swap: fix potential UAF issue for VMA readahead
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Huang Ying <ying.huang@linux.alibaba.com>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 12, 2025 at 11:12:32AM +0100, Miguel Ojeda wrote:
-> On Wed, Nov 12, 2025 at 10:49=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
-> wrote:
-> >
-> > This changes ResourceSize to use the resource_size_t typedef (currently
-> > ResourceSize is defined as phys_addr_t), and moves ResourceSize to
-> > kernel::io and defines PhysAddr next to it. Any usage of ResourceSize o=
-r
-> > bindings::phys_addr_t that references a physical address is updated to
-> > use the new PhysAddr typedef.
->=20
-> Should we have these as actual types instead of aliases? i.e. same
-> discussion as for `Offset`.
->=20
-> If there is a change of these getting mixed up, then I think we should
-> just pay that price (not necessarily now, of course).
+Acked-by: Chris Li <chrisl@kernel.org>
 
-Maybe later. Right now I think it's more trouble than it's worth.
+Chris
 
-> > I included some cc stable annotations because I think it is useful to
-> > backport this to v6.18. This is to make backporting drivers to the 6.18
-> > LTS easier as we will not have to worry about changing imports when
-> > backporting.
->=20
-> For context, will those drivers be backported upstream too?
-
-I could imagine cases where a normal fix gets backported upstream and
-benefits from this, but I mainly thought it was useful for backports
-that happen downstream.
-
-> i.e. we have sometimes backported bits to simplify further backporting
-> elsewhere, which is fine and up to the stable team of course, but I am
-> not sure if using Option 1 (i.e. the Cc tag) may be a bit confusing in
-> the log, i.e. Option 2 or 3 offer a better chance to give a reason.
-
-Using a different option makes sense to me.
-
-Alice
+On Tue, Nov 11, 2025 at 5:36=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> Since commit 78524b05f1a3 ("mm, swap: avoid redundant swap device
+> pinning"), the common helper for allocating and preparing a folio in the
+> swap cache layer no longer tries to get a swap device reference
+> internally, because all callers of __read_swap_cache_async are already
+> holding a swap entry reference. The repeated swap device pinning isn't
+> needed on the same swap device.
+>
+> Caller of VMA readahead is also holding a reference to the target
+> entry's swap device, but VMA readahead walks the page table, so it might
+> encounter swap entries from other devices, and call
+> __read_swap_cache_async on another device without holding a reference to
+> it.
+>
+> So it is possible to cause a UAF when swapoff of device A raced with
+> swapin on device B, and VMA readahead tries to read swap entries from
+> device A. It's not easy to trigger, but in theory, it could cause real
+> issues.
+>
+> Make VMA readahead try to get the device reference first if the swap
+> device is a different one from the target entry.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning")
+> Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+> Sending as a new patch instead of V2 because the approach is very
+> different.
+>
+> Previous patch:
+> https://lore.kernel.org/linux-mm/20251110-revert-78524b05f1a3-v1-1-88313f=
+2b9b20@tencent.com/
+> ---
+>  mm/swap_state.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 0cf9853a9232..da0481e163a4 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -745,6 +745,7 @@ static struct folio *swap_vma_readahead(swp_entry_t t=
+arg_entry, gfp_t gfp_mask,
+>
+>         blk_start_plug(&plug);
+>         for (addr =3D start; addr < end; ilx++, addr +=3D PAGE_SIZE) {
+> +               struct swap_info_struct *si =3D NULL;
+>                 softleaf_t entry;
+>
+>                 if (!pte++) {
+> @@ -759,8 +760,19 @@ static struct folio *swap_vma_readahead(swp_entry_t =
+targ_entry, gfp_t gfp_mask,
+>                         continue;
+>                 pte_unmap(pte);
+>                 pte =3D NULL;
+> +               /*
+> +                * Readahead entry may come from a device that we are not
+> +                * holding a reference to, try to grab a reference, or sk=
+ip.
+> +                */
+> +               if (swp_type(entry) !=3D swp_type(targ_entry)) {
+> +                       si =3D get_swap_device(entry);
+> +                       if (!si)
+> +                               continue;
+> +               }
+>                 folio =3D __read_swap_cache_async(entry, gfp_mask, mpol, =
+ilx,
+>                                                 &page_allocated, false);
+> +               if (si)
+> +                       put_swap_device(si);
+>                 if (!folio)
+>                         continue;
+>                 if (page_allocated) {
+>
+> ---
+> base-commit: 565d240810a6c9689817a9f3d08f80adf488ca59
+> change-id: 20251111-swap-fix-vma-uaf-bec70969250f
+>
+> Best regards,
+> --
+> Kairui Song <kasong@tencent.com>
+>
 
