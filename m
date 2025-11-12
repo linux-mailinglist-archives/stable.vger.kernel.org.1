@@ -1,79 +1,83 @@
-Return-Path: <stable+bounces-194555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007B3C50295
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 01:57:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E75C5029B
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 01:59:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 789BE34C0AD
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 00:57:45 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1394A34C1CA
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 00:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD7E1B142D;
-	Wed, 12 Nov 2025 00:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0011C6FEC;
+	Wed, 12 Nov 2025 00:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMcC/mJD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZC9UIyt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35F835957
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 00:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1719E35957;
+	Wed, 12 Nov 2025 00:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762909060; cv=none; b=uWFvzErf05H/1PKMGRjSF2zE/M7N0jv1OkU4i3/hMcqLp/Ba0hlwcdWYEyFLvjdcj75uiJk/A6ZsSKZwUX81sPBCcFEWuN868dilMc6oNr5yWppHaDAizexXsodYdMmX+za6gXf0aA9XJzB8ZSKriWPhgaQE7RD3aa70d3Xr4PY=
+	t=1762909168; cv=none; b=u9lH+tDmzPYG4Q1Yhw025ibkTJzuhxRCMj/mC1VlBVuxNOJxr5wXBzdRdTO6WA/pKtWYyXOUo1Gm3uH8nNFGR4mueZ5OLu2Lp/9xpYQ0qq4Ml1a+8jN+zlnhJzRDnVdLxnErfKxaAl6uo+bcOCehuHd54DQeFuDFfF+bkgFy0Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762909060; c=relaxed/simple;
-	bh=SVyPGLvWVxtjQuNRt12M6wC7Y1ObIVFbHgZ3cldZ260=;
+	s=arc-20240116; t=1762909168; c=relaxed/simple;
+	bh=zqeAXDrLxznNxB60JDMhr7dB4CjvCfnNzwTgFAT5Xyk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h4dKlhvU7fvSbI+UKrqoPpIbJVBdIju9DsyrcC7GB75lQKJOUCvafYX7r8kXqiABp+CVkkdOuVnPeyMzeAgfe3aaiF5kx8xZm/G9RIURLaN6WKbBE47N7gD9Tp+oQm7hAqrBXOgwQVd5XST8JQOcZ80RZbjAJCgLV1jZ33rCeV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMcC/mJD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0629AC4CEFB;
-	Wed, 12 Nov 2025 00:57:39 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=AuLlbovO9dgWMJSuRXNuHOl0F1HJls1k0v3Oy2Q3mbf8RrRK3WzckiUlw2HvBFqysyKQSDxdhmp9pphqPlBrnRXk0018E7Unpq6wyMUzNmaKJC9lCWeAnQH0JwY6zv39XbV5fQ91T38WkFr4aSNvs73hCWRoxiaWn9A4uTWAmBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZC9UIyt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD77C116B1;
+	Wed, 12 Nov 2025 00:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762909060;
-	bh=SVyPGLvWVxtjQuNRt12M6wC7Y1ObIVFbHgZ3cldZ260=;
+	s=korg; t=1762909167;
+	bh=zqeAXDrLxznNxB60JDMhr7dB4CjvCfnNzwTgFAT5Xyk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mMcC/mJDy8ZiZdXgo+3h9rja0QASzPSWoC/2twuqKc76JnKG3n/HE6se2IIGM+HMa
-	 Z212OlCGz714F8orEr4Lsgu2vUpYtMLkBtdCfzJoB0+KHC5aPLAlvg9fYGLZYefBRA
-	 wMzarpWpm1VkCQBiSPWt17x4UqEZPFXzT7pZt5Ag=
-Date: Wed, 12 Nov 2025 09:57:38 +0900
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: ojeda@kernel.org, aliceryhl@google.com, jforbes@fedoraproject.org,
-	stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] rust: kbuild: treat `build_error` and
- `rustdoc` as kernel" failed to apply to 6.12-stable tree
-Message-ID: <2025111242-unchanged-catwalk-49f0@gregkh>
-References: <2025110816-catalog-residency-716f@gregkh>
- <CANiq72m2Rw2tFVH5e0PKo99k6Bn4fn-6N39DnHGsEDvmNhGYMg@mail.gmail.com>
- <CANiq72kEW52FBsanY2eqs+OXS6xLx6+J052RTBzFLdR5dinNuQ@mail.gmail.com>
+	b=XZC9UIytZ8HikohCR2aDAIgFNDIJ9FVYDKPifAFmrOoLxUFJalg4Ul5PYqWcFzStR
+	 jLSdEko+IHKWPxOJB2XOSrShxjOPpYy3F6xjzMTxV4bdikUc/7w2J2kx8A99CC5/YV
+	 FypYOimJ1L3G9r7gNQW61L0prQ3s+4hUkvv42Dfc=
+Date: Wed, 12 Nov 2025 09:59:25 +0900
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Luben Tuikov <ltuikov89@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 084/565] drm/sched: Re-group and rename the entity
+ run-queue lock
+Message-ID: <2025111200-handoff-boxing-aa92@gregkh>
+References: <20251111004526.816196597@linuxfoundation.org>
+ <20251111004528.857251276@linuxfoundation.org>
+ <b239f2abb28d4e5dfc36c67bb6b88975a63c11e6.camel@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kEW52FBsanY2eqs+OXS6xLx6+J052RTBzFLdR5dinNuQ@mail.gmail.com>
+In-Reply-To: <b239f2abb28d4e5dfc36c67bb6b88975a63c11e6.camel@redhat.com>
 
-On Tue, Nov 11, 2025 at 01:46:20PM +0100, Miguel Ojeda wrote:
-> On Sun, Nov 9, 2025 at 6:05â€¯PM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > Sasha's sibling resolution looks fine, thanks!
+On Tue, Nov 11, 2025 at 03:30:45PM +0100, Philipp Stanner wrote:
+> On Tue, 2025-11-11 at 09:39 +0900, Greg Kroah-Hartman wrote:
+> > 6.12-stable review patch.  If anyone has any objections, please let me know.
 > 
-> Just in case this was missed, I think this one and the related one
-> weren't picked up for 6.12.58-rc2.
-> 
-> Should I do something?
+> This and patch 83 are mere code improvements, not bug fixes.
 
-No, I just didn't get the chance to pick up backports for 6.12 and older
-just yet, I wanted to push out what we had already.  My queue is big,
-due to travel at the moment, sorry.
+But as the patch says:
 
-greg "what day/timezone/continent is it now?" k-h
+> > Stable-dep-of: d25e3a610bae ("drm/sched: Fix race in drm_sched_entity_select_rq()")
+
+That is a bugfix, right?  So this is needed here too.
+
+thanks,
+
+greg k-h
 
