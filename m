@@ -1,73 +1,50 @@
-Return-Path: <stable+bounces-194619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A54D7C5258B
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 13:58:49 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B16EC52E8F
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 16:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F35EC188742E
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 12:57:53 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5C5CF355E39
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 15:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CED335081;
-	Wed, 12 Nov 2025 12:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C5233AD9A;
+	Wed, 12 Nov 2025 14:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yhclw4Yu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="enBY7x6Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D24328B73;
-	Wed, 12 Nov 2025 12:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED6333859C;
+	Wed, 12 Nov 2025 14:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762952244; cv=none; b=m8wq+CXo6PQo4zFmRDIOBh8QYsYhIWLUaVwYLnj0PmNuTPFXzBuD5WgfjnYXOZ3Ss5Ahaqi1ZJJKJA82zwAEmozdPbAcVHxuf8TBU3MXAj5V5Dif9zeX7L+sxoeHBi1mSx16Bs8pGy0axVWj4FCW7+L/tz3fXUtQnG2VCfqQqcU=
+	t=1762959037; cv=none; b=AhdGxxUCBpTcw2wChv57KHSfw4zZCe/iOfP7+0mPxQM9IuRxCET+L4XnrykcoFF0Mq2TbUyNOKvv2485TBHJfv3VjjQQwhfbTKC6Cya8PxrLKHavVe/0RhcbG4vJ5Q4clkIn0iW7d+exzJ7Sg24lUYoDlUESCoSTiF5XBSbUSPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762952244; c=relaxed/simple;
-	bh=dhaRUvSmwrrEzm722nO20RVYYV4MggIRD2VI3fVuqZo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KP+6GJ2SCfoWVL5Xdw6t+0motHOG2m682Tm1um3Zz9c/yPD9VP7+g0dXN0mAcvobW3fR4XBm2unAL4yecP6daS+aVAPev0YKHrFuzno9tirE5rGlKlr1ah2Dlq03ujceoMS976beulnrvDCXPG3Fhu1jWT++tjxDT+FU8Re9n/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yhclw4Yu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB7AC4CEF7;
-	Wed, 12 Nov 2025 12:57:18 +0000 (UTC)
+	s=arc-20240116; t=1762959037; c=relaxed/simple;
+	bh=fDyqUYG96cnQY+L9W/+s4ilvkJlQdMXHRO6AeDHlCzI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Yms1R2HM0w1WAc2A1mAinG3VBE+IL/wWShUr4SjVRfZKEZIcOL+GRb/b+JiHxrk71lHLKpY1D7bjzZICP1VKTeVFsVaQks/B1stHYQArOzFgX89084ulE+Jr/JJPLuGjqL4gg6TWOALBI2bS2qFoGVM5bcFvLq6V4/q4kC/qUvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=enBY7x6Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C317FC4CEF7;
+	Wed, 12 Nov 2025 14:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762952243;
-	bh=dhaRUvSmwrrEzm722nO20RVYYV4MggIRD2VI3fVuqZo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yhclw4Yulib9HPJdsVXRTo2PjHbGxKyTz3/CGA5hj+pD0w/fJYSELChR4ncOmumLu
-	 VM1/IehXOQhrA3lxW7cov3XPl6v3DJfNpPe6RjruevdBxoiYP/0LU4dPWkYPtPbQrd
-	 Auuo7prOklr1RBL4aWBffMFjmikrLdsi9iOww/Oa1/EilavKfiJz1Mu8X8nrnA+z2M
-	 OqLAEvbhxUAd52ysU2PrHxmgRc3J95MBmiFnUHsFralSEluJSSKLHMDW+PD0YqlcEE
-	 DketIBIru5A7fV7BbHXN3c9wnOtlfAWrja+io8Y5/ZLS7hmxyC3FXu/Zs85CeheEOC
-	 an4AWWopUt9XA==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 6.17 000/849] 6.17.8-rc1 review
-Date: Wed, 12 Nov 2025 13:57:09 +0100
-Message-ID: <20251112125709.142950-1-ojeda@kernel.org>
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-References: <20251111004536.460310036@linuxfoundation.org>
+	s=k20201202; t=1762959036;
+	bh=fDyqUYG96cnQY+L9W/+s4ilvkJlQdMXHRO6AeDHlCzI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=enBY7x6YOWv87kpNak4NrFB8JtZ3UVXQuLOeCAaj6KUbV7onIs9gxe3f9AeakO/UD
+	 P9eC6n1V+zD9y14jPBKQXNdiwFWCkIL/ENmV5k9VIeu7Q+Nq5Te9yLdQLMd2eAlUeg
+	 oKk8bFYOfMrgnmuXhvcvdgjgoF+jv7G9Npc5uNdflqeXzjDoIFBF0ao7BlTFrDIBER
+	 WPxW+kQ0/k5jeCxf4L1ZlrSQyoyW+ZUsbthCnokc6bNsq/ZCLUjXr6rvA/asAwvQ3B
+	 dN3rWLyryTt87mMkUEJ5I8rcVupgRBgwiglVwJqgR9GZ4BNh0keKckGoqJaKn+y9Tw
+	 PPXSl/G8Y5KVg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE16739EFA4C;
+	Wed, 12 Nov 2025 14:50:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,24 +52,46 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v1] ipv4: route: Prevent rt_bind_exception() from
+ rebinding stale fnhe
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176295900651.38875.8173375178181875394.git-patchwork-notify@kernel.org>
+Date: Wed, 12 Nov 2025 14:50:06 +0000
+References: <20251111064328.24440-1-nashuiliang@gmail.com>
+In-Reply-To: <20251111064328.24440-1-nashuiliang@gmail.com>
+To: Chuang Wang <nashuiliang@gmail.com>
+Cc: stable@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Tue, 11 Nov 2025 09:32:50 +0900 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.17.8 release.
-> There are 849 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 13 Nov 2025 00:43:57 +0000.
-> Anything received after that time might be too late.
+Hello:
 
-Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-for arm and loongarch64:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
+On Tue, 11 Nov 2025 14:43:24 +0800 you wrote:
+> The sit driver's packet transmission path calls: sit_tunnel_xmit() ->
+> update_or_create_fnhe(), which lead to fnhe_remove_oldest() being called
+> to delete entries exceeding FNHE_RECLAIM_DEPTH+random.
+> 
+> The race window is between fnhe_remove_oldest() selecting fnheX for
+> deletion and the subsequent kfree_rcu(). During this time, the
+> concurrent path's __mkroute_output() -> find_exception() can fetch the
+> soon-to-be-deleted fnheX, and rt_bind_exception() then binds it with a
+> new dst using a dst_hold(). When the original fnheX is freed via RCU,
+> the dst reference remains permanently leaked.
+> 
+> [...]
 
-Thanks!
+Here is the summary with links:
+  - [net,v1] ipv4: route: Prevent rt_bind_exception() from rebinding stale fnhe
+    https://git.kernel.org/netdev/net/c/ac1499fcd40f
 
-Cheers,
-Miguel
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
