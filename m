@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-194604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0EA8C51D41
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 12:06:01 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B89C51D4D
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 12:06:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF90F3A3D7E
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:58:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3587E4F53F4
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439562FDC5B;
-	Wed, 12 Nov 2025 10:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63E830B521;
+	Wed, 12 Nov 2025 10:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qwGnzPdo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdUYumqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F384B223DD6;
-	Wed, 12 Nov 2025 10:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C18130ACED;
+	Wed, 12 Nov 2025 10:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762945084; cv=none; b=SdhNfOmAEdJ2jzGEPDcdNjj5Pw3g6k9aLJtzSksEWhzB7NEje6b15uuzSLCES4EwbejUadOFirueRgvFu0vNoaKImqUowcZBh44gGnDRso8kAsG1VUoTdW3csZssZw9+sxsSillhnqn1ZhVIs/OwYvN0NjkdClYQvDSp1wTjoN8=
+	t=1762945166; cv=none; b=jD2LERzvI4r3KERO3+0FNqGz7BJ368+wYw0EgtKqtiKBKUmRsJjc4C+PA+fvwpMr5i0H6h6+OH+zrbo0O1D+uuXu9Rd6pKchKVFmRIbSx3s+m64VmD6AhTIlU0SGDq8CypcNeBXarps7iz01U6lYC/wp/dIqpRq/lwKbiSlayug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762945084; c=relaxed/simple;
-	bh=c0MJyFQfofT+kLIzHC2PGnpq2h6txKRkt+1J0lXD9+U=;
+	s=arc-20240116; t=1762945166; c=relaxed/simple;
+	bh=kDc26jylMCjx5lPAYh2LgJVWyF7lQbmkJzm1ShisrSU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uZo650GWRbSP0ph4jT6Sz8V6dfjc6qm1tW2yrwZjSNIt3RRIqBC6I1/aBNWAieEi87VU7+QvTgjTL5QFVHUrq9TBLiHTc7BbY3ijkATJfHZDPxs01Mp4p+VntqvXtfyIgkbUviscxQerkkIkMC31Xxo08akAD3i2AktiSFnJEXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qwGnzPdo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74ED2C4CEF5;
-	Wed, 12 Nov 2025 10:58:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762945083;
-	bh=c0MJyFQfofT+kLIzHC2PGnpq2h6txKRkt+1J0lXD9+U=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=RIVLI35wOTq1QlavrBK8T+g13CKXgIPz7rRXkK5R856RLTpfeP25inF74gXvmze3GD+52ozhLSB1WCrhy3SXNKCrzlZPlgiU7BWrZv4S95IVHzRLaMdVAOWI/Sw/xJpd2dEb7QMifEN47gxO02QLOUKt7rGF4yQuDkMmuROo8qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdUYumqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C4DC116B1;
+	Wed, 12 Nov 2025 10:59:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1762945165;
+	bh=kDc26jylMCjx5lPAYh2LgJVWyF7lQbmkJzm1ShisrSU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qwGnzPdoaXDdrScj7SpEr3SZ4JVT6cuk3jD1zH3WrwTA6AInM6Crqo2SniuQiDe0m
-	 GBC2Y00cPtuEwGcXrC2c4UTOUZQIVhNUIujSq1mzfs1fKqke5hz8TjdjHsrETMUmQZ
-	 55oMoW7S/9G3DpI50RQwz0QY8wos70+Z0l9PyP80FPehhWoz2VnZcleOjB0zOKKhEB
-	 J2erslHXUqlsD4BdQ23Zik3oyIlBhKf0OhS4qam4ASU1uxfxej6KPLM3Dky5xRtwBT
-	 LLpEgI4E/4aCT37L1S++8pWlklcORXY+Mw3NsiaC2Tzc6/q8ry3DknSXyUlArZNSfe
-	 HgWP9IokuRl2g==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vJ8Y7-0000000025s-0mJO;
-	Wed, 12 Nov 2025 11:58:03 +0100
-Date: Wed, 12 Nov 2025 11:58:03 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] clocksource/drivers/stm: Fix section mismatches
-Message-ID: <aRRoO5mXbH9eg0fE@hovoldconsulting.com>
-References: <20251017054943.7195-1-johan@kernel.org>
- <7ad2b976-3b0d-4823-a145-ceedf071450d@linaro.org>
- <aRH74auttb6UgnjP@hovoldconsulting.com>
- <3c2dee38-46a8-4359-b981-d4e3d53061fe@linaro.org>
+	b=rdUYumqKqYMky1mPZ1kbbJVYBSpX+NuhLscpewkjXw+O6FfBcRP58g/jKDWm/gGQk
+	 oDddyQxh31Cl34RkiLIRLCCKZg26A3t0iEbEKkb1rGuQxhv/PwUXMW7r2BiGm4jM+A
+	 +jawy08INyfOWScwnIwTEKP8gmA/5d4PhQLHM9PM=
+Date: Wed, 12 Nov 2025 05:59:23 -0500
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Markus Heidelberg <M.Heidelberg@cab.de>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.17 468/849] eeprom: at25: support Cypress FRAMs without
+ device ID
+Message-ID: <2025111252-unmindful-blemish-a2d8@gregkh>
+References: <20251111004536.460310036@linuxfoundation.org>
+ <20251111004547.745840653@linuxfoundation.org>
+ <aRMJ07J1E0C-gjC7@KAN23-025>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,44 +59,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3c2dee38-46a8-4359-b981-d4e3d53061fe@linaro.org>
+In-Reply-To: <aRMJ07J1E0C-gjC7@KAN23-025>
 
-On Wed, Nov 12, 2025 at 10:57:21AM +0100, Daniel Lezcano wrote:
-> On 11/10/25 15:51, Johan Hovold wrote:
-
-> > On Wed, Nov 05, 2025 at 02:32:18PM +0100, Daniel Lezcano wrote:
+On Tue, Nov 11, 2025 at 10:03:17AM +0000, Markus Heidelberg wrote:
+> On Tue, Nov 11, 2025 at 09:40:38AM +0900, Greg Kroah-Hartman wrote:
+> > 6.17-stable review patch.  If anyone has any objections, please let me know.
 > > 
-> >> You should replace __init by __init_or_module
+> > ------------------
 > > 
-> > That's not sufficient as the driver can still be rebound through sysfs
-> > currently (the driver would probably crash anyway, but that's a separate
-> > issue).
+> > From: Markus Heidelberg <m.heidelberg@cab.de>
 > > 
-> > Also note that no drivers use __init_or_module these days, likely as
-> > everyone uses modules and it's not worth the added complexity in trying
-> > to get the section markers right for a build configuration that few
-> > people care about.
-> > 
-> > I can send a follow-on patch to suppress the unbind attribute, or
-> > include it in a v2 if you insist on using __init_or_module.
-> > 
-> > What do you prefer?
+> > [ Upstream commit 1b434ed000cd474f074e62e8ab876f87449bb4ac ]
 > 
-> I think it makes sens to use __init_or_module because these drivers have 
-> been always compiled in and we are converting them into modules.
+> No objections, but the corresponding bindings patch should be included
+> as well then,
+> see upstream commit 534c702c3c234665ca2fe426a9fbb12281e55d55
+> ("dt-bindings: eeprom: at25: use "size" for FRAMs without device ID").
 
-That's not really relevant. __init_or_module will only save a tiny bit
-of memory in builds where modules are completely disabled
-(i.e. !CONFIG_MODULES) which is hardly used any more.
+Great, now added.
 
-Note that it has nothing to do with whether this particular driver is
-built as a module or not.
+> How to handle the third and last patch of the same series?
+> See upstream commit dfb962e214788aa5f6dfe9f2bd4a482294533e3e
+> ("eeprom: at25: make FRAM device ID error message more precise").
 
-And since no other drivers cares about this uncommon case, are you sure
-you want to do this here?
+Not really needed for a kernel tree that will only be alive another
+month or so, right?
 
-Note that this would also require suppressing section mismatch warnings
-for the common case (CONFIG_MODULES).
+thanks,
 
-Johan
+greg k-h
 
