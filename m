@@ -1,142 +1,92 @@
-Return-Path: <stable+bounces-194610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9BFBC520A8
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 12:43:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 801F5C52090
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 12:42:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99BD13AAE24
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 11:37:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05C2C3AA1CB
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 11:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC7D311959;
-	Wed, 12 Nov 2025 11:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFBB31195F;
+	Wed, 12 Nov 2025 11:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tssltd.ru header.i=@tssltd.ru header.b="X8F6rha8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rTSplVLt"
 X-Original-To: stable@vger.kernel.org
-Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [178.154.239.83])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBB7299AB5;
-	Wed, 12 Nov 2025 11:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1022F3621;
+	Wed, 12 Nov 2025 11:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762947473; cv=none; b=KiTpSXLy+jqEy9zdc/9aHAdff3PMc1msO0ZwdQb+ArG690nwzoY0NvaL8iJSgzxggBEuzYCM5XD9ecSoBjfKENwyjWl4oLkwxDd1K8VXbd1+mIYRQqRsqLgMR1QE+8GfxgLijV7sM9JodG45kkAHl+/CUMkQMj2IDsQLoJxWBzk=
+	t=1762947432; cv=none; b=VzqS6O71Rmx6ZA1RIu0PZ7pzmpk/GKlkjIvNJSvh2yTACHUyX2jhloTeA2sIkP7GpIpy9gcBa8u975LwNXtQ4DjnqC0b0jkVOV0V7g6b485IhjotMSeteUsHnyGn56ycGzzx6xcJjyji/QDJEvNcB0tZPhPFt7LEU+jdc6jZUZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762947473; c=relaxed/simple;
-	bh=Nqgas7GiliM6f4hdPxwETZq0KRMgTU9NytxRsquiSrY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Rg0re9Yay5vzwFggdaSzMU8XQlRmUA1q1ZtrMKfVVFMWoVH8iajmUFCHbIHOqtBTrm19o3TgAh614laN8/Jcppf4SrrZ60vGibhGkCHw25mjhSY7NVKCILiCA170FoB0MLemArbqCc6tTlTTcqRCV1GwpLzQmLRTC3l1PCvSi7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tssltd.ru; spf=pass smtp.mailfrom=tssltd.ru; dkim=pass (1024-bit key) header.d=tssltd.ru header.i=@tssltd.ru header.b=X8F6rha8; arc=none smtp.client-ip=178.154.239.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tssltd.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tssltd.ru
-Received: from mail-nwsmtp-smtp-production-main-73.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-73.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:8583:0:640:4841:0])
-	by forward100a.mail.yandex.net (Yandex) with ESMTPS id 27261C0197;
-	Wed, 12 Nov 2025 14:37:41 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-73.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 8bNmXh1LSmI0-DzCqPhFU;
-	Wed, 12 Nov 2025 14:37:40 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tssltd.ru; s=mail;
-	t=1762947460; bh=SYA/S7aWl0ErpoDeBicsv0aZyCAPuChwqx/jUn5emuw=;
-	h=Message-Id:Date:Cc:Subject:To:From;
-	b=X8F6rha8hVsY1Sp7aX37uungA7fmgpe2WPwJSbeH/b8rx+3znMvaE7lSJIxmMJq66
-	 tGBpnAcIK/NCZkTNsZaJ3PgOTMoNihsaWtraRLHvLsd5dUkZZ0+2g07zJtDEBYhZig
-	 jRstBJHmZ6OnoveL+ns1HxirZw5V4kSgzFf0RSag=
-Authentication-Results: mail-nwsmtp-smtp-production-main-73.iva.yp-c.yandex.net; dkim=pass header.i=@tssltd.ru
-From: Stepan Artuhov <s.artuhov@tssltd.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Olivier Langlois <olivier@trillion01.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	io-uring@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Stepan Artuhov <s.artuhov@tssltd.ru>
-Subject: [PATCH 6.12] io_uring/napi: fix io_napi_entry RCU accesses
-Date: Wed, 12 Nov 2025 14:37:06 +0300
-Message-Id: <20251112113706.533309-1-s.artuhov@tssltd.ru>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1762947432; c=relaxed/simple;
+	bh=ymCfGk4AxYo4bd74CdMZkB02vK66A3ulrQ4KUB+F6wg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nLqXeYT514ejVpZ612oF87jTXXCO1Nqv2fZwGN+kx1hvxAqXSCk9kj3tX9rvl5uzbbo4MmQNvPkBeogA87bLR1VPaLH7JdRhHxXgx0tt/xLde2ems6wZvhj2u8n4U1mF7cmy4ST96iA8maYHwD7zY+6u2P8Bbj/GUdwiP1ORPfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rTSplVLt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F73FC4CEF7;
+	Wed, 12 Nov 2025 11:37:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762947431;
+	bh=ymCfGk4AxYo4bd74CdMZkB02vK66A3ulrQ4KUB+F6wg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rTSplVLtdX0NamxtioaiuZdXlSof29fiiG/qEJXf4CmgfrBTyY3YX83kegMriynp3
+	 ySuGL3f+j0DNkWzNw41Y9kCgUIS40koqYfyVR0RLTPrrdu7KQbmnPRWbKYszw2XoM3
+	 SuHNK5rm2jQtC4uZuR+ZaFt/F+QOHm2QrEArvluLwMkKaqMGtKxVdaH7jJ2EaG1uiO
+	 HkHAfjqY7BM/NrEs+7wOl0+gooulTesZq1Dd3OGeQ3bDNhImQsHVVE3PX149JkAPD9
+	 cdG6chGChJsLGrjmhkMtyyTnaZ6ZQHR8t15pQYTmgSEEnX8YTEU/sjWuGYucusqsU/
+	 wOcDm//eAQOZQ==
+Date: Wed, 12 Nov 2025 17:07:08 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Cc: Srinivas Kandagatla <srini@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Miaoqian Lin <linmq006@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] slimbus: ngd: Fix reference count leak in
+ qcom_slim_ngd_notify_slaves
+Message-ID: <aRRxZCWCWMFD23b4@vaman>
+References: <20251027060601.33228-1-linmq006@gmail.com>
+ <176292442599.64339.7709313480733902465.b4-ty@kernel.org>
+ <7eed86f6-97a9-487a-8161-3617597f7391@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7eed86f6-97a9-487a-8161-3617597f7391@oss.qualcomm.com>
 
-From: Olivier Langlois <olivier@trillion01.com>
+On 12-11-25, 10:09, Srinivas Kandagatla wrote:
+> 
+> 
+> On 11/12/25 5:13 AM, Vinod Koul wrote:
+> > 
+> > On Mon, 27 Oct 2025 14:06:01 +0800, Miaoqian Lin wrote:
+> >> The function qcom_slim_ngd_notify_slaves() calls of_slim_get_device() which
+> >> internally uses device_find_child() to obtain a device reference.
+> >> According to the device_find_child() documentation,
+> >> the caller must drop the reference with put_device() after use.
+> >>
+> >> Found via static analysis and this is similar to commit 4e65bda8273c
+> >> ("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
+> >>
+> >> [...]
+> > 
+> > Applied, thanks!
+> 
+> These are slimbus patches? any reason why they are going via soundwire tree?
 
-[Upstream commit 45b3941d09d13b3503309be1f023b83deaf69b4d ]
+My mistake, sorry :-( dropped now
 
-correct 3 RCU structures modifications that were not using the RCU
-functions to make their update.
-
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Pavel Begunkov <asml.silence@gmail.com>
-Cc: io-uring@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: lvc-project@linuxtesting.org
-Signed-off-by: Olivier Langlois <olivier@trillion01.com>
-Link: https://lore.kernel.org/r/9f53b5169afa8c7bf3665a0b19dc2f7061173530.1728828877.git.olivier@trillion01.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[Stepan Artuhov: cherry-picked a commit]
-Signed-off-by: Stepan Artuhov <s.artuhov@tssltd.ru>
----
- io_uring/napi.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
-
-diff --git a/io_uring/napi.c b/io_uring/napi.c
-index d0cf694d0172..fa959fd32042 100644
---- a/io_uring/napi.c
-+++ b/io_uring/napi.c
-@@ -81,19 +81,24 @@ void __io_napi_add(struct io_ring_ctx *ctx, struct socket *sock)
- 	}
- 
- 	hlist_add_tail_rcu(&e->node, hash_list);
--	list_add_tail(&e->list, &ctx->napi_list);
-+	list_add_tail_rcu(&e->list, &ctx->napi_list);
- 	spin_unlock(&ctx->napi_lock);
- }
- 
- static void __io_napi_remove_stale(struct io_ring_ctx *ctx)
- {
- 	struct io_napi_entry *e;
--	unsigned int i;
- 
- 	spin_lock(&ctx->napi_lock);
--	hash_for_each(ctx->napi_ht, i, e, node) {
--		if (time_after(jiffies, e->timeout)) {
--			list_del(&e->list);
-+	/*
-+	 * list_for_each_entry_safe() is not required as long as:
-+	 * 1. list_del_rcu() does not reset the deleted node next pointer
-+	 * 2. kfree_rcu() delays the memory freeing until the next quiescent
-+	 *    state
-+	 */
-+	list_for_each_entry(e, &ctx->napi_list, list) {
-+		if (time_after(jiffies, READ_ONCE(e->timeout))) {
-+			list_del_rcu(&e->list);
- 			hash_del_rcu(&e->node);
- 			kfree_rcu(e, rcu);
- 		}
-@@ -204,13 +209,13 @@ void io_napi_init(struct io_ring_ctx *ctx)
- void io_napi_free(struct io_ring_ctx *ctx)
- {
- 	struct io_napi_entry *e;
--	unsigned int i;
- 
- 	spin_lock(&ctx->napi_lock);
--	hash_for_each(ctx->napi_ht, i, e, node) {
-+	list_for_each_entry(e, &ctx->napi_list, list) {
- 		hash_del_rcu(&e->node);
- 		kfree_rcu(e, rcu);
- 	}
-+	INIT_LIST_HEAD_RCU(&ctx->napi_list);
- 	spin_unlock(&ctx->napi_lock);
- }
- 
 -- 
-2.39.5
-
+~Vinod
 
