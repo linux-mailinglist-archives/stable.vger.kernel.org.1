@@ -1,156 +1,178 @@
-Return-Path: <stable+bounces-194573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0138C50EE4
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 08:29:04 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D18E2C50E6C
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 08:21:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D81C1895A6F
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 07:29:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 575A64E4B3A
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 07:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDA62C21CC;
-	Wed, 12 Nov 2025 07:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F38A2C0299;
+	Wed, 12 Nov 2025 07:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lNYpv4uu"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="0qh8C1VQ"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D232E285C9F;
-	Wed, 12 Nov 2025 07:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6981C29ACD7;
+	Wed, 12 Nov 2025 07:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762932539; cv=none; b=NYhlnC8ch6QSL6KqexsyqlWytvIy0+aU/6spxlPw8eKWRyup5RBjR59OV8F6RXa9yBbcqsg2p99LE2uMzIj4m0O382GB4FPO4QeOoT4A9AnoK2jYovpNeLRRyu/CFA2ctM4vYpdO+9cEib7uEDFudMcdnubXWU6PMaXGL4C0jmI=
+	t=1762931966; cv=none; b=DfCQSDOk0KUQnlVev6vCpF1W3FEmxaj5MhT00wUF8GFet7698ZcuhHmZnszgEaII/4uQN2+YxGuRI3itasOW11I2UeUPwJ/E4N0veD8t6yf/8avaORU7CP9+wsfhx1DwowXJsffR+tAGHJaKl97Xqmt355HXdMmSMrRPZiSYGtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762932539; c=relaxed/simple;
-	bh=V6wi0kcFw0Q8gGUYw1DFlgX+4CHH6igLN6gf7Xs9mfc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EFUxt8LpG9PBOWfUUnhWnICHWzXerk/YK4rq9rdZ6ZcypsyoiMdnb/UggHaoytsvx/cWZlvRK8Q/YHBliBFRBrDedaH77I9/YJFgHbbL+w/KqCAFN17o6dFlahtKWnxMS1UkvGrc7F4BMXdx1USj8TuP0Cu3py/cNe10mAi6h10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lNYpv4uu; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 8F4CC7A01E4;
-	Wed, 12 Nov 2025 02:28:56 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Wed, 12 Nov 2025 02:28:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1762932536; x=1763018936; bh=/qRyiDiAt8Ei9aeC9qYnbXqrngQdTyNLTYg
-	+pPQSEdY=; b=lNYpv4uuczW9jJ51COZWxybhWMYHt1jnsMOuTNbBjUCB+c///Pq
-	tZOQFQ2xr+LxsEAatisVecUuM1vjRoODnMXKjkot7p6NRTEVCLVvCCw31R7SmHgU
-	sp2P9SE1HPwWDZHGSGdV82+NbzPe1rFn6W/ptrLzIehk7l3pEFvZ/FWbk45U1IDr
-	VASAK90DM/VFhnM1vaUZ4iTKvDF4pe3Jnx8hry5CeSesbiTYzsSELKqd3HguImHn
-	g8+lxcj+J60ukdeMY8jXk+DvA3mraKeK26VzHeBslAuycCOd5aDCmsUNliwGn6o3
-	3TKhUXWrejyo6zB8GGkj/sCa7revkPnXQlg==
-X-ME-Sender: <xms:NzcUaVCIPFnaxmDOyeBkIvxf1XNW4k3BTajYLbYuVLf2RnYIvAKVpA>
-    <xme:NzcUaZhhAEQHdeIGnpGj1KlsVs90GzZZaRt7FG9LCEzgtdjZ68EVfQXi015-wGtzm
-    MWXGUZNJgsINtk15jM9G6dhGugq_drsxjrzH7Yo1enAA2PcPzL6>
-X-ME-Received: <xmr:NzcUabaGuKdvSTjaGpuf4L5iCyojdXmYbGS5YTiAdsY0vgUrOzo7OGvV>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtdefgeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepkfguohcuufgt
-    hhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepvddufeevkeehueegfedtvdevfefgudeifeduieefgfelkeehgeelgeejjeeggefh
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihguoh
-    hstghhsehiughoshgthhdrohhrghdpnhgspghrtghpthhtohepuddtpdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopehnrghshhhuihhlihgrnhhgsehgmhgrihhlrdgtohhmpd
-    hrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
-    ohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegushgrhhgvrh
-    hnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgv
-    rdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohephhhorhhmsheskhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorh
-    hg
-X-ME-Proxy: <xmx:NzcUaSnw0vjSTsRlETzAO-f6e9txzJBTexzov_bkv-ajTlSv1vSCdA>
-    <xmx:NzcUaZjZ2_KIHPkgLVr9rAP7czoqp57UYhS2_XknATW1q3FC2G1VdA>
-    <xmx:NzcUacS7srdZXtMu_XjR68i_0KHfbP7qe2kYO9UOglvF5F0wyVZQcg>
-    <xmx:NzcUaSZOytN-o93XqUe2BNWbppfw5msVwglET4mkIgmcRv_igEFAZw>
-    <xmx:ODcUaeoyGUVhTGJ-9EHCyB9fs9EJf3a3Ewq0jcW2XYpoXsiCXISEZ9qr>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 12 Nov 2025 02:28:55 -0500 (EST)
-Date: Wed, 12 Nov 2025 09:28:53 +0200
-From: Ido Schimmel <idosch@idosch.org>
-To: Chuang Wang <nashuiliang@gmail.com>
-Cc: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v1] ipv4: route: Prevent rt_bind_exception() from
- rebinding stale fnhe
-Message-ID: <aRQ3NYERGcHJ4rZP@shredder>
-References: <20251111064328.24440-1-nashuiliang@gmail.com>
+	s=arc-20240116; t=1762931966; c=relaxed/simple;
+	bh=O0TsZjlLttjYXNGtziIBfvWtwkKAH3z+Txs9+EQsKmc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=q3vY/+11EIRTEa1M6VwyAF7nPUIW78Uvfyoyb1VO3c/9gcfVdBttAIkmIWdvGRof1KA/C/8VHQmCwqmkYhc0TfKGKmzk/4bbwjpakZkhoQQeutccU5XE5QErwPRp1qa9+8ZlEjv+ctLJ0XP/mmFcwCMfdlM++iecy8UbT19NT00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=0qh8C1VQ; arc=none smtp.client-ip=113.46.200.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=irUYqWMOySTEOFqOXf1mC30hXOb+We/PmI+gXOE9qqA=;
+	b=0qh8C1VQEQBhlxZ+YTNIaa2TvA7bkXHSTRPozST6Cuzum6aFvy/PZ/lIMOC724yu+SBu8zlhU
+	s/+4FjyDGIK8VpX0klYMK5qTyHP4dWa0rgBL2WikLsuWQ4ppaCzY+8B5zoAdCe2MoQKqPSR5c6q
+	IUpyc5ttMQ17X3cmj71vA3c=
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4d5vqX5nKMzcbQc;
+	Wed, 12 Nov 2025 15:17:28 +0800 (CST)
+Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1BB9A14022E;
+	Wed, 12 Nov 2025 15:19:18 +0800 (CST)
+Received: from huawei.com (10.67.174.33) by kwepemh100007.china.huawei.com
+ (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 12 Nov
+ 2025 15:19:17 +0800
+From: Gu Bowen <gubowen5@huawei.com>
+To: Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>
+CC: <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+	<stable@vger.kernel.org>, Lu Jialin <lujialin4@huawei.com>, Gu Bowen
+	<gubowen5@huawei.com>
+Subject: [PATCH stable] fbdev: Fix out-of-bounds issue in sys_fillrect()
+Date: Wed, 12 Nov 2025 15:32:07 +0800
+Message-ID: <20251112073207.1731125-1-gubowen5@huawei.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251111064328.24440-1-nashuiliang@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemh100007.china.huawei.com (7.202.181.92)
 
-On Tue, Nov 11, 2025 at 02:43:24PM +0800, Chuang Wang wrote:
-> The sit driver's packet transmission path calls: sit_tunnel_xmit() ->
-> update_or_create_fnhe(), which lead to fnhe_remove_oldest() being called
-> to delete entries exceeding FNHE_RECLAIM_DEPTH+random.
-> 
-> The race window is between fnhe_remove_oldest() selecting fnheX for
-> deletion and the subsequent kfree_rcu(). During this time, the
-> concurrent path's __mkroute_output() -> find_exception() can fetch the
-> soon-to-be-deleted fnheX, and rt_bind_exception() then binds it with a
-> new dst using a dst_hold(). When the original fnheX is freed via RCU,
-> the dst reference remains permanently leaked.
-> 
-> CPU 0                             CPU 1
-> __mkroute_output()
->   find_exception() [fnheX]
->                                   update_or_create_fnhe()
->                                     fnhe_remove_oldest() [fnheX]
->   rt_bind_exception() [bind dst]
->                                   RCU callback [fnheX freed, dst leak]
-> 
-> This issue manifests as a device reference count leak and a warning in
-> dmesg when unregistering the net device:
-> 
->   unregister_netdevice: waiting for sitX to become free. Usage count = N
-> 
-> Ido Schimmel provided the simple test validation method [1].
-> 
-> The fix clears 'oldest->fnhe_daddr' before calling fnhe_flush_routes().
-> Since rt_bind_exception() checks this field, setting it to zero prevents
-> the stale fnhe from being reused and bound to a new dst just before it
-> is freed.
-> 
-> [1]
-> ip netns add ns1
-> ip -n ns1 link set dev lo up
-> ip -n ns1 address add 192.0.2.1/32 dev lo
-> ip -n ns1 link add name dummy1 up type dummy
-> ip -n ns1 route add 192.0.2.2/32 dev dummy1
-> ip -n ns1 link add name gretap1 up arp off type gretap \
->     local 192.0.2.1 remote 192.0.2.2
-> ip -n ns1 route add 198.51.0.0/16 dev gretap1
-> taskset -c 0 ip netns exec ns1 mausezahn gretap1 \
->     -A 198.51.100.1 -B 198.51.0.0/16 -t udp -p 1000 -c 0 -q &
-> taskset -c 2 ip netns exec ns1 mausezahn gretap1 \
->     -A 198.51.100.1 -B 198.51.0.0/16 -t udp -p 1000 -c 0 -q &
-> sleep 10
-> ip netns pids ns1 | xargs kill
-> ip netns del ns1
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 67d6d681e15b ("ipv4: make exception cache less predictible")
-> Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
+There was an out-of-bounds issue found by syzkaller test on v6.6.
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+BUG: unable to handle page fault for address: ffffc90000c3f000
+PGD 100000067 P4D 100000067 PUD 100c80067 PMD 10ac1c067 PTE 0
+Oops: 0002 [#1] PREEMPT SMP KASAN PTI
+CPU: 3 PID: 6521 Comm: syz.3.1365 Not tainted 6.6.0+ #82
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+RIP: 0010:memset64 arch/x86/include/asm/string_64.h:58 [inline]
+RIP: 0010:memset_l include/linux/string.h:168 [inline]
+RIP: 0010:bitfill_aligned drivers/video/fbdev/core/sysfillrect.c:53 [inline]
+RIP: 0010:bitfill_aligned+0x144/0x1c0 drivers/video/fbdev/core/sysfillrect.c:25
+Code: 23 04 24 48 31 d0 49 89 46 f8 44 89 e0 44 29 f8 29 c3 e8 9f 39 49 fe 89 d8 31 d2 4c 89 f7 41 f7 f4 48 89 c3 48 89 c1 48 89 e8 <f3> 48 ab 31 ff 4c 89 ee e8 df 2f 49 fe 4d 85 ed 0f 84 6b ff ff ff
+RSP: 0018:ffff888119ce7418 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000180 RCX: 0000000000000180
+RDX: 0000000000000000 RSI: ffffc90003873000 RDI: ffffc90000c3f000
+RBP: 0000000000000000 R08: 0000000000006000 R09: 0000000000000040
+R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000040
+R13: 0000000000000000 R14: ffffc90000c3f000 R15: 0000000000000000
+FS:  00007f1704b926c0(0000) GS:ffff8881f5980000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffc90000c3f000 CR3: 00000001230d0002 CR4: 0000000000770ee0
+DR0: 0000000000000000 DR1: 000000000000e000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
+PKRU: 80000000
+Call Trace:
+ <TASK>
+ sys_fillrect+0x429/0x830 drivers/video/fbdev/core/sysfillrect.c:281
+ drm_fbdev_generic_defio_fillrect+0x27/0x140 drivers/gpu/drm/drm_fbdev_generic.c:37
+ bit_clear+0x183/0x220 drivers/video/fbdev/core/bitblit.c:73
+ __fbcon_clear+0x5ea/0x670 drivers/video/fbdev/core/fbcon.c:1281
+ fbcon_scroll+0x41e/0x560 drivers/video/fbdev/core/fbcon.c:1847
+ con_scroll+0x464/0x6a0 drivers/tty/vt/vt.c:577
+ lf+0x274/0x2d0 drivers/tty/vt/vt.c:1461
+ do_con_trol+0x5ea/0x3d80 drivers/tty/vt/vt.c:2149
+ do_con_write+0x780/0x10c0 drivers/tty/vt/vt.c:2905
+ con_write+0x28/0xc0 drivers/tty/vt/vt.c:3245
+ do_output_char+0x5de/0x850 drivers/tty/n_tty.c:433
+ process_output drivers/tty/n_tty.c:500 [inline]
+ n_tty_write+0x442/0xb00 drivers/tty/n_tty.c:2406
+ iterate_tty_write+0x2b5/0x630 drivers/tty/tty_io.c:1017
+ file_tty_write.constprop.0+0x20c/0x3b0 drivers/tty/tty_io.c:1088
+ call_write_iter include/linux/fs.h:2085 [inline]
+ do_iter_readv_writev+0x210/0x3c0 fs/read_write.c:737
+ do_iter_write+0x181/0x4e0 fs/read_write.c:862
+ vfs_writev+0x15b/0x4d0 fs/read_write.c:935
+ do_writev+0x136/0x370 fs/read_write.c:978
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x59/0x110 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x78/0xe2
+
+When the virtual console is rotated in the backend state, it can lead to
+inconsistencies between the size of the virtual console's size and its
+hook functions. In such cases, clearing the screen may result in
+out-of-bounds issue.
+
+Fix it by adding a check in sys_fillrect() and moving set_blitting_type()
+to the visible area of the VC.
+
+CC: stable@vger.kernel.org      # fbdev had been refactored on 6.15-rc1
+Fixes: 68648ed1f58d ("fbdev: add drawing functions for framebuffers in system RAM")
+Signed-off-by: Gu Bowen <gubowen5@huawei.com>
+---
+ drivers/video/fbdev/core/fbcon.c       | 2 +-
+ drivers/video/fbdev/core/sysfillrect.c | 6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index b49f15a3442e..a6602f230089 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2702,9 +2702,9 @@ static void fbcon_modechanged(struct fb_info *info)
+ 		return;
+ 
+ 	p = &fb_display[vc->vc_num];
+-	set_blitting_type(vc, info);
+ 
+ 	if (con_is_visible(vc)) {
++		set_blitting_type(vc, info);
+ 		var_to_display(p, &info->var, info);
+ 		cols = FBCON_SWAP(ops->rotate, info->var.xres, info->var.yres);
+ 		rows = FBCON_SWAP(ops->rotate, info->var.yres, info->var.xres);
+diff --git a/drivers/video/fbdev/core/sysfillrect.c b/drivers/video/fbdev/core/sysfillrect.c
+index bcdcaeae6538..e5c4ee317b0b 100644
+--- a/drivers/video/fbdev/core/sysfillrect.c
++++ b/drivers/video/fbdev/core/sysfillrect.c
+@@ -238,6 +238,7 @@ void sys_fillrect(struct fb_info *p, const struct fb_fillrect *rect)
+ 	u32 bpp = p->var.bits_per_pixel;
+ 	unsigned long *dst;
+ 	int dst_idx, left;
++	long dst_offset;
+ 
+ 	if (p->state != FBINFO_STATE_RUNNING)
+ 		return;
+@@ -277,6 +278,11 @@ void sys_fillrect(struct fb_info *p, const struct fb_fillrect *rect)
+ 		}
+ 		while (height--) {
+ 			dst += dst_idx >> (ffs(bits) - 1);
++			dst_offset = (unsigned long)dst - (unsigned long)p->screen_base;
++			if (dst_offset < 0 || dst_offset >= p->fix.smem_len) {
++				pr_err("dst offset out of bound: dst_offset(%ld)", dst_offset);
++				return;
++			}
+ 			dst_idx &= (bits - 1);
+ 			fill_op32(p, dst, dst_idx, pat, width*bpp, bits);
+ 			dst_idx += p->fix.line_length*8;
+-- 
+2.43.0
+
 
