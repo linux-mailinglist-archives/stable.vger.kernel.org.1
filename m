@@ -1,133 +1,144 @@
-Return-Path: <stable+bounces-194575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2BA9C512D5
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 09:49:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CC8C5146B
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:08:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CC9E34EDD55
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 08:47:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 400033ADF5D
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 09:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9D12FD669;
-	Wed, 12 Nov 2025 08:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E835D2FE58F;
+	Wed, 12 Nov 2025 08:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yKwyZYl4"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDC52FD69F
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 08:47:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9943A2FE06B
+	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 08:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762937257; cv=none; b=ZzM/AtZaxg33po8blab1c3/LnEW/BEcv3G/bdDoYSFe44g9YdkRSGsCGL/04hagrW/G/VsK1jaEjEz3I8+SukYj3lMAKfdmWBMFoh5aGrGpjDVLFrJlTviWOW3BbEsHi8/rexcwvV/BfPcp8YcAna869R7kKY8o24YaN0rAVIWI=
+	t=1762937984; cv=none; b=Fd35Z96mLVh9J6lJ1/ZCD+je/UuKzcwiPw1P47TWqYsQ8Mmh+YTIDapQRFjnzPfh6+Aoye1Jyd63hxbkhchrKR3rMHapJids4Ax47NiV3VpyP06F71DBBuJ9stkk309lXLIH7oMFh6+unJMda25sVmJ5/OfFQ/ZwJRCai2QSRfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762937257; c=relaxed/simple;
-	bh=AWeQnti40jHnOJbmGeOlA0NmYMcbw2PDNWzz614QK/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=epcjGbSTkUSecomYFmkunmEfYycbCLl/pJwO7U6QDJVZkNo2sEPAzIcMVrn70oGIzGiS98k2Njtf1Lry+n4J+ku2Ewq8YHPT0WPAwy+XWuFXL9A6A0z4Yz/0oJLEgGF965XXKQc2mqpXOVB+fFdXdu0dBAtsIMTddnirqEFrK+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vJ6Vc-0002Je-Qv; Wed, 12 Nov 2025 09:47:20 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vJ6Vb-0003IJ-22;
-	Wed, 12 Nov 2025 09:47:19 +0100
-Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 55FAC49D92A;
-	Wed, 12 Nov 2025 08:47:19 +0000 (UTC)
-Date: Wed, 12 Nov 2025 09:47:19 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Biju <biju.das.au@gmail.com>
-Cc: Vincent Mailhol <mailhol@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Biju Das <biju.das.jz@bp.renesas.com>, Tranh Ha <tranh.ha.xb@renesas.com>, 
-	Duy Nguyen <duy.nguyen.rh@renesas.com>, linux-can@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] can: rcar_canfd: Fix controller mode setting for RZ/G2L
- SoCs
-Message-ID: <20251112-warping-ninja-jaybird-22edde-mkl@pengutronix.de>
-References: <20251030120508.420377-1-biju.das.jz@bp.renesas.com>
+	s=arc-20240116; t=1762937984; c=relaxed/simple;
+	bh=fw6xRRSrEe6IvmtlKZd1GHXRPKMnz65H243RiUIEEfI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tLBlAyeMSAgNmcjJLi/4Y+cd1eytRMkWj8bLsk+lPzr3dlzBrAmrGYQwE6oxQxz/QXXfXL+D2BC9bczUpuer8lkyBIp4v88nWJHhBEcrjh3X/vhqowJ5HjBAImrEnnhLqN/v0NP+JhEepyqCVKs3nv5MG4UYh9bBLl1a52mjzsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yKwyZYl4; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 023251A1A06;
+	Wed, 12 Nov 2025 08:59:41 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C2BBE6070B;
+	Wed, 12 Nov 2025 08:59:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9C7D31037170F;
+	Wed, 12 Nov 2025 09:59:35 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1762937979; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=XgvHorkYlljZc4LneQOwVFrbrAMtL/782gZQ0/mOGIY=;
+	b=yKwyZYl4dynT48ezsUgkoxmvzYd+FSQ9cbqH5KYFiCa/jACajVD8n/vtnbxf3pdaFiqpCu
+	E2AwTCbX7yIYoGlv0rBSyKkRjEOjcdnxbIj7v+4Tu/I5u1eC/gRvlp/EZPWlFg7bG6wA+G
+	L2Ef2HHXzqoRCBSY4ZeJy9DgCMgtVhsKasN9/zGySRsVBod4xGugR0X0a/3ZKQcBBZoX6/
+	+HLfBuH7ym7aYM9IUM+aFIhxNdxPEymjckh53zcJkIC0qJyIZTEbl/Ojh48hoFGKp/lPOp
+	LgUGLzWnOxPEhEEqqERuqQCqglx4gjEp9ajBSXdkiIm2wdXl3qRMV4L6z5DUwQ==
+Date: Wed, 12 Nov 2025 09:59:34 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Lee Jones <lee@kernel.org>
+Cc: kernel test robot <lkp@intel.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman
+ <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, Tony Lindgren
+ <tony@atomide.com>, Shree Ramamoorthy <s-ramamoorthy@ti.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, oe-kbuild-all@lists.linux.dev, Andrew Davis
+ <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mfd: tps65219: Implement LOCK register handling
+ for TPS65214
+Message-ID: <20251112095934.41dfe0a3@kmaincent-XPS-13-7390>
+In-Reply-To: <20251110134221.GD1949330@google.com>
+References: <20251106-fix_tps65219-v2-1-a7d608c4272f@bootlin.com>
+	<202511070607.Il9q9meO-lkp@intel.com>
+	<20251110134221.GD1949330@google.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lxeis23kjl3hmw2g"
-Content-Disposition: inline
-In-Reply-To: <20251030120508.420377-1-biju.das.jz@bp.renesas.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-
-
---lxeis23kjl3hmw2g
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] can: rcar_canfd: Fix controller mode setting for RZ/G2L
- SoCs
-MIME-Version: 1.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 30.10.2025 12:05:04, Biju wrote:
-> From: Biju Das <biju.das.jz@bp.renesas.com>
->
-> The commit 5cff263606a1 ("can: rcar_canfd: Fix controller mode setting")
-> applies to all SoCs except the RZ/G2L family of SoCs. As per RZ/G2L
-> hardware manual "Figure 28.16 CAN Setting Procedure after the MCU is
-> Reset" CAN mode needs to be set before channel reset. Add the
-> mode_before_ch_rst variable to struct rcar_canfd_hw_info to handle
-> this difference.
->
-> The above commit also breaks CANFD functionality on RZ/G3E. Adapt this
-> change to RZ/G3E, as well=C2=A0as it works ok by following the initialisa=
-tion
-> sequence of RZ/G2L.
->
-> Fixes: 5cff263606a1 ("can: rcar_canfd: Fix controller mode setting")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+On Mon, 10 Nov 2025 13:42:21 +0000
+Lee Jones <lee@kernel.org> wrote:
 
-Applied to linux-can.
+> On Fri, 07 Nov 2025, kernel test robot wrote:
+>=20
+> > Hi Kory,
+> >=20
+> > kernel test robot noticed the following build warnings:
+> >=20
+> > [auto build test WARNING on 1c353dc8d962de652bc7ad2ba2e63f553331391c]
+> >=20
+> > url:
+> > https://github.com/intel-lab-lkp/linux/commits/Kory-Maincent-TI-com/mfd=
+-tps65219-Implement-LOCK-register-handling-for-TPS65214/20251106-185551
+> > base:   1c353dc8d962de652bc7ad2ba2e63f553331391c patch link:
+> > https://lore.kernel.org/r/20251106-fix_tps65219-v2-1-a7d608c4272f%40boo=
+tlin.com
+> > patch subject: [PATCH v2 1/2] mfd: tps65219: Implement LOCK register
+> > handling for TPS65214 config: i386-buildonly-randconfig-003-20251107
+> > (https://download.01.org/0day-ci/archive/20251107/202511070607.Il9q9meO=
+-lkp@intel.com/config)
+> > compiler: gcc-13 (Debian 13.3.0-16) 13.3.0 reproduce (this is a W=3D1 b=
+uild):
+> > (https://download.01.org/0day-ci/archive/20251107/202511070607.Il9q9meO=
+-lkp@intel.com/reproduce)
+> >=20
+> > If you fix the issue in a separate patch/commit (i.e. not just a new
+> > version of the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes:
+> > https://lore.kernel.org/oe-kbuild-all/202511070607.Il9q9meO-lkp@intel.c=
+om/
+> >=20
+> > All warnings (new ones prefixed by >>):
+> >=20
+> >    drivers/mfd/tps65219.c: In function 'tps65214_reg_write': =20
+> > >> drivers/mfd/tps65219.c:479:26: warning: variable 'tps' set but not u=
+sed
+> > >> [-Wunused-but-set-variable] =20
+> >      479 |         struct tps65219 *tps;
+> >          |                          ^~~
+> >=20
+> >=20
+> > vim +/tps +479 drivers/mfd/tps65219.c
+> >=20
+> >    475=09
+> >    476	static int tps65214_reg_write(void *context, unsigned int
+> > reg, unsigned int val) 477	{
+> >    478		struct i2c_client *i2c =3D context; =20
+> >  > 479		struct tps65219 *tps; =20
+>=20
+> Please fix.
 
-Thanks,
-Marc
+Yes, I will do it this week, I was waiting for few days in case of more
+reviews.
 
+Regards,
 --=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---lxeis23kjl3hmw2g
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmkUSZIACgkQDHRl3/mQ
-kZwuigf9F5PFg+qtPIWyiJ0SYay6CKVFjWfOfIo6j4qqRIYmT2K+uhZVhUaUkoYo
-KfqPGwX7NZFUGA5zVghfGDI4efNmI0uWY9YOYCiI1AIQhPj9RDYzouLHhXrubTh1
-dgqtnpY4lZ9NwR5diS8NoDHUHUfUz1oGCzSRJF8XZVKEsOAB99QqsgkKLuioPCB2
-0av+JbP8ElykswI8Zh+iALa4/funve5dN01tpl7Bnb80D816672a8tGv1JnkDg15
-rThLn7XQ8i8sqCPKwQK8d0QJTJ+W2YiSXkUUYjGsLsk+ScCckL1WQjghWgPhjfw5
-psUadcWpBqHziKPpH9CZ/eKuuSVbnQ==
-=4TVP
------END PGP SIGNATURE-----
-
---lxeis23kjl3hmw2g--
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
