@@ -1,141 +1,130 @@
-Return-Path: <stable+bounces-194631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E4CC53C76
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 18:48:43 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92509C53E39
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 19:21:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F347734420B
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 17:48:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 03EDB4E1DD5
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 18:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89632D97AF;
-	Wed, 12 Nov 2025 17:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7347734575A;
+	Wed, 12 Nov 2025 18:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V1fvbV+m"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aEfziyyl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63F621D3E8
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 17:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79616340D9A
+	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 18:12:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762969715; cv=none; b=A4GRSNX5/dgtV+HPd1TAuBW9494m/HvoOpuX1fLCHzNgTGmIWgKiouqE8agXuGaUS1ydmB6/A10uIpBqYu3UiDnV2hAoO68L2me0/7D1ucTTMe9AuBfMsiOmbXy2Qq3Bp0lYf6AObRgb5SoSq3cZ00GYMdOx61d/4h0aW8gqGgs=
+	t=1762971159; cv=none; b=rpFvpjgDS3HQihOqzPaPzXzQg1BBlNHuQZT1/IJ6mS6HpGgvxsWCpbcY1nkNFukP2gWPeTGuDNeoGsKiB1JvnvWyUJUVKcphHcKYHZ7+M5ZGez4R3knk8mP0YRm1dBMoNp0g7W9TefaaHA4pQe0RXhJXUyC9nBIpE2gEDfFrhlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762969715; c=relaxed/simple;
-	bh=alg3GZVbOGWLPqlw23mtYgLHmyaW7rHaNGquInyV+is=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WadeQv+ntzzacayOwvYRxp0iDXGclPB9DW5t5IoKLB3UTBlYSJJVWXo/bzo1qTnapQLAkLHUUGhxjXPtO3FNdFfc4bxeqYRk4QPFDHm+xaOXk3Vsop4AR7p4HmC80dOVt4AcWXHklxhW8aIyh5uX4o1Iu6/D9+HOypxTdOTtd1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V1fvbV+m; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-594270ec7f9so1126269e87.3
-        for <stable@vger.kernel.org>; Wed, 12 Nov 2025 09:48:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762969712; x=1763574512; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7RtNiaEUI+oSnsJyG/c+SNYFc+FQ7s2DIR24yvY/faE=;
-        b=V1fvbV+mMgVSsAB1Nqxpq6G618nkNw/bjmbg7EIoquzEqh8DYGfIi2uzdUkSwP6fV8
-         cvSVXqpsi1eE32GbBU+4xz+mKNn1UG04yh8ZeD5HaGEmph9Ymio3Xpm1/yZ5pqlqpwRZ
-         fAVcrkZS06I8J2DrauTAi3rYGPXhokJDf/3+K+huiUDRKisK2jaGGo4HkesgTgzwDlVt
-         NFRjDyVE6I79t4R/h6ho3V89hbNqOKk9k75kbou0lrOnFyGUQc0TXnmVOFKfLZc9pjjE
-         1x80W9OzFFpbnYj9qxMlc7900FP5QC4zyQWXKtJ0+B9r9bO9zXTZ2XZsea12Qhpo5cZD
-         jc5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762969712; x=1763574512;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7RtNiaEUI+oSnsJyG/c+SNYFc+FQ7s2DIR24yvY/faE=;
-        b=wXMvv1z8/R+z38sKzrIPH7V9TwNEDOovzW6MWRo7PAonX4KriGzRMY+0ifxFxrN/zA
-         p4LxbkWV0xUwU7jKVI1Cj8BUmdMpLEmB0R4WxwSNZrVugKjC23JqL0fvYqfFThbNJUB/
-         CbK6LQDklcX2cD9IJLeOHWkMfkVlWjCikGLUEsFkFnnD1Msu1md1ttXHg4txmzsY2Qcc
-         pQjSEgLdI4E3ykScJXEwUw5lNlR4HeIYPNTUTiwVncjRTPZyz8wJrGsUJKAFQ3JLlZeC
-         2QKjDdR2U8pqfcsdJ2ZNcQaIFc6TuRELef8PmzCkjlmysaw5tFYfw8/gv67jeVGu305R
-         mRUQ==
-X-Gm-Message-State: AOJu0YxqMqIrKd6sxw3MstptHlzCdyW7P/iklY+oNM20ic+/wA6yco7O
-	kdYIUzVBm0rAlyOx0hr9Ojsv5sok41b4V1pkmOhivd1LGCBoBCrbq7oRHlmhmkUVozXe8dv1jkw
-	IMVLLvTgyZptgS3qE07T8ZpF0Iqgcqo4=
-X-Gm-Gg: ASbGncs6AjdALwbDtDlMGZNtCDprqCkP0ky0lQDP9U+GzLk5SPD7LLnn59TdxJUheWO
-	UHvvsVb+ldev9ayNBwtI0gWWC6+QI9E0Nemuxxb4nHKuRFUKwYKZ4LiLj+g0CRWFzC1pQlzx2A6
-	Ee6A/evcfmKFaVoBzyhF5cHLqSqrHl4r7tc+dKpFgDYDQHYI/j/zOid7o4Lc6j4E7ZVxOt8id4N
-	qGrO0HLSlGssoIrj0C4rZVS4I/AXC7/qtrEiLk2DJpoyXcwrkVuhelbCAKuJshz7n2EHP0=
-X-Google-Smtp-Source: AGHT+IFUSyjuKhia9bnSd3m+2XKy8hJzcQ9DOE86De5ut0/zfw/syHIlc0LrALyxrMp9Xpe7aEiZMUHElmGsUj1/cvA=
-X-Received: by 2002:a05:6512:12c8:b0:592:fa8a:810d with SMTP id
- 2adb3069b0e04-59576e0c293mr1351088e87.16.1762969711505; Wed, 12 Nov 2025
- 09:48:31 -0800 (PST)
+	s=arc-20240116; t=1762971159; c=relaxed/simple;
+	bh=pXBpMbO7JwnkmEOYiY2bivPb05DBSARSwoGTpZiRGyU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cKNkYJ5MPvVz6SxOassZ/DOaYqav6cAtaIVD13G5GEBsmORXiQkc4GiiKds78RlXD/bFVAkYy6H7uHzupF5vl6p2bUEuVGFBMPl0GXETA2ZY6//HK/lRczIz36aiXR+I21ajCjMuXcz8d1hiWyLcN1W5eIHnr4q3KUPoY9rupPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aEfziyyl; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762971158; x=1794507158;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=pXBpMbO7JwnkmEOYiY2bivPb05DBSARSwoGTpZiRGyU=;
+  b=aEfziyylsGM4tC9skhWKm6pQcpug9mkn3AxIEeIybnKbOkpbK5YuOdJV
+   l2mDPPn2ni8DXgI/G/7zJG0Mw3aZCGfQmV9ok2HrAWY7o+vGWH0mxLPTL
+   MrVos3mu8n4YHXewDSraiLBTUYRBSG3bRrFcysLSzqbI1H2GjEkc09NSN
+   kyCXsp0G7VQhDf3SVFNtoJ/0vhNRX77sxG4wole93fEDwwdWp6YsNe086
+   irME+OZOL64GBzn2vB2m9aHSyRBpzly/F9G5y8GxQA4SWpyHq40zI7d7B
+   zeFywAj0DhRMpWNbnAM27s6x0g/AYXx3VrUIqf31r3qyaCgHQ9Y9ky8rG
+   w==;
+X-CSE-ConnectionGUID: 8SBY6PkCRCS+hntphhGSmQ==
+X-CSE-MsgGUID: AMSroLwZRS+dLLMq1QIAdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64967136"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="64967136"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 10:12:37 -0800
+X-CSE-ConnectionGUID: c36GhNUJShWzqo0BEaTqdg==
+X-CSE-MsgGUID: yaxx+PhBQhqhlwusnkxorw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,300,1754982000"; 
+   d="scan'208";a="189061491"
+Received: from osgc-linux-buildserver.sh.intel.com ([10.112.232.103])
+  by orviesa009.jf.intel.com with ESMTP; 12 Nov 2025 10:12:36 -0800
+From: Shuicheng Lin <shuicheng.lin@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
+	stable@vger.kernel.org,
+	Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH v2] drm/xe: Prevent BIT() overflow when handling invalid prefetch region
+Date: Wed, 12 Nov 2025 18:10:06 +0000
+Message-ID: <20251112181005.2120521-2-shuicheng.lin@intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251111004536.460310036@linuxfoundation.org>
-In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
-From: Dileep malepu <dileep.debian@gmail.com>
-Date: Wed, 12 Nov 2025 23:18:19 +0530
-X-Gm-Features: AWmQ_bnluPVMUosVyxKqvHFL5eHej5lPP_cCQ5Wjldeq2Z-RlGs2I1Xcdqu8o74
-Message-ID: <CAC-m1roJfjSk8iTSGNSE=fELNaUORwFmMS6YpwL6B=Ub=DWHnQ@mail.gmail.com>
-Subject: Re: [PATCH 6.17 000/849] 6.17.8-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hiii greg,
+If user provides a large value (such as 0x80) for parameter
+prefetch_mem_region_instance in vm_bind ioctl, it will cause
+BIT(prefetch_region) overflow as below:
+"
+ ------------[ cut here ]------------
+ UBSAN: shift-out-of-bounds in drivers/gpu/drm/xe/xe_vm.c:3414:7
+ shift exponent 128 is too large for 64-bit type 'long unsigned int'
+ CPU: 8 UID: 0 PID: 53120 Comm: xe_exec_system_ Tainted: G        W           6.18.0-rc1-lgci-xe-kernel+ #200 PREEMPT(voluntary)
+ Tainted: [W]=WARN
+ Hardware name: ASUS System Product Name/PRIME Z790-P WIFI, BIOS 0812 02/24/2023
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0xa0/0xc0
+  dump_stack+0x10/0x20
+  ubsan_epilogue+0x9/0x40
+  __ubsan_handle_shift_out_of_bounds+0x10e/0x170
+  ? mutex_unlock+0x12/0x20
+  xe_vm_bind_ioctl.cold+0x20/0x3c [xe]
+ ...
+"
+Fix it by validating prefetch_region before the BIT() usage.
 
-On Tue, Nov 11, 2025 at 6:18=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.17.8 release.
-> There are 849 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 13 Nov 2025 00:43:57 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.17.8-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.17.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k
->
+v2: Add Closes and Cc stable kernels. (Matt)
 
-Build and Boot Report for 6.17.8
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6478
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+---
+ drivers/gpu/drm/xe/xe_vm.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-The kernel version 6.17.8-rc1 was built and boot-tested using qemu-x86_64
-and qemu-arm64 with the default configuration (defconfig). The build and bo=
-ot
-processes completed successfully, and the kernel operated as expected
-in the virtualized environments without any issues.
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 8fb5cc6a69ec..7cac646bdf1c 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -3411,8 +3411,10 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
+ 				 op == DRM_XE_VM_BIND_OP_PREFETCH) ||
+ 		    XE_IOCTL_DBG(xe, prefetch_region &&
+ 				 op != DRM_XE_VM_BIND_OP_PREFETCH) ||
+-		    XE_IOCTL_DBG(xe,  (prefetch_region != DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC &&
+-				       !(BIT(prefetch_region) & xe->info.mem_region_mask))) ||
++		    XE_IOCTL_DBG(xe, (prefetch_region != DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC &&
++				      /* Guard against undefined shift in BIT(prefetch_region) */
++				      (prefetch_region >= (sizeof(xe->info.mem_region_mask) * 8) ||
++				      !(BIT(prefetch_region) & xe->info.mem_region_mask)))) ||
+ 		    XE_IOCTL_DBG(xe, obj &&
+ 				 op == DRM_XE_VM_BIND_OP_UNMAP) ||
+ 		    XE_IOCTL_DBG(xe, (flags & DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET) &&
+-- 
+2.49.0
 
-Build Details :
-Builds : arm64, x86_64
-Kernel Version: 6.17.8-rc1
-Configuration : defconfig
-Source: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git
-Commit : a0476dc10cb160082a35b307f8dbfe4a066d41ec
-
-Tested-by: Dileep Malepu <dileep.debian@gmail.com>
-
-Best regards,
-Dileep Malepu
 
