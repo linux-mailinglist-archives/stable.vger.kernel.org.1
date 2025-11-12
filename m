@@ -1,212 +1,98 @@
-Return-Path: <stable+bounces-194618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28737C52591
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 13:59:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A54D7C5258B
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 13:58:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2525A4E3120
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 12:52:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F35EC188742E
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 12:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8E6328B73;
-	Wed, 12 Nov 2025 12:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CED335081;
+	Wed, 12 Nov 2025 12:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JJCX+6L8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yhclw4Yu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DC932C95D;
-	Wed, 12 Nov 2025 12:52:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D24328B73;
+	Wed, 12 Nov 2025 12:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762951940; cv=none; b=aaVY4LqVp4uGiBtlNM6rKtFbUC258m2jwVqNBzhoLFB+3WLANVEEHEYbf+QEJe8ZC1vPo7fLPRp0195uRg1SVKu2BC7qAZIF6W/Vd0Y5sIcS5mG8FFmKGKBDQMSZcYVY6QSL1XuQ+xA1YOjJsnjp27iuWWLST5lVuIu7f6pDYaw=
+	t=1762952244; cv=none; b=m8wq+CXo6PQo4zFmRDIOBh8QYsYhIWLUaVwYLnj0PmNuTPFXzBuD5WgfjnYXOZ3Ss5Ahaqi1ZJJKJA82zwAEmozdPbAcVHxuf8TBU3MXAj5V5Dif9zeX7L+sxoeHBi1mSx16Bs8pGy0axVWj4FCW7+L/tz3fXUtQnG2VCfqQqcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762951940; c=relaxed/simple;
-	bh=XIZi7QICnCQAIPVE0rgrZwfPhgCJFmBbSp9UzfIZVao=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BrnzqENjBCJilAXG79Qn6sPByOhe0azWqIWJZtKdhI2+tBgIulVwON8pT5PR4wuVWJFsTE9bxNiYrDVNsDgQYV126wXUYNjmEeoLmXXfvr17VENMqSTr5IZtqdpZP5oEAZR35OoLtu+X42IiJ1u3jRCUimwpv/NRlB8Dd+HnQE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JJCX+6L8; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id A22E81A1A27;
-	Wed, 12 Nov 2025 12:52:10 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 53A7A6070B;
-	Wed, 12 Nov 2025 12:52:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 12CD2102F16E0;
-	Wed, 12 Nov 2025 13:52:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1762951929; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=AYZ/cx5fZ6HcCKpGtjExhhhcWre3YYt/qaExsF1NtNw=;
-	b=JJCX+6L8rNUn8S1HwGa0GHynwmndXy5LNh/UFW9QhKmhH7HR/d3ZVm/cevAjqRItHi6QmD
-	QUpjUT29qs/tE1U4NRAvbYjjXRkD/BSQD13wfPTFKrfrEeGFqKdh9WSTFNAisWm339vwMz
-	kQsI13fW3wCISQ9exDKFlW0EwBRZBDlhLrDnDEEPDqISlVSib18CPrnlzxDpOseC1zHqwB
-	rqWxLl4hGCujJIrTOeArSQHQotTxQeCWjaqns0pDWLmgrG5K5j6ZewbFdP0KfJvLIgBCe0
-	zfy8JhWoxXubkA5u0T+md4Ro4C2hq/cVenC6iXKCWB1i0DhPER8+Jv506/Ij7w==
-Date: Wed, 12 Nov 2025 13:52:03 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade
- <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, Roger Quadros
- <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, Lee Jones
- <lee@kernel.org>, Shree Ramamoorthy <s-ramamoorthy@ti.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>
-Cc: Andrew Davis <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] mfd: tps65219: Implement LOCK register handling
- for TPS65214
-Message-ID: <20251112135203.4a4c4c85@kmaincent-XPS-13-7390>
-In-Reply-To: <20251112-fix_tps65219-v3-1-e49bab4c01ce@bootlin.com>
-References: <20251112-fix_tps65219-v3-0-e49bab4c01ce@bootlin.com>
-	<20251112-fix_tps65219-v3-1-e49bab4c01ce@bootlin.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1762952244; c=relaxed/simple;
+	bh=dhaRUvSmwrrEzm722nO20RVYYV4MggIRD2VI3fVuqZo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KP+6GJ2SCfoWVL5Xdw6t+0motHOG2m682Tm1um3Zz9c/yPD9VP7+g0dXN0mAcvobW3fR4XBm2unAL4yecP6daS+aVAPev0YKHrFuzno9tirE5rGlKlr1ah2Dlq03ujceoMS976beulnrvDCXPG3Fhu1jWT++tjxDT+FU8Re9n/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yhclw4Yu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB7AC4CEF7;
+	Wed, 12 Nov 2025 12:57:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762952243;
+	bh=dhaRUvSmwrrEzm722nO20RVYYV4MggIRD2VI3fVuqZo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Yhclw4Yulib9HPJdsVXRTo2PjHbGxKyTz3/CGA5hj+pD0w/fJYSELChR4ncOmumLu
+	 VM1/IehXOQhrA3lxW7cov3XPl6v3DJfNpPe6RjruevdBxoiYP/0LU4dPWkYPtPbQrd
+	 Auuo7prOklr1RBL4aWBffMFjmikrLdsi9iOww/Oa1/EilavKfiJz1Mu8X8nrnA+z2M
+	 OqLAEvbhxUAd52ysU2PrHxmgRc3J95MBmiFnUHsFralSEluJSSKLHMDW+PD0YqlcEE
+	 DketIBIru5A7fV7BbHXN3c9wnOtlfAWrja+io8Y5/ZLS7hmxyC3FXu/Zs85CeheEOC
+	 an4AWWopUt9XA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.17 000/849] 6.17.8-rc1 review
+Date: Wed, 12 Nov 2025 13:57:09 +0100
+Message-ID: <20251112125709.142950-1-ojeda@kernel.org>
+In-Reply-To: <20251111004536.460310036@linuxfoundation.org>
+References: <20251111004536.460310036@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-On Wed, 12 Nov 2025 10:45:24 +0100
-"Kory Maincent (TI.com)" <kory.maincent@bootlin.com> wrote:
+On Tue, 11 Nov 2025 09:32:50 +0900 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.17.8 release.
+> There are 849 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 13 Nov 2025 00:43:57 +0000.
+> Anything received after that time might be too late.
 
-> The TPS65214 PMIC variant has a LOCK_REG register that prevents writes to
-> nearly all registers.
->=20
-> Implement custom regmap operations that automatically unlock before writes
-> and re-lock afterwards for TPS65214, while leaving other chip variants
-> unaffected.
->=20
-> The implementation follows the regmap-i2c design pattern.
+Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+for arm and loongarch64:
 
-After some thought and internal discussions, I think it is better to unlock=
- the
-registers only one time in the probe instead of adding burden in each regmap
-write. I will rewrite this patch.
-Shree I will remove your reviewed-by due to the change.
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
-pw-bot: cr
+Thanks!
 
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 7947219ab1a2d ("mfd: tps65219: Add support for TI TPS65214 PMIC")
-> Reviewed-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-> Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
-> ---
->=20
-> Changes in v3:
-> - Removed unused variable.
->=20
-> Changes in v2:
-> - Setup a custom regmap_bus only for the TPS65214 instead of checking
->   the chip_id every time reg_write is called.
-> ---
->  drivers/mfd/tps65219.c       | 49
-> +++++++++++++++++++++++++++++++++++++++++++- include/linux/mfd/tps65219.h=
- |
-> 2 ++ 2 files changed, 50 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
-> index 65a952555218d..d31e808faab1f 100644
-> --- a/drivers/mfd/tps65219.c
-> +++ b/drivers/mfd/tps65219.c
-> @@ -473,6 +473,48 @@ static const struct tps65219_chip_data chip_info_tab=
-le[]
-> =3D { },
->  };
-> =20
-> +static int tps65214_reg_write(void *context, unsigned int reg, unsigned =
-int
-> val) +{
-> +	struct i2c_client *i2c =3D context;
-> +	int ret;
-> +
-> +	if (val > 0xff || reg > 0xff)
-> +		return -EINVAL;
-> +
-> +	ret =3D i2c_smbus_write_byte_data(i2c, TPS65214_REG_LOCK,
-> +					TPS65214_LOCK_ACCESS_CMD);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D i2c_smbus_write_byte_data(i2c, reg, val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return i2c_smbus_write_byte_data(i2c, TPS65214_REG_LOCK, 0);
-> +}
-> +
-> +static int tps65214_reg_read(void *context, unsigned int reg, unsigned i=
-nt
-> *val) +{
-> +	struct i2c_client *i2c =3D context;
-> +	int ret;
-> +
-> +	if (reg > 0xff)
-> +		return -EINVAL;
-> +
-> +	ret =3D i2c_smbus_read_byte_data(i2c, reg);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*val =3D ret;
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct regmap_bus tps65214_regmap_bus =3D {
-> +	.reg_write =3D tps65214_reg_write,
-> +	.reg_read =3D tps65214_reg_read,
-> +};
-> +
->  static int tps65219_probe(struct i2c_client *client)
->  {
->  	struct tps65219 *tps;
-> @@ -491,7 +533,12 @@ static int tps65219_probe(struct i2c_client *client)
->  	chip_id =3D (uintptr_t)i2c_get_match_data(client);
->  	pmic =3D &chip_info_table[chip_id];
-> =20
-> -	tps->regmap =3D devm_regmap_init_i2c(client, &tps65219_regmap_config);
-> +	if (chip_id =3D=3D TPS65214)
-> +		tps->regmap =3D devm_regmap_init(&client->dev,
-> +					       &tps65214_regmap_bus, client,
-> +					       &tps65219_regmap_config);
-> +	else
-> +		tps->regmap =3D devm_regmap_init_i2c(client,
-> &tps65219_regmap_config); if (IS_ERR(tps->regmap)) {
->  		ret =3D PTR_ERR(tps->regmap);
->  		dev_err(tps->dev, "Failed to allocate register map: %d\n",
-> ret); diff --git a/include/linux/mfd/tps65219.h b/include/linux/mfd/tps65=
-219.h
-> index 55234e771ba73..198ee319dd1db 100644
-> --- a/include/linux/mfd/tps65219.h
-> +++ b/include/linux/mfd/tps65219.h
-> @@ -149,6 +149,8 @@ enum pmic_id {
->  #define TPS65215_ENABLE_LDO2_EN_MASK                    BIT(5)
->  #define TPS65214_ENABLE_LDO1_EN_MASK			BIT(5)
->  #define TPS65219_ENABLE_LDO4_EN_MASK			BIT(6)
-> +/* Register Lock */
-> +#define TPS65214_LOCK_ACCESS_CMD			0x5a
->  /* power ON-OFF sequence slot */
->  #define TPS65219_BUCKS_LDOS_SEQUENCE_OFF_SLOT_MASK	GENMASK(3, 0)
->  #define TPS65219_BUCKS_LDOS_SEQUENCE_ON_SLOT_MASK	GENMASK(7, 4)
->=20
-
-
-
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+Cheers,
+Miguel
 
