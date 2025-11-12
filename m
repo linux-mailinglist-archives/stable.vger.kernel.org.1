@@ -1,134 +1,116 @@
-Return-Path: <stable+bounces-194601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C097C51CD0
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 11:58:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8117BC51C9A
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 11:55:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C67104EB3FC
-	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:50:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87979189A8B6
+	for <lists+stable@lfdr.de>; Wed, 12 Nov 2025 10:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A6F3019C5;
-	Wed, 12 Nov 2025 10:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA511307AD4;
+	Wed, 12 Nov 2025 10:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mizS3kv6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ED27z4KD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86DC29BD9B
-	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 10:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451D9301473
+	for <stable@vger.kernel.org>; Wed, 12 Nov 2025 10:55:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762944645; cv=none; b=MsNUGU1Oo1zKeCnRcdfEexLEmQQMTc9gmmVP3IskfG+yqcaZ5BT9H0FqzHKYh7r2u5Urodb3hPV/rLygz+Pi9MGLVfhoeusg1yKJREJNXS5jENvFRmT18sY2yj90VrqxHzpCK/lQBbWHUtbx6d+EvdXm07c2wU5yUfOJHCF0/SE=
+	t=1762944909; cv=none; b=bfwKhPvQqNEUjPJ2j2X6pVFZhY8djmm0KHra4nAWqajwA0MDA5918wbmpYMlVd9G6U+/1cFKycvkE/SZ+Am0TKlawgtHjr6PPb4NWCcCno41jePgqWh3N5Za6513+f35df87AzRNyAATamkB5EzzF7pk3hBuZBKqn/qsqN60trE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762944645; c=relaxed/simple;
-	bh=0+unaSKUFdFHJhkY4RjZVR+uXBrXziaM/doRPyYlSzQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RUrrqBhi1V3wtIyvRtW3BoiLSiUBpeFH0FR1TDAALVOHJKTSDMnUzQqTqVJb7MBdtN+3GCvsvSOCl3zHuM34NCp4pwXbLImhfrDdroT6skKyHV5d1FX8gPWZl6HX2Pm31s/xnd1skLrAmqgAJx+979tuSErY2oMu6QIau3CHywA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mizS3kv6; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id F081E1A1A00;
-	Wed, 12 Nov 2025 10:50:40 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C59876070B;
-	Wed, 12 Nov 2025 10:50:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 768F3102F1699;
-	Wed, 12 Nov 2025 11:50:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1762944640; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=0+unaSKUFdFHJhkY4RjZVR+uXBrXziaM/doRPyYlSzQ=;
-	b=mizS3kv6uoJgba8W4pJm2oS1mrMVnDNPFVJGQtU9ZgSJ701Y4ZdRvd79WEdYs8x9oSCo2s
-	eib7tTolLYvjh7nAX9IW6fY5GD8Dgi75aZpad/kIZtuuxlEK/m2S4KhbjV1/IpEbPG4YM2
-	BFwpY/jSKDhFPWfHHmicaiK5iFxE+KicBh5szT0Jp1pNgGc7eO6h5gHI90amSMyC1579zS
-	Bz8F33OK+M9WL7/qMB9goIa/Hl52oAH+mAW7AeSQ+z73GxrFCxw7aWX7rc5S4dU7E2bytQ
-	Vego2TDdagK+fyvI6188iQ+SZ7qAHIr4CIpclwQWxXBNFSNm/te+7wtwhoAAEA==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
-  linux-mtd@lists.infradead.org,  linux-kernel@vger.kernel.org,
-  stable@vger.kernel.org
-Subject: Re: [PATCH] mtd: mtdpart: ignore error -ENOENT from parsers on
- subpartitions
-In-Reply-To: <691456b8.050a0220.3c21b3.5c4c@mx.google.com> (Christian
-	Marangi's message of "Wed, 12 Nov 2025 10:43:17 +0100")
-References: <20251109115247.15448-1-ansuelsmth@gmail.com>
-	<87y0ob7fyy.fsf@bootlin.com>
-	<691456b8.050a0220.3c21b3.5c4c@mx.google.com>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Wed, 12 Nov 2025 11:50:36 +0100
-Message-ID: <87ikffikxv.fsf@bootlin.com>
+	s=arc-20240116; t=1762944909; c=relaxed/simple;
+	bh=82sfAS4BKz1KNiaLNqx18bHdwdUYK8X02FBvH6vmN1k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VGyIVVOo/eU075kl4h1WUGn1IxYRsxK+PRjCSKvZeMIx38MmkYU4D8bQrYN8ZAvblfyOSLSz6sh6FgXkqVrcZaincVkcyHnrwCthmjja/Eq3HM7Bci/9NIGtpGa0LPbW31TDQ4AVOmf7MgKz3hVbjcccdcJvaeo+O9MuR+u2194=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ED27z4KD; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b8f70154354so94009a12.2
+        for <stable@vger.kernel.org>; Wed, 12 Nov 2025 02:55:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762944907; x=1763549707; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kQJWtPZk17V4l48RMFU2vUfDUBcuLAHxhxXOZo4IqCg=;
+        b=ED27z4KDla66atEkRYysJmuTML+lQHJxLuAp3jhRIY1+XlSwW+hrhyNhdm0TrxwI41
+         iBlsA13sWRigSXpGnp9wOKsIhOi79fY+8GWGAg/2xPPHITEM4I6Ao+gB/jOUHJUFTVVj
+         TQkwS0vY2dv8SKDri2fAeJe9ThGageatQMLTcaIm9jKEdqvsQDKdC+OQqWvXN8ctirmd
+         GQH0gOU5QuNuhBkqkdeYagovW+jnqwiJEQ4adTMDi9LqLpJ23QSrIfb6Pu1pkK5N18RB
+         5IRMoTMy1qE45ThKmUaMd/5hReGtC2MaBdD6k7Eci97Cb79IDn8lQZiN/kHZ6r1geQ/x
+         lQIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762944907; x=1763549707;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kQJWtPZk17V4l48RMFU2vUfDUBcuLAHxhxXOZo4IqCg=;
+        b=kxJQ+71caUd/g5EOiVkZuG5LZ1D4MZnbPMQoUUhFuvS9i+yykpzIjC661jqWBOUe4x
+         kwfGFOyoLusUrHoyKQHX0Yd1WmqtbyGoUCiTyLpIvfCK2pi38/O+T5kYZ5t2Exb0UIx1
+         y8c3JiYSc0WqUEGI4kGSJSoK8153yr/ZWFCSGaK3o1sMmep/L7ILA7bYzSB827n9kAs+
+         QJGPIYTX8a9oznhgElc9CPCZfRxaeNNHw/0Tcg5a+rTF/4zjECORQg8K6+fnb6wUDSQp
+         NjxNFTiH8MYllbtz6J7klhiJtqgUKQ76iT2FDom5GyB2duuCYXTKrq9UjUaI4QMOPtQc
+         bfUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4elewVwF9rQuCKs1n9aPc+xYMPoGJ2o5NuQjCJ2UQ6TvAFqIudTFvP1Qy8fLmrnC7jdRlnBY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKOGTRivEQJPJMkjV4MYV1EhKbBIGDxUNwbyqcnZ1EKEz3PYFT
+	lQnBnzooPsNeZQ9U/ztJje9R87O5TniqsZySwXiHpJbxWuB5UknYQ17lTBwBEz/nIud+bdXaulg
+	T7tf1TwYS99MDnEQqlJqlvrTbNCsNi4Q=
+X-Gm-Gg: ASbGnctPsIl2w3RkkRn8sdb7sABQoM+XQqAMhgq3moNpe35/L/sfh/5R93qk0H6flT9
+	mb9yj+LGT2JLcYmg32505znTHpzW7/aCAtH5tEZAblqfWKvGm1ViGLF6cKcDy8zzGRqY5FDYhbf
+	gILlOIMFb7akWT979z3UOuPJemGBGy4SBrPHT7NMbGFIBV6BtZajMaGgt3cLk73I1MHuUV+sFPP
+	qnY4HEwAlD1e/K1nbV0mzDUOS68VDYqmwFQpxvGfT63PBT2Rj5848pOr4hWe1jxGv8l3ZwInz59
+	dVBGW7ROwDn4/ZvGb/Qu7HeTUOSZ/MAm6btL5yO4ifRazM3iI40hybopiByKLJlY6U+gJ5/Tiav
+	JwEk=
+X-Google-Smtp-Source: AGHT+IFsTy6OYScG+CerWDpgPGJvvrpZZa2slmzCw2p2FhMd++qGQwfMjY8XkE5BZNsi8aZK27qX30hA8hzulfn8Qac=
+X-Received: by 2002:a17:903:2282:b0:297:df7c:ed32 with SMTP id
+ d9443c01a7336-2984ec8fb37mr19636225ad.0.1762944907518; Wed, 12 Nov 2025
+ 02:55:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com>
+ <CANiq72maV_j1uV=2nPGbTgRabnk8cpc7TNN_FQ+ou52OpZ=k6Q@mail.gmail.com>
+ <aRRgbZ67cuW4ZoBN@google.com> <aRRkzrUw1iYNt8KJ@google.com>
+In-Reply-To: <aRRkzrUw1iYNt8KJ@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 12 Nov 2025 11:54:55 +0100
+X-Gm-Features: AWmQ_blEy9lDgXUuRaA9PFmJsOL5mkEF1Q6ty6i4iYdlOSuG0l-50NngYkbjG7o
+Message-ID: <CANiq72kEYWbQ_yqJKHoa=ffereCun4A6rMudrcU+qBK_Npks8g@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] Rust: Fix typedefs for resource_size_t and phys_addr_t
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
 
-On 12/11/2025 at 10:43:17 +01, Christian Marangi <ansuelsmth@gmail.com> wro=
-te:
-
-> On Wed, Nov 12, 2025 at 10:33:25AM +0100, Miquel Raynal wrote:
->> Hi Christian,
->>=20
->> On 09/11/2025 at 12:52:44 +01, Christian Marangi <ansuelsmth@gmail.com> =
+On Wed, Nov 12, 2025 at 11:43=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
 wrote:
->>=20
->> > Commit 5c2f7727d437 ("mtd: mtdpart: check for subpartitions parsing
->> > result") introduced some kind of regression with parser on subpartitio=
-ns
->> > where if a parser emits an error then the entire parsing process from =
-the
->> > upper parser fails and partitions are deleted.
->> >
->> > Not checking for error in subpartitions was originally intended as
->> > special parser can emit error also in the case of the partition not
->> > correctly init (for example a wiped partition) or special case where t=
-he
->> > partition should be skipped due to some ENV variables externally
->> > provided (from bootloader for example)
->> >
->> > One example case is the TRX partition where, in the context of a wiped
->> > partition, returns a -ENOENT as the trx_magic is not found in the
->> > expected TRX header (as the partition is wiped)
->>=20
->> I didn't had in mind this was a valid case. I am a bit puzzled because
->> it opens the breach to other special cases, but at the same time I have
->> no strong arguments to refuse this situation so let's go for it.
->>=20
 >
-> Thanks a lot for accepting this. I checked all the parser both upstream
-> and downstream and I found this ""undocumented"" pattern of returning
-> -ENOENT. [1] [2] [3]
->
-> For sure it's a regression, we had various device on OpenWrt that broke
-> from migrating from 6.6 to 6.12. I agree there is the risk you are
-> pointing out but I feel this is a good compromise to restore original
-> functionality of the upstream parsers.
->
-> (the other error condition are -ENOMEM or sometimes -EINVAL for parser
-> header present but very wrong)
->
-> [1] https://elixir.bootlin.com/linux/v6.17.7/source/drivers/mtd/parsers/t=
-plink_safeloader.c#L93
-> [2] https://elixir.bootlin.com/linux/v6.17.7/source/drivers/mtd/parsers/s=
-cpart.c#L170
-> [3] https://elixir.bootlin.com/linux/v6.17.7/source/drivers/mtd/parsers/o=
-fpart_bcm4908.c#L47
+> On the other hand, I think that the first patch qualifies as an actual
+> fix.
 
-Thanks for the digging. I will apply this to -next and not -fixes. It
-will be slightly longer to get it backported, but this gives a bit more
-time for this patch to be thought about as I plan on sending my fixes PR
-in the next days.
+Yes -- for that one we should add a Fixes instead:
 
-Miqu=C3=A8l
+    Fixes: 493fc33ec252 ("rust: io: add resource abstraction")
+
+Which means it may go to 6.17 as well and the "# for 6.18" part is not
+needed in the other tag.
+
+Cheers,
+Miguel
 
