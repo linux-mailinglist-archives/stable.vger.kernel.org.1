@@ -1,106 +1,150 @@
-Return-Path: <stable+bounces-194757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9969C5A9F7
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 00:35:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4616AC5AA62
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 00:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BA3D3A02DF
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 23:34:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0A1A44ED634
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 23:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEFB33D6C3;
-	Thu, 13 Nov 2025 23:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2515232C93C;
+	Thu, 13 Nov 2025 23:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DsvSKa22"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pZkNd9Fy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C368333B6D9;
-	Thu, 13 Nov 2025 23:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C700B329E61;
+	Thu, 13 Nov 2025 23:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763076727; cv=none; b=CLaVlK6fjQLvReL/Li1G6fbKC+W3TEM7p0aoRbXj4CUIcVbViBON1NtZR5WQ/ET/C0AgQn+4W/hdd4DpUwdudhCDuB0xgGFJ0R8JqVyvkeVkRHa8n5qQQLcDkID0PD3ex/u8XKUwvcLJlxXISTf7+/TfhQ0SOZxOaEvgm/gVG6U=
+	t=1763076805; cv=none; b=p3vCUwQlGLFAdWJzXZUaqIdNiLcMsbHvYhjzUIEZDDjOqrLFynfJYHzWsiWMjDNgk0yc/LFdIesBa6I3PL/J3XvterDdv52n629mKsf9K/46U1urYQusMgZT+ND6H6dMkJfHA5X7bUoc9VoeEYz13D0a3uruUhClmtyTbxiNmK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763076727; c=relaxed/simple;
-	bh=0/Wu2Fbf5XL6YXzMCsU9T/GGUPwbFh2GCmkLRrlFK+U=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=aUKPdrl+KlnQG1KpuhFp6KH7ItMW5SWGzvMuuDBgoF6rQbN6PIadZgL+mUb+davJ/9qTzBVN6VLw86bmjhY+tiModXnM+gJ2v+rCJLToEl2xUgILzjQUC855PAEa9ZElvlj/lbbhGYzUEJr+V67a63Mbq2Hx1rC9+4tgDXehAoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DsvSKa22; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B28C4DE01;
-	Thu, 13 Nov 2025 23:32:06 +0000 (UTC)
+	s=arc-20240116; t=1763076805; c=relaxed/simple;
+	bh=xVIezJELpedxiEREds/HsFfnOF1ieaw0tZnBuCExW74=;
+	h=Date:To:From:Subject:Message-Id; b=cPZnNhKSO9ZDx8lC17nFWEybu29UGeAu7Lfqaiyg3vpKxWbXVLhcrbgnNZMvhVi52SJ/wjT7zDQgxw7gl9Q66ggi/Vw2jpcCLhRJgeCSiVk17tkj/njZR3SSX+9JFPEqauViK7ffuECp9rHIeWNOj3VALtybmXKXRAR+8IBYIFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pZkNd9Fy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51071C19424;
+	Thu, 13 Nov 2025 23:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763076727;
-	bh=0/Wu2Fbf5XL6YXzMCsU9T/GGUPwbFh2GCmkLRrlFK+U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DsvSKa22dmOLI50W4oxTVoFKUf84nqZZR5Kh5pCAiFxU5Wy5G+9iOCJEJsNSksOej
-	 T/LZE//2cuhxzpEMmDR5zf9vE5QUSJLH0h+MC5MLMsZSEbFyQmNbhuyjhLOHIzjjGX
-	 8AuW1DiXEdj4xAwcqSJ35ghaR6Oj7If5wSIObnJw=
-Date: Thu, 13 Nov 2025 15:32:05 -0800
+	s=korg; t=1763076805;
+	bh=xVIezJELpedxiEREds/HsFfnOF1ieaw0tZnBuCExW74=;
+	h=Date:To:From:Subject:From;
+	b=pZkNd9Fy4acA82LWCrwx0Cg0LsI6s8WnbLtuU9tLJqmltpxCXG3fTR6R9+I5En9hO
+	 +2x4SB/Hu2jZRJ5EZVxU47sSmx5/XN8aeJcHJDpHmYmwUGNtO0a8IrP2qrmU0Eh2TX
+	 O9ZyOXFg4PRUYzEiLhByvzbslg3vJkJE103V2EuU=
+Date: Thu, 13 Nov 2025 15:33:24 -0800
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,shuah@kernel.org,rppt@kernel.org,peterx@redhat.com,mhocko@suse.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,jackmanb@google.com,david@kernel.org,cmllamas@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Carlos Llamas <cmllamas@google.com>, "David Hildenbrand (Red Hat)"
- <david@kernel.org>, Peter Xu <peterx@redhat.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Ujwal Kundur
- <ujwal.kundur@gmail.com>, Brendan Jackman <jackmanb@google.com>,
- kernel-team@android.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, "open list:MEMORY MANAGEMENT - USERFAULTFD"
- <linux-mm@kvack.org>, "open list:KERNEL SELFTEST FRAMEWORK"
- <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH] selftests/mm: fix division-by-zero in uffd-unit-tests
-Message-Id: <20251113153205.6507ecb308e7d09362905da7@linux-foundation.org>
-In-Reply-To: <b4291d0d-b913-4e61-9f9d-fbebd1eb4720@lucifer.local>
-References: <20251113034623.3127012-1-cmllamas@google.com>
-	<e0be6864-4260-4843-a432-d47437b5d43f@kernel.org>
-	<4a60a703-d9c2-46a8-83b4-a7ecff7f6ba2@lucifer.local>
-	<aRXyxWeh81-aTHaC@google.com>
-	<b4291d0d-b913-4e61-9f9d-fbebd1eb4720@lucifer.local>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Subject: + selftests-mm-fix-division-by-zero-in-uffd-unit-tests.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251113233325.51071C19424@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Thu, 13 Nov 2025 15:03:06 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-> On Thu, Nov 13, 2025 at 03:01:25PM +0000, Carlos Llamas wrote:
-> > On Thu, Nov 13, 2025 at 09:54:37AM +0000, Lorenzo Stoakes wrote:
-> > > On Thu, Nov 13, 2025 at 10:06:42AM +0100, David Hildenbrand (Red Hat) wrote:
-> > > > On 13.11.25 04:46, Carlos Llamas wrote:
-> > > > > Commit 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global
-> > > > > vars into struct") moved some of the operations previously implemented
-> > > > > in uffd_setup_environment() earlier in the main test loop.
-> > > > >
-> > > > > The calculation of nr_pages, which involves a division by page_size, now
-> > > > > occurs before checking that default_huge_page_size() returns a non-zero
-> > > > > This leads to a division-by-zero error on systems with !CONFIG_HUGETLB.
-> > > > >
-> > > > > Fix this by relocating the non-zero page_size check before the nr_pages
-> > > > > calculation, as it was originally implemented.
-> > > > >
-> > > > > Cc: stable@vger.kernel.org
-> > > >
-> > > > Do we CC stable on unit tests? From my recollection, no.
-> > >
-> > > Yeah please let's not.
-> >
-> > Oops, I keep getting confused about this Cc stable thing. Please let me
-> > know if a v2 dropping the tag is needed.
-> 
-> No need, Andrew should spot the objection and drop the tag :)
+The patch titled
+     Subject: selftests/mm: fix division-by-zero in uffd-unit-tests
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     selftests-mm-fix-division-by-zero-in-uffd-unit-tests.patch
 
-I actually add cc:stable tags to selftests fixes!
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-fix-division-by-zero-in-uffd-unit-tests.patch
 
-Because why not.  Why leave people running known-to-be-buggy code when
-our backporting processes are so well-functioning and lightweight?
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-I'm not getting the objection?
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Carlos Llamas <cmllamas@google.com>
+Subject: selftests/mm: fix division-by-zero in uffd-unit-tests
+Date: Thu, 13 Nov 2025 03:46:22 +0000
+
+Commit 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global
+vars into struct") moved some of the operations previously implemented in
+uffd_setup_environment() earlier in the main test loop.
+
+The calculation of nr_pages, which involves a division by page_size, now
+occurs before checking that default_huge_page_size() returns a non-zero
+This leads to a division-by-zero error on systems with !CONFIG_HUGETLB.
+
+Fix this by relocating the non-zero page_size check before the nr_pages
+calculation, as it was originally implemented.
+
+Link: https://lkml.kernel.org/r/20251113034623.3127012-1-cmllamas@google.com
+Fixes: 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global vars into struct")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ tools/testing/selftests/mm/uffd-unit-tests.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c~selftests-mm-fix-division-by-zero-in-uffd-unit-tests
++++ a/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -1758,10 +1758,15 @@ int main(int argc, char *argv[])
+ 			uffd_test_ops = mem_type->mem_ops;
+ 			uffd_test_case_ops = test->test_case_ops;
+ 
+-			if (mem_type->mem_flag & (MEM_HUGETLB_PRIVATE | MEM_HUGETLB))
++			if (mem_type->mem_flag & (MEM_HUGETLB_PRIVATE | MEM_HUGETLB)) {
+ 				gopts.page_size = default_huge_page_size();
+-			else
++				if (gopts.page_size == 0) {
++					uffd_test_skip("huge page size is 0, feature missing?");
++					continue;
++				}
++			} else {
+ 				gopts.page_size = psize();
++			}
+ 
+ 			/* Ensure we have at least 2 pages */
+ 			gopts.nr_pages = MAX(UFFD_TEST_MEM_SIZE, gopts.page_size * 2)
+@@ -1776,12 +1781,6 @@ int main(int argc, char *argv[])
+ 				continue;
+ 
+ 			uffd_test_start("%s on %s", test->name, mem_type->name);
+-			if ((mem_type->mem_flag == MEM_HUGETLB ||
+-			    mem_type->mem_flag == MEM_HUGETLB_PRIVATE) &&
+-			    (default_huge_page_size() == 0)) {
+-				uffd_test_skip("huge page size is 0, feature missing?");
+-				continue;
+-			}
+ 			if (!uffd_feature_supported(test)) {
+ 				uffd_test_skip("feature missing");
+ 				continue;
+_
+
+Patches currently in -mm which might be from cmllamas@google.com are
+
+selftests-mm-fix-division-by-zero-in-uffd-unit-tests.patch
+
 
