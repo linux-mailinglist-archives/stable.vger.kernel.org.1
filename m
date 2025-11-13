@@ -1,74 +1,61 @@
-Return-Path: <stable+bounces-194707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1091FC590A6
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 18:14:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A0FC59482
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 18:55:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D5EC6508CD3
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 16:30:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F02514FF8E0
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 16:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B617E35B132;
-	Thu, 13 Nov 2025 16:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69620368299;
+	Thu, 13 Nov 2025 16:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nzGAEvDw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nDCka9IN"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A1835B12C
-	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 16:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECD936828C;
+	Thu, 13 Nov 2025 16:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763050898; cv=none; b=G9KikomImnKxXv8TFWYimjFiYG7JJ25JdL2Dw/Acc8QBD7XCkWTHZmeATxUoadH433qkWgnlZBd+uhfKEdzXfTmrxokJyvg5tzlQrOTp0Ogvdv9sUKBFzxlWJ+wSWgwG9RSY9YId8K/1LTE38LXol/AE0ClpYscYOxgmCUmuRaY=
+	t=1763052600; cv=none; b=rasus+PqAqlVC88Z/XC8B2daZGhV6S0XlB3FWw1rTEPhtiRIPpnUkoQ9041iZ3/4A2q9Os6aRmpZrpiUdL3XOJdqIArNq6kSTuPcRPe2ldMNWEgaV2QUX/D+KJTxl0tLIPdLYtRicR6sNMCH4AXDYg/hLOeuZ4PLAaphyipmhLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763050898; c=relaxed/simple;
-	bh=XSrcaNhguz8zSGMbWozn5kQN8atSs74h/cO9FuTZM2w=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=IajQi6ItKlsFSHffpwm7t0x8LGvuw7Di2WvMZ3LredFnlSf/celxSRIgG6H8d6RjxWkAAK2dy6kfFTuea6mI2QorCpux/vmFLS2dNyfZCj8TRDlGj42feZiRbHEwsHqPtIISMZiRDVk9gs91/skJ4MIH+QdxE/CH3lvQfNZoW/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nzGAEvDw; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763050896; x=1794586896;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=XSrcaNhguz8zSGMbWozn5kQN8atSs74h/cO9FuTZM2w=;
-  b=nzGAEvDwP7emAW/ffOE0c8hqVNJGAnyrE2DrlWKp/WjFfyNMNkRPjsMo
-   qZ1nveQne5NXV0Shz4vTpQQKsZbnpZPhUtxY8usBsbu29nO8cuuBux4eO
-   Zc0/Hu+cAQpfhH5OinSP8o0Y48BBmBPQTWqKytOv1iHJint23aOGSrMa1
-   2fA7sI5uB6oga+ALoSMPdUYy1AmS3sxtUj41FCIoJ42YtE7yb1Unzp4Sj
-   jP/0vUKlDih/2aBfIVMh8G4hIcJHe8MXUZ5RzGNhYIr0s1HM97ViWFMjj
-   ec5uoc4SKi9qAzu7ClaAyMjZU3R7LXbtJKXIw5IOtvrGXYSY284tSYvYy
-   w==;
-X-CSE-ConnectionGUID: jjIP5hNSQbae1oTL+QbreA==
-X-CSE-MsgGUID: STg+Xx7STSyGK6rW1Yvj2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="68765922"
-X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
-   d="scan'208";a="68765922"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 08:21:36 -0800
-X-CSE-ConnectionGUID: 3RnC93V4RMe7kPiPIminsw==
-X-CSE-MsgGUID: CvMLncZiRomQ5FFhj++Xrw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
-   d="scan'208";a="189553016"
-Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 13 Nov 2025 08:21:35 -0800
-Received: from kbuild by 7b01c990427b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vJa4i-0005YJ-2o;
-	Thu, 13 Nov 2025 16:21:32 +0000
-Date: Fri, 14 Nov 2025 00:20:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: John Ogness <john.ogness@linutronix.de>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH printk v2 1/2] printk: Allow printk_trigger_flush() to
- flush all types
-Message-ID: <aRYFVT9p8QIII8jL@c83b8aa73612>
+	s=arc-20240116; t=1763052600; c=relaxed/simple;
+	bh=jKwcaTs9OGE50tqCMbBmlyCuHrBkn1lUUry6R0uYFMU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eBoGtDktBzOC1MyDBwdyHouPX7LjmQ27NdWQZXEgZIeHu8fdLrjiMRk+H8D5BWJD8iYidK1dGt3Q9jCId/4FRPQT1VVP09oraxgBWI5lxyVe5qZ4K9SqUhJTEWipIfaj0QuAa4U3QgM0sWBK8CD8WT0L0oMEaqOsWGFW0SdS5Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nDCka9IN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D47C4CEF5;
+	Thu, 13 Nov 2025 16:49:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763052599;
+	bh=jKwcaTs9OGE50tqCMbBmlyCuHrBkn1lUUry6R0uYFMU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nDCka9INhlxX07+ZDkwnA2BjwPRDB17OtwMyUZVrOEBEhyHVb+xmEc1mytZUl6/vq
+	 Z7noKS7xpGVkazchihr3BbMzvaqQbqP8pIetPJOrQSsXmuT02ZSz5OhHaNRB2U2gQe
+	 fcN6dRUBnzSTOcb+dvdM5St1UnCO6atN1eAQYClN3l6lBU0c5mgTipIHTtClUhn2nN
+	 ye4xmZIJnrosr7q2piuE2OI/reh0PnmZNAuDRlU3KoxkiJw5bHZwNOe3+7QIpzbVuy
+	 rbwdZwdCFl34DkpUnAgbC8sFaAPlwx8D22NVCh2GYxEZpE14p1aVEsDfRZ3qSbw5xr
+	 us7AUkWo3VPUw==
+Date: Thu, 13 Nov 2025 22:19:55 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: linux-phy@lists.infradead.org, Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Josua Mayer <josua@solid-run.com>, linux-kernel@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 phy 02/16] phy: lynx-28g: refactor lane probing to
+ lynx_28g_probe_lane()
+Message-ID: <aRYMM3ZuyBYH8zEC@vaman>
+References: <20251110092241.1306838-1-vladimir.oltean@nxp.com>
+ <20251110092241.1306838-3-vladimir.oltean@nxp.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,24 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251113160351.113031-2-john.ogness@linutronix.de>
+In-Reply-To: <20251110092241.1306838-3-vladimir.oltean@nxp.com>
 
-Hi,
+On 10-11-25, 11:22, Vladimir Oltean wrote:
+> This simplifies the main control flow a little bit and makes the logic
+> reusable for probing the lanes with OF nodes if those exist.
+> 
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> ---
+> v3->v4:
+> - patch is new, broken out from previous "[PATCH v3 phy 13/17] phy:
+>   lynx-28g: probe on per-SoC and per-instance compatible strings" to
+>   deal only with lane OF nodes, in a backportable way
+> 
+>  drivers/phy/freescale/phy-fsl-lynx-28g.c | 42 +++++++++++++++---------
+>  1 file changed, 26 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/phy/freescale/phy-fsl-lynx-28g.c b/drivers/phy/freescale/phy-fsl-lynx-28g.c
+> index c20d2636c5e9..901240bbcade 100644
+> --- a/drivers/phy/freescale/phy-fsl-lynx-28g.c
+> +++ b/drivers/phy/freescale/phy-fsl-lynx-28g.c
+> @@ -579,12 +579,33 @@ static struct phy *lynx_28g_xlate(struct device *dev,
+>  	return priv->lane[idx].phy;
+>  }
+>  
+> +static int lynx_28g_probe_lane(struct lynx_28g_priv *priv, int id,
+> +			       struct device_node *dn)
+> +{
+> +	struct lynx_28g_lane *lane = &priv->lane[id];
+> +	struct phy *phy;
+> +
+> +	memset(lane, 0, sizeof(*lane));
 
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH printk v2 1/2] printk: Allow printk_trigger_flush() to flush all types
-Link: https://lore.kernel.org/stable/20251113160351.113031-2-john.ogness%40linutronix.de
+priv is kzalloc, so why memset here?
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+~Vinod
 
