@@ -1,69 +1,155 @@
-Return-Path: <stable+bounces-194689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A758BC57C71
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 14:49:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B13C57A91
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 14:30:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E95334A7435
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 13:17:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88E5F426177
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 13:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3636351FAC;
-	Thu, 13 Nov 2025 13:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCC4351FAB;
+	Thu, 13 Nov 2025 13:22:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTx28SKr"
 X-Original-To: stable@vger.kernel.org
-Received: from zpanel.taknet.net (unknown [130.185.75.60])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB842C21D8
-	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 13:17:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.185.75.60
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FFF33F8D2;
+	Thu, 13 Nov 2025 13:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763039850; cv=none; b=m/pdDztnhcsaOSmGd9RjnyfEU1jd/XxKvjwgKzMB/+e8cUMfLz20nwedLZeiHPXc6BJc7FffS3gtFvnPQk3NEFXheKdGNI6/v9UA2V80vXx6iE1sDUQ/Xg/B/+DxDD/vyfDgYEpLhTIoOFAD8i7IBgNpz+NxPOkrxzIdU8D1dQk=
+	t=1763040137; cv=none; b=gyJvzsMlZvCIXajIPmcH5U2P6VEf69zmWpm2JWEGWgJ7rewI4CsQABSO1TtQweh5AuPY/W4+NwQeC+nJZmCPMNEuhdz+L5VoeCnBhmdEdyhG/tklEbBg5jW3iAlKtUkyqoc+4mBNzSvVZ1QQ4in9C38BPzXr0qpgStqIEQ8baP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763039850; c=relaxed/simple;
-	bh=gRpSnxQJ/4kkbC+uc4uJRS3lv/3yaR5s2BnwM6PHjeM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u6gGlVtD0MtUrP/dfojMC7aC/EtEcBH89BqxWlW5buf/olPCzHktV/CqVwNzHWrlahuE6inv87jdCo5ApZU7iQllEDO/rz0+15hf6va+NrppLLQ+ZwPdC2QJVVv7lMOro3KaQasd4RgxWJXT4d43FLjHkQ5OBFix2Pv+jqlwLEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=virakshop.com; spf=none smtp.mailfrom=virakshop.com; arc=none smtp.client-ip=130.185.75.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=virakshop.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=virakshop.com
-Received: from [36.255.98.22] (port=55493)
-	by zpanel.taknet.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <supervisor@virakshop.com>)
-	id 1vJXCJ-00054z-2B
-	for stable@vger.kernel.org;
-	Thu, 13 Nov 2025 14:17:19 +0100
-Reply-To: harry.schofield@lexcapital-group.com
-From: Harry Schofield ESQ <supervisor@virakshop.com>
-To: stable@vger.kernel.org
-Subject: Re:Good day,
-Date: 13 Nov 2025 05:17:20 -0800
-Message-ID: <20251113051719.42644CBD6BA01B05@virakshop.com>
+	s=arc-20240116; t=1763040137; c=relaxed/simple;
+	bh=2tikzxEHnmdkbUqaFaA988rollYf1y6GcLUgGwj7ekE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MwuWqifkHlFjdtajxVUh/ZK+WkIbI6pLaroj4qSeE2hQZNoCWhqrcd+0DODhJqRK8vb8rPpB0QJFPU5Jtm1rySWHW2nOo2j+9ofBnw4UlqEeUqG8dY5MN0a4j1jK3Tciv/mjlwYT+LfS28y6914fqhv1UHoL7Ix39LBidETYshs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTx28SKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55252C4CEF5;
+	Thu, 13 Nov 2025 13:22:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1763040136;
+	bh=2tikzxEHnmdkbUqaFaA988rollYf1y6GcLUgGwj7ekE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mTx28SKrpAv8HJij+nUqzAAwSFH7Lb9RM0nU8Fp2QIwgioPnwFxElbUHhFAVOETZy
+	 OYX79AEqwveFkBOraZC5MGM7zllMmx4DNMITFwlmpLnGUqu/y7L6w13Gu+6/WXkmS7
+	 LbWDR2CQxCxGV5BOy7a3kDxOrn66LoitUX+XR1qc=
+Date: Thu, 13 Nov 2025 08:22:14 -0500
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com, Alan Maguire <alan.maguire@oracle.com>
+Subject: Re: [PATCH 6.12 000/562] 6.12.58-rc2 review
+Message-ID: <2025111355-confound-anyplace-6719@gregkh>
+References: <20251111012348.571643096@linuxfoundation.org>
+ <5b13fb12-66ac-4502-a93b-d79692cc7b81@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - zpanel.taknet.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - virakshop.com
-X-Get-Message-Sender-Via: zpanel.taknet.net: authenticated_id: supervisor@virakshop.com
-X-Authenticated-Sender: zpanel.taknet.net: supervisor@virakshop.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5b13fb12-66ac-4502-a93b-d79692cc7b81@oracle.com>
 
-Re:Good day,
-Hope you are well, my first email returned undelivered, please=20
-can I provide you with more information through this email?.
-Best regards,
-Harry Schofield
+On Thu, Nov 13, 2025 at 03:48:53PM +0530, Harshit Mogalapalli wrote:
+> Hi Greg,
+> 
+> On 11/11/25 06:54, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.12.58 release.
+> > There are 562 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Thu, 13 Nov 2025 01:22:51 +0000.
+> > Anything received after that time might be too late.
+> 
+> link.c: In function ‘is_x86_ibt_enabled’:
+> link.c:288:37: error: array type has incomplete element type ‘struct
+> kernel_config_option’
+>   288 |         struct kernel_config_option options[] = {
+>       |                                     ^~~~~~~
+> In file included from /u01/hamogala/stable_rc_testing/linux-stable-rc/tools/include/linux/kernel.h:8,
+>                  from main.h:14,
+>                  from link.c:17:
+> /u01/hamogala/stable_rc_testing/linux-stable-rc/tools/include/linux/build_bug.h:16:51:
+> error: bit-field ‘<anonymous>’ width not an integer constant
+>    16 | #define BUILD_BUG_ON_ZERO(e) ((int)(sizeof(struct { int:(-!!(e));
+> })))
+>       |                                                   ^
+> /u01/hamogala/stable_rc_testing/linux-stable-rc/tools/include/linux/compiler-gcc.h:26:33:
+> note: in expansion of macro ‘BUILD_BUG_ON_ZERO’
+>    26 | #define __must_be_array(a) BUILD_BUG_ON_ZERO(__same_type((a),
+> &(a)[0]))
+>       |                                 ^~~~~~~~~~~~~~~~~
+> /u01/hamogala/stable_rc_testing/linux-stable-rc/tools/include/linux/kernel.h:103:59:
+> note: in expansion of macro ‘__must_be_array’
+>   103 | #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) +
+> __must_be_array(arr))
+>       | ^~~~~~~~~~~~~~~
+> link.c:291:22: note: in expansion of macro ‘ARRAY_SIZE’
+>   291 |         char *values[ARRAY_SIZE(options)] = { };
+>       |                      ^~~~~~~~~~
+> link.c:294:13: warning: implicit declaration of function
+> ‘read_kernel_config’ [-Wimplicit-function-declaration]
+>   294 |         if (read_kernel_config(options, ARRAY_SIZE(options), values,
+> NULL))
+>       |             ^~~~~~~~~~~~~~~~~~
+> In file included from /u01/hamogala/stable_rc_testing/linux-stable-rc/tools/include/linux/kernel.h:8,
+>                  from main.h:14,
+>                  from link.c:17:
+> /u01/hamogala/stable_rc_testing/linux-stable-rc/tools/include/linux/build_bug.h:16:51:
+> error: bit-field ‘<anonymous>’ width not an integer constant
+>    16 | #define BUILD_BUG_ON_ZERO(e) ((int)(sizeof(struct { int:(-!!(e));
+> })))
+>       |                                                   ^
+> /u01/hamogala/stable_rc_testing/linux-stable-rc/tools/include/linux/compiler-gcc.h:26:33:
+> note: in expansion of macro ‘BUILD_BUG_ON_ZERO’
+>    26 | #define __must_be_array(a) BUILD_BUG_ON_ZERO(__same_type((a),
+> &(a)[0]))
+>       |                                 ^~~~~~~~~~~~~~~~~
+> /u01/hamogala/stable_rc_testing/linux-stable-rc/tools/include/linux/kernel.h:103:59:
+> note: in expansion of macro ‘__must_be_array’
+>   103 | #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) +
+> __must_be_array(arr))
+>       | ^~~~~~~~~~~~~~~
+> link.c:294:41: note: in expansion of macro ‘ARRAY_SIZE’
+>   294 |         if (read_kernel_config(options, ARRAY_SIZE(options), values,
+> NULL))
+>       |                                         ^~~~~~~~~~
+> link.c:291:15: warning: unused variable ‘values’ [-Wunused-variable]
+>   291 |         char *values[ARRAY_SIZE(options)] = { };
+>       |               ^~~~~~
+> link.c:288:37: warning: unused variable ‘options’ [-Wunused-variable]
+>   288 |         struct kernel_config_option options[] = {
+>       |                                     ^~~~~~~
+> make: *** [Makefile:249: link.o] Error 1
+> make: *** Waiting for unfinished jobs....
+> 
+> 
+> I see this with bpftool build.
+> 
+> let us drop this commit ?
+> 
+> commit: c8271196124a ("bpftool: Add CET-aware symbol matching for x86_64
+> architectures")
+> 
+
+Already dropped.
+
+thanks,
+
+greg k-h
 
