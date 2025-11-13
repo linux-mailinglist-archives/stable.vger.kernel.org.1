@@ -1,167 +1,159 @@
-Return-Path: <stable+bounces-194653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E426C55805
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 04:02:46 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0965AC55815
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 04:05:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C8EEC34BA76
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 03:02:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B618734BC49
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 03:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE381B0439;
-	Thu, 13 Nov 2025 03:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609F02741C0;
+	Thu, 13 Nov 2025 03:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cas305hE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="REJHIpeQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52ABA224D6
-	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 03:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA8C263F28
+	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 03:05:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763002954; cv=none; b=ZnPANNND3x0iKwDlaPDx8Ju6Q0wO+qw3GP2MJ9dTk4zZ93gh+QYFtzWMDfrawveOzK6PxrvIzxVsGzL6Ewc3dxpEDli2pyIqyjKYFFCVlTmYiV48MVCqSJRBRnQ2QwQZUiDCVPLpEsepZV9clEbMT1DF3PuZ2/f3Lx4SKFhds5I=
+	t=1763003108; cv=none; b=e1WypOkRZjIfjfai3uKCaiMMZusVZVMHrjn6ndonVLHLav11VUs2jY+yAcZPwRkHtpNZiY33pPZlPA83iSGXUIKZf1jxKq3FzWas8ihI1iVRVyeOY7M7y8PKH+Hf2r/Nzm2Z3nqfwlgZP+IlOWEAC+G52y3NdEVx8irvm0Zb5Hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763002954; c=relaxed/simple;
-	bh=//fsSqVwcMMj8kj2hnXE62bVqKB4thvdzGySq8e0d8c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Eaq3EOxuu+pwa6XekEAQjI/iACbBJTfU2lPqs/MB6sHOdEvwY5n5kCq0f90mx8FjQsWVoJ/IgUiOo5DGzcWBc5dzlT+xiBCw2sCbE61YwQa85TuSGJj4G8ulgYYuxWauy+SRrTdQoTjJpSrkX356HbNOLC0ebwWImYybkcmyhcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cas305hE; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1763003108; c=relaxed/simple;
+	bh=O9zV8bAoUVd2ZzjVizrq0aVJWNKCtlsakqD1EEwfl7I=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=sp7F69W49juKCeBrmIHh87Ip60Z5Pq0lVq7lCCCMhZ2OjR1U4J2Kqd5A8pDT9TLEQpxT3PZDVtjlPbytZK3QfYbXHww00R8NRtTh4URB9bsumispSnczS0DSbkLKsG3Rhn0xBnTl0vN2Kfdu28CJCe3eLfaEIEJG/ueEjbe1ICM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=REJHIpeQ; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7a9cdf62d31so348101b3a.3
-        for <stable@vger.kernel.org>; Wed, 12 Nov 2025 19:02:33 -0800 (PST)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29800ac4ef3so846115ad.1
+        for <stable@vger.kernel.org>; Wed, 12 Nov 2025 19:05:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763002952; x=1763607752; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=QQv8xx1Duq6ZgFVf8NjZsfCCJSLzn/A1nSzNFREUl64=;
-        b=Cas305hENX3A9FBrNwq5x8E9KbkpWVRcAEt1DNYlkLVVZJIdxsjbs4wsD3SEAQmlI+
-         mCTp/gbUi4+EJx7o1nWem6helSIvTzr3z4ISACOdQJuWFmZgLK6G89j0aX1oY7ctVCAS
-         91NSsFbtov2OG7QJKfCVk178Zt0NTYDCF3RfhyUGwzfsk9qOfCpWsEI2OsF4vJxPfEn6
-         a+I30xke13yX+sJ5fsrhtT8UFBdO6D6QEkmj6IFxCbJwWyzumlcTX7B3D/y4RIfkLLNH
-         hPUMCTYiEMK2HMhF44ikXGQWiVwAGskSpjrCiEUkvykkMqJOFlcItL5cZSBkhgouqkP7
-         qNpg==
+        d=gmail.com; s=20230601; t=1763003105; x=1763607905; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=79ZFMgyqh7NLEU0bjPwPQ0uTiSQzLvP0WrsYbbAHZdM=;
+        b=REJHIpeQMqCyfBtuqBxxYToslfUaJjbaFtZz5LA1BkKaq31+IeB3Jvot6lc7oTh8dp
+         N5v4UFmTRDFJx7ISkKvslA/ySRIhVewBJ8qPZk76bAgxgkQj5ATGEgEzwWVb3S3TWISb
+         evA8YWqeqgy5RO+c8aw3FK8GLXvj/xcxXQtIqpiUgKY+C2ZYDVSh8sVWfFIjPLi9UYo2
+         rAJKukHDY0JQVbtyBbmACUbHzS1KtmwLOQc6TZOEDZ77IOCUeQjSq0EVwKxXBmrRK5vJ
+         Bk1xdp9iGrjBqvP0BG6iPTRAy2LeOO5NHyELTzxS3M4OAVBWlF+PoljBx+D6BjJENoPx
+         +1iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763002952; x=1763607752;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QQv8xx1Duq6ZgFVf8NjZsfCCJSLzn/A1nSzNFREUl64=;
-        b=VuRvpdc7Ig6a1+OlDUpr5XUYpp6bK1IKjSOAKL8q5f8RSKFLCdFQ1CXbE6XHyYL5Ex
-         RCNycFOKxb/dTtTN2wKX6x4+pQlFbI2wPkvipsls5R+yaxPgZeV144YEa9yudmxxu35G
-         QEnUPpVij3LKolYU6cNFJDsdB65n/ioOagSFoHdatQLq4R6rprnuU2oJ0g9BWIRejfm4
-         3my0Cscvus16YGXSl9E2jbodcrIuN/KnkllX3geTXWsGgyzGOcB01WRO2z8u6nyycUcW
-         F8Daq0xTd31zWdoZ9SJFOr06hILxNf2fYIVat0jNGm7L+Hlebgm2SW1E4JlG4zWm8V9c
-         Db4A==
-X-Forwarded-Encrypted: i=1; AJvYcCXdFrYZE1/RKACX5G/ncldXVLzsl9MLxBciSxM+Um2Eoh3/YtM7s9C+KdeGI+ZnuU6g5pb1xB8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzd2ZvLOOwv+/E6aP29IEw8JLkiS6rcyYMuDWpK8znDlAJ5Uky2
-	vosaeZ1VTsjBffRWP8Pt8OhfWDzVyNCDlZxsug3sAK6JkfHlEVUnDV9s
-X-Gm-Gg: ASbGncvDt4x6LQFXn7pz4aHyVrrWeJf6Gwy2M5Z/606kmWRz3GPFkHcKq7be23M6juK
-	z2ieLB+roW+ocJaI9FkMNGqKHzkAmsh3lfTe6Nsh7l4Cj9xs/uaog+HJkeupP5YdKZvY1h9bm8T
-	hexdt+68MjA3SGdok1zwQugEBD0tQMXLwCt7fYWzxR+XZusbKrPYwBTWJYUM6KAxNu0R2LqR/3m
-	4HHpN3BvBa+eNS/tGBmt87UgXLABC/Ghx1FllphRwy2TBccnZJmsAkESQxpP4Yy3L82/oOYfTgs
-	f6sHn/SgAs7rcBUQPc4ME+tHZOS4PhrxCDD6Hu38BPcIHnVFBlX/2L4zDZWEoU36h8W5yMbqeHW
-	eWvE+fn5m4xwIXixTzTiRHOxi85E9K0TH/2FsDWILlXs0+aynwIWbmKO+f5w3zOKdWB5Od4t/v7
-	LLv73sZM0rff7NxC6Yrl/kL/UfVQE9UrXsACAwLB3AbJMVeDV8
-X-Google-Smtp-Source: AGHT+IHFGM7yAAmuzYKKX9AWtV35TPZpE/Q6IPvSk5IPW4CF2y/lsD+bEHp9IHeJDSfFlJ9JMJQf9g==
-X-Received: by 2002:a05:6a20:1611:b0:334:9e5e:c2c2 with SMTP id adf61e73a8af0-3590968969amr7186139637.13.1763002952560;
-        Wed, 12 Nov 2025 19:02:32 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b927731a72sm486226b3a.50.2025.11.12.19.02.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Nov 2025 19:02:32 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <834b1518-67c0-4d8b-b607-f960a178ff2c@roeck-us.net>
-Date: Wed, 12 Nov 2025 19:02:30 -0800
+        d=1e100.net; s=20230601; t=1763003105; x=1763607905;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=79ZFMgyqh7NLEU0bjPwPQ0uTiSQzLvP0WrsYbbAHZdM=;
+        b=SlmjEW/TtTlDc5VwUPnOvK9N/ofHcom2KgSS1xgPuGHglB5g0dIKDbyU9Pn09KeCYq
+         G4EtI5ebX19QuqTa+KTNvxl6Zw3oZdWOLqFWiFfHn2exGSk2X4U42mhU8FHdqWAS7aI8
+         RJ6NFsMwWzu/Vt+ip/2LfK25eus52b7xfUQZsNBldusNY1ny4OtmCOuIewUxexdXzxan
+         VPmNAx7vsfbo9ypnXMKGO9StCoyO/H22BcS18YO+HV7fI6I8HBPqGJ3uxFBDW7W0zmWp
+         OvxtnCSi8pJqWdzh+wyw2vc56aYRiywq7Rf+93rA1RDJlSsAgRiKQsSXRfonSHkAE9C5
+         kPcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXFQQos2w1tB38SrgZ5O+Z07efthvmCFUxq62DnfL/0ufSur7HK8qxABMU7oJTo1QAkBgBHNBk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqPHmgCJZp/y6CKRnh0HzNBnH0XXXZ8fP8OJZznQWBDhL158Yx
+	+Zg+zhyugb2mClwNFB5t2PG5zsop9QEclAuqvLVhfmBiqPltYGToldec
+X-Gm-Gg: ASbGncsqDexMhhWFw0TfKLAGa9p7mzy4E+pS5qEpv8u4oNx6HGdoqMPEJoOqmTHwLbg
+	HgailNh3u6lUC72Y9/eDB46A9N2cO8y2K2//OsT2AiWaJE5/7AUYRzLmHxKtEfldlC6kStV48xM
+	HZQyb5caZoJ7JWc87wb97y3FFKjVru2arnsE8PVS0+y3nb4m80YwXUM4WkobnZgTeQTK6lpUGxi
+	+VNSdD7ysEF0Qs/7GXdXGTjjCEYiKdbnnwoUkX3ek/i3oykp7uGVL1uSSkJTg8+fA4H1GCJKCGS
+	dazUdi6c9rR7sn6FcWL6qDeDEHawXXjR1Qs4Ie4ql4lX898zOclkbsFZ6auviMFmGFyQVU1VznT
+	G4tZ6Qh9y5e8w//Y3+iBC0MxmLJ/VzmkFzz2DAt1bgkDG5O//KC9GRugRAqTuRCvKN/QBbPDqXn
+	AxxQsmysGfHY62M575RvC6hqr7/bdI3H4QZ6GjQw8GJprVVmMr370cpjpHqoqgeg==
+X-Google-Smtp-Source: AGHT+IEw90g2Hzt/8ufbJVQWlDjtChK6HX/U5OEBYjDIouhOWonfZhzrah1NQrxITRslczO8iIzXZQ==
+X-Received: by 2002:a17:902:db04:b0:295:247c:fb7e with SMTP id d9443c01a7336-2984edfb282mr36630385ad.11.1763003105365;
+        Wed, 12 Nov 2025 19:05:05 -0800 (PST)
+Received: from poi.localdomain (KD118158218050.ppp-bb.dion.ne.jp. [118.158.218.50])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2346dasm6739945ad.7.2025.11.12.19.05.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 19:05:04 -0800 (PST)
+From: Qianchang Zhao <pioooooooooip@gmail.com>
+To: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>
+Cc: gregkh@linuxfoundation.org,
+	linux-cifs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	security@kernel.org,
+	Zhitong Liu <liuzhitong1993@gmail.com>,
+	Qianchang Zhao <pioooooooooip@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ksmbd: vfs_cache: avoid integer overflow in inode_hash()
+Date: Thu, 13 Nov 2025 12:04:53 +0900
+Message-Id: <20251113030453.526393-1-pioooooooooip@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2025111234-synthesis-wimp-7485@gregkh>
+References: <2025111234-synthesis-wimp-7485@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 00/40] 6.12.57-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20251031140043.939381518@linuxfoundation.org>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20251031140043.939381518@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Greg,
+inode_hash() currently mixes a name-derived hash with the super_block
+pointer using an unbounded multiplication:
 
-On 10/31/25 07:00, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.57 release.
-> There are 40 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sun, 02 Nov 2025 14:00:34 +0000.
-> Anything received after that time might be too late.
->
-...
-> Steven Rostedt <rostedt@goodmis.org>
->      perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL
-> 
-This patch triggers a crash in one of our stress tests.
+    tmp = (hashval * (unsigned long)sb) ^
+          (GOLDEN_RATIO_PRIME + hashval) / L1_CACHE_BYTES;
 
-The problem is also seen in 6.18-rc5, so it is not LTS specific.
+On 64-bit kernels this multiplication can overflow for many inputs.
+With attacker-chosen filenames (authenticated client), overflowed
+products collapse into a small set of buckets, saturating a few chains
+and degrading lookups from O(1) to O(n). This produces second-scale
+latency spikes and high CPU usage in ksmbd workers (algorithmic DoS).
 
-Guenter
+Replace the pointer*hash multiply with hash_long() over a mixed value
+(hashval ^ (unsigned long)sb) and keep the existing shift/mask. This
+removes the overflow source and improves bucket distribution under
+adversarial inputs without changing external behavior.
+
+This is an algorithmic-complexity issue (CWE-190/CWE-407), not a
+memory-safety bug.
+
+Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+---
+ fs/smb/server/vfs_cache.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index dfed6fce8..ac18edf56 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -10,6 +10,7 @@
+ #include <linux/vmalloc.h>
+ #include <linux/kthread.h>
+ #include <linux/freezer.h>
++#include <linux/hash.h>
+ 
+ #include "glob.h"
+ #include "vfs_cache.h"
+@@ -65,12 +66,8 @@ static void fd_limit_close(void)
+ 
+ static unsigned long inode_hash(struct super_block *sb, unsigned long hashval)
+ {
+-	unsigned long tmp;
+-
+-	tmp = (hashval * (unsigned long)sb) ^ (GOLDEN_RATIO_PRIME + hashval) /
+-		L1_CACHE_BYTES;
+-	tmp = tmp ^ ((tmp ^ GOLDEN_RATIO_PRIME) >> inode_hash_shift);
+-	return tmp & inode_hash_mask;
++	return hash_long(hashval ^ (unsigned long)sb, inode_hash_shift) &
++		inode_hash_mask;
+ }
+ 
+ static struct ksmbd_inode *__ksmbd_inode_lookup(struct dentry *de)
+-- 
+2.34.1
 
 
