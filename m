@@ -1,147 +1,106 @@
-Return-Path: <stable+bounces-194701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD51FC58767
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 16:45:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6726EC58B1B
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 17:26:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FD6E4A7068
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 15:33:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA68C4A1232
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 15:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22FBD2EACE2;
-	Thu, 13 Nov 2025 15:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B86350A1C;
+	Thu, 13 Nov 2025 15:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BKvFdi9k"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QFhRljHR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02AF25EF9C;
-	Thu, 13 Nov 2025 15:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D010350A16
+	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 15:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763047411; cv=none; b=Yg0lcWVCy3s0EwsZvdDmGrGkYfsl6OE9tmNw3wSB9+e9QYl1GdG3wydFOlB0s0DYE+iNWum1GfGY1gASly7VDFoR3sBRKwHiIO3LrGHZ7wPp9hIVSWUpIOXMOI+Q6x1INZYrwkDQXwzPGly1a5GHebLI4O9gt+REwRKQ5k3dL50=
+	t=1763048402; cv=none; b=TDmkRb12Z7+8+6/0PYxQhUV4Q1lXy6zpIWNhbn+6VnsTjGRCNByHCElWyAwDXgJc6rJlGDIsTEY68A/F3j9/uLLUk7kphqclP1ZyV0WQK8HUx083RWXkkvDSlWjZOn+gLJrxBu8SqMcfMLzwkhCleOR2g6sWdgs+IEGdE66M9Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763047411; c=relaxed/simple;
-	bh=d9PhCmAQbrZluboZNdUsSmy8Hk+VX5BfUP3Vl7V4KDo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9gG9ZlcoB3mPP/dQ+CCesmeC9sQpltscvA1qY5UqpHqvgzSUxxovb3vnCLvpATbkgamKQXZgBg0y0Y7J6RejM0WuWnPAHRE7cbSBPE4VyUYmMWXoQVv+8ZbcSNIkMdhPkaIo5AtbI+inUieDKHHvwySaYF6OaJe8oZcSOaCiC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BKvFdi9k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F84C4CEF5;
-	Thu, 13 Nov 2025 15:23:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763047411;
-	bh=d9PhCmAQbrZluboZNdUsSmy8Hk+VX5BfUP3Vl7V4KDo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BKvFdi9kKpHn6Ew12/6uzHcqEJl0iYi56H0x2bCOunD0Q9kwG+UvUX1DwGLczx0QI
-	 R/hvzCNTxeE+SfJC57JNbJOUIDyWK/81xrWNKF91l6DpTaamuOwpTfMzqjx1N5OCRB
-	 JdcZ+RsyIy1clIlAYB6aPmHpCtyFxMJzo71ygub4So7lE6Kqzg/7b9hErwJV/MaUXj
-	 0+Xc7ms1YF4IYQQxuBa2C9Epvz+1vQIA1s+kvRtn+AMfK+m82GgscT4bEMzr5kJ93G
-	 EZxhD39Ute+39TjU/vfg3nDctTNp8Ty1lpB22jvgohJ0EkFibcqxcvgPS46V8cVmnS
-	 JUETJt2+VuizA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] mptcp: pm: in-kernel: C-flag: handle late ADD_ADDR
-Date: Thu, 13 Nov 2025 16:22:57 +0100
-Message-ID: <20251113152256.3075806-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102646-unwary-premises-4a2c@gregkh>
-References: <2025102646-unwary-premises-4a2c@gregkh>
+	s=arc-20240116; t=1763048402; c=relaxed/simple;
+	bh=IAwkvPGN1J6/ndtGV/PbZPfm2JVOjdVPyim6gdQtW9A=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=W0lvPw4CFUg6FPNgYtTpHcrZqbNRy+Pol+7GsEogHY/+mntBh+Yh7ooJf9Y3aYub+zkfcUPqTp4XVmPkeyyQvniz8FBvCK60sl173qYXeWrW9SQSuBKptdKtSvzKYpGvQJq3j9JNN1MAm62N51uzAHewnGl5b59vUw2+Xsb4hoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QFhRljHR; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763048388;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gE+3sRbPyHtFVg+iv45yjGoy/qm9/uVMyd8LB7zMmwc=;
+	b=QFhRljHRmtIGs223E59VPERVczvN2nHQAZk8qZV5OgPZgVtwzjez+vinkcRX9sBdKFUyOi
+	gsIxw0nqty75c4NLgYc08QFgtLph1EoUtBEBKtxgXPPVXeIqxGAJZRVcR6SgCShaRzxSbR
+	c+wLs+NVMI97YHz8Tha5UIAk6ExPYYg=
+From: Dawei Li <dawei.li@linux.dev>
+To: andersson@kernel.org,
+	mathieu.poirier@linaro.org
+Cc: linux-remoteproc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dawei.li@linux.dev,
+	set_pte_at@outlook.com,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/3] rpmsg: char: Remove put_device() in rpmsg_eptdev_add()
+Date: Thu, 13 Nov 2025 23:39:07 +0800
+Message-Id: <20251113153909.3789-2-dawei.li@linux.dev>
+In-Reply-To: <20251113153909.3789-1-dawei.li@linux.dev>
+References: <20251113153909.3789-1-dawei.li@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3174; i=matttbe@kernel.org; h=from:subject; bh=d9PhCmAQbrZluboZNdUsSmy8Hk+VX5BfUP3Vl7V4KDo=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJFv18MuMlm+JNd407DpCcZkRF8uZFOf0zSD8dGVkevt KqLn9nTUcrCIMbFICumyCLdFpk/83kVb4mXnwXMHFYmkCEMXJwCMBGX1Qz/dGxqpM3qC3eq38gJ MNobw7yHWewa0yuXddndrzqVH0ncYvif9OzVxPmaui3lYpcsDzy1vrhKPj5bxtt06yQV39tNBvE MAA==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-[ Upstream commit e84cb860ac3ce67ec6ecc364433fd5b412c448bc ]
+put_device() is called on error path of rpmsg_eptdev_add() to cleanup
+resource attached to eptdev->dev, unfortunately it's bogus cause
+dev->release() is not set yet.
 
-The special C-flag case expects the ADD_ADDR to be received when
-switching to 'fully-established'. But for various reasons, the ADD_ADDR
-could be sent after the "4th ACK", and the special case doesn't work.
+When a struct device instance is destroyed, driver core framework checks
+the possible release() callback from candidates below:
+- struct device::release()
+- dev->type->release()
+- dev->class->dev_release()
 
-On NIPA, the new test validating this special case for the C-flag failed
-a few times, e.g.
+Rpmsg eptdev owns none of them so WARN() will complaint the absence of
+release():
 
-  102 default limits, server deny join id 0
-        syn rx                 [FAIL] got 0 JOIN[s] syn rx expected 2
+[  159.112182] ------------[ cut here ]------------
+[  159.112188] Device '(null)' does not have a release() function, it is broken and must be fixed. See Documentation/core-api/kobject.rst.
+[  159.112205] WARNING: CPU: 2 PID: 1975 at drivers/base/core.c:2567 device_release+0x7a/0x90
 
-  Server ns stats
-  (...)
-  MPTcpExtAddAddrTx  1
-  MPTcpExtEchoAdd    1
-
-  Client ns stats
-  (...)
-  MPTcpExtAddAddr    1
-  MPTcpExtEchoAddTx  1
-
-        synack rx              [FAIL] got 0 JOIN[s] synack rx expected 2
-        ack rx                 [FAIL] got 0 JOIN[s] ack rx expected 2
-        join Rx                [FAIL] see above
-        syn tx                 [FAIL] got 0 JOIN[s] syn tx expected 2
-        join Tx                [FAIL] see above
-
-I had a suspicion about what the issue could be: the ADD_ADDR might have
-been received after the switch to the 'fully-established' state. The
-issue was not easy to reproduce. The packet capture shown that the
-ADD_ADDR can indeed be sent with a delay, and the client would not try
-to establish subflows to it as expected.
-
-A simple fix is not to mark the endpoints as 'used' in the C-flag case,
-when looking at creating subflows to the remote initial IP address and
-port. In this case, there is no need to try.
-
-Note: newly added fullmesh endpoints will still continue to be used as
-expected, thanks to the conditions behind mptcp_pm_add_addr_c_flag_case.
-
-Fixes: 4b1ff850e0c1 ("mptcp: pm: in-kernel: usable client side with C-flag")
+Fixes: c0cdc19f84a4 ("rpmsg: Driver for user space endpoint interface")
 Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-1-8207030cb0e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ applied to pm_netlink.c instead of pm_kernel.c ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ I took the version from Sasha from v6.1, and fixed an additional
-  conflict in pm_netlink.c, because commit a88c9e496937 ("mptcp: do not
-  block subflows creation on errors") is not in this version and changed
-  the code around: check_work_pending() is now called directly, followed
-  by a return instead of a goto. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Dawei Li <dawei.li@linux.dev>
 ---
- net/mptcp/pm_netlink.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/rpmsg/rpmsg_char.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index df46ca14ce23..e94b78a8b0ef 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -532,6 +532,12 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 		check_work_pending(msk);
- 	}
+diff --git a/drivers/rpmsg/rpmsg_char.c b/drivers/rpmsg/rpmsg_char.c
+index 34b35ea74aab..1b8297b373f0 100644
+--- a/drivers/rpmsg/rpmsg_char.c
++++ b/drivers/rpmsg/rpmsg_char.c
+@@ -494,7 +494,6 @@ static int rpmsg_eptdev_add(struct rpmsg_eptdev *eptdev,
+ 	if (cdev)
+ 		ida_free(&rpmsg_minor_ida, MINOR(dev->devt));
+ free_eptdev:
+-	put_device(dev);
+ 	kfree(eptdev);
  
-+	/* No need to try establishing subflows to remote id0 if not allowed */
-+	if (mptcp_pm_add_addr_c_flag_case(msk)) {
-+		check_work_pending(msk);
-+		return;
-+	}
-+
- 	/* check if should create a new subflow */
- 	if (msk->pm.local_addr_used < local_addr_max &&
- 	    msk->pm.subflows < subflows_max &&
+ 	return ret;
 -- 
-2.51.0
+2.25.1
 
 
