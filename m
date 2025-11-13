@@ -1,153 +1,96 @@
-Return-Path: <stable+bounces-194667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4362C56928
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 10:25:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A7AC5697C
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 10:29:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0EC77343CF7
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 09:21:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5C93E3546A2
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 09:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26DF92D8378;
-	Thu, 13 Nov 2025 09:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC8F2C15BB;
+	Thu, 13 Nov 2025 09:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mZpXHuIo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pkHhGr7e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D652D63EF;
-	Thu, 13 Nov 2025 09:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41BD232785;
+	Thu, 13 Nov 2025 09:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763025635; cv=none; b=VVATJT41MiKLBMk+BJG2vDoUbI/M+LLW197LOY8NP/gu3mY1hXqgg4PRPxVzAH3IOZ+JByWvDE603W7OaTIsjVSesyO6yi2dH0VTrwcl9iA0psdHXI6ZJ/gJtfIwy62zQydiF6EQ7GjXM1usU2OZwU19j/o1CvS8QkTEZ/nyGjo=
+	t=1763025805; cv=none; b=KHZSwYHx2WMT/lB9mEyWf4dgVvkGdh7VU8W8cFx12h6NdGOhJOMDdabBN61T/uFGIP3Q3GamRS+H3j7VWtPCMl8dsBlv6egxhwFpKy2jsEmUa9HbQNJzmi4bwzTWITheyXV+sDEceBuj9DVb02ofqqLBIJZic9JOwmdr4TcU1RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763025635; c=relaxed/simple;
-	bh=qWeXKefTr39Z8QEjwx9tm3gjalzsAeVjEjzYhlbwRLk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LGV1vPXahWJn+H45yT9UpHcCzo3CXjxWte6LAqq2m1iBNGnrpXSoQ1jnvbSVHaqQP14FcckD+HreZj4ZfUyhN3RgOZdwdeBNZ4ObZykSzUTCcXAlCLUrbOdUCzPOTQeI+bKjUAw9UgyU8p8Zm+Tw0Om5mFmq4ii+2zIuIQQA2+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mZpXHuIo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318D1C4CEF8;
-	Thu, 13 Nov 2025 09:20:31 +0000 (UTC)
+	s=arc-20240116; t=1763025805; c=relaxed/simple;
+	bh=qVovaGkTT3RmHRbLQKVq/nDJeUu2QtGE4zbD+r6UQ4w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=qtGNUN8ODKxpNmTeU9eADi/iSO42slPp6fZEMo9nXAsawzQ/pAhQzR0+l7/DbDlC8q9Obpa5hxWuENy+RmndnofUExOZXgIszCELnVCpC/LU5+qWIyj46z7FpT9Rjzx0AwUVRei8gOqd4q/hNMxy0PolcGZdXdQswaHilS/YNEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pkHhGr7e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBDFC113D0;
+	Thu, 13 Nov 2025 09:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763025635;
-	bh=qWeXKefTr39Z8QEjwx9tm3gjalzsAeVjEjzYhlbwRLk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mZpXHuIo3H0Egv1WBvo4ABjZoXf/Ci7KeFuiEV49hQKzupIZa+lZL1qvjl0IQWK/U
-	 XmdIh5Wq8FVW4cGmedobTnlvmkjd1HEW2nvPphS6oepn5iJ46yxyc0WxGxl5Xarigv
-	 FMYNO98+W8LvaWJcsQu+XKL48ez4hWlQk++JZ1IMAIiQzv9EED9p3oxHBf5bOTx6AL
-	 rmKTRVIfQSRH5jstDjYuz97FgVmoKmqh0QWlpaKnduUGQP0b6pevGQlycLr/cFy7OW
-	 VEVwCKkKnDimgS7OIxx7OeylF/s3pEFfHWbgdRjUwOnUtuO1P5XTXFM3jHt0vBLERe
-	 LMHvQqEW79YUQ==
-Message-ID: <6d104efa-0686-4621-aba1-3ce17ef85391@kernel.org>
-Date: Thu, 13 Nov 2025 10:20:30 +0100
+	s=k20201202; t=1763025805;
+	bh=qVovaGkTT3RmHRbLQKVq/nDJeUu2QtGE4zbD+r6UQ4w=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=pkHhGr7e6vMBEQww5CcrBSoNXtYBnWf0gPpJt30EV4aNZWene0FCb8XcmdxYHnS8n
+	 BcZAgjWsxuyuU9FgWjwwocDNjPnWJOrrr0lKqTT1MNbZr7q6FvIgCJz6w7phH+aVzI
+	 wc3zxUtBF0HHvb2I9WK/+IrW+/CNV/+tfzCBpEWuaePtd6ktbrqyFE/tXOQk8W2qK5
+	 QCR3H0tJJqhUUSBOwd9g6mwWcSqW+p1poEm9FX3zmA/HMub9fkC4ZlnqHeh8SQBenw
+	 twY8yIAeP0Wzprzadfx+cx7XuDug/MNBYb5oDE0slEiMSH/GaGM9hoUNenJPJyIhoz
+	 osUAHx0PuBJSQ==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/memfd: fix information leak in hugetlb folios
-To: Deepanshu Kartikey <kartikey406@gmail.com>, hughd@google.com,
- baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
- muchun.song@linux.dev, osalvador@suse.de
-Cc: kraxel@redhat.com, airlied@redhat.com, jgg@ziepe.ca, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, vivek.kasireddy@intel.com,
- syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20251112145034.2320452-1-kartikey406@gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251112145034.2320452-1-kartikey406@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 13 Nov 2025 20:23:12 +1100
+Message-Id: <DE7GHFYIRXVK.3SZGBBQBOVDYQ@kernel.org>
+Subject: Re: [PATCH v2 0/4] Rust: Fix typedefs for resource_size_t and
+ phys_addr_t
+Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, "Robin Murphy"
+ <robin.murphy@arm.com>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com>
+In-Reply-To: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com>
 
-On 12.11.25 15:50, Deepanshu Kartikey wrote:
-> When allocating hugetlb folios for memfd, three initialization steps
-> are missing:
-> 
-> 1. Folios are not zeroed, leading to kernel memory disclosure to userspace
-> 2. Folios are not marked uptodate before adding to page cache
-> 3. hugetlb_fault_mutex is not taken before hugetlb_add_to_page_cache()
-> 
-> The memfd allocation path bypasses the normal page fault handler
-> (hugetlb_no_page) which would handle all of these initialization steps.
-> This is problematic especially for udmabuf use cases where folios are
-> pinned and directly accessed by userspace via DMA.
-> 
-> Fix by matching the initialization pattern used in hugetlb_no_page():
-> - Zero the folio using folio_zero_user() which is optimized for huge pages
-> - Mark it uptodate with folio_mark_uptodate()
-> - Take hugetlb_fault_mutex before adding to page cache to prevent races
-> 
-> The folio_zero_user() change also fixes a potential security issue where
-> uninitialized kernel memory could be disclosed to userspace through
-> read() or mmap() operations on the memfd.
-> 
-> Reported-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
-> Link: https://lore.kernel.org/all/20251112031631.2315651-1-kartikey406@gmail.com/ [v1]
-> Closes: https://syzkaller.appspot.com/bug?extid=f64019ba229e3a5c411b
-> Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Oscar Salvador <osalvador@suse.de>
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Tested-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
-> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-> ---
-> 
-> v1 -> v2:
-> - Use folio_zero_user() instead of folio_zero_range() (optimized for huge pages)
-> - Add folio_mark_uptodate() before adding to page cache
-> - Add hugetlb_fault_mutex locking around hugetlb_add_to_page_cache()
-> - Add Fixes: tag and Cc: stable for backporting
-> - Add Suggested-by: tags for Oscar and David
-> ---
->   mm/memfd.c | 27 +++++++++++++++++++++++++++
->   1 file changed, 27 insertions(+)
-> 
-> diff --git a/mm/memfd.c b/mm/memfd.c
-> index 1d109c1acf21..d32eef58d154 100644
-> --- a/mm/memfd.c
-> +++ b/mm/memfd.c
-> @@ -96,9 +96,36 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
->   						    NULL,
->   						    gfp_mask);
->   		if (folio) {
-> +			u32 hash;
-> +
-> +			/*
-> +			 * Zero the folio to prevent information leaks to userspace.
-> +			 * Use folio_zero_user() which is optimized for huge/gigantic
-> +			 * pages. Pass 0 as addr_hint since this is not a faulting path
-> +			 *  and we don't have a user virtual address yet.
-> +			 */
-> +			folio_zero_user(folio, 0);
+On Wed Nov 12, 2025 at 8:48 PM AEDT, Alice Ryhl wrote:
 
-Staring at hugetlbfs_fallocate(), we see, to pass the offset within the 
-file.
+Applied to driver-core-testing, thanks!
 
-I think it shouldn't make a difference here (I don't see how the offset 
-in the file would be better than 0: it's in both cases not the user 
-address).
+(@Miguel: Thanks for adding the tags for convenience. :)
 
-> +
-> +			/*
-> +			 * Mark the folio uptodate before adding to page cache,
-> +			 * as required by filemap.c and other hugetlb paths.
-> +			 */
-> +			__folio_mark_uptodate(folio);
+I adjusted the tags as follows:
 
-Personally, I'd drop this comment as it is really just doing what we do 
-everywhere else :)
+> Alice Ryhl (4):
+>       rust: io: define ResourceSize as resource_size_t
 
-Hoping we can factor that out into hugetlb code properly.
+    Cc: stable@vger.kernel.org
+    Fixes: 493fc33ec252 ("rust: io: add resource abstraction")
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>       rust: io: move ResourceSize to top-level io module
 
--- 
-Cheers
+    Cc: stable@vger.kernel.org # for v6.18 [1]
+    Link: https://lore.kernel.org/all/20251112-resource-phys-typedefs-v2-0-=
+538307384f82@google.com/ [1]
 
-David
+>       rust: scatterlist: import ResourceSize from kernel::io
+>       rust: io: add typedef for phys_addr_t
+
+    Cc: stable@vger.kernel.org # for v6.18 [1]
+    Link: https://lore.kernel.org/all/20251112-resource-phys-typedefs-v2-0-=
+538307384f82@google.com/ [1]
 
