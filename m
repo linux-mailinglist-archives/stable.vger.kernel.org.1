@@ -1,97 +1,64 @@
-Return-Path: <stable+bounces-194684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE5DC57236
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 12:20:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C1EC573F3
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 12:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9837F3A53D7
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 11:16:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4001B4E5F53
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 11:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BCAA33BBDA;
-	Thu, 13 Nov 2025 11:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77162346FD1;
+	Thu, 13 Nov 2025 11:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="HMuZoRh+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VU146KzH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAED433B96C
-	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 11:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5AD3112BB;
+	Thu, 13 Nov 2025 11:42:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763032554; cv=none; b=WoBP7uVX20FGDyKXCPaC0GgtdgfOwdVFIcwCMgG5gNnsM7pHbk9zc6mR8UR9wPoxz75KU7YjytHcxrKx0+Ql5A/pjD8cakY75dp1val4ZBnrZarzj+CJQTQq2uceGFF41356/WW5YjY+tP8iwMfS5FUyvaiIIsVAWZsEckDobsE=
+	t=1763034134; cv=none; b=Q0U9IquTV1/MNtkhppuKRAPrOUP+oy3mB997zsgCKJTeXygxXiidEnxvMgTy2kL8LrGXZOywn+GpMNihGTDnh+GMUpJfePJHUCDa5nU5Csyk1KML4/J2HY135mQJ3Fb+g5+tV1wz1IedjUBZHSgtwARDw+xfJaGEwbBtg7U2uqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763032554; c=relaxed/simple;
-	bh=7Dty1bsVrl3mflWypqdumDcsm+eUd6kxdLgav7xBytY=;
+	s=arc-20240116; t=1763034134; c=relaxed/simple;
+	bh=STrLN9TaMedzhy/AV3DPEXhd1qFmA8sZ1GjlOFXHjO4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TmK31DHtSJFbHGxaQcBbuastSqX0lFEg3ZATk7tn4i0AZOKVxtEw6junQTeamsg9Im6t6iFZJvlBJEsTlVig0HXvJzP0pjEesyclUHKpOZqXMhgjcipmn0zcCRYMzW9HJu+bdBh6iHjBiZI4WxFCaA3wfITT4+HF09Ld92w9JVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=HMuZoRh+; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b7355f6ef12so68519266b.3
-        for <stable@vger.kernel.org>; Thu, 13 Nov 2025 03:15:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1763032550; x=1763637350; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=c5AzzFRZPbAyw/0U2l3vo4T8Z0AKAvwU0ttCnBP9wco=;
-        b=HMuZoRh+Jngf1OkERsVdMUw/sJ5vTIDiLbUXMxOds4Lk8Kx7L10xHWE3y/QRXqHl1W
-         dIccO+egfpUCaszzY8usa+j9cCR9W6sLDgEDXroUNfNR4Kg/ZBvkBMJ8LwC8O6hWHIiN
-         bCzii8vJ0CYVxt0hiZ2F5uzT9THnf2GsNwSFTaO/20AHT1UO5JqFGDUQFELAbujAYM+v
-         bnh1tUnXXdCfe942oOh+qY4Ig4t8bYBjNXusMzIU4/lB3F+I/iI1tJmgkiMZnQnskhsa
-         hGjojOdUCoM+cK23aJqTwGnn5FWDGwHyZ7GfcMLfcMfFtSzdJqiHtJthW8GaVAgyfcNa
-         cFmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763032550; x=1763637350;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c5AzzFRZPbAyw/0U2l3vo4T8Z0AKAvwU0ttCnBP9wco=;
-        b=htET31R3k5CRDRry1AQVsL2AFkyhomgk1DuS1+wTJN0iJUOUu8TI5FvQ6TEVRWX796
-         g7anaCia8K2dFy0vFknCE7g1UGe+GQqvX+2nhqzrJotaM1/4x3s9/O1r5kEHcHAWdE6u
-         9L62KPghipDtG8/MyHtVXWNeg1wa9GgsOVU73l9P+V30jFbPhaV/fdl0fCAT1B+LXLOd
-         kzMrEvIVHT0yZeyngb2CdN+sEj/Na94FyK/KaQO4J5jK/WjEJGEdGlJ+r1j2ysV/Q8Tx
-         UlggJYv4tqkBYiNJ6NFpZn0JE51vMS+MAr5cDT+VFEFb5OPA5jHiLo9V3WXz7CkaSW5q
-         b+4A==
-X-Forwarded-Encrypted: i=1; AJvYcCWROJoEtwb4ycAVkajqK1JMxfZ1Y5VbbxytoD5+ru2XBpgFrvXIGunVRB7HquAt+fdsRg/5xBw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMCMjNLkyxTC4udMfi36oWvudhENv0PjuLiONo7fU0nxDuftCl
-	ufijMcY5D1DELkYb/en7KJp7ZX5A/Svnba2a6C8f3Z4dLbmTMp//9/6vdmLIOSkR460=
-X-Gm-Gg: ASbGnctSoafMYnjGpetT55jH8Qwrz/wCS22tyQtu9ULwGqV6wrXQOn5K4YDlyYh4pLr
-	4ci8gZTRxDhIsad1Ae6inK49wzSwTksSg83Z3CjclIZb7a+FsXXLAER3KQ/b7/nteHpI3vt60/U
-	i+0PRrC28dwWR7win0e63+sHyx1MgYaQnzbQuqG24Nt27K43n4nCFH2QDzOcAp5qhLMvQcMIdU8
-	ooV/pssSrI4UxWQ2rWdFoTQ13DHfNy3pWlW1Xi+3W8R1z4g7Bbfrfjk8deToxYfcHuMtQmlNOB9
-	iTascfxpxbl7qzjXvlaJWOi+SYSP+1+w3dd+29qaGXHaO5abi+NASkJ26avBDf58P00PD0RjpUt
-	K4Nr2g4+3eDeyzkQKnKiuS4zOg6+l9G0t62Yun1aqjfNxP3lRs0Wxnaaxey+FKruq2stTjBnbFk
-	5aTuU=
-X-Google-Smtp-Source: AGHT+IExcpEGzB16h+OORPfiSc3U/Q+WA4IUJ/PrcE+hSGqVvU7uaWsum+i+r5qrKs9tVBN7TJ03IQ==
-X-Received: by 2002:a17:907:3f11:b0:b73:1baa:6424 with SMTP id a640c23a62f3a-b7331af1e06mr647068066b.55.1763032550071;
-        Thu, 13 Nov 2025 03:15:50 -0800 (PST)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fd809fasm142355066b.45.2025.11.13.03.15.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Nov 2025 03:15:49 -0800 (PST)
-Date: Thu, 13 Nov 2025 12:15:47 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: John Ogness <john.ogness@linutronix.de>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sherry Sun <sherry.sun@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Derek Barbosa <debarbos@redhat.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH printk v1 1/1] printk: Avoid scheduling irq_work on
- suspend
-Message-ID: <aRW9439ee0NdXuyo@pathway.suse.cz>
-References: <20251111144328.887159-1-john.ogness@linutronix.de>
- <20251111144328.887159-2-john.ogness@linutronix.de>
- <aRNk8vLuvfOOlAjV@pathway>
- <87ldkb9rnl.fsf@jogness.linutronix.de>
- <aRWqei9jA8gcM-sD@pathway.suse.cz>
- <877bvukzs1.fsf@jogness.linutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=YemcIK6+B+IodXejH4+Qnq4Y7QC8Xpesx0iZzpyDVIyg1vdu/GF4sDX6gLOfB/ytsEBdsDOxT5NORJ4Fe7dqc1PAtjMLQ3DdOEln5EFtDLI5rN0U+zcATutZWqfvz697+/Fh5rkgacQOERLxBHTbWNwPIo3+VnUYY9jwIf1jk4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VU146KzH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC98CC4AF09;
+	Thu, 13 Nov 2025 11:42:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763034134;
+	bh=STrLN9TaMedzhy/AV3DPEXhd1qFmA8sZ1GjlOFXHjO4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VU146KzHCHjuBsPUsgTIzQH0cXL+9V8Z6BJqbMtO79x84t7yUlDckcL2h7qf9bRFg
+	 obF3uDlCXmobGcjhbUpr3Wa7VgZ6PIAjSBYOzjxqEbNq9uGJvWb8yDvfj08/PQ/g6a
+	 D13+Zzxmn8YrUz2QFj168p5x6HYuAqYEW1zTQ3zSxxfbU4fE2KkhZKF5gYoWk1cLlw
+	 MTsxXNGTVAzosrfZAxLZ83pNPnN8uj3mBnqlX8pye1ZjQHW1YlAcQHdvIY6394FQSB
+	 1aQEUiLoVhEL9j6cYVFgedr30vAUY4djX/mqiBY0rzyeqOfTiityRADnFo5V5M65hg
+	 pEb7zGtClVyQA==
+Date: Thu, 13 Nov 2025 13:42:04 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Carlos Llamas <cmllamas@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	Ujwal Kundur <ujwal.kundur@gmail.com>,
+	Brendan Jackman <jackmanb@google.com>, kernel-team@android.com,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	"open list:MEMORY MANAGEMENT - USERFAULTFD" <linux-mm@kvack.org>,
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH] selftests/mm: fix division-by-zero in uffd-unit-tests
+Message-ID: <aRXEDLQQtwVPz7va@kernel.org>
+References: <20251113034623.3127012-1-cmllamas@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,117 +67,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <877bvukzs1.fsf@jogness.linutronix.de>
+In-Reply-To: <20251113034623.3127012-1-cmllamas@google.com>
 
-On Thu 2025-11-13 11:17:42, John Ogness wrote:
-> On 2025-11-13, Petr Mladek <pmladek@suse.com> wrote:
-> >> I would prefer to keep all the printk_get_console_flush_type() changes
-> >> since it returns proper available flush type information. If you would
-> >> like to _additionally_ short-circuit __wake_up_klogd() and
-> >> nbcon_kthreads_wake() in order to avoid all possible irq_work queueing,
-> >> I would be OK with that.
-> >
-> > Combining both approaches might be a bit messy. Some code paths might
-> > work correctly because of the explicit check and some just by chance.
-> >
-> > But I got an idea. We could add a warning into __wake_up_klogd()
-> > and nbcon_kthreads_wake() to report when they are called unexpectedly.
-> >
-> > And we should also prevent calling it from lib/nmi_backtrace.c.
-> >
-> > I played with it and came up with the following changes on
-> > top of this patch:
-> >
-> > diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-> > index 334b4edff08c..e9290c418d12 100644
-> > --- a/kernel/printk/printk.c
-> > +++ b/kernel/printk/printk.c
-> > @@ -4637,6 +4644,21 @@ void defer_console_output(void)
-> >  	__wake_up_klogd(PRINTK_PENDING_WAKEUP | PRINTK_PENDING_OUTPUT);
-> >  }
-> >  
-> > +void printk_try_flush(void)
-> > +{
-> > +	struct console_flush_type ft;
-> > +
-> > +	printk_get_console_flush_type(&ft);
-> > +	if (ft.nbcon_atomic)
-> > +		nbcon_atomic_flush_pending();
+On Thu, Nov 13, 2025 at 03:46:22AM +0000, Carlos Llamas wrote:
+> Commit 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global
+> vars into struct") moved some of the operations previously implemented
+> in uffd_setup_environment() earlier in the main test loop.
 > 
-> For completeness, we should probably also have here:
+> The calculation of nr_pages, which involves a division by page_size, now
+> occurs before checking that default_huge_page_size() returns a non-zero
+> This leads to a division-by-zero error on systems with !CONFIG_HUGETLB.
 > 
-> 	if (ft.nbcon_offload)
-> 		nbcon_kthreads_wake();
-
-Makes sense. I think that did not add it because I got scared by
-the _wake suffix. I forgot that it just queued the irq_work.
-
-
-> > +	if (ft.legacy_direct) {
-> > +		if (console_trylock())
-> > +			console_unlock();
-> > +	}
-> > +	if (ft.legacy_offload)
-> > +		defer_console_output();
-> > +}
-> > +
-> >  void printk_trigger_flush(void)
-> >  {
-> >  	defer_console_output();
-> > diff --git a/lib/nmi_backtrace.c b/lib/nmi_backtrace.c
-> > index 33c154264bfe..632bbc28cb79 100644
-> > --- a/lib/nmi_backtrace.c
-> > +++ b/lib/nmi_backtrace.c
-> > @@ -78,10 +78,10 @@ void nmi_trigger_cpumask_backtrace(const cpumask_t *mask,
-> >  	nmi_backtrace_stall_check(to_cpumask(backtrace_mask));
-> >  
-> >  	/*
-> > -	 * Force flush any remote buffers that might be stuck in IRQ context
-> > +	 * Try flushing messages added CPUs which might be stuck in IRQ context
-> >  	 * and therefore could not run their irq_work.
-> >  	 */
-> > -	printk_trigger_flush();
-> > +	printk_try_flush();
-> >  
-> >  	clear_bit_unlock(0, &backtrace_flag);
-> >  	put_cpu();
-> >
-> > How does it look, please?
+> Fix this by relocating the non-zero page_size check before the nr_pages
+> calculation, as it was originally implemented.
 > 
-> I like this. But I think the printk_try_flush() implementation should
-> simply replace the implementation of printk_trigger_flush().
+> Cc: stable@vger.kernel.org
+> Fixes: 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global vars into struct")
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
 
-Make sense.
+Agree with what David and Lorenzo said about cc:stable.
 
-> For the arch/powerpc/kernel/watchdog.c:watchdog_timer_interrupt() and
-> lib/nmi_backtrace.c:nmi_trigger_cpumask_backtrace() sites I think it is
-> appropriate.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Yup.
-
-> For the kernel/printk/nbcon.c:nbcon_device_release() site I think the
-> call should be changed to defer_console_output():
+> ---
+>  tools/testing/selftests/mm/uffd-unit-tests.c | 15 +++++++--------
+>  1 file changed, 7 insertions(+), 8 deletions(-)
 > 
-> diff --git a/kernel/printk/nbcon.c b/kernel/printk/nbcon.c
-> index 558ef31779760..73f315fd97a3e 100644
-> --- a/kernel/printk/nbcon.c
-> +++ b/kernel/printk/nbcon.c
-> @@ -1849,7 +1849,7 @@ void nbcon_device_release(struct console *con)
->  			if (console_trylock())
->  				console_unlock();
->  		} else if (ft.legacy_offload) {
-> -			printk_trigger_flush();
-> +			defer_console_output();
->  		}
->  	}
->  	console_srcu_read_unlock(cookie);
+> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+> index 9e3be2ee7f1b..f917b4c4c943 100644
+> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
+> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+> @@ -1758,10 +1758,15 @@ int main(int argc, char *argv[])
+>  			uffd_test_ops = mem_type->mem_ops;
+>  			uffd_test_case_ops = test->test_case_ops;
+>  
+> -			if (mem_type->mem_flag & (MEM_HUGETLB_PRIVATE | MEM_HUGETLB))
+> +			if (mem_type->mem_flag & (MEM_HUGETLB_PRIVATE | MEM_HUGETLB)) {
+>  				gopts.page_size = default_huge_page_size();
+> -			else
+> +				if (gopts.page_size == 0) {
+> +					uffd_test_skip("huge page size is 0, feature missing?");
+> +					continue;
+> +				}
+> +			} else {
+>  				gopts.page_size = psize();
+> +			}
+>  
+>  			/* Ensure we have at least 2 pages */
+>  			gopts.nr_pages = MAX(UFFD_TEST_MEM_SIZE, gopts.page_size * 2)
+> @@ -1776,12 +1781,6 @@ int main(int argc, char *argv[])
+>  				continue;
+>  
+>  			uffd_test_start("%s on %s", test->name, mem_type->name);
+> -			if ((mem_type->mem_flag == MEM_HUGETLB ||
+> -			    mem_type->mem_flag == MEM_HUGETLB_PRIVATE) &&
+> -			    (default_huge_page_size() == 0)) {
+> -				uffd_test_skip("huge page size is 0, feature missing?");
+> -				continue;
+> -			}
+>  			if (!uffd_feature_supported(test)) {
+>  				uffd_test_skip("feature missing");
+>  				continue;
+> -- 
+> 2.51.2.1041.gc1ab5b90ca-goog
+> 
 
-Looks good.
-
-> Can I fold all that into a new patch?
-
-Go ahead.
-
-Best Regards,
-Petr
+-- 
+Sincerely yours,
+Mike.
 
