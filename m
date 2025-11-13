@@ -1,111 +1,119 @@
-Return-Path: <stable+bounces-194719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 160D3C59789
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 19:31:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B64C5985E
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 19:40:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 107044F067F
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 18:09:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E19064E900E
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 18:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F168346790;
-	Thu, 13 Nov 2025 18:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1103587D6;
+	Thu, 13 Nov 2025 18:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="LGdw+TmK"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="WDrpRxX3"
 X-Original-To: stable@vger.kernel.org
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E37D299A8C;
-	Thu, 13 Nov 2025 18:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3DB326937;
+	Thu, 13 Nov 2025 18:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763057375; cv=none; b=V0ZCqBnhrbDM+yxX8rTch0rx1aqzquLHD2LyRl+xdIZ2uTj2UAY3sal6RCxtIX5pXv5Z5LOyuPjQ5jP12ujfUOKMF8DM3y3FJmJzC3ao2gmvW4FtXTI0K1AjOKUqYYgCUKax1uIDo99aL7OSvsXJYb6Gp7hI/PaFIGZQr1AwfRI=
+	t=1763057825; cv=none; b=kxS675jyZgZA0QmGihNPjcjzvmiZdKaqlhqxSQ7yvUxXhV2iwpCXc8MCHgeh/mqZEBD5yPK2bKUTeAxEPfEXnK2F4Qu5TZUCXFqfGOQZtCWMYeuCPe+M7ugVHwxyx6u43Izh/j8lZbO+OYdrTPI9I7dpKcKGa54ziwsBivUHoYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763057375; c=relaxed/simple;
-	bh=+WfrJYAcG5cVtaeOgZk4Ik7SVUGLhfv+q/98SoorJR0=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=AMEc5pebWVex25mUxgcDMMvSFcEM6kEJqIyX2tKk3owWzqsP6QkeIEP82IWCgL+celrccyeea5F7PoH7ZbvB9hFzkQerHIjFW3qz8G2KJc8N7P5zQcSBK6HMTTuPZdi+x7DOfI68j/ULuxzxnoV+O+gKRkZ4WdJXx4WGP26pj8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=LGdw+TmK; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
-Received: from mail01.disroot.lan (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id B448026599;
-	Thu, 13 Nov 2025 19:09:23 +0100 (CET)
-X-Virus-Scanned: SPAM Filter at disroot.org
-Received: from layka.disroot.org ([127.0.0.1])
- by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id 4JuVBlzQUfkY; Thu, 13 Nov 2025 19:09:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1763057363; bh=+WfrJYAcG5cVtaeOgZk4Ik7SVUGLhfv+q/98SoorJR0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=LGdw+TmKg4/ga7JVk6RR2cNrViS4yxLbbMGIC7edjZ4aMgmEVjBt2KUJeymOIP65b
-	 izz/D3nd1BuwLkh+CFH7Ecn4mgsSeVDYaoIG7pg+L3nZfW0HAMtR9DBAX5xbTbaIJB
-	 WswuogQCKQq6+4bzGcg2nbVgu1wU8GCuFSAQ49Cp4DxZL4NyWbKe7E66JqvDlN/h1I
-	 dJarBGWmf4T6agr9xwBxGSYPLqT89m6hFwA5HDdHGAcve9ZGPDVpBHv9bGcqRaybiR
-	 zPtODu5O5AOYvlq+InKRc29oMvW/xjwBbg/RBiarpyOrMMQ1ZXWX98JHIrspjH//EM
-	 OEKCxNtOVesAQ==
+	s=arc-20240116; t=1763057825; c=relaxed/simple;
+	bh=tIAMkL4abpkqO1UKWuVTulyKSmyD+EbZET4M3Pcp9xA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pXawqrFBpr8Opsbg94e3iAow34htRCzvld3mi4yhU2FFwN2AuLVTcHFjrbZWLPIHe5lO4gd8o6Qs6r0s1Di5iQO6gODiqVnRY2YC9UEQDipt9t+h4bREDM9T2w3cx3pnyBKX8rt6eYzmwCaq7zM7vYNZHIe5zHEWbfkeF+F6aUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=WDrpRxX3; arc=none smtp.client-ip=199.89.3.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 004.mia.mailroute.net (Postfix) with ESMTP id 4d6pQ66VCqzm17vx;
+	Thu, 13 Nov 2025 18:17:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:from:from:received:received; s=mr01; t=
+	1763057821; x=1765649822; bh=e2JzViC6JvXkQTbEtCyOfPhNdVTB+H5X3gX
+	jMq1FvDE=; b=WDrpRxX3jgJjs4P1lnLcNSYMBB7f4DP4AhO3I9HMyYCh/T0Sd0k
+	jaF4pAGy71ruUa0tvWQoMUTCm9TdZPT5B0RhomZS/myS6mbAy3OHkXstb0qWewpX
+	6PmzjmmBUeBvj3aKZeev9NvfMszKa6UfcLknmz8O9VaWqEFtd86elBlZYal021Jd
+	DY1JQuMoOiH6qgkcIBT7DJNnTTZtAV3io5bmqyS/QzbM8N6VazqQ4QTPeSiYPLV/
+	VFNfBmBuML/HEcFrUDRIEfujGrATcUiIrXNsr2AhTcqkdDSZJwUm1p6PUS9iUPF4
+	dja9deDJUJXZ0wOoah38zfM88vehQ9YJCCw==
+X-Virus-Scanned: by MailRoute
+Received: from 004.mia.mailroute.net ([127.0.0.1])
+ by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id POLuWaMDJIlW; Thu, 13 Nov 2025 18:17:01 +0000 (UTC)
+Received: from bvanassche.mtv.corp.google.com (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4d6pPz324Qzm1CHG;
+	Thu, 13 Nov 2025 18:16:54 +0000 (UTC)
+From: Bart Van Assche <bvanassche@acm.org>
+To: "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org,
+	Bart Van Assche <bvanassche@acm.org>,
+	syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com,
+	Hannes Reinecke <hare@suse.de>,
+	stable@vger.kernel.org,
+	Doug Gilbert <dgilbert@interlog.com>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Subject: [PATCH] scsi: sg: Do not sleep in atomic context
+Date: Thu, 13 Nov 2025 10:16:43 -0800
+Message-ID: <20251113181643.1108973-1-bvanassche@acm.org>
+X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 13 Nov 2025 18:09:22 +0000
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: Inki Dae <inki.dae@samsung.com>, Jagan Teki
- <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
- Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
- <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] drm/bridge: samsung-dsim: Fix device node reference leak
- in samsung_dsim_parse_dt
-In-Reply-To: <20251029074121.15260-1-linmq006@gmail.com>
-References: <20251029074121.15260-1-linmq006@gmail.com>
-Message-ID: <209646801ba4a40da89aa16853524756@disroot.org>
-X-Sender: kauschluss@disroot.org
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On 2025-10-29 07:41, Miaoqian Lin wrote:
-> The function samsung_dsim_parse_dt() calls of_graph_get_endpoint_by_regs()
-> to get the endpoint device node, but fails to call of_node_put() to release
-> the reference when the function returns. This results in a device node
-> reference leak.
-> 
-> Fix this by adding the missing of_node_put() call before returning from
-> the function.
-> 
-> Found via static analysis and code review.
-> 
-> Fixes: 77169a11d4e9 ("drm/bridge: samsung-dsim: add driver support for exynos7870 DSIM bridge")
+sg_finish_rem_req() calls blk_rq_unmap_user(). The latter function may
+sleep. Hence, call sg_finish_rem_req() with interrupts enabled instead
+of disabled.
 
-Is the Fixes: tag correct? This is what I get for relevant code:
+Reported-by: syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-scsi/691560c4.a70a0220.3124cb.001a.=
+GAE@google.com/
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: stable@vger.kernel.org
+Fixes: 97d27b0dd015 ("scsi: sg: close race condition in sg_remove_sfp_use=
+rcontext()")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+---
+ drivers/scsi/sg.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2074)     endpoint = of_graph_get_endpoint_by_regs(node, 1, -1);
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2075)     nr_lanes = of_property_count_u32_elems(endpoint, "data-lanes");
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2076)     if (nr_lanes > 0 && nr_lanes <= 4) {
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2077)             /* Polarity 0 is clock lane, 1..4 are data lanes. */
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2078)             of_property_read_u32_array(endpoint, "lane-polarities",
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2079)                                        lane_polarities, nr_lanes + 1);
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2080)             for (i = 1; i <= nr_lanes; i++) {
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2081)                     if (lane_polarities[1] != lane_polarities[i])
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2082)                             DRM_DEV_ERROR(dsi->dev, "Data lanes polarities do not match");
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2083)             }
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2084)             if (lane_polarities[0])
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2085)                     dsi->swap_dn_dp_clk = true;
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2086)             if (lane_polarities[1])
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2087)                     dsi->swap_dn_dp_data = true;
-74629c49e66cc (Marek Vasut          2023-05-14 08:46:25 -0300 2088)     }
-
-This should be a fix for 74629c49e66c instead.
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index 4c62c597c7be..b3af9b78fa12 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -2208,9 +2208,17 @@ sg_remove_sfp_usercontext(struct work_struct *work=
+)
+ 	write_lock_irqsave(&sfp->rq_list_lock, iflags);
+ 	while (!list_empty(&sfp->rq_list)) {
+ 		srp =3D list_first_entry(&sfp->rq_list, Sg_request, entry);
+-		sg_finish_rem_req(srp);
+ 		list_del(&srp->entry);
++		write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
++
++		sg_finish_rem_req(srp);
++		/*
++		 * sg_rq_end_io() uses srp->parentfp. Hence, only clear
++		 * srp->parentfp after blk_mq_free_request() has been called.
++		 */
+ 		srp->parentfp =3D NULL;
++
++		write_lock_irqsave(&sfp->rq_list_lock, iflags);
+ 	}
+ 	write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
+=20
 
