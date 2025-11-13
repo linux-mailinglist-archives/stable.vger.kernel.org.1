@@ -1,257 +1,228 @@
-Return-Path: <stable+bounces-194675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D976AC56BD6
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 11:04:13 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44EAFC56C6F
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 11:14:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B4EA3ACF2C
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 09:59:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D387C4E3B24
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 10:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8881C2DF6E9;
-	Thu, 13 Nov 2025 09:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6127E2DFA46;
+	Thu, 13 Nov 2025 10:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="v9XKwzWy"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nR96jifA";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="onMmSOGu"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E069A2DF154
-	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 09:58:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9680D35CBD6;
+	Thu, 13 Nov 2025 10:11:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763027940; cv=none; b=PpS4Nmz3m20WX3A/evOGDafGH52x+5xHFtocvjBqxeCK79g6KXLNcNoRhezEMZvCAjF4OZv7O/G2m/CMfFBFceos39dyopBoWvt7bzSPOESwToVyNu4z2zglfohNNIHm2CLTfIlis4cSq2v56OlL5JALaGvsnxMVyqfcw9sFOac=
+	t=1763028707; cv=none; b=J+QsDLOY7lekmfKv6J3hX6YIbqqzQetXS2n8NNRLVjJRK6YLCkgIuXPO+8Xjb1Zr/Ex+w39eIfcdxpd0S9wyWmd01TatMnWS0yh2K8+2fLgZGEQwd19hCN5l9ai+JWkcLFOeGgEy9nm0qJEUDy2U95Qtz60zVd+Um9Y7OsQqkUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763027940; c=relaxed/simple;
-	bh=j3zNURYAKH0pT2IA6JJkVM2VF8F9CMavm6vqAKenlAI=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=N3RCxiKSs0S+Kb1QTs1CFUB0A/XyJiMcGUxRgHp68iORAMguhujfhM8ChDjzXo/OjH2kmAMbqVwD1VRsxXqUKVQKfkq4tgLX0KIIeLl65f6Esr/kfbaSy7zvWUytAbUqOJrmVgtcPEKv6+ld/zIZX0viDJdslx3grB5ee173OuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=v9XKwzWy; arc=none smtp.client-ip=120.232.169.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=v9XKwzWyrBSQlA8Z22zsUpFy7dM5oJ8fOAdYPBy8kdZsMmTnWf3zJBHwL0wMTXKiKZmyk8c9R3Wbu
-	 U0oXTgyvJmKItToDAE3RZytP5B1WUGExloQQI61f1u9hxztTDXHJu/mpBJy7SWeXok+hQygahlSKcY
-	 cVCDtWCkQg9HwrDo=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[117.129.7.61])
-	by rmsmtp-lg-appmail-39-12053 (RichMail) with SMTP id 2f156915ab1e329-3054e;
-	Thu, 13 Nov 2025 17:55:45 +0800 (CST)
-X-RM-TRANSID:2f156915ab1e329-3054e
-From: Rajani Kantha <681739313@139.com>
-To: yebin10@huawei.com,
-	jack@suse.cz,
-	tytso@mit.edu,
-	stable@vger.kernel.org
-Subject: [PATCH 6.12.y 2/2] ext4: fix out-of-bound read in ext4_xattr_inode_dec_ref_all()
-Date: Thu, 13 Nov 2025 17:55:37 +0800
-Message-Id: <20251113095537.1831-3-681739313@139.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20251113095537.1831-1-681739313@139.com>
-References: <20251113095537.1831-1-681739313@139.com>
+	s=arc-20240116; t=1763028707; c=relaxed/simple;
+	bh=DCgraUxnIHCdSYO/82thIrC3AFENsm6IeTrXsxUe6qc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=r/iYe2yDw7P2sDfxx6gS+wsh3L6OMXnDjl1lAe2TY3w0wDy7UwyOzVpHyeorD1lIW/nTwJUv8SGlHiax55Jq+G3bbsWivRin5WAglXTO6uCjmPCCFyUEGbaRmNgTCPq6KJicEmSi+iTdg34ogmaIEldoDD8WkAGd32agaN+AYA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nR96jifA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=onMmSOGu; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1763028703;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T7rQ1Ku+Lcb1YDFKTkaU7P1bhMj4USysrirqKAlROBQ=;
+	b=nR96jifA84HMHu8GyG1kTBdHHa5dKOk5A/UDAPumiYBiqRKuTqOBsGyLKLDRWpApUBoBTp
+	zJ0OSM7ZbW5t3+pWly7gfpr551GodtyhacCq6G/MsDIH102GBVks38no2IWhOPKeJRC8tK
+	gAO61ZsOZ/ckcCdLg0DUmpiSBTgwbA4xfpIh5C5AOEw2Fkxj+Eie3DQ+EGspNcK+ewYgki
+	pCH7CdtbdsMtlGPEVTN/EMlhl/3m83O5BQnSO47Hr4QoWDOKxPE9dwAts4wgfWPvQuxzN7
+	dm4LZ8M674ur8RabHy8D4wWuOm1JmF67X1Jdmb+EDXJkwE3LCegAMyTsgJ5/RA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1763028703;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T7rQ1Ku+Lcb1YDFKTkaU7P1bhMj4USysrirqKAlROBQ=;
+	b=onMmSOGuepJ9C/XpFXLKShpQQTgDfO1Y2dhsGtd0jv9fVN5Brvx04oVDOF9ZtIPhMO8m5V
+	6h/w2D9JumzXgiDQ==
+To: Petr Mladek <pmladek@suse.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, Steven Rostedt
+ <rostedt@goodmis.org>, Sherry Sun <sherry.sun@nxp.com>, Jacky Bai
+ <ping.bai@nxp.com>, Jon Hunter <jonathanh@nvidia.com>, Thierry Reding
+ <thierry.reding@gmail.com>, Derek Barbosa <debarbos@redhat.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH printk v1 1/1] printk: Avoid scheduling irq_work on suspend
+In-Reply-To: <aRWqei9jA8gcM-sD@pathway.suse.cz>
+References: <20251111144328.887159-1-john.ogness@linutronix.de>
+ <20251111144328.887159-2-john.ogness@linutronix.de>
+ <aRNk8vLuvfOOlAjV@pathway> <87ldkb9rnl.fsf@jogness.linutronix.de>
+ <aRWqei9jA8gcM-sD@pathway.suse.cz>
+Date: Thu, 13 Nov 2025 11:17:42 +0106
+Message-ID: <877bvukzs1.fsf@jogness.linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-From: Ye Bin <yebin10@huawei.com>
+On 2025-11-13, Petr Mladek <pmladek@suse.com> wrote:
+>> I would prefer to keep all the printk_get_console_flush_type() changes
+>> since it returns proper available flush type information. If you would
+>> like to _additionally_ short-circuit __wake_up_klogd() and
+>> nbcon_kthreads_wake() in order to avoid all possible irq_work queueing,
+>> I would be OK with that.
+>
+> Combining both approaches might be a bit messy. Some code paths might
+> work correctly because of the explicit check and some just by chance.
+>
+> But I got an idea. We could add a warning into __wake_up_klogd()
+> and nbcon_kthreads_wake() to report when they are called unexpectedly.
+>
+> And we should also prevent calling it from lib/nmi_backtrace.c.
+>
+> I played with it and came up with the following changes on
+> top of this patch:
+>
+> diff --git a/include/linux/printk.h b/include/linux/printk.h
+> index 45c663124c9b..71e31b908ad1 100644
+> --- a/include/linux/printk.h
+> +++ b/include/linux/printk.h
+> @@ -203,6 +203,7 @@ void dump_stack_print_info(const char *log_lvl);
+>  void show_regs_print_info(const char *log_lvl);
+>  extern asmlinkage void dump_stack_lvl(const char *log_lvl) __cold;
+>  extern asmlinkage void dump_stack(void) __cold;
+> +void printk_try_flush(void);
+>  void printk_trigger_flush(void);
+>  void console_try_replay_all(void);
+>  void printk_legacy_allow_panic_sync(void);
+> @@ -299,6 +300,9 @@ static inline void dump_stack_lvl(const char *log_lvl)
+>  static inline void dump_stack(void)
+>  {
+>  }
+> +static inline void printk_try_flush(void)
+> +{
+> +}
+>  static inline void printk_trigger_flush(void)
+>  {
+>  }
+> diff --git a/kernel/printk/nbcon.c b/kernel/printk/nbcon.c
+> index ffd5a2593306..a09b8502e507 100644
+> --- a/kernel/printk/nbcon.c
+> +++ b/kernel/printk/nbcon.c
+> @@ -1302,6 +1302,13 @@ void nbcon_kthreads_wake(void)
+>  	if (!printk_kthreads_running)
+>  		return;
+>  
+> +	/*
+> +	 * Nobody is allowed to call this function when console irq_work
+> +	 * is blocked.
+> +	 */
+> +	if (WARN_ON_ONCE(console_irqwork_blocked))
+> +		return;
+> +
+>  	cookie = console_srcu_read_lock();
+>  	for_each_console_srcu(con) {
+>  		if (!(console_srcu_read_flags(con) & CON_NBCON))
+> diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+> index 334b4edff08c..e9290c418d12 100644
+> --- a/kernel/printk/printk.c
+> +++ b/kernel/printk/printk.c
+> @@ -4581,6 +4581,13 @@ static void __wake_up_klogd(int val)
+>  	if (!printk_percpu_data_ready())
+>  		return;
+>  
+> +	/*
+> +	 * Nobody is allowed to call this function when console irq_work
+> +	 * is blocked.
+> +	 */
+> +	if (WARN_ON_ONCE(console_irqwork_blocked))
+> +		return;
+> +
+>  	preempt_disable();
+>  	/*
+>  	 * Guarantee any new records can be seen by tasks preparing to wait
+> @@ -4637,6 +4644,21 @@ void defer_console_output(void)
+>  	__wake_up_klogd(PRINTK_PENDING_WAKEUP | PRINTK_PENDING_OUTPUT);
+>  }
+>  
+> +void printk_try_flush(void)
+> +{
+> +	struct console_flush_type ft;
+> +
+> +	printk_get_console_flush_type(&ft);
+> +	if (ft.nbcon_atomic)
+> +		nbcon_atomic_flush_pending();
 
-[ Upstream commit 5701875f9609b000d91351eaa6bfd97fe2f157f4 ]
+For completeness, we should probably also have here:
 
-There's issue as follows:
-BUG: KASAN: use-after-free in ext4_xattr_inode_dec_ref_all+0x6ff/0x790
-Read of size 4 at addr ffff88807b003000 by task syz-executor.0/15172
+	if (ft.nbcon_offload)
+		nbcon_kthreads_wake();
 
-CPU: 3 PID: 15172 Comm: syz-executor.0
-Call Trace:
- __dump_stack lib/dump_stack.c:82 [inline]
- dump_stack+0xbe/0xfd lib/dump_stack.c:123
- print_address_description.constprop.0+0x1e/0x280 mm/kasan/report.c:400
- __kasan_report.cold+0x6c/0x84 mm/kasan/report.c:560
- kasan_report+0x3a/0x50 mm/kasan/report.c:585
- ext4_xattr_inode_dec_ref_all+0x6ff/0x790 fs/ext4/xattr.c:1137
- ext4_xattr_delete_inode+0x4c7/0xda0 fs/ext4/xattr.c:2896
- ext4_evict_inode+0xb3b/0x1670 fs/ext4/inode.c:323
- evict+0x39f/0x880 fs/inode.c:622
- iput_final fs/inode.c:1746 [inline]
- iput fs/inode.c:1772 [inline]
- iput+0x525/0x6c0 fs/inode.c:1758
- ext4_orphan_cleanup fs/ext4/super.c:3298 [inline]
- ext4_fill_super+0x8c57/0xba40 fs/ext4/super.c:5300
- mount_bdev+0x355/0x410 fs/super.c:1446
- legacy_get_tree+0xfe/0x220 fs/fs_context.c:611
- vfs_get_tree+0x8d/0x2f0 fs/super.c:1576
- do_new_mount fs/namespace.c:2983 [inline]
- path_mount+0x119a/0x1ad0 fs/namespace.c:3316
- do_mount+0xfc/0x110 fs/namespace.c:3329
- __do_sys_mount fs/namespace.c:3540 [inline]
- __se_sys_mount+0x219/0x2e0 fs/namespace.c:3514
- do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x67/0xd1
+> +	if (ft.legacy_direct) {
+> +		if (console_trylock())
+> +			console_unlock();
+> +	}
+> +	if (ft.legacy_offload)
+> +		defer_console_output();
+> +}
+> +
+>  void printk_trigger_flush(void)
+>  {
+>  	defer_console_output();
+> diff --git a/lib/nmi_backtrace.c b/lib/nmi_backtrace.c
+> index 33c154264bfe..632bbc28cb79 100644
+> --- a/lib/nmi_backtrace.c
+> +++ b/lib/nmi_backtrace.c
+> @@ -78,10 +78,10 @@ void nmi_trigger_cpumask_backtrace(const cpumask_t *mask,
+>  	nmi_backtrace_stall_check(to_cpumask(backtrace_mask));
+>  
+>  	/*
+> -	 * Force flush any remote buffers that might be stuck in IRQ context
+> +	 * Try flushing messages added CPUs which might be stuck in IRQ context
+>  	 * and therefore could not run their irq_work.
+>  	 */
+> -	printk_trigger_flush();
+> +	printk_try_flush();
+>  
+>  	clear_bit_unlock(0, &backtrace_flag);
+>  	put_cpu();
+>
+> How does it look, please?
 
-Memory state around the buggy address:
- ffff88807b002f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff88807b002f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffff88807b003000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                   ^
- ffff88807b003080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff88807b003100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+I like this. But I think the printk_try_flush() implementation should
+simply replace the implementation of printk_trigger_flush().
 
-Above issue happens as ext4_xattr_delete_inode() isn't check xattr
-is valid if xattr is in inode.
-To solve above issue call xattr_check_inode() check if xattr if valid
-in inode. In fact, we can directly verify in ext4_iget_extra_inode(),
-so that there is no divergent verification.
+For the arch/powerpc/kernel/watchdog.c:watchdog_timer_interrupt() and
+lib/nmi_backtrace.c:nmi_trigger_cpumask_backtrace() sites I think it is
+appropriate.
 
-Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250208063141.1539283-3-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Rajani Kantha <681739313@139.com>
----
- fs/ext4/inode.c |  5 +++++
- fs/ext4/xattr.c | 26 +-------------------------
- fs/ext4/xattr.h |  7 +++++++
- 3 files changed, 13 insertions(+), 25 deletions(-)
+For the kernel/printk/nbcon.c:nbcon_device_release() site I think the
+call should be changed to defer_console_output():
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 4ad34eba00a7..ae513b14fd08 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4688,6 +4688,11 @@ static inline int ext4_iget_extra_inode(struct inode *inode,
- 	    *magic == cpu_to_le32(EXT4_XATTR_MAGIC)) {
- 		int err;
- 
-+		err = xattr_check_inode(inode, IHDR(inode, raw_inode),
-+					ITAIL(inode, raw_inode));
-+		if (err)
-+			return err;
-+
- 		ext4_set_inode_state(inode, EXT4_STATE_XATTR);
- 		err = ext4_find_inline_data_nolock(inode);
- 		if (!err && ext4_has_inline_data(inode))
-diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index cfc2229370b6..7a0469ba1464 100644
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -312,7 +312,7 @@ __ext4_xattr_check_block(struct inode *inode, struct buffer_head *bh,
- 	__ext4_xattr_check_block((inode), (bh),  __func__, __LINE__)
- 
- 
--static inline int
-+int
- __xattr_check_inode(struct inode *inode, struct ext4_xattr_ibody_header *header,
- 			 void *end, const char *function, unsigned int line)
- {
-@@ -320,9 +320,6 @@ __xattr_check_inode(struct inode *inode, struct ext4_xattr_ibody_header *header,
- 			    function, line);
- }
- 
--#define xattr_check_inode(inode, header, end) \
--	__xattr_check_inode((inode), (header), (end), __func__, __LINE__)
--
- static int
- xattr_find_entry(struct inode *inode, struct ext4_xattr_entry **pentry,
- 		 void *end, int name_index, const char *name, int sorted)
-@@ -654,9 +651,6 @@ ext4_xattr_ibody_get(struct inode *inode, int name_index, const char *name,
- 	raw_inode = ext4_raw_inode(&iloc);
- 	header = IHDR(inode, raw_inode);
- 	end = ITAIL(inode, raw_inode);
--	error = xattr_check_inode(inode, header, end);
--	if (error)
--		goto cleanup;
- 	entry = IFIRST(header);
- 	error = xattr_find_entry(inode, &entry, end, name_index, name, 0);
- 	if (error)
-@@ -787,7 +781,6 @@ ext4_xattr_ibody_list(struct dentry *dentry, char *buffer, size_t buffer_size)
- 	struct ext4_xattr_ibody_header *header;
- 	struct ext4_inode *raw_inode;
- 	struct ext4_iloc iloc;
--	void *end;
- 	int error;
- 
- 	if (!ext4_test_inode_state(inode, EXT4_STATE_XATTR))
-@@ -797,14 +790,9 @@ ext4_xattr_ibody_list(struct dentry *dentry, char *buffer, size_t buffer_size)
- 		return error;
- 	raw_inode = ext4_raw_inode(&iloc);
- 	header = IHDR(inode, raw_inode);
--	end = ITAIL(inode, raw_inode);
--	error = xattr_check_inode(inode, header, end);
--	if (error)
--		goto cleanup;
- 	error = ext4_xattr_list_entries(dentry, IFIRST(header),
- 					buffer, buffer_size);
- 
--cleanup:
- 	brelse(iloc.bh);
- 	return error;
- }
-@@ -872,7 +860,6 @@ int ext4_get_inode_usage(struct inode *inode, qsize_t *usage)
- 	struct ext4_xattr_ibody_header *header;
- 	struct ext4_xattr_entry *entry;
- 	qsize_t ea_inode_refs = 0;
--	void *end;
- 	int ret;
- 
- 	lockdep_assert_held_read(&EXT4_I(inode)->xattr_sem);
-@@ -883,10 +870,6 @@ int ext4_get_inode_usage(struct inode *inode, qsize_t *usage)
- 			goto out;
- 		raw_inode = ext4_raw_inode(&iloc);
- 		header = IHDR(inode, raw_inode);
--		end = ITAIL(inode, raw_inode);
--		ret = xattr_check_inode(inode, header, end);
--		if (ret)
--			goto out;
- 
- 		for (entry = IFIRST(header); !IS_LAST_ENTRY(entry);
- 		     entry = EXT4_XATTR_NEXT(entry))
-@@ -2251,9 +2234,6 @@ int ext4_xattr_ibody_find(struct inode *inode, struct ext4_xattr_info *i,
- 	is->s.here = is->s.first;
- 	is->s.end = ITAIL(inode, raw_inode);
- 	if (ext4_test_inode_state(inode, EXT4_STATE_XATTR)) {
--		error = xattr_check_inode(inode, header, is->s.end);
--		if (error)
--			return error;
- 		/* Find the named attribute. */
- 		error = xattr_find_entry(inode, &is->s.here, is->s.end,
- 					 i->name_index, i->name, 0);
-@@ -2804,10 +2784,6 @@ int ext4_expand_extra_isize_ea(struct inode *inode, int new_extra_isize,
- 	min_offs = end - base;
- 	total_ino = sizeof(struct ext4_xattr_ibody_header) + sizeof(u32);
- 
--	error = xattr_check_inode(inode, header, end);
--	if (error)
--		goto cleanup;
--
- 	ifree = ext4_xattr_free_space(base, &min_offs, base, &total_ino);
- 	if (ifree >= isize_diff)
- 		goto shift;
-diff --git a/fs/ext4/xattr.h b/fs/ext4/xattr.h
-index 5197f17ffd9a..1fedf44d4fb6 100644
---- a/fs/ext4/xattr.h
-+++ b/fs/ext4/xattr.h
-@@ -209,6 +209,13 @@ extern int ext4_xattr_ibody_set(handle_t *handle, struct inode *inode,
- extern struct mb_cache *ext4_xattr_create_cache(void);
- extern void ext4_xattr_destroy_cache(struct mb_cache *);
- 
-+extern int
-+__xattr_check_inode(struct inode *inode, struct ext4_xattr_ibody_header *header,
-+		    void *end, const char *function, unsigned int line);
-+
-+#define xattr_check_inode(inode, header, end) \
-+	__xattr_check_inode((inode), (header), (end), __func__, __LINE__)
-+
- #ifdef CONFIG_EXT4_FS_SECURITY
- extern int ext4_init_security(handle_t *handle, struct inode *inode,
- 			      struct inode *dir, const struct qstr *qstr);
--- 
-2.17.1
+diff --git a/kernel/printk/nbcon.c b/kernel/printk/nbcon.c
+index 558ef31779760..73f315fd97a3e 100644
+--- a/kernel/printk/nbcon.c
++++ b/kernel/printk/nbcon.c
+@@ -1849,7 +1849,7 @@ void nbcon_device_release(struct console *con)
+ 			if (console_trylock())
+ 				console_unlock();
+ 		} else if (ft.legacy_offload) {
+-			printk_trigger_flush();
++			defer_console_output();
+ 		}
+ 	}
+ 	console_srcu_read_unlock(cookie);
 
+Can I fold all that into a new patch?
 
+John
 
