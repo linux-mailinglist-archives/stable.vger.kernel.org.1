@@ -1,98 +1,118 @@
-Return-Path: <stable+bounces-194703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5271FC58919
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 17:06:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15EA8C58C17
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 17:34:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DB06234D404
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 15:53:39 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EC34E3619AF
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 16:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D502F6162;
-	Thu, 13 Nov 2025 15:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E687355806;
+	Thu, 13 Nov 2025 16:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mGo27SBF"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gYnAiZvT";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OsM2QT/M"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFDA2F60B6;
-	Thu, 13 Nov 2025 15:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B390307494;
+	Thu, 13 Nov 2025 16:03:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763048864; cv=none; b=YFlcW1ecQlwePfhbNbhT/oz60swibvkC51lsOAtkdrgbRfIoZpTSCclmSLLI18OvqUgiLGoGa1m6Gee4AAfkl+rjome+HGlaRLN860AZpDrieDxZaiyObM0/D9Bheiz4rtSDg4jkIXTXwA+HkdLuysjJujofvR8cKsnD0lqxKxE=
+	t=1763049835; cv=none; b=dttDYiiH2ncrdjyaZJkl0nbYrQw0o/RZz6nlc2o3lJ2o+mj1p0ZA4hUAftkW7wbvL6Qr/i1W2y26pXFlxsCcqYs0UvEJXkyIToqwBRr8IK8E626vG0KSSpTD156vQ+/1t2hbrHxclR4GAMD4zeznyTh/Cz/EqhRQr0441Vqtn3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763048864; c=relaxed/simple;
-	bh=cG9hBJEBN8DnERl9DpO2cswwVm/n8xEWtCEa4sUGlEo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V0HhKBpc72/ZNPRnRvRzbj28CAFUAr+RzYM7o3yfZwhmIIHG0QRg3WnflR6/Px0OliNM7+xwnvJH31XFSw9aGeYz5Jxn9KKAHZeMoRyUB/33U6tLd55OIL+429jtx40dHDCOQNEEn47uX0BsL+t6jskH1iuuNrw3vUQG1epQY90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mGo27SBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26087C4CEF1;
-	Thu, 13 Nov 2025 15:47:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763048863;
-	bh=cG9hBJEBN8DnERl9DpO2cswwVm/n8xEWtCEa4sUGlEo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mGo27SBFHsRToadSwWx0BWjGeMWmtCoHv4PmPw6q3D0KGAC+ITztLBcbgzy/9RGFB
-	 z3cbuT19OH1K6QzPt9kokAwKp55jradM3Fag/Oozdx9Tw7aV6DhB3gwZM1diu1u4tn
-	 DT53TPvqOekeRU49oZSW6ov586fZ5Es0fZLeV+EGOmDrUYVMbhB4zkwu2yXNiSQ8PQ
-	 V4xtfxReOAnDuHvyrcpA6ICD5i1/u8Xkptq/euQj6oNREEuCmd5YHg0H08rrZcXDyx
-	 AHxfHRg4acwAPIHrW/WNJ8mzQXcbX/N89nE8KIAdxaCEZ1kC+XoOzUxFDjHik6hDwR
-	 pqC3YNH9mXp5A==
-Date: Thu, 13 Nov 2025 10:47:41 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: gregkh@linuxfoundation.org, stable-commits@vger.kernel.org,
-	geliang@kernel.org, kuba@kernel.org, martineau@kernel.org,
-	pabeni@redhat.com,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	MPTCP Linux <mptcp@lists.linux.dev>
-Subject: Re: Patch "mptcp: drop bogus optimization in __mptcp_check_push()"
- has been added to the 5.15-stable tree
-Message-ID: <aRX9nX8aN5iZ4IpL@laps>
-References: <2025110310-scapegoat-magnetic-3cf8@gregkh>
- <48bbe998-982c-4dbd-b261-83c076ebcb7a@kernel.org>
+	s=arc-20240116; t=1763049835; c=relaxed/simple;
+	bh=sNeYjFyeepM+Uuw9qC6g3oMXihUOPhg6vjjlQrql67A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LhpFfQbNovTOZpUjRQCqggJayNUFfLh76nKO4oc44TWHxVxcmPc+eMiALVFY+/lu8CAsiK5TNPkzNfgxSSo1xaF3X1ZHV1bB573O4D5NU2l66ABZw4IcAbb8NYO60sX20hwOYSIvu4OQbRbwks7SvKpwXpVWDAaICWtYif5eWJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gYnAiZvT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OsM2QT/M; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1763049832;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dSu3isrQsKKlplmGivpvBB81XULmt4zSr8+0Mpy6yXU=;
+	b=gYnAiZvTynWXQFp8OuRLi/kyDmqSuCNnX6TnRnVJY3gi6GwCul4QPCxf62V4tz20maQwK/
+	UvaGnJjARyk3Cc2fY1qkj4hdJWb4gl3cBI6I6rFUN5QBBk26psSaNHUIL2gzNy9aGNXejv
+	oMqqi1sl1U/arkUa3BNhh8rr+2EnSkN5j2hn4zKyivZYvRbIzVgsPJRnjuwJSv1UORHfqO
+	Q4tgpARaAgN+CoKdaJRUXXttWQjjKgQlkj2SdlJsfLom8+Q0y2p68F/lzs3YH6qmaF7GUo
+	RDkTzvHDvBm0kTlcMCVZ2otDHCRNvB+jeRvkzzuSaLGSSKvRQG1AL0TeWSbWUA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1763049832;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dSu3isrQsKKlplmGivpvBB81XULmt4zSr8+0Mpy6yXU=;
+	b=OsM2QT/MSSgJ8ZOiRJS+kRJ4JRZt29+VJci5MO3RNLSaqUA5WquTHSnfmDzxPqVjb4EIVZ
+	vifGv9MSx5QNyTCA==
+To: Petr Mladek <pmladek@suse.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Derek Barbosa <debarbos@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH printk v2 0/2] Fix reported suspend failures
+Date: Thu, 13 Nov 2025 17:09:46 +0106
+Message-ID: <20251113160351.113031-1-john.ogness@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <48bbe998-982c-4dbd-b261-83c076ebcb7a@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 13, 2025 at 04:19:56PM +0100, Matthieu Baerts wrote:
->Hi Greg, Sasha,
->
->On 03/11/2025 02:38, gregkh@linuxfoundation.org wrote:
->>
->> This is a note to let you know that I've just added the patch titled
->>
->>     mptcp: drop bogus optimization in __mptcp_check_push()
->>
->> to the 5.15-stable tree which can be found at:
->>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>
->> The filename of the patch is:
->>      mptcp-drop-bogus-optimization-in-__mptcp_check_push.patch
->> and it can be found in the queue-5.15 subdirectory.
->>
->> If you, or anyone else, feels it should not be added to the stable tree,
->> please let <stable@vger.kernel.org> know about it.
->
->Can you please drop this patch from v5.15? It looks like it is causing
->some issues with MP_PRIO tests. I think that's because back then, the
->path is selected differently, with the use of 'msk->last_snd' which will
->bypass some decisions to where to send the next data.
->
->I will try to check if another version of this patch is needed for v5.15.
+This is v2 of a series to address multiple reports [0][1]
+(+ 2 offlist) of suspend failing when NBCON console drivers are
+in use. With the help of NXP and NVIDIA we were able to isolate
+the problem and verify the fix.
 
-Sure, now dropped from 5.15.
+v1 is here [2].
 
+The first NBCON drivers appeared in 6.13, so currently there is
+no LTS kernel that requires this series. But it should go into
+6.17.x and 6.18.
+
+The changes since v1:
+
+- For printk_trigger_flush() add support for all flush types
+  that are available. This will prevent printk_trigger_flush()
+  from trying to inappropriately queue irq_work after this
+  series is applied.
+
+- Add WARN_ON_ONCE() to the printk irq_work queueing functions
+  in case they are called when irq_work is blocked. There
+  should never be (and currently are no) such callers, but
+  these functions are externally available.
+
+John Ogness
+
+[0] https://lore.kernel.org/lkml/80b020fc-c18a-4da4-b222-16da1cab2f4c@nvidia.com
+[1] https://lore.kernel.org/lkml/DB9PR04MB8429E7DDF2D93C2695DE401D92C4A@DB9PR04MB8429.eurprd04.prod.outlook.com
+[2] https://lore.kernel.org/lkml/20251111144328.887159-1-john.ogness@linutronix.de
+
+John Ogness (2):
+  printk: Allow printk_trigger_flush() to flush all types
+  printk: Avoid scheduling irq_work on suspend
+
+ kernel/printk/internal.h |  8 ++--
+ kernel/printk/nbcon.c    |  9 ++++-
+ kernel/printk/printk.c   | 81 ++++++++++++++++++++++++++++++++--------
+ 3 files changed, 78 insertions(+), 20 deletions(-)
+
+
+base-commit: e9a6fb0bcdd7609be6969112f3fbfcce3b1d4a7c
 -- 
-Thanks,
-Sasha
+2.47.3
+
 
