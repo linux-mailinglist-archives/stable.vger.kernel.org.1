@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-194745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F89C5A564
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 23:38:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7065C5A56A
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 23:38:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7221C4E77AA
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 22:35:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1E0B74EF93D
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 22:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE0A2E54B3;
-	Thu, 13 Nov 2025 22:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627032D6E78;
+	Thu, 13 Nov 2025 22:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NiJeIbXW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nlaf+pu6"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3F22DEA83
-	for <Stable@vger.kernel.org>; Thu, 13 Nov 2025 22:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7694F76026
+	for <Stable@vger.kernel.org>; Thu, 13 Nov 2025 22:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763073295; cv=none; b=do5k/1bfKV3ISeysGhf8ok0MSVyXPpfwPCgBTka2seEDgEjnsoIcK+eELrKz02V+rezgPWI5AkqGp/lFrJNbQl48pjKFs7c2iqnk/gUlrCjKnYOY4haduC96+XLueYzp0ciRjN6ipN8r791p89koxHim+s++o3TN8BanY5NhSX4=
+	t=1763073300; cv=none; b=CXgjq5w6v77rQMvaK2qWGWvcpaPzYSBXgE6DQzF+UaizplSIARDMkwyK//jI01p4OXzhAdna+WLy37mtIBRIB0uIX2qQJXlaLbrJn4DnK0E9Xt8lNIvT2rVy30fcKSskPVtQHN5h7GexEsBFRxqf7fO7v/cLGx4oFfXe8eQXQ88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763073295; c=relaxed/simple;
-	bh=YHAy59a0u+ShxK6BTTg1SQrVl+NJV4agg4ln4PoAnzM=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=PEvWhztMCwikaK5uf4RySaPyRIjXxqRc5dAxBDG5CDAoSu8LwuCtbgC8Rfm9VLXaQFI/sg/SqvYiA1KKSl3b1Jmla+5QBvUiwXD1lkXnDkKYV4YUndgwGmEdfzD62NkeBaDUKw3tzoFuu/2470j5Fxgl9E7/0AZ58GuR3F2qSkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NiJeIbXW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3671BC4CEF8;
-	Thu, 13 Nov 2025 22:34:54 +0000 (UTC)
+	s=arc-20240116; t=1763073300; c=relaxed/simple;
+	bh=8/g5ZpRnIWc30BHkbs/Oba9D+xDSKzoitO+ai2r7XI8=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=jpC3Esh86yQBV+4sYiLks5gvaiZwGqR8ZyYl68W7woX22kkCE2N0trmd5aiVRdY1urW4IpqnkUQo+YVjonOwNMPZSoVG85hTntK8PxiPMIiS2MNNWOu7E1Q8RJ0BdyfNXiuuJglVTV7HUxcAsD8yLJP3XJ5S7aI7cJvHxIpPW1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nlaf+pu6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D19C4CEF7;
+	Thu, 13 Nov 2025 22:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763073294;
-	bh=YHAy59a0u+ShxK6BTTg1SQrVl+NJV4agg4ln4PoAnzM=;
+	s=korg; t=1763073299;
+	bh=8/g5ZpRnIWc30BHkbs/Oba9D+xDSKzoitO+ai2r7XI8=;
 	h=Subject:To:From:Date:From;
-	b=NiJeIbXW3aEXoodfgHB82MvMqfPw54Pr3sfH+mbEQ8+vwfKstuD0ZO+MlOFA+Cl9k
-	 x/ZNVwEhc3Y6+f864t+BtjKTeNyOKgpK+H0xRB6dCtfM4h2YQFoNy4Jgu0qDRt4480
-	 FOAje3eMAIVBnXDWpLTlB7EDMiaVXMAkxdQCeRpQ=
-Subject: patch "iio: pressure: bmp280: correct meas_time_us calculation" added to char-misc-linus
-To: Achim.Gratz@Stromeko.DE,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dlechner@baylibre.com
+	b=Nlaf+pu6JJ5IqXdhvaRp2kGHEQ8VWJ+IPqos6WD+bmzoJZDifVUcAE5mxA7XdHocY
+	 c5N0ywJJGJM/lK4Mjq0C8Sac/C/8FfObPshiNQZC50Q1VGEa1KQk5K1y0hJFSY2VT1
+	 MYnKrdo3IWbaAfxGPEWcUJE1pT7Aj0U8bK8s4WfY=
+Subject: patch "iio: buffer-dmaengine: enable .get_dma_dev()" added to char-misc-linus
+To: nuno.sa@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dlechner@baylibre.com
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 13 Nov 2025 17:34:50 -0500
-Message-ID: <2025111350-negation-guileless-6893@gregkh>
+Date: Thu, 13 Nov 2025 17:34:51 -0500
+Message-ID: <2025111351-epidermal-creed-5e44@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: pressure: bmp280: correct meas_time_us calculation
+    iio: buffer-dmaengine: enable .get_dma_dev()
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,65 +69,45 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 0bf1bfde53b30da7fd7f4a6c3db5b8e77888958d Mon Sep 17 00:00:00 2001
-From: Achim Gratz <Achim.Gratz@Stromeko.DE>
-Date: Sun, 28 Sep 2025 19:26:28 +0200
-Subject: iio: pressure: bmp280: correct meas_time_us calculation
+From 3db847df994d475db7812dde90376f2848bcd30a Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
+Date: Tue, 7 Oct 2025 10:15:23 +0100
+Subject: iio: buffer-dmaengine: enable .get_dma_dev()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Correction of meas_time_us initialization based on an observation and
-partial patch by David Lechner.
+Wire up the .get_dma_dev() callback to use the DMA buffer infrastructure's
+implementation. This ensures that DMABUF operations use the correct DMA
+device for mapping, which is essential for proper operation on systems
+where memory is mapped above the 32-bit range.
 
-The constant part of the measurement time (as described in the
-datasheet and implemented in the BM(P/E)2 Sensor API) was apparently
-forgotten (it was already correctly applied for the BMP380) and is now
-used.
+Without this callback, the core would fall back to using the IIO device's
+parent, which may not have the appropriate DMA mask configuration for
+high memory access.
 
-There was also another thinko in bmp280_wait_conv:
-data->oversampling_humid can actually have a value of 0 (for an
-oversampling_ratio of 1), so it can not be used to detect the presence
-of the humidity measurement capability.  Use
-data->chip_info->oversampling_humid_avail instead, which is NULL for
-chips that cannot measure humidity and therefore must skip that part
-of the calculation.
-
-Closes: https://lore.kernel.org/linux-iio/875xgfg0wz.fsf@Gerda.invalid/
-Fixes: 26ccfaa9ddaa ("iio: pressure: bmp280: Use sleep and forced mode for oneshot captures")
-Suggested-by: David Lechner <dlechner@baylibre.com>
-Tested-by: Achim Gratz <Achim.Gratz@Stromeko.DE>
-Signed-off-by: Achim Gratz <Achim.Gratz@Stromeko.DE>
+Fixes: 7a86d469983a ("iio: buffer-dmaengine: Support new DMABUF based userspace API")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/pressure/bmp280-core.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index c04e8bb4c993..d983ce9c0b99 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1040,13 +1040,16 @@ static int bmp280_wait_conv(struct bmp280_data *data)
- 	unsigned int reg, meas_time_us;
- 	int ret;
+diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+index e9d9a7d39fe1..27dd56334345 100644
+--- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
++++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+@@ -177,6 +177,8 @@ static const struct iio_buffer_access_funcs iio_dmaengine_buffer_ops = {
+ 	.lock_queue = iio_dma_buffer_lock_queue,
+ 	.unlock_queue = iio_dma_buffer_unlock_queue,
  
--	/* Check if we are using a BME280 device */
--	if (data->oversampling_humid)
--		meas_time_us = BMP280_PRESS_HUMID_MEAS_OFFSET +
--				BIT(data->oversampling_humid) * BMP280_MEAS_DUR;
-+	/* Constant part of the measurement time */
-+	meas_time_us = BMP280_MEAS_OFFSET;
- 
--	else
--		meas_time_us = 0;
-+	/*
-+	 * Check if we are using a BME280 device,
-+	 * Humidity measurement time
-+	 */
-+	if (data->chip_info->oversampling_humid_avail)
-+		meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
-+				BIT(data->oversampling_humid) * BMP280_MEAS_DUR;
- 
- 	/* Pressure measurement time */
- 	meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
++	.get_dma_dev = iio_dma_buffer_get_dma_dev,
++
+ 	.modes = INDIO_BUFFER_HARDWARE,
+ 	.flags = INDIO_BUFFER_FLAG_FIXED_WATERMARK,
+ };
 -- 
 2.51.2
 
