@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-194746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22045C5A567
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 23:38:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F89C5A564
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 23:38:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EDDD04EF76C
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7221C4E77AA
 	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 22:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332FC2E0926;
-	Thu, 13 Nov 2025 22:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE0A2E54B3;
+	Thu, 13 Nov 2025 22:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c36WI+8S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NiJeIbXW"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929DC2E427C
-	for <Stable@vger.kernel.org>; Thu, 13 Nov 2025 22:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3F22DEA83
+	for <Stable@vger.kernel.org>; Thu, 13 Nov 2025 22:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763073296; cv=none; b=X4NzzSnhiNGGVJPeUpX3R02PfPTuT2evFje3+sjSMh4CGm42x2XkURu7/HHEWFpTpXABcSNOHCWBn7rr7En/RLHirQCzZHKZxwSrGFskVBZ9QIYE3Bx0q3pralFdqBbFhH7AsM+rGo2sXuIU9oppBmoV7XeLPxzeYMb4OWBmYJ8=
+	t=1763073295; cv=none; b=do5k/1bfKV3ISeysGhf8ok0MSVyXPpfwPCgBTka2seEDgEjnsoIcK+eELrKz02V+rezgPWI5AkqGp/lFrJNbQl48pjKFs7c2iqnk/gUlrCjKnYOY4haduC96+XLueYzp0ciRjN6ipN8r791p89koxHim+s++o3TN8BanY5NhSX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763073296; c=relaxed/simple;
-	bh=2F3kWPaeVKjvs0xpjenmmLhijBgQcvK+sStMGxua8lQ=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=oTZl1Cmgqu4pQa2qz39ILZyQAUKq/6LJjcwJTK3nQupcl4bD/wmJrqNopMxvcP/TLkeGU8jgeAXGpUpzDx8/X29e3EexZVZi6uxAR7R0bqivzDjkSdSxtC+AV/ORguxQ/iiJM0Ds5CIusBGRi+SnRKNVKczg1riCOSsx5H29dFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c36WI+8S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A167C4CEFB;
-	Thu, 13 Nov 2025 22:34:55 +0000 (UTC)
+	s=arc-20240116; t=1763073295; c=relaxed/simple;
+	bh=YHAy59a0u+ShxK6BTTg1SQrVl+NJV4agg4ln4PoAnzM=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=PEvWhztMCwikaK5uf4RySaPyRIjXxqRc5dAxBDG5CDAoSu8LwuCtbgC8Rfm9VLXaQFI/sg/SqvYiA1KKSl3b1Jmla+5QBvUiwXD1lkXnDkKYV4YUndgwGmEdfzD62NkeBaDUKw3tzoFuu/2470j5Fxgl9E7/0AZ58GuR3F2qSkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NiJeIbXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3671BC4CEF8;
+	Thu, 13 Nov 2025 22:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763073295;
-	bh=2F3kWPaeVKjvs0xpjenmmLhijBgQcvK+sStMGxua8lQ=;
+	s=korg; t=1763073294;
+	bh=YHAy59a0u+ShxK6BTTg1SQrVl+NJV4agg4ln4PoAnzM=;
 	h=Subject:To:From:Date:From;
-	b=c36WI+8SSm8JpxCxOdbGFEzrzdXjamEOG7fZMmW20RF6mZEd4FXcEqm4EPNq9Uidw
-	 pLjSZQgKNSe7QYrsl34JX4jAiJcIru32sRKEdXHoVPN/1OJmps2c/JO4gF/kWVNTRh
-	 J7mwR3VbGlaWCY1SPTitJERFs7vPlY0ZJXOHuN3w=
-Subject: patch "iio: adc: stm32-dfsdm: fix st,adc-alt-channel property handling" added to char-misc-linus
-To: olivier.moysan@foss.st.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,nuno.sa@analog.com
+	b=NiJeIbXW3aEXoodfgHB82MvMqfPw54Pr3sfH+mbEQ8+vwfKstuD0ZO+MlOFA+Cl9k
+	 x/ZNVwEhc3Y6+f864t+BtjKTeNyOKgpK+H0xRB6dCtfM4h2YQFoNy4Jgu0qDRt4480
+	 FOAje3eMAIVBnXDWpLTlB7EDMiaVXMAkxdQCeRpQ=
+Subject: patch "iio: pressure: bmp280: correct meas_time_us calculation" added to char-misc-linus
+To: Achim.Gratz@Stromeko.DE,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dlechner@baylibre.com
 From: <gregkh@linuxfoundation.org>
 Date: Thu, 13 Nov 2025 17:34:50 -0500
-Message-ID: <2025111350-dial-quarry-31ed@gregkh>
+Message-ID: <2025111350-negation-guileless-6893@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: stm32-dfsdm: fix st,adc-alt-channel property handling
+    iio: pressure: bmp280: correct meas_time_us calculation
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,46 +69,65 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 8a6b7989ff0cd0a95c93be1927f2af7ad10f28de Mon Sep 17 00:00:00 2001
-From: Olivier Moysan <olivier.moysan@foss.st.com>
-Date: Thu, 2 Oct 2025 13:22:49 +0200
-Subject: iio: adc: stm32-dfsdm: fix st,adc-alt-channel property handling
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 0bf1bfde53b30da7fd7f4a6c3db5b8e77888958d Mon Sep 17 00:00:00 2001
+From: Achim Gratz <Achim.Gratz@Stromeko.DE>
+Date: Sun, 28 Sep 2025 19:26:28 +0200
+Subject: iio: pressure: bmp280: correct meas_time_us calculation
 
-Initially st,adc-alt-channel property was defined as an enum in the DFSDM
-binding. The DFSDM binding has been changed to use the new IIO backend
-framework, along with the adoption of IIO generic channels.
-In this new binding st,adc-alt-channel is defined as a boolean property,
-but it is still handled has an enum in DFSDM driver.
-Fix st,adc-alt-channel property handling in DFSDM driver.
+Correction of meas_time_us initialization based on an observation and
+partial patch by David Lechner.
 
-Fixes: 3208fa0cd919 ("iio: adc: stm32-dfsdm: adopt generic channels bindings")
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+The constant part of the measurement time (as described in the
+datasheet and implemented in the BM(P/E)2 Sensor API) was apparently
+forgotten (it was already correctly applied for the BMP380) and is now
+used.
+
+There was also another thinko in bmp280_wait_conv:
+data->oversampling_humid can actually have a value of 0 (for an
+oversampling_ratio of 1), so it can not be used to detect the presence
+of the humidity measurement capability.  Use
+data->chip_info->oversampling_humid_avail instead, which is NULL for
+chips that cannot measure humidity and therefore must skip that part
+of the calculation.
+
+Closes: https://lore.kernel.org/linux-iio/875xgfg0wz.fsf@Gerda.invalid/
+Fixes: 26ccfaa9ddaa ("iio: pressure: bmp280: Use sleep and forced mode for oneshot captures")
+Suggested-by: David Lechner <dlechner@baylibre.com>
+Tested-by: Achim Gratz <Achim.Gratz@Stromeko.DE>
+Signed-off-by: Achim Gratz <Achim.Gratz@Stromeko.DE>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/stm32-dfsdm-adc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/pressure/bmp280-core.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-index 74b1b4dc6e81..9664b9bd75d4 100644
---- a/drivers/iio/adc/stm32-dfsdm-adc.c
-+++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-@@ -725,9 +725,8 @@ static int stm32_dfsdm_generic_channel_parse_of(struct stm32_dfsdm *dfsdm,
- 	}
- 	df_ch->src = val;
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index c04e8bb4c993..d983ce9c0b99 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -1040,13 +1040,16 @@ static int bmp280_wait_conv(struct bmp280_data *data)
+ 	unsigned int reg, meas_time_us;
+ 	int ret;
  
--	ret = fwnode_property_read_u32(node, "st,adc-alt-channel", &df_ch->alt_si);
--	if (ret != -EINVAL)
--		df_ch->alt_si = 0;
-+	if (fwnode_property_present(node, "st,adc-alt-channel"))
-+		df_ch->alt_si = 1;
+-	/* Check if we are using a BME280 device */
+-	if (data->oversampling_humid)
+-		meas_time_us = BMP280_PRESS_HUMID_MEAS_OFFSET +
+-				BIT(data->oversampling_humid) * BMP280_MEAS_DUR;
++	/* Constant part of the measurement time */
++	meas_time_us = BMP280_MEAS_OFFSET;
  
- 	if (adc->dev_data->type == DFSDM_IIO) {
- 		backend = devm_iio_backend_fwnode_get(&indio_dev->dev, NULL, node);
+-	else
+-		meas_time_us = 0;
++	/*
++	 * Check if we are using a BME280 device,
++	 * Humidity measurement time
++	 */
++	if (data->chip_info->oversampling_humid_avail)
++		meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
++				BIT(data->oversampling_humid) * BMP280_MEAS_DUR;
+ 
+ 	/* Pressure measurement time */
+ 	meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
 -- 
 2.51.2
 
