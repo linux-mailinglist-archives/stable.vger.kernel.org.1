@@ -1,61 +1,74 @@
-Return-Path: <stable+bounces-194709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A70C58F5B
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 18:01:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1091FC590A6
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 18:14:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4A4D43563A9
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 16:55:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D5EC6508CD3
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 16:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2D235E539;
-	Thu, 13 Nov 2025 16:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B617E35B132;
+	Thu, 13 Nov 2025 16:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WQpzzHWZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nzGAEvDw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0442F2F5316;
-	Thu, 13 Nov 2025 16:46:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A1835B12C
+	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 16:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763052414; cv=none; b=BJoh0/cwox+B4C3XST6RpMd5e1BlPaR3Xh48yNFRGlPVdHCq2InEnzyLKO0SwLi20M7xZ668t4Y28GfAbQdWKmGeyS0gWqnTmOodYU7ajU+dBTpaQIdMGZjRzPhSaywMhURirXuyOsJnHdUckm9scb6PSEvFdICPVxSbQc85eHo=
+	t=1763050898; cv=none; b=G9KikomImnKxXv8TFWYimjFiYG7JJ25JdL2Dw/Acc8QBD7XCkWTHZmeATxUoadH433qkWgnlZBd+uhfKEdzXfTmrxokJyvg5tzlQrOTp0Ogvdv9sUKBFzxlWJ+wSWgwG9RSY9YId8K/1LTE38LXol/AE0ClpYscYOxgmCUmuRaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763052414; c=relaxed/simple;
-	bh=6iUKG8NMVDDWdZqxXodaG87MpkmvyRMnCj8mZaI9oGw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jjsS9wQr4h9zPexPpWhgr9ekF/N7PbXQlc45gAZRUaTx2csEXr9QOaTE2WH9osh+8GnljaEJbdv/6Znoa8IXZxsrORcqSC7qXFaOEETTr2jnUml1z5ZX5Q7BzB9EiMRbYonyrFDxeYOjGxgaNDCB1G3wWsw/ZyOpfEOgHfKCISo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WQpzzHWZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E84FC4CEF1;
-	Thu, 13 Nov 2025 16:46:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763052413;
-	bh=6iUKG8NMVDDWdZqxXodaG87MpkmvyRMnCj8mZaI9oGw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WQpzzHWZfMEVz7RF4t4SEwrbP4KnU0Mrr9M8bfDObp4UMhIvCk0AlwJpTVufHaRaf
-	 HaFOR3enGDvFET1hyxQjgRoVgPm+fdkx+iwYVNYNTX3nmmT/kln7mrJYCYqO7tkEUu
-	 reTVMej3LCfiM5gsJy+BqqMDUPTdNKHjy6UPtknxZ0YS6wyOywEWML4WUUr+aKd/uX
-	 ORtQUsIR5Igrh+FzXxW1r/PqEoVa4Uz5eNzNisf1TYPM3SRbNdPCoFdAH6Wbr4T1Pl
-	 I6OK88FQACAHQjzNTR+bKj7ksLuRnhM81EOQzPYAjDxbInFxaFqW7qph15laI/tp1e
-	 1Tw/WNah60/5A==
-Date: Thu, 13 Nov 2025 22:16:49 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: linux-phy@lists.infradead.org, Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Josua Mayer <josua@solid-run.com>, linux-kernel@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4 phy 01/16] dt-bindings: phy: lynx-28g: permit lane OF
- PHY providers
-Message-ID: <aRYLeVUSk5G3DYlF@vaman>
-References: <20251110092241.1306838-1-vladimir.oltean@nxp.com>
- <20251110092241.1306838-2-vladimir.oltean@nxp.com>
+	s=arc-20240116; t=1763050898; c=relaxed/simple;
+	bh=XSrcaNhguz8zSGMbWozn5kQN8atSs74h/cO9FuTZM2w=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=IajQi6ItKlsFSHffpwm7t0x8LGvuw7Di2WvMZ3LredFnlSf/celxSRIgG6H8d6RjxWkAAK2dy6kfFTuea6mI2QorCpux/vmFLS2dNyfZCj8TRDlGj42feZiRbHEwsHqPtIISMZiRDVk9gs91/skJ4MIH+QdxE/CH3lvQfNZoW/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nzGAEvDw; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763050896; x=1794586896;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=XSrcaNhguz8zSGMbWozn5kQN8atSs74h/cO9FuTZM2w=;
+  b=nzGAEvDwP7emAW/ffOE0c8hqVNJGAnyrE2DrlWKp/WjFfyNMNkRPjsMo
+   qZ1nveQne5NXV0Shz4vTpQQKsZbnpZPhUtxY8usBsbu29nO8cuuBux4eO
+   Zc0/Hu+cAQpfhH5OinSP8o0Y48BBmBPQTWqKytOv1iHJint23aOGSrMa1
+   2fA7sI5uB6oga+ALoSMPdUYy1AmS3sxtUj41FCIoJ42YtE7yb1Unzp4Sj
+   jP/0vUKlDih/2aBfIVMh8G4hIcJHe8MXUZ5RzGNhYIr0s1HM97ViWFMjj
+   ec5uoc4SKi9qAzu7ClaAyMjZU3R7LXbtJKXIw5IOtvrGXYSY284tSYvYy
+   w==;
+X-CSE-ConnectionGUID: jjIP5hNSQbae1oTL+QbreA==
+X-CSE-MsgGUID: STg+Xx7STSyGK6rW1Yvj2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="68765922"
+X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
+   d="scan'208";a="68765922"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 08:21:36 -0800
+X-CSE-ConnectionGUID: 3RnC93V4RMe7kPiPIminsw==
+X-CSE-MsgGUID: CvMLncZiRomQ5FFhj++Xrw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
+   d="scan'208";a="189553016"
+Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 13 Nov 2025 08:21:35 -0800
+Received: from kbuild by 7b01c990427b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vJa4i-0005YJ-2o;
+	Thu, 13 Nov 2025 16:21:32 +0000
+Date: Fri, 14 Nov 2025 00:20:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: John Ogness <john.ogness@linutronix.de>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH printk v2 1/2] printk: Allow printk_trigger_flush() to
+ flush all types
+Message-ID: <aRYFVT9p8QIII8jL@c83b8aa73612>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,66 +77,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251110092241.1306838-2-vladimir.oltean@nxp.com>
+In-Reply-To: <20251113160351.113031-2-john.ogness@linutronix.de>
 
-On 10-11-25, 11:22, Vladimir Oltean wrote:
-> Josua Mayer requested to have OF nodes for each lane, so that he
-> (and other board developers) can further describe electrical parameters
-> individually.
-> 
-> For this use case, we need a container node to apply the already
-> existing Documentation/devicetree/bindings/phy/transmit-amplitude.yaml,
-> plus whatever other schemas might get standardized for TX equalization
-> parameters, polarity inversion etc.
-> 
-> When lane OF nodes exist, these are also PHY providers ("phys" phandles
-> can point directly to them). Compare that to the existing binding, where
-> the PHY provider is the top-level SerDes node, and the second cell in
-> the "phys" phandle specifies the lane index.
-> 
-> The new binding format overlaps over the old one without interfering,
-> but there is a caveat:
-> 
-> Existing device trees, which already have "phys = <&serdes1 0>" cannot
-> be converted to "phys = <&serdes_1_lane_a>", because in doing so, we
-> would break compatibility with old kernels which don't understand how to
-> translate the latter phandle to a PHY.
-> 
-> The transition to the new phandle format can be performed only after a
-> reasonable amount of time has elapsed after this schema change and the
-> corresponding driver change have been backported to stable kernels.
-> 
-> However, the aforementioned transition is not strictly necessary, and
-> the "hybrid" description (where individual lanes have their own OF node,
-> but are not pointed to by the "phys" phandle) can remain for an
-> indefinite amount of time, even if a little inelegant.
-> 
-> For newly introduced device trees, where there are no compatibility
-> concerns with old kernels to speak of, it is strongly recommended to use
-> the "phys = <&serdes_1_lane_a>" format. The same holds for phandles
-> towards lanes of LX2160A SerDes #3, which at the time of writing is not
-> yet described in fsl-lx2160a.dtsi, so there is no legacy to maintain.
-> 
-> To avoid the strange situation where we have a "phy" (SerDes node) ->
-> "phy" (lane node) hierarchy, let's rename the expected name of the
-> top-level node to "serdes", and update the example too. This has a
-> theoretical chance of causing regressions if bootloaders search for
-> hardcoded paths rather than using aliases, but to the best of my
-> knowledge, for LX2160A/LX2162A this is not the case.
-> 
-> Link: https://lore.kernel.org/lkml/02270f62-9334-400c-b7b9-7e6a44dbbfc9@solid-run.com/
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: devicetree@vger.kernel.org
-> Cc: stable@vger.kernel.org
+Hi,
 
-You can keep cc lines after s-o-b line after the '---' separator, that
-way it will be skipped when applying while email client will cc folks.
+Thanks for your patch.
 
-My main question was cc stable, for a binding additions, that might not
-be helpful as dts may not have these updates, so why port bindings?
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH printk v2 1/2] printk: Allow printk_trigger_flush() to flush all types
+Link: https://lore.kernel.org/stable/20251113160351.113031-2-john.ogness%40linutronix.de
 
 -- 
-~Vinod
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
