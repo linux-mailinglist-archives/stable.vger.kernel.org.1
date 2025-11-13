@@ -1,99 +1,141 @@
-Return-Path: <stable+bounces-194664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5456DC568FE
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 10:23:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE2FC567FD
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 10:10:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9A7214F5807
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 09:06:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F05913B8D15
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 09:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFA22D12F1;
-	Thu, 13 Nov 2025 09:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2FF2D0610;
+	Thu, 13 Nov 2025 09:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rMMueHiG"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Tt3fERR1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6472C11C5;
-	Thu, 13 Nov 2025 09:06:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F71248F7C;
+	Thu, 13 Nov 2025 09:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763024809; cv=none; b=OUgp+Bm8DVP5TfGx34piFXbBw3hjYY9uI4EFa0YZvaIrzFHDX+qSz9mknRzdk2dVYJDQAAR1rrF/Sd7CFjRrc85shqoe59fpI2q3dHWVY7IvKhYCPPl4xOkI5zHHUHtPwzAS+2Phe7OMnjTH1TSpX7ahuGRl5rnRNp4WNvEhiTU=
+	t=1763024984; cv=none; b=GU+v8itF0up96QqZ6v++HObY7FAQ5oUS7kO8QBWxAPOu9hkpqZg62U978hfDUg5OmKw+n58UkAaeTpZbhyWkGYC512arai4OqK9gJk54nhUEVnJrviWn9JkapsdtXuujazccKAFgY3zzK/jhRZtPCWghrBWRGTysc5udC0qDRPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763024809; c=relaxed/simple;
-	bh=kzjNmKxRv2HTgs2BLleVn+WPjcFHAp+Wpu1+B0RTMcg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AwGAeloTQHhSampuR9Nib+lldJFh082V3OG3qp/9z6upsKlFPRsUyEeStgGxb8gLIGsnmaheFfqZSSHtzaCOFh50n7ijm7rc8Mn+zm9zpdb8Mzc5Zk96PGaRoWyXFamdPkZe2vFvAYOF4dEcQQSIVekP9EHKwJ2+oih3CwSFfqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rMMueHiG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871ABC16AAE;
-	Thu, 13 Nov 2025 09:06:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763024808;
-	bh=kzjNmKxRv2HTgs2BLleVn+WPjcFHAp+Wpu1+B0RTMcg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rMMueHiGvlrNs0GOCrftUTNWmns+IBBzry02OQpjdL86fQD1Vt2a34qjLTyOMa6oO
-	 q2CHwNgbCa4RZFauDEOSNlG6DdPb29aKc8eLeNgi88psiR5iehoQiw3AT5pafglAK0
-	 lV8xWJNCMAzM4IFbXKq8i8lkO+PX4j0xY7uNPy2jrnFpSiV9/3SshWEfIR7tTWsB7H
-	 ioy3iuygOXPiNUqvH1KssnH/7XuxzmU/j1CH+6xt7Nk0uuVQHLjjP1BV1kD7hMbrBv
-	 MTlJDSM+sgcKd0ie3cIVt8OjXBQvoKl0cN7IQdtwUWx8bSlOAodKyl6EOH0A44NfOt
-	 T5l6xJqgvIwgg==
-Message-ID: <e0be6864-4260-4843-a432-d47437b5d43f@kernel.org>
-Date: Thu, 13 Nov 2025 10:06:42 +0100
+	s=arc-20240116; t=1763024984; c=relaxed/simple;
+	bh=Rp7Z8Nbk+XngHPvukR28mGt8Tvb9RTvzouJkBVBA+tw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=npxgvFSwV+jkU16vS6jzK539kGtgk0HGeGPHKVRmLissdUrc9pQ090+OmDnmRP8iVyYmtfv2R07wAPLYKUMWznfJYVnpLXX8NzarjAB61dszroLiMQl6vNGsk/PdSA4g6eq5Z/57cJ30wkl7GPYySpbJbzcxxfkyamHitqIXGyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Tt3fERR1; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E29C0103D144D;
+	Thu, 13 Nov 2025 10:09:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1763024972; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=K7E9QF6PoTwdjOzELtXjqU+UET+KoQv5bYJIbXqp7B0=;
+	b=Tt3fERR1JHfof1JWppuTTQolC40L4kIY2MoOtBs+1zGebPUwDPibQEQzeuinqGtS4xoecw
+	PIYv0HFCSRqK/aK1DkKA27Fd9BxgUE39oDlBDk1v3Qh7jqIElGsNAmYlsi9C+dGIddWRWK
+	hv+ydRd6py9mGjKILUVxXnpi4IsLZivZmxOAKq5D8OSynjrRZBTh0i4NBWmVVUDH+0MH/V
+	Ib/zUMSa0HRpRfOUtVPzmYPfGJ9HxiJItLhSg7VEUsB85wWlaJc075oRKnYeU6zxzCrCFU
+	kJmYEPz6Oanl5yfEqqN4q5Ptyi3LOFAbffafzYJUIt+EICoKOHqDZXUQUmHihg==
+Date: Thu, 13 Nov 2025 10:09:24 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, tiwai@suse.de,
+	niklas.soderlund+renesas@ragnatech.se, lirongqing@baidu.com,
+	viro@zeniv.linux.org.uk, theo.lebrun@bootlin.com,
+	arkadiusz.bokowy@gmail.com
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/562] 6.12.58-rc2 review
+Message-ID: <aRWgRG5VmLHFZDWp@duo.ucw.cz>
+References: <20251111012348.571643096@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: fix division-by-zero in uffd-unit-tests
-To: Carlos Llamas <cmllamas@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Ujwal Kundur <ujwal.kundur@gmail.com>,
- Brendan Jackman <jackmanb@google.com>
-Cc: kernel-team@android.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,
- "open list:MEMORY MANAGEMENT - USERFAULTFD" <linux-mm@kvack.org>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>
-References: <20251113034623.3127012-1-cmllamas@google.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251113034623.3127012-1-cmllamas@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="vkMACDBEIuRlEgTs"
+Content-Disposition: inline
+In-Reply-To: <20251111012348.571643096@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 13.11.25 04:46, Carlos Llamas wrote:
-> Commit 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global
-> vars into struct") moved some of the operations previously implemented
-> in uffd_setup_environment() earlier in the main test loop.
-> 
-> The calculation of nr_pages, which involves a division by page_size, now
-> occurs before checking that default_huge_page_size() returns a non-zero
-> This leads to a division-by-zero error on systems with !CONFIG_HUGETLB.
-> 
-> Fix this by relocating the non-zero page_size check before the nr_pages
-> calculation, as it was originally implemented.
-> 
-> Cc: stable@vger.kernel.org
 
-Do we CC stable on unit tests? From my recollection, no.
+--vkMACDBEIuRlEgTs
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Fixes: 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global vars into struct")
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
-> ---
+Hi!
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> This is the start of the stable review cycle for the 6.12.58 release.
+> There are 562 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
--- 
-Cheers
+I don't believe Sasha or his automation did good job here. It is wrong
+to sign-off patches just because of LLM output.
 
-David
+> Takashi Iwai <tiwai@suse.de>
+>     ALSA: usb-audio: Add validation of UAC2/UAC3 effect units
+
+If the check triggers, we'll be breaking someone's audio.
+
+> Niklas S=F6derlund <niklas.soderlund+renesas@ragnatech.se>
+>     net: sh_eth: Disable WoL if system can not suspend
+
+WoL is used for powering up systems, too. Congratulations, this patch
+breaks that.
+
+> Li RongQing <lirongqing@baidu.com>
+>     x86/kvm: Prefer native qspinlock for dedicated vCPUs irrespective of =
+PV_UNHALT
+
+Looking at the code, that should really be "goto out".
+
+> Al Viro <viro@zeniv.linux.org.uk>
+>     allow finish_no_open(file, ERR_PTR(-E...))
+
+Not sure what bug this is supposed to fix. Sounds like preparation for
+something we don't have.
+
+> Th=E9o Lebrun <theo.lebrun@bootlin.com>
+>     net: macb: avoid dealing with endianness in macb_set_hwaddr()
+
+First, this does not fix any bugs. Second, code was "cpu_to_le32", now
+it is equivalent of "le32_to_cpu".
+
+> Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
+>     Bluetooth: btusb: Check for unexpected bytes when defragmenting HCI f=
+rames
+
+BTUSB_BARROT is "write only". That value is never checked.
+
+Best regards,
+								Pavel
+--=20
+In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
+Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--vkMACDBEIuRlEgTs
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaRWgRAAKCRAw5/Bqldv6
+8mSuAKCxatrZYWRdTsqb+VMeMJcO5rylqgCfW1YNLeoPMoUzaELhp79o4uuu9Lg=
+=4tVS
+-----END PGP SIGNATURE-----
+
+--vkMACDBEIuRlEgTs--
 
