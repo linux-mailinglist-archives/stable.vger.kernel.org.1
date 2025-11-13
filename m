@@ -1,86 +1,69 @@
-Return-Path: <stable+bounces-194688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BEACC57CCE
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 14:55:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A758BC57C71
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 14:49:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7A1A4207C3
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 13:16:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E95334A7435
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 13:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74738351FA1;
-	Thu, 13 Nov 2025 13:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sXoGgSTQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3636351FAC;
+	Thu, 13 Nov 2025 13:17:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from zpanel.taknet.net (unknown [130.185.75.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0A02C21D8;
-	Thu, 13 Nov 2025 13:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB842C21D8
+	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 13:17:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.185.75.60
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763039792; cv=none; b=Ld355uobriclOIe+Fo9SmS6vrjeSpkfXyuNYIgKztGWbfm2g9yVnI4wn0DNJggvRxtITIzEXxOtkCAjXz8i4Nr87iNB4qcphvenAu8B1/o3I1LrVlzsloZiDwFggbZsjjEpbbLleB61wvpJQBZl6wjKMRQJhbuR/j8TXm3Ulajw=
+	t=1763039850; cv=none; b=m/pdDztnhcsaOSmGd9RjnyfEU1jd/XxKvjwgKzMB/+e8cUMfLz20nwedLZeiHPXc6BJc7FffS3gtFvnPQk3NEFXheKdGNI6/v9UA2V80vXx6iE1sDUQ/Xg/B/+DxDD/vyfDgYEpLhTIoOFAD8i7IBgNpz+NxPOkrxzIdU8D1dQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763039792; c=relaxed/simple;
-	bh=RGSgXcAd96kqffuZ9ti1iWg3748mZ1P1LuNqW+28iA8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=rzRSemCLIZxtpthSmHBeXJOtKAb5KcHtFN5iamgPZex3qwg3OOsorfAjnoLFKKC6CZB616XCTtNiIjlk3onTbszvWjjUWh36n+gAhOTAulR+2hNVLghwxtwbE+XZMLpEIILKQGrwLpaxbU37i/MNv0PoTLl0FW+r7wCcA1ddruY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sXoGgSTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC058C113D0;
-	Thu, 13 Nov 2025 13:16:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763039792;
-	bh=RGSgXcAd96kqffuZ9ti1iWg3748mZ1P1LuNqW+28iA8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=sXoGgSTQ2ZrUZehF3hsqYiW9YNmrFbThVgHdblB3j07NMM6MM2gnpSgwXx//Pz7Ru
-	 iUmLMOGRQLLiVXImrD6/P2Tnx2KSpvSPph9XY2Hv5rOh8bea3yhav8jzrMtFprZmxQ
-	 NN0UDjYu1cL7sqiqaTHgMyBfkfWEzV19Mr1IVV0eZ+kVYKDYy+wtLbQAUKDDBvGndE
-	 jGXhBfpMon+NxxOgjMF0wQRbzfYgNlxlKAFafJCgpH7oF4gbN59QcpeL5nJW5UvmB/
-	 1Zs0TXC9ctcsRd5ihNq2OM97XmE7Ix2NwxofdfkH8cM1qetQlvFBn16z8xBlvjNH7w
-	 KJHskBXtavmsQ==
-From: Lee Jones <lee@kernel.org>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Jacek Anaszewski <jacek.anaszewski@gmail.com>, Dan Murphy <dmurphy@ti.com>, 
- Christian Hitz <christian@klarinett.li>
-Cc: Christian Hitz <christian.hitz@bbv.ch>, stable@vger.kernel.org, 
- Pavel Machek <pavel@ucw.cz>, linux-leds@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20251028155141.1603193-1-christian@klarinett.li>
-References: <20251028155141.1603193-1-christian@klarinett.li>
-Subject: Re: (subset) [PATCH v2] leds: leds-lp50xx: enable chip before any
- communication
-Message-Id: <176303978954.1472978.16250090294402354876.b4-ty@kernel.org>
-Date: Thu, 13 Nov 2025 13:16:29 +0000
+	s=arc-20240116; t=1763039850; c=relaxed/simple;
+	bh=gRpSnxQJ/4kkbC+uc4uJRS3lv/3yaR5s2BnwM6PHjeM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u6gGlVtD0MtUrP/dfojMC7aC/EtEcBH89BqxWlW5buf/olPCzHktV/CqVwNzHWrlahuE6inv87jdCo5ApZU7iQllEDO/rz0+15hf6va+NrppLLQ+ZwPdC2QJVVv7lMOro3KaQasd4RgxWJXT4d43FLjHkQ5OBFix2Pv+jqlwLEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=virakshop.com; spf=none smtp.mailfrom=virakshop.com; arc=none smtp.client-ip=130.185.75.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=virakshop.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=virakshop.com
+Received: from [36.255.98.22] (port=55493)
+	by zpanel.taknet.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <supervisor@virakshop.com>)
+	id 1vJXCJ-00054z-2B
+	for stable@vger.kernel.org;
+	Thu, 13 Nov 2025 14:17:19 +0100
+Reply-To: harry.schofield@lexcapital-group.com
+From: Harry Schofield ESQ <supervisor@virakshop.com>
+To: stable@vger.kernel.org
+Subject: Re:Good day,
+Date: 13 Nov 2025 05:17:20 -0800
+Message-ID: <20251113051719.42644CBD6BA01B05@virakshop.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-52d38
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - zpanel.taknet.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - virakshop.com
+X-Get-Message-Sender-Via: zpanel.taknet.net: authenticated_id: supervisor@virakshop.com
+X-Authenticated-Sender: zpanel.taknet.net: supervisor@virakshop.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Tue, 28 Oct 2025 16:51:40 +0100, Christian Hitz wrote:
-> If a GPIO is used to control the chip's enable pin, it needs to be pulled
-> high before any i2c communication is attempted.
-> 
-> Currently, the enable GPIO handling is not correct.
-> 
-> Assume the enable GPIO is low when the probe function is entered. In this
-> case the device is in SHUTDOWN mode and does not react to i2c commands.
-> 
-> [...]
-
-Applied, thanks!
-
-[1/1] leds: leds-lp50xx: enable chip before any communication
-      commit: 434959618c47efe9e5f2e20f4a850caac4f6b823
-
---
-Lee Jones [李琼斯]
-
+Re:Good day,
+Hope you are well, my first email returned undelivered, please=20
+can I provide you with more information through this email?.
+Best regards,
+Harry Schofield
 
