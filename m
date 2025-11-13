@@ -1,183 +1,113 @@
-Return-Path: <stable+bounces-194660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E884C55CFF
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 06:29:51 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15344C55ED7
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 07:31:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0559B3AE9CB
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 05:29:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 393E24E2B67
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 06:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D58199949;
-	Thu, 13 Nov 2025 05:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95212320A04;
+	Thu, 13 Nov 2025 06:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MHADl0F7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ma8VLPZe"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A4035CBC3
-	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 05:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D00E299957;
+	Thu, 13 Nov 2025 06:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763011786; cv=none; b=hBTzgSDsM7iuPYGUvyAZ3RWkvXj4zyHM1saTd7XCyjEpcml8pdIFIie7t+5mvVaYCAmzcXu78SGlyHMa4prVDT9KJJlcjiraMNw6Sur5oyLVjGTt0+2yVay6c9AQVh1BAgKj/BZvjlPp2yOgj1pZS5F2xOeqbEvOZlZjLzqTOog=
+	t=1763015474; cv=none; b=MUYUwcMdmXQ2IX5emEmXb7uprBW4XBAY75Ztylu26LLQKPU8H5VxXx3TC5TvZfMMrisZl2TwPn4pkNhnSxp8R9PAV6RADNveklqYFtHWjXK9iHMe73DAvZrQd0WmkThJ6TVbe7ws572vN9by2mxB/HJGdoNaZPGcspevyk7r/T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763011786; c=relaxed/simple;
-	bh=rbAlDdL9MMF25B6EoR34d58v2JHT2KUnHAr3E3DXNZM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bXX+w8wZjwQEbxpddhjpjX+oRNiVChma1tfrUCCrymb6fLUPPgCHTS1+3dlINKJvzKWApFleTnwNRabDXTeuKWEOUakhH8Gfq1k6qGtHS40ytOl0c+qMiMSOCrL8HXwrsbs2WBzGWTSXogPIOHEfWg4fkBLZCQlN7n0mE0vJ5Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MHADl0F7; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AD1SHRh3120385
-	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 05:29:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=eZ6OLS9Ndb6
-	8+TlAt0dnmMmxvTIl3QWJjkZdmgWlVnk=; b=MHADl0F7pAn2Pa0N6RnIKotX6FT
-	By8y0T22d9R+EhAephAS9SmnTF8EgAYkhRFC3ZUf2kYjin3hHofD28TEhvNq/fS0
-	8V904UFGdoskqs85ik/GSRVyc3BliD5BOKEtTP/TpEi28wWv0Ll1U8Zw6lHwQRlz
-	gk5FyoNUv8tYYLEb0wg2I6rrN0Yre4D41wugsC7Sco3E7FzQfXQ7BvIogm2Ulx0e
-	SY3bFaHyd6+u56HgcemWW9j6vMzWr3O/BtYHrqwpnd9ijdNy7vmtuwiCAOdSlerV
-	UqfLZf7wCbbB2GccIPXLSZhe+fvhQgTlAKa5e6NjrW4/yOQa75nTIervoDw==
-Received: from aptaippmta01.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ad5purkfw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 05:29:43 +0000 (GMT)
-Received: from pps.filterd (APTAIPPMTA01.qualcomm.com [127.0.0.1])
-	by APTAIPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AD5TfCf030550
-	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 05:29:41 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 4a9xxmmy42-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 05:29:41 +0000
-Received: from APTAIPPMTA01.qualcomm.com (APTAIPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AD5Ten2030541
-	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 05:29:40 GMT
-Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
-	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 5AD5TeT2030539
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Nov 2025 05:29:40 +0000
-Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
-	id 80FD12287B; Thu, 13 Nov 2025 13:29:39 +0800 (CST)
-From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
-To: shuai.zhang@oss.qualcomm.com
-Cc: cheng.jiang@oss.qualcomm.com, chezhou@qti.qualcomm.com,
-        jiaymao@qti.qualcomm.com, wei.deng@oss.qualcomm.com,
-        stable@vger.kernel.org
-Subject: [PATCH v2 1/1] Bluetooth: btqca: Add WCN6855 firmware priority selection feature
-Date: Thu, 13 Nov 2025 13:29:38 +0800
-Message-Id: <20251113052938.1631408-2-shuai.zhang@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251113052938.1631408-1-shuai.zhang@oss.qualcomm.com>
-References: <20251113052938.1631408-1-shuai.zhang@oss.qualcomm.com>
+	s=arc-20240116; t=1763015474; c=relaxed/simple;
+	bh=KTrdF0oN78I/0/ajkgQRubzWWqyEYegoWh0yFiFiDOE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lrv0HwsH2YTH7cKU2hvSO8HPw0QCMYBOxNfVCHvHOTka5hmbczev1Z2jOS0AqcN6lakASJiVNTuhhe+HP70HvvHJBARnLdqE8wVhmW10giQ0MxzMGKH/3y3eJYhk5EVvF03j4HrOePEtASFlUM6S4MGlXRj//xcDNkGspX0DJx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ma8VLPZe; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763015473; x=1794551473;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KTrdF0oN78I/0/ajkgQRubzWWqyEYegoWh0yFiFiDOE=;
+  b=Ma8VLPZeNSciQrYAIOKC2nC/zt1Ger62BKVsXvaEMZwMWr40tyYvJ8Qz
+   K0maNkIFUF6FEzmQVnwyzgm/DN/6HZOhr9ArDX7yUaOYXmwfBBEd1evf6
+   4MU0pFb4tydlIMyhI5pfj+o0fhwfy0a99NP6OuCy5MqxmmYWnzd18Y+4o
+   PST3RB6C32wm4cCR13bFcUdeeyQy6OBciDy3Fgn4st2+hebH6Y3tApSkn
+   AZ5fEkro25ENyP+5PBKbBUedzZ32zdilXn75946K9LfHnBt8WKWX06xRf
+   E4Yvwjkyce0j9RlwlTQAJce8cFwdVS6EKe/dPB56kPi8saSNHw7lbBGz5
+   w==;
+X-CSE-ConnectionGUID: MXTNAD2kThOEKIN6c3M7sw==
+X-CSE-MsgGUID: wkiO0o6IQkKFTUfMqqwg9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="87733524"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; 
+   d="scan'208";a="87733524"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 22:31:11 -0800
+X-CSE-ConnectionGUID: f4Al0sQYSWCeg4XI9lC06A==
+X-CSE-MsgGUID: R/7lys7xSAWvOlYx8I0N0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; 
+   d="scan'208";a="189268442"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.89])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 22:31:07 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 6EB12121796;
+	Thu, 13 Nov 2025 08:31:04 +0200 (EET)
+Date: Thu, 13 Nov 2025 08:31:04 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, hariconscious@gmail.com,
+	cezary.rojewski@intel.com, liam.r.girdwood@linux.intel.com,
+	peter.ujfalusi@linux.intel.com, yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com, kai.vehmanen@linux.intel.com,
+	pierre-louis.bossart@linux.dev, perex@perex.cz, tiwai@suse.com,
+	amadeuszx.slawinski@linux.intel.com, khalid@kernel.org,
+	shuah@kernel.org, david.hunter.linux@gmail.com,
+	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] ASoC: Intel: avs: Fix potential buffer overflow by
+ snprintf()
+Message-ID: <aRV7KMU_I13osYbE@kekkonen.localdomain>
+References: <20251112181851.13450-1-hariconscious@gmail.com>
+ <2025111239-sturdily-entire-d281@gregkh>
+ <18bac943-6420-439c-91dc-643277850f69@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=E6/AZKdl c=1 sm=1 tr=0 ts=69156cc7 cx=c_pps
- a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=mafMjTZoDSqqSwhiDToA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEzMDAzNSBTYWx0ZWRfX8OGAK58skP88
- jt0l/6HFICUAnLAKXitnMexzO5xBYBRfLLyjzdi8DR7lRxoKlGGlCWqZ4mtHUthfyVt7HNWC0rd
- mCr6uLAowGUKa/k+r10tfueXwf9iCEUwp7T2lm+9VJPdOGZ7XmGi9eRnXpjIgv6fyUb3qDKwiWp
- nZlmmyhooynPthhhOXMA5M5kmAvm/fXGhx/0sYz1VLMVtEiIaYzQ7oR195K5zMhwJMwdV3kezG6
- /rvt66TTyFf/nlPzVIv04PSJwDHIdGe+B80bdeuhW6xk8ikiICGb3hkVScYywbf5b/cV8ZKP5tc
- 4D8NGpUq2D/eAJ6/JFglzzBzRgkdSCMmq1DzOQEhlXr0+AKpOOCvD/IxyYvKu5y7EfrD3iC4PU4
- YyHCE+fp8b/8Sf5syJi7Fd7QEdgpkg==
-X-Proofpoint-GUID: poF68YuZbN7M3ZXckRI1b6b0DO36Tgz5
-X-Proofpoint-ORIG-GUID: poF68YuZbN7M3ZXckRI1b6b0DO36Tgz5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-12_06,2025-11-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 malwarescore=0 spamscore=0
- clxscore=1015 phishscore=0 bulkscore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511130035
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <18bac943-6420-439c-91dc-643277850f69@sirena.org.uk>
 
-The prefix "wcn" corresponds to the WCN685x chip, while entries without
-the "wcn" prefix correspond to the QCA2066 chip. There are some feature
-differences between the two.
+On Wed, Nov 12, 2025 at 07:33:51PM +0000, Mark Brown wrote:
+> On Wed, Nov 12, 2025 at 02:20:19PM -0500, Greg KH wrote:
+> 
+> > Also please do not wrap lines of fixes tags.
+> 
+> Someone probably ought to teach checkpatch about that one, it moans
+> about long lines without checking for Fixes: IIRC.
 
-However, due to historical reasons, WCN685x chip has been using firmware
-without the "wcn" prefix. The mapping between the chip and its
-corresponding firmware has now been corrected.
+I can recall this issue, too... I checked how to reproduce and fix this but
+it seems it's already done: I couldn't reproduce it. I'm getting this for
+breaking a Fixes: line:
 
-Cc: stable@vger.kernel.org
-Fixes: 30209aeff75f ("Bluetooth: qca: Expand firmware-name to load specific rampatch")
-Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
----
- drivers/bluetooth/btqca.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+WARNING: Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' - ie: 'Fixes: ...
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index 7c958d606..8e0004ef7 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -847,8 +847,12 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 				 "qca/msbtfw%02x.mbn", rom_ver);
- 			break;
- 		case QCA_WCN6855:
-+			/* Due to historical reasons, WCN685x chip has been using firmware
-+			 * without the "wcn" prefix. The mapping between the chip and its
-+			 * corresponding firmware has now been corrected.
-+			 */
- 			snprintf(config.fwname, sizeof(config.fwname),
--				 "qca/hpbtfw%02x.tlv", rom_ver);
-+				 "qca/wcnhpbtfw%02x.tlv", rom_ver);
- 			break;
- 		case QCA_WCN7850:
- 			snprintf(config.fwname, sizeof(config.fwname),
-@@ -861,6 +865,13 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 	}
- 
- 	err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
-+
-+	if (!rampatch_name && err < 0 && soc_type == QCA_WCN6855) {
-+		snprintf(config.fwname, sizeof(config.fwname),
-+			 "qca/hpbtfw%02x.tlv", rom_ver);
-+		err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
-+	}
-+
- 	if (err < 0) {
- 		bt_dev_err(hdev, "QCA Failed to download patch (%d)", err);
- 		return err;
-@@ -923,7 +934,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 		case QCA_WCN6855:
- 			qca_read_fw_board_id(hdev, &boardid);
- 			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
--						  "hpnv", soc_type, ver, rom_ver, boardid);
-+						  "wcnhpnv", soc_type, ver, rom_ver, boardid);
- 			break;
- 		case QCA_WCN7850:
- 			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
-@@ -936,6 +947,13 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 	}
- 
- 	err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
-+
-+	if (!firmware_name && err < 0 && soc_type == QCA_WCN6855) {
-+		qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
-+					  "hpnv", soc_type, ver, rom_ver, boardid);
-+		err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
-+	}
-+
- 	if (err < 0) {
- 		bt_dev_err(hdev, "QCA Failed to download NVM (%d)", err);
- 		return err;
+It basically now checks the subject matches with the quoted string.
+
+So all is well!
+
 -- 
-2.34.1
-
+Sakari Ailus
 
