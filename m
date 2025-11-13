@@ -1,56 +1,79 @@
-Return-Path: <stable+bounces-194659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A04C55CDE
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 06:25:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E884C55CFF
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 06:29:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8883834A531
-	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 05:24:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0559B3AE9CB
+	for <lists+stable@lfdr.de>; Thu, 13 Nov 2025 05:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3DD1C6FEC;
-	Thu, 13 Nov 2025 05:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D58199949;
+	Thu, 13 Nov 2025 05:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UVX/kacM"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MHADl0F7"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39BC8248C;
-	Thu, 13 Nov 2025 05:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A4035CBC3
+	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 05:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763011462; cv=none; b=PRq8B3n9Jq+3rf1Vmm4oVBkA08YjxAN3qEQc9bD3774kf3n2XBCRsH1Rp5Ya/9gZQX4BGufehKd2fOrQv6l3LSQaX/P+bc9ZzVOvoGE5a/s4+qUBRCiq3lFvPfYudykH9F1XbiIcODdb7Q/ChxDloR5KL9WEPyid8367bEyslXs=
+	t=1763011786; cv=none; b=hBTzgSDsM7iuPYGUvyAZ3RWkvXj4zyHM1saTd7XCyjEpcml8pdIFIie7t+5mvVaYCAmzcXu78SGlyHMa4prVDT9KJJlcjiraMNw6Sur5oyLVjGTt0+2yVay6c9AQVh1BAgKj/BZvjlPp2yOgj1pZS5F2xOeqbEvOZlZjLzqTOog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763011462; c=relaxed/simple;
-	bh=b9ABffOv/cH7SFVh8RKYB+PWGLNj2Y0+b2R3LnzAw84=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kqPTphULrkkQbBmTPnfogxEqymV45QxFBIX4EQvPhKPZsgd8WOXxoTV6yALLUbPHTzVHQmL1Q/HG4woQNwRJCYQvgHCzuecA3DfathOF/JYP+bnW0E2gaipaOLmD5JWN5ey/eux+/B8F5KqHzyzVqVjt+lh140oNSce37bmPHQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UVX/kacM; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=WY
-	2FpZw6svj8X3Onv9ZtcmZTMHe+hfBT0p28fJxGQ68=; b=UVX/kacMFIwMHl/tL0
-	23nlcqkA7twGabQH/qoDi48fVIaTBn/u1ZOg/vmKRzKhi76vBWaZVUDazvtVK4aa
-	nwiXPr0A5GjAJmT8H2RVDKiI+e61XJjhM51G6cZa6O+Ss9a2fSPhpzhR1xASFTl4
-	TdOBG+DqIVF6jJgzhtCbf88yc=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wAHpMJvaxVpLV6zDg--.140S2;
-	Thu, 13 Nov 2025 13:23:59 +0800 (CST)
-From: "rom.wang" <r4o5m6e8o@163.com>
-To: lexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Yufeng Wang <wangyufeng@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] libfs: Fix NULL pointer access in simple_recursive_removal
-Date: Thu, 13 Nov 2025 13:23:57 +0800
-Message-Id: <20251113052357.41868-1-r4o5m6e8o@163.com>
+	s=arc-20240116; t=1763011786; c=relaxed/simple;
+	bh=rbAlDdL9MMF25B6EoR34d58v2JHT2KUnHAr3E3DXNZM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=bXX+w8wZjwQEbxpddhjpjX+oRNiVChma1tfrUCCrymb6fLUPPgCHTS1+3dlINKJvzKWApFleTnwNRabDXTeuKWEOUakhH8Gfq1k6qGtHS40ytOl0c+qMiMSOCrL8HXwrsbs2WBzGWTSXogPIOHEfWg4fkBLZCQlN7n0mE0vJ5Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MHADl0F7; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AD1SHRh3120385
+	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 05:29:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=eZ6OLS9Ndb6
+	8+TlAt0dnmMmxvTIl3QWJjkZdmgWlVnk=; b=MHADl0F7pAn2Pa0N6RnIKotX6FT
+	By8y0T22d9R+EhAephAS9SmnTF8EgAYkhRFC3ZUf2kYjin3hHofD28TEhvNq/fS0
+	8V904UFGdoskqs85ik/GSRVyc3BliD5BOKEtTP/TpEi28wWv0Ll1U8Zw6lHwQRlz
+	gk5FyoNUv8tYYLEb0wg2I6rrN0Yre4D41wugsC7Sco3E7FzQfXQ7BvIogm2Ulx0e
+	SY3bFaHyd6+u56HgcemWW9j6vMzWr3O/BtYHrqwpnd9ijdNy7vmtuwiCAOdSlerV
+	UqfLZf7wCbbB2GccIPXLSZhe+fvhQgTlAKa5e6NjrW4/yOQa75nTIervoDw==
+Received: from aptaippmta01.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ad5purkfw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 05:29:43 +0000 (GMT)
+Received: from pps.filterd (APTAIPPMTA01.qualcomm.com [127.0.0.1])
+	by APTAIPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AD5TfCf030550
+	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 05:29:41 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 4a9xxmmy42-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 05:29:41 +0000
+Received: from APTAIPPMTA01.qualcomm.com (APTAIPPMTA01.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AD5Ten2030541
+	for <stable@vger.kernel.org>; Thu, 13 Nov 2025 05:29:40 GMT
+Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
+	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 5AD5TeT2030539
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Nov 2025 05:29:40 +0000
+Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
+	id 80FD12287B; Thu, 13 Nov 2025 13:29:39 +0800 (CST)
+From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+To: shuai.zhang@oss.qualcomm.com
+Cc: cheng.jiang@oss.qualcomm.com, chezhou@qti.qualcomm.com,
+        jiaymao@qti.qualcomm.com, wei.deng@oss.qualcomm.com,
+        stable@vger.kernel.org
+Subject: [PATCH v2 1/1] Bluetooth: btqca: Add WCN6855 firmware priority selection feature
+Date: Thu, 13 Nov 2025 13:29:38 +0800
+Message-Id: <20251113052938.1631408-2-shuai.zhang@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251113052938.1631408-1-shuai.zhang@oss.qualcomm.com>
+References: <20251113052938.1631408-1-shuai.zhang@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,59 +81,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAHpMJvaxVpLV6zDg--.140S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tr4UGryDuFW3KrW5KF48JFb_yoW8tFyrpr
-	47tF15CF48Jr45Jr4Iyr45Xw1Uta9rCF4UXr1xAr17tF1DG345try8tF42qw1DZr48Jr43
-	tr4kWw4ktr12qaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jO189UUUUU=
-X-CM-SenderInfo: 3uurkzkwhy0qqrwthudrp/1tbiYBYFdWkVZ55hFwAAs1
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=E6/AZKdl c=1 sm=1 tr=0 ts=69156cc7 cx=c_pps
+ a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=mafMjTZoDSqqSwhiDToA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEzMDAzNSBTYWx0ZWRfX8OGAK58skP88
+ jt0l/6HFICUAnLAKXitnMexzO5xBYBRfLLyjzdi8DR7lRxoKlGGlCWqZ4mtHUthfyVt7HNWC0rd
+ mCr6uLAowGUKa/k+r10tfueXwf9iCEUwp7T2lm+9VJPdOGZ7XmGi9eRnXpjIgv6fyUb3qDKwiWp
+ nZlmmyhooynPthhhOXMA5M5kmAvm/fXGhx/0sYz1VLMVtEiIaYzQ7oR195K5zMhwJMwdV3kezG6
+ /rvt66TTyFf/nlPzVIv04PSJwDHIdGe+B80bdeuhW6xk8ikiICGb3hkVScYywbf5b/cV8ZKP5tc
+ 4D8NGpUq2D/eAJ6/JFglzzBzRgkdSCMmq1DzOQEhlXr0+AKpOOCvD/IxyYvKu5y7EfrD3iC4PU4
+ YyHCE+fp8b/8Sf5syJi7Fd7QEdgpkg==
+X-Proofpoint-GUID: poF68YuZbN7M3ZXckRI1b6b0DO36Tgz5
+X-Proofpoint-ORIG-GUID: poF68YuZbN7M3ZXckRI1b6b0DO36Tgz5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-12_06,2025-11-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 malwarescore=0 spamscore=0
+ clxscore=1015 phishscore=0 bulkscore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511130035
 
-From: Yufeng Wang <wangyufeng@kylinos.cn>
+The prefix "wcn" corresponds to the WCN685x chip, while entries without
+the "wcn" prefix correspond to the QCA2066 chip. There are some feature
+differences between the two.
 
-There is an issue in the kernel:
-if inode is NULL pointer. the function "inode_lock_nested"
-(or function "inode_lock" before)
-a crash will happen at code "&inode->i_rwsem".
-[292618.520532] BUG: unable to handle kernel NULL pointer dereference at 00000000000000a0
-[...]
-[292618.560398] RIP: 0010:down_write+0x12/0x30
-[292618.565580] Code: 83 f8 01 74 08 48 c7 47 20 01 00 00 00 f3 c3 66 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 ba 01 00 00 00 ff ff ff ff 48 89 f8 <f0> 48 0f c1 10 85 d2 74 05 e8 00 43 ff ff 65 48 8b 04 25 80 5c 01
-[292618.587219] RSP: 0018:ffffb898dc86fc20 EFLAGS: 00010246
-[292618.593666] RAX: 00000000000000a0 RBX: ffff94c84f363950 RCX: ffffff8000000000
-[292618.602255] RDX: ffffffff00000001 RSI: 0000000000000063 RDI: 00000000000000a0
-[292618.610844] RBP: ffffb898dc86fc78 R08: 0000000000000000 R09: 0000000000000000
-[292618.619434] R10: ffffb898dc86fca8 R11: 0000000000000000 R12: 0000000000000000
-[292618.628022] R13: ffff94c84f362a20 R14: ffff954d3f2fb4a0 R15: ffff954c3afa5010
-[292618.636612] FS:  0000555555989cc0(0000) GS:ffff956dbf900000(0000) knlGS:0000000000000000
-[292618.646271] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[292618.653300] CR2: 00000000000000a0 CR3: 000000fc7f25a000 CR4: 00000000003406e0
-[292618.661888] Call Trace:
-[292618.665225]  simple_recursive_removal+0x4f/0x230
-[292618.670994]  ? debug_fill_super+0xe0/0xe0
-[292618.676079]  debugfs_remove+0x40/0x60
-[292618.680799]  kvm_vcpu_release+0x19/0x30 [kvm]
+However, due to historical reasons, WCN685x chip has been using firmware
+without the "wcn" prefix. The mapping between the chip and its
+corresponding firmware has now been corrected.
 
-Fixes: a3d1e7eb5abe ("simple_recursive_removal(): kernel-side rm -rf for ramfs-style filesystems")
 Cc: stable@vger.kernel.org
-
-Signed-off-by: Yufeng Wang <wangyufeng@kylinos.cn>
+Fixes: 30209aeff75f ("Bluetooth: qca: Expand firmware-name to load specific rampatch")
+Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
 ---
- fs/libfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bluetooth/btqca.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index 1661dcb7d983..9090cd1f97c4 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -611,6 +611,8 @@ static void __simple_recursive_removal(struct dentry *dentry,
- 		struct dentry *victim = NULL, *child;
- 		struct inode *inode = this->d_inode;
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index 7c958d606..8e0004ef7 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -847,8 +847,12 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 				 "qca/msbtfw%02x.mbn", rom_ver);
+ 			break;
+ 		case QCA_WCN6855:
++			/* Due to historical reasons, WCN685x chip has been using firmware
++			 * without the "wcn" prefix. The mapping between the chip and its
++			 * corresponding firmware has now been corrected.
++			 */
+ 			snprintf(config.fwname, sizeof(config.fwname),
+-				 "qca/hpbtfw%02x.tlv", rom_ver);
++				 "qca/wcnhpbtfw%02x.tlv", rom_ver);
+ 			break;
+ 		case QCA_WCN7850:
+ 			snprintf(config.fwname, sizeof(config.fwname),
+@@ -861,6 +865,13 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 	}
  
-+		if (!inode)
-+			return;
- 		inode_lock_nested(inode, I_MUTEX_CHILD);
- 		if (d_is_dir(this))
- 			inode->i_flags |= S_DEAD;
+ 	err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
++
++	if (!rampatch_name && err < 0 && soc_type == QCA_WCN6855) {
++		snprintf(config.fwname, sizeof(config.fwname),
++			 "qca/hpbtfw%02x.tlv", rom_ver);
++		err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
++	}
++
+ 	if (err < 0) {
+ 		bt_dev_err(hdev, "QCA Failed to download patch (%d)", err);
+ 		return err;
+@@ -923,7 +934,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 		case QCA_WCN6855:
+ 			qca_read_fw_board_id(hdev, &boardid);
+ 			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
+-						  "hpnv", soc_type, ver, rom_ver, boardid);
++						  "wcnhpnv", soc_type, ver, rom_ver, boardid);
+ 			break;
+ 		case QCA_WCN7850:
+ 			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
+@@ -936,6 +947,13 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 	}
+ 
+ 	err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
++
++	if (!firmware_name && err < 0 && soc_type == QCA_WCN6855) {
++		qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
++					  "hpnv", soc_type, ver, rom_ver, boardid);
++		err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
++	}
++
+ 	if (err < 0) {
+ 		bt_dev_err(hdev, "QCA Failed to download NVM (%d)", err);
+ 		return err;
 -- 
 2.34.1
 
