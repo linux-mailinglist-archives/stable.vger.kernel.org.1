@@ -1,121 +1,125 @@
-Return-Path: <stable+bounces-194768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED23C5BAC8
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 08:06:23 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 259A1C5BCDC
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 08:36:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D10073B0D26
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 07:06:21 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6269A352F0E
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 07:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07041F91E3;
-	Fri, 14 Nov 2025 07:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D7C2F5A30;
+	Fri, 14 Nov 2025 07:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QPrqaDX1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nkw+G5Xu"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC571A3160
-	for <stable@vger.kernel.org>; Fri, 14 Nov 2025 07:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721FC27E074
+	for <stable@vger.kernel.org>; Fri, 14 Nov 2025 07:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763103978; cv=none; b=S8QXcrIPID3uWfmar7BOf1W94ALm+AOe1O6hx4f75Yy/gtz8HYdgiJZCOZaLn6/XqgrtyeEl3fEXTvEsafG6M6jr8QE90j5Am5DwSe3muqlNX12/aLdJGezRFdj3qZTHyQoAa7ZWsScXwdPLImqQB4LXmbuTYCYS1I2ROi6ideQ=
+	t=1763105757; cv=none; b=Q/CVxiX8QBS/BjE7K11DuE55NrzTchTMvfGuwVHo+osRh34VJuG8GwMxST5KWJw3WZ4V7mjnYze0n/f12Rpuj4WD9adVRM286REbxDoV4lwFgvGmV0X+JGgrtRYSlpTzyoxSe4liZJYKUkGZ+vXaGljx0fDOrZ/yT9hKTEVhqdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763103978; c=relaxed/simple;
-	bh=d9LjtPLP9ntFDGX3+zqvG6uFgPQVD0YLOV0GppXVWLc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iIuiusDB87O4o357HR2Zn0iLrdQxnaEmP6LT0cNkSiPdkdItgS0vLZos16XeD1JC2EqSV7IuuFZMwbJoy6rLzb2qCBY0SIBKj/snJnsP57qPp6ULALWBusGE8nR2vc36RzmTQeO/zjaJLXeoI5wteFt3jrhm864whQeyVmf+7jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QPrqaDX1; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Ja
-	PZ23DPribnGwimqs5KgNFWQUUN5wS6hsvSHAbMjiQ=; b=QPrqaDX1rBoY9QXUF8
-	m8xTgBjzp3cwZqWaaTfckQopbXaLPPrFJ/9hcXfNlW+wInx7qCGwgV61wLADCNjo
-	hE78yimDFEf9tg7MgJHY30Zn9Dd4byKyxVivCW2CxIFuR0IKiN3i1spguh/e4i5H
-	O2MVsasW2OBiYVBWreUcy+iCk=
-Received: from pek-blan-cn-l1.corp.ad.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wDHT6G41BZpwnLFAA--.10020S4;
-	Fri, 14 Nov 2025 15:05:46 +0800 (CST)
-From: jetlan9@163.com
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.12.y] wifi: ath11k: Clear affinity hint before calling ath11k_pcic_free_irq() in error path
-Date: Fri, 14 Nov 2025 15:05:09 +0800
-Message-Id: <20251114070509.1764-1-jetlan9@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1763105757; c=relaxed/simple;
+	bh=HCFB0gf1PTZ8qxvL0c9ZgT0prON/gQ9PbNIYjC4hFrQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=e/NxF+LeDjWqzzyIQvyz4F7e74vfxnmNMvW8GWDXgpbJDB67QL0zGo1eXMA2yXcjrsEft+sW0K0/MSakDuz5gJm5+ksin8dapiSpCnf+mFrKQT1h3KsSYiJlthZPN8CNlLL1yAvnPOV7zSaPBS7GLb2JBmT5aHZc/4zhs6XG/P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nkw+G5Xu; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-640a0812658so2639754a12.0
+        for <stable@vger.kernel.org>; Thu, 13 Nov 2025 23:35:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763105754; x=1763710554; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lFLTfYFZo+inPQxPyq4xaMb0Ju+C3NcGaHtCUNuaidI=;
+        b=Nkw+G5XuPphbM8Z24zwvM6Jx0KTORY4EHAlx/cE6LCUfVWPLhpDr5VrO5bKeTbvHaI
+         xLcOjfliPV60r0j2inpTVfyVPNRmFJeF4HGAazXdkZgZCDN0YsPkSteP21TatNwDEy/H
+         am0/pz9AZrClLc1zXKUQ9cc3psQ8AThUsxNm1LIVGCu9yG8uNuO5B7hMgQw8uPahHFUf
+         lvsqKI3RD90/wHhVmsNe5R3p3hsFwIq23cHyna8clpI3bHRnFIToT+WSFLMEHL/ikXFG
+         9LZL3VJjm2ZfOq7kevlnzWDbYiAAlf1stT4cKwllJqyiQ/h6KUWA9+5Wsb9cxWR+YmNF
+         +IzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763105754; x=1763710554;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=lFLTfYFZo+inPQxPyq4xaMb0Ju+C3NcGaHtCUNuaidI=;
+        b=epZnpgT8rM41MTCW9Z/rRUYzQrHb7nDFrBwV6wngpvrdPtQMd1ZR9aPciM8043fko6
+         J1vnhATev7AEUqUKEeKpx6o3B1IF4un/XN/JZlpcieckwhpdkXZ6S+ltFxsibzoGIB1k
+         plPOgX5aUdqOWYiBPk9gYZs94dxTL6h2Z9oftrCiQCAW9GAQuq/z9EEfNw72j6bxDJ9W
+         BAHIafDG61JYI32eyJf4Qt2Nr2y4Yc1NoRa0w2T2RD0nVdq9nzn7w7JOdZRqpkIT8i5H
+         ZogGI307H5JkjgQsvZxQs7zLIZaxF1pdfvjzWzfnQFKv6fhPe6hT1XrBR6mgftmK22zX
+         hq7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXon5dD1bVjLBTafu+XGnAW0sotJ4seU3HlpUQgbGJ/l/V1Dp45G3YNfMV/himD51iQwX2i5Dw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7qJIDlHSqpfTcCVz1GAS5pxdH51qJf+j29FcNIBQVxLf5JAfR
+	DHjkTfSfpSHNH1AryUb4CqytDQt0PSZQF1/nDhsVktkU4y/Ub0dtTHHJ
+X-Gm-Gg: ASbGncvIKNGqnor1PU17w1J49/9OkdQWIAReJHzyTB8JUT+vxkdhiisbhsJO5ooYL+v
+	K4gd3SYUVk77asSX0bWA+EjMUrHALFC6YRhGRljgDsNpAdEbDmtfYYrjeQq15+GDb+QcvnGbzqM
+	x2a7GNrwu2LpadrI5qcOvKY8pEz3awMurNzZ3R2TQn5p2D7R1rnu7gzk9tGfhvM19NVcBA7VUdw
+	iJUpnNurzTHO82UfzhGKTWUPlj5iD9ED7mm76rxaSVFM0/lHA5SCm6QMMv2b4S6eyKMLsga/q84
+	u+JOY3uQGuhGJ/bAquo446gQIwYjwq2LDDM1pT89V5QnGVWLBZQZa7hBXkDrCBOlivS+i55fcOW
+	/y4iRKwVfKRRDiogmufNp3Vyuzd+n+/tEBd8iwebziZitJXmBa9eKakIdGe/ZGfrFgKmhdB1h/L
+	7ne/XJKt0JjKHrHh9YZCt8
+X-Google-Smtp-Source: AGHT+IHP8f4IDOhs+3WdtpM7lYYKMk1Y/gzrU/hQkgwM7xC+v+Hy+cdkWU21+fN20Ut6b8xaehwCWg==
+X-Received: by 2002:a17:907:d09:b0:b3f:cc6d:e0a8 with SMTP id a640c23a62f3a-b736786e693mr156169466b.17.1763105753546;
+        Thu, 13 Nov 2025 23:35:53 -0800 (PST)
+Received: from foxbook (bfd52.neoplus.adsl.tpnet.pl. [83.28.41.52])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fa81275sm330810266b.13.2025.11.13.23.35.52
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Thu, 13 Nov 2025 23:35:53 -0800 (PST)
+Date: Fri, 14 Nov 2025 08:35:48 +0100
+From: Michal Pecio <michal.pecio@gmail.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: linux-media@vger.kernel.org, Hans de Goede <hansg@kernel.org>, Ricardo
+ Ribalda <ribalda@chromium.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] media: uvcvideo: Return queued buffers on
+ start_streaming() failure
+Message-ID: <20251114083548.54251544.michal.pecio@gmail.com>
+In-Reply-To: <20251113214056.2464-1-laurent.pinchart@ideasonboard.com>
+References: <20251113214056.2464-1-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHT6G41BZpwnLFAA--.10020S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ZryxAr48ZrWUGF4DuF1xZrb_yoW8tr18pr
-	W0gay7CF93Jr4xGa1rGF4xZFyfXFsxArW7JrW7Kw13uF4YyFyktF1aqF17tF1UCrWrAFya
-	qwsrKr1fWa4YvFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pujgn5UUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/1tbiOgIGyGkW0b5P3gAAs3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+On Thu, 13 Nov 2025 23:40:56 +0200, Laurent Pinchart wrote:
+> From: Michal Pecio <michal.pecio@gmail.com>
+> 
+> Return buffers if streaming fails to start due to uvc_pm_get() error.
+> 
+> This bug may be responsible for a warning I got running
+> 
+>     while :; do yavta -c3 /dev/video0; done
+> 
+> on an xHCI controller which failed under this workload.
+> I had no luck reproducing this warning again to confirm.
+> 
+> xhci_hcd 0000:09:00.0: HC died; cleaning up
+> usb 13-2: USB disconnect, device number 2
+> WARNING: CPU: 2 PID: 29386 at drivers/media/common/videobuf2/videobuf2-core.c:1803 vb2_start_streaming+0xac/0x120
+> 
+> Fixes: 7dd56c47784a ("media: uvcvideo: Remove stream->is_streaming field")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+> Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Link: https://patch.msgid.link/20251015133642.3dede646.michal.pecio@gmail.com
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> ---
+> Changes since v1:
+> 
+> - Reorganize error path
 
-[ Upstream commit 68410c5bd381a81bcc92b808e7dc4e6b9ed25d11 ]
-
-If a shared IRQ is used by the driver due to platform limitation, then the
-IRQ affinity hint is set right after the allocation of IRQ vectors in
-ath11k_pci_alloc_msi(). This does no harm unless one of the functions
-requesting the IRQ fails and attempt to free the IRQ. This results in the
-below warning:
-
-WARNING: CPU: 7 PID: 349 at kernel/irq/manage.c:1929 free_irq+0x278/0x29c
-Call trace:
- free_irq+0x278/0x29c
- ath11k_pcic_free_irq+0x70/0x10c [ath11k]
- ath11k_pci_probe+0x800/0x820 [ath11k_pci]
- local_pci_probe+0x40/0xbc
-
-The warning is due to not clearing the affinity hint before freeing the
-IRQs.
-
-So to fix this issue, clear the IRQ affinity hint before calling
-ath11k_pcic_free_irq() in the error path. The affinity will be cleared once
-again further down the error path due to code organization, but that does
-no harm.
-
-Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1
-
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>
-Fixes: 39564b475ac5 ("wifi: ath11k: fix boot failure with one MSI vector")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250225053447.16824-2-manivannan.sadhasivam@linaro.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
----
- drivers/net/wireless/ath/ath11k/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index 6ebfa5d02e2e..c1d576ff77fa 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -936,6 +936,8 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
- 	return 0;
- 
- err_free_irq:
-+	/* __free_irq() expects the caller to have cleared the affinity hint */
-+	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
- 	ath11k_pcic_free_irq(ab);
- 
- err_ce_free:
--- 
-2.43.0
-
+Look alright, thanks for taking the patch.
 
