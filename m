@@ -1,79 +1,79 @@
-Return-Path: <stable+bounces-194800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE84C5DF19
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 16:43:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 356A2C5DD15
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 16:20:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B8EDE502FBC
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 15:04:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD0804F7F38
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 15:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8808C328638;
-	Fri, 14 Nov 2025 14:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DD732E73E;
+	Fri, 14 Nov 2025 14:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="gJYfOWMW"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="DQd+0y+7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5FF32AAA0
-	for <stable@vger.kernel.org>; Fri, 14 Nov 2025 14:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831EA32E734
+	for <stable@vger.kernel.org>; Fri, 14 Nov 2025 14:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763132130; cv=none; b=HPOGQJPmGT2UfKakVDpI/pMlIXVqKO9yB18oGcrsQIT1IqQ9BaCDZZjNcwAjtAYGZm3zBxUkDA1TWVvmoCv5khx6zdOdqbxal/cLCfX7gEWZ0tth6TCGuQvQivDnLhYULWx+hhXOY0UPeQbOeP22tRsCLPkJgiKrugPrEBAwVZo=
+	t=1763132227; cv=none; b=Mw5toSrJVFcSdaPFT+FLio3Jf9BkqlGrDgWoar2Sh/HShySvh82ImZNH8NAZV3si5wehqAod5Uz58lqSkn9jt2duBtd6+NRvcwMwUIr0lyGso1ILaX1EKMDgqrSK2w9yoqaqtCLsKYcJ2hZON7AWC3k2A6Bs2TUHrNKzMI0XbEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763132130; c=relaxed/simple;
-	bh=2Khq+clUZPAnTgX8+cOpXF7s2qoRd84f1QccmectT60=;
+	s=arc-20240116; t=1763132227; c=relaxed/simple;
+	bh=gciHlXxYLdlQzs+wz9fWszVt4GV+k4O7swYAQmw88xs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bnTvzNZ0dea5saP/ue09xyvqXX5rwMLQmFG7bb7j7IEd6Va6VdZ4i+C8rHYbdYWsZqcazu68HR8h9mT0rQiNN2lXo4QpPz7Ny5FYdkpZ9hJnOAIDWnwopDFY0vs9JUgvZGPsY4KHtrZV7zj1UMo7vGjJKy91gFYXoqkrvuSPAX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=gJYfOWMW; arc=none smtp.client-ip=209.85.218.52
+	 Content-Type:Content-Disposition:In-Reply-To; b=J5TZX0X5oCP7tRpG/O5W2mrbYx3iJjkcZXQbzAn9piZ5h4UkQ0NWEp0WsxH/ef8tGEBq+whBHqdSc0cX3cUMe9ti9ml6APeb9WcRTw/ksNNR0yNTIJ7WqZXlFhH2PJOE77UiNVuhAYadOJKC7dVwG+r/2rhrNBTp0mFT/7gGs8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=DQd+0y+7; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b714b1290aeso311200966b.2
-        for <stable@vger.kernel.org>; Fri, 14 Nov 2025 06:55:27 -0800 (PST)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b725ead5800so258642366b.1
+        for <stable@vger.kernel.org>; Fri, 14 Nov 2025 06:57:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1763132126; x=1763736926; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1763132223; x=1763737023; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HDzBp/INwp+nibTWfFPJwgjZkiTPte/DobTvzSfhc24=;
-        b=gJYfOWMW/a2/mvzhAdwixNybVhMDLe8ppWD9QSzWdX2ecxR5sDO652vNNywaVfNuEz
-         DmyKdMEna1IbULw+D6Ooo+4mEeSEpeBHi1aaXhm2E/w7IaDY8iBfdQxosMxFdPETd1VE
-         C3RjFx4GSX7Afuai8ae7HgliGZhQesFEdGCuCMFB0sdbfdYCME8CAlGGigkzZAiH0bmK
-         YQ+sW5SN0+eJ3NwMBKXa053PTj/753LAK0hk9oTpQN23/lSzfkXgGqFXyIRyQYYT3cma
-         ovPhvKf4HxKVIk3tZDwF+HADGJZ4flS/n48Z+w4ENrhF+EJVRzSKSaJ03/pWuaDQPY8g
-         Yhwg==
+        bh=x48AYDZ6c8REpkpum5TA6RkDPVy+wpYnc495RC66pG0=;
+        b=DQd+0y+7+BUAEc0dk/W2CLqAeB/ccIvpLLH1OY9EqMS70RjqnIufkMq46A90oJoKBH
+         ntccNGcE3dfFtMmFVcr2zzUzXbFrdu/Zpt+dRbXFR9sJhTSMHB/MfVq2vfGE1VvR+Nsm
+         pAPTaA7gTZKNJ9pzIv4+toRysiuZ3Z1LXPmpxuv+2FoqO/txN3c2wCdwYncRL+7Jqy2H
+         vuz5u5c9iiowzVmeQUQRi3iUCBlx0vK90eTjttKfMU9V3arxgKXR6PYKpVuhWtj+tYJz
+         en1rx+JZZnTG7x7VdBH2Z/oUYEW7XsAaJVtPMNFarwZUqI2MDp6C6+IUlzZAwutgH6gb
+         HDMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763132126; x=1763736926;
+        d=1e100.net; s=20230601; t=1763132223; x=1763737023;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HDzBp/INwp+nibTWfFPJwgjZkiTPte/DobTvzSfhc24=;
-        b=NfDqc/5aNOkIzBssnefHf8KmX+GENO2VuZXBCtth5NUkC68a9PBa5hZ5sUPJOl0Uqz
-         JF/KEl2aUi0XTD7hQtsWnsivLK/hcjMVJ7tlfkHsNCIHaLSDgwzFENEi5MuaJpgkblKc
-         LZbDe3fJG5bxB4A984QipmJ5gxHqv/0XlojnAMcRE5InCiIQb8A4vM4hNxY/rEO3tQk6
-         lrUaw8e/+i3QMXoIuEwgvsf93vdgQInCJdSzIANkgYnODzPB+YP5KQ9bmMf1xiwAFH2U
-         7qx4JrvikOvcMnuuXxNWt5H7YPDFvjfKzDFrGNJlWOH2wJdsVJUJyxMMJUft/7vpgsSF
-         r5kw==
-X-Forwarded-Encrypted: i=1; AJvYcCWMhjdI01JrdsdfTZKUK4nzaaR2+/LXvzCHYOxKOBOHhS30BZF683nepZxOc3sYu5V1UACsWGI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFDfv7IL25+0vK3fr2v6BsnBM1TB/fb610c38dLq2ZMUqrO+pU
-	WPQDk5drIppd5tEkQIduHWCfxjQFiy5iki2/hJW9M9qQBBwts4+lkoOUmAGr733RpK0=
-X-Gm-Gg: ASbGncsO7spfn1vvKc6iRhbfFmFvXlC85+5Ew1Y4QTnJGSkWo2phI7Kv3lS3CLMnZLp
-	YzCIdw3D3OrrGpLfGPF8FXoJMoOqSxvItAQvnuoeXM5hrZlzUiWARd/1atGf6XG34A+iJ041CGo
-	iAdtIdOj6D4b5OvH/FfoC5yvzgj7JYvQv9PbSejA2VIEPMl/n++ppR434fSeNRwDcWo+O7nsE52
-	GkyWpjtc+MR121f7hzgXIh1W2rn1wqz04PCTHvUzsfcrFRmVJJPQaOMPMubelPcAhf7ml+8U51w
-	4l28V0tBpQpBD8rcBikXpfDTkZ63UtXEBlJxUBBa0GMqvG1YPDLgEwenn/nt915bVLp6vSdI04i
-	H9p+suRqCERppZj9QFnNSpB0NErno415AACDbQ1EMJvcVrCVoyCYLP5tFkH5rcfOo/XT6k483QN
-	ihBYA=
-X-Google-Smtp-Source: AGHT+IF+i2WhjuFis09P1HmbNsLUwVUwMcIFjOCk5FIhnMXjfFaPahdHVqojAAaz8G1W/NE/AKf0zg==
-X-Received: by 2002:a17:906:c10b:b0:b3b:5fe6:577a with SMTP id a640c23a62f3a-b73677ece6fmr307763166b.8.1763132126316;
-        Fri, 14 Nov 2025 06:55:26 -0800 (PST)
+        bh=x48AYDZ6c8REpkpum5TA6RkDPVy+wpYnc495RC66pG0=;
+        b=c2qqQ4wl+jVGR0X30eu5igKPjqYNAgqUoG4jY471tG+d/FYegK93jUKFGxTCcK6VcO
+         XlqQeJt7baolWdOYlL5VUfpt8RYg+Y/j2rbkWtM0xUFN1ioPIZNSpz6afDHoG/0VZYNe
+         n2fuXfZqegy04wh6IDPgr6uGiv4rPTROXrKWc9X9r6q8GSJUpT9K9HRQpKu7oykCB2nc
+         kiVU72W1HZExXQDXGRIydHRnWvhuApRSkkd3hOf4nGEokw4f2+nii6E6oFyNjhv7Oh1f
+         gdxfTNJM2biHMN0YXk1cREt/a1jTOJnK+nFS0/K49iwexiNaiKE+DMlcxuzMeohJ9n4l
+         dsuw==
+X-Forwarded-Encrypted: i=1; AJvYcCXbsNGySaYS8BqovrVP1iEE7udy86xdXt+D+uVQ9kGaPWl92cX18eZmvFkbffMu+M4B14tRSYU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaVZXxo6Kr6WTo3doryEXqTEd8RJ2QLIHY2zC7seqvbCN6AV/T
+	I7o89Y1dW8ZLwOlcisZk/2Lb4sr4WxLph6WOQo1xs7xZReRL6PPwXlc+qtQp1KRiDV8=
+X-Gm-Gg: ASbGncuP6FdmC3Ii4zrnkskZbmHuPpwnPDw4KUcuIzQ4XtPitu8Pg3RV6B1gIlypk4m
+	hibQYRRWApuH6jVCoAFOL1Y3ExmEteXutTORJQYp9RlX/lBOlgnRM8mf5XAR8wx6YwPtnlUOt7w
+	nyanmpGQ9tOpnyR8azt4LWS47OLoHYJxXJ1cCKsIO8weuA06mPeMM52XOAqHGYO+qh4YbnVDke5
+	OluX9NtWpq2EobF1X+zWR4ki9suVzaabIXLf6tW0F0dX1j5rvjmz1XCczTjdz/vAqC2GzKfEgVG
+	yHg3VtgZdvMUDALoSVO9vx+vs891g46n6XGtCQ2QNs1Ed8KHWOWXLsowhrq0Fk7pcFnVFMEh3/I
+	YujixELSy8tBNAOjOT8FXr6mjRM9gPFy4/KgDAbJpzbsts7Pzm+crt3jiTsomasOsTBQYd9S2pT
+	d0dO0=
+X-Google-Smtp-Source: AGHT+IGmgo/ueKtcknmnIWfzWxJ6fDWEdRR0mk9D2czttZy+48P6Hx0ftDkWhgjzFkqNL+MGjNP5jg==
+X-Received: by 2002:a17:906:9f89:b0:b73:42df:27a with SMTP id a640c23a62f3a-b7367808697mr315784566b.1.1763132222635;
+        Fri, 14 Nov 2025 06:57:02 -0800 (PST)
 Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6433a3f8767sm3899788a12.9.2025.11.14.06.55.25
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fdaf6dasm400448466b.63.2025.11.14.06.57.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Nov 2025 06:55:25 -0800 (PST)
-Date: Fri, 14 Nov 2025 15:55:24 +0100
+        Fri, 14 Nov 2025 06:57:02 -0800 (PST)
+Date: Fri, 14 Nov 2025 15:57:00 +0100
 From: Petr Mladek <pmladek@suse.com>
 To: John Ogness <john.ogness@linutronix.de>
 Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
@@ -83,11 +83,9 @@ Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Thierry Reding <thierry.reding@gmail.com>,
 	Derek Barbosa <debarbos@redhat.com>, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH printk v2 2/2] printk: Avoid scheduling irq_work on
- suspend
-Message-ID: <aRdC3Dd-dfoWopS1@pathway.suse.cz>
+Subject: Re: [PATCH printk v2 0/2] Fix reported suspend failures
+Message-ID: <aRdDPB73FQ4eMomh@pathway.suse.cz>
 References: <20251113160351.113031-1-john.ogness@linutronix.de>
- <20251113160351.113031-3-john.ogness@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,45 +94,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251113160351.113031-3-john.ogness@linutronix.de>
+In-Reply-To: <20251113160351.113031-1-john.ogness@linutronix.de>
 
-On Thu 2025-11-13 17:09:48, John Ogness wrote:
-> Allowing irq_work to be scheduled while trying to suspend has shown
-> to cause problems as some architectures interpret the pending
-> interrupts as a reason to not suspend. This became a problem for
-> printk() with the introduction of NBCON consoles. With every
-> printk() call, NBCON console printing kthreads are woken by queueing
-> irq_work. This means that irq_work continues to be queued due to
-> printk() calls late in the suspend procedure.
+On Thu 2025-11-13 17:09:46, John Ogness wrote:
+> This is v2 of a series to address multiple reports [0][1]
+> (+ 2 offlist) of suspend failing when NBCON console drivers are
+> in use. With the help of NXP and NVIDIA we were able to isolate
+> the problem and verify the fix.
 > 
-> Avoid this problem by preventing printk() from queueing irq_work
-> once console suspending has begun. This applies to triggering NBCON
-> and legacy deferred printing as well as klogd waiters.
+> v1 is here [2].
 > 
-> Since triggering of NBCON threaded printing relies on irq_work, the
-> pr_flush() within console_suspend_all() is used to perform the final
-> flushing before suspending consoles and blocking irq_work queueing.
-> NBCON consoles that are not suspended (due to the usage of the
-> "no_console_suspend" boot argument) transition to atomic flushing.
+> The first NBCON drivers appeared in 6.13, so currently there is
+> no LTS kernel that requires this series. But it should go into
+> 6.17.x and 6.18.
 > 
-> Introduce a new global variable @console_irqwork_blocked to flag
-> when irq_work queueing is to be avoided. The flag is used by
-> printk_get_console_flush_type() to avoid allowing deferred printing
-> and switch NBCON consoles to atomic flushing. It is also used by
-> vprintk_emit() to avoid klogd waking.
+> The changes since v1:
 > 
-> Add WARN_ON_ONCE(console_irqwork_blocked) to the irq_work queuing
-> functions to catch any code that attempts to queue printk irq_work
-> during the suspending/resuming procedure.
+> - For printk_trigger_flush() add support for all flush types
+>   that are available. This will prevent printk_trigger_flush()
+>   from trying to inappropriately queue irq_work after this
+>   series is applied.
 > 
-> Cc: <stable@vger.kernel.org> # 6.13.x because no drivers in 6.12.x
-> Fixes: 6b93bb41f6ea ("printk: Add non-BKL (nbcon) console basic infrastructure")
-> Closes: https://lore.kernel.org/lkml/DB9PR04MB8429E7DDF2D93C2695DE401D92C4A@DB9PR04MB8429.eurprd04.prod.outlook.com
-> Signed-off-by: John Ogness <john.ogness@linutronix.de>
+> - Add WARN_ON_ONCE() to the printk irq_work queueing functions
+>   in case they are called when irq_work is blocked. There
+>   should never be (and currently are no) such callers, but
+>   these functions are externally available.
+> 
+> John Ogness
+> 
+> [0] https://lore.kernel.org/lkml/80b020fc-c18a-4da4-b222-16da1cab2f4c@nvidia.com
+> [1] https://lore.kernel.org/lkml/DB9PR04MB8429E7DDF2D93C2695DE401D92C4A@DB9PR04MB8429.eurprd04.prod.outlook.com
+> [2] https://lore.kernel.org/lkml/20251111144328.887159-1-john.ogness@linutronix.de
+> 
+> John Ogness (2):
+>   printk: Allow printk_trigger_flush() to flush all types
+>   printk: Avoid scheduling irq_work on suspend
+> 
+>  kernel/printk/internal.h |  8 ++--
+>  kernel/printk/nbcon.c    |  9 ++++-
+>  kernel/printk/printk.c   | 81 ++++++++++++++++++++++++++++++++--------
+>  3 files changed, 78 insertions(+), 20 deletions(-)
 
-The changes look goot to me:
-
-Reviewed-by: Petr Mladek <pmladek@suse.com>
+The patchset seems to be ready for linux-next from my POV. I am going
+to wait few more days for potential feedback. I'll push it later the
+following week unless anyone complains.
 
 Best Regards,
 Petr
