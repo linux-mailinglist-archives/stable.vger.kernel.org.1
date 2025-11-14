@@ -1,275 +1,440 @@
-Return-Path: <stable+bounces-194786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A59C5CDC1
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 12:29:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8253C5CF3B
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 12:54:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 79FD04E1006
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 11:24:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 82EF14E6390
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 11:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D91A2FA0F2;
-	Fri, 14 Nov 2025 11:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDED3148A0;
+	Fri, 14 Nov 2025 11:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="n+llvOnO";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="dU6ah67w"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aaCuEjuT"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EC83115A6
-	for <stable@vger.kernel.org>; Fri, 14 Nov 2025 11:24:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A8430BF66
+	for <stable@vger.kernel.org>; Fri, 14 Nov 2025 11:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763119468; cv=none; b=BbGH2vZKLPrDV7ZyY0bczO90WgHHJTAs435tSBWzfyYjp2oqGnql7BZA1Ch5JIIGQouWOeQWdYAxhiBqLodVtbDv3zu/D4kembQE4ytcVQJ4C6BRN5G7gmRKZ6m+EKGcn5MYlsKt3vnD3RxW3/ojh/5ihchb0bWnA3cXTLX8B9s=
+	t=1763120976; cv=none; b=Gfh2+LBC5L9ym3hQnvHsnxX6y9IPQWb6fdb+2RyiNi4uoec/swoi/27pbJMlawIowSt8Ly42v5TJQ+CNCj3udUMiUUhlneydASCdDw6APTrCQSKFo6xHbPEfmMzZrqVnFoAxkG5KE3aNhtnrkZKLVUtqd2H792BVrn7tlQFimXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763119468; c=relaxed/simple;
-	bh=4jaLqD3KZ7VuNrlZ6Q6LZMSVU3w1+1xihGdTjga8JjM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k0GWzkMddiQltUQhG98fhjKIwBT0i11mk6Xejmvz/jc/I1JTaIaK+c+8Sw8CsRg8GpdgwAXMRGuFpfhK0tO51c7YaW+2IUeZ0sciwDAqrpnPL3HbKrWnffakJYfBMNSeSijkFBwUatkH1+xZx1D9Yal0bvbCeUPGd5QZt5bEQ9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=n+llvOnO; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=dU6ah67w; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AE8gZXT1485460
-	for <stable@vger.kernel.org>; Fri, 14 Nov 2025 11:24:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	50JEvdflBeKatW9OY+cR1OJ8SgpTllW/vP2IZkIBCk8=; b=n+llvOnOw1qaao6q
-	QcTfxCQ1uNvCabsnHPbv2Nv0EmN3d1ynBcBP/gMSqsLUxEsT93uKO7wePXuRWFsY
-	bGRzsw3fAwnTFuir45oQ8DgJToVm/yuPCYUQjUvNTbfOymjtVu4PkwiUsNfffA1I
-	YCQ42UvXklpURm5MMfvkm00Uj44NZyemAOcq3S2W5H7laReRiPSNK+9L7d5BxKhO
-	W3DK6qKWT5Am1hCU2zBKv0417c62IevssNUa7g7ZIfPzoMj3KU87ZZufYSsJAAyK
-	uoxPKzYQ9+ZoufKktOnXLFACPbaTUKk2DZaquISO89WSJiOvT9VB8FXXveyL4pJy
-	PpgH8Q==
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4adr9hsyf5-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 14 Nov 2025 11:24:25 +0000 (GMT)
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-b63038a6350so2390845a12.0
-        for <stable@vger.kernel.org>; Fri, 14 Nov 2025 03:24:25 -0800 (PST)
+	s=arc-20240116; t=1763120976; c=relaxed/simple;
+	bh=vwahUSp5YQTJyYca3f9QlLDPSMAEJf7JQP6DChDyn/c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bOVG6FCm+h5XZQewdUhifrzeYXU3Y9b7LmqzEJmrqKYe9FS+/LSNxRw/0+Hwy3a8I8Ku9XqW1MKhNg/ijNSqN/vbkBfTN+P/XuQq9wglxARiIQISpIy2Y1wiuy5vWrsQd2A2+KwddEsOy3Mk1I/RyYRPmbX/N1KgHmZIF1MgQ9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aaCuEjuT; arc=none smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-787c9f90eccso20913867b3.3
+        for <stable@vger.kernel.org>; Fri, 14 Nov 2025 03:49:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1763119464; x=1763724264; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=50JEvdflBeKatW9OY+cR1OJ8SgpTllW/vP2IZkIBCk8=;
-        b=dU6ah67wsyqijI0TXiSi6fB2R8aEXRuVVWBXKq/2j4ZB0Db1QZPeK4GPSzgQh3od5f
-         0tr/w3/bgAfszZLELSE0wVvR/s+EzG/Gh+mfdP18uhTjCjaJ98UwrhHV9XBpggyIKcgd
-         ILIcg5bUUs2UGEAlHkn5wsYyj4VBqQqtP1Yp3vlIOBvvvGO6JFtRLk1wcyJUWqasOJG8
-         kRVnEnJHFRPQAhTo86u7BQwM/KxpjWGBB+W4ohMjvbCdZESh0szvJkYF95+kMZAkZxps
-         ugcgmySPL3LCw3a75gA0qhLf28uM7qr1ABNoezc5gk+09w57WjzssmsrgDMSYpYiSfPx
-         cNSg==
+        d=gmail.com; s=20230601; t=1763120973; x=1763725773; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KCP0fq9NrHtq04u5AKlbZ6NekY0qgPfss4jXoTspXHc=;
+        b=aaCuEjuTPjI3INZ7KYZYCighaDWn+zPRB8905P9mjQWWNX/Hwm2XaFb8Gmt9QF/phY
+         K5+JW7bPDpsC9JGaGs/Q1tfwo5EP7WcbwS7dY11WAFmjJukrim6mDi7AMumTDuaTKNkP
+         l9PjEgytfe6J8UaIIotcUWOVKYg7dZy9Ua5Z0sDv18VAvaMnxZ7VYgL0sCwdzQVYGAHl
+         sWUZAyFIZs5ugPGvlcCqiey2JC+sZGtrgM6eplvyI2Q3RfPmOI6h/CtaCMNRDLcypi77
+         rToc0btfawCjXPh+w6SE7nlG4NkcT+veK99NPWQPW5HjFGqYGvpqI4XBXZ3lflQEC6Qg
+         RLCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763119464; x=1763724264;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=50JEvdflBeKatW9OY+cR1OJ8SgpTllW/vP2IZkIBCk8=;
-        b=WMXQiE77DxVqs6HMsawkGLR1MftSGXFuHl+JWJqjI0eTXPawVzmiP3675si4A+EqKJ
-         Tyui5aPrEBVnrzYN/UWUAN3qvif18sdawibZhYlgSytCPCeLcfKYKq4ou2E9sF6XrJve
-         kyHxeAyDN3WN2Ons2Xh8P+HEjRW8Gk0tFHvOK1cbX/AMbTXh0hvjiyxwV17rfNLYIJgP
-         RsHGwhPWOzIPhnoT1D19RYjX92RNXgi+iDw7nrDPeecvxwPhFkEpsv7YCtI3eJeKa4xn
-         Vrw7kpP6FkcTrOlWui1rHd0GBIFFQTG3AWEqXBi1i/+axmWafZHE+r1U66jlMkjrr3Ii
-         rv9w==
-X-Forwarded-Encrypted: i=1; AJvYcCXsXqP4glrxU6XRL32TwY4biakJlERojCoz63nkCWNPei8+L3SKVfWxQdOULDnBOQSiVkoVvYg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEJf+IYj2ewEFphK4W/EUhlgdKjyJ+A7dna1s7nYjg4TgTKEbS
-	hTPlOXd+3JzsKLkhrRaNOPgd+JJZQV/P7c71zBC6Me9DYgYp1GVS398a2kpkcwADHUOLg7yApLb
-	HRdSFBLvCetiYCjMOOhGEb9bVMCf7qsnzihem3e+8vq8boFnp/mqLH7XxK3Q=
-X-Gm-Gg: ASbGnctfSoSZ+mS5eEjdGqi5rJUL6B1eBXplL3VdS3KGQRV8YenLJqVR3LSTamVfYVe
-	lEQSwp++pq69cq+C4zp9CsNzer54S7lucFbxpm8JVQAtZj/9Eg7p/iimkD9kNP3iuZcLxGu5GYk
-	H5RTisuyduVWA91jB8IQsJIgqPoqi0COvmqws9TMlg7fHkxHO6C14wf+i5gT6GCZuVNHo05R+gw
-	UGd1LLWpurTle2MiiDF7lOEuaVkzcvfKz0HthdESq757p3YMDitn3RvcjqfXxXFiMqCBFjoTYmG
-	8q4svKYbl6utg4D/489xpdWGOXj2aX6UVG8ED0GJmWXjH8FlXHMOeZV2cXj953Vd6W5fKxEI39i
-	svk6pz+w+pt6xwGGfE4ebo1aZHiuTVc6jU80zjTuWyrOyVLQb7EDl9Oo=
-X-Received: by 2002:a05:7022:f68a:b0:119:e569:f84f with SMTP id a92af1059eb24-11b033ae894mr1093209c88.6.1763119464423;
-        Fri, 14 Nov 2025 03:24:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IER/KNwHh+JkP9cIAvCS8U1orv/bAdp2HgRSNhoWYtU/+3J4fEc3CRBuZMRvHx0R9loqh4jRg==
-X-Received: by 2002:a05:7022:f68a:b0:119:e569:f84f with SMTP id a92af1059eb24-11b033ae894mr1093186c88.6.1763119463426;
-        Fri, 14 Nov 2025 03:24:23 -0800 (PST)
-Received: from [10.110.115.10] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11b060885c0sm9652707c88.3.2025.11.14.03.24.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Nov 2025 03:24:22 -0800 (PST)
-Message-ID: <eb280667-f2bc-443a-baac-4f48d5acfc1d@oss.qualcomm.com>
-Date: Fri, 14 Nov 2025 19:24:18 +0800
+        d=1e100.net; s=20230601; t=1763120973; x=1763725773;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KCP0fq9NrHtq04u5AKlbZ6NekY0qgPfss4jXoTspXHc=;
+        b=G4AoJtgKEx/6bXeSE3rkihInlqcmQFrHIwn/qcPm/vxbeqP8XRrao1E2+jpr5eVbv7
+         3Hqv9PKKvepqH5xX0leR102VvaP8lydjtTNwQe82M6aaYYYw+NJMjFW7EtXz+WeSyE+X
+         rDMx87cVru6aDIj5SEMl/MTZknSeUc8ZRLZs70Md0Jxd29RQxJAP3zPoyLQjlkC2XVXI
+         XKtS7kErkhFno7BEioKiOEnaCjccab28UuV4Twi94LpvnpzfDtVl6UuNZTh1ZRdGcBpY
+         mE4KFR3mwN3lHDIa99pA1AdAZ7onhaqoy04hrT0D8EeaAX+IwKGsafuAzp6wOB0JLBmp
+         P3Qg==
+X-Forwarded-Encrypted: i=1; AJvYcCVu+Z+On+e2aIzxzbLGyy/TOH1d2kvT4EtDRsHjwovNub3G3HXBhJ/LVb2lE1mZGgwIc+fOrbA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCkrzfpMPvxN0br83qI8yZxxBnSqhuDwXbPoOxj4sM7e19tVR7
+	jcYU9AhjnCAck59MIuLWWcHqaTt7fN3QmN4TOvjyjiL/Y3ligjpCeok+sO/7OKlt+aGBzfa4CuJ
+	/+MVGFemUZVUENduMbtH4ZztCKRgNADA=
+X-Gm-Gg: ASbGnct8IAQADCYHZGnMfTiTfNZCKP9NjUwC4PJQw121KXa/dfg4R2YzNJNVuaybxm5
+	r2G/q6t/Ap1wN2K1BDJxgoTxQeuQLSG5R4NsdwhzsjrUX7UppCEhO/710FiX833OuLYt73QQxO4
+	Xrkg+WqT6SU8yYYtrVcjjyLiJZkza8kqHY2ygU3noPoGY7Jfy2pdEaRAsFGE/sgBdNSXtXli/FQ
+	+dVGN3Jk1MNbG0ytljQsfyRpOCGJ2xcjdoyWeB8jlWudaq4DG0FkfZUxm2OWyoUkuk1SBwjIb8r
+	HRvo0AAsA0lFS1HVp56sK7iHuUUsgGjztQkhBjE=
+X-Google-Smtp-Source: AGHT+IGgY0RCMrdDYWEgvk991hUiHklUkEjuB1nLEaSEWhi7uSWGUVc3JHjOAg1leKscNYyi/kK07roSx2cyp7IpsMI=
+X-Received: by 2002:a05:690c:7342:b0:786:57f5:b49a with SMTP id
+ 00721157ae682-78929e5341emr24663787b3.29.1763120973150; Fri, 14 Nov 2025
+ 03:49:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] Bluetooth: btqca: Add WCN6855 firmware priority
- selection feature
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
-        Marcel Holtmann
- <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-kernel@vger.kernel.org, cheng.jiang@oss.qualcomm.com,
-        quic_chezhou@quicinc.com, wei.deng@oss.qualcomm.com,
-        stable@vger.kernel.org
-References: <20251114081751.3940541-1-shuai.zhang@oss.qualcomm.com>
- <20251114081751.3940541-2-shuai.zhang@oss.qualcomm.com>
- <967d99e5-7cc1-4f8c-8a1b-21b1bd096cb9@molgen.mpg.de>
- <32c952e1-39c0-421b-ad77-26603907d444@oss.qualcomm.com>
- <8ffee44c-0e44-4137-bf9e-11e7d8b168ab@molgen.mpg.de>
-Content-Language: en-US
-From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
-In-Reply-To: <8ffee44c-0e44-4137-bf9e-11e7d8b168ab@molgen.mpg.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: 0kRKTdM1A4SE9EXtfFHDnJmvWCjxBkMQ
-X-Proofpoint-ORIG-GUID: 0kRKTdM1A4SE9EXtfFHDnJmvWCjxBkMQ
-X-Authority-Analysis: v=2.4 cv=N+Qk1m9B c=1 sm=1 tr=0 ts=69171169 cx=c_pps
- a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=BUV9c_y4XzYhrbKXCpIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=_Vgx9l1VpLgwpw_dHYaR:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE0MDA5MCBTYWx0ZWRfX1K6MD2DwgmQz
- 5xa+kDfyZhh3/pqTvlaJPVVKU0cuPupUnNAh/3q0+7UixnCcjNKQcWTTD3paBQLDvRzZW4ooOsx
- CfcvJaKDhqFndIEAzAAdZSyZhKG+37cCibIA3NMN12pmtfOi82f3HcrK+cdDHD5hUFDrirzGB0a
- 9q8aQWgTfgcvzLjNqMTiZBtKgwiMArBu2adfBhjD/gpwInuNVZKGFsqVgUwdF7ni/jqQk1Mwx9N
- GyxPIVKnyiPf0wfCiccB/eQN4FTfQ9jpAqgxCUiGyH6T3vDk25ytRl81XxCpTTTg/SRCrxkZ8Pg
- fNqo0T9ZPMETIoy1/2KXreCFGgt7htx8NAgMcfBCk48sm3ujq2dHqZYayl5RF6SBOkbfQj6Y0WP
- kV6AarS/GSmLRfzKp2FMdKeXpOMkrA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-14_03,2025-11-13_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 spamscore=0 suspectscore=0 impostorscore=0
- clxscore=1015 malwarescore=0 bulkscore=0 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511140090
+References: <aRYjk4JBqHvVl-wN@eldamar.lan> <7a38c04d-4e54-4f1a-96fd-43f0f11ab97b@linux.microsoft.com>
+In-Reply-To: <7a38c04d-4e54-4f1a-96fd-43f0f11ab97b@linux.microsoft.com>
+From: Peter Morrow <pdmorrow@gmail.com>
+Date: Fri, 14 Nov 2025 11:49:22 +0000
+X-Gm-Features: AWmQ_bl0SBJOFSgqRHSj1LuxiEDat2xdPPqrhSzSzQnn92HbNlDYJQ1byHb3M2M
+Message-ID: <CAFcZKTwQgd9hrTaXnThML=+WG82TH3DK90FT1-WWsBSoRj7dRw@mail.gmail.com>
+Subject: Re: [REGRESSION 6.12.y] hyper-v: BUG: kernel NULL pointer
+ dereference, address: 00000000000000a0: RIP: 0010:hv_uio_channel_cb+0xd/0x20 [uio_hv_generic]
+To: Naman Jain <namjain@linux.microsoft.com>
+Cc: Salvatore Bonaccorso <carnil@debian.org>, Long Li <longli@microsoft.com>, 1120602@bugs.debian.org, 
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	regressions@lists.linux.dev, stable@vger.kernel.org, 
+	John Starks <jostarks@microsoft.com>, Michael Kelley <mhklinux@outlook.com>, 
+	Tianyu Lan <tiala@microsoft.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Dear Paul
+Hi Naman,
 
-On 11/14/2025 6:45 PM, Paul Menzel wrote:
-> Dear Shuai,
+On Fri, 14 Nov 2025 at 06:03, Naman Jain <namjain@linux.microsoft.com> wrot=
+e:
 >
 >
-> Am 14.11.25 um 11:41 schrieb Shuai Zhang:
 >
->> On 11/14/2025 6:04 PM, Paul Menzel wrote:
+> On 11/13/2025 11:59 PM, Salvatore Bonaccorso wrote:
+> > Peter Morrow reported in Debian a regression, reported in
+> > https://bugs.debian.org/1120602 . The regression was seen after
+> > updating, to 6.12.57-1 in Debian, but details on the offending commit
+> > follows.
+> >
+> > His report was as follows:
+> >
+> >> Dear Maintainer,
+> >>
+> >> I'm seeing a kernel crash quite soon after boot on a debian trixie bas=
+ed
+> >> system running 6.12.57+deb13-amd64, unfortunately the kernel panics be=
+fore
+> >> I can access the system to gather more information. Thus I'll provide =
+details
+> >> of the system using a previously known good version. The panic is happ=
+ening
+> >> 100% of the time unfortunately. I have access to the serial console ho=
+wever
+> >> so can enable any required verbose logging during boot if necessary.
+> >>
+> >> Crucially the crash is not seen with kernel version 6.12.41+deb13-amd6=
+4 with the
+> >> same userspace. We had pinned to that version until very recently to i=
+n order
+> >> to work around https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D110=
+9676
+> >>
+> >> I'm running a dpdk application here (VPP) on Azure, VM form factor is =
+a
+> >> "Standard DS3 v2 (4 vcpus, 14 GiB memory)".
+> >>
+> >> The only relevant upstream commit in this area (as far as I can see) i=
+s:
+> >>
+> >> https://lore.kernel.org/linux-hyperv/1bb599ee-fe28-409d-b430-2fc086268=
+936@linux.microsoft.com/
+> >>
+> >> The comment regarding avoiding races at start adds a bit more weight b=
+ehind this
+> >> hunch, though it's only a hunch as I am most definitely nowhere near a=
+n expert
+> >> in this area.
+> >>
+> >> -- Package-specific info:
+> >>
+> >> [   19.625535] BUG: kernel NULL pointer dereference, address: 00000000=
+000000a0
+> >> [   19.628874] #PF: supervisor read access in kernel mode
+> >> [   19.630841] #PF: error_code(0x0000) - not-present page
+> >> [   19.632788] PGD 0 P4D 0
+> >> [   19.633905] Oops: Oops: 0000 [#1] PREEMPT SMP PTI
+> >> [   19.635586] CPU: 3 UID: 0 PID: 0 Comm: swapper/3 Not tainted 6.12.5=
+7+deb13-amd64 #1  Debian 6.12.57-1
+> >> [   19.640216] Hardware name: Microsoft Corporation Virtual Machine/Vi=
+rtual Machine, BIOS Hyper-V UEFI Release v4.1 09/28/2024
+> >> [   19.644514] RIP: 0010:hv_uio_channel_cb+0xd/0x20 [uio_hv_generic]
+> >> [   19.646994] Code: 02 00 00 5b 5d e9 53 98 69 e9 0f 1f 00 90 90 90 9=
+0 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 48 8b 47 1=
+0 <48> 8b b8 a0 00 00 00 f0 83 44 24 fc 00 e9 51 6f fa ff 90 90 90 90
+> >> [   19.654377] RSP: 0018:ffffb15ac01a4fa8 EFLAGS: 00010046
+> >> [   19.656385] RAX: 0000000000000000 RBX: 0000000000000015 RCX: 000000=
+0000000015
+> >> [   19.659240] RDX: 0000000000000001 RSI: ffffffffffffffff RDI: ffff8f=
+f69c759400
+> >> [   19.662168] RBP: ffff8ff548790200 R08: ffff8ff548790200 R09: 00fca7=
+5150b080e9
+> >> [   19.665239] R10: 0000000000000000 R11: ffffb15ac01a4ff8 R12: ffff8f=
+f871dc1480
+> >> [   19.668193] R13: ffff8ff69c759400 R14: ffff8ff69c7596a0 R15: ffffff=
+ffc106e160
+> >> [   19.671106] FS:  0000000000000000(0000) GS:ffff8ff871d80000(0000) k=
+nlGS:0000000000000000
+> >> [   19.674281] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> >> [   19.676533] CR2: 00000000000000a0 CR3: 0000000100ba6003 CR4: 000000=
+00003706f0
+> >> [   19.679385] Call Trace:
+> >> [   19.680361]  <IRQ>
+> >> [   19.681181]  vmbus_isr+0x1a5/0x210 [hv_vmbus]
+> >> [   19.682916]  __sysvec_hyperv_callback+0x32/0x60
+> >> [   19.684991]  sysvec_hyperv_callback+0x6c/0x90
+> >> [   19.686665]  </IRQ>
+> >> [   19.687509]  <TASK>
+> >> [   19.688366]  asm_sysvec_hyperv_callback+0x1a/0x20
+> >> [   19.690262] RIP: 0010:pv_native_safe_halt+0xf/0x20
+> >> [   19.692067] Code: 09 e9 c5 08 01 00 0f 1f 44 00 00 90 90 90 90 90 9=
+0 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d e5 3b 31 00 fb f=
+4 <c3> cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90
+> >> [   19.699119] RSP: 0018:ffffb15ac0103ed8 EFLAGS: 00000246
+> >> [   19.701412] RAX: 0000000000000003 RBX: ffff8ff5403b1fc0 RCX: ffff8f=
+f54c64ce30
+> >> [   19.704328] RDX: 0000000000000000 RSI: 0000000000000003 RDI: 000000=
+000001f894
+> >> [   19.706910] RBP: 0000000000000003 R08: 000000000bb760d9 R09: 00fca7=
+5150b080e9
+> >> [   19.709762] R10: 0000000000000003 R11: 0000000000000001 R12: 000000=
+0000000000
+> >> [   19.712510] R13: 0000000000000000 R14: 0000000000000000 R15: 000000=
+0000000000
+> >> [   19.715173]  default_idle+0x9/0x20
+> >> [   19.716846]  default_idle_call+0x29/0x100
+> >> [   19.718623]  do_idle+0x1fe/0x240
+> >> [   19.720045]  cpu_startup_entry+0x29/0x30
+> >> [   19.721595]  start_secondary+0x11e/0x140
+> >> [   19.723080]  common_startup_64+0x13e/0x141
+> >> [   19.725222]  </TASK>
+> >> [   19.726387] Modules linked in: isofs cdrom uio_hv_generic uio binfm=
+t_misc intel_rapl_msr intel_rapl_common intel_uncore_frequency_common isst_=
+if_mbox_msr isst_if_common rpcrdma skx_edac_common nfit sunrpc libnvdimm cr=
+ct10dif_pclmul ghash_clmulni_intel sha512_ssse3 sha256_ssse3 rdma_ucm ib_is=
+er sha1_ssse3 rdma_cm aesni_intel iw_cm gf128mul crypto_simd libiscsi crypt=
+d ib_umad ib_ipoib scsi_transport_iscsi ib_cm rapl sg hv_utils hv_balloon e=
+vdev pcspkr joydev mpls_router ip_tunnel ramoops configfs pstore_blk efi_ps=
+tore pstore_zone nfnetlink vsock_loopback vmw_vsock_virtio_transport_common=
+ hv_sock vmw_vsock_vmci_transport vsock vmw_vmci efivarfs ip_tables x_table=
+s autofs4 overlay squashfs dm_verity dm_bufio reed_solomon dm_mod loop ext4=
+ crc16 mbcache jbd2 crc32c_generic mlx5_ib ib_uverbs ib_core mlx5_core mlxf=
+w pci_hyperv pci_hyperv_intf hyperv_drm drm_shmem_helper sd_mod drm_kms_hel=
+per hv_storvsc scsi_transport_fc drm scsi_mod hid_generic hid_hyperv hid se=
+rio_raw hv_netvsc hyperv_keyboard scsi_common hv_vmbus
+> >> [   19.726466]  crc32_pclmul crc32c_intel
+> >> [   19.765771] CR2: 00000000000000a0
+> >> [   19.767524] ---[ end trace 0000000000000000 ]---
+> >> [   19.800433] RIP: 0010:hv_uio_channel_cb+0xd/0x20 [uio_hv_generic]
+> >> [   19.803170] Code: 02 00 00 5b 5d e9 53 98 69 e9 0f 1f 00 90 90 90 9=
+0 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 48 8b 47 1=
+0 <48> 8b b8 a0 00 00 00 f0 83 44 24 fc 00 e9 51 6f fa ff 90 90 90 90
+> >> [   19.811041] RSP: 0018:ffffb15ac01a4fa8 EFLAGS: 00010046
+> >> [   19.813466] RAX: 0000000000000000 RBX: 0000000000000015 RCX: 000000=
+0000000015
+> >> [   19.816504] RDX: 0000000000000001 RSI: ffffffffffffffff RDI: ffff8f=
+f69c759400
+> >> [   19.819484] RBP: ffff8ff548790200 R08: ffff8ff548790200 R09: 00fca7=
+5150b080e9
+> >> [   19.822625] R10: 0000000000000000 R11: ffffb15ac01a4ff8 R12: ffff8f=
+f871dc1480
+> >> [   19.825569] R13: ffff8ff69c759400 R14: ffff8ff69c7596a0 R15: ffffff=
+ffc106e160
+> >> [   19.828804] FS:  0000000000000000(0000) GS:ffff8ff871d80000(0000) k=
+nlGS:0000000000000000
+> >> [   19.832214] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> >> [   19.834709] CR2: 00000000000000a0 CR3: 0000000100ba6003 CR4: 000000=
+00003706f0
+> >> [   19.837976] Kernel panic - not syncing: Fatal exception in interrup=
+t
+> >> [   19.841825] Kernel Offset: 0x28a00000 from 0xffffffff81000000 (relo=
+cation range: 0xffffffff80000000-0xffffffffbfffffff)
+> >> [   19.896620] ---[ end Kernel panic - not syncing: Fatal exception in=
+ interrupt ]---
+> >>
 >
->>> Am 14.11.25 um 09:17 schrieb Shuai Zhang:
->>>> The prefix "wcn" corresponds to the WCN685x chip, while entries 
->>>> without
->>>> the "wcn" prefix correspond to the QCA2066 chip. There are some 
->>>> feature
->>>> differences between the two.
->>>>
->>>> However, due to historical reasons, WCN685x chip has been using 
->>>> firmware
->>>> without the "wcn" prefix. The mapping between the chip and its
->>>> corresponding firmware has now been corrected.
->>>
->>> Present tense: … is now corrected.
->>>
->>> Maybe give one example of the firmware file.
->>>
->>> How did you test this? Maybe paste some log lines before and after?
->>>
->> Should I put the test log results directly in the commit?
+> <snip>
 >
-> Without knowing how they look, I cannot say for sure, but yes, I would 
-> add as much as possible to the commit message.
+> > The offending commit appers to be the backport of b15b7d2a1b09
+> > ("uio_hv_generic: Let userspace take care of interrupt mask") for
+> > 6.12.y.
+> >
+> > Peter confirmed that reverting this commit on top of 6.12.57-1 as
+> > packaged in Debian resolves indeed the issue. Interestingly the issue
+> > is *not* seen with 6.17.7 based kernel in Debian.
+> >
+> > #regzbot introduced: 37bd91f22794dc05436130d6983302cb90ecfe7e
+> > #regzbot monitor: https://bugs.debian.org/1120602
+> >
+> > Thank you already!
+> >
+> > Regards,
+> > Salvatore
 >
-Sure, I’ll update.
+> Hi Peter, Salvatore,
+> Thanks for reporting this crash, and sorry for the trouble. Here is my
+> analysis.
+>
+> On 6.17.7, where commit d062463edf17 ("uio_hv_generic: Set event for all
+> channels on the device") is present, hv_uio_irqcontrol() supports
+> setting of interrupt mask from userspace for sub-channels as well.
+>
+> This aligns with commit e29587c07537 ("uio_hv_generic: Let userspace
+> take care of interrupt mask") which relies on userspace to manage
+> interrupt mask, so it safely removes the interrupt mask management logic
+> in the driver.
+>
+> However, in 6.12.57, the first commit is not present, but the second one
+> is, so there is no way to disable interrupt mask for sub-channels and
+> interrupt_mask stays 0, which means interrupts are not masked. So we may
+> be having an interrupt callback being handled for a sub-channel, where
+> we do not expect it to come. This may be causing this issue.
+>
+> This would have led to a crash in hv_uio_channel_cb() for sub-channels:
+> struct hv_device *hv_dev =3D chan->device_obj;
+>
+>
+> I have ported commit d062463edf17 ("uio_hv_generic: Set event for all
+> channels on the device") on 6.12.57, and resolved some merge conflicts.
+> Could you please help with testing this, if it works for you.
 
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: 30209aeff75f ("Bluetooth: qca: Expand firmware-name to load 
->>>> specific rampatch")
->>>> Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
->>>> ---
->>>>   drivers/bluetooth/btqca.c | 22 ++++++++++++++++++++--
->>>>   1 file changed, 20 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
->>>> index 7c958d606..8e0004ef7 100644
->>>> --- a/drivers/bluetooth/btqca.c
->>>> +++ b/drivers/bluetooth/btqca.c
->>>> @@ -847,8 +847,12 @@ int qca_uart_setup(struct hci_dev *hdev, 
->>>> uint8_t baudrate,
->>>>                    "qca/msbtfw%02x.mbn", rom_ver);
->>>>               break;
->>>>           case QCA_WCN6855:
->>>> +            /* Due to historical reasons, WCN685x chip has been 
->>>> using firmware
->>>> +             * without the "wcn" prefix. The mapping between the 
->>>> chip and its
->>>> +             * corresponding firmware has now been corrected.
->>>> +             */
->>>>               snprintf(config.fwname, sizeof(config.fwname),
->>>> -                 "qca/hpbtfw%02x.tlv", rom_ver);
->>>> +                 "qca/wcnhpbtfw%02x.tlv", rom_ver);
->>>>               break;
->>>>           case QCA_WCN7850:
->>>>               snprintf(config.fwname, sizeof(config.fwname),
->>>> @@ -861,6 +865,13 @@ int qca_uart_setup(struct hci_dev *hdev, 
->>>> uint8_t baudrate,
->>>>       }
->>>>         err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
->>>> +
->>>> +    if (!rampatch_name && err < 0 && soc_type == QCA_WCN6855) {
->>>> +        snprintf(config.fwname, sizeof(config.fwname),
->>>> +             "qca/hpbtfw%02x.tlv", rom_ver);
->>>> +        err = qca_download_firmware(hdev, &config, soc_type, 
->>>> rom_ver);
->>>> +    }
->>>> +
->>>>       if (err < 0) {
->>>>           bt_dev_err(hdev, "QCA Failed to download patch (%d)", err);
->>>>           return err;
->>>> @@ -923,7 +934,7 @@ int qca_uart_setup(struct hci_dev *hdev, 
->>>> uint8_t baudrate,
->>>>           case QCA_WCN6855:
->>>>               qca_read_fw_board_id(hdev, &boardid);
->>>>               qca_get_nvm_name_by_board(config.fwname, 
->>>> sizeof(config.fwname),
->>>> -                          "hpnv", soc_type, ver, rom_ver, boardid);
->>>> +                          "wcnhpnv", soc_type, ver, rom_ver, 
->>>> boardid);
->>>>               break;
->>>>           case QCA_WCN7850:
->>>>               qca_get_nvm_name_by_board(config.fwname, 
->>>> sizeof(config.fwname),
->>>> @@ -936,6 +947,13 @@ int qca_uart_setup(struct hci_dev *hdev, 
->>>> uint8_t baudrate,
->>>>       }
->>>>         err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
->>>> +
->>>> +    if (!firmware_name && err < 0 && soc_type == QCA_WCN6855) {
->>>> +        qca_get_nvm_name_by_board(config.fwname, 
->>>> sizeof(config.fwname),
->>>> +                      "hpnv", soc_type, ver, rom_ver, boardid);
->>>> +        err = qca_download_firmware(hdev, &config, soc_type, 
->>>> rom_ver);
->>>> +    }
->>>> +
->>>>       if (err < 0) {
->>>>           bt_dev_err(hdev, "QCA Failed to download NVM (%d)", err);
->>>>           return err;
->>>
->>> The diff logs good.
->>>
->>> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Applying the patch against the debian 6.12.57 kernel worked, I am no
+longer seeing that panic on boot:
+
+gnos@vEdge:~$ uname -a
+Linux vEdge 6.12+unreleased-amd64 #1 SMP PREEMPT_DYNAMIC Debian
+6.12.57-1a~test (2025-11-14) x86_64 GNU/Linux
+gnos@vEdge:~$ uptime
+ 11:46:33 up 4 min,  1 user,  load average: 3.31, 2.07, 0.89
+gnos@vEdge:~$ sudo dmidecode -t system
+# dmidecode 3.6
+Getting SMBIOS data from sysfs.
+SMBIOS 3.1.0 present.
+
+Handle 0x0001, DMI type 1, 27 bytes
+System Information
+        Manufacturer: Microsoft Corporation
+        Product Name: Virtual Machine
+        Version: Hyper-V UEFI Release v4.1
+        Serial Number: 0000-0002-8036-1108-7588-3134-50
+        UUID: 26e86d6e-140c-496a-862c-a3b3bbcd16ad
+        Wake-up Type: Power Switch
+        SKU Number: None
+        Family: Virtual Machine
+
+Handle 0x0010, DMI type 32, 11 bytes
+System Boot Information
+        Status: No errors detected
+
+gnos@vEdge:~$
+
+Thanks a lot for the quick analysis!
+
+Peter.
+
 >
+> Hi Long,
+> If this works, do you see any concerns if I back-port your patch on
+> older kernels (6.12 and prior)?
 >
-> Kind regards,
+> Regards,
+> Naman
 >
-> Paul
-
-Kind regards,
-
-Shuai
-
-
+> --------------
+> Patch:
+>
+>  From 2f14d48d2bde3f86b153b9f756a9cd688cda3453 Mon Sep 17 00:00:00 2001
+> From: Long Li <longli@microsoft.com>
+> Date: Mon, 10 Mar 2025 15:12:01 -0700
+> Subject: [PATCH] uio_hv_generic: Set event for all channels on the device
+>
+> Hyper-V may offer a non latency sensitive device with subchannels without
+> monitor bit enabled. The decision is entirely on the Hyper-V host not
+> configurable within guest.
+>
+> When a device has subchannels, also signal events for the subchannel
+> if its monitor bit is disabled.
+>
+> This patch also removes the memory barrier when monitor bit is enabled
+> as it is not necessary. The memory barrier is only needed between
+> setting up interrupt mask and calling vmbus_set_event() when monitor
+> bit is disabled.
+>
+> Signed-off-by: Long Li <longli@microsoft.com>
+> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+> Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+> ---
+>   drivers/uio/uio_hv_generic.c | 32 ++++++++++++++++++++++++++------
+>   1 file changed, 26 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
+> index 0b414d1168dd..9f3b124a5e09 100644
+> --- a/drivers/uio/uio_hv_generic.c
+> +++ b/drivers/uio/uio_hv_generic.c
+> @@ -65,6 +65,16 @@ struct hv_uio_private_data {
+>          char    send_name[32];
+>   };
+>
+> +static void set_event(struct vmbus_channel *channel, s32 irq_state)
+> +{
+> +       channel->inbound.ring_buffer->interrupt_mask =3D !irq_state;
+> +       if (!channel->offermsg.monitor_allocated && irq_state) {
+> +               /* MB is needed for host to see the interrupt mask first =
+*/
+> +               virt_mb();
+> +               vmbus_set_event(channel);
+> +       }
+> +}
+> +
+>   /*
+>    * This is the irqcontrol callback to be registered to uio_info.
+>    * It can be used to disable/enable interrupt from user space processes=
+.
+> @@ -79,12 +89,15 @@ hv_uio_irqcontrol(struct uio_info *info, s32 irq_stat=
+e)
+>   {
+>          struct hv_uio_private_data *pdata =3D info->priv;
+>          struct hv_device *dev =3D pdata->device;
+> +       struct vmbus_channel *primary, *sc;
+>
+> -       dev->channel->inbound.ring_buffer->interrupt_mask =3D !irq_state;
+> -       virt_mb();
+> +       primary =3D dev->channel;
+> +       set_event(primary, irq_state);
+>
+> -       if (!dev->channel->offermsg.monitor_allocated && irq_state)
+> -               vmbus_setevent(dev->channel);
+> +       mutex_lock(&vmbus_connection.channel_mutex);
+> +       list_for_each_entry(sc, &primary->sc_list, sc_list)
+> +               set_event(sc, irq_state);
+> +       mutex_unlock(&vmbus_connection.channel_mutex);
+>
+>          return 0;
+>   }
+> @@ -95,11 +108,18 @@ hv_uio_irqcontrol(struct uio_info *info, s32 irq_sta=
+te)
+>   static void hv_uio_channel_cb(void *context)
+>   {
+>          struct vmbus_channel *chan =3D context;
+> -       struct hv_device *hv_dev =3D chan->device_obj;
+> -       struct hv_uio_private_data *pdata =3D hv_get_drvdata(hv_dev);
+> +       struct hv_device *hv_dev;
+> +       struct hv_uio_private_data *pdata;
+>
+>          virt_mb();
+>
+> +       /*
+> +       * The callback may come from a subchannel, in which case look
+> +       * for the hv device in the primary channel
+> +       */
+> +       hv_dev =3D chan->primary_channel ?
+> +       chan->primary_channel->device_obj : chan->device_obj;
+> +       pdata =3D hv_get_drvdata(hv_dev);
+>          uio_event_notify(&pdata->info);
+>   }
+>
+> --
+> 2.43.0
 
