@@ -1,161 +1,121 @@
-Return-Path: <stable+bounces-194767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A7BC5BAAD
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 08:04:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED23C5BAC8
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 08:06:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 060F5348A90
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 07:03:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D10073B0D26
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 07:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D7D1F91E3;
-	Fri, 14 Nov 2025 07:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07041F91E3;
+	Fri, 14 Nov 2025 07:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Kkr8BUxq";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VqrKIJLk"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QPrqaDX1"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D188B12DDA1;
-	Fri, 14 Nov 2025 07:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC571A3160
+	for <stable@vger.kernel.org>; Fri, 14 Nov 2025 07:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763103809; cv=none; b=aTgyu+3eIItJqmxCeWXB6mZdmUtLQS+eucGmrYBjQQNNHV6yrf2wyCG+8xoYovn8uguE8VEEZmkTOA0w3rjBagFUahntq7cXt6es4rLAyxViqNUn0r3IilegNm8EROl4p3zSSacoZ5fLyNN81dQTFsEMcMnGILWyav38p8nemoI=
+	t=1763103978; cv=none; b=S8QXcrIPID3uWfmar7BOf1W94ALm+AOe1O6hx4f75Yy/gtz8HYdgiJZCOZaLn6/XqgrtyeEl3fEXTvEsafG6M6jr8QE90j5Am5DwSe3muqlNX12/aLdJGezRFdj3qZTHyQoAa7ZWsScXwdPLImqQB4LXmbuTYCYS1I2ROi6ideQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763103809; c=relaxed/simple;
-	bh=JJmcUa8kzgG4fsYeJvqgfTT9tu3JsO3ITBAzyO0ISvc=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Ix8p8dVetKtbdjFlvm8C5udWmFz5eLxzY1sOxmKAURk1yduo8PCFRGPBOdkGwg+DwOytB2CdxSr4Eb0qtYrdFWVxig/wwypQcbqdWRiJj/cRLKKAQjnePGv/Ik7ahKWqMFnYacABRthqOT1JlEEXjrMUyLfmXvGAbX+Vh7aPL6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Kkr8BUxq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VqrKIJLk; arc=none smtp.client-ip=202.12.124.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id A0A797A013D;
-	Fri, 14 Nov 2025 02:03:25 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Fri, 14 Nov 2025 02:03:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1763103805;
-	 x=1763190205; bh=+9e6FQJYDBsPl1jkD3novF2T5qQ3BDazY3CfaJMvju8=; b=
-	Kkr8BUxqPGK1Z3+4BpwkcXn5eWZ9hMKOCWH9VvtuOl+T5CZniYPcirw4hz4KbzdQ
-	GKsbIF3vOFzTZntkQ6NCK/rtrMeAMNRe3j5OUq9xExIihhTwc3Z/qRom3f8tL3yS
-	7n2V4faSNEDFfp/ujiH3LAvBsSEziqCvB2Rf++cCpMXwi+2OnPSN9NwwtHrT3YYW
-	Wz0ea1xFFlEXs3HBXsI9GRf7hXxIOlfP3v7G46WAjSqJVOZJary7yua61l1Afuaj
-	0qYzD+bxLzOZnEc+QWoEm2VXAp8kvLkMR/gXCROlc91RF47RX6WrFjoRjiv9CFZq
-	qG3sIpCL8ks0PqG32b3rtA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1763103805; x=
-	1763190205; bh=+9e6FQJYDBsPl1jkD3novF2T5qQ3BDazY3CfaJMvju8=; b=V
-	qrKIJLkCU7Mup7XIDF1GPVKKA5HtwWZ8hfI1GSxMH389tPz/7C6xyCWjp3gvQEDZ
-	foJS+VzCfYF2PT0hBwbTr4KUYAlAO0HaEExLkiyAHoKg10wDZoFKMsbFFoj114Dc
-	5Wity2sFlDERE1MOMPiMQZZJR0VhsYMMxYofbe8ltLdnxvvvqoqswy/wRopAjq68
-	N9WQnOW/dayWEX5etQkEAVT+sYVCJ6olEbiIJX6T10NXQDNao54wMcsP6krVnCrc
-	aeXE/f5cr2JL/yezBvx2EWoH0EuaefrGUHPI98nKSWvaIr5711lWo8X/2prxgu5K
-	y4g+Fa6yM8jYn6zirN7Fw==
-X-ME-Sender: <xms:PNQWacaVLBgC9nNxAwigGX5Drf_gq_HI7fBsev8LJN1HNxR62q6Ygg>
-    <xme:PNQWaSN9ovvEr8UNpipQJTb-Tytj75m2UJODHaIoQWt_WNoGL43TEbXLsZ-HG9x7t
-    0j-cAa8b-NsPptu3MkCZOWxBU6FuCLfPHKLizBNIb53mu5cfuCk_4c>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtdeludejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudefpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
-    epkhhishhhohhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkfihilhgtiiihnhhs
-    khhisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlphhivghrrghlihhsiheskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtohepmhgrnhhisehkvghrnhgvlhdrohhrghdprhgtphht
-    thhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmh
-    dqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohep
-    uhhnihgtohhrnhgpfigrnhhgsehouhhtlhhoohhkrdgtohhmpdhrtghpthhtohepshdqvh
-    gruggrphgrlhhlihesthhirdgtohhm
-X-ME-Proxy: <xmx:PNQWaXUUidTCGn64MDLMVcH47OvgeHBQFXeYoNhlQ4GbuQwTL4iPsg>
-    <xmx:PNQWaUwbGym5csyq4rlEQA7cA_CwvSknjLXJiP2xEfbGuENE6u-Uvg>
-    <xmx:PNQWaWxviwxkJ9-dMGWL06UcV7Ck3G16huzVzBcb5QYNJk0HI3Oxmw>
-    <xmx:PNQWaR24J5sgWpWmsX9owMhMU2_lhQL0E23a1XmsLbzraobsEovf6w>
-    <xmx:PdQWafCtN7VisKCATc9zZ-SqIK6ihquremM1SW5EHRJqIbo3FQZzl7kE>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id CE6DB700054; Fri, 14 Nov 2025 02:03:24 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1763103978; c=relaxed/simple;
+	bh=d9LjtPLP9ntFDGX3+zqvG6uFgPQVD0YLOV0GppXVWLc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iIuiusDB87O4o357HR2Zn0iLrdQxnaEmP6LT0cNkSiPdkdItgS0vLZos16XeD1JC2EqSV7IuuFZMwbJoy6rLzb2qCBY0SIBKj/snJnsP57qPp6ULALWBusGE8nR2vc36RzmTQeO/zjaJLXeoI5wteFt3jrhm864whQeyVmf+7jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QPrqaDX1; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Ja
+	PZ23DPribnGwimqs5KgNFWQUUN5wS6hsvSHAbMjiQ=; b=QPrqaDX1rBoY9QXUF8
+	m8xTgBjzp3cwZqWaaTfckQopbXaLPPrFJ/9hcXfNlW+wInx7qCGwgV61wLADCNjo
+	hE78yimDFEf9tg7MgJHY30Zn9Dd4byKyxVivCW2CxIFuR0IKiN3i1spguh/e4i5H
+	O2MVsasW2OBiYVBWreUcy+iCk=
+Received: from pek-blan-cn-l1.corp.ad.wrs.com (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wDHT6G41BZpwnLFAA--.10020S4;
+	Fri, 14 Nov 2025 15:05:46 +0800 (CST)
+From: jetlan9@163.com
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 6.12.y] wifi: ath11k: Clear affinity hint before calling ath11k_pcic_free_irq() in error path
+Date: Fri, 14 Nov 2025 15:05:09 +0800
+Message-Id: <20251114070509.1764-1-jetlan9@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AO4N9SNPwumV
-Date: Fri, 14 Nov 2025 08:03:04 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Siddharth Vadapalli" <s-vadapalli@ti.com>,
- "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- "Manivannan Sadhasivam" <mani@kernel.org>, "Rob Herring" <robh@kernel.org>,
- bhelgaas@google.com, "Chen Wang" <unicorn_wang@outlook.com>,
- "Kishon Vijay Abraham I" <kishon@kernel.org>
-Cc: stable@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- srk@ti.com
-Message-Id: <201b9ad1-3ebd-4992-acdd-925d2e357d22@app.fastmail.com>
-In-Reply-To: <250d2b94d5785e70530200e00c1f0f46fde4311b.camel@ti.com>
-References: <20251113092721.3757387-1-s-vadapalli@ti.com>
- <084b804f-2999-4f8d-8372-43cfbf0c0d28@app.fastmail.com>
- <250d2b94d5785e70530200e00c1f0f46fde4311b.camel@ti.com>
-Subject: Re: [PATCH] PCI: cadence: Kconfig: change PCIE_CADENCE configs from tristate
- to bool
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDHT6G41BZpwnLFAA--.10020S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ZryxAr48ZrWUGF4DuF1xZrb_yoW8tr18pr
+	W0gay7CF93Jr4xGa1rGF4xZFyfXFsxArW7JrW7Kw13uF4YyFyktF1aqF17tF1UCrWrAFya
+	qwsrKr1fWa4YvFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pujgn5UUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/1tbiOgIGyGkW0b5P3gAAs3
 
-On Fri, Nov 14, 2025, at 06:47, Siddharth Vadapalli wrote:
-> On Thu, 2025-11-13 at 11:13 +0100, Arnd Bergmann wrote:
->> On Thu, Nov 13, 2025, at 10:27, Siddharth Vadapalli wrote:
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-> Thank you for the suggestion. I think that the following Makefile changes
-> will be sufficient and Kconfig doesn't need to be modified:
->
-> diff --git a/drivers/pci/controller/cadence/Makefile
-> b/drivers/pci/controller/cadence/Makefile
-> index 5e23f8539ecc..1a97c9b249b8 100644
-> --- a/drivers/pci/controller/cadence/Makefile
-> +++ b/drivers/pci/controller/cadence/Makefile
-> @@ -4,4 +4,6 @@ obj-$(CONFIG_PCIE_CADENCE_HOST) += pcie-cadence-host.o
->  obj-$(CONFIG_PCIE_CADENCE_EP) += pcie-cadence-ep.o
->  obj-$(CONFIG_PCIE_CADENCE_PLAT) += pcie-cadence-plat.o
->  obj-$(CONFIG_PCI_J721E) += pci-j721e.o
-> +pci_j721e-y := pci-j721e.o pcie-cadence.o
->  obj-$(CONFIG_PCIE_SG2042_HOST) += pcie-sg2042.o
-> +pci_sg2042_host-y := pci-sg2042.o pcie-cadence.o
->
-> If either of PCI_J721E or SG2042_HOST is selected as a built-in module,
-> then pcie-cadence-host.c, pcie-cadence-ep.c and pcie-cadence.c drivers will
-> be built-in. If both PCI_J721E and SG2042_HOST are selected as loadable
-> modules, only then the library drivers will be enabled as loadable modules.
->
-> Please let me know what you think.
+[ Upstream commit 68410c5bd381a81bcc92b808e7dc4e6b9ed25d11 ]
 
-I don't think that the version above does what you want,
-this would build the pcie-cadence.o file into three separate
-modules and break in additional ways if a subset of them are
-built-in.
+If a shared IRQ is used by the driver due to platform limitation, then the
+IRQ affinity hint is set right after the allocation of IRQ vectors in
+ath11k_pci_alloc_msi(). This does no harm unless one of the functions
+requesting the IRQ fails and attempt to free the IRQ. This results in the
+below warning:
 
-I would still suggest combining pcie-cadence{,-ep,-host}.o into
-one module that is used by the other drivers, as that would address
-the build failure you are observing.
+WARNING: CPU: 7 PID: 349 at kernel/irq/manage.c:1929 free_irq+0x278/0x29c
+Call trace:
+ free_irq+0x278/0x29c
+ ath11k_pcic_free_irq+0x70/0x10c [ath11k]
+ ath11k_pci_probe+0x800/0x820 [ath11k_pci]
+ local_pci_probe+0x40/0xbc
 
-An alternative would be to change the pcie-j721e.c file to only
-reference the host portion if host support is enabled for this
-driver.
+The warning is due to not clearing the affinity hint before freeing the
+IRQs.
 
-      Arnd
+So to fix this issue, clear the IRQ affinity hint before calling
+ath11k_pcic_free_irq() in the error path. The affinity will be cleared once
+again further down the error path due to code organization, but that does
+no harm.
+
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1
+
+Cc: Baochen Qiang <quic_bqiang@quicinc.com>
+Fixes: 39564b475ac5 ("wifi: ath11k: fix boot failure with one MSI vector")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250225053447.16824-2-manivannan.sadhasivam@linaro.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
+---
+ drivers/net/wireless/ath/ath11k/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+index 6ebfa5d02e2e..c1d576ff77fa 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.c
++++ b/drivers/net/wireless/ath/ath11k/pci.c
+@@ -936,6 +936,8 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
+ 	return 0;
+ 
+ err_free_irq:
++	/* __free_irq() expects the caller to have cleared the affinity hint */
++	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
+ 	ath11k_pcic_free_irq(ab);
+ 
+ err_ce_free:
+-- 
+2.43.0
+
 
