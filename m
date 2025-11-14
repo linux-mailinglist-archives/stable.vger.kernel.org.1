@@ -1,141 +1,232 @@
-Return-Path: <stable+bounces-194797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 430FEC5D7E4
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 15:11:12 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6FE4C5D9BC
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 15:35:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5D7784EA8E8
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 14:05:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 476E735AD6E
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 14:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E904306B0D;
-	Fri, 14 Nov 2025 14:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD1D8324703;
+	Fri, 14 Nov 2025 14:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RwnRUDRk"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rBqOsu4X"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637141EB195
-	for <stable@vger.kernel.org>; Fri, 14 Nov 2025 14:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A21D320A32
+	for <stable@vger.kernel.org>; Fri, 14 Nov 2025 14:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763129118; cv=none; b=dWBvYtwIZoZHZyqOtp7xkaYQy1OWVkJGW+VnIY+T9lLE5voZbL5xWv8+mpXPNuDUj1KZTW4ZbvIzi/erq1bAXSM5IJlIW4KUPinsEGiYfzxkhLaw8k8gnStwHwVNowDrHeV99x4NJdFG+Dpqt6r/Avt1tlVVZi1B/lCiCsiFR1Q=
+	t=1763130220; cv=none; b=Scwj9hx+hpzUZIdnAV8G+3e/wKa5V+dN8BbIBAgINwuGIC9GHAy/zdTssicV7tUUToB3UX2Ug5BEZQGOlEsMFT6GLXA/AkoLyUGl+28AoAik7LnlbrhOemoVk9CpervG8tWCWBBikvo4rPa9d9WLB+K1SCz1oyVmGQpqvgb4xVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763129118; c=relaxed/simple;
-	bh=PQszCpf/77jd/myDNzNExlDVeGv2LjpI5PKDDM++TGk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rx4TJptIBbhTvSkWxr/IktgLQQs0bG/cuym/MIrYlZqMzF8QMIbjGvP3FmnyW10bGAiJB9X7kJ1vt7wOlEo+q9xY4jM2c+hzG8E0VvSmhSxGaPx9NkWtPD9h0xzTmVXHqQhdekjESWmb/MEoWXFZdntFPkPdlfspAuDUxb/zukQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RwnRUDRk; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763129116; x=1794665116;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=PQszCpf/77jd/myDNzNExlDVeGv2LjpI5PKDDM++TGk=;
-  b=RwnRUDRkNg7HDrNlIpKA9n25Z7tmy5kTCDl4nEt8ammUu27b+qcLjJUS
-   RbOUkgeYjmuQ57jzQmx67xGi9KT/Hcq6UV1O8uwQBwmXfFjJ56YQoLvDC
-   txISXmH6NBtg/bWcr7cIkymxiz0o649usEbFvhxTM+1+u9xuW+v8fVHRv
-   gjBQsEuBBa5XQNwsxIl1ImW17pv6Kn3coOwoQ1qZxMRpeCTONOPbzil4u
-   4LcM6gFhrCCWpMjtHPz9JVZe1fCNl7sw6iGB9gd2SE3FTDzMvn7ZtrsCG
-   F+Thf2le+yAtnuWtHzveN9p46QkkGX6w8m+WxmdmXBj5qkE2DWswtWSFM
-   w==;
-X-CSE-ConnectionGUID: gHorZ+OMQxCAq2doKX0rhg==
-X-CSE-MsgGUID: 55MV3nfmTW6UfrnQlWvHbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="76569450"
-X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; 
-   d="scan'208";a="76569450"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 06:05:15 -0800
-X-CSE-ConnectionGUID: hwyWzw3OTser45lcqEaXqg==
-X-CSE-MsgGUID: uoZLd03+Q9SnNpfVrN65MA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; 
-   d="scan'208";a="190031087"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO [10.245.244.26]) ([10.245.244.26])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 06:05:13 -0800
-Message-ID: <d2ddc2b2-e22a-4cfb-aa27-9332b03ecbc3@intel.com>
-Date: Fri, 14 Nov 2025 14:05:11 +0000
+	s=arc-20240116; t=1763130220; c=relaxed/simple;
+	bh=2HghHUrkl5db0zEbNZE3HDsjkTGa1InKkbx0W70I7zE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F7MuG2u3wtkL+aD/Zz66ZJ/q+TzuO4TWX/5npFLXk3xdElUMQJp6fD3QkjpOyVusRBcgp/mI+ge4MrW4j2c+0DcWpsp4Yqh21siC6lWIQshtc9r+X2+yjUIyE42Si/Lp0iiKMDu5zJEckRL0UmVrBBXxLmW3UN8CFrnLgq5nvrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rBqOsu4X; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Fri, 14 Nov 2025 22:23:29 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763130215;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=edbg6kSgtlnvu7vls6v+XLyNrvXdah8IKPMkEwyjJUo=;
+	b=rBqOsu4XzAKoovKNoPXeQ8Tln72B1IHrM3BHp9bcLAqbJBScFvu28TB7M4lVWu7caqN1Sg
+	t9GAUMRhTCeGYZIPmf7RG6C2pZfNIebinnNAgZLusE+Nb0dGTcTApdnR19rTf9jGSb4L0v
+	9vbcSFnSwysxAl5Vxb2FuAE3+evtqnw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Dawei Li <dawei.li@linux.dev>
+To: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+Cc: andersson@kernel.org, mathieu.poirier@linaro.org,
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	set_pte_at@outlook.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] rpmsg: char: Remove put_device() in
+ rpmsg_eptdev_add()
+Message-ID: <20251114142329.GA5858@wendao-VirtualBox>
+References: <20251113153909.3789-1-dawei.li@linux.dev>
+ <20251113153909.3789-2-dawei.li@linux.dev>
+ <b754155b-a17b-4e8e-92b7-8ab37949dded@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/xe: Prevent BIT() overflow when handling invalid
- prefetch region
-To: Shuicheng Lin <shuicheng.lin@intel.com>, intel-xe@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-References: <20251112181005.2120521-2-shuicheng.lin@intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20251112181005.2120521-2-shuicheng.lin@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b754155b-a17b-4e8e-92b7-8ab37949dded@oss.qualcomm.com>
+X-Migadu-Flow: FLOW_OUT
 
-On 12/11/2025 18:10, Shuicheng Lin wrote:
-> If user provides a large value (such as 0x80) for parameter
-> prefetch_mem_region_instance in vm_bind ioctl, it will cause
-> BIT(prefetch_region) overflow as below:
-> "
->   ------------[ cut here ]------------
->   UBSAN: shift-out-of-bounds in drivers/gpu/drm/xe/xe_vm.c:3414:7
->   shift exponent 128 is too large for 64-bit type 'long unsigned int'
->   CPU: 8 UID: 0 PID: 53120 Comm: xe_exec_system_ Tainted: G        W           6.18.0-rc1-lgci-xe-kernel+ #200 PREEMPT(voluntary)
->   Tainted: [W]=WARN
->   Hardware name: ASUS System Product Name/PRIME Z790-P WIFI, BIOS 0812 02/24/2023
->   Call Trace:
->    <TASK>
->    dump_stack_lvl+0xa0/0xc0
->    dump_stack+0x10/0x20
->    ubsan_epilogue+0x9/0x40
->    __ubsan_handle_shift_out_of_bounds+0x10e/0x170
->    ? mutex_unlock+0x12/0x20
->    xe_vm_bind_ioctl.cold+0x20/0x3c [xe]
->   ...
-> "
-> Fix it by validating prefetch_region before the BIT() usage.
+Hi,
+
+Thanks for the review.
+
+On Fri, Nov 14, 2025 at 05:53:14PM +0800, Zhongqiu Han wrote:
+> On 11/13/2025 11:39 PM, Dawei Li wrote:
+> > put_device() is called on error path of rpmsg_eptdev_add() to cleanup
+> > resource attached to eptdev->dev, unfortunately it's bogus cause
+> > dev->release() is not set yet.
+> > 
+> > When a struct device instance is destroyed, driver core framework checks
+> > the possible release() callback from candidates below:
+> > - struct device::release()
+> > - dev->type->release()
+> > - dev->class->dev_release()
+> > 
+> > Rpmsg eptdev owns none of them so WARN() will complaint the absence of
+> > release():
 > 
-> v2: Add Closes and Cc stable kernels. (Matt)
+> Hi Dawei,
 > 
-> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6478
-> Cc: <stable@vger.kernel.org> # v6.8+
-> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-
-Pushed with added:
-
-Reported-by: Koen Koning <koen.koning@intel.com>
-Reported-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-
-Thanks for the fix.
-
-> ---
->   drivers/gpu/drm/xe/xe_vm.c | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-> index 8fb5cc6a69ec..7cac646bdf1c 100644
-> --- a/drivers/gpu/drm/xe/xe_vm.c
-> +++ b/drivers/gpu/drm/xe/xe_vm.c
-> @@ -3411,8 +3411,10 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
->   				 op == DRM_XE_VM_BIND_OP_PREFETCH) ||
->   		    XE_IOCTL_DBG(xe, prefetch_region &&
->   				 op != DRM_XE_VM_BIND_OP_PREFETCH) ||
-> -		    XE_IOCTL_DBG(xe,  (prefetch_region != DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC &&
-> -				       !(BIT(prefetch_region) & xe->info.mem_region_mask))) ||
-> +		    XE_IOCTL_DBG(xe, (prefetch_region != DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC &&
-> +				      /* Guard against undefined shift in BIT(prefetch_region) */
-> +				      (prefetch_region >= (sizeof(xe->info.mem_region_mask) * 8) ||
-> +				      !(BIT(prefetch_region) & xe->info.mem_region_mask)))) ||
->   		    XE_IOCTL_DBG(xe, obj &&
->   				 op == DRM_XE_VM_BIND_OP_UNMAP) ||
->   		    XE_IOCTL_DBG(xe, (flags & DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET) &&
+> > 
+> > [  159.112182] ------------[ cut here ]------------
+> > [  159.112188] Device '(null)' does not have a release() function, it is broken and must be fixed. See Documentation/core-api/kobject.rst.
+> > [  159.112205] WARNING: CPU: 2 PID: 1975 at drivers/base/core.c:2567 device_release+0x7a/0x90
+> > 
+> 
+> 
+> Although my local checkpatch.pl didn’t complain about this log line
+> exceeding 75 characters, could we simplify it or just provide a summary
+> instead?
+> 
+> 
+> > Fixes: c0cdc19f84a4 ("rpmsg: Driver for user space endpoint interface")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Dawei Li <dawei.li@linux.dev>
+> > ---
+> >   drivers/rpmsg/rpmsg_char.c | 1 -
+> >   1 file changed, 1 deletion(-)
+> > 
+> > diff --git a/drivers/rpmsg/rpmsg_char.c b/drivers/rpmsg/rpmsg_char.c
+> > index 34b35ea74aab..1b8297b373f0 100644
+> > --- a/drivers/rpmsg/rpmsg_char.c
+> > +++ b/drivers/rpmsg/rpmsg_char.c
+> > @@ -494,7 +494,6 @@ static int rpmsg_eptdev_add(struct rpmsg_eptdev *eptdev,
+> >   	if (cdev)
+> >   		ida_free(&rpmsg_minor_ida, MINOR(dev->devt));
+> >   free_eptdev:
+> > -	put_device(dev);
+> 
+> 
+> Yes, remove put_device can solve the warning issue, however it would
+> introduce one memleak issue of kobj->name.
 
+
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/remoteproc/linux.git/tree/drivers/rpmsg/rpmsg_char.c#n381
+> 
+> 
+> dev_set_name(dev, "rpmsg%d", ret); is already called, it depends on
+> put_device to free memory, right?
+
+Good catch.
+
+If it's just device name being leaked, just postpone dev_set_name till
+every resource was allocated successfully. 
+
+[Copying your comment on patch3/3]
+
+> As I mentioned about the potential memory leak issue in patch 1/3, we
+> could consider still using put_device for management, as this better
+> aligns with the driver model standards and avoids potential issue.
+> However, this requires assigning the release function in advance and
+> also handling the special case where ida allocation fails in
+> rpmsg_eptdev_add (removing the manual ida release).
+
+But I agree with you, every data structure embedding struct device
+should bind its life cycle management to struct devcice, that's what
+driver core is designed. But it's bit tricky to implement your proposed
+approach, especially considering backing port to stable kernel. A
+possible solution could be:
+
+diff --git a/drivers/rpmsg/rpmsg_char.c b/drivers/rpmsg/rpmsg_char.c
+index 34b35ea74aab..e223a5452a75 100644
+--- a/drivers/rpmsg/rpmsg_char.c
++++ b/drivers/rpmsg/rpmsg_char.c
+@@ -408,8 +408,13 @@ static void rpmsg_eptdev_release_device(struct device *dev)
+ {
+        struct rpmsg_eptdev *eptdev = dev_to_eptdev(dev);
+ 
+-       ida_free(&rpmsg_ept_ida, dev->id);
+-       if (eptdev->dev.devt)
++       /*
++        * release() can be invoked from error path of rpmsg_eptdev_add(),
++        * WARN() will be fired if ida_free() is feed with invaid ID.
++        */
++       if (likely(ida_exists(&rpmsg_ept_ida, dev->id)))
++               ida_free(&rpmsg_ept_ida, dev->id);
++       if (eptdev->dev.devt && likely(ida_exists(&rpmsg_minor_ida, MINOR(eptdev->dev.devt))))
+                ida_free(&rpmsg_minor_ida, MINOR(eptdev->dev.devt));
+        kfree(eptdev);
+ }
+@@ -458,6 +463,8 @@ static int rpmsg_eptdev_add(struct rpmsg_eptdev *eptdev,
+        struct device *dev = &eptdev->dev;
+        int ret;
+ 
++       dev->release = rpmsg_eptdev_release_device;
++
+        eptdev->chinfo = chinfo;
+ 
+        if (cdev) {
+@@ -471,7 +478,7 @@ static int rpmsg_eptdev_add(struct rpmsg_eptdev *eptdev,
+        /* Anonymous inode device still need device name for dev_err() and friends */
+        ret = ida_alloc(&rpmsg_ept_ida, GFP_KERNEL);
+        if (ret < 0)
+-               goto free_minor_ida;
++               goto free_eptdev;
+        dev->id = ret;
+        dev_set_name(dev, "rpmsg%d", ret);
+ 
+@@ -480,22 +487,13 @@ static int rpmsg_eptdev_add(struct rpmsg_eptdev *eptdev,
+        if (cdev) {
+                ret = cdev_device_add(&eptdev->cdev, &eptdev->dev);
+                if (ret)
+-                       goto free_ept_ida;
++                       goto free_eptdev;
+        }
+ 
+-       /* We can now rely on the release function for cleanup */
+-       dev->release = rpmsg_eptdev_release_device;
+-
+        return ret;
+ 
+-free_ept_ida:
+-       ida_free(&rpmsg_ept_ida, dev->id);
+-free_minor_ida:
+-       if (cdev)
+-               ida_free(&rpmsg_minor_ida, MINOR(dev->devt));
+ free_eptdev:
+        put_device(dev);
+-       kfree(eptdev);
+ 
+        return ret;
+ }
+
+ida_exists() is introduced in 7fe6b987166b9, which is beyond the
+coverage of every stable kernel, and the commit this patch is fixing
+(c0cdc19f84a4) is contained in almost every stable kernel maintained.
+
+Thanks,
+
+	Dawei
+
+> 
+> 
+> >   	kfree(eptdev);
+> >   	return ret;
+> 
+> 
+> -- 
+> Thx and BRs,
+> Zhongqiu Han
 
