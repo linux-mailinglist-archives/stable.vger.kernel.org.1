@@ -1,83 +1,82 @@
-Return-Path: <stable+bounces-194790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50E2C5D0F8
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 13:17:09 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9AC6C5D10B
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 13:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65E8C3AA11E
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 12:17:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AEC0135B77D
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 12:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448CD14EC73;
-	Fri, 14 Nov 2025 12:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B593A190664;
+	Fri, 14 Nov 2025 12:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="pYNbCe5i"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="H2s0BiSy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A57136358
-	for <stable@vger.kernel.org>; Fri, 14 Nov 2025 12:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C2786329
+	for <stable@vger.kernel.org>; Fri, 14 Nov 2025 12:17:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763122624; cv=none; b=J7IzToS/DIoeFmFttZFvSv+ZXlcrCxN/DqmFDqHEvewOmXqhsiGvDtjsDRo6PYkssb1M3uo4KIcARgvFbkiGtcHWCBfT5ORhngnF7ogAA26hCA8zrdYrXpS0lKHo09AbwM4/5L60E2Sv8dzKa38jNjVuMt0ZoFxR8w62JT8RYaM=
+	t=1763122650; cv=none; b=fCl0FyoWWybf0Q6hk/HiAgKsLKRTbr9JEsIq4qMJK3bdnc31ALq183f/dMlNGG/rQ9sjK5aThtA8wnFcEz+eCviGCv3si0jTRxGZ7QWviom6bzUdw6VaM9TP7MTLp58kODlYTRL+p1knmX0PHwj2MSWcZOwNjsyVBEef+Pkyw1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763122624; c=relaxed/simple;
-	bh=ytKFf6tWTEMRKa/hmjUCZSln+A+apd2o8gMHpQNNkCM=;
+	s=arc-20240116; t=1763122650; c=relaxed/simple;
+	bh=/jHCYvHfudowXNxZZJBjH1r13Co+r5TD+q0QuXa4PVw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dE4RPk6wZQa948tp6Cdr5zn6Ka/sL93c4HyfQdo1hLlnv6zz1wiJ6NhAbp2+NoY6r+j73cHIBCBV3kjWNJOqbxTOrfaDssnKXID+symN2mHUl07XoM9ZYS6TsFCvas56MqOdMF2Y4NHX46EMQYDC3Ui9gUsChfIwfQQXjA8ViL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=pYNbCe5i; arc=none smtp.client-ip=209.85.128.41
+	 In-Reply-To:Content-Type; b=WzMqus4VvJm5oNnUQiatmazwPc68NG3UPqjUN2Qqx0vNYnfP07OvMEBtUB5h9aLmo01su0m1QhQBH0CCPM07/RQKdxCMJMS+hYWJVdZvw0DDrdqnLIyPlJl1VBtg6ZnOKsEpdl6X4hLvdcjcDxA2lTizZbWKbaF/h2c71r1iP0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=H2s0BiSy; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-477632d45c9so14566465e9.2
-        for <stable@vger.kernel.org>; Fri, 14 Nov 2025 04:17:01 -0800 (PST)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-429c82bf86bso1071956f8f.1
+        for <stable@vger.kernel.org>; Fri, 14 Nov 2025 04:17:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1763122620; x=1763727420; darn=vger.kernel.org;
+        d=tuxon.dev; s=google; t=1763122647; x=1763727447; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=5+4VXmKc8GdqsVqjC4o+a1rY7ncy6Vgm0Q7gfsgW7BY=;
-        b=pYNbCe5iJqULV5YLcO9oJs6hK3X0Hybhdam5PDwLJN96+bYi3p7mX7Hc54zIhRzxtk
-         bjyTzTOQS+mYh2dWoujR54GwoTI/QCPUH8/icsiS4uuZxKiosCz/p6PGrs/B5++K7pcm
-         Hx0lcIUlfoJZYtTkUsQOyuiylwmxgF+Q8KokqlrbZmDNiqxRLJrro33fzLEhJuw0mh4N
-         0WhH5Khul7vA7ZI0a+JHJNJGmxGWH8MgLheahs+yRcxHOQVE/W2nw6ILZoB6vItFVCAs
-         WUrJRaJ0ba4SrzGu0eGiq/mUtQNmqdn/+iM3Rc+W+MI7SPcQ5IYl/Isg9JHs9dnB8DUA
-         5AiA==
+        bh=FWbVdVcKmIgQNXcQML6O29oQ0R011ddFFEiHnoRKaJQ=;
+        b=H2s0BiSyTnI8++0jjZOaCLTVwk4Lxjq32VWTYiCy+p6hXrCHD7J51Ui8xOoSwsQKcD
+         G3Y9gU6psRpMYUbCtBy8Gzk2fAtUze+ROOGNJVjNruaOiJXjhOc5s/5C4HddL2VDfbPt
+         /G+XjnlFyV0g017qrpFOurQ5xIInZXCAboqrBT5GpNc72XIhaddMMMhy0AoO62FDlPqn
+         K6fjwEZgkLBjFzDs6d4xgwwjvx3y9Yi7hK0CUezsdYcpL4jinQYw4fgO8BMu7blJiqfs
+         2CrK8RhV0jN5CKbgYNRhMpsUJO8wB/n61BErei/5PaqETnoRFny7cLKGep1amAwlMvTD
+         nV7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763122620; x=1763727420;
+        d=1e100.net; s=20230601; t=1763122647; x=1763727447;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5+4VXmKc8GdqsVqjC4o+a1rY7ncy6Vgm0Q7gfsgW7BY=;
-        b=e07OaqpC8ezgPYMhn590GvzjSsGH4cj8nFU9xN74IGS7xjwNw6IbX/9LS9gY1fmMDf
-         ysCif2gGB7w53gz4cMuMkbq4CdHMlGY5IwOpJkG+1WiN3zGVMiSiCeIsRRGyVRhc5gBm
-         6OPdtcamyIykQ5eGP90xYhBW5dadGit0odYBW7Vep+JKL9YhJOu8kHcVQyF9oi6y/yiC
-         O1T2uLjDBx9WBmCYOYvr5Tacew86/QFOrdEPFAO13mmWhOmusxueB0bwBr+DeBL5Ktiq
-         L7hx27VIxbJD18Iv3r5p7ASAFeqLAJPoDWe7ZZWPZbd8uMuk3gpWuhCgdoq2hZAl2ZGN
-         +KEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUsMkGTE4JmtKFFUvcJcpypfZhjxW935phW1ECcqHNac/2mzGAOY6bbA7Sfs1fdwgXVB37ttek=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/tGbHm2GdENMY2aD7ayLdb3uxdzi0pZC1ElC78TODwllY5gcD
-	hJ2dKIbU25ShCB6rBOYE0/yC5UMppu1Fb9mOEkPKbdyhAwx2vDpNqNPIpyfVZvIT4vjCATr+Ndh
-	GsDJJVYM=
-X-Gm-Gg: ASbGncvcqVL+h3QK6PQKYMieJFm7e299/dKqe6V7ljTI+1155FJsdsDnrpbKwOQ8CUa
-	MAFRgLIraRTN/1kPZDe1/Lll/PwYzOygwxFLSADIgJmB9uSvSR18xWlgVJLdzaXVhVROZ5ey/Xf
-	OQjhnvX00BxyhalbceB5H5M94TWdUUvje81m7svq7SIr0RVXXC5hI6xvWOx+sDiM3PJKhqbIxPK
-	vpf/lpI56nH6zlVFyrKjhuksO0y+KZOpe+gL4WAiIEar05yf9SwSS5HV8C0XEkZjVe31jHH1GQL
-	75jJXMbG8KhuXY27nAn3wWegAiEw15Bm/9bCBfMqXfa6DS3h1JbmutgmH17gDd/4sEcoXkyfvrE
-	cDP8aQAChHgx03OxdOyWUyc0yxyTN/ss5yAVScENoEGII7wMvHy0mJlAgnI2JsS6avWf2xyZ+fC
-	908y6JCrOA/8g9NUJvewk=
-X-Google-Smtp-Source: AGHT+IG7ua9Hd9WJN68PNypvCmNCiC8BHy/cDb9A4Sd0TasdV61HLLe0O8GuCtGCcmhOWbH2k/1f5Q==
-X-Received: by 2002:a05:600c:6289:b0:46e:3d41:6001 with SMTP id 5b1f17b1804b1-4778fe8cae9mr29819225e9.34.1763122620367;
-        Fri, 14 Nov 2025 04:17:00 -0800 (PST)
+        bh=FWbVdVcKmIgQNXcQML6O29oQ0R011ddFFEiHnoRKaJQ=;
+        b=XWn675Qoli2c5tX1IfGwwUWsgEfgIpe9ff/5KIhMuZltFbebc34m5UFPQrycoPvLbr
+         fxI+PgIpvTMwdvyvPelO8QiOZtJhoT90Vu7SiVyo/PXvGYERpaG0a3WgNPJs/x+QTbk4
+         HPQnu8HNYaB+WyWEnsDcfAJPYrdVC5dEwmzrhcPz1Wb6g5KYJdLhqj4beOZlFMZZ9lTX
+         fRpp+bPHXSyKqET0ZkFy0y1fBApCGwtOi4pJvqk83gU3fKs6MSB0pkx9fmtLE+0HQ2Ux
+         IYVbFfhwmJncgp9tPoOjnVVdH8SEdppMJ/xp2oODRgRyKmidPAKyDjCeW/t6Q/R1ZUDI
+         Kj9w==
+X-Forwarded-Encrypted: i=1; AJvYcCXVSOso6cP+VFZK8kMrj2RKwgHjJv8TaDz3f+Ri8CY42quvG1Fnvuo+9KHiQTBEpUjkfwUlrOA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+6AAM6fqJGxTOwsShAG0n3nE+fe2RXJiGQ025Hv+gsCHDGAY5
+	lizHV/6QwxEQFGLxhod10CEMJR8Ph5HxC11dK6JEXyxxA8KJ/y54U/lBFlrI6lbYYYU=
+X-Gm-Gg: ASbGnctR9/5LPUMlpQ3VI/2m4zStPZ+wIm4M+BDt1fF9RhZ+WRVBKanJ2eF8wJcm0gy
+	16J4qt5dMupHHgA1usp7gkSu4h3wuccgFlWlyj76ISnObGmXFKlpulTHaTabbnczScEndMvTH4W
+	gHXKZsAvjY2FbA3BHvqTBDVe0lCwiYqbXz8w5IQFj8mjYrUDPFOekNwCzTQ9+R0tByI4WZ6qTKu
+	17RTm90YSJVQl5iOitC52CUJtYt6ll3o2bGoOlxYCutEDGrvKanGnkaNqeWVKa/YTZbm4LuBqGH
+	kR6hTiKRSd9Gm80EVlaIpwkdH1OWjpgX/EkX79UHuTFJ/CGUPXFXGvelNeK44OJcUfZXtkYjA4p
+	IlWkkEDVjhlKhIpJF7rPu8CJyxRhJOFm+6yfzZKlFBHXqDmkac2vXpjiq00a67K8Trl0gv8K66/
+	JbCa9w5I6m
+X-Google-Smtp-Source: AGHT+IHWDEjSqjebElJ40Y85LJmLRDwBFGhrOde2zVXNUcqPkVLjSRdizuSu3jurgeaQwyEgPyTdEg==
+X-Received: by 2002:a05:6000:2008:b0:42b:31da:18b1 with SMTP id ffacd0b85a97d-42b59397865mr2717515f8f.56.1763122647208;
+        Fri, 14 Nov 2025 04:17:27 -0800 (PST)
 Received: from [192.168.50.4] ([82.78.167.134])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47787e95327sm138949845e9.12.2025.11.14.04.16.58
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53f174afsm9409253f8f.33.2025.11.14.04.17.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Nov 2025 04:16:59 -0800 (PST)
-Message-ID: <5d2826ee-ab27-402e-93b9-f0fde31907bc@tuxon.dev>
-Date: Fri, 14 Nov 2025 14:16:57 +0200
+        Fri, 14 Nov 2025 04:17:25 -0800 (PST)
+Message-ID: <ffcb6730-2e1b-452a-b44e-60c8432175e0@tuxon.dev>
+Date: Fri, 14 Nov 2025 14:17:12 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,7 +84,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] ARM: dts: microchip: sama7d65: fix uart fifo size to
+Subject: Re: [PATCH 2/2] ARM: dts: microchip: sama7g5: fix uart fifo size to
  32
 To: nicolas.ferre@microchip.com,
  Alexandre Belloni <alexandre.belloni@bootlin.com>
@@ -93,9 +92,10 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  Ryan Wanner <ryan.wanner@microchip.com>,
  Cristian Birsan <cristian.birsan@microchip.com>, stable@vger.kernel.org
 References: <20251114103313.20220-1-nicolas.ferre@microchip.com>
+ <20251114103313.20220-2-nicolas.ferre@microchip.com>
 From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Content-Language: en-US
-In-Reply-To: <20251114103313.20220-1-nicolas.ferre@microchip.com>
+In-Reply-To: <20251114103313.20220-2-nicolas.ferre@microchip.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -105,13 +105,10 @@ On 11/14/25 12:33, nicolas.ferre@microchip.com wrote:
 > From: Nicolas Ferre <nicolas.ferre@microchip.com>
 > 
 > On some flexcom nodes related to uart, the fifo sizes were wrong: fix
-> them to 32 data.  Note that product datasheet is being reviewed to fix
-> inconsistency, but this value is validated by product's designers.
+> them to 32 data.
 > 
-> Fixes: 261dcfad1b59 ("ARM: dts: microchip: add sama7d65 SoC DT")
-> Fixes: b51e4aea3ecf ("ARM: dts: microchip: sama7d65: Add FLEXCOMs to sama7d65 SoC")
-> Cc: <stable@vger.kernel.org> # 6.16+
+> Fixes: 7540629e2fc7 ("ARM: dts: at91: add sama7g5 SoC DT and sama7g5-ek")
+> Cc: <stable@vger.kernel.org> # 5.15+
 > Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-
 Applied to at91-dt, thanks!
 
