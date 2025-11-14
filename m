@@ -1,120 +1,125 @@
-Return-Path: <stable+bounces-194771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D16C5BE63
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 09:11:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF19C5BF46
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 09:18:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 32079345872
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 08:11:54 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 47D663506C0
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 08:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB1F2F5A22;
-	Fri, 14 Nov 2025 08:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F002F656B;
+	Fri, 14 Nov 2025 08:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MT9IHfhL"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MI02RcxT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7206275AE4;
-	Fri, 14 Nov 2025 08:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1083C21C9E1;
+	Fri, 14 Nov 2025 08:18:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763107908; cv=none; b=KslehChCVHrbW9G2P44D3GXRuhpjodyd/DOVNF9CfaHrE7FdtRZjVYK6Zy05XiHRK/dcpz/+GBeTWnqiJmyHVgEgF4HW/+UyS/qCwvsIFU1euIv9GXqtOGOaKZWn8enjiaU1FIMwjDXIVW2Cqf8GspXS4e9r2RjEIk5p9k7IcKY=
+	t=1763108283; cv=none; b=XYNLeYjsDEcIkhiuEy8QY/mwH693bKut1qrs0+ykMXQY/QnTXNL4SyEY9s2gDKPLkpguhWn1wpuW8y3AP1URlcH5DGuCd7FeMJbK1RPwltCua2e/qN3P6AmQ5fo7Xbt9PQivXC95NQBg5NiadFjrqeI5K/lUX6mPuxZ5a5OZFCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763107908; c=relaxed/simple;
-	bh=OhGJvBDuLbsZuOLjHyEX6xIRl+rLMcdKrk/4+J4TeoY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s8eyIBzMIPsFbvi6ZMlUEoTMRcvTCoDATCXTmwQUCdUextFb5Eq71/9i5UbgRLpn9xTHWdK/CKvZERA9C2fjnGhOR9ZtGf33PBns2p9nhRWiRZ64GUFlxb+uwwlvIFXSCIN3F7sDFh3hvQTM2yO6eHMGnSrFZjpz2DJWS3GuWJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MT9IHfhL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39037C19421;
-	Fri, 14 Nov 2025 08:11:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763107906;
-	bh=OhGJvBDuLbsZuOLjHyEX6xIRl+rLMcdKrk/4+J4TeoY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MT9IHfhLgZNygWpWG+dIRg6p7RUMUEJnK40W4JZjMG0Yi6v+emGp8fU39Dv5V938i
-	 RfBl//v9Ge3H/xItQ2DqNjBiq9ZOnM4UIPaxoDcfBXafM4kkEDITA9SSqc2sSdXGVq
-	 o7Hu4mvfGFxlFKsWc/nNdJvQQlg9sWoXCT9DHE3oYDYq6WZMkCe7PG6unlXomQBHHk
-	 UaXZwAnG6UHtepYc44yd4I52ghf1b8H64CrQCGiRPzXDn9UGEQmvBdJZMaPf1ClPot
-	 aPgBmOUnsHTiqmRoTeu8rOVEFVk+Rd+smmC0ATKdv/AoT0lOdj+uCLIh1F+0T5pdCu
-	 oCyn+0Y2SCsIw==
-Message-ID: <9d30836b-9ddb-4432-aa39-85e32c2ea645@kernel.org>
-Date: Fri, 14 Nov 2025 09:11:40 +0100
+	s=arc-20240116; t=1763108283; c=relaxed/simple;
+	bh=qDEtVWuKa3nNq0TdHsWA5DtCc8KzkRxwXXfPKtQ9XDM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=irMmz5NdVVOJ7s2IRB5Maq8YM+zg6/BQsUNMzvW1xWT7C7FRHE6BOP+pa336zUISo7Tm7YtRBCMUgChZrT42mTCXQU6TdSYsqeg6LuzKZbdcrFOUTx3mCDx4LfsJr4KEPrAvJYcFFdAhViA9LJXAXCzBpQ2sF9nJDE3m3YFj2PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MI02RcxT; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5ADMb0kF1428363;
+	Fri, 14 Nov 2025 08:17:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=QzbJkE3oSLkXlG8DWAR5dymyilF+zia6V5+
+	I2vEt0As=; b=MI02RcxTdPhBdlknLciq30zGJOszl4HNGwmGlLxeEXKuK+gAL9b
+	+KNlNAXKWrvc5M5SWui5Q5DTefXFDESAuj+9FzPdY4DwbeTJKAH/iVN4zLG1DoNl
+	slC5Ag7RNnctocehE6XcO8rVrijcGHN1xDVef4mAQdCR6OG1NXM2nZV4o95qnfCH
+	nhNsSa/xVsopsqWoZkpYL2eT0iKk56GwOgesTKDHbSN4uz8NXrBl3HLQp9SZK/qp
+	oKgjjePJnTbk+WPeZKKVvdyWHOkqKjvQFBWTIXca799nBDD0bP3WGG8PjgjxBK0D
+	zPgQtGkhBnzSUtJECJeIbPJHXvSPYg45RIA==
+Received: from aptaippmta02.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4adr9g1bs9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Nov 2025 08:17:56 +0000 (GMT)
+Received: from pps.filterd (APTAIPPMTA02.qualcomm.com [127.0.0.1])
+	by APTAIPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AE8HsUv016497;
+	Fri, 14 Nov 2025 08:17:54 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 4a9xxn5rja-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Nov 2025 08:17:54 +0000
+Received: from APTAIPPMTA02.qualcomm.com (APTAIPPMTA02.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AE8Hsje016356;
+	Fri, 14 Nov 2025 08:17:54 GMT
+Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
+	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 5AE8Hrnw016353
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Nov 2025 08:17:54 +0000
+Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
+	id D6B1A22B22; Fri, 14 Nov 2025 16:17:52 +0800 (CST)
+From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>, Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-kernel@vger.kernel.org, cheng.jiang@oss.qualcomm.com,
+        quic_chezhou@quicinc.com, wei.deng@oss.qualcomm.com,
+        shuai.zhang@oss.qualcomm.com, stable@vger.kernel.org
+Subject: [PATCH v2 0/1] Bluetooth: btqca: Add WCN6855 firmware priority selection feature
+Date: Fri, 14 Nov 2025 16:17:50 +0800
+Message-Id: <20251114081751.3940541-1-shuai.zhang@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: fix division-by-zero in uffd-unit-tests
-To: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Carlos Llamas <cmllamas@google.com>, Peter Xu <peterx@redhat.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Ujwal Kundur <ujwal.kundur@gmail.com>,
- Brendan Jackman <jackmanb@google.com>, kernel-team@android.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- "open list:MEMORY MANAGEMENT - USERFAULTFD" <linux-mm@kvack.org>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>
-References: <20251113034623.3127012-1-cmllamas@google.com>
- <e0be6864-4260-4843-a432-d47437b5d43f@kernel.org>
- <4a60a703-d9c2-46a8-83b4-a7ecff7f6ba2@lucifer.local>
- <aRXyxWeh81-aTHaC@google.com>
- <b4291d0d-b913-4e61-9f9d-fbebd1eb4720@lucifer.local>
- <20251113153205.6507ecb308e7d09362905da7@linux-foundation.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251113153205.6507ecb308e7d09362905da7@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=L+AQguT8 c=1 sm=1 tr=0 ts=6916e5b5 cx=c_pps
+ a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
+ a=042h51yfOyDqjzMtcBEA:9 a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE0MDA2NCBTYWx0ZWRfX5QPR+2xmsbH+
+ RTOEenc2E64SMb5nw7X4CWcYVF59jguksETLinpV/XQFmrQG/ir7x8vFqQC4xVXaskjl/Y8JHrS
+ mqJx/oKUMvlYAkfpI5hKtopNaCWf0jJq8gb590Ks5cvQAb2o9Ae4+o18mhkmh3uMB9hld4DqfQu
+ ZHrgDktBmZp1yJlY3LKLxrMT83Ih82eCLUkuDyhHtRWlM3m2FyGpQIOGToa/iiaT4oHEXOIxV5s
+ 3TvSQin2oc0IilhAJzd08SJ7yqj9Zhp8Trmblr/Brk3exe4B+gflA1mc8+zRtcmsyVY5tb7NbVg
+ Ib69yzhO5JzTiSClWPx+tHtn4tu/jG4s0AxsN/9ZKP1ohm1aGEVVfqC/CBZmDKIT/qg0H2JEcE8
+ SUeBALCyvY3E2e7a6JwHykYQMIPQFA==
+X-Proofpoint-ORIG-GUID: AQ51e088eEfbNqeg60lillmFnL4wgcg6
+X-Proofpoint-GUID: AQ51e088eEfbNqeg60lillmFnL4wgcg6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-14_01,2025-11-13_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 impostorscore=0 priorityscore=1501 adultscore=0
+ clxscore=1011 bulkscore=0 malwarescore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511140064
 
-On 14.11.25 00:32, Andrew Morton wrote:
-> On Thu, 13 Nov 2025 15:03:06 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
-> 
->> On Thu, Nov 13, 2025 at 03:01:25PM +0000, Carlos Llamas wrote:
->>> On Thu, Nov 13, 2025 at 09:54:37AM +0000, Lorenzo Stoakes wrote:
->>>> On Thu, Nov 13, 2025 at 10:06:42AM +0100, David Hildenbrand (Red Hat) wrote:
->>>>> On 13.11.25 04:46, Carlos Llamas wrote:
->>>>>> Commit 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global
->>>>>> vars into struct") moved some of the operations previously implemented
->>>>>> in uffd_setup_environment() earlier in the main test loop.
->>>>>>
->>>>>> The calculation of nr_pages, which involves a division by page_size, now
->>>>>> occurs before checking that default_huge_page_size() returns a non-zero
->>>>>> This leads to a division-by-zero error on systems with !CONFIG_HUGETLB.
->>>>>>
->>>>>> Fix this by relocating the non-zero page_size check before the nr_pages
->>>>>> calculation, as it was originally implemented.
->>>>>>
->>>>>> Cc: stable@vger.kernel.org
->>>>>
->>>>> Do we CC stable on unit tests? From my recollection, no.
->>>>
->>>> Yeah please let's not.
->>>
->>> Oops, I keep getting confused about this Cc stable thing. Please let me
->>> know if a v2 dropping the tag is needed.
->>
->> No need, Andrew should spot the objection and drop the tag :)
-> 
-> I actually add cc:stable tags to selftests fixes!
-> 
-> Because why not.  Why leave people running known-to-be-buggy code when
-> our backporting processes are so well-functioning and lightweight?
-> 
-> I'm not getting the objection?
+Fixed WCN6855 firmware to use the correct FW file and added a fallback mechanism.
 
-I thought we were so inconsistent on that that it ends up being a wasted 
-effort to even try taking care about stability of selfests in stable trees.
+Changes v2:
+- Add Fixes tag.
+- Add comments in the commit and code to explain the reason for the changes.
+- Link to v1
+  https://lore.kernel.org/all/20251112074638.1592864-1-quic_shuaz@quicinc.com/
+Shuai Zhang (1):
+  Bluetooth: btqca: Add WCN6855 firmware priority selection feature
+
+ drivers/bluetooth/btqca.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
 -- 
-Cheers
+2.34.1
 
-David
 
