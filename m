@@ -1,98 +1,292 @@
-Return-Path: <stable+bounces-194827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAAD9C5F855
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 23:39:43 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32286C5F8AC
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 23:59:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 57D2934F9DC
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 22:39:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A9C0B35730F
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 22:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268D12FDC20;
-	Fri, 14 Nov 2025 22:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6524830AAD7;
+	Fri, 14 Nov 2025 22:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="i8uaM4bq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tqA0qV41"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C920429D27A;
-	Fri, 14 Nov 2025 22:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8BF2FB622;
+	Fri, 14 Nov 2025 22:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763159951; cv=none; b=YJHVuTDoupfNN8pjHZvMxydXOQCfKwLpzZWKr9NArCOsP74pEGZ3RszSDxV4QsL931XA8wPzNPZ8CiT7TuRbCGuMYyXj2/S9pFxMOZaG8KNQPKt2cunYQHCu8s6NC2Z0VmDAm+LXUop0fzqiiMibqTl04m4qufMSTnEkPG/c/24=
+	t=1763161192; cv=none; b=QTFhULGv9ctWs2IZFaawyqctM/VU6OpKIH5cbwZvHPk1LlEpoOGt3PagSSPgwHgKPfxuY9ljfcqrq2ORZrdxCtSKFrjQABugKP9RXt3RDlkPJsOkjrMKn69gY8lrTxwweKuNaGXkXIxQ2viay923Rfl+dKfHfRnuJIVBIktGEic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763159951; c=relaxed/simple;
-	bh=MYESjMwsofYhqqquOVfZchs52Vx8aKwvtmP2Lmh5LHE=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=eqKESJ9r0dTl36FPXVIC4UmfVJ0WgprJ7cM/8TIRDCdmbFeQRpIeR1wCQHW3Rbtw224ALufiwHUhvQeYaGJ4ETtUGuGRrnuBoDNLPbmCEljj5175ByQlcCwtwxnbySOp9/ZeTF7swC1Dlxmh70VeO+VWz66akfsDvgCujigaNKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=i8uaM4bq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF69C4CEF5;
-	Fri, 14 Nov 2025 22:39:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763159950;
-	bh=MYESjMwsofYhqqquOVfZchs52Vx8aKwvtmP2Lmh5LHE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=i8uaM4bqM/bAoszT1IjaRnvMQKaHJOAf2cjkjEQMgfdFGodOKmrvYIXQ72E7IljE2
-	 wMLOmULdxSobtPEPSgdfYKeEuuC2Hw7V/uPUKlTFV0IvsQICMERyNtvFwZHby9fF+p
-	 B/R2us7EVhMEVKTjjFgmroiAhM5yIjim9sXODTgc=
-Date: Fri, 14 Nov 2025 14:39:09 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Carlos Llamas
- <cmllamas@google.com>, Peter Xu <peterx@redhat.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Ujwal Kundur
- <ujwal.kundur@gmail.com>, Brendan Jackman <jackmanb@google.com>,
- kernel-team@android.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, "open list:MEMORY MANAGEMENT - USERFAULTFD"
- <linux-mm@kvack.org>, "open list:KERNEL SELFTEST FRAMEWORK"
- <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH] selftests/mm: fix division-by-zero in uffd-unit-tests
-Message-Id: <20251114143909.14ecee31b88f179bc2858e30@linux-foundation.org>
-In-Reply-To: <9d30836b-9ddb-4432-aa39-85e32c2ea645@kernel.org>
-References: <20251113034623.3127012-1-cmllamas@google.com>
-	<e0be6864-4260-4843-a432-d47437b5d43f@kernel.org>
-	<4a60a703-d9c2-46a8-83b4-a7ecff7f6ba2@lucifer.local>
-	<aRXyxWeh81-aTHaC@google.com>
-	<b4291d0d-b913-4e61-9f9d-fbebd1eb4720@lucifer.local>
-	<20251113153205.6507ecb308e7d09362905da7@linux-foundation.org>
-	<9d30836b-9ddb-4432-aa39-85e32c2ea645@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1763161192; c=relaxed/simple;
+	bh=xyqlJhrmdH/19s66Uc9RvAWqrLSELkZ0GQwYbHazZgk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=m6OcDRyMWD0wGGLHLH/Ux1VW2Hn1P/k9Mfza7NvHUmm6O8AUVV5/ALHVIQlbhqaF9t/eOrfEL1FbuQzdyR3mZnhwTp3mKIpzJ8uzP4+EH1S9jbvOnyk32QEF/Kk9TfyUzIcFRlYVzQMB2SmMc63IRN0qDxdm60MoPE1Xk7eCVM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tqA0qV41; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8900C116D0;
+	Fri, 14 Nov 2025 22:59:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763161191;
+	bh=xyqlJhrmdH/19s66Uc9RvAWqrLSELkZ0GQwYbHazZgk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tqA0qV41NkYI9yu+vQnXSxgWgDD4H//KHZKp9cPh/ctnD6v4wIPbpmq5lNuRNl6B6
+	 d//QUNohRmZBBd3VHb5DEO5r1MEm6oraVF5HxenEu9IUYKXZDhrm0aBEE5BponoBDO
+	 2j89r/ZwXXxhElSHffQm8Ips2zwCIPr5NhEHsv3CSKoW1L6FoxK7YY4hd5iwONdwP7
+	 CRydf3KAkpcECQAfs0EB6WXhoWdOI1yGMh6CnInpWaUzq+Z3zzrOh078oPaeEgf7h3
+	 jbNVu8WO4bePwPqPIywHfemLhLWSgOMNQwJJHM/LoTx6zkg6zmZFiwG0K5HWArqbxG
+	 G2AiDC+MpYLBA==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Colin Ian King <coking@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] crypto: scatterwalk - Fix memcpy_sglist() to always succeed
+Date: Fri, 14 Nov 2025 14:58:50 -0800
+Message-ID: <20251114225851.324143-2-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20251114225851.324143-1-ebiggers@kernel.org>
+References: <20251114225851.324143-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 14 Nov 2025 09:11:40 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
+The original implementation of memcpy_sglist() was broken because it
+didn't handle overlapping scatterlists.  The current implementation is
+broken too because it calls the skcipher_walk functions which can fail.
+It ignores any errors from those functions.
 
-> >>> Oops, I keep getting confused about this Cc stable thing. Please let me
-> >>> know if a v2 dropping the tag is needed.
-> >>
-> >> No need, Andrew should spot the objection and drop the tag :)
-> > 
-> > I actually add cc:stable tags to selftests fixes!
-> > 
-> > Because why not.  Why leave people running known-to-be-buggy code when
-> > our backporting processes are so well-functioning and lightweight?
-> > 
-> > I'm not getting the objection?
-> 
-> I thought we were so inconsistent on that that it ends up being a wasted 
-> effort to even try taking care about stability of selfests in stable trees.
+Fix it by replacing it with a new implementation written from scratch.
+It always succeeds.  It's also a bit faster, since it avoids the
+overhead of skcipher_walk.  skcipher_walk includes a lot of
+functionality (such as alignmask handling) that's irrelevant here.
 
-Oh,  I try to be vigilant about it.
+Reported-by: Colin Ian King <coking@nvidia.com>
+Closes: https://lore.kernel.org/r/20251114122620.111623-1-coking@nvidia.com
+Fixes: 131bdceca1f0 ("crypto: scatterwalk - Add memcpy_sglist")
+Fixes: 0f8d42bf128d ("crypto: scatterwalk - Move skcipher walk and use it for memcpy_sglist")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
+ crypto/scatterwalk.c         | 103 ++++++++++++++++++++++++++++++-----
+ include/crypto/scatterwalk.h |  52 +++++++++++-------
+ 2 files changed, 121 insertions(+), 34 deletions(-)
 
-hp2:/usr/src/mm> git log tools/testing/selftests/mm | grep stable@|wc
-     44      89    1462
+diff --git a/crypto/scatterwalk.c b/crypto/scatterwalk.c
+index 1d010e2a1b1a..af6c17bfcadb 100644
+--- a/crypto/scatterwalk.c
++++ b/crypto/scatterwalk.c
+@@ -99,30 +99,107 @@ void memcpy_to_sglist(struct scatterlist *sg, unsigned int start,
+ 	scatterwalk_start_at_pos(&walk, sg, start);
+ 	memcpy_to_scatterwalk(&walk, buf, nbytes);
+ }
+ EXPORT_SYMBOL_GPL(memcpy_to_sglist);
+ 
++/**
++ * memcpy_sglist() - Copy data from one scatterlist to another
++ * @dst: The destination scatterlist.  Can be NULL if @nbytes == 0.
++ * @src: The source scatterlist.  Can be NULL if @nbytes == 0.
++ * @nbytes: Number of bytes to copy
++ *
++ * The scatterlists can overlap.  Hence this really acts like memmove(), not
++ * memcpy().
++ *
++ * Context: Any context
++ */
+ void memcpy_sglist(struct scatterlist *dst, struct scatterlist *src,
+ 		   unsigned int nbytes)
+ {
+-	struct skcipher_walk walk = {};
++	unsigned int src_offset, dst_offset;
+ 
+-	if (unlikely(nbytes == 0)) /* in case sg == NULL */
++	if (unlikely(nbytes == 0)) /* in case src and/or dst is NULL */
+ 		return;
+ 
+-	walk.total = nbytes;
+-
+-	scatterwalk_start(&walk.in, src);
+-	scatterwalk_start(&walk.out, dst);
++	src_offset = src->offset;
++	dst_offset = dst->offset;
++	for (;;) {
++		/* Compute the length to copy this step. */
++		unsigned int len = min3(src->offset + src->length - src_offset,
++					dst->offset + dst->length - dst_offset,
++					nbytes);
++		struct page *src_page = sg_page(src);
++		struct page *dst_page = sg_page(dst);
++		const void *src_virt;
++		void *dst_virt;
++
++		if (IS_ENABLED(CONFIG_HIGHMEM)) {
++			/* HIGHMEM: we may have to actually map the pages. */
++			const unsigned int src_oip = offset_in_page(src_offset);
++			const unsigned int dst_oip = offset_in_page(dst_offset);
++			const unsigned int limit = PAGE_SIZE;
++
++			/* Further limit len to not cross a page boundary. */
++			len = min3(len, limit - src_oip, limit - dst_oip);
++
++			/* Compute the source and destination pages. */
++			src_page += src_offset / PAGE_SIZE;
++			dst_page += dst_offset / PAGE_SIZE;
++
++			if (src_page != dst_page) {
++				/*
++				 * Copy between different pages.
++				 * No need for memmove(), as the pages differ.
++				 */
++				src_virt = kmap_local_page(src_page);
++				dst_virt = kmap_local_page(dst_page);
++				memcpy(dst_virt + dst_oip, src_virt + src_oip,
++				       len);
++				flush_dcache_page(dst_page);
++				kunmap_local(dst_virt);
++				kunmap_local(src_virt);
++			} else if (src_oip != dst_oip) {
++				/* Copy between different parts of same page */
++				dst_virt = kmap_local_page(dst_page);
++				memmove(dst_virt + dst_oip, dst_virt + src_oip,
++					len);
++				flush_dcache_page(dst_page);
++				kunmap_local(dst_virt);
++			} /* Exact overlap.  No action needed. */
++		} else {
++			/*
++			 * !HIGHMEM: no mapping needed.  Just work in the linear
++			 * buffer of each sg entry.
++			 */
++			src_virt = page_address(src_page) + src_offset;
++			dst_virt = page_address(dst_page) + dst_offset;
++			if (src_virt != dst_virt) {
++				memmove(dst_virt, src_virt, len);
++				if (ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE)
++					__scatterwalk_flush_dcache_pages(
++						dst_page, dst_offset, len);
++			}
++		}
++		nbytes -= len;
++		if (nbytes == 0) /* No more to copy? */
++			break;
+ 
+-	skcipher_walk_first(&walk, true);
+-	do {
+-		if (walk.src.virt.addr != walk.dst.virt.addr)
+-			memcpy(walk.dst.virt.addr, walk.src.virt.addr,
+-			       walk.nbytes);
+-		skcipher_walk_done(&walk, 0);
+-	} while (walk.nbytes);
++		/*
++		 * There's more to copy.  Advance the offsets by the length
++		 * copied this step, and advance the sg entries as needed.
++		 */
++		src_offset += len;
++		if (src_offset >= src->offset + src->length) {
++			src = sg_next(src);
++			src_offset = src->offset;
++		}
++		dst_offset += len;
++		if (dst_offset >= dst->offset + dst->length) {
++			dst = sg_next(dst);
++			dst_offset = dst->offset;
++		}
++	}
+ }
+ EXPORT_SYMBOL_GPL(memcpy_sglist);
+ 
+ struct scatterlist *scatterwalk_ffwd(struct scatterlist dst[2],
+ 				     struct scatterlist *src,
+diff --git a/include/crypto/scatterwalk.h b/include/crypto/scatterwalk.h
+index 83d14376ff2b..f485454e3955 100644
+--- a/include/crypto/scatterwalk.h
++++ b/include/crypto/scatterwalk.h
+@@ -225,10 +225,38 @@ static inline void scatterwalk_done_src(struct scatter_walk *walk,
+ {
+ 	scatterwalk_unmap(walk);
+ 	scatterwalk_advance(walk, nbytes);
+ }
+ 
++/*
++ * Flush the dcache of any pages that overlap the region
++ * [offset, offset + nbytes) relative to base_page.
++ *
++ * This should be called only when ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE, to ensure
++ * that all relevant code (including the call to sg_page() in the caller, if
++ * applicable) gets fully optimized out when !ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE.
++ */
++static inline void __scatterwalk_flush_dcache_pages(struct page *base_page,
++						    unsigned int offset,
++						    unsigned int nbytes)
++{
++	unsigned int num_pages;
++
++	base_page += offset / PAGE_SIZE;
++	offset %= PAGE_SIZE;
++
++	/*
++	 * This is an overflow-safe version of
++	 * num_pages = DIV_ROUND_UP(offset + nbytes, PAGE_SIZE).
++	 */
++	num_pages = nbytes / PAGE_SIZE;
++	num_pages += DIV_ROUND_UP(offset + (nbytes % PAGE_SIZE), PAGE_SIZE);
++
++	for (unsigned int i = 0; i < num_pages; i++)
++		flush_dcache_page(base_page + i);
++}
++
+ /**
+  * scatterwalk_done_dst() - Finish one step of a walk of destination scatterlist
+  * @walk: the scatter_walk
+  * @nbytes: the number of bytes processed this step, less than or equal to the
+  *	    number of bytes that scatterwalk_next() returned.
+@@ -238,31 +266,13 @@ static inline void scatterwalk_done_src(struct scatter_walk *walk,
+  */
+ static inline void scatterwalk_done_dst(struct scatter_walk *walk,
+ 					unsigned int nbytes)
+ {
+ 	scatterwalk_unmap(walk);
+-	/*
+-	 * Explicitly check ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE instead of just
+-	 * relying on flush_dcache_page() being a no-op when not implemented,
+-	 * since otherwise the BUG_ON in sg_page() does not get optimized out.
+-	 * This also avoids having to consider whether the loop would get
+-	 * reliably optimized out or not.
+-	 */
+-	if (ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE) {
+-		struct page *base_page;
+-		unsigned int offset;
+-		int start, end, i;
+-
+-		base_page = sg_page(walk->sg);
+-		offset = walk->offset;
+-		start = offset >> PAGE_SHIFT;
+-		end = start + (nbytes >> PAGE_SHIFT);
+-		end += (offset_in_page(offset) + offset_in_page(nbytes) +
+-			PAGE_SIZE - 1) >> PAGE_SHIFT;
+-		for (i = start; i < end; i++)
+-			flush_dcache_page(base_page + i);
+-	}
++	if (ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE)
++		__scatterwalk_flush_dcache_pages(sg_page(walk->sg),
++						 walk->offset, nbytes);
+ 	scatterwalk_advance(walk, nbytes);
+ }
+ 
+ void scatterwalk_skip(struct scatter_walk *walk, unsigned int nbytes);
+ 
+-- 
+2.51.2
 
-I pass selftests patches through the same brain algorithm as
-I do everything else, shrug.
 
