@@ -1,189 +1,110 @@
-Return-Path: <stable+bounces-194807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B2CC5E588
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 17:53:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40108C5E951
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 18:31:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 574232411C
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 16:53:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CD27A500ED6
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 17:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D0F2C11F6;
-	Fri, 14 Nov 2025 16:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C9E33E373;
+	Fri, 14 Nov 2025 17:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YnW5BDIY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R974YA7v"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4E32C08C8;
-	Fri, 14 Nov 2025 16:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E998E2DC345;
+	Fri, 14 Nov 2025 17:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763139177; cv=none; b=Z8a9Erkj7GikpTm1vTBZOkZ3oVar65qs6NxO8APbfZxdIkI4OKeKjfWknSnG3B8S/fqDtZTfouc7KLbud4Ti/ku973LXFnc09zxtquskynxNXQYV4H7RM+AY55yAh5ySjt/oObS7T7MkBo6vDGOFRG2PyAvlqmie08lhtp6VqpU=
+	t=1763140009; cv=none; b=B29mQAB4wSKyZ1NZx+yLWUdHK7alPxFHadM3xP3ylxmuoxodiDQB0QLXF4madR1QGn91zN67t64B1Ycso0rkb9X1I7piStK4APWsJ1AVqPdKmJlDyxWHmoBquH7QdW0e7RJUo7WMx5D8ff5N29MIffSmzxIPrHqoumsnTWmg+/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763139177; c=relaxed/simple;
-	bh=J+woEYepazJSNt9YNRNQTE0n0oqUmlct4V9a+jNg6SI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UwVLCm/XOWu++ekWZBBJOqLrHi+BqHwZ8X2oCTexDstVH/sthz2SbY0SULLJvKnoy+3K/Rbta1Huh9jcTHu+vLDJcLBLgwpafuk/Ft5MxkQhkrnajnjaOy3+JtZvN+MEoMirkqxiQrT8s1UL8Zsd5yd4J1lDf8/tkUBm+mFsVgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YnW5BDIY; arc=none smtp.client-ip=95.215.58.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Fri, 14 Nov 2025 16:52:10 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763139162;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=//sw+C17RnFVza/MgpE+dbMHlRJchErAG8BGBLaOJ8Q=;
-	b=YnW5BDIY6QcylpUO5hEnexNGhRyCTK4m7GP1M2Pa62Na6fFFlCq4P1dB2+Z1Ws7olatMly
-	SAkh4EvhNQwiyHXX7QGBBCBl8Gp+HTCT0YJONQZEBVxj5nBs2CCwhNI5HFMBOcu35zQLk7
-	I3w9nKOoCFTkTUoGdxWxgxb+ixxFL+Q=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: SVM: Fix redundant updates of LBR MSR intercepts
-Message-ID: <ei6cdmnvhzyavfobamjkcq2ghdrxcv7ruxhcbzzycqlvaty7zr@5cjkfczxiqom>
-References: <20251112013017.1836863-1-yosry.ahmed@linux.dev>
- <aRdaLrnQ8Xt77S8Y@google.com>
+	s=arc-20240116; t=1763140009; c=relaxed/simple;
+	bh=8VM0uG/P3AR5x2Yp+ncyz04JSf7l6wNPUKaGJaMheJ0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=uKO4ePBZYNY3FC4kv5ihGtoqGRzHZIxut08ZFJb2h67X1ZvOSPpb6Vo3NkJECpTAuRYvMjiisyeRdDRTA1jOGmVShB9ImGYYZrdGYsNMQ3AqZC1tmBY8UGWSbFXcym8QQydATSssXVflzfxTlU2qZJTsejpuE+soTplf159qRCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R974YA7v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A64C116B1;
+	Fri, 14 Nov 2025 17:06:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763140007;
+	bh=8VM0uG/P3AR5x2Yp+ncyz04JSf7l6wNPUKaGJaMheJ0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=R974YA7vC1puvxLtRvK8xFQpfqpYFKZq4IriY3+/N5P/me0XYwLAtT8bq5Ny8bVVi
+	 FOCDD2pRuRFT960qIiqpOITBNDLgp1oEWWAwBjwAbYid+qeacAQvyhh6AyFYS3lTYS
+	 QwWA8D76GmrEuM39I2U+W9usi2cMehSp5VRp/5G4/ipdMSbYcAo3JPBJ6YvkDQvASd
+	 a6KaFRpFaoqDYMtZVkWVdPTDg7oaCPbiYjOVEdG1Kbejur6geqXGxpSC/LwlqHMevV
+	 XmUQxouRFDFM9z9peT9029eaHTSmSgVZk6n3cKP2R1wE287v3hX0dtv18EI+Ft/Vid
+	 06jNt2IWIk4fA==
+From: Mark Brown <broonie@kernel.org>
+To: Srinivas Kandagatla <srini@kernel.org>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Alexey Klimov <alexey.klimov@linaro.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>, 
+ linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20251023-asoc-regmap-irq-chip-v1-0-17ad32680913@linaro.org>
+References: <20251023-asoc-regmap-irq-chip-v1-0-17ad32680913@linaro.org>
+Subject: Re: [PATCH RFC 0/2] ASoC: codecs: pm4125: Two minor fixes for
+ potential issues
+Message-Id: <176314000498.179998.13753639237348930413.b4-ty@kernel.org>
+Date: Fri, 14 Nov 2025 17:06:44 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aRdaLrnQ8Xt77S8Y@google.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-88d78
 
-On Fri, Nov 14, 2025 at 08:34:54AM -0800, Sean Christopherson wrote:
-> On Wed, Nov 12, 2025, Yosry Ahmed wrote:
-> > svm_update_lbrv() always updates LBR MSRs intercepts, even when they are
-> > already set correctly. This results in force_msr_bitmap_recalc always
-> > being set to true on every nested transition,
+On Thu, 23 Oct 2025 11:02:49 +0200, Krzysztof Kozlowski wrote:
+> I marked these as fixes, but the issue is not likely to trigger in
+> normal conditions.
 > 
-> Nit, it's only on VMRUN, not on every transition (i.e. not on nested #VMEXIT).
+> Not tested on hardware, please kindly provide tested-by, the best with
+> some probe bind/unbind cycle.
+> 
+> Best regards,
+> Krzysztof
+> 
+> [...]
 
-How so? svm_update_lbrv() will also be called in nested_svm_vmexit(),
-and it will eventually lead to force_msr_bitmap_recalc being set to
-true.
+Applied to
 
-I guess what you meant is the "undoing the Hyper-V optimization" part.
-That is indeed only affected by the svm_update_lbrv() call in the nested
-VMRUN path.
-
-So we do set force_msr_bitmap_recalc on nested #VMEXIT, but it doesn't
-really matter because we set it again on nested VMRUN before
-nested_svm_merge_msrpm() is called.
-
-> 
-> > essentially undoing the hyperv optimization in nested_svm_merge_msrpm().
-> 
-> When something fixes a KVM test failures (selftests or KUT), please call that
-> out in the changelog.  That way when other people encounter the failure, they'll
-> get search hits and won't have to waste their time bisecting and/or debugging.
-> 
-> If you hadn't mentioned off-list that this was detected by hyperv_svm_test, I
-> wouldn't have had the first clue as to why that test started failing.  Even with
-> the hint, it still took me a few minutes to connect the dots.
-
-Noted, makes sense. I thought the fix and the original patch are in such
-quick succession that hopefully no one will run into it.
-
-> 
-> In general, be more explicit/detailed, e.g. "undoing the hyperv optimization" is
-> unnecessarily vague, as the reader has to go look at the code to understand what
-> you're talking about.  My philosophy with changelogs is that they are write-once,
-> read-many, and so if you can save any time/effort for readers, it's almost always
-> worth the extra time/effort on the "write" side.
-> 
-> And a nit: my strong preference is to lead with what is being changed, and then
-> dive into the details of why, what's breaking, etc.  This is one of the few
-> divergences from the tip-tree preferences.  From  Documentation/process/maintainer-kvm-x86.rst:
-> 
->   Stating what a patch does before diving into details is preferred by KVM x86
->   for several reasons.  First and foremost, what code is actually being changed
->   is arguably the most important information, and so that info should be easy to
->   find. Changelogs that bury the "what's actually changing" in a one-liner after
->   3+ paragraphs of background make it very hard to find that information.
-
-Noted.
-
-> 
-> E.g.
-> 
-> --
-> Don't update the LBR MSR intercept bitmaps if they're already up-to-date,
-> as unconditionally updating the intercepts forces KVM to recalculate the
-> MSR bitmaps for vmcb02 on every nested VMRUN.  Functionally, the redundant
-> updates are benign, but forcing an update neuters the Hyper-V optimization
-> that allows KVM to skip refreshing the vmcb12 MSR bitmap if L1 marked the
-> "nested enlightenments" as being clean, i.e. if L1 told KVM that no
-> changes were made to the MSR bitmap since the last VMRUN.
-> 
-> Clobbering the Hyper-V optimization manifests as a failure in the
-> hyperv_svm_test KVM selftest, which intentionally changes the MSR bitmap
-> "without telling KVM about it" to verify that KVM honors the clean hint.
-> 
->   ==== Test Assertion Failure ====
->   x86/hyperv_svm_test.c:120: vmcb->control.exit_code == 0x081
->   pid=193558 tid=193558 errno=4 - Interrupted system call
->      1	0x0000000000411361: assert_on_unhandled_exception at processor.c:659
->      2	0x0000000000406186: _vcpu_run at kvm_util.c:1699
->      3	 (inlined by) vcpu_run at kvm_util.c:1710
->      4	0x0000000000401f2a: main at hyperv_svm_test.c:175
->      5	0x000000000041d0d3: __libc_start_call_main at libc-start.o:?
->      6	0x000000000041f27c: __libc_start_main_impl at ??:?
->      7	0x00000000004021a0: _start at ??:?
->   vmcb->control.exit_code == SVM_EXIT_VMMCALL
-> 
-> Avoid using ....
-> --  
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
 Thanks!
 
-> 
-> > Fix it by keeping track of whether LBR MSRs are intercepted or not and
-> > only doing the update if needed, similar to x2avic_msrs_intercepted.
-> > 
-> > Avoid using svm_test_msr_bitmap_*() to check the status of the
-> > intercepts, as an arbitrary MSR will need to be chosen as a
-> > representative of all LBR MSRs, and this could theoretically break if
-> > some of the MSRs intercepts are handled differently from the rest.
-> 
-> For posterity, Yosry originally proposed (off-list) fixing this by having
-> svm_set_intercept_for_msr() check for redundant updates, but I voted against
-> that because updating MSR interception _should_ be rare (full CPUID updates and
-> explicit MSR filter updates), and I don't want to risk hiding a bug/flaw elsewhere.
-> I.e. if something is triggering frequent/unexpected MSR bitmap changes, I want
-> that to be surfaced, not squashed/handled by the low level helpers.
+[1/2] ASoC: codecs: pm4125: Fix potential conflict when probing two devices
+      commit: fd94857a934cbe613353810a024c84d54826ead3
+[2/2] ASoC: codecs: pm4125: Remove irq_chip on component unbind
+      commit: e65b871c9b5af9265aefc5b8cd34993586d93aab
 
-Hmm, that was on-list though :P
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-https://lore.kernel.org/kvm/aRO5ItX_--ZDfnfM@google.com/
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> 
->  
-> > Also, using svm_test_msr_bitmap_*() makes backports difficult as it was
-> > only recently introduced with no direct alternatives in older kernels.
-> > 
-> > Fixes: fbe5e5f030c2 ("KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> 
-> With an updated changelog,
-> 
-> Reviewed-by: Sean Christopherson <seanjc@google.com>
-> Tested-by: Sean Christopherson <seanjc@google.com>
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Thanks!
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Paolo, do you prefer a updated patch with the updated changelog, or
-fixing it up when you apply it?
+Thanks,
+Mark
+
 
