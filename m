@@ -1,155 +1,128 @@
-Return-Path: <stable+bounces-194778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55CE9C5C6E3
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 11:05:00 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50BF0C5CA02
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 11:39:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4E983B3CDD
-	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 10:04:57 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DDC9734847A
+	for <lists+stable@lfdr.de>; Fri, 14 Nov 2025 10:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1DF30C633;
-	Fri, 14 Nov 2025 10:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8FF3081A7;
+	Fri, 14 Nov 2025 10:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="fyXooem/"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2167D308F0A;
-	Fri, 14 Nov 2025 10:04:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928FB2F5A22;
+	Fri, 14 Nov 2025 10:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763114692; cv=none; b=lL0YzfD7kMVGI/7XtKGVyLjCk0IxUiUU82LmEJYY1NCNAvEi6vY6COjE6XURhhlikh3T/ESIL3bTTrGTPnrysd046S0fsZxVH7yyOuKHSZ4OubZY3yyhJlzmJHGw+8zAZ/Dn84ZaKGDo5z2QcDVuzfQ8tuJff7Fm3g+bg0XUnPQ=
+	t=1763116450; cv=none; b=PLXHPVMVMFJJBxB1jZ3V+7kfhiLXmnZHqqhMa403MRmraSg1sgsAEf/B/UTpcG/NVP0cQmY+Hngm5YfuIZc0hdi17XGJU93RHhFEjjlFW9FCRZTsRiXgVNoH7Hcabkw2mN2/yx+fI6JebYOk3Fo2G6gDrv1U4sasn5tsK+D13Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763114692; c=relaxed/simple;
-	bh=kkRx/RrFHdv30eTr3JsD5xYzgrNVy/3tb/nAqPsXD/Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PJgeoUg5eapMrZICyfKLIQsfbzKnsIpG207I3ZFafe0uHAO0i9ItlzMufE8EMYC+q8vO1C9U66xk/GjQxKCgJNUlW+OEZjH8/0SONRRPt408CqjNmbjlB2DRGhEFzE+r7AjapUSbUixI5mZ8ee03dato8Q6ojpPbflxztpZSgEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.0.5] (ip5f5af126.dynamic.kabel-deutschland.de [95.90.241.38])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id BC3A161E6484C;
-	Fri, 14 Nov 2025 11:04:26 +0100 (CET)
-Message-ID: <967d99e5-7cc1-4f8c-8a1b-21b1bd096cb9@molgen.mpg.de>
-Date: Fri, 14 Nov 2025 11:04:25 +0100
+	s=arc-20240116; t=1763116450; c=relaxed/simple;
+	bh=D9cxNLkNziaEdzUnkoYLDeMaPHjBAxKPggl+Zh8QZpU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eKdn4kP/uiUVVag6+Wddf0IgoBev4WUalT7A8CFnXvLD+Q/Ejw8jEZztk43Xws+TBAPZ/h3vD0+hSf9mE7WJss2VJTPtKBs/hgXCenZIE+xtfXNY1edVWVbvDBQ+lJNtx5uC2+2A4BLbnT8kJQQG0VCwhHC8C8WmNkg8bs4sIs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=fyXooem/; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1763116448; x=1794652448;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=D9cxNLkNziaEdzUnkoYLDeMaPHjBAxKPggl+Zh8QZpU=;
+  b=fyXooem/B7wzDuUzoRYbJRKkZF7XfxPR6kP34zTSwVfMIpRKe9kiZgYe
+   +761DG9XKknaHYAKbSNXPHt+zivdxaY9UQeso4lgPKa4wI8VNvsMEpvR7
+   BMEgN2mK37z0G1F+1WumL2IouJOne+uQCWbMYgI5OFnIauhRAfLsidCoH
+   j6IS59CoVnegafbbdNEcPU7IOM8Yj+9Xb3UAcHE2ozDvspgeNZazNlZBc
+   sHy7ciydksJA8HVmT0N8ZX2xdErxYeVA6CWGRvgllerk2bY+qdCbZk454
+   iocCMTsUgBVn4qis7IBXG5c7fHMSJzOZ3WAuTIvSDXobWtQcoRY91qixr
+   w==;
+X-CSE-ConnectionGUID: Bmgk/fX/QBGabdIqtVBXBQ==
+X-CSE-MsgGUID: wIk1cWa8SLKfj1V6vLzLuw==
+X-IronPort-AV: E=Sophos;i="6.19,304,1754982000"; 
+   d="scan'208";a="49627358"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 03:34:00 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.29; Fri, 14 Nov 2025 03:33:30 -0700
+Received: from ROU-LL-M43238.microchip.com (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Fri, 14 Nov 2025 03:33:29 -0700
+From: <nicolas.ferre@microchip.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
+	<claudiu.beznea@tuxon.dev>
+CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	Ryan Wanner <ryan.wanner@microchip.com>, Cristian Birsan
+	<cristian.birsan@microchip.com>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH 1/2] ARM: dts: microchip: sama7d65: fix uart fifo size to 32
+Date: Fri, 14 Nov 2025 11:33:12 +0100
+Message-ID: <20251114103313.20220-1-nicolas.ferre@microchip.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] Bluetooth: btqca: Add WCN6855 firmware priority
- selection feature
-To: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Marcel Holtmann
- <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
- linux-kernel@vger.kernel.org, cheng.jiang@oss.qualcomm.com,
- quic_chezhou@quicinc.com, wei.deng@oss.qualcomm.com, stable@vger.kernel.org
-References: <20251114081751.3940541-1-shuai.zhang@oss.qualcomm.com>
- <20251114081751.3940541-2-shuai.zhang@oss.qualcomm.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20251114081751.3940541-2-shuai.zhang@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Dear Shuai,
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
 
+On some flexcom nodes related to uart, the fifo sizes were wrong: fix
+them to 32 data.  Note that product datasheet is being reviewed to fix
+inconsistency, but this value is validated by product's designers.
 
-Thank you for your patch.
+Fixes: 261dcfad1b59 ("ARM: dts: microchip: add sama7d65 SoC DT")
+Fixes: b51e4aea3ecf ("ARM: dts: microchip: sama7d65: Add FLEXCOMs to sama7d65 SoC")
+Cc: <stable@vger.kernel.org> # 6.16+
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+---
+ arch/arm/boot/dts/microchip/sama7d65.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Am 14.11.25 um 09:17 schrieb Shuai Zhang:
-> The prefix "wcn" corresponds to the WCN685x chip, while entries without
-> the "wcn" prefix correspond to the QCA2066 chip. There are some feature
-> differences between the two.
-> 
-> However, due to historical reasons, WCN685x chip has been using firmware
-> without the "wcn" prefix. The mapping between the chip and its
-> corresponding firmware has now been corrected.
+diff --git a/arch/arm/boot/dts/microchip/sama7d65.dtsi b/arch/arm/boot/dts/microchip/sama7d65.dtsi
+index e53e2dd6d530..cd2cf9a6f40b 100644
+--- a/arch/arm/boot/dts/microchip/sama7d65.dtsi
++++ b/arch/arm/boot/dts/microchip/sama7d65.dtsi
+@@ -557,7 +557,7 @@ uart4: serial@200 {
+ 				dma-names = "tx", "rx";
+ 				atmel,use-dma-rx;
+ 				atmel,use-dma-tx;
+-				atmel,fifo-size = <16>;
++				atmel,fifo-size = <32>;
+ 				atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 				status = "disabled";
+ 			};
+@@ -618,7 +618,7 @@ uart6: serial@200 {
+ 				clocks = <&pmc PMC_TYPE_PERIPHERAL 40>;
+ 				clock-names = "usart";
+ 				atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+-				atmel,fifo-size = <16>;
++				atmel,fifo-size = <32>;
+ 				status = "disabled";
+ 			};
+ 		};
+@@ -643,7 +643,7 @@ uart7: serial@200 {
+ 				dma-names = "tx", "rx";
+ 				atmel,use-dma-rx;
+ 				atmel,use-dma-tx;
+-				atmel,fifo-size = <16>;
++				atmel,fifo-size = <32>;
+ 				atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 				status = "disabled";
+ 			};
+-- 
+2.43.0
 
-Present tense: … is now corrected.
-
-Maybe give one example of the firmware file.
-
-How did you test this? Maybe paste some log lines before and after?
-
-> Cc: stable@vger.kernel.org
-> Fixes: 30209aeff75f ("Bluetooth: qca: Expand firmware-name to load specific rampatch")
-> Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
-> ---
->   drivers/bluetooth/btqca.c | 22 ++++++++++++++++++++--
->   1 file changed, 20 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-> index 7c958d606..8e0004ef7 100644
-> --- a/drivers/bluetooth/btqca.c
-> +++ b/drivers/bluetooth/btqca.c
-> @@ -847,8 +847,12 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
->   				 "qca/msbtfw%02x.mbn", rom_ver);
->   			break;
->   		case QCA_WCN6855:
-> +			/* Due to historical reasons, WCN685x chip has been using firmware
-> +			 * without the "wcn" prefix. The mapping between the chip and its
-> +			 * corresponding firmware has now been corrected.
-> +			 */
->   			snprintf(config.fwname, sizeof(config.fwname),
-> -				 "qca/hpbtfw%02x.tlv", rom_ver);
-> +				 "qca/wcnhpbtfw%02x.tlv", rom_ver);
->   			break;
->   		case QCA_WCN7850:
->   			snprintf(config.fwname, sizeof(config.fwname),
-> @@ -861,6 +865,13 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
->   	}
->   
->   	err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
-> +
-> +	if (!rampatch_name && err < 0 && soc_type == QCA_WCN6855) {
-> +		snprintf(config.fwname, sizeof(config.fwname),
-> +			 "qca/hpbtfw%02x.tlv", rom_ver);
-> +		err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
-> +	}
-> +
->   	if (err < 0) {
->   		bt_dev_err(hdev, "QCA Failed to download patch (%d)", err);
->   		return err;
-> @@ -923,7 +934,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
->   		case QCA_WCN6855:
->   			qca_read_fw_board_id(hdev, &boardid);
->   			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
-> -						  "hpnv", soc_type, ver, rom_ver, boardid);
-> +						  "wcnhpnv", soc_type, ver, rom_ver, boardid);
->   			break;
->   		case QCA_WCN7850:
->   			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
-> @@ -936,6 +947,13 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
->   	}
->   
->   	err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
-> +
-> +	if (!firmware_name && err < 0 && soc_type == QCA_WCN6855) {
-> +		qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
-> +					  "hpnv", soc_type, ver, rom_ver, boardid);
-> +		err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
-> +	}
-> +
->   	if (err < 0) {
->   		bt_dev_err(hdev, "QCA Failed to download NVM (%d)", err);
->   		return err;
-
-The diff logs good.
-
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-
-
-Kind regards,
-
-Paul
 
