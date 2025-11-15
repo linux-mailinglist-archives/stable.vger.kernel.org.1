@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-194840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F6FC60A33
-	for <lists+stable@lfdr.de>; Sat, 15 Nov 2025 19:52:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 837BCC60A34
+	for <lists+stable@lfdr.de>; Sat, 15 Nov 2025 19:52:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 75A064E1A93
-	for <lists+stable@lfdr.de>; Sat, 15 Nov 2025 18:52:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 231724E1DC3
+	for <lists+stable@lfdr.de>; Sat, 15 Nov 2025 18:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65190307481;
-	Sat, 15 Nov 2025 18:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5BD304BAF;
+	Sat, 15 Nov 2025 18:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XRt61UAT"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="qbjduFSt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DD31DE4E1;
-	Sat, 15 Nov 2025 18:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C3A1DE4E1;
+	Sat, 15 Nov 2025 18:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763232757; cv=none; b=djzHFk+TgQXn8fsTMJoa9BeYjk6eHCRDGWxBdV24+1ALjMHyBMD7TFa15UfiilVeVHW6Iqt+dEjwA1zc917v99UtUAgYe6KiJ7NiWfCNI38ysOagjo2w+qOTUk6jOPgyp2wABsfbCUfWpAn3f8TBDLcHu1VMEhgb3yzXUs0rleY=
+	t=1763232759; cv=none; b=rV9+R5wtWA6CfYyujWKqNpI7uwRw+jo5e/ihq9PnRSZ3mi/QuvtRLz1XR2Zo720N31ujPDo0nCWcTbfVWwFIIyCjuhN4/JNgOOU1uGcaSEtr/b2Y9pEeXTKxmxRrBWfe3szICldLdD84LRKRG9/JkoS0w4DrdVH7zMhiEz4ad4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763232757; c=relaxed/simple;
-	bh=EclQu3LspR/U/FR3XM5fTE1OZ5FQxdaHwm65y0qz6kw=;
-	h=Date:To:From:Subject:Message-Id; b=YNNr94FKi//evU+cAdfOXj4CD1lQmekFLldKnWpDrRyYUfQm3bACiIeJAJtfjlH79XF7d0xhZgdNJ0SOsq5bWaHq12O1ZzxBv3ARilKmpj5yeLrIFSEr8wNv/jFN806arnFf8wHWIqKvWBEzdesjHbmaFkrJ0p6PeCNM8C2J7Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XRt61UAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCB4C113D0;
-	Sat, 15 Nov 2025 18:52:36 +0000 (UTC)
+	s=arc-20240116; t=1763232759; c=relaxed/simple;
+	bh=I9pxkfQX3+DeoXG7PanWwYNAJbUZRZjxlTIZvs7fpAw=;
+	h=Date:To:From:Subject:Message-Id; b=Ptm6SbFj+Al/645Kc9Egwlzd6KNzhPT96XJIqdROUVL2fu69Ix3oN6BPUvyrVO6kKto6bY49Dvf4ZqTlgDu9hx9LjKjPP2oefyCE7/QJWcsdlEPkY0ciuWD5/+0OgdtT87q/twO+16XFY746eqBmRduc0c7RuIkcZrU5jyswQn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=qbjduFSt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F4CC4CEF5;
+	Sat, 15 Nov 2025 18:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763232756;
-	bh=EclQu3LspR/U/FR3XM5fTE1OZ5FQxdaHwm65y0qz6kw=;
+	s=korg; t=1763232759;
+	bh=I9pxkfQX3+DeoXG7PanWwYNAJbUZRZjxlTIZvs7fpAw=;
 	h=Date:To:From:Subject:From;
-	b=XRt61UATwzsKXPgDdZFlSgrsG8ojPBDaTwFQ5UySLdzUVaCzaY2roc0cfs8cnnnst
-	 9GM9a5Gp2474o077vHVMDaE8sBNbztXCZV0KXcu86hsZ3StUfaoKNAdxNGlQAKd3M9
-	 vy/fZcLD02f+Yi4aMOVcw7L02mh4uFLx8C3JZ/as=
-Date: Sat, 15 Nov 2025 10:52:35 -0800
-To: mm-commits@vger.kernel.org,thunder.leizhen@huawei.com,stable@vger.kernel.org,bhe@redhat.com,sourabhjain@linux.ibm.com,akpm@linux-foundation.org
+	b=qbjduFStqirykEOcKVz8/T99yd2dH9uu0P9MBuGki6kGFve+87QT0zeM1jHZYOU02
+	 9wmImxeZDxuuUfuv2KiT54pT6Xp4HUn0bOlsv8BIc/rVGshpgrYH9AMT54WnIperPJ
+	 UM1KuNiumaxwQeUrILxkXB2Kz/8TmlqvRslatdLw=
+Date: Sat, 15 Nov 2025 10:52:38 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ryan.roberts@arm.com,richard.weiyang@gmail.com,npache@redhat.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,lance.yang@linux.dev,dev.jain@arm.com,david@kernel.org,baolin.wang@linux.alibaba.com,baohua@kernel.org,ziy@nvidia.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] crash-fix-crashkernel-resource-shrink.patch removed from -mm tree
-Message-Id: <20251115185236.8CCB4C113D0@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-huge_memory-fix-folio-split-check-for-anon-folios-in-swapcache.patch removed from -mm tree
+Message-Id: <20251115185239.45F4CC4CEF5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,96 +50,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: crash: fix crashkernel resource shrink
+     Subject: mm/huge_memory: fix folio split check for anon folios in swapcache
 has been removed from the -mm tree.  Its filename was
-     crash-fix-crashkernel-resource-shrink.patch
+     mm-huge_memory-fix-folio-split-check-for-anon-folios-in-swapcache.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-Subject: crash: fix crashkernel resource shrink
-Date: Sun, 2 Nov 2025 01:07:41 +0530
+From: Zi Yan <ziy@nvidia.com>
+Subject: mm/huge_memory: fix folio split check for anon folios in swapcache
+Date: Wed, 5 Nov 2025 11:29:10 -0500
 
-When crashkernel is configured with a high reservation, shrinking its
-value below the low crashkernel reservation causes two issues:
+Both uniform and non uniform split check missed the check to prevent
+splitting anon folios in swapcache to non-zero order.
 
-1. Invalid crashkernel resource objects
-2. Kernel crash if crashkernel shrinking is done twice
+Splitting anon folios in swapcache to non-zero order can cause data
+corruption since swapcache only support PMD order and order-0 entries. 
+This can happen when one use split_huge_pages under debugfs to split
+anon folios in swapcache.
 
-For example, with crashkernel=200M,high, the kernel reserves 200MB of high
-memory and some default low memory (say 256MB).  The reservation appears
-as:
+In-tree callers do not perform such an illegal operation.  Only debugfs
+interface could trigger it.  I will put adding a test case on my TODO
+list.
 
-cat /proc/iomem | grep -i crash
-af000000-beffffff : Crash kernel
-433000000-43f7fffff : Crash kernel
+Fix the check.
 
-If crashkernel is then shrunk to 50MB (echo 52428800 >
-/sys/kernel/kexec_crash_size), /proc/iomem still shows 256MB reserved:
-af000000-beffffff : Crash kernel
-
-Instead, it should show 50MB:
-af000000-b21fffff : Crash kernel
-
-Further shrinking crashkernel to 40MB causes a kernel crash with the
-following trace (x86):
-
-BUG: kernel NULL pointer dereference, address: 0000000000000038
-PGD 0 P4D 0
-Oops: 0000 [#1] PREEMPT SMP NOPTI
-<snip...>
-Call Trace: <TASK>
-? __die_body.cold+0x19/0x27
-? page_fault_oops+0x15a/0x2f0
-? search_module_extables+0x19/0x60
-? search_bpf_extables+0x5f/0x80
-? exc_page_fault+0x7e/0x180
-? asm_exc_page_fault+0x26/0x30
-? __release_resource+0xd/0xb0
-release_resource+0x26/0x40
-__crash_shrink_memory+0xe5/0x110
-crash_shrink_memory+0x12a/0x190
-kexec_crash_size_store+0x41/0x80
-kernfs_fop_write_iter+0x141/0x1f0
-vfs_write+0x294/0x460
-ksys_write+0x6d/0xf0
-<snip...>
-
-This happens because __crash_shrink_memory()/kernel/crash_core.c
-incorrectly updates the crashk_res resource object even when
-crashk_low_res should be updated.
-
-Fix this by ensuring the correct crashkernel resource object is updated
-when shrinking crashkernel memory.
-
-Link: https://lkml.kernel.org/r/20251101193741.289252-1-sourabhjain@linux.ibm.com
-Fixes: 16c6006af4d4 ("kexec: enable kexec_crash_size to support two crash kernel regions")
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Zhen Lei <thunder.leizhen@huawei.com>
+Link: https://lkml.kernel.org/r/20251105162910.752266-1-ziy@nvidia.com
+Fixes: 58729c04cf10 ("mm/huge_memory: add buddy allocator like (non-uniform) folio_split()")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reported-by: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Closes: https://lore.kernel.org/all/dc0ecc2c-4089-484f-917f-920fdca4c898@kernel.org/
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- kernel/crash_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/huge_memory.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/kernel/crash_core.c~crash-fix-crashkernel-resource-shrink
-+++ a/kernel/crash_core.c
-@@ -373,7 +373,7 @@ static int __crash_shrink_memory(struct
- 		old_res->start = 0;
- 		old_res->end   = 0;
- 	} else {
--		crashk_res.end = ram_res->start - 1;
-+		old_res->end = ram_res->start - 1;
- 	}
- 
- 	crash_free_reserved_phys_range(ram_res->start, ram_res->end);
+--- a/mm/huge_memory.c~mm-huge_memory-fix-folio-split-check-for-anon-folios-in-swapcache
++++ a/mm/huge_memory.c
+@@ -3522,7 +3522,8 @@ bool non_uniform_split_supported(struct
+ 		/* order-1 is not supported for anonymous THP. */
+ 		VM_WARN_ONCE(warns && new_order == 1,
+ 				"Cannot split to order-1 folio");
+-		return new_order != 1;
++		if (new_order == 1)
++			return false;
+ 	} else if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+ 	    !mapping_large_folio_support(folio->mapping)) {
+ 		/*
+@@ -3553,7 +3554,8 @@ bool uniform_split_supported(struct foli
+ 	if (folio_test_anon(folio)) {
+ 		VM_WARN_ONCE(warns && new_order == 1,
+ 				"Cannot split to order-1 folio");
+-		return new_order != 1;
++		if (new_order == 1)
++			return false;
+ 	} else  if (new_order) {
+ 		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+ 		    !mapping_large_folio_support(folio->mapping)) {
 _
 
-Patches currently in -mm which might be from sourabhjain@linux.ibm.com are
+Patches currently in -mm which might be from ziy@nvidia.com are
 
+mm-huge_memory-add-split_huge_page_to_order.patch
+mm-memory-failure-improve-large-block-size-folio-handling.patch
+mm-huge_memory-fix-kernel-doc-comments-for-folio_split-and-related.patch
+mm-huge_memory-fix-kernel-doc-comments-for-folio_split-and-related-fix.patch
+mm-huge_memory-fix-kernel-doc-comments-for-folio_split-and-related-fix-2.patch
+migrate-optimise-alloc_migration_target-fix.patch
 
 
