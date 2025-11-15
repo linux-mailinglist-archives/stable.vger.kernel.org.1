@@ -1,142 +1,91 @@
-Return-Path: <stable+bounces-194844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3166DC60A3F
-	for <lists+stable@lfdr.de>; Sat, 15 Nov 2025 19:54:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE245C60C30
+	for <lists+stable@lfdr.de>; Sat, 15 Nov 2025 23:47:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BF7F834C436
-	for <lists+stable@lfdr.de>; Sat, 15 Nov 2025 18:52:47 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 006E6345974
+	for <lists+stable@lfdr.de>; Sat, 15 Nov 2025 22:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736A13093C3;
-	Sat, 15 Nov 2025 18:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471C82571D4;
+	Sat, 15 Nov 2025 22:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mY7+MWQO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lxb0xi7P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D483303C8A;
-	Sat, 15 Nov 2025 18:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4AE23C512;
+	Sat, 15 Nov 2025 22:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763232764; cv=none; b=PDnTyWZe0HSEiCVhbrZ4Fpa6sFj5J1ydPOPkrZDYvN0h0AGW4iWGd3qMvNwGZK2PBDwhUCLIIZfaiJy6/9sOkI9WNsPNV+xN9Ls8udn6ao6sgdbr9+f11eTaDSCAO7/XRKFNYhPaLgMFLl/FhAWo9qFZkawoVGPxJk500quZdB0=
+	t=1763246828; cv=none; b=CTEdB35e9s5WQnJTDSOvn/XXYlbiCFewTAk4m1KbhLqZhFWBVD9kP54Zi3CGch7niWhnNRRT45EexHpHxiPTG2uIe6XZaC38Nvz4EzdY/LuBuJMjY9bzUD3KTMzAhau0bfsLebDGugkZms3UmabyCX0Jx/Iziu9oajeCiTRyf3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763232764; c=relaxed/simple;
-	bh=Er9hdcgNskam3PzMLjiTmHAsFZiJOnk4VhRxn8n5UoU=;
-	h=Date:To:From:Subject:Message-Id; b=LuXqB/4MYQDUCcC5Jm/OpO+jdEiOVz9Yqm4BW3aqwsBIpphqHXXaOHr8dSh81DCThWP2FCEoVe6zGAlEzZ1h7hSK6N49RH4hCk69xPBvXq216C5dEVHerL0516XY7LbuoLVGlHiJMvUBdM9L7btVnviPIdNo1cgamcmIkVnBbCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mY7+MWQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3709C4CEF8;
-	Sat, 15 Nov 2025 18:52:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763232763;
-	bh=Er9hdcgNskam3PzMLjiTmHAsFZiJOnk4VhRxn8n5UoU=;
-	h=Date:To:From:Subject:From;
-	b=mY7+MWQOu+dlwmENXS8A90ErTlXH0untaQHuIq3/ok3v+TG77L83YRqHCkGf2PRd+
-	 kRP+U8E7gZeeTi8JEyxfxxRyEbQZakf5kdlUmr11r75nbITA4sd+2hlDM2oEKwXx5z
-	 CmgM0Fs03k+bU5siQhBwo5zV/D6Hx+YTNpsdG0uM=
-Date: Sat, 15 Nov 2025 10:52:43 -0800
-To: mm-commits@vger.kernel.org,ying.huang@linux.alibaba.com,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,chrisl@kernel.org,bhe@redhat.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-swap-fix-potential-uaf-issue-for-vma-readahead.patch removed from -mm tree
-Message-Id: <20251115185243.A3709C4CEF8@smtp.kernel.org>
+	s=arc-20240116; t=1763246828; c=relaxed/simple;
+	bh=hQwb56XishG6Npr0bKU5tri4GKJyyN/6ZQreEwScrKw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VRV2iS6HJyF4/BZhspURAh8otSFH5mxY3Zs3rngZ3HfQdqGs3fYdaYBi3XO49dsj8UWfSL7PMtOP1PBfg98ztC/IMk+iq7OfuCL7IX9mkT0nBrmUlwsdm4RfIH+rb1JdmOyv2Ht5dym0KQ+1mDLI5LrqdmfanJQXTpd32Dq8yCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lxb0xi7P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D11C4CEF7;
+	Sat, 15 Nov 2025 22:47:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763246824;
+	bh=hQwb56XishG6Npr0bKU5tri4GKJyyN/6ZQreEwScrKw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Lxb0xi7PJvh7StcNDuwQvJrFI+1nX4Ftglp4eQgwlPlN5UQhvCnXRqzGD+QyLwGdz
+	 lgDw5CniJZbi29c2Cw1mQVXTlpQ4NC+Q+Z3yBueMnVW/e4lQMjz63dPlb1Bam4b5q0
+	 9HdscdILI8NFCphk36akV2Y6GXciklLJRRusO6CPJRkl7hYe+V88prQp0ptLB+N21O
+	 Ef1xK10onaipIy6utWNAtpLQQYooPqe0q/TDZQXzm9jg1/ZFUKnX8XFI6CzCz/sOHA
+	 O6Yt9g1wPjuuYdPwhscQ+/E9yruO07nFqptcm/Qaubkr8dHyASFxbUwVYWRkxImwMX
+	 +/nnf+gzR33Ng==
+Date: Sat, 15 Nov 2025 14:47:00 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Colin Ian King <coking@nvidia.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] crypto: scatterwalk - Fix memcpy_sglist() to always
+ succeed
+Message-ID: <20251115224700.GA8885@quark>
+References: <20251114225851.324143-1-ebiggers@kernel.org>
+ <20251114225851.324143-2-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251114225851.324143-2-ebiggers@kernel.org>
 
+On Fri, Nov 14, 2025 at 02:58:50PM -0800, Eric Biggers wrote:
+> +/**
+> + * memcpy_sglist() - Copy data from one scatterlist to another
+> + * @dst: The destination scatterlist.  Can be NULL if @nbytes == 0.
+> + * @src: The source scatterlist.  Can be NULL if @nbytes == 0.
+> + * @nbytes: Number of bytes to copy
+> + *
+> + * The scatterlists can overlap.  Hence this really acts like memmove(), not
+> + * memcpy().
+> + *
+> + * Context: Any context
+> + */
+[...]
+> +			if (src_virt != dst_virt) {
+> +				memmove(dst_virt, src_virt, len);
+> +				if (ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE)
+> +					__scatterwalk_flush_dcache_pages(
+> +						dst_page, dst_offset, len);
+> +			}
 
-The quilt patch titled
-     Subject: mm, swap: fix potential UAF issue for VMA readahead
-has been removed from the -mm tree.  Its filename was
-     mm-swap-fix-potential-uaf-issue-for-vma-readahead.patch
+I realized that this doesn't correctly handle arbitrary overlaps in the
+case where there are multiple copy steps.  So, my idea to make this
+function more robust by allowing arbitrary overlaps won't easily work.
+I'll send a revised version that only claims to support exact overlaps,
+which is consistent with the current code.
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Kairui Song <kasong@tencent.com>
-Subject: mm, swap: fix potential UAF issue for VMA readahead
-Date: Tue, 11 Nov 2025 21:36:08 +0800
-
-Since commit 78524b05f1a3 ("mm, swap: avoid redundant swap device
-pinning"), the common helper for allocating and preparing a folio in the
-swap cache layer no longer tries to get a swap device reference
-internally, because all callers of __read_swap_cache_async are already
-holding a swap entry reference.  The repeated swap device pinning isn't
-needed on the same swap device.
-
-Caller of VMA readahead is also holding a reference to the target entry's
-swap device, but VMA readahead walks the page table, so it might encounter
-swap entries from other devices, and call __read_swap_cache_async on
-another device without holding a reference to it.
-
-So it is possible to cause a UAF when swapoff of device A raced with
-swapin on device B, and VMA readahead tries to read swap entries from
-device A.  It's not easy to trigger, but in theory, it could cause real
-issues.
-
-Make VMA readahead try to get the device reference first if the swap
-device is a different one from the target entry.
-
-Link: https://lkml.kernel.org/r/20251111-swap-fix-vma-uaf-v1-1-41c660e58562@tencent.com
-Fixes: 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning")
-Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Acked-by: Chris Li <chrisl@kernel.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/swap_state.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
---- a/mm/swap_state.c~mm-swap-fix-potential-uaf-issue-for-vma-readahead
-+++ a/mm/swap_state.c
-@@ -748,6 +748,8 @@ static struct folio *swap_vma_readahead(
- 
- 	blk_start_plug(&plug);
- 	for (addr = start; addr < end; ilx++, addr += PAGE_SIZE) {
-+		struct swap_info_struct *si = NULL;
-+
- 		if (!pte++) {
- 			pte = pte_offset_map(vmf->pmd, addr);
- 			if (!pte)
-@@ -761,8 +763,19 @@ static struct folio *swap_vma_readahead(
- 			continue;
- 		pte_unmap(pte);
- 		pte = NULL;
-+		/*
-+		 * Readahead entry may come from a device that we are not
-+		 * holding a reference to, try to grab a reference, or skip.
-+		 */
-+		if (swp_type(entry) != swp_type(targ_entry)) {
-+			si = get_swap_device(entry);
-+			if (!si)
-+				continue;
-+		}
- 		folio = __read_swap_cache_async(entry, gfp_mask, mpol, ilx,
- 						&page_allocated, false);
-+		if (si)
-+			put_swap_device(si);
- 		if (!folio)
- 			continue;
- 		if (page_allocated) {
-_
-
-Patches currently in -mm which might be from kasong@tencent.com are
-
-mm-swap-do-not-perform-synchronous-discard-during-allocation.patch
-mm-swap-rename-helper-for-setup-bad-slots.patch
-mm-swap-cleanup-swap-entry-allocation-parameter.patch
-mm-migrate-swap-drop-usage-of-folio_index.patch
-mm-swap-remove-redundant-argument-for-isolating-a-cluster.patch
-
+- Eric
 
