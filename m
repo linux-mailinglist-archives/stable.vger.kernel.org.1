@@ -1,70 +1,71 @@
-Return-Path: <stable+bounces-194855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12915C60F33
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 03:44:57 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0E0C60F9B
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 04:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DF5774E375C
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 02:44:55 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6230B35F209
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 03:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CD2223DD0;
-	Sun, 16 Nov 2025 02:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D2C225A29;
+	Sun, 16 Nov 2025 03:38:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CC682866;
-	Sun, 16 Nov 2025 02:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A03817C211;
+	Sun, 16 Nov 2025 03:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763261091; cv=none; b=VvEAVVDt22DuTSufZSf8nCDpOZJrO+wkr+lgtUtP45UHy8BVCy2/i3ZfpKOvwRmKUpIgphtIOoSSpgHJYSzRaRyTrhvpEqLOVL1aFLQfncIO8B+1TFk9TZwSLvRiSNrl+svGS6Vubt9YiAOYC3Rt1QOLByQTZ/UiAFcGDyHzxv4=
+	t=1763264280; cv=none; b=SAO2yMAR+F555LHhNVshHx2gPuYoy78lQ0PLoWUotcTDf5fw//tc690US/LL/7VgtNfGpLORqsYToqpCslY/+QP5cxGOhbiNUeFBseXmQGu94jR1fZyUL1MWiafpFgBLU6WH6Fzu1hUZiQO7G/ksA9Hji6a+EnnxxvVzMxUmpWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763261091; c=relaxed/simple;
-	bh=ESzJpiBooaawubAvyvKPHMB+wWYpbqR4O6qNHSTLqxU=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=Xoqz0QuSoZOH66D2OpxL/WWm2mpYxx/H7GFGnpVleze0w2i4Y1zFDpXH+JL5B7IwbtX3qy0ZEAl08SEDqrIlxIE/FuTJhIYOKRr4kYfcJoyCJHrdFisAb8C2AxruwvCo7LyIwYxE93BAifaq8um8o3DNKCuV9VDPH99eakKQ4Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+	s=arc-20240116; t=1763264280; c=relaxed/simple;
+	bh=5TlFauKgyuZQTEVmaKa7SFRUz88wvUoi8MN+xGek9/c=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=uov6fh721Hfe8ozj2pvgiaBFubscrR6hYFOIpoKH2zMJVfVIbDP+s+Ii8p64yx+oxxHPn3yoK7+YPCV3HhuVxovL8pwqGZIATbSyLOjHM9lz1suzspojS9B16L3xZBWSETGsbhzJeHALA4Ga38OzFWNDsP1FEnx6i9VitRpZrJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-03 (Coremail) with SMTP id rQCowACnONt9OhlphMrrAA--.5337S2;
-	Sun, 16 Nov 2025 10:44:20 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowAAH_l7uRhlpbmjqAA--.17336S2;
+	Sun, 16 Nov 2025 11:37:27 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	make24@iscas.ac.cn,
-	benh@kernel.crashing.org,
-	smaclennan@pikatech.com
-Cc: linuxppc-dev@lists.ozlabs.org,
+To: srini@kernel.org,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alexey.klimov@linaro.org
+Cc: linux-sound@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] powerpc/warp: Fix error handling in pika_dtm_thread
-Date: Sun, 16 Nov 2025 10:44:11 +0800
-Message-Id: <20251116024411.21968-1-make24@iscas.ac.cn>
+Subject: [PATCH] ASoC: codecs: Fix error handling in pm4125 audio codec driver
+Date: Sun, 16 Nov 2025 11:37:16 +0800
+Message-Id: <20251116033716.29369-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:rQCowACnONt9OhlphMrrAA--.5337S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrtrW7tryDtFy8Xr17Cw17KFg_yoWftwb_Ka
-	109a97urW8Wr4qk3Wqyr1fGrZxJ39rJ34UKw1qg3W2ya45Xa95Xw4FyrZ5uw17ursFkr43
-	Jan5WrsrC3WS9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbDAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwV
-	AFwVW8JwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
-	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIx
-	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
-	wI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
-	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUmLvtU
-	UUUU=
+X-CM-TRANSID:zQCowAAH_l7uRhlpbmjqAA--.17336S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJFWxKFWkKrWDCw1fXF43Wrg_yoW5Wr18pa
+	98Ca95KrWjqF17C393WrWDAay3Jw1IyF1fAr47Kw1xKr13tryFgFy0yryava48CFWkAFWD
+	JasrX34kGryjyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPF14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
+	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
+	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4
+	vE14v_Gr4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+	67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MI
+	IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+	14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+	W8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUnYFA
+	DUUUU
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -72,32 +73,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-pika_dtm_thread() acquires client through of_find_i2c_device_by_node()
-but fails to release it in error handling path. This could result in a
-reference count leak, preventing proper cleanup and potentially
-leading to resource exhaustion. Add put_device() to release the
-reference in the error handling path.
+pm4125_bind() acquires references through pm4125_sdw_device_get() but
+fails to release them in error paths and during normal unbind
+operations. This could result in reference count leaks, preventing
+proper cleanup and potentially causing resource exhaustion over
+multiple bind/unbind cycles.
+
+Calling path: pm4125_sdw_device_get() -> bus_find_device_by_of_node()
+-> bus_find_device() -> get_device.
 
 Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: 3984114f0562 ("powerpc/warp: Platform fix for i2c change")
+Fixes: 8ad529484937 ("ASoC: codecs: add new pm4125 audio codec driver")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- arch/powerpc/platforms/44x/warp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/codecs/pm4125.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/44x/warp.c b/arch/powerpc/platforms/44x/warp.c
-index a5001d32f978..6f674f86dc85 100644
---- a/arch/powerpc/platforms/44x/warp.c
-+++ b/arch/powerpc/platforms/44x/warp.c
-@@ -293,6 +293,8 @@ static int pika_dtm_thread(void __iomem *fpga)
- 		schedule_timeout(HZ);
+diff --git a/sound/soc/codecs/pm4125.c b/sound/soc/codecs/pm4125.c
+index 706fc668ffe2..f9bcae6d1d79 100644
+--- a/sound/soc/codecs/pm4125.c
++++ b/sound/soc/codecs/pm4125.c
+@@ -1551,6 +1551,10 @@ static int pm4125_bind(struct device *dev)
+ 	struct device_link *devlink;
+ 	int ret;
+ 
++	/* Initialize device pointers to NULL for safe cleanup */
++	pm4125->rxdev = NULL;
++	pm4125->txdev = NULL;
++
+ 	/* Give the soundwire subdevices some more time to settle */
+ 	usleep_range(15000, 15010);
+ 
+@@ -1574,7 +1578,7 @@ static int pm4125_bind(struct device *dev)
+ 	if (!pm4125->txdev) {
+ 		dev_err(dev, "could not find txslave with matching of node\n");
+ 		ret = -EINVAL;
+-		goto error_unbind_all;
++		goto error_put_rx;
  	}
  
-+	put_device(&client->dev);
+ 	pm4125->sdw_priv[AIF1_CAP] = dev_get_drvdata(pm4125->txdev);
+@@ -1584,7 +1588,7 @@ static int pm4125_bind(struct device *dev)
+ 	if (!pm4125->tx_sdw_dev) {
+ 		dev_err(dev, "could not get txslave with matching of dev\n");
+ 		ret = -EINVAL;
+-		goto error_unbind_all;
++		goto error_put_tx;
+ 	}
+ 
+ 	/*
+@@ -1596,7 +1600,7 @@ static int pm4125_bind(struct device *dev)
+ 	if (!devlink) {
+ 		dev_err(dev, "Could not devlink TX and RX\n");
+ 		ret = -EINVAL;
+-		goto error_unbind_all;
++		goto error_put_tx;
+ 	}
+ 
+ 	devlink = device_link_add(dev, pm4125->txdev,
+@@ -1650,6 +1654,10 @@ static int pm4125_bind(struct device *dev)
+ 	device_link_remove(dev, pm4125->txdev);
+ link_remove_rx_tx:
+ 	device_link_remove(pm4125->rxdev, pm4125->txdev);
++error_put_tx:
++	put_device(pm4125->txdev);
++error_put_rx:
++	put_device(pm4125->rxdev);
+ error_unbind_all:
+ 	component_unbind_all(dev, pm4125);
+ 	return ret;
+@@ -1663,6 +1671,13 @@ static void pm4125_unbind(struct device *dev)
+ 	device_link_remove(dev, pm4125->txdev);
+ 	device_link_remove(dev, pm4125->rxdev);
+ 	device_link_remove(pm4125->rxdev, pm4125->txdev);
 +
- 	return 0;
++	/* Release device references acquired in bind */
++	if (pm4125->txdev)
++		put_device(pm4125->txdev);
++	if (pm4125->rxdev)
++		put_device(pm4125->rxdev);
++
+ 	component_unbind_all(dev, pm4125);
  }
  
 -- 
