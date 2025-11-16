@@ -1,116 +1,103 @@
-Return-Path: <stable+bounces-194847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164A3C60E30
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 02:07:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4AEC60E54
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 02:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 708794E549B
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 01:07:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A0433BBE63
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 01:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635D61A9B58;
-	Sun, 16 Nov 2025 01:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509BC1FC0E2;
+	Sun, 16 Nov 2025 01:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="eZAqF4Mu"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0D635CBC5;
-	Sun, 16 Nov 2025 01:06:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6239A217F2E
+	for <stable@vger.kernel.org>; Sun, 16 Nov 2025 01:13:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763255218; cv=none; b=dJ+E0BHXOJ9vim315BwyLSIiBz3NZt3QKFKefFlI32CgXIHyILVkaiDTVCfFDzIb4aVmGpPcDGoqtx5AjGN1/ACopRMgHLJYwUixwkGGRh+1Yb/UPwHDYHImvvkyYffm6gNmczVhZGQL6lO/k1bsYEqPfsm2me1XC6h+q3T1s78=
+	t=1763255622; cv=none; b=Gqu+LnpIwbi8xicmP4zm3HDtnJXcwn8EkCeppprKvKEGFO5kVNlyx4ohmdtnfdRTbgjRfWLWp/7iIMJlKcULpXkdn7vb4h00vUTT9U99D8wfNqDCSW9xgkmxTHhpX1RMIbo3Vbmk0VegBRh2PMZnAcHk3J87pr5cPEreRto9g5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763255218; c=relaxed/simple;
-	bh=pMBoikwlcqXhtgGzOZuJ7pt3ACAMyLeq9gNXtcVyVyM=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=tbTgV1KHYgJpDPopBs/X8Vt1Mjhi8h1WFUvPcZ54fCftEyXEVo0cTQ5EGvb3Jg5nsK1zJZIcxju0hmOO4KafzLvMvmgJUxwsu7l5PyahKzSmeZzuufFopEJxVb9BLJsnuCd+0UdyPlCKhOYdAzyGyahpL2j50KJrw3lmqBnVq8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-03 (Coremail) with SMTP id rQCowAAXqNqMIxlpksTpAA--.20173S2;
-	Sun, 16 Nov 2025 09:06:23 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: stern@rowland.harvard.edu,
-	vz@mleia.com,
-	piotr.wojtaszczyk@timesys.com,
-	gregkh@linuxfoundation.org,
-	stigge@antcom.de,
-	arnd@arndb.de
-Cc: linux-usb@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] USB: ohci-nxp: Fix error handling in ohci-hcd-nxp driver
-Date: Sun, 16 Nov 2025 09:06:13 +0800
-Message-Id: <20251116010613.7966-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:rQCowAAXqNqMIxlpksTpAA--.20173S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZrW7urW5KF1UKrWUGF1ftFb_yoW8GrykpF
-	47XFyjkFyUGw4293y3CF13Xa40kw42v34rKw17Gw17Wan0v34qvFyvyF1FvF43XFWkGrWF
-	ga1Dt34jyr4UAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBa14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
-	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
-	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
-	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
-	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20x
-	vY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I
-	3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIx
-	AIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAI
-	cVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2js
-	IEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUQvtAUUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1763255622; c=relaxed/simple;
+	bh=oKjm2pBf2aAQQKHvfSrwj82kDinKyncuoesGVBSNX74=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KbLqiOL8d4Kd3/QYV3KxmH5by8EM7lNqqh3QcxXFzGf9j/vj53jG2Pyj5jtHBaNPhyVC1T01GJirK6qo0b5+LXlcCDTG3xKPPwKCGmAmrrhXJEB/ewZbpAseBG7v8pE3cNpni0WpapWZ+GUsEtjDE5O3ehQzgKPkGwEQTNMOhd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=eZAqF4Mu; arc=none smtp.client-ip=95.215.58.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+	s=key1; t=1763255607;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=a4PXq7Rgx8/hRFwiVk4QQ8umfI2YEPdEWl4yazxnH7w=;
+	b=eZAqF4MuNIos9EB/3lAFcWKniOb4Wo6Po5DEtnIt+dTBhdy02/HQKQzGsqPI1f4Kiq0E3V
+	9yIeyl0oNyQrMvrYdFY9tSrabHGb99NdH9CVk/x/YBn7H6lOkxwuZNWIT8+8F9VigTz8o5
+	ryQ9mNBTAnIdb2Fhm1SEzVZZF1wWgdJ79eUAlMOz9uELktHPsGOx/XXBYNzjG7qVyuV8ss
+	Vsk9ic3TAr7blfkQdnulhv9t08k5ZFNRD6j3OSvqV7rODY4t42IuB7W/oufbsM/WmUJ4Uv
+	9Q2ailkeB7BpWOGHXtRzZHzptCfC0ztPrBdXWYRRykLcyWkur5GzyuQF10D6IQ==
+From: Alexey Minnekhanov <alexeymin@postmarketos.org>
+Subject: [PATCH v2 0/3] SDM630/660: Add missing MDSS reset
+Date: Sun, 16 Nov 2025 04:12:32 +0300
+Message-Id: <20251116-sdm660-mdss-reset-v2-0-6219bec0a97f@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAlGWkC/32NTQqDMBBGryKz7pT8aJCueg9xEXXUUDQyE6RFv
+ HtTD9Dle/C97wAhDiTwKA5g2oOEuGYwtwL62a8TYRgyg1Gm0spqlGFxTuEyiCCTUEKlK186b2z
+ dVZB3G9MY3lezaTPPQVLkz3Wx65/9V9s1KtRl35XkautG89yipMXzi1KUe+QJ2vM8v8NTUbG5A
+ AAA
+X-Change-ID: 20251031-sdm660-mdss-reset-015a46a238b5
+To: Bjorn Andersson <andersson@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ Alexey Minnekhanov <alexeymin@postmarketos.org>
+X-Migadu-Flow: FLOW_OUT
 
-When obtaining the ISP1301 I2C client through the device tree, the
-driver does not release the device reference in the probe failure path
-or in the remove function. This could cause a reference count leak,
-which may prevent the device from being properly unbound or freed,
-leading to resource leakage. Add put_device() to release the reference
-in the probe failure path and in the remove function.
+Since kernel 6.17 display stack needs to reset the hardware properly to
+ensure that we don't run into issues with the hardware configured by the
+bootloader. MDSS reset is necessary to have working display when the
+bootloader has already initialized it for the boot splash screen.
 
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: 73108aa90cbf ("USB: ohci-nxp: Use isp1301 driver")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
 ---
- drivers/usb/host/ohci-nxp.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Changes in v2:
+- Added "Fixes" tag, pointing to commit which is the root cause for
+  exposing this "bug", which is only present since 6.17
+- Extended commit messages
+- Prepared series using correct user.email git setting
+- Link to v1: https://lore.kernel.org/r/20251031-sdm660-mdss-reset-v1-0-14cb4e6836f2@postmarketos.org
 
-diff --git a/drivers/usb/host/ohci-nxp.c b/drivers/usb/host/ohci-nxp.c
-index 24d5a1dc5056..f79558ef0b45 100644
---- a/drivers/usb/host/ohci-nxp.c
-+++ b/drivers/usb/host/ohci-nxp.c
-@@ -223,6 +223,8 @@ static int ohci_hcd_nxp_probe(struct platform_device *pdev)
- fail_resource:
- 	usb_put_hcd(hcd);
- fail_disable:
-+	if (isp1301_i2c_client)
-+		put_device(&isp1301_i2c_client->dev);
- 	isp1301_i2c_client = NULL;
- 	return ret;
- }
-@@ -234,6 +236,8 @@ static void ohci_hcd_nxp_remove(struct platform_device *pdev)
- 	usb_remove_hcd(hcd);
- 	ohci_nxp_stop_hc();
- 	usb_put_hcd(hcd);
-+	if (isp1301_i2c_client)
-+		put_device(&isp1301_i2c_client->dev);
- 	isp1301_i2c_client = NULL;
- }
- 
+---
+Alexey Minnekhanov (3):
+      dt-bindings: clock: mmcc-sdm660: Add missing MDSS reset
+      clk: qcom: mmcc-sdm660: Add missing MDSS reset
+      arm64: dts: qcom: sdm630: Add missing MDSS reset
+
+ arch/arm64/boot/dts/qcom/sdm630.dtsi         | 1 +
+ drivers/clk/qcom/mmcc-sdm660.c               | 1 +
+ include/dt-bindings/clock/qcom,mmcc-sdm660.h | 1 +
+ 3 files changed, 3 insertions(+)
+---
+base-commit: 1cc41c88ef00de0f3216c5f4b9cfab47de1c49d3
+change-id: 20251031-sdm660-mdss-reset-015a46a238b5
+
+Best regards,
 -- 
-2.17.1
+Alexey Minnekhanov <alexeymin@postmarketos.org>
 
 
