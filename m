@@ -1,153 +1,145 @@
-Return-Path: <stable+bounces-194853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0106C60EE2
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 03:02:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9CEC60F0B
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 03:28:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2952235625A
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 02:02:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D1D63ACDE1
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 02:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59CD1D31B9;
-	Sun, 16 Nov 2025 02:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9971F220687;
+	Sun, 16 Nov 2025 02:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="dVR64hPW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dzX/BknE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031D8B67E
-	for <stable@vger.kernel.org>; Sun, 16 Nov 2025 02:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8F61C3BF7
+	for <stable@vger.kernel.org>; Sun, 16 Nov 2025 02:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763258567; cv=none; b=gCKLnUxmHN5jKMUrlvjYq8PT/YvxeM8qqWIPE5hiMtKDKahds/LsQR+ZckPeYhS0v08Tl1RFEvs+MhV7YzLyqeRdEHBo5Y1rV5ElMKtgkh1caTGWILKNkpQ6b6x5R+Bzi6i6iJV7NVIVNubvs69C8D8VzdDSp24G2U3K/Ya0rp4=
+	t=1763260051; cv=none; b=NvW/lGyzL6MJ2IEG7D52WIpZjtrdTlK9w5I+vKQP9bOwBJOsIE+pnZJuicHkvIgXtymN39UBy4Kh7qkIPKfZuzmWzuw8tMRUG3+vVIzRbjogAEbK4E7GssDpc4vE/wHH4T1ScHblzAk6djL/aitGCl1LQ1zzUcfJ4wD/0wv839Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763258567; c=relaxed/simple;
-	bh=ix3L74YT5V67SxQcvcSjcHCLWXPN7DwdUDzu7JUwpac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K+uLP0vooTdEc4OD1moUWnv9afZA3lIwFNreQocQBzal/E0K5vc9Ps2lFUcXMIgipUx4djzhDz62DHHwjfgrprDY8XnCrno0+gRUB6uLJcvYnzaeDOvUfGkNFDLfzyhWZn9sZ1oBkZeSiVeJJtuIMb6aEKlefrQrxT+89f5ykHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=dVR64hPW; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8b2ea2b9631so2335685a.3
-        for <stable@vger.kernel.org>; Sat, 15 Nov 2025 18:02:45 -0800 (PST)
+	s=arc-20240116; t=1763260051; c=relaxed/simple;
+	bh=HeUkJojjgy8x+9+W2n//VkrvHV0zGjUVIl4jJ5gb4Kk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MHJ8m+PEmvbqDlhfes9+vzkYnW/INEroA81+GYk3wrJpzmz8heRncipYwaTde5nnyKr3TEb6gsW/g9s7wDrGntDF3wtWc1pbxVIgYfn5uVCaONVAWxIZx/aPsqXImNd0myKylsk9wIoOFAiumiMRzva4Irp2OkOLd2yxMKJ2ckI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dzX/BknE; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-42b32a3e78bso2571329f8f.0
+        for <stable@vger.kernel.org>; Sat, 15 Nov 2025 18:27:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1763258565; x=1763863365; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pkXB0RiOx00wRtlBivyr40k1pXaqD5wN/4yTU+LCQbk=;
-        b=dVR64hPWX38dH/Hbc+t3ataLS/k+ldyJ+MI9ha15l6pP3qxcVgApW4nfx7tKqUMKZ+
-         g7xEkQO+yyZzc/nNISsG948Iy2oWBSaniDnDO+T1j6s0FBQwP88r/xAAR1Bf0AR3YzUw
-         WCOGMBkJUd7BakVQItkRFx2cSTZb+FqkcfqEEI1clsgCAeZYK/3YcO+t0Y96mFxtUCo+
-         yh0ePFBLnehTKv6EbKfL82PuLXNIaeV5ps5zY+OLQbXIvg9UT7hLcSl9nSfpzAE0W6l9
-         fsbu2mRBLwJO75W1w1a48fGTTALubjV5iZ4aa9xcJWYs2mP0+7mbCOuWTCBaoKqxvKV5
-         ZznA==
+        d=gmail.com; s=20230601; t=1763260048; x=1763864848; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kQHTaaCZSuYsO96UdJunWUIQb8utCVV4zfJ0o3NYY/0=;
+        b=dzX/BknELDlXypOkf/NVT265QBtQ0vFYhxRsmMom/s1NQ5ECJehnQ2jwxQ44Y/l2Lu
+         u2S+w1aoSaz7f0/I2sAaQ+LyVKOXoSNVyTtlW0esXbJK4M1s/WeSk4DIdLlkKrwPeEeZ
+         lsLhI+/qqMo3udc+6z++LoATkM/hANiaRQIGuealP9IaEf0X89+5uA590AoWpq1J9kn9
+         kVv/MP7vEiZhl1MlW47R0znWg2RsTxWccpk0yi18xnYIfmLC1KxMMKK4I5Djx30t5HO/
+         LO123FuvwCyJTUGzWFC8EIpjRprwTedY4v8yYj4/XW4xMoNpsY4ucCT+vurkiHgHNOt0
+         OOgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763258565; x=1763863365;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pkXB0RiOx00wRtlBivyr40k1pXaqD5wN/4yTU+LCQbk=;
-        b=ItiJ1SpXOggUk+AJRfmELbqYvb+k6N7TKyGWIoof+AJIyhxOZJC0v/t4ewHtFTd4z2
-         FOafdd9DkrjwSDL2v1k+UW4OaRlQpDAHx9V0wZqHKjVgCreb7mPSBiKvRf7F9FgwcXKD
-         bJzjViEewJ10pmNZ3cdgJd2D48x0R/7Xn3VXX1VcgdR3RMg64fes61uT6GJtG4JXP8lu
-         dBJvpbK2iWY+dOXsnT7gJJHoM1iXTmrryRp9DuD5QIeWY7LvMW+hvIGeKSk6kOi2Bac0
-         XcAbcL6exN66f4NpoCVWpSxNKH0O9c0tN+jFp2ju74KQU8tO9tzIEl5UHvrV0XugOdv/
-         b/Ag==
-X-Forwarded-Encrypted: i=1; AJvYcCWAFJtTiphSCvdkI3FrCzO13YnYXZeoRcIQ75Pfiazt9Dy3WT/5Q29IVI+BeCTL0OySGr6mdy0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0q4XAQ9zILmZ7b0di7Am73NN4zvFhC0nppLC68PgDUQOEO4wn
-	RRX+JYtCuJf5Vy0FEknDWgA5NWcZfY0hkM4Ptv6gov90smZk4kiKJL+KAl0sTu2OwFlXSLg3h4F
-	FqmFIqg==
-X-Gm-Gg: ASbGncvQ/phz6JCJItdPUG/Z3Hf9+sXuZRRxCqCI0J7RsfIhLF2eAhwZ3i5q6ZjaSVY
-	El4Mu1nadZngLY50TSHTWfS7SyO7jFekxhCjfZ4ZgxfUVa/Of3Fus83NE+nWQ7W95WQUgVBhQeU
-	dTDnAmzGbWqifAEseRaxYpuBh1jK8EK70rh3J6qnDEG8nMAlPL+6Ht5gmq9BqtN9xddCyg3BJDu
-	VZoVClpy4gOC8NcyfIDgWXBpHSiadH/1PZMbMjJ+N7CNV2rY3M6dMPbEOD3mYARA/ApdFK8Y+5j
-	iMYuLTHKqEp0QVXQNxvqcn7pZ/DLYqTS5AFAZAQOaQQSzK9tRr8euMZ/6uw5cvmkT/DHXpqTkNS
-	/3yprtbu8zYMCLqFwbofd+uzo3jbXFV9lzbaTIVW96PX4jiqYmhvtkye7y/RHrZlLmSioee9h7R
-	DMcg==
-X-Google-Smtp-Source: AGHT+IGadHCqqKWDl62JvuYVsXnkpYDC3mZv4xvz6u4dz1J6qc7Ey4fFE9duNHKyg1jQsybJWUGC9Q==
-X-Received: by 2002:a05:620a:1aa5:b0:8b2:5649:25ef with SMTP id af79cd13be357-8b2c31585a3mr1026069885a.21.1763258564892;
-        Sat, 15 Nov 2025 18:02:44 -0800 (PST)
-Received: from rowland.harvard.edu ([2601:19b:d03:1700::db9a])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2aeeb4afbsm659488785a.14.2025.11.15.18.02.43
+        d=1e100.net; s=20230601; t=1763260048; x=1763864848;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kQHTaaCZSuYsO96UdJunWUIQb8utCVV4zfJ0o3NYY/0=;
+        b=VWQJMAlpSPIt/MGAJe1xrf4v51DasPtGjuQZc6GUqYec66TO++Jb/YnDyfnWUTxBg4
+         f+aINdyrZACx5rV7upS/3i4DamShm8taLNkeEcfzyfQU9zMUG/oEfESPvAiQOnnVDAcl
+         pggMytx9gt5iu73g77xckcAA6xtmyqLqkbwK3M6mgx6+t9xV+5iuXxC3+cH+GYTQErdG
+         TEaHTREKvInnMiClEa1c5b0t7erPpJnI0HMTASjM9OP8p6aXnOOTIqeOeDW8lHZBKGx4
+         10ydFzHQBAKm5BeCD1eZ9zgFBfvz+aC7oDx1XnlyjC+zXURiYvTHf2uVrOtQQOrAyr4M
+         EC+w==
+X-Forwarded-Encrypted: i=1; AJvYcCWvSVxfPUJcm2SOHzqpxtwyX6VDbwentwgcw+WKgKWkmUTAmN2Q+WGwXa+rIBpsueCRQDYPC1I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9UEjYoA5DNNvQQNTARMg32pWwrqy+XKIj64OKcC1/NtJNVz98
+	b+jfbJeCi2SjD0dKgTJL8rzklcYHzL6m+llmZ06Ovl+vIQMO01GC5VrU
+X-Gm-Gg: ASbGnctsjwstP55loar/bjkW/8VykLzNDSOCEMMHnXSaiyjndQGoiSTjz6XA2MGIBE2
+	5nZcXPwTAhNGYfxwIVVHqD0GqtEKpv45+p0Sv4FF0BbB85UXZQpGuTTAjBky1HBJVeTTe4nvI9j
+	5QDwDDhfYQa+JpZaEPGw6qEHsSKMUwjVzGJo+zW95+cl1yD2mYxHspN+S+npSuMlcMInsKNj8S+
+	Dt+uCTCvhzhZESpYuGri+Z9BzEmlv/yprFQfBeox5LwNAORUU9SDZUXitAWpKrXCZoR+1gD08um
+	IhMS2L8YEBBiln8HhnOMpPSURP9EratxUH6wvnLIb99xfGsTN6pgQ4bmUCpwlB2NSnsklakdd8A
+	FHyVZqmcUZpel8lMzDdf1DFXbvpCB50L7eNKG0amHpCeuAnJWdmJYih//kre02VM5nKJWABUMpN
+	7q/TR0YJ9wUaxxpkSWQg==
+X-Google-Smtp-Source: AGHT+IHnVi5ps4m0awDqDegGNwiLqoqub0TaFKEwUQHgJbapVBZLNKrRY2nowbQjtaJ2Z1Ma1OCukw==
+X-Received: by 2002:a5d:5f47:0:b0:42b:3825:2ac8 with SMTP id ffacd0b85a97d-42b5939ce2emr6911403f8f.59.1763260047788;
+        Sat, 15 Nov 2025 18:27:27 -0800 (PST)
+Received: from ekhafagy-ROG-Strix.. ([197.46.78.60])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53e7ae47sm18198368f8f.4.2025.11.15.18.27.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Nov 2025 18:02:44 -0800 (PST)
-Date: Sat, 15 Nov 2025 21:02:40 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: vz@mleia.com, piotr.wojtaszczyk@timesys.com, gregkh@linuxfoundation.org,
-	stigge@antcom.de, arnd@arndb.de, linux-usb@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, stable@vger.kernel.org
-Subject: Re: [PATCH] USB: ohci-nxp: Fix error handling in ohci-hcd-nxp driver
-Message-ID: <69b9818e-7db3-4c2b-80f2-29b8170a95eb@rowland.harvard.edu>
-References: <20251116010613.7966-1-make24@iscas.ac.cn>
+        Sat, 15 Nov 2025 18:27:27 -0800 (PST)
+From: Eslam Khafagy <eslam.medhat1993@gmail.com>
+To: roderick.colenbrander@sony.com,
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	max@enpas.org
+Cc: linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	eslam.medhat1993@gmail.com,
+	syzbot+4f5f81e1456a1f645bf8@syzkaller.appspotmail.com
+Subject: [PATCH v2] HID: memory leak in dualshock4_get_calibration_data
+Date: Sun, 16 Nov 2025 04:27:23 +0200
+Message-ID: <20251116022723.29857-1-eslam.medhat1993@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251116010613.7966-1-make24@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 16, 2025 at 09:06:13AM +0800, Ma Ke wrote:
-> When obtaining the ISP1301 I2C client through the device tree, the
+function dualshock4_get_calibration_data allocates memory to pointer
+buf. however the function may exit prematurely due to transfer_failure
+in this case it does not handle freeing memory.
 
-What if the client is obtained not through the device tree but through 
-normal I2C probing?  See the isp1301_get_client() routine in 
-drivers/usb/phy/phy-isp1301.c.
+this patch handles memory deallocation at exit.
 
-> driver does not release the device reference in the probe failure path
-> or in the remove function. This could cause a reference count leak,
-> which may prevent the device from being properly unbound or freed,
-> leading to resource leakage. Add put_device() to release the reference
-> in the probe failure path and in the remove function.
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 73108aa90cbf ("USB: ohci-nxp: Use isp1301 driver")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/usb/host/ohci-nxp.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/usb/host/ohci-nxp.c b/drivers/usb/host/ohci-nxp.c
-> index 24d5a1dc5056..f79558ef0b45 100644
-> --- a/drivers/usb/host/ohci-nxp.c
-> +++ b/drivers/usb/host/ohci-nxp.c
-> @@ -223,6 +223,8 @@ static int ohci_hcd_nxp_probe(struct platform_device *pdev)
->  fail_resource:
->  	usb_put_hcd(hcd);
->  fail_disable:
-> +	if (isp1301_i2c_client)
+Reported-by: syzbot+4f5f81e1456a1f645bf8@syzkaller.appspotmail.com
+Tested-by: syzbot+4f5f81e1456a1f645bf8@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/691560c4.a70a0220.3124cb.0019.GAE@google.com/T/
+Fixes: 947992c7fa9e0 ("HID: playstation: DS4: Fix calibration workaround for clone devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eslam Khafagy <eslam.medhat1993@gmail.com>
+---
+v2:
+* Adding tag "Cc: stable@vger.kernel.org"
+v1: https://lore.kernel.org/all/20251115022323.1395726-1-eslam.medhat1993@gmail.com/
+---
+ drivers/hid/hid-playstation.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-This test is not needed; there is no way to get here if 
-isp1301_i2c_client is NULL.
+diff --git a/drivers/hid/hid-playstation.c b/drivers/hid/hid-playstation.c
+index 63f6eb9030d1..fef81b7e27c1 100644
+--- a/drivers/hid/hid-playstation.c
++++ b/drivers/hid/hid-playstation.c
+@@ -1992,9 +1992,6 @@ static int dualshock4_get_calibration_data(struct dualshock4 *ds4)
+ 	acc_z_plus       = get_unaligned_le16(&buf[31]);
+ 	acc_z_minus      = get_unaligned_le16(&buf[33]);
+ 
+-	/* Done parsing the buffer, so let's free it. */
+-	kfree(buf);
+-
+ 	/*
+ 	 * Set gyroscope calibration and normalization parameters.
+ 	 * Data values will be normalized to 1/DS4_GYRO_RES_PER_DEG_S degree/s.
+@@ -2041,6 +2038,10 @@ static int dualshock4_get_calibration_data(struct dualshock4 *ds4)
+ 	ds4->accel_calib_data[2].sens_denom = range_2g;
+ 
+ transfer_failed:
++	/* First free buf if still allocated */
++	if(buf)
++		kfree(buf);
++
+ 	/*
+ 	 * Sanity check gyro calibration data. This is needed to prevent crashes
+ 	 * during report handling of virtual, clone or broken devices not implementing
+-- 
+2.43.0
 
-> +		put_device(&isp1301_i2c_client->dev);
->  	isp1301_i2c_client = NULL;
->  	return ret;
->  }
-> @@ -234,6 +236,8 @@ static void ohci_hcd_nxp_remove(struct platform_device *pdev)
->  	usb_remove_hcd(hcd);
->  	ohci_nxp_stop_hc();
->  	usb_put_hcd(hcd);
-> +	if (isp1301_i2c_client)
-
-The same is true for this test.
-
-Alan Stern
-
-> +		put_device(&isp1301_i2c_client->dev);
->  	isp1301_i2c_client = NULL;
->  }
->  
-> -- 
-> 2.17.1
-> 
 
