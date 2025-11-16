@@ -1,108 +1,205 @@
-Return-Path: <stable+bounces-194850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9A2C60E6C
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 02:15:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E124FC60EBE
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 02:50:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 60E17362E46
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 01:14:07 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 63F3435D350
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 01:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A4A223DD0;
-	Sun, 16 Nov 2025 01:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="AJuYWDNd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0051F4168;
+	Sun, 16 Nov 2025 01:50:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2568C1DB356
-	for <stable@vger.kernel.org>; Sun, 16 Nov 2025 01:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0BC1DA23;
+	Sun, 16 Nov 2025 01:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763255617; cv=none; b=NluTJPHnaZhw+8JZgdqvrFDXefASAU4UaZ5L9YOJAKs4BtCYGYDvA+sHkfyW5hkTeqGW0mXFhsvUyLRhtKEEj3Z7txEhOapmBDj1N7E+01FggXlhF+NV/3WDYNfOYts39AhDWWXM3OeghYElRZUh2eF11DWamjlPGKeikLruZZM=
+	t=1763257816; cv=none; b=e8fhFGVR1ozhysJeK7RNQ8GOwopqF+fR3uQ+MqiSzh84lX2HOwnSe2CXAgiHJFv0vmsZ80UWs8Lp5AXxJj0VYUBPVfggxGM8K1xag/mYiQavIcybEDwFq4Q7jVmqN7g3bsXQIDJ7BHfcJ1Q6SsRVWjkQpAErd1FXIuGU/01BEXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763255617; c=relaxed/simple;
-	bh=bTyV/HYwPwuHc6C1YROdxFSSqnjzqyL8eog+Uhw91jE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gJmPBoDLyfYVFAtT2zBTdvisGqHfs8J2Q8GYYk0VSDk4Y6M0XP9b5AVE/tvx1sWC4xr0F3Vb9OusZZ/AQl56xlz1qdYj4HEiztmTQXiGJ8eb5yiagLIDHN3Ztr7LW9yNzlQ3PJW1mdmi9VE71xIfgTFTSzso3k+HS5yejHeN3G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=AJuYWDNd; arc=none smtp.client-ip=95.215.58.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1763255612;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w6bXBbcoVoyWKUZamRu37JTHuPgnt26R7z8laRfJ1tE=;
-	b=AJuYWDNdOFJnBy/w9c9ZYiw/ioZMVRXq8L1Mqp3JSMGUVn2LhgkB+9Kz5batLKhzUSfpGs
-	mGtHFMzY373gCxfRBDbCqYpvQqpbBcmf3xu9MAN/0yKagkkGqtw+L62MbmbvNC70AfYu4x
-	lhIGnGALdSgKyAQPp7SIkVr2po/nShhQs5VMTTOa/ZsnOhBSbKvAtEaBfN/JhQoL5WgGVq
-	X+hWMVNGlcEuVVVcCe6RF9ODPjcaJXR2/gSMxubI8I7UN2YUdVBi7b2cpHGHbPdxx6YwTc
-	f1ohfQCaXUXTNy1TVZ5KFoELWnjSwgZbAXhdSa8KW+Hzl4V78cdyUZzSeGWvfQ==
-From: Alexey Minnekhanov <alexeymin@postmarketos.org>
-Date: Sun, 16 Nov 2025 04:12:35 +0300
-Subject: [PATCH v2 3/3] arm64: dts: qcom: sdm630: Add missing MDSS reset
+	s=arc-20240116; t=1763257816; c=relaxed/simple;
+	bh=uf49/6eknRCvXoQMkkLGmvy+FYqcoEWtiuIlzP8T3cc=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=mK1+QtLeXvwxPYiW6M+39oZOaTQxH9qdkfnRqQrAEDsVqXGZkRmzgpgZCH3kAIEKukci/gEQW+enKWlL8S0WwW7SGahXpABlOFo7xowvXH7Nib3Oxsy3QWMUYzRk4KX/QcxpxhVfthC6GwoIR/KkY0D78BmgoLw7DEIaKfKfeGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-03 (Coremail) with SMTP id rQCowACHD9K9LRlpsrLqAA--.8809S2;
+	Sun, 16 Nov 2025 09:50:00 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: gregkh@linuxfoundation.org,
+	vz@mleia.com,
+	piotr.wojtaszczyk@timesys.com,
+	make24@iscas.ac.cn,
+	arnd@arndb.de,
+	stigge@antcom.de
+Cc: linux-usb@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	stable@vger.kernel.org
+Subject: [PATCH] USB: Fix error handling in gadget driver
+Date: Sun, 16 Nov 2025 09:49:48 +0800
+Message-Id: <20251116014948.14093-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:rQCowACHD9K9LRlpsrLqAA--.8809S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxCF48CrWxCryUAry7Gr15Arb_yoWruryUpr
+	18GFWYkrWDGr9Fkw17A3WDuF1SkF4Iy3yrtrZ7G3Wqk3ZxZr9rJ3W8uFy2qF4xJF97Cr4f
+	Aanxta10y3W8urUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
+	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
+	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4
+	vE14v_KwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIx
+	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+	wI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUmQ6LU
+	UUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251116-sdm660-mdss-reset-v2-3-6219bec0a97f@postmarketos.org>
-References: <20251116-sdm660-mdss-reset-v2-0-6219bec0a97f@postmarketos.org>
-In-Reply-To: <20251116-sdm660-mdss-reset-v2-0-6219bec0a97f@postmarketos.org>
-To: Bjorn Andersson <andersson@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- Alexey Minnekhanov <alexeymin@postmarketos.org>
-X-Migadu-Flow: FLOW_OUT
 
-If the OS does not support recovering the state left by the
-bootloader it needs a way to reset display hardware, so that it can
-start from a clean state. Add a reference to the relevant reset.
+lpc32xx_udc_probe() acquires an i2c_client reference through
+isp1301_get_client() but fails to release it in both error handling
+paths and the normal removal path. This could result in a reference
+count leak for the I2C device, preventing proper cleanup and
+potentially leading to resource exhaustion. Add put_device() to
+release the reference in the probe failure path and in the remove
+function.
 
-It fixes display init issue appeared in Linux v6.17: without reset
-device boots into black screen and you need to turn display off/on
-to "fix" it. Also sometimes it can boot into solid blue color
-with these messages in kernel log:
+Calling path: isp1301_get_client() -> of_find_i2c_device_by_node() ->
+i2c_find_device_by_fwnode(). As comments of
+i2c_find_device_by_fwnode() says, 'The user must call
+put_device(&client->dev) once done with the i2c client.'
 
-  hw recovery is not complete for ctl:2
-  [drm:dpu_encoder_phys_vid_prepare_for_kickoff:569] [dpu error]enc33
-      intf1 ctl 2 reset failure: -22
-  [drm:dpu_encoder_frame_done_timeout:2727] [dpu error]enc33 frame
-      done timeout
+Found by code review.
 
-Fixes: 0e789b491ba0 ("pmdomain: core: Leave powered-on genpds on until sync_state")
-Cc: <stable@vger.kernel.org> # 6.17
-Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
+Cc: stable@vger.kernel.org
+Fixes: 24a28e428351 ("USB: gadget driver for LPC32xx")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- arch/arm64/boot/dts/qcom/sdm630.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/gadget/udc/lpc32xx_udc.c | 35 +++++++++++++++++++++++-----
+ 1 file changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-index 8b1a45a4e56e..fedff18a5721 100644
---- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-@@ -1563,6 +1563,7 @@ mdss: display-subsystem@c900000 {
- 			reg-names = "mdss_phys", "vbif_phys";
+diff --git a/drivers/usb/gadget/udc/lpc32xx_udc.c b/drivers/usb/gadget/udc/lpc32xx_udc.c
+index 1a7d3c4f652f..b6fddfff712d 100644
+--- a/drivers/usb/gadget/udc/lpc32xx_udc.c
++++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
+@@ -2986,6 +2986,7 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
+ 	int retval, i;
+ 	dma_addr_t dma_handle;
+ 	struct device_node *isp1301_node;
++	bool isp1301_acquired = false;
  
- 			power-domains = <&mmcc MDSS_GDSC>;
-+			resets = <&mmcc MDSS_BCR>;
+ 	udc = devm_kmemdup(dev, &controller_template, sizeof(*udc), GFP_KERNEL);
+ 	if (!udc)
+@@ -3013,6 +3014,7 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
+ 	if (!udc->isp1301_i2c_client) {
+ 		return -EPROBE_DEFER;
+ 	}
++	isp1301_acquired = true;
  
- 			clocks = <&mmcc MDSS_AHB_CLK>,
- 				 <&mmcc MDSS_AXI_CLK>,
-
+ 	dev_info(udc->dev, "ISP1301 I2C device at address 0x%x\n",
+ 		 udc->isp1301_i2c_client->addr);
+@@ -3020,7 +3022,7 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
+ 	pdev->dev.dma_mask = &lpc32xx_usbd_dmamask;
+ 	retval = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
+ 	if (retval)
+-		return retval;
++		goto i2c_fail;
+ 
+ 	udc->board = &lpc32xx_usbddata;
+ 
+@@ -3038,28 +3040,32 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
+ 	/* Get IRQs */
+ 	for (i = 0; i < 4; i++) {
+ 		udc->udp_irq[i] = platform_get_irq(pdev, i);
+-		if (udc->udp_irq[i] < 0)
+-			return udc->udp_irq[i];
++		if (udc->udp_irq[i] < 0) {
++			retval = udc->udp_irq[i];
++			goto i2c_fail;
++		}
+ 	}
+ 
+ 	udc->udp_baseaddr = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(udc->udp_baseaddr)) {
+ 		dev_err(udc->dev, "IO map failure\n");
+-		return PTR_ERR(udc->udp_baseaddr);
++		retval = PTR_ERR(udc->udp_baseaddr);
++		goto i2c_fail;
+ 	}
+ 
+ 	/* Get USB device clock */
+ 	udc->usb_slv_clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(udc->usb_slv_clk)) {
+ 		dev_err(udc->dev, "failed to acquire USB device clock\n");
+-		return PTR_ERR(udc->usb_slv_clk);
++		retval = PTR_ERR(udc->usb_slv_clk);
++		goto i2c_fail;
+ 	}
+ 
+ 	/* Enable USB device clock */
+ 	retval = clk_prepare_enable(udc->usb_slv_clk);
+ 	if (retval < 0) {
+ 		dev_err(udc->dev, "failed to start USB device clock\n");
+-		return retval;
++		goto i2c_fail;
+ 	}
+ 
+ 	/* Setup deferred workqueue data */
+@@ -3161,6 +3167,8 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
+ 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
+ 			  udc->udca_v_base, udc->udca_p_base);
+ i2c_fail:
++	if (isp1301_acquired && udc->isp1301_i2c_client)
++		put_device(&udc->isp1301_i2c_client->dev);
+ 	clk_disable_unprepare(udc->usb_slv_clk);
+ 	dev_err(udc->dev, "%s probe failed, %d\n", driver_name, retval);
+ 
+@@ -3170,6 +3178,18 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
+ static void lpc32xx_udc_remove(struct platform_device *pdev)
+ {
+ 	struct lpc32xx_udc *udc = platform_get_drvdata(pdev);
++	struct device *dev = &pdev->dev;
++	struct device_node *isp1301_node;
++	bool isp1301_acquired = false;
++
++	/* Check if we acquired isp1301 via device tree */
++	if (dev->of_node) {
++		isp1301_node = of_parse_phandle(dev->of_node, "transceiver", 0);
++		if (isp1301_node) {
++			isp1301_acquired = true;
++			of_node_put(isp1301_node);
++		}
++	}
+ 
+ 	usb_del_gadget_udc(&udc->gadget);
+ 	if (udc->driver) {
+@@ -3189,6 +3209,9 @@ static void lpc32xx_udc_remove(struct platform_device *pdev)
+ 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
+ 			  udc->udca_v_base, udc->udca_p_base);
+ 
++	if (isp1301_acquired && udc->isp1301_i2c_client)
++		put_device(&udc->isp1301_i2c_client->dev);
++
+ 	clk_disable_unprepare(udc->usb_slv_clk);
+ }
+ 
 -- 
-2.51.0
+2.17.1
 
 
