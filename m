@@ -1,227 +1,189 @@
-Return-Path: <stable+bounces-194861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FAEC611A8
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 09:16:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 938CDC611D0
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 09:44:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A5AE435E5D6
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 08:16:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 529214E1F0D
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 08:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9034521A459;
-	Sun, 16 Nov 2025 08:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3434283142;
+	Sun, 16 Nov 2025 08:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="CeOgGiL2"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C330A15E97;
-	Sun, 16 Nov 2025 08:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA4B7083C;
+	Sun, 16 Nov 2025 08:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763280998; cv=none; b=L7zHZVuE13Ti7y8fRpUvMGDVkTbCdfN7HywczRkLbRm8PGnIbhAcrHkk8R3EZmNQfE4x4ZbfLnYG9jPuxkLAlU61DAp9k0g/gqZLTy3SnbJxZyGGuT1XZuhAFgJPCl4QCCG9oWtv3stLNkrvJTQSs2IpJhpVBk/UNgSGid7JyH8=
+	t=1763282686; cv=none; b=QI0tR2A1Gu/eCD8hcyxmqp1DRO446we4/2APyEdNaUZOMyTb4sqhu7CC1hhZyB1LKBkB7bsydK/esRXpEF9DmJqBieIKo8lMfaMuredRwCvCf5H82N7V3a2GWIIz9SjiNxatoOGGgpyrMEKVqmP2K84emtLr+hnBYLUMAyBlzZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763280998; c=relaxed/simple;
-	bh=0507P64Y1wb0dgKC4xe3LKZImWIlfpqAPpZCmnSOmW4=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=WJMOx/eOfywPgjXdS4nK86XPMBAaE1euQzBFzg654S1wNAqgGZmEBgt+eNEIY+2oC4l17/kSJDyeOnuCV3BmJCmLBcZqMsPnilSgLc2nexKIXU9w7cB99aNFxJgcsrXELGWimQrhvMQhLdY/1Q4X/95zEU81Ad0phk12ZTGTYPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-05 (Coremail) with SMTP id zQCowAAXHG1DiBlp1_bvAA--.52935S2;
-	Sun, 16 Nov 2025 16:16:12 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: tglx@linutronix.de,
-	maz@kernel.org,
-	shawn.guo@linaro.org
-Cc: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] irqchip: Fix error handling in qcom_mpm_init
-Date: Sun, 16 Nov 2025 16:16:02 +0800
-Message-Id: <20251116081602.28926-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:zQCowAAXHG1DiBlp1_bvAA--.52935S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAw1kZF48KryUtr17ur1xXwb_yoWrAFWUpa
-	1fCFWYvrWkJrn2gr92vF1UZwn8Aw17Kay3G3W8Cwna9rnavry5try0qF1Fqa4rCFWvvF15
-	J3y3K3W5CFWUuw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9G14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lc7CjxVAaw2AFwI0_JF0_Jw1lc2xSY4AK67AK6r43MxAIw28IcxkI7VAKI48JMx
-	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
-	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
-	vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v2
-	0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
-	W8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjhF4tUUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1763282686; c=relaxed/simple;
+	bh=M0FlkSXQduubMvN/iVtO0RqZrB9CnOKYMoB3ClbrUXk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hGvUAA3Ts4ZvsZwAee8fnYHpbizmvqC6Au55CZjSorch+cchYmeDby2D15lQ9UiGfViWhlTIIjhOiE6QzNdovhce2XFlbCfR7mP7N6Hm46FAqx4bsXjRZAdkFC2omnZUL+jP/ei66h+W4iqSKz0yOtfBJUWGgDkp53beBm8Y3TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=CeOgGiL2; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id D504B53406A9;
+	Sun, 16 Nov 2025 09:44:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1763282673;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=m7Kh/mq86IFruS2ynmZbEZJzhMLfAN2RrT3BrSbG+mc=;
+	b=CeOgGiL2cWRinPg7GXGV+jH43wXNAMjeP2MXBEDuMEh3/TXgDGV77RiuCsaSf5vAacozsz
+	+MLjW9v9vGobuzqtCBMMsBacTkuciGh0HD5SxSGvArAXZ9zXFqveDYx/Wl65ciUFlmNoW3
+	EtpK1LSIwJwFmpw9e1NT8Xga9Of9whw=
+Message-ID: <d09d394f-92d7-420b-b3d4-2eef493d173e@ixit.cz>
+Date: Sun, 16 Nov 2025 09:44:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ASoC: codecs: wcd937x: Fix error handling in wcd937x
+ codec driver
+To: Ma Ke <make24@iscas.ac.cn>, srini@kernel.org, lgirdwood@gmail.com,
+ broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ dmitry.baryshkov@oss.qualcomm.com
+Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ stable@vger.kernel.org
+References: <20251116061623.11830-1-make24@iscas.ac.cn>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ xsFNBF5v1x4BEADS3EddwsNsvVAI1XF8uQKbdYPY/GhjaSLziwVnbwv5BGwqB1tfXoHnccoA
+ 9kTgKAbiXG/CiZFhD6l4WCIskQDKzyQN3JhCUIxh16Xyw0lECI7iqoW9LmMoN1dNKcUmCO9g
+ lZxQaOl+1bY/7ttd7DapLh9rmBXJ2lKiMEaIpUwb/Nw0d7Enp4Jy2TpkhPywIpUn8CoJCv3/
+ 61qbvI9y5utB/UhfMAUXsaAgwEJyGPAqHlC0YZjaTwOu+YQUE3AFzhCbksq95CwDz4U4gdls
+ dmv9tkATfu2OmzERZQ6vJTehK0Pu4l5KmCAzYg42I9Dy4E6b17x6NncKbcByQFOXMtG0qVUk
+ F1yeeOQUHwu+8t3ZDMBUhCkRL/juuoqLmyDWKMc0hKNNeZ9BNXgB8fXkRLWEUfgDXsFyEkKp
+ NxUy5bDRlivf6XfExnikk5kj9l2gGlNQwqROti/46bfbmlmc/a2GM4k8ZyalHNEAdwtXYSpP
+ 8JJmlbQ7hNTLkc3HQLRsIocN5th/ur7pPMz1Beyp0gbE9GcOceqmdZQB80vJ01XDyCAihf6l
+ AMnzwpXZsjqIqH9r7T7tM6tVEVbPSwPt4eZYXSoJijEBC/43TBbmxDX+5+3txRaSCRQrG9dY
+ k3mMGM3xJLCps2KnaqMcgUnvb1KdTgEFUZQaItw7HyRd6RppewARAQABzSBEYXZpZCBIZWlk
+ ZWxiZXJnIDxkYXZpZEBpeGl0LmN6PsLBlAQTAQgAPgIbAwULCQgHAgYVCgkICwIEFgIDAQIe
+ AQIXgBYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJl+KksBQkPDaAOAAoJEGACP8TTSSBy6IAQ
+ AMqFqVi9LLxCEcUWBn82ssQGiVSDniKpFE/tp7lMXflwhjD5xoftoWOmMYkiWE86t5x5Fsp7
+ afALx7SEDz599F1K1bLnaga+budu55JEAYGudD2WwpLJ0kPzRhqBwGFIx8k6F+goZJzxPDsf
+ loAtXQE62UvEKa4KRRcZmF0GGoRsgA7vE7OnV8LMeocdD3eb2CuXLzauHAfdvqF50IfPH/sE
+ jbzROiAZU+WgrwU946aOzrN8jVU+Cy8XAccGAZxsmPBfhTY5f2VN1IqvfaRdkKKlmWVJWGw+
+ ycFpAEJKFRdfcc5PSjUJcALn5C+hxzL2hBpIZJdfdfStn+DWHXNgBeRDiZj1x6vvyaC43RAb
+ VXvRzOQfG4EaMVMIOvBjBA/FtIpb1gtXA42ewhvPnd5RVCqD9YYUxsVpJ9d+XsAy7uib3BsV
+ W2idAEsPtoqhVhq8bCUs/G4sC2DdyGZK8MRFDJqciJSUbqA+5z1ZCuE8UOPDpZKiW6H/OuOM
+ zDcjh0lOzr4p+/1TSg1PbUh7fQ+nbMuiT044sC1lLtJK0+Zyn0GwhR82oNM4fldNsaHRW42w
+ QGD35+eNo5Pvb3We5XRMlBdhFnj7Siggp4J8/PJ6MJvRyC+RIJPGtbdMB2/RxWunFLn87e5w
+ UgwR9jPMHAstuTR1yR23c4SIYoQ2fzkrRzuazsFNBF5v1x4BEADnlrbta2WL87BlEOotZUh0
+ zXANMrNV15WxexsirLetfqbs0AGCaTRNj+uWlTUDJRXOVIwzmF76Us3I2796+Od2ocNpLheZ
+ 7EIkq8budtLVd1c06qJ+GMraz51zfgSIazVInNMPk9T6fz0lembji5yEcNPNNBA4sHiFmXfo
+ IhepHFOBApjS0CiOPqowYxSTPe/DLcJ/LDwWpTi37doKPhBwlHev1BwVCbrLEIFjY0MLM0aT
+ jiBBlyLJaTqvE48gblonu2SGaNmGtkC3VoQUQFcVYDXtlL9CVbNo7BAt5gwPcNqEqkUL60Jh
+ FtvVSKyQh6gn7HHsyMtgltjZ3NKjv8S3yQd7zxvCn79tCKwoeNevsvoMq/bzlKxc9QiKaRPO
+ aDj3FtW7R/3XoKJBY8Hckyug6uc2qYWRpnuXc0as6S0wfek6gauExUttBKrtSbPPHiuTeNHt
+ NsT4+dyvaJtQKPBTbPHkXpTO8e1+YAg7kPj3aKFToE/dakIh8iqUHLNxywDAamRVn8Ha67WO
+ AEAA3iklJ49QQk2ZyS1RJ2Ul28ePFDZ3QSr9LoJiOBZv9XkbhXS164iRB7rBZk6ZRVgCz3V6
+ hhhjkipYvpJ/fpjXNsVL8jvel1mYNf0a46T4QQDQx4KQj0zXJbC2fFikAtu1AULktF4iEXEI
+ rSjFoqhd4euZ+QARAQABwsF8BBgBCAAmAhsMFiEE13oJz+7cK71TpwR0YAI/xNNJIHIFAmX4
+ qVAFCQ8NoDIACgkQYAI/xNNJIHKN4A/+Ine2Ii7JiuGITjJkcV6pgKlfwYdEs4eFD1pTRb/K
+ 5dprUz3QSLP41u9OJQ23HnESMvn31UENk9ffebNoW7WxZ/8cTQY0JY/cgTTrlNXtyAlGbR3/
+ 3Q/VBJptf04Er7I6TaKAmqWzdVeKTw33LljpkHp02vrbOdylb4JQG/SginLV9purGAFptYRO
+ 8JNa2J4FAQtQTrfOUjulOWMxy7XRkqK3QqLcPW79/CFn7q1yxamPkpoXUJq9/fVjlhk7P+da
+ NYQpe4WQQnktBY29SkFnvfIAwqIVU8ix5Oz8rghuCcAdR7lEJ7hCX9bR0EE05FOXdZy5FWL9
+ GHvFa/Opkq3DPmFl/0nt4HJqq1Nwrr+WR6d0414oo1n2hPEllge/6iD3ZYwptTvOFKEw/v0A
+ yqOoYSiKX9F7Ko7QO+VnYeVDsDDevKic2T/4GDpcSVd9ipiKxCQvUAzKUH7RUpqDTa+rYurm
+ zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
+ fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
+ ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
+In-Reply-To: <20251116061623.11830-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-of_find_device_by_node() increments the reference count but it's never
-decremented, preventing proper device cleanup. Add put_device()
-properly to ensure references released before function return.
+On 16/11/2025 07:16, Ma Ke wrote:
+> In wcd937x_bind(), the driver calls of_sdw_find_device_by_node() to
+> obtain references to RX and TX SoundWire devices, which increment the
+> device reference counts. However, the corresponding put_device() are
+> missing in both the error paths and the normal unbind path in
+> wcd937x_unbind().
+> 
+> Add proper error handling with put_device() calls in all error paths
+> of wcd937x_bind() and ensure devices are released in wcd937x_unbind().
+> 
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 772ed12bd04e ("ASoC: codecs: wcdxxxx: use of_sdw_find_device_by_node helper")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>   sound/soc/codecs/wcd937x.c | 43 ++++++++++++++++++++++++++++++--------
+>   1 file changed, 34 insertions(+), 9 deletions(-)
+> 
 
-Found by code review.
+[...]
 
-Cc: stable@vger.kernel.org
-Fixes: a6199bb514d8 ("irqchip: Add Qualcomm MPM controller driver")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/irqchip/irq-qcom-mpm.c | 56 +++++++++++++++++++++++-----------
- 1 file changed, 38 insertions(+), 18 deletions(-)
+> @@ -2809,10 +2816,26 @@ static int wcd937x_bind(struct device *dev)
+>   
+>   	ret = snd_soc_register_component(dev, &soc_codec_dev_wcd937x,
+>   					 wcd937x_dais, ARRAY_SIZE(wcd937x_dais));
+> -	if (ret)
+> +	if (ret) {
+>   		dev_err(dev, "Codec registration failed\n");
+> +		goto err_remove_link3;
+> +	}
+>   
+>   	return ret;
+> +
+> +err_remove_link3:
+> +	device_link_remove(dev, wcd937x->rxdev);
+> +err_remove_link2:
+> +	device_link_remove(dev, wcd937x->txdev);
+> +err_remove_link1:
+> +	device_link_remove(wcd937x->rxdev, wcd937x->txdev);
+> +err_put_txdev:
+> +	put_device(wcd937x->txdev);
+> +err_put_rxdev:
+> +	put_device(wcd937x->rxdev);
+> +err_component_unbind:
+> +	component_unbind_all(dev, wcd937x);
+> +	return ret;
+>   }
+>   
+>   static void wcd937x_unbind(struct device *dev)
+> @@ -2825,6 +2848,8 @@ static void wcd937x_unbind(struct device *dev)
+>   	device_link_remove(wcd937x->rxdev, wcd937x->txdev);
+>   	component_unbind_all(dev, wcd937x);
+>   	mutex_destroy(&wcd937x->micb_lock);
+> +	put_device(wcd937x->txdev);
+> +	put_device(wcd937x->rxdev);
 
-diff --git a/drivers/irqchip/irq-qcom-mpm.c b/drivers/irqchip/irq-qcom-mpm.c
-index 8d569f7c5a7a..8e5303375261 100644
---- a/drivers/irqchip/irq-qcom-mpm.c
-+++ b/drivers/irqchip/irq-qcom-mpm.c
-@@ -333,14 +333,19 @@ static int qcom_mpm_init(struct device_node *np, struct device_node *parent)
- 	int i, irq;
- 	int ret;
- 
-+	if (!pdev)
-+		return -ENODEV;
-+
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
--	if (!priv)
--		return -ENOMEM;
-+	if (!priv) {
-+		ret = -ENOMEM;
-+		goto err_put_device;
-+	}
- 
- 	ret = of_property_read_u32(np, "qcom,mpm-pin-count", &pin_cnt);
- 	if (ret) {
- 		dev_err(dev, "failed to read qcom,mpm-pin-count: %d\n", ret);
--		return ret;
-+		goto err_put_device;
- 	}
- 
- 	priv->reg_stride = DIV_ROUND_UP(pin_cnt, 32);
-@@ -348,19 +353,22 @@ static int qcom_mpm_init(struct device_node *np, struct device_node *parent)
- 	ret = of_property_count_u32_elems(np, "qcom,mpm-pin-map");
- 	if (ret < 0) {
- 		dev_err(dev, "failed to read qcom,mpm-pin-map: %d\n", ret);
--		return ret;
-+		goto err_put_device;
- 	}
- 
- 	if (ret % 2) {
- 		dev_err(dev, "invalid qcom,mpm-pin-map\n");
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto err_put_device;
- 	}
- 
- 	priv->map_cnt = ret / 2;
- 	priv->maps = devm_kcalloc(dev, priv->map_cnt, sizeof(*priv->maps),
- 				  GFP_KERNEL);
--	if (!priv->maps)
--		return -ENOMEM;
-+	if (!priv->maps) {
-+		ret = -ENOMEM;
-+		goto err_put_device;
-+	}
- 
- 	for (i = 0; i < priv->map_cnt; i++) {
- 		u32 pin, hwirq;
-@@ -386,19 +394,23 @@ static int qcom_mpm_init(struct device_node *np, struct device_node *parent)
- 		ret = of_address_to_resource(msgram_np, 0, &res);
- 		if (ret) {
- 			of_node_put(msgram_np);
--			return ret;
-+			goto err_put_device;
- 		}
- 
- 		/* Don't use devm_ioremap_resource, as we're accessing a shared region. */
- 		priv->base = devm_ioremap(dev, res.start, resource_size(&res));
- 		of_node_put(msgram_np);
--		if (!priv->base)
--			return -ENOMEM;
-+		if (!priv->base) {
-+			ret = -ENOMEM;
-+			goto err_put_device;
-+		}
- 	} else {
- 		/* Otherwise, fall back to simple MMIO. */
- 		priv->base = devm_platform_ioremap_resource(pdev, 0);
--		if (IS_ERR(priv->base))
--			return PTR_ERR(priv->base);
-+		if (IS_ERR(priv->base)) {
-+			ret = PTR_ERR(priv->base);
-+			goto err_put_device;
-+		}
- 	}
- 
- 	for (i = 0; i < priv->reg_stride; i++) {
-@@ -410,21 +422,25 @@ static int qcom_mpm_init(struct device_node *np, struct device_node *parent)
- 	}
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0)
--		return irq;
-+	if (irq < 0) {
-+		ret = irq;
-+		goto err_put_device;
-+	}
- 
- 	genpd = &priv->genpd;
- 	genpd->flags = GENPD_FLAG_IRQ_SAFE;
- 	genpd->power_off = mpm_pd_power_off;
- 
- 	genpd->name = devm_kasprintf(dev, GFP_KERNEL, "%s", dev_name(dev));
--	if (!genpd->name)
--		return -ENOMEM;
-+	if (!genpd->name) {
-+		ret = -ENOMEM;
-+		goto err_put_device;
-+	}
- 
- 	ret = pm_genpd_init(genpd, NULL, false);
- 	if (ret) {
- 		dev_err(dev, "failed to init genpd: %d\n", ret);
--		return ret;
-+		goto err_put_device;
- 	}
- 
- 	ret = of_genpd_add_provider_simple(np, genpd);
-@@ -438,7 +454,7 @@ static int qcom_mpm_init(struct device_node *np, struct device_node *parent)
- 	if (IS_ERR(priv->mbox_chan)) {
- 		ret = PTR_ERR(priv->mbox_chan);
- 		dev_err(dev, "failed to acquire IPC channel: %d\n", ret);
--		return ret;
-+		goto remove_genpd;
- 	}
- 
- 	parent_domain = irq_find_host(parent);
-@@ -466,6 +482,7 @@ static int qcom_mpm_init(struct device_node *np, struct device_node *parent)
- 		goto remove_domain;
- 	}
- 
-+	put_device(dev);
- 	return 0;
- 
- remove_domain:
-@@ -474,6 +491,9 @@ static int qcom_mpm_init(struct device_node *np, struct device_node *parent)
- 	mbox_free_channel(priv->mbox_chan);
- remove_genpd:
- 	pm_genpd_remove(genpd);
-+err_put_device:
-+	if (pdev)
-+		put_device(dev);
- 	return ret;
- }
- 
+Shouldn't component_unbind_all be placed here too?
+
+Anyway, current changes (applies with or without the mentioned change):
+
+Reviewed-by: David Heidelberg <david@ixit.cz>
+
+Thank you!
+
+>   }
+>   
+>   static const struct component_master_ops wcd937x_comp_ops = {
+
 -- 
-2.17.1
+David Heidelberg
 
 
