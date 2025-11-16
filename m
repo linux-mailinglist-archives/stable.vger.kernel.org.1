@@ -1,164 +1,76 @@
-Return-Path: <stable+bounces-194856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E0E0C60F9B
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 04:38:21 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 626C7C61059
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 05:35:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6230B35F209
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 03:38:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5E1FC4E4E8F
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 04:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D2C225A29;
-	Sun, 16 Nov 2025 03:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D13227E82;
+	Sun, 16 Nov 2025 04:35:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail.enpas.org (lighthouse.enpas.org [46.38.232.102])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A03817C211;
-	Sun, 16 Nov 2025 03:37:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9CF6288D6;
+	Sun, 16 Nov 2025 04:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.38.232.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763264280; cv=none; b=SAO2yMAR+F555LHhNVshHx2gPuYoy78lQ0PLoWUotcTDf5fw//tc690US/LL/7VgtNfGpLORqsYToqpCslY/+QP5cxGOhbiNUeFBseXmQGu94jR1fZyUL1MWiafpFgBLU6WH6Fzu1hUZiQO7G/ksA9Hji6a+EnnxxvVzMxUmpWg=
+	t=1763267723; cv=none; b=Y9pFxOFvSVdH4QfQqLaKYphuTixkAXxrpEHiCHLH5kdyH3YEawEJgVKmC3B0FXEcVtIrPTlopSF8iqBQ1QxGjnAG4fSFpf1/3S4uUMGwLzethmbmqvG9a2+0zpGUkwlRA2ZD8SZQc1B//03NssbB5q45Qp8eu4yMl/+8+CWMN9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763264280; c=relaxed/simple;
-	bh=5TlFauKgyuZQTEVmaKa7SFRUz88wvUoi8MN+xGek9/c=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=uov6fh721Hfe8ozj2pvgiaBFubscrR6hYFOIpoKH2zMJVfVIbDP+s+Ii8p64yx+oxxHPn3yoK7+YPCV3HhuVxovL8pwqGZIATbSyLOjHM9lz1suzspojS9B16L3xZBWSETGsbhzJeHALA4Ga38OzFWNDsP1FEnx6i9VitRpZrJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-05 (Coremail) with SMTP id zQCowAAH_l7uRhlpbmjqAA--.17336S2;
-	Sun, 16 Nov 2025 11:37:27 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: srini@kernel.org,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alexey.klimov@linaro.org
-Cc: linux-sound@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] ASoC: codecs: Fix error handling in pm4125 audio codec driver
-Date: Sun, 16 Nov 2025 11:37:16 +0800
-Message-Id: <20251116033716.29369-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:zQCowAAH_l7uRhlpbmjqAA--.17336S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJFWxKFWkKrWDCw1fXF43Wrg_yoW5Wr18pa
-	98Ca95KrWjqF17C393WrWDAay3Jw1IyF1fAr47Kw1xKr13tryFgFy0yryava48CFWkAFWD
-	JasrX34kGryjyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPF14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
-	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
-	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
-	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
-	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4
-	vE14v_Gr4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
-	67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MI
-	IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
-	14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
-	W8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUnYFA
-	DUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1763267723; c=relaxed/simple;
+	bh=s057bGZl+Q1uaUlVRkVexz6hPfzkiKzrq8B75jCk+F4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a9zZTRr06NxOdb4cNkH2muYU7N45suwjONZkco2qGCCQnNRW0R+2bgMywMChg8LCtyDDe5O0SBMecw45S74Q+55UdAUgkBnqRwlzLaNMgA6c4SU4DTp6V0bDaxV6mmouBFarQ1lRvZQw40wNNDy6ho25/e9BqUI5n1WRESOBQqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enpas.org; spf=pass smtp.mailfrom=enpas.org; arc=none smtp.client-ip=46.38.232.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enpas.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enpas.org
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by mail.enpas.org (Postfix) with ESMTPSA id ED700104097;
+	Sun, 16 Nov 2025 04:35:14 +0000 (UTC)
+Message-ID: <ddb16ea8-7588-4c0a-9e34-6bd8babd598f@enpas.org>
+Date: Sun, 16 Nov 2025 13:34:50 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] HID: memory leak in dualshock4_get_calibration_data
+To: Eslam Khafagy <eslam.medhat1993@gmail.com>,
+ roderick.colenbrander@sony.com, jikos@kernel.org, bentiss@kernel.org
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, syzbot+4f5f81e1456a1f645bf8@syzkaller.appspotmail.com
+References: <20251116022723.29857-1-eslam.medhat1993@gmail.com>
+Content-Language: en-US
+From: Max Staudt <max@enpas.org>
+In-Reply-To: <20251116022723.29857-1-eslam.medhat1993@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-pm4125_bind() acquires references through pm4125_sdw_device_get() but
-fails to release them in error paths and during normal unbind
-operations. This could result in reference count leaks, preventing
-proper cleanup and potentially causing resource exhaustion over
-multiple bind/unbind cycles.
+On 11/16/25 11:27 AM, Eslam Khafagy wrote:
+> function dualshock4_get_calibration_data allocates memory to pointer
+> buf. however the function may exit prematurely due to transfer_failure
+> in this case it does not handle freeing memory.
+> 
+> this patch handles memory deallocation at exit.
 
-Calling path: pm4125_sdw_device_get() -> bus_find_device_by_of_node()
--> bus_find_device() -> get_device.
+Reviewed-by: Max Staudt <max@enpas.org>
 
-Found by code review.
 
-Cc: stable@vger.kernel.org
-Fixes: 8ad529484937 ("ASoC: codecs: add new pm4125 audio codec driver")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- sound/soc/codecs/pm4125.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+One minor thing that I forgot: I see that the commit message is all 
+lower case. Proper capitalisation helps readability and matches the 
+kernel style. No need to resend this time, but in case you're sending a 
+v3 for any other reason, it'd be great if you picked this up as well :)
 
-diff --git a/sound/soc/codecs/pm4125.c b/sound/soc/codecs/pm4125.c
-index 706fc668ffe2..f9bcae6d1d79 100644
---- a/sound/soc/codecs/pm4125.c
-+++ b/sound/soc/codecs/pm4125.c
-@@ -1551,6 +1551,10 @@ static int pm4125_bind(struct device *dev)
- 	struct device_link *devlink;
- 	int ret;
- 
-+	/* Initialize device pointers to NULL for safe cleanup */
-+	pm4125->rxdev = NULL;
-+	pm4125->txdev = NULL;
-+
- 	/* Give the soundwire subdevices some more time to settle */
- 	usleep_range(15000, 15010);
- 
-@@ -1574,7 +1578,7 @@ static int pm4125_bind(struct device *dev)
- 	if (!pm4125->txdev) {
- 		dev_err(dev, "could not find txslave with matching of node\n");
- 		ret = -EINVAL;
--		goto error_unbind_all;
-+		goto error_put_rx;
- 	}
- 
- 	pm4125->sdw_priv[AIF1_CAP] = dev_get_drvdata(pm4125->txdev);
-@@ -1584,7 +1588,7 @@ static int pm4125_bind(struct device *dev)
- 	if (!pm4125->tx_sdw_dev) {
- 		dev_err(dev, "could not get txslave with matching of dev\n");
- 		ret = -EINVAL;
--		goto error_unbind_all;
-+		goto error_put_tx;
- 	}
- 
- 	/*
-@@ -1596,7 +1600,7 @@ static int pm4125_bind(struct device *dev)
- 	if (!devlink) {
- 		dev_err(dev, "Could not devlink TX and RX\n");
- 		ret = -EINVAL;
--		goto error_unbind_all;
-+		goto error_put_tx;
- 	}
- 
- 	devlink = device_link_add(dev, pm4125->txdev,
-@@ -1650,6 +1654,10 @@ static int pm4125_bind(struct device *dev)
- 	device_link_remove(dev, pm4125->txdev);
- link_remove_rx_tx:
- 	device_link_remove(pm4125->rxdev, pm4125->txdev);
-+error_put_tx:
-+	put_device(pm4125->txdev);
-+error_put_rx:
-+	put_device(pm4125->rxdev);
- error_unbind_all:
- 	component_unbind_all(dev, pm4125);
- 	return ret;
-@@ -1663,6 +1671,13 @@ static void pm4125_unbind(struct device *dev)
- 	device_link_remove(dev, pm4125->txdev);
- 	device_link_remove(dev, pm4125->rxdev);
- 	device_link_remove(pm4125->rxdev, pm4125->txdev);
-+
-+	/* Release device references acquired in bind */
-+	if (pm4125->txdev)
-+		put_device(pm4125->txdev);
-+	if (pm4125->rxdev)
-+		put_device(pm4125->rxdev);
-+
- 	component_unbind_all(dev, pm4125);
- }
- 
--- 
-2.17.1
+
+Thanks for your patch!
+
+Max
 
 
