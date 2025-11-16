@@ -1,145 +1,106 @@
-Return-Path: <stable+bounces-194854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9CEC60F0B
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 03:28:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12915C60F33
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 03:44:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D1D63ACDE1
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 02:27:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DF5774E375C
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 02:44:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9971F220687;
-	Sun, 16 Nov 2025 02:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dzX/BknE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CD2223DD0;
+	Sun, 16 Nov 2025 02:44:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8F61C3BF7
-	for <stable@vger.kernel.org>; Sun, 16 Nov 2025 02:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CC682866;
+	Sun, 16 Nov 2025 02:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763260051; cv=none; b=NvW/lGyzL6MJ2IEG7D52WIpZjtrdTlK9w5I+vKQP9bOwBJOsIE+pnZJuicHkvIgXtymN39UBy4Kh7qkIPKfZuzmWzuw8tMRUG3+vVIzRbjogAEbK4E7GssDpc4vE/wHH4T1ScHblzAk6djL/aitGCl1LQ1zzUcfJ4wD/0wv839Y=
+	t=1763261091; cv=none; b=VvEAVVDt22DuTSufZSf8nCDpOZJrO+wkr+lgtUtP45UHy8BVCy2/i3ZfpKOvwRmKUpIgphtIOoSSpgHJYSzRaRyTrhvpEqLOVL1aFLQfncIO8B+1TFk9TZwSLvRiSNrl+svGS6Vubt9YiAOYC3Rt1QOLByQTZ/UiAFcGDyHzxv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763260051; c=relaxed/simple;
-	bh=HeUkJojjgy8x+9+W2n//VkrvHV0zGjUVIl4jJ5gb4Kk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MHJ8m+PEmvbqDlhfes9+vzkYnW/INEroA81+GYk3wrJpzmz8heRncipYwaTde5nnyKr3TEb6gsW/g9s7wDrGntDF3wtWc1pbxVIgYfn5uVCaONVAWxIZx/aPsqXImNd0myKylsk9wIoOFAiumiMRzva4Irp2OkOLd2yxMKJ2ckI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dzX/BknE; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-42b32a3e78bso2571329f8f.0
-        for <stable@vger.kernel.org>; Sat, 15 Nov 2025 18:27:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763260048; x=1763864848; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kQHTaaCZSuYsO96UdJunWUIQb8utCVV4zfJ0o3NYY/0=;
-        b=dzX/BknELDlXypOkf/NVT265QBtQ0vFYhxRsmMom/s1NQ5ECJehnQ2jwxQ44Y/l2Lu
-         u2S+w1aoSaz7f0/I2sAaQ+LyVKOXoSNVyTtlW0esXbJK4M1s/WeSk4DIdLlkKrwPeEeZ
-         lsLhI+/qqMo3udc+6z++LoATkM/hANiaRQIGuealP9IaEf0X89+5uA590AoWpq1J9kn9
-         kVv/MP7vEiZhl1MlW47R0znWg2RsTxWccpk0yi18xnYIfmLC1KxMMKK4I5Djx30t5HO/
-         LO123FuvwCyJTUGzWFC8EIpjRprwTedY4v8yYj4/XW4xMoNpsY4ucCT+vurkiHgHNOt0
-         OOgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763260048; x=1763864848;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kQHTaaCZSuYsO96UdJunWUIQb8utCVV4zfJ0o3NYY/0=;
-        b=VWQJMAlpSPIt/MGAJe1xrf4v51DasPtGjuQZc6GUqYec66TO++Jb/YnDyfnWUTxBg4
-         f+aINdyrZACx5rV7upS/3i4DamShm8taLNkeEcfzyfQU9zMUG/oEfESPvAiQOnnVDAcl
-         pggMytx9gt5iu73g77xckcAA6xtmyqLqkbwK3M6mgx6+t9xV+5iuXxC3+cH+GYTQErdG
-         TEaHTREKvInnMiClEa1c5b0t7erPpJnI0HMTASjM9OP8p6aXnOOTIqeOeDW8lHZBKGx4
-         10ydFzHQBAKm5BeCD1eZ9zgFBfvz+aC7oDx1XnlyjC+zXURiYvTHf2uVrOtQQOrAyr4M
-         EC+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWvSVxfPUJcm2SOHzqpxtwyX6VDbwentwgcw+WKgKWkmUTAmN2Q+WGwXa+rIBpsueCRQDYPC1I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9UEjYoA5DNNvQQNTARMg32pWwrqy+XKIj64OKcC1/NtJNVz98
-	b+jfbJeCi2SjD0dKgTJL8rzklcYHzL6m+llmZ06Ovl+vIQMO01GC5VrU
-X-Gm-Gg: ASbGnctsjwstP55loar/bjkW/8VykLzNDSOCEMMHnXSaiyjndQGoiSTjz6XA2MGIBE2
-	5nZcXPwTAhNGYfxwIVVHqD0GqtEKpv45+p0Sv4FF0BbB85UXZQpGuTTAjBky1HBJVeTTe4nvI9j
-	5QDwDDhfYQa+JpZaEPGw6qEHsSKMUwjVzGJo+zW95+cl1yD2mYxHspN+S+npSuMlcMInsKNj8S+
-	Dt+uCTCvhzhZESpYuGri+Z9BzEmlv/yprFQfBeox5LwNAORUU9SDZUXitAWpKrXCZoR+1gD08um
-	IhMS2L8YEBBiln8HhnOMpPSURP9EratxUH6wvnLIb99xfGsTN6pgQ4bmUCpwlB2NSnsklakdd8A
-	FHyVZqmcUZpel8lMzDdf1DFXbvpCB50L7eNKG0amHpCeuAnJWdmJYih//kre02VM5nKJWABUMpN
-	7q/TR0YJ9wUaxxpkSWQg==
-X-Google-Smtp-Source: AGHT+IHnVi5ps4m0awDqDegGNwiLqoqub0TaFKEwUQHgJbapVBZLNKrRY2nowbQjtaJ2Z1Ma1OCukw==
-X-Received: by 2002:a5d:5f47:0:b0:42b:3825:2ac8 with SMTP id ffacd0b85a97d-42b5939ce2emr6911403f8f.59.1763260047788;
-        Sat, 15 Nov 2025 18:27:27 -0800 (PST)
-Received: from ekhafagy-ROG-Strix.. ([197.46.78.60])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53e7ae47sm18198368f8f.4.2025.11.15.18.27.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Nov 2025 18:27:27 -0800 (PST)
-From: Eslam Khafagy <eslam.medhat1993@gmail.com>
-To: roderick.colenbrander@sony.com,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	max@enpas.org
-Cc: linux-input@vger.kernel.org,
+	s=arc-20240116; t=1763261091; c=relaxed/simple;
+	bh=ESzJpiBooaawubAvyvKPHMB+wWYpbqR4O6qNHSTLqxU=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=Xoqz0QuSoZOH66D2OpxL/WWm2mpYxx/H7GFGnpVleze0w2i4Y1zFDpXH+JL5B7IwbtX3qy0ZEAl08SEDqrIlxIE/FuTJhIYOKRr4kYfcJoyCJHrdFisAb8C2AxruwvCo7LyIwYxE93BAifaq8um8o3DNKCuV9VDPH99eakKQ4Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-03 (Coremail) with SMTP id rQCowACnONt9OhlphMrrAA--.5337S2;
+	Sun, 16 Nov 2025 10:44:20 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	make24@iscas.ac.cn,
+	benh@kernel.crashing.org,
+	smaclennan@pikatech.com
+Cc: linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	eslam.medhat1993@gmail.com,
-	syzbot+4f5f81e1456a1f645bf8@syzkaller.appspotmail.com
-Subject: [PATCH v2] HID: memory leak in dualshock4_get_calibration_data
-Date: Sun, 16 Nov 2025 04:27:23 +0200
-Message-ID: <20251116022723.29857-1-eslam.medhat1993@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	akpm@linux-foundation.org,
+	stable@vger.kernel.org
+Subject: [PATCH] powerpc/warp: Fix error handling in pika_dtm_thread
+Date: Sun, 16 Nov 2025 10:44:11 +0800
+Message-Id: <20251116024411.21968-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:rQCowACnONt9OhlphMrrAA--.5337S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtrW7tryDtFy8Xr17Cw17KFg_yoWftwb_Ka
+	109a97urW8Wr4qk3Wqyr1fGrZxJ39rJ34UKw1qg3W2ya45Xa95Xw4FyrZ5uw17ursFkr43
+	Jan5WrsrC3WS9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbDAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwV
+	AFwVW8JwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIx
+	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+	wI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUmLvtU
+	UUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-function dualshock4_get_calibration_data allocates memory to pointer
-buf. however the function may exit prematurely due to transfer_failure
-in this case it does not handle freeing memory.
+pika_dtm_thread() acquires client through of_find_i2c_device_by_node()
+but fails to release it in error handling path. This could result in a
+reference count leak, preventing proper cleanup and potentially
+leading to resource exhaustion. Add put_device() to release the
+reference in the error handling path.
 
-this patch handles memory deallocation at exit.
+Found by code review.
 
-Reported-by: syzbot+4f5f81e1456a1f645bf8@syzkaller.appspotmail.com
-Tested-by: syzbot+4f5f81e1456a1f645bf8@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/691560c4.a70a0220.3124cb.0019.GAE@google.com/T/
-Fixes: 947992c7fa9e0 ("HID: playstation: DS4: Fix calibration workaround for clone devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Eslam Khafagy <eslam.medhat1993@gmail.com>
+Fixes: 3984114f0562 ("powerpc/warp: Platform fix for i2c change")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
-v2:
-* Adding tag "Cc: stable@vger.kernel.org"
-v1: https://lore.kernel.org/all/20251115022323.1395726-1-eslam.medhat1993@gmail.com/
----
- drivers/hid/hid-playstation.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/44x/warp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/hid-playstation.c b/drivers/hid/hid-playstation.c
-index 63f6eb9030d1..fef81b7e27c1 100644
---- a/drivers/hid/hid-playstation.c
-+++ b/drivers/hid/hid-playstation.c
-@@ -1992,9 +1992,6 @@ static int dualshock4_get_calibration_data(struct dualshock4 *ds4)
- 	acc_z_plus       = get_unaligned_le16(&buf[31]);
- 	acc_z_minus      = get_unaligned_le16(&buf[33]);
+diff --git a/arch/powerpc/platforms/44x/warp.c b/arch/powerpc/platforms/44x/warp.c
+index a5001d32f978..6f674f86dc85 100644
+--- a/arch/powerpc/platforms/44x/warp.c
++++ b/arch/powerpc/platforms/44x/warp.c
+@@ -293,6 +293,8 @@ static int pika_dtm_thread(void __iomem *fpga)
+ 		schedule_timeout(HZ);
+ 	}
  
--	/* Done parsing the buffer, so let's free it. */
--	kfree(buf);
--
- 	/*
- 	 * Set gyroscope calibration and normalization parameters.
- 	 * Data values will be normalized to 1/DS4_GYRO_RES_PER_DEG_S degree/s.
-@@ -2041,6 +2038,10 @@ static int dualshock4_get_calibration_data(struct dualshock4 *ds4)
- 	ds4->accel_calib_data[2].sens_denom = range_2g;
- 
- transfer_failed:
-+	/* First free buf if still allocated */
-+	if(buf)
-+		kfree(buf);
++	put_device(&client->dev);
 +
- 	/*
- 	 * Sanity check gyro calibration data. This is needed to prevent crashes
- 	 * during report handling of virtual, clone or broken devices not implementing
+ 	return 0;
+ }
+ 
 -- 
-2.43.0
+2.17.1
 
 
