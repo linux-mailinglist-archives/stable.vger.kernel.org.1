@@ -1,65 +1,73 @@
-Return-Path: <stable+bounces-194875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D00C618FF
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 18:11:00 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B712FC61903
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 18:14:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A63B83AE096
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 17:10:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4EAB34E6FA2
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 17:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B96930C372;
-	Sun, 16 Nov 2025 17:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66FF30DD30;
+	Sun, 16 Nov 2025 17:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CFqDGjTo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="phm0xnB4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A9025333F
-	for <stable@vger.kernel.org>; Sun, 16 Nov 2025 17:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A5930CDB4
+	for <stable@vger.kernel.org>; Sun, 16 Nov 2025 17:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763313056; cv=none; b=AazhqMB726jdsrivrJUW7mw5SkEUIge8KVC6WfH5fYHirUOBoJSpw65sof6Y6tIdmnqh+/9ZYYO8L2kKvKhUt8KrijPywvhS31gNX+hcukaw23CZWlexeBXVGmCqJ/aMVBKAWkGGj8aAtVbNhBbuC5hVGrWI4ezubKMokccJdOs=
+	t=1763313249; cv=none; b=PKCBHKbjda0+YMyZX9ummXyR+VrJC5wlxKCYPXGUZ7gGQA27NLqNmO52rpeKNgxpFoXeCQiSoUzW1MimXDLTHKuO5FKhsRoQ+Hl4ObM2m+Z3gvFtYDyASW/CBW56iwy8kv0F9JBUv40HvR5Iv1Y34CsLg8hXSwNjyBmfbHgh3cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763313056; c=relaxed/simple;
-	bh=v8xVUh0legxqT0KCOulHRL/Wo1FSUCbl/5BMwmQjMq8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F1nEfp0nDbKoES4LWE7EOe/iHjBO4ElrrR9gb9FR7I0XNPSAr2QTckAu28wgVbptDG+DnjqBn8fVNODJv9QVldsh8m/07+C4qrSMglDqJnkAfmw3QkRpIfsrIsWrfsYoGSRTp1gl95rWYPLhYqJ7eD/Cap/dXGrWxahWz/ThtWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CFqDGjTo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C66C4CEF1;
-	Sun, 16 Nov 2025 17:10:55 +0000 (UTC)
+	s=arc-20240116; t=1763313249; c=relaxed/simple;
+	bh=ckSkflevBvENHF/v+r6feGwZCRm+dQy+RCIDt9XRhx0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CWQykaz8PFTcZA3uq8maBy87wZkNETFSKT6RoqQFEGYE3vYBjMecz8PDrc7tz4G6zD31stxyONbJEy9J7oQUAeVLSAqB4cPxiZLkwYS7M22Y26jOAG7mrxmbUbPT/IHu+jZvxM35WipxNEpN59DFf8saR4dni3X63c6W6kSOTs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=phm0xnB4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BB7C4CEFB;
+	Sun, 16 Nov 2025 17:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763313055;
-	bh=v8xVUh0legxqT0KCOulHRL/Wo1FSUCbl/5BMwmQjMq8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFqDGjTomRSQS9ciZwTsd/Rs6sBW8qgJt57kvwi5xUEwd9qZhvunvq145Xoxinxb0
-	 bBwN86bLL1ACvIxdYZIdHLqN40GpGDu/QvjLvOU99fR2kR8C6LtxPXZRjm6q/Y9Y6a
-	 nrdLo41s76F6VX+O1XQYM/AQtRnOrbwPD1FqxXWOxCyqfo/SbVGFNbJymcOQGsN3qq
-	 sJfTehsx/ldWxpYpRPrlSxEt/wSYM6o1TLl678ba7mMm8IEO8spQDamC3CJa8kBiLB
-	 p1Ujbu5enCgceu/STVyBLSRpA7G9xmd6HQJEWtlirR2Fke2yScEItxRMtzd6b7hNZr
-	 n+3xm7Y3k3z4Q==
+	s=k20201202; t=1763313249;
+	bh=ckSkflevBvENHF/v+r6feGwZCRm+dQy+RCIDt9XRhx0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=phm0xnB4iU2KUGXTdbAgVHB97WCDz4ojz65gdSRzBN5MgedYp1eX/l2eerSEipQTi
+	 xNOZ7lk7kedn6EPtPf8IMqYkLfQHjjilsninh7ab5TPjISxrZVeDyt5hgUx0gDjn6b
+	 ONUztnrALYtrzSK0D7eERMqlqoeFo4wCyljyk8vuNSUp9nkin8nr52/2YW8U7F3PcO
+	 K6Am0h8s5iatGdUwYFk2FS4AtE5JTHWi40TrkX1jsxPiVXw32+ovs2sOTNS+zpZ7h6
+	 rCMy928iyO/FwBHVCXJuhtflMbP5FMOnPbJe8cvXU7tvxGfbHGhP9T0kmWWYE16HO7
+	 LXOzyGb0tynrA==
+Date: Sun, 16 Nov 2025 12:14:07 -0500
 From: Sasha Levin <sashal@kernel.org>
-To: Jakub Acs <acsjakub@amazon.de>
-Cc: stable@vger.kernel.org,
-	Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH 6.12.y] proc: fix the issue of proc_mem_open returning NULL
-Date: Sun, 16 Nov 2025 12:10:54 -0500
-Message-ID: <20251116171054.3605266-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251111081926.8505-1-acsjakub@amazon.de>
-References: <20251111081926.8505-1-acsjakub@amazon.de>
+To: NeilBrown <neilb@ownmail.net>
+Cc: stable@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH stable 6.1.y] nfsd: use __clamp in nfsd4_get_drc_mem()
+Message-ID: <aRoGX3KLr43L3HNf@laps>
+References: <176272473578.634289.16492611931438112048@noble.neil.brown.name>
+ <20251116163915.3588641-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20251116163915.3588641-1-sashal@kernel.org>
 
-Subject: proc: fix the issue of proc_mem_open returning NULL
+On Sun, Nov 16, 2025 at 11:39:15AM -0500, Sasha Levin wrote:
+>Subject: nfsd: use __clamp in nfsd4_get_drc_mem()
+>
+>Thanks!
 
-Thanks!
+This was NOT queued up, sorry. My script did the wrong thing here :(
+
+-- 
+Thanks,
+Sasha
 
