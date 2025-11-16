@@ -1,123 +1,181 @@
-Return-Path: <stable+bounces-194869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52980C61735
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 16:09:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64EB4C617B1
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 16:44:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 686214EA14F
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 15:09:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A6F1E36172E
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 15:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD6B30C379;
-	Sun, 16 Nov 2025 15:09:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oc6KKPtq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE73D30CDA8;
+	Sun, 16 Nov 2025 15:44:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CB41DEFE8
-	for <stable@vger.kernel.org>; Sun, 16 Nov 2025 15:09:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAC630CDAA
+	for <stable@vger.kernel.org>; Sun, 16 Nov 2025 15:44:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763305750; cv=none; b=m0qajYATahAp51V5U7auDHs7dy4miO+xI+zZNAsDgaWRdYH+ytzKWont6l00bkeHRA8Lb9cq+A7GFjJY04Uw9f5+692F42nzfJcXjuqFBf3oSxxguPWOx856PRrAFIJVbaxa/tK4DAyjmkKX0zFfiAw2K/+/NgHO2rykw96vx5w=
+	t=1763307860; cv=none; b=EEPwWSIGQvCkLU77aEiKJk3aTS4WR/6ZzWS4rvYEcYDrYS48OYFahsKGB1e6siTLU+5tUU16B2KTMoidhhbHmq8ga7Awx62W60kqQGq5sr+EzNzJ95lh+z1SpYTVKCrxzVoiOnynWFEGJQDY9ssh8F5vYGiO6OY9iMa249gkQ+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763305750; c=relaxed/simple;
-	bh=xq8xTEaVyip20qvmaObDd4dfH1b/XchZRVgFrwvraHE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P1fYU+fe3ID7OW7uLqyLol1Y9sR2xDTw6hdqzFQ0NnyfZ1be3I70Kf56bZxmqp4Tzhzk1bNmqPCysjALDqtz4oaJQ3pa6Na9xMSCwbD/jBxZHXLnwx7beZ6nIGEkI3wSpS0xlLTnViyhf1aeUGcvXa+hncrA7ZPnSPxdzg5HeNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oc6KKPtq; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-47775fb6c56so38228605e9.1
-        for <stable@vger.kernel.org>; Sun, 16 Nov 2025 07:09:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763305745; x=1763910545; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EvODb/e7qLsRFrmDWJkGdxSLjYJZj6/4elRLF1YEXuE=;
-        b=Oc6KKPtqtYazDKDP0bX02uTJWmEUPOW6uAMkZTKj7Vpbs4AU7lWm09tFd9fgIPys9G
-         itXJh6/j4rVJvnFALAQ2u3TuPdKSaolZeNtkjSwYj5H2xpQKMmjOnfeYC156eyxqRFJi
-         OObe9pXTH1FMSBxhKhK0qZ+DSE+rAo6hlcDPVSBAWJlEvsJI7KkkXpBCM5xSBwR6l/9s
-         MmlxI2DXX9kw0ToFDc1GEksUJDJ8pDOIl+WpaWm5vwyKMeBAqbnw2k8nRF/LuyvKmYR+
-         pRhSCtin20ITF03WWZaQuPJpWXQBTvWKp4igxWfrT3yC9RCzcRnNcp3xzqoEHxojkU6/
-         WGGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763305745; x=1763910545;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EvODb/e7qLsRFrmDWJkGdxSLjYJZj6/4elRLF1YEXuE=;
-        b=nHDcYzcvsFe2CfvcsCIJ7u5xGRhtzem9Hb6ZxTpi/dj643lxKLqdFcMocTwQjiiQwp
-         qPin2vFFnah198AJ+/ulKLG63f2z2pYIanhw2gOVogQwla3Bdal0nMvkPfEOWr9+IKsl
-         X/P8OGtnPHmBaqK6OjXBNAAG1B4WitNXNTHRf8eOpQl9chUDwp1BbVh1hZbu/JBeBtKI
-         iGY9xh8vfIjy+VoqF6Ge0OvAshXY9at7ZJtbMUofebnF1YOw1z7Z1xIYnUb9dy8Yil8z
-         Bh6N9XugTEF9uYrBrw97XeSwPKwqGP4GC+UjuXtLLee/FB9NPvdJy+Mpc+bVe3P7OgK1
-         TOLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW05K/hCWohebKpKoDDbaiuB6xeINcG6DdPp/kza0Fzc1JLvRLNu4G28kW60niSgNxoFTfpEZ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywy0A4FTphktkoGTvvvS95jmoaIjEmc2NutpUqiMmZuqkzCth1d
-	W/pWRNmh/wkF1BIWggwnXaBZS5LMLiEe/20dr0DXE79h2RVBprpa/CA+
-X-Gm-Gg: ASbGncvkTdSVrWvg7BQ0qIEUfQZ/dcQ2h0vrHPe4hqkF7UkJCoEZPoRpuiLAhNij74g
-	Q0TWSRAxChNOK+pOPYdZ9BnlvizegTlmed1NcvoDR46bJQVgjOeOeAnOddrZ2blRqCSDadLHyuz
-	VWjjd1pWAD1IfSrq7C321O2Ipb/53I6necTBgQM0t1ux8AUcrUg628YidlFbTHdL40TmjAvYQuf
-	VLF+5R8Dg+WepI3a6+O2D0FHLWBqOfxGbXGgQUNHQLYOb7skZ+2J+KlYAs7rEhRDKPMxivQT9vX
-	QvVXLQ3lEEH2FjZ2EhoV/GbeD6NRFui5iztckogJuOxBgOGMiRcKyF60CR//2svPmhgc3dX8Rch
-	avJjoLRvjcxwxehNLCX/uo0xqr1oPsNKtPpKytzIsISilDH85iCo5PEQoUwmYtZP9R7I1gi1+xq
-	uiJrLNrVnHfu2pBNRDjew4
-X-Google-Smtp-Source: AGHT+IGMp5GTuzD+R9g6gkfd5sPc9gSs2a2eVt8uvtcAe/vzEoodhAs9XilhHcDZOUcO+nPtbyO15Q==
-X-Received: by 2002:a05:600c:1d20:b0:477:7a1a:4b79 with SMTP id 5b1f17b1804b1-4778feaaeb3mr87055775e9.37.1763305745160;
-        Sun, 16 Nov 2025 07:09:05 -0800 (PST)
-Received: from [192.168.1.12] ([197.46.78.60])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4779973ddcfsm83154645e9.15.2025.11.16.07.09.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Nov 2025 07:09:04 -0800 (PST)
-Message-ID: <a3d10075-3ff3-419e-8231-0a1558195d0f@gmail.com>
-Date: Sun, 16 Nov 2025 17:09:03 +0200
+	s=arc-20240116; t=1763307860; c=relaxed/simple;
+	bh=H3tEJofUrq0Emqx3M1MlIfhw7ICeXPNnNUPyWg5azE8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kzx/LoYIlr1+zfMjGYWw5FbtQosKuuOqZKn0c6r10vqcOQOkcUfqBOD8iMzd5Qg9gOOdjxcx1kh+AldTbC5vyXRlTrkZYWeggdm7/XY/KD02lDmQK9+sLdIdSYOHUxdwn60fS64IPwWBecalmZH8DMzfDVE/Hu0eJD8ocuI4cxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vKeuy-0005Ia-8K; Sun, 16 Nov 2025 16:43:56 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vKeuw-000lf6-30;
+	Sun, 16 Nov 2025 16:43:54 +0100
+Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id B4D654A02F8;
+	Sun, 16 Nov 2025 15:22:52 +0000 (UTC)
+Date: Sun, 16 Nov 2025 16:22:50 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Biju Das <biju.das.jz@bp.renesas.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Vincent Mailhol <mailhol@kernel.org>, "magnus.damm" <magnus.damm@gmail.com>, 
+	Tranh Ha <tranh.ha.xb@renesas.com>, Duy Nguyen <duy.nguyen.rh@renesas.com>, 
+	"linux-can@vger.kernel.org" <linux-can@vger.kernel.org>, 
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: RE: [PATCH] can: rcar_canfd: Fix controller mode setting for
+ RZ/G2L SoCs
+Message-ID: <20251116-deer-of-total-apotheosis-2ce1cc-mkl@pengutronix.de>
+References: <20251030120508.420377-1-biju.das.jz@bp.renesas.com>
+ <20251112-warping-ninja-jaybird-22edde-mkl@pengutronix.de>
+ <TY3PR01MB11346974232A057A7D5B6EBAD86CBA@TY3PR01MB11346.jpnprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] HID: memory leak in dualshock4_get_calibration_data
-To: Max Staudt <max@enpas.org>, roderick.colenbrander@sony.com,
- jikos@kernel.org, bentiss@kernel.org
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, syzbot+4f5f81e1456a1f645bf8@syzkaller.appspotmail.com
-References: <20251116022723.29857-1-eslam.medhat1993@gmail.com>
- <ddb16ea8-7588-4c0a-9e34-6bd8babd598f@enpas.org>
-Content-Language: en-US
-From: Eslam Khafagy <eslam.medhat1993@gmail.com>
-In-Reply-To: <ddb16ea8-7588-4c0a-9e34-6bd8babd598f@enpas.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="342downr2s5n6lny"
+Content-Disposition: inline
+In-Reply-To: <TY3PR01MB11346974232A057A7D5B6EBAD86CBA@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
 
-On 11/16/25 06:34, Max Staudt wrote:
-> On 11/16/25 11:27 AM, Eslam Khafagy wrote:
->> function dualshock4_get_calibration_data allocates memory to pointer
->> buf. however the function may exit prematurely due to transfer_failure
->> in this case it does not handle freeing memory.
->>
->> this patch handles memory deallocation at exit.
+--342downr2s5n6lny
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: RE: [PATCH] can: rcar_canfd: Fix controller mode setting for
+ RZ/G2L SoCs
+MIME-Version: 1.0
+
+On 15.11.2025 13:57:13, Biju Das wrote:
+> Hi Marc, Geert,
 >
-> Reviewed-by: Max Staudt <max@enpas.org>
+> > -----Original Message-----
+> > From: Marc Kleine-Budde <mkl@pengutronix.de>
+> > Sent: 12 November 2025 08:47
+> > Subject: Re: [PATCH] can: rcar_canfd: Fix controller mode setting for R=
+Z/G2L SoCs
+> >
+> > On 30.10.2025 12:05:04, Biju wrote:
+> > > From: Biju Das <biju.das.jz@bp.renesas.com>
+> > >
+> > > The commit 5cff263606a1 ("can: rcar_canfd: Fix controller mode
+> > > setting") applies to all SoCs except the RZ/G2L family of SoCs. As per
+> > > RZ/G2L hardware manual "Figure 28.16 CAN Setting Procedure after the
+> > > MCU is Reset" CAN mode needs to be set before channel reset. Add the
+> > > mode_before_ch_rst variable to struct rcar_canfd_hw_info to handle
+> > > this difference.
+> > >
+> > > The above commit also breaks CANFD functionality on RZ/G3E. Adapt this
+> > > change to RZ/G3E, as well=C2=A0as it works ok by following the
+> > > initialisation sequence of RZ/G2L.
+> > >
+> > > Fixes: 5cff263606a1 ("can: rcar_canfd: Fix controller mode setting")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> >
+> > Applied to linux-can.
 >
+> There are 3 modes for CANFD on RZ/G3E
 >
-> One minor thing that I forgot: I see that the commit message is all 
-> lower case. Proper capitalisation helps readability and matches the 
-> kernel style. No need to resend this time, but in case you're sending 
-> a v3 for any other reason, it'd be great if you picked this up as well :)
+> 1) CAN-FD mode
+> 2) FD only mode
+> 3) Classical CAN only mode
 >
-Oh, ok. but, no plans for v3 for now.
-> Thanks for your patch!
+> In the "FD only mode", the FDOE bit enables the reception and transmissio=
+n of CAN-FD-only frames.
+> If enabled, communication in the Classical CAN frame format is disabled.
 >
-welcome
-> Max
+> On RZ/G2L, currently, CAN-FD mode is enabled by default and
+> On RZ/G3E and R-Car Gen4, currently FD-only mode is the default.
 >
+> Prior to commit 5cff263606a1010 ("can: rcar_canfd: Fix controller mode se=
+tting)
+> RZ/G3E and R-Car Gen4 are using incorrect code for setting CAN-FD mode. B=
+ut fortunately,
+> it sets the mode as CAN-FD node, as the channel reset was executed after
+> setting the mode, that resets the registers to CAN-FD mode.(Global reset,=
+ set mode, channel reset)
+>
+> The commit 5cff263606a1010 makes (Global reset, channel reset, set mode),=
+ now
+> align with the flow mentioned in the hardware manual for all SoCs except =
+RZ/G2L.
+> But because of the earlier wrong code, it sets to FD-only mode instead of=
+ CAN-FD mode.
+>
+> Is it okay to drop this patch so I can send another patch to make CAN-FD =
+mode
+> as the default for RZ/G3E and R-Car Gen4?
+
+Yes. I'll drop this patch now.
+
+> As an enhancement, we need to define a device tree property to support FD=
+-only mode
+> for RZ/G2L, RZ/G3E and R-Car Gen4. Please share your thoughts on this.
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--342downr2s5n6lny
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmkZ7DsACgkQDHRl3/mQ
+kZymkAf/VSOUZK3IudRdzA+MK5ODwmvKV2wiiMMtS1FHfxH7PDBAd+kXGagNNhvB
+25ob7J/De4gP8RfS98wp7AG1RF4b+dbj83aYpEcba4ByXAZUTzQACJN/Xkj6Vqk9
+QX9vlNk4sTJuJ2s4ddtKjlXCJsXk8HqtwgJ1lS4+u46wJuH1JVuaepdyCOdn+iwD
+W7QMKBr+0Zuhssw22xb+uhCkGrN2KQ517LQKmIL72/A4Lfq/yeus3L1rUNQSRa+g
+ZCix0jvPsF26qBtzogVPkOejTnHDK0qoR8AfpdVE4DYN1FF/BfIYxU1TjnHOsTrz
+MdXDivK6kSFyK8DPYhRy3RPCAMfYvA==
+=EIRn
+-----END PGP SIGNATURE-----
+
+--342downr2s5n6lny--
 
