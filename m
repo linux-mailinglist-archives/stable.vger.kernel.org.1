@@ -1,97 +1,119 @@
-Return-Path: <stable+bounces-194885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C4A0C61A75
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 19:18:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C8EEC61AED
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 19:40:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 69FD84EAE67
-	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 18:16:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 151A74E2A72
+	for <lists+stable@lfdr.de>; Sun, 16 Nov 2025 18:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE76F30FC20;
-	Sun, 16 Nov 2025 18:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F9C30E85B;
+	Sun, 16 Nov 2025 18:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Vyo6J5tt";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3N1YU/4z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sagPWVkh"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6BF2F7AC5;
-	Sun, 16 Nov 2025 18:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC53F2309B9;
+	Sun, 16 Nov 2025 18:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763316992; cv=none; b=UPGYkW6eB6I201+aGHrfYx/h3ARoR+tSLbYtVptJ7poeCeEqAi/5kvkm6tN1PJPlRtqdGwcr4i0nx6+QSynYhBXhvnXpBmUsIpOaIYEJA181MSxg3IXFa57zPZwYNUyrGhL4x3JycMmbsRJOjYWzYl+1mvPITc0InrP+Rl1SsTE=
+	t=1763318419; cv=none; b=E9sMgXAL5qGkcFYPLBWPdiJkkKY7E9qsnODCAMSoFIt2IllU+Unv3MCGdTFqpHNJpHRUVk++BW25WwXJ/Y8QOcWRDqpQAKC2vXP9CKsq/F+6lFxc0PvWK3S+v8Mf0aoYBRm5Hsiy6mFBniVaU7fyMZAb3UrCptdBKiiV2F9ql8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763316992; c=relaxed/simple;
-	bh=HP34z7eR9mKVjYxjveu66xMtkd2K3K/BGg3xoelD6ss=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Ommi3TZNnmF58/75YaiOqpGg3+gUiF+1Tm+yCc61kZyl4K+JXpGciW/U7Ykm5yrwZpmbM6WNEm6WCA5nxmvfaUPm+EY19fgS5tXpaFyl4ISGrU+T3WjtTPb4qHCFI+gYmvaErkBv4IU3RXDZZ6k07hk+tgKKc97+2gnESk6efEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Vyo6J5tt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3N1YU/4z; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763316989;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NOIkG1cenxXym0AokE46jiBs/wDOAMCFMCN4N3uWS0Y=;
-	b=Vyo6J5ttZyjGh65TzRZZQC4F+kHTVniWMf18AjxXC3GI5AW2JgKsPsWYXSoCA/zK5Px9jv
-	kmOjHvXMMHKc18FANOvWJxD29+Qd+ib1bAd0WxtAvMqgIfogFpd1+TnrLoQ88dR/Pop5nx
-	FsVWAyl6sDZVW8HCHr3xH0/ACcUsUA8vKEksS8N7zzPm0Rs/55R6cJtJ8KPv4L2Xp8PB9G
-	vixBeOWC5IDjIeyJkfNdMTyuYDWoEkcA/jJ2XWfTKg1KYcLsyXKwl2QY/fRRFGigviV1fJ
-	/FD0AmqYiftEfyupUbHT0+i3laOEiTU5nufcF081jO+1q8w0+DAUj1MozFh4Yw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763316989;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NOIkG1cenxXym0AokE46jiBs/wDOAMCFMCN4N3uWS0Y=;
-	b=3N1YU/4zcdmx3UiDoHeaS48syypf2MAvrYXi6XfqIYeaB6zZGaQeKkIuJAKUC1QAH8q+ka
-	wBZas81Cd9SD/kAA==
-To: Ma Ke <make24@iscas.ac.cn>, maz@kernel.org, shawn.guo@linaro.org
-Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org, Ma Ke
- <make24@iscas.ac.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH] irqchip: Fix error handling in qcom_mpm_init
-In-Reply-To: <20251116081602.28926-1-make24@iscas.ac.cn>
-References: <20251116081602.28926-1-make24@iscas.ac.cn>
-Date: Sun, 16 Nov 2025 19:16:28 +0100
-Message-ID: <87seed972b.ffs@tglx>
+	s=arc-20240116; t=1763318419; c=relaxed/simple;
+	bh=MFvfiF10TjB5tzqijgQzsyHuJS8eAudS8TIxPduTtO8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=n2nong0aWjXlTz2KbEyPj19+p5w3dhvi2JISHyHQf4HSKV6OOppjtSo9tUJwCsHCPvhuZ9ms/grngFlJ+G69h66mRuoWSU8Y1zNZen+d8RTiXbZ/mGizmETeR0l0d5YXjwAmduO2bptUSs0SjF5Pmx+E8riBy/AGz4/vuuJLuoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sagPWVkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C32C4CEF1;
+	Sun, 16 Nov 2025 18:40:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763318419;
+	bh=MFvfiF10TjB5tzqijgQzsyHuJS8eAudS8TIxPduTtO8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sagPWVkhWGmvTw/Fj5c+SdhnXn1gkYb0TEzne3TjhPJNmeMXmacilq4RAYyHvQ/Hl
+	 4szYGMWb2AF758tjN3euqq/kuuW4vIZX5A2Id/vegmPV8W0pN+F1Ci5wrXKcpwLINx
+	 KF11Mu3R0okFRI1vBNluRKMcDZ3oLFFwD26Tx4J11NsBZpn/dDIvAdg1rPibdlVxEz
+	 qaYK00ugP3ojgxxmSaNTKWiA+KoVCyo64sMFy2JJUiyt8oV/X4WvLYN9mbYquV+snu
+	 KeeDzf2vvHEKdq045m0VH3TT2gMmRCx20JxR2HjDptHOtiZ6eeNS9cwZGrjjrD+EnK
+	 BxJCCG4yokZ6Q==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Cc: linux-kernel@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	larryw3i <larryw3i@yeah.net>,
+	stable@vger.kernel.org,
+	AlanSong-oc@zhaoxin.com,
+	CobeChen@zhaoxin.com,
+	GeorgeXue@zhaoxin.com,
+	HansHu@zhaoxin.com,
+	LeoLiu-oc@zhaoxin.com,
+	TonyWWang-oc@zhaoxin.com,
+	YunShen@zhaoxin.com
+Subject: [PATCH] crypto: padlock-sha - Disable broken driver
+Date: Sun, 16 Nov 2025 10:39:26 -0800
+Message-ID: <20251116183926.3969-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <3af01fec-b4d3-4d0c-9450-2b722d4bbe39@yeah.net>
+References: <3af01fec-b4d3-4d0c-9450-2b722d4bbe39@yeah.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 16 2025 at 16:16, Ma Ke wrote:
+This driver is known broken, as it computes the wrong SHA-1 and SHA-256
+hashes.  Correctness needs to be the first priority for cryptographic
+code.  Just disable it, allowing the standard (and actually correct)
+SHA-1 and SHA-256 implementations to take priority.
 
-> of_find_device_by_node() increments the reference count but it's never
-> decremented, preventing proper device cleanup. Add put_device()
-> properly to ensure references released before function return.
->
-> Found by code review.
+Reported-by: larryw3i <larryw3i@yeah.net>
+Closes: https://lore.kernel.org/r/3af01fec-b4d3-4d0c-9450-2b722d4bbe39@yeah.net/
+Closes: https://lists.debian.org/debian-kernel/2025/09/msg00019.html
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1113996
+Cc: stable@vger.kernel.org
+Cc: AlanSong-oc@zhaoxin.com
+Cc: CobeChen@zhaoxin.com
+Cc: GeorgeXue@zhaoxin.com
+Cc: HansHu@zhaoxin.com
+Cc: LeoLiu-oc@zhaoxin.com
+Cc: TonyWWang-oc@zhaoxin.com
+Cc: YunShen@zhaoxin.com
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
 
-By whom? You sent 7 patches today which touch random parts of the
-kernel:
+This patch is targeting crypto/master
 
-  [PATCH] irqchip: Fix error handling in qcom_mpm_init
-  [PATCH] phy: HiSilicon: Fix error handling in hi3670_pcie_get_resources_from_pcie
-  [PATCH] ASoC: codecs: wcd937x: Fix error handling in wcd937x codec driver
-  [PATCH] ASoC: codecs: Fix error handling in pm4125 audio codec driver
-  [PATCH] powerpc/warp: Fix error handling in pika_dtm_thread
-  [PATCH] USB: Fix error handling in gadget driver
-  [PATCH] USB: ohci-nxp: Fix error handling in ohci-hcd-nxp driver
+ drivers/crypto/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-and in all of them you claim to have found them by code review.
+diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
+index a6688d54984c..16ea3e741350 100644
+--- a/drivers/crypto/Kconfig
++++ b/drivers/crypto/Kconfig
+@@ -38,11 +38,11 @@ config CRYPTO_DEV_PADLOCK_AES
+ 	  If unsure say M. The compiled module will be
+ 	  called padlock-aes.
+ 
+ config CRYPTO_DEV_PADLOCK_SHA
+ 	tristate "PadLock driver for SHA1 and SHA256 algorithms"
+-	depends on CRYPTO_DEV_PADLOCK
++	depends on CRYPTO_DEV_PADLOCK && BROKEN
+ 	select CRYPTO_HASH
+ 	select CRYPTO_SHA1
+ 	select CRYPTO_SHA256
+ 	help
+ 	  Use VIA PadLock for SHA1/SHA256 algorithms.
 
-Why do I have doubts especially when I look at your email address?
+base-commit: 59b0afd01b2ce353ab422ea9c8375b03db313a21
+-- 
+2.51.2
 
-Thanks,
-
-        tglx
 
