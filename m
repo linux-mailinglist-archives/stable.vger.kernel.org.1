@@ -1,154 +1,67 @@
-Return-Path: <stable+bounces-194919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC0DC6202A
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 02:36:17 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F2DC62030
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 02:38:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CF5C135DD23
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 01:36:03 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F2BCF356890
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 01:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11EF23507E;
-	Mon, 17 Nov 2025 01:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8C92367BA;
+	Mon, 17 Nov 2025 01:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CmHEA6Hn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i09QA4gG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1E823D7FD;
-	Mon, 17 Nov 2025 01:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C96A1E4AB
+	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 01:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763343313; cv=none; b=UnhefdmAk4bmLEqSSilYUlkFPUH0MwI81Nt95tYw9yoqsPV+UgUgees2irleBzLh08BdJJcs01ocOp6LlbPMgE/hwYuzThm3zriwHWIbbFGdVw7E6BpeAw8vedv49F69jr8XGjszzoFEK5gFzF2KvLON7UmDvB3HXFP9O90iwh8=
+	t=1763343511; cv=none; b=XIvkijgh3BvR9U1bJf/qZx8+Ud/ejrqKrswI8r/NEMPhoR3SDGsetUhfDmI2JnTdVg7/bSaiDbtKfQp/EmQjR53Dnlkryuhw2lyov9MO2y2cc0sSET7Rho33zJ9wnMIfP2g6wp5yGUggS4ZPB3d6YMIWqj6LzYttLNMxPS3rmzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763343313; c=relaxed/simple;
-	bh=jv6T66thiPG7CNumGq5iILhsz5LxU62i3wjdr75feuI=;
-	h=Date:To:From:Subject:Message-Id; b=UNYX3jBd2GivQCSm/GL4Hogr/XAa5DNz8xxrtwtHndHSr4UKJy6PBt1DgvgaBYj2kHRYeITbhA7eAaE9Y5WN9S2iPaLTUQ0SYxT2cCqrPhpHJU9jgHGXW1LXWEmzKdE4hrJ/skhd5PsKd6yV6ORJhrWnnMVqSXsaSSYyVh4WNFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CmHEA6Hn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795AFC116D0;
-	Mon, 17 Nov 2025 01:35:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763343313;
-	bh=jv6T66thiPG7CNumGq5iILhsz5LxU62i3wjdr75feuI=;
-	h=Date:To:From:Subject:From;
-	b=CmHEA6HnamffgxBfwT/G6Yh3+bn6dtugfmvt4N5uyF60uKbnw4mkL9gHCcY6+atgz
-	 fm2n7LUsFHGcTSy2MQTSGEG86Keo1Oik/0WuOQNN41jgx5szt4QsjPnytW0iWrFasc
-	 +GizFhlLjiXONWcCcvfHPwMAV1VVJflX5M9M08Dc=
-Date: Sun, 16 Nov 2025 17:35:12 -0800
-To: mm-commits@vger.kernel.org,wangkefeng.wang@huawei.com,stable@vger.kernel.org,davidgow@google.com,brendan.higgins@linux.dev,sj@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-damon-tests-sysfs-kunit-handle-alloc-failures-on-damon_sysfs_test_add_targets.patch removed from -mm tree
-Message-Id: <20251117013513.795AFC116D0@smtp.kernel.org>
+	s=arc-20240116; t=1763343511; c=relaxed/simple;
+	bh=4J0Y/3/+xNlkwAt5r4aphsEDKQO77GGhJxd7GUgHL1o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Iz3eHtEGS3B4vTAFsmEPz0B9odZWdKOfzeHaBnvrEjPPxbtHH6yz1Xs1pdCvZIeaxe6N4K9uHOcKfiUJYH0iAfFLY0pntoGbDGk1FRwePrl6H0go5zD8SAkVvvT83eRkKWkUYyfkX7JfJbb7ZcPvj1ZYHln6kRatRf8gbiWtJaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i09QA4gG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF20C4CEF1;
+	Mon, 17 Nov 2025 01:38:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763343510;
+	bh=4J0Y/3/+xNlkwAt5r4aphsEDKQO77GGhJxd7GUgHL1o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=i09QA4gGaKw94VkKdhLUGiCyXLn6PH/MYN7VNXDCS/5b4zwLSYN7oVGVMPOxXwhrl
+	 7mAZZrSQpDuheO85sa4fIP/0BPN7kTTEOmHWS9WBhIMarvLXLFwTc/tiY5w/XRXdeP
+	 art3ITPEcBwrToUSBLrJhK2MOQ89TswwHKI9BaVJXIbdpnCHVOsItBSN39naWcTiio
+	 DnUM99AiOtV79ac+6AxWUR6hTjpRMDZvI2Wgg0tHRthS0Xb5RLrD0NO6OG/M3XEcQ5
+	 SBZ9BvSs8hL+nq8hNcHHwFfP3uzy+5XR1monqZnBx2CHTm/xoBozMV46/cNOUAOb+J
+	 mX7nGiMQBPLgw==
+From: Sasha Levin <sashal@kernel.org>
+To: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Cc: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: Re: [PATCH 6.1.y] Bluetooth: hci_sync: fix double free in 'hci_discovery_filter_clear()'
+Date: Sun, 16 Nov 2025 20:38:28 -0500
+Message-ID: <20251117013828.3745002-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <tencent_FF86E4B3752C0E284C4FC31B2D4ECDEDC706@qq.com>
+References: <tencent_FF86E4B3752C0E284C4FC31B2D4ECDEDC706@qq.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+Subject: Bluetooth: hci_sync: fix double free in 'hci_discovery_filter_clear()'
 
-The quilt patch titled
-     Subject: mm/damon/tests/sysfs-kunit: handle alloc failures on damon_sysfs_test_add_targets()
-has been removed from the -mm tree.  Its filename was
-     mm-damon-tests-sysfs-kunit-handle-alloc-failures-on-damon_sysfs_test_add_targets.patch
-
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/tests/sysfs-kunit: handle alloc failures on damon_sysfs_test_add_targets()
-Date: Sat, 1 Nov 2025 11:20:14 -0700
-
-damon_sysfs_test_add_targets() is assuming all dynamic memory allocation
-in it will succeed.  Those are indeed likely in the real use cases since
-those allocations are too small to fail, but theoretically those could
-fail.  In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
-
-Link: https://lkml.kernel.org/r/20251101182021.74868-21-sj@kernel.org
-Fixes: b8ee5575f763 ("mm/damon/sysfs-test: add a unit test for damon_sysfs_set_targets()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.7+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/tests/sysfs-kunit.h |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
---- a/mm/damon/tests/sysfs-kunit.h~mm-damon-tests-sysfs-kunit-handle-alloc-failures-on-damon_sysfs_test_add_targets
-+++ a/mm/damon/tests/sysfs-kunit.h
-@@ -45,16 +45,41 @@ static void damon_sysfs_test_add_targets
- 	struct damon_ctx *ctx;
- 
- 	sysfs_targets = damon_sysfs_targets_alloc();
-+	if (!sysfs_targets)
-+		kunit_skip(test, "sysfs_targets alloc fail");
- 	sysfs_targets->nr = 1;
- 	sysfs_targets->targets_arr = kmalloc_array(1,
- 			sizeof(*sysfs_targets->targets_arr), GFP_KERNEL);
-+	if (!sysfs_targets->targets_arr) {
-+		kfree(sysfs_targets);
-+		kunit_skip(test, "targets_arr alloc fail");
-+	}
- 
- 	sysfs_target = damon_sysfs_target_alloc();
-+	if (!sysfs_target) {
-+		kfree(sysfs_targets->targets_arr);
-+		kfree(sysfs_targets);
-+		kunit_skip(test, "sysfs_target alloc fail");
-+	}
- 	sysfs_target->pid = __damon_sysfs_test_get_any_pid(12, 100);
- 	sysfs_target->regions = damon_sysfs_regions_alloc();
-+	if (!sysfs_target->regions) {
-+		kfree(sysfs_targets->targets_arr);
-+		kfree(sysfs_targets);
-+		kfree(sysfs_target);
-+		kunit_skip(test, "sysfs_regions alloc fail");
-+	}
-+
- 	sysfs_targets->targets_arr[0] = sysfs_target;
- 
- 	ctx = damon_new_ctx();
-+	if (!ctx) {
-+		kfree(sysfs_targets->targets_arr);
-+		kfree(sysfs_targets);
-+		kfree(sysfs_target);
-+		kfree(sysfs_target->regions);
-+		kunit_skip(test, "ctx alloc fail");
-+	}
- 
- 	damon_sysfs_add_targets(ctx, sysfs_targets);
- 	KUNIT_EXPECT_EQ(test, 1u, nr_damon_targets(ctx));
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-tests-core-kunit-remove-dynamic-allocs-on-damos_test_commit_filter.patch
-mm-damon-tests-core-kunit-split-out-damos_test_commit_filter-core-logic.patch
-mm-damon-tests-core-kunit-extend-damos_test_commit_filter_for-for-union-fields.patch
-mm-damon-tests-core-kunit-add-test-cases-to-damos_test_commit_filter.patch
-mm-damon-tests-core-kunit-add-damos_commit_quota_goal-test.patch
-mm-damon-tests-core-kunit-add-damos_commit_quota_goals-test.patch
-mm-damon-tests-core-kunit-add-damos_commit_quota-test.patch
-mm-damon-core-pass-migrate_dests-to-damos_commit_dests.patch
-mm-damon-tests-core-kunit-add-damos_commit_dests-test.patch
-mm-damon-tests-core-kunit-add-damos_commit-test.patch
-mm-damon-tests-core-kunit-add-damon_commit_target_regions-test.patch
-mm-damon-rename-damos-core-filter-helpers-to-have-word-core.patch
-mm-damon-rename-damos-filters-to-damos-core_filters.patch
-mm-damon-vaddr-cleanup-using-pmd_trans_huge_lock.patch
-mm-damon-vaddr-use-vm_normal_folio_pmd-instead-of-damon_get_folio.patch
-mm-damon-vaddr-consistently-use-only-pmd_entry-for-damos_migrate.patch
-mm-damon-tests-core-kunit-remove-damon_min_region-redefinition.patch
-selftests-damon-sysfspy-merge-damon-status-dumping-into-commitment-assertion.patch
-docs-mm-damon-maintainer-profile-fix-a-typo-on-mm-untable-link.patch
-docs-mm-damon-maintainer-profile-fix-grammartical-errors.patch
-
+Thanks!
 
