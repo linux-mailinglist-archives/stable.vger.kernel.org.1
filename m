@@ -1,161 +1,122 @@
-Return-Path: <stable+bounces-194976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C6ECC65058
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 17:03:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95024C65022
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 17:01:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1368B360C92
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:01:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 80362240D2
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23AD2BE7AA;
-	Mon, 17 Nov 2025 16:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7612BE7AB;
+	Mon, 17 Nov 2025 16:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="VpB8Qkkl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UsrEcFBO"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BFA2BDC09
-	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 16:01:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F7B23BF9B
+	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 16:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763395263; cv=none; b=W+QwAtcaS2FlvqdFkdt+3RKc5ivgB5lO3BAef2d8zpD4tOK1+IZAwXwbforhpM3dviFWcBTQj5b8k9veC8PVCNkbMovECAZpNTtaX/cIzC/OmC9OC3Os65tfsZNm6VoMGM1SUE53c3ShX01m1fmgUujexIpaUfUewpxSOEWBjKo=
+	t=1763395254; cv=none; b=jzbjMCAX5ZGt16txiGdrWegpSfIh/H4y6apLmhlyogiVGfLXC6MVPqFSaSIgYR6BWphdyorEfA3KP/lPOniHVE5aUQb3uKSAOeg8b8l09NUuUw4MeNj/icMyhp5OQQPRAJ6MkZcy88k07h2OXS9B5dyya3LdZ5PfFdvFD/xxIT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763395263; c=relaxed/simple;
-	bh=9RSsR5U4W7BTG6LYCPzyJndp7H3oEE0mKDMWjHJa7qM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 References; b=iZzlCF+CNApWlG2NQQI3L24iKrxYiFnZZh6bvqx+IsXG5AYgZER2JIa1n+YT5AHL27e7h61BshBp0q9528jdMjg5hHpctI000Itgd06vvgSqT0dlaKGcLuAgHkKAQMpCH7qOUIzzXpUwioagGC7OVzxldsCL2jlRnDITh8Hukro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=VpB8Qkkl; arc=none smtp.client-ip=203.254.224.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20251117160059epoutp02a44f175e961100c3ebb1b514c092f4c0~41qU6RXWb2370823708epoutp02Q
-	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 16:00:59 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20251117160059epoutp02a44f175e961100c3ebb1b514c092f4c0~41qU6RXWb2370823708epoutp02Q
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1763395259;
-	bh=I67VOD55Qfnuqg41UpFlurJxMf6XJBCy6vb0p2590/c=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=VpB8Qkklg7Y5B2IP/Eg3coJvDNgEdKAI7mtdUnWOV6ceQ0jDZ7w8YLxmTEPusAvK1
-	 oXkrXZ12mPKDqJBUxNTLhOdmOFUUPMYJN8QoLsoiJtiM0tg32BPCihphDDe4FU/Zu5
-	 FU1PwQDkLUQrG4m37wqQRT6+XZJRwRAXKT7uM9G0=
-Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
-	20251117160058epcas5p4719f72c4469d4e16f94ca8356b35d72a~41qUZD3Sp2883528835epcas5p4j;
-	Mon, 17 Nov 2025 16:00:58 +0000 (GMT)
-Received: from epcas5p4.samsung.com (unknown [182.195.38.94]) by
-	epsnrtp04.localdomain (Postfix) with ESMTP id 4d9CCF51Ndz6B9m6; Mon, 17 Nov
-	2025 16:00:57 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-	20251117160057epcas5p324eddf1866146216495186a50bcd3c01~41qS3iGLm2061120611epcas5p3J;
-	Mon, 17 Nov 2025 16:00:57 +0000 (GMT)
-Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20251117160055epsmtip1f7d3368895afa49a595ca513148de7b8~41qRBUXrh0499104991epsmtip1K;
-	Mon, 17 Nov 2025 16:00:54 +0000 (GMT)
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
-To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, naushad@samsung.com,
-	akash.m5@samsung.com, h10.kim@samsung.com, eomji.oh@samsung.com,
-	alim.akhtar@samsung.com, thiagu.r@samsung.com, Selvarasu Ganesan
-	<selvarasu.g@samsung.com>, stable@vger.kernel.org
-Subject: [PATCH v2] usb: dwc3: gadget: Prevent EPs resource conflict during
- StartTransfer
-Date: Mon, 17 Nov 2025 21:29:13 +0530
-Message-ID: <20251117155920.643-1-selvarasu.g@samsung.com>
-X-Mailer: git-send-email 2.46.0.windows.1
+	s=arc-20240116; t=1763395254; c=relaxed/simple;
+	bh=gPI0C6syoehgpLs27hBA8AFGKtCtG8+sA7VEVWD6eDQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Wrc15rp4j4Rh+Q344EnDQiTn/JyjcrNPX/2BuZTe/WDjo7mUU/fyokHdU9HBV0yv0K9JkuC8VzM+gzAgWv+73xjh0/B0KBpZTZ/Hqj6fD/5TcAAIPU/nx819Sfp3bu16lwNzeR4T6gKftmjNpTW/uQiFW8Q5l7aJff55NtU8qAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UsrEcFBO; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-477619f8ae5so30452955e9.3
+        for <stable@vger.kernel.org>; Mon, 17 Nov 2025 08:00:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763395251; x=1764000051; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8MfJOCnIiNYi8BMGn+NPB99ABQIsMxcFHnwgdzV97ds=;
+        b=UsrEcFBOn1i4/HFjvXXIh4O63xfb4llt6q0j18FWKE2Jj3fKkxlHM9QPEHxP2Djc/k
+         Yg3/sgv1UlzDsR4HATlEIVyepmzemy1ElB0pMkLRE4wKzUsXBY0FvNjqSy49Co0hiJh/
+         CaxEtADrgZBkA70eAfxj44Ehzs0hXhZCBZUqvOpeS5t5vK6V47nUiejcZU0vte30GGj6
+         lK5ngTT/VhzoArg50BBqJlJLONQHR4hsBQ+4fnEo7dFu7fwfNliv9bnUlZD3Qzv8U9Fv
+         xvwvKiGxxLcfOxytKDIAzH4EyuSjXkVyZ4blk4zvULH2r/5CJFOr2YwTxdpfzt0hwxcz
+         AonQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763395251; x=1764000051;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8MfJOCnIiNYi8BMGn+NPB99ABQIsMxcFHnwgdzV97ds=;
+        b=DzoxtQIrWWv/aatDIqnw5XjrP2P+ivuo0WkfCEhFS5a6bfkcmLwFUwvIJ9iNzCOS5V
+         SJF9dtZLs7P394pKsW6hjnQA7S6vPti57dk4knWFaEstdnMlgzgwWQWz+nTBiuYhOlYe
+         3kIz3TSJW64QmgDDatx/9V+DfI8XqBKd9+GNYLq0vE1PXKQbUEJIVKEqx5b3Q9doSb4x
+         xy2ZDK4WIRgeacbm2W+nBmVs9xtgkwKzxPMftxtOZRHi1q/9UJnk+zlqMpZ56p4+S1bM
+         UoIDPJLYMXWtCdSS1i4ulWFriafJ/a3IGOKx3d2Blq63evuXLsngf108skleOa6fvpJA
+         mgkw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2yNxwABj2oUZjaOXCsozHBn5tgZVvWLE77G2V2nAUwd/Y87VBq9jzhqsjsVRpcM4wooFcYI4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoJgRUVEI5FSanIaVWFkYeXMWhXYFmo6b1zWIqD6jusrr36AE5
+	RnQZwO/gfY882LR7dE6PyGPDRpxfj0f9qYZud35I54O1NsXNUyDd7s7/rZkJEKtwFdt1E41SwCr
+	o173VZRPzcR0trgHxhJ+yt58Q90M31dQ=
+X-Gm-Gg: ASbGncujgMRcLeqIy5h4SP3C/aBpM662gS5GD9t7Hj/2rMxyAkNtnXRYPtxieUx4yUV
+	SwsH7qj4YUJ9Fyod9eBO2Ee9coK13kT4sH+v395e422xqp6TYrxFHbYuf8IVPpaq7b3NwphNmcz
+	/TUFuvBSEv9NN5lfaPqokvgXW3Y+/a6o7v7nkIhvWhUeCnp0R1dBrzjrmEluBZmTNaG+24m/DYG
+	/TpapQSvgkEfcz7RHBHL9AsSBhQ5509dxjClrH0z8Ah1CXxszZb3fYIqso09wKmufwZDI14
+X-Google-Smtp-Source: AGHT+IHW+g/BPRYaCa4/onCsB+Xol9C9Wfq5DHTB6kJC5BaFMll2GRNcADVlDtl6mOEQPT60rlcj4VLhQLLKjImcMvE=
+X-Received: by 2002:a05:600c:8b21:b0:477:1bb6:17de with SMTP id
+ 5b1f17b1804b1-4778feb566dmr136106965e9.30.1763395250721; Mon, 17 Nov 2025
+ 08:00:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20251117160057epcas5p324eddf1866146216495186a50bcd3c01
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-542,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20251117160057epcas5p324eddf1866146216495186a50bcd3c01
-References: <CGME20251117160057epcas5p324eddf1866146216495186a50bcd3c01@epcas5p3.samsung.com>
+From: Max Krummenacher <max.oss.09@gmail.com>
+Date: Mon, 17 Nov 2025 17:00:39 +0100
+X-Gm-Features: AWmQ_bnpKPbAGbvsTguUPABUOHsZFSWl8Eduski5J_5udQ4gFFyYAvf2tUhFav8
+Message-ID: <CAEHkU3Vr4RVG1Up1_cnoV70QRaYrRXW8ONCMOBB88F+Cu7WRuw@mail.gmail.com>
+Subject: 6.1.159-rc1 regression on building perf
+To: Max Krummenacher <max.krummenacher@toradex.com>
+Cc: Ian Rogers <irogers@google.com>, Sasha Levin <sashal@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The below “No resource for ep” warning appears when a StartTransfer
-command is issued for bulk or interrupt endpoints in
-`dwc3_gadget_ep_enable` while a previous StartTransfer on the same
-endpoint is still in progress. The gadget functions drivers can invoke
-`usb_ep_enable` (which triggers a new StartTransfer command) before the
-earlier transfer has completed. Because the previous StartTransfer is
-still active, `dwc3_gadget_ep_disable` can skip the required
-`EndTransfer` due to `DWC3_EP_DELAY_STOP`, leading to  the endpoint
-resources are busy for previous StartTransfer and warning ("No resource
-for ep") from dwc3 driver.
+Hi
 
-To resolve this, a check is added to `dwc3_gadget_ep_enable` that
-checks the `DWC3_EP_TRANSFER_STARTED` flag before issuing a new
-StartTransfer. By preventing a second StartTransfer on an already busy
-endpoint, the resource conflict is eliminated, the warning disappears,
-and potential kernel panics caused by `panic_on_warn` are avoided.
+Our CI found a regression when cross-compiling perf from the 6.1.159-rc1
+sources in a yocto setup for a arm64 based machine.
 
-------------[ cut here ]------------
-dwc3 13200000.dwc3: No resource for ep1out
-WARNING: CPU: 0 PID: 700 at drivers/usb/dwc3/gadget.c:398 dwc3_send_gadget_ep_cmd+0x2f8/0x76c
-Call trace:
- dwc3_send_gadget_ep_cmd+0x2f8/0x76c
- __dwc3_gadget_ep_enable+0x490/0x7c0
- dwc3_gadget_ep_enable+0x6c/0xe4
- usb_ep_enable+0x5c/0x15c
- mp_eth_stop+0xd4/0x11c
- __dev_close_many+0x160/0x1c8
- __dev_change_flags+0xfc/0x220
- dev_change_flags+0x24/0x70
- devinet_ioctl+0x434/0x524
- inet_ioctl+0xa8/0x224
- sock_do_ioctl+0x74/0x128
- sock_ioctl+0x3bc/0x468
- __arm64_sys_ioctl+0xa8/0xe4
- invoke_syscall+0x58/0x10c
- el0_svc_common+0xa8/0xdc
- do_el0_svc+0x1c/0x28
- el0_svc+0x38/0x88
- el0t_64_sync_handler+0x70/0xbc
- el0t_64_sync+0x1a8/0x1ac
+In file included from .../tools/include/linux/bitmap.h:6,
+                 from util/pmu.h:5,
+                 from builtin-list.c:14:
+.../tools/include/asm-generic/bitsperlong.h:14:2: error: #error
+Inconsistent word size. Check asm/bitsperlong.h
+   14 | #error Inconsistent word size. Check asm/bitsperlong.h
+      |  ^~~~~
 
-Fixes: a97ea994605e ("usb: dwc3: gadget: offset Start Transfer latency for bulk EPs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
----
 
-Changes in v2:
-- Removed change-id.
-- Updated commit message.
-Link to v1: https://lore.kernel.org/linux-usb/20251117152812.622-1-selvarasu.g@samsung.com/
----
- drivers/usb/dwc3/gadget.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+I could reproduce this as follows in a simpler setup:
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 1f67fb6aead5..8d3caa71ea12 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -963,8 +963,9 @@ static int __dwc3_gadget_ep_enable(struct dwc3_ep *dep, unsigned int action)
- 	 * Issue StartTransfer here with no-op TRB so we can always rely on No
- 	 * Response Update Transfer command.
- 	 */
--	if (usb_endpoint_xfer_bulk(desc) ||
--			usb_endpoint_xfer_int(desc)) {
-+	if ((usb_endpoint_xfer_bulk(desc) ||
-+			usb_endpoint_xfer_int(desc)) &&
-+			!(dep->flags & DWC3_EP_TRANSFER_STARTED)) {
- 		struct dwc3_gadget_ep_cmd_params params;
- 		struct dwc3_trb	*trb;
- 		dma_addr_t trb_dma;
--- 
-2.34.1
+git clone -b linux-6.1.y
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+cd linux-stable-rc/
+export ARCH=arm64
+export CROSS_COMPILE=aarch64-none-linux-gnu-
+make defconfig
+make -j$(nproc)
+cd tools/perf
+make
 
+Reverting commit 4d99bf5f8f74 ("tools bitmap: Add missing
+asm-generic/bitsperlong.h include") fixed the build in my setup however
+I think that the issue the commit addresses would then reappear, so I
+don't know what would be a good way forward.
+
+Regards
+Max
+
+P.S.
+Checking out Linux 6.6.117-rc1 builds perf.
+make NO_LIBELF=1 NO_JEVENTS=1 NO_LIBTRACEEVENT=1
 
