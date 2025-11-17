@@ -1,100 +1,104 @@
-Return-Path: <stable+bounces-194991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0E5C651BB
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 17:22:39 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD00C652DF
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 17:36:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sto.lore.kernel.org (Postfix) with ESMTPS id 7B5E524186
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:22:38 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 43C1E38486C
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352F52D24A9;
-	Mon, 17 Nov 2025 16:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773362D23A4;
+	Mon, 17 Nov 2025 16:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hlmX01o6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lJQhwmxx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B302C3255;
-	Mon, 17 Nov 2025 16:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3784F1C54A9
+	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 16:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763396508; cv=none; b=SlWI4VixCYw2ty73/zmY5GzsgFJkGqqq305LsCpcIdxOG0+OQwnUrwXXSDEbVgnnVu3uPXvnkfBOIdG+fS6F4yDXpQntge1VXjIv8tquAMBs8WNeDcCHRIU/d8WHCj7J8N0tD53MSPOToZZhN9XHcMMucOg/wvbmprgjHG7AX4U=
+	t=1763396826; cv=none; b=fPyoXYIBcdpq+msqNeY6hA9VynVJlr544N3PVSJKshbRlO9HBlTAq24wrEJRWEvsxTaprkiYY1/ilvxTVM7kQ/MgofR6zz2RM4CzTPc0XKtvfk/1BuXUaZ3gl9qHCiAb4HZExkuhAux5s4O3g/XvsDSAQ0nI91ouFsg6qIBdIw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763396508; c=relaxed/simple;
-	bh=TiI83tCg5AKsktlTXAjyXY6utWvY4C8WcBuoUX5zOms=;
+	s=arc-20240116; t=1763396826; c=relaxed/simple;
+	bh=yzYPZrpd44Gl4vB2cKVLqUa5FT5oZQOkbshwmkivACY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ocK4HsVXxypE/Ubrwb//NA1WKw7K6wVukwxGnKg1GU5bdbSZE4acb2pZhfP5TIPhOf5w5LjzXBMZAIuTfEMLGqlf/hpBgw1bOaIHrBTM6+d6+k98dq6Cu/iyQXBYN+Ei8A6tWVeOyWLUhc6vGcxsvx4mywtT/fRo2U/1n4TF4vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hlmX01o6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862EFC19423;
-	Mon, 17 Nov 2025 16:21:47 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=jMwrVCfZ78jXMpAzXtwj8npGWuyX5v4AprIRnTASXGc3iB+HJEoKGehEZVlVkVvw8N6DxrzefR+JzQ6plqosZHbI5xqyHgRCmknFo0uWe1TXfst8WTV/AUiABcCh/Xx0t4DGKrNbF1ZkUcl2V6pwhWMyl2JYCmy8ZyFfZiq8MoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lJQhwmxx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC99C19422;
+	Mon, 17 Nov 2025 16:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763396507;
-	bh=TiI83tCg5AKsktlTXAjyXY6utWvY4C8WcBuoUX5zOms=;
+	s=k20201202; t=1763396824;
+	bh=yzYPZrpd44Gl4vB2cKVLqUa5FT5oZQOkbshwmkivACY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hlmX01o6zvfOF647eW/XjbKbtoiLEBORcvp36rZb1QULsMeVeRvCTx77FQee89Gbe
-	 KYaycnMLmyAqD5KW77ykDsjwGMdEKrIKp7Yg3ReULVWo7kbiOpGLJWxtTf8d0x9LNt
-	 ePeVQsdNo1Hu5DLkMdZqSzs6o+5zzEzbsQwWsYftqaVhI43BNBCfni2OBkDNLYVBJf
-	 Th6N7HATRehRRItHXLZFD2TEd3sCVWwRzdeyLJRtbEKVxYzayf5WU9gJkHwL3HZ+Lw
-	 Vtapxnh7oFdw4Oi4/cC5I99oWuPmsezKGQVMxbO45mTEIfiN46SgDpTSvcHQTdoKRi
-	 on+XVqBrvKK4g==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vL1z7-000000002yZ-1cgg;
-	Mon, 17 Nov 2025 17:21:45 +0100
-Date: Mon, 17 Nov 2025 17:21:45 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Dave Jiang <dave.jiang@intel.com>
-Cc: Vinod Koul <vkoul@kernel.org>,
-	Ludovic Desroches <ludovic.desroches@microchip.com>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
-	=?utf-8?Q?Am=C3=A9lie?= Delaunay <amelie.delaunay@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	b=lJQhwmxxzWApRvtzN9sZORf7QXn+PPnnQKoSn2MPABopK3Hw5mOv13WMGaEpKNQYw
+	 VCNsSlnKzzyxmN2YkR7xYAZALeAMQ6yQMl0DnNO49zHSj4ale9WIL/+vROkOjByF3G
+	 G5rUMfXBChGFER0lKNYQjeprQ4IL9hrVeCvRBxCMWmk7d0qdEHyzcQy8ZvCQalwn1h
+	 RCCE7ad+FgNZvBcWsaZkdEAC5b7g6zw1mPQIgADGkrRIjE0tVjJynPXfxQLPgSfShV
+	 +QwGtSE2FN8nN5NKYSaCGvCkNOUBAMhS2qnDEeX70Ic1jpJpXVz+2Xkm28swVcRtv4
+	 Z4t1OXGCqsNRA==
+Date: Mon, 17 Nov 2025 11:27:02 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Max Krummenacher <max.oss.09@gmail.com>
+Cc: Max Krummenacher <max.krummenacher@toradex.com>,
+	Ian Rogers <irogers@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 05/15] dmaengine: idxd: fix device leaks on compat bind
- and unbind
-Message-ID: <aRtLmTQIJqMdQWFm@hovoldconsulting.com>
-References: <20251117161258.10679-1-johan@kernel.org>
- <20251117161258.10679-7-johan@kernel.org>
- <867fa85c-8e7d-4b60-a354-630d4147c3ea@intel.com>
+Subject: Re: 6.1.159-rc1 regression on building perf
+Message-ID: <aRtM1qdOprtHrw4n@laps>
+References: <CAEHkU3Vr4RVG1Up1_cnoV70QRaYrRXW8ONCMOBB88F+Cu7WRuw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <867fa85c-8e7d-4b60-a354-630d4147c3ea@intel.com>
+In-Reply-To: <CAEHkU3Vr4RVG1Up1_cnoV70QRaYrRXW8ONCMOBB88F+Cu7WRuw@mail.gmail.com>
 
-On Mon, Nov 17, 2025 at 09:18:39AM -0700, Dave Jiang wrote:
-> 
-> 
-> On 11/17/25 9:12 AM, Johan Hovold wrote:
-> > Make sure to drop the reference taken when looking up the idxd device as
-> > part of the compat bind and unbind sysfs interface.
-> > 
-> > Fixes: 6e7f3ee97bbe ("dmaengine: idxd: move dsa_drv support to compatible mode")
-> > Cc: stable@vger.kernel.org	# 5.15
-> > Cc: Dave Jiang <dave.jiang@intel.com>
-> > Signed-off-by: Johan Hovold <johan@kernel.org>
-> 
-> Reviewed-by: Dave Jiang <dave.jiang@intel.com>> ---
+On Mon, Nov 17, 2025 at 05:00:39PM +0100, Max Krummenacher wrote:
+>Hi
+>
+>Our CI found a regression when cross-compiling perf from the 6.1.159-rc1
+>sources in a yocto setup for a arm64 based machine.
+>
+>In file included from .../tools/include/linux/bitmap.h:6,
+>                 from util/pmu.h:5,
+>                 from builtin-list.c:14:
+>.../tools/include/asm-generic/bitsperlong.h:14:2: error: #error
+>Inconsistent word size. Check asm/bitsperlong.h
+>   14 | #error Inconsistent word size. Check asm/bitsperlong.h
+>      |  ^~~~~
+>
+>
+>I could reproduce this as follows in a simpler setup:
+>
+>git clone -b linux-6.1.y
+>https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+>cd linux-stable-rc/
+>export ARCH=arm64
+>export CROSS_COMPILE=aarch64-none-linux-gnu-
+>make defconfig
+>make -j$(nproc)
+>cd tools/perf
+>make
+>
+>Reverting commit 4d99bf5f8f74 ("tools bitmap: Add missing
+>asm-generic/bitsperlong.h include") fixed the build in my setup however
+>I think that the issue the commit addresses would then reappear, so I
+>don't know what would be a good way forward.
 
-Thanks for reviewing.
+Thanks for the report! I could reproduce this issue localy.
 
-Note that something happened here with the end of your tag. Hopefully
-Vinod can fix that up when applying.
+Could you please try cherry-picking commit 8386f58f8deda on top and seeing if
+it solves the issue and your CI passes?
 
-Johan
+-- 
+Thanks,
+Sasha
 
