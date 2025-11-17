@@ -1,91 +1,182 @@
-Return-Path: <stable+bounces-195012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7FFFC65EA5
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 20:18:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 480B9C65F5F
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 20:28:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A7F594EF4BC
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 19:16:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 82A1E4F0AC3
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 19:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1793233CE86;
-	Mon, 17 Nov 2025 19:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7FA331234;
+	Mon, 17 Nov 2025 19:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="bzt+K3z/"
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="N96Yf/uX";
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="N96Yf/uX"
 X-Original-To: stable@vger.kernel.org
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+Received: from mail.mleia.com (mleia.com [178.79.152.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEE833C539
-	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 19:14:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB74E32F759;
+	Mon, 17 Nov 2025 19:24:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763406861; cv=none; b=akeK1ELPjptf1xxcxdCjJDzFeqhhqt108ULhXnRxrex+/vRWi6ERysirum0t19JbgraBhD/hXdvBQC7i+0TwALx3zBANQ0EonzlMqH6teM4g7JRC2oaj7soXfzNQt98IeFGFDduOUF0E+tBjMmoT4RN20PCWz6fdR4QeottJQyg=
+	t=1763407493; cv=none; b=IKIEHAamf5tBDjeqwZNZAm3qeg0zFov5zl9nF6deOrDGm5g2pGpjMz2DUZqcB4q/+s83T2Y4lvFg3VvmyJxIk72N7WxwqXuZ6EjbPZeVpCrJiTWQMhV3NxnXnpfEDNqQ0vjerHyFNQrDM5ZXygekHw/2KjGulljo51vDknao2m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763406861; c=relaxed/simple;
-	bh=S8+oYdvzJkqg5GnbKH1RT7Mgj2ukg9Yf1oBFfES9NFg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G6+tAXjhVT6K6/2XSHQJTp1F2MtS2pr2oqMsNvtb8X0eT4gXCatExSVGipm3TcLtvpzv94dXw3YBWFmf0X9HUII8MrPJDLgSixMVwR5X69KY/Z//urUHc9okrcTw+U+ShDWmOWt+qmFQ8go/AhgzwM2vccK10HQx1rY3drQInGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=bzt+K3z/; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from trampoline.thunk.org (pool-173-48-114-69.bstnma.fios.verizon.net [173.48.114.69])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 5AHJDqn9020625
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Nov 2025 14:13:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1763406835; bh=mNZ5GIaU4El1zYRELHlqutylXT+r7C+fyoeeZNVHpfY=;
-	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=bzt+K3z/iCbZT5y2WMcWDVNp93G0iAunFTHHpfeaq0lo8aGc6TxynOQ/x0X27CDsM
-	 aKDAAvQR2Nf3Rgu3bgCxixCqAMtkdYEREnGNwYC/46Plv/YM9IN5bypPQSw1jNfxDQ
-	 EM7l4m0jFcQW0ErUjnY4IsApPWTUIebmCn9GtgQt+tDf591VTS4HOwKnop/LApWBZg
-	 tOlMj3j92PF9uH0B6vd2MT/404x90sKGTWDd2HOj5t7zFLBfE6C4kT8hvbz30dNpGL
-	 9UAJul1aj2qvtUGnD4jd7JHXJiF+6Qx6g4sdCHNW7sX1ORoNDmwt1CnWPFFZy3IQLg
-	 Hp4J2i6w2eIRA==
-Received: by trampoline.thunk.org (Postfix, from userid 15806)
-	id 48CD32E00DF; Mon, 17 Nov 2025 14:13:50 -0500 (EST)
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Alexey Nepomnyashih <sdl@nppct.ru>
-Cc: "Theodore Ts'o" <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
-        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lvc-project@linuxtesting.org, stable@vger.kernel.org
-Subject: Re: [PATCH RFC] ext4: add i_data_sem protection in ext4_destroy_inline_data_nolock()
-Date: Mon, 17 Nov 2025 14:13:36 -0500
-Message-ID: <176340680646.138575.18168327924359030421.b4-ty@mit.edu>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251104093326.697381-1-sdl@nppct.ru>
-References: <20251104093326.697381-1-sdl@nppct.ru>
+	s=arc-20240116; t=1763407493; c=relaxed/simple;
+	bh=kr8XYJleaZfABLzNB9f0KF+kt7RreSx+5YDnN5v88/A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RVr0N/an4W0RbzE8A3y6cvwhb/4AvUNSTfJKuIV9caWQ01oTyYEk0bME5FRXPQdstzvmYsYVZj/ld8TSj+yhmzUWWtUaigfCpM34eAdXsHgCUA6ISuUGgwrd7/PPq2bCbUYFSYZ/pBnPJ+Xrz9kBivIVOtO42exkmkmzC3+138Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=N96Yf/uX; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=N96Yf/uX; arc=none smtp.client-ip=178.79.152.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1763407490; bh=kr8XYJleaZfABLzNB9f0KF+kt7RreSx+5YDnN5v88/A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=N96Yf/uXnQGAbBQ7h+v7vk0gHzSdE5njoIWpMim1QTrz4+lSMUxS8UMdjb2y8DrTP
+	 4GW6SxUkawU5qDC6BeS+c+Z29r6xXVcdZgOgrH2Ck5zd02WPhDJt1+hFDD++arttlU
+	 Yrmsdpb/OByV/dOp/ZQp7aMah4b+XoTs2xSelo1zBfvTflKS4F/U5kWhGDVOyOqdvV
+	 cQH+dO7+K5QQg49oDbreJmldl0nicvr2LiXMHG5idKBOx3ETWL28Kx0FHA/n2WsKhR
+	 eRo562GmAHL8O4AofPrwEf61QcFg8STkauP+ghYK8xkWp0n44Op4IbNXPiagaqgp/W
+	 FoXX2aqV3wMmw==
+Received: from mail.mleia.com (localhost [127.0.0.1])
+	by mail.mleia.com (Postfix) with ESMTP id 49C4C3E1D1D;
+	Mon, 17 Nov 2025 19:24:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1763407490; bh=kr8XYJleaZfABLzNB9f0KF+kt7RreSx+5YDnN5v88/A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=N96Yf/uXnQGAbBQ7h+v7vk0gHzSdE5njoIWpMim1QTrz4+lSMUxS8UMdjb2y8DrTP
+	 4GW6SxUkawU5qDC6BeS+c+Z29r6xXVcdZgOgrH2Ck5zd02WPhDJt1+hFDD++arttlU
+	 Yrmsdpb/OByV/dOp/ZQp7aMah4b+XoTs2xSelo1zBfvTflKS4F/U5kWhGDVOyOqdvV
+	 cQH+dO7+K5QQg49oDbreJmldl0nicvr2LiXMHG5idKBOx3ETWL28Kx0FHA/n2WsKhR
+	 eRo562GmAHL8O4AofPrwEf61QcFg8STkauP+ghYK8xkWp0n44Op4IbNXPiagaqgp/W
+	 FoXX2aqV3wMmw==
+Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi [91.159.24.186])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.mleia.com (Postfix) with ESMTPSA id 707A73E1D02;
+	Mon, 17 Nov 2025 19:24:49 +0000 (UTC)
+Message-ID: <2e38039b-f136-44c6-829c-1d98783bbb1a@mleia.com>
+Date: Mon, 17 Nov 2025 21:24:48 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/15] dmaengine: lpc18xx-dmamux: fix device leak on route
+ allocation
+To: Johan Hovold <johan@kernel.org>, Vinod Koul <vkoul@kernel.org>
+Cc: Ludovic Desroches <ludovic.desroches@microchip.com>,
+ Viresh Kumar <vireshk@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+ =?UTF-8?Q?Am=C3=A9lie_Delaunay?= <amelie.delaunay@foss.st.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Peter Ujfalusi <peter.ujfalusi@gmail.com>, dmaengine@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251117161258.10679-1-johan@kernel.org>
+ <20251117161258.10679-8-johan@kernel.org>
+From: Vladimir Zapolskiy <vz@mleia.com>
+In-Reply-To: <20251117161258.10679-8-johan@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
+X-CRM114-CacheID: sfid-20251117_192450_322343_1DBD9D04 
+X-CRM114-Status: GOOD (  20.21  )
 
+Hi Johan.
 
-On Tue, 04 Nov 2025 09:33:25 +0000, Alexey Nepomnyashih wrote:
-> Fix a race between inline data destruction and block mapping.
+On 11/17/25 18:12, Johan Hovold wrote:
+> Make sure to drop the reference taken when looking up the DMA mux
+> platform device during route allocation.
 > 
-> The function ext4_destroy_inline_data_nolock() changes the inode data
-> layout by clearing EXT4_INODE_INLINE_DATA and setting EXT4_INODE_EXTENTS.
-> At the same time, another thread may execute ext4_map_blocks(), which
-> tests EXT4_INODE_EXTENTS to decide whether to call ext4_ext_map_blocks()
-> or ext4_ind_map_blocks().
+> Note that holding a reference to a device does not prevent its driver
+> data from going away so there is no point in keeping the reference.
 > 
-> [...]
+> Fixes: e5f4ae84be74 ("dmaengine: add driver for lpc18xx dmamux")
+> Cc: stable@vger.kernel.org	# 4.3
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
+>   drivers/dma/lpc18xx-dmamux.c | 19 ++++++++++++++-----
+>   1 file changed, 14 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/dma/lpc18xx-dmamux.c b/drivers/dma/lpc18xx-dmamux.c
+> index 2b6436f4b193..d3ff521951b8 100644
+> --- a/drivers/dma/lpc18xx-dmamux.c
+> +++ b/drivers/dma/lpc18xx-dmamux.c
+> @@ -57,30 +57,31 @@ static void *lpc18xx_dmamux_reserve(struct of_phandle_args *dma_spec,
+>   	struct lpc18xx_dmamux_data *dmamux = platform_get_drvdata(pdev);
+>   	unsigned long flags;
+>   	unsigned mux;
+> +	int ret = -EINVAL;
+>   
+>   	if (dma_spec->args_count != 3) {
+>   		dev_err(&pdev->dev, "invalid number of dma mux args\n");
+> -		return ERR_PTR(-EINVAL);
+> +		goto err_put_pdev;
+>   	}
+>   
+>   	mux = dma_spec->args[0];
+>   	if (mux >= dmamux->dma_master_requests) {
+>   		dev_err(&pdev->dev, "invalid mux number: %d\n",
+>   			dma_spec->args[0]);
+> -		return ERR_PTR(-EINVAL);
+> +		goto err_put_pdev;
+>   	}
+>   
+>   	if (dma_spec->args[1] > LPC18XX_DMAMUX_MAX_VAL) {
+>   		dev_err(&pdev->dev, "invalid dma mux value: %d\n",
+>   			dma_spec->args[1]);
+> -		return ERR_PTR(-EINVAL);
+> +		goto err_put_pdev;
+>   	}
+>   
+>   	/* The of_node_put() will be done in the core for the node */
+>   	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
+>   	if (!dma_spec->np) {
+>   		dev_err(&pdev->dev, "can't get dma master\n");
+> -		return ERR_PTR(-EINVAL);
+> +		goto err_put_pdev;
+>   	}
+>   
+>   	spin_lock_irqsave(&dmamux->lock, flags);
+> @@ -89,7 +90,8 @@ static void *lpc18xx_dmamux_reserve(struct of_phandle_args *dma_spec,
+>   		dev_err(&pdev->dev, "dma request %u busy with %u.%u\n",
+>   			mux, mux, dmamux->muxes[mux].value);
+>   		of_node_put(dma_spec->np);
+> -		return ERR_PTR(-EBUSY);
+> +		ret = -EBUSY;
+> +		goto err_put_pdev;
+>   	}
+>   
+>   	dmamux->muxes[mux].busy = true;
+> @@ -106,7 +108,14 @@ static void *lpc18xx_dmamux_reserve(struct of_phandle_args *dma_spec,
+>   	dev_dbg(&pdev->dev, "mapping dmamux %u.%u to dma request %u\n", mux,
+>   		dmamux->muxes[mux].value, mux);
+>   
+> +	put_device(&pdev->dev);
+> +
+>   	return &dmamux->muxes[mux];
+> +
+> +err_put_pdev:
+> +	put_device(&pdev->dev);
+> +
+> +	return ERR_PTR(ret);
+>   }
+>   
+>   static int lpc18xx_dmamux_probe(struct platform_device *pdev)
 
-Applied, thanks!
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
 
-[1/1] ext4: add i_data_sem protection in ext4_destroy_inline_data_nolock()
-      commit: 103ce01cd045197461d654f62f1a30cabedbcad4
-
-Best regards,
 -- 
-Theodore Ts'o <tytso@mit.edu>
+Best wishes,
+Vladimir
 
