@@ -1,75 +1,52 @@
-Return-Path: <stable+bounces-194938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C868C63064
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 10:02:24 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24AA1C6352F
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 10:48:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 581C128AD6
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 09:02:21 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4C04E360CEC
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 09:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86603203B0;
-	Mon, 17 Nov 2025 09:02:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sPGXfE9D"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C644328B66;
+	Mon, 17 Nov 2025 09:38:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2850431BC8D;
-	Mon, 17 Nov 2025 09:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4FD328B4F
+	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 09:38:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763370134; cv=none; b=YZ7uQml5WESyJmamta9Poq/aC/oOu5Uu3AAxQEyjnIB16C61AQ8NFrZMpPPdsnPJnjkCBwZ+ImInWpHWiSGe+99bFvpTUQrFRzEmMQk3RN7xv++9RJo7tCgkBmXSmnWiOIyPyyTQJ92dmtI6wTrZlMBurIDvqVZ8EC3B8bINQf8=
+	t=1763372318; cv=none; b=bFZcdW7AfT46Ynrg5TxuRnKyN01THqCVqrLq+P53QCJp18s+yAEqaYlAbQuH8q1Xrr/vlBfpBc9WF4iCrOvakGFeqPBvrmGubXWn3EJzX4glhlcUzcLQmsSEyu8lMf9ou4Z5OxETlCKyE6j54iAFPXXKkNz52VxI5U+YbeM6jTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763370134; c=relaxed/simple;
-	bh=dg7CXevlIsnuqPReLm3SerOjBmC0kT4dd1RNc42zAMs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SlPTVv/yXS2QEWL8ZfWGzC3OfZLbgtwOLg5Shhl4jMW4c8nLNA4lYKlifzkTT0M82q1nKmVba0fUFt6MgmvXvRsAqxZhKfsyhy6Ptt570Q1fFd3BA2bEYcWVoOwLwGfmX+NHjuFQ+Fi9WSyWl/tP3l+N9s05Ha5m7s/bVXoRcsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sPGXfE9D; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AGMrSMT031300;
-	Mon, 17 Nov 2025 09:01:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=PwflT1
-	I/Uph07lr+p8RbFYFfClGoEtJaI0hycQ6We+o=; b=sPGXfE9DJ77vo2dOlbZonD
-	2yiFBM54o+40QddlXUxUmN8yK//INEEZ/k+mGxMOwm7Oa/jwU9YnM6ldeqhRIBMr
-	1HjeV5Q83xrEomnwoAR1Etr0gJOPSRdBCH7HbTxNs8AZdNf/gUBmrBZak6J/PpQj
-	3W4JCJRknOdHgF845v28dNJB4snl3DqMFRtzTqusLVSTWpV+qY1SHxHFQuZRpVIr
-	7pTfoaUgtQWk/j0htba/aN+Qz6bf5s0oTYjDcWDovIuJbLaVn9YDRn7KZXrkakUj
-	zTHs1f+1Pm50JmnNHlhy1w1Amoqm64LDKTNoygzJ+diCpjaQu6rg9tDrIzaOCgqw
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejjvwaem-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Nov 2025 09:01:54 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AH8nirG017317;
-	Mon, 17 Nov 2025 09:01:53 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4af6j1cma5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Nov 2025 09:01:53 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AH91qu330540486
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Nov 2025 09:01:52 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 353435805A;
-	Mon, 17 Nov 2025 09:01:52 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CBE655803F;
-	Mon, 17 Nov 2025 09:01:47 +0000 (GMT)
-Received: from [9.61.140.236] (unknown [9.61.140.236])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 17 Nov 2025 09:01:47 +0000 (GMT)
-Message-ID: <542de632-aace-4ff4-940e-55b57142b496@linux.ibm.com>
-Date: Mon, 17 Nov 2025 14:31:46 +0530
+	s=arc-20240116; t=1763372318; c=relaxed/simple;
+	bh=0Gq1vTAls4U5lWqQVRIcTaH4k9hEnn0rjpzDd+hIbT0=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
+	 In-Reply-To:Content-Type; b=J/dxnYWkvrLVLtD/A1ZXQDqwWit6D31xDUDhyZ/fAEtnO0zWv4LWkoicQB3ZKUVJ5dDsIuZqwuoD91f5H+utbW1O4/CJ5tayIxDg0MHl6+6lWisR6uxJyUWsK59QbLxTpiOl4k8MbJNw5xYuZvv5ygfQuhAzsRIvVeyccfhXH8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1763371317-1eb14e3d8797650001-OJig3u
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx2.zhaoxin.com with ESMTP id UscqPKxxjogxNE8Z (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Mon, 17 Nov 2025 17:21:57 +0800 (CST)
+X-Barracuda-Envelope-From: AlanSong-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Mon, 17 Nov
+ 2025 17:21:57 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
+ ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
+ 15.01.2507.059; Mon, 17 Nov 2025 17:21:57 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from [10.32.65.156] (10.32.65.156) by ZXBJMBX02.zhaoxin.com
+ (10.29.252.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Mon, 17 Nov
+ 2025 17:04:25 +0800
+Message-ID: <c24d0582-ae94-4dfb-ae6f-6baafa7fe689@zhaoxin.com>
+Date: Mon, 17 Nov 2025 17:03:17 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,84 +54,56 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/2] block: Remove queue freezing from several sysfs
- store callbacks
-To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-        Ming Lei <ming.lei@redhat.com>, Martin Wilck <mwilck@suse.com>,
-        Benjamin Marzinski <bmarzins@redhat.com>, stable@vger.kernel.org,
-        Hannes Reinecke <hare@suse.de>, Damien Le Moal <dlemoal@kernel.org>,
-        Chaitanya Kulkarni <kch@nvidia.com>
-References: <20251114210409.3123309-1-bvanassche@acm.org>
- <20251114210409.3123309-3-bvanassche@acm.org>
-Content-Language: en-US
-From: Nilay Shroff <nilay@linux.ibm.com>
-In-Reply-To: <20251114210409.3123309-3-bvanassche@acm.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=BanVE7t2 c=1 sm=1 tr=0 ts=691ae482 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=IPLMIk6eJIHjdk74lYUA:9 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX9s8WqisTafGS
- XxK4Ht0nQJRu6bAh/Vl+PT93UGRzw7aVWYGIHYmwfMmNp2e1v4RqdZcxEbCw+yD3372iDz9M2WJ
- ZZ60TlMftDL2EudPwzOp9DxRHvPoZO4Dc5+RX8d/LD6NWxnMP+dQ1Z5QY5aPni9QnSCx2C0DAsL
- Y8YRmHEFY3mlgWD+WISpdekc5M/LASTXE/7WPsQG9N8UG7q+JdwcD5Or6ak7d8HvmjTR7q5VQtq
- f4NvLYJKTS7ycnzD/I/hpUP8M1VQfJOmi/khqGSToMzNP0wOK7wzD9Seqy50o36ZqH2n+QlqlDd
- ZblQddHQyArEUuWu3s3dqhbymLnX788bzRA8jMZswy7XUeTMtQoZTHE1qawKiUb02hfJnT+xeI9
- gYSlQM7J5HKLVf4L5VwNymqjQcP5ww==
-X-Proofpoint-GUID: xxppZQWA0lbZxB0SZgZJdBBCYOANrdZM
-X-Proofpoint-ORIG-GUID: xxppZQWA0lbZxB0SZgZJdBBCYOANrdZM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-17_02,2025-11-13_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 suspectscore=0 spamscore=0 impostorscore=0
- priorityscore=1501 clxscore=1015 phishscore=0 bulkscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511150032
+From: AlanSong-oc <AlanSong-oc@zhaoxin.com>
+Subject: Re: [PATCH] crypto: padlock-sha - Disable broken driver
+To: Eric Biggers <ebiggers@kernel.org>, <linux-crypto@vger.kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+X-ASG-Orig-Subj: Re: [PATCH] crypto: padlock-sha - Disable broken driver
+CC: <linux-kernel@vger.kernel.org>, larryw3i <larryw3i@yeah.net>,
+	<stable@vger.kernel.org>, <CobeChen@zhaoxin.com>, <GeorgeXue@zhaoxin.com>,
+	<HansHu@zhaoxin.com>, <LeoLiu-oc@zhaoxin.com>, <TonyWWang-oc@zhaoxin.com>,
+	<YunShen@zhaoxin.com>
+References: <3af01fec-b4d3-4d0c-9450-2b722d4bbe39@yeah.net>
+ <20251116183926.3969-1-ebiggers@kernel.org>
+In-Reply-To: <20251116183926.3969-1-ebiggers@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ ZXBJMBX02.zhaoxin.com (10.29.252.6)
+X-Moderation-Data: 11/17/2025 5:21:55 PM
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1763371317
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 736
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -1.52
+X-Barracuda-Spam-Status: No, SCORE=-1.52 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=BSF_SC0_SA983
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.150256
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	0.50 BSF_SC0_SA983          Custom Rule BSF_SC0_SA983
 
-Hi Bart,
 
-On 11/15/25 2:34 AM, Bart Van Assche wrote:
-> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-> index 2fff8a80dbd2..cb4ba09959ee 100644
-> --- a/include/linux/blkdev.h
-> +++ b/include/linux/blkdev.h
-> @@ -495,7 +495,7 @@ struct request_queue {
->  	 */
->  	unsigned long		queue_flags;
->  
-> -	unsigned int		rq_timeout;
-> +	unsigned int __data_racy rq_timeout;
->  
->  	unsigned int		queue_depth;
+On 11/17/2025 2:39 AM, Eric Biggers wrote:
 
-This change look good to me however as I mentioned earlier, 
-introducing __data_racy would break the kernel build. So 
-are you going to raise a separate bug report to fix it? 
+> This driver is known broken, as it computes the wrong SHA-1 and SHA-256
+> hashes.  Correctness needs to be the first priority for cryptographic
+> code.  Just disable it, allowing the standard (and actually correct)
+> SHA-1 and SHA-256 implementations to take priority.
+> =20
 
-  AS      .tmp_vmlinux2.kallsyms.o
-  LD      vmlinux.unstripped
-  BTFIDS  vmlinux.unstripped
-WARN: multiple IDs found for 'task_struct': 116, 10183 - using 116
-WARN: multiple IDs found for 'module': 190, 10190 - using 190
-WARN: multiple IDs found for 'vm_area_struct': 324, 10227 - using 324
-WARN: multiple IDs found for 'inode': 956, 10314 - using 956
-WARN: multiple IDs found for 'path': 989, 10344 - using 989
-WARN: multiple IDs found for 'file': 765, 10375 - using 765
-WARN: multiple IDs found for 'cgroup': 1030, 10409 - using 1030
-WARN: multiple IDs found for 'seq_file': 1358, 10593 - using 1358
-WARN: multiple IDs found for 'bpf_prog': 2054, 10984 - using 2054
-WARN: multiple IDs found for 'bpf_map': 2134, 11012 - using 2134
-[...]
-[...]
-make[2]: *** [scripts/Makefile.vmlinux:72: vmlinux.unstripped] Error 255
-make[2]: *** Deleting file 'vmlinux.unstripped'
-make[1]: *** [/home/src/linux/Makefile:1242: vmlinux] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
+Following Herbert Xu's=20
+suggestion=EF=BC=88https://lore.kernel.org/linux-crypto/aFkdNoQFmr8-x4cu@go=
+ndor.apana.org.au/=EF=BC=89,=20
+we have prepared a new version of the patch to address this issue. Since=20
+the code needs to remain compatible with older platforms, we are still=20
+conducting extensive testing. Once the testing is complete, I will=20
+submit the finalized patch immediately.
 
-Thanks,
---Nilay
+Best Regards
+AlanSong-oc
 
