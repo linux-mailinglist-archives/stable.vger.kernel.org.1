@@ -1,143 +1,153 @@
-Return-Path: <stable+bounces-195017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D361C65FE6
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 20:38:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0ECCC6602E
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 20:44:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 431273529BC
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 19:38:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 7CBE22980E
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 19:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4FE2C027A;
-	Mon, 17 Nov 2025 19:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06483161A5;
+	Mon, 17 Nov 2025 19:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X+6qZtYK"
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="J2OCl/J8";
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="J2OCl/J8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.mleia.com (mleia.com [178.79.152.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B20E3002AE
-	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 19:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EA5276046;
+	Mon, 17 Nov 2025 19:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763408323; cv=none; b=qLpnH2lP+D5xaFKCy/vvdEuyUg7AtU5V0bmwFZoFLz/Oqo2e2NjZVDLiVDDP3xzEzEsvVuJalSHZhDIZ7/6Plg0m7LrPxKF2rs3MYtR833XKjbHQMiExfOej9nHrHeMI/SQ8O8H5IvGDiKKjmk/1PqQ/OifTtiCeG7rMJuNDpKo=
+	t=1763408688; cv=none; b=m57/pNA1D+VuVnnjqWqAIaG5EsfX8eSQmpeO3ZGEdtnQj+7dHclEnxoBpF39YCC8sHZMdWhxBBNgiOAdfb6ZKSHgiKHgEAg1X2mFgs+BfnapGjhHq7azCvCeKpVuXwMzTBzyN8XykDbvUBvOnI/hpc0cNTvoNj73XJwvSPPWk0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763408323; c=relaxed/simple;
-	bh=byaAuzRhnwOM/SStP273n9k657IgFhbcRUyjz1C9Q74=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aPnzmcVtwJ04UrymL0EwgSHoOrq6ozE44vgRgZvVzaVDyx9Qa1o5lCI/LlDmpPzhhgUzUo7hfDlKPLSXrv/XOrDgMIsOMwsmTlp3sxCWhCvRD3xEnkjlbbQehpHB/naemX2QIzoFHTFxKn1citguGMEP67cByMNiYHmfy5z4R3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X+6qZtYK; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7b99c2a5208so372630b3a.3
-        for <stable@vger.kernel.org>; Mon, 17 Nov 2025 11:38:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763408321; x=1764013121; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EWBlv27Dksc7HrBPUdOReRPEGAb8gw0+ItSWLw68B88=;
-        b=X+6qZtYKUgZDBqA04Yc3+ZuFjIIHnqb5NkRPDbngWdO7GG2ps7qMf3FNCJgKywoJsq
-         F29ZWAaJxKvweO1eEGjYuzfbvLodKZt2rMo+xl4qsSxBIQbZvLwYOyTocP8vQSIzWPa9
-         Z9PpQRUD6zbQQ1kwxAi9y04eZqzh4GZ0Vy676aMZ0r3FntGMvdCex5NBUk8Eoe3h0rBG
-         tc+cx+JTg8e8a5XGyOMrd+IxtwmbwVr/ehdkFXFGL8AoqCkBFvEnBGK2RxG/Ov0gmIGt
-         WLnWtxhplcgcDpWgaL46zjJnwU7DO+GoftOuH6rQ4rZAWsXbCNueHeJ27Sgr+FcyCHwV
-         wNxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763408321; x=1764013121;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EWBlv27Dksc7HrBPUdOReRPEGAb8gw0+ItSWLw68B88=;
-        b=AHg9jjn736OUXTrDPDF/Ew/kteUTqebW+kD3OGR9+xlfnipyKft5wccsn3FV52CzTD
-         5czD0M66sXXF+S63ecR3VBu8kS3rlHtzsT3lcMHBQi05SxrtaI0Q06E2vHIaqlstFi0z
-         cUykYLDHmrRaDgxHcnJ/oIKyFvPXyvIytcGNOoOXrw2cvHrcvnaM5M/ePClnzRKFvGwu
-         IH/XuopEC7eYgWDjOf4Adnrsn3qwIqv5PS6ZFF3ftgcyU2PFhHLXcooBU2aeKF3TB98+
-         tLvVGaL0NZrSyNK9AUesdGT2+sUoO6e72K8XgMnwA724UgOw7FXzRZMzPOBIAlpB7qPt
-         bjiw==
-X-Forwarded-Encrypted: i=1; AJvYcCUtE6XfNOPZSDpwyJSAUjdwxMyqNpaEU9WP1xGoXp//2HbCYcf7l2UoV9XV/Wj/9J0wYrLCvso=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEfoiR2JNDKn3aR9yhdngv8Zd+7ZUnJvVlo1p/UCY+WGhz2irZ
-	KqfmD/xoMCCouvd0V/9BBUhVcUS5a+Pw9PiMwVn7HsfWUlWEJlcPNNz+aArdH8YIP2majziN+3S
-	LQ12gqdBeHdFofyuTpB9rvg0z707oSkA=
-X-Gm-Gg: ASbGncvD1EMLrBNWEdVDLiFr+U/uZuY1xEoad2JWk7iHxsZI50k3BiNCbPVXvGeYvNs
-	dppXUROfhpbIbwcoz79h+HrR07251OnkFFgxvhIfPqBie0yLJ/TIcquRGCuf7tPjgYYcd0/mAiT
-	FNyG7/DzTDZU9B3tnXbbpVkyrmqDQ3/ADRuwhnyJPNW740fmmbxVIKrJxQA0ze6TcwlC3tdQEjF
-	HeQn8y0cBe9NGpxjKfpkuL22bmz+asndbRcIDG5RCruIiJBYmwc5QndqQkhdQwhVrBlLck=
-X-Google-Smtp-Source: AGHT+IFw+WamDCBwcmKs7ViNx4T5bwc4cNYCwwbn0Jd4DLeSo+2vCqUcd6+HDDs1xhn8kHeO7snA1pVYk6/KGV9gIic=
-X-Received: by 2002:a05:7022:6186:b0:119:e56b:c3f5 with SMTP id
- a92af1059eb24-11b4941c45dmr4967156c88.5.1763408321331; Mon, 17 Nov 2025
- 11:38:41 -0800 (PST)
+	s=arc-20240116; t=1763408688; c=relaxed/simple;
+	bh=maDYVAw3NdZd7Yq2YnAUo3PJYzmMdCYL5n3QL0+uiEg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hZouMSKEu26ParsGrA2ZDfi2TAMV5CZT7BEZumGnUhK6UwQ9Lq5r/43DQTMZCbO009BycXIaUgL/G/YNCIlEWg3DfoBss73mN8NMOS7N6BygVtwCf9jiEyC3rbdFs8SprE60IQcQ9mcCBXtcvgt4TFgrSCam1H5+Wr/exYr2XbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=J2OCl/J8; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=J2OCl/J8; arc=none smtp.client-ip=178.79.152.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1763408685; bh=maDYVAw3NdZd7Yq2YnAUo3PJYzmMdCYL5n3QL0+uiEg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=J2OCl/J8Nc8TotGlvXWe9ddEhv8yMq421/w/QqAfDRBHl1FNoHSVnix0EWybUPnVM
+	 UeFRH6p4v9HztYjWIIBc1AcvO2+/LVsVGogZlvqARwSEblYKHBxs5X/GHPsgv7yEiy
+	 MrvhPS3wsfjGog2XTkfBfHKS7M8LBOMiW6RlSZjpoq+avpUXOVWGKaOwmGjz4EBhMA
+	 Fg7u9jxR54WEsbeAJhIruOIdSnp72y2hWar9LSGbgaOMUx0y/fcHxaT8A6kCnKohRi
+	 maAL6ZDA4TFkUGtgBSca2faNCfQzztLoTqULevWS9dnKNkzZMnkaD+8lQdIMEGh7eL
+	 z6Gzq7RxRzTcw==
+Received: from mail.mleia.com (localhost [127.0.0.1])
+	by mail.mleia.com (Postfix) with ESMTP id 4EC1F3E1D1D;
+	Mon, 17 Nov 2025 19:44:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1763408685; bh=maDYVAw3NdZd7Yq2YnAUo3PJYzmMdCYL5n3QL0+uiEg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=J2OCl/J8Nc8TotGlvXWe9ddEhv8yMq421/w/QqAfDRBHl1FNoHSVnix0EWybUPnVM
+	 UeFRH6p4v9HztYjWIIBc1AcvO2+/LVsVGogZlvqARwSEblYKHBxs5X/GHPsgv7yEiy
+	 MrvhPS3wsfjGog2XTkfBfHKS7M8LBOMiW6RlSZjpoq+avpUXOVWGKaOwmGjz4EBhMA
+	 Fg7u9jxR54WEsbeAJhIruOIdSnp72y2hWar9LSGbgaOMUx0y/fcHxaT8A6kCnKohRi
+	 maAL6ZDA4TFkUGtgBSca2faNCfQzztLoTqULevWS9dnKNkzZMnkaD+8lQdIMEGh7eL
+	 z6Gzq7RxRzTcw==
+Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi [91.159.24.186])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.mleia.com (Postfix) with ESMTPSA id A43FE3E1D02;
+	Mon, 17 Nov 2025 19:44:44 +0000 (UTC)
+Message-ID: <1ebfc59e-dad5-40bf-8bdb-869fb5b06a1f@mleia.com>
+Date: Mon, 17 Nov 2025 21:44:44 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251116173321.4831-1-rbmccav@gmail.com>
-In-Reply-To: <20251116173321.4831-1-rbmccav@gmail.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 17 Nov 2025 14:38:29 -0500
-X-Gm-Features: AWmQ_blHHYc5TZLAOrneOd3RNEx5Qsw9cHSZhuvgZck70-WcLnivbQRg6pgFYMI
-Message-ID: <CADnq5_P8z9C8e6kZLOyzTAxrhj97-ujm2bVWXij9PnrJTBwHdA@mail.gmail.com>
-Subject: Re: [PATCH] drm/radeon: delete radeon_fence_process in is_signaled,
- no deadlock
-To: Robert McClinton <rbmccav@gmail.com>
-Cc: amd-gfx@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] USB: ohci-nxp: Fix error handling in ohci-hcd-nxp
+ driver
+To: Alan Stern <stern@rowland.harvard.edu>, Arnd Bergmann <arnd@arndb.de>
+Cc: Ma Ke <make24@iscas.ac.cn>, piotr.wojtaszczyk@timesys.com,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stigge@antcom.de,
+ linux-usb@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org
+References: <20251117013428.21840-1-make24@iscas.ac.cn>
+ <4fe5b63e-072c-419c-a1b9-bc21aec7e083@app.fastmail.com>
+ <9834be77-29e0-4a65-93f6-b61bf724f922@rowland.harvard.edu>
+From: Vladimir Zapolskiy <vz@mleia.com>
+In-Reply-To: <9834be77-29e0-4a65-93f6-b61bf724f922@rowland.harvard.edu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
+X-CRM114-CacheID: sfid-20251117_194445_344946_6003C871 
+X-CRM114-Status: GOOD (  27.93  )
 
-Applied.  Thanks!
+On 11/17/25 16:56, Alan Stern wrote:
+> On Mon, Nov 17, 2025 at 09:53:21AM +0100, Arnd Bergmann wrote:
+>> On Mon, Nov 17, 2025, at 02:34, Ma Ke wrote:
+>>> When obtaining the ISP1301 I2C client through the device tree, the
+>>> driver does not release the device reference in the probe failure path
+>>> or in the remove function. This could cause a reference count leak,
+>>> which may prevent the device from being properly unbound or freed,
+>>> leading to resource leakage.
+>>>
+>>> Fix this by storing whether the client was obtained via device tree
+>>> and only releasing the reference in that case.
+>>>
+>>> Found by code review.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: 73108aa90cbf ("USB: ohci-nxp: Use isp1301 driver")
+>>> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+>>
+>> The patch looks fine in principle, however I don't see any way
+>> this driver would be probed without devicetree, and I think
+>> it would be better to remove all the traces of the pre-DT
+>> logic in it.
+>>
+>> The lpc32xx platform was converted to DT back in 2012, so
+>> any reference to the old variant is dead code. Something like
+>> the patch below should work here.
+>>
+>> Other thoughts on this driver, though I I'm not sure anyone
+>> is going to have the energy to implement these:
+>>
+>>   - the reference to isp1301_i2c_client should be kept in
+>>     the hcd private data, after allocating a structure, by
+>>     setting driver->hcd_priv_size.
+>>   - instead of looking for the i2c device, I would suppose
+>>     it should look for a usb_phy instead, as there is no
+>>     guarantee on the initialization being ordered at the
+>>     moment.
+>>   - instead of a usb_phy, the driver should probably use
+>>     a generic phy (a much larger rework).
 
-Alex
+Since I'm one of the remaining users and holders of the LPC32xx powered
+boards, I should take this task.
 
-On Mon, Nov 17, 2025 at 3:42=E2=80=AFAM Robert McClinton <rbmccav@gmail.com=
-> wrote:
->
-> Delete the attempt to progress the queue when checking if fence is
-> signaled. This avoids deadlock.
->
-> dma-fence_ops::signaled can be called with the fence lock in unknown
-> state. For radeon, the fence lock is also the wait queue lock. This can
-> cause a self deadlock when signaled() tries to make forward progress on
-> the wait queue. But advancing the queue is unneeded because incorrectly
-> returning false from signaled() is perfectly acceptable.
->
-> Link: https://github.com/brave/brave-browser/issues/49182
->
-> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4641
->
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Robert McClinton <rbmccav@gmail.com>
-> ---
->  drivers/gpu/drm/radeon/radeon_fence.c | 7 -------
->  1 file changed, 7 deletions(-)
->
-> diff --git a/drivers/gpu/drm/radeon/radeon_fence.c b/drivers/gpu/drm/rade=
-on/radeon_fence.c
-> index 5b5b54e876d4..167d6f122b8e 100644
-> --- a/drivers/gpu/drm/radeon/radeon_fence.c
-> +++ b/drivers/gpu/drm/radeon/radeon_fence.c
-> @@ -360,13 +360,6 @@ static bool radeon_fence_is_signaled(struct dma_fenc=
-e *f)
->         if (atomic64_read(&rdev->fence_drv[ring].last_seq) >=3D seq)
->                 return true;
->
-> -       if (down_read_trylock(&rdev->exclusive_lock)) {
-> -               radeon_fence_process(rdev, ring);
-> -               up_read(&rdev->exclusive_lock);
-> -
-> -               if (atomic64_read(&rdev->fence_drv[ring].last_seq) >=3D s=
-eq)
-> -                       return true;
-> -       }
->         return false;
->  }
->
-> --
-> 2.51.2
->
+> 
+> Considering what the comments at the start of the file say:
+> 
+>   * Currently supported OHCI host devices:
+>   * - NXP LPC32xx
+> 
+>   * NOTE: This driver does not have suspend/resume functionality
+>   * This driver is intended for engineering development purposes only
+> 
+> I wonder whether any existing systems actually use this driver.
+> 
+
+The LPC32xx OHCI host device works fine with the driver, noteworthy
+there were some issues with the LPC32xx UDC though.
+
+Any pre-dt leftovers should be removed from the driver, as Arnd suggested.
+
+-- 
+Best wishes,
+Vladimir
 
