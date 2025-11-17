@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-194896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B521C61FD3
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 02:31:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572C6C61FD6
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 02:33:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CF5AF35B43F
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 01:31:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0726F4E49DF
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 01:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93437212554;
-	Mon, 17 Nov 2025 01:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FCD2288D5;
+	Mon, 17 Nov 2025 01:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ID7mCxVs"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GRBKBk6j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395E820E6E2;
-	Mon, 17 Nov 2025 01:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AE11A3179;
+	Mon, 17 Nov 2025 01:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763343092; cv=none; b=UJfXMX2h5FhXzFw0heUtRErom81gGxNqku5VhmsZqEsyB/hkqBwKOLVdwJJQ2yuQmMmaQA9GEajznQEuWV03oGNlSYPEO1yYWTDegUOXWzzmHEa+GDBxJLmS9FP/xwvhgaCY2mJhey1qdC9UZhnOH3yaCS9mGWR2yNssM39xFXI=
+	t=1763343213; cv=none; b=cxTJ4ufDx6c8YbKxeo++v6VOt2KiD3VBfWNloWLnYMe6IX95xDpBsUe5omlEASDMiIBycZKSURWG8bqARQTjvEupeHLuXcIPEBM02NjKxxofr/3SZT9s63wOVt8nSEnwoHZWyhvnEbdh+k9u9cKLfTriNSS+v/lNp5Lk2tkQC6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763343092; c=relaxed/simple;
-	bh=jq2omNwQwmgF2TnEV7f+GT3IR00VUydphYjBEpLzg1Y=;
-	h=Date:To:From:Subject:Message-Id; b=qUsuVwbzVpN4Pxuele1Are0kN6SglEHz/xoHiynNSDYZnlJwZLHJ+QaS/H5JpGIRASpxF6VTqTjtZSp1rGiYNpSDlg4bCBBUAU4CJTfFDBLI2aO71t3Ph5g6WGe8HN0Eob2vvHLjrKf6ajY8zHk2Kc13Rkr8ZTpFeXiYgu6IqvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ID7mCxVs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0776EC16AAE;
-	Mon, 17 Nov 2025 01:31:31 +0000 (UTC)
+	s=arc-20240116; t=1763343213; c=relaxed/simple;
+	bh=i0Xp947bdJC5rb4quVFFsRCdEx75XPX03XjbDw9LyIw=;
+	h=Date:To:From:Subject:Message-Id; b=cR0CQSltHk/NMOZIHgEWDKjBt7E+n0J+mxlqCOJxt3hckrHokK4bVdzqtilQGm0ZOR2fSWoPQN5D2H90JyvNIHngBcmrrZ6peU9exn3LTi/8zKf/47nltxGWrNpCwcHgPYYWVRxZwgDIJloY+AtRHxMxfUPEUuVOUhJkF2RZKRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GRBKBk6j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F45C113D0;
+	Mon, 17 Nov 2025 01:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763343092;
-	bh=jq2omNwQwmgF2TnEV7f+GT3IR00VUydphYjBEpLzg1Y=;
+	s=korg; t=1763343213;
+	bh=i0Xp947bdJC5rb4quVFFsRCdEx75XPX03XjbDw9LyIw=;
 	h=Date:To:From:Subject:From;
-	b=ID7mCxVsfGIQ0xTsf14j68ngMg4V5N6UBL9l7Ryq4Cyy1qmn1ghraGzA5QbpbW1L7
-	 8GUTX2GHk02P6HgW+d2tOptbaVsy5tyV536/1PFUi0PQBYne2+MHoSXzpUP3cN5L9n
-	 3yYn2l589tYqidAJUBjoZTjUNPAr/CkKMVRddxrY=
-Date: Sun, 16 Nov 2025 17:31:31 -0800
-To: mm-commits@vger.kernel.org,yang.yang29@zte.com.cn,wang.yaxin@zte.com.cn,tujinjiang@huawei.com,stable@vger.kernel.org,shr@devkernel.io,david@redhat.com,xu.xin16@zte.com.cn,akpm@linux-foundation.org
+	b=GRBKBk6jWxwGn2jt/wN1ZpZ1ORxwgx+qSQXSw+dwBrEzrvx0YlnGgH4wo1UC7mV25
+	 XHdxx0CGaUsVhYluHr+K7r6vrwV/NsSJJ6boDGtfWIIBrwGGDt8v2cF4tQvzAWjgeP
+	 vUtSpUm96aKLUEurfJRv322fw3RMC+/qPEzJ8bc0=
+Date: Sun, 16 Nov 2025 17:33:32 -0800
+To: mm-commits@vger.kernel.org,yi1.lai@intel.com,willy@infradead.org,will@kernel.org,vinicius.gomes@intel.com,vbabka@suse.cz,vasant.hegde@amd.com,urezki@gmail.com,tglx@linutronix.de,stable@vger.kernel.org,rppt@kernel.org,robin.murphy@arm.com,peterz@infradead.org,mingo@redhat.com,mhocko@kernel.org,luto@kernel.org,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,kevin.tian@intel.com,joro@8bytes.org,jgg@nvidia.com,jean-philippe@linaro.org,jannh@google.com,david@redhat.com,dave.hansen@intel.com,bp@alien8.de,apopple@nvidia.com,baolu.lu@linux.intel.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-ksm-fix-exec-fork-inheritance-support-for-prctl.patch removed from -mm tree
-Message-Id: <20251117013132.0776EC16AAE@smtp.kernel.org>
+Subject: [merged mm-stable] iommu-disable-sva-when-config_x86-is-set.patch removed from -mm tree
+Message-Id: <20251117013333.31F45C113D0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,155 +50,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/ksm: fix exec/fork inheritance support for prctl
+     Subject: iommu: disable SVA when CONFIG_X86 is set
 has been removed from the -mm tree.  Its filename was
-     mm-ksm-fix-exec-fork-inheritance-support-for-prctl.patch
+     iommu-disable-sva-when-config_x86-is-set.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: xu xin <xu.xin16@zte.com.cn>
-Subject: mm/ksm: fix exec/fork inheritance support for prctl
-Date: Tue, 7 Oct 2025 18:28:21 +0800 (CST)
+From: Lu Baolu <baolu.lu@linux.intel.com>
+Subject: iommu: disable SVA when CONFIG_X86 is set
+Date: Wed, 22 Oct 2025 16:26:27 +0800
 
-Patch series "ksm: fix exec/fork inheritance", v2.
+Patch series "Fix stale IOTLB entries for kernel address space", v7.
 
-This series fixes exec/fork inheritance.  See the detailed description of
-the issue below.
+This proposes a fix for a security vulnerability related to IOMMU Shared
+Virtual Addressing (SVA).  In an SVA context, an IOMMU can cache kernel
+page table entries.  When a kernel page table page is freed and
+reallocated for another purpose, the IOMMU might still hold stale,
+incorrect entries.  This can be exploited to cause a use-after-free or
+write-after-free condition, potentially leading to privilege escalation or
+data corruption.
+
+This solution introduces a deferred freeing mechanism for kernel page
+table pages, which provides a safe window to notify the IOMMU to
+invalidate its caches before the page is reused.
 
 
-This patch (of 2):
+This patch (of 8):
 
-Background
-==========
+In the IOMMU Shared Virtual Addressing (SVA) context, the IOMMU hardware
+shares and walks the CPU's page tables.  The x86 architecture maps the
+kernel's virtual address space into the upper portion of every process's
+page table.  Consequently, in an SVA context, the IOMMU hardware can walk
+and cache kernel page table entries.
 
-commit d7597f59d1d33 ("mm: add new api to enable ksm per process")
-introduced MMF_VM_MERGE_ANY for mm->flags, and allowed user to set it by
-prctl() so that the process's VMAs are forcibly scanned by ksmd. 
+The Linux kernel currently lacks a notification mechanism for kernel page
+table changes, specifically when page table pages are freed and reused. 
+The IOMMU driver is only notified of changes to user virtual address
+mappings.  This can cause the IOMMU's internal caches to retain stale
+entries for kernel VA.
 
-Subsequently, the 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
-supported inheriting the MMF_VM_MERGE_ANY flag when a task calls execve().
+Use-After-Free (UAF) and Write-After-Free (WAF) conditions arise when
+kernel page table pages are freed and later reallocated.  The IOMMU could
+misinterpret the new data as valid page table entries.  The IOMMU might
+then walk into attacker-controlled memory, leading to arbitrary physical
+memory DMA access or privilege escalation.  This is also a
+Write-After-Free issue, as the IOMMU will potentially continue to write
+Accessed and Dirty bits to the freed memory while attempting to walk the
+stale page tables.
 
-Finally, commit 3a9e567ca45fb ("mm/ksm: fix ksm exec support for prctl")
-fixed the issue that ksmd doesn't scan the mm_struct with MMF_VM_MERGE_ANY
-by adding the mm_slot to ksm_mm_head in __bprm_mm_init().
+Currently, SVA contexts are unprivileged and cannot access kernel
+mappings.  However, the IOMMU will still walk kernel-only page tables all
+the way down to the leaf entries, where it realizes the mapping is for the
+kernel and errors out.  This means the IOMMU still caches these
+intermediate page table entries, making the described vulnerability a real
+concern.
 
-Problem
-=======
+Disable SVA on x86 architecture until the IOMMU can receive notification
+to flush the paging cache before freeing the CPU kernel page table pages.
 
-In some extreme scenarios, however, this inheritance of MMF_VM_MERGE_ANY
-during exec/fork can fail.  For example, when the scanning frequency of
-ksmd is tuned extremely high, a process carrying MMF_VM_MERGE_ANY may
-still fail to pass it to the newly exec'd process.  This happens because
-ksm_execve() is executed too early in the do_execve flow (prematurely
-adding the new mm_struct to the ksm_mm_slot list).
-
-As a result, before do_execve completes, ksmd may have already performed a
-scan and found that this new mm_struct has no VM_MERGEABLE VMAs, thus
-clearing its MMF_VM_MERGE_ANY flag.  Consequently, when the new program
-executes, the flag MMF_VM_MERGE_ANY inheritance missed.
-
-Root reason
-===========
-
-commit d7597f59d1d33 ("mm: add new api to enable ksm per process") clear
-the flag MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE VMAs.
-
-Solution
-========
-
-Firstly, Don't clear MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE
-VMAs, because perhaps their mm_struct has just been added to ksm_mm_slot
-list, and its process has not yet officially started running or has not
-yet performed mmap/brk to allocate anonymous VMAS.
-
-Secondly, recheck MMF_VM_MERGEABLE again if a process takes
-MMF_VM_MERGE_ANY, and create a mm_slot and join it into ksm_scan_list
-again.
-
-Link: https://lkml.kernel.org/r/20251007182504440BJgK8VXRHh8TD7IGSUIY4@zte.com.cn
-Link: https://lkml.kernel.org/r/20251007182821572h_SoFqYZXEP1mvWI4n9VL@zte.com.cn
-Fixes: 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
-Fixes: d7597f59d1d3 ("mm: add new api to enable ksm per process")
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-Cc: Stefan Roesch <shr@devkernel.io>
+Link: https://lkml.kernel.org/r/20251022082635.2462433-1-baolu.lu@linux.intel.com
+Link: https://lkml.kernel.org/r/20251022082635.2462433-2-baolu.lu@linux.intel.com
+Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@intel.com>
 Cc: David Hildenbrand <david@redhat.com>
-Cc: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: Wang Yaxin <wang.yaxin@zte.com.cn>
-Cc: Yang Yang <yang.yang29@zte.com.cn>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Kevin Tian <kevin.tian@intel.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Robin Murohy <robin.murphy@arm.com>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: Vasant Hegde <vasant.hegde@amd.com>
+Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yi Lai <yi1.lai@intel.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/ksm.h |    4 ++--
- mm/ksm.c            |   20 +++++++++++++++++---
- 2 files changed, 19 insertions(+), 5 deletions(-)
+ drivers/iommu/iommu-sva.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/include/linux/ksm.h~mm-ksm-fix-exec-fork-inheritance-support-for-prctl
-+++ a/include/linux/ksm.h
-@@ -17,7 +17,7 @@
- #ifdef CONFIG_KSM
- int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
- 		unsigned long end, int advice, vm_flags_t *vm_flags);
--vm_flags_t ksm_vma_flags(const struct mm_struct *mm, const struct file *file,
-+vm_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
- 			 vm_flags_t vm_flags);
- int ksm_enable_merge_any(struct mm_struct *mm);
- int ksm_disable_merge_any(struct mm_struct *mm);
-@@ -103,7 +103,7 @@ bool ksm_process_mergeable(struct mm_str
+--- a/drivers/iommu/iommu-sva.c~iommu-disable-sva-when-config_x86-is-set
++++ a/drivers/iommu/iommu-sva.c
+@@ -77,6 +77,9 @@ struct iommu_sva *iommu_sva_bind_device(
+ 	if (!group)
+ 		return ERR_PTR(-ENODEV);
  
- #else  /* !CONFIG_KSM */
++	if (IS_ENABLED(CONFIG_X86))
++		return ERR_PTR(-EOPNOTSUPP);
++
+ 	mutex_lock(&iommu_sva_lock);
  
--static inline vm_flags_t ksm_vma_flags(const struct mm_struct *mm,
-+static inline vm_flags_t ksm_vma_flags(struct mm_struct *mm,
- 		const struct file *file, vm_flags_t vm_flags)
- {
- 	return vm_flags;
---- a/mm/ksm.c~mm-ksm-fix-exec-fork-inheritance-support-for-prctl
-+++ a/mm/ksm.c
-@@ -2712,8 +2712,14 @@ no_vmas:
- 		spin_unlock(&ksm_mmlist_lock);
- 
- 		mm_slot_free(mm_slot_cache, mm_slot);
-+		/*
-+		 * Only clear MMF_VM_MERGEABLE. We must not clear
-+		 * MMF_VM_MERGE_ANY, because for those MMF_VM_MERGE_ANY process,
-+		 * perhaps their mm_struct has just been added to ksm_mm_slot
-+		 * list, and its process has not yet officially started running
-+		 * or has not yet performed mmap/brk to allocate anonymous VMAS.
-+		 */
- 		mm_flags_clear(MMF_VM_MERGEABLE, mm);
--		mm_flags_clear(MMF_VM_MERGE_ANY, mm);
- 		mmap_read_unlock(mm);
- 		mmdrop(mm);
- 	} else {
-@@ -2831,12 +2837,20 @@ static int __ksm_del_vma(struct vm_area_
-  *
-  * Returns: @vm_flags possibly updated to mark mergeable.
-  */
--vm_flags_t ksm_vma_flags(const struct mm_struct *mm, const struct file *file,
-+vm_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
- 			 vm_flags_t vm_flags)
- {
- 	if (mm_flags_test(MMF_VM_MERGE_ANY, mm) &&
--	    __ksm_should_add_vma(file, vm_flags))
-+	    __ksm_should_add_vma(file, vm_flags)) {
- 		vm_flags |= VM_MERGEABLE;
-+		/*
-+		 * Generally, the flags here always include MMF_VM_MERGEABLE.
-+		 * However, in rare cases, this flag may be cleared by ksmd who
-+		 * scans a cycle without finding any mergeable vma.
-+		 */
-+		if (unlikely(!mm_flags_test(MMF_VM_MERGEABLE, mm)))
-+			__ksm_enter(mm);
-+	}
- 
- 	return vm_flags;
- }
+ 	/* Allocate mm->pasid if necessary. */
 _
 
-Patches currently in -mm which might be from xu.xin16@zte.com.cn are
+Patches currently in -mm which might be from baolu.lu@linux.intel.com are
 
 
 
