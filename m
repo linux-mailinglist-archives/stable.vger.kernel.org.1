@@ -1,65 +1,64 @@
-Return-Path: <stable+bounces-195013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19CCFC65EFF
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 20:21:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7FFFC65EA5
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 20:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DCAAA4EF985
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 19:18:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A7F594EF4BC
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 19:16:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBFB33C50F;
-	Mon, 17 Nov 2025 19:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1793233CE86;
+	Mon, 17 Nov 2025 19:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="I8XmeTTz"
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="bzt+K3z/"
 X-Original-To: stable@vger.kernel.org
 Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0B9331A4B
-	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 19:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEE833C539
+	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 19:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763406990; cv=none; b=FFZAnx1N4NJhWg+rQs/DImNyXc3NvrnO+21EOdB9u6hXi1uknXDdshw3qLZMH+W13LEQ3wAcc15KlTYJMQ3/LU9Bruz8S6AS/BIt5fzOU6Tn+l8+1QmW/EcvO2VlCAyW/tFwaxn6i4NDeqi6EXBT+uP0jQKdD5F+TQ5tiTAzUoc=
+	t=1763406861; cv=none; b=akeK1ELPjptf1xxcxdCjJDzFeqhhqt108ULhXnRxrex+/vRWi6ERysirum0t19JbgraBhD/hXdvBQC7i+0TwALx3zBANQ0EonzlMqH6teM4g7JRC2oaj7soXfzNQt98IeFGFDduOUF0E+tBjMmoT4RN20PCWz6fdR4QeottJQyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763406990; c=relaxed/simple;
-	bh=rbJzXKItKYr+U5o4o4OscBnQtNIZzlJEJXtz7E9/Z9E=;
+	s=arc-20240116; t=1763406861; c=relaxed/simple;
+	bh=S8+oYdvzJkqg5GnbKH1RT7Mgj2ukg9Yf1oBFfES9NFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=atkILxfcx+viu3A+o5C48id1PW4+fVOzwZXfJ34uXof7bUbaC+JO7sCtVYpafliXE+0WjosKWlgAxqdxugxx/9Y86ko6nsDV6ub78hyNTkssxwrfq21UmAy9x7XaKDmW7+dKYsUE3EN40TguG0zT4vLALX4oBzJ4HGLTouF9Zfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=I8XmeTTz; arc=none smtp.client-ip=18.9.28.11
+	 MIME-Version:Content-Type; b=G6+tAXjhVT6K6/2XSHQJTp1F2MtS2pr2oqMsNvtb8X0eT4gXCatExSVGipm3TcLtvpzv94dXw3YBWFmf0X9HUII8MrPJDLgSixMVwR5X69KY/Z//urUHc9okrcTw+U+ShDWmOWt+qmFQ8go/AhgzwM2vccK10HQx1rY3drQInGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=bzt+K3z/; arc=none smtp.client-ip=18.9.28.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
 Received: from trampoline.thunk.org (pool-173-48-114-69.bstnma.fios.verizon.net [173.48.114.69])
 	(authenticated bits=0)
         (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 5AHJDoSK020573
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 5AHJDqn9020625
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Nov 2025 14:13:51 -0500
+	Mon, 17 Nov 2025 14:13:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1763406833; bh=kSvqqUPl7yymxqG13UPEos8QgcCE/m0fKfgNjTXmHno=;
+	t=1763406835; bh=mNZ5GIaU4El1zYRELHlqutylXT+r7C+fyoeeZNVHpfY=;
 	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=I8XmeTTzPDUgk9nUO8xIxg5D5G4qzB4sjelJgQlzD5M7VG6wjq/yjgDvp+RCLej7R
-	 bpXZiel+XISW5FTjMpnUwWq9FbjIsiVBFRUKDFgpgpeeO0+aLofSoR0tCPtrDNBj9u
-	 kUZIa3q1115ENhkQiN7IIIV56vXbSNVfr0lDjc3CpK5yvB3pwTqm/MXtR0vhU8aA0O
-	 TmJe/2SBlnVO5KaWKu/tQb17kD75TetRnDXbwWjUMOcn/d1ExoO2oVfBzC9dncRrsk
-	 R9VuwH/MN99XtXpkANf4eb2O0RPtGdExahljHDq3Bncx9d2GLW8wo2QOUUG1pjcY0S
-	 ZC41ONAbnWZ1A==
+	b=bzt+K3z/iCbZT5y2WMcWDVNp93G0iAunFTHHpfeaq0lo8aGc6TxynOQ/x0X27CDsM
+	 aKDAAvQR2Nf3Rgu3bgCxixCqAMtkdYEREnGNwYC/46Plv/YM9IN5bypPQSw1jNfxDQ
+	 EM7l4m0jFcQW0ErUjnY4IsApPWTUIebmCn9GtgQt+tDf591VTS4HOwKnop/LApWBZg
+	 tOlMj3j92PF9uH0B6vd2MT/404x90sKGTWDd2HOj5t7zFLBfE6C4kT8hvbz30dNpGL
+	 9UAJul1aj2qvtUGnD4jd7JHXJiF+6Qx6g4sdCHNW7sX1ORoNDmwt1CnWPFFZy3IQLg
+	 Hp4J2i6w2eIRA==
 Received: by trampoline.thunk.org (Postfix, from userid 15806)
-	id 42FB02E00DD; Mon, 17 Nov 2025 14:13:50 -0500 (EST)
+	id 48CD32E00DF; Mon, 17 Nov 2025 14:13:50 -0500 (EST)
 From: "Theodore Ts'o" <tytso@mit.edu>
-To: Jan Kara <jack@suse.cz>, linux-ext4@vger.kernel.org,
-        Fedor Pchelkin <pchelkin@ispras.ru>
+To: Alexey Nepomnyashih <sdl@nppct.ru>
 Cc: "Theodore Ts'o" <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
-        "Darrick J. Wong" <djwong@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
         lvc-project@linuxtesting.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] ext4: fix string copying in parse_apply_sb_mount_options()
-Date: Mon, 17 Nov 2025 14:13:34 -0500
-Message-ID: <176340680644.138575.9603909521172863181.b4-ty@mit.edu>
+Subject: Re: [PATCH RFC] ext4: add i_data_sem protection in ext4_destroy_inline_data_nolock()
+Date: Mon, 17 Nov 2025 14:13:36 -0500
+Message-ID: <176340680646.138575.18168327924359030421.b4-ty@mit.edu>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251101160430.222297-1-pchelkin@ispras.ru>
-References: <20251101160430.222297-1-pchelkin@ispras.ru>
+In-Reply-To: <20251104093326.697381-1-sdl@nppct.ru>
+References: <20251104093326.697381-1-sdl@nppct.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,46 +69,21 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Sat, 01 Nov 2025 19:04:28 +0300, Fedor Pchelkin wrote:
-> strscpy_pad() can't be used to copy a non-NUL-term string into a NUL-term
-> string of possibly bigger size.  Commit 0efc5990bca5 ("string.h: Introduce
-> memtostr() and memtostr_pad()") provides additional information in that
-> regard.  So if this happens, the following warning is observed:
+On Tue, 04 Nov 2025 09:33:25 +0000, Alexey Nepomnyashih wrote:
+> Fix a race between inline data destruction and block mapping.
 > 
-> strnlen: detected buffer overflow: 65 byte read of buffer size 64
-> WARNING: CPU: 0 PID: 28655 at lib/string_helpers.c:1032 __fortify_report+0x96/0xc0 lib/string_helpers.c:1032
-> Modules linked in:
-> CPU: 0 UID: 0 PID: 28655 Comm: syz-executor.3 Not tainted 6.12.54-syzkaller-00144-g5f0270f1ba00 #0
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> RIP: 0010:__fortify_report+0x96/0xc0 lib/string_helpers.c:1032
-> Call Trace:
->  <TASK>
->  __fortify_panic+0x1f/0x30 lib/string_helpers.c:1039
->  strnlen include/linux/fortify-string.h:235 [inline]
->  sized_strscpy include/linux/fortify-string.h:309 [inline]
->  parse_apply_sb_mount_options fs/ext4/super.c:2504 [inline]
->  __ext4_fill_super fs/ext4/super.c:5261 [inline]
->  ext4_fill_super+0x3c35/0xad00 fs/ext4/super.c:5706
->  get_tree_bdev_flags+0x387/0x620 fs/super.c:1636
->  vfs_get_tree+0x93/0x380 fs/super.c:1814
->  do_new_mount fs/namespace.c:3553 [inline]
->  path_mount+0x6ae/0x1f70 fs/namespace.c:3880
->  do_mount fs/namespace.c:3893 [inline]
->  __do_sys_mount fs/namespace.c:4103 [inline]
->  __se_sys_mount fs/namespace.c:4080 [inline]
->  __x64_sys_mount+0x280/0x300 fs/namespace.c:4080
->  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
->  do_syscall_64+0x64/0x140 arch/x86/entry/common.c:83
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> The function ext4_destroy_inline_data_nolock() changes the inode data
+> layout by clearing EXT4_INODE_INLINE_DATA and setting EXT4_INODE_EXTENTS.
+> At the same time, another thread may execute ext4_map_blocks(), which
+> tests EXT4_INODE_EXTENTS to decide whether to call ext4_ext_map_blocks()
+> or ext4_ind_map_blocks().
 > 
 > [...]
 
 Applied, thanks!
 
-[1/2] ext4: fix string copying in parse_apply_sb_mount_options()
-      commit: c517b381de9490b910ab451c2177aa32064678ad
-[2/2] ext4: check if mount_opts is NUL-terminated in ext4_ioctl_set_tune_sb()
-      commit: 687524bafd4e86cfa783857f8045460f4caee921
+[1/1] ext4: add i_data_sem protection in ext4_destroy_inline_data_nolock()
+      commit: 103ce01cd045197461d654f62f1a30cabedbcad4
 
 Best regards,
 -- 
