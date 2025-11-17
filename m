@@ -1,109 +1,158 @@
-Return-Path: <stable+bounces-194944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24AA1C6352F
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 10:48:06 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DEBCC63123
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 10:13:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4C04E360CEC
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 09:41:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 495BC4EC948
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 09:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C644328B66;
-	Mon, 17 Nov 2025 09:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40FCC322C8A;
+	Mon, 17 Nov 2025 09:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="pl1Mou2a";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gtUVWTtW"
 X-Original-To: stable@vger.kernel.org
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4FD328B4F
-	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 09:38:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7173246F7;
+	Mon, 17 Nov 2025 09:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763372318; cv=none; b=bFZcdW7AfT46Ynrg5TxuRnKyN01THqCVqrLq+P53QCJp18s+yAEqaYlAbQuH8q1Xrr/vlBfpBc9WF4iCrOvakGFeqPBvrmGubXWn3EJzX4glhlcUzcLQmsSEyu8lMf9ou4Z5OxETlCKyE6j54iAFPXXKkNz52VxI5U+YbeM6jTQ=
+	t=1763370486; cv=none; b=M17XqDMzzgODtdba06N6KIBt3NI5QVqiAfRG+rjbeU0qckLNPLxTAQMKnlft7IUcBTEzMy0bMbdWRdny2+adbUd6tt+5dRHe+62QLu5m2Y1koipkWKC08z/vcXNQYgAdpPpU+EPtQ4gu7frsDNT2PdZb3iyQ1PJXILCxaRbi314=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763372318; c=relaxed/simple;
-	bh=0Gq1vTAls4U5lWqQVRIcTaH4k9hEnn0rjpzDd+hIbT0=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
-	 In-Reply-To:Content-Type; b=J/dxnYWkvrLVLtD/A1ZXQDqwWit6D31xDUDhyZ/fAEtnO0zWv4LWkoicQB3ZKUVJ5dDsIuZqwuoD91f5H+utbW1O4/CJ5tayIxDg0MHl6+6lWisR6uxJyUWsK59QbLxTpiOl4k8MbJNw5xYuZvv5ygfQuhAzsRIvVeyccfhXH8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1763371317-1eb14e3d8797650001-OJig3u
-Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx2.zhaoxin.com with ESMTP id UscqPKxxjogxNE8Z (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Mon, 17 Nov 2025 17:21:57 +0800 (CST)
-X-Barracuda-Envelope-From: AlanSong-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX3.zhaoxin.com
- (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Mon, 17 Nov
- 2025 17:21:57 +0800
-Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
- ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
- 15.01.2507.059; Mon, 17 Nov 2025 17:21:57 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from [10.32.65.156] (10.32.65.156) by ZXBJMBX02.zhaoxin.com
- (10.29.252.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Mon, 17 Nov
- 2025 17:04:25 +0800
-Message-ID: <c24d0582-ae94-4dfb-ae6f-6baafa7fe689@zhaoxin.com>
-Date: Mon, 17 Nov 2025 17:03:17 +0800
+	s=arc-20240116; t=1763370486; c=relaxed/simple;
+	bh=MQJ8YPH8Nssy1ljCLQGwWx/LUNDSH+o2Sk5H8NIyyYc=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=atDBbIRPrnOIQpVVDA6oBBoWnBSwKegTokSaTfexuIeiaOFAeucgpst0wYQ35Jk7RILQIXMTLzY4v4oa2wIO5XdBbrx8OPM2Q4rBNTZVC8inktuuAZqDUW9ZXi6Qwxp7tpYZ/wTk4mKo7xFiTVJLrAdCMoKHPXymxJTPSPovviU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=pl1Mou2a; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gtUVWTtW; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 2FC731400138;
+	Mon, 17 Nov 2025 04:08:03 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Mon, 17 Nov 2025 04:08:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1763370483;
+	 x=1763456883; bh=PO+HprFxowvXbocpvtAlTvfgsKxJ9kwRQfs+WUVErPM=; b=
+	pl1Mou2a8h7kYUp3llgfzWaQkTkptKjNgKWve02MAli3WV7Yy+zFFzUiMVV55q8C
+	Gp9sO5auj0GBfNeNQSZFd45BmUjMqTPIEr/60m1CKIQny8PWwO/CiplylIBhEwxK
+	KPLSfkD5eEfxClT7Prcdsw5IzdArD3ReYb+bPpp3S7lYVqy5zAWZpp8JUxmhA1Yq
+	8jmkklnrt4xxtxWsvzZvuhtvWKGes3TQJUzguU4fIPMWnipTK/d6D6EYlr0Qp+Hy
+	bYHDTu2OduDkeTL/JPGJfLIHNPvG1IMBj2vGL/S+ywoodvbh5FlyeYK3K9bgS1dl
+	p/SP3CP2uWErMGLKjHavyg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1763370483; x=
+	1763456883; bh=PO+HprFxowvXbocpvtAlTvfgsKxJ9kwRQfs+WUVErPM=; b=g
+	tUVWTtWQ9suuL5LE40z44bT+w2Tc0tk/1HmA3x9NuY7ziwGlRqlDman8J8F+71vg
+	cJjaFHJwUtsw3qZFyN26JF6jMgwp31QPsqVrNdgbjXK2/6jgC0wwOeWJpNQFivE/
+	HNvR4jVkAzHAutI9LXVQf+DqiG76fwr0PweuF+MT8xQ2vx+wQw3yZRr7UF+kUQV1
+	Xg8iyh9qRWPxSxPwtDx9mNzu92I62pxTQ0lNapNUJ/ICsMWWAfyo//0yAFCDRDet
+	fs6QP2t2z+xOWIxUVzhiLWKDzIKAadJiuiK86z7wKnz0KY3UwoNfAZKfPITmz8CB
+	M4IPzbNXf9ffR8J+y8BdQ==
+X-ME-Sender: <xms:8uUaaUo3h4NKJxokYbYGzN1po5V5t6oJllHAQTC1H277R2Kv3GeaKA>
+    <xme:8uUaaVfaBXz5BBBqyxYdy3U_GsM1p8yCymviuTaYLY2gksVrVsmVRFbKV2JdtG4Pi
+    qve-MD0bAgnWxMFJdbNGD6ldAB329EE_UMjPDMSOqID6Rcp06-5MlH5>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvudektdeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
+    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudefpdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
+    epkhhishhhohhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkfihilhgtiiihnhhs
+    khhisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlphhivghrrghlihhsiheskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepmhgrnhhisehkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmh
+    dqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohep
+    uhhnihgtohhrnhgpfigrnhhgsehouhhtlhhoohhkrdgtohhmpdhrtghpthhtohepshdqvh
+    gruggrphgrlhhlihesthhirdgtohhm
+X-ME-Proxy: <xmx:8uUaaXkPpeIadKJMvzQsGDBOWh1Tjcyb_HYNz-fc5QIn_5I_yTtsIA>
+    <xmx:8-UaaQCUOi64x4mS4xdvxIWltUmj6-C2bwKXVe8MKvDIl17qfISE1Q>
+    <xmx:8-UaaRCMU9_LSXcsRQbaYW2jNnFweHe2YeZWhDYIUnZBMUItkuS2VA>
+    <xmx:8-UaafFBR8Oni9HUqk8SYx1FY8THGzhwWa1NMngIWtX0bbzWGBCJDw>
+    <xmx:8-UaafQesAiugEDtRmw1jUGiKcTBd3esQoZhIahysN1L032ZoLvjuIN3>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id DF8F9700063; Mon, 17 Nov 2025 04:08:02 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: AlanSong-oc <AlanSong-oc@zhaoxin.com>
-Subject: Re: [PATCH] crypto: padlock-sha - Disable broken driver
-To: Eric Biggers <ebiggers@kernel.org>, <linux-crypto@vger.kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-X-ASG-Orig-Subj: Re: [PATCH] crypto: padlock-sha - Disable broken driver
-CC: <linux-kernel@vger.kernel.org>, larryw3i <larryw3i@yeah.net>,
-	<stable@vger.kernel.org>, <CobeChen@zhaoxin.com>, <GeorgeXue@zhaoxin.com>,
-	<HansHu@zhaoxin.com>, <LeoLiu-oc@zhaoxin.com>, <TonyWWang-oc@zhaoxin.com>,
-	<YunShen@zhaoxin.com>
-References: <3af01fec-b4d3-4d0c-9450-2b722d4bbe39@yeah.net>
- <20251116183926.3969-1-ebiggers@kernel.org>
-In-Reply-To: <20251116183926.3969-1-ebiggers@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- ZXBJMBX02.zhaoxin.com (10.29.252.6)
-X-Moderation-Data: 11/17/2025 5:21:55 PM
-X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
-X-Barracuda-Start-Time: 1763371317
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 736
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -1.52
-X-Barracuda-Spam-Status: No, SCORE=-1.52 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=BSF_SC0_SA983
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.150256
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
-	0.50 BSF_SC0_SA983          Custom Rule BSF_SC0_SA983
+X-ThreadId: AO4N9SNPwumV
+Date: Mon, 17 Nov 2025 10:06:57 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Siddharth Vadapalli" <s-vadapalli@ti.com>
+Cc: "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ "Manivannan Sadhasivam" <mani@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ bhelgaas@google.com, "Chen Wang" <unicorn_wang@outlook.com>,
+ "Kishon Vijay Abraham I" <kishon@kernel.org>, stable@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, srk@ti.com
+Message-Id: <37f6f8ce-12b2-44ee-a94c-f21b29c98821@app.fastmail.com>
+In-Reply-To: <7eaa4d917f7639913838abd4fd64ae8fe73a8cfc.camel@ti.com>
+References: <20251113092721.3757387-1-s-vadapalli@ti.com>
+ <084b804f-2999-4f8d-8372-43cfbf0c0d28@app.fastmail.com>
+ <250d2b94d5785e70530200e00c1f0f46fde4311b.camel@ti.com>
+ <201b9ad1-3ebd-4992-acdd-925d2e357d22@app.fastmail.com>
+ <7eaa4d917f7639913838abd4fd64ae8fe73a8cfc.camel@ti.com>
+Subject: Re: [PATCH] PCI: cadence: Kconfig: change PCIE_CADENCE configs from tristate
+ to bool
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+On Mon, Nov 17, 2025, at 07:05, Siddharth Vadapalli wrote:
+> On Fri, 2025-11-14 at 08:03 +0100, Arnd Bergmann wrote:
+>> On Fri, Nov 14, 2025, at 06:47, Siddharth Vadapalli wrote:
+
+> I understand that the solution should be fixing the pci-j721e.c driver
+> rather than updating Kconfig or Makefile. Thank you for the feedback. I
+> will update the pci-j721e.c driver to handle the case that is triggering
+> the build error.
+
+Ok, thanks!
+
+I think a single if(IS_ENABLED(CONFIG_PCI_J721E_HOST)) check
+is probably enough to avoid the link failure
+
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -669,7 +669,8 @@ static void j721e_pcie_remove(struct platform_device *pdev)
+        struct cdns_pcie_ep *ep;
+        struct cdns_pcie_rc *rc;
+ 
+-       if (pcie->mode == PCI_MODE_RC) {
++       if (IS_ENABLED(CONFIG_PCI_J721E_HOST) &&
++           pcie->mode == PCI_MODE_RC) {
+                rc = container_of(cdns_pcie, struct cdns_pcie_rc, pcie);
+                cdns_pcie_host_disable(rc);
 
 
-On 11/17/2025 2:39 AM, Eric Biggers wrote:
+but you may want to split it up further to get better dead
+code elimination and prevent similar bugs from reappearing when
+another call gets added without this type of check.
 
-> This driver is known broken, as it computes the wrong SHA-1 and SHA-256
-> hashes.  Correctness needs to be the first priority for cryptographic
-> code.  Just disable it, allowing the standard (and actually correct)
-> SHA-1 and SHA-256 implementations to take priority.
-> =20
+If you split j721e_pcie_driver into a host and an ep driver
+structure with their own probe/remove callbacks, you can
+move the IS_ENABLED() check all the way into module_init()
+function.
 
-Following Herbert Xu's=20
-suggestion=EF=BC=88https://lore.kernel.org/linux-crypto/aFkdNoQFmr8-x4cu@go=
-ndor.apana.org.au/=EF=BC=89,=20
-we have prepared a new version of the patch to address this issue. Since=20
-the code needs to remain compatible with older platforms, we are still=20
-conducting extensive testing. Once the testing is complete, I will=20
-submit the finalized patch immediately.
-
-Best Regards
-AlanSong-oc
+     Arnd
 
