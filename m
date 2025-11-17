@@ -1,70 +1,74 @@
-Return-Path: <stable+bounces-194974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DFCC64FCB
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:55:25 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6ECC65058
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 17:03:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 80E064E259F
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 15:55:24 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1368B360C92
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8387A29ACD7;
-	Mon, 17 Nov 2025 15:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23AD2BE7AA;
+	Mon, 17 Nov 2025 16:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="CkUD4nSK"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="VpB8Qkkl"
 X-Original-To: stable@vger.kernel.org
-Received: from mx13.kaspersky-labs.com (mx13.kaspersky-labs.com [91.103.66.164])
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4274B275B05;
-	Mon, 17 Nov 2025 15:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.103.66.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BFA2BDC09
+	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 16:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763394918; cv=none; b=tXvEe/v8uVDICbR7+DZomPjPFoKD8gPA1qdKGdlW7pqpbtYWm4JrhTya5Ym9jxlHfmTDCDGDmQonJbKZZ1rnCKxqA4M4bm7+5aefxPdARMQckShjQg/T2JQYf8c2go2tYagwrr7B7BFS3cPb48a7WnYAgA7+ynUKJcr8OVzJufQ=
+	t=1763395263; cv=none; b=W+QwAtcaS2FlvqdFkdt+3RKc5ivgB5lO3BAef2d8zpD4tOK1+IZAwXwbforhpM3dviFWcBTQj5b8k9veC8PVCNkbMovECAZpNTtaX/cIzC/OmC9OC3Os65tfsZNm6VoMGM1SUE53c3ShX01m1fmgUujexIpaUfUewpxSOEWBjKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763394918; c=relaxed/simple;
-	bh=hPrJDzyj8DX0fuDZDNUP+DAIWqS/5XdNO8huBQyUsLA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fNyq17ORd108ws9ftl5g2IKQLVupumRL9owgGYNHcnGYPGJ7DpU+cEc0HgybmFPaen5w8K2KzCNMwUun6kpRKYW2x8G7ZEMvjXuUsMwSGNhBLnmhZwL0p8n8qqyFX+Jeszv7lmF3qLEvTt/gZPn7BgJCn9OO9brEo+ORq229Gzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=CkUD4nSK; arc=none smtp.client-ip=91.103.66.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1763394908;
-	bh=16HCA9ddrIpnYG6PtakcW47alFrg1zTkrEo2ojf5Jdg=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=CkUD4nSKYq2qyquyvta8i15LQTPsVQlyHnSRpfHd7/9YJM1AQ8TCCPVXQ5oEQECtI
-	 r8r0zjzgXS4wZkueTaGGlFH+HAvqgITwvdHzoW41KYLsBw/N+uj41KPf5Z6rrNpgf8
-	 FcS+IkN+Qpi6PvupRQL5kZ7gp+fnghhDIpf8VpnUIVNo5J6JznyZx9I2DtjG2tT/gY
-	 q5U72jdsl3eHB5RLKzjZaHuO44wRPq3cVdfR/YAnP1TZvrRKxDI889y4qRoKtxHQWW
-	 oCmrQtBtX165S85H8c24kh6U45fmSguzCwOzQDrWxJ53sVA16SkUuCMpCrsYr7rWfB
-	 Os5zDlTmC7jTQ==
-Received: from relay13.kaspersky-labs.com (localhost [127.0.0.1])
-	by relay13.kaspersky-labs.com (Postfix) with ESMTP id 78FFA3E1D2C;
-	Mon, 17 Nov 2025 18:55:08 +0300 (MSK)
-Received: from mail-hq2.kaspersky.com (unknown [91.103.66.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub13.kaspersky-labs.com (Postfix) with ESMTPS id 0B7643E4FCA;
-	Mon, 17 Nov 2025 18:55:06 +0300 (MSK)
-Received: from Nalivayko.avp.ru (10.16.105.14) by HQMAILSRV3.avp.ru
- (10.64.57.53) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Mon, 17 Nov
- 2025 18:54:57 +0300
-From: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
-To: <linux-media@vger.kernel.org>
-CC: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>, Mauro Carvalho Chehab
-	<mchehab@kernel.org>, Antoine Jacquet <royale@zerezo.com>, Christophe JAILLET
-	<christophe.jaillet@wanadoo.fr>, Alan Stern <stern@rowland.harvard.edu>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	<lvc-project@linuxtesting.org>,
-	<syzbot+0335df380edd9bd3ff70@syzkaller.appspotmail.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] dvb-usb: dtv5100: rewrite i2c message usb_control send/recv
-Date: Mon, 17 Nov 2025 18:53:56 +0300
-Message-ID: <20251117155356.1912431-1-Sergey.Nalivayko@kaspersky.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1763395263; c=relaxed/simple;
+	bh=9RSsR5U4W7BTG6LYCPzyJndp7H3oEE0mKDMWjHJa7qM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 References; b=iZzlCF+CNApWlG2NQQI3L24iKrxYiFnZZh6bvqx+IsXG5AYgZER2JIa1n+YT5AHL27e7h61BshBp0q9528jdMjg5hHpctI000Itgd06vvgSqT0dlaKGcLuAgHkKAQMpCH7qOUIzzXpUwioagGC7OVzxldsCL2jlRnDITh8Hukro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=VpB8Qkkl; arc=none smtp.client-ip=203.254.224.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20251117160059epoutp02a44f175e961100c3ebb1b514c092f4c0~41qU6RXWb2370823708epoutp02Q
+	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 16:00:59 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20251117160059epoutp02a44f175e961100c3ebb1b514c092f4c0~41qU6RXWb2370823708epoutp02Q
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1763395259;
+	bh=I67VOD55Qfnuqg41UpFlurJxMf6XJBCy6vb0p2590/c=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=VpB8Qkklg7Y5B2IP/Eg3coJvDNgEdKAI7mtdUnWOV6ceQ0jDZ7w8YLxmTEPusAvK1
+	 oXkrXZ12mPKDqJBUxNTLhOdmOFUUPMYJN8QoLsoiJtiM0tg32BPCihphDDe4FU/Zu5
+	 FU1PwQDkLUQrG4m37wqQRT6+XZJRwRAXKT7uM9G0=
+Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
+	20251117160058epcas5p4719f72c4469d4e16f94ca8356b35d72a~41qUZD3Sp2883528835epcas5p4j;
+	Mon, 17 Nov 2025 16:00:58 +0000 (GMT)
+Received: from epcas5p4.samsung.com (unknown [182.195.38.94]) by
+	epsnrtp04.localdomain (Postfix) with ESMTP id 4d9CCF51Ndz6B9m6; Mon, 17 Nov
+	2025 16:00:57 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20251117160057epcas5p324eddf1866146216495186a50bcd3c01~41qS3iGLm2061120611epcas5p3J;
+	Mon, 17 Nov 2025 16:00:57 +0000 (GMT)
+Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20251117160055epsmtip1f7d3368895afa49a595ca513148de7b8~41qRBUXrh0499104991epsmtip1K;
+	Mon, 17 Nov 2025 16:00:54 +0000 (GMT)
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, naushad@samsung.com,
+	akash.m5@samsung.com, h10.kim@samsung.com, eomji.oh@samsung.com,
+	alim.akhtar@samsung.com, thiagu.r@samsung.com, Selvarasu Ganesan
+	<selvarasu.g@samsung.com>, stable@vger.kernel.org
+Subject: [PATCH v2] usb: dwc3: gadget: Prevent EPs resource conflict during
+ StartTransfer
+Date: Mon, 17 Nov 2025 21:29:13 +0530
+Message-ID: <20251117155920.643-1-selvarasu.g@samsung.com>
+X-Mailer: git-send-email 2.46.0.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,156 +76,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: HQMAILSRV1.avp.ru (10.64.57.51) To HQMAILSRV3.avp.ru
- (10.64.57.53)
-X-KSE-ServerInfo: HQMAILSRV3.avp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 11/17/2025 15:26:59
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 198158 [Nov 17 2025]
-X-KSE-AntiSpam-Info: Version: 6.1.1.11
-X-KSE-AntiSpam-Info: Envelope from: Sergey.Nalivayko@kaspersky.com
-X-KSE-AntiSpam-Info: LuaCore: 77 0.3.77
- 32e48053defa8195f3a40f668b6fa713f8e2761b
-X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
-X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
-X-KSE-AntiSpam-Info: {Tracking_one_url}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;kaspersky.com:5.0.1,7.1.1;127.0.0.199:7.1.2;syzkaller.appspot.com:5.0.1,7.1.1
-X-KSE-AntiSpam-Info: {Tracking_white_helo}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 11/17/2025 15:28:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 11/17/2025 2:02:00 PM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSMG-AntiPhishing: NotDetected, bases: 2025/11/17 15:09:00
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/11/17 08:57:00 #27937168
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2025/11/17 15:09:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 52
+X-CMS-MailID: 20251117160057epcas5p324eddf1866146216495186a50bcd3c01
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20251117160057epcas5p324eddf1866146216495186a50bcd3c01
+References: <CGME20251117160057epcas5p324eddf1866146216495186a50bcd3c01@epcas5p3.samsung.com>
 
-syzbot reports a WARNING issue as below:
+The below “No resource for ep” warning appears when a StartTransfer
+command is issued for bulk or interrupt endpoints in
+`dwc3_gadget_ep_enable` while a previous StartTransfer on the same
+endpoint is still in progress. The gadget functions drivers can invoke
+`usb_ep_enable` (which triggers a new StartTransfer command) before the
+earlier transfer has completed. Because the previous StartTransfer is
+still active, `dwc3_gadget_ep_disable` can skip the required
+`EndTransfer` due to `DWC3_EP_DELAY_STOP`, leading to  the endpoint
+resources are busy for previous StartTransfer and warning ("No resource
+for ep") from dwc3 driver.
 
-usb 1-1: BOGUS control dir, pipe 80000280 doesn't match bRequestType c0
-WARNING: CPU: 0 PID: 5833 at drivers/usb/core/urb.c:413 usb_submit_urb+0x1112/0x1870 drivers/usb/core/urb.c:411
-Modules linked in:
-CPU: 0 UID: 0 PID: 5833 Comm: syz-executor411 Not tainted 6.15.0-syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
- usb_start_wait_urb+0x114/0x4c0 drivers/usb/core/message.c:59
- usb_internal_control_msg drivers/usb/core/message.c:103 [inline]
- usb_control_msg+0x232/0x3e0 drivers/usb/core/message.c:154
- dtv5100_i2c_msg+0x250/0x330 drivers/media/usb/dvb-usb/dtv5100.c:60
- dtv5100_i2c_xfer+0x1a4/0x3c0 drivers/media/usb/dvb-usb/dtv5100.c:86
- __i2c_transfer+0x871/0x2170 drivers/i2c/i2c-core-base.c:-1
- i2c_transfer+0x25b/0x3a0 drivers/i2c/i2c-core-base.c:2315
- i2c_transfer_buffer_flags+0x105/0x190 drivers/i2c/i2c-core-base.c:2343
- i2c_master_send include/linux/i2c.h:109 [inline]
- i2cdev_write+0x112/0x1b0 drivers/i2c/i2c-dev.c:183
- do_loop_readv_writev include/linux/uio.h:-1 [inline]
- vfs_writev+0x4a5/0x9a0 fs/read_write.c:1057
- do_writev+0x14d/0x2d0 fs/read_write.c:1101
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf6/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+To resolve this, a check is added to `dwc3_gadget_ep_enable` that
+checks the `DWC3_EP_TRANSFER_STARTED` flag before issuing a new
+StartTransfer. By preventing a second StartTransfer on an already busy
+endpoint, the resource conflict is eliminated, the warning disappears,
+and potential kernel panics caused by `panic_on_warn` are avoided.
 
-The issue occurs due to insufficient validation of data passed to the USB API.
-In the current implementation, the case where the operation type is read
-but the read length is zero is not handled properly, which makes no sense.
+------------[ cut here ]------------
+dwc3 13200000.dwc3: No resource for ep1out
+WARNING: CPU: 0 PID: 700 at drivers/usb/dwc3/gadget.c:398 dwc3_send_gadget_ep_cmd+0x2f8/0x76c
+Call trace:
+ dwc3_send_gadget_ep_cmd+0x2f8/0x76c
+ __dwc3_gadget_ep_enable+0x490/0x7c0
+ dwc3_gadget_ep_enable+0x6c/0xe4
+ usb_ep_enable+0x5c/0x15c
+ mp_eth_stop+0xd4/0x11c
+ __dev_close_many+0x160/0x1c8
+ __dev_change_flags+0xfc/0x220
+ dev_change_flags+0x24/0x70
+ devinet_ioctl+0x434/0x524
+ inet_ioctl+0xa8/0x224
+ sock_do_ioctl+0x74/0x128
+ sock_ioctl+0x3bc/0x468
+ __arm64_sys_ioctl+0xa8/0xe4
+ invoke_syscall+0x58/0x10c
+ el0_svc_common+0xa8/0xdc
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x38/0x88
+ el0t_64_sync_handler+0x70/0xbc
+ el0t_64_sync+0x1a8/0x1ac
 
-When usb_control_msg() is called with a PIPEOUT type and a read length of
-zero, a mismatch error occurs between the operation type and the expected
-transfer direction in function usb_submit_urb. This is the trigger
-for warning.
-
-Replace usb_control_msg() with usb_control_msg_recv() and
-usb_control_msg_send() to rely on the USB API for proper validation and
-prevent inconsistencies in the future.
-
-Reported-by: syzbot+0335df380edd9bd3ff70@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0335df380edd9bd3ff70
-Fixes: 60688d5e6e6e ("V4L/DVB (8735): dtv5100: replace dummy frontend by zl10353")
+Fixes: a97ea994605e ("usb: dwc3: gadget: offset Start Transfer latency for bulk EPs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
 ---
- drivers/media/usb/dvb-usb/dtv5100.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/media/usb/dvb-usb/dtv5100.c b/drivers/media/usb/dvb-usb/dtv5100.c
-index 3d85c6f7f6ec..05860f5d5053 100644
---- a/drivers/media/usb/dvb-usb/dtv5100.c
-+++ b/drivers/media/usb/dvb-usb/dtv5100.c
-@@ -26,40 +26,37 @@ static int dtv5100_i2c_msg(struct dvb_usb_device *d, u8 addr,
- 			   u8 *wbuf, u16 wlen, u8 *rbuf, u16 rlen)
- {
- 	struct dtv5100_state *st = d->priv;
--	unsigned int pipe;
- 	u8 request;
- 	u8 type;
- 	u16 value;
- 	u16 index;
- 
-+	index = (addr << 8) + wbuf[0];
-+
-+	memcpy(st->data, rbuf, rlen);
-+	msleep(1); /* avoid I2C errors */
-+
- 	switch (wlen) {
- 	case 1:
- 		/* write { reg }, read { value } */
--		pipe = usb_rcvctrlpipe(d->udev, 0);
- 		request = (addr == DTV5100_DEMOD_ADDR ? DTV5100_DEMOD_READ :
- 							DTV5100_TUNER_READ);
- 		type = USB_TYPE_VENDOR | USB_DIR_IN;
- 		value = 0;
--		break;
-+		return usb_control_msg_recv(d->udev, 0, request, type, value, index,
-+			st->data, rlen, DTV5100_USB_TIMEOUT, GFP_KERNEL);
- 	case 2:
- 		/* write { reg, value } */
--		pipe = usb_sndctrlpipe(d->udev, 0);
- 		request = (addr == DTV5100_DEMOD_ADDR ? DTV5100_DEMOD_WRITE :
- 							DTV5100_TUNER_WRITE);
- 		type = USB_TYPE_VENDOR | USB_DIR_OUT;
- 		value = wbuf[1];
--		break;
-+		return usb_control_msg_send(d->udev, 0, request, type, value, index,
-+			st->data, rlen, DTV5100_USB_TIMEOUT, GFP_KERNEL);
- 	default:
- 		warn("wlen = %x, aborting.", wlen);
- 		return -EINVAL;
- 	}
--	index = (addr << 8) + wbuf[0];
--
--	memcpy(st->data, rbuf, rlen);
--	msleep(1); /* avoid I2C errors */
--	return usb_control_msg(d->udev, pipe, request,
--			       type, value, index, st->data, rlen,
--			       DTV5100_USB_TIMEOUT);
- }
- 
- /* I2C */
+Changes in v2:
+- Removed change-id.
+- Updated commit message.
+Link to v1: https://lore.kernel.org/linux-usb/20251117152812.622-1-selvarasu.g@samsung.com/
+---
+ drivers/usb/dwc3/gadget.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 1f67fb6aead5..8d3caa71ea12 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -963,8 +963,9 @@ static int __dwc3_gadget_ep_enable(struct dwc3_ep *dep, unsigned int action)
+ 	 * Issue StartTransfer here with no-op TRB so we can always rely on No
+ 	 * Response Update Transfer command.
+ 	 */
+-	if (usb_endpoint_xfer_bulk(desc) ||
+-			usb_endpoint_xfer_int(desc)) {
++	if ((usb_endpoint_xfer_bulk(desc) ||
++			usb_endpoint_xfer_int(desc)) &&
++			!(dep->flags & DWC3_EP_TRANSFER_STARTED)) {
+ 		struct dwc3_gadget_ep_cmd_params params;
+ 		struct dwc3_trb	*trb;
+ 		dma_addr_t trb_dma;
 -- 
-2.39.5
+2.34.1
 
 
