@@ -1,38 +1,63 @@
-Return-Path: <stable+bounces-194994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C03C653A8
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 17:48:31 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FFBC6555D
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 18:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 10B6029103
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:48:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1F7D535EC1F
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236432F3C0A;
-	Mon, 17 Nov 2025 16:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D460E301705;
+	Mon, 17 Nov 2025 16:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="JUOvl7IQ"
 X-Original-To: stable@vger.kernel.org
-Received: from vps-29453c8d.vps.ovh.ca (mail.tendersportal.com [158.69.221.80])
+Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951812F49F1
-	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 16:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.69.221.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2424302141;
+	Mon, 17 Nov 2025 16:54:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763398104; cv=none; b=OoOsqNXpzc2voFGiEg/lkjPTZ2fu+3msv4j5QtNPhcctJb6DLUle+kVLiWBNk+VIaeH3DmY5iibN6Eg1oMihmkLR9yB20Zux6IXuVJwTfHTtTZaK/7SoYgsCW1OP3kcbjK/nE3Ec2ELh+8HNdWAiGWz3Ic/ETKhNvl902SMfG9E=
+	t=1763398486; cv=none; b=lXzMgn2ykMlanHVgFPK5ATPjGL3gw4EvZklt3vsEw00FzAYYg+f2Z8nDggStDUra6WTif/70e7hrFbJy+kZkOwO+86aRb2yhwpeaaaZtmXbpz3/NVH0fJcJ40BVoD0vG3HBRITSDz8G0q/xBS7TRPC1UUCrgHRiMgL0u7dML3Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763398104; c=relaxed/simple;
-	bh=vPlmLc8BCr2EG7YbQ2RLyiDzvm3J5IqXYLyUmBcIIbY=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=YLKXNDWBmgvEVvctGNNiqsWsEF4WDFKmptgz4NHJNhbmDcCoPIN+eyWJe8jqeXF3Y7BA40C4FmqahchpuHQ/vZkINKeEo9kAKh4/+Y2d4nA6B1ayEPnsvGsgdgaKfVOapQI0t4z7fXgPzAhfNahI8cjkzSQ7PWU152KxaMWi0Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=qatarairwaybids.com; spf=pass smtp.mailfrom=qatarairwaybids.com; arc=none smtp.client-ip=158.69.221.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=qatarairwaybids.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qatarairwaybids.com
-Received: from [10.5.18.69] (unknown [140.228.24.194])
-	by vps-29453c8d.vps.ovh.ca (Postfix) with ESMTPSA id 6C9BF48EC2
-	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 16:43:08 +0000 (UTC)
-Message-ID: <22b4c084-cea7-4ffc-9116-3695b2be9c0a@qatarairwaybids.com>
-Date: Mon, 17 Nov 2025 11:43:05 -0500
+	s=arc-20240116; t=1763398486; c=relaxed/simple;
+	bh=E2Jd6k8ASCaHYjPHZ/TAnWmKaJoKIfNrrFtu5aWWang=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NLJABDls32dLDVgg2+oNnDRns1sn06HN22yJy2ChcmX862DWqjNgLlSaor4F+9/SZO9LLBylV/SxoG5U6UjY6sIcL9ljqXIXT7NfMNjUHBukmaf4iP8oK/U8Vspqd2jSfWnnejitHn+duPQYq6Pm9peOGCiqiQollokcCkhKa/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=JUOvl7IQ; arc=none smtp.client-ip=199.89.3.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 004.mia.mailroute.net (Postfix) with ESMTP id 4d9DPG4qfrzm0XCD;
+	Mon, 17 Nov 2025 16:54:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1763398481; x=1765990482; bh=aakcOhZLQs4tB1ZycPZjCgK1
+	Zpd/IsXOyidwTRbtc4I=; b=JUOvl7IQML9/xU35ul5bEsMpW42re53TAov9iFY3
+	IzV0F6MBIfiWqspTx61eIZrxdzlZXmoXdrxUQzF62+SgXCgzxQS9ufVBEsJd+lWi
+	nNudp7q4W8ngytIalYmd5LlbC353p/wNBN2PBNvyyXD0VgrnI9sZs0GwAeeCJogf
+	Oa5fqxEsJjk3f/N5Ffgwh4uvo7CwL3mTCh/ji4YVKyI/49FxS4whlBLFz9VzOExQ
+	SHsTDhAnUlG4jd+2Ruh4L4xHD5DQwesSLDu3usStvJjEb920qZ27cPYshXCWmU/m
+	yCFjDxMqQsE6dEUzXRrSSSgrKj7pdjFvQqcXnxNuCtBdBA==
+X-Virus-Scanned: by MailRoute
+Received: from 004.mia.mailroute.net ([127.0.0.1])
+ by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id eOvpHIxEhpht; Mon, 17 Nov 2025 16:54:41 +0000 (UTC)
+Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4d9DP93lPPzm0yQ5;
+	Mon, 17 Nov 2025 16:54:36 +0000 (UTC)
+Message-ID: <39e01b9d-2681-459a-84a2-f96ade679764@acm.org>
+Date: Mon, 17 Nov 2025 08:54:35 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -40,32 +65,49 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] block: rate-limit capacity change info log
+To: Li Chen <me@linux.beauty>, Jens Axboe <axboe@kernel.dk>,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20251117053407.70618-1-me@linux.beauty>
 Content-Language: en-US
-Organization: Qatar Airways
-From: Qatar Airways <register@qatarairwaybids.com>
-To: stable@vger.kernel.org
-Subject: Vendor Registration - Qatar Airways
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20251117053407.70618-1-me@linux.beauty>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Dear Sir/Madam,
+On 11/16/25 9:34 PM, Li Chen wrote:
+> From: Li Chen <chenl311@chinatelecom.cn>
+> 
+> loop devices under heavy stress-ng loop streessor can trigger many
+> capacity change events in a short time. Each event prints an info
+> message from set_capacity_and_notify(), flooding the console and
+> contributing to soft lockups on slow consoles.
+> 
+> Switch the printk in set_capacity_and_notify() to
+> pr_info_ratelimited() so frequent capacity changes do not spam
+> the log while still reporting occasional changes.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
+> ---
+>   block/genhd.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/block/genhd.c b/block/genhd.c
+> index 9bbc38d12792..bd3a6841e5b5 100644
+> --- a/block/genhd.c
+> +++ b/block/genhd.c
+> @@ -90,7 +90,7 @@ bool set_capacity_and_notify(struct gendisk *disk, sector_t size)
+>   	    (disk->flags & GENHD_FL_HIDDEN))
+>   		return false;
+>   
+> -	pr_info("%s: detected capacity change from %lld to %lld\n",
+> +	pr_info_ratelimited("%s: detected capacity change from %lld to %lld\n",
+>   		disk->disk_name, capacity, size);
+>   
+>   	/*
 
-We hope this message finds you well.
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 
-Qatar Airways is pleased to announce the launch of its 2026/27 Expansion 
-Program. We are currently seeking to engage with qualified Suppliers, 
-Vendors, Manufacturers, and Contractors across a wide range of sectors.
-
-If your organization is interested in participating in this exciting 
-initiative, we invite you to request our Vendor Application Form and 
-submit your Expression of Interest (EOI) for evaluation.
-
-We look forward to the opportunity to collaborate and achieve mutual 
-growth through this strategic partnership.
-Best regards,
-
-Hamza Mohammed Sahib
-Procurement & Logistics Manager
-Phone/ WhatsApp: +971-56-778-2809
-Qatar Airways
 
