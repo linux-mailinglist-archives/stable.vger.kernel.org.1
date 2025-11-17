@@ -1,147 +1,152 @@
-Return-Path: <stable+bounces-194945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00831C63583
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 10:51:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E4B7C63592
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 10:51:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E51133804C4
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 09:44:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D13D93680F9
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 09:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FF4328628;
-	Mon, 17 Nov 2025 09:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58540326D5E;
+	Mon, 17 Nov 2025 09:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="z9YWdbBP"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="T0EkJgKC";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qYUEP6bx"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8927326D51;
-	Mon, 17 Nov 2025 09:42:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB19D299A96;
+	Mon, 17 Nov 2025 09:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763372537; cv=none; b=RBiX2OmaPp0w1y/WiSOhgzLtqGq3G3hTPv4In0iZZ58+xz1OuRcIB/AT4kBYtY5hvqIAoGCV4U+Tpiqprdwk3TolOOor8odqpjtHuReGtHCb6DjNZRhfc2zSFuhF45hSxCet0phq15wB1qKyDPyl7G2VI5Wi4gZw7x1y4CuMVI8=
+	t=1763372603; cv=none; b=jheNm4YnGANRDDLBbHdKMMjt1v1upcg6Ox6EhEcij40w891gv50XDhLMd3xDG3ipzuZDpoS2PN0vZcHhCxEkU0pQOX/LBC4pc9SjFE2wQbpztW4EdazO9dQQlB0eKiyi8Gi3OvhKJbTUb8aO9GDzlvBrj2xaXZKX3HHkORLeRfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763372537; c=relaxed/simple;
-	bh=+lDX5repbVwAgSSpxEPe8Ggrw67h+ua6KeXvVwqhAvA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KH1tx5K7KVoguyWAnL0sledbZrLkGaON1XiRI1pRzn/1xgVvt79DPS/vJ2AtkDn1VROJzc+qRh7eqPWyrndU6KVX9wzMtRMb9fpbpmBNQQ7243fRJ31OnPHnAoxT7XpZBrVwZIn8OCIxA6hkAP7morLQLNavbHT/76+mFoZp86A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=z9YWdbBP; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=5FRGOs0emlTmc51RdE5KM9BmjBcn2zfRmynLjSXyid8=; t=1763372535;
-	x=1763804535; b=z9YWdbBPsUG40dPREbc9ZGK05KxKpl3FiicJ/d3rtuvj9HY4II4FtovqWZ1FV
-	VSHJ2FYYfLCqkJmlzEZlorPL3DpN3c6/SPZchvS2zVM3Ajgi+IyISeQYPZ7yfuxBw7vpReW/CtekP
-	lRx/lrjrqG03d7JDqF87fCRzlD/fNJIe0L6lwXk2MKGN9m+egD4DJSLsHLWg4gucyjJV1YvemeMUN
-	FAwZKhWfnbYmcXAEAgHj1/1yp+Iao7DSwovW4bCmRj3ThMzeM8eEgWe9KMVKXm2AVPvPWTc6nAG+R
-	3bCD4eVo3RMyOUt/HyZm7D/h+vLIouG00SJ5wmMnFyugfV/r6A==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1vKvkM-005HvH-0f;
-	Mon, 17 Nov 2025 10:42:06 +0100
-Message-ID: <1b59d3c2-1ed0-40df-a3ba-cca2316e866b@leemhuis.info>
-Date: Mon, 17 Nov 2025 10:42:05 +0100
+	s=arc-20240116; t=1763372603; c=relaxed/simple;
+	bh=Fq6cDpU79qOWFGK1t0X95O9tDLh2cB4gJjqrGSnshp0=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=oOEbRBjdNLiV35pmSgLlDdJ0kZ20PznWmUYznKma3trWsDTPNjd3XNdOoehA2wRpegXIeM/iG7OYHDA2hi1kM7dPOH4h88NS+QDB4WrbSO+ladVJbDXSwk5j1/9U4lPje60ALxG5JYP+3FPFLd0uVzqV5+ZJDRBW8LC9viZmxKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=T0EkJgKC; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qYUEP6bx; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id AB8FA14001D3;
+	Mon, 17 Nov 2025 04:43:19 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Mon, 17 Nov 2025 04:43:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1763372599;
+	 x=1763458999; bh=sT1vNBwVROLZPKVddoZIohPPUecTNY2R/P13dlzJXbI=; b=
+	T0EkJgKCLIMPF806+hzXmRAcbNfdJCAILARWg4EZM3zfUKfFxdOLqpcgIcwiXOfO
+	erQot5VlD2cux2/ErnW+Iv1l0l7wCQyqGQS5kuIvo4T6Gm4bUGlrsoKqk47Uotca
+	E9nDWWD1KIQlF0KHgJRTA6ZWwgQBf9Q51OpxtbrPKnx94NIW/33yT58y+KTZSWrC
+	K86nm98bpfBAuhFBlmr716VG14/0oVuZZkwCGPQw498/7shNMjSYpRQ7hLF7N66R
+	BMBQoCOkLCd+kUYVWgYf8vmw0KMI/Cjztmjq5RpMDbQGVpXIezXjCCIRvQIpuHhL
+	mQmxwOPFQqhc8FeahVF+tw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1763372599; x=
+	1763458999; bh=sT1vNBwVROLZPKVddoZIohPPUecTNY2R/P13dlzJXbI=; b=q
+	YUEP6bxzDTn7NmjJyBFJumNssyRd1QtWpfl+IGOcEttrH4b3TnZgECNvRF1zW2px
+	FfeSi1D821IA9dGrt0mbg0zD+CjogPIihHYkM3iOi5mBVLPE7RaouVzTy7MjHe1Y
+	HOnCupfVSPg1PmJdfOySY2CuUirqIwIginvXWiDJOtarpDXGWhmEE+5+HCR+iXfL
+	Cwkd5htyewgMzRGwOMgGzMhdqEt6l0uCHqN90bf8/3xFEhref5atI5k8xaN2vcc+
+	ex1x1Isd+J/HM36HkJoj75Cq6WRlvmzwSSv8fn5I3pupiWBcUGHkhhGiDbRwbhy6
+	AWwfsDNDO0/aCtXlxMbuw==
+X-ME-Sender: <xms:N-4aac2RFyGLnUqijeqQVvomJGuo2PxuLYBAqt0uglJeLGzaAuYzaw>
+    <xme:N-4aaR4Wkk4LEKkpbrgFkPuY7RXosBHwr6SIRFQ1Y4FRNe_mRDo2CILmNGPDlH9eM
+    JgPMTQwgWtIocecGg5aJj77D02aDMuLaq5sfcIoLvulH3wSHjNV1Ds>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvudekudefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
+    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudefpdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
+    epkhhishhhohhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkfihilhgtiiihnhhs
+    khhisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlphhivghrrghlihhsiheskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepmhgrnhhisehkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmh
+    dqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohep
+    uhhnihgtohhrnhgpfigrnhhgsehouhhtlhhoohhkrdgtohhmpdhrtghpthhtohepshdqvh
+    gruggrphgrlhhlihesthhirdgtohhm
+X-ME-Proxy: <xmx:N-4aaRyxh3Q8AJLSnX6F5evD92we4PcMxwOS-dT1AmzJTQqO4UacmA>
+    <xmx:N-4aaWfYNUUD9IFnF7hWPzYPR00X20e1hiEmn-Z4V-wRVLRicp8vXg>
+    <xmx:N-4aaes1uMi8oAZ3-VSieEl5QqNgqZnZIMPKuAs6SYRRxv6QTri8kQ>
+    <xmx:N-4aaTBWohPtb6UOlfDQzdIsxUIZXQlJTbrVRf42yzQ-N57mnU6W3A>
+    <xmx:N-4aaRep-p8ziAyI6weD5d5bkRxM78vHFBwKvGArWFGK7Qz1G5IzeFM2>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 76DBE700063; Mon, 17 Nov 2025 04:43:19 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] Bluetooth adapter provided by `btusb` not recognized
- since v6.13.2
-To: incogcyberpunk@proton.me, "stable@vger.kernel.org"
- <stable@vger.kernel.org>
-Cc: "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
- "marcel@holtmann.org" <marcel@holtmann.org>,
- "luiz.dentz@gmail.com" <luiz.dentz@gmail.com>,
- "linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>,
- "johan.hedberg@gmail.com" <johan.hedberg@gmail.com>,
- "sean.wang@mediatek.com" <sean.wang@mediatek.com>
-References: <jOB6zqCC3xjlPPJXwPYPb4MxHJOhxVgp380ayP7lYq-aT2iA5D8YCdMeCvq5Cp_ICZmqjpfgX8o9siQdlPu9DY4qgnL_zCjgqP23fXc-P4U=@proton.me>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <jOB6zqCC3xjlPPJXwPYPb4MxHJOhxVgp380ayP7lYq-aT2iA5D8YCdMeCvq5Cp_ICZmqjpfgX8o9siQdlPu9DY4qgnL_zCjgqP23fXc-P4U=@proton.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1763372535;dec64b74;
-X-HE-SMSGID: 1vKvkM-005HvH-0f
+X-ThreadId: AO4N9SNPwumV
+Date: Mon, 17 Nov 2025 10:42:58 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Siddharth Vadapalli" <s-vadapalli@ti.com>
+Cc: "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ "Manivannan Sadhasivam" <mani@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ bhelgaas@google.com, "Chen Wang" <unicorn_wang@outlook.com>,
+ "Kishon Vijay Abraham I" <kishon@kernel.org>, stable@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, srk@ti.com
+Message-Id: <477b851b-56b1-497a-812a-eb0c9bfdc4d8@app.fastmail.com>
+In-Reply-To: <8ac2ed36a85f854a54ee1d05599891632087869d.camel@ti.com>
+References: <20251113092721.3757387-1-s-vadapalli@ti.com>
+ <084b804f-2999-4f8d-8372-43cfbf0c0d28@app.fastmail.com>
+ <250d2b94d5785e70530200e00c1f0f46fde4311b.camel@ti.com>
+ <201b9ad1-3ebd-4992-acdd-925d2e357d22@app.fastmail.com>
+ <7eaa4d917f7639913838abd4fd64ae8fe73a8cfc.camel@ti.com>
+ <37f6f8ce-12b2-44ee-a94c-f21b29c98821@app.fastmail.com>
+ <8ac2ed36a85f854a54ee1d05599891632087869d.camel@ti.com>
+Subject: Re: [PATCH] PCI: cadence: Kconfig: change PCIE_CADENCE configs from tristate
+ to bool
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On 11/17/25 02:30, incogcyberpunk@proton.me wrote:
-> 
-> #regzbot introduced: v6.13.1..v6.13.2
-> 
-> Distro: Arch Linux 
-> Kernel: since v6.13.2
+On Mon, Nov 17, 2025, at 10:23, Siddharth Vadapalli wrote:
+> On Mon, 2025-11-17 at 10:06 +0100, Arnd Bergmann wrote:
+>> On Mon, Nov 17, 2025, at 07:05, Siddharth Vadapalli wrote:
+>> 
+>> but you may want to split it up further to get better dead
+>> code elimination and prevent similar bugs from reappearing when
+>> another call gets added without this type of check.
+>> 
+>> If you split j721e_pcie_driver into a host and an ep driver
+>> structure with their own probe/remove callbacks, you can
+>> move the IS_ENABLED() check all the way into module_init()
+>> function.
+>
+> Thank you for the suggestion :)
+>
+> Would it work if I send a quick fix for `cdns_pcie_host_disable` using
+> IS_ENABLED in the existing driver implementation and then send the
+> refactoring series later? This is to resolve the build error quickly until
+> the refactoring series is ready.
+>
+> On the other hand, if it should be fixed the right way by refactoring, I
+> will not post the temporary fix. Please let me know.
 
-Lo! Thx for the report. It's unlikely that any developer will look into
-this report[1] as 6.13.y is ancient by kernel development standards and
-EOL for quite a while.
+Please see if my suggestion works in practice using all the
+combinations of build options, I may have missed something.
+If it fixes all the build failures, merging and backporting
+this first makes sense.
 
-Please check if the latest stable version is still affected; if it is,
-ideally try latest mainline (6.18-rc6), too. If that is as well, it
-would be great if you could bisect between 6.13.1 and 6.13.2.
-
-Ciao, Thorsten
-
-[1] see also:
-https://linux-regtracking.leemhuis.info/post/frequent-reasons-why-linux-kernel-bug-reports-are-ignored/
-
-> The bluetooth adapter would be recognized and the bluetooth worked
-> flawlessly till v6.13.1 , but since the v6.13.2 , the bluetooth adapter
-> doesn't get recognized by the bluetooth service and therefore the
-> bluetooth functionality doesn't work . 
-> 
-> I suspect the bluetooth's driver failing to load at the kernel-level. 
-> 
->   * The output of |bluetoothctl|​ :
-> 
-> $: bluetoothctl
-> Agent registered
-> [bluetoothctl]> list
-> [bluetoothctl]> devices
-> No default controller available
-> [bluetoothctl]>
-> 
->   * The output of |systemctl status bluetooth.service|​ :
-> 
-> ● bluetooth.service - Bluetooth service
->      Loaded: loaded (/usr/lib/systemd/system/bluetooth.service; enabled;
-> preset: disabled)
->      Active: active (running) since Sat 2025-11-15 22:57:00 +0545; 1 day
-> 8h ago
->  Invocation: bddf190655fd4a4290d41cde594f2efa
->        Docs: man:bluetoothd(8)
->    Main PID: 617 (bluetoothd)
->      Status: "Running"
->       Tasks: 1 (limit: 18701)
->      Memory: 2.8M (peak: 3.8M)
->         CPU: 38ms
->      CGroup: /system.slice/bluetooth.service
->              └─617 /usr/lib/bluetooth/bluetoothd
-> 
-> Nov 15 22:57:00 Incog systemd[1]: Starting Bluetooth service...
-> Nov 15 22:57:00 Incog bluetoothd[617]: Bluetooth daemon 5.84
-> Nov 15 22:57:00 Incog systemd[1]: Started Bluetooth service.
-> Nov 15 22:57:00 Incog bluetoothd[617]: Starting SDP server
-> Nov 15 22:57:00 Incog bluetoothd[617]: Bluetooth management interface
-> 1.23 initialized
-> 
->   * The output of |lspci|​ is attached below . 
-> 
->   * The logs for |journalctl -b|​ for both v6.13.1 and v6.13.2 are
->     attached below. 
-> 
-> 
-> Regards,
-> IncogCyberpunk
-> 
-
+     Arnd
 
