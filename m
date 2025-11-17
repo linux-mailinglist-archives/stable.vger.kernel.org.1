@@ -1,155 +1,125 @@
-Return-Path: <stable+bounces-194953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75601C63D7D
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 12:36:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDAE6C63FCA
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 13:07:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 72EF94E7370
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 11:34:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 497F824042
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 12:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA393271E2;
-	Mon, 17 Nov 2025 11:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0654E32C94C;
+	Mon, 17 Nov 2025 12:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Z8ywHJMH";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="syD3jK3r"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="WU/L1iha"
 X-Original-To: stable@vger.kernel.org
-Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA7828640B;
-	Mon, 17 Nov 2025 11:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED3B257854;
+	Mon, 17 Nov 2025 12:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763379267; cv=none; b=O0SKurZaNknvpnZnNHQECBRf9t19Kg3/0AA2jBOQEqZyMGemXQ5azgoBs5brhcytXoh3rarcAbOVdDtSqPmc3v/Vz2BsUEieGeV5FYzCrIYz+OF5E5MDnQPRfzVPKfLdOqNHyRilpYdaHL1mzV6DIQcvP2DxKVecw1rL9MUg/oU=
+	t=1763381205; cv=none; b=qZhwz4xJcSCIR1Yl9A0lf/Kyk9RP/yxn5P45TzQYCe51xVVNaWvPUSerrwZXt+fTc1HjHmiGf+J15m1jFmcwgSmk0Hkp7wMEhxtxbm2SfA0UFIS+KyRf/t1/JNmye46YK4h8580KJa2nXejPmgfvlTHmfeLuO3T3klyDWBnNuMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763379267; c=relaxed/simple;
-	bh=JktO8F5K8/AbbvqeJKCLi379h7FRs3fzEUHk/0VFZ88=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=qCYf1s5uPeG0DWye6KGx+7f9Du+DrUMnXBStznZaMLv61upRFN+Mp5q1wwfMPn9dqVoTn3pjXYJaGJxnWH5guXEHPV+ZhYDnTTchoZk0vVhIOHYaGVuI+oUCQ65DNkU7xpFBMYmy6Bz4E0qljN0DR5SDsHHYqxxTWP5Icm9zbXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Z8ywHJMH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=syD3jK3r; arc=none smtp.client-ip=103.168.172.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.phl.internal (Postfix) with ESMTP id F097A13801C1;
-	Mon, 17 Nov 2025 06:34:23 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Mon, 17 Nov 2025 06:34:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1763379263;
-	 x=1763386463; bh=Fd2jDBS6TczwyfapWowGCLfJ2ZDyiWW2nSxP/Qc1jTw=; b=
-	Z8ywHJMH6RJztItXyxhnCdMdrpCnuulEfpshTedUx8fNsXHEt4EuNWlfudMcER9/
-	YpdnfwkgNKR7h2UJN1sPVzYzRw7v21vLO9pk55T7rcJMaljpVviGONhEmmZgbiK8
-	M7O7eQNMFqOANmFmbtenJnuDfHKEsVukkoB405Ci+2MJ8Ezs0tt6wzqmc77g4BCO
-	nXnOXxw2ULDztWr8/w+8EvicEkSj+foP5MpnSlTLfcPdehLwtlv8989/wZjas9p0
-	OMekgTgN8lkm39pWSPu7PLP00HOIIwrWcQe6K9qb5OGVKT6QKDh/ml2xZ1Jn/aud
-	Teah4O9SbocFkiPdIZyiZA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1763379263; x=
-	1763386463; bh=Fd2jDBS6TczwyfapWowGCLfJ2ZDyiWW2nSxP/Qc1jTw=; b=s
-	yD3jK3rNfTS2oDa8ZUhjkAPKYvrSDSH3QepIrxzqgCnOKdlGwmBqb4af47TtRcCH
-	dmVieIMQA9uLuPwKU/EPgRQo1oaCIPVR7bniWdqNVk9kyQD1atG2XL6lwQzYRHi4
-	6aTa4bVJ25lIvBJRjIVR+Z3r7n8YAYe/LYelS3ZywFRqaxsvXQC43j4WyCFysTr0
-	jZi1yBqQDN9kvCK15SqBhj/QHUFhAAnPTqfsju6werXAZ2C41pNo4ruaRDJjgivJ
-	k2iGScGhfL3v8RbOeCiORVNJQHcVXztpv9D3x6JecYInZ28PLW4EyMvxlh38IbNI
-	UfK//XaFe8rOvvyqlnVTg==
-X-ME-Sender: <xms:Pwgbafudna6Sko-cwJ0ae9YtsZ60_dPgSxhFe61mt25fHmyV6vrrUw>
-    <xme:PwgbabSZ_h0Srl5kkbHZBMCI_n_AuqCdEP_3X01fZS0JAVAIsrLWklVqBEbZwqWs5
-    -DWPXlZy23mC_ojMgu1fOf5BppG7sWvOndZBRuQeHDj55HPlX9kFiM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvudekfeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucfrhhhishhhihhnghdqkffkrfgprhhtucdliedtjedmne
-    cujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepfefhheetffduvdfgieeghfejtedvkeetkeejfeekkeelffejteevvdeghffh
-    iefhnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggp
-    rhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepsghhvghlgh
-    grrghssehgohhoghhlvgdrtghomhdprhgtphhtthhopehkihhshhhonheskhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtohepkhifihhltgiihihnshhkiheskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtoheplhhpihgvrhgrlhhishhisehkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehmrghniheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosghhsehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhtshdr
-    ihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehsqdhvrggurghprghllhhisehtih
-    drtghomhdprhgtphhtthhopehsrhhksehtihdrtghomh
-X-ME-Proxy: <xmx:PwgbaTpFJreT2VJHNLbYE7Whh4s9XfYb_hQQ1SZhEOUv5CR1396G3Q>
-    <xmx:PwgbadG5XJb_LDl5dZcgcMRSkvcm3QSc4MXaorMnLdb0ea5r1ml3og>
-    <xmx:PwgbaRTpQ3Oon1-T8cqdutDb3ek9gVcremSSU8NL-xtuPzgfL-qndw>
-    <xmx:PwgbabOobIF4ndC1xXGnLwC7cuUqVi49wehJ5zsGINBnCGpvvwotRw>
-    <xmx:PwgbaYUo0c5N5lyHxB6cAJOcPj63TJR56AKKr-ClAk4QCkoCUv9avjEX>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id A75EE700054; Mon, 17 Nov 2025 06:34:23 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1763381205; c=relaxed/simple;
+	bh=kuS8ZVbLhND5KJER3gHFfgdM5iFVTjjuNMrsyzs2Fds=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VSrWH9UucOyihDVSnJojynGnJ4La2ARupUdG5V36ND8p0EgbbiKChez+PV8fnLnqm+m3hqzbVs9kINffzu99XQ2tQb5ZfhnS+mM/etr5NWZIEajEuZ6mEQlHU9yjIFf/HHt28fWrClcx0sg0Uknp66KwNlYizqHDvLrohvoqHmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=WU/L1iha; arc=none smtp.client-ip=18.169.211.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1763381175;
+	bh=fLshn+7E9KUs6vh0E2as97dyMJLrggNvwrM3GmPcWj4=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=WU/L1ihaVR6liOXRs6Px1n17hroYoJmFt7NLLkPiVqCFsQExVUK1d2kGyvupSj274
+	 MTCShV9PVKxZCyKtXi1npFT91lTT7U8v+woy1v12z+q9x7lTwry+OmK2AqgqG47SsH
+	 9zP3lhWIep0AOnhHQrQcbsHX1hrmw42Exbfw8Pxw=
+X-QQ-mid: esmtpgz13t1763381166td1f29682
+X-QQ-Originating-IP: TJq7fiIGP1hf079n+so4ykzadcdTWYUHAdKgrnbaCd0=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 17 Nov 2025 20:06:04 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 11519860046904685920
+EX-QQ-RecipientCnt: 9
+From: Wentao Guan <guanwentao@uniontech.com>
+To: leon@kernel.org
+Cc: shiraz.saleem@intel.com,
+	tatyana.e.nikolova@intel.com,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhanjun@uniontech.com,
+	niecheng1@uniontech.com,
+	Wentao Guan <guanwentao@uniontech.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] RDMA/irdma: fix Kconfig dependency
+Date: Mon, 17 Nov 2025 20:05:51 +0800
+Message-Id: <20251117120551.1672104-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: ARY7ZiTdmDAg
-Date: Mon, 17 Nov 2025 12:34:03 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Siddharth Vadapalli" <s-vadapalli@ti.com>,
- "Vignesh Raghavendra" <vigneshr@ti.com>,
- "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- "Manivannan Sadhasivam" <mani@kernel.org>, "Rob Herring" <robh@kernel.org>,
- bhelgaas@google.com
-Cc: "Kishon Vijay Abraham I" <kishon@kernel.org>, stable@vger.kernel.org,
- Linux-OMAP <linux-omap@vger.kernel.org>, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- srk@ti.com
-Message-Id: <965a2836-050a-4958-af95-ca3b5f9a57ed@app.fastmail.com>
-In-Reply-To: <20251117113246.1460644-1-s-vadapalli@ti.com>
-References: <20251117113246.1460644-1-s-vadapalli@ti.com>
-Subject: Re: [PATCH] PCI: j721e: Add config guards for Cadence Host and Endpoint
- library APIs
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: NAvIe9bVixN3YxWpuNkd8u8xNvhBNTaGLq/t7tfpvjtz1vb8unT5Uyin
+	VSfpBTqNSbX+ye0iXsLrPk8yZ0GaCE5pgjlZPtHogfomMxPolQDed9AA11dWnLxT7lcvH3s
+	aXkXazkpyLHZ08Jdz5LChlnQ9bADhKdRRauTpg3cJFIdNTICzGaoZLmLy3E9zKJB0y7JDQw
+	tU7dmJaOdqvlofo3YuUmUBjlGTmgmLjDe8b1DJm07m90+bAG3bCopi2025S79JlqUxBD6K9
+	iJdDBLp/VPUoteuMcj8ZXtWVAh+l+g9RvvRZOKr9ELkEh/Gc0Lp7iR9H2ATjFn3UcJNcBC/
+	WQM7/LklGZ/lDuWMxnLnm4WoWg1PDuYv15iCFOdtTgMFi1QGgrqhKPgNvgXJ8hl/2SftG9h
+	lAvo/Gke3yN5vHC2eaGNT6XZWeugK7pguIRucixUcofxU5SiTqtUQATmrVsshjvGbHfosGa
+	IvWXRmtH3z8kDTnKWS45bDzamUnN74d/y/eXpkKwRy1Rj2lsoK1plPL2kDb2Ef6k2m2Cs0D
+	Zf9x/BnJyLcrPNaiSa2mccYJ8Feeo+///x8rh8Ou2IxgqKRHRinzMgra2Xw3YDNqGLUxPsl
+	pxpgSgkw4R1xhpd1XrsaSb8VgMkF2W3G41mKCM6JldbCx+FyxTWqxqka1svv/NsUI2Eu5ve
+	gm13owGExfSG8/ZQmmibr+94vSvXM3LvLSHFTsKnWOZXwXRvSuKQjOnLRoVTfj7cMbsuLR9
+	u6zMg+Nu/1gkX3toJ1pzsIX08Py+7l1YwXecBd9DtRPqZA/cXvoqkrTHBUNDKManzGBtUL0
+	D6relsxwmyDH/qWyZxIJFq4kkPsXrfNV32/Qg8yUao90qIro4QKLgX55lqg0ArjQnhX0415
+	IMnRGOfbWBj7FzaikGSwJQZbuJT0j69oFmvxgrDIwjhBGlQKjEWkIWToORVxV27wRSbCur4
+	QfiLB/Jtd17diq3KlOROqmBF53CtwV9jK1BLmU/xVvsUtcpbGlMFuLeqpjb6TuecVKtq4zi
+	Rci1G/hiQAgb4bOS952IBDN+n5A70lsk3euFcky3LHTuG6lu1oQANKHEQhq3UgaWJ+TLVyW
+	uIZQixONexr
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+X-QQ-RECHKSPAM: 0
 
-On Mon, Nov 17, 2025, at 12:32, Siddharth Vadapalli wrote:
-> Commit under Fixes enabled loadable module support for the driver under
-> the assumption that it shall be the sole user of the Cadence Host and
-> Endpoint library APIs. This assumption guarantees that we won't end up
-> in a case where the driver is built-in and the library support is built
-> as a loadable module.
->
-> With the introduction of [1], this assumption is no longer valid. The
-> SG2042 driver could be built as a loadable module, implying that the
-> Cadence Host library is also selected as a loadable module. However, the
-> pci-j721e.c driver could be built-in as indicated by CONFIG_PCI_J721E=y
-> due to which the Cadence Endpoint library is built-in. Despite the
-> library drivers being built as specified by their respective consumers,
-> since the 'pci-j721e.c' driver has references to the Cadence Host
-> library APIs as well, we run into a build error as reported at [0].
->
-> Fix this by adding config guards as a temporary workaround. The proper
-> fix is to split the 'pci-j721e.c' driver into independent Host and
-> Endpoint drivers as aligned at [2].
->
-> Fixes: a2790bf81f0f ("PCI: j721e: Add support to build as a loadable 
-> module")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: 
-> https://lore.kernel.org/oe-kbuild-all/202511111705.MZ7ls8Hm-lkp@intel.com/
-> Cc: <stable@vger.kernel.org>
-> [0]: https://lore.kernel.org/r/202511111705.MZ7ls8Hm-lkp@intel.com/
-> [1]: commit 1c72774df028 ("PCI: sg2042: Add Sophgo SG2042 PCIe driver")
-> [2]: 
-> https://lore.kernel.org/r/37f6f8ce-12b2-44ee-a94c-f21b29c98821@app.fastmail.com/
-> Suggested-by: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Any combination of (IDPF || ICE || I40E) can register auxiliary_dev,
+so use '||' instead of '&&' in IRDMA config.
 
-Looks good to me,
+Cc: stable@vger.kernel.org
+Fixes: 060842fed53f ("RDMA/irdma: Update Kconfig")
+Fixes: fa0cf568fd76 ("RDMA/irdma: Add irdma Kconfig/Makefile and remove i40iw")
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+---
+PS: found in stable v6.12.58, it makes IRDMA be removed when select ICE+I40E+(!IDPF).
+---
+---
+ drivers/infiniband/hw/irdma/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/infiniband/hw/irdma/Kconfig b/drivers/infiniband/hw/irdma/Kconfig
+index 0bd7e3fca1fbb..83a55b23c1325 100644
+--- a/drivers/infiniband/hw/irdma/Kconfig
++++ b/drivers/infiniband/hw/irdma/Kconfig
+@@ -4,7 +4,7 @@ config INFINIBAND_IRDMA
+ 	depends on INET
+ 	depends on IPV6 || !IPV6
+ 	depends on PCI
+-	depends on IDPF && ICE && I40E
++	depends on IDPF || ICE || I40E
+ 	select GENERIC_ALLOCATOR
+ 	select AUXILIARY_BUS
+ 	select CRC32
+
+base-commit: 9b9e43704d2b05514aeeaea36311addba2c72408
+-- 
+2.20.1
+
 
