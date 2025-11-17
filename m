@@ -1,132 +1,156 @@
-Return-Path: <stable+bounces-194970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 619F8C64DBF
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82CAFC64DFA
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:29:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4D78C4E65D8
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 15:24:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 71A2B4E022F
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 15:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57AED33B970;
-	Mon, 17 Nov 2025 15:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749B032ED46;
+	Mon, 17 Nov 2025 15:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kw7IEkrz"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ceTBpUQr"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E60339714;
-	Mon, 17 Nov 2025 15:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799CD31D75C
+	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 15:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763393028; cv=none; b=fcYONBZ2OC08pFFQt3k9gfLl7IrtmHl1DPFdvGymgl2BKVqz29JF2yi3fcg88SbTbWgBvgBL05CUn7cus0Ymf66QuqjppN56T2F0x8EyDlEOZN2XQ393ZWd1AIRkFKIm6xhovpdiWF499VXlcTqEyfMV8EzAr8jybJMg/fAOr9c=
+	t=1763393372; cv=none; b=tdio/FnsOPNcHquJ6K1c+TlC2DlDzxrM7quSXpTYezn/ebsB1KTaQt+JL4b0brO1tVNDJUHrbwlFQog0IQ35dmHS4aKqytGN/yidcwCwSvtNQBfkEfatLKsJiz2CQbW36n3et32+lwHdBaJm+QP5JAgRXJ6dHzZPiWf6wjZ2BY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763393028; c=relaxed/simple;
-	bh=R207KvhirYCVpdy19bCCIuuklsmD3ljT/ayIsEAqa2w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ds8EAdLWY/2ykrLnAcWDiW349quCId6LnkKuLusIUiRoE6lk+EsJkvuPtYvEKgFnheo/K514OLZ361Nu43a9fXhRBSooNsathjRhNJ5mOBferycpckuGVUP4UWYlObSUMQrtZDMFTLtHITyRcYorVNoMWK3Zo2v7B70inRFfpGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kw7IEkrz; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763393027; x=1794929027;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=R207KvhirYCVpdy19bCCIuuklsmD3ljT/ayIsEAqa2w=;
-  b=kw7IEkrzOyA+o331n0t0fePw1zC7m7REi450SGm9ViLOmpOfwqrmNZks
-   USFvoJ9vYd/srmsSOqKQERbht0a7HTdMGzIY/uY2t+/AVLNUtWTTwOUGt
-   QoaqE/Bw8vg9xd7X+B+cxp/i1LhjyryAnv9ZwZf2c1kFzp98827TpCVUv
-   UnWjixsh6avycKcIgOWHpRkeEyCP7Q/S8TzNRZ9MlhUapNvZPToQzulQ9
-   tO/leOgzrhd9zoy+C85cIE3RTvQhBrHwMcz8JB2m3bPs1tUspFQftvy2a
-   7otkzcfguQxAkAPNkF1AJAmdV6nixShKr7vbakshyIWxmDvr2ZYHEv3AE
-   w==;
-X-CSE-ConnectionGUID: EEKVZn5uTEy9G92ZJW5Skw==
-X-CSE-MsgGUID: ocV1gfNLQKe8f/x/ZILqzg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="65328016"
-X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
-   d="scan'208";a="65328016"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 07:23:46 -0800
-X-CSE-ConnectionGUID: s994fjxCQL20ZCVPvdXqAw==
-X-CSE-MsgGUID: Ob3lUQMhTKKoiLWoc9Ur0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
-   d="scan'208";a="190636817"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO [10.245.244.255]) ([10.245.244.255])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 07:23:44 -0800
-Message-ID: <d25feb0d-2ede-4722-a499-095139870c96@linux.intel.com>
-Date: Mon, 17 Nov 2025 17:23:41 +0200
+	s=arc-20240116; t=1763393372; c=relaxed/simple;
+	bh=i+nmoWgsaVuYuG8wFv0ebxdBrhIc8t/vnIEhP9P9cHM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 References; b=JZ+/wc9G7Z/7IpB2mSf7JzDd9XNZ9u0vVDm3vl2n4eZt+bMpkSJI5GDZqq2Qz4sNzLjeHEVrzlNJJ6nPtz9D69lMVICBSzRHSIqBvuYSiIvr8vDQB5LcaAaRHtWqr/5NmjlEsbt5Fo0Py0NILkIYtseztdF5CX3zPW5beWeZ4zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=ceTBpUQr; arc=none smtp.client-ip=203.254.224.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20251117152927epoutp026fc028126adb25a7c194ccd4e9351c28~41OyvELDa2954429544epoutp02J
+	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 15:29:27 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20251117152927epoutp026fc028126adb25a7c194ccd4e9351c28~41OyvELDa2954429544epoutp02J
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1763393367;
+	bh=/jf/D4qje85S4KTVFC0gtmhMr3p/woT8WaV5hzvpclA=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=ceTBpUQrEMNpvBAcm4lTFtx3H2/AbK66j6HCj4Ml6r2GxE2vzl3uOMnG+JEh0IQT6
+	 izmzR547teYZ35rPRB8SRUEIbi/otzjvsqIUwr0BaOlCfFO9LrwOJ5jDrgfy8S/vqS
+	 BQzww5O1jPs1ZvTp3h2lfc76ajteJFwz9Dapx2Qc=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20251117152926epcas5p17806e0ef42124603ab2be7213b3f8fb8~41OyLmlFl3219232192epcas5p1f;
+	Mon, 17 Nov 2025 15:29:26 +0000 (GMT)
+Received: from epcas5p1.samsung.com (unknown [182.195.38.93]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4d9BVs5ybtz2SSKX; Mon, 17 Nov
+	2025 15:29:25 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20251117152924epcas5p3463725d014582467d6f3c100fa21eb8c~41OwMiVUL2269822698epcas5p3t;
+	Mon, 17 Nov 2025 15:29:24 +0000 (GMT)
+Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20251117152914epsmtip291ff8a398f7b70f631318625c65f7c9a~41OnKR6Td2369423694epsmtip2L;
+	Mon, 17 Nov 2025 15:29:13 +0000 (GMT)
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, naushad@samsung.com,
+	akash.m5@samsung.com, h10.kim@samsung.com, eomji.oh@samsung.com,
+	alim.akhtar@samsung.com, thiagu.r@samsung.com, Selvarasu Ganesan
+	<selvarasu.g@samsung.com>, stable@vger.kernel.org
+Subject: [PATCH] usb: dwc3: gadget: Prevent EPs resource conflict during
+ StartTransfer
+Date: Mon, 17 Nov 2025 20:58:05 +0530
+Message-ID: <20251117152812.622-1-selvarasu.g@samsung.com>
+X-Mailer: git-send-email 2.46.0.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] xhci: dbgtty: fix device unregister
-To: =?UTF-8?Q?=C5=81ukasz_Bartosik?= <ukaszb@chromium.org>,
- Mathias Nyman <mathias.nyman@intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org, stable@vger.kernel.org
-References: <20251114150147.584150-1-ukaszb@google.com>
-Content-Language: en-US
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-In-Reply-To: <20251114150147.584150-1-ukaszb@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20251117152924epcas5p3463725d014582467d6f3c100fa21eb8c
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20251117152924epcas5p3463725d014582467d6f3c100fa21eb8c
+References: <CGME20251117152924epcas5p3463725d014582467d6f3c100fa21eb8c@epcas5p3.samsung.com>
 
-Hi Łukasz
+This commit fixes the below warning that occurs when a StartTransfer
+command is issued for bulk or interrupt endpoints in
+`dwc3_gadget_ep_enable` while a previous transfer on the same endpoint
+is still in progress. The gadget functions drivers can invoke
+usb_ep_enable (which triggers a new StartTransfer command) before the
+earlier transfer has completed. Because the previous StartTransfer is
+still active, `dwc3_gadget_ep_disable` can skip the required
+`EndTransfer` due to `DWC3_EP_DELAY_STOP`, leading to  the endpoint
+resources are busy for previous StartTransfer and warning ("No resource
+for ep") from gadget driver.
 
-On 11/14/25 17:01, Łukasz Bartosik wrote:
-> From: Łukasz Bartosik <ukaszb@chromium.org>
-> 
-> When DbC is disconnected then xhci_dbc_tty_unregister_device()
-> is called. However if there is any user space process blocked
-> on write to DbC terminal device then it will never be signalled
-> and thus stay blocked indifinitely.
-> 
-> This fix adds a tty_hangup() call in xhci_dbc_tty_unregister_device().
-> The tty_hangup() wakes up any blocked writers and causes subsequent
-> write attempts to DbC terminal device to fail.
+To resolve this, a check is added to `dwc3_gadget_ep_enable` that
+checks the `DWC3_EP_TRANSFER_STARTED` flag before issuing a new
+StartTransfer. By preventing a second StartTransfer on an already busy
+endpoint, the resource conflict is eliminated, the warning disappears,
+and potential kernel panics caused by `panic_on_warn` are avoided.
 
-Nice catch
+------------[ cut here ]------------
+dwc3 13200000.dwc3: No resource for ep1out
+WARNING: CPU: 0 PID: 700 at drivers/usb/dwc3/gadget.c:398 dwc3_send_gadget_ep_cmd+0x2f8/0x76c
+Call trace:
+ dwc3_send_gadget_ep_cmd+0x2f8/0x76c
+ __dwc3_gadget_ep_enable+0x490/0x7c0
+ dwc3_gadget_ep_enable+0x6c/0xe4
+ usb_ep_enable+0x5c/0x15c
+ mp_eth_stop+0xd4/0x11c
+ __dev_close_many+0x160/0x1c8
+ __dev_change_flags+0xfc/0x220
+ dev_change_flags+0x24/0x70
+ devinet_ioctl+0x434/0x524
+ inet_ioctl+0xa8/0x224
+ sock_do_ioctl+0x74/0x128
+ sock_ioctl+0x3bc/0x468
+ __arm64_sys_ioctl+0xa8/0xe4
+ invoke_syscall+0x58/0x10c
+ el0_svc_common+0xa8/0xdc
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x38/0x88
+ el0t_64_sync_handler+0x70/0xbc
+ el0t_64_sync+0x1a8/0x1ac
 
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-> Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
-> ---
->   drivers/usb/host/xhci-dbgtty.c | 7 +++++++
->   1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
-> index d894081d8d15..6ea31af576c7 100644
-> --- a/drivers/usb/host/xhci-dbgtty.c
-> +++ b/drivers/usb/host/xhci-dbgtty.c
-> @@ -535,6 +535,13 @@ static void xhci_dbc_tty_unregister_device(struct xhci_dbc *dbc)
->   
->   	if (!port->registered)
->   		return;
-> +	/*
-> +	 * Hang up the TTY. This wakes up any blocked
-> +	 * writers and causes subsequent writes to fail.
-> +	 */
-> +	if (port->port.tty)
-> +		tty_hangup(port->port.tty);
+Change-Id: Id292265a34448e566ef1ea882e313856423342dc
+Fixes: a97ea994605e ("usb: dwc3: gadget: offset Start Transfer latency for bulk EPs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+---
+ drivers/usb/dwc3/gadget.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-I'm not a tty expert but would the tty_port_tty_vhangup(&port->port) make
-sense here?
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index f95d1369bbc6..23e5c111da7c 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -951,8 +951,9 @@ static int __dwc3_gadget_ep_enable(struct dwc3_ep *dep, unsigned int action)
+ 	 * Issue StartTransfer here with no-op TRB so we can always rely on No
+ 	 * Response Update Transfer command.
+ 	 */
+-	if (usb_endpoint_xfer_bulk(desc) ||
+-			usb_endpoint_xfer_int(desc)) {
++	if ((usb_endpoint_xfer_bulk(desc) ||
++			usb_endpoint_xfer_int(desc)) &&
++			!(dep->flags & DWC3_EP_TRANSFER_STARTED)) {
+ 		struct dwc3_gadget_ep_cmd_params params;
+ 		struct dwc3_trb	*trb;
+ 		dma_addr_t trb_dma;
+-- 
+2.34.1
 
-No need to check for port->port.tty, and it does all the needed locking and
-tty reference counting.
-
-It is also synchronous which should probably be ok as this is either called
-from a delayed workqueue, during suspend, or remove()
-
-Thanks
-Mathias
 
