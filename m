@@ -1,104 +1,115 @@
-Return-Path: <stable+bounces-194998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A72C655FF
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 18:12:39 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC73C65768
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 18:25:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 18A232A309
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 17:11:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9C22B366BF2
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 17:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E874030BF60;
-	Mon, 17 Nov 2025 17:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184AF307491;
+	Mon, 17 Nov 2025 17:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rYpEo30R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YZu4/Xeq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C66C30B536
-	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 17:03:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E396257AEC;
+	Mon, 17 Nov 2025 17:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763399025; cv=none; b=Y+RqYE723HKG0iQ6FnPuqRdPQ/bKZnw75SYcpcAsbHiaruc8y/m78CAVfFzp+6pkjMgLtVchVxVdVWyupB8QgIL7D/+rkjzVyLsqsMLImvAOHPPMrgYW4829v26LwJyc5xCb/bq+Sbu7O4SRFoXZV2Yuc50mtMlBkQ8uce62M3g=
+	t=1763399153; cv=none; b=FMB9taMqxBN/vKsn0e30EhctWNRn7mNHD7/pilJzGHsrF31KgQabPoFOf4M8NfeOAg93iv17IcaCIRQ+6wIgBxb3CjbnNn257ExVBe86ffCoqoiMd5qD8ZKjTdGTKkW0QRBEmTR4HgXF5rpw6I5lSbjiuUOsQsn97xwBYAZ79G4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763399025; c=relaxed/simple;
-	bh=bkVMcDwSIQqPy3ppwR3++s+E7Tde5RHH8Gep/ihy9i8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pap21Aggjrvpmij08/NF9m+G8CmXmsg0uuOsazuWbYobSAW5SCZniWKFZ5nMX/5mrhIqNXOTOgvbsyhw/vdPVmV12Xa2KuxnyeMHFs0hc949hq9QtQX8QzrHVgYQAs9SFSBOPGr2nzyRhm8QMjPVqlL+s7FKg0vEpfkzX370Jjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rYpEo30R; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7be3d08f863so3219114b3a.2
-        for <stable@vger.kernel.org>; Mon, 17 Nov 2025 09:03:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763399023; x=1764003823; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0hq6Uia9RhmITs3Fm5C1ux3TB78rTa2oGwDQ4IOSjBE=;
-        b=rYpEo30RpXd7WtfTxTPw2DJWdaW4wEeNOB3FAF7M0R5noH4kkvp8HWqItfRFJOM9wq
-         yDZxvZDGuh8yDkX30Qo/zsQGZWivVa9tNmS8Xnaa9Vdp6Pptcgm7+qJ9kCEBBpT8rH19
-         /Y9yS5gfQ/GwfSJZLV82KQuLlRekzS+3H4k2Y81rjV2YxFZPNXqHxvTNXczrS4ePzJhq
-         DEX28q03BISuirAF9Osw5xq4/K0U7B2q7H4Jwb9lJJcig/PjoU4uXGnVvqMdazCtDmmt
-         /g808ppriT3eD0opreVJZklP0gYh1Es5AGYv/o3cnbKx/hk99I4PZ3Ei+oFlUavCmLor
-         FZEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763399023; x=1764003823;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0hq6Uia9RhmITs3Fm5C1ux3TB78rTa2oGwDQ4IOSjBE=;
-        b=SOOjJH52uEld/SkNaQSTbmldB+249aljryW9annff134qL+v302sIh3ilmNvpIcgoZ
-         1fbxyE9pciQoBuM2t5g2AmQvO+5S38Sig8iv+EDtuYm/DXpnlcFGQgejbTzWcB1m3f03
-         ME/CIqpwD0MvSoWP0eXulFcxW9K2WeLtPvyPY3YV8IpN/n7Zo7YI1oH4U9Ns5wM9/rvm
-         XxTBNy/95wI4/C3meuBHb5fpHVo0+llda74mUrQsBUxRqTX0l7SsCAbR//AVE7DJ8/3f
-         ANOsZOcE52knl/4OFVfv2bX9nPZ2dcKffAWlL+ruliEJIua7ZKEweEaM+OT8gq0EMcTp
-         jaBA==
-X-Forwarded-Encrypted: i=1; AJvYcCViCiCILgdQRG+eTvGAr4GEBDIR601KqhJ0sb89ClMGuGW/6SdbxPNkMX0CMbPd/gm1kQxr3+s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymmjnNXWG2E5DqwnEk1cwoVHHJ9vfyq8O2nqNeon32cUPFBHQ5
-	op0UXA5ihWfgjCWfsEJ40Q6wSsYF++SlBf0jZQQ8Qo2HksOEOrSDZ1KC10uvIuRZhb4ml+L4apA
-	s6hkyFw==
-X-Google-Smtp-Source: AGHT+IGkp5EJaeics9rfr6OPoTNm9TOyUmNPfmPd5OleLPcrSezjyK79L0sxbr8BzPRbpMbixTLjg2AYM2E=
-X-Received: from pgnc22.prod.google.com ([2002:a63:7256:0:b0:bc3:7d57:2ea2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:999f:b0:35e:7605:56a4
- with SMTP id adf61e73a8af0-35e76055d0cmr7231438637.51.1763399023245; Mon, 17
- Nov 2025 09:03:43 -0800 (PST)
-Date: Mon, 17 Nov 2025 09:03:41 -0800
-In-Reply-To: <ei6cdmnvhzyavfobamjkcq2ghdrxcv7ruxhcbzzycqlvaty7zr@5cjkfczxiqom>
+	s=arc-20240116; t=1763399153; c=relaxed/simple;
+	bh=DW7iOnljyYkbqTKlwa33/VbgEj6oPP1CWbEhzObBsXc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=flG6Km5m21rvhU69bYQVcAX1Z1MCghle6gg9aEXixxyuu1adJSIgAA0ssGsAUEiBWpv7NuizpNTU1hYQkYi04nCPeon8HKIsFMBsiPLpiwonnsfLkb9OvAC9ax1NhVaVjoVOZBERVJqK9TMKSD8D/ajaNXDveA4FSx/IX6A7TPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YZu4/Xeq; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763399152; x=1794935152;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DW7iOnljyYkbqTKlwa33/VbgEj6oPP1CWbEhzObBsXc=;
+  b=YZu4/Xeq9BaO85fNoSbOCQbTZ4PCcbTXF9r1ZFPrBmu+GZpTdc5Vsqnc
+   3pMbZV2gy/B1YbteIg5Vv5sasoCYe7ryIjEnxBml6HC6rIhAlYNmYAQwi
+   D8XVLvZLXG78vvUwwsybEyzJKYpjawxv0XKCXhT8cNguDVqcY6FJgSzdd
+   qXFfYlaE117eYlpXnqiI5L119kaBfJZkCGtzlxGrn/DeXQBBen60SZFjZ
+   paXzOSX78ivz4VqinVyCLpHqt2bQhGNoDnUlgAIQzfZOfBVL2Ax13YWiw
+   AigUDjlb/qviEbylNcWKlDhaes/trXTuAQuzDwlGduFZhqNkw+S16UPPO
+   w==;
+X-CSE-ConnectionGUID: +exPuRqmSvCLf45Z6SoFqw==
+X-CSE-MsgGUID: 2gkV8T9pQSiqz+ShTlVznA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="65340685"
+X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
+   d="scan'208";a="65340685"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 09:05:52 -0800
+X-CSE-ConnectionGUID: ROs6gZk+TG6RiG6eKeZEiw==
+X-CSE-MsgGUID: KIco31o0QSKRXkO77XTL5A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
+   d="scan'208";a="190524483"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa007.jf.intel.com with ESMTP; 17 Nov 2025 09:05:48 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id 2684C96; Mon, 17 Nov 2025 18:05:47 +0100 (CET)
+Date: Mon, 17 Nov 2025 18:05:47 +0100
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Vinod Koul <vkoul@kernel.org>,
+	Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	=?iso-8859-1?Q?Am=E9lie?= Delaunay <amelie.delaunay@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: Re: [PATCH 04/15] dmaengine: dw: dmamux: fix OF node leak on route
+ allocation failure
+Message-ID: <aRtV69UcldVcYiKR@black.igk.intel.com>
+References: <20251117161258.10679-1-johan@kernel.org>
+ <20251117161258.10679-6-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251112013017.1836863-1-yosry.ahmed@linux.dev>
- <aRdaLrnQ8Xt77S8Y@google.com> <ei6cdmnvhzyavfobamjkcq2ghdrxcv7ruxhcbzzycqlvaty7zr@5cjkfczxiqom>
-Message-ID: <aRtVbeVHe5ZFOPQW@google.com>
-Subject: Re: [PATCH] KVM: SVM: Fix redundant updates of LBR MSR intercepts
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251117161258.10679-6-johan@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, Nov 14, 2025, Yosry Ahmed wrote:
-> On Fri, Nov 14, 2025 at 08:34:54AM -0800, Sean Christopherson wrote:
-> > On Wed, Nov 12, 2025, Yosry Ahmed wrote:
-> > > svm_update_lbrv() always updates LBR MSRs intercepts, even when they are
-> > > already set correctly. This results in force_msr_bitmap_recalc always
-> > > being set to true on every nested transition,
-> > 
-> > Nit, it's only on VMRUN, not on every transition (i.e. not on nested #VMEXIT).
-> 
-> How so? svm_update_lbrv() will also be called in nested_svm_vmexit(),
-> and it will eventually lead to force_msr_bitmap_recalc being set to
-> true.
-> 
-> I guess what you meant is the "undoing the Hyper-V optimization" part.
-> That is indeed only affected by the svm_update_lbrv() call in the nested
-> VMRUN path.
+On Mon, Nov 17, 2025 at 05:12:47PM +0100, Johan Hovold wrote:
+> Make sure to drop the reference taken to the DMA master OF node also on
+> late route allocation failures.
 
-Ooh, yeah, my mind was fully on when the intercepts would be recomputed, not on
-when the flag could be set.
+...
+
+> +put_dma_spec_np:
+> +	of_node_put(dma_spec->np);
+
+Can we use __free() instead?
+
+(Just in case you are going to question the appearance of cleanup.h and the
+ respective class in of.h, it's available in the closest stable, i.e.
+ v6.1.108 onwards).
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
