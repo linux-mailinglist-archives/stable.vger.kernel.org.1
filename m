@@ -1,122 +1,126 @@
-Return-Path: <stable+bounces-194975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95024C65022
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 17:01:01 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E4E6C65152
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 17:18:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 80362240D2
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:01:00 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 74087365DCA
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7612BE7AB;
-	Mon, 17 Nov 2025 16:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643F22C327D;
+	Mon, 17 Nov 2025 16:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UsrEcFBO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s1cCgSQh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F7B23BF9B
-	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 16:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D8C2C178D;
+	Mon, 17 Nov 2025 16:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763395254; cv=none; b=jzbjMCAX5ZGt16txiGdrWegpSfIh/H4y6apLmhlyogiVGfLXC6MVPqFSaSIgYR6BWphdyorEfA3KP/lPOniHVE5aUQb3uKSAOeg8b8l09NUuUw4MeNj/icMyhp5OQQPRAJ6MkZcy88k07h2OXS9B5dyya3LdZ5PfFdvFD/xxIT4=
+	t=1763396005; cv=none; b=N5TkUQNymhLcyTHXYiYE+acOECp8WgT1xvYpZpZI2J8CkoKWTcwxqRGTpE6+9ZX1JDfUjvq0H2AR0tUMHKgYA5dlyXZtTTHUg40cYUVi+xzlHxcQjCX6OQxs5P8sw1WIZu9kaDoLCj0pOD+mjTt9s8Vl5UXV/ESoQr81bOQIpjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763395254; c=relaxed/simple;
-	bh=gPI0C6syoehgpLs27hBA8AFGKtCtG8+sA7VEVWD6eDQ=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Wrc15rp4j4Rh+Q344EnDQiTn/JyjcrNPX/2BuZTe/WDjo7mUU/fyokHdU9HBV0yv0K9JkuC8VzM+gzAgWv+73xjh0/B0KBpZTZ/Hqj6fD/5TcAAIPU/nx819Sfp3bu16lwNzeR4T6gKftmjNpTW/uQiFW8Q5l7aJff55NtU8qAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UsrEcFBO; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-477619f8ae5so30452955e9.3
-        for <stable@vger.kernel.org>; Mon, 17 Nov 2025 08:00:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763395251; x=1764000051; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8MfJOCnIiNYi8BMGn+NPB99ABQIsMxcFHnwgdzV97ds=;
-        b=UsrEcFBOn1i4/HFjvXXIh4O63xfb4llt6q0j18FWKE2Jj3fKkxlHM9QPEHxP2Djc/k
-         Yg3/sgv1UlzDsR4HATlEIVyepmzemy1ElB0pMkLRE4wKzUsXBY0FvNjqSy49Co0hiJh/
-         CaxEtADrgZBkA70eAfxj44Ehzs0hXhZCBZUqvOpeS5t5vK6V47nUiejcZU0vte30GGj6
-         lK5ngTT/VhzoArg50BBqJlJLONQHR4hsBQ+4fnEo7dFu7fwfNliv9bnUlZD3Qzv8U9Fv
-         xvwvKiGxxLcfOxytKDIAzH4EyuSjXkVyZ4blk4zvULH2r/5CJFOr2YwTxdpfzt0hwxcz
-         AonQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763395251; x=1764000051;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8MfJOCnIiNYi8BMGn+NPB99ABQIsMxcFHnwgdzV97ds=;
-        b=DzoxtQIrWWv/aatDIqnw5XjrP2P+ivuo0WkfCEhFS5a6bfkcmLwFUwvIJ9iNzCOS5V
-         SJF9dtZLs7P394pKsW6hjnQA7S6vPti57dk4knWFaEstdnMlgzgwWQWz+nTBiuYhOlYe
-         3kIz3TSJW64QmgDDatx/9V+DfI8XqBKd9+GNYLq0vE1PXKQbUEJIVKEqx5b3Q9doSb4x
-         xy2ZDK4WIRgeacbm2W+nBmVs9xtgkwKzxPMftxtOZRHi1q/9UJnk+zlqMpZ56p4+S1bM
-         UoIDPJLYMXWtCdSS1i4ulWFriafJ/a3IGOKx3d2Blq63evuXLsngf108skleOa6fvpJA
-         mgkw==
-X-Forwarded-Encrypted: i=1; AJvYcCV2yNxwABj2oUZjaOXCsozHBn5tgZVvWLE77G2V2nAUwd/Y87VBq9jzhqsjsVRpcM4wooFcYI4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoJgRUVEI5FSanIaVWFkYeXMWhXYFmo6b1zWIqD6jusrr36AE5
-	RnQZwO/gfY882LR7dE6PyGPDRpxfj0f9qYZud35I54O1NsXNUyDd7s7/rZkJEKtwFdt1E41SwCr
-	o173VZRPzcR0trgHxhJ+yt58Q90M31dQ=
-X-Gm-Gg: ASbGncujgMRcLeqIy5h4SP3C/aBpM662gS5GD9t7Hj/2rMxyAkNtnXRYPtxieUx4yUV
-	SwsH7qj4YUJ9Fyod9eBO2Ee9coK13kT4sH+v395e422xqp6TYrxFHbYuf8IVPpaq7b3NwphNmcz
-	/TUFuvBSEv9NN5lfaPqokvgXW3Y+/a6o7v7nkIhvWhUeCnp0R1dBrzjrmEluBZmTNaG+24m/DYG
-	/TpapQSvgkEfcz7RHBHL9AsSBhQ5509dxjClrH0z8Ah1CXxszZb3fYIqso09wKmufwZDI14
-X-Google-Smtp-Source: AGHT+IHW+g/BPRYaCa4/onCsB+Xol9C9Wfq5DHTB6kJC5BaFMll2GRNcADVlDtl6mOEQPT60rlcj4VLhQLLKjImcMvE=
-X-Received: by 2002:a05:600c:8b21:b0:477:1bb6:17de with SMTP id
- 5b1f17b1804b1-4778feb566dmr136106965e9.30.1763395250721; Mon, 17 Nov 2025
- 08:00:50 -0800 (PST)
+	s=arc-20240116; t=1763396005; c=relaxed/simple;
+	bh=JU5H6HzpmYMdelWGOYxXN2hreX6TM79xCo8vhX30ZwQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DX6njqb3agu5t11McE3b8HPLD+grvvxfWCsGWGN/YJDWTQt8OB68a2kOjMvHpJ+VQO1rkThD3VRuKNfRgM2taLdzDpIplGRqku6wHg6uf9sIR/bDZQjmS09kRahElSx3z85jpSGlQW6Bb198gSUloCzea9wBVrH5MiZVU1Pg0iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s1cCgSQh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8257FC2BCB0;
+	Mon, 17 Nov 2025 16:13:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763396004;
+	bh=JU5H6HzpmYMdelWGOYxXN2hreX6TM79xCo8vhX30ZwQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=s1cCgSQhfV0qhT6mFaFgEIkguoEpECx/rToTAYzsJqeGAIsE5m2pybvanaeEUoUme
+	 00dTKQ2xl1xZqQ2DjkV4NhO26i+KWvVTHntCySEJ026fOT/gJAB7xxEHDpE5bUzvH+
+	 DFIGA+BaP5S73IGZmh0L7mvgUAKdn+jpVblJyJCWRHAgn85AakDj6Md1R5P8zTpOJI
+	 UYmu78bU+q/iFohmUdhSFILywTSug3d8g+pOE5TbbqLmpKoHsH36lQ2gd9bABfED/4
+	 9yNNg720sJ+FuvR4v+c4bRqkr6VC+Zv+jR/63uxz9OClpYpLH4Zhluds8SyChyU3Qu
+	 vqx7cDuhXJnNQ==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vL1r0-000000002nU-1MKk;
+	Mon, 17 Nov 2025 17:13:22 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	=?UTF-8?q?Am=C3=A9lie=20Delaunay?= <amelie.delaunay@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Yu Kuai <yukuai3@huawei.com>
+Subject: [PATCH 01/15] dmaengine: at_hdmac: fix device leak on of_dma_xlate()
+Date: Mon, 17 Nov 2025 17:12:43 +0100
+Message-ID: <20251117161258.10679-2-johan@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251117161258.10679-1-johan@kernel.org>
+References: <20251117161258.10679-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Max Krummenacher <max.oss.09@gmail.com>
-Date: Mon, 17 Nov 2025 17:00:39 +0100
-X-Gm-Features: AWmQ_bnpKPbAGbvsTguUPABUOHsZFSWl8Eduski5J_5udQ4gFFyYAvf2tUhFav8
-Message-ID: <CAEHkU3Vr4RVG1Up1_cnoV70QRaYrRXW8ONCMOBB88F+Cu7WRuw@mail.gmail.com>
-Subject: 6.1.159-rc1 regression on building perf
-To: Max Krummenacher <max.krummenacher@toradex.com>
-Cc: Ian Rogers <irogers@google.com>, Sasha Levin <sashal@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi
+Make sure to drop the reference taken when looking up the DMA platform
+device during of_dma_xlate() when releasing channel resources.
 
-Our CI found a regression when cross-compiling perf from the 6.1.159-rc1
-sources in a yocto setup for a arm64 based machine.
+Note that commit 3832b78b3ec2 ("dmaengine: at_hdmac: add missing
+put_device() call in at_dma_xlate()") fixed the leak in a couple of
+error paths but the reference is still leaking on successful allocation.
 
-In file included from .../tools/include/linux/bitmap.h:6,
-                 from util/pmu.h:5,
-                 from builtin-list.c:14:
-.../tools/include/asm-generic/bitsperlong.h:14:2: error: #error
-Inconsistent word size. Check asm/bitsperlong.h
-   14 | #error Inconsistent word size. Check asm/bitsperlong.h
-      |  ^~~~~
+Fixes: bbe89c8e3d59 ("at_hdmac: move to generic DMA binding")
+Fixes: 3832b78b3ec2 ("dmaengine: at_hdmac: add missing put_device() call in at_dma_xlate()")
+Cc: stable@vger.kernel.org	# 3.10: 3832b78b3ec2
+Cc: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/dma/at_hdmac.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/dma/at_hdmac.c b/drivers/dma/at_hdmac.c
+index 2d147712cbc6..dffe5becd6c3 100644
+--- a/drivers/dma/at_hdmac.c
++++ b/drivers/dma/at_hdmac.c
+@@ -1765,6 +1765,7 @@ static int atc_alloc_chan_resources(struct dma_chan *chan)
+ static void atc_free_chan_resources(struct dma_chan *chan)
+ {
+ 	struct at_dma_chan	*atchan = to_at_dma_chan(chan);
++	struct at_dma_slave	*atslave;
+ 
+ 	BUG_ON(atc_chan_is_enabled(atchan));
+ 
+@@ -1774,8 +1775,12 @@ static void atc_free_chan_resources(struct dma_chan *chan)
+ 	/*
+ 	 * Free atslave allocated in at_dma_xlate()
+ 	 */
+-	kfree(chan->private);
+-	chan->private = NULL;
++	atslave = chan->private;
++	if (atslave) {
++		put_device(atslave->dma_dev);
++		kfree(atslave);
++		chan->private = NULL;
++	}
+ 
+ 	dev_vdbg(chan2dev(chan), "free_chan_resources: done\n");
+ }
+-- 
+2.51.0
 
-I could reproduce this as follows in a simpler setup:
-
-git clone -b linux-6.1.y
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-cd linux-stable-rc/
-export ARCH=arm64
-export CROSS_COMPILE=aarch64-none-linux-gnu-
-make defconfig
-make -j$(nproc)
-cd tools/perf
-make
-
-Reverting commit 4d99bf5f8f74 ("tools bitmap: Add missing
-asm-generic/bitsperlong.h include") fixed the build in my setup however
-I think that the issue the commit addresses would then reappear, so I
-don't know what would be a good way forward.
-
-Regards
-Max
-
-P.S.
-Checking out Linux 6.6.117-rc1 builds perf.
-make NO_LIBELF=1 NO_JEVENTS=1 NO_LIBTRACEEVENT=1
 
