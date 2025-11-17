@@ -1,118 +1,160 @@
-Return-Path: <stable+bounces-195004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606B1C65A0D
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 18:57:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058C1C65A4C
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 19:00:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 25177343D5B
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 17:51:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C2A474E766B
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 18:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D7F308F39;
-	Mon, 17 Nov 2025 17:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="oQBqUjSf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC73427877D;
+	Mon, 17 Nov 2025 18:00:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-07.mail-europe.com (mail-07.mail-europe.com [188.165.51.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F07B268C42;
-	Mon, 17 Nov 2025 17:51:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35E91DB125;
+	Mon, 17 Nov 2025 18:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763401894; cv=none; b=srMvVbfbboiGc39wpbCeWaLcvCVlu6sCgD+LKM0rOjsRz6x7+cwDa2UBtQkm3beMRS3DTuwGlUb4NEhvT/qmX/J5pkuznMWxcw9JPuBli/C3IWt1v8U2mz4djBKDo0vOdbvd4aLCXvRdyUPx83+TNHawmvXThgzlDKDwOZUbyRQ=
+	t=1763402425; cv=none; b=qCUiyPzjum4Yfzq/h5LQgS84X6MBjtogvPU4FXYxgCLtK2w1scUKXxCFQx822nqJONA3Fy3spZi/efE3d/EKMvJB/1Heec2nSkQiW0CBK3a4IRegC5KErcjjn/efH0AmikU6eGhnzBGPNQsgOtXnYEg72u2QjrqKKKHHvzc9ci4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763401894; c=relaxed/simple;
-	bh=dvBUOLItidwfrNQEf4mN9DTt1GLDuvVSAWBtWZ+I3h8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IuCPAgxduARwUk9BwAweYHCAUg1T07Oiwo4bv0mpBLxZIb9rnT+V6KJIogn079207v2AVKh0fJwL8LUfwOikCuSMTzge9i1S9qHDkpCMA9Fe9/dpQxRDZf/A3Lbr8ie9w5H80vEDc1peDh2nkTS5JX5Mu7pjOKn03GdGFhRq21k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=oQBqUjSf; arc=none smtp.client-ip=188.165.51.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1763401880; x=1763661080;
-	bh=8JHRGFc+rtU8gXb3Jyiztx9jQrUCtKtMFdopnkmvtTw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=oQBqUjSfF7G2kJQrbbupyMiiL3urxY+IOjodFvyRKJ7BeHY/Dcl/doiaaDctJYfkJ
-	 neWOwaOGLUAaNvOOA9Lnkn/V7Zxs46ZLspzWPnHWqsqxS/d+3JQ28pmHZyaP3ROCiP
-	 lPORmcpqbEa/NLboQDALyeNMJy7OAFr681dFCiyvFWO465XYCDffdIMULNoQdGBZG5
-	 LqsCEq8v1qizeghermjOZkDdSKpmudU0KEGcYzC75rPAJEG8nR1gQFIh5UjtYTVp5L
-	 Abt+RNltqCl/40foE++yjpzIs3zTJ+mCRrvbsrD50yTsJZVBuZlmevHhrdCKoaSwyO
-	 yZDKI/Aa1I0hg==
-Date: Mon, 17 Nov 2025 17:51:13 +0000
-To: Alexander Potapenko <glider@google.com>
-From: =?utf-8?Q?Maciej_Wiecz=C3=B3r-Retman?= <m.wieczorretman@pm.me>
-Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, ardb@kernel.org,
-	Liam.Howlett@oracle.com, nicolas.schier@linux.dev, ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org, stable@vger.kernel.org, Baoquan He <bhe@redhat.com>
-Subject: Re: [PATCH v6 01/18] kasan: Unpoison pcpu chunks with base address tag
-Message-ID: <ha5gz3hfjtfrmldzbscrbbtptecyqkwzkwdkjxnc2puqzquurl@nthv7frvqatw>
-In-Reply-To: <CAG_fn=Wj9rB0jHKT3QKjZsPYce1JFcb1e72QBOBP52Ybs3_qgQ@mail.gmail.com>
-References: <cover.1761763681.git.m.wieczorretman@pm.me> <fbce40a59b0a22a5735cb6e9b95c5a45a34b23cb.1761763681.git.m.wieczorretman@pm.me> <CAG_fn=Wj9rB0jHKT3QKjZsPYce1JFcb1e72QBOBP52Ybs3_qgQ@mail.gmail.com>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 7b84ae9accb4bc7551e617e5e7661cf28649358a
+	s=arc-20240116; t=1763402425; c=relaxed/simple;
+	bh=Y1d9XsSWtXQN5UtwmC6lMVTpaJZ8ScRdIDgzx9/SaZU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OuR1Zjrl8okcFrrncVCMytWIiTRHEb8fmUZ6uKf6cvamE3pWV8fZIISDTww/HdeZyYeJUJsuOprNY2lUgA1eCThXuSU/5vfnwTVSEdi14ey+pn3EkwgaHf02hWox84Izvrj92wdqk8cBxcolIcWRnDxObPgPazFKxCozfpPv6Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C6FEFFEC;
+	Mon, 17 Nov 2025 10:00:15 -0800 (PST)
+Received: from [10.57.87.92] (unknown [10.57.87.92])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AF5AE3F740;
+	Mon, 17 Nov 2025 10:00:21 -0800 (PST)
+Message-ID: <1a485744-67fc-4530-b131-304f2cb84a8c@arm.com>
+Date: Mon, 17 Nov 2025 18:00:19 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iommu/omap: Fix error handling in omap_iommu_probe_device
+To: Ma Ke <make24@iscas.ac.cn>, joro@8bytes.org, will@kernel.org,
+ t-kristo@ti.com, s-anna@ti.com
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, stable@vger.kernel.org
+References: <20251117033943.40749-1-make24@iscas.ac.cn>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20251117033943.40749-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 2025-11-10 at 18:32:21 +0100, Alexander Potapenko wrote:
->On Wed, Oct 29, 2025 at 8:05=E2=80=AFPM Maciej Wieczor-Retman
-><m.wieczorretman@pm.me> wrote:
->>
->> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
->>
->> The problem presented here is related to NUMA systems and tag-based
->> KASAN modes - software and hardware ones. It can be explained in the
->> following points:
->>
->>         1. There can be more than one virtual memory chunk.
->>         2. Chunk's base address has a tag.
->>         3. The base address points at the first chunk and thus inherits
->>            the tag of the first chunk.
->>         4. The subsequent chunks will be accessed with the tag from the
->>            first chunk.
->>         5. Thus, the subsequent chunks need to have their tag set to
->>            match that of the first chunk.
->>
->> Refactor code by moving it into a helper in preparation for the actual
->> fix.
->
->The code in the helper function:
->
->> +void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
->> +{
->> +       int area;
->> +
->> +       for (area =3D 0 ; area < nr_vms ; area++) {
->> +               kasan_poison(vms[area]->addr, vms[area]->size,
->> +                            arch_kasan_get_tag(vms[area]->addr), false)=
-;
->> +       }
->> +}
->
->is different from what was originally called:
->
->> -       for (area =3D 0; area < nr_vms; area++)
->> -               vms[area]->addr =3D kasan_unpoison_vmalloc(vms[area]->ad=
-dr,
->> -                               vms[area]->size, KASAN_VMALLOC_PROT_NORM=
-AL);
->> +       kasan_unpoison_vmap_areas(vms, nr_vms);
->
->, so the patch description is a bit misleading.
->
->Please also ensure you fix the errors reported by kbuild test robot.
+On 2025-11-17 3:39 am, Ma Ke wrote:
+> omap_iommu_probe_device() calls of_find_device_by_node() which
+> increments the reference count of the platform device, but fails to
+> decrement the reference count in both success and error paths. This
+> could lead to resource leakage and prevent proper device cleanup when
+> the IOMMU is unbound or the device is removed.
 
-Thanks for looking at the series! Yes, I'll fix these two patches, I've
-split them off into a separate 'fixes' series and I'm trying to make
-sure it's an acutal refactor this time.
+This is already fixed by Johan's comprehensive cleanup series:
+
+https://lore.kernel.org/linux-iommu/20251020045318.30690-1-johan@kernel.org/
+
+Thanks,
+Robin.
+
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 9d5018deec86 ("iommu/omap: Add support to program multiple iommus")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>   drivers/iommu/omap-iommu.c | 32 +++++++++++++++++++++-----------
+>   1 file changed, 21 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/iommu/omap-iommu.c b/drivers/iommu/omap-iommu.c
+> index 5c6f5943f44b..4df06cb09623 100644
+> --- a/drivers/iommu/omap-iommu.c
+> +++ b/drivers/iommu/omap-iommu.c
+> @@ -1637,6 +1637,7 @@ static struct iommu_device *omap_iommu_probe_device(struct device *dev)
+>   	struct omap_iommu *oiommu;
+>   	struct device_node *np;
+>   	int num_iommus, i;
+> +	int ret = 0;
+>   
+>   	/*
+>   	 * Allocate the per-device iommu structure for DT-based devices.
+> @@ -1663,28 +1664,26 @@ static struct iommu_device *omap_iommu_probe_device(struct device *dev)
+>   	for (i = 0, tmp = arch_data; i < num_iommus; i++, tmp++) {
+>   		np = of_parse_phandle(dev->of_node, "iommus", i);
+>   		if (!np) {
+> -			kfree(arch_data);
+> -			return ERR_PTR(-EINVAL);
+> +			ret = -EINVAL;
+> +			goto err_cleanup;
+>   		}
+>   
+>   		pdev = of_find_device_by_node(np);
+> +		of_node_put(np);
+>   		if (!pdev) {
+> -			of_node_put(np);
+> -			kfree(arch_data);
+> -			return ERR_PTR(-ENODEV);
+> +			ret = -ENODEV;
+> +			goto err_cleanup;
+>   		}
+>   
+>   		oiommu = platform_get_drvdata(pdev);
+>   		if (!oiommu) {
+> -			of_node_put(np);
+> -			kfree(arch_data);
+> -			return ERR_PTR(-EINVAL);
+> +			put_device(&pdev->dev);
+> +			ret = -EINVAL;
+> +			goto err_cleanup;
+>   		}
+>   
+>   		tmp->iommu_dev = oiommu;
+>   		tmp->dev = &pdev->dev;
+> -
+> -		of_node_put(np);
+>   	}
+>   
+>   	dev_iommu_priv_set(dev, arch_data);
+> @@ -1697,17 +1696,28 @@ static struct iommu_device *omap_iommu_probe_device(struct device *dev)
+>   	oiommu = arch_data->iommu_dev;
+>   
+>   	return &oiommu->iommu;
+> +
+> +err_cleanup:
+> +	for (tmp = arch_data; tmp < arch_data + i; tmp++) {
+> +		if (tmp->dev)
+> +			put_device(tmp->dev);
+> +	}
+> +	kfree(arch_data);
+> +	return ERR_PTR(ret);
+>   }
+>   
+>   static void omap_iommu_release_device(struct device *dev)
+>   {
+>   	struct omap_iommu_arch_data *arch_data = dev_iommu_priv_get(dev);
+> +	struct omap_iommu_arch_data *tmp;
+>   
+>   	if (!dev->of_node || !arch_data)
+>   		return;
+>   
+> -	kfree(arch_data);
+> +	for (tmp = arch_data; tmp->dev; tmp++)
+> +		put_device(tmp->dev);
+>   
+> +	kfree(arch_data);
+>   }
+>   
+>   static int omap_iommu_of_xlate(struct device *dev, const struct of_phandle_args *args)
 
 
