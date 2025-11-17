@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-194942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECDAC63316
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 10:36:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEAFEC63511
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 10:47:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0797236533B
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 09:31:21 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6ECC4355023
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 09:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98834326D6D;
-	Mon, 17 Nov 2025 09:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E54327218;
+	Mon, 17 Nov 2025 09:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="EEsgL4b3"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="FpxaDXUa"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324391E0B9C;
-	Mon, 17 Nov 2025 09:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A96E31B80C;
+	Mon, 17 Nov 2025 09:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763371873; cv=none; b=o8+3fn3VD1b23DefJM1fDQSuCK1VsriMLX3665fxq26Gj9RswtdeUh+6XfHEScJiEGAD32Ac47Szw885V5jgg5VVvlgjVVEcUbwwlI0S828+jVygJKtzFVUabRH9KVa/I8ZnXhEfViEYtdkPUGFLHmw1IDERLMZO9uTyGS7uEHM=
+	t=1763372232; cv=none; b=XqSwyj+qmL9GoEIg6mVjLn6pm3gCbxy8Qr1Z7mF74QHhkIPSON1XTfV4v2+18Dw1qsTL1gyBWoSc5VlvK72Snfs8Yje7lqi5yvGSICParW3nJ0AAJCagzix0GugwolvnlK9cFUyyeX+XAlufX06LuOXMGngc2bGG5fTttSCOsFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763371873; c=relaxed/simple;
-	bh=y31P2SamkKpy03nySQ8MxoFT9ExxfApysBgJZ+VMS6M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gfRz46O7IGQaHeS2ghgrr29JAhgCX7FSaxzz/BOwlE2lk0DG/Xd7ZAsWhKoS/4DkWSJNADno5j7J5YDy/ue458sC/8wUpDoJNIuiyYljnt1yqGpAM4b6zA0xBqlQu8tkVDoBuZNFV79Q+JPAhR1F99dw+oh7WDvbK/+wfjiMwfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=EEsgL4b3; arc=none smtp.client-ip=117.135.210.3
+	s=arc-20240116; t=1763372232; c=relaxed/simple;
+	bh=Q92BrVKG/TcJp4kH+GoH+0iOwFsjJAi6Tyf4hyLjiuI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DKt5El8sVf3eRlZDZifZcWloZB5+zK5dYwrai3GF/XG2s/ybZ31fQNJkB46EHX7d2EZwnWnJkL0Bfxuzw5ROHs6CzYIsrprCuYqhepEhEeWe9+GISWi95dQIi4zbmGQog7qPv5A1jBoxaPwJJmhE22CBPtzq/BRXVTy5RBAJ6+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=FpxaDXUa; arc=none smtp.client-ip=220.197.31.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=LZ
-	cR7Q4cpqHteOASNgU0SXmxsFcuej1Nddkk9obHzEc=; b=EEsgL4b36rrHCiJCoF
-	erxKTB+v6VTsim7kEFVrB4h2DCEAcxCBDOUQHLa2MR0JNuFgIrKmfkD2dqqUZiMc
-	N7F8xQZKVTrFRPFpvLOgWkVAPMTnV3DrGYYMrhu98oIqrkkE4MiFkELumI6ZLCPr
-	oSSZ6+u3HEP6rNUK8sNSPFxgw=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=ri
+	SKGNhSBuzjqm2tTvzWCi5vuUvvezhD9OfBXJt03xg=; b=FpxaDXUaRHsb7OzkD9
+	ed2j7X/o5tRH4+2o6lqeOOKjLU6iAH3hoG6Nxo3ujs5Si7HYmyN79/W3QB5F7JEF
+	/GSkOnDS+jVURvR0Eu5gW5LDJFojHuvIAO4WRgDmToXr9F1aCoLVJy8E4RNVZRBb
+	o/D/DqLsmvs/p4eunxjyw45zg=
 Received: from localhost (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgC3Geku6xppowwAEA--.2573S3;
-	Mon, 17 Nov 2025 17:30:23 +0800 (CST)
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wB3_I2L7Bpp20_mAg--.41016S3;
+	Mon, 17 Nov 2025 17:36:13 +0800 (CST)
 From: mambaxin@163.com
 To: dennis@kernel.org,
 	tj@kernel.org,
@@ -52,9 +52,9 @@ Cc: linux-mm@kvack.org,
 	Vlastimil Babka <vbabka@suse.cz>,
 	Filipe David Manana <fdmanana@suse.com>,
 	chenxin <chenxinxin@xiaomi.com>
-Subject: [PATCH 6.6.y] mm, percpu: do not consider sleepable allocations atomic
-Date: Mon, 17 Nov 2025 17:30:13 +0800
-Message-ID: <20251117093013.545253-1-mambaxin@163.com>
+Subject: [PATCH 6.12.y] mm, percpu: do not consider sleepable allocations atomic
+Date: Mon, 17 Nov 2025 17:36:04 +0800
+Message-ID: <20251117093604.551707-1-mambaxin@163.com>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,12 +63,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgC3Geku6xppowwAEA--.2573S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGryrXFy3KrW7urW7GFWfXwb_yoW5KFW8pF
-	ZYg3W0vFZ5Xrn3W34vy3Z2gw4Ygw4rWFW8GwnxWw18Zrs8Jr10gr92ya4YqFy8XF9YvF1Y
-	vrZ0qF9aqayUAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jneOJUUUUU=
-X-CM-SenderInfo: xpdputx0lqqiywtou0bp/1tbiJhkJCmka3GjFMQABsO
+X-CM-TRANSID:_____wB3_I2L7Bpp20_mAg--.41016S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGryrXFy3KrW7urW7GFWfXwb_yoW5KFW5pF
+	ZYg3W0vFZ5Xr93Ww1qva1Igw4Ygw4rWFW8GwnxWw18Zrs8Jr1jgr92ya4YqFy8WF90vF1Y
+	vrZ0qF9aqayjya7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j0g4fUUUUU=
+X-CM-SenderInfo: xpdputx0lqqiywtou0bp/xtbCwQ4-SWka7I4nSQAA3G
 
 From: Michal Hocko <mhocko@suse.com>
 
@@ -117,10 +117,10 @@ Signed-off-by: chenxin <chenxinxin@xiaomi.com>
  1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/mm/percpu.c b/mm/percpu.c
-index 38d5121c2b65..54c2988a7496 100644
+index fb0307723da6..44764720b6d8 100644
 --- a/mm/percpu.c
 +++ b/mm/percpu.c
-@@ -1734,7 +1734,7 @@ static void __percpu *pcpu_alloc(size_t size, size_t align, bool reserved,
+@@ -1758,7 +1758,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
  	gfp = current_gfp_context(gfp);
  	/* whitelisted flags that can be passed to the backing allocators */
  	pcpu_gfp = gfp & (GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN);
@@ -129,7 +129,7 @@ index 38d5121c2b65..54c2988a7496 100644
  	do_warn = !(gfp & __GFP_NOWARN);
  
  	/*
-@@ -2231,7 +2231,12 @@ static void pcpu_balance_workfn(struct work_struct *work)
+@@ -2203,7 +2203,12 @@ static void pcpu_balance_workfn(struct work_struct *work)
  	 * to grow other chunks.  This then gives pcpu_reclaim_populated() time
  	 * to move fully free chunks to the active list to be freed if
  	 * appropriate.
@@ -142,7 +142,7 @@ index 38d5121c2b65..54c2988a7496 100644
  	mutex_lock(&pcpu_alloc_mutex);
  	spin_lock_irq(&pcpu_lock);
  
-@@ -2242,6 +2247,7 @@ static void pcpu_balance_workfn(struct work_struct *work)
+@@ -2214,6 +2219,7 @@ static void pcpu_balance_workfn(struct work_struct *work)
  
  	spin_unlock_irq(&pcpu_lock);
  	mutex_unlock(&pcpu_alloc_mutex);
