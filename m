@@ -1,163 +1,151 @@
-Return-Path: <stable+bounces-194965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A511C64BF5
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 15:58:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC9FC64BC2
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 15:56:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7E23D35B732
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 14:55:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id A589529038
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 14:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3805732ED32;
-	Mon, 17 Nov 2025 14:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858523358B5;
+	Mon, 17 Nov 2025 14:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Iv/QG6cH"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="mO2AZ5vd"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95199221FDA;
-	Mon, 17 Nov 2025 14:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDE630F7F7
+	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 14:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763391334; cv=none; b=D5C/vTq8FzRt9ibR2Gk1iGuoKfKRCf9LxX0kSq5cTmGMvK31BWG4AwARSxyCwO44TJSIzxbwRM5gnvfwazQkANsjQrPe/TUAYXuzu64eZ0Tb/FihaP983ILAXWFYFbogYpVBuSFsLjbMzoWwlNHqRaHdgR9RewhvksY/wtWCikA=
+	t=1763391384; cv=none; b=kB8F9yoJ1PaXyjsJoehTpxmxCS2e+XrnSnOT680kJpen7GdXQEiD8sqmM2lyT3rREOuPQXr5Vi9tdeclCts9KhJ+QqhxSqHr+NEEa5mB6PWGqMOUa7zHbE7+3aC3uNwQLZdszLYZ6phvWV17tMXlPgFgLslPiQrWhyH5xOnOtBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763391334; c=relaxed/simple;
-	bh=auZ5IpUmby+BNPOWFEnPl3ltv0OBTPlou86Uelx6Z4Y=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=jjSMUorWZ9zzuXVcVo5WuucP7bmtbqGwwodEntgY+xRFg7sedy+GoOAIohGVD1cdBEdoO2L3TEgOIevOHMVxoz93uw8cCvJwp8UpzUomugRhHknNIFq5RJVtw+jabqzfCWbKvZp9ejclqmmaYqOrq3M5PkU0aDdUIvJP44BUhi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Iv/QG6cH; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1763391313; x=1763996113; i=markus.elfring@web.de;
-	bh=auZ5IpUmby+BNPOWFEnPl3ltv0OBTPlou86Uelx6Z4Y=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Iv/QG6cHkPJhHnwq+dCQYMJYnGX3jGqDWdRLVpzH0V1ka20NCMTcn6iUwbUdLUPs
-	 dEERN6CGrldO6fiMn783/npipoCoVuRdFjHnx9VjSfGLHtgywmXWLn7aNs0auu7/w
-	 RlEHUVe8TPdqR40W07lE8VgLIhFZ2fzBVwX0m87CFwFzB63rHK26YIXMcXrYhtdlj
-	 tiNCuD8+wPAj+LEBQ1rJbfQF90SKEwB4hoijOy9NWB1o9a60oX9UVdn+Fnw7iSXY7
-	 Cpe9O4hJpU72U4Err+qx4BvAlIjSO+NiJ5InaSKNPg90H3Z280G8L7mSDfInwEYlP
-	 59IScOtPqKMFsrcCzA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.92.218]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mm9Zc-1w36tV0xRg-00hG4n; Mon, 17
- Nov 2025 15:55:13 +0100
-Message-ID: <1352fa6d-dcd9-4df0-ad0b-11be9fee7493@web.de>
-Date: Mon, 17 Nov 2025 15:55:11 +0100
+	s=arc-20240116; t=1763391384; c=relaxed/simple;
+	bh=FUW7FF8r1W3YYL9VmYQ8ZQgxK2I4bKD568Bof2i6gC4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RJo7iNXRaB8D9WfbikX7yhAPLlEL0aYQKk/JLRwoSfiNDJJCWTU4y+NdbEO6q3Y3oBXS4GDIe9wkChEhmDU7P02zUbVhmi5QBBg4JnBNSdOYzLbpf8wpu6pLSNFir3wKTrQqx1r8jq1YXSf9Mpd0a+RzXPReHYojlVFNIhHBUp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=mO2AZ5vd; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4eddceccb89so49958111cf.0
+        for <stable@vger.kernel.org>; Mon, 17 Nov 2025 06:56:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1763391381; x=1763996181; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bDTMAjFTHZZURat4atsXS5dyJJHx/gXD6vpgW9NtTRs=;
+        b=mO2AZ5vdktTvwcCvqqpT8Vbtd0rYhceDoYeaOPGl2USzdCHvn/Gh7qetG7VRvfeQG8
+         SsTmsU2M92Oal7RLC5m/0cuhF2ffeTQqzisFEeFFw67Uy3ir2Qv74Cv93ebhA2X84i4f
+         uJ+Fqx7e7zaTHUEoT3sJXaiOA2lbql/9MpWsFLjre8CJx1Ob/1uc4hX5ARbfr6VCIDUr
+         MTx5TPHfcVXnjl6Oz7bDx6rIu0KeX5ic2ta0o4t00wSpsZXMo2PQBr5xjwDZ6PB5/e83
+         O91oSIhon2bSdcxTtJKHllEP3AtWSNLmPB/giJHIu+n5gYFNBkP0j4IPY1D1x/83RG1z
+         rj6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763391381; x=1763996181;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bDTMAjFTHZZURat4atsXS5dyJJHx/gXD6vpgW9NtTRs=;
+        b=JAIHy3vanM6KZ9DFQziSgixnROmzLjijIyNs0/TQ1gim7sworOYf1fiKbHn+5DHi8a
+         oicUURMgdlc2ax/xaqXo9zNbAIQiP4ikECCvvW7juD73PvXMVraIfzz0h1+g1jnJKYQv
+         93lz0019kkqo+u5Id12eHYRuI1g1S4mANmymS1Lw7NJNHew38oWhYQrtIJaiR8zVb2UG
+         DgWTRSUYIApFLmDCS3CmNpW60jocqNZx4JircnZF/eTHMwSW+FGZY3juPbetdjtFUJjj
+         X2vwIe3/YjRUXMoZKqPeMfVuj9C6/TDeR0TB6yYFMmq3xk+LnsvWC6pAZHfGEEH/5Ln3
+         ilng==
+X-Forwarded-Encrypted: i=1; AJvYcCXyv6GxWdj9oyDaAIMZVSZzoBOIHJzvwhbLCUio7GYt3Sovdoe56eizQ90o+gWMh+DCDfXDPX8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyz5xEy5eEoWszGJEHkMnlx7Cp7zEgYsZZsDrC05icOe9d0qMGh
+	z2hHHKE5zxHdFLbx6HPvX2q69cFHVJytBHU+gmQ965XIHuyI1xet1zewQJUUhuAusEyrMqpHRL7
+	9jHV0qQ==
+X-Gm-Gg: ASbGnctzvztuRVTZyZ3Hh4w8kjT4w2vN+Ur299cm7jy/yNKiLUUYYMDeOGskuZDtTk4
+	ZkT8VKvQflG8UPa9DIbfm9+4eCe55DnlhK/1JENgFFgCC9JTRdvaioyaxX/nO3+QUUE+YR9wn/l
+	vMxxa9sE4kv7Yruv9XfwR3WXfmkPy7y+E3Xjs0qJtuRUNuDWqE2jTPOUhTlAApyw3vzAtseslNj
+	XfiL0oJjVcZj8yqZrjD/2lWMXFuq+Inj0yNB8Y7Z3LnWRBB+QBHUBm1k3gTkHoX2qmN+/clwT0E
+	bEdqbHqzd01W95+LJwKVWwRFwCpG4jJunDHXrRHnL8CN5M7o7pPyWcejd7kQc1cBRhlvLmdZgRK
+	drPCHiNPZ4/E9TAcqVmAWDHFq3p7UdOB8fpCiCHZhQE/1tqsvPn7hRSMv+hIgqMYwYfapuR6Ksm
+	1tXkkDAt5QjgdEE9hHkO+J7eOMJCDsHQ==
+X-Google-Smtp-Source: AGHT+IEA4s9TEMA/DC/kZYt/NdkfOC8lgCBVVGJx2NH4cSc3zU3y7yNtT3OeFcpvLBqvdCfUiBKB3w==
+X-Received: by 2002:ac8:5805:0:b0:4ee:1e82:e3f4 with SMTP id d75a77b69052e-4ee1e82e6a9mr56880141cf.64.1763391381300;
+        Mon, 17 Nov 2025 06:56:21 -0800 (PST)
+Received: from rowland.harvard.edu ([140.247.181.15])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ede88799bbsm84283071cf.34.2025.11.17.06.56.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Nov 2025 06:56:20 -0800 (PST)
+Date: Mon, 17 Nov 2025 09:56:18 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Ma Ke <make24@iscas.ac.cn>, Vladimir Zapolskiy <vz@mleia.com>,
+	piotr.wojtaszczyk@timesys.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stigge@antcom.de,
+	linux-usb@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] USB: ohci-nxp: Fix error handling in ohci-hcd-nxp
+ driver
+Message-ID: <9834be77-29e0-4a65-93f6-b61bf724f922@rowland.harvard.edu>
+References: <20251117013428.21840-1-make24@iscas.ac.cn>
+ <4fe5b63e-072c-419c-a1b9-bc21aec7e083@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: make24@iscas.ac.cn, dmaengine@vger.kernel.org,
- =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>,
- Vinod Koul <vkoul@kernel.org>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20251117082532.918-1-make24@iscas.ac.cn>
-Subject: Re: [PATCH] dmaengine: ti-dma-crossbar: Fix error handling in
- ti_am335x_xbar_route_allocate
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20251117082532.918-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:vjWcitRxeRGkSI5R+BgoBggalaJAnersi+mKhocfFdQKuhga51I
- F0iA8lArFHQ3YJgS3za22pnj20SwcFK79JnDmonoDIAPmrhX0M+oxrUyflg3rFk7pvM8QkY
- 8Ykl2cFxYey1k2mLYYpjLTq2+S+4o50EciG8zr8yOazVi6CZy4McTAyBaarmZJF0OZ8uxoZ
- vkig88d+McFFt3vn8bgaw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ABaRC52M5a0=;0qwWkMip+kL95mbpMSQm3h+s4rJ
- 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
- XkbtNNChkdWjWAxil6Z6c7znPh/99EFNrPj95B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4fe5b63e-072c-419c-a1b9-bc21aec7e083@app.fastmail.com>
 
-> Add proper put_device() calls in all exit paths to fix the reference
-> count imbalance.
+On Mon, Nov 17, 2025 at 09:53:21AM +0100, Arnd Bergmann wrote:
+> On Mon, Nov 17, 2025, at 02:34, Ma Ke wrote:
+> > When obtaining the ISP1301 I2C client through the device tree, the
+> > driver does not release the device reference in the probe failure path
+> > or in the remove function. This could cause a reference count leak,
+> > which may prevent the device from being properly unbound or freed,
+> > leading to resource leakage.
+> >
+> > Fix this by storing whether the client was obtained via device tree
+> > and only releasing the reference in that case.
+> >
+> > Found by code review.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 73108aa90cbf ("USB: ohci-nxp: Use isp1301 driver")
+> > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> 
+> The patch looks fine in principle, however I don't see any way
+> this driver would be probed without devicetree, and I think
+> it would be better to remove all the traces of the pre-DT
+> logic in it.
+> 
+> The lpc32xx platform was converted to DT back in 2012, so
+> any reference to the old variant is dead code. Something like
+> the patch below should work here.
+> 
+> Other thoughts on this driver, though I I'm not sure anyone
+> is going to have the energy to implement these:
+> 
+>  - the reference to isp1301_i2c_client should be kept in
+>    the hcd private data, after allocating a structure, by
+>    setting driver->hcd_priv_size.
+>  - instead of looking for the i2c device, I would suppose
+>    it should look for a usb_phy instead, as there is no
+>    guarantee on the initialization being ordered at the
+>    moment.
+>  - instead of a usb_phy, the driver should probably use
+>    a generic phy (a much larger rework).
 
-How do you think about to apply the attribute =E2=80=9C__free(put_device)=
-=E2=80=9D
-in this function implementation?
-https://elixir.bootlin.com/linux/v6.18-rc5/source/include/linux/device.h#L=
-1183
+Considering what the comments at the start of the file say:
 
-Regards,
-Markus
+ * Currently supported OHCI host devices:
+ * - NXP LPC32xx
+
+ * NOTE: This driver does not have suspend/resume functionality
+ * This driver is intended for engineering development purposes only
+
+I wonder whether any existing systems actually use this driver.
+
+Alan Stern
 
