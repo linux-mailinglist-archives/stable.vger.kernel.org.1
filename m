@@ -1,188 +1,100 @@
-Return-Path: <stable+bounces-194923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC5BC62127
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 03:15:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 116A4C6214F
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 03:18:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 66A144E5E70
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 02:15:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C60564E68D3
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 02:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BFC24EAB1;
-	Mon, 17 Nov 2025 02:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E661E3DE5;
+	Mon, 17 Nov 2025 02:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RJ0rmmMj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yua3qNpw"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D962459E5;
-	Mon, 17 Nov 2025 02:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF72156677
+	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 02:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763345705; cv=none; b=OEo4+K4ucADREg4rQOTLGb654Zu1q8EgwdiXDVCKIX5py41Qps+I4tdy53YnEd9JN9jY/XqaknaB4MfqMeiZvw9oWwTMn93UfD1P0gUbwqu11x5ymFpyOy4tY181SfeW4BYo4o7MyWOdJ0dLS3DMBliX44iFbvv8L2YLH9+IP2I=
+	t=1763345863; cv=none; b=lRPoBJip97tpKxGd7BkjTXyzmUvxhWHDrOLy7NG2niRPF5JDIUm1onEDugrBZGHoUAz0l9hB+47n17V92BvDU9B4ggFBNconIDcg14q8fJKbM4N+GkHtz3BtZtIPLP7IEszutvfLid1GpSshq2QIlc7WIgtpFRbosmawQoa9PB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763345705; c=relaxed/simple;
-	bh=Rx900UmhktNpwXcg60MQFit86edv3x5igmZ3sZFFEg0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GZyww1Ha73Jefh/7o3DrFAT9ZHfBsk22WwYrLgETyYBlxxslYf3kEm7WvK+4u1CvM8o7NTIrrYsYMm1gtKJB8rW7KbITaYE/ovRbi6UuoyBIx9LrjK1xNSQGEhbyf3YZCsQozelZIMd2cUI/sRv3jm21VJyoZlEXSuMEf10x9nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RJ0rmmMj; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AGMu98n2175237;
-	Mon, 17 Nov 2025 02:14:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=3oJmDOKHYr+
-	dxjccUVFiWGkGsLVRzUKp7PTRUBXg3CU=; b=RJ0rmmMjmV6isQsADkWOdCigZih
-	rxR7iuULu2LNfpiBZTeIdmnYD+QpJdT0fAmu8JkgPfCnf7qnI1gJdjxIillAF+ft
-	YeJ203E5HGOVTQ4U/Cl9x33/1lCaJXitOisxPdvJkb+xoctNufOVyJrJu3cTt7MG
-	ffKwNCeQKSmL0l7NO3snQSe0KNnJbwBtIyA//tSfgb5ijeZfNXfv+NArIyGyX0JD
-	UyF/4Mbe6R4rZz53Kxy+1slV8LjQ5Gu1Gi4h3w+6M+va0xuhpeElwA1CXrE3kdKa
-	75nomD0BI3s1obwt77Zd0tIaADTeN0O1AYvuiveKCdiZSB8wPsfDMs1cx3Q==
-Received: from aptaippmta02.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4aejgcb1jy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Nov 2025 02:14:58 +0000 (GMT)
-Received: from pps.filterd (APTAIPPMTA02.qualcomm.com [127.0.0.1])
-	by APTAIPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AH2EuuY026317;
-	Mon, 17 Nov 2025 02:14:56 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 4aejkkwn4q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Nov 2025 02:14:56 +0000
-Received: from APTAIPPMTA02.qualcomm.com (APTAIPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AH2EuRD026307;
-	Mon, 17 Nov 2025 02:14:56 GMT
-Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
-	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 5AH2Et6f026304
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Nov 2025 02:14:56 +0000
-Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
-	id 1120F23499; Mon, 17 Nov 2025 10:14:55 +0800 (CST)
-From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>, Marcel Holtmann <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-kernel@vger.kernel.org, cheng.jiang@oss.qualcomm.com,
-        quic_chezhou@quicinc.com, wei.deng@oss.qualcomm.com,
-        shuai.zhang@oss.qualcomm.com, stable@vger.kernel.org
-Subject: [PATCH v3 1/1] Bluetooth: btqca: Add WCN6855 firmware priority selection feature
-Date: Mon, 17 Nov 2025 10:14:29 +0800
-Message-Id: <20251117021429.711611-2-shuai.zhang@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251117021429.711611-1-shuai.zhang@oss.qualcomm.com>
-References: <20251117021429.711611-1-shuai.zhang@oss.qualcomm.com>
+	s=arc-20240116; t=1763345863; c=relaxed/simple;
+	bh=kJ7rArdQZhc3YqIOZm65TkKxb2rNJCi6cN+oqBOmiS8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=TFnfc+RqvSUdowoH8knJJdFGIHNT5h2gbXwa/6j+fZTBOsJs+4EuEmxNVtT1ihPE2NjGuiRLr6Brr/2zVgbCJ3hCH0aVseakiHHhSh0yLCaM5n58YFFDXn8Yx9x/9I24N2T2xZVjH6j6qV+LQyzSffWHTN0eNvCDxRbAsf+/Stg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yua3qNpw; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763345861; x=1794881861;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=kJ7rArdQZhc3YqIOZm65TkKxb2rNJCi6cN+oqBOmiS8=;
+  b=Yua3qNpwfKbdJtzotiP67qDAruUSxSi3i4tjs1DSje00xNPYNG+7zA4H
+   XN6/rWxUBCOxZ6n7LtXgK+SDLEoxPQe5U9fb+tuwsriNTxyy1MHMat9PH
+   Axn0yu/GcfKB1XrBIOxntgiSs47I+Z8MmF9NcOE1OlwlxSLl1Eeu0cAPs
+   FhQe+oreCxlRHKUNtjehYmhMWxOVNlsq/tEUfrN/qebyYToALOf8XshZg
+   oq8mwN0rAfMP3Usrs8S3D/fNFYxSySViInsJ/rzbqjDLuCgsX2NGuoL8u
+   9MxZdqHGMbOIP4OsLPNSHp2Esu53FbTzIzdRvTEywyETwsN/ENYZ0o1E6
+   A==;
+X-CSE-ConnectionGUID: UfYw372SShuhYwlQM+IIAg==
+X-CSE-MsgGUID: VG9R1VINS2+A+4lszhFfiQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="75660947"
+X-IronPort-AV: E=Sophos;i="6.19,310,1754982000"; 
+   d="scan'208";a="75660947"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2025 18:17:40 -0800
+X-CSE-ConnectionGUID: XQ4FJphvTbiz1PszRElAAQ==
+X-CSE-MsgGUID: X6qgFbeUR/G7iHgH4VLixA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,310,1754982000"; 
+   d="scan'208";a="195264636"
+Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 16 Nov 2025 18:17:38 -0800
+Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vKooC-00004t-29;
+	Mon, 17 Nov 2025 02:17:36 +0000
+Date: Mon, 17 Nov 2025 10:16:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v3 1/1] Bluetooth: btqca: Add WCN6855 firmware priority
+ selection feature
+Message-ID: <aRqFmo4DCWLcgeyp@3f7c4ed3526d>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 4FBA6FywFkPioedwfWKUqW-vuMGak-Qy
-X-Proofpoint-GUID: 4FBA6FywFkPioedwfWKUqW-vuMGak-Qy
-X-Authority-Analysis: v=2.4 cv=PJECOPqC c=1 sm=1 tr=0 ts=691a8522 cx=c_pps
- a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8
- a=mafMjTZoDSqqSwhiDToA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE3MDAxNiBTYWx0ZWRfX4TsnzIx6F8zX
- w1aQTMV+zyYkdbLMlX/LeuTj3KaAD1LiI3U0dIRP2bkqOPVpmhfMgGvksQNRA1X0UKfjpyfRyzU
- pOXvbcCAI3hZpSUXupkhIL3mE7tVIzIOkCP+R16TLW4N0sS7C9K9TLWZKJhL+mQGqYVSFgAZ5mI
- wLceaLe8SttxoFLv0d1g8wQm3ZUn9mOUWoFr1wqn8E0fx9JnHSTyEI/GGUD/XF3nl08tvA93NOW
- 3BDPAiGWVP8Fkv3PHeH0v4do8fyhmSrKKU/L+cPgXTyCCpnquCSamtpR+itnT+NVZ/p82LPUvLC
- pO3amjFLmaa0e9XlzbNtb9r5KIwZ+4FbscMyllvfqnHZRU4iP4vnpJbO1z9o6QU3WO7XXQjUKtI
- YF7+1BmzhrtHyiWkPrqC2MqkjsmW2Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-17_01,2025-11-13_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 phishscore=0
- bulkscore=0 impostorscore=0 suspectscore=0 priorityscore=1501 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511170016
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251117021429.711611-2-shuai.zhang@oss.qualcomm.com>
 
-Historically, WCN685x and QCA2066 shared the same firmware files.
-Now, changes are planned for the firmware that will make it incompatible
-with QCA2066, so a new firmware name is required for WCN685x.
+Hi,
 
-Test Steps:
- - Boot device
- - Check the BTFW loading status via dmesg
+Thanks for your patch.
 
-Sanity pass and Test Log:
-QCA Downloading qca/wcnhpbftfw21.tlv
-Direct firmware load for qca/wcnhpbftfw21.tlv failed with error -2
-QCA Downloading qca/hpbftfw21.tlv
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
----
- drivers/bluetooth/btqca.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index 7c958d606..8e0004ef7 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -847,8 +847,12 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 				 "qca/msbtfw%02x.mbn", rom_ver);
- 			break;
- 		case QCA_WCN6855:
-+			/* Due to historical reasons, WCN685x chip has been using firmware
-+			 * without the "wcn" prefix. The mapping between the chip and its
-+			 * corresponding firmware has now been corrected.
-+			 */
- 			snprintf(config.fwname, sizeof(config.fwname),
--				 "qca/hpbtfw%02x.tlv", rom_ver);
-+				 "qca/wcnhpbtfw%02x.tlv", rom_ver);
- 			break;
- 		case QCA_WCN7850:
- 			snprintf(config.fwname, sizeof(config.fwname),
-@@ -861,6 +865,13 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 	}
- 
- 	err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
-+
-+	if (!rampatch_name && err < 0 && soc_type == QCA_WCN6855) {
-+		snprintf(config.fwname, sizeof(config.fwname),
-+			 "qca/hpbtfw%02x.tlv", rom_ver);
-+		err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
-+	}
-+
- 	if (err < 0) {
- 		bt_dev_err(hdev, "QCA Failed to download patch (%d)", err);
- 		return err;
-@@ -923,7 +934,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 		case QCA_WCN6855:
- 			qca_read_fw_board_id(hdev, &boardid);
- 			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
--						  "hpnv", soc_type, ver, rom_ver, boardid);
-+						  "wcnhpnv", soc_type, ver, rom_ver, boardid);
- 			break;
- 		case QCA_WCN7850:
- 			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
-@@ -936,6 +947,13 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 	}
- 
- 	err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
-+
-+	if (!firmware_name && err < 0 && soc_type == QCA_WCN6855) {
-+		qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
-+					  "hpnv", soc_type, ver, rom_ver, boardid);
-+		err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
-+	}
-+
- 	if (err < 0) {
- 		bt_dev_err(hdev, "QCA Failed to download NVM (%d)", err);
- 		return err;
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v3 1/1] Bluetooth: btqca: Add WCN6855 firmware priority selection feature
+Link: https://lore.kernel.org/stable/20251117021429.711611-2-shuai.zhang%40oss.qualcomm.com
+
 -- 
-2.34.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
