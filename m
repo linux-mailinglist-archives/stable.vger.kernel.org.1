@@ -1,55 +1,65 @@
-Return-Path: <stable+bounces-194969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2284C64D5F
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:18:20 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 619F8C64DBF
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:24:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 28159242B1
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 15:18:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4D78C4E65D8
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 15:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CBCF336EE6;
-	Mon, 17 Nov 2025 15:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57AED33B970;
+	Mon, 17 Nov 2025 15:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="PgBU8UWM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kw7IEkrz"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B177D285C99;
-	Mon, 17 Nov 2025 15:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E60339714;
+	Mon, 17 Nov 2025 15:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763392697; cv=none; b=nUfaC2uw0IsEih/AZLEHRKrus/4C3QGoHsGt+IGvH/cD0wGWkQRWCvcDSD+p21naRcyR4op6/cVjMfq5lFtVyv1jpjKvI923y6i45DwoGWjXME715TsjKfznhowhxtyzGVyvAA+NcStWOGZ+ZwDS/09kgq+4mysPyDxvhU2DHHk=
+	t=1763393028; cv=none; b=fcYONBZ2OC08pFFQt3k9gfLl7IrtmHl1DPFdvGymgl2BKVqz29JF2yi3fcg88SbTbWgBvgBL05CUn7cus0Ymf66QuqjppN56T2F0x8EyDlEOZN2XQ393ZWd1AIRkFKIm6xhovpdiWF499VXlcTqEyfMV8EzAr8jybJMg/fAOr9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763392697; c=relaxed/simple;
-	bh=2W5Rbwxqtq0XX/ZesOB9631VZ2GDsGyw2Vnd98tuWE4=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=gDWoYkl8MtAkzPt9aVT+OHyGuYB3L4ahr+WSKkeY4sK7gbhHoSzYfb99a9VgHPkmpdrqAURq5h1/B7g5gXHlxf/V56FTKVttaK/cm5L9+xoRLMEQLr7NqrZPhunydJQ4g7CDXwFnObbD5FOT9i9aeuBc4uHeu70iSLoxQD+L2Zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=PgBU8UWM; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1763392684; x=1763997484; i=markus.elfring@web.de;
-	bh=2W5Rbwxqtq0XX/ZesOB9631VZ2GDsGyw2Vnd98tuWE4=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=PgBU8UWMHUapoEaBcEFOAMPokRP28jmc8OfvyNFRUAE3ZwCjiNe33AwbLMnQc69k
-	 OBtymeYT2a8kVyITh9t7PudhTNCGZOBCgWduxXmUqKDWfkkf9glhUJfW6KcsY4pS0
-	 GMEI//jJaG+VkZeNBlBAySYTz++fnbBzX5mn0XoAwRs9Le3ivMDZPodz0XflBgydO
-	 RTuhLQm6AbmGpltXwVE0dd4F7P2ncFsz/iCrAjNuviFB7SZ7Tm847Znt9OoFABnW+
-	 4hoN/If/L9omyEJT7NBeGSPKGFx0UI6OcRbjsoJxwtBNpIZK3Iq1jOc6im2joIXCD
-	 u83ni5oypeJYo/BI3A==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.92.218]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MSIF2-1vjEtn3Agi-00QqYM; Mon, 17
- Nov 2025 16:18:03 +0100
-Message-ID: <1822671a-5f10-43b1-b678-04f47752cd29@web.de>
-Date: Mon, 17 Nov 2025 16:18:01 +0100
+	s=arc-20240116; t=1763393028; c=relaxed/simple;
+	bh=R207KvhirYCVpdy19bCCIuuklsmD3ljT/ayIsEAqa2w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ds8EAdLWY/2ykrLnAcWDiW349quCId6LnkKuLusIUiRoE6lk+EsJkvuPtYvEKgFnheo/K514OLZ361Nu43a9fXhRBSooNsathjRhNJ5mOBferycpckuGVUP4UWYlObSUMQrtZDMFTLtHITyRcYorVNoMWK3Zo2v7B70inRFfpGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kw7IEkrz; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763393027; x=1794929027;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=R207KvhirYCVpdy19bCCIuuklsmD3ljT/ayIsEAqa2w=;
+  b=kw7IEkrzOyA+o331n0t0fePw1zC7m7REi450SGm9ViLOmpOfwqrmNZks
+   USFvoJ9vYd/srmsSOqKQERbht0a7HTdMGzIY/uY2t+/AVLNUtWTTwOUGt
+   QoaqE/Bw8vg9xd7X+B+cxp/i1LhjyryAnv9ZwZf2c1kFzp98827TpCVUv
+   UnWjixsh6avycKcIgOWHpRkeEyCP7Q/S8TzNRZ9MlhUapNvZPToQzulQ9
+   tO/leOgzrhd9zoy+C85cIE3RTvQhBrHwMcz8JB2m3bPs1tUspFQftvy2a
+   7otkzcfguQxAkAPNkF1AJAmdV6nixShKr7vbakshyIWxmDvr2ZYHEv3AE
+   w==;
+X-CSE-ConnectionGUID: EEKVZn5uTEy9G92ZJW5Skw==
+X-CSE-MsgGUID: ocV1gfNLQKe8f/x/ZILqzg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="65328016"
+X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
+   d="scan'208";a="65328016"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 07:23:46 -0800
+X-CSE-ConnectionGUID: s994fjxCQL20ZCVPvdXqAw==
+X-CSE-MsgGUID: Ob3lUQMhTKKoiLWoc9Ur0w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
+   d="scan'208";a="190636817"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO [10.245.244.255]) ([10.245.244.255])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 07:23:44 -0800
+Message-ID: <d25feb0d-2ede-4722-a499-095139870c96@linux.intel.com>
+Date: Mon, 17 Nov 2025 17:23:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,114 +67,66 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: make24@iscas.ac.cn, dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
- David Airlie <airlied@gmail.com>, Edmund Dea <edmund.j.dea@intel.com>,
- Sam Ravnborg <sam@ravnborg.org>, Simona Vetter <simona@ffwll.ch>
-References: <20251117075708.37414-1-make24@iscas.ac.cn>
-Subject: Re: [PATCH] drm/kmb: Fix error handling in kmb_probe
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20251117075708.37414-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:OUUHpJXTJ8/RDPKfSJDgjDJ46e2ecf6AeZCclxibDQKGRavmXng
- t6eDvQQde/v/+MSqbIpB5wzVEcCIPB3fWzwCCbe11mu7KWxbUQ+HS3hzeMCOd5YV/HluHJL
- eucwIFd0VkEcnjQxc4OWv05xItxHIOxk18hEo6m2jm0Dmd8IaJl6kNM09VIxosDLUNd2DB4
- x1w0D14rWVn5NO0qHAt2g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:KIgYaJpVs54=;PsBBNn2VcoOQ8TJLSVKzACU7/93
- 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
+Subject: Re: [PATCH v1] xhci: dbgtty: fix device unregister
+To: =?UTF-8?Q?=C5=81ukasz_Bartosik?= <ukaszb@chromium.org>,
+ Mathias Nyman <mathias.nyman@intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org, stable@vger.kernel.org
+References: <20251114150147.584150-1-ukaszb@google.com>
+Content-Language: en-US
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+In-Reply-To: <20251114150147.584150-1-ukaszb@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-=E2=80=A6
-> Add put_device() in all code paths where dsi_pdev is no longer needed,
-> including error paths and the normal removal path.
+Hi Łukasz
 
-How do you think about to apply the attribute =E2=80=9C__free(put_device)=
-=E2=80=9D?
-https://elixir.bootlin.com/linux/v6.18-rc5/source/include/linux/device.h#L=
-1183
+On 11/14/25 17:01, Łukasz Bartosik wrote:
+> From: Łukasz Bartosik <ukaszb@chromium.org>
+> 
+> When DbC is disconnected then xhci_dbc_tty_unregister_device()
+> is called. However if there is any user space process blocked
+> on write to DbC terminal device then it will never be signalled
+> and thus stay blocked indifinitely.
+> 
+> This fix adds a tty_hangup() call in xhci_dbc_tty_unregister_device().
+> The tty_hangup() wakes up any blocked writers and causes subsequent
+> write attempts to DbC terminal device to fail.
 
-By the way:
-I propose to avoid duplicate of_node_put() calls in this function implemen=
-tation.
+Nice catch
 
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+> Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+> ---
+>   drivers/usb/host/xhci-dbgtty.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
+> index d894081d8d15..6ea31af576c7 100644
+> --- a/drivers/usb/host/xhci-dbgtty.c
+> +++ b/drivers/usb/host/xhci-dbgtty.c
+> @@ -535,6 +535,13 @@ static void xhci_dbc_tty_unregister_device(struct xhci_dbc *dbc)
+>   
+>   	if (!port->registered)
+>   		return;
+> +	/*
+> +	 * Hang up the TTY. This wakes up any blocked
+> +	 * writers and causes subsequent writes to fail.
+> +	 */
+> +	if (port->port.tty)
+> +		tty_hangup(port->port.tty);
 
-Would it be helpful to append parentheses to the function name in the summ=
-ary phrase?
+I'm not a tty expert but would the tty_port_tty_vhangup(&port->port) make
+sense here?
 
-Regards,
-Markus
+No need to check for port->port.tty, and it does all the needed locking and
+tty reference counting.
+
+It is also synchronous which should probably be ok as this is either called
+from a delayed workqueue, during suspend, or remove()
+
+Thanks
+Mathias
 
