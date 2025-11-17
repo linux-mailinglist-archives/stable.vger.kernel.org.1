@@ -1,75 +1,170 @@
-Return-Path: <stable+bounces-194968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF31C64D69
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:18:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2284C64D5F
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 16:18:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C233634ED29
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 15:12:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 28159242B1
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 15:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E38338928;
-	Mon, 17 Nov 2025 15:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CBCF336EE6;
+	Mon, 17 Nov 2025 15:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XrkD7ePQ"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="PgBU8UWM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.15.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540123385BC
-	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 15:11:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B177D285C99;
+	Mon, 17 Nov 2025 15:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763392318; cv=none; b=FE9xfeqfmDhwo6GWioo6mBoht/9dAh4z5pCN5QvvuWyeh/QG78B9s3K0Sbo9Bikcrp1i6FKfmu1lr5XKETJ1i6ZFCW5LtgiT8gcRcHTTdQRVBaiQ6IT1M3ScUC0S9Od1FZ138ynKI09GdQEDnA+QSGnypb3h8qA1zDieF0uVCLM=
+	t=1763392697; cv=none; b=nUfaC2uw0IsEih/AZLEHRKrus/4C3QGoHsGt+IGvH/cD0wGWkQRWCvcDSD+p21naRcyR4op6/cVjMfq5lFtVyv1jpjKvI923y6i45DwoGWjXME715TsjKfznhowhxtyzGVyvAA+NcStWOGZ+ZwDS/09kgq+4mysPyDxvhU2DHHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763392318; c=relaxed/simple;
-	bh=N+xjMv3WWIgvDqubtkWQsnb9EEn1d7Dx3y4amduFMa8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I4fFzKFy9tHlywH3u4qyNtyF520qIYTnufntAR+cpeX92cjueaTMrlH7BtPyOOTCUh1Bd+mJ+uHN+OQAGX+LW7HMJVRgvOg1e+IiVn6MYFudmiSJ/+HU5VuYSbBcC+7g6CRNlKT7BdS0pIqufAYFtWiL0NBPyq7jz0wXDYB8KC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XrkD7ePQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACB9C19422;
-	Mon, 17 Nov 2025 15:11:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763392318;
-	bh=N+xjMv3WWIgvDqubtkWQsnb9EEn1d7Dx3y4amduFMa8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XrkD7ePQZTJXYVHbx1A7crQGR6nONcwDAn1BvTRNBNQU/IHYd3yjdzGUrjMavVSHB
-	 0roH9stnTWtH0mTXESU9VdiLgHB8PKasAvYOzJds01F696s4nlyZL7gS1uDwQ3fjGA
-	 EZSYeOTDMjeURZ0Digu6Yuxsbtb1sXieSYceYkN+/L07jVrb4HHN49V21u/3JEYWYK
-	 BEnIHPWPEAVnu8yWw+bvADtWDE2rD+whRAnG6GdQzxbrjFfKKzZPkbHKyqQlzWlJlv
-	 nxh2Fvjb8tarIN9avgS11Vjwh1+0nwIGUDkzZDD7f65bE8RRLi2NZBs2wYxTUxOK6Y
-	 v1c5F3REIRQ/w==
-From: Sasha Levin <sashal@kernel.org>
-To: Jakub Acs <acsjakub@amazon.de>
-Cc: stable@vger.kernel.org,
-	vbabka@suse.cz,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	SeongJae Park <sj@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Peter Xu <peterx@redhat.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 5.4.y] mm/ksm: fix flag-dropping behavior in ksm_madvise
-Date: Mon, 17 Nov 2025 10:11:55 -0500
-Message-ID: <20251117151155.3878553-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251107121920.19211-1-acsjakub@amazon.de>
-References: <20251107121920.19211-1-acsjakub@amazon.de>
+	s=arc-20240116; t=1763392697; c=relaxed/simple;
+	bh=2W5Rbwxqtq0XX/ZesOB9631VZ2GDsGyw2Vnd98tuWE4=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=gDWoYkl8MtAkzPt9aVT+OHyGuYB3L4ahr+WSKkeY4sK7gbhHoSzYfb99a9VgHPkmpdrqAURq5h1/B7g5gXHlxf/V56FTKVttaK/cm5L9+xoRLMEQLr7NqrZPhunydJQ4g7CDXwFnObbD5FOT9i9aeuBc4uHeu70iSLoxQD+L2Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=PgBU8UWM; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1763392684; x=1763997484; i=markus.elfring@web.de;
+	bh=2W5Rbwxqtq0XX/ZesOB9631VZ2GDsGyw2Vnd98tuWE4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=PgBU8UWMHUapoEaBcEFOAMPokRP28jmc8OfvyNFRUAE3ZwCjiNe33AwbLMnQc69k
+	 OBtymeYT2a8kVyITh9t7PudhTNCGZOBCgWduxXmUqKDWfkkf9glhUJfW6KcsY4pS0
+	 GMEI//jJaG+VkZeNBlBAySYTz++fnbBzX5mn0XoAwRs9Le3ivMDZPodz0XflBgydO
+	 RTuhLQm6AbmGpltXwVE0dd4F7P2ncFsz/iCrAjNuviFB7SZ7Tm847Znt9OoFABnW+
+	 4hoN/If/L9omyEJT7NBeGSPKGFx0UI6OcRbjsoJxwtBNpIZK3Iq1jOc6im2joIXCD
+	 u83ni5oypeJYo/BI3A==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.92.218]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MSIF2-1vjEtn3Agi-00QqYM; Mon, 17
+ Nov 2025 16:18:03 +0100
+Message-ID: <1822671a-5f10-43b1-b678-04f47752cd29@web.de>
+Date: Mon, 17 Nov 2025 16:18:01 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: make24@iscas.ac.cn, dri-devel@lists.freedesktop.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
+ David Airlie <airlied@gmail.com>, Edmund Dea <edmund.j.dea@intel.com>,
+ Sam Ravnborg <sam@ravnborg.org>, Simona Vetter <simona@ffwll.ch>
+References: <20251117075708.37414-1-make24@iscas.ac.cn>
+Subject: Re: [PATCH] drm/kmb: Fix error handling in kmb_probe
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20251117075708.37414-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:OUUHpJXTJ8/RDPKfSJDgjDJ46e2ecf6AeZCclxibDQKGRavmXng
+ t6eDvQQde/v/+MSqbIpB5wzVEcCIPB3fWzwCCbe11mu7KWxbUQ+HS3hzeMCOd5YV/HluHJL
+ eucwIFd0VkEcnjQxc4OWv05xItxHIOxk18hEo6m2jm0Dmd8IaJl6kNM09VIxosDLUNd2DB4
+ x1w0D14rWVn5NO0qHAt2g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:KIgYaJpVs54=;PsBBNn2VcoOQ8TJLSVKzACU7/93
+ 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
 
-Subject: mm/ksm: fix flag-dropping behavior in ksm_madvise
-Queue: 5.4
+=E2=80=A6
+> Add put_device() in all code paths where dsi_pdev is no longer needed,
+> including error paths and the normal removal path.
 
-Thanks for the backport!
+How do you think about to apply the attribute =E2=80=9C__free(put_device)=
+=E2=80=9D?
+https://elixir.bootlin.com/linux/v6.18-rc5/source/include/linux/device.h#L=
+1183
+
+By the way:
+I propose to avoid duplicate of_node_put() calls in this function implemen=
+tation.
+
+
+Would it be helpful to append parentheses to the function name in the summ=
+ary phrase?
+
+Regards,
+Markus
 
