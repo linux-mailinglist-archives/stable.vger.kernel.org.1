@@ -1,125 +1,156 @@
-Return-Path: <stable+bounces-194941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79CE6C632F8
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 10:34:45 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BECDAC63316
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 10:36:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 547BD4EC2D5
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 09:29:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0797236533B
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 09:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFC6326D5E;
-	Mon, 17 Nov 2025 09:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98834326D6D;
+	Mon, 17 Nov 2025 09:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s16gOmgG"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="EEsgL4b3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31162D7DC7;
-	Mon, 17 Nov 2025 09:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324391E0B9C;
+	Mon, 17 Nov 2025 09:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763371753; cv=none; b=h9NPqxXUCeO5/BsrI/hi7gNme3pBJBHPpRFnVzg/f4y0uOe8/TMhX8gMEUKnhJaVkiaskyLuP3Hu706/Lhqhbx54MIMGbIX5m1TtBqz/GImVTqg1YfjTTCbYbi4nK1Ep/xQy4z75CnR1WXn4aLO1aSXHZ+RL02n1tmmXHanUsSs=
+	t=1763371873; cv=none; b=o8+3fn3VD1b23DefJM1fDQSuCK1VsriMLX3665fxq26Gj9RswtdeUh+6XfHEScJiEGAD32Ac47Szw885V5jgg5VVvlgjVVEcUbwwlI0S828+jVygJKtzFVUabRH9KVa/I8ZnXhEfViEYtdkPUGFLHmw1IDERLMZO9uTyGS7uEHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763371753; c=relaxed/simple;
-	bh=EvfhddzpSjAUpbk6cAJyWuqhfd5As3u/pK+Q9MjlPCM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mwiyv1+ctSxBbnDACCy9euliOmNHQuASaPJSS+aJD8DYOUl++rrXumAkq1M/4N/qDZCIeJqhrAGBT/fi0peU5wsLVWUKcM4hGup6jP54ft+CiLDI5YG/VANvRem7QHBOxmsj0g3VuoFva9wP6YOce79PsFfjRDTSrOwbxBDhIos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s16gOmgG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E040C4CEFB;
-	Mon, 17 Nov 2025 09:29:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763371751;
-	bh=EvfhddzpSjAUpbk6cAJyWuqhfd5As3u/pK+Q9MjlPCM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s16gOmgGUVKPAqiWs++keSoec+8iplKd+ZA9c8CDc2VzfqMtJrvxEMaDUSkjFleol
-	 62idgoBXux7xRBcbcaQeTCv8H1Evpz6gjxCa+gKuF3plPK4BO//7UwHc1L2Z/tWsay
-	 o45oCTnOdifacpFCrKPTGoD6/Mc0wNGMEzfZjYavJDdvGwIiHmytTDTdB/gaZexbcE
-	 4S8j3/Zu7jIq4tkZTgd9SgYjglZKH8LqfIZCzcfhuJejTUPwe3Ex/nvS4LCE0P+KAC
-	 P+hppMncliPGWnBN3H/JeNcRVAIechrv7o/RHeB09M2+m4Ens6eiCEktgeuU24jlkg
-	 cZCnkHf5xuWNA==
-Date: Mon, 17 Nov 2025 14:58:58 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Rob Herring <robh@kernel.org>, bhelgaas@google.com, Chen Wang <unicorn_wang@outlook.com>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, stable@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, srk@ti.com
-Subject: Re: [PATCH] PCI: cadence: Kconfig: change PCIE_CADENCE configs from
- tristate to bool
-Message-ID: <k4yatufwwibauqxmm2nv6bh4clckk2j2xnpc2o5zjjpk7j7phk@ihrd2rsqdm64>
-References: <20251113092721.3757387-1-s-vadapalli@ti.com>
- <084b804f-2999-4f8d-8372-43cfbf0c0d28@app.fastmail.com>
- <250d2b94d5785e70530200e00c1f0f46fde4311b.camel@ti.com>
- <201b9ad1-3ebd-4992-acdd-925d2e357d22@app.fastmail.com>
- <7eaa4d917f7639913838abd4fd64ae8fe73a8cfc.camel@ti.com>
- <37f6f8ce-12b2-44ee-a94c-f21b29c98821@app.fastmail.com>
- <8ac2ed36a85f854a54ee1d05599891632087869d.camel@ti.com>
+	s=arc-20240116; t=1763371873; c=relaxed/simple;
+	bh=y31P2SamkKpy03nySQ8MxoFT9ExxfApysBgJZ+VMS6M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gfRz46O7IGQaHeS2ghgrr29JAhgCX7FSaxzz/BOwlE2lk0DG/Xd7ZAsWhKoS/4DkWSJNADno5j7J5YDy/ue458sC/8wUpDoJNIuiyYljnt1yqGpAM4b6zA0xBqlQu8tkVDoBuZNFV79Q+JPAhR1F99dw+oh7WDvbK/+wfjiMwfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=EEsgL4b3; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=LZ
+	cR7Q4cpqHteOASNgU0SXmxsFcuej1Nddkk9obHzEc=; b=EEsgL4b36rrHCiJCoF
+	erxKTB+v6VTsim7kEFVrB4h2DCEAcxCBDOUQHLa2MR0JNuFgIrKmfkD2dqqUZiMc
+	N7F8xQZKVTrFRPFpvLOgWkVAPMTnV3DrGYYMrhu98oIqrkkE4MiFkELumI6ZLCPr
+	oSSZ6+u3HEP6rNUK8sNSPFxgw=
+Received: from localhost (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgC3Geku6xppowwAEA--.2573S3;
+	Mon, 17 Nov 2025 17:30:23 +0800 (CST)
+From: mambaxin@163.com
+To: dennis@kernel.org,
+	tj@kernel.org,
+	cl@linux.com,
+	akpm@linux-foundation.org,
+	gregkh@linuxfoundation.org,
+	mhocko@suse.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Filipe David Manana <fdmanana@suse.com>,
+	chenxin <chenxinxin@xiaomi.com>
+Subject: [PATCH 6.6.y] mm, percpu: do not consider sleepable allocations atomic
+Date: Mon, 17 Nov 2025 17:30:13 +0800
+Message-ID: <20251117093013.545253-1-mambaxin@163.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <8ac2ed36a85f854a54ee1d05599891632087869d.camel@ti.com>
+X-CM-TRANSID:PCgvCgC3Geku6xppowwAEA--.2573S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGryrXFy3KrW7urW7GFWfXwb_yoW5KFW8pF
+	ZYg3W0vFZ5Xrn3W34vy3Z2gw4Ygw4rWFW8GwnxWw18Zrs8Jr10gr92ya4YqFy8XF9YvF1Y
+	vrZ0qF9aqayUAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jneOJUUUUU=
+X-CM-SenderInfo: xpdputx0lqqiywtou0bp/1tbiJhkJCmka3GjFMQABsO
 
-On Mon, Nov 17, 2025 at 02:53:00PM +0530, Siddharth Vadapalli wrote:
-> On Mon, 2025-11-17 at 10:06 +0100, Arnd Bergmann wrote:
-> > On Mon, Nov 17, 2025, at 07:05, Siddharth Vadapalli wrote:
-> > > On Fri, 2025-11-14 at 08:03 +0100, Arnd Bergmann wrote:
-> > > > On Fri, Nov 14, 2025, at 06:47, Siddharth Vadapalli wrote:
-> > 
-> > > I understand that the solution should be fixing the pci-j721e.c driver
-> > > rather than updating Kconfig or Makefile. Thank you for the feedback. I
-> > > will update the pci-j721e.c driver to handle the case that is triggering
-> > > the build error.
-> > 
-> > Ok, thanks!
-> > 
-> > I think a single if(IS_ENABLED(CONFIG_PCI_J721E_HOST)) check
-> > is probably enough to avoid the link failure
-> > 
-> > --- a/drivers/pci/controller/cadence/pci-j721e.c
-> > +++ b/drivers/pci/controller/cadence/pci-j721e.c
-> > @@ -669,7 +669,8 @@ static void j721e_pcie_remove(struct platform_device *pdev)
-> >         struct cdns_pcie_ep *ep;
-> >         struct cdns_pcie_rc *rc;
-> >  
-> > -       if (pcie->mode == PCI_MODE_RC) {
-> > +       if (IS_ENABLED(CONFIG_PCI_J721E_HOST) &&
-> > +           pcie->mode == PCI_MODE_RC) {
-> >                 rc = container_of(cdns_pcie, struct cdns_pcie_rc, pcie);
-> >                 cdns_pcie_host_disable(rc);
-> > 
-> > 
-> > but you may want to split it up further to get better dead
-> > code elimination and prevent similar bugs from reappearing when
-> > another call gets added without this type of check.
-> > 
-> > If you split j721e_pcie_driver into a host and an ep driver
-> > structure with their own probe/remove callbacks, you can
-> > move the IS_ENABLED() check all the way into module_init()
-> > function.
-> 
-> Thank you for the suggestion :)
-> 
-> Would it work if I send a quick fix for `cdns_pcie_host_disable` using
-> IS_ENABLED in the existing driver implementation and then send the
-> refactoring series later? This is to resolve the build error quickly until
-> the refactoring series is ready.
-> 
+From: Michal Hocko <mhocko@suse.com>
 
-This will work for me so that this fix can be backported.
+[ Upstream commit 9a5b183941b52f84c0f9e5f27ce44e99318c9e0f ]
 
-- Mani
+28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
+has fixed a reclaim recursion for scoped GFP_NOFS context.  It has done
+that by avoiding taking pcpu_alloc_mutex.  This is a correct solution as
+the worker context with full GFP_KERNEL allocation/reclaim power and which
+is using the same lock cannot block the NOFS pcpu_alloc caller.
 
+On the other hand this is a very conservative approach that could lead to
+failures because pcpu_alloc lockless implementation is quite limited.
+
+We have a bug report about premature failures when scsi array of 193
+devices is scanned.  Sometimes (not consistently) the scanning aborts
+because the iscsid daemon fails to create the queue for a random scsi
+device during the scan.  iscsid itself is running with PR_SET_IO_FLUSHER
+set so all allocations from this process context are GFP_NOIO.  This in
+turn makes any pcpu_alloc lockless (without pcpu_alloc_mutex) which leads
+to pre-mature failures.
+
+It has turned out that iscsid has worked around this by dropping
+PR_SET_IO_FLUSHER (https://github.com/open-iscsi/open-iscsi/pull/382) when
+scanning host.  But we can do better in this case on the kernel side and
+use pcpu_alloc_mutex for NOIO resp.  NOFS constrained allocation scopes
+too.  We just need the WQ worker to never trigger IO/FS reclaim.  Achieve
+that by enforcing scoped GFP_NOIO for the whole execution of
+pcpu_balance_workfn (this will imply NOFS constrain as well).  This will
+remove the dependency chain and preserve the full allocation power of the
+pcpu_alloc call.
+
+While at it make is_atomic really test for blockable allocations.
+
+Link: https://lkml.kernel.org/r/20250206122633.167896-1-mhocko@kernel.org
+Fixes: 28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
+Signed-off-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Filipe David Manana <fdmanana@suse.com>
+Cc: Tejun Heo <tj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: chenxin <chenxinxin@xiaomi.com>
+---
+ mm/percpu.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/mm/percpu.c b/mm/percpu.c
+index 38d5121c2b65..54c2988a7496 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -1734,7 +1734,7 @@ static void __percpu *pcpu_alloc(size_t size, size_t align, bool reserved,
+ 	gfp = current_gfp_context(gfp);
+ 	/* whitelisted flags that can be passed to the backing allocators */
+ 	pcpu_gfp = gfp & (GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN);
+-	is_atomic = (gfp & GFP_KERNEL) != GFP_KERNEL;
++	is_atomic = !gfpflags_allow_blocking(gfp);
+ 	do_warn = !(gfp & __GFP_NOWARN);
+ 
+ 	/*
+@@ -2231,7 +2231,12 @@ static void pcpu_balance_workfn(struct work_struct *work)
+ 	 * to grow other chunks.  This then gives pcpu_reclaim_populated() time
+ 	 * to move fully free chunks to the active list to be freed if
+ 	 * appropriate.
++	 *
++	 * Enforce GFP_NOIO allocations because we have pcpu_alloc users
++	 * constrained to GFP_NOIO/NOFS contexts and they could form lock
++	 * dependency through pcpu_alloc_mutex
+ 	 */
++	unsigned int flags = memalloc_noio_save();
+ 	mutex_lock(&pcpu_alloc_mutex);
+ 	spin_lock_irq(&pcpu_lock);
+ 
+@@ -2242,6 +2247,7 @@ static void pcpu_balance_workfn(struct work_struct *work)
+ 
+ 	spin_unlock_irq(&pcpu_lock);
+ 	mutex_unlock(&pcpu_alloc_mutex);
++	memalloc_noio_restore(flags);
+ }
+ 
+ /**
 -- 
-மணிவண்ணன் சதாசிவம்
+2.50.1
+
 
