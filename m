@@ -1,65 +1,79 @@
-Return-Path: <stable+bounces-194954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDAE6C63FCA
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 13:07:00 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A892AC64054
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 13:21:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 497F824042
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 12:06:59 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 21D55341BDB
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 12:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0654E32C94C;
-	Mon, 17 Nov 2025 12:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B4D287507;
+	Mon, 17 Nov 2025 12:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="WU/L1iha"
+	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="qfaA63eN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED3B257854;
-	Mon, 17 Nov 2025 12:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D3D24729A;
+	Mon, 17 Nov 2025 12:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.188.205.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763381205; cv=none; b=qZhwz4xJcSCIR1Yl9A0lf/Kyk9RP/yxn5P45TzQYCe51xVVNaWvPUSerrwZXt+fTc1HjHmiGf+J15m1jFmcwgSmk0Hkp7wMEhxtxbm2SfA0UFIS+KyRf/t1/JNmye46YK4h8580KJa2nXejPmgfvlTHmfeLuO3T3klyDWBnNuMY=
+	t=1763382071; cv=none; b=asgKnJA+aLETzz+EBXNEF/sQk353O1+bjWapOyqkEJOIj0/dMmsa6ufUHC1xmyVoP2Z5ZzcrkaBuJDVG6BZzm/p5g7glkZwLDy14j2/VANiEwH1dkTmSpF+AhbOVuWSYlqKLPhqA6i9wR4Sh0AFHWrZVf0uAQeGQAWRj+VgO02g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763381205; c=relaxed/simple;
-	bh=kuS8ZVbLhND5KJER3gHFfgdM5iFVTjjuNMrsyzs2Fds=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VSrWH9UucOyihDVSnJojynGnJ4La2ARupUdG5V36ND8p0EgbbiKChez+PV8fnLnqm+m3hqzbVs9kINffzu99XQ2tQb5ZfhnS+mM/etr5NWZIEajEuZ6mEQlHU9yjIFf/HHt28fWrClcx0sg0Uknp66KwNlYizqHDvLrohvoqHmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=WU/L1iha; arc=none smtp.client-ip=18.169.211.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1763381175;
-	bh=fLshn+7E9KUs6vh0E2as97dyMJLrggNvwrM3GmPcWj4=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=WU/L1ihaVR6liOXRs6Px1n17hroYoJmFt7NLLkPiVqCFsQExVUK1d2kGyvupSj274
-	 MTCShV9PVKxZCyKtXi1npFT91lTT7U8v+woy1v12z+q9x7lTwry+OmK2AqgqG47SsH
-	 9zP3lhWIep0AOnhHQrQcbsHX1hrmw42Exbfw8Pxw=
-X-QQ-mid: esmtpgz13t1763381166td1f29682
-X-QQ-Originating-IP: TJq7fiIGP1hf079n+so4ykzadcdTWYUHAdKgrnbaCd0=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 17 Nov 2025 20:06:04 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 11519860046904685920
-EX-QQ-RecipientCnt: 9
-From: Wentao Guan <guanwentao@uniontech.com>
-To: leon@kernel.org
-Cc: shiraz.saleem@intel.com,
-	tatyana.e.nikolova@intel.com,
-	linux-rdma@vger.kernel.org,
+	s=arc-20240116; t=1763382071; c=relaxed/simple;
+	bh=8jKSmHS95dTjMHcoA/Eb57z/ZXmfWP4rEHKQBz7NL/4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XC0Tr+g/2+I5OHial1bacPl4QnzjYhxqj7dyvyetIecKeRyjaHyqJjXKYPTQM2RmJEJsHbAVDtEkdfB/fK9TRmWqyAwdNaPrtxC3v+G+MDomvb47q2xMPhGsh4oBi9zTXnuQrqECmU1OhJSCVQy/aucRoJ+gK0VdSnx5Huf/0zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=qfaA63eN; arc=none smtp.client-ip=93.188.205.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1763381597;
+	bh=8jKSmHS95dTjMHcoA/Eb57z/ZXmfWP4rEHKQBz7NL/4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qfaA63eNAJYYM9xQs3iOT6xtmtSWOvaSsWL/+GqRlXj3eUhRJZ1hVtjSiIYJm/sAQ
+	 EDaviV/fLJ3bXVjUFpXAtxiqVOm5GWrfAktw3xDImb6Re420uPOyET3ntPWx361Onj
+	 TfcgiFDi0xCV6q+5mlEpwlClL4zJSfYKM5Hm4wTgBlVjOMbOMH8APhTCXvjBcz/a/9
+	 eAPqb8q8Rzk9tMkfNao/PCFa08hLuR9W6pHPoxsI3bMgHZfOXg4YNFGJo0zUnj3S+s
+	 TflmoxGOesK4aU24Nkdv1VWnNWmcwV311kKs7PAyUfI7QPRafVMoXY7qTzj2+foHxe
+	 JLmYgqfjkCiuA==
+Received: from gca-msk-a-srv-ksmg01 (localhost [127.0.0.1])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id D9C3C1FA5B;
+	Mon, 17 Nov 2025 15:13:17 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
+	Mon, 17 Nov 2025 15:13:13 +0300 (MSK)
+Received: from rbta-msk-lt-302690.astralinux.ru.astracloud.ru (rbta-msk-lt-302690.astralinux.ru [10.198.51.247])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4d967q3y9JzSgqV;
+	Mon, 17 Nov 2025 15:12:38 +0300 (MSK)
+From: Alexandra Diupina <adiupina@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexandra Diupina <adiupina@astralinux.ru>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Jaska Uimonen <jaska.uimonen@intel.com>,
+	sound-open-firmware@alsa-project.org,
+	alsa-devel@alsa-project.org,
 	linux-kernel@vger.kernel.org,
-	zhanjun@uniontech.com,
-	niecheng1@uniontech.com,
-	Wentao Guan <guanwentao@uniontech.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] RDMA/irdma: fix Kconfig dependency
-Date: Mon, 17 Nov 2025 20:05:51 +0800
-Message-Id: <20251117120551.1672104-1-guanwentao@uniontech.com>
-X-Mailer: git-send-email 2.20.1
+	lvc-project@linuxtesting.org,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10] ASoC: SOF: Intel: hda: Fix potential buffer overflow by snprintf()
+Date: Mon, 17 Nov 2025 15:12:03 +0300
+Message-Id: <20251117121203.9811-1-adiupina@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,59 +81,57 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: NAvIe9bVixN3YxWpuNkd8u8xNvhBNTaGLq/t7tfpvjtz1vb8unT5Uyin
-	VSfpBTqNSbX+ye0iXsLrPk8yZ0GaCE5pgjlZPtHogfomMxPolQDed9AA11dWnLxT7lcvH3s
-	aXkXazkpyLHZ08Jdz5LChlnQ9bADhKdRRauTpg3cJFIdNTICzGaoZLmLy3E9zKJB0y7JDQw
-	tU7dmJaOdqvlofo3YuUmUBjlGTmgmLjDe8b1DJm07m90+bAG3bCopi2025S79JlqUxBD6K9
-	iJdDBLp/VPUoteuMcj8ZXtWVAh+l+g9RvvRZOKr9ELkEh/Gc0Lp7iR9H2ATjFn3UcJNcBC/
-	WQM7/LklGZ/lDuWMxnLnm4WoWg1PDuYv15iCFOdtTgMFi1QGgrqhKPgNvgXJ8hl/2SftG9h
-	lAvo/Gke3yN5vHC2eaGNT6XZWeugK7pguIRucixUcofxU5SiTqtUQATmrVsshjvGbHfosGa
-	IvWXRmtH3z8kDTnKWS45bDzamUnN74d/y/eXpkKwRy1Rj2lsoK1plPL2kDb2Ef6k2m2Cs0D
-	Zf9x/BnJyLcrPNaiSa2mccYJ8Feeo+///x8rh8Ou2IxgqKRHRinzMgra2Xw3YDNqGLUxPsl
-	pxpgSgkw4R1xhpd1XrsaSb8VgMkF2W3G41mKCM6JldbCx+FyxTWqxqka1svv/NsUI2Eu5ve
-	gm13owGExfSG8/ZQmmibr+94vSvXM3LvLSHFTsKnWOZXwXRvSuKQjOnLRoVTfj7cMbsuLR9
-	u6zMg+Nu/1gkX3toJ1pzsIX08Py+7l1YwXecBd9DtRPqZA/cXvoqkrTHBUNDKManzGBtUL0
-	D6relsxwmyDH/qWyZxIJFq4kkPsXrfNV32/Qg8yUao90qIro4QKLgX55lqg0ArjQnhX0415
-	IMnRGOfbWBj7FzaikGSwJQZbuJT0j69oFmvxgrDIwjhBGlQKjEWkIWToORVxV27wRSbCur4
-	QfiLB/Jtd17diq3KlOROqmBF53CtwV9jK1BLmU/xVvsUtcpbGlMFuLeqpjb6TuecVKtq4zi
-	Rci1G/hiQAgb4bOS952IBDN+n5A70lsk3euFcky3LHTuG6lu1oQANKHEQhq3UgaWJ+TLVyW
-	uIZQixONexr
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
-X-QQ-RECHKSPAM: 0
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/11/17 11:46:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: adiupina@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 76 0.3.76 6aad6e32ec76b30ee13ccddeafeaa4d1732eef15, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, new-mail.astralinux.ru:7.1.1;lore.kernel.org:7.1.1;127.0.0.199:7.1.2;astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 198143 [Nov 17 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.11
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/11/17 08:57:00 #27937168
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/11/17 11:47:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 
-Any combination of (IDPF || ICE || I40E) can register auxiliary_dev,
-so use '||' instead of '&&' in IRDMA config.
+From: Takashi Iwai <tiwai@suse.de>
 
-Cc: stable@vger.kernel.org
-Fixes: 060842fed53f ("RDMA/irdma: Update Kconfig")
-Fixes: fa0cf568fd76 ("RDMA/irdma: Add irdma Kconfig/Makefile and remove i40iw")
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+commit 94c1ceb043c1a002de9649bb630c8e8347645982 upstream.
 
+snprintf() returns the would-be-filled size when the string overflows
+the given buffer size, hence using this value may result in the buffer
+overflow (although it's unrealistic).
+
+This patch replaces with a safer version, scnprintf() for papering
+over such a potential issue.
+
+Fixes: 29c8e4398f02 ("ASoC: SOF: Intel: hda: add extended rom status dump to error log")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20220801165420.25978-4-tiwai@suse.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
 ---
-PS: found in stable v6.12.58, it makes IRDMA be removed when select ICE+I40E+(!IDPF).
----
----
- drivers/infiniband/hw/irdma/Kconfig | 2 +-
+Backport fix for CVE-2022-50050
+ sound/soc/sof/intel/hda.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/irdma/Kconfig b/drivers/infiniband/hw/irdma/Kconfig
-index 0bd7e3fca1fbb..83a55b23c1325 100644
---- a/drivers/infiniband/hw/irdma/Kconfig
-+++ b/drivers/infiniband/hw/irdma/Kconfig
-@@ -4,7 +4,7 @@ config INFINIBAND_IRDMA
- 	depends on INET
- 	depends on IPV6 || !IPV6
- 	depends on PCI
--	depends on IDPF && ICE && I40E
-+	depends on IDPF || ICE || I40E
- 	select GENERIC_ALLOCATOR
- 	select AUXILIARY_BUS
- 	select CRC32
-
-base-commit: 9b9e43704d2b05514aeeaea36311addba2c72408
+diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
+index b4cc72483137..1d879c2b81e1 100644
+--- a/sound/soc/sof/intel/hda.c
++++ b/sound/soc/sof/intel/hda.c
+@@ -437,7 +437,7 @@ static void hda_dsp_dump_ext_rom_status(struct snd_sof_dev *sdev)
+ 
+ 	for (i = 0; i < HDA_EXT_ROM_STATUS_SIZE; i++) {
+ 		value = snd_sof_dsp_read(sdev, HDA_DSP_BAR, HDA_DSP_SRAM_REG_ROM_STATUS + i * 0x4);
+-		len += snprintf(msg + len, sizeof(msg) - len, " 0x%x", value);
++		len += scnprintf(msg + len, sizeof(msg) - len, " 0x%x", value);
+ 	}
+ 
+ 	sof_dev_dbg_or_err(sdev->dev, hda->boot_iteration == HDA_FW_BOOT_ATTEMPTS,
 -- 
-2.20.1
+2.30.2
 
 
