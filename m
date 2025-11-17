@@ -1,165 +1,134 @@
-Return-Path: <stable+bounces-194921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE069C6210C
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 03:13:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD552C62121
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 03:15:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B06654E4FCF
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 02:13:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86C383B338E
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 02:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E970242D9D;
-	Mon, 17 Nov 2025 02:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E393F248F64;
+	Mon, 17 Nov 2025 02:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="nwLFMWFJ"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="b3ulAuqj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A032C9D
-	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 02:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DFA2459FD;
+	Mon, 17 Nov 2025 02:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763345572; cv=none; b=s9LRe7vTCa7ZFMmihvUEIMrwx8saKKX89QTaaO/idbYMV+SxJX1kSKdHAaX0Iy7Y+ypTYCvxLhpxwxObFpFnhLzL/87MIBSW/2axcCNZoEgxDlNIA5ywOE3oBJpZ5mKMtDkty64fSZfPylzAlkU8zOtvvrL58wWq51n1WFAZHoQ=
+	t=1763345705; cv=none; b=EHm3xPM+U5cPZ3NhOsh0ko9tCRH+u0jRTueTQEc7kIpKS2iZ5bKfizugJwJyyVUT+TGbmhsw/2GlYDwFMgHYrMAbl+kjBcYiOksIJOcTNp6xBnN89RH51pczV/JQ4rcL2dDnpAboIvl7i37tzXGUABarr2wMZOxw9bLrvHz6WeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763345572; c=relaxed/simple;
-	bh=5GLZszpKtkmms3GbZx78rJHS969BKMO3S7W+AmR69Cc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dl+GNo7Xaq8cFCYJMivtGQly+hqlhOXwrt3LOXJDyLnFH76D0JbOhBH8p6ETsIVrIhbVRVNBYbCADryqPDisbNpGqN7vpKvm5+WnK61D2z+9IvURebT2ledeyn2QhKyaWyeOpyUPDCBrw/IVX0l1bTW9GcdyNjamtdAAlCL7txE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=nwLFMWFJ; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4eda77e2358so34593061cf.1
-        for <stable@vger.kernel.org>; Sun, 16 Nov 2025 18:12:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1763345569; x=1763950369; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kiclg+ICV3isWwwDeMvQP4a8YD6UqUKW5pl+uehC4+8=;
-        b=nwLFMWFJsHh8XI7WU8P/cK7ooC6NNKQ26LmFfGZvm+ihxiOaIDRSRpq8gSIT0vXGhx
-         o7n9BLcNfYH0wCSxKPSErmbq00KaAY2WK+R2W47rbGXq15Z5mX7D3rIxpZ9gWcK2KGaB
-         URzcZLOGSQLpXp8OvjVv60mpbqHnbS5ANHpSFWyiEiBtv4I2RLdVBJsbmsapijPFXgi/
-         PBE3C8MaIRZUew7fmrbHhfukImiF+/yKgkwm7h5hKxP2bSWiIk6YBy78wnsP5GGrRKMH
-         FhmD/Pnumo/7+AalbqTgE3RXsTfJ7clJyBCYsTT87VcGmpfDMzHe2eXHqg6emolWL1uz
-         hOUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763345569; x=1763950369;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kiclg+ICV3isWwwDeMvQP4a8YD6UqUKW5pl+uehC4+8=;
-        b=cZTFoO4xCVFJHW2ZPsPdz1of4WDJpzKr33/j0jIn5j4MC2W1zgQMM+nEBjck51+Gw5
-         nJUCiMiOiIkhBccBtU+4Yw/rrDwGUZ8DroH54XSEAEoqqEU1lra5IimWl+k81vu3wLj9
-         2KWfy1hIeU+D2cDwm3qJihXR71Mk8ykov1kFYqear+PeHiTkEJKE/ha6WryqEA28nFq+
-         Z9e3wJiAJWfXxg5fV1Z2Y6OvhicykrsjjCrZK2w1swQuThh/b5PHoBgCNoyFM2+hZ+sb
-         +rix8y4dpkIVJQHOItNPb+KIw5wuIC2XN+HboPlSSUCzraeJilbtwreKhc7q2gsq7za1
-         7INA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUdmk8Zi+M8wpue9a+4dl9pCn7OIQ+rBq8R551qgSI1ayBykPp+Q7y0CRz30NVywCt5dPbOzs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYGeuw/mS5eZKZiha0Ogf4jvaTBbyfYv972IQC3Au2Gpop+HBA
-	ytAzqzP/HRxHGQOjOcn03Z4Uecvtc3ZNwmSpy/DHFRUW6YI9FD7/x1dHd6enO3r6Fw==
-X-Gm-Gg: ASbGncus8QiPTzjQxMM0lIFykhdP7zMZHXlaktXydT0VUvzwMiFWpAfA1lp84dakqLU
-	t+hb0hizNJ5KSPJ9gXrd8fGi1CptfUyOTbTsJIEDlrGdLpRd6r+eFqdh4xWybPE8kbptuVoXk+2
-	Xlod3rhJlHHKwN4x8kNksuyljjVacrrfYRLNypPf+l49gLAkarvG3W9O2VxcuwWH1HiBYGEVHbL
-	xNyOI7xlGy6WRBafeyeu7yNKyE0C2VTXNAKJ1sl5q/s6HgR/K6X8Ugp78nmwsr6jgCzsyHmf3YZ
-	VzxY4KzHzxIlI72RT29w3TeK6THxCWLIIfSOWc1SOOx67KGGi+sqFek5xvmcYmAz3lPVafbr0nX
-	7ZeBlhAOofht7MQtjm8Ae6dG1d1OqAOT7Z52exNKiORra/mDUFFav7uSDcjCNNk6yCAmc2BOjo1
-	4jMQ==
-X-Google-Smtp-Source: AGHT+IF7aGO2MtqCmmlI9cMAEmYhFjVvHTERbxwvkt+rHOGTTynDRbR2K+xvEJ5DiSzvgQDHQlegoA==
-X-Received: by 2002:a05:622a:18a2:b0:4ee:2510:198a with SMTP id d75a77b69052e-4ee25101ab2mr9280681cf.39.1763345568881;
-        Sun, 16 Nov 2025 18:12:48 -0800 (PST)
-Received: from rowland.harvard.edu ([2601:19b:d03:1700::e258])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ee16389879sm29098271cf.24.2025.11.16.18.12.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Nov 2025 18:12:48 -0800 (PST)
-Date: Sun, 16 Nov 2025 21:12:45 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: vz@mleia.com, piotr.wojtaszczyk@timesys.com, gregkh@linuxfoundation.org,
-	arnd@arndb.de, stigge@antcom.de, linux-usb@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] USB: ohci-nxp: Fix error handling in ohci-hcd-nxp
- driver
-Message-ID: <288508e8-9d97-4c90-a0d4-ef6798110211@rowland.harvard.edu>
-References: <20251117013428.21840-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1763345705; c=relaxed/simple;
+	bh=MMo+jgPtLTswivlBM114wIb2/mXzt7OCx96fJaDfvXg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UISWskA4oiomc41eoV4Rz4X1v1vgdtL6U5QBan+aua0HLpdmcm23ZP11c+1t3WwYL3wglZRTJpmVtjf/KK4p4HYn444UFoWXfi0ZdbJXND+GFUDqU5ADvbkPESalyOfhkJ8C6Fjf7SyAaVy6MIeF2Joo9m4ZC+Q8EUOtel6UPHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=b3ulAuqj; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AGLWWOO1956132;
+	Mon, 17 Nov 2025 02:14:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=Bw3Otc0mIgw69DMPRsfrrwDudVtHSOc1+wf
+	6md+QLUA=; b=b3ulAuqj5wUniYH+b+s+3NmbNil7rz2Eb21IpeZ3wUB5dLdiDTH
+	ASFJRFQst+Jw6PXXI6zOEsGpG1X46K3lSy8o6z6NRFPN48+XaJFnC4IK8YzxGjhZ
+	teXuu3NNQtRcb1CIMSGYPEF7oIHg4CcAudtZru/KhfD5zHpoemv8FugDacn1GT50
+	ru2GMjnthqIy398qeW+z+JU2j8yVveYUexcQyYB/hMZdW3eI9JvcQV9YrfT/fSDp
+	pjZ0radn2MlQizqgeUpN1Y97tSGhJMroKkUb7nzHnXIFTRfTh8XdA86ZzPKv2+oU
+	sbmXiVUDT/k3edylRMgIAd4+SH0HyIfdU8Q==
+Received: from aptaippmta02.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4aejh0b15u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Nov 2025 02:14:59 +0000 (GMT)
+Received: from pps.filterd (APTAIPPMTA02.qualcomm.com [127.0.0.1])
+	by APTAIPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AH2EueX026316;
+	Mon, 17 Nov 2025 02:14:56 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 4aejkkwn4p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Nov 2025 02:14:56 +0000
+Received: from APTAIPPMTA02.qualcomm.com (APTAIPPMTA02.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AH2Eu47026306;
+	Mon, 17 Nov 2025 02:14:56 GMT
+Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
+	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 5AH2EtaL026303
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Nov 2025 02:14:56 +0000
+Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
+	id 0EFAF23963; Mon, 17 Nov 2025 10:14:55 +0800 (CST)
+From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>, Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-kernel@vger.kernel.org, cheng.jiang@oss.qualcomm.com,
+        quic_chezhou@quicinc.com, wei.deng@oss.qualcomm.com,
+        shuai.zhang@oss.qualcomm.com, stable@vger.kernel.org
+Subject: [PATCH v3 0/1] Bluetooth: btqca: Add WCN6855 firmware priority selection feature
+Date: Mon, 17 Nov 2025 10:14:28 +0800
+Message-Id: <20251117021429.711611-1-shuai.zhang@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251117013428.21840-1-make24@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: jRStRLa9gcgi4iPcQ0VAmGZJQYHPpx7H
+X-Authority-Analysis: v=2.4 cv=A8lh/qWG c=1 sm=1 tr=0 ts=691a8523 cx=c_pps
+ a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=COk6AnOGAAAA:8 a=042h51yfOyDqjzMtcBEA:9 a=TjNXssC_j7lpFel5tvFf:22
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: jRStRLa9gcgi4iPcQ0VAmGZJQYHPpx7H
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE3MDAxNiBTYWx0ZWRfX0q1XysM3tHpx
+ zdrmc7LYHM4mKGIa5m0UVe/iQaXRNbkzBGio45myMVarkTtLDyGisCqyltHa3Muyh5v7TQtLBt+
+ DzHWCj7RvIaQYTkGSF0IZ6BMc7LED2auFZWLZB4AIoiTD6+QQpNC4zgZBsKzGGe3d/RW0Unr/oi
+ KOc2Gc77EVl/sTpQVMeyfBoEIzDyy84tZm5Dbm/1xaZVUrJY0QU1Knk2kAZ9MenqLrOE4tJyLoq
+ xC+pp9BwhE832JjN/FfqeOm9xxUX47SwLhfUmrzFleGQDUB9ewdLO5/gR3RkhRzxYLASZkFVLLL
+ UjKzF8sl4BVxDle8HWcHF1/z/dCapy/+/hdCS7zlW9AdfsHN8Eq+9PUVESmY0YtMSCK4iKs5fBn
+ Wdm0FE2JlSwJ6phB9nRkGIfWPC3lVg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-17_01,2025-11-13_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ adultscore=0 malwarescore=0 priorityscore=1501 impostorscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511170016
 
-On Mon, Nov 17, 2025 at 09:34:28AM +0800, Ma Ke wrote:
-> When obtaining the ISP1301 I2C client through the device tree, the
-> driver does not release the device reference in the probe failure path
-> or in the remove function. This could cause a reference count leak,
-> which may prevent the device from being properly unbound or freed,
-> leading to resource leakage.
-> 
-> Fix this by storing whether the client was obtained via device tree
-> and only releasing the reference in that case.
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 73108aa90cbf ("USB: ohci-nxp: Use isp1301 driver")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
-> Changes in v2:
-> - only released the device reference when the ISP1301 client was obtained through device tree, not in the non-DT case where the global variable is used;
-> - removed unnecessary NULL checks as suggested by reviewer.
-> ---
+Update WCN6855 firmware to use the new FW file and added a fallback mechanism.
 
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
+changed v2:
+- Remove CC satble
+- Update commit
+- add test steps and log
+- Link to v2
+  https://lore.kernel.org/all/20251114081751.3940541-2-shuai.zhang@oss.qualcomm.com/
 
+Changes v2:
+- Add Fixes tag.
+- Add comments in the commit and code to explain the reason for the changes.
+- Link to v1
+  https://lore.kernel.org/all/20251112074638.1592864-1-quic_shuaz@quicinc.com/
 
->  drivers/usb/host/ohci-nxp.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/usb/host/ohci-nxp.c b/drivers/usb/host/ohci-nxp.c
-> index 24d5a1dc5056..081b8c7f21a0 100644
-> --- a/drivers/usb/host/ohci-nxp.c
-> +++ b/drivers/usb/host/ohci-nxp.c
-> @@ -50,6 +50,7 @@ static const char hcd_name[] = "ohci-nxp";
->  static struct hc_driver __read_mostly ohci_nxp_hc_driver;
->  
->  static struct i2c_client *isp1301_i2c_client;
-> +static bool isp1301_using_dt;
->  
->  static void isp1301_configure_lpc32xx(void)
->  {
-> @@ -161,6 +162,7 @@ static int ohci_hcd_nxp_probe(struct platform_device *pdev)
->  	} else {
->  		isp1301_node = NULL;
->  	}
-> +	isp1301_using_dt = (isp1301_node != NULL);
->  
->  	isp1301_i2c_client = isp1301_get_client(isp1301_node);
->  	of_node_put(isp1301_node);
-> @@ -223,6 +225,8 @@ static int ohci_hcd_nxp_probe(struct platform_device *pdev)
->  fail_resource:
->  	usb_put_hcd(hcd);
->  fail_disable:
-> +	if (isp1301_using_dt)
-> +		put_device(&isp1301_i2c_client->dev);
->  	isp1301_i2c_client = NULL;
->  	return ret;
->  }
-> @@ -234,6 +238,8 @@ static void ohci_hcd_nxp_remove(struct platform_device *pdev)
->  	usb_remove_hcd(hcd);
->  	ohci_nxp_stop_hc();
->  	usb_put_hcd(hcd);
-> +	if (isp1301_using_dt)
-> +		put_device(&isp1301_i2c_client->dev);
->  	isp1301_i2c_client = NULL;
->  }
->  
-> -- 
-> 2.17.1
-> 
+Shuai Zhang (1):
+  Bluetooth: btqca: Add WCN6855 firmware priority selection feature
+
+ drivers/bluetooth/btqca.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
+
 
