@@ -1,203 +1,139 @@
-Return-Path: <stable+bounces-194898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF46DC61FD9
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 02:33:55 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFF7C62009
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 02:35:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B378A4E3274
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 01:33:54 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 87B8735D038
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 01:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9D0233136;
-	Mon, 17 Nov 2025 01:33:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CRzhCdZC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB61823D28C;
+	Mon, 17 Nov 2025 01:35:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1574D2264CA;
-	Mon, 17 Nov 2025 01:33:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C24E23F26A;
+	Mon, 17 Nov 2025 01:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763343233; cv=none; b=GjTuDLv4N7sH2da0WvpEvf2lhGcqbr3vTnoW8+AxM+q3JohUFEEVvP7ue/kASdlwp7l/Ved/wfFmb1VEnjbNUh6U+Q0rQ7kpNJ4nX64NdmjZT+K7azCMnRAiQinKHmsNnCEtYFAlM4htfw3LoU2ae0U0lbKkgah4f6xZIpSJr2g=
+	t=1763343302; cv=none; b=UAc6v1fLyDFksfI6kAZxYe5BaH0zHgJ3VbTZyHQGHLPXhCm7GtY5p/JWG6ES454ZFUKvVphrWDGjU+I1OSKyTNVMlXQvJf3DfzzmbZrfEaalULNgbPVjiV1Jw252UmdsB06GJR+K1GuLLVwL9DsAUuta8Vi8UZD2pqN4J/OQruA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763343233; c=relaxed/simple;
-	bh=evuTg8UmkyEwqfbuUJoHjj/jq+1Fpnt1XbCb9ESh1h8=;
-	h=Date:To:From:Subject:Message-Id; b=J1x1b3BWeh9CGiUcZ6SJ5IkqwjtSaM1VUlZZ3+4ZDp7s9mfMdIMY49YNrzvz8La6tLgO8BbGUdrsVfmzhQgI51uWaFoSw57CJ0RGUm1pwRybgZvWk/DMW/ZH5x1FoMYdzBxUzyh6k4JdDCayssgy7W8Huww/V88JpFjd/LKR7bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CRzhCdZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD345C4CEF5;
-	Mon, 17 Nov 2025 01:33:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763343233;
-	bh=evuTg8UmkyEwqfbuUJoHjj/jq+1Fpnt1XbCb9ESh1h8=;
-	h=Date:To:From:Subject:From;
-	b=CRzhCdZCoEnJsIcPEHv8tKlZLSELO9c/EioRWBbk8cVxPqppCaSKktGIJ7NPpYDAQ
-	 vYIR8Pm3nokaElPycjnEK/iMgi0mFVAEYr46d5+0N2HhPJcJR+OG+RZF/8Aekxdhmy
-	 Qtn09LuUALjLSTMFdffZ+gFmFcrZMuUlqhKIq2bA=
-Date: Sun, 16 Nov 2025 17:33:52 -0800
-To: mm-commits@vger.kernel.org,ying.huang@linux.alibaba.com,willy@infradead.org,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,david@redhat.com,chrisl@kernel.org,bhe@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-swap-do-not-perform-synchronous-discard-during-allocation.patch removed from -mm tree
-Message-Id: <20251117013352.DD345C4CEF5@smtp.kernel.org>
+	s=arc-20240116; t=1763343302; c=relaxed/simple;
+	bh=YR0JE0NXqs8+tcKOsSAlU2ZlbyfFSpFgZTnKfqti5G8=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=H0Q08Kwwrig4hS9KBaIRaU500NtkUm1rs0nKhZ6SwBi4V5i8Jp87tIDSaoYuLtqKlmWTodIXvZecH00yql5Zy//mxamam/gooLoY8ZMdeqdo50RlWk6w3KYSDDSsJJpNObYVYOsetzFEOf85Vku7AX9Y3WpBtsHGgETGTwqo0Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-05 (Coremail) with SMTP id zQCowADn4GGlexppPSADAQ--.76S2;
+	Mon, 17 Nov 2025 09:34:38 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: stern@rowland.harvard.edu,
+	vz@mleia.com,
+	piotr.wojtaszczyk@timesys.com,
+	gregkh@linuxfoundation.org,
+	arnd@arndb.de,
+	stigge@antcom.de
+Cc: linux-usb@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] USB: ohci-nxp: Fix error handling in ohci-hcd-nxp driver
+Date: Mon, 17 Nov 2025 09:34:28 +0800
+Message-Id: <20251117013428.21840-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:zQCowADn4GGlexppPSADAQ--.76S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CFWxCF13XrWUJr4kAr4fZrb_yoW8uFy7pF
+	nrWa4YkFyDG3yIg3y3AF17XFyIkw47t3yrt3y7Gw17Wan0y3sIvFyvkFyjvF43XrWkGr1F
+	9an8t3yYyw4UAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
+	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
+	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4
+	vE14v_KwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIx
+	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+	wI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUmQ6LU
+	UUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
+When obtaining the ISP1301 I2C client through the device tree, the
+driver does not release the device reference in the probe failure path
+or in the remove function. This could cause a reference count leak,
+which may prevent the device from being properly unbound or freed,
+leading to resource leakage.
 
-The quilt patch titled
-     Subject: mm, swap: do not perform synchronous discard during allocation
-has been removed from the -mm tree.  Its filename was
-     mm-swap-do-not-perform-synchronous-discard-during-allocation.patch
+Fix this by storing whether the client was obtained via device tree
+and only releasing the reference in that case.
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Found by code review.
 
-------------------------------------------------------
-From: Kairui Song <kasong@tencent.com>
-Subject: mm, swap: do not perform synchronous discard during allocation
-Date: Fri, 24 Oct 2025 02:34:11 +0800
-
-Patch series "mm, swap: misc cleanup and bugfix", v2.
-
-A few cleanups and a bugfix that are either suitable after the swap table
-phase I or found during code review.
-
-Patch 1 is a bugfix and needs to be included in the stable branch, the
-rest have no behavioral change.
-
-
-This patch (of 5):
-
-Since commit 1b7e90020eb77 ("mm, swap: use percpu cluster as allocation
-fast path"), swap allocation is protected by a local lock, which means we
-can't do any sleeping calls during allocation.
-
-However, the discard routine is not taken well care of.  When the swap
-allocator failed to find any usable cluster, it would look at the pending
-discard cluster and try to issue some blocking discards.  It may not
-necessarily sleep, but the cond_resched at the bio layer indicates this is
-wrong when combined with a local lock.  And the bio GFP flag used for
-discard bio is also wrong (not atomic).
-
-It's arguable whether this synchronous discard is helpful at all.  In most
-cases, the async discard is good enough.  And the swap allocator is doing
-very differently at organizing the clusters since the recent change, so it
-is very rare to see discard clusters piling up.
-
-So far, no issues have been observed or reported with typical SSD setups
-under months of high pressure.  This issue was found during my code
-review.  But by hacking the kernel a bit: adding a mdelay(500) in the
-async discard path, this issue will be observable with WARNING triggered
-by the wrong GFP and cond_resched in the bio layer for debug builds.
-
-So now let's apply a hotfix for this issue: remove the synchronous discard
-in the swap allocation path.  And when order 0 is failing with all cluster
-list drained on all swap devices, try to do a discard following the swap
-device priority list.  If any discards released some cluster, try the
-allocation again.  This way, we can still avoid OOM due to swap failure if
-the hardware is very slow and memory pressure is extremely high.
-
-This may cause more fragmentation issues if the discarding hardware is
-really slow.  Ideally, we want to discard pending clusters before
-continuing to iterate the fragment cluster lists.  This can be implemented
-in a cleaner way if we clean up the device list iteration part first.
-
-Link: https://lkml.kernel.org/r/20251024-swap-clean-after-swap-table-p1-v2-0-a709469052e7@tencent.com
-Link: https://lkml.kernel.org/r/20251024-swap-clean-after-swap-table-p1-v2-1-c5b0e1092927@tencent.com
-Fixes: 1b7e90020eb7 ("mm, swap: use percpu cluster as allocation fast path")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-Acked-by: Chris Li <chrisl@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 73108aa90cbf ("USB: ohci-nxp: Use isp1301 driver")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
+Changes in v2:
+- only released the device reference when the ISP1301 client was obtained through device tree, not in the non-DT case where the global variable is used;
+- removed unnecessary NULL checks as suggested by reviewer.
+---
+ drivers/usb/host/ohci-nxp.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
- mm/swapfile.c |   40 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 33 insertions(+), 7 deletions(-)
-
---- a/mm/swapfile.c~mm-swap-do-not-perform-synchronous-discard-during-allocation
-+++ a/mm/swapfile.c
-@@ -1101,13 +1101,6 @@ new_cluster:
- 			goto done;
+diff --git a/drivers/usb/host/ohci-nxp.c b/drivers/usb/host/ohci-nxp.c
+index 24d5a1dc5056..081b8c7f21a0 100644
+--- a/drivers/usb/host/ohci-nxp.c
++++ b/drivers/usb/host/ohci-nxp.c
+@@ -50,6 +50,7 @@ static const char hcd_name[] = "ohci-nxp";
+ static struct hc_driver __read_mostly ohci_nxp_hc_driver;
+ 
+ static struct i2c_client *isp1301_i2c_client;
++static bool isp1301_using_dt;
+ 
+ static void isp1301_configure_lpc32xx(void)
+ {
+@@ -161,6 +162,7 @@ static int ohci_hcd_nxp_probe(struct platform_device *pdev)
+ 	} else {
+ 		isp1301_node = NULL;
  	}
++	isp1301_using_dt = (isp1301_node != NULL);
  
--	/*
--	 * We don't have free cluster but have some clusters in discarding,
--	 * do discard now and reclaim them.
--	 */
--	if ((si->flags & SWP_PAGE_DISCARD) && swap_do_scheduled_discard(si))
--		goto new_cluster;
--
- 	if (order)
- 		goto done;
- 
-@@ -1394,6 +1387,33 @@ start_over:
- 	return false;
+ 	isp1301_i2c_client = isp1301_get_client(isp1301_node);
+ 	of_node_put(isp1301_node);
+@@ -223,6 +225,8 @@ static int ohci_hcd_nxp_probe(struct platform_device *pdev)
+ fail_resource:
+ 	usb_put_hcd(hcd);
+ fail_disable:
++	if (isp1301_using_dt)
++		put_device(&isp1301_i2c_client->dev);
+ 	isp1301_i2c_client = NULL;
+ 	return ret;
+ }
+@@ -234,6 +238,8 @@ static void ohci_hcd_nxp_remove(struct platform_device *pdev)
+ 	usb_remove_hcd(hcd);
+ 	ohci_nxp_stop_hc();
+ 	usb_put_hcd(hcd);
++	if (isp1301_using_dt)
++		put_device(&isp1301_i2c_client->dev);
+ 	isp1301_i2c_client = NULL;
  }
  
-+/*
-+ * Discard pending clusters in a synchronized way when under high pressure.
-+ * Return: true if any cluster is discarded.
-+ */
-+static bool swap_sync_discard(void)
-+{
-+	bool ret = false;
-+	int nid = numa_node_id();
-+	struct swap_info_struct *si, *next;
-+
-+	spin_lock(&swap_avail_lock);
-+	plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-+		spin_unlock(&swap_avail_lock);
-+		if (get_swap_device_info(si)) {
-+			if (si->flags & SWP_PAGE_DISCARD)
-+				ret = swap_do_scheduled_discard(si);
-+			put_swap_device(si);
-+		}
-+		if (ret)
-+			return true;
-+		spin_lock(&swap_avail_lock);
-+	}
-+	spin_unlock(&swap_avail_lock);
-+
-+	return false;
-+}
-+
- /**
-  * folio_alloc_swap - allocate swap space for a folio
-  * @folio: folio we want to move to swap
-@@ -1432,11 +1452,17 @@ int folio_alloc_swap(struct folio *folio
- 		}
- 	}
- 
-+again:
- 	local_lock(&percpu_swap_cluster.lock);
- 	if (!swap_alloc_fast(&entry, order))
- 		swap_alloc_slow(&entry, order);
- 	local_unlock(&percpu_swap_cluster.lock);
- 
-+	if (unlikely(!order && !entry.val)) {
-+		if (swap_sync_discard())
-+			goto again;
-+	}
-+
- 	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
- 	if (mem_cgroup_try_charge_swap(folio, entry))
- 		goto out_free;
-_
-
-Patches currently in -mm which might be from kasong@tencent.com are
-
+-- 
+2.17.1
 
 
