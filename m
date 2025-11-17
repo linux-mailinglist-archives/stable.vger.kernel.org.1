@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-195031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F02FC664CE
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 22:41:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8047EC667FF
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 23:58:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0DEA54E2082
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 21:41:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id F30BE297AC
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 22:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD96333427;
-	Mon, 17 Nov 2025 21:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098EA32C950;
+	Mon, 17 Nov 2025 22:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="U4owAwzB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iww6WZiA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9962B255F31;
-	Mon, 17 Nov 2025 21:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DAC2949E0;
+	Mon, 17 Nov 2025 22:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763415658; cv=none; b=Nkp+uyA8B3kxC8RuV9H0xsIH1dcxCgcRpI9f8HdKzKZE9oYnvaLz1rwefrgGooqB3BnOQnd/7JB5h0pmCI1nA37uYgy0n9BfiK7EGjy57Y4robBZISt+nz/gO8pRct1Gw/h5Ci965NiHLI0RdfzzXtNGgPx7PLOnfsoLTKm3LjA=
+	t=1763420281; cv=none; b=UNp4aJSEcyYTPoUQFq4jJpANyW0RpuWsuXFYrCtbxzlsdX61up8kD+sIAyCozqoHou8xxqTxnfG/uaeFRMHaymPQysiqJUZQs/IUgGbrTotBhdLFgxI8pW1hqXwauh27VIu+NcUj3dHsSkqKvAuhE8nZ4DjQm+h6ACUJuXKl89s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763415658; c=relaxed/simple;
-	bh=6AVP6/waYBCSTk3eM287PleDofD4ie7z+SyLM+INe5M=;
+	s=arc-20240116; t=1763420281; c=relaxed/simple;
+	bh=Z2nOKB4BeNgDhKEkbgrNxGPg5B8oV6EhoU/jbksRrbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERHU49ptWfL9vm7KoWQBADIr5YHVWYvWug5g//xaiugTTdA7YvKSCI7LvrBoSwWdDrmpqDRZPtmgQQ/TJKJJFE7AIbEnEf+PK6Pi+ENjs8VSF0wvkCz+ZgNn8jFopaRz35KId3rzmfb95WFQ8Bf81bmuSHUCWunm8YgVPUqYoRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=U4owAwzB; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id CED5E6027E;
-	Mon, 17 Nov 2025 22:40:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1763415655;
-	bh=buGRw0thpo1INGuPHZSd/Mn4rfmS50BZCj2ylYCYOQs=;
+	 MIME-Version; b=ja3ZO8u+fbQ/zHYcR3Q785Na1GqQkmu4b1qhDJGsFd2itwl/9CqKXz4iPCSypW/FOlFhPYVdX9mt3ItRFUr8Fdbf5tFr6I4RYBBoNvoAR+FZVEN0+urA6hJPa6ILTpLU7bl6xEC+Y/iJOI0VYhMtnQbzCVpKpbu9/01lwkw2raI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iww6WZiA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34AD7C2BCB1;
+	Mon, 17 Nov 2025 22:57:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763420279;
+	bh=Z2nOKB4BeNgDhKEkbgrNxGPg5B8oV6EhoU/jbksRrbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U4owAwzBoef+0+eku42VMAEnnuF0J1UVyXPTbSEyuSRC2F3KPDM9kGnXm3XUISR2V
-	 2La0GaygmrqH1a3JgwQcWf6Co8BjTrHfSkyeL99p2jnyfZERsiy4rploNwwE7ZeHgt
-	 6y37HwJPkWxWZv8+b/YroOu3CIEITSSdQdS4oeaplw92547JHPYFQMX/HhRE3uGGnz
-	 ehmhsKZ94pSCOavPJ1uRxDy2VnpG/g+sYr4gemojn1XTVxFK3PQA/MGe/4xs6/6K6F
-	 PQekaTUWdlQhE8lX22FLgxHjFWiDoIhlU7Y4cmZbXQWY087heqWw1MdW7gPzXSUXb2
-	 FoV9cgCp+uNtg==
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
+	b=Iww6WZiA6H/1Dz4kBzrhRc+E4knorfiHS/SKgUFuz3seNAoZMjQOGisuyQHmzEXja
+	 EnDSk/n8LYPCij33V34hmJBOw1ZnHKv2qCQLo9cYIZt8Tt0yrDoRWmpr4fdFcZ9uyU
+	 EAs09F3fJJDsHz/Eauz2azqgJ0cFKH0vm2kFMR/sbvGmjWgwGJsigrc+tinnIERigW
+	 MfOQOeLUkLDhjWfUkAqSFJJdP1q8qhRHMxXXHjd0jJum8MsVvlyRo6yKzmDYrK70Lp
+	 cdLSAsBnRPhaRToGixBi8BBVnKIcHLZCrOpudxu271VAlTWfoHg9K/SJbh7hIEhRre
+	 e2aKLJtyqZ7Hg==
+From: Sasha Levin <sashal@kernel.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org,
+	gregkh@linuxfoundation.org,
 	sashal@kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH -stable,5.10 1/1] netfilter: nft_socket: fix sk refcount leaks
-Date: Mon, 17 Nov 2025 21:40:47 +0000
-Message-ID: <20251117214047.858985-3-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251117214047.858985-1-pablo@netfilter.org>
-References: <20251117214047.858985-1-pablo@netfilter.org>
+Subject: Re: [PATCH -stable,6.12 1/2] Revert "netfilter: nf_tables: Reintroduce shortened deletion notifications"
+Date: Mon, 17 Nov 2025 17:57:56 -0500
+Message-ID: <20251117225756.4104730-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251117212859.858321-2-pablo@netfilter.org>
+References: <20251117212859.858321-2-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,50 +61,10 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Florian Westphal <fw@strlen.de>
+This patch has been queued up for the 6.12 stable tree.
 
-commit 8b26ff7af8c32cb4148b3e147c52f9e4c695209c upstream.
+Subject: Revert "netfilter: nf_tables: Reintroduce shortened deletion notifications"
+Queue: 6.12
 
-We must put 'sk' reference before returning.
-
-Fixes: 039b1f4f24ec ("netfilter: nft_socket: fix erroneous socket assignment")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
-Backport patch posted by Denis Arefev.
-
- net/netfilter/nft_socket.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
-index 826e5f8c78f3..07e73e50b713 100644
---- a/net/netfilter/nft_socket.c
-+++ b/net/netfilter/nft_socket.c
-@@ -88,13 +88,13 @@ static void nft_socket_eval(const struct nft_expr *expr,
- 			*dest = sk->sk_mark;
- 		} else {
- 			regs->verdict.code = NFT_BREAK;
--			return;
-+			goto out_put_sk;
- 		}
- 		break;
- 	case NFT_SOCKET_WILDCARD:
- 		if (!sk_fullsock(sk)) {
- 			regs->verdict.code = NFT_BREAK;
--			return;
-+			goto out_put_sk;
- 		}
- 		nft_socket_wildcard(pkt, regs, sk, dest);
- 		break;
-@@ -103,6 +103,7 @@ static void nft_socket_eval(const struct nft_expr *expr,
- 		regs->verdict.code = NFT_BREAK;
- 	}
- 
-+out_put_sk:
- 	if (sk != skb->sk)
- 		sock_gen_put(sk);
- }
--- 
-2.30.2
-
+Thanks for the backport!
 
