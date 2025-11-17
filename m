@@ -1,118 +1,142 @@
-Return-Path: <stable+bounces-195007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6214C65BA5
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 19:31:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B0C4C65BE3
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 19:38:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id C706E29070
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 18:31:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A9C774E5299
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 18:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92663314B9A;
-	Mon, 17 Nov 2025 18:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4607C314B95;
+	Mon, 17 Nov 2025 18:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="l9omBSjr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Mdmy6gHR";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="hE+NW2jR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB5A314A83
-	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 18:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509B12FFF99
+	for <stable@vger.kernel.org>; Mon, 17 Nov 2025 18:38:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763404259; cv=none; b=V25z0S8MdJOCH4LBOrNxcT7caGQKozONsRPIWuhEf8M3yRjbryTjyT7kZ7yngMRl5k1yugXJwp1qXvstdju4Zj2Nw34DTT6e0sM7H4FuE3mLFh9/Byq3O00AGEaFegbJxzWdTbC+6gFEMXae+yu7kFXskFuXxbkGkC8T0IH1mcM=
+	t=1763404708; cv=none; b=qFd1fJAf4MiWOgdCB927gVmE27Gj1sFUxIfa8f+bpoj46UJFTj9fBvYx99hhTx53fzlxldnjUmjUZAUoSjXugsVIptD7DYvm/AB5MskE+SI75Gu9YvTEIN1v/RyLEyuHmdfHLVfOixjURUnUW+rYq3UafNX2iuApZx6h07Soywk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763404259; c=relaxed/simple;
-	bh=20lwm6JOtChvlMh74FxsClts7z/ThQcFc5kTgOvXEPc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=XrccPXU+N1AjYk/ggzk5W5K4OBFluzmNFRbUplnOzU7KfxoG55gGBh3XbEBBJ10M5n0D/CTRxqXA47Q40Te6tB0SsSyhI3zoHnWmIDb1G4kxRjW02la7IEfvZDQ4FI0pN4HGGhZWW5DFCRlI86cpG5IHiJ6Il6ULZwhkY7XGVRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=l9omBSjr; arc=none smtp.client-ip=209.85.166.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f50.google.com with SMTP id ca18e2360f4ac-949042bca69so59342239f.1
-        for <stable@vger.kernel.org>; Mon, 17 Nov 2025 10:30:56 -0800 (PST)
+	s=arc-20240116; t=1763404708; c=relaxed/simple;
+	bh=qt8pI/XUyJPmOWFJ8OtyNeKVh5q3V2jICBQ1DQqA8Tk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W1KK30HRH6z3tlhfw60Tc3tieviC4X0f1Hjfe2N+iBahJGTBgFuE7lvqtHzj9i8SJxqx3Z5/lmxAGIJOUHVk3dxDPW5ny7PE+SOt6rYFv132MEb4wnRTbZzyHd2cuk9iIdWoYiDdSqXWxVdS8+N80bd54Sf/qPUSqmSovkXxI74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Mdmy6gHR; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=hE+NW2jR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763404705;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qt8pI/XUyJPmOWFJ8OtyNeKVh5q3V2jICBQ1DQqA8Tk=;
+	b=Mdmy6gHReQBr5KcVMYvrtcr6QIhIf88JT7YXHIo+lzbawJ8WpouXUC0FpEIF+sJCz8+eKz
+	OJJqk+ne8S7wOk3zP+27McXAwWx/+zU66AWe7lKzfOwGghxeNHaocDMAn0xtjb+WmatQ4q
+	Bpe0ZWgowQranAdPfnWPR44YuTZhltM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-628-9ArxPe5YM0ujFVqQk6LCeQ-1; Mon, 17 Nov 2025 13:38:23 -0500
+X-MC-Unique: 9ArxPe5YM0ujFVqQk6LCeQ-1
+X-Mimecast-MFC-AGG-ID: 9ArxPe5YM0ujFVqQk6LCeQ_1763404702
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-42b3c965ce5so3205686f8f.2
+        for <stable@vger.kernel.org>; Mon, 17 Nov 2025 10:38:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1763404256; x=1764009056; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+        d=redhat.com; s=google; t=1763404702; x=1764009502; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bqKQSsT6c3z9Bj8qCv27kYuWk8B17EEFfT4KJ4q6GHk=;
-        b=l9omBSjrVV8D9Wdl6IeI069D6mYxCbmqw7FcTTISJylWsT4UVwVmM1/mtsBjWpAU/Y
-         8iLmF7un3LIN981wPHu1BlQdUNjGcLnbLZVlAKsoT6l/PpDbsMzzt0QR31zB1sl7OLEr
-         qwrvQqLySRiMOkglTg6ai1sTzJKhyvP0Ui9qgplOE254fYTQLz7HupP7Y6+eVMz/QsXf
-         8kS59B/yQZ8K+Uaq77M8L7jfOlvnvpuG++UU6UWymek9hVWAKtjnURF1mgdRtCdFWUfF
-         kkOFg/V9t6rx6xA1PUzgvXW22+O7WgoV7804wZoWpMqAjAZV3Xetf8PTCzt/j79dgiON
-         /S+w==
+        bh=qt8pI/XUyJPmOWFJ8OtyNeKVh5q3V2jICBQ1DQqA8Tk=;
+        b=hE+NW2jR+vWdAOnHjMn5wW6IztLhlVExY/8hvU3iYbXZlJWNE0L0TPsRmU4d+sO1Uq
+         DqsEKok8GDugdUvO93Xi7dmHiVNfE6hd1UtDcIYbnhSQS6U9/DucZcpLOYGZUQ42K5Oi
+         +Q4lvdLB7bpufgVJ6I5oUkz6OjVvkCVsQRxi1LOaQ+edGyb/KeQNYc+6K3Eh/mcCKLZ2
+         dyMesBeG6XsVuc4HSm/3tIwnrfc44yYaIN+0nvl/rRqHQM2b1ekMZy4kdiAPPGdPGi3R
+         5SANdh8dcugdePW//srYQmSv3/JOySjRBqlatOgZGe5HEEsVOwFjBrxu8pHbU3SL6EzD
+         OWqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763404256; x=1764009056;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1763404702; x=1764009502;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bqKQSsT6c3z9Bj8qCv27kYuWk8B17EEFfT4KJ4q6GHk=;
-        b=I2/5fSS5QyP6b9FGQuxkCQ/TF2BGHHCO8KM224wO4uIVBfcOnlt20/GhcR8STadjpB
-         AFIi8iefcFUjVTVpBjQUo1mczj19Cbps3UNW79BK6i+SrJn4sVxzV2E/udKTJvzSWEcm
-         TEVnvpMRMnX37s+6gsda04/Fe/VA1d13Yf+bl7NZrBpVycubDIGpYpm8xrfZBMb9yotQ
-         bYcwNQQzA5ng+xfD4mxgSgkss/c+VLVMzgNyeUBQo6K0Opi5/5yv1COrmYrAODTIRHRq
-         9OwXz4+X+vhyrbJhNi7V6qJbdPTCI9gCjV93TxsRjTiP+sYpKYLc2lSURQNj4p70MUjw
-         d4bA==
-X-Gm-Message-State: AOJu0YyhdwgOUTSoJ1hiZIciTRsihDEBCud8mJY+YdmDPDeO1xpVCtl7
-	I3rENykUhqXfehWPZwAFFDvsdYzhlk2lfl3qJOCqgAN9nSvvoA6jDDxUdNXt2bM8Z2E=
-X-Gm-Gg: ASbGncuTYKJX/Zlx08UTgcFdyGkITjfSQGg4L359L0sPs/cz5PxUXOsCypTVJVJna8C
-	PKYGvycDhYbvb0GtgPNKpMW57aC4tEGo+lJ+BNngHwCN+qLdIOy/mZT2wtNK6/stc8/LhfD4K3n
-	ZaDQZ8+1juFEDOfNeCzzfIe1PtvbNpBMITcUY4x5lsnOHp2nkRe9WJTSYZEG6UpBfiQ7nUjO4Vf
-	qhfmvAhP2zZ5KyNsFVArjGRmEeQzxBaZRJI5ULwiiCLyx/9+2OukI+ulliU1CbrJtLBanjSyJkZ
-	FkySm6fJbZ96Bf6qLA6Ow1DlCp1y5UppKVKSlskxbADzEoZn5TYCBs3hzAAFFCfi8ehXeuXkbu7
-	N3TedE9dm8JTYprGB+aaYnH/jijSIJRlYBELP3DUGx0L9vTltY02/sc1yaHrdD1Wk54E=
-X-Google-Smtp-Source: AGHT+IGvuhMY4d03HogBUJSIJbGY9sYO14AFhTEAj3WefpBduHEhD1PThR4VVSVrWu3aCSbDyhdMgA==
-X-Received: by 2002:a05:6638:35a7:b0:573:5038:cee6 with SMTP id 8926c6da1cb9f-5b7c9d8b98amr9092982173.12.1763404255881;
-        Mon, 17 Nov 2025 10:30:55 -0800 (PST)
-Received: from [127.0.0.1] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-5b7bd34cd7fsm5045090173.54.2025.11.17.10.30.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 10:30:55 -0800 (PST)
-From: Jens Axboe <axboe@kernel.dk>
-To: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Li Chen <me@linux.beauty>
-Cc: stable@vger.kernel.org
-In-Reply-To: <20251117053407.70618-1-me@linux.beauty>
-References: <20251117053407.70618-1-me@linux.beauty>
-Subject: Re: [PATCH] block: rate-limit capacity change info log
-Message-Id: <176340425521.222021.13576588245917125051.b4-ty@kernel.dk>
-Date: Mon, 17 Nov 2025 11:30:55 -0700
+        bh=qt8pI/XUyJPmOWFJ8OtyNeKVh5q3V2jICBQ1DQqA8Tk=;
+        b=l370Gag0ZvtKLOezEkqHFuByn6Q7vRVgIdvK0l/4j4TL0iRO14SLnWCJPMW8LgIIXr
+         YglCo8jCkK0c9PPM9tSX8NsV6j9qqR8Sz4GIL7wPlt9TOQs60LqJrxIi+HGosubcmIj1
+         eN8/wRgf1OIb8GvbOe+YsV5z4+pli4zYcMsoZOzFZ7tpbSzLhhgTfA4D/AYcfn7CJ0vj
+         Zsyzt62TB1+u5GXcBbHnHwfo1UoIg4XzaKu6WmLwHbd0kYOns9coBGzDHrTIGiL6u2eI
+         b+ZDcCeHYTrB7XAtREHwG4Y+qZUeGcNPl22nXQ1H1TWQIPV+f8D1yBpTpoAu0n+FzTAp
+         zzGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUHZCQJF/pOQ/vOoFSkbg1dNPiFVmQhIrd2tT8gmPyA0/wXrY0B/A9Qthz7RKFgPaS+nZClwgA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlBp0f6BxaC14NMuUrfGvxXlKcEScLNZyMHu51ysK4MyX5vbyv
+	AU8GBsNI6iKbNH9p5tgbBSExehRGGfmqippzwLbJB3rdaaAI5NVlhFLa3iDaS7yfM/QGti48NTN
+	yFIrBcqE08H7JEpZiuqXVI4Csunk2d0dkhfY8FNkma3chPIrUka5b06eK0vp8dq9p2ceyVwcTbI
+	27fCs2LURVS+H0mAeouAkYSWsE78YsFSJZ
+X-Gm-Gg: ASbGnctnQujxs/JhKljRKaFEKR9bcQlY0jozCRBjIFP5R88NCHelGSGyWWopmjUFZsn
+	Lxjn6AsTc3zgSgHiGJs1NsN0uGAa186zbPg0TkFhWJ0JjqICr0gKJXwV//PFnghQ26OhzWncTfu
+	PRlLPPyjYqCZMSXix65zL/z6wCjejuc8+0v/zw9WMQan8YOSJv2N3oqG4FhBYIA/ngiZ8iyrWkk
+	wkF2CHyl7/Vi7pPVYMkfwEcUyaj6JYpzXsxg7mvyyz/kH7v+K1Cpx/V4NfJM5uue4e/Bkk=
+X-Received: by 2002:a5d:5f50:0:b0:42b:300f:7d8d with SMTP id ffacd0b85a97d-42b593869c6mr13166812f8f.34.1763404702321;
+        Mon, 17 Nov 2025 10:38:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFnEaD/rV3lWOiO5rreNhHE1lGuzFUaOfW3HAQS5wjJ4b9AS2smFRbUlViMrFrMV9q3Tzd8rnKyclt9DgLWMQs=
+X-Received: by 2002:a5d:5f50:0:b0:42b:300f:7d8d with SMTP id
+ ffacd0b85a97d-42b593869c6mr13166788f8f.34.1763404701936; Mon, 17 Nov 2025
+ 10:38:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+References: <20251112013017.1836863-1-yosry.ahmed@linux.dev>
+ <aRdaLrnQ8Xt77S8Y@google.com> <ei6cdmnvhzyavfobamjkcq2ghdrxcv7ruxhcbzzycqlvaty7zr@5cjkfczxiqom>
+In-Reply-To: <ei6cdmnvhzyavfobamjkcq2ghdrxcv7ruxhcbzzycqlvaty7zr@5cjkfczxiqom>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 17 Nov 2025 19:38:09 +0100
+X-Gm-Features: AWmQ_bnIlZmixuOYfjEcsFi-_x45fU5TrndzUaisTYGr1jqd8XVwM4JZZyjUEKc
+Message-ID: <CABgObfa8O9m+jFBMMnJn63PSnK8rQWixKH4WkcjKAh9F4UtzwQ@mail.gmail.com>
+Subject: Re: [PATCH] KVM: SVM: Fix redundant updates of LBR MSR intercepts
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Nov 14, 2025 at 5:52=E2=80=AFPM Yosry Ahmed <yosry.ahmed@linux.dev>=
+ wrote:
+>
+> On Fri, Nov 14, 2025 at 08:34:54AM -0800, Sean Christopherson wrote:
+> > On Wed, Nov 12, 2025, Yosry Ahmed wrote:
+> > > svm_update_lbrv() always updates LBR MSRs intercepts, even when they =
+are
+> > > already set correctly. This results in force_msr_bitmap_recalc always
+> > > being set to true on every nested transition,
+> >
+> > Nit, it's only on VMRUN, not on every transition (i.e. not on nested #V=
+MEXIT).
+>
+> How so? svm_update_lbrv() will also be called in nested_svm_vmexit(),
+> and it will eventually lead to force_msr_bitmap_recalc being set to
+> true.
+>
+> I guess what you meant is the "undoing the Hyper-V optimization" part.
+> That is indeed only affected by the svm_update_lbrv() call in the nested
+> VMRUN path.
 
-On Mon, 17 Nov 2025 13:34:07 +0800, Li Chen wrote:
-> loop devices under heavy stress-ng loop streessor can trigger many
-> capacity change events in a short time. Each event prints an info
-> message from set_capacity_and_notify(), flooding the console and
-> contributing to soft lockups on slow consoles.
-> 
-> Switch the printk in set_capacity_and_notify() to
-> pr_info_ratelimited() so frequent capacity changes do not spam
-> the log while still reporting occasional changes.
-> 
-> [...]
+Yes, I'll make sure that's clear in the changelog.
 
-Applied, thanks!
+> Paolo, do you prefer a updated patch with the updated changelog, or
+> fixing it up when you apply it?
 
-[1/1] block: rate-limit capacity change info log
-      commit: 3179a5f7f86bcc3acd5d6fb2a29f891ef5615852
+I'll take care of it, thanks!
 
-Best regards,
--- 
-Jens Axboe
-
-
+Paolo
 
 
