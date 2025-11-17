@@ -1,156 +1,160 @@
-Return-Path: <stable+bounces-194937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-194938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C8C9C63061
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 10:02:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C868C63064
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 10:02:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9430C4E9CB5
-	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 09:01:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 581C128AD6
+	for <lists+stable@lfdr.de>; Mon, 17 Nov 2025 09:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A54F2D7DC7;
-	Mon, 17 Nov 2025 09:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86603203B0;
+	Mon, 17 Nov 2025 09:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="AnK1WtKl"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sPGXfE9D"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE382324B0F;
-	Mon, 17 Nov 2025 09:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2850431BC8D;
+	Mon, 17 Nov 2025 09:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763370074; cv=none; b=WoGQkW0QDRbfUeivqzIDDbSxpvqH0Kf5nQbNAt27oaKXeVPCGA+/s7CNWkw25AszYIGnhbxwA4IbdKudhfQ4Y19qVWtGMY7RNiNa7jPy1XIhD/cMn86/TxVjnJYMOoICMSJuAeSGe23Wk/MkCxWyDFAlUNVQjLsG6zCLM4frTu4=
+	t=1763370134; cv=none; b=YZ7uQml5WESyJmamta9Poq/aC/oOu5Uu3AAxQEyjnIB16C61AQ8NFrZMpPPdsnPJnjkCBwZ+ImInWpHWiSGe+99bFvpTUQrFRzEmMQk3RN7xv++9RJo7tCgkBmXSmnWiOIyPyyTQJ92dmtI6wTrZlMBurIDvqVZ8EC3B8bINQf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763370074; c=relaxed/simple;
-	bh=ACJm+u6Gj4h51hX4BzY9VIO91osQ4LYBnz6N6upuuM4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rnn+FO6M7Y15NiiQ/zI/wV9Aa/yjV+nspLEBtgoeB2UK3C+foNZsKfAYoWy0mUXY3+rWIn79wreYpreMhfkt2vqHAJi3vrHhC1jgu1WRuI/ZAHos//GlhlH0DRUpjtUVw37A1ThnLR20NySZ8OJcndpauySMTYffqWgn4ee5Ovg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=AnK1WtKl; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=UC
-	oyTfr8gCn8mJ1uiwDuIzSa07pY7bQVEfFH0JQUb/o=; b=AnK1WtKlwnBLWPojsY
-	QV7/mG8PIQ4VkMAhh42b0phurQvL0PxVAvKH3QQKe4v62yfbY58F8bQMIG7AUbtZ
-	SvnUP5YJCVSVmWDJ9pj3Gah8d/bgj9GOKdu5Cx4/ceW5fJdQg2R4xhw7WLCkn3Qs
-	O+LjLCjdyjAeDM9pSZ5NWg8n4=
-Received: from localhost (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXSpP94xppVWuYAw--.64332S3;
-	Mon, 17 Nov 2025 16:59:42 +0800 (CST)
-From: mambaxin@163.com
-To: dennis@kernel.org,
-	tj@kernel.org,
-	cl@linux.com,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	mhocko@suse.com,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Filipe David Manana <fdmanana@suse.com>,
-	chenxin <chenxinxin@xiaomi.com>
-Subject: [PATCH 6.1.y] mm, percpu: do not consider sleepable allocations atomic
-Date: Mon, 17 Nov 2025 16:59:22 +0800
-Message-ID: <20251117085922.508060-1-mambaxin@163.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1763370134; c=relaxed/simple;
+	bh=dg7CXevlIsnuqPReLm3SerOjBmC0kT4dd1RNc42zAMs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SlPTVv/yXS2QEWL8ZfWGzC3OfZLbgtwOLg5Shhl4jMW4c8nLNA4lYKlifzkTT0M82q1nKmVba0fUFt6MgmvXvRsAqxZhKfsyhy6Ptt570Q1fFd3BA2bEYcWVoOwLwGfmX+NHjuFQ+Fi9WSyWl/tP3l+N9s05Ha5m7s/bVXoRcsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sPGXfE9D; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AGMrSMT031300;
+	Mon, 17 Nov 2025 09:01:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=PwflT1
+	I/Uph07lr+p8RbFYFfClGoEtJaI0hycQ6We+o=; b=sPGXfE9DJ77vo2dOlbZonD
+	2yiFBM54o+40QddlXUxUmN8yK//INEEZ/k+mGxMOwm7Oa/jwU9YnM6ldeqhRIBMr
+	1HjeV5Q83xrEomnwoAR1Etr0gJOPSRdBCH7HbTxNs8AZdNf/gUBmrBZak6J/PpQj
+	3W4JCJRknOdHgF845v28dNJB4snl3DqMFRtzTqusLVSTWpV+qY1SHxHFQuZRpVIr
+	7pTfoaUgtQWk/j0htba/aN+Qz6bf5s0oTYjDcWDovIuJbLaVn9YDRn7KZXrkakUj
+	zTHs1f+1Pm50JmnNHlhy1w1Amoqm64LDKTNoygzJ+diCpjaQu6rg9tDrIzaOCgqw
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejjvwaem-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Nov 2025 09:01:54 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AH8nirG017317;
+	Mon, 17 Nov 2025 09:01:53 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4af6j1cma5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Nov 2025 09:01:53 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AH91qu330540486
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 Nov 2025 09:01:52 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 353435805A;
+	Mon, 17 Nov 2025 09:01:52 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CBE655803F;
+	Mon, 17 Nov 2025 09:01:47 +0000 (GMT)
+Received: from [9.61.140.236] (unknown [9.61.140.236])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 17 Nov 2025 09:01:47 +0000 (GMT)
+Message-ID: <542de632-aace-4ff4-940e-55b57142b496@linux.ibm.com>
+Date: Mon, 17 Nov 2025 14:31:46 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXSpP94xppVWuYAw--.64332S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGryrXFy3KrW7urW7GFWfXwb_yoW5Kw4DpF
-	ZYg3W0vFZ5Xrn3Ww1vv3WIgw4Ygw4rWFW5G3ZxWw18Zrs8Jr1jgr92ya4YqFy8XF9Y9F1Y
-	vrZ0qF9aqayjya7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jneOJUUUUU=
-X-CM-SenderInfo: xpdputx0lqqiywtou0bp/1tbiJhkJCmka3GjFMQAAsP
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/2] block: Remove queue freezing from several sysfs
+ store callbacks
+To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+        Ming Lei <ming.lei@redhat.com>, Martin Wilck <mwilck@suse.com>,
+        Benjamin Marzinski <bmarzins@redhat.com>, stable@vger.kernel.org,
+        Hannes Reinecke <hare@suse.de>, Damien Le Moal <dlemoal@kernel.org>,
+        Chaitanya Kulkarni <kch@nvidia.com>
+References: <20251114210409.3123309-1-bvanassche@acm.org>
+ <20251114210409.3123309-3-bvanassche@acm.org>
+Content-Language: en-US
+From: Nilay Shroff <nilay@linux.ibm.com>
+In-Reply-To: <20251114210409.3123309-3-bvanassche@acm.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=BanVE7t2 c=1 sm=1 tr=0 ts=691ae482 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=IPLMIk6eJIHjdk74lYUA:9 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX9s8WqisTafGS
+ XxK4Ht0nQJRu6bAh/Vl+PT93UGRzw7aVWYGIHYmwfMmNp2e1v4RqdZcxEbCw+yD3372iDz9M2WJ
+ ZZ60TlMftDL2EudPwzOp9DxRHvPoZO4Dc5+RX8d/LD6NWxnMP+dQ1Z5QY5aPni9QnSCx2C0DAsL
+ Y8YRmHEFY3mlgWD+WISpdekc5M/LASTXE/7WPsQG9N8UG7q+JdwcD5Or6ak7d8HvmjTR7q5VQtq
+ f4NvLYJKTS7ycnzD/I/hpUP8M1VQfJOmi/khqGSToMzNP0wOK7wzD9Seqy50o36ZqH2n+QlqlDd
+ ZblQddHQyArEUuWu3s3dqhbymLnX788bzRA8jMZswy7XUeTMtQoZTHE1qawKiUb02hfJnT+xeI9
+ gYSlQM7J5HKLVf4L5VwNymqjQcP5ww==
+X-Proofpoint-GUID: xxppZQWA0lbZxB0SZgZJdBBCYOANrdZM
+X-Proofpoint-ORIG-GUID: xxppZQWA0lbZxB0SZgZJdBBCYOANrdZM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-17_02,2025-11-13_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 spamscore=0 impostorscore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511150032
 
-From: Michal Hocko <mhocko@suse.com>
+Hi Bart,
 
-[ Upstream commit 9a5b183941b52f84c0f9e5f27ce44e99318c9e0f ]
+On 11/15/25 2:34 AM, Bart Van Assche wrote:
+> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+> index 2fff8a80dbd2..cb4ba09959ee 100644
+> --- a/include/linux/blkdev.h
+> +++ b/include/linux/blkdev.h
+> @@ -495,7 +495,7 @@ struct request_queue {
+>  	 */
+>  	unsigned long		queue_flags;
+>  
+> -	unsigned int		rq_timeout;
+> +	unsigned int __data_racy rq_timeout;
+>  
+>  	unsigned int		queue_depth;
 
-28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
-has fixed a reclaim recursion for scoped GFP_NOFS context.  It has done
-that by avoiding taking pcpu_alloc_mutex.  This is a correct solution as
-the worker context with full GFP_KERNEL allocation/reclaim power and which
-is using the same lock cannot block the NOFS pcpu_alloc caller.
+This change look good to me however as I mentioned earlier, 
+introducing __data_racy would break the kernel build. So 
+are you going to raise a separate bug report to fix it? 
 
-On the other hand this is a very conservative approach that could lead to
-failures because pcpu_alloc lockless implementation is quite limited.
+  AS      .tmp_vmlinux2.kallsyms.o
+  LD      vmlinux.unstripped
+  BTFIDS  vmlinux.unstripped
+WARN: multiple IDs found for 'task_struct': 116, 10183 - using 116
+WARN: multiple IDs found for 'module': 190, 10190 - using 190
+WARN: multiple IDs found for 'vm_area_struct': 324, 10227 - using 324
+WARN: multiple IDs found for 'inode': 956, 10314 - using 956
+WARN: multiple IDs found for 'path': 989, 10344 - using 989
+WARN: multiple IDs found for 'file': 765, 10375 - using 765
+WARN: multiple IDs found for 'cgroup': 1030, 10409 - using 1030
+WARN: multiple IDs found for 'seq_file': 1358, 10593 - using 1358
+WARN: multiple IDs found for 'bpf_prog': 2054, 10984 - using 2054
+WARN: multiple IDs found for 'bpf_map': 2134, 11012 - using 2134
+[...]
+[...]
+make[2]: *** [scripts/Makefile.vmlinux:72: vmlinux.unstripped] Error 255
+make[2]: *** Deleting file 'vmlinux.unstripped'
+make[1]: *** [/home/src/linux/Makefile:1242: vmlinux] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
 
-We have a bug report about premature failures when scsi array of 193
-devices is scanned.  Sometimes (not consistently) the scanning aborts
-because the iscsid daemon fails to create the queue for a random scsi
-device during the scan.  iscsid itself is running with PR_SET_IO_FLUSHER
-set so all allocations from this process context are GFP_NOIO.  This in
-turn makes any pcpu_alloc lockless (without pcpu_alloc_mutex) which leads
-to pre-mature failures.
-
-It has turned out that iscsid has worked around this by dropping
-PR_SET_IO_FLUSHER (https://github.com/open-iscsi/open-iscsi/pull/382) when
-scanning host.  But we can do better in this case on the kernel side and
-use pcpu_alloc_mutex for NOIO resp.  NOFS constrained allocation scopes
-too.  We just need the WQ worker to never trigger IO/FS reclaim.  Achieve
-that by enforcing scoped GFP_NOIO for the whole execution of
-pcpu_balance_workfn (this will imply NOFS constrain as well).  This will
-remove the dependency chain and preserve the full allocation power of the
-pcpu_alloc call.
-
-While at it make is_atomic really test for blockable allocations.
-
-Link: https://lkml.kernel.org/r/20250206122633.167896-1-mhocko@kernel.org
-Fixes: 28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
-Signed-off-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Filipe David Manana <fdmanana@suse.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: chenxin <chenxinxin@xiaomi.com>
----
- mm/percpu.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/mm/percpu.c b/mm/percpu.c
-index 39e645dfd46c..651101c895ed 100644
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -1737,7 +1737,7 @@ static void __percpu *pcpu_alloc(size_t size, size_t align, bool reserved,
- 	gfp = current_gfp_context(gfp);
- 	/* whitelisted flags that can be passed to the backing allocators */
- 	pcpu_gfp = gfp & (GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN);
--	is_atomic = (gfp & GFP_KERNEL) != GFP_KERNEL;
-+	is_atomic = !gfpflags_allow_blocking(gfp);
- 	do_warn = !(gfp & __GFP_NOWARN);
- 
- 	/*
-@@ -2237,7 +2237,12 @@ static void pcpu_balance_workfn(struct work_struct *work)
- 	 * to grow other chunks.  This then gives pcpu_reclaim_populated() time
- 	 * to move fully free chunks to the active list to be freed if
- 	 * appropriate.
-+	 *
-+	 * Enforce GFP_NOIO allocations because we have pcpu_alloc users
-+	 * constrained to GFP_NOIO/NOFS contexts and they could form lock
-+	 * dependency through pcpu_alloc_mutex
- 	 */
-+	unsigned int flags = memalloc_noio_save();
- 	mutex_lock(&pcpu_alloc_mutex);
- 	spin_lock_irq(&pcpu_lock);
- 
-@@ -2248,6 +2253,7 @@ static void pcpu_balance_workfn(struct work_struct *work)
- 
- 	spin_unlock_irq(&pcpu_lock);
- 	mutex_unlock(&pcpu_alloc_mutex);
-+	memalloc_noio_restore(flags);
- }
- 
- /**
--- 
-2.50.1
-
+Thanks,
+--Nilay
 
