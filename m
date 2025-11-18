@@ -1,195 +1,163 @@
-Return-Path: <stable+bounces-195082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D91C686EF
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 10:09:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0096EC6875F
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 10:15:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 92B7F4E2125
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 09:09:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8D0594E724F
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 09:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689982F39AD;
-	Tue, 18 Nov 2025 09:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K8HvqEFj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FB73081D0;
+	Tue, 18 Nov 2025 09:13:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3732571BD
-	for <stable@vger.kernel.org>; Tue, 18 Nov 2025 09:09:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47453126A0
+	for <stable@vger.kernel.org>; Tue, 18 Nov 2025 09:13:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763456965; cv=none; b=a+cMxYYcj7/X+uBpgkRHaPz8N1J3OxYu6kKcLg8er/4Mo9FLofgigCW8gZU87nTQBP0k15DQzx5fKnQuqzVZ2/LO+whEK73oOQTdtGI+SVbGAcEFNMo7/RSgbEcI9/fR5H0B9QVzk+I+J59gXKQz7Ma1CjKlfLijyNdLaIx6Q+U=
+	t=1763457198; cv=none; b=cTEbkh/mwnk/svmtcQqNoUcChG1ULh/tBtYQJXYOH3XiOZiOVO9AHIl8NQRWxWrR5P7t+ZTuWq3ak9Q+J0GmlpgjFRmW+r6No3h9xrZCoUEAeZq63cudXtghfnRTrtpx0IEXBvB/CHZgW7V5SNPRuxoGmsinFBKdOD4v8lGqqno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763456965; c=relaxed/simple;
-	bh=KStui9ZnJbovpsb3ngD0DxgyPevQ2vMiSRxvbuLxZMU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JvlNMsElOeikdlqVzL4FbSyPjmCcyz77iVpWklLe/UL/IL5cEFtFrmI6FKq8OK+g888uKhYP8K6wj31Dzzdm6jJF0roDkIIM15Hrykk0jfV3TvvLZ6pp0l0jt/0srQDMDEMBnNljvLNCdeO2yrV9yk63yQ5QMcFJHiHdI6ZgKHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K8HvqEFj; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-477a1c28778so25082225e9.3
-        for <stable@vger.kernel.org>; Tue, 18 Nov 2025 01:09:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763456962; x=1764061762; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6oIfItUat9PClJ/7841Lk0/EAWLm0Y5CqmDrv2Vv/oI=;
-        b=K8HvqEFjwynzXqkfjql1S0uwmMDGIdNxQw4TD9G8RBWRQLR0ffO+i631OgAbZmzS6o
-         qltJ6vrpqTG4Dr3j0jWU1xePB4EYQ7+h9kXFMQJd+LJ3+bn29yEUa0nOGJAQiGo0tewJ
-         ZnlSzvta8/ABD7fFidAlf8l+TsKaOtm4hPDUZwsZaMlXhs4bC82nvIjvJPbkPFrFGYGq
-         GSALFEKTwXmJrKPtF5uWl6RsivbYju6lhHS8GaAEm1dsjQ4U/XvYUHcoIKIKQOjEqTRX
-         oR6sDtpo4L25Eu6H+Jm+T1yoc6b+YmnC7LnxMTwtfzmLxBO1lr3qav/SrvwtiHZkYkCn
-         yM/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763456962; x=1764061762;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6oIfItUat9PClJ/7841Lk0/EAWLm0Y5CqmDrv2Vv/oI=;
-        b=FLgre39BSU8srVPKCK8ASd3jhCRUXWOD5AxeyiZJFMSLCTcltYo16/tcQoCESIqt1A
-         cIQglbWbj4AJsX+/uHGbyVgm71nblaEpRVoH5UWWOieRv8cU0QpoaQkAGT+COLW7cRYd
-         v+A24LD9/tyD/DvsLR3KVTEwaxnjmkX8QB+ZhOqSJdqEURGqu8U7bIPFAt2hsnTWz4W9
-         sRTkgzYpq5WfkVR0e5KN8BoX1vJnVsq6IKFSd2w69nMSxToLVDZlrGmFDihUIs9xExnN
-         ZrfNhkepvyyChojedhUdRAwNz/b9gjP5z+C0Es5z5zUkhjSu3ABi4M+onVmKZAy8gvS2
-         tV8w==
-X-Forwarded-Encrypted: i=1; AJvYcCVQJRzK+PUNtZcsiAIYh5bu/f0QpmIEEfgAfMVYGnHJqCOia9E+Is/DWz7O9UpCV7ADJCK/pyo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyhqbjyqh2ud4BQaHpJZuvRCd7VWih6DwI9FIxMFRcLz9P7uPSD
-	f+0nwv0Jflz/4oHKP1juVAGrx3XHeFwdKLuO5ftGU+j8HTlQ0H6xz+varglvQbRNcEg=
-X-Gm-Gg: ASbGncu2qFovqqi50qB5FtH6SplzhzOH/6ilXUOGF/dn7hE91006HC2388cMGOfpDRb
-	fmdbyERXy7Su7laiTz8SPVxii22qCCdK15VT4HuzvvpnzZwHoHI9VAI4gA9Anq6+as5wRRdroMI
-	9drG4/7i15DpAxdjww/xUgii3aNoQA54/fcWr4ICEHehNCpOODncxCVZ2PVIYpEIMKEzBuvHdMM
-	eTjL0nqHLyhp4TuWbjI8lCAPGKL6bgtGfuR8nJhQKDR3XNISCxkvB405KE7VSRnhnXIDxadozxc
-	ajVXEXdH5kyREAQEhyMjju5w2DreH8KX/lRks7c+9VDadLfFAZ+zJz26B3ptqZn0/qu5r035S+Z
-	ZI5JPbPfZPwbJmL7KRMQyBTC1O4aMMVOJ55Eo8u4Tgmvby1VIa8UssZ/YZAWKH0MBTcUAS29Exi
-	kVm1nHws8LJT3uBf1Dhsgw4+lXflBoSZM/5EuhyHLST5P3OWrAgc1WpVgMqEXR8HA=
-X-Google-Smtp-Source: AGHT+IHc8ApN7ctjZzzYbFA8HW7vBukVzWPj5prvx9bmeaSfL0r9Voscu8eVE4UTNA+dfltTKtHYaw==
-X-Received: by 2002:a05:600c:354b:b0:475:da13:257c with SMTP id 5b1f17b1804b1-4778fea1239mr167868515e9.27.1763456961571;
-        Tue, 18 Nov 2025 01:09:21 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:3d9:2080:366e:5264:fffe:1c49? ([2a01:e0a:3d9:2080:366e:5264:fffe:1c49])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477a9741cbfsm13033615e9.6.2025.11.18.01.09.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Nov 2025 01:09:21 -0800 (PST)
-Message-ID: <8d34bc6b-77e1-487e-af2f-fba99ab867ac@linaro.org>
-Date: Tue, 18 Nov 2025 10:09:20 +0100
+	s=arc-20240116; t=1763457198; c=relaxed/simple;
+	bh=JY8g9+Iv96I59y5ev4BmnnuzHSlvp11V8wDFWmv8Pbc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B6JaEnRrv+yfWIevabq9tOD3WqEROMBLAsj7yZsvRoIAFI1zek3GnNguVzSM0Vq3lZGAzxtOt9f9IbcM3k5dlWTRuKuILPrbWifJHkUytte/ivOxIa2HDPtwiPsKlNCBdu5w15FtW2CxZnSTbPa60zBg/f9u2sz8a9adF+LBEDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vLHli-00056w-O1; Tue, 18 Nov 2025 10:12:58 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vLHlg-0013co-2R;
+	Tue, 18 Nov 2025 10:12:56 +0100
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vLHlg-00A9WL-1z;
+	Tue, 18 Nov 2025 10:12:56 +0100
+Date: Tue, 18 Nov 2025 10:12:56 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-iio@vger.kernel.org, Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: Re: [PATCH] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
+Message-ID: <aRw4mIZpWdsr9exb@pengutronix.de>
+References: <20251118083603.778626-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH v2] phy: HiSilicon: Fix error handling in
- hi3670_pcie_get_resources_from_pcie
-To: Ma Ke <make24@iscas.ac.cn>, vkoul@kernel.org, kishon@kernel.org,
- andriy.shevchenko@linux.intel.com, mchehab+huawei@kernel.org, mani@kernel.org
-Cc: linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
- akpm@linux-foundation.org, stable@vger.kernel.org
-References: <20251117010227.17238-1-make24@iscas.ac.cn>
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20251117010227.17238-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251118083603.778626-1-alexander.sverdlin@siemens.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On 11/17/25 02:02, Ma Ke wrote:
-> In hi3670_pcie_get_resources_from_pcie(), the reference obtained via
-> bus_find_device_by_of_node() is never released with put_device(). Each
-> call to this function increments the reference count of the PCIe
-> device without decrementing it, preventing proper device cleanup. And
-> the device node obtained via of_get_child_by_name() is never released
-> with of_node_put(). This could cause a leak of the node reference.
+Hi Alexander,
+
+On Tue, Nov 18, 2025 at 09:35:48AM +0100, A. Sverdlin wrote:
+> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 > 
-> Add proper resource cleanup using goto labels to ensure all acquired
-> references are released before function return, regardless of the exit
-> path.
+> An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
+> CONFIG_PROVE_RAW_LOCK_NESTING warns:
+> =============================
+> [ BUG: Invalid wait context ]
+> 6.18.0-rc1+git... #1
+> -----------------------------
+> some-user-space-process/1251 is trying to lock:
+> (&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
+> other info that might help us debug this:
+> context-{2:2}
+> no locks held by some-user-space-process/....
+> stack backtrace:
+> CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
+> Call trace:
+>  show_stack (C)
+>  dump_stack_lvl
+>  dump_stack
+>  __lock_acquire
+>  lock_acquire
+>  _raw_spin_lock_irqsave
+>  counter_push_event [counter]
+>  interrupt_cnt_isr [interrupt_cnt]
+>  __handle_irq_event_percpu
+>  handle_irq_event
+>  handle_simple_irq
+>  handle_irq_desc
+>  generic_handle_domain_irq
+>  gpio_irq_handler
+>  handle_irq_desc
+>  generic_handle_domain_irq
+>  gic_handle_irq
+>  call_on_irq_stack
+>  do_interrupt_handler
+>  el0_interrupt
+>  __el0_irq_handler_common
+>  el0t_64_irq_handler
+>  el0t_64_irq
 > 
-> Found by code review.
+> ... and Sebastian correctly points out. Remove IRQF_NO_THREAD as an
+> alternative to switching to raw_spinlock_t, because the latter would limit
+> all potential nested locks to raw_spinlock_t only.
 > 
+> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 > Cc: stable@vger.kernel.org
-> Fixes: 73075011ffff ("phy: HiSilicon: Add driver for Kirin 970 PCIe PHY")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> Link: https://lore.kernel.org/all/20251117151314.xwLAZrWY@linutronix.de/
+> Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 > ---
-> Changes in v2:
-> - modified the patch for the warning that variable 'ret' is set but not used.
-> ---
->   drivers/phy/hisilicon/phy-hi3670-pcie.c | 15 +++++++++++----
->   1 file changed, 11 insertions(+), 4 deletions(-)
+>  drivers/counter/interrupt-cnt.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/drivers/phy/hisilicon/phy-hi3670-pcie.c b/drivers/phy/hisilicon/phy-hi3670-pcie.c
-> index dbc7dcce682b..9960c9da9b4a 100644
-> --- a/drivers/phy/hisilicon/phy-hi3670-pcie.c
-> +++ b/drivers/phy/hisilicon/phy-hi3670-pcie.c
-> @@ -560,7 +560,8 @@ static int hi3670_pcie_get_resources_from_pcie(struct hi3670_pcie_phy *phy)
->   {
->   	struct device_node *pcie_port;
->   	struct device *dev = phy->dev;
-> -	struct device *pcie_dev;
-> +	struct device *pcie_dev = NULL;
-> +	int ret = 0;
->   
->   	pcie_port = of_get_child_by_name(dev->parent->of_node, "pcie");
->   	if (!pcie_port) {
-> @@ -572,7 +573,8 @@ static int hi3670_pcie_get_resources_from_pcie(struct hi3670_pcie_phy *phy)
->   	pcie_dev = bus_find_device_by_of_node(&platform_bus_type, pcie_port);
->   	if (!pcie_dev) {
->   		dev_err(dev, "Didn't find pcie device\n");
-> -		return -ENODEV;
-> +		ret = -ENODEV;
-> +		goto out_put_node;
->   	}
->   
->   	/*
-> @@ -586,10 +588,15 @@ static int hi3670_pcie_get_resources_from_pcie(struct hi3670_pcie_phy *phy)
->   	phy->apb = dev_get_regmap(pcie_dev, "kirin_pcie_apb");
->   	if (!phy->apb) {
->   		dev_err(dev, "Failed to get APB regmap\n");
-> -		return -ENODEV;
-> +		ret = -ENODEV;
-> +		goto out_put_device;
->   	}
->   
-> -	return 0;
-> +out_put_device:
-> +	put_device(pcie_dev);
-> +out_put_node:
-> +	of_node_put(pcie_port);
-> +	return ret;
->   }
->   
->   static int kirin_pcie_clk_ctrl(struct hi3670_pcie_phy *phy, bool enable)
+> diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
+> index 6c0c1d2d7027d..e6100b5fb082e 100644
+> --- a/drivers/counter/interrupt-cnt.c
+> +++ b/drivers/counter/interrupt-cnt.c
+> @@ -229,8 +229,7 @@ static int interrupt_cnt_probe(struct platform_device *pdev)
+>  
+>  	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
+>  	ret = devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
+> -			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
+> -			       dev_name(dev), counter);
+> +			       IRQF_TRIGGER_RISING, dev_name(dev), counter);
+>  	if (ret)
+>  		return ret;
+>  
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Hm, I guess it will break the requirement to handle at least 10kHz
+interrupts. May be we should move only counter_push_event() to the
+thread? or using delayed worker?
+
+Right now I do not have needed system for testing to come with better
+proposal.
+
+Best Regards,
+Oleksij
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
