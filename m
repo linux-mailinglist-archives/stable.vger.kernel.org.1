@@ -1,144 +1,99 @@
-Return-Path: <stable+bounces-195044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00D5C67288
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 04:34:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 093D8C672A9
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 04:35:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B04684E2078
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 03:34:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id B7EE129F0F
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 03:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD9730217D;
-	Tue, 18 Nov 2025 03:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326E52FB0A1;
+	Tue, 18 Nov 2025 03:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FyKKujqN"
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="A+c847Zf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FDC30AAC6
-	for <stable@vger.kernel.org>; Tue, 18 Nov 2025 03:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA4D25B31B;
+	Tue, 18 Nov 2025 03:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763436836; cv=none; b=tBt8Yf0lSy73kJSWv/AAMzFOAHvXnHiKBuOQt9LfH80uBS2yG+RGYiFJNbSOk0PyujqFOhdyzYqIzEmdTiD0VNInq0ZHpDF7Bcx2WFPwZ7+doQ3FYhY7GLh0sNiOCbpEsAOEiF532qb8arsGkBAClQHXZUxmfl8uWP6iwxAMZzs=
+	t=1763436909; cv=none; b=FzQBBE25MW3PehGL5L+8WgCzsUbNETSSDCkABxrM4NlVwC/zDrBFAPuaySXoYBr6Y57dzmpOwtfuJOHQ2etbpX3YzM50zj5rFpQRpCsb9Jy7SZbSnu80sSzQCjDyHeWGsHq0uzOHuiR0PJQc9wpmpiGiamk5UehxhzIUbefLY+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763436836; c=relaxed/simple;
-	bh=geufpOCEDdFKcZ5MrqwwzZdC8+vVlLCwpno40cRwcLQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fu1xuc7xx50zCq0gEBC5/RGJ9Uk4HLoKTFU88dhArojz74FjaFYMEeIfFUeBMLb0eLxztw7Pn9Cxq42/73xD3ZSY58F9YSUhD6Bidz8P6PhdmuLhe1SvahNR5sFV0UUgxbeCadUp4+Iv07p26K8F6sTEv6t/7iSWB/EFMrdS960=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FyKKujqN; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-29812589890so64275205ad.3
-        for <stable@vger.kernel.org>; Mon, 17 Nov 2025 19:33:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763436834; x=1764041634; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4POpDdLCAEAaguEwBjZapDEtx8R3iRforMNq6m5UEKA=;
-        b=FyKKujqNMMDxGv8e22gg3zoaGD7x8YmwAFHnIB/IaWBNl85Qri1ugt6EVGCH5PlGY9
-         uG+WB0WJpdesl52cZabnXcS5WH9aPoDvvHUkDU4he4qvOvuBW059yYdHzBP3Vc1+xsOF
-         0saZRjA9mUYPLinG15Nf7Vu/yYbyJbTMmZQfsPdKiN17vcj8y0rfm08ZsvZmRIEUnjzF
-         8ZxSO+Llgtw7S5aSssFF+PKBQEU0HDhybJd/qFa/G8LKsUGveEqLrn6LYA5S3UhD5uQw
-         ZqbEa5tapoHDxIu4oDoDgz9rgXV2CzibLiH5UD6bt6RwOYaa+8Q7ZYH5L44KyszouHrP
-         X9Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763436834; x=1764041634;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4POpDdLCAEAaguEwBjZapDEtx8R3iRforMNq6m5UEKA=;
-        b=BqyQor549u0qkPnIuCVbABbnTFhwoiGfOGZb7miS2I6ozXYUJe3pHe9vQJjLm+3P+e
-         PrcJljJgXZhWJQ+giL/Oyenjm9FAeRHWQ776XrVpuHixkNIkylwcblqVEfcL3GkzdtqP
-         c7qN9U24cwlf77zPgmLkR8BYAfEKKKL5L8MKyr9IddKYiac/lBmt4Ak+FgBRStnOe+49
-         8L8ALBgVXgY3OM5Yo2o5pecC6BO14JRqd6pO53xntZxeZlkaXOR3PFQuwkN+kghs4Uo9
-         pfjMSUdhw2/S02+y1ieTzDdLZWmY2et2V2gZrkVP3O0NmFucxgFTaGMT46F9Mext3S0J
-         1SuA==
-X-Forwarded-Encrypted: i=1; AJvYcCWcKJgeffkxMrjZfmlxyZJ94YAqz3pYLTav00FZXJpo8wxU0zqWIgv4R+IrGIo8LO+4vyBmiPw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzo81+rpNyrssFHwT/OQz2s39zYs7de6SAcur+ZUngFX3UH/HWV
-	0clFjubK75IOToIhTMrqHdCGISMOfLt2xIO4Yu0MPschMu7PAmOAke42
-X-Gm-Gg: ASbGncteqS6yrB8k+Wr9ejrb7hHfDGklPfZT3rNQRVIu4j/jiQiC31TLosrMhHet4Y4
-	A8mUfokQruhxsk3yWrNguQnPku7WKY30u+/6K2owQcJ9Ayh9X7GJgjSp8zOxat+/1XeR+44OZiZ
-	ohS8X0Z+jWaM3O50cIHwoxZ1SVhxl92Gvs7UkmMEJ974HErgxPQtL4tLVbeGnVCo21tp6CFccSv
-	PvsmdaLYY7MJi4FQbrpPkH6Lx773JyYq1dIoPwKuUfhRqUNvLP0qpzLCwxSNFZ/2/2n0coeAQBJ
-	O31AmFbwklRy08OjD2Kx0EQ6bPDp6TpmNOZ6DnT1yW/iBR9k3k7rFnHBEFzm8AdC9ErOlfdOjAj
-	pzxiITwcRYWJrCqKd6dmT6duxeMHVMY1EoAQsilA2uiEIXuBelsWV0Q4rETlD3QIomnJ2zmSuFU
-	clkU8wIc4E6iPCmb8JcsmDW46z3w8N5WONlG1CMQ==
-X-Google-Smtp-Source: AGHT+IGdPC7Cyz7EiLnEPeeedFK9rwJEg8TG2kP1KcNvBMkrm9YQB0epxVT4tlbA7xQi7ezGfVf1wA==
-X-Received: by 2002:a17:902:f78d:b0:299:dc84:fd0 with SMTP id d9443c01a7336-299dc8410aemr79764285ad.17.1763436834248;
-        Mon, 17 Nov 2025 19:33:54 -0800 (PST)
-Received: from bass-virtual-machine.. ([1.203.169.140])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2376f6sm153724295ad.21.2025.11.17.19.33.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 19:33:53 -0800 (PST)
-From: Gui-Dong Han <hanguidong02@gmail.com>
-To: 3chas3@gmail.com,
-	horms@kernel.org,
-	kuba@kernel.org
-Cc: linux-atm-general@lists.sourceforge.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH REPOST net v2] atm/fore200e: Fix possible data race in fore200e_open()
-Date: Tue, 18 Nov 2025 11:33:30 +0800
-Message-Id: <20251118033330.1844136-1-hanguidong02@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1763436909; c=relaxed/simple;
+	bh=4llNktAFHmag0wadvRM3IGLwPLcCV6SYiWC/f97cN7I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ewMGsg9RxVuyFewyfMLMX5g0vfd/0hfPgIbkIzHArpYrEsg4xayiOq2jH7sqfTV3QRC4F4WyrvWY8hi3XLpXDgL5EnPipjrJwMB2GelmFvginn0oiT4SkORknrXJN1WJ0Stsah2LAvE4LubEhxf2JKn59kE7eqfZgGFXwtkCTK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=A+c847Zf; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=kK7QyPM+ihEt5L9TAPPj7gSvSsUm69YbTMRhxbNBmpI=; 
+	b=A+c847ZfkNvJ+w+yxDHiMz1/5sfjpwwiR2wVjPeGij386ELW5Fw27FB0KVE/PS1e8fLt3AmI9/a
+	3ZsEB/nhSuSFtA2A7+8zH6aVAnho06jnPNOtJwHTlfJlbj+T2XWkl+TZ/mRPy057M59L/riumSPwk
+	D+vYzi/ZfvNDBMgHJYSyPSDHCIc3dmhZWY6aiVe82/qDRwuq/Kh3yKu3axmL46CK3D0NF8shWBa7f
+	TUlymqMTOgDWZ0ig2320rvUWrxxDGF6j0gLG8lEk1M6wzP/EPISUM9ztMCfMiuYggV1OZZOgn/nzM
+	xcUqnbzXQ6CKfZ2Xk6Kw4/vbu9JcuNWy4ISA==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1vLCUU-003uRO-05;
+	Tue, 18 Nov 2025 11:34:51 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 18 Nov 2025 11:34:50 +0800
+Date: Tue, 18 Nov 2025 11:34:50 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	larryw3i <larryw3i@yeah.net>, stable@vger.kernel.org,
+	AlanSong-oc@zhaoxin.com, CobeChen@zhaoxin.com,
+	GeorgeXue@zhaoxin.com, HansHu@zhaoxin.com, LeoLiu-oc@zhaoxin.com,
+	TonyWWang-oc@zhaoxin.com, YunShen@zhaoxin.com
+Subject: Re: [PATCH] crypto: padlock-sha - Disable broken driver
+Message-ID: <aRvpWqwQhndipqx-@gondor.apana.org.au>
+References: <3af01fec-b4d3-4d0c-9450-2b722d4bbe39@yeah.net>
+ <20251116183926.3969-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251116183926.3969-1-ebiggers@kernel.org>
 
-Protect access to fore200e->available_cell_rate with rate_mtx lock to
-prevent potential data race.
+On Sun, Nov 16, 2025 at 10:39:26AM -0800, Eric Biggers wrote:
+> This driver is known broken, as it computes the wrong SHA-1 and SHA-256
+> hashes.  Correctness needs to be the first priority for cryptographic
+> code.  Just disable it, allowing the standard (and actually correct)
+> SHA-1 and SHA-256 implementations to take priority.
 
-In this case, since the update depends on a prior read, a data race
-could lead to a wrong fore200e.available_cell_rate value.
-
-The field fore200e.available_cell_rate is generally protected by the lock
-fore200e.rate_mtx when accessed. In all other read and write cases, this
-field is consistently protected by the lock, except for this case and
-during initialization.
-
-This potential bug was detected by our experimental static analysis tool,
-which analyzes locking APIs and paired functions to identify data races
-and atomicity violations.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
-v2:
-* Added a description of the data race hazard in fore200e_open(), as
-suggested by Jakub Kicinski and Simon Horman.
-
-REPOST:
-* Reposting v2 as it seems to have been overlooked.
----
- drivers/atm/fore200e.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/atm/fore200e.c b/drivers/atm/fore200e.c
-index 4fea1149e003..f62e38571440 100644
---- a/drivers/atm/fore200e.c
-+++ b/drivers/atm/fore200e.c
-@@ -1374,7 +1374,9 @@ fore200e_open(struct atm_vcc *vcc)
+...
  
- 	vcc->dev_data = NULL;
- 
-+	mutex_lock(&fore200e->rate_mtx);
- 	fore200e->available_cell_rate += vcc->qos.txtp.max_pcr;
-+	mutex_unlock(&fore200e->rate_mtx);
- 
- 	kfree(fore200e_vcc);
- 	return -EINVAL;
+> diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
+> index a6688d54984c..16ea3e741350 100644
+> --- a/drivers/crypto/Kconfig
+> +++ b/drivers/crypto/Kconfig
+> @@ -38,11 +38,11 @@ config CRYPTO_DEV_PADLOCK_AES
+>  	  If unsure say M. The compiled module will be
+>  	  called padlock-aes.
+>  
+>  config CRYPTO_DEV_PADLOCK_SHA
+>  	tristate "PadLock driver for SHA1 and SHA256 algorithms"
+> -	depends on CRYPTO_DEV_PADLOCK
+> +	depends on CRYPTO_DEV_PADLOCK && BROKEN
+
+It's only broken on ZHAOXIN, so this should be conditional on
+CPU_SUP_ZHAOXIN.
+
+Thanks,
 -- 
-2.34.1
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
