@@ -1,117 +1,115 @@
-Return-Path: <stable+bounces-195071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2A6C682FD
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 09:24:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C723C68321
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 09:28:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 00D5C2A48C
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 08:24:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id CB32B2A420
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 08:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7EB308F0F;
-	Tue, 18 Nov 2025 08:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C43D30F526;
+	Tue, 18 Nov 2025 08:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="Pd9FXlvj"
 X-Original-To: stable@vger.kernel.org
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
+Received: from mail.crpt.ru (mail.crpt.ru [91.236.205.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBAE2D8773
-	for <stable@vger.kernel.org>; Tue, 18 Nov 2025 08:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19D430ACEA
+	for <stable@vger.kernel.org>; Tue, 18 Nov 2025 08:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.236.205.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763454279; cv=none; b=kV5vp00cUU3EiW42rhKiEqBGh2pFD7sdsQWkSP9kNtiWca+cMaX0OL6z17qq8zy1uKWJlep3LM1nYXdbQu2ON8QmCNwzOa1fzH3zvKOI0GPrMm7HfvHSQ54k5VM5PhyjF1u4oYHf7uWHtaTTJ9PIPhpdkJ6jcEtn9Rhw30Jawr0=
+	t=1763454445; cv=none; b=gJJm4fdJO5abttrCRpgtJ569BpQWwIEMHSbT8glyD6R5numj+yrllY4iK5UtRLXwwINEdUtvDrCqh2kZYekAfMa2HMoMDIKQwG1OQgJFmvfW5WCL8R9QRfa/p6dR3Xxw1fQ/nCFxIN/ycZ6hniY7oAjAyjZYnFSH9IHgRm36vOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763454279; c=relaxed/simple;
-	bh=lTOIlzIyKMgsX3aqGJXsr0wy1f3tRqcuMjDRKEpejpw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=YxOzVnrA17y3lwreFhGMO3NmGvA14dYoFk1oL9i1vhklYLsBOcRD6ddg/E2r4YLQPazd11UWWu2lWNsGgsZ3VE40+BlSRA74xpX+WIbcRVwbWiYdVGKqJavHd1ReXgVsfFK+z7TMwWfI5VBEpBr6HKQjpj+4gCankBD1X9DIH8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1763454273-1eb14e3d8899e30001-OJig3u
-Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx2.zhaoxin.com with ESMTP id q0zNv7sWKB1Co6xB (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Tue, 18 Nov 2025 16:24:33 +0800 (CST)
-X-Barracuda-Envelope-From: AlanSong-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX2.zhaoxin.com
- (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Tue, 18 Nov
- 2025 16:24:32 +0800
-Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
- ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
- 15.01.2507.059; Tue, 18 Nov 2025 16:24:32 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from [10.32.65.156] (10.32.65.156) by ZXBJMBX02.zhaoxin.com
- (10.29.252.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Tue, 18 Nov
- 2025 16:22:37 +0800
-Message-ID: <e15e6946-2de8-4f12-8665-814bb2a9e013@zhaoxin.com>
-Date: Tue, 18 Nov 2025 16:22:02 +0800
+	s=arc-20240116; t=1763454445; c=relaxed/simple;
+	bh=3XpadBi7RcjB+sw6CmZ/gXMgSZUBo7YY22/GRGiFNJY=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Cq2G6B8IY2oA0JsrmQV0H4X/ASq17fx0IzeYmd4KxWMNr/5cKfKIUc0wUaT44kc13l/FAGUgSbQ9Nc8OGBgNXPZ+AZ2utLFJIAk9AnbjfbDA4DpP+OY9olq9NxJ2NDXpqwbLk5c50cok6rzcWR+tOo984QNXaSJ8wqbxS9uWzw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=Pd9FXlvj; arc=none smtp.client-ip=91.236.205.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crpt.ru
+Received: from mail.crpt.ru ([192.168.60.4])
+	by mail.crpt.ru  with ESMTPS id 5AI8R73c023767-5AI8R73e023767
+	(version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=OK);
+	Tue, 18 Nov 2025 11:27:07 +0300
+Received: from EX2.crpt.local (192.168.60.4) by ex2.crpt.local (192.168.60.4)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Tue, 18 Nov
+ 2025 11:27:07 +0300
+Received: from EX2.crpt.local ([192.168.60.4]) by EX2.crpt.local
+ ([192.168.60.4]) with mapi id 15.01.2507.044; Tue, 18 Nov 2025 11:27:07 +0300
+From: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>
+To: "lvc-patches@linuxtesting.org" <lvc-patches@linuxtesting.org>
+CC: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH] scsi: target: reset t_task_cdb pointer in error case
+Thread-Topic: [PATCH] scsi: target: reset t_task_cdb pointer in error case
+Thread-Index: AQHcWGUg4xOEQbD6pU+6rUudom/Eiw==
+Date: Tue, 18 Nov 2025 08:27:07 +0000
+Message-ID: <20251118082633.260743-1-a.vatoropin@crpt.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-kse-serverinfo: EX2.crpt.local, 9
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: Clean, bases: 11/17/2025 10:38:00 PM
+x-kse-attachment-filter-triggered-rules: Clean
+x-kse-attachment-filter-triggered-filters: Clean
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] crypto: padlock-sha - Disable broken driver
-To: larryw3i <larryw3i@yeah.net>, Eric Biggers <ebiggers@kernel.org>,
-	<linux-crypto@vger.kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>
-X-ASG-Orig-Subj: Re: [PATCH] crypto: padlock-sha - Disable broken driver
-CC: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-	<CobeChen@zhaoxin.com>, <GeorgeXue@zhaoxin.com>, <HansHu@zhaoxin.com>,
-	<LeoLiu-oc@zhaoxin.com>, <TonyWWang-oc@zhaoxin.com>, <YunShen@zhaoxin.com>
-References: <3af01fec-b4d3-4d0c-9450-2b722d4bbe39@yeah.net>
- <20251116183926.3969-1-ebiggers@kernel.org>
- <c24d0582-ae94-4dfb-ae6f-6baafa7fe689@zhaoxin.com>
- <c829e264-1cd0-4307-ac62-b75515ad3027@yeah.net>
-From: AlanSong-oc <AlanSong-oc@zhaoxin.com>
-In-Reply-To: <c829e264-1cd0-4307-ac62-b75515ad3027@yeah.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- ZXBJMBX02.zhaoxin.com (10.29.252.6)
-X-Moderation-Data: 11/18/2025 4:24:31 PM
-X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
-X-Barracuda-Start-Time: 1763454273
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 1284
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.150302
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
+X-FEAS-BEC-Info: WlpIGw0aAQkEARIJHAEHBlJSCRoLAAEeDUhZUEhYSFhIWUhZXkguLVxYWC48UVlRWFhYWVxaSFlRSAlGHgkcBxoHGAEGKAsaGBxGGh1IWUhaUEgEHgtFGAkcCwANGygEAQYdEBwNGxwBBg9GBxoPSFhIWkhZWkhZUVpGWV5QRl5YRlxIUEhYSFhIWkhYSFhIWEhaUEgEHgtFGAkcCwANGygEAQYdEBwNGxwBBg9GBxoPSFhIWlpIGxwJCgQNKB4PDRpGAw0aBg0ERgcaD0hY
+X-FEAS-Client-IP: 192.168.60.4
+X-FE-Policy-ID: 2:4:0:SYSTEM
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=crpt.ru; s=crpt.ru; c=relaxed/relaxed;
+ h=from:to:cc:subject:date:message-id:content-type:mime-version;
+ bh=Ga2KAT/PUK66gvzRVKhE/lxJ4rvQrM3uO5+Aoxd9MrY=;
+ b=Pd9FXlvje7RWJQ6CXZhVAGtrTD3mb+r8eB1FqZPh7R+J7SVygb/Y9Y01TH4IBHTC3Hjei5PnjIr2
+	8xmgA62gCkT8wKDB3u6+cvajnerw7BNsn9TTs7mTVUwvIluKH92ZhZ01PQjcuzkaazKRps98C/6G
+	3usLWhBA8eJfovqUfcKOmLlYFbsHtAIZ2RR9esHpN2uOXfCCWZ/GRjxjM/U0LyEeEXxKP8PnfAss
+	z45beeHrG4BRKXZHu0oFyPWZa07EdOIJ4yVmZnITuPVhTOuXmufCJmBFjsaUYtJsb0skH5cAZ3IP
+	WrGjokBXbx9xqgoaLSRExqsguog7+WunbLwdkg==
 
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-On 11/17/2025 6:08 PM, larryw3i wrote:
-> On 11/17/25 17:03, AlanSong-oc wrote:
->> I will submit the finalized patch immediately.
-> Dear AlanSong-oc,
->=20
-> I also want to nag a few more words. I think after a period of time,
-> most of your machines without external graphics cards may not be able to
-> install Debian properly (I don't know if KX-7000 is the same). It seems
-> that GNOME 49 no longer uses X11 by default but Wayland. However, as far
-> as I know, Wayland requires a graphics card driver to work. I have over
-> ten laptops with your CPUs built-in here. The operating system I
-> installed is Debian testing, but now GNOME is not working and I have to
-> use XFCE4.  =F0=9F=98=AD
+If allocation of cmd->t_task_cdb fails, it remains NULL but is later
+dereferenced at the 'err' path.
 
-Thank you for reporting the issue on the Zhaoxin platform. However, I
-would suggest not discussing the unrelated display problem in this patch
-email. Regarding the display issue you encountered, as far as I know,
-using Wayland for display does not require a dedicated graphics driver.
-Wayland can operate using the generic SimpleDRM driver. However, I have
-not checked whether SimpleDRM is enabled or available in Debian. If you
-need the proper graphics driver for the Zhaoxin platform, I recommend
-contacting the OEM or Zhaoxin customer support.
+In case of error reset NULL t_task_cdb value to point at the default
+fixed-size buffer.
 
-Best Regards
-AlanSong-oc
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
+Fixes: 9e95fb805dc0 ("scsi: target: Fix NULL pointer dereference")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+---
+ drivers/target/target_core_transport.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target=
+_core_transport.c
+index 0a76bdfe5528..88544c911949 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -1524,6 +1524,7 @@ target_cmd_init_cdb(struct se_cmd *cmd, unsigned char=
+ *cdb, gfp_t gfp)
+ 	if (scsi_command_size(cdb) > sizeof(cmd->__t_task_cdb)) {
+ 		cmd->t_task_cdb =3D kzalloc(scsi_command_size(cdb), gfp);
+ 		if (!cmd->t_task_cdb) {
++			cmd->t_task_cdb =3D &cmd->__t_task_cdb[0];
+ 			pr_err("Unable to allocate cmd->t_task_cdb"
+ 				" %u > sizeof(cmd->__t_task_cdb): %lu ops\n",
+ 				scsi_command_size(cdb),
+--=20
+2.43.0
 
