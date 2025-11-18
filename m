@@ -1,139 +1,118 @@
-Return-Path: <stable+bounces-195097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 941B6C68DC8
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 11:36:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 837B8C68DCE
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 11:36:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7E2863476EE
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 10:30:36 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3E29E34D96E
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 10:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8475E3375A0;
-	Tue, 18 Nov 2025 10:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D4A30E84D;
+	Tue, 18 Nov 2025 10:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="F8oHLuGA";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qVDb6tv/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iqk7n7eZ"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A0B346E4C;
-	Tue, 18 Nov 2025 10:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5C127E1D5;
+	Tue, 18 Nov 2025 10:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763461828; cv=none; b=ZqOqWwXt3JTAcGyHSZaWuQNI+1+KUko7YH65G4pV9VcegFsSe8BVCukvqd07JROcJXC70SQV9tyau7ax43n+nlBmU4WAGxyHp4QnLf0syJdvFyFC/sRVMa2pFsowpuUZ7zZ0Fcu346wgSL5m58beYY1UnC5QpoYS56DEK1vLSXo=
+	t=1763461850; cv=none; b=V8JV5NQLxSjJhUyqCns2vQSAJHmdz8Pa1JnOh44Bd+t4JAHGBuuzQhHPp6fx3aiO9wCOWMMzL1NOtLa4YKlW5O4EyRsuPyZ5fDNKeXRyJQBeGV4oRUBh+F6ni+HcLktefypu3olvRrc/OdaTrpNWPmuizzrfOKTaj2iPXDtAb74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763461828; c=relaxed/simple;
-	bh=byCrX0eQkLFdGGy7c64agpdOAecHHq27PAIo3HB0P6Y=;
+	s=arc-20240116; t=1763461850; c=relaxed/simple;
+	bh=97rveo2IXOkr8UnydUJWTQGyrsAxOU77Y7PsYTPIAL8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rae4F3kGR2BVikH6hfXjfvAsRNlDZ1m+QPlUBiVxViGDBxNNYdvdL8c9nqM+uyFzeB1drrnAEGEMChfwOtHJdhh43/1bsHO24V+j6SOnN3JN8OHek3tnEXUhe23R5G92uuHmWFJoY9l16Wl9yz6az/DzgI+dJb9TDfE0FiX9mcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=F8oHLuGA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qVDb6tv/; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 18 Nov 2025 11:30:22 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763461823;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z/PXxhzl5P2ZgPyxLJkLxuOMSgUgRbZTFJJj5rKiSnw=;
-	b=F8oHLuGA7oo3EnhvD8VPIfJaYpPXvOLbAeEBi25BSsnfvrto+HmmstasfvusshAUy2IqrZ
-	PZ0oAKinKAwEl+Yz8ktcmOJmAQZLlBaur6+hxunF23PmHwnFKSvWx0i3qNaEmnRWJ3zDgk
-	oLjZCwm97cShG7vXEO/y6UiS3czKyF9fIqtLCVCQyuitq1B4YRakvLwzqGrJUMZqGOHeUm
-	chizflFLPVaEodDwnRxHRni98qcbB5A5vsIduy5TMvIysIqmnW7JiQV8gPHemLp5A6hh26
-	+k1YJGNckwrYhwuLBQJ4nQeQx7t4R4jl53uOS7h5tyGlYKZ6+hfOZXYbJW8mUg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763461823;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z/PXxhzl5P2ZgPyxLJkLxuOMSgUgRbZTFJJj5rKiSnw=;
-	b=qVDb6tv/YgGbvE/zkmel7mpNO7m3hhprFW56uIcX+uwq9a80m30qdYMPF8F+QiU3nnqjV5
-	X1SvCyTtzxTeocAg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-iio@vger.kernel.org, William Breathitt Gray <wbg@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	linux-kernel@vger.kernel.org,
-	"Paul E . McKenney" <paulmck@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
-Message-ID: <20251118103022.1FY-iKhs@linutronix.de>
-References: <20251118083603.778626-1-alexander.sverdlin@siemens.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=W9WG2gCwaF9JFZXLdIvKzujsDzkwfGsmNxgroYDcMNagJKvCVXDpOer0871dfqGTaezAIebAfdBGMlqgnKt9h32BDQFxVhrQZLRCC+kITZ55h7GCEoljz9kMBjHrvAMjeXfHLzwDU8Nk4Qymq1RajLEa2XgymTnl59OIJUdKcUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iqk7n7eZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AAEC2BCC7;
+	Tue, 18 Nov 2025 10:30:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763461849;
+	bh=97rveo2IXOkr8UnydUJWTQGyrsAxOU77Y7PsYTPIAL8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iqk7n7eZ8ANWuGK4G/j8wdCO+hGb0dXf7hZP6q3I8b/IKwfWr8ldB3KHDJajm/J+o
+	 nVEGXH3pyv3oDwdWfOCs0qVkYM6OwY3nYnCxnoOujFs4ioWSMyHrdk+xtGf3R710ut
+	 eHEkBXw2MZzCgFQSlybQDpo/xshHEzz56G/zGL9XIa39y9cM4N/ly0EbVbWUuGKbz9
+	 kKZlhGoNzjhc9lSSdjtt1GcyMFSG6x+RtSpfEpxU6Qcf6emCDPNFeNQ3zPM/dJiMu3
+	 pfjbBit3vCPDO3jQv01R9VLxcfK3zw5G7O/62m1WVFMuatKDe3jea4VgoxkAVgyr8t
+	 ADkxOpDYe3lSw==
+Date: Tue, 18 Nov 2025 11:30:38 +0100
+From: Alexey Gladkov <legion@kernel.org>
+To: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] unshare: Fix nsproxy leak on set_cred_ucounts() error
+ path
+Message-ID: <aRxKzrX5np4YpS19@example.org>
+References: <20251118064552.936962-1-ptikhomirov@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251118083603.778626-1-alexander.sverdlin@siemens.com>
+In-Reply-To: <20251118064552.936962-1-ptikhomirov@virtuozzo.com>
 
-On 2025-11-18 09:35:48 [+0100], A. Sverdlin wrote:
-> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+On Tue, Nov 18, 2025 at 02:45:50PM +0800, Pavel Tikhomirov wrote:
+> If unshare_nsproxy_namespaces() successfully creates the new_nsproxy,
+> but then set_cred_ucounts() fails, on its error path there is no cleanup
+> for new_nsproxy, so it is leaked. Let's fix that by freeing new_nsproxy
+> if it's not NULL on this error path.
 > 
-> An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
-> CONFIG_PROVE_RAW_LOCK_NESTING warns:
-> =============================
-> [ BUG: Invalid wait context ]
-> 6.18.0-rc1+git... #1
-> -----------------------------
-> some-user-space-process/1251 is trying to lock:
-> (&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
-> other info that might help us debug this:
-> context-{2:2}
-> no locks held by some-user-space-process/....
-> stack backtrace:
-> CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
-> Call trace:
->  show_stack (C)
->  dump_stack_lvl
->  dump_stack
->  __lock_acquire
->  lock_acquire
->  _raw_spin_lock_irqsave
->  counter_push_event [counter]
->  interrupt_cnt_isr [interrupt_cnt]
->  __handle_irq_event_percpu
->  handle_irq_event
->  handle_simple_irq
->  handle_irq_desc
->  generic_handle_domain_irq
->  gpio_irq_handler
->  handle_irq_desc
->  generic_handle_domain_irq
->  gic_handle_irq
->  call_on_irq_stack
->  do_interrupt_handler
->  el0_interrupt
->  __el0_irq_handler_common
->  el0t_64_irq_handler
->  el0t_64_irq
+> Fixes: 905ae01c4ae2a ("Add a reference to ucounts for each cred")
+> Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 
-I would recommend to trim the commit message to what is required in
-terms of describing the problem you faced. This backtrace contains a lot
-noise and is not relevant.
-The problem is that IRQF_NO_THREAD does not allow threading the
-interrupt handler. Using spinlock_t in non-threaded (atomic) context is
-not allowed and is reported by lockdep.
+Cc: stable@vger.kernel.org 
+Acked-by: Alexey Gladkov <legion@kernel.org>
 
-> ... and Sebastian correctly points out. Remove IRQF_NO_THREAD as an
-> alternative to switching to raw_spinlock_t, because the latter would limit
-> all potential nested locks to raw_spinlock_t only.
-Correct.
+> ---
+>  kernel/fork.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 3da0f08615a95..6f7332e3e0c8c 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -3133,8 +3133,11 @@ int ksys_unshare(unsigned long unshare_flags)
+>  
+>  	if (new_cred) {
+>  		err = set_cred_ucounts(new_cred);
+> -		if (err)
+> +		if (err) {
+> +			if (new_nsproxy)
+> +				free_nsproxy(new_nsproxy);
+>  			goto bad_unshare_cleanup_cred;
+> +		}
+>  	}
+>  
+>  	if (new_fs || new_fd || do_sysvsem || new_cred || new_nsproxy) {
+> -- 
+> 2.51.1
+> 
 
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+-- 
+Rgrds, legion
 
-> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/all/20251117151314.xwLAZrWY@linutronix.de/
-> Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-
-Sebastian
 
