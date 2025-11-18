@@ -1,62 +1,76 @@
-Return-Path: <stable+bounces-195083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0096EC6875F
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 10:15:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9644BC687C9
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 10:21:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8D0594E724F
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 09:14:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 213522A609
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 09:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FB73081D0;
-	Tue, 18 Nov 2025 09:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9B5313539;
+	Tue, 18 Nov 2025 09:21:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vz1Jc0at"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47453126A0
-	for <stable@vger.kernel.org>; Tue, 18 Nov 2025 09:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF15B2FBE15;
+	Tue, 18 Nov 2025 09:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763457198; cv=none; b=cTEbkh/mwnk/svmtcQqNoUcChG1ULh/tBtYQJXYOH3XiOZiOVO9AHIl8NQRWxWrR5P7t+ZTuWq3ak9Q+J0GmlpgjFRmW+r6No3h9xrZCoUEAeZq63cudXtghfnRTrtpx0IEXBvB/CHZgW7V5SNPRuxoGmsinFBKdOD4v8lGqqno=
+	t=1763457694; cv=none; b=sk7Er79f6ZgJoGDbBmpA84FfCILpdafCmDjYjGxPSM/BVzxgVTc2YSnUqcRs1HPUl2tcUey8SYtAfkMgBT/JbRB+r0dQ1U9BLtQRFvU/5COeGhOz41qyHlpPy+/O7d9WnhlXUYdaJcMG+0x7F9z/l+syfqqF8BbKrtk3RhgGw1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763457198; c=relaxed/simple;
-	bh=JY8g9+Iv96I59y5ev4BmnnuzHSlvp11V8wDFWmv8Pbc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B6JaEnRrv+yfWIevabq9tOD3WqEROMBLAsj7yZsvRoIAFI1zek3GnNguVzSM0Vq3lZGAzxtOt9f9IbcM3k5dlWTRuKuILPrbWifJHkUytte/ivOxIa2HDPtwiPsKlNCBdu5w15FtW2CxZnSTbPa60zBg/f9u2sz8a9adF+LBEDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vLHli-00056w-O1; Tue, 18 Nov 2025 10:12:58 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vLHlg-0013co-2R;
-	Tue, 18 Nov 2025 10:12:56 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vLHlg-00A9WL-1z;
-	Tue, 18 Nov 2025 10:12:56 +0100
-Date: Tue, 18 Nov 2025 10:12:56 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-iio@vger.kernel.org, Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: Re: [PATCH] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
-Message-ID: <aRw4mIZpWdsr9exb@pengutronix.de>
-References: <20251118083603.778626-1-alexander.sverdlin@siemens.com>
+	s=arc-20240116; t=1763457694; c=relaxed/simple;
+	bh=pw6InKVn77MYmI/6SyWOGZzhKwLWJdj7Un75QeGELa0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=P23ZF2Z3vjkYP7erl6OI8Khmkpz0DwlPVBOxc1093WAUMnJc3iLKJuAVrfjVfhNfqVzjD77W5N95JAvxcMMBa+CCaIk0Z+Fw7VtdlRnNR427pKOy34cpcspCtbkLCwQ4rXgbemlI9CndsRRHyLOijTF2hrTv+f7TLMJGcv0sGTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vz1Jc0at; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 2F899C0F560;
+	Tue, 18 Nov 2025 09:13:07 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4029A606FE;
+	Tue, 18 Nov 2025 09:13:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EABD810370C29;
+	Tue, 18 Nov 2025 10:13:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1763457208; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=XhuyhJllFm95ww/oufEX2VBqQR/eTEzY1I3HIzztG/w=;
+	b=vz1Jc0atdB8/+3UeJ2+ToL/QhwDgLXeFw7MI9/QXNelbKf17ZQeMGFlraQaujHVco269Fp
+	hIFazW5x+Ilaz0sn0Mm7NrTwPDzTeOlPlATuIlns6GMOQB8mQFIy3XfLiM0vVCWvcNS2fJ
+	x3jaUI50BHL+Xcfayq/Mf0jikpICFeMsud64+etUAu+sj5u3wvE98HFSmm5Y8y9W74nZmz
+	sTEkjj8u/NfDyj0e3gU9kLRbqGgJ/CEfGuMJp7WMbZg7YXCLS+xUCEDoULHC/STAfHIfPi
+	vL6bCx/SJP97WexlXuyrHK0/6Ygu0yfie0vAuq3ap75p8vO+Ew4GYvv4mLtw5g==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Johan Hovold <johan@kernel.org>,  Vinod Koul <vkoul@kernel.org>,
+  Ludovic Desroches <ludovic.desroches@microchip.com>,  Viresh Kumar
+ <vireshk@kernel.org>,  Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+  Dave Jiang <dave.jiang@intel.com>,  Vladimir Zapolskiy <vz@mleia.com>,
+  Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,  =?utf-8?Q?Am=C3=A9li?=
+ =?utf-8?Q?e?= Delaunay
+ <amelie.delaunay@foss.st.com>,  Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>,  Alexandre Torgue
+ <alexandre.torgue@foss.st.com>,  Peter Ujfalusi
+ <peter.ujfalusi@gmail.com>,  dmaengine@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  stable@vger.kernel.org
+Subject: Re: [PATCH 04/15] dmaengine: dw: dmamux: fix OF node leak on route
+ allocation failure
+In-Reply-To: <aRtV69UcldVcYiKR@black.igk.intel.com> (Andy Shevchenko's message
+	of "Mon, 17 Nov 2025 18:05:47 +0100")
+References: <20251117161258.10679-1-johan@kernel.org>
+	<20251117161258.10679-6-johan@kernel.org>
+	<aRtV69UcldVcYiKR@black.igk.intel.com>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Tue, 18 Nov 2025 10:13:21 +0100
+Message-ID: <87jyznitzi.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,100 +78,44 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251118083603.778626-1-alexander.sverdlin@siemens.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Alexander,
+Hi Andy,
 
-On Tue, Nov 18, 2025 at 09:35:48AM +0100, A. Sverdlin wrote:
-> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-> 
-> An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
-> CONFIG_PROVE_RAW_LOCK_NESTING warns:
-> =============================
-> [ BUG: Invalid wait context ]
-> 6.18.0-rc1+git... #1
-> -----------------------------
-> some-user-space-process/1251 is trying to lock:
-> (&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
-> other info that might help us debug this:
-> context-{2:2}
-> no locks held by some-user-space-process/....
-> stack backtrace:
-> CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
-> Call trace:
->  show_stack (C)
->  dump_stack_lvl
->  dump_stack
->  __lock_acquire
->  lock_acquire
->  _raw_spin_lock_irqsave
->  counter_push_event [counter]
->  interrupt_cnt_isr [interrupt_cnt]
->  __handle_irq_event_percpu
->  handle_irq_event
->  handle_simple_irq
->  handle_irq_desc
->  generic_handle_domain_irq
->  gpio_irq_handler
->  handle_irq_desc
->  generic_handle_domain_irq
->  gic_handle_irq
->  call_on_irq_stack
->  do_interrupt_handler
->  el0_interrupt
->  __el0_irq_handler_common
->  el0t_64_irq_handler
->  el0t_64_irq
-> 
-> ... and Sebastian correctly points out. Remove IRQF_NO_THREAD as an
-> alternative to switching to raw_spinlock_t, because the latter would limit
-> all potential nested locks to raw_spinlock_t only.
-> 
-> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/all/20251117151314.xwLAZrWY@linutronix.de/
-> Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-> ---
->  drivers/counter/interrupt-cnt.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
-> index 6c0c1d2d7027d..e6100b5fb082e 100644
-> --- a/drivers/counter/interrupt-cnt.c
-> +++ b/drivers/counter/interrupt-cnt.c
-> @@ -229,8 +229,7 @@ static int interrupt_cnt_probe(struct platform_device *pdev)
->  
->  	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
->  	ret = devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
-> -			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
-> -			       dev_name(dev), counter);
-> +			       IRQF_TRIGGER_RISING, dev_name(dev), counter);
->  	if (ret)
->  		return ret;
->  
+On 17/11/2025 at 18:05:47 +01, Andy Shevchenko <andriy.shevchenko@linux.int=
+el.com> wrote:
 
-Hm, I guess it will break the requirement to handle at least 10kHz
-interrupts. May be we should move only counter_push_event() to the
-thread? or using delayed worker?
+> On Mon, Nov 17, 2025 at 05:12:47PM +0100, Johan Hovold wrote:
+>> Make sure to drop the reference taken to the DMA master OF node also on
+>> late route allocation failures.
+>
+> ...
+>
+>> +put_dma_spec_np:
+>> +	of_node_put(dma_spec->np);
+>
+> Can we use __free() instead?
 
-Right now I do not have needed system for testing to come with better
-proposal.
+I probably haven't followed closely enough, but I don't understand how
+__free() is best than of_node_put() in front of of_parse_phandle()?
+Especially since the doc clearly states
 
-Best Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+           "Return: The device_node pointer with refcount incremented.
+           Use of_node_put() on it when done."
+
+> (Just in case you are going to question the appearance of cleanup.h and t=
+he
+>  respective class in of.h, it's available in the closest stable, i.e.
+>  v6.1.108 onwards).
+
+I don't believe including a recent header is a good practice for stable
+inclusion anyway. I would recommend to let the commit as it is and in a
+follow-up patch, maybe, we can move to a newer API if we want. This way
+history between stable and mailine versions is easier to compare.
+
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
+Thanks,
+Miqu=C3=A8l
 
