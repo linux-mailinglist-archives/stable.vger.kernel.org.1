@@ -1,70 +1,67 @@
-Return-Path: <stable+bounces-195039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A06C66C8A
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 02:07:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61808C66E14
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 02:45:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 266A835484C
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 01:05:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5A55C4E1160
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 01:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A2313DBA0;
-	Tue, 18 Nov 2025 01:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13C630BF6D;
+	Tue, 18 Nov 2025 01:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ovvh2G/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="svVUH5ST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC69A2D94B9;
-	Tue, 18 Nov 2025 01:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F4613D8B1;
+	Tue, 18 Nov 2025 01:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763427921; cv=none; b=SBucsM6XG2behuXcpuBoSvsZ2G7G9aeHd5bkhRM+lUNcDtN5oHA4VAJIKKiQvBFFXmFGqouBU/f9nWennU49f+oCgESjl5b4o13Votwiozx2POK5z49vxmsHJrAvpCKX1h9TBQF+RAlFuHNDKOaMQOW5XbRbHjDLo5l2rWGND7o=
+	t=1763430320; cv=none; b=qLhUQPXQF+uRyDzogbOoEcESdCOVXGTiLIYjMLbrX/MXZ/qRJ3A7sc5HREa9NfTE9byLQe9+t/XDpMJZdAanN1m8oGQvY3Ju94KpmEZCJ3ew6TK1/Y87+NY8IkzbL0APBWxnQkaJt6LRC02sc0pwAbXgQRC54RSrZUStpxNycIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763427921; c=relaxed/simple;
-	bh=PzV0c0sqvr8ORwUIKl8WKcw16mVdkiKtVU8Dq1Lafbc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDF/DyOxWjIKT7QippHd8flkOr0B4ILBfLqBo0cQLDEhyJ7B11CgSeATwvLqItxP6dHLv1t6NaNkrEPdFjrb6e6Ok4HiAI1cK3LXgH0i8myxgfWunFQBrDq+UKJeHBD6PA8Vrel69ieVrJQX1QyxBKhueFsAs4YsXIEKjbf9Ykw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ovvh2G/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6608C2BC86;
-	Tue, 18 Nov 2025 01:05:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763427920;
-	bh=PzV0c0sqvr8ORwUIKl8WKcw16mVdkiKtVU8Dq1Lafbc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ovvh2G/RSpNuQGoLSu+tZcuXzAsx1NGUqKjavC5JSWig1p+WEzZcqMwFU6keCaHoe
-	 s0hqv5HUJ3akGba87Hvwf8IoXS53gdE6WLRYrGz5m5RU4ltlRL7Usts8L0iHRQ5RUA
-	 kjdXUM4dsaWxhshng3gS1BYCmG1QvMxnPy3vh6M8w6kS+7nWyZ3WjKsIyQLBhIsnFF
-	 nzc2rS4fDyU6EfnMb6rbz4JfQGeI2QplPqbaueX8Pibo2IZx7cFp7zjFAyptYUbtjS
-	 KE8qJMe1qeZ+EZF9nNubwFfZA0yVZDVLYxg8vuYDNtwk/4a/jQf4ljZbB3I1WTYy9x
-	 GwK+bUKTog63A==
-From: Sasha Levin <sashal@kernel.org>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netfilter-devel@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH -stable,5.10 1/1] netfilter: nf_tables: reject duplicate device on updates
-Date: Mon, 17 Nov 2025 20:05:16 -0500
-Message-ID: <20251118010516.4139867-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251117214047.858985-2-pablo@netfilter.org>
-References: <20251117214047.858985-2-pablo@netfilter.org>
+	s=arc-20240116; t=1763430320; c=relaxed/simple;
+	bh=8BLonCtVGo7oWPKTbBIr2mR9kjUSrGZ05CDBk4uzAxU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P8r9OvH8T4snaJ15/fvXlW0pC3oIYCGApA84orole9gI5RcDwL+jSQ5BJrgMY9DxVfPxsniBUdyncK0NFiq/aJu5+F3Y0Qedecfe0td1NtRrf1NAWMcJFVTe46Sr7GNRAM0Re/Lz1xmCaWbmqFeqCPDMVbI0UP5OqzWfC4CePwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=svVUH5ST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAAEC2BC87;
+	Tue, 18 Nov 2025 01:45:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1763430319;
+	bh=8BLonCtVGo7oWPKTbBIr2mR9kjUSrGZ05CDBk4uzAxU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=svVUH5STgoBGPxTB9mVfBZolv2Xts0XSZEKr7m++912MJ4a+jtYIgXYczHJtvPgMW
+	 /jrm2O8PIRNCruoqlYteZD+0BOgbL21k1iCjd04DIKc3ELn4WgSQe/uINiVDrZGsK0
+	 ICQWVnHJEgyT+4NOAW4umFoIO/PfEdgfTjnCmHAI=
+Date: Mon, 17 Nov 2025 20:45:17 -0500
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Gulam Mohamed <gulam.mohamed@oracle.com>
+Cc: linux-kernel@vger.kernel.org, hch@lst.de, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] Revert "block: don't add or resize partition on the
+ disk with GENHD_FL_NO_PART"
+Message-ID: <2025111708-deplored-mousy-1b27@gregkh>
+References: <20251117174315.367072-1-gulam.mohamed@oracle.com>
+ <20251117174315.367072-2-gulam.mohamed@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251117174315.367072-2-gulam.mohamed@oracle.com>
 
-This patch has been queued up for the 5.10 stable tree.
+On Mon, Nov 17, 2025 at 05:43:15PM +0000, Gulam Mohamed wrote:
+> This reverts commit 1a721de8489fa559ff4471f73c58bb74ac5580d3.
+> 
 
-Subject: netfilter: nf_tables: reject duplicate device on updates
-Queue: 5.10
+No reason why?
 
-Thanks for the backport!
+:(
 
