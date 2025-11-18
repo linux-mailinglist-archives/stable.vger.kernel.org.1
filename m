@@ -1,176 +1,256 @@
-Return-Path: <stable+bounces-195095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596E6C68BE1
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 11:14:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5FEC68BF3
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 11:15:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 60211381163
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 10:11:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AA37F4EEDD6
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 10:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD95A338912;
-	Tue, 18 Nov 2025 10:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC76C333732;
+	Tue, 18 Nov 2025 10:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GzmP8zWb";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Ol4v3Qwd"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="TKKjqYnB"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE563358B2
-	for <stable@vger.kernel.org>; Tue, 18 Nov 2025 10:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66668332918
+	for <stable@vger.kernel.org>; Tue, 18 Nov 2025 10:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763460589; cv=none; b=r4dlbGvsJvWFTuMn2gXc4liZ4GMLZKJFJEkS8EsQleCeffWpKh2rTV0qYtmzOmu4eGX2B+7B9lY3Z2t3TW24+pcm7yuJQCoE3y8rkJH9jMV3O3qL4Yt53ntzNCV1OZFAt+QwrVW3jN+NjnhRaPnFVZp3OEPo46IPIDm4K4Z5S9I=
+	t=1763460749; cv=none; b=eydvntYR/BjV3NAjZF9UdSRC0zga+/ALRKiYOEfOJcqwl+zm1nzigHcY619TDkrT2bgZwurrAm15/f4nNVUr8ms3kD17pX0/Bett+O5W9DMIMA9ofgD7zNokwZzVh2hpgcamMtYGICMZS5f/7w+D2RFCM67t43QoLVwTfONIuF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763460589; c=relaxed/simple;
-	bh=OqUORvbTuc3X0J/VSCAu/hr2s9Hhv+URzk8dOXhc72o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IJeYFanqk+3DDeUQfZJNbcvM7qsS0+CJz3m64XOraSVbm0yyu0pt7/saQUApiqaCBoJnhOSQKFVdmTgtmiYSwA63XBS6dLpVDZ9yFwAEY8zvaoLJ5/37tRNpkEXWd9cxPmurMCgvBWa9ffs4zkMR6qvBQVQM0jh3/ec0zD/3ooM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GzmP8zWb; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Ol4v3Qwd; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AI2w9FJ375768
-	for <stable@vger.kernel.org>; Tue, 18 Nov 2025 10:09:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	TpA86malWsoC8khMUULp/bosX8u9eRqCjiBugIRYxnY=; b=GzmP8zWb6LZ+TQYq
-	2YlKVJKFLi6qZA9tSJfMbgKW3CE5waFIrbAsCTuu6eIScK00r33Pv233EF/Fk8Ay
-	w3qTpZ+PkhXLgVtpU6kaRSZbgRJs/kylg8B5HejSwP6W2hBmhk7Hc1vKrJGZQ0Id
-	7yXn2grV5te3qPGf2XFw9jSu4XSAZzgAM83S8WeMQj2U7KeJf7+wgnD3oNKmVfcc
-	dlWxyJR64rI+CPrnwT4JtkHTrGClgLj2RxUo8dRBvqeXYHnaXTJDBWAhx8ePvJMd
-	nJEwc3QXWs+JFonu7sDhJCo8sQHNr2bDRmiugJV9b8Qziw0tETjFFGNfXcx3lzch
-	5d+unw==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ag76njrcm-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 18 Nov 2025 10:09:43 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4ee07f794fcso9793481cf.2
-        for <stable@vger.kernel.org>; Tue, 18 Nov 2025 02:09:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1763460583; x=1764065383; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TpA86malWsoC8khMUULp/bosX8u9eRqCjiBugIRYxnY=;
-        b=Ol4v3QwdAGkWKFSrlYKqLi1aIb/Wu5vIbWIkZujYf9kiVd19iFDtLMGOUI5VsBmBFa
-         mojexrhxbjY69Wz5RPPSzHa9McE1YfgjI3haoBBLPvy1ISarDul2n2qvoS7WtjrThG9Q
-         Ai5JgQzrp+OJS1muAqO2EQyHdoEB+nWTSqXu3DY48N9Sc2Eq7chNpCNCBtTQhQKZs1L9
-         49Xe+oPFbhOy+k6elSYPIj5yqCMRg7YQ3vPsl6P8gsJkWn72ryFcs1JN6sC5LtjedVzA
-         i8/TdKu45vH3Sq+rodJIOVnvVZtV11Zh2yiB9wakbcR3gbXxPZvGY72cdqSG0XkfTTxW
-         wJUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763460583; x=1764065383;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TpA86malWsoC8khMUULp/bosX8u9eRqCjiBugIRYxnY=;
-        b=rE95n0VlK1R0eQeBG1a0ArU4sQ2ofLV1WcS2b1t4ZSQiAS1WdDJf5bOZPYojbOiSRp
-         jMLAD6YBcqdTIKFlm2jIXzWZn3NkxeYKw7LklOq2laIAC85CXhDS0OozImZjVLMTQVyi
-         ouBa4x4MGA+i0U/BvWubI+iQkM8J7rpDVtLTT14m7A7FTW9vDm+DJUMXNuztKXIrHKbN
-         VcxoTcRlMZ0z5yV7b4+Leo+kmLjcsp8iTYO55KL3BcfCkmTIFEfQZVLR4AjjeGMCDwW7
-         zva07SEdIf8pMNPdXBoTAKCOTca41HmAev+Ohj7+pxNWxyvJEuo0TsnBsuNsseZGBjoI
-         s+dg==
-X-Forwarded-Encrypted: i=1; AJvYcCVzn00i1fxThYorGS4JnWohzy0lrv7iYZfne5qCFUrVw8B+wxEqElTI8ergVCkgdl7DP+RDY3I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbwxPZ2kXzkK813x61HZQfYcqFRWqIPIhvhsdUGdFXlxgBBgAW
-	3ece58YeeMkVbNtKmVTeWVH2d7yHxWU2anBhPRTpkJIj4+bm119YSDWwlPlthBqClSC+hcso7MB
-	vZMc2FP3fx0D3J31QAluIdbeMRtkQ3ME25mD2geD0QzlbUh/D3FksoreknpQ=
-X-Gm-Gg: ASbGncv77hmDGLNMK/dGvR0RLvuW5iYokymqbwZk5tBAPSXPy9FT2dAQcTI1uVNx8aV
-	n8Khfo7P56jTsSeloRdimsF/BeaeIXZ7GLirCAOShmuYGiLdEDgbPp1G4hVcigya/gLd1w3Hl2o
-	5uopToQ7NDldQSsXslLFxeFoptyyr736OkzdT0bLHKH8QBAvgMnXYCBaa5/9jqqHS6mVsPnulkT
-	O6MnTh4th2fLRt/Jei3iRoPaE2YGdqJUGVMB2xiFR3Hu4KF6pI5pFnjNJ9D0UFIL+oFMuA2rv0F
-	lhE7droS8Xl3gEiONhgKtYvcYtwkgszTOzzSLEgr2b1EJWjYCxFcfBDggp1VZbhI/jGTU9wlHeu
-	Xwgh/rVv+d7HeO5fV+WNergZT6IPiCOOkwRHeKR2vB84YZClNW4+WwXEdTEXwQZwarik=
-X-Received: by 2002:a05:622a:10a:b0:4d0:3985:e425 with SMTP id d75a77b69052e-4edf2087991mr148537311cf.7.1763460582662;
-        Tue, 18 Nov 2025 02:09:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGN59Q61Eb2CNlYDxQpBWVtF5VFujGxsR5/ckcEtaIq+KMFxkfUpWv8DK6msTFYM50HKOrU6g==
-X-Received: by 2002:a05:622a:10a:b0:4d0:3985:e425 with SMTP id d75a77b69052e-4edf2087991mr148537121cf.7.1763460582152;
-        Tue, 18 Nov 2025 02:09:42 -0800 (PST)
-Received: from [192.168.119.202] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fb11d94sm1306025766b.30.2025.11.18.02.09.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Nov 2025 02:09:41 -0800 (PST)
-Message-ID: <0167a373-79e2-49f7-a765-d3a770ff2395@oss.qualcomm.com>
-Date: Tue, 18 Nov 2025 11:09:39 +0100
+	s=arc-20240116; t=1763460749; c=relaxed/simple;
+	bh=SeOijDDBbx/gt8b41/UY+Z9ZzrzLSuYGOCdDop6i7I4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iLjkPOOsaHoMcaMNGyOFECZDjEX6MCeSu9qkHWpGsxAF8MTieVwLEGaYJprrj2cpECPFjqwr75+J0O5p4L3swmYwG0rwtW5JuVqIvkvH3SXdz9dFtNQ/W72532NQbCLF0J+OiE3ziXy/LgpXOntIKNQNs2KEKmAT8nRK+MAj380=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=TKKjqYnB; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=nQ
+	LVkl2V7v/t3JQEFAjk0mHOi1899CqsYo+GwAOjuHA=; b=TKKjqYnBYp1GJ0sq8l
+	l+0x3xO3ltjLqBVQY1fIAtsFxcKnlCvobOHQ7KMC7AWO3DkiZmTEm5PLUuCEvqHu
+	VaFMobWtC5a4rjy++uh+S4LCO0NSEiKc4unyN2Sx86uIbQsz64H0r8JnA9QSlM/l
+	mnhH61in11nTN0Y6elTxM/Ua4=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgDHlOI2RhxpjRW9EQ--.15317S2;
+	Tue, 18 Nov 2025 18:11:03 +0800 (CST)
+From: zhangchen200426@163.com
+To: luiz.von.dentz@intel.com,
+	pav@iki.fi,
+	pmenzel@molgen.mpg.de,
+	chharry@chromium.org,
+	kuniyu@google.com,
+	yang.li@amlogic.com,
+	linux@treblig.org,
+	ceggers@arri.de,
+	nishiyama.pedro@gmail.com,
+	marcel@holtmann.org
+Cc: zhangchen <zhangchen01@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] Bluetooth: HCI: Fix hci0 not release in usb disconnect process
+Date: Tue, 18 Nov 2025 18:10:54 +0800
+Message-Id: <20251118101054.1182503-1-zhangchen200426@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/22] drm/msm/a6xx: Fix out of bound IO access in
- a6xx_get_gmu_registers
-To: Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-        Rob Clark <robin.clark@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Sean Paul <sean@poorly.run>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Abhinav Kumar
- <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Jonathan Marek <jonathan@marek.ca>,
-        Jordan Crouse
- <jordan@cosmicpenguin.net>,
-        Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <joro@8bytes.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Connor Abbott <cwabbott0@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
-        devicetree@vger.kernel.org, stable@vger.kernel.org
-References: <20251118-kaana-gpu-support-v4-0-86eeb8e93fb6@oss.qualcomm.com>
- <20251118-kaana-gpu-support-v4-1-86eeb8e93fb6@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20251118-kaana-gpu-support-v4-1-86eeb8e93fb6@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE4MDA4MCBTYWx0ZWRfX5BF/wzCysJJP
- OVFrwRacBNqQ+NM86iBmKeZffUwbMNhlAMdne/Dsu29yPCogK8XJtmxXnYXSN1xwRW1oTf6doBE
- AfYVQ/EkNeArqA+k2KsjyKfcvLI4+WcKN1iRGxyHUmw2FwulgUTqCN7gPpqHS4+fodd0MIcOVFX
- 96jGdYwx50+s8pD9Smvr2WLU8gUkU5Rj1nEfPgeezfObCEj14mW562eTc4UEmzeqAvQYeCokyA4
- vMAmlK37HU7hO1nUDeZp6WV2lNfIMvfsKVQgCqV0eFqYwR2ncDHx/TPUVf/5ujEQznL/jqNmCoU
- iyyu6jmMWu+2zY8QByp6lZi8zd2k1P2OOODDIKvf386enJnRiqipGjk1QPePDq+vbOvWiuj0kF3
- xLbmSgcBWY5KHFkfbLxFWGLqSJZVgQ==
-X-Proofpoint-GUID: 5KNdXeGN1VKQhQuCXRrakdex7I0miWWR
-X-Proofpoint-ORIG-GUID: 5KNdXeGN1VKQhQuCXRrakdex7I0miWWR
-X-Authority-Analysis: v=2.4 cv=a4I9NESF c=1 sm=1 tr=0 ts=691c45e7 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=MwKg9OkWFYoYUW3DDnkA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-17_04,2025-11-13_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 suspectscore=0 spamscore=0 clxscore=1015 bulkscore=0
- adultscore=0 malwarescore=0 priorityscore=1501 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511180080
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PigvCgDHlOI2RhxpjRW9EQ--.15317S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuw4DurWkGrWUWr4UJFy7ZFb_yoW3Ar1kpa
+	9Ika4fAw18Jr4Sg34rAa18JF9Yk3yI93y7CFZ7W3srG39Yy34UtryUAryYqF9ruryDJr1q
+	vF4Dta1a9Fy8Gw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jMfO7UUUUU=
+X-CM-SenderInfo: x2kd0whfkh0jaqqujli6rwjhhfrp/xtbCwBcAnGkcRjdG0wAA3a
 
-On 11/18/25 9:50 AM, Akhil P Oommen wrote:
-> REG_A6XX_GMU_AO_AHB_FENCE_CTRL register falls under GMU's register
-> range. So, use gmu_write() routines to write to this register.
-> 
-> Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-> ---
+From: zhangchen <zhangchen01@kylinos.cn>
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+If hci_resume_dev before hci_unregister_dev, the hci command will
+timeout and the reference count of hdev will not reset to zero.
+Then the node "hci0" will not release.
 
-Konrad
+The output in question is as follows:
+[ 3391.553518][ 7] [T247244] Bluetooth: hci0: command 0x0c01 tx timeout
+[ 3391.553588][ 7] [T264732] Bluetooth: hci0: Opcode 0x0c01 failed: -110
+[ 3393.569514][ 3] [T247244] Bluetooth: hci0: command 0x0c01 tx timeout
+[ 3393.569515][ 3] [T264732] Bluetooth: hci0: Opcode 0x0c1a failed: -110
+[ 3393.709645][ 6] [T104579] usb 10-1: new full-speed USB device number 95 using xhci-hcd
+[ 3393.862194][ 6] [T104579] usb 10-1: New USB device found, idVendor=13d3, idProduct=3570, bcdDevice= 0.00
+[ 3393.862205][ 6] [T104579] usb 10-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[ 3393.862208][ 6] [T104579] usb 10-1: Product: Bluetooth Radio
+[ 3393.862210][ 6] [T104579] usb 10-1: Manufacturer: Realtek
+[ 3393.862212][ 6] [T104579] usb 10-1: SerialNumber: 00e04c000001
+[ 3393.867589][ 6] [T247244] Bluetooth: hci1: RTL: examining hci_ver=0b hci_rev=000b lmp_ver=0b lmp_subver=8852
+[ 3393.868573][ 6] [T247244] Bluetooth: hci1: RTL: rom_version status=0 version=1
+[ 3393.868583][ 6] [T247244] Bluetooth: hci1: RTL: loading rtl_bt/rtl8852bu_fw.bin
+[ 3393.868672][ 6] [T247244] Bluetooth: hci1: RTL: loading rtl_bt/rtl8852bu_config.bin
+[ 3393.869699][ 6] [T247244] Bluetooth: hci1: RTL: cfg_sz 6, total sz 65603
+
+The call sequence in question is as follows:
+usb disconnect:
+  btusb_disconnect
+   hci_unregister_dev
+    hci_dev_set_flag
+    hci_cmd_sync_clear
+    hci_unregister_suspend_notifier
+    hci_dev_do_close
+    device_del
+
+device resume:
+  hci_suspend_notifier
+   hci_resume_dev
+    hci_resume_sync
+     hci_set_event_mask_sync
+      __hci_cmd_sync_status
+       __hci_cmd_sync_status_sk
+        __hci_cmd_sync_sk
+         wait_event_interruptible_timeout
+
+The output after adding debug information in question is as follows:
+[ 6378.366215][ 6] [T434033] hci_resume_dev hci name hci0
+[ 6378.366218][ 6] [T434033] hci_resume_sync set event mask sync
+[ 6378.366219][ 6] [T434033] hci_set_event_mask_sync
+[ 6378.366220][ 6] [T434033] __hci_cmd_sync_sk hci name hci0 Opcode 0x0c01
+[ 6378.366227][ 6] [T434033] __hci_cmd_sync_sk wait event interruptible timeout
+[ 6378.367632][ 6] [T420012] btusb_disconnect intf 0000000024117fc1
+[ 6378.367637][ 6] [T420012] btusb_disconnect hci_unregister_dev
+[ 6378.367638][ 6] [T420012] hci_unregister_dev 0000000064bfd783 name hci0 bus 1
+[ 6378.367641][ 6] [T420012] hci_unregister_dev set flag
+[ 6378.367804][ 6] [T420012] hci_unregister_dev cmd sync clear
+[ 6378.367807][ 6] [T420012] hci_unregister_dev unregister suspend notifier
+[ 6380.367544][ 6] [T434033] __hci_cmd_sync_sk cmd timeout
+[ 6380.367542][ 6] [T197498] Bluetooth: hci0: command 0x0c01 tx timeout
+[ 6380.367550][ 6] [T434033] __hci_cmd_sync_sk hci0 end: err -110
+[ 6380.367552][ 6] [T434033] Bluetooth: hci0: Opcode 0x0c01 failed: -110
+[ 6380.367555][ 6] [T434033] hci_resume_sync clear event filter
+[ 6380.367556][ 6] [T434033] hci_resume_sync resume scan sync
+[ 6380.367558][ 6] [T434033] __hci_cmd_sync_sk hci name hci0 Opcode 0x0c1a
+[ 6380.367561][ 6] [T434033] __hci_cmd_sync_sk wait event interruptible timeout
+[ 6382.383538][ 6] [T197498] Bluetooth: hci0: command 0x0c01 tx timeout
+[ 6382.383593][ 6] [T434033] __hci_cmd_sync_sk hci0 end: err -110
+[ 6382.383597][ 6] [T434033] Bluetooth: hci0: Opcode 0x0c1a failed: -110
+
+The output after adding debug information in normal is as follows:
+[50.039156][ 6] [ T8360] btusb_disconnect intf 00000000fca35842
+[50.039160][ 6] [ T8360] btusb_disconnect hci_unregister_dev
+[50.039162][ 6] [ T8360] hci_unregister_dev 000000002422b946 name hci0 bus 1
+[50.039164][ 6] [ T8360] hci_unregister_dev set flag
+[50.039224][ 6] [ T8360] hci_unregister_dev cmd sync clear
+[50.039227][ 5] [ T8360] hci_unregister_dev unregister suspend notifier
+[50.043542][ 5] [ T8284] hci_resume_dev hci name hci0
+
+This patch add hci_cancel_cmd_sync in hci_unregister_dev to wake up
+hdev->req_wait_q, and stop __hci_cmd_sync_sk by judging the
+HCI_UNREGISTER flag. Then stopping hci_resume_dev process based on the
+returned error code.
+
+Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
+Cc: stable@vger.kernel.org
+Signed-off-by: zhangchen <zhangchen01@kylinos.cn>
+---
+ net/bluetooth/hci_core.c |  6 ++++++
+ net/bluetooth/hci_sync.c | 22 ++++++++++++++++------
+ 2 files changed, 22 insertions(+), 6 deletions(-)
+
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 3418d7b964a1..c977bcba3e76 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -50,6 +50,7 @@
+ static void hci_rx_work(struct work_struct *work);
+ static void hci_cmd_work(struct work_struct *work);
+ static void hci_tx_work(struct work_struct *work);
++static void hci_cancel_cmd_sync(struct hci_dev *hdev, int err);
+ 
+ /* HCI device list */
+ LIST_HEAD(hci_dev_list);
+@@ -2695,6 +2696,8 @@ void hci_unregister_dev(struct hci_dev *hdev)
+ 	hci_dev_set_flag(hdev, HCI_UNREGISTER);
+ 	mutex_unlock(&hdev->unregister_lock);
+ 
++	hci_cancel_cmd_sync(hdev, EINTR);
++
+ 	write_lock(&hci_dev_list_lock);
+ 	list_del(&hdev->list);
+ 	write_unlock(&hci_dev_list_lock);
+@@ -2877,6 +2880,9 @@ int hci_resume_dev(struct hci_dev *hdev)
+ 	ret = hci_resume_sync(hdev);
+ 	hci_req_sync_unlock(hdev);
+ 
++	if (ret && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return 0;
++
+ 	mgmt_resuming(hdev, hdev->wake_reason, &hdev->wake_addr,
+ 		      hdev->wake_addr_type);
+ 
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 6e76798ec786..f48d34fbfff2 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -174,10 +174,11 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 		return ERR_PTR(err);
+ 
+ 	err = wait_event_interruptible_timeout(hdev->req_wait_q,
+-					       hdev->req_status != HCI_REQ_PEND,
++					       hdev->req_status != HCI_REQ_PEND ||
++					       hci_dev_test_flag(hdev, HCI_UNREGISTER),
+ 					       timeout);
+ 
+-	if (err == -ERESTARTSYS)
++	if (err == -ERESTARTSYS || hci_dev_test_flag(hdev, HCI_UNREGISTER))
+ 		return ERR_PTR(-EINTR);
+ 
+ 	switch (hdev->req_status) {
+@@ -6296,6 +6297,7 @@ static int hci_resume_scan_sync(struct hci_dev *hdev)
+  */
+ int hci_resume_sync(struct hci_dev *hdev)
+ {
++	int err;
+ 	/* If not marked as suspended there nothing to do */
+ 	if (!hdev->suspended)
+ 		return 0;
+@@ -6303,10 +6305,14 @@ int hci_resume_sync(struct hci_dev *hdev)
+ 	hdev->suspended = false;
+ 
+ 	/* Restore event mask */
+-	hci_set_event_mask_sync(hdev);
++	err = hci_set_event_mask_sync(hdev);
++	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return err;
+ 
+ 	/* Clear any event filters and restore scan state */
+-	hci_clear_event_filter_sync(hdev);
++	err = hci_clear_event_filter_sync(hdev);
++	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return err;
+ 
+ 	/* Resume scanning */
+ 	hci_resume_scan_sync(hdev);
+@@ -6315,10 +6321,14 @@ int hci_resume_sync(struct hci_dev *hdev)
+ 	hci_resume_monitor_sync(hdev);
+ 
+ 	/* Resume other advertisements */
+-	hci_resume_advertising_sync(hdev);
++	err = hci_resume_advertising_sync(hdev);
++	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return err;
+ 
+ 	/* Resume discovery */
+-	hci_resume_discovery_sync(hdev);
++	err = hci_resume_discovery_sync(hdev);
++	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return err;
+ 
+ 	return 0;
+ }
+-- 
+2.25.1
+
 
