@@ -1,165 +1,121 @@
-Return-Path: <stable+bounces-195075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3B5C683C9
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 09:41:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE03C683ED
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 09:42:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id D3A092A483
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 08:41:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 5CC912A29D
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 08:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E153043DA;
-	Tue, 18 Nov 2025 08:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10272FDC41;
+	Tue, 18 Nov 2025 08:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="COibqzuy"
+	dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="laofH8xX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.crpt.ru (mail.crpt.ru [91.236.205.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3B4243956;
-	Tue, 18 Nov 2025 08:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43362C3745;
+	Tue, 18 Nov 2025 08:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.236.205.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763455274; cv=none; b=MQ4TdiiBexIFWMOks//XcKPKZVCben8p/udXy26tMC1UWPPUB3KCTQ3BsqPMBSqRN2S/0avgSm4zIVMpDaLOoVM3su1pu1BWZZ56Z+jTIwm8BIOkWXjWadzLqSB77gcMmXx21DbOnagE1NzSupGgH3Jsow2+nz4SNJjMVuaNESk=
+	t=1763455367; cv=none; b=ZDXKvI5GCcsG5/BwVElB5qEfMP+6FDV4RAvLrLzIVvEkVLPQaECmo6orZacu7v4GVfyOk1HJmgsQc87HiDyKIQPHen/5WPgXaXECHskUwm7zJYF5Ecj6nmEcGw393aRvYmoFlkJDbTC/+UP7oi9Wj2CoXBkaS7D/GLt2ysQB02o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763455274; c=relaxed/simple;
-	bh=yv+nMkP3sB5ZqxMQaDS8ZhHziPUR0FgjZj2OND8BSMg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mjFOAEhsjwQxjUbjL/335/cp+Io1Juc7Hq56XySu3p7IH8fTOG3pGuWzn6ARH5SsJU5UnH1tDj1e5Vdx7NqBS1u3iyfZaeUeQSLaum1SkFf4qYaXcRZuFYyWdSj8vS8GIhcyH/KHQddl19Tc+En3ITMvQgdx0hGiNlqtYmshJpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=COibqzuy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE18C116B1;
-	Tue, 18 Nov 2025 08:41:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763455273;
-	bh=yv+nMkP3sB5ZqxMQaDS8ZhHziPUR0FgjZj2OND8BSMg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=COibqzuyy819aIgqmsF/y/N1Kt4uknIAt07D82nbdzoI1I9Rou7/nXjjfG1xdAGp+
-	 gjuCxfNIyt+WK+WuXmns9ZZKJKUumXcPYEb5eL4R1Rnz1ZCD0MpKfGuC3I6QhoGPlI
-	 J7t2TcfY5t2Lkl/0GNrgdkV3w5tZfMFQRRj7i1xEutijdPMqsp8XI/arFfKVB5pvYv
-	 FP/JIR1bHan0/OILd4MoMSFO9EqseiOAvbSnrAzY6WS0rI6CtH47tXXSQgwiPn+Ef0
-	 O4ARTztvtinvRklkCdyhvhg4MtpB+XozhbFIJUvzETp/KXpycWP4G7eTB74He0AYSE
-	 uFDmPheDrWT0g==
-Message-ID: <d775d0b818bf0ae6165ffc3a2dbd5f54a84a85e6.camel@kernel.org>
-Subject: Re: [PATCH net 09/11] selftests: mptcp: join: userspace: longer
- timeout
-From: Geliang Tang <geliang@kernel.org>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, Mat Martineau	
- <martineau@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni	 <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan	
- <shuah@kernel.org>, Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
- linux-kernel@vger.kernel.org, 	linux-kselftest@vger.kernel.org,
- stable@vger.kernel.org
-Date: Tue, 18 Nov 2025 16:41:05 +0800
-In-Reply-To: <20251118-net-mptcp-misc-fixes-6-18-rc6-v1-9-806d3781c95f@kernel.org>
-References: 
-	<20251118-net-mptcp-misc-fixes-6-18-rc6-v1-0-806d3781c95f@kernel.org>
-	 <20251118-net-mptcp-misc-fixes-6-18-rc6-v1-9-806d3781c95f@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.56.2-4 
+	s=arc-20240116; t=1763455367; c=relaxed/simple;
+	bh=3XpadBi7RcjB+sw6CmZ/gXMgSZUBo7YY22/GRGiFNJY=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=fxA1DxmXDDduiMU6iiG4xqTwgSJOmzKtSt001CJ/HF4X2TxmaXYpRDv+0MKxJbLj638buBWdlo4RhxBwmJb10ZRuPOwEBo500PzpVtlq7UAb0vAJgUdhmWaOevF4EFB2QVlcv9u9WR/6V87X9QrUd7fTOONF2lLwXsALNjzBUBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=laofH8xX; arc=none smtp.client-ip=91.236.205.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crpt.ru
+Received: from mail.crpt.ru ([192.168.60.4])
+	by mail.crpt.ru  with ESMTPS id 5AI8gWBN017210-5AI8gWBP017210
+	(version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=OK);
+	Tue, 18 Nov 2025 11:42:32 +0300
+Received: from EX2.crpt.local (192.168.60.4) by ex2.crpt.local (192.168.60.4)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Tue, 18 Nov
+ 2025 11:42:32 +0300
+Received: from EX2.crpt.local ([192.168.60.4]) by EX2.crpt.local
+ ([192.168.60.4]) with mapi id 15.01.2507.044; Tue, 18 Nov 2025 11:42:32 +0300
+From: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>
+To: "Martin K. Petersen" <martin.petersen@oracle.com>
+CC: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>, "Sudhakar
+ Panneerselvam" <sudhakar.panneerselvam@oracle.com>, Mike Christie
+	<michael.christie@oracle.com>, "linux-scsi@vger.kernel.org"
+	<linux-scsi@vger.kernel.org>, "target-devel@vger.kernel.org"
+	<target-devel@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
+	<lvc-project@linuxtesting.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: [PATCH] scsi: target: reset t_task_cdb pointer in error case
+Thread-Topic: [PATCH] scsi: target: reset t_task_cdb pointer in error case
+Thread-Index: AQHcWGdHrKaxm3cec0iMJkx4NLwWBA==
+Date: Tue, 18 Nov 2025 08:42:31 +0000
+Message-ID: <20251118084014.324940-1-a.vatoropin@crpt.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-kse-serverinfo: EX2.crpt.local, 9
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: Clean, bases: 11/17/2025 10:38:00 PM
+x-kse-attachment-filter-triggered-rules: Clean
+x-kse-attachment-filter-triggered-filters: Clean
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-FEAS-BEC-Info: WlpIGw0aAQkEARIJHAEHBlJSCRoLAAEeDUhZUEhYSFhIWUhZXkguLVxYWC48UVlRWFhYWVxaSFlRSAlGHgkcBxoHGAEGKAsaGBxGGh1IWUhaXkgFCRocAQZGGA0cDRobDQYoBxoJCwQNRgsHBUhYSFpIWVpIWVFaRlleUEZeWEZcSFBIWEhYSFtIWEhYSFhIWlBIBAEGHRBFAw0aBg0EKB4PDRpGAw0aBg0ERgcaD0hYSFpQSAQeC0UYGgcCDQscKAQBBh0QHA0bHAEGD0YHGg9IWEhaXkgFCRocAQZGGA0cDRobDQYoBxoJCwQNRgsHBUhY
+X-FEAS-Client-IP: 192.168.60.4
+X-FE-Policy-ID: 2:4:0:SYSTEM
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=crpt.ru; s=crpt.ru; c=relaxed/relaxed;
+ h=from:to:cc:subject:date:message-id:content-type:mime-version;
+ bh=Ga2KAT/PUK66gvzRVKhE/lxJ4rvQrM3uO5+Aoxd9MrY=;
+ b=laofH8xX4h5InP9u0oe7cqLP5uZed9F2oXBZuEJvmTflSW/rHX9C+NV6nvNJhliwcY6UmwV0/lKg
+	nGvj+n43uTPBlMVTIMIUqQfQmJcVyzvcZKl6CSHZli5oQhlOLJ7uLjHmoalkbje303+o3jl/YshF
+	QMReCftkEgX8wdxVAkfqXLioDfK5B+DpIoOeIWCijsfY3kAACxIeL1PK6elY999+sMxYHHFrUg4O
+	hTcMapcjt+gcEWzv3DkCqHp109ESdLKEXDr1bgwI5nSKOTAsTHT99+R5DwN62WUAKZuU4YJSExlt
+	V+oS6CCx4YIJz61wrlht28lc3SmBj8rJk8bzzg==
 
-Hi Matt,
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-On Tue, 2025-11-18 at 08:20 +0100, Matthieu Baerts (NGI0) wrote:
-> In rare cases, when the test environment is very slow, some userspace
-> tests can fail because some expected events have not been seen.
-> 
-> Because the tests are expecting a long on-going connection, and they
-> are
-> not waiting for the end of the transfer, it is fine to have a longer
-> timeout, and even go over the default one. This connection will be
-> killed at the end, after the verifications: increasing the timeout
-> doesn't change anything, apart from avoiding it to end before the end
-> of
-> the verifications.
-> 
-> To play it safe, all userspace tests not waiting for the end of the
-> transfer are now having a longer timeout: 2 minutes.
-> 
-> The Fixes commit was making the connection longer, but still, the
-> default timeout would have stopped it after 1 minute, which might not
-> be
-> enough in very slow environments.
-> 
-> Fixes: 290493078b96 ("selftests: mptcp: join: userspace: longer
-> transfer")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+If allocation of cmd->t_task_cdb fails, it remains NULL but is later
+dereferenced at the 'err' path.
 
-This patch looks good to me.
+In case of error reset NULL t_task_cdb value to point at the default
+fixed-size buffer.
 
-Reviewed-by: Geliang Tang <geliang@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Thanks,
--Geliang
+Fixes: 9e95fb805dc0 ("scsi: target: Fix NULL pointer dereference")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+---
+ drivers/target/target_core_transport.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> ---
->  tools/testing/selftests/net/mptcp/mptcp_join.sh | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> index 93d38ded5e4e..74632beae2c6 100755
-> --- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> +++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> @@ -3804,7 +3804,7 @@ userspace_tests()
->  	   continue_if mptcp_lib_has_file
-> '/proc/sys/net/mptcp/pm_type'; then
->  		set_userspace_pm $ns1
->  		pm_nl_set_limits $ns2 2 2
-> -		{ test_linkfail=128 speed=5 \
-> +		{ timeout_test=120 test_linkfail=128 speed=5 \
->  			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->  		local tests_pid=$!
->  		wait_mpj $ns1
-> @@ -3837,7 +3837,7 @@ userspace_tests()
->  	   continue_if mptcp_lib_has_file
-> '/proc/sys/net/mptcp/pm_type'; then
->  		set_userspace_pm $ns2
->  		pm_nl_set_limits $ns1 0 1
-> -		{ test_linkfail=128 speed=5 \
-> +		{ timeout_test=120 test_linkfail=128 speed=5 \
->  			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->  		local tests_pid=$!
->  		wait_mpj $ns2
-> @@ -3865,7 +3865,7 @@ userspace_tests()
->  	   continue_if mptcp_lib_has_file
-> '/proc/sys/net/mptcp/pm_type'; then
->  		set_userspace_pm $ns2
->  		pm_nl_set_limits $ns1 0 1
-> -		{ test_linkfail=128 speed=5 \
-> +		{ timeout_test=120 test_linkfail=128 speed=5 \
->  			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->  		local tests_pid=$!
->  		wait_mpj $ns2
-> @@ -3886,7 +3886,7 @@ userspace_tests()
->  	   continue_if mptcp_lib_has_file
-> '/proc/sys/net/mptcp/pm_type'; then
->  		set_userspace_pm $ns2
->  		pm_nl_set_limits $ns1 0 1
-> -		{ test_linkfail=128 speed=5 \
-> +		{ timeout_test=120 test_linkfail=128 speed=5 \
->  			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->  		local tests_pid=$!
->  		wait_mpj $ns2
-> @@ -3910,7 +3910,7 @@ userspace_tests()
->  	   continue_if mptcp_lib_has_file
-> '/proc/sys/net/mptcp/pm_type'; then
->  		set_userspace_pm $ns1
->  		pm_nl_set_limits $ns2 1 1
-> -		{ test_linkfail=128 speed=5 \
-> +		{ timeout_test=120 test_linkfail=128 speed=5 \
->  			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->  		local tests_pid=$!
->  		wait_mpj $ns1
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target=
+_core_transport.c
+index 0a76bdfe5528..88544c911949 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -1524,6 +1524,7 @@ target_cmd_init_cdb(struct se_cmd *cmd, unsigned char=
+ *cdb, gfp_t gfp)
+ 	if (scsi_command_size(cdb) > sizeof(cmd->__t_task_cdb)) {
+ 		cmd->t_task_cdb =3D kzalloc(scsi_command_size(cdb), gfp);
+ 		if (!cmd->t_task_cdb) {
++			cmd->t_task_cdb =3D &cmd->__t_task_cdb[0];
+ 			pr_err("Unable to allocate cmd->t_task_cdb"
+ 				" %u > sizeof(cmd->__t_task_cdb): %lu ops\n",
+ 				scsi_command_size(cdb),
+--=20
+2.43.0
 
