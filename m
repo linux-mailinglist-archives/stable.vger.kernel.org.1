@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-195063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DAEFC67EFF
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 08:28:47 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48BDEC67F20
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 08:29:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2A8C84EFA48
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 07:23:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8305A4F6134
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 07:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA99C306B35;
-	Tue, 18 Nov 2025 07:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DED3081DB;
+	Tue, 18 Nov 2025 07:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+/BqPOB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h9fnYbQi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DDB3064A7;
-	Tue, 18 Nov 2025 07:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CA63081B9;
+	Tue, 18 Nov 2025 07:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763450472; cv=none; b=Nz4Wazl5Q7x7ZLKZJYcqKKUvdfOyASn+hRsBKEcrowuTz2ywG2r5eY45s4sKClmt2KzfCcAXOhZViGANKYwKEwYmCzhDVrkbqstwtpliKQh3MmWIoskHSD85t47FUFgLS59BN9uc+Tfq/KSwQZGwWZJ8y1cNSnBTHRhnVouKvn0=
+	t=1763450478; cv=none; b=F7Uyqwm9RW7jxTLH6e2MUMT2SXSgzQSPtcNgATHouwFO6sGxESqGaueevMLwNYPx4A4MjExZCRp+kNaQjfV37q3Xc3J6E5NtAKIPuwYmnGePZ4SwRVGAylOPxaQBx4oSaKalCKD8Bc5vA2gbp/t83/F4jX6L+IbqwiSYolPy8/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763450472; c=relaxed/simple;
-	bh=rN00PkD+rofdzTv8Iit9dTRPmFxKtGBef6EoZRFIrd8=;
+	s=arc-20240116; t=1763450478; c=relaxed/simple;
+	bh=PsNkfnJCyxo7NMXegdzKziVjOZ7caxE9x0t2PWtbAE8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Z5NFAE5LRInFhc8gMXY6+tcYOl/kqL4IslUjGT8dP9ZIxMLfeovgqL3NRdDXGIpsLhJrGb4ZmNS4W2f/Rr8i14SMnLn3AWsAalbpH+DSl/3zjDBWw0TApE9h+3QdtHTMnnOJq2i4n2ZRp05pPffVfq2I4Gbp4wJzcQCAPC78ZmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+/BqPOB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53371C4CEF5;
-	Tue, 18 Nov 2025 07:21:09 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=SYeIN6g1eTA3ztAtGBdRB/z2uuOy6wXnPdoykeqhRH5IAEHOW20MpszSJol4qJmHq3A3R1+dQ4P58V7j3ksDLeBMViv0WdWbUpXVF+gp49mPYya3DxEXjdR5R0E1gZAzCw7LGUpIPzRzrG6JVB0WuefNPPf/4REt8g8tayDL+y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h9fnYbQi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11552C4CEF5;
+	Tue, 18 Nov 2025 07:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763450471;
-	bh=rN00PkD+rofdzTv8Iit9dTRPmFxKtGBef6EoZRFIrd8=;
+	s=k20201202; t=1763450477;
+	bh=PsNkfnJCyxo7NMXegdzKziVjOZ7caxE9x0t2PWtbAE8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=V+/BqPOBPN4z3AN9Qe6yM45N/xqBSvjYf5Nv3kwSRQFerThqUY6Egg1Dg3cdx1RSc
-	 d9C1GvZ4NZSdxAdJf6gTnMANISS8OOAZbWlDB337wRbhRGx6QY7szxukcdNloee98t
-	 /OoTmRGeE1iJCPaPY8RsS0OFUcU1Iu7UVXJDEjAvqKA0AumYHEQ6lxeoxQArn6Sxvj
-	 037dLKGPXB+TPDYGyCdpCg4vnnQ0WLM29npJ5NRS/2LloXbSXfhWYRliquADXd11Qq
-	 e3DY9wpUPsTtRRlJ6eNe48t6zzrHbqAwkC69mwaGp1hXVz55n9a26CzZ5lZzly6xbS
-	 yVkv71SWU9mCQ==
+	b=h9fnYbQiTrqXQbz5e0DmwT2QMAH62kJNzrPgVvUHlrGMD9hbSoEj6z9MmemiG/NrL
+	 DNafV212bhFiPv4EUUVH+WE64Q8p7jYf9IBvCc9ZX2Fzj0K1USfse2lKkwsgWP423l
+	 vLsWrsy9JkCy27sl6ddMrYdyhwsLhd9JbPDMcKMLsRFKz4j0EC67QQyqNj34U0N3Dy
+	 HSSXUcec8aRVvtYwhQGvtgkWgNXjTxJSRTpLW2V1nrf497QgBff1eRCXLUFO+fQire
+	 DUNaKNI2zMG+N2fAGdi2McwFIY3p6ILB+B2ZdqPWiWXUblNKzZvIBEVjPWIiZ15Egw
+	 1mhui04l+7MzQ==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 18 Nov 2025 08:20:24 +0100
-Subject: [PATCH net 06/11] mptcp: fix duplicate reset on fastclose
+Date: Tue, 18 Nov 2025 08:20:26 +0100
+Subject: [PATCH net 08/11] selftests: mptcp: join: endpoints: longer
+ timeout
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,7 +53,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251118-net-mptcp-misc-fixes-6-18-rc6-v1-6-806d3781c95f@kernel.org>
+Message-Id: <20251118-net-mptcp-misc-fixes-6-18-rc6-v1-8-806d3781c95f@kernel.org>
 References: <20251118-net-mptcp-misc-fixes-6-18-rc6-v1-0-806d3781c95f@kernel.org>
 In-Reply-To: <20251118-net-mptcp-misc-fixes-6-18-rc6-v1-0-806d3781c95f@kernel.org>
 To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
@@ -64,116 +65,79 @@ Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
  linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
  "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3606; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=LYEAjFlwBNcLPv3BhiEyg2jvdxLL/0HMlIDSK6hafA4=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJl5HyKTn8tiF9WsZs36gT/BoXVO5hvWik+uFK40ecUc
- 7j+9jaPjlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIkoRzH8s9YPzTot4sQ+mz/s
- lkiv9OdNalccYy09Ll2c9f3ZfMF/Hxj+pz07rr9XInXzhtDjkUzFrrGLZQveTtBojQ2V1mJ9yVH
- ABgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2833; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=PsNkfnJCyxo7NMXegdzKziVjOZ7caxE9x0t2PWtbAE8=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJl5Pzc1Zc7qFcsml75dsuOLS7LnfrCVwSvenL1QPc2p
+ RSpUpu4jlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIk8fMPIsFX0drOw35wpkXsM
+ Yw6F9bktWKHz1biGZ7d3gd9r63U6mgz//XP2nyhc5yba/P7/zzm6/kXX193J7419178lpcZ5X9p
+ efgA=
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-From: Paolo Abeni <pabeni@redhat.com>
+In rare cases, when the test environment is very slow, some endpoints
+tests can fail because some expected events have not been seen.
 
-The CI reports sporadic failures of the fastclose self-tests. The root
-cause is a duplicate reset, not carrying the relevant MPTCP option.
-In the failing scenario the bad reset is received by the peer before
-the fastclose one, preventing the reception of the latter.
+Because the tests are expecting a long on-going connection, and they are
+not waiting for the end of the transfer, it is fine to have a longer
+timeout, and even go over the default one. This connection will be
+killed at the end, after the verifications: increasing the timeout
+doesn't change anything, apart from avoiding it to end before the end of
+the verifications.
 
-Indeed there is window of opportunity at fastclose time for the
-following race:
+To play it safe, all endpoints tests not waiting for the end of the
+transfer are now having a longer timeout: 2 minutes.
 
-  mptcp_do_fastclose
-    __mptcp_close_ssk
-      __tcp_close()
-        tcp_set_state() [1]
-        tcp_send_active_reset() [2]
+The Fixes commit was making the connection longer, but still, the
+default timeout would have stopped it after 1 minute, which might not be
+enough in very slow environments.
 
-After [1] the stack will send reset to in-flight data reaching the now
-closed port. Such reset may race with [2].
-
-Address the issue explicitly sending a single reset on fastclose before
-explicitly moving the subflow to close status.
-
-Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios")
+Fixes: 6457595db987 ("selftests: mptcp: join: endpoints: longer transfer")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/596
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/protocol.c | 36 +++++++++++++++++++++++-------------
- 1 file changed, 23 insertions(+), 13 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index c59246c1fde6..a70267a74e3c 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2409,7 +2409,6 @@ bool __mptcp_retransmit_pending_data(struct sock *sk)
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 303abbca59fc..93d38ded5e4e 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3941,7 +3941,7 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns1 2 2
+ 		pm_nl_set_limits $ns2 2 2
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+-		{ test_linkfail=128 speed=slow \
++		{ timeout_test=120 test_linkfail=128 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
  
- /* flags for __mptcp_close_ssk() */
- #define MPTCP_CF_PUSH		BIT(1)
--#define MPTCP_CF_FASTCLOSE	BIT(2)
+@@ -3968,7 +3968,7 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns2 0 3
+ 		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+-		{ test_linkfail=128 speed=5 \
++		{ timeout_test=120 test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
  
- /* be sure to send a reset only if the caller asked for it, also
-  * clean completely the subflow status when the subflow reaches
-@@ -2420,7 +2419,7 @@ static void __mptcp_subflow_disconnect(struct sock *ssk,
- 				       unsigned int flags)
- {
- 	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
--	    (flags & MPTCP_CF_FASTCLOSE)) {
-+	    subflow->send_fastclose) {
- 		/* The MPTCP code never wait on the subflow sockets, TCP-level
- 		 * disconnect should never fail
- 		 */
-@@ -2467,14 +2466,8 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+@@ -4046,7 +4046,7 @@ endpoint_tests()
+ 		# broadcast IP: no packet for this address will be received on ns1
+ 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+ 		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
+-		{ test_linkfail=128 speed=5 \
++		{ timeout_test=120 test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
  
- 	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
+@@ -4119,7 +4119,7 @@ endpoint_tests()
+ 		# broadcast IP: no packet for this address will be received on ns1
+ 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+ 		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
+-		{ test_linkfail=128 speed=20 \
++		{ timeout_test=120 test_linkfail=128 speed=20 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
  
--	if ((flags & MPTCP_CF_FASTCLOSE) && !__mptcp_check_fallback(msk)) {
--		/* be sure to force the tcp_close path
--		 * to generate the egress reset
--		 */
--		ssk->sk_lingertime = 0;
--		sock_set_flag(ssk, SOCK_LINGER);
--		subflow->send_fastclose = 1;
--	}
-+	if (subflow->send_fastclose && ssk->sk_state != TCP_CLOSE)
-+		tcp_set_state(ssk, TCP_CLOSE);
- 
- 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
- 	if (!dispose_it) {
-@@ -2779,9 +2772,26 @@ static void mptcp_do_fastclose(struct sock *sk)
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 
- 	mptcp_set_state(sk, TCP_CLOSE);
--	mptcp_for_each_subflow_safe(msk, subflow, tmp)
--		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow),
--				  subflow, MPTCP_CF_FASTCLOSE);
-+
-+	/* Explicitly send the fastclose reset as need */
-+	if (__mptcp_check_fallback(msk))
-+		return;
-+
-+	mptcp_for_each_subflow_safe(msk, subflow, tmp) {
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+
-+		lock_sock(ssk);
-+
-+		/* Some subflow socket states don't allow/need a reset.*/
-+		if ((1 << ssk->sk_state) & (TCPF_LISTEN | TCPF_CLOSE))
-+			goto unlock;
-+
-+		subflow->send_fastclose = 1;
-+		tcp_send_active_reset(ssk, ssk->sk_allocation,
-+				      SK_RST_REASON_TCP_ABORT_ON_CLOSE);
-+unlock:
-+		release_sock(ssk);
-+	}
- }
- 
- static void mptcp_worker(struct work_struct *work)
 
 -- 
 2.51.0
