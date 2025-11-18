@@ -1,179 +1,140 @@
-Return-Path: <stable+bounces-195092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC616C68A9B
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 10:56:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA9FC68BCD
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 11:13:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F2B794F161B
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 09:55:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 707222D1D9
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 10:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D6D328B6A;
-	Tue, 18 Nov 2025 09:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929652DA758;
+	Tue, 18 Nov 2025 10:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4NITz2L"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1999C2EA743
-	for <stable@vger.kernel.org>; Tue, 18 Nov 2025 09:54:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA84330B3B
+	for <stable@vger.kernel.org>; Tue, 18 Nov 2025 10:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763459699; cv=none; b=gbZRJSie72jUDuff8StMHwWvDGru7UXf1yWd+cT1YRm5z74dooAvaUDlghU79Wfi4tsWQb0cRvfwxRKQHnDIzX7sPSlph7b+t64LaCzEAFf6WRkj0WS+SUl89j3WR3kKLUfnT1GQiuX811t5sv95cnsOILY1SWGQaYQkOe48KTs=
+	t=1763460195; cv=none; b=hJvs4xYvxHVMxkEEUyqg/2IIXfk1f1USMhaKBU84bfOm+EdJBHNyxmRlySkbQa6dcmIazl1DFWrxZdTAm1lhgdYxVjxj4faeJpnfR+1lEhHCHefNVTnFJQaqjje+1MYlVYARETKdXqOP+2nrxu29Qxv+4eo4xPbbLb8lAMFH0bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763459699; c=relaxed/simple;
-	bh=04lIDrwEueqoNF1FBuMpRNyxK8Qa6McA1a3QAb2yqGQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qk4QPNY37xeuZuExcdwLmiQlaH1wtbUWc4paqrOYhvAeL1ST0t5BEOXDLZAfc0d5x7F1u2oy+HUD9cR6A6evrPXgognkHF56fmI2MrQxe/Q/QA57unde/ImukFlMc4trMs2UR6Qap3+W9utLydE2I1ZitoHNzD5Ol9aPBXLPHZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vLIPe-0002Fj-NI; Tue, 18 Nov 2025 10:54:14 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vLIPd-0013pp-2g;
-	Tue, 18 Nov 2025 10:54:13 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vLIPd-00AAvN-2F;
-	Tue, 18 Nov 2025 10:54:13 +0100
-Date: Tue, 18 Nov 2025 10:54:13 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>
-Cc: "a.fatoum@pengutronix.de" <a.fatoum@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-	"wbg@kernel.org" <wbg@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"paulmck@kernel.org" <paulmck@kernel.org>,
-	"bigeasy@linutronix.de" <bigeasy@linutronix.de>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
-Message-ID: <aRxCRT-giHoZxaGU@pengutronix.de>
-References: <20251118083603.778626-1-alexander.sverdlin@siemens.com>
- <aRw4mIZpWdsr9exb@pengutronix.de>
- <c23143c9edb2444e145849d46794d580715eeb8f.camel@siemens.com>
+	s=arc-20240116; t=1763460195; c=relaxed/simple;
+	bh=yN17U6/arJFZbWy7v+5E/AzgDQnFBqjDoOQeqwGAn4g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jciKPheRj9TiutfLAAm/m/Vl8iUSsYx29BOXIx5xHKC21Tsozw0PgxhAAuAFRQzz2jqmO3Z+TqPIOW32EgiEowWV/pxbM2f1CXhG7d0EaG+QQdjU1T7WscEp4U6a18M4+QszAIujEFw3RCqaNMMUCi9ea6dc8KrpO60NnO2uThg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4NITz2L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CAE7C2BCAF;
+	Tue, 18 Nov 2025 10:03:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763460194;
+	bh=yN17U6/arJFZbWy7v+5E/AzgDQnFBqjDoOQeqwGAn4g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=e4NITz2L4WhpFnnyGQGlVfOhx1ER8y3eEy0+tVBmYypjVn7vXOyhNliG5FvDbCyR5
+	 lxTp0Q1jxhouDc2CwUFz62DVqghmgE2RSmgJITSckOFak9Pf9Ytrqxb3e/YWu9WpPt
+	 ajH4UG6vqcsidnfSaKEoknhVBb+pCYkVdU5YxQIvcIilJzfD3fesuYgRmz2d5VZdcC
+	 bdvcNL6UhkLQKc5LOGCt/xaqTBl/aUsOzvhG8yV0vTNXyXqquSIxe6KW8HyjzhrUpC
+	 NTZi5t3UFIf6emePcwMuRm0xMgv+S+vdfPYFJDY3Bs3fvvTvA3JG4bnSMHYxohnyWW
+	 Ku2CTQFctpeVg==
+Message-ID: <944a09b0-77a6-40c9-8bea-d6b86a438d8a@kernel.org>
+Date: Tue, 18 Nov 2025 11:03:07 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c23143c9edb2444e145849d46794d580715eeb8f.camel@siemens.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
+ huge_pmd_unshare() vs GUP-fast race
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jann Horn <jannh@google.com>, "Uschakow, Stanislav" <suschako@amazon.de>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "trix@redhat.com"
+ <trix@redhat.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>,
+ "nathan@kernel.org" <nathan@kernel.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "muchun.song@linux.dev" <muchun.song@linux.dev>,
+ "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>,
+ "liam.howlett@oracle.com" <liam.howlett@oracle.com>,
+ "osalvador@suse.de" <osalvador@suse.de>, "vbabka@suse.cz" <vbabka@suse.cz>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>
+ <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com>
+ <CAG48ez2dqOF9mM2bAQv1uDGBPWndwOswB0VAkKG7LGkrTXzmzQ@mail.gmail.com>
+ <81d096fb-f2c2-4b26-ab1b-486001ee2cac@lucifer.local>
+ <CAG48ez3paQTctuAO1bXWarzvRK33kyLjHbQ6zsQLTWya8Y1=dQ@mail.gmail.com>
+ <a317657d-5c4a-4291-9b53-4435012bd590@lucifer.local>
+ <CAG48ez0ubDysSygbKjUvjR2JU6_UmFJzzXtQfk0=zQeGMPwDEA@mail.gmail.com>
+ <4ebbd082-86e3-4b86-bb01-6325f300fc9c@lucifer.local>
+ <CAG48ez1JEerijaUxDRad6RkVm3TLm8bSuWGxQYs+fc_rsJDpAQ@mail.gmail.com>
+ <2bff49c4-6292-446b-9cd4-1563358fe3b4@redhat.com>
+ <0dabc80e-9c68-41be-b936-8c6e55582c79@lucifer.local>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <0dabc80e-9c68-41be-b936-8c6e55582c79@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 18, 2025 at 09:51:02AM +0000, Sverdlin, Alexander wrote:
-> Hi Oleksij!
+On 29.10.25 19:02, Lorenzo Stoakes wrote:
+> On Wed, Oct 29, 2025 at 05:19:54PM +0100, David Hildenbrand wrote:
+>>>>>> Why is a tlb_remove_table_sync_one() needed in huge_pmd_unshare()?
+>>>>>
+>>>>> Because nothing else on that path is guaranteed to send any IPIs
+>>>>> before the page table becomes reusable in another process.
+>>>>
+>>>> I feel that David's suggestion of just disallowing the use of shared page
+>>>> tables like this (I mean really does it actually come up that much?) is the
+>>>> right one then.
+>>>
+>>> Yeah, I also like that suggestion.
+>>
+>> I started hacking on this (only found a bit of time this week), and in
+>> essence, we'll be using the mmu_gather when unsharing to collect the pages
+>> and handle the TLB flushing etc.
+>>
+>> (TLB flushing in that hugetlb area is a mess)
+>>
+>> It almost looks like a cleanup.
+>>
+>> Having that said, it will take a bit longer to finish it and, of course, I
+>> first have to test it then to see if it even works.
+>>
+>> But it looks doable. :)
 > 
-> On Tue, 2025-11-18 at 10:12 +0100, Oleksij Rempel wrote:
-> > > An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
-> > > CONFIG_PROVE_RAW_LOCK_NESTING warns:
-> > > =============================
-> > > [ BUG: Invalid wait context ]
-> > > 6.18.0-rc1+git... #1
-> > > -----------------------------
-> > > some-user-space-process/1251 is trying to lock:
-> > > (&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
-> > > other info that might help us debug this:
-> > > context-{2:2}
-> > > no locks held by some-user-space-process/....
-> > > stack backtrace:
-> > > CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
-> > > Call trace:
-> > >   show_stack (C)
-> > >   dump_stack_lvl
-> > >   dump_stack
-> > >   __lock_acquire
-> > >   lock_acquire
-> > >   _raw_spin_lock_irqsave
-> > >   counter_push_event [counter]
-> > >   interrupt_cnt_isr [interrupt_cnt]
-> > >   __handle_irq_event_percpu
-> > >   handle_irq_event
-> > >   handle_simple_irq
-> > >   handle_irq_desc
-> > >   generic_handle_domain_irq
-> > >   gpio_irq_handler
-> > >   handle_irq_desc
-> > >   generic_handle_domain_irq
-> > >   gic_handle_irq
-> > >   call_on_irq_stack
-> > >   do_interrupt_handler
-> > >   el0_interrupt
-> > >   __el0_irq_handler_common
-> > >   el0t_64_irq_handler
-> > >   el0t_64_irq
-> > > 
-> > > ... and Sebastian correctly points out. Remove IRQF_NO_THREAD as an
-> > > alternative to switching to raw_spinlock_t, because the latter would limit
-> > > all potential nested locks to raw_spinlock_t only.
-> > > 
-> > > Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> > > Cc: stable@vger.kernel.org
-> > > Link: https://lore.kernel.org/all/20251117151314.xwLAZrWY@linutronix.de/
-> > > Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
-> > > Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-> > > ---
-> > >   drivers/counter/interrupt-cnt.c | 3 +--
-> > >   1 file changed, 1 insertion(+), 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
-> > > index 6c0c1d2d7027d..e6100b5fb082e 100644
-> > > --- a/drivers/counter/interrupt-cnt.c
-> > > +++ b/drivers/counter/interrupt-cnt.c
-> > > @@ -229,8 +229,7 @@ static int interrupt_cnt_probe(struct platform_device *pdev)
-> > >   
-> > >   	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
-> > >   	ret = devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
-> > > -			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
-> > > -			       dev_name(dev), counter);
-> > > +			       IRQF_TRIGGER_RISING, dev_name(dev), counter);
-> > >   	if (ret)
-> > >   		return ret;
-> > >   
-> > 
-> > Hm, I guess it will break the requirement to handle at least 10kHz
-> > interrupts. May be we should move only counter_push_event() to the
-> > thread? or using delayed worker?
-> > 
-> > Right now I do not have needed system for testing to come with better
-> > proposal.
+> Ohhhh nice :)
 > 
-> I thought about possible performance implications of the patch.
-> But the performance regression would happen only with PREEMPT_RT.
-> However, it must have been broken (and by that I mean really broken, like
-> "scheduling in atomic") from the very beginning in PREEMPT_RT and
-> I suppose your initial tests were performed not with PREEMPT_RT kernel.
+> I look forward to it!
 
-Ack.
+As shared offline already, it looked simple, but there is one nasty 
+corner case: if we never reuse a shared page table, who will take care 
+of unmapping all pages?
 
-> So overall there shall be no possible performance regression in reality.
+I played with various ideas, but it just ended up looking more 
+complicated and possibly even slower.
 
-Ok, thank you!
+So what I am currently looking into is simply reducing (batching) the 
+number of IPIs.
 
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+In essence, we only have to send one IPI when unsharing multiple page 
+tables, and we only have to send one when we are the last one sharing 
+the page table (before it can get reused).
+
+While at it, I'm looking into making also the TLB flushing easier to 
+understand here.
+
+I'm hacking on a prototype and should likely have something to test this 
+week.
+
+[I guess what I am doing now is aligned with Jann's initial ideas to 
+optimize this ]
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Cheers
+
+David
 
