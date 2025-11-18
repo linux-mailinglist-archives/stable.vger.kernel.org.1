@@ -1,132 +1,140 @@
-Return-Path: <stable+bounces-195073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E986C6836C
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 09:32:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41222C6879C
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 10:18:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 10D5B34BAF2
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 08:31:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id D168B2A9B3
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 09:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 786D930ACEA;
-	Tue, 18 Nov 2025 08:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EE530F809;
+	Tue, 18 Nov 2025 09:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="MdQbUO6M"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="aI27Mqaw"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from mta-64-226.siemens.flowmailer.net (mta-64-226.siemens.flowmailer.net [185.136.64.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED38915667D;
-	Tue, 18 Nov 2025 08:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29E03101BC
+	for <stable@vger.kernel.org>; Tue, 18 Nov 2025 09:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763454657; cv=none; b=iNAbQq2qBhi5oyp87gaSdtfPq2E7bMCgPP27yrjIOiHi6L2VMwAqu7OD91eW5v2oAVwJckYQbWYecjrZ50b09XX6/W71r9t/um9w05tRubMKSLfdf5Iwb0fTGPwZ3V+WJzgS/RKPEpErUEG8bTBD0lz7x9/ithYL3jRPQOCpG8A=
+	t=1763457392; cv=none; b=ipNUcPcuDHW+cPBpttJwxBcS7XfFxnuRlkHoO/kGiltfY30YBkNtzvOwi0dXCly7IiLisnWzlmRL1XvDcsl2xxpdiaIfl5bh7GdCOeld418BNDGe37H3wdkyMBJPOJ4oNNg9S/Y0cH2KcrY+5QWUBYltF5dL+ogo7nyLd4tDTvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763454657; c=relaxed/simple;
-	bh=OPUYOYkowFC02j4zkIAR5psWwDsFS1/rLP0eNPLfyHA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=imMqjyOxyZhdxmd121X5gFCWgktmEXAhnMjxOz35wm1v18sRrhQ9GTHmK6PlY49irP++fa0FgyK+HR/QTxPolWErv48lTSZ/JVi/dHLDwRY85Zc093UFaOypVDFMTUMZ8VnRRO0WjP46OsizsoDYEp7h/g18iUrSWvViZMrcJck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=MdQbUO6M; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4d9d9R1SBDz9tkJ;
-	Tue, 18 Nov 2025 09:30:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1763454651; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OPUYOYkowFC02j4zkIAR5psWwDsFS1/rLP0eNPLfyHA=;
-	b=MdQbUO6MK/5vrvt0gLNgvKvkMCSgH0Gb22F50yNgjD14iYGg+sg3AA6QoxCV6hLrg9MmTd
-	imTrAJtFftfJTDEBP+ztp1ikeWtibHY4EJYXDi5rk0PpZoQp24HZJsz0LrDGtzPhO8Xit+
-	DIRgpWDhUtX+99UDfGsRFXeB0BKBXaTdXx9pkX3ssspghkb+k2kqbBdv14a0mOuD7mGpYG
-	hDZgbwHGGQFvBZN6ziggXFRx19WZnwCz0WGNekD764oq0OLSFC5tGCCirqDXVS3ySAUDWr
-	DvuHjcg4QD3XbGZCYwY4tmgexH1/YrtUtJY/mkOfa1UEgSRwyfvntZ16ViSfCA==
-Message-ID: <4db9dae5f659512146bd441cf2edf5a4aca16b93.camel@mailbox.org>
-Subject: Re: [PATCH v2] rust: list: Add unsafe for container_of
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Philipp Stanner
-	 <phasta@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, Christian Schrefl
- <chrisi.schrefl@gmail.com>,  rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,  stable@vger.kernel.org
-Date: Tue, 18 Nov 2025 09:30:45 +0100
-In-Reply-To: <CANiq72md+0Lerj+kqr6QiU6ySR3XjRzmuBiLjkpWWieM72wyeQ@mail.gmail.com>
-References: <20251118072833.196876-3-phasta@kernel.org>
-	 <CANiq72md+0Lerj+kqr6QiU6ySR3XjRzmuBiLjkpWWieM72wyeQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1763457392; c=relaxed/simple;
+	bh=HlvJh/d+H01RMGcaIajlUtWn0/55klvBZdKu9AtWwd0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f+nojdlUIkIfPyuYf8mrtFL0BLadJXHxPXVb7oNapgwVzV3Js+WM/ftDKYQtrfGRRqoPumuHbkKrOP+r4nj18oGiB+p5hXtGLePfMXWnZav0nvi71wste5fNZpHFchb8D18GWgLhdfyLG+gUFumgcEbdEcOgoPEyq2ioBkOzwiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=aI27Mqaw; arc=none smtp.client-ip=185.136.64.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id 20251118083607bfaef3d932000207c0
+        for <stable@vger.kernel.org>;
+        Tue, 18 Nov 2025 09:36:08 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=N8PWbhNGE835ewlSJOR81Jz9u85SnjicOh3tRt55o+E=;
+ b=aI27Mqaw7RFigT111R6iaEUr4MsS2aJ1nZLHD5bIOVh0MvO0UJnFM8mvfufuaLoXRx1ij4
+ h+0KMWJv/4z2GCCmd2y6SkQn9Fj0AexzMkZV0upWSsrl7BhZoNwPTA2LcyV0hBPTm1hmjEc+
+ uXgl10jTJ2n+KxHrY9FdTlBhG05CdWp4OnyJnoEOgbSlMzgls8tCGJ+SGxvY9XW5eLvbJPlu
+ TpnsnLXPsSaQcOiiGmVliBaB51S1PfFOI5DhtLDRYyEalaf+5FqyYAa9shmmO0H8vWhNybIO
+ r0KvyJzFCR4UDESVNvnfx5wZqlREgJy1w0nxaah2aK1IpiQ2UfwN9H/A==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-iio@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	William Breathitt Gray <wbg@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	linux-kernel@vger.kernel.org,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
+Date: Tue, 18 Nov 2025 09:35:48 +0100
+Message-ID: <20251118083603.778626-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: gdss3euaazp9ahcbr9wno9q1ffb5a9r3
-X-MBO-RS-ID: 8bf6f2026d62427ef6e
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-On Tue, 2025-11-18 at 09:20 +0100, Miguel Ojeda wrote:
-> On Tue, Nov 18, 2025 at 8:29=E2=80=AFAM Philipp Stanner <phasta@kernel.or=
-g> wrote:
-> >=20
-> > For unknown reasons, that problem was so far not visible and only gets
-> > visible once one utilizes the list implementation from within the core
-> > crate:
->=20
-> What do you mean by "unknown reasons"? The reason is known -- please
-> refer to my message in the other thread. It should be mentioned in the
-> log, including the link to the compiler issue.
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-OK.
+An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
+CONFIG_PROVE_RAW_LOCK_NESTING warns:
+=============================
+[ BUG: Invalid wait context ]
+6.18.0-rc1+git... #1
+-----------------------------
+some-user-space-process/1251 is trying to lock:
+(&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
+other info that might help us debug this:
+context-{2:2}
+no locks held by some-user-space-process/....
+stack backtrace:
+CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
+Call trace:
+ show_stack (C)
+ dump_stack_lvl
+ dump_stack
+ __lock_acquire
+ lock_acquire
+ _raw_spin_lock_irqsave
+ counter_push_event [counter]
+ interrupt_cnt_isr [interrupt_cnt]
+ __handle_irq_event_percpu
+ handle_irq_event
+ handle_simple_irq
+ handle_irq_desc
+ generic_handle_domain_irq
+ gpio_irq_handler
+ handle_irq_desc
+ generic_handle_domain_irq
+ gic_handle_irq
+ call_on_irq_stack
+ do_interrupt_handler
+ el0_interrupt
+ __el0_irq_handler_common
+ el0t_64_irq_handler
+ el0t_64_irq
 
->=20
-> Also, I assume you meant `kernel` crate, not `core`.
->=20
-> > Cc: stable@vger.kernel.org=C2=A0# v6.17+
->=20
-> No need to mention the kernel version if the Fixes tags implies it. In
-> fact, it is more confusing, since it looks like there is a version
-> where it should not be applied to.
+... and Sebastian correctly points out. Remove IRQF_NO_THREAD as an
+alternative to switching to raw_spinlock_t, because the latter would limit
+all potential nested locks to raw_spinlock_t only.
 
-It's absolutely common to provide it. If you feel better without it, I
-can omit it, I guess.
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20251117151314.xwLAZrWY@linutronix.de/
+Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+---
+ drivers/counter/interrupt-cnt.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
->=20
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 let container =3D $crate::container_of!(
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 let container =3D unsafe { $crate::container_of!(
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 links_field, $crate::li=
-st::ListLinksSelfPtr<Self, $num>, inner
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 );
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 ) };
->=20
-> Unsafe blocks require `// SAFETY: ...` comments.
+diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
+index 6c0c1d2d7027d..e6100b5fb082e 100644
+--- a/drivers/counter/interrupt-cnt.c
++++ b/drivers/counter/interrupt-cnt.c
+@@ -229,8 +229,7 @@ static int interrupt_cnt_probe(struct platform_device *pdev)
+ 
+ 	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
+ 	ret = devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
+-			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
+-			       dev_name(dev), counter);
++			       IRQF_TRIGGER_RISING, dev_name(dev), counter);
+ 	if (ret)
+ 		return ret;
+ 
+-- 
+2.51.1
 
-Ah, right. Overlooked that because the other section already has one.
-
->=20
-> Also, please double-check if this is the formatting that `rustfmt` would =
-use.
-
-I ran rustfmt.
-
-
-P.
 
