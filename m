@@ -1,299 +1,255 @@
-Return-Path: <stable+bounces-195105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2964C69A1C
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 14:39:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A4FC69B61
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 14:51:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 126B4367D69
-	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 13:39:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 7B54C2B14B
+	for <lists+stable@lfdr.de>; Tue, 18 Nov 2025 13:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A53C346FA8;
-	Tue, 18 Nov 2025 13:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE0C359708;
+	Tue, 18 Nov 2025 13:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KxaKJHRm"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="K3jqY1EM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11010047.outbound.protection.outlook.com [52.101.229.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492C625D53C;
-	Tue, 18 Nov 2025 13:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763473165; cv=none; b=SSAvT8FUQ+aBQDtqh1Vk+NvHPayzoVVItJsQGNkAd/QBXpxLv1/raGkaR0h7LneTnoz5MWTkojbJAjVstp6URs+riveWTpbqqE4Ic/UnQFzoj7h73CpoQ+2OWK8pwizftGQTbUZlxWKD5oJhPXwP0wj5vKuqSgtJ1+9S/2ObAUM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763473165; c=relaxed/simple;
-	bh=hWDKGylYx9dXLsAGY4F57fOXF4vDFtZJdbU4SFGg0hg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dmSvTFVwaCdWoR3o64WBK1IsBaVjv28S/b2u3AcqeUIZBQ1GUOEMZj25jc+UFYl8F7DYX5fT44sPzY0m5uuC7EHWcmGX3Kvzc0QWUCuTBvSSfddwZPgZf+JMPWq7ti2ZiBG5bDfjVoJmmYKR2CWuan92TGk/GCIxj57JoNTLjSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KxaKJHRm; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 3D6BEC12674;
-	Tue, 18 Nov 2025 13:38:57 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4EF0E606FE;
-	Tue, 18 Nov 2025 13:39:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A893710371DD3;
-	Tue, 18 Nov 2025 14:39:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763473158; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=+5BtD6UXAzSoODFJ0HtV1TARfbnO74SaTKUs4pCZoxo=;
-	b=KxaKJHRmfqTlJw6wcWE+4fak/MCoHFUHILBP8MP5Y6Nc9II/kbbhKwizdIIRW7VyjNevec
-	VQEwr3rdp2KAsFTeTwaSQgWJvtFxgo14EC9T1j713YltOpk3jl/MMeQI9k0CFsM1nhHW3f
-	0NuW0jI74cUZG+xpoXIpGsgdS9mCGBQFLjTLpxqDs/sWnUI4HV2aFEIgbEz2+LYZHmDVED
-	A9t4EaSzmaGAK1819MkOTIsHCH+HQswyXF6YLzXBM9WhS3SdqWlo0532N+GOS7g7uherzo
-	26qaJ+fZqDnWe14Di81L9madRnm5AfFKdRDDMN7VayWQO5nzueSya6A5svbC6g==
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Maxime Ripard <mripard@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: Bajjuri Praneeth <praneeth@ti.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	"Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
-	stable@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	Jyri Sarha <jyri.sarha@iki.fi>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>
-Subject: [PATCH v3] drm/tilcdc: Fix removal actions in case of failed probe
-Date: Tue, 18 Nov 2025 14:38:48 +0100
-Message-ID: <20251118133850.125561-1-kory.maincent@bootlin.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713BA3587CC;
+	Tue, 18 Nov 2025 13:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763473811; cv=fail; b=XB1lTf482I2B4E8v7xXVM3kuVF7szL5SV7s+TUz/fofRMnlAWUK2PPhyiJp+jteKOeZOHmSAQZuTQ71V5RDyNcrRYTBzdTx9bfEzxAc/Tr2L7sb7pD16KBrJC5cndxiUpxS0Opdd64ngsuygxFP/t7pghYh2c7k5n29Fl3cxyHI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763473811; c=relaxed/simple;
+	bh=C41yqYQqGAv/mzxuV4+QvJ4kc1zxs9Nd0oscv2EyB/Y=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fXRgmkq482sFJu7RvEDisZpXv+AW3AjJDB2xcgRzxRo7BcNyAfUPQoohr0bESwQcTgLfvtjs0kz1g57DzGhP3EHeExCnjM9jzo14yGbWa8JReqpE3tI0CemY+PQI7FOpTtbLhVAFqngfGo9LRmHf/bzEp9FqQMX+P05gGQ1qb78=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=K3jqY1EM; arc=fail smtp.client-ip=52.101.229.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aqLBtYtgFTm6HwSpAIrNbdkzIXuWC54CRcs1FXIXpyY/yl4IELHC9aFtEuspWMzEPx+70DASx+lJ986tHqWWYWMLn9HtAwIT5POmjDAmSVtgBe2P9VkdVKATXJqOfQndVLVK4UEsBnvy2lq2fLadj86rcLv08c7ngaSLse5HdFV5EvpGXQVN9HscOqvjyT/khQiBBtwPgSsvLv5E579GuAnwdg6oV61P52Fib/AcCUi/xquUD53Lg0jSm41sgy/uBAIPTWUPga6sX6gOfHbTRAYJyUXDI8sGWh5vGarXMbhAu9SRhojtzxkIQ2aPfNax/XOL7+J3Opfbi1UyKJpu9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PTmeGEcN4m90IfTn7vxY0pDos7LuLJJTiK833rVGs3I=;
+ b=xbG6g+INVrka9oIFgp8TT2ClzEwaxw/gwqQClsgRCjpthSPfGi14loE5w/jLHoSshiKICSA9Xpo3b445e4wpp8eTZj4uH1B/HGuKFMyJtqZuTR2a1joq7+VPmhSiozp/KXisFo1MJsWZ1bEoiYmk4cDjIyK1K2FIowOZph6G8lFOki1mO2G0GU/30ml9LgwDRT/SJJ3wbBMxv5sJaaaNdQfcnypl9J4E5vDWR4INAeKs4FYqAzez6r5FeZdLKdnk/WgkPGklzSst1PAJfgzZLZ7Oy+cuNH3F8sl+JA56Gd7w6rzbwxOhRzwjcCiUWUmAz14RbXaQ8dA/DOiZ6zx4tw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PTmeGEcN4m90IfTn7vxY0pDos7LuLJJTiK833rVGs3I=;
+ b=K3jqY1EMQO1a9eBKCv0YGQcm3lXyMQSLWZIRgBUKY46/xSDzzCNkdB0lgeKk7eh2RvSvh52/MBje2100w7VnI6AWlY1Bhm1Gekn7Oypo+jAq0PU9Gr25qrMu90bnORNxwSIVZM+biyk7UUtMEvzGU1KbtFcQgZrbgglvjU+bzr0=
+Received: from TYCPR01MB12093.jpnprd01.prod.outlook.com (2603:1096:400:448::7)
+ by OSCPR01MB16310.jpnprd01.prod.outlook.com (2603:1096:604:3f2::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Tue, 18 Nov
+ 2025 13:49:55 +0000
+Received: from TYCPR01MB12093.jpnprd01.prod.outlook.com
+ ([fe80::439:42dd:2bf:a430]) by TYCPR01MB12093.jpnprd01.prod.outlook.com
+ ([fe80::439:42dd:2bf:a430%4]) with mapi id 15.20.9343.009; Tue, 18 Nov 2025
+ 13:49:55 +0000
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+To: Johan Hovold <johan@kernel.org>, Vinod Koul <vkoul@kernel.org>
+CC: Ludovic Desroches <ludovic.desroches@microchip.com>, Viresh Kumar
+	<vireshk@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>, Dave Jiang
+	<dave.jiang@intel.com>, Vladimir Zapolskiy <vz@mleia.com>, Piotr Wojtaszczyk
+	<piotr.wojtaszczyk@timesys.com>, =?iso-8859-1?Q?Am=E9lie_Delaunay?=
+	<amelie.delaunay@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Peter Ujfalusi
+	<peter.ujfalusi@gmail.com>, "dmaengine@vger.kernel.org"
+	<dmaengine@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH 08/15] dmaengine: sh: rz-dmac: fix device leak on probe
+ failure
+Thread-Topic: [PATCH 08/15] dmaengine: sh: rz-dmac: fix device leak on probe
+ failure
+Thread-Index: AQHcV90d5kZo2bGFA0qREXcrW7sn3LT4dKZA
+Date: Tue, 18 Nov 2025 13:49:54 +0000
+Message-ID:
+ <TYCPR01MB120937B42EF315F79D0F55B8DC2D6A@TYCPR01MB12093.jpnprd01.prod.outlook.com>
+References: <20251117161258.10679-1-johan@kernel.org>
+ <20251117161258.10679-10-johan@kernel.org>
+In-Reply-To: <20251117161258.10679-10-johan@kernel.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYCPR01MB12093:EE_|OSCPR01MB16310:EE_
+x-ms-office365-filtering-correlation-id: cd4fe25f-d37e-4d4b-b8d2-08de26a95af6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|7416014|376014|366016|38070700021;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?dx+PeaNNsfjgHmQcECeQdHeb13bH5t0K4AZZdi5N7q/AjhyV0gxcCNl/fz?=
+ =?iso-8859-1?Q?tzcD1tQTtsNhrScknR4+wKQtPZ6P99mBJ6d0ttcfH4EX5hxY2xQLQEq7X+?=
+ =?iso-8859-1?Q?nB9WEWJmHLYp4QOtEI035pOmdtJLuaWWFIKL5bupPYgKoXstsI44M+8bgv?=
+ =?iso-8859-1?Q?xPI+u53J6sp/pPljRozh3uBeTfIt5U7b/F5tgdlT77q/DUqQKTl8dJgpi8?=
+ =?iso-8859-1?Q?XbTofL+Q6yggczag/FTRzgjxcMW0nIKhWKc+ggq2dgYkeFwDM5xN4552K4?=
+ =?iso-8859-1?Q?ftVtBsNPAS39tC7t3Uqa1UG6ynTGbQyTBpL2VReRw315o9Fd0yByYk603P?=
+ =?iso-8859-1?Q?4MDKt7rBZ2fKQdbCu8z1PfXO/3KLrfkc7qP72BdDJo6mIzc1y/zbkOPOcn?=
+ =?iso-8859-1?Q?xGX1TDB8onJB2gqey6/fbMC6devgxblfh4gGUMwnfPTCymFivg5AADOUss?=
+ =?iso-8859-1?Q?r+ZBqUy8orvxISkoC+pd40Ruvay4xvTjR5ikV3s7QwozEbH9gZ3OEbHbuj?=
+ =?iso-8859-1?Q?o+aUHXe4BBCO94UMpL3n33nauHY3H1cA5dhUY5FpRr3pT4R534FZscx+GA?=
+ =?iso-8859-1?Q?0e/1acutqNWiTaUW9u2PDZtba0W6uguusgtXPMu0XNVLXd0UgnInibleum?=
+ =?iso-8859-1?Q?frEItYiqgFjYCahCXodbngbDIoRB8w/+8c3H/KzPqvYrwYBxai9K3EjFUw?=
+ =?iso-8859-1?Q?JWc0xtbmh/YivdGSizSHJfSFeUknncJKpQBXLKByttcq+0pl2M7wUBKmb7?=
+ =?iso-8859-1?Q?S/fvxwuKKHWGJGUW2u5B4/c963h/PlBjzmJmlkSpIEuC4EyXatqH0ySZ+6?=
+ =?iso-8859-1?Q?KTyP88Aq0Sia/oxEkxQy261Pk0gzjd9t2UUu/+MhEg+isPrh6cftTpaNHv?=
+ =?iso-8859-1?Q?ujWPVjvOkiPBS3akzPwXYZR/+43zf6WnbLVFKtN5d97uefs2ROzY0OcrSr?=
+ =?iso-8859-1?Q?IYXMyaj3jUQWnUmw2mXBTNFMr++fj8uklgvK3XmuEwj3/I2iCwbkDM9XMU?=
+ =?iso-8859-1?Q?SX1pZC1zYY9xpKXNsv2+e+bLhmwHh87Kq4GOUX0+fmRiAOgOiK0qa2v/Q3?=
+ =?iso-8859-1?Q?Jv/P9PO0Poxj/z/zybvRmXqa2oBLQ3DdhPvGFVJoWr1xHrwkcUPbIzHtYO?=
+ =?iso-8859-1?Q?5aiGmfI+JOrNm7s85sjdpRpP5vImK32xeuYtqXTqdIqVtVapzfOIlOrm6F?=
+ =?iso-8859-1?Q?Quj1JEuchRwhRNQSz5XG7tfWSdmiRjGUjyhGYlLPDvSSf7O/h3eUDOdWra?=
+ =?iso-8859-1?Q?a2gyefsIicxtHCAismccBNye9hGh1tCB7bAnp25KAN08dSScRAB9d3zN7e?=
+ =?iso-8859-1?Q?SYqsHmFIyRb78Xu41EbQCKT7cjddhVgld2Ik3DnFFkVOhun0h3WV/r4r0Y?=
+ =?iso-8859-1?Q?H/EY9i/pw/xmKLzVuJgFlFT6Z72w/ZUR1dn0yWY0LDN3MEXRiWEyKnarb3?=
+ =?iso-8859-1?Q?8z3bvam3eqRAHe2CLJHKPyKOHJXNrcfy7BoYs4iAUmLxqlirjXH6TEc1ED?=
+ =?iso-8859-1?Q?3zjZfNwSa2iNVR/pqT7TqVQwcwTp3onFN5aICGmWiSVmOeOF22OI5sJb9R?=
+ =?iso-8859-1?Q?OmqxWOfz144/hAegVLmpJHj4OIuy?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB12093.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?I74Kjq/UzY9yS7kvLXmgPcAeJ614d/sBVX48o9lfG5rMAEDUMFvHyDop7k?=
+ =?iso-8859-1?Q?7nS0JTyx8Oa1F+Pax3wQOMd98YOXCEiopksT0gLQpdVCTSnEYGR6nSHCdl?=
+ =?iso-8859-1?Q?YrAZvtEIuhdym+ibhunqMkgxRLhyAnsrnfVw9KYizJ1aVeH8uHdKYbtITU?=
+ =?iso-8859-1?Q?6O5eRCKRiZ87D5pfiD1E86d9SmfMSYayAx3o4567gbgEMjg1AAz3+jx/+G?=
+ =?iso-8859-1?Q?O9gqKTjhLoFsTsX5L1PwXjV7tOtSZleJMqIWnnla+b7De4pQWahO+mi22T?=
+ =?iso-8859-1?Q?+ASB+sMDk1x1cilEVguIGbWsxDOZlQOCvmFrPVGjtRIbNv0CAUViUe1Eeb?=
+ =?iso-8859-1?Q?UCKkJHXpExzqobR+DnQ60l72d2MMx7bT8ELS4HhF+mZ4VeSv1XSt+cHH+N?=
+ =?iso-8859-1?Q?jWKYg/bbmpm+WX/HaM4nDpBZCMoFCaVIsC0liWpJb8jeARd9IKq1XF4SvI?=
+ =?iso-8859-1?Q?/ep34OUKeeSIjTIy3BLIf2QKGfk06Lqd4K+rL/aVCjG9BxFeQ4D+D/L7FD?=
+ =?iso-8859-1?Q?mM5wQzFUh84pPmXFOxS70f1cTDo7qYi6BYSNDOJUI8Tfr/aCf+woa/LltQ?=
+ =?iso-8859-1?Q?m2tUkNa2j4P9/7TZDTLYi3+AmG0e1D7sSzgfevMbfgyh2fLt/ElI8apHuw?=
+ =?iso-8859-1?Q?lX6ugVkhmkTTYK77RKatDlWydVIlCfCJdXHfmtXvyR2FRPhNqvaHUvpj8E?=
+ =?iso-8859-1?Q?1IsMzBkeceUqdiY9/0BYQ0aMzsYEmAjouppdoAEn5UbsHs8EyY3ObArB3A?=
+ =?iso-8859-1?Q?aTZ7Ah2d5AhmZkfxCpVEboWX2SAKHmL60g63EX4ZFXHn3KLIhjlauaBhiz?=
+ =?iso-8859-1?Q?GPg+yNEAbHYJuv7pNFLABfEPePR79vGvQMdYeqTYR5U6EvfxA1/z4/Zb/X?=
+ =?iso-8859-1?Q?kZN5aprQEborbCBrMI0mfajX9uqV9EqvPJ6QxxWb9c88oYbSGioFLYnvwt?=
+ =?iso-8859-1?Q?HjqOpsFa6dUE4BzuNE/dR+zpT7CXgroNX2tHp5fKvOoymne8ITLInJntR/?=
+ =?iso-8859-1?Q?AwER3uXZCPLzDowu79w99ef8kZ880mHqxICCTSXLvHgDyTyo/f1kIC+wFw?=
+ =?iso-8859-1?Q?kKlb8ppt4n58c7qlXT0zPbtajgPm9K9X4sSRpqvUEpifEGZiz4yOrsJ1Ed?=
+ =?iso-8859-1?Q?KeR+I3HU9Us57vq+RsviBSHE8ymp/vZTOEda8UBzB9L5afc8sw8Dfc8oWe?=
+ =?iso-8859-1?Q?F3Ui7O23gymVkxJac4K6mtkCVWi2JMnPw8p0lHJMsRkx65brARUMOflxsf?=
+ =?iso-8859-1?Q?aLtDFMMmv9YTcTYrtY8eA8rTa6Cp6AsZmrM5d+8eQEaqhUZ0RjUMnvITl8?=
+ =?iso-8859-1?Q?H6uQ8W1Tv35eEkCaHhdjQg+84tVLzZejT59FJyHn+vQWUpJ0q4rraF0gH5?=
+ =?iso-8859-1?Q?38rdBWmquWPxRjDVBROrxkeNmg/WT4WBFOSIbXyUTJb02pADW/QWz7+mhd?=
+ =?iso-8859-1?Q?n+UoWAt/xqzFfOw+iuRTNW9xsf5euGp7IlkJjQEgfznea/35B8BcUVCRg+?=
+ =?iso-8859-1?Q?QimFkTF99PA8KQl5tNe+nY/5pjJJUAaum02Xtxp+lYxlV3guBw/6EB7bca?=
+ =?iso-8859-1?Q?nRPYZpTpF7aGPT2/6GG0fS6fzKzdmHgNvQbIItUu8ww7u7JDuGqz9ApEo1?=
+ =?iso-8859-1?Q?mVws6jhgv+rpz1IeUhVQRHxOJl/+9Sjkbgz1qtvDd5pmoSmAdw/PpBuA?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB12093.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd4fe25f-d37e-4d4b-b8d2-08de26a95af6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2025 13:49:55.0206
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: PQ+/sbXJtekvRj7MmlsKf7peFZWEzutdmO79+alw37W4Co03QXR93NizUaZAEElOZcEJe2iZnE7EaOs+0aad8V5pyI6TMduEssqdqZ8lKes=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSCPR01MB16310
 
-From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
+> From: Johan Hovold <johan@kernel.org>
+> Sent: 17 November 2025 16:13
+> To: Vinod Koul <vkoul@kernel.org>
+> Cc: Ludovic Desroches <ludovic.desroches@microchip.com>; Viresh Kumar <vi=
+reshk@kernel.org>; Andy
+> Shevchenko <andriy.shevchenko@linux.intel.com>; Vinicius Costa Gomes <vin=
+icius.gomes@intel.com>; Dave
+> Jiang <dave.jiang@intel.com>; Vladimir Zapolskiy <vz@mleia.com>; Piotr Wo=
+jtaszczyk
+> <piotr.wojtaszczyk@timesys.com>; Am=E9lie Delaunay <amelie.delaunay@foss.=
+st.com>; Maxime Coquelin
+> <mcoquelin.stm32@gmail.com>; Alexandre Torgue <alexandre.torgue@foss.st.c=
+om>; Peter Ujfalusi
+> <peter.ujfalusi@gmail.com>; dmaengine@vger.kernel.org; linux-kernel@vger.=
+kernel.org; Johan Hovold
+> <johan@kernel.org>; stable@vger.kernel.org; Fabrizio Castro <fabrizio.cas=
+tro.jz@renesas.com>
+> Subject: [PATCH 08/15] dmaengine: sh: rz-dmac: fix device leak on probe f=
+ailure
+>=20
+> Make sure to drop the reference taken when looking up the ICU device
+> during probe also on probe failures (e.g. probe deferral).
+>=20
+> Fixes: 7de873201c44 ("dmaengine: sh: rz-dmac: Add RZ/V2H(P) support")
+> Cc: stable@vger.kernel.org	# 6.16
+> Cc: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-The drm_kms_helper_poll_fini() and drm_atomic_helper_shutdown() helpers
-should only be called when the device has been successfully registered.
-Currently, these functions are called unconditionally in tilcdc_fini(),
-which causes warnings during probe deferral scenarios.
+Reviewed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
-[    7.972317] WARNING: CPU: 0 PID: 23 at drivers/gpu/drm/drm_atomic_state_helper.c:175 drm_atomic_helper_crtc_duplicate_state+0x60/0x68
-...
-[    8.005820]  drm_atomic_helper_crtc_duplicate_state from drm_atomic_get_crtc_state+0x68/0x108
-[    8.005858]  drm_atomic_get_crtc_state from drm_atomic_helper_disable_all+0x90/0x1c8
-[    8.005885]  drm_atomic_helper_disable_all from drm_atomic_helper_shutdown+0x90/0x144
-[    8.005911]  drm_atomic_helper_shutdown from tilcdc_fini+0x68/0xf8 [tilcdc]
-[    8.005957]  tilcdc_fini [tilcdc] from tilcdc_pdev_probe+0xb0/0x6d4 [tilcdc]
-
-Fix this by rewriting the failed probe cleanup path using the standard
-goto error handling pattern, which ensures that cleanup functions are
-only called on successfully initialized resources. Additionally, remove
-the now-unnecessary is_registered flag.
-
-Cc: stable@vger.kernel.org
-Fixes: 3c4babae3c4a ("drm: Call drm_atomic_helper_shutdown() at shutdown/remove time for misc drivers")
-Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
----
-
-I'm working on removing the usage of deprecated functions as well as
-general improvements to this driver, but it will take some time so for
-now this is a simple fix to a functional bug.
-
-Change in v3:
-- Rewrite the failed probe clean up path using goto
-- Remove the is_registered flag
-
-Change in v2:
-- Add missing cc: stable tag
-- Add Swamil reviewed-by
----
- drivers/gpu/drm/tilcdc/tilcdc_crtc.c |  2 +-
- drivers/gpu/drm/tilcdc/tilcdc_drv.c  | 53 ++++++++++++++++++----------
- drivers/gpu/drm/tilcdc/tilcdc_drv.h  |  2 +-
- 3 files changed, 37 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-index 5718d9d83a49f..52c95131af5af 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-@@ -586,7 +586,7 @@ static void tilcdc_crtc_recover_work(struct work_struct *work)
- 	drm_modeset_unlock(&crtc->mutex);
- }
- 
--static void tilcdc_crtc_destroy(struct drm_crtc *crtc)
-+void tilcdc_crtc_destroy(struct drm_crtc *crtc)
- {
- 	struct tilcdc_drm_private *priv = crtc->dev->dev_private;
- 
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-index 7caec4d38ddf0..2a88cce445b8f 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-@@ -172,8 +172,7 @@ static void tilcdc_fini(struct drm_device *dev)
- 	if (priv->crtc)
- 		tilcdc_crtc_shutdown(priv->crtc);
- 
--	if (priv->is_registered)
--		drm_dev_unregister(dev);
-+	drm_dev_unregister(dev);
- 
- 	drm_kms_helper_poll_fini(dev);
- 	drm_atomic_helper_shutdown(dev);
-@@ -220,21 +219,21 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
- 	priv->wq = alloc_ordered_workqueue("tilcdc", 0);
- 	if (!priv->wq) {
- 		ret = -ENOMEM;
--		goto init_failed;
-+		goto put_drm;
- 	}
- 
- 	priv->mmio = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(priv->mmio)) {
- 		dev_err(dev, "failed to request / ioremap\n");
- 		ret = PTR_ERR(priv->mmio);
--		goto init_failed;
-+		goto free_wq;
- 	}
- 
- 	priv->clk = clk_get(dev, "fck");
- 	if (IS_ERR(priv->clk)) {
- 		dev_err(dev, "failed to get functional clock\n");
- 		ret = -ENODEV;
--		goto init_failed;
-+		goto free_wq;
- 	}
- 
- 	pm_runtime_enable(dev);
-@@ -313,7 +312,7 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
- 	ret = tilcdc_crtc_create(ddev);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to create crtc\n");
--		goto init_failed;
-+		goto disable_pm;
- 	}
- 	modeset_init(ddev);
- 
-@@ -324,46 +323,46 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
- 	if (ret) {
- 		dev_err(dev, "failed to register cpufreq notifier\n");
- 		priv->freq_transition.notifier_call = NULL;
--		goto init_failed;
-+		goto destroy_crtc;
- 	}
- #endif
- 
- 	if (priv->is_componentized) {
- 		ret = component_bind_all(dev, ddev);
- 		if (ret < 0)
--			goto init_failed;
-+			goto unregister_cpufreq_notif;
- 
- 		ret = tilcdc_add_component_encoder(ddev);
- 		if (ret < 0)
--			goto init_failed;
-+			goto unbind_component;
- 	} else {
- 		ret = tilcdc_attach_external_device(ddev);
- 		if (ret)
--			goto init_failed;
-+			goto unregister_cpufreq_notif;
- 	}
- 
- 	if (!priv->external_connector &&
- 	    ((priv->num_encoders == 0) || (priv->num_connectors == 0))) {
- 		dev_err(dev, "no encoders/connectors found\n");
- 		ret = -EPROBE_DEFER;
--		goto init_failed;
-+		goto unbind_component;
- 	}
- 
- 	ret = drm_vblank_init(ddev, 1);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to initialize vblank\n");
--		goto init_failed;
-+		goto unbind_component;
- 	}
- 
- 	ret = platform_get_irq(pdev, 0);
- 	if (ret < 0)
--		goto init_failed;
-+		goto unbind_component;
- 	priv->irq = ret;
- 
- 	ret = tilcdc_irq_install(ddev, priv->irq);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to install IRQ handler\n");
--		goto init_failed;
-+		goto unbind_component;
- 	}
- 
- 	drm_mode_config_reset(ddev);
-@@ -372,16 +371,34 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
- 
- 	ret = drm_dev_register(ddev, 0);
- 	if (ret)
--		goto init_failed;
--	priv->is_registered = true;
-+		goto stop_poll;
- 
- 	drm_client_setup_with_color_mode(ddev, bpp);
- 
- 	return 0;
- 
--init_failed:
--	tilcdc_fini(ddev);
-+stop_poll:
-+	drm_kms_helper_poll_fini(ddev);
-+	tilcdc_irq_uninstall(ddev);
-+unbind_component:
-+	if (priv->is_componentized)
-+		component_unbind_all(dev, ddev);
-+unregister_cpufreq_notif:
-+#ifdef CONFIG_CPU_FREQ
-+	cpufreq_unregister_notifier(&priv->freq_transition,
-+				    CPUFREQ_TRANSITION_NOTIFIER);
-+#endif
-+destroy_crtc:
-+	tilcdc_crtc_destroy(priv->crtc);
-+disable_pm:
-+	pm_runtime_disable(dev);
-+	clk_put(priv->clk);
-+free_wq:
-+	destroy_workqueue(priv->wq);
-+put_drm:
- 	platform_set_drvdata(pdev, NULL);
-+	ddev->dev_private = NULL;
-+	drm_dev_put(ddev);
- 
- 	return ret;
- }
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.h b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-index b818448c83f61..58b276f82a669 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-@@ -82,7 +82,6 @@ struct tilcdc_drm_private {
- 	struct drm_encoder *external_encoder;
- 	struct drm_connector *external_connector;
- 
--	bool is_registered;
- 	bool is_componentized;
- 	bool irq_enabled;
- };
-@@ -164,6 +163,7 @@ void tilcdc_crtc_set_panel_info(struct drm_crtc *crtc,
- void tilcdc_crtc_set_simulate_vesa_sync(struct drm_crtc *crtc,
- 					bool simulate_vesa_sync);
- void tilcdc_crtc_shutdown(struct drm_crtc *crtc);
-+void tilcdc_crtc_destroy(struct drm_crtc *crtc);
- int tilcdc_crtc_update_fb(struct drm_crtc *crtc,
- 		struct drm_framebuffer *fb,
- 		struct drm_pending_vblank_event *event);
--- 
-2.43.0
+> ---
+>  drivers/dma/sh/rz-dmac.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/dma/sh/rz-dmac.c b/drivers/dma/sh/rz-dmac.c
+> index 1f687b08d6b8..38137e8d80b9 100644
+> --- a/drivers/dma/sh/rz-dmac.c
+> +++ b/drivers/dma/sh/rz-dmac.c
+> @@ -854,6 +854,13 @@ static int rz_dmac_chan_probe(struct rz_dmac *dmac,
+>  	return 0;
+>  }
+>=20
+> +static void rz_dmac_put_device(void *_dev)
+> +{
+> +	struct device *dev =3D _dev;
+> +
+> +	put_device(dev);
+> +}
+> +
+>  static int rz_dmac_parse_of_icu(struct device *dev, struct rz_dmac *dmac=
+)
+>  {
+>  	struct device_node *np =3D dev->of_node;
+> @@ -876,6 +883,10 @@ static int rz_dmac_parse_of_icu(struct device *dev, =
+struct rz_dmac *dmac)
+>  		return -ENODEV;
+>  	}
+>=20
+> +	ret =3D devm_add_action_or_reset(dev, rz_dmac_put_device, &dmac->icu.pd=
+ev->dev);
+> +	if (ret)
+> +		return ret;
+> +
+>  	dmac_index =3D args.args[0];
+>  	if (dmac_index > RZV2H_MAX_DMAC_INDEX) {
+>  		dev_err(dev, "DMAC index %u invalid.\n", dmac_index);
+> @@ -1055,8 +1066,6 @@ static void rz_dmac_remove(struct platform_device *=
+pdev)
+>  	reset_control_assert(dmac->rstc);
+>  	pm_runtime_put(&pdev->dev);
+>  	pm_runtime_disable(&pdev->dev);
+> -
+> -	platform_device_put(dmac->icu.pdev);
+>  }
+>=20
+>  static const struct of_device_id of_rz_dmac_match[] =3D {
+> --
+> 2.51.0
 
 
