@@ -1,123 +1,116 @@
-Return-Path: <stable+bounces-195187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479A1C6FB1C
-	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 16:38:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42163C6FD71
+	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 16:55:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9D12A380DDC
-	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 15:31:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 510D62F410
+	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 15:55:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556FE2DCBFA;
-	Wed, 19 Nov 2025 15:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="bp8alCq/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFBF83A1D09;
+	Wed, 19 Nov 2025 15:50:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D9218A956
-	for <stable@vger.kernel.org>; Wed, 19 Nov 2025 15:30:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F393570DE;
+	Wed, 19 Nov 2025 15:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763566241; cv=none; b=e7XQh8P5NkZGHTTFu/MvSaWtz+uP4l/FqIUnDm4QdmUF3XEE2N5jiSudCVtfT+1h8j5h7paRlaV9nfCZFzAgHODJvMhPQINit+cONgbCeO06F3SJAn3k+WpbSSNPUDkzHsFxT9aiDNXXeQJnfJjaPONZvMZB1RqTvLaWT2H5bDM=
+	t=1763567437; cv=none; b=D7Q7Qfb5Q6TcoT7eRN27iYEunxXoFZrZqM1evIBHGdiGFKclLIE5+W5HQEAC+4YS8otL3fn1ncksd7YdBZskOIShhz0bfk59ATeHbwW/lQP1Kl/LzCOsQRA4TrrOqzQzqx23zqhX0WK+zEpzfcHWR7h3O+J0udTsZUph6w+QZkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763566241; c=relaxed/simple;
-	bh=gBAPjo8ugyvHmrVtrmxOJ2a0rCcEYfOjyZ36VdDd+lc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jighWlIoKB5nwng/+1tzn3sRa/Y2bAPho+7jd3x3eBQDLFJF7Y2ul8+KgIrksV7ByE6dsV5w6YbBC7hLYJC6NdrqC7cNWeE+Z+d2FERauGG4tembVD9r0OzUo7buYfJ2C/zEfISbYaBaFCodTLM4lMjIB7K+WpYrkMfsPk4JIbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=bp8alCq/; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b73161849e1so1280471666b.2
-        for <stable@vger.kernel.org>; Wed, 19 Nov 2025 07:30:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1763566237; x=1764171037; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cR91zrIOJSKyh2Hyhj1xDMc7fJKXJHnNsh4M5UGYklM=;
-        b=bp8alCq/2JEXWopyzs7Y0oyXpBboUgXkqTmTIqdI9PawLHumOSJjoviiZ81RvuwyT8
-         Mr+rVXMiefGh98gy+yEqxTI92kAfzJQdzQ7KKChznsOXUDmnysAz2bEi/6DkhwnklAm1
-         22ycVCi7M/YsCPC5QPq8+swz6/fjFkJPynqoFeKbSkS/Jb03yqUT+Z5quQ90iP4zQmQ7
-         2UrLRYaGxeG2yJZATDa3YLYrT4pbfG242YlJ0e68suiA610GhR5M4o8sZSeXkQSjivVF
-         6jEMES7Bwte3niNqsuElOPiKzpqzF43eInDoFoDpW20ph1K+jeguL9rhghEPJ6XlD99N
-         eqvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763566237; x=1764171037;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cR91zrIOJSKyh2Hyhj1xDMc7fJKXJHnNsh4M5UGYklM=;
-        b=Rxrcam16EpqpAJjeB+Fa1c6J0vzjJFkOnFtBnJLZ+xfYBmj2148AWVulvVn+QUaISU
-         gyYtNVfoBHys5p3RnLgj2bvr/auN82MatJ4y+SMlCTSl1kJLqiewGySK6w0Wgl1CCGRj
-         mXd5jPidNYQTP8EwHu/DyNihmnwXOX5EftDshbGOKNFLqmuswqAlU8mDaQ3B17LnZ8w9
-         KVePI2ti5KGe2ROjdMlbb2TwEcY3RiTllY45M+z8yHx56qS7wkLcW9v1us2/BZbWGU0O
-         RglPZjGw5hWsjIY/fUrM23HK9CLlPqFHnpHXC2lvitr6ikZS0tUCMAFSmyZfN33tHcyv
-         mBTg==
-X-Forwarded-Encrypted: i=1; AJvYcCXXi3TUBMht/3/U31rhKD4Yt42Wrr69rs0JRNLiPmbjJJ7pZ0sdVeoJcQIRGUqNl4apey8SqAg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCnHJ6DShdUosJDfwrus5TM70fa9WKfap8TQZziG00PCK5jawI
-	y/FDiZixiQIBlg5qPyy2KSqTfAikixJ3QYpFDNJqQoEL6eZ5GZ3X6RSz8vw077oNIQs=
-X-Gm-Gg: ASbGncusTFmME1ubt4xrt6YW9WcXTG03qz6azCuynifWZtoVP61fFCmbTLK2q3uIlqF
-	20eFNYi190NEjlssHhQObQjjLTeb5mJJMNABJWR09qyruywsmUAQvtvmq70PNiRfBsUGGTiHX3K
-	/PnBI/bwdRubPdqtYPyHsy9wCjH7otLkUeF8arE5eavnwGy3jID/7UKqVopmhpKLr6fFp4K3AFr
-	5K+2xJwOFqzdhcNgUiQVck9oh4SxSaCSh5OqNKso9fjGp+bmsRrpKM6ZlTSkb8IpifNqpQrW15t
-	vSVJ1dY9NkH39HQZ8YRILAB2enFnhwHN8uAyAY/J2wfp9abuorTwzscn00X0ha/ZgV3fiDp183Z
-	tBGgnqvpxQAULuPVs5grMO+s/p2mpoF5Nis6TLpmqqB+N0BaVAAch+Jp7VOuLfIqRbN9Npx9VgG
-	RQTbMOcCR0aXtVfQ==
-X-Google-Smtp-Source: AGHT+IHoB/qu/86GOU5ftmQshmg+mif3CnNL4qbLOXTn62JkkK8VdGUvRDWsx4F8y8maSQwvqqMWaQ==
-X-Received: by 2002:a17:907:7e86:b0:b72:aaae:1b22 with SMTP id a640c23a62f3a-b7637827c2cmr321869266b.12.1763566237187;
-        Wed, 19 Nov 2025 07:30:37 -0800 (PST)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6433a3d82cfsm15313831a12.2.2025.11.19.07.30.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Nov 2025 07:30:36 -0800 (PST)
-Date: Wed, 19 Nov 2025 16:30:34 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: John Ogness <john.ogness@linutronix.de>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sherry Sun <sherry.sun@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Derek Barbosa <debarbos@redhat.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH printk v2 0/2] Fix reported suspend failures
-Message-ID: <aR3imvWPagv1pwcK@pathway.suse.cz>
-References: <20251113160351.113031-1-john.ogness@linutronix.de>
+	s=arc-20240116; t=1763567437; c=relaxed/simple;
+	bh=A2T9h19zDOA0NtxG4phPcuK/llzYhFV82mZ3UhuqEZI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nSnoT9KiX4UH8WJYa0igtj1YfgPbBCyOgTi0R24qwGvaV3gsCNkag7+zzQrH13k6kXs6rFtvucm1oGPG5UnyU4iwxVDO5Rs/5icoqGpdztL5OQ7Ym4pfEgbeSYiGS2EhvsIiIsPUeqGizmi+atfsLrku2ZBQnBItPVECTYWeOJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4dBQbr4LWxz9sTm;
+	Wed, 19 Nov 2025 16:38:00 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id jOnRrJ5A7_EN; Wed, 19 Nov 2025 16:38:00 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4dBQbr3btHz9sSn;
+	Wed, 19 Nov 2025 16:38:00 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 690918B76D;
+	Wed, 19 Nov 2025 16:38:00 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id u265QodWAVzI; Wed, 19 Nov 2025 16:38:00 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E5AC98B763;
+	Wed, 19 Nov 2025 16:37:59 +0100 (CET)
+Message-ID: <657c8574-8844-48ef-93e1-e0df8e9cf91a@csgroup.eu>
+Date: Wed, 19 Nov 2025 16:37:59 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251113160351.113031-1-john.ogness@linutronix.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/warp: Fix error handling in pika_dtm_thread
+To: Ma Ke <make24@iscas.ac.cn>, maddy@linux.ibm.com, mpe@ellerman.id.au,
+ npiggin@gmail.com, benh@kernel.crashing.org, smaclennan@pikatech.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, stable@vger.kernel.org
+References: <20251116024411.21968-1-make24@iscas.ac.cn>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20251116024411.21968-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu 2025-11-13 17:09:46, John Ogness wrote:
-> This is v2 of a series to address multiple reports [0][1]
-> (+ 2 offlist) of suspend failing when NBCON console drivers are
-> in use. With the help of NXP and NVIDIA we were able to isolate
-> the problem and verify the fix.
-> 
-> The first NBCON drivers appeared in 6.13, so currently there is
-> no LTS kernel that requires this series. But it should go into
-> 6.17.x and 6.18.
-> 
-> John Ogness (2):
->   printk: Allow printk_trigger_flush() to flush all types
->   printk: Avoid scheduling irq_work on suspend
-> 
->  kernel/printk/internal.h |  8 ++--
->  kernel/printk/nbcon.c    |  9 ++++-
->  kernel/printk/printk.c   | 81 ++++++++++++++++++++++++++++++++--------
->  3 files changed, 78 insertions(+), 20 deletions(-)
 
-JFYI, the patchset has been committed into printk/linux.git,
-branch rework/suspend-fixes.
 
-Best Regards,
-Petr
+Le 16/11/2025 à 03:44, Ma Ke a écrit :
+> ***ATTENTION, Sopra Steria Group cannot confirm the identity of this email sender (SPF record failure). This might be a fake email from an attacker, if you have any doubts report and delete the email.***
+> 
+> ***ATTENTION, Sopra Steria Group ne peut pas confirmer l’identité de l’émetteur de ce message (SPF record failure). Il pourrait s’agir d’un faux message, à détruire si vous avez un doute ***
+> 
+> pika_dtm_thread() acquires client through of_find_i2c_device_by_node()
+> but fails to release it in error handling path. This could result in a
+> reference count leak, preventing proper cleanup and potentially
+> leading to resource exhaustion. Add put_device() to release the
+> reference in the error handling path.
+
+It is not really an error path, it is the termination of the kthread.
+
+> 
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 3984114f0562 ("powerpc/warp: Platform fix for i2c change")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+> ---
+>   arch/powerpc/platforms/44x/warp.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/powerpc/platforms/44x/warp.c b/arch/powerpc/platforms/44x/warp.c
+> index a5001d32f978..6f674f86dc85 100644
+> --- a/arch/powerpc/platforms/44x/warp.c
+> +++ b/arch/powerpc/platforms/44x/warp.c
+> @@ -293,6 +293,8 @@ static int pika_dtm_thread(void __iomem *fpga)
+>                  schedule_timeout(HZ);
+>          }
+> 
+> +       put_device(&client->dev);
+> +
+>          return 0;
+>   }
+> 
+> --
+> 2.17.1
+> 
+
 
