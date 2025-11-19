@@ -1,218 +1,177 @@
-Return-Path: <stable+bounces-195160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A2FC6D89C
-	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 09:58:13 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C33FC6D948
+	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 10:06:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 5A0822A6CD
-	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 08:58:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7F38F3580BD
+	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 09:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E6C32E730;
-	Wed, 19 Nov 2025 08:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB8A33373D;
+	Wed, 19 Nov 2025 09:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P3SKLotS"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="F133vRw/";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fLR66Z9T"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3465132ED44
-	for <stable@vger.kernel.org>; Wed, 19 Nov 2025 08:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA857333437
+	for <stable@vger.kernel.org>; Wed, 19 Nov 2025 09:03:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763542685; cv=none; b=BvgbNPf7G3FTUlq09YtqxY3KY8UweZJi6g+shHY6d89pXRO7VPi3oPg8g+TM7rNr1lgXQ49DQDaQf672aoekIekD6bIQRll/oY1feoVxDMiA2QUWLRV/p0D29k1FLlKXO3nKHjw5xXCg+fTm3dIXLPRtAEeJivbvEjSyu5q4WRI=
+	t=1763543042; cv=none; b=lEjBVV17pB/Z61uIUyIk7pBE90hAnXD48pdq6zsrZX7VlJm0mDJKWxgGCx/Dz0dHWKCj7yxld+zMnnkB2ESyBnKTHwD7mzI6svKEqr/p6KCcildifKLc0gr4xYRnkvwJpILRy1PPNSx678QP3PbB0WNdoRRG3taMau/s2/lKk6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763542685; c=relaxed/simple;
-	bh=SEyrQRN6vxWoOkBDR/9CmO79XgbuxRdUsBZ9vRIt9XQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pGGEheV5MKF7/DzOi/00BlKYf/b11y40q+F7f6xLJQXtO9LUBm4En4l2kY5Ckexg5hRPeCgc4cSp2C7nxNBa6s4iAGU4fkHRNEyeZ2eWHloLFqYYiYnY/aYHrcLFbu2g+iy5+lvpgK5Z1h/AzOa95vW7bJdTVU8U5m/Z4s389cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P3SKLotS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F14C19421;
-	Wed, 19 Nov 2025 08:58:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763542684;
-	bh=SEyrQRN6vxWoOkBDR/9CmO79XgbuxRdUsBZ9vRIt9XQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=P3SKLotSQD/ek/OairstDSQ9az94gG0MpogyOM85oXkDwzdCT9p7R5Ytq6xzjlsPB
-	 WYUHTFBPWFMIxosKwStrZl8m++04ArWKDevNP0/fFWu+uZEcPbYZwQRsilaPmZsxqM
-	 WzL1iO9XjczlkSXxW+Q9iwqUXrxBCzlKoCDqstz1IcqV2J353BGLKM+XwBmVLHDQ9u
-	 AYK9IjbHcqx1q0cB7AhB/6ZMOUeaCp0kR4EyBO9DdCcLMC2uk/AP8x9gcuq8HzNqbd
-	 uCMw1yyUp+cmjztWQBpcT8OJn07t4DVJRxTmYk5JjGB53GaIGeOTgIrhvQs7S73jhS
-	 ojEZbG5T29FNg==
-Message-ID: <a5437eb1-0d5f-48eb-ba20-70ef9d02396b@kernel.org>
-Date: Wed, 19 Nov 2025 09:57:58 +0100
+	s=arc-20240116; t=1763543042; c=relaxed/simple;
+	bh=7PYuIVxtoPFYg62jWxIrmMhmv/W6lp9AHKj7G26g0YQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cjPG/ASscejmlF9Li2dDTUBy46lRVsyYlExioy64Sp+jZ1JptPgxorFCOG6bdd+bsT5gpg/FcC3kdAXsh7f0rdhPimAiaGTMWGTPG3E/TOmoKJOIU0l0zTT7U/SbD6cw6FbNVrgwHSRjRSEiP4Ost97984zKd0BFmgIrme9kbtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=F133vRw/; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fLR66Z9T; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AJ7aFxV718744
+	for <stable@vger.kernel.org>; Wed, 19 Nov 2025 09:03:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=/DVKl889ORLjBsf1CmtN97Ol
+	7Es2W4sbC50Q/Zqk7ew=; b=F133vRw/ZJ4fThE/cs7tswbRjcTnZTuiyAs967t1
+	NxQHcSXheN2PJro5DSDzxHxsHezA9zxtMzf0jMlIleexCKkH18KfJ3waNPYNOezy
+	ISGNC6ijgr9lWqeCpvuvS9BaOXMbTzHtaeycy5f2b05aAOfxOiYkaYauwx7lqUw7
+	r8SK0bKAasUHFzybeZjoH1vd6UYCs/UvmXqdml8cuDduOa0bjIZ919Mk+W8lBbH0
+	ChUwpaFfwePjxBG9hU/9S3zEmqNC7KbJlo2rlQyV8lHCf7KgY7gaX8mf5IZYjIFz
+	VqBWB8QSKJguAogkBGypg9Nx19QZ/eicOUTPLSurRncNYQ==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ah9n0r8pv-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 19 Nov 2025 09:03:58 +0000 (GMT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8805054afa1so169995016d6.0
+        for <stable@vger.kernel.org>; Wed, 19 Nov 2025 01:03:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1763543038; x=1764147838; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/DVKl889ORLjBsf1CmtN97Ol7Es2W4sbC50Q/Zqk7ew=;
+        b=fLR66Z9TltbigcI8DJYw5dISyxiqjHLOHDSkLySxrHxUar9kKYq2XucypiYwD/KihC
+         XNV0v1jmuXlS2pDc0AWkKTIpYjpWhcbRjVZApoWbbzH48HFhww+BkeaLJP2EbSPTduRV
+         64difajofcehKA55DLusLncrwmU1gFlfKHkTvzaoQWek7JutsaIl0qd9BeZXyfeTRe8y
+         xn1xwxdd13sT+dwNVXtE5H/iOycZJ7U7IWiys6tlN7RxPaoi5MmdSTfG3N4I4TC4t8sc
+         wuESoLD7YGNjvHlC95Ra/tX2CnRBZ1wk51zJVNN4gc/EEjppWo/MQCKDVmEsuh3uT1KW
+         opyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763543038; x=1764147838;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/DVKl889ORLjBsf1CmtN97Ol7Es2W4sbC50Q/Zqk7ew=;
+        b=L6zFymJwTJ77YjBxa18OO5iMISmrgl0aFjTxfzIMT9hEwXD4XMXiIITZS0LZitD4Y8
+         K4Fx1sicRC3nP8TY/n+j8FytQz+Pi0uPcXL6LyX8v6u5bBbded+028iFE6X53PScOExC
+         uh/B1GaHdIVpsUn5hyE+zEx5YvST+6DKxEpkU8IDvf9wGKS/+AohyjRnJSmIFwX5pWoy
+         GsiqLIx6FVWNdkMAKkATHinuKyN+4vT+sUkNrC014JZTcWw1wKHSho8qPtm3BYP6r9yM
+         U+oKcd2Co0NmtxzZ/WboyxFJyVDYp3jf6BT0g6DwYV1shX0JauCQjQcQHH/P6Z1I0tSg
+         6n0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU4lecZ38hqu0kYTDuHX7ZwbpjWgkyfLHuj1L5/FUbOe+3yj82u4doZ1jwS+PueGBzQ9fCqKD8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqytA3budSabaM9loeF3J//y5oT/TP7/cef3BwWJ/o24JqrBBg
+	mi1WYhAWuCrcvETFoP8M2a49WIgFhT2uYOedl3FxQhcDh4C3iE7nw7RmpqjplMGadW6QIuqshRS
+	lqqGjFG+a4/8V/rPrDjgc1Hz+1yi5RKP0vsDjtWCOc8RZPkNGccgthOh611k=
+X-Gm-Gg: ASbGncsxt6cmHDHudeYIdwLUYU8nQFGblKYG+x+kz//1yE8bA1OPZ7TMQN+RvnjjKMn
+	2VbA0MPynReJ7oUpTZZUeNBNDynmqbe9vBq7D+wd5WM66Dh5I9wiM5o2B/79FjYcmsfhBuTVQaT
+	LhikzoN/d1v3h7JGK8Iajr0msFPFhoWrYaM4kvBasuhpmTZJPGQdcTlyDRMkaEuqcvrYkU7/ofO
+	e8rq6Y4Ke2D86y1UPsqdCWpyWIZNsXQpxWh8XPMJFhYFkAlBMO6NFlnQCavW3gjQcjwsRin8OpN
+	eOEb/Zht3D4NGgUc8Axq4kuwScN6UBaGpZXTMMagHEh8Egnh31JRofDyOEpDwCyaI7KiwbA8/Eu
+	mtWtnBDV7qu9/M+gpDKu3NDm6/7Pw+k+B47JjxVU30FXRllRaqfsA5LjYSuM5nNotdIpzTEHC8A
+	OHLpTUVWV5NJdW12m6DfeHR30=
+X-Received: by 2002:a05:622a:87:b0:4ee:1c10:729f with SMTP id d75a77b69052e-4ee1c1076admr155151801cf.35.1763543037805;
+        Wed, 19 Nov 2025 01:03:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEgCgf7dxZdMMwZXKao/8OhfR5srPEi9FV8w0+XM6CwVTnm8sYFYyJRINt88wai2SJeu1RY5w==
+X-Received: by 2002:a05:622a:87:b0:4ee:1c10:729f with SMTP id d75a77b69052e-4ee1c1076admr155151571cf.35.1763543037376;
+        Wed, 19 Nov 2025 01:03:57 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-595803b8bc7sm4478697e87.46.2025.11.19.01.03.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Nov 2025 01:03:56 -0800 (PST)
+Date: Wed, 19 Nov 2025 11:03:54 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Abel Vesa <abel.vesa@linaro.org>
+Cc: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Sibi Sankar <quic_sibis@quicinc.com>,
+        Rajendra Nayak <quic_rjendra@quicinc.com>,
+        Johan Hovold <johan@kernel.org>, Taniya Das <quic_tdas@quicinc.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] phy: qcom: edp: Make the number of clocks flexible
+Message-ID: <basmm6j76upxmb5h6tmqvuuehg3qvj3tfkbq4q6e7tugfkv4is@ttu4dam5h2gx>
+References: <20250909-phy-qcom-edp-add-missing-refclk-v3-0-4ec55a0512ab@linaro.org>
+ <20250909-phy-qcom-edp-add-missing-refclk-v3-2-4ec55a0512ab@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: fix NULL pointer deference when splitting
- shmem folio in swap cache
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
-Cc: linux-mm@kvack.org, stable@vger.kernel.org
-References: <20251119012630.14701-1-richard.weiyang@gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251119012630.14701-1-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909-phy-qcom-edp-add-missing-refclk-v3-2-4ec55a0512ab@linaro.org>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE5MDA3MCBTYWx0ZWRfXzTCbfS8e1y3v
+ Y1zW5VLoysJf5aL1iEb1VwkALL57P72AzWtVmz6BjnNkP3Yr84lsfQRM4XlxY/cWvh1YI8eotFL
+ xtYjYyjf6COdpGFqaJmvYq4gYxxTeHhH0+tkgjqhOPHysLI3A+Nq9HhLCvf3CR2ZAO0PrZeXQMs
+ c+LVpqaI1u7r0NRoqAJ2iyYUZkRMaHo3Snt8wA/+vab0NDT+uMEtP5LM0qjmsGd9zj99BB/0q6A
+ iXNRLq2g5EIvVBb0CxqIYzdL+Ocy5jyo00XtW7U8nsBSgwcsvO5O6hrHNihtazauxkDBMlbOhEb
+ 2pc1eLvQv3rjlMrahiyX74KabDS+UMga7P7h85Hf0s/IyeFAnaMSXkeQ9L/M5v5+rhSD2WMsleR
+ TRZSXAw7U8WlYpaDVNdavYsH0zxa5w==
+X-Proofpoint-GUID: s9BIpzLp1cYIJr7jSZJH79hBmDCn4XT5
+X-Authority-Analysis: v=2.4 cv=QZlrf8bv c=1 sm=1 tr=0 ts=691d87fe cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=77Gn-jvO4NWksBu-1S8A:9
+ a=CjuIK1q_8ugA:10 a=iYH6xdkBrDN1Jqds4HTS:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: s9BIpzLp1cYIJr7jSZJH79hBmDCn4XT5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-19_02,2025-11-18_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 phishscore=0 adultscore=0 suspectscore=0
+ clxscore=1015 priorityscore=1501 bulkscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2511190070
 
-On 19.11.25 02:26, Wei Yang wrote:
-> Commit c010d47f107f ("mm: thp: split huge page to any lower order
-> pages") introduced an early check on the folio's order via
-> mapping->flags before proceeding with the split work.
+On Tue, Sep 09, 2025 at 10:33:34AM +0300, Abel Vesa wrote:
+> On X Elite, the DP PHY needs another clock called ref, while all other
+> platforms do not.
 > 
-> This check introduced a bug: for shmem folios in the swap cache, the
-> mapping pointer can be NULL. Accessing mapping->flags in this state
-> leads directly to a NULL pointer dereference.
-
-Under which circumstances would that be the case? Only for large shmem 
-folios in the swapcache or also for truncated folios? So I'd assume this
-would also affect truncated folios and we should spell that out here?
-
+> The current X Elite devices supported upstream work fine without this
+> clock, because the boot firmware leaves this clock enabled. But we should
+> not rely on that. Also, even though this change breaks the ABI, it is
+> needed in order to make the driver disables this clock along with the
+> other ones, for a proper bring-down of the entire PHY.
 > 
-> This commit fixes the issue by moving the check for mapping != NULL
-> before any attempt to access mapping->flags.
+> So in order to handle these clocks on different platforms, make the driver
+> get all the clocks regardless of how many there are provided.
 > 
-> This fix necessarily changes the return value from -EBUSY to -EINVAL
-> when mapping is NULL. After reviewing current callers, they do not
-> differentiate between these two error codes, making this change safe.
-
-The doc of __split_huge_page_to_list_to_order() would now be outdated 
-and has to be updated.
-
-Also, take a look at s390_wiggle_split_folio(): returning -EINVAL 
-instead of -EBUSY will make a difference on concurrent truncation. 
--EINVAL will be propagated and make the operation fail, while -EBUSY 
-will be translated to -EAGAIN and the caller will simply lookup the 
-folio again and retry.
-
-So I think we should try to keep truncation return -EBUSY. For the shmem 
-case, I think it's ok to return -EINVAL. I guess we can identify such 
-folios by checking for folio_test_swapcache().
-
-
-Probably worth mentioning that this was identified by code inspection?
-
-> 
-> Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: <stable@vger.kernel.org>
-
-Hmm, what would this patch look like when based on current upstream? 
-We'd likely want to get that upstream asap.
-
-> 
+> Cc: stable@vger.kernel.org # v6.10
+> Fixes: db83c107dc29 ("phy: qcom: edp: Add v6 specific ops and X1E80100 platform support")
+> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 > ---
+>  drivers/phy/qualcomm/phy-qcom-edp.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
 > 
-> This patch is based on current mm-new, latest commit:
-> 
->      056b93566a35 mm/vmalloc: warn only once when vmalloc detect invalid gfp flags
-> 
-> Backport note:
-> 
-> Current code evolved from original commit with following four changes.
-> We should do proper adjustment respectively on backporting.
-> 
-> commit c010d47f107f609b9f4d6a103b6dfc53889049e9
-> Author: Zi Yan <ziy@nvidia.com>
-> Date:   Mon Feb 26 15:55:33 2024 -0500
-> 
->      mm: thp: split huge page to any lower order pages
-> 
-> commit 6a50c9b512f7734bc356f4bd47885a6f7c98491a
-> Author: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> Date:   Fri Jun 7 17:40:48 2024 +0800
-> 
->      mm: huge_memory: fix misused mapping_large_folio_support() for anon folios
-> 
-> commit 9b2f764933eb5e3ac9ebba26e3341529219c4401
-> Author: Zi Yan <ziy@nvidia.com>
-> Date:   Wed Jan 22 11:19:27 2025 -0500
-> 
->      mm/huge_memory: allow split shmem large folio to any lower order
-> 
-> commit 58729c04cf1092b87aeef0bf0998c9e2e4771133
-> Author: Zi Yan <ziy@nvidia.com>
-> Date:   Fri Mar 7 12:39:57 2025 -0500
-> 
->      mm/huge_memory: add buddy allocator like (non-uniform) folio_split()
-> ---
->   mm/huge_memory.c | 68 +++++++++++++++++++++++++-----------------------
->   1 file changed, 35 insertions(+), 33 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 7c69572b6c3f..8701c3eef05f 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3696,29 +3696,42 @@ bool folio_split_supported(struct folio *folio, unsigned int new_order,
->   				"Cannot split to order-1 folio");
->   		if (new_order == 1)
->   			return false;
-> -	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
-> -		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-> -		    !mapping_large_folio_support(folio->mapping)) {
-> -			/*
-> -			 * We can always split a folio down to a single page
-> -			 * (new_order == 0) uniformly.
-> -			 *
-> -			 * For any other scenario
-> -			 *   a) uniform split targeting a large folio
-> -			 *      (new_order > 0)
-> -			 *   b) any non-uniform split
-> -			 * we must confirm that the file system supports large
-> -			 * folios.
-> -			 *
-> -			 * Note that we might still have THPs in such
-> -			 * mappings, which is created from khugepaged when
-> -			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
-> -			 * case, the mapping does not actually support large
-> -			 * folios properly.
-> -			 */
-> -			VM_WARN_ONCE(warns,
-> -				"Cannot split file folio to non-0 order");
-> +	} else {
 
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-Why not simply
-
-} else if (!folio->mapping) {
-	/*
-	 * Truncated?
-	...
-	return false;
-} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
-...
-
-> +		const struct address_space *mapping = folio->mapping;
-> +
-> +		/* Truncated ? */
-> +		/*
-> +		 * TODO: add support for large shmem folio in swap cache.
-> +		 * When shmem is in swap cache, mapping is NULL and
-> +		 * folio_test_swapcache() is true.
-> +		 */
-
-While at it, can we merge the two comments into something, like:
-
-/*
-  * If there is no mapping that the folio was truncated and we cannot
-  * split.
-  *
-  * TODO: large shmem folio in the swap cache also don't currently have a
-  * mapping but folio_test_swapcache() is true for them.
-  */
 
 -- 
-Cheers
-
-David
+With best wishes
+Dmitry
 
