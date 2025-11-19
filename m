@@ -1,117 +1,128 @@
-Return-Path: <stable+bounces-195164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C62C6E34D
-	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 12:22:57 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E5AC6E4A6
+	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 12:42:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5B4184EE3F1
-	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 11:17:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EB798350142
+	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 11:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F15350A31;
-	Wed, 19 Nov 2025 11:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0C7352955;
+	Wed, 19 Nov 2025 11:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZA77XtmL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PHlmx8Jt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8572534D93E
-	for <stable@vger.kernel.org>; Wed, 19 Nov 2025 11:16:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9B833C50F
+	for <stable@vger.kernel.org>; Wed, 19 Nov 2025 11:35:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763551012; cv=none; b=DL6P8fkUfCIiNCci6M3/UhTDuehMpL1jTls0Y7aeLu7QyfFYfFmW12SjlbmIcxd8jfxEIAls+uNZFuUAjVwAMewAf4JZLQCeUT3LkvmxEWPCN0dUQUsKp+JRgxzOpkqcef19PUcOtQMC/JRXPum8iyetFwVppSVwXV4Q7ObAvC4=
+	t=1763552159; cv=none; b=aEbu2dkQ8rfIK3MF7zs4TKyvL6q4iMOeh0erEazDqagWadV1PRIXvO2wnbXYiOv48J7u6Ujnek3qu8BO2Mt2E446PSvosSl1Od/SVGPHB1Gq924xbUOqerEOdCArvOgNB7BkvFzi8MNkp/LIJGFy5HFKFJv8JJQglOIwJ7q0wq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763551012; c=relaxed/simple;
-	bh=Jfm1+IV0dmKR6UvATXbNPaNXa4YJ4/UDhZCRc24a46A=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Bjpj5LQI5azblEgTdRxjjyOL7XzWyNdcFOeJco8PQ9EV2AbSjpyKVoLsvAd75LG4ksqQZbETqY3JPTkgJio9uZWPlkMSA5lOrfV5yAgtC9TY9/8xgsdwyi8fLxc37OSlF9CXG2DZdhKMCMF+98HcWxIqd9ZO3mYt2TB6eNdMufw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZA77XtmL; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47755de027eso44842985e9.0
-        for <stable@vger.kernel.org>; Wed, 19 Nov 2025 03:16:49 -0800 (PST)
+	s=arc-20240116; t=1763552159; c=relaxed/simple;
+	bh=XeetoD9h5YFMO/jwCNj9WxEZ/IVBUdwKo6worfpDAPE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oaiqs9P7OTt8zevx833xpbbSZ67EHF9Z9SoYBnZGs8xOwsTHBLU/7zPtOmrhfEzYfKimF0sByknOCx3uGyvYSWohXjpp4o/j36kN/BjPbctQPQ4uswkijCh1rNkcF2d7A5aHCbCjE/AzqqSaJb4pdD+Usau+qrZBxLw063EnvsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PHlmx8Jt; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-37b97e59520so45006641fa.2
+        for <stable@vger.kernel.org>; Wed, 19 Nov 2025 03:35:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763551008; x=1764155808; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Jfm1+IV0dmKR6UvATXbNPaNXa4YJ4/UDhZCRc24a46A=;
-        b=ZA77XtmLwwkJObTivXPBfyDyqMyutSIkl8y3xw6NyX0zWizyH8GREDJ8Xy9KQ1VUAc
-         v5aB2YnBhltBiL/ocqMmMZ0V7/PojY60D8WCO95lJBzqcdeq2kjXf232ERL4UhrFV8Fi
-         8RNkFjsXsPlWa8u0VNf6DaGo8BS5DQffGZRDhz42ii51Kh9cu9eHLM1bShF5OSkvmdp9
-         RMUpOr+vQq8XanN+5hh+h8ZFvd6e64ByWTb8TJakk6t74FH9ptwJYwPcFfmUYGluba6+
-         bGDtqYexC3beYqQ+hfBHFRoQkvzcSJOMyV0HzoAma3X1OK5HmN9tQ+Ln4AfDes8E+6xu
-         zR+w==
+        d=gmail.com; s=20230601; t=1763552155; x=1764156955; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mOjKGZlnAXgjmbnxI7QvaAPBMson5j4nh4MkPbAPAEs=;
+        b=PHlmx8Jt5vIs0Pvnug1QmJeSQ5mJZAvLJPcg7XqiobEHEwNPbruwQnDhUp+JSuzS9B
+         JxwRPIB3f1HMWPOmGY/NzQlUJOplyXYmGzkjduW7sUfVOnEd+BB2rBUDXq8MNHqkOP+2
+         ZSYNlwtmpopWVatk9zFLQU7+lgizzq0I+fukdiq2O7Tnzc2ksSutSKDlXOVR+jqBdPWP
+         qCpK8cA+Iimqah34r/DWOK1MtFc/JpyVJjlgPAAPHv0DR1KcBx/83zieOztd4jliT/5p
+         DFJeySbm5rLUFaNqxr1PDR/Kmul1+fwyuNg3AeG3H3tebcTV5HDQR6FeRUaZHkupoOFA
+         VwOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763551008; x=1764155808;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jfm1+IV0dmKR6UvATXbNPaNXa4YJ4/UDhZCRc24a46A=;
-        b=L3yyNfwiZpkGcssskK2S8O6j1rKgIPHmS6oOeCOffDkiEVeOiyyLQPJlcRTxJiy+yN
-         o8MfC3hw94X1XbLFh0nUM8e3bs+DqCvuX7K4ccjy9HbPIirGZu3urFm3/n7bWFv/AWiQ
-         6TRDbtKFYPFuEKhkIaKwsTbnXE2llLwOwc/wz1faz0JlUFtvStNwtG46jcXK+sYZJvWc
-         W8JUDTKg1ZwlAuWV2Sn5ULMKO49cqBs5Zn9DtX3CpZ3odh4KdlRmDkFHOi3dXnHpBE6h
-         WeBTR5jwHSZz9IOUy24J6KMmjMsztDTe31z7zc0sgHYChce58hppz2xaWIWnJZAYVxQ5
-         dr9w==
-X-Forwarded-Encrypted: i=1; AJvYcCXKNzvrkMyhR4E3zePSYwSmAR0GTcRHP4ewLa4/5JylxRCh5SOu3Xusle0ubVyAvOkfly46Kek=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcPmRccKBmnHQJDMVCoc7VJ4WiS2XSkVV2eoSFRjfdImKoj0a2
-	7zzF5zK8xnPMjx9p3NgmSl7r1rFFiarsTXc1GmpIDAaH2keH7jsvQo5UoC4D7iBQlnQ=
-X-Gm-Gg: ASbGncvBiuJozq6fsO6v8JIqcu3L7Qwiiz0ZUI60SeVs4vBLHgY80VrxIKSVNksmGNN
-	VnRWcoonOXeHC53viVqra3KYLyf5jUtuLiaffGgRarBxvSddQCDpyC1cQOcuV7ONci/UTT6FV7L
-	Tal3gVxpfhzdjnDtNn3u7lVsqw/UPJNEoRdLbMjKvNKm7mfOTpbQsNx7a41tPXY3b2uLvhcv0tS
-	rc1bxWCN5c1zZUc+xk5BlUF5hW4CJwmAI5ZaEJx+QLUmc2rX2pbQJ92BXrEqbkCkKFJmWMd1NSh
-	5wyilNLhcHQv/JesfC471rWEU5nAudSX2vXcpJwSFn+N/ycRpRALdLHlWkcTV7LCFDwXly/4cOv
-	U8s49sZq4uSqUuIEQprkEQ0H4jon3wBVPjdHT82Xtt76WIoQ8CU0fFU7CJriFrdyd2ffhMI1L7s
-	QXZVXPHzoAWDbpxVVwdQ==
-X-Google-Smtp-Source: AGHT+IHxUjgdNCXTiwpOfnXS2oC4TBNMEII+w8M+hOGIH0Djg1ZSLLta8lC5CXkAR753ngvyVq70XA==
-X-Received: by 2002:a05:600c:3542:b0:471:115e:87bd with SMTP id 5b1f17b1804b1-4778fe7d0ecmr189079235e9.26.1763551007791;
-        Wed, 19 Nov 2025 03:16:47 -0800 (PST)
-Received: from [10.1.1.13] ([212.129.77.152])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477b1013edcsm42553585e9.4.2025.11.19.03.16.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Nov 2025 03:16:47 -0800 (PST)
-Message-ID: <643a5776c383a501b129cd0f867395c0ccf80566.camel@linaro.org>
-Subject: Re: [PATCH] phy: exynos5-usbdrd: fix clock prepare imbalance
-From: =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
-To: Vinod Koul <vkoul@kernel.org>
-Cc: Peter Griffin <peter.griffin@linaro.org>, Tudor Ambarus	
- <tudor.ambarus@linaro.org>, Will McVicker <willmcvicker@google.com>, 
-	kernel-team@android.com, linux-phy@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Kishon Vijay Abraham
- I	 <kishon@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar	
- <alim.akhtar@samsung.com>
-Date: Wed, 19 Nov 2025 11:16:46 +0000
-In-Reply-To: <20251006-gs101-usb-phy-clk-imbalance-v1-1-205b206126cf@linaro.org>
-References: 
-	<20251006-gs101-usb-phy-clk-imbalance-v1-1-205b206126cf@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-7 
+        d=1e100.net; s=20230601; t=1763552155; x=1764156955;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mOjKGZlnAXgjmbnxI7QvaAPBMson5j4nh4MkPbAPAEs=;
+        b=LiR3hXOa6n8bx91rnzMjGdFBR4A5Nnr95oXLx7iLecPVyL/yQ5xQzggPNCx48cYqX0
+         nPhSbUMiyX27HEzMUSJgMJt3nHG2dwvyU4hfQsY++H3yo5oTOifL8Ti4A61LBu3Gbusl
+         e9VXfrcbpw3ZvlXlojyg05KzfUcwRBdpbsZVdRyRaIms/G+zzJ2iq83r+aEeGQerAfow
+         LvlGcPu5Q86OR3t4H1YAZ07TMjZHpAUpIbAv7ZL5vbWUucl3EOWh9fbfn6dK3+DO2HUQ
+         q4oNffoo9qRKwSAku9grzTT9PKlz5e6Ge4H9pOrwGeFghWg9d/rPt5VOkzsPcR/MajA2
+         UaDA==
+X-Forwarded-Encrypted: i=1; AJvYcCUg5RB+X2cFNXtPsdfkXGhR8qbETfI3DN4KJkJvSfzyeVBGxRj9ccsuWfydV2CEMZ7tCQ0skjE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFgG05RiMZEUQKSL0Y+OiYMjS9ovqfJ79mZ2N6GuZlEfdvupqa
+	mkOe/a//9c8Mqc1He1xmAH8rs1XUFGRtCUWZPJmgovAWFCLWp+bqQ9dMIQVnCE+8kTcJFnsR4Ds
+	RhB3kGeSQAauzwE4ouy7fFwh7CLpG1m4=
+X-Gm-Gg: ASbGnctv0T9IZs1Kywi8XtDHvksvfoY3/NnG3lcZal9gB3vfB1UpDQy94oF6W/o/wTP
+	c/BfEyC996zgo3GQP3qdkxh8PLpnurCAf5Z71OCTDA9MmbmaDtig51Yv51aoLWoVXJN3R7cR/Q8
+	UoyDZHdq2GVtW7x3VRvUVToejDYBS2c6MO10NgD2Vdq3eSMB0uTLsGsJRLNUima5gkdY/U7b7Fk
+	vpZIl/40S83UlGT7aIbKpcdghKOo8qqOCs6gklkd2Nfx8BeMT3gLVTf6QGqeSpv797U9A==
+X-Google-Smtp-Source: AGHT+IGLB87l3c6YQaMAVvCIZHa9Iaw20ytZFxmWh7hR2zupdPWm65PeLgAMP+NHumhl01ckY9NXDPo9Y80ggn2lAT0=
+X-Received: by 2002:a05:651c:20c6:b0:36d:4e3b:f1e3 with SMTP id
+ 38308e7fff4ca-37babb619famr41318181fa.13.1763552155407; Wed, 19 Nov 2025
+ 03:35:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <cf6e08dfdfbf1c540685d12388baab1326f95d2c.1762165324.git.xakep.amatop@gmail.com>
+ <176307584246.496508.12079514999315183214.b4-ty@sntech.de>
+In-Reply-To: <176307584246.496508.12079514999315183214.b4-ty@sntech.de>
+From: Mykola Kvach <xakep.amatop@gmail.com>
+Date: Wed, 19 Nov 2025 13:35:43 +0200
+X-Gm-Features: AWmQ_bneNTA_MoPN6LwNuV_BB7nADqcezocvI0r4IOjj8wtQr6qn-bFxwXAym-o
+Message-ID: <CAGeoDV_R8GBSs9qjY4772ymU=LsLiP=LTTx2-4uBLkB2PAuVhQ@mail.gmail.com>
+Subject: Re: [PATCH v3] arm64: dts: rockchip: orangepi-5: fix PCIe 3.3V
+ regulator voltage
+To: Heiko Stuebner <heiko@sntech.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Johan Jonker <jbx6244@gmail.com>, 
+	Michael Riesch <michael.riesch@collabora.com>, =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>, 
+	Muhammed Efe Cetin <efectn@6tel.net>, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2025-10-06 at 09:07 +0100, Andr=C3=A9 Draszik wrote:
-> Commit f4fb9c4d7f94 ("phy: exynos5-usbdrd: allow DWC3 runtime suspend
-> with UDC bound (E850+)") incorrectly added clk_bulk_disable() as the
-> inverse of clk_bulk_prepare_enable() while it should have of course
-> used clk_bulk_disable_unprepare(). This means incorrect reference
-> counts to the CMU driver remain.
->=20
-> Update the code accordingly.
->=20
-> Fixes: f4fb9c4d7f94 ("phy: exynos5-usbdrd: allow DWC3 runtime suspend wit=
-h UDC bound (E850+)")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org>
+On Fri, Nov 14, 2025 at 1:18=E2=80=AFAM Heiko Stuebner <heiko@sntech.de> wr=
+ote:
+>
+>
+> On Mon, 03 Nov 2025 12:27:40 +0200, Mykola Kvach wrote:
+> > The vcc3v3_pcie20 fixed regulator powers the PCIe device-side 3.3V rail
+> > for pcie2x1l2 via vpcie3v3-supply. The DTS mistakenly set its
+> > regulator-min/max-microvolt to 1800000 (1.8 V). Correct both to 3300000
+> > (3.3 V) to match the rail name, the PCIe/M.2 power requirement, and the
+> > actual hardware wiring on Orange Pi 5.
+> >
+> >
+> > [...]
+>
+> Applied, thanks!
+>
+> [1/1] arm64: dts: rockchip: orangepi-5: fix PCIe 3.3V regulator voltage
+>       commit: b5414520793e68d266fdd97a84989d9831156aad
+>
+> Please start new threads when sending version x+1 and don't append
+> that new patch to the old thread (less confusing for tooling like b4).
 
-Friendly ping.
+Got it, thanks for the explanation.
+
+>
+> Best regards,
+> --
+> Heiko Stuebner <heiko@sntech.de>
+
+Best regards,
+Mykola
 
