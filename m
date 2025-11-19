@@ -1,134 +1,117 @@
-Return-Path: <stable+bounces-195163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45209C6E13C
-	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 11:54:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C62C6E34D
+	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 12:22:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 3D5172E19B
-	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 10:54:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5B4184EE3F1
+	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 11:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22F634D928;
-	Wed, 19 Nov 2025 10:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F15350A31;
+	Wed, 19 Nov 2025 11:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="ejtmpWyK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZA77XtmL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.crpt.ru (mail.crpt.ru [91.236.205.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2A234CFCB;
-	Wed, 19 Nov 2025 10:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.236.205.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8572534D93E
+	for <stable@vger.kernel.org>; Wed, 19 Nov 2025 11:16:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763549626; cv=none; b=NuPv4UHnY7ygSpXZkd3Se+Sh+Gfj7W7uxuX9cJjUr+8QJRQ59T0Qs3TleydrtZnh9lvLUDo6GPG5oBtYLEIxVhevLxt1U69O5yHh0u4UkSKyTDNNReQbnq6uzKzpHZU77M8/VSFOIK2ThLkoXSsk8Jqw+5kCI46ZcJHoenIOiT0=
+	t=1763551012; cv=none; b=DL6P8fkUfCIiNCci6M3/UhTDuehMpL1jTls0Y7aeLu7QyfFYfFmW12SjlbmIcxd8jfxEIAls+uNZFuUAjVwAMewAf4JZLQCeUT3LkvmxEWPCN0dUQUsKp+JRgxzOpkqcef19PUcOtQMC/JRXPum8iyetFwVppSVwXV4Q7ObAvC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763549626; c=relaxed/simple;
-	bh=r8NQXmkDGFK45wMHuCWwoJWze6DIL4Jbz9p+2HOcp/o=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Vn4y196lZmYUtAfXXowQfDF66gjFaThSESjAwPxrjFb6ApKfBmgucVt+bb8Vrc7EWigOxH+qfRc5c5kvtioTAG107E5K+ppSNKJsDfIHPowmGFScylK88TY5Cjh7L7LnPGA57GuNk8dazvYdMElepavL47mig/Qr+BhkFmYUy+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=ejtmpWyK; arc=none smtp.client-ip=91.236.205.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crpt.ru
-Received: from mail.crpt.ru ([192.168.60.3])
-	by mail.crpt.ru  with ESMTPS id 5AJApD1P015814-5AJApD1R015814
-	(version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=OK);
-	Wed, 19 Nov 2025 13:51:13 +0300
-Received: from EX2.crpt.local (192.168.60.4) by ex1.crpt.local (192.168.60.3)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Wed, 19 Nov
- 2025 13:51:12 +0300
-Received: from EX2.crpt.local ([192.168.60.4]) by EX2.crpt.local
- ([192.168.60.4]) with mapi id 15.01.2507.044; Wed, 19 Nov 2025 13:51:12 +0300
-From: =?utf-8?B?0JLQsNGC0L7RgNC+0L/QuNC9INCQ0L3QtNGA0LXQuQ==?=
-	<a.vatoropin@crpt.ru>
-To: Ajit Khaparde <ajit.khaparde@broadcom.com>
-CC: =?utf-8?B?0JLQsNGC0L7RgNC+0L/QuNC9INCQ0L3QtNGA0LXQuQ==?=
-	<a.vatoropin@crpt.ru>, Sriharsha Basavapatna
-	<sriharsha.basavapatna@broadcom.com>, Somnath Kotur
-	<somnath.kotur@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Venkata Duvvuru
-	<VenkatKumar.Duvvuru@Emulex.Com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: [PATCH net] be2net: pass wrb_params in case of OS2BMC
-Thread-Topic: [PATCH net] be2net: pass wrb_params in case of OS2BMC
-Thread-Index: AQHcWUJr/pH3Et6rekuGUHy0xRHHsg==
-Date: Wed, 19 Nov 2025 10:51:12 +0000
-Message-ID: <20251119105015.194501-1-a.vatoropin@crpt.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-kse-serverinfo: EX1.crpt.local, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 11/18/2025 10:39:00 PM
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9AAC07FCABA36D47B99B9BEAA47F1486@crpt.ru>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1763551012; c=relaxed/simple;
+	bh=Jfm1+IV0dmKR6UvATXbNPaNXa4YJ4/UDhZCRc24a46A=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Bjpj5LQI5azblEgTdRxjjyOL7XzWyNdcFOeJco8PQ9EV2AbSjpyKVoLsvAd75LG4ksqQZbETqY3JPTkgJio9uZWPlkMSA5lOrfV5yAgtC9TY9/8xgsdwyi8fLxc37OSlF9CXG2DZdhKMCMF+98HcWxIqd9ZO3mYt2TB6eNdMufw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZA77XtmL; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47755de027eso44842985e9.0
+        for <stable@vger.kernel.org>; Wed, 19 Nov 2025 03:16:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1763551008; x=1764155808; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Jfm1+IV0dmKR6UvATXbNPaNXa4YJ4/UDhZCRc24a46A=;
+        b=ZA77XtmLwwkJObTivXPBfyDyqMyutSIkl8y3xw6NyX0zWizyH8GREDJ8Xy9KQ1VUAc
+         v5aB2YnBhltBiL/ocqMmMZ0V7/PojY60D8WCO95lJBzqcdeq2kjXf232ERL4UhrFV8Fi
+         8RNkFjsXsPlWa8u0VNf6DaGo8BS5DQffGZRDhz42ii51Kh9cu9eHLM1bShF5OSkvmdp9
+         RMUpOr+vQq8XanN+5hh+h8ZFvd6e64ByWTb8TJakk6t74FH9ptwJYwPcFfmUYGluba6+
+         bGDtqYexC3beYqQ+hfBHFRoQkvzcSJOMyV0HzoAma3X1OK5HmN9tQ+Ln4AfDes8E+6xu
+         zR+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763551008; x=1764155808;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jfm1+IV0dmKR6UvATXbNPaNXa4YJ4/UDhZCRc24a46A=;
+        b=L3yyNfwiZpkGcssskK2S8O6j1rKgIPHmS6oOeCOffDkiEVeOiyyLQPJlcRTxJiy+yN
+         o8MfC3hw94X1XbLFh0nUM8e3bs+DqCvuX7K4ccjy9HbPIirGZu3urFm3/n7bWFv/AWiQ
+         6TRDbtKFYPFuEKhkIaKwsTbnXE2llLwOwc/wz1faz0JlUFtvStNwtG46jcXK+sYZJvWc
+         W8JUDTKg1ZwlAuWV2Sn5ULMKO49cqBs5Zn9DtX3CpZ3odh4KdlRmDkFHOi3dXnHpBE6h
+         WeBTR5jwHSZz9IOUy24J6KMmjMsztDTe31z7zc0sgHYChce58hppz2xaWIWnJZAYVxQ5
+         dr9w==
+X-Forwarded-Encrypted: i=1; AJvYcCXKNzvrkMyhR4E3zePSYwSmAR0GTcRHP4ewLa4/5JylxRCh5SOu3Xusle0ubVyAvOkfly46Kek=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcPmRccKBmnHQJDMVCoc7VJ4WiS2XSkVV2eoSFRjfdImKoj0a2
+	7zzF5zK8xnPMjx9p3NgmSl7r1rFFiarsTXc1GmpIDAaH2keH7jsvQo5UoC4D7iBQlnQ=
+X-Gm-Gg: ASbGncvBiuJozq6fsO6v8JIqcu3L7Qwiiz0ZUI60SeVs4vBLHgY80VrxIKSVNksmGNN
+	VnRWcoonOXeHC53viVqra3KYLyf5jUtuLiaffGgRarBxvSddQCDpyC1cQOcuV7ONci/UTT6FV7L
+	Tal3gVxpfhzdjnDtNn3u7lVsqw/UPJNEoRdLbMjKvNKm7mfOTpbQsNx7a41tPXY3b2uLvhcv0tS
+	rc1bxWCN5c1zZUc+xk5BlUF5hW4CJwmAI5ZaEJx+QLUmc2rX2pbQJ92BXrEqbkCkKFJmWMd1NSh
+	5wyilNLhcHQv/JesfC471rWEU5nAudSX2vXcpJwSFn+N/ycRpRALdLHlWkcTV7LCFDwXly/4cOv
+	U8s49sZq4uSqUuIEQprkEQ0H4jon3wBVPjdHT82Xtt76WIoQ8CU0fFU7CJriFrdyd2ffhMI1L7s
+	QXZVXPHzoAWDbpxVVwdQ==
+X-Google-Smtp-Source: AGHT+IHxUjgdNCXTiwpOfnXS2oC4TBNMEII+w8M+hOGIH0Djg1ZSLLta8lC5CXkAR753ngvyVq70XA==
+X-Received: by 2002:a05:600c:3542:b0:471:115e:87bd with SMTP id 5b1f17b1804b1-4778fe7d0ecmr189079235e9.26.1763551007791;
+        Wed, 19 Nov 2025 03:16:47 -0800 (PST)
+Received: from [10.1.1.13] ([212.129.77.152])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477b1013edcsm42553585e9.4.2025.11.19.03.16.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Nov 2025 03:16:47 -0800 (PST)
+Message-ID: <643a5776c383a501b129cd0f867395c0ccf80566.camel@linaro.org>
+Subject: Re: [PATCH] phy: exynos5-usbdrd: fix clock prepare imbalance
+From: =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Peter Griffin <peter.griffin@linaro.org>, Tudor Ambarus	
+ <tudor.ambarus@linaro.org>, Will McVicker <willmcvicker@google.com>, 
+	kernel-team@android.com, linux-phy@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Kishon Vijay Abraham
+ I	 <kishon@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar	
+ <alim.akhtar@samsung.com>
+Date: Wed, 19 Nov 2025 11:16:46 +0000
+In-Reply-To: <20251006-gs101-usb-phy-clk-imbalance-v1-1-205b206126cf@linaro.org>
+References: 
+	<20251006-gs101-usb-phy-clk-imbalance-v1-1-205b206126cf@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-7 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-FEAS-BEC-Info: WlpIGw0aAQkEARIJHAEHBlJSCRoLAAEeDUhZUEhYSFhIWUhZXkguLVxYWC48UVlRWFhYWVxaSFlRSAlGHgkcBxoHGAEGKAsaGBxGGh1IWUhaXkgJAgEcRgMACRgJGgwNKAoaBwkMCwcFRgsHBUhYSFpIWVpIWVFaRlleUEZeWEZbSFBIWEhYSFFIWEhYSFhIWl5ICQIBHEYDAAkYCRoMDSgKGgcJDAsHBUYLBwVIWEhaWUgJBgwaDR9DBg0cDA0eKAQdBgZGCwBIWEhZUUgMCR4NBSgMCR4NBQQHDhxGBg0cSFhIWVFIDQwdBQkSDRwoDwcHDwQNRgsHBUhYSFldSAMdCgkoAw0aBg0ERgcaD0hYSFpQSAQBBh0QRQMNGgYNBCgeDw0aRgMNGgYNBEYHGg9IWEhaUEgEHgtFGBoHAg0LHCgEAQYdEBwNGxwBBg9GBxoPSFhIWV9IGAkKDQYBKBoNDAAJHEYLBwVIWEhbWEg+DQYDCRwjHQUJGkYsHR4eHRodKA0FHQQNEEYLBwVIWA==
-X-FEAS-Client-IP: 192.168.60.3
-X-FE-Policy-ID: 2:4:0:SYSTEM
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=crpt.ru; s=crpt.ru; c=relaxed/relaxed;
- h=from:to:cc:subject:date:message-id:content-type:mime-version;
- bh=r8NQXmkDGFK45wMHuCWwoJWze6DIL4Jbz9p+2HOcp/o=;
- b=ejtmpWyK3YYi/4wHcCWgLa/WMvB3Aa4S/mFVSwPGpDEs8p4I5jh3NuFzmSw+tRkd6N70ojzON4zE
-	3vVfUx/un5npcgUV7lCWVFekeKkPrQjb9dGRNxGynrmgJM+7S3uKY70a4Hh2PZIPHA2xr3ToQ4Qs
-	v/vfspGiXIo3PBgWrwhU9HsZdcbtvAOjRzzw2KiOlxzCVvBkTsj1OxjIzON8mq45Xa8rlWWifoIC
-	zmnMF7gJowE45V8kB32cFuZEIuCBTmeVYfZXLubyfBwScAd7dZfTUxMVSqqXxdcefzY4kEyK/+Zb
-	FFwZ4NY0AyGU3uyX+aVyKDm1lzawBaL3Y7wjlQ==
 
-RnJvbTogQW5kcmV5IFZhdG9yb3BpbiA8YS52YXRvcm9waW5AY3JwdC5ydT4NCg0KYmVfaW5zZXJ0
-X3ZsYW5faW5fcGt0KCkgaXMgY2FsbGVkIHdpdGggdGhlIHdyYl9wYXJhbXMgYXJndW1lbnQgYmVp
-bmcgTlVMTA0KYXQgYmVfc2VuZF9wa3RfdG9fYm1jKCkgY2FsbCBzaXRlLsKgIFRoaXMgbWF5IGxl
-YWQgdG8gZGVyZWZlcmVuY2luZyBhIE5VTEwNCnBvaW50ZXIgd2hlbiBwcm9jZXNzaW5nIGEgd29y
-a2Fyb3VuZCBmb3Igc3BlY2lmaWMgcGFja2V0LCBhcyBjb21taXQNCmJjMGMzNDA1YWJiYiAoImJl
-Mm5ldDogZml4IGEgVHggc3RhbGwgYnVnIGNhdXNlZCBieSBhIHNwZWNpZmljIGlwdjYNCnBhY2tl
-dCIpIHN0YXRlcy4NCg0KVGhlIGNvcnJlY3Qgd2F5IHdvdWxkIGJlIHRvIHBhc3MgdGhlIHdyYl9w
-YXJhbXMgZnJvbSBiZV94bWl0KCkuDQoNCkZvdW5kIGJ5IExpbnV4IFZlcmlmaWNhdGlvbiBDZW50
-ZXIgKGxpbnV4dGVzdGluZy5vcmcpIHdpdGggU1ZBQ0UuDQoNCkZpeGVzOiA3NjBjMjk1ZTBlOGQg
-KCJiZTJuZXQ6IFN1cHBvcnQgZm9yIE9TMkJNQy4iKQ0KQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5v
-cmcNClNpZ25lZC1vZmYtYnk6IEFuZHJleSBWYXRvcm9waW4gPGEudmF0b3JvcGluQGNycHQucnU+
-DQotLS0NCnYyOiAtIHBhc3Mgd3JiX3BhcmFtcyBmcm9tIGluc2lkZSBiZV94bWl0KCnCoCAoSmFr
-dWIgS2ljaW5za2kpDQp2MTogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbmV0ZGV2LzIwMjUxMTEy
-MDkyMDUxLjg1MTE2My0xLWEudmF0b3JvcGluQGNycHQucnUvDQogZHJpdmVycy9uZXQvZXRoZXJu
-ZXQvZW11bGV4L2JlbmV0L2JlX21haW4uYyB8IDcgKysrKy0tLQ0KIDEgZmlsZSBjaGFuZ2VkLCA0
-IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25l
-dC9ldGhlcm5ldC9lbXVsZXgvYmVuZXQvYmVfbWFpbi5jIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQv
-ZW11bGV4L2JlbmV0L2JlX21haW4uYw0KaW5kZXggY2IwMDRmZDE2MjUyLi41YmIzMWM4ZmFiMzkg
-MTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9lbXVsZXgvYmVuZXQvYmVfbWFpbi5j
-DQorKysgYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9lbXVsZXgvYmVuZXQvYmVfbWFpbi5jDQpAQCAt
-MTI5Niw3ICsxMjk2LDggQEAgc3RhdGljIHZvaWQgYmVfeG1pdF9mbHVzaChzdHJ1Y3QgYmVfYWRh
-cHRlciAqYWRhcHRlciwgc3RydWN0IGJlX3R4X29iaiAqdHhvKQ0KIAkJKGFkYXB0ZXItPmJtY19m
-aWx0X21hc2sgJiBCTUNfRklMVF9NVUxUSUNBU1QpDQogDQogc3RhdGljIGJvb2wgYmVfc2VuZF9w
-a3RfdG9fYm1jKHN0cnVjdCBiZV9hZGFwdGVyICphZGFwdGVyLA0KLQkJCSAgICAgICBzdHJ1Y3Qg
-c2tfYnVmZiAqKnNrYikNCisJCQkgICAgICAgc3RydWN0IHNrX2J1ZmYgKipza2IsDQorCQkJICAg
-ICAgIHN0cnVjdCBiZV93cmJfcGFyYW1zICp3cmJfcGFyYW1zKQ0KIHsNCiAJc3RydWN0IGV0aGhk
-ciAqZWggPSAoc3RydWN0IGV0aGhkciAqKSgqc2tiKS0+ZGF0YTsNCiAJYm9vbCBvczJibWMgPSBm
-YWxzZTsNCkBAIC0xMzYwLDcgKzEzNjEsNyBAQCBzdGF0aWMgYm9vbCBiZV9zZW5kX3BrdF90b19i
-bWMoc3RydWN0IGJlX2FkYXB0ZXIgKmFkYXB0ZXIsDQogCSAqIHRvIEJNQywgYXNpYyBleHBlY3Rz
-IHRoZSB2bGFuIHRvIGJlIGlubGluZSBpbiB0aGUgcGFja2V0Lg0KIAkgKi8NCiAJaWYgKG9zMmJt
-YykNCi0JCSpza2IgPSBiZV9pbnNlcnRfdmxhbl9pbl9wa3QoYWRhcHRlciwgKnNrYiwgTlVMTCk7
-DQorCQkqc2tiID0gYmVfaW5zZXJ0X3ZsYW5faW5fcGt0KGFkYXB0ZXIsICpza2IsIHdyYl9wYXJh
-bXMpOw0KIA0KIAlyZXR1cm4gb3MyYm1jOw0KIH0NCkBAIC0xMzg3LDcgKzEzODgsNyBAQCBzdGF0
-aWMgbmV0ZGV2X3R4X3QgYmVfeG1pdChzdHJ1Y3Qgc2tfYnVmZiAqc2tiLCBzdHJ1Y3QgbmV0X2Rl
-dmljZSAqbmV0ZGV2KQ0KIAkvKiBpZiBvczJibWMgaXMgZW5hYmxlZCBhbmQgaWYgdGhlIHBrdCBp
-cyBkZXN0aW5lZCB0byBibWMsDQogCSAqIGVucXVldWUgdGhlIHBrdCBhIDJuZCB0aW1lIHdpdGgg
-bWdtdCBiaXQgc2V0Lg0KIAkgKi8NCi0JaWYgKGJlX3NlbmRfcGt0X3RvX2JtYyhhZGFwdGVyLCAm
-c2tiKSkgew0KKwlpZiAoYmVfc2VuZF9wa3RfdG9fYm1jKGFkYXB0ZXIsICZza2IsICZ3cmJfcGFy
-YW1zKSkgew0KIAkJQkVfV1JCX0ZfU0VUKHdyYl9wYXJhbXMuZmVhdHVyZXMsIE9TMkJNQywgMSk7
-DQogCQl3cmJfY250ID0gYmVfeG1pdF9lbnF1ZXVlKGFkYXB0ZXIsIHR4bywgc2tiLCAmd3JiX3Bh
-cmFtcyk7DQogCQlpZiAodW5saWtlbHkoIXdyYl9jbnQpKQ0KLS0gDQoyLjQzLjANCg==
+On Mon, 2025-10-06 at 09:07 +0100, Andr=C3=A9 Draszik wrote:
+> Commit f4fb9c4d7f94 ("phy: exynos5-usbdrd: allow DWC3 runtime suspend
+> with UDC bound (E850+)") incorrectly added clk_bulk_disable() as the
+> inverse of clk_bulk_prepare_enable() while it should have of course
+> used clk_bulk_disable_unprepare(). This means incorrect reference
+> counts to the CMU driver remain.
+>=20
+> Update the code accordingly.
+>=20
+> Fixes: f4fb9c4d7f94 ("phy: exynos5-usbdrd: allow DWC3 runtime suspend wit=
+h UDC bound (E850+)")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org>
+
+Friendly ping.
 
