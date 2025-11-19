@@ -1,175 +1,179 @@
-Return-Path: <stable+bounces-195196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F410C706A5
-	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 18:19:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8538C70CCE
+	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 20:26:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 87FE13A04CC
-	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 17:13:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id AAD3C28BA6
+	for <lists+stable@lfdr.de>; Wed, 19 Nov 2025 19:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7761130ACE5;
-	Wed, 19 Nov 2025 17:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF24B366DA1;
+	Wed, 19 Nov 2025 19:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TiXCrvZS"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="b4MTTQQJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mout.web.de (mout.web.de [212.227.15.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E694330B527
-	for <stable@vger.kernel.org>; Wed, 19 Nov 2025 17:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209182D97BA;
+	Wed, 19 Nov 2025 19:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763572372; cv=none; b=RJkMAwRPtJtTCn3PE5ichSxj++oxydMNsZAbbGrcRjOpumktrAO7rIb4EEYWC5eAHOtFtLUMpmlRPE6G1GU0zL8sNZkZdbiilB7TAVKClLGHltK7iRdq6NpgvvJblWMV+JaNzRtjZKgtxz3yNrxkrNe5Zyj8tZ1qu1spb9gRzKU=
+	t=1763580368; cv=none; b=MFe9fqntqYxIauvtfrkCjxO9MX5WnR3fkgqOoN0+r+YxA/1DI2p7igk87+k3MIJUFg/jaza0ADVPMrapXOvBKzy43U+sL40FiSE1R7jnBk/VVfznHOgmwSfERqHroszm1uXb6e2AzVmXhm0TtR9t/sPVyA/RpumK0sIV0BlJ1ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763572372; c=relaxed/simple;
-	bh=FBgTtlcqzUH0UB0El2IuOCOLGApeLr1TPbgJryUefZc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=gM3dv7uyoC0FKq4RvaWvabF67FGKtHBxKSK0giqPTcHbuz8HY3zLjqGWk06dGqgTA17G7ICHPGQVjl+6ehOEcPA5D1IszWCLGGbr1wFymje+DzMCCiHfI/Yz3Ag9IYbZAFH4s5omJTVZMlA0emWn3JvEbvdfbpDQyhVnC9Xhn4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TiXCrvZS; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id C93AAC1118C;
-	Wed, 19 Nov 2025 17:12:24 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DA13360699;
-	Wed, 19 Nov 2025 17:12:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1BD7710371A3F;
-	Wed, 19 Nov 2025 18:12:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763572366; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=UB7/F7zzy1OltvdHfLAL9s9iwGMEQBiMw1GwZS3Jz/g=;
-	b=TiXCrvZSCVy76DX2Smg0KhMJAAAyorlNCvFnIBuWxYCc8sPn+y07thF01qCZJWdW0zxjtt
-	QTSglPNXsj2cdoq6W7OgeMTwOs7DPMMYjC/qlM83ILJu8Y57AC1ElLm0p/agZGMVsPEd57
-	ssnCHklS9abwXjP9CJqgojVl1tIaKai47fbM2IKqV8KP/ccvwK1ohoSQvBBHvMniGqgVBA
-	uAxNjrs2MTVu938+q1ATby86xxF5GGiiBvPES0KPmrYWxREzSAqj22i0vMN/O1KUU/TJIQ
-	hmyg+Ns3V0qplRbHiVzAWDEdvsThN78n3pvuoTq4D/xj2ankQOaknRfCyeZM2Q==
+	s=arc-20240116; t=1763580368; c=relaxed/simple;
+	bh=sWy3P/BrumxA6pj8hPttgqq3s8DLv3wioNMaRQeQnbs=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=CEmiuBaW+s6znmx+Na6/gFimZ+CNJp5yMViIDekfNaRkt2Cj6/zRz+2pVlwvoeicfz/UKz+DMMTglajMkt8Z26CWH+kzB+jo0C8uBW4GFqqGdzQCIEKfX591SoDXl9HLQChiFNvzhKZqguSVSNNkJ7L9Kacol9UAQ3nM3zHSpts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=b4MTTQQJ; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1763580316; x=1764185116; i=markus.elfring@web.de;
+	bh=gEn59hFZtQ2tVmel4ezQ6xaHST238q/COzyzoaCPxiQ=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=b4MTTQQJYD2ZRFoSVepAx59SUEw0bHEi9rk+ZZ7hNJZktnu0b38JeX98QtxinvGD
+	 2b1/DzydrRfVfQBIX2M/FJWCL2NKKZdRaBl+Cvf6NVyYyJr0whuQjHaYR3NmZn6Uw
+	 nNdaib1AO/F+jufOIjhY/d5fRgJoaVVuwYqXi++5D7fGUQQrXwP0P8UK6R11rwJ69
+	 waGlH3bsSq2AxB4Z+WMTBfTyMkMatSx8N7nJds1XuNMYABAf6Ldh6mhGfY/P9XPCj
+	 0dacF/nzzljH9pYMCrwLsuMId+J5YoMcygDgdpSpk/TOWmHdzpY911mPYe+r0JdeK
+	 Cr2+N6T9bKD1o+/+0w==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.92.228]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MSqXS-1viS5y1syM-00Mzfu; Wed, 19
+ Nov 2025 20:25:16 +0100
+Message-ID: <4677bcd3-8e90-462a-bfe7-25ed35ea07ea@web.de>
+Date: Wed, 19 Nov 2025 20:25:13 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, dri-devel@lists.freedesktop.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Alexey Brodkin <abrodkin@synopsys.com>, David Airlie <airlied@gmail.com>,
+ Hui Pu <Hui.Pu@gehealthcare.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>
+References: <20251119-drm-arcgpu-fix-device-node-leak-v1-1-06229edcfe6e@bootlin.com>
+Subject: Re: [PATCH] drm/arcgpu: fix device node leak
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20251119-drm-arcgpu-fix-device-node-leak-v1-1-06229edcfe6e@bootlin.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 19 Nov 2025 18:12:40 +0100
-Message-Id: <DECU85YFDJFQ.51DNK1JF0CQ4@bootlin.com>
-Cc: "Bajjuri Praneeth" <praneeth@ti.com>, "Louis Chauvet"
- <louis.chauvet@bootlin.com>, <stable@vger.kernel.org>,
- <thomas.petazzoni@bootlin.com>, "Jyri Sarha" <jyri.sarha@iki.fi>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>
-To: "Kory Maincent" <kory.maincent@bootlin.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Douglas Anderson" <dianders@chromium.org>, "Tomi
- Valkeinen" <tomi.valkeinen@ideasonboard.com>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v3] drm/tilcdc: Fix removal actions in case of failed
- probe
-X-Mailer: aerc 0.20.1
-References: <20251118133850.125561-1-kory.maincent@bootlin.com>
-In-Reply-To: <20251118133850.125561-1-kory.maincent@bootlin.com>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:hEBME8w7cyfvUgoAWN3l9fW/QMTzh0BLS3cZ3EhVdPpwqRX1qr4
+ kEquqidXMQaeVdf16lbAwdpdy5NvuYmS1lRKzPHNXFQz+JVL5Xs3DbTIKTNPj7Sw0cQ2rqk
+ byjoBYcsjRcQVyZHe0BGR3zYMJA64imyQkj2k2fr6CS0GHl2crtiE8nRltdIRTygedv2hRG
+ ekpNwLFFUEjn8iIBIPS1g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:r5MWY86MvI0=;MEGWkI7PLWbOj+wjQhRV7D/Nkd5
+ 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
 
-Hello K=C3=B6ry,
+> This function gets a device_node reference via
+> of_graph_get_remote_port_parent() and stores it in encoder_node, but nec=
+er
 
-On Tue Nov 18, 2025 at 2:38 PM CET, Kory Maincent wrote:
-> From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
->
-> The drm_kms_helper_poll_fini() and drm_atomic_helper_shutdown() helpers
-> should only be called when the device has been successfully registered.
-> Currently, these functions are called unconditionally in tilcdc_fini(),
-> which causes warnings during probe deferral scenarios.
->
-> [    7.972317] WARNING: CPU: 0 PID: 23 at drivers/gpu/drm/drm_atomic_stat=
-e_helper.c:175 drm_atomic_helper_crtc_duplicate_state+0x60/0x68
-> ...
-> [    8.005820]  drm_atomic_helper_crtc_duplicate_state from drm_atomic_ge=
-t_crtc_state+0x68/0x108
-> [    8.005858]  drm_atomic_get_crtc_state from drm_atomic_helper_disable_=
-all+0x90/0x1c8
-> [    8.005885]  drm_atomic_helper_disable_all from drm_atomic_helper_shut=
-down+0x90/0x144
-> [    8.005911]  drm_atomic_helper_shutdown from tilcdc_fini+0x68/0xf8 [ti=
-lcdc]
-> [    8.005957]  tilcdc_fini [tilcdc] from tilcdc_pdev_probe+0xb0/0x6d4 [t=
-ilcdc]
->
-> Fix this by rewriting the failed probe cleanup path using the standard
-> goto error handling pattern, which ensures that cleanup functions are
-> only called on successfully initialized resources. Additionally, remove
-> the now-unnecessary is_registered flag.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 3c4babae3c4a ("drm: Call drm_atomic_helper_shutdown() at shutdown/=
-remove time for misc drivers")
-> Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
+                                                                       nev=
+er?
 
-Except for the bug reported by the kernel test robot, this patch looks
-good to me. Just a couple thoughts, below.
 
-> @@ -372,16 +371,34 @@ static int tilcdc_init(const struct drm_driver *ddr=
-v, struct device *dev)
->
->  	ret =3D drm_dev_register(ddev, 0);
->  	if (ret)
-> -		goto init_failed;
-> -	priv->is_registered =3D true;
-> +		goto stop_poll;
->
->  	drm_client_setup_with_color_mode(ddev, bpp);
->
->  	return 0;
->
-> -init_failed:
-> -	tilcdc_fini(ddev);
-> +stop_poll:
-> +	drm_kms_helper_poll_fini(ddev);
-> +	tilcdc_irq_uninstall(ddev);
-> +unbind_component:
-> +	if (priv->is_componentized)
-> +		component_unbind_all(dev, ddev);
-> +unregister_cpufreq_notif:
-> +#ifdef CONFIG_CPU_FREQ
-> +	cpufreq_unregister_notifier(&priv->freq_transition,
-> +				    CPUFREQ_TRANSITION_NOTIFIER);
-> +#endif
-> +destroy_crtc:
-> +	tilcdc_crtc_destroy(priv->crtc);
-> +disable_pm:
-> +	pm_runtime_disable(dev);
-> +	clk_put(priv->clk);
-> +free_wq:
-> +	destroy_workqueue(priv->wq);
-> +put_drm:
->  	platform_set_drvdata(pdev, NULL);
+> puts that reference. Add it.
+=E2=80=A6
+> +++ b/drivers/gpu/drm/tiny/arcpgu.c
+> @@ -250,7 +250,8 @@ DEFINE_DRM_GEM_DMA_FOPS(arcpgu_drm_ops);
+>  static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
+>  {
+>  	struct platform_device *pdev =3D to_platform_device(arcpgu->drm.dev);
+> -	struct device_node *encoder_node =3D NULL, *endpoint_node =3D NULL;
+> +	struct device_node *encoder_node __free(device_node) =3D NULL;
+> +	struct device_node *endpoint_node =3D NULL;
+>  	struct drm_connector *connector =3D NULL;
+>  	struct drm_device *drm =3D &arcpgu->drm;
+>  	int ret;
 
-I'm not 100% sure this is needed, but perhaps it is because of the
-component framework being used.
+May the scopes be reduced for any of these variables?
 
-If it is needed, then shouldn't it be present in tilcdc_fini() as well?
-
-> +	ddev->dev_private =3D NULL;
-> +	drm_dev_put(ddev);
->
->  	return ret;
->  }
-
-About tilcdc_fini(), I think it can be itself cleaned up a lot (in another =
-patch). Basically
-it should do the same thing (almost) that are here below the 'return 0'
-line, and in the same order. Now the list of actions is auite different and
-the order is very different.
-
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Regards,
+Markus
 
