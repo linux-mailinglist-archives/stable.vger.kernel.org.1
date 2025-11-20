@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-195329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8271BC755A0
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:29:21 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E4EC75501
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:21:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 548ED4F320E
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:13:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CD43334F9EC
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1AB35F8A8;
-	Thu, 20 Nov 2025 16:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B23361DCF;
+	Thu, 20 Nov 2025 16:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wU+WaXVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snSTSbom"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A60235E553
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 16:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40CE35C188
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 16:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763655170; cv=none; b=SYIkDP0XBXvQ9d0Ykd86rqh2oYdNU0t2wRg6neJXCXEWGC82pxfMGmwnkG0o9ngN4RWIhHa0TbgXHzjuD+1EKmAUwRT2DolUrMIXeOmSXMhzt+07bgUBP1Y8ptIM2etck9RpLVHdlUtPNqgppbYw0KIRDR/pDG8KxZN6/uG29ng=
+	t=1763655220; cv=none; b=AF+RUOD54UlnuLBjk5c6Yu4qjggDCXALemXONPeAvHzrKoMj3C7KDpf51zrEFNVpH26FGP92ztPJCeUncs76wDZ0of+/tliKgFPswd1R9I9hLavoXxFNBtO3Secn38qabkQOEggRUGtNqRTrTEfwXd0lkt7fGhPV3bZguG5yTvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763655170; c=relaxed/simple;
-	bh=25K+nic0V91Q9J/YMFRlwxT07mK98R01xjO3y0/1Icg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=t289gHuLICaDOoZP20EHDJWVHixPwMZhGDvLo51pQQYwjhlHaKU1B3FHQ3rKr4AfysJzoQw5I6KhJO3D3pr2GRf6fXK5Iji7NghhbR8gTJrj5rPPG0vpnYBq+O3GiPEOToVTFyjHfi6hZe+a5KBXl+2lx2Nb+uTKlvB1YWRQBds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wU+WaXVD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66638C4CEF1;
-	Thu, 20 Nov 2025 16:12:49 +0000 (UTC)
+	s=arc-20240116; t=1763655220; c=relaxed/simple;
+	bh=5qdHcUMiBjjV0slgqhCaoorQ1hve79ZIW6ZU1uUfGxA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oHPO99y5uvaQpkx4PVfCnTTGmPV4cmzxZNuZ4yqTdtx9hoxZR3tnKoIx5snsC0fCA7WdwPnhs2DJ5OwjWle5Vv6dZsOHyv/QtH1OUv2Yg/gR+hQ6i7X4NFvNdaA8rQdnSlpLUn0DrakQCg0rka3VfeNprlo4PXbItUvs/fK03mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snSTSbom; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A2EC4CEF1;
+	Thu, 20 Nov 2025 16:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763655169;
-	bh=25K+nic0V91Q9J/YMFRlwxT07mK98R01xjO3y0/1Icg=;
+	s=korg; t=1763655219;
+	bh=5qdHcUMiBjjV0slgqhCaoorQ1hve79ZIW6ZU1uUfGxA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wU+WaXVDOSHW+RVuvO/Hj8kKCVyapLZSP11tU4KrxZSa3DlajjDNBdyNQTgHzvaZ6
-	 ZP4PBY+BeGPbuV0kSYIjnC4GgG8CKEWz9TSYsflsCXvZzPDntbTJmMFA88oMnDl8PJ
-	 qsdWO8MaqLlzn5e9kQMgRznStr4CrN2tBk8gwNJw=
-Subject: FAILED: patch "[PATCH] mm/mm_init: fix hash table order logging in" failed to apply to 5.4-stable tree
-To: isaacmanjarres@google.com,akpm@linux-foundation.org,david@redhat.com,rppt@kernel.org,stable@vger.kernel.org
+	b=snSTSbomXDHMxSJSIMFP9qaGg7SmcePla3QtWOMfkHXhQdwooaEXJYEa687R4O9KO
+	 a7q9ZcoDcvgekit6SND9exCTKSP/cNDsQ1/77nVu9hP3Cy3UlW0MwtIzO6UMAGDFdS
+	 S7j429Ju8N+p+rWoOTKxzUwk68ilhrFxfhO6mdUE=
+Subject: FAILED: patch "[PATCH] mm/truncate: unmap large folio on split failure" failed to apply to 6.17-stable tree
+To: kas@kernel.org,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,brauner@kernel.org,david@fromorbit.com,david@redhat.com,djwong@kernel.org,hannes@cmpxchg.org,hughd@google.com,liam.howlett@oracle.com,lorenzo.stoakes@oracle.com,mhocko@suse.com,riel@surriel.com,rppt@kernel.org,shakeel.butt@linux.dev,stable@vger.kernel.org,surenb@google.com,vbabka@suse.cz,viro@zeniv.linux.org.uk,willy@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 20 Nov 2025 17:12:34 +0100
-Message-ID: <2025112034-decrease-sardine-8989@gregkh>
+Date: Thu, 20 Nov 2025 17:13:37 +0100
+Message-ID: <2025112037-resurface-backlight-da75@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0d6c356dd6547adac2b06b461528e3573f52d953
+git cherry-pick -x fa04f5b60fda62c98a53a60de3a1e763f11feb41
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112034-decrease-sardine-8989@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112037-resurface-backlight-da75@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,48 +77,114 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0d6c356dd6547adac2b06b461528e3573f52d953 Mon Sep 17 00:00:00 2001
-From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
-Date: Tue, 28 Oct 2025 12:10:12 -0700
-Subject: [PATCH] mm/mm_init: fix hash table order logging in
- alloc_large_system_hash()
+From fa04f5b60fda62c98a53a60de3a1e763f11feb41 Mon Sep 17 00:00:00 2001
+From: Kiryl Shutsemau <kas@kernel.org>
+Date: Mon, 27 Oct 2025 11:56:36 +0000
+Subject: [PATCH] mm/truncate: unmap large folio on split failure
 
-When emitting the order of the allocation for a hash table,
-alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from log
-base 2 of the allocation size.  This is not correct if the allocation size
-is smaller than a page, and yields a negative value for the order as seen
-below:
+Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
+supposed to generate SIGBUS.
 
-TCP established hash table entries: 32 (order: -4, 256 bytes, linear) TCP
-bind hash table entries: 32 (order: -2, 1024 bytes, linear)
+This behavior might not be respected on truncation.
 
-Use get_order() to compute the order when emitting the hash table
-information to correctly handle cases where the allocation size is smaller
-than a page:
+During truncation, the kernel splits a large folio in order to reclaim
+memory.  As a side effect, it unmaps the folio and destroys PMD mappings
+of the folio.  The folio will be refaulted as PTEs and SIGBUS semantics
+are preserved.
 
-TCP established hash table entries: 32 (order: 0, 256 bytes, linear) TCP
-bind hash table entries: 32 (order: 0, 1024 bytes, linear)
+However, if the split fails, PMD mappings are preserved and the user will
+not receive SIGBUS on any accesses within the PMD.
 
-Link: https://lkml.kernel.org/r/20251028191020.413002-1-isaacmanjarres@google.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Unmap the folio on split failure.  It will lead to refault as PTEs and
+preserve SIGBUS semantics.
+
+Make an exception for shmem/tmpfs that for long time intentionally mapped
+with PMDs across i_size.
+
+Link: https://lkml.kernel.org/r/20251027115636.82382-3-kirill@shutemov.name
+Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Dave Chinner <david@fromorbit.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 3db2dea7db4c..7712d887b696 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2469,7 +2469,7 @@ void *__init alloc_large_system_hash(const char *tablename,
- 		panic("Failed to allocate %s hash table\n", tablename);
+diff --git a/mm/truncate.c b/mm/truncate.c
+index 9210cf808f5c..3c5a50ae3274 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -177,6 +177,32 @@ int truncate_inode_folio(struct address_space *mapping, struct folio *folio)
+ 	return 0;
+ }
  
- 	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
--		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
-+		tablename, 1UL << log2qty, get_order(size), size,
- 		virt ? (huge ? "vmalloc hugepage" : "vmalloc") : "linear");
++static int try_folio_split_or_unmap(struct folio *folio, struct page *split_at,
++				    unsigned long min_order)
++{
++	enum ttu_flags ttu_flags =
++		TTU_SYNC |
++		TTU_SPLIT_HUGE_PMD |
++		TTU_IGNORE_MLOCK;
++	int ret;
++
++	ret = try_folio_split_to_order(folio, split_at, min_order);
++
++	/*
++	 * If the split fails, unmap the folio, so it will be refaulted
++	 * with PTEs to respect SIGBUS semantics.
++	 *
++	 * Make an exception for shmem/tmpfs that for long time
++	 * intentionally mapped with PMDs across i_size.
++	 */
++	if (ret && !shmem_mapping(folio->mapping)) {
++		try_to_unmap(folio, ttu_flags);
++		WARN_ON(folio_mapped(folio));
++	}
++
++	return ret;
++}
++
+ /*
+  * Handle partial folios.  The folio may be entirely within the
+  * range if a split has raced with us.  If not, we zero the part of the
+@@ -226,7 +252,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
  
- 	if (_hash_shift)
+ 	min_order = mapping_min_folio_order(folio->mapping);
+ 	split_at = folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZE);
+-	if (!try_folio_split_to_order(folio, split_at, min_order)) {
++	if (!try_folio_split_or_unmap(folio, split_at, min_order)) {
+ 		/*
+ 		 * try to split at offset + length to make sure folios within
+ 		 * the range can be dropped, especially to avoid memory waste
+@@ -250,13 +276,10 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+ 		if (!folio_trylock(folio2))
+ 			goto out;
+ 
+-		/*
+-		 * make sure folio2 is large and does not change its mapping.
+-		 * Its split result does not matter here.
+-		 */
++		/* make sure folio2 is large and does not change its mapping */
+ 		if (folio_test_large(folio2) &&
+ 		    folio2->mapping == folio->mapping)
+-			try_folio_split_to_order(folio2, split_at2, min_order);
++			try_folio_split_or_unmap(folio2, split_at2, min_order);
+ 
+ 		folio_unlock(folio2);
+ out:
 
 
