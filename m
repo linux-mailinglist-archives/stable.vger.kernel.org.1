@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-195411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD84C761B3
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 20:43:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11480C761B6
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 20:43:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 95FCC355DA4
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 15F02244EB
 	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 19:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B832E303A10;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83B53043D1;
 	Thu, 20 Nov 2025 19:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jfk1/TN8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rc3idv1Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7713E3009CA
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 19:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770BA1A0BF3
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 19:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763667789; cv=none; b=Zfmw64eJ19kCGPjwtHeXKRkbGzHwepX0SUw0W7t8+BdEKOsqyOkd/ORHEbOYJ0DAiCw+An9u71CrOt/VXW6ms7NTxyfSQCP3AZsedQykoy9DQNx3bOVY355lxH9waV5AMGXFEYr06rGm4iw1co/67sArvdhBo0IUSHTssp/u1BM=
+	t=1763667789; cv=none; b=aiJXJg2hEbwRaNF33NU22Qk4NtcBiQHiZQW7tXktDbbD88ZCET7TWgKxLjFhdsjKeAxPLGdcfXzw/YHy2EhZmGdwp9KPwCPu1hZFhSdeKySa73oB9PUXgnQL5RX4bhtyz+Ie8ch6dL4jP9jCWX3v3X3kg8ddPj1Xxx9wCo4WBjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763667789; c=relaxed/simple;
-	bh=9qBUwC0W1CdAcd3h/7fprjBtTevu4OM9vZ8Ci3eq+HA=;
+	bh=rkGQWjdKCRGNRJ4S5cA0AGD7hqIxNu6YsmXnIHhG+i0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VlvJbjdciT8aRukhHsqo+Wwa/zXuF3t5cnNnr9iTB8ilUGYu60sJt+E8Paix9odYCN0jAY8dhmIeVGtJyqYhPW9Mw7wD2WaJu1ZFvtwpr3dlBEZSAj3q3RriauhhTRIa+zWJbrUekgpUkNcvvUdJmt6JAYALMkPSepFq7C9Vvew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jfk1/TN8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B4FC116C6;
-	Thu, 20 Nov 2025 19:43:06 +0000 (UTC)
+	 MIME-Version; b=LUfpDeYIFr6ckdoING2Ni+D20PtzGEvuCK+7sMwfiKOSwOh2SxZJq5MYIg1ZQsWrivCMK1Ldr1D6iWK1GDRgmNsJi/lnFXfUMIk+V3Svp8p0wl/ZsV3IDF/rnDBa9VKyYzjyH8Fwu+C57P+TMy0nQkg7DRtyD3Q7ksilBPuqJjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rc3idv1Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52ADEC116B1;
+	Thu, 20 Nov 2025 19:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763667787;
-	bh=9qBUwC0W1CdAcd3h/7fprjBtTevu4OM9vZ8Ci3eq+HA=;
+	s=k20201202; t=1763667788;
+	bh=rkGQWjdKCRGNRJ4S5cA0AGD7hqIxNu6YsmXnIHhG+i0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jfk1/TN8QMf0xJIcSB585SknBeLzYhatHnohMWOBw9XOGzkjOwwFjLpxbDOXQ190G
-	 1JLq4W6SUa8sm196+oN8o6TbE9QSYS1Z7fyZnjHCEzgf332GXuhsmNVXcQc//Gtb4F
-	 +4FZWkY2slFHhs0DkALEK0hdamYsX92X3ujKu+QyOFBuOTaxRmlMFduKfZt5pv+65k
-	 u6kmOokQfcZy6secnZd4A7so8pCVf+LAAcEzRNRcUlhii9sdqDlATmkH0mSScOKTpf
-	 K0d37nHB6S7/68rQqTsLrsD0MH3xZVH7H0XRD1HUk6UaFNPfLoqq2k5bJzxxlMqrwO
-	 8qQAA0lHFgW4A==
+	b=rc3idv1YpVfQCR1huU+KQ00BZ6fWDLhqtdBp/+Kh+WSb72eMb4KqgISOo7muEkazm
+	 4L0KwurwzV5OJryTejVIXH4JZTMQOwQht03msaCEyKtwX82CevXXDxzb1SYwSb6BBx
+	 AcAduiZNAJP4Cp8SInZVEYDH2HwVyZFtAQMPPINmI8+f4a2cD2IHuiU4lw7JCU8RX/
+	 JmN7u95f6upxBU3GeenjYtU4x6PKTzGIc2cbhPjDunl0zzFacXHTqaItuuM5AXmupp
+	 WWRuLDWbIKayl++Wj8ueEqwTZOQWZishmgiL3lRfy28FFZ8tMsqhTXRnj9cXjTnePy
+	 nNThT+HOiIZMg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Breno Leitao <leitao@debian.org>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/3] net: netpoll: flush skb pool during cleanup
-Date: Thu, 20 Nov 2025 14:43:02 -0500
-Message-ID: <20251120194303.2293083-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y 3/3] net: netpoll: fix incorrect refcount handling causing incorrect cleanup
+Date: Thu, 20 Nov 2025 14:43:03 -0500
+Message-ID: <20251120194303.2293083-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251120194303.2293083-1-sashal@kernel.org>
 References: <2025112005-polio-gratify-8d3b@gregkh>
@@ -63,71 +65,81 @@ Content-Transfer-Encoding: 8bit
 
 From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 6c59f16f1770481a6ee684720ec55b1e38b3a4b2 ]
+[ Upstream commit 49c8d2c1f94cc2f4d1a108530d7ba52614b874c2 ]
 
-The netpoll subsystem maintains a pool of 32 pre-allocated SKBs per
-instance, but these SKBs are not freed when the netpoll user is brought
-down. This leads to memory waste as these buffers remain allocated but
-unused.
+commit efa95b01da18 ("netpoll: fix use after free") incorrectly
+ignored the refcount and prematurely set dev->npinfo to NULL during
+netpoll cleanup, leading to improper behavior and memory leaks.
 
-Add skb_pool_flush() to properly clean up these SKBs when netconsole is
-terminated, improving memory efficiency.
+Scenario causing lack of proper cleanup:
 
+1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
+   allocated, and refcnt = 1
+   - Keep in mind that npinfo is shared among all netpoll instances. In
+     this case, there is just one.
+
+2) Another netpoll is also associated with the same NIC and
+   npinfo->refcnt += 1.
+   - Now dev->npinfo->refcnt = 2;
+   - There is just one npinfo associated to the netdev.
+
+3) When the first netpolls goes to clean up:
+   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
+     refcnt.
+     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
+   - Set dev->npinfo = NULL, without proper cleanup
+   - No ->ndo_netpoll_cleanup() is either called
+
+4) Now the second target tries to clean up
+   - The second cleanup fails because np->dev->npinfo is already NULL.
+     * In this case, ops->ndo_netpoll_cleanup() was never called, and
+       the skb pool is not cleaned as well (for the second netpoll
+       instance)
+  - This leaks npinfo and skbpool skbs, which is clearly reported by
+    kmemleak.
+
+Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
+clarifying comments emphasizing that npinfo cleanup should only happen
+once the refcount reaches zero, ensuring stable and correct netpoll
+behavior.
+
+Cc: <stable@vger.kernel.org> # 3.17.x
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Fixes: efa95b01da18 ("netpoll: fix use after free")
 Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20241114-skb_buffers_v2-v3-2-9be9f52a8b69@debian.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251107-netconsole_torture-v10-1-749227b55f63@debian.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 49c8d2c1f94c ("net: netpoll: fix incorrect refcount handling causing incorrect cleanup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ net/core/netpoll.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 76bdb6ce46378..3f6dca03fa600 100644
+index 3f6dca03fa600..47e6fb660f03e 100644
 --- a/net/core/netpoll.c
 +++ b/net/core/netpoll.c
-@@ -536,6 +536,14 @@ static int netpoll_parse_ip_addr(const char *str, union inet_addr *addr)
- 	return -1;
- }
+@@ -841,6 +841,10 @@ void __netpoll_cleanup(struct netpoll *np)
+ 	if (!npinfo)
+ 		return;
  
-+static void skb_pool_flush(struct netpoll *np)
-+{
-+	struct sk_buff_head *skb_pool;
-+
-+	skb_pool = &np->skb_pool;
-+	skb_queue_purge_reason(skb_pool, SKB_CONSUMED);
-+}
-+
- int netpoll_parse_options(struct netpoll *np, char *opt)
- {
- 	char *cur=opt, *delim;
-@@ -784,7 +792,7 @@ int netpoll_setup(struct netpoll *np)
++	/* At this point, there is a single npinfo instance per netdevice, and
++	 * its refcnt tracks how many netpoll structures are linked to it. We
++	 * only perform npinfo cleanup when the refcnt decrements to zero.
++	 */
+ 	if (refcount_dec_and_test(&npinfo->refcnt)) {
+ 		const struct net_device_ops *ops;
  
- 	err = __netpoll_setup(np, ndev);
- 	if (err)
--		goto put;
-+		goto flush;
- 	rtnl_unlock();
+@@ -850,8 +854,7 @@ void __netpoll_cleanup(struct netpoll *np)
  
- 	/* Make sure all NAPI polls which started before dev->npinfo
-@@ -795,6 +803,8 @@ int netpoll_setup(struct netpoll *np)
- 
- 	return 0;
- 
-+flush:
-+	skb_pool_flush(np);
- put:
- 	DEBUG_NET_WARN_ON_ONCE(np->dev);
- 	if (ip_overwritten)
-@@ -842,6 +852,8 @@ void __netpoll_cleanup(struct netpoll *np)
- 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
- 	} else
  		RCU_INIT_POINTER(np->dev->npinfo, NULL);
-+
-+	skb_pool_flush(np);
- }
- EXPORT_SYMBOL_GPL(__netpoll_cleanup);
+ 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
+-	} else
+-		RCU_INIT_POINTER(np->dev->npinfo, NULL);
++	}
  
+ 	skb_pool_flush(np);
+ }
 -- 
 2.51.0
 
