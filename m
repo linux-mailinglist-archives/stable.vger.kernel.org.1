@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-195305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFEAC75297
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:56:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD729C75474
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:15:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 4411C2BB45
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 15:56:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2A6FF4E6FF2
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 15:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E8233A717;
-	Thu, 20 Nov 2025 15:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA82F33B6EB;
+	Thu, 20 Nov 2025 15:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcvN9fwV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueNlJXII"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684A232BF4B
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 15:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DD3338928
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 15:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763654168; cv=none; b=sudK71AwJg4FgfDC3Rvexpoe5gePBv/ZEiizImGFDw4FaNPU/t2O/K1MDwTnOvmiJP8vfIUTKjPADc6bmN5EscJ/mC0a8uM/MEdfaO2Dto73N5xq0Gphq/kB5GNBFkLDTApUoaP3viOnZPFbtk7OSFj4TFnd/KkCDhvX97EE5MM=
+	t=1763654177; cv=none; b=qTSTJXVEX8Hwe9IHCRc1CKCAJ6xzGzBZ72224w0bjBbt6mYoFtAGd50Xvvu7TixEsyUJGAesoGCbl4zC+hEX+4mK6ELU5j5MwCoLNEOutI9KsebSPi3TvGChazczT71HiG1H6Hd6rqmdSrcfdB7fS/erI4U/pY5ZzO6JyUNUGLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763654168; c=relaxed/simple;
-	bh=mc+zz3oOAG+FMCMq4g3fB//Nx0cb/WouRvNSpPPHuXM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=b7PrMlYf2QYCLrrl1UquAoFqqeyHlE29U6RSC/+QNslg0KThg8mdXawIDOzzE+18faZDDbYMdV9pdqFgfVJPslztdVS2mChDb3eX5BjlDdFCg1pIhMl47U3qFC5lEoq2o9ptPp3W71mfG+M8SjmiQjzNkcd121+Y9qYiJhjSDh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcvN9fwV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAD3C4CEF1;
-	Thu, 20 Nov 2025 15:56:07 +0000 (UTC)
+	s=arc-20240116; t=1763654177; c=relaxed/simple;
+	bh=1YYj9bOSYIOB8DlA+wf0ZsnyKP9UmV+p496hVhB/qUc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=A/fouy6dglbnGy2Xg/8jZe7ZuDk6WvrAe2FvIh9jpEQDqWNWs9/amhNpN/JUAN6zHbsesUnoxdFDqgFPuTXnEDd2ZtuMTPcZ/S2a6zq48eJfWjwVkBwzGd+0h2r9QBFdkCMhRMkMbVOVdIWKoGviJicSxG/rZkkudefDkKrg50Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ueNlJXII; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7C1C4CEF1;
+	Thu, 20 Nov 2025 15:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763654168;
-	bh=mc+zz3oOAG+FMCMq4g3fB//Nx0cb/WouRvNSpPPHuXM=;
+	s=korg; t=1763654177;
+	bh=1YYj9bOSYIOB8DlA+wf0ZsnyKP9UmV+p496hVhB/qUc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VcvN9fwV71Ap4/0iOW+Llw1Dtq/1vSENXVIGSd5wGoTrBGdNFfXmE5H0dj+hyQZMG
-	 Fxf3GfLLgqeBftE62tylDchqOVCGLCPkgAVCHIVh8oQSA+Al8N5AUi4jzPBMsvNwMo
-	 kzELtj0k7iPGAd8LyudVKJgJYI3xrz+PueQ4seh4=
-Subject: FAILED: patch "[PATCH] maple_tree: fix tracepoint string pointers" failed to apply to 6.6-stable tree
-To: martin@kaiser.cx,Liam.Howlett@oracle.com,akpm@linux-foundation.org,stable@vger.kernel.org
+	b=ueNlJXIINomHyrwySXXR6ke9omnVM/CvEmmSyn2zHRIY6HKteD76Cb9h8sL2WGLvd
+	 V5z3/sRXarPWZXw9xO6HadcPGwBsA3kZ9LK+eDFI7yuxbLB8qOXoHWV1F1gN/xDX/Q
+	 MYUzbKQh8IGFzUL44kAnd535E57jTjfAvaGhcodQ=
+Subject: FAILED: patch "[PATCH] mm/huge_memory: do not change split_huge_page*() target order" failed to apply to 6.17-stable tree
+To: ziy@nvidia.com,akpm@linux-foundation.org,baohua@kernel.org,baolin.wang@linux.alibaba.com,brauner@kernel.org,david@redhat.com,dev.jain@arm.com,jane.chu@oracle.com,lance.yang@linux.dev,liam.howlett@oracle.com,linmiaohe@huawei.com,lorenzo.stoakes@oracle.com,mcgrof@kernel.org,nao.horiguchi@gmail.com,npache@redhat.com,p.raghav@samsung.com,richard.weiyang@gmail.com,ryan.roberts@arm.com,stable@vger.kernel.org,willy@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 20 Nov 2025 16:55:54 +0100
-Message-ID: <2025112054-jawless-tuesday-76d3@gregkh>
+Date: Thu, 20 Nov 2025 16:56:14 +0100
+Message-ID: <2025112014-photo-email-c834@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x 91a54090026f84ceffaa12ac53c99b9f162946f6
+git cherry-pick -x 77008e1b2ef73249bceb078a321a3ff6bc087afb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112054-jawless-tuesday-76d3@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112014-photo-email-c834@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,173 +77,203 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 91a54090026f84ceffaa12ac53c99b9f162946f6 Mon Sep 17 00:00:00 2001
-From: Martin Kaiser <martin@kaiser.cx>
-Date: Thu, 30 Oct 2025 16:55:05 +0100
-Subject: [PATCH] maple_tree: fix tracepoint string pointers
+From 77008e1b2ef73249bceb078a321a3ff6bc087afb Mon Sep 17 00:00:00 2001
+From: Zi Yan <ziy@nvidia.com>
+Date: Thu, 16 Oct 2025 21:36:30 -0400
+Subject: [PATCH] mm/huge_memory: do not change split_huge_page*() target order
+ silently
 
-maple_tree tracepoints contain pointers to function names. Such a pointer
-is saved when a tracepoint logs an event. There's no guarantee that it's
-still valid when the event is parsed later and the pointer is dereferenced.
+Page cache folios from a file system that support large block size (LBS)
+can have minimal folio order greater than 0, thus a high order folio might
+not be able to be split down to order-0.  Commit e220917fa507 ("mm: split
+a folio in minimum folio order chunks") bumps the target order of
+split_huge_page*() to the minimum allowed order when splitting a LBS
+folio.  This causes confusion for some split_huge_page*() callers like
+memory failure handling code, since they expect after-split folios all
+have order-0 when split succeeds but in reality get min_order_for_split()
+order folios and give warnings.
 
-The kernel warns about these unsafe pointers.
+Fix it by failing a split if the folio cannot be split to the target
+order.  Rename try_folio_split() to try_folio_split_to_order() to reflect
+the added new_order parameter.  Remove its unused list parameter.
 
-	event 'ma_read' has unsafe pointer field 'fn'
-	WARNING: kernel/trace/trace.c:3779 at ignore_event+0x1da/0x1e4
+[The test poisons LBS folios, which cannot be split to order-0 folios, and
+also tries to poison all memory.  The non split LBS folios take more
+memory than the test anticipated, leading to OOM.  The patch fixed the
+kernel warning and the test needs some change to avoid OOM.]
 
-Mark the function names as tracepoint_string() to fix the events.
-
-One case that doesn't work without my patch would be trace-cmd record
-to save the binary ringbuffer and trace-cmd report to parse it in
-userspace.  The address of __func__ can't be dereferenced from
-userspace but tracepoint_string will add an entry to
-/sys/kernel/tracing/printk_formats
-
-Link: https://lkml.kernel.org/r/20251030155537.87972-1-martin@kaiser.cx
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Link: https://lkml.kernel.org/r/20251017013630.139907-1-ziy@nvidia.com
+Fixes: e220917fa507 ("mm: split a folio in minimum folio order chunks")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reported-by: syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68d2c943.a70a0220.1b52b.02b3.GAE@google.com/
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Reviewed-by: Pankaj Raghav <p.raghav@samsung.com>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Mariano Pache <npache@redhat.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Christian Brauner <brauner@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index 39bb779cb311..5aa4c9500018 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -64,6 +64,8 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/maple_tree.h>
- 
-+#define TP_FCT tracepoint_string(__func__)
-+
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index f327d62fc985..71ac78b9f834 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -376,45 +376,30 @@ bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
+ int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
+ 		struct list_head *list);
  /*
-  * Kernel pointer hashing renders much of the maple tree dump useless as tagged
-  * pointers get hashed to arbitrary values.
-@@ -2756,7 +2758,7 @@ static inline void mas_rebalance(struct ma_state *mas,
- 	MA_STATE(l_mas, mas->tree, mas->index, mas->last);
- 	MA_STATE(r_mas, mas->tree, mas->index, mas->last);
+- * try_folio_split - try to split a @folio at @page using non uniform split.
++ * try_folio_split_to_order - try to split a @folio at @page to @new_order using
++ * non uniform split.
+  * @folio: folio to be split
+- * @page: split to order-0 at the given page
+- * @list: store the after-split folios
++ * @page: split to @new_order at the given page
++ * @new_order: the target split order
+  *
+- * Try to split a @folio at @page using non uniform split to order-0, if
+- * non uniform split is not supported, fall back to uniform split.
++ * Try to split a @folio at @page using non uniform split to @new_order, if
++ * non uniform split is not supported, fall back to uniform split. After-split
++ * folios are put back to LRU list. Use min_order_for_split() to get the lower
++ * bound of @new_order.
+  *
+  * Return: 0: split is successful, otherwise split failed.
+  */
+-static inline int try_folio_split(struct folio *folio, struct page *page,
+-		struct list_head *list)
++static inline int try_folio_split_to_order(struct folio *folio,
++		struct page *page, unsigned int new_order)
+ {
+-	int ret = min_order_for_split(folio);
+-
+-	if (ret < 0)
+-		return ret;
+-
+-	if (!non_uniform_split_supported(folio, 0, false))
+-		return split_huge_page_to_list_to_order(&folio->page, list,
+-				ret);
+-	return folio_split(folio, ret, page, list);
++	if (!non_uniform_split_supported(folio, new_order, /* warns= */ false))
++		return split_huge_page_to_list_to_order(&folio->page, NULL,
++				new_order);
++	return folio_split(folio, new_order, page, NULL);
+ }
+ static inline int split_huge_page(struct page *page)
+ {
+-	struct folio *folio = page_folio(page);
+-	int ret = min_order_for_split(folio);
+-
+-	if (ret < 0)
+-		return ret;
+-
+-	/*
+-	 * split_huge_page() locks the page before splitting and
+-	 * expects the same page that has been split to be locked when
+-	 * returned. split_folio(page_folio(page)) cannot be used here
+-	 * because it converts the page to folio and passes the head
+-	 * page to be split.
+-	 */
+-	return split_huge_page_to_list_to_order(page, NULL, ret);
++	return split_huge_page_to_list_to_order(page, NULL, 0);
+ }
+ void deferred_split_folio(struct folio *folio, bool partially_mapped);
  
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 
- 	/*
- 	 * Rebalancing occurs if a node is insufficient.  Data is rebalanced
-@@ -2997,7 +2999,7 @@ static void mas_split(struct ma_state *mas, struct maple_big_node *b_node)
- 	MA_STATE(prev_l_mas, mas->tree, mas->index, mas->last);
- 	MA_STATE(prev_r_mas, mas->tree, mas->index, mas->last);
- 
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 
- 	mast.l = &l_mas;
- 	mast.r = &r_mas;
-@@ -3172,7 +3174,7 @@ static bool mas_is_span_wr(struct ma_wr_state *wr_mas)
- 			return false;
- 	}
- 
--	trace_ma_write(__func__, wr_mas->mas, wr_mas->r_max, entry);
-+	trace_ma_write(TP_FCT, wr_mas->mas, wr_mas->r_max, entry);
- 	return true;
+@@ -597,14 +582,20 @@ static inline int split_huge_page(struct page *page)
+ 	return -EINVAL;
  }
  
-@@ -3416,7 +3418,7 @@ static noinline void mas_wr_spanning_store(struct ma_wr_state *wr_mas)
- 	 * of data may happen.
- 	 */
- 	mas = wr_mas->mas;
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 
- 	if (unlikely(!mas->index && mas->last == ULONG_MAX))
- 		return mas_new_root(mas, wr_mas->entry);
-@@ -3552,7 +3554,7 @@ static inline void mas_wr_node_store(struct ma_wr_state *wr_mas,
- 	} else {
- 		memcpy(wr_mas->node, newnode, sizeof(struct maple_node));
- 	}
--	trace_ma_write(__func__, mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
- 	mas_update_gap(mas);
- 	mas->end = new_end;
- 	return;
-@@ -3596,7 +3598,7 @@ static inline void mas_wr_slot_store(struct ma_wr_state *wr_mas)
- 		mas->offset++; /* Keep mas accurate. */
- 	}
- 
--	trace_ma_write(__func__, mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
- 	/*
- 	 * Only update gap when the new entry is empty or there is an empty
- 	 * entry in the original two ranges.
-@@ -3717,7 +3719,7 @@ static inline void mas_wr_append(struct ma_wr_state *wr_mas,
- 		mas_update_gap(mas);
- 
- 	mas->end = new_end;
--	trace_ma_write(__func__, mas, new_end, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, new_end, wr_mas->entry);
- 	return;
++static inline int min_order_for_split(struct folio *folio)
++{
++	VM_WARN_ON_ONCE_FOLIO(1, folio);
++	return -EINVAL;
++}
++
+ static inline int split_folio_to_list(struct folio *folio, struct list_head *list)
+ {
+ 	VM_WARN_ON_ONCE_FOLIO(1, folio);
+ 	return -EINVAL;
  }
  
-@@ -3731,7 +3733,7 @@ static void mas_wr_bnode(struct ma_wr_state *wr_mas)
+-static inline int try_folio_split(struct folio *folio, struct page *page,
+-		struct list_head *list)
++static inline int try_folio_split_to_order(struct folio *folio,
++		struct page *page, unsigned int new_order)
  {
- 	struct maple_big_node b_node;
+ 	VM_WARN_ON_ONCE_FOLIO(1, folio);
+ 	return -EINVAL;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 1d1b74950332..feac4aef7dfb 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3653,8 +3653,6 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
  
--	trace_ma_write(__func__, wr_mas->mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, wr_mas->mas, 0, wr_mas->entry);
- 	memset(&b_node, 0, sizeof(struct maple_big_node));
- 	mas_store_b_node(wr_mas, &b_node, wr_mas->offset_end);
- 	mas_commit_b_node(wr_mas, &b_node);
-@@ -5062,7 +5064,7 @@ void *mas_store(struct ma_state *mas, void *entry)
+ 		min_order = mapping_min_folio_order(folio->mapping);
+ 		if (new_order < min_order) {
+-			VM_WARN_ONCE(1, "Cannot split mapped folio below min-order: %u",
+-				     min_order);
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+@@ -3986,12 +3984,7 @@ int min_order_for_split(struct folio *folio)
+ 
+ int split_folio_to_list(struct folio *folio, struct list_head *list)
  {
- 	MA_WR_STATE(wr_mas, mas, entry);
+-	int ret = min_order_for_split(folio);
+-
+-	if (ret < 0)
+-		return ret;
+-
+-	return split_huge_page_to_list_to_order(&folio->page, list, ret);
++	return split_huge_page_to_list_to_order(&folio->page, list, 0);
+ }
  
--	trace_ma_write(__func__, mas, 0, entry);
-+	trace_ma_write(TP_FCT, mas, 0, entry);
- #ifdef CONFIG_DEBUG_MAPLE_TREE
- 	if (MAS_WARN_ON(mas, mas->index > mas->last))
- 		pr_err("Error %lX > %lX " PTR_FMT "\n", mas->index, mas->last,
-@@ -5163,7 +5165,7 @@ void mas_store_prealloc(struct ma_state *mas, void *entry)
- 	}
+ /*
+diff --git a/mm/truncate.c b/mm/truncate.c
+index 91eb92a5ce4f..9210cf808f5c 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -194,6 +194,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+ 	size_t size = folio_size(folio);
+ 	unsigned int offset, length;
+ 	struct page *split_at, *split_at2;
++	unsigned int min_order;
  
- store:
--	trace_ma_write(__func__, mas, 0, entry);
-+	trace_ma_write(TP_FCT, mas, 0, entry);
- 	mas_wr_store_entry(&wr_mas);
- 	MAS_WR_BUG_ON(&wr_mas, mas_is_err(mas));
- 	mas_destroy(mas);
-@@ -5882,7 +5884,7 @@ void *mtree_load(struct maple_tree *mt, unsigned long index)
- 	MA_STATE(mas, mt, index, index);
- 	void *entry;
+ 	if (pos < start)
+ 		offset = start - pos;
+@@ -223,8 +224,9 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+ 	if (!folio_test_large(folio))
+ 		return true;
  
--	trace_ma_read(__func__, &mas);
-+	trace_ma_read(TP_FCT, &mas);
- 	rcu_read_lock();
- retry:
- 	entry = mas_start(&mas);
-@@ -5925,7 +5927,7 @@ int mtree_store_range(struct maple_tree *mt, unsigned long index,
- 	MA_STATE(mas, mt, index, last);
- 	int ret = 0;
++	min_order = mapping_min_folio_order(folio->mapping);
+ 	split_at = folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZE);
+-	if (!try_folio_split(folio, split_at, NULL)) {
++	if (!try_folio_split_to_order(folio, split_at, min_order)) {
+ 		/*
+ 		 * try to split at offset + length to make sure folios within
+ 		 * the range can be dropped, especially to avoid memory waste
+@@ -254,7 +256,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+ 		 */
+ 		if (folio_test_large(folio2) &&
+ 		    folio2->mapping == folio->mapping)
+-			try_folio_split(folio2, split_at2, NULL);
++			try_folio_split_to_order(folio2, split_at2, min_order);
  
--	trace_ma_write(__func__, &mas, 0, entry);
-+	trace_ma_write(TP_FCT, &mas, 0, entry);
- 	if (WARN_ON_ONCE(xa_is_advanced(entry)))
- 		return -EINVAL;
- 
-@@ -6148,7 +6150,7 @@ void *mtree_erase(struct maple_tree *mt, unsigned long index)
- 	void *entry = NULL;
- 
- 	MA_STATE(mas, mt, index, index);
--	trace_ma_op(__func__, &mas);
-+	trace_ma_op(TP_FCT, &mas);
- 
- 	mtree_lock(mt);
- 	entry = mas_erase(&mas);
-@@ -6485,7 +6487,7 @@ void *mt_find(struct maple_tree *mt, unsigned long *index, unsigned long max)
- 	unsigned long copy = *index;
- #endif
- 
--	trace_ma_read(__func__, &mas);
-+	trace_ma_read(TP_FCT, &mas);
- 
- 	if ((*index) > max)
- 		return NULL;
+ 		folio_unlock(folio2);
+ out:
 
 
