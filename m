@@ -1,111 +1,161 @@
-Return-Path: <stable+bounces-195227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B275BC724F9
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 07:15:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 617ADC72993
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 08:30:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 137AE4E4594
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 06:15:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F0B0F4EBB1B
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 07:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D85E28D8DF;
-	Thu, 20 Nov 2025 06:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6682F99A3;
+	Thu, 20 Nov 2025 07:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="QsjOkJja"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WuPXchqJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp153-165.sina.com.cn (smtp153-165.sina.com.cn [61.135.153.165])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f225.google.com (mail-il1-f225.google.com [209.85.166.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2662C0F68
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 06:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.135.153.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296F62BF019
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 07:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763619309; cv=none; b=rGrdRMWaZkAPbaKQOEeU1/3fmbXngKzBGmAPkqkzEEXbX6RdZLBgP9tEEcipu+ENz4Up0YD4nOCkhgmwqAfPyz4k35BaPO9xEsKZpiUT4p85Ch4Ccg3B+/leC34VRSH5Bp1bPn5KfIlAjdw7tChsw4y3sGwuFHkPxLYMKmEh4nM=
+	t=1763623555; cv=none; b=JDHNxCQ4+AT6jylJe47WXfJLltUIcRQOD9ju8JZzongoB5zhntVWmlBGcCVWzp2n+bVPhSmLKUrQYN7xX9d4PZBEj0k5dk+v4wAFNTXZAci+v2I4HLiJUepyKFfCXaME/hZypI+Qe/foYCzKSGJPjHh44LY8xMixeqWsJTHU7X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763619309; c=relaxed/simple;
-	bh=sF1qIao+TYn7SW75G70+AU4lV0vjhqkP6LJXt4lvhnI=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=eOdB35G1o5yg5MQKE1lqWMxZZaeDBHspPALcrDpd/iJIqNUqa+9juFr2SeZddBF7t5Nj75hMl52cu6/TNyRkIh/RvYFUeIzmU0nKIEr3/78fQIVfPJD4c6jdMT2Tk6UFjEyfIf9kc8KBlN7AaIwHzWf7Jrt8nH3wIoF247JEwx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=QsjOkJja; arc=none smtp.client-ip=61.135.153.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1763619302;
-	bh=B11YdCxnfX3eA2fZ53RtkZVR+/TU7c6yKHbU0cgE2fI=;
-	h=From:Subject:Date:Message-Id;
-	b=QsjOkJjaOhAGg+hbS2ROGH6ClWzAB5XihFIXpoTL9hMV+Fs0T12bbOsgTIGoEJ8/X
-	 IFLZG8uWkcb2htY0O7DMjaKfOO56MW2Af7ag24jl6QnjXCsVD+MjUa17rDV3S/aTbv
-	 h1ff0ZkB93Tb8kV2uxMqiqeDL83lQKD9VNnplT7M=
-X-SMAIL-HELO: sina-kernel-team
-Received: from unknown (HELO sina-kernel-team)([117.129.7.61])
-	by sina.cn (10.54.253.32) with ESMTP
-	id 691EB151000042F5; Thu, 20 Nov 2025 14:12:36 +0800 (CST)
-X-Sender: xnguchen@sina.cn
-X-Auth-ID: xnguchen@sina.cn
-Authentication-Results: sina.cn;
-	 spf=none smtp.mailfrom=xnguchen@sina.cn;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=xnguchen@sina.cn
-X-SMAIL-MID: 6698014456643
-X-SMAIL-UIID: 00068659356640B899E01033BC39A168-20251120-141236-1
-From: Chen Yu <xnguchen@sina.cn>
-To: vladimir.oltean@nxp.com,
-	horms@kernel.org,
-	kuba@kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 6.12.y] net: dsa: sja1105: fix kasan out-of-bounds warning in sja1105_table_delete_entry()
-Date: Thu, 20 Nov 2025 14:12:31 +0800
-Message-Id: <20251120061231.3103-1-xnguchen@sina.cn>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1763623555; c=relaxed/simple;
+	bh=x7zoQKjejtTwgqWLbZyHhyC/P+er2/F2lcU4gQbyGGM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IWPGjdsxMcThBvtaQyqZsPM9PuHR4cBospoq4HvgcTBLm2CpYSAdwyMyjd/SjEy3cwEtQqXMHH8zeH8dlz+V4L5+LwiHlrFriKF28U4L+AgtHSKtkbSjM9j176tFAc3A8OxNekGmhvjWD1i2x8+3eLhRH0pZQBpJlEvGOT3zKg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WuPXchqJ; arc=none smtp.client-ip=209.85.166.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-il1-f225.google.com with SMTP id e9e14a558f8ab-4331709968fso2679785ab.2
+        for <stable@vger.kernel.org>; Wed, 19 Nov 2025 23:25:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763623553; x=1764228353;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vNBg3K0OSAln8eZOSUOn8UtbJ+SShwdvZTkyuXu3RMs=;
+        b=wnszmZP0hvCMalbAPtiSTPMbtvd98U1nsE2tixDLId2TvACmaF5YPeM+rMUOfX3uwc
+         vIJySZOMRf+iOvVmvU61/o2d02Ig+jTwwKSiDNRAuSqMDpnRpiXrmKmavmiP610KW04Y
+         Cksx+q6g7h6Dpwm7g64LqI7N/J8v5AfimOKrdBjZJ5QYrp3sxdYe31CDPf3cgvgxCE8A
+         utbHsuI4RVa/XjjRdt06gja1jfT8b0txTWiABXvf7jX0gJ378SBuUjX7WomHk1lqMoT0
+         IFFFK7TsB/HqSIpWcjK4bzA1S/K60GaGTLyu/jZAvHztE4LKdHgc2qPGflqzAxWWhel7
+         67/g==
+X-Forwarded-Encrypted: i=1; AJvYcCX0jXzdxa9HN1OdgTJzXF4ysrrF0WM9cs90NZYWtPiwx8EgOOpmwyhHz8UQ3bNHl2ST6akNZMI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZn1dcZRbG0OagxWU/8YMfCpZyGrC/nsImVaZTdLtQlT7K/XSG
+	R6ZqNlDN0cmXRhrCoT3iqZVP84PWsWi1Ryog9npKbEQgIApZ7Q82kKD6iiKNtqROrr2cyuBWWmb
+	+6eCTWKXE46J92jO2596TXlXCXOrvfj5818sKv2ItfJssRE1JJKICJhTLHnLp5/4VhuiaMadgau
+	eMtVHdwSIcmuuDkn2V+9gd0DpBQb/t5HyKCsnFyhIvajpOD0Nd+RN0bdv0Rbzv6izPgzbfv4jqp
+	WaNULX9Uaj02hgNsMPykPqWdew=
+X-Gm-Gg: ASbGnctRUsqyOIwgiCRv9KWskxBCn2XmksmGk4V38He/jSpxLLv1lYDMyJ9ZxlTiS59
+	Egy13WF1PSlAwatVu6L0tO3Fhj3sMQfYblEzZmS9Up3IuAN3Fr8MjALe0Z0ZW2YMGVsinS7bYJ4
+	3f2cr7+4bb2L8yREKrzYYFASBG/69lw+KmrPDxQ4f2lxMY2vpXjdtz3ypDiWrjeTTgEVBRp6jxq
+	gHs85QnzYOhoppBoZFwwKPLhSddo68n+ptrxMHfgJTosHfRPKwzTxIFmcRT/pVyVzAeR6RuzVO6
+	TJOuwz2Wm/RMNwUSZliLInMAmcy6qoPXnI388vzuEfvSztsSIKEg6FtapdRX4Zcm5QBYOZ0bYMO
+	YSpDpTXUh42D9EaurB1o5TpVZe8xITUiVV3/snHTf6VCqYXxV+g7eK7nBSm9BySJNbak+FSN0A7
+	oYGVJnAgL+2FkVQ9M7WGFVrCKYjppYYOUkJKUiXF4Zk9O4wfmiFbA5TprXUQ==
+X-Google-Smtp-Source: AGHT+IGW/uxc/DeYBCXZOH5NUAUb+c+ukHCjbYAzeg+21EaDKmzcNukFyUTF3xjklOK660sHGXg8ASgvq/Y2
+X-Received: by 2002:a05:6e02:3001:b0:433:7a7c:e2a2 with SMTP id e9e14a558f8ab-435b1fca493mr6554665ab.7.1763623553096;
+        Wed, 19 Nov 2025 23:25:53 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-1.dlp.protect.broadcom.com. [144.49.247.1])
+        by smtp-relay.gmail.com with ESMTPS id 8926c6da1cb9f-5b954a08435sm144427173.4.2025.11.19.23.25.52
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 19 Nov 2025 23:25:53 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7be3d08f863so1069417b3a.2
+        for <stable@vger.kernel.org>; Wed, 19 Nov 2025 23:25:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1763623551; x=1764228351; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vNBg3K0OSAln8eZOSUOn8UtbJ+SShwdvZTkyuXu3RMs=;
+        b=WuPXchqJaobE03xTjoPuq/LF0lfe9jyNUVAWj3AHc2MBZ5iHDAXkLbWq9W3QVDbAvp
+         5S1IjtsKxNUCwIJXfDU1TAwivCiPxD70MtFHgsyLJFFF9MlU5eSK6RsPGe3LBHG1eS6X
+         NQTnMmtkDigajDOQ2Hv05pHdhqZZ2SHEKGvYc=
+X-Forwarded-Encrypted: i=1; AJvYcCUFwy6y6lJm4tt9WxR2uCvo35cLfklSV3F8D8uqprdijMxEDrNHQAClToz8ZpDlu7z49qGZBXw=@vger.kernel.org
+X-Received: by 2002:a05:6a20:12c7:b0:334:a784:3046 with SMTP id adf61e73a8af0-36140be339fmr1347330637.38.1763623551407;
+        Wed, 19 Nov 2025 23:25:51 -0800 (PST)
+X-Received: by 2002:a05:6a20:12c7:b0:334:a784:3046 with SMTP id adf61e73a8af0-36140be339fmr1347305637.38.1763623550943;
+        Wed, 19 Nov 2025 23:25:50 -0800 (PST)
+Received: from dhcp-10-123-98-239.dhcp.broadcom.net ([192.19.234.250])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bd75dfed8f6sm1593796a12.2.2025.11.19.23.25.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Nov 2025 23:25:50 -0800 (PST)
+From: Suganath Prabu S <suganath-prabu.subramani@broadcom.com>
+To: linux-scsi@vger.kernel.org,
+	martin.petersen@oracle.com,
+	stable@vger.kernel.org
+Cc: sathya.prakash@broadcom.com,
+	ranjan.kumar@broadcom.com,
+	chandrakanth.patil@broadcom.com,
+	Suganath Prabu S <suganath-prabu.subramani@broadcom.com>
+Subject: [PATCH]  mpi3mr: Prevent duplicate SAS/SATA device entries in channel 1
+Date: Thu, 20 Nov 2025 12:49:55 +0530
+Message-Id: <20251120071955.463475-1-suganath-prabu.subramani@broadcom.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+ This fix avoids scanning of SAS/SATA devices in channel 1
+ when SAS transport is enabled as the SAS/SATA devices are
+ exposed through channel 0 when SAS transport is enabled.
 
-[ Upstream commit 5f2b28b79d2d1946ee36ad8b3dc0066f73c90481 ]
-
-There are actually 2 problems:
-- deleting the last element doesn't require the memmove of elements
-  [i + 1, end) over it. Actually, element i+1 is out of bounds.
-- The memmove itself should move size - i - 1 elements, because the last
-  element is out of bounds.
-
-The out-of-bounds element still remains out of bounds after being
-accessed, so the problem is only that we touch it, not that it becomes
-in active use. But I suppose it can lead to issues if the out-of-bounds
-element is part of an unmapped page.
-
-Fixes: 6666cebc5e30 ("net: dsa: sja1105: Add support for VLAN operations")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250318115716.2124395-4-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Chen Yu <xnguchen@sina.cn>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Signed-off-by: Suganath Prabu S <suganath-prabu.subramani@broadcom.com>
 ---
- drivers/net/dsa/sja1105/sja1105_static_config.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr.h    | 4 ++--
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 4 +++-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_static_config.c b/drivers/net/dsa/sja1105/sja1105_static_config.c
-index baba204ad62f..2ac91fe2a79b 100644
---- a/drivers/net/dsa/sja1105/sja1105_static_config.c
-+++ b/drivers/net/dsa/sja1105/sja1105_static_config.c
-@@ -1921,8 +1921,10 @@ int sja1105_table_delete_entry(struct sja1105_table *table, int i)
- 	if (i > table->entry_count)
- 		return -ERANGE;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr.h b/drivers/scsi/mpi3mr/mpi3mr.h
+index 6742684..31d68c1 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr.h
++++ b/drivers/scsi/mpi3mr/mpi3mr.h
+@@ -56,8 +56,8 @@ extern struct list_head mrioc_list;
+ extern int prot_mask;
+ extern atomic64_t event_counter;
  
--	memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
--		(table->entry_count - i) * entry_size);
-+	if (i + 1 < table->entry_count) {
-+		memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
-+			(table->entry_count - i - 1) * entry_size);
-+	}
+-#define MPI3MR_DRIVER_VERSION	"8.15.0.5.50"
+-#define MPI3MR_DRIVER_RELDATE	"12-August-2025"
++#define MPI3MR_DRIVER_VERSION	"8.15.0.5.51"
++#define MPI3MR_DRIVER_RELDATE	"18-November-2025"
  
- 	table->entry_count--;
+ #define MPI3MR_DRIVER_NAME	"mpi3mr"
+ #define MPI3MR_DRIVER_LICENSE	"GPL"
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index b88633e..bca3671 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -1184,6 +1184,8 @@ static void mpi3mr_update_tgtdev(struct mpi3mr_ioc *mrioc,
+ 	if (is_added == true)
+ 		tgtdev->io_throttle_enabled =
+ 		    (flags & MPI3_DEVICE0_FLAGS_IO_THROTTLING_REQUIRED) ? 1 : 0;
++	if(!mrioc->sas_transport_enabled)
++		tgtdev->non_stl = 1;
  
+ 	switch (flags & MPI3_DEVICE0_FLAGS_MAX_WRITE_SAME_MASK) {
+ 	case MPI3_DEVICE0_FLAGS_MAX_WRITE_SAME_256_LB:
+@@ -4844,7 +4846,7 @@ static int mpi3mr_target_alloc(struct scsi_target *starget)
+ 	spin_lock_irqsave(&mrioc->tgtdev_lock, flags);
+ 	if (starget->channel == mrioc->scsi_device_channel) {
+ 		tgt_dev = __mpi3mr_get_tgtdev_by_perst_id(mrioc, starget->id);
+-		if (tgt_dev && !tgt_dev->is_hidden) {
++		if (tgt_dev && !tgt_dev->is_hidden && tgt_dev->non_stl) {
+ 			scsi_tgt_priv_data->starget = starget;
+ 			scsi_tgt_priv_data->dev_handle = tgt_dev->dev_handle;
+ 			scsi_tgt_priv_data->perst_id = tgt_dev->perst_id;
 -- 
-2.17.1
+2.47.3
 
 
