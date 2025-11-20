@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-195286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C010BC752CA
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:57:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC54C752D0
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:57:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D0C9334641A
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 15:51:47 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1C809363405
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 15:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC04633AD84;
-	Thu, 20 Nov 2025 15:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6FB340A47;
+	Thu, 20 Nov 2025 15:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wd6Dq2t2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDMJTjPp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793CE2EB85E
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 15:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348F134AAF7
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 15:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763653861; cv=none; b=S0T3t2ma7cysSdVR0Vl1/p58NrufJdPwd+rzHeNSG49yrXw4ZLlv/Zl/HAA4UAbaIoJbRTeTD3vUceYWtY34emGGfSsry+ee6jeny/hPVr/G9m198H/JfZBufl20+fXe3mnthCyFQ9ivWMtcdIreNd4biCKOCGinj3FC4bJNS9I=
+	t=1763653867; cv=none; b=r7H6FNGFkTMYUvKBPOvIKAeLxJ/MCRyBVSr4+pfvqkLdNbfmbbvavzziXq7PePf4Y79ubbnt/4Uh+DeXrrovtDo2yzf2WVhk5ujZmJFYWIKKqa2npKWnnzAxAzhcg9DwSAPkYicLSA3rdhFaLklv2KldzJs91itksXLEqSAXZQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763653861; c=relaxed/simple;
-	bh=XuhOrQ/5fffqVUt1LpeiCH02s/a6eOEEyRoswqHiNos=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Fn0j4SErCxTXYDFqhGg0ZI2XLANiFobaER1qySJGYLEQQFIS27NQu2jIyKNS/8PELWLKhBT+aroLYiUc7phwuMO76r+FBs/wMoGwiMqbrULoZE+GTgyfj1eKy1Y9GmbirIHSpr8IAPMl5efFl4/ta1w6lWdpft1dpD2SXy1N9M4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wd6Dq2t2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAA7C4CEF1;
-	Thu, 20 Nov 2025 15:51:00 +0000 (UTC)
+	s=arc-20240116; t=1763653867; c=relaxed/simple;
+	bh=mh1kCb+1S3QRJoqrqoa1dQmQ32aCdFIPGAeiaQ8B7rY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RA2V2QX+1hH7X3AlqHrRAQ7xPsYWtbhYJzLXg0iTFfbc+6UBohS5G5R+zx9Gt3PK3gSffBLimuytCXgiMIoGQbV9NG3P3qiJsmMQ6Y3aD0z93WkiPixuIEKWC5/GvHZmtr5y8FaPGt+GHsr/37mYpU4o2OiPp3UpoPqdrJR1qyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDMJTjPp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF19C4CEF1;
+	Thu, 20 Nov 2025 15:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763653861;
-	bh=XuhOrQ/5fffqVUt1LpeiCH02s/a6eOEEyRoswqHiNos=;
+	s=korg; t=1763653866;
+	bh=mh1kCb+1S3QRJoqrqoa1dQmQ32aCdFIPGAeiaQ8B7rY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Wd6Dq2t2d3AAXWJb/w4C3eRsipw/a/n9p+RUNum3D6MQjh8l9KzOHdbzZJmKXJbUI
-	 q1M/JbbpYeURRHOheYIwsGhIe1ALufBJVTcwRM+OjSexYfY7TIMRBVx48AOhJWCuTH
-	 4vIT8ujgtiEVSXdPphLuwy8jTDyRnfxK1HFSPZf4=
-Subject: FAILED: patch "[PATCH] KVM: nSVM: Always recalculate LBR MSR intercepts in" failed to apply to 6.1-stable tree
+	b=iDMJTjPpWF6fuZ+2+VZxkeUFmEPnnsJ9+EExV2Iz1EsVrvN73bNd1U+MwBlee7VW4
+	 ILwd8NyeJ4Zq9Pw6tFBtujyrA9CWfr1/8l78pre64YMd+OEnMR9BDx3ddtDqo0Rhq+
+	 9QvVNAraetYopznA4GUV1FLiwfheyG7mugMU6SxY=
+Subject: FAILED: patch "[PATCH] KVM: nSVM: Fix and simplify LBR virtualization handling with" failed to apply to 6.6-stable tree
 To: yosry.ahmed@linux.dev,pbonzini@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 20 Nov 2025 16:50:48 +0100
-Message-ID: <2025112048-equation-nursery-dd67@gregkh>
+Date: Thu, 20 Nov 2025 16:50:59 +0100
+Message-ID: <2025112059-labrador-contently-dd98@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x fbe5e5f030c22ae717ee422aaab0e00ea84fab5e
+git cherry-pick -x 8a4821412cf2c1429fffa07c012dd150f2edf78c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112048-equation-nursery-dd67@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112059-labrador-contently-dd98@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,98 +77,192 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fbe5e5f030c22ae717ee422aaab0e00ea84fab5e Mon Sep 17 00:00:00 2001
+From 8a4821412cf2c1429fffa07c012dd150f2edf78c Mon Sep 17 00:00:00 2001
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
-Date: Sat, 8 Nov 2025 00:45:20 +0000
-Subject: [PATCH] KVM: nSVM: Always recalculate LBR MSR intercepts in
- svm_update_lbrv()
+Date: Sat, 8 Nov 2025 00:45:21 +0000
+Subject: [PATCH] KVM: nSVM: Fix and simplify LBR virtualization handling with
+ nested
 
-svm_update_lbrv() is called when MSR_IA32_DEBUGCTLMSR is updated, and on
-nested transitions where LBRV is used. It checks whether LBRV enablement
-needs to be changed in the current VMCB, and if it does, it also
-recalculate intercepts to LBR MSRs.
+The current scheme for handling LBRV when nested is used is very
+complicated, especially when L1 does not enable LBRV (i.e. does not set
+LBR_CTL_ENABLE_MASK).
 
-However, there are cases where intercepts need to be updated even when
-LBRV enablement doesn't. Example scenario:
-- L1 has MSR_IA32_DEBUGCTLMSR cleared.
-- L1 runs L2 without LBR_CTL_ENABLE (no LBRV).
-- L2 sets DEBUGCTLMSR_LBR in MSR_IA32_DEBUGCTLMSR, svm_update_lbrv()
-  sets LBR_CTL_ENABLE in VMCB02 and disables intercepts to LBR MSRs.
-- L2 exits to L1, svm_update_lbrv() is not called on this transition.
-- L1 clears MSR_IA32_DEBUGCTLMSR, svm_update_lbrv() finds that
-  LBR_CTL_ENABLE is already cleared in VMCB01 and does nothing.
-- Intercepts remain disabled, L1 reads to LBR MSRs read the host MSRs.
+To avoid copying LBRs between VMCB01 and VMCB02 on every nested
+transition, the current implementation switches between using VMCB01 or
+VMCB02 as the source of truth for the LBRs while L2 is running. If L2
+enables LBR, VMCB02 is used as the source of truth. When L2 disables
+LBR, the LBRs are copied to VMCB01 and VMCB01 is used as the source of
+truth. This introduces significant complexity, and incorrect behavior in
+some cases.
 
-Fix it by always recalculating intercepts in svm_update_lbrv().
+For example, on a nested #VMEXIT, the LBRs are only copied from VMCB02
+to VMCB01 if LBRV is enabled in VMCB01. This is because L2's writes to
+MSR_IA32_DEBUGCTLMSR to enable LBR are intercepted and propagated to
+VMCB01 instead of VMCB02. However, LBRV is only enabled in VMCB02 when
+L2 is running.
+
+This means that if L2 enables LBR and exits to L1, the LBRs will not be
+propagated from VMCB02 to VMCB01, because LBRV is disabled in VMCB01.
+
+There is no meaningful difference in CPUID rate in L2 when copying LBRs
+on every nested transition vs. the current approach, so do the simple
+and correct thing and always copy LBRs between VMCB01 and VMCB02 on
+nested transitions (when LBRV is disabled by L1). Drop the conditional
+LBRs copying in __svm_{enable/disable}_lbrv() as it is now unnecessary.
+
+VMCB02 becomes the only source of truth for LBRs when L2 is running,
+regardless of LBRV being enabled by L1, drop svm_get_lbr_vmcb() and use
+svm->vmcb directly in its place.
 
 Fixes: 1d5a1b5860ed ("KVM: x86: nSVM: correctly virtualize LBR msrs when L2 is running")
 Cc: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20251108004524.1600006-3-yosry.ahmed@linux.dev
+Link: https://patch.msgid.link/20251108004524.1600006-4-yosry.ahmed@linux.dev
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index a6443feab252..da6e80b3ac35 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -677,11 +677,10 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm, struct vmcb *vmcb12
+ 		 */
+ 		svm_copy_lbrs(vmcb02, vmcb12);
+ 		vmcb02->save.dbgctl &= ~DEBUGCTL_RESERVED_BITS;
+-		svm_update_lbrv(&svm->vcpu);
+-
+-	} else if (unlikely(vmcb01->control.virt_ext & LBR_CTL_ENABLE_MASK)) {
++	} else {
+ 		svm_copy_lbrs(vmcb02, vmcb01);
+ 	}
++	svm_update_lbrv(&svm->vcpu);
+ }
+ 
+ static inline bool is_evtinj_soft(u32 evtinj)
+@@ -833,11 +832,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+ 			svm->soft_int_next_rip = vmcb12_rip;
+ 	}
+ 
+-	vmcb02->control.virt_ext            = vmcb01->control.virt_ext &
+-					      LBR_CTL_ENABLE_MASK;
+-	if (guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV))
+-		vmcb02->control.virt_ext  |=
+-			(svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK);
++	/* LBR_CTL_ENABLE_MASK is controlled by svm_update_lbrv() */
+ 
+ 	if (!nested_vmcb_needs_vls_intercept(svm))
+ 		vmcb02->control.virt_ext |= VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
+@@ -1189,13 +1184,12 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
+ 		kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
+ 
+ 	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+-		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
++		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK)))
+ 		svm_copy_lbrs(vmcb12, vmcb02);
+-		svm_update_lbrv(vcpu);
+-	} else if (unlikely(vmcb01->control.virt_ext & LBR_CTL_ENABLE_MASK)) {
++	else
+ 		svm_copy_lbrs(vmcb01, vmcb02);
+-		svm_update_lbrv(vcpu);
+-	}
++
++	svm_update_lbrv(vcpu);
+ 
+ 	if (vnmi) {
+ 		if (vmcb02->control.int_ctl & V_NMI_BLOCKING_MASK)
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 39538098002b..53201f13a43c 100644
+index 53201f13a43c..10c21e4c5406 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -806,25 +806,29 @@ void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
- 	vmcb_mark_dirty(to_vmcb, VMCB_LBR);
+@@ -808,13 +808,7 @@ void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
+ 
+ static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
+ {
+-	struct vcpu_svm *svm = to_svm(vcpu);
+-
+-	svm->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
+-
+-	/* Move the LBR msrs to the vmcb02 so that the guest can see them. */
+-	if (is_guest_mode(vcpu))
+-		svm_copy_lbrs(svm->vmcb, svm->vmcb01.ptr);
++	to_svm(vcpu)->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
  }
  
--void svm_enable_lbrv(struct kvm_vcpu *vcpu)
-+static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
+ void svm_enable_lbrv(struct kvm_vcpu *vcpu)
+@@ -825,35 +819,15 @@ void svm_enable_lbrv(struct kvm_vcpu *vcpu)
+ 
+ static void __svm_disable_lbrv(struct kvm_vcpu *vcpu)
  {
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 
- 	svm->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
--	svm_recalc_lbr_msr_intercepts(vcpu);
- 
- 	/* Move the LBR msrs to the vmcb02 so that the guest can see them. */
- 	if (is_guest_mode(vcpu))
- 		svm_copy_lbrs(svm->vmcb, svm->vmcb01.ptr);
- }
- 
--static void svm_disable_lbrv(struct kvm_vcpu *vcpu)
-+void svm_enable_lbrv(struct kvm_vcpu *vcpu)
-+{
-+	__svm_enable_lbrv(vcpu);
-+	svm_recalc_lbr_msr_intercepts(vcpu);
-+}
-+
-+static void __svm_disable_lbrv(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 
+-	struct vcpu_svm *svm = to_svm(vcpu);
+-
  	KVM_BUG_ON(sev_es_guest(vcpu->kvm), vcpu->kvm);
- 	svm->vmcb->control.virt_ext &= ~LBR_CTL_ENABLE_MASK;
--	svm_recalc_lbr_msr_intercepts(vcpu);
+-	svm->vmcb->control.virt_ext &= ~LBR_CTL_ENABLE_MASK;
+-
+-	/*
+-	 * Move the LBR msrs back to the vmcb01 to avoid copying them
+-	 * on nested guest entries.
+-	 */
+-	if (is_guest_mode(vcpu))
+-		svm_copy_lbrs(svm->vmcb01.ptr, svm->vmcb);
+-}
+-
+-static struct vmcb *svm_get_lbr_vmcb(struct vcpu_svm *svm)
+-{
+-	/*
+-	 * If LBR virtualization is disabled, the LBR MSRs are always kept in
+-	 * vmcb01.  If LBR virtualization is enabled and L1 is running VMs of
+-	 * its own, the MSRs are moved between vmcb01 and vmcb02 as needed.
+-	 */
+-	return svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK ? svm->vmcb :
+-								   svm->vmcb01.ptr;
++	to_svm(vcpu)->vmcb->control.virt_ext &= ~LBR_CTL_ENABLE_MASK;
+ }
  
- 	/*
- 	 * Move the LBR msrs back to the vmcb01 to avoid copying them
-@@ -853,13 +857,18 @@ void svm_update_lbrv(struct kvm_vcpu *vcpu)
+ void svm_update_lbrv(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	bool current_enable_lbrv = svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK;
+-	bool enable_lbrv = (svm_get_lbr_vmcb(svm)->save.dbgctl & DEBUGCTLMSR_LBR) ||
++	bool enable_lbrv = (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR) ||
  			    (is_guest_mode(vcpu) && guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
  			    (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK));
  
--	if (enable_lbrv == current_enable_lbrv)
--		return;
-+	if (enable_lbrv && !current_enable_lbrv)
-+		__svm_enable_lbrv(vcpu);
-+	else if (!enable_lbrv && current_enable_lbrv)
-+		__svm_disable_lbrv(vcpu);
+@@ -2733,19 +2707,19 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		msr_info->data = svm->tsc_aux;
+ 		break;
+ 	case MSR_IA32_DEBUGCTLMSR:
+-		msr_info->data = svm_get_lbr_vmcb(svm)->save.dbgctl;
++		msr_info->data = svm->vmcb->save.dbgctl;
+ 		break;
+ 	case MSR_IA32_LASTBRANCHFROMIP:
+-		msr_info->data = svm_get_lbr_vmcb(svm)->save.br_from;
++		msr_info->data = svm->vmcb->save.br_from;
+ 		break;
+ 	case MSR_IA32_LASTBRANCHTOIP:
+-		msr_info->data = svm_get_lbr_vmcb(svm)->save.br_to;
++		msr_info->data = svm->vmcb->save.br_to;
+ 		break;
+ 	case MSR_IA32_LASTINTFROMIP:
+-		msr_info->data = svm_get_lbr_vmcb(svm)->save.last_excp_from;
++		msr_info->data = svm->vmcb->save.last_excp_from;
+ 		break;
+ 	case MSR_IA32_LASTINTTOIP:
+-		msr_info->data = svm_get_lbr_vmcb(svm)->save.last_excp_to;
++		msr_info->data = svm->vmcb->save.last_excp_to;
+ 		break;
+ 	case MSR_VM_HSAVE_PA:
+ 		msr_info->data = svm->nested.hsave_msr;
+@@ -3013,10 +2987,10 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
+ 		if (data & DEBUGCTL_RESERVED_BITS)
+ 			return 1;
  
--	if (enable_lbrv)
--		svm_enable_lbrv(vcpu);
--	else
--		svm_disable_lbrv(vcpu);
-+	/*
-+	 * During nested transitions, it is possible that the current VMCB has
-+	 * LBR_CTL set, but the previous LBR_CTL had it cleared (or vice versa).
-+	 * In this case, even though LBR_CTL does not need an update, intercepts
-+	 * do, so always recalculate the intercepts here.
-+	 */
-+	svm_recalc_lbr_msr_intercepts(vcpu);
- }
+-		if (svm_get_lbr_vmcb(svm)->save.dbgctl == data)
++		if (svm->vmcb->save.dbgctl == data)
+ 			break;
  
- void disable_nmi_singlestep(struct vcpu_svm *svm)
+-		svm_get_lbr_vmcb(svm)->save.dbgctl = data;
++		svm->vmcb->save.dbgctl = data;
+ 		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+ 		svm_update_lbrv(vcpu);
+ 		break;
 
 
