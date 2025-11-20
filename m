@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-195336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0CAC75453
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:14:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 546AFC75462
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:14:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 4D3132BAE8
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:14:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id C746A2BADF
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98EBB3624DF;
-	Thu, 20 Nov 2025 16:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB11361DCF;
+	Thu, 20 Nov 2025 16:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJLevNUt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZLikKyN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58768363C44
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 16:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6B13587BD
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 16:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763655238; cv=none; b=Bi/VP8qZZspKFTF+k0wq0Y2L9ab7fsXa5tEVeYPQOJ0RarEiZpQ79AGBEhuS7cxTka0jkPyZSS0qmr3UO/pmSDEA3zFq+AzzrVsw3D/rXZXe17d8BSgIAZiYQF4KqRq3rx1svlVhTjCYL7W01SP9jGMI15iyX0KAw9+cG00mPxU=
+	t=1763655288; cv=none; b=V+A/+4+rzzy/xTwLJfYgWRgouRni13gUVnPxR+dnwdyaNOV8O1hm0qH2mqT1iLlclcJxcJxKDNpbES4tzulqqGC78WKQlA9xFA86aWqogUF/U5/xxNQ+rjklFHMNUtM/80i2WEMxvDgyrIkpzz9VdmiMYnpOwv8Mh93Ta+7HJ9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763655238; c=relaxed/simple;
-	bh=UNDvfcRL2FPBONhYjku8mfWlJrky30DL7UJSvRUocWk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KM5eMOa+7Tbf6j14KIxhYPKLGeXvJrguu7RTd+zZ/a0DRvpDOjbrxWNi7HXdr54KKwtKtSeyXm7PXAc3WELUm16wmTuMsBwt6uWiNqet59EMsnaDHdPcr8VorqqIeoBptzxV6+2qipkUfpsdigjrDg+wGybEDufD76mFMpHN8H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJLevNUt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935C4C116D0;
-	Thu, 20 Nov 2025 16:13:57 +0000 (UTC)
+	s=arc-20240116; t=1763655288; c=relaxed/simple;
+	bh=EVh3juoHjHFGuYTjZzefb09ptr119BQRekhG6/9txAY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uqwwK3PaWh7fqlMhGt/FuJ1RQdmRn2eFKVBlFTg/ob7m3mzLJLmqybdmCNDhwwdDAefdwELzBpys4vLLDjbe3+Bo2M/77hr1IzgmKO1ER3gv8A2zaUda5+8BEgVjRrBCPpYIZ2BYpRV2gA45mmKYIWA7+vlmL2jCDFEaZc5xHHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZLikKyN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2378C4CEF1;
+	Thu, 20 Nov 2025 16:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763655238;
-	bh=UNDvfcRL2FPBONhYjku8mfWlJrky30DL7UJSvRUocWk=;
+	s=korg; t=1763655288;
+	bh=EVh3juoHjHFGuYTjZzefb09ptr119BQRekhG6/9txAY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=jJLevNUtk3vt3AXYo31lRKRqJB6W+3uUBkUMwG98BPQnwNt3U0msmtbF3SuqPErD0
-	 POQFR58ZkyWfoUnsnAQAsqsI46Mq1o2f1CRiqvVqt88wPeqO+0uO7qe7PKW35o/uzU
-	 kd0JFycJFFYLqFBv59CfUemGxwHTzNH+hOR+G/E8=
-Subject: FAILED: patch "[PATCH] mmc: sdhci-of-dwcmshc: Change DLL_STRBIN_TAPNUM_DEFAULT to" failed to apply to 5.15-stable tree
-To: shawn.lin@rock-chips.com,alchark@gmail.com,sigmaris@gmail.com,ulf.hansson@linaro.org
+	b=EZLikKyNezbjZNN6qwhk0mjMBk5mkkQVIRIWN+rfPbtYHqLRkHowVd07ElJzEH7k+
+	 EU7QTLKXKDSIiyKanyhMmdFPlxoyib2JfPOt/7eKazgUDq0Po4Nd2yMh8EISInu36W
+	 lCQUrExjCsOcI5EBQAiMbttyFFnYf5Qdps6QeS90=
+Subject: FAILED: patch "[PATCH] ALSA: usb-audio: Fix potential overflow of PCM transfer" failed to apply to 5.4-stable tree
+To: tiwai@suse.de,lizhi.xu@windriver.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 20 Nov 2025 17:13:55 +0100
-Message-ID: <2025112055-suspense-expiring-db69@gregkh>
+Date: Thu, 20 Nov 2025 17:14:37 +0100
+Message-ID: <2025112037-brick-dreadful-388a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x a28352cf2d2f8380e7aca8cb61682396dca7a991
+git cherry-pick -x 05a1fc5efdd8560f34a3af39c9cf1e1526cc3ddf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112055-suspense-expiring-db69@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112037-brick-dreadful-388a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,34 +77,53 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a28352cf2d2f8380e7aca8cb61682396dca7a991 Mon Sep 17 00:00:00 2001
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Date: Mon, 20 Oct 2025 09:49:41 +0800
-Subject: [PATCH] mmc: sdhci-of-dwcmshc: Change DLL_STRBIN_TAPNUM_DEFAULT to
- 0x4
+From 05a1fc5efdd8560f34a3af39c9cf1e1526cc3ddf Mon Sep 17 00:00:00 2001
+From: Takashi Iwai <tiwai@suse.de>
+Date: Sun, 9 Nov 2025 10:12:07 +0100
+Subject: [PATCH] ALSA: usb-audio: Fix potential overflow of PCM transfer
+ buffer
 
-strbin signal delay under 0x8 configuration is not stable after massive
-test. The recommandation of it should be 0x4.
+The PCM stream data in USB-audio driver is transferred over USB URB
+packet buffers, and each packet size is determined dynamically.  The
+packet sizes are limited by some factors such as wMaxPacketSize USB
+descriptor.  OTOH, in the current code, the actually used packet sizes
+are determined only by the rate and the PPS, which may be bigger than
+the size limit above.  This results in a buffer overflow, as reported
+by syzbot.
 
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Tested-by: Alexey Charkov <alchark@gmail.com>
-Tested-by: Hugh Cole-Baker <sigmaris@gmail.com>
-Fixes: 08f3dff799d4 ("mmc: sdhci-of-dwcmshc: add rockchip platform support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Basically when the limit is smaller than the calculated packet size,
+it implies that something is wrong, most likely a weird USB
+descriptor.  So the best option would be just to return an error at
+the parameter setup time before doing any further operations.
 
-diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
-index eebd45389956..5b61401a7f3d 100644
---- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-+++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-@@ -94,7 +94,7 @@
- #define DLL_TXCLK_TAPNUM_DEFAULT	0x10
- #define DLL_TXCLK_TAPNUM_90_DEGREES	0xA
- #define DLL_TXCLK_TAPNUM_FROM_SW	BIT(24)
--#define DLL_STRBIN_TAPNUM_DEFAULT	0x8
-+#define DLL_STRBIN_TAPNUM_DEFAULT	0x4
- #define DLL_STRBIN_TAPNUM_FROM_SW	BIT(24)
- #define DLL_STRBIN_DELAY_NUM_SEL	BIT(26)
- #define DLL_STRBIN_DELAY_NUM_OFFSET	16
+This patch introduces such a sanity check, and returns -EINVAL when
+the packet size is greater than maxpacksize.  The comparison with
+ep->packsize[1] alone should suffice since it's always equal or
+greater than ep->packsize[0].
+
+Reported-by: syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bfd77469c8966de076f7
+Link: https://lore.kernel.org/690b6b46.050a0220.3d0d33.0054.GAE@google.com
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251109091211.12739-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+
+diff --git a/sound/usb/endpoint.c b/sound/usb/endpoint.c
+index 880f5afcce60..cc15624ecaff 100644
+--- a/sound/usb/endpoint.c
++++ b/sound/usb/endpoint.c
+@@ -1362,6 +1362,11 @@ int snd_usb_endpoint_set_params(struct snd_usb_audio *chip,
+ 	ep->sample_rem = ep->cur_rate % ep->pps;
+ 	ep->packsize[0] = ep->cur_rate / ep->pps;
+ 	ep->packsize[1] = (ep->cur_rate + (ep->pps - 1)) / ep->pps;
++	if (ep->packsize[1] > ep->maxpacksize) {
++		usb_audio_dbg(chip, "Too small maxpacksize %u for rate %u / pps %u\n",
++			      ep->maxpacksize, ep->cur_rate, ep->pps);
++		return -EINVAL;
++	}
+ 
+ 	/* calculate the frequency in 16.16 format */
+ 	ep->freqm = ep->freqn;
 
 
