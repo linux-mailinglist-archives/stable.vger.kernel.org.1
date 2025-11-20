@@ -1,150 +1,97 @@
-Return-Path: <stable+bounces-195312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 412BDC752AD
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:56:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C8CC753FF
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:10:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 4C2EA2B9CE
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 15:56:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id E55CC2ABDB
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A4F2E88B0;
-	Thu, 20 Nov 2025 15:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69B6361DCF;
+	Thu, 20 Nov 2025 16:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Exvh0YZf"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M74yrSbi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BD215855E
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 15:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3F035E553;
+	Thu, 20 Nov 2025 16:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763654205; cv=none; b=sxfYru5RM9dLrtINHio3+cOlTDECuu92ETYsJgeRPUzuossBF+39gjPoPv/N6mYjUwlwblluyy0Jc6ZJaIAXLGmsnr1LA/HYPKxtvXagDHbBdUYbUi25+GQI7y/sjhj+BMY6LOX2RyYfUG64XTHK2AsOfvJlJ0YmOkFXtCl00Ro=
+	t=1763655043; cv=none; b=IYj1nSbk0mQHdbyDolWnWJQtFQ7vXDCWkFkn7HlIgr4ZkTpZ8e4Zy+ht4X12AOC7aq0UDIWYo/T/tOEZxz85O1FFKAXvQXi9LXit8eZBGV1pz1C5AsiQetF7VITmLmwBSnyLPzRQGP569LcAiUZV5UAe7/jcbmyqQMgVs0+mauc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763654205; c=relaxed/simple;
-	bh=ri6QVeZGuO8PpBNcB2BXJ7Kt7GxzykjSxdbzCM4OloQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QaCkj+cpG3KgGe2CjknRLd2Cp2fjA7145DcacwAoIzpKLGDvfrflaZZqBvx/iHhyS72xgY+IPe3H2VoybqWVo2MJp3Wph+vMA+G4zbZnv/4+uK5pw+nCb16hcHMERdj27nEuV24FJkQxJHh7yI7sE/po+ZBw2e48pU0NjfiP4iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Exvh0YZf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80274C4CEF1;
-	Thu, 20 Nov 2025 15:56:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763654204;
-	bh=ri6QVeZGuO8PpBNcB2BXJ7Kt7GxzykjSxdbzCM4OloQ=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Exvh0YZfIpE01mtnZagr9m/aTughGU8iMbvnBhqwH+Fbth9BweLhwUu2SosFxARqk
-	 58rO3yZqJVdtjZFc1Zk13wtuW6G0R9kfiPtfCrDOBXY07SFMJjfgBphmsF0C52x1DA
-	 8S6C1LD6aMULabb5KQ+sI9FXRSRwWLM9H0JQ+FPE=
-Subject: FAILED: patch "[PATCH] scripts/decode_stacktrace.sh: fix build ID and PC source" failed to apply to 6.17-stable tree
-To: cmllamas@google.com,akpm@linux-foundation.org,broonie@kernel.org,catalin.marinas@arm.com,leitao@debian.org,luca.ceresoli@bootlin.com,mark.rutland@arm.com,matttbe@kernel.org,mbenes@suse.cz,puranjay@kernel.org,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 20 Nov 2025 16:56:31 +0100
-Message-ID: <2025112031-catalyze-sleep-ba6e@gregkh>
+	s=arc-20240116; t=1763655043; c=relaxed/simple;
+	bh=Eb6ynyOtXG61Ezk7YCZHzjM2XgYPekLwM/FoJGDK3oo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=PYO00tYKh3NTrAUVcLezaYldmkt+UDaHdEPUrLKWd7O9nMK1t6vHAHYYXU+PpoRttryDtN6sooZjrLMDzEQe3RafESDJWP5v7g6H2VfSJzbU6vDCMvHjUWrC643FZQPhwHvkeTYpZ/wN0Y6Fx/Ai7VlyH+wlphdwWLBUo05qBR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M74yrSbi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13C9C116C6;
+	Thu, 20 Nov 2025 16:10:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763655043;
+	bh=Eb6ynyOtXG61Ezk7YCZHzjM2XgYPekLwM/FoJGDK3oo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=M74yrSbiwOPk8R8LlIfXhct7HD622KPMESzjR5/kvO3QCoAHQ7YRHowHWhUcYvuzu
+	 2WraB+ZKGgiaoqVN+yog0Tzki9zg/F03pVqAGAtw7PUXBc57xeD5U2XZ/6MjtidlZG
+	 QZwSU6DdxEtR+EPBRAkkdqn9D0gPswUQO8e93HLkSiqfHNRrX1nOblGFvSmmFhHm8f
+	 0Df1uia/4ukLeh/WeTanYj8B87ZUCnFG7XnyCNi9EboRaGXQo/i6FrhTIvvA7TkzyS
+	 avBfB+qw4x8hUmyvsjWBJBPlPR+GAizOJH8kCGZtGC143uimYYt6PV2rlIeeQe/xJw
+	 EpwlzUb5RMGAA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70F6D3A40FC2;
+	Thu, 20 Nov 2025 16:10:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] be2net: pass wrb_params in case of OS2BMC
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176365500794.1690915.6904445190938491859.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Nov 2025 16:10:07 +0000
+References: <20251119105015.194501-1-a.vatoropin@crpt.ru>
+In-Reply-To: <20251119105015.194501-1-a.vatoropin@crpt.ru>
+To: =?utf-8?b?0JLQsNGC0L7RgNC+0L/QuNC9INCQ0L3QtNGA0LXQuSA8YS52YXRvcm9waW5AY3Jw?=@codeaurora.org,
+	=?utf-8?b?dC5ydT4=?=@codeaurora.org
+Cc: ajit.khaparde@broadcom.com, sriharsha.basavapatna@broadcom.com,
+ somnath.kotur@broadcom.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ VenkatKumar.Duvvuru@Emulex.Com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+ stable@vger.kernel.org
 
+Hello:
 
-The patch below does not apply to the 6.17-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On Wed, 19 Nov 2025 10:51:12 +0000 you wrote:
+> From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+> 
+> be_insert_vlan_in_pkt() is called with the wrb_params argument being NULL
+> at be_send_pkt_to_bmc() call site.  This may lead to dereferencing a NULL
+> pointer when processing a workaround for specific packet, as commit
+> bc0c3405abbb ("be2net: fix a Tx stall bug caused by a specific ipv6
+> packet") states.
+> 
+> [...]
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
-git checkout FETCH_HEAD
-git cherry-pick -x 7d9f7d390f6af3a29614e81e802e2b9c238eb7b2
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112031-catalyze-sleep-ba6e@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
+Here is the summary with links:
+  - [net] be2net: pass wrb_params in case of OS2BMC
+    https://git.kernel.org/netdev/net/c/7d277a7a5857
 
-Possible dependencies:
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 7d9f7d390f6af3a29614e81e802e2b9c238eb7b2 Mon Sep 17 00:00:00 2001
-From: Carlos Llamas <cmllamas@google.com>
-Date: Thu, 30 Oct 2025 01:03:33 +0000
-Subject: [PATCH] scripts/decode_stacktrace.sh: fix build ID and PC source
- parsing
-
-Support for parsing PC source info in stacktraces (e.g.  '(P)') was added
-in commit 2bff77c665ed ("scripts/decode_stacktrace.sh: fix decoding of
-lines with an additional info").  However, this logic was placed after the
-build ID processing.  This incorrect order fails to parse lines containing
-both elements, e.g.:
-
-  drm_gem_mmap_obj+0x114/0x200 [drm 03d0564e0529947d67bb2008c3548be77279fd27] (P)
-
-This patch fixes the problem by extracting the PC source info first and
-then processing the module build ID.  With this change, the line above is
-now properly parsed as such:
-
-  drm_gem_mmap_obj (./include/linux/mmap_lock.h:212 ./include/linux/mm.h:811 drivers/gpu/drm/drm_gem.c:1177) drm (P)
-
-While here, also add a brief explanation the build ID section.
-
-Link: https://lkml.kernel.org/r/20251030010347.2731925-1-cmllamas@google.com
-Fixes: 2bff77c665ed ("scripts/decode_stacktrace.sh: fix decoding of lines with an additional info")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Marc Rutland <mark.rutland@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Miroslav Benes <mbenes@suse.cz>
-Cc: Puranjay Mohan <puranjay@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/scripts/decode_stacktrace.sh b/scripts/decode_stacktrace.sh
-index c73cb802a0a3..8d01b741de62 100755
---- a/scripts/decode_stacktrace.sh
-+++ b/scripts/decode_stacktrace.sh
-@@ -277,12 +277,6 @@ handle_line() {
- 		fi
- 	done
- 
--	if [[ ${words[$last]} =~ ^[0-9a-f]+\] ]]; then
--		words[$last-1]="${words[$last-1]} ${words[$last]}"
--		unset words[$last] spaces[$last]
--		last=$(( $last - 1 ))
--	fi
--
- 	# Extract info after the symbol if present. E.g.:
- 	# func_name+0x54/0x80 (P)
- 	#                     ^^^
-@@ -295,6 +289,14 @@ handle_line() {
- 		last=$(( $last - 1 ))
- 	fi
- 
-+	# Join module name with its build id if present, as these were
-+	# split during tokenization (e.g. "[module" and "modbuildid]").
-+	if [[ ${words[$last]} =~ ^[0-9a-f]+\] ]]; then
-+		words[$last-1]="${words[$last-1]} ${words[$last]}"
-+		unset words[$last] spaces[$last]
-+		last=$(( $last - 1 ))
-+	fi
-+
- 	if [[ ${words[$last]} =~ \[([^]]+)\] ]]; then
- 		module=${words[$last]}
- 		# some traces format is "(%pS)", which like "(foo+0x0/0x1 [bar])"
 
 
