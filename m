@@ -1,134 +1,215 @@
-Return-Path: <stable+bounces-195424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5304C765FD
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 22:28:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A71A1C7666C
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 22:42:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0A4C24E1A23
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 21:28:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 73A574E2285
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 21:42:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6984F30AAB6;
-	Thu, 20 Nov 2025 21:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA9D2E9EBB;
+	Thu, 20 Nov 2025 21:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B+KYuYi+"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wYB2li8M"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012010.outbound.protection.outlook.com [40.107.200.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704D72EC55D
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 21:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763674118; cv=none; b=Bxu4pSArwuoBb6bEnueNHR8FiHCVQnVr2XuqckmUCBddGVIzc+XQkZq63vmT2t9Nv+hY0obB/qSMwRo83z5xm1+rGKhxW84txLsIarBsqE5L4TDtSzEUdavxc0uI0jKjUboeWhoUBP3+Hl7KbIZQDNwHJOREUz6EJxy6nKVzcs4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763674118; c=relaxed/simple;
-	bh=Q8U3O6jgZZEpClalOlIGtLCm09UlDJ0npUO0CA7BwqM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gAznA4m4Rz1gi8SmtSz2Ez1X4cnM3JyYV5FntF9C+yG8BQ6LHeVf4RFsQXE95xUV3siYvVbC/4RoX0NHGZvMY9MRoepCqo2z/31nuMZsaXti2Jb4ZU3aJW2DOnDYbULz0R8vAn8u13+JahpLxjYELU/Acvyrthq6i6GT3/A0brg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B+KYuYi+; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4eda77e2358so10796431cf.1
-        for <stable@vger.kernel.org>; Thu, 20 Nov 2025 13:28:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763674115; x=1764278915; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q8U3O6jgZZEpClalOlIGtLCm09UlDJ0npUO0CA7BwqM=;
-        b=B+KYuYi+UNxb0Vhe9OJRva7kpG52MmIlo1GdB6PwClyWeW4AVJ9yzTzJdDOorPgikT
-         zyx3pUKYsyrc0KUqcUkkPTW8YUDQOBWqcPs7tx2MXzbrb1fkJklBe6Rwl364/sPegnK1
-         go0c3mHzo0WojQDH27l8zkJNwqvDGBpug6jtifwcpygUfkvp0hgs1tl90hwBg9QvkGap
-         v71QPEIfTbmiqbQPYVMOj9dJkf+gimkZlHHS4X2751BUM7woBQpdAXVgPqyeI+meVnMT
-         Cn/xR4+lC7kFlmrFBqnMB8pHb8S8MxirYkJm5zYErgtQIDsEcaYMiEuSlY9wWcDMECEQ
-         XeYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763674115; x=1764278915;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Q8U3O6jgZZEpClalOlIGtLCm09UlDJ0npUO0CA7BwqM=;
-        b=AeLrGJBYNX6l2atuwIoLVdmr35YYmYqYsBsPAbfrvDZHJZOgPDs7sza8QCSJJ641lc
-         nQFNeFfn0Ua4F5s7u7Z9HmmLYmg2YUUwJQjfuPJxrPwEEV1YNx9C7CUTodEteaBIQS/G
-         5fEm95Sgn0R247QCPtx97hM9/27R8xyTNSSsxSnPx/8VYQ4Ey4gPbrBH/95A8ZpYbbyK
-         gXh7Oaf3NO0Wbi9qyR/Iuu/mefes5Ujn9CzEqXlB8FD8Fh/3nSaq8wwcIR2xEiqtf+Ur
-         Gblv5U4sSRLSm0r/e1COloNe3DUQxSn8hj72Rqin73NJ1Mo8gXYrzzskXOeCN2GP2v5i
-         LNWA==
-X-Forwarded-Encrypted: i=1; AJvYcCXbUyiKSKqIVaMWpZfUqy+LAGqwBjKlpPBSP4hxG77SMEcVpyrB/KklUBCU1HJmaEwV2Nwfq8E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwS0U21zcBq3KVwQ2LTIf4IjMjtCAydhznUdAusorLD/+I04DiZ
-	3MUg65b4AlyvQaHyrunv3NjLRUgZ8jdwL3sfbaE8+f1pmQo+WdiahfhRsTztYAv3JjHUmm72hwA
-	Zz55DPOiyOjATuT+/lTpsiTGAGGzUe3c=
-X-Gm-Gg: ASbGncu8xeW9xinncYpWTAmEU1nXyE8+IuAD6ANz095Y3/1rV6Uz94TCH0Qw5OVMCEw
-	vlyWN0kNCK0T2AwE/wRScBhWhib+28FKUedmjynAIfH4Eb0/WNRUlPshvk57Pqvxkewp4pWFu7T
-	/aZyIJT2MF3ZQdZSAGJgdKTj/TCOIsGq30z+dJsjbARx0x62liXNFbu0Zg6GoXzLwEldixNfGNd
-	XMgqq3B9UzEJaXQjP/s+FlH/8TysrFvUW/pbfO5JnOrwdNsC9F2wj001SihP2FasFgDpw==
-X-Google-Smtp-Source: AGHT+IEa5T+vJspuWQ+toPhdixw0WwlXC4G0HJVZEYNsBGrI4UEp3MsHvbWsFOZ191NkPJIFH9UZtf+mHSYJj1eRNx0=
-X-Received: by 2002:a05:622a:4ca:b0:4ee:15af:b938 with SMTP id
- d75a77b69052e-4ee5892e29dmr992241cf.70.1763674115151; Thu, 20 Nov 2025
- 13:28:35 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5458E239E8B;
+	Thu, 20 Nov 2025 21:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763674922; cv=fail; b=EIEcdMbmYM1IqhZfkIkWMFoa2FFhrj6/BGDBpwNTq0aniWDvsBVQL2onBq7fmVnM/DkiXgd2PZmk97yR9nKAdsIZm+TB+jK/EXkZc+99Muy+Y++0HEzExOyxKSWK7BO7ehOyMksjl2ox5DwKHApLp0qVmzWEnBHVnaFZAJuHkME=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763674922; c=relaxed/simple;
+	bh=UMeCf11ZR2MVACE6u8P0fxlNQEnrSNFubc017CEMviw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SR/x1vcyotI4/uDE2DgSKcz26bh2jHvYnCep+vSiVRjEUEufOYSAatScD1Hni4/Q8oyJlrZ5BlqKzaDIR6K5JAKgZpKoq+rGWNOxLit/KL4Uxvcc8gelwlPmHt6lUSN+vyUBrhg0Dw63Ht54Rhq9dB+E1v0RBNrg843Y5sGM0BU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wYB2li8M; arc=fail smtp.client-ip=40.107.200.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ShnNV4enkjDRUNWDFqIaZChc+4Olph//59F4VIz7o06G32Xs4HojSVZMefK4hs8KynWsfW/zOqIEriVxth/AqDqkG/iMN/Xtx3sPTW4DAks8wkGb7qEER55aZKnjNSAXt/OgJB9Rrt+WYVIbG5WxTLPvM10dph6upnlJPlYU0zZbjg8sGsx5fo209wwVOWCOCiTbQTH2T3E7a3QVkzgVB2ycEb/J3SvcX7pcIrdWa2aFD8ajOqdsGcAUXXoKqrmtQKDx+XLBBdwaupQ3m4vBHL9/Szp56J+WjCnmBNK4tPwKkrnlnH4ap8muGSIi0KGn3IVs0ymhj67a4bbNVtO3Rg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=q/ERDym35WJk7eK/B4r65pzEhT/L8/KM81Q0tkXOddo=;
+ b=ddXtXRs2T+7tk1NyxT6GRjxptvhEhzlh/4atqJMWcvTDGjyVSXE7E/g2c0oZRymhtuEQn7+/ARO7d3mPq/9JsEDyX2FX/2T/exjd49fDCuEHuy3VLCrZO5ESbYx6g66zYrUpldcA3nia9QvUMFMjeAtDbRk0Art9dvXB7Bsz7pCxwiRHwGtEp4ft/xX4XIthGo9hdTbaNLy4Ktys3KpyF/RhRNj2CyljI9DqqIQna0StV+7dKgrQXLyYc9+gpd4eVA82MPMGWGxP9J8/Qr2gorBtQVhHgF3cPpJjDaNb4lZuyoREnrpGyOyXJPCGPo87PI2VWEIC46t7doNp6TtzNw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=q/ERDym35WJk7eK/B4r65pzEhT/L8/KM81Q0tkXOddo=;
+ b=wYB2li8MAgcCjtZ83u7iF65ZRiqAH0qwstWUDkquDtrDYvapyLvAFM0Hg7wwk/pKC3rXHQnt6QZU+1Dz7aQbuqk7hvuRildUAdi46oT5JTj+jCul3KyiqPWvczxHqW79XjoJXgT0oR+HPDU7w/ZCigjK/A3d7EWChnVTm5KkJAA=
+Received: from BYAPR02CA0059.namprd02.prod.outlook.com (2603:10b6:a03:54::36)
+ by PH8PR12MB6842.namprd12.prod.outlook.com (2603:10b6:510:1c9::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Thu, 20 Nov
+ 2025 21:41:53 +0000
+Received: from SJ1PEPF00002325.namprd03.prod.outlook.com
+ (2603:10b6:a03:54:cafe::df) by BYAPR02CA0059.outlook.office365.com
+ (2603:10b6:a03:54::36) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.11 via Frontend Transport; Thu,
+ 20 Nov 2025 21:41:53 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF00002325.mail.protection.outlook.com (10.167.242.88) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9343.9 via Frontend Transport; Thu, 20 Nov 2025 21:41:53 +0000
+Received: from titanite-d354host.amd.com (10.180.168.240) by
+ satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 20 Nov 2025 13:41:50 -0800
+From: Avadhut Naik <avadhut.naik@amd.com>
+To: <stable@vger.kernel.org>
+CC: <gregkh@linuxfoundation.org>, <sashal@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <avadhut.naik@amd.com>, Smita Koralahalli
+	<Smita.KoralahalliChannabasappa@amd.com>, Tony Luck <tony.luck@intel.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>, Borislav Petkov <bp@alien8.de>, "Qiuxu
+ Zhuo" <qiuxu.zhuo@intel.com>
+Subject: [PATCH] x86/mce: Handle AMD threshold interrupt storms
+Date: Thu, 20 Nov 2025 21:41:24 +0000
+Message-ID: <20251120214139.1721338-1-avadhut.naik@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251120184211.2379439-1-joannelkoong@gmail.com>
- <20251120184211.2379439-2-joannelkoong@gmail.com> <7fae20ca-d7b0-4786-8c31-288648db8ad0@kernel.org>
-In-Reply-To: <7fae20ca-d7b0-4786-8c31-288648db8ad0@kernel.org>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Thu, 20 Nov 2025 13:28:24 -0800
-X-Gm-Features: AWmQ_bmnvTHHOQkyw-5ik9LsEU1gIAn8vSNbEvhvGRrj7a058LOg6piKf3ugJVk
-Message-ID: <CAJnrk1ZpU3eqh7jN8r-ZPyFsuAjkKgwJ-_Sx0L=710hD0UYwUg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] mm: rename AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM to AS_WRITEBACK_MAY_HANG
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, shakeel.butt@linux.dev, 
-	athul.krishna.kr@protonmail.com, miklos@szeredi.hu, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002325:EE_|PH8PR12MB6842:EE_
+X-MS-Office365-Filtering-Correlation-Id: 08910fb0-0dc1-474a-6630-08de287d9ed7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?a54wWhNxz/lS/P0dkxVxVaHe6QqDRO05trdfYJeO5rX9MoVQ0g6ekx3LU/oW?=
+ =?us-ascii?Q?anL1oADat0pwZrQ6DTn8BMuR8FvYlFe2prjQmv28lisoorElJgV0uAEFCe4j?=
+ =?us-ascii?Q?FJ7XittU6PVCP727T7cZ0sPWvUj1HrMd33RoUjs6xCwa1gsAMA6ueHoft89U?=
+ =?us-ascii?Q?BMhlRlso47ldAi9ywFnmVgdVP3iQE3yu3HKKT9xoVtbgwfO94ObF/e7mxaEq?=
+ =?us-ascii?Q?mRRlI2NbRCOVYvCOXqixcBeXCxIsfV/qCgtipzZtfSzWo2zbsrXQWEIw8XcG?=
+ =?us-ascii?Q?x/F6oV0q+UdTWlmjAqymUPygyQ2ruSNNPUKh9ZbvdQ94umSI76lTit0ybRZQ?=
+ =?us-ascii?Q?pAiTvePKynFF8bDVyxeJrUyKeteVQunk3psMes7gWfzN0q+auv2pCxfPZrDJ?=
+ =?us-ascii?Q?0KwQUzqmpQsdqSfXm3ya19q3fdMzgfYjamZyt+x9+0uxOhZwXlQFhiQ5Vhdc?=
+ =?us-ascii?Q?0UTyKdy/KxHWr9DGd0JDdaCL/yTUlYEOHrS6aARhD2eM/p5O5fimZVdAccNQ?=
+ =?us-ascii?Q?AvLaMT6gtkxEcLlTvCv/nGYI/N1faZ0Mlt/Q6Sx/bVkK4ig3D423VXMjr86/?=
+ =?us-ascii?Q?UhrC/p0NdQ+yA9yWEq/BnvzLeRyASoynsNySSm2l40oZgYM399uBIYH/1vX4?=
+ =?us-ascii?Q?ji6DlmvWCJBso1BloeZ8gud8cs0tjGNAjMpJPD3WWrvuPXzDtdYSHzmi9mP0?=
+ =?us-ascii?Q?iRevOClOepTGY2Y0rJ2iuE9FcEWMiac8V68B2KshhxQqiEaeDIcsAbvAOBNG?=
+ =?us-ascii?Q?tvSdZ/jT0aejeWMNFv0+FLwPYF10mIZBptZJIIFWSAXtz8Yf04H3Q56Ub5Di?=
+ =?us-ascii?Q?RF45NG+mKCzcj44NGtM65Ns61KVItkFo8rvuoHdEK346OwVwoyy8RQiIKSdZ?=
+ =?us-ascii?Q?ZvD8wvSNt62zJom+kN77jgUcroOKPS+D2itENoYf9Arhfm3c8Flqhient6Wc?=
+ =?us-ascii?Q?tf/5RRy169Yhh7aTLK0bV1+PVG3wH73xUczlHSwhOmgx4gAc4oKhPXoT/mil?=
+ =?us-ascii?Q?e0h0T8AJbTw3fgnQMlNtFuEawLXhO3nZzRvDXF2LUqIdbZla1nEhZCjclcf9?=
+ =?us-ascii?Q?t3kwdsCWzY5kGVjc09JnL+Xd+e0zEeWQ7UuKGQMoiWYKloXVMb3h5YZIIewS?=
+ =?us-ascii?Q?r4xYqThSHQkByUId5G7uslzgbFVugaFjF4J35Y6oqZhQgLueqWoTn9QjbEWP?=
+ =?us-ascii?Q?Xe6STZCMF1beGbIRi5m2rRRDWBPmusK2HrntGPYHLxMaC4cAC8SKwC++H0n+?=
+ =?us-ascii?Q?Ws9SqPubgt1XkjkXvKlthr10xe0aVH13Wo2a2kLsdwJyuox9lM9V25YkHJkE?=
+ =?us-ascii?Q?/gsolQA5xR1eWXuENlktRGAibXuOo1vO3Y1kDF6/WNYAnsgEnhvpu//bZvEF?=
+ =?us-ascii?Q?X0qv9Tmmtdfvh2XaJf7Knpaj06pQ2Uv9cxekRDti1T5YgYPgpIgOC615n3fK?=
+ =?us-ascii?Q?qNKiMHJoI+YZRqzP+DyRzglvxdS/U2mD5K77zywGMU5mhXXO1HdGbCGmrsPY?=
+ =?us-ascii?Q?rACFzzb8Ariz+ZnQN0+O1W3CSsMGgPnJgz2EJCeKYhF/aO266Ct/JWTgOqtl?=
+ =?us-ascii?Q?UNuPDUSNAWntFlFUU5Y=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 21:41:53.2801
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08910fb0-0dc1-474a-6630-08de287d9ed7
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002325.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6842
 
-On Thu, Nov 20, 2025 at 12:08=E2=80=AFPM David Hildenbrand (Red Hat)
-<david@kernel.org> wrote:
->
-> On 11/20/25 19:42, Joanne Koong wrote:
-> > AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM was added to avoid waiting on
-> > writeback during reclaim for inodes belonging to filesystems where
-> > a) waiting on writeback in reclaim may lead to a deadlock or
-> > b) a writeback request may never complete due to the nature of the
-> > filesystem (unrelated to reclaim)
-> >
-> > Rename AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM to the more generic
-> > AS_WRITEBACK_MAY_HANG to reflect mappings where writeback may hang wher=
-e
-> > the cause could be unrelated to reclaim.
-> >
-> > This allows us to later use AS_WRITEBACK_MAY_HANG to mitigate other
-> > scenarios such as possible hangs when sync waits on writeback.
->
-> Hmm, there is a difference whether writeback may hang or whether
-> writeback may deadlock.
->
-> In particular, isn't it the case that writeback on any filesystem might
-> effectively hang forever on I/O errors etc?
->
-> Is this going back to the previous flag semantics before we decided on
-> AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM? (I'd have to look at the previous
-> discussions, but "writeback may take an indefinite amount" in patch #2
-> pretty much looks like what I remember there)
+From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 
-Yes, I think if we keep AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, then we
-would need another flag to denote the inode should be skipped in
-wait_sb_inodes(), which seems unideal. I was considering renaming this
-to AS_WRITEBACK_INDETERMINATE but I remember everyone hated that name.
+Extend the logic of handling CMCI storms to AMD threshold interrupts.
 
-Thanks,
-Joanne
+Rely on the similar approach as of Intel's CMCI to mitigate storms per CPU and
+per bank. But, unlike CMCI, do not set thresholds and reduce interrupt rate on
+a storm. Rather, disable the interrupt on the corresponding CPU and bank.
+Re-enable back the interrupts if enough consecutive polls of the bank show no
+corrected errors (30, as programmed by Intel).
 
->
-> --
-> Cheers
->
-> David
+Turning off the threshold interrupts would be a better solution on AMD systems
+as other error severities will still be handled even if the threshold
+interrupts are disabled.
+
+Also, AMD systems currently allow banks to be managed by both polling and
+interrupts. So don't modify the polling banks set after a storm ends.
+
+  [Tony: Small tweak because mce_handle_storm() isn't a pointer now]
+  [Yazen: Rebase and simplify]
+
+Stable backport notes:
+1. Currently, when a Machine check interrupt storm is detected, the bank's
+corresponding bit in mce_poll_banks per-CPU variable is cleared by
+cmci_storm_end(). As a result, on AMD's SMCA systems, errors injected or
+encountered after the storm subsides are not logged since polling on that
+bank has been disabled. Polling banks set on AMD systems should not be
+modified when a storm subsides.
+
+2. This patch is a snippet from the CMCI storm handling patch (link below)
+that has been accepted into tip for v6.19. While backporting the patch
+would have been the preferred way, the same cannot be undertaken since
+its part of a larger set. As such, this fix will be temporary. When the
+original patch and its set is integrated into stable, this patch should be
+reverted.
+
+Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Link: https://lore.kernel.org/20251104-wip-mca-updates-v8-0-66c8eacf67b9@amd.com
+Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+---
+This is somewhat of a new scenario for me. Not really sure about the
+procedure. Hence, haven't modified the commit message and removed the
+tags. If required, will rework both.
+Also, while this issue can be encountered on AMD systems using v6.8 and
+later stable kernels, we would specifically prefer for this fix to be
+backported to v6.12 since its LTS.
+---
+ arch/x86/kernel/cpu/mce/threshold.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/cpu/mce/threshold.c b/arch/x86/kernel/cpu/mce/threshold.c
+index f4a007616468..61eaa1774931 100644
+--- a/arch/x86/kernel/cpu/mce/threshold.c
++++ b/arch/x86/kernel/cpu/mce/threshold.c
+@@ -85,7 +85,8 @@ void cmci_storm_end(unsigned int bank)
+ {
+ 	struct mca_storm_desc *storm = this_cpu_ptr(&storm_desc);
+ 
+-	__clear_bit(bank, this_cpu_ptr(mce_poll_banks));
++	if (!mce_flags.amd_threshold)
++		__clear_bit(bank, this_cpu_ptr(mce_poll_banks));
+ 	storm->banks[bank].history = 0;
+ 	storm->banks[bank].in_storm_mode = false;
+ 
+
+base-commit: 8b690556d8fe074b4f9835075050fba3fb180e93
+-- 
+2.43.0
+
 
