@@ -1,146 +1,95 @@
-Return-Path: <stable+bounces-195417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67EAAC7622B
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 20:57:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD4CC76237
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 21:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 2DD05241EE
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 19:57:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id AD21B290A8
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 20:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F1830505B;
-	Thu, 20 Nov 2025 19:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828F62FB094;
+	Thu, 20 Nov 2025 20:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SwWvPOjK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FUgR5We2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E84285073
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 19:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F56E1E7C34
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 20:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763668621; cv=none; b=uRINnxuyXut3IKNiNGkXGzCWsMQgxoATt8BoFzbOye2TMPzt827OCk7pMIQxDCL6tx+P1xFuP5f5Xz0eWFJus1IkQ0oYWcR0vx1rL6HJFLsTbUfmiTgQdxnngfAS6CFG/LN3La/IF61zK/+Lijd5j2Wmboq0GiJQWEyLDHk1LMs=
+	t=1763669286; cv=none; b=S7Osv1Ye3bGac3NMhc5Ran/F2a7sp164mcvBwjpKvcsXSbmx0Ho8c8ORuQzIdtrUBWk5mJX1T72H9/iLdP23B94P5Jct7dTjErqw5f/d85cv2LB43Eq/WlUbK7CwAk8sYXzqmiGrtzPDz7KyIcsLruJsETjIfgqA3/8ieJi14uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763668621; c=relaxed/simple;
-	bh=4Yvbb3g077zKwbyMMLqqeQa7gk57PHN5LK72XxE4wag=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QBiHiMPmJZ88qoNIokhH8zGX36uXcIGW01yWGAF2SRZ/Nu0NkT4BjZqsSJrx93+0cFuCZn5suPhHDaqM7C8oz9EYkU1VDRsXGqz0QfUi2M325u6WBWnT453SYlXsJlQz7V95XOypyfCZYeEXl/z0HMy76BTnCgQGZEcQXu2Y1fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SwWvPOjK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68844C116B1;
-	Thu, 20 Nov 2025 19:57:00 +0000 (UTC)
+	s=arc-20240116; t=1763669286; c=relaxed/simple;
+	bh=VVP8DdbSUeK/J4HV2SMoyh6buJCbiFpKSw4KcUAUqQY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cB0fBycIsTLsE7Tipau0rsY/0MyadXLMxR8oS2oqcWxinyTU/pKFdzk3RAg+voMC7f5VT+4beVzRAOoZecjwtJoJeq4dgoWrkw9OZnqIqwhSgT0ChLAqiph3bX7xP8WgcgY+2CE1AVAoTxKt1xLJTq62P5kGeRAGQqn31uP5yUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FUgR5We2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFE1C4CEF1;
+	Thu, 20 Nov 2025 20:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763668621;
-	bh=4Yvbb3g077zKwbyMMLqqeQa7gk57PHN5LK72XxE4wag=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SwWvPOjKNE9brYwbgPdTuEbrfh4Iqr3Jojccf9ZLqQV1gbiC54/4JZc2mnu+KHKXr
-	 PkJFCzm03fvHf/PkCskTPSfBRIFYFsW6RMuuVpniAaONff1qY1lbnmBvmNG4X69sv3
-	 Ms3pvTCgOyz7Y9+VvlGt8yfYyOioRXxiI1XiwoFVX3s2XSrM5P2n6bcivy0f9s3h7N
-	 OOOlUq1ja/OuG9fiRQ9l/c3XmJcw5T8CZdKVJx5O/ncaGk/waaEEo2pukDvq5cd/Ie
-	 nMQOJ1lQm75rOfuFo5qWDnce5TSEvQVmtFayRGBs+m1pi+MIG+IC8E0N/axpry8oyn
-	 Iuew+6nwSwTWw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 4/4] net: netpoll: fix incorrect refcount handling causing incorrect cleanup
-Date: Thu, 20 Nov 2025 14:56:56 -0500
-Message-ID: <20251120195656.2297634-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251120195656.2297634-1-sashal@kernel.org>
-References: <2025112006-author-harmony-d5f7@gregkh>
- <20251120195656.2297634-1-sashal@kernel.org>
+	s=k20201202; t=1763669285;
+	bh=VVP8DdbSUeK/J4HV2SMoyh6buJCbiFpKSw4KcUAUqQY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FUgR5We2tVWz3KOYVUlN9XBm2aT9NIJuOBtVwZlHkIk4HijQ9xaoL+hJIAJzVu+1+
+	 kldFCboZhalUhd1A6glgmSWS/am1dk6WrKFWuw3nWY/EqbPTlBjKcfpoJ8EbqdFi3g
+	 O+NozSCVx3VB+rhgZnQj4yJT6++vwZZFZ2iN7liJIq42i19RJ9GsWPvnneOVvnmkEP
+	 YVnYefGXWT/BwT5aKviXdVcq3J5EWu/bsgSaZiwmY1rL2ykMW8tSzOpU52YpNL1g1p
+	 +s2vMiv7ehxSoD/sOABpJbOO/joYPl6Dou5XevL7Zm/WpOcVu4c53FBlovBXLvWOCJ
+	 6rkhH4KPoRbGg==
+Message-ID: <7fae20ca-d7b0-4786-8c31-288648db8ad0@kernel.org>
+Date: Thu, 20 Nov 2025 21:08:01 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] mm: rename AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM to
+ AS_WRITEBACK_MAY_HANG
+To: Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, shakeel.butt@linux.dev,
+ athul.krishna.kr@protonmail.com, miklos@szeredi.hu, stable@vger.kernel.org
+References: <20251120184211.2379439-1-joannelkoong@gmail.com>
+ <20251120184211.2379439-2-joannelkoong@gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251120184211.2379439-2-joannelkoong@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Breno Leitao <leitao@debian.org>
+On 11/20/25 19:42, Joanne Koong wrote:
+> AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM was added to avoid waiting on
+> writeback during reclaim for inodes belonging to filesystems where
+> a) waiting on writeback in reclaim may lead to a deadlock or
+> b) a writeback request may never complete due to the nature of the
+> filesystem (unrelated to reclaim)
+> 
+> Rename AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM to the more generic
+> AS_WRITEBACK_MAY_HANG to reflect mappings where writeback may hang where
+> the cause could be unrelated to reclaim.
+> 
+> This allows us to later use AS_WRITEBACK_MAY_HANG to mitigate other
+> scenarios such as possible hangs when sync waits on writeback.
 
-[ Upstream commit 49c8d2c1f94cc2f4d1a108530d7ba52614b874c2 ]
+Hmm, there is a difference whether writeback may hang or whether 
+writeback may deadlock.
 
-commit efa95b01da18 ("netpoll: fix use after free") incorrectly
-ignored the refcount and prematurely set dev->npinfo to NULL during
-netpoll cleanup, leading to improper behavior and memory leaks.
+In particular, isn't it the case that writeback on any filesystem might 
+effectively hang forever on I/O errors etc?
 
-Scenario causing lack of proper cleanup:
+Is this going back to the previous flag semantics before we decided on 
+AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM? (I'd have to look at the previous 
+discussions, but "writeback may take an indefinite amount" in patch #2 
+pretty much looks like what I remember there)
 
-1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
-   allocated, and refcnt = 1
-   - Keep in mind that npinfo is shared among all netpoll instances. In
-     this case, there is just one.
-
-2) Another netpoll is also associated with the same NIC and
-   npinfo->refcnt += 1.
-   - Now dev->npinfo->refcnt = 2;
-   - There is just one npinfo associated to the netdev.
-
-3) When the first netpolls goes to clean up:
-   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
-     refcnt.
-     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
-   - Set dev->npinfo = NULL, without proper cleanup
-   - No ->ndo_netpoll_cleanup() is either called
-
-4) Now the second target tries to clean up
-   - The second cleanup fails because np->dev->npinfo is already NULL.
-     * In this case, ops->ndo_netpoll_cleanup() was never called, and
-       the skb pool is not cleaned as well (for the second netpoll
-       instance)
-  - This leaks npinfo and skbpool skbs, which is clearly reported by
-    kmemleak.
-
-Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
-clarifying comments emphasizing that npinfo cleanup should only happen
-once the refcount reaches zero, ensuring stable and correct netpoll
-behavior.
-
-Cc: <stable@vger.kernel.org> # 3.17.x
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Fixes: efa95b01da18 ("netpoll: fix use after free")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251107-netconsole_torture-v10-1-749227b55f63@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/core/netpoll.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index f053141b88968..a92ed89376ab3 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -843,6 +843,10 @@ void __netpoll_cleanup(struct netpoll *np)
- 	if (!npinfo)
- 		return;
- 
-+	/* At this point, there is a single npinfo instance per netdevice, and
-+	 * its refcnt tracks how many netpoll structures are linked to it. We
-+	 * only perform npinfo cleanup when the refcnt decrements to zero.
-+	 */
- 	if (refcount_dec_and_test(&npinfo->refcnt)) {
- 		const struct net_device_ops *ops;
- 
-@@ -852,8 +856,7 @@ void __netpoll_cleanup(struct netpoll *np)
- 
- 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
- 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
--	} else
--		RCU_INIT_POINTER(np->dev->npinfo, NULL);
-+	}
- 
- 	skb_pool_flush(np);
- }
 -- 
-2.51.0
+Cheers
 
+David
 
