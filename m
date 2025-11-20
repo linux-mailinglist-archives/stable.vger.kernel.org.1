@@ -1,125 +1,86 @@
-Return-Path: <stable+bounces-195223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC12BC72271
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 05:17:09 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 165A1C722E0
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 05:23:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 258EE2A127
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 04:17:07 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F2AF435307D
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 04:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E780E2D24BF;
-	Thu, 20 Nov 2025 04:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A19B2C0F73;
+	Thu, 20 Nov 2025 04:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="R/llkZ8i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nOD8j1Pk"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188D62C0F73;
-	Thu, 20 Nov 2025 04:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D582135CE;
+	Thu, 20 Nov 2025 04:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763612204; cv=none; b=iSXbjbfET2gazysACW7tf4zG0gbEZm/quJRRmCLPvDRg7IRQP0Ff0jK31JqZQpY65WpGhTrI/ExGw5XVw7EIuSDuiRB2/d37A5kR4vRJLuGy2sYEXXOvaCP5dt5ul+eZzmfpPtmG+roo97cmBir5qEz5bO4u8wRhDgbj6N1pMj4=
+	t=1763612531; cv=none; b=JsDuyjCqU5AedNv1WQAAmttfmgsV71mFEB/u3ESrVRHGnL/JvyZ//GV9SUo79lQw2Ee0Fdu8o8JV9xFkkZCpAjKebpk1oWQ8uH/Ho/8CSmJ6RFutwiAW8GjRe8lJJRCEIQUTsGQxO0yuPyve3OBskRk3UZpjsALG0KkyIvEpa34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763612204; c=relaxed/simple;
-	bh=2+R7WWApY8TWGd2c9bP1RaQKspmfGyy6mhjQCc3vCzI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fdhM8Rukqsy5Mi2wUvLGsUFcp3hd4k4Kbs5imf3FiHasYCCG1/IVShMBz0j5WMuV31a1ZAtmkdRlfatxoXN4Oqge5WDtlR70nzLdf/USx8PYW+HAtCJQswZ1sMbBT4GIeZoh0Th1/C61UHo9N9zHaFxzPy3Dp0uvo0lIYKIx2nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=R/llkZ8i; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AK1NVSG013261;
-	Thu, 20 Nov 2025 04:16:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=uKJDSIG1l3qAAwUwQnYUyhPgHI+AfOXiCycqQ8h9e7Q=; b=
-	R/llkZ8irJLEGQlcnD63IC/un3n2XfOPnXXRgd+AEXIOU7rGf1ylkjLEffo31tPw
-	988T2FqvV0AjjpQaw6rRi9HQReG1IXWRyQRyvEravj2ayQNTBUWKKobZKw5wej1D
-	WCahd2+Q5oL/v3iD7kxaM2IhXLuXAUxdQcarDDpjzXl71hCpT028MYbmvohy1X94
-	PSdK10EvVy9++b7dGxmzNu/AmrLEL0fCBOoYhsvlvyD5hfMsm6Nf69K20chyq4tg
-	t0wF+3nZuT+CwlmxyqtRF4SlBYCzymJG8PsW/1bxSL9xXcG/hrXwE3n8PM/VqpQ0
-	GlkSO8+5Xuo60U6lziJtqA==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aejbur8wx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Nov 2025 04:16:37 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AK2RGMq007200;
-	Thu, 20 Nov 2025 04:16:36 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4aefybh4dk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Nov 2025 04:16:36 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AK4GKPr012546;
-	Thu, 20 Nov 2025 04:16:35 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4aefybh471-14;
-	Thu, 20 Nov 2025 04:16:35 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        moonafterrain@outlook.com
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>
-Subject: Re: [PATCH] scsi: aic94xx: fix use-after-free in device removal path
-Date: Wed, 19 Nov 2025 23:16:03 -0500
-Message-ID: <176357169020.3229299.14175005699966083724.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <ME2PR01MB3156AB7DCACA206C845FC7E8AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com>
-References: <ME2PR01MB3156AB7DCACA206C845FC7E8AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com>
+	s=arc-20240116; t=1763612531; c=relaxed/simple;
+	bh=bHoA5YIj8f9goOT8x55+QH3KcEvt0Aw7nd4f8ohSWh0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oOiXrFbUyKtdrDcwSkQfy1IRUnBZDB9wGw9PnVUy5xbj/WLoQSelb/G2tF4pj9SZHf9zcCGauil84cX7qTIyZGzfQx+EpM2QiqBFTgmDpiCc4w5w44CFv5vjS2AhpuOfncM5U5/pAx75E2XAfWLSOiZ+E4u5psXXzhYXhCztjqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nOD8j1Pk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89AAC4CEF1;
+	Thu, 20 Nov 2025 04:22:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763612530;
+	bh=bHoA5YIj8f9goOT8x55+QH3KcEvt0Aw7nd4f8ohSWh0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=nOD8j1PkS8DZ1TBDONiAouELH6FJYLNOciUm0jBbEz9FAlv0lDup/VMPszLHfvpnm
+	 KKczo6ZDlen8eEFkwdCbgg5PN/VUYG2l1hnKB9BukJfhbmYJJiMy0UiFA6Mvd1PZKK
+	 5CUryRCbAumEhUBGH7ZRDtATyExuVAWSfmQ+ivOuOwwTOOqbKgcvAfaDbG9cJSomUC
+	 LdRQ75SPMBvnOepV2C2MVJE2smWWozW9FA5obWV25utUzK/4UuNazEWmLg93B/89WZ
+	 HripqdmXbJXfwSfBN+T8xqxJrjoaqzmVIYispRr1uHAM8ZATtQdQmdITHNmf4Ngiv2
+	 MZPu3datVgTjA==
+Date: Wed, 19 Nov 2025 20:22:08 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, Arun
+ Ramadoss <arun.ramadoss@microchip.com>, Pascal Eberhard
+ <pascal.eberhard@se.com>, =?UTF-8?B?TWlxdcOobA==?= Raynal
+ <miquel.raynal@bootlin.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v5 4/5] net: dsa: microchip: Free previously
+ initialized ports on init failures
+Message-ID: <20251119202208.1b0f5a3a@kernel.org>
+In-Reply-To: <20251118-ksz-fix-v5-4-8e9c7f56618d@bootlin.com>
+References: <20251118-ksz-fix-v5-0-8e9c7f56618d@bootlin.com>
+	<20251118-ksz-fix-v5-4-8e9c7f56618d@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-20_01,2025-11-18_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 bulkscore=0
- mlxscore=0 malwarescore=0 adultscore=0 mlxlogscore=487 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2511200020
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfXwy6xlBWwn3VL
- ixw5f4RTVVF9sRRFthxugKIfxTN541zqhizi0sG9zhlfzeoLbx8KWDTKRpgiHCkdS0dL0+CQbC6
- 2624GR3D65cLDM8BHa6iK6zynPRSg9tG/qV2RD0UFe33ai2ysL2zUJOHNr9jzwqWudtiXRpEXrM
- y3zl6lbxi7vsT5hggoiQfZtHEIIwrvtj9DIm7C0eQyN7oM2SNvaenGTGvv11rffCYZ/K4VS1t/R
- n7sIxkx5A5azblSO8jdtIn035zhq8wSJqlsJb6ohMBWi+EhiMXbS7fuIqZ4mvDcCkx8sg7vBhSj
- 5brvu1TEo+kKlzWdUeur/U1bOamsKqMd79IgiRYR9Di8cjUMQF7RxP/CZMy88oos7OwWbflhHbD
- 4aCv6BUb9Je/ft+BU9Q+l1BgV+9oUg==
-X-Proofpoint-GUID: Yse-u4KPXFgJEaPX_tg-VI0OeH2lR45M
-X-Proofpoint-ORIG-GUID: Yse-u4KPXFgJEaPX_tg-VI0OeH2lR45M
-X-Authority-Analysis: v=2.4 cv=Rdydyltv c=1 sm=1 tr=0 ts=691e9625 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=UqCG9HQmAAAA:8 a=-IL5odScx_SrRfHQifgA:9 a=QEXdDO2ut3YA:10
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 29 Oct 2025 00:29:04 +0800, moonafterrain@outlook.com wrote:
+On Tue, 18 Nov 2025 17:13:25 +0100 Bastien Curutchet (Schneider
+Electric) wrote:
+>  			if (dev->info->ptp_capable) {
+>  				ret = ksz_ptp_irq_setup(ds, dp->index);
+> -				if (ret)
+> -					goto out_pirq;
+> +				if (ret) {
+> +					ksz_irq_free(&dev->ports[dp->index].pirq);
+> +					goto port_release;
 
-> The asd_pci_remove() function fails to synchronize with pending tasklets
-> before freeing the asd_ha structure, leading to a potential use-after-free
-> vulnerability.
-> 
-> When a device removal is triggered (via hot-unplug or module unload), race condition can occur.
-> 
-> The fix adds tasklet_kill() before freeing the asd_ha structure, ensuring
-> all scheduled tasklets complete before cleanup proceeds.
-> 
-> [...]
+please jump to the correct location in the unwind loop
+it's perfectly normal for kernel code
 
-Applied to 6.19/scsi-queue, thanks!
-
-[1/1] scsi: aic94xx: fix use-after-free in device removal path
-      https://git.kernel.org/mkp/scsi/c/f6ab594672d4
-
--- 
-Martin K. Petersen
+> +				}
+>  			}
 
