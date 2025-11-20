@@ -1,53 +1,62 @@
-Return-Path: <stable+bounces-195213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A99EC719B9
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 01:51:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6DBDC719B3
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 01:50:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C30DC34D0A8
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 00:50:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id D4CAF29678
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 00:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198F313957E;
-	Thu, 20 Nov 2025 00:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E19B1D27B6;
+	Thu, 20 Nov 2025 00:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="I1rqVVGf"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wuGsV9EC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9856F2F2
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 00:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFAE136E3F;
+	Thu, 20 Nov 2025 00:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763599809; cv=none; b=lgXSJIF2LDsxKFt5cCXD5YGzLbxO19wjsjs4yku58g/EEcYxLAt4LGldy0EKHYN4bl4tmw4sa1HNfBBvwO3ZpJeKgiLpd1XaPl2SaOOOv5FUnc6KwUIvajKywYDxke+aGN97Xr/oJQSub+SiOl0XX1g1ZorKyYnOCbvkCFb7eUE=
+	t=1763599833; cv=none; b=VWEMJoKiLLKqivJKQlGd3fzpL4stk0mL/OoBd889yC+4bVSjFA5MybLWJ679jp0qrpao7Fny3/Edq1XephjQIjEVNYHRJoozrv9dojCexAMgvII3ormIFu5zBLOys2KJTx7rKOhlSYGhz5k2Rh6ZucVnvgbbsU3goRWxxVbXwYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763599809; c=relaxed/simple;
-	bh=ViT1lghG8J8QIA9ZSDab0bZu2pW2FVQEhrwAZRyQlAI=;
-	h=Date:To:From:Subject:Message-Id; b=X+KI3HLov0YQghZBpnDb9ipseh3QnJ9fw0wL6n1AHOxJATHRTrKBqShSxtODggDBmbS1tkDK+gLKeTignqaScrFon1wyWav+1UzT85ZmvfEk2ufL8VdSm2izSRtP7uB7Q2j+IW1Np17ZE60w8g0dFRSrpcWSebqsk8UZHKoNhe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=I1rqVVGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE61C4CEF5;
-	Thu, 20 Nov 2025 00:50:09 +0000 (UTC)
+	s=arc-20240116; t=1763599833; c=relaxed/simple;
+	bh=lXRXJlvVqgIXdaPCnQBIW5mBZezdkXEccYsE3MSM1g4=;
+	h=Date:To:From:Subject:Message-Id; b=QiMeEFsJrrxgOjt6nLm0B/l10j7IEJ1imb6AyB43UMhmOVzFfKM7mEGUVKe6CaU/EuatnKZMiuUhkQwQHoDAxUc5Xprm2jMvC6GQ2sChkuCFrfEZ8416Gl1T0GdRm5TV8peU0fWe3BzRIlMzP6OZ+u+7BLEc6vkVBRv4l5vr820=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wuGsV9EC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D2D8C4CEF5;
+	Thu, 20 Nov 2025 00:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763599809;
-	bh=ViT1lghG8J8QIA9ZSDab0bZu2pW2FVQEhrwAZRyQlAI=;
+	s=korg; t=1763599832;
+	bh=lXRXJlvVqgIXdaPCnQBIW5mBZezdkXEccYsE3MSM1g4=;
 	h=Date:To:From:Subject:From;
-	b=I1rqVVGf3Z2+1ypGOBn4w1H6gEMQfbO5gr9Jx0dhAzKzZ3grCIAX6RCilr9IxAAc5
-	 jSqceP9osVoXCC6tDFkdeP3yi+xIKayJotgTNguIeACiiFGwaRO2o5xuyp89Z8YsEr
-	 nLzi7C3sZ6vRWlY6im3m9Dk6GAWF6R7716hRmCkU=
-Date: Wed, 19 Nov 2025 16:50:08 -0800
-To: vschneid@redhat.com,vincent.guittot@linaro.org,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,rostedt@goodmis.org,peterz@infradead.org,mingo@redhat.com,mhocko@suse.com,mgorman@suse.de,lorenzo.stoakes@oracle.com,Liam.Howlett@oracle.com,legion@kernel.org,kees@kernel.org,juri.lelli@redhat.com,ebiederm@xmission.com,dietmar.eggemann@arm.com,bsegall@google.com,ptikhomirov@virtuozzo.com,akpm@linux-foundation.org,brauner@kernel.org,akpm@linux-foundation.org
+	b=wuGsV9ECVKAeHpc2ElSZDyliIU+JFShh0MJSHi0RDU/6O4qha1MKO41UV0dQyh63R
+	 6ZUw+Kq9oxpcv1O2zaYiZ8E4JcQoQl/Erbfafreq2kj+e8ol2pxnGzFs7KYsOGsAgL
+	 d76S6wWspmJ1Sa4BqXzCqY61dMzMvAdzzs2FcE5c=
+Date: Wed, 19 Nov 2025 16:50:31 -0800
+To: mm-commits@vger.kernel.org,vschneid@redhat.com,vincent.guittot@linaro.org,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,rostedt@goodmis.org,peterz@infradead.org,mingo@redhat.com,mhocko@suse.com,mgorman@suse.de,lorenzo.stoakes@oracle.com,Liam.Howlett@oracle.com,legion@kernel.org,kees@kernel.org,juri.lelli@redhat.com,ebiederm@xmission.com,dietmar.eggemann@arm.com,bsegall@google.com,brauner@kernel.org,ptikhomirov@virtuozzo.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [patch 1/1] unshare: fix nsproxy leak on set_cred_ucounts() error path
-Message-Id: <20251120005009.4FE61C4CEF5@smtp.kernel.org>
+Subject: [merged] unshare-fix-nsproxy-leak-on-set_cred_ucounts-error-path.patch removed from -mm tree
+Message-Id: <20251120005032.7D2D8C4CEF5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
+
+The quilt patch titled
+     Subject: unshare: fix nsproxy leak on set_cred_ucounts() error path
+has been removed from the -mm tree.  Its filename was
+     unshare-fix-nsproxy-leak-on-set_cred_ucounts-error-path.patch
+
+This patch was dropped because it was merged into mainline or a subsystem tree
+
+------------------------------------------------------
 From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 Subject: unshare: fix nsproxy leak on set_cred_ucounts() error path
 Date: Tue, 18 Nov 2025 14:45:50 +0800
@@ -58,7 +67,7 @@ new_nsproxy, so it is leaked.  Let's fix that by freeing new_nsproxy if
 it's not NULL on this error path.
 
 Link: https://lkml.kernel.org/r/20251118064552.936962-1-ptikhomirov@virtuozzo.com
-Fixes: 905ae01c4ae2a ("Add a reference to ucounts for each cred")
+Fixes: 905ae01c4ae2 ("Add a reference to ucounts for each cred")
 Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 Acked-by: Alexey Gladkov <legion@kernel.org>
 Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
@@ -78,6 +87,7 @@ Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: Valentin Schneider <vschneid@redhat.com>
 Cc: Vincent Guittot <vincent.guittot@linaro.org>
 Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Christian Brauner <brauner@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
@@ -101,4 +111,8 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  
  	if (new_fs || new_fd || do_sysvsem || new_cred || new_nsproxy) {
 _
+
+Patches currently in -mm which might be from ptikhomirov@virtuozzo.com are
+
+
 
