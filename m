@@ -1,46 +1,58 @@
-Return-Path: <stable+bounces-195270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E723DC73FB8
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 13:35:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFDD7C74054
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 13:43:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 397064E8F0F
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 12:34:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id AA2AF2A8ED
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 12:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8E732F751;
-	Thu, 20 Nov 2025 12:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74AF52C21C1;
+	Thu, 20 Nov 2025 12:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FfNKBWeX"
 X-Original-To: stable@vger.kernel.org
-Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19DB26463A;
-	Thu, 20 Nov 2025 12:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.226.244.123
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266932E03F1
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 12:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763642077; cv=none; b=CncbBPapRFqOcV9de+28pICVBEYl2PYcAOUbksmQBwnUpFbTiDiUwWIKZoLLfXoBbPkhR6Kj/10anx88ZqE/4B+9b40Amw4vLHHob46/iYNE3Q7Gi+WOTbT8igQvNPyY8Z179Xpbwne5FyCiD2NVmodR5L8QIbj6BRzmwmOeb9A=
+	t=1763642635; cv=none; b=IWCWlsCHfsyVRz/dp1uTGGVfyIfDTto70ElKCHj85eP9wqBwjRXrwZ16w8Yo+yl9Ch0ArzkF1gktsz2qqgPzzNxZQP7+9D7vnX5Cp3QsqG8NYlJizaACBD8TfYZ9/85MjKIyEqs+4TBEgII6CHF9T2EzrRbAPZgiU/evisIUJiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763642077; c=relaxed/simple;
-	bh=uASkiBThjg0+2aydI15+rppeNYNlJb+ZepyqZt3ACiI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RSZ99YFkYNevR0AKjbwhGx9jGpZQFsfIgZW66EXS2UwhDR1jbkW+ppxQUyLMYuUR1B5n2DGx4E6Pw9xYlctASdftWLMfnTliZ31bkc6WPn6/TbSU2FpjTVQSz+C2/SnaI3Ev9jkZYXAPItNLsZzIkkgbVViQNEMh1GgOSi2sQJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com; spf=pass smtp.mailfrom=xiaomi.com; arc=none smtp.client-ip=207.226.244.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaomi.com
-X-CSE-ConnectionGUID: I9S4tjiGQ7WW3GG6Ca6ONQ==
-X-CSE-MsgGUID: JD2+mL9rQqCt5e1vO6uGnA==
-X-IronPort-AV: E=Sophos;i="6.20,213,1758556800"; 
-   d="scan'208";a="158953641"
-From: guhuinan <guhuinan@xiaomi.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Oliver Neukum
-	<oneukum@suse.com>, Alan Stern <stern@rowland.harvard.edu>
-CC: <linux-usb@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-	<usb-storage@lists.one-eyed-alien.net>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>, Yu Chen <chenyu45@xiaomi.com>, Owen Gu
-	<guhuinan@xiaomi.com>, Michal Pecio <michal.pecio@gmail.com>
-Subject: [PATCH v4] usb: uas: fix urb unmapping issue when the uas device is remove during ongoing data transfer
-Date: Thu, 20 Nov 2025 20:33:36 +0800
-Message-ID: <20251120123336.3328-1-guhuinan@xiaomi.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1763642635; c=relaxed/simple;
+	bh=wALybBOwfgc/XWEOQ5iWGvl57ismMJnraUsi+1nzINA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N2FohY3n17++kPt9AM+/5su/w4Nx2dQalNLcmllvCihWcJAK7bToB40WjQGzIIZwPYcCzJzEIw9Fz0wwaDRx75tyLaxHPzsk2tr9aNbu9ecvSRjASnhhXyiVhQ3ELGf4ZMnA24IWQecvoVfFbgkMY4hLMhFcG7odwFg2ca4cA5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FfNKBWeX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E299C4CEF1;
+	Thu, 20 Nov 2025 12:43:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763642634;
+	bh=wALybBOwfgc/XWEOQ5iWGvl57ismMJnraUsi+1nzINA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FfNKBWeX1Psgh9t9vmxpW2UtJ5Gm2MWbDPh1VRksXP4FHRiq1rfKGM1UyJHLZKnOT
+	 CMAAP95XVEjn5ScybzjorQE2L/RKeYr4eZxvIgt7MHWRX9cMt2qI9SIKUfYcpketlW
+	 HCy2nXcmYPLOpZOmkXsh9MPr7ggFflPiqMGBJZT6Zq2Es9K8QfHtpibJOEP1aFP87F
+	 aueu3tYpwvfJN2GU7lpkVS+e0YmyEt1D07TMs1JXW/JJa0/cNeh/lxx7Q8C4gKr81h
+	 qTJv+qowNUCuNcpVHexboqHMvlDovCmtknoVxsI/iyDmdGHoph6frQfGDRX4tSgUg3
+	 ZW0hewvsPz0gg==
+From: Sasha Levin <sashal@kernel.org>
+To: Chen Yu <xnguchen@sina.cn>
+Cc: vladimir.oltean@nxp.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 6.12.y] net: dsa: sja1105: fix kasan out-of-bounds warning in sja1105_table_delete_entry()
+Date: Thu, 20 Nov 2025 07:43:52 -0500
+Message-ID: <20251120124352.1816256-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251120061231.3103-1-xnguchen@sina.cn>
+References: <20251120061231.3103-1-xnguchen@sina.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,91 +60,11 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BJ-MBX19.mioffice.cn (10.237.8.139) To BJ-MBX05.mioffice.cn
- (10.237.8.125)
 
-From: Owen Gu <guhuinan@xiaomi.com>
+This patch has been queued up for the 6.12 stable tree.
 
-When a UAS device is unplugged during data transfer, there is
-a probability of a system panic occurring. The root cause is
-an access to an invalid memory address during URB callback handling.
-Specifically, this happens when the dma_direct_unmap_sg() function
-is called within the usb_hcd_unmap_urb_for_dma() interface, but the
-sg->dma_address field is 0 and the sg data structure has already been
-freed.
+Subject: net: dsa: sja1105: fix kasan out-of-bounds warning in sja1105_table_delete_entry()
+Queue: 6.12
 
-The SCSI driver sends transfer commands by invoking uas_queuecommand_lck()
-in uas.c, using the uas_submit_urbs() function to submit requests to USB.
-Within the uas_submit_urbs() implementation, three URBs (sense_urb,
-data_urb, and cmd_urb) are sequentially submitted. Device removal may
-occur at any point during uas_submit_urbs execution, which may result
-in URB submission failure. However, some URBs might have been successfully
-submitted before the failure, and uas_submit_urbs will return the -ENODEV
-error code in this case. The current error handling directly calls
-scsi_done(). In the SCSI driver, this eventually triggers scsi_complete()
-to invoke scsi_end_request() for releasing the sgtable. The successfully
-submitted URBs, when being unlinked to giveback, call
-usb_hcd_unmap_urb_for_dma() in hcd.c, leading to exceptions during sg
-unmapping operations since the sg data structure has already been freed.
-
-This patch modifies the error condition check in the uas_submit_urbs()
-function. When a UAS device is removed but one or more URBs have already
-been successfully submitted to USB, it avoids immediately invoking
-scsi_done() and save the cmnd to devinfo->cmnd array. If the successfully
-submitted URBs is completed before devinfo->resetting being set, then
-the scsi_done() function will be called within uas_try_complete() after
-all pending URB operations are finalized. Otherwise, the scsi_done()
-function will be called within uas_zap_pending(), which is executed after
-usb_kill_anchored_urbs().
-
-The error handling only takes effect when uas_queuecommand_lck() calls
-uas_submit_urbs() and returns the error value -ENODEV . In this case,
-the device is disconnected, and the flow proceeds to uas_disconnect(),
-where uas_zap_pending() is invoked to call uas_try_complete().
-
-Fixes: eb2a86ae8c54 ("USB: UAS: fix disconnect by unplugging a hub")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yu Chen <chenyu45@xiaomi.com>
-Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
----
-v4: Add the fix tag, cc stable and acked-by tag
-v3: Add some commit message.
-v2: Upon uas_submit_urbs() returning -ENODEV despite successful URB
-submission, the cmnd is added to the devinfo->cmnd array before
-exiting uas_queuecommand_lck().
-https://lore.kernel.org/linux-usb/20251015153157.11870-1-guhuinan@xiaomi.com/
-v1: https://lore.kernel.org/linux-usb/20250930045309.21588-1-guhuinan@xiaomi.com/
----
----
- drivers/usb/storage/uas.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
-index 03043d567fa1..02fe411567fa 100644
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -698,6 +698,10 @@ static int uas_queuecommand_lck(struct scsi_cmnd *cmnd)
- 	 * of queueing, no matter how fatal the error
- 	 */
- 	if (err == -ENODEV) {
-+		if (cmdinfo->state & (COMMAND_INFLIGHT | DATA_IN_URB_INFLIGHT |
-+				DATA_OUT_URB_INFLIGHT))
-+			goto out;
-+
- 		set_host_byte(cmnd, DID_NO_CONNECT);
- 		scsi_done(cmnd);
- 		goto zombie;
-@@ -711,6 +715,7 @@ static int uas_queuecommand_lck(struct scsi_cmnd *cmnd)
- 		uas_add_work(cmnd);
- 	}
- 
-+out:
- 	devinfo->cmnd[idx] = cmnd;
- zombie:
- 	spin_unlock_irqrestore(&devinfo->lock, flags);
--- 
-2.43.0
-
+Thanks for the backport!
 
