@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-195339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C8A3C75579
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:27:24 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0BA2C7552B
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:22:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1ABBE4E7CBA
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:15:07 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D69DA34663B
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3498F3570A5;
-	Thu, 20 Nov 2025 16:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9111A3612D4;
+	Thu, 20 Nov 2025 16:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZgLIklp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Coz3SfLh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1363B22F74A
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 16:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9CD22CBC6
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 16:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763655302; cv=none; b=XVOJs1UyPhFaEBiS2t/MATdkevqSsxTyYF35F4L0rVddpKJp0Ki4j5UAYMizMfXqy/9w1VZwjhD2cvHiGJAfPZO16TS2KHoqCtW6t1JZlZ1sW5xYKAKQkZa5lAf08j0TAhlRJOqBb1KEWZ8vy5wevJTi7fCEJ3Ss4I7PiCnjzeE=
+	t=1763655332; cv=none; b=blV6e1qAnz6twNtbCrf8OllTBtLV4uC0f69vUAEHm4gIH9eg/9ZfsWxuQAxhr10+2yg5tASwqtmUvlbj2sdNT39MUUYaMMOI2myYs+pfC46qU0pRod+h5jfbhP+PIN9Kmkszvf4HVh2aP958EINYFH3+IX/uQETzMe5Y9h1CoQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763655302; c=relaxed/simple;
-	bh=WQdzyYHENsPEjo5Gv9a9ux0sKZT9y2r10tQiVug2XsY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nUPZBrmYlENJl+i3FpP1eQUyltikD1iT4VHBOJdxqjWSvlDPCOKrdtYxDvgH/zgbeQMkzlMCzC/Gdc9yGecXHsQ+mwRmnG4LqRvc5OM2Oycnv3kQRM4a76O0e743FbfQyJ4OAd0pM1hAltdwUQe9Xy+EQ98J/tas/xH+w6b6qyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZgLIklp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF48C4CEF1;
-	Thu, 20 Nov 2025 16:14:59 +0000 (UTC)
+	s=arc-20240116; t=1763655332; c=relaxed/simple;
+	bh=H9flIl8a53bjWP7GTSG+GMxgq920SNB95/t98MZCeg0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YfcMJNe6HtsmWL+4pYTd2GbHH5p+QG1DWXESjKPopEgaLKG6NCFS0Du8ncXC/7AUsw90FdtvbWu64TnWDV3O8ZSMoa9p9MRCiercBvzc1PBNqItNgGU0RlPCnynYSuFzt5rSaCcb7NezQowofvshNnyzWfPiq27Y/2p5UOLoMAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Coz3SfLh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B0FC4CEF1;
+	Thu, 20 Nov 2025 16:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763655300;
-	bh=WQdzyYHENsPEjo5Gv9a9ux0sKZT9y2r10tQiVug2XsY=;
+	s=korg; t=1763655332;
+	bh=H9flIl8a53bjWP7GTSG+GMxgq920SNB95/t98MZCeg0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=kZgLIklp3HpkKMu9t/Avg8vr07MkJGLymafid54jHmP39GaykePEGOKfetpssGrpT
-	 fD1+fKq1Vel2ePamrFdSqAhVVne2+xqAEqykkWKvvzpdV6kAZQDLuYY1Ysx7A4XxWU
-	 qwKVAFyf3Z3FM5sizPdQ/jo62LOmcFk8eezmnuJ0=
-Subject: FAILED: patch "[PATCH] ASoC: da7213: Use component driver suspend/resume" failed to apply to 6.17-stable tree
-To: claudiu.beznea.uj@bp.renesas.com,broonie@kernel.org
+	b=Coz3SfLhNFeEGa8xnhqOAlSV/V4/O056HkYFzVLzXjbgawsoVCkeKohPCcRS7dSqP
+	 ejgAbBr+fibLpOQ1K0pwvh+0xB8GKjNK/h0AS+L/DnawZfpthokxAA5/sPWD08pVcy
+	 vgiz9iWeRQYSONQO0xNU++VFchVeumMefcEbIQ0w=
+Subject: FAILED: patch "[PATCH] crash: fix crashkernel resource shrink" failed to apply to 6.6-stable tree
+To: sourabhjain@linux.ibm.com,akpm@linux-foundation.org,bhe@redhat.com,stable@vger.kernel.org,thunder.leizhen@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 20 Nov 2025 17:14:57 +0100
-Message-ID: <2025112057-rubble-coleslaw-6ad1@gregkh>
+Date: Thu, 20 Nov 2025 17:15:29 +0100
+Message-ID: <2025112029-arrogance-bondless-6a5b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.17-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 249d96b492efb7a773296ab2c62179918301c146
+git cherry-pick -x 00fbff75c5acb4755f06f08bd1071879c63940c5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112057-rubble-coleslaw-6ad1@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112029-arrogance-bondless-6a5b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,143 +77,83 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 249d96b492efb7a773296ab2c62179918301c146 Mon Sep 17 00:00:00 2001
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Date: Tue, 4 Nov 2025 13:49:14 +0200
-Subject: [PATCH] ASoC: da7213: Use component driver suspend/resume
+From 00fbff75c5acb4755f06f08bd1071879c63940c5 Mon Sep 17 00:00:00 2001
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+Date: Sun, 2 Nov 2025 01:07:41 +0530
+Subject: [PATCH] crash: fix crashkernel resource shrink
 
-Since snd_soc_suspend() is invoked through snd_soc_pm_ops->suspend(),
-and snd_soc_pm_ops is associated with the soc_driver (defined in
-sound/soc/soc-core.c), and there is no parent-child relationship between
-the soc_driver and the DA7213 codec driver, the power management subsystem
-does not enforce a specific suspend/resume order between the DA7213 driver
-and the soc_driver.
+When crashkernel is configured with a high reservation, shrinking its
+value below the low crashkernel reservation causes two issues:
 
-Because of this, the different codec component functionalities, called from
-snd_soc_resume() to reconfigure various functions, can race with the
-DA7213 struct dev_pm_ops::resume function, leading to misapplied
-configuration. This occasionally results in clipped sound.
+1. Invalid crashkernel resource objects
+2. Kernel crash if crashkernel shrinking is done twice
 
-Fix this by dropping the struct dev_pm_ops::{suspend, resume} and use
-instead struct snd_soc_component_driver::{suspend, resume}. This ensures
-the proper configuration sequence is handled by the ASoC subsystem.
+For example, with crashkernel=200M,high, the kernel reserves 200MB of high
+memory and some default low memory (say 256MB).  The reservation appears
+as:
 
-Cc: stable@vger.kernel.org
-Fixes: 431e040065c8 ("ASoC: da7213: Add suspend to RAM support")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20251104114914.2060603-1-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+cat /proc/iomem | grep -i crash
+af000000-beffffff : Crash kernel
+433000000-43f7fffff : Crash kernel
 
-diff --git a/sound/soc/codecs/da7213.c b/sound/soc/codecs/da7213.c
-index ae89260ca215..3420011da444 100644
---- a/sound/soc/codecs/da7213.c
-+++ b/sound/soc/codecs/da7213.c
-@@ -2124,11 +2124,50 @@ static int da7213_probe(struct snd_soc_component *component)
- 	return 0;
- }
+If crashkernel is then shrunk to 50MB (echo 52428800 >
+/sys/kernel/kexec_crash_size), /proc/iomem still shows 256MB reserved:
+af000000-beffffff : Crash kernel
+
+Instead, it should show 50MB:
+af000000-b21fffff : Crash kernel
+
+Further shrinking crashkernel to 40MB causes a kernel crash with the
+following trace (x86):
+
+BUG: kernel NULL pointer dereference, address: 0000000000000038
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+<snip...>
+Call Trace: <TASK>
+? __die_body.cold+0x19/0x27
+? page_fault_oops+0x15a/0x2f0
+? search_module_extables+0x19/0x60
+? search_bpf_extables+0x5f/0x80
+? exc_page_fault+0x7e/0x180
+? asm_exc_page_fault+0x26/0x30
+? __release_resource+0xd/0xb0
+release_resource+0x26/0x40
+__crash_shrink_memory+0xe5/0x110
+crash_shrink_memory+0x12a/0x190
+kexec_crash_size_store+0x41/0x80
+kernfs_fop_write_iter+0x141/0x1f0
+vfs_write+0x294/0x460
+ksys_write+0x6d/0xf0
+<snip...>
+
+This happens because __crash_shrink_memory()/kernel/crash_core.c
+incorrectly updates the crashk_res resource object even when
+crashk_low_res should be updated.
+
+Fix this by ensuring the correct crashkernel resource object is updated
+when shrinking crashkernel memory.
+
+Link: https://lkml.kernel.org/r/20251101193741.289252-1-sourabhjain@linux.ibm.com
+Fixes: 16c6006af4d4 ("kexec: enable kexec_crash_size to support two crash kernel regions")
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Zhen Lei <thunder.leizhen@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+index 3b1c43382eec..99dac1aa972a 100644
+--- a/kernel/crash_core.c
++++ b/kernel/crash_core.c
+@@ -373,7 +373,7 @@ static int __crash_shrink_memory(struct resource *old_res,
+ 		old_res->start = 0;
+ 		old_res->end   = 0;
+ 	} else {
+-		crashk_res.end = ram_res->start - 1;
++		old_res->end = ram_res->start - 1;
+ 	}
  
-+static int da7213_runtime_suspend(struct device *dev)
-+{
-+	struct da7213_priv *da7213 = dev_get_drvdata(dev);
-+
-+	regcache_cache_only(da7213->regmap, true);
-+	regcache_mark_dirty(da7213->regmap);
-+	regulator_bulk_disable(DA7213_NUM_SUPPLIES, da7213->supplies);
-+
-+	return 0;
-+}
-+
-+static int da7213_runtime_resume(struct device *dev)
-+{
-+	struct da7213_priv *da7213 = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = regulator_bulk_enable(DA7213_NUM_SUPPLIES, da7213->supplies);
-+	if (ret < 0)
-+		return ret;
-+	regcache_cache_only(da7213->regmap, false);
-+	return regcache_sync(da7213->regmap);
-+}
-+
-+static int da7213_suspend(struct snd_soc_component *component)
-+{
-+	struct da7213_priv *da7213 = snd_soc_component_get_drvdata(component);
-+
-+	return da7213_runtime_suspend(da7213->dev);
-+}
-+
-+static int da7213_resume(struct snd_soc_component *component)
-+{
-+	struct da7213_priv *da7213 = snd_soc_component_get_drvdata(component);
-+
-+	return da7213_runtime_resume(da7213->dev);
-+}
-+
- static const struct snd_soc_component_driver soc_component_dev_da7213 = {
- 	.probe			= da7213_probe,
- 	.set_bias_level		= da7213_set_bias_level,
- 	.controls		= da7213_snd_controls,
- 	.num_controls		= ARRAY_SIZE(da7213_snd_controls),
-+	.suspend		= da7213_suspend,
-+	.resume			= da7213_resume,
- 	.dapm_widgets		= da7213_dapm_widgets,
- 	.num_dapm_widgets	= ARRAY_SIZE(da7213_dapm_widgets),
- 	.dapm_routes		= da7213_audio_map,
-@@ -2175,6 +2214,8 @@ static int da7213_i2c_probe(struct i2c_client *i2c)
- 	if (!da7213->fin_min_rate)
- 		return -EINVAL;
- 
-+	da7213->dev = &i2c->dev;
-+
- 	i2c_set_clientdata(i2c, da7213);
- 
- 	/* Get required supplies */
-@@ -2224,31 +2265,9 @@ static void da7213_i2c_remove(struct i2c_client *i2c)
- 	pm_runtime_disable(&i2c->dev);
- }
- 
--static int da7213_runtime_suspend(struct device *dev)
--{
--	struct da7213_priv *da7213 = dev_get_drvdata(dev);
--
--	regcache_cache_only(da7213->regmap, true);
--	regcache_mark_dirty(da7213->regmap);
--	regulator_bulk_disable(DA7213_NUM_SUPPLIES, da7213->supplies);
--
--	return 0;
--}
--
--static int da7213_runtime_resume(struct device *dev)
--{
--	struct da7213_priv *da7213 = dev_get_drvdata(dev);
--	int ret;
--
--	ret = regulator_bulk_enable(DA7213_NUM_SUPPLIES, da7213->supplies);
--	if (ret < 0)
--		return ret;
--	regcache_cache_only(da7213->regmap, false);
--	return regcache_sync(da7213->regmap);
--}
--
--static DEFINE_RUNTIME_DEV_PM_OPS(da7213_pm, da7213_runtime_suspend,
--				 da7213_runtime_resume, NULL);
-+static const struct dev_pm_ops da7213_pm = {
-+	RUNTIME_PM_OPS(da7213_runtime_suspend, da7213_runtime_resume, NULL)
-+};
- 
- static const struct i2c_device_id da7213_i2c_id[] = {
- 	{ "da7213" },
-diff --git a/sound/soc/codecs/da7213.h b/sound/soc/codecs/da7213.h
-index b9ab791d6b88..29cbf0eb6124 100644
---- a/sound/soc/codecs/da7213.h
-+++ b/sound/soc/codecs/da7213.h
-@@ -595,6 +595,7 @@ enum da7213_supplies {
- /* Codec private data */
- struct da7213_priv {
- 	struct regmap *regmap;
-+	struct device *dev;
- 	struct mutex ctrl_lock;
- 	struct regulator_bulk_data supplies[DA7213_NUM_SUPPLIES];
- 	struct clk *mclk;
+ 	crash_free_reserved_phys_range(ram_res->start, ram_res->end);
 
 
