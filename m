@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-195343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69C4C756A6
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:40:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46588C75718
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:44:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AD46534CE8C
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:31:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0FD313636C5
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742A236E57E;
-	Thu, 20 Nov 2025 16:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40B5364EB4;
+	Thu, 20 Nov 2025 16:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJKRQRsq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yF8kn+1w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F7636E56F
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 16:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B0E340D81
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 16:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763656109; cv=none; b=TSr2hdF/Os6rfwhVaSK0ZajaFk17rUYE33PmcE3JwGmUEIsfqqZ7FpsB5NB0cHBvG+m8ROGeu7rwXdehAsOFTiabUkktqYvuM5hO91aFKJVGOUNL4RqoaJ9Ismhb5GQ1jpy7pwFGLVFzLsonZP04SxBYnQLwVJOf54K0jPqGQMs=
+	t=1763656135; cv=none; b=L4zbxPCHf8FLWzXfeIK2i8FOYdILXanoV/V4Lkn6HApzzcwji8ZeT62zffvN2ymRjDa1Vhz/pnhSGyH9PE2Z1Kxsw/sY3h2sNoQqWLI2R/X5J4McYxsagvifWPtwxoYQ9KSEdySHfSe7U8s1+P+OLg+V6lVeqMLWW39xrkQ9wDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763656109; c=relaxed/simple;
-	bh=6UXbLHVrPNknWW3mbNJweibc6oD02NVjDEGL2tPA+Cc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OG9DziKe7zjc/+OjYe5yLAftTRtF14E+M7EMKKTXuV0NrQ/HHb6tTug2ElnIUuTo1yC/wkSvn+XiSpQ+ofnZgXh0co4v7QVPJhIW5GWcFur40xFx5/db8EBWAoS3bElWcQ7HLvCM5e3Gj0ypgAaH1RQV3QM95defHYtbOtl4rTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJKRQRsq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D9DC4CEF1;
-	Thu, 20 Nov 2025 16:28:28 +0000 (UTC)
+	s=arc-20240116; t=1763656135; c=relaxed/simple;
+	bh=kLAWDooHfpj7MBlKO+kr/2msm/jMFdDpq2rR0ybbrp8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=itFyZq6HBCc/ox6eCBjJ5NRGES7dR4QG03/mu+1Hvd9frGRlLCBNjNxt7fjRrjLtOPyXwm+enNKv1vPOQ0wUvGCZCIH0PCBjpXb2vvve7cJa6adE4OwxmNsj/KGzzY8r0f28nfhbPjPeboxgjfTwMwquI7UUlrYOZ4y5qyj1kDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yF8kn+1w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE08C4CEF1;
+	Thu, 20 Nov 2025 16:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763656108;
-	bh=6UXbLHVrPNknWW3mbNJweibc6oD02NVjDEGL2tPA+Cc=;
+	s=korg; t=1763656135;
+	bh=kLAWDooHfpj7MBlKO+kr/2msm/jMFdDpq2rR0ybbrp8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=UJKRQRsqGe66ms2o6OO1A81nVnlCg9VkKZyshlwIjTByuguDjrtDYun7Ktmbd63mq
-	 j27uYV0qYfF7QHSMZtC/LPwz5nghHD/3s5YPd3WPKq0lSb5sPPMnq9POAzr8LeB3dp
-	 CpWaGubsAS97qWbNdyqBFO2OAvgW3oeCi83bDDG8=
-Subject: FAILED: patch "[PATCH] drm/i915/dp_mst: Disable Panel Replay" failed to apply to 6.12-stable tree
-To: imre.deak@intel.com,animesh.manna@intel.com,jouni.hogander@intel.com,rodrigo.vivi@intel.com
+	b=yF8kn+1wA54jJFqYv53qaqD052AMJdZfD4/FJtRSt0o9jCyfd9IUcfq0IYyFTX66F
+	 qqSU3BGa5cruOTlmrQxMeeJaWnXa/Zl5WpMm0AQAL4/zC7tEG+G66bjfgdTmdI0Bzo
+	 2pViLLU8FNl4YbmsgiOTUHZjT4LTtuiefhfexsNE=
+Subject: FAILED: patch "[PATCH] pmdomain: arm: scmi: Fix genpd leak on provider registration" failed to apply to 6.6-stable tree
+To: sudeep.holla@arm.com,peng.fan@nxp.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 20 Nov 2025 17:28:17 +0100
-Message-ID: <2025112017-gigahertz-gravitate-93f3@gregkh>
+Date: Thu, 20 Nov 2025 17:28:52 +0100
+Message-ID: <2025112052-bulldozer-hatbox-e9df@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x f2687d3cc9f905505d7b510c50970176115066a2
+git cherry-pick -x 7458f72cc28f9eb0de811effcb5376d0ec19094a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112017-gigahertz-gravitate-93f3@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112052-bulldozer-hatbox-e9df@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,43 +77,77 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f2687d3cc9f905505d7b510c50970176115066a2 Mon Sep 17 00:00:00 2001
-From: Imre Deak <imre.deak@intel.com>
-Date: Fri, 7 Nov 2025 14:41:41 +0200
-Subject: [PATCH] drm/i915/dp_mst: Disable Panel Replay
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 7458f72cc28f9eb0de811effcb5376d0ec19094a Mon Sep 17 00:00:00 2001
+From: Sudeep Holla <sudeep.holla@arm.com>
+Date: Fri, 17 Oct 2025 12:03:20 +0100
+Subject: [PATCH] pmdomain: arm: scmi: Fix genpd leak on provider registration
+ failure
 
-Disable Panel Replay on MST links until it's properly implemented. For
-instance the required VSC SDP is not programmed on MST and FEC is not
-enabled if Panel Replay is enabled.
+If of_genpd_add_provider_onecell() fails during probe, the previously
+created generic power domains are not removed, leading to a memory leak
+and potential kernel crash later in genpd_debug_add().
 
-Fixes: 3257e55d3ea7 ("drm/i915/panelreplay: enable/disable panel replay")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15174
-Cc: Jouni Högander <jouni.hogander@intel.com>
-Cc: Animesh Manna <animesh.manna@intel.com>
-Cc: stable@vger.kernel.org # v6.8+
-Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patch.msgid.link/20251107124141.911895-1-imre.deak@intel.com
-(cherry picked from commit e109f644b871df8440c886a69cdce971ed533088)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Add proper error handling to unwind the initialized domains before
+returning from probe to ensure all resources are correctly released on
+failure.
 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index d5e0a1e66944..4619237f1346 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -585,6 +585,10 @@ static void _panel_replay_init_dpcd(struct intel_dp *intel_dp)
- 	struct intel_display *display = to_intel_display(intel_dp);
- 	int ret;
+Example crash trace observed without this fix:
+
+  | Unable to handle kernel paging request at virtual address fffffffffffffc70
+  | CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.18.0-rc1 #405 PREEMPT
+  | Hardware name: ARM LTD ARM Juno Development Platform/ARM Juno Development Platform
+  | pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  | pc : genpd_debug_add+0x2c/0x160
+  | lr : genpd_debug_init+0x74/0x98
+  | Call trace:
+  |  genpd_debug_add+0x2c/0x160 (P)
+  |  genpd_debug_init+0x74/0x98
+  |  do_one_initcall+0xd0/0x2d8
+  |  do_initcall_level+0xa0/0x140
+  |  do_initcalls+0x60/0xa8
+  |  do_basic_setup+0x28/0x40
+  |  kernel_init_freeable+0xe8/0x170
+  |  kernel_init+0x2c/0x140
+  |  ret_from_fork+0x10/0x20
+
+Fixes: 898216c97ed2 ("firmware: arm_scmi: add device power domain support using genpd")
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+diff --git a/drivers/pmdomain/arm/scmi_pm_domain.c b/drivers/pmdomain/arm/scmi_pm_domain.c
+index 8fe1c0a501c9..b5e2ffd5ea64 100644
+--- a/drivers/pmdomain/arm/scmi_pm_domain.c
++++ b/drivers/pmdomain/arm/scmi_pm_domain.c
+@@ -41,7 +41,7 @@ static int scmi_pd_power_off(struct generic_pm_domain *domain)
  
-+	/* TODO: Enable Panel Replay on MST once it's properly implemented. */
-+	if (intel_dp->mst_detect == DRM_DP_MST)
-+		return;
+ static int scmi_pm_domain_probe(struct scmi_device *sdev)
+ {
+-	int num_domains, i;
++	int num_domains, i, ret;
+ 	struct device *dev = &sdev->dev;
+ 	struct device_node *np = dev->of_node;
+ 	struct scmi_pm_domain *scmi_pd;
+@@ -108,9 +108,18 @@ static int scmi_pm_domain_probe(struct scmi_device *sdev)
+ 	scmi_pd_data->domains = domains;
+ 	scmi_pd_data->num_domains = num_domains;
+ 
++	ret = of_genpd_add_provider_onecell(np, scmi_pd_data);
++	if (ret)
++		goto err_rm_genpds;
 +
- 	ret = drm_dp_dpcd_read_data(&intel_dp->aux, DP_PANEL_REPLAY_CAP_SUPPORT,
- 				    &intel_dp->pr_dpcd, sizeof(intel_dp->pr_dpcd));
- 	if (ret < 0)
+ 	dev_set_drvdata(dev, scmi_pd_data);
+ 
+-	return of_genpd_add_provider_onecell(np, scmi_pd_data);
++	return 0;
++err_rm_genpds:
++	for (i = num_domains - 1; i >= 0; i--)
++		pm_genpd_remove(domains[i]);
++
++	return ret;
+ }
+ 
+ static void scmi_pm_domain_remove(struct scmi_device *sdev)
 
 
