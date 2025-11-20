@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-195408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC12C761AD
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 20:42:31 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92027C761B0
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 20:43:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 1A2902BFB6
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 19:42:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3B04F355DFD
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 19:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5048E2D8372;
-	Thu, 20 Nov 2025 19:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1017F2D8372;
+	Thu, 20 Nov 2025 19:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cKWXCyAB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X1XbTzQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9211A0BF3
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 19:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AE01A0BF3
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 19:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763667748; cv=none; b=LyatX6GpnKkMjSY6p8MXolXUgaZehDa00ZWyRWhXvQr7BpSpdQBv/4S5DjcnRz16kVNvpVkU2hfnTZQXCA/BlAvEjmdf/SZTjMgVL7GPMkPsaWjKrjh3bL61U8tgjr9CI/YWswEiZXtMzKTcJt6DlH69vUWa7XxO6gLfE05ROCI=
+	t=1763667787; cv=none; b=T5QpnIJhwVTW3vQjh4wHel1unCqGKspGt4XnSWWnmxdOLJIat3REqHQ2ng1u3Ab83mS56pHcqByZRmOBbHAxaPTzsWQrY4DxneO0VuK3pUj60oCRJPGTVHS2N+CXkjpHmO2/nHXHj+iu1QKWx/jmeEz/FCd/7wPM5GHs513V/o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763667748; c=relaxed/simple;
-	bh=c4VPauC5Re5ANoYhoVtGeMHJgiFik7V626+7X8w7VT4=;
+	s=arc-20240116; t=1763667787; c=relaxed/simple;
+	bh=q7rJyx756AGxY+plABdRtxO7WoRo9XGqtI74WtGA/zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iGfiND2n5iJ4VlozbwMpNic25OM/j8MsbE8tJ35uSuUecj/v68ajbI3dd2npPBd9wG1D5MIlzilr01tBFx8WHjH20djeWQvYj/De8O3oGTe+kz8m1Njlm8d7QjHwjTroYCbqxZE9P/F/5o9Mu2Yf1fE3DAQMIHyKIH0V75pIgJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cKWXCyAB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0139CC4CEF1;
-	Thu, 20 Nov 2025 19:42:25 +0000 (UTC)
+	 MIME-Version; b=YYstHR6YTcG+LagKLbC/cDjX8HU5xzBmbe2l9D0En7rklYuy5kKWTvl5NmMVGtJg5roG1Np/VJzQsv/OIqegYDTlmftokXs0eMPaiBYA7Ph/T9wOsV2upiYUXBb/Jn7XkfJohp7Il6l60W7BHZ1ECcI3d2AJxXdiWPmsLFaHtkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X1XbTzQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBA8C4CEF1;
+	Thu, 20 Nov 2025 19:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763667747;
-	bh=c4VPauC5Re5ANoYhoVtGeMHJgiFik7V626+7X8w7VT4=;
+	s=k20201202; t=1763667786;
+	bh=q7rJyx756AGxY+plABdRtxO7WoRo9XGqtI74WtGA/zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cKWXCyABNGdApKpkMjF8e8xxMCEqvK6fdyjB1skJRCxO5/GqQAy80HLd4xGtsC6M9
-	 gQoVm7NYBMTQHZvBJbKOWVviVSgX9AFK+SctWo0sfp8UQKr9I21G/4Yl76swvpfc2t
-	 xOZn2VlIzplcuxGAP56xshJwX5xJNErB87x+KPFcs+MC/oQzY0UFDXcMuaNXelSPLf
-	 prXGor/T+4FaeY03JHYxOFJxhbZROvd4QHBY5xNY9iH3qKFVFvhA1dl/etfH/9aSjU
-	 5ZpqBg1cn7rXYN6jCUkSJqWAtn0DTwciTmBiSx7IlGRoB206F0jL0lAtmoykAKVkCc
-	 xUxqlCIjHRSKg==
-From: Mike Rapoport <rppt@kernel.org>
+	b=X1XbTzQcF5whvkBHCInssD862XGSu04f6DAZuhlaiNhRXnysSaltLnvkQCdilzDYL
+	 GCEEB4CSAKMDp2Ongm5Qa2yEVb5gFKkIfK00BUOxk33vo8qrYrELcEbXeaTNzSV6JI
+	 pkjCJ2ZLQ0lHD+RSwdGpmfpmvenRhTnT6Sq/T2ix4ufVYxjit1ooijel5a0Y0Aq4I6
+	 WJ6/6StgvsCzuljCQR/NtOXXREW15ROvQliyncrh7mJofFi3FMW+btzdSbbwmlhxXt
+	 Qax66hVyn8EsIm2Ly42UonOM7FUzAGxYETnnU9DEd11bfSrJii60YhUMs59CqpsGUJ
+	 GLYf0JXuIaaqA==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1.y] mm/mm_init: fix hash table order logging in alloc_large_system_hash()
-Date: Thu, 20 Nov 2025 21:42:22 +0200
-Message-ID: <20251120194222.2365413-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025112032-parted-progeny-cd9e@gregkh>
-References: <2025112032-parted-progeny-cd9e@gregkh>
+Cc: Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/3] net: netpoll: Individualize the skb pool
+Date: Thu, 20 Nov 2025 14:43:01 -0500
+Message-ID: <20251120194303.2293083-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112005-polio-gratify-8d3b@gregkh>
+References: <2025112005-polio-gratify-8d3b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,51 +60,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
+From: Breno Leitao <leitao@debian.org>
 
-When emitting the order of the allocation for a hash table,
-alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from log
-base 2 of the allocation size.  This is not correct if the allocation size
-is smaller than a page, and yields a negative value for the order as seen
-below:
+[ Upstream commit 221a9c1df790fa711d65daf5ba05d0addc279153 ]
 
-TCP established hash table entries: 32 (order: -4, 256 bytes, linear) TCP
-bind hash table entries: 32 (order: -2, 1024 bytes, linear)
+The current implementation of the netpoll system uses a global skb
+pool, which can lead to inefficient memory usage and
+waste when targets are disabled or no longer in use.
 
-Use get_order() to compute the order when emitting the hash table
-information to correctly handle cases where the allocation size is smaller
-than a page:
+This can result in a significant amount of memory being unnecessarily
+allocated and retained, potentially causing performance issues and
+limiting the availability of resources for other system components.
 
-TCP established hash table entries: 32 (order: 0, 256 bytes, linear) TCP
-bind hash table entries: 32 (order: 0, 1024 bytes, linear)
+Modify the netpoll system to assign a skb pool to each target instead of
+using a global one.
 
-Link: https://lkml.kernel.org/r/20251028191020.413002-1-isaacmanjarres@google.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 0d6c356dd6547adac2b06b461528e3573f52d953)
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+This approach allows for more fine-grained control over memory
+allocation and deallocation, ensuring that resources are only allocated
+and retained as needed.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20241114-skb_buffers_v2-v3-1-9be9f52a8b69@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 49c8d2c1f94c ("net: netpoll: fix incorrect refcount handling causing incorrect cleanup")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/netpoll.h |  1 +
+ net/core/netpoll.c      | 31 +++++++++++++------------------
+ 2 files changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 86066a2cf258..d760b96604ec 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -9225,7 +9225,7 @@ void *__init alloc_large_system_hash(const char *tablename,
- 		panic("Failed to allocate %s hash table\n", tablename);
+diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
+index 959a4daacea1f..b34301650c479 100644
+--- a/include/linux/netpoll.h
++++ b/include/linux/netpoll.h
+@@ -32,6 +32,7 @@ struct netpoll {
+ 	bool ipv6;
+ 	u16 local_port, remote_port;
+ 	u8 remote_mac[ETH_ALEN];
++	struct sk_buff_head skb_pool;
+ };
  
- 	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
--		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
-+		tablename, 1UL << log2qty, get_order(size), size,
- 		virt ? (huge ? "vmalloc hugepage" : "vmalloc") : "linear");
+ struct netpoll_info {
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 87182a4272bfd..76bdb6ce46378 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -45,9 +45,6 @@
  
- 	if (_hash_shift)
+ #define MAX_UDP_CHUNK 1460
+ #define MAX_SKBS 32
+-
+-static struct sk_buff_head skb_pool;
+-
+ #define USEC_PER_POLL	50
+ 
+ #define MAX_SKB_SIZE							\
+@@ -234,20 +231,23 @@ void netpoll_poll_enable(struct net_device *dev)
+ 		up(&ni->dev_lock);
+ }
+ 
+-static void refill_skbs(void)
++static void refill_skbs(struct netpoll *np)
+ {
++	struct sk_buff_head *skb_pool;
+ 	struct sk_buff *skb;
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&skb_pool.lock, flags);
+-	while (skb_pool.qlen < MAX_SKBS) {
++	skb_pool = &np->skb_pool;
++
++	spin_lock_irqsave(&skb_pool->lock, flags);
++	while (skb_pool->qlen < MAX_SKBS) {
+ 		skb = alloc_skb(MAX_SKB_SIZE, GFP_ATOMIC);
+ 		if (!skb)
+ 			break;
+ 
+-		__skb_queue_tail(&skb_pool, skb);
++		__skb_queue_tail(skb_pool, skb);
+ 	}
+-	spin_unlock_irqrestore(&skb_pool.lock, flags);
++	spin_unlock_irqrestore(&skb_pool->lock, flags);
+ }
+ 
+ static void zap_completion_queue(void)
+@@ -284,12 +284,12 @@ static struct sk_buff *find_skb(struct netpoll *np, int len, int reserve)
+ 	struct sk_buff *skb;
+ 
+ 	zap_completion_queue();
+-	refill_skbs();
++	refill_skbs(np);
+ repeat:
+ 
+ 	skb = alloc_skb(len, GFP_ATOMIC);
+ 	if (!skb)
+-		skb = skb_dequeue(&skb_pool);
++		skb = skb_dequeue(&np->skb_pool);
+ 
+ 	if (!skb) {
+ 		if (++count < 10) {
+@@ -678,6 +678,8 @@ int netpoll_setup(struct netpoll *np)
+ 	struct in_device *in_dev;
+ 	int err;
+ 
++	skb_queue_head_init(&np->skb_pool);
++
+ 	rtnl_lock();
+ 	if (np->dev_name[0]) {
+ 		struct net *net = current->nsproxy->net_ns;
+@@ -778,7 +780,7 @@ int netpoll_setup(struct netpoll *np)
+ 	}
+ 
+ 	/* fill up the skb queue */
+-	refill_skbs();
++	refill_skbs(np);
+ 
+ 	err = __netpoll_setup(np, ndev);
+ 	if (err)
+@@ -804,13 +806,6 @@ int netpoll_setup(struct netpoll *np)
+ }
+ EXPORT_SYMBOL(netpoll_setup);
+ 
+-static int __init netpoll_init(void)
+-{
+-	skb_queue_head_init(&skb_pool);
+-	return 0;
+-}
+-core_initcall(netpoll_init);
+-
+ static void rcu_cleanup_netpoll_info(struct rcu_head *rcu_head)
+ {
+ 	struct netpoll_info *npinfo =
 -- 
-2.50.1
+2.51.0
 
 
