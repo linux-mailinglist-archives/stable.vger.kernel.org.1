@@ -1,106 +1,87 @@
-Return-Path: <stable+bounces-195429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2361EC76986
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 00:26:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EBD0C76A19
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 00:40:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id B160A2BB51
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 23:26:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 3D5BA29EA7
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 23:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0283093C6;
-	Thu, 20 Nov 2025 23:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756252D7DE7;
+	Thu, 20 Nov 2025 23:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JOz75Qbf"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sYoxdzvE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D7A30146D;
-	Thu, 20 Nov 2025 23:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040682C3244
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 23:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763681195; cv=none; b=EvEoXcXd1/0Bp7mlX/JWWaPrOJF+RjYOv35GwAJXCEaTwswA/kOau8Iid8Twi+XtcTcYZEcbscWbgVqKwFmJh9ebiP/VBvRRTBbVSxbuHHKkfNmNyAcxl5NiYDEDTIonxc9iWWLHkkij60faFZsqOcydoo7lug1JF2IdYy7Vhh0=
+	t=1763681996; cv=none; b=ZwwKRcH/SrOu8lxKi5Fi5rOMn12UB2MsXaR+CQkn3rsglsaZo73GLahR9nMWtdWus/kkSAoFB+KylPs9VNykW4hUH5o0jTIlEcEcCUUEWmwm5MquNvn5MoNO69iqwLSP40CQESkv9cT0IGYzsfbvzTQKB7iuCGYZE5kBTiQEetI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763681195; c=relaxed/simple;
-	bh=IzzXrKpnxD77S92ynC5y2Koa1yDERlcqMfRIHt5aWrc=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=hHuC+x5fNUD4ujWpoovLVICiHieL55Z8y0MLLsUgWpDK5kipP2IkmZ3aEppHDzzX8dINzaAZu8gBHtuKyNwpi/0iTzS5Dn33U5oEVO1iv3WGOtLL31E48xkjH2Fmzsl/SJ+dyNuDkau5bFrUO8NCW0562RApAg6NTVgP0JslzqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JOz75Qbf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D30C19421;
-	Thu, 20 Nov 2025 23:26:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763681195;
-	bh=IzzXrKpnxD77S92ynC5y2Koa1yDERlcqMfRIHt5aWrc=;
-	h=Date:From:To:Cc:Subject:References:From;
-	b=JOz75QbfYPf1lLjECkzgIr3HvHniReLyUTIUP5He64TV2YGPX9xIRFTHZBzxGLY0p
-	 CcIdrx2aYZXNwyH/qYTBBSkIUYrG1yEa47m4nP7Hohgz5jWIrQi1glDbicRL6bFaYo
-	 3Nr2fpyc54YfZcECsJwBteFbbupy5Lhg2MqGSd+4nBL+Qm3F0eJkAebG1XB482dVNu
-	 uUl3Kj6lUw0DyeRpkqJYs1yjXO2CiDmBf90bPhivcEClB4yIU6mIABXBq88DJZuM2E
-	 LUO8zc8QC63730pkf30oSUE78gJe7NhYCPgHRvQKExXvav7ysn+zDqpWqIqJmQIuVt
-	 bQEgQsCnwFOqA==
-Received: from rostedt by gandalf with local (Exim 4.98.2)
-	(envelope-from <rostedt@kernel.org>)
-	id 1vME3Q-000000041sC-0NxX;
-	Thu, 20 Nov 2025 18:27:08 -0500
-Message-ID: <20251120232707.946976394@kernel.org>
-User-Agent: quilt/0.68
-Date: Thu, 20 Nov 2025 18:23:27 -0500
-From: Steven Rostedt <rostedt@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: Tomas Glozar <tglozar@redhat.com>,
- John Kacur <jkacur@redhat.com>,
- stable@vger.kernel.org,
- Wander Lairson Costa <wander@redhat.com>
-Subject: [for-next][PATCH 04/16] rtla/timerlat_bpf: Stop tracing on user latency
-References: <20251120232323.271532418@kernel.org>
+	s=arc-20240116; t=1763681996; c=relaxed/simple;
+	bh=+3EbIaW84lTO86iIFzy/SflM9M4KNG5EVk8ttAiXMLM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=j+XrSc5j0lp/0EJGuLEKYx33oLprP+cmAgqjpaHE0MGcT9jTHMyN9n+TCOy9oCmstIPIYabNc/GMN8m8XzfbX8NL9SownVfQ9PlC5uVvazV4QIGzFk634uZeCIhBu0ff+XEM53DQRouxP4FXU0OJxi3QZQYYEA8/Bqe+pPZ+QHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sYoxdzvE; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763681991;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eLf/dd1zKfIPfCKbKoTJhnMoW1xfXHe5J/hRjAIR0pc=;
+	b=sYoxdzvE5lnzArxnlTY9CamhYk26OIpUwo8SF4kNmOgO3UBdkhrR8eL5VT86c6OxL0vePN
+	vPpsNHE7TtFMo8lwTtJOpCKCntZVahZLAoSZlkx1Yf8aU1jcAKa1cWcoeqqZNTwDD2xMsP
+	FNQWh/6BudD8RhpmE5+jQBxPinFj2eo=
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: stable@vger.kernel.org
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>
+Subject: [PATCH 6.12.y 0/5] LBR virtualization fixes
+Date: Thu, 20 Nov 2025 23:39:31 +0000
+Message-ID: <20251120233936.2407119-1-yosry.ahmed@linux.dev>
+In-Reply-To: <2025112046-confider-smelting-6296@gregkh>
+References: <2025112046-confider-smelting-6296@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Tomas Glozar <tglozar@redhat.com>
+This is a backport of LBR virtualization fixes that recently landed in
+Linus's tree to 6.12.y.
 
-rtla-timerlat allows a *thread* latency threshold to be set via the
--T/--thread option. However, the timerlat tracer calls this *total*
-latency (stop_tracing_total_us), and stops tracing also when the
-return-to-user latency is over the threshold.
+Patch 1 is not a backport, it's introducing a helper that exists in
+Linus's tree to make the following backports more straightforward to
+apply.
 
-Change the behavior of the timerlat BPF program to reflect what the
-timerlat tracer is doing, to avoid discrepancy between stopping
-collecting data in the BPF program and stopping tracing in the timerlat
-tracer.
+Patch 2 should already be in queue-6.12, but it's included here as the
+remaining patches depend on it.
 
-Cc: stable@vger.kernel.org
-Fixes: e34293ddcebd ("rtla/timerlat: Add BPF skeleton to collect samples")
-Reviewed-by: Wander Lairson Costa <wander@redhat.com>
-Link: https://lore.kernel.org/r/20251006143100.137255-1-tglozar@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
----
- tools/tracing/rtla/src/timerlat.bpf.c | 3 +++
- 1 file changed, 3 insertions(+)
+Yosry Ahmed (5):
+  KVM: SVM: Introduce svm_recalc_lbr_msr_intercepts()
+  KVM: SVM: Mark VMCB_LBR dirty when MSR_IA32_DEBUGCTLMSR is updated
+  KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()
+  KVM: nSVM: Fix and simplify LBR virtualization handling with nested
+  KVM: SVM: Fix redundant updates of LBR MSR intercepts
 
-diff --git a/tools/tracing/rtla/src/timerlat.bpf.c b/tools/tracing/rtla/src/timerlat.bpf.c
-index 084cd10c21fc..e2265b5d6491 100644
---- a/tools/tracing/rtla/src/timerlat.bpf.c
-+++ b/tools/tracing/rtla/src/timerlat.bpf.c
-@@ -148,6 +148,9 @@ int handle_timerlat_sample(struct trace_event_raw_timerlat_sample *tp_args)
- 	} else {
- 		update_main_hist(&hist_user, bucket);
- 		update_summary(&summary_user, latency, bucket);
-+
-+		if (thread_threshold != 0 && latency_us >= thread_threshold)
-+			set_stop_tracing();
- 	}
- 
- 	return 0;
+ arch/x86/kvm/svm/nested.c | 20 +++-----
+ arch/x86/kvm/svm/svm.c    | 96 ++++++++++++++++++++-------------------
+ arch/x86/kvm/svm/svm.h    |  1 +
+ 3 files changed, 57 insertions(+), 60 deletions(-)
+
 -- 
-2.51.0
-
+2.52.0.rc2.455.g230fcf2819-goog
 
 
